@@ -1,26 +1,209 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Typography */
+  --font-ui: var(--font-interface);
+  --font-whimsy: var(--font-display);
+
+  /* Structure */
+  --page-max-width: 1200px;
+  --page-padding: 24px;
+  --card-radius: 28px;
+  --card-padding: 28px;
+  --grid-gap: 20px;
+
+  /* Iridescent — our first working theme */
+  --background: #eaf8ff;
+  --foreground: #243657;
+
+  --accent-purple: #8964d8;
+  --accent-pink: #e783b9;
+  --accent-aqua: #43b6d0;
+
+  --glass-background: rgba(255, 255, 255, 0.52);
+  --glass-border: rgba(137, 100, 216, 0.52);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+* {
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html,
+body {
+  margin: 0;
+  min-height: 100%;
 }
 
 body {
-  background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-ui), sans-serif;
+
+  background:
+    radial-gradient(
+      circle at 12% 10%,
+      rgba(112, 210, 238, 0.42),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 88% 12%,
+      rgba(215, 153, 255, 0.38),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 72% 90%,
+      rgba(255, 169, 209, 0.32),
+      transparent 34%
+    ),
+    var(--background);
+
+  background-attachment: fixed;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+.muse-page {
+  width: min(100% - 32px, var(--page-max-width));
+  margin: 0 auto;
+  padding: 32px 0 80px;
+}
+
+.whimsy {
+  font-family: var(--font-whimsy), serif;
+  font-style: italic;
+}
+.muse-header {
+  padding: 12px 0 30px;
+}
+
+.muse-brand-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.muse-logo {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+}
+
+.muse-logo span {
+  color: var(--accent-purple);
+}
+
+.theme-name {
+  color: var(--accent-purple);
+  font-size: 0.85rem;
+  letter-spacing: 0.14em;
+}
+
+.muse-stars {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 54px 5% 42px;
+}
+
+.star {
+  display: inline-block;
+  line-height: 1;
+}
+
+.star-purple {
+  color: var(--accent-purple);
+  font-size: 3rem;
+}
+
+.star-pink {
+  color: var(--accent-pink);
+  font-size: 2.25rem;
+}
+
+.star-aqua {
+  color: var(--accent-aqua);
+  font-size: 2.7rem;
+}
+
+.muse-greeting {
+  margin: 0;
+  max-width: 800px;
+  font-size: clamp(2.6rem, 6vw, 5rem);
+  line-height: 0.98;
+  font-weight: 500;
+  letter-spacing: -0.04em;
+}
+.muse-card {
+  padding: var(--card-padding);
+
+  background: var(--glass-background);
+
+  border: 1.5px solid var(--glass-border);
+  border-radius: var(--card-radius);
+
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+
+  box-shadow:
+    0 18px 50px rgba(77, 68, 130, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55);
+}
+.card-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.card-heading h2 {
+  margin: 0;
+  font-size: 1.45rem;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+
+.priority-count {
+  flex-shrink: 0;
+  color: var(--accent-purple);
+  font-size: 1.15rem;
+}
+
+.priority-list {
+  display: grid;
+  gap: 18px;
+  margin-top: 28px;
+}
+
+.priority-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 1.1rem;
+}
+
+.priority-check {
+  display: grid;
+  place-items: center;
+
+  width: 24px;
+  height: 24px;
+  flex: 0 0 24px;
+
+  border: 2px solid var(--accent-purple);
+  border-radius: 50%;
+}
+
+.priority-check.complete {
+  color: white;
+  background: var(--accent-purple);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+.daily-grid {
+  display: grid;
+  gap: var(--grid-gap);
 }
