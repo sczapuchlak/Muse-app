@@ -1,0 +1,4 @@
+.muse-modal { position: fixed; inset: 0; display: flex; width: min(660px, calc(100vw - 32px)); height: min(680px, 75dvh); max-width: calc(100vw - 32px); max-height: 75dvh; margin: auto; padding: var(--space-5); overflow: hidden; border: 1px solid var(--glass-border); border-top-color: var(--glass-edge); border-radius: var(--card-radius); color: var(--foreground); background: var(--floating-background); box-shadow: var(--floating-shadow); }
+.muse-modal::backdrop { background: color-mix(in srgb, var(--background) 40%, transparent); backdrop-filter: blur(4px); }
+@media (max-width: 680px) { .muse-modal { width: calc(100vw - 16px); max-width: calc(100vw - 16px); height: 90dvh; max-height: 90dvh; margin: auto auto 8px; padding: var(--space-4); } }
+@media (max-height: 500px) { .muse-modal { height: calc(100dvh - 16px); max-height: calc(100dvh - 16px); padding: var(--space-3); } }

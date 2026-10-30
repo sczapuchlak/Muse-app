@@ -1,0 +1,40 @@
+"use client";
+import { useState } from "react";
+import { dailyEditSample } from "@/lib/daily-edit-data";
+import { dateLabel, shiftDate, weekDates } from "@/lib/dates";
+import { mockProfile } from "@/lib/mock-profile";
+import { entryFor, weekSummary, type RitualDefinition } from "@/lib/rituals";
+import { MusePageHeader } from "../MusePageHeader";
+import { DateNavigator } from "../DateNavigator";
+import { RitualWeekNavigator } from "./RitualWeekNavigator";
+import { useMuseDate } from "../MuseSession";
+import { useMuseToday } from "../useMuseToday";
+import { RitualProvider, useRituals } from "./RitualStore";
+import { RitualGroup } from "./RitualGroup";
+import { RitualEditor } from "./RitualEditor";
+import { RitualGroupManager } from "./RitualGroupManager";
+import { RitualEntryEditor } from "./RitualEntryEditor";
+import "./Rituals.css";
+
+type Editor = { kind: "ritual"; ritual?: RitualDefinition; anchor: HTMLElement } | { kind: "groups"; anchor: HTMLElement } | { kind: "entry"; ritual: RitualDefinition; date: string; anchor: HTMLElement; apply: (value: number | null) => void };
+function RitualsView() {
+  const { state } = useRituals();
+  const [date, setDate] = useMuseDate(dailyEditSample.date.iso);
+  const [editor, setEditor] = useState<Editor | null>(null);
+  const today = useMuseToday(mockProfile.timeZone);
+  const week = weekDates(date), summary = weekSummary(state, week, today);
+  return <main className="muse-page muse-rituals-page">
+    <MusePageHeader eyebrow="A rhythm of your own" title="Rituals" description="Small things, returned to."><DateNavigator date={date} onChange={setDate} /></MusePageHeader>
+    <div className="muse-rituals-toolbar"><nav className="muse-ritual-week-navigation" aria-label="Ritual week navigation"><button className="muse-button" type="button" disabled={!today} onClick={() => setDate(today)}>This week</button><button className="muse-button" type="button" aria-label="Previous week" onClick={() => setDate(shiftDate(date, -7))}>←</button><span>{new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", timeZone: "UTC" }).format(new Date(`${week[0]}T12:00:00Z`))} – {new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", timeZone: "UTC" }).format(new Date(`${week[6]}T12:00:00Z`))}</span><button className="muse-button" type="button" aria-label="Next week" onClick={() => setDate(shiftDate(date, 7))}>→</button></nav><div className="muse-rituals-actions"><button className="muse-button" type="button" onClick={(event) => setEditor({ kind: "groups", anchor: event.currentTarget })}>Manage groups</button><button className="muse-button button-primary" type="button" onClick={(event) => setEditor({ kind: "ritual", anchor: event.currentTarget })}>+ Add ritual</button></div></div>
+    <div className="muse-rituals-week-context"><RitualWeekNavigator selectedDate={date} today={today} onChange={setDate}/><p className="small-label">{dateLabel(date)} · {today && date > today ? "Upcoming days are ready to plan, then log when they arrive." : "Past scheduled days remain editable."}</p></div>
+    <dl className="muse-rituals-summary"><div><dt>Complete</dt><dd>{today ? summary.completed : "…"}<span>{summary.partial} partial · {summary.missed} explicitly missed</span></dd></div><div><dt>Not logged</dt><dd>{today ? summary.unknown : "…"}<span>past scheduled days · unknown</span></dd></div><div><dt>Weekly goals met</dt><dd>{today ? `${summary.weeklyMet} / ${summary.weeklyTargets}` : "…"}<span>separate from daily goals</span></dd></div></dl>
+    <div className="muse-ritual-groups">{state.groups.map((group) => <RitualGroup key={group.id} group={group} week={week} selectedDate={date} today={today} onEdit={(ritual, anchor) => setEditor({ kind: "ritual", ritual, anchor })} onEditEntry={(ritual, entryDate, anchor, apply) => setEditor({ kind: "entry", ritual, date: entryDate, anchor, apply })} />)}</div>
+    <div className="muse-ritual-legend" aria-label="Week status legend"><span><i data-status="complete" />Complete</span><span><i data-status="partial" />Partial progress</span><span>× Explicitly missed</span><span>○ Not logged / unknown</span><span><i data-status="upcoming" />Upcoming</span><span>— Not scheduled</span></div>
+    <p className="small-label muse-ritual-semantics">Partial progress is its own state. Past blanks stay unknown until you log them. Weekly targets accumulate across available days; unscheduled days never count against a streak.</p>
+    {editor?.kind === "ritual" && <RitualEditor key={editor.ritual?.id ?? "new"} initial={editor.ritual} date={date} returnFocus={editor.anchor} onClose={() => setEditor(null)} />}
+    {editor?.kind === "groups" && <RitualGroupManager returnFocus={editor.anchor} onClose={() => setEditor(null)} />}
+    {editor?.kind === "entry" && <RitualEntryEditor ritual={editor.ritual} date={editor.date} current={entryFor(state, editor.ritual.id, editor.date)?.value ?? null} returnFocus={editor.anchor} onApply={editor.apply} onClose={() => setEditor(null)} />}
+    <footer className="muse-footer">Sample rituals · Changes stay in this session and reset on refresh</footer>
+  </main>;
+}
+export function Rituals() { return <RitualProvider><RitualsView /></RitualProvider>; }

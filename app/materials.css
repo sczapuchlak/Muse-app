@@ -1,0 +1,51 @@
+/* Optical roles only: material never changes geometry or information hierarchy. */
+:root {
+  --material-blur: 22px;
+  --material-saturation: 1.4;
+  --material-reflection: 12%;
+  --material-internal-light: 9%;
+  --material-specular: 38%;
+}
+:root[data-material="frosted"] {
+  --material-blur: 34px;
+  --material-saturation: 1.05;
+  --material-reflection: 5.5%;
+  --material-internal-light: 2%;
+  --material-specular: 15%;
+  --glass-background: var(--frosted-glass-background);
+  --floating-background: var(--frosted-floating-background);
+  --surface-subtle: var(--frosted-surface-subtle);
+  --surface-hover: var(--frosted-surface-hover);
+  --surface-control: var(--frosted-surface-control);
+  --planning-control-background: var(--frosted-surface-control);
+  --planning-container-background: var(--frosted-planning-container-background);
+  --planning-rail-background: var(--frosted-planning-rail-background);
+  --planning-task-background: var(--frosted-planning-task-background);
+}
+/* Higher specificity keeps component background shorthands from erasing the material.
+   These are cheap painted light layers; there is no extra nested blur or animated filter. */
+:root[data-material] :is(.muse-card, .muse-planning-rail, .muse-day-drop, .muse-ritual-group, .muse-nourish-day, .muse-planner-task, .muse-meal-entry, .muse-saved-meal, .muse-grocery-section, .muse-popover-panel, .muse-drawer, .muse-modal) {
+  --surface-feedback-shadow: 0 0 0 transparent;
+  --material-depth-shadow: var(--card-shadow);
+  background-image:
+    linear-gradient(172deg, color-mix(in srgb, var(--glass-edge) var(--material-specular), transparent), transparent 18%),
+    radial-gradient(ellipse at 0% 5%, color-mix(in srgb, var(--accent-secondary) var(--material-internal-light), transparent), transparent 65%),
+    radial-gradient(ellipse at 100% 95%, color-mix(in srgb, var(--accent-warm) var(--material-internal-light), transparent), transparent 65%),
+    linear-gradient(125deg, color-mix(in srgb, var(--glass-edge) var(--material-reflection), transparent), transparent 42%, color-mix(in srgb, var(--glass-aqua-edge) 10%, transparent));
+  box-shadow: var(--surface-feedback-shadow), var(--material-depth-shadow), inset 0 1px 0 color-mix(in srgb, var(--glass-edge) 75%, transparent), inset 1px 0 0 color-mix(in srgb, var(--accent-secondary) 14%, transparent), inset -1px -1px 0 color-mix(in srgb, var(--accent-warm) 12%, transparent);
+}
+/* Blur only primary glass sheets and existing floating surfaces, never each nested entry. */
+:root[data-material] :is(.muse-card, .muse-planning-rail, .muse-day-drop, .muse-ritual-group, .muse-nourish-day, .muse-grocery-section, .muse-popover-panel, .muse-drawer, .muse-modal) {
+  backdrop-filter: blur(var(--material-blur)) saturate(var(--material-saturation));
+  -webkit-backdrop-filter: blur(var(--material-blur)) saturate(var(--material-saturation));
+}
+
+/* Quieter painted refraction at the nested task/meal level, with no added blur. */
+:root[data-material] :is(.muse-planner-task, .muse-meal-entry) { --material-internal-light: 4%; --material-specular: 20%; }
+:root[data-material="frosted"] :is(.muse-planner-task, .muse-meal-entry) { --material-internal-light: 1%; --material-specular: 10%; }
+/* Material depth composes with drop/drag feedback instead of overriding it. */
+:root[data-material] .muse-drop-zone[data-drop-active="true"] { --surface-feedback-shadow: 0 0 16px var(--wash-aqua); }
+:root[data-material] :is(.muse-drag-surface, .muse-planner-task)[data-dragging="true"] { --surface-feedback-shadow: var(--muse-edge-glow); }
+:root[data-material] .muse-planner-task[data-drop-before="true"] { --surface-feedback-shadow: inset 0 2px 0 var(--focus-ring), 0 -2px 8px var(--wash-aqua); }
+
+:root[data-material] :is(.muse-popover-panel, .muse-drawer, .muse-modal) { --material-depth-shadow: var(--floating-shadow); }

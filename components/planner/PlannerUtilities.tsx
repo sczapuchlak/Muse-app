@@ -1,0 +1,6 @@
+import type { PlannerFilters as Filters } from "@/lib/planner";
+import { MuseIcon } from "../MuseIcon";
+import { PlannerFilters } from "./PlannerFilters";
+export function PlannerUtilities({search,onSearch,filters,onFilter,workspaceId,today,onToday,onPrevious,onNext}:{search:string;onSearch:(value:string)=>void;filters:Filters;onFilter:(value:Filters)=>void;workspaceId:string;today:string;onToday:()=>void;onPrevious:()=>void;onNext:()=>void}) {
+  return <div className="muse-planner-toolbar"><label className="muse-planner-search"><MuseIcon name="search" size={16}/><input aria-label="Search Planner tasks" type="search" value={search} onChange={(event)=>onSearch(event.target.value)} placeholder="Search tasks…"/></label><div className="muse-planner-utility-row"><PlannerFilters value={filters} onChange={onFilter} workspaceId={workspaceId}/><nav className="muse-planning-window-nav" aria-label="Rolling planning window"><button className="muse-button" type="button" disabled={!today} onClick={onToday}>Today</button><button className="muse-button" type="button" aria-label="Previous planning day" onClick={onPrevious}>←</button><button className="muse-button" type="button" aria-label="Next planning day" onClick={onNext}>→</button></nav></div></div>;
+}

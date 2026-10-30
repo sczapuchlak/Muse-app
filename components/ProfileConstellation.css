@@ -1,0 +1,10 @@
+.muse-profile-constellation { position: absolute; pointer-events: none; opacity: .75; }
+.muse-profile-constellation[data-intensity="luminous"] { opacity: 1; }
+.muse-profile-constellation > svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.muse-profile-constellation line { stroke: color-mix(in srgb, var(--constellation-color-3) 65%, var(--star-3)); stroke-width: .65; vector-effect: non-scaling-stroke; opacity: .7; }
+.muse-profile-constellation .star-purple { color: color-mix(in srgb, var(--constellation-color-1) 65%, var(--star-1)); }
+.muse-profile-constellation .star-pink { color: color-mix(in srgb, var(--constellation-color-2) 65%, var(--star-2)); }
+.muse-profile-constellation .star-aqua { color: color-mix(in srgb, var(--constellation-color-3) 65%, var(--star-3)); }
+.muse-constellation-node { position: absolute; display: block; transform: translate(-50%, -50%); opacity: var(--node-brightness); animation: muse-star-shimmer var(--motion-shimmer, 14000ms) ease-in-out var(--glint-delay) infinite; }
+@media (max-width: 760px) { .muse-profile-constellation { display: none; } }
+@media (prefers-reduced-motion: reduce) { .muse-constellation-node { animation: none; opacity: var(--node-brightness); } }

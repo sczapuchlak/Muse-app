@@ -1,0 +1,23 @@
+.muse-orbital-glint, .muse-constellation-celebration { position: absolute; z-index: 6; left: 50%; top: 50%; pointer-events: none; }
+.muse-orbital-glint { width: 64px; height: 64px; margin: -32px; animation: muse-orbit-fade var(--motion-orbital, 580ms) var(--ease-silky) both; }
+.muse-orbital-glint > .muse-star { position: absolute; top: 1px; right: 6px; }
+.muse-orbit-arc { width: 100%; height: 100%; transform: rotate(-100deg); animation: muse-orbit-sweep var(--motion-orbital, 580ms) var(--ease-silky) both; }
+.muse-orbit-arc circle { fill: none; stroke: var(--star-3); stroke-width: 1; stroke-dasharray: 48 103; }
+@keyframes muse-orbit-sweep { from { transform: rotate(-100deg); } to { transform: rotate(180deg); } }
+@keyframes muse-orbit-fade { 0% { opacity: 0; } 20%, 50% { opacity: 1; } 100% { opacity: 0; } }
+.muse-constellation-celebration { width: 100px; height: 80px; margin: -40px -50px; animation: muse-orbit-fade var(--motion-celebration, 950ms) var(--ease-silky) both; }
+.muse-celebration-lines { position: absolute; inset: 0; width: 100%; height: 100%; }
+.muse-celebration-lines path { fill: none; stroke: var(--star-1); stroke-width: .7; stroke-dasharray: 50; stroke-dashoffset: 50; animation: muse-lines-wake 300ms 70ms ease-out forwards; }
+.muse-celebration-lines path:nth-child(2) { animation-delay: 210ms; }
+.muse-celebration-lines path:nth-child(3) { animation-delay: 350ms; }
+.muse-constellation-celebration > span { position: absolute; transform: translate(-50%, -50%); }
+.muse-constellation-celebration > span:nth-of-type(1) { left: 12%; top: 55%; }
+.muse-constellation-celebration > span:nth-of-type(2) { left: 40%; top: 20%; }
+.muse-constellation-celebration > span:nth-of-type(3) { left: 64%; top: 72.5%; }
+.muse-constellation-celebration > span:nth-of-type(4) { left: 88%; top: 37.5%; }
+@keyframes muse-lines-wake { to { stroke-dashoffset: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .muse-orbital-glint, .muse-constellation-celebration { animation: none; width: 44px; height: 44px; margin: -22px; border-radius: var(--pill-radius); background: var(--selected-background); box-shadow: 0 0 12px var(--wash-aqua); }
+  .muse-orbital-glint *, .muse-constellation-celebration * { animation: none; }
+  .muse-orbital-glint > *, .muse-constellation-celebration > * { display: none; animation: none; }
+}

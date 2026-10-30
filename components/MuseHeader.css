@@ -1,0 +1,31 @@
+/* Three visual zones use existing horizontal space; the hero does not stack decorations. */
+.muse-editorial-header { position: relative; isolation: isolate; display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(120px, .65fr) minmax(340px, 1fr); align-items: center; gap: var(--space-5); padding: var(--space-4) 0 var(--space-6); }
+.muse-greeting-zone { position: relative; grid-column: 1; grid-row: 1; min-width: 0; padding: var(--space-5) 0; }
+.muse-editorial-header .muse-greeting { position: relative; z-index: 1; max-width: 24ch; font-size: clamp(2.7rem, 4.1cqi, 3.55rem); line-height: 1.03; letter-spacing: -.045em; text-wrap: balance; }
+.muse-editorial-header > .muse-profile-constellation { position: relative; grid-column: 2; grid-row: 1; width: 100%; height: 160px; opacity: 1; }
+.muse-temporal-zone { grid-column: 3; grid-row: 1; display: flex; flex-direction: column; align-items: flex-end; gap: var(--space-3); min-width: 0; }
+.muse-hero-appearance { display: flex; flex-direction: row; flex-wrap: nowrap; justify-content: flex-end; align-items: center; gap: var(--space-3); width: 100%; }
+.muse-temporal-zone .muse-stars { display: flex; flex: 0 0 auto; flex-direction: row; flex-wrap: nowrap; justify-content: flex-end; align-self: center; padding: 0; gap: var(--space-3); }
+.muse-temporal-zone .muse-week-strip { width: 100%; max-width: 520px; margin: 0; }
+.muse-daily-section-title { margin: 0 0 var(--space-5); font-size: 1rem; font-weight: 650; letter-spacing: -.025em; }
+@container muse-content (max-width: 900px) {
+  .muse-editorial-header { grid-template-columns: minmax(0, 1.2fr) minmax(340px, 1fr); }
+  .muse-editorial-header > .muse-profile-constellation { display: none; }
+  .muse-temporal-zone { grid-column: 2; }
+}
+@container muse-content (max-width: 800px) {
+  .muse-editorial-header { grid-template-columns: minmax(0, 1fr); gap: var(--space-3); padding-top: var(--space-2); }
+  .muse-editorial-header .muse-greeting { max-width: 22ch; font-size: clamp(2.5rem, 6.5cqi, 3.7rem); }
+  .muse-greeting-zone { padding: var(--space-3) 0; }
+  .muse-temporal-zone { grid-column: 1; grid-row: 2; }
+  .muse-hero-appearance { justify-content: flex-end; }
+  .muse-temporal-zone .muse-week-strip { max-width: 100%; }
+}
+@media (max-width: 760px) {
+  .muse-editorial-header .muse-greeting { max-width: 21ch; font-size: clamp(2rem, 7.6vw, 3rem); }
+  .muse-temporal-zone .muse-stars { gap: var(--space-2); }
+  .muse-temporal-zone .muse-stars > :nth-child(2) { width: 18px; height: 30px; }
+  .muse-temporal-zone .muse-stars > :first-child, .muse-temporal-zone .muse-stars > :last-child { width: 11px; height: 19px; }
+}
+
+.muse-hero-appearance > .muse-theme-root { flex: 0 0 auto; }

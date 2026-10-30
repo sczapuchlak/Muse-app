@@ -1,0 +1,9 @@
+.muse-nutrition-total { padding-top: var(--space-3); border-top: 1px solid var(--divider); font-variant-numeric: tabular-nums; }
+.muse-nutrition-caption { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-1) var(--space-3); font-size: .72rem; font-weight: 600; }
+.muse-nutrition-caption small { color: var(--text-muted); font-weight: 400; font-size: .65rem; }
+.muse-nutrition-total dl { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: var(--space-3); margin: var(--space-2) 0 0; }
+.muse-nutrition-total dt { color: var(--text-muted); font-size: .62rem; }
+.muse-nutrition-total dd { margin: var(--space-1) 0 0; color: var(--foreground); font-size: .94rem; font-weight: 550; }
+.muse-nutrition-total dd span { color: var(--text-muted); font-size: .65rem; font-weight: 400; }
+.muse-nutrition-total-compact { margin-top: auto; }
+.muse-nutrition-total-compact dl { grid-template-columns: repeat(2,minmax(0,1fr)); }

@@ -1,0 +1,5 @@
+.muse-overflow-trigger { display: inline-grid; place-items: center; flex: 0 0 var(--touch-target); width: var(--touch-target); height: var(--touch-target); padding: 0; border: 1px solid transparent; border-radius: var(--control-radius); background: transparent; color: var(--text-muted); }
+.muse-overflow-trigger:hover { color: var(--foreground); background: var(--surface-hover); }
+.muse-overflow-actions { display: flex; flex-direction: column; gap: var(--space-1); }
+.muse-overflow-actions a { text-decoration: none; }
+.muse-overflow-actions [data-destructive="true"] { color: var(--urgency-ink); }

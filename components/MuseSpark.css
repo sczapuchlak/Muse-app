@@ -1,0 +1,10 @@
+.muse-spark { position: absolute; inset: 50% auto auto 50%; z-index: 5; width: 0; height: 0; pointer-events: none; }
+.muse-spark-star { position: absolute; left: -4px; top: -7px; opacity: 0; animation: muse-spark-glint var(--motion-success, 560ms) var(--ease-silky) both; }
+.muse-spark-star:nth-child(1) { --spark-x: -14px; --spark-y: -18px; }
+.muse-spark-star:nth-child(2) { --spark-x: 17px; --spark-y: -12px; }
+.muse-spark-star:nth-child(3) { --spark-x: 2px; --spark-y: -25px; }
+@keyframes muse-spark-glint { 0% { opacity: 0; transform: translate(0, 0) scale(.3); } 25% { opacity: .85; } 100% { opacity: 0; transform: translate(var(--spark-x), var(--spark-y)) scale(.2); } }
+@media (prefers-reduced-motion: reduce) {
+  .muse-spark-star { display: none; animation: none; }
+  .muse-spark::after { content: ""; position: absolute; left: -14px; top: -14px; width: 28px; height: 28px; border-radius: 50%; background: radial-gradient(circle, var(--wash-purple), transparent 72%); box-shadow: 0 0 8px var(--wash-purple); }
+}

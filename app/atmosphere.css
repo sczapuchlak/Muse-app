@@ -1,0 +1,12 @@
+/* The atmospheric plane belongs to the viewport, independent of body/content paint height. */
+body::before { content: ""; position: fixed; z-index: -2; inset: 0; pointer-events: none; background:
+  radial-gradient(ellipse var(--hero-glow-size) at var(--hero-glow-position), var(--hero-glow), transparent 78%),
+  radial-gradient(ellipse var(--bloom-size-1) at var(--bloom-position-1), var(--atmosphere-aqua), transparent 78%),
+  radial-gradient(ellipse var(--bloom-size-2) at var(--bloom-position-2), var(--atmosphere-lavender), transparent 78%),
+  radial-gradient(ellipse var(--bloom-size-3) at var(--bloom-position-3), var(--atmosphere-blush), transparent 80%),
+  radial-gradient(ellipse var(--bloom-size-4) at var(--bloom-position-4), var(--atmosphere-blue-violet), transparent 82%),
+  radial-gradient(ellipse 460px 360px at 0% 98%, var(--atmosphere-aqua), transparent 80%), var(--background); }
+body::after { content: ""; position: fixed; z-index: -1; inset: -3%; pointer-events: none; background: radial-gradient(ellipse 44% 30% at 52% 0%, var(--haze-primary), transparent 80%), radial-gradient(ellipse 38% 42% at 100% 78%, var(--haze-secondary), transparent 78%); filter: blur(24px); animation: muse-celestial-drift var(--motion-drift,32000ms) ease-in-out infinite alternate; }
+@keyframes muse-celestial-drift { from { transform: translate3d(0,-3px,0); } to { transform: translate3d(5px,5px,0); } }
+@keyframes muse-star-shimmer { 0%,8%,100% { opacity: var(--node-brightness,.4); } 3% { opacity: .95; } }
+@media (prefers-reduced-motion: reduce) { body::after { animation: none; transform: none; } }

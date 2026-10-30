@@ -1,0 +1,23 @@
+/* One prismatic edge treatment for genuine controls, never static card containers. */
+:root { --muse-edge-gradient: linear-gradient(115deg, var(--hover-start), var(--hover-middle) 52%, var(--hover-end)); --muse-edge-glow: 0 0 12px var(--wash-purple); }
+:is(.muse-edge, .muse-button, .choice-button, .inline-edit-value, .popover-choice, .emotion-option) { position: relative; isolation: isolate; }
+:is(.muse-edge, .muse-button, .choice-button, .inline-edit-value, .popover-choice, .emotion-option)::before { content: ""; position: absolute; inset: -1px; padding: 1px; border-radius: inherit; background: var(--muse-edge-gradient); -webkit-mask: linear-gradient(black 0 0) content-box, linear-gradient(black 0 0); -webkit-mask-composite: xor; mask: linear-gradient(black 0 0) content-box, linear-gradient(black 0 0); mask-composite: exclude; opacity: 0; pointer-events: none; transition: opacity var(--motion-hover, 180ms) var(--ease-silky); }
+:is(.muse-edge, .muse-button, .choice-button, .inline-edit-value, .popover-choice, .emotion-option):focus-visible::before { opacity: 1; }
+@media (hover: hover) and (pointer: fine) {
+  :is(.muse-edge, .muse-button, .choice-button, .inline-edit-value, .popover-choice, .emotion-option):not(:disabled):hover::before { opacity: .85; }
+  .muse-edge:hover { box-shadow: var(--muse-edge-glow); }
+}
+@media (prefers-reduced-motion: reduce) { :is(.muse-edge, .muse-button, .choice-button, .inline-edit-value, .popover-choice, .emotion-option)::before { transition: none; } }
+.priority-check { position: relative; overflow: visible; }
+.water-goal-button { min-height: var(--touch-target); padding: 0 var(--space-1); border: 1px solid transparent; border-radius: var(--control-radius); background: transparent; color: var(--text-muted); font-size: .8rem; font-variant-numeric: tabular-nums; }
+.water-goal-button:hover, .water-goal-button[aria-expanded="true"] { border-color: var(--glass-aqua-edge); color: var(--ink-aqua); background: var(--wash-aqua); }
+
+/* Shared semantic organization accents for task collections and ritual groups. */
+[data-accent="primary"] { --organization-accent: var(--accent-primary); }
+[data-accent="secondary"] { --organization-accent: var(--accent-secondary); }
+[data-accent="pop"] { --organization-accent: var(--accent-pop); }
+.muse-workspace-dot { display: inline-block; width: 7px; height: 7px; flex: 0 0 7px; border-radius: 2px; background: var(--organization-accent, var(--accent-primary)); }
+
+.muse-drop-zone[data-drop-active="true"] { border-color: var(--selected-border); outline: 2px solid var(--focus-ring); outline-offset: -2px; box-shadow: 0 0 16px var(--wash-aqua); }
+.muse-drag-surface[data-dragging="true"] { transform: translateY(-1px); opacity: .8; border-color: var(--selected-border); box-shadow: var(--muse-edge-glow); }
+@media (prefers-reduced-motion: reduce) { .muse-drag-surface[data-dragging="true"] { transform: none; } }

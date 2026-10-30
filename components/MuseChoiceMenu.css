@@ -1,0 +1,5 @@
+.muse-choice-menu { min-width: 0; }
+.muse-choice-trigger { width: 100%; justify-content: space-between; gap: var(--space-3); text-align: left; background: var(--planning-control-background); }
+.muse-choice-trigger > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.muse-choice-options { margin-top: var(--space-2); }
+.muse-choice-options .popover-choice > span { display: flex; align-items: center; gap: var(--space-2); }

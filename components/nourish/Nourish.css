@@ -1,0 +1,110 @@
+.muse-nourish-toolbar, .muse-nourish-toolbar nav { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-2); }
+.muse-nourish-toolbar { justify-content: space-between; margin-bottom: var(--space-3); }
+.muse-nourish-toolbar nav > button { min-width: var(--touch-target); }
+.muse-nourish-page > .muse-week-strip { max-width: none; width: 100%; margin: 0 0 var(--space-5); }
+.muse-nourish-week { display: flex; flex-direction: column; gap: var(--space-3); }
+.muse-meal-week-heading, .muse-nourish-day { display: grid; grid-template-columns: 80px repeat(4,minmax(130px,1fr)); gap: var(--space-3); }
+.muse-meal-week-heading { padding: 0 var(--space-4); color: var(--text-muted); font-size: .68rem; text-transform: uppercase; letter-spacing: .08em; }
+.muse-nourish-day { padding: var(--space-4); background: var(--planning-container-background); border: 1px solid var(--glass-border); border-top-color: var(--glass-edge); border-radius: var(--card-radius); backdrop-filter: blur(var(--material-blur)); box-shadow: var(--card-shadow); }
+.muse-nourish-day[data-selected="true"] { border-color: var(--selected-border); }
+.muse-meal-day-heading { display: flex; flex-direction: column; gap: var(--space-2); align-items: flex-start; padding: var(--space-2) 0; }
+.muse-meal-day-heading h2 { margin: 0; font-weight: 500; }
+.muse-meal-day-heading time { display: flex; flex-direction: column; gap: var(--space-1); }
+.muse-meal-day-heading time > span { font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted); }
+.muse-meal-day-heading strong { font-size: 1.7rem; line-height: 1; font-weight: 550; }
+.muse-meal-slot { position: relative; display: flex; flex-direction: column; align-items: stretch; min-width: 0; min-height: 112px; padding: var(--space-2); border: 1px solid var(--divider); border-radius: var(--control-radius); background: var(--surface-subtle); }
+.muse-meal-slot-title { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.muse-meal-entries { max-height: 250px; overflow-y: auto; overscroll-behavior: contain; list-style: none; margin: 0; padding: 0 0 var(--space-2); scrollbar-width: thin; }
+.muse-meal-entry { padding: var(--space-2); border: 1px solid var(--planning-task-border); border-radius: var(--control-radius); background: var(--planning-task-background); }
+.muse-meal-entry + .muse-meal-entry { margin-top: var(--space-2); }
+.muse-meal-title { width: 100%; min-height: var(--touch-target); padding: 0; color: var(--foreground); border: 0; border-radius: var(--space-1); background: transparent; text-align: left; font-size: .82rem; font-weight: 500; overflow-wrap: anywhere; }
+.muse-meal-note { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+.muse-meal-meta { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-1); margin-top: var(--space-1); }
+.muse-meal-meta .small-label { margin-right: auto; font-size: .6rem; }
+.muse-meal-meta .text-button { padding-inline: var(--space-1); font-size: .65rem; }
+.muse-meal-drag { cursor: grab; text-decoration: none; }
+.muse-meal-add { align-self: flex-start; margin-top: auto; padding-inline: var(--space-1); }
+.muse-slot-feedback { position: absolute; bottom: 24px; right: 25px; pointer-events: none; }
+.muse-meal-form { display: flex; flex-direction: column; gap: var(--space-4); }
+.muse-meal-form h3, .muse-meal-picker h3 { margin: 0 0 var(--space-2); font-size: .88rem; font-weight: 600; }
+.muse-meal-form label { display: flex; flex-direction: column; gap: var(--space-2); color: var(--text-muted); font-size: .78rem; }
+.muse-meal-form .muse-meal-save-toggle { display: flex; flex-direction: row; align-items: center; gap: var(--space-2); min-height: var(--touch-target); }
+.muse-meal-save-toggle input { width: 18px; height: 18px; accent-color: var(--success-primary); }
+.muse-meal-form fieldset { min-width: 0; margin: 0; padding: 0; border: 0; }
+.muse-meal-form legend { color: var(--text-muted); margin-bottom: var(--space-2); font-size: .78rem; }
+.muse-meal-picker { margin-top: var(--space-5); padding-top: var(--space-4); border-top: 1px solid var(--divider); }
+.muse-meal-picker h3:not(:first-child) { margin-top: var(--space-4); }
+.muse-saved-choices { display: flex; flex-direction: column; gap: var(--space-1); max-height: 220px; overflow-y: auto; }
+.muse-meal-form input[type="url"] { width: 100%; min-height: var(--touch-target); padding: var(--space-2) var(--space-3); color: var(--foreground); background: var(--surface-control); border: 1px solid var(--glass-border); border-radius: var(--control-radius); }
+.muse-feedback-anchor { position: relative; }
+@container muse-content (max-width: 850px) and (min-width: 761px) { .muse-meal-week-heading,.muse-nourish-day { grid-template-columns: 64px repeat(4,minmax(110px,1fr)); gap: var(--space-2); } }
+@container muse-content (max-width: 760px) {
+  .muse-meal-week-heading { display: none; }
+  .muse-nourish-day { grid-template-columns: minmax(0,1fr); }
+  .muse-nourish-day[data-selected="false"] { display: none; }
+  .muse-meal-day-heading { flex-direction: row; justify-content: space-between; }
+  .muse-meal-day-heading time { flex-direction: row; align-items: baseline; gap: var(--space-2); }
+  .muse-meal-slot-title { position: static; width: auto; height: auto; clip-path: none; margin: 0 0 var(--space-2); font-size: .8rem; font-weight: 600; color: var(--ink-pink); }
+  .muse-meal-slot { min-height: 100px; padding: var(--space-3); }
+  .muse-meal-drag { display: none; }
+  .muse-meal-meta { justify-content: flex-end; }
+}
+@media (hover: none) { .muse-meal-drag { display: none; } }
+
+/* Nourish's three experiences share one domain store and the existing Muse controls. */
+.muse-nourish-sections { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-bottom: var(--space-5); }
+.muse-nourish-sections a { display: inline-flex; align-items: center; text-decoration: none; }
+.muse-nourish-sections [aria-current="page"] { color: var(--selected-text); background: var(--selected-background); border-color: var(--selected-border); box-shadow: inset 0 -2px 0 var(--selected-border); }
+.muse-nourish-section-heading { display: flex; justify-content: space-between; align-items: center; gap: var(--space-4); margin-bottom: var(--space-4); }
+.muse-nourish-section-heading h2 { margin: 0 0 var(--space-1); font-size: 1.15rem; font-weight: 600; }
+.muse-library-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); margin-bottom: var(--space-5); }
+.muse-library-toolbar > input { max-width: 260px; }
+.muse-saved-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); align-items: start; gap: var(--space-3); list-style: none; margin: 0; padding: 0; }
+.muse-saved-meal { display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; padding: var(--space-3); background: var(--glass-background); border: 1px solid var(--glass-border); border-top-color: var(--glass-edge); border-radius: var(--floating-radius); overflow-wrap: anywhere; }
+.muse-saved-meal h3 { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; min-width: 0; margin: 0; font-size: .87rem; line-height: 1.3; font-weight: 600; }
+.muse-meal-type-labels { display: flex; flex-wrap: wrap; gap: var(--space-1); margin: 0; }
+.muse-meal-type-labels span { color: var(--ink-aqua); background: var(--wash-aqua); border: 1px solid var(--accent-secondary); border-radius: var(--pill-radius); padding: 1px 6px; font-size: .6rem; }
+.muse-nourish-empty { padding: var(--space-8) var(--space-4); text-align: center; color: var(--text-muted); }
+.muse-nutrition-editor { padding-block: var(--space-3); border-block: 1px solid var(--divider); }
+.muse-nutrition-editor summary { cursor: pointer; min-height: var(--touch-target); display: flex; align-items: center; gap: var(--space-2); color: var(--foreground); font-size: .82rem; }
+.muse-nutrition-editor summary::before { content: "+"; color: var(--accent-secondary); font-size: 1rem; }
+.muse-nutrition-editor[open] summary::before { content: "−"; }
+.muse-nutrition-fields { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: var(--space-3); padding-block: var(--space-2) var(--space-3); }
+.muse-nutrition-fields label { min-width: 0; }
+.muse-nutrition-fields input { width: 100%; }
+.muse-nourish-day > .muse-nutrition-total { grid-column: 2 / -1; }
+.muse-grocery-section { min-width: 0; background: var(--glass-background); padding: var(--space-3); border: 1px solid var(--glass-border); border-radius: var(--floating-radius); }
+.muse-grocery-section ul { list-style: none; margin: 0; padding: 0; }
+.muse-grocery-item { display: flex; align-items: center; gap: var(--space-2); padding-block: var(--space-1); }
+.muse-grocery-check { flex: 0 0 var(--touch-target); display: grid; place-items: center; width: var(--touch-target); height: var(--touch-target); border: 1px solid var(--glass-border); border-radius: var(--control-radius); background: var(--surface-control); }
+.muse-grocery-check > svg { opacity: 0; }
+.muse-grocery-check[aria-checked="true"] { color: var(--on-accent); border-color: var(--success-primary); background: var(--success-primary); }
+.muse-grocery-check[aria-checked="true"] > svg { opacity: 1; }
+.muse-grocery-quantity { margin-left: var(--space-2); color: var(--text-muted); font-size: .72rem; }
+.muse-grocery-item[data-complete="true"] .muse-grocery-item-copy { color: var(--text-muted); }
+.muse-grocery-item[data-complete="true"] strong { text-decoration: line-through; }
+@container muse-content (max-width: 900px) { .muse-saved-grid { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+@container muse-content (max-width: 600px) { .muse-saved-grid { grid-template-columns: minmax(0,1fr); } .muse-nourish-section-heading { flex-wrap: wrap; } .muse-library-toolbar > input { max-width: none; } }
+@container muse-content (max-width: 760px) { .muse-nourish-day > .muse-nutrition-total { grid-column: 1 / -1; } }
+
+.muse-saved-meal-heading { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); }
+.muse-saved-meal-actions { display: flex; align-items: center; flex-shrink: 0; }
+.muse-saved-meal-actions .text-button { font-size: .68rem; padding-inline: var(--space-1); }
+.muse-saved-macros { color: var(--text-muted); font-size: .68rem; font-variant-numeric: tabular-nums; }
+.muse-saved-note { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.muse-grocery-quick-add-global { margin-bottom: var(--space-5); }
+.muse-grocery-quick-add .inline-editor-controls { display: flex; flex-wrap: wrap; gap: var(--space-1); }
+.muse-grocery-quick-add .inline-editor-controls input { flex: 1 1 120px; min-width: 0; }
+.muse-grocery-quick-add-global .inline-text-editor { max-width: 600px; }
+.muse-grocery-sections { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); align-items: start; gap: var(--space-3); }
+.muse-grocery-section > summary { display: flex; align-items: center; gap: var(--space-2); min-height: var(--touch-target); color: var(--ink-aqua); font-size: .72rem; text-transform: uppercase; letter-spacing: .05em; cursor: pointer; }
+.muse-grocery-section > summary::marker { content: ""; }
+.muse-grocery-section > summary::-webkit-details-marker { display: none; }
+.muse-grocery-section > summary > span:first-child { flex: 1; }
+.muse-grocery-section > summary .small-label { font-size: .6rem; text-transform: none; letter-spacing: 0; }
+.muse-grocery-section:not([open]) > summary > svg { transform: rotate(-90deg); }
+.muse-grocery-item-copy { flex: 1; min-width: 0; min-height: var(--touch-target); padding: var(--space-1); color: var(--foreground); text-align: left; background: transparent; border: 0; border-radius: var(--control-radius); overflow-wrap: anywhere; }
+.muse-grocery-item-copy strong { font-size: .8rem; font-weight: 500; }
+.muse-grocery-note { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+@container muse-content (max-width: 1100px) { .muse-grocery-sections { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+@container muse-content (max-width: 600px) { .muse-grocery-sections { grid-template-columns: minmax(0,1fr); } }

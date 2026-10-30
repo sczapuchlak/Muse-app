@@ -1,0 +1,23 @@
+.muse-plan-section { margin-top: var(--space-3); }
+.muse-plan-section + .muse-plan-section { border-top: 1px solid var(--divider); padding-top: var(--space-2); }
+.muse-plan-heading { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
+.muse-plan-heading h3 { margin: 0; color: var(--text-muted); font-size: .67rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; }
+.muse-plan-list { display: block; width: 100%; margin: 0; padding: 0; list-style: none; }
+.muse-plan-list > li + li { border-top: 1px solid var(--divider); }
+.muse-plan-event { display: grid; grid-template-columns: 80px minmax(0, 1fr); align-items: center; gap: var(--space-4); padding: var(--space-2) 0; }
+.muse-plan-event time { color: var(--foreground); font-size: .75rem; font-weight: 550; font-variant-numeric: tabular-nums; }
+.muse-plan-eventContent { min-width: 0; padding-left: var(--space-3); border-left: 2px solid var(--accent-aqua); }
+.muse-plan-eventContent h4 { margin: 0; font-size: .87rem; font-weight: 500; }
+.muse-plan-eventContent p { margin-top: 2px; color: var(--text-muted); font-size: .75rem; }
+.muse-plan-task { position: relative; display: flex; align-items: center; gap: var(--space-3); width: 100%; min-width: 0; min-height: var(--touch-target); cursor: pointer; }
+.muse-plan-task > input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+.muse-plan-check { display: grid; place-items: center; flex: 0 0 20px; width: 20px; height: 20px; border: 1.5px solid var(--selected-border); border-radius: var(--space-1); background: var(--surface-subtle); }
+.muse-plan-task input:checked + .muse-plan-check { color: var(--on-accent); background: var(--success-primary); border-color: var(--success-primary); }
+.muse-plan-task input:focus-visible + .muse-plan-check { outline: 2px solid var(--focus-ring); outline-offset: 3px; }
+.muse-plan-title { display: block; flex: 1 1 0%; width: auto; min-width: 0; font-size: .87rem; line-height: 1.5; overflow-wrap: break-word; }
+.muse-plan-task input:checked ~ .muse-plan-title { color: var(--text-muted); text-decoration: line-through; }
+.muse-plan-more { display: flex; align-items: center; gap: var(--space-2); margin-top: var(--space-1); }
+.muse-plan-overflow-list { min-height: 0; max-height: 320px; overflow-y: auto; padding-bottom: var(--space-3); }
+.schedule-card .muse-plan-title, .schedule-card .muse-plan-eventContent h4 { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+.schedule-card .muse-plan-eventContent p { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+.muse-plan-check { position: relative; overflow: visible; }

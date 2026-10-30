@@ -1,0 +1,15 @@
+/* Copy and context inhabit an environmental field; artwork is never a third layout column. */
+.muse-module-header { position: relative; isolation: isolate; display: flex; align-items: center; justify-content: space-between; gap: var(--space-8); margin: var(--space-4) 0 var(--space-6); min-height: 168px; }
+.muse-module-header[data-celestial="orbit"] { min-height: 184px; }
+.muse-module-header[data-celestial="garden"] { min-height: 176px; }
+.muse-module-identity { position: relative; z-index: 1; flex: 0 1 320px; max-width: 32ch; min-width: 0; }
+.muse-module-header h1 { display: flex; align-items: center; gap: var(--space-3); margin: var(--space-1) 0 0; font-size: 2.2rem; font-weight: 600; letter-spacing: -.05em; }
+.muse-module-context { position: relative; z-index: 1; min-width: 0; max-width: 60%; }
+@container muse-content (max-width: 900px) {
+  .muse-module-header { flex-wrap: wrap; gap: var(--space-3) var(--space-5); padding-block: var(--space-3); }
+  .muse-module-context { flex: 1 1 100%; width: 100%; max-width: none; display: flex; justify-content: flex-end; }
+}
+@container muse-content (max-width: 600px) {
+  .muse-module-header { min-height: 150px; }
+  .muse-module-header[data-celestial="orbit"], .muse-module-header[data-celestial="garden"] { min-height: 150px; }
+}
