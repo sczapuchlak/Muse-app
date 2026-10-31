@@ -131,6 +131,8 @@ p { margin: 0; }
   container-type: inline-size;
 }
 .card-full { grid-column: 1 / -1; }
+/* Keep the priority capture group independent of native fieldset layout invalidation. */
+.priorities-card > .muse-daily-capture { display:block; width:100%; }
 .schedule-card { grid-column: span 7; }
 .meals-card { grid-column: span 5; }
 .card-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2) var(--space-3); }

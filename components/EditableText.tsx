@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 
 type EditableTextProps = {
+  disabled?: boolean;
   value: string;
   label: string;
   onSave: (value: string) => void;
@@ -13,7 +14,7 @@ type EditableTextProps = {
 };
 
 /** Shared direct editing for priority titles and daily meal assignments. */
-export function EditableText({ value, label, onSave, placeholder = "Add a value", maxLength = 120, allowEmpty = false, className = "" }: EditableTextProps) {
+export function EditableText({ disabled=false,value, label, onSave, placeholder = "Add a value", maxLength = 120, allowEmpty = false, className = "" }: EditableTextProps) {
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState(value);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -43,7 +44,7 @@ export function EditableText({ value, label, onSave, placeholder = "Add a value"
   return (
     <span className={`editable-text ${className}`}>
       {editing ? <input
-        ref={inputRef} className="inline-edit-input" type="text" value={draft} maxLength={maxLength}
+        disabled={disabled} ref={inputRef} className="inline-edit-input" type="text" value={draft} maxLength={maxLength}
         aria-label={label} onChange={(event) => setDraft(event.target.value)} onBlur={() => finish(true, false)}
         onKeyDown={(event) => {
           if (event.nativeEvent.isComposing) return;
@@ -53,7 +54,7 @@ export function EditableText({ value, label, onSave, placeholder = "Add a value"
             finish(event.key === "Enter", true);
           }
         }}
-      /> : <button ref={triggerRef} type="button" className="inline-edit-value" aria-label={`${label}: ${value || "not assigned"}`}
+      /> : <button disabled={disabled} ref={triggerRef} type="button" className="inline-edit-value" aria-label={`${label}: ${value || "not assigned"}`}
         onClick={() => { setDraft(value); finished.current = false; setEditing(true); }}>
         {value || <span className="inline-edit-placeholder">{placeholder}</span>}
       </button>}

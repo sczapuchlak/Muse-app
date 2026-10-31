@@ -17,11 +17,12 @@ function PersistentPlanner({children,profile}:{children:ReactNode;profile:DailyP
  const status=useSyncExternalStore(store.subscribe,store.getSnapshot,store.getSnapshot);
  useLayoutEffect(()=>store.setTimeZone(profile.timeZone),[store,profile.timeZone]);
  useEffect(()=>{
+  const unsubscribe=dailyStore?.subscribeChanges(kind=>{if(kind==='priorities')void store.load(true);});let dailyChannel:BroadcastChannel|undefined;try{dailyChannel=new BroadcastChannel(`muse.daily.${profile.id}`);dailyChannel.onmessage=()=>void store.load(true);}catch{}
   void store.load();let channel:BroadcastChannel|undefined;try{channel=new BroadcastChannel(`muse.planner.${profile.id}`);channel.onmessage=()=>{void store.load(true);dailyStore?.refresh();};}catch{}
   store.setOnChange(()=>{dailyStore?.refresh();channel?.postMessage('changed');try{localStorage.setItem('muse.planner.changed',`${profile.id}/${crypto.randomUUID()}`);localStorage.removeItem('muse.planner.changed');}catch{}});
-  const refresh=()=>{void store.load(true);dailyStore?.refresh();},storage=(event:StorageEvent)=>{if(event.key==='muse.planner.changed'&&event.newValue?.startsWith(profile.id+'/'))refresh();},unload=(event:BeforeUnloadEvent)=>{if(store.hasPending()){event.preventDefault();event.returnValue='';}};
+  const refresh=()=>{void store.load(true);dailyStore?.refresh();},storage=(event:StorageEvent)=>{if(['muse.planner.changed','muse.daily.changed'].includes(event.key??'')&&event.newValue?.startsWith(profile.id+'/'))refresh();},unload=(event:BeforeUnloadEvent)=>{if(store.hasPending()){event.preventDefault();event.returnValue='';}};
   window.addEventListener('focus',refresh);window.addEventListener('online',refresh);window.addEventListener('storage',storage);window.addEventListener('beforeunload',unload);
-  return()=>{store.setOnChange(undefined);store.flush();channel?.close();window.removeEventListener('focus',refresh);window.removeEventListener('online',refresh);window.removeEventListener('storage',storage);window.removeEventListener('beforeunload',unload);};
+  return()=>{unsubscribe?.();dailyChannel?.close();store.setOnChange(undefined);store.flush();channel?.close();window.removeEventListener('focus',refresh);window.removeEventListener('online',refresh);window.removeEventListener('storage',storage);window.removeEventListener('beforeunload',unload);};
  },[store,profile.id,dailyStore]);
  return <PlannerContext.Provider value={{state:status.state,dispatch:store.dispatch,canEdit:status.loaded&&!status.error,status,timeZone:profile.timeZone,store,holdDraft:store.hold}}>{children}</PlannerContext.Provider>;
 }

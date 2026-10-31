@@ -42,8 +42,8 @@ select throws_ok($$select public.save_account_preferences((select revision from 
 select throws_ok($$update public.profiles set created_at=now()$$,'42501',null,'Profile creation timestamp is not a client field');
 
 select public.save_daily_priorities('2026-10-29',(select jsonb_agg(jsonb_build_object('id',gen_random_uuid(),'text','Test priority '||slot,'complete',slot=0) order by slot) from generate_series(0,2) slot),'[]');
-select is((select count(*)::integer from public.daily_priorities),3,'Three standalone slots can persist without Mood');
-select ok((select completed_at is not null from public.daily_priorities where position=0),'Completion capture is timestamped');
+select is((select count(*)::integer from public.daily_priorities),3,'Three priority designations can persist without Mood');
+select ok((select t.completed_at is not null from public.daily_priorities p join public.tasks t on t.id=p.task_id where p.position=0),'Canonical task completion capture is timestamped');
 select throws_ok($$insert into public.daily_priorities(daily_record_id,text,position) select id,'Fourth',3 from public.daily_records$$,'42501',null,'Direct priority insertion is not an authorized bypass');
 select throws_ok($$insert into public.daily_priorities(daily_record_id,text,position) values('20000000-0000-0000-0000-000000000002','Foreign',0)$$,'42501',null,'Cannot bypass commands to link a foreign day');
 

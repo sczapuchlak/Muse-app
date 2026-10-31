@@ -1,6 +1,6 @@
 # Planner persistence — Pass B
 
-**Implemented locally.** This extends [Pass A](PLANNER_PASS_A.md) and the [daily cutover](PHASE1_DAILY_PERSISTENCE.md), without redesigning the dashboard or migrating another module. No hosted resources, personal seeds, commit or push.
+**Implemented locally at the Pass B checkpoint.** The subsequent [automatic task-curation pass](PRIORITY_TASK_CURATIONS.md) supersedes optional standalone creation, independent live titles and Unlink UI; the historical/security foundations below are retained. This extends [Pass A](PLANNER_PASS_A.md) and the [daily cutover](PHASE1_DAILY_PERSISTENCE.md), without redesigning the dashboard or migrating another module. No hosted resources, personal seeds, commit or push.
 
 ## One commitment, optional task link
 

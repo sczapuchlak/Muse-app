@@ -59,14 +59,14 @@ isOneToOne: false
                   ]
                 },"daily_priorities": {
                   Row: {
-                    "completed_at": string | null,"completion_origin": string,"created_at": string,"daily_record_id": string,"id": string,"linked_at": string | null,"materialized_at": string | null,"materialized_task_id": string | null,"position": number,"revision": number,"standalone_complete": boolean | null,"task_id": string | null,"text": string,"updated_at": string,"user_id": string
+                    "completed_at": string | null,"completion_origin": string,"created_at": string,"daily_record_id": string,"id": string,"legacy_backfilled_at": string | null,"legacy_complete": boolean | null,"linked_at": string | null,"materialized_at": string | null,"materialized_task_id": string | null,"position": number,"revision": number,"standalone_complete": boolean | null,"task_id": string | null,"text": string,"updated_at": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "completed_at"?: string | null,"completion_origin"?: string,"created_at"?: string,"daily_record_id": string,"id"?: string,"linked_at"?: string | null,"materialized_at"?: string | null,"materialized_task_id"?: string | null,"position": number,"revision"?: number,"standalone_complete"?: boolean | null,"task_id"?: string | null,"text": string,"updated_at"?: string,"user_id"?: string
+                    "completed_at"?: string | null,"completion_origin"?: string,"created_at"?: string,"daily_record_id": string,"id"?: string,"legacy_backfilled_at"?: string | null,"legacy_complete"?: boolean | null,"linked_at"?: string | null,"materialized_at"?: string | null,"materialized_task_id"?: string | null,"position": number,"revision"?: number,"standalone_complete"?: boolean | null,"task_id"?: string | null,"text": string,"updated_at"?: string,"user_id"?: string
                   }
                   Update: {
-                    "completed_at"?: string | null,"completion_origin"?: string,"created_at"?: string,"daily_record_id"?: string,"id"?: string,"linked_at"?: string | null,"materialized_at"?: string | null,"materialized_task_id"?: string | null,"position"?: number,"revision"?: number,"standalone_complete"?: boolean | null,"task_id"?: string | null,"text"?: string,"updated_at"?: string,"user_id"?: string
+                    "completed_at"?: string | null,"completion_origin"?: string,"created_at"?: string,"daily_record_id"?: string,"id"?: string,"legacy_backfilled_at"?: string | null,"legacy_complete"?: boolean | null,"linked_at"?: string | null,"materialized_at"?: string | null,"materialized_task_id"?: string | null,"position"?: number,"revision"?: number,"standalone_complete"?: boolean | null,"task_id"?: string | null,"text"?: string,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
                     {
@@ -465,14 +465,14 @@ isOneToOne: false
                   ]
                 },"tasks": {
                   Row: {
-                    "actual_minutes_baseline": number,"captured_time_zone": string,"complete": boolean,"completed_at": string | null,"created_at": string,"deleted_at": string | null,"detail": string | null,"due_date": string | null,"estimated_minutes": number | null,"group_id": string | null,"id": string,"local_time_slot": string | null,"notes": string | null,"planned_date": string | null,"position": number,"recurrence_frequency": string | null,"recurrence_interval": number | null,"recurrence_until": string | null,"revision": number,"title": string,"updated_at": string,"user_id": string,"workspace_id": string
+                    "actual_minutes_baseline": number,"captured_time_zone": string,"complete": boolean,"completed_at": string | null,"created_at": string,"deleted_at": string | null,"detail": string | null,"due_date": string | null,"estimated_minutes": number | null,"group_id": string | null,"id": string,"initial_complete": boolean,"initial_completed_at": string | null,"local_time_slot": string | null,"notes": string | null,"origin_priority_id": string | null,"planned_date": string | null,"position": number,"recurrence_frequency": string | null,"recurrence_interval": number | null,"recurrence_until": string | null,"revision": number,"title": string,"updated_at": string,"user_id": string,"workspace_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "actual_minutes_baseline"?: number,"captured_time_zone": string,"complete"?: boolean,"completed_at"?: string | null,"created_at"?: string,"deleted_at"?: string | null,"detail"?: string | null,"due_date"?: string | null,"estimated_minutes"?: number | null,"group_id"?: string | null,"id": string,"local_time_slot"?: string | null,"notes"?: string | null,"planned_date"?: string | null,"position"?: number,"recurrence_frequency"?: string | null,"recurrence_interval"?: number | null,"recurrence_until"?: string | null,"revision"?: number,"title": string,"updated_at"?: string,"user_id": string,"workspace_id": string
+                    "actual_minutes_baseline"?: number,"captured_time_zone": string,"complete"?: boolean,"completed_at"?: string | null,"created_at"?: string,"deleted_at"?: string | null,"detail"?: string | null,"due_date"?: string | null,"estimated_minutes"?: number | null,"group_id"?: string | null,"id": string,"initial_complete"?: boolean,"initial_completed_at"?: string | null,"local_time_slot"?: string | null,"notes"?: string | null,"origin_priority_id"?: string | null,"planned_date"?: string | null,"position"?: number,"recurrence_frequency"?: string | null,"recurrence_interval"?: number | null,"recurrence_until"?: string | null,"revision"?: number,"title": string,"updated_at"?: string,"user_id": string,"workspace_id": string
                   }
                   Update: {
-                    "actual_minutes_baseline"?: number,"captured_time_zone"?: string,"complete"?: boolean,"completed_at"?: string | null,"created_at"?: string,"deleted_at"?: string | null,"detail"?: string | null,"due_date"?: string | null,"estimated_minutes"?: number | null,"group_id"?: string | null,"id"?: string,"local_time_slot"?: string | null,"notes"?: string | null,"planned_date"?: string | null,"position"?: number,"recurrence_frequency"?: string | null,"recurrence_interval"?: number | null,"recurrence_until"?: string | null,"revision"?: number,"title"?: string,"updated_at"?: string,"user_id"?: string,"workspace_id"?: string
+                    "actual_minutes_baseline"?: number,"captured_time_zone"?: string,"complete"?: boolean,"completed_at"?: string | null,"created_at"?: string,"deleted_at"?: string | null,"detail"?: string | null,"due_date"?: string | null,"estimated_minutes"?: number | null,"group_id"?: string | null,"id"?: string,"initial_complete"?: boolean,"initial_completed_at"?: string | null,"local_time_slot"?: string | null,"notes"?: string | null,"origin_priority_id"?: string | null,"planned_date"?: string | null,"position"?: number,"recurrence_frequency"?: string | null,"recurrence_interval"?: number | null,"recurrence_until"?: string | null,"revision"?: number,"title"?: string,"updated_at"?: string,"user_id"?: string,"workspace_id"?: string
                   }
                   Relationships: [
                     {
@@ -508,7 +508,7 @@ isOneToOne: false
           Views: {
             "daily_priority_projection": {
                   Row: {
-                    "completed_at": string | null,"completion_origin": string,"created_at": string,"current_complete": boolean | null,"current_completed_at": string | null,"daily_record_id": string,"display_complete": boolean | null,"historical_complete": boolean | null,"historical_day": boolean | null,"id": string,"linked_at": string | null,"materialized_at": string | null,"materialized_task_id": string | null,"position": number,"revision": number,"standalone_complete": boolean | null,"task_id": string | null,"task_title": string | null,"text": string,"updated_at": string,"user_id": string
+                    "completed_at": string | null,"completion_origin": string,"created_at": string,"current_complete": boolean | null,"current_completed_at": string | null,"daily_record_id": string,"display_complete": boolean | null,"historical_complete": boolean | null,"historical_day": boolean | null,"id": string,"legacy_backfilled_at": string | null,"legacy_complete": boolean | null,"linked_at": string | null,"materialized_at": string | null,"materialized_task_id": string | null,"position": number,"revision": number,"standalone_complete": boolean | null,"task_id": string | null,"task_title": string | null,"task_unavailable": boolean | null,"text": string | null,"updated_at": string,"user_id": string
                   }
                   ComputedFields: never
                   Relationships: [
@@ -535,8 +535,14 @@ isOneToOne: false
                 }
           }
           Functions: {
-            "complete_linked_priority":
+            "backfill_priority_tasks":
+{ Args: { "p_command_id": string,"p_expected_planner_revision": number }; Returns: number
+                           },
+"complete_linked_priority":
 { Args: { "p_command_id": string,"p_complete": boolean,"p_expected_planner_revision": number,"p_id": string,"p_priority_revision": number }; Returns: number
+                           },
+"create_priority_task":
+{ Args: { "p_command_id": string,"p_date": string,"p_expected_planner_revision": number,"p_id": string,"p_text": string }; Returns: number
                            },
 "delete_mood_checkin":
 { Args: { "p_expected_revision": number,"p_id": string }; Returns: undefined
@@ -581,6 +587,9 @@ isOneToOne: false
 "read_planner":
 { Args: Record<PropertyKey, never>; Returns: Json
                            },
+"rename_priority_task":
+{ Args: { "p_command_id": string,"p_expected_planner_revision": number,"p_id": string,"p_priority_revision": number,"p_title": string }; Returns: number
+                           },
 "save_account_preferences":
 { Args: { "p_command_id": string,"p_expected_revision": number,"p_patch": Json }; Returns: number
                            },
@@ -591,6 +600,8 @@ isOneToOne: false
 "created_at": string,
 "daily_record_id": string,
 "id": string,
+"legacy_backfilled_at": string | null,
+"legacy_complete": boolean | null,
 "linked_at": string | null,
 "materialized_at": string | null,
 "materialized_task_id": string | null,

@@ -18,11 +18,11 @@ try{
  assert.equal(record.time_zone,'America/Los_Angeles');
  const first={id:crypto.randomUUID(),text:'Write the opening',complete:false},second={id:crypto.randomUUID(),text:'Leave room',complete:true};await savePriorities(a.client,date,[first,second],[]);
  let day=await readDay(a.client,date);const createdAt=day.priorities.find(item=>item.id===second.id).created_at,completedAt=day.priorities.find(item=>item.id===second.id).completed_at;
- const stale=structuredClone(day.priorities);await savePriorities(a.client,date,[second,{...first,text:'Write and revise',complete:true}],day.priorities);day=await readDay(a.client,date);
- assert.deepEqual(day.priorities.map(item=>item.id),[second.id,first.id]);assert.equal(day.priorities[0].created_at,createdAt);assert.equal(day.priorities[0].completed_at,completedAt);assert.ok(day.priorities.every(item=>item.standalone_complete));
- await assert.rejects(()=>savePriorities(a.client,date,[first],stale),error=>error.code==='40001');
- assert.equal((await readDay(a.client,date)).priorities.length,2);
- console.log('PASS daily expression/Pulse, ordered standalone priorities, stable IDs and conflict-safe reordering');
+ const {readPlanner,writePlanner}=load('lib/data/planner');let plan=await readPlanner(a.client);const p=day.priorities.find(item=>item.id===first.id);await writePlanner(a.client,plan.revision,crypto.randomUUID(),{type:'priority/title',id:p.id,taskId:p.task_id,priorityRevision:p.revision,title:'Write and revise'},'America/Los_Angeles');plan=await readPlanner(a.client);await writePlanner(a.client,plan.revision,crypto.randomUUID(),{type:'priority/complete',id:p.id,taskId:p.task_id,priorityRevision:p.revision,complete:true,now:'ignored'},'America/Los_Angeles');day=await readDay(a.client,date);
+ const stale=structuredClone(day.priorities),items=day.priorities.map(row=>({id:row.id,text:row.text,complete:null,taskId:row.task_id})).reverse();await savePriorities(a.client,date,items,day.priorities);day=await readDay(a.client,date);
+ assert.deepEqual(day.priorities.map(item=>item.id),[second.id,first.id]);assert.equal(day.priorities[0].created_at,createdAt);assert.equal(day.priorities[0].completed_at,completedAt);assert.ok(day.priorities.every(item=>item.current_complete));
+ await assert.rejects(()=>savePriorities(a.client,date,[first],stale),error=>error.code==='40001');assert.equal((await readDay(a.client,date)).priorities.length,2);
+ console.log('PASS daily expression/Pulse, ordered task priorities, stable IDs and conflict-safe reordering');
  const influence=must(await a.client.from('influence_tags').insert({label:'A new chapter'}).select('*').single());
  await saveMoodCheckin(a.client,{date,period:'morning',reflection:'A quieter start.',emotionIds:['emotion-calm','emotion-hopeful'],influenceIds:[influence.id],revision:null});
  await saveMoodCheckin(a.client,{date,period:'evening',reflection:'Room for both.',emotionIds:['emotion-anxious'],influenceIds:[],revision:null});

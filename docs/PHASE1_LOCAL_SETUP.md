@@ -31,7 +31,8 @@ Docker Desktop installed the CLI under `~/.docker/bin`, outside the original she
 | `npm run db:lint` | Lint local public-schema functions |
 | `npm run test:db:api` | Test local Auth/API with temporary synthetic users, deleted afterward |
 | `npm run auth:invite -- your@email.example` | Send an admin-managed local invitation to the test inbox |
-| `npm run test:priority-links` | Verify optional task links, temporal history, materialization, atomic races and ownership with disposable users |
+| `npm run test:priority-curations` | Verify automatic task creation, shared titles/completion, safe designation removal/deletion, dates, races and ownership |
+| `npm run test:priority-links` | Compatibility alias for the current priority-curation integration checks |
 | `npm run test:account` | Verify profile preferences, timezone/history, ownership and scoped export HTTP behavior with disposable users |
 | `npm run test:notes` | Verify standalone Notes CRUD, rich text, organization, concurrency and ownership with disposable users |
 | `npm run test:planner` | Verify local Planner CRUD/history, ordering, timers, concurrency and ownership with disposable users |
@@ -96,3 +97,7 @@ Subsequent local migration `20261030000500_priority_task_links.sql` implements [
 [Notes Pass A](NOTES_PASS_A.md) adds local migration `20261031000600_notes_pass_a.sql`; its19 rolled-back assertions bring database coverage to113. Notes is now persistent; other unmigrated domains retain prototype ownership.
 
 [Settings persistence](SETTINGS_PERSISTENCE.md) adds `20261031000700_account_preferences.sql`;18 new assertions bring local database coverage to131. Scope includes profile preferences and read-only saved-data export. Account deletion and hosted/privacy rollout remain deferred.
+
+[Automatic priority/task curations](PRIORITY_TASK_CURATIONS.md) adds local migration `20261031000800_priority_task_curations.sql`, including a preservation-checked backfill of the three eligible local standalone records. All later normal priority captures create tasks atomically. No movement or hosted changes.
+
+The priority-curation checkpoint has218 Node tests and162 rolled-back database assertions passing, with focused API/browser validation recorded in its phase report.

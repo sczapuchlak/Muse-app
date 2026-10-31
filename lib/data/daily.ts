@@ -6,7 +6,7 @@ type Client = SupabaseClient<Database>;
 type Tables = Database["public"]["Tables"];
 export type DailyRecord = Tables["daily_records"]["Row"];
 export type DailyPriority = Tables["daily_priorities"]["Row"] & {
- task_title?:string|null;current_complete?:boolean|null;current_completed_at?:string|null;historical_complete?:boolean|null;display_complete?:boolean|null;historical_day?:boolean;
+ task_title?:string|null;current_complete?:boolean|null;current_completed_at?:string|null;historical_complete?:boolean|null;display_complete?:boolean|null;historical_day?:boolean;task_unavailable?:boolean;
 };
 export type MoodCheckin = Tables["mood_checkins"]["Row"];
 export type DailyPatch = Partial<Pick<DailyRecord,"intention_text"|"intention_emoji"|"day_in_three"|"energy"|"stress"|"overall_day">>;

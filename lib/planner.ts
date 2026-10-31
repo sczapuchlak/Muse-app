@@ -17,6 +17,8 @@ export type PlannerState = {
 };
 export type TaskPatch = Partial<Omit<PlannedTask, "id" | "kind" | "createdAt">>;
 export type PlannerAction =
+  | {type:"priority/create";id:string;date:string;title:string}
+  | {type:"priority/title";id:string;taskId:string;priorityRevision:number;title:string}
   | {type:"priority/complete";id:string;taskId:string;priorityRevision:number;complete:boolean;now:string}
   | { type: "task/add"; task: PlannedTask }
   | { type: "task/update"; id: string; patch: TaskPatch }
@@ -57,6 +59,8 @@ function normalizeTask(state: PlannerState, task: PlannedTask): PlannedTask {
 /** One domain reducer for both surfaces. Rescheduling only changes plannedDate. */
 export function plannerReducer(state: PlannerState, action: PlannerAction): PlannerState {
   switch (action.type) {
+    case 'priority/create': return state; // The server creates the task and designation atomically.
+    case 'priority/title': return plannerReducer(state,{type:'task/update',id:action.taskId,patch:{title:action.title}});
     case 'priority/complete': return plannerReducer(action.complete&&state.activeTimer?.taskId===action.taskId?pause(state,action.now):state,{type:'task/update',id:action.taskId,patch:{complete:action.complete,completedAt:action.complete?action.now:undefined}});
     case "task/add": return !action.task.title.trim() || state.tasks.some((task) => task.id === action.task.id) ? state : { ...state, tasks: [...state.tasks, normalizeTask(state, action.task)] };
     case "task/update": return { ...state, tasks: state.tasks.map((task) => task.id === action.id ? normalizeTask(state, { ...task, ...action.patch, title: action.patch.title?.trim() || task.title }) : task) };
