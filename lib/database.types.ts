@@ -59,14 +59,14 @@ isOneToOne: false
                   ]
                 },"daily_priorities": {
                   Row: {
-                    "completed_at": string | null,"created_at": string,"daily_record_id": string,"id": string,"position": number,"revision": number,"standalone_complete": boolean,"text": string,"updated_at": string,"user_id": string
+                    "completed_at": string | null,"completion_origin": string,"created_at": string,"daily_record_id": string,"id": string,"linked_at": string | null,"materialized_at": string | null,"materialized_task_id": string | null,"position": number,"revision": number,"standalone_complete": boolean | null,"task_id": string | null,"text": string,"updated_at": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "completed_at"?: string | null,"created_at"?: string,"daily_record_id": string,"id"?: string,"position": number,"revision"?: number,"standalone_complete"?: boolean,"text": string,"updated_at"?: string,"user_id"?: string
+                    "completed_at"?: string | null,"completion_origin"?: string,"created_at"?: string,"daily_record_id": string,"id"?: string,"linked_at"?: string | null,"materialized_at"?: string | null,"materialized_task_id"?: string | null,"position": number,"revision"?: number,"standalone_complete"?: boolean | null,"task_id"?: string | null,"text": string,"updated_at"?: string,"user_id"?: string
                   }
                   Update: {
-                    "completed_at"?: string | null,"created_at"?: string,"daily_record_id"?: string,"id"?: string,"position"?: number,"revision"?: number,"standalone_complete"?: boolean,"text"?: string,"updated_at"?: string,"user_id"?: string
+                    "completed_at"?: string | null,"completion_origin"?: string,"created_at"?: string,"daily_record_id"?: string,"id"?: string,"linked_at"?: string | null,"materialized_at"?: string | null,"materialized_task_id"?: string | null,"position"?: number,"revision"?: number,"standalone_complete"?: boolean | null,"task_id"?: string | null,"text"?: string,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
                     {
@@ -74,6 +74,18 @@ isOneToOne: false
       columns: ["user_id","daily_record_id"]
 isOneToOne: false
       referencedRelation: "daily_records"
+      referencedColumns: ["user_id","id"]
+    },{
+      foreignKeyName: "daily_priorities_user_id_materialized_task_id_fkey"
+      columns: ["user_id","materialized_task_id"]
+isOneToOne: false
+      referencedRelation: "tasks"
+      referencedColumns: ["user_id","id"]
+    },{
+      foreignKeyName: "daily_priorities_user_id_task_id_fkey"
+      columns: ["user_id","task_id"]
+isOneToOne: false
+      referencedRelation: "tasks"
       referencedColumns: ["user_id","id"]
     }
                   ]
@@ -197,6 +209,20 @@ isOneToOne: false
                   }
                   Update: {
                     "revision"?: number,"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
+                },"priority_commands": {
+                  Row: {
+                    "id": string,"operation": string,"planner_revision": number | null,"priority_versions": Json | null,"request_hash": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "id": string,"operation": string,"planner_revision"?: number | null,"priority_versions"?: Json | null,"request_hash": string,"user_id": string
+                  }
+                  Update: {
+                    "id"?: string,"operation"?: string,"planner_revision"?: number | null,"priority_versions"?: Json | null,"request_hash"?: string,"user_id"?: string
                   }
                   Relationships: [
 
@@ -378,10 +404,39 @@ isOneToOne: false
                 }
           }
           Views: {
-            [_ in never]: never
+            "daily_priority_projection": {
+                  Row: {
+                    "completed_at": string | null,"completion_origin": string,"created_at": string,"current_complete": boolean | null,"current_completed_at": string | null,"daily_record_id": string,"display_complete": boolean | null,"historical_complete": boolean | null,"historical_day": boolean | null,"id": string,"linked_at": string | null,"materialized_at": string | null,"materialized_task_id": string | null,"position": number,"revision": number,"standalone_complete": boolean | null,"task_id": string | null,"task_title": string | null,"text": string,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Relationships: [
+                    {
+      foreignKeyName: "daily_priorities_user_id_daily_record_id_fkey"
+      columns: ["user_id","daily_record_id"]
+isOneToOne: false
+      referencedRelation: "daily_records"
+      referencedColumns: ["user_id","id"]
+    },{
+      foreignKeyName: "daily_priorities_user_id_materialized_task_id_fkey"
+      columns: ["user_id","materialized_task_id"]
+isOneToOne: false
+      referencedRelation: "tasks"
+      referencedColumns: ["user_id","id"]
+    },{
+      foreignKeyName: "daily_priorities_user_id_task_id_fkey"
+      columns: ["user_id","task_id"]
+isOneToOne: false
+      referencedRelation: "tasks"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+                }
           }
           Functions: {
-            "delete_mood_checkin":
+            "complete_linked_priority":
+{ Args: { "p_command_id": string,"p_complete": boolean,"p_expected_planner_revision": number,"p_id": string,"p_priority_revision": number }; Returns: number
+                           },
+"delete_mood_checkin":
 { Args: { "p_expected_revision": number,"p_id": string }; Returns: undefined
                            },
 "ensure_daily_record":
@@ -409,18 +464,29 @@ isOneToOne: false
 "planner_command":
 { Args: { "p_action": Json,"p_command_id": string,"p_expected_revision": number }; Returns: number
                            },
+"priority_day_end":
+{ Args: { "p_date": string,"p_zone": string }; Returns: string
+                           },
+"read_daily_days":
+{ Args: { "p_after"?: string,"p_end": string,"p_limit"?: number,"p_start": string }; Returns: Json
+                           },
 "read_planner":
 { Args: Record<PropertyKey, never>; Returns: Json
                            },
 "save_daily_priorities":
-{ Args: { "p_date": string,"p_expected": Json,"p_items": Json }; Returns: {
+{ Args: { "p_command_id"?: string,"p_date": string,"p_expected": Json,"p_expected_planner_revision"?: number,"p_items": Json }; Returns: {
               "completed_at": string | null,
+"completion_origin": string,
 "created_at": string,
 "daily_record_id": string,
 "id": string,
+"linked_at": string | null,
+"materialized_at": string | null,
+"materialized_task_id": string | null,
 "position": number,
 "revision": number,
-"standalone_complete": boolean,
+"standalone_complete": boolean | null,
+"task_id": string | null,
 "text": string,
 "updated_at": string,
 "user_id": string
@@ -470,7 +536,12 @@ isOneToOne: false
         to: "mood_checkins"
         isOneToOne: true
         isSetofReturn: false
-      } }
+      } },
+"task_completion_before":
+{ Args: { "p_before": string,"p_task_id": string }; Returns: {
+              "complete": boolean,"completed_at": string
+            }[]
+                           }
           }
           Enums: {
             [_ in never]: never

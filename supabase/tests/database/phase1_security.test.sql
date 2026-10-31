@@ -41,12 +41,11 @@ select throws_ok($$update public.daily_records set local_date='2026-10-30'$$,'22
 select throws_ok($$update public.profiles set time_zone='Not/AZone'$$,'23514',null,'Unknown IANA timezone rejected');
 select throws_ok($$update public.profiles set created_at=now()$$,'42501',null,'Profile creation timestamp is not a client field');
 
-insert into public.daily_priorities(user_id,daily_record_id,text,position,standalone_complete)
-select auth.uid(),id,'Test priority '||slot,slot,slot=0 from public.daily_records cross join generate_series(0,2) slot;
+select public.save_daily_priorities('2026-10-29',(select jsonb_agg(jsonb_build_object('id',gen_random_uuid(),'text','Test priority '||slot,'complete',slot=0) order by slot) from generate_series(0,2) slot),'[]');
 select is((select count(*)::integer from public.daily_priorities),3,'Three standalone slots can persist without Mood');
 select ok((select completed_at is not null from public.daily_priorities where position=0),'Completion capture is timestamped');
-select throws_ok($$insert into public.daily_priorities(daily_record_id,text,position) select id,'Fourth',3 from public.daily_records$$,'23514',null,'Fourth priority rejected');
-select throws_ok($$insert into public.daily_priorities(daily_record_id,text,position) values('20000000-0000-0000-0000-000000000002','Foreign',0)$$,'23503',null,'Cannot link priority to another owner day');
+select throws_ok($$insert into public.daily_priorities(daily_record_id,text,position) select id,'Fourth',3 from public.daily_records$$,'42501',null,'Direct priority insertion is not an authorized bypass');
+select throws_ok($$insert into public.daily_priorities(daily_record_id,text,position) values('20000000-0000-0000-0000-000000000002','Foreign',0)$$,'42501',null,'Cannot bypass commands to link a foreign day');
 
 insert into public.influence_tags(id,label) values('40000000-0000-0000-0000-000000000001','Work');
 select lives_ok($$select public.save_mood_checkin('2026-10-29','morning','Test reflection',array['emotion-calm'],array['40000000-0000-0000-0000-000000000001']::uuid[],null)$$,'Morning feelings/context/reflection save atomically');

@@ -5,7 +5,9 @@ import { validDate } from "@/lib/dates";
 type Client = SupabaseClient<Database>;
 type Tables = Database["public"]["Tables"];
 export type DailyRecord = Tables["daily_records"]["Row"];
-export type DailyPriority = Tables["daily_priorities"]["Row"];
+export type DailyPriority = Tables["daily_priorities"]["Row"] & {
+ task_title?:string|null;current_complete?:boolean|null;current_completed_at?:string|null;historical_complete?:boolean|null;display_complete?:boolean|null;historical_day?:boolean;
+};
 export type MoodCheckin = Tables["mood_checkins"]["Row"];
 export type DailyPatch = Partial<Pick<DailyRecord,"intention_text"|"intention_emoji"|"day_in_three"|"energy"|"stress"|"overall_day">>;
 const fields = new Set(["intention_text","intention_emoji","day_in_three","energy","stress","overall_day"]);
@@ -48,13 +50,14 @@ export async function saveDailyRecord(client:Client,record:DailyRecord,patch:Dai
 }
 
 /** One query projection for Daily Edit/Mood/Dayprint; no duplicate summary records. */
+type DailyWire=DailyRecord&{daily_priorities:DailyPriority[];mood_checkins:DayData['checkins']};
+function projectDay(data:DailyWire):DayData{const {daily_priorities,mood_checkins,...record}=data;return {record,priorities:daily_priorities.sort((a,b)=>a.position-b.position),checkins:mood_checkins.sort((a,b)=>a.period===b.period?0:a.period==='morning'?-1:1)};}
 export async function readDay(client:Client,date:string):Promise<DayData> {
   checkDate(date);
-  const {data,error}=await client.from('daily_records').select('*,daily_priorities(*),mood_checkins(*,checkin_emotions(emotion_id),checkin_influences(influence_id,position))').eq('local_date',date).maybeSingle();
+  const {data,error}=await client.rpc('read_daily_days',{p_start:date,p_end:date,p_limit:1});
   if(error)throw error;
-  if(!data)return emptyDay();
-  const {daily_priorities,mood_checkins,...record}=data;
-  return {record,priorities:daily_priorities.sort((a,b)=>a.position-b.position),checkins:mood_checkins.sort((a,b)=>a.period===b.period?0:a.period==='morning'?-1:1)};
+  const rows=data as unknown as DailyWire[];
+  return rows.length?projectDay(rows[0]):emptyDay();
 }
 export async function saveMoodCheckin(client:Client,input:{date:string;period:"morning"|"evening";reflection:string|null;emotionIds:string[];influenceIds:string[];revision:number|null}) {
   checkDate(input.date);
@@ -71,23 +74,27 @@ export async function deleteMoodCheckin(client:Client,record:MoodCheckin) {
 }
 
 export type DayData = {record:DailyRecord|null;priorities:DailyPriority[];checkins:(MoodCheckin&{checkin_emotions:{emotion_id:string}[];checkin_influences:{influence_id:string;position:number}[]})[]};
-export type PriorityInput = {id:string;text:string;complete:boolean};
+export type PriorityInput = {id:string;text:string;complete:boolean|null;taskId?:string|null};
 export const emptyDay = ():DayData=>({record:null,priorities:[],checkins:[]});
-export async function savePriorities(client:Client,date:string,items:PriorityInput[],expected:DailyPriority[]) {
+export async function savePriorities(client:Client,date:string,items:PriorityInput[],expected:DailyPriority[],options:{commandId?:string;plannerRevision?:number}={}) {
   checkDate(date);
-  if(items.length>3||new Set(items.map(item=>item.id)).size!==items.length||items.some(item=>!item.text.trim()||item.text.trim().length>160||typeof item.complete!=='boolean'))throw new RangeError('Choose up to three priorities, each with at most 160 characters.');
-  const {error}=await client.rpc('save_daily_priorities',{p_date:date,p_items:items,p_expected:expected.map(({id,revision})=>({id,revision}))});
+  if(items.length>3||new Set(items.map(item=>item.id)).size!==items.length||items.some(item=>!item.text.trim()||item.text.trim().length>160||item.complete!==null&&typeof item.complete!=='boolean'))throw new RangeError('Choose up to three priorities, each with at most 160 characters.');
+  const {data,error}=await client.rpc('save_daily_priorities',{p_date:date,p_items:items,p_expected:expected.map(({id,revision})=>({id,revision})),p_command_id:options.commandId??crypto.randomUUID(),p_expected_planner_revision:options.plannerRevision});
   if(error)throw error;
+  return data as DailyPriority[];
 }
 /** Bounded pages within an explicit date range. Reads never create empty days. */
 export async function readDays(client:Client,start:string,end:string) {
   checkDate(start);checkDate(end);if(end<start)throw new RangeError('Invalid date range.');
   const result:Record<string,DayData>={};
-  for(let offset=0;;offset+=100){
-    const {data,error}=await client.from('daily_records').select('*,daily_priorities(*),mood_checkins(*,checkin_emotions(emotion_id),checkin_influences(influence_id,position))').gte('local_date',start).lte('local_date',end).order('local_date').range(offset,offset+99);
+  let after:string|undefined;
+  for(;;){
+    const {data,error}=await client.rpc('read_daily_days',{p_start:start,p_end:end,p_after:after,p_limit:100});
     if(error)throw error;
-    for(const {daily_priorities,mood_checkins,...record} of data)result[record.local_date]={record,priorities:daily_priorities.sort((a,b)=>a.position-b.position),checkins:mood_checkins};
-    if(data.length<100)break;
+    const rows=data as unknown as DailyWire[];
+    for(const row of rows)result[row.local_date]=projectDay(row);
+    if(rows.length<100)break;
+    after=rows.at(-1)!.local_date;
   }
   return result;
 }

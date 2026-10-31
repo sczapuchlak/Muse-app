@@ -337,3 +337,7 @@ The functional `/login` and non-sending `/login-preview` share `MuseLoginFrame`,
 ## Persistence feedback without a visual redesign
 
 Daily capture keeps the existing cards, controls, typography and materials. A compact shared status line distinguishes initial loading, refreshing, saving, confirmed saved data and failures. Disable revision-dependent capture until it loads; failed/conflicting drafts remain available with retry or explicit discard/load-latest and a readable draft review. Do not present a transient optimistic state as a confirmed durable save. Historical views label one daily Pulse independently of Morning/Evening sessions. Creation/removal/order controls for standalone priorities use existing compact buttons; decorative styling and other module layouts remain unchanged.
+
+### Linked priority capture
+
+Use a compact existing link icon and searchable Muse glass popover beside the existing priority actions; do not turn daily commitments into task cards. Preserve their own text and date. Keep commitment text usable at narrow item widths by placing the action group below it when necessary. Historical linked checkboxes are labeled day-end readouts, unknown is distinct from incomplete, and current-task completion actions live in the link menu. Reuse the established saving/error/retry/conflict patterns; optimistic feedback is not proof of persistence.

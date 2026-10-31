@@ -1,6 +1,6 @@
 # Phase 1 — local setup and database foundation
 
-Status: **database foundation, application authentication and approved daily-data cutover implemented locally; Planner Pass A is implemented; other domains are pending**. This is not a claim that the entire Phase 1 user journey is finished. No hosted project was created/linked, no production changes, no commit/push. Daily Edit/Mood/Dayprint now use canonical daily records; later module views retain prototype sources. See [PHASE1_DAILY_PERSISTENCE](PHASE1_DAILY_PERSISTENCE.md). See [AUTH_LOCAL](AUTH_LOCAL.md) for login and invitation instructions.
+Status: **database foundation, application authentication and approved daily-data cutover implemented locally; Planner Passes A and B are implemented; other domains are pending**. This is not a claim that the entire Phase 1 user journey is finished. No hosted project was created/linked, no production changes, no commit/push. Daily Edit/Mood/Dayprint now use canonical daily records; later module views retain prototype sources. See [PHASE1_DAILY_PERSISTENCE](PHASE1_DAILY_PERSISTENCE.md). See [AUTH_LOCAL](AUTH_LOCAL.md) for login and invitation instructions.
 
 ## Running local services
 
@@ -31,6 +31,7 @@ Docker Desktop installed the CLI under `~/.docker/bin`, outside the original she
 | `npm run db:lint` | Lint local public-schema functions |
 | `npm run test:db:api` | Test local Auth/API with temporary synthetic users, deleted afterward |
 | `npm run auth:invite -- your@email.example` | Send an admin-managed local invitation to the test inbox |
+| `npm run test:priority-links` | Verify optional task links, temporal history, materialization, atomic races and ownership with disposable users |
 | `npm run test:planner` | Verify local Planner CRUD/history, ordering, timers, concurrency and ownership with disposable users |
 | `npm run test:daily` | Verify persistent daily data, priorities, sessions, concurrency and RLS with disposable users |
 | `npm run test:auth` | Test the running app's login/callback/refresh/logout through real local inbox messages |
@@ -87,3 +88,5 @@ These checks do not claim browser domain persistence, user-facing export/account
 Still pending: user-facing profile controls, scoped export/confirmed account deletion before real-data use, later linked-priority history and module-specific persistence. Hydration UI/ownership, Nourish, Rituals, Money, Notes and hosted configuration remain separate scope; Planner priority linking remains Pass B. Unexpected durable real data must be preserved, not treated as disposable prototype values.
 
 Planner Pass A adds `20261030000400_planner_pass_a.sql`; see [PLANNER_PASS_A](PLANNER_PASS_A.md) for its schema, validation and deferred Pass B scope. Apply with the existing local `db:migrate` command. No reset is needed.
+
+Subsequent local migration `20261030000500_priority_task_links.sql` implements [Planner Pass B](PLANNER_PASS_B.md). The additional rolled-back priority suite brings database coverage to94 assertions; no reset or hosted operation is required.

@@ -37,6 +37,6 @@ The initial repository reads the whole Planner aggregate in one MVCC snapshot, a
 - Actual isolated Chrome: workspace creation from empty state; capture/edit/subtask/completion/reopen; date changes; drag/drop; search; manual Inbox move; timer; delete; refresh and real browser restart; error/retry/conflict recovery; the shared Daily Edit preview; representative light desktop/dark mobile containment. This is not exhaustive visual approval of every theme.
 - All 192 Node tests, ESLint, TypeScript and production build pass. Existing 57 foundation database assertions, local daily persistence and auth/inbox integration pass; database function lint is clean. No sample imports, database reset, production operation, commit or push.
 
-## Explicitly deferred
+## Scope at the Pass A checkpoint
 
-Pass B: Planner-linked priorities, cross-module priority completion synchronization and end-of-day historical priority calculations. Other module migrations remain deferred. No Rituals, Money, Nourish, Notes or Whimsy data migration was started. Existing daily persistence and authentication remain intact.
+At this checkpoint Pass B was deferred. The subsequent [PLANNER_PASS_B](PLANNER_PASS_B.md) now implements Planner-linked priorities, shared task completion and original-day historical priority calculations locally. Other module migrations remain deferred. No Rituals, Money, Nourish, Notes or Whimsy data migration was started. Existing daily persistence and authentication remain intact.

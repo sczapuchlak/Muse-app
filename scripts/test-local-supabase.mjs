@@ -33,7 +33,7 @@ try{
  console.log('PASS competing writes produce one commit and one explicit conflict');
  const stale=await a.client.rpc('save_daily_record',{p_date:'2026-10-29',p_patch:{energy:1},p_expected_revision:day.revision});assert.equal(stale.error?.code,'40001');
  assert.equal(must(await b.client.from('daily_records').select('*').eq('id',day.id)).length,0);
- const forged=await b.client.from('daily_priorities').insert({user_id:b.user.id,daily_record_id:day.id,text:'Forbidden',position:0});assert.equal(forged.error?.code,'23503');
+ const forged=await b.client.from('daily_priorities').insert({user_id:b.user.id,daily_record_id:day.id,text:'Forbidden',position:0});assert.equal(forged.error?.code,'42501');
  console.log('PASS durable daily values, revisions and cross-user isolation');
  const first=must(await a.client.rpc('save_mood_checkin',{p_date:'2026-10-29',p_period:'morning',p_reflection:'Local morning',p_emotion_ids:['emotion-calm'],p_influence_ids:[]}));
  must(await a.client.rpc('save_mood_checkin',{p_date:'2026-10-29',p_period:'evening',p_reflection:'Local evening',p_emotion_ids:['emotion-calm'],p_influence_ids:[]}));

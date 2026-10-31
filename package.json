@@ -20,7 +20,8 @@
     "auth:invite": "node scripts/invite-local-user.mjs",
     "test:auth": "node scripts/test-local-auth.mjs",
     "test:daily": "node scripts/test-local-daily.mjs",
-    "test:planner": "node scripts/test-local-planner.mjs"
+    "test:planner": "node scripts/test-local-planner.mjs",
+    "test:priority-links": "node scripts/test-local-priority-links.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",

@@ -4,18 +4,18 @@ import {plannerReducer,type PlannerAction,type PlannerState} from '@/lib/planner
 import {validTimeZone} from '@/lib/dates';
 import {readPlanner,writePlanner,emptyPlannerState,type PlannerSnapshot} from './planner';
 export type PlannerRepository={read:()=>Promise<PlannerSnapshot>;write:(revision:number,id:string,action:PlannerAction)=>Promise<number>};
-export type PlannerView={state:PlannerState;loaded:boolean;pending:boolean;saving:boolean;refreshing:boolean;error:string;conflict:boolean;discarded:number;drafts:Record<string,string>;drafting:boolean};
+export type PlannerView={state:PlannerState;loaded:boolean;pending:boolean;saving:boolean;refreshing:boolean;error:string;conflict:boolean;discarded:number;drafts:Record<string,string>;drafting:boolean;revision:number};
 type Job={id:string;action:PlannerAction};
 export class PlannerStore{
  private base:PlannerSnapshot={revision:0,state:emptyPlannerState()};private jobs:Job[]=[];private listeners=new Set<()=>void>();private running=false;private timer?:ReturnType<typeof setTimeout>;private loading?:Promise<void>;private epoch=0;private holds=new Set<string>();private changed?:()=>void;
- private view:PlannerView={state:emptyPlannerState(),loaded:false,pending:false,saving:false,refreshing:false,error:'',conflict:false,discarded:0,drafts:{},drafting:false};
+ private view:PlannerView={state:emptyPlannerState(),loaded:false,pending:false,saving:false,refreshing:false,error:'',conflict:false,discarded:0,drafts:{},drafting:false,revision:0};
  constructor(private repository:PlannerRepository,readonly timeZone:string){}
  static forClient(client:SupabaseClient<Database>,zone:string){return new PlannerStore({read:()=>readPlanner(client),write:(revision,id,action)=>writePlanner(client,revision,id,action,zone)},zone);}
  subscribe=(listener:()=>void)=>{this.listeners.add(listener);return()=>{this.listeners.delete(listener);};};getSnapshot=()=>this.view;
  setEditorDraft=(key:string,value:string|null)=>{const drafts={...this.view.drafts};if(value===null){delete drafts[key];this.holds.delete(key);}else{drafts[key]=value;this.holds.add(key);}this.view={...this.view,drafts};this.epoch++;this.publish();};
  setOnChange(listener:(()=>void)|undefined){this.changed=listener;}
  hold=(id:string,value:boolean)=>{if(value)this.holds.add(id);else this.holds.delete(id);};
- private publish(){let state=this.base.state;for(const job of this.jobs)state=plannerReducer(state,job.action);this.view={...this.view,state,pending:!!this.jobs.length,saving:this.running||!!this.timer,refreshing:!!this.loading,drafting:Object.keys(this.view.drafts).length>0};for(const listener of this.listeners)listener();}
+ private publish(){let state=this.base.state;for(const job of this.jobs)state=plannerReducer(state,job.action);this.view={...this.view,revision:this.base.revision,state,pending:!!this.jobs.length,saving:this.running||!!this.timer,refreshing:!!this.loading,drafting:Object.keys(this.view.drafts).length>0};for(const listener of this.listeners)listener();}
  async load(force=false){if(this.jobs.length||this.holds.size||this.loading||this.view.loaded&&!force)return this.loading;if(!validTimeZone(this.timeZone)){this.view={...this.view,error:'Set a valid saved IANA timezone before planning.'};this.publish();return;}const epoch=this.epoch;
   this.loading=(async()=>{try{const snapshot=await this.repository.read();if(epoch===this.epoch&&!this.jobs.length&&!this.holds.size){this.base=snapshot;this.view={...this.view,loaded:true,error:''};}}catch{if(epoch===this.epoch&&!this.jobs.length)this.view={...this.view,error:'Planner could not load. Check your connection and retry.'};}finally{this.loading=undefined;this.publish();}})();this.publish();return this.loading;
  }
@@ -26,6 +26,7 @@ export class PlannerStore{
  hasPending(){return !!this.jobs.length||Object.keys(this.view.drafts).length>0;}
  draftText(){const edits=Object.entries(this.view.drafts).map(([key,value])=>`${key.startsWith('task-title/')?'Task title':'Subtask title'} draft: ${value}`).join('\n');return edits+'\n'+this.jobs.map(({action})=>{
   const task='id'in action?this.view.state.tasks.find(item=>item.id===action.id)??this.base.state.tasks.find(item=>item.id===action.id):undefined;
+  if(action.type==='priority/complete')return `${action.complete?'Complete':'Reopen'} linked task: ${this.view.state.tasks.find(item=>item.id===action.taskId)?.title??'task'}`;
   if(action.type==='task/add')return `New task: ${action.task.title}\nPlanned: ${action.task.plannedDate??'Task List'}`;
   if(action.type==='task/update')return `Edit ${task?.title??'task'}:\n`+Object.entries(action.patch).map(([key,value])=>{if(key==='workspaceId')return 'Workspace: '+(this.view.state.workspaces.find(item=>item.id===value)?.name??'not set');if(key==='groupId')return 'Group: '+(this.view.state.groups.find(item=>item.id===value)?.name??'not set');if(key==='tagIds')return 'Tags: '+(value as string[]).map(id=>this.view.state.tags.find(item=>item.id===id)?.name).join(', ');if(key==='subtasks')return 'Subtasks: '+(value as {title:string;complete:boolean}[]).map(item=>(item.complete?'Complete: ':'')+item.title).join('; ');return `${key}: ${value===undefined?'not set':JSON.stringify(value)}`;}).join('\n');
   if(action.type==='task/move'||action.type==='task/place')return `Move ${task?.title??'task'} to ${action.date??'Task List'}`;
