@@ -83,8 +83,8 @@ test('grocery removal is reversible without changing identity, quantity, note or
 });
 
 test('allocation identity contains an inline category chip and Bills show readable dates with no underlined name controls',()=>{
- const {MoneyAllocationRow}=load('components/money/MoneyAllocationRow'),{MoneyBillRow}=load('components/money/MoneyBillRow'),{MoneyProvider}=load('components/money/MoneyStore'),{moneySample}=load('lib/money-sample');
- const allocation=moneySample.allocations.find((item)=>item.dueDate),html=renderToStaticMarkup(React.createElement(MoneyProvider,null,React.createElement(MoneyAllocationRow,{allocation,onOpen(){}}),React.createElement(MoneyBillRow,{bill:moneySample.bills[0],today:'2026-10-30',onOpen(){}})));
+ const {MoneyAllocationRow}=load('components/money/MoneyAllocationRow'),{MoneyBillRow}=load('components/money/MoneyBillRow'),{MoneyContext}=load('components/money/MoneyStore'),{moneySample}=load('lib/money-sample');
+ const allocation=moneySample.allocations.find((item)=>item.dueDate),html=renderToStaticMarkup(React.createElement(MoneyContext.Provider,{value:moneyFixture(moneySample)},React.createElement(MoneyAllocationRow,{allocation,onOpen(){}}),React.createElement(MoneyBillRow,{bill:moneySample.bills[0],today:'2026-10-30',onOpen(){}})));
  assert.ok(html.includes('muse-money-allocation-identity'));assert.ok(html.includes('data-variant="chip"'));assert.ok(!html.includes(`>${allocation.dueDate}<`));assert.ok(!html.includes(`>${moneySample.bills[0].dueDate}<`));assert.ok(html.includes('muse-bill-paid-action'));assert.ok(!html.includes('text-button muse-bill-name'));assert.ok(html.includes('muse-money-ledger-number'));
 });
 
@@ -93,3 +93,5 @@ test('Cosmic Forecast preference restores, switches immediately and survives den
  globalThis.window={localStorage:{getItem:(key)=>storage.get(key)??null,setItem:(key,value)=>storage.set(key,value)},addEventListener:events.addEventListener.bind(events),removeEventListener:events.removeEventListener.bind(events),dispatchEvent:events.dispatchEvent.bind(events)};
  try{const pref=load('lib/cosmic-preference',true);assert.equal(JSON.parse(pref.readCosmicPreference()).enabled,false);let notifications=0;const stop=pref.subscribeCosmicPreference(()=>notifications++);pref.changeCosmicPreference({enabled:true});assert.equal(JSON.parse(pref.readCosmicPreference()).sign,'virgo');assert.equal(notifications,1);window.localStorage.setItem=()=>{throw Error('denied');};pref.changeCosmicPreference({enabled:false,sign:'aries'});assert.deepEqual(JSON.parse(pref.readCosmicPreference()),{enabled:false,sign:'aries'});assert.equal(JSON.parse(storage.get('muse-cosmic-preferences')).enabled,true,'storage remains unchanged while the live preference works');stop();}finally{delete globalThis.window;}
 });
+
+function moneyFixture(state){const view={state,loaded:true,pending:false,error:''};return {subscribe:()=>()=>{},getSnapshot:()=>view,dispatch:()=>{},whenSaved:()=>{}};}

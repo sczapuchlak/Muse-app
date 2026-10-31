@@ -25,7 +25,10 @@
     "test:notes": "node scripts/test-local-notes.mjs",
     "test:account": "node scripts/test-local-account.mjs",
     "test:priority-curations": "node scripts/test-local-priority-curations.mjs",
-    "test:wellness": "node scripts/test-local-wellness.mjs"
+    "test:wellness": "node scripts/test-local-wellness.mjs",
+    "test:rituals": "node scripts/test-local-rituals.mjs",
+    "test:ritual-lifecycle": "node scripts/test-local-ritual-lifecycle.mjs",
+    "test:money": "node scripts/test-local-money.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",

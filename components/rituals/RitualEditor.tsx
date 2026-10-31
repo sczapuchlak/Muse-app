@@ -5,9 +5,10 @@ import { MuseDrawer } from "../MuseDrawer";
 import { useRituals } from "./RitualStore";
 
 export function RitualEditor({ initial, date, returnFocus, onClose }: { initial?: RitualDefinition; date: string; returnFocus: HTMLElement; onClose: () => void }) {
-  const { state, dispatch } = useRituals();
+  const { state, dispatch, status } = useRituals();
+  const [captureId]=useState(()=>initial?.id??crypto.randomUUID());
   const [name, setName] = useState(initial?.name ?? "");
-  const [groupId, setGroup] = useState(initial?.groupId ?? state.groups[0].id);
+  const [groupId, setGroup] = useState(initial?.groupId ?? state.groups[0]?.id??"");
   const [type, setType] = useState<RitualType>(initial?.type ?? "checkbox");
   const [goal, setGoal] = useState(String(initial?.goal ?? 1));
   const [unit, setUnit] = useState(initial?.unit ?? "check-in");
@@ -15,11 +16,11 @@ export function RitualEditor({ initial, date, returnFocus, onClose }: { initial?
   const [days, setDays] = useState<number[]>(initial?.recurrence.kind === "weekdays" ? initial.recurrence.weekdays : initial?.recurrence.kind === "weekly" ? [initial.recurrence.weekday] : [1, 3, 5]);
   const [startDate, setStartDate] = useState(initial?.startDate ?? date);
   const locked = !!initial && state.entries.some((entry) => entry.ritualId === initial.id);
-  const valid = name.trim() && Number(goal) > 0 && (kind === "daily" || days.length > 0);
+  const valid = name.trim() && Number.isFinite(Number(goal)) && Number(goal) > 0 && Number(goal)<=1000000 && (kind === "daily" || days.length > 0);
   function submit(event: FormEvent) {
-    event.preventDefault(); if (!valid) return;
+    event.preventDefault(); if (!valid||!status.loaded||status.error) return;
     const recurrence: RitualRecurrence = kind === "daily" ? { kind } : kind === "weekly" ? { kind, weekday: days[0] } : { kind, weekdays: days };
-    dispatch({ type: "ritual/save", ritual: { id: initial?.id ?? crypto.randomUUID(), name, groupId, type, goal: Number(goal), unit: type === "duration" ? "min" : type === "weekly-target" ? "times" : type === "checkbox" ? "check-in" : unit.trim(), startDate, createdAt: initial?.createdAt ?? new Date().toISOString(), recurrence } });
+    dispatch({ type: "ritual/save", ritual: { id:captureId, name, groupId, type, goal: Number(goal), unit: type === "duration" ? "min" : type === "weekly-target" ? "times" : type === "checkbox" ? "check-in" : unit.trim(), startDate, createdAt: initial?.createdAt ?? new Date().toISOString(), recurrence } });
     onClose();
   }
   return <MuseDrawer title={initial ? "Edit ritual" : "A new ritual"} onClose={onClose} returnFocus={returnFocus}>
@@ -34,7 +35,7 @@ export function RitualEditor({ initial, date, returnFocus, onClose }: { initial?
       </fieldset>
       {locked && <p className="small-label">This ritual has history. Its type, goal, and schedule stay fixed to preserve those entries. You can change its name or group; create a new ritual for a new rhythm.</p>}
       {type === "weekly-target" && <p className="small-label">The goal applies to the whole week. Available days are opportunities to log, not separate daily obligations.</p>}
-      <div className="editor-actions"><button className="muse-button button-primary" type="submit" disabled={!valid}>{initial ? "Save ritual" : "Add ritual"}</button><button className="text-button" type="button" onClick={onClose}>Cancel</button></div>
+      <div className="editor-actions"><button className="muse-button button-primary" type="submit" disabled={!valid||!status.loaded||!!status.error}>{initial ? "Save ritual" : "Add ritual"}</button><button className="text-button" type="button" onClick={onClose}>Cancel</button></div>
     </form>
   </MuseDrawer>;
 }

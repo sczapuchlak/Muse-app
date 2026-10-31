@@ -9,21 +9,21 @@ import { useRitualFeedback } from "../MuseRitualFeedback";
 import { useRituals } from "./RitualStore";
 
 export function RitualWeekCell({ ritual, date, today, selected, onEditEntry }: { ritual: RitualDefinition; date: string; today: string; selected: boolean; onEditEntry: (ritual: RitualDefinition, date: string, anchor: HTMLElement, onComplete: (value: number | null) => void) => void }) {
-  const { state, dispatch } = useRituals();
+  const { state, dispatch,store,status } = useRituals();
   const cell = ritualCell(state, ritual, date, today);
   const { trigger, effect } = useRitualFeedback();
   const statusLabel = cell.status === "unscheduled" ? "not scheduled" : cell.status === "upcoming" ? "upcoming" : cell.status === "missed" ? ritual.type === "weekly-target" ? "no session recorded; weekly goal tracked separately" : "explicitly missed" : cell.status === "unknown" ? "not logged; unknown" : cell.status === "available" ? "available to log; weekly goal" : cell.status === "complete" ? `complete${ritual.type === "checkbox" ? "" : `: ${cell.value} of ${ritual.goal} ${ritual.unit}`}` : cell.status === "partial" ? `partial: ${cell.value} of ${ritual.goal} ${ritual.unit}` : cell.status === "logged" ? `${cell.value} ${ritual.unit} logged toward the weekly goal` : "not logged yet";
-  function record(value: number | null) {
-    const action = { type: "entry/set" as const, ritualId: ritual.id, date, value, today, now: new Date().toISOString() };
+  function record(value: number | null,cycle=false) {
+    const action = { type: cycle?"entry/cycle" as const:"entry/set" as const, ritualId: ritual.id, date, value, today, now: new Date().toISOString() };
     const next = ritualReducer(state, action);
     const feedback = ritualFeedback(state, next, ritual, date, today);
-    if (feedback) trigger(feedback.kind);
     dispatch(action);
+    if(feedback)store.whenSaved(()=>trigger(feedback.kind));
   }
-  const disabled = !today || cell.status === "unscheduled" || cell.status === "upcoming";
+  const disabled = !status.loaded||!!status.error||!today || cell.status === "unscheduled" || cell.status === "upcoming";
   return <div className="muse-ritual-week-cell" data-selected={selected} data-status={cell.status} data-recorded={cell.recorded} data-today={date === today}>
-    {cell.status==="unscheduled"?<span className="muse-ritual-unavailable" aria-label={`${ritual.name}, ${dateLabel(date)}: not scheduled`}>—</span>:<button className="muse-ritual-cell-control muse-edge" type="button" disabled={disabled} aria-label={`${ritual.name}, ${dateLabel(date)}: ${statusLabel}`} aria-haspopup="dialog" title={`${dateLabel(date)} · ${statusLabel}`} onClick={(event) => {
-      onEditEntry(ritual, date, event.currentTarget, record);
+    {cell.status==="unscheduled"?<span className="muse-ritual-unavailable" aria-label={`${ritual.name}, ${dateLabel(date)}: not scheduled`}>—</span>:<button className="muse-ritual-cell-control muse-edge" type="button" disabled={disabled} aria-label={`${ritual.name}, ${dateLabel(date)}: ${statusLabel}`} aria-haspopup={ritual.type==='checkbox'?undefined:'dialog'} title={`${dateLabel(date)} · ${statusLabel}`} onClick={(event) => {
+      if(ritual.type==='checkbox')record(null,true);else onEditEntry(ritual, date, event.currentTarget, record);
     }}>
       {cell.status === "upcoming" ? <MuseStar size={15}/>
         : cell.status === "missed" ? <MuseIcon name="close" size={16}/>

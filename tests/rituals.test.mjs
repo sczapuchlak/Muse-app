@@ -122,9 +122,10 @@ test('new quantity/duration/weekly/checkbox definitions have validated goals and
 });
 
 test('Ritual weekly rows expose seven semantic cells, group collapse and separate weekly target progress', () => {
-  const {RitualProvider}=load('components/rituals/RitualStore');
+  const {RitualContext}=load('components/rituals/RitualStore');
+ const fixture=state=>({subscribe:()=>()=>{},getSnapshot:()=>({state,loaded:true,error:'',pending:false}),dispatch:()=>{},whenSaved:()=>{}});
   const {RitualGroup}=load('components/rituals/RitualGroup');
-  function render(group) {return renderToStaticMarkup(React.createElement(RitualProvider,null,React.createElement(RitualGroup,{group,week:weekDates(today),today,selectedDate:today,onEdit(){},onEditEntry(){}})));}
+  function render(group) {return renderToStaticMarkup(React.createElement(RitualContext.Provider,{value:fixture(ritualsSample)},React.createElement(RitualGroup,{group,week:weekDates(today),today,selectedDate:today,onEdit(){},onEditEntry(){}})));}
   const html=render(ritualsSample.groups[1]);
   assert.equal((html.match(/class="muse-ritual-week-cell"/g)??[]).length,14);
   assert.ok(html.includes('data-status="unscheduled"'));
@@ -240,12 +241,13 @@ test('daily completion credit counts full scheduled daily goals, never partial c
 });
 
 test('completed quantities retain a central value and small completion badge; partial alone uses a ring',()=>{
- const {RitualProvider}=load('components/rituals/RitualStore');
+ const {RitualContext}=load('components/rituals/RitualStore');
+ const fixture=state=>({subscribe:()=>()=>{},getSnapshot:()=>({state,loaded:true,error:'',pending:false}),dispatch:()=>{},whenSaved:()=>{}});
  const {RitualWeekCell}=load('components/rituals/RitualWeekCell');
  const base=fresh(),ritual={...base.rituals.find((item)=>item.type==='numeric'),goal:20,recurrence:{kind:'daily'},startDate:'2026-10-26'};
  const render=(value)=>{
   const state=log({...base,rituals:[ritual],entries:[]},ritual.id,today,value);
-  return renderToStaticMarkup(React.createElement(RitualProvider,{initialState:state},React.createElement(RitualWeekCell,{ritual,date:today,today,selected:true,onEditEntry(){}})));
+  return renderToStaticMarkup(React.createElement(RitualContext.Provider,{value:fixture(state)},React.createElement(RitualWeekCell,{ritual,date:today,today,selected:true,onEditEntry(){}})));
  };
  const complete=render(22),partial=render(12),missed=render(0),unknown=render(null);
  assert.ok(complete.includes('muse-ritual-completion-badge'));

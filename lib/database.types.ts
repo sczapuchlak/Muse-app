@@ -5,7 +5,149 @@ export type Database = {
 
   "public": {
           Tables: {
-            "checkin_emotions": {
+            "allocation_groups": {
+                  Row: {
+                    "accent": string,"captured_time_zone": string,"created_at": string,"currency": string,"id": string,"name": string,"position": number,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "accent": string,"captured_time_zone": string,"created_at"?: string,"currency"?: string,"id": string,"name": string,"position"?: number,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "accent"?: string,"captured_time_zone"?: string,"created_at"?: string,"currency"?: string,"id"?: string,"name"?: string,"position"?: number,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
+                },"allocations": {
+                  Row: {
+                    "actual_cents": number | null,"allocation_group_id": string,"bill_id": string | null,"captured_time_zone": string,"card_id": string | null,"category_id": string | null,"created_at": string,"currency": string,"due_date": string | null,"id": string,"name": string,"note": string | null,"paycheck_id": string,"planned_cents": number,"position": number,"subcategory_id": string | null,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "actual_cents"?: number | null,"allocation_group_id": string,"bill_id"?: string | null,"captured_time_zone": string,"card_id"?: string | null,"category_id"?: string | null,"created_at"?: string,"currency"?: string,"due_date"?: string | null,"id": string,"name": string,"note"?: string | null,"paycheck_id": string,"planned_cents": number,"position"?: number,"subcategory_id"?: string | null,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "actual_cents"?: number | null,"allocation_group_id"?: string,"bill_id"?: string | null,"captured_time_zone"?: string,"card_id"?: string | null,"category_id"?: string | null,"created_at"?: string,"currency"?: string,"due_date"?: string | null,"id"?: string,"name"?: string,"note"?: string | null,"paycheck_id"?: string,"planned_cents"?: number,"position"?: number,"subcategory_id"?: string | null,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "allocations_user_id_allocation_group_id_fkey"
+      columns: ["user_id","allocation_group_id"]
+isOneToOne: false
+      referencedRelation: "allocation_groups"
+      referencedColumns: ["user_id","id"]
+    },{
+      foreignKeyName: "allocations_user_id_bill_id_fkey"
+      columns: ["user_id","bill_id"]
+isOneToOne: false
+      referencedRelation: "bills"
+      referencedColumns: ["user_id","id"]
+    },{
+      foreignKeyName: "allocations_user_id_card_id_fkey"
+      columns: ["user_id","card_id"]
+isOneToOne: false
+      referencedRelation: "cards"
+      referencedColumns: ["user_id","id"]
+    },{
+      foreignKeyName: "allocations_user_id_category_id_fkey"
+      columns: ["user_id","category_id"]
+isOneToOne: false
+      referencedRelation: "money_categories"
+      referencedColumns: ["user_id","id"]
+    },{
+      foreignKeyName: "allocations_user_id_category_id_subcategory_id_fkey"
+      columns: ["user_id","category_id","subcategory_id"]
+isOneToOne: false
+      referencedRelation: "money_subcategories"
+      referencedColumns: ["user_id","category_id","id"]
+    },{
+      foreignKeyName: "allocations_user_id_paycheck_id_fkey"
+      columns: ["user_id","paycheck_id"]
+isOneToOne: false
+      referencedRelation: "paychecks"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+                },"bills": {
+                  Row: {
+                    "amount_cents": number,"captured_time_zone": string,"card_id": string | null,"category_id": string | null,"created_at": string,"currency": string,"due_date": string,"id": string,"name": string,"note": string | null,"paid": boolean,"position": number,"recurrence": string,"recurring_id": string | null,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "amount_cents": number,"captured_time_zone": string,"card_id"?: string | null,"category_id"?: string | null,"created_at"?: string,"currency"?: string,"due_date": string,"id": string,"name": string,"note"?: string | null,"paid": boolean,"position"?: number,"recurrence": string,"recurring_id"?: string | null,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "amount_cents"?: number,"captured_time_zone"?: string,"card_id"?: string | null,"category_id"?: string | null,"created_at"?: string,"currency"?: string,"due_date"?: string,"id"?: string,"name"?: string,"note"?: string | null,"paid"?: boolean,"position"?: number,"recurrence"?: string,"recurring_id"?: string | null,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "bills_user_id_card_id_fkey"
+      columns: ["user_id","card_id"]
+isOneToOne: false
+      referencedRelation: "cards"
+      referencedColumns: ["user_id","id"]
+    },{
+      foreignKeyName: "bills_user_id_category_id_fkey"
+      columns: ["user_id","category_id"]
+isOneToOne: false
+      referencedRelation: "money_categories"
+      referencedColumns: ["user_id","id"]
+    },{
+      foreignKeyName: "bills_user_id_recurring_id_fkey"
+      columns: ["user_id","recurring_id"]
+isOneToOne: false
+      referencedRelation: "recurring_commitments"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+                },"card_payments": {
+                  Row: {
+                    "allocation_id": string | null,"amount_cents": number,"captured_time_zone": string,"card_id": string,"created_at": string,"currency": string,"id": string,"local_date": string,"note": string | null,"paycheck_id": string | null,"position": number,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "allocation_id"?: string | null,"amount_cents": number,"captured_time_zone": string,"card_id": string,"created_at"?: string,"currency"?: string,"id": string,"local_date": string,"note"?: string | null,"paycheck_id"?: string | null,"position"?: number,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "allocation_id"?: string | null,"amount_cents"?: number,"captured_time_zone"?: string,"card_id"?: string,"created_at"?: string,"currency"?: string,"id"?: string,"local_date"?: string,"note"?: string | null,"paycheck_id"?: string | null,"position"?: number,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "card_payments_user_id_allocation_id_fkey"
+      columns: ["user_id","allocation_id"]
+isOneToOne: false
+      referencedRelation: "allocations"
+      referencedColumns: ["user_id","id"]
+    },{
+      foreignKeyName: "card_payments_user_id_card_id_fkey"
+      columns: ["user_id","card_id"]
+isOneToOne: false
+      referencedRelation: "cards"
+      referencedColumns: ["user_id","id"]
+    },{
+      foreignKeyName: "card_payments_user_id_paycheck_id_fkey"
+      columns: ["user_id","paycheck_id"]
+isOneToOne: false
+      referencedRelation: "paychecks"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+                },"cards": {
+                  Row: {
+                    "apr": number | null,"captured_time_zone": string,"created_at": string,"currency": string,"due_date": string | null,"id": string,"limit_cents": number | null,"minimum_cents": number | null,"name": string,"note": string | null,"opening_as_of": string,"opening_balance_cents": number,"planned_payment_cents": number | null,"position": number,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "apr"?: number | null,"captured_time_zone": string,"created_at"?: string,"currency"?: string,"due_date"?: string | null,"id": string,"limit_cents"?: number | null,"minimum_cents"?: number | null,"name": string,"note"?: string | null,"opening_as_of": string,"opening_balance_cents": number,"planned_payment_cents"?: number | null,"position"?: number,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "apr"?: number | null,"captured_time_zone"?: string,"created_at"?: string,"currency"?: string,"due_date"?: string | null,"id"?: string,"limit_cents"?: number | null,"minimum_cents"?: number | null,"name"?: string,"note"?: string | null,"opening_as_of"?: string,"opening_balance_cents"?: number,"planned_payment_cents"?: number | null,"position"?: number,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
+                },"checkin_emotions": {
                   Row: {
                     "checkin_id": string,"emotion_id": string,"user_id": string
                   }
@@ -233,6 +375,96 @@ isOneToOne: false
       referencedColumns: ["user_id","id"]
     }
                   ]
+                },"money_categories": {
+                  Row: {
+                    "accent": string,"archived": boolean,"captured_time_zone": string,"created_at": string,"currency": string,"icon_id": string | null,"id": string,"name": string,"position": number,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "accent": string,"archived": boolean,"captured_time_zone": string,"created_at"?: string,"currency"?: string,"icon_id"?: string | null,"id": string,"name": string,"position"?: number,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "accent"?: string,"archived"?: boolean,"captured_time_zone"?: string,"created_at"?: string,"currency"?: string,"icon_id"?: string | null,"id"?: string,"name"?: string,"position"?: number,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
+                },"money_commands": {
+                  Row: {
+                    "id": string,"request_hash": string,"revision": number,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "id": string,"request_hash": string,"revision": number,"user_id": string
+                  }
+                  Update: {
+                    "id"?: string,"request_hash"?: string,"revision"?: number,"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
+                },"money_deleted_ids": {
+                  Row: {
+                    "collection": string,"deleted_at": string,"id": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "collection": string,"deleted_at"?: string,"id": string,"user_id": string
+                  }
+                  Update: {
+                    "collection"?: string,"deleted_at"?: string,"id"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
+                },"money_subcategories": {
+                  Row: {
+                    "category_id": string,"id": string,"name": string,"position": number,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "category_id": string,"id": string,"name": string,"position": number,"user_id": string
+                  }
+                  Update: {
+                    "category_id"?: string,"id"?: string,"name"?: string,"position"?: number,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "money_subcategories_user_id_category_id_fkey"
+      columns: ["user_id","category_id"]
+isOneToOne: false
+      referencedRelation: "money_categories"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+                },"money_tags": {
+                  Row: {
+                    "archived": boolean,"captured_time_zone": string,"created_at": string,"currency": string,"id": string,"name": string,"position": number,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "archived": boolean,"captured_time_zone": string,"created_at"?: string,"currency"?: string,"id": string,"name": string,"position"?: number,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "archived"?: boolean,"captured_time_zone"?: string,"created_at"?: string,"currency"?: string,"id"?: string,"name"?: string,"position"?: number,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
+                },"money_versions": {
+                  Row: {
+                    "revision": number,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "revision"?: number,"user_id": string
+                  }
+                  Update: {
+                    "revision"?: number,"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
                 },"mood_checkins": {
                   Row: {
                     "captured_time_zone": string,"created_at": string,"daily_record_id": string,"id": string,"period": string,"reflection": string | null,"revision": number,"updated_at": string,"user_id": string
@@ -429,6 +661,104 @@ isOneToOne: false
                   Relationships: [
 
                   ]
+                },"paycheck_template_allocations": {
+                  Row: {
+                    "allocation_group_id": string,"bill_id": string | null,"card_id": string | null,"category_id": string | null,"name": string,"note": string | null,"planned_cents": number,"position": number,"subcategory_id": string | null,"template_id": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "allocation_group_id": string,"bill_id"?: string | null,"card_id"?: string | null,"category_id"?: string | null,"name": string,"note"?: string | null,"planned_cents": number,"position": number,"subcategory_id"?: string | null,"template_id": string,"user_id": string
+                  }
+                  Update: {
+                    "allocation_group_id"?: string,"bill_id"?: string | null,"card_id"?: string | null,"category_id"?: string | null,"name"?: string,"note"?: string | null,"planned_cents"?: number,"position"?: number,"subcategory_id"?: string | null,"template_id"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "paycheck_template_allocations_user_id_allocation_group_id_fkey"
+      columns: ["user_id","allocation_group_id"]
+isOneToOne: false
+      referencedRelation: "allocation_groups"
+      referencedColumns: ["user_id","id"]
+    },{
+      foreignKeyName: "paycheck_template_allocations_user_id_bill_id_fkey"
+      columns: ["user_id","bill_id"]
+isOneToOne: false
+      referencedRelation: "bills"
+      referencedColumns: ["user_id","id"]
+    },{
+      foreignKeyName: "paycheck_template_allocations_user_id_card_id_fkey"
+      columns: ["user_id","card_id"]
+isOneToOne: false
+      referencedRelation: "cards"
+      referencedColumns: ["user_id","id"]
+    },{
+      foreignKeyName: "paycheck_template_allocations_user_id_category_id_fkey"
+      columns: ["user_id","category_id"]
+isOneToOne: false
+      referencedRelation: "money_categories"
+      referencedColumns: ["user_id","id"]
+    },{
+      foreignKeyName: "paycheck_template_allocations_user_id_category_id_subcateg_fkey"
+      columns: ["user_id","category_id","subcategory_id"]
+isOneToOne: false
+      referencedRelation: "money_subcategories"
+      referencedColumns: ["user_id","category_id","id"]
+    },{
+      foreignKeyName: "paycheck_template_allocations_user_id_template_id_fkey"
+      columns: ["user_id","template_id"]
+isOneToOne: false
+      referencedRelation: "paycheck_templates"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+                },"paycheck_templates": {
+                  Row: {
+                    "captured_time_zone": string,"created_at": string,"currency": string,"expected_cents": number | null,"id": string,"name": string,"position": number,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "captured_time_zone": string,"created_at"?: string,"currency"?: string,"expected_cents"?: number | null,"id": string,"name": string,"position"?: number,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "captured_time_zone"?: string,"created_at"?: string,"currency"?: string,"expected_cents"?: number | null,"id"?: string,"name"?: string,"position"?: number,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
+                },"paychecks": {
+                  Row: {
+                    "actual_cents": number | null,"captured_time_zone": string,"created_at": string,"currency": string,"expected_cents": number | null,"id": string,"name": string,"note": string | null,"period_end": string,"period_start": string,"position": number,"received_date": string,"template_id": string | null,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "actual_cents"?: number | null,"captured_time_zone": string,"created_at"?: string,"currency"?: string,"expected_cents"?: number | null,"id": string,"name": string,"note"?: string | null,"period_end": string,"period_start": string,"position"?: number,"received_date": string,"template_id"?: string | null,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "actual_cents"?: number | null,"captured_time_zone"?: string,"created_at"?: string,"currency"?: string,"expected_cents"?: number | null,"id"?: string,"name"?: string,"note"?: string | null,"period_end"?: string,"period_start"?: string,"position"?: number,"received_date"?: string,"template_id"?: string | null,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "paychecks_user_id_template_id_fkey"
+      columns: ["user_id","template_id"]
+isOneToOne: false
+      referencedRelation: "paycheck_templates"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+                },"payment_methods": {
+                  Row: {
+                    "captured_time_zone": string,"created_at": string,"currency": string,"id": string,"name": string,"position": number,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "captured_time_zone": string,"created_at"?: string,"currency"?: string,"id": string,"name": string,"position"?: number,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "captured_time_zone"?: string,"created_at"?: string,"currency"?: string,"id"?: string,"name"?: string,"position"?: number,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
                 },"planner_commands": {
                   Row: {
                     "id": string,"request_hash": string,"revision": number,"user_id": string
@@ -512,6 +842,174 @@ isOneToOne: false
                   }
                   Relationships: [
 
+                  ]
+                },"recurring_commitments": {
+                  Row: {
+                    "amount_behavior": string,"amount_cents": number | null,"anchor_date": string,"billing_source": string,"cancelled_date": string | null,"captured_time_zone": string,"card_id": string | null,"category_id": string | null,"created_at": string,"currency": string,"end_date": string | null,"id": string,"interval_count": number,"interval_unit": string,"manage_at": string | null,"name": string,"note": string | null,"payment_method_id": string | null,"position": number,"status": string,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "amount_behavior": string,"amount_cents"?: number | null,"anchor_date": string,"billing_source": string,"cancelled_date"?: string | null,"captured_time_zone": string,"card_id"?: string | null,"category_id"?: string | null,"created_at"?: string,"currency"?: string,"end_date"?: string | null,"id": string,"interval_count": number,"interval_unit": string,"manage_at"?: string | null,"name": string,"note"?: string | null,"payment_method_id"?: string | null,"position"?: number,"status": string,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "amount_behavior"?: string,"amount_cents"?: number | null,"anchor_date"?: string,"billing_source"?: string,"cancelled_date"?: string | null,"captured_time_zone"?: string,"card_id"?: string | null,"category_id"?: string | null,"created_at"?: string,"currency"?: string,"end_date"?: string | null,"id"?: string,"interval_count"?: number,"interval_unit"?: string,"manage_at"?: string | null,"name"?: string,"note"?: string | null,"payment_method_id"?: string | null,"position"?: number,"status"?: string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "recurring_commitments_user_id_card_id_fkey"
+      columns: ["user_id","card_id"]
+isOneToOne: false
+      referencedRelation: "cards"
+      referencedColumns: ["user_id","id"]
+    },{
+      foreignKeyName: "recurring_commitments_user_id_category_id_fkey"
+      columns: ["user_id","category_id"]
+isOneToOne: false
+      referencedRelation: "money_categories"
+      referencedColumns: ["user_id","id"]
+    },{
+      foreignKeyName: "recurring_commitments_user_id_payment_method_id_fkey"
+      columns: ["user_id","payment_method_id"]
+isOneToOne: false
+      referencedRelation: "payment_methods"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+                },"recurring_versions": {
+                  Row: {
+                    "commitment_id": string,"definition": NonNullable<Json>,"recorded_at": string,"revision": number,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "commitment_id": string,"definition": NonNullable<Json>,"recorded_at"?: string,"revision": number,"user_id": string
+                  }
+                  Update: {
+                    "commitment_id"?: string,"definition"?: NonNullable<Json>,"recorded_at"?: string,"revision"?: number,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "recurring_versions_user_id_commitment_id_fkey"
+      columns: ["user_id","commitment_id"]
+isOneToOne: false
+      referencedRelation: "recurring_commitments"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+                },"ritual_commands": {
+                  Row: {
+                    "id": string,"request_hash": string,"revision": number,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "id": string,"request_hash": string,"revision": number,"user_id": string
+                  }
+                  Update: {
+                    "id"?: string,"request_hash"?: string,"revision"?: number,"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
+                },"ritual_entries": {
+                  Row: {
+                    "captured_time_zone": string,"created_at": string,"local_date": string,"outcome": string,"ritual_id": string,"updated_at": string,"user_id": string,"value": number
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "captured_time_zone": string,"created_at"?: string,"local_date": string,"outcome": string,"ritual_id": string,"updated_at"?: string,"user_id": string,"value": number
+                  }
+                  Update: {
+                    "captured_time_zone"?: string,"created_at"?: string,"local_date"?: string,"outcome"?: string,"ritual_id"?: string,"updated_at"?: string,"user_id"?: string,"value"?: number
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "ritual_entries_user_id_ritual_id_fkey"
+      columns: ["user_id","ritual_id"]
+isOneToOne: false
+      referencedRelation: "rituals"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+                },"ritual_groups": {
+                  Row: {
+                    "accent": string,"collapsed": boolean,"gradient": Json | null,"icon_id": string,"id": string,"name": string,"position": number,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "accent": string,"collapsed": boolean,"gradient"?: Json | null,"icon_id": string,"id": string,"name": string,"position": number,"user_id": string
+                  }
+                  Update: {
+                    "accent"?: string,"collapsed"?: boolean,"gradient"?: Json | null,"icon_id"?: string,"id"?: string,"name"?: string,"position"?: number,"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
+                },"ritual_inactive_periods": {
+                  Row: {
+                    "ends_before": string | null,"kind": string,"ritual_id": string,"starts_on": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "ends_before"?: string | null,"kind": string,"ritual_id": string,"starts_on": string,"user_id": string
+                  }
+                  Update: {
+                    "ends_before"?: string | null,"kind"?: string,"ritual_id"?: string,"starts_on"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "ritual_inactive_periods_user_id_ritual_id_fkey"
+      columns: ["user_id","ritual_id"]
+isOneToOne: false
+      referencedRelation: "rituals"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+                },"ritual_tombstones": {
+                  Row: {
+                    "deleted_at": string,"id": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "deleted_at"?: string,"id": string,"user_id": string
+                  }
+                  Update: {
+                    "deleted_at"?: string,"id"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
+                },"ritual_versions_owner": {
+                  Row: {
+                    "revision": number,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "revision"?: number,"user_id": string
+                  }
+                  Update: {
+                    "revision"?: number,"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
+                },"rituals": {
+                  Row: {
+                    "captured_time_zone": string,"created_at": string,"goal": number,"group_id": string,"id": string,"lifecycle_status": string,"name": string,"position": number,"recurrence": string,"start_date": string,"tracking_type": string,"unit": string,"updated_at": string,"user_id": string,"weekdays": (number)[]
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "captured_time_zone": string,"created_at"?: string,"goal": number,"group_id": string,"id": string,"lifecycle_status"?: string,"name": string,"position": number,"recurrence": string,"start_date": string,"tracking_type": string,"unit": string,"updated_at"?: string,"user_id": string,"weekdays": (number)[]
+                  }
+                  Update: {
+                    "captured_time_zone"?: string,"created_at"?: string,"goal"?: number,"group_id"?: string,"id"?: string,"lifecycle_status"?: string,"name"?: string,"position"?: number,"recurrence"?: string,"start_date"?: string,"tracking_type"?: string,"unit"?: string,"updated_at"?: string,"user_id"?: string,"weekdays"?: (number)[]
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "rituals_user_id_group_id_fkey"
+      columns: ["user_id","group_id"]
+isOneToOne: false
+      referencedRelation: "ritual_groups"
+      referencedColumns: ["user_id","id"]
+    }
                   ]
                 },"saved_meals": {
                   Row: {
@@ -673,6 +1171,108 @@ isOneToOne: false
       referencedColumns: ["user_id","workspace_id","id"]
     }
                   ]
+                },"transaction_splits": {
+                  Row: {
+                    "amount_cents": number,"category_id": string | null,"id": string,"position": number,"subcategory_id": string | null,"transaction_id": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "amount_cents": number,"category_id"?: string | null,"id": string,"position": number,"subcategory_id"?: string | null,"transaction_id": string,"user_id": string
+                  }
+                  Update: {
+                    "amount_cents"?: number,"category_id"?: string | null,"id"?: string,"position"?: number,"subcategory_id"?: string | null,"transaction_id"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "transaction_splits_user_id_category_id_fkey"
+      columns: ["user_id","category_id"]
+isOneToOne: false
+      referencedRelation: "money_categories"
+      referencedColumns: ["user_id","id"]
+    },{
+      foreignKeyName: "transaction_splits_user_id_category_id_subcategory_id_fkey"
+      columns: ["user_id","category_id","subcategory_id"]
+isOneToOne: false
+      referencedRelation: "money_subcategories"
+      referencedColumns: ["user_id","category_id","id"]
+    },{
+      foreignKeyName: "transaction_splits_user_id_transaction_id_fkey"
+      columns: ["user_id","transaction_id"]
+isOneToOne: false
+      referencedRelation: "transactions"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+                },"transaction_tag_links": {
+                  Row: {
+                    "tag_id": string,"transaction_id": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "tag_id": string,"transaction_id": string,"user_id": string
+                  }
+                  Update: {
+                    "tag_id"?: string,"transaction_id"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "transaction_tag_links_user_id_tag_id_fkey"
+      columns: ["user_id","tag_id"]
+isOneToOne: false
+      referencedRelation: "money_tags"
+      referencedColumns: ["user_id","id"]
+    },{
+      foreignKeyName: "transaction_tag_links_user_id_transaction_id_fkey"
+      columns: ["user_id","transaction_id"]
+isOneToOne: false
+      referencedRelation: "transactions"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+                },"transactions": {
+                  Row: {
+                    "allocation_id": string | null,"amount_cents": number,"captured_time_zone": string,"card_id": string | null,"category_id": string | null,"created_at": string,"currency": string,"id": string,"local_date": string,"merchant": string,"note": string | null,"payment_label": string,"payment_method_id": string | null,"position": number,"subcategory_id": string | null,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "allocation_id"?: string | null,"amount_cents": number,"captured_time_zone": string,"card_id"?: string | null,"category_id"?: string | null,"created_at"?: string,"currency"?: string,"id": string,"local_date": string,"merchant": string,"note"?: string | null,"payment_label": string,"payment_method_id"?: string | null,"position"?: number,"subcategory_id"?: string | null,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "allocation_id"?: string | null,"amount_cents"?: number,"captured_time_zone"?: string,"card_id"?: string | null,"category_id"?: string | null,"created_at"?: string,"currency"?: string,"id"?: string,"local_date"?: string,"merchant"?: string,"note"?: string | null,"payment_label"?: string,"payment_method_id"?: string | null,"position"?: number,"subcategory_id"?: string | null,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "transactions_user_id_allocation_id_fkey"
+      columns: ["user_id","allocation_id"]
+isOneToOne: false
+      referencedRelation: "allocations"
+      referencedColumns: ["user_id","id"]
+    },{
+      foreignKeyName: "transactions_user_id_card_id_fkey"
+      columns: ["user_id","card_id"]
+isOneToOne: false
+      referencedRelation: "cards"
+      referencedColumns: ["user_id","id"]
+    },{
+      foreignKeyName: "transactions_user_id_category_id_fkey"
+      columns: ["user_id","category_id"]
+isOneToOne: false
+      referencedRelation: "money_categories"
+      referencedColumns: ["user_id","id"]
+    },{
+      foreignKeyName: "transactions_user_id_category_id_subcategory_id_fkey"
+      columns: ["user_id","category_id","subcategory_id"]
+isOneToOne: false
+      referencedRelation: "money_subcategories"
+      referencedColumns: ["user_id","category_id","id"]
+    },{
+      foreignKeyName: "transactions_user_id_payment_method_id_fkey"
+      columns: ["user_id","payment_method_id"]
+isOneToOne: false
+      referencedRelation: "payment_methods"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
                 },"wellness_commands": {
                   Row: {
                     "id": string,"request_hash": string,"revision": number,"user_id": string
@@ -793,10 +1393,16 @@ isOneToOne: false
 "read_daily_days":
 { Args: { "p_after"?: string,"p_end": string,"p_limit"?: number,"p_start": string }; Returns: Json
                            },
+"read_money":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
 "read_notes":
 { Args: Record<PropertyKey, never>; Returns: Json
                            },
 "read_planner":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
+"read_rituals":
 { Args: Record<PropertyKey, never>; Returns: Json
                            },
 "read_wellness":
@@ -804,6 +1410,9 @@ isOneToOne: false
                            },
 "rename_priority_task":
 { Args: { "p_command_id": string,"p_expected_planner_revision": number,"p_id": string,"p_priority_revision": number,"p_title": string }; Returns: number
+                           },
+"ritual_lifecycle":
+{ Args: { "p_command_id": string,"p_confirm_delete"?: boolean,"p_expected_revision": number,"p_operation": string,"p_ritual_id": string }; Returns: number
                            },
 "save_account_preferences":
 { Args: { "p_command_id": string,"p_expected_revision": number,"p_patch": Json }; Returns: number
@@ -856,6 +1465,9 @@ isOneToOne: false
         isOneToOne: true
         isSetofReturn: false
       } },
+"save_money":
+{ Args: { "p_command_id": string,"p_expected_revision": number,"p_state": Json }; Returns: number
+                           },
 "save_mood_checkin":
 { Args: { "p_date": string,"p_emotion_ids": (string)[],"p_expected_revision"?: number,"p_influence_ids": (string)[],"p_period": string,"p_reflection": string }; Returns: {
               "captured_time_zone": string,
@@ -875,6 +1487,9 @@ isOneToOne: false
         isSetofReturn: false
       } },
 "save_notes":
+{ Args: { "p_command_id": string,"p_expected_revision": number,"p_state": Json }; Returns: number
+                           },
+"save_rituals":
 { Args: { "p_command_id": string,"p_expected_revision": number,"p_state": Json }; Returns: number
                            },
 "save_wellness":

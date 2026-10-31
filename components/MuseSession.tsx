@@ -14,7 +14,7 @@ export function MuseSessionProvider({ initialDate, initialRecords = {}, children
     const value=typeof next==='function'?next(date):next;
     if(!validDate(value))return;
     setDateState(value);
-    if(typeof window!=='undefined'&&['/','/mood','/insights'].includes(window.location.pathname)){
+    if(typeof window!=='undefined'&&['/','/mood','/insights','/rituals','/money'].includes(window.location.pathname)){
       const url=new URL(window.location.href);url.searchParams.set('date',value);window.history.replaceState(null,'',url);
     }
   };

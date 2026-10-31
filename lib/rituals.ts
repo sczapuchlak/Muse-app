@@ -10,39 +10,45 @@ export type RitualRecurrence = { kind: "daily" } | { kind: "weekly"; weekday: nu
 export type RitualType = "checkbox" | "numeric" | "duration" | "weekly-target";
 export type RitualDefinition = {
   id: string; name: string; groupId: string; type: RitualType; goal: number; unit: string;
+  status?:"active"|"paused"|"archived"; inactivePeriods?:{start:string;end:string|null;kind:"paused"|"archived"}[];
   recurrence: RitualRecurrence; startDate: string; createdAt: string;
 };
 export type RitualEntry = { id: string; ritualId: string; date: string; value: number; outcome?: "missed"; updatedAt: string };
 export type RitualState = { groups: RitualGroupDefinition[]; rituals: RitualDefinition[]; entries: RitualEntry[]; celebratedMilestones: string[] };
 export type RitualAction =
+  | {type:"ritual/lifecycle";id:string;operation:"pause"|"resume"|"archive"|"restore"|"delete";today:string}
   | { type: "ritual/save"; ritual: RitualDefinition }
   | { type: "group/save"; group: RitualGroupDefinition }
   | { type: "group/toggle"; id: string }
   | { type: "group/delete"; id: string }
+  | { type: "entry/cycle"; ritualId:string;date:string;today:string;now:string }
   | { type: "entry/set"; ritualId: string; date: string; value: number | null; today: string; now: string };
 export const ritualTypeLabels: Record<RitualType, string> = { checkbox: "Checkbox", numeric: "Quantity", duration: "Duration", "weekly-target": "Weekly target" };
 export const weekdayOptions = [{ day: 1, label: "Mon" }, { day: 2, label: "Tue" }, { day: 3, label: "Wed" }, { day: 4, label: "Thu" }, { day: 5, label: "Fri" }, { day: 6, label: "Sat" }, { day: 0, label: "Sun" }];
-export function isScheduled(ritual: RitualDefinition, date: string) {
-  if (date < ritual.startDate) return false;
+function matchesSchedule(ritual:RitualDefinition,date:string){
+  if(date<ritual.startDate)return false;
   const weekday = new Date(`${date}T12:00:00Z`).getUTCDay();
   return ritual.recurrence.kind === "daily" || (ritual.recurrence.kind === "weekly" ? ritual.recurrence.weekday === weekday : ritual.recurrence.weekdays.includes(weekday));
 }
+export function isScheduled(ritual:RitualDefinition,date:string){return matchesSchedule(ritual,date)&&!ritual.inactivePeriods?.some(period=>period.start<=date&&(!period.end||date<period.end));}
 export function recurrenceLabel(recurrence: RitualRecurrence) {
   if (recurrence.kind === "daily") return "Every day";
   const days = recurrence.kind === "weekly" ? [recurrence.weekday] : recurrence.weekdays;
   return weekdayOptions.filter((option) => days.includes(option.day)).map((option) => option.label).join(" · ");
 }
 export function entryFor(state: RitualState, id: string, date: string) { return state.entries.find((entry) => entry.ritualId === id && entry.date === date); }
+/** Previously recorded measurements remain meaningful even on the day pausing began. */
+export function ritualOpportunity(state:RitualState,ritual:RitualDefinition,date:string){return matchesSchedule(ritual,date)&&(isScheduled(ritual,date)||!!entryFor(state,ritual.id,date));}
 export function weeklyValue(state: RitualState, ritual: RitualDefinition, date: string) {
   const week = weekDates(date);
-  return state.entries.filter((entry) => entry.ritualId === ritual.id && week.includes(entry.date) && isScheduled(ritual, entry.date)).reduce((sum, entry) => sum + entry.value, 0);
+  return state.entries.filter((entry) => entry.ritualId === ritual.id && week.includes(entry.date)&&matchesSchedule(ritual,entry.date)).reduce((sum, entry) => sum + entry.value, 0);
 }
 export function ritualCell(state: RitualState, ritual: RitualDefinition, date: string, today: string) {
   const entry = entryFor(state, ritual.id, date);
   const value = entry?.value ?? null;
   const recorded = entry !== undefined;
   let status: "unscheduled" | "complete" | "partial" | "missed" | "unknown" | "upcoming" | "open" | "available" | "logged";
-  if (!isScheduled(ritual, date)) status = "unscheduled";
+  if (!ritualOpportunity(state,ritual,date)) status = "unscheduled";
   else if (today && date > today) status = "upcoming";
   else if (recorded && (entry.outcome === "missed" || value === 0)) status = "missed";
   else if (ritual.type === "weekly-target") status = value !== null && value > 0 ? "logged" : "available";
@@ -62,18 +68,19 @@ export function ritualStreak(state: RitualState, ritual: RitualDefinition, today
     let monday = weekDates(today)[0];
     if (weeklyValue(state, ritual, monday) < ritual.goal) monday = shiftDate(monday, -7);
     while (shiftDate(monday, 6) >= ritual.startDate) {
+      if(!weekDates(monday).some(date=>ritualOpportunity(state,ritual,date))){monday=shiftDate(monday,-7);continue;}
       if (weeklyValue(state, ritual, monday) < ritual.goal) break;
       count++; start = monday; monday = shiftDate(monday, -7);
     }
   } else {
     let day = today;
-    if (isScheduled(ritual, day)) {
+    if (ritualOpportunity(state,ritual,day)) {
       const current = ritualCell(state, ritual, day, today).status;
       if (current === "missed") return { count, start, unit };
       if (current !== "complete") day = shiftDate(day, -1);
     }
     while (day >= ritual.startDate) {
-      if (isScheduled(ritual, day)) {
+      if (ritualOpportunity(state,ritual,day)) {
         if (ritualCell(state, ritual, day, today).status !== "complete") break;
         count++; start = day;
       }
@@ -84,11 +91,11 @@ export function ritualStreak(state: RitualState, ritual: RitualDefinition, today
 }
 export function weekSummary(state: RitualState, week: string[], today: string) {
   const daily = state.rituals.filter((ritual) => ritual.type !== "weekly-target");
-  const elapsed = daily.flatMap((ritual) => week.filter((date) => today && date <= today && isScheduled(ritual, date)).map((date) => ({ ritual, date })));
+  const elapsed = daily.flatMap((ritual) => week.filter((date) => today && date <= today && ritualOpportunity(state,ritual,date)).map((date) => ({ ritual, date })));
   const countStatus = (status: ReturnType<typeof ritualCell>["status"]) => elapsed.filter(({ ritual, date }) => ritualCell(state, ritual, date, today).status === status).length;
   const completed = elapsed.filter(({ ritual, date }) => ritualCell(state, ritual, date, today).status === "complete").length;
   const logged = state.entries.filter((entry) => week.includes(entry.date) && today && entry.date <= today).length;
-  const targets = state.rituals.filter((ritual) => ritual.type === "weekly-target" && week.some((date) => isScheduled(ritual, date)));
+  const targets = state.rituals.filter((ritual) => ritual.type === "weekly-target" && week.some((date) => ritualOpportunity(state,ritual,date)));
   return { completed, partial: countStatus("partial"), missed: countStatus("missed"), unknown: countStatus("unknown"), scheduled: elapsed.length, logged, weeklyMet: targets.filter((ritual) => weeklyValue(state, ritual, week[0]) >= ritual.goal).length, weeklyTargets: targets.length };
 }
 export function ritualFeedback(before: RitualState, after: RitualState, ritual: RitualDefinition, date: string, today: string): { kind: "orbital" | "constellation"; key?: string; keys?: string[] } | null {
@@ -110,6 +117,16 @@ function validRecurrence(recurrence: RitualRecurrence) {
 }
 export function ritualReducer(state: RitualState, action: RitualAction): RitualState {
   switch (action.type) {
+    case 'ritual/lifecycle': {
+      const ritual=state.rituals.find(r=>r.id===action.id);if(!ritual||!validDate(action.today))return state;
+      if(action.operation==='delete')return {...state,rituals:state.rituals.filter(r=>r.id!==action.id),entries:state.entries.filter(e=>e.ritualId!==action.id)};
+      const status=action.operation==='pause'?'paused':action.operation==='archive'?'archived':'active';
+      if((ritual.status??'active')===status)return state;
+      const periods=(ritual.inactivePeriods??[]).filter(p=>p.end||p.start!==action.today).map(p=>p.end?p:{...p,end:action.today});
+      if(status!=='active')periods.push({start:action.today,end:null,kind:status});
+      return {...state,rituals:state.rituals.map(r=>r.id===action.id?{...r,status,inactivePeriods:periods}:r)};
+    }
+    case "entry/cycle": {const current=entryFor(state,action.ritualId,action.date);return ritualReducer(state,{...action,type:"entry/set",value:current?.value===1?0:current?.value===0?null:1});}
     case "ritual/save": {
       const ritual = action.ritual;
       if (!ritual.name.trim() || !validDate(ritual.startDate) || !Number.isFinite(ritual.goal) || ritual.goal <= 0 || !validRecurrence(ritual.recurrence) || !state.groups.some((group) => group.id === ritual.groupId)) return state;
@@ -117,7 +134,8 @@ export function ritualReducer(state: RitualState, action: RitualAction): RitualS
       const previous = state.rituals.find((entry) => entry.id === ritual.id);
       // Protect the meaning of history until effective-dated schedule/goal changes exist.
       const locked = previous && state.entries.some((entry) => entry.ritualId === ritual.id);
-      const next = locked ? { ...previous, name: ritual.name.trim(), groupId: ritual.groupId } : { ...ritual, name: ritual.name.trim(), goal: ritual.type === "checkbox" ? 1 : ritual.goal };
+      const lifecycle=previous?{...(previous.status?{status:previous.status}:{}),...(previous.inactivePeriods?{inactivePeriods:previous.inactivePeriods}:{})}:{};
+      const next = locked ? { ...previous, name: ritual.name.trim(), groupId: ritual.groupId } : { ...ritual,...lifecycle, name: ritual.name.trim(), goal: ritual.type === "checkbox" ? 1 : ritual.goal };
       return { ...state, rituals: previous ? state.rituals.map((entry) => entry.id === ritual.id ? next : entry) : [...state.rituals, next] };
     }
     case "group/save": return !action.group.name.trim() || !validAccent(action.group.accent) || (action.group.gradient && typeof action.group.gradient !== "string" && !validGradient(action.group.gradient)) ? state : { ...state, groups: state.groups.some((group) => group.id === action.group.id) ? state.groups.map((group) => group.id === action.group.id ? { ...action.group, name: action.group.name.trim() } : group) : [...state.groups, { ...action.group, name: action.group.name.trim() }] };
@@ -125,7 +143,7 @@ export function ritualReducer(state: RitualState, action: RitualAction): RitualS
     case "group/delete": return state.groups.length <= 1 || state.rituals.some((ritual) => ritual.groupId === action.id) ? state : { ...state, groups: state.groups.filter((group) => group.id !== action.id) };
     case "entry/set": {
       const ritual = state.rituals.find((entry) => entry.id === action.ritualId);
-      if (!ritual || !validDate(action.date) || !validDate(action.today) || action.date > action.today || !isScheduled(ritual, action.date)) return state;
+      if (!ritual || !validDate(action.date) || !validDate(action.today) || action.date > action.today || !ritualOpportunity(state,ritual,action.date)) return state;
       if (action.value !== null && (!Number.isFinite(action.value) || action.value < 0 || (ritual.type === "checkbox" && ![0, 1].includes(action.value)) || (ritual.type === "weekly-target" && !Number.isInteger(action.value)))) return state;
       const rest = state.entries.filter((entry) => entry.ritualId !== ritual.id || entry.date !== action.date);
       const next = { ...state, entries: action.value === null ? rest : [...rest, { id: `${ritual.id}/${action.date}`, ritualId: ritual.id, date: action.date, value: action.value, ...(action.value === 0 ? { outcome: "missed" as const } : {}), updatedAt: action.now }] };
@@ -140,7 +158,7 @@ export function ritualReducer(state: RitualState, action: RitualAction): RitualS
  * This prototype has no approved fractional-adherence model: Partial is not full credit.
  */
 export function ritualDayProgress(state:RitualState,date:string,today:string) {
-  const scheduled=state.rituals.filter((ritual)=>ritual.type!=="weekly-target"&&isScheduled(ritual,date));
+  const scheduled=state.rituals.filter((ritual)=>ritual.type!=="weekly-target"&&ritualOpportunity(state,ritual,date));
   const completed=scheduled.filter((ritual)=>ritualCell(state,ritual,date,today).status==="complete").length;
   const future=!today||date>today;
   return {total:scheduled.length,completed,fraction:future||!scheduled.length?null:completed/scheduled.length,perfect:!future&&scheduled.length>0&&completed===scheduled.length};

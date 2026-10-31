@@ -1,0 +1,16 @@
+begin;
+select plan(13);
+select has_table('public','rituals','definitions persist');
+select has_table('public','ritual_groups','groups persist');
+select has_table('public','ritual_entries','dated observations persist');
+select has_function('public','read_rituals',array[]::text[],'canonical reads');
+select has_function('public','save_rituals',array['bigint','uuid','jsonb'],'revision checked saves');
+select ok(not has_function_privilege('anon','public.read_rituals()','execute'),'anonymous read denied');
+select ok(not has_function_privilege('anon','public.save_rituals(bigint,uuid,jsonb)','execute'),'anonymous write denied');
+select ok(not has_table_privilege('authenticated','public.rituals','insert'),'direct definition insert denied');
+select ok(not has_table_privilege('authenticated','public.ritual_entries','update'),'direct entry mutation denied');
+select ok(not has_table_privilege('authenticated','public.ritual_entries','delete'),'direct entry deletion denied');
+select ok((select bool_and(relrowsecurity) from pg_class where oid in ('public.rituals'::regclass,'public.ritual_entries'::regclass,'public.ritual_groups'::regclass)),'all owners enforce RLS');
+select is((select count(*) from pg_constraint where conrelid='public.ritual_entries'::regclass and contype='p'),1::bigint,'one outcome per owner/habit/date');
+select ok(not exists(select 1 from information_schema.columns where table_schema='public' and table_name='ritual_entries' and column_name in ('streak','complete','failed')),'streak and completion derive from measurements, not competing flags');
+select * from finish();rollback;

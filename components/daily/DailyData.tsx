@@ -34,4 +34,4 @@ export function DailySaveStatus({date}:{date?:string}){const [selected]=useMuseD
 }
 
 /** Date URLs retain intentional historical selection across refresh; no travel-zone rewriting. */
-export function DailyDateSync(){const query=useSearchParams(),queryDate=query?.get('date'),path=usePathname(),[date,setDate]=useMuseDate(''),setter=useRef(setDate);useEffect(()=>{setter.current=setDate;});const current=useRef(date);useEffect(()=>{current.current=date;});useEffect(()=>{if(['/','/mood','/insights'].includes(path??''))setter.current(validDate(queryDate)?queryDate:current.current);},[queryDate,path]);return null;}
+export function DailyDateSync(){const query=useSearchParams(),queryDate=query?.get('date'),path=usePathname(),[date,setDate]=useMuseDate(''),setter=useRef(setDate);useEffect(()=>{setter.current=setDate;});const current=useRef(date);useEffect(()=>{current.current=date;});useEffect(()=>{if(['/','/mood','/insights','/rituals','/money'].includes(path??''))setter.current(validDate(queryDate)?queryDate:current.current);},[queryDate,path]);return null;}

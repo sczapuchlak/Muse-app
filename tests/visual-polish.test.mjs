@@ -5,7 +5,9 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { load,root } from './helpers.mjs';
-const {moneySample}=load('lib/money-sample'),money=load('lib/money'),{MoneyProvider}=load('components/money/MoneyStore');
+const {moneySample}=load('lib/money-sample'),money=load('lib/money'),{MoneyContext}=load('components/money/MoneyStore');
+
+function MoneyProvider({initialState=moneySample,children}){const view={state:initialState,loaded:true,pending:false,saving:false,error:'',conflict:false};return React.createElement(MoneyContext.Provider,{value:{getSnapshot:()=>view,subscribe:()=>()=>{},dispatch:()=>{}}},children);}
 
 test('Money Overview authors independent column stacks and places recent spending after both',()=>{
  const {MoneyOverview}=load('components/money/MoneyViews'),html=renderToStaticMarkup(React.createElement(MoneyProvider,null,React.createElement(MoneyOverview,{paycheck:moneySample.paychecks[0],period:money.paycheckPeriod(moneySample.paychecks[0]),today:'2026-10-30',onOpen(){},onSpending(){}})));

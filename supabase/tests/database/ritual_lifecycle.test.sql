@@ -1,0 +1,13 @@
+begin;
+select plan(10);
+select has_column('public','rituals','lifecycle_status','persistent lifecycle state');
+select has_table('public','ritual_inactive_periods','dated inactivity preserves history');
+select has_table('public','ritual_tombstones','minimal deletion identity prevents resurrection');
+select has_function('public','ritual_lifecycle',array['bigint','uuid','uuid','text','boolean'],'lifecycle command shares owner revision');
+select ok(not has_function_privilege('anon','public.ritual_lifecycle(bigint,uuid,uuid,text,boolean)','execute'),'anonymous transitions denied');
+select ok(not has_table_privilege('authenticated','public.ritual_inactive_periods','insert'),'direct period mutation denied');
+select ok(not has_table_privilege('authenticated','public.ritual_tombstones','delete'),'clients cannot erase resurrection protection');
+select ok(not has_table_privilege('authenticated','public.rituals','delete'),'permanent deletion requires owner command');
+select ok((select bool_and(relrowsecurity) from pg_class where oid in ('public.ritual_inactive_periods'::regclass,'public.ritual_tombstones'::regclass)),'lifecycle ownership RLS enabled');
+select ok(exists(select 1 from pg_trigger where tgrelid='public.rituals'::regclass and tgname='ritual_no_resurrection'),'all insert paths guard tombstones');
+select * from finish();rollback;

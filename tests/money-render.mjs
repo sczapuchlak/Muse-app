@@ -1,0 +1,2 @@
+import React from 'react';import {renderToStaticMarkup} from 'react-dom/server';import {load} from './helpers.mjs';
+export function renderWithMoney(element){const {MoneyContext}=load('components/money/MoneyStore'),{moneySample}=load('lib/money-sample');const state=element?.props?.initialState??moneySample,view={state,loaded:true,pending:false,saving:false,error:'',conflict:false};const store={getSnapshot:()=>view,subscribe:()=>()=>{},dispatch:()=>{},whenSaved:()=>{}};return renderToStaticMarkup(React.createElement(MoneyContext.Provider,{value:store},element));}

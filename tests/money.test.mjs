@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import React from 'react';
-import { renderToStaticMarkup } from 'react-dom/server';
+import {renderWithMoney as renderToStaticMarkup} from './money-render.mjs';
 import { load } from './helpers.mjs';
 const m=load('lib/money'),{moneySample}=load('lib/money-sample');
 const fresh=()=>structuredClone(moneySample);
@@ -95,8 +95,8 @@ test('unknown card limit/APR remain unknown and upcoming obligations use actual 
 });
 
 test('Money sections render one shared model, compact ledger, vivid charts and Muse controls',()=>{
- const {MoneyProvider}=load('components/money/MoneyStore'),views=load('components/money/MoneyViews'),onOpen=()=>{};
- const render=(component,props)=>renderToStaticMarkup(React.createElement(MoneyProvider,null,React.createElement(component,{onOpen,...props})));
+ const {MoneyContext}=load('components/money/MoneyStore'),views=load('components/money/MoneyViews'),onOpen=()=>{};
+ const render=(component,props)=>renderToStaticMarkup(React.createElement(MoneyContext.Provider,{value:moneyFixture(moneySample)},React.createElement(component,{onOpen,...props})));
  const overview=render(views.MoneyOverview,{paycheck:moneySample.paychecks[0],period,today:'2026-10-30',onSpending(){}});
  assert.ok(overview.includes('Current paycheck'));assert.ok(overview.includes('muse-money-ribbon'));assert.ok(overview.includes('$130.00'));assert.ok(overview.includes('Coming up'));
  const paycheck=render(views.MoneyPaychecks,{paycheck:moneySample.paychecks[0],onSelect(){}});assert.ok(paycheck.includes('Use template'));assert.ok(paycheck.includes('Save changes to template'));assert.ok(paycheck.includes('$218.00'));
@@ -113,3 +113,5 @@ test('Money refuses unsafe card-balance arithmetic and preserves existing alloca
  const allocation=state.allocations.find((item)=>item.id==='a-amex');assert.equal(save(state,'allocations',{...allocation,cardId:'visa'}),state);
  assert.equal(save(state,'allocations',{...state.allocations.find((item)=>item.id==='a-food'),cardId:'amex'}),state);
 });
+
+function moneyFixture(state){const view={state,loaded:true,pending:false,error:''};return {subscribe:()=>()=>{},getSnapshot:()=>view,dispatch:()=>{},whenSaved:()=>{}};}

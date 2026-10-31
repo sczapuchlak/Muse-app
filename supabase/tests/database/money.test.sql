@@ -1,0 +1,16 @@
+begin;select plan(14);
+select has_table('public','transactions','actual spending persists');
+select has_table('public','cards','explicit card basis persists');
+select has_table('public','card_payments','payments separate from expenses');
+select has_table('public','recurring_versions','expectation edits retain versions');
+select has_table('public','money_deleted_ids','no resurrection');
+select has_function('public','read_money',array[]::text[],'owner projection');
+select has_function('public','save_money',array['bigint','uuid','jsonb'],'atomic owner revision save');
+select ok(not has_function_privilege('anon','public.read_money()','execute'),'anonymous read denied');
+select ok(not has_function_privilege('anon','public.save_money(bigint,uuid,jsonb)','execute'),'anonymous write denied');
+select ok(not has_table_privilege('authenticated','public.cards','update'),'balances cannot bypass command');
+select ok(not has_table_privilege('authenticated','public.transactions','insert'),'financial writes protected');
+select ok(not has_table_privilege('authenticated','public.money_deleted_ids','delete'),'deletion markers protected');
+select ok((select bool_and(relrowsecurity) from pg_class where oid in ('public.transactions'::regclass,'public.cards'::regclass,'public.card_payments'::regclass,'public.paychecks'::regclass)),'financial RLS enabled');
+select has_column('public','cards','opening_as_of','dated user-established opening basis');
+select * from finish();rollback;
