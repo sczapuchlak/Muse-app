@@ -18,7 +18,8 @@
     "db:env": "node scripts/supabase-local.mjs env",
     "test:db:api": "node scripts/test-local-supabase.mjs",
     "auth:invite": "node scripts/invite-local-user.mjs",
-    "test:auth": "node scripts/test-local-auth.mjs"
+    "test:auth": "node scripts/test-local-auth.mjs",
+    "test:daily": "node scripts/test-local-daily.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",

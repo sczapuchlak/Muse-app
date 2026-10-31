@@ -5,7 +5,9 @@ import { usePathname } from "next/navigation";
 import { useRef, useState, type ReactNode } from "react";
 import { desktopGroups, isActiveDestination, mobileMoreIds, mobilePrimaryIds, navigation, navItems, type NavItem } from "@/lib/navigation";
 import { dailySessionSeed } from "@/lib/daily-session-seed";
-import { dailyEditSample } from "@/lib/daily-edit-data";
+import {todayInTimeZone} from "@/lib/dates";
+import {DailyDataProvider,DailyDateSync} from "./daily/DailyData";
+import type {DailyProfile} from "@/lib/data/daily-store";
 import { MuseAtmosphere } from "./MuseAtmosphere";
 import { MuseIcon } from "./MuseIcon";
 import { MuseStar } from "./MuseStar";
@@ -28,14 +30,14 @@ function NavDestination({ item, path, compact = false, onNavigate }: { item: Nav
   </Link>;
 }
 
-export function AppShell({ children }: { children: ReactNode }) {
+export function AppShell({ children, profile }: { children: ReactNode; profile:DailyProfile }) {
   const path = usePathname() ?? "/";
   const [collapsed, setCollapsed] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
   const moreRef = useRef<HTMLButtonElement>(null);
   const moreActive = navItems(mobileMoreIds).some((item) => isActiveDestination(path, item.href));
   return (
-    <MuseSessionProvider initialDate={dailyEditSample.date.iso} initialRecords={dailySessionSeed}>
+    <MuseSessionProvider initialDate={todayInTimeZone(profile.timeZone)} initialRecords={Object.fromEntries(Object.entries(dailySessionSeed).filter(([key])=>!key.endsWith("/intention")))}><DailyDataProvider profile={profile}><DailyDateSync/>
       <PlannerProvider><NourishProvider><MoneyProvider><RitualProvider><div className="muse-app-shell" data-rail={collapsed ? "collapsed" : "expanded"} data-module={path.split("/")[1]||"daily"}>
         <MuseMagicBridge/><MuseAtmosphere/>
         <a className="muse-skip-link" href="#muse-main-content">Skip to content</a>
@@ -73,6 +75,6 @@ export function AppShell({ children }: { children: ReactNode }) {
           <div className="muse-more-destinations">{navItems(mobileMoreIds).map((item) => <NavDestination key={item.id} item={item} path={path} onNavigate={() => setMoreOpen(false)} />)}<LogoutButton/></div>
         </GlassPopover>
       </div></RitualProvider></MoneyProvider></NourishProvider></PlannerProvider>
-    </MuseSessionProvider>
+    </DailyDataProvider></MuseSessionProvider>
   );
 }

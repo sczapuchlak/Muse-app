@@ -6,7 +6,7 @@ import { pulseDescription, pulseSignals } from "@/lib/pulse";
 import { MuseCard } from "./MuseCard";
 import { CardHeading } from "./CardHeading";
 import { MuseStar } from "./MuseStar";
-import { useMood } from "./mood/useMood";
+import {useDailyDay,DailyCapture} from "./daily/DailyData";
 import "./DayPulseCard.css";
 
 type SignalProps = { signal: typeof pulseSignals[number]; value: number | null; onChange: (value: number | null) => void };
@@ -41,12 +41,14 @@ export function PulseControl({ signal, value, onChange }: SignalProps) {
 }
 
 export function DayPulseCard({ date }: { date: string }) {
-  const {record:checkIn,update}=useMood(date);
+  const {day,patch}=useDailyDay(date);
+  const checkIn={energy:day.record?.energy??null,stress:day.record?.stress??null,overallDay:day.record?.overall_day??null};
+  const update=(values:Partial<typeof checkIn>)=>patch({...("energy" in values?{energy:values.energy}:{}),...("stress" in values?{stress:values.stress}:{}),...("overallDay" in values?{overall_day:values.overallDay}:{})});
   const hasValues = pulseSignals.some((signal) => checkIn[signal.id] !== null);
   function change(signal: PulseSignal, value: number|null) { update({[signal]:value}); }
   return <MuseCard id="day-pulse" className="day-pulse-card">
-    <CardHeading id="day-pulse" title="Day Pulse" icon="insights"><button type="button" className="text-button" disabled={!hasValues} aria-label="Reset all Day Pulse values" onClick={() => update({ energy: null, stress: null, overallDay: null })}>Reset</button></CardHeading>
+    <DailyCapture date={date}><CardHeading id="day-pulse" title="Day Pulse" icon="insights"><button type="button" className="text-button" disabled={!hasValues} aria-label="Reset all Day Pulse values" onClick={() => update({ energy: null, stress: null, overallDay: null })}>Reset</button></CardHeading>
     <p className="muse-pulse-copy">{pulseDescription}</p>
     <div className="muse-pulse-signals">{pulseSignals.map((signal) => <PulseControl key={signal.id} signal={signal} value={checkIn[signal.id]} onChange={(value) => change(signal.id, value)} />)}</div>
-  </MuseCard>;
+  </DailyCapture></MuseCard>;
 }

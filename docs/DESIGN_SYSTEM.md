@@ -332,3 +332,8 @@ Icon/emoji pickers adapt to their parent, never expand the modal to fit themselv
 ## Live authentication preserves the standalone Muse identity
 
 The functional `/login` and non-sending `/login-preview` share `MuseLoginFrame`, the existing atmosphere/material tokens and original login CSS. Preserve the editorial brand copy, official stars, split desktop composition and mobile stack. Sending, cooldown, validation, expired-link, unavailable and signed-out messages belong inside the existing form feedback area; no new auth dashboard or separate visual system. Private app navigation appears only after verification. Sign out reuses sidebar and mobile More navigation styles. See [AUTH_LOCAL](AUTH_LOCAL.md) for implementation and validation.
+
+
+## Persistence feedback without a visual redesign
+
+Daily capture keeps the existing cards, controls, typography and materials. A compact shared status line distinguishes initial loading, refreshing, saving, confirmed saved data and failures. Disable revision-dependent capture until it loads; failed/conflicting drafts remain available with retry or explicit discard/load-latest and a readable draft review. Do not present a transient optimistic state as a confirmed durable save. Historical views label one daily Pulse independently of Morning/Evening sessions. Creation/removal/order controls for standalone priorities use existing compact buttons; decorative styling and other module layouts remain unchanged.

@@ -14,25 +14,26 @@ import { dailyEditSample } from "@/lib/daily-edit-data";
 import { sampleMovementTypes } from "@/lib/sample-taxonomies";
 import { emotionCatalog } from "@/lib/emotions";
 import { mockDay } from "@/lib/dates";
-import { mockProfile } from "@/lib/mock-profile";
+import {useDailyData,DailySaveStatus,DailyCapture} from "./daily/DailyData";
 
 export function DailyEdit() {
   const [selectedDate, setSelectedDate] = useMuseDate(dailyEditSample.date.iso);
   const day = mockDay(selectedDate);
+  const {profile}=useDailyData();
   return (
     <main className="muse-page">
-      <DailyEditHeader date={day.date} greeting={day.greeting} profile={mockProfile} onDateChange={setSelectedDate} />
-      <h1 className="muse-daily-section-title" id="daily-edit">The Daily Edit</h1>
+      <DailyEditHeader date={day.date} greeting={day.greeting} profile={profile} onDateChange={setSelectedDate} />
+      <DailySaveStatus date={selectedDate}/><h1 className="muse-daily-section-title" id="daily-edit">The Daily Edit</h1>
       <div className="daily-grid" key={selectedDate}>
         <CosmicForecast compact />
-        <PrioritiesCard initialPriorities={day.priorities} initialIntention={day.intention} />
+        <PrioritiesCard />
         <MovementCard initialTypes={sampleMovementTypes} initialDay={day.movement} />
         <WaterCard initialDay={{ date: day.water.date, total: day.water.total }} settings={day.water.settings} />
         <ScheduleCard selectedDate={selectedDate} />
         <MealsCard selectedDate={selectedDate} />
-        <MoodCheckInLayout date={selectedDate} emotions={emotionCatalog} />
+        <DailyCapture date={selectedDate}><MoodCheckInLayout date={selectedDate} emotions={emotionCatalog} /></DailyCapture>
       </div>
-      <footer className="muse-footer">Sample data · Daily entries reset on refresh</footer>
+      <footer className="muse-footer">Intention, priorities, Day in Three, Day Pulse and feelings save to your account. Movement, water, Planner and meals remain prototype data.</footer>
     </main>
   );
 }

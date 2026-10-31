@@ -1,6 +1,6 @@
 # Muse database and synchronization blueprint
 
-**APPROVED ARCHITECTURE; LOCAL FOUNDATION AND AUTHENTICATION IMPLEMENTED, DOMAIN CUTOVER PENDING.** Companion to the evidence-based [architecture audit](ARCHITECTURE_AUDIT.md). The subsequent approved Phase 1 brief authorizes the local foundation described in [PHASE1_LOCAL_SETUP](PHASE1_LOCAL_SETUP.md). Its two migrations, local Auth configuration, RLS tests and typed clients exist. [AUTH_LOCAL](AUTH_LOCAL.md) records the implemented login/callback, Proxy refresh, private layout and logout stage. Hosted deployment and domain persistence cutover remain unimplemented; later-module schema remains proposed. No production resources are authorized.
+**APPROVED ARCHITECTURE; LOCAL FOUNDATION, AUTHENTICATION AND DAILY CUTOVER IMPLEMENTED; LATER DOMAINS PENDING.** Companion to the evidence-based [architecture audit](ARCHITECTURE_AUDIT.md). The subsequent approved Phase 1 brief authorizes the local foundation described in [PHASE1_LOCAL_SETUP](PHASE1_LOCAL_SETUP.md). Its two migrations, local Auth configuration, RLS tests and typed clients exist. [AUTH_LOCAL](AUTH_LOCAL.md) records the implemented login/callback, Proxy refresh, private layout and logout stage. The approved daily UI cutover is now implemented; see [PHASE1_DAILY_PERSISTENCE](PHASE1_DAILY_PERSISTENCE.md). Hosted deployment and later domain persistence remain unimplemented; later-module schema remains proposed. No production resources are authorized.
 
 ## Ownership and daily identity
 

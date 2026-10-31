@@ -1,6 +1,6 @@
 # Local authentication — Phase 1
 
-**Implemented and verified locally.** Authentication is connected; domain persistence is not. Existing Daily Edit, Mood, Dayprint and other views still use their fictional prototype state. This stage does not import it, replace the mock profile, or add hosted services, migrations or privacy-management UI.
+**Implemented and verified locally.** Authentication is connected. The subsequent [persistent daily stage](PHASE1_DAILY_PERSISTENCE.md) now connects Daily Edit/Mood/Dayprint; other domains remain prototypes. The original auth stage did not import prototype data or add hosted services or privacy-management UI.
 
 ## Preview and test
 
@@ -33,6 +33,6 @@ With the local app running, `npm run test:auth` provisions a temporary synthetic
 
 Actual isolated Chrome checks also passed: invitation and magic-link navigation by clicking local inbox email links, request/loading/network-error and expired-link feedback, cross-tab logout, protected Back navigation and prototype-store disposal. Login layout was checked at1440/1024/768/390px in representative light/dark/Disco themes; light desktop and dark mobile screenshots were inspected. This does not claim exhaustive testing of every existing module or appearance combination.
 
-## Next stage, intentionally deferred
+## Subsequent daily stage and remaining work
 
-Bind authenticated profile/timezone and canonical daily/session queries to Daily Edit, Mood, Dayprint and relevant Insights together. Remove fictional fallbacks as each domain moves to durable state. User-facing export/account deletion remain required before real personal-data use. Hosted invitation delivery, production email/recovery, deployment configuration and production hardening are separate work. No domain data cutover, new migration or unrelated UI redesign is included here.
+The authenticated profile/timezone and canonical daily/session integration is now implemented; see [PHASE1_DAILY_PERSISTENCE](PHASE1_DAILY_PERSISTENCE.md). Fictional daily fallbacks are removed from the migrated fields. User-facing export/account deletion remain required before real personal-data use. Hosted invitation delivery, production email/recovery, deployment configuration and production hardening are separate work. No domain data cutover, new migration or unrelated UI redesign is included here.

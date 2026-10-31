@@ -48,16 +48,13 @@ export async function saveDailyRecord(client:Client,record:DailyRecord,patch:Dai
 }
 
 /** One query projection for Daily Edit/Mood/Dayprint; no duplicate summary records. */
-export async function readDay(client:Client,date:string) {
-  const record=await readDailyRecord(client,date);
-  if (!record) return {record:null,priorities:[],checkins:[]};
-  const [priorities,checkins]=await Promise.all([
-    client.from("daily_priorities").select("*").eq("daily_record_id",record.id).order("position"),
-    client.from("mood_checkins").select("*,checkin_emotions(emotion_id),checkin_influences(influence_id,position)").eq("daily_record_id",record.id).order("period"),
-  ]);
-  if (priorities.error) throw priorities.error;
-  if (checkins.error) throw checkins.error;
-  return {record,priorities:priorities.data,checkins:checkins.data.sort((a,b)=>a.period===b.period?0:a.period==="morning"?-1:1)};
+export async function readDay(client:Client,date:string):Promise<DayData> {
+  checkDate(date);
+  const {data,error}=await client.from('daily_records').select('*,daily_priorities(*),mood_checkins(*,checkin_emotions(emotion_id),checkin_influences(influence_id,position))').eq('local_date',date).maybeSingle();
+  if(error)throw error;
+  if(!data)return emptyDay();
+  const {daily_priorities,mood_checkins,...record}=data;
+  return {record,priorities:daily_priorities.sort((a,b)=>a.position-b.position),checkins:mood_checkins.sort((a,b)=>a.period===b.period?0:a.period==='morning'?-1:1)};
 }
 export async function saveMoodCheckin(client:Client,input:{date:string;period:"morning"|"evening";reflection:string|null;emotionIds:string[];influenceIds:string[];revision:number|null}) {
   checkDate(input.date);
@@ -71,4 +68,26 @@ export async function saveMoodCheckin(client:Client,input:{date:string;period:"m
 export async function deleteMoodCheckin(client:Client,record:MoodCheckin) {
   const {error}=await client.rpc("delete_mood_checkin",{p_id:record.id,p_expected_revision:record.revision});
   if (error) throw error;
+}
+
+export type DayData = {record:DailyRecord|null;priorities:DailyPriority[];checkins:(MoodCheckin&{checkin_emotions:{emotion_id:string}[];checkin_influences:{influence_id:string;position:number}[]})[]};
+export type PriorityInput = {id:string;text:string;complete:boolean};
+export const emptyDay = ():DayData=>({record:null,priorities:[],checkins:[]});
+export async function savePriorities(client:Client,date:string,items:PriorityInput[],expected:DailyPriority[]) {
+  checkDate(date);
+  if(items.length>3||new Set(items.map(item=>item.id)).size!==items.length||items.some(item=>!item.text.trim()||item.text.trim().length>160||typeof item.complete!=='boolean'))throw new RangeError('Choose up to three priorities, each with at most 160 characters.');
+  const {error}=await client.rpc('save_daily_priorities',{p_date:date,p_items:items,p_expected:expected.map(({id,revision})=>({id,revision}))});
+  if(error)throw error;
+}
+/** Bounded pages within an explicit date range. Reads never create empty days. */
+export async function readDays(client:Client,start:string,end:string) {
+  checkDate(start);checkDate(end);if(end<start)throw new RangeError('Invalid date range.');
+  const result:Record<string,DayData>={};
+  for(let offset=0;;offset+=100){
+    const {data,error}=await client.from('daily_records').select('*,daily_priorities(*),mood_checkins(*,checkin_emotions(emotion_id),checkin_influences(influence_id,position))').gte('local_date',start).lte('local_date',end).order('local_date').range(offset,offset+99);
+    if(error)throw error;
+    for(const {daily_priorities,mood_checkins,...record} of data)result[record.local_date]={record,priorities:daily_priorities.sort((a,b)=>a.position-b.position),checkins:mood_checkins};
+    if(data.length<100)break;
+  }
+  return result;
 }

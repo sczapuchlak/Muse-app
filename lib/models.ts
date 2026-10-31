@@ -20,7 +20,7 @@ export type PlannedTask = {
 export type DayEvent = {
   id: string; kind: "event"; title: string; date: string; dateTime: string; time: string; detail?: string;
 };
-export type ContextTag = { id: string; name: string };
+export type ContextTag = { id: string; name: string; archived?:boolean };
 export type EmotionQuadrant = "red" | "blue" | "green" | "yellow";
 
 export const moodQuadrants: Record<EmotionQuadrant, {

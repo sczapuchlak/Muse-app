@@ -22,12 +22,12 @@ export function updateMood(state:MoodState,date:string,period:MoodPeriod,patch:M
  const rest=state.records.filter((item)=>item.date!==date||item.period!==period);
  return {...state,records:hasMoodData(record)?[...rest,record]:rest};
 }
-export function moodSummary(records:EmotionalCheckIn[],emotions:Emotion[]) {
+export function moodSummary(records:EmotionalCheckIn[],emotions:Emotion[],daily?:{energy:number|null;stress:number|null;overallDay:number|null}[]) {
  records=uniqueMoodRecords(records);
- const values=records.flatMap((record)=>record.overallDay===null?[]:[record.overallDay]);
+ const values=(daily??records).flatMap((record)=>record.overallDay===null?[]:[record.overallDay]);
  const counts=new Map<string,number>(); const families:Record<EmotionQuadrant,number>={red:0,blue:0,green:0,yellow:0};
  for(const record of records)for(const id of record.emotionIds){const emotion=emotions.find((item)=>item.id===id);if(!emotion)continue;counts.set(id,(counts.get(id)??0)+1);families[emotion.quadrant]++;}
- const signals=Object.fromEntries((['energy','stress','overallDay'] as const).map(key=>{const values=records.flatMap(record=>record[key]===null?[]:[record[key]]);return [key,{count:values.length,average:values.length?values.reduce((sum,n)=>sum+n,0)/values.length:null}];})) as Record<PulseSignal,{count:number;average:number|null}>;
+ const signals=Object.fromEntries((['energy','stress','overallDay'] as const).map(key=>{const values=(daily??records).flatMap(record=>record[key]===null?[]:[record[key]]);return [key,{count:values.length,average:values.length?values.reduce((sum,n)=>sum+n,0)/values.length:null}];})) as Record<PulseSignal,{count:number;average:number|null}>;
  return {signals,count:records.length,dayCount:values.length,averageDay:values.length?values.reduce((sum,value)=>sum+value,0)/values.length:null,families,frequent:[...counts.entries()].sort((a,b)=>b[1]-a[1]).slice(0,4)};
 }
 

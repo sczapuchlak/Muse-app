@@ -2,12 +2,22 @@
 
 import { createContext, useContext, useState, type Dispatch, type ReactNode, type SetStateAction } from "react";
 
+import {validDate} from "@/lib/dates";
+
 type Records = Record<string, unknown>;
 type Session = { date: string; setDate: Dispatch<SetStateAction<string>>; records: Records; setRecords: Dispatch<SetStateAction<Records>> };
 const MuseSession = createContext<Session | null>(null);
 
 export function MuseSessionProvider({ initialDate, initialRecords = {}, children }: { initialDate: string; initialRecords?: Records; children: ReactNode }) {
-  const [date, setDate] = useState(initialDate);
+  const [date, setDateState] = useState(initialDate);
+  const setDate:Dispatch<SetStateAction<string>>=(next)=>{
+    const value=typeof next==='function'?next(date):next;
+    if(!validDate(value))return;
+    setDateState(value);
+    if(typeof window!=='undefined'&&['/','/mood','/insights'].includes(window.location.pathname)){
+      const url=new URL(window.location.href);url.searchParams.set('date',value);window.history.replaceState(null,'',url);
+    }
+  };
   const [records, setRecords] = useState<Records>(initialRecords);
   return <MuseSession.Provider value={{ date, setDate, records, setRecords }}>{children}</MuseSession.Provider>;
 }

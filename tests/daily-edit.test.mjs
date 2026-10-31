@@ -1,3 +1,4 @@
+import {dailyFixture,dailyTestTree} from './daily-fixtures.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -195,9 +196,7 @@ test('Day Pulse renders three named optional radio scales and no HTML range slid
   assert.equal((html.match(/checked=""/g) ?? []).length,0);
   assert.equal((html.match(/type="range"/g) ?? []).length,0);
   assert.ok(html.includes('running low') && html.includes('electric') && html.includes('rough one') && html.includes('lovely'));
-  const {MuseSessionProvider}=load('components/MuseSession'),{initialMoodState,updateMood}=load('lib/mood');
-  const recordState=updateMood(initialMoodState,'2026-10-29','evening',{energy:7,stress:3,overallDay:8},'now');
-  const filled = renderToStaticMarkup(React.createElement(MuseSessionProvider,{initialDate:'2026-10-29',initialRecords:{'library/emotional-observatory':recordState}},React.createElement(DayPulseCard,{date:'2026-10-29'})));
+  const filled = renderToStaticMarkup(dailyTestTree(React.createElement(DayPulseCard,{date:'2026-10-29'}),dailyFixture({pulse:{energy:7,stress:3,overall_day:8}})));
   assert.equal((filled.match(/checked=""/g) ?? []).length,3);
   assert.equal((filled.match(/class="muse-spark"/g) ?? []).length,0,'Saved values must not celebrate on page load');
 });

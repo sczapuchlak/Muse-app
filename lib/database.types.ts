@@ -204,6 +204,25 @@ isOneToOne: false
         isOneToOne: true
         isSetofReturn: false
       } },
+"save_daily_priorities":
+{ Args: { "p_date": string,"p_expected": Json,"p_items": Json }; Returns: {
+              "completed_at": string | null,
+"created_at": string,
+"daily_record_id": string,
+"id": string,
+"position": number,
+"revision": number,
+"standalone_complete": boolean,
+"text": string,
+"updated_at": string,
+"user_id": string
+            }[]
+                          SetofOptions: {
+        from: "*"
+        to: "daily_priorities"
+        isOneToOne: false
+        isSetofReturn: true
+      } },
 "save_daily_record":
 { Args: { "p_date": string,"p_expected_revision": number,"p_patch": Json }; Returns: {
               "created_at": string,

@@ -1,3 +1,4 @@
+import {dailyFixture,dailyTestTree} from './daily-fixtures.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import React from 'react';
@@ -24,12 +25,12 @@ test('influence limit/custom library and historical edits do not create competin
  const edited=mood.updateMood(state,'2025-12-31','evening',{reflection:'Looking back.'},'later');assert.equal(edited.records.length,1);assert.equal(edited.records[0].date,'2025-12-31');
 });
 
-test('Daily Edit feelings and Day Pulse render the same period-scoped canonical Mood record',()=>{
+test('Daily Edit feelings remain period-scoped while both periods share the same daily Pulse',()=>{
  const {MuseSessionProvider}=load('components/MuseSession'),{MoodCard}=load('components/MoodCard'),{DayPulseCard}=load('components/DayPulseCard');
  let state=mood.updateMood(mood.initialMoodState,'2026-10-29','morning',{emotionIds:['emotion-calm'],energy:9,stress:3},'now');
  state=mood.updateMood(state,'2026-10-29','evening',{emotionIds:['emotion-anxious'],overallDay:4},'then');
- function render(period){return renderToStaticMarkup(React.createElement(MuseSessionProvider,{initialDate:'2026-10-29',initialRecords:{'library/emotional-observatory':state,'library/mood-sessions':{'2026-10-29':period}}},React.createElement(MoodCard,{emotions:emotionCatalog}),React.createElement(DayPulseCard,{date:'2026-10-29'})));}
- const morning=render('morning'),evening=render('evening');assert.ok(morning.includes('Remove feeling: Calm'));assert.ok(!morning.includes('Remove feeling: Anxious'));assert.equal((morning.match(/checked=""/g)??[]).length,2);assert.ok(evening.includes('Remove feeling: Anxious'));assert.equal((evening.match(/checked=""/g)??[]).length,1);
+ function render(period){return renderToStaticMarkup(dailyTestTree(React.createElement(MuseSessionProvider,{initialDate:'2026-10-29',initialRecords:{'library/emotional-observatory':state,'library/mood-sessions':{'2026-10-29':period}}},React.createElement(MoodCard,{emotions:emotionCatalog}),React.createElement(DayPulseCard,{date:'2026-10-29'})),dailyFixture({checkins:state.records,pulse:{energy:9,stress:3}})));}
+ const morning=render('morning'),evening=render('evening');assert.ok(morning.includes('Remove feeling: Calm'));assert.ok(!morning.includes('Remove feeling: Anxious'));assert.equal((morning.match(/checked=""/g)??[]).length,2);assert.ok(evening.includes('Remove feeling: Anxious'));assert.equal((evening.match(/checked=""/g)??[]).length,2);
 });
 
 test('Mood statistics count only recorded dimensions and known emotion families',()=>{
@@ -47,7 +48,7 @@ test('favorites belong to shared preferences without inventing a check-in',()=>{
 
 test('Mood page has honest empty history, independent Pulse and a secondary category visualization',()=>{
  const {Mood}=load('components/mood/Mood');const html=renderToStaticMarkup(React.createElement(Mood));
- for(const label of ['FEEL IT. NAME IT. TRACK IT.','A little reflection','An emotional landscape','Your emotional history','Nothing logged','0 recorded check-ins','morning','evening'])assert.ok(html.includes(label),label);
+ for(const label of ['FEEL IT. NAME IT. TRACK IT.','A little reflection','An emotional landscape','Your emotional history','Loading history…','0 recorded check-ins','morning','evening'])assert.ok(html.includes(label),label);
  assert.equal((html.match(/type="radio"/g)??[]).length,30);assert.equal((html.match(/class="muse-mood-history-feeling"/g)??[]).length,0);
 });
 

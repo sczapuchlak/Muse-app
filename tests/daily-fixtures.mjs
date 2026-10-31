@@ -1,0 +1,7 @@
+import React from 'react';
+import {load} from './helpers.mjs';
+export function dailyFixture({date='2026-10-29',pulse={},checkins=[],priorities=[],intention=null,three=[]}={}){
+ const record={id:'day-fixture',user_id:'user-fixture',local_date:date,time_zone:'America/Los_Angeles',intention_text:intention,intention_emoji:null,day_in_three:three,energy:null,stress:null,overall_day:null,created_at:'now',updated_at:'now',revision:1,...pulse};
+ return {[date]:{record,priorities,checkins:checkins.map(item=>({id:item.id,user_id:record.user_id,daily_record_id:record.id,period:item.period,reflection:item.reflection||null,captured_time_zone:item.timeZone,created_at:item.createdAt,updated_at:item.updatedAt,revision:1,checkin_emotions:item.emotionIds.map(emotion_id=>({emotion_id})),checkin_influences:item.causeTagIds.map((influence_id,position)=>({influence_id,position}))}))}};
+}
+export function dailyTestTree(child,days={},ranges={}){const {DailyDataContext}=load('components/daily/DailyData');const snapshot={days,statuses:Object.fromEntries(Object.keys(days).map(date=>[date,{loaded:true,saving:false,error:'',pending:false,conflict:false}])),influences:[],ranges,rangeErrors:{}};const store={getSnapshot:()=>snapshot,subscribe:()=>()=>{},profile:{id:'user-fixture',firstName:'',timeZone:'America/Los_Angeles'},period:()=> 'evening'};return React.createElement(DailyDataContext.Provider,{value:store},child);}

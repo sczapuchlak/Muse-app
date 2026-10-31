@@ -1,6 +1,6 @@
 # Phase 1 — local setup and database foundation
 
-Status: **database foundation and application authentication implemented and validated locally; domain-data cutover is pending**. This is not a claim that the entire Phase 1 user journey is finished. No hosted project was created/linked, no production changes, no commit/push. Existing app views still use their prototype sources until the next authenticated UI/data integration stage. See [AUTH_LOCAL](AUTH_LOCAL.md) for login and invitation instructions.
+Status: **database foundation, application authentication and approved daily-data cutover implemented locally; later domains are pending**. This is not a claim that the entire Phase 1 user journey is finished. No hosted project was created/linked, no production changes, no commit/push. Daily Edit/Mood/Dayprint now use canonical daily records; later module views retain prototype sources. See [PHASE1_DAILY_PERSISTENCE](PHASE1_DAILY_PERSISTENCE.md). See [AUTH_LOCAL](AUTH_LOCAL.md) for login and invitation instructions.
 
 ## Running local services
 
@@ -31,6 +31,7 @@ Docker Desktop installed the CLI under `~/.docker/bin`, outside the original she
 | `npm run db:lint` | Lint local public-schema functions |
 | `npm run test:db:api` | Test local Auth/API with temporary synthetic users, deleted afterward |
 | `npm run auth:invite -- your@email.example` | Send an admin-managed local invitation to the test inbox |
+| `npm run test:daily` | Verify persistent daily data, priorities, sessions, concurrency and RLS with disposable users |
 | `npm run test:auth` | Test the running app's login/callback/refresh/logout through real local inbox messages |
 
 The wrapper rejects unknown/remote commands and remote Docker endpoints. It passes the custom network to container-based commands; the current in-process type generator intentionally receives no network flag. No automatic data-reset command is exposed. Do not reset an environment holding meaningful data without explicit authorization and a recovery plan.
@@ -66,20 +67,20 @@ Local Auth is private/invitation-only: global signup and anonymous login are dis
 
 The existing standalone login design is now functional at **http://localhost:3000/login**. Admin invitations and subsequent magic links arrive in the local inbox and verify through `/auth/confirm`. Next16 Proxy refreshes cookies and protects document/RSC requests; a request-bound Suspense layout verifies identity before mounting the private shell. Logout clears auth cookies and disposes in-memory UI across open tabs. Unknown addresses cannot register through the sign-in form. See [AUTH_LOCAL](AUTH_LOCAL.md) for security boundaries, error states, invitation provisioning and verification details.
 
-Typed browser/request-scoped server/admin factories and a daily/session repository exist. Ordinary data access uses the public key plus the user's authenticated session/RLS. Admin factory is `server-only`. Auth now gates AppShell; capture components and domain providers are deliberately not connected to that repository yet.
+Typed browser/request-scoped server/admin factories and a daily/session repository exist. Ordinary data access uses the public key plus the user's authenticated session/RLS. Admin factory is `server-only`. Auth now gates AppShell; daily capture components now connect through one shared user-scoped cache; later domain providers remain prototype-only.
 
 ## Validation
 
 - Docker Engine/local endpoint, migration application, service health and explicit loopback port binding verified.
 -57 pgTAP assertions pass: ownership/anonymous denial, foreign-owner link rejection, date uniqueness, bounded values/slots, revision conflict, influence limit, immutable historical identity, session independence, rollback on failed replacements, clearing, daily-without-session data and account cascades/stale-subject denial. Tests roll back all fixtures.
 - Local HTTP integration passes: public registration denied; anonymous reads denied; admin invitation/verification; magic-link issuance; own-profile isolation; durable date values; conflict response and competing writes; cross-user read/link denial; fresh authenticated client roundtrip; separate sessions; deletion preserves daily values; Auth deletion/cascade and local signout. Both temporary Auth users are removed in cleanup.
-- Database lint passes.172 Node tests pass. ESLint, TypeScript noEmit and production build pass. Foundation-stage production dependency audit reported no vulnerabilities; installation also reported moderate development-tooling findings, with no unrelated forced upgrades applied.
+- Database lint passes.182 Node tests pass. ESLint, TypeScript noEmit and production build pass. Foundation-stage production dependency audit reported no vulnerabilities; installation also reported moderate development-tooling findings, with no unrelated forced upgrades applied.
 - Application HTTP auth integration and actual isolated Chrome inbox login/logout checks pass; details and coverage limits are in [AUTH_LOCAL](AUTH_LOCAL.md). Temporary auth/browser test accounts are removed afterward.
 
 These checks do not claim browser domain persistence, user-facing export/account deletion, cross-device domain synchronization, a configured production backup policy or hosted readiness.
 
-## Next approved stage
+## Current daily integration and next stages
 
-Authentication is complete for local validation. The next separately approved stage is to bind the authenticated profile and canonical daily/session queries to Daily Edit, Mood, Dayprint and the existing Insights score adapter together; remove sample fallbacks for migrated data, preserve empty/error/conflict/draft behavior and support history without Mood. Add standalone priority capture/edit/delete and user-facing profile timezone controls. Provide scoped export plus confirmed account deletion/cache clearing before real personal-data use. Other modules remain prototype-only until their own slices. The authentication task does not begin this cutover.
+[PHASE1_DAILY_PERSISTENCE](PHASE1_DAILY_PERSISTENCE.md) records the implemented coordinated cutover: authenticated profile/date, Daily Edit, Mood, derived Dayprint and existing Insights Pulse. The additive `20261030000300_daily_priority_command.sql` migration supplies revision-checked atomic standalone priority replacement/reorder; the original foundation is preserved and no personal fixture import occurred.
 
-Approved prototype scores may be discarded during that coordinated cutover. If unexpected real persisted data is found, preserve it and stop for review. Planner-linked historical completion, hydration UI, Money and later domains are not part of this foundation stage.
+Still pending: user-facing profile controls, scoped export/confirmed account deletion before real-data use, later linked-priority history and module-specific persistence. Hydration UI/ownership, Planner, Nourish, Rituals, Money, Notes and hosted configuration remain separate scope. Unexpected durable real data must be preserved, not treated as disposable prototype values.
