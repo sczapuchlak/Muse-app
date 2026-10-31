@@ -1,0 +1,11 @@
+import {loadEnvFile} from 'node:process';
+import {createClient} from '@supabase/supabase-js';
+loadEnvFile('.env.local');
+const email=process.argv[2],url=process.env.NEXT_PUBLIC_SUPABASE_URL,secret=process.env.SUPABASE_SECRET_KEY,site=process.env.SITE_URL;
+if(process.argv.length!==3||!email||email.length>254||!/^\S+@[^\s@]+\.[^\s@]+$/.test(email))throw new Error('Usage: npm run auth:invite -- your@email.example');
+for(const value of [url,site])if(!value||!['localhost','127.0.0.1','[::1]'].includes(new URL(value).hostname))throw new Error('Invitations are restricted to configured local development services.');
+if(!secret)throw new Error('Run npm run db:env to configure the local admin key.');
+const admin=createClient(url,secret,{auth:{persistSession:false,autoRefreshToken:false}});
+const {error}=await admin.auth.admin.inviteUserByEmail(email,{redirectTo:`${new URL(site).origin}/auth/confirm`});
+if(error)throw new Error(error.code==='email_exists'?'That address already has an account. Use /login to request a magic link.':`Local invitation failed: ${error.code??'request failed'}`);
+console.log('Invitation sent to the local test inbox: http://127.0.0.1:54324 (no external email delivery).');

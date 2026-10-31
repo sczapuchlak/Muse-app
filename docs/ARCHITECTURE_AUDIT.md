@@ -1,6 +1,6 @@
 # Muse architecture audit
 
-Audit baseline date: 2026-10-30. Subsequent local foundation status: [PHASE1_LOCAL_SETUP](PHASE1_LOCAL_SETUP.md). Inventory below describes the pre-backend audit baseline, not a claim that newly implemented local infrastructure is absent. Status: **repository evidence, not a persistence implementation**. Read with [DATABASE_BLUEPRINT](DATABASE_BLUEPRINT.md), [PRODUCT_RULES](PRODUCT_RULES.md), [FEATURE_SPEC](FEATURE_SPEC.md) and [WHIMSY_ROADMAP](WHIMSY_ROADMAP.md). The blueprint is a proposal requiring approval; the daily/session distinction is already approved. Latest explicit layout corrections supersede earlier header-Forecast placement instructions.
+Audit baseline date: 2026-10-30. Subsequent local foundation status: [PHASE1_LOCAL_SETUP](PHASE1_LOCAL_SETUP.md); subsequent implemented application authentication: [AUTH_LOCAL](AUTH_LOCAL.md). Inventory below describes the pre-backend audit baseline, not a claim that newly implemented local infrastructure/authentication is absent. Status: **repository evidence, not a domain persistence cutover**. Read with [DATABASE_BLUEPRINT](DATABASE_BLUEPRINT.md), [PRODUCT_RULES](PRODUCT_RULES.md), [FEATURE_SPEC](FEATURE_SPEC.md) and [WHIMSY_ROADMAP](WHIMSY_ROADMAP.md). The local Phase 1 foundation and auth slice have since been approved and implemented; later schema/modules remain planned. Latest explicit layout corrections supersede earlier header-Forecast placement instructions.
 
 ## Executive assessment
 

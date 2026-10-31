@@ -17,6 +17,7 @@ import { MuseSessionProvider } from "./MuseSession";
 import { RitualProvider } from "./rituals/RitualStore";
 import { MoneyProvider } from "./money/MoneyStore";
 import "./AppShell.css";
+import {LogoutButton} from "./auth/LogoutButton";
 import {MuseMagicBridge} from "./MuseMagic";
 
 function NavDestination({ item, path, compact = false, onNavigate }: { item: NavItem; path: string; compact?: boolean; onNavigate?: () => void }) {
@@ -50,7 +51,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           </nav>
           <div className="muse-rail-footer"><ThemeSwitcher compact={collapsed}/>
             {navigation.filter((item) => item.group === "Tools").map((item) => <NavDestination key={item.id} item={item} path={path} compact={collapsed} />)}
-
+            <LogoutButton compact={collapsed}/>
           </div>
         </aside>
         <div className="muse-app-main">
@@ -69,7 +70,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         </nav>
         <GlassPopover id="muse-more-navigation" label="More from Muse" open={moreOpen} anchorRef={moreRef} onClose={() => setMoreOpen(false)} width={340} align="end">
           <p className="editor-label">More from Muse</p>
-          <div className="muse-more-destinations">{navItems(mobileMoreIds).map((item) => <NavDestination key={item.id} item={item} path={path} onNavigate={() => setMoreOpen(false)} />)}</div>
+          <div className="muse-more-destinations">{navItems(mobileMoreIds).map((item) => <NavDestination key={item.id} item={item} path={path} onNavigate={() => setMoreOpen(false)} />)}<LogoutButton/></div>
         </GlassPopover>
       </div></RitualProvider></MoneyProvider></NourishProvider></PlannerProvider>
     </MuseSessionProvider>

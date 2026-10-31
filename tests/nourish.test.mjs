@@ -74,12 +74,12 @@ test('card heading supports meaningful badge/action combinations without fake sy
 test('all fixed navigation destinations have dedicated routes; unknown module catch-all is gone',()=>{
  const {navigation}=load('lib/navigation');
  for(const item of navigation) {
-  const file=item.href==='/'?'app/page.tsx':`app${item.href}/page.tsx`;
+  const file=item.href==='/'?'app/(app)/page.tsx':`app/(app)${item.href}/page.tsx`;
   assert.ok(existsSync(resolve(root,file)),item.href);
   assert.ok(!readFileSync(resolve(root,file),'utf8').includes('await params'),item.href);
  }
  assert.ok(!existsSync(resolve(root,'app/[module]/page.tsx')));
- const nourish=readFileSync(resolve(root,'app/nourish/page.tsx'),'utf8');
+ const nourish=readFileSync(resolve(root,'app/(app)/nourish/page.tsx'),'utf8');
  assert.ok(nourish.includes('<Suspense')&&nourish.includes('<Nourish'));
 });
 

@@ -16,7 +16,9 @@
     "db:lint": "node scripts/supabase-local.mjs lint",
     "db:types": "node scripts/supabase-local.mjs types",
     "db:env": "node scripts/supabase-local.mjs env",
-    "test:db:api": "node scripts/test-local-supabase.mjs"
+    "test:db:api": "node scripts/test-local-supabase.mjs",
+    "auth:invite": "node scripts/invite-local-user.mjs",
+    "test:auth": "node scripts/test-local-auth.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",

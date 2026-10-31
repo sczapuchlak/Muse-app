@@ -4,7 +4,6 @@ import "./globals.css";
 import "./interactions.css";
 import { motionTokens } from "@/lib/motion";
 import { defaultTheme } from "@/lib/themes";
-import { AppShell } from "@/components/AppShell";
 
 const geistSans = Geist({
   variable: "--font-interface",
@@ -25,7 +24,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       style={motionTokens}
       className={`${geistSans.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col"><AppShell>{children}</AppShell></body>
+      <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );
 }

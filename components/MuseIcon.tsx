@@ -6,6 +6,7 @@ const ExtendedMuseIcon=dynamic(()=>import("./ExtendedMuseIcon"),{loading:()=>nul
 import { PrismaticSvg, type PrismaticTone } from './PrismaticSvg';
 
 const paths = {
+  logout: <><path d="M9 5H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h4M16 17l5-5-5-5M21 12H9"/></>,
   sparkle:<path d={MUSE_STAR_PATH} transform="translate(4.8 0) scale(.6)"/>,
   sort:<path d="M3 5h12M3 10h9M3 15h6M18 4v16m-3-3 3 3 3-3"/>,
   tag: <><path d="M3 3h8l10 10-8 8L3 11V3Z"/><circle cx="7" cy="7" r="1"/></>,

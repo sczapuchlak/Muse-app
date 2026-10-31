@@ -12,7 +12,7 @@ export async function createMuseServerClient({ cookieWrites = false } = {}) {
     cookies: {
       getAll: () => cookieStore.getAll(),
       setAll(values) {
-        if (!cookieWrites) return; // The later auth refresh boundary owns writes for RSC reads.
+        if (!cookieWrites) return; // Proxy owns refresh-cookie writes for RSC reads.
         for (const { name, value, options } of values) cookieStore.set(name, value, options);
       },
     },

@@ -73,3 +73,6 @@
 
 @media(min-width:1024px) { .muse-global-bar { display:none; } }
 .muse-planner-workspaces .muse-workspace-dot { margin-right:var(--space-2); }
+
+.muse-logout {width:100%;min-width:0;}
+.muse-logout>.muse-nav-link {width:100%;text-align:left;}
