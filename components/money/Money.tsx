@@ -35,7 +35,7 @@ export function Money() {const {profile}=useDailyData();
   function changeView(next:string){router.replace(`/money?view=${next}&date=${selectedDate}`,{scroll:false});}
   return <main className="muse-page muse-money-page">
     <MusePageHeader title="Money"><DateNavigator date={selectedDate} onChange={setSelectedDate}/></MusePageHeader>
-    <MoneySaveStatus/><MoneyCapture>
+    <MoneyCapture>
     <MuseSectionNav label="Money sections" current={view} items={sections.map((item)=>({...item,href:`/money?view=${item.id}&date=${selectedDate}`}))}/>
     {(view==="overview"||view==="spending")&&<section className="muse-money-period" aria-label="Money reporting period"><MuseChoiceMenu label="Period type" valueLabel={periodMode==="month"?"Calendar month":periodMode==="custom"?"Custom period":"Paycheck period"} selectedIds={[periodMode]} options={[{id:"paycheck",label:"Paycheck period"},{id:"month",label:"Calendar month"},{id:"custom",label:"Custom period"}]} onSelect={setPeriodMode}/>
       {periodMode==="paycheck"&&<MuseChoiceMenu label="Reporting paycheck" valueLabel={paycheck?.name??"No paycheck"} selectedIds={paycheck?[paycheck.id]:[]} options={state.paychecks.map((item)=>({id:item.id,label:`${item.name} · ${item.periodStart}`}))} onSelect={setPaycheckId}/>}
@@ -52,6 +52,6 @@ export function Money() {const {profile}=useDailyData();
     <GlassPopover id="money-spending-filters" label="Filter spending" open={filtersOpen&&view==="spending"} anchorRef={filterRef} onClose={()=>setFiltersOpen(false)} width={340}><div className="muse-money-form">{[{label:"Category",value:category,set:setCategory,options:state.categories},{label:"Tag",value:tag,set:setTag,options:state.tags},{label:"Card",value:card,set:setCard,options:state.cards}].map((filter)=><fieldset key={filter.label}><legend>{filter.label}</legend><div className="muse-filter-options"><button className="choice-button" type="button" aria-pressed={!filter.value} onClick={()=>filter.set("")}>All</button>{filter.options.map((item)=><button key={item.id} className="choice-button" type="button" aria-pressed={filter.value===item.id} onClick={()=>filter.set(item.id)}>{item.name}</button>)}</div></fieldset>)}<div className="editor-actions"><button className="text-button" type="button" onClick={()=>{setCategory("");setTag("");setCard("");}}>Clear</button><button className="muse-button" type="button" onClick={()=>{setFiltersOpen(false);filterRef.current?.focus();}}>Done</button></div></div></GlassPopover>
     {editor&&<MoneyEditors editor={editor} date={selectedDate} paycheckId={paycheck?.id} onClose={()=>setEditor(null)} onSaved={()=>store.whenSaved(trigger)} onPaycheckSaved={(id)=>{setPaycheckId(id);store.whenSaved(trigger);changeView("paychecks");}}/>}
     <div className="muse-feedback-anchor" aria-hidden="true">{spark}</div>
-    </MoneyCapture><footer className="muse-footer">Money records save to your account · USD · No bank connection</footer>
+    </MoneyCapture><footer className="muse-footer"><MoneySaveStatus/>Money records save to your account · USD · No bank connection</footer>
   </main>;
 }

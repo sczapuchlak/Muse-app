@@ -9,7 +9,7 @@ import { CardHeading } from "./CardHeading";
 import { MuseIcon } from "./MuseIcon";
 import { GlassPopover } from "./GlassPopover";
 import { PlanEntryForm } from "./PlanEntryForm";
-import { PlannerPersistenceStatus,PlannerCapture,usePlanner } from "./PlannerStore";
+import { PlannerCapture,usePlanner } from "./PlannerStore";
 import { useMuseSpark } from "./MuseSpark";
 import "./ScheduleCard.css";
 
@@ -38,21 +38,21 @@ export function ScheduleCard({ selectedDate }: { selectedDate: string }) {
     dispatch({ type: "task/toggle", id, now: new Date().toISOString() });
   }
   function overflowButton(kind: "task" | "event", total: number) {
-    return <Link className="text-button muse-plan-more" href={`/planner?date=${selectedDate}${kind === "event" ? "#planner-events" : ""}`}>
+    return <Link className="muse-button button-ghost muse-plan-more" href={`/planner?date=${selectedDate}${kind === "event" ? "#planner-events" : ""}`}>
       View all {total} {kind === "task" ? "tasks" : "events"}<MuseIcon name="arrow" size={14} />
     </Link>;
   }
   return (
     <MuseCard id="schedule" className="schedule-card">
-      <PlannerPersistenceStatus/><PlannerCapture><CardHeading id="schedule" title="Today’s plan" icon="calendar" sourceModule="planner" manage={{ href: `/planner?date=${selectedDate}` }} />
+      <PlannerCapture><CardHeading id="schedule" title="Today’s plan" icon="calendar"><Link className="muse-button button-ghost" href={`/planner?date=${selectedDate}`}>Open Planner</Link></CardHeading>
       <div className="muse-plan-section" role="group" aria-labelledby="plan-schedule-title">
-        <div className="muse-plan-heading"><h3 id="plan-schedule-title">Schedule</h3><button type="button" className="text-button" aria-expanded={adding === "event"} aria-controls="plan-entry" onClick={(event) => { anchorRef.current = event.currentTarget; setAdding("event"); }}>+ Add event</button></div>
+        <div className="muse-plan-heading"><h3 id="plan-schedule-title">Schedule</h3><button type="button" className="muse-button button-ghost" aria-expanded={adding === "event"} aria-controls="plan-entry" onClick={(event) => { anchorRef.current = event.currentTarget; setAdding("event"); }}>+ Add event</button></div>
         <ul className="muse-plan-list">{preview.visibleEvents.map((event) => <EventRow key={event.id} event={event} />)}</ul>
         {!preview.events.length && <p className="small-label">No timed events.</p>}
         {preview.hiddenEvents > 0 && overflowButton("event", preview.events.length)}
       </div>
       <div className="muse-plan-section" role="group" aria-labelledby="plan-tasks-title">
-        <div className="muse-plan-heading"><h3 id="plan-tasks-title">Tasks</h3><button type="button" className="text-button" aria-expanded={adding === "task"} aria-controls="plan-entry" onClick={(event) => { anchorRef.current = event.currentTarget; setAdding("task"); }}>+ Add task</button></div>
+        <div className="muse-plan-heading"><h3 id="plan-tasks-title">Tasks</h3><button type="button" className="muse-button button-ghost" aria-expanded={adding === "task"} aria-controls="plan-entry" onClick={(event) => { anchorRef.current = event.currentTarget; setAdding("task"); }}>+ Add task</button></div>
         <ul className="muse-plan-list">{preview.visibleTasks.map((task) => <TaskRow key={task.id} task={task} onToggle={toggleTask} />)}</ul>
         {!preview.tasks.length && <p className="small-label">No tasks planned.</p>}
         {preview.hiddenTasks > 0 && overflowButton("task", preview.tasks.length)}

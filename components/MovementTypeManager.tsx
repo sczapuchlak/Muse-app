@@ -21,7 +21,7 @@ export function MovementTypeManager({ types, quickIds, onToggleQuick, onRename, 
               Quick{quickIds.includes(type.id) && <MuseIcon name="check" size={12} />}
             </button>
             {type.source === "custom" && <span className="managed-type-actions">
-              <button type="button" className="text-button" aria-label={`Rename ${type.name}`} onClick={() => onRename(type.id)}>Rename</button>
+              <button type="button" className="muse-button button-ghost" aria-label={`Rename ${type.name}`} onClick={() => onRename(type.id)}>Rename</button>
               <MuseIconButton icon="trash" label={`Delete ${type.name}`} onClick={() => onDelete(type.id)}/>
             </span>}
           </li>

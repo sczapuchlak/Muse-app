@@ -34,7 +34,7 @@ export function InlineTextEditor({ id, label, initialValue, maxLength, submitLab
           aria-invalid={error ? true : undefined} aria-describedby={error ? `${id}-error` : undefined}
           onChange={(event) => { setValue(event.target.value); setError(null); }} />
         <button type="submit" className="muse-button button-primary">{submitLabel}</button>
-        <button type="button" className="text-button" onClick={onCancel}>Cancel</button>
+        <button type="button" className="muse-button button-ghost" onClick={onCancel}>Cancel</button>
       </div>
       {error && <p className="input-error" id={`${id}-error`} role="alert">{error}</p>}
     </form>

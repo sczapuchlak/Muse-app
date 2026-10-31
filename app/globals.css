@@ -66,7 +66,7 @@ p { margin: 0; }
 .muse-page {
   width: min(calc(100% - var(--page-padding) * 2), var(--page-max-width));
   margin: 0 auto;
-  padding: var(--space-4) 0 calc(var(--space-6) + env(safe-area-inset-bottom));
+  padding: calc(var(--space-4) + var(--header-top-air,16px)) 0 calc(var(--space-6) + env(safe-area-inset-bottom));
 }
 .whimsy { font-family: var(--font-whimsy); font-style: italic; }
 .muse-header { padding-bottom: var(--space-3); }
@@ -507,3 +507,5 @@ input[type="search"] { padding:var(--space-2) var(--space-3); line-height:1.45; 
 .movement-selection-status { display:flex; align-items:baseline; gap:var(--space-2, .5rem); justify-content:space-between; min-width:0; }
 .movement-selection-status > p { min-width:0; }
 .movement-selection-status > button { flex-shrink:0; }
+
+@media(max-width:600px) { :root { --header-top-air:8px; } }

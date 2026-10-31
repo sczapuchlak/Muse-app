@@ -25,3 +25,6 @@
   .muse-mood-checkin-layout { grid-template-columns: minmax(0, 1fr); }
   .muse-mood-checkin-layout .muse-pulse-signals { flex: none; }
 }
+/* Daily Edit reflection: Mood + Pulse, followed by Day in Three. Mood page is unchanged. */
+.muse-mood-checkin-layout[data-layout="reflection"] > .muse-card { grid-column:auto; }
+.muse-mood-checkin-layout[data-layout="reflection"] > #day-in-three { grid-column:1/-1; }

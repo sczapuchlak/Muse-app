@@ -1,5 +1,4 @@
 "use client";
-import Link from "next/link";
 import {useEffect,useState,type FormEvent} from "react";
 import {authMessages,authNoticeMessage,safeReturnPath} from "@/lib/auth/paths";
 import {MuseStar} from "../MuseStar";
@@ -20,7 +19,7 @@ export function MuseLogin({notice="",next="/"}:{notice?:string;next?:string}){
     }catch{setError("Couldn’t reach local sign-in. Check your connection and try again.");setState("error");}
   }
   const feedback=state==="invalid"?"Enter a valid email address.":state==="error"?error:state==="sending"?"Sending your sign-in link…":state==="sent"?authMessages.sent:authNoticeMessage(notice)??"Use the email address that received your invitation.";
-  return <MuseLoginFrame><span className="editor-label">A little space, all yours</span><h2 id="login-preview-title">Welcome to Muse.</h2><p className="card-description">Your own little corner of the universe.</p>
+  return <MuseLoginFrame><span className="editor-label">YOUR OWN LITTLE CORNER OF THE UNIVERSE <MuseStar size={14}/></span><h2 id="login-preview-title">Welcome to Muse.</h2><p className="card-description">For everything you are and everything you&apos;re becoming.</p>
     <form action="/auth/link" method="post" noValidate onSubmit={submit} aria-busy={state==="sending"}>
       <label className="editor-label" htmlFor="login-email">Email address</label><input name="email" id="login-email" type="email" autoComplete="email" inputMode="email" maxLength={254} required placeholder="you@example.com" value={email} aria-invalid={state==="invalid"} aria-describedby="login-feedback" disabled={state==="sending"} onChange={event=>{setEmail(event.target.value);setState("idle");setError("");}}/>
       <input type="hidden" name="next" value={safeReturnPath(next)}/>
@@ -28,6 +27,5 @@ export function MuseLogin({notice="",next="/"}:{notice?:string;next?:string}){
       <p id="login-feedback" role={state==="error"||state==="invalid"?"alert":"status"} className="muse-login-feedback">{feedback}</p>
     </form>
     <p className="small-label">Private, invite-only access. An invitation is required; this form never creates an account.</p>
-    <Link className="muse-login-return" href="/login-preview">View the original design preview →</Link>
   </MuseLoginFrame>;
 }

@@ -5,7 +5,7 @@ import {useDailyDay,DailyCapture} from './daily/DailyData';
 import type {DailyPriority,PriorityInput} from '@/lib/data/daily';
 import {dailyTextDisplay,priorityCompletion} from '@/lib/data/daily-projections';
 import {MuseCard} from './MuseCard';import {CardHeading} from './CardHeading';import {MuseIcon} from './MuseIcon';import {EditableText} from './EditableText';import {useMuseSpark} from './MuseSpark';import {EmojiButton} from './EmojiPicker';import {MuseMilestone} from './MuseMilestone';
-import {usePlanner,PlannerPersistenceStatus} from './PlannerStore';import {PriorityTaskLink} from './PriorityTaskLink';
+import {usePlanner} from './PlannerStore';import './PrioritiesCard.css';import {PriorityTaskLink} from './PriorityTaskLink';
 import {useMuseToday} from './useMuseToday';
 function PriorityItem({priority,complete,historical,disabled,onToggle,onEdit,children}:{priority:DailyPriority;complete:boolean|null;historical:boolean;disabled:boolean;onToggle:()=>void;onEdit:(title:string)=>void;children:React.ReactNode}){
  const unavailable=priority.task_unavailable===true||!priority.task_id;
@@ -42,6 +42,6 @@ export function PrioritiesCard(){
  </PriorityItem>)}</ul>
  {!inputs.length&&<p className="card-description">No priorities for this day.</p>}
  {inputs.length<3&&<form className="priority-add" onSubmit={event=>{event.preventDefault();if(!title.trim()||!planner.canEdit||planner.status?.pending||capture.current)return;const id=crypto.randomUUID();capture.current={id,date,text:title};planner.dispatch({type:'priority/create',id,date,title:title.trim()});}}><input aria-label="New priority" placeholder="Add a priority…" maxLength={160} value={title} onChange={event=>setTitle(event.target.value)}/><button className="muse-button" type="submit" disabled={!title.trim()||!planner.canEdit||!!planner.status?.pending}>Add priority</button></form>}
- </DailyCapture><PlannerPersistenceStatus activityOnly/></MuseCard>;
+ </DailyCapture></MuseCard>;
 }
 function IntentionInput({value,onChange}:{value:string;onChange:(value:string)=>void}){const [draft,setDraft]=useState<string|null>(null);return <input aria-label="Today’s intention" type="text" value={dailyTextDisplay(value,draft)} maxLength={1000} onBlur={()=>setDraft(null)} onChange={event=>{setDraft(event.target.value);onChange(event.target.value);}} placeholder="What matters today?"/>;}

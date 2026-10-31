@@ -32,7 +32,7 @@ export function TaskDetails({ taskId, onClose, returnFocus }: { taskId: string; 
   function update(patch: Partial<Omit<PlannedTask, "id" | "kind" | "createdAt">>) { dispatch({ type: "task/update", id: taskId, patch }); }
   function saveTitle(){if(!canEdit&&titleDraft.dirty)return false;if(titleDraft.dirty&&title.trim()&&title.trim()!==task?.title)update({title:title.trim()});titleDraft.clear();return true;}
   return <MuseDrawer title="Task details" onClose={() => { if(saveTitle())onClose(); }} returnFocus={returnFocus}>
-    <PlannerPersistenceStatus/><PlannerCapture><div className="muse-task-details">
+    <PlannerPersistenceStatus activityOnly/><PlannerCapture><div className="muse-task-details">
       <label className="editor-label">Title<input type="text" required maxLength={160} value={title} onChange={(event) => {titleDraft.set(event.target.value);}} onBlur={saveTitle} /></label>
       <label className="muse-detail-complete"><input type="checkbox" checked={task.complete} onChange={(event) => { if (event.target.checked) trigger(); dispatch({ type: "task/toggle", id: taskId, now: new Date().toISOString() }); }} />Completed{spark}</label>
       <div className="muse-detail-fields">

@@ -9,12 +9,9 @@ const {moneySample}=load('lib/money-sample'),money=load('lib/money'),{MoneyConte
 
 function MoneyProvider({initialState=moneySample,children}){const view={state:initialState,loaded:true,pending:false,saving:false,error:'',conflict:false};return React.createElement(MoneyContext.Provider,{value:{getSnapshot:()=>view,subscribe:()=>()=>{},dispatch:()=>{}}},children);}
 
-test('Money Overview authors independent column stacks and places recent spending after both',()=>{
+test('Money Overview aligns the spending/comparison row and keeps recurring full-width before recent spending',()=>{
  const {MoneyOverview}=load('components/money/MoneyViews'),html=renderToStaticMarkup(React.createElement(MoneyProvider,null,React.createElement(MoneyOverview,{paycheck:moneySample.paychecks[0],period:money.paycheckPeriod(moneySample.paychecks[0]),today:'2026-10-30',onOpen(){},onSpending(){}})));
- assert.equal((html.match(/class="muse-money-dashboard-column"/g)??[]).length,2);
- const left=html.indexOf('aria-label="Paycheck, recorded spending and recurring"'),right=html.indexOf('aria-label="Upcoming and comparison"'),recent=html.indexOf('<h2>Recent spending</h2>');
- assert.ok(left<html.indexOf('<h2>Recorded spending</h2>'));assert.ok(html.indexOf('<h2>Recurring</h2>')<right);assert.ok(right<recent);assert.ok(html.includes('</div></div><section class="muse-money-panel muse-money-wide">'));
- const css=readFileSync(resolve(root,'components/money/Money.css'),'utf8');assert.match(css,/\.muse-money-dashboard-column \{[^}]*flex-direction:column[^}]*gap:var\(--space-6\)/);assert.ok(!css.includes('grid-auto-rows'));
+ const spent=html.indexOf('muse-money-recorded'),comparison=html.indexOf('muse-money-comparison'),recurring=html.indexOf('<h2>Recurring</h2>'),recent=html.indexOf('<h2>Recent spending</h2>');assert.ok(spent<comparison&&comparison<recurring&&recurring<recent);assert.ok(!html.includes('muse-money-dashboard-column"'));const css=readFileSync(resolve(root,'components/money/Money.css'),'utf8');assert.ok(css.includes('grid-template-columns:repeat(2,minmax(0,1fr))'));assert.ok(!css.includes('grid-auto-rows'));
 });
 
 test('paycheck quick shelf stays three records while historical selection shares canonical IDs',()=>{

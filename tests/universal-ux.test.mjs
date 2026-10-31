@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import React from 'react';
-import {renderToStaticMarkup} from 'react-dom/server';
+import {renderWithWellness as renderToStaticMarkup} from './wellness-render.mjs';
 import {load} from './helpers.mjs';
 const {moneySample}=load('lib/money-sample'),{plannerSample}=load('lib/planner-sample'),{ritualsSample}=load('lib/rituals-sample');
 

@@ -1,3 +1,4 @@
+import {ritualTestTree} from './rituals-render.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
@@ -83,17 +84,19 @@ test('Little Revelations are deterministic, range/record traceable and never req
 
 test('Daily Edit renders one Forecast after its section heading and before priorities, outside the date header',()=>{
  const {DailyEdit}=load('components/DailyEdit'),{PlannerProvider}=load('components/PlannerStore'),{NourishProvider}=load('components/NourishStore'),{MuseSessionProvider}=load('components/MuseSession');
- const {AccountPreferencesContext}=load('components/AccountPreferences');const account={loaded:true,saved:{profile:{cosmic_enabled:true,zodiac_sign:null}},draft:{}};const tree=React.createElement(MuseSessionProvider,{initialDate:'2026-10-29'},React.createElement(PlannerProvider,null,React.createElement(NourishProvider,null,React.createElement(DailyEdit))));const html=renderToStaticMarkup(React.createElement(AccountPreferencesContext.Provider,{value:{subscribe:()=>()=>{},getSnapshot:()=>account}},tree));
+ const {AccountPreferencesContext}=load('components/AccountPreferences');const account={loaded:true,saved:{profile:{cosmic_enabled:true,zodiac_sign:null}},draft:{}};const tree=React.createElement(MuseSessionProvider,{initialDate:'2026-10-29'},React.createElement(PlannerProvider,null,React.createElement(NourishProvider,null,React.createElement(DailyEdit))));const html=renderToStaticMarkup(ritualTestTree(React.createElement(AccountPreferencesContext.Provider,{value:{subscribe:()=>()=>{},getSnapshot:()=>account}},tree)));
  assert.equal((html.match(/id="cosmic-forecast"/g)??[]).length,1);
  assert.ok(html.indexOf('</header>')<html.indexOf('id="daily-edit"'));
  assert.ok(html.indexOf('id="daily-edit"')<html.indexOf('class="daily-grid"'));
- assert.ok(html.indexOf('class="daily-grid"')<html.indexOf('id="cosmic-forecast"'));
+ assert.ok(html.indexOf('class="daily-focus-stack"')<html.indexOf('id="cosmic-forecast"'));assert.ok(html.indexOf('id="little-rituals"')<html.indexOf('class="daily-grid"'));
  assert.ok(html.indexOf('id="cosmic-forecast"')<html.indexOf('id="priorities"'));
  assert.equal((html.match(/id="day-in-three"/g)??[]).length,1);
  assert.ok(html.indexOf('id="mood"')<html.indexOf('id="day-in-three"'));
- assert.ok(html.indexOf('id="day-in-three"')<html.indexOf('id="day-pulse"'));
+ assert.ok(html.indexOf('id="day-pulse"')<html.indexOf('id="day-in-three"'));
+ assert.ok(html.indexOf('id="movement"')<html.indexOf('id="water"'));assert.ok(html.indexOf('id="water"')<html.indexOf('id="meals"'));assert.ok(html.indexOf('id="meals"')<html.indexOf('id="schedule"'));assert.ok(html.indexOf('id="schedule"')<html.indexOf('id="mood"'));
+ for(const id of ['movement','water','meals','schedule','mood','day-pulse'])assert.equal((html.match(new RegExp('id="'+id+'"','g'))??[]).length,1);
  const pulse=html.slice(html.indexOf('id="day-pulse"'));assert.ok(pulse.includes('The numbers behind your day.'));assert.ok(!pulse.includes('Morning ratings'));assert.ok(!pulse.includes('Evening ratings'));
- const svg=readFileSync(resolve(root,'public/atmosphere/disco-ball.svg'),'utf8');assert.ok((svg.match(/<polygon/g)??[]).length>700);assert.ok(svg.includes('radialGradient'));assert.ok(!svg.includes('<image'));assert.ok(Buffer.byteLength(svg)<100000);
+ const disco=readFileSync(resolve(root,'components/DiscoAtmosphere.tsx'),'utf8');assert.ok(!disco.includes('disco-ball'));assert.ok(disco.includes('MuseStar'));
 });
 
 test('date heatmap distinguishes neutral unscheduled, explicit missed, unlogged and upcoming without color alone',()=>{

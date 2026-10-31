@@ -63,7 +63,7 @@ export function WaterCard({ initialDay, settings }: WaterCardProps) {
           <button
             ref={editRef}
             type="button"
-            className="text-button"
+            className="muse-button button-ghost"
             aria-label="Edit today’s water total"
             aria-expanded={editor === "edit"}
             aria-controls="water-editor"

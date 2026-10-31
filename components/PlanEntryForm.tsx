@@ -25,6 +25,6 @@ export function PlanEntryForm({ kind, date, onAdd, onCancel }: Props) {
     <label className="editor-label" htmlFor="plan-entry-title">{kind === "event" ? "New event" : "New task"}</label>
     <input id="plan-entry-title" type="text" required maxLength={160} value={title} onChange={(event) => setTitle(event.target.value)} placeholder={kind === "event" ? "Event title" : "Task title"} />
     {kind === "event" && <label className="plan-time-label">Time<input type="time" required value={time} onChange={(event) => setTime(event.target.value)} /></label>}
-    {kind==='task'&&!state.workspaces.length&&<p className="small-label">Create a workspace in Planner before adding tasks.</p>}<div className="editor-actions"><button type="submit" disabled={!canEdit||(kind==='task'&&!state.workspaces.length)} className="muse-button button-primary">{kind === "event" ? "Add event" : "Add task"}</button><button type="button" className="text-button" onClick={onCancel}>Cancel</button></div>
+    {kind==='task'&&!state.workspaces.length&&<p className="small-label">Create a workspace in Planner before adding tasks.</p>}<div className="editor-actions"><button type="submit" disabled={!canEdit||(kind==='task'&&!state.workspaces.length)} className="muse-button button-primary">{kind === "event" ? "Add event" : "Add task"}</button><button type="button" className="muse-button button-ghost" onClick={onCancel}>Cancel</button></div>
   </form>;
 }

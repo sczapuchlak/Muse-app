@@ -1218,9 +1218,9 @@
   --atmosphere-lavender: rgba(163,66,255,.57);
   --atmosphere-blush: rgba(252,39,179,.50);
   --atmosphere-blue-violet: rgba(52,103,255,.32);
-  --glass-background: rgba(35,26,52,.72);
-  --glass-border: rgba(210,196,244,.40);
-  --glass-edge: rgba(246,242,255,.35);
+  --glass-background: rgba(17,12,26,.64);
+  --glass-border: rgba(210,237,255,.65);
+  --glass-edge: rgba(246,242,255,.70);
   --glass-aqua-edge: rgba(169,245,255,.36);
   --surface-subtle: rgba(221,203,246,.08);
   --surface-hover: rgba(221,203,246,.17);

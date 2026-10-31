@@ -60,7 +60,7 @@ export function WaterAmountForm({ mode, unit, initialAmount, onApply, onCancel }
           <span className="quantity-unit" aria-hidden="true">{unit}</span>
         </div>
         <button className="muse-button button-primary" type="submit">{goal ? "Save goal" : editing ? "Save total" : "Add"}</button>
-        <button className="text-button" type="button" onClick={onCancel}>Cancel</button>
+        <button className="muse-button button-ghost" type="button" onClick={onCancel}>Cancel</button>
       </div>
       {error && <p className="input-error" id="water-amount-error" role="alert">{error}</p>}
     </form>

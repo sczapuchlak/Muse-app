@@ -86,8 +86,8 @@ test('long plan markup renders only preview rows with correct View all actions a
   assert.equal((html.match(/type="checkbox"/g) ?? []).length, 5);
   assert.equal((html.match(/<time /g) ?? []).length, 3);
   assert.ok(!html.includes('60 items'));
-  assert.ok(html.includes('data-module="planner"'));
-  assert.ok(html.includes('Manage today’s plan'));
+  assert.ok(!html.includes('data-module="planner"'));
+  assert.ok(html.includes('Open Planner'));
   assert.ok(html.includes('View all 40 tasks'));
   assert.ok(html.includes('View all 20 events'));
   assert.ok(html.includes('/planner?date=2026-10-29'));

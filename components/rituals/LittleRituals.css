@@ -1,0 +1,16 @@
+.daily-focus-grid { display:grid; grid-template-columns:minmax(0,8fr) minmax(0,5fr); gap:var(--grid-gap); margin-bottom:var(--grid-gap); align-items:stretch; }
+.daily-focus-stack { display:grid; gap:var(--grid-gap); align-content:start; min-width:0; }
+.muse-little-rituals { contain:size; min-height:0; }
+.muse-little-rituals .card-heading { flex-shrink:0; }
+.muse-little-list { flex:1; min-height:0; overflow-y:auto; overscroll-behavior:contain; padding:var(--space-1); }
+.muse-little-group + .muse-little-group { margin-top:var(--space-4); }
+.muse-little-group h3 { display:flex; align-items:center; gap:var(--space-2); font-size:.7rem; text-transform:uppercase; letter-spacing:.1em; color:var(--text-muted); margin:0 0 var(--space-1); }
+.muse-little-group h3 svg { color:var(--custom-accent-ink,var(--organization-accent)); }
+.muse-little-row { display:grid; grid-template-columns:minmax(0,1fr) 52px; align-items:center; gap:var(--space-2); font-size:.85rem; }
+.muse-little-row > span { overflow-wrap:anywhere; }
+.muse-little-row small { display:block; }
+.muse-little-rituals footer { flex-shrink:0; padding-top:var(--space-3); border-top:1px solid var(--divider); margin-top:var(--space-3); }
+@container muse-content (max-width:880px) { .daily-focus-grid { grid-template-columns:minmax(0,1fr); }.muse-little-rituals { contain:none; max-height:30rem; min-height:15rem; } }
+/* Nested authored tracks must not inherit the dashboard's twelve-column spans. */
+.daily-focus-grid > .muse-card { grid-column:auto; }
+.daily-focus-stack > .muse-card { grid-column:1 / -1; }

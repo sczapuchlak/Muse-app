@@ -1,0 +1,9 @@
+.muse-save-indicator { display:inline-flex; align-items:center; gap:var(--space-2); color:var(--text-muted); font-size:.75rem; line-height:1.5; }
+.muse-save-indicator > i { width:6px; height:6px; border-radius:50%; flex-shrink:0; background:var(--text-muted); }
+.muse-save-indicator[data-state="saved"] > i { background:var(--mood-green,var(--accent-secondary)); }
+.muse-save-indicator[data-state="error"] { color:var(--foreground); }
+.muse-save-indicator[data-state="error"] > i { background:var(--mood-red,var(--accent-pop)); }
+.muse-footer:has(.muse-daily-save-state) { display:flex; flex-wrap:wrap; align-items:baseline; gap:var(--space-2) var(--space-4); }
+.muse-footer .muse-daily-save-state { margin:0; }
+.button-ghost, a.button-ghost { background:transparent; text-decoration:none; color:var(--foreground); border-color:transparent; }
+.button-ghost:hover, a.button-ghost:hover { border-color:var(--interactive-border); background:var(--surface-hover); }

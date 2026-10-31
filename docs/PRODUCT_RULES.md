@@ -251,7 +251,7 @@ Money spending derives only from recorded transactions, respecting split amounts
 
 Cosmic Forecast appears once, directly below the Daily Edit week strip in the right hero track. The left personalized greeting/mantra and right date top-align. Content determines height; disabling Forecast leaves no empty dashboard slot. Manual sign/visibility preferences and unavailable/illustrative preview remain; no live provider is implied.
 
-Stephanie's latest approved Disco direction supersedes the former prohibition on a literal mirrorball: Disco Damage XXXTRA! now intentionally uses a recognizable spherical chrome/holographic mirrorball, editorial cropping, and reflected light throughout the continuous page atmosphere. This is a Disco-only exception, not a new literal-art rule for other themes. Bright art must reserve functional/copy safe space, remain noninteractive, and yield to readable glass/writing surfaces. The other eight theme identities remain unchanged. Slow optional light shimmer has a static reduced-motion fallback; no strobe, confetti or full-screen animated filter.
+The latest Session 2 Disco direction removes the literal mirrorball and supersedes earlier spherical-art approval. Disco Damage XXXTRA! is intentionally maximalist through holographic foil, prismatic reflected light, chrome and abundant official-star glitter. Keep copy/controls legible and noninteractive decoration pointer-transparent. Other themes stay unchanged; Quiet and reduced motion disable unnecessary motion without erasing Disco's color identity.
 
 
 ## Icon hierarchy and Water milestone refinement
@@ -405,3 +405,19 @@ Daily Edit currently has no Little Rituals surface. Shared authoritative access 
 Pause/resume and archive/restore are explicit actions from the compact ritual overflow menu. Changes start on **today in the saved IANA timezone**, not a selected historical date. Dated inactive intervals preserve original earlier schedules and observations. Paused/archived unrecorded dates are not due, missed or streak opportunities; resume/restore never backfill outcomes. Existing recorded measurements, including the transition day, remain meaningful and correctable. Entire inactive weeks have no weekly goal obligation and do not break a confirmed streak; partial active weeks retain the original whole goal without invented prorating. Historical summaries continue to include real archived observations. Active tracking hides archived rituals, while View archived offers historical review and Restore.
 
 Permanent deletion requires a dedicated confirmation that explains dependent-history loss and prioritizes Archive instead. It removes the ritual, its observations and inactivity periods; only an owner-protected minimal ID/timestamp tombstone remains to prevent stale/retried snapshots recreating it. Lifecycle commands share the established owner revision, idempotency receipts, RLS, draft/retry and conflict recovery. Measurement/schedule history locks are unchanged. No new dashboard, tracking mode or gamification is added. See [RITUALS_PERSISTENCE](RITUALS_PERSISTENCE.md#lifecycle-mvp-completion) for rules, migration and validation.
+
+## Daily experience UI — Session 1
+
+Daily Edit now uses the approved wider Forecast/Priorities stack and narrower Little Rituals surface. Little Rituals is a dated projection of authoritative Rituals, not a new checklist/log owner; preserve recurrence, lifecycle intervals, ordering and shared completion/recovery controls. Weekly sessions remain separate from daily completion denominators.
+
+Dayprint is one selected day with The Day, Morning, Evening and far-right Day Summary. Intention, actual dated movement/hydration, independent sessions and daily Pulse/Day in Three remain with their existing owners. Priorities remain stored with historical links/evidence but no longer appear in Dayprint. Never substitute planned movement or current hydration preferences for historical records. See [UI_SESSION_1](UI_SESSION_1.md). This supersedes earlier no-widget/no-Wellness-Dayprint presentation notes only, without altering their data ownership rules.
+
+## Wellness identity and UI Session 2
+
+Approved user-facing identity: **Wellness**, Lucide heart-pulse icon, exact mantra **Take care of yourself. You've got places to be.** Preserve legacy `/nourish`, domain/table/storage IDs and existing behavior; this is not a new module or migration.
+
+Status labels must describe actual acknowledged owner state, with errors/retry/drafts preserved and successful sync feedback in unobtrusive footers. Money's approved UI now aligns Spending with Plan / Actual and places Recurring full-width afterward; natural heights and unchanged financial semantics remain required. Disco's approved maximalism uses holographic light/glitter/chrome instead of a literal mirrorball. Session 3/Insights remains deferred. See [UI_SESSION_2](UI_SESSION_2.md).
+
+## Daily Edit final card placement
+
+The approved daily progression is expressed only through placement: Forecast/Priorities + Little Rituals, then Movement/Water/Meals beside Today's Plan, then Mood/Day Pulse followed by Day in Three. Reuse each existing owner and component exactly once; no new grouping functionality, records or persistence rules. Ritual list length never determines the top-row height, and Plan grows naturally with its existing bounded preview. Mood's dedicated page and Dayprint are not redesigned by this refinement.

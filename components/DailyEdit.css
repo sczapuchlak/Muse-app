@@ -1,0 +1,10 @@
+/* Page composition only. Cards and their authenticated owners remain unchanged. */
+.daily-middle-grid { grid-column:1/-1; display:grid; grid-template-columns:minmax(0,8fr) minmax(0,5fr); gap:var(--grid-gap); align-items:start; min-width:0; }
+.daily-care-stack { display:flex; flex-direction:column; gap:var(--grid-gap); min-width:0; }
+.daily-middle-grid > .schedule-card { grid-column:auto; width:100%; }
+/* Stretch accounting includes this margin, shortening only the scrollable widget. */
+.daily-focus-grid > .muse-little-rituals { margin-bottom:var(--space-6); }
+@container muse-content (max-width:880px) {
+ .daily-middle-grid { grid-template-columns:minmax(0,1fr); }
+ .daily-focus-grid > .muse-little-rituals { margin-bottom:0; }
+}

@@ -1,39 +1,28 @@
-/* Disco art is isolated in the shared background plane; no artwork participates in layout. */
+/* Isolated theme paint: shared structure and other themes are untouched. */
 .muse-disco-environment { display:none; position:absolute; inset:0; pointer-events:none; z-index:1; overflow:clip; }
 :root[data-theme="disco-damage"] .muse-disco-environment { display:block; }
-.muse-disco-ball {
-  visibility:hidden; position:absolute; width:clamp(190px,24vw,280px); aspect-ratio:1; left:38%; top:-95px;
-  background:url('/atmosphere/disco-ball.svg') center/contain no-repeat;
-  opacity:.86;
-  mask-image:linear-gradient(#000,#000),linear-gradient(#000,#000),linear-gradient(#000,#000);
-  mask-size:100% 100%,var(--ball-safe-0-w,70%) var(--ball-safe-0-h,200px),var(--ball-safe-1-w,70%) var(--ball-safe-1-h,360px);
-  mask-position:0 0,var(--ball-safe-0-x,-35%) var(--ball-safe-0-y,110px),var(--ball-safe-1-x,70%) var(--ball-safe-1-y,110px);
-  mask-repeat:no-repeat; mask-composite:exclude;
-}
-/* Only this small, clipped highlight moves; full-document light remains static. */
-.muse-disco-ball::after { content:""; position:absolute; inset:0; clip-path:circle(38.75% at 50% 52.5%); background:linear-gradient(115deg,transparent 28%,color-mix(in srgb,var(--chart-3) 16%,transparent) 36%,color-mix(in srgb,var(--star-1) 32%,transparent) 42%,color-mix(in srgb,var(--chart-1) 15%,transparent) 46%,transparent 54%); background-size:250% 100%; background-position:100% 0; opacity:.6; }
 .muse-disco-spill { position:absolute; inset:0; background:
- radial-gradient(ellipse 64% 320px at 15% 1%,color-mix(in srgb,var(--chart-3) 25%,transparent),transparent 78%),
- radial-gradient(ellipse 52% 380px at 88% 8%,color-mix(in srgb,var(--chart-1) 24%,transparent),transparent 80%),
- radial-gradient(ellipse 54% 12% at 7% 18%,color-mix(in srgb,var(--chart-6) 15%,transparent),transparent 80%),
- radial-gradient(ellipse 50% 15% at 100% 36%,color-mix(in srgb,var(--chart-1) 24%,transparent),transparent 80%),
- radial-gradient(ellipse 32% 12% at 8% 60%,color-mix(in srgb,var(--chart-8) 17%,transparent),transparent 80%),
- radial-gradient(ellipse 45% 16% at 83% 79%,color-mix(in srgb,var(--chart-5) 24%,transparent),transparent 80%),
- radial-gradient(ellipse 54% 15% at 21% 98%,color-mix(in srgb,var(--chart-3) 23%,transparent),transparent 80%);
-}
+ radial-gradient(ellipse 58% 420px at 7% 1%,color-mix(in srgb,var(--chart-3) 52%,transparent),transparent 78%),
+ radial-gradient(ellipse 55% 480px at 96% 5%,color-mix(in srgb,var(--chart-1) 50%,transparent),transparent 80%),
+ radial-gradient(ellipse 38% 13% at 9% 30%,color-mix(in srgb,var(--chart-6) 32%,transparent),transparent 80%),
+ radial-gradient(ellipse 45% 17% at 97% 46%,color-mix(in srgb,var(--chart-1) 44%,transparent),transparent 80%),
+ radial-gradient(ellipse 40% 14% at 5% 68%,color-mix(in srgb,var(--chart-8) 28%,transparent),transparent 80%),
+ radial-gradient(ellipse 52% 20% at 86% 88%,color-mix(in srgb,var(--chart-5) 40%,transparent),transparent 80%); }
 .muse-disco-caustics { position:absolute; inset:0; background:
- linear-gradient(118deg,transparent 19%,color-mix(in srgb,var(--chart-3) 11%,transparent) 21%,color-mix(in srgb,var(--star-1) 12%,transparent) 21.4%,color-mix(in srgb,var(--chart-2) 9%,transparent) 22%,transparent 25%),
- linear-gradient(68deg,transparent 47%,color-mix(in srgb,var(--chart-1) 11%,transparent) 49%,color-mix(in srgb,var(--chart-5) 12%,transparent) 49.5%,transparent 52%),
- radial-gradient(ellipse 31% 4% at 98% 28%,color-mix(in srgb,var(--chart-3) 20%,transparent),transparent 76%),
- radial-gradient(ellipse 24% 3% at 6% 47%,color-mix(in srgb,var(--chart-1) 20%,transparent),transparent 76%),
- radial-gradient(ellipse 30% 4% at 92% 67%,color-mix(in srgb,var(--chart-6) 13%,transparent),transparent 76%),
- radial-gradient(ellipse 20% 3% at 19% 85%,color-mix(in srgb,var(--chart-8) 17%,transparent),transparent 76%);
- mask-image:linear-gradient(180deg,transparent,#000 200px,#000 96%,transparent);
-}
-:root[data-theme="disco-damage"] .muse-disco-reflections { mask-image:linear-gradient(180deg,transparent 0 160px,#000 280px); }
-:root[data-theme="disco-damage"] .muse-disco-reflections > i { width:var(--reflection-size,30px); height:calc(var(--reflection-size,30px) * .65); opacity:var(--reflection-opacity,.6); background:linear-gradient(128deg,transparent 6%,color-mix(in srgb,var(--star-1) 48%,transparent) 39%,color-mix(in srgb,var(--facet-light) 56%,transparent) 43%,transparent 80%); clip-path:polygon(12% 0,100% 14%,77% 100%,0 81%); }
-:root[data-theme="disco-damage"] .muse-disco-reflections > i:nth-child(3n) { clip-path:polygon(24% 0,100% 67%,52% 100%,0 33%); }
-:root[data-theme="disco-damage"] .muse-galaxy-fleck { box-shadow:0 0 4px var(--fleck-color),0 0 12px color-mix(in srgb,var(--fleck-color) 30%,transparent); }
-@media(max-width:1100px) { .muse-disco-ball { left:42%; width:220px; top:-90px; } }
-@media(max-width:700px) { .muse-disco-ball { left:auto; right:-55px; width:185px; top:-72px; opacity:.7; } }
-@media(prefers-reduced-motion:no-preference) { .muse-disco-ball::after { animation:muse-disco-specular 22s ease-in-out infinite alternate; } @keyframes muse-disco-specular { to { background-position:0 0; } } }
+ conic-gradient(from 70deg at 3% 8%,transparent 0 15%,color-mix(in srgb,var(--star-1) 16%,transparent) 17%,color-mix(in srgb,var(--chart-3) 23%,transparent) 18%,transparent 22% 70%,color-mix(in srgb,var(--chart-6) 20%,transparent) 72%,transparent 76%),
+ conic-gradient(from 240deg at 95% 53%,transparent 0 24%,color-mix(in srgb,var(--chart-1) 20%,transparent) 27%,color-mix(in srgb,var(--star-1) 22%,transparent) 28%,transparent 32%),
+ repeating-linear-gradient(121deg,transparent 0 100px,color-mix(in srgb,var(--star-1) 8%,transparent) 102px,transparent 105px 180px); }
+.muse-disco-glitter { position:absolute; inset:0; }
+.muse-disco-glitter > span { position:absolute; display:grid; place-items:center; opacity:.7; filter:drop-shadow(0 0 3px currentColor); }
+.muse-disco-glitter > span:nth-child(n+49) { display:none; }
+:root[data-magic="extra"] .muse-disco-glitter > span { display:grid; }
+:root[data-magic="quiet"] .muse-disco-glitter > span:nth-child(n+13) { display:none; }
+:root[data-magic="quiet"] .muse-disco-caustics { opacity:.35; }
+:root[data-material="frosted"] .muse-disco-caustics { opacity:.6; }
+:root[data-theme="disco-damage"] .muse-disco-reflections > i { opacity:var(--reflection-opacity,.65); background:linear-gradient(128deg,transparent 6%,color-mix(in srgb,var(--star-1) 75%,transparent) 39%,color-mix(in srgb,var(--facet-light) 85%,transparent) 45%,transparent 80%); }
+@media(prefers-reduced-motion:no-preference) { .muse-disco-glitter > span { animation:muse-disco-twinkle 9s ease-in-out infinite alternate; } @keyframes muse-disco-twinkle { 0%,20% { opacity:.25; } 65%,100% { opacity:.95; } } }
+@media(prefers-reduced-motion:reduce) { .muse-disco-glitter > span { animation:none; } }
+/* A single composited prism sweep, rather than animated blur on every surface. */
+.muse-disco-caustics::after { content:''; position:absolute; inset:0 auto 0 -25%; width:25%; background:linear-gradient(110deg,transparent,color-mix(in srgb,var(--chart-3) 13%,transparent) 42%,color-mix(in srgb,var(--star-1) 15%,transparent) 46%,color-mix(in srgb,var(--chart-1) 13%,transparent) 50%,transparent 65%); pointer-events:none; }
+@media(prefers-reduced-motion:no-preference) { :root:not([data-magic="quiet"]) .muse-disco-caustics::after { animation:muse-disco-prism-sweep 36s linear infinite alternate; } @keyframes muse-disco-prism-sweep { to { transform:translateX(450%); } } }
+@media(prefers-reduced-motion:reduce) { .muse-disco-caustics::after { animation:none; } }

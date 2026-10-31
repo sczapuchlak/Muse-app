@@ -107,3 +107,13 @@
 
 .muse-ritual-group[data-gradient="custom"] .muse-ritual-group-header { position:relative; isolation:isolate; background:transparent; }.muse-ritual-group[data-gradient="custom"] .muse-ritual-group-header::before { content:""; position:absolute; inset:0; z-index:-1; pointer-events:none; border-radius:inherit; background:var(--ritual-banner-gradient); opacity:.12; }
 .muse-ritual-group-icon { color:var(--custom-accent-ink,var(--organization-accent)); }
+/* Saved group accents belong to controls; banner gradients remain independent. */
+:is(.muse-ritual-group,.muse-little-group) { --completion-edge:var(--organization-accent,var(--accent-primary)); --completion-gradient:linear-gradient(140deg,color-mix(in srgb,var(--organization-accent,var(--accent-primary)) 65%,var(--accent-secondary)),var(--organization-accent,var(--accent-primary))); }
+.muse-ritual-week-head [data-selected="true"] { border-bottom:2px solid var(--organization-accent,var(--accent-primary)); }
+.muse-ritual-week-head [data-today="true"] { border-color:var(--organization-accent,var(--accent-primary)); }
+:is(.muse-ritual-group,.muse-little-group) .muse-ring-progress { stroke:var(--organization-accent,var(--accent-primary)); }
+.muse-ritual-weekly-progress > div > span { background:var(--organization-accent,var(--accent-primary)); }
+.muse-ritual-appearance { min-width:0; border:0; padding:0; margin:0; }
+.muse-ritual-appearance > legend { font-weight:550; margin-bottom:var(--space-2); }
+.muse-ritual-appearance details { margin-top:var(--space-3); }
+.muse-ritual-appearance summary { cursor:pointer; min-height:var(--touch-target); display:flex; align-items:center; }

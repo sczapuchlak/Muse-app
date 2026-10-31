@@ -48,7 +48,7 @@ test('favorites belong to shared preferences without inventing a check-in',()=>{
 
 test('Mood page has honest empty history, independent Pulse and a secondary category visualization',()=>{
  const {Mood}=load('components/mood/Mood');const html=renderToStaticMarkup(React.createElement(Mood));
- for(const label of ['FEEL IT. NAME IT. TRACK IT.','A little reflection','An emotional landscape','Your emotional history','Loading history…','0 recorded check-ins','morning','evening'])assert.ok(html.includes(label),label);
+ for(const label of ['FEEL IT. NAME IT. TRACK IT.','A little reflection','Emotional Landscape','Your emotional history','Loading history…','0 recorded check-ins','morning','evening'])assert.ok(html.includes(label),label);
  assert.equal((html.match(/type="radio"/g)??[]).length,30);assert.equal((html.match(/class="muse-mood-history-feeling"/g)??[]).length,0);
 });
 

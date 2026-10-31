@@ -2,7 +2,7 @@
 export const pageMantras = {
   Planner: 'THE ART OF GETTING SH!T DONE',
   Rituals: 'ON REPEAT, BY DESIGN',
-  Nourish: "A GIRL'S GOTTA EAT",
+  Wellness: "Take care of yourself. You've got places to be.",
   Mood: 'FEEL IT. NAME IT. TRACK IT.',
   Money: "REASONS WHY I'M NOT A MILLIONAIRE",
   Notes: 'GET IT OUT OF YOUR HEAD',

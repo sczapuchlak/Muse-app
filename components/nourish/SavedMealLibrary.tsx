@@ -30,7 +30,7 @@ function SavedMealEditor({initial,anchor,onClose,onSaved}:{initial?:SavedMeal;an
       <label>Link · optional<input type="url" value={link} onChange={(event)=>setLink(event.target.value)} placeholder="https://…"/></label>
       <NutritionFields value={nutrition} onChange={setNutrition}/>
       {status.error&&<p role="alert" className="field-error">Resolve the wellness save error before saving this form. Your input is still here.</p>}{error&&<p role="alert" className="field-error">{error}</p>}
-      <div className="editor-actions"><button className="muse-button button-primary" type="submit" disabled={!status.loaded||!!status.error}>Save meal</button><button className="text-button" type="button" onClick={onClose}>Cancel</button></div>
+      <div className="editor-actions"><button className="muse-button button-primary" type="submit" disabled={!status.loaded||!!status.error}>Save meal</button><button className="muse-button button-ghost" type="button" onClick={onClose}>Cancel</button></div>
       <p className="small-label">Defaults for next time. Existing plans keep their own names, notes and nutrition values.</p>
     </form>
   </MuseDrawer>;

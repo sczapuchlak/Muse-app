@@ -5,7 +5,7 @@ export const navigation: NavItem[] = [
   { id: "daily", label: "Daily Edit", href: "/", icon: "home", group: "Everyday", description: "Your day, thoughtfully together." },
   { id: "planner", label: "Planner", href: "/planner", icon: "calendar", group: "Everyday", description: "A home for your plans, tasks, and events." },
   { id: "rituals", label: "Rituals", href: "/rituals", icon: "rituals", group: "Everyday", description: "Small rhythms that make a day your own." },
-  { id: "nourish", label: "Nourish", href: "/nourish", icon: "meals", group: "Everyday", description: "Meal planning with room for what you love." },
+  { id: "nourish", label: "Wellness", href: "/nourish", icon: "heart-pulse", group: "Everyday", description: "Take care of yourself. You've got places to be." },
   { id: "mood", label: "Mood", href: "/mood", icon: "mood", group: "Reflect", description: "A little more room to understand what you feel." },
   { id: "insights", label: "Insights", href: "/insights", icon: "insights", group: "Reflect", description: "A place to explore your patterns over time." },
   { id: "money", label: "Money", href: "/money", icon: "money", group: "Life", description: "A calmer view of your everyday finances." },

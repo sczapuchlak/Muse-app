@@ -57,7 +57,7 @@ export function Planner() {
 
   return <main className="muse-page muse-planner-page">
     <MusePageHeader title="Planner"><DateNavigator date={date} onChange={changeDate}/></MusePageHeader>
-    <PlannerPersistenceStatus/><PlannerCapture><div className="muse-module-toolbar">{utilities()}</div>
+    <PlannerCapture><div className="muse-module-toolbar">{utilities()}</div>
     <div className="muse-planner-mobile-tabs"><button className="muse-button" type="button" aria-haspopup="dialog" aria-expanded={mobileView==="inbox"} onClick={(event)=>{setInboxAnchor(event.currentTarget);setMobileView("inbox");}}>Task List · {inbox.length}</button></div>
     <div className="muse-planner-mobile-week"><WeekNavigator selectedDate={date} timeZone={profile.timeZone} onChange={(next) => { changeDate(next); setMobileView("day"); }} /></div>
     {state.activeTimer && <p className="muse-planner-timer-status" role="status">Timer running: {state.tasks.find((task) => task.id === state.activeTimer?.taskId)?.title}. <button className="text-button" type="button" onClick={(event) => { if (state.activeTimer) setDetail({ id: state.activeTimer.taskId, anchor: event.currentTarget }); }}>Open timer</button></p>}
@@ -87,5 +87,5 @@ export function Planner() {
     {mobileView==="inbox"&&<MuseDrawer title="Task List" returnFocus={inboxAnchor} onClose={()=>setMobileView("day")}><div className="muse-planner-sheet-body">{rail()}</div></MuseDrawer>}
     <div className="muse-sr-only" role="status">{announcement}</div>
     {detail && <TaskDetails key={`${detail.id}/${status?.discarded??0}`} taskId={detail.id} returnFocus={detail.anchor} onClose={() => { setDetail(null); setAnnouncement("Task details closed. Check the Planner save status for pending changes."); }} />}
-  </PlannerCapture></main>;
+  </PlannerCapture><footer className="muse-footer"><PlannerPersistenceStatus/></footer></main>;
 }
