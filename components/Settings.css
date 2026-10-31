@@ -1,0 +1,18 @@
+.muse-settings-layout { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--grid-gap);align-items:start; }
+.muse-settings-layout > * { min-width:0; }
+.muse-settings-layout > .muse-card { grid-column:auto; }
+.muse-settings-fields { display:grid;gap:var(--space-5);margin-top:var(--space-4); }
+.muse-settings-fields label { display:grid;gap:var(--space-2);font-size:.8rem; }
+.muse-settings-fields input { width:100%;min-width:0; }
+.muse-settings-fields :is(form,fieldset,section) { min-width:0; }
+.muse-settings-fields h3 { font-size:.9rem;margin:0; }
+.muse-settings-fields :is(.card-description,.small-label) { margin-block:var(--space-3); }
+.muse-settings-fields .muse-choice-menu { max-width:100%; }
+@media(max-width:760px){.muse-settings-layout { grid-template-columns:minmax(0,1fr); }}
+
+.muse-settings-save { margin-top:var(--space-4);font-size:.75rem;color:var(--text-muted); }
+.muse-settings-save .muse-daily-save-state { margin-bottom:0; }
+.muse-cosmic-settings > .card-description { margin-block:var(--space-3) var(--space-4); }
+.muse-cosmic-settings-controls { display:grid;gap:var(--space-4);justify-items:start;min-width:0; }
+.muse-cosmic-settings > .small-label { margin-top:var(--space-4); }
+.muse-about-philosophy { margin-block:var(--space-4);font-size:1rem;line-height:1.7;color:var(--foreground); }

@@ -9,8 +9,9 @@ type Job={id:string;action:PlannerAction};
 export class PlannerStore{
  private base:PlannerSnapshot={revision:0,state:emptyPlannerState()};private jobs:Job[]=[];private listeners=new Set<()=>void>();private running=false;private timer?:ReturnType<typeof setTimeout>;private loading?:Promise<void>;private epoch=0;private holds=new Set<string>();private changed?:()=>void;
  private view:PlannerView={state:emptyPlannerState(),loaded:false,pending:false,saving:false,refreshing:false,error:'',conflict:false,discarded:0,drafts:{},drafting:false,revision:0};
- constructor(private repository:PlannerRepository,readonly timeZone:string){}
- static forClient(client:SupabaseClient<Database>,zone:string){return new PlannerStore({read:()=>readPlanner(client),write:(revision,id,action)=>writePlanner(client,revision,id,action,zone)},zone);}
+ constructor(private repository:PlannerRepository,public timeZone:string){}
+ static forClient(client:SupabaseClient<Database>,zone:string){const store:PlannerStore=new PlannerStore({read:()=>readPlanner(client),write:(revision,id,action)=>writePlanner(client,revision,id,action,store.timeZone)},zone);return store;}
+ setTimeZone(zone:string){if(this.timeZone!==zone){this.timeZone=zone;this.publish();}}
  subscribe=(listener:()=>void)=>{this.listeners.add(listener);return()=>{this.listeners.delete(listener);};};getSnapshot=()=>this.view;
  setEditorDraft=(key:string,value:string|null)=>{const drafts={...this.view.drafts};if(value===null){delete drafts[key];this.holds.delete(key);}else{drafts[key]=value;this.holds.add(key);}this.view={...this.view,drafts};this.epoch++;this.publish();};
  setOnChange(listener:(()=>void)|undefined){this.changed=listener;}

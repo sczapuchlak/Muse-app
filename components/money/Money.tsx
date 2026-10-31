@@ -1,9 +1,9 @@
 "use client";
+import {useDailyData} from "../daily/DailyData";
 import { useRef,useState } from "react";
 import { useRouter,useSearchParams } from "next/navigation";
 import { validDate } from "@/lib/dates";
 import { dailyEditSample } from "@/lib/daily-edit-data";
-import { mockProfile } from "@/lib/mock-profile";
 import { currentPaycheck,monthPeriod,paycheckPeriod,formatMoney,spendingTotal,type MoneyPeriod } from "@/lib/money";
 import { DateNavigator } from "../DateNavigator";
 import { useMuseDate } from "../MuseSession";
@@ -21,9 +21,9 @@ import { useMoney } from "./MoneyStore";
 import "./Money.css";
 
 const sections=[{id:"overview",label:"Overview"},{id:"paychecks",label:"Paychecks"},{id:"spending",label:"Spending"},{id:"recurring",label:"Recurring"},{id:"cards",label:"Cards"},{id:"categories",label:"Categories"}] as const;
-export function Money() {
+export function Money() {const {profile}=useDailyData();
   const [selectedDate,setSelectedDate]=useMuseDate(dailyEditSample.date.iso);
-  const {state}=useMoney(),query=useSearchParams(),router=useRouter(),today=useMuseToday(mockProfile.timeZone),date=today||dailyEditSample.date.iso;
+  const {state}=useMoney(),query=useSearchParams(),router=useRouter(),today=useMuseToday(profile.timeZone),date=today||dailyEditSample.date.iso;
   const view=sections.find((item)=>item.id===query.get("view"))?.id??"overview";
   const [paycheckId,setPaycheckId]=useState(""),[periodMode,setPeriodMode]=useState("paycheck"),[month,setMonth]=useState(dailyEditSample.date.iso.slice(0,7)),[start,setStart]=useState(dailyEditSample.date.iso),[end,setEnd]=useState(dailyEditSample.date.iso),[editor,setEditor]=useState<MoneyEditorRequest|null>(null);
   const [search,setSearch]=useState(""),[category,setCategory]=useState(""),[tag,setTag]=useState(""),[card,setCard]=useState(""),[filtersOpen,setFiltersOpen]=useState(false),filterRef=useRef<HTMLButtonElement>(null),{trigger,spark}=useMuseSpark();

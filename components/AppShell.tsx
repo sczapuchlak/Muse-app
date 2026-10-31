@@ -14,6 +14,8 @@ import { MuseStar } from "./MuseStar";
 import { ThemeSwitcher } from "./ThemeSwitcher";
 import { GlassPopover } from "./GlassPopover";
 import { NourishProvider } from "./NourishStore";
+import {AccountPreferencesProvider,useAccountPreferences} from "./AccountPreferences";
+import {NotesProvider} from "./notes/NotesStore";
 import { PlannerProvider } from "./PlannerStore";
 import { MuseSessionProvider } from "./MuseSession";
 import { RitualProvider } from "./rituals/RitualStore";
@@ -30,7 +32,10 @@ function NavDestination({ item, path, compact = false, onNavigate }: { item: Nav
   </Link>;
 }
 
-export function AppShell({ children, profile }: { children: ReactNode; profile:DailyProfile }) {
+export function AppShell({children,profile}:{children:ReactNode;profile:DailyProfile}){return <AccountPreferencesProvider userId={profile.id}><AppShellContent profile={profile}>{children}</AppShellContent></AccountPreferencesProvider>;}
+function AppShellContent({ children, profile:initialProfile }: { children: ReactNode; profile:DailyProfile }) {
+  const {status}=useAccountPreferences();
+  const profile={...initialProfile,timeZone:status.saved?.profile.time_zone??initialProfile.timeZone};
   const path = usePathname() ?? "/";
   const [collapsed, setCollapsed] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
@@ -38,7 +43,7 @@ export function AppShell({ children, profile }: { children: ReactNode; profile:D
   const moreActive = navItems(mobileMoreIds).some((item) => isActiveDestination(path, item.href));
   return (
     <MuseSessionProvider initialDate={todayInTimeZone(profile.timeZone)} initialRecords={Object.fromEntries(Object.entries(dailySessionSeed).filter(([key])=>!key.endsWith("/intention")))}><DailyDataProvider profile={profile}><DailyDateSync/>
-      <PlannerProvider profile={profile}><NourishProvider><MoneyProvider><RitualProvider><div className="muse-app-shell" data-rail={collapsed ? "collapsed" : "expanded"} data-module={path.split("/")[1]||"daily"}>
+      <NotesProvider profile={profile}><PlannerProvider profile={profile}><NourishProvider><MoneyProvider><RitualProvider><div className="muse-app-shell" data-rail={collapsed ? "collapsed" : "expanded"} data-module={path.split("/")[1]||"daily"}>
         <MuseMagicBridge/><MuseAtmosphere/>
         <a className="muse-skip-link" href="#muse-main-content">Skip to content</a>
         <aside className="muse-rail" aria-label="Muse app navigation">
@@ -52,7 +57,7 @@ export function AppShell({ children, profile }: { children: ReactNode; profile:D
             </div>)}
           </nav>
           <div className="muse-rail-footer"><ThemeSwitcher compact={collapsed}/>
-            {navigation.filter((item) => item.group === "Tools").map((item) => <NavDestination key={item.id} item={item} path={path} compact={collapsed} />)}
+            {navigation.filter((item) => item.group === "Tools" && item.id !== "appearance").map((item) => <NavDestination key={item.id} item={item} path={path} compact={collapsed} />)}
             <LogoutButton compact={collapsed}/>
           </div>
         </aside>
@@ -74,7 +79,7 @@ export function AppShell({ children, profile }: { children: ReactNode; profile:D
           <p className="editor-label">More from Muse</p>
           <div className="muse-more-destinations">{navItems(mobileMoreIds).map((item) => <NavDestination key={item.id} item={item} path={path} onNavigate={() => setMoreOpen(false)} />)}<LogoutButton/></div>
         </GlassPopover>
-      </div></RitualProvider></MoneyProvider></NourishProvider></PlannerProvider>
+      </div></RitualProvider></MoneyProvider></NourishProvider></PlannerProvider></NotesProvider>
     </DailyDataProvider></MuseSessionProvider>
   );
 }

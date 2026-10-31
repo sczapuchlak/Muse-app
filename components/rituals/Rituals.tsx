@@ -1,8 +1,8 @@
 "use client";
+import {useDailyData} from "../daily/DailyData";
 import { useState } from "react";
 import { dailyEditSample } from "@/lib/daily-edit-data";
 import { dateLabel, shiftDate, weekDates } from "@/lib/dates";
-import { mockProfile } from "@/lib/mock-profile";
 import { entryFor, weekSummary, type RitualDefinition } from "@/lib/rituals";
 import { MusePageHeader } from "../MusePageHeader";
 import { DateNavigator } from "../DateNavigator";
@@ -18,10 +18,11 @@ import "./Rituals.css";
 
 type Editor = { kind: "ritual"; ritual?: RitualDefinition; anchor: HTMLElement } | { kind: "groups"; anchor: HTMLElement } | { kind: "entry"; ritual: RitualDefinition; date: string; anchor: HTMLElement; apply: (value: number | null) => void };
 function RitualsView() {
+  const {profile}=useDailyData();
   const { state } = useRituals();
   const [date, setDate] = useMuseDate(dailyEditSample.date.iso);
   const [editor, setEditor] = useState<Editor | null>(null);
-  const today = useMuseToday(mockProfile.timeZone);
+  const today = useMuseToday(profile.timeZone);
   const week = weekDates(date), summary = weekSummary(state, week, today);
   return <main className="muse-page muse-rituals-page">
     <MusePageHeader title="Rituals"><DateNavigator date={date} onChange={setDate} /></MusePageHeader>

@@ -20,7 +20,8 @@ export function emotionalRecords(days:Record<string,DayData>):EmotionalCheckIn[]
 export class DailyStore {
  private lanes=new Map<string,Lane>();private listeners=new Set<()=>void>();private periods=new Map<string,MoodPeriod>();private rangeRequests=new Map<string,Promise<void>>();
  private snapshot:DailySnapshot={days:{},statuses:{},influences:[],rangeErrors:{},ranges:{}};
- constructor(readonly client:SupabaseClient<Database>,readonly profile:DailyProfile){}
+ constructor(readonly client:SupabaseClient<Database>,public profile:DailyProfile){}
+ setProfile(profile:DailyProfile){if(this.profile.timeZone!==profile.timeZone||this.profile.firstName!==profile.firstName){this.profile=profile;this.publish();}}
  getSnapshot=()=>this.snapshot;
  period(date:string){let value=this.periods.get(date);if(!value){value=defaultMoodPeriod(new Date(),this.profile.timeZone);this.periods.set(date,value);}return value;}
  setOnChange(listener:((date:string)=>void)|undefined){this.changed=listener;}

@@ -21,7 +21,9 @@
     "test:auth": "node scripts/test-local-auth.mjs",
     "test:daily": "node scripts/test-local-daily.mjs",
     "test:planner": "node scripts/test-local-planner.mjs",
-    "test:priority-links": "node scripts/test-local-priority-links.mjs"
+    "test:priority-links": "node scripts/test-local-priority-links.mjs",
+    "test:notes": "node scripts/test-local-notes.mjs",
+    "test:account": "node scripts/test-local-account.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",

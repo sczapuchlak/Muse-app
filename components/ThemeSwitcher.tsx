@@ -4,6 +4,7 @@ import { useId, useLayoutEffect, useRef, useState, useSyncExternalStore, type CS
 import { defaultTheme, themes } from "@/lib/themes";
 import { readThemePreference, selectTheme, serverThemePreference, subscribeThemePreference } from "@/lib/theme-preference";
 import { materials, readMaterial, selectMaterial, serverMaterial, subscribeMaterial } from "@/lib/material-preference";
+import {readMagic,serverMagic,subscribeMagic,magicLevels,selectMagic} from "@/lib/magic-preference";
 import { MuseStar } from "./MuseStar";
 import { MuseIcon } from "./MuseIcon";
 import { GlassPopover } from "./GlassPopover";
@@ -13,6 +14,7 @@ export function ThemeSwitcher({compact=false}:{compact?:boolean}) {
   const menuId=useId();
   const [open, setOpen] = useState(false);
   const activeId = useSyncExternalStore(subscribeThemePreference, readThemePreference, serverThemePreference);
+  const magic=useSyncExternalStore(subscribeMagic,readMagic,serverMagic);
   const material = useSyncExternalStore(subscribeMaterial, readMaterial, serverMaterial);
   useLayoutEffect(() => { document.documentElement.setAttribute("data-material", material); }, [material]);
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -50,6 +52,7 @@ export function ThemeSwitcher({compact=false}:{compact?:boolean}) {
           ))}
           <div className="muse-theme-materials" role="group" aria-label="Glass material"><p className="small-label">Glass material</p>{materials.map((value) => <button key={value} type="button" className="muse-theme-option muse-edge" role="menuitemradio" tabIndex={-1} aria-label={`${value === "crystal" ? "Crystal" : "Frosted"} glass`} aria-checked={material === value} onClick={() => selectMaterial(value)}><span className="muse-material-swatch" data-material={value} aria-hidden="true" /><span>{value === "crystal" ? "Crystal" : "Frosted"}</span>{material === value && <MuseIcon name="check" size={16} />}</button>)}</div>
         </div>
+        <div className="muse-theme-materials"><p className="editor-label">Muse Magic</p><div role="group" aria-label="Muse Magic">{magicLevels.map(value=><button key={value} type="button" className="choice-button" aria-pressed={magic===value} onClick={()=>selectMagic(value)}>{value[0].toUpperCase()+value.slice(1)}</button>)}</div><p className="small-label">Your device’s reduced-motion preference takes priority.</p></div>
       </GlassPopover>
     </div>
   );

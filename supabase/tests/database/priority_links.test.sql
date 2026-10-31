@@ -57,7 +57,7 @@ select is((select standalone_complete from public.daily_priorities where positio
 select is((select count(*)::integer from public.daily_priorities),3,'Delete does not erase priority');
 select lives_ok($$select public.planner_command(1,gen_random_uuid(),'{"type":"task/delete","id":"91000000-0000-0000-0000-000000000003"}')$$,'Delete preserves unknown historical evidence');
 select is((select standalone_complete from public.daily_priorities where position=2),null::boolean,'Deleted task remains unknown for earlier day');
-select lives_ok($$update public.profiles set time_zone='Asia/Tokyo'$$,'User may explicitly change profile zone');
+select lives_ok($$select public.save_account_preferences((select revision from public.profiles),gen_random_uuid(),'{"time_zone":"Asia/Tokyo"}')$$,'User may explicitly change profile zone');
 select is((select time_zone from public.daily_records),'America/Los_Angeles','Original daily identity/zone stays unchanged');
 select is((select historical_complete from public.daily_priority_projection where position=1),true,'Materialized history remains stable through travel');
 select throws_ok($$update public.daily_priorities set standalone_complete=true where position=0$$,'42501',null,'Cannot forge linked/standalone state outside commands');

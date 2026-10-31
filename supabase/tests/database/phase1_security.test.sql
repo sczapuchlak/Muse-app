@@ -35,10 +35,10 @@ select throws_ok($$select public.save_daily_record('2026-10-29','{"day_in_three"
 select throws_ok($$select public.save_daily_record('2026-10-29','{"owner":"bad"}',2)$$,'22023',null,'Patch cannot change ownership/identity');
 select lives_ok($$select public.save_daily_record('2026-10-29','{"energy":null}',2)$$,'Clear stores null, not zero');
 select ok((select energy is null and overall_day=7 and intention_text='Test intention' from public.daily_records),'Clear preserves other dimensions');
-select lives_ok($$update public.profiles set time_zone='Asia/Tokyo'$$,'User may intentionally change profile zone');
+select lives_ok($$select public.save_account_preferences((select revision from public.profiles),gen_random_uuid(),'{"time_zone":"Asia/Tokyo"}')$$,'User may intentionally change profile zone');
 select is((select time_zone from public.daily_records),'America/Los_Angeles','Profile change never relabels historical day');
 select throws_ok($$update public.daily_records set local_date='2026-10-30'$$,'22023',null,'Historical date cannot drift during edit');
-select throws_ok($$update public.profiles set time_zone='Not/AZone'$$,'23514',null,'Unknown IANA timezone rejected');
+select throws_ok($$select public.save_account_preferences((select revision from public.profiles),gen_random_uuid(),'{"time_zone":"Not/AZone"}')$$,'22023',null,'Unknown IANA timezone rejected');
 select throws_ok($$update public.profiles set created_at=now()$$,'42501',null,'Profile creation timestamp is not a client field');
 
 select public.save_daily_priorities('2026-10-29',(select jsonb_agg(jsonb_build_object('id',gen_random_uuid(),'text','Test priority '||slot,'complete',slot=0) order by slot) from generate_series(0,2) slot),'[]');

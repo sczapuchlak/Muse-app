@@ -83,7 +83,7 @@ test('Little Revelations are deterministic, range/record traceable and never req
 
 test('Daily Edit renders one Forecast after its section heading and before priorities, outside the date header',()=>{
  const {DailyEdit}=load('components/DailyEdit'),{PlannerProvider}=load('components/PlannerStore'),{NourishProvider}=load('components/NourishStore'),{MuseSessionProvider}=load('components/MuseSession');
- const html=renderToStaticMarkup(React.createElement(MuseSessionProvider,{initialDate:'2026-10-29'},React.createElement(PlannerProvider,null,React.createElement(NourishProvider,null,React.createElement(DailyEdit)))));
+ const {AccountPreferencesContext}=load('components/AccountPreferences');const account={loaded:true,saved:{profile:{cosmic_enabled:true,zodiac_sign:null}},draft:{}};const tree=React.createElement(MuseSessionProvider,{initialDate:'2026-10-29'},React.createElement(PlannerProvider,null,React.createElement(NourishProvider,null,React.createElement(DailyEdit))));const html=renderToStaticMarkup(React.createElement(AccountPreferencesContext.Provider,{value:{subscribe:()=>()=>{},getSnapshot:()=>account}},tree));
  assert.equal((html.match(/id="cosmic-forecast"/g)??[]).length,1);
  assert.ok(html.indexOf('</header>')<html.indexOf('id="daily-edit"'));
  assert.ok(html.indexOf('id="daily-edit"')<html.indexOf('class="daily-grid"'));

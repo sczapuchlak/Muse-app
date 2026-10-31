@@ -1,7 +1,7 @@
 'use client';
 import {useSearchParams,usePathname} from 'next/navigation';
 import {validDate} from '@/lib/dates';
-import {createContext,useContext,useEffect,useRef,useState,useSyncExternalStore,type ReactNode} from 'react';
+import {createContext,useContext,useEffect,useLayoutEffect,useRef,useState,useSyncExternalStore,type ReactNode} from 'react';
 import {createMuseBrowserClient} from '@/lib/supabase/client';
 import {DailyStore,type DailyProfile,type DailySnapshot} from '@/lib/data/daily-store';
 import {emptyDay,type DailyPatch} from '@/lib/data/daily';
@@ -12,6 +12,7 @@ const noop=()=>()=>{};
 const emptySnapshot=()=>empty;
 export function DailyDataProvider({profile,children}:{profile:DailyProfile;children:ReactNode}){
  const [store]=useState(()=>new DailyStore(createMuseBrowserClient(),profile));
+ useLayoutEffect(()=>store.setProfile(profile),[store,profile]);
  useEffect(()=>{
   void store.loadInfluences();
   let channel:BroadcastChannel|undefined;try{channel=new BroadcastChannel(`muse.daily.${profile.id}`);channel.onmessage=()=>store.refresh();}catch{}

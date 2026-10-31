@@ -171,6 +171,94 @@ isOneToOne: false
       referencedColumns: ["user_id","id"]
     }
                   ]
+                },"note_tag_links": {
+                  Row: {
+                    "note_id": string,"tag_id": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "note_id": string,"tag_id": string,"user_id"?: string
+                  }
+                  Update: {
+                    "note_id"?: string,"tag_id"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "note_tag_links_user_id_note_id_fkey"
+      columns: ["user_id","note_id"]
+isOneToOne: false
+      referencedRelation: "notes"
+      referencedColumns: ["user_id","id"]
+    },{
+      foreignKeyName: "note_tag_links_user_id_tag_id_fkey"
+      columns: ["user_id","tag_id"]
+isOneToOne: false
+      referencedRelation: "note_tags"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+                },"note_tags": {
+                  Row: {
+                    "icon": string,"id": string,"parent_id": string | null,"path": string,"pinned": boolean,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "icon": string,"id": string,"parent_id"?: string | null,"path": string,"pinned": boolean,"user_id"?: string
+                  }
+                  Update: {
+                    "icon"?: string,"id"?: string,"parent_id"?: string | null,"path"?: string,"pinned"?: boolean,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "note_tags_user_id_parent_id_fkey"
+      columns: ["user_id","parent_id"]
+isOneToOne: false
+      referencedRelation: "note_tags"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+                },"notes": {
+                  Row: {
+                    "created_at": string,"document": NonNullable<Json>,"id": string,"pinned": boolean,"plain_text": string,"revision": number,"search_vector": unknown,"status": string,"title": string,"trashed_at": string | null,"trashed_from": string | null,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"document": NonNullable<Json>,"id": string,"pinned": boolean,"plain_text": string,"revision"?: number,"search_vector"?: never,"status": string,"title": string,"trashed_at"?: string | null,"trashed_from"?: string | null,"updated_at"?: string,"user_id"?: string
+                  }
+                  Update: {
+                    "created_at"?: string,"document"?: NonNullable<Json>,"id"?: string,"pinned"?: boolean,"plain_text"?: string,"revision"?: number,"search_vector"?: never,"status"?: string,"title"?: string,"trashed_at"?: string | null,"trashed_from"?: string | null,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
+                },"notes_commands": {
+                  Row: {
+                    "id": string,"request_hash": string,"revision": number,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "id": string,"request_hash": string,"revision": number,"user_id": string
+                  }
+                  Update: {
+                    "id"?: string,"request_hash"?: string,"revision"?: number,"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
+                },"notes_versions": {
+                  Row: {
+                    "revision": number,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "revision"?: number,"user_id": string
+                  }
+                  Update: {
+                    "revision"?: number,"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
                 },"planner_commands": {
                   Row: {
                     "id": string,"request_hash": string,"revision": number,"user_id": string
@@ -213,6 +301,20 @@ isOneToOne: false
                   Relationships: [
 
                   ]
+                },"preference_commands": {
+                  Row: {
+                    "id": string,"request_hash": string,"revision": number,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "id": string,"request_hash": string,"revision": number,"user_id": string
+                  }
+                  Update: {
+                    "id"?: string,"request_hash"?: string,"revision"?: number,"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
                 },"priority_commands": {
                   Row: {
                     "id": string,"operation": string,"planner_revision": number | null,"priority_versions": Json | null,"request_hash": string,"user_id": string
@@ -229,14 +331,14 @@ isOneToOne: false
                   ]
                 },"profiles": {
                   Row: {
-                    "created_at": string,"first_name": string,"id": string,"revision": number,"time_zone": string,"updated_at": string
+                    "cosmic_enabled": boolean,"created_at": string,"first_name": string,"id": string,"revision": number,"time_zone": string,"time_zone_confirmed_at": string | null,"updated_at": string,"zodiac_sign": string | null
                   }
                   ComputedFields: never
                   Insert: {
-                    "created_at"?: string,"first_name"?: string,"id": string,"revision"?: number,"time_zone"?: string,"updated_at"?: string
+                    "cosmic_enabled"?: boolean,"created_at"?: string,"first_name"?: string,"id": string,"revision"?: number,"time_zone"?: string,"time_zone_confirmed_at"?: string | null,"updated_at"?: string,"zodiac_sign"?: string | null
                   }
                   Update: {
-                    "created_at"?: string,"first_name"?: string,"id"?: string,"revision"?: number,"time_zone"?: string,"updated_at"?: string
+                    "cosmic_enabled"?: boolean,"created_at"?: string,"first_name"?: string,"id"?: string,"revision"?: number,"time_zone"?: string,"time_zone_confirmed_at"?: string | null,"updated_at"?: string,"zodiac_sign"?: string | null
                   }
                   Relationships: [
 
@@ -461,6 +563,9 @@ isOneToOne: false
         isOneToOne: true
         isSetofReturn: false
       } },
+"export_personal_data":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
 "planner_command":
 { Args: { "p_action": Json,"p_command_id": string,"p_expected_revision": number }; Returns: number
                            },
@@ -470,8 +575,14 @@ isOneToOne: false
 "read_daily_days":
 { Args: { "p_after"?: string,"p_end": string,"p_limit"?: number,"p_start": string }; Returns: Json
                            },
+"read_notes":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
 "read_planner":
 { Args: Record<PropertyKey, never>; Returns: Json
+                           },
+"save_account_preferences":
+{ Args: { "p_command_id": string,"p_expected_revision": number,"p_patch": Json }; Returns: number
                            },
 "save_daily_priorities":
 { Args: { "p_command_id"?: string,"p_date": string,"p_expected": Json,"p_expected_planner_revision"?: number,"p_items": Json }; Returns: {
@@ -537,6 +648,9 @@ isOneToOne: false
         isOneToOne: true
         isSetofReturn: false
       } },
+"save_notes":
+{ Args: { "p_command_id": string,"p_expected_revision": number,"p_state": Json }; Returns: number
+                           },
 "task_completion_before":
 { Args: { "p_before": string,"p_task_id": string }; Returns: {
               "complete": boolean,"completed_at": string

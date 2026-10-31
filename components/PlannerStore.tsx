@@ -1,5 +1,5 @@
 'use client';
-import {createContext,useContext,useEffect,useReducer,useState,useSyncExternalStore,type Dispatch,type ReactNode} from 'react';
+import {createContext,useContext,useEffect,useLayoutEffect,useReducer,useState,useSyncExternalStore,type Dispatch,type ReactNode} from 'react';
 import {plannerReducer,type PlannerAction,type PlannerState} from '@/lib/planner';
 import {plannerSample} from '@/lib/planner-sample';
 import {PlannerStore,type PlannerView} from '@/lib/data/planner-store';
@@ -15,6 +15,7 @@ function PersistentPlanner({children,profile}:{children:ReactNode;profile:DailyP
  const {store:dailyStore}=useDailyData();
  const [store]=useState(()=>PlannerStore.forClient(createMuseBrowserClient(),profile.timeZone));
  const status=useSyncExternalStore(store.subscribe,store.getSnapshot,store.getSnapshot);
+ useLayoutEffect(()=>store.setTimeZone(profile.timeZone),[store,profile.timeZone]);
  useEffect(()=>{
   void store.load();let channel:BroadcastChannel|undefined;try{channel=new BroadcastChannel(`muse.planner.${profile.id}`);channel.onmessage=()=>{void store.load(true);dailyStore?.refresh();};}catch{}
   store.setOnChange(()=>{dailyStore?.refresh();channel?.postMessage('changed');try{localStorage.setItem('muse.planner.changed',`${profile.id}/${crypto.randomUUID()}`);localStorage.removeItem('muse.planner.changed');}catch{}});

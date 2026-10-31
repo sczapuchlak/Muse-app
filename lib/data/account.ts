@@ -1,0 +1,21 @@
+import type {SupabaseClient} from '@supabase/supabase-js';
+import type {Database,Json} from '@/lib/database.types';
+export type AccountProfile=Database['public']['Tables']['profiles']['Row'];
+export type AccountData={profile:AccountProfile;email:string};
+export type PreferencePatch=Partial<Pick<AccountProfile,'time_zone'|'cosmic_enabled'|'zodiac_sign'>>;
+export async function readAccount(client:SupabaseClient<Database>):Promise<AccountData>{const {data,error}=await client.auth.getUser();if(error||!data.user)throw error??Error('Sign in required');const result=await client.from('profiles').select('*').eq('id',data.user.id).single();if(result.error)throw result.error;return {profile:result.data,email:data.user.email??''};}
+export async function writePreferences(client:SupabaseClient<Database>,revision:number,id:string,patch:PreferencePatch){const {data,error}=await client.rpc('save_account_preferences',{p_expected_revision:revision,p_command_id:id,p_patch:patch as Json});if(error)throw error;if(data===null)throw Error('Save not acknowledged');return data;}
+export type AccountView={saved:AccountData|null;draft:PreferencePatch;loaded:boolean;pending:boolean;saving:boolean;error:string;conflict:boolean};
+/** Small single-profile command lane, matching existing revision/idempotency patterns. */
+export class AccountStore{
+ private jobs:{id:string;patch:PreferencePatch;expected?:number}[]=[];private running=false;private epoch=0;private loading?:Promise<void>;private listeners=new Set<()=>void>();private changed?:()=>void;
+ private view:AccountView={saved:null,draft:{},loaded:false,pending:false,saving:false,error:'',conflict:false};
+ constructor(private repository:{read:()=>Promise<AccountData>;write:(revision:number,id:string,patch:PreferencePatch)=>Promise<number>}){}
+ getSnapshot=()=>this.view;subscribe=(fn:()=>void)=>{this.listeners.add(fn);return()=>{this.listeners.delete(fn);};};setOnChange(fn:(()=>void)|undefined){this.changed=fn;}
+ private publish(){this.view={...this.view,draft:Object.assign({},...this.jobs.map(j=>j.patch)),pending:!!this.jobs.length,saving:this.running};for(const fn of this.listeners)fn();}
+ async load(force=false){if(this.jobs.length||this.loading||this.view.loaded&&!force)return this.loading;const epoch=this.epoch;this.loading=(async()=>{try{const saved=await this.repository.read();if(epoch===this.epoch&&!this.jobs.length)this.view={...this.view,saved,loaded:true,error:''};}catch{if(epoch===this.epoch)this.view={...this.view,error:'Account preferences could not load. Please retry.'};}finally{this.loading=undefined;this.publish();}})();return this.loading;}
+ edit(patch:PreferencePatch,expectedRevision?:number){if(!this.view.loaded||this.view.error)return;this.epoch++;this.jobs.push({id:crypto.randomUUID(),patch,expected:expectedRevision});this.publish();void this.drain();}
+ private async drain(){if(this.running||this.view.error||!this.jobs.length||!this.view.saved)return;this.running=true;this.publish();try{while(this.jobs.length){const job=this.jobs[0];job.expected??=this.view.saved!.profile.revision;const revision=await this.repository.write(job.expected,job.id,job.patch),saved=await this.repository.read();if(saved.profile.revision!==revision)throw {code:'40001'};this.view={...this.view,saved};this.jobs.shift();this.epoch++;this.publish();this.changed?.();}}catch(error){const code=(error as {code?:string}).code;this.view={...this.view,conflict:code==='40001',error:code==='40001'?'Preferences changed in another window. Your choice is kept. Load the latest saved preferences before trying again.':code==='22023'?'This preference could not be accepted. Your choice is kept; load the saved version to choose again.':'Preferences are not confirmed saved. Your choice is kept. Check your connection and retry.'};}finally{this.running=false;this.publish();}}
+ retry(){if(this.view.conflict)return;this.view={...this.view,error:''};if(this.jobs.length)void this.drain();else void this.load(true);this.publish();}
+ async discard(){if(this.running)return;this.jobs=[];this.epoch++;this.view={...this.view,error:'',conflict:false};this.publish();await this.load(true);}
+}

@@ -341,3 +341,8 @@ Daily capture keeps the existing cards, controls, typography and materials. A co
 ### Linked priority capture
 
 Use a compact existing link icon and searchable Muse glass popover beside the existing priority actions; do not turn daily commitments into task cards. Preserve their own text and date. Keep commitment text usable at narrow item widths by placing the action group below it when necessary. Historical linked checkboxes are labeled day-end readouts, unknown is distinct from incomplete, and current-task completion actions live in the link menu. Reuse the established saving/error/retry/conflict patterns; optimistic feedback is not proof of persistence.
+
+
+### Settings composition and feedback
+
+Keep Account & Preferences, Cosmic Forecast, Privacy & Your Data and About Muse in a compact responsive glass grid; scope shared card spans to that grid. Related Forecast controls stack with existing 12–16px gaps and a separate short preview disclosure. Save/sync feedback is a subtle footer below all sections; expand only for genuine error/conflict recovery. An unsubmitted choice is unsaved, queued work is saving, and only confirmed readback is up to date. Do not expose technical migration links or nonfunctional destructive buttons. About uses the approved core statement, with secondary version information; longer approved copy remains pending.
