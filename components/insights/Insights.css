@@ -31,3 +31,24 @@
 .muse-insight-heatmap-legend [data-status="upcoming"] { border-style:dashed; opacity:.7; }
 
 .muse-insight-heatmap-month { grid-column:1/-1; padding-top:var(--space-2); color:var(--text-muted); font-size:.67rem; font-weight:550; }
+
+/* A quiet context row, not another toolbar or card. */
+.muse-insight-period-row { display:flex; align-items:center; justify-content:space-between; gap:var(--space-4); margin-bottom:var(--module-section-gap); border-bottom:1px solid var(--divider); padding-bottom:var(--space-4); }
+.muse-insight-period-row .muse-insight-comparison { padding:0; margin:0; border:0; min-width:0; }
+.muse-insight-action { display:inline-flex; align-items:center; justify-content:center; gap:var(--space-2); flex-shrink:0; width:fit-content; max-width:100%; font-size:.75rem; text-decoration:none; }
+.muse-insight-revelations .muse-revelation-copy { display:flex; flex-direction:column; align-items:flex-start; gap:var(--space-2); min-width:0; }
+.muse-revelation-copy > :is(h3,p) { margin:0; }
+.muse-revelation-copy .muse-insight-basis { margin:0; width:100%; }
+.muse-insight-basis summary { list-style:revert; color:var(--information-accent); width:fit-content; border-radius:var(--control-radius); }
+.muse-insight-basis summary:focus-visible { outline:2px solid var(--focus-ring); outline-offset:2px; }
+.muse-insight-lately .muse-insight-action { margin-top:var(--space-3); }
+.muse-insight-small-metrics { grid-template-columns:repeat(auto-fit,minmax(min(100%,130px),1fr)); align-content:start; }
+.muse-insight-inspection-date { display:grid; gap:var(--space-3); }
+.muse-insight-date-inspection > div[hidden] { display:none; }
+.muse-insight-date-inspection > div:not([hidden]):last-child { display:grid; gap:var(--space-5); }
+.muse-insight-date-inspection section { min-width:0; }
+.muse-insight-date-inspection section > .muse-insight-action { margin-top:var(--space-3); }
+.muse-insight-date-inspection li + li { margin-top:var(--space-2); }
+.muse-insight-date-inspection li .muse-insight-action { margin-block:var(--space-1); }
+@container muse-content (max-width:600px) { .muse-insight-period-row { flex-wrap:wrap; }.muse-insight-period-row > .muse-insight-action { margin-left:auto; } }
+.muse-insight-source-note { margin-top:var(--module-section-gap); }

@@ -363,4 +363,33 @@ Disco's latest approved direction supersedes earlier mirrorball guidance: **no l
 
 ## Daily Edit final layout refinement
 
-Preserve the approximately62/38 Forecast/Priorities + Little Rituals top composition. Desktop Little Rituals is24px shorter than the left stack through stretch/margin accounting, retaining its stationary header/footer and sole scrollable list; narrow screens retain natural bounded height. The middle uses independent natural-height columns on the same tracks: Movement → Water → Meals left, Today's Plan right aligned with Movement. Do not equalize their heights or add a Plan scrollbar/filler. Daily Edit's reflection composition is Mood + Day Pulse, then full-width Day in Three; the Mood module's existing check-in composition is unchanged. Stack middle/reflection tracks at the existing880px content breakpoint. No AM/PM grouping or shared-header spacing changes.
+Current restoration supersedes the temporary right-only reflection layout. Preserve the existing approximately62/38 upper tracks and card placement: Forecast/Priorities/Movement/Water/Meals at left, Little Rituals/Today's Plan at right. Mood and Day Pulse occupy a broad page-level60/40 row below those tracks; Day in Three uses the Mood-column width directly beneath Mood at `--grid-gap`. Pulse remains natural-height and spans the two reflection rows without stretching. At the existing880px content breakpoint, reflection stacks Mood → Pulse → Day in Three. Upper cards, internal layouts and owner captures are unchanged. Use the same `--grid-gap` between neighbors and sections; no filler heights or per-card compensation margins. A shorter upper column naturally ends earlier before the broad reflection row. Eliminating that remaining area would require relocating, resizing or stretching content, which is not approved. The referenced layout screenshot was not attached to this request; direct reference-image matching remains pending.
+
+
+## Insights UI Session 3
+
+Inspect a Date belongs at the right of the existing Previous Period context row, immediately below period filters; narrow layouts wrap it deliberately. It never belongs in a source-information banner. Source readiness, errors and retry remain explicit.
+
+`MuseDatePicker`/`MuseCalendar` reuse `GlassPopover` and semantic control/theme tokens, with civil-date arithmetic and profile-local today supplied by the caller. The inspector has one readable date trigger, no duplicate date heading or visible OS date input. The Monday-first calendar includes month/year steps, Today, selected/today/outside-month states, roving day focus, arrows/Home/End/Page Up/Down (Shift for years), native Enter/Space selection, Escape and focus return. Popovers stay within the existing drawer/viewport and the drawer body remains scrollable.
+
+Personal Overview and Your Life, Lately exclude financial totals and revelations. Financial observations belong in Insights → Money, retaining the exact canonical calculations and evidence. `RevelationList` supplies consistent title/evidence/ghost navigation hierarchy and the native **What this is based on** disclosure. Prominent standalone owner links use shared ghost/secondary buttons; contextual chart-value inspection remains a text action. No evidence or missing/planned/actual distinctions are removed, and sparse content never receives fabricated filler. All theme palettes, including Disco holographic materials, stay unchanged.
+
+## Disco Damage XXXTRA — blacklight identity
+
+This supersedes the earlier violet-glass/full-surface foil direction for `disco-damage` only. Aim for **90% black atmosphere, 10% explosive neon light**: near-black `#050507`, neutral black/charcoal Crystal and Frosted surfaces, white primary text and neutral secondary ink. Planner maintains distinct charcoal container/task levels. Purple and pink must not tint large passive card fills.
+
+Electric cyan, hot pink, acid lime, ultraviolet and fluorescent orange participate in semantic accents, icon gradients, progress, selected controls and focus. Local overlapping radial blooms resemble reflected oil-slick light while leaving substantial black negative space. Passive glass gets fine neutral chrome highlights and restrained cyan/pink edge light; full multicolor foil and soft neon glow belong to selected/hover moments, not every card. The registry preview follows this identity. Other eight theme palettes, shared layout, data and functionality remain unchanged.
+
+Official MuseStars stay crisp and theme-colored; achievement gold remains separate. Disco's ambient radial fields and caustics are static, with no looping full-page prism sweep or glitter animation. Existing shared reduced-motion and Quiet behavior remains. No animated blur, new canvas/WebGL or extra rendering dependency.
+
+
+## ISSYA BDAY! light — glossy neon frosting
+
+Scope is exactly `issya-bday`, never its independently tokenized `issya-bday-xxx` dark sibling or Disco. Keep the approved light background/bloom tokens. Light Crystal uses more opaque pearlescent white, stronger violet/cyan outline roles and dimensional soft shadows so cards separate from the atmosphere. Frosted retains greater opacity/diffusion; unlike generic low-opacity Crystal, this explicitly approved frosting material has a smaller opacity delta. Shared geometry, materials CSS and theme backgrounds remain unchanged.
+
+Use saturated cyan/turquoise, hot pink, ultraviolet and lime in icons, progress, interactive borders, sparkles and glossy selected states. Body/control text stays dark. Filled actions use a deeper saturated pink with readable white labels; decorative neon is not a substitute for readable ink. No new animation or extra blur. Birthday siblings share conceptual candy identity, not identical color values.
+
+
+## Final theme-picker descriptions
+
+All nine themes expose one approved `subtitle` in `lib/themes.ts`, rendered directly beneath the unchanged name by the existing picker and Appearance chooser. Birthday variant metadata remains intact but its old short caption is replaced by the approved description. Preserve names/IDs/order/swatches and official birthday MuseStar decoration. Subtitles use the existing small secondary type, natural wrapping and content-height menu rows. Do not change theme paint or selection/persistence behavior for copy updates.

@@ -1,13 +1,22 @@
-"use client";
+'use client';
 import {useMemo} from 'react';
 import {usePlanner} from '../PlannerStore';
-import {useNourish} from '../NourishStore';
 import {useRituals} from '../rituals/RitualStore';
 import {useMoney} from '../money/MoneyStore';
-import {useMood} from '../mood/useMood';
 import {useWellness} from '../WellnessStore';
 import {useDailyData} from '../daily/DailyData';
-import {dayPulse} from '@/lib/data/daily-projections';
-import {normalizeInsights} from '@/lib/insights/normalize';
-export function useInsightsSources(date:string,today:string){const {state:planner}=usePlanner(),{state:nourish}=useNourish(),{state:rituals}=useRituals(),{state:money}=useMoney(),{state:mood}=useMood(date),{state:wellness}=useWellness(),{snapshot,profile}=useDailyData();
- return useMemo(()=>normalizeInsights({planner,nourish,rituals,money,mood,dailyPulse:Object.entries(snapshot.days).map(([date,day])=>dayPulse(date,day)),movement:wellness.movement,water:wellness.water,movementTypes:wellness.types,timeZone:profile.timeZone,today,source:{kind:'prototype-session',provider:'Muse local prototype'}}),[planner,nourish,rituals,money,mood,wellness,today,snapshot.days,profile.timeZone]);}
+import {persistedInsights} from '@/lib/insights/persisted';
+import type {InsightSourceStatus} from '@/lib/insights/sources';
+/** Existing owner subscriptions handle local edits, focus/online and cross-window invalidation. */
+export function useInsightsSources(_date:string,today:string){
+ const planner=usePlanner(),rituals=useRituals(),money=useMoney(),wellness=useWellness(),{snapshot,profile,store:dailyStore}=useDailyData();
+ const input=useMemo(()=>persistedInsights({planner:planner.state,rituals:rituals.state,wellness:wellness.state,money:money.state,days:snapshot.days,influences:snapshot.influences,timeZone:profile.timeZone,today}),[planner.state,wellness.state,rituals.state,money.state,today,snapshot.days,snapshot.influences,profile.timeZone]);
+ const sources:{name:string;status:InsightSourceStatus;retry:()=>void}[]=[
+  {name:'Planner',status:planner.status??{loaded:false,error:'Planner is unavailable.'},retry:()=>{planner.store?.retry();void planner.store?.load(true);}},
+  {name:'Rituals',status:rituals.status,retry:()=>rituals.store.retry()},
+  {name:'Wellness',status:wellness.status,retry:()=>wellness.store.retry()},
+  {name:'Money',status:money.status,retry:()=>money.store.retry()},
+  {name:'Feeling context',status:{loaded:!!snapshot.influencesLoaded,error:snapshot.rangeErrors.influences},retry:()=>{void dailyStore?.loadInfluences();}}
+ ];
+ return {input,sources};
+}

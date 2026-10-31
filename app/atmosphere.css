@@ -42,3 +42,9 @@
 .muse-disco-reflections > i:nth-child(3n) { width:12px; height:35px; opacity:.4; }
 /* Crisp facets/spotlight edges yield to header copy and temporal hit areas. */
 .muse-disco-reflections { mask-image:linear-gradient(180deg,transparent 0 160px,#000 280px); }
+
+/* Disco keeps black negative space; localized light replaces the broad shared wash. */
+:root[data-theme="disco-damage"] .muse-atmosphere::after { background:
+ radial-gradient(ellipse 210px 150px at 98% 32%,color-mix(in srgb,var(--accent-pink) 16%,transparent),transparent 80%),
+ radial-gradient(ellipse 180px 160px at 1% 62%,color-mix(in srgb,var(--accent-aqua) 18%,transparent),transparent 80%),
+ radial-gradient(ellipse 200px 130px at 92% 91%,color-mix(in srgb,var(--chart-3) 12%,transparent),transparent 82%); }

@@ -441,3 +441,28 @@ Shared scoped footer save indicators preserve existing recovery, standalone acti
 Existing components are recomposed at the parent level: top Forecast/Priorities +24px-shorter desktop Little Rituals; middle Movement → Water → Meals left, natural-height Plan right; bottom Mood/Pulse then Day in Three. An explicit shared-layout presentation variant scopes the reflection order to Daily Edit and preserves the Mood page's default layout. Existing880px stacking, card surfaces, Session 2 header spacing, capture/loading/recovery and all Planner/Wellness/Ritual relationships remain. No duplicate card instances, new records, data integration or schema changes.
 
 Final layout verification:268 tests, TypeScript, ESLint and production build passed. After Docker/Supabase recovered, authenticated local-browser checks passed for the24px Rituals reduction/internal scrolling, care-stack/Plan alignment, reflection ordering, unique card instances, three linked priorities/limit, shared Ritual completion/missed/clear and failed-save retry, responsive containment, nine themes and both materials. Disposable test records were removed; no persistence or domain logic changed.
+
+## Insights engineering — implemented authoritative integration
+
+All five existing views now consume the completed authenticated owners with source-specific readiness/retry, typed read-only adaptation and memoized calculations. Historical date inspection fetches its own daily record; intention/Day in Three/Pulse/M/E and actual Wellness data remain with their owners. Recorded movement supplements the existing intention series. Daily Pulse normalization, Money missing-date/comparison handling and canonical unassigned-split drilldown are corrected; revelation evidence thresholds are tightened. A minimal shared daily read-order regression fix preserves newer overlapping reads without changing write/conflict semantics. No schema/migration or analytics tables. Metric contracts, unavailable capabilities and278-test/API/browser validation: [INSIGHTS_PERSISTENCE](INSIGHTS_PERSISTENCE.md). This supersedes older prototype-source statements; UI Session 3 presentation remains deferred.
+
+
+## UI Session 3 — implemented
+
+Insights Inspect a Date now shares the Previous Period row. The existing accessible drawer uses a reusable themed calendar with month/year navigation, Today, historical selection, roving keyboard focus and Escape/focus return; data retrieval is unchanged. Shared revelations use ghost navigation and accessible evidence disclosures. Money-only observations and totals are excluded from personal Overview and surfaced in Insights → Money, using existing calculations. Daily Edit uses independent authored column stacks and one shared card-gap token; Little Rituals and Plan no longer stretch, and Day in Three occupies the left reflection track. This supersedes the earlier24px reduction/full-width Day in Three presentation, without changing owners or workflows. Details and actual validation: [UI_SESSION_3](UI_SESSION_3.md).
+
+## Disco blacklight identity — implemented
+
+Only `disco-damage` receives the near-black foundation, neutral Crystal/Frosted surfaces, concentrated cyan/lime/pink/UV/orange reflections, vivid icon/progress/selected-state roles and restrained neon glow. Passive rainbow card fills and the looping prism sweep are removed. Registry ID and all layout/data behavior remain; other eight theme blocks and shared material rules are unchanged. Sixteen relevant theme/layout/UI tests, TypeScript, lint and production build passed; local authenticated browser checks passed on Daily Edit, Planner, Insights, Money and Wellness in Crystal/Frosted, with1440/1100/768/390px containment, selected Movement, calendar keyboard focus/Escape and reduced motion. Disposable QA accounts were removed. No manual screen-reader or exhaustive contrast audit is claimed.
+
+
+## Final Daily Edit / ISSYA BDAY! light repair — implemented
+
+This supersedes Session 3's separate reflection region: Mood/Pulse/Day in Three are consecutive existing cards in Daily Edit's right stack after Rituals/Plan. Desktop remains8:5 independent tracks; existing880px content breakpoint gives the approved mobile order with Plan before Wellness. Card gaps remain `--grid-gap`; owner captures, read/write behavior and all widgets remain intact.
+
+`issya-bday` alone receives opaque pearl/frosting surfaces, stronger dimensional outline/shadow roles and vivid neon semantic accents, preserving its background. All eight other theme blocks and shared material rules are unchanged. TypeScript/lint/build pass; full suite278/281 with three reproduced pre-existing protected Disco assertions. Exact evidence/remaining issues: [DAILY_EDIT_BIRTHDAY_REPAIR](DAILY_EDIT_BIRTHDAY_REPAIR.md).
+
+
+## Final subtitle copy and broad Daily Edit reflection — implemented
+
+All nine approved subtitles render in ThemeSwitcher and the mobile Appearance chooser, replacing short birthday captions without changing IDs/names/order/previews or paint. Daily Edit's upper cards remain in place; existing reflection cards return to a full-width side-by-side Mood/Pulse layout with proportional Day in Three directly beneath Mood. Natural heights, shared gap and existing responsive stacking/captures remain. Thirty-five focused tests, TypeScript, ESLint and production build pass; actual switching/persistence/wrapping/responsive browser checks pass. No reference screenshot was attached, so exact approved-image comparison is pending. See [THEME_PICKER_LAYOUT_RESTORATION](THEME_PICKER_LAYOUT_RESTORATION.md).

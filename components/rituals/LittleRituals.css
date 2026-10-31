@@ -1,6 +1,4 @@
-.daily-focus-grid { display:grid; grid-template-columns:minmax(0,8fr) minmax(0,5fr); gap:var(--grid-gap); margin-bottom:var(--grid-gap); align-items:stretch; }
-.daily-focus-stack { display:grid; gap:var(--grid-gap); align-content:start; min-width:0; }
-.muse-little-rituals { contain:size; min-height:0; }
+.muse-little-rituals { min-height:0; max-height:30rem; align-self:start; }
 .muse-little-rituals .card-heading { flex-shrink:0; }
 .muse-little-list { flex:1; min-height:0; overflow-y:auto; overscroll-behavior:contain; padding:var(--space-1); }
 .muse-little-group + .muse-little-group { margin-top:var(--space-4); }
@@ -10,7 +8,5 @@
 .muse-little-row > span { overflow-wrap:anywhere; }
 .muse-little-row small { display:block; }
 .muse-little-rituals footer { flex-shrink:0; padding-top:var(--space-3); border-top:1px solid var(--divider); margin-top:var(--space-3); }
-@container muse-content (max-width:880px) { .daily-focus-grid { grid-template-columns:minmax(0,1fr); }.muse-little-rituals { contain:none; max-height:30rem; min-height:15rem; } }
+@container muse-content (max-width:880px) { .muse-little-rituals { max-height:30rem; min-height:0; } }
 /* Nested authored tracks must not inherit the dashboard's twelve-column spans. */
-.daily-focus-grid > .muse-card { grid-column:auto; }
-.daily-focus-stack > .muse-card { grid-column:1 / -1; }

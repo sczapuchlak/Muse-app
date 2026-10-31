@@ -18,6 +18,6 @@
 .muse-rail-footer .muse-theme-root { margin-bottom:var(--space-2); }
 .muse-rail-footer .muse-theme-trigger { width:100%; justify-content:flex-start; border-radius:var(--control-radius); font-size:.7rem; }
 .muse-theme-active-name { min-width:0; overflow:hidden; text-overflow:ellipsis; }
-.muse-theme-name small { color:var(--text-muted); font-size:.65rem; }
+.muse-theme-name small { color:var(--text-muted); font-size:.65rem; white-space:normal; overflow-wrap:break-word; }
 
 .muse-theme-name > span { display:flex; align-items:center; gap:var(--space-1); }

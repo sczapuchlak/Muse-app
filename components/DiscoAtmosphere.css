@@ -1,28 +1,22 @@
-/* Isolated theme paint: shared structure and other themes are untouched. */
+/* Disco-only light: static soft radial falloffs; no full-screen rainbow wash. */
 .muse-disco-environment { display:none; position:absolute; inset:0; pointer-events:none; z-index:1; overflow:clip; }
 :root[data-theme="disco-damage"] .muse-disco-environment { display:block; }
 .muse-disco-spill { position:absolute; inset:0; background:
- radial-gradient(ellipse 58% 420px at 7% 1%,color-mix(in srgb,var(--chart-3) 52%,transparent),transparent 78%),
- radial-gradient(ellipse 55% 480px at 96% 5%,color-mix(in srgb,var(--chart-1) 50%,transparent),transparent 80%),
- radial-gradient(ellipse 38% 13% at 9% 30%,color-mix(in srgb,var(--chart-6) 32%,transparent),transparent 80%),
- radial-gradient(ellipse 45% 17% at 97% 46%,color-mix(in srgb,var(--chart-1) 44%,transparent),transparent 80%),
- radial-gradient(ellipse 40% 14% at 5% 68%,color-mix(in srgb,var(--chart-8) 28%,transparent),transparent 80%),
- radial-gradient(ellipse 52% 20% at 86% 88%,color-mix(in srgb,var(--chart-5) 40%,transparent),transparent 80%); }
+ radial-gradient(ellipse 150px 110px at 96% 9%,color-mix(in srgb,var(--chart-2) 48%,transparent),transparent 80%),
+ radial-gradient(ellipse 130px 140px at 87% 13%,color-mix(in srgb,var(--chart-1) 36%,transparent),transparent 80%),
+ radial-gradient(ellipse 90px 100px at 98% 17%,color-mix(in srgb,var(--chart-3) 30%,transparent),transparent 82%),
+ radial-gradient(ellipse 120px 90px at 3% 56%,color-mix(in srgb,var(--chart-4) 28%,transparent),transparent 80%),
+ radial-gradient(ellipse 140px 130px at 10% 59%,color-mix(in srgb,var(--chart-5) 30%,transparent),transparent 82%),
+ radial-gradient(ellipse 120px 100px at 93% 88%,color-mix(in srgb,var(--chart-1) 30%,transparent),transparent 82%); }
 .muse-disco-caustics { position:absolute; inset:0; background:
- conic-gradient(from 70deg at 3% 8%,transparent 0 15%,color-mix(in srgb,var(--star-1) 16%,transparent) 17%,color-mix(in srgb,var(--chart-3) 23%,transparent) 18%,transparent 22% 70%,color-mix(in srgb,var(--chart-6) 20%,transparent) 72%,transparent 76%),
- conic-gradient(from 240deg at 95% 53%,transparent 0 24%,color-mix(in srgb,var(--chart-1) 20%,transparent) 27%,color-mix(in srgb,var(--star-1) 22%,transparent) 28%,transparent 32%),
- repeating-linear-gradient(121deg,transparent 0 100px,color-mix(in srgb,var(--star-1) 8%,transparent) 102px,transparent 105px 180px); }
+ radial-gradient(ellipse 130px 2px at 90% 22%,color-mix(in srgb,var(--chart-1) 18%,transparent),transparent),
+ radial-gradient(ellipse 2px 100px at 6% 64%,color-mix(in srgb,var(--chart-2) 14%,transparent),transparent); }
 .muse-disco-glitter { position:absolute; inset:0; }
-.muse-disco-glitter > span { position:absolute; display:grid; place-items:center; opacity:.7; filter:drop-shadow(0 0 3px currentColor); }
+.muse-disco-glitter > span { position:absolute; display:grid; place-items:center; opacity:.65; filter:drop-shadow(0 0 3px currentColor); }
 .muse-disco-glitter > span:nth-child(n+49) { display:none; }
 :root[data-magic="extra"] .muse-disco-glitter > span { display:grid; }
 :root[data-magic="quiet"] .muse-disco-glitter > span:nth-child(n+13) { display:none; }
 :root[data-magic="quiet"] .muse-disco-caustics { opacity:.35; }
 :root[data-material="frosted"] .muse-disco-caustics { opacity:.6; }
-:root[data-theme="disco-damage"] .muse-disco-reflections > i { opacity:var(--reflection-opacity,.65); background:linear-gradient(128deg,transparent 6%,color-mix(in srgb,var(--star-1) 75%,transparent) 39%,color-mix(in srgb,var(--facet-light) 85%,transparent) 45%,transparent 80%); }
-@media(prefers-reduced-motion:no-preference) { .muse-disco-glitter > span { animation:muse-disco-twinkle 9s ease-in-out infinite alternate; } @keyframes muse-disco-twinkle { 0%,20% { opacity:.25; } 65%,100% { opacity:.95; } } }
-@media(prefers-reduced-motion:reduce) { .muse-disco-glitter > span { animation:none; } }
-/* A single composited prism sweep, rather than animated blur on every surface. */
-.muse-disco-caustics::after { content:''; position:absolute; inset:0 auto 0 -25%; width:25%; background:linear-gradient(110deg,transparent,color-mix(in srgb,var(--chart-3) 13%,transparent) 42%,color-mix(in srgb,var(--star-1) 15%,transparent) 46%,color-mix(in srgb,var(--chart-1) 13%,transparent) 50%,transparent 65%); pointer-events:none; }
-@media(prefers-reduced-motion:no-preference) { :root:not([data-magic="quiet"]) .muse-disco-caustics::after { animation:muse-disco-prism-sweep 36s linear infinite alternate; } @keyframes muse-disco-prism-sweep { to { transform:translateX(450%); } } }
-@media(prefers-reduced-motion:reduce) { .muse-disco-caustics::after { animation:none; } }
+:root[data-theme="disco-damage"] .muse-disco-reflections > i { opacity:var(--reflection-opacity,.65); background:linear-gradient(128deg,transparent 6%,color-mix(in srgb,var(--icon-gradient-highlight) 60%,transparent) 39%,color-mix(in srgb,var(--facet-light) 75%,transparent) 45%,transparent 80%); }
+/* Stars stay crisp and static. No animated blur, full-page sweep or looping glows. */

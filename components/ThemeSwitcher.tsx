@@ -46,7 +46,7 @@ export function ThemeSwitcher({compact=false}:{compact?:boolean}) {
               data-popover-autofocus={theme.id === activeId ? "true" : undefined} aria-checked={activeId === theme.id}
               onClick={() => { selectTheme(theme.id); close(); }}>
               <span className="muse-theme-orb" style={{ "--theme-orb": theme.preview } as CSSProperties} aria-hidden="true" />
-              <span className="muse-theme-name"><span>{theme.name}{"family" in theme&&<MuseStar size={14} color="pink"/>}</span>{"variant" in theme&&<small>{theme.variant}</small>}</span>
+              <span className="muse-theme-name"><span>{theme.name}{"family" in theme&&<MuseStar size={14} color="pink"/>}</span><small>{theme.subtitle}</small></span>
               {activeId === theme.id && <MuseIcon name="check" size={16} />}
             </button>
           ))}

@@ -1,0 +1,18 @@
+.muse-date-picker-trigger { display:inline-flex; align-items:center; gap:var(--space-2); max-width:100%; text-align:left; white-space:normal; }
+.muse-date-picker-trigger time { min-width:0; }
+.muse-calendar { min-width:0; width:100%; }
+.muse-calendar-navigation { display:grid; grid-template-columns:32px 32px minmax(0,1fr) 32px 32px; align-items:center; gap:var(--space-1); margin-bottom:var(--space-3); }
+.muse-calendar-navigation strong { text-align:center; font-size:.8rem; }
+.muse-calendar-navigation button { min-height:40px; padding:0; border:1px solid var(--divider); border-radius:var(--control-radius); background:var(--surface-subtle); color:var(--foreground); font-size:1.2rem; }
+.muse-calendar-week { display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:2px; }
+.muse-calendar-week [role=columnheader] { text-align:center; font-size:.67rem; padding-block:var(--space-2); color:var(--text-muted); }
+.muse-calendar-week [role=gridcell] { min-width:0; }
+.muse-calendar-week button { width:100%; min-height:42px; padding:0; border:1px solid transparent; border-radius:var(--control-radius); font-size:.8rem; color:var(--foreground); background:transparent; font-variant-numeric:tabular-nums; }
+.muse-calendar-week button[data-outside=true] { color:var(--text-muted); border-style:dotted; }
+.muse-calendar-week button[aria-current=date] { border-color:var(--information-accent); text-decoration:underline; text-underline-offset:4px; }
+.muse-calendar-week [aria-selected=true] button { background:var(--selected-background); color:var(--selected-text); border-color:var(--selected-border); font-weight:650; }
+.muse-calendar button:hover { background:var(--control-wash); border-color:var(--interactive-border); }
+.muse-calendar button:focus-visible { outline:2px solid var(--focus-ring); outline-offset:-2px; }
+.muse-calendar-footer { display:flex; justify-content:space-between; align-items:center; gap:var(--space-2); margin-top:var(--space-3); padding-top:var(--space-3); border-top:1px solid var(--divider); }
+.muse-calendar-footer span { font-size:.67rem; color:var(--text-muted); }
+@media(pointer:coarse) { .muse-calendar-week button,.muse-calendar-navigation button { min-height:44px; } }

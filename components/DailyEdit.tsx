@@ -7,7 +7,9 @@ import { MovementCard } from "./MovementCard";
 import { WaterCard } from "./WaterCard";
 import { ScheduleCard } from "./ScheduleCard";
 import { MealsCard } from "./MealsCard";
-import { MoodCheckInLayout } from "./mood/MoodCheckInLayout";
+import { MoodCard } from "./MoodCard";
+import { DayPulseCard } from "./DayPulseCard";
+import { DayInThreeCard } from "./DayInThree";
 import {LittleRituals} from "./rituals/LittleRituals";
 import {PlannerPersistenceStatus} from "./PlannerStore";
 import { CosmicForecast } from "./CosmicForecast";
@@ -28,14 +30,20 @@ export function DailyEdit() {
     <main className="muse-page">
       <DailyEditHeader date={day.date} greeting={day.greeting} profile={profile} onDateChange={setSelectedDate} />
       <h1 className="muse-daily-section-title" id="daily-edit">The Daily Edit</h1>
-      <div className="daily-focus-grid" key={`focus/${selectedDate}`}><div className="daily-focus-stack"><CosmicForecast compact /><PrioritiesCard /></div><LittleRituals date={selectedDate}/></div>
-      <div className="daily-grid" key={selectedDate}>
-        <div className="daily-middle-grid"><div className="daily-care-stack">
-        <WellnessCapture><MovementCard initialTypes={sampleMovementTypes.filter(type=>type.source==='starter')} initialDay={{date:selectedDate,typeIds:[]}} /></WellnessCapture>
-        <WellnessCapture><WaterCard initialDay={{ date: selectedDate, total: 0 }} settings={day.water.settings} /></WellnessCapture>
-        <WellnessCapture><MealsCard selectedDate={selectedDate} /></WellnessCapture>
-        </div><ScheduleCard selectedDate={selectedDate} /></div>
-        <DailyCapture date={selectedDate}><MoodCheckInLayout date={selectedDate} emotions={emotionCatalog} layout="reflection" /></DailyCapture>
+      <div className="daily-working-grid" key={`working/${selectedDate}`}>
+        <div className="daily-working-left">
+          <CosmicForecast compact />
+          <PrioritiesCard />
+          <WellnessCapture><MovementCard initialTypes={sampleMovementTypes.filter(type=>type.source==='starter')} initialDay={{date:selectedDate,typeIds:[]}} /></WellnessCapture>
+          <WellnessCapture><WaterCard initialDay={{ date: selectedDate, total: 0 }} settings={day.water.settings} /></WellnessCapture>
+          <DailyCapture date={selectedDate}><MoodCard emotions={emotionCatalog} /><DayInThreeCard /></DailyCapture>
+        </div>
+        <div className="daily-working-right">
+          <LittleRituals date={selectedDate}/>
+          <ScheduleCard selectedDate={selectedDate} />
+          <WellnessCapture><MealsCard selectedDate={selectedDate} /></WellnessCapture>
+          <DailyCapture date={selectedDate}><DayPulseCard date={selectedDate}/></DailyCapture>
+        </div>
       </div>
       <footer className="muse-footer"><DailySaveStatus date={selectedDate}/><PlannerPersistenceStatus compact/><WellnessSaveStatus/>Your daily entries, plan, meals, hydration and movement save to your account.</footer>
     </main>

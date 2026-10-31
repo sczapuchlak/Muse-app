@@ -68,7 +68,7 @@ test('compact Notes list and nested tag navigation expose selected state and avo
 
 test('approved theme labels are registry-only renames and Disco adds a ninth stable saved preference',()=>{
  const {themes,isThemeId}=load('lib/themes');assert.equal(themes.length,9);assert.deepEqual(themes.slice(0,6).map((theme)=>[theme.id,theme.name]),[['iridescent','Glitter!'],['astral','Midnight Ballerina!'],['nightbloom','Pretty Toxic!'],['solstice','Sunburnt & Sinful!'],['prism-noir','Curses!'],['afterglow','Neon Hangover!']]);assert.ok(isThemeId('disco-damage'));assert.ok(isThemeId('astral'));assert.equal(themes.find((theme)=>theme.id==='issya-bday').name,'ISSYA BDAY!');
- const css=readFileSync(resolve(root,'app/themes.css'),'utf8');assert.match(css,/:root\[data-theme="disco-damage"\][\s\S]*--background: #0c071a;/);assert.match(css,/:root\[data-theme="disco-damage"\][\s\S]*--star-color-1: #f6f2ff;/);
+ const css=readFileSync(resolve(root,'app/themes.css'),'utf8');assert.match(css,/:root\[data-theme="disco-damage"\][\s\S]*--background: #050507;/);assert.match(css,/:root\[data-theme="disco-damage"\][\s\S]*--star-color-1: #c6ff00;/);
 });
 
 test('Daily Edit and all module headers share one normal-flow signature zone and have no hero illustration or theme picker',()=>{

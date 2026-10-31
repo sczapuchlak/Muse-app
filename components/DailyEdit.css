@@ -1,10 +1,18 @@
-/* Page composition only. Cards and their authenticated owners remain unchanged. */
-.daily-middle-grid { grid-column:1/-1; display:grid; grid-template-columns:minmax(0,8fr) minmax(0,5fr); gap:var(--grid-gap); align-items:start; min-width:0; }
-.daily-care-stack { display:flex; flex-direction:column; gap:var(--grid-gap); min-width:0; }
-.daily-middle-grid > .schedule-card { grid-column:auto; width:100%; }
-/* Stretch accounting includes this margin, shortening only the scrollable widget. */
-.daily-focus-grid > .muse-little-rituals { margin-bottom:var(--space-6); }
+/* Two authored independent stacks. The gutter never depends on opposite-column content. */
+.daily-working-grid { display:grid; grid-template-columns:minmax(0,8fr) minmax(0,5fr); gap:var(--grid-gap); align-items:start; min-width:0; }
+.daily-working-left,.daily-working-right { display:flex; flex-direction:column; gap:var(--grid-gap); min-width:0; }
+.daily-working-grid .muse-card { width:100%; grid-column:auto; }
 @container muse-content (max-width:880px) {
- .daily-middle-grid { grid-template-columns:minmax(0,1fr); }
- .daily-focus-grid > .muse-little-rituals { margin-bottom:0; }
+ .daily-working-grid { grid-template-columns:minmax(0,1fr); }
+ .daily-working-left,.daily-working-right { display:contents; }
+ .daily-working-grid .muse-cosmic-forecast { order:1; }
+ .daily-working-grid .priorities-card { order:2; }
+ .daily-working-grid .muse-little-rituals { order:3; }
+ .daily-working-grid .schedule-card { order:4; }
+ .daily-working-grid .movement-card { order:5; }
+ .daily-working-grid .water-card { order:6; }
+ .daily-working-grid .meals-card { order:7; }
+ .daily-working-grid .mood-card { order:8; }
+ .daily-working-grid .day-pulse-card { order:9; }
+ .daily-working-grid .day-in-three-card { order:10; }
 }

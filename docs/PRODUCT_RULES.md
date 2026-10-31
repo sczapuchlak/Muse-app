@@ -421,3 +421,28 @@ Status labels must describe actual acknowledged owner state, with errors/retry/d
 ## Daily Edit final card placement
 
 The approved daily progression is expressed only through placement: Forecast/Priorities + Little Rituals, then Movement/Water/Meals beside Today's Plan, then Mood/Day Pulse followed by Day in Three. Reuse each existing owner and component exactly once; no new grouping functionality, records or persistence rules. Ritual list length never determines the top-row height, and Plan grows naturally with its existing bounded preview. Mood's dedicated page and Dayprint are not redesigned by this refinement.
+
+## Insights MVP engineering
+
+Insights is a read-only projection of authoritative module owners. Gate unconfirmed/failed/loading sources; never substitute prototype history. Count linked priorities through Planner once, distinguish completion transitions from distinct tasks, preserve captured historical local dates, and reuse Ritual recurrence/lifecycle/weekly helpers and Money calculations. Actual movement is separate from intention; meal assignments remain plans; daily Pulse is never session-specific. Current recurring expectations and allocation plans are not historical charges. Sparse evidence/unknown values must not become negative outcomes, invented patterns or accomplishment praise. Full definitions and implemented limits: [INSIGHTS_PERSISTENCE](INSIGHTS_PERSISTENCE.md). No independent writable analytics records or UI Session 3 work.
+
+
+## Insights UI Session 3 — implemented presentation boundaries
+
+The general Overview reflects personal life; recorded financial totals and financial revelations are grouped in Insights → Money. This is presentation routing over the same owner records/calculations, not a second financial engine. Inspector selection uses civil dates and the saved profile timezone for Today; historical selection remains unrestricted by chart range. Evidence disclosures remain available. Session 3 also supersedes the final Daily Edit equal-height Rituals rule: independent authored columns, natural card heights, bounded Ritual scrolling, standard gutters and proportional Day in Three. No persistence/ownership rules change. See [UI_SESSION_3](UI_SESSION_3.md).
+
+## Disco Damage XXXTRA identity correction
+
+Approved Disco-only direction: near-black/neutral charcoal foundations with concentrated blacklight neon and liquid-chrome reflections, rather than a purple/pink dark-mode wash. Color belongs mainly to localized atmosphere, semantic accents, selected states, progress and fine edges. Preserve all layouts, owners, functionality, theme IDs and the other eight themes. See the current [design-system direction](DESIGN_SYSTEM.md#disco-damage-xxxtra--blacklight-identity).
+
+
+## Final Daily Edit / birthday-light repair
+
+Daily Edit's independent left track is Forecast/Priorities/Movement/Water/Meals; right is Little Rituals/Plan/Mood/Day Pulse/Day in Three. Reflection must not sit after the shared tallest-column boundary. Preserve natural card sizes, one grid-gap token, existing owner captures and no duplicated records. Mobile orders Forecast, Priorities, Rituals, Plan, Movement, Water, Meals, Mood, Pulse, Day in Three. The dedicated Mood page is unchanged.
+
+Only ISSYA BDAY! light receives stronger pearl surface separation and neon frosting accents. ISSYA BDAY XXX! dark, Disco and other theme tokens are protected. See [DAILY_EDIT_BIRTHDAY_REPAIR](DAILY_EDIT_BIRTHDAY_REPAIR.md) for validation and existing protected-theme test limitations.
+
+
+## Daily Edit restoration and final theme-picker copy
+
+The right-only reflection experiment is superseded: restore broad side-by-side Mood/Day Pulse with Day in Three directly below Mood. Preserve upper card placement and natural heights with existing gaps; do not relocate Wellness/reflection to fill space. Approved theme descriptions are centralized metadata, never theme appearance changes. See [THEME_PICKER_LAYOUT_RESTORATION](THEME_PICKER_LAYOUT_RESTORATION.md) for actual verification and the missing-reference limitation.
