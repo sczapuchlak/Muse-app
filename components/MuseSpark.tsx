@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import {allowsMagic} from "@/lib/magic-preference";
 import { motion } from "@/lib/motion";
 import { MuseStar } from "./MuseStar";
 import "./MuseSpark.css";
@@ -20,6 +21,7 @@ export function useMuseSpark() {
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(() => () => { if (timer.current) clearTimeout(timer.current); }, []);
   function trigger() {
+    if(!allowsMagic())return;
     if (timer.current) clearTimeout(timer.current);
     setSequence(++next.current);
     timer.current = setTimeout(() => setSequence(null), motion.success);

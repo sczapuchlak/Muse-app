@@ -6,9 +6,9 @@ type Records = Record<string, unknown>;
 type Session = { date: string; setDate: Dispatch<SetStateAction<string>>; records: Records; setRecords: Dispatch<SetStateAction<Records>> };
 const MuseSession = createContext<Session | null>(null);
 
-export function MuseSessionProvider({ initialDate, children }: { initialDate: string; children: ReactNode }) {
+export function MuseSessionProvider({ initialDate, initialRecords = {}, children }: { initialDate: string; initialRecords?: Records; children: ReactNode }) {
   const [date, setDate] = useState(initialDate);
-  const [records, setRecords] = useState<Records>({});
+  const [records, setRecords] = useState<Records>(initialRecords);
   return <MuseSession.Provider value={{ date, setDate, records, setRecords }}>{children}</MuseSession.Provider>;
 }
 
@@ -31,3 +31,7 @@ export function useMuseState<T>(name: string, initial: T | (() => T), shared = f
   });
   return [value, update];
 }
+
+/** Read existing dated/library records for cross-module analytics without creating another store. */
+export function useMuseRecords(){return useContext(MuseSession)?.records??emptyRecords;}
+const emptyRecords:Records={};

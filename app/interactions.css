@@ -16,8 +16,24 @@
 [data-accent="primary"] { --organization-accent: var(--accent-primary); }
 [data-accent="secondary"] { --organization-accent: var(--accent-secondary); }
 [data-accent="pop"] { --organization-accent: var(--accent-pop); }
+[data-accent="warm"] { --organization-accent: var(--accent-warm); }
+[data-accent="info"] { --organization-accent: var(--information-accent); }
 .muse-workspace-dot { display: inline-block; width: 7px; height: 7px; flex: 0 0 7px; border-radius: 2px; background: var(--organization-accent, var(--accent-primary)); }
 
 .muse-drop-zone[data-drop-active="true"] { border-color: var(--selected-border); outline: 2px solid var(--focus-ring); outline-offset: -2px; box-shadow: 0 0 16px var(--wash-aqua); }
 .muse-drag-surface[data-dragging="true"] { transform: translateY(-1px); opacity: .8; border-color: var(--selected-border); box-shadow: var(--muse-edge-glow); }
 @media (prefers-reduced-motion: reduce) { .muse-drag-surface[data-dragging="true"] { transform: none; } }
+
+/* Everyday feedback stays quick; state changes never wait for decoration. */
+:is(.priority-check,.muse-note-icon,.muse-note-new,.muse-grocery-icon,.muse-overflow-trigger) {transition:color var(--motion-hover,180ms) ease,border-color var(--motion-hover,180ms) ease,background var(--motion-hover,180ms) ease,box-shadow var(--motion-hover,180ms) ease;}
+:is(.priority-check,.task-check)>svg {animation:muse-check-arrive 180ms ease-out;}
+@keyframes muse-check-arrive {from{opacity:.3;transform:scale(.82)}to{opacity:1;transform:scale(1)}}
+.muse-popover-panel {animation:muse-surface-arrive 180ms ease-out;}
+@keyframes muse-surface-arrive {from{opacity:0;translate:0 3px}to{opacity:1;translate:0 0}}
+.muse-movement-feedback {position:absolute;right:40px;top:50%;pointer-events:none;}
+:root[data-magic="quiet"] :is(.muse-galaxy-fleck,.muse-disco-ball::after,.muse-star-cluster,.muse-star-cluster *, .muse-achievement *) {animation:none!important;}
+:root[data-magic="quiet"] :is(.muse-spark,.muse-orbital-glint,.muse-constellation-celebration,.muse-achievement-glint) {display:none;}
+@media(prefers-reduced-motion:reduce){:is(.priority-check,.task-check)>svg,.muse-popover-panel{animation:none;}:is(.priority-check,.muse-note-icon,.muse-note-new,.muse-grocery-icon,.muse-overflow-trigger){transition:none;}}
+
+.muse-task-timer-panel {animation:muse-surface-arrive 180ms ease-out;}
+@media(prefers-reduced-motion:reduce){.muse-task-timer-panel{animation:none;}}

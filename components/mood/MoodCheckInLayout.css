@@ -1,0 +1,27 @@
+.muse-mood-checkin-layout {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  align-items: stretch;
+  gap: var(--grid-gap);
+  min-width: 0;
+}
+.muse-mood-checkin-stack {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-content: start;
+  gap: var(--grid-gap);
+  min-width: 0;
+}
+.muse-mood-checkin-stack > .muse-card,
+.muse-mood-checkin-layout > .day-pulse-card { grid-column: auto; }
+.muse-mood-checkin-layout > .day-pulse-card { align-self: stretch; }
+.muse-mood-checkin-layout .muse-pulse-signals {
+  flex: 1;
+  align-content: space-between;
+  padding-bottom: var(--space-2);
+}
+@container muse-content (max-width: 880px) {
+  .muse-mood-checkin-layout { grid-template-columns: minmax(0, 1fr); }
+  .muse-mood-checkin-layout .muse-pulse-signals { flex: none; }
+}

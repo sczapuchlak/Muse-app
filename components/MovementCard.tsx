@@ -11,10 +11,13 @@ import { MovementTypeManager } from "./MovementTypeManager";
 import { GlassPopover } from "./GlassPopover";
 import { useMuseState } from "./MuseSession";
 
+import {useMuseSpark} from "./MuseSpark";
+
 type Props = { initialTypes: MovementType[]; initialDay: DailyMovement };
 type Panel = { mode: "more" | "add" | "manage" } | { mode: "rename"; id: string } | null;
 
 export function MovementCard({ initialTypes, initialDay }: Props) {
+  const {trigger,spark}=useMuseSpark();
   const [types, setTypes] = useMuseState("movement-types", initialTypes, true);
   const [quickIds, setQuickIds] = useMuseState("movement-quick", () => initialTypes.filter((type) => type.source === "starter").slice(0, MAX_QUICK_MOVEMENTS).map((type) => type.id), true);
   const [recentIds, setRecentIds] = useMuseState<string[]>("movement-recent", [], true);
@@ -34,6 +37,7 @@ export function MovementCard({ initialTypes, initialDay }: Props) {
   }
   function toggleDay(id: string, fromOverflow = false) {
     if (!day.typeIds.includes(id)) {
+      trigger();
       if (fromOverflow) selectIntoShelf(id);
       else setRecentIds((ids) => [id, ...ids.filter((value) => value !== id)]);
     }
@@ -67,7 +71,7 @@ export function MovementCard({ initialTypes, initialDay }: Props) {
         <button type="button" className="text-button" aria-expanded={panel?.mode === "manage"} aria-controls="movement-menu"
           onClick={(event) => { anchorRef.current = event.currentTarget; setPanel((current) => current?.mode === "manage" ? null : { mode: "manage" }); }}>Manage</button>
       </CardHeading>
-      <p className="card-description movement-selection-summary" title={selectedNames || "Today’s intention · Select any"}>{selectedNames ? `Selected: ${selectedNames}` : "Today’s intention · Select any"}</p>
+      <span className="muse-movement-feedback">{spark}</span><p className="card-description movement-selection-summary" title={selectedNames || "Today’s intention · Select any"}>{selectedNames ? `Selected: ${selectedNames}` : "Today’s intention · Select any"}</p>
       <div className="movement-quick-row" role="group" aria-label="Quick movement types" style={{ "--quick-columns": quick.length + 1 } as CSSProperties}>
         {quick.map((type) => (
           <button type="button" className="choice-button movement-quick-chip" key={type.id} title={type.name} aria-pressed={day.typeIds.includes(type.id)} onClick={() => toggleDay(type.id)}>

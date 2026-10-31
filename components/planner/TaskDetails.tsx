@@ -1,8 +1,11 @@
 "use client";
+import {accentStyle} from "@/lib/appearance-values";
 import { useEffect, useState } from "react";
 import type { PlannedTask } from "@/lib/models";
 import { runningMinutes } from "@/lib/planner";
 import { usePlanner } from "../PlannerStore";
+import { MuseChoiceMenu } from "../MuseChoiceMenu";
+import { TaskMoveControl } from "./TaskMoveControl";
 import { MuseDrawer } from "../MuseDrawer";
 import { useMuseSpark } from "../MuseSpark";
 
@@ -31,22 +34,20 @@ export function TaskDetails({ taskId, onClose, returnFocus }: { taskId: string; 
       <label className="editor-label">Title<input type="text" required maxLength={160} value={title} onChange={(event) => setTitle(event.target.value)} onBlur={() => { update({ title }); if (!title.trim()) setTitle(currentTask.title); }} /></label>
       <label className="muse-detail-complete"><input type="checkbox" checked={task.complete} onChange={(event) => { if (event.target.checked) trigger(); dispatch({ type: "task/toggle", id: taskId, now: new Date().toISOString() }); }} />Completed{spark}</label>
       <div className="muse-detail-fields">
-        <label>Workspace<select value={task.workspaceId} onChange={(event) => update({ workspaceId: event.target.value })}>{state.workspaces.map((entry) => <option key={entry.id} value={entry.id}>{entry.name}</option>)}</select></label>
-        <label>Group<select value={task.groupId ?? ""} onChange={(event) => update({ groupId: event.target.value || undefined })}><option value="">No group</option>{state.groups.filter((entry) => entry.workspaceId === task.workspaceId).map((entry) => <option key={entry.id} value={entry.id}>{entry.name}</option>)}</select></label>
-        <label>Planned date<input type="date" value={task.plannedDate ?? ""} onChange={(event) => dispatch({ type: "task/move", id: taskId, date: event.target.value || undefined })} /></label>
+        <div><p className="editor-label">Workspace</p><MuseChoiceMenu label="Task workspace" valueLabel={state.workspaces.find((item)=>item.id===task.workspaceId)?.name??"Workspace"} options={state.workspaces.map((item)=>({id:item.id,label:item.name,accent:item.accent}))} selectedIds={[task.workspaceId]} onSelect={(workspaceId)=>update({workspaceId})}/></div>
+        <div><p className="editor-label">Group</p><MuseChoiceMenu label="Task group" valueLabel={state.groups.find((item)=>item.id===task.groupId)?.name??"No group"} options={[{id:"",label:"No group"},...state.groups.filter((item)=>item.workspaceId===task.workspaceId).map((item)=>({id:item.id,label:item.name}))]} selectedIds={[task.groupId??""]} onSelect={(groupId)=>update({groupId:groupId||undefined})}/></div>
+        <div className="muse-planned-field"><div><label htmlFor="task-planned-date">Planned date</label><TaskMoveControl task={task}/></div><input id="task-planned-date" type="date" value={task.plannedDate ?? ""} onChange={(event) => dispatch({ type: "task/move", id: taskId, date: event.target.value || undefined })} /></div>
         <label>Due date<input type="date" value={task.dueDate ?? ""} onChange={(event) => update({ dueDate: event.target.value || undefined })} /></label>
         <label>Time slot<input type="time" value={task.timeSlot ?? ""} onChange={(event) => update({ timeSlot: event.target.value || undefined })} /></label>
         <label>Estimate (minutes)<input type="number" min={0} step={1} value={task.estimatedMinutes ?? ""} onChange={(event) => update({ estimatedMinutes: event.target.value === "" ? undefined : Math.max(0, Number(event.target.value)) })} /></label>
       </div>
-      <p className="small-label">Planned is when you’ll do it. Due is when it’s needed. Clear the planned date to return it to Inbox.</p>
-      <fieldset className="muse-detail-tags"><legend>Tags</legend>{state.tags.map((tag) => <button key={tag.id} type="button" className="choice-button" data-accent={tag.accent} aria-pressed={task.tagIds.includes(tag.id)} onClick={() => update({ tagIds: task.tagIds.includes(tag.id) ? task.tagIds.filter((id) => id !== tag.id) : [...task.tagIds, tag.id] })}>#{tag.name}</button>)}<p className="small-label">Create reusable tags with Organize.</p></fieldset>
+      <fieldset className="muse-detail-tags"><legend>Tags</legend>{state.tags.map((tag) => <button key={tag.id} type="button" className="choice-button" data-accent={tag.accent} style={accentStyle(tag.accent)} aria-pressed={task.tagIds.includes(tag.id)} onClick={() => update({ tagIds: task.tagIds.includes(tag.id) ? task.tagIds.filter((id) => id !== tag.id) : [...task.tagIds, tag.id] })}>#{tag.name}</button>)}</fieldset>
       <label className="editor-label">Notes<textarea rows={3} value={task.notes ?? ""} onChange={(event) => update({ notes: event.target.value })} placeholder="A little context…" /></label>
       <section className="muse-detail-section" aria-labelledby="task-subtasks"><h3 id="task-subtasks">Subtasks <span className="small-label">{task.subtasks.filter((item) => item.complete).length}/{task.subtasks.length}</span></h3>
         <ul className="muse-subtask-list">{task.subtasks.map((item) => <SubtaskRow key={item.id} item={item} onChange={(next) => update({ subtasks: task.subtasks.map((entry) => entry.id === item.id ? next : entry) })} onDelete={() => update({ subtasks: task.subtasks.filter((entry) => entry.id !== item.id) })} />)}</ul>
         <form className="muse-task-quick-add" onSubmit={(event) => { event.preventDefault(); if (!subtask.trim()) return; update({ subtasks: [...task.subtasks, { id: crypto.randomUUID(), title: subtask.trim(), complete: false }] }); setSubtask(""); }}><input type="text" maxLength={160} aria-label="New subtask title" placeholder="Add a subtask…" value={subtask} onChange={(event) => setSubtask(event.target.value)} /><button type="submit" disabled={!subtask.trim()} aria-label="Add subtask">+</button></form>
       </section>
-      <section className="muse-detail-section" aria-labelledby="task-time"><h3 id="task-time">Time spent</h3><div className="muse-task-timer"><output aria-label="Actual time spent">{Math.floor(task.actualMinutes + runningMinutes(state, taskId, now))}m actual</output><button type="button" className="muse-button" disabled={task.complete} onClick={() => dispatch(running ? { type: "timer/pause", now: new Date().toISOString() } : { type: "timer/start", id: taskId, now: new Date().toISOString() })}>{running ? "Pause timer" : "Start timer"}</button></div><p className="small-label">One task timer at a time. Keeps running across app pages; resets on refresh. Estimates stay separate.</p></section>
-      <p className="small-label">{task.recurrence ? "Recurring task metadata retained. Recurrence editing is planned." : "Recurrence is planned for a later Planner iteration."}</p>
+      <section className="muse-detail-section" aria-labelledby="task-time"><h3 id="task-time">Time spent</h3><div className="muse-task-timer"><output aria-label="Actual time spent">{Math.floor(task.actualMinutes + runningMinutes(state, taskId, now))}m actual</output><button type="button" className="muse-button" disabled={task.complete} onClick={() => dispatch(running ? { type: "timer/pause", now: new Date().toISOString() } : { type: "timer/start", id: taskId, now: new Date().toISOString() })}>{running ? "Pause timer" : "Start timer"}</button></div></section>
       <button className="text-button muse-delete-task" type="button" onClick={() => { dispatch({ type: "task/delete", id: taskId, now: new Date().toISOString() }); onClose(); }}>Delete task</button>
     </div>
   </MuseDrawer>;

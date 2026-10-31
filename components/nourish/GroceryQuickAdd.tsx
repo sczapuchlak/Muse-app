@@ -2,13 +2,19 @@
 import { useId,useRef,useState } from "react";
 import { createGroceryItem,UNSORTED_GROCERY_SECTION } from "@/lib/nourish";
 import { useNourish } from "../NourishStore";
-import { InlineTextEditor } from "../InlineTextEditor";
+import { MuseChoiceMenu } from "../MuseChoiceMenu";
+import { MuseIcon } from "../MuseIcon";
 
 export function GroceryQuickAdd({sectionId=UNSORTED_GROCERY_SECTION,sectionName="Unsorted",global=false}:{sectionId?:string;sectionName?:string;global?:boolean}) {
-  const {dispatch}=useNourish(),[open,setOpen]=useState(false),anchor=useRef<HTMLButtonElement>(null),id=useId();
-  function close(){setOpen(false);anchor.current?.focus();}
-  return <div className={`muse-grocery-quick-add${global?" muse-grocery-quick-add-global":""}`}>
-    <button ref={anchor} type="button" className={global?"muse-button muse-edge":"text-button"} aria-expanded={open} aria-controls={id} aria-label={global?"Quick add anything to Unsorted":`Add item to ${sectionName}`} onClick={()=>setOpen((value)=>!value)}>{global?"+ Quick add anything…":"+ Add"}</button>
-    {open&&<div id={id}><InlineTextEditor id={`${id}-name`} label={global?"Add anything · goes to Unsorted":`Add to ${sectionName}`} initialValue="" maxLength={120} submitLabel="Add" onCancel={close} onSave={(name)=>{if(!name.trim())return "Enter an item name.";dispatch({type:"grocery/save",item:createGroceryItem(name,crypto.randomUUID(),new Date().toISOString(),sectionId)});close();return null;}}/></div>}
-  </div>;
+ const {state,dispatch}=useNourish(),[open,setOpen]=useState(global),[name,setName]=useState(""),[quantity,setQuantity]=useState(""),[category,setCategory]=useState(sectionId),[message,setMessage]=useState("");
+ const input=useRef<HTMLInputElement>(null),anchor=useRef<HTMLButtonElement>(null),id=useId();
+ function close(){setOpen(false);anchor.current?.focus();}
+ return <div className={`muse-grocery-quick-add${global?" muse-grocery-quick-add-global":""}`}>
+ {!global&&<button ref={anchor} type="button" className="text-button" aria-expanded={open} aria-controls={id} aria-label={`Add item to ${sectionName}`} onClick={()=>setOpen((value)=>!value)}>+ Add item</button>}
+ {open&&<form id={id} className={global?"muse-grocery-capture":"muse-grocery-scoped-capture"} onSubmit={(event)=>{event.preventDefault();if(!name.trim())return;dispatch({type:"grocery/save",item:{...createGroceryItem(name,crypto.randomUUID(),new Date().toISOString(),category),quantity:quantity.trim()||undefined}});setMessage(`${name.trim()} added`);setName("");setQuantity("");input.current?.focus();}}>
+ <label>Item name<input ref={input} type="text" required maxLength={120} placeholder="What do you need?" value={name} onChange={(event)=>setName(event.target.value)} /></label>
+ {global&&<><label>Quantity <span className="small-label">optional</span><input type="text" maxLength={60} placeholder="e.g. 2 cartons" value={quantity} onChange={(event)=>setQuantity(event.target.value)}/></label><div><p className="editor-label">Category</p><MuseChoiceMenu label="Quick-add category" valueLabel={state.grocerySections.find((section)=>section.id===category)?.name??"Unsorted"} options={state.grocerySections.map((section)=>({id:section.id,label:section.name}))} selectedIds={[category]} onSelect={setCategory}/></div></>}
+ <button type="submit" className="muse-button button-primary" disabled={!name.trim()}><MuseIcon name="plus" size={16}/>Add</button>{!global&&<button type="button" className="text-button" onClick={close}>Cancel</button>}
+ </form>}<span className="sr-only" role="status">{message}</span>
+ </div>;
 }

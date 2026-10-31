@@ -1,0 +1,20 @@
+import {categorySpending,allocationActual,inPeriod} from '../money';
+import {nextRecurringDate,recurrenceLabel} from '../recurring';
+import {dailyNutrition} from '../nourish';
+import {mealSlots,mealLabels} from '../models';
+import {shiftDate,weekDates} from '../dates';
+import {within,rangeDays,type InsightRange} from './ranges';
+import type {NormalizedInsights} from './normalize';
+export function moneyMetrics(input:NormalizedInsights,range:InsightRange){const state=input.money,period={...range,label:'Selected range'},transactions=state.transactions.filter((item)=>inPeriod(item.date,period)),categories=categorySpending(state,period),paychecks=state.paychecks.filter((paycheck)=>within(paycheck.receivedDate,range));
+ const paycheckIds=new Set(paychecks.map((item)=>item.id)),allocations=state.allocations.filter((item)=>paycheckIds.has(item.paycheckId)).map((allocation)=>({...allocation,actual:allocationActual(state,allocation)}));
+ const recurring=state.recurring.flatMap((item)=>{const occurrences:{id:string;recordId:string;date:string;name:string;amount:number|null;estimated:boolean;frequency:string}[]=[];let date=nextRecurringDate(item,range.start),count=0;while(date&&date<=range.end&&count++<733){occurrences.push({id:`${item.id}/${date}`,recordId:item.id,date,name:item.name,amount:item.amountCents??null,estimated:item.amountBehavior==='estimated',frequency:recurrenceLabel(item.recurrence)});date=nextRecurringDate(item,shiftDate(date,1));}return occurrences;});
+ return {transactions,categories,paychecks,allocations,spending:transactions.reduce((sum,item)=>sum+item.amountCents,0),byDate:rangeDays(range).map((date)=>({date,spending:transactions.filter((item)=>item.date===date).reduce((sum,item)=>sum+item.amountCents,0)})),income:paychecks.reduce((sum,item)=>sum+(item.actualCents??0),0),incomeRecorded:paychecks.filter((item)=>item.actualCents!==undefined).length,planned:allocations.reduce((sum,item)=>sum+item.plannedCents,0),recordedAllocationActual:allocations.reduce((sum,item)=>sum+(item.actual??0),0),actualCoverage:allocations.filter((item)=>item.actual!==null).length,recurring,expected:recurring.reduce((sum,item)=>sum+(item.amount??0),0),unknownExpected:recurring.filter((item)=>item.amount===null).length};
+}
+export function nourishMetrics(input:NormalizedInsights,range:InsightRange){const assignments=input.nourish.assignments.filter((meal)=>within(meal.date,range)),days=rangeDays(range),knownNutrition=dailyNutrition(assignments),fullyKnown=assignments.filter((meal)=>['calories','protein','carbs','fat'].every((key)=>meal.nutrition?.[key as keyof NonNullable<typeof meal.nutrition>]!==undefined));
+ const byDate=days.map((date)=>({date,meals:assignments.filter((meal)=>meal.date===date).length}));
+ const byType=mealSlots.map((slot)=>({id:slot,label:mealLabels[slot],count:assignments.filter((meal)=>meal.slot===slot).length}));
+ const saved=input.nourish.savedMeals.map((meal)=>({id:meal.id,label:meal.name,count:assignments.filter((entry)=>entry.savedMealId===meal.id).length})).filter((row)=>row.count).sort((a,b)=>b.count-a.count);
+ const weeks=[...new Set(days.map((date)=>weekDates(date)[0]))].map((start)=>{const included=weekDates(start).filter((date)=>within(date,range));return {start,days:included.length,planned:included.filter((date)=>assignments.some((meal)=>meal.date===date)).length,meals:assignments.filter((meal)=>weekDates(start).includes(meal.date)).length};});
+ return {assignments,byDate,byType,saved,weeks,knownNutrition,fullyKnown:fullyKnown.length,completeNutrition:dailyNutrition(fullyKnown),plannedDays:new Set(assignments.map((meal)=>meal.date)).size};
+}
+export function dailyMetrics(input:NormalizedInsights,range:InsightRange){const movement=input.movement.filter((record)=>within(record.date,range)),water=input.water.filter((record)=>within(record.date,range)),knownGoals=water.filter((record)=>record.goal!==undefined&&record.goal>0);return {movement,water,movementDays:movement.filter((record)=>record.typeIds.length>0).length,knownGoals:knownGoals.length,waterMet:knownGoals.filter((record)=>record.total>=record.goal!).length};}

@@ -1,4 +1,4 @@
-.muse-planner-page { --page-max-width: 1480px; }
+.muse-planner-page { --page-max-width: 1480px; --planner-min-height:420px; --planner-surface-height:var(--planner-min-height); }
 .muse-detail-fields label, .muse-organize-form > label { display: flex; flex-direction: column; gap: var(--space-1); color: var(--text-muted); font-size: .72rem; }
 .muse-planner-toolbar select, .muse-task-details select, .muse-task-details input[type="date"], .muse-task-details input[type="time"], .muse-organize-form select { min-width: 0; width: 100%; min-height: var(--touch-target); padding: var(--space-2); color: var(--foreground); background: var(--surface-control); border: 1px solid var(--glass-border); border-radius: var(--control-radius); font-size: .82rem; }
 select option { background: var(--background); color: var(--foreground); }
@@ -6,7 +6,7 @@ select option { background: var(--background); color: var(--foreground); }
 .muse-day-drop { border: 1px solid var(--glass-border); border-top-color: var(--glass-edge); border-radius: var(--card-radius); background: var(--planning-container-background); box-shadow: var(--card-shadow); backdrop-filter: blur(var(--material-blur)); }
 .muse-inbox-drop { min-height: 160px; padding: var(--space-2) 0; border-radius: var(--control-radius); }
 .muse-planner-day { min-width: 0; scroll-snap-align: start; }
-.muse-day-drop { min-height: 420px; height: 100%; padding: var(--space-3); transition: border-color var(--transition), background var(--transition); }
+.muse-day-drop { height: var(--planner-surface-height); min-height: 0; display: flex; flex-direction: column; padding: var(--space-3); transition: border-color var(--transition), background var(--transition); }
 .muse-day-drop[data-selected="true"] { border-top-color: var(--selected-border); }
 :is(.muse-day-drop, .muse-inbox-drop)[data-drop-active="true"] { border-color: var(--selected-border); background: var(--selected-background); outline: 2px solid var(--focus-ring); outline-offset: -2px; }
 .muse-planner-day-heading { padding: var(--space-1) var(--space-1) var(--space-3); margin-bottom: var(--space-3); border-bottom: 1px solid var(--divider); }
@@ -18,7 +18,7 @@ select option { background: var(--background); color: var(--foreground); }
 .muse-planner-events p { display: flex; gap: var(--space-2); margin: var(--space-2) 0; padding-left: var(--space-2); border-left: 2px solid var(--accent-secondary); font-size: .7rem; }
 .muse-planner-events time { flex: 0 0 50px; color: var(--text-muted); }
 .muse-planner-task-list { display: flex; flex-direction: column; gap: var(--space-2); margin: var(--space-2) 0; padding: 0; list-style: none; }
-.muse-planner-task { min-width: 0; padding: var(--space-2); border: 1px solid var(--divider); border-radius: var(--control-radius); background: var(--planning-task-background); border-color: var(--planning-task-border); }
+.muse-planner-task { min-width: 0; padding: 10px var(--space-2); border: 1px solid var(--divider); border-radius: var(--control-radius); background: var(--planning-task-background); border-color: var(--planning-task-border); }
 .muse-task-title-row { display: flex; align-items: flex-start; gap: 2px; }
 .muse-task-completion { position: relative; display: grid; place-items: center; width: 36px; min-height: var(--touch-target); flex: 0 0 30px; cursor: pointer; }
 .muse-task-completion .priority-check { width: 18px; height: 18px; border-radius: 5px; border-color: var(--selected-border); }
@@ -28,10 +28,6 @@ select option { background: var(--background); color: var(--foreground); }
 .muse-task-facts, .muse-task-tags { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-2); padding: var(--space-2) var(--space-1) 0; font-size: .68rem; color: var(--text-muted); }
 .muse-task-due[data-before-plan="true"], .muse-delete-task { color: var(--urgency-ink); }
 .muse-task-tag { padding: 2px 5px; color: var(--foreground); border-radius: var(--space-1); border: 1px solid color-mix(in srgb, var(--organization-accent) 40%, transparent); background: color-mix(in srgb, var(--organization-accent) 12%, transparent); }
-.muse-task-actions { display: flex; justify-content: space-between; gap: var(--space-1); margin-top: var(--space-1); }
-.muse-task-actions .text-button { font-size: .65rem; }
-.muse-task-drag { cursor: grab; text-decoration: none; font-size: 1.1rem !important; }
-.muse-task-drag:active { cursor: grabbing; }
 .muse-task-quick-add { display: flex; gap: var(--space-1); margin-top: var(--space-3); }
 .muse-task-quick-add input { padding: var(--space-2); background: transparent; font-size: .8rem; }
 .muse-task-quick-add button { flex: 0 0 36px; min-height: var(--touch-target); border: 1px solid var(--glass-border); border-radius: var(--control-radius); background: var(--surface-control); color: var(--selected-text); font-size: 1.2rem; }
@@ -61,7 +57,6 @@ select option { background: var(--background); color: var(--foreground); }
 .muse-organize-form { display: flex; flex-direction: column; gap: var(--space-3); margin-top: var(--space-4); }
 .muse-accent-choices label { display: inline-flex; gap: var(--space-1); align-items: center; margin: 0 var(--space-2) var(--space-2) 0; min-height: var(--touch-target); font-size: .7rem; }
 .muse-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-@media (hover: none) { .muse-task-drag { display: none; } }
 @media (prefers-reduced-motion: reduce) { .muse-day-drop { transition: none; } }
 
 /* A source rail beside the canvas, deliberately unlike the dated planning tracks. */
@@ -82,13 +77,14 @@ select option { background: var(--background); color: var(--foreground); }
 
 /* A bounded source rail and one flexible canvas: no implicit rows or spanning children. */
 .muse-planner-layout { display: grid; grid-template-columns: minmax(260px, 280px) minmax(0, 1fr); align-items: stretch; gap: var(--grid-gap); width: 100%; min-width: 0; }
-.muse-planning-rail { width: 100%; min-width: 0; height: 100%; min-height: 420px; contain: size; overflow-y: auto; overscroll-behavior: contain; padding: var(--space-5); background: var(--planning-rail-background); border: 1px solid var(--glass-border); border-radius: var(--card-radius); backdrop-filter: blur(var(--material-blur)); box-shadow: var(--card-shadow); }
+.muse-planning-rail { width: 100%; min-width: 0; height: var(--planner-surface-height); min-height: 0; display: flex; flex-direction: column; overflow: hidden; overscroll-behavior: contain; padding: var(--space-5); background: var(--planning-rail-background); border: 1px solid var(--glass-border); border-radius: var(--card-radius); backdrop-filter: blur(var(--material-blur)); box-shadow: var(--card-shadow); }
+.muse-planning-rail > :not(.muse-inbox-drop) { flex-shrink: 0; }
 .muse-planning-rail > .muse-section-eyebrow { margin-bottom: var(--space-2); }
 .muse-planning-rail-hint { padding-top: var(--space-4); border-top: 1px solid var(--divider); }
 .muse-planning-canvas { min-width: 0; width: 100%; }
 .muse-planner-board { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); width: 100%; min-width: 0; align-items: stretch; gap: var(--space-3); }
-.muse-planner-toolbar { display: flex; align-items: center; justify-content: flex-end; gap: var(--space-2); flex-wrap: wrap; }
-.muse-planner-toolbar .muse-planner-search { display: flex; align-items: center; flex-direction: row; width: 150px; max-width: 180px; gap: var(--space-2); padding-left: var(--space-2); border: 1px solid var(--glass-border); border-radius: var(--control-radius); background: var(--planning-control-background); color: var(--text-muted); }
+.muse-planner-toolbar { display:grid; grid-template-columns:minmax(140px,1fr) auto; align-items:center; gap:var(--space-2); width:100%; min-width:0; }
+.muse-planner-toolbar .muse-planner-search { display: flex; align-items: center; flex-direction: row; width:100%; max-width:none; min-width:0; gap: var(--space-2); padding-left: var(--space-2); border: 1px solid var(--glass-border); border-radius: var(--control-radius); background: var(--planning-control-background); color: var(--text-muted); }
 .muse-planner-search input { min-width: 0; min-height: var(--touch-target); border: 0; background: transparent; font-size: .8rem; }
 .muse-planner-search:focus-within { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 .muse-planner-utility-row { display: flex; align-items: center; gap: var(--space-1); min-width: 0; }
@@ -111,8 +107,7 @@ select option { background: var(--background); color: var(--foreground); }
   .muse-planner-mobile-week .muse-week-strip { max-width: none; margin: 0; width: 100%; }
   .muse-day-drop { min-height: 280px; }
   .muse-task-completion { width: var(--touch-target); flex-basis: var(--touch-target); }
-  .muse-task-drag, .muse-planner-help { display: none; }
-  .muse-task-actions { justify-content: flex-end; }
+  .muse-planner-help { display: none; }
 }
 .muse-planner-mobile-tabs, .muse-planner-mobile-week { display: none; }
 .muse-planner-hero-controls { display: flex; flex-direction: column; align-items: flex-end; gap: var(--space-3); }
@@ -120,3 +115,83 @@ select option { background: var(--background); color: var(--foreground); }
 .muse-day-drop[data-selected="true"]::after, .muse-planner-day[data-today="true"] .muse-day-drop::after { opacity: 1; }
 @container muse-content (max-width: 820px) { .muse-planner-mobile-tabs { display: flex; margin-bottom: var(--space-3); } .muse-planner-mobile-week { display: block; margin-bottom: var(--space-3); } .muse-planner-toolbar { justify-content: flex-start; width: 100%; } .muse-planner-hero-controls { width: 100%; align-items: stretch; } }
 
+
+.muse-inbox-drop { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+.muse-day-drop > .muse-planner-task-list { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+.muse-day-drop > :not(.muse-planner-task-list) { flex-shrink: 0; }
+.muse-planning-pool-heading { margin-top: var(--space-3); }
+.muse-planning-rail-hint { margin-top: var(--space-2); font-size: .65rem; }
+.muse-planner-task { padding: 6px; cursor: grab; }
+.muse-task-completion { flex-basis: 28px; width: 28px; }
+.muse-task-title { padding: var(--space-1); font-size: .8rem; }
+.muse-task-context { display: inline-flex; align-items: center; gap: var(--space-1); min-height: 28px; padding: 0 var(--space-1); border: 0; border-radius: var(--space-1); background: transparent; text-align: left; cursor: pointer; }
+.muse-task-facts, .muse-task-tags { gap: 2px var(--space-2); padding-top: 2px; font-size: .63rem; }
+.muse-task-tag { padding-block: 0; }
+.muse-task-inline-timer { display: inline-flex; flex: 0 0 auto; align-items: center; justify-content: center; gap: 3px; min-width: 48px; min-height: var(--touch-target); padding: 0 var(--space-1); border: 0; border-radius: var(--control-radius); color: var(--text-muted); background: transparent; font-size: .64rem; font-variant-numeric: tabular-nums; }
+.muse-task-inline-timer[data-running="true"] { color: var(--timer-accent); background: var(--wash-aqua); }
+.muse-timer-elapsed { display: block; font-size: 1.6rem; font-variant-numeric: tabular-nums; margin-block: var(--space-3); }
+@media (hover: hover) { .muse-planner-task:hover { border-color: var(--interactive-secondary); } }
+@media (pointer: coarse) { .muse-task-context { min-height: var(--touch-target); } }
+@container muse-content (max-width: 820px) { .muse-day-drop { height: auto; min-height: 360px; } .muse-day-drop > .muse-planner-task-list { max-height: 65dvh; } }
+.muse-planner-sheet-body .muse-inbox-drop { overflow: visible; }
+@container muse-content (max-width: 820px) { .muse-task-completion { width: var(--touch-target); flex-basis: var(--touch-target); } }
+
+/* Two compact scan rows; deeper timing is a real inline disclosure. */
+.muse-task-title-row { display:grid; grid-template-columns:28px minmax(0,1fr) auto; align-items:center; }
+.muse-task-title { width:100%; line-height:1.35; }
+.muse-task-secondary-row { display:flex; align-items:center; flex-wrap:wrap; gap:var(--space-1) var(--space-2); min-width:0; }
+.muse-task-secondary-row .muse-task-context { max-width:100%; min-width:0; font-size:.68rem; }
+.muse-task-secondary-row .muse-task-tags { flex:0 1 auto; justify-content:flex-end; margin-left:auto; min-width:0; padding:0; }
+.muse-task-timer-panel { grid-column:1/-1; min-width:0; padding:var(--space-3); margin-block:var(--space-2); border:1px solid var(--glass-border); border-radius:var(--control-radius); background:var(--planning-control-background); cursor:default; }
+.muse-task-timer-panel dl { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--space-2); margin:0 0 var(--space-3); }
+.muse-task-timer-panel dt { font-size:.64rem; color:var(--text-muted); }
+.muse-task-timer-panel dd { margin:var(--space-1) 0 0; font-size:.85rem; font-variant-numeric:tabular-nums; }
+.muse-task-timer-actions { display:flex; flex-wrap:wrap; gap:var(--space-1); }
+.muse-task-timer-actions button { font-size:.7rem; padding-inline:var(--space-2); }
+.muse-task-due-preview { margin:var(--space-1); color:var(--text-muted); font-size:.72rem; }
+.muse-planner-filter-heading { flex-shrink:0; padding-bottom:var(--space-3); }
+.muse-planner-filter-heading > p { margin-bottom:var(--space-2); }
+.muse-planner-filter-results { min-height:0; overflow-y:auto; overscroll-behavior:contain; padding:3px; scrollbar-width:thin; }
+.muse-planner-filter-results .muse-filter-section { padding-block:var(--space-3); margin:0; border-top:1px solid var(--divider); }
+.muse-filter-rows { display:flex; flex-direction:column; gap:2px; }
+.muse-filter-rows label { display:flex; align-items:center; gap:var(--space-2); min-height:36px; padding:var(--space-1) var(--space-2); border-radius:var(--control-radius); font-size:.78rem; cursor:pointer; }
+.muse-filter-rows label:hover { background:var(--surface-hover); }
+.muse-filter-rows label:focus-within { outline:2px solid var(--focus-ring); outline-offset:-2px; }
+.muse-filter-rows input { width:16px; height:16px; flex:0 0 16px; accent-color:var(--organization-accent,var(--filter-selected-border)); }
+.muse-filter-rows label small { display:block; margin-top:2px; color:var(--text-muted); font-size:.66rem; }
+.muse-filter-rows label:has(input:checked) { color:var(--filter-selected-text); background:var(--filter-selected-background); }
+@media(pointer:coarse) { .muse-filter-rows label { min-height:var(--touch-target); } }
+@container muse-content (max-width:820px) { .muse-task-title-row { grid-template-columns:44px minmax(0,1fr) auto; } }
+
+.muse-task-context-label { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+/* Stack deliberately only once both full-size utility groups cannot fit. */
+@container muse-content (max-width:430px) { .muse-planner-toolbar { grid-template-columns:minmax(0,1fr); }.muse-planner-utility-row { justify-content:flex-end; } }
+
+.muse-module-toolbar { display:flex; justify-content:flex-end; margin-bottom:var(--module-toolbar-gap); min-width:0; }
+.muse-module-toolbar .muse-planner-toolbar { width:min(100%,590px); grid-template-columns:minmax(190px,1fr) auto; }
+@container muse-content (max-width:500px) { .muse-module-toolbar .muse-planner-toolbar { grid-template-columns:minmax(0,1fr); } }
+
+/* Compact, immediate classification and on-demand full editing. */
+.muse-classification-options { min-height:0;overflow:auto;overscroll-behavior:contain;display:grid;gap:8px;padding:0 2px 8px; }
+.muse-classification-options .popover-choice { min-height:36px;padding-block:5px; }
+.muse-task-details { gap:12px; }
+.muse-task-details .muse-detail-fields { gap:10px 12px; }
+.muse-planned-field { display:grid;gap:6px; }
+.muse-planned-field>div { display:flex;justify-content:space-between;align-items:center;gap:8px; }
+.muse-planned-field .text-button { min-height:28px;padding:0 4px; }
+.muse-task-details .editor-label { margin:0; }
+.muse-delete-task { border-top:1px solid var(--glass-border);padding-top:14px;margin-top:4px;justify-self:start; }
+
+/* Use the actual measured desktop remainder; small viewports flow naturally. */
+.muse-planning-rail>.muse-task-quick-add,.muse-day-drop>.muse-task-quick-add {margin-top:auto;padding-top:var(--space-3);}
+.muse-planner-layout[data-height-mode="natural"] :is(.muse-planning-rail,.muse-day-drop) {height:auto;min-height:var(--planner-min-height);}
+.muse-planner-layout[data-height-mode="natural"] :is(.muse-inbox-drop,.muse-planner-task-list) {overflow:visible;flex:0 0 auto;}
+@container muse-content (max-width:820px){.muse-planner-layout :is(.muse-day-drop,.muse-planning-rail){height:auto;min-height:360px;}.muse-planner-layout .muse-day-drop>.muse-planner-task-list {overflow:visible;max-height:none;flex:0 0 auto;}}
+.muse-classification-options {margin-top:var(--space-5);gap:var(--space-2);}
+.muse-classification-options>.editor-label {margin:0;}
+.muse-classification-options>.popover-choice-list + .editor-label {margin-top:var(--space-3);}
+
+.muse-day-drop>.muse-day-content {flex:1 1 auto;min-height:0;overflow:auto;overscroll-behavior:contain;padding:0 2px;}
+.muse-planner-layout[data-height-mode="natural"] .muse-day-content {flex:0 0 auto;overflow:visible;}
+@container muse-content (max-width:820px){.muse-planner-layout .muse-day-content{flex:0 0 auto;overflow:visible;}}

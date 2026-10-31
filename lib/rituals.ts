@@ -1,9 +1,10 @@
+import {validAccent,validGradient,type AccentColor,type CustomGradient} from "./appearance-values";
 import { shiftDate, validDate, weekDates } from "./dates";
 import type { MuseIconName } from "@/components/MuseIcon";
 
-export type RitualAccent = "primary" | "secondary" | "pop";
+export type RitualAccent = AccentColor;
 export const ritualGradients = ["primary-secondary", "secondary-pop", "pop-primary"] as const;
-export type RitualGradient = typeof ritualGradients[number];
+export type RitualGradient = typeof ritualGradients[number] | CustomGradient;
 export type RitualGroupDefinition = { id: string; name: string; accent: RitualAccent; icon: MuseIconName; collapsed: boolean; gradient?: RitualGradient };
 export type RitualRecurrence = { kind: "daily" } | { kind: "weekly"; weekday: number } | { kind: "weekdays"; weekdays: number[] };
 export type RitualType = "checkbox" | "numeric" | "duration" | "weekly-target";
@@ -119,7 +120,7 @@ export function ritualReducer(state: RitualState, action: RitualAction): RitualS
       const next = locked ? { ...previous, name: ritual.name.trim(), groupId: ritual.groupId } : { ...ritual, name: ritual.name.trim(), goal: ritual.type === "checkbox" ? 1 : ritual.goal };
       return { ...state, rituals: previous ? state.rituals.map((entry) => entry.id === ritual.id ? next : entry) : [...state.rituals, next] };
     }
-    case "group/save": return !action.group.name.trim() ? state : { ...state, groups: state.groups.some((group) => group.id === action.group.id) ? state.groups.map((group) => group.id === action.group.id ? { ...action.group, name: action.group.name.trim() } : group) : [...state.groups, { ...action.group, name: action.group.name.trim() }] };
+    case "group/save": return !action.group.name.trim() || !validAccent(action.group.accent) || (action.group.gradient && typeof action.group.gradient !== "string" && !validGradient(action.group.gradient)) ? state : { ...state, groups: state.groups.some((group) => group.id === action.group.id) ? state.groups.map((group) => group.id === action.group.id ? { ...action.group, name: action.group.name.trim() } : group) : [...state.groups, { ...action.group, name: action.group.name.trim() }] };
     case "group/toggle": return { ...state, groups: state.groups.map((group) => group.id === action.id ? { ...group, collapsed: !group.collapsed } : group) };
     case "group/delete": return state.groups.length <= 1 || state.rituals.some((ritual) => ritual.groupId === action.id) ? state : { ...state, groups: state.groups.filter((group) => group.id !== action.id) };
     case "entry/set": {

@@ -12,3 +12,12 @@
 .muse-theme-materials > p { margin: 0 var(--space-2) var(--space-2); }
 .muse-material-swatch { width: 18px; height: 18px; border: 1px solid var(--glass-edge); border-radius: 5px; background: var(--glass-background); box-shadow: inset 0 1px 2px var(--glass-edge); }
 .muse-material-swatch[data-material="frosted"] { background: var(--frosted-glass-background); }
+
+.muse-theme-root[data-compact="true"] .muse-theme-active-name,.muse-theme-root[data-compact="true"] .muse-theme-trigger > svg { display:none; }
+.muse-theme-root[data-compact="true"] .muse-theme-trigger { width:44px; height:44px; padding:0; }
+.muse-rail-footer .muse-theme-root { margin-bottom:var(--space-2); }
+.muse-rail-footer .muse-theme-trigger { width:100%; justify-content:flex-start; border-radius:var(--control-radius); font-size:.7rem; }
+.muse-theme-active-name { min-width:0; overflow:hidden; text-overflow:ellipsis; }
+.muse-theme-name small { color:var(--text-muted); font-size:.65rem; }
+
+.muse-theme-name > span { display:flex; align-items:center; gap:var(--space-1); }

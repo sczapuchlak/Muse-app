@@ -1,15 +1,10 @@
 import { mealSlots, type DailyMealAssignment, type MealSlot, type MealNutrition } from "./models";
+import { defaultGrocerySections,UNSORTED_GROCERY_SECTION } from "./grocery-sections";
+export { defaultGrocerySections,UNSORTED_GROCERY_SECTION };
 import { validDate } from "./dates";
 export type SavedMeal = { id: string; name: string; mealTypes: MealSlot[]; nutrition?: MealNutrition; note?: string; link?: string; createdAt: string };
 export type GrocerySection = { id: string; name: string };
 export type GroceryItem = { id: string; name: string; quantity?: string; note?: string; sectionId: string; complete: boolean; createdAt: string };
-export const UNSORTED_GROCERY_SECTION="unsorted";
-export const defaultGrocerySections:GrocerySection[]=[
-  {id:"unsorted",name:"Unsorted"},{id:"produce",name:"Produce"},{id:"protein",name:"Meat & Protein"},
-  {id:"dairy",name:"Dairy & Eggs"},{id:"pantry",name:"Pantry"},{id:"frozen",name:"Frozen"},
-  {id:"bakery",name:"Bakery"},{id:"snacks",name:"Snacks"},{id:"drinks",name:"Beverages"},
-  {id:"household",name:"Household"},{id:"personal-care",name:"Personal Care"},{id:"pets",name:"Pets"},{id:"other",name:"Other"},
-];
 export function createGroceryItem(name:string,id:string,now:string,sectionId=UNSORTED_GROCERY_SECTION):GroceryItem {
   return {id,name:name.trim(),sectionId,complete:false,createdAt:now};
 }
@@ -25,6 +20,7 @@ export type NourishAction =
   | { type: "saved/save"; meal: SavedMeal }
   | { type: "saved/remove"; id: string }
   | { type: "grocery/save"; item: Omit<GroceryItem,"sectionId"> & {sectionId?:string} }
+  | { type: "grocery/restore"; items: GroceryItem[] }
   | { type: "grocery/complete"; id: string; complete: boolean }
   | { type: "grocery/remove"; id: string }
   | { type: "grocery/clear-completed" };
@@ -78,6 +74,7 @@ export function nourishReducer(state: NourishState, action: NourishAction): Nour
       const next={...item,name:item.name.trim(),quantity:item.quantity?.trim()||undefined,note:item.note?.trim()||undefined};
       return {...state,grocerySections:sections,groceryItems:state.groceryItems.some((entry)=>entry.id===item.id)?state.groceryItems.map((entry)=>entry.id===item.id?next:entry):[...state.groceryItems,next]};
     }
+    case "grocery/restore": return action.items.reduce((next,item)=>next.groceryItems.some((entry)=>entry.id===item.id)?next:nourishReducer(next,{type:"grocery/save",item}),state);
     case "grocery/complete": return {...state,groceryItems:state.groceryItems.map((item)=>item.id===action.id?{...item,complete:action.complete}:item)};
     case "grocery/remove": return {...state,groceryItems:state.groceryItems.filter((item)=>item.id!==action.id)};
     case "grocery/clear-completed": return {...state,groceryItems:state.groceryItems.filter((item)=>!item.complete)};
@@ -108,3 +105,6 @@ export function dailyNutrition(meals: DailyMealAssignment[]) {
 export function savedMealsFor(state:NourishState,slot:MealSlot|"all",query="") {
   return state.savedMeals.filter((meal)=>(slot==="all"||meal.mealTypes.includes(slot))&&meal.name.toLocaleLowerCase("en-US").includes(query.trim().toLocaleLowerCase("en-US")));
 }
+
+export type SavedMealSort='az'|'za'|'newest'|'oldest';
+export function sortSavedMeals(meals:SavedMeal[],order:SavedMealSort){return [...meals].sort((a,b)=>{const names=a.name.localeCompare(b.name,undefined,{sensitivity:'base'});return order==='az'?names:order==='za'?-names:(order==='newest'?-1:1)*(a.createdAt??'').localeCompare(b.createdAt??'')||names||a.id.localeCompare(b.id);});}

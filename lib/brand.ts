@@ -1,0 +1,1 @@
+export const museBrand={mantra:'Be the muse of your own life.',support:'Your plans, your rituals, your feelings, your future.',invitation:'A little space to keep growing, exploring, and becoming.'} as const;

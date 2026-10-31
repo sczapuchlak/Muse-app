@@ -24,7 +24,7 @@
 }
 /* Higher specificity keeps component background shorthands from erasing the material.
    These are cheap painted light layers; there is no extra nested blur or animated filter. */
-:root[data-material] :is(.muse-card, .muse-planning-rail, .muse-day-drop, .muse-ritual-group, .muse-nourish-day, .muse-planner-task, .muse-meal-entry, .muse-saved-meal, .muse-grocery-section, .muse-popover-panel, .muse-drawer, .muse-modal) {
+:root[data-material] :is(.muse-card, .muse-insight-panel, .muse-notes-workspace, .muse-money-panel, .muse-planning-rail, .muse-day-drop, .muse-ritual-group, .muse-nourish-day, .muse-planner-task, .muse-meal-entry, .muse-saved-meal, .muse-grocery-section, .muse-popover-panel, .muse-drawer, .muse-modal) {
   --surface-feedback-shadow: 0 0 0 transparent;
   --material-depth-shadow: var(--card-shadow);
   background-image:
@@ -35,7 +35,7 @@
   box-shadow: var(--surface-feedback-shadow), var(--material-depth-shadow), inset 0 1px 0 color-mix(in srgb, var(--glass-edge) 75%, transparent), inset 1px 0 0 color-mix(in srgb, var(--accent-secondary) 14%, transparent), inset -1px -1px 0 color-mix(in srgb, var(--accent-warm) 12%, transparent);
 }
 /* Blur only primary glass sheets and existing floating surfaces, never each nested entry. */
-:root[data-material] :is(.muse-card, .muse-planning-rail, .muse-day-drop, .muse-ritual-group, .muse-nourish-day, .muse-grocery-section, .muse-popover-panel, .muse-drawer, .muse-modal) {
+:root[data-material] :is(.muse-card, .muse-insight-panel, .muse-notes-workspace, .muse-money-panel, .muse-planning-rail, .muse-day-drop, .muse-ritual-group, .muse-nourish-day, .muse-grocery-section, .muse-popover-panel, .muse-drawer, .muse-modal) {
   backdrop-filter: blur(var(--material-blur)) saturate(var(--material-saturation));
   -webkit-backdrop-filter: blur(var(--material-blur)) saturate(var(--material-saturation));
 }
@@ -49,3 +49,5 @@
 :root[data-material] .muse-planner-task[data-drop-before="true"] { --surface-feedback-shadow: inset 0 2px 0 var(--focus-ring), 0 -2px 8px var(--wash-aqua); }
 
 :root[data-material] :is(.muse-popover-panel, .muse-drawer, .muse-modal) { --material-depth-shadow: var(--floating-shadow); }
+/* Disco is chrome-reflective Crystal; Frosted keeps its softer shared optics. */
+:root[data-theme="disco-damage"][data-material="crystal"] { --material-reflection:20%; --material-internal-light:12%; --material-specular:48%; }

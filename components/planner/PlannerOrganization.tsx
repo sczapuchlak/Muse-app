@@ -1,40 +1,14 @@
 "use client";
-import { useState, type FormEvent } from "react";
-import { plannerAccentIds, type PlannerAccent } from "@/lib/planner";
-import { usePlanner } from "../PlannerStore";
-
-type Kind = "workspace" | "group" | "tag";
-export function PlannerOrganizationPanel({ onClose }: { onClose: () => void }) {
-  const { state, dispatch } = usePlanner();
-  const [kind, setKind] = useState<Kind>("workspace");
-  const [editing, setEditing] = useState<string | null>(null);
-  const [name, setName] = useState("");
-  const [accent, setAccent] = useState<PlannerAccent>("primary");
-  const [workspaceId, setWorkspace] = useState(state.workspaces[0].id);
-  const entries = kind === "workspace" ? state.workspaces : kind === "group" ? state.groups : state.tags;
-  function reset() { setEditing(null); setName(""); setAccent("primary"); }
-  function save(event: FormEvent) {
-    event.preventDefault();
-    if (!name.trim()) return;
-    const id = editing ?? crypto.randomUUID();
-    if (kind === "workspace") dispatch({ type: "workspace/save", workspace: { id, name: name.trim(), accent } });
-    if (kind === "group") dispatch({ type: "group/save", group: { id, name: name.trim(), workspaceId } });
-    if (kind === "tag") dispatch({ type: "tag/save", tag: { id, name: name.trim().replace(/^#/, ""), accent } });
-    reset();
-  }
-  return <div>
-      <div className="muse-organize-tabs" role="group" aria-label="Organization type">{(["workspace", "group", "tag"] as const).map((value) => <button type="button" className="choice-button" key={value} aria-pressed={kind === value} onClick={() => { setKind(value); reset(); }}>{value === "workspace" ? "Workspaces" : value === "group" ? "Groups" : "Tags"}</button>)}</div>
-      <ul className="muse-organize-list">{entries.map((entry) => {
-        const blocked = kind === "workspace" && (state.workspaces.length <= 1 || state.tasks.some((task) => task.workspaceId === entry.id) || state.groups.some((group) => group.workspaceId === entry.id));
-        return <li key={entry.id}><span>{entry.name}{"workspaceId" in entry && <small> · {state.workspaces.find((workspace) => workspace.id === entry.workspaceId)?.name}</small>}</span>
-          <button type="button" className="text-button" onClick={() => { setEditing(entry.id); setName(entry.name); if ("accent" in entry) setAccent(entry.accent); if ("workspaceId" in entry) setWorkspace(entry.workspaceId); }}>Edit</button>
-          <button className="text-button" type="button" disabled={blocked} title={blocked ? "Move tasks and remove groups first; keep at least one workspace" : undefined} onClick={() => { dispatch({ type: `${kind}/delete`, id: entry.id }); if (editing === entry.id) reset(); }}>Delete</button></li>;
-      })}</ul>
-      {kind === "workspace" && <p className="small-label">Only empty workspaces without groups can be deleted. Keep at least one.</p>}
-      <form className="muse-organize-form" onSubmit={save}>
-        <label className="editor-label">{editing ? "Rename" : "New"} {kind}<input type="text" required maxLength={40} value={name} onChange={(event) => setName(event.target.value)} /></label>
-        {kind === "group" ? <fieldset className="muse-filter-section"><legend>Workspace</legend><div className="muse-filter-options">{state.workspaces.map((workspace) => <button key={workspace.id} className="choice-button" type="button" aria-pressed={workspaceId === workspace.id} onClick={() => setWorkspace(workspace.id)}>{workspace.name}</button>)}</div></fieldset> : <fieldset className="muse-accent-choices"><legend>Accent</legend>{plannerAccentIds.map((value) => <label data-accent={value} key={value}><input type="radio" name="organization-accent" checked={accent === value} onChange={() => setAccent(value)} /><span className="muse-workspace-dot" />{value === "primary" ? "Signature" : value === "secondary" ? "Companion" : "Contrast"}</label>)}</fieldset>}
-        <div className="editor-actions"><button className="muse-button button-primary" type="submit">{editing ? "Save changes" : `Add ${kind}`}</button>{editing && <button className="text-button" type="button" onClick={reset}>Cancel edit</button>}<button className="text-button" type="button" onClick={onClose}>Done</button></div>
-      </form>
-  </div>;
-}
+import {useEffect,useRef,useState} from 'react';
+import type {Workspace,TaskGroup,TaskTag} from '@/lib/planner';
+import {pinAccent,type AccentColor} from '@/lib/appearance-values';
+import {MuseIconPicker} from '../MuseIconPicker';
+import type {MuseIconName} from '../MuseIcon';
+import {MuseColorPicker} from '../MuseColorPicker';
+import {ColorLabel} from '../ColorLabel';
+import {MuseIconButton} from '../MuseIconButton';
+import {MuseChoiceMenu} from '../MuseChoiceMenu';
+import {usePlanner} from '../PlannerStore';
+type Kind='workspace'|'group'|'tag';type Entry=Workspace|TaskGroup|TaskTag;
+function OrganizationEditor({kind,initial,onClose}:{kind:Kind;initial?:Entry;onClose:()=>void}){const {state,dispatch}=usePlanner(),[name,setName]=useState(initial?.name??''),[accent,setAccent]=useState<AccentColor>(initial&&'accent'in initial&&initial.accent?initial.accent:'primary'),[icon,setIcon]=useState<MuseIconName|''>(initial?.icon??''),[workspaceId,setWorkspace]=useState(initial&&'workspaceId'in initial?initial.workspaceId:state.workspaces[0].id),ref=useRef<HTMLInputElement>(null);useEffect(()=>ref.current?.focus(),[]);return <form className="muse-inline-editor" onKeyDown={e=>{if(e.key==='Escape'){e.preventDefault();e.stopPropagation();onClose();}}} onSubmit={e=>{e.preventDefault();if(!name.trim())return;const id=initial?.id??crypto.randomUUID(),color=pinAccent(accent);if(kind==='workspace')dispatch({type:'workspace/save',workspace:{id,name:name.trim(),accent:color,icon:icon||undefined}});if(kind==='group')dispatch({type:'group/save',group:{id,name:name.trim(),workspaceId,accent:color,icon:icon||undefined}});if(kind==='tag')dispatch({type:'tag/save',tag:{id,name:name.trim().replace(/^#/,''),accent:color,icon:icon||undefined}});onClose();}}><label>{initial?'Name':`New ${kind}`}<input ref={ref} type="text" maxLength={40} required value={name} onChange={e=>setName(e.target.value)}/></label>{kind==='group'&&<MuseChoiceMenu label="Workspace" valueLabel={state.workspaces.find(w=>w.id===workspaceId)?.name??''} selectedIds={[workspaceId]} options={state.workspaces.map(w=>({id:w.id,label:w.name,accent:w.accent}))} onSelect={setWorkspace}/>}<MuseColorPicker value={accent} onChange={setAccent}/><MuseIconPicker value={icon} onChange={setIcon}/><div className="editor-actions"><button type="submit" className="muse-button button-primary">{initial?'Save changes':`Add ${kind}`}</button><button type="button" className="muse-button" onClick={onClose}>Cancel</button></div></form>;}
+export function PlannerOrganizationPanel({onClose}:{onClose:()=>void}){const {state,dispatch}=usePlanner(),[kind,setKind]=useState<Kind>('workspace'),[editing,setEditing]=useState<string|null>(null),[creating,setCreating]=useState(false),[removing,setRemoving]=useState<string|null>(null);const entries=kind==='workspace'?state.workspaces:kind==='group'?state.groups:state.tags;return <div><div className="muse-manager-tabs" role="group" aria-label="Organization type">{(['workspace','group','tag'] as const).map(k=><button className="choice-button" key={k} type="button" aria-pressed={kind===k} onClick={()=>{setKind(k);setEditing(null);setCreating(false);setRemoving(null);}}>{k==='workspace'?'Workspaces':k==='group'?'Groups':'Tags'}</button>)}</div><ul className="muse-inline-manager-list">{entries.map(entry=>{const blocked=kind==='workspace'&&(state.workspaces.length<=1||state.tasks.some(t=>t.workspaceId===entry.id)||state.groups.some(g=>g.workspaceId===entry.id));return <li key={`${kind}/${entry.id}`}><div className="muse-managed-row"><ColorLabel icon={entry.icon} color={'accent'in entry?entry.accent:undefined}>{entry.name}{'workspaceId'in entry&&<small> · {state.workspaces.find(w=>w.id===entry.workspaceId)?.name}</small>}</ColorLabel><MuseIconButton icon="edit" label={`Edit ${entry.name}`} onClick={()=>{setEditing(entry.id);setCreating(false);}}/><MuseIconButton icon="trash" label={`Delete ${entry.name}`} disabled={blocked} title={blocked?'Move tasks and groups first; keep at least one workspace':`Delete ${entry.name}`} onClick={()=>setRemoving(entry.id)}/></div>{editing===entry.id&&<OrganizationEditor key={entry.id} kind={kind} initial={entry} onClose={()=>setEditing(null)}/>} {removing===entry.id&&<div className="muse-inline-editor"><p className="small-label">Remove {entry.name}? Tasks remain; their references to this item are cleared.</p><div className="editor-actions"><button type="button" className="muse-button" onClick={()=>{dispatch({type:`${kind}/delete`,id:entry.id});setRemoving(null);setEditing(null);}}>Remove</button><button type="button" className="muse-button" onClick={()=>setRemoving(null)}>Keep it</button></div></div>}</li>;})}</ul>{creating?<OrganizationEditor key={kind} kind={kind} onClose={()=>setCreating(false)}/>:<button className="muse-button" type="button" onClick={()=>{setCreating(true);setEditing(null);}}>+ New {kind}</button>}<div className="popover-footer"><button className="muse-button" type="button" onClick={onClose}>Done</button></div></div>;}

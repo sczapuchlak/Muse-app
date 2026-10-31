@@ -1,7 +1,8 @@
 "use client";
+import {MuseChoiceMenu} from "../MuseChoiceMenu";
 import { useRef,useState } from "react";
 import { mealSlots,mealLabels,type MealSlot } from "@/lib/models";
-import { safeMealLink,savedMealsFor,validNutrition,type SavedMeal } from "@/lib/nourish";
+import { safeMealLink,savedMealsFor,sortSavedMeals,validNutrition,type SavedMeal,type SavedMealSort } from "@/lib/nourish";
 import { useNourish } from "../NourishStore";
 import { MuseDrawer } from "../MuseDrawer";
 import { useMuseSpark } from "../MuseSpark";
@@ -36,11 +37,12 @@ export function SavedMealLibrary() {
   const {state,dispatch}=useNourish(),{trigger,spark}=useMuseSpark();
   const [filter,setFilter]=useState<MealSlot|"all">("all"),[query,setQuery]=useState("");
   const [editor,setEditor]=useState<{initial?:SavedMeal;anchor:HTMLElement}|null>(null);
-  const meals=savedMealsFor(state,filter,query);
+  const [sort,setSort]=useState<SavedMealSort>("az"),sortOptions=[{id:"az",label:"Name: A–Z"},{id:"za",label:"Name: Z–A"},{id:"newest",label:"Recently added"},{id:"oldest",label:"Oldest added"}];
+  const meals=sortSavedMeals(savedMealsFor(state,filter,query),sort);
   const addAnchor=useRef<HTMLButtonElement>(null);
   return <section aria-label="Saved meals" className="muse-saved-view">
     <div className="muse-nourish-section-heading"><div><h2>Saved meals</h2><p className="card-description">The things you like coming back to. No recipe required.</p></div><button ref={addAnchor} className="muse-button button-primary muse-feedback-anchor" type="button" onClick={(event)=>setEditor({anchor:event.currentTarget})}>+ Add saved meal{spark}</button></div>
-    <div className="muse-library-toolbar"><input type="search" aria-label="Find a saved meal" placeholder="Find a meal…" value={query} onChange={(event)=>setQuery(event.target.value)}/><div className="muse-filter-options" role="group" aria-label="Filter saved meals by type"><button className="choice-button" type="button" aria-pressed={filter==="all"} onClick={()=>setFilter("all")}>All</button>{mealSlots.map((slot)=><button className="choice-button" type="button" key={slot} aria-pressed={filter===slot} onClick={()=>setFilter(slot)}>{mealLabels[slot]}</button>)}</div></div>
+    <div className="muse-library-toolbar"><input type="search" aria-label="Find a saved meal" placeholder="Find a meal…" value={query} onChange={(event)=>setQuery(event.target.value)}/><div className="muse-filter-options" role="group" aria-label="Filter saved meals by type"><button className="choice-button" type="button" aria-pressed={filter==="all"} onClick={()=>setFilter("all")}>All</button>{mealSlots.map((slot)=><button className="choice-button" type="button" key={slot} aria-pressed={filter===slot} onClick={()=>setFilter(slot)}>{mealLabels[slot]}</button>)}<MuseChoiceMenu label="Sort saved meals" variant="icon" valueLabel={sortOptions.find(o=>o.id===sort)!.label} options={sortOptions} selectedIds={[sort]} onSelect={id=>setSort(id as SavedMealSort)}/></div></div>
     <ul className="muse-saved-grid">{meals.map((meal)=><SavedMealCard key={meal.id} meal={meal} onEdit={(initial,anchor)=>setEditor({initial,anchor})} onRemove={()=>{dispatch({type:"saved/remove",id:meal.id});addAnchor.current?.focus();}}/>)}</ul>
     {!meals.length&&<p className="muse-nourish-empty">{query||filter!=="all"?"No saved meals match. Try All or a different search.":"A good meal is worth remembering. Save your first one."}</p>}
     {editor&&<SavedMealEditor initial={editor.initial} anchor={editor.anchor} onClose={()=>setEditor(null)} onSaved={trigger}/>}

@@ -23,3 +23,6 @@
 }
 /* The emotion picker owns its scrolling results; its footer stays outside them. */
 .muse-popover-content-scroll { overflow: hidden; min-height: 0; }
+
+.muse-popover-panel { scroll-padding:var(--space-1); }
+.muse-popover-panel .popover-footer { flex:0 0 auto; }

@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import {allowsMagic} from "@/lib/magic-preference";
 import { motion } from "@/lib/motion";
 import { MuseStar } from "./MuseStar";
 import "./MuseRitualFeedback.css";
@@ -16,6 +17,7 @@ export function useRitualFeedback() {
   const sequence = useRef(0), timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(() => () => { if (timer.current) clearTimeout(timer.current); }, []);
   function trigger(kind: "orbital" | "constellation") {
+    if(!allowsMagic())return;
     if (timer.current) clearTimeout(timer.current);
     setEffect({ kind, key: ++sequence.current });
     timer.current = setTimeout(() => setEffect(null), kind === "orbital" ? motion.orbital : motion.celebration);

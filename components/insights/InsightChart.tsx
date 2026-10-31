@@ -1,0 +1,11 @@
+"use client";
+import {useId} from 'react';
+import dynamic from 'next/dynamic';
+import type {ChartCanvasProps} from './ChartCanvas';
+import {shortDate} from '@/lib/display-date';
+import {formatMoney} from '@/lib/money';
+const ChartCanvas=dynamic(()=>import('./ChartCanvas').then((module)=>module.ChartCanvas),{ssr:false,loading:()=> <p className="muse-insight-chart-loading">Preparing the view…</p>});
+export function InsightChart({title,description,empty='Your patterns are still introducing themselves.',hasData,...chart}:ChartCanvasProps&{title:string;description:string;empty?:string;hasData?:boolean}){const id=useId(),hasValues=hasData??chart.data.some((row)=>chart.series.some((series)=>row[series.key]!==null&&row[series.key]!==undefined));
+ const format=(value:string|number|null|undefined)=>value===null||value===undefined?'Not recorded':chart.unit==='money'?formatMoney(Number(value)):typeof value==='number'?String(Math.round(value*100)/100):value;
+ return <figure className="muse-insight-chart" aria-labelledby={id}><figcaption><h3 id={id}>{title}</h3><p>{description}</p></figcaption>{hasValues?<div className="muse-insight-chart-canvas" role="group" aria-label={`${title}. ${description}`}><ChartCanvas {...chart}/></div>:<p className="muse-insight-empty">{empty}</p>}<details className="muse-insight-data"><summary>Read the values</summary><div><table><caption className="sr-only">{title} source values</caption><thead><tr><th scope="col">{chart.labelKey==='date'?'Date':'Category'}</th>{chart.series.map((series)=><th key={series.key} scope="col">{series.label}</th>)}</tr></thead><tbody>{chart.data.map((row,index)=><tr key={String(row.id??row[chart.labelKey]??index)}><th scope="row">{chart.onInspect?<button type="button" className="text-button" onClick={()=>chart.onInspect?.(String(row[chart.inspectKey??chart.labelKey]))}>{chart.labelKey==='date'?`${shortDate(String(row[chart.labelKey]))}, ${String(row[chart.labelKey]).slice(0,4)}`:String(row[chart.labelKey])}</button>:chart.labelKey==='date'?`${shortDate(String(row[chart.labelKey]))}, ${String(row[chart.labelKey]).slice(0,4)}`:String(row[chart.labelKey])}</th>{chart.series.map((series)=><td key={series.key}>{format(row[series.key])}</td>)}</tr>)}</tbody></table></div></details></figure>;
+}

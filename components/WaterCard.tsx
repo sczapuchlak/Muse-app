@@ -1,13 +1,15 @@
 "use client";
 
-import { useMuseState } from "./MuseSession";
+import { useMuseState, useMuseRecords } from "./MuseSession";
 
 import { useRef, useState, type CSSProperties } from "react";
 import { formatWaterAmount, type DailyWater, type WaterSettings } from "@/lib/water";
+import { AchievementBadge } from "./AchievementStar";
 import { MuseCard } from "./MuseCard";
 import { CardHeading } from "./CardHeading";
 import { GlassPopover } from "./GlassPopover";
 import { WaterManager } from "./WaterManager";
+import "./WaterCard.css";
 import { WaterAmountForm } from "./WaterAmountForm";
 
 type WaterCardProps = { initialDay: DailyWater; settings: WaterSettings };
@@ -16,6 +18,7 @@ type EditorMode = "add" | "edit" | "goal" | "manage" | null;
 export function WaterCard({ initialDay, settings }: WaterCardProps) {
   const [day, setDay] = useMuseState("water", initialDay);
   const total = day.total;
+  const records=useMuseRecords(),hasRecordedDay=!!records[`${initialDay.date}/water`];
   const [editor, setEditor] = useState<EditorMode>(null);
   const editRef = useRef<HTMLButtonElement>(null);
   const customRef = useRef<HTMLButtonElement>(null);
@@ -24,6 +27,7 @@ export function WaterCard({ initialDay, settings }: WaterCardProps) {
   const [quickAdds, setQuickAdds] = useMuseState("water-quick-adds", settings.quickAdds, true);
   const manageRef = useRef<HTMLButtonElement>(null);
   const [goal, setGoal] = useMuseState("water-goal", settings.goal, true);
+  const achieved = goal > 0 && total >= goal;
   const progress = Math.min(100, Math.max(0, (total / goal) * 100));
 
   function closeEditor() {
@@ -35,12 +39,12 @@ export function WaterCard({ initialDay, settings }: WaterCardProps) {
   function applyAmount(amount: number) {
     if (editor === "goal") {
       if (amount <= 0) return "Enter a goal greater than zero.";
-      setGoal(amount); closeEditor(); return null;
+      setGoal(amount); if(hasRecordedDay)setDay((current)=>({...current,goal:amount,unit})); closeEditor(); return null;
     }
     // Keep the real quantity even above the goal; only the visual bar is capped.
     const next = editor === "edit" ? amount : total + amount;
     if (!Number.isFinite(next)) return "Enter a smaller amount.";
-    setDay((current) => ({ ...current, total: next }));
+    setDay((current) => ({ ...current, total: next, goal, unit }));
     closeEditor();
     return null;
   }
@@ -64,6 +68,7 @@ export function WaterCard({ initialDay, settings }: WaterCardProps) {
           >Edit</button>
         </div>
       </CardHeading>
+      <div className="water-progress-goal" data-achieved={achieved}>
       <div
         className="water-progress"
         role="progressbar"
@@ -74,9 +79,12 @@ export function WaterCard({ initialDay, settings }: WaterCardProps) {
         aria-valuetext={`${formatWaterAmount(total)} of ${formatWaterAmount(goal)} ${unit}${total >= goal ? ", goal reached" : ""}`}
         style={{ "--water-progress": `${progress}%` } as CSSProperties}
       ><span /></div>
+      <span className="water-achievement-finish"><AchievementBadge achieved={achieved} label="Water goal achieved" size={28} replayOnReentry delay={220}/></span>
+      <span className="sr-only" role="status">{achieved?'Water goal reached.':''}</span>
+      </div>
       <div className="water-additions" role="group" aria-label="Add water">
         {quickAdds.map((amount) => (
-          <button key={amount} type="button" className="muse-button water-add-button" onClick={() => setDay((current) => ({ ...current, total: current.total + amount }))}>
+          <button key={amount} type="button" className="muse-button water-add-button" onClick={() => setDay((current) => ({ ...current, total: current.total + amount, goal, unit }))}>
             {`+${amount} ${unit}`}
           </button>
         ))}
@@ -92,7 +100,7 @@ export function WaterCard({ initialDay, settings }: WaterCardProps) {
       <div id="water-editor" hidden={editor === null || editor === "manage"}>
         {editor && editor !== "manage" && <WaterAmountForm key={editor} mode={editor} unit={unit} initialAmount={editor === "goal" ? goal : total} onApply={applyAmount} onCancel={closeEditor} />}
       </div>
-      <GlassPopover id="water-manage" label="Manage water" open={editor === "manage"} anchorRef={manageRef} onClose={() => setEditor(null)} width={340}><WaterManager goal={goal} quickAdds={quickAdds} unit={unit} onClose={() => { setEditor(null); manageRef.current?.focus(); }} onSave={(nextGoal, amounts) => { setGoal(nextGoal); setQuickAdds(amounts); setEditor(null); manageRef.current?.focus(); }} /></GlassPopover>
+      <GlassPopover id="water-manage" label="Manage water" open={editor === "manage"} anchorRef={manageRef} onClose={() => setEditor(null)} width={340}><WaterManager goal={goal} quickAdds={quickAdds} unit={unit} onClose={() => { setEditor(null); manageRef.current?.focus(); }} onSave={(nextGoal, amounts) => { setGoal(nextGoal); if(hasRecordedDay)setDay((current)=>({...current,goal:nextGoal,unit})); setQuickAdds(amounts); setEditor(null); manageRef.current?.focus(); }} /></GlassPopover>
     </MuseCard>
   );
 }

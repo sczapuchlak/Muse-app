@@ -1,0 +1,8 @@
+.muse-star-cluster { display:inline-flex; flex:0 0 auto; align-items:center; gap:11px; padding:4px; pointer-events:none; }
+.muse-star-cluster > :first-child { transform:translateY(-5px) rotate(-8deg); }
+.muse-star-cluster > :last-child { margin-left:2px; transform:translateY(8px) rotate(7deg); }
+.muse-star-cluster > :nth-child(2) { filter:drop-shadow(0 0 5px color-mix(in srgb,var(--star-1) 25%,transparent)); }
+@media(max-width:520px){.muse-star-cluster { gap:7px; }.muse-star-cluster > svg { max-height:30px; max-width:18px; }}
+/* A single arrival glint, never a repeating pulse. Individual offsets stay unchanged. */
+.muse-star-cluster > svg { filter:drop-shadow(0 0 2px color-mix(in srgb,var(--icon-edge) 28%,transparent)); }
+@media(prefers-reduced-motion:no-preference) { .muse-star-cluster { animation:muse-signature-arrival 580ms ease-out both; } @keyframes muse-signature-arrival { 0% { opacity:.78; } 45% { opacity:1; filter:brightness(1.18); } 100% { opacity:1; filter:none; } } }

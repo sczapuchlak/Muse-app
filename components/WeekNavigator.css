@@ -10,8 +10,5 @@
 @media (max-width: 760px) { .muse-week-strip { width: 100%; } }
 
 .muse-week-day { position: relative; }
-.muse-week-progress { position: absolute; left: 6px; right: 6px; bottom: 3px; height: 3px; border-radius: var(--pill-radius); overflow: hidden; background: var(--surface-control); }
-.muse-week-progress > span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--progress-start), var(--progress-middle), var(--progress-end)); transition: width var(--transition); }
 .muse-week-reward { position: absolute; right: 5px; top: 4px; pointer-events: none; }
-.muse-week-day[data-perfect="true"] .muse-week-progress { box-shadow: 0 0 7px var(--wash-aqua); }
-@media (prefers-reduced-motion: reduce) { .muse-week-progress > span { transition: none; } }
+.muse-week-number[data-has-progress="true"] { height: 38px; }

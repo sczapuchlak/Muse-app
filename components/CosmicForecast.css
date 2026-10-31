@@ -1,0 +1,17 @@
+.muse-cosmic-forecast { position:relative; min-width:0; overflow-wrap:anywhere; }
+.daily-grid > .muse-cosmic-forecast { grid-column:1 / -1; width:100%; }
+.muse-cosmic-forecast > svg { position:absolute; right:var(--space-5); bottom:var(--space-5); color:var(--star-3); opacity:.2; pointer-events:none; }
+.muse-cosmic-forecast-meta { display:flex; gap:var(--space-2); color:var(--text-muted); font-size:.7rem; margin-block:var(--space-3); }
+.muse-cosmic-preview { font-size:.95rem; line-height:1.65; margin-bottom:var(--space-2); }
+.muse-cosmic-forecast-actions { display:flex; flex-wrap:wrap; gap:var(--space-4); margin-top:var(--space-2); }
+
+
+.muse-cosmic-forecast-compact { width:100%; padding:var(--space-3) var(--space-4); border-radius:var(--floating-radius); text-align:left; }
+.muse-cosmic-forecast-compact .card-heading { margin-bottom:0; }
+.muse-cosmic-forecast-compact .card-heading h2 { font-size:.8rem; }
+.muse-cosmic-forecast-compact .muse-cosmic-forecast-meta { margin-block:var(--space-1); font-size:.65rem; }
+.muse-cosmic-forecast-compact .muse-cosmic-preview { font-size:.8rem; line-height:1.45; margin-block:var(--space-1); }
+.muse-cosmic-forecast-compact .small-label { font-size:.62rem; }
+.muse-cosmic-forecast-compact .muse-cosmic-forecast-actions { gap:var(--space-3); margin-top:0; }
+.muse-cosmic-forecast-compact .muse-cosmic-forecast-actions .text-button { min-height:28px; font-size:.65rem; padding-block:var(--space-1); }
+@media(pointer:coarse) { .muse-cosmic-forecast-compact .muse-cosmic-forecast-actions .text-button { min-height:44px; } }

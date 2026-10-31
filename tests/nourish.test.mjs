@@ -167,3 +167,28 @@ test('Saved Meals and Grocery List render as distinct Muse views with meal filte
  assert.ok(html.includes('data-complete="true"'));assert.ok(html.includes('Clear completed'));
  assert.ok(!html.includes('<select'));
 });
+
+test('fast grocery capture defaults to Unsorted, preserves scoped categories, and sorts checked rows below active',()=>{
+ const base=fresh(),item=domain.createGroceryItem('Apples','capture','now');
+ assert.equal(item.sectionId,'unsorted');
+ let state=domain.nourishReducer(base,{type:'grocery/save',item});
+ assert.ok(state.grocerySections.some((section)=>section.id==='unsorted'));
+ state=domain.nourishReducer(state,{type:'grocery/save',item:{...item,id:'scoped',name:'Pears',sectionId:'produce'}});
+ state=domain.nourishReducer(state,{type:'grocery/save',item:{...item,id:'blank-section',sectionId:undefined}});
+ assert.equal(state.groceryItems.find((entry)=>entry.id==='blank-section').sectionId,'unsorted');
+ state=domain.nourishReducer(state,{type:'grocery/complete',id:'scoped',complete:true});
+ state=domain.nourishReducer(state,{type:'grocery/save',item:{...item,id:'active',sectionId:'produce'}});
+ assert.equal(domain.groceryItemsFor(state,'produce').at(-1).id,'scoped');
+ assert.equal(state.groceryItems.length,4,'checking retains the item');
+});
+
+test('assigned meal tiles prioritize known macros and keep source/note data out of the scan view',()=>{
+ const {MealMacros}=load('components/nourish/MealMacros'),{MealSlot}=load('components/nourish/MealSlot'),{NourishProvider}=load('components/NourishStore');
+ const render=(nutrition)=>renderToStaticMarkup(React.createElement(MealMacros,{nutrition}));
+ assert.equal(render(undefined),'');assert.equal(render({}),'');assert.ok(render({calories:0,protein:32}).includes('Cal 0'));assert.ok(!render({calories:410,protein:32}).includes('F '));
+ let state=fresh();const meal={...domain.createMealAssignment('A one-off lunch','2026-11-01','lunch','macros-tile','now'),nutrition:{calories:520,protein:42,carbs:38,fat:21},note:'The corner café'};
+ state=domain.nourishReducer(state,{type:'assignment/save',assignment:meal});
+ const html=renderToStaticMarkup(React.createElement(NourishProvider,{initialState:state},React.createElement(MealSlot,{date:meal.date,slot:meal.slot,onOpen(){},onPlace(){}})));
+ for(const value of ['Cal 520','P 42g','C 38g','F 21g'])assert.ok(html.includes(value),value);
+ assert.ok(!html.includes('The corner café'));assert.ok(!html.includes('Saved meal'));assert.equal(state.assignments.find((entry)=>entry.id===meal.id).note,'The corner café');assert.ok(html.includes('>Move<'));assert.ok(html.includes('>Copy<'));assert.ok(html.includes('draggable="true"'));
+});

@@ -1,12 +1,14 @@
+import {validAccent,type AccentColor} from "./appearance-values";
 import { validDate } from "./dates";
 export { validDate } from "./dates";
+import type {MuseIconName} from "@/components/MuseIcon";
 import type { DayEvent, PlannedTask } from "./models";
 
 export const plannerAccentIds = ["primary", "secondary", "pop"] as const;
-export type PlannerAccent = typeof plannerAccentIds[number];
-export type Workspace = { id: string; name: string; accent: PlannerAccent };
-export type TaskGroup = { id: string; name: string; workspaceId: string };
-export type TaskTag = { id: string; name: string; accent: PlannerAccent };
+export type PlannerAccent = AccentColor;
+export type Workspace = { id: string; name: string; accent: PlannerAccent; icon?:MuseIconName };
+export type TaskGroup = { id: string; name: string; workspaceId: string; accent?:AccentColor; icon?:MuseIconName };
+export type TaskTag = { id: string; name: string; accent: PlannerAccent; icon?:MuseIconName };
 export type PlannerState = {
   tasks: PlannedTask[]; events: DayEvent[]; workspaces: Workspace[]; groups: TaskGroup[]; tags: TaskTag[];
   activeTimer: { taskId: string; startedAt: string } | null;
@@ -67,18 +69,18 @@ export function plannerReducer(state: PlannerState, action: PlannerAction): Plan
     }
     case "task/toggle": {
       const next = state.activeTimer?.taskId === action.id ? pause(state, action.now) : state;
-      return { ...next, tasks: next.tasks.map((task) => task.id === action.id ? { ...task, complete: !task.complete } : task) };
+      return { ...next, tasks: next.tasks.map((task) => task.id === action.id ? { ...task, complete: !task.complete, completedAt: task.complete ? undefined : action.now } : task) };
     }
     case "task/delete": {
       const next = state.activeTimer?.taskId === action.id ? pause(state, action.now) : state;
       return { ...next, tasks: next.tasks.filter((task) => task.id !== action.id) };
     }
     case "event/add": return state.events.some((event) => event.id === action.event.id) ? state : { ...state, events: [...state.events, action.event] };
-    case "workspace/save": return !action.workspace.name.trim() ? state : { ...state, workspaces: replace(state.workspaces, action.workspace) };
+    case "workspace/save": return !action.workspace.name.trim() || !validAccent(action.workspace.accent) ? state : { ...state, workspaces: replace(state.workspaces, action.workspace) };
     case "workspace/delete": return state.workspaces.length <= 1 || state.tasks.some((task) => task.workspaceId === action.id) || state.groups.some((group) => group.workspaceId === action.id) ? state : { ...state, workspaces: state.workspaces.filter((entry) => entry.id !== action.id) };
-    case "group/save": return !action.group.name.trim() || !state.workspaces.some((entry) => entry.id === action.group.workspaceId) ? state : { ...state, groups: replace(state.groups, action.group), tasks: state.tasks.map((task) => task.groupId === action.group.id && task.workspaceId !== action.group.workspaceId ? { ...task, groupId: undefined } : task) };
+    case "group/save": return !action.group.name.trim() || (action.group.accent && !validAccent(action.group.accent)) || !state.workspaces.some((entry) => entry.id === action.group.workspaceId) ? state : { ...state, groups: replace(state.groups, action.group), tasks: state.tasks.map((task) => task.groupId === action.group.id && task.workspaceId !== action.group.workspaceId ? { ...task, groupId: undefined } : task) };
     case "group/delete": return { ...state, groups: state.groups.filter((entry) => entry.id !== action.id), tasks: state.tasks.map((task) => task.groupId === action.id ? { ...task, groupId: undefined } : task) };
-    case "tag/save": return !action.tag.name.trim() ? state : { ...state, tags: replace(state.tags, action.tag) };
+    case "tag/save": return !action.tag.name.trim() || !validAccent(action.tag.accent) ? state : { ...state, tags: replace(state.tags, action.tag) };
     case "tag/delete": return { ...state, tags: state.tags.filter((entry) => entry.id !== action.id), tasks: state.tasks.map((task) => ({ ...task, tagIds: task.tagIds.filter((id) => id !== action.id) })) };
     case "timer/start": {
       if (!state.tasks.some((task) => task.id === action.id && !task.complete) || state.activeTimer?.taskId === action.id) return state;
@@ -95,11 +97,11 @@ export function formatPlannedMinutes(minutes: number): string {
 }
 
 export const PLANNING_WINDOW_DAYS = 3;
-export type PlannerFilters = { groupId: string; tagIds: string[]; status: "all" | "open" | "complete" };
+export type PlannerFilters = { groupId: string; tagIds: string[]; status: "all" | "open" | "complete";timeboxedOnly?:boolean };
 export const emptyPlannerFilters: PlannerFilters = { groupId: "", tagIds: [], status: "all" };
 export function filterPlannerTasks(tasks: PlannedTask[], workspaceId: string, filters: PlannerFilters, search: string): PlannedTask[] {
   const query = search.trim().toLocaleLowerCase("en-US");
-  return tasks.filter((task) => (!workspaceId || task.workspaceId === workspaceId) && (!filters.groupId || task.groupId === filters.groupId) && filters.tagIds.every((id) => task.tagIds.includes(id)) && (filters.status === "all" || task.complete === (filters.status === "complete")) && task.title.toLocaleLowerCase("en-US").includes(query));
+  return tasks.filter((task) => (!workspaceId || task.workspaceId === workspaceId) && (!filters.groupId || task.groupId === filters.groupId) && filters.tagIds.every((id) => task.tagIds.includes(id)) && (filters.status === "all" || task.complete === (filters.status === "complete")) && (!filters.timeboxedOnly||!!task.timeSlot) && task.title.toLocaleLowerCase("en-US").includes(query));
 }
 export function placementChanges(state: PlannerState, action: Extract<PlannerAction, { type: "task/place" }>): boolean {
   const next = plannerReducer(state, action);

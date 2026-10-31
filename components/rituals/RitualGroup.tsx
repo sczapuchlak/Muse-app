@@ -1,17 +1,21 @@
 "use client";
+import {accentStyle,customGradientCss} from "@/lib/appearance-values";
 import type { RitualDefinition, RitualGroupDefinition } from "@/lib/rituals";
-import { recurrenceLabel, ritualStreak, weeklyValue } from "@/lib/rituals";
+import { recurrenceLabel, ritualStreak, weeklyValue,ritualCell,isScheduled } from "@/lib/rituals";
 import { MuseIcon } from "../MuseIcon";
 import { RitualWeekCell } from "./RitualWeekCell";
+import {MuseMilestone} from "../MuseMilestone";
 import { useRituals } from "./RitualStore";
 
 type Props = { group: RitualGroupDefinition; week: string[]; today: string; selectedDate: string; onEdit: (ritual: RitualDefinition, anchor: HTMLElement) => void; onEditEntry: (ritual: RitualDefinition, date: string, anchor: HTMLElement, onComplete: (value: number | null) => void) => void };
 export function RitualGroup({ group, week, today, selectedDate, onEdit, onEditEntry }: Props) {
   const { state, dispatch } = useRituals();
   const rituals = state.rituals.filter((ritual) => ritual.groupId === group.id);
+  const scheduled=rituals.filter(ritual=>ritual.type!=="weekly-target"&&isScheduled(ritual,selectedDate));
+  const groupComplete=scheduled.length>0&&scheduled.every(ritual=>ritualCell(state,ritual,selectedDate,today).status==="complete");
   const logged = state.entries.filter((entry) => week.includes(entry.date) && rituals.some((ritual) => ritual.id === entry.ritualId)).length;
-  return <section className="muse-ritual-group" data-accent={group.accent} data-gradient={group.gradient ?? (group.accent === "primary" ? "primary-secondary" : group.accent === "secondary" ? "secondary-pop" : "pop-primary")} aria-labelledby={`ritual-group-${group.id}`}>
-    <header className="muse-ritual-group-header"><div className="muse-ritual-group-title"><span className="muse-ritual-group-icon"><MuseIcon name={group.icon} /></span><div><h2 id={`ritual-group-${group.id}`}>{group.name}</h2><p className="small-label">{rituals.length} {rituals.length === 1 ? "ritual" : "rituals"} · {logged} logged this week</p></div></div><button type="button" className="muse-button" aria-expanded={!group.collapsed} aria-controls={`ritual-group-body-${group.id}`} aria-label={`${group.collapsed ? "Expand" : "Collapse"} ${group.name}`} onClick={() => dispatch({ type: "group/toggle", id: group.id })}><span className={group.collapsed ? "chevron-right" : undefined}><MuseIcon name="chevron" size={16} /></span></button></header>
+  return <section className="muse-ritual-group" data-accent={group.accent} style={{...accentStyle(group.accent),...(group.gradient&&typeof group.gradient!=="string"?{"--ritual-banner-gradient":customGradientCss(group.gradient),"--ritual-gradient-start":group.gradient.colors[0],"--ritual-gradient-end":group.gradient.colors[group.gradient.colors.length-1]}:{})} as React.CSSProperties} data-gradient={typeof group.gradient==="string"?group.gradient:group.gradient?"custom":group.accent==="secondary"?"secondary-pop":"primary-secondary"} aria-labelledby={`ritual-group-${group.id}`}>
+    <MuseMilestone key={selectedDate} achieved={groupComplete}/><header className="muse-ritual-group-header"><div className="muse-ritual-group-title"><span className="muse-ritual-group-icon"><MuseIcon name={group.icon} treatment="prismatic" tone={group.accent==="secondary"?"secondary":group.accent==="pop"?"tertiary":"primary"} /></span><div><h2 id={`ritual-group-${group.id}`}>{group.name}</h2><p className="small-label">{rituals.length} {rituals.length === 1 ? "ritual" : "rituals"} · {logged} logged this week</p></div></div><button type="button" className="muse-button" aria-expanded={!group.collapsed} aria-controls={`ritual-group-body-${group.id}`} aria-label={`${group.collapsed ? "Expand" : "Collapse"} ${group.name}`} onClick={() => dispatch({ type: "group/toggle", id: group.id })}><span className={group.collapsed ? "chevron-right" : undefined}><MuseIcon name="chevron" size={16} /></span></button></header>
     {!group.collapsed && <div id={`ritual-group-body-${group.id}`}>
       <div className="muse-ritual-week-head" aria-hidden="true"><span>Ritual / rhythm</span>{week.map((date) => <span key={date} data-today={date === today}>{new Intl.DateTimeFormat("en-US", { weekday: "short", timeZone: "UTC" }).format(new Date(`${date}T12:00:00Z`))}<strong>{Number(date.slice(-2))}</strong></span>)}</div>
       {rituals.map((ritual) => {

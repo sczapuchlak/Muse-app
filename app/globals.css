@@ -5,6 +5,7 @@
 
 :root {
   /* Change the interface or greeting family here, independently. */
+  --icon-transition:180ms ease;
   --font-ui: var(--font-interface), Arial, sans-serif;
   --font-whimsy: var(--font-display, Georgia), serif;
 
@@ -208,9 +209,9 @@ input[aria-invalid="true"] { border-color: var(--ink-pink); }
 .priority-count { display: flex; align-items: baseline; gap: var(--space-1); color: var(--ink-purple); font-size: 0.85rem; font-variant-numeric: tabular-nums; }
 .priority-count strong { font-weight: 650; }
 .count-label { margin-left: var(--space-1); color: var(--text-muted); font-size: 0.72rem; }
-.daily-intention { display: flex; align-items: center; gap: var(--space-3); margin-top: var(--space-2); }
-.daily-intention > span { flex-shrink: 0; color: var(--text-muted); font-size: 0.75rem; }
-.daily-intention input { max-width: 600px; border-color: transparent; background: transparent; }
+.daily-intention { display:grid; grid-template-columns:max-content max-content minmax(0,1fr); align-items:center; gap:var(--space-3); margin-top:var(--space-2); }
+.daily-intention > .editor-label { margin:0; color: var(--text-muted); font-size: 0.75rem; }
+.daily-intention input { min-width:0; width:100%; border-color: transparent; background: transparent; }
 .daily-intention input:hover { background: var(--surface-subtle); }
 .priority-list {
   display: grid;
@@ -268,7 +269,7 @@ input[aria-invalid="true"] { border-color: var(--ink-pink); }
 .water-quantity strong { color: var(--foreground); font-size: 1.3rem; font-weight: 600; letter-spacing: -0.04em; }
 .water-quantity strong span { font-size: 0.8rem; font-weight: 500; letter-spacing: 0; }
 .water-progress { overflow: hidden; height: 7px; margin: var(--space-2) 0 var(--space-4); border-radius: var(--pill-radius); background: var(--wash-aqua); box-shadow: inset 0 0 0 1px var(--glass-aqua-edge); }
-.water-progress > span { display: block; width: var(--water-progress); height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--water-gradient-start), var(--water-gradient-middle) 45%, var(--water-gradient-highlight) 65%, var(--water-gradient-end)); box-shadow: 0 0 10px var(--water-glow), inset 0 1px 0 var(--glass-edge); transition: width var(--transition); }
+.water-progress > span { display: block; width: var(--water-progress); height: 100%; border-radius: inherit; background: var(--water-progress-gradient); box-shadow: 0 0 10px var(--water-glow), inset 0 1px 0 var(--glass-edge); transition: width var(--transition); }
 .water-additions { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--space-2); }
 .water-additions > .water-add-button {
   width: 100%;
@@ -351,9 +352,8 @@ input[aria-invalid="true"] { border-color: var(--ink-pink); }
   .muse-greeting { max-width: 400px; font-size: clamp(1.45rem, 5.2vw, 1.9rem); }
   .daily-title-row { flex-wrap: wrap; gap: var(--space-1) var(--space-3); }
   .daily-title-row time { font-size: 0.73rem; }
-  .daily-intention { display: block; margin-top: var(--space-3); }
-  .daily-intention > span { display: block; }
-  .daily-intention input { padding-left: 0; }
+  .daily-intention { grid-template-columns:minmax(0,1fr) max-content; margin-top:var(--space-3); }
+  .daily-intention input { grid-column:1 / -1; }
   .priority-list { grid-template-columns: 1fr; gap: 0; }
   .priority-list li + li { padding: var(--space-1) 0 0; margin-top: var(--space-1); border-left: 0; border-top: 1px solid var(--divider); }
   .priority-number { display: block; }
@@ -453,10 +453,44 @@ input[aria-invalid="true"] { border-color: var(--ink-pink); }
 @media (max-width: 450px) { .card-heading { align-items: flex-start; } .muse-card-heading-actions { gap: var(--space-1); } }
 
 /* Shared compact choices used by Planner and Nourish forms/filters. */
-.muse-filter-options { display: flex; flex-wrap: wrap; gap: var(--space-1); max-height: 180px; padding: var(--space-1); overflow-y: auto; }
+.muse-filter-options { display: flex; flex-wrap: wrap; gap: var(--space-2); max-height: 180px; padding: var(--space-1); overflow-y: auto; }
 
 .emotion-option .emotion-name { flex: 1; min-width: 0; }
 .muse-modal .quadrant-filters { flex-wrap: nowrap; overflow-x: auto; padding: var(--space-1); }
 .muse-modal .quadrant-filters button { flex: 0 0 auto; border-color: color-mix(in srgb, var(--quadrant-color, var(--selected-border)) 60%, var(--divider)); }
 .muse-modal .quadrant-filters button[aria-pressed="true"] { border-color: var(--quadrant-color, var(--selected-border)); background: var(--selected-background); color: var(--selected-text); box-shadow: inset 0 -2px 0 var(--quadrant-color, var(--selected-border)); }
 @media (max-width: 520px) { .emotion-picker .emotion-options { grid-template-columns: minmax(0, 1fr); } }
+
+/* Separate functional color roles preserve each theme's coordinated multicolor identity. */
+.text-button, a.text-button { color: var(--link-ink); }
+.muse-filter-options .choice-button[aria-pressed="true"] { color: var(--filter-selected-text); background: var(--filter-selected-background); border-color: var(--filter-selected-border); }
+.card-heading-icon { color: var(--information-accent); }
+
+/* Shared scan tags and contained focus treatments. Color remains semantic. */
+:root { --tag-padding-inline:8px; --tag-padding-block:3px; --tag-radius:6px; --tag-line-height:1.4; --focus-width:2px; --focus-inset:-2px; }
+:is(.muse-task-tag,.muse-meal-type-labels > span) { display:inline-flex; align-items:center; gap:var(--space-1); min-height:23px; max-width:100%; padding:var(--tag-padding-block) var(--tag-padding-inline); line-height:var(--tag-line-height); border-radius:var(--tag-radius); overflow-wrap:anywhere; }
+:is(.tag-chip,.muse-detail-tags .choice-button) { padding:var(--space-2) var(--space-3); line-height:var(--tag-line-height); }
+input[type="search"] { padding:var(--space-2) var(--space-3); line-height:1.45; }
+:is(input,textarea):focus-visible { outline:var(--focus-width) solid var(--focus-ring); outline-offset:var(--focus-inset); }
+:is(.muse-drawer-content,.muse-popover-panel,.muse-planner-task-list,.muse-meal-entries) :is(button,a):focus-visible { outline-offset:var(--focus-inset); }
+.muse-choice-options { scroll-padding:var(--space-1); }
+[data-accent="warm"] { --organization-accent:var(--accent-warm); }
+[data-accent="info"] { --organization-accent:var(--information-accent); }
+
+:is(.emotion-search-field,.muse-planner-search):focus-within { outline-offset:var(--focus-inset); }
+
+.quadrant-filters { gap:8px; padding:4px; }.quadrant-filters button[data-chip-size] { display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:40px; padding:8px 14px; }.quadrant-filters .quadrant-dot { flex:0 0 auto; margin:0; }
+
+/* Shared compact form rhythm: field title + control, related groups, section actions. */
+.muse-field-label { display:inline-flex; flex-wrap:wrap; align-items:baseline; gap:var(--space-2); }
+.muse-field-label > .small-label { font-weight:400; }
+:where(form) .editor-label:has(> :is(input,textarea,select,.muse-choice-menu)):not(:has(input[type="checkbox"],input[type="radio"])) {
+  display:flex;
+  flex-direction:column;
+  gap:var(--space-2);
+  margin-bottom:0;
+  min-width:0;
+}
+:where(.muse-drawer-content,.muse-popover-panel) form > .editor-actions { margin-top:0; }
+:where(.muse-drawer-content,.muse-popover-panel) form > .editor-actions:last-child { padding-top:var(--space-1); }
+:where(.muse-drawer-content,.muse-modal,.muse-popover-panel) :is(input,textarea) { scroll-margin-block:var(--space-4); }

@@ -1,15 +1,18 @@
-/* Copy and context inhabit an environmental field; artwork is never a third layout column. */
-.muse-module-header { position: relative; isolation: isolate; display: flex; align-items: center; justify-content: space-between; gap: var(--space-8); margin: var(--space-4) 0 var(--space-6); min-height: 168px; }
-.muse-module-header[data-celestial="orbit"] { min-height: 184px; }
-.muse-module-header[data-celestial="garden"] { min-height: 176px; }
-.muse-module-identity { position: relative; z-index: 1; flex: 0 1 320px; max-width: 32ch; min-width: 0; }
-.muse-module-header h1 { display: flex; align-items: center; gap: var(--space-3); margin: var(--space-1) 0 0; font-size: 2.2rem; font-weight: 600; letter-spacing: -.05em; }
-.muse-module-context { position: relative; z-index: 1; min-width: 0; max-width: 60%; }
-@container muse-content (max-width: 900px) {
-  .muse-module-header { flex-wrap: wrap; gap: var(--space-3) var(--space-5); padding-block: var(--space-3); }
-  .muse-module-context { flex: 1 1 100%; width: 100%; max-width: none; display: flex; justify-content: flex-end; }
-}
-@container muse-content (max-width: 600px) {
-  .muse-module-header { min-height: 150px; }
-  .muse-module-header[data-celestial="orbit"], .muse-module-header[data-celestial="garden"] { min-height: 150px; }
-}
+:root { --header-context-min:320px; --header-context-width:400px; --header-top:8px; --header-content-gap:20px; --header-copy-gap:8px; --header-mantra-size:.7rem; --module-nav-gap:16px; --module-toolbar-gap:16px; --module-week-gap:16px; --module-section-gap:24px; --module-card-gap:16px; }
+.muse-header-layout { position:relative; display:grid; grid-template-columns:minmax(0,1fr) minmax(var(--header-context-min),var(--header-context-width)); align-items:start; gap:var(--space-6); margin:0 0 var(--header-content-gap); padding:var(--header-top) 0 0; min-height:120px; }
+.muse-header-layout[data-context-width="wide"] { grid-template-columns:minmax(0,1fr) minmax(var(--header-context-min),var(--header-context-width)); }
+.muse-header-layout:not(:has(.muse-header-context)) { grid-template-columns:minmax(0,1fr); }
+.muse-header-identity { min-width:0; }
+.muse-header-title-row { display:flex; align-items:center; gap:var(--space-5); min-width:0; }
+.muse-header-signature { display:flex; flex:0 0 auto; align-items:center; pointer-events:none; }
+.muse-header-layout h1 { margin:0; font-size:2.2rem; line-height:1.15; font-weight:600; letter-spacing:-.05em; }
+.muse-header-identity > :is(.muse-mantra,.card-description) { margin-top:var(--header-copy-gap); max-width:48ch; }
+.muse-header-context { min-width:0; width:100%; display:flex; flex-direction:column; align-items:flex-end; gap:var(--space-3); }
+.muse-module-context { padding-top:0; }
+.muse-header-context > .date-navigation { align-self:flex-end; width:100%; max-width:100%; }
+@container muse-content (max-width:850px) { .muse-header-layout,.muse-header-layout[data-context-width="wide"] { grid-template-columns:minmax(0,1fr); gap:var(--space-4); min-height:0; }.muse-module-context { padding-top:0; }.muse-header-context { align-items:stretch; }.muse-header-context > .date-navigation { align-self:flex-end; } }
+@container muse-content (max-width:460px) { .muse-header-title-row { gap:var(--space-3); }.muse-header-layout h1 { font-size:2rem; } }
+
+/* Standard module identity is two lines; editorial Daily Edit retains its own rhythm. */
+.muse-module-header { min-height:0; }
+.muse-module-header .muse-mantra { margin:var(--header-copy-gap) 0 0; max-width:58ch; color:var(--text-muted); font-family:var(--font-ui); font-size:var(--header-mantra-size); font-weight:500; line-height:1.5; letter-spacing:.11em; text-transform:uppercase; }

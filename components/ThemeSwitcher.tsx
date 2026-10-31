@@ -1,14 +1,16 @@
 "use client";
 
-import { useLayoutEffect, useRef, useState, useSyncExternalStore, type CSSProperties } from "react";
+import { useId, useLayoutEffect, useRef, useState, useSyncExternalStore, type CSSProperties } from "react";
 import { defaultTheme, themes } from "@/lib/themes";
 import { readThemePreference, selectTheme, serverThemePreference, subscribeThemePreference } from "@/lib/theme-preference";
 import { materials, readMaterial, selectMaterial, serverMaterial, subscribeMaterial } from "@/lib/material-preference";
+import { MuseStar } from "./MuseStar";
 import { MuseIcon } from "./MuseIcon";
 import { GlassPopover } from "./GlassPopover";
 import "./ThemeSwitcher.css";
 
-export function ThemeSwitcher() {
+export function ThemeSwitcher({compact=false}:{compact?:boolean}) {
+  const menuId=useId();
   const [open, setOpen] = useState(false);
   const activeId = useSyncExternalStore(subscribeThemePreference, readThemePreference, serverThemePreference);
   const material = useSyncExternalStore(subscribeMaterial, readMaterial, serverMaterial);
@@ -19,15 +21,15 @@ export function ThemeSwitcher() {
   function close() { setOpen(false); triggerRef.current?.focus(); }
 
   return (
-    <div className="muse-theme-root">
-      <button ref={triggerRef} className="muse-theme-trigger muse-edge" type="button" aria-haspopup="menu" aria-expanded={open} aria-controls="theme-menu"
+    <div className="muse-theme-root" data-compact={compact}>
+      <button ref={triggerRef} className="muse-theme-trigger muse-edge" type="button" aria-haspopup="menu" aria-expanded={open} aria-controls={menuId} aria-label={`Theme: ${active.name}. Change theme or material`} title={compact?active.name:undefined}
         onClick={() => setOpen((value) => !value)} onKeyDown={(event) => {
           if (event.key === "ArrowDown" || event.key === "ArrowUp") { event.preventDefault(); setOpen(true); }
         }}>
         <span className="muse-theme-orb" style={{ "--theme-orb": active.preview } as CSSProperties} aria-hidden="true" />
-        <span>{active.name}</span><MuseIcon name="chevron" size={14} />
+        <span className="muse-theme-active-name">{active.name}</span><MuseIcon name="chevron" size={14} />
       </button>
-      <GlassPopover id="theme-menu" label="Muse themes" role="menu" open={open} anchorRef={triggerRef} onClose={() => setOpen(false)} width={248} align="end">
+      <GlassPopover id={menuId} label="Muse themes" role="menu" open={open} anchorRef={triggerRef} onClose={() => setOpen(false)} width={310} align="end">
         <div className="muse-theme-list" onKeyDown={(event) => {
           if (event.key === "Tab") { setOpen(false); return; }
           if (!["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)) return;
@@ -42,7 +44,7 @@ export function ThemeSwitcher() {
               data-popover-autofocus={theme.id === activeId ? "true" : undefined} aria-checked={activeId === theme.id}
               onClick={() => { selectTheme(theme.id); close(); }}>
               <span className="muse-theme-orb" style={{ "--theme-orb": theme.preview } as CSSProperties} aria-hidden="true" />
-              <span className="muse-theme-name">{theme.name}</span>
+              <span className="muse-theme-name"><span>{theme.name}{"family" in theme&&<MuseStar size={14} color="pink"/>}</span>{"variant" in theme&&<small>{theme.variant}</small>}</span>
               {activeId === theme.id && <MuseIcon name="check" size={16} />}
             </button>
           ))}

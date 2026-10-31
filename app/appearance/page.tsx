@@ -1,3 +1,2 @@
-import { PendingModule } from "@/components/ModulePlaceholder";
-
-export default function Page() { return <PendingModule id="appearance" />; }
+import {AppearanceSettings} from '@/components/AppearanceSettings';
+export default function Page(){return <AppearanceSettings/>;}

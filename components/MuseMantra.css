@@ -1,0 +1,2 @@
+.muse-mantra { margin-top:var(--space-3); max-width:46ch; color:var(--text-muted); font-size:.83rem; line-height:1.6; text-wrap:pretty; }
+.muse-mantra-compact { font-size:.75rem; margin-top:var(--space-2); }

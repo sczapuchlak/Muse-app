@@ -1,24 +1,18 @@
 "use client";
-import { useId, useRef, useState } from "react";
+import {accentStyle} from "@/lib/appearance-values";
+import { useId,useRef,useState } from "react";
 import type { PlannerFilters as Filters } from "@/lib/planner";
 import { emptyPlannerFilters } from "@/lib/planner";
 import { GlassPopover } from "../GlassPopover";
 import { MuseIcon } from "../MuseIcon";
 import { usePlanner } from "../PlannerStore";
-
-export function PlannerFilters({ value, onChange, workspaceId }: { value: Filters; onChange: (value: Filters) => void; workspaceId: string }) {
-  const { state } = usePlanner();
-  const id=useId();
-  const [open, setOpen] = useState(false);
-  const anchor = useRef<HTMLButtonElement>(null);
-  const count = Number(!!value.groupId) + value.tagIds.length + Number(value.status !== "all");
-  return <>
-    <button ref={anchor} className="muse-button" type="button" aria-expanded={open} aria-controls={id} onClick={() => setOpen((current) => !current)}><MuseIcon name="filter" size={16} />Filters{count ? ` · ${count}` : ""}</button>
-    <GlassPopover id={id} label="Planner filters" open={open} anchorRef={anchor} onClose={() => setOpen(false)} width={350}>
-      <fieldset className="muse-filter-section"><legend>Group / collection</legend><div className="muse-filter-options"><button className="choice-button" type="button" aria-pressed={!value.groupId} onClick={() => onChange({ ...value, groupId: "" })}>All groups</button>{state.groups.filter((group) => !workspaceId || group.workspaceId === workspaceId).map((group) => <button key={group.id} className="choice-button" type="button" aria-pressed={group.id === value.groupId} onClick={() => onChange({ ...value, groupId: group.id })}>{group.name}</button>)}</div></fieldset>
-      <fieldset className="muse-filter-section"><legend>Tags · match all selected</legend><div className="muse-filter-options">{state.tags.map((tag) => <button key={tag.id} className="choice-button" type="button" data-accent={tag.accent} aria-pressed={value.tagIds.includes(tag.id)} onClick={() => onChange({ ...value, tagIds: value.tagIds.includes(tag.id) ? value.tagIds.filter((id) => id !== tag.id) : [...value.tagIds, tag.id] })}>#{tag.name}</button>)}</div></fieldset>
-      <fieldset className="muse-filter-section"><legend>Status</legend><div className="muse-filter-options">{(["all", "open", "complete"] as const).map((status) => <button key={status} className="choice-button" type="button" aria-pressed={value.status === status} onClick={() => onChange({ ...value, status })}>{status === "all" ? "All tasks" : status === "open" ? "Open" : "Completed"}</button>)}</div></fieldset>
-      <div className="popover-footer"><button className="text-button" type="button" onClick={() => onChange(emptyPlannerFilters)}>Clear filters</button><button className="text-button" type="button" onClick={() => { setOpen(false); anchor.current?.focus(); }}>Done</button></div>
-    </GlassPopover>
-  </>;
+export function PlannerFilters({value,onChange,workspaceId}:{value:Filters;onChange:(value:Filters)=>void;workspaceId:string}) {
+ const {state}=usePlanner(),id=useId(),[open,setOpen]=useState(false),[search,setSearch]=useState(''),anchor=useRef<HTMLButtonElement>(null),count=Number(!!value.groupId)+value.tagIds.length+Number(value.status!=='all')+Number(!!value.timeboxedOnly),matches=(text:string)=>text.toLowerCase().includes(search.trim().toLowerCase());
+ return <><button ref={anchor} className="muse-button" type="button" aria-expanded={open} aria-controls={id} aria-haspopup="dialog" onClick={()=>{setSearch('');setOpen((current)=>!current);}}><MuseIcon name="filter" size={16} treatment={count?"prismatic":"plain"}/>Filters{count?` · ${count}`:''}</button>
+ <GlassPopover id={id} label="Planner filters" open={open} anchorRef={anchor} onClose={()=>setOpen(false)} width={320} scrollMode="content"><div className="muse-planner-filter-heading"><p className="editor-label">Refine your plan</p><input type="search" aria-label="Search groups and tags" placeholder="Find a group or tag…" value={search} onChange={(e)=>setSearch(e.target.value)}/></div><div className="muse-planner-filter-results">
+ <fieldset className="muse-filter-section"><legend>Group / collection</legend><div className="muse-filter-rows"><label><input type="radio" name={`${id}-group`} checked={!value.groupId} onChange={()=>onChange({...value,groupId:''})}/><span>All groups</span></label>{state.groups.filter((group)=>(!workspaceId||group.workspaceId===workspaceId)&&matches(`${group.name} ${state.workspaces.find((workspace)=>workspace.id===group.workspaceId)?.name??''}`)).map((group)=><label key={group.id} data-accent={state.workspaces.find((workspace)=>workspace.id===group.workspaceId)?.accent}><input type="radio" name={`${id}-group`} checked={group.id===value.groupId} onChange={()=>onChange({...value,groupId:group.id})}/><i className="muse-workspace-dot"/><span>{group.name}{!workspaceId&&<small>{state.workspaces.find((workspace)=>workspace.id===group.workspaceId)?.name}</small>}</span></label>)}</div></fieldset>
+ <fieldset className="muse-filter-section"><legend>Tags · match all selected</legend><div className="muse-filter-rows">{state.tags.filter((tag)=>matches(tag.name)).map((tag)=><label key={tag.id} data-accent={tag.accent} style={accentStyle(tag.accent)}><input type="checkbox" checked={value.tagIds.includes(tag.id)} onChange={()=>onChange({...value,tagIds:value.tagIds.includes(tag.id)?value.tagIds.filter((entry)=>entry!==tag.id):[...value.tagIds,tag.id]})}/><i className="muse-workspace-dot"/><span>#{tag.name}</span></label>)}</div></fieldset>
+ <fieldset className="muse-filter-section"><legend>Visibility</legend><div className="muse-filter-rows"><label><input type="checkbox" checked={value.status!=='open'} onChange={(e)=>onChange({...value,status:e.target.checked?'all':'open'})}/><span>Show completed</span></label><label><input type="checkbox" checked={value.timeboxedOnly??false} onChange={(e)=>onChange({...value,timeboxedOnly:e.target.checked})}/><span>Timeboxed only<small>Tasks with a scheduled time</small></span></label></div></fieldset>
+ <fieldset className="muse-filter-section"><legend>Status</legend><div className="muse-filter-rows">{(['all','open','complete'] as const).map((status)=><label key={status}><input type="radio" name={`${id}-status`} checked={value.status===status} onChange={()=>onChange({...value,status})}/><span>{status==='all'?'All tasks':status==='open'?'Open':'Completed only'}</span></label>)}</div></fieldset>
+ </div><div className="popover-footer"><button className="text-button" type="button" onClick={()=>{onChange(emptyPlannerFilters);setSearch('');}}>Clear filters</button><button className="muse-button" type="button" onClick={()=>{setOpen(false);anchor.current?.focus();}}>Done</button></div></GlassPopover></>;
 }

@@ -1,0 +1,6 @@
+:root { --achievement-gold:#e4a51d; --achievement-champagne:#fff1ba; --achievement-amber:#93560b; --achievement-halo:rgba(241,177,44,.26); }
+.muse-achievement { position:relative; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; vertical-align:middle; }
+.muse-achievement-star { overflow:visible; filter:drop-shadow(0 1px 1px var(--achievement-amber)) drop-shadow(0 0 5px var(--achievement-halo)); }
+.muse-achievement-glint { position:absolute; inset:-5px; border:1px solid var(--achievement-gold); border-radius:50%; pointer-events:none; animation:muse-earned-glint 600ms ease-out both; }
+@keyframes muse-earned-glint { from { opacity:.7; transform:scale(.7); } to { opacity:0; transform:scale(1.45); } }
+@media(prefers-reduced-motion:reduce) { .muse-achievement-glint { animation:none; transform:none; opacity:.25; box-shadow:0 0 8px var(--achievement-halo); } }

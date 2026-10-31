@@ -23,7 +23,6 @@ export function TaskMoveControl({ task }: { task: PlannedTask }) {
         <label className="editor-label" htmlFor={`move-date-${task.id}`}>Plan for a day</label>
         <input className="date-input" id={`move-date-${task.id}`} type="date" required value={date} onChange={(event) => setDate(event.target.value)} />
         <div className="editor-actions"><button className="muse-button button-primary" type="submit">Move task</button><button className="text-button" type="button" onClick={() => move(undefined)}>To Inbox</button></div>
-        <p className="small-label">Your due date stays the same.</p>
         {siblings.length > 1 && <div className="editor-actions" role="group" aria-label="Task order"><button className="muse-button" type="button" disabled={position === 0} onClick={() => dispatch({ type: "task/place", id: task.id, date: task.plannedDate, beforeId: siblings[position - 1]?.id })}>Move earlier</button><button className="muse-button" type="button" disabled={position === siblings.length - 1} onClick={() => dispatch({ type: "task/place", id: task.id, date: task.plannedDate, beforeId: siblings[position + 2]?.id })}>Move later</button></div>}
       </form>
     </GlassPopover>

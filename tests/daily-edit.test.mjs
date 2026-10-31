@@ -86,7 +86,7 @@ test('long plan markup renders only preview rows with correct View all actions a
   assert.equal((html.match(/<time /g) ?? []).length, 3);
   assert.ok(!html.includes('60 items'));
   assert.ok(html.includes('data-module="planner"'));
-  assert.ok(html.includes('Manage today’s plan')); 
+  assert.ok(html.includes('Manage today’s plan'));
   assert.ok(html.includes('View all 40 tasks'));
   assert.ok(html.includes('View all 20 events'));
   assert.ok(html.includes('/planner?date=2026-10-29'));
@@ -95,7 +95,7 @@ test('long plan markup renders only preview rows with correct View all actions a
 
 test('every theme supplies the same complete visual token set and the correct light/dark mode', () => {
   const expected = Object.keys(palettes.iridescent).sort();
-  assert.equal(themes.length, 6);
+  assert.equal(themes.length, 9);
   assert.ok(expected.length >= 70);
   for (const theme of themes) {
     assert.deepEqual(Object.keys(palettes[theme.id]).sort(), expected, theme.id);
@@ -132,7 +132,7 @@ test('theme preference restores, changes immediately, ignores invalid values, an
     for (const theme of themes) { preference.selectTheme(theme.id); assert.equal(preference.readThemePreference(), theme.id); assert.equal(storage.get('muse.theme'), theme.id); }
     assert.equal(notifications, themes.length); unsubscribe();
     preference = load('lib/theme-preference', true);
-    assert.equal(preference.readThemePreference(), 'afterglow');
+    assert.equal(preference.readThemePreference(), themes.at(-1).id);
     storage.set('muse.theme','not-a-theme');
     assert.equal(preference.readThemePreference(), 'iridescent');
     window.localStorage.setItem = () => { throw new Error('storage blocked'); };
@@ -158,9 +158,9 @@ test('picker footer is separate from results; shared CSS preserves alignment and
 test('global navigation covers every destination and keeps mobile primary/More choices centralized', () => {
   const { navigation, desktopGroups, mobilePrimaryIds, mobileMoreIds, navItems, isActiveDestination } = load('lib/navigation');
   assert.deepEqual(desktopGroups, ['Everyday','Reflect','Life']);
-  assert.equal(new Set(navigation.map((item) => item.href)).size, 10);
+  assert.equal(new Set(navigation.map((item) => item.href)).size, 11);
   assert.deepEqual(navItems(mobilePrimaryIds).map((item) => item.id), ['daily','planner','rituals']);
-  assert.deepEqual(navItems(mobileMoreIds).map((item) => item.id), ['mood','nourish','insights','money','notes','appearance','settings']);
+  assert.deepEqual(navItems(mobileMoreIds).map((item) => item.id), ['mood','nourish','insights','money','notes','whimsy','appearance','settings']);
   assert.equal(new Set([...mobilePrimaryIds,...mobileMoreIds]).size, navigation.length);
   assert.equal(isActiveDestination('/','/'), true);
   assert.equal(isActiveDestination('/planner','/'), false);
@@ -188,15 +188,16 @@ test('Day Pulse keeps all signals optional, independent, dated, and bounded to i
 
 test('Day Pulse renders three named optional radio scales and no HTML range sliders', () => {
   const { DayPulseCard } = load('components/DayPulseCard');
-  const { emptyDayPulse } = load('lib/pulse');
-  const html = renderToStaticMarkup(React.createElement(DayPulseCard,{initialCheckIn:emptyDayPulse('2026-10-29')}));
+  const html = renderToStaticMarkup(React.createElement(DayPulseCard,{date:'2026-10-29'}));
   assert.equal((html.match(/type="radio"/g) ?? []).length,30);
-  for (const signal of ['energy','stress','overallDay']) assert.equal((html.match(new RegExp(`name="pulse-${signal}"`,'g')) ?? []).length,10);
+  for (const signal of ['energy','stress','overallDay']) assert.equal((html.match(new RegExp(`name="pulse-${signal}-[^"]+"`,'g')) ?? []).length,10);
   assert.equal((html.match(/>Optional<\/output>/g) ?? []).length,3);
   assert.equal((html.match(/checked=""/g) ?? []).length,0);
   assert.equal((html.match(/type="range"/g) ?? []).length,0);
   assert.ok(html.includes('running low') && html.includes('electric') && html.includes('rough one') && html.includes('lovely'));
-  const filled = renderToStaticMarkup(React.createElement(DayPulseCard,{initialCheckIn:{...emptyDayPulse('2026-10-29'),energy:7,stress:3,overallDay:8}}));
+  const {MuseSessionProvider}=load('components/MuseSession'),{initialMoodState,updateMood}=load('lib/mood');
+  const recordState=updateMood(initialMoodState,'2026-10-29','evening',{energy:7,stress:3,overallDay:8},'now');
+  const filled = renderToStaticMarkup(React.createElement(MuseSessionProvider,{initialDate:'2026-10-29',initialRecords:{'library/emotional-observatory':recordState}},React.createElement(DayPulseCard,{date:'2026-10-29'})));
   assert.equal((filled.match(/checked=""/g) ?? []).length,3);
   assert.equal((filled.match(/class="muse-spark"/g) ?? []).length,0,'Saved values must not celebrate on page load');
 });
@@ -224,8 +225,9 @@ test('shell reserves rail width, switches mobile navigation, and stacks grids us
   assert.ok(shell.includes('@container muse-content (max-width: 760px)'));
   assert.ok(shell.includes('env(safe-area-inset-bottom)'));
   const header = readFileSync(resolve(root,'components/MuseHeader.css'),'utf8');
-  assert.ok(header.includes('grid-template-columns: minmax(0, 1.35fr) minmax(120px, .65fr) minmax(340px, 1fr)'));
-  assert.ok(header.includes('@container muse-content (max-width: 800px)'));
+  assert.ok(header.includes('.muse-daily-header-right')); // The right column owns its own responsive tracks.
+  assert.ok(readFileSync(resolve(root,'components/MusePageHeader.css'),'utf8').includes('align-items:start'));
+  assert.ok(header.includes('@container muse-content (max-width:850px)'));
   const daily = readFileSync(resolve(root,'components/DailyEdit.tsx'),'utf8');
   assert.ok(daily.indexOf('id="daily-edit"') < daily.indexOf('className="daily-grid"'));
   assert.ok(!daily.includes('MuseSessionProvider'),'Records must live above route pages');
@@ -393,9 +395,11 @@ test('Planner rail is a workspace-driven unscheduled source without a day header
   const {PlannerRail}=load('components/planner/PlannerRail');
   const state=freshPlanner(); state.workspaces.push({id:'studio',name:'Studio',accent:'pop'});
   const html=renderToStaticMarkup(React.createElement(PlannerProvider,{initialState:state},React.createElement(PlannerRail,{workspaceId:'studio',tasks:[],onWorkspaceChange(){},onOpen(){}})));
-  assert.ok(html.includes('aria-label="Planning rail"'));
+  assert.ok(html.includes('aria-label="Task List"'));
   assert.ok(html.includes('aria-label="Workspace: Studio"'));
-  assert.ok(html.includes('Unscheduled'));
+  assert.ok(!html.includes('>Unscheduled<'));
+  assert.ok(!html.includes('Ideas waiting for their day'));
+  assert.ok(!html.includes('muse-new-workspace'));
   assert.ok(html.includes('New Inbox task'));
   assert.ok(!html.includes('<time'));
   assert.ok(!html.includes('<select'));
@@ -450,6 +454,7 @@ test('vivid action/completion fills keep readable labels and dark accents retain
     const tokens=palettes[theme.id];
     for(const role of ['--action-fill','--success-primary'])assert.ok(contrast(color(tokens['--on-accent']),resolveColor(tokens,role))>=4.5,`${theme.id}: label on ${role}`);
     if(theme.mode==='dark')for(const role of ['--navigation-accent','--selected-border','--focus-ring','--success-primary','--star-color-1','--star-color-2','--star-color-3','--water-gradient-end']){
+      if(theme.id==='disco-damage'&&['--star-color-1','--navigation-accent','--selected-border','--focus-ring'].includes(role)){assert.ok(contrast(resolveColor(tokens,role),color(tokens['--background']))>=7,'Disco chrome/ice glints must remain bright, not muddy');continue;}
       const rgb=resolveColor(tokens,role).slice(0,3),saturation=(Math.max(...rgb)-Math.min(...rgb))/Math.max(...rgb);
       assert.ok(saturation>=.42,`${theme.id}: ${role} should not become a gray/pastel ink token`);
     }
@@ -475,5 +480,37 @@ test('the full vocabulary is browseable in the large feeling picker without a se
  assert.equal((html.match(/class="emotion-option"/g)??[]).length,emotionCatalog.length);
  assert.ok(html.includes('aria-pressed="true"'));
  assert.ok(html.includes('Browse '+emotionCatalog.length+' feelings'));
- assert.equal((html.match(/tabindex="0"/g)??[]).length,1,'one results tab stop, with arrows for browsing');
+ assert.equal((html.match(/tabindex="0"/g)??[]).length,emotionCatalog[0].definition?3:2,'only the active feeling and its available utility actions precede Done');
+});
+
+test('compact Planner cards share inline timer/classification and retain manual move only in Details',()=>{
+ const {PlannerProvider}=load('components/PlannerStore'),{PlannerTaskCard}=load('components/planner/PlannerTaskCard'),{plannerSample}=load('lib/planner-sample');
+ const state=plannerSample,task=state.tasks[0];
+ const html=renderToStaticMarkup(React.createElement(PlannerProvider,{initialState:state},React.createElement(PlannerTaskCard,{task,onOpen(){}})));
+ assert.ok(html.includes('draggable="true"'));assert.ok(html.includes('Timer for '+task.title));assert.ok(html.includes('Change workspace or group for '+task.title));assert.ok(!html.includes('muse-task-drag'));assert.ok(!html.includes('>Move</button>'));
+ const details=readFileSync(resolve(root,'components/planner/TaskDetails.tsx'),'utf8');assert.ok(details.includes('<TaskMoveControl'));assert.ok(details.includes('<MuseChoiceMenu'));assert.ok(!details.includes('<select'));
+});
+
+test('Water earns one golden semantic star at or above the real target while its visual bar stays capped',()=>{
+ const {WaterCard}=load('components/WaterCard'),{AchievementStar}=load('components/AchievementStar'),{MUSE_STAR_PATH}=load('components/MuseStar');
+ const render=(total)=>renderToStaticMarkup(React.createElement(WaterCard,{initialDay:{date:'2026-10-30',total},settings:{unit:'oz',goal:100,quickAdds:[12,24,32,40]}}));
+ assert.ok(!render(72).includes('muse-achievement-star'));
+ for(const total of [100,108]){const html=render(total);assert.ok(html.includes('aria-label="Water goal achieved"'));assert.ok(html.includes('--water-progress:100%'));assert.ok(html.includes(`aria-valuetext="${total} of 100 oz, goal reached"`));assert.ok(html.includes('data-celebrating="false"'));}
+ const star=renderToStaticMarkup(React.createElement(AchievementStar,{size:30}));assert.ok(star.includes(MUSE_STAR_PATH));assert.ok(star.includes('var(--achievement-gold)'));assert.ok(!star.includes('var(--star-'));
+});
+
+test('birthday siblings keep white/black bases, complete materials and deterministic shared candy roles',()=>{
+ const light=palettes['issya-bday'],dark=palettes['issya-bday-xxx'];assert.equal(light['--background'],'#fffefd');assert.equal(dark['--background'],'#030304');
+ for(const role of ['--chart-1','--chart-2','--chart-3','--chart-4','--chart-5','--chart-6','--chart-7','--chart-8','--completion-gradient','--water-progress-gradient'])assert.equal(light[role],dark[role],role);
+ assert.equal(new Set(Array.from({length:8},(_,index)=>light[`--chart-${index+1}`])).size,8);
+ const {PageCelestial}=load('components/PageCelestial'),html=(motif)=>renderToStaticMarkup(React.createElement(PageCelestial,{motif}));
+ assert.notEqual(html('path'),html('garden'));assert.notEqual(html('orbit'),html('trajectories'));assert.ok(!html('daily').includes('achievement'));assert.equal((html('garden').match(/<path /g)??[]).length,2,'only the two official star paths remain');
+ const styles=readFileSync(resolve(root,'app/atmosphere.css'),'utf8'),sprinkles=readFileSync(resolve(root,'components/CosmicSprinkles.css'),'utf8');assert.ok(styles.includes('prefers-reduced-motion'));assert.ok(sprinkles.includes('prefers-reduced-motion'));assert.ok(!styles.includes('canvas'));
+});
+
+test('completed orb center/badge white checks retain numeric contrast across every theme',()=>{
+ for(const theme of themes){const tokens=palettes[theme.id],shadow=color(tokens['--completion-shadow']),ink=color(tokens['--completion-ink']);
+  const ref=(name)=>{const raw=tokens[name],match=raw.match(/^var\((--[\w-]+)\)$/);return match?ref(match[1]):raw;};
+  const center=blend(shadow,color(ref('--progress-middle')));assert.ok(contrast(ink,center)>=4.5,theme.id+' orb center');assert.ok(contrast(color(tokens['--completion-check']),color(tokens['--completion-badge']))>=4.5,theme.id+' badge');
+ }
 });

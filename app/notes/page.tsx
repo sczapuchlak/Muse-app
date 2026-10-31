@@ -1,3 +1,2 @@
-import { PendingModule } from "@/components/ModulePlaceholder";
-
-export default function Page() { return <PendingModule id="notes" />; }
+import {Notes} from '@/components/notes/Notes';
+export default function Page(){return <Notes/>;}

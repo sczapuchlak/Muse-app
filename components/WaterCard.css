@@ -1,0 +1,13 @@
+/* Fixed geometry reserves the finish line in both states; the track clips its own fill only. */
+.water-progress-goal { --water-finish-width:20px; position:relative; display:flex; align-items:center; min-height:28px; padding-inline-end:calc(var(--water-finish-width) / 2); margin:0 0 var(--space-1); }
+.water-progress-goal > .water-progress { width:100%; margin:0; }
+.water-achievement-finish { position:absolute; inset-inline-end:0; top:50%; display:flex; align-items:center; justify-content:center; width:var(--water-finish-width); transform:translateY(-50%); pointer-events:none; }
+.water-progress-goal .water-progress > span { transition:width 220ms ease-out; }
+.water-achievement-finish .muse-achievement { filter:drop-shadow(0 0 4px var(--achievement-halo)); }
+@media(prefers-reduced-motion:no-preference) {
+  .water-achievement-finish .muse-achievement[data-celebrating="true"] > .muse-achievement-star { animation:muse-water-finish 650ms var(--achievement-delay) ease-out both; }
+  .water-achievement-finish .muse-achievement[data-celebrating="true"] > .muse-achievement-glint { animation:muse-water-endpoint-glint 620ms var(--achievement-delay) ease-out both; }
+  @keyframes muse-water-endpoint-glint { 0% { opacity:0; transform:scale(.5); } 12% { opacity:.8; } 100% { opacity:0; transform:scale(1.5); } }
+  @keyframes muse-water-finish { 0% { opacity:0; transform:scale(.5); } 20% { opacity:1; filter:brightness(1.65) drop-shadow(0 0 9px var(--achievement-gold)); } 44% { opacity:1; transform:scale(1.15); } 100% { opacity:1; transform:scale(1); } }
+}
+@media(prefers-reduced-motion:reduce) { .water-progress-goal .water-progress > span { transition:none; }.water-achievement-finish .muse-achievement-glint { animation:none; opacity:.2; } }

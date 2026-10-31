@@ -78,15 +78,11 @@ test('quantity ring clamps overflow, exposes partial geometry and keeps checkbox
   assert.ok(styles.includes('prefers-reduced-motion: reduce'));
 });
 
-test('header celestial hierarchy keeps the profile pattern outside greeting text and hides it on narrow screens', () => {
-  const {MuseHeader}=load('components/MuseHeader');
-  const {mockProfile}=load('lib/mock-profile');
-  const html=renderToStaticMarkup(React.createElement(MuseHeader,{date:{iso:'2026-10-29',label:''},profile:mockProfile,greeting:'Make room for a little magic.',onDateChange(){}}));
-  assert.ok(html.indexOf('muse-profile-constellation')<html.indexOf('muse-greeting-zone'));
-  const styles=readFileSync(resolve(root,'components/MuseHeader.css'),'utf8');
-  assert.match(styles,/\.muse-hero-appearance \{[^}]*display: flex[^}]*align-items: center/);
-  assert.ok(html.indexOf('class="muse-stars"') < html.indexOf('class="muse-theme-root"'));
-  assert.ok(styles.includes('.muse-editorial-header > .muse-profile-constellation { display: none; }'));
-  const motif=readFileSync(resolve(root,'components/ProfileConstellation.tsx'),'utf8');
-  assert.ok(!motif.includes('Virgo'));
+test('Daily Edit uses a full abstract field, with stars left of date and no hero theme picker',()=>{
+ const {MuseHeader}=load('components/MuseHeader'),{mockProfile}=load('lib/mock-profile');
+ const html=renderToStaticMarkup(React.createElement(MuseHeader,{date:{iso:'2026-10-29',label:''},profile:mockProfile,greeting:'Make room for a little magic.',onDateChange(){}}));
+ assert.ok(html.includes('muse-star-cluster'));assert.ok(!html.includes('muse-profile-constellation'));assert.ok(!html.includes('muse-theme-root'));
+ assert.ok(html.indexOf('muse-star-cluster')<html.indexOf('class="muse-date-navigation"')||html.indexOf('muse-star-cluster')<html.indexOf('aria-label="Previous day"'));
+ const source=readFileSync(resolve(root,'components/AppShell.tsx'),'utf8');assert.ok(source.includes('<div className="muse-rail-footer"><ThemeSwitcher'));
+ const artwork=readFileSync(resolve(root,'components/PageCelestial.tsx'),'utf8');assert.ok(!artwork.includes('CelestialPath'));assert.ok(artwork.includes('compositions[motif]'));
 });

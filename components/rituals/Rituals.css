@@ -1,10 +1,10 @@
 .muse-rituals-toolbar, .muse-rituals-actions, .muse-ritual-week-navigation { display: flex; align-items: center; gap: var(--space-2); flex-wrap: wrap; }
-.muse-rituals-toolbar { justify-content: space-between; margin-bottom: var(--space-4); }
+.muse-rituals-toolbar { justify-content: space-between; margin-bottom: var(--module-toolbar-gap); }
 .muse-ritual-week-navigation > span { padding-inline: var(--space-2); color: var(--foreground); font-size: .85rem; font-weight: 500; }
 .muse-ritual-week-navigation .muse-button { min-width: var(--touch-target); }
-.muse-rituals-week-context { margin-bottom: var(--space-5); }
+.muse-rituals-week-context { margin-bottom: var(--module-week-gap); }
 .muse-rituals-week-context .muse-week-strip { width: 100%; max-width: none; margin: 0 0 var(--space-2); border-bottom: 1px solid var(--divider); padding-bottom: var(--space-3); }
-.muse-rituals-summary { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-5); margin: 0 0 var(--space-6); padding: var(--space-4) 0; }
+.muse-rituals-summary { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-5); margin: 0 0 var(--module-section-gap); padding: 0 0 var(--space-2); }
 .muse-rituals-summary > div + div { padding-left: var(--space-5); border-left: 1px solid var(--divider); }
 .muse-rituals-summary dt { color: var(--text-muted); font-size: .72rem; }
 .muse-rituals-summary dd { display: flex; align-items: baseline; flex-wrap: wrap; gap: var(--space-2); margin: var(--space-1) 0 0; color: var(--foreground); font-size: 1.4rem; font-weight: 550; font-variant-numeric: tabular-nums; }
@@ -14,7 +14,7 @@
 .muse-ritual-group-header { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
 .muse-ritual-group-title { display: flex; align-items: center; gap: var(--space-3); }
 .muse-ritual-group-title h2 { margin: 0 0 2px; font-size: 1rem; font-weight: 600; letter-spacing: -.025em; }
-.muse-ritual-group-icon { display: inline-grid; place-items: center; flex: 0 0 36px; width: 36px; height: 36px; color: var(--organization-accent); border: 1px solid color-mix(in srgb, var(--organization-accent) 40%, transparent); border-radius: var(--control-radius); background: color-mix(in srgb, var(--organization-accent) 10%, transparent); }
+.muse-ritual-group-icon { display:inline-flex; align-items:center; justify-content:center; flex:0 0 24px; width:24px; height:24px; color:var(--organization-accent); }
 .muse-ritual-week-head, .muse-ritual-row { display: grid; grid-template-columns: minmax(220px, 1.4fr) repeat(7, minmax(44px, .5fr)); align-items: center; gap: var(--space-2); }
 .muse-ritual-week-head { margin-top: var(--space-4); padding-bottom: var(--space-2); color: var(--text-muted); font-size: .62rem; letter-spacing: .06em; text-transform: uppercase; }
 .muse-ritual-week-head > span:not(:first-child) { display: flex; flex-direction: column; align-items: center; padding-bottom: var(--space-1); }
@@ -81,7 +81,7 @@
 [data-gradient="secondary-pop"] { --ritual-gradient-start: var(--accent-secondary); --ritual-gradient-end: var(--accent-pop); }
 [data-gradient="pop-primary"] { --ritual-gradient-start: var(--accent-pop); --ritual-gradient-end: var(--accent-primary); }
 .muse-ritual-group { position: relative; isolation: isolate; overflow: hidden; overflow: clip; }
-.muse-ritual-group::before { content: ""; position: absolute; inset: 0 0 auto; height: 5px; border-radius: var(--card-radius) var(--card-radius) 0 0; background: linear-gradient(100deg, var(--ritual-gradient-start), var(--ritual-gradient-end)); box-shadow: 0 3px 16px color-mix(in srgb, var(--ritual-gradient-start) 25%, transparent); pointer-events: none; }
+.muse-ritual-group::before { content: ""; position: absolute; inset: 0 0 auto; height: 5px; border-radius: var(--card-radius) var(--card-radius) 0 0; background: var(--ritual-banner-gradient,linear-gradient(100deg, var(--ritual-gradient-start), var(--ritual-gradient-end))); box-shadow: 0 3px 16px color-mix(in srgb, var(--ritual-gradient-start) 25%, transparent); pointer-events: none; }
 .muse-ritual-group-header { margin: calc(-1 * var(--ritual-group-padding)) calc(-1 * var(--ritual-group-padding)) 0; padding: var(--ritual-group-padding); border-radius: var(--card-radius) var(--card-radius) 0 0; background: linear-gradient(110deg, color-mix(in srgb, var(--ritual-gradient-start) 14%, transparent), color-mix(in srgb, var(--ritual-gradient-end) 8%, transparent), transparent); }
 .muse-ritual-week-cell[data-status="partial"] .muse-ritual-cell-control { border-color: transparent; background: var(--surface-subtle); }
 .muse-ritual-week-cell[data-status="missed"] .muse-ritual-cell-control { color: var(--text-muted); border-style: solid; background: var(--surface-subtle); }
@@ -90,13 +90,20 @@
 .muse-ritual-cell-control > .muse-progress-ring { max-width: none; overflow: visible; }
 .muse-ritual-weekly-progress > div > span { background: linear-gradient(90deg, var(--ritual-gradient-start), var(--ritual-gradient-end)); }
 .muse-ritual-legend [data-status="partial"] { border: 2px solid var(--accent-secondary); border-left-color: var(--divider); border-radius: 50%; }
-.muse-gradient-preview { width: 26px; height: 12px; border-radius: var(--pill-radius); background: linear-gradient(100deg, var(--ritual-gradient-start), var(--ritual-gradient-end)); }
+.muse-gradient-preview { width: 26px; height: 12px; border-radius: var(--pill-radius); background: var(--ritual-banner-gradient,linear-gradient(100deg, var(--ritual-gradient-start), var(--ritual-gradient-end))); }
 @container muse-content (max-width: 760px) { .muse-ritual-group-header { margin-bottom: var(--space-3); } }
 /* Completion answers "Did I finish?"; rings answer "How far did I get?" */
-.muse-ritual-week-cell[data-status="complete"] .muse-ritual-cell-control { color: var(--on-accent); background: linear-gradient(135deg, var(--action-fill), color-mix(in srgb, var(--action-fill) 92%, var(--ritual-gradient-end))); border-color: var(--action-fill); box-shadow: inset 0 1px 0 var(--glass-edge); }
-.muse-ritual-completed-value { display: flex; flex-direction: column; align-items: center; line-height: 1.1; font-size: .8rem; }
-.muse-ritual-completed-value small { font-size: .5rem; margin-top: 2px; }
-.muse-ritual-cell-control > .muse-ritual-completion-badge { position: absolute; top: -4px; right: -4px; display: grid; place-items: center; width: 17px; height: 17px; max-width: none; overflow: visible; border: 2px solid var(--planning-container-background); border-radius: 50%; background: var(--action-fill); color: var(--on-accent); pointer-events: none; }
-
+.muse-ritual-week-cell[data-status="complete"] .muse-ritual-cell-control { color:var(--completion-ink); background:radial-gradient(ellipse at 50% 55%,var(--completion-shadow),transparent 88%),radial-gradient(ellipse at 27% 16%,var(--completion-highlight),transparent 47%), var(--completion-gradient); border-color:var(--completion-edge); box-shadow:inset 0 1px 2px var(--glass-edge), inset 0 -2px 4px var(--completion-shadow), 0 0 10px var(--wash-purple); }
+.muse-ritual-completed-value { display:grid; place-items:center; width:100%; font-size:.85rem; font-weight:650; text-shadow:0 1px 2px var(--completion-shadow); }
+.muse-ritual-cell-control > .muse-ritual-completion-badge { position:absolute; z-index:2; top:-2px; right:-2px; display:grid; place-items:center; width:17px; height:17px; max-width:none; border-radius:50%; color:var(--completion-check); background:var(--completion-badge); border:1px solid var(--completion-edge); box-shadow:0 1px 3px var(--completion-shadow); }
 
 .muse-ritual-weekly-met { display: flex; align-items: center; gap: var(--space-1); color: var(--selected-text); font-weight: 550; }
+
+/* The cell footprint contains its control exactly; rings never overflow a padded button. */
+.muse-ritual-week-cell { min-width: 0; min-height: 52px; display: grid; place-items: center; }
+.muse-ritual-cell-control { position: relative; padding: 0; width: 44px; height: 44px; min-width: 44px; border-radius: 50%; }
+.muse-ritual-week-cell[data-status="partial"] .muse-ritual-cell-control { border: 0; background: transparent; }
+.muse-ritual-unavailable { display: grid; place-items: center; width: 44px; height: 44px; color: var(--text-muted); }
+
+.muse-ritual-group[data-gradient="custom"] .muse-ritual-group-header { position:relative; isolation:isolate; background:transparent; }.muse-ritual-group[data-gradient="custom"] .muse-ritual-group-header::before { content:""; position:absolute; inset:0; z-index:-1; pointer-events:none; border-radius:inherit; background:var(--ritual-banner-gradient); opacity:.12; }
+.muse-ritual-group-icon { color:var(--custom-accent-ink,var(--organization-accent)); }

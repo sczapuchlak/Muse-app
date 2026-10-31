@@ -9,7 +9,7 @@ import { DateNavigator } from "../DateNavigator";
 import { RitualWeekNavigator } from "./RitualWeekNavigator";
 import { useMuseDate } from "../MuseSession";
 import { useMuseToday } from "../useMuseToday";
-import { RitualProvider, useRituals } from "./RitualStore";
+import { useRituals } from "./RitualStore";
 import { RitualGroup } from "./RitualGroup";
 import { RitualEditor } from "./RitualEditor";
 import { RitualGroupManager } from "./RitualGroupManager";
@@ -24,7 +24,7 @@ function RitualsView() {
   const today = useMuseToday(mockProfile.timeZone);
   const week = weekDates(date), summary = weekSummary(state, week, today);
   return <main className="muse-page muse-rituals-page">
-    <MusePageHeader eyebrow="A rhythm of your own" title="Rituals" description="Small things, returned to."><DateNavigator date={date} onChange={setDate} /></MusePageHeader>
+    <MusePageHeader title="Rituals"><DateNavigator date={date} onChange={setDate} /></MusePageHeader>
     <div className="muse-rituals-toolbar"><nav className="muse-ritual-week-navigation" aria-label="Ritual week navigation"><button className="muse-button" type="button" disabled={!today} onClick={() => setDate(today)}>This week</button><button className="muse-button" type="button" aria-label="Previous week" onClick={() => setDate(shiftDate(date, -7))}>←</button><span>{new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", timeZone: "UTC" }).format(new Date(`${week[0]}T12:00:00Z`))} – {new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", timeZone: "UTC" }).format(new Date(`${week[6]}T12:00:00Z`))}</span><button className="muse-button" type="button" aria-label="Next week" onClick={() => setDate(shiftDate(date, 7))}>→</button></nav><div className="muse-rituals-actions"><button className="muse-button" type="button" onClick={(event) => setEditor({ kind: "groups", anchor: event.currentTarget })}>Manage groups</button><button className="muse-button button-primary" type="button" onClick={(event) => setEditor({ kind: "ritual", anchor: event.currentTarget })}>+ Add ritual</button></div></div>
     <div className="muse-rituals-week-context"><RitualWeekNavigator selectedDate={date} today={today} onChange={setDate}/><p className="small-label">{dateLabel(date)} · {today && date > today ? "Upcoming days are ready to plan, then log when they arrive." : "Past scheduled days remain editable."}</p></div>
     <dl className="muse-rituals-summary"><div><dt>Complete</dt><dd>{today ? summary.completed : "…"}<span>{summary.partial} partial · {summary.missed} explicitly missed</span></dd></div><div><dt>Not logged</dt><dd>{today ? summary.unknown : "…"}<span>past scheduled days · unknown</span></dd></div><div><dt>Weekly goals met</dt><dd>{today ? `${summary.weeklyMet} / ${summary.weeklyTargets}` : "…"}<span>separate from daily goals</span></dd></div></dl>
@@ -37,4 +37,4 @@ function RitualsView() {
     <footer className="muse-footer">Sample rituals · Changes stay in this session and reset on refresh</footer>
   </main>;
 }
-export function Rituals() { return <RitualProvider><RitualsView /></RitualProvider>; }
+export function Rituals() { return <RitualsView />; }

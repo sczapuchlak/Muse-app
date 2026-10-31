@@ -1,0 +1,12 @@
+.priorities-card {position:relative;}
+.muse-milestone { position:absolute;inset:0;overflow:hidden;border-radius:inherit;pointer-events:none;z-index:2; }
+.muse-milestone-flight { position:absolute;left:6%;top:56%;color:var(--star-2);filter:drop-shadow(0 0 5px var(--accent-secondary));animation:muse-milestone-flight 800ms ease-out both; }
+.muse-milestone-trail { position:absolute;left:8%;top:60%;width:70%;height:1px;background:linear-gradient(90deg,transparent,var(--accent-secondary),var(--accent-tertiary),transparent);transform-origin:left;animation:muse-milestone-trail 800ms ease-out both; }
+.muse-milestone-glint .muse-milestone-flight {left:auto;right:12%;top:15%;animation:muse-milestone-glint 700ms ease-out both;}
+.muse-milestone-glint .muse-milestone-trail {top:30%;width:80%;}
+@keyframes muse-milestone-flight {0%{transform:translate(0,10px) scale(.7);opacity:0}15%{opacity:1}75%{opacity:1}100%{transform:translate(65vw,-32px) scale(.5);opacity:0}}
+@keyframes muse-milestone-trail {0%{transform:scaleX(0);opacity:0}30%{opacity:.8}100%{transform:scaleX(1);opacity:0}}
+@keyframes muse-milestone-glint {0%{opacity:0;transform:scale(.75)}35%{opacity:1}100%{opacity:0;transform:scale(1.1)}}
+:root[data-magic="extra"] .muse-milestone-flight {filter:drop-shadow(0 0 8px var(--accent-tertiary)) drop-shadow(0 0 4px var(--accent-secondary));}
+:root[data-magic="quiet"] :is(.muse-milestone,.muse-spark,.muse-orbital-glint,.muse-constellation-celebration,.muse-achievement-glint) {display:none;}
+@media(prefers-reduced-motion:reduce){.muse-milestone{display:none;}}

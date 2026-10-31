@@ -1,0 +1,30 @@
+/* Entry presentation shares the providers, atmosphere and tokens, without gating app routes. */
+.muse-app-shell[data-module="login-preview"] :is(.muse-rail,.muse-bottom-navigation,.muse-global-bar) {display:none;}
+.muse-app-shell[data-module="login-preview"] .muse-app-main {margin-left:0;padding:0;}
+.muse-app-shell[data-module="login-preview"] .muse-disco-environment {display:none;}
+.muse-login-preview {min-height:100dvh;max-width:1200px;margin:auto;padding:max(40px,env(safe-area-inset-top)) 48px max(40px,env(safe-area-inset-bottom));display:grid;grid-template-columns:minmax(0,1.25fr) minmax(320px,1fr);gap:clamp(32px,6vw,100px);align-items:center;}
+.muse-login-story {position:relative;min-width:0;}
+.muse-login-logo {font-family:var(--font-ui);font-size:2.3rem;font-weight:650;letter-spacing:-.07em;display:inline-flex;gap:12px;align-items:center;}
+.muse-login-story>.muse-star-cluster {margin:28px 0 0;}
+.muse-login-story h1 {font-size:clamp(2.5rem,4.6vw,4.3rem);line-height:1.14;font-weight:400;max-width:570px;margin:20px 0;}
+.muse-login-story>p {font-size:1.05rem;line-height:1.7;}
+.muse-login-story .muse-login-invitation {color:var(--foreground-muted);font-size:.9rem;max-width:380px;}
+.muse-login-glass {padding:32px;border:1px solid var(--glass-border);border-top-color:var(--glass-edge);border-radius:var(--card-radius);background:var(--glass-background);box-shadow:var(--glass-shadow);backdrop-filter:blur(var(--material-blur));}
+.muse-login-glass h2 {font-size:1.5rem;margin:10px 0;}
+.muse-login-glass form {display:grid;gap:10px;margin:24px 0 12px;}
+.muse-login-glass input {width:100%;min-height:46px;}
+.muse-login-feedback {font-size:.78rem;line-height:1.6;min-height:4.8em;color:var(--foreground-muted);}
+.muse-login-return {display:inline-flex;color:var(--accent-secondary);min-height:44px;align-items:center;font-size:.85rem;}
+@media(max-width:720px){.muse-login-preview{grid-template-columns:minmax(0,1fr);padding:24px 20px max(24px,env(safe-area-inset-bottom));gap:28px;align-content:center;}.muse-login-story h1{font-size:2.5rem;max-width:450px;}.muse-login-story>.muse-star-cluster{display:none;}.muse-login-glass{padding:24px;}}
+
+.muse-login-state-preview {font-size:.75rem;color:var(--foreground-muted);margin:16px 0;}
+.muse-login-state-preview summary {cursor:pointer;min-height:36px;display:flex;align-items:center;}
+.muse-login-state-preview>div[role="group"] {display:flex;gap:12px;}
+.muse-login-demo {border:1px solid var(--glass-border);border-radius:var(--control-radius);padding:12px;margin-top:8px;}
+.muse-login-demo strong {color:var(--foreground);}.muse-login-demo p {margin:6px 0;}
+.muse-login-demo[data-state="error"] {border-color:var(--accent-tertiary);}
+.muse-login-glass .button-primary {display:inline-flex;align-items:center;justify-content:center;gap:8px;}
+.muse-app-shell[data-module="login-preview"][data-rail] {--muse-rail-width:0px;}
+.muse-login-glass input[type="email"] {padding:10px 12px;color:var(--foreground);background:var(--surface-control);border:1px solid var(--glass-border);border-radius:var(--control-radius);font:inherit;font-size:.9rem;}
+.muse-login-glass input[type="email"]::placeholder {color:var(--foreground-muted);}
+.muse-login-glass .button-primary .muse-star {color:inherit;}

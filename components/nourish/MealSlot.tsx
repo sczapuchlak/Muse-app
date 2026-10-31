@@ -3,7 +3,7 @@ import { useState } from "react";
 import { mealLabels, type DailyMealAssignment, type MealSlot as Slot } from "@/lib/models";
 import { mealsFor } from "@/lib/nourish";
 import { useNourish } from "../NourishStore";
-import { MuseIcon } from "../MuseIcon";
+import { MealMacros } from "./MealMacros";
 import { useMuseSpark } from "../MuseSpark";
 import { useMuseDropTarget } from "../useMuseDropTarget";
 export const MEAL_DRAG_TYPE="application/x-muse-meal";
@@ -11,10 +11,10 @@ export type MealOpen=(date:string,slot:Slot,anchor:HTMLElement,onSaved:()=>void,
 export type MealPlace=(assignment:DailyMealAssignment,mode:"move"|"copy",anchor:HTMLElement)=>void;
 function MealItem({meal,onOpen,onPlace,onSaved}:{meal:DailyMealAssignment;onOpen:MealOpen;onPlace:MealPlace;onSaved:()=>void}) {
   const [dragging,setDragging]=useState(false);
-  return <li className="muse-meal-entry muse-drag-surface" data-dragging={dragging}>
+  return <li className="muse-meal-entry muse-drag-surface" data-dragging={dragging} draggable onDragStart={(event)=>{if((event.target as Element).closest("button,input,a")){event.preventDefault();return;}setDragging(true);event.dataTransfer.setData(MEAL_DRAG_TYPE,meal.id);event.dataTransfer.effectAllowed="move";}} onDragEnd={()=>setDragging(false)}>
     <button type="button" className="muse-meal-title muse-edge" onClick={(event)=>onOpen(meal.date,meal.slot,event.currentTarget,onSaved,meal)}>{meal.title}</button>
-    {meal.note&&<p className="small-label muse-meal-note">{meal.note}</p>}
-    <div className="muse-meal-meta">{meal.savedMealId&&<span className="small-label">Saved meal</span>}<button type="button" className="muse-meal-drag text-button" draggable aria-label={`Drag ${meal.title}; Move is also available`} onDragStart={(event)=>{setDragging(true);event.dataTransfer.setData(MEAL_DRAG_TYPE,meal.id);event.dataTransfer.effectAllowed="move";}} onDragEnd={()=>setDragging(false)}><MuseIcon name="grip" size={15}/></button><button className="text-button" type="button" onClick={(event)=>onPlace(meal,"move",event.currentTarget)}>Move</button><button className="text-button" type="button" onClick={(event)=>onPlace(meal,"copy",event.currentTarget)}>Copy</button></div>
+    <MealMacros nutrition={meal.nutrition}/>
+    <div className="muse-meal-meta"><button className="text-button" type="button" onClick={(event)=>onPlace(meal,"move",event.currentTarget)}>Move</button><button className="text-button" type="button" onClick={(event)=>onPlace(meal,"copy",event.currentTarget)}>Copy</button></div>
   </li>;
 }
 export function MealSlot({date,slot,onOpen,onPlace}:{date:string;slot:Slot;onOpen:MealOpen;onPlace:MealPlace}) {

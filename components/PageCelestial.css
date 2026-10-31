@@ -1,24 +1,10 @@
-/* An asymmetric field behind functional content, fading through the atmosphere. */
-.muse-page-celestial { position: absolute; z-index: 0; inset: -30px -24px -20px; overflow: hidden; pointer-events: none; mask-image: linear-gradient(90deg, transparent, rgba(0,0,0,.12) 18%, #000 42%, rgba(0,0,0,.8) 73%, transparent 97%); -webkit-mask-image: linear-gradient(90deg, transparent, rgba(0,0,0,.12) 18%, #000 42%, rgba(0,0,0,.8) 73%, transparent 97%); }
-.muse-page-celestial::before { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse 28% 75% at 36% 30%, var(--haze-primary), transparent 78%), radial-gradient(ellipse 30% 70% at 78% 90%, var(--haze-secondary), transparent 80%); opacity: .6; }
-.muse-page-celestial > svg { position: absolute; inset: 0; width: 100%; height: 100%; }
-.muse-celestial-line { fill: none; stroke: currentColor; stroke-width: .65; vector-effect: non-scaling-stroke; opacity: .22; }
-.muse-celestial-distant { opacity: .12; stroke-width: .45; }
-.muse-celestial-points { fill: var(--star-3); opacity: .3; }
-.muse-celestial-node { --node-brightness: .7; animation: muse-star-shimmer var(--motion-shimmer,14000ms) ease-in-out var(--celestial-delay) infinite; }
-.muse-celestial-phase { fill: none; stroke: currentColor; stroke-width: .7; vector-effect: non-scaling-stroke; opacity: .38; }
-.muse-celestial-crescent { fill: currentColor; opacity: .15; }
-.muse-celestial-fragment-far { opacity: .45; }
-.muse-page-celestial[data-motif="orbit"] { inset-block: -44px -24px; }
-.muse-page-celestial[data-motif="garden"] { mask-image: linear-gradient(110deg, transparent 8%, #000 45%, #000 65%, transparent 95%); -webkit-mask-image: linear-gradient(110deg, transparent 8%, #000 45%, #000 65%, transparent 95%); }
-.muse-mood-aurora { position: absolute; inset: 0; }
-.muse-mood-aurora > i { position: absolute; inset: 0; background: radial-gradient(ellipse 30% 65% at var(--aurora-position), color-mix(in srgb, var(--aurora-color) 24%, transparent), transparent 75%); }
-.muse-mood-aurora > i:nth-child(1) { --aurora-color: var(--mood-red); --aurora-position: 32% 32%; }
-.muse-mood-aurora > i:nth-child(2) { --aurora-color: var(--mood-blue); --aurora-position: 55% 78%; }
-.muse-mood-aurora > i:nth-child(3) { --aurora-color: var(--mood-green); --aurora-position: 70% 23%; }
-.muse-mood-aurora > i:nth-child(4) { --aurora-color: var(--mood-yellow); --aurora-position: 87% 67%; }
-.muse-mood-aurora > .muse-star { position: absolute; left: 61%; top: 24%; opacity: .55; }
-.muse-mood-aurora > .muse-star:last-child { left: 83%; top: 66%; opacity: .35; }
-@container muse-content (max-width: 900px) { .muse-page-celestial { opacity: .7; mask-image: linear-gradient(90deg, transparent 20%, #000 70%, transparent); -webkit-mask-image: linear-gradient(90deg, transparent 20%, #000 70%, transparent); } }
-@container muse-content (max-width: 600px) { .muse-page-celestial { opacity: .35; inset-inline: 15% -16px; } }
-@media (prefers-reduced-motion: reduce) { .muse-celestial-node { animation: none; opacity: .7; } }
+/* Only sparse punctuation belongs to the header. Atmospheric depth belongs to the full shell. */
+.muse-page-celestial { position:absolute; z-index:0; inset:0 var(--hero-safe-end,0px) 0 0; pointer-events:none; overflow:hidden; mask-image:linear-gradient(90deg,transparent,#000 40%,#000 85%,transparent); }
+.muse-cosmos-particles { position:absolute; inset:0; }
+.muse-cosmos-particles > span { position:absolute; }
+.muse-cosmos-dust { width:2px; height:2px; border-radius:50%; background:var(--star-3); opacity:.3; box-shadow:0 0 5px var(--star-3); }
+.muse-cosmos-crisp { opacity:.5; }
+.muse-editorial-header > .muse-page-celestial { --hero-safe-end:50%; }
+.muse-module-header:has(.muse-module-context) > .muse-page-celestial { --hero-safe-end:60%; }
+@container muse-content (max-width:900px) { .muse-module-header:has(.muse-module-context) > .muse-page-celestial { display:none; } }
+@container muse-content (max-width:800px) { .muse-editorial-header > .muse-page-celestial { display:none; } }

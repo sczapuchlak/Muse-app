@@ -21,4 +21,5 @@ export const sampleContextTags: ContextTag[] = [
   { id: "context-travel", name: "Travel" },
   { id: "context-money", name: "Money" },
   { id: "context-family", name: "Family" },
+  ...["Relationships","Friends","Food","Weather","Creativity","Rest","Personal growth"].map((name)=>({id:`context-${name.toLowerCase().replaceAll(" ","-")}`,name})),
 ];

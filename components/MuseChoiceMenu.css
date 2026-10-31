@@ -3,3 +3,24 @@
 .muse-choice-trigger > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .muse-choice-options { margin-top: var(--space-2); }
 .muse-choice-options .popover-choice > span { display: flex; align-items: center; gap: var(--space-2); }
+.muse-choice-value { display:inline-flex; align-items:center; gap:var(--space-2); }
+.muse-choice-value > span { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.muse-choice-options { flex:1 1 auto; min-height:0; max-height:none; padding:3px; }
+.muse-popover-content-scroll > :is(input,.editor-label,.popover-footer) { flex-shrink:0; }
+
+.muse-popover-content-scroll .muse-choice-options { max-height:none; min-height:0; overflow-y:auto; }
+
+.muse-choice-menu[data-variant="chip"] .muse-choice-trigger { min-height:36px; padding:6px 10px; gap:8px; border-radius:var(--pill-radius); background:var(--surface-control); font-size:.73rem; text-decoration:none; }
+.muse-choice-menu[data-variant="chip"] .muse-choice-trigger:hover { border-color:var(--interactive-border); background:var(--surface-hover); }
+.muse-choice-menu[data-variant="chip"] .muse-choice-value { min-width:0; gap:6px; }
+.muse-choice-menu[data-variant="chip"] .muse-choice-value > span { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+@media(pointer:coarse) { .muse-choice-menu[data-variant="chip"] .muse-choice-trigger { min-height:44px; } }
+
+.muse-choice-menu[data-variant="chip"] .muse-choice-trigger[data-accent] { color:var(--foreground); border-color:color-mix(in srgb,var(--chip-ink,var(--information-accent)) 60%,var(--glass-border)); background:color-mix(in srgb,var(--chip-ink,var(--information-accent)) 12%,var(--surface-control)); }
+.muse-choice-menu[data-variant="chip"] [data-accent="primary"] { --chip-ink:var(--accent-primary); }
+.muse-choice-menu[data-variant="chip"] [data-accent="secondary"] { --chip-ink:var(--accent-secondary); }
+.muse-choice-menu[data-variant="chip"] [data-accent="pop"] { --chip-ink:var(--accent-pop); }
+.muse-choice-menu[data-variant="chip"] [data-accent="warm"] { --chip-ink:var(--accent-warm); }
+.muse-choice-menu[data-variant="chip"] .muse-choice-trigger:focus-visible { outline:2px solid var(--focus-ring); outline-offset:2px; }
+
+.muse-choice-menu[data-variant="icon"] .muse-choice-trigger { width:40px; min-height:40px; padding:8px; }

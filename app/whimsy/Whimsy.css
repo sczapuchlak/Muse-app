@@ -1,0 +1,4 @@
+.muse-whimsy-previews {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-5);}
+.muse-whimsy-previews h2 {font-size:1.1rem;margin:18px 0 8px;}
+.muse-whimsy-soon {display:inline-flex;color:var(--foreground-muted);border:1px solid var(--glass-border);border-radius:var(--radius-pill);padding:5px 10px;font-size:.72rem;margin-top:18px;}
+@media(max-width:760px){.muse-whimsy-previews{grid-template-columns:1fr;}}

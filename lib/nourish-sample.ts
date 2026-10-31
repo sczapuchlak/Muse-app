@@ -1,4 +1,5 @@
-import { defaultGrocerySections,type NourishState } from "./nourish";
+import type { NourishState } from "./nourish";
+import { defaultGrocerySections } from "./grocery-sections";
 import type { DailyMealAssignment } from "./models";
 // Illustrative, manually seeded nutrition values are sample data, never inferred from names.
 // One set of seed assignments; both views consume Nourish's canonical live collection.

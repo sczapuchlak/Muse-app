@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { mealLabels, type DailyMealAssignment, type MealSlot } from "@/lib/models";
+import { mealSlots,mealLabels, type DailyMealAssignment, type MealSlot } from "@/lib/models";
 import { createMealAssignment, recentMeals, savedMealsFor, validNutrition } from "@/lib/nourish";
 import { dateLabel } from "@/lib/dates";
 import { useNourish } from "../NourishStore";
@@ -35,14 +35,14 @@ export function MealEditor({date,slot,initial,anchor,onClose,onSaved}:{date:stri
     }}>
       <p className="small-label">{dateLabel(date)} · {mealLabels[slot]}</p>
       <label className="editor-label">Meal<input data-drawer-autofocus type="text" required maxLength={160} value={title} placeholder="Tacos. Dinner out. Anything goes." onChange={(event)=>{setTitle(event.target.value);setSavedId(undefined);setError("");}}/></label>
-      <label className="editor-label">Note <span className="small-label">optional</span><textarea rows={2} maxLength={500} value={note} onChange={(event)=>setNote(event.target.value)} placeholder="Use the leftover rice…"/></label>
+      <label className="editor-label"><span className="muse-field-label">Note <small className="small-label">optional</small></span><textarea rows={2} maxLength={500} value={note} onChange={(event)=>setNote(event.target.value)} placeholder="Use the leftover rice…"/></label>
       {!savedId&&<label className="muse-meal-save-toggle"><input type="checkbox" checked={saveMeal} onChange={(event)=>setSaveMeal(event.target.checked)}/>Save this meal to use again</label>}
       {saveMeal&&!savedId&&<MealTypeSelector value={mealTypes} onChange={setMealTypes}/>}
       <NutritionFields value={nutrition} onChange={setNutrition}/>
       {error&&<p className="field-error" role="alert">{error}</p>}
       <div className="editor-actions"><button className="muse-button button-primary" type="submit">{initial?"Save meal":"Add meal"}</button><button className="text-button" type="button" onClick={onClose}>Cancel</button>{initial&&<button className="text-button" type="button" onClick={()=>{dispatch({type:"assignment/remove",id:initial.id});onClose();}}>Remove from this day</button>}</div>
     </form>
-    <section className="muse-meal-picker" aria-label="Choose a saved or recent meal"><h3>Saved meals</h3><div className="muse-filter-options"><button className="choice-button" type="button" aria-pressed={filter===slot} onClick={()=>setFilter(slot)}>{mealLabels[slot]}</button><button className="choice-button" type="button" aria-pressed={filter==="all"} onClick={()=>setFilter("all")}>All</button></div><div className="muse-saved-choices">{saved.map((meal)=><button className="popover-choice" key={meal.id} type="button" aria-pressed={savedId===meal.id} onClick={()=>{setTitle(meal.name);setNote(meal.note??"");setSavedId(meal.id);setNutrition(nutritionDraft(meal.nutrition));setSaveMeal(false);setError("");}}>{meal.name}</button>)}{!saved.length&&<p className="small-label">No matching saved meals. Quick text is all you need.</p>}</div>
+    <section className="muse-meal-picker" aria-label="Choose a saved or recent meal"><h3>Saved meals</h3><div className="muse-filter-options" role="group" aria-label="Saved meal types">{([slot,'all',...mealSlots.filter(value=>value!==slot)] as const).map(value=><button className="choice-button" type="button" key={value} aria-pressed={filter===value} onClick={()=>setFilter(value)}>{value==='all'?'All':mealLabels[value]}</button>)}</div><div className="muse-saved-choices">{saved.map((meal)=><button className="popover-choice" key={meal.id} type="button" aria-pressed={savedId===meal.id} onClick={()=>{setTitle(meal.name);setNote(meal.note??"");setSavedId(meal.id);setNutrition(nutritionDraft(meal.nutrition));setSaveMeal(false);setError("");}}>{meal.name}</button>)}{!saved.length&&<p className="small-label">No matching saved meals. Quick text is all you need.</p>}</div>
       {recent.length>0&&<><h3>Recent meals</h3><div className="muse-saved-choices">{recent.map((meal)=><button className="popover-choice" type="button" key={meal.id} onClick={()=>{setTitle(meal.title);setNote(meal.note??"");setSavedId(meal.savedMealId);setNutrition(nutritionDraft(meal.nutrition));setError("");}}>{meal.title}</button>)}</div></>}
     </section>
   </MuseDrawer>;

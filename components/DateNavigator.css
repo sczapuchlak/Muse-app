@@ -1,0 +1,4 @@
+.date-navigation { min-width:0; max-width:100%; }
+.date-navigation .date-step { flex:0 0 var(--touch-target); }
+.date-navigation .date-current { flex:1 1 auto; min-width:0; }
+.date-navigation .date-current time { display:block; max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }

@@ -1,4 +1,24 @@
+"use client";
+import {MUSE_STAR_PATH} from "./MuseStar";
+import dynamic from "next/dynamic";
+import type {ExtraIconName} from "@/lib/icon-catalog";
+const ExtendedMuseIcon=dynamic(()=>import("./ExtendedMuseIcon"),{loading:()=>null});
+import { PrismaticSvg, type PrismaticTone } from './PrismaticSvg';
+
 const paths = {
+  sparkle:<path d={MUSE_STAR_PATH} transform="translate(4.8 0) scale(.6)"/>,
+  sort:<path d="M3 5h12M3 10h9M3 15h6M18 4v16m-3-3 3 3 3-3"/>,
+  tag: <><path d="M3 3h8l10 10-8 8L3 11V3Z"/><circle cx="7" cy="7" r="1"/></>,
+  pin: <path d="m9 3 8 2-2 5 3 4-5 1-6 6 2-8-4-3 5-2-1-5Z"/>,
+  archive: <><path d="M4 8v13h16V8M9 12h6"/><rect x="3" y="3" width="18" height="5" rx="1"/></>,
+  panel: <><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16M6 8h.01M6 12h.01"/></>,
+  focus: <path d="M8 3H3v5M16 3h5v5M21 16v5h-5M3 16v5h5M9 12h6"/>,
+  link: <><path d="m10 8 3-3a4 4 0 0 1 6 6l-3 3M14 16l-3 3a4 4 0 0 1-6-6l3-3M8 16l8-8"/></>,
+  undo: <><path d="M8 4 3 9l5 5M3 9h10a7 7 0 0 1 0 14"/></>,
+  favorite: <path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9L12 3Z" />,
+  info: <><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7h.01"/></>,
+  trash: <><path d="M3 6h18M9 6V3h6v3M5 6l1 15h12l1-15M10 10v7M14 10v7" /></>,
+  timer: <><circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M9 2h6M12 2v3"/></>,
   grip: <path d="M8 5h.01M16 5h.01M8 12h.01M16 12h.01M8 19h.01M16 19h.01" />,
   filter: <><path d="M4 6h16M7 12h10M10 18h4" /></>,
   check: <path d="m5 12 4 4L19 6" />,
@@ -25,12 +45,15 @@ const paths = {
   arrow: <path d="M5 12h14m-5-5 5 5-5 5" />,
 };
 
-export type MuseIconName = keyof typeof paths;
+export type MuseIconName = keyof typeof paths | ExtraIconName;
 
-export function MuseIcon({ name, size = 20 }: { name: MuseIconName; size?: number }) {
+export function MuseIcon({ name, size = 20, treatment = 'plain', tone = 'primary' }: { name: MuseIconName; size?: number; treatment?: 'plain' | 'prismatic'; tone?: PrismaticTone }) {
+  if (!(name in paths)) return <span aria-hidden="true" style={{display:"inline-flex",flexShrink:0,width:size,height:size,pointerEvents:"none"}}><ExtendedMuseIcon name={name as ExtraIconName} size={size} treatment={treatment} tone={tone}/></span>;
+  const shape=paths[name as keyof typeof paths];
+  if (treatment === 'prismatic') return <PrismaticSvg width={size} height={size} viewBox="0 0 24 24" tone={tone} className="muse-icon-prismatic">{shape}</PrismaticSvg>;
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
-      {paths[name]}
+      {shape}
     </svg>
   );
 }

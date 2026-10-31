@@ -5,7 +5,8 @@ export const pulseSignals: { id: PulseSignal; label: string; low: string; high: 
   { id: "stress", label: "Stress", low: "soft", high: "a lot" },
   { id: "overallDay", label: "Overall Day", low: "rough one", high: "lovely" },
 ];
-export const pulseCopy = ["A tiny read on today.", "How’s the internal weather?", "Checking the vibe.", "A little data about being a person."];
+export const pulseDescription = "The numbers behind your day.";
+export const pulseCopy = [pulseDescription];
 
 export function emptyDayPulse(date: string): DayPulseCheckIn {
   return { id: `pulse-${date}`, date, updatedAt: null, energy: null, stress: null, overallDay: null };

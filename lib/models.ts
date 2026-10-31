@@ -9,7 +9,7 @@ export type MovementType = {
 
 export type DailyMovement = { date: string; typeIds: string[] };
 export type PlannedTask = {
-  id: string; kind: "task"; title: string; complete: boolean;
+  id: string; kind: "task"; title: string; complete: boolean; completedAt?: string;
   workspaceId: string; groupId?: string; tagIds: string[];
   plannedDate?: string; dueDate?: string; timeSlot?: string;
   notes?: string; detail?: string; estimatedMinutes?: number; actualMinutes: number;

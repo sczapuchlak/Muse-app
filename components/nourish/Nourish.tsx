@@ -1,5 +1,5 @@
 "use client";
-import Link from "next/link";
+import { MuseSectionNav } from "../MuseSectionNav";
 import { useEffect,useState } from "react";
 import { useRouter,useSearchParams } from "next/navigation";
 import { dateLabel,shiftDate,validDate,weekDates } from "@/lib/dates";
@@ -31,13 +31,13 @@ export function Nourish() {
   const {state}=useNourish();
   const view=query.get("view")==="saved-meals"?"saved-meals":query.get("view")==="grocery"?"grocery":"plan";
   useEffect(()=>{if(validDate(requested))setDate(requested);},[requested,setDate]);
-  function changeDate(next:string){setDate(next);router.replace(`/nourish?date=${next}`,{scroll:false});}
+  function changeDate(next:string){setDate(next);router.replace(`/nourish?date=${next}&view=${view}`,{scroll:false});}
   const onOpen:MealOpen=(entryDate,slot,anchor,onSaved,initial)=>setEditor({kind:"meal",date:entryDate,slot,anchor,onSaved,initial});
   const onPlace:MealPlace=(meal,mode,anchor)=>setEditor({kind:"place",meal,mode,anchor});
   const week=weekDates(date);
   return <main className="muse-page muse-nourish-page">
-    <MusePageHeader eyebrow="Nourish what carries you" title="Nourish" description="A little something to look forward to." celestial="garden">{view==="plan"&&<DateNavigator date={date} onChange={changeDate}/>}</MusePageHeader>
-    <nav className="muse-nourish-sections" aria-label="Nourish sections">{[{id:"plan",name:"Plan"},{id:"saved-meals",name:"Saved Meals"},{id:"grocery",name:"Grocery List"}].map((item)=><Link className="muse-button" aria-current={view===item.id?"page":undefined} href={`/nourish?date=${date}&view=${item.id}`} scroll={false} key={item.id}>{item.name}</Link>)}</nav>
+    <MusePageHeader title="Nourish"><DateNavigator date={date} onChange={changeDate}/></MusePageHeader>
+    <MuseSectionNav label="Nourish sections" current={view} items={[{id:"plan",label:"Plan"},{id:"saved-meals",label:"Saved Meals"},{id:"grocery",label:"Grocery List"}].map((item)=>({...item,href:`/nourish?date=${date}&view=${item.id}`}))}/>
     {view==="plan"&&<>
     <div className="muse-nourish-toolbar"><nav aria-label="Meal planning week"><button className="muse-button" type="button" disabled={!today} onClick={()=>changeDate(today)}>This week</button><button className="muse-button" type="button" aria-label="Previous meal planning week" onClick={()=>changeDate(shiftDate(date,-7))}>←</button><button className="muse-button" type="button" aria-label="Next meal planning week" onClick={()=>changeDate(shiftDate(date,7))}>→</button><span className="small-label">{new Intl.DateTimeFormat("en-US",{month:"short",day:"numeric",timeZone:"UTC"}).format(new Date(`${week[0]}T12:00:00Z`))} – {new Intl.DateTimeFormat("en-US",{month:"short",day:"numeric",timeZone:"UTC"}).format(new Date(`${week[6]}T12:00:00Z`))}</span></nav><span className="muse-feedback-anchor" aria-hidden="true">{spark}</span></div>
     <WeekNavigator selectedDate={date} timeZone={mockProfile.timeZone} onChange={changeDate}/>

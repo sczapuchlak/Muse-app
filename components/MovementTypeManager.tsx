@@ -1,3 +1,4 @@
+import {MuseIconButton} from "./MuseIconButton";
 import type { MovementType } from "@/lib/models";
 import { MAX_QUICK_MOVEMENTS } from "@/lib/selections";
 import { MuseIcon } from "./MuseIcon";
@@ -21,7 +22,7 @@ export function MovementTypeManager({ types, quickIds, onToggleQuick, onRename, 
             </button>
             {type.source === "custom" && <span className="managed-type-actions">
               <button type="button" className="text-button" aria-label={`Rename ${type.name}`} onClick={() => onRename(type.id)}>Rename</button>
-              <button type="button" className="text-button" aria-label={`Delete ${type.name}`} onClick={() => onDelete(type.id)}>Delete</button>
+              <MuseIconButton icon="trash" label={`Delete ${type.name}`} onClick={() => onDelete(type.id)}/>
             </span>}
           </li>
         ))}

@@ -239,7 +239,7 @@ test('daily completion credit counts full scheduled daily goals, never partial c
  assert.deepEqual(domain.ritualDayProgress(empty,today,today),{total:0,completed:0,fraction:null,perfect:false});
 });
 
-test('completed quantities preserve the actual value with a check badge; only partial quantities render a ring',()=>{
+test('completed quantities retain a central value and small completion badge; partial alone uses a ring',()=>{
  const {RitualProvider}=load('components/rituals/RitualStore');
  const {RitualWeekCell}=load('components/rituals/RitualWeekCell');
  const base=fresh(),ritual={...base.rituals.find((item)=>item.type==='numeric'),goal:20,recurrence:{kind:'daily'},startDate:'2026-10-26'};
@@ -249,6 +249,7 @@ test('completed quantities preserve the actual value with a check badge; only pa
  };
  const complete=render(22),partial=render(12),missed=render(0),unknown=render(null);
  assert.ok(complete.includes('muse-ritual-completion-badge'));
+ assert.ok(complete.includes('<svg'));
  assert.ok(complete.includes('complete: 22'));
  assert.ok(!complete.includes('muse-progress-ring'));
  assert.ok(partial.includes('data-progress="0.6"'));
@@ -257,7 +258,7 @@ test('completed quantities preserve the actual value with a check badge; only pa
  assert.ok(unknown.includes('muse-ritual-unlogged'));
 });
 
-test('week progress exposes a perfect-day star and percentage while future/no-obligation days have no zero-percent bar',()=>{
+test('week progress surrounds dates with rings and rewards perfect days without treating future/no-obligation days as zero',()=>{
  const {WeekNavigator}=load('components/WeekNavigator');
  const {mockProfile}=load('lib/mock-profile');
  const html=renderToStaticMarkup(React.createElement(WeekNavigator,{selectedDate:today,timeZone:mockProfile.timeZone,onChange(){},progress:{
@@ -267,7 +268,9 @@ test('week progress exposes a perfect-day star and percentage while future/no-ob
   '2026-10-30':{fraction:null,perfect:false,label:'Upcoming; no completion percentage'},
  }}));
  assert.equal((html.match(/role="progressbar"/g)??[]).length,2);
- assert.equal((html.match(/class="muse-week-reward"/g)??[]).length,1);
+ assert.equal((html.match(/class="muse-achievement-star"/g)??[]).length,1);
+ assert.equal((html.match(/class="muse-progress-ring"/g)??[]).length,2);
+ assert.ok(!html.includes('muse-week-day-progress'));
  assert.ok(html.includes('aria-valuenow="50"'));
  assert.ok(!html.includes('aria-valuenow="0"'));
  assert.ok(html.includes('All scheduled daily rituals completed'));

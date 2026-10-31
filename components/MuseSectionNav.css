@@ -1,0 +1,4 @@
+.muse-section-nav { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:var(--module-nav-gap); }
+.muse-section-nav a { text-decoration:none; }
+.muse-section-nav [aria-current="page"] { color:var(--selected-text); border-color:var(--selected-border); background:var(--selected-background); }
+@media(max-width:600px) { .muse-section-nav { flex-wrap:nowrap; overflow-x:auto; padding:3px; } .muse-section-nav a { flex-shrink:0; } }
