@@ -1,6 +1,6 @@
 # Muse architecture audit
 
-Audit date: 2026-10-30. Status: **repository evidence, not a persistence implementation**. Read with [DATABASE_BLUEPRINT](DATABASE_BLUEPRINT.md), [PRODUCT_RULES](PRODUCT_RULES.md), [FEATURE_SPEC](FEATURE_SPEC.md) and [WHIMSY_ROADMAP](WHIMSY_ROADMAP.md). The blueprint is a proposal requiring approval; the daily/session distinction is already approved. Latest explicit layout corrections supersede earlier header-Forecast placement instructions.
+Audit baseline date: 2026-10-30. Subsequent local foundation status: [PHASE1_LOCAL_SETUP](PHASE1_LOCAL_SETUP.md). Inventory below describes the pre-backend audit baseline, not a claim that newly implemented local infrastructure is absent. Status: **repository evidence, not a persistence implementation**. Read with [DATABASE_BLUEPRINT](DATABASE_BLUEPRINT.md), [PRODUCT_RULES](PRODUCT_RULES.md), [FEATURE_SPEC](FEATURE_SPEC.md) and [WHIMSY_ROADMAP](WHIMSY_ROADMAP.md). The blueprint is a proposal requiring approval; the daily/session distinction is already approved. Latest explicit layout corrections supersede earlier header-Forecast placement instructions.
 
 ## Executive assessment
 
@@ -188,14 +188,13 @@ Evidence: [themes](../lib/themes.ts), [appearance](../components/AppearanceSetti
 | P2 privacy/performance | In-memory all-data searches/Insights; future sensitive journal excerpts | Range-limited owner queries/indexes; opt-in excerpts; clear caches on auth change; avoid full-table realtime subscriptions. |
 | P2 integrations | Forecast unavailable, browser preference only, profile mock | Keep provider boundary; choose services later; label actual-today vs selected-day behavior before historical forecast support. |
 
-## Decisions required before backend implementation
+## Final decisions — approved after this audit
 
-1. Approve proposed table/ownership and auth approach in the blueprint; choose private invite-only entry vs a later public-signup product. Proposed default is invite-only magic link.
-2. Decide legacy Pulse conflict handling: explicit per-date resolution preserving both inputs until reviewed, or a consented prototype fresh start. Agree how deleting a session should interact with a now-independent daily record (recommended: it must not delete daily Pulse).
-3. **Resolved by the follow-up product contract:** priorities are daily commitments, standalone or optionally linked to Planner; never auto-create tasks. Approve the proposed linked-task delete/unlink history policy before persistence.
-4. Approve Money currency scope (proposed USD v1), opening-balance baseline, corrections and future recurring-definition history. No financial formulas are changed here.
-5. Approve archive/retention/export/delete behavior for private content and operational shopping lists; privacy does not mean unlimited duplicate history.
-6. Confirm profile timezone change policy: historical local dates never relabel; decide future defaults for travel, week start (current Monday) and local timed-event DST ambiguity.
+The approved Phase 1 brief resolves the original gates: discard memory-only prototype scores (no sample imports); use daily Pulse separate from emotional sessions; support standalone/linked priorities with Planner-owned live completion and preserved historical commitments; private admin-invited magic-link Auth; USD-only initial Money scope with explicit opening balance/date; user-controlled retention/export/account deletion; stable intentional profile timezone without travel relabeling.
+
+Historical integrity adjustment: later task completion must not rewrite earlier Dayprints. The blueprint proposes bounded completion-transition history resolved at the original day boundary; reopen/recomplete, late linking, backdated corrections and unlink/delete provenance require explicit handling before the later Planner integration. No Planner links are implemented in Phase 1.
+
+Local infrastructure work is authorized; application cutover, hosted deployment and later modules remain separate stages. See the current setup report rather than interpreting this baseline audit as a second audit requirement.
 
 ## Implementation order and acceptance plan
 

@@ -1,0 +1,23 @@
+#!/usr/bin/env node
+// Supabase 2.122's Docker publishing ignores the network's loopback default on this engine.
+// Scope the correction to this project's CLI subprocesses; never change Docker daemon settings.
+import {spawn} from 'node:child_process';
+const args=process.argv.slice(2),real=process.env.MUSE_REAL_DOCKER;
+if(!real||real===process.argv[1])throw new Error('Missing real Docker binary for local CLI wrapper.');
+if(['create','run'].includes(args[0])){
+ const project=args.some(value=>value==='muse-local-only'||value.endsWith('_muse-local'));
+ if(project){
+  const bind=value=>{
+   if(/^\d+:\d+(?:\/(?:tcp|udp))?$/.test(value))return `127.0.0.1:${value}`;
+   if(value.startsWith('127.0.0.1:'))return value;
+   throw new Error('Refusing a non-loopback port publication for Muse local services.');
+  };
+  for(let index=0;index<args.length;index++){
+   if(args[index]==='-p'||args[index]==='--publish')args[index+1]=bind(args[++index]);
+   else if(args[index].startsWith('--publish='))args[index]=`--publish=${bind(args[index].slice(10))}`;
+  }
+ }
+}
+const child=spawn(real,args,{stdio:'inherit'});
+child.on('error',error=>{console.error(error.message);process.exitCode=1;});
+child.on('exit',(code,signal)=>{if(signal)process.kill(process.pid,signal);else process.exitCode=code??1;});

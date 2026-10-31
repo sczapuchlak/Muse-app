@@ -7,9 +7,20 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "node --test tests/*.test.mjs"
+    "test": "node --test tests/*.test.mjs",
+    "db:start": "node scripts/supabase-local.mjs start",
+    "db:stop": "node scripts/supabase-local.mjs stop",
+    "db:status": "node scripts/supabase-local.mjs status",
+    "db:migrate": "node scripts/supabase-local.mjs migrate",
+    "db:test": "node scripts/supabase-local.mjs test",
+    "db:lint": "node scripts/supabase-local.mjs lint",
+    "db:types": "node scripts/supabase-local.mjs types",
+    "db:env": "node scripts/supabase-local.mjs env",
+    "test:db:api": "node scripts/test-local-supabase.mjs"
   },
   "dependencies": {
+    "@supabase/ssr": "^0.12.7",
+    "@supabase/supabase-js": "^2.118.0",
     "@tiptap/extension-list": "^3.32.1",
     "@tiptap/pm": "^3.32.1",
     "@tiptap/react": "^3.32.1",
@@ -18,7 +29,8 @@
     "next": "16.4.3",
     "react": "19.3.0",
     "react-dom": "19.3.0",
-    "recharts": "^3.10.1"
+    "recharts": "^3.10.1",
+    "server-only": "^0.0.1"
   },
   "devDependencies": {
     "@tailwindcss/turbopack": "^4",
@@ -27,6 +39,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.4.3",
+    "supabase": "2.122.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
