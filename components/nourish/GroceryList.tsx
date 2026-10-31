@@ -2,6 +2,7 @@
 import { useRef,useState } from "react";
 import { groceryItemsFor,type GroceryItem,type GrocerySection } from "@/lib/nourish";
 import { visibleGrocerySections } from "@/lib/grocery-sections";
+import {useWellness} from "../WellnessStore";
 import { useNourish } from "../NourishStore";
 import { MuseIcon } from "../MuseIcon";
 import { useMuseSpark } from "../MuseSpark";
@@ -10,9 +11,10 @@ import { GroceryItemEditor } from "./GroceryItemEditor";
 
 type EditItem=(item:GroceryItem,anchor:HTMLElement)=>void;
 function GroceryRow({item,onEdit,onRemove}:{item:GroceryItem;onEdit:EditItem;onRemove:()=>void}) {
+ const {store}=useWellness();
  const {dispatch}=useNourish(),{trigger,spark}=useMuseSpark();
  return <li className="muse-grocery-item" data-complete={item.complete}>
- <button className="muse-grocery-check muse-feedback-anchor" type="button" role="checkbox" aria-checked={item.complete} aria-label={`${item.complete?"Uncheck":"Check off"} ${item.name}`} onClick={()=>{dispatch({type:"grocery/complete",id:item.id,complete:!item.complete});if(!item.complete)trigger();}}><span><MuseIcon name="check" size={13}/></span>{spark}</button>
+ <button className="muse-grocery-check muse-feedback-anchor" type="button" role="checkbox" aria-checked={item.complete} aria-label={`${item.complete?"Uncheck":"Check off"} ${item.name}`} onClick={()=>{dispatch({type:"grocery/complete",id:item.id,complete:!item.complete});if(!item.complete)store.whenSaved(trigger);}}><span><MuseIcon name="check" size={13}/></span>{spark}</button>
  <div className="muse-grocery-item-copy"><strong>{item.name}</strong>{item.quantity&&<span className="muse-grocery-quantity">{item.quantity}</span>}</div>
  <div className="muse-grocery-row-actions"><button className="muse-grocery-icon muse-edge" type="button" title={`Edit ${item.name}`} aria-label={`Edit ${item.name}`} onClick={(event)=>onEdit(item,event.currentTarget)}><MuseIcon name="edit" size={16}/></button><button className="muse-grocery-icon muse-edge" type="button" title={`Remove ${item.name}`} aria-label={`Remove ${item.name}`} onClick={onRemove}><MuseIcon name="trash" size={16}/></button></div>
  </li>;

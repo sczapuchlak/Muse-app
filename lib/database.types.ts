@@ -137,6 +137,68 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"grocery_items": {
+                  Row: {
+                    "complete": boolean,"created_at": string,"id": string,"name": string,"note": string | null,"position": number,"quantity": string | null,"section_id": string,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "complete": boolean,"created_at"?: string,"id": string,"name": string,"note"?: string | null,"position": number,"quantity"?: string | null,"section_id": string,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "complete"?: boolean,"created_at"?: string,"id"?: string,"name"?: string,"note"?: string | null,"position"?: number,"quantity"?: string | null,"section_id"?: string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "grocery_items_user_id_section_id_fkey"
+      columns: ["user_id","section_id"]
+isOneToOne: false
+      referencedRelation: "grocery_sections"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+                },"grocery_sections": {
+                  Row: {
+                    "id": string,"name": string,"position": number,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "id": string,"name": string,"position": number,"user_id": string
+                  }
+                  Update: {
+                    "id"?: string,"name"?: string,"position"?: number,"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
+                },"hydration_days": {
+                  Row: {
+                    "captured_time_zone": string,"created_at": string,"goal": number,"local_date": string,"quantity": number,"unit": string,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "captured_time_zone": string,"created_at"?: string,"goal": number,"local_date": string,"quantity": number,"unit": string,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "captured_time_zone"?: string,"created_at"?: string,"goal"?: number,"local_date"?: string,"quantity"?: number,"unit"?: string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
+                },"hydration_settings": {
+                  Row: {
+                    "goal": number,"quick_adds": (number)[],"unit": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "goal": number,"quick_adds": (number)[],"unit": string,"user_id": string
+                  }
+                  Update: {
+                    "goal"?: number,"quick_adds"?: (number)[],"unit"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
                 },"influence_tags": {
                   Row: {
                     "archived_at": string | null,"created_at": string,"id": string,"label": string,"revision": number,"updated_at": string,"user_id": string
@@ -150,6 +212,26 @@ isOneToOne: false
                   }
                   Relationships: [
 
+                  ]
+                },"meal_assignments": {
+                  Row: {
+                    "captured_time_zone": string,"created_at": string,"id": string,"local_date": string,"note": string | null,"nutrition": Json | null,"position": number,"saved_meal_id": string | null,"slot": string,"title": string,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "captured_time_zone": string,"created_at"?: string,"id": string,"local_date": string,"note"?: string | null,"nutrition"?: Json | null,"position": number,"saved_meal_id"?: string | null,"slot": string,"title": string,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "captured_time_zone"?: string,"created_at"?: string,"id"?: string,"local_date"?: string,"note"?: string | null,"nutrition"?: Json | null,"position"?: number,"saved_meal_id"?: string | null,"slot"?: string,"title"?: string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "meal_assignments_user_id_saved_meal_id_fkey"
+      columns: ["user_id","saved_meal_id"]
+isOneToOne: false
+      referencedRelation: "saved_meals"
+      referencedColumns: ["user_id","id"]
+    }
                   ]
                 },"mood_checkins": {
                   Row: {
@@ -170,6 +252,94 @@ isOneToOne: false
       referencedRelation: "daily_records"
       referencedColumns: ["user_id","id"]
     }
+                  ]
+                },"movement_day_types": {
+                  Row: {
+                    "local_date": string,"type_id": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "local_date": string,"type_id": string,"user_id": string
+                  }
+                  Update: {
+                    "local_date"?: string,"type_id"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "movement_day_types_user_id_local_date_fkey"
+      columns: ["user_id","local_date"]
+isOneToOne: false
+      referencedRelation: "movement_days"
+      referencedColumns: ["user_id","local_date"]
+    },{
+      foreignKeyName: "movement_day_types_user_id_type_id_fkey"
+      columns: ["user_id","type_id"]
+isOneToOne: false
+      referencedRelation: "movement_types"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+                },"movement_days": {
+                  Row: {
+                    "captured_time_zone": string,"local_date": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "captured_time_zone": string,"local_date": string,"user_id": string
+                  }
+                  Update: {
+                    "captured_time_zone"?: string,"local_date"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
+                },"movement_preferences": {
+                  Row: {
+                    "quick_ids": (string)[],"recent_ids": (string)[],"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "quick_ids": (string)[],"recent_ids": (string)[],"user_id": string
+                  }
+                  Update: {
+                    "quick_ids"?: (string)[],"recent_ids"?: (string)[],"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
+                },"movement_records": {
+                  Row: {
+                    "captured_time_zone": string,"created_at": string,"id": string,"local_date": string,"type_id": string,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "captured_time_zone": string,"created_at"?: string,"id": string,"local_date": string,"type_id": string,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "captured_time_zone"?: string,"created_at"?: string,"id"?: string,"local_date"?: string,"type_id"?: string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "movement_records_user_id_type_id_fkey"
+      columns: ["user_id","type_id"]
+isOneToOne: false
+      referencedRelation: "movement_types"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+                },"movement_types": {
+                  Row: {
+                    "archived": boolean,"id": string,"label": string,"origin": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "archived"?: boolean,"id": string,"label": string,"origin": string,"user_id": string
+                  }
+                  Update: {
+                    "archived"?: boolean,"id"?: string,"label"?: string,"origin"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+
                   ]
                 },"note_tag_links": {
                   Row: {
@@ -343,6 +513,20 @@ isOneToOne: false
                   Relationships: [
 
                   ]
+                },"saved_meals": {
+                  Row: {
+                    "created_at": string,"id": string,"link": string | null,"meal_types": (string)[],"name": string,"note": string | null,"nutrition": Json | null,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"id": string,"link"?: string | null,"meal_types": (string)[],"name": string,"note"?: string | null,"nutrition"?: Json | null,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "created_at"?: string,"id"?: string,"link"?: string | null,"meal_types"?: (string)[],"name"?: string,"note"?: string | null,"nutrition"?: Json | null,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
                 },"task_completion_events": {
                   Row: {
                     "complete": boolean,"id": string,"local_date": string,"occurred_at": string,"planned_date": string | null,"task_id": string,"time_zone": string,"title": string,"user_id": string,"workspace_id": string
@@ -489,6 +673,34 @@ isOneToOne: false
       referencedColumns: ["user_id","workspace_id","id"]
     }
                   ]
+                },"wellness_commands": {
+                  Row: {
+                    "id": string,"request_hash": string,"revision": number,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "id": string,"request_hash": string,"revision": number,"user_id": string
+                  }
+                  Update: {
+                    "id"?: string,"request_hash"?: string,"revision"?: number,"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
+                },"wellness_versions": {
+                  Row: {
+                    "revision": number,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "revision"?: number,"user_id": string
+                  }
+                  Update: {
+                    "revision"?: number,"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
                 },"workspaces": {
                   Row: {
                     "accent": string,"archived_at": string | null,"created_at": string,"icon_id": string | null,"id": string,"name": string,"revision": number,"updated_at": string,"user_id": string
@@ -587,6 +799,9 @@ isOneToOne: false
 "read_planner":
 { Args: Record<PropertyKey, never>; Returns: Json
                            },
+"read_wellness":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
 "rename_priority_task":
 { Args: { "p_command_id": string,"p_expected_planner_revision": number,"p_id": string,"p_priority_revision": number,"p_title": string }; Returns: number
                            },
@@ -660,6 +875,9 @@ isOneToOne: false
         isSetofReturn: false
       } },
 "save_notes":
+{ Args: { "p_command_id": string,"p_expected_revision": number,"p_state": Json }; Returns: number
+                           },
+"save_wellness":
 { Args: { "p_command_id": string,"p_expected_revision": number,"p_state": Json }; Returns: number
                            },
 "task_completion_before":

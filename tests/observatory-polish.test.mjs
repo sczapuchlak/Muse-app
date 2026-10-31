@@ -2,7 +2,7 @@ import {dailyFixture,dailyTestTree} from './daily-fixtures.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import React from 'react';
-import {renderToStaticMarkup} from 'react-dom/server';
+import {renderWithWellness as renderToStaticMarkup} from './wellness-render.mjs';
 import {load} from './helpers.mjs';
 const mood=load('lib/mood'),{emotionCatalog}=load('lib/emotions');
 

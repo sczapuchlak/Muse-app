@@ -1,5 +1,6 @@
 "use client";
 
+import {WellnessCapture,WellnessSaveStatus} from "./WellnessStore";
 import { DailyEditHeader } from "./DailyEditHeader";
 import { PrioritiesCard } from "./PrioritiesCard";
 import { MovementCard } from "./MovementCard";
@@ -23,17 +24,17 @@ export function DailyEdit() {
   return (
     <main className="muse-page">
       <DailyEditHeader date={day.date} greeting={day.greeting} profile={profile} onDateChange={setSelectedDate} />
-      <DailySaveStatus date={selectedDate}/><h1 className="muse-daily-section-title" id="daily-edit">The Daily Edit</h1>
+      <DailySaveStatus date={selectedDate}/><WellnessSaveStatus/><h1 className="muse-daily-section-title" id="daily-edit">The Daily Edit</h1>
       <div className="daily-grid" key={selectedDate}>
         <CosmicForecast compact />
         <PrioritiesCard />
-        <MovementCard initialTypes={sampleMovementTypes} initialDay={day.movement} />
-        <WaterCard initialDay={{ date: day.water.date, total: day.water.total }} settings={day.water.settings} />
+        <WellnessCapture><MovementCard initialTypes={sampleMovementTypes.filter(type=>type.source==='starter')} initialDay={{date:selectedDate,typeIds:[]}} /></WellnessCapture>
+        <WellnessCapture><WaterCard initialDay={{ date: selectedDate, total: 0 }} settings={day.water.settings} /></WellnessCapture>
         <ScheduleCard selectedDate={selectedDate} />
-        <MealsCard selectedDate={selectedDate} />
+        <WellnessCapture><MealsCard selectedDate={selectedDate} /></WellnessCapture>
         <DailyCapture date={selectedDate}><MoodCheckInLayout date={selectedDate} emotions={emotionCatalog} /></DailyCapture>
       </div>
-      <footer className="muse-footer">Intention, priorities, Day in Three, Day Pulse and feelings save to your account. Planner tasks and events also save to your account. Movement, water and meals remain prototype data.</footer>
+      <footer className="muse-footer">Intention, priorities, Day in Three, Day Pulse and feelings save to your account. Planner tasks and events also save to your account. Meals, water and movement intentions save to your account.</footer>
     </main>
   );
 }

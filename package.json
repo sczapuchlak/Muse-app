@@ -24,7 +24,8 @@
     "test:priority-links": "node scripts/test-local-priority-links.mjs",
     "test:notes": "node scripts/test-local-notes.mjs",
     "test:account": "node scripts/test-local-account.mjs",
-    "test:priority-curations": "node scripts/test-local-priority-curations.mjs"
+    "test:priority-curations": "node scripts/test-local-priority-curations.mjs",
+    "test:wellness": "node scripts/test-local-wellness.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { existsSync,readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import React from 'react';
-import { renderToStaticMarkup } from 'react-dom/server';
+import {renderWithWellness as renderToStaticMarkup} from './wellness-render.mjs';
 import { load,root } from './helpers.mjs';
 const domain=load('lib/nourish');
 const {nourishSample}=load('lib/nourish-sample');

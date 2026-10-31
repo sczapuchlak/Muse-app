@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {resolve} from 'node:path';
 import React from 'react';
-import {renderToStaticMarkup} from 'react-dom/server';
+import {renderWithWellness as renderToStaticMarkup} from './wellness-render.mjs';
 import {load,root} from './helpers.mjs';
 const ranges=load('lib/insights/ranges'),{normalizeInsights,dailySessionRecords}=load('lib/insights/normalize'),{calculateInsights}=load('lib/insights/metrics'),{generateRevelations}=load('lib/insights/revelations'),{emptyCheckIn,initialMoodState}=load('lib/mood');
 const {plannerSample}=load('lib/planner-sample'),{ritualsSample}=load('lib/rituals-sample'),{nourishSample}=load('lib/nourish-sample'),{moneySample}=load('lib/money-sample');

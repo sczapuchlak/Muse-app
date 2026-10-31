@@ -502,3 +502,8 @@ input[type="search"] { padding:var(--space-2) var(--space-3); line-height:1.45; 
 :where(.muse-drawer-content,.muse-popover-panel) form > .editor-actions { margin-top:0; }
 :where(.muse-drawer-content,.muse-popover-panel) form > .editor-actions:last-child { padding-top:var(--space-1); }
 :where(.muse-drawer-content,.muse-modal,.muse-popover-panel) :is(input,textarea) { scroll-margin-block:var(--space-4); }
+
+/* Intention stays on the quick shelf; explicit completion uses its existing popover. */
+.movement-selection-status { display:flex; align-items:baseline; gap:var(--space-2, .5rem); justify-content:space-between; min-width:0; }
+.movement-selection-status > p { min-width:0; }
+.movement-selection-status > button { flex-shrink:0; }

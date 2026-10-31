@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useRef, useState, type ReactNode } from "react";
 import { desktopGroups, isActiveDestination, mobileMoreIds, mobilePrimaryIds, navigation, navItems, type NavItem } from "@/lib/navigation";
-import { dailySessionSeed } from "@/lib/daily-session-seed";
+import {WellnessProvider} from "./WellnessStore";
 import {todayInTimeZone} from "@/lib/dates";
 import {DailyDataProvider,DailyDateSync} from "./daily/DailyData";
 import type {DailyProfile} from "@/lib/data/daily-store";
@@ -42,8 +42,8 @@ function AppShellContent({ children, profile:initialProfile }: { children: React
   const moreRef = useRef<HTMLButtonElement>(null);
   const moreActive = navItems(mobileMoreIds).some((item) => isActiveDestination(path, item.href));
   return (
-    <MuseSessionProvider initialDate={todayInTimeZone(profile.timeZone)} initialRecords={Object.fromEntries(Object.entries(dailySessionSeed).filter(([key])=>!key.endsWith("/intention")))}><DailyDataProvider profile={profile}><DailyDateSync/>
-      <NotesProvider profile={profile}><PlannerProvider profile={profile}><NourishProvider><MoneyProvider><RitualProvider><div className="muse-app-shell" data-rail={collapsed ? "collapsed" : "expanded"} data-module={path.split("/")[1]||"daily"}>
+    <MuseSessionProvider initialDate={todayInTimeZone(profile.timeZone)}><DailyDataProvider profile={profile}><DailyDateSync/>
+      <NotesProvider profile={profile}><PlannerProvider profile={profile}><WellnessProvider key={profile.id} userId={profile.id}><NourishProvider><MoneyProvider><RitualProvider><div className="muse-app-shell" data-rail={collapsed ? "collapsed" : "expanded"} data-module={path.split("/")[1]||"daily"}>
         <MuseMagicBridge/><MuseAtmosphere/>
         <a className="muse-skip-link" href="#muse-main-content">Skip to content</a>
         <aside className="muse-rail" aria-label="Muse app navigation">
@@ -79,7 +79,7 @@ function AppShellContent({ children, profile:initialProfile }: { children: React
           <p className="editor-label">More from Muse</p>
           <div className="muse-more-destinations">{navItems(mobileMoreIds).map((item) => <NavDestination key={item.id} item={item} path={path} onNavigate={() => setMoreOpen(false)} />)}<LogoutButton/></div>
         </GlassPopover>
-      </div></RitualProvider></MoneyProvider></NourishProvider></PlannerProvider></NotesProvider>
+      </div></RitualProvider></MoneyProvider></NourishProvider></WellnessProvider></PlannerProvider></NotesProvider>
     </DailyDataProvider></MuseSessionProvider>
   );
 }

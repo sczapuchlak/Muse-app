@@ -1,6 +1,6 @@
 "use client";
 
-import { useMuseState, useMuseRecords } from "./MuseSession";
+import {useWellness} from "./WellnessStore";
 
 import { useRef, useState, type CSSProperties } from "react";
 import { formatWaterAmount, type DailyWater, type WaterSettings } from "@/lib/water";
@@ -16,17 +16,20 @@ type WaterCardProps = { initialDay: DailyWater; settings: WaterSettings };
 type EditorMode = "add" | "edit" | "goal" | "manage" | null;
 
 export function WaterCard({ initialDay, settings }: WaterCardProps) {
-  const [day, setDay] = useMuseState("water", initialDay);
-  const total = day.total;
-  const records=useMuseRecords(),hasRecordedDay=!!records[`${initialDay.date}/water`];
+  const {state,dispatch}=useWellness();
+  const day=state.water.find(day=>day.date===initialDay.date);
+  const defaults=state.waterSettings??settings;
+  const total=day?.total??0;
+  const hasRecordedDay=!!day;
   const [editor, setEditor] = useState<EditorMode>(null);
   const editRef = useRef<HTMLButtonElement>(null);
   const customRef = useRef<HTMLButtonElement>(null);
   const goalRef = useRef<HTMLButtonElement>(null);
-  const { unit } = settings;
-  const [quickAdds, setQuickAdds] = useMuseState("water-quick-adds", settings.quickAdds, true);
+  const unit=day?.unit??defaults.unit;
+  const quickAdds=defaults.quickAdds;
   const manageRef = useRef<HTMLButtonElement>(null);
-  const [goal, setGoal] = useMuseState("water-goal", settings.goal, true);
+  const goal=day?.goal??defaults.goal;
+  const currentSettings={goal,unit,quickAdds};
   const achieved = goal > 0 && total >= goal;
   const progress = Math.min(100, Math.max(0, (total / goal) * 100));
 
@@ -39,12 +42,12 @@ export function WaterCard({ initialDay, settings }: WaterCardProps) {
   function applyAmount(amount: number) {
     if (editor === "goal") {
       if (amount <= 0) return "Enter a goal greater than zero.";
-      setGoal(amount); if(hasRecordedDay)setDay((current)=>({...current,goal:amount,unit})); closeEditor(); return null;
+      dispatch({kind:'water/settings',settings:{...defaults,goal:amount},date:hasRecordedDay?initialDay.date:undefined}); closeEditor(); return null;
     }
     // Keep the real quantity even above the goal; only the visual bar is capped.
     const next = editor === "edit" ? amount : total + amount;
-    if (!Number.isFinite(next)) return "Enter a smaller amount.";
-    setDay((current) => ({ ...current, total: next, goal, unit }));
+    if (!Number.isFinite(next) || next > 1000000) return "Enter a smaller amount.";
+    dispatch({kind:'water',date:initialDay.date,mode:editor==='edit'?'set':'add',amount,settings:currentSettings});
     closeEditor();
     return null;
   }
@@ -84,7 +87,7 @@ export function WaterCard({ initialDay, settings }: WaterCardProps) {
       </div>
       <div className="water-additions" role="group" aria-label="Add water">
         {quickAdds.map((amount) => (
-          <button key={amount} type="button" className="muse-button water-add-button" onClick={() => setDay((current) => ({ ...current, total: current.total + amount, goal, unit }))}>
+          <button key={amount} type="button" className="muse-button water-add-button" onClick={() => dispatch({kind:'water',date:initialDay.date,mode:'add',amount,settings:currentSettings})}>
             {`+${amount} ${unit}`}
           </button>
         ))}
@@ -100,7 +103,7 @@ export function WaterCard({ initialDay, settings }: WaterCardProps) {
       <div id="water-editor" hidden={editor === null || editor === "manage"}>
         {editor && editor !== "manage" && <WaterAmountForm key={editor} mode={editor} unit={unit} initialAmount={editor === "goal" ? goal : total} onApply={applyAmount} onCancel={closeEditor} />}
       </div>
-      <GlassPopover id="water-manage" label="Manage water" open={editor === "manage"} anchorRef={manageRef} onClose={() => setEditor(null)} width={340}><WaterManager goal={goal} quickAdds={quickAdds} unit={unit} onClose={() => { setEditor(null); manageRef.current?.focus(); }} onSave={(nextGoal, amounts) => { setGoal(nextGoal); if(hasRecordedDay)setDay((current)=>({...current,goal:nextGoal,unit})); setQuickAdds(amounts); setEditor(null); manageRef.current?.focus(); }} /></GlassPopover>
+      <GlassPopover id="water-manage" label="Manage water" open={editor === "manage"} anchorRef={manageRef} onClose={() => setEditor(null)} width={340}><WaterManager goal={goal} quickAdds={quickAdds} unit={unit} onClose={() => { setEditor(null); manageRef.current?.focus(); }} onSave={(nextGoal, amounts) => { dispatch({kind:'water/settings',settings:{goal:nextGoal,unit:defaults.unit,quickAdds:amounts},date:hasRecordedDay?initialDay.date:undefined}); setEditor(null); manageRef.current?.focus(); }} /></GlassPopover>
     </MuseCard>
   );
 }

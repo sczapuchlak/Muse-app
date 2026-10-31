@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, type CSSProperties } from "react";
+import { useRef, useState, type CSSProperties, type Dispatch, type SetStateAction } from "react";
 import type { DailyMovement, MovementType } from "@/lib/models";
 import { MAX_QUICK_MOVEMENTS, promoteMovement, movementNameError, normalizeMovementName, toggleSelection } from "@/lib/selections";
 import { MuseCard } from "./MuseCard";
@@ -9,25 +9,46 @@ import { MuseIcon } from "./MuseIcon";
 import { InlineTextEditor } from "./InlineTextEditor";
 import { MovementTypeManager } from "./MovementTypeManager";
 import { GlassPopover } from "./GlassPopover";
-import { useMuseState } from "./MuseSession";
+import {useWellness} from "./WellnessStore";
 
 import {useMuseSpark} from "./MuseSpark";
 
 type Props = { initialTypes: MovementType[]; initialDay: DailyMovement };
-type Panel = { mode: "more" | "add" | "manage" } | { mode: "rename"; id: string } | null;
+type Panel = { mode: "more" | "add" | "manage" | "completion" } | { mode: "rename"; id: string } | null;
 
 export function MovementCard({ initialTypes, initialDay }: Props) {
   const {trigger,spark}=useMuseSpark();
-  const [types, setTypes] = useMuseState("movement-types", initialTypes, true);
-  const [quickIds, setQuickIds] = useMuseState("movement-quick", () => initialTypes.filter((type) => type.source === "starter").slice(0, MAX_QUICK_MOVEMENTS).map((type) => type.id), true);
-  const [recentIds, setRecentIds] = useMuseState<string[]>("movement-recent", [], true);
-  const [day, setDay] = useMuseState("movement", initialDay);
+  const {state,dispatch,status}=useWellness();
+  const types=state.types.length?state.types:initialTypes;
+  const quickIds=state.types.length?state.quickIds:initialTypes.filter(type=>type.source==='starter').slice(0,MAX_QUICK_MOVEMENTS).map(type=>type.id);
+  const recentIds=state.recentIds;
+  const day=state.movement.find(day=>day.date===initialDay.date)??{date:initialDay.date,typeIds:[]};
+  // Compose all parts against the latest optimistic state, not stale render closures.
+  const {store}=useWellness();
+  function updatePart<K extends 'types'|'quickIds'|'recentIds'|'day'>(key:K,next:SetStateAction<{types:MovementType[];quickIds:string[];recentIds:string[];day:DailyMovement}[K]>){
+    const current=store.getSnapshot().state;
+    const value={types:current.types.length?current.types:initialTypes,quickIds:current.types.length?current.quickIds:quickIds,recentIds:current.recentIds,day:current.movement.find(d=>d.date===initialDay.date)??{date:initialDay.date,typeIds:[]}};
+    const previous=value[key];
+    const updated=typeof next==='function'?(next as (v:typeof previous)=>typeof previous)(previous):next;
+    dispatch({kind:'movement',...value,day:undefined,[key]:updated});
+  }
+  const setTypes:Dispatch<SetStateAction<MovementType[]>>=next=>updatePart('types',next);
+  const setQuickIds:Dispatch<SetStateAction<string[]>>=next=>updatePart('quickIds',next);
+  const setRecentIds:Dispatch<SetStateAction<string[]>>=next=>updatePart('recentIds',next);
+  const setDay:Dispatch<SetStateAction<DailyMovement>>=next=>updatePart('day',next);
   const [panel, setPanel] = useState<Panel>(null);
   const anchorRef = useRef<HTMLButtonElement>(null);
   const available = types.filter((type) => !type.archived);
   const quick = quickIds.map((id) => available.find((type) => type.id === id)).filter((type): type is MovementType => Boolean(type));
   const others = available.filter((type) => !quickIds.includes(type.id));
-  const selectedNames = available.filter((type) => day.typeIds.includes(type.id)).map((type) => type.name).join(", ");
+  const selectedNames = types.filter((type) => day.typeIds.includes(type.id)).map((type) => type.name).join(", ");
+  const recorded=state.activities.filter(item=>item.date===initialDay.date);
+  const completionIds=[...new Set([...day.typeIds,...recorded.map(item=>item.typeId)])];
+  const completedNames=recorded.map(item=>types.find(type=>type.id===item.typeId)?.name).filter(Boolean).join(', ');
+  function setCompleted(typeId:string,complete:boolean){
+    dispatch({kind:'movement/complete',date:initialDay.date,typeId,complete,id:crypto.randomUUID()});
+    if(complete)store.whenSaved(trigger);
+  }
   const renaming = panel?.mode === "rename" ? types.find((type) => type.id === panel.id) : undefined;
 
   function close() { setPanel(null); anchorRef.current?.focus(); }
@@ -71,7 +92,7 @@ export function MovementCard({ initialTypes, initialDay }: Props) {
         <button type="button" className="text-button" aria-expanded={panel?.mode === "manage"} aria-controls="movement-menu"
           onClick={(event) => { anchorRef.current = event.currentTarget; setPanel((current) => current?.mode === "manage" ? null : { mode: "manage" }); }}>Manage</button>
       </CardHeading>
-      <span className="muse-movement-feedback">{spark}</span><p className="card-description movement-selection-summary" title={selectedNames || "Today’s intention · Select any"}>{selectedNames ? `Selected: ${selectedNames}` : "Today’s intention · Select any"}</p>
+      <span className="muse-movement-feedback">{spark}</span><div className="movement-selection-status"><p className="card-description movement-selection-summary" title={selectedNames || "Today’s intention · Select any"}>{selectedNames ? `Selected: ${selectedNames}` : "Today’s intention · Select any"}{completedNames&&<span className="small-label"> · Completed: {completedNames}</span>}</p><button type="button" className="text-button" disabled={!completionIds.length||!status.loaded||!!status.error} aria-expanded={panel?.mode==='completion'} aria-controls="movement-menu" onClick={event=>{anchorRef.current=event.currentTarget;setPanel({mode:'completion'});}}>{recorded.length?'Review done':'Mark Done'}</button></div>
       <div className="movement-quick-row" role="group" aria-label="Quick movement types" style={{ "--quick-columns": quick.length + 1 } as CSSProperties}>
         {quick.map((type) => (
           <button type="button" className="choice-button movement-quick-chip" key={type.id} title={type.name} aria-pressed={day.typeIds.includes(type.id)} onClick={() => toggleDay(type.id)}>
@@ -83,7 +104,8 @@ export function MovementCard({ initialTypes, initialDay }: Props) {
           More<MuseIcon name="chevron" size={12} />
         </button>
       </div>
-      <GlassPopover id="movement-menu" label="Saved movement types" open={panel !== null} anchorRef={anchorRef} onClose={() => setPanel(null)} width={panel?.mode === "manage" ? 420 : 340}>
+      <GlassPopover id="movement-menu" label={panel?.mode==='completion'?'Movement completion':'Saved movement types'} open={panel !== null} anchorRef={anchorRef} onClose={() => setPanel(null)} width={panel?.mode === "manage" ? 420 : 340}>
+        {panel?.mode==='completion'&&<><p className="editor-label">Movement · {initialDay.date}</p><p className="small-label">Selection is an intention. Mark what you actually did.</p><div className="popover-choice-list">{completionIds.map(id=>{const done=recorded.some(item=>item.typeId===id);return <div className="popover-footer" key={id}><span>{types.find(type=>type.id===id)?.name??'Movement'}{done&&<span className="small-label"> · Done</span>}</span><button type="button" className="text-button" disabled={!status.loaded||!!status.error} aria-label={`${done?'Undo completion for':'Mark done:'} ${types.find(type=>type.id===id)?.name??'movement'}`} onClick={()=>setCompleted(id,!done)}>{done?'Undo':'Mark Done'}</button></div>;})}</div><div className="popover-footer"><button type="button" className="text-button" onClick={close}>Close</button></div></>}
         {panel?.mode === "more" && <>
           <p className="editor-label">Saved movement types</p>
           <div className="popover-choice-list">

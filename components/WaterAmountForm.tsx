@@ -15,6 +15,7 @@ export function WaterAmountForm({ mode, unit, initialAmount, onApply, onCancel }
   const [amount, setAmount] = useState(mode !== "add" ? String(initialAmount) : "");
   const [error, setError] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
+  const submitted=useRef(false);
   const editing = mode === "edit";
   const goal = mode === "goal";
 
@@ -22,12 +23,16 @@ export function WaterAmountForm({ mode, unit, initialAmount, onApply, onCancel }
 
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if(submitted.current)return;
     const parsed = parseWaterAmount(amount, editing);
     if (parsed === null) {
       setError(editing ? "Enter a total of zero or more." : "Enter an amount greater than zero.");
       return;
     }
-    setError(onApply(parsed) ?? "");
+    submitted.current=true;
+    const failure=onApply(parsed);
+    if(failure)submitted.current=false;
+    setError(failure ?? "");
   }
 
   return (

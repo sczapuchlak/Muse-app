@@ -4,6 +4,7 @@ import { useRef,useState } from "react";
 import { mealSlots,mealLabels,type MealSlot } from "@/lib/models";
 import { safeMealLink,savedMealsFor,sortSavedMeals,validNutrition,type SavedMeal,type SavedMealSort } from "@/lib/nourish";
 import { useNourish } from "../NourishStore";
+import {useWellness} from "../WellnessStore";
 import { MuseDrawer } from "../MuseDrawer";
 import { useMuseSpark } from "../MuseSpark";
 import { SavedMealCard } from "./SavedMealCard";
@@ -12,22 +13,24 @@ import { NutritionFields,nutritionDraft,nutritionValue } from "./NutritionFields
 
 function SavedMealEditor({initial,anchor,onClose,onSaved}:{initial?:SavedMeal;anchor:HTMLElement;onClose:()=>void;onSaved:()=>void}) {
   const {state,dispatch}=useNourish();
+  const {store,status}=useWellness();
+  const [captureId]=useState(()=>initial?.id??crypto.randomUUID());
   const [name,setName]=useState(initial?.name??""),[note,setNote]=useState(initial?.note??""),[link,setLink]=useState(initial?.link??""),[types,setTypes]=useState<MealSlot[]>(initial?.mealTypes??[]),[nutrition,setNutrition]=useState(()=>nutritionDraft(initial?.nutrition)),[error,setError]=useState("");
   return <MuseDrawer title={initial?"Edit saved meal":"Add saved meal"} onClose={onClose} returnFocus={anchor}>
     <form className="muse-meal-form" onSubmit={(event)=>{
-      event.preventDefault();if(!name.trim())return;
+      event.preventDefault();if(!status.loaded||status.error)return;if(!name.trim())return;
       if(link.trim()&&!safeMealLink(link)){setError("Use a full http or https link.");return;}
       if(state.savedMeals.some((meal)=>meal.id!==initial?.id&&meal.name.toLocaleLowerCase("en-US")===name.trim().toLocaleLowerCase("en-US"))){setError("A saved meal already uses that name.");return;}
       const macros=nutritionValue(nutrition);if(!validNutrition(macros)){setError("Nutrition values must be finite numbers, zero or greater.");return;}
-      dispatch({type:"saved/save",meal:{id:initial?.id??crypto.randomUUID(),name,note:note.trim()||undefined,link:link.trim()||undefined,mealTypes:types,nutrition:macros,createdAt:initial?.createdAt??new Date().toISOString()}});onSaved();onClose();
+      dispatch({type:"saved/save",meal:{id:captureId,name,note:note.trim()||undefined,link:link.trim()||undefined,mealTypes:types,nutrition:macros,createdAt:initial?.createdAt??new Date().toISOString()}});store.whenSaved(onSaved);onClose();
     }}>
       <label>Name<input data-drawer-autofocus type="text" required maxLength={160} value={name} onChange={(event)=>setName(event.target.value)}/></label>
       <MealTypeSelector value={types} onChange={setTypes}/>
       <label>Note · optional<textarea rows={2} maxLength={500} value={note} onChange={(event)=>setNote(event.target.value)}/></label>
       <label>Link · optional<input type="url" value={link} onChange={(event)=>setLink(event.target.value)} placeholder="https://…"/></label>
       <NutritionFields value={nutrition} onChange={setNutrition}/>
-      {error&&<p role="alert" className="field-error">{error}</p>}
-      <div className="editor-actions"><button className="muse-button button-primary" type="submit">Save meal</button><button className="text-button" type="button" onClick={onClose}>Cancel</button></div>
+      {status.error&&<p role="alert" className="field-error">Resolve the wellness save error before saving this form. Your input is still here.</p>}{error&&<p role="alert" className="field-error">{error}</p>}
+      <div className="editor-actions"><button className="muse-button button-primary" type="submit" disabled={!status.loaded||!!status.error}>Save meal</button><button className="text-button" type="button" onClick={onClose}>Cancel</button></div>
       <p className="small-label">Defaults for next time. Existing plans keep their own names, notes and nutrition values.</p>
     </form>
   </MuseDrawer>;

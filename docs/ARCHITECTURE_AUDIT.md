@@ -234,3 +234,12 @@ This follow-up resolves product direction, not prototype persistence. **Daily Ed
 | Authoritative sources → Insights | Existing deterministic provider projections; intentions/priority trends not yet connected | Bounded queries over real persisted daily/session/module records, independent denominators; no invented past or emoji psychology. |
 
 Rituals and Money Daily widgets are not required. Nourish Water is approved/planned, **not implemented in this audit/cleanup**. No state model is replaced, and prototype values have not been declared disposable.
+
+
+## Nourish / Wellness MVP — current persistence checkpoint
+
+**Implemented locally:** owner-protected saved meals and dated assignments, optional existing nutrition snapshots, hydration totals/goal/unit snapshots and preferences, movement types/shelf preferences and dated **intentions**, plus explicit recorded completions. Movement's existing Mark Done popover records one actual activity per owner/type/local date; Undo removes completion while preserving intention. Merely selecting movement never completes it. Users can correct a wrong completion by Undo and marking the intended type/date. No workout tracker, new activity editor, Wellness navigation rename or Planner activity link was added.
+
+The existing single Grocery List is now persistent in owner-scoped categories/items, retaining item IDs, name, optional quantity/units text, notes, category, insertion order and checked state. It is not date-scoped, and checking an item is not evidence of purchase or consumption. No separate unit field, multiple-list feature or meal-to-grocery connection existed; none is invented. Removal/Clear completed retain the current Undo, implemented as a revision-checked restore with the original ID and metadata. Old receipts cannot replay a stale list over newer edits; conflicts require explicit recovery. No fictional or unattributable session history is imported.
+
+Daily Edit/Nourish use one typed confirmed Wellness owner with atomic revision-checked saves, retry receipts, draft/conflict recovery, RLS, stable local dates and captured IANA timezone. Settings export includes groceries and all other saved Wellness records. Dayprint has no existing Wellness section and no new widgets were added. Existing Insights reads keep their established semantics without new derivations. This checkpoint supersedes earlier prototype-only/deferred-grocery statements for these sources. See [WELLNESS_PERSISTENCE](WELLNESS_PERSISTENCE.md) for migrations, validation and remaining scope limits.

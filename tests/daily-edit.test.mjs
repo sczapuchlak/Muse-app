@@ -5,7 +5,7 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { load, root } from './helpers.mjs';
 import React from 'react';
-import { renderToStaticMarkup } from 'react-dom/server';
+import {renderWithWellness as renderToStaticMarkup} from './wellness-render.mjs';
 
 const { weekDates, shiftDate, todayInTimeZone } = load('lib/dates');
 const { planPreview } = load('lib/plan-preview');
