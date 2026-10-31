@@ -1,6 +1,6 @@
 # Settings persistence and focused UX refinement
 
-**Implemented locally.** Existing Notes work was preserved. This phase does not deploy, migrate another domain, implement account deletion or add an astrology service.
+**Implemented locally.** Existing Notes work was preserved. The original Settings phase did not deploy or implement deletion. Confirmed self-deletion was subsequently implemented in [PRODUCTION_READINESS_PHASE1](PRODUCTION_READINESS_PHASE1.md).
 
 ## Account preferences and timezone
 
@@ -18,13 +18,13 @@ Cosmic Forecast enabled/sign preferences now belong only to the authenticated pr
 
 Theme, Crystal/Frosted and Quiet/Magical/Extra controls share the sidebar theme dropdown and preserve their browser storage and reduced-motion behavior. Appearance is absent from desktop/mobile navigation. The old direct Appearance route remains compatible; no duplicate Appearance controls were placed in Settings.
 
-## Scoped export and deferred deletion
+## Scoped export and account deletion
 
 `export_personal_data` is an authenticated, security-invoker MVCC query with explicit owner filters and RLS. The no-store authenticated `/api/account/export` route returns a portable versioned JSON attachment. It includes profile preferences; daily records, priorities, Morning/Evening joins/reflections, influences/favorites and the reference emotion catalog; Planner organization/tasks/subtasks/tags/events/time sessions/completion evidence including retained deleted-task history; Notes documents, archived/trashed states, tags and links. Dayprints remain derived, not duplicate export records. Receipts, internal revision scopes and search indexes are excluded.
 
 The UI clearly excludes prototype-only Rituals/Nourish/Money/hydration, browser appearance/pane preferences and unsaved drafts. It does not claim a complete export of every app surface. Download handling rejects login redirects, non-JSON/invalid responses and mismatched profile identity. A failed export shows an error; successful preparation is not a claim about the user's chosen file destination. Future persistence migrations must explicitly extend the export registry and disclosure.
 
-Account deletion is intentionally **deferred** to a security-focused pass covering destructive authorization/confirmation, related-data cleanup and session/cache disposal. Settings states that it is unavailable; there is no fake Delete button. This remains a production/privacy readiness requirement.
+Confirmed self-deletion is now implemented in Settings: authenticated same-origin POST, typed DELETE confirmation, server-only hard Auth deletion and existing transactional ownership cascades. No caller-supplied target ID is accepted. Confirmed success clears auth cookies/cache and disposes private browser state; failure retains the confirmation and an honest retry path. Live backup retention is a separately configured policy, not immediate backup erasure. See [PRODUCTION_READINESS_PHASE1](PRODUCTION_READINESS_PHASE1.md).
 
 ## Settings composition and copy
 
@@ -43,4 +43,4 @@ About uses the approved statement: **“You are the muse. You are the artist. Yo
 
 ## Limits
 
-Pending/unsubmitted preferences are tab-local until confirmed, not crash-recovery storage. Conservative profile-level revisions can conflict on otherwise unrelated preference edits. There is no automatic device-zone travel update, calendar integration, new analytics or live forecast. Account deletion, hosted/private deployment hardening and the approved longer About copy remain deferred.
+Pending/unsubmitted preferences are tab-local until confirmed, not crash-recovery storage. Conservative profile-level revisions can conflict on otherwise unrelated preference edits. There is no automatic device-zone travel update, calendar integration, new analytics or live forecast. Hosted/private deployment verification and the approved longer About copy remain deferred.

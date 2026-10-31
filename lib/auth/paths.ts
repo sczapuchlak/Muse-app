@@ -20,11 +20,12 @@ export const returnCookie = "muse-auth-return";
 export const authMessages:Record<string,string> = {
   "link-expired":"That link has expired or has already been used. Request a fresh one below.",
   "invalid-link":"That sign-in link is incomplete or invalid. Request a fresh one below.",
-  "unavailable":"Local sign-in is temporarily unavailable. Check that Supabase is running, then try again.",
+  "unavailable":"Sign-in is temporarily unavailable. Please try again.",
   "signed-out":"You’re signed out.",
+  "account-deleted":"Your account and saved Muse data have been deleted.",
   "signed-out-local":"You’re signed out of this browser. Server session revocation could not be confirmed.",
   "session-expired":"Your session has ended. Sign in again to return to Muse.",
-  "sent":"If this address has an invitation, a sign-in link is on its way. Check the local email inbox.",
+  "sent":"If this address has an invitation, a sign-in link is on its way. Check your email inbox.",
 };
 
 export function authNoticeMessage(notice:string):string|undefined{return Object.hasOwn(authMessages,notice)?authMessages[notice]:undefined;}

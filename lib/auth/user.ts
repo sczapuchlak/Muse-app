@@ -1,11 +1,11 @@
 import "server-only";
-import {localAuthConfig} from "./config";
+import {authConfig} from "./config";
 import {cache} from "react";
 import {redirect} from "next/navigation";
 import {createMuseServerClient} from "@/lib/supabase/server";
 /** Request-scoped identity verification, not a user object trusted from client storage. */
 export const verifiedUser=cache(async()=>{
-  localAuthConfig();
+  authConfig();
   const client=await createMuseServerClient();
   const {data,error}=await client.auth.getUser();
   if(error||!data.user)return null;

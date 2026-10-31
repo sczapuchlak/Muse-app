@@ -16,7 +16,7 @@ export function MuseLogin({notice="",next="/"}:{notice?:string;next?:string}){
       const result=await response.json();
       if(!response.ok){setError(result.error??"Your link couldn’t be sent. Please try again.");setState("error");if(response.status===429)setCooldown(60);return;}
       setState("sent");setCooldown(60);
-    }catch{setError("Couldn’t reach local sign-in. Check your connection and try again.");setState("error");}
+    }catch{setError("Couldn’t reach sign-in. Check your connection and try again.");setState("error");}
   }
   const feedback=state==="invalid"?"Enter a valid email address.":state==="error"?error:state==="sending"?"Sending your sign-in link…":state==="sent"?authMessages.sent:authNoticeMessage(notice)??"Use the email address that received your invitation.";
   return <MuseLoginFrame><span className="editor-label">YOUR OWN LITTLE CORNER OF THE UNIVERSE <MuseStar size={14}/></span><h2 id="login-preview-title">Welcome to Muse.</h2><p className="card-description">For everything you are and everything you&apos;re becoming.</p>

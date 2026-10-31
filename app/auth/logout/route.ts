@@ -1,10 +1,10 @@
 import {NextResponse,type NextRequest} from "next/server";
-import {localAuthConfig} from "@/lib/auth/config";
+import {authConfig} from "@/lib/auth/config";
 import {clearAuthCookies,privateResponse,routeAuthClient,trustedOrigin} from "@/lib/auth/http";
 export async function POST(request:NextRequest){
   try{
-    if(!trustedOrigin(request))return privateResponse(NextResponse.json({error:"Sign out from Muse’s local page."},{status:403}));
-    const {origin}=localAuthConfig(),json=request.headers.get("accept")?.includes("application/json");
+    if(!trustedOrigin(request))return privateResponse(NextResponse.json({error:"Sign out from Muse’s page."},{status:403}));
+    const {origin}=authConfig(),json=request.headers.get("accept")?.includes("application/json");
     const response=privateResponse(json?NextResponse.json({ok:true,notice:"signed-out"}):NextResponse.redirect(new URL("/login?notice=signed-out",origin),303));
     let notice="signed-out";
     try{

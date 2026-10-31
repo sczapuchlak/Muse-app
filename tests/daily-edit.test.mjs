@@ -416,7 +416,20 @@ test('all six themes supply readable planning materials and dark cards visibly s
     const container=blend(color(resolveToken(tokens,'--planning-container-background')),page);
     const task=blend(color(resolveToken(tokens,'--planning-task-background')),container);
     for(const text of ['--foreground','--text-muted']) assert.ok(contrast(color(tokens[text]),task)>=4.5,`${theme.id}: ${text} on task`);
-    if(theme.mode==='dark') assert.ok(luminance(task)-luminance(container)>.015,`${theme.id}: elevated task luminance`);
+    if(theme.id==='disco-damage') {
+      // Approved neutral charcoal materials use edge contrast, not an arbitrary
+      // absolute luminance increment, to delineate the compact task cards.
+      assert.equal(tokens['--planning-container-background'],'rgba(18,19,22,.88)');
+      assert.equal(tokens['--planning-task-background'],'rgba(39,41,44,.94)');
+      for(const material of ['crystal','frosted']) {
+        const frosted=material==='frosted';
+        const surface=blend(color(resolveToken(tokens,frosted?'--frosted-planning-container-background':'--planning-container-background')),page);
+        const card=blend(color(resolveToken(tokens,frosted?'--frosted-planning-task-background':'--planning-task-background')),surface);
+        const border=blend(color(resolveToken(tokens,'--planning-task-border')),card);
+        assert.ok(luminance(card)>luminance(surface),`${theme.id}/${material}: task remains elevated`);
+        assert.ok(contrast(border,surface)>=3,`${theme.id}/${material}: task boundary contrast`);
+      }
+    } else if(theme.mode==='dark') assert.ok(luminance(task)-luminance(container)>.015,`${theme.id}: elevated task luminance`);
   }
   assert.equal(palettes.afterglow['--background'],'#0d0e11');
   assert.equal(palettes.afterglow['--color-scheme'],'dark');
@@ -428,7 +441,12 @@ test('Crystal and Frosted keep all six theme surfaces readable while Frosted inc
   for(const theme of themes) {
     const token=palettes[theme.id], base=color(token['--background']);
     const crystal=color(token['--glass-background']), frosted=color(token['--frosted-glass-background']);
-    assert.ok(frosted[3]-crystal[3]>=(theme.id==='issya-bday'?.05:.2),`${theme.id}: material opacity hierarchy`);
+    if(theme.id==='disco-damage') {
+      assert.equal(crystal[3],.89,'Disco approved Crystal opacity');
+      assert.equal(frosted[3],.98,'Disco approved Frosted opacity');
+      assert.ok(frosted[3]>crystal[3],'Disco Frosted remains more opaque than Crystal');
+      assert.ok(crystal[3]>0&&crystal[3]<1,'Disco Crystal remains translucent');
+    } else assert.ok(frosted[3]-crystal[3]>=(theme.id==='issya-bday'?.05:.2),`${theme.id}: material opacity hierarchy`);
     assert.ok(frosted[3]<1,`${theme.id}: Frosted still has a translucent surface`);
     for(const material of ['crystal','frosted']) {
       const card=blend(material==='crystal'?crystal:frosted,base);
@@ -442,6 +460,7 @@ test('Crystal and Frosted keep all six theme surfaces readable while Frosted inc
     }
   }
   const style=readFileSync(resolve(root,'app/materials.css'),'utf8');
+  assert.ok(style.includes('--material-blur: 22px'));
   assert.ok(style.includes('--material-blur: 34px'));
   assert.ok(!/grid-template|padding:|font-size:|width:/.test(style),'Materials cannot change geometry');
 });
@@ -510,6 +529,11 @@ test('birthday siblings keep white/black bases and independently defined complet
 test('completed orb center/badge white checks retain numeric contrast across every theme',()=>{
  for(const theme of themes){const tokens=palettes[theme.id],shadow=color(tokens['--completion-shadow']),ink=color(tokens['--completion-ink']);
   const ref=(name)=>{const raw=tokens[name],match=raw.match(/^var\((--[\w-]+)\)$/);return match?ref(match[1]):raw;};
-  const center=blend(shadow,color(ref('--progress-middle')));assert.ok(contrast(ink,center)>=4.5,theme.id+' orb center');assert.ok(contrast(color(tokens['--completion-check']),color(tokens['--completion-badge']))>=4.5,theme.id+' badge');
+  const center=blend(shadow,color(ref('--progress-middle')));assert.ok(contrast(ink,center)>=4.5,theme.id+' orb center');assert.ok(contrast(color(ref('--completion-check')),color(tokens['--completion-badge']))>=4.5,theme.id+' badge');
+  if(theme.id==='disco-damage') {
+    assert.equal(tokens['--completion-check'],'var(--completion-ink)','Disco badge reuses existing white completion ink');
+    assert.equal(ref('--completion-check'),'#ffffff');
+    assert.equal(tokens['--completion-badge'],'#101214','Disco badge background stays unchanged');
+  }
  }
 });

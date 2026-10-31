@@ -446,3 +446,16 @@ Only ISSYA BDAY! light receives stronger pearl surface separation and neon frost
 ## Daily Edit restoration and final theme-picker copy
 
 The right-only reflection experiment is superseded: restore broad side-by-side Mood/Day Pulse with Day in Three directly below Mood. Preserve upper card placement and natural heights with existing gaps; do not relocate Wellness/reflection to fill space. Approved theme descriptions are centralized metadata, never theme appearance changes. See [THEME_PICKER_LAYOUT_RESTORATION](THEME_PICKER_LAYOUT_RESTORATION.md) for actual verification and the missing-reference limitation.
+
+
+## Explicit reference arrangement — current Daily Edit
+
+This supersedes the previous reflection-row/right-only experiments. Left is Forecast, Priorities, Movement, Water, Mood, Day in Three; right is Little Rituals, Plan, Meals, Day Pulse. Each is an independent natural-height stack with the same shared gap. Content growth moves only later cards in its own stack; preserve Ritual scrolling and all existing data/controls. There is no shared reflection row or nested reflection grid in Daily Edit. [DAILY_EDIT_STACKS](DAILY_EDIT_STACKS.md) records the final layout verification. Theme-picker copy and all palettes are unchanged by this correction.
+
+## Production readiness Phase 1 — authentication and self-deletion
+
+**Implemented and verified locally:** explicit canonical HTTPS application/Supabase origins for staging/production; paired loopback development endpoints; no request-derived or localhost fallback for missing configuration. Magic links remain invite-only (`shouldCreateUser:false` plus Supabase signup prohibition). No hosted environment was created or changed.
+
+Settings now supports authenticated, same-origin, explicitly typed DELETE confirmation for the current account only. A server-only Auth admin hard delete invokes existing owner/dependency cascades in one Auth database transaction; no piecemeal domain cleanup or new migration. Success requires an acknowledged matching user or a verified missing-user response after uncertainty. Failed/unconfirmed operations do not claim success. Confirmed deletion clears project auth/PKCE/return cookies and HTTP cache, broadcasts a transient logout signal and fully navigates away to dispose private providers/drafts/router memory. Appearance preferences remain. Outstanding JWTs may remain cryptographically valid until expiry; server identity checks deny the removed account and owned records are gone.
+
+These decisions supersede earlier phase statements that self-service deletion was unavailable. Export is offered before permanent deletion; backups follow the eventual deployment retention policy and are not promised immediate erasure. Storage/attachments are currently disabled; introducing them requires revisiting deletion orchestration. Hosted email, invitation administration, TLS/proxy behavior and actual deployment retention still require staging verification. See [PRODUCTION_READINESS_PHASE1](PRODUCTION_READINESS_PHASE1.md).

@@ -29,7 +29,8 @@
     "test:rituals": "node scripts/test-local-rituals.mjs",
     "test:ritual-lifecycle": "node scripts/test-local-ritual-lifecycle.mjs",
     "test:money": "node scripts/test-local-money.mjs",
-    "test:insights": "node scripts/test-local-insights.mjs"
+    "test:insights": "node scripts/test-local-insights.mjs",
+    "test:account-deletion": "node scripts/test-local-account-deletion.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",

@@ -1316,7 +1316,7 @@
   --completion-gradient: linear-gradient(135deg, var(--progress-start), var(--progress-middle) 48%, var(--progress-end));
   --completion-ink: #ffffff;
   --completion-badge: #101214;
-  --completion-check: #050507;
+  --completion-check: var(--completion-ink);
   --completion-edge: var(--glass-edge);
   --completion-highlight: rgba(255,255,255,.37);
   --completion-shadow: rgba(0,0,0,.65);

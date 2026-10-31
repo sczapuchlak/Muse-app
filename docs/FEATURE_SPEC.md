@@ -466,3 +466,16 @@ This supersedes Session 3's separate reflection region: Mood/Pulse/Day in Three 
 ## Final subtitle copy and broad Daily Edit reflection — implemented
 
 All nine approved subtitles render in ThemeSwitcher and the mobile Appearance chooser, replacing short birthday captions without changing IDs/names/order/previews or paint. Daily Edit's upper cards remain in place; existing reflection cards return to a full-width side-by-side Mood/Pulse layout with proportional Day in Three directly beneath Mood. Natural heights, shared gap and existing responsive stacking/captures remain. Thirty-five focused tests, TypeScript, ESLint and production build pass; actual switching/persistence/wrapping/responsive browser checks pass. No reference screenshot was attached, so exact approved-image comparison is pending. See [THEME_PICKER_LAYOUT_RESTORATION](THEME_PICKER_LAYOUT_RESTORATION.md).
+
+
+## Daily Edit explicit reference stacks — implemented
+
+Parent placement now follows the clarified reference exactly: Forecast/Priorities/Movement/Water/Mood/Day in Three left, Rituals/Plan/Meals/Pulse right. The existing MoodCard, DayPulseCard and DayInThreeCard are rendered directly with the same DailyCapture owner boundary, not inside MoodCheckInLayout. Existing Wellness captures remain around their same cards. No child component behavior, Ritual sizing/scrolling, persistence, theme values or card padding changes. Responsive mobile progression uses the existing breakpoint and one gutter token. Verification: [DAILY_EDIT_STACKS](DAILY_EDIT_STACKS.md).
+
+## Production readiness Phase 1 — authentication and self-deletion
+
+**Implemented and verified locally:** explicit canonical HTTPS application/Supabase origins for staging/production; paired loopback development endpoints; no request-derived or localhost fallback for missing configuration. Magic links remain invite-only (`shouldCreateUser:false` plus Supabase signup prohibition). No hosted environment was created or changed.
+
+Settings now supports authenticated, same-origin, explicitly typed DELETE confirmation for the current account only. A server-only Auth admin hard delete invokes existing owner/dependency cascades in one Auth database transaction; no piecemeal domain cleanup or new migration. Success requires an acknowledged matching user or a verified missing-user response after uncertainty. Failed/unconfirmed operations do not claim success. Confirmed deletion clears project auth/PKCE/return cookies and HTTP cache, broadcasts a transient logout signal and fully navigates away to dispose private providers/drafts/router memory. Appearance preferences remain. Outstanding JWTs may remain cryptographically valid until expiry; server identity checks deny the removed account and owned records are gone.
+
+These decisions supersede earlier phase statements that self-service deletion was unavailable. Export is offered before permanent deletion; backups follow the eventual deployment retention policy and are not promised immediate erasure. Storage/attachments are currently disabled; introducing them requires revisiting deletion orchestration. Hosted email, invitation administration, TLS/proxy behavior and actual deployment retention still require staging verification. See [PRODUCTION_READINESS_PHASE1](PRODUCTION_READINESS_PHASE1.md).
