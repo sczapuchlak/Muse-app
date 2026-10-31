@@ -2,7 +2,7 @@
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[]
 
 export type Database = {
-  
+
   "public": {
           Tables: {
             "checkin_emotions": {
@@ -89,7 +89,7 @@ isOneToOne: false
                     "created_at"?: string,"day_in_three"?: (string)[],"energy"?: number | null,"id"?: string,"intention_emoji"?: string | null,"intention_text"?: string | null,"local_date"?: string,"overall_day"?: number | null,"revision"?: number,"stress"?: number | null,"time_zone"?: string,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
-                    
+
                   ]
                 },"emotion_catalog": {
                   Row: {
@@ -103,7 +103,7 @@ isOneToOne: false
                     "definition"?: string | null,"emoji"?: string,"energy"?: never,"id"?: string,"name"?: string,"pleasantness"?: never,"quadrant"?: string
                   }
                   Relationships: [
-                    
+
                   ]
                 },"emotion_favorites": {
                   Row: {
@@ -137,7 +137,7 @@ isOneToOne: false
                     "archived_at"?: string | null,"created_at"?: string,"id"?: string,"label"?: string,"revision"?: number,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
-                    
+
                   ]
                 },"mood_checkins": {
                   Row: {
@@ -159,6 +159,48 @@ isOneToOne: false
       referencedColumns: ["user_id","id"]
     }
                   ]
+                },"planner_commands": {
+                  Row: {
+                    "id": string,"request_hash": string,"revision": number,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "id": string,"request_hash": string,"revision": number,"user_id": string
+                  }
+                  Update: {
+                    "id"?: string,"request_hash"?: string,"revision"?: number,"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
+                },"planner_events": {
+                  Row: {
+                    "created_at": string,"detail": string | null,"id": string,"local_date": string,"local_time": string,"revision": number,"time_zone": string,"title": string,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"detail"?: string | null,"id": string,"local_date": string,"local_time": string,"revision"?: number,"time_zone": string,"title": string,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "created_at"?: string,"detail"?: string | null,"id"?: string,"local_date"?: string,"local_time"?: string,"revision"?: number,"time_zone"?: string,"title"?: string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
+                },"planner_versions": {
+                  Row: {
+                    "revision": number,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "revision"?: number,"user_id": string
+                  }
+                  Update: {
+                    "revision"?: number,"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
                 },"profiles": {
                   Row: {
                     "created_at": string,"first_name": string,"id": string,"revision": number,"time_zone": string,"updated_at": string
@@ -171,7 +213,167 @@ isOneToOne: false
                     "created_at"?: string,"first_name"?: string,"id"?: string,"revision"?: number,"time_zone"?: string,"updated_at"?: string
                   }
                   Relationships: [
-                    
+
+                  ]
+                },"task_completion_events": {
+                  Row: {
+                    "complete": boolean,"id": string,"local_date": string,"occurred_at": string,"planned_date": string | null,"task_id": string,"time_zone": string,"title": string,"user_id": string,"workspace_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "complete": boolean,"id"?: string,"local_date": string,"occurred_at": string,"planned_date"?: string | null,"task_id": string,"time_zone": string,"title": string,"user_id": string,"workspace_id": string
+                  }
+                  Update: {
+                    "complete"?: boolean,"id"?: string,"local_date"?: string,"occurred_at"?: string,"planned_date"?: string | null,"task_id"?: string,"time_zone"?: string,"title"?: string,"user_id"?: string,"workspace_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "task_completion_events_user_id_task_id_fkey"
+      columns: ["user_id","task_id"]
+isOneToOne: false
+      referencedRelation: "tasks"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+                },"task_groups": {
+                  Row: {
+                    "accent": string | null,"archived_at": string | null,"created_at": string,"icon_id": string | null,"id": string,"name": string,"revision": number,"updated_at": string,"user_id": string,"workspace_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "accent"?: string | null,"archived_at"?: string | null,"created_at"?: string,"icon_id"?: string | null,"id": string,"name": string,"revision"?: number,"updated_at"?: string,"user_id": string,"workspace_id": string
+                  }
+                  Update: {
+                    "accent"?: string | null,"archived_at"?: string | null,"created_at"?: string,"icon_id"?: string | null,"id"?: string,"name"?: string,"revision"?: number,"updated_at"?: string,"user_id"?: string,"workspace_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "task_groups_user_id_workspace_id_fkey"
+      columns: ["user_id","workspace_id"]
+isOneToOne: false
+      referencedRelation: "workspaces"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+                },"task_subtasks": {
+                  Row: {
+                    "complete": boolean,"id": string,"position": number,"task_id": string,"title": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "complete"?: boolean,"id": string,"position": number,"task_id": string,"title": string,"user_id": string
+                  }
+                  Update: {
+                    "complete"?: boolean,"id"?: string,"position"?: number,"task_id"?: string,"title"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "task_subtasks_user_id_task_id_fkey"
+      columns: ["user_id","task_id"]
+isOneToOne: false
+      referencedRelation: "tasks"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+                },"task_tag_links": {
+                  Row: {
+                    "tag_id": string,"task_id": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "tag_id": string,"task_id": string,"user_id": string
+                  }
+                  Update: {
+                    "tag_id"?: string,"task_id"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "task_tag_links_user_id_tag_id_fkey"
+      columns: ["user_id","tag_id"]
+isOneToOne: false
+      referencedRelation: "task_tags"
+      referencedColumns: ["user_id","id"]
+    },{
+      foreignKeyName: "task_tag_links_user_id_task_id_fkey"
+      columns: ["user_id","task_id"]
+isOneToOne: false
+      referencedRelation: "tasks"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+                },"task_tags": {
+                  Row: {
+                    "accent": string,"archived_at": string | null,"created_at": string,"icon_id": string | null,"id": string,"name": string,"revision": number,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "accent": string,"archived_at"?: string | null,"created_at"?: string,"icon_id"?: string | null,"id": string,"name": string,"revision"?: number,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "accent"?: string,"archived_at"?: string | null,"created_at"?: string,"icon_id"?: string | null,"id"?: string,"name"?: string,"revision"?: number,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
+                },"task_time_sessions": {
+                  Row: {
+                    "ended_at": string | null,"id": string,"started_at": string,"task_id": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "ended_at"?: string | null,"id"?: string,"started_at": string,"task_id": string,"user_id": string
+                  }
+                  Update: {
+                    "ended_at"?: string | null,"id"?: string,"started_at"?: string,"task_id"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "task_time_sessions_user_id_task_id_fkey"
+      columns: ["user_id","task_id"]
+isOneToOne: false
+      referencedRelation: "tasks"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+                },"tasks": {
+                  Row: {
+                    "actual_minutes_baseline": number,"captured_time_zone": string,"complete": boolean,"completed_at": string | null,"created_at": string,"deleted_at": string | null,"detail": string | null,"due_date": string | null,"estimated_minutes": number | null,"group_id": string | null,"id": string,"local_time_slot": string | null,"notes": string | null,"planned_date": string | null,"position": number,"recurrence_frequency": string | null,"recurrence_interval": number | null,"recurrence_until": string | null,"revision": number,"title": string,"updated_at": string,"user_id": string,"workspace_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "actual_minutes_baseline"?: number,"captured_time_zone": string,"complete"?: boolean,"completed_at"?: string | null,"created_at"?: string,"deleted_at"?: string | null,"detail"?: string | null,"due_date"?: string | null,"estimated_minutes"?: number | null,"group_id"?: string | null,"id": string,"local_time_slot"?: string | null,"notes"?: string | null,"planned_date"?: string | null,"position"?: number,"recurrence_frequency"?: string | null,"recurrence_interval"?: number | null,"recurrence_until"?: string | null,"revision"?: number,"title": string,"updated_at"?: string,"user_id": string,"workspace_id": string
+                  }
+                  Update: {
+                    "actual_minutes_baseline"?: number,"captured_time_zone"?: string,"complete"?: boolean,"completed_at"?: string | null,"created_at"?: string,"deleted_at"?: string | null,"detail"?: string | null,"due_date"?: string | null,"estimated_minutes"?: number | null,"group_id"?: string | null,"id"?: string,"local_time_slot"?: string | null,"notes"?: string | null,"planned_date"?: string | null,"position"?: number,"recurrence_frequency"?: string | null,"recurrence_interval"?: number | null,"recurrence_until"?: string | null,"revision"?: number,"title"?: string,"updated_at"?: string,"user_id"?: string,"workspace_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "tasks_user_id_workspace_id_fkey"
+      columns: ["user_id","workspace_id"]
+isOneToOne: false
+      referencedRelation: "workspaces"
+      referencedColumns: ["user_id","id"]
+    },{
+      foreignKeyName: "tasks_user_id_workspace_id_group_id_fkey"
+      columns: ["user_id","workspace_id","group_id"]
+isOneToOne: false
+      referencedRelation: "task_groups"
+      referencedColumns: ["user_id","workspace_id","id"]
+    }
+                  ]
+                },"workspaces": {
+                  Row: {
+                    "accent": string,"archived_at": string | null,"created_at": string,"icon_id": string | null,"id": string,"name": string,"revision": number,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "accent": string,"archived_at"?: string | null,"created_at"?: string,"icon_id"?: string | null,"id": string,"name": string,"revision"?: number,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "accent"?: string,"archived_at"?: string | null,"created_at"?: string,"icon_id"?: string | null,"id"?: string,"name"?: string,"revision"?: number,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+
                   ]
                 }
           }
@@ -204,6 +406,12 @@ isOneToOne: false
         isOneToOne: true
         isSetofReturn: false
       } },
+"planner_command":
+{ Args: { "p_action": Json,"p_command_id": string,"p_expected_revision": number }; Returns: number
+                           },
+"read_planner":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
 "save_daily_priorities":
 { Args: { "p_date": string,"p_expected": Json,"p_items": Json }; Returns: {
               "completed_at": string | null,
@@ -381,7 +589,7 @@ export type CompositeTypes<
 export const Constants = {
   "public": {
           Enums: {
-            
+
           }
         }
 } as const

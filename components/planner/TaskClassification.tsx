@@ -1,12 +1,13 @@
 "use client";
-import { useId,useRef,useState,type KeyboardEvent } from "react";
+import { useId,useRef,useState,useEffect,type KeyboardEvent } from "react";
 import type { PlannedTask } from "@/lib/models";
 import {ColorLabel} from "../ColorLabel";
 import { usePlanner } from "../PlannerStore";
 import { GlassPopover } from "../GlassPopover";
 import { InlineTextEditor } from "../InlineTextEditor";
 export function TaskClassification({task}:{task:PlannedTask}) {
-  const {state,dispatch}=usePlanner(),[open,setOpen]=useState(false),[query,setQuery]=useState(""),[adding,setAdding]=useState(false),anchor=useRef<HTMLButtonElement>(null),id=useId();
+  const {state,dispatch,holdDraft}=usePlanner(),[open,setOpen]=useState(false),[query,setQuery]=useState(""),[adding,setAdding]=useState(false),anchor=useRef<HTMLButtonElement>(null),id=useId();
+  useEffect(()=>{const key=`classification/${task.id}`;holdDraft(key,open);return()=>holdDraft(key,false);},[holdDraft,open,task.id]);
   const [workspaceId,setWorkspace]=useState(task.workspaceId),[groupId,setGroup]=useState(task.groupId);
   const workspace=state.workspaces.find((item)=>item.id===task.workspaceId),draftWorkspace=state.workspaces.find((item)=>item.id===workspaceId),group=state.groups.find((item)=>item.id===task.groupId),matches=(name:string)=>name.toLowerCase().includes(query.toLowerCase());
   function close(){setOpen(false);anchor.current?.focus();}

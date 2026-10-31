@@ -41,3 +41,6 @@ export function mockDay(iso: string) {
 export function validDate(value: string | null | undefined): value is string {
   return !!value && /^\d{4}-\d{2}-\d{2}$/.test(value) && !Number.isNaN(Date.parse(`${value}T12:00:00Z`)) && new Date(`${value}T12:00:00Z`).toISOString().slice(0, 10) === value;
 }
+
+/** Configuration errors must be shown explicitly, never replaced with a mock/device zone. */
+export function validTimeZone(value:string|null|undefined):value is string{if(!value?.trim())return false;try{new Intl.DateTimeFormat('en-US',{timeZone:value}).format(0);return true;}catch{return false;}}

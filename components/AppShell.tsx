@@ -38,7 +38,7 @@ export function AppShell({ children, profile }: { children: ReactNode; profile:D
   const moreActive = navItems(mobileMoreIds).some((item) => isActiveDestination(path, item.href));
   return (
     <MuseSessionProvider initialDate={todayInTimeZone(profile.timeZone)} initialRecords={Object.fromEntries(Object.entries(dailySessionSeed).filter(([key])=>!key.endsWith("/intention")))}><DailyDataProvider profile={profile}><DailyDateSync/>
-      <PlannerProvider><NourishProvider><MoneyProvider><RitualProvider><div className="muse-app-shell" data-rail={collapsed ? "collapsed" : "expanded"} data-module={path.split("/")[1]||"daily"}>
+      <PlannerProvider profile={profile}><NourishProvider><MoneyProvider><RitualProvider><div className="muse-app-shell" data-rail={collapsed ? "collapsed" : "expanded"} data-module={path.split("/")[1]||"daily"}>
         <MuseMagicBridge/><MuseAtmosphere/>
         <a className="muse-skip-link" href="#muse-main-content">Skip to content</a>
         <aside className="muse-rail" aria-label="Muse app navigation">

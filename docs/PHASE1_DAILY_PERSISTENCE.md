@@ -34,7 +34,7 @@ Daily/Mood/Insights date selection is retained in a safe `date=YYYY-MM-DD` URL. 
 
 ## Deliberately still prototype-only
 
-Planner/tasks/events and linking, movement, hydration, meals/Nourish, Rituals, Money and Notes retain their current prototype owners and behavior. They are not saved by the daily adapter. Daily Edit's footer and Insights source note distinguish them from persistent daily data. Favorites, reflection drafts and open/filter state remain session UI preferences; appearance preferences retain their existing browser persistence. No new Whimsy backend was added.
+Subsequent [Planner Pass A](PLANNER_PASS_A.md) now persists tasks/events and their existing shared preview; priority linking remains deferred. Movement, hydration, meals/Nourish, Rituals, Money and Notes retain their prototype owners and behavior. They are not saved by the daily adapter. Daily Edit's footer and Insights source note distinguish them from persistent daily data. Favorites, reflection drafts and open/filter state remain session UI preferences; appearance preferences retain their existing browser persistence. No new Whimsy backend was added.
 
 Export/account deletion UI, profile editing, recovery policies, hosted email/deployment and remaining module cutovers are not included. Approved user-controlled export and confirmed deletion are still required before real-world personal-data use. This is local development functionality, not a production-readiness claim.
 

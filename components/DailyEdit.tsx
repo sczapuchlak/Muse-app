@@ -33,7 +33,7 @@ export function DailyEdit() {
         <MealsCard selectedDate={selectedDate} />
         <DailyCapture date={selectedDate}><MoodCheckInLayout date={selectedDate} emotions={emotionCatalog} /></DailyCapture>
       </div>
-      <footer className="muse-footer">Intention, priorities, Day in Three, Day Pulse and feelings save to your account. Movement, water, Planner and meals remain prototype data.</footer>
+      <footer className="muse-footer">Intention, priorities, Day in Three, Day Pulse and feelings save to your account. Planner tasks and events also save to your account. Movement, water and meals remain prototype data.</footer>
     </main>
   );
 }

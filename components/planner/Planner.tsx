@@ -6,7 +6,7 @@ import { dailyEditSample } from "@/lib/daily-edit-data";
 import { PLANNING_WINDOW_DAYS, emptyPlannerFilters, filterPlannerTasks, formatPlannedMinutes, validDate, type PlannerFilters as Filters } from "@/lib/planner";
 import type { PlannedTask } from "@/lib/models";
 import { useMuseDate } from "../MuseSession";
-import { usePlanner } from "../PlannerStore";
+import { PlannerCapture,PlannerPersistenceStatus,usePlanner } from "../PlannerStore";
 import { MusePageHeader } from "../MusePageHeader";
 import { PlannerUtilities } from "./PlannerUtilities";
 import { MuseDrawer } from "../MuseDrawer";
@@ -16,7 +16,7 @@ import { PlanningDropZone } from "./PlanningDropZone";
 import { MuseStar } from "../MuseStar";
 import { DateNavigator } from "../DateNavigator";
 import { WeekNavigator } from "../WeekNavigator";
-import { mockProfile } from "@/lib/mock-profile";
+import {useDailyData} from "../daily/DailyData";
 import { PlannerTaskCard } from "./PlannerTaskCard";
 import { TaskQuickAdd } from "./TaskQuickAdd";
 import { TaskDetails } from "./TaskDetails";
@@ -25,7 +25,8 @@ import {usePlannerHeight} from "./usePlannerHeight";
 import {MuseMilestone} from "../MuseMilestone";
 
 export function Planner() {
-  const { state } = usePlanner();
+  const { state,status } = usePlanner();
+  const {profile}=useDailyData();
   const workspaceRef=useRef<HTMLDivElement>(null);
   usePlannerHeight(workspaceRef);
   const [date, setDate] = useMuseDate(dailyEditSample.date.iso);
@@ -37,7 +38,7 @@ export function Planner() {
   const [filters, setFilters] = useState<Filters>(emptyPlannerFilters);
   const [mobileView, setMobileView] = useState<"day" | "inbox">("day");
   const [inboxAnchor,setInboxAnchor]=useState<HTMLElement|null>(null);
-  const today = useMuseToday(mockProfile.timeZone);
+  const today = useMuseToday(profile.timeZone);
   const [search, setSearch] = useState("");
   const [detail, setDetail] = useState<{ id: string; anchor: HTMLElement } | null>(null);
   const [announcement, setAnnouncement] = useState("");
@@ -56,9 +57,9 @@ export function Planner() {
 
   return <main className="muse-page muse-planner-page">
     <MusePageHeader title="Planner"><DateNavigator date={date} onChange={changeDate}/></MusePageHeader>
-    <div className="muse-module-toolbar">{utilities()}</div>
+    <PlannerPersistenceStatus/><PlannerCapture><div className="muse-module-toolbar">{utilities()}</div>
     <div className="muse-planner-mobile-tabs"><button className="muse-button" type="button" aria-haspopup="dialog" aria-expanded={mobileView==="inbox"} onClick={(event)=>{setInboxAnchor(event.currentTarget);setMobileView("inbox");}}>Task List · {inbox.length}</button></div>
-    <div className="muse-planner-mobile-week"><WeekNavigator selectedDate={date} timeZone={mockProfile.timeZone} onChange={(next) => { changeDate(next); setMobileView("day"); }} /></div>
+    <div className="muse-planner-mobile-week"><WeekNavigator selectedDate={date} timeZone={profile.timeZone} onChange={(next) => { changeDate(next); setMobileView("day"); }} /></div>
     {state.activeTimer && <p className="muse-planner-timer-status" role="status">Timer running: {state.tasks.find((task) => task.id === state.activeTimer?.taskId)?.title}. <button className="text-button" type="button" onClick={(event) => { if (state.activeTimer) setDetail({ id: state.activeTimer.taskId, anchor: event.currentTarget }); }}>Open timer</button></p>}
     <div ref={workspaceRef} className="muse-planner-layout">
       {rail()}
@@ -85,6 +86,6 @@ export function Planner() {
     </div>
     {mobileView==="inbox"&&<MuseDrawer title="Task List" returnFocus={inboxAnchor} onClose={()=>setMobileView("day")}><div className="muse-planner-sheet-body">{rail()}</div></MuseDrawer>}
     <div className="muse-sr-only" role="status">{announcement}</div>
-    {detail && <TaskDetails key={detail.id} taskId={detail.id} returnFocus={detail.anchor} onClose={() => { setDetail(null); setAnnouncement("Task details closed. Changes are saved for this session."); }} />}
-  </main>;
+    {detail && <TaskDetails key={`${detail.id}/${status?.discarded??0}`} taskId={detail.id} returnFocus={detail.anchor} onClose={() => { setDetail(null); setAnnouncement("Task details closed. Check the Planner save status for pending changes."); }} />}
+  </PlannerCapture></main>;
 }

@@ -1,13 +1,17 @@
+import type {PlannedTask} from '../models';
 import {isScheduled,ritualCell,ritualStreak,weeklyValue} from '../rituals';
 import {weekDates,shiftDate} from '../dates';
 import {within,localTimestampDate,type InsightRange,rangeDays} from './ranges';
 import type {NormalizedInsights} from './normalize';
 export function plannerMetrics(input:NormalizedInsights,range:InsightRange){
- const planned=input.planner.tasks.filter((task)=>within(task.plannedDate,range)),completed=planned.filter((task)=>task.complete),created=input.planner.tasks.filter((task)=>within(localTimestampDate(task.createdAt,input.timeZone),range)),datedCompletions=input.planner.tasks.filter((task)=>task.complete&&within(localTimestampDate(task.completedAt,input.timeZone),range));
- const byDate=rangeDays(range).map((date)=>({date,created:created.filter((task)=>localTimestampDate(task.createdAt,input.timeZone)===date).length,completed:datedCompletions.filter((task)=>localTimestampDate(task.completedAt,input.timeZone)===date).length,planned:planned.filter((task)=>task.plannedDate===date).length}));
+ const planned=input.planner.tasks.filter((task)=>within(task.plannedDate,range)),completed=planned.filter((task)=>task.complete),created=input.planner.tasks.filter((task)=>within(localTimestampDate(task.createdAt,input.timeZone),range));
+ const historical: (PlannedTask&{completionLocalDate?:string})[]=input.planner.completionHistory?input.planner.completionHistory.filter(event=>event.complete).map(event=>({id:event.id,kind:'task',title:event.title,workspaceId:event.workspaceId,plannedDate:event.plannedDate,complete:true,completedAt:event.occurredAt,completionLocalDate:event.localDate,actualMinutes:0,tagIds:[],subtasks:[],createdAt:event.occurredAt})):input.planner.tasks.filter(task=>task.complete);
+ const completionDate=(task:PlannedTask&{completionLocalDate?:string})=>task.completionLocalDate??localTimestampDate(task.completedAt,input.timeZone);
+ const datedCompletions=historical.filter(task=>within(completionDate(task),range));
+ const byDate=rangeDays(range).map((date)=>({date,created:created.filter((task)=>localTimestampDate(task.createdAt,input.timeZone)===date).length,completed:datedCompletions.filter((task)=>completionDate(task)===date).length,planned:planned.filter((task)=>task.plannedDate===date).length}));
  const byWorkspace=input.planner.workspaces.map((workspace)=>({id:workspace.id,label:workspace.name,planned:planned.filter((task)=>task.workspaceId===workspace.id).length,completed:completed.filter((task)=>task.workspaceId===workspace.id).length})).filter((row)=>row.planned);
  const byGroup=input.planner.groups.map((group)=>({id:group.id,label:group.name,planned:planned.filter((task)=>task.groupId===group.id).length,completed:completed.filter((task)=>task.groupId===group.id).length})).filter((row)=>row.planned);
- const weekdays=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map((label,i)=>({label,completed:datedCompletions.filter((task)=>(new Date(`${localTimestampDate(task.completedAt,input.timeZone)}T12:00:00Z`).getUTCDay()+6)%7===i).length,planned:planned.filter((task)=>(new Date(`${task.plannedDate}T12:00:00Z`).getUTCDay()+6)%7===i).length}));
+ const weekdays=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map((label,i)=>({label,completed:datedCompletions.filter((task)=>(new Date(`${completionDate(task)}T12:00:00Z`).getUTCDay()+6)%7===i).length,planned:planned.filter((task)=>(new Date(`${task.plannedDate}T12:00:00Z`).getUTCDay()+6)%7===i).length}));
  const timed=planned.filter((task)=>task.actualMinutes>0),estimated=planned.filter((task)=>task.estimatedMinutes!==undefined);
  return {planned,completed,created,datedCompletions,byDate,byWorkspace,byGroup,weekdays,rate:planned.length?completed.length/planned.length:null,undatedCompletions:input.planner.tasks.filter((task)=>task.complete&&!localTimestampDate(task.completedAt,input.timeZone)).length,actualMinutes:timed.reduce((sum,task)=>sum+task.actualMinutes,0),trackedTasks:timed.length,estimatedMinutes:estimated.reduce((sum,task)=>sum+(task.estimatedMinutes??0),0),estimatedTasks:estimated.length};
 }

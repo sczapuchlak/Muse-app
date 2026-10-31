@@ -11,7 +11,7 @@ import { TaskClassification } from "./TaskClassification";
 
 export const TASK_DRAG_TYPE = "application/x-muse-task";
 export function PlannerTaskCard({ task, onOpen, showDueDate=false }: { showDueDate?:boolean; task: PlannedTask; onOpen: (task: PlannedTask, anchor: HTMLElement) => void }) {
-  const { state, dispatch } = usePlanner();
+  const { state, dispatch,status } = usePlanner();
   const workspace = state.workspaces.find((entry) => entry.id === task.workspaceId);
   const blockedDrag=useRef(false);
   const { spark, trigger } = useMuseSpark();
@@ -33,7 +33,7 @@ export function PlannerTaskCard({ task, onOpen, showDueDate=false }: { showDueDa
       </label>
       <button className="muse-task-title muse-edge" type="button" onClick={(event) => onOpen(task, event.currentTarget)}>{task.title}</button>
     <TaskTimer task={task}/></div>
-    <div className="muse-task-secondary-row"><TaskClassification task={task}/>{task.tagIds.length>0&&<div className="muse-task-tags">{task.tagIds.map((id)=>{const tag=state.tags.find((entry)=>entry.id===id);return tag?<span className="muse-task-tag" data-accent={tag.accent} style={accentStyle(tag.accent)} key={id}>#{tag.name}</span>:null;})}</div>}</div>
+    <div className="muse-task-secondary-row"><TaskClassification key={status?.discarded??0} task={task}/>{task.tagIds.length>0&&<div className="muse-task-tags">{task.tagIds.map((id)=>{const tag=state.tags.find((entry)=>entry.id===id);return tag?<span className="muse-task-tag" data-accent={tag.accent} style={accentStyle(tag.accent)} key={id}>#{tag.name}</span>:null;})}</div>}</div>
     {showDueDate&&due&&<p className="muse-task-due-preview">Due {task.dueDate}</p>}
 
   </li>;

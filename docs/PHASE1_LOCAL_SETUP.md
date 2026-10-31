@@ -1,6 +1,6 @@
 # Phase 1 — local setup and database foundation
 
-Status: **database foundation, application authentication and approved daily-data cutover implemented locally; later domains are pending**. This is not a claim that the entire Phase 1 user journey is finished. No hosted project was created/linked, no production changes, no commit/push. Daily Edit/Mood/Dayprint now use canonical daily records; later module views retain prototype sources. See [PHASE1_DAILY_PERSISTENCE](PHASE1_DAILY_PERSISTENCE.md). See [AUTH_LOCAL](AUTH_LOCAL.md) for login and invitation instructions.
+Status: **database foundation, application authentication and approved daily-data cutover implemented locally; Planner Pass A is implemented; other domains are pending**. This is not a claim that the entire Phase 1 user journey is finished. No hosted project was created/linked, no production changes, no commit/push. Daily Edit/Mood/Dayprint now use canonical daily records; later module views retain prototype sources. See [PHASE1_DAILY_PERSISTENCE](PHASE1_DAILY_PERSISTENCE.md). See [AUTH_LOCAL](AUTH_LOCAL.md) for login and invitation instructions.
 
 ## Running local services
 
@@ -31,6 +31,7 @@ Docker Desktop installed the CLI under `~/.docker/bin`, outside the original she
 | `npm run db:lint` | Lint local public-schema functions |
 | `npm run test:db:api` | Test local Auth/API with temporary synthetic users, deleted afterward |
 | `npm run auth:invite -- your@email.example` | Send an admin-managed local invitation to the test inbox |
+| `npm run test:planner` | Verify local Planner CRUD/history, ordering, timers, concurrency and ownership with disposable users |
 | `npm run test:daily` | Verify persistent daily data, priorities, sessions, concurrency and RLS with disposable users |
 | `npm run test:auth` | Test the running app's login/callback/refresh/logout through real local inbox messages |
 
@@ -59,7 +60,7 @@ Only the existing canonical80-emotion vocabulary is inserted by migration; perso
 
 Daily/session write commands retain invoker rights and RLS. Daily writes patch only approved fields and require the version held by the editor; stale writes return40001. Session creation/replacement locks its parent day and validates expected revision, with joins in the same transaction. Constraints enforce scale/date relationships even for direct API calls. The Auth bootstrap helper is unexposed, fixed-search-path, minimally privileged and not executable as an API function.
 
-Standalone priorities are implemented; no placeholder Planner table/task FK or Money/Whimsy schema was created. Priority completion capture timestamps record when the status was entered, not proof of when real work happened. Later linked-priority history must meet the approved end-of-day semantics in the blueprint.
+Standalone priorities are implemented without task links. Planner now has its own separate Pass A migration; no Money/Whimsy schema was created. Priority completion capture timestamps record when the status was entered, not proof of when real work happened. Later linked-priority history must meet the approved end-of-day semantics in the blueprint.
 
 ## Application authentication
 
@@ -74,7 +75,7 @@ Typed browser/request-scoped server/admin factories and a daily/session reposito
 - Docker Engine/local endpoint, migration application, service health and explicit loopback port binding verified.
 -57 pgTAP assertions pass: ownership/anonymous denial, foreign-owner link rejection, date uniqueness, bounded values/slots, revision conflict, influence limit, immutable historical identity, session independence, rollback on failed replacements, clearing, daily-without-session data and account cascades/stale-subject denial. Tests roll back all fixtures.
 - Local HTTP integration passes: public registration denied; anonymous reads denied; admin invitation/verification; magic-link issuance; own-profile isolation; durable date values; conflict response and competing writes; cross-user read/link denial; fresh authenticated client roundtrip; separate sessions; deletion preserves daily values; Auth deletion/cascade and local signout. Both temporary Auth users are removed in cleanup.
-- Database lint passes.182 Node tests pass. ESLint, TypeScript noEmit and production build pass. Foundation-stage production dependency audit reported no vulnerabilities; installation also reported moderate development-tooling findings, with no unrelated forced upgrades applied.
+- Database lint passes.192 Node tests pass. ESLint, TypeScript noEmit and production build pass. Foundation-stage production dependency audit reported no vulnerabilities; installation also reported moderate development-tooling findings, with no unrelated forced upgrades applied.
 - Application HTTP auth integration and actual isolated Chrome inbox login/logout checks pass; details and coverage limits are in [AUTH_LOCAL](AUTH_LOCAL.md). Temporary auth/browser test accounts are removed afterward.
 
 These checks do not claim browser domain persistence, user-facing export/account deletion, cross-device domain synchronization, a configured production backup policy or hosted readiness.
@@ -83,4 +84,6 @@ These checks do not claim browser domain persistence, user-facing export/account
 
 [PHASE1_DAILY_PERSISTENCE](PHASE1_DAILY_PERSISTENCE.md) records the implemented coordinated cutover: authenticated profile/date, Daily Edit, Mood, derived Dayprint and existing Insights Pulse. The additive `20261030000300_daily_priority_command.sql` migration supplies revision-checked atomic standalone priority replacement/reorder; the original foundation is preserved and no personal fixture import occurred.
 
-Still pending: user-facing profile controls, scoped export/confirmed account deletion before real-data use, later linked-priority history and module-specific persistence. Hydration UI/ownership, Planner, Nourish, Rituals, Money, Notes and hosted configuration remain separate scope. Unexpected durable real data must be preserved, not treated as disposable prototype values.
+Still pending: user-facing profile controls, scoped export/confirmed account deletion before real-data use, later linked-priority history and module-specific persistence. Hydration UI/ownership, Nourish, Rituals, Money, Notes and hosted configuration remain separate scope; Planner priority linking remains Pass B. Unexpected durable real data must be preserved, not treated as disposable prototype values.
+
+Planner Pass A adds `20261030000400_planner_pass_a.sql`; see [PLANNER_PASS_A](PLANNER_PASS_A.md) for its schema, validation and deferred Pass B scope. Apply with the existing local `db:migrate` command. No reset is needed.

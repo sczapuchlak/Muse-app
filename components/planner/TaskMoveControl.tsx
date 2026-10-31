@@ -1,15 +1,16 @@
 "use client";
-import { useRef, useState } from "react";
+import { useRef, useState,useEffect } from "react";
 import type { PlannedTask } from "@/lib/models";
 import { usePlanner } from "../PlannerStore";
 import { GlassPopover } from "../GlassPopover";
 import { validDate } from "@/lib/planner";
 
 export function TaskMoveControl({ task }: { task: PlannedTask }) {
-  const { state, dispatch } = usePlanner();
+  const { state, dispatch,holdDraft } = usePlanner();
   const siblings = state.tasks.filter((entry) => entry.plannedDate === task.plannedDate);
   const position = siblings.findIndex((entry) => entry.id === task.id);
   const [open, setOpen] = useState(false);
+  useEffect(()=>{const key=`move/${task.id}`;holdDraft(key,open);return()=>holdDraft(key,false);},[holdDraft,open,task.id]);
   const trigger = useRef<HTMLButtonElement>(null);
   const [date, setDate] = useState(task.plannedDate ?? "");
   function move(value: string | undefined) {

@@ -1,6 +1,6 @@
 # Muse database and synchronization blueprint
 
-**APPROVED ARCHITECTURE; LOCAL FOUNDATION, AUTHENTICATION AND DAILY CUTOVER IMPLEMENTED; LATER DOMAINS PENDING.** Companion to the evidence-based [architecture audit](ARCHITECTURE_AUDIT.md). The subsequent approved Phase 1 brief authorizes the local foundation described in [PHASE1_LOCAL_SETUP](PHASE1_LOCAL_SETUP.md). Its two migrations, local Auth configuration, RLS tests and typed clients exist. [AUTH_LOCAL](AUTH_LOCAL.md) records the implemented login/callback, Proxy refresh, private layout and logout stage. The approved daily UI cutover is now implemented; see [PHASE1_DAILY_PERSISTENCE](PHASE1_DAILY_PERSISTENCE.md). Hosted deployment and later domain persistence remain unimplemented; later-module schema remains proposed. No production resources are authorized.
+**APPROVED ARCHITECTURE; LOCAL FOUNDATION, AUTHENTICATION AND DAILY CUTOVER IMPLEMENTED; LATER DOMAINS PENDING.** Companion to the evidence-based [architecture audit](ARCHITECTURE_AUDIT.md). The subsequent approved Phase 1 brief authorizes the local foundation described in [PHASE1_LOCAL_SETUP](PHASE1_LOCAL_SETUP.md). The original foundation migrations, local Auth configuration, RLS tests and typed clients exist. The subsequent [Planner Pass A](PLANNER_PASS_A.md) implements the approved Planner domain locally; Pass B priority links remain deferred. [AUTH_LOCAL](AUTH_LOCAL.md) records the implemented login/callback, Proxy refresh, private layout and logout stage. The approved daily UI cutover is now implemented; see [PHASE1_DAILY_PERSISTENCE](PHASE1_DAILY_PERSISTENCE.md). Hosted deployment and later domain persistence remain unimplemented; later-module schema remains proposed. No production resources are authorized.
 
 ## Ownership and daily identity
 
@@ -82,6 +82,8 @@ Dayprint is a **query/presentation**, not a table: daily record + priorities wit
 
 
 ## Planner and movement
+
+Planner Pass A is now implemented locally; see [PLANNER_PASS_A](PLANNER_PASS_A.md). Tasks have soft-deletion metadata and append-only completion transitions; organization archives preserve references. A conservative per-user revision lock protects commands/order/timer, with idempotency receipts. The tables below remain the domain contract; movement and later priority-link/history integration are not implemented by this slice.
 
 | Table | Fields | Integrity and query paths |
 |---|---|---|

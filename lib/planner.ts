@@ -9,7 +9,9 @@ export type PlannerAccent = AccentColor;
 export type Workspace = { id: string; name: string; accent: PlannerAccent; icon?:MuseIconName };
 export type TaskGroup = { id: string; name: string; workspaceId: string; accent?:AccentColor; icon?:MuseIconName };
 export type TaskTag = { id: string; name: string; accent: PlannerAccent; icon?:MuseIconName };
+export type TaskCompletion={id:string;taskId:string;complete:boolean;occurredAt:string;localDate:string;timeZone:string;title:string;workspaceId:string;plannedDate?:string};
 export type PlannerState = {
+  completionHistory?:TaskCompletion[];
   tasks: PlannedTask[]; events: DayEvent[]; workspaces: Workspace[]; groups: TaskGroup[]; tags: TaskTag[];
   activeTimer: { taskId: string; startedAt: string } | null;
 };

@@ -9,7 +9,7 @@ import { CardHeading } from "./CardHeading";
 import { MuseIcon } from "./MuseIcon";
 import { GlassPopover } from "./GlassPopover";
 import { PlanEntryForm } from "./PlanEntryForm";
-import { usePlanner } from "./PlannerStore";
+import { PlannerPersistenceStatus,PlannerCapture,usePlanner } from "./PlannerStore";
 import { useMuseSpark } from "./MuseSpark";
 import "./ScheduleCard.css";
 
@@ -44,7 +44,7 @@ export function ScheduleCard({ selectedDate }: { selectedDate: string }) {
   }
   return (
     <MuseCard id="schedule" className="schedule-card">
-      <CardHeading id="schedule" title="Today’s plan" icon="calendar" sourceModule="planner" manage={{ href: `/planner?date=${selectedDate}` }} />
+      <PlannerPersistenceStatus/><PlannerCapture><CardHeading id="schedule" title="Today’s plan" icon="calendar" sourceModule="planner" manage={{ href: `/planner?date=${selectedDate}` }} />
       <div className="muse-plan-section" role="group" aria-labelledby="plan-schedule-title">
         <div className="muse-plan-heading"><h3 id="plan-schedule-title">Schedule</h3><button type="button" className="text-button" aria-expanded={adding === "event"} aria-controls="plan-entry" onClick={(event) => { anchorRef.current = event.currentTarget; setAdding("event"); }}>+ Add event</button></div>
         <ul className="muse-plan-list">{preview.visibleEvents.map((event) => <EventRow key={event.id} event={event} />)}</ul>
@@ -61,6 +61,6 @@ export function ScheduleCard({ selectedDate }: { selectedDate: string }) {
         {adding && <PlanEntryForm key={adding} kind={adding} date={selectedDate} onCancel={close} onAdd={(item) => { if (item.kind === "task") dispatch({ type: "task/add", task: item }); else dispatch({ type: "event/add", event: item }); close(); }} />}
       </GlassPopover>
 
-    </MuseCard>
+    </PlannerCapture></MuseCard>
   );
 }
