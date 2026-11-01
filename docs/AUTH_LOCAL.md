@@ -40,3 +40,9 @@ The authenticated profile/timezone and canonical daily/session integration is no
 ## Hosted configuration and privacy completion
 
 Each deployment must explicitly set its canonical `SITE_URL` and matching `NEXT_PUBLIC_SUPABASE_URL`. Local endpoints must both be loopback; hosted endpoints must both be root HTTPS origins. Missing/invalid configuration fails closed without a localhost redirect. Configure Supabase Site URL, exact callback allowlist and email templates for that deployment; keep unrestricted signup disabled. The browser uses only a publishable/legacy anon key; `SUPABASE_SECRET_KEY` remains server-only for confirmed self-deletion. Local invitation/test tooling still refuses hosted endpoints. See [PRODUCTION_READINESS_PHASE1](PRODUCTION_READINESS_PHASE1.md) for current verification and deployment requirements.
+
+## Login-only appearance clarification
+
+Entry routes now use a read-only Disco Damage fallback when no valid `muse.theme` preference exists; valid explicitly saved theme choices and saved material preferences are retained. This fallback never writes an appearance preference and does not change the authenticated application's Iridescent default. Login mounts its own static starfield and edge-biased neon atmosphere, with no rectangular confetti or shared Disco fragments. Its dark glow paint is entry-scoped; application themes, tokens, shared atmosphere, login geometry and authentication are unchanged. Reduced motion and Quiet decoration preferences remain respected.
+
+The product owner has clarified that the UI Session 2 login wording must **not** be considered final. No later verifiable replacement was found in the available implementation/history/reports. The owner explicitly approved leaving all existing wording unchanged for now and revisiting final copy separately; no new copy has been invented.

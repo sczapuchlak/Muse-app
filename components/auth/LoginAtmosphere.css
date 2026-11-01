@@ -1,0 +1,24 @@
+/* Entry-only paint; no shared theme tokens, geometry or atmosphere rules change. */
+.muse-login-atmosphere[data-neon="true"]::before {
+  background:
+    radial-gradient(ellipse 42% 35% at -6% 12%,color-mix(in srgb,var(--accent-pink) 42%,transparent),transparent 76%),
+    radial-gradient(ellipse 37% 30% at 103% 8%,color-mix(in srgb,var(--accent-aqua) 40%,transparent),transparent 79%),
+    radial-gradient(ellipse 27% 37% at 100% 80%,color-mix(in srgb,var(--accent-purple) 40%,transparent),transparent 80%),
+    radial-gradient(ellipse 34% 28% at 8% 104%,color-mix(in srgb,var(--accent-aqua) 32%,transparent),transparent 80%),
+    radial-gradient(ellipse 24% 23% at 73% 108%,color-mix(in srgb,var(--accent-pink) 40%,transparent),transparent 82%),
+    radial-gradient(ellipse 19% 17% at 104% 47%,color-mix(in srgb,var(--star-color-1) 20%,transparent),transparent 85%),
+    #050507;
+}
+.muse-login-atmosphere[data-neon="true"]::after {
+  background:
+    radial-gradient(ellipse 24% 20% at 0% 59%,color-mix(in srgb,var(--accent-purple) 24%,transparent),transparent 83%),
+    radial-gradient(ellipse 22% 16% at 68% -7%,color-mix(in srgb,var(--accent-pink) 22%,transparent),transparent 83%);
+}
+.muse-login-starfield {position:absolute;inset:0;z-index:1;pointer-events:none;}
+.muse-login-starfield>span {position:absolute;display:grid;place-items:center;color:var(--login-star-color);opacity:var(--login-star-opacity);}
+.muse-login-stardot {width:1.5px;height:1.5px;border-radius:50%;background:currentColor;box-shadow:0 0 4px currentColor;}
+.muse-login-sparkle {filter:drop-shadow(0 0 3px currentColor);}
+:root[data-magic="quiet"] .muse-login-starfield>span:nth-child(n+29) {display:none;}
+/* The atmosphere is static, including under reduced motion: no animated blur,
+   sweeping light or floating shapes. Color and star visibility remain intact. */
+@media(prefers-reduced-motion:reduce) {.muse-login-starfield>span {animation:none;transition:none;}}
