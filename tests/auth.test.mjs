@@ -20,6 +20,16 @@ test('live login reuses approved branding and glass structure, while preview rem
  const render=component=>renderToStaticMarkup(React.createElement(component));
  for(const html of [render(MuseLogin),render(LoginPreview)])for(const token of ['muse-login-story','muse-login-glass','muse-login-logo','muse-star-cluster','Welcome to Muse.'])assert.ok(html.includes(token),token);
  const live=render(MuseLogin);assert.ok(live.includes('action="/auth/link"'));assert.ok(live.includes('method="post"'));assert.ok(!live.includes('No email is sent'));
+ const {museBrand}=load('lib/brand');
+ for(const copy of [museBrand.mantra,museBrand.support,museBrand.invitation,'YOUR OWN LITTLE CORNER OF THE UNIVERSE','Welcome to Muse.',"For everything you are and everything you're becoming."]){
+   assert.ok(live.replace(/&#x27;|&apos;/g,"'").includes(copy),copy);
+ }
+ assert.ok(!/STREY|City Concierge/i.test(live));
  assert.ok(render(LoginPreview).includes('Design preview only. No email is sent'));
  const expired=renderToStaticMarkup(React.createElement(MuseLogin,{notice:'link-expired'}));assert.ok(expired.includes('expired or has already been used'));
+});
+test('public entry metadata identifies Muse without inheriting the Daily Edit title',()=>{
+ const {metadata}=load('app/(entry)/layout');
+ assert.equal(metadata.title,'Welcome to Muse.');
+ assert.equal(metadata.description,"For everything you are and everything you're becoming.");
 });

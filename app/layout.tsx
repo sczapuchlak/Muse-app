@@ -4,6 +4,7 @@ import "./globals.css";
 import "./interactions.css";
 import { motionTokens } from "@/lib/motion";
 import { defaultTheme } from "@/lib/themes";
+import { museBrand } from "@/lib/brand";
 
 const geistSans = Geist({
   variable: "--font-interface",
@@ -11,8 +12,8 @@ const geistSans = Geist({
 });
 
 export const metadata: Metadata = {
-  title: "Daily Edit · Muse",
-  description: "A little space for what matters. Your priorities, wellbeing, and daily rituals, thoughtfully together.",
+  title: `Muse — ${museBrand.mantra}`,
+  description: museBrand.invitation,
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
