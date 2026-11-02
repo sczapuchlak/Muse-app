@@ -6,6 +6,7 @@ export const pageMantras = {
   Mood: 'FEEL IT. NAME IT. TRACK IT.',
   Money: "REASONS WHY I'M NOT A MILLIONAIRE",
   Notes: 'GET IT OUT OF YOUR HEAD',
+  Mindspace: 'GET IT OUT OF YOUR HEAD',
   Whimsy: 'A LITTLE MAGIC NEVER HURT',
 } as const;
 

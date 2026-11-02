@@ -12,7 +12,7 @@ import {validDate} from '../dates';
 export type SourceKind='prototype-session'|'manual'|'imported';
 export type SourceInfo={kind:SourceKind;provider?:string};
 export type DatedSource<T>={record:T;source:SourceInfo};
-export type InsightsInput={planner:PlannerState;rituals:RitualState;mood:MoodState;dailyPulse?:DailyPulseObservation[];dailyEntries?:(DailyExpression&{date:string;id:string})[];activities?:MovementRecord[];money:MoneyState;nourish:NourishState;movement:DailyMovement[];movementTypes?:MovementType[];water:DailyWater[];timeZone:string;today:string;source:SourceInfo};
+export type InsightsInput={whimsy?:{sources:import('../whimsy/models').WhimsySources;status:import('./sources').InsightSourceStatus};planner:PlannerState;rituals:RitualState;mood:MoodState;dailyPulse?:DailyPulseObservation[];dailyEntries?:(DailyExpression&{date:string;id:string})[];activities?:MovementRecord[];money:MoneyState;nourish:NourishState;movement:DailyMovement[];movementTypes?:MovementType[];water:DailyWater[];timeZone:string;today:string;source:SourceInfo};
 /** Future adapters must resolve cross-source external IDs before these canonical records reach metrics. */
 export type NormalizedInsights=InsightsInput&{quality:{duplicatesRemoved:number;invalidDailyDates:number;invalidNumericRecords:number};provenance:{module:string;source:SourceInfo;count:number}[]};
 function unique<T>(items:T[],key:(item:T)=>string,updated:(item:T)=>string=()=> ''):T[]{const map=new Map<string,T>();for(const item of items){const id=key(item),previous=map.get(id);if(!previous||updated(item)>=updated(previous))map.set(id,item);}return [...map.values()];}

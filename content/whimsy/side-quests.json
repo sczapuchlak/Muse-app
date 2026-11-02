@@ -1,0 +1,3402 @@
+[
+  {
+    "id": "quest-build-a-blanket-nest",
+    "experience": "side-quests",
+    "category": "Cozy",
+    "tags": [
+      "cozy"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Build a blanket nest",
+    "body": "Make a soft corner and stay there for one unhurried chapter.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-good-mug-ceremony",
+    "experience": "side-quests",
+    "category": "Cozy",
+    "tags": [
+      "cozy"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The good mug ceremony",
+    "body": "Choose your favorite mug and make an ordinary drink feel ceremonial.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-window-weather-watch",
+    "experience": "side-quests",
+    "category": "Cozy",
+    "tags": [
+      "cozy"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Window weather watch",
+    "body": "Sit by a window for ten minutes and notice how the sky changes.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-read-by-lamplight",
+    "experience": "side-quests",
+    "category": "Cozy",
+    "tags": [
+      "cozy"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Read by lamplight",
+    "body": "Give a book twenty minutes and the brightest lamp in the room.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-soup-from-almost-nothing",
+    "experience": "side-quests",
+    "category": "Cozy",
+    "tags": [
+      "cozy"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Soup from almost nothing",
+    "body": "Turn a few pantry odds and ends into a warm bowl.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-a-very-small-spa",
+    "experience": "side-quests",
+    "category": "Cozy",
+    "tags": [
+      "cozy"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "A very small spa",
+    "body": "Make a warm towel, put on music, and give yourself a gentle reset.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-letter-to-tomorrow",
+    "experience": "side-quests",
+    "category": "Cozy",
+    "tags": [
+      "cozy"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Letter to tomorrow",
+    "body": "Write tomorrow-you a kind note and leave it where they'll find it.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-cloud-inventory",
+    "experience": "side-quests",
+    "category": "Cozy",
+    "tags": [
+      "cozy"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Cloud inventory",
+    "body": "Name the shapes you can see from your window, however ridiculous.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-candle-hour",
+    "experience": "side-quests",
+    "category": "Cozy",
+    "tags": [
+      "cozy"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The candle hour",
+    "body": "Light a candle and spend a whole hour without multitasking.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-fresh-sheets-fresh-plot",
+    "experience": "side-quests",
+    "category": "Cozy",
+    "tags": [
+      "cozy"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Fresh sheets, fresh plot",
+    "body": "Change the sheets and pretend the next chapter starts tonight.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-a-tiny-tea-tasting",
+    "experience": "side-quests",
+    "category": "Cozy",
+    "tags": [
+      "cozy"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "A tiny tea tasting",
+    "body": "Compare two teas slowly and pick a wildly specific favorite.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-comfort-recipe",
+    "experience": "side-quests",
+    "category": "Cozy",
+    "tags": [
+      "cozy"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The comfort recipe",
+    "body": "Cook or assemble the snack that always makes things softer.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-unhurried-breakfast",
+    "experience": "side-quests",
+    "category": "Cozy",
+    "tags": [
+      "cozy"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Unhurried breakfast",
+    "body": "Make breakfast without looking at a screen until the last bite.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-cozy-soundtrack",
+    "experience": "side-quests",
+    "category": "Cozy",
+    "tags": [
+      "cozy"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The cozy soundtrack",
+    "body": "Build a five-song soundtrack for the room you're in.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-soft-light-audit",
+    "experience": "side-quests",
+    "category": "Cozy",
+    "tags": [
+      "cozy"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Soft light audit",
+    "body": "Replace one harsh light with a softer lamp or string of lights.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-a-pocket-of-silence",
+    "experience": "side-quests",
+    "category": "Cozy",
+    "tags": [
+      "cozy"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "A pocket of silence",
+    "body": "Take fifteen quiet minutes with no input to process.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-favorite-chair-date",
+    "experience": "side-quests",
+    "category": "Cozy",
+    "tags": [
+      "cozy"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The favorite chair date",
+    "body": "Sit in your best chair with one good thing to read.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-make-a-reading-nook",
+    "experience": "side-quests",
+    "category": "Cozy",
+    "tags": [
+      "cozy"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Make a reading nook",
+    "body": "Move one pillow and one light until a corner becomes inviting.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-gentle-tidy",
+    "experience": "side-quests",
+    "category": "Cozy",
+    "tags": [
+      "cozy"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The gentle tidy",
+    "body": "Clear only one small surface and admire the breathing room.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-scent-memory",
+    "experience": "side-quests",
+    "category": "Cozy",
+    "tags": [
+      "cozy"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Scent memory",
+    "body": "Find a scent that reminds you of somewhere safe and write why.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-rainy-day-backup",
+    "experience": "side-quests",
+    "category": "Cozy",
+    "tags": [
+      "cozy"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Rainy day backup",
+    "body": "Put together a rainy-day kit with music, snack, and comfort read.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-warm-hands-ritual",
+    "experience": "side-quests",
+    "category": "Cozy",
+    "tags": [
+      "cozy"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Warm hands ritual",
+    "body": "Moisturize your hands slowly and notice how they feel afterward.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-nightstand-edit",
+    "experience": "side-quests",
+    "category": "Cozy",
+    "tags": [
+      "cozy"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Nightstand edit",
+    "body": "Keep only three things that make bedtime feel kinder.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-a-no-rush-walk",
+    "experience": "side-quests",
+    "category": "Cozy",
+    "tags": [
+      "cozy"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "A no-rush walk",
+    "body": "Walk a short route at the pace of someone with nowhere to be.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-soft-playlist-swap",
+    "experience": "side-quests",
+    "category": "Cozy",
+    "tags": [
+      "cozy"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The soft playlist swap",
+    "body": "Ask someone for a comfort song and listen all the way through.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-make-a-cocoa-variation",
+    "experience": "side-quests",
+    "category": "Cozy",
+    "tags": [
+      "cozy"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Make a cocoa variation",
+    "body": "Try one surprising addition to cocoa or a warm drink.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-postcard-pause",
+    "experience": "side-quests",
+    "category": "Cozy",
+    "tags": [
+      "cozy"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The postcard pause",
+    "body": "Write a postcard, even if you send it to yourself.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-cozy-in-color",
+    "experience": "side-quests",
+    "category": "Cozy",
+    "tags": [
+      "cozy"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Cozy in color",
+    "body": "Gather five objects in a comforting color and make a tiny arrangement.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-a-screen-free-sunset",
+    "experience": "side-quests",
+    "category": "Cozy",
+    "tags": [
+      "cozy"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "A screen-free sunset",
+    "body": "Watch the sky shift color without photographing it.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-miniature-picnic",
+    "experience": "side-quests",
+    "category": "Cozy",
+    "tags": [
+      "cozy"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The miniature picnic",
+    "body": "Put a snack on a real plate and eat it somewhere pleasant.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-quiet-craft-hour",
+    "experience": "side-quests",
+    "category": "Cozy",
+    "tags": [
+      "cozy"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Quiet craft hour",
+    "body": "Repair, stitch, fold, or make something with your hands for twenty minutes.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-home-library-hunt",
+    "experience": "side-quests",
+    "category": "Cozy",
+    "tags": [
+      "cozy"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The home library hunt",
+    "body": "Find an unread book you already own and give it ten pages.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-pillow-fort-for-grownups",
+    "experience": "side-quests",
+    "category": "Cozy",
+    "tags": [
+      "cozy"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Pillow fort for grownups",
+    "body": "Arrange cushions into a ridiculous but excellent rest spot.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-slow-shower",
+    "experience": "side-quests",
+    "category": "Cozy",
+    "tags": [
+      "cozy"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The slow shower",
+    "body": "Take a shower with music and enough time to enjoy the water.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-sunday-at-any-time",
+    "experience": "side-quests",
+    "category": "Cozy",
+    "tags": [
+      "cozy"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Sunday-at-any-time",
+    "body": "Make a small weekend ritual on a completely ordinary day.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-softest-socks",
+    "experience": "side-quests",
+    "category": "Cozy",
+    "tags": [
+      "cozy"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The softest socks",
+    "body": "Find your comfiest socks and pair them with a five-minute pause.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-a-warm-note",
+    "experience": "side-quests",
+    "category": "Cozy",
+    "tags": [
+      "cozy"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "A warm note",
+    "body": "Send one person a specific, sincere compliment.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-a-tiny-flower-vessel",
+    "experience": "side-quests",
+    "category": "Cozy",
+    "tags": [
+      "cozy"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "A tiny flower vessel",
+    "body": "Put one stem, leaf, or interesting twig in a small jar.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-comfort-movie-scene",
+    "experience": "side-quests",
+    "category": "Cozy",
+    "tags": [
+      "cozy"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Comfort movie scene",
+    "body": "Watch only your favorite scene and savor why it works.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-bedtime-bookmark",
+    "experience": "side-quests",
+    "category": "Cozy",
+    "tags": [
+      "cozy"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Bedtime bookmark",
+    "body": "End the day with one page of fiction before any more scrolling.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-take-the-unfamiliar-turn",
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "tags": [
+      "adventurous"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Take the unfamiliar turn",
+    "body": "Walk or ride one safe route you usually pass by.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-mystery-shelf",
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "tags": [
+      "adventurous"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The mystery shelf",
+    "body": "Choose a book from a section you'd never normally browse.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-visit-a-new-corner",
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "tags": [
+      "adventurous"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Visit a new corner",
+    "body": "Find a neighborhood spot you haven't seen and spend ten minutes there.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-sunrise-reconnaissance",
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "tags": [
+      "adventurous"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Sunrise reconnaissance",
+    "body": "Go outside early and notice what your block sounds like.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-a-different-lunch-address",
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "tags": [
+      "adventurous"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "A different lunch address",
+    "body": "Eat lunch in a place that's new to you.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-map-pin-dare",
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "tags": [
+      "adventurous"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The map pin dare",
+    "body": "Pick one nearby map pin that makes you curious and go investigate.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-local-landmark-detour",
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "tags": [
+      "adventurous"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Local landmark detour",
+    "body": "Visit a modest landmark and learn one surprising fact about it.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-ride-to-the-last-stop",
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "tags": [
+      "adventurous"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Ride to the last stop",
+    "body": "Take a familiar transit route a little farther than usual.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-outside-hour",
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "tags": [
+      "adventurous"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The outside hour",
+    "body": "Spend an hour outdoors with no destination to optimize.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-try-a-new-flavor",
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "tags": [
+      "adventurous"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Try a new flavor",
+    "body": "Order or make a flavor combination you've been avoiding.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-secondhand-treasure-hunt",
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "tags": [
+      "adventurous"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The secondhand treasure hunt",
+    "body": "Visit a thrift or used-book shop and look for one odd beauty.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-first-time-class-sampler",
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "tags": [
+      "adventurous"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "First-time class sampler",
+    "body": "Try a short class, tutorial, or workshop in unfamiliar territory.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-night-walk",
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "tags": [
+      "adventurous"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The night walk",
+    "body": "Take a safe evening walk and notice the neighborhood after dark.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-small-museum-mission",
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "tags": [
+      "adventurous"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Small museum mission",
+    "body": "Visit a gallery or local exhibit and choose one favorite object.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-ask-for-the-special",
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "tags": [
+      "adventurous"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Ask for the special",
+    "body": "At a cafe or shop, ask what someone there genuinely recommends.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-opposite-aisle",
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "tags": [
+      "adventurous"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The opposite aisle",
+    "body": "Explore the grocery aisle you normally skip.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-find-public-art",
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "tags": [
+      "adventurous"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Find public art",
+    "body": "Locate one mural or sculpture and learn who made it.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-bridge-crossing",
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "tags": [
+      "adventurous"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The bridge crossing",
+    "body": "Cross a nearby bridge or boundary just to see the other side.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-tiny-train-adventure",
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "tags": [
+      "adventurous"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Tiny train adventure",
+    "body": "Take public transit to a spot you've only driven past.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-a-new-trailhead",
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "tags": [
+      "adventurous"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "A new trailhead",
+    "body": "Try the first stretch of a different safe path or trail.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-hidden-garden",
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "tags": [
+      "adventurous"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The hidden garden",
+    "body": "Find a community garden or green pocket in your area.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-borrow-a-guidebook",
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "tags": [
+      "adventurous"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Borrow a guidebook",
+    "body": "Open a guide to your own city and try one suggestion.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-unfamiliar-bakery",
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "tags": [
+      "adventurous"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The unfamiliar bakery",
+    "body": "Buy one treat from a bakery you've never visited.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-photo-scavenger-stroll",
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "tags": [
+      "adventurous"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Photo scavenger stroll",
+    "body": "Find a circle, a reflection, and a surprising texture outside.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-neighborhood-history-walk",
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "tags": [
+      "adventurous"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Neighborhood history walk",
+    "body": "Look up an old photo and find its present-day location.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-weather-dare",
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "tags": [
+      "adventurous"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The weather dare",
+    "body": "Dress for the forecast and go out anyway for fifteen minutes.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-find-the-water",
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "tags": [
+      "adventurous"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Find the water",
+    "body": "Visit a river, pond, fountain, or shoreline nearby.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-try-the-late-opening",
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "tags": [
+      "adventurous"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Try the late opening",
+    "body": "Visit a place during its evening hours if it offers them.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-local-market-lap",
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "tags": [
+      "adventurous"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The local market lap",
+    "body": "Walk through a market and ask about one unfamiliar ingredient.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-scenic-route-home",
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "tags": [
+      "adventurous"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The scenic route home",
+    "body": "Choose beauty over efficiency for one trip home.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-a-new-kind-of-movement",
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "tags": [
+      "adventurous"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "A new kind of movement",
+    "body": "Sample a movement style you've never tried for ten minutes.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-tiny-day-trip",
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "tags": [
+      "adventurous"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The tiny day trip",
+    "body": "Choose a nearby town or district and visit one street.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-independent-cinema",
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "tags": [
+      "adventurous"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The independent cinema",
+    "body": "See what a small local cinema is screening and go if it calls.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-learn-a-street-name",
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "tags": [
+      "adventurous"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Learn a street name",
+    "body": "Find out why one street near you has its name.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-bookstore-roulette",
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "tags": [
+      "adventurous"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The bookstore roulette",
+    "body": "Let a bookseller or shelf label choose your next sample read.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-go-above-or-below",
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "tags": [
+      "adventurous"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Go above or below",
+    "body": "Visit a rooftop, lookout, basement venue, or underpass safely.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-stranger-menu-item",
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "tags": [
+      "adventurous"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The stranger menu item",
+    "body": "Pick one menu item you cannot already describe.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-golden-hour-detour",
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "tags": [
+      "adventurous"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The golden-hour detour",
+    "body": "Catch one place you know in entirely different light.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-an-unexpected-errand",
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "tags": [
+      "adventurous"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "An unexpected errand",
+    "body": "Pair a routine errand with one new stop nearby.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-two-stop-expedition",
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "tags": [
+      "adventurous"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The two-stop expedition",
+    "body": "Go to two places you've never combined in one outing.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-write-a-six-line-scene",
+    "experience": "side-quests",
+    "category": "Creative",
+    "tags": [
+      "creative"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Write a six-line scene",
+    "body": "Give two characters a problem and only six lines to solve it.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-invent-a-book-cover",
+    "experience": "side-quests",
+    "category": "Creative",
+    "tags": [
+      "creative"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Invent a book cover",
+    "body": "Sketch the cover for a book that doesn't exist yet.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-one-color-collage",
+    "experience": "side-quests",
+    "category": "Creative",
+    "tags": [
+      "creative"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "One-color collage",
+    "body": "Make a small collage using only one color family.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-bad-poem-challenge",
+    "experience": "side-quests",
+    "category": "Creative",
+    "tags": [
+      "creative"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The bad poem challenge",
+    "body": "Write a deliberately terrible poem and keep the best line.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-tiny-photo-essay",
+    "experience": "side-quests",
+    "category": "Creative",
+    "tags": [
+      "creative"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Tiny photo essay",
+    "body": "Take five photos that tell one ordinary story.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-soundtrack-a-memory",
+    "experience": "side-quests",
+    "category": "Creative",
+    "tags": [
+      "creative"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Soundtrack a memory",
+    "body": "Choose three songs that would score a specific day in your life.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-draw-your-breakfast",
+    "experience": "side-quests",
+    "category": "Creative",
+    "tags": [
+      "creative"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Draw your breakfast",
+    "body": "Sketch what you ate without trying to make it good.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-name-a-fictional-cafe",
+    "experience": "side-quests",
+    "category": "Creative",
+    "tags": [
+      "creative"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Name a fictional cafe",
+    "body": "Invent its name, menu special, and one loyal regular.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-a-postcard-from-nowhere",
+    "experience": "side-quests",
+    "category": "Creative",
+    "tags": [
+      "creative"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "A postcard from nowhere",
+    "body": "Write a postcard from a place you invented.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-one-page-zine",
+    "experience": "side-quests",
+    "category": "Creative",
+    "tags": [
+      "creative"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The one-page zine",
+    "body": "Fold paper into a mini zine and fill every panel.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-make-a-mood-palette",
+    "experience": "side-quests",
+    "category": "Creative",
+    "tags": [
+      "creative"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Make a mood palette",
+    "body": "Collect five colors that describe this week.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-found-word-story",
+    "experience": "side-quests",
+    "category": "Creative",
+    "tags": [
+      "creative"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The found-word story",
+    "body": "Use three words you spot nearby in a tiny story.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-rewrite-a-headline",
+    "experience": "side-quests",
+    "category": "Creative",
+    "tags": [
+      "creative"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Rewrite a headline",
+    "body": "Turn one dull headline into a dramatic fairy-tale title.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-photograph-reflections",
+    "experience": "side-quests",
+    "category": "Creative",
+    "tags": [
+      "creative"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Photograph reflections",
+    "body": "Capture three reflections that look like different worlds.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-write-a-toast",
+    "experience": "side-quests",
+    "category": "Creative",
+    "tags": [
+      "creative"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Write a toast",
+    "body": "Compose a toast to something small that deserves applause.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-object-monologue",
+    "experience": "side-quests",
+    "category": "Creative",
+    "tags": [
+      "creative"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The object monologue",
+    "body": "Let an everyday object tell its side of the story.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-map-an-imaginary-island",
+    "experience": "side-quests",
+    "category": "Creative",
+    "tags": [
+      "creative"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Map an imaginary island",
+    "body": "Draw a map with a curious landmark and a local rumor.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-make-a-tiny-comic",
+    "experience": "side-quests",
+    "category": "Creative",
+    "tags": [
+      "creative"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Make a tiny comic",
+    "body": "Create a three-panel comic about today's minor victory.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-a-new-signature",
+    "experience": "side-quests",
+    "category": "Creative",
+    "tags": [
+      "creative"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "A new signature",
+    "body": "Invent an exaggerated signature for your alter ego.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-color-outside-the-plan",
+    "experience": "side-quests",
+    "category": "Creative",
+    "tags": [
+      "creative"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Color outside the plan",
+    "body": "Make a quick drawing using your least-used color.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-room-portrait",
+    "experience": "side-quests",
+    "category": "Creative",
+    "tags": [
+      "creative"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The room portrait",
+    "body": "Describe one room as if it were a character.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-create-a-creature",
+    "experience": "side-quests",
+    "category": "Creative",
+    "tags": [
+      "creative"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Create a creature",
+    "body": "Combine two ordinary animals and give the result a job.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-thirty-second-melody",
+    "experience": "side-quests",
+    "category": "Creative",
+    "tags": [
+      "creative"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The thirty-second melody",
+    "body": "Hum or record a short tune before you judge it.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-write-a-micro-review",
+    "experience": "side-quests",
+    "category": "Creative",
+    "tags": [
+      "creative"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Write a micro review",
+    "body": "Review a cloud, chair, snack, or other unlikely subject.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-scrap-paper-sculpture",
+    "experience": "side-quests",
+    "category": "Creative",
+    "tags": [
+      "creative"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The scrap-paper sculpture",
+    "body": "Turn one sheet of scrap paper into a standing object.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-design-a-secret-door",
+    "experience": "side-quests",
+    "category": "Creative",
+    "tags": [
+      "creative"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Design a secret door",
+    "body": "Sketch where a hidden door would go and what it opens to.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-a-five-word-memoir",
+    "experience": "side-quests",
+    "category": "Creative",
+    "tags": [
+      "creative"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "A five-word memoir",
+    "body": "Describe a chapter of your life in exactly five words.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-poetry-from-a-receipt",
+    "experience": "side-quests",
+    "category": "Creative",
+    "tags": [
+      "creative"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Poetry from a receipt",
+    "body": "Use words on a receipt or label to make a poem.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-make-a-visual-pun",
+    "experience": "side-quests",
+    "category": "Creative",
+    "tags": [
+      "creative"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Make a visual pun",
+    "body": "Draw the silliest pun you can tolerate.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-memory-storyboard",
+    "experience": "side-quests",
+    "category": "Creative",
+    "tags": [
+      "creative"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The memory storyboard",
+    "body": "Sketch four frames of a favorite memory.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-invent-a-festival",
+    "experience": "side-quests",
+    "category": "Creative",
+    "tags": [
+      "creative"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Invent a festival",
+    "body": "Name a one-day festival and its most absurd tradition.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-a-new-cover-song",
+    "experience": "side-quests",
+    "category": "Creative",
+    "tags": [
+      "creative"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "A new cover song",
+    "body": "Rewrite one chorus to be about your day; keep it private.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-shadow-theater",
+    "experience": "side-quests",
+    "category": "Creative",
+    "tags": [
+      "creative"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Shadow theater",
+    "body": "Make shapes with a lamp and photograph the best one.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-miniature-still-life",
+    "experience": "side-quests",
+    "category": "Creative",
+    "tags": [
+      "creative"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The miniature still life",
+    "body": "Arrange three small objects and draw their silhouettes.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-one-sentence-five-versions",
+    "experience": "side-quests",
+    "category": "Creative",
+    "tags": [
+      "creative"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "One sentence, five versions",
+    "body": "Rewrite one sentence as mystery, comedy, romance, news, and fantasy.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-craft-a-tiny-invitation",
+    "experience": "side-quests",
+    "category": "Creative",
+    "tags": [
+      "creative"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Craft a tiny invitation",
+    "body": "Design an invitation to an imaginary event.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-color-walk",
+    "experience": "side-quests",
+    "category": "Creative",
+    "tags": [
+      "creative"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The color walk",
+    "body": "Photograph only one color during a short walk.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-make-a-paper-crown",
+    "experience": "side-quests",
+    "category": "Creative",
+    "tags": [
+      "creative"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Make a paper crown",
+    "body": "Build a crown for a very specific mood.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-alternate-ending",
+    "experience": "side-quests",
+    "category": "Creative",
+    "tags": [
+      "creative"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The alternate ending",
+    "body": "Give a familiar story a kinder or stranger ending.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-future-exhibit-label",
+    "experience": "side-quests",
+    "category": "Creative",
+    "tags": [
+      "creative"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Future exhibit label",
+    "body": "Write a museum label for something you made or kept.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-specific-thank-you",
+    "experience": "side-quests",
+    "category": "Social",
+    "tags": [
+      "social"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The specific thank-you",
+    "body": "Tell someone exactly which small thing they did mattered.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-ask-a-better-question",
+    "experience": "side-quests",
+    "category": "Social",
+    "tags": [
+      "social"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Ask a better question",
+    "body": "Ask a friend something beyond how their week went.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-send-a-voice-postcard",
+    "experience": "side-quests",
+    "category": "Social",
+    "tags": [
+      "social"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Send a voice postcard",
+    "body": "Record a one-minute hello for someone you miss.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-share-a-tiny-discovery",
+    "experience": "side-quests",
+    "category": "Social",
+    "tags": [
+      "social"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Share a tiny discovery",
+    "body": "Send a friend a song, recipe, or fact and why you thought of them.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-walking-catch-up",
+    "experience": "side-quests",
+    "category": "Social",
+    "tags": [
+      "social"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The walking catch-up",
+    "body": "Invite someone for a short walk instead of another screen chat.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-compliment-a-craft",
+    "experience": "side-quests",
+    "category": "Social",
+    "tags": [
+      "social"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Compliment a craft",
+    "body": "Notice and name someone's effort rather than the result.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-two-person-playlist",
+    "experience": "side-quests",
+    "category": "Social",
+    "tags": [
+      "social"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The two-person playlist",
+    "body": "Trade one song each and explain the choice.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-call-the-faraway-person",
+    "experience": "side-quests",
+    "category": "Social",
+    "tags": [
+      "social"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Call the faraway person",
+    "body": "Make a brief call you keep meaning to make.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-old-photo-hello",
+    "experience": "side-quests",
+    "category": "Social",
+    "tags": [
+      "social"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The old photo hello",
+    "body": "Send someone a memory photo with one sentence.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-invite-a-plus-one",
+    "experience": "side-quests",
+    "category": "Social",
+    "tags": [
+      "social"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Invite a plus-one",
+    "body": "Ask someone to join an errand, museum, or coffee run.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-recipe-exchange",
+    "experience": "side-quests",
+    "category": "Social",
+    "tags": [
+      "social"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The recipe exchange",
+    "body": "Swap a comfort recipe with someone you know.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-a-question-for-an-elder",
+    "experience": "side-quests",
+    "category": "Social",
+    "tags": [
+      "social"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "A question for an elder",
+    "body": "Ask an older person about a place they loved growing up.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-surprise-check-in",
+    "experience": "side-quests",
+    "category": "Social",
+    "tags": [
+      "social"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The surprise check-in",
+    "body": "Message someone simply because they crossed your mind.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-write-a-tiny-fan-letter",
+    "experience": "side-quests",
+    "category": "Social",
+    "tags": [
+      "social"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Write a tiny fan letter",
+    "body": "Tell a creator or local maker why you appreciate their work.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-dinner-question-jar",
+    "experience": "side-quests",
+    "category": "Social",
+    "tags": [
+      "social"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Dinner question jar",
+    "body": "Bring three unusual questions to a meal with others.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-neighbor-hello",
+    "experience": "side-quests",
+    "category": "Social",
+    "tags": [
+      "social"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The neighbor hello",
+    "body": "Introduce yourself or say hello to someone nearby.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-make-a-low-stakes-plan",
+    "experience": "side-quests",
+    "category": "Social",
+    "tags": [
+      "social"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Make a low-stakes plan",
+    "body": "Propose a simple meetup with a real day and place.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-tell-a-good-story",
+    "experience": "side-quests",
+    "category": "Social",
+    "tags": [
+      "social"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Tell a good story",
+    "body": "Share a small funny story with someone today.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-skill-trade",
+    "experience": "side-quests",
+    "category": "Social",
+    "tags": [
+      "social"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The skill trade",
+    "body": "Ask someone to show you a skill and offer one back.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-celebrate-quietly",
+    "experience": "side-quests",
+    "category": "Social",
+    "tags": [
+      "social"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Celebrate quietly",
+    "body": "Congratulate someone on progress they may have overlooked.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-museum-buddy",
+    "experience": "side-quests",
+    "category": "Social",
+    "tags": [
+      "social"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The museum buddy",
+    "body": "Invite a friend to choose one artwork each and compare notes.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-send-the-first-meme",
+    "experience": "side-quests",
+    "category": "Social",
+    "tags": [
+      "social"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Send the first meme",
+    "body": "Send a meme that actually matches someone's sense of humor.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-ask-for-a-recommendation",
+    "experience": "side-quests",
+    "category": "Social",
+    "tags": [
+      "social"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Ask for a recommendation",
+    "body": "Invite a person to recommend something they genuinely love.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-shared-coffee-pause",
+    "experience": "side-quests",
+    "category": "Social",
+    "tags": [
+      "social"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The shared coffee pause",
+    "body": "Take a fifteen-minute drink break with another human.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-make-a-table-tradition",
+    "experience": "side-quests",
+    "category": "Social",
+    "tags": [
+      "social"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Make a table tradition",
+    "body": "Start a small recurring question or toast at a shared meal.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-handwritten-hello",
+    "experience": "side-quests",
+    "category": "Social",
+    "tags": [
+      "social"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The handwritten hello",
+    "body": "Leave a short handwritten note for someone in your life.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-kind-introduction",
+    "experience": "side-quests",
+    "category": "Social",
+    "tags": [
+      "social"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The kind introduction",
+    "body": "Introduce two people who might enjoy knowing each other.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-memory-question",
+    "experience": "side-quests",
+    "category": "Social",
+    "tags": [
+      "social"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The memory question",
+    "body": "Ask a friend what they remember about a shared day.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-book-exchange",
+    "experience": "side-quests",
+    "category": "Social",
+    "tags": [
+      "social"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The book exchange",
+    "body": "Lend or trade a book and include a note inside.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-little-favor",
+    "experience": "side-quests",
+    "category": "Social",
+    "tags": [
+      "social"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The little favor",
+    "body": "Offer one specific, manageable favor to someone who could use it.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-ask-about-their-project",
+    "experience": "side-quests",
+    "category": "Social",
+    "tags": [
+      "social"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Ask about their project",
+    "body": "Give someone space to talk about what excites them.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-unexpected-applause",
+    "experience": "side-quests",
+    "category": "Social",
+    "tags": [
+      "social"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The unexpected applause",
+    "body": "Recognize a colleague or friend for invisible work.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-share-the-view",
+    "experience": "side-quests",
+    "category": "Social",
+    "tags": [
+      "social"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Share the view",
+    "body": "Send someone a photo of something beautiful you noticed.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-lunch-invitation",
+    "experience": "side-quests",
+    "category": "Social",
+    "tags": [
+      "social"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The lunch invitation",
+    "body": "Invite someone to an uncomplicated lunch or snack.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-reconnect-with-context",
+    "experience": "side-quests",
+    "category": "Social",
+    "tags": [
+      "social"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Reconnect with context",
+    "body": "Message an old friend with a real memory, not just hey.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-honest-recommendation",
+    "experience": "side-quests",
+    "category": "Social",
+    "tags": [
+      "social"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The honest recommendation",
+    "body": "Write a short review for a small business you value.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-play-a-question-game",
+    "experience": "side-quests",
+    "category": "Social",
+    "tags": [
+      "social"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Play a question game",
+    "body": "Take turns answering five curious questions with someone.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-two-minute-toast",
+    "experience": "side-quests",
+    "category": "Social",
+    "tags": [
+      "social"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The two-minute toast",
+    "body": "Raise a glass or mug to a person who made the week better.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-future-plan-seed",
+    "experience": "side-quests",
+    "category": "Social",
+    "tags": [
+      "social"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The future plan seed",
+    "body": "Ask a friend what small thing you'd both like to try.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-thank-you-follow-up",
+    "experience": "side-quests",
+    "category": "Social",
+    "tags": [
+      "social"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The thank-you follow-up",
+    "body": "Tell someone how their advice or help played out.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-dramatic-errand",
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "tags": [
+      "chaos-goblin"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The dramatic errand",
+    "body": "Narrate a boring errand in your head like an epic quest.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-official-snack-judging",
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "tags": [
+      "chaos-goblin"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Official snack judging",
+    "body": "Rate three snacks with suspiciously serious criteria.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-ridiculous-hat-walk",
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "tags": [
+      "chaos-goblin"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The ridiculous hat walk",
+    "body": "Wear something delightfully odd for a brief outing.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-rename-the-houseplants",
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "tags": [
+      "chaos-goblin"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Rename the houseplants",
+    "body": "Give one plant a title and an improbable backstory.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-tiny-trophy-ceremony",
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "tags": [
+      "chaos-goblin"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Tiny trophy ceremony",
+    "body": "Award a household object a trophy for exceptional service.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-fake-museum-tour",
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "tags": [
+      "chaos-goblin"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The fake museum tour",
+    "body": "Describe your own living room as a world-famous exhibit.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-dance-to-one-entire-song",
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "tags": [
+      "chaos-goblin"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Dance to one entire song",
+    "body": "No choreography, no audience required, just commitment.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-a-secret-handshake",
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "tags": [
+      "chaos-goblin"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "A secret handshake",
+    "body": "Invent a handshake for you and a willing accomplice.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-villain-playlist",
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "tags": [
+      "chaos-goblin"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The villain playlist",
+    "body": "Make three songs for a very polite fictional villain.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-mystery-ingredient-challenge",
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "tags": [
+      "chaos-goblin"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Mystery ingredient challenge",
+    "body": "Add one surprising safe ingredient to an ordinary snack.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-absurd-weather-report",
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "tags": [
+      "chaos-goblin"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The absurd weather report",
+    "body": "Report today's weather as if it were a soap opera.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-found-object-mascot",
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "tags": [
+      "chaos-goblin"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Found object mascot",
+    "body": "Choose a harmless object as your mascot for the day.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-one-minute-parade",
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "tags": [
+      "chaos-goblin"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The one-minute parade",
+    "body": "March through a room to a song of your choosing.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-rename-an-ordinary-thing",
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "tags": [
+      "chaos-goblin"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Rename an ordinary thing",
+    "body": "Give an everyday object a more glamorous official name.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-tiny-heist-plan",
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "tags": [
+      "chaos-goblin"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The tiny heist plan",
+    "body": "Plan how to steal back fifteen minutes for yourself; commit no crimes.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-a-fake-award-speech",
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "tags": [
+      "chaos-goblin"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "A fake award speech",
+    "body": "Thank the people, pets, or snacks behind your latest tiny win.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-upside-down-drawing",
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "tags": [
+      "chaos-goblin"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The upside-down drawing",
+    "body": "Draw an object while looking at it upside down.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-make-a-nonsense-menu",
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "tags": [
+      "chaos-goblin"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Make a nonsense menu",
+    "body": "Invent a restaurant menu for imaginary creatures.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-dramatic-entrance",
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "tags": [
+      "chaos-goblin"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The dramatic entrance",
+    "body": "Enter a room as if someone is announcing your arrival.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-very-serious-rock-review",
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "tags": [
+      "chaos-goblin"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Very serious rock review",
+    "body": "Review a pebble like a luxury product.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-spoon-orchestra",
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "tags": [
+      "chaos-goblin"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The spoon orchestra",
+    "body": "Make a thirty-second tune with safe kitchen objects.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-secret-code-note",
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "tags": [
+      "chaos-goblin"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The secret code note",
+    "body": "Write yourself a note in a code you invent.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-invent-a-minor-holiday",
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "tags": [
+      "chaos-goblin"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "Invent a minor holiday",
+    "body": "Declare a holiday for something wonderfully specific.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-floor-is-lava-route",
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "tags": [
+      "chaos-goblin"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The floor-is-lava route",
+    "body": "Cross a room using only a safe silly path.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-a-rubber-duck-pitch",
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "tags": [
+      "chaos-goblin"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "A rubber-duck pitch",
+    "body": "Explain an idea to an object as if it's your investor.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-backwards-playlist",
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "tags": [
+      "chaos-goblin"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The backwards playlist",
+    "body": "Play a favorite playlist from the last song to the first.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-surprise-costume-detail",
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "tags": [
+      "chaos-goblin"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The surprise costume detail",
+    "body": "Add one tiny costume-like accessory to an ordinary outfit.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-a-sock-puppet-interview",
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "tags": [
+      "chaos-goblin"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "A sock puppet interview",
+    "body": "Ask an improvised puppet three questions about its ambitions.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-cabinet-fashion-show",
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "tags": [
+      "chaos-goblin"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The cabinet fashion show",
+    "body": "Give three mugs or bowls absurd runway descriptions.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-midnight-noodle-myth",
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "tags": [
+      "chaos-goblin"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The midnight-noodle myth",
+    "body": "Invent an origin myth for a favorite late snack.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-an-impossible-postcard",
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "tags": [
+      "chaos-goblin"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "An impossible postcard",
+    "body": "Write a postcard from the moon's least popular gift shop.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-made-up-sport",
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "tags": [
+      "chaos-goblin"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The made-up sport",
+    "body": "Invent a tiny indoor sport with safe rules and a ridiculous name.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-alternate-job-title",
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "tags": [
+      "chaos-goblin"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The alternate job title",
+    "body": "Give yourself the fanciest possible title for today's chores.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-a-tiny-conspiracy-board",
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "tags": [
+      "chaos-goblin"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "A tiny conspiracy board",
+    "body": "Connect three unrelated objects with a harmless silly theory.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-peculiar-compliment",
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "tags": [
+      "chaos-goblin"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The peculiar compliment",
+    "body": "Give someone a kind compliment with an unexpected metaphor.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-dramatic-countdown",
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "tags": [
+      "chaos-goblin"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The dramatic countdown",
+    "body": "Count down from ten before completing one tiny task.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-elevator-pitch-for-a-cloud",
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "tags": [
+      "chaos-goblin"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The elevator pitch for a cloud",
+    "body": "Sell the idea of a cloud like a startup founder.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-imaginary-mascot-audition",
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "tags": [
+      "chaos-goblin"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The imaginary mascot audition",
+    "body": "Audition three household objects for team mascot.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-forbidden-flavor-debate",
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "tags": [
+      "chaos-goblin"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The forbidden flavor debate",
+    "body": "Argue for a strange snack pairing, then taste it if safe.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20
+    },
+    "sources": []
+  },
+  {
+    "id": "quest-the-good-nonsense-manifesto",
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "tags": [
+      "chaos-goblin"
+    ],
+    "version": 1,
+    "state": "published",
+    "title": "The good-nonsense manifesto",
+    "body": "Write three rules for a more playful ordinary day.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20
+    },
+    "sources": []
+  }
+]

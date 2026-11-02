@@ -1,0 +1,1250 @@
+[
+  {
+    "id": "tarot-major-00",
+    "name": "The Fool",
+    "section": "Major Arcana",
+    "number": 0,
+    "keywords": [
+      "beginning",
+      "trust",
+      "possibility"
+    ],
+    "upright": "The traveler steps toward an unknown path with curiosity; a fresh start asks for openness and a little faith.",
+    "reversed": "Pause before leaping, or notice where fear of looking foolish has closed a useful door.",
+    "symbolism": "A figure approaches a cliff with a white rose and small dog; innocence meets the edge of experience.",
+    "question": "What new beginning feels worth a thoughtful risk?",
+    "element": "varies"
+  },
+  {
+    "id": "tarot-major-01",
+    "name": "The Magician",
+    "section": "Major Arcana",
+    "number": 1,
+    "keywords": [
+      "agency",
+      "focus",
+      "skill"
+    ],
+    "upright": "Tools are already on the table; focused intention turns an idea into something tangible.",
+    "reversed": "Scattered energy or a polished performance may be hiding the work that actually matters.",
+    "symbolism": "One hand points upward while the other reaches earth, linking inspiration to action through the four suit tools.",
+    "question": "Which skill could you put to work today?",
+    "element": "varies"
+  },
+  {
+    "id": "tarot-major-02",
+    "name": "The High Priestess",
+    "section": "Major Arcana",
+    "number": 2,
+    "keywords": [
+      "intuition",
+      "mystery",
+      "inner knowledge"
+    ],
+    "upright": "Quiet observation may reveal more than another immediate answer; trust what you know beneath the noise.",
+    "reversed": "A secret may need gentle examination, or intuition may be confused with avoidance.",
+    "symbolism": "She sits between dark and light pillars with a scroll and veil, guarding knowledge that unfolds slowly.",
+    "question": "What have you sensed but not yet named?",
+    "element": "varies"
+  },
+  {
+    "id": "tarot-major-03",
+    "name": "The Empress",
+    "section": "Major Arcana",
+    "number": 3,
+    "keywords": [
+      "nurture",
+      "abundance",
+      "creation"
+    ],
+    "upright": "Care and patience help an idea, relationship, or body grow into its own season.",
+    "reversed": "Overgiving or neglecting your own needs can make abundance feel strangely thin.",
+    "symbolism": "Wheat, flowing water, and a starry crown place creativity within a generous living landscape.",
+    "question": "What needs tending rather than forcing?",
+    "element": "varies"
+  },
+  {
+    "id": "tarot-major-04",
+    "name": "The Emperor",
+    "section": "Major Arcana",
+    "number": 4,
+    "keywords": [
+      "structure",
+      "boundaries",
+      "stewardship"
+    ],
+    "upright": "Clear boundaries and steady responsibility can give an ambitious plan a reliable shape.",
+    "reversed": "Rigid control may be protecting you from uncertainty while limiting everyone else's room.",
+    "symbolism": "A ruler sits on a stone throne marked by rams, holding symbols of authority in a stark landscape.",
+    "question": "Where would a clear boundary make life easier?",
+    "element": "varies"
+  },
+  {
+    "id": "tarot-major-05",
+    "name": "The Hierophant",
+    "section": "Major Arcana",
+    "number": 5,
+    "keywords": [
+      "tradition",
+      "teaching",
+      "belonging"
+    ],
+    "upright": "A trusted practice, teacher, or community can offer useful wisdom before you improvise your own way.",
+    "reversed": "A rule may be outliving its purpose; ask whether you are following it by choice.",
+    "symbolism": "A ceremonial teacher sits between pillars as two students receive instruction below.",
+    "question": "Which tradition supports you, and which one needs revision?",
+    "element": "varies"
+  },
+  {
+    "id": "tarot-major-06",
+    "name": "The Lovers",
+    "section": "Major Arcana",
+    "number": 6,
+    "keywords": [
+      "choice",
+      "alignment",
+      "connection"
+    ],
+    "upright": "A meaningful choice becomes clearer when your values and commitments are allowed into the conversation.",
+    "reversed": "Attraction or approval may be replacing honest alignment with what you truly want.",
+    "symbolism": "Two figures stand beneath an angel, with contrasting trees behind them.",
+    "question": "What choice feels most aligned with your values?",
+    "element": "varies"
+  },
+  {
+    "id": "tarot-major-07",
+    "name": "The Chariot",
+    "section": "Major Arcana",
+    "number": 7,
+    "keywords": [
+      "direction",
+      "will",
+      "momentum"
+    ],
+    "upright": "Choose a direction and coordinate competing impulses rather than waiting for a perfectly smooth road.",
+    "reversed": "Pushing harder without checking the route can become motion without progress.",
+    "symbolism": "A charioteer faces two differently colored sphinxes beneath a starry canopy.",
+    "question": "What would deliberate forward motion look like here?",
+    "element": "varies"
+  },
+  {
+    "id": "tarot-major-08",
+    "name": "Strength",
+    "section": "Major Arcana",
+    "number": 8,
+    "keywords": [
+      "courage",
+      "gentleness",
+      "patience"
+    ],
+    "upright": "Gentle courage can work where force fails; steady care is its own form of strength.",
+    "reversed": "Suppressed frustration or self-doubt may need compassion before it can change.",
+    "symbolism": "A calm figure closes a lion's mouth beneath the infinity symbol.",
+    "question": "Where could you try patience instead of pressure?",
+    "element": "varies"
+  },
+  {
+    "id": "tarot-major-09",
+    "name": "The Hermit",
+    "section": "Major Arcana",
+    "number": 9,
+    "keywords": [
+      "solitude",
+      "inquiry",
+      "guidance"
+    ],
+    "upright": "Step back long enough to hear your own thinking; solitude can clarify the next small step.",
+    "reversed": "Isolation may have become a hiding place, or noise may be keeping you from reflection.",
+    "symbolism": "A cloaked traveler holds a lantern high on a mountain path.",
+    "question": "What becomes clearer when you have quiet?",
+    "element": "varies"
+  },
+  {
+    "id": "tarot-major-10",
+    "name": "Wheel of Fortune",
+    "section": "Major Arcana",
+    "number": 10,
+    "keywords": [
+      "cycles",
+      "change",
+      "timing"
+    ],
+    "upright": "Conditions are shifting; meet the turn with adaptability rather than pretending everything is fixed.",
+    "reversed": "Trying to control every outcome may make change feel more frightening than it is.",
+    "symbolism": "A turning wheel is surrounded by symbolic creatures studying open books.",
+    "question": "What is changing, and what remains yours to choose?",
+    "element": "varies"
+  },
+  {
+    "id": "tarot-major-11",
+    "name": "Justice",
+    "section": "Major Arcana",
+    "number": 11,
+    "keywords": [
+      "fairness",
+      "accountability",
+      "clarity"
+    ],
+    "upright": "Look at the evidence, own your part, and seek a fair outcome with clear eyes.",
+    "reversed": "A rushed verdict or convenient story may be obscuring the full picture.",
+    "symbolism": "A seated figure holds balanced scales and an upright sword.",
+    "question": "What facts deserve a more honest hearing?",
+    "element": "varies"
+  },
+  {
+    "id": "tarot-major-12",
+    "name": "The Hanged Man",
+    "section": "Major Arcana",
+    "number": 12,
+    "keywords": [
+      "pause",
+      "perspective",
+      "surrender"
+    ],
+    "upright": "A voluntary pause can reveal an angle that pushing forward would miss.",
+    "reversed": "Waiting without reflection may be stagnation disguised as patience.",
+    "symbolism": "A calm figure hangs by one foot with a halo, seeing the world upside down.",
+    "question": "What might change if you viewed this differently?",
+    "element": "varies"
+  },
+  {
+    "id": "tarot-major-13",
+    "name": "Death",
+    "section": "Major Arcana",
+    "number": 13,
+    "keywords": [
+      "ending",
+      "transition",
+      "renewal"
+    ],
+    "upright": "An ending can make room for a different life chapter; let the old form complete itself.",
+    "reversed": "Clinging to a finished chapter can delay a kinder transition.",
+    "symbolism": "A skeletal rider moves past fallen figures toward a sunrise between towers.",
+    "question": "What are you ready to let end gently?",
+    "element": "varies"
+  },
+  {
+    "id": "tarot-major-14",
+    "name": "Temperance",
+    "section": "Major Arcana",
+    "number": 14,
+    "keywords": [
+      "balance",
+      "integration",
+      "pacing"
+    ],
+    "upright": "Combine different needs with care; a sustainable rhythm may be more powerful than extremes.",
+    "reversed": "The mixture may be out of balance, or moderation may have become an excuse to avoid a decision.",
+    "symbolism": "An angel pours water between two cups with one foot on land and one in water.",
+    "question": "What needs a more workable balance?",
+    "element": "varies"
+  },
+  {
+    "id": "tarot-major-15",
+    "name": "The Devil",
+    "section": "Major Arcana",
+    "number": 15,
+    "keywords": [
+      "attachment",
+      "habit",
+      "choice"
+    ],
+    "upright": "Notice the bargain that keeps you stuck; naming it is a first step toward choice.",
+    "reversed": "Shame may be deepening a pattern that needs understanding and support.",
+    "symbolism": "Two figures stand loosely chained beneath a horned figure, suggesting bonds that can be examined.",
+    "question": "What hold on you might be looser than it feels?",
+    "element": "varies"
+  },
+  {
+    "id": "tarot-major-16",
+    "name": "The Tower",
+    "section": "Major Arcana",
+    "number": 16,
+    "keywords": [
+      "disruption",
+      "revelation",
+      "rebuilding"
+    ],
+    "upright": "A sudden change may expose what was unstable; respond to what is real before rebuilding.",
+    "reversed": "Fear of disruption may be keeping a fragile structure standing too long.",
+    "symbolism": "Lightning strikes a tower and its crown falls as figures descend.",
+    "question": "What truth has become too clear to ignore?",
+    "element": "varies"
+  },
+  {
+    "id": "tarot-major-17",
+    "name": "The Star",
+    "section": "Major Arcana",
+    "number": 17,
+    "keywords": [
+      "hope",
+      "restoration",
+      "openness"
+    ],
+    "upright": "After difficulty, small acts of trust and restoration can make the future feel possible again.",
+    "reversed": "Hope may need nourishment, or comparison may be dimming your own light.",
+    "symbolism": "A figure pours water onto earth and pool beneath a large star and seven smaller ones.",
+    "question": "What would help hope feel practical today?",
+    "element": "varies"
+  },
+  {
+    "id": "tarot-major-18",
+    "name": "The Moon",
+    "section": "Major Arcana",
+    "number": 18,
+    "keywords": [
+      "uncertainty",
+      "dreams",
+      "intuition"
+    ],
+    "upright": "Not every shadow is a warning; move carefully while feelings and facts become clearer.",
+    "reversed": "Confusion may be growing because imagination is filling gaps that evidence could answer.",
+    "symbolism": "A moon hangs over a winding path between towers, with dog, wolf, and crayfish below.",
+    "question": "Which part is known, and which part is imagined?",
+    "element": "varies"
+  },
+  {
+    "id": "tarot-major-19",
+    "name": "The Sun",
+    "section": "Major Arcana",
+    "number": 19,
+    "keywords": [
+      "joy",
+      "visibility",
+      "vitality"
+    ],
+    "upright": "Let a clear success be visible; warmth and simple pleasure deserve space too.",
+    "reversed": "A bright moment need not erase harder feelings, and forced cheer can flatten the truth.",
+    "symbolism": "A child rides beneath a radiant sun and sunflowers, carrying a red banner.",
+    "question": "What good thing can you allow yourself to enjoy?",
+    "element": "varies"
+  },
+  {
+    "id": "tarot-major-20",
+    "name": "Judgement",
+    "section": "Major Arcana",
+    "number": 20,
+    "keywords": [
+      "reckoning",
+      "renewal",
+      "calling"
+    ],
+    "upright": "A past chapter can be understood without being relived; answer the call to begin differently.",
+    "reversed": "Harsh self-judgment may be preventing the honest repair that would set you free.",
+    "symbolism": "An angel's trumpet calls figures from open graves toward a distant horizon.",
+    "question": "What are you ready to answer for and move beyond?",
+    "element": "varies"
+  },
+  {
+    "id": "tarot-major-21",
+    "name": "The World",
+    "section": "Major Arcana",
+    "number": 21,
+    "keywords": [
+      "completion",
+      "integration",
+      "wholeness"
+    ],
+    "upright": "A cycle has reached its own shape; recognize what you learned before stepping onward.",
+    "reversed": "A final detail or unmet expectation may be keeping you from acknowledging real completion.",
+    "symbolism": "A dancing figure within a wreath is framed by four symbolic creatures.",
+    "question": "What have you completed that deserves recognition?",
+    "element": "varies"
+  },
+  {
+    "id": "tarot-wands-01",
+    "name": "Ace of Wands",
+    "section": "Wands",
+    "number": 1,
+    "keywords": [
+      "spark",
+      "initiative",
+      "creative energy"
+    ],
+    "upright": "A lively idea wants a first experiment, even if the full plan is not ready.",
+    "reversed": "The spark may be buried under delay, or excitement may need a clearer direction.",
+    "symbolism": "A hand offers a budding wand above a fertile landscape.",
+    "question": "What small action would give this idea air?",
+    "element": "Fire"
+  },
+  {
+    "id": "tarot-wands-02",
+    "name": "Two of Wands",
+    "section": "Wands",
+    "number": 2,
+    "keywords": [
+      "vision",
+      "choice",
+      "planning"
+    ],
+    "upright": "You can see farther from this vantage; compare possible routes before committing.",
+    "reversed": "Staying at the planning stage may feel safe while the world waits outside.",
+    "symbolism": "A figure holds a globe by a parapet, looking beyond familiar walls.",
+    "question": "Which horizon is worth preparing for?",
+    "element": "Fire"
+  },
+  {
+    "id": "tarot-wands-03",
+    "name": "Three of Wands",
+    "section": "Wands",
+    "number": 3,
+    "keywords": [
+      "expansion",
+      "anticipation",
+      "progress"
+    ],
+    "upright": "Work already set in motion is reaching outward; watch for what returns.",
+    "reversed": "Expecting immediate results may obscure the progress already traveling toward you.",
+    "symbolism": "A figure stands above the sea watching ships approach beneath three wands.",
+    "question": "What progress is underway beyond your direct view?",
+    "element": "Fire"
+  },
+  {
+    "id": "tarot-wands-04",
+    "name": "Four of Wands",
+    "section": "Wands",
+    "number": 4,
+    "keywords": [
+      "welcome",
+      "milestone",
+      "community"
+    ],
+    "upright": "Mark a shared milestone and make room for people who helped you reach it.",
+    "reversed": "A celebration may feel hollow if belonging or rest has been postponed.",
+    "symbolism": "Four wands support a garland while people gather near home.",
+    "question": "What small victory deserves a gathering?",
+    "element": "Fire"
+  },
+  {
+    "id": "tarot-wands-05",
+    "name": "Five of Wands",
+    "section": "Wands",
+    "number": 5,
+    "keywords": [
+      "friction",
+      "competition",
+      "different voices"
+    ],
+    "upright": "Clashing ideas can reveal energy and possibility if everyone knows the rules.",
+    "reversed": "Noise and rivalry may be crowding out the common goal.",
+    "symbolism": "Five youths cross wooden wands in a lively, disorderly contest.",
+    "question": "Where is useful debate becoming needless struggle?",
+    "element": "Fire"
+  },
+  {
+    "id": "tarot-wands-06",
+    "name": "Six of Wands",
+    "section": "Wands",
+    "number": 6,
+    "keywords": [
+      "recognition",
+      "momentum",
+      "encouragement"
+    ],
+    "upright": "Let recognition strengthen your next step; a visible win can encourage others too.",
+    "reversed": "External praise may be steering the work more than your own purpose.",
+    "symbolism": "A laurel-crowned rider passes through a crowd carrying a decorated wand.",
+    "question": "What success can you accept without minimizing it?",
+    "element": "Fire"
+  },
+  {
+    "id": "tarot-wands-07",
+    "name": "Seven of Wands",
+    "section": "Wands",
+    "number": 7,
+    "keywords": [
+      "conviction",
+      "defense",
+      "resolve"
+    ],
+    "upright": "You may need to hold your ground while explaining what matters.",
+    "reversed": "Defending every position can exhaust the energy needed for genuine priorities.",
+    "symbolism": "A figure on high ground faces six rising wands with one of their own.",
+    "question": "Which boundary is worth defending today?",
+    "element": "Fire"
+  },
+  {
+    "id": "tarot-wands-08",
+    "name": "Eight of Wands",
+    "section": "Wands",
+    "number": 8,
+    "keywords": [
+      "speed",
+      "messages",
+      "movement"
+    ],
+    "upright": "Several things are moving at once; respond clearly and keep pace with what is real.",
+    "reversed": "Hurry may be replacing intention, or a needed message may still be unsent.",
+    "symbolism": "Eight wands streak through open sky toward the ground.",
+    "question": "What deserves a prompt, uncomplicated response?",
+    "element": "Fire"
+  },
+  {
+    "id": "tarot-wands-09",
+    "name": "Nine of Wands",
+    "section": "Wands",
+    "number": 9,
+    "keywords": [
+      "resilience",
+      "caution",
+      "endurance"
+    ],
+    "upright": "Experience has made you careful, and you can keep going without pretending you are untouched.",
+    "reversed": "Constant vigilance may be asking for rest rather than another defense.",
+    "symbolism": "A bandaged watcher grips a wand before a row of eight others.",
+    "question": "What support would make persistence less lonely?",
+    "element": "Fire"
+  },
+  {
+    "id": "tarot-wands-10",
+    "name": "Ten of Wands",
+    "section": "Wands",
+    "number": 10,
+    "keywords": [
+      "burden",
+      "responsibility",
+      "delegation"
+    ],
+    "upright": "You have carried a great deal; finishing may require putting some weight down.",
+    "reversed": "Taking every task as proof of worth can hide the help that is available.",
+    "symbolism": "A figure bends beneath ten bundled wands approaching a town.",
+    "question": "What can be shared, simplified, or set aside?",
+    "element": "Fire"
+  },
+  {
+    "id": "tarot-wands-11",
+    "name": "Page of Wands",
+    "section": "Wands",
+    "number": 11,
+    "keywords": [
+      "curiosity",
+      "news",
+      "playful ambition"
+    ],
+    "upright": "Explore a new creative direction with beginner's permission to be clumsy.",
+    "reversed": "A promising impulse may need one practical step before it fades.",
+    "symbolism": "A young messenger studies a wand in a desert landscape.",
+    "question": "What would you try if you were allowed to be new?",
+    "element": "Fire"
+  },
+  {
+    "id": "tarot-wands-12",
+    "name": "Knight of Wands",
+    "section": "Wands",
+    "number": 12,
+    "keywords": [
+      "boldness",
+      "travel",
+      "pursuit"
+    ],
+    "upright": "Energy favors movement; take a brave step with your eyes open.",
+    "reversed": "Impulsiveness may outrun the preparation that would help you arrive.",
+    "symbolism": "A rider charges across dry ground with a wand raised.",
+    "question": "Where can you be bold without being reckless?",
+    "element": "Fire"
+  },
+  {
+    "id": "tarot-wands-13",
+    "name": "Queen of Wands",
+    "section": "Wands",
+    "number": 13,
+    "keywords": [
+      "confidence",
+      "warmth",
+      "presence"
+    ],
+    "upright": "Lead with generous confidence and make space for your own creative fire.",
+    "reversed": "Doubt or the urge to perform may be dimming an authentic voice.",
+    "symbolism": "A queen holds a sunflower and wand beside a black cat.",
+    "question": "What part of your work deserves your full presence?",
+    "element": "Fire"
+  },
+  {
+    "id": "tarot-wands-14",
+    "name": "King of Wands",
+    "section": "Wands",
+    "number": 14,
+    "keywords": [
+      "vision",
+      "leadership",
+      "enterprise"
+    ],
+    "upright": "A broad vision needs steady leadership and room for others to contribute.",
+    "reversed": "Command may become control if you stop listening to the people doing the work.",
+    "symbolism": "A king sits on a throne marked by lions and salamanders, wand in hand.",
+    "question": "How can you lead without carrying everything alone?",
+    "element": "Fire"
+  },
+  {
+    "id": "tarot-cups-01",
+    "name": "Ace of Cups",
+    "section": "Cups",
+    "number": 1,
+    "keywords": [
+      "openness",
+      "compassion",
+      "emotional beginning"
+    ],
+    "upright": "A new feeling or connection can be received without demanding certainty at once.",
+    "reversed": "Emotional fatigue may call for replenishment before giving more.",
+    "symbolism": "An overflowing cup rises from a hand beneath a dove and falling water.",
+    "question": "What feeling is asking to be welcomed?",
+    "element": "Water"
+  },
+  {
+    "id": "tarot-cups-02",
+    "name": "Two of Cups",
+    "section": "Cups",
+    "number": 2,
+    "keywords": [
+      "mutuality",
+      "partnership",
+      "exchange"
+    ],
+    "upright": "Honest reciprocity can deepen a connection; both voices belong in the room.",
+    "reversed": "A bond may need a clearer conversation about balance and consent.",
+    "symbolism": "Two figures exchange cups beneath a winged lion and caduceus.",
+    "question": "Where does mutual care feel strongest?",
+    "element": "Water"
+  },
+  {
+    "id": "tarot-cups-03",
+    "name": "Three of Cups",
+    "section": "Cups",
+    "number": 3,
+    "keywords": [
+      "friendship",
+      "reunion",
+      "shared joy"
+    ],
+    "upright": "Celebrate with people who can be happy with you, not only helpful in crisis.",
+    "reversed": "Overextension or social comparison may be dulling genuine connection.",
+    "symbolism": "Three figures raise cups together amid fruit and flowers.",
+    "question": "Who would enjoy this good moment with you?",
+    "element": "Water"
+  },
+  {
+    "id": "tarot-cups-04",
+    "name": "Four of Cups",
+    "section": "Cups",
+    "number": 4,
+    "keywords": [
+      "apathy",
+      "contemplation",
+      "missed offer"
+    ],
+    "upright": "A pause may help you notice an option that boredom has blurred.",
+    "reversed": "Withdrawing too long can make even a sincere offer hard to see.",
+    "symbolism": "A seated figure studies three cups while a fourth is offered from a cloud.",
+    "question": "What invitation have you barely considered?",
+    "element": "Water"
+  },
+  {
+    "id": "tarot-cups-05",
+    "name": "Five of Cups",
+    "section": "Cups",
+    "number": 5,
+    "keywords": [
+      "grief",
+      "disappointment",
+      "remaining support"
+    ],
+    "upright": "Loss deserves attention, and it need not erase what still stands nearby.",
+    "reversed": "Fixating on what spilled may make repair or support difficult to recognize.",
+    "symbolism": "A cloaked figure faces three overturned cups while two remain upright.",
+    "question": "What can you mourn and still carry forward?",
+    "element": "Water"
+  },
+  {
+    "id": "tarot-cups-06",
+    "name": "Six of Cups",
+    "section": "Cups",
+    "number": 6,
+    "keywords": [
+      "memory",
+      "kindness",
+      "familiarity"
+    ],
+    "upright": "A memory or simple gesture can reconnect you with a gentler part of yourself.",
+    "reversed": "Nostalgia may be polishing the past so brightly that today's possibilities disappear.",
+    "symbolism": "Children exchange flower-filled cups in a quiet courtyard.",
+    "question": "Which old kindness could you bring into the present?",
+    "element": "Water"
+  },
+  {
+    "id": "tarot-cups-07",
+    "name": "Seven of Cups",
+    "section": "Cups",
+    "number": 7,
+    "keywords": [
+      "options",
+      "fantasy",
+      "discernment"
+    ],
+    "upright": "Many possibilities shimmer; compare them against your real values and resources.",
+    "reversed": "Dreaming without choosing may leave every cup hovering just out of reach.",
+    "symbolism": "Seven cups float in clouds holding dazzling and unsettling visions.",
+    "question": "Which possibility still matters after the sparkle fades?",
+    "element": "Water"
+  },
+  {
+    "id": "tarot-cups-08",
+    "name": "Eight of Cups",
+    "section": "Cups",
+    "number": 8,
+    "keywords": [
+      "departure",
+      "meaning",
+      "search"
+    ],
+    "upright": "Walking away from something adequate may be necessary to seek what feels meaningful.",
+    "reversed": "Leaving too soon or staying from habit can each hide the deeper question.",
+    "symbolism": "A traveler leaves eight stacked cups beneath a moonlit sky.",
+    "question": "What are you outgrowing, even if it once fit?",
+    "element": "Water"
+  },
+  {
+    "id": "tarot-cups-09",
+    "name": "Nine of Cups",
+    "section": "Cups",
+    "number": 9,
+    "keywords": [
+      "satisfaction",
+      "pleasure",
+      "gratitude"
+    ],
+    "upright": "Enjoy the result of your effort and name what genuinely satisfies you.",
+    "reversed": "Comfort may become complacency if it replaces curiosity or connection.",
+    "symbolism": "A seated figure smiles beneath a display of nine cups.",
+    "question": "What feels abundant beyond appearances?",
+    "element": "Water"
+  },
+  {
+    "id": "tarot-cups-10",
+    "name": "Ten of Cups",
+    "section": "Cups",
+    "number": 10,
+    "keywords": [
+      "belonging",
+      "harmony",
+      "shared future"
+    ],
+    "upright": "A vision of home and connection feels possible when people make room for each other.",
+    "reversed": "Idealizing harmony may silence the honest conversations that sustain it.",
+    "symbolism": "A family stands beneath a rainbow of ten cups near a home.",
+    "question": "What kind of belonging are you helping create?",
+    "element": "Water"
+  },
+  {
+    "id": "tarot-cups-11",
+    "name": "Page of Cups",
+    "section": "Cups",
+    "number": 11,
+    "keywords": [
+      "imagination",
+      "message",
+      "tender surprise"
+    ],
+    "upright": "A small emotional surprise may invite curiosity instead of embarrassment.",
+    "reversed": "Sensitive feelings may need expression rather than private rehearsal.",
+    "symbolism": "A young figure looks at a fish emerging from a cup.",
+    "question": "What unexpected feeling deserves a gentle reply?",
+    "element": "Water"
+  },
+  {
+    "id": "tarot-cups-12",
+    "name": "Knight of Cups",
+    "section": "Cups",
+    "number": 12,
+    "keywords": [
+      "invitation",
+      "idealism",
+      "romance"
+    ],
+    "upright": "An invitation or ideal can be followed with heart and clear boundaries.",
+    "reversed": "A beautiful proposal may need practical detail before you say yes.",
+    "symbolism": "A rider offers a cup while a horse steps carefully beside water.",
+    "question": "Which invitation feels both lovely and grounded?",
+    "element": "Water"
+  },
+  {
+    "id": "tarot-cups-13",
+    "name": "Queen of Cups",
+    "section": "Cups",
+    "number": 13,
+    "keywords": [
+      "empathy",
+      "depth",
+      "intuition"
+    ],
+    "upright": "Listen with care while keeping a shore for your own feelings.",
+    "reversed": "Absorbing everyone else's mood may make your own needs hard to hear.",
+    "symbolism": "A queen studies an ornate lidded cup beside the sea.",
+    "question": "How can you care without disappearing?",
+    "element": "Water"
+  },
+  {
+    "id": "tarot-cups-14",
+    "name": "King of Cups",
+    "section": "Cups",
+    "number": 14,
+    "keywords": [
+      "emotional steadiness",
+      "wisdom",
+      "care"
+    ],
+    "upright": "Strong feeling and calm judgment can coexist; steady presence helps others feel safe.",
+    "reversed": "Controlled appearance may be concealing feelings that need a trustworthy outlet.",
+    "symbolism": "A king sits on a stone throne above moving waves, cup and scepter in hand.",
+    "question": "What would emotional steadiness look like in action?",
+    "element": "Water"
+  },
+  {
+    "id": "tarot-swords-01",
+    "name": "Ace of Swords",
+    "section": "Swords",
+    "number": 1,
+    "keywords": [
+      "clarity",
+      "truth",
+      "decisive thought"
+    ],
+    "upright": "A clear insight can cut through confusion; use it with care and precision.",
+    "reversed": "A sharp idea can wound if certainty outruns understanding.",
+    "symbolism": "A hand raises a crowned sword through clouds above mountains.",
+    "question": "What truth needs a cleaner sentence?",
+    "element": "Air"
+  },
+  {
+    "id": "tarot-swords-02",
+    "name": "Two of Swords",
+    "section": "Swords",
+    "number": 2,
+    "keywords": [
+      "stalemate",
+      "choice",
+      "guarded peace"
+    ],
+    "upright": "A pause is understandable, but eventually a choice needs information and feeling together.",
+    "reversed": "Avoiding a decision may be preserving a fragile peace at a cost.",
+    "symbolism": "A blindfolded figure crosses two swords before a dark sea.",
+    "question": "What fact are you unwilling to look at yet?",
+    "element": "Air"
+  },
+  {
+    "id": "tarot-swords-03",
+    "name": "Three of Swords",
+    "section": "Swords",
+    "number": 3,
+    "keywords": [
+      "heartache",
+      "honest pain",
+      "release"
+    ],
+    "upright": "Pain can be named without becoming your whole story; honesty makes room for care.",
+    "reversed": "Rehearsing the hurt may keep a healing conversation from beginning.",
+    "symbolism": "Three swords pierce a heart beneath a rainy sky.",
+    "question": "What pain deserves acknowledgment rather than argument?",
+    "element": "Air"
+  },
+  {
+    "id": "tarot-swords-04",
+    "name": "Four of Swords",
+    "section": "Swords",
+    "number": 4,
+    "keywords": [
+      "rest",
+      "recovery",
+      "reflection"
+    ],
+    "upright": "Rest is a strategy, not a reward you must earn after collapse.",
+    "reversed": "Retreat may have become avoidance if the same issue waits untouched.",
+    "symbolism": "A recumbent figure rests beneath stained glass and three hanging swords.",
+    "question": "What kind of rest would actually restore you?",
+    "element": "Air"
+  },
+  {
+    "id": "tarot-swords-05",
+    "name": "Five of Swords",
+    "section": "Swords",
+    "number": 5,
+    "keywords": [
+      "conflict",
+      "cost",
+      "hollow victory"
+    ],
+    "upright": "Winning an argument may still cost trust; consider what outcome you truly want.",
+    "reversed": "An old conflict can be repaired if pride stops writing the whole script.",
+    "symbolism": "A figure gathers swords while others retreat beneath a troubled sky.",
+    "question": "Is this victory worth the relationship it may strain?",
+    "element": "Air"
+  },
+  {
+    "id": "tarot-swords-06",
+    "name": "Six of Swords",
+    "section": "Swords",
+    "number": 6,
+    "keywords": [
+      "transition",
+      "passage",
+      "gradual relief"
+    ],
+    "upright": "A difficult crossing can still be progress; accept help for the journey.",
+    "reversed": "Carrying every old worry into the new place may make arrival harder.",
+    "symbolism": "A boat carries travelers and six swords across water toward distant land.",
+    "question": "What are you ready to leave on the far shore?",
+    "element": "Air"
+  },
+  {
+    "id": "tarot-swords-07",
+    "name": "Seven of Swords",
+    "section": "Swords",
+    "number": 7,
+    "keywords": [
+      "strategy",
+      "secrecy",
+      "independence"
+    ],
+    "upright": "A clever approach can help you work around a real obstacle.",
+    "reversed": "Secrecy may be protecting convenience instead of integrity.",
+    "symbolism": "A figure slips away from a camp carrying five swords and leaving two behind.",
+    "question": "What would a more honest strategy look like?",
+    "element": "Air"
+  },
+  {
+    "id": "tarot-swords-08",
+    "name": "Eight of Swords",
+    "section": "Swords",
+    "number": 8,
+    "keywords": [
+      "constraint",
+      "fear",
+      "limited view"
+    ],
+    "upright": "The situation may be hard, yet some boundaries may be less fixed than they appear.",
+    "reversed": "Self-blame is not a map out; ask what support or information changes the scene.",
+    "symbolism": "A bound, blindfolded figure stands among swords with open ground nearby.",
+    "question": "Which limit is real, and which one needs testing?",
+    "element": "Air"
+  },
+  {
+    "id": "tarot-swords-09",
+    "name": "Nine of Swords",
+    "section": "Swords",
+    "number": 9,
+    "keywords": [
+      "anxiety",
+      "rumination",
+      "night thoughts"
+    ],
+    "upright": "A worry may feel enormous at night; bring it into daylight and compassionate company.",
+    "reversed": "Ignoring distress can make it louder; consider a smaller, practical response.",
+    "symbolism": "A figure wakes in bed beneath nine swords on a dark wall.",
+    "question": "What would help this thought feel less solitary?",
+    "element": "Air"
+  },
+  {
+    "id": "tarot-swords-10",
+    "name": "Ten of Swords",
+    "section": "Swords",
+    "number": 10,
+    "keywords": [
+      "ending",
+      "exhaustion",
+      "dawn"
+    ],
+    "upright": "Something has reached a painful limit; the dawn suggests that an ending is not all there is.",
+    "reversed": "Replaying the collapse can obscure the first signs of recovery.",
+    "symbolism": "A prone figure lies beneath ten swords as light rises at the horizon.",
+    "question": "What can you stop carrying after this ending?",
+    "element": "Air"
+  },
+  {
+    "id": "tarot-swords-11",
+    "name": "Page of Swords",
+    "section": "Swords",
+    "number": 11,
+    "keywords": [
+      "curiosity",
+      "alertness",
+      "questions"
+    ],
+    "upright": "Ask precise questions and keep learning before making a firm claim.",
+    "reversed": "A restless mind may turn curiosity into suspicion or noise.",
+    "symbolism": "A young figure holds a raised sword in a windy landscape.",
+    "question": "Which question would improve your understanding?",
+    "element": "Air"
+  },
+  {
+    "id": "tarot-swords-12",
+    "name": "Knight of Swords",
+    "section": "Swords",
+    "number": 12,
+    "keywords": [
+      "speed",
+      "conviction",
+      "challenge"
+    ],
+    "upright": "Move decisively when clarity is earned and the stakes are understood.",
+    "reversed": "Charging forward may leave empathy and context behind.",
+    "symbolism": "An armored rider races into the wind with sword extended.",
+    "question": "Where should you slow down just enough to see others?",
+    "element": "Air"
+  },
+  {
+    "id": "tarot-swords-13",
+    "name": "Queen of Swords",
+    "section": "Swords",
+    "number": 13,
+    "keywords": [
+      "discernment",
+      "candor",
+      "boundaries"
+    ],
+    "upright": "A clear boundary can be kind when it is honest and well timed.",
+    "reversed": "Distance or criticism may be standing in for a vulnerable truth.",
+    "symbolism": "A queen holds an upright sword while extending an open hand.",
+    "question": "What can you say plainly without becoming harsh?",
+    "element": "Air"
+  },
+  {
+    "id": "tarot-swords-14",
+    "name": "King of Swords",
+    "section": "Swords",
+    "number": 14,
+    "keywords": [
+      "reason",
+      "ethics",
+      "judgment"
+    ],
+    "upright": "Use knowledge and responsibility to make a fair, considered decision.",
+    "reversed": "Intellectual certainty can become detached from the people affected.",
+    "symbolism": "A crowned king sits with an upright sword beneath a patterned sky.",
+    "question": "How will you pair clear thinking with care?",
+    "element": "Air"
+  },
+  {
+    "id": "tarot-pentacles-01",
+    "name": "Ace of Pentacles",
+    "section": "Pentacles",
+    "number": 1,
+    "keywords": [
+      "opportunity",
+      "resources",
+      "practical beginning"
+    ],
+    "upright": "A tangible opportunity is present; give it a small, workable first step.",
+    "reversed": "A promising resource may be overlooked while waiting for perfect conditions.",
+    "symbolism": "A hand offers a coin above a garden path and archway.",
+    "question": "What practical seed can you plant now?",
+    "element": "Earth"
+  },
+  {
+    "id": "tarot-pentacles-02",
+    "name": "Two of Pentacles",
+    "section": "Pentacles",
+    "number": 2,
+    "keywords": [
+      "adaptation",
+      "juggling",
+      "rhythm"
+    ],
+    "upright": "Several demands can be balanced if you stay flexible about timing.",
+    "reversed": "Constant juggling may be hiding a need to drop or delegate one task.",
+    "symbolism": "A figure loops two coins while ships rise and fall behind them.",
+    "question": "Which commitment needs a different rhythm?",
+    "element": "Earth"
+  },
+  {
+    "id": "tarot-pentacles-03",
+    "name": "Three of Pentacles",
+    "section": "Pentacles",
+    "number": 3,
+    "keywords": [
+      "craft",
+      "collaboration",
+      "learning"
+    ],
+    "upright": "Good work grows through skill, feedback, and shared expertise.",
+    "reversed": "Working alone or resisting feedback may limit a promising project.",
+    "symbolism": "Artisans confer beneath the arches of a building in progress.",
+    "question": "Whose perspective could strengthen this work?",
+    "element": "Earth"
+  },
+  {
+    "id": "tarot-pentacles-04",
+    "name": "Four of Pentacles",
+    "section": "Pentacles",
+    "number": 4,
+    "keywords": [
+      "security",
+      "holding",
+      "control"
+    ],
+    "upright": "Protecting what you have can create stability when it comes from clarity.",
+    "reversed": "Holding too tightly may make resources and relationships feel smaller.",
+    "symbolism": "A figure grips coins at crown, chest, and feet outside a city.",
+    "question": "What are you protecting, and at what cost?",
+    "element": "Earth"
+  },
+  {
+    "id": "tarot-pentacles-05",
+    "name": "Five of Pentacles",
+    "section": "Pentacles",
+    "number": 5,
+    "keywords": [
+      "hardship",
+      "exclusion",
+      "help"
+    ],
+    "upright": "Difficulty is real; support may be closer than it first appears.",
+    "reversed": "Shame can keep you outside a door that would open if you knocked.",
+    "symbolism": "Two figures walk in snow beside a lit stained-glass window.",
+    "question": "What help could you ask for without apology?",
+    "element": "Earth"
+  },
+  {
+    "id": "tarot-pentacles-06",
+    "name": "Six of Pentacles",
+    "section": "Pentacles",
+    "number": 6,
+    "keywords": [
+      "giving",
+      "receiving",
+      "fairness"
+    ],
+    "upright": "Resources move best with attention to dignity and genuine need.",
+    "reversed": "A gift can create imbalance if generosity becomes control.",
+    "symbolism": "A figure weighs coins and gives to two people beneath the scales.",
+    "question": "How can giving or receiving feel more equal?",
+    "element": "Earth"
+  },
+  {
+    "id": "tarot-pentacles-07",
+    "name": "Seven of Pentacles",
+    "section": "Pentacles",
+    "number": 7,
+    "keywords": [
+      "patience",
+      "assessment",
+      "investment"
+    ],
+    "upright": "Progress takes tending; pause to judge what is growing before planting more.",
+    "reversed": "Waiting alone will not fix a method that needs adjustment.",
+    "symbolism": "A gardener leans on a tool and studies a vine of coins.",
+    "question": "What investment deserves patience, and what needs revision?",
+    "element": "Earth"
+  },
+  {
+    "id": "tarot-pentacles-08",
+    "name": "Eight of Pentacles",
+    "section": "Pentacles",
+    "number": 8,
+    "keywords": [
+      "practice",
+      "mastery",
+      "detail"
+    ],
+    "upright": "Repetition is building skill; care in the small parts matters.",
+    "reversed": "Perfectionism may make practice feel like punishment instead of learning.",
+    "symbolism": "A craftsperson carves coin after coin beside a workbench.",
+    "question": "Which skill improves with one more honest attempt?",
+    "element": "Earth"
+  },
+  {
+    "id": "tarot-pentacles-09",
+    "name": "Nine of Pentacles",
+    "section": "Pentacles",
+    "number": 9,
+    "keywords": [
+      "independence",
+      "cultivation",
+      "pleasure"
+    ],
+    "upright": "Enjoy the stability you helped create and the freedom it makes possible.",
+    "reversed": "Comfort may be isolating if it never opens toward connection.",
+    "symbolism": "A figure stands in a fruitful garden with a falcon and nine coins.",
+    "question": "What have you cultivated that lets you breathe?",
+    "element": "Earth"
+  },
+  {
+    "id": "tarot-pentacles-10",
+    "name": "Ten of Pentacles",
+    "section": "Pentacles",
+    "number": 10,
+    "keywords": [
+      "legacy",
+      "household",
+      "long view"
+    ],
+    "upright": "Think beyond the immediate gain toward what can support others over time.",
+    "reversed": "Inherited expectations may need updating to fit the people living with them.",
+    "symbolism": "Generations gather beneath an arch with dogs and patterned coins.",
+    "question": "What kind of legacy are your ordinary choices building?",
+    "element": "Earth"
+  },
+  {
+    "id": "tarot-pentacles-11",
+    "name": "Page of Pentacles",
+    "section": "Pentacles",
+    "number": 11,
+    "keywords": [
+      "study",
+      "practical curiosity",
+      "opportunity"
+    ],
+    "upright": "A new practical skill deserves attention and a patient beginning.",
+    "reversed": "Planning to learn can become a way to postpone the first lesson.",
+    "symbolism": "A young figure studies a coin in a green field.",
+    "question": "What useful skill are you ready to practice?",
+    "element": "Earth"
+  },
+  {
+    "id": "tarot-pentacles-12",
+    "name": "Knight of Pentacles",
+    "section": "Pentacles",
+    "number": 12,
+    "keywords": [
+      "consistency",
+      "reliability",
+      "steady effort"
+    ],
+    "upright": "Slow, repeatable action can carry a plan farther than a dramatic start.",
+    "reversed": "Routine may need a fresh reason if it has turned into mere inertia.",
+    "symbolism": "A rider sits on a still dark horse holding a coin above worked land.",
+    "question": "What small action would be worth repeating?",
+    "element": "Earth"
+  },
+  {
+    "id": "tarot-pentacles-13",
+    "name": "Queen of Pentacles",
+    "section": "Pentacles",
+    "number": 13,
+    "keywords": [
+      "care",
+      "resourcefulness",
+      "grounded comfort"
+    ],
+    "upright": "Practical care can make a home, project, or body feel supported.",
+    "reversed": "Caring for everyone else may leave your own resources unattended.",
+    "symbolism": "A queen holds a coin in a lush garden while a rabbit waits nearby.",
+    "question": "What needs both kindness and a practical plan?",
+    "element": "Earth"
+  },
+  {
+    "id": "tarot-pentacles-14",
+    "name": "King of Pentacles",
+    "section": "Pentacles",
+    "number": 14,
+    "keywords": [
+      "stewardship",
+      "stability",
+      "generosity"
+    ],
+    "upright": "Experience and resources can be used to build something lasting and generous.",
+    "reversed": "Success may harden into control if you forget what it was meant to serve.",
+    "symbolism": "A king sits among vines and carved bulls with a coin in hand.",
+    "question": "How can stability serve more than yourself?",
+    "element": "Earth"
+  }
+]

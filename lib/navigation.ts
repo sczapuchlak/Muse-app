@@ -9,7 +9,7 @@ export const navigation: NavItem[] = [
   { id: "mood", label: "Mood", href: "/mood", icon: "mood", group: "Reflect", description: "A little more room to understand what you feel." },
   { id: "insights", label: "Insights", href: "/insights", icon: "insights", group: "Reflect", description: "A place to explore your patterns over time." },
   { id: "money", label: "Money", href: "/money", icon: "money", group: "Life", description: "A calmer view of your everyday finances." },
-  { id: "notes", label: "Notes", href: "/notes", icon: "notes", group: "Life", description: "Somewhere for the thoughts you want to keep." },
+  { id: "notes", label: "Mindspace", href: "/notes", icon: "brain", group: "Life", description: "Somewhere for the thoughts you want to keep." },
   { id: "whimsy", label: "Whimsy", href: "/whimsy", icon: "sparkle", group: "Life", description: "A little wonder belongs here." },
   { id: "appearance", label: "Appearance", href: "/appearance", icon: "appearance", group: "Tools", description: "Make Muse feel like you. Use the global theme control for quick theme and glass choices." },
   { id: "settings", label: "Settings", href: "/settings", icon: "settings", group: "Tools", description: "Your preferences will live here." },

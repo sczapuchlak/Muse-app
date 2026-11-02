@@ -15,6 +15,7 @@ export function load(relative, fresh = false) {
   if (!fresh && cache.has(file)) return cache.get(file).exports;
   const loadedModule = { exports: {} };
   cache.set(file, loadedModule);
+  if(file.endsWith('.json')){loadedModule.exports=JSON.parse(readFileSync(file,'utf8'));return loadedModule.exports;}
   const output = ts.transpileModule(readFileSync(file, 'utf8'), {
     compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020, jsx: ts.JsxEmit.ReactJSX, esModuleInterop: true },
   }).outputText;

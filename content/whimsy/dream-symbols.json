@@ -1,0 +1,687 @@
+[
+  {
+    "id": "dream-dog",
+    "name": "Dog",
+    "category": "Animals",
+    "aliases": [
+      "puppy",
+      "canine"
+    ],
+    "description": "A familiar animal that can feel like company, protection, or an untamed part of a relationship.",
+    "associations": [
+      "Companionship and trust",
+      "Loyalty that feels comforting or demanding",
+      "Instinct and protection"
+    ],
+    "context": "Notice whether the dog followed, guarded, played, or frightened you; its behavior changes the tone.",
+    "question": "What kind of closeness did the dog seem to offer or ask for?",
+    "version": 1,
+    "source": "Muse original editorial library"
+  },
+  {
+    "id": "dream-bird",
+    "name": "Bird",
+    "category": "Animals",
+    "aliases": [
+      "flying bird",
+      "wings"
+    ],
+    "description": "A creature moving between ground and sky, often noticed for its distance, song, or sudden arrival.",
+    "associations": [
+      "Freedom and perspective",
+      "Messages you hope to hear",
+      "Fragility and change"
+    ],
+    "context": "A caged bird differs from one crossing open sky; notice the space around it.",
+    "question": "Where did you feel free or confined in this scene?",
+    "version": 1,
+    "source": "Muse original editorial library"
+  },
+  {
+    "id": "dream-snake",
+    "name": "Snake",
+    "category": "Animals",
+    "aliases": [
+      "serpent"
+    ],
+    "description": "An animal that may evoke both fear and fascination, especially when it sheds skin or appears unexpectedly.",
+    "associations": [
+      "Change and renewal",
+      "A boundary needing attention",
+      "Hidden knowledge or uncertainty"
+    ],
+    "context": "Your own response matters more than a fixed cultural meaning; consider whether the snake threatened, watched, or transformed.",
+    "question": "What changed when you noticed the snake?",
+    "version": 1,
+    "source": "Muse original editorial library"
+  },
+  {
+    "id": "dream-forest",
+    "name": "Forest",
+    "category": "Nature and Elements",
+    "aliases": [
+      "woods",
+      "trees"
+    ],
+    "description": "A landscape with paths, cover, and places that cannot be seen all at once.",
+    "associations": [
+      "Exploration without a map",
+      "Shelter or concealment",
+      "The complexity of an inner question"
+    ],
+    "context": "A sunlit path and a dark thicket invite different feelings; remember whether you were lost or choosing a route.",
+    "question": "What did the forest make possible, and what did it hide?",
+    "version": 1,
+    "source": "Muse original editorial library"
+  },
+  {
+    "id": "dream-mountain",
+    "name": "Mountain",
+    "category": "Nature and Elements",
+    "aliases": [
+      "peak",
+      "hill"
+    ],
+    "description": "A high place that can suggest a long climb, a clear view, or distance from everyday life.",
+    "associations": [
+      "Effort toward a goal",
+      "Perspective earned slowly",
+      "A challenge that feels larger than you"
+    ],
+    "context": "Were you climbing, resting, watching from below, or already at the summit?",
+    "question": "What did the height change about how you saw things?",
+    "version": 1,
+    "source": "Muse original editorial library"
+  },
+  {
+    "id": "dream-storm",
+    "name": "Storm",
+    "category": "Nature and Elements",
+    "aliases": [
+      "thunder",
+      "lightning"
+    ],
+    "description": "Weather that interrupts plans and changes the atmosphere quickly.",
+    "associations": [
+      "Strong emotion",
+      "A disruption outside your control",
+      "Energy waiting for release"
+    ],
+    "context": "Sheltering, dancing, or being swept away describe very different relationships to the storm.",
+    "question": "What were you trying to protect or release during the storm?",
+    "version": 1,
+    "source": "Muse original editorial library"
+  },
+  {
+    "id": "dream-ocean",
+    "name": "Ocean",
+    "category": "Water",
+    "aliases": [
+      "sea",
+      "waves"
+    ],
+    "description": "A vast moving surface that can feel peaceful, unknowable, or overwhelming.",
+    "associations": [
+      "Emotional depth",
+      "Open possibility",
+      "Uncertainty without clear edges"
+    ],
+    "context": "Notice whether the water was calm, rough, inviting, or distant, and whether you were on shore or inside it.",
+    "question": "How close did you want to be to the water?",
+    "version": 1,
+    "source": "Muse original editorial library"
+  },
+  {
+    "id": "dream-river",
+    "name": "River",
+    "category": "Water",
+    "aliases": [
+      "stream",
+      "current"
+    ],
+    "description": "Water moving through a landscape, sometimes gently and sometimes faster than expected.",
+    "associations": [
+      "A life transition",
+      "Being carried by events",
+      "A route through complexity"
+    ],
+    "context": "Crossing a river differs from drifting along it; look at your direction and sense of choice.",
+    "question": "Were you following the current or finding your own crossing?",
+    "version": 1,
+    "source": "Muse original editorial library"
+  },
+  {
+    "id": "dream-flood",
+    "name": "Flood",
+    "category": "Water",
+    "aliases": [
+      "rising water",
+      "overflow"
+    ],
+    "description": "Water entering places normally kept dry, often with a sudden change in scale.",
+    "associations": [
+      "Too much arriving at once",
+      "A need to adapt",
+      "Old boundaries becoming porous"
+    ],
+    "context": "The dream may reflect intensity without predicting danger; recall what, if anything, stayed safe.",
+    "question": "What felt submerged, and what remained within reach?",
+    "version": 1,
+    "source": "Muse original editorial library"
+  },
+  {
+    "id": "dream-stranger",
+    "name": "Stranger",
+    "category": "People and Relationships",
+    "aliases": [
+      "unknown person",
+      "unfamiliar face"
+    ],
+    "description": "An unfamiliar person who may feel like a new possibility, a threat, or a part of the scene you have not named.",
+    "associations": [
+      "Unfamiliar aspects of yourself",
+      "A change in trust",
+      "Curiosity about someone new"
+    ],
+    "context": "Pay attention to their actions rather than assuming every stranger stands for one thing.",
+    "question": "What did this person know or do that surprised you?",
+    "version": 1,
+    "source": "Muse original editorial library"
+  },
+  {
+    "id": "dream-childhood-friend",
+    "name": "Childhood Friend",
+    "category": "People and Relationships",
+    "aliases": [
+      "old friend",
+      "school friend"
+    ],
+    "description": "Someone connected with an earlier version of your life, whether or not you still know them now.",
+    "associations": [
+      "Memory and continuity",
+      "A quality you once shared",
+      "An unfinished conversation"
+    ],
+    "context": "The dream may be about a time in your life rather than the person themselves.",
+    "question": "What part of your younger self did their presence bring back?",
+    "version": 1,
+    "source": "Muse original editorial library"
+  },
+  {
+    "id": "dream-family-member",
+    "name": "Family Member",
+    "category": "People and Relationships",
+    "aliases": [
+      "parent",
+      "sibling",
+      "relative"
+    ],
+    "description": "A familiar relationship carrying its own history, affection, tension, and expectations.",
+    "associations": [
+      "Belonging and distance",
+      "Care or obligation",
+      "A remembered family pattern"
+    ],
+    "context": "Consider the actual relationship and the dream interaction before reaching for general symbolism.",
+    "question": "How did this meeting differ from waking life?",
+    "version": 1,
+    "source": "Muse original editorial library"
+  },
+  {
+    "id": "dream-house",
+    "name": "House",
+    "category": "Places and Buildings",
+    "aliases": [
+      "home",
+      "rooms"
+    ],
+    "description": "An interior with rooms, thresholds, and private spaces that may feel familiar or newly discovered.",
+    "associations": [
+      "Safety and belonging",
+      "An aspect of your personal life",
+      "Parts of a story not yet explored"
+    ],
+    "context": "Which room mattered, and did the house feel like yours, someone else's, or neither?",
+    "question": "What did you find behind the door you opened?",
+    "version": 1,
+    "source": "Muse original editorial library"
+  },
+  {
+    "id": "dream-school",
+    "name": "School",
+    "category": "Places and Buildings",
+    "aliases": [
+      "classroom",
+      "campus"
+    ],
+    "description": "A place of learning and evaluation that may return long after formal school ends.",
+    "associations": [
+      "Learning something new",
+      "Old expectations",
+      "Feeling observed or tested"
+    ],
+    "context": "Notice whether you were teaching, studying, wandering, or trying to find a class.",
+    "question": "What did you feel expected to know?",
+    "version": 1,
+    "source": "Muse original editorial library"
+  },
+  {
+    "id": "dream-bridge",
+    "name": "Bridge",
+    "category": "Places and Buildings",
+    "aliases": [
+      "crossing",
+      "overpass"
+    ],
+    "description": "A structure between two places, sometimes sturdy and sometimes uncertain.",
+    "associations": [
+      "Transition and connection",
+      "Taking a step between roles",
+      "Trust in a path"
+    ],
+    "context": "Was the bridge complete, crowded, narrow, or easy to cross?",
+    "question": "What was on each side, and which direction mattered?",
+    "version": 1,
+    "source": "Muse original editorial library"
+  },
+  {
+    "id": "dream-key",
+    "name": "Key",
+    "category": "Objects",
+    "aliases": [
+      "keys",
+      "lock"
+    ],
+    "description": "A small object that can open something, be lost, or fail to fit.",
+    "associations": [
+      "Access and choice",
+      "A solution that requires timing",
+      "Responsibility for a threshold"
+    ],
+    "context": "A key only matters in relation to its lock and the person holding it.",
+    "question": "What were you hoping the key would open?",
+    "version": 1,
+    "source": "Muse original editorial library"
+  },
+  {
+    "id": "dream-mirror",
+    "name": "Mirror",
+    "category": "Objects",
+    "aliases": [
+      "reflection",
+      "looking glass"
+    ],
+    "description": "A reflective surface that may show yourself, someone else, or an unexpected version of the scene.",
+    "associations": [
+      "Self-perception",
+      "A change in identity",
+      "Seeing something differently"
+    ],
+    "context": "A distorted reflection may speak to uncertainty, not to a hidden truth about you.",
+    "question": "What felt familiar or unfamiliar in what you saw?",
+    "version": 1,
+    "source": "Muse original editorial library"
+  },
+  {
+    "id": "dream-phone",
+    "name": "Phone",
+    "category": "Objects",
+    "aliases": [
+      "telephone",
+      "message"
+    ],
+    "description": "A tool for contact, missed calls, or messages that do not quite arrive.",
+    "associations": [
+      "Connection and reachability",
+      "An unanswered question",
+      "Information you want or avoid"
+    ],
+    "context": "Did the device work, ring, disappear, or connect you with a specific person?",
+    "question": "Who were you trying to reach, and why then?",
+    "version": 1,
+    "source": "Muse original editorial library"
+  },
+  {
+    "id": "dream-train",
+    "name": "Train",
+    "category": "Transportation",
+    "aliases": [
+      "railway",
+      "station"
+    ],
+    "description": "A journey on a shared route with stops, schedules, and other passengers.",
+    "associations": [
+      "Momentum and timing",
+      "A path shaped with others",
+      "An arrival or departure"
+    ],
+    "context": "Missing a train differs from enjoying the ride; notice your sense of agency.",
+    "question": "Did you want to board, leave, or change direction?",
+    "version": 1,
+    "source": "Muse original editorial library"
+  },
+  {
+    "id": "dream-car",
+    "name": "Car",
+    "category": "Transportation",
+    "aliases": [
+      "driving",
+      "vehicle"
+    ],
+    "description": "A familiar vehicle that makes the driver's role and the road ahead especially noticeable.",
+    "associations": [
+      "Agency and control",
+      "Direction in a decision",
+      "Dependence on another driver"
+    ],
+    "context": "Who was at the wheel, and could you see the road clearly?",
+    "question": "How did you feel about the route you were taking?",
+    "version": 1,
+    "source": "Muse original editorial library"
+  },
+  {
+    "id": "dream-airplane",
+    "name": "Airplane",
+    "category": "Transportation",
+    "aliases": [
+      "flight",
+      "airport"
+    ],
+    "description": "A long-distance journey that can hold excitement, fear, separation, or a wider view.",
+    "associations": [
+      "A leap in scale",
+      "Distance from the familiar",
+      "Plans with many moving parts"
+    ],
+    "context": "Boarding, turbulence, and landing are different moments; recall which one carried the dream.",
+    "question": "Where were you going, and did you choose the destination?",
+    "version": 1,
+    "source": "Muse original editorial library"
+  },
+  {
+    "id": "dream-teeth",
+    "name": "Teeth",
+    "category": "Body and Health",
+    "aliases": [
+      "tooth",
+      "mouth"
+    ],
+    "description": "Teeth can appear in vivid dreams about speaking, appearance, physical sensation, or change.",
+    "associations": [
+      "Vulnerability and self-image",
+      "A difficulty saying something",
+      "A bodily sensation carried into sleep"
+    ],
+    "context": "This image is common and is not a diagnosis; notice your actual feeling and any physical context.",
+    "question": "What mattered more: the sensation, the appearance, or who saw it?",
+    "version": 1,
+    "source": "Muse original editorial library"
+  },
+  {
+    "id": "dream-hands",
+    "name": "Hands",
+    "category": "Body and Health",
+    "aliases": [
+      "fingers",
+      "palms"
+    ],
+    "description": "Hands make, hold, touch, and let go; their condition often shapes what is possible in a dream.",
+    "associations": [
+      "Capability and care",
+      "A need for contact",
+      "What you can or cannot hold"
+    ],
+    "context": "Were your hands busy, injured, transformed, or unexpectedly gentle?",
+    "question": "What were you trying to make, carry, or release?",
+    "version": 1,
+    "source": "Muse original editorial library"
+  },
+  {
+    "id": "dream-voice",
+    "name": "Voice",
+    "category": "Body and Health",
+    "aliases": [
+      "speaking",
+      "singing",
+      "silence"
+    ],
+    "description": "A voice may be loud, absent, musical, or difficult to use.",
+    "associations": [
+      "Expression and being heard",
+      "A message you are forming",
+      "Silence chosen or imposed"
+    ],
+    "context": "Not being able to speak is different from deciding not to; consider who was listening.",
+    "question": "What did you most want to say?",
+    "version": 1,
+    "source": "Muse original editorial library"
+  },
+  {
+    "id": "dream-laughter",
+    "name": "Laughter",
+    "category": "Emotions",
+    "aliases": [
+      "laughing",
+      "giggle"
+    ],
+    "description": "Shared or solitary laughter that may feel joyful, nervous, or out of place.",
+    "associations": [
+      "Relief and play",
+      "Connection with others",
+      "A way to soften tension"
+    ],
+    "context": "Were people laughing with you, at you, or because something absurd happened?",
+    "question": "What changed when the laughter began?",
+    "version": 1,
+    "source": "Muse original editorial library"
+  },
+  {
+    "id": "dream-crying",
+    "name": "Crying",
+    "category": "Emotions",
+    "aliases": [
+      "tears",
+      "weeping"
+    ],
+    "description": "Tears in dreams can accompany grief, relief, frustration, or a release of feeling.",
+    "associations": [
+      "An emotion finding room",
+      "A need for comfort",
+      "Relief after holding something in"
+    ],
+    "context": "The feeling around the tears matters more than the tears alone.",
+    "question": "What did the crying allow you to notice?",
+    "version": 1,
+    "source": "Muse original editorial library"
+  },
+  {
+    "id": "dream-fear",
+    "name": "Fear",
+    "category": "Emotions",
+    "aliases": [
+      "scared",
+      "frightened"
+    ],
+    "description": "A felt sense of alarm that can attach to many different dream scenes.",
+    "associations": [
+      "A perceived boundary",
+      "Uncertainty asking for care",
+      "A memory of vulnerability"
+    ],
+    "context": "Dream fear is not proof of real danger; notice what the dream presented and what helped.",
+    "question": "What did you need in that moment?",
+    "version": 1,
+    "source": "Muse original editorial library"
+  },
+  {
+    "id": "dream-falling",
+    "name": "Falling",
+    "category": "Actions and Events",
+    "aliases": [
+      "fall",
+      "drop"
+    ],
+    "description": "A sudden change in height that may end abruptly or transform into another movement.",
+    "associations": [
+      "Loss of footing",
+      "An unexpected transition",
+      "Letting go of control"
+    ],
+    "context": "The landing, if any, and the feeling before the fall change its meaning.",
+    "question": "What happened just before you lost your footing?",
+    "version": 1,
+    "source": "Muse original editorial library"
+  },
+  {
+    "id": "dream-flying",
+    "name": "Flying",
+    "category": "Actions and Events",
+    "aliases": [
+      "float",
+      "soar"
+    ],
+    "description": "Moving through the air without ordinary limits, sometimes freely and sometimes with effort.",
+    "associations": [
+      "Freedom and possibility",
+      "Distance from a problem",
+      "A new vantage point"
+    ],
+    "context": "Could you steer, and was the flight joyful, exhausting, or frightening?",
+    "question": "What became visible from above?",
+    "version": 1,
+    "source": "Muse original editorial library"
+  },
+  {
+    "id": "dream-running",
+    "name": "Running",
+    "category": "Actions and Events",
+    "aliases": [
+      "chase",
+      "race"
+    ],
+    "description": "Fast movement that may be toward something, away from it, or simply for the pleasure of motion.",
+    "associations": [
+      "Urgency and pursuit",
+      "An effort to keep pace",
+      "Energy seeking direction"
+    ],
+    "context": "Being chased, racing, and running freely are not the same scene.",
+    "question": "What were you moving toward or away from?",
+    "version": 1,
+    "source": "Muse original editorial library"
+  },
+  {
+    "id": "dream-ghost",
+    "name": "Ghost",
+    "category": "Supernatural and Fantasy",
+    "aliases": [
+      "spirit",
+      "apparition"
+    ],
+    "description": "A figure that seems present and absent at once, sometimes familiar and sometimes unknown.",
+    "associations": [
+      "Memory lingering",
+      "An unfinished story",
+      "A presence you cannot easily place"
+    ],
+    "context": "Consider who or what the figure reminded you of rather than assuming a supernatural message.",
+    "question": "What did the ghost want, if anything?",
+    "version": 1,
+    "source": "Muse original editorial library"
+  },
+  {
+    "id": "dream-portal",
+    "name": "Portal",
+    "category": "Supernatural and Fantasy",
+    "aliases": [
+      "gateway",
+      "other world"
+    ],
+    "description": "An opening into a different place or set of rules.",
+    "associations": [
+      "An invitation to change",
+      "Curiosity about an alternative",
+      "A threshold with uncertain stakes"
+    ],
+    "context": "Did you enter, hesitate, or only watch someone else pass through?",
+    "question": "What made the other side appealing or alarming?",
+    "version": 1,
+    "source": "Muse original editorial library"
+  },
+  {
+    "id": "dream-magic",
+    "name": "Magic",
+    "category": "Supernatural and Fantasy",
+    "aliases": [
+      "spell",
+      "enchantment"
+    ],
+    "description": "An impossible change that still feels natural inside the dream.",
+    "associations": [
+      "A wish for agency",
+      "Wonder in the ordinary",
+      "An unexpected way through a problem"
+    ],
+    "context": "Notice whether you performed the magic, witnessed it, or resisted it.",
+    "question": "What became possible when ordinary rules changed?",
+    "version": 1,
+    "source": "Muse original editorial library"
+  },
+  {
+    "id": "dream-being-late",
+    "name": "Being Late",
+    "category": "Common Dream Scenarios",
+    "aliases": [
+      "missed deadline",
+      "late arrival"
+    ],
+    "description": "A recurring kind of dream in which timing feels urgent and the destination keeps moving.",
+    "associations": [
+      "Pressure and expectation",
+      "Fear of disappointing someone",
+      "Competing demands"
+    ],
+    "context": "The dream does not predict failure; consider what made arrival difficult.",
+    "question": "Whose timetable mattered in the dream?",
+    "version": 1,
+    "source": "Muse original editorial library"
+  },
+  {
+    "id": "dream-getting-lost",
+    "name": "Getting Lost",
+    "category": "Common Dream Scenarios",
+    "aliases": [
+      "lost",
+      "wrong turn"
+    ],
+    "description": "A route becomes unfamiliar, even if the place itself seems known.",
+    "associations": [
+      "Uncertainty in a transition",
+      "A search for orientation",
+      "A chance to notice a new path"
+    ],
+    "context": "Were you alone, asking for help, or enjoying the detour?",
+    "question": "What would have helped you feel oriented?",
+    "version": 1,
+    "source": "Muse original editorial library"
+  },
+  {
+    "id": "dream-taking-an-exam",
+    "name": "Taking an Exam",
+    "category": "Common Dream Scenarios",
+    "aliases": [
+      "test",
+      "unprepared"
+    ],
+    "description": "A task with rules and judgment that may arrive without warning.",
+    "associations": [
+      "Evaluation and self-expectation",
+      "A skill you are learning",
+      "Fear of being found unready"
+    ],
+    "context": "Many people dream of exams years later; the scene is not a measure of real ability.",
+    "question": "What did you believe was being measured?",
+    "version": 1,
+    "source": "Muse original editorial library"
+  }
+]

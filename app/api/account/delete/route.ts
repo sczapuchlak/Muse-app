@@ -1,3 +1,4 @@
+import {deleteConstellationFiles} from '@/lib/auth/constellation-storage-cleanup';
 import {NextResponse,type NextRequest} from 'next/server';
 import {privateResponse,routeAuthClient,trustedOrigin,clearAuthCookies} from '@/lib/auth/http';
 import {createMuseAdminClient} from '@/lib/supabase/admin';
@@ -27,6 +28,7 @@ export async function POST(request:NextRequest){
     let confirmation:unknown;try{confirmation=JSON.parse(raw);}catch{return failure('Type DELETE to confirm account deletion.',400);}
     if(!validDeletionConfirmation(confirmation))return failure('Type DELETE to confirm account deletion. No account identifier is accepted.',400);
     const admin=createMuseAdminClient();
+    await deleteConstellationFiles(admin,data.user.id);
     await deleteConfirmedAccount(data.user.id,admin.auth.admin);
     clearAuthCookies(request,response);
     response.headers.set('Clear-Site-Data','"cache"');

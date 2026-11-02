@@ -38,9 +38,7 @@
 .muse-galaxy-grain::before { content:""; position:absolute; inset:0; opacity:.35; background:radial-gradient(ellipse 12% 3% at 7% 23%,var(--haze-primary),transparent 90%),radial-gradient(ellipse 16% 5% at 91% 49%,var(--haze-secondary),transparent 90%),radial-gradient(ellipse 18% 3% at 20% 83%,var(--haze-primary),transparent 90%); }
 .muse-disco-reflections { display:none; position:absolute; inset:0; z-index:1; }
 :root[data-theme="disco-damage"] .muse-disco-reflections { display:block; background:conic-gradient(from 160deg at 5% 4%,transparent 0 68%,color-mix(in srgb,var(--star-1) 10%,transparent) 69%,transparent 71%),conic-gradient(from 35deg at 96% 46%,transparent 0 73%,color-mix(in srgb,var(--accent-cyan) 8%,transparent) 74%,transparent 76%),conic-gradient(from 110deg at 11% 87%,transparent 0 62%,color-mix(in srgb,var(--accent-warm) 8%,transparent) 63%,transparent 65%); }
-.muse-disco-reflections > i { position:absolute; width:30px; height:23px; transform:rotate(var(--facet-turn)); clip-path:polygon(8% 10%,100% 30%,63% 95%,0 65%); background:linear-gradient(128deg,transparent 6%,color-mix(in srgb,var(--star-1) 36%,transparent) 40%,color-mix(in srgb,var(--facet-light) 32%,transparent) 44%,transparent 78%); opacity:.6; }
-.muse-disco-reflections > i:nth-child(3n) { width:12px; height:35px; opacity:.4; }
-/* Crisp facets/spotlight edges yield to header copy and temporal hit areas. */
+/* Continuous reflected light yields to header copy and temporal hit areas. */
 .muse-disco-reflections { mask-image:linear-gradient(180deg,transparent 0 160px,#000 280px); }
 
 /* Disco keeps black negative space; localized light replaces the broad shared wash. */

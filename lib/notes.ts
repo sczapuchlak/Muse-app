@@ -1,13 +1,14 @@
+import {isNoteAccent,type NoteAccent} from './mindspace';
 import type { JSONContent } from '@tiptap/react';
 export type NoteDocument=JSONContent;
 export type NoteStatus='active'|'archived'|'trashed';
-export type Note={id:string;title:string;document:NoteDocument;plainText:string;status:NoteStatus;trashedFrom?:Exclude<NoteStatus,'trashed'>;pinned:boolean;createdAt:string;updatedAt:string;revision:number};
+export type Note={accent?:NoteAccent;id:string;title:string;document:NoteDocument;plainText:string;status:NoteStatus;trashedFrom?:Exclude<NoteStatus,'trashed'>;pinned:boolean;createdAt:string;updatedAt:string;revision:number};
 export const noteTagIcons=['tag','home','notes','meals','calendar'] as const;
 export type NoteTag={id:string;path:string;pinned:boolean;icon:typeof noteTagIcons[number]};
 export type NoteTagLink={noteId:string;tagId:string};
 export type NoteDraft=Pick<Note,'title'|'document'|'plainText'|'updatedAt'|'revision'>;
 export type NotesState={notes:Note[];tags:NoteTag[];links:NoteTagLink[];drafts:Record<string,NoteDraft>};
-export type NotesFilter={view:'all'|'pinned'|'archive'|'trash'|'tag';tagId?:string;query:string;searchAll:boolean;includeArchived:boolean;sort:'edited'|'created'|'title'};
+export type NotesFilter={view:'all'|'pinned'|'archive'|'trash'|'tag';tagId?:string;query:string;searchAll:boolean;includeArchived:boolean;sort:'edited'|'created'|'title'|'pinned'};
 export const initialNotesFilter:NotesFilter={view:'all',query:'',searchAll:false,includeArchived:false,sort:'edited'};
 export function normalizeTagPath(path:string):string {return path.trim().replace(/^#+/,'').split('/').map((part)=>part.trim().toLocaleLowerCase('en-US').replace(/\s+/g,'-').replace(/[^\p{L}\p{N}_-]/gu,'')).filter(Boolean).join('/');}
 export function tagPaths(path:string):string[]{const parts=normalizeTagPath(path).split('/').filter(Boolean);return parts.map((_,index)=>parts.slice(0,index+1).join('/'));}
@@ -36,6 +37,7 @@ export type NotesAction=
  |{type:'note/draft';id:string;patch:Partial<Pick<NoteDraft,'title'|'document'|'plainText'>>;now:string}
  |{type:'note/commit';id:string;revision:number}
  |{type:'note/pin';id:string}
+ |{type:'note/accent';id:string;accent?:NoteAccent}
  |{type:'note/status';id:string;status:NoteStatus|'restore'}
  |{type:'note/delete';id:string}
  |{type:'note/duplicate';id:string;newId:string;now:string}
@@ -49,6 +51,7 @@ export function notesReducer(state:NotesState,action:NotesAction):NotesState {
  case 'note/create':return state.notes.some((note)=>note.id===action.note.id)?state:{...state,notes:[...state.notes,action.note],links:action.tagId&&state.tags.some((tag)=>tag.id===action.tagId)?[...state.links,{noteId:action.note.id,tagId:action.tagId}]:state.links};
  case 'note/draft':{const base=state.notes.find((note)=>note.id===action.id);if(!base||base.status==='trashed')return state;const current=resolvedNote(state,base);return {...state,drafts:{...state.drafts,[action.id]:{title:current.title,document:current.document,plainText:current.plainText,...action.patch,updatedAt:action.now,revision:current.revision+1}}};}
  case 'note/commit':{const draft=state.drafts[action.id];if(!draft||draft.revision!==action.revision)return state;const drafts={...state.drafts};delete drafts[action.id];return {...state,drafts,notes:state.notes.map((note)=>note.id===action.id?{...note,...draft}:note)};}
+ case 'note/accent':return action.accent!==undefined&&!isNoteAccent(action.accent)?state:{...state,notes:state.notes.map(note=>note.id===action.id?{...note,accent:action.accent}:note)};
  case 'note/pin':return {...state,notes:state.notes.map((note)=>note.id===action.id?{...note,pinned:!note.pinned}:note)};
  case 'note/status':return {...state,notes:state.notes.map((note)=>note.id!==action.id?note:{...note,status:action.status==='restore'?note.status==='trashed'?(note.trashedFrom??'active'):'active':action.status,trashedFrom:action.status==='trashed'&&note.status!=='trashed'?note.status:note.trashedFrom})};
  case 'note/delete':{const drafts={...state.drafts};delete drafts[action.id];return state.notes.find((note)=>note.id===action.id)?.status!=='trashed'?state:{...state,drafts,notes:state.notes.filter((note)=>note.id!==action.id),links:state.links.filter((link)=>link.noteId!==action.id)};}

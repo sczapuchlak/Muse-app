@@ -1,0 +1,16 @@
+'use client';
+import {createContext,useContext,useEffect,useState,useSyncExternalStore,type ReactNode} from 'react';
+import {createMuseBrowserClient} from '@/lib/supabase/client';
+import {readWhimsy,type WhimsyRecords} from '@/lib/whimsy/persistence';
+import type {InsightSourceStatus} from '@/lib/insights/sources';
+type View={records:WhimsyRecords|null;status:InsightSourceStatus};
+class WhimsyReadOwner{
+ private view:View={records:null,status:{loaded:false}};private listeners=new Set<()=>void>();private loading?:Promise<void>;private again=false;
+ constructor(private read:()=>Promise<WhimsyRecords>){}
+ getSnapshot=()=>this.view;subscribe=(fn:()=>void)=>{this.listeners.add(fn);return()=>{this.listeners.delete(fn);};};private publish(){for(const fn of this.listeners)fn();}
+ load=(force=false)=>{if(this.loading){this.again||=force;return this.loading;}if(this.view.status.loaded&&!force)return Promise.resolve();this.view={...this.view,status:{...this.view.status,pending:true}};this.publish();this.loading=(async()=>{try{const records=await this.read();this.view={records,status:{loaded:true}};}catch{this.view={...this.view,status:{loaded:!!this.view.records,error:'Whimsy could not load. Your private records have not been replaced.'}};}finally{this.loading=undefined;this.publish();if(this.again){this.again=false;void this.load(true);}}})();return this.loading;};
+}
+const Context=createContext<{owner:WhimsyReadOwner;userId:string;timeZone:string}|null>(null);
+export function WhimsyDataProvider({userId,timeZone,children}:{userId:string;timeZone:string;children:ReactNode}){const [owner]=useState(()=>{const client=createMuseBrowserClient();return new WhimsyReadOwner(()=>readWhimsy(client));});useEffect(()=>{let channel:BroadcastChannel|undefined;try{channel=new BroadcastChannel(`muse.whimsy.${userId}`);channel.onmessage=()=>{void owner.load(true);};}catch{}const refresh=()=>{void owner.load(true);},changed=()=>{channel?.postMessage('changed');refresh();},storage=(e:StorageEvent)=>{if(e.key===`muse.whimsy.changed.${userId}`&&e.newValue)refresh();};window.addEventListener('focus',refresh);window.addEventListener('online',refresh);window.addEventListener('muse-whimsy-changed',changed);window.addEventListener('storage',storage);return()=>{channel?.close();window.removeEventListener('focus',refresh);window.removeEventListener('online',refresh);window.removeEventListener('muse-whimsy-changed',changed);window.removeEventListener('storage',storage);};},[owner,userId]);return <Context.Provider value={{owner,userId,timeZone}}>{children}</Context.Provider>;}
+export function useWhimsyData(){const context=useContext(Context);if(!context)throw Error('Private Whimsy requires its authenticated owner');const {owner,userId,timeZone}=context;const snapshot=useSyncExternalStore(owner.subscribe,owner.getSnapshot,owner.getSnapshot);useEffect(()=>{void owner.load();},[owner]);return {...snapshot,userId,timeZone,retry:()=>owner.load(true)};}
+export function WhimsyConnectionStatus(){const {status,retry}=useWhimsyData();return <div className="small-label" role="status">{status.error?<>{status.error} <button type="button" className="muse-button button-ghost" onClick={retry}>Retry</button></>:status.loaded?'Private Whimsy history connected.':'Connecting private Whimsy history…'}</div>;}

@@ -1,0 +1,35 @@
+# Whimsy foundation — local implementation
+
+## Implemented
+
+Five authenticated internal routes exist for Side Quests, Tarot, Dreamscapes, Fortunes, and Bookshelf. They share Muse navigation and materials, with honest foundation states instead of fabricated user activity. Weekly Side Quests, Tarot, and Dreamscapes are implemented locally. Fortunes and Bookshelf remain foundation surfaces.
+
+Migration `20261101001600_whimsy_foundation.sql` is applied **locally only**. It adds separate user-owned records for quest weeks/completions, tarot readings/personal meanings, dreams, fortune assignments/saved discoveries, books/reading sessions/goals, and widget preferences. The reference catalog keeps immutable content versions. Owner RLS, authenticated read-only table access, closed revision-checked write commands, idempotent command receipts, natural daily/weekly uniqueness, parent relationships, and account deletion cascades protect records. A combined owner snapshot has an explicit 5,000-record bound; pagination is needed before larger libraries.
+
+`lib/whimsy/persistence.ts` reads canonical records, saves/deletes with expected revisions and stable command IDs, and exposes the existing repository contract. `lib/whimsy/connected.ts` implements once-only date assignments, real recap/Dayview projections, optional widgets, and reading-habit contributions. The shared authenticated `WhimsyDataProvider` supplies loading/error/retry and owner-scoped invalidation; Insights consumes canonical Whimsy sources without inventing missing data. Account export includes these records. The server-only content importer validates editorial batches before its privileged database RPC. Development examples are excluded from live imports by default; the published 200-quest catalog is reference content, and no personal history is seeded.
+
+Reading time comes from settled UTC active segments split by the saved IANA timezone across midnight and daylight-saving changes. Pauses do not count. Reading-habit contributions are an explicit opt-in projection and never silently write Ritual completions. Widget projections expose source IDs without private journal excerpts. The Dreamscapes preview is a later, off-by-default exception; other projections still have no rendered card.
+
+## Weekly Side Quests — implemented locally
+
+The Weekly Draw offers three draw modes and five vibes, six unique possibilities with only three reveal positions, rerolls within those positions, exactly-three selection and a three-second pointer or keyboard hold. Screen readers announce the hold instruction; no separate confirmation action is used. The local reference catalog has 200 versioned published quests. User preferences, weekly draws, selections, commitment, completion/undo, swaps and history persist under the authenticated owner with revision checks and idempotent command receipts. A Monday week uses the saved timezone. Migrations 20261102001800 through 20261102002000 are local-only and require hosted review/application before deployment. The earlier foundation test fixtures remain compatible.
+
+## Tarot — implemented locally
+
+The Reading Table supports a saved daily one-card draw, three named three-card spreads, a five-position deep dive, and free one-to-five-card readings. The user chooses face-down cards, reveals them individually, switches concise/detailed interpretations, and explicitly saves or discards each reading. A persisted preference controls reversals. The Grimoire has all 78 Rider–Waite–Smith cards with unique artwork, upright/reversed meanings, symbolism, keywords and questions; personal interpretations use the existing private, revision-checked card-meaning records. Study Mode reveals meanings without grades. The Reading Journal reconstructs saved readings, supports search/filters and timeline/calendar date selection, appends dated follow-up reflections, and computes observed statistics from actual saved readings only. No AI or predictive claims are made.
+
+`20261102002100_tarot_catalog.sql` imports 78 immutable curated references; `20261102002200_tarot_private_state.sql` creates owner-RLS daily-draw, preference and append-only follow-up tables; `20261102002300_tarot_integrity.sql` validates published card references and unique reading cards/positions. All are local-only. The 78 local card images are original 1909 Rider–Waite–Smith scans from Wikimedia Commons, individually marked public domain there; `content/whimsy/rws-artwork.json` records the file-page source of every image. Preserve those source and license records when distributing the artwork.
+
+## Dreamscapes — implemented locally
+
+Dream Diary supports quick fragment capture, optional details, date editing, search/filter/sort/calendar browsing, and confirmed deletion. Dream Decoder combines selected encyclopedia symbols, shared emotion vocabulary and user-written private meanings without generating a whole-dream AI claim. The original 36-symbol, 12-category reference library and private custom symbols/personal meanings are separate from saved dream entries. Dream Atlas derives calendar, month/week frequency, symbols, emotions, lucid counts, and manually linked recurring-series summaries from actual saved dreams. Local migrations `20261102002400`–`20261102002600` add the published source-independent catalog and owner-RLS private records. The last migration corrects a trigger-field error found in disposable-account testing. The public HeartYearning repository did not have a clear standard reuse license, so none of its interpretation text was copied.
+
+## Not yet implemented
+
+Fortunes and Bookshelf full UIs, their production content libraries/providers, richer editorial workflows, and hosted migration remain separate future slices. No horoscope or discovery API is selected. Other Whimsy Daily Edit placements and automatic Ritual writes remain unimplemented. Widget projection contracts exist. Dreamscapes now has a single opt-in Daily Edit preview after Day Pulse; it is absent by default and shows no private excerpt. A generic configurable Whimsy widget area and other Whimsy widgets remain future work.
+
+Reference library expansion remains future editorial work: 500 total quests, 365 each cookies/oracle answers/prophecies, 250 verified curiosities, a future multi-deck catalog beyond the implemented 1909 deck, and an externally licensed dream-symbol expansion beyond the original 36-entry starter library. Never treat development sample content as real user history.
+
+## Validation
+
+Local disposable-account API checks cover the 200-quest catalog, preferences, draw/reveal/reroll/select/seal, completion/undo, swaps, fresh-client reload, and every foundation record kind, content version immutability, date assignments, replay safety, RLS and anonymous denial, cross-user isolation, timezone and overlapping reading rejection, conflicts, refresh through a fresh client, parent deletion rules, and account cascades. The broader unit, lint, type, and build results are reported separately for this checkpoint. No hosted database or deployment was touched.

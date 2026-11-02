@@ -199,6 +199,62 @@ isOneToOne: false
       referencedColumns: ["user_id","id"]
     }
                   ]
+                },"constellation_cards": {
+                  Row: {
+                    "created_at": string,"id": string,"payload": NonNullable<Json>,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"id": string,"payload": NonNullable<Json>,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "created_at"?: string,"id"?: string,"payload"?: NonNullable<Json>,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
+                },"constellation_commands": {
+                  Row: {
+                    "id": string,"request_hash": string,"revision": number,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "id": string,"request_hash": string,"revision": number,"user_id": string
+                  }
+                  Update: {
+                    "id"?: string,"request_hash"?: string,"revision"?: number,"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
+                },"constellation_tags": {
+                  Row: {
+                    "color": string | null,"id": string,"name": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "color"?: string | null,"id": string,"name": string,"user_id": string
+                  }
+                  Update: {
+                    "color"?: string | null,"id"?: string,"name"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
+                },"constellation_versions": {
+                  Row: {
+                    "revision": number,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "revision"?: number,"user_id": string
+                  }
+                  Update: {
+                    "revision"?: number,"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
                 },"daily_priorities": {
                   Row: {
                     "completed_at": string | null,"completion_origin": string,"created_at": string,"daily_record_id": string,"id": string,"legacy_backfilled_at": string | null,"legacy_complete": boolean | null,"linked_at": string | null,"materialized_at": string | null,"materialized_task_id": string | null,"position": number,"revision": number,"standalone_complete": boolean | null,"task_id": string | null,"text": string,"updated_at": string,"user_id": string
@@ -621,14 +677,14 @@ isOneToOne: false
                   ]
                 },"notes": {
                   Row: {
-                    "created_at": string,"document": NonNullable<Json>,"id": string,"pinned": boolean,"plain_text": string,"revision": number,"search_vector": unknown,"status": string,"title": string,"trashed_at": string | null,"trashed_from": string | null,"updated_at": string,"user_id": string
+                    "accent": string | null,"created_at": string,"document": NonNullable<Json>,"id": string,"pinned": boolean,"plain_text": string,"revision": number,"search_vector": unknown,"status": string,"title": string,"trashed_at": string | null,"trashed_from": string | null,"updated_at": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "created_at"?: string,"document": NonNullable<Json>,"id": string,"pinned": boolean,"plain_text": string,"revision"?: number,"search_vector"?: never,"status": string,"title": string,"trashed_at"?: string | null,"trashed_from"?: string | null,"updated_at"?: string,"user_id"?: string
+                    "accent"?: string | null,"created_at"?: string,"document": NonNullable<Json>,"id": string,"pinned": boolean,"plain_text": string,"revision"?: number,"search_vector"?: never,"status": string,"title": string,"trashed_at"?: string | null,"trashed_from"?: string | null,"updated_at"?: string,"user_id"?: string
                   }
                   Update: {
-                    "created_at"?: string,"document"?: NonNullable<Json>,"id"?: string,"pinned"?: boolean,"plain_text"?: string,"revision"?: number,"search_vector"?: never,"status"?: string,"title"?: string,"trashed_at"?: string | null,"trashed_from"?: string | null,"updated_at"?: string,"user_id"?: string
+                    "accent"?: string | null,"created_at"?: string,"document"?: NonNullable<Json>,"id"?: string,"pinned"?: boolean,"plain_text"?: string,"revision"?: number,"search_vector"?: never,"status"?: string,"title"?: string,"trashed_at"?: string | null,"trashed_from"?: string | null,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
 
@@ -1301,6 +1357,362 @@ isOneToOne: false
                   Relationships: [
 
                   ]
+                },"whimsy_books": {
+                  Row: {
+                    "activity_date": string | null,"created_at": string,"id": string,"payload": NonNullable<Json>,"revision": number,"time_zone": string | null,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "activity_date"?: string | null,"created_at"?: string,"id": string,"payload": NonNullable<Json>,"revision"?: number,"time_zone"?: string | null,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "activity_date"?: string | null,"created_at"?: string,"id"?: string,"payload"?: NonNullable<Json>,"revision"?: number,"time_zone"?: string | null,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
+                },"whimsy_card_meanings": {
+                  Row: {
+                    "activity_date": string | null,"created_at": string,"id": string,"payload": NonNullable<Json>,"revision": number,"time_zone": string | null,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "activity_date"?: string | null,"created_at"?: string,"id": string,"payload": NonNullable<Json>,"revision"?: number,"time_zone"?: string | null,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "activity_date"?: string | null,"created_at"?: string,"id"?: string,"payload"?: NonNullable<Json>,"revision"?: number,"time_zone"?: string | null,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
+                },"whimsy_commands": {
+                  Row: {
+                    "id": string,"request_hash": string,"result": NonNullable<Json>,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "id": string,"request_hash": string,"result": NonNullable<Json>,"user_id": string
+                  }
+                  Update: {
+                    "id"?: string,"request_hash"?: string,"result"?: NonNullable<Json>,"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
+                },"whimsy_content_links": {
+                  Row: {
+                    "content_id": string,"content_version": number,"kind": string,"record_id": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "content_id": string,"content_version": number,"kind": string,"record_id": string,"user_id": string
+                  }
+                  Update: {
+                    "content_id"?: string,"content_version"?: number,"kind"?: string,"record_id"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "whimsy_content_links_content_id_content_version_fkey"
+      columns: ["content_id","content_version"]
+isOneToOne: false
+      referencedRelation: "whimsy_content_versions"
+      referencedColumns: ["content_id","version"]
+    }
+                  ]
+                },"whimsy_content_versions": {
+                  Row: {
+                    "category": string,"content_id": string,"document": NonNullable<Json>,"experience": string,"version": number
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "category": string,"content_id": string,"document": NonNullable<Json>,"experience": string,"version": number
+                  }
+                  Update: {
+                    "category"?: string,"content_id"?: string,"document"?: NonNullable<Json>,"experience"?: string,"version"?: number
+                  }
+                  Relationships: [
+
+                  ]
+                },"whimsy_dream_custom_symbols": {
+                  Row: {
+                    "created_at": string,"id": string,"name": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"id": string,"name": string,"user_id": string
+                  }
+                  Update: {
+                    "created_at"?: string,"id"?: string,"name"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
+                },"whimsy_dream_entries": {
+                  Row: {
+                    "activity_date": string,"created_at": string,"id": string,"payload": NonNullable<Json>,"revision": number,"time_zone": string,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "activity_date": string,"created_at"?: string,"id": string,"payload": NonNullable<Json>,"revision"?: number,"time_zone": string,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "activity_date"?: string,"created_at"?: string,"id"?: string,"payload"?: NonNullable<Json>,"revision"?: number,"time_zone"?: string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
+                },"whimsy_dream_series": {
+                  Row: {
+                    "created_at": string,"id": string,"name": string,"revision": number,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"id": string,"name": string,"revision"?: number,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "created_at"?: string,"id"?: string,"name"?: string,"revision"?: number,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
+                },"whimsy_dream_series_entries": {
+                  Row: {
+                    "dream_id": string,"linked_at": string,"series_id": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "dream_id": string,"linked_at"?: string,"series_id": string,"user_id": string
+                  }
+                  Update: {
+                    "dream_id"?: string,"linked_at"?: string,"series_id"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "whimsy_dream_series_entries_user_id_dream_id_fkey"
+      columns: ["user_id","dream_id"]
+isOneToOne: true
+      referencedRelation: "whimsy_dream_entries"
+      referencedColumns: ["user_id","id"]
+    },{
+      foreignKeyName: "whimsy_dream_series_entries_user_id_series_id_fkey"
+      columns: ["user_id","series_id"]
+isOneToOne: false
+      referencedRelation: "whimsy_dream_series"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+                },"whimsy_dream_symbol_meanings": {
+                  Row: {
+                    "meaning": string,"revision": number,"symbol_id": string,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "meaning": string,"revision"?: number,"symbol_id": string,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "meaning"?: string,"revision"?: number,"symbol_id"?: string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
+                },"whimsy_fortune_assignments": {
+                  Row: {
+                    "activity_date": string,"created_at": string,"id": string,"payload": NonNullable<Json>,"revision": number,"time_zone": string,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "activity_date": string,"created_at"?: string,"id": string,"payload": NonNullable<Json>,"revision"?: number,"time_zone": string,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "activity_date"?: string,"created_at"?: string,"id"?: string,"payload"?: NonNullable<Json>,"revision"?: number,"time_zone"?: string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
+                },"whimsy_quest_completions": {
+                  Row: {
+                    "activity_date": string,"created_at": string,"id": string,"payload": NonNullable<Json>,"revision": number,"time_zone": string,"updated_at": string,"user_id": string,"week_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "activity_date": string,"created_at"?: string,"id": string,"payload": NonNullable<Json>,"revision"?: number,"time_zone": string,"updated_at"?: string,"user_id": string,"week_id": string
+                  }
+                  Update: {
+                    "activity_date"?: string,"created_at"?: string,"id"?: string,"payload"?: NonNullable<Json>,"revision"?: number,"time_zone"?: string,"updated_at"?: string,"user_id"?: string,"week_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "quest_week_owner"
+      columns: ["user_id","week_id"]
+isOneToOne: false
+      referencedRelation: "whimsy_quest_weeks"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+                },"whimsy_quest_preferences": {
+                  Row: {
+                    "experience": string,"revision": number,"updated_at": string,"user_id": string,"vibe": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "experience": string,"revision"?: number,"updated_at"?: string,"user_id": string,"vibe": string
+                  }
+                  Update: {
+                    "experience"?: string,"revision"?: number,"updated_at"?: string,"user_id"?: string,"vibe"?: string
+                  }
+                  Relationships: [
+
+                  ]
+                },"whimsy_quest_weeks": {
+                  Row: {
+                    "activity_date": string,"created_at": string,"id": string,"payload": NonNullable<Json>,"revision": number,"time_zone": string,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "activity_date": string,"created_at"?: string,"id": string,"payload": NonNullable<Json>,"revision"?: number,"time_zone": string,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "activity_date"?: string,"created_at"?: string,"id"?: string,"payload"?: NonNullable<Json>,"revision"?: number,"time_zone"?: string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
+                },"whimsy_reading_goals": {
+                  Row: {
+                    "activity_date": string | null,"created_at": string,"id": string,"payload": NonNullable<Json>,"revision": number,"time_zone": string | null,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "activity_date"?: string | null,"created_at"?: string,"id": string,"payload": NonNullable<Json>,"revision"?: number,"time_zone"?: string | null,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "activity_date"?: string | null,"created_at"?: string,"id"?: string,"payload"?: NonNullable<Json>,"revision"?: number,"time_zone"?: string | null,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
+                },"whimsy_reading_sessions": {
+                  Row: {
+                    "activity_date": string,"book_id": string,"created_at": string,"id": string,"payload": NonNullable<Json>,"revision": number,"time_zone": string,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "activity_date": string,"book_id": string,"created_at"?: string,"id": string,"payload": NonNullable<Json>,"revision"?: number,"time_zone": string,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "activity_date"?: string,"book_id"?: string,"created_at"?: string,"id"?: string,"payload"?: NonNullable<Json>,"revision"?: number,"time_zone"?: string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "reading_book_owner"
+      columns: ["user_id","book_id"]
+isOneToOne: false
+      referencedRelation: "whimsy_books"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+                },"whimsy_saved_discoveries": {
+                  Row: {
+                    "activity_date": string,"assignment_id": string,"created_at": string,"id": string,"payload": NonNullable<Json>,"revision": number,"time_zone": string,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "activity_date": string,"assignment_id": string,"created_at"?: string,"id": string,"payload": NonNullable<Json>,"revision"?: number,"time_zone": string,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "activity_date"?: string,"assignment_id"?: string,"created_at"?: string,"id"?: string,"payload"?: NonNullable<Json>,"revision"?: number,"time_zone"?: string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "fortune_owner"
+      columns: ["user_id","assignment_id"]
+isOneToOne: false
+      referencedRelation: "whimsy_fortune_assignments"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+                },"whimsy_tarot_daily_draws": {
+                  Row: {
+                    "activity_date": string,"card_id": string,"card_version": number,"deck_id": string,"drawn_at": string,"orientation": string,"time_zone": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "activity_date": string,"card_id": string,"card_version": number,"deck_id": string,"drawn_at"?: string,"orientation": string,"time_zone": string,"user_id": string
+                  }
+                  Update: {
+                    "activity_date"?: string,"card_id"?: string,"card_version"?: number,"deck_id"?: string,"drawn_at"?: string,"orientation"?: string,"time_zone"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "whimsy_tarot_daily_draws_card_id_card_version_fkey"
+      columns: ["card_id","card_version"]
+isOneToOne: false
+      referencedRelation: "whimsy_content_versions"
+      referencedColumns: ["content_id","version"]
+    }
+                  ]
+                },"whimsy_tarot_followups": {
+                  Row: {
+                    "created_at": string,"id": string,"reading_id": string,"text": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"id": string,"reading_id": string,"text": string,"user_id": string
+                  }
+                  Update: {
+                    "created_at"?: string,"id"?: string,"reading_id"?: string,"text"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "whimsy_tarot_followups_user_id_reading_id_fkey"
+      columns: ["user_id","reading_id"]
+isOneToOne: false
+      referencedRelation: "whimsy_tarot_readings"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+                },"whimsy_tarot_preferences": {
+                  Row: {
+                    "include_reversed": boolean,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "include_reversed"?: boolean,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "include_reversed"?: boolean,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
+                },"whimsy_tarot_readings": {
+                  Row: {
+                    "activity_date": string,"created_at": string,"id": string,"payload": NonNullable<Json>,"revision": number,"time_zone": string,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "activity_date": string,"created_at"?: string,"id": string,"payload": NonNullable<Json>,"revision"?: number,"time_zone": string,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "activity_date"?: string,"created_at"?: string,"id"?: string,"payload"?: NonNullable<Json>,"revision"?: number,"time_zone"?: string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
+                },"whimsy_widget_preferences": {
+                  Row: {
+                    "activity_date": string | null,"created_at": string,"id": string,"payload": NonNullable<Json>,"revision": number,"time_zone": string | null,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "activity_date"?: string | null,"created_at"?: string,"id": string,"payload": NonNullable<Json>,"revision"?: number,"time_zone"?: string | null,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "activity_date"?: string | null,"created_at"?: string,"id"?: string,"payload"?: NonNullable<Json>,"revision"?: number,"time_zone"?: string | null,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
                 },"workspaces": {
                   Row: {
                     "accent": string,"archived_at": string | null,"created_at": string,"icon_id": string | null,"id": string,"name": string,"revision": number,"updated_at": string,"user_id": string
@@ -1384,11 +1796,17 @@ isOneToOne: false
 "export_personal_data":
 { Args: Record<PropertyKey, never>; Returns: Json
                            },
+"import_whimsy_content":
+{ Args: { "p_batch": Json }; Returns: number
+                           },
 "planner_command":
 { Args: { "p_action": Json,"p_command_id": string,"p_expected_revision": number }; Returns: number
                            },
 "priority_day_end":
 { Args: { "p_date": string,"p_zone": string }; Returns: string
+                           },
+"read_constellations":
+{ Args: Record<PropertyKey, never>; Returns: Json
                            },
 "read_daily_days":
 { Args: { "p_after"?: string,"p_end": string,"p_limit"?: number,"p_start": string }; Returns: Json
@@ -1402,10 +1820,16 @@ isOneToOne: false
 "read_planner":
 { Args: Record<PropertyKey, never>; Returns: Json
                            },
+"read_quest_preference":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
 "read_rituals":
 { Args: Record<PropertyKey, never>; Returns: Json
                            },
 "read_wellness":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
+"read_whimsy":
 { Args: Record<PropertyKey, never>; Returns: Json
                            },
 "rename_priority_task":
@@ -1416,6 +1840,9 @@ isOneToOne: false
                            },
 "save_account_preferences":
 { Args: { "p_command_id": string,"p_expected_revision": number,"p_patch": Json }; Returns: number
+                           },
+"save_constellations":
+{ Args: { "p_command_id": string,"p_expected_revision": number,"p_state": Json }; Returns: number
                            },
 "save_daily_priorities":
 { Args: { "p_command_id"?: string,"p_date": string,"p_expected": Json,"p_expected_planner_revision"?: number,"p_items": Json }; Returns: {
@@ -1489,11 +1916,17 @@ isOneToOne: false
 "save_notes":
 { Args: { "p_command_id": string,"p_expected_revision": number,"p_state": Json }; Returns: number
                            },
+"save_quest_preference":
+{ Args: { "p_command_id": string,"p_expected_revision": number,"p_experience": string,"p_vibe": string }; Returns: Json
+                           },
 "save_rituals":
 { Args: { "p_command_id": string,"p_expected_revision": number,"p_state": Json }; Returns: number
                            },
 "save_wellness":
 { Args: { "p_command_id": string,"p_expected_revision": number,"p_state": Json }; Returns: number
+                           },
+"save_whimsy_record":
+{ Args: { "p_command_id": string,"p_delete"?: boolean,"p_expected_revision": number,"p_kind": string,"p_record": Json }; Returns: Json
                            },
 "task_completion_before":
 { Args: { "p_before": string,"p_task_id": string }; Returns: {

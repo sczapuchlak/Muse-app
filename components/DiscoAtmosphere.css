@@ -18,5 +18,4 @@
 :root[data-magic="quiet"] .muse-disco-glitter > span:nth-child(n+13) { display:none; }
 :root[data-magic="quiet"] .muse-disco-caustics { opacity:.35; }
 :root[data-material="frosted"] .muse-disco-caustics { opacity:.6; }
-:root[data-theme="disco-damage"] .muse-disco-reflections > i { opacity:var(--reflection-opacity,.65); background:linear-gradient(128deg,transparent 6%,color-mix(in srgb,var(--icon-gradient-highlight) 60%,transparent) 39%,color-mix(in srgb,var(--facet-light) 75%,transparent) 45%,transparent 80%); }
 /* Stars stay crisp and static. No animated blur, full-page sweep or looping glows. */

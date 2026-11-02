@@ -1,0 +1,4 @@
+.muse-whimsy-navigation { display:flex; flex-wrap:wrap; gap:var(--space-2); margin-bottom:var(--space-5); }
+.muse-whimsy-navigation [aria-current=page] { background:var(--selected-background); border-color:var(--selected-border); color:var(--selected-text); }
+.muse-whimsy-foundation-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr)); gap:var(--grid-gap); }
+.muse-whimsy-foundation-grid h2 { font-size:1.1rem; }
