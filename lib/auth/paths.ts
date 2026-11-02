@@ -11,7 +11,7 @@ export function safeReturnPath(input: unknown): string {
   } catch { return "/"; }
 }
 export function isPublicAuthPath(path:string) {
-  return path === "/login" || path === "/login-preview" || ["/auth/link","/auth/confirm","/auth/logout"].includes(path);
+  return path === "/login" || path === "/login-preview" || ["/auth/link","/auth/verify","/auth/confirm","/auth/logout"].includes(path);
 }
 export function validLoginEmail(input:unknown): input is string {
   return typeof input === "string" && input.trim().length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.trim());

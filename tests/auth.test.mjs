@@ -10,7 +10,7 @@ test('auth return targets stay inside actual application destinations and reject
  assert.equal(safeReturnPath('/notes?x='+'x'.repeat(3000)),'/');
 });
 test('only intended entry routes are public and email/notice parsing cannot expose arbitrary object members',()=>{
- for(const path of ['/login','/login-preview','/auth/link','/auth/logout','/auth/confirm'])assert.equal(isPublicAuthPath(path),true);
+ for(const path of ['/login','/login-preview','/auth/link','/auth/verify','/auth/logout','/auth/confirm'])assert.equal(isPublicAuthPath(path),true);
  for(const path of ['/','/mood','/settings','/login/anything','/auth/admin'])assert.equal(isPublicAuthPath(path),false);
  assert.ok(validLoginEmail(' local@example.test '));for(const input of ['bad','x@',null,'a@b.test\r\nX: yes','x'.repeat(255)+'@example.test'])assert.equal(validLoginEmail(input),false);
  assert.equal(authNoticeMessage('__proto__'),undefined);assert.equal(authNoticeMessage('constructor'),undefined);assert.ok(authNoticeMessage('link-expired').includes('expired'));

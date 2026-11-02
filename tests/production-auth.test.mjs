@@ -55,3 +55,19 @@ test('intentional deletion holds session-exit races and releases failed/unmounte
  const previous=globalThis.window,events=[];globalThis.window={dispatchEvent:event=>events.push(event.type)};
  try{const session=load('lib/auth/client-session',true);assert.equal(session.isAccountDeletionPending(),false);const release=session.holdAccountDeletionExit();assert.equal(session.isAccountDeletionPending(),true);release();release();assert.equal(session.isAccountDeletionPending(),false);assert.deepEqual(events,[session.sessionExitReleased]);const boundary=readFileSync(resolve(root,'components/auth/AuthSessionBoundary.tsx'),'utf8');assert.match(boundary,/leaving.current\|\|isAccountDeletionPending\(\)/);assert.ok(boundary.includes('addEventListener(sessionExitReleased,verify)'));}finally{globalThis.window=previous;}
 });
+
+test('email OTP verification uses the configured project, writes SSR cookies and returns only a safe path',async()=>{
+ let verified;const helpers={...http({}),routeAuthClient:(_request,response)=>({auth:{verifyOtp:async input=>{verified=input;response.cookies.set('sb-project-auth-token','test-session',{secure:true,path:'/'});return {data:{user:{id:identity},session:{access_token:'not-returned'}},error:null};}}})};
+ const route=moduleFor('app/auth/verify/route.ts',{'@/lib/auth/http':helpers,'@/lib/auth/paths':load('lib/auth/paths')});
+ const response=await route.POST(request('/auth/verify',{email:' invited@example.test ',code:'123456',next:'https://other.example'}));assert.equal(response.status,200);assert.deepEqual(verified,{email:'invited@example.test',token:'123456',type:'email'});assert.deepEqual(await response.json(),{ok:true,next:'/notes'});assert.match(response.headers.get('set-cookie'),/sb-project-auth-token/);assert.match(response.headers.get('cache-control'),/no-store/);assert.match(response.headers.get('set-cookie'),/muse-auth-return=;/);
+});
+test('OTP rejects bad origins, malformed/non-six-digit codes and unavailable providers without success',async()=>{
+ let calls=0;const client={auth:{verifyOtp:async()=>{calls++;return {data:{user:null,session:null},error:{code:'otp_expired',status:403}};}}};
+ const route=moduleFor('app/auth/verify/route.ts',{'@/lib/auth/http':http(client),'@/lib/auth/paths':load('lib/auth/paths')});
+ for(const code of ['12345','1234567','12a456','１２３４５６',null,123456])assert.equal((await route.POST(request('/auth/verify',{email:'x@example.test',code}))).status,400);
+ assert.equal((await route.POST(request('/auth/verify',{email:'x@example.test',code:'123456'},'https://other.example'))).status,403);assert.equal(calls,0);
+ assert.equal((await route.POST(request('/auth/verify','{bad'))).status,400);assert.equal((await route.POST(request('/auth/verify','x'.repeat(4097)))).status,413);
+ const result=await route.POST(request('/auth/verify',{email:'x@example.test',code:'123456'}));assert.equal(result.status,400);assert.match((await result.json()).error,/incorrect, expired, or already used/);assert.equal(result.headers.get('set-cookie'),null);
+ client.auth.verifyOtp=async()=>({data:{},error:{status:429}});assert.equal((await route.POST(request('/auth/verify',{email:'x@example.test',code:'123456'}))).headers.get('retry-after'),'60');
+ for(const result of [{data:{},error:{status:503}},{data:{},error:null}]){client.auth.verifyOtp=async()=>result;assert.equal((await route.POST(request('/auth/verify',{email:'x@example.test',code:'123456'}))).status,503);}
+});
