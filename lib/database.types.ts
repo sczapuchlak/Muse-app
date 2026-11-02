@@ -1611,6 +1611,26 @@ isOneToOne: false
       referencedColumns: ["user_id","id"]
     }
                   ]
+                },"whimsy_reading_timers": {
+                  Row: {
+                    "book_id": string,"payload": NonNullable<Json>,"revision": number,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "book_id": string,"payload": NonNullable<Json>,"revision"?: number,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "book_id"?: string,"payload"?: NonNullable<Json>,"revision"?: number,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "whimsy_reading_timers_user_id_book_id_fkey"
+      columns: ["user_id","book_id"]
+isOneToOne: false
+      referencedRelation: "whimsy_books"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
                 },"whimsy_saved_discoveries": {
                   Row: {
                     "activity_date": string,"assignment_id": string,"created_at": string,"id": string,"payload": NonNullable<Json>,"revision": number,"time_zone": string,"updated_at": string,"user_id": string
@@ -1771,6 +1791,9 @@ isOneToOne: false
 "delete_mood_checkin":
 { Args: { "p_expected_revision": number,"p_id": string }; Returns: undefined
                            },
+"delete_whimsy_book":
+{ Args: { "p_book_id": string,"p_command_id": string,"p_expected_revision": number }; Returns: Json
+                           },
 "ensure_daily_record":
 { Args: { "p_date": string }; Returns: {
               "created_at": string,
@@ -1821,6 +1844,9 @@ isOneToOne: false
 { Args: Record<PropertyKey, never>; Returns: Json
                            },
 "read_quest_preference":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
+"read_reading_timer":
 { Args: Record<PropertyKey, never>; Returns: Json
                            },
 "read_rituals":
@@ -1918,6 +1944,9 @@ isOneToOne: false
                            },
 "save_quest_preference":
 { Args: { "p_command_id": string,"p_expected_revision": number,"p_experience": string,"p_vibe": string }; Returns: Json
+                           },
+"save_reading_timer":
+{ Args: { "p_command_id": string,"p_expected_revision": number,"p_payload": Json }; Returns: Json
                            },
 "save_rituals":
 { Args: { "p_command_id": string,"p_expected_revision": number,"p_state": Json }; Returns: number

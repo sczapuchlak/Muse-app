@@ -1,0 +1,7240 @@
+[
+  {
+    "id": "TP-037",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A task of modest dimensions may finally surrender, leaving you disproportionately pleased with a checkbox.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "small-victories",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "small-victories",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-038",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "Something you have practiced quietly shall reveal itself in a movement that suddenly feels natural.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "small-victories",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "small-victories",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-039",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The kingdom may rejoice when a lid is matched to its rightful container without further negotiations.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "small-victories",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "small-victories",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-040",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A sentence you have been struggling to write may become simpler after you stop trying to make it impressive.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "encouraging",
+      "theme": "small-victories",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "small-victories",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-041",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "An errand may conclude with fewer complications than the elaborate internal briefing predicted.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "small-victories",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "small-victories",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-042",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "One ordinary decision shall leave a little more room in the rest of the day.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "small-victories",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "small-victories",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-043",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A tiny victory may demand a title far longer than the event that earned it.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "small-victories",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "small-victories",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-044",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "You may remember the thing before the reminder arrives and feel briefly capable of governing a small nation.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "small-victories",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "small-victories",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-045",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A useful question may be asked at exactly the moment everyone else was pretending to understand.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "encouraging",
+      "theme": "small-victories",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "small-victories",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-046",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The first pleasing stitch of a new technique may appear among its more experimental neighbors.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "small-victories",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "small-victories",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-047",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "An item may be put away in the correct place on the first attempt. Witnesses are optional.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "small-victories",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "small-victories",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-048",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A stubborn digital setting shall be found behind a menu with an unnecessarily mysterious name.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "small-victories",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "small-victories",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-049",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A small promise to yourself may be kept without requiring a dramatic change of personality.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "encouraging",
+      "theme": "small-victories",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "small-victories",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-050",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "Something once confusing may become familiar enough that you forget it used to be difficult.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "small-victories",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "small-victories",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-051",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A short explanation may do the work of the much longer explanation currently warming up backstage.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "small-victories",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "small-victories",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-052",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "An ordinary domestic success may receive an imaginary trumpet fanfare of entirely appropriate grandeur.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "small-victories",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "small-victories",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-053",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The version you actually finish may turn out to be the version you needed all along.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "encouraging",
+      "theme": "small-victories",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "small-victories",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-054",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A little patience may return as a visible line of progress across something made by hand.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "small-victories",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "small-victories",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-055",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "You may discover that the “quick fix” is, on this rare occasion, genuinely a quick fix.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "small-victories",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "small-victories",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-056",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A drawer shall close on its first try, and the household council will struggle to remain humble.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "small-victories",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "small-victories",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-057",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A reasonable plan may survive contact with an ordinary day by being allowed to change.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "encouraging",
+      "theme": "small-victories",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "small-victories",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-058",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "One small repair may restore more affection for an old object than you expected.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "small-victories",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "small-victories",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-059",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A forgotten appointment detail may be found exactly where a sensible person would have written it.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "small-victories",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "small-victories",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-060",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A minor obstacle may resign its position after receiving one calm, specific question.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "small-victories",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "small-victories",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-061",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "Something you learned recently may become useful before you have time to doubt that you learned it.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "encouraging",
+      "theme": "small-victories",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "small-victories",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-062",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A quiet hour may leave behind a result that feels unmistakably yours.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "small-victories",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "small-victories",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-063",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The correct cable may be selected without an introductory trial of every other cable in the room.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "small-victories",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "small-victories",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-064",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A particularly satisfying knot may be untied and granted an honorable retirement.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "small-victories",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "small-victories",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-065",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "You may finish a small task and resist immediately replacing it with three larger ones.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "encouraging",
+      "theme": "small-victories",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "small-victories",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-066",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "An ordinary choice may become a gentle turning point only when you look back at it.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "small-victories",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "small-victories",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-067",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A useful document may be found under a filename that is unexpectedly descriptive.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "small-victories",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "small-victories",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-068",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The kingdom of Nearly Done may formally annex one completed paragraph.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "small-victories",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "small-victories",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-069",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A modest amount of preparation may make an upcoming moment feel more welcoming.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "encouraging",
+      "theme": "small-victories",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "small-victories",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-070",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "Your hands may remember a skill before your confidence catches up with them.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "small-victories",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "small-victories",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-071",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "One thing may take exactly as long as expected, briefly restoring faith in estimates.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "small-victories",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "small-victories",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-072",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A small victory shall be celebrated with an ordinary beverage wearing ceremonial significance.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "small-victories",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "small-victories",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-073",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "An idea may become easier to explain once you let it be a little less complete.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "encouraging",
+      "theme": "small-victories",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "small-victories",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-074",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A familiar route through a difficult task may reveal a kinder shortcut.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "small-victories",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "small-victories",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-075",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "You may leave a little earlier and arrive without having to negotiate with every traffic light.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "small-victories",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "small-victories",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-076",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A tiny technical success may inspire a private expression normally reserved for major sporting events.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "small-victories",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "small-victories",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-077",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A task you feared may become manageable when broken into parts that fit the actual afternoon.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "encouraging",
+      "theme": "small-victories",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "small-victories",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-078",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A patient effort may become visible in the detail you once rushed past.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "small-victories",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "small-victories",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-079",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The final item on a short list may prove to be both real and finishable.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "small-victories",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "small-victories",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-080",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A missing button may be sewn back on and immediately promoted to veteran status.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "small-victories",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "small-victories",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-081",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "You may recognize an improvement before anyone else knows there was something to improve.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "encouraging",
+      "theme": "small-victories",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "small-victories",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-082",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "One small thing may find its place, and the room will feel fractionally more settled.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "small-victories",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "small-victories",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-083",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "An answer may be located in the instructions before a search engine is summoned.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "small-victories",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "small-victories",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-084",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A modest achievement shall acquire an absurdly grand name in your private records.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "small-victories",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "small-victories",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-085",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The next attempt may use an old mistake as a surprisingly useful signpost.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "encouraging",
+      "theme": "small-victories",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "small-victories",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-086",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A little work done with care may leave the day feeling more inhabited.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "small-victories",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "small-victories",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-087",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A familiar appliance may complete its entire performance before you remember why you were waiting beside it.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "domestic-drama",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "domestic-drama",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-088",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The laundry shall briefly form a convincing mountain range with disputed borders.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "domestic-drama",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "domestic-drama",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-089",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A small change in the light may make the same old table look newly introduced.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "domestic-drama",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "domestic-drama",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-090",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The item you put somewhere “temporarily” may begin applying for permanent residency.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "domestic-drama",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "domestic-drama",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-091",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A spoon may emerge from the drawer at a moment of great diplomatic importance.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "domestic-drama",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "domestic-drama",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-092",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "An ordinary meal may be rescued by the ingredient you almost forgot was there.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "encouraging",
+      "theme": "domestic-drama",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "domestic-drama",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-093",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A household sound may turn out to be much less mysterious once someone checks the obvious thing.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "domestic-drama",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "domestic-drama",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-094",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A room may become welcoming through one small practical act rather than an entire transformation.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "domestic-drama",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "domestic-drama",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-095",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The cupboard shall reveal an inventory best described as ambitious, but not in the categories you expected.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "domestic-drama",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "domestic-drama",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-096",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A container may be opened with complete confidence and reveal a completely different leftover.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "domestic-drama",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "domestic-drama",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-097",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "Something already in your home may solve a problem you had begun pricing online.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "encouraging",
+      "theme": "domestic-drama",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "domestic-drama",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-098",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A familiar scent may arrive at the doorway before the meal is ready.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "domestic-drama",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "domestic-drama",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-099",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The good scissors may return from a journey they have declined to document.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "domestic-drama",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "domestic-drama",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-100",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A sock shall appear in a jurisdiction where no sock has any reasonable business.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "domestic-drama",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "domestic-drama",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-101",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "An empty box may remain useful in theory for another highly distinguished week.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "domestic-drama",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "domestic-drama",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-102",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The quiet after a household machine stops may feel unexpectedly spacious.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "domestic-drama",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "domestic-drama",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-103",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A small amount of tidying may reveal an object you are sincerely glad to own.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "encouraging",
+      "theme": "domestic-drama",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "domestic-drama",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-104",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A jar may open only after receiving a second, more diplomatic introduction.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "domestic-drama",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "domestic-drama",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-105",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The exact amount of something may be left, producing a satisfaction no recipe can adequately describe.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "domestic-drama",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "domestic-drama",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-106",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A favorite bowl may make a familiar meal feel like a small welcome home.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "domestic-drama",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "domestic-drama",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-107",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The chair with clothes on it shall briefly consider declaring itself a separate room.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "domestic-drama",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "domestic-drama",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-108",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A grocery list may reveal the interesting difference between what you need and what you remember enjoying.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "domestic-drama",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "domestic-drama",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-109",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "An old household workaround may be replaced by a simpler solution you can actually maintain.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "encouraging",
+      "theme": "domestic-drama",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "domestic-drama",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-110",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A clear surface may catch a patch of light that had nowhere to land before.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "domestic-drama",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "domestic-drama",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-111",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The last clean towel may be discovered before the situation becomes a personal essay.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "domestic-drama",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "domestic-drama",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-112",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A kitchen timer shall announce an event with more authority than the event strictly requires.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "domestic-drama",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "domestic-drama",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-113",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A perfectly ordinary cupboard may contain enough mugs to support an imaginary conference.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "domestic-drama",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "domestic-drama",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-114",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "Something folded and put away may become tomorrow's quiet relief.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "domestic-drama",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "domestic-drama",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-115",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A small repair may make a familiar object feel invited back into use.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "encouraging",
+      "theme": "domestic-drama",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "domestic-drama",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-116",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The fridge shall host a summit between several ingredients approaching the end of their term.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "domestic-drama",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "domestic-drama",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-117",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A bag may contain the thing you packed deliberately, alongside three things whose presence remains unexplained.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "domestic-drama",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "domestic-drama",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-118",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The sound of a familiar key may mark the most comforting transition of the day.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "domestic-drama",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "domestic-drama",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-119",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A mismatched set of tableware may achieve a surprisingly convincing coalition.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "domestic-drama",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "domestic-drama",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-120",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The object you need may be under the object you moved in order to look for it.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "domestic-drama",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "domestic-drama",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-121",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "An ordinary routine may improve when you remove one unnecessary step.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "encouraging",
+      "theme": "domestic-drama",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "domestic-drama",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-122",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A lamp may transform a corner without asking the rest of the room to cooperate.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "domestic-drama",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "domestic-drama",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-123",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A small spill may be cleaned before it acquires a backstory.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "domestic-drama",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "domestic-drama",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-124",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The official household census shall uncover a suspicious number of reusable bags.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "domestic-drama",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "domestic-drama",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-125",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A meal may produce exactly one portion too little or one excellent lunch for later; the prophecy refuses to choose.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "domestic-drama",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "domestic-drama",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-126",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A familiar fabric may feel newly pleasant when the weather changes.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "domestic-drama",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "domestic-drama",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-127",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "Something practical done tonight may feel like kindness delivered tomorrow morning.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "encouraging",
+      "theme": "domestic-drama",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "domestic-drama",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-128",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A cupboard door shall finally stop squeaking and lose its unofficial speaking role.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "domestic-drama",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "domestic-drama",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-129",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A pen may work immediately after you have already selected a replacement pen.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "domestic-drama",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "domestic-drama",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-130",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A room may seem quieter after one small visual distraction finds a home.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "domestic-drama",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "domestic-drama",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-131",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The recycling shall briefly resemble the remains of an extremely modest industrial empire.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "domestic-drama",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "domestic-drama",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-132",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A charging cable may be long enough, a development worthy of careful appreciation.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "domestic-drama",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "domestic-drama",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-133",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A forgotten household note may prevent a minor inconvenience at an unusually useful moment.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "encouraging",
+      "theme": "domestic-drama",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "domestic-drama",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-134",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The first ordinary sound after returning home may feel like the room recognizing you.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "domestic-drama",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "domestic-drama",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-135",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "An item may be found while looking for something else and accept none of the blame.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "domestic-drama",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "domestic-drama",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-136",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The domestic council shall adjourn early after discovering that everyone mainly wanted a snack.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "domestic-drama",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "domestic-drama",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-137",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "An unfinished idea may return with a clearer shape after you stop asking it to become a whole project.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "creative-inspiration",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "creative-inspiration",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-138",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A practice sample may look better than the thing you were officially trying to make.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "creative-inspiration",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "creative-inspiration",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-139",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A color combination shall arrive dressed as a minor scandal and win everyone over.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "creative-inspiration",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "creative-inspiration",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-140",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A new technique may become less intimidating after the first intentionally imperfect attempt.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "encouraging",
+      "theme": "creative-inspiration",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "creative-inspiration",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-141",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A scrap of material may suggest a project more interesting than the one it was saved for.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "creative-inspiration",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "creative-inspiration",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-142",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A file called “final” may discover that it has several younger siblings.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "creative-inspiration",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "creative-inspiration",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-143",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The creative department shall propose a bold new direction during an entirely unrelated errand.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "creative-inspiration",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "creative-inspiration",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-144",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A small experiment may teach you something useful even if you never make a larger version.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "encouraging",
+      "theme": "creative-inspiration",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "creative-inspiration",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-145",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "One accidental mark may become the detail that gives the piece its character.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "creative-inspiration",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "creative-inspiration",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-146",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A tutorial may finally explain the small step every previous tutorial treated as obvious.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "creative-inspiration",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "creative-inspiration",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-147",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "An imaginary art critic shall be silenced by the undeniable charm of a very small object.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "creative-inspiration",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "creative-inspiration",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-148",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A line of code may produce a tiny effect that feels disproportionately magical.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "creative-inspiration",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "creative-inspiration",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-149",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A familiar skill may become interesting again when used at a different scale.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "encouraging",
+      "theme": "creative-inspiration",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "creative-inspiration",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-150",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The spare yarn may have a stronger opinion about the palette than the official plan.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "creative-inspiration",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "creative-inspiration",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-151",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A first draft shall attempt to become three separate projects and be politely asked to sit down.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "creative-inspiration",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "creative-inspiration",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-152",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A new texture may make your hands curious before your mind has chosen a purpose.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "creative-inspiration",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "creative-inspiration",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-153",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The most useful sketch may be the one you made while waiting for something else.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "creative-inspiration",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "creative-inspiration",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-154",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A question about how something works may lead to a satisfying little prototype.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "encouraging",
+      "theme": "creative-inspiration",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "creative-inspiration",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-155",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The browser shall render the intended layout and briefly appear to understand your artistic vision.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "creative-inspiration",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "creative-inspiration",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-156",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A familiar subject may reveal a new shape when you draw only its shadows.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "creative-inspiration",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "creative-inspiration",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-157",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "An excellent idea may arrive just after you have put the supplies away.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "creative-inspiration",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "creative-inspiration",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-158",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A small finished object may make the next unfinished one feel less daunting.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "encouraging",
+      "theme": "creative-inspiration",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "creative-inspiration",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-159",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A very serious design decision shall be settled by the phrase “that one makes me happy.”",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "creative-inspiration",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "creative-inspiration",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-160",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A piece of music may quietly lend its rhythm to something you make.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "creative-inspiration",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "creative-inspiration",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-161",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The correct stitch count may be achieved without a recount, though the prophecy recommends savoring the rarity.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "creative-inspiration",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "creative-inspiration",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-162",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A useful constraint may make the blank page feel more inviting.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "encouraging",
+      "theme": "creative-inspiration",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "creative-inspiration",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-163",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "Something you admired in another medium may suggest a fresh approach to your own.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "creative-inspiration",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "creative-inspiration",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-164",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The typography council shall discover that one less font is an unexpectedly powerful policy.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "creative-inspiration",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "creative-inspiration",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-165",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A small bug may reveal an assumption you had been carrying around without a name.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "creative-inspiration",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "creative-inspiration",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-166",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "An old project may become approachable once you choose a smaller definition of finished.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "encouraging",
+      "theme": "creative-inspiration",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "creative-inspiration",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-167",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A limited palette may produce a color you would never have selected alone.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "creative-inspiration",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "creative-inspiration",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-168",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A tool you already own may turn out to have a second, highly convenient function.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "creative-inspiration",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "creative-inspiration",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-169",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A scrap-paper prototype shall embarrass the elaborate plan by working immediately.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "creative-inspiration",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "creative-inspiration",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-170",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A quiet detail may become the center of the composition after you finally give it room.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "creative-inspiration",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "creative-inspiration",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-171",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A skill you thought you had forgotten may return in pieces you can recognize.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "encouraging",
+      "theme": "creative-inspiration",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "creative-inspiration",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-172",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The practice page may accidentally acquire a personality and demand a title.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "creative-inspiration",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "creative-inspiration",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-173",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A miniature project shall develop ambitions far beyond its available square inches.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "creative-inspiration",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "creative-inspiration",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-174",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "An ordinary object may offer a shape worth borrowing for a new design.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "creative-inspiration",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "creative-inspiration",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-175",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A mistake may become a useful reference when you label what happened honestly.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "encouraging",
+      "theme": "creative-inspiration",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "creative-inspiration",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-176",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A single spacing adjustment may settle an argument that color changes could not resolve.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "creative-inspiration",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "creative-inspiration",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-177",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The craft supplies shall convene a summit and nominate the most neglected material.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "creative-inspiration",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "creative-inspiration",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-178",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A familiar pattern may feel different when made in a color you chose for yourself.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "creative-inspiration",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "creative-inspiration",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-179",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "An idea saved in an obscure note may reappear at the exact moment it finally has a use.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "creative-inspiration",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "creative-inspiration",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-180",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A small amount of practice may reveal a question you could not have asked before starting.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "encouraging",
+      "theme": "creative-inspiration",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "creative-inspiration",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-181",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A photograph may contain a better composition at its edge than at its intended center.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "creative-inspiration",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "creative-inspiration",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-182",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The imaginary client shall approve the design after you stop inviting them to every decision.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "creative-inspiration",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "creative-inspiration",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-183",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A project may become much easier when you admit that one feature was there only to impress nobody in particular.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "creative-inspiration",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "creative-inspiration",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-184",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A clear explanation of your process may help you see what you already know.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "encouraging",
+      "theme": "creative-inspiration",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "creative-inspiration",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-185",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The final small detail may arrive as a feeling of quiet fit rather than a flash of certainty.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "creative-inspiration",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "creative-inspiration",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-186",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A very tiny masterpiece shall be completed and immediately inspected from three unnecessary angles.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "creative-inspiration",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "creative-inspiration",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-187",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A familiar person may tell a small story that makes an old place feel new.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "social-surprises",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "social-surprises",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-188",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A conversation may survive a pause without anyone rushing to fill it with weather.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "social-surprises",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "social-surprises",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-189",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The group chat shall briefly achieve the impossible: a plan with a time and an address.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "social-surprises",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "social-surprises",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-190",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A considerate invitation may be appreciated even when the answer is a gentle no.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "encouraging",
+      "theme": "social-surprises",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "social-surprises",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-191",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "Someone may remember an ordinary detail you once mentioned and return it to you like a small gift.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "social-surprises",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "social-surprises",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-192",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A shared joke may acquire a second life in a completely inappropriate household context, privately and harmlessly.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "social-surprises",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "social-surprises",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-193",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "An imaginary debate shall be settled by the discovery that both sides mainly agree about snacks.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "social-surprises",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "social-surprises",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-194",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A simple question may give someone room to talk about something they love.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "encouraging",
+      "theme": "social-surprises",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "social-surprises",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-195",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A short message may make a distant day feel briefly connected to yours.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "social-surprises",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "social-surprises",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-196",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "Someone may recommend exactly the thing you had been trying unsuccessfully to describe.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "social-surprises",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "social-surprises",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-197",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A small gathering shall contain enough different opinions about chairs to justify a minor symposium.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "social-surprises",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "social-surprises",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-198",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A familiar voice may sound especially welcome after an unremarkable stretch of silence.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "social-surprises",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "social-surprises",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-199",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A clear, kind boundary may make a shared plan easier rather than less friendly.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "encouraging",
+      "theme": "social-surprises",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "social-surprises",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-200",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A story you thought was too ordinary may turn out to be someone else's favorite part of the conversation.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "social-surprises",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "social-surprises",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-201",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The unofficial committee shall discover that nobody actually wanted the complicated option.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "social-surprises",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "social-surprises",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-202",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A moment of shared attention may become more memorable than the activity you planned around it.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "social-surprises",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "social-surprises",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-203",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A friend may identify the song from your wildly inaccurate description with unsettling speed.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "social-surprises",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "social-surprises",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-204",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "Someone may be pleased to learn that a small thing they did stayed with you.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "encouraging",
+      "theme": "social-surprises",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "social-surprises",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-205",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A harmless disagreement shall conclude with everyone adopting an even stranger third option.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "social-surprises",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "social-surprises",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-206",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A conversation may wander somewhere neither person could have reached alone.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "social-surprises",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "social-surprises",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-207",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "An invitation may be accepted more easily after it includes the useful phrase “only half an hour.”",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "social-surprises",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "social-surprises",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-208",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A little practical clarity may spare two people a great deal of unnecessary guessing.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "encouraging",
+      "theme": "social-surprises",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "social-surprises",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-209",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "Someone's ordinary expertise may become unexpectedly fascinating when you ask how they learned it.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "social-surprises",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "social-surprises",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-210",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The council of friends shall produce a nickname for an event that lasted approximately eleven seconds.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "social-surprises",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "social-surprises",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-211",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A familiar anecdote may acquire one new detail that improves the entire production.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "social-surprises",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "social-surprises",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-212",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A message sent without demanding a quick reply may arrive at a particularly welcome moment.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "encouraging",
+      "theme": "social-surprises",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "social-surprises",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-213",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "Two people may remember the same day through entirely different colors.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "social-surprises",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "social-surprises",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-214",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A shared playlist may reveal an overlap nobody's public image adequately prepared you for.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "social-surprises",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "social-surprises",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-215",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A tiny celebration shall become official when a second person agrees that it counts.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "social-surprises",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "social-surprises",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-216",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "Someone may make room for your actual answer instead of the convenient one.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "social-surprises",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "social-surprises",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-217",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "An ordinary offer of company may turn out to be exactly the right size.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "encouraging",
+      "theme": "social-surprises",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "social-surprises",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-218",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A conversation may become easier when one person admits they do not know the acronym either.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "social-surprises",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "social-surprises",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-219",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The imaginary social secretary shall approve a plan requiring no special outfit and very little travel.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "social-surprises",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "social-surprises",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-220",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A kind question may be remembered longer than the answer it received.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "social-surprises",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "social-surprises",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-221",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A person you know may reveal an unexpectedly specific interest and become briefly impossible to interrupt, delightfully.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "social-surprises",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "social-surprises",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-222",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A small acknowledgment may help a shared effort feel more visible.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "encouraging",
+      "theme": "social-surprises",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "social-surprises",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-223",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A quiet companion may make the ordinary view seem worth staying with.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "social-surprises",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "social-surprises",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-224",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The next friendly game may produce a rule interpretation worthy of a fictional constitutional court.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "social-surprises",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "social-surprises",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-225",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A mutual recommendation may lead to an excellent conversation even if neither of you liked the thing.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "social-surprises",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "social-surprises",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-226",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "Someone may be relieved when you make declining as easy as accepting.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "encouraging",
+      "theme": "social-surprises",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "social-surprises",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-227",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A small story from another generation may make your own routine feel part of a longer thread.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "social-surprises",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "social-surprises",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-228",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The simplest plan in the chat may emerge as the one everybody actually wanted.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "social-surprises",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "social-surprises",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-229",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A two-person creative exercise shall generate a title far more dramatic than its contents.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "social-surprises",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "social-surprises",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-230",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "An ordinary goodbye may contain one sentence worth carrying into the rest of the day.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "social-surprises",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "social-surprises",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-231",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A little honest enthusiasm may give someone permission to enjoy their own interest more openly.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "encouraging",
+      "theme": "social-surprises",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "social-surprises",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-232",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The next cool breeze may make a familiar fabric feel like an especially good decision.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "cozy-moments",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cozy-moments",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-233",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A quiet hour may arrive and decline to provide a productivity report.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "cozy-moments",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cozy-moments",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-234",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The official comfort committee shall select the least photogenic but most comfortable seat.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "cozy-moments",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cozy-moments",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-235",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A familiar room may become briefly golden while you are doing something utterly ordinary.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "cozy-moments",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cozy-moments",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-236",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "An unhurried meal may give the day a small, welcoming middle.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "encouraging",
+      "theme": "cozy-moments",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cozy-moments",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-237",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A book may become interesting at precisely the moment you intended to read only one page.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "cozy-moments",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cozy-moments",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-238",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The sound of rain may turn an ordinary task into a pleasantly sheltered expedition.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "cozy-moments",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cozy-moments",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-239",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A blanket shall be deployed with the solemn precision of royal regalia.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "cozy-moments",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cozy-moments",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-240",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The beverage may reach its ideal temperature exactly when you remember it exists.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "cozy-moments",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cozy-moments",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-241",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A short pause may reveal how much you like the view from where you already are.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "cozy-moments",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cozy-moments",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-242",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A familiar routine may feel kind again after you remove the part that was becoming a demand.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "encouraging",
+      "theme": "cozy-moments",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cozy-moments",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-243",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "An old song may make a room feel occupied by a younger version of yourself.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "cozy-moments",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cozy-moments",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-244",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A particularly agreeable cushion shall receive an unofficial promotion.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "cozy-moments",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cozy-moments",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-245",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A comfortable evening may proceed without becoming content for anyone else.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "cozy-moments",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cozy-moments",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-246",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A small light left on may make returning feel like being expected.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "cozy-moments",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cozy-moments",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-247",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The thing you set aside for pleasure may finally be used for pleasure.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "encouraging",
+      "theme": "cozy-moments",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cozy-moments",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-248",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A slow morning may contain the remarkable discovery that nothing needs to be optimized before breakfast.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "cozy-moments",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cozy-moments",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-249",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The texture of a familiar page may bring back the place where you first read it.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "cozy-moments",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cozy-moments",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-250",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A snack shall be served on a plate of wildly disproportionate dignity.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "cozy-moments",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cozy-moments",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-251",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A quiet corner may become yours for long enough to finish a thought.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "cozy-moments",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cozy-moments",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-252",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A little preparation may allow rest to begin without an opening negotiation.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "encouraging",
+      "theme": "cozy-moments",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cozy-moments",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-253",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "An ordinary chair may defeat several more impressive locations in the comfort rankings.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "cozy-moments",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cozy-moments",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-254",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The last light of the day may find a detail you had stopped seeing.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "cozy-moments",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cozy-moments",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-255",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The household's coziest object shall refuse all attempts at an elegant description.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "cozy-moments",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cozy-moments",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-256",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A familiar film may offer comfort without requiring you to pretend you do not know the ending.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "cozy-moments",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cozy-moments",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-257",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A small seasonal change may arrive first as a scent through an open window.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "cozy-moments",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cozy-moments",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-258",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A modest plan for the evening may turn out to be exactly enough.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "encouraging",
+      "theme": "cozy-moments",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cozy-moments",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-259",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "Your favorite mug may return from the dishwasher as though completing a long and distinguished voyage.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "cozy-moments",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cozy-moments",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-260",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A few minutes of silence may feel like a room being gently aired.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "cozy-moments",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cozy-moments",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-261",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The royal bedtime council shall recommend fewer proceedings and a softer landing.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "cozy-moments",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cozy-moments",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-262",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A pleasant activity may end before it becomes one more thing to finish.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "cozy-moments",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cozy-moments",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-263",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A comfortable repetition may become the small steady note in an otherwise changeable day.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "cozy-moments",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cozy-moments",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-264",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "Something warm and ordinary may be enjoyed without being earned first.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "encouraging",
+      "theme": "cozy-moments",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cozy-moments",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-265",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A familiar sound may tell you that the day has reached its quieter part.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "cozy-moments",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cozy-moments",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-266",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The ceremonial socks shall be selected for their excellent service rather than their appearance.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "cozy-moments",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cozy-moments",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-267",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A reading session may conclude with the bookmark doing the only administrative work required.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "cozy-moments",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cozy-moments",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-268",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A little patch of shade may make an ordinary outdoor pause feel carefully arranged.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "cozy-moments",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cozy-moments",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-269",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A small choice may make your surroundings easier to inhabit.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "encouraging",
+      "theme": "cozy-moments",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cozy-moments",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-270",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The most satisfying part of an evening may be the part nobody scheduled.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "cozy-moments",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cozy-moments",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-271",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A household object worn smooth by use may feel especially lovely in your hands.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "cozy-moments",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cozy-moments",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-272",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The comfort archive shall produce a forgotten favorite with remarkably good timing.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "cozy-moments",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cozy-moments",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-273",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A slow snack may last long enough to notice that you actually like it.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "cozy-moments",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cozy-moments",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-274",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The room may grow familiar again after a few minutes of your undivided attention.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "cozy-moments",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cozy-moments",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-275",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "An ordinary return may feel like a small welcome rather than another transition to manage.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "encouraging",
+      "theme": "cozy-moments",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cozy-moments",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-276",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The quietest part of the day may leave the clearest memory.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "cozy-moments",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cozy-moments",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-277",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A thing declared missing may appear in the exact place you moved it to make it easier to find.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "ordinary-mysteries",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ordinary-mysteries",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-278",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "An old note may contain a sentence that seems oddly suited to the present afternoon.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "mysterious",
+      "theme": "ordinary-mysteries",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ordinary-mysteries",
+      "mysterious"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-279",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A household mystery shall be solved by evidence too ordinary for the dramatic soundtrack.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "ordinary-mysteries",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ordinary-mysteries",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-280",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A familiar place may reveal an unnoticed detail after years of keeping it in plain sight.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "ordinary-mysteries",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ordinary-mysteries",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-281",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A forgotten password hint may become a fascinating historical document rather than a useful clue.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "ordinary-mysteries",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ordinary-mysteries",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-282",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A question you set aside may return with one missing practical detail quietly supplied.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "mysterious",
+      "theme": "ordinary-mysteries",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ordinary-mysteries",
+      "mysterious"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-283",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The imaginary detective shall solve the case of the extra button without explaining the second button.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "ordinary-mysteries",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ordinary-mysteries",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-284",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "An object may be discovered inside another object that you were certain had already been checked.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "ordinary-mysteries",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ordinary-mysteries",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-285",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A name on an old page may lead you toward a small piece of your own history.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "ordinary-mysteries",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ordinary-mysteries",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-286",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "Something familiar may become more interesting after you learn what it was originally for.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "mysterious",
+      "theme": "ordinary-mysteries",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ordinary-mysteries",
+      "mysterious"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-287",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The source of a mysterious sound may turn out to be a perfectly reasonable object doing its job.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "ordinary-mysteries",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ordinary-mysteries",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-288",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A tiny clue shall be found beneath a mountain of entirely unrelated receipts.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "ordinary-mysteries",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ordinary-mysteries",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-289",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "An overlooked inscription may make an ordinary building feel briefly inhabited by another time.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "ordinary-mysteries",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ordinary-mysteries",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-290",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A device may begin working just as you prepare the most articulate complaint of your life.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "ordinary-mysteries",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ordinary-mysteries",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-291",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The answer may be located in a detail you had classified as decoration.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "mysterious",
+      "theme": "ordinary-mysteries",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ordinary-mysteries",
+      "mysterious"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-292",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A missing item shall return with no alibi and a suspicious lack of remorse.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "ordinary-mysteries",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ordinary-mysteries",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-293",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A familiar phrase may turn out to mean something slightly different from what you have been confidently implying.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "ordinary-mysteries",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ordinary-mysteries",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-294",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A photograph may reveal a detail that your memory had edited into a different shape.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "ordinary-mysteries",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ordinary-mysteries",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-295",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "An ordinary curiosity may lead to a much better question than the one you started with.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "mysterious",
+      "theme": "ordinary-mysteries",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ordinary-mysteries",
+      "mysterious"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-296",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The Bureau of Small Mysteries shall close a file after discovering a very obvious drawer.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "ordinary-mysteries",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ordinary-mysteries",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-297",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "Something may be found while you are carefully explaining that it cannot possibly be there.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "ordinary-mysteries",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ordinary-mysteries",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-298",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A new angle on a familiar object may make its design suddenly legible.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "ordinary-mysteries",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ordinary-mysteries",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-299",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The clue may arrive in the example you nearly skipped.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "mysterious",
+      "theme": "ordinary-mysteries",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ordinary-mysteries",
+      "mysterious"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-300",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A long-forgotten bookmark may reveal exactly where another version of you became distracted.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "ordinary-mysteries",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ordinary-mysteries",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-301",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The imaginary archive shall uncover a document marked “important” containing an ordinary shopping list.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "ordinary-mysteries",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ordinary-mysteries",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-302",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A small discovery may change how you see a route you thought you knew completely.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "ordinary-mysteries",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ordinary-mysteries",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-303",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A mystery stain may turn out to be a shadow, allowing everyone to stand down with dignity.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "ordinary-mysteries",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ordinary-mysteries",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-304",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The most useful answer may come from checking which question was actually asked.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "mysterious",
+      "theme": "ordinary-mysteries",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ordinary-mysteries",
+      "mysterious"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-305",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A suspiciously specific coincidence shall be enjoyed without being promoted to official cosmic policy.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "ordinary-mysteries",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ordinary-mysteries",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-306",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "An old object may explain one of its peculiar features when you finally look closely.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "ordinary-mysteries",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ordinary-mysteries",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-307",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The missing lid may appear shortly after the replacement container has been selected.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "ordinary-mysteries",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ordinary-mysteries",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-308",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A little local history may make a familiar name sound newly meaningful.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "mysterious",
+      "theme": "ordinary-mysteries",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ordinary-mysteries",
+      "mysterious"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-309",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The household investigation shall discover that “somewhere safe” is not a sufficiently precise address.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "ordinary-mysteries",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ordinary-mysteries",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-310",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A label may answer a question you have been carrying for an unnecessarily long time.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "ordinary-mysteries",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ordinary-mysteries",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-311",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A quiet detail may connect two memories that had been living in separate rooms.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "ordinary-mysteries",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ordinary-mysteries",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-312",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "Something you thought was an exception may reveal a pattern worth noticing.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "mysterious",
+      "theme": "ordinary-mysteries",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ordinary-mysteries",
+      "mysterious"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-313",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "An old file may open successfully and contain a younger self's extremely confident formatting decisions.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "ordinary-mysteries",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ordinary-mysteries",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-314",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The council of clues shall nominate the least dramatic explanation as its official favorite.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "ordinary-mysteries",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ordinary-mysteries",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-315",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A familiar sound may lead you to a detail you have never seen.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "ordinary-mysteries",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ordinary-mysteries",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-316",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A small unanswered question may become an enjoyable reason to look something up.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "mysterious",
+      "theme": "ordinary-mysteries",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ordinary-mysteries",
+      "mysterious"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-317",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The object you need may be visible in a photograph of the place you just searched.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "ordinary-mysteries",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ordinary-mysteries",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-318",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A very minor enigma shall be resolved without requiring a conspiracy board, though the board looked excellent.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "ordinary-mysteries",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ordinary-mysteries",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-319",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A forgotten name may return with the memory of how someone used to say it.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "ordinary-mysteries",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ordinary-mysteries",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-320",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The correct answer may prove less complicated than the explanation you had been rehearsing.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "ordinary-mysteries",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ordinary-mysteries",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-321",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "One ordinary fact may gently rearrange an assumption you did not know you held.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "mysterious",
+      "theme": "ordinary-mysteries",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ordinary-mysteries",
+      "mysterious"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-322",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A fictional royal messenger may arrive bearing a completely ordinary reminder in exceptionally good handwriting.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "delightful-nonsense",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "delightful-nonsense",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-323",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "An insignificant event may acquire a nickname that survives much longer than anyone expects.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "delightful-nonsense",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "delightful-nonsense",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-324",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A small absurdity may make the day feel less tightly buttoned.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "delightful-nonsense",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "delightful-nonsense",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-325",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The imaginary council shall declare one corner of the room a zone of unnecessary delight.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "delightful-nonsense",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "delightful-nonsense",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-326",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A harmless joke may return at a moment when everyone has forgotten why it was funny, becoming funnier.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "delightful-nonsense",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "delightful-nonsense",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-327",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "An ordinary utensil shall be selected as the emblem of a fictional nation with excellent lunches.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "delightful-nonsense",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "delightful-nonsense",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-328",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A playful idea may find a use before it finds a sensible explanation.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "delightful-nonsense",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "delightful-nonsense",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-329",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The day's most dramatic sentence may concern a remarkably undramatic object.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "delightful-nonsense",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "delightful-nonsense",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-330",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A tiny ceremony shall take place for an achievement no official institution has thought to recognize.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "delightful-nonsense",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "delightful-nonsense",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-331",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "An accidental rhyme may briefly improve the quality of an otherwise ordinary announcement.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "delightful-nonsense",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "delightful-nonsense",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-332",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A little silliness may loosen a thought that seriousness had tied too tightly.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "delightful-nonsense",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "delightful-nonsense",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-333",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The imaginary museum shall acquire an artifact described only as “probably from the kitchen.”",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "delightful-nonsense",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "delightful-nonsense",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-334",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A ridiculous comparison may become the most accurate description available.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "delightful-nonsense",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "delightful-nonsense",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-335",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The household's unofficial anthem shall receive an unexpected remix from an appliance.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "delightful-nonsense",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "delightful-nonsense",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-336",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A passing thought may become a small story worth keeping for no practical reason.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "delightful-nonsense",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "delightful-nonsense",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-337",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A perfectly normal word may sound strange after being repeated with too much ceremony.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "delightful-nonsense",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "delightful-nonsense",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-338",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The fictional weather bureau shall issue a mild advisory for excessive attachment to stationery.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "delightful-nonsense",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "delightful-nonsense",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-339",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "An imaginary title may make a mundane responsibility briefly more entertaining.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "delightful-nonsense",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "delightful-nonsense",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-340",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A small act of play may leave the ordinary room looking fractionally different.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "delightful-nonsense",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "delightful-nonsense",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-341",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A very minor household object shall be honored with a grand biography of fewer than fifty words.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "delightful-nonsense",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "delightful-nonsense",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-342",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The best joke of the day may be delivered by someone who was trying to be entirely serious.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "delightful-nonsense",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "delightful-nonsense",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-343",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The kingdom shall commission a map whose only reliable landmark is the snack cupboard.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "delightful-nonsense",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "delightful-nonsense",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-344",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A tiny invention may solve a problem that existed only long enough to inspire it.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "delightful-nonsense",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "delightful-nonsense",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-345",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A dramatic pause may be deployed before an announcement about leftovers.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "delightful-nonsense",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "delightful-nonsense",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-346",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The imaginary board of directors shall approve a motion to go outside and look at one interesting thing.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "delightful-nonsense",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "delightful-nonsense",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-347",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A harmless typo may accidentally name a much more interesting fictional creature.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "delightful-nonsense",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "delightful-nonsense",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-348",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "An absurd possibility may make a practical conversation feel more spacious.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "delightful-nonsense",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "delightful-nonsense",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-349",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The royal orchestra shall perform a brief tribute to an unusually cooperative zipper.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "delightful-nonsense",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "delightful-nonsense",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-350",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A mundane task may acquire a plot twist consisting entirely of finding the correct tool.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "delightful-nonsense",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "delightful-nonsense",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-351",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A fictional goblin shall submit a very persuasive argument for keeping one attractive scrap of paper.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "delightful-nonsense",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "delightful-nonsense",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-352",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A private joke may turn an ordinary object into a small landmark in your day.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "delightful-nonsense",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "delightful-nonsense",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-353",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "Someone may describe a minor inconvenience with language normally reserved for a historical siege.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "delightful-nonsense",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "delightful-nonsense",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-354",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The Bureau of Pleasantly Unnecessary Things shall discover that its entire inventory is already in use.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "delightful-nonsense",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "delightful-nonsense",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-355",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "An ordinary list may accidentally resemble the opening of a peculiar poem.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "delightful-nonsense",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "delightful-nonsense",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-356",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A small imaginative detour may return you to the practical task in a better mood.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "delightful-nonsense",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "delightful-nonsense",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-357",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The imaginary press office shall release a statement about the successful preparation of a snack.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "delightful-nonsense",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "delightful-nonsense",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-358",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A perfectly sensible plan may benefit from one completely optional flourish.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "delightful-nonsense",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "delightful-nonsense",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-359",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The council shall award an honorary doctorate to an object that has been quietly holding something up.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "delightful-nonsense",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "delightful-nonsense",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-360",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A little theatricality may make a familiar routine feel newly yours.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "delightful-nonsense",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "delightful-nonsense",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-361",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The phrase you invent for a tiny event may prove annoyingly difficult to improve upon.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "delightful-nonsense",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "delightful-nonsense",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-362",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A miniature diplomatic summit shall resolve the question of which mug gets the best shelf position.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "delightful-nonsense",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "delightful-nonsense",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-363",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A harmless coincidence may be treated with just enough drama to make everyone smile.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "delightful-nonsense",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "delightful-nonsense",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-364",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A brief absurd thought may become the small bright detail you remember from the afternoon.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "delightful-nonsense",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "delightful-nonsense",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-365",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The fictional curtain shall fall on an ordinary day with a surprisingly satisfying little bow.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "delightful-nonsense",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "delightful-nonsense",
+      "absurd"
+    ],
+    "sources": []
+  }
+]

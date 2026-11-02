@@ -1,0 +1,288 @@
+{
+  "status": "research_needed",
+  "target": 250,
+  "currentEntries": 100,
+  "unfilledSlots": 150,
+  "reservedEditorialIds": {
+    "from": "CUR-101",
+    "through": "CUR-250"
+  },
+  "policy": "These are research leads, not verified claims or content entries. No invented facts or citations. Do not import this file. Expand a lead into an entry only after verifying the actual claim and checking overlap with the existing collection.",
+  "leads": [
+    {
+      "area": "history",
+      "topic": "Roman dodecahedra and the limits of functional interpretation",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "history",
+      "topic": "Antique automata and the clockwork monk",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "history",
+      "topic": "The Mechanical Turk and concealed human labor",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "history",
+      "topic": "Ornamental hermits: distinguish advertisements from actual employment",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "history",
+      "topic": "Early pneumatic transport beyond the already published mail-tube entry",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "history",
+      "topic": "Pineapple cultivation and status in European hothouses",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "history",
+      "topic": "Victorian fern collections and cultivation technology",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "history",
+      "topic": "Hairwork jewelry and personal remembrance",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "history",
+      "topic": "Paper marbling and book endpapers",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "history",
+      "topic": "Astrolabes as astronomical instruments",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "history",
+      "topic": "Ancient faience and its manufactured composition",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "history",
+      "topic": "The Royal Game of Ur and reconstructed rules",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "history",
+      "topic": "Babylonian world maps",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "history",
+      "topic": "Medieval movable book diagrams",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "history",
+      "topic": "Historically documented portable sundials",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "nature",
+      "topic": "Mimosa movement and its physical mechanism",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "nature",
+      "topic": "Sundew trapping and nutrient acquisition",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "nature",
+      "topic": "Orchid pollination strategies without anthropomorphic intention",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "nature",
+      "topic": "Leafcutter ants and cultivated fungi",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "nature",
+      "topic": "Archerfish and water jets",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "nature",
+      "topic": "Snapping shrimp and cavitation",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "nature",
+      "topic": "Mantis shrimp strikes without the superior-color-vision myth",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "nature",
+      "topic": "Hoatzin chicks and wing claws",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "nature",
+      "topic": "Bowerbird construction and courtship",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "nature",
+      "topic": "Hummingbird torpor",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "nature",
+      "topic": "Albatross dynamic soaring",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "nature",
+      "topic": "Frigatebird sleep during flight",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "nature",
+      "topic": "Bar-tailed godwit migrations with dated measurements",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "nature",
+      "topic": "Parrotfish and sand production",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "nature",
+      "topic": "Scallop mirror-based eyes",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "nature",
+      "topic": "Chiton teeth and magnetite",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "nature",
+      "topic": "Cuttlefish buoyancy and cuttlebones",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "nature",
+      "topic": "Lichens as multispecies associations",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "nature",
+      "topic": "Slime molds and changing taxonomic understanding",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "nature",
+      "topic": "Bristlecone pines with well-supported individual ages",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "science",
+      "topic": "Moon recession and laser ranging",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "science",
+      "topic": "Ganymede magnetic field measurements",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "science",
+      "topic": "Europa ocean evidence and its uncertainty",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "science",
+      "topic": "Pluto nitrogen-ice convection",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "science",
+      "topic": "Ceres salt deposits",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "science",
+      "topic": "Bennu sampling and rubble-pile structure",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "science",
+      "topic": "Dinkinesh and its contact-binary satellite Selam",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "science",
+      "topic": "Comet tail directions and solar interactions",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "science",
+      "topic": "Solar coronal heating: discoveries versus unresolved mechanism",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "science",
+      "topic": "Circumbinary planets",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "science",
+      "topic": "Gravitational lensing",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "science",
+      "topic": "Crystallization in white dwarfs",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "science",
+      "topic": "Voyager Golden Record contents and selection",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "culture",
+      "topic": "Cochineal dye and Indigenous expertise",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "culture",
+      "topic": "Zoetropes and apparent movement",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "culture",
+      "topic": "Daguerreotype viewing angles",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "culture",
+      "topic": "Historical maps showing California as an island",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "culture",
+      "topic": "Japanese repair traditions without universal kintsugi claims",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "culture",
+      "topic": "Early traffic-signal patents and attribution",
+      "verification_status": "research_needed"
+    },
+    {
+      "area": "culture",
+      "topic": "The distinction between photography and camera-less photograms",
+      "verification_status": "research_needed"
+    }
+  ]
+}

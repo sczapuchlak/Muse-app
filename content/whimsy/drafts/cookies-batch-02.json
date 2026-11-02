@@ -1,0 +1,6911 @@
+[
+  {
+    "id": "FC-037",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Your calendar is a proposal. It has been taking itself rather seriously.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-038",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The plot improves when every supporting character stops trying to manage the lighting.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-039",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A well-timed “perhaps later” can be a surprisingly elegant piece of architecture.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-040",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Some mysteries are best solved by checking the pocket you were certain was empty.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-041",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "You may be overqualified for the argument currently happening inside your head.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-042",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The correct amount of enthusiasm is rarely determined by the quietest person nearby.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-043",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A useful list has room for things you decide not to do.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-044",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Your taste is allowed to develop without issuing a press release.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-045",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The expensive version of a small pleasure is not automatically the better one.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-046",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A good question can save a remarkable amount of decorative confusion.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-047",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Your attention is a guest list. Not every notification needs an invitation.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-048",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "There is no award for making the easy part unnecessarily elaborate.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-049",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A familiar mistake in a new outfit is still asking for your time.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-050",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The phrase “while I'm here” has started several ambitious domestic sagas.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-051",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A drawer that closes is a form of closure worth respecting.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-052",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Your next masterpiece may begin with a filename you later regret.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-053",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Some plans need a revision. Others need a sandwich and twenty quiet minutes.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-054",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A second draft is where your first draft stops doing all the talking.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-055",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The best seat at the table may be the one near the exit you prefer.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-056",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Your opinion may change after lunch. This is called receiving additional information.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-057",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "An elegant solution occasionally looks suspiciously like asking where the instructions are.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-058",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The group chat has mistaken volume for a decision again.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-059",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A short message can contain a very large amount of consideration.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-060",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "One person's unnecessary detail is another person's entire reason for attending.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-061",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Your most practical idea may arrive dressed as a joke.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-062",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The universe has declined to adjudicate which notebook is too nice to use.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-063",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A respectable plan includes knowing when the shop is closed.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-064",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The word “quick” has been doing some imaginative work in your estimates.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-065",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A tiny adjustment may deserve credit usually reserved for a dramatic reinvention.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-066",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Some unfinished business is simply a hobby taking a long scenic route.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-067",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "You can enjoy a thing without becoming its official local expert.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-068",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A recipe's “optional” ingredient occasionally has the strongest personality in the room.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-069",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Your browser bookmarks are hosting a conference you have not agreed to attend.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-070",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A modest success remains successful even without a cinematic soundtrack.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-071",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The right tool can be helpful. Knowing where you put it is also useful.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-072",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A comfortable shoe is a persuasive argument for sensible magic.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-073",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Your future biographer can survive a paragraph about a quiet afternoon.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-074",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The most charming detail may be the one nobody put in the presentation.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-075",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A well-placed comma can prevent an entirely different evening.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-076",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "An invitation is not a summons, even when the font is lovely.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-077",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "You may leave a conversation with your point still pleasantly unmade.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-078",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A new perspective sometimes requires moving the chair six inches.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-079",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The instructions were not judging you while you read them twice.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-080",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Your favorite version of yourself probably has ordinary laundry somewhere.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-081",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A project can be important without being allowed to occupy every available surface.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-082",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The smallest container is not always the most efficient place for the largest ambition.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-083",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A useful boundary rarely needs a dramatic entrance or a velvet rope.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-084",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The word “just” has been understating your effort again.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-085",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Some detours have excellent snacks and poor signage. Read both conditions carefully.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-086",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A good idea does not become worse because you wrote it on scrap paper.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-087",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The meeting may benefit from one person remembering what it was originally about.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-088",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Your standards are welcome. Their entourage of impossible conditions may wait outside.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-089",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A clear label is a small act of mercy toward tomorrow.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-090",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A shelf can hold books without becoming a referendum on your personality.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-091",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The version you actually use has a compelling advantage over the theoretically perfect one.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-092",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A small laugh is an excellent return on a very minor inconvenience.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-093",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The phrase “good enough for today” has a respectable academic record.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-094",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "You do not have to turn every pleasant discovery into a new recurring obligation.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-095",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A beautiful pen still has to survive being used for an ordinary address.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-096",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Your curiosity has excellent taste and occasionally questionable timing.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-097",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "You can begin with the part that feels possible and learn the shape from there.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "encouraging",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-098",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A quiet contribution can change the room without becoming the loudest thing in it.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "encouraging",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-099",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Your first attempt is allowed to look like someone learning.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "encouraging",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-100",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "You may enjoy the progress before deciding what comes next.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "encouraging",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-101",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A difficult week does not erase the skills you brought into it.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "encouraging",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-102",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The thing you made with care carries more than its visible seams.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "encouraging",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-103",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "You can return to an interest without explaining the years in between.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "encouraging",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-104",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A small amount of courage is still doing real work.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "encouraging",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-105",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "You may choose a pace that lets you notice where you are.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "encouraging",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-106",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A kind answer to yourself can be practical as well as tender.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "encouraging",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-107",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Your idea deserves a place to land before it deserves a perfect name.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "encouraging",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-108",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "You are allowed to ask for the detail that would make the instructions clearer.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "encouraging",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-109",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Some forms of confidence begin as willingness to try one small part.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "encouraging",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-110",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Your attention to an ordinary detail may be exactly what makes it lovely.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "encouraging",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-111",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A day can contain something worthwhile without becoming a story of transformation.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "encouraging",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-112",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "You may keep a little space for the interest that has no obvious purpose.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "encouraging",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-113",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Being new at something is a temporary address, not a permanent identity.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "encouraging",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-114",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The work you quietly repeat is teaching your hands things words cannot hurry.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "encouraging",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-115",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A careful pause can belong to the process rather than interrupt it.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "encouraging",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-116",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "You can be pleased with what you did and still want to improve it.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "encouraging",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-117",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The next attempt gets to use everything the last one taught you.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "encouraging",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-118",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "You do not need a dramatic reason to make your surroundings a little kinder.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "encouraging",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-119",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A modest plan can carry a very real hope.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "encouraging",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-120",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "You can let someone help with a part you already know how to do.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "encouraging",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-121",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The question you nearly kept to yourself may make the explanation useful for everyone.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "encouraging",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-122",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Your interests do not need to agree on one tidy category.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "encouraging",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-123",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A little preparation can be a generous gift to the person you will be later.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "encouraging",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-124",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "You may finish a small thing without immediately assigning yourself a larger one.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "encouraging",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-125",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Learning can be satisfying even when nobody is keeping score.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "encouraging",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-126",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Your care for the details is visible in more ways than you think.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "encouraging",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-127",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "You can change a plan before it becomes an avoidable ordeal.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "encouraging",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-128",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A gentle beginning is still a beginning with somewhere to go.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "encouraging",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-129",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Your unfinished creative life is allowed to have several open windows.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "encouraging",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-130",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "You may take your own preference seriously before it becomes a strong opinion.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "encouraging",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-131",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The fact that something is easy for you does not make it worthless.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "encouraging",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-132",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "You can make a useful contribution without arriving with every answer.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "encouraging",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-133",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A little practice may be more welcoming than another hour of preparing to practice.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "encouraging",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-134",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "You are allowed to save the enjoyable part for a time when you can enjoy it.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "encouraging",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-135",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Some good decisions feel less like certainty and more like a little extra room.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "encouraging",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-136",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A personal victory does not need witnesses to remain real.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "encouraging",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-137",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "You can make one corner of the day feel more like yours.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "encouraging",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-138",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Your effort is allowed to be uneven while your life is happening.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "encouraging",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-139",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A small invitation to yourself can be answered with a sincere yes.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "encouraging",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-140",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "You may stop polishing a thing long enough to discover whether it works.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "encouraging",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-141",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The care you give an ordinary task can be a form of affection.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "encouraging",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-142",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "You can learn from an awkward moment without making it your permanent narrator.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "encouraging",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-143",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "There is room for your particular combination of practical and peculiar.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "encouraging",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-144",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "You may choose the version that leaves enough energy to enjoy the result.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "encouraging",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-145",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A second beginning is allowed to be quieter than the first.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "encouraging",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-146",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Your curiosity can lead without knowing the entire route.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "encouraging",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-147",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A thing can matter deeply without needing to become a daily habit.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reflective",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-148",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Sometimes the pleasant part was never meant to be measured.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reflective",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-149",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The story you tell about a pause can make it heavier than the pause itself.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reflective",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-150",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A familiar room changes when you notice who made its ordinary objects.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reflective",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-151",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Not every useful lesson arrives in a form you would have chosen.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reflective",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-152",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A preference can be small and still deserve a place in the plan.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reflective",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-153",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The difference between waiting and resting may be where you put your attention.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reflective",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-154",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Some questions become clearer when you stop demanding a grand answer.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reflective",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-155",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "You can outgrow a routine without deciding it was always a mistake.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reflective",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-156",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "An ordinary possession may hold a history no price tag could explain.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reflective",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-157",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The best part of a memory is not always the part the photograph kept.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reflective",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-158",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A good ending can be an act of care for what came before it.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reflective",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-159",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Some ideas need conversation. Others need a little privacy first.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reflective",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-160",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Your taste is partly a record of what you have learned to notice.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reflective",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-161",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A useful tradition leaves room for the people actually living inside it.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reflective",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-162",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "You can miss a place and be glad you left it.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reflective",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-163",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A simple pleasure does not become less meaningful because you can explain it.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reflective",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-164",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Some things are worth returning to precisely because they do not surprise you.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reflective",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-165",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The part you call ordinary may be the part someone else remembers warmly.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reflective",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-166",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A plan tells one story about your life; your attention tells another.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reflective",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-167",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "There is a difference between a full day and a day that felt inhabited.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reflective",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-168",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "You may discover that the detail you omitted was the whole point for someone else.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reflective",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-169",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A good question makes space instead of merely requesting an answer.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reflective",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-170",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The work of choosing can be tiring even when every option is pleasant.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reflective",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-171",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Some comfort comes from being known; some comes from being left pleasantly unobserved.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reflective",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-172",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A small ritual can mark time without asking time to become more impressive.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reflective",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-173",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "You can appreciate a skill without wanting to make it your profession.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reflective",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-174",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "What you keep close often says more than what you put on display.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reflective",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-175",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A quiet room can reveal how much noise you were carrying into it.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reflective",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-176",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The useful part of nostalgia may be a texture rather than an instruction to return.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reflective",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-177",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A generous explanation leaves the learner with dignity as well as information.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reflective",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-178",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "You may be fond of something that no longer fits your life.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reflective",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-179",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "An ordinary afternoon can become memorable through one unhurried conversation.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reflective",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-180",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The simplest version may reveal what the elaborate version was trying to hide.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reflective",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-181",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Your collection of unfinished interests is also evidence of things that caught your eye.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reflective",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-182",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A little uncertainty can be honest without being an emergency.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reflective",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-183",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The right amount of detail depends on who needs to use it.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reflective",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-184",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A promise to yourself is easier to hear when it sounds like your own voice.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reflective",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-185",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Some things become precious because they were there, quietly, for a long time.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reflective",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-186",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "You can preserve a memory without preserving every object attached to it.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reflective",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-187",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The feeling of enough is sometimes quieter than the urge for one more thing.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reflective",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-188",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A slow skill teaches a different kind of patience than a delayed result.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reflective",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-189",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A room can be welcoming before it is finished.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reflective",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-190",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "You may learn more from the question you keep revising than from the first answer.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reflective",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-191",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A meaningful choice does not always announce itself as a turning point.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reflective",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-192",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The most useful comparison may be with your own earlier understanding.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reflective",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-193",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "An honest description can be kinder than an impressive interpretation.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reflective",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-194",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Some details deserve attention simply because they make being here more interesting.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reflective",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-195",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A good companion can make silence feel like a shared activity.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reflective",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-196",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "You can carry affection for a season without wishing it would last forever.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reflective",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-197",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The council of teaspoons has approved your afternoon, pending a crumb inspection.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-198",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A very small dragon has taken responsibility for the missing paper clips.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-199",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Your imaginary assistant requests a desk, a title, and absolutely no responsibilities.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-200",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The moon's customer service department is experiencing unusually poetic delays.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-201",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A committee of moths has shortlisted your lamp for a lifetime achievement award.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-202",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The household weather service predicts scattered socks with a chance of finding both.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-203",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "An ancient prophecy has been located in the terms and conditions. Nobody has read it.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-204",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Your snack has been promoted to Director of Immediate Affairs.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-205",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The ghost in the filing cabinet prefers documents sorted by emotional atmosphere.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-206",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A ceremonial trumpet may be excessive, but the successful zipper deserves acknowledgment.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-207",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The Bureau of Tiny Wonders has misplaced its official stamp. Operations continue by nodding.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-208",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A pigeon somewhere is behaving as though it owns a very important building.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-209",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Your bookmark is holding a place in the story and requesting no applause.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-210",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The imaginary kingdom in your notes has a better transport plan than expected.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-211",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A wizard has reviewed the situation and suggested turning the lamp on.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-212",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The royal archivist insists that the good scissors have a documented chain of custody.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-213",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Your cushion has applied for permanent residency in the most convenient chair.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-214",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The stars are wearing sensible shoes to today's mysterious appointment.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-215",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A tiny parade has been authorized for the successful opening of a stubborn jar.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-216",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The Department of Mild Delight has extended its hours by one song.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-217",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "An owl in an imaginary waistcoat considers your question unusually well punctuated.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-218",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The goblin exchange currently values one interesting pebble at three respectable buttons.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-219",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A cloud has submitted an abstract that simply says “look at me.”",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-220",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The secret society meets whenever everyone remembers where they put the invitation.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-221",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Your fictional nemesis has also forgotten why they entered the kitchen.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-222",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A miniature opera is being written about the return of the correct charging cable.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-223",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The enchanted forest has installed clearer signs and is rather pleased with itself.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-224",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A very dignified frog has declined to comment on your plans.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-225",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The council has awarded your ordinary Tuesday an honorary cape.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-226",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Your tea bag's exit interview was brief but remarkably fragrant.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-227",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A tiny museum has opened inside a forgotten pocket. Admission is one curious finger.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-228",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The household council has voted to recognize the chair as a clothing-adjacent structure.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-229",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A ceremonial gong has been replaced by a considerate little tap.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-230",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Your imaginary publicist recommends describing the nap as a private summit.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-231",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The dragons have unionized. Fire-breathing requests now require reasonable notice.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-232",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A moonbeam has been assigned to a project with no measurable deliverables.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-233",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The Ministry of Unnecessary Flourishes has approved your preferred handwriting.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-234",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "An invisible librarian is quietly delighted that you returned to the same paragraph.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-235",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The royal cartographer has labeled the drawer “Here Be Adapters.”",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-236",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A committee of fictional pirates has identified the real treasure as a comfortable waistband.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-237",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The stars have delegated this matter to a reasonably competent houseplant.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-238",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Your imaginary castle has excellent insulation and one surprisingly modern dishwasher.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-239",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A goblin has filed a patent for the feeling of finding the exact lid.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-240",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The grand oracle has temporarily become distracted by a particularly good sandwich.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-241",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A tiny crown has been placed upon the last clean spoon.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-242",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The Department of Almost has decided to call it a day.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-243",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "An enchanted envelope contains a very ordinary appointment reminder, beautifully delivered.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-244",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The mythical creature in charge of timing has taken an extended lunch.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-245",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Your secret laboratory has produced a new substance called “probably another notebook.”",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-246",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A solemn procession is escorting the final biscuit to its destination.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-247",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The royal decree permits one unnecessary adjective in today's private correspondence.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-248",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "An imaginary detective has solved the case by looking under the obvious thing.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-249",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The moon has requested that its reflection be credited separately.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-250",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A tiny diplomatic incident has been resolved through the fair division of toast.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-251",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The committee's final report recommends fewer committees and a better chair.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-252",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A friendly goblin has mistaken your shopping list for an ambitious poem.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-253",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The enchanted staircase is delighted when anyone remembers the handrail.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-254",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A constellation has been named after the shape your headphones make in a bag.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-255",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The official forecast contains one inexplicable kazoo solo and otherwise mild conditions.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-256",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Your imaginary medal has arrived. It is lightweight and does not require polishing.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-257",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A detail you nearly overlooked may become the most interesting part of the story.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "mysterious",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "mysterious",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-258",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The familiar route still contains a door you have never properly noticed.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "mysterious",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "mysterious",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-259",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Something you set aside may look different under this season's light.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "mysterious",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "mysterious",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-260",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A question from long ago may return with fewer demands and a clearer voice.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "mysterious",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "mysterious",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-261",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The next useful clue could be hiding in what feels pleasantly obvious.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "mysterious",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "mysterious",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-262",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A small coincidence may be worth enjoying without appointing it a destiny.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "mysterious",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "mysterious",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-263",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The answer may depend on which part of the question you are willing to change.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "mysterious",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "mysterious",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-264",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A forgotten note may know more about your present interests than you expect.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "mysterious",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "mysterious",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-265",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The room has another story when you sit where you usually stand.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "mysterious",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "mysterious",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-266",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A quiet invitation can be easy to miss among louder obligations.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "mysterious",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "mysterious",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-267",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The thing you keep returning to may deserve a more comfortable place.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "mysterious",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "mysterious",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-268",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A familiar name may lead you toward an unfamiliar corner of your own history.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "mysterious",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "mysterious",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-269",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The next interesting discovery may arrive without needing to be purchased.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "mysterious",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "mysterious",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-270",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A pause in the conversation could be making room for the honest part.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "mysterious",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "mysterious",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-271",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Something ordinary may catch the light in an unusually persuasive way.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "mysterious",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "mysterious",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-272",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A useful distinction is waiting between two words you have been treating as twins.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "mysterious",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "mysterious",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-273",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The story's smallest object may have the most patient secret.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "mysterious",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "mysterious",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-274",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A place you know well may surprise you at a different hour.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "mysterious",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "mysterious",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-275",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The missing piece may be a question rather than another answer.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "mysterious",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "mysterious",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-276",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "An old preference may be ready to explain itself more clearly.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "mysterious",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "mysterious",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-277",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The most interesting door might open onto a very ordinary room.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "mysterious",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "mysterious",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-278",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A little ambiguity may be keeping the idea alive long enough to grow.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "mysterious",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "mysterious",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-279",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The clue you need could be in the example everyone skipped.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "mysterious",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "mysterious",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-280",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A familiar sound may carry you somewhere you had not planned to visit.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "mysterious",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "mysterious",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-281",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The next chapter may begin before you recognize the change in scenery.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "mysterious",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "mysterious",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-282",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Something you thought you understood may have another useful layer.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "mysterious",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "mysterious",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-283",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A good mystery occasionally resolves into a better description of the problem.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "mysterious",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "mysterious",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-284",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The thing you cannot quite name may still be worth keeping nearby.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "mysterious",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "mysterious",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-285",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A question asked gently can open a door that force will not improve.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "mysterious",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "mysterious",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-286",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "An ordinary object may turn out to be a very good witness.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "mysterious",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "mysterious",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-287",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The right perspective may be waiting on the other side of a small assumption.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "mysterious",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "mysterious",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-288",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A detail from yesterday may become useful at an unexpectedly quiet moment.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "mysterious",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "mysterious",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-289",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The idea that keeps tapping may not need the whole room, only a corner.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "mysterious",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "mysterious",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-290",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A small unfinished story may be waiting for your current self to hear it.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "mysterious",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "mysterious",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-291",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The most revealing answer may begin with “I hadn't noticed that before.”",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "mysterious",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "mysterious",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-292",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A place can feel new when you learn what used to stand there.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "mysterious",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "mysterious",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-293",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The thing you nearly discarded may be useful for a completely different reason.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "mysterious",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "mysterious",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-294",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A quiet change in taste can be the first sign of a new chapter.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "mysterious",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "mysterious",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-295",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The next interesting question may be hiding inside a task you already know.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "mysterious",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "mysterious",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-296",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A tiny discovery can remain magical after you learn how it works.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "mysterious",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "mysterious",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-297",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Some afternoons are made of light finding patient places to rest.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "poetic",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-298",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A familiar voice can make a distant room feel briefly next door.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "poetic",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-299",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The day has small pockets that belong to nobody until you notice them.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "poetic",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-300",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A sentence can become a little window you carry around for years.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "poetic",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-301",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The ordinary world keeps making beautiful things without checking whether you are watching.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "poetic",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-302",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A well-loved object holds the shape of attention given over time.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "poetic",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-303",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The quiet part of a song is still part of the music.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "poetic",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-304",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A path becomes personal through the details you learn to recognize.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "poetic",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-305",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "There is a kind of richness in knowing exactly how you like the light.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "poetic",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-306",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A small kindness can leave warmth long after its words have ended.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "poetic",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-307",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The sky is allowed to be beautiful on a day that was otherwise difficult.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "poetic",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-308",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A handmade thing can hold the rhythm of the hands that made it.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "poetic",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-309",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Some memories return first as a color or the sound of a door.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "poetic",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-310",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A room grows familiar one ordinary return at a time.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "poetic",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-311",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The edge of a season can feel like a page turning slowly.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "poetic",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-312",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A good meal can be a small way of saying you are glad to be here.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "poetic",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-313",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The world is full of modest wonders that do not advertise their opening hours.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "poetic",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-314",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A quiet morning can have more than one beginning.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "poetic",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-315",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The things you notice become part of the place you live.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "poetic",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-316",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A book waits without taking your absence personally.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "poetic",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-317",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The softest light often arrives when the day stops trying to impress anyone.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "poetic",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-318",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Some joy is a bright flash; some is the lamp you remember to switch on.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "poetic",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-319",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A familiar walk can carry a different thought home each time.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "poetic",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-320",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The smallest handmade detail may outlast the explanation of why you added it.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "poetic",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-321",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "There is room in a day for something beautiful that solves nothing.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "poetic",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-322",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A little space on the page can let the words breathe.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "poetic",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-323",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The ordinary cup can become a marker for an entire season of your life.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "poetic",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-324",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A moment of attention can make a borrowed view feel briefly yours.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "poetic",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-325",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The quietest forms of care often become the structure holding everything else.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "poetic",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-326",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A small discovery can alter the color of an otherwise familiar afternoon.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "poetic",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-327",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The light on the wall is making something that cannot be saved for later.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "poetic",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-328",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Some conversations leave a room feeling larger than it was before.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "poetic",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-329",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A carefully chosen word can be a small act of hospitality.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "poetic",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-330",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The story of a day may live in the detail you did not think to photograph.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "poetic",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-331",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A useful object can be beautiful because it has been there for you.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "poetic",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-332",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The first cool evening can remind you that change has a texture.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "poetic",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-333",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A patch of shade is a kind of welcome the world makes without a sign.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "poetic",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-334",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Some things become dear through repetition rather than surprise.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "poetic",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-335",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A little wonder can fit comfortably beside an entirely practical plan.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "poetic",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-336",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The last note of a song leaves space for your own thoughts to return.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "poetic",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-337",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The clean towel you remembered is already making a convincing case for civilization.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "everyday",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-338",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A little extra water in the vase may be the day's most elegant maintenance decision.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "everyday",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-339",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The last five minutes before leaving can benefit from one fewer optional task.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "everyday",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-340",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "An ordinary errand may improve when you stop treating it as a race.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "everyday",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-341",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A drawer organizer cannot negotiate with the objects you refuse to put away.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "everyday",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-342",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The most useful kitchen skill may be knowing which leftovers are actually there.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "everyday",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-343",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A prepared bag can make tomorrow feel less like an improvised obstacle course.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "everyday",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-344",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The right light can rescue a room from an argument it was never having.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "everyday",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-345",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A comfortable routine leaves a little room for the person using it.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "everyday",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-346",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The good socks have noticed your loyalty and continue to serve with distinction.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "everyday",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-347",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A clear counter is lovely. A usable counter also has a strong case.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "everyday",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-348",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The best bookmark is the one that is present when the interruption arrives.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "everyday",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-349",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A small repair can make an old favorite feel newly invited.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "everyday",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-350",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Your favorite shortcut may be someone else's excellent piece of practical wisdom.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "everyday",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-351",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A little label can prevent a surprising amount of future detective work.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "everyday",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-352",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The thing you put by the door is most helpful when it is the thing you need.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "everyday",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-353",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A sensible pocket is a design achievement deserving more public admiration.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "everyday",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-354",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The ordinary chair is doing its best work when you forget to think about it.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "everyday",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-355",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A meal can be satisfying without having an origin story worth publishing.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "everyday",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-356",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The day may improve when the volume is adjusted rather than the whole soundtrack replaced.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "everyday",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-357",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A spare minute is allowed to remain spare for its entire brief life.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "everyday",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-358",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The list on the fridge may know more than the ambitious list on your phone.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "everyday",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-359",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A familiar recipe can still surprise you when someone else stirs the pot.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "everyday",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-360",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The best small purchase is sometimes discovering you already own the right thing.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "everyday",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-361",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A good routine can be changed by the person it is supposed to support.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "everyday",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-362",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The cup you can comfortably hold has understood something important about luxury.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "everyday",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-363",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "An ordinary task can be complete before it becomes impressive.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "everyday",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-364",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A quiet evening does not require a better explanation than “that sounds lovely.”",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "everyday",
+      "balanced-muse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-365",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The tiny practical kindness you do now may be the nicest part of later.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "everyday",
+      "balanced-muse"
+    ],
+    "sources": []
+  }
+]

@@ -1,0 +1,6338 @@
+[
+  {
+    "id": "SQ-COZ-053",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Cozy",
+    "state": "draft",
+    "title": "The Familiar Footpath",
+    "body": "Trace a favorite short route from memory on paper. Add one tiny detail only you would think to mark.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 15,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "paper and pen",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "memory",
+      "place"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-COZ-054",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Cozy",
+    "state": "draft",
+    "title": "A Very Good Doorway",
+    "body": "Pause in a doorway at home and notice the frame it makes around the room. Photograph the composition or simply enjoy it for a minute.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 10,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "none",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "home",
+      "observation"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-COZ-055",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Cozy",
+    "state": "draft",
+    "title": "The Last Bite Ceremony",
+    "body": "Save your favorite bite of a meal for last. Give it a proper, undistracted farewell.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 10,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a meal already planned",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "food",
+      "attention"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-COZ-056",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Cozy",
+    "state": "draft",
+    "title": "The Sound Before Sleep",
+    "body": "Listen to one familiar bedtime sound for five minutes without adding a podcast or video. Let the room provide the soundtrack.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 5,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "none",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "sound",
+      "rest"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-COZ-057",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Cozy",
+    "state": "draft",
+    "title": "The Good Paper Drawer",
+    "body": "Find a piece of paper you have been saving because it is lovely. Use a small part of it for something you will actually see.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 15,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "saved paper",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "paper",
+      "pleasure"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-COZ-058",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Cozy",
+    "state": "draft",
+    "title": "The First Page Again",
+    "body": "Read the opening page of a book you finished long ago. Notice what it was quietly telling you the first time.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 10,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a familiar book",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reading",
+      "nostalgia"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-COZ-059",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Cozy",
+    "state": "draft",
+    "title": "The Temperature Tour",
+    "body": "Notice three safe, comfortable temperatures around your home: a cool window, warm fabric, or room-temperature tabletop. Choose where you want to settle.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 10,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "none",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "sensory",
+      "comfort"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-COZ-060",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Cozy",
+    "state": "draft",
+    "title": "A Seat at Your Own Table",
+    "body": "Set a place for yourself with one detail you usually reserve for guests. Use what you already own.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 15,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "tableware",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "home",
+      "ritual"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-COZ-061",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Cozy",
+    "state": "draft",
+    "title": "The Familiar Voice Visit",
+    "body": "Listen to a short recording of someone whose voice comforts you, from a favorite storyteller to a saved family message.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 15,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "an existing recording",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "audio",
+      "comfort"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-COZ-062",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Cozy",
+    "state": "draft",
+    "title": "The Tiny Time Capsule",
+    "body": "Put today's date and one ordinary observation in an envelope or folded paper. Choose a future month to open it.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 15,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "paper",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "memory",
+      "ritual"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-COZ-063",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Cozy",
+    "state": "draft",
+    "title": "The Unhurried Fruit",
+    "body": "Prepare a piece of fruit slowly enough to notice its color, scent, and shape. Eat it without scrolling.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 10,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "fruit already available",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "food",
+      "sensory"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-COZ-064",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Cozy",
+    "state": "draft",
+    "title": "A Personal Intermission",
+    "body": "Take a ten-minute break between two ordinary activities. Sit somewhere comfortable and let the transition have its own space.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 10,
+      "setting": "anywhere",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a comfortable place",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "rest",
+      "pace"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-COZ-065",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Cozy",
+    "state": "draft",
+    "title": "The Photo You Never Framed",
+    "body": "Choose one personal photo you rarely look at. Give it a temporary place where you will notice it this week.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 15,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a personal photo",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "memory",
+      "home"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-COZ-066",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Cozy",
+    "state": "draft",
+    "title": "The Good Bowl Decision",
+    "body": "Use your favorite bowl for something completely ordinary. Notice whether the ordinary thing becomes slightly nicer.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 10,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a favorite bowl",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "food",
+      "pleasure"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-COZ-067",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Cozy",
+    "state": "draft",
+    "title": "The Gentle Reread",
+    "body": "Revisit a paragraph you once underlined. Decide whether you would underline the same words today.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 15,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a previously marked text",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reading",
+      "reflection"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-COZ-068",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Cozy",
+    "state": "draft",
+    "title": "The Pillow-Side Poem",
+    "body": "Read one short poem aloud softly, or listen to a recording. Let one line stay with you without analyzing it.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 10,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a freely available poem",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "poetry",
+      "rest"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-COZ-069",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Cozy",
+    "state": "draft",
+    "title": "An Ordinary Color Collection",
+    "body": "Find five shades of a color you enjoy in the room you are in. You may collect them with your eyes rather than moving anything.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 10,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "none",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "color",
+      "observation"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-COZ-070",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Cozy",
+    "state": "draft",
+    "title": "The Kindly Packed Bag",
+    "body": "Put one small comfort you already own into the bag you use most. Thank yourself when you find it later.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 10,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a familiar comfort item",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "care",
+      "practical"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-COZ-071",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Cozy",
+    "state": "draft",
+    "title": "A Piece of Home Abroad",
+    "body": "Find a recording or photo of a place you miss. Spend ten minutes with one specific detail rather than browsing endlessly.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 10,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a photo or recording",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "place",
+      "nostalgia"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-COZ-072",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Cozy",
+    "state": "draft",
+    "title": "The Second Cup of Attention",
+    "body": "Spend five minutes looking carefully at the pattern on a cup, plate, or textile you use every day. Find one detail you had overlooked.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 5,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "an everyday object",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "design",
+      "attention"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-COZ-073",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Cozy",
+    "state": "draft",
+    "title": "The Slow Folding Interval",
+    "body": "Fold five garments or towels without trying to finish the whole pile. Enjoy the small stack and stop there if you wish.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 15,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "laundry already available",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "home",
+      "sensory"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-COZ-074",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Cozy",
+    "state": "draft",
+    "title": "A Bookshop in Your Memory",
+    "body": "Write down three books that belong to different eras of your life. Give each era a shelf label.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 15,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "paper or notes app",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reading",
+      "memory"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-COZ-075",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Cozy",
+    "state": "draft",
+    "title": "The Favorite Phrase",
+    "body": "Choose a phrase from a loved one's speech, a regional saying, or a family expression. Record what it means to you.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 10,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "paper or notes app",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "language",
+      "memory"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-COZ-076",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Cozy",
+    "state": "draft",
+    "title": "The No-Occasion Napkin",
+    "body": "Fold a cloth or paper napkin in a way you find pleasing. Use it with an ordinary snack or meal.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 10,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "a napkin",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "home",
+      "small-ritual"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-COZ-077",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Cozy",
+    "state": "draft",
+    "title": "A Few Minutes of Firelight",
+    "body": "Watch a safe existing fireplace, a recording of a fire, or changing light on a wall for five quiet minutes.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 5,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a safe light source or recording",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "light",
+      "rest"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-COZ-078",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Cozy",
+    "state": "draft",
+    "title": "The Soft Ending",
+    "body": "Choose a book chapter, show episode, or game session and stop at a satisfying boundary. Give yourself a minute to arrive back in the room.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 15,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "something already in progress",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "rest",
+      "transition"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-COZ-079",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Cozy",
+    "state": "draft",
+    "title": "The Shelf-Side Holiday",
+    "body": "Take one small souvenir or keepsake off its shelf. Remember the ordinary part of that day, not just the highlight.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 10,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a keepsake",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "memory",
+      "travel"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-COZ-080",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Cozy",
+    "state": "draft",
+    "title": "A Comfort from Elsewhere",
+    "body": "Learn about one everyday comfort ritual from another culture through a reliable article or personal account. Notice the practical detail you like most.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 20,
+      "setting": "online",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "internet access",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "culture",
+      "curiosity"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-COZ-081",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Cozy",
+    "state": "draft",
+    "title": "The Quiet Kitchen Companion",
+    "body": "Prepare part of an ordinary meal with no background media. Listen to the small sounds of making something edible.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 15,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "ingredients already planned",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "food",
+      "sound"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-COZ-082",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Cozy",
+    "state": "draft",
+    "title": "The Unscheduled View",
+    "body": "Give yourself ten minutes to look out from a safe window or seated outdoor spot. You do not need to identify, photograph, or improve anything.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 10,
+      "setting": "anywhere",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a comfortable view",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "nature",
+      "rest"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-COZ-083",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Cozy",
+    "state": "draft",
+    "title": "The Margin of the Day",
+    "body": "Leave a small blank space on today's page or schedule. Use five minutes of it however your body prefers.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 10,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "none",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "rest",
+      "choice"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-COZ-084",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Cozy",
+    "state": "draft",
+    "title": "The Familiar Game Recess",
+    "body": "Play one short round of a game you already know. Stop before it becomes a task you need to win.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 20,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a familiar game",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "play",
+      "nostalgia"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-COZ-085",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Cozy",
+    "state": "draft",
+    "title": "A Light for the Return",
+    "body": "Before stepping out, arrange one safe, welcoming detail for when you return: a clear seat, a glass ready for water, or a book waiting.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 10,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "existing household items",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "home",
+      "care"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-COZ-086",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Cozy",
+    "state": "draft",
+    "title": "The Good Smell, Named",
+    "body": "Notice a pleasant everyday scent that is already present. Write a name for it more specific than “nice.”",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 5,
+      "setting": "anywhere",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "none",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "scent",
+      "language"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-COZ-087",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Cozy",
+    "state": "draft",
+    "title": "The One-Song Kitchen Waltz",
+    "body": "Move gently to one song while waiting for an ordinary kitchen task. Seated swaying and imaginary choreography both qualify.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 5,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "music",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "movement",
+      "music"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-COZ-088",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Cozy",
+    "state": "draft",
+    "title": "A Small Permission Slip",
+    "body": "Write yourself permission to do one harmless thing slowly today. Put it where you will encounter it before the moment arrives.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 10,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "paper and pen",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "rest",
+      "writing"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-COZ-089",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Cozy",
+    "state": "draft",
+    "title": "The Favorite Button",
+    "body": "Find one button, clasp, or zipper on something you own that feels satisfying to use. Appreciate the tiny bit of design doing its job.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 5,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "an everyday item",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "design",
+      "sensory"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-COZ-090",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Cozy",
+    "state": "draft",
+    "title": "The Old Recipe Handwriting",
+    "body": "Look at a handwritten recipe or other old note, yours or one freely shared by an archive. Notice the human details of the handwriting.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 15,
+      "setting": "anywhere",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a note or archive image",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "memory",
+      "food"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-COZ-091",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Cozy",
+    "state": "draft",
+    "title": "The Unfancy Picnic Spot",
+    "body": "Eat a small snack somewhere at home you do not usually sit. Bring a plate, even if the expedition is three feet long.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 15,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a snack already available",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "play",
+      "home"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-COZ-092",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Cozy",
+    "state": "draft",
+    "title": "A Chapter by Ear",
+    "body": "Listen to ten minutes of a freely available audiobook. Close your eyes if comfortable and let someone else carry the sentences.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 10,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "free audiobook access",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reading",
+      "audio"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-COZ-093",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Cozy",
+    "state": "draft",
+    "title": "The Night-Sky Color Study",
+    "body": "Look safely at the evening sky from indoors or outside. Find a color you would not simply call black.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 10,
+      "setting": "anywhere",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a safe view",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "sky",
+      "observation"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-COZ-094",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Cozy",
+    "state": "draft",
+    "title": "The Smallest Souvenir",
+    "body": "Choose an ordinary detail from today to remember: a sentence, a shadow, or a good bite. Give it a title and keep just that.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 10,
+      "setting": "anywhere",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "paper optional",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "memory",
+      "attention"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-COZ-095",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Cozy",
+    "state": "draft",
+    "title": "An Unhurried Hand Wash",
+    "body": "Wash your hands with ordinary care and pay attention to the water, soap, and towel. Let this one routine take its full minute.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 5,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "normal washing supplies",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "sensory",
+      "care"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-COZ-096",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Cozy",
+    "state": "draft",
+    "title": "The Book's Hidden Company",
+    "body": "Look at a book's publication page and find one person or role beyond the author. Imagine the care that brought the object into your hands.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 10,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a book",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reading",
+      "craft"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-COZ-097",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Cozy",
+    "state": "draft",
+    "title": "The Comfortable Distance",
+    "body": "Move a screen, lamp, or chair a small amount until an everyday activity feels easier. Enjoy the result for five minutes.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 10,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "existing furniture or device",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "comfort",
+      "practical"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-COZ-098",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Cozy",
+    "state": "draft",
+    "title": "A Slow Slice of Music",
+    "body": "Listen to one instrumental passage twice. The first time follow the melody; the second time follow the quietest sound you can hear.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 10,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "music",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "music",
+      "attention"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-COZ-099",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Cozy",
+    "state": "draft",
+    "title": "The Season in One Object",
+    "body": "Choose something already at home that feels like this season to you. Give it a temporary place of honor.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 15,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "an existing object",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "season",
+      "home"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-COZ-100",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Cozy",
+    "state": "draft",
+    "title": "The Unclaimed Half Hour",
+    "body": "Reserve thirty minutes for an activity you enjoy without recording progress. When time ends, you may have nothing to show for it.",
+    "metadata": {
+      "vibes": "Cozy",
+      "minutes": 30,
+      "setting": "anywhere",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "none",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "rest",
+      "pleasure"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-ADV-053",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "state": "draft",
+    "title": "The Public Staircase Story",
+    "body": "Find a freely accessible staircase or an online architectural tour. Look for evidence of how people have used it over time.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 25,
+      "setting": "anywhere",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a public site or online tour",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "architecture",
+      "history"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-ADV-054",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "state": "draft",
+    "title": "The Local Archive Surprise",
+    "body": "Browse a free local archive for an image of a familiar place. Compare one detail with how it looks now.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 25,
+      "setting": "online",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "internet access",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "history",
+      "local"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-ADV-055",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "state": "draft",
+    "title": "A Postcard from a Webcam",
+    "body": "Open a reputable public landscape webcam in an unfamiliar region. Watch for five minutes and write a two-sentence postcard.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 15,
+      "setting": "online",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "internet access",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "travel",
+      "writing"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-ADV-056",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "state": "draft",
+    "title": "The Unfamiliar Instrument",
+    "body": "Listen to a demonstration of an instrument you cannot name by sound. Learn its name and one way it is played.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20,
+      "setting": "online",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "internet access",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "music",
+      "culture"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-ADV-057",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "state": "draft",
+    "title": "The Public Noticeboard Visit",
+    "body": "Read a community noticeboard in person or online. Find one local activity you had no idea existed.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20,
+      "setting": "anywhere",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a public noticeboard",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "community",
+      "discovery"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-ADV-058",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "state": "draft",
+    "title": "The Building Material Hunt",
+    "body": "Look at a public building from a safe spot or a detailed photo. Identify three materials and wonder why each was chosen.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20,
+      "setting": "anywhere",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a building or photograph",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "architecture",
+      "design"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-ADV-059",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "state": "draft",
+    "title": "A New Kind of Map",
+    "body": "Explore a free map that shows something besides roads, such as geology, trees, or light pollution. Find one surprising pattern.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 25,
+      "setting": "online",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "internet access",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maps",
+      "science"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-ADV-060",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "state": "draft",
+    "title": "The Unfamiliar Sport Window",
+    "body": "Watch ten minutes of a sport you have never followed. Learn enough to explain how a point is scored.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20,
+      "setting": "online",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a free official recording",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "culture",
+      "learning"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-ADV-061",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "state": "draft",
+    "title": "The Public Sculpture Backstory",
+    "body": "Choose one public sculpture nearby or online. Learn its title and one fact about why it is there.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 25,
+      "setting": "anywhere",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "public art information",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "art",
+      "local"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-ADV-062",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "state": "draft",
+    "title": "The Market Without a Purchase",
+    "body": "Browse a public market or its vendor list. Find one product, craft, or ingredient you would like to understand better.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 30,
+      "setting": "anywhere",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a market or website",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "food",
+      "craft"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-ADV-063",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "state": "draft",
+    "title": "The Train Window Expedition",
+    "body": "Watch a short route video from a place you have never visited. Notice how the landscape changes between two stops.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20,
+      "setting": "online",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "internet access",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "travel",
+      "accessible"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-ADV-064",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "state": "draft",
+    "title": "An Unfamiliar Alphabet",
+    "body": "Learn to recognize three characters from a writing system new to you using a reputable beginner resource. Copy them if you like.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 25,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "a free learning resource",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "language",
+      "culture"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-ADV-065",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "state": "draft",
+    "title": "The Watershed Detective",
+    "body": "Look up the watershed of a place you know. Trace where rainwater travels after leaving that neighborhood.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 25,
+      "setting": "online",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a reliable watershed map",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "nature",
+      "local"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-ADV-066",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "state": "draft",
+    "title": "The Museum Storage Window",
+    "body": "Explore a museum's online behind-the-scenes collection or conservation page. Find one object that is not usually on display.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 25,
+      "setting": "online",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "internet access",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "museum",
+      "craft"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-ADV-067",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "state": "draft",
+    "title": "The Small Public Performance",
+    "body": "Find a free public performance or official recording under twenty minutes. Give it your attention even if the genre is unfamiliar.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 25,
+      "setting": "anywhere",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "free performance access",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "arts",
+      "discovery"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-ADV-068",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "state": "draft",
+    "title": "The Nearby Place-Name Puzzle",
+    "body": "Choose a nearby river, hill, or district name. Find a reliable account of its origin and note any uncertainty.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 25,
+      "setting": "online",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "local history sources",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "language",
+      "history"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-ADV-069",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "state": "draft",
+    "title": "The Window-Box Safari",
+    "body": "From a public path or an online neighborhood walk, notice how people fit plants into small spaces. Find one ingenious arrangement.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 25,
+      "setting": "anywhere",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a safe public view",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "gardens",
+      "design"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-ADV-070",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "state": "draft",
+    "title": "A Recipe from a Region",
+    "body": "Read a recipe from a region you know little about. Learn what role the dish plays before deciding whether to cook it another day.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20,
+      "setting": "online",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a reputable food source",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "food",
+      "culture"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-ADV-071",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "state": "draft",
+    "title": "The Free Lecture Seat",
+    "body": "Watch fifteen minutes of a public museum or university talk on an unfamiliar subject. Keep one question it raises.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20,
+      "setting": "online",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "internet access",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "learning",
+      "accessible"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-ADV-072",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "state": "draft",
+    "title": "The Local Accessibility Scout",
+    "body": "Choose a public place you might enjoy visiting. Check its access information and save a route that would work for your needs.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20,
+      "setting": "online",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "venue information",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "accessibility",
+      "local"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-ADV-073",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "state": "draft",
+    "title": "The Old Newspaper Afternoon",
+    "body": "Read one non-distressing page of a digitized historical newspaper. Find an ordinary advertisement or notice that makes the era feel real.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 25,
+      "setting": "online",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a public archive",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "history",
+      "everyday-life"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-ADV-074",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "state": "draft",
+    "title": "An Unfamiliar Dance Rhythm",
+    "body": "Watch a short introduction to a dance tradition from a knowledgeable practitioner. Notice the rhythm without needing to perform it.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20,
+      "setting": "online",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a free demonstration",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "dance",
+      "culture"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-ADV-075",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "state": "draft",
+    "title": "The Urban Tree Introduction",
+    "body": "Find a safely observable street tree or a municipal tree-map entry. Learn one identifying feature besides its leaves.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20,
+      "setting": "anywhere",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a tree guide or map",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "nature",
+      "local"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-ADV-076",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "state": "draft",
+    "title": "The Free Exhibit Label",
+    "body": "Visit a free exhibit or online gallery. Read one label slowly enough to explain the object's story to yourself.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 25,
+      "setting": "anywhere",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "free gallery access",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "art",
+      "history"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-ADV-077",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "state": "draft",
+    "title": "The Unfamiliar Breakfast Research",
+    "body": "Learn about an everyday breakfast somewhere new to you. Identify one ingredient you already have, without needing to recreate the dish.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a reliable food resource",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "food",
+      "culture"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-ADV-078",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "state": "draft",
+    "title": "The Bridge Design Question",
+    "body": "Look at a public bridge from a safe accessible location or photo. Find out what type it is and how its shape supports the span.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 25,
+      "setting": "anywhere",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a bridge image and reference",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "engineering",
+      "local"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-ADV-079",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "state": "draft",
+    "title": "A Park Beyond the Path",
+    "body": "Browse a park's official map and find an area you have never noticed. Read its access information and choose whether it belongs on a future visit.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20,
+      "setting": "online",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "an official park map",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "nature",
+      "planning"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-ADV-080",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "state": "draft",
+    "title": "The Stationery Archaeologist",
+    "body": "Browse a free museum collection of writing tools. Find one device you would not have guessed was used for writing.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20,
+      "setting": "online",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "internet access",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "design",
+      "history"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-ADV-081",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "state": "draft",
+    "title": "The Public Library Beyond Books",
+    "body": "Check your library's services page. Find one free resource that is not simply borrowing a printed book.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 15,
+      "setting": "online",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a library website",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "community",
+      "learning"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-ADV-082",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "state": "draft",
+    "title": "The Unfamiliar Season",
+    "body": "Look at a reliable photo essay about a season in another climate. Notice one everyday adaptation people make there.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20,
+      "setting": "online",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a photo essay",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "climate",
+      "culture"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-ADV-083",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "state": "draft",
+    "title": "The Small Language Expedition",
+    "body": "Learn a polite greeting and its pronunciation in a language new to you. Listen to a native-speaker example rather than guessing.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 15,
+      "setting": "online",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "a free language resource",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "language",
+      "learning"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-ADV-084",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "state": "draft",
+    "title": "The Museum Floor Plan",
+    "body": "Study the floor plan of a museum you have never visited. Plan a three-object route that suits your interests and energy.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 25,
+      "setting": "online",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a museum collection and map",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "art",
+      "accessible"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-ADV-085",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "state": "draft",
+    "title": "The Hidden Infrastructure Tour",
+    "body": "Read an official explanation of a local water, transit, or energy system. Find one piece of infrastructure you pass without noticing.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 25,
+      "setting": "online",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a public utility resource",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "engineering",
+      "local"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-ADV-086",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "state": "draft",
+    "title": "An Unfamiliar Craft Demonstration",
+    "body": "Watch a craftsperson demonstrate a technique from a tradition new to you. Learn the name of one tool and what it does.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20,
+      "setting": "online",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a free demonstration",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "craft",
+      "culture"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-ADV-087",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "state": "draft",
+    "title": "The Shortest Nature Documentary",
+    "body": "Watch a reputable five-to-fifteen-minute nature film about a habitat you have never seen. Notice one relationship between species.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20,
+      "setting": "online",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a free nature film",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "nature",
+      "learning"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-ADV-088",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "state": "draft",
+    "title": "The Public Bench Perspective",
+    "body": "Sit at a safe public spot you usually pass through, or use a street-view panorama. Notice what the slower viewpoint reveals.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20,
+      "setting": "anywhere",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a safe seat or panorama",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "place",
+      "observation"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-ADV-089",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "state": "draft",
+    "title": "A Local Festival's Origin",
+    "body": "Look up a free public festival's history. Find out what it originally celebrated and how it has changed.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20,
+      "setting": "online",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "an official festival history",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "culture",
+      "local"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-ADV-090",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "state": "draft",
+    "title": "The Unfamiliar Room Tour",
+    "body": "Explore a freely available virtual tour of a historic room. Find a practical detail that surprises you more than the decoration.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 25,
+      "setting": "online",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a museum virtual tour",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "history",
+      "design"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-ADV-091",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "state": "draft",
+    "title": "The Night Wildlife Window",
+    "body": "Read a park or wildlife agency's guide to nocturnal animals in your region. Learn one sign you might safely notice from home.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20,
+      "setting": "online",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "an official wildlife guide",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "nature",
+      "night"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-ADV-092",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "state": "draft",
+    "title": "The Map of One Meal",
+    "body": "Choose a meal you already eat and trace the likely growing regions of three ingredients. Keep the exercise curious rather than a shopping assignment.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 25,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "ingredient labels and a map",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "food",
+      "geography"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-ADV-093",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "state": "draft",
+    "title": "A Public Art Audio Walk",
+    "body": "Listen to part of a free official art or heritage audio walk. Following the route physically is optional.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 25,
+      "setting": "anywhere",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "an audio guide",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "art",
+      "accessible"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-ADV-094",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "state": "draft",
+    "title": "The Unfamiliar Everyday Object",
+    "body": "Find a museum object used in daily life by another culture or era. Learn its actual purpose before inventing a guess.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20,
+      "setting": "online",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a museum collection",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "culture",
+      "history"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-ADV-095",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "state": "draft",
+    "title": "The Community Science Peek",
+    "body": "Browse a reputable community-science project. Learn what one observation would contribute; participation is optional.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20,
+      "setting": "online",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a project website",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "science",
+      "curiosity"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-ADV-096",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "state": "draft",
+    "title": "The Public Garden in Winter",
+    "body": "Explore a garden's official seasonal guide, regardless of your current season. Find what remains interesting when flowers are absent.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20,
+      "setting": "online",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a garden guide",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "nature",
+      "seasons"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-ADV-097",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "state": "draft",
+    "title": "An Unfamiliar Sound Archive",
+    "body": "Open a public sound archive and hear three short recordings from one place. Notice what sound tells you that a photograph would not.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 20,
+      "setting": "online",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a public sound archive",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "audio",
+      "place"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-ADV-098",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "state": "draft",
+    "title": "The Architecture Detail Passport",
+    "body": "Find three different window shapes on a safe familiar route or virtual walk. Give your favorite a tiny passport sketch.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 25,
+      "setting": "anywhere",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "paper optional",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "architecture",
+      "observation"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-ADV-099",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "state": "draft",
+    "title": "The Local Myth Check",
+    "body": "Choose a harmless story about a local landmark. Compare it with a museum, archive, or official history and note what is actually known.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 30,
+      "setting": "online",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "reliable local sources",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "history",
+      "research"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-ADV-100",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Adventurous",
+    "state": "draft",
+    "title": "The Free Workshop Preview",
+    "body": "Find a free beginner workshop recording on an unfamiliar subject. Try its first small exercise using materials you already have.",
+    "metadata": {
+      "vibes": "Adventurous",
+      "minutes": 35,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "medium",
+      "skill_level": "beginner",
+      "materials": "existing supplies",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "learning",
+      "experiment"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CRE-053",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Creative",
+    "state": "draft",
+    "title": "The Crochet Turning Point",
+    "body": "Practice a turning chain and the first stitch of a new row on a small swatch. Mark the row edge so you can find it again.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 25,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "leftover yarn and hook",
+      "content_version": 1,
+      "editorial_status": "draft",
+      "creative_domain": "fiber"
+    },
+    "tags": [
+      "fiber",
+      "crochet",
+      "skill"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CRE-054",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Creative",
+    "state": "draft",
+    "title": "The Knit-and-Purl Landscape",
+    "body": "Knit a small rectangle that alternates a smooth area with a textured area. Compare how the same yarn behaves in each.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 35,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "medium",
+      "skill_level": "beginner",
+      "materials": "yarn and knitting needles",
+      "content_version": 1,
+      "editorial_status": "draft",
+      "creative_domain": "fiber"
+    },
+    "tags": [
+      "fiber",
+      "knitting",
+      "skill"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CRE-055",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Creative",
+    "state": "draft",
+    "title": "The Yarn Weight Detective",
+    "body": "Compare two yarns you own by making a tiny sample with each. Record which feels better for a small accessory.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 30,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "two yarns and suitable tools",
+      "content_version": 1,
+      "editorial_status": "draft",
+      "creative_domain": "fiber"
+    },
+    "tags": [
+      "fiber",
+      "materials",
+      "skill"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CRE-056",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Creative",
+    "state": "draft",
+    "title": "The Crochet Circle Rehearsal",
+    "body": "Practice the first three rounds of a flat crochet circle. Count the stitches at the end of each round and note the shape.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 35,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "medium",
+      "skill_level": "beginner",
+      "materials": "yarn and hook",
+      "content_version": 1,
+      "editorial_status": "draft",
+      "creative_domain": "fiber"
+    },
+    "tags": [
+      "fiber",
+      "crochet",
+      "skill"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CRE-057",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Creative",
+    "state": "draft",
+    "title": "The Knit Edge Experiment",
+    "body": "Try two edge treatments on a short knitted sample. Label which edge you would want on a scarf.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 35,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "medium",
+      "skill_level": "intermediate",
+      "materials": "yarn and needles",
+      "content_version": 1,
+      "editorial_status": "draft",
+      "creative_domain": "fiber"
+    },
+    "tags": [
+      "fiber",
+      "knitting",
+      "skill"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CRE-058",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Creative",
+    "state": "draft",
+    "title": "The Scrappy Yarn Tassel",
+    "body": "Make a tassel from leftover yarn and attach it to a bookmark or key you already own. Trim it into a shape you like.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 25,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "yarn scraps and scissors",
+      "content_version": 1,
+      "editorial_status": "draft",
+      "creative_domain": "fiber"
+    },
+    "tags": [
+      "fiber",
+      "accessory",
+      "skill"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CRE-059",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Creative",
+    "state": "draft",
+    "title": "The Stitch Marker Improvisation",
+    "body": "Make three removable stitch markers from safe supplies you already have, such as scrap yarn loops. Test that they do not snag.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 20,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "scrap yarn or smooth clips",
+      "content_version": 1,
+      "editorial_status": "draft",
+      "creative_domain": "fiber"
+    },
+    "tags": [
+      "fiber",
+      "tools",
+      "diy"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CRE-060",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Creative",
+    "state": "draft",
+    "title": "The Crochet Ribbing Trial",
+    "body": "Work a short sample using back-loop stitches. Stretch it gently and compare it with a plain sample.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 35,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "medium",
+      "skill_level": "beginner",
+      "materials": "yarn and hook",
+      "content_version": 1,
+      "editorial_status": "draft",
+      "creative_domain": "fiber"
+    },
+    "tags": [
+      "fiber",
+      "crochet",
+      "skill"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CRE-061",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Creative",
+    "state": "draft",
+    "title": "The Knitted Buttonhole Test",
+    "body": "Practice one beginner buttonhole on a scrap swatch. Try it with a button you own before planning a whole garment.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 35,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "medium",
+      "skill_level": "intermediate",
+      "materials": "yarn needles and button",
+      "content_version": 1,
+      "editorial_status": "draft",
+      "creative_domain": "fiber"
+    },
+    "tags": [
+      "fiber",
+      "knitting",
+      "skill"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CRE-062",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Creative",
+    "state": "draft",
+    "title": "The Yarn Color Forecast",
+    "body": "Choose four leftover yarn colors and arrange three different stripe sequences. Make a small sample of the most unexpected combination.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 40,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "medium",
+      "skill_level": "beginner",
+      "materials": "leftover yarn and tools",
+      "content_version": 1,
+      "editorial_status": "draft",
+      "creative_domain": "fiber"
+    },
+    "tags": [
+      "fiber",
+      "color",
+      "skill"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CRE-063",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Creative",
+    "state": "draft",
+    "title": "The Crochet Joining Lab",
+    "body": "Join two tiny crochet squares using two different methods. Compare the seam's flexibility and appearance.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 40,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "medium",
+      "skill_level": "intermediate",
+      "materials": "two small swatches and yarn",
+      "content_version": 1,
+      "editorial_status": "draft",
+      "creative_domain": "fiber"
+    },
+    "tags": [
+      "fiber",
+      "crochet",
+      "skill"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CRE-064",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Creative",
+    "state": "draft",
+    "title": "The Gentle Unravel",
+    "body": "Unravel a small sample you no longer need and wind the yarn neatly. Notice which construction details become clear in reverse.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 25,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "an unwanted yarn sample",
+      "content_version": 1,
+      "editorial_status": "draft",
+      "creative_domain": "fiber"
+    },
+    "tags": [
+      "fiber",
+      "learning",
+      "reuse"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CRE-065",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Creative",
+    "state": "draft",
+    "title": "The Knit Repair Rehearsal",
+    "body": "Use a practice swatch to learn how to pick up a dropped stitch with a crochet hook. Keep the repair visible as a reference.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 35,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "medium",
+      "skill_level": "intermediate",
+      "materials": "swatch and hook",
+      "content_version": 1,
+      "editorial_status": "draft",
+      "creative_domain": "fiber"
+    },
+    "tags": [
+      "fiber",
+      "knitting",
+      "skill"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CRE-066",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Creative",
+    "state": "draft",
+    "title": "The Mini Crochet Basket",
+    "body": "Crochet a shallow cup-sized basket from yarn you already own. It only needs to hold one small object.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 60,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "medium",
+      "skill_level": "intermediate",
+      "materials": "yarn and hook",
+      "content_version": 1,
+      "editorial_status": "draft",
+      "creative_domain": "fiber"
+    },
+    "tags": [
+      "fiber",
+      "crochet",
+      "project"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CRE-067",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Creative",
+    "state": "draft",
+    "title": "The Woven Yarn Bookmark",
+    "body": "Weave a narrow strip on a small cardboard loom using leftover yarn. Finish the ends so it can mark a page.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 45,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "medium",
+      "skill_level": "beginner",
+      "materials": "cardboard yarn and scissors",
+      "content_version": 1,
+      "editorial_status": "draft",
+      "creative_domain": "fiber"
+    },
+    "tags": [
+      "fiber",
+      "weaving",
+      "skill"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CRE-068",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Creative",
+    "state": "draft",
+    "title": "The Fabric Grain Test",
+    "body": "Compare how a fabric scrap stretches along its length width and diagonal. Label the directions on a small reference sample.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 20,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "fabric scrap and pen",
+      "content_version": 1,
+      "editorial_status": "draft",
+      "creative_domain": "fiber"
+    },
+    "tags": [
+      "fiber",
+      "textiles",
+      "skill"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CRE-069",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Creative",
+    "state": "draft",
+    "title": "The Crochet Pattern Translation",
+    "body": "Take one short stitch instruction you understand and rewrite it in plain language for your future self. Test it on a swatch.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 30,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "yarn hook and an instruction",
+      "content_version": 1,
+      "editorial_status": "draft",
+      "creative_domain": "fiber"
+    },
+    "tags": [
+      "fiber",
+      "crochet",
+      "learning"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CRE-070",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Creative",
+    "state": "draft",
+    "title": "The Semantic HTML Postcard",
+    "body": "Build a tiny webpage using a heading paragraph image description and footer. Check that the page still makes sense with its CSS removed.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 35,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "medium",
+      "skill_level": "beginner",
+      "materials": "browser and free text editor",
+      "content_version": 1,
+      "editorial_status": "draft",
+      "creative_domain": "coding"
+    },
+    "tags": [
+      "coding",
+      "html",
+      "accessibility"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CRE-071",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Creative",
+    "state": "draft",
+    "title": "The CSS Type Specimen",
+    "body": "Create a page showing one heading and one paragraph in three free system-font combinations. Choose the pair that reads most comfortably.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 35,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "medium",
+      "skill_level": "beginner",
+      "materials": "browser and text editor",
+      "content_version": 1,
+      "editorial_status": "draft",
+      "creative_domain": "coding"
+    },
+    "tags": [
+      "coding",
+      "typography",
+      "skill"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CRE-072",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Creative",
+    "state": "draft",
+    "title": "The Responsive Card Trio",
+    "body": "Build three simple cards with CSS Grid. Make them become one column at a narrow width without fixed page widths.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 45,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "medium",
+      "skill_level": "beginner",
+      "materials": "browser and text editor",
+      "content_version": 1,
+      "editorial_status": "draft",
+      "creative_domain": "coding"
+    },
+    "tags": [
+      "coding",
+      "css",
+      "responsive"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CRE-073",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Creative",
+    "state": "draft",
+    "title": "The Focus Ring Tune-Up",
+    "body": "Make a button and a link whose keyboard focus states are clearly visible. Test them using Tab without touching the mouse.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 30,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "medium",
+      "skill_level": "beginner",
+      "materials": "browser and text editor",
+      "content_version": 1,
+      "editorial_status": "draft",
+      "creative_domain": "coding"
+    },
+    "tags": [
+      "coding",
+      "accessibility",
+      "skill"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CRE-074",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Creative",
+    "state": "draft",
+    "title": "The Tiny Disclosure",
+    "body": "Use HTML details and summary to build a small expandable explanation. Style its open state without hiding the keyboard focus indicator.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 30,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "medium",
+      "skill_level": "beginner",
+      "materials": "browser and text editor",
+      "content_version": 1,
+      "editorial_status": "draft",
+      "creative_domain": "coding"
+    },
+    "tags": [
+      "coding",
+      "html",
+      "interaction"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CRE-075",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Creative",
+    "state": "draft",
+    "title": "The JavaScript Counter",
+    "body": "Build a counter with increase decrease and reset buttons. Prevent it from going below zero and explain that rule beside it.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 45,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "medium",
+      "skill_level": "beginner",
+      "materials": "browser and text editor",
+      "content_version": 1,
+      "editorial_status": "draft",
+      "creative_domain": "coding"
+    },
+    "tags": [
+      "coding",
+      "javascript",
+      "skill"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CRE-076",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Creative",
+    "state": "draft",
+    "title": "The Color Variable Garden",
+    "body": "Define four CSS custom properties and use them across a tiny page. Change the palette by editing only those properties.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 35,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "medium",
+      "skill_level": "beginner",
+      "materials": "browser and text editor",
+      "content_version": 1,
+      "editorial_status": "draft",
+      "creative_domain": "coding"
+    },
+    "tags": [
+      "coding",
+      "css",
+      "tokens"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CRE-077",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Creative",
+    "state": "draft",
+    "title": "The Browser Inspector Walk",
+    "body": "Use developer tools on your own practice page to change spacing and type size. Save one improvement back into the source file.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 25,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "a practice webpage",
+      "content_version": 1,
+      "editorial_status": "draft",
+      "creative_domain": "coding"
+    },
+    "tags": [
+      "coding",
+      "devtools",
+      "skill"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CRE-078",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Creative",
+    "state": "draft",
+    "title": "The No-Motion Alternative",
+    "body": "Add one small CSS transition to a practice component, then provide a prefers-reduced-motion rule. Test both states in browser tools.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 35,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "medium",
+      "skill_level": "beginner",
+      "materials": "browser and text editor",
+      "content_version": 1,
+      "editorial_status": "draft",
+      "creative_domain": "coding"
+    },
+    "tags": [
+      "coding",
+      "motion",
+      "accessibility"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CRE-079",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Creative",
+    "state": "draft",
+    "title": "The Tiny Theme Toggle",
+    "body": "Build a two-theme practice page using CSS variables and one JavaScript button. Keep the button label accurate after each change.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 50,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "medium",
+      "skill_level": "beginner",
+      "materials": "browser and text editor",
+      "content_version": 1,
+      "editorial_status": "draft",
+      "creative_domain": "coding"
+    },
+    "tags": [
+      "coding",
+      "javascript",
+      "theme"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CRE-080",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Creative",
+    "state": "draft",
+    "title": "The Error Message That Helps",
+    "body": "Create a small email form that explains an invalid entry beside the field. Preserve the typed value after the error.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 45,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "medium",
+      "skill_level": "beginner",
+      "materials": "browser and text editor",
+      "content_version": 1,
+      "editorial_status": "draft",
+      "creative_domain": "coding"
+    },
+    "tags": [
+      "coding",
+      "forms",
+      "accessibility"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CRE-081",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Creative",
+    "state": "draft",
+    "title": "The Image Fit Laboratory",
+    "body": "Place the same image in three card shapes and compare object-fit contain and cover. Choose the crop that preserves the subject.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 30,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "an image you may use and browser",
+      "content_version": 1,
+      "editorial_status": "draft",
+      "creative_domain": "coding"
+    },
+    "tags": [
+      "coding",
+      "css",
+      "images"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CRE-082",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Creative",
+    "state": "draft",
+    "title": "The Local Storage Reminder",
+    "body": "Build a tiny practice page that remembers one harmless text preference after refresh. Add a clear button that removes it.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 50,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "medium",
+      "skill_level": "beginner",
+      "materials": "browser and text editor",
+      "content_version": 1,
+      "editorial_status": "draft",
+      "creative_domain": "coding"
+    },
+    "tags": [
+      "coding",
+      "javascript",
+      "persistence"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CRE-083",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Creative",
+    "state": "draft",
+    "title": "The Accessible Color Pair",
+    "body": "Choose a foreground and background for a practice button. Check their contrast with a free tool and adjust until the label is readable.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 30,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "browser and contrast checker",
+      "content_version": 1,
+      "editorial_status": "draft",
+      "creative_domain": "coding"
+    },
+    "tags": [
+      "coding",
+      "color",
+      "accessibility"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CRE-084",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Creative",
+    "state": "draft",
+    "title": "The CSS Shape Portrait",
+    "body": "Make a small abstract portrait using only CSS shapes and gradients. Keep the HTML readable enough to explain to yourself later.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 45,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "medium",
+      "skill_level": "beginner",
+      "materials": "browser and text editor",
+      "content_version": 1,
+      "editorial_status": "draft",
+      "creative_domain": "coding"
+    },
+    "tags": [
+      "coding",
+      "css",
+      "creative"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CRE-085",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Creative",
+    "state": "draft",
+    "title": "The Friendly Empty List",
+    "body": "Build a list component with an empty state and an add-item action. Make the empty message disappear when the first real item arrives.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 50,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "medium",
+      "skill_level": "beginner",
+      "materials": "browser and text editor",
+      "content_version": 1,
+      "editorial_status": "draft",
+      "creative_domain": "coding"
+    },
+    "tags": [
+      "coding",
+      "javascript",
+      "empty-state"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CRE-086",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Creative",
+    "state": "draft",
+    "title": "The Keyboard-Only Tour",
+    "body": "Navigate your own practice website using only the keyboard. Fix one place where focus is missing or the order becomes confusing.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 35,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "medium",
+      "skill_level": "beginner",
+      "materials": "a practice website",
+      "content_version": 1,
+      "editorial_status": "draft",
+      "creative_domain": "coding"
+    },
+    "tags": [
+      "coding",
+      "accessibility",
+      "testing"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CRE-087",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Creative",
+    "state": "draft",
+    "title": "The Tiny Loading State",
+    "body": "Create a practice button that briefly shows a loading label and prevents duplicate clicks. Restore it after the simulated operation ends.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 40,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "medium",
+      "skill_level": "beginner",
+      "materials": "browser and text editor",
+      "content_version": 1,
+      "editorial_status": "draft",
+      "creative_domain": "coding"
+    },
+    "tags": [
+      "coding",
+      "javascript",
+      "interaction"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CRE-088",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Creative",
+    "state": "draft",
+    "title": "The Form Label Audit",
+    "body": "Choose one familiar form and sketch a version where every field has a clear label and helpful error placement. Explain one improvement.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 30,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "paper or a free design tool",
+      "content_version": 1,
+      "editorial_status": "draft",
+      "creative_domain": "ux"
+    },
+    "tags": [
+      "ux",
+      "forms",
+      "skill"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CRE-089",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Creative",
+    "state": "draft",
+    "title": "The Three-Step User Flow",
+    "body": "Map a familiar digital task in three to seven steps. Remove one unnecessary decision without removing a useful feature.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 30,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "medium",
+      "skill_level": "beginner",
+      "materials": "paper or a free design tool",
+      "content_version": 1,
+      "editorial_status": "draft",
+      "creative_domain": "ux"
+    },
+    "tags": [
+      "ux",
+      "flow",
+      "skill"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CRE-090",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Creative",
+    "state": "draft",
+    "title": "The Mobile Priority Sketch",
+    "body": "Sketch a phone version of a desktop screen you use. Decide which three actions deserve the first screen and why.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 35,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "medium",
+      "skill_level": "beginner",
+      "materials": "paper or a free design tool",
+      "content_version": 1,
+      "editorial_status": "draft",
+      "creative_domain": "ux"
+    },
+    "tags": [
+      "ux",
+      "mobile",
+      "skill"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CRE-091",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Creative",
+    "state": "draft",
+    "title": "The Helpful Confirmation",
+    "body": "Write a deletion confirmation that names the object consequence and recovery option. Sketch where Cancel and Delete belong.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 25,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "paper or a free design tool",
+      "content_version": 1,
+      "editorial_status": "draft",
+      "creative_domain": "ux"
+    },
+    "tags": [
+      "ux",
+      "microcopy",
+      "safety"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CRE-092",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Creative",
+    "state": "draft",
+    "title": "The Navigation Card Sort",
+    "body": "Write six familiar app destinations on scraps of paper. Group them into a navigation structure and give each group a plain label.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 35,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "medium",
+      "skill_level": "beginner",
+      "materials": "paper scraps",
+      "content_version": 1,
+      "editorial_status": "draft",
+      "creative_domain": "ux"
+    },
+    "tags": [
+      "ux",
+      "information-architecture",
+      "skill"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CRE-093",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Creative",
+    "state": "draft",
+    "title": "The One-Screen Hierarchy",
+    "body": "Sketch a content-heavy screen with one clear title one primary action and two supporting levels. Test it by looking away and back.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 35,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "medium",
+      "skill_level": "beginner",
+      "materials": "paper or a free design tool",
+      "content_version": 1,
+      "editorial_status": "draft",
+      "creative_domain": "ux"
+    },
+    "tags": [
+      "ux",
+      "hierarchy",
+      "skill"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CRE-094",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Creative",
+    "state": "draft",
+    "title": "The Touch Target Check",
+    "body": "Measure the main controls in a phone interface you own or may inspect. Sketch one correction for a cramped target without enlarging everything.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 30,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "phone and paper",
+      "content_version": 1,
+      "editorial_status": "draft",
+      "creative_domain": "ux"
+    },
+    "tags": [
+      "ux",
+      "mobile",
+      "accessibility"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CRE-095",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Creative",
+    "state": "draft",
+    "title": "The Search Recovery Sketch",
+    "body": "Design a no-results state that preserves the search text and offers one useful next action. Avoid pretending the collection is empty.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 30,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "medium",
+      "skill_level": "beginner",
+      "materials": "paper or a free design tool",
+      "content_version": 1,
+      "editorial_status": "draft",
+      "creative_domain": "ux"
+    },
+    "tags": [
+      "ux",
+      "search",
+      "skill"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CRE-096",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Creative",
+    "state": "draft",
+    "title": "The State Matrix",
+    "body": "Choose a simple save button and list its idle loading success and failure states. Write the visible label for each state.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 30,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "paper or a free design tool",
+      "content_version": 1,
+      "editorial_status": "draft",
+      "creative_domain": "ux"
+    },
+    "tags": [
+      "ux",
+      "states",
+      "skill"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CRE-097",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Creative",
+    "state": "draft",
+    "title": "The Microcopy Read-Aloud",
+    "body": "Read five interface labels from a familiar app aloud. Rewrite the two that sound least like something a person would say.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 25,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "an interface and paper",
+      "content_version": 1,
+      "editorial_status": "draft",
+      "creative_domain": "ux"
+    },
+    "tags": [
+      "ux",
+      "microcopy",
+      "skill"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CRE-098",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Creative",
+    "state": "draft",
+    "title": "The Progressive Form",
+    "body": "Sketch a form that asks only its essential fields first and reveals optional details on demand. Label what makes each field optional.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 40,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "medium",
+      "skill_level": "beginner",
+      "materials": "paper or a free design tool",
+      "content_version": 1,
+      "editorial_status": "draft",
+      "creative_domain": "ux"
+    },
+    "tags": [
+      "ux",
+      "forms",
+      "progressive-disclosure"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CRE-099",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Creative",
+    "state": "draft",
+    "title": "The Usability Question",
+    "body": "Write a short task prompt for testing a familiar screen without telling someone what to click. Then list what you would observe rather than assume.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 35,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "medium",
+      "skill_level": "beginner",
+      "materials": "paper or notes app",
+      "content_version": 1,
+      "editorial_status": "draft",
+      "creative_domain": "ux"
+    },
+    "tags": [
+      "ux",
+      "research",
+      "skill"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CRE-100",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Creative",
+    "state": "draft",
+    "title": "The Error Recovery Map",
+    "body": "Choose one everyday app failure and map how a user could retry undo or leave safely. Sketch the smallest useful recovery control.",
+    "metadata": {
+      "vibes": "Creative",
+      "minutes": 35,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "medium",
+      "skill_level": "beginner",
+      "materials": "paper or a free design tool",
+      "content_version": 1,
+      "editorial_status": "draft",
+      "creative_domain": "ux"
+    },
+    "tags": [
+      "ux",
+      "recovery",
+      "skill"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-SOC-053",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Social",
+    "state": "draft",
+    "title": "The Shared First Impression",
+    "body": "Invite a willing friend to look at the same unfamiliar artwork. Each of you names the first detail you noticed before reading its label.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20,
+      "setting": "online",
+      "participation_mode": "with_others",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a public artwork image",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "art",
+      "remote"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-SOC-054",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Social",
+    "state": "draft",
+    "title": "The Two-Person Atlas",
+    "body": "Ask someone you know to name a place they would happily revisit. Find it on a map and let them describe one ordinary detail.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20,
+      "setting": "anywhere",
+      "participation_mode": "with_others",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a map and conversation",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "place",
+      "memory"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-SOC-055",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Social",
+    "state": "draft",
+    "title": "The Kind Decline Practice",
+    "body": "With a willing friend, each write a polite way to decline a low-stakes invitation. Trade the versions and keep one that sounds like you.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20,
+      "setting": "anywhere",
+      "participation_mode": "with_others",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "paper or messages",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "boundaries",
+      "writing"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-SOC-056",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Social",
+    "state": "draft",
+    "title": "The Parallel Snack Break",
+    "body": "Arrange a short snack break with a friend in another place. You may eat completely different things and discuss none of them.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 15,
+      "setting": "online",
+      "participation_mode": "with_others",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a snack already available",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "remote",
+      "company"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-SOC-057",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Social",
+    "state": "draft",
+    "title": "The Childhood Rulebook",
+    "body": "Ask someone you know about one harmless rule from their childhood home. Share one from yours and enjoy the comparison.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 15,
+      "setting": "anywhere",
+      "participation_mode": "with_others",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "conversation",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "memory",
+      "culture"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-SOC-058",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Social",
+    "state": "draft",
+    "title": "The Good Question Bookmark",
+    "body": "Ask a friend which question they wish people asked about a hobby they enjoy. Let them answer that question if they want.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20,
+      "setting": "anywhere",
+      "participation_mode": "with_others",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "conversation",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "hobbies",
+      "curiosity"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-SOC-059",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Social",
+    "state": "draft",
+    "title": "The Shared Object Drawing",
+    "body": "Choose one ordinary object with a willing friend and each draw it for two minutes. Compare the details your eyes selected.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 15,
+      "setting": "anywhere",
+      "participation_mode": "with_others",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "paper and pens",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "drawing",
+      "play"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-SOC-060",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Social",
+    "state": "draft",
+    "title": "A Tiny Care Package in Words",
+    "body": "Send someone three specific things you appreciate about a place or activity they introduced you to. Keep the message easy to receive.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 10,
+      "setting": "online",
+      "participation_mode": "with_others",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a message",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "appreciation",
+      "friendship"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-SOC-061",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Social",
+    "state": "draft",
+    "title": "The No-Agenda Call",
+    "body": "Ask a friend whether they would enjoy a ten-minute call with no problem to solve. Respect their answer and schedule it only if welcome.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 15,
+      "setting": "online",
+      "participation_mode": "with_others",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a call or message",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "company",
+      "remote"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-SOC-062",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Social",
+    "state": "draft",
+    "title": "The Gentle Fact-Check Duo",
+    "body": "With a willing friend, choose a harmless fact you both half-remember. Find a reliable source and compare how your memories edited it.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 25,
+      "setting": "online",
+      "participation_mode": "with_others",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "internet access",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "curiosity",
+      "research"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-SOC-063",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Social",
+    "state": "draft",
+    "title": "The Shared Finish Line",
+    "body": "Invite someone to spend fifteen minutes on a small task of their choosing while you do yours. Check in afterward without comparing productivity.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20,
+      "setting": "online",
+      "participation_mode": "with_others",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "two chosen tasks",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "company",
+      "remote"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-SOC-064",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Social",
+    "state": "draft",
+    "title": "The Local Favorite Map",
+    "body": "Ask a friend for a favorite free place nearby. Add it to a small personal map with the reason they like it.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 15,
+      "setting": "online",
+      "participation_mode": "with_others",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a map or notes app",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "local",
+      "friendship"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-SOC-065",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Social",
+    "state": "draft",
+    "title": "The Audio Description Exchange",
+    "body": "Describe a pleasant scene to a willing friend without sending a picture. Ask which detail they imagined most clearly.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 15,
+      "setting": "anywhere",
+      "participation_mode": "with_others",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "conversation or message",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "language",
+      "sensory"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-SOC-066",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Social",
+    "state": "draft",
+    "title": "The Two-Minute Tutorial",
+    "body": "Teach someone who is interested one tiny thing you know, or ask them to teach you. Stop while it still feels small.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 15,
+      "setting": "anywhere",
+      "participation_mode": "with_others",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "whatever the skill needs",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "learning",
+      "exchange"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-SOC-067",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Social",
+    "state": "draft",
+    "title": "The Personal Holiday Question",
+    "body": "Ask someone what ordinary date or season means more to them than a public holiday. Share yours only if you want.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 15,
+      "setting": "anywhere",
+      "participation_mode": "with_others",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "conversation",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ritual",
+      "memory"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-SOC-068",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Social",
+    "state": "draft",
+    "title": "The Shared Listening Note",
+    "body": "Choose one short public radio or podcast segment with a friend. Each name a question it leaves you with.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 25,
+      "setting": "online",
+      "participation_mode": "with_others",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a free audio segment",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "audio",
+      "curiosity"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-SOC-069",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Social",
+    "state": "draft",
+    "title": "The Delayed Reply Amnesty",
+    "body": "Tell a friend you enjoy hearing from that there is no rush to answer your next message. Send one low-pressure hello and mean the permission.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 10,
+      "setting": "online",
+      "participation_mode": "with_others",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a message",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "friendship",
+      "care"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-SOC-070",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Social",
+    "state": "draft",
+    "title": "The Joint Tiny Exhibition",
+    "body": "With a willing friend, each choose one photo or object around a shared theme. Give your two-item exhibition a title.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 25,
+      "setting": "anywhere",
+      "participation_mode": "with_others",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "two objects or photos",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "creative",
+      "play"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-SOC-071",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Social",
+    "state": "draft",
+    "title": "The Favorite Sound Question",
+    "body": "Ask someone which everyday sound they would miss if it disappeared. Compare it with your own choice.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 10,
+      "setting": "anywhere",
+      "participation_mode": "with_others",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "conversation",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "sensory",
+      "connection"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-SOC-072",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Social",
+    "state": "draft",
+    "title": "The Kind Errand Offer",
+    "body": "If it fits a trip you are already making, offer a known person one specific practical errand. Make declining easy and do not promise more than you can do.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 15,
+      "setting": "anywhere",
+      "participation_mode": "with_others",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "an errand already planned",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "care",
+      "practical"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-SOC-073",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Social",
+    "state": "draft",
+    "title": "The Two-Person Mini Review",
+    "body": "Try the same free short story or video with a friend. Each write a review using exactly three descriptive words.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 25,
+      "setting": "online",
+      "participation_mode": "with_others",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "a free short work",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "culture",
+      "play"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-SOC-074",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Social",
+    "state": "draft",
+    "title": "The Chosen Tradition Audit",
+    "body": "Ask someone you share a small tradition with which part they actually enjoy. Keep that part at the next opportunity.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 15,
+      "setting": "anywhere",
+      "participation_mode": "with_others",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "conversation",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ritual",
+      "friendship"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-SOC-075",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Social",
+    "state": "draft",
+    "title": "The Skill You Admire",
+    "body": "Tell a person you know which particular detail of their work or hobby you admire. Ask a question only if they seem interested in explaining.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 10,
+      "setting": "anywhere",
+      "participation_mode": "with_others",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a welcome message",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "craft",
+      "appreciation"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-SOC-076",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Social",
+    "state": "draft",
+    "title": "The Cooperative Shopping List",
+    "body": "With someone you already share food or a household with, compare one small preference that makes an ordinary meal easier. Record the useful detail.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20,
+      "setting": "home",
+      "participation_mode": "with_others",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a shared routine",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "home",
+      "care"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-SOC-077",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Social",
+    "state": "draft",
+    "title": "The Friendly Accessibility Question",
+    "body": "For a plan you are making together, ask what pace format or access detail would help. Offer a concrete alternative without requiring an explanation.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 15,
+      "setting": "anywhere",
+      "participation_mode": "with_others",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a shared plan",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "accessibility",
+      "care"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-SOC-078",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Social",
+    "state": "draft",
+    "title": "The Two-Person Color Name",
+    "body": "Show a willing friend one color and each invent a name for it. Explain your names with entirely unnecessary confidence.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 10,
+      "setting": "online",
+      "participation_mode": "with_others",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "a color sample",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "play",
+      "design"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-SOC-079",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Social",
+    "state": "draft",
+    "title": "The Small Story Recording",
+    "body": "With permission, record someone you know telling a short ordinary story. Let them choose whether you keep or delete the recording.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20,
+      "setting": "anywhere",
+      "participation_mode": "with_others",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a recording device optional",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "memory",
+      "consent"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-SOC-080",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Social",
+    "state": "draft",
+    "title": "The Shared Public Domain Find",
+    "body": "Browse a public-domain archive with a friend. Each bring back one image that deserves more attention.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 25,
+      "setting": "online",
+      "participation_mode": "with_others",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a public archive",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "art",
+      "discovery"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-SOC-081",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Social",
+    "state": "draft",
+    "title": "The Question with an Exit",
+    "body": "Invite someone you know to share a small recent delight, explicitly allowing “nothing comes to mind.” Accept either answer warmly.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 10,
+      "setting": "anywhere",
+      "participation_mode": "with_others",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "conversation",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "care",
+      "connection"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-SOC-082",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Social",
+    "state": "draft",
+    "title": "The Two-Person Wordless Comic",
+    "body": "Each draw three simple panels for the same harmless event. Compare how much story you told without words.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 25,
+      "setting": "anywhere",
+      "participation_mode": "with_others",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "paper and pens",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "drawing",
+      "storytelling"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-SOC-083",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Social",
+    "state": "draft",
+    "title": "The Ordinary Expertise Exchange",
+    "body": "Ask a friend for their method for one mundane thing they do well. Offer your own method for a different task if they want it.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20,
+      "setting": "anywhere",
+      "participation_mode": "with_others",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "conversation",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "learning",
+      "everyday-life"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-SOC-084",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Social",
+    "state": "draft",
+    "title": "The Shared Weather Memory",
+    "body": "Compare memories of an unusual but non-distressing weather day with someone who was there. Notice which details each of you kept.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 15,
+      "setting": "anywhere",
+      "participation_mode": "with_others",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "conversation",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "memory",
+      "place"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-SOC-085",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Social",
+    "state": "draft",
+    "title": "The Low-Stakes Poll",
+    "body": "Ask a few willing friends one harmless question with no correct answer. Share the results without ranking anyone's taste.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20,
+      "setting": "online",
+      "participation_mode": "with_others",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "messages",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "play",
+      "conversation"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-SOC-086",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Social",
+    "state": "draft",
+    "title": "The Invitation with Details",
+    "body": "Make one small invitation that includes duration cost and an easy way to decline. Clarity is the considerate part of the quest.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 15,
+      "setting": "online",
+      "participation_mode": "with_others",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a message",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "planning",
+      "care"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-SOC-087",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Social",
+    "state": "draft",
+    "title": "The Companionable Repair",
+    "body": "Invite someone to sit with you while each repairs or sorts one small thing. Conversation is optional and expertise is not required.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 45,
+      "setting": "anywhere",
+      "participation_mode": "with_others",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "a small existing item",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "making",
+      "company"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-SOC-088",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Social",
+    "state": "draft",
+    "title": "The Familiar Place, Two Eras",
+    "body": "Compare a place you both know as it was in different years. Let each person name one change they like.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20,
+      "setting": "anywhere",
+      "participation_mode": "with_others",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "conversation or photos",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "memory",
+      "place"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-SOC-089",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Social",
+    "state": "draft",
+    "title": "The Shared Recipe Annotation",
+    "body": "Read a recipe together and each add one practical note based on experience. You do not need to cook it today.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20,
+      "setting": "online",
+      "participation_mode": "with_others",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a recipe",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "food",
+      "learning"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-SOC-090",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Social",
+    "state": "draft",
+    "title": "The Very Small Collaboration",
+    "body": "Ask a willing friend to supply a title for something you make, or offer a title for theirs. Credit the collaboration in your private record.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20,
+      "setting": "online",
+      "participation_mode": "with_others",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "a small creative work",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "creative",
+      "friendship"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-SOC-091",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Social",
+    "state": "draft",
+    "title": "The Gracious Recommendation Return",
+    "body": "If you tried something someone recommended, tell them one specific thing you noticed. You do not have to pretend you loved it.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 10,
+      "setting": "online",
+      "participation_mode": "with_others",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a message",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "honesty",
+      "friendship"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-SOC-092",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Social",
+    "state": "draft",
+    "title": "The Common Ground Surprise",
+    "body": "With someone you know, list three things each of you liked as children. Find one overlap you had never discussed.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20,
+      "setting": "anywhere",
+      "participation_mode": "with_others",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "conversation",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "nostalgia",
+      "connection"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-SOC-093",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Social",
+    "state": "draft",
+    "title": "The Two-Person Tiny Debate",
+    "body": "Choose an absurd harmless topic with a willing friend. Each give a thirty-second argument, then retire the issue without a winner.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 15,
+      "setting": "anywhere",
+      "participation_mode": "with_others",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "none",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "play",
+      "conversation"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-SOC-094",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Social",
+    "state": "draft",
+    "title": "The Public Credit Note",
+    "body": "Where appropriate and welcome, credit someone for a useful idea they shared with you. Keep the acknowledgment specific and respect their privacy.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 10,
+      "setting": "online",
+      "participation_mode": "with_others",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a message or shared workspace",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "appreciation",
+      "care"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-SOC-095",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Social",
+    "state": "draft",
+    "title": "The Shared Quiet View",
+    "body": "Spend ten minutes looking at a safe view with someone, in person or by sharing a live call. Talk only when either of you feels like it.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 15,
+      "setting": "anywhere",
+      "participation_mode": "with_others",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a view or call",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "company",
+      "rest"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-SOC-096",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Social",
+    "state": "draft",
+    "title": "The Friend's Pronunciation Guide",
+    "body": "Ask a willing friend to teach you the correct pronunciation of a word or place they know well. Practice it back and thank them.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 15,
+      "setting": "anywhere",
+      "participation_mode": "with_others",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "conversation",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "language",
+      "learning"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-SOC-097",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Social",
+    "state": "draft",
+    "title": "The Two-Person Time Capsule",
+    "body": "Each write one prediction about a harmless shared interest. Agree on a date to compare the guesses and keep the notes privately.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20,
+      "setting": "anywhere",
+      "participation_mode": "with_others",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "paper or messages",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "play",
+      "memory"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-SOC-098",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Social",
+    "state": "draft",
+    "title": "The Kind Reminder Agreement",
+    "body": "Ask someone whether a reminder about a shared plan would help and what form they prefer. Follow their preference rather than guessing.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 10,
+      "setting": "online",
+      "participation_mode": "with_others",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a shared plan",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "care",
+      "communication"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-SOC-099",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Social",
+    "state": "draft",
+    "title": "The Shared Ending Ritual",
+    "body": "At the end of a call or visit, each name one thing you enjoyed about the time. A simple answer is enough.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 5,
+      "setting": "anywhere",
+      "participation_mode": "with_others",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a willing companion",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "friendship",
+      "ritual"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-SOC-100",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Social",
+    "state": "draft",
+    "title": "The One-Photo Field Guide",
+    "body": "With a willing friend, each photograph one ordinary detail around you. Describe why it belongs in a field guide to your day.",
+    "metadata": {
+      "vibes": "Social",
+      "minutes": 20,
+      "setting": "online",
+      "participation_mode": "with_others",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "camera or a written description",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "place",
+      "creative"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CHA-053",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "state": "draft",
+    "title": "The Department of Mild Suspicion",
+    "body": "List three completely harmless things that seem faintly suspicious today. Assign each a case number and close the investigation.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 15,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "paper and pen",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "fiction",
+      "investigation"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CHA-054",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "state": "draft",
+    "title": "The Emergency Biscuit Protocol",
+    "body": "Write a three-step emergency procedure for a situation that absolutely is not an emergency, such as a biscuit breaking in half.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 10,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "paper optional",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "procedure"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CHA-055",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "state": "draft",
+    "title": "The Tiny Epic Opening",
+    "body": "Write the first paragraph of an epic saga about locating a clean teaspoon. Give the quest a grand geographical obstacle.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 15,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "paper or notes app",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "writing",
+      "epic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CHA-056",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "state": "draft",
+    "title": "The Invisible Ribbon Cutting",
+    "body": "Ceremonially open a newly cleared patch of desk or a fresh page. Deliver a speech under thirty seconds and avoid actual ribbons.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 10,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "a small clear space",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ceremony",
+      "domestic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CHA-057",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "state": "draft",
+    "title": "The Extremely Modest Patent",
+    "body": "Draw a useless invention that solves a problem nobody has. Include one feature that makes the problem slightly worse.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "paper and pen",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "design",
+      "invention"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CHA-058",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "state": "draft",
+    "title": "The Bureaucratic Bedtime Story",
+    "body": "Write a four-sentence fairy tale in the style of an administrative notice. Include one clearly unnecessary form.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "paper or notes app",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "writing",
+      "bureaucracy"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CHA-059",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "state": "draft",
+    "title": "The Unreliable Nature Guide",
+    "body": "Write a clearly fictional field-guide entry for a dust bunny, including habitat diet and one implausible migration pattern.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 15,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "paper optional",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "fiction",
+      "nature-parody"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CHA-060",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "state": "draft",
+    "title": "The Historic Napkin Treaty",
+    "body": "Draft a peace treaty between two abstract concepts, such as Monday and the snooze button. Give both sides a ridiculous concession.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "paper and pen",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "writing",
+      "diplomacy"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CHA-061",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "state": "draft",
+    "title": "The One-Person Sound Effect Team",
+    "body": "Add private sound effects to one harmless routine for two minutes. Stop if anyone nearby would rather have quiet.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 5,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "none",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "audio",
+      "play"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CHA-062",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "state": "draft",
+    "title": "The Improbable Product Launch",
+    "body": "Pitch an imaginary product that no sensible shop would stock. Include a slogan and one honest warning.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "paper optional",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "design",
+      "comedy"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CHA-063",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "state": "draft",
+    "title": "The Formal Apology to Tuesday",
+    "body": "Write three lines apologizing to a day of the week for your unreasonable expectations. Let the day decline to comment.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 10,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "paper or notes app",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "writing",
+      "time"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CHA-064",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "state": "draft",
+    "title": "The Minuscule Quest Log",
+    "body": "Record a mundane achievement as if it earned an RPG reward. The reward must be something you already have permission to enjoy.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 10,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "paper optional",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "games",
+      "storytelling"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CHA-065",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "state": "draft",
+    "title": "The Unnecessary Map Key",
+    "body": "Draw a map of a tiny familiar area and invent six symbols for features no normal map would mention.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "paper and pen",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maps",
+      "design"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CHA-066",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "state": "draft",
+    "title": "The Suspiciously Specific Oath",
+    "body": "Swear a brief fictional oath about a harmless preference, such as how toast should be cut. Include a loophole for emergencies.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 10,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "none",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "language",
+      "ceremony"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CHA-067",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "state": "draft",
+    "title": "The Museum Audio Guide Voice",
+    "body": "Record or perform a twenty-second audio guide to an empty shelf. Make its absence sound historically significant.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 10,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "recording device optional",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "performance",
+      "art"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CHA-068",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "state": "draft",
+    "title": "The Anti-Climax Championship",
+    "body": "Write a dramatic buildup to an extremely small event. End with the plainest possible sentence.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 15,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "paper or notes app",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "writing",
+      "comedy"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CHA-069",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "state": "draft",
+    "title": "The Fictional Safety Label",
+    "body": "Design a warning label for a harmless feeling, such as enthusiasm for stationery. Keep it obviously fictional and kind.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "paper and pen",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "design",
+      "wordplay"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CHA-070",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "state": "draft",
+    "title": "The Imaginary Rival Review",
+    "body": "Write a polite review of a fictional rival's equally fictional bakery. Accidentally praise it more than you intended.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "paper or notes app",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "writing",
+      "character"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CHA-071",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "state": "draft",
+    "title": "The Tiny Orchestra Score",
+    "body": "Write a ten-second score using three safe household sounds. Perform it once at a considerate volume.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 15,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "three safe sound sources",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "music",
+      "composition"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CHA-072",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "state": "draft",
+    "title": "The Bureau of Unfinished Sentences",
+    "body": "Write five sentence openings that sound momentous. Choose one and finish it with something very ordinary.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 15,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "paper and pen",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "writing",
+      "surprise"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CHA-073",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "state": "draft",
+    "title": "The Goblin Exchange Rate",
+    "body": "Invent a currency used only for imaginary favors between fictional goblins. Draw one coin and explain its most inconvenient denomination.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "paper and pen",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "worldbuilding",
+      "design"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CHA-074",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "state": "draft",
+    "title": "The Overqualified Shopping Note",
+    "body": "Rewrite an ordinary shopping reminder as a job description requiring absurd experience. Do not actually send it to anyone.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 15,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "an existing reminder",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "writing",
+      "bureaucracy"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CHA-075",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "state": "draft",
+    "title": "The Invisible Creature Footprint",
+    "body": "Draw the tracks of an imaginary creature that lives in margins. Explain why nobody has ever seen its knees.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "paper and pen",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "drawing",
+      "worldbuilding"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CHA-076",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "state": "draft",
+    "title": "The Extremely Short Opera",
+    "body": "Sing or quietly recite three dramatic lines about a minor inconvenience. End before a second act becomes necessary.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 10,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "none",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "performance",
+      "music"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CHA-077",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "state": "draft",
+    "title": "The Unhelpful Forecast Model",
+    "body": "Invent a forecasting system based on a harmless arbitrary detail, such as the number of blue objects nearby. Label every prediction as nonsense.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 15,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "paper optional",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "systems"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CHA-078",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "state": "draft",
+    "title": "The Secret Society of Maybe",
+    "body": "Write the membership rules for a fictional society that cannot make a decision. Make joining optional and resigning effortless.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "paper or notes app",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "writing",
+      "institutions"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CHA-079",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "state": "draft",
+    "title": "The Mock Archaeological Dig",
+    "body": "Examine the contents of your own pocket or bag as future artifacts. Write one clearly fictional museum label that gets everything wrong.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "your own belongings",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "history-parody",
+      "writing"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CHA-080",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "state": "draft",
+    "title": "The Compliment for a Concept",
+    "body": "Compose an elaborate compliment to a harmless abstract idea, such as punctuation or second helpings. Keep it under fifty words.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 15,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "paper optional",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "language",
+      "comedy"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CHA-081",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "state": "draft",
+    "title": "The Inconvenient Superpower",
+    "body": "Invent a superpower that is useful only in a very specific ordinary circumstance. Draw its heroic emblem.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "paper and pen",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "drawing",
+      "character"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CHA-082",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "state": "draft",
+    "title": "The Etiquette of Dragons",
+    "body": "Write three etiquette rules for dragons attending a small apartment gathering. Solve at least one space problem politely.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 15,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "paper or notes app",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "fantasy",
+      "comedy"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CHA-083",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "state": "draft",
+    "title": "The Extremely Local Legend",
+    "body": "Invent a clearly fictional legend explaining a tiny detail in your home. End with the phrase “scholars remain divided.”",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 15,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "none",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "storytelling",
+      "lore"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CHA-084",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "state": "draft",
+    "title": "The Official Pause Announcement",
+    "body": "Announce a five-minute break as if broadcasting a historic public service notice. Then actually take the break.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 10,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "none",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "performance",
+      "rest"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CHA-085",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "state": "draft",
+    "title": "The Disappointing Treasure Chest",
+    "body": "Draw a treasure chest containing three perfectly ordinary things. Explain why the imaginary pirate considers them priceless.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "paper and pen",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "drawing",
+      "storytelling"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CHA-086",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "state": "draft",
+    "title": "The One-Line Court Transcript",
+    "body": "Write a fictional court exchange in which the evidence is a single crumb. Resolve the case without accusing a real person.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 15,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "paper optional",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "writing",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CHA-087",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "state": "draft",
+    "title": "The Goblin Quality Assurance Desk",
+    "body": "Test an imaginary product against three ridiculous requirements. Issue a report that fails it for being too sensible.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "paper or notes app",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "design",
+      "comedy"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CHA-088",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "state": "draft",
+    "title": "The Minor Villain's Day Off",
+    "body": "Write a short itinerary for a fictional villain trying to enjoy a quiet day. Give them one surprisingly ordinary hobby.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "paper optional",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "character",
+      "writing"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CHA-089",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "state": "draft",
+    "title": "The Suspenseful Sandwich Diagram",
+    "body": "Draw a sandwich as an architectural plan. Add one dramatic label that has no culinary justification.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "paper and pen",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "drawing",
+      "food"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CHA-090",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "state": "draft",
+    "title": "The Committee of One Agenda",
+    "body": "Write an agenda for a meeting with yourself about a completely trivial preference. Conclude before appointing a subcommittee.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 10,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "paper or notes app",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "bureaucracy",
+      "comedy"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CHA-091",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "state": "draft",
+    "title": "The Fictional Museum Gift Shop",
+    "body": "Design three imaginary souvenirs for a museum devoted to an absurd subject. Give the least practical one the highest price in made-up currency.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 25,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "paper and pen",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "design",
+      "worldbuilding"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CHA-092",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "state": "draft",
+    "title": "The Dignified Typo",
+    "body": "Choose a harmless typo you have made and give it a grand definition as though it were a real word. Use it in one fictional sentence.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 15,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "paper optional",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "wordplay",
+      "language"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CHA-093",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "state": "draft",
+    "title": "The Tiny Monster's Complaint",
+    "body": "Write a polite complaint from a fictional monster about an unexpectedly mundane problem. Offer it one practical solution.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "paper or notes app",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "character",
+      "writing"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CHA-094",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "state": "draft",
+    "title": "The Redundant Celebration",
+    "body": "Celebrate having completed the preparations for a very small celebration. A nod and a snack you already own are sufficient.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 10,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "none",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ceremony",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CHA-095",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "state": "draft",
+    "title": "The Imaginary Travel Advisory",
+    "body": "Write an obviously fictional travel advisory for a place inside a drawing. Include one charming inconvenience and no actual danger.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "paper and pen",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "worldbuilding",
+      "travel"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CHA-096",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "state": "draft",
+    "title": "The Dramatic Footnote",
+    "body": "Write an ordinary sentence and attach a footnote that is far more dramatic than the sentence deserves.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 15,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "paper or notes app",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "writing",
+      "comedy"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CHA-097",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "state": "draft",
+    "title": "The Goblin Menu Typography",
+    "body": "Design a tiny menu for a fictional goblin cafe using only three dishes. Make the typography more dignified than the food names.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 25,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "paper or free design tool",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "design",
+      "typography"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CHA-098",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "state": "draft",
+    "title": "The Very Small Time Machine",
+    "body": "Describe a time machine that can move only seven seconds into the past. Give its owner a surprisingly heartfelt reason to keep it.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 20,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "paper optional",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "science-fiction",
+      "writing"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CHA-099",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "state": "draft",
+    "title": "The Unnecessary Victory Lap",
+    "body": "Take a comfortable seated stretch or safe short lap after completing one ordinary thing. Announce the result to an imaginary sports commentator.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 10,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "none",
+      "materials": "none",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "performance",
+      "play"
+    ],
+    "sources": []
+  },
+  {
+    "id": "SQ-CHA-100",
+    "version": 1,
+    "experience": "side-quests",
+    "category": "Chaos Goblin",
+    "state": "draft",
+    "title": "The Department Closes Early",
+    "body": "Write a closing notice for an imaginary department you are tired of running, such as Overthinking Minor Emails. Give it generous opening hours tomorrow.",
+    "metadata": {
+      "vibes": "Chaos Goblin",
+      "minutes": 15,
+      "setting": "home",
+      "participation_mode": "solo",
+      "cost_level": "free",
+      "energy_level": "low",
+      "skill_level": "beginner",
+      "materials": "paper or notes app",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "writing",
+      "rest"
+    ],
+    "sources": []
+  }
+]

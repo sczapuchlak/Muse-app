@@ -1,2 +1,2 @@
-import {WhimsyFoundation} from '@/components/whimsy/WhimsyFoundation';
-export default function Page(){return <WhimsyFoundation experience="fortunes"/>;}
+import {FortunesExperience} from '@/components/whimsy/FortunesExperience';
+export default function FortunesPage(){return <FortunesExperience/>;}

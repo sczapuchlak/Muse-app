@@ -1,0 +1,482 @@
+[
+  {
+    "id": "CUR-040",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "The Popcorn-Scented Animal",
+    "body": "Binturongs produce a scent with a chemical also responsible for popcorn’s aroma.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "Nature Is Showing Off",
+      "tell_more": "The binturong’s familiar-smelling calling card comes from a compound called 2-acetyl-1-pyrroline in its urine. Smithsonian keepers describe the resulting aroma as buttered popcorn. This is communication, not an animal raiding a cinema concession stand: scent helps binturongs advertise their presence. Their nickname, bear cat, is also misleading, because they belong to the civet family rather than being bears or cats. Both the smell and the name demonstrate how quickly a human comparison can become attached to an animal with its own very different purposes.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "mammals",
+      "scent",
+      "chemistry"
+    ],
+    "sources": [
+      {
+        "url": "https://nationalzoo.si.edu/animals/binturong",
+        "name": "Smithsonian's National Zoo and Conservation Biology Institute",
+        "title": "Binturong",
+        "publisher": "Smithsonian's National Zoo and Conservation Biology Institute",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-041",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "Cubes Made Inside a Tube",
+    "body": "Wombats form their distinctive cubic droppings within the intestine, not through a square opening.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "That Can't Be Real",
+      "tell_more": "Researchers investigated the puzzle with dissections, tissue measurements, imaging, and physical models. They found that cube formation happens in the colon, where tissue properties vary around the circumference. Experiments imitating those differences and muscular contractions helped explain how flat sides and corners can emerge inside a tube. The work specifically rejected the intuitive square-exit explanation. An apparently comic wildlife question therefore became a serious mechanics problem about how flexible biological material shapes a moving substance before that substance leaves the body.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "wombats",
+      "biomechanics",
+      "research"
+    ],
+    "sources": [
+      {
+        "url": "https://hu.gatech.edu/wp-content/uploads/2021/01/Hu21-wombat.pdf",
+        "name": "Georgia Institute of Technology / Soft Matter",
+        "title": "Intestines of non-uniform stiffness mold the corners of wombat feces",
+        "publisher": "Georgia Institute of Technology / Soft Matter",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-042",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "A Frog’s Winter Pause",
+    "body": "Wood frogs can survive substantial freezing and resume activity after thawing.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "Nature Is Showing Off",
+      "tell_more": "A wood frog’s winter strategy is more remarkable than simply hiding somewhere chilly. The National Park Service describes ice forming outside cells while high concentrations of glucose help protect delicate tissues. Breathing and heartbeat can stop during the frozen period, then resume as conditions warm. This is a specialized adaptation, not evidence that any frog can safely be frozen. In northern habitats it allows these small amphibians to survive conditions that would seem incompatible with an animal’s ordinary active life.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "frogs",
+      "winter",
+      "adaptation"
+    ],
+    "sources": [
+      {
+        "url": "https://www.nps.gov/mabi/learn/nature/amphibians.htm",
+        "name": "National Park Service",
+        "title": "Amphibians — Marsh-Billings-Rockefeller National Historical Park",
+        "publisher": "National Park Service",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-043",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "The Limb That Can Return",
+    "body": "Axolotls can regenerate a lost limb, replacing multiple kinds of tissue.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "That's Incredible",
+      "tell_more": "Regeneration in an axolotl is more extensive than a wound simply closing. San Diego Zoo describes the replacement of structures including skin, bone, cartilage, and muscle when a limb regrows. Researchers study this ability because understanding it could reveal how complex repair is organized. That interest should not be confused with an available human treatment. The animal itself is also vulnerable in the wild; its remarkable biology does not make it immune to habitat loss or the disappearance of the waterways where it lives.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "amphibians",
+      "regeneration",
+      "research"
+    ],
+    "sources": [
+      {
+        "url": "https://animals.sandiegozoo.org/animals/axolotl",
+        "name": "San Diego Zoo Wildlife Alliance",
+        "title": "Axolotl",
+        "publisher": "San Diego Zoo Wildlife Alliance",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-044",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "The Adult with Baby Features",
+    "body": "Axolotls normally retain conspicuous juvenile traits, including external gills, into adulthood.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "Nature Is Showing Off",
+      "tell_more": "Many salamanders undergo a dramatic transition between an aquatic juvenile and a more terrestrial adult. Axolotls usually follow a different pattern, retaining larval features while becoming reproductively mature. Their feathery external gills are the most recognizable sign, and they continue living in water. The biological term is neoteny. Calling them perpetual babies would be misleading, because they are functioning adults. The surprise lies in how development can separate maturity from the familiar package of physical changes seen in related animals.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "amphibians",
+      "development",
+      "axolotls"
+    ],
+    "sources": [
+      {
+        "url": "https://animals.sandiegozoo.org/animals/axolotl",
+        "name": "San Diego Zoo Wildlife Alliance",
+        "title": "Axolotl",
+        "publisher": "San Diego Zoo Wildlife Alliance",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-045",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "A Mammal Colony with a Queen",
+    "body": "Naked mole-rat colonies divide reproductive and working roles in an unusually social system.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "Nature Is Showing Off",
+      "tell_more": "In a typical naked mole-rat colony, one female, called the queen, produces offspring while many other members maintain tunnels, gather food, defend the group, and help rear young. This arrangement is described as eusocial, a term more often encountered when discussing insects. Smithsonian accounts emphasize how unusual it is among mammals. The queen is not a miniature human monarch, and the workers are not following written orders; the comparison is a convenient name for a biological organization that evolved underground.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "mammals",
+      "social-behavior",
+      "colonies"
+    ],
+    "sources": [
+      {
+        "url": "https://www.nationalzoo.si.edu/animals/naked-mole-rat",
+        "name": "Smithsonian's National Zoo and Conservation Biology Institute",
+        "title": "Naked mole-rat",
+        "publisher": "Smithsonian's National Zoo and Conservation Biology Institute",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-046",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "Teeth Outside, Dirt Outside",
+    "body": "Naked mole-rats can close their lips behind the incisors they use for digging.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "That's Incredible",
+      "tell_more": "Digging a tunnel with the front of your face creates an obvious housekeeping problem: keeping soil out of your mouth. Naked mole-rats have a useful arrangement in which the lips close behind their large incisors. Smithsonian describes workers breaking ground with those teeth while others move loosened material along the tunnel system. Their anatomy and cooperative behavior make sense together. The odd-looking face is not an unfinished design; it is specialized equipment for a life spent excavating and maintaining underground routes.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "mammals",
+      "anatomy",
+      "adaptation"
+    ],
+    "sources": [
+      {
+        "url": "https://www.nationalzoo.si.edu/animals/naked-mole-rat",
+        "name": "Smithsonian's National Zoo and Conservation Biology Institute",
+        "title": "Naked mole-rat",
+        "publisher": "Smithsonian's National Zoo and Conservation Biology Institute",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-047",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "Pink Is on the Menu",
+    "body": "Flamingos obtain the pigments behind their familiar color from food.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "Nature Is Showing Off",
+      "tell_more": "Flamingos do not begin life as small, fully pink copies of the adults. Carotenoid pigments in foods such as algae and the organisms that eat it contribute to the color that develops in their feathers. The Smithsonian explains the link between diet, pigment metabolism, and plumage. The bird’s appearance therefore records a biological process rather than a coat of paint. It is a particularly flamboyant example of an animal using materials from its environment to build a visible feature of its own body.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "birds",
+      "color",
+      "food"
+    ],
+    "sources": [
+      {
+        "url": "https://nationalzoo.si.edu/animals/news/why-are-flamingos-pink-and-other-flamingo-facts",
+        "name": "Smithsonian's National Zoo and Conservation Biology Institute",
+        "title": "Why Are Flamingos Pink? And Other Flamingo Facts",
+        "publisher": "Smithsonian's National Zoo and Conservation Biology Institute",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-048",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "The Upside-Down Dinner Filter",
+    "body": "Flamingos feed with their heads inverted and use their bills as filters.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "That's Incredible",
+      "tell_more": "A flamingo sweeps its inverted head through shallow water while its tongue helps move water through the bill. Comb-like structures retain food as water leaves. Smithsonian describes a menu including algae, small crustaceans, seeds, and other small organisms. The distinctive bent bill is therefore part of a feeding system, not merely the bird’s decorative signature. Watching the posture without knowing the mechanism can look wonderfully eccentric; understanding the filter makes the apparent awkwardness reveal its practical purpose.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "birds",
+      "feeding",
+      "anatomy"
+    ],
+    "sources": [
+      {
+        "url": "https://nationalzoo.si.edu/animals/news/why-are-flamingos-pink-and-other-flamingo-facts",
+        "name": "Smithsonian's National Zoo and Conservation Biology Institute",
+        "title": "Why Are Flamingos Pink? And Other Flamingo Facts",
+        "publisher": "Smithsonian's National Zoo and Conservation Biology Institute",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-049",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "A Thumb Made from a Wrist",
+    "body": "A modified wrist bone helps red pandas grip bamboo.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "Nature Is Showing Off",
+      "tell_more": "Red pandas can grasp bamboo with help from a modified wrist bone often called a false thumb. It is not an extra finger with the same anatomical origin as a human thumb. The Smithsonian notes a similar adaptation in giant pandas, although the animals are not close relatives. The shape is useful for holding food, showing how evolution can recruit an existing part for a new mechanical role. A familiar-looking grip can therefore be assembled from a surprisingly different set of anatomical pieces.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "mammals",
+      "evolution",
+      "anatomy"
+    ],
+    "sources": [
+      {
+        "url": "https://nationalzoo.si.edu/animals/red-panda",
+        "name": "Smithsonian's National Zoo and Conservation Biology Institute",
+        "title": "Red panda",
+        "publisher": "Smithsonian's National Zoo and Conservation Biology Institute",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-050",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "Panda Is Not a Family Reunion",
+    "body": "Red pandas and giant pandas belong to different families.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "I Need to Tell Someone This",
+      "tell_more": "The resemblance in common names can make the two pandas seem like different sizes of the same family story. Smithsonian’s account instead places red pandas in their own family, Ailuridae, distinct from the bears that include giant pandas. Their classification has been debated historically, with raccoon and bear connections proposed before modern genetic work clarified the picture. Shared diet and appearance are useful observations, but they do not by themselves establish close ancestry. Names can preserve an earlier human impression long after the evidence becomes more precise.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "mammals",
+      "names",
+      "evolution"
+    ],
+    "sources": [
+      {
+        "url": "https://nationalzoo.si.edu/animals/red-panda",
+        "name": "Smithsonian's National Zoo and Conservation Biology Institute",
+        "title": "Red panda",
+        "publisher": "Smithsonian's National Zoo and Conservation Biology Institute",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-051",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "A Bill That Reads Electricity",
+    "body": "A platypus can detect electrical signals from prey while searching underwater.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "That's Incredible",
+      "tell_more": "The platypus’s broad bill is soft and packed with sensory structures. San Diego Zoo describes electroreceptors that help it locate living prey while its eyes and ears are closed underwater. Touch-sensitive structures contribute information too. The animal therefore does not depend on seeing through murky water in the way a human swimmer might. Its apparently improbable face is a sophisticated foraging instrument, combining different kinds of signals to help find small aquatic animals hidden in a visually difficult environment.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "mammals",
+      "senses",
+      "electricity"
+    ],
+    "sources": [
+      {
+        "url": "https://animals.sandiegozoo.org/animals/platypus",
+        "name": "San Diego Zoo Wildlife Alliance",
+        "title": "Platypus",
+        "publisher": "San Diego Zoo Wildlife Alliance",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-052",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "Eggs from a Mammal",
+    "body": "Platypuses lay eggs and later nurse their young.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "That Can't Be Real",
+      "tell_more": "Being a mammal does not require giving birth to live young. Platypuses belong to the monotremes, the small living group that also includes echidnas, and they lay eggs while retaining defining mammalian traits such as milk production. San Diego Zoo describes their reproductive life alongside the aquatic adaptations that make them so distinctive. The combination is not an evolutionary mistake assembled from unrelated spare parts. It is a surviving branch of mammal diversity that challenges the simplified version of the category many people first learn.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "mammals",
+      "reproduction",
+      "evolution"
+    ],
+    "sources": [
+      {
+        "url": "https://animals.sandiegozoo.org/animals/platypus",
+        "name": "San Diego Zoo Wildlife Alliance",
+        "title": "Platypus",
+        "publisher": "San Diego Zoo Wildlife Alliance",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-053",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "The Giraffe’s Forest Relative",
+    "body": "The striped-legged okapi is a close living relative of the giraffe, not a zebra.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "Nature Is Showing Off",
+      "tell_more": "An okapi’s bold leg markings invite an understandable first guess, but its family connection lies with giraffes. San Diego Zoo points to shared features including ossicones in males and a long, grasping tongue used to strip vegetation. The okapi’s shorter proportions suit movement through dense rainforest rather than the open setting people often associate with giraffes. Its appearance is a good lesson in looking beyond the most conspicuous pattern: stripes can dominate our impression while less obvious anatomy tells the deeper family story.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "mammals",
+      "evolution",
+      "rainforests"
+    ],
+    "sources": [
+      {
+        "url": "https://animals.sandiegozoo.org/animals/okapi",
+        "name": "San Diego Zoo Wildlife Alliance",
+        "title": "Okapi",
+        "publisher": "San Diego Zoo Wildlife Alliance",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-054",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "The Conversation Below Our Hearing",
+    "body": "Okapis produce some calls at frequencies too low for humans to hear.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "That's Incredible",
+      "tell_more": "San Diego Zoo researchers discovered these low-frequency sounds by examining recordings rather than relying only on what they could hear beside the animals. The zoo describes a possible role in communication between mothers and calves, while treating the explanation as a hypothesis rather than a fully settled translation. The important discovery is the signal itself. A seemingly quiet animal can be communicating outside the range of human hearing, and an ordinary recording becomes more revealing when examined with the right analytical tools.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "mammals",
+      "sound",
+      "research"
+    ],
+    "sources": [
+      {
+        "url": "https://animals.sandiegozoo.org/animals/okapi",
+        "name": "San Diego Zoo Wildlife Alliance",
+        "title": "Okapi",
+        "publisher": "San Diego Zoo Wildlife Alliance",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  }
+]

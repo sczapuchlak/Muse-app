@@ -1,0 +1,315 @@
+{
+  "possibleQuestOverlaps": [],
+  "possibleWordingOverlaps": [],
+  "relatedCuriosities": [
+    {
+      "a": "fortune-curiosity-001",
+      "b": "CUR-016",
+      "reason": "Shared source; confirm distinct claims. Shared sources alone are not duplicates."
+    },
+    {
+      "a": "fortune-curiosity-002",
+      "b": "fortune-curiosity-011",
+      "reason": "Shared source; confirm distinct claims. Shared sources alone are not duplicates."
+    },
+    {
+      "a": "fortune-curiosity-002",
+      "b": "CUR-025",
+      "reason": "Shared source; confirm distinct claims. Shared sources alone are not duplicates."
+    },
+    {
+      "a": "fortune-curiosity-003",
+      "b": "fortune-curiosity-013",
+      "reason": "Shared source; confirm distinct claims. Shared sources alone are not duplicates."
+    },
+    {
+      "a": "fortune-curiosity-011",
+      "b": "CUR-025",
+      "reason": "Shared source; confirm distinct claims. Shared sources alone are not duplicates."
+    },
+    {
+      "a": "CUR-014",
+      "b": "CUR-015",
+      "reason": "Shared source; confirm distinct claims. Shared sources alone are not duplicates."
+    },
+    {
+      "a": "CUR-017",
+      "b": "CUR-018",
+      "reason": "Shared source; confirm distinct claims. Shared sources alone are not duplicates."
+    },
+    {
+      "a": "CUR-019",
+      "b": "CUR-020",
+      "reason": "Shared source; confirm distinct claims. Shared sources alone are not duplicates."
+    },
+    {
+      "a": "CUR-021",
+      "b": "CUR-022",
+      "reason": "Shared source; confirm distinct claims. Shared sources alone are not duplicates."
+    },
+    {
+      "a": "CUR-023",
+      "b": "CUR-024",
+      "reason": "Shared source; confirm distinct claims. Shared sources alone are not duplicates."
+    },
+    {
+      "a": "CUR-026",
+      "b": "CUR-027",
+      "reason": "Shared source; confirm distinct claims. Shared sources alone are not duplicates."
+    },
+    {
+      "a": "CUR-036",
+      "b": "CUR-037",
+      "reason": "Shared source; confirm distinct claims. Shared sources alone are not duplicates."
+    },
+    {
+      "a": "CUR-043",
+      "b": "CUR-044",
+      "reason": "Shared source; confirm distinct claims. Shared sources alone are not duplicates."
+    },
+    {
+      "a": "CUR-045",
+      "b": "CUR-046",
+      "reason": "Shared source; confirm distinct claims. Shared sources alone are not duplicates."
+    },
+    {
+      "a": "CUR-047",
+      "b": "CUR-048",
+      "reason": "Shared source; confirm distinct claims. Shared sources alone are not duplicates."
+    },
+    {
+      "a": "CUR-049",
+      "b": "CUR-050",
+      "reason": "Shared source; confirm distinct claims. Shared sources alone are not duplicates."
+    },
+    {
+      "a": "CUR-051",
+      "b": "CUR-052",
+      "reason": "Shared source; confirm distinct claims. Shared sources alone are not duplicates."
+    },
+    {
+      "a": "CUR-053",
+      "b": "CUR-054",
+      "reason": "Shared source; confirm distinct claims. Shared sources alone are not duplicates."
+    },
+    {
+      "a": "CUR-067",
+      "b": "CUR-068",
+      "reason": "Shared source; confirm distinct claims. Shared sources alone are not duplicates."
+    },
+    {
+      "a": "CUR-085",
+      "b": "CUR-086",
+      "reason": "Shared source; confirm distinct claims. Shared sources alone are not duplicates."
+    }
+  ],
+  "lengthReview": [
+    {
+      "id": "FC-075",
+      "words": 9,
+      "reason": "Outside preferred 10–35-word range; not a hard publication rule."
+    },
+    {
+      "id": "FC-084",
+      "words": 9,
+      "reason": "Outside preferred 10–35-word range; not a hard publication rule."
+    },
+    {
+      "id": "FC-096",
+      "words": 9,
+      "reason": "Outside preferred 10–35-word range; not a hard publication rule."
+    },
+    {
+      "id": "FC-119",
+      "words": 9,
+      "reason": "Outside preferred 10–35-word range; not a hard publication rule."
+    },
+    {
+      "id": "FC-146",
+      "words": 9,
+      "reason": "Outside preferred 10–35-word range; not a hard publication rule."
+    },
+    {
+      "id": "FC-189",
+      "words": 9,
+      "reason": "Outside preferred 10–35-word range; not a hard publication rule."
+    },
+    {
+      "id": "FC-314",
+      "words": 9,
+      "reason": "Outside preferred 10–35-word range; not a hard publication rule."
+    },
+    {
+      "id": "FC-316",
+      "words": 8,
+      "reason": "Outside preferred 10–35-word range; not a hard publication rule."
+    },
+    {
+      "id": "FC-334",
+      "words": 9,
+      "reason": "Outside preferred 10–35-word range; not a hard publication rule."
+    },
+    {
+      "id": "CUR-026",
+      "words": 79,
+      "reason": "Slightly below approximate 80-word aim; review for depth rather than padding."
+    },
+    {
+      "id": "CUR-029",
+      "words": 79,
+      "reason": "Slightly below approximate 80-word aim; review for depth rather than padding."
+    },
+    {
+      "id": "CUR-048",
+      "words": 77,
+      "reason": "Slightly below approximate 80-word aim; review for depth rather than padding."
+    },
+    {
+      "id": "CUR-051",
+      "words": 79,
+      "reason": "Slightly below approximate 80-word aim; review for depth rather than padding."
+    },
+    {
+      "id": "TP-068",
+      "words": 11,
+      "reason": "Outside preferred 12–45-word range; not a hard publication rule."
+    },
+    {
+      "id": "TP-102",
+      "words": 11,
+      "reason": "Outside preferred 12–45-word range; not a hard publication rule."
+    },
+    {
+      "id": "TP-114",
+      "words": 10,
+      "reason": "Outside preferred 12–45-word range; not a hard publication rule."
+    },
+    {
+      "id": "TP-119",
+      "words": 11,
+      "reason": "Outside preferred 12–45-word range; not a hard publication rule."
+    },
+    {
+      "id": "TP-121",
+      "words": 11,
+      "reason": "Outside preferred 12–45-word range; not a hard publication rule."
+    },
+    {
+      "id": "TP-123",
+      "words": 11,
+      "reason": "Outside preferred 12–45-word range; not a hard publication rule."
+    },
+    {
+      "id": "TP-126",
+      "words": 11,
+      "reason": "Outside preferred 12–45-word range; not a hard publication rule."
+    },
+    {
+      "id": "TP-127",
+      "words": 11,
+      "reason": "Outside preferred 12–45-word range; not a hard publication rule."
+    },
+    {
+      "id": "TP-162",
+      "words": 11,
+      "reason": "Outside preferred 12–45-word range; not a hard publication rule."
+    },
+    {
+      "id": "TP-169",
+      "words": 11,
+      "reason": "Outside preferred 12–45-word range; not a hard publication rule."
+    },
+    {
+      "id": "TP-206",
+      "words": 11,
+      "reason": "Outside preferred 12–45-word range; not a hard publication rule."
+    },
+    {
+      "id": "TP-213",
+      "words": 11,
+      "reason": "Outside preferred 12–45-word range; not a hard publication rule."
+    },
+    {
+      "id": "TP-222",
+      "words": 11,
+      "reason": "Outside preferred 12–45-word range; not a hard publication rule."
+    },
+    {
+      "id": "TP-236",
+      "words": 11,
+      "reason": "Outside preferred 12–45-word range; not a hard publication rule."
+    },
+    {
+      "id": "TP-244",
+      "words": 9,
+      "reason": "Outside preferred 12–45-word range; not a hard publication rule."
+    },
+    {
+      "id": "TP-245",
+      "words": 11,
+      "reason": "Outside preferred 12–45-word range; not a hard publication rule."
+    },
+    {
+      "id": "TP-264",
+      "words": 11,
+      "reason": "Outside preferred 12–45-word range; not a hard publication rule."
+    },
+    {
+      "id": "TP-269",
+      "words": 10,
+      "reason": "Outside preferred 12–45-word range; not a hard publication rule."
+    },
+    {
+      "id": "TP-276",
+      "words": 11,
+      "reason": "Outside preferred 12–45-word range; not a hard publication rule."
+    },
+    {
+      "id": "TP-299",
+      "words": 10,
+      "reason": "Outside preferred 12–45-word range; not a hard publication rule."
+    },
+    {
+      "id": "TP-324",
+      "words": 11,
+      "reason": "Outside preferred 12–45-word range; not a hard publication rule."
+    },
+    {
+      "id": "TP-329",
+      "words": 11,
+      "reason": "Outside preferred 12–45-word range; not a hard publication rule."
+    },
+    {
+      "id": "TP-334",
+      "words": 10,
+      "reason": "Outside preferred 12–45-word range; not a hard publication rule."
+    },
+    {
+      "id": "TP-339",
+      "words": 11,
+      "reason": "Outside preferred 12–45-word range; not a hard publication rule."
+    },
+    {
+      "id": "TP-345",
+      "words": 11,
+      "reason": "Outside preferred 12–45-word range; not a hard publication rule."
+    },
+    {
+      "id": "TP-348",
+      "words": 11,
+      "reason": "Outside preferred 12–45-word range; not a hard publication rule."
+    },
+    {
+      "id": "TP-358",
+      "words": 11,
+      "reason": "Outside preferred 12–45-word range; not a hard publication rule."
+    },
+    {
+      "id": "TP-360",
+      "words": 11,
+      "reason": "Outside preferred 12–45-word range; not a hard publication rule."
+    }
+  ],
+  "structuralErrors": [],
+  "limitations": "Similarity checks identify wording overlap, not semantic identity, literary quality, or source truth. Every draft needs editorial approval. Fact-check flags record research performed; this script cannot prove source support."
+}

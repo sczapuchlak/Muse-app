@@ -1,0 +1,738 @@
+[
+  {
+    "id": "CUR-078",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "Customer Service, in Clay",
+    "body": "A Babylonian customer complained about the quality of copper roughly 3,700 years ago.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "History Was Unhinged",
+      "tell_more": "The complaint tablet associated with the merchant Ea-nasir comes from Ur and is dated to about 1750 BCE. Its survival makes a very ordinary commercial disagreement unexpectedly tangible: the wrong grade of copper was worth putting into writing. The British Museum acquired the excavated tablet in 1953. Calling it an ancient customer complaint is reasonable; calling it the first complaint anyone ever made would be impossible to establish. What survives is a specific written grievance, not a complete record of human dissatisfaction.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "history",
+      "writing",
+      "trade"
+    ],
+    "sources": [
+      {
+        "url": "https://discovery.ucl.ac.uk/id/eprint/10220181/",
+        "name": "UCL Discovery",
+        "title": "The Legend of Ea-Naṣir: How a Babylonian Businessman Became an Internet Meme",
+        "publisher": "UCL Discovery",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-079",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "The Cup Changes Its Mind",
+    "body": "The Roman Lycurgus Cup looks green in reflected light and red when light passes through it.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "That Can't Be Real",
+      "tell_more": "The fourth-century glass cup contains tiny quantities of gold and silver that change how it interacts with light. The British Museum describes the transition from opaque-looking green to translucent red under transmitted illumination. Its decoration tells the myth of Lycurgus, trapped in vines after attacking Dionysus and his followers. The optical surprise belongs to the glass itself rather than a modern lighting filter. A vessel made for ancient banqueting can therefore offer a color-changing effect that still looks startling in a museum.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "glass",
+      "rome",
+      "color"
+    ],
+    "sources": [
+      {
+        "url": "https://www.britishmuseum.org/sites/default/files/2021-05/large_print_guide_room_2a_waddesdon.pdf",
+        "name": "British Museum",
+        "title": "Room 2a Waddesdon Bequest large-print guide",
+        "publisher": "British Museum",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-080",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "Pockets You Could Take Off",
+    "body": "Women’s tie-on pockets were separate accessories worn beneath or around clothing.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "I Need to Tell Someone This",
+      "tell_more": "European women used detachable pockets for centuries, tying them around the waist rather than relying on a pocket sewn into each garment. Openings in dresses and petticoats provided access. Surviving examples can be surprisingly large, and some were embroidered or personalized. The V&A traces their common use from about 1650 into the nineteenth century and beyond. They challenge the simple story that historical women had no pockets: the storage existed, but its construction and relationship to the outfit differed from many modern expectations.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "fashion",
+      "pockets",
+      "design"
+    ],
+    "sources": [
+      {
+        "url": "https://www.vam.ac.uk/articles/womens-tie-pockets",
+        "name": "Victoria and Albert Museum",
+        "title": "Women's tie-on pockets",
+        "publisher": "Victoria and Albert Museum",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-081",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "A Whole Theatre, Folded Flat",
+    "body": "Paper peepshows used layered cutouts and bellows to make a portable illusion of depth.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "That's Incredible",
+      "tell_more": "Open a paper peepshow and a small stack of printed sheets becomes a receding scene. Front and back panels hold cutout pictures apart, with folding bellows connecting the layers. Looking through the opening creates an intimate miniature spectacle. The V&A’s collection includes nineteenth-century examples depicting events, places, and engineering achievements such as the Thames Tunnel. When closed, the construction folds back into a compact bundle or box. The experience depends on ordinary paper arranged cleverly, rather than a screen, projector, or moving picture.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "paper",
+      "optical-illusions",
+      "design"
+    ],
+    "sources": [
+      {
+        "url": "https://www.vam.ac.uk/articles/paper-peepshows",
+        "name": "Victoria and Albert Museum",
+        "title": "Paper peepshows",
+        "publisher": "Victoria and Albert Museum",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-082",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "Miniature Did Not Start Small",
+    "body": "The word miniature came through a term for manuscript painting, not simply a word meaning tiny.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "I Need to Tell Someone This",
+      "tell_more": "The V&A traces English miniature to the Italian miniatura, associated with limning and manuscript illumination. Small painted portraits developed from that artistic tradition. Their convenient size later helped the word become associated with smallness more generally. Such portraits could be protected in lockets or boxes and worn or carried. The history makes a familiar word less obvious: a miniature was connected to a particular way of painting before it became an everyday label for almost anything made on a reduced scale.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "language",
+      "painting",
+      "books"
+    ],
+    "sources": [
+      {
+        "url": "https://www.vam.ac.uk/articles/portrait-miniatures-at-the-va",
+        "name": "Victoria and Albert Museum",
+        "title": "Portrait miniatures at the V&A",
+        "publisher": "Victoria and Albert Museum",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-083",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "The Pigeon Had a Camera",
+    "body": "The CIA developed a breast-mounted camera small enough for a pigeon to carry.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "History Was Unhinged",
+      "tell_more": "The camera used a tiny motor to advance film and take still photographs at intervals, either immediately or after a delay. A released pigeon would return toward home while the device recorded images. The agency hoped an ordinary-looking bird could obtain detail from much lower altitude than aircraft or satellites. The CIA’s museum also records the limitation: the birds were not reliable at crossing the exact locations required. This was an actual intelligence experiment, not proof that ordinary pigeons are secretly surveillance machines.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "photography",
+      "birds",
+      "inventions"
+    ],
+    "sources": [
+      {
+        "url": "https://www.cia.gov/legacy/museum/artifact/pigeon-camera/",
+        "name": "Central Intelligence Agency Museum",
+        "title": "Pigeon Camera",
+        "publisher": "Central Intelligence Agency Museum",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-084",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "Lincoln’s Other Job: Inventor",
+    "body": "Abraham Lincoln patented an inflatable system intended to help boats float over obstacles.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "History Was Unhinged",
+      "tell_more": "Patent number 6,469, issued on May 22, 1849, concerned buoying vessels rather than politics. Lincoln’s design placed expandable chambers beside a boat’s hull so added buoyancy could help free it in shallow water. Experiences with boats encountering obstacles had prompted the idea. NIH’s historical account notes that it was never commercialized. That distinction matters: receiving a patent documents a proposed invention, not a successful product. The future president’s solution nevertheless offers a wonderfully practical glimpse of a mind occupied with sandbars and displaced water.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "patents",
+      "boats",
+      "engineering"
+    ],
+    "sources": [
+      {
+        "url": "https://www.techtransfer.nih.gov/news/the-only-president-to-hold-a-patent",
+        "name": "National Institutes of Health",
+        "title": "The Only President to Hold a Patent",
+        "publisher": "National Institutes of Health",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-085",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "The Silk Had Instructions",
+    "body": "Punched cards controlled complex patterns on Jacquard looms.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "That's Incredible",
+      "tell_more": "A pattern could be stored as a sequence of physical holes rather than remembered and executed entirely by hand. Each card helped determine which warp threads rose for a pass of the shuttle. The Computer History Museum describes Jacquard’s 1801 demonstration and the later use of punched cards in information processing. The loom was not an electronic computer, and textile workers’ skill did not disappear. It demonstrates something more specific: a repeatable sequence of machine operations could be encoded in a separate, changeable physical medium.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "weaving",
+      "computing",
+      "patterns"
+    ],
+    "sources": [
+      {
+        "url": "https://www.computerhistory.org/storageengine/punched-cards-control-jacquard-loom/",
+        "name": "Computer History Museum",
+        "title": "1801: Punched cards control Jacquard loom",
+        "publisher": "Computer History Museum",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-086",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "Data Sized Like a Dollar",
+    "body": "Early Hollerith punched cards were approximately the size of contemporary US dollar bills.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "I Need to Tell Someone This",
+      "tell_more": "Herman Hollerith’s electromechanical tabulator used punched cards to process information for the 1890 US census. According to the Computer History Museum, the early card dimensions helped adapt existing storage and handling equipment designed around paper currency. A seemingly arbitrary information format therefore reflected a very physical convenience. Later punched-card systems changed and standardized their own layouts. The example is a reminder that data has always needed furniture: even before digital files, the shape of information could be influenced by available drawers and machinery.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "computing",
+      "design",
+      "data"
+    ],
+    "sources": [
+      {
+        "url": "https://www.computerhistory.org/storageengine/punched-cards-control-jacquard-loom/",
+        "name": "Computer History Museum",
+        "title": "1801: Punched cards control Jacquard loom",
+        "publisher": "Computer History Museum",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-087",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "Those Sequins Were Beetles",
+    "body": "Some nineteenth-century embroidered textiles shimmer with actual jewel-beetle wing cases.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "I Need to Tell Someone This",
+      "tell_more": "The hard outer wing cases, or elytra, of jewel beetles retain an iridescent surface. Embroiderers pierced and trimmed them, then stitched them onto fabric, often alongside metallic thread. The V&A documents examples from India and their popularity in European dress. Their changing reflections were not an imitation produced by a modern plastic sequin. They were biological structures incorporated into skilled textile work. Recognizing the material changes how the garment reads: its shimmer belongs simultaneously to insect anatomy, craft practice, fashion, and historical trade.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "textiles",
+      "insects",
+      "craft"
+    ],
+    "sources": [
+      {
+        "url": "https://www.vam.ac.uk/articles/indian-embroidery",
+        "name": "Victoria and Albert Museum",
+        "title": "Indian embroidery",
+        "publisher": "Victoria and Albert Museum",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-088",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "A Gemstone Became Blue Paint",
+    "body": "Natural ultramarine was made by separating blue material from lapis lazuli.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "That's Incredible",
+      "tell_more": "The richly colored rock contains the blue component used for natural ultramarine, but simply crushing a stone was not the whole preparation. Getty conservation research describes a laborious separation process, including a historical method using a wax, oil, and resin mixture. Synthetic production developed in the nineteenth century offered another route to the color. Natural and synthetic ultramarine can be difficult to distinguish chemically, making particle appearance useful in analysis. A beautiful patch of blue can therefore carry evidence of both workshop labor and manufacturing history.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "pigments",
+      "painting",
+      "minerals"
+    ],
+    "sources": [
+      {
+        "url": "https://www.getty.edu/publications/resources/virtuallibrary/0892364696.pdf",
+        "name": "Getty Conservation Institute",
+        "title": "Infrared Spectroscopy in Conservation Science",
+        "publisher": "Getty Conservation Institute",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-089",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "The Peacock Was Younger Than It Looked",
+    "body": "Technical research found modern pigments in a Getty fresco once considered ancient Roman.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "History Was Unhinged",
+      "tell_more": "The Getty peacock fragment had long been dated to ancient Campania. Examination identified modern chrome oxide green and evidence for synthetic ultramarine, placing the painted surface much later. Researchers argue it appears to be a reproduction made for an early twentieth-century English bungalow, not necessarily an intentional forgery. That distinction is essential: a later copy and a deceptive fake are different claims. The study shows how microscopic material evidence can revise a familiar museum story without pretending that every question about an object’s history is settled.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "art",
+      "conservation",
+      "chemistry"
+    ],
+    "sources": [
+      {
+        "url": "https://www.getty.edu/publications/getty-research-journal/21/the-getty-peacock-fresco/",
+        "name": "Getty Research Journal",
+        "title": "The Getty Peacock Fresco: Unraveling Its History Through Technical and Historical Investigations",
+        "publisher": "Getty Research Journal",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-090",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "A Giant Flower Living on Someone Else",
+    "body": "Rafflesia arnoldii produces an enormous single bloom without visible leaves, roots, or a stem.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "Nature Is Showing Off",
+      "tell_more": "The Library of Congress describes this Indonesian rainforest plant as a parasite obtaining water and nutrients from a host. Its huge flower can approach three feet across, and its odor resembles decaying meat, attracting insect pollinators. The familiar name corpse flower can refer to other plants too, so the scientific name is important. Rafflesia’s single blossom should not be confused with the titan arum’s many-flowered structure. Two spectacularly smelly plants can hold different botanical claims without either needing an exaggerated, universal largest-flower headline.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "plants",
+      "flowers",
+      "parasitism"
+    ],
+    "sources": [
+      {
+        "url": "https://www.loc.gov/everyday-mysteries/categories/botany/item/what-is-the-largest-flower-in-the-world/",
+        "name": "Library of Congress",
+        "title": "What is the largest flower in the world?",
+        "publisher": "Library of Congress",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-091",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "The Flower Turns Up the Heat",
+    "body": "Titan arum produces heat as part of its spectacular, foul-smelling bloom.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "Nature Is Showing Off",
+      "tell_more": "The enormous structure is an inflorescence: a collection of flowers rather than one giant flower. Kew describes its central spike producing heat that helps disperse the odor attracting pollinators. The dark reddish interior adds to a meat-like presentation. Despite luring insects with this elaborate display, titan arum is not carnivorous. Its visitors participate in pollination rather than becoming a meal. What looks like an extravagant botanical sculpture is a coordinated system involving shape, color, smell, temperature, and the responses of other living things.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "plants",
+      "heat",
+      "pollination"
+    ],
+    "sources": [
+      {
+        "url": "https://www.kew.org/plants/titan-arum",
+        "name": "Royal Botanic Gardens, Kew",
+        "title": "Titan arum — Amorphophallus titanum",
+        "publisher": "Royal Botanic Gardens, Kew",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-092",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "A Teenager Changed Reading",
+    "body": "Louis Braille developed his six-dot tactile code while still in his teens.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "That's Incredible",
+      "tell_more": "RNIB describes Braille adapting Charles Barbier’s raised-dot system into a smaller cell of two columns and three dots. By 1824, aged fifteen, he had identified sixty-three nonblank combinations within fingertip-sized space. The system later included notation for mathematics and music. Adoption was not immediate, and the history includes resistance as well as invention. The achievement was not merely making printed letters raised: it was designing a compact code suited to touch, with readers’ practical access to information at its center.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "accessibility",
+      "reading",
+      "design"
+    ],
+    "sources": [
+      {
+        "url": "https://www.rnib.org.uk/living-with-sight-loss/education-and-learning/braille-tactile-codes/braille-through-the-years-past-present-and-future/",
+        "name": "Royal National Institute of Blind People",
+        "title": "Braille through the years: past, present and future",
+        "publisher": "Royal National Institute of Blind People",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-093",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "The Barcode Debut Was Gum",
+    "body": "The first retail UPC scan was a pack of Wrigley’s gum in Troy, Ohio, in 1974.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "I Need to Tell Someone This",
+      "tell_more": "The Smithsonian dates the transaction to June 26, 1974, at a Marsh supermarket. The Universal Product Code turned a printed pattern into something a scanner could identify at checkout. Gum is a charmingly ordinary object for such a technological milestone: the novelty was not the product but the system connecting its package to a machine-readable identity. This claim concerns the first retail UPC transaction, not the invention of every kind of barcode or every earlier experiment in automated identification. Keeping that boundary makes the story accurate.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "shopping",
+      "barcodes",
+      "inventions"
+    ],
+    "sources": [
+      {
+        "url": "https://www.si.edu/exhibitions/behind-lines-universal-product-code-upc-25%3Aevent-exhib-4211",
+        "name": "Smithsonian Institution",
+        "title": "Behind the Lines: The Universal Product Code at 25",
+        "publisher": "Smithsonian Institution",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-094",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "The Glue That Wasn’t Strong Enough",
+    "body": "Post-it Notes grew from an adhesive that released more easily than its inventor originally intended.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "I Need to Tell Someone This",
+      "tell_more": "In 1968, 3M scientist Spencer Silver developed an unusual adhesive based on microspheres. It was not the strong bond he had been seeking, but its ability to separate was useful in another setting. Colleague Art Fry helped connect the material with paper, leading to the familiar removable note. The company’s account emphasizes collaboration rather than a finished product appearing instantly from one accident. A result can miss its original brief and still become valuable when someone recognizes a different problem it can solve.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "adhesives",
+      "paper",
+      "inventions"
+    ],
+    "sources": [
+      {
+        "url": "https://www.3m.com/3M/en_US/consumer-us/stories/full-story/?storyid=e9f444d3-a5c5-46f1-a34b-082ff275aa7d",
+        "name": "3M",
+        "title": "One scientist, good. Many scientists, even better.",
+        "publisher": "3M",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-095",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "A Burr Became a Fastener",
+    "body": "Hook-and-loop fastening was inspired by burrs sticking to clothing and a dog’s coat.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "That's Incredible",
+      "tell_more": "George de Mestral examined burdock burrs and saw the tiny hooks responsible for their grip. The National Inventors Hall of Fame describes how this observation led to a manufactured pairing of hooks and loops. Turning the idea into a useful material required development and collaboration; a woodland walk did not produce a finished fastening tape by itself. The story is an example of biomimicry, adapting a natural mechanism to a human purpose. A seed-dispersal strategy became an everyday way to close and reopen things.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "plants",
+      "design",
+      "biomimicry"
+    ],
+    "sources": [
+      {
+        "url": "https://www.invent.org/blog/inventors/walk-in-the-woods-velcro",
+        "name": "National Inventors Hall of Fame",
+        "title": "How Did a Walk in the Woods Lead to the Invention of VELCRO Fasteners?",
+        "publisher": "National Inventors Hall of Fame",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-096",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "An Eclipse Calendar in Gears",
+    "body": "The Antikythera Mechanism encoded astronomical cycles used to anticipate eclipses.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "That's Incredible",
+      "tell_more": "The National Archaeological Museum’s explanation connects the mechanism with cycles linking lunar months, solar years, and repeating eclipses. One is the Saros, approximately eighteen years and eleven days, or 223 lunar months. Repetition is not identical placement: the timing shifts, and further cycles help address that difference. The mechanism demonstrates sophisticated modeling of recurring astronomical patterns. Calling it an ancient computer can be useful shorthand, but it should not suggest a modern programmable laptop; its remarkable achievement was representing particular relationships mechanically.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "astronomy",
+      "gears",
+      "history"
+    ],
+    "sources": [
+      {
+        "url": "https://antikythera-mechanism.namuseum.gr/en/what-is-the-mechanism-and-what-does-it-consist-of/",
+        "name": "National Archaeological Museum, Athens",
+        "title": "What is the Mechanism and what does it consist of?",
+        "publisher": "National Archaeological Museum, Athens",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-097",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "Tiny Sculptures with a Practical Job",
+    "body": "Japanese netsuke served as toggles for objects suspended from a sash.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "I Need to Tell Someone This",
+      "tell_more": "The miniature carving was not necessarily made simply to sit on a shelf. A cord connected a carried object, such as a pouch or an inro case, with a netsuke that helped secure it at the wearer’s obi. The Metropolitan Museum explains the demand for a practical solution to carrying items with a pocketless kimono. That useful role offered carvers a small but expressive sculptural surface. An animal, figure, or playful scene could therefore be part of everyday carrying equipment as well as a work of art.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "japan",
+      "sculpture",
+      "design"
+    ],
+    "sources": [
+      {
+        "url": "https://resources.metmuseum.org/resources/metpublications/pdf/Netsuke_The_Metropolitan_Museum_of_Art_Bulletin_v_38_no_2_Fall_1980.pdf",
+        "name": "Metropolitan Museum of Art",
+        "title": "Netsuke: Small Sculptures of Japan",
+        "publisher": "Metropolitan Museum of Art",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-098",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "Seaweed Helped Make a Photography Landmark",
+    "body": "Anna Atkins used cyanotypes to illustrate a botanical book beginning in 1843.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "That's Incredible",
+      "tell_more": "Atkins wanted accurate representations of small algae specimens. The cyanotype process associated with John Herschel offered a way to obtain pale plant impressions against deep blue. NYPL describes the first installment of Photographs of British Algae appearing in October 1843 and identifies it as the first photographically illustrated book. This was scientific documentation with a striking visual result, not blue paint applied around every specimen by hand. The project makes a lovely meeting point for botany, early photography, careful observation, and the art of putting knowledge into books.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "photography",
+      "botany",
+      "books"
+    ],
+    "sources": [
+      {
+        "url": "https://www.nypl.org/events/exhibitions/galleries/visual-world/item/4105",
+        "name": "New York Public Library",
+        "title": "Anna Atkins's Photographs of British Algae: Cyanotype Impressions",
+        "publisher": "New York Public Library",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-099",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "Royal Purple Had a Shellfish Source",
+    "body": "The celebrated Tyrian purple dye came from marine mollusks rather than a purple plant.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "I Need to Tell Someone This",
+      "tell_more": "The Metropolitan Museum describes murex-derived dye as a prized source of color in the ancient Mediterranean. Depending on the material and process, shellfish dyes could produce shades ranging from reddish to bluish purple. The result belongs to textile technology and trade as much as to the history of prestige. It is misleading to imagine one universal purple recipe or to assume every surviving purple cloth used the same substance. The memorable point is the source: a marine animal helped supply a color associated with extraordinary status.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "dyes",
+      "textiles",
+      "sea-life"
+    ],
+    "sources": [
+      {
+        "url": "https://resources.metmuseum.org/resources/metpublications/pdf/Cochineal_Red_the_art_history_of_a_color.pdf",
+        "name": "Metropolitan Museum of Art",
+        "title": "Cochineal Red: The Art History of a Color",
+        "publisher": "Metropolitan Museum of Art",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-100",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "A Rook That Was a Warrior",
+    "body": "One Lewis chess piece represents a standing armed warder, not a miniature castle.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "History Was Unhinged",
+      "tell_more": "The British Museum records this walrus-ivory figure as a warder, corresponding to a rook in the game. Dated to around 1150–1200, he carries a sword and a kite-shaped shield and wears a conical helmet. The piece shows how a familiar game role can have a different visual identity across time. A rook need not look like the tower in a modern set to occupy its place on the board. The carved warrior makes an abstract rule into a small, carefully equipped character.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "games",
+      "medieval",
+      "carving"
+    ],
+    "sources": [
+      {
+        "url": "https://www.britishmuseum.org/collection/object/H_1831-1101-120",
+        "name": "British Museum",
+        "title": "Chess-piece: The Lewis Chessmen, 1831,1101.120",
+        "publisher": "British Museum",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  }
+]

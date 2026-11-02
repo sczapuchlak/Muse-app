@@ -1,2 +1,2 @@
-import {WhimsyFoundation} from '@/components/whimsy/WhimsyFoundation';
-export default function Page(){return <WhimsyFoundation experience="bookshelf"/>;}
+import {Bookshelf} from '@/components/whimsy/Bookshelf';
+export default function Page(){return <Bookshelf/>;}

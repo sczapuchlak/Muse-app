@@ -1,0 +1,96 @@
+{
+  "target": 1845,
+  "existingPublished": 281,
+  "newDraft": 1414,
+  "currentTotal": 1695,
+  "remaining": 150,
+  "collections": {
+    "sideQuests": {
+      "target": 500,
+      "published": 200,
+      "draft": 300
+    },
+    "cookies": {
+      "target": 365,
+      "published": 24,
+      "draft": 341
+    },
+    "oracle": {
+      "target": 365,
+      "published": 20,
+      "draft": 345
+    },
+    "prophecies": {
+      "target": 365,
+      "published": 24,
+      "draft": 341
+    },
+    "curiosities": {
+      "target": 250,
+      "published": 13,
+      "draft": 87
+    }
+  },
+  "questCategories": {
+    "Cozy": {
+      "published": 40,
+      "draft": 60,
+      "target": 100
+    },
+    "Adventurous": {
+      "published": 40,
+      "draft": 60,
+      "target": 100
+    },
+    "Creative": {
+      "published": 40,
+      "draft": 60,
+      "target": 100
+    },
+    "Social": {
+      "published": 40,
+      "draft": 60,
+      "target": 100
+    },
+    "Chaos Goblin": {
+      "published": 40,
+      "draft": 60,
+      "target": 100
+    }
+  },
+  "oracleDistribution": {
+    "yes": 90,
+    "no": 90,
+    "maybe": 90,
+    "not_yet": 50,
+    "cryptic": 45
+  },
+  "sourceLinkedPublishedCuriosities": 13,
+  "newlyFactCheckedCuriosities": 87,
+  "editorialStatus": "New batches are draft, unavailable to runtime selection, and require human review before import.",
+  "completionStatus": "Four fictional collections complete. Curiosities target remains incomplete; see research queue.",
+  "lastBatch": "cookies-batch-02.json, curiosities-batch-01.json, curiosities-batch-02.json, curiosities-batch-03.json, curiosities-batch-04.json, fortunes-batch-01.json, oracle-batch-02.json, prophecies-batch-02.json, side-quests-batch-01.json, side-quests-batch-02.json",
+  "creativeDraftDomains": {
+    "fiber": 20,
+    "painting": 2,
+    "diy": 2,
+    "new_craft": 2,
+    "coding": 20,
+    "ux": 14
+  },
+  "legacyCreativeExceptions": 40,
+  "legacyMetadataReview": {
+    "quests": 200,
+    "fortunes": 81,
+    "reason": "Published records retain original metadata and immutable versions. Expanded editorial metadata must be reviewed as explicit versioned enrichment, not silently overwritten."
+  },
+  "legacyIdPolicy": "GRAND_COLLECTION_INDEX.json maps requested editorial collection IDs to immutable canonical content IDs. Existing IDs and saved history are never renamed.",
+  "validation": {
+    "structuralErrors": 0,
+    "possibleQuestOverlaps": 0,
+    "possibleWordingOverlaps": 0,
+    "relatedCuriosityPairs": 20,
+    "lengthReview": 41
+  },
+  "next": "Human editorial review of drafts; research the remaining Curiosities without inventing facts. No draft is automatically published. Runtime publication and any hosted import require separate approval."
+}

@@ -12,6 +12,8 @@ import { DayPulseCard } from "./DayPulseCard";
 import { DayInThreeCard } from "./DayInThree";
 import {LittleRituals} from "./rituals/LittleRituals";
 import {DreamDayviewWidget} from "./whimsy/DreamDayviewWidget";
+import {FortuneDayviewWidget} from "./whimsy/FortuneDayviewWidget";
+import {BooksDayviewWidget} from "./whimsy/BooksDayviewWidget";
 import {PlannerPersistenceStatus} from "./PlannerStore";
 import { CosmicForecast } from "./CosmicForecast";
 import { useMuseDate } from "./MuseSession";
@@ -45,6 +47,8 @@ export function DailyEdit() {
           <WellnessCapture><MealsCard selectedDate={selectedDate} /></WellnessCapture>
           <DailyCapture date={selectedDate}><DayPulseCard date={selectedDate}/></DailyCapture>
           <DreamDayviewWidget date={selectedDate}/>
+          <FortuneDayviewWidget date={selectedDate}/>
+          <BooksDayviewWidget date={selectedDate}/>
         </div>
       </div>
       <footer className="muse-footer"><DailySaveStatus date={selectedDate}/><PlannerPersistenceStatus compact/><WellnessSaveStatus/>Your daily entries, plan, meals, hydration and movement save to your account.</footer>

@@ -1,0 +1,10 @@
+{
+  "side-quests.json": {
+    "sha256": "94943691fac71c1d25aaf6aa8bda0779a15bf5b26b5ba68fe96b948a95fb6224",
+    "entries": 200
+  },
+  "fortunes.json": {
+    "sha256": "d4f9301486a0a6badc3c0487e44e038c5e53a07add6b4799740404988a27e6f6",
+    "entries": 81
+  }
+}

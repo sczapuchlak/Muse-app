@@ -1,0 +1,738 @@
+[
+  {
+    "id": "CUR-055",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "A Sea with No Shore",
+    "body": "The Sargasso Sea is bounded by ocean currents rather than land.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "That Can't Be Real",
+      "tell_more": "A sea usually brings a coastline to mind, but the Sargasso Sea sits within the North Atlantic’s circulating waters. NOAA describes its boundaries through major currents, including the Gulf Stream, rather than enclosing land. Those moving boundaries help define a region associated with floating sargassum seaweed and the animals using it for food and shelter. The sea is a real ecological and geographical region, not a separate basin with walls. Its edges are maintained by the movement of the ocean itself.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ocean",
+      "geography",
+      "currents"
+    ],
+    "sources": [
+      {
+        "url": "https://oceanservice.noaa.gov/facts/sargassosea.html",
+        "name": "NOAA",
+        "title": "What is the Sargasso Sea?",
+        "publisher": "NOAA",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-056",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "Snow That Feeds the Deep",
+    "body": "Marine snow is sinking debris that carries food from upper waters into the deep ocean.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "Nature Is Showing Off",
+      "tell_more": "The pale particles in deep-ocean video are often organic debris rather than mineral snowflakes. NOAA describes material from dead organisms, waste, and other particles combining into aggregates as they descend. Some take weeks to reach the seabed, and animals can intercept them along the way. This slow fall connects productive surface waters with habitats where sunlight cannot support photosynthesis. What looks like visual clutter around a remotely operated vehicle can therefore be part of an important food-delivery system linking distant layers of the sea.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "deep-sea",
+      "food-webs",
+      "carbon"
+    ],
+    "sources": [
+      {
+        "url": "https://oceanservice.noaa.gov/facts/marinesnow.html",
+        "name": "NOAA",
+        "title": "What is marine snow?",
+        "publisher": "NOAA",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-057",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "Hotter Than Boiling, Still Liquid",
+    "body": "Deep hydrothermal-vent water can remain liquid at temperatures above ordinary surface boiling.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "That Can't Be Real",
+      "tell_more": "At a hydrothermal vent, seawater travels through cracks, is heated near hot rock, and returns carrying dissolved chemicals. NOAA notes temperatures above 340 degrees Celsius in some vent fluids. The surrounding pressure at depth prevents the boiling behavior familiar from an open kitchen pot. As hot fluid mixes with cold seawater, minerals precipitate and can build chimneys. The striking scene is neither smoke from a fire nor water behaving impossibly: temperature, pressure, and chemistry are operating together under very different conditions.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ocean",
+      "geology",
+      "pressure"
+    ],
+    "sources": [
+      {
+        "url": "https://oceanservice.noaa.gov/facts/vents.html",
+        "name": "NOAA",
+        "title": "What is a hydrothermal vent?",
+        "publisher": "NOAA",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-058",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "A Food Web Without Sunlight",
+    "body": "Chemosynthetic microbes can use chemical energy to build food in dark environments.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "That's Incredible",
+      "tell_more": "Photosynthesis is not the only route to the organic material supporting a food web. NOAA explains that some microbes use energy released by chemical reactions, including reactions involving compounds supplied at vents and seeps. Larger organisms can depend on this production even where sunlight never reaches. The discovery of thriving vent communities in 1977 challenged familiar expectations about deep-sea life. This does not mean the organisms need no energy; they draw it from a different source than the sunlight powering most familiar plants.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ocean",
+      "microbes",
+      "energy"
+    ],
+    "sources": [
+      {
+        "url": "https://origin.oceanexplorer.noaa.gov/ocean-fact/photochemo/",
+        "name": "NOAA",
+        "title": "What is the difference between photosynthesis and chemosynthesis?",
+        "publisher": "NOAA",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-059",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "Sea Level Has a Shape",
+    "body": "The geoid models a subtly uneven global sea-level surface shaped by gravity.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "That's Incredible",
+      "tell_more": "Earth is not a perfect sphere, and its mass is not distributed uniformly. Those differences influence gravity and the level surface water would follow without effects such as currents and tides. NOAA uses the geoid to help define precise elevations, extending the reference surface through land as well as ocean. Familiar bumpy visualizations greatly exaggerate the variations to make them visible. They should not be mistaken for photographs of a lumpy planet; the useful surprise is that even “zero height” requires a carefully defined model.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "earth",
+      "maps",
+      "gravity"
+    ],
+    "sources": [
+      {
+        "url": "https://oceanservice.noaa.gov/facts/geoid.html",
+        "name": "NOAA",
+        "title": "What is the geoid?",
+        "publisher": "NOAA",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-060",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "The Ocean Can Froth",
+    "body": "Sea foam can form when waves churn water containing dissolved organic material.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "Nature Is Showing Off",
+      "tell_more": "Seawater contains more than salt and water. Organic compounds and other material can help stabilize bubbles when wind and surf agitate the surface. NOAA describes decaying algal material as one common contributor to thick foam. The result can look like a beach-sized bubble bath without having a household soap source. Appearance alone does not establish that a particular foam is harmless, because harmful blooms and pollutants can also be involved. The physical explanation is interesting without turning an identification into a safety assurance.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ocean",
+      "bubbles",
+      "chemistry"
+    ],
+    "sources": [
+      {
+        "url": "https://oceanservice.noaa.gov/facts/seafoam.html",
+        "name": "NOAA",
+        "title": "What is sea foam?",
+        "publisher": "NOAA",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-061",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "A Waterfall Under the Water",
+    "body": "Dense water cascades beneath the Denmark Strait without a visible cliff-top river.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "That Can't Be Real",
+      "tell_more": "Between Greenland and Iceland, cold dense water flows beneath warmer water and descends over underwater topography. NOAA describes the Denmark Strait cataract as an enormous submerged waterfall. It does not resemble a white ribbon dropping through air: the moving fluid remains surrounded by other seawater. Density differences and the shape of the seabed organize the descent. The comparison is useful precisely because it stretches the usual image of a waterfall, revealing a major movement that is hidden beneath an apparently ordinary ocean surface.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ocean",
+      "currents",
+      "geography"
+    ],
+    "sources": [
+      {
+        "url": "https://oceanservice.noaa.gov/facts/largest-waterfall.html",
+        "name": "NOAA",
+        "title": "Where is Earth’s Largest Waterfall?",
+        "publisher": "NOAA",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-062",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "A Lake Inside the Ocean",
+    "body": "Very salty brine can collect in pools on the seafloor.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "That Can't Be Real",
+      "tell_more": "Brine is denser than the seawater around it, so it can flow along the bottom and gather in depressions. NOAA Ocean Exploration documents pools with a distinct-looking boundary, making the scene resemble a lake under another body of water. The fluid is still water, but its dissolved-salt content changes its physical behavior. These pools are not safe miniature swimming holes for ordinary marine animals. Their chemistry creates unusual conditions, and nearby communities may depend on processes quite different from those around a familiar freshwater lake.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "deep-sea",
+      "salt",
+      "chemistry"
+    ],
+    "sources": [
+      {
+        "url": "https://oceanexplorer.noaa.gov/multimedia/daily-image-media-20200720/",
+        "name": "NOAA",
+        "title": "Brine Pool",
+        "publisher": "NOAA",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-063",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "Sound’s Oceanic Corridor",
+    "body": "The SOFAR channel allows underwater sound to travel unusually long distances.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "That's Incredible",
+      "tell_more": "Sound speed in seawater changes with conditions including temperature and pressure. A deep region where the speed reaches a minimum can guide sound, bending it back toward the channel rather than letting all its energy spread away vertically. NOAA describes this natural sound-fixing and ranging channel as a route for long-distance transmission. It is not a pipe or an empty tunnel. The corridor is made from the properties of the water, giving the ocean an acoustic geography that cannot be seen from a map of its surface.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ocean",
+      "sound",
+      "physics"
+    ],
+    "sources": [
+      {
+        "url": "https://cdn.oceanservice.noaa.gov/oceanserviceprod/facts/sofar.pdf",
+        "name": "NOAA",
+        "title": "What is SOFAR?",
+        "publisher": "NOAA",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-064",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "The Almost Invisible Giant Wave",
+    "body": "Oceanic Rossby waves can span huge distances while leaving only a small surface signal.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "That's Incredible",
+      "tell_more": "The rolling wave at a beach is not the only shape of wave the ocean can support. NOAA describes oceanic Rossby waves as large, slow movements linked to Earth’s rotation, with changes in deeper layers far greater than the small displacement visible at the surface. Scientists use instruments such as satellite altimetry to detect them. Their size does not make them obvious to a person on a boat. A major pattern can pass through the water while the surface offers only a subtle clue.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ocean",
+      "waves",
+      "rotation"
+    ],
+    "sources": [
+      {
+        "url": "https://oceanservice.noaa.gov/facts/rossby-wave.html",
+        "name": "NOAA",
+        "title": "What is a Rossby wave?",
+        "publisher": "NOAA",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-065",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "A Wave on a Long Commute",
+    "body": "Some equatorial Kelvin waves take months to cross the Pacific.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "Nature Is Showing Off",
+      "tell_more": "Kelvin waves are broad oceanic disturbances quite unlike the short crests breaking at a shore. NOAA describes warm-water waves extending thousands of miles and moving across the equatorial Pacific over roughly two or three months. They can change the depth of the thermocline and affect sea-surface conditions, including during El Niño. The important scale is the ocean basin rather than a single beach. Calling something a wave therefore says little by itself about whether it is small, fast, visible, or likely to break.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ocean",
+      "waves",
+      "climate"
+    ],
+    "sources": [
+      {
+        "url": "https://oceanservice.noaa.gov/facts/kelvin-waves.html",
+        "name": "NOAA",
+        "title": "What is a Kelvin wave?",
+        "publisher": "NOAA",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-066",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "The Wave Is Not a Traveling Bucket",
+    "body": "A surface wave primarily carries energy rather than transporting the same water across an ocean.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "I Need to Tell Someone This",
+      "tell_more": "Watching a crest move makes it tempting to imagine a parcel of water racing all the way with it. NOAA explains that wave motion instead transfers energy through the water, with particles following orbital motions in the simplified description. Water can certainly move in currents, and breaking waves can produce local transport, so the distinction is not a claim that the sea stays perfectly in place. It separates the moving pattern from the material carrying it, an idea shared with many other kinds of waves.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ocean",
+      "waves",
+      "physics"
+    ],
+    "sources": [
+      {
+        "url": "https://oceanservice.noaa.gov/facts/wavesinocean.html",
+        "name": "NOAA",
+        "title": "Why does the ocean have waves?",
+        "publisher": "NOAA",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-067",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "A Mast Can Wear a Glow",
+    "body": "St. Elmo’s fire is an electrical discharge, not ordinary combustion.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "Nature Is Showing Off",
+      "tell_more": "Under a strong atmospheric electric field, pointed structures can develop a luminous discharge in the surrounding air. NOAA includes ships’ masts and aircraft among the settings where the phenomenon can appear. The glow helped give it an evocative name and a place in maritime lore, but the mechanism belongs to atmospheric electricity. It should not be confused with a safe invitation to watch a storm from an exposed position. The fascinating part is that the air itself can light up around a shape that concentrates the field.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "weather",
+      "electricity",
+      "history"
+    ],
+    "sources": [
+      {
+        "url": "https://oceanservice.noaa.gov/ocean/weird-ocean-weather.html",
+        "name": "NOAA",
+        "title": "Top Five: Weird Ocean Phenomena",
+        "publisher": "NOAA",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-068",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "A Tsunami Driven by Weather",
+    "body": "Rapid air-pressure changes can generate waves called meteotsunamis.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "That's Incredible",
+      "tell_more": "Earthquakes are not the only possible source of a tsunami-like water disturbance. NOAA describes meteotsunamis produced by moving atmospheric pressure changes associated with weather systems. Whether a significant wave develops depends on the disturbance and the waterbody, and harbors or bays can amplify it. The name identifies a physical cause, not a harmless version of a wave. It is a striking connection between air and water: a weather system passing above can set a much deeper body of fluid into motion.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "weather",
+      "ocean",
+      "waves"
+    ],
+    "sources": [
+      {
+        "url": "https://oceanservice.noaa.gov/ocean/weird-ocean-weather.html",
+        "name": "NOAA",
+        "title": "Top Five: Weird Ocean Phenomena",
+        "publisher": "NOAA",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-069",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "A Fish Looking Through Its Forehead",
+    "body": "The barreleye has rotating tubular eyes inside a transparent, fluid-filled head shield.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "Nature Is Showing Off",
+      "tell_more": "The green structures visible through a barreleye’s upper head are part of its unusual eyes. MBARI researchers combined observations in the ocean with a live specimen to show that the eyes can turn from upward-looking to forward-looking. That helps solve the puzzle of detecting prey above while bringing food toward a forward-facing mouth. The dark spots near the mouth are not its eyes but smell-related organs. Seeing the intact animal underwater revealed features that fragile specimens collected in nets had often lost.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "fish",
+      "vision",
+      "deep-sea"
+    ],
+    "sources": [
+      {
+        "url": "https://www.mbari.org/news/researchers-solve-mystery-of-deep-sea-fish-with-tubular-eyes-and-transparent-head/",
+        "name": "Monterey Bay Aquarium Research Institute",
+        "title": "Researchers solve mystery of deep-sea fish with tubular eyes and transparent head",
+        "publisher": "Monterey Bay Aquarium Research Institute",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-070",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "The Vampire Eats Debris",
+    "body": "The vampire squid collects sinking organic particles rather than behaving like its frightening name suggests.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "Nature Is Showing Off",
+      "tell_more": "MBARI research used video, laboratory observations, and stomach contents to understand the animal’s feeding. Long sticky filaments collect marine snow, which is then brought toward the mouth with mucus helping gather the particles. This strategy suits a low-energy life in waters with little oxygen. The animal’s dramatic appearance and scientific name once encouraged an image of a formidable hunter. Its actual feeding behavior is a useful warning against treating an evocative name as a reliable description of what an organism does.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cephalopods",
+      "food",
+      "deep-sea"
+    ],
+    "sources": [
+      {
+        "url": "https://www.mbari.org/news/mbari-researchers-discover-what-vampire-squids-eat-its-not-what-you-think/",
+        "name": "Monterey Bay Aquarium Research Institute",
+        "title": "MBARI researchers discover what vampire squids eat",
+        "publisher": "Monterey Bay Aquarium Research Institute",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-071",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "Two Eyes, Two Jobs",
+    "body": "A strawberry squid’s unequal eyes look into different lighting conditions.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "Nature Is Showing Off",
+      "tell_more": "The strawberry squid has a large eye directed upward and a smaller one directed downward. MBARI explains that the larger eye helps detect silhouettes against faint light from above, while the other searches darker water for flashes of bioluminescence. Their mismatch is therefore functional rather than an accidental asymmetry. The animal occupies a world where “up” and “down” offer different kinds of visual information. A pair of identical eyes would not necessarily be the best equipment for those two very different viewing problems.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "squid",
+      "vision",
+      "adaptation"
+    ],
+    "sources": [
+      {
+        "url": "https://www.mbari.org/animal/strawberry-squid/",
+        "name": "Monterey Bay Aquarium Research Institute",
+        "title": "Strawberry squid",
+        "publisher": "Monterey Bay Aquarium Research Institute",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-072",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "An Animal Built as a Colony",
+    "body": "A siphonophore contains specialized connected units called zooids.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "That's Incredible",
+      "tell_more": "A long siphonophore can look like one elaborate drifting creature, yet its structure includes many connected zooids with different jobs. MBARI describes units specialized for swimming, feeding, defense, and reproduction. They function together rather than forming a casual gathering of independent animals that happened to meet. The arrangement complicates the everyday question “How many animals is that?” It also shows how a body can distribute tasks across repeated living units, creating a coordinated form whose organization is very different from a familiar fish.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "colonies",
+      "deep-sea",
+      "biology"
+    ],
+    "sources": [
+      {
+        "url": "https://www.mbari.org/news/siphonophores-served-cold/",
+        "name": "Monterey Bay Aquarium Research Institute",
+        "title": "Siphonophores, served cold",
+        "publisher": "Monterey Bay Aquarium Research Institute",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-073",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "A House Made of Mucus",
+    "body": "Giant larvaceans build elaborate mucus filters much larger than their own bodies.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "Nature Is Showing Off",
+      "tell_more": "A larvacean’s house is a feeding apparatus rather than a permanent shelter. The animal pumps water through delicate filters that separate particles, concentrating material it can eat. MBARI documents giant larvaceans only centimeters long making structures that can approach a meter across. When the filters clog, they can abandon them, and the discarded material sinks with its trapped particles. The unexpectedly architectural result matters beyond the animal itself, because those sinking structures move organic material from upper waters toward the deep sea.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "larvaceans",
+      "mucus",
+      "carbon"
+    ],
+    "sources": [
+      {
+        "url": "https://www.mbari.org/news/sinkers-provide-missing-piece-in-deep-sea-puzzle-2/",
+        "name": "Monterey Bay Aquarium Research Institute",
+        "title": "“Sinkers” provide missing piece in deep-sea puzzle",
+        "publisher": "Monterey Bay Aquarium Research Institute",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-074",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "A Red Stomach for Hiding Light",
+    "body": "The bloody-belly comb jelly’s dark red gut can conceal luminous food.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "Nature Is Showing Off",
+      "tell_more": "In deep water, a glowing meal could betray the position of the animal that swallowed it. MBARI explains that the bloody-belly comb jelly’s pigmented stomach helps mask bioluminescent prey. Red coloration can appear very dark where red light from the surface is absent, so the striking color seen under a vehicle’s lights is part of concealment in its own environment. The creature is also a ctenophore, or comb jelly, rather than a true jellyfish, and moves with rows of beating cilia.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "color",
+      "deep-sea",
+      "camouflage"
+    ],
+    "sources": [
+      {
+        "url": "https://www.mbari.org/animal/bloody-belly-comb-jelly/",
+        "name": "Monterey Bay Aquarium Research Institute",
+        "title": "Bloody-belly comb jelly",
+        "publisher": "Monterey Bay Aquarium Research Institute",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-075",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "Roots for Eating Bone",
+    "body": "Osedax worms obtain nutrients from bones without ordinary mouths or guts.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "That's Incredible",
+      "tell_more": "These worms grow root-like tissues into bones on the seafloor. MBARI describes how the roots help access organic compounds and house symbiotic bacteria important to nutrition. Their discovery on whale remains led researchers to test other bones, showing that whales are not the only possible source. The worms are not miniature animals gnawing with invisible teeth; their anatomy and partnerships solve the feeding problem in another way. A skeleton that seems like the end of a meal can therefore become a highly specialized habitat.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "worms",
+      "symbiosis",
+      "deep-sea"
+    ],
+    "sources": [
+      {
+        "url": "https://www.mbari.org/project/osedax-studies/",
+        "name": "Monterey Bay Aquarium Research Institute",
+        "title": "Osedax Studies",
+        "publisher": "Monterey Bay Aquarium Research Institute",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-076",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "A Very Unusual Guest Room",
+    "body": "Some pearlfish shelter inside sea cucumbers.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "I Need to Tell Someone This",
+      "tell_more": "The relationship is more specific than a fish resting beside a larger animal. Smithsonian describes pearlfish entering the sea cucumber’s body through its rear opening, which the host also uses to move water for respiration. The arrangement provides shelter, but its consequences vary: some relationships cause little apparent harm, while some pearlfish species consume host tissues. It is therefore misleading to label every example a friendly partnership. The memorable lodging address is real, and the biology is more complicated than the joke it immediately invites.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "fish",
+      "symbiosis",
+      "sea-cucumbers"
+    ],
+    "sources": [
+      {
+        "url": "https://ocean.si.edu/ocean-life/fish/pearlfish-sea-cucumber",
+        "name": "Smithsonian Ocean",
+        "title": "Pearlfish from a Sea Cucumber",
+        "publisher": "Smithsonian Ocean",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-077",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "The Ocean Is One Connected Body",
+    "body": "Named oceans are regions of a connected global ocean rather than separate containers.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "I Need to Tell Someone This",
+      "tell_more": "Maps divide the sea into familiar named regions, but NOAA emphasizes the underlying continuity of the global ocean. Those labels have developed through geography, culture, history, and scientific convention. Recognizing a Southern Ocean, for example, does not create a new physical wall around Antarctica. This distinction is useful when thinking about water, heat, and organisms moving between regions. The names help people describe places, while the connected system keeps operating across the boundaries drawn in our atlases and learned in school.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "ocean",
+      "maps",
+      "names"
+    ],
+    "sources": [
+      {
+        "url": "https://oceanservice.noaa.gov/facts/howmanyoceans.html",
+        "name": "NOAA",
+        "title": "How many oceans are there?",
+        "publisher": "NOAA",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  }
+]

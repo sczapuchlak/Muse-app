@@ -1,0 +1,7328 @@
+[
+  {
+    "id": "OR-033",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Yes. The imaginary paperwork is unusually cooperative.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-034",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "This is a yes you may examine at your own pace.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-035",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Approved. The council has put on its ceremonial reading glasses.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-036",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "There is room to try a small version.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-037",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Yes, with fewer speeches than you are currently preparing.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-038",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The door appears open. You still get to choose the threshold.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-039",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "A considered yes, rather than a promise about the outcome.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-040",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The answer is affirmative; the dramatic lighting is optional.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-041",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Yes. Even the decorative gargoyle has stopped objecting.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-042",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "This possibility deserves a fair hearing.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-043",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "You have enough reason to explore it further.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-044",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Yes, though the universe cannot help you name the group chat.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-045",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "There is a little light on this path.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-046",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Permission granted by the entirely fictional Department of Possibility.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-047",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "A yes can include sensible conditions of your own.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-048",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The orb is nodding, which is an impressive feat for an orb.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-049",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Give the idea a little room to prove itself.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-050",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "This looks worth a reversible first step.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-051",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Yes. You may now stop rehearsing your opening statement.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-052",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The stars have signed in the correct box for once.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-053",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "A quiet yes, like a lamp left on for your return.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-054",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Your interest seems worth listening to here.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-055",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Affirmative. Please keep the victory speech within reasonable limits.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-056",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "It is reasonable to let yourself want this.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-057",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The imaginary jury has returned wearing encouraging hats.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-058",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Yes, while leaving space for new information.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-059",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The answer has arrived without needing another spreadsheet.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-060",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "This possibility has a welcoming shape.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-061",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "A small beginning is supported by the available evidence of your curiosity.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-062",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Yes. The council requests ordinary footwear and a manageable plan.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-063",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "You may proceed without pretending to be completely certain.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-064",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The ceremonial green light is, unusually, actually green.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-065",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "This receives the orb's least sarcastic approval.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-066",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "A measured yes is still a proper yes.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-067",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The next step seems to have room for you.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-068",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "There is something here you can explore kindly.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-069",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Yes, and the footnotes are less alarming than expected.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-070",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The moon has stamped this with a tiny agreeable crater.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-071",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "This is worth trying on for size.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-072",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Approved for a modest pilot episode.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-073",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "You may let the possibility be exciting.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-074",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "A small opening, enough for one honest step.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-075",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Yes, provided the choice remains yours.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-076",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The council supports it and has mercifully cancelled the meeting.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-077",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The enchanted quill has written a surprisingly legible yes.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-078",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "You do not need to dismiss this just because it is unfamiliar.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-079",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "There is a workable version waiting to be found.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-080",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Yes. The unnecessary subplot can be omitted.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-081",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "This answer leans toward the window rather than the wall.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-082",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The imaginary dragons have lowered the drawbridge politely.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-083",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "A yes to exploring, without a guarantee of liking every part.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-084",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The orb's official position is “worth a go.”",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-085",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "You may give this a place in the plan.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-086",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The balance of this playful reading favors proceeding thoughtfully.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-087",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The stars have formed an unusually practical arrow.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-088",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Yes, with a budget of one reasonable amount of drama.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-089",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Something about this choice leaves a little breathing room.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-090",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "This seems compatible with taking your own preference seriously.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-091",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "A tentative yes can become clearer through a small experiment.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-092",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The answer is yes; the commemorative merchandise is unnecessary.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-093",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The council's pet comet has voted enthusiastically.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-094",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "This deserves more than an automatic dismissal.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-095",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Approved, without requiring you to become a different person first.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-096",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The path is not complete, but the first stone is there.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-097",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "You may begin before the whole picture sharpens.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-098",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "There is a sensible question to pursue here.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-099",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Yes. Please resist forming a task force about the yes.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-100",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The fictional gatekeeper has found your name on a very nice list.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-101",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "This is a yes with permission to reassess.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-102",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "A little invitation rather than a grand command.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-103",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The possibility can be welcomed without being rushed.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-104",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The orb has checked twice and remains pleasantly agreeable.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-105",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Your reasons for considering it appear worth respecting.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-106",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The cosmic stationery has finally matched the decision.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-107",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Yes, in the ordinary font rather than the ominous one.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-108",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "A small trial may tell you more than another rehearsal.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-109",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The answer opens rather than closes the room.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-110",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Let the interesting part have its chance.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-111",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The committee approves the idea and declines to manage the details.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-112",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The imaginary seal of approval has landed upright.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-113",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Yes, as an invitation to use your own judgment.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-114",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Proceed with a sensible amount of main-character energy.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-115",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "No. The idea has been returned with a polite sticky note.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-116",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "This answer favors declining rather than forcing a fit.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-117",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The council has hidden the ceremonial permission slip.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-118",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "You may leave this one without proving anything.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-119",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "No, and there is no requirement to build a courtroom around it.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-120",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "This door seems better left gently closed.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-121",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "A clear no can protect room for a more suitable choice.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-122",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The orb is making its smallest disapproving face.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-123",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The stars have arranged themselves into a tasteful refusal.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-124",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "This does not appear to need more of your energy.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-125",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "You can choose not to continue with this version.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-126",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Declined. The imaginary paperwork is admirably brief.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-127",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The path narrows where you would rather have space.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-128",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The fictional gatekeeper has suggested a different entrance.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-129",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "A no to this particular option is not a verdict on your larger hopes.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-130",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The answer is negative; please spare the interpretive dance.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-131",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "You do not have to make yourself enjoy this.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-132",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "This choice seems to ask for more than it offers.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-133",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The council has voted against adding another unnecessary subplot.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-134",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The decorative raven has filed a formal objection.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-135",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "A quiet refusal may be the kinder shape.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-136",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "There may be a better question than how to make this work.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-137",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "No. Even the footnotes are shaking their heads.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-138",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "You may trust that this is not the version for you.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-139",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The enchanted stamp has landed firmly on “decline.”",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-140",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Continuing is not the only respectable response.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-141",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "This proposal has failed the very modest vibe inspection.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-142",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The light seems to be coming from another doorway.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-143",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "A no here leaves your judgment intact.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-144",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The orb recommends a graceful unsubscribe.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-145",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "You may stop negotiating against your own preference.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-146",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The imaginary drawbridge is staying comfortably raised.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-147",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The fit appears forced rather than promising.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-148",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "No, despite the excellent presentation font.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-149",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "This answer offers an ending, not a punishment.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-150",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "You can decline without inventing an elaborate reason.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-151",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The committee regrets to inform the idea that it is doing too much.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-152",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The moon has returned the invitation unopened but respectfully.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-153",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Your energy may belong somewhere else.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-154",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "This is not getting a second season from the orb.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-155",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "A different approach may serve the same wish more honestly.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-156",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "There is a gentle boundary at this edge.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-157",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "No. The decorative fog has cleared just enough to say so.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-158",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The council's tiny bell has rung once for refusal.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-159",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "This answer does not ask you to keep persuading yourself.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-160",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "You may let this possibility pass without chasing it.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-161",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Declined, with no appeal to the group chat required.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-162",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The thread seems ready to be set down.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-163",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Your discomfort may deserve consideration rather than a clever explanation away.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-164",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The imaginary dragons are politely blocking this route.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-165",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The orb cannot endorse this particular production of events.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-166",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "A no can be complete before everyone agrees with it.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-167",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "You are allowed to prefer an easier fit.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-168",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "This idea has mistaken persistence for an invitation.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-169",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The fictional stars have withdrawn their decorative sponsorship.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-170",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The present version seems better left alone.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-171",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The room feels smaller when this answer is yes.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-172",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "No, even if the stationery is extremely persuasive.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-173",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Another option may require less self-negotiation.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-174",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "You may leave room for a choice you actually welcome.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-175",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The ceremonial door has closed with a considerate little click.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-176",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The council has voted to stop holding meetings about this.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-177",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "This answer favors your ability to decline clearly.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-178",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The path seems to turn away from what you are seeking.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-179",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The orb has placed this in the folder labeled “not ours.”",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-180",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "You need not treat every possibility as a responsibility.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-181",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "A small refusal can be an honest act of care.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-182",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The imaginary quill has crossed it out without tearing the page.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-183",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "No. The extended edition is unlikely to improve the premise.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-184",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The reasons to stop deserve equal time with the reasons to continue.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-185",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Some doors are simply not your doorway today.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-186",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The committee has declined the sequel and the commemorative mug.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-187",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "This choice appears to rely on ignoring a detail that matters to you.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-188",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The council's official ribbon is tied across this entrance.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-189",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "You may release the obligation to make this appealing.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-190",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The answer is no, delivered in a perfectly civil tone.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-191",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "This is a refusal of the option, not of your curiosity.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-192",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The shape of the answer is a little more space elsewhere.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-193",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The orb has read the room and excused itself.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-194",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The fictional archive will preserve the proposal without activating it.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-195",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "You can keep the lesson and decline the experience.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-196",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "No. Please enjoy the unexpected lack of follow-up tasks.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-197",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Maybe. The evidence has arrived wearing mismatched shoes.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-198",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "More information would make this answer more useful.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-199",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The council is evenly divided and someone has lost the deciding spoon.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-200",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "A small reversible test could help you learn.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-201",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The orb has selected “please show your working.”",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-202",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The answer is still taking shape around the edges.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-203",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "It depends on which condition matters most to you.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-204",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "A promising perhaps, with an impressive number of asterisks.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-205",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The stars are holding two incompatible seating plans.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-206",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Neither option has made a convincing case yet.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-207",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "You may stay curious without choosing immediately.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-208",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The committee has requested one practical detail and fewer adjectives.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-209",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "There is light here, but the outline is unfinished.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-210",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "A conversation may clarify what guessing cannot.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-211",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The imaginary scales are balanced on a very theatrical pebble.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-212",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Maybe. The orb refuses to confuse confidence with evidence.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-213",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The answer changes depending on the version you mean.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-214",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "You can explore without turning exploration into a commitment.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-215",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "This is a perhaps with sensible pockets.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-216",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The path has not settled on its direction.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-217",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The council has voted to remain intriguingly unhelpful.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-218",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "What would make this a clear yes or no for you?",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-219",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The available information has a rather large missing sleeve.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-220",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "A little clarification may be more useful than a bolder guess.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-221",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "This seems conditional rather than settled.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-222",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The moon is consulting a second, equally decorative moon.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-223",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Maybe, but the fine print deserves an actual reading.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-224",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The answer is a doorway still being measured.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-225",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Both your interest and your hesitation have something to say.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-226",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "You can ask for the detail you need.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-227",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The orb is hovering between intrigued and unconvinced.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-228",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "A smaller version might reveal the important difference.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-229",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The fictional committee has split into two very polite factions.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-230",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "This receives a provisional “hmm.”",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-231",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The answer is a cloud with edges you can almost see.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-232",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Your priorities may matter more than a general rule here.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-233",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "It is reasonable to wait for a clearer picture.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-234",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Maybe. Nobody has brought the necessary context to the meeting.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-235",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The enchanted quill keeps drawing a question mark with excellent penmanship.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-236",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The outcome may depend on an assumption worth checking.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-237",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The orb requests a less mysterious description of “the thing.”",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-238",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "A little more daylight may change the shape of it.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-239",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "You may keep the question open while learning more.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-240",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "There are tradeoffs here that a simple answer would hide.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-241",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The council has appointed a subcommittee to locate the original question.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-242",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "This is not yet a yes-shaped or no-shaped problem.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-243",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "What happens if you try the least consequential part first?",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-244",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The answer is waiting at the meeting point of two preferences.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-245",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The committee is interested but unwilling to guess the missing paragraph.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-246",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "You can be undecided without being careless.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-247",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The stars have arranged a very convincing semicolon.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-248",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The details of timing and scale may change the answer.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-249",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Maybe, depending on whether “quick” means quick this time.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-250",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The possibility is real; its fit is still unclear.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-251",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "A useful answer may require a more specific question.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-252",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Your hesitation can be investigated without being obeyed automatically.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-253",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The orb has placed this in the “ask one more thing” tray.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-254",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The imaginary jury is taking a thoughtful snack break.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-255",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "It may work, but that is different from wanting it.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-256",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The answer is a bridge with one plank still missing.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-257",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "This receives conditional interest and no ceremonial fireworks.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-258",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Which uncertainty could you reduce with one ordinary question?",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-259",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "You may give yourself time to notice your actual preference.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-260",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The council's compass is pointing toward “depends.”",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-261",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Maybe. The proposal has potential and an incomplete address.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-262",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The answer may be different at a smaller scale.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-263",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Two possible stories are sharing the same first page.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-264",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The orb is neither endorsing nor dramatically fleeing.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-265",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "A trial can be useful even if you decide not to continue.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-266",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Consider what you would need to know before choosing.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-267",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The stars are comparing notes written in different inks.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-268",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The committee would like to meet the actual details.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-269",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Your reasons may become clearer when you describe the alternative honestly.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-270",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The answer has a horizon, but not yet a map.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-271",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "You do not have to manufacture certainty for the sake of momentum.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-272",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Maybe, with a clear exit and a modest pilot budget.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-273",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "This seems worth discussing rather than predicting.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-274",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The fictional scales have requested that everyone stop leaning on the table.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-275",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The orb's current diagnosis of the question is “insufficient context,” not a medical opinion.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-276",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "A little room remains for the answer to surprise you.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-277",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The useful next step may be learning what the choice actually includes.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-278",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Maybe. Please return with one fewer assumption.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-279",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Not yet. The idea is still looking for its shoes.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "not_yet",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "not_yet",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-280",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Wait until the missing practical detail is clear.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "not_yet",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "not_yet",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-281",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The council has postponed the ceremony, not cancelled the possibility.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "not_yet",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "not_yet",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-282",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "A little preparation may make this easier to welcome.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "not_yet",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "not_yet",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-283",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The seed does not need to be pulled upward to prove it is growing.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "not_yet",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "not_yet",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-284",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The answer is waiting for the calendar to stop shouting.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "not_yet",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "not_yet",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-285",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "This may deserve a different moment rather than a harder push.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "not_yet",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "not_yet",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-286",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The enchanted door is being measured for a less inconvenient hinge.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "not_yet",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "not_yet",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-287",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "You can keep the possibility without acting on it today.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "not_yet",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "not_yet",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-288",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Not yet. The supporting cast has not received the script.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "not_yet",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "not_yet",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-289",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Let the question settle long enough to distinguish interest from urgency.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "not_yet",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "not_yet",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-290",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The light is coming, but it has not reached this corner.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "not_yet",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "not_yet",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-291",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The fictional launch window is closed for routine cloud maintenance.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "not_yet",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "not_yet",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-292",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The orb recommends one ordinary pause, without ominous music.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "not_yet",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "not_yet",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-293",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "You may need an answer to a smaller question first.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "not_yet",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "not_yet",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-294",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "There is no prize for arriving before you can enjoy being there.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "not_yet",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "not_yet",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-295",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "This chapter still needs its final quiet paragraph.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "not_yet",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "not_yet",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-296",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The committee is waiting for someone to locate the actual deadline.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "not_yet",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "not_yet",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-297",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "A later choice may be better informed than a faster one.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "not_yet",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "not_yet",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-298",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The stars are still removing the ceremonial price tags.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "not_yet",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "not_yet",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-299",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Give the practical parts a chance to catch up with the exciting part.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "not_yet",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "not_yet",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-300",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Not yet; the imaginary kettle has not clicked off.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "not_yet",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "not_yet",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-301",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Your available energy belongs in the timing discussion.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "not_yet",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "not_yet",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-302",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Some doors open more gently after the room is ready.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "not_yet",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "not_yet",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-303",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The council's carrier pigeon has stopped to read a map.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "not_yet",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "not_yet",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-304",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The answer is delayed by one unresolved “how, exactly?”",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "not_yet",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "not_yet",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-305",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Check what needs to be true before this becomes workable.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "not_yet",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "not_yet",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-306",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "You can prepare one small part and leave the rest for later.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "not_yet",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "not_yet",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-307",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The tide in this metaphor has not quite turned.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "not_yet",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "not_yet",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-308",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Not yet. The idea has arrived early and is politely waiting outside.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "not_yet",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "not_yet",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-309",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "This seems better approached after the current commitment has an ending.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "not_yet",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "not_yet",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-310",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The imaginary stage crew is still testing the sensible lighting.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "not_yet",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "not_yet",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-311",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Waiting can be an active choice when you know what you are waiting for.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "not_yet",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "not_yet",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-312",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The orb requests a little less haste and a much clearer date.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "not_yet",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "not_yet",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-313",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The answer is on its way through the slow part of the garden.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "not_yet",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "not_yet",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-314",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Resolve the condition that would otherwise follow you into the decision.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "not_yet",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "not_yet",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-315",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The council has put this on the agenda after “finish the agenda.”",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "not_yet",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "not_yet",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-316",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Not yet; the fine print is still introducing itself.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "not_yet",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "not_yet",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-317",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "You may return when the idea fits your actual week.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "not_yet",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "not_yet",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-318",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "A short delay could reveal whether the interest lasts beyond the first spark.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "not_yet",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "not_yet",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-319",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The next step may be easier when the ground is less crowded.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "not_yet",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "not_yet",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-320",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The orb has selected “save draft” with great dignity.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "not_yet",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "not_yet",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-321",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The fictional portal is open for planning, closed for dramatic entrances.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "not_yet",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "not_yet",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-322",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Let the timing serve the choice rather than become a test of courage.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "not_yet",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "not_yet",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-323",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "There is room to wait without giving up.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "not_yet",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "not_yet",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-324",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The committee's answer is “later,” delivered without a passive-aggressive sigh.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "not_yet",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "not_yet",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-325",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The story is keeping a place for this possibility.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "not_yet",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "not_yet",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-326",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Not yet. Name the condition that would make you ready.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "not_yet",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "not_yet",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-327",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The answer is hiding in the adjective you used twice.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "cryptic",
+      "tone": "mysterious",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cryptic",
+      "mysterious"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-328",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Consult the imaginary archivist, not the loudest gargoyle.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "cryptic",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cryptic",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-329",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Choose the door whose handle does not require you to shrink.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "cryptic",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cryptic",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-330",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The orb suspects the question has borrowed someone else's coat.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "cryptic",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cryptic",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-331",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Ask what you would choose if no explanation were required.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "cryptic",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cryptic",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-332",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "There is a second question beneath the one you brought.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "cryptic",
+      "tone": "mysterious",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cryptic",
+      "mysterious"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-333",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The council has returned a drawing of a very patient duck.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "cryptic",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cryptic",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-334",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Follow the thread that leaves your hands a little less clenched.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "cryptic",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cryptic",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-335",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The answer has been filed under “what are we actually doing here?”",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "cryptic",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cryptic",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-336",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Notice which option you keep defending to yourself.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "cryptic",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cryptic",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-337",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The missing detail is not necessarily the most dramatic one.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "cryptic",
+      "tone": "mysterious",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cryptic",
+      "mysterious"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-338",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The moon requests a diagram, preferably with snacks marked clearly.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "cryptic",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cryptic",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-339",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The map may become clearer when you stop drawing the destination first.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "cryptic",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cryptic",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-340",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The orb has asked the question a question.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "cryptic",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cryptic",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-341",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Which part belongs to your preference, and which part belongs to the audience?",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "cryptic",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cryptic",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-342",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Something in the phrasing has mistaken habit for inevitability.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "cryptic",
+      "tone": "mysterious",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cryptic",
+      "mysterious"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-343",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The council's reply is a tiny chair facing a window.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "cryptic",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cryptic",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-344",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Look for the choice that makes room for an honest return.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "cryptic",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cryptic",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-345",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The answer is not in the decorative fog; that is mostly a lighting decision.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "cryptic",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cryptic",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-346",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Try describing what you want without describing what you should want.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "cryptic",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cryptic",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-347",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The clue is in the condition you nearly omitted.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "cryptic",
+      "tone": "mysterious",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cryptic",
+      "mysterious"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-348",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "An imaginary librarian has handed you a blank index card and a knowing look.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "cryptic",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cryptic",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-349",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The path may be asking for a different kind of traveler, not a different person.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "cryptic",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cryptic",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-350",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The orb declines the premise but appreciates the punctuation.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "cryptic",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cryptic",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-351",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "What would a kind, practical version of this question sound like?",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "cryptic",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cryptic",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-352",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The answer may be smaller than the role you have prepared for it.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "cryptic",
+      "tone": "mysterious",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cryptic",
+      "mysterious"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-353",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The council has sent a ceremonial spoon. Its jurisdiction remains unclear.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "cryptic",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cryptic",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-354",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The useful light may come from the side rather than the end of the hall.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "cryptic",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cryptic",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-355",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The question has arrived at the wrong department, but the receptionist is lovely.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "cryptic",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cryptic",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-356",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Notice the difference between wanting the result and wanting the experience.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "cryptic",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cryptic",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-357",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The answer is waiting near the exception you keep making.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "cryptic",
+      "tone": "mysterious",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cryptic",
+      "mysterious"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-358",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The stars have provided a footnote that simply says “interesting.”",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "cryptic",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cryptic",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-359",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "A little less performance may let the true shape appear.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "cryptic",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cryptic",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-360",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The orb suggests removing the word “obviously” and reading the question again.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "cryptic",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cryptic",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-361",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Whose comfort is doing all the work in this version?",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "cryptic",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cryptic",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-362",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The next clue may be an ordinary fact you have not checked.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "cryptic",
+      "tone": "mysterious",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cryptic",
+      "mysterious"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-363",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The council's official answer is an eloquent, completely fictional eyebrow.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "cryptic",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cryptic",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-364",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Some questions are keys; some are invitations to build a different door.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "cryptic",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cryptic",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-365",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The universe has asked whether you would like to rephrase that kindly.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "cryptic",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cryptic",
+      "witty"
+    ],
+    "sources": []
+  }
+]

@@ -1,0 +1,834 @@
+[
+  {
+    "id": "CUR-014",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "Mercury Rewinds the Sunrise",
+    "body": "On parts of Mercury, the Sun can rise, set, and rise again in one morning.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "That Can't Be Real",
+      "tell_more": "Mercury turns slowly while traveling around the Sun on a strongly elliptical orbit. Near its fastest part of that orbit, the relationship between those two motions can briefly reverse the Sun’s apparent movement across the sky. From some locations, sunrise therefore includes an apparent retreat before the Sun rises again. This is orbital geometry, not a second star or an atmospheric trick. A complete sunrise-to-sunrise cycle takes about 176 Earth days, even though Mercury completes an orbit in roughly 88.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "space",
+      "mercury",
+      "orbits"
+    ],
+    "sources": [
+      {
+        "url": "https://science.nasa.gov/mercury/facts/",
+        "name": "NASA",
+        "title": "Mercury Facts",
+        "publisher": "NASA",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-015",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "A Planetary Arts Register",
+    "body": "Mercury’s impact landscape includes names honoring artists, musicians, and writers.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "I Need to Tell Someone This",
+      "tell_more": "The battered surface of Mercury doubles as an unusual cultural directory. NASA notes that its craters and other features honor deceased creative figures, including Dr. Seuss and Alvin Ailey. The names do not describe the shapes of the craters; they are part of the human system for identifying locations on another world. It is a pleasing collision of scales: an impact scar made by a violent astronomical event can become a durable address carrying the name of someone who made stories or dances.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "space",
+      "names",
+      "art"
+    ],
+    "sources": [
+      {
+        "url": "https://science.nasa.gov/mercury/facts/",
+        "name": "NASA",
+        "title": "Mercury Facts",
+        "publisher": "NASA",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-016",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "The Hottest Planet Is Second",
+    "body": "Venus is hotter than Mercury, although Mercury orbits closer to the Sun.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "That Can't Be Real",
+      "tell_more": "Distance from the Sun is only part of a planet’s temperature story. Venus has a dense atmosphere that traps heat through an extreme greenhouse effect. NASA gives its surface temperature as roughly 467 degrees Celsius, hot enough to melt lead, with surface pressure around 93 times Earth’s sea-level pressure. Mercury lacks a comparable atmosphere to hold heat. The comparison is a useful reminder that a planet is an interacting system: its air can matter as much as its position in the solar lineup.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "space",
+      "venus",
+      "atmosphere"
+    ],
+    "sources": [
+      {
+        "url": "https://science.nasa.gov/venus/venus-facts/",
+        "name": "NASA",
+        "title": "Venus Facts",
+        "publisher": "NASA",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-017",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "A Canyon on Continental Terms",
+    "body": "Mars has a canyon system long enough to span much of the United States.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "That's Incredible",
+      "tell_more": "Valles Marineris stretches about 3,870 kilometers across Mars. NASA compares that length with the distance from California to New York, a scale that makes a terrestrial canyon feel suddenly local. The system is not one tidy crack of uniform width or depth; it is a vast, complicated landscape. Its dimensions reveal how much geological history can fit on a planet only about half Earth’s diameter. A small-looking line on a global image can represent an immense place at ground level.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "space",
+      "mars",
+      "geology"
+    ],
+    "sources": [
+      {
+        "url": "https://science.nasa.gov/mars/facts/",
+        "name": "NASA",
+        "title": "Mars Facts",
+        "publisher": "NASA",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-018",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "Mars Is Wearing Rust",
+    "body": "The Red Planet gets its characteristic color from oxidized iron in its surface materials.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "Nature Is Showing Off",
+      "tell_more": "Mars is not uniformly red when seen close up. Its surface includes brown, gold, and tan, but iron minerals that have oxidized help give its dust a reddish appearance. That dust is spread through the atmosphere and across the landscape, influencing the planet’s distant color. NASA describes the familiar red as a consequence of this rust-like chemistry. The dramatic name belongs to an everyday kind of chemical change, operating across an unfamiliar world rather than on the forgotten metal object in a garden.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "space",
+      "mars",
+      "color"
+    ],
+    "sources": [
+      {
+        "url": "https://science.nasa.gov/mars/facts/",
+        "name": "NASA",
+        "title": "Mars Facts",
+        "publisher": "NASA",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-019",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "Jupiter’s Quiet Jewelry",
+    "body": "Jupiter has faint rings made of dark particles.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "I Need to Tell Someone This",
+      "tell_more": "Voyager 1 discovered Jupiter’s rings in 1979. They are composed of small, dark particles and become easier to see when sunlight illuminates them from behind. Data from the Galileo mission suggest that impacts on small inner moons supply dust to the ring system. The result is a planetary feature that can remain visually hidden until the geometry is favorable. Saturn did not secure an exclusive license on rings; it simply has a much more conspicuous display than its giant neighbor.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "space",
+      "jupiter",
+      "rings"
+    ],
+    "sources": [
+      {
+        "url": "https://science.nasa.gov/jupiter/jupiter-facts/",
+        "name": "NASA",
+        "title": "Jupiter Facts",
+        "publisher": "NASA",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-020",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "Nowhere to Park on Jupiter",
+    "body": "A spacecraft cannot land on a solid Jovian surface because Jupiter has no true surface.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "That Can't Be Real",
+      "tell_more": "Jupiter’s visible cloud tops are not a crust with a landscape beneath them. The gas giant is largely gases and liquids, with pressure and temperature increasing dramatically at depth. NASA explains that a spacecraft has nowhere to land and cannot simply fly safely through the planet either: the deeper environment would destroy it. The familiar globe in pictures encourages a misleading comparison with a rocky world. Its apparent edge marks the outer layers of a vast atmosphere, not the boundary of a giant solid ball.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "space",
+      "jupiter",
+      "planets"
+    ],
+    "sources": [
+      {
+        "url": "https://science.nasa.gov/jupiter/jupiter-facts/",
+        "name": "NASA",
+        "title": "Jupiter Facts",
+        "publisher": "NASA",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-021",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "Saturn’s Rings Are a Crowd",
+    "body": "Saturn’s rings are countless separate pieces, not a single solid disk.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "That Can't Be Real",
+      "tell_more": "The bright bands around Saturn contain enormous numbers of icy and rocky particles, ranging from very small grains to much larger chunks. They orbit the planet rather than forming a rigid platform. NASA notes that different rings move at different speeds, and the main ring system is remarkably thin compared with its enormous width. From far away the pieces blend into graceful bands. Up close, the elegant graphic is a dynamic population of objects, each following an orbit instead of holding hands with its neighbors.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "space",
+      "saturn",
+      "rings"
+    ],
+    "sources": [
+      {
+        "url": "https://science.nasa.gov/saturn/facts/",
+        "name": "NASA",
+        "title": "Saturn Facts",
+        "publisher": "NASA",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-022",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "A Six-Sided Weather Pattern",
+    "body": "Saturn’s north pole has a huge hexagonal jet-stream pattern.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "Nature Is Showing Off",
+      "tell_more": "A hexagon sounds like something an engineer would draw, yet Saturn’s atmosphere produces one at its north pole. Voyager images first revealed the pattern, and Cassini later examined it closely. NASA describes it as a wavy jet stream surrounding a central rotating storm, spanning roughly 30,000 kilometers. It is not a solid structure or a polygon painted onto the planet. Moving air maintains the striking geometry, making a familiar classroom shape part of weather on a world with no ordinary ground beneath it.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "space",
+      "saturn",
+      "weather"
+    ],
+    "sources": [
+      {
+        "url": "https://science.nasa.gov/saturn/facts/",
+        "name": "NASA",
+        "title": "Saturn Facts",
+        "publisher": "NASA",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-023",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "A Planet Found in the Arithmetic",
+    "body": "Neptune was located after its gravitational effects suggested where astronomers should look.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "That's Incredible",
+      "tell_more": "Uranus was not moving exactly as expected, and its orbital discrepancies offered a clue. Urbain Le Verrier calculated a position for an unseen planet that could help explain the motion. Johann Gottfried Galle then found Neptune in 1846 on his first night of searching using those predictions. NASA presents the discovery as a major example of mathematics directing observation. The planet was not invented by the calculation; its influence was already present in the behavior of another world, waiting to be interpreted.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "space",
+      "mathematics",
+      "discovery"
+    ],
+    "sources": [
+      {
+        "url": "https://science.nasa.gov/neptune/neptune-facts/",
+        "name": "NASA",
+        "title": "Neptune Facts",
+        "publisher": "NASA",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-024",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "Pluto and Neptune Keep Time",
+    "body": "Pluto can move closer to the Sun than Neptune without the two worlds colliding.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "That Can't Be Real",
+      "tell_more": "Pluto’s elongated orbit sometimes carries it nearer the Sun than Neptune. That does not mean the two are on a collision schedule. Their orbital periods have a repeating relationship: Pluto completes two circuits while Neptune completes three. NASA explains that this pattern prevents close approaches. The arrangement is called an orbital resonance. It is a useful correction to the flat schoolbook picture of neatly nested circles, because real orbits can overlap in distance while their timing keeps the moving worlds apart.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "space",
+      "pluto",
+      "orbits"
+    ],
+    "sources": [
+      {
+        "url": "https://science.nasa.gov/neptune/neptune-facts/",
+        "name": "NASA",
+        "title": "Neptune Facts",
+        "publisher": "NASA",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-025",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "The Planet Almost Named George",
+    "body": "William Herschel proposed a royal name for the world now called Uranus.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "History Was Unhinged",
+      "tell_more": "When Herschel discovered Uranus in 1781, the identification of a new planet did not arrive with an agreed name attached. He tried to honor King George III with Georgium Sidus. The name that eventually prevailed, suggested by Johann Bode, instead continued the mythological character of planetary naming. NASA recounts this as part of the planet’s discovery history. The familiar solar-system vocabulary therefore contains an abandoned branch: a world might have carried a conspicuously British royal tribute rather than the name we now learn at school.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "space",
+      "names",
+      "history"
+    ],
+    "sources": [
+      {
+        "url": "https://science.nasa.gov/uranus/facts/",
+        "name": "NASA",
+        "title": "Uranus Facts",
+        "publisher": "NASA",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-026",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "Rain, Rivers, and Methane",
+    "body": "Titan has a weather cycle involving liquid hydrocarbons rather than Earth’s familiar water rain.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "Nature Is Showing Off",
+      "tell_more": "Saturn’s moon Titan has clouds, rainfall, rivers, lakes, and seas. The resemblance to Earth becomes stranger when the liquid is identified: methane and ethane can fill those surface roles in Titan’s cold environment. NASA describes a cycle in which these hydrocarbons fall, flow, collect, and return to the atmosphere. It is not a claim that Titan has an Earthlike climate or breathable air. The surprise is that a recognizable landscape-making process can operate with different materials on another world.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "space",
+      "titan",
+      "weather"
+    ],
+    "sources": [
+      {
+        "url": "https://science.nasa.gov/saturn/moons/titan/facts/",
+        "name": "NASA",
+        "title": "Titan Facts",
+        "publisher": "NASA",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-027",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "An Ocean Beneath Titan’s Ground",
+    "body": "Measurements indicate that Titan also hides a liquid-water ocean under its icy exterior.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "That's Incredible",
+      "tell_more": "The hydrocarbon lakes on Titan’s surface are only part of its liquid story. NASA reports that Cassini gravity measurements and evidence gathered during Huygens’s descent support an underground ocean, likely containing salts and ammonia. This water is separated from the surface by an icy shell. Researchers are interested in whether such environments could be habitable, but an ocean is not evidence that organisms live there. Titan can therefore be both a world of methane rain above and a candidate water-ocean world below.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "space",
+      "titan",
+      "oceans"
+    ],
+    "sources": [
+      {
+        "url": "https://science.nasa.gov/saturn/moons/titan/facts/",
+        "name": "NASA",
+        "title": "Titan Facts",
+        "publisher": "NASA",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-028",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "A Moon That Offers Samples",
+    "body": "Enceladus sprays material from its hidden ocean into space.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "That's Incredible",
+      "tell_more": "Enceladus is small and icy, yet jets near its south pole send water vapor and ice particles outward. Cassini could examine this material without drilling through the moon’s frozen exterior. NASA reports that the samples reveal a salty subsurface ocean with many chemical ingredients relevant to habitability and evidence consistent with hydrothermal activity. These findings motivate further investigation; they do not establish life. The remarkable practical detail is access: an ocean concealed beneath ice is exporting some of its contents into a spacecraft’s path.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "space",
+      "enceladus",
+      "oceans"
+    ],
+    "sources": [
+      {
+        "url": "https://science.nasa.gov/saturn/moons/enceladus/",
+        "name": "NASA",
+        "title": "Enceladus",
+        "publisher": "NASA",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-029",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "The Moon Going the Other Way",
+    "body": "Triton orbits Neptune opposite the direction of Neptune’s rotation.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "Nature Is Showing Off",
+      "tell_more": "Triton’s backward orbital direction distinguishes it from the other large moons in the solar system. NASA explains that this is one reason scientists think Neptune captured a previously independent object. Voyager 2 added another surprise during its 1989 encounter: despite Triton’s extreme cold, the spacecraft observed active geysers. The moon is not simply an inert frozen ornament. Its unusual path and active surface preserve clues about both how it joined Neptune’s system and what processes continue to reshape it.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "space",
+      "triton",
+      "moons"
+    ],
+    "sources": [
+      {
+        "url": "https://science.nasa.gov/neptune/moons/triton/",
+        "name": "NASA",
+        "title": "Triton",
+        "publisher": "NASA",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-030",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "The Knights Had Snail Problems",
+    "body": "Medieval manuscript margins repeatedly show armored knights confronting snails.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "History Was Unhinged",
+      "tell_more": "The British Library preserves several examples of this wonderfully disproportionate contest in manuscripts from the thirteenth and fourteenth centuries. The images are real; a single definitive explanation is not. Scholars have proposed political satire, social commentary, religious associations, and other readings, but the motif does not fit one stable meaning in every setting. The important distinction is between evidence and interpretation. We can confidently admire the tiny armed encounter while admitting that the original joke, warning, or reference may not be fully recoverable.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "manuscripts",
+      "art",
+      "medieval"
+    ],
+    "sources": [
+      {
+        "url": "https://www.bl.uk/stories/blogs/posts/knight-v-snail",
+        "name": "British Library",
+        "title": "Knight v Snail",
+        "publisher": "British Library",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-031",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "Pompeii Had Campaign Walls",
+    "body": "Political endorsements were painted onto the walls of ancient Pompeii.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "History Was Unhinged",
+      "tell_more": "The National Archaeological Museum of Naples documents painted inscriptions that named candidates, offices, supporters, and sometimes the professional signwriter. Their abbreviated formulas made a public case for electing particular people. Surviving examples even record support from groups such as fruit sellers and ball players. These are not modern slogans projected onto ancient ruins; the painted plaster itself preserves the messages. The walls reveal a city conducting ordinary civic persuasion, complete with recognizable concerns about who should manage public buildings, streets, and markets.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "rome",
+      "writing",
+      "politics"
+    ],
+    "sources": [
+      {
+        "url": "https://artsandculture.google.com/story/tgUBNHEcEscIJg",
+        "name": "Museo Archeologico Nazionale di Napoli",
+        "title": "Elections in Pompeii",
+        "publisher": "Museo Archeologico Nazionale di Napoli",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-032",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "A Coin for Holy Water",
+    "body": "An ancient mechanical dispenser used the weight of a coin to release water.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "History Was Unhinged",
+      "tell_more": "The Kotsanas Museum reconstructs a coin-operated holy-water dispenser associated with ancient Alexandria. Its exhibit describes a five-drachma coin falling onto a balance mechanism, whose movement opened a valve and allowed a measured flow. The striking idea is the conversion of payment into a physical action without an attendant making the release. Calling it a distant relative of a vending machine helps explain the mechanism, but the museum display is a reconstruction of an ancient device, not an intact machine newly found beside a temple.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "engineering",
+      "ancient",
+      "mechanisms"
+    ],
+    "sources": [
+      {
+        "url": "https://collection.kotsanasmuseum.com/en/exhibits/106039/",
+        "name": "Kotsanas Museum of Ancient Greek Technology",
+        "title": "The automatic holy water server with coin-acceptor",
+        "publisher": "Kotsanas Museum of Ancient Greek Technology",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-033",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "A Shark’s Eye Is an Archive",
+    "body": "Greenland shark ages can be estimated from proteins in their eye lenses.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "Nature Is Showing Off",
+      "tell_more": "Greenland sharks do not offer the convenient hard growth bands used to age some other sharks. Researchers instead studied long-lasting lens proteins formed before birth and used radiocarbon dating to estimate their ages. NOAA describes a large female whose estimated range was 272 to 512 years. That range matters: it is not an exact birthday, and a random photograph cannot be labeled with that individual’s age. Even with the uncertainty preserved, the research points to a vertebrate lifespan measured on an extraordinary scale.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "sharks",
+      "aging",
+      "research"
+    ],
+    "sources": [
+      {
+        "url": "https://oceanservice.noaa.gov/facts/greenland-shark.html",
+        "name": "NOAA",
+        "title": "How long do Greenland sharks live?",
+        "publisher": "NOAA",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-034",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "The Father Carries the Pregnancy",
+    "body": "Male seahorses incubate developing young inside a brood pouch and give birth.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "Nature Is Showing Off",
+      "tell_more": "During seahorse courtship, a female transfers eggs into the male’s brood pouch. Fertilization and development then occur there, and muscular contractions eventually release fully formed young. NOAA describes gestation commonly lasting two to four weeks, though details vary among species. The phenomenon is not simply a male guarding eggs on an external nest. His body carries the developing offspring. It is a striking reproductive arrangement within the pipefish family, and a reminder that familiar assumptions about animal parenting cover only part of nature’s repertoire.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "seahorses",
+      "reproduction",
+      "fish"
+    ],
+    "sources": [
+      {
+        "url": "https://oceanservice.noaa.gov/facts/seahorse.html",
+        "name": "NOAA",
+        "title": "How do seahorses differ from all other animals?",
+        "publisher": "NOAA",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-035",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "One Whale, a Long Community",
+    "body": "A sunken whale can support successive deep-sea communities for years or decades.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "Nature Is Showing Off",
+      "tell_more": "A whale fall delivers a concentrated supply of organic material to a deep environment where food is often scarce. Scavengers first consume soft tissues, while fragments enrich nearby sediment. Later, the skeleton provides habitat and chemical resources: microbes can use energy from reactions involving compounds released as the bones decay. NOAA describes a succession rather than a single feeding event. The large animal’s story continues as an ecosystem, with different residents using different resources long after the first scavengers have moved on.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "deep-sea",
+      "whales",
+      "ecosystems"
+    ],
+    "sources": [
+      {
+        "url": "https://oceanservice.noaa.gov/facts/whale-fall.html",
+        "name": "NOAA",
+        "title": "What is a whale fall?",
+        "publisher": "NOAA",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-036",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "A Living Glass House",
+    "body": "Some glass sponges grow intricate silica skeletons that become homes for tiny crustaceans.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "Nature Is Showing Off",
+      "tell_more": "Glass sponges are animals, despite their architectural appearance. Their structural elements are made from silica, and some species join those elements into elaborate frameworks. In the Venus flower basket, small crustaceans can enter while young and later grow too large to pass back through the lattice. NOAA describes pairs living inside while their tiny offspring can escape. The sponge is therefore more than a striking skeleton: it is also a habitat whose openings can determine the life history of another animal.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "sponges",
+      "symbiosis",
+      "silica"
+    ],
+    "sources": [
+      {
+        "url": "https://oceanservice.noaa.gov/facts/glass-sponge.html",
+        "name": "NOAA",
+        "title": "What is a glass sponge?",
+        "publisher": "NOAA",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-037",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "The Reefs That Were Still Here",
+    "body": "Living glass-sponge reefs were discovered off British Columbia in 1987.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "That's Incredible",
+      "tell_more": "Large glass-sponge reefs had been treated as features of a much older world, familiar from fossil remains. NOAA recounts the discovery of living reefs along British Columbia’s northern coast in 1987, overturning the assumption that this kind of reef had disappeared long ago. The surprise was not that individual sponges existed, but that they still built substantial reef structures. It is an example of how an apparently settled picture of living habitats can change when a poorly explored part of the ocean is examined.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reefs",
+      "discovery",
+      "deep-sea"
+    ],
+    "sources": [
+      {
+        "url": "https://oceanservice.noaa.gov/facts/glass-sponge.html",
+        "name": "NOAA",
+        "title": "What is a glass sponge?",
+        "publisher": "NOAA",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-038",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "The Invisible Oxygen Producers",
+    "body": "Ocean plankton account for roughly half of Earth’s oxygen production.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "That's Incredible",
+      "tell_more": "The ocean’s photosynthetic organisms include microscopic algae and bacteria that are easy to overlook beside a forest. Together they make a major contribution to global oxygen production. NOAA stresses an essential qualification: marine life and decay consume roughly comparable amounts, while the atmosphere also contains oxygen accumulated over immense spans of time. “Half the oxygen production” should not be casually rewritten as half of each breath coming directly from today’s plankton. The real cycle is both more complicated and more interesting than that shortcut.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "plankton",
+      "oxygen",
+      "ecosystems"
+    ],
+    "sources": [
+      {
+        "url": "https://oceanservice.noaa.gov/facts/ocean-oxygen.html",
+        "name": "NOAA",
+        "title": "How much oxygen comes from the ocean?",
+        "publisher": "NOAA",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "id": "CUR-039",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "curiosity",
+    "state": "draft",
+    "title": "The Carbon Is Underfoot",
+    "body": "Much of the carbon held by coastal wetlands is stored below ground.",
+    "metadata": {
+      "kind": "curiosity",
+      "category": "Nature Is Showing Off",
+      "tell_more": "Mangroves, seagrass habitats, and salt marshes can capture and retain carbon in their vegetation and sediments. The term blue carbon describes carbon associated with ocean and coastal ecosystems. NOAA notes that much of this storage is hidden beneath the visible plants, and some coastal-soil carbon is thousands of years old. That makes the mud part of the story rather than mere scenery. Damaging these systems can release stored carbon, while conserving them also protects habitat and other useful coastal functions.",
+      "verification_status": "fact_checked",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "wetlands",
+      "carbon",
+      "coasts"
+    ],
+    "sources": [
+      {
+        "url": "https://oceanservice.noaa.gov/facts/bluecarbon.html",
+        "name": "NOAA",
+        "title": "What is Blue Carbon?",
+        "publisher": "NOAA",
+        "license": "Original Muse summary; source and linked media retain their own rights",
+        "verifiedAt": "2026-11-02"
+      }
+    ]
+  }
+]

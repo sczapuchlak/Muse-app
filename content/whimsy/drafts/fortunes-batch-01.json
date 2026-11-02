@@ -1,0 +1,770 @@
+[
+  {
+    "id": "FC-025",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The meeting you feared may turn out to be an email with better shoes.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-026",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "An unfinished thing is allowed to remain interesting while it waits.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-027",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Someone will mispronounce a word with such confidence that you may briefly consider adopting it.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-028",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Your next good idea may arrive while your hands are busy with something gloriously ordinary.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-029",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The universe has no opinion about your inbox. You may close it for a while.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-030",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A small kindness you forgot giving may still be making its rounds.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-031",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Today’s mystery: why the best chair in the room is rarely the fanciest.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-032",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "There is a delightful difference between having a plan and being owned by it.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-033",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A forgotten song may return with all its original dramatic lighting.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "mysterious",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "mysterious"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-034",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "Your future self would appreciate one labeled container. They would also understand if you chose a nap.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-035",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "The best souvenir from this week might be a sentence you overhear in your own head.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "FC-036",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Cookie",
+    "state": "draft",
+    "title": "Fortune Cookie",
+    "body": "A detour is only a detour if the original route still sounds interesting.",
+    "metadata": {
+      "kind": "cookie",
+      "category": "Cookie",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-021",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Yes. The committee has approved it, though the minutes are written in glitter.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-022",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Yes, provided you are allowed to change your mind after learning more.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-023",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "It has a yes-shaped shadow. Step closer and see whether the door is real.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "yes",
+      "tone": "mysterious",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "yes",
+      "mysterious"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-024",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "No. A polite no is still a complete sentence.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-025",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The vote is no, and the moon has requested that nobody make a scene.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "witty",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "witty"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-026",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Not this one. Save your energy for a door that opens without a crowbar.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "no",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "no",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-027",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Maybe. The answer depends on a detail you have not asked about yet.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-028",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The council is undecided; its members keep changing seats.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "absurd",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "absurd"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-029",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Possibly. Try the smallest reversible version and listen to what happens.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "maybe",
+      "tone": "encouraging",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "maybe",
+      "encouraging"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-030",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Not yet. Let the idea keep its coat on for another day.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "not_yet",
+      "tone": "poetic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "not_yet",
+      "poetic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-031",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "Wait for the next clear sign, which may simply be more information.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "not_yet",
+      "tone": "reflective",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "not_yet",
+      "reflective"
+    ],
+    "sources": []
+  },
+  {
+    "id": "OR-032",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Oracle",
+    "state": "draft",
+    "title": "Oracle Answer",
+    "body": "The answer is disguised as a question about what you actually want.",
+    "metadata": {
+      "kind": "oracle",
+      "category": "Oracle",
+      "response_category": "cryptic",
+      "tone": "mysterious",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "cryptic",
+      "mysterious"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-025",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A forgotten tab shall reveal the exact thing you needed, then demand to know why you opened twelve others.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "modern-life",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "modern-life"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-026",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "One ordinary meal may taste unexpectedly like a place you have missed.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "memory",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "poetic",
+      "memory"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-027",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A tiny household problem shall be solved by an object that was already within arm’s reach.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "domestic",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "domestic"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-028",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "The next time you change your route, a window display may earn an undeserved amount of your attention.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "mysterious",
+      "theme": "discovery",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "mysterious",
+      "discovery"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-029",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "Someone may laugh at the precise part of your story that you almost left out.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "warm",
+      "theme": "connection",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "warm",
+      "connection"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-030",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A song from your past will arrive uninvited and insist upon the entire chorus.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "music",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "music"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-031",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "An abandoned idea may return wearing a better outfit and asking for fifteen minutes of your time.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "creative",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "poetic",
+      "creative"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-032",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "Your most modest accomplishment this week may receive the most enthusiastic private applause.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "warm",
+      "theme": "small-victory",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "warm",
+      "small-victory"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-033",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A perfectly timed patch of sunlight shall make a familiar room appear briefly rented by a film crew.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "poetic",
+      "theme": "cozy",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "poetic",
+      "cozy"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-034",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "You may find a note in your own handwriting and have no memory of becoming that wise.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "witty",
+      "theme": "memory",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "witty",
+      "memory"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-035",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "A minor inconvenience is expected to resign before lunch. Its replacement remains under review.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "absurd",
+      "theme": "modern-life",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "absurd",
+      "modern-life"
+    ],
+    "sources": []
+  },
+  {
+    "id": "TP-036",
+    "version": 1,
+    "experience": "fortunes",
+    "category": "Tiny Prophecy",
+    "state": "draft",
+    "title": "Tiny Prophecy",
+    "body": "One kind message may travel farther through the day than its sender intended.",
+    "metadata": {
+      "kind": "prophecy",
+      "category": "Tiny Prophecy",
+      "tone": "warm",
+      "theme": "connection",
+      "content_version": 1,
+      "editorial_status": "draft"
+    },
+    "tags": [
+      "warm",
+      "connection"
+    ],
+    "sources": []
+  }
+]
