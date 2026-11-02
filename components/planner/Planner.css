@@ -195,3 +195,9 @@ select option { background: var(--background); color: var(--foreground); }
 .muse-day-drop>.muse-day-content {flex:1 1 auto;min-height:0;overflow:auto;overscroll-behavior:contain;padding:0 2px;}
 .muse-planner-layout[data-height-mode="natural"] .muse-day-content {flex:0 0 auto;overflow:visible;}
 @container muse-content (max-width:820px){.muse-planner-layout .muse-day-content{flex:0 0 auto;overflow:visible;}}
+
+/* Paired labels share a track, including the planned-date Move action. */
+.muse-task-details .muse-detail-fields > :is(div,label) { display:grid; grid-row:span 2; grid-template-rows:subgrid; gap:var(--space-1); min-width:0; align-items:end; }
+.muse-task-details .muse-detail-fields :is(input,.muse-choice-trigger) { min-width:0; width:100%; min-height:44px; box-sizing:border-box; }
+.muse-task-details .muse-detail-fields .editor-label, .muse-task-details .muse-detail-fields > label > span { align-self:center; }
+@media(max-width:480px) { .muse-task-details .muse-detail-fields { grid-template-columns:minmax(0,1fr); } }

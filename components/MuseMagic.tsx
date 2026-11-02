@@ -1,4 +1,5 @@
 "use client";
+import './MuseMagic.css';
 import {useEffect,useSyncExternalStore} from 'react';
 import {readMagic,serverMagic,subscribeMagic,magicLevels,selectMagic} from '@/lib/magic-preference';
 export function MuseMagicBridge(){const level=useSyncExternalStore(subscribeMagic,readMagic,serverMagic);useEffect(()=>{document.documentElement.dataset.magic=level;},[level]);return null;}

@@ -1,0 +1,2 @@
+/* Keep intensity choices separate without changing their shared pill treatment. */
+.muse-appearance-material [role="group"][aria-label="Muse Magic"] { display:flex; flex-wrap:wrap; gap:var(--space-2); margin-block:var(--space-3); }

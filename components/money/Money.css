@@ -27,15 +27,15 @@
 .muse-money-ribbon { display:flex; height:14px; border:1px solid var(--glass-border); border-radius:var(--pill-radius); overflow:hidden; background:var(--surface-subtle); margin:var(--space-4) 0 var(--space-3); }
 .muse-money-ribbon > span { background:linear-gradient(105deg,var(--money-accent),color-mix(in srgb,var(--money-accent) 75%,var(--glass-edge))); }
 .muse-money-ribbon .muse-money-unallocated { background:var(--surface-control); }
-.muse-money-ribbon-legend { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--space-2) var(--space-4); list-style:none; margin:0; padding:0; font-size:.7rem; }
+.muse-money-ribbon-legend { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--space-2) var(--space-4); list-style:none; margin:0; padding:0; font-size:.875rem; }
 .muse-money-ribbon-legend li { display:flex; align-items:center; gap:6px; color:var(--text-muted); }
 .muse-money-ribbon-legend strong { margin-left:auto; color:var(--foreground); font-weight:550; }
 .muse-money-color-dot,.muse-money-ribbon-legend i,.muse-money-allocation-name i { display:inline-block; flex-shrink:0; width:7px; height:7px; border-radius:50%; background:var(--money-accent); box-shadow:0 0 7px color-mix(in srgb,var(--money-accent) 24%,transparent); }
 .muse-money-remaining { display:flex; align-items:center; gap:var(--space-2); margin:var(--space-4) 0 0; font-size:.78rem; color:var(--link-ink); }
 .muse-money-chart { display:grid; gap:var(--space-3); }
-.muse-money-chart > div > div:first-child { display:flex; justify-content:space-between; gap:var(--space-3); margin-bottom:5px; font-size:.72rem; }
-.muse-money-chart strong { font-weight:550; }
-.muse-money-chart small { color:var(--text-muted); font-size:.65rem; }
+.muse-money-chart > div > div:first-child { display:flex; justify-content:space-between; gap:var(--space-3); margin-bottom:5px; font-size:.875rem; }
+.muse-money-chart strong { font-weight:550; font-variant-numeric:tabular-nums; }
+.muse-money-chart small { color:var(--text-muted); font-size:.8rem; }
 .muse-money-bar-track,.muse-money-utilization { height:7px; border-radius:var(--pill-radius); background:var(--surface-subtle); overflow:hidden; }
 .muse-money-bar-track span { display:block; height:100%; border-radius:inherit; background:var(--money-accent); }
 .muse-money-plan-bar { margin-bottom:4px; }
@@ -65,7 +65,7 @@
 .muse-money-bills { margin-top:var(--space-4); }
 .muse-money-card-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--space-4); align-items:start; margin-bottom:var(--space-4); }
 .muse-money-card-facts { display:grid; gap:var(--space-2); margin-block:var(--space-4); }
-.muse-money-card-facts > div { display:flex; justify-content:space-between; align-items:baseline; gap:var(--space-3); font-size:.72rem; }
+.muse-money-card-facts > div { display:flex; justify-content:space-between; align-items:baseline; gap:var(--space-3); font-size:.875rem; }
 .muse-money-card-facts dt { color:var(--text-muted); }
 .muse-money-card-facts dd { margin:0; text-align:right; }
 .muse-money-payment-history li,.muse-money-taxonomy li { display:flex; align-items:center; justify-content:space-between; gap:var(--space-2); font-size:.72rem; border-bottom:1px solid var(--divider); }
@@ -144,12 +144,12 @@
 .muse-paycheck-navigation .muse-money-paycheck-choices { flex:0 1 auto; width:fit-content; min-width:0; max-width:100%; margin:0; display:grid; grid-template-columns:repeat(3,minmax(0,180px)); overflow:visible; }
 .muse-paycheck-navigation .choice-button { width:100%; max-width:100%; min-width:0; align-items:center; justify-content:center; text-align:center; white-space:normal; gap:var(--space-1); padding:var(--space-2) var(--space-3); }
 .muse-paycheck-navigation .choice-button > span { font-size:.6rem; text-transform:uppercase; letter-spacing:.05em; color:var(--text-muted); }
-.muse-paycheck-navigation .choice-button strong { max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:.84rem; }
+.muse-paycheck-navigation .choice-button strong { max-width:100%; white-space:normal; overflow-wrap:anywhere; font-size:.875rem; }
 .muse-paycheck-navigation .choice-button small { max-width:100%; font-size:.68rem; color:var(--text-muted); }
 .muse-paycheck-plan > .muse-money-panel-heading h2 { font-size:1.35rem; }
 .muse-paycheck-period { font-size:.94rem; color:var(--foreground); font-weight:550; }
 .muse-paycheck-income-context { display:flex; flex-wrap:wrap; gap:var(--space-2); font-size:.83rem; color:var(--text-muted); margin-top:var(--space-2); }
-.muse-paychecks-view .muse-money-ribbon-legend { font-size:.8rem; }
+.muse-paychecks-view .muse-money-ribbon-legend { font-size:.875rem; }
 .muse-paychecks-view .muse-money-remaining { font-size:.92rem; margin-bottom:var(--space-4); }
 /* Allocation identity keeps name and category in one inline group. */
 .muse-paychecks-view .muse-money-allocation-header,.muse-paychecks-view .muse-money-allocation-row { display:grid; grid-template-columns:minmax(0,1fr) minmax(90px,.22fr) minmax(105px,.25fr) 44px; gap:var(--space-3); align-items:center; }

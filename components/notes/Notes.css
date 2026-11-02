@@ -73,3 +73,9 @@
 @container muse-content (max-width:500px) { .muse-note-save { display:none; }.muse-note-action-buttons { gap:0; }.muse-notes-editor-actions { gap:4px; } }
 
 .muse-notes-workspace {position:relative;}.muse-notes-action-feedback {position:absolute;right:150px;top:28px;pointer-events:none;z-index:5;}
+
+/* Empty editor actions occupy the same top edge as a selected note. */
+.muse-notes-editor-empty { position:relative; align-items:stretch; }
+.muse-notes-editor-empty > .muse-notes-editor-actions { position:absolute; inset:0 0 auto; }
+.muse-notes-empty-content { display:flex; flex-direction:column; align-items:center; text-align:center; gap:var(--space-3); min-width:0; padding-top:calc(44px + var(--space-3)); }
+.muse-notes-empty-content > :is(h2,p) { margin:0; }

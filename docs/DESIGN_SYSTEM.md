@@ -322,7 +322,7 @@ See [ARCHITECTURE_AUDIT](ARCHITECTURE_AUDIT.md) for observed state/UX gaps and [
 
 ## Money preview and picker containment
 
-Money Overview keeps authored independent content-driven stacks: existing Current paycheck → Recorded spending → Recurring at left; existing Coming up → Plan / actual at right. Cards use natural height; no shared row reservations or card equalization. Recent Spending follows the entire upper region with the normal section gap. A taller left stack necessarily leaves space below the shorter right stack while Recent Spending remains full-width; report that imbalance rather than silently moving cards, padding empty regions or stretching charts.
+Money Overview follows the later approved Session 2 composition: Current paycheck and Coming up form the first desktop pair; Recorded spending and Plan / actual begin on the same second-row boundary. Recurring is full-width afterward, followed by Recent spending. Cards retain natural heights and standard token gutters; never stretch cards or add filler to disguise differing content heights. Narrow screens stack in DOM reading order. Recurring summary rows share label, right-aligned tabular amount, and metadata tracks, with metadata wrapping below on narrow screens.
 
 Coming up is a bounded preview using the Bills ledger language: readable clickable name, separate readable due date and right-aligned tabular amount, subtle separators and a focus ring on the real name control. Keep + Bill and current obligation selection/calculation behavior; do not add management actions. Paycheck navigation keeps three compact centered groups (small Previous/Current/Next label, name, readable range), theme-aware selection and a separate Past Paychecks menu. Bound maximum widths rather than consuming every spare pixel; narrow tracks compress gracefully and longer names retain their full tooltip.
 
@@ -393,3 +393,11 @@ Use saturated cyan/turquoise, hot pink, ultraviolet and lime in icons, progress,
 ## Final theme-picker descriptions
 
 All nine themes expose one approved `subtitle` in `lib/themes.ts`, rendered directly beneath the unchanged name by the existing picker and Appearance chooser. Birthday variant metadata remains intact but its old short caption is replaced by the approved description. Preserve names/IDs/order/swatches and official birthday MuseStar decoration. Subtitles use the existing small secondary type, natural wrapping and content-height menu rows. Do not change theme paint or selection/persistence behavior for copy updates.
+
+## Focused workspace alignment polish
+
+Money financial labels use readable interface type (about 14px), secondary chart metadata about 13px, and tabular numeric values; compact paycheck selectors wrap long names instead of permanently truncating them. Preserve their existing selection and history-menu behavior.
+
+Task Details pairs labels and controls on shared desktop tracks so the planned-date Move action cannot displace its input relative to Due date. Workspace/Group and Time slot/Estimate remain distinct pairs; narrow screens stack in reading order. Existing controls retain comfortable targets and drawer scrolling.
+
+Muse Magic intensity choices use a wrapping flex group with the existing 8px token gap in both directions. Notes empty-editor actions occupy the editor’s top-right header independently of the horizontally centered message group; preserve its established vertical placement and the selected-note editor behavior.
