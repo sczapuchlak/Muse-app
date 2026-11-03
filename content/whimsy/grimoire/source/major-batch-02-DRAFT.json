@@ -1,0 +1,433 @@
+{
+  "collection": "Muse Tarot Grimoire",
+  "deck": "Rider–Waite–Smith",
+  "batch": "major-02",
+  "editorialVoice": "The Enchanted Scholar",
+  "status": "draft—NOT APPROVED OR FOR IMPORT",
+  "schemaNote": "Editorial transport format only. Codex must map this to the existing Muse schema; preserve existing canonical IDs, art, personal notes, and user records. Do not automatically publish.",
+  "sourceMethod": "Historical and image-description claims checked against A. E. Waite’s Pictorial Key Parts II/III, with supplementary identified museum and publisher references; modern reflective readings are explicitly interpretive. Remaining image-by-image asset mapping and independent review are not completed.",
+  "cards": [
+    {
+      "id": "tarot-major-07",
+      "number": 7,
+      "name": "The Chariot",
+      "arcana": "Major Arcana",
+      "subtitle": "The Art of Steering",
+      "editorialStatus": "draft",
+      "reviewBatch": "major-02",
+      "candidateVersion": 1,
+      "provenance": "original Muse editorial candidate; not previously approved",
+      "keywords": {
+        "upright": [
+          "Direction",
+          "Resolve",
+          "Discipline",
+          "Momentum",
+          "Integration"
+        ],
+        "reversed": [
+          "Overcontrol",
+          "Divided aims",
+          "Exhaustion",
+          "Drift",
+          "Recalibration"
+        ]
+      },
+      "chapters": {
+        "story": "A figure stands inside a chariot beneath a canopy of stars. In front wait two sphinxes, one dark, one pale, facing subtly different directions. The driver has neither reins nor an ordinary road to follow. The scene looks like a triumphal departure, but it is also a riddle: what moves this vehicle, and who decides where it goes?\n\nThe Chariot is often described as victory through will. Its deeper subject, however, is direction. Victory is meaningless if the traveler cannot say what has been won, what has been sacrificed, and whether the destination was worth the journey. A person can pursue a goal with magnificent discipline and still discover they have been racing toward someone else's definition of success.\n\nHistorically, triumphal chariots belong to a broad European language of conquest and public honor. Waite's Rider–Waite–Smith image draws on that visual inheritance and adds distinctly esoteric details. Contemporary readings often turn public conquest inward: not dominion over other people, but the ability to navigate competing desires, obligations, and fears. The Chariot asks not simply whether you can move. It asks whether you can steer.",
+        "symbolism": "**The paired sphinxes.** One black and one white sphinx sit before the vehicle. Their contrast may invite a reading of competing forces or different needs; the exact psychological lesson is modern interpretation, not a label printed on the image. Unlike ordinary draft animals, the sphinxes introduce an atmosphere of riddles and discernment.\n\n**The absent reins.** No reins visibly connect the driver to the sphinxes. Readers often see disciplined attention rather than physical force as the means of guidance, although the painting does not prescribe one technique.\n\n**The starry canopy.** Stars cover the chariot's canopy. Waite describes the canopy and its heavenly imagery in a spiritual frame; the modern viewer may see a reminder that a journey needs a guiding value as well as a destination.\n\n**The city, armor, and water.** The figure is armored; a walled settlement stands behind, with water in the landscape. The armor suggests preparedness; the city, a place from which one departs or receives recognition. Neither proves a literal battle or journey in the reader's future.",
+        "meanings": {
+          "upright": "Upright, The Chariot can mark a moment when intention needs an actual course. You may be managing competing priorities, entering a demanding season, or committing to a direction after a period of indecision. This is not an instruction to become louder, harsher, or busier. It is a call to decide which commitments deserve to pull the vehicle forward.\n\nThink of the sphinxes as tensions that cannot simply be erased: ambition and rest, loyalty and independence, speed and care. A disciplined response may involve an explicit plan, a boundary, and a way to measure progress without making your entire worth depend on the result.\n\nIn a relationship, this card might favor a frank conversation about where two people hope to go. At work, it might invite a clear priority instead of a dozen competing initiatives. The victory suggested by the card is not guaranteed. You remain responsible for how you travel—and for noticing when the road changes.",
+          "reversed": "Reversed, the Chariot may reveal that momentum has outpaced direction. A person can be relentlessly productive while quietly losing sight of what matters. Alternately, the problem may be hesitation: the goal is clear, but conflicting demands or fear of commitment have left the vehicle stationary.\n\nA more uncomfortable reading concerns control. If you are trying to steer another person's choices, the card may ask where your responsibility ends. If you are imposing a punishing pace upon yourself, it may be time to distinguish discipline from self-exhaustion.\n\nLook for the actual obstacle. Is the destination vague? Are the resources insufficient? Have you taken on obligations that cannot coexist? Or is the next step genuinely available but difficult to claim? The reversal is not a prediction of defeat. It is an opportunity to correct course before effort becomes a substitute for judgment."
+        },
+        "inYourLife": "**Love:** Upright may suggest shared direction and mature initiative; reversed may raise questions about incompatible plans, pressure, or trying to manage another person's autonomy.\n\n**Work and study:** Choose a primary objective, define milestones, and distinguish deliberate progress from performative busyness. Reversed, revisit the workload before adding another commitment.\n\n**Resources:** A goal that requires travel, money, or stamina needs a real budget and timeline. A bold intention does not repeal a constraint.\n\n**Reading example:** Asked whether to lead a demanding project, The Chariot might invite a written scope, a definition of success, and agreement about who is actually driving which decisions.",
+        "hiddenKnowledge": "**Triumph without a literal war.** Chariots and triumphal imagery were historically associated with public victory. Smith's card transforms that inheritance through a celestial canopy, ritual-looking armor, and sphinxes rather than horses. The result is a deliberately strange victory scene, not a photograph of an actual procession.\n\n**A card of self-rule, not domination.** Waite gives The Chariot an exalted spiritual context even while his divinatory list includes triumph and success. The modern idea of coordinating inner contradictions is a useful psychological extension, not a quotation from a medieval tarot manual.\n\n**Related paths:** Compare The Chariot with Strength: one emphasizes direction and resolve, the other a subtler kind of fortitude. Compare it with The Emperor: structures may protect a journey, but structure and movement are not the same skill.",
+        "reflection": "**Upright questions:** What destination is truly mine? Which competing demands need negotiation rather than denial? What would sustainable forward movement look like?\n\n**Reversed questions:** Am I controlling what is not mine to control? Has my pace hidden an unclear purpose? Which course correction would reduce unnecessary strain?\n\n**Journal ritual — The Map and the Reins:** Write your destination at the top of a page. Under it, name two forces pulling in different directions. Draw a boundary around what you can actually influence. Choose one step that respects both ambition and limitation.\n\n*The road is not an argument you win by shouting at it.*"
+      },
+      "misconception": "The Chariot does not mean victory at any cost, nor does it promise that determination alone overcomes structural or practical barriers.",
+      "relatedCardIds": [
+        "tarot-major-04",
+        "tarot-major-08",
+        "tarot-major-14"
+      ],
+      "readingSummary": {
+        "upright": "Direction: consider the context and choose a grounded response.",
+        "reversed": "Overcontrol: test which possibility fits the available evidence."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "supports": "Waite’s description of visual symbols and esoteric interpretation"
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite’s period divinatory meanings, including reversals"
+        }
+      ]
+    },
+    {
+      "id": "tarot-major-08",
+      "number": 8,
+      "name": "Strength",
+      "arcana": "Major Arcana",
+      "subtitle": "The Gentle Hand",
+      "editorialStatus": "draft",
+      "reviewBatch": "major-02",
+      "candidateVersion": 1,
+      "provenance": "original Muse editorial candidate; not previously approved",
+      "keywords": {
+        "upright": [
+          "Fortitude",
+          "Compassion",
+          "Patience",
+          "Courage",
+          "Restraint"
+        ],
+        "reversed": [
+          "Depletion",
+          "Suppressed anger",
+          "Self-doubt",
+          "Force",
+          "Repair"
+        ]
+      },
+      "chapters": {
+        "story": "A woman calmly tends to the mouth of a lion. She is not dressed for battle. Her hands appear gentle, and a garland of flowers connects the scene. The animal remains a lion: large, formidable, and unmistakably capable of harm. Yet the image refuses the familiar story in which courage must look like conquest.\n\nStrength is sometimes mistaken for a command to endure anything. It is much more searching than that. What is courage when anger is justified? What is patience when a limit needs defending? Can you approach a difficult feeling without making it your ruler—or pretending it does not exist?\n\nIn the Rider–Waite–Smith deck, Strength is VIII, while some older tarot patterns place it at XI and Justice at VIII. Waite acknowledges the interchange but does not offer a public explanation for all his reasons. The card is also called Fortitude, an old name that connects it with the moral virtue of perseverance. The modern insight is not that tenderness always wins. It is that force is only one of many possible ways to meet what is powerful.",
+        "symbolism": "**The lion.** The animal's physical power is plain. Waite describes it in relation to human passions and spiritual fortitude. A modern reader may consider strong feelings, instinct, or an intimidating situation; the lion is not proof that emotion is dangerous.\n\n**The hands.** The figure meets the lion's jaws directly and without a visible weapon. Interpretations differ over whether she is opening or closing them. The uncertainty matters: calm contact is visible, but the exact action need not be forced into a single moral.\n\n**The infinity sign.** A figure eight floats above her head, echoing The Magician. Waite reads this as spiritually significant; modern readings may associate it with sustained practice rather than a dramatic one-time victory.\n\n**The floral garland.** Flowers bind and adorn the scene. Waite calls attention to their gentle restraint. A reader might think of care, relationship, or the paradox of being firm without brutality.",
+        "meanings": {
+          "upright": "Upright, Strength can indicate the slow kind of courage that rarely receives a trumpet fanfare. You may need to stay present with discomfort, speak plainly during a tense conversation, or persist in a difficult undertaking without punishing yourself for being human.\n\nCompassion here does not mean surrender. A calm boundary can be stronger than a dramatic confrontation. Patience may be appropriate when learning an unfamiliar skill, supporting a loved one, or rebuilding confidence after a setback. But patience is not a moral duty to remain in an unsafe situation. Sometimes fortitude means leaving or asking for help.\n\nThe card's pairing of human and animal invites you to consider your relationship with intense feelings. You need not deny anger, appetite, fear, or grief in order to act wisely. Acknowledge what they tell you, then choose how to respond. Strength is the space between the feeling and the action.",
+          "reversed": "Reversed, Strength may point to exhaustion disguised as a lack of character. Perhaps you have been asking yourself to manage too much for too long. Or perhaps anger has been forced underground, emerging as resentment or sudden eruptions because it was never allowed an honest name.\n\nAnother possibility is fear of your own capability. You may have learned to appear agreeable at the cost of necessary self-advocacy. At the opposite extreme, the need to prove strength may be encouraging force where patience or assistance would serve better.\n\nThe image does not diagnose an emotional problem or imply that difficult feelings make you weak. Look at the context. What is genuinely being asked of you? Is rest needed? A boundary? A conversation? A different support structure? The reversal may be less about taming the lion than about noticing how tired both figures have become."
+        },
+        "inYourLife": "**Love:** Upright encourages tenderness plus boundaries; reversed asks whether patience has become self-erasure or a conflict is being handled through suppression.\n\n**Work:** Fortitude might mean steady craftsmanship under pressure. Reversed, consider whether a workload is unsustainable rather than treating burnout as a personal failing.\n\n**Inner life:** Courage may look like admitting fear and proceeding carefully, or acknowledging when proceeding would be unwise.\n\n**Reading example:** Asked about addressing a recurring disagreement, Strength suggests planning a direct conversation with room for both feeling and a clear limit—not merely swallowing irritation until it passes.",
+        "hiddenKnowledge": "**The numbering question.** In many Marseille-style decks, Justice is VIII and Strength XI. Rider–Waite–Smith reverses them. Both sequences have historical standing; this entry follows the specific RWS deck rather than claiming one arrangement is universally correct.\n\n**Fortitude as a virtue.** The older name links the card to an ethical tradition concerned with courage in adversity. Waite's own explanation is deeply theological and does not reduce Strength to self-confidence.\n\n**A useful contrast:** The Chariot often stages successful direction on a grand scale. Strength brings the question close enough to touch. One can steer a campaign and still struggle with an honest feeling. One can also act bravely without an audience.",
+        "reflection": "**Upright questions:** Where does steadiness matter more than spectacle? Which feeling needs acknowledgment rather than suppression? What boundary would allow compassion without self-abandonment?\n\n**Reversed questions:** Am I depleted rather than incapable? Where am I confusing control with courage? What support would make the next step humane?\n\n**Journal ritual — A Conversation with the Lion:** Name one feeling you have called inconvenient. Write what it may be protecting. Then name a response that honors the information without allowing the feeling to dictate every action.\n\n*Not every brave act makes a noise.*"
+      },
+      "misconception": "Strength is not an instruction to tolerate harm, and calmness is not the sole measure of courage.",
+      "relatedCardIds": [
+        "tarot-major-07",
+        "tarot-major-11",
+        "tarot-major-15"
+      ],
+      "readingSummary": {
+        "upright": "Fortitude: consider the context and choose a grounded response.",
+        "reversed": "Depletion: test which possibility fits the available evidence."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "supports": "Waite’s description of visual symbols and esoteric interpretation"
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite’s period divinatory meanings, including reversals"
+        },
+        {
+          "url": "https://www.usgamesinc.com/files/attachments/1485/PRWS78_booklet_Update.pdf",
+          "supports": "RWS numbering distinction between Strength VIII and Justice XI"
+        }
+      ]
+    },
+    {
+      "id": "tarot-major-09",
+      "number": 9,
+      "name": "The Hermit",
+      "arcana": "Major Arcana",
+      "subtitle": "The Keeper of the Lamp",
+      "editorialStatus": "draft",
+      "reviewBatch": "major-02",
+      "candidateVersion": 1,
+      "provenance": "original Muse editorial candidate; not previously approved",
+      "keywords": {
+        "upright": [
+          "Solitude",
+          "Inquiry",
+          "Discernment",
+          "Wisdom",
+          "Perspective"
+        ],
+        "reversed": [
+          "Isolation",
+          "Avoidance",
+          "Overthinking",
+          "Disconnectedness",
+          "Re-entry"
+        ]
+      },
+      "chapters": {
+        "story": "High on a barren height, an old figure holds a lamp before the dark. The light is modest. It illuminates a small part of a vast landscape, not the entire world. The Hermit stands still long enough to look carefully, and the card dares to suggest that this may be a form of movement.\n\nThe Hermit is not simply someone who dislikes company. In European traditions, the solitary elder and the lantern can evoke time, withdrawal, pilgrimage, and contemplation. Waite's interpretation particularly emphasizes a guiding light and the spiritual search. Modern readings often place the question closer to home: what becomes audible when you stop seeking everyone else's verdict?\n\nThere is a difference between choosing privacy for discernment and withdrawing because connection feels impossible. The Hermit's wisdom depends upon knowing which one you are doing. His lantern is useful precisely because there is darkness; pretending to know the entire path would make it unnecessary. The card invites thoughtful solitude, not the invention of certainty.",
+        "symbolism": "**The lantern.** A six-pointed star appears within the lamp in the RWS design. Waite treats it as the light of a higher ideal; modern reflection may use it as a metaphor for values or a limited but dependable understanding.\n\n**The staff.** A walking stick supports the figure. The symbol can invite questions about learned experience and the supports that make an independent search possible.\n\n**The height and cold landscape.** The Hermit stands in a sparse, elevated setting. Distance grants perspective, but it also separates. Both benefits and costs belong to solitude.\n\n**The hooded elder.** Age may conventionally suggest accumulated experience, yet wisdom is not guaranteed by years, nor available only to solitary people. The figure is an archetypal image, not a rule about who may know.",
+        "meanings": {
+          "upright": "Upright, The Hermit can recommend a period of purposeful inquiry. Perhaps a decision has become crowded with outside advice, a relationship needs clearer self-understanding, or a demanding project would benefit from quiet concentration. Step away long enough to distinguish genuine information from noise.\n\nThis is not withdrawal for its own sake. The aim is to return with something more reliable: a clarified value, an unanswered question worth pursuing, an improved sense of limits. The lamp's small radius is a reminder that wise judgment often begins with admitting what remains unlit.\n\nYou may seek a mentor, read closely, walk alone, or make time for an unhurried journal entry. The form matters less than the quality of attention. The Hermit is not necessarily an introvert; he is someone temporarily unwilling to let public urgency replace private examination.",
+          "reversed": "Reversed, the Hermit asks whether distance has stopped teaching you anything. Solitude may have become avoidance, self-protection may have hardened into isolation, or endless research may be shielding you from the risk of acting.\n\nAlternatively, the reversal may describe an inability to find even a small pocket of quiet. Constant availability and unsolicited opinions can make reflection impossible. The question is not whether you are alone, but whether your present relationship to solitude serves understanding and care.\n\nIf you have been withdrawing, consider a modest return: one trustworthy conversation, one request for assistance, one decision tested in the world. If you are overwhelmed by social demands, protect a period of silence without apologizing for it. The lantern is meant to help you navigate, not become a room in which you must live forever."
+        },
+        "inYourLife": "**Love:** Time alone can clarify your needs; reversed may ask whether silence is withholding a necessary conversation or whether a relationship leaves too little room for individuality.\n\n**Work and learning:** Favor deliberate study, independent thought, and a mentor with real expertise. Reversed, watch for research that never becomes an experiment.\n\n**Well-being:** Quiet can restore attention, but prolonged isolation may warrant support rather than romanticization.\n\n**Reading example:** Asked whether to change careers, The Hermit might suggest clarifying nonnegotiable values and gathering informed perspectives before announcing a sweeping decision.",
+        "hiddenKnowledge": "**The light is not universal certainty.** Waite's description connects the lamp with a luminous higher ideal. A modern reader can understand the image as careful discernment without adopting Waite's esoteric worldview as historical fact.\n\n**Solitude versus secrecy.** The Hermit differs from The High Priestess, whose partly veiled knowledge invites observation of what is hidden. The Hermit visibly carries a light: he is seeking and perhaps offering guidance, not simply guarding a secret.\n\n**The bridge to The Wheel.** The Hermit offers stillness before the Wheel's sudden motion. Reflection cannot prevent change, but may help a person recognize their values when circumstances begin to turn.",
+        "reflection": "**Upright questions:** Whose voice has become louder than my own? What question deserves patient study? What have I learned that I could share responsibly?\n\n**Reversed questions:** Is my solitude renewing me or shrinking my world? What decision am I endlessly preparing for? Who could help without taking over?\n\n**Journal ritual — The Radius of the Lamp:** Write three things you know, three things you suspect, and three things you do not know. Circle one uncertainty you can investigate honestly. Leave the rest unclaimed.\n\n*Wisdom often begins at the edge of the light.*"
+      },
+      "misconception": "The Hermit does not equate isolation with enlightenment or require a person to solve every difficulty alone.",
+      "relatedCardIds": [
+        "tarot-major-02",
+        "tarot-major-10",
+        "tarot-major-12"
+      ],
+      "readingSummary": {
+        "upright": "Solitude: consider the context and choose a grounded response.",
+        "reversed": "Isolation: test which possibility fits the available evidence."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "supports": "Waite’s description of visual symbols and esoteric interpretation"
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite’s period divinatory meanings, including reversals"
+        }
+      ]
+    },
+    {
+      "id": "tarot-major-10",
+      "number": 10,
+      "name": "Wheel of Fortune",
+      "arcana": "Major Arcana",
+      "subtitle": "The Turning of Things",
+      "editorialStatus": "draft",
+      "reviewBatch": "major-02",
+      "candidateVersion": 1,
+      "provenance": "original Muse editorial candidate; not previously approved",
+      "keywords": {
+        "upright": [
+          "Change",
+          "Cycles",
+          "Contingency",
+          "Opportunity",
+          "Perspective"
+        ],
+        "reversed": [
+          "Resistance",
+          "Instability",
+          "Repetition",
+          "Uncertainty",
+          "Adaptation"
+        ]
+      },
+      "chapters": {
+        "story": "At the center of the card floats a great wheel marked by letters and symbols. Strange figures occupy its edges. Around it, winged beings read from books in the corners of the sky. The scene does not offer a single human hero controlling events. Instead, it presents a world in motion: difficult to predict, impossible to freeze, and larger than one person's wishes.\n\nThe Wheel of Fortune inherits an old European allegory. Medieval and Renaissance images of Fortuna's wheel portrayed the rise and fall of worldly rank, reminding kings and ordinary people alike that circumstance can overturn certainty. Waite and Smith reinterpret that visual tradition through an occult vocabulary, adding Egyptian-looking and scriptural figures.\n\nModern readings often call this a card of luck. That is not wrong as a loose shorthand, but it can be too tidy. A turning wheel offers movement, not a personalized guarantee of reward. Sometimes change opens a door. Sometimes it exposes fragility. The lesson is to distinguish what you can influence from what no reasonable amount of planning could have commanded.",
+        "symbolism": "**The central wheel.** Its circular motion is the principal symbol; beginning and ending become harder to distinguish. The printed letters include T, A, R, O and Hebrew characters. Traditions interpret their arrangement esoterically; they do not constitute a historical proof of any hidden language of destiny.\n\n**The descending serpent and rising figure.** A serpent curves down one side, while a jackal-headed figure is visible below. Waite identifies the latter with Hermanubis. The figures suggest motion and transformation, though the particular occult explanations belong to his period.\n\n**The crowned sphinx.** A sphinx sits on top of the wheel, holding a sword. Waite describes its significance in terms of equilibrium; a modern reader may consider the wish for understanding amid unpredictability.\n\n**The four corner beings.** A human/angel, eagle, lion, and bull appear with books, drawing on traditional Christian visionary iconography. Their presence turns a simple wheel of luck into an image with overlapping religious and occult histories.",
+        "meanings": {
+          "upright": "Upright, the Wheel of Fortune may point to a change in circumstances, an opportunity that appears through timing, or a reminder that no personal plan can account for every variable. A job opening, an unexpected interruption, a change in a relationship's rhythm—these can all make the familiar landscape look new.\n\nThe card does not tell you whether the turn will be fortunate. Instead, ask what is changing and what responses remain available. If an opportunity opens, assess it rather than assuming it must be fate. If circumstances are difficult, do not turn the card into a claim that hardship was deserved or cosmically arranged.\n\nThe Wheel is especially valuable when a reader has confused responsibility with total control. You can prepare, choose, repair, and adapt. You cannot abolish chance, social conditions, illness, other people's decisions, or the ordinary surprises of a changing world.",
+          "reversed": "Reversed, the Wheel can evoke the disorientation of repeated setbacks, resistant habits, or a cycle that keeps returning. Yet describing a difficulty as a 'cycle' does not explain its causes. The work is to notice whether the pattern comes from circumstance, an entrenched behavior, a system around you, or some combination.\n\nYou might be trying to preserve a situation that has already changed. Or you might be blaming fate for a part of life where one small intervention is possible. Conversely, there are moments when circumstances are genuinely beyond your power and self-blame is cruelly misplaced.\n\nA reversed Wheel therefore asks for more careful attribution, not more superstitious fear. What turned? What stayed the same? Which support, contingency plan, or boundary would help you meet the next turn? Adaptation is an achievement even when it does not look like triumph."
+        },
+        "inYourLife": "**Love:** A relationship can enter a new phase without anyone becoming its villain. Reversed, examine repeated dynamics while resisting simplistic 'destiny' stories.\n\n**Work:** Timing and external conditions matter. Prepare for openings and setbacks; do not treat success as proof of virtue or disappointment as proof of inadequacy.\n\n**Money:** Uncertainty makes emergency buffers and realistic planning useful; a card cannot identify market movements or promise winnings.\n\n**Reading example:** Asked about an unexpected opportunity, the Wheel may encourage evaluating timing, trade-offs, and alternatives before assigning the event a cosmic meaning.",
+        "hiddenKnowledge": "**Fortuna's medieval ancestry.** The allegorical Wheel of Fortune appears in medieval European art and literature, notably in the tradition surrounding Boethius's *Consolation of Philosophy*. This broad ancestry is distinct from Waite's specific wheel design.\n\n**An image with several sources.** The corner creatures recall the four living beings of biblical visionary traditions; the serpent, sphinx, and jackal-headed figure reflect Waite's esoteric synthesis. They should not be presented as one intact ancient Egyptian teaching.\n\n**Against the mythology of deserving.** The card is particularly useful for challenging the belief that every success is earned and every misfortune is a personal failure. Fortuna's wheel turns through kings and beggars without consulting their résumés.",
+        "reflection": "**Upright questions:** What has changed outside my control? Where is there a real opening worth examining? What remains steady as circumstances turn?\n\n**Reversed questions:** Which pattern recurs, and what evidence explains it? Am I resisting a change that has already happened? What support would make uncertainty less costly?\n\n**Journal ritual — The Turning Page:** Draw two columns: 'Within my influence' and 'Beyond my influence.' Place your current worry honestly between them, then choose one response from the first column.\n\n*The wheel turns. That is not the same as knowing why.*"
+      },
+      "misconception": "The Wheel of Fortune does not prove that events are predestined, morally deserved, or about to become lucky.",
+      "relatedCardIds": [
+        "tarot-major-09",
+        "tarot-major-11",
+        "tarot-major-16"
+      ],
+      "readingSummary": {
+        "upright": "Change: consider the context and choose a grounded response.",
+        "reversed": "Resistance: test which possibility fits the available evidence."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "supports": "Waite’s description of visual symbols and esoteric interpretation"
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite’s period divinatory meanings, including reversals"
+        },
+        {
+          "url": "https://www.britannica.com/topic/Fortuna-Roman-goddess",
+          "supports": "Fortuna as a historical personification of fortune; contextual background, not direct RWS attribution"
+        }
+      ]
+    },
+    {
+      "id": "tarot-major-11",
+      "number": 11,
+      "name": "Justice",
+      "arcana": "Major Arcana",
+      "subtitle": "The Measure and the Mirror",
+      "editorialStatus": "draft",
+      "reviewBatch": "major-02",
+      "candidateVersion": 1,
+      "provenance": "original Muse editorial candidate; not previously approved",
+      "keywords": {
+        "upright": [
+          "Fairness",
+          "Accountability",
+          "Clarity",
+          "Consequences",
+          "Discernment"
+        ],
+        "reversed": [
+          "Bias",
+          "Rationalization",
+          "Imbalance",
+          "Evasion",
+          "Repair"
+        ]
+      },
+      "chapters": {
+        "story": "Justice sits between pillars, upright and frontal. A sword rises in one hand, scales hang from the other. There is almost no narrative distraction. Unlike the Chariot, no journey unfolds; unlike the Wheel, no creatures tumble through change. The composition insists upon attention to a decision and what it requires.\n\nThe image belongs to a long European tradition of personifying Justice as a seated or standing figure with scales and a sword. In the Rider–Waite–Smith deck, her eyes are uncovered. The famous blindfold belongs to other depictions, not this one. Waite placed Justice at XI, exchanging its common Marseille-style position of VIII with Strength.\n\nModern readings often summarize this card as karma. That shortcut can make it sound as though a cosmic judge guarantees that everyone receives precisely what they deserve. Human justice is more difficult, more imperfect, and more dependent upon evidence, power, institutions, and courageous decisions. This card is most useful when it asks what fairness would require of us—not when it pretends fairness already rules the world.",
+        "symbolism": "**The scales.** The scales signal weighing and comparison. They invite scrutiny of evidence, competing obligations, and the effects of a choice. They are not a calculator that produces a universally agreed moral verdict.\n\n**The upright sword.** Justice holds a blade upright. In European iconography, the sword often represents the authority to enforce a judgment. As a reflection, it may raise the uncomfortable question of whether a conclusion will lead to action.\n\n**The uncovered eyes.** Smith's Justice does not wear a blindfold. Do not project the standard blindfolded statue onto this specific image. Her gaze can invite examination of what one is willing—or unwilling—to see.\n\n**The pillars and veil.** Architectural framing resembles other seated trumps, including The High Priestess. A reader may explore the relationship between inner discernment and public responsibility, but that is a modern thematic comparison.",
+        "meanings": {
+          "upright": "Upright, Justice may direct attention to evidence, accountability, and the concrete effects of decisions. Perhaps a misunderstanding needs a fair hearing. Perhaps a contract deserves careful reading. Perhaps you must own a mistake without turning that ownership into lifelong punishment.\n\nFairness is not merely an attitude. It has procedures: listen, verify, consider whose voice is missing, evaluate obligations, and be willing to revise a judgment when evidence changes. It also has limits. Two sides to a disagreement are not automatically equally responsible, and a neat compromise is not always just.\n\nJustice can ask for intellectual honesty in personal affairs and practical care in formal ones. If a legal or financial matter is involved, seek appropriate professional guidance rather than treating a reading as a verdict. The card offers a question about responsibility, not the outcome of a trial.",
+          "reversed": "Reversed, Justice may reveal a distorted scale. A person might be rationalizing a convenient conclusion, avoiding an obligation, accepting an unfair arrangement, or mistaking self-criticism for accountability.\n\nBut a reversal must not be used to accuse the reader or another person of dishonesty. Sometimes the imbalance is external: unequal bargaining power, an opaque process, or a system that fails to treat people fairly. In such situations, the ethical demand may be advocacy and support rather than self-correction.\n\nAsk what facts are verified, who benefits from the current account, and what kind of repair is realistically possible. An apology, a changed policy, a clarified agreement, or a careful refusal can all be more meaningful than symbolic guilt. Justice reversed offers no guarantee that wrongs will be righted. It challenges us not to disguise uncertainty as certainty."
+        },
+        "inYourLife": "**Love:** Discuss expectations and impact without turning the relationship into a courtroom. Reversed, check whether accountability is reciprocal or unevenly distributed.\n\n**Work:** Transparent criteria, accurate records, and clear commitments can prevent conflicts. Reversed, investigate procedural unfairness rather than automatically blaming individuals.\n\n**Money and agreements:** Read terms, preserve records, and get qualified advice for significant decisions. Tarot is not legal advice.\n\n**Reading example:** Asked how to address a broken promise, Justice may encourage naming the facts, listening to context, describing the effect, and agreeing upon a realistic form of repair.",
+        "hiddenKnowledge": "**An old allegory, a particular card.** Scales and swords long predate modern tarot. The RWS version draws upon that broader iconographic inheritance while presenting a distinctly unblindfolded Justice.\n\n**The exchange with Strength.** Many earlier decks put Justice at VIII and Strength at XI; RWS reverses this. The distinction matters when learners compare decks, but neither numbering is a universal historical law.\n\n**Why 'karma' is an imperfect shortcut.** Karma belongs to complex South Asian religious and philosophical traditions and should not be reduced to 'people get what they deserve.' The card can discuss consequences without borrowing that vocabulary loosely or assuming cosmic moral bookkeeping.",
+        "reflection": "**Upright questions:** What evidence deserves more weight? Whose perspective has not been fairly heard? What repair or decision would be proportionate?\n\n**Reversed questions:** Where am I defending a conclusion before examining the facts? Is the imbalance personal, structural, or both? What honest next step is available without promising perfect justice?\n\n**Journal ritual — The Two Scales:** Describe a current dilemma first as observable facts, then as values and obligations. Name one possible bias in your account. Write a decision you can explain without pretending the situation is simple.\n\n*A balanced scale must still be held by human hands.*"
+      },
+      "misconception": "Justice does not forecast a favorable legal outcome, prove that the universe rewards the good, or require falsely equal treatment of unequal harms.",
+      "relatedCardIds": [
+        "tarot-major-02",
+        "tarot-major-08",
+        "tarot-major-20"
+      ],
+      "readingSummary": {
+        "upright": "Fairness: consider the context and choose a grounded response.",
+        "reversed": "Bias: test which possibility fits the available evidence."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "supports": "Waite’s description of visual symbols and esoteric interpretation"
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite’s period divinatory meanings, including reversals"
+        },
+        {
+          "url": "https://www.usgamesinc.com/files/attachments/1485/PRWS78_booklet_Update.pdf",
+          "supports": "The RWS numbering interchange of Justice and Strength"
+        }
+      ]
+    },
+    {
+      "id": "tarot-major-12",
+      "number": 12,
+      "name": "The Hanged Man",
+      "arcana": "Major Arcana",
+      "subtitle": "A Different Vantage",
+      "editorialStatus": "draft",
+      "reviewBatch": "major-02",
+      "candidateVersion": 1,
+      "provenance": "original Muse editorial candidate; not previously approved",
+      "keywords": {
+        "upright": [
+          "Pause",
+          "Perspective",
+          "Surrender",
+          "Reassessment",
+          "Patience"
+        ],
+        "reversed": [
+          "Stagnation",
+          "Avoidance",
+          "Coercion",
+          "Martyrdom",
+          "Renewed agency"
+        ]
+      },
+      "chapters": {
+        "story": "A figure hangs by one foot from a living wooden support. His other leg folds across it; his hands are behind his back. Yet his face appears serene, and light circles his head. The image is unsettling because it refuses to settle into either punishment or peace. What kind of person hangs suspended and seems, somehow, to be looking at the world differently?\n\nIn earlier Italian tarot, a hanging figure could evoke the shame of a traitor, displayed upside down in a public image of disgrace. Surviving Renaissance cards and related pictorial conventions complicate any claim that the card always meant serene spiritual surrender. The Rider–Waite–Smith version dramatically changes the emotional register, emphasizing luminous contemplation.\n\nModern interpretations often speak of letting go. That can be wise, but only when freely chosen and situated in reality. Waiting can create insight; it can also cost dearly. The Hanged Man asks whether a pause is revealing something that motion concealed, and whether the person suspended has any choice about remaining there.",
+        "symbolism": "**The inverted body.** The figure's orientation is unambiguous, but the emotional meaning is not. A changed viewpoint is a useful modern reading; the posture also has a more punitive historical ancestry.\n\n**The bent leg.** One leg folds across the other, giving the body an orderly shape despite its inversion. Waite stresses the stillness and repose of the figure; a reader might notice composure amid unfamiliar conditions.\n\n**The halo.** Light rings the figure's head, a striking departure from images of ordinary punishment. Waite interprets this as spiritually meaningful, not as a literal prediction of enlightenment.\n\n**The living support.** Foliage appears on the wooden frame. Modern readings may take this as a suggestion that growth can occur in interruption; the observation alone does not prove what the artist intended.",
+        "meanings": {
+          "upright": "Upright, The Hanged Man can mark an interval in which the most useful action is to stop repeating an ineffective one. A familiar problem may require a different question, a willingness to learn from an unfamiliar perspective, or a temporary suspension of the urge to force a conclusion.\n\nThe card does not romanticize passivity. A productive pause is bounded by purpose: what are you observing, what assumptions are you testing, and when will you return to the decision? Sometimes insight appears when a person accepts that a desired outcome cannot be hurried. At other times a fresh vantage emerges through listening to someone whose experience differs from your own.\n\nSurrender, in this careful sense, means relinquishing a fantasy of total control—not abandoning your responsibilities or permitting harm. The Hanged Man offers a shift in relationship to the problem rather than a guarantee that the problem will vanish.",
+          "reversed": "Reversed, the card may speak to stagnation disguised as spiritual patience. You could be postponing a difficult choice, accepting an arrangement that no longer serves you, or calling a sacrifice noble because it feels easier than asking whether it is necessary.\n\nThere is another possibility: the pause has been imposed. Illness, caregiving, financial pressure, discrimination, or another person's choices may limit movement. In that situation, the ethical reading is not 'you chose this lesson.' It is to acknowledge constraint and seek options or support where possible.\n\nAsk who benefits from continued waiting, what insight has actually emerged, and whether the cost of the suspension remains acceptable. Sometimes the next wise act is continued patience. Sometimes it is setting a deadline, making a request, or stepping down from a role no one has the right to demand forever."
+        },
+        "inYourLife": "**Love:** A pause may create room to see a recurring dynamic; reversed, beware indefinite uncertainty presented as noble sacrifice.\n\n**Work and creativity:** Changing a premise can solve a stalled project. Reversed, distinguish research that yields insight from procrastination that protects you from feedback.\n\n**Resources:** Delay may have concrete costs. Measure them rather than assuming waiting is free.\n\n**Reading example:** Asked about a stalled collaboration, The Hanged Man may suggest hearing each participant's assumptions and identifying what decision can wait—and which cannot.",
+        "hiddenKnowledge": "**A darker historical ancestor.** The Morgan Library preserves a fifteenth-century Visconti–Sforza Hanged Man, evidence that the upside-down figure is much older than the RWS deck. In Italian visual culture, hanging by the foot could mark disgrace or treachery; the precise meaning of any single tarot example still requires care.\n\n**Waite's spiritual reframing.** In the early twentieth-century deck, the calm face and luminous head redirect the viewer toward suspension as a sacred or contemplative mystery. This is an interpretive transformation, not proof that medieval card players understood it that way.\n\n**The Hermit's counterpart.** The Hermit steps aside intentionally to seek light; The Hanged Man may experience a pause that is less voluntary. Both offer new perspectives, but neither should be used to erase real constraint.",
+        "reflection": "**Upright questions:** What assumption changes if I view this from another angle? Is a pause producing genuine insight? What would I learn by listening rather than insisting?\n\n**Reversed questions:** Who benefits from my continued suspension? Is my sacrifice freely chosen? What would make the difference between patient waiting and avoidant delay?\n\n**Journal ritual — Turn the Page:** Write an unresolved question. Beneath it, write the interpretation you most resist considering. Test it against the facts. Name one decision that can wait and one that deserves a date.\n\n*An altered view is valuable only if it helps you see.*"
+      },
+      "misconception": "The Hanged Man does not prescribe suffering, martyrdom, or permanent inaction as a route to wisdom.",
+      "relatedCardIds": [
+        "tarot-major-09",
+        "tarot-major-13",
+        "tarot-major-14"
+      ],
+      "readingSummary": {
+        "upright": "Pause: consider the context and choose a grounded response.",
+        "reversed": "Stagnation: test which possibility fits the available evidence."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "supports": "Waite’s description of visual symbols and esoteric interpretation"
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite’s period divinatory meanings, including reversals"
+        },
+        {
+          "url": "https://www.themorgan.org/collection/tarot-cards/the-hanged-man",
+          "supports": "Fifteenth-century surviving Hanged Man artwork in Visconti–Sforza collection"
+        }
+      ]
+    },
+    {
+      "id": "tarot-major-13",
+      "number": 13,
+      "name": "Death",
+      "arcana": "Major Arcana",
+      "subtitle": "The Necessary Ending",
+      "editorialStatus": "draft",
+      "reviewBatch": "major-02",
+      "candidateVersion": 1,
+      "provenance": "original Muse editorial candidate; not previously approved",
+      "keywords": {
+        "upright": [
+          "Ending",
+          "Transition",
+          "Release",
+          "Change",
+          "Renewal"
+        ],
+        "reversed": [
+          "Resistance",
+          "Unfinished grief",
+          "Lingering attachment",
+          "Fear of change",
+          "Careful closure"
+        ]
+      },
+      "chapters": {
+        "story": "A skeletal rider passes through a landscape where a king has fallen, a religious figure petitions, and others watch or turn away. The rider carries a dark banner marked by a pale flower. In the distance, a path leads between towers toward a rising—or setting—sun. The card's picture gives an ending weight. It refuses to pretend that all change arrives politely.\n\nDeath is among tarot's most famous and most misread images. In the Rider–Waite–Smith tradition, card XIII is commonly interpreted as a major ending or transition rather than a literal prediction of death. That modern reading is useful; it must not erase the fact that mortality is part of the card's historical imagery. Older death cards used recognizably medieval personifications of death, often with scythes or bodies underfoot.\n\nThe enduring question is not whether every ending is secretly wonderful. Some endings are painful, unjust, or unwanted. It is how we meet the fact that a form of life, a plan, a role, or a relationship cannot remain unchanged. The card does not demand cheerfulness. It allows a serious farewell.",
+        "symbolism": "**The armored skeleton.** Death rides a pale horse, recalling the visual language of mortality and the apocalyptic horsemen. Waite's description makes the figure an emblem of life's transformation; it is not a medical omen.\n\n**The black banner and white flower.** The banner carries a white floral emblem. Waite describes a mystical rose, with spiritual associations. A contemporary reader might see the contrast of mourning and continuity, but should not invent a specific botanical certainty from stylized art.\n\n**The fallen king and living witnesses.** A crowned figure lies beneath the horse; other figures face the rider differently. Death's presence crosses social rank. The image also makes room for varied human responses—resistance, grief, appeal, and bewilderment.\n\n**The waterway, vessel, towers, and sun.** A boat and distant horizon appear in the landscape, with sunlight framed between towers. Modern readers frequently use this as a metaphor for passage; the art does not prove that any loss will immediately reveal a better chapter.",
+        "meanings": {
+          "upright": "Upright, Death can describe the recognition that something is ending in a form that cannot simply be restored. A project may reach its natural conclusion. A relationship may change beyond its old agreements. An identity once necessary may no longer fit. The card asks you to take the ending seriously enough to name it.\n\nThere is freedom in honest closure, but not always immediate relief. You may feel grief, gratitude, anger, excitement, or all of them at different moments. Death does not require you to call a painful event a blessing. It asks what remains to be honored, what practical responsibilities need tending, and what you are ready—or not yet ready—to release.\n\nThe strongest modern reading pairs transformation with care. Ending a commitment may require a conversation, an archive, a ritual, a plan, or simply time. The new cannot be ordered to arrive on schedule. What matters is acknowledging the change rather than spending all your energy arguing that nothing has happened.",
+          "reversed": "Reversed, Death may suggest resistance to an ending already underway. Familiar roles, old hopes, or unsustainable arrangements can become difficult to relinquish because they once provided shelter. Yet the reversal can also name an ending that has been interrupted: unresolved grief, unfinished logistics, or a necessary closure that remains unsafe or unavailable.\n\nDo not read this as a command to cut ties impulsively. The difference between a habit that no longer serves and a responsibility that cannot be abandoned is morally significant. Nor should the card be used to pressure someone to 'move on' from bereavement according to an arbitrary timetable.\n\nAsk what is actually ending, which part remains in your control, and what resources could make the transition less damaging. Sometimes the next step is a farewell. Sometimes it is rest, documentation, help, or acknowledging that closure will be imperfect. Death reversed is not a threat. It is an invitation to be truthful about the work an ending asks of us."
+        },
+        "inYourLife": "**Love:** A relationship may need a transformed agreement or a clear farewell. Reversed, examine whether old expectations keep replacing genuine communication. Never infer a partner's death or inevitable departure.\n\n**Work and creativity:** Retiring a failed method can make room for another. Ending a project deserves care for collaborators and for what was learned.\n\n**Resources:** Transition can involve moving costs, job changes, and practical responsibilities. Make a plan; symbolism cannot replace logistics.\n\n**Reading example:** Asked about an increasingly unsuitable role, Death may invite a thoughtful exit strategy or a renegotiation of identity, not a dramatic resignation on the spot.",
+        "hiddenKnowledge": "**Death in the older decks.** Fifteenth-century tarot artists drew on the wider European visual tradition of personified Death. RWS retains the skeletal figure while expanding the landscape into a spiritual drama of passage and transformation.\n\n**Why XIII is not a diagnosis.** Waite's own discussion explicitly distinguishes the card's occult lesson from simplistic pronouncements about literal bodily death. The modern warning against predictive panic is both sensible and responsible. Tarot should never substitute for medical assessment or grief care.\n\n**The next card: Temperance.** Death is followed by XIV, Temperance. As a modern narrative pairing, this can suggest that after a form of life ends, rebalancing takes time. It does not promise that suffering happens 'for a reason.'\n\n**The difficult beauty of the image.** The card includes a fallen ruler and people who cannot negotiate away the rider's arrival. Its visual honesty is why a merely cheerful 'transformation!' reading can feel inadequate. Some doors close with a sound you remember.",
+        "reflection": "**Upright questions:** What has changed in fact, even if my feelings have not caught up? What deserves thanks or mourning? What responsibility accompanies this ending?\n\n**Reversed questions:** What am I keeping alive only through fear? Where is closure unavailable or unsafe to rush? What support would make the next transition kinder?\n\n**Journal ritual — A Page for the Ending:** Write the name of a chapter you are leaving. Record what it gave you, what it cost, and what you cannot yet understand. On a separate line, write one practical act of care for the transition. You do not have to declare yourself reborn.\n\n*An ending need not be beautiful to deserve tenderness.*"
+      },
+      "misconception": "Death is not a literal prediction of physical death, and it does not require cheerful acceptance of loss or instantaneous renewal.",
+      "relatedCardIds": [
+        "tarot-major-12",
+        "tarot-major-14",
+        "tarot-major-16"
+      ],
+      "readingSummary": {
+        "upright": "Ending: consider the context and choose a grounded response.",
+        "reversed": "Resistance: test which possibility fits the available evidence."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "supports": "Waite’s description of visual symbols and esoteric interpretation"
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite’s period divinatory meanings, including reversals"
+        }
+      ]
+    }
+  ]
+}

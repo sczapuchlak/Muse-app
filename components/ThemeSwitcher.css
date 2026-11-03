@@ -16,7 +16,10 @@
 .muse-theme-root[data-compact="true"] .muse-theme-active-name,.muse-theme-root[data-compact="true"] .muse-theme-trigger > svg { display:none; }
 .muse-theme-root[data-compact="true"] .muse-theme-trigger { width:44px; height:44px; padding:0; }
 .muse-rail-footer .muse-theme-root { margin-bottom:var(--space-2); }
-.muse-rail-footer .muse-theme-trigger { width:100%; justify-content:flex-start; border-radius:var(--control-radius); font-size:.7rem; }
+.muse-rail-footer .muse-theme-trigger { width:100%; min-width:0; justify-content:flex-start; border-radius:var(--control-radius); font-size:.7rem; }
+.muse-rail-footer .muse-theme-root { width:100%; min-width:0; }
+.muse-theme-trigger > svg { flex:0 0 auto; }
+.muse-theme-trigger .muse-theme-active-name { flex:1; text-align:left; }
 .muse-theme-active-name { min-width:0; overflow:hidden; text-overflow:ellipsis; }
 .muse-theme-name small { color:var(--text-muted); font-size:.65rem; white-space:normal; overflow-wrap:break-word; }
 

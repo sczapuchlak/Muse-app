@@ -1,0 +1,1177 @@
+{
+  "collection": "Muse Tarot Grimoire",
+  "batch": "Pentacles 01",
+  "editorialVoice": "The Enchanted Scholar",
+  "status": "DRAFT — creative-director review required",
+  "schemaNote": "Editorial interchange format. Codex must map to the existing application schema; do not import directly without validation.",
+  "cards": [
+    {
+      "id": "tarot-pentacles-01",
+      "name": "Ace of Pentacles",
+      "arcana": "Minor Arcana",
+      "suit": "Pentacles",
+      "rank": "Ace",
+      "number": 1,
+      "subtitle": "The Gate in the Garden",
+      "editorialStatus": "draft",
+      "researchStatus": "primary-source-text-checked-artwork-requires-asset-confirmation",
+      "candidateVersion": 1,
+      "uprightKeywords": [
+        "opportunity",
+        "resources",
+        "embodiment",
+        "possibility",
+        "beginning"
+      ],
+      "reversedKeywords": [
+        "misplaced priorities",
+        "delayed opportunity",
+        "fragile foundations",
+        "excess"
+      ],
+      "chapters": {
+        "story": "## Chapter I — The Story\n### The Gate in the Garden\n\nA hand emerges from a cloud, presenting a pentacle above a cultivated garden. A path passes under an arch of greenery toward distant mountains. The offer is visible; the journey it might fund is not yet undertaken.\n\nThis is the beginning of material possibility, not a receipt for money that has already arrived. A new job, course, savings habit, available room, or promising idea may give hope a practical shape. But the path matters as much as the coin: what must be built between receiving a resource and benefiting from it?\n\nThe Pentacles are often associated in modern Tarot with earth, resources, the body, and the material conditions of daily life. Yet no object in a card can determine the future. The scene offers a question about how we live with what is real, limited, shared, and made over time. This card’s distinctive concern is the gate in the garden: not merely what we possess, but what our choices allow us to sustain.\n\n### A note from the archive\nWaite associates the Ace with contentment and gold, and describes the reversal as prosperity whose effects may be unfavorable. Modern readers tend to speak of opportunities and beginnings instead of guaranteed wealth.",
+        "symbolism": "## Chapter II — Symbolism\n\nA hand emerges from a cloud, presenting a pentacle above a cultivated garden. A path passes under an arch of greenery toward distant mountains. The offer is visible; the journey it might fund is not yet undertaken.\n\n### Details to notice\n- **Cloud-held pentacle** — Look at its placement and relationship to the people and setting. The detail belongs to Smith’s visible composition; any moral or psychological meaning we draw is an interpretation rather than proof of what must occur.\n- **Flowering garden and arch** — Look at its placement and relationship to the people and setting. The detail belongs to Smith’s visible composition; any moral or psychological meaning we draw is an interpretation rather than proof of what must occur.\n- **Distant mountain pathway** — Look at its placement and relationship to the people and setting. The detail belongs to Smith’s visible composition; any moral or psychological meaning we draw is an interpretation rather than proof of what must occur.\n\n### The symbolic lesson\nAn entrance is not the destination. Resources create options; choices and conditions determine what follows.",
+        "meanings": "## Chapter III — Meanings\n### Upright · Opportunity, Resources, Embodiment, Possibility, Beginning\n\nThis is the beginning of material possibility, not a receipt for money that has already arrived. A new job, course, savings habit, available room, or promising idea may give hope a practical shape. But the path matters as much as the coin: what must be built between receiving a resource and benefiting from it?\n\nRather than treating this orientation as an instruction, identify the action it might illuminate. A resource could be money, but it might equally be attention, accessible support, time, practical knowledge, or physical energy. Consider what is possible within actual circumstances and what others involved have consented to.\n\n### Reversed · Misplaced Priorities, Delayed Opportunity, Fragile Foundations, Excess\n\nAn offer may have conditions, or the wish for security may crowd out other forms of well-being. This reversal can invite you to revisit terms, assess affordability, or notice a good opportunity you have dismissed because it arrived in an unexpected form. It is not a prophecy of bankruptcy or a declaration that a chance has been permanently lost.\n\nA reversal does not automatically mean the opposite of an upright meaning, nor does it establish another person’s motives. Sometimes it calls for a boundary, sometimes for renewed action, and sometimes simply for a better description of the problem.\n\n**Essence — upright:** An entrance is not the destination. Resources create options; choices and conditions determine what follows.\n\n**Essence — reversed:** Re-examine where this card’s gift has become limited, neglected, or distorted.",
+        "life": "## Chapter IV — In Your Life\n### Work, study and creative practice\nThis is the beginning of material possibility, not a receipt for money that has already arrived. A new job, course, savings habit, available room, or promising idea may give hope a practical shape. But the path matters as much as the coin: what must be built between receiving a resource and benefiting from it?\n\nIn professional settings, translate the theme into observable terms: available hours, clear expectations, documented outcomes, and the willingness to revise. Talent alone is not a project plan.\n\n### Relationships and belonging\nAn offer may have conditions, or the wish for security may crowd out other forms of well-being. This reversal can invite you to revisit terms, assess affordability, or notice a good opportunity you have dismissed because it arrived in an unexpected form. It is not a prophecy of bankruptcy or a declaration that a chance has been permanently lost.\n\nAsk whether support, attention, boundaries, or decision-making are mutual. Do not use the card to declare that another person is trustworthy or deceitful; relationships deserve evidence and direct conversation.\n\n### Money, resources and the body\nAn entrance is not the destination. Resources create options; choices and conditions determine what follows. A prudent reading distinguishes a symbolic prompt from actual financial, medical, or legal advice. Where stakes are high, seek grounded information and qualified help.\n\n### A reading in practice\n**Question:** What would responsible action look like here?\n\nYou are offered funding for a new venture. What does a sustainable first experiment cost, and what obligation would accepting the money create?",
+        "hiddenKnowledge": "## Chapter V — Hidden Knowledge\n### A historical reading, not a timeless rule\nWaite associates the Ace with contentment and gold, and describes the reversal as prosperity whose effects may be unfavorable. Modern readers tend to speak of opportunities and beginnings instead of guaranteed wealth.\n\nEarlier tarot suits often used coins or deniers rather than the pentacles pictured in this deck. Waite notes that the symbol should not be reduced to money alone. The Rider–Waite–Smith image is a twentieth-century design informed by older cartomancy and its creators’ esoteric interests; the modern psychological interpretation is a later layer.\n\n### A second look\nAn entrance is not the destination. Resources create options; choices and conditions determine what follows. Read the composition as a conversation between image, history, and your own circumstances. Those three sources of meaning should remain distinguishable.",
+        "reflection": "## Chapter VI — Reflection\n### Upright questions\n1. Where is a tangible beginning available to me?\n2. Which conditions belong to this opportunity?\n3. What would a responsible first investment of time or money look like?\n\n### Reversed questions\n1. Am I equating the size of an offer with its value?\n2. What practical detail have I left unexamined?\n3. What already available resource have I overlooked?\n\n### The journal ritual\nWrite an inventory of what is newly within reach, then draw the first three stones of a realistic path.\n\n### A misconception worth unlearning\nThis card does not promise riches or instruct you to accept every opportunity.\n\n### The last word\n*An entrance is not the destination. Resources create options; choices and conditions determine what follows.*"
+      },
+      "overview": "A hand emerges from a cloud, presenting a pentacle above a cultivated garden. A path passes under an arch of greenery toward distant mountains. The offer is visible; the journey it might fund is not yet undertaken. This is the beginning of material possibility, not a receipt for money that has already arrived. A new job, course, savings habit, available room, or promising idea may give hope a practical shape. But the path matters as much as the coin: what must be built between receiving a resource and benefiting from it?",
+      "historicalContext": "Waite associates the Ace with contentment and gold, and describes the reversal as prosperity whose effects may be unfavorable. Modern readers tend to speak of opportunities and beginnings instead of guaranteed wealth.",
+      "uprightInterpretation": "This is the beginning of material possibility, not a receipt for money that has already arrived. A new job, course, savings habit, available room, or promising idea may give hope a practical shape. But the path matters as much as the coin: what must be built between receiving a resource and benefiting from it?",
+      "reversedInterpretation": "An offer may have conditions, or the wish for security may crowd out other forms of well-being. This reversal can invite you to revisit terms, assess affordability, or notice a good opportunity you have dismissed because it arrived in an unexpected form. It is not a prophecy of bankruptcy or a declaration that a chance has been permanently lost.",
+      "visualSymbols": [
+        {
+          "detail": "Cloud-held pentacle",
+          "classification": "observed motif in Rider–Waite–Smith image; interpretation distinct"
+        },
+        {
+          "detail": "flowering garden and arch",
+          "classification": "observed motif in Rider–Waite–Smith image; interpretation distinct"
+        },
+        {
+          "detail": "distant mountain pathway",
+          "classification": "observed motif in Rider–Waite–Smith image; interpretation distinct"
+        }
+      ],
+      "beginnerExplanation": "An entrance is not the destination. Resources create options; choices and conditions determine what follows.",
+      "readingExample": "You are offered funding for a new venture. What does a sustainable first experiment cost, and what obligation would accepting the money create?",
+      "uprightQuestions": [
+        "Where is a tangible beginning available to me?",
+        "Which conditions belong to this opportunity?",
+        "What would a responsible first investment of time or money look like?"
+      ],
+      "reversedQuestions": [
+        "Am I equating the size of an offer with its value?",
+        "What practical detail have I left unexamined?",
+        "What already available resource have I overlooked?"
+      ],
+      "journalPrompt": "Write an inventory of what is newly within reach, then draw the first three stones of a realistic path.",
+      "misconception": "This card does not promise riches or instruct you to accept every opportunity.",
+      "readingSummary": {
+        "upright": "An entrance is not the destination. Resources create options; choices and conditions determine what follows.",
+        "reversed": "Examine the limits or misuse of the card’s central resource or skill."
+      },
+      "relatedCardIds": [
+        "tarot-pentacles-02"
+      ],
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite 1911 specific Pentacles description and historical upright/reversed divinatory lists"
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "supports": "Waite esoteric framework; context for Rider–Waite–Smith symbolic tradition"
+        }
+      ]
+    },
+    {
+      "id": "tarot-pentacles-02",
+      "name": "Two of Pentacles",
+      "arcana": "Minor Arcana",
+      "suit": "Pentacles",
+      "rank": "Two",
+      "number": 2,
+      "subtitle": "The Art of Keeping Afloat",
+      "editorialStatus": "draft",
+      "researchStatus": "primary-source-text-checked-artwork-requires-asset-confirmation",
+      "candidateVersion": 1,
+      "uprightKeywords": [
+        "adaptation",
+        "movement",
+        "prioritization",
+        "competing demands",
+        "flexibility"
+      ],
+      "reversedKeywords": [
+        "overextension",
+        "performative ease",
+        "disorder",
+        "recalibration"
+      ],
+      "chapters": {
+        "story": "## Chapter I — The Story\n### The Art of Keeping Afloat\n\nA young figure dances with two pentacles joined by a looping cord shaped like a sideways eight. Behind him, ships rise and fall on formidable waves. The sea refuses to behave simply because the dancer appears cheerful.\n\nThe Two belongs to the busy middle of life: appointments, bills, relationships, side projects, and plans requiring more than one pair of hands. Adaptability is a skill, but agility should not be mistaken for infinite capacity. Notice what the dancer is doing—moving with instability rather than abolishing it. Something may have to take a different rhythm.\n\nThe Pentacles are often associated in modern Tarot with earth, resources, the body, and the material conditions of daily life. Yet no object in a card can determine the future. The scene offers a question about how we live with what is real, limited, shared, and made over time. This card’s distinctive concern is the art of keeping afloat: not merely what we possess, but what our choices allow us to sustain.\n\n### A note from the archive\nWaite describes gaiety and recreation alongside agitation and obstacles; the reversal includes enforced merriment and written communications. The tidy modern label “work-life balance” captures only part of that contradiction.",
+        "symbolism": "## Chapter II — Symbolism\n\nA young figure dances with two pentacles joined by a looping cord shaped like a sideways eight. Behind him, ships rise and fall on formidable waves. The sea refuses to behave simply because the dancer appears cheerful.\n\n### Details to notice\n- **Two pentacles and looping cord** — Look at its placement and relationship to the people and setting. The detail belongs to Smith’s visible composition; any moral or psychological meaning we draw is an interpretation rather than proof of what must occur.\n- **Dancing posture** — Look at its placement and relationship to the people and setting. The detail belongs to Smith’s visible composition; any moral or psychological meaning we draw is an interpretation rather than proof of what must occur.\n- **Ships on rough seas** — Look at its placement and relationship to the people and setting. The detail belongs to Smith’s visible composition; any moral or psychological meaning we draw is an interpretation rather than proof of what must occur.\n\n### The symbolic lesson\nBalance is an active verb, not a permanent pose.",
+        "meanings": "## Chapter III — Meanings\n### Upright · Adaptation, Movement, Prioritization, Competing Demands, Flexibility\n\nThe Two belongs to the busy middle of life: appointments, bills, relationships, side projects, and plans requiring more than one pair of hands. Adaptability is a skill, but agility should not be mistaken for infinite capacity. Notice what the dancer is doing—moving with instability rather than abolishing it. Something may have to take a different rhythm.\n\nRather than treating this orientation as an instruction, identify the action it might illuminate. A resource could be money, but it might equally be attention, accessible support, time, practical knowledge, or physical energy. Consider what is possible within actual circumstances and what others involved have consented to.\n\n### Reversed · Overextension, Performative Ease, Disorder, Recalibration\n\nPerhaps the rhythm has become punishing. You may be publicly making a difficult situation look easy, or juggling commitments that should never have competed for the same hour. Another possibility is rigidity: refusing to adjust a schedule that no longer serves its purpose. Reducing, renegotiating, or postponing can be a form of competence.\n\nA reversal does not automatically mean the opposite of an upright meaning, nor does it establish another person’s motives. Sometimes it calls for a boundary, sometimes for renewed action, and sometimes simply for a better description of the problem.\n\n**Essence — upright:** Balance is an active verb, not a permanent pose.\n\n**Essence — reversed:** Re-examine where this card’s gift has become limited, neglected, or distorted.",
+        "life": "## Chapter IV — In Your Life\n### Work, study and creative practice\nThe Two belongs to the busy middle of life: appointments, bills, relationships, side projects, and plans requiring more than one pair of hands. Adaptability is a skill, but agility should not be mistaken for infinite capacity. Notice what the dancer is doing—moving with instability rather than abolishing it. Something may have to take a different rhythm.\n\nIn professional settings, translate the theme into observable terms: available hours, clear expectations, documented outcomes, and the willingness to revise. Talent alone is not a project plan.\n\n### Relationships and belonging\nPerhaps the rhythm has become punishing. You may be publicly making a difficult situation look easy, or juggling commitments that should never have competed for the same hour. Another possibility is rigidity: refusing to adjust a schedule that no longer serves its purpose. Reducing, renegotiating, or postponing can be a form of competence.\n\nAsk whether support, attention, boundaries, or decision-making are mutual. Do not use the card to declare that another person is trustworthy or deceitful; relationships deserve evidence and direct conversation.\n\n### Money, resources and the body\nBalance is an active verb, not a permanent pose. A prudent reading distinguishes a symbolic prompt from actual financial, medical, or legal advice. Where stakes are high, seek grounded information and qualified help.\n\n### A reading in practice\n**Question:** What would responsible action look like here?\n\nYou can manage two projects for a month but not indefinitely. Which needs a deadline, a delegate, or a deliberate no?",
+        "hiddenKnowledge": "## Chapter V — Hidden Knowledge\n### A historical reading, not a timeless rule\nWaite describes gaiety and recreation alongside agitation and obstacles; the reversal includes enforced merriment and written communications. The tidy modern label “work-life balance” captures only part of that contradiction.\n\nEarlier tarot suits often used coins or deniers rather than the pentacles pictured in this deck. Waite notes that the symbol should not be reduced to money alone. The Rider–Waite–Smith image is a twentieth-century design informed by older cartomancy and its creators’ esoteric interests; the modern psychological interpretation is a later layer.\n\n### A second look\nBalance is an active verb, not a permanent pose. Read the composition as a conversation between image, history, and your own circumstances. Those three sources of meaning should remain distinguishable.",
+        "reflection": "## Chapter VI — Reflection\n### Upright questions\n1. What demands are actually competing?\n2. Which responsibility can change shape?\n3. Where am I already adapting well?\n\n### Reversed questions\n1. What effort am I hiding behind a cheerful answer?\n2. Where have I confused flexibility with availability?\n3. Which commitment could I renegotiate?\n\n### The journal ritual\nDraw two circles for your principal commitments. Where do they overlap, and what must cease competing?\n\n### A misconception worth unlearning\nThe card does not require you to become better at doing everything.\n\n### The last word\n*Balance is an active verb, not a permanent pose.*"
+      },
+      "overview": "A young figure dances with two pentacles joined by a looping cord shaped like a sideways eight. Behind him, ships rise and fall on formidable waves. The sea refuses to behave simply because the dancer appears cheerful. The Two belongs to the busy middle of life: appointments, bills, relationships, side projects, and plans requiring more than one pair of hands. Adaptability is a skill, but agility should not be mistaken for infinite capacity. Notice what the dancer is doing—moving with instability rather than abolishing it. Something may have to take a different rhythm.",
+      "historicalContext": "Waite describes gaiety and recreation alongside agitation and obstacles; the reversal includes enforced merriment and written communications. The tidy modern label “work-life balance” captures only part of that contradiction.",
+      "uprightInterpretation": "The Two belongs to the busy middle of life: appointments, bills, relationships, side projects, and plans requiring more than one pair of hands. Adaptability is a skill, but agility should not be mistaken for infinite capacity. Notice what the dancer is doing—moving with instability rather than abolishing it. Something may have to take a different rhythm.",
+      "reversedInterpretation": "Perhaps the rhythm has become punishing. You may be publicly making a difficult situation look easy, or juggling commitments that should never have competed for the same hour. Another possibility is rigidity: refusing to adjust a schedule that no longer serves its purpose. Reducing, renegotiating, or postponing can be a form of competence.",
+      "visualSymbols": [
+        {
+          "detail": "Two pentacles and looping cord",
+          "classification": "observed motif in Rider–Waite–Smith image; interpretation distinct"
+        },
+        {
+          "detail": "dancing posture",
+          "classification": "observed motif in Rider–Waite–Smith image; interpretation distinct"
+        },
+        {
+          "detail": "ships on rough seas",
+          "classification": "observed motif in Rider–Waite–Smith image; interpretation distinct"
+        }
+      ],
+      "beginnerExplanation": "Balance is an active verb, not a permanent pose.",
+      "readingExample": "You can manage two projects for a month but not indefinitely. Which needs a deadline, a delegate, or a deliberate no?",
+      "uprightQuestions": [
+        "What demands are actually competing?",
+        "Which responsibility can change shape?",
+        "Where am I already adapting well?"
+      ],
+      "reversedQuestions": [
+        "What effort am I hiding behind a cheerful answer?",
+        "Where have I confused flexibility with availability?",
+        "Which commitment could I renegotiate?"
+      ],
+      "journalPrompt": "Draw two circles for your principal commitments. Where do they overlap, and what must cease competing?",
+      "misconception": "The card does not require you to become better at doing everything.",
+      "readingSummary": {
+        "upright": "Balance is an active verb, not a permanent pose.",
+        "reversed": "Examine the limits or misuse of the card’s central resource or skill."
+      },
+      "relatedCardIds": [
+        "tarot-pentacles-01",
+        "tarot-pentacles-03"
+      ],
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite 1911 specific Pentacles description and historical upright/reversed divinatory lists"
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "supports": "Waite esoteric framework; context for Rider–Waite–Smith symbolic tradition"
+        }
+      ]
+    },
+    {
+      "id": "tarot-pentacles-03",
+      "name": "Three of Pentacles",
+      "arcana": "Minor Arcana",
+      "suit": "Pentacles",
+      "rank": "Three",
+      "number": 3,
+      "subtitle": "The Work That Bears Witness",
+      "editorialStatus": "draft",
+      "researchStatus": "primary-source-text-checked-artwork-requires-asset-confirmation",
+      "candidateVersion": 1,
+      "uprightKeywords": [
+        "craft",
+        "collaboration",
+        "recognition",
+        "shared standards",
+        "competence"
+      ],
+      "reversedKeywords": [
+        "miscommunication",
+        "undervalued labor",
+        "rushed execution",
+        "weak coordination"
+      ],
+      "chapters": {
+        "story": "## Chapter I — The Story\n### The Work That Bears Witness\n\nInside a stone building, an artisan works beneath an arch where three pentacles form part of the design. Two other figures look on, one holding what appears to be plans. This is a scene of labor that can be witnessed, assessed, and discussed.\n\nThere is a special intimacy to making something well alongside other people. Skill is not diminished by feedback; it often becomes more precise through it. The Three asks whether responsibilities are clear, whether expertise is being respected, and whether a shared standard exists beyond everyone merely appearing busy.\n\nThe Pentacles are often associated in modern Tarot with earth, resources, the body, and the material conditions of daily life. Yet no object in a card can determine the future. The scene offers a question about how we live with what is real, limited, shared, and made over time. This card’s distinctive concern is the work that bears witness: not merely what we possess, but what our choices allow us to sustain.\n\n### A note from the archive\nWaite calls the working figure a sculptor in a monastery and links the card to skilled trade, while recording older divinatory associations with status and renown. Modern teamwork readings are reasonable developments of the pictured interaction, not words directly assigned to it by Waite.",
+        "symbolism": "## Chapter II — Symbolism\n\nInside a stone building, an artisan works beneath an arch where three pentacles form part of the design. Two other figures look on, one holding what appears to be plans. This is a scene of labor that can be witnessed, assessed, and discussed.\n\n### Details to notice\n- **Stoneworker beneath arch** — Look at its placement and relationship to the people and setting. The detail belongs to Smith’s visible composition; any moral or psychological meaning we draw is an interpretation rather than proof of what must occur.\n- **Three pentacles in architecture** — Look at its placement and relationship to the people and setting. The detail belongs to Smith’s visible composition; any moral or psychological meaning we draw is an interpretation rather than proof of what must occur.\n- **Two observing figures and plans** — Look at its placement and relationship to the people and setting. The detail belongs to Smith’s visible composition; any moral or psychological meaning we draw is an interpretation rather than proof of what must occur.\n\n### The symbolic lesson\nThe outcome belongs to the craft—and to the quality of the conversation around it.",
+        "meanings": "## Chapter III — Meanings\n### Upright · Craft, Collaboration, Recognition, Shared Standards, Competence\n\nThere is a special intimacy to making something well alongside other people. Skill is not diminished by feedback; it often becomes more precise through it. The Three asks whether responsibilities are clear, whether expertise is being respected, and whether a shared standard exists beyond everyone merely appearing busy.\n\nRather than treating this orientation as an instruction, identify the action it might illuminate. A resource could be money, but it might equally be attention, accessible support, time, practical knowledge, or physical energy. Consider what is possible within actual circumstances and what others involved have consented to.\n\n### Reversed · Miscommunication, Undervalued Labor, Rushed Execution, Weak Coordination\n\nCollaboration may have become theatre: too many opinions, no final decision, or a specialist whose work is expected but not acknowledged. Sometimes the problem is your own reluctance to show unfinished work. Seek concrete feedback, name the decision-maker, and distinguish a real quality concern from ordinary discomfort with revision.\n\nA reversal does not automatically mean the opposite of an upright meaning, nor does it establish another person’s motives. Sometimes it calls for a boundary, sometimes for renewed action, and sometimes simply for a better description of the problem.\n\n**Essence — upright:** The outcome belongs to the craft—and to the quality of the conversation around it.\n\n**Essence — reversed:** Re-examine where this card’s gift has become limited, neglected, or distorted.",
+        "life": "## Chapter IV — In Your Life\n### Work, study and creative practice\nThere is a special intimacy to making something well alongside other people. Skill is not diminished by feedback; it often becomes more precise through it. The Three asks whether responsibilities are clear, whether expertise is being respected, and whether a shared standard exists beyond everyone merely appearing busy.\n\nIn professional settings, translate the theme into observable terms: available hours, clear expectations, documented outcomes, and the willingness to revise. Talent alone is not a project plan.\n\n### Relationships and belonging\nCollaboration may have become theatre: too many opinions, no final decision, or a specialist whose work is expected but not acknowledged. Sometimes the problem is your own reluctance to show unfinished work. Seek concrete feedback, name the decision-maker, and distinguish a real quality concern from ordinary discomfort with revision.\n\nAsk whether support, attention, boundaries, or decision-making are mutual. Do not use the card to declare that another person is trustworthy or deceitful; relationships deserve evidence and direct conversation.\n\n### Money, resources and the body\nThe outcome belongs to the craft—and to the quality of the conversation around it. A prudent reading distinguishes a symbolic prompt from actual financial, medical, or legal advice. Where stakes are high, seek grounded information and qualified help.\n\n### A reading in practice\n**Question:** What would responsible action look like here?\n\nA team is building an ambitious product, but its designers and engineers are working from different assumptions. What shared artifact would settle the disagreement?",
+        "hiddenKnowledge": "## Chapter V — Hidden Knowledge\n### A historical reading, not a timeless rule\nWaite calls the working figure a sculptor in a monastery and links the card to skilled trade, while recording older divinatory associations with status and renown. Modern teamwork readings are reasonable developments of the pictured interaction, not words directly assigned to it by Waite.\n\nEarlier tarot suits often used coins or deniers rather than the pentacles pictured in this deck. Waite notes that the symbol should not be reduced to money alone. The Rider–Waite–Smith image is a twentieth-century design informed by older cartomancy and its creators’ esoteric interests; the modern psychological interpretation is a later layer.\n\n### A second look\nThe outcome belongs to the craft—and to the quality of the conversation around it. Read the composition as a conversation between image, history, and your own circumstances. Those three sources of meaning should remain distinguishable.",
+        "reflection": "## Chapter VI — Reflection\n### Upright questions\n1. Where would collaboration sharpen my work?\n2. Whose expertise needs acknowledgment?\n3. What would “good” look like in observable terms?\n\n### Reversed questions\n1. Where are roles or expectations undefined?\n2. Am I withholding a draft because it is imperfect?\n3. Is recognition being fairly distributed?\n\n### The journal ritual\nDescribe something you built with others. Name one skill you contributed and one skill you benefited from.\n\n### A misconception worth unlearning\nThe Three is not proof that every group effort succeeds or that criticism is always wise.\n\n### The last word\n*The outcome belongs to the craft—and to the quality of the conversation around it.*"
+      },
+      "overview": "Inside a stone building, an artisan works beneath an arch where three pentacles form part of the design. Two other figures look on, one holding what appears to be plans. This is a scene of labor that can be witnessed, assessed, and discussed. There is a special intimacy to making something well alongside other people. Skill is not diminished by feedback; it often becomes more precise through it. The Three asks whether responsibilities are clear, whether expertise is being respected, and whether a shared standard exists beyond everyone merely appearing busy.",
+      "historicalContext": "Waite calls the working figure a sculptor in a monastery and links the card to skilled trade, while recording older divinatory associations with status and renown. Modern teamwork readings are reasonable developments of the pictured interaction, not words directly assigned to it by Waite.",
+      "uprightInterpretation": "There is a special intimacy to making something well alongside other people. Skill is not diminished by feedback; it often becomes more precise through it. The Three asks whether responsibilities are clear, whether expertise is being respected, and whether a shared standard exists beyond everyone merely appearing busy.",
+      "reversedInterpretation": "Collaboration may have become theatre: too many opinions, no final decision, or a specialist whose work is expected but not acknowledged. Sometimes the problem is your own reluctance to show unfinished work. Seek concrete feedback, name the decision-maker, and distinguish a real quality concern from ordinary discomfort with revision.",
+      "visualSymbols": [
+        {
+          "detail": "Stoneworker beneath arch",
+          "classification": "observed motif in Rider–Waite–Smith image; interpretation distinct"
+        },
+        {
+          "detail": "three pentacles in architecture",
+          "classification": "observed motif in Rider–Waite–Smith image; interpretation distinct"
+        },
+        {
+          "detail": "two observing figures and plans",
+          "classification": "observed motif in Rider–Waite–Smith image; interpretation distinct"
+        }
+      ],
+      "beginnerExplanation": "The outcome belongs to the craft—and to the quality of the conversation around it.",
+      "readingExample": "A team is building an ambitious product, but its designers and engineers are working from different assumptions. What shared artifact would settle the disagreement?",
+      "uprightQuestions": [
+        "Where would collaboration sharpen my work?",
+        "Whose expertise needs acknowledgment?",
+        "What would “good” look like in observable terms?"
+      ],
+      "reversedQuestions": [
+        "Where are roles or expectations undefined?",
+        "Am I withholding a draft because it is imperfect?",
+        "Is recognition being fairly distributed?"
+      ],
+      "journalPrompt": "Describe something you built with others. Name one skill you contributed and one skill you benefited from.",
+      "misconception": "The Three is not proof that every group effort succeeds or that criticism is always wise.",
+      "readingSummary": {
+        "upright": "The outcome belongs to the craft—and to the quality of the conversation around it.",
+        "reversed": "Examine the limits or misuse of the card’s central resource or skill."
+      },
+      "relatedCardIds": [
+        "tarot-pentacles-02",
+        "tarot-pentacles-04"
+      ],
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite 1911 specific Pentacles description and historical upright/reversed divinatory lists"
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "supports": "Waite esoteric framework; context for Rider–Waite–Smith symbolic tradition"
+        }
+      ]
+    },
+    {
+      "id": "tarot-pentacles-04",
+      "name": "Four of Pentacles",
+      "arcana": "Minor Arcana",
+      "suit": "Pentacles",
+      "rank": "Four",
+      "number": 4,
+      "subtitle": "The Keeper of the Keys",
+      "editorialStatus": "draft",
+      "researchStatus": "primary-source-text-checked-artwork-requires-asset-confirmation",
+      "candidateVersion": 1,
+      "uprightKeywords": [
+        "stewardship",
+        "boundaries",
+        "preservation",
+        "security",
+        "restraint"
+      ],
+      "reversedKeywords": [
+        "fear of loss",
+        "rigidity",
+        "scarcity thinking",
+        "obstructed exchange"
+      ],
+      "chapters": {
+        "story": "## Chapter I — The Story\n### The Keeper of the Keys\n\nA seated, crowned figure holds one pentacle close to the chest. Another rests above the head; two are held underfoot. A city stands behind this motionless keeper, who possesses the coins but seems reluctant to move.\n\nKeeping something safe can be profoundly sensible. An emergency fund, time protected from interruption, ownership of one’s labor, or firm limits around lending are meaningful forms of care. Yet safety can become a tiny kingdom. The Four asks whether preservation is protecting your freedom or quietly reducing it.\n\nThe Pentacles are often associated in modern Tarot with earth, resources, the body, and the material conditions of daily life. Yet no object in a card can determine the future. The scene offers a question about how we live with what is real, limited, shared, and made over time. This card’s distinctive concern is the keeper of the keys: not merely what we possess, but what our choices allow us to sustain.\n\n### A note from the archive\nWaite describes a figure clasping what he has, with associations of secure possession and inheritance. His reversal emphasizes delay and opposition, rather than the simple modern equation “reversed equals greed.”",
+        "symbolism": "## Chapter II — Symbolism\n\nA seated, crowned figure holds one pentacle close to the chest. Another rests above the head; two are held underfoot. A city stands behind this motionless keeper, who possesses the coins but seems reluctant to move.\n\n### Details to notice\n- **Pentacle clutched against chest** — Look at its placement and relationship to the people and setting. The detail belongs to Smith’s visible composition; any moral or psychological meaning we draw is an interpretation rather than proof of what must occur.\n- **One above crown** — Look at its placement and relationship to the people and setting. The detail belongs to Smith’s visible composition; any moral or psychological meaning we draw is an interpretation rather than proof of what must occur.\n- **Two beneath feet** — Look at its placement and relationship to the people and setting. The detail belongs to Smith’s visible composition; any moral or psychological meaning we draw is an interpretation rather than proof of what must occur.\n- **Distant city** — Look at its placement and relationship to the people and setting. The detail belongs to Smith’s visible composition; any moral or psychological meaning we draw is an interpretation rather than proof of what must occur.\n\n### The symbolic lesson\nA resource can be both protected and put to meaningful use.",
+        "meanings": "## Chapter III — Meanings\n### Upright · Stewardship, Boundaries, Preservation, Security, Restraint\n\nKeeping something safe can be profoundly sensible. An emergency fund, time protected from interruption, ownership of one’s labor, or firm limits around lending are meaningful forms of care. Yet safety can become a tiny kingdom. The Four asks whether preservation is protecting your freedom or quietly reducing it.\n\nRather than treating this orientation as an instruction, identify the action it might illuminate. A resource could be money, but it might equally be attention, accessible support, time, practical knowledge, or physical energy. Consider what is possible within actual circumstances and what others involved have consented to.\n\n### Reversed · Fear Of Loss, Rigidity, Scarcity Thinking, Obstructed Exchange\n\nPossession may have become the measure of self-worth, or caution may be preventing necessary investment or generosity. Alternatively, you might need firmer boundaries because your resources are being treated as communal property without your consent. The reversal is not always a command to spend or share; it asks whether your boundary fits the real risk.\n\nA reversal does not automatically mean the opposite of an upright meaning, nor does it establish another person’s motives. Sometimes it calls for a boundary, sometimes for renewed action, and sometimes simply for a better description of the problem.\n\n**Essence — upright:** A resource can be both protected and put to meaningful use.\n\n**Essence — reversed:** Re-examine where this card’s gift has become limited, neglected, or distorted.",
+        "life": "## Chapter IV — In Your Life\n### Work, study and creative practice\nKeeping something safe can be profoundly sensible. An emergency fund, time protected from interruption, ownership of one’s labor, or firm limits around lending are meaningful forms of care. Yet safety can become a tiny kingdom. The Four asks whether preservation is protecting your freedom or quietly reducing it.\n\nIn professional settings, translate the theme into observable terms: available hours, clear expectations, documented outcomes, and the willingness to revise. Talent alone is not a project plan.\n\n### Relationships and belonging\nPossession may have become the measure of self-worth, or caution may be preventing necessary investment or generosity. Alternatively, you might need firmer boundaries because your resources are being treated as communal property without your consent. The reversal is not always a command to spend or share; it asks whether your boundary fits the real risk.\n\nAsk whether support, attention, boundaries, or decision-making are mutual. Do not use the card to declare that another person is trustworthy or deceitful; relationships deserve evidence and direct conversation.\n\n### Money, resources and the body\nA resource can be both protected and put to meaningful use. A prudent reading distinguishes a symbolic prompt from actual financial, medical, or legal advice. Where stakes are high, seek grounded information and qualified help.\n\n### A reading in practice\n**Question:** What would responsible action look like here?\n\nYou are deciding whether to use savings on training. What would preserve your safety margin while allowing a measured investment?",
+        "hiddenKnowledge": "## Chapter V — Hidden Knowledge\n### A historical reading, not a timeless rule\nWaite describes a figure clasping what he has, with associations of secure possession and inheritance. His reversal emphasizes delay and opposition, rather than the simple modern equation “reversed equals greed.”\n\nEarlier tarot suits often used coins or deniers rather than the pentacles pictured in this deck. Waite notes that the symbol should not be reduced to money alone. The Rider–Waite–Smith image is a twentieth-century design informed by older cartomancy and its creators’ esoteric interests; the modern psychological interpretation is a later layer.\n\n### A second look\nA resource can be both protected and put to meaningful use. Read the composition as a conversation between image, history, and your own circumstances. Those three sources of meaning should remain distinguishable.",
+        "reflection": "## Chapter VI — Reflection\n### Upright questions\n1. What am I protecting, and why?\n2. Which boundary has genuinely helped?\n3. How do I define enough?\n\n### Reversed questions\n1. Is fear setting a rule that evidence does not support?\n2. Where do I need a stronger financial or emotional boundary?\n3. What could circulate without compromising security?\n\n### The journal ritual\nList what you hold tightly. For each item, write whether it is protecting a need or defending a fear.\n\n### A misconception worth unlearning\nThe card does not make saving selfish or generosity compulsory.\n\n### The last word\n*A resource can be both protected and put to meaningful use.*"
+      },
+      "overview": "A seated, crowned figure holds one pentacle close to the chest. Another rests above the head; two are held underfoot. A city stands behind this motionless keeper, who possesses the coins but seems reluctant to move. Keeping something safe can be profoundly sensible. An emergency fund, time protected from interruption, ownership of one’s labor, or firm limits around lending are meaningful forms of care. Yet safety can become a tiny kingdom. The Four asks whether preservation is protecting your freedom or quietly reducing it.",
+      "historicalContext": "Waite describes a figure clasping what he has, with associations of secure possession and inheritance. His reversal emphasizes delay and opposition, rather than the simple modern equation “reversed equals greed.”",
+      "uprightInterpretation": "Keeping something safe can be profoundly sensible. An emergency fund, time protected from interruption, ownership of one’s labor, or firm limits around lending are meaningful forms of care. Yet safety can become a tiny kingdom. The Four asks whether preservation is protecting your freedom or quietly reducing it.",
+      "reversedInterpretation": "Possession may have become the measure of self-worth, or caution may be preventing necessary investment or generosity. Alternatively, you might need firmer boundaries because your resources are being treated as communal property without your consent. The reversal is not always a command to spend or share; it asks whether your boundary fits the real risk.",
+      "visualSymbols": [
+        {
+          "detail": "Pentacle clutched against chest",
+          "classification": "observed motif in Rider–Waite–Smith image; interpretation distinct"
+        },
+        {
+          "detail": "one above crown",
+          "classification": "observed motif in Rider–Waite–Smith image; interpretation distinct"
+        },
+        {
+          "detail": "two beneath feet",
+          "classification": "observed motif in Rider–Waite–Smith image; interpretation distinct"
+        },
+        {
+          "detail": "distant city",
+          "classification": "observed motif in Rider–Waite–Smith image; interpretation distinct"
+        }
+      ],
+      "beginnerExplanation": "A resource can be both protected and put to meaningful use.",
+      "readingExample": "You are deciding whether to use savings on training. What would preserve your safety margin while allowing a measured investment?",
+      "uprightQuestions": [
+        "What am I protecting, and why?",
+        "Which boundary has genuinely helped?",
+        "How do I define enough?"
+      ],
+      "reversedQuestions": [
+        "Is fear setting a rule that evidence does not support?",
+        "Where do I need a stronger financial or emotional boundary?",
+        "What could circulate without compromising security?"
+      ],
+      "journalPrompt": "List what you hold tightly. For each item, write whether it is protecting a need or defending a fear.",
+      "misconception": "The card does not make saving selfish or generosity compulsory.",
+      "readingSummary": {
+        "upright": "A resource can be both protected and put to meaningful use.",
+        "reversed": "Examine the limits or misuse of the card’s central resource or skill."
+      },
+      "relatedCardIds": [
+        "tarot-pentacles-03",
+        "tarot-pentacles-05"
+      ],
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite 1911 specific Pentacles description and historical upright/reversed divinatory lists"
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "supports": "Waite esoteric framework; context for Rider–Waite–Smith symbolic tradition"
+        }
+      ]
+    },
+    {
+      "id": "tarot-pentacles-05",
+      "name": "Five of Pentacles",
+      "arcana": "Minor Arcana",
+      "suit": "Pentacles",
+      "rank": "Five",
+      "number": 5,
+      "subtitle": "The Window in Winter",
+      "editorialStatus": "draft",
+      "researchStatus": "primary-source-text-checked-artwork-requires-asset-confirmation",
+      "candidateVersion": 1,
+      "uprightKeywords": [
+        "hardship",
+        "exclusion",
+        "mutual aid",
+        "vulnerability",
+        "material pressure"
+      ],
+      "reversedKeywords": [
+        "reconnection",
+        "seeking support",
+        "lingering insecurity",
+        "uneven recovery"
+      ],
+      "chapters": {
+        "story": "## Chapter I — The Story\n### The Window in Winter\n\nTwo poorly clothed travelers pass a brightly lit stained-glass window while snow falls. One uses crutches. The cold is not metaphorical within the image: bodies are exposed, and shelter or assistance may be near without being accessible.\n\nThis is a card that should not be prettified. Financial trouble, illness, unstable housing, exclusion, and the loneliness of struggling can change what choices are realistically available. The Five offers no moral lesson that hardship is deserved. It asks who has been left outside, what resources are actually accessible, and how dignity can survive an unequal world.\n\nThe Pentacles are often associated in modern Tarot with earth, resources, the body, and the material conditions of daily life. Yet no object in a card can determine the future. The scene offers a question about how we live with what is real, limited, shared, and made over time. This card’s distinctive concern is the window in winter: not merely what we possess, but what our choices allow us to sustain.\n\n### A note from the archive\nWaite foregrounds destitution yet records an incompatible alternate tradition that associates this card with lovers and affinity. That historical contradiction is worth preserving rather than smoothing into a single ancient meaning.",
+        "symbolism": "## Chapter II — Symbolism\n\nTwo poorly clothed travelers pass a brightly lit stained-glass window while snow falls. One uses crutches. The cold is not metaphorical within the image: bodies are exposed, and shelter or assistance may be near without being accessible.\n\n### Details to notice\n- **Two travelers in snow** — Look at its placement and relationship to the people and setting. The detail belongs to Smith’s visible composition; any moral or psychological meaning we draw is an interpretation rather than proof of what must occur.\n- **Crutches and bare feet** — Look at its placement and relationship to the people and setting. The detail belongs to Smith’s visible composition; any moral or psychological meaning we draw is an interpretation rather than proof of what must occur.\n- **Illuminated pentacle window** — Look at its placement and relationship to the people and setting. The detail belongs to Smith’s visible composition; any moral or psychological meaning we draw is an interpretation rather than proof of what must occur.\n\n### The symbolic lesson\nThe presence of a window does not prove that the door is open.",
+        "meanings": "## Chapter III — Meanings\n### Upright · Hardship, Exclusion, Mutual Aid, Vulnerability, Material Pressure\n\nThis is a card that should not be prettified. Financial trouble, illness, unstable housing, exclusion, and the loneliness of struggling can change what choices are realistically available. The Five offers no moral lesson that hardship is deserved. It asks who has been left outside, what resources are actually accessible, and how dignity can survive an unequal world.\n\nRather than treating this orientation as an instruction, identify the action it might illuminate. A resource could be money, but it might equally be attention, accessible support, time, practical knowledge, or physical energy. Consider what is possible within actual circumstances and what others involved have consented to.\n\n### Reversed · Reconnection, Seeking Support, Lingering Insecurity, Uneven Recovery\n\nHelp may become available, though not always immediately or adequately. A reversed Five can describe receiving assistance, beginning recovery, or discovering that shame makes asking difficult. It can also describe ongoing instability after the most visible crisis has passed. The relevant question is not whether one is “manifesting abundance,” but whether concrete support and safer conditions exist.\n\nA reversal does not automatically mean the opposite of an upright meaning, nor does it establish another person’s motives. Sometimes it calls for a boundary, sometimes for renewed action, and sometimes simply for a better description of the problem.\n\n**Essence — upright:** The presence of a window does not prove that the door is open.\n\n**Essence — reversed:** Re-examine where this card’s gift has become limited, neglected, or distorted.",
+        "life": "## Chapter IV — In Your Life\n### Work, study and creative practice\nThis is a card that should not be prettified. Financial trouble, illness, unstable housing, exclusion, and the loneliness of struggling can change what choices are realistically available. The Five offers no moral lesson that hardship is deserved. It asks who has been left outside, what resources are actually accessible, and how dignity can survive an unequal world.\n\nIn professional settings, translate the theme into observable terms: available hours, clear expectations, documented outcomes, and the willingness to revise. Talent alone is not a project plan.\n\n### Relationships and belonging\nHelp may become available, though not always immediately or adequately. A reversed Five can describe receiving assistance, beginning recovery, or discovering that shame makes asking difficult. It can also describe ongoing instability after the most visible crisis has passed. The relevant question is not whether one is “manifesting abundance,” but whether concrete support and safer conditions exist.\n\nAsk whether support, attention, boundaries, or decision-making are mutual. Do not use the card to declare that another person is trustworthy or deceitful; relationships deserve evidence and direct conversation.\n\n### Money, resources and the body\nThe presence of a window does not prove that the door is open. A prudent reading distinguishes a symbolic prompt from actual financial, medical, or legal advice. Where stakes are high, seek grounded information and qualified help.\n\n### A reading in practice\n**Question:** What would responsible action look like here?\n\nAn unexpected expense leaves someone short on rent. Rather than interpreting this as personal failure, what immediate, trustworthy assistance and longer-term options could be considered?",
+        "hiddenKnowledge": "## Chapter V — Hidden Knowledge\n### A historical reading, not a timeless rule\nWaite foregrounds destitution yet records an incompatible alternate tradition that associates this card with lovers and affinity. That historical contradiction is worth preserving rather than smoothing into a single ancient meaning.\n\nEarlier tarot suits often used coins or deniers rather than the pentacles pictured in this deck. Waite notes that the symbol should not be reduced to money alone. The Rider–Waite–Smith image is a twentieth-century design informed by older cartomancy and its creators’ esoteric interests; the modern psychological interpretation is a later layer.\n\n### A second look\nThe presence of a window does not prove that the door is open. Read the composition as a conversation between image, history, and your own circumstances. Those three sources of meaning should remain distinguishable.",
+        "reflection": "## Chapter VI — Reflection\n### Upright questions\n1. What material or relational support is missing?\n2. Who might be overlooked in my community?\n3. Which form of help would preserve dignity?\n\n### Reversed questions\n1. Has the immediate crisis ended but insecurity remained?\n2. What makes accepting support difficult?\n3. What systems or people could make recovery less solitary?\n\n### The journal ritual\nWrite about a moment of being outside a door. Who held it open, and what would genuine welcome have required?\n\n### A misconception worth unlearning\nThe Five does not blame people for poverty or imply that hardship is caused by insufficient positivity.\n\n### The last word\n*The presence of a window does not prove that the door is open.*"
+      },
+      "overview": "Two poorly clothed travelers pass a brightly lit stained-glass window while snow falls. One uses crutches. The cold is not metaphorical within the image: bodies are exposed, and shelter or assistance may be near without being accessible. This is a card that should not be prettified. Financial trouble, illness, unstable housing, exclusion, and the loneliness of struggling can change what choices are realistically available. The Five offers no moral lesson that hardship is deserved. It asks who has been left outside, what resources are actually accessible, and how dignity can survive an unequal world.",
+      "historicalContext": "Waite foregrounds destitution yet records an incompatible alternate tradition that associates this card with lovers and affinity. That historical contradiction is worth preserving rather than smoothing into a single ancient meaning.",
+      "uprightInterpretation": "This is a card that should not be prettified. Financial trouble, illness, unstable housing, exclusion, and the loneliness of struggling can change what choices are realistically available. The Five offers no moral lesson that hardship is deserved. It asks who has been left outside, what resources are actually accessible, and how dignity can survive an unequal world.",
+      "reversedInterpretation": "Help may become available, though not always immediately or adequately. A reversed Five can describe receiving assistance, beginning recovery, or discovering that shame makes asking difficult. It can also describe ongoing instability after the most visible crisis has passed. The relevant question is not whether one is “manifesting abundance,” but whether concrete support and safer conditions exist.",
+      "visualSymbols": [
+        {
+          "detail": "Two travelers in snow",
+          "classification": "observed motif in Rider–Waite–Smith image; interpretation distinct"
+        },
+        {
+          "detail": "crutches and bare feet",
+          "classification": "observed motif in Rider–Waite–Smith image; interpretation distinct"
+        },
+        {
+          "detail": "illuminated pentacle window",
+          "classification": "observed motif in Rider–Waite–Smith image; interpretation distinct"
+        }
+      ],
+      "beginnerExplanation": "The presence of a window does not prove that the door is open.",
+      "readingExample": "An unexpected expense leaves someone short on rent. Rather than interpreting this as personal failure, what immediate, trustworthy assistance and longer-term options could be considered?",
+      "uprightQuestions": [
+        "What material or relational support is missing?",
+        "Who might be overlooked in my community?",
+        "Which form of help would preserve dignity?"
+      ],
+      "reversedQuestions": [
+        "Has the immediate crisis ended but insecurity remained?",
+        "What makes accepting support difficult?",
+        "What systems or people could make recovery less solitary?"
+      ],
+      "journalPrompt": "Write about a moment of being outside a door. Who held it open, and what would genuine welcome have required?",
+      "misconception": "The Five does not blame people for poverty or imply that hardship is caused by insufficient positivity.",
+      "readingSummary": {
+        "upright": "The presence of a window does not prove that the door is open.",
+        "reversed": "Examine the limits or misuse of the card’s central resource or skill."
+      },
+      "relatedCardIds": [
+        "tarot-pentacles-04",
+        "tarot-pentacles-06"
+      ],
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite 1911 specific Pentacles description and historical upright/reversed divinatory lists"
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "supports": "Waite esoteric framework; context for Rider–Waite–Smith symbolic tradition"
+        }
+      ]
+    },
+    {
+      "id": "tarot-pentacles-06",
+      "name": "Six of Pentacles",
+      "arcana": "Minor Arcana",
+      "suit": "Pentacles",
+      "rank": "Six",
+      "number": 6,
+      "subtitle": "The Scales Between Us",
+      "editorialStatus": "draft",
+      "researchStatus": "primary-source-text-checked-artwork-requires-asset-confirmation",
+      "candidateVersion": 1,
+      "uprightKeywords": [
+        "generosity",
+        "reciprocity",
+        "fairness",
+        "assistance",
+        "power"
+      ],
+      "reversedKeywords": [
+        "conditional giving",
+        "unequal exchange",
+        "dependency",
+        "withheld support"
+      ],
+      "chapters": {
+        "story": "## Chapter I — The Story\n### The Scales Between Us\n\nA well-dressed figure holds scales while giving coins to a kneeling recipient. Another kneels nearby. Six pentacles frame the scene. The scales are central, but so is the uncomfortable fact that one person has the power to distribute what others need.\n\nGenerosity has a material effect: money, opportunity, attention, and time can relieve real strain. Yet giving is not automatically fair. The Six asks who decides the terms, who can refuse, and whether an exchange respects the dignity of everyone involved. Receiving aid is not an ethical failing; neither is establishing limits on what you can give.\n\nThe Pentacles are often associated in modern Tarot with earth, resources, the body, and the material conditions of daily life. Yet no object in a card can determine the future. The scene offers a question about how we live with what is real, limited, shared, and made over time. This card’s distinctive concern is the scales between us: not merely what we possess, but what our choices allow us to sustain.\n\n### A note from the archive\nWaite identifies a merchant weighing and distributing money, associated with gifts and present prosperity. His reversal includes envy and desire. Modern power-analysis adds useful questions without claiming to reconstruct Smith’s private intent.",
+        "symbolism": "## Chapter II — Symbolism\n\nA well-dressed figure holds scales while giving coins to a kneeling recipient. Another kneels nearby. Six pentacles frame the scene. The scales are central, but so is the uncomfortable fact that one person has the power to distribute what others need.\n\n### Details to notice\n- **Scales held by giver** — Look at its placement and relationship to the people and setting. The detail belongs to Smith’s visible composition; any moral or psychological meaning we draw is an interpretation rather than proof of what must occur.\n- **Two kneeling recipients** — Look at its placement and relationship to the people and setting. The detail belongs to Smith’s visible composition; any moral or psychological meaning we draw is an interpretation rather than proof of what must occur.\n- **Coins changing hands** — Look at its placement and relationship to the people and setting. The detail belongs to Smith’s visible composition; any moral or psychological meaning we draw is an interpretation rather than proof of what must occur.\n\n### The symbolic lesson\nFair exchange concerns dignity as much as arithmetic.",
+        "meanings": "## Chapter III — Meanings\n### Upright · Generosity, Reciprocity, Fairness, Assistance, Power\n\nGenerosity has a material effect: money, opportunity, attention, and time can relieve real strain. Yet giving is not automatically fair. The Six asks who decides the terms, who can refuse, and whether an exchange respects the dignity of everyone involved. Receiving aid is not an ethical failing; neither is establishing limits on what you can give.\n\nRather than treating this orientation as an instruction, identify the action it might illuminate. A resource could be money, but it might equally be attention, accessible support, time, practical knowledge, or physical energy. Consider what is possible within actual circumstances and what others involved have consented to.\n\n### Reversed · Conditional Giving, Unequal Exchange, Dependency, Withheld Support\n\nPerhaps an offer comes with strings attached, or you are giving so much that resentment has become its hidden price. You may also be refusing help because indebtedness feels frightening. Examine the actual conditions. Does this exchange create opportunity and mutual respect, or reinforce control? The card cannot determine someone’s generosity from appearances alone.\n\nA reversal does not automatically mean the opposite of an upright meaning, nor does it establish another person’s motives. Sometimes it calls for a boundary, sometimes for renewed action, and sometimes simply for a better description of the problem.\n\n**Essence — upright:** Fair exchange concerns dignity as much as arithmetic.\n\n**Essence — reversed:** Re-examine where this card’s gift has become limited, neglected, or distorted.",
+        "life": "## Chapter IV — In Your Life\n### Work, study and creative practice\nGenerosity has a material effect: money, opportunity, attention, and time can relieve real strain. Yet giving is not automatically fair. The Six asks who decides the terms, who can refuse, and whether an exchange respects the dignity of everyone involved. Receiving aid is not an ethical failing; neither is establishing limits on what you can give.\n\nIn professional settings, translate the theme into observable terms: available hours, clear expectations, documented outcomes, and the willingness to revise. Talent alone is not a project plan.\n\n### Relationships and belonging\nPerhaps an offer comes with strings attached, or you are giving so much that resentment has become its hidden price. You may also be refusing help because indebtedness feels frightening. Examine the actual conditions. Does this exchange create opportunity and mutual respect, or reinforce control? The card cannot determine someone’s generosity from appearances alone.\n\nAsk whether support, attention, boundaries, or decision-making are mutual. Do not use the card to declare that another person is trustworthy or deceitful; relationships deserve evidence and direct conversation.\n\n### Money, resources and the body\nFair exchange concerns dignity as much as arithmetic. A prudent reading distinguishes a symbolic prompt from actual financial, medical, or legal advice. Where stakes are high, seek grounded information and qualified help.\n\n### A reading in practice\n**Question:** What would responsible action look like here?\n\nA colleague offers unpaid mentorship but expects unlimited access to your time in return. Which expectations need to be clarified?",
+        "hiddenKnowledge": "## Chapter V — Hidden Knowledge\n### A historical reading, not a timeless rule\nWaite identifies a merchant weighing and distributing money, associated with gifts and present prosperity. His reversal includes envy and desire. Modern power-analysis adds useful questions without claiming to reconstruct Smith’s private intent.\n\nEarlier tarot suits often used coins or deniers rather than the pentacles pictured in this deck. Waite notes that the symbol should not be reduced to money alone. The Rider–Waite–Smith image is a twentieth-century design informed by older cartomancy and its creators’ esoteric interests; the modern psychological interpretation is a later layer.\n\n### A second look\nFair exchange concerns dignity as much as arithmetic. Read the composition as a conversation between image, history, and your own circumstances. Those three sources of meaning should remain distinguishable.",
+        "reflection": "## Chapter VI — Reflection\n### Upright questions\n1. Where can I give without controlling?\n2. What help could I receive without shame?\n3. Who sets the terms of an exchange?\n\n### Reversed questions\n1. Is generosity concealing a demand?\n2. Where is my effort not reciprocated?\n3. What boundary would make this arrangement fairer?\n\n### The journal ritual\nDescribe one gift or act of support. Consider what it cost, what it enabled, and who retained choice.\n\n### A misconception worth unlearning\nThe Six is not a guarantee that a wealthy person is benevolent.\n\n### The last word\n*Fair exchange concerns dignity as much as arithmetic.*"
+      },
+      "overview": "A well-dressed figure holds scales while giving coins to a kneeling recipient. Another kneels nearby. Six pentacles frame the scene. The scales are central, but so is the uncomfortable fact that one person has the power to distribute what others need. Generosity has a material effect: money, opportunity, attention, and time can relieve real strain. Yet giving is not automatically fair. The Six asks who decides the terms, who can refuse, and whether an exchange respects the dignity of everyone involved. Receiving aid is not an ethical failing; neither is establishing limits on what you can give.",
+      "historicalContext": "Waite identifies a merchant weighing and distributing money, associated with gifts and present prosperity. His reversal includes envy and desire. Modern power-analysis adds useful questions without claiming to reconstruct Smith’s private intent.",
+      "uprightInterpretation": "Generosity has a material effect: money, opportunity, attention, and time can relieve real strain. Yet giving is not automatically fair. The Six asks who decides the terms, who can refuse, and whether an exchange respects the dignity of everyone involved. Receiving aid is not an ethical failing; neither is establishing limits on what you can give.",
+      "reversedInterpretation": "Perhaps an offer comes with strings attached, or you are giving so much that resentment has become its hidden price. You may also be refusing help because indebtedness feels frightening. Examine the actual conditions. Does this exchange create opportunity and mutual respect, or reinforce control? The card cannot determine someone’s generosity from appearances alone.",
+      "visualSymbols": [
+        {
+          "detail": "Scales held by giver",
+          "classification": "observed motif in Rider–Waite–Smith image; interpretation distinct"
+        },
+        {
+          "detail": "two kneeling recipients",
+          "classification": "observed motif in Rider–Waite–Smith image; interpretation distinct"
+        },
+        {
+          "detail": "coins changing hands",
+          "classification": "observed motif in Rider–Waite–Smith image; interpretation distinct"
+        }
+      ],
+      "beginnerExplanation": "Fair exchange concerns dignity as much as arithmetic.",
+      "readingExample": "A colleague offers unpaid mentorship but expects unlimited access to your time in return. Which expectations need to be clarified?",
+      "uprightQuestions": [
+        "Where can I give without controlling?",
+        "What help could I receive without shame?",
+        "Who sets the terms of an exchange?"
+      ],
+      "reversedQuestions": [
+        "Is generosity concealing a demand?",
+        "Where is my effort not reciprocated?",
+        "What boundary would make this arrangement fairer?"
+      ],
+      "journalPrompt": "Describe one gift or act of support. Consider what it cost, what it enabled, and who retained choice.",
+      "misconception": "The Six is not a guarantee that a wealthy person is benevolent.",
+      "readingSummary": {
+        "upright": "Fair exchange concerns dignity as much as arithmetic.",
+        "reversed": "Examine the limits or misuse of the card’s central resource or skill."
+      },
+      "relatedCardIds": [
+        "tarot-pentacles-05",
+        "tarot-pentacles-07"
+      ],
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite 1911 specific Pentacles description and historical upright/reversed divinatory lists"
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "supports": "Waite esoteric framework; context for Rider–Waite–Smith symbolic tradition"
+        }
+      ]
+    },
+    {
+      "id": "tarot-pentacles-07",
+      "name": "Seven of Pentacles",
+      "arcana": "Minor Arcana",
+      "suit": "Pentacles",
+      "rank": "Seven",
+      "number": 7,
+      "subtitle": "The Long Season",
+      "editorialStatus": "draft",
+      "researchStatus": "primary-source-text-checked-artwork-requires-asset-confirmation",
+      "candidateVersion": 1,
+      "uprightKeywords": [
+        "cultivation",
+        "evaluation",
+        "delayed return",
+        "patience",
+        "reconsideration"
+      ],
+      "reversedKeywords": [
+        "frustration",
+        "wasted effort",
+        "sunk costs",
+        "uncertain yield"
+      ],
+      "chapters": {
+        "story": "## Chapter I — The Story\n### The Long Season\n\nA worker leans against a staff and studies seven pentacles growing on a leafy plant. The posture is neither triumph nor defeat. It is the pause of someone who has spent time tending something and now wants to know what it has become.\n\nPatience can be wise, but “just keep going” is not always advice. The Seven asks for an honest review of growth, cost, and expectation. A garden has seasons, yet not every planting belongs in the same soil. Progress may be slower than hoped, and still be real; it may also have stalled for reasons worth investigating.\n\nThe Pentacles are often associated in modern Tarot with earth, resources, the body, and the material conditions of daily life. Yet no object in a card can determine the future. The scene offers a question about how we live with what is real, limited, shared, and made over time. This card’s distinctive concern is the long season: not merely what we possess, but what our choices allow us to sustain.\n\n### A note from the archive\nWaite notes that traditional divinatory meanings for the Seven are strikingly contradictory, including money, disputes, innocence, and anxiety about lending. The modern harvest-and-patience motif draws primarily from Smith’s pictured worker.",
+        "symbolism": "## Chapter II — Symbolism\n\nA worker leans against a staff and studies seven pentacles growing on a leafy plant. The posture is neither triumph nor defeat. It is the pause of someone who has spent time tending something and now wants to know what it has become.\n\n### Details to notice\n- **Worker leaning on staff** — Look at its placement and relationship to the people and setting. The detail belongs to Smith’s visible composition; any moral or psychological meaning we draw is an interpretation rather than proof of what must occur.\n- **Seven pentacles amid foliage** — Look at its placement and relationship to the people and setting. The detail belongs to Smith’s visible composition; any moral or psychological meaning we draw is an interpretation rather than proof of what must occur.\n- **Contemplative gaze** — Look at its placement and relationship to the people and setting. The detail belongs to Smith’s visible composition; any moral or psychological meaning we draw is an interpretation rather than proof of what must occur.\n\n### The symbolic lesson\nTime spent is evidence of effort, not proof of future reward.",
+        "meanings": "## Chapter III — Meanings\n### Upright · Cultivation, Evaluation, Delayed Return, Patience, Reconsideration\n\nPatience can be wise, but “just keep going” is not always advice. The Seven asks for an honest review of growth, cost, and expectation. A garden has seasons, yet not every planting belongs in the same soil. Progress may be slower than hoped, and still be real; it may also have stalled for reasons worth investigating.\n\nRather than treating this orientation as an instruction, identify the action it might illuminate. A resource could be money, but it might equally be attention, accessible support, time, practical knowledge, or physical energy. Consider what is possible within actual circumstances and what others involved have consented to.\n\n### Reversed · Frustration, Wasted Effort, Sunk Costs, Uncertain Yield\n\nYou may be tempted to abandon sound work before it matures, or to keep investing because leaving would mean admitting an earlier choice was imperfect. Reversal can mark a reassessment of inputs rather than a failure of character. Distinguish outcomes delayed by their nature from outcomes prevented by conditions that will not change.\n\nA reversal does not automatically mean the opposite of an upright meaning, nor does it establish another person’s motives. Sometimes it calls for a boundary, sometimes for renewed action, and sometimes simply for a better description of the problem.\n\n**Essence — upright:** Time spent is evidence of effort, not proof of future reward.\n\n**Essence — reversed:** Re-examine where this card’s gift has become limited, neglected, or distorted.",
+        "life": "## Chapter IV — In Your Life\n### Work, study and creative practice\nPatience can be wise, but “just keep going” is not always advice. The Seven asks for an honest review of growth, cost, and expectation. A garden has seasons, yet not every planting belongs in the same soil. Progress may be slower than hoped, and still be real; it may also have stalled for reasons worth investigating.\n\nIn professional settings, translate the theme into observable terms: available hours, clear expectations, documented outcomes, and the willingness to revise. Talent alone is not a project plan.\n\n### Relationships and belonging\nYou may be tempted to abandon sound work before it matures, or to keep investing because leaving would mean admitting an earlier choice was imperfect. Reversal can mark a reassessment of inputs rather than a failure of character. Distinguish outcomes delayed by their nature from outcomes prevented by conditions that will not change.\n\nAsk whether support, attention, boundaries, or decision-making are mutual. Do not use the card to declare that another person is trustworthy or deceitful; relationships deserve evidence and direct conversation.\n\n### Money, resources and the body\nTime spent is evidence of effort, not proof of future reward. A prudent reading distinguishes a symbolic prompt from actual financial, medical, or legal advice. Where stakes are high, seek grounded information and qualified help.\n\n### A reading in practice\n**Question:** What would responsible action look like here?\n\nYou have invested months in a course. Is the learning measurable, and what would justify finishing or changing direction?",
+        "hiddenKnowledge": "## Chapter V — Hidden Knowledge\n### A historical reading, not a timeless rule\nWaite notes that traditional divinatory meanings for the Seven are strikingly contradictory, including money, disputes, innocence, and anxiety about lending. The modern harvest-and-patience motif draws primarily from Smith’s pictured worker.\n\nEarlier tarot suits often used coins or deniers rather than the pentacles pictured in this deck. Waite notes that the symbol should not be reduced to money alone. The Rider–Waite–Smith image is a twentieth-century design informed by older cartomancy and its creators’ esoteric interests; the modern psychological interpretation is a later layer.\n\n### A second look\nTime spent is evidence of effort, not proof of future reward. Read the composition as a conversation between image, history, and your own circumstances. Those three sources of meaning should remain distinguishable.",
+        "reflection": "## Chapter VI — Reflection\n### Upright questions\n1. What is genuinely growing?\n2. Which results require a longer season?\n3. What evidence would help me assess progress?\n\n### Reversed questions\n1. Am I impatient or noticing a real problem?\n2. What am I continuing solely because I already began?\n3. What experiment would test whether the conditions can improve?\n\n### The journal ritual\nChoose a project and write three columns: effort invested, evidence of change, and what to do next.\n\n### A misconception worth unlearning\nThis card does not promise that persistence alone eventually pays off.\n\n### The last word\n*Time spent is evidence of effort, not proof of future reward.*"
+      },
+      "overview": "A worker leans against a staff and studies seven pentacles growing on a leafy plant. The posture is neither triumph nor defeat. It is the pause of someone who has spent time tending something and now wants to know what it has become. Patience can be wise, but “just keep going” is not always advice. The Seven asks for an honest review of growth, cost, and expectation. A garden has seasons, yet not every planting belongs in the same soil. Progress may be slower than hoped, and still be real; it may also have stalled for reasons worth investigating.",
+      "historicalContext": "Waite notes that traditional divinatory meanings for the Seven are strikingly contradictory, including money, disputes, innocence, and anxiety about lending. The modern harvest-and-patience motif draws primarily from Smith’s pictured worker.",
+      "uprightInterpretation": "Patience can be wise, but “just keep going” is not always advice. The Seven asks for an honest review of growth, cost, and expectation. A garden has seasons, yet not every planting belongs in the same soil. Progress may be slower than hoped, and still be real; it may also have stalled for reasons worth investigating.",
+      "reversedInterpretation": "You may be tempted to abandon sound work before it matures, or to keep investing because leaving would mean admitting an earlier choice was imperfect. Reversal can mark a reassessment of inputs rather than a failure of character. Distinguish outcomes delayed by their nature from outcomes prevented by conditions that will not change.",
+      "visualSymbols": [
+        {
+          "detail": "Worker leaning on staff",
+          "classification": "observed motif in Rider–Waite–Smith image; interpretation distinct"
+        },
+        {
+          "detail": "seven pentacles amid foliage",
+          "classification": "observed motif in Rider–Waite–Smith image; interpretation distinct"
+        },
+        {
+          "detail": "contemplative gaze",
+          "classification": "observed motif in Rider–Waite–Smith image; interpretation distinct"
+        }
+      ],
+      "beginnerExplanation": "Time spent is evidence of effort, not proof of future reward.",
+      "readingExample": "You have invested months in a course. Is the learning measurable, and what would justify finishing or changing direction?",
+      "uprightQuestions": [
+        "What is genuinely growing?",
+        "Which results require a longer season?",
+        "What evidence would help me assess progress?"
+      ],
+      "reversedQuestions": [
+        "Am I impatient or noticing a real problem?",
+        "What am I continuing solely because I already began?",
+        "What experiment would test whether the conditions can improve?"
+      ],
+      "journalPrompt": "Choose a project and write three columns: effort invested, evidence of change, and what to do next.",
+      "misconception": "This card does not promise that persistence alone eventually pays off.",
+      "readingSummary": {
+        "upright": "Time spent is evidence of effort, not proof of future reward.",
+        "reversed": "Examine the limits or misuse of the card’s central resource or skill."
+      },
+      "relatedCardIds": [
+        "tarot-pentacles-06",
+        "tarot-pentacles-08"
+      ],
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite 1911 specific Pentacles description and historical upright/reversed divinatory lists"
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "supports": "Waite esoteric framework; context for Rider–Waite–Smith symbolic tradition"
+        }
+      ]
+    },
+    {
+      "id": "tarot-pentacles-08",
+      "name": "Eight of Pentacles",
+      "arcana": "Minor Arcana",
+      "suit": "Pentacles",
+      "rank": "Eight",
+      "number": 8,
+      "subtitle": "The Workshop of Repetition",
+      "editorialStatus": "draft",
+      "researchStatus": "primary-source-text-checked-artwork-requires-asset-confirmation",
+      "candidateVersion": 1,
+      "uprightKeywords": [
+        "craftsmanship",
+        "practice",
+        "discipline",
+        "learning",
+        "quality"
+      ],
+      "reversedKeywords": [
+        "burnout",
+        "hollow perfectionism",
+        "misused expertise",
+        "disengagement"
+      ],
+      "chapters": {
+        "story": "## Chapter I — The Story\n### The Workshop of Repetition\n\nAn artisan sits at a bench carving a pentacle. Several finished pieces hang in orderly sequence; another rests nearby. The small town in the distance makes the workshop feel apart from ordinary bustle. Nothing in the scene suggests skill arrived by enchantment.\n\nThe Eight is about the remarkable, unglamorous process of becoming good at something. Repetition can refine perception; feedback teaches the hand what enthusiasm cannot. Work done attentively may become a source of pride, income, or service. But productivity is not the same as dignity, and the worth of a person does not depend upon constant output.\n\nThe Pentacles are often associated in modern Tarot with earth, resources, the body, and the material conditions of daily life. Yet no object in a card can determine the future. The scene offers a question about how we live with what is real, limited, shared, and made over time. This card’s distinctive concern is the workshop of repetition: not merely what we possess, but what our choices allow us to sustain.\n\n### A note from the archive\nWaite names craftsmanship, employment, and skill; his reversal includes vanity, greed, and ingenuity turned toward intrigue. That ethical shadow is historically documented rather than a modern addition.",
+        "symbolism": "## Chapter II — Symbolism\n\nAn artisan sits at a bench carving a pentacle. Several finished pieces hang in orderly sequence; another rests nearby. The small town in the distance makes the workshop feel apart from ordinary bustle. Nothing in the scene suggests skill arrived by enchantment.\n\n### Details to notice\n- **Artisan carving a pentacle** — Look at its placement and relationship to the people and setting. The detail belongs to Smith’s visible composition; any moral or psychological meaning we draw is an interpretation rather than proof of what must occur.\n- **Row of finished works** — Look at its placement and relationship to the people and setting. The detail belongs to Smith’s visible composition; any moral or psychological meaning we draw is an interpretation rather than proof of what must occur.\n- **Town beyond the workshop** — Look at its placement and relationship to the people and setting. The detail belongs to Smith’s visible composition; any moral or psychological meaning we draw is an interpretation rather than proof of what must occur.\n\n### The symbolic lesson\nMastery is not a mood. It is an accumulating relationship with practice.",
+        "meanings": "## Chapter III — Meanings\n### Upright · Craftsmanship, Practice, Discipline, Learning, Quality\n\nThe Eight is about the remarkable, unglamorous process of becoming good at something. Repetition can refine perception; feedback teaches the hand what enthusiasm cannot. Work done attentively may become a source of pride, income, or service. But productivity is not the same as dignity, and the worth of a person does not depend upon constant output.\n\nRather than treating this orientation as an instruction, identify the action it might illuminate. A resource could be money, but it might equally be attention, accessible support, time, practical knowledge, or physical energy. Consider what is possible within actual circumstances and what others involved have consented to.\n\n### Reversed · Burnout, Hollow Perfectionism, Misused Expertise, Disengagement\n\nSometimes practice has become mechanical, or the demand for flawless execution prevents any work from being finished. At other times ability is being directed toward manipulation, exploitation, or hollow status. Reversal asks whether your relationship to the work remains healthy. Rest, a new teacher, a better standard, or a change of environment may be more useful than doubling the hours.\n\nA reversal does not automatically mean the opposite of an upright meaning, nor does it establish another person’s motives. Sometimes it calls for a boundary, sometimes for renewed action, and sometimes simply for a better description of the problem.\n\n**Essence — upright:** Mastery is not a mood. It is an accumulating relationship with practice.\n\n**Essence — reversed:** Re-examine where this card’s gift has become limited, neglected, or distorted.",
+        "life": "## Chapter IV — In Your Life\n### Work, study and creative practice\nThe Eight is about the remarkable, unglamorous process of becoming good at something. Repetition can refine perception; feedback teaches the hand what enthusiasm cannot. Work done attentively may become a source of pride, income, or service. But productivity is not the same as dignity, and the worth of a person does not depend upon constant output.\n\nIn professional settings, translate the theme into observable terms: available hours, clear expectations, documented outcomes, and the willingness to revise. Talent alone is not a project plan.\n\n### Relationships and belonging\nSometimes practice has become mechanical, or the demand for flawless execution prevents any work from being finished. At other times ability is being directed toward manipulation, exploitation, or hollow status. Reversal asks whether your relationship to the work remains healthy. Rest, a new teacher, a better standard, or a change of environment may be more useful than doubling the hours.\n\nAsk whether support, attention, boundaries, or decision-making are mutual. Do not use the card to declare that another person is trustworthy or deceitful; relationships deserve evidence and direct conversation.\n\n### Money, resources and the body\nMastery is not a mood. It is an accumulating relationship with practice. A prudent reading distinguishes a symbolic prompt from actual financial, medical, or legal advice. Where stakes are high, seek grounded information and qualified help.\n\n### A reading in practice\n**Question:** What would responsible action look like here?\n\nYou want to learn sewing. Instead of attempting a complicated garment first, what simple construction skill could you practise three times and compare?",
+        "hiddenKnowledge": "## Chapter V — Hidden Knowledge\n### A historical reading, not a timeless rule\nWaite names craftsmanship, employment, and skill; his reversal includes vanity, greed, and ingenuity turned toward intrigue. That ethical shadow is historically documented rather than a modern addition.\n\nEarlier tarot suits often used coins or deniers rather than the pentacles pictured in this deck. Waite notes that the symbol should not be reduced to money alone. The Rider–Waite–Smith image is a twentieth-century design informed by older cartomancy and its creators’ esoteric interests; the modern psychological interpretation is a later layer.\n\n### A second look\nMastery is not a mood. It is an accumulating relationship with practice. Read the composition as a conversation between image, history, and your own circumstances. Those three sources of meaning should remain distinguishable.",
+        "reflection": "## Chapter VI — Reflection\n### Upright questions\n1. Which skill deserves patient repetition?\n2. What counts as improvement rather than mere output?\n3. Who could offer specific feedback?\n\n### Reversed questions\n1. Has practice become punishment?\n2. Where am I polishing instead of completing?\n3. Am I using expertise in a way I respect?\n\n### The journal ritual\nDescribe a craft you admire. Record what a beginner could practise for twenty minutes.\n\n### A misconception worth unlearning\nThe Eight does not demand workaholism or claim that effort guarantees success.\n\n### The last word\n*Mastery is not a mood. It is an accumulating relationship with practice.*"
+      },
+      "overview": "An artisan sits at a bench carving a pentacle. Several finished pieces hang in orderly sequence; another rests nearby. The small town in the distance makes the workshop feel apart from ordinary bustle. Nothing in the scene suggests skill arrived by enchantment. The Eight is about the remarkable, unglamorous process of becoming good at something. Repetition can refine perception; feedback teaches the hand what enthusiasm cannot. Work done attentively may become a source of pride, income, or service. But productivity is not the same as dignity, and the worth of a person does not depend upon constant output.",
+      "historicalContext": "Waite names craftsmanship, employment, and skill; his reversal includes vanity, greed, and ingenuity turned toward intrigue. That ethical shadow is historically documented rather than a modern addition.",
+      "uprightInterpretation": "The Eight is about the remarkable, unglamorous process of becoming good at something. Repetition can refine perception; feedback teaches the hand what enthusiasm cannot. Work done attentively may become a source of pride, income, or service. But productivity is not the same as dignity, and the worth of a person does not depend upon constant output.",
+      "reversedInterpretation": "Sometimes practice has become mechanical, or the demand for flawless execution prevents any work from being finished. At other times ability is being directed toward manipulation, exploitation, or hollow status. Reversal asks whether your relationship to the work remains healthy. Rest, a new teacher, a better standard, or a change of environment may be more useful than doubling the hours.",
+      "visualSymbols": [
+        {
+          "detail": "Artisan carving a pentacle",
+          "classification": "observed motif in Rider–Waite–Smith image; interpretation distinct"
+        },
+        {
+          "detail": "row of finished works",
+          "classification": "observed motif in Rider–Waite–Smith image; interpretation distinct"
+        },
+        {
+          "detail": "town beyond the workshop",
+          "classification": "observed motif in Rider–Waite–Smith image; interpretation distinct"
+        }
+      ],
+      "beginnerExplanation": "Mastery is not a mood. It is an accumulating relationship with practice.",
+      "readingExample": "You want to learn sewing. Instead of attempting a complicated garment first, what simple construction skill could you practise three times and compare?",
+      "uprightQuestions": [
+        "Which skill deserves patient repetition?",
+        "What counts as improvement rather than mere output?",
+        "Who could offer specific feedback?"
+      ],
+      "reversedQuestions": [
+        "Has practice become punishment?",
+        "Where am I polishing instead of completing?",
+        "Am I using expertise in a way I respect?"
+      ],
+      "journalPrompt": "Describe a craft you admire. Record what a beginner could practise for twenty minutes.",
+      "misconception": "The Eight does not demand workaholism or claim that effort guarantees success.",
+      "readingSummary": {
+        "upright": "Mastery is not a mood. It is an accumulating relationship with practice.",
+        "reversed": "Examine the limits or misuse of the card’s central resource or skill."
+      },
+      "relatedCardIds": [
+        "tarot-pentacles-07",
+        "tarot-pentacles-09"
+      ],
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite 1911 specific Pentacles description and historical upright/reversed divinatory lists"
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "supports": "Waite esoteric framework; context for Rider–Waite–Smith symbolic tradition"
+        }
+      ]
+    },
+    {
+      "id": "tarot-pentacles-09",
+      "name": "Nine of Pentacles",
+      "arcana": "Minor Arcana",
+      "suit": "Pentacles",
+      "rank": "Nine",
+      "number": 9,
+      "subtitle": "A Garden of One’s Own",
+      "editorialStatus": "draft",
+      "researchStatus": "primary-source-text-checked-artwork-requires-asset-confirmation",
+      "candidateVersion": 1,
+      "uprightKeywords": [
+        "self-sufficiency",
+        "discernment",
+        "earned comfort",
+        "pleasure",
+        "autonomy"
+      ],
+      "reversedKeywords": [
+        "isolation",
+        "fragile luxury",
+        "image management",
+        "precarious independence"
+      ],
+      "chapters": {
+        "story": "## Chapter I — The Story\n### A Garden of One’s Own\n\nA richly dressed figure stands among grapes and nine pentacles, with a hooded bird on the wrist. A manor rises behind the cultivated abundance. This is not wilderness: the scene is arranged, tended, and possibly protected.\n\nThe Nine invites a different question from the Ten. Not what can be handed down, but what kind of independence feels livable now? Privacy, time, security, pleasure, and competence can make a life feel spacious. The bird hints at training and restraint alongside privilege; even comfort comes with structures and responsibilities.\n\nThe Pentacles are often associated in modern Tarot with earth, resources, the body, and the material conditions of daily life. Yet no object in a card can determine the future. The scene offers a question about how we live with what is real, limited, shared, and made over time. This card’s distinctive concern is a garden of one’s own: not merely what we possess, but what our choices allow us to sustain.\n\n### A note from the archive\nWaite describes a woman with a bird amid grapevines and links the card to prudence, safety, accomplishment, and discernment. He treats ownership as possible, not certain. Modern claims that she necessarily represents a particular social class or relationship status go beyond the record.",
+        "symbolism": "## Chapter II — Symbolism\n\nA richly dressed figure stands among grapes and nine pentacles, with a hooded bird on the wrist. A manor rises behind the cultivated abundance. This is not wilderness: the scene is arranged, tended, and possibly protected.\n\n### Details to notice\n- **Figure in vineyard** — Look at its placement and relationship to the people and setting. The detail belongs to Smith’s visible composition; any moral or psychological meaning we draw is an interpretation rather than proof of what must occur.\n- **Hooded bird on wrist** — Look at its placement and relationship to the people and setting. The detail belongs to Smith’s visible composition; any moral or psychological meaning we draw is an interpretation rather than proof of what must occur.\n- **Nine pentacles and distant manor** — Look at its placement and relationship to the people and setting. The detail belongs to Smith’s visible composition; any moral or psychological meaning we draw is an interpretation rather than proof of what must occur.\n\n### The symbolic lesson\nThe ability to choose one’s company is different from having nobody to call.",
+        "meanings": "## Chapter III — Meanings\n### Upright · Self-Sufficiency, Discernment, Earned Comfort, Pleasure, Autonomy\n\nThe Nine invites a different question from the Ten. Not what can be handed down, but what kind of independence feels livable now? Privacy, time, security, pleasure, and competence can make a life feel spacious. The bird hints at training and restraint alongside privilege; even comfort comes with structures and responsibilities.\n\nRather than treating this orientation as an instruction, identify the action it might illuminate. A resource could be money, but it might equally be attention, accessible support, time, practical knowledge, or physical energy. Consider what is possible within actual circumstances and what others involved have consented to.\n\n### Reversed · Isolation, Fragile Luxury, Image Management, Precarious Independence\n\nPerhaps apparent independence relies on invisible labor, unstable finances, or relentless perfection. Perhaps you have built real security but cannot enjoy it without feeling guilty. Reversal can invite a gentler audit of foundations and companionship rather than treating wealth or solitude as a moral flaw.\n\nA reversal does not automatically mean the opposite of an upright meaning, nor does it establish another person’s motives. Sometimes it calls for a boundary, sometimes for renewed action, and sometimes simply for a better description of the problem.\n\n**Essence — upright:** The ability to choose one’s company is different from having nobody to call.\n\n**Essence — reversed:** Re-examine where this card’s gift has become limited, neglected, or distorted.",
+        "life": "## Chapter IV — In Your Life\n### Work, study and creative practice\nThe Nine invites a different question from the Ten. Not what can be handed down, but what kind of independence feels livable now? Privacy, time, security, pleasure, and competence can make a life feel spacious. The bird hints at training and restraint alongside privilege; even comfort comes with structures and responsibilities.\n\nIn professional settings, translate the theme into observable terms: available hours, clear expectations, documented outcomes, and the willingness to revise. Talent alone is not a project plan.\n\n### Relationships and belonging\nPerhaps apparent independence relies on invisible labor, unstable finances, or relentless perfection. Perhaps you have built real security but cannot enjoy it without feeling guilty. Reversal can invite a gentler audit of foundations and companionship rather than treating wealth or solitude as a moral flaw.\n\nAsk whether support, attention, boundaries, or decision-making are mutual. Do not use the card to declare that another person is trustworthy or deceitful; relationships deserve evidence and direct conversation.\n\n### Money, resources and the body\nThe ability to choose one’s company is different from having nobody to call. A prudent reading distinguishes a symbolic prompt from actual financial, medical, or legal advice. Where stakes are high, seek grounded information and qualified help.\n\n### A reading in practice\n**Question:** What would responsible action look like here?\n\nYou have created a comfortable independent routine. Which part of it brings pleasure, and which part merely impresses outsiders?",
+        "hiddenKnowledge": "## Chapter V — Hidden Knowledge\n### A historical reading, not a timeless rule\nWaite describes a woman with a bird amid grapevines and links the card to prudence, safety, accomplishment, and discernment. He treats ownership as possible, not certain. Modern claims that she necessarily represents a particular social class or relationship status go beyond the record.\n\nEarlier tarot suits often used coins or deniers rather than the pentacles pictured in this deck. Waite notes that the symbol should not be reduced to money alone. The Rider–Waite–Smith image is a twentieth-century design informed by older cartomancy and its creators’ esoteric interests; the modern psychological interpretation is a later layer.\n\n### A second look\nThe ability to choose one’s company is different from having nobody to call. Read the composition as a conversation between image, history, and your own circumstances. Those three sources of meaning should remain distinguishable.",
+        "reflection": "## Chapter VI — Reflection\n### Upright questions\n1. What does enough look like on my own terms?\n2. What have I patiently cultivated?\n3. What pleasure can I enjoy without proving anything?\n\n### Reversed questions\n1. Is my independence supported by a stable foundation?\n2. Where might I need companionship or help?\n3. What am I maintaining mainly for appearances?\n\n### The journal ritual\nWrite a description of your ideal ordinary afternoon, including the resources that would sustain it.\n\n### A misconception worth unlearning\nThe Nine is not a requirement to be wealthy or single before being content.\n\n### The last word\n*The ability to choose one’s company is different from having nobody to call.*"
+      },
+      "overview": "A richly dressed figure stands among grapes and nine pentacles, with a hooded bird on the wrist. A manor rises behind the cultivated abundance. This is not wilderness: the scene is arranged, tended, and possibly protected. The Nine invites a different question from the Ten. Not what can be handed down, but what kind of independence feels livable now? Privacy, time, security, pleasure, and competence can make a life feel spacious. The bird hints at training and restraint alongside privilege; even comfort comes with structures and responsibilities.",
+      "historicalContext": "Waite describes a woman with a bird amid grapevines and links the card to prudence, safety, accomplishment, and discernment. He treats ownership as possible, not certain. Modern claims that she necessarily represents a particular social class or relationship status go beyond the record.",
+      "uprightInterpretation": "The Nine invites a different question from the Ten. Not what can be handed down, but what kind of independence feels livable now? Privacy, time, security, pleasure, and competence can make a life feel spacious. The bird hints at training and restraint alongside privilege; even comfort comes with structures and responsibilities.",
+      "reversedInterpretation": "Perhaps apparent independence relies on invisible labor, unstable finances, or relentless perfection. Perhaps you have built real security but cannot enjoy it without feeling guilty. Reversal can invite a gentler audit of foundations and companionship rather than treating wealth or solitude as a moral flaw.",
+      "visualSymbols": [
+        {
+          "detail": "Figure in vineyard",
+          "classification": "observed motif in Rider–Waite–Smith image; interpretation distinct"
+        },
+        {
+          "detail": "hooded bird on wrist",
+          "classification": "observed motif in Rider–Waite–Smith image; interpretation distinct"
+        },
+        {
+          "detail": "nine pentacles and distant manor",
+          "classification": "observed motif in Rider–Waite–Smith image; interpretation distinct"
+        }
+      ],
+      "beginnerExplanation": "The ability to choose one’s company is different from having nobody to call.",
+      "readingExample": "You have created a comfortable independent routine. Which part of it brings pleasure, and which part merely impresses outsiders?",
+      "uprightQuestions": [
+        "What does enough look like on my own terms?",
+        "What have I patiently cultivated?",
+        "What pleasure can I enjoy without proving anything?"
+      ],
+      "reversedQuestions": [
+        "Is my independence supported by a stable foundation?",
+        "Where might I need companionship or help?",
+        "What am I maintaining mainly for appearances?"
+      ],
+      "journalPrompt": "Write a description of your ideal ordinary afternoon, including the resources that would sustain it.",
+      "misconception": "The Nine is not a requirement to be wealthy or single before being content.",
+      "readingSummary": {
+        "upright": "The ability to choose one’s company is different from having nobody to call.",
+        "reversed": "Examine the limits or misuse of the card’s central resource or skill."
+      },
+      "relatedCardIds": [
+        "tarot-pentacles-08",
+        "tarot-pentacles-10"
+      ],
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite 1911 specific Pentacles description and historical upright/reversed divinatory lists"
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "supports": "Waite esoteric framework; context for Rider–Waite–Smith symbolic tradition"
+        }
+      ]
+    },
+    {
+      "id": "tarot-pentacles-10",
+      "name": "Ten of Pentacles",
+      "arcana": "Minor Arcana",
+      "suit": "Pentacles",
+      "rank": "Ten",
+      "number": 10,
+      "subtitle": "The House and the Generations",
+      "editorialStatus": "draft",
+      "researchStatus": "primary-source-text-checked-artwork-requires-asset-confirmation",
+      "candidateVersion": 1,
+      "uprightKeywords": [
+        "legacy",
+        "continuity",
+        "shared resources",
+        "inheritance",
+        "belonging"
+      ],
+      "reversedKeywords": [
+        "family strain",
+        "insecure foundations",
+        "unequal access",
+        "contested legacy"
+      ],
+      "chapters": {
+        "story": "## Chapter I — The Story\n### The House and the Generations\n\nBeneath an archway near a house, several generations share a crowded scene: an elder with dogs, an adult couple, and a child. Ten pentacles occupy the image, which is almost architectural in its arrangement. A household is visible, but the relationships within it remain partly open to interpretation.\n\nThe Ten explores what lasts beyond an individual accomplishment. Property, knowledge, traditions, caregiving, and community institutions can all be forms of inheritance. Legacy has advantages and obligations: what is preserved, who benefits, and who is missing from the family portrait? A household can be chosen as well as inherited.\n\nThe Pentacles are often associated in modern Tarot with earth, resources, the body, and the material conditions of daily life. Yet no object in a card can determine the future. The scene offers a question about how we live with what is real, limited, shared, and made over time. This card’s distinctive concern is the house and the generations: not merely what we possess, but what our choices allow us to sustain.\n\n### A note from the archive\nWaite emphasizes gain, family records, lineage, and the home; his reversed list includes losses and forms of chance, but also gifts and pensions. The card is not exclusively about genetic family or guaranteed generational wealth.",
+        "symbolism": "## Chapter II — Symbolism\n\nBeneath an archway near a house, several generations share a crowded scene: an elder with dogs, an adult couple, and a child. Ten pentacles occupy the image, which is almost architectural in its arrangement. A household is visible, but the relationships within it remain partly open to interpretation.\n\n### Details to notice\n- **Archway and house** — Look at its placement and relationship to the people and setting. The detail belongs to Smith’s visible composition; any moral or psychological meaning we draw is an interpretation rather than proof of what must occur.\n- **Elder with dogs** — Look at its placement and relationship to the people and setting. The detail belongs to Smith’s visible composition; any moral or psychological meaning we draw is an interpretation rather than proof of what must occur.\n- **Couple and child** — Look at its placement and relationship to the people and setting. The detail belongs to Smith’s visible composition; any moral or psychological meaning we draw is an interpretation rather than proof of what must occur.\n- **Ten pentacles across the scene** — Look at its placement and relationship to the people and setting. The detail belongs to Smith’s visible composition; any moral or psychological meaning we draw is an interpretation rather than proof of what must occur.\n\n### The symbolic lesson\nInheritance includes habits and obligations, not only valuables.",
+        "meanings": "## Chapter III — Meanings\n### Upright · Legacy, Continuity, Shared Resources, Inheritance, Belonging\n\nThe Ten explores what lasts beyond an individual accomplishment. Property, knowledge, traditions, caregiving, and community institutions can all be forms of inheritance. Legacy has advantages and obligations: what is preserved, who benefits, and who is missing from the family portrait? A household can be chosen as well as inherited.\n\nRather than treating this orientation as an instruction, identify the action it might illuminate. A resource could be money, but it might equally be attention, accessible support, time, practical knowledge, or physical energy. Consider what is possible within actual circumstances and what others involved have consented to.\n\n### Reversed · Family Strain, Insecure Foundations, Unequal Access, Contested Legacy\n\nA shared structure may be wealthy on paper yet emotionally fragile, or a conflict about responsibility may expose unequal access to resources. The reversal can also question whether tradition is being used to justify exclusion. Repair may require practical agreements, difficult conversations, or changing what is passed forward.\n\nA reversal does not automatically mean the opposite of an upright meaning, nor does it establish another person’s motives. Sometimes it calls for a boundary, sometimes for renewed action, and sometimes simply for a better description of the problem.\n\n**Essence — upright:** Inheritance includes habits and obligations, not only valuables.\n\n**Essence — reversed:** Re-examine where this card’s gift has become limited, neglected, or distorted.",
+        "life": "## Chapter IV — In Your Life\n### Work, study and creative practice\nThe Ten explores what lasts beyond an individual accomplishment. Property, knowledge, traditions, caregiving, and community institutions can all be forms of inheritance. Legacy has advantages and obligations: what is preserved, who benefits, and who is missing from the family portrait? A household can be chosen as well as inherited.\n\nIn professional settings, translate the theme into observable terms: available hours, clear expectations, documented outcomes, and the willingness to revise. Talent alone is not a project plan.\n\n### Relationships and belonging\nA shared structure may be wealthy on paper yet emotionally fragile, or a conflict about responsibility may expose unequal access to resources. The reversal can also question whether tradition is being used to justify exclusion. Repair may require practical agreements, difficult conversations, or changing what is passed forward.\n\nAsk whether support, attention, boundaries, or decision-making are mutual. Do not use the card to declare that another person is trustworthy or deceitful; relationships deserve evidence and direct conversation.\n\n### Money, resources and the body\nInheritance includes habits and obligations, not only valuables. A prudent reading distinguishes a symbolic prompt from actual financial, medical, or legal advice. Where stakes are high, seek grounded information and qualified help.\n\n### A reading in practice\n**Question:** What would responsible action look like here?\n\nA family discusses caring for an older relative. What would an equitable plan look like if money, time, and emotional labor were counted?",
+        "hiddenKnowledge": "## Chapter V — Hidden Knowledge\n### A historical reading, not a timeless rule\nWaite emphasizes gain, family records, lineage, and the home; his reversed list includes losses and forms of chance, but also gifts and pensions. The card is not exclusively about genetic family or guaranteed generational wealth.\n\nEarlier tarot suits often used coins or deniers rather than the pentacles pictured in this deck. Waite notes that the symbol should not be reduced to money alone. The Rider–Waite–Smith image is a twentieth-century design informed by older cartomancy and its creators’ esoteric interests; the modern psychological interpretation is a later layer.\n\n### A second look\nInheritance includes habits and obligations, not only valuables. Read the composition as a conversation between image, history, and your own circumstances. Those three sources of meaning should remain distinguishable.",
+        "reflection": "## Chapter VI — Reflection\n### Upright questions\n1. What do I hope to pass forward?\n2. Who belongs in my idea of family?\n3. Which shared resource needs stewardship?\n\n### Reversed questions\n1. What tradition has become restrictive?\n2. Are responsibilities and benefits distributed fairly?\n3. Which foundation needs repair before it can support others?\n\n### The journal ritual\nMake two lists: the inheritance you received and the inheritance you choose to create.\n\n### A misconception worth unlearning\nThe Ten does not promise marriage, children, or a fortune; family structures are diverse.\n\n### The last word\n*Inheritance includes habits and obligations, not only valuables.*"
+      },
+      "overview": "Beneath an archway near a house, several generations share a crowded scene: an elder with dogs, an adult couple, and a child. Ten pentacles occupy the image, which is almost architectural in its arrangement. A household is visible, but the relationships within it remain partly open to interpretation. The Ten explores what lasts beyond an individual accomplishment. Property, knowledge, traditions, caregiving, and community institutions can all be forms of inheritance. Legacy has advantages and obligations: what is preserved, who benefits, and who is missing from the family portrait? A household can be chosen as well as inherited.",
+      "historicalContext": "Waite emphasizes gain, family records, lineage, and the home; his reversed list includes losses and forms of chance, but also gifts and pensions. The card is not exclusively about genetic family or guaranteed generational wealth.",
+      "uprightInterpretation": "The Ten explores what lasts beyond an individual accomplishment. Property, knowledge, traditions, caregiving, and community institutions can all be forms of inheritance. Legacy has advantages and obligations: what is preserved, who benefits, and who is missing from the family portrait? A household can be chosen as well as inherited.",
+      "reversedInterpretation": "A shared structure may be wealthy on paper yet emotionally fragile, or a conflict about responsibility may expose unequal access to resources. The reversal can also question whether tradition is being used to justify exclusion. Repair may require practical agreements, difficult conversations, or changing what is passed forward.",
+      "visualSymbols": [
+        {
+          "detail": "Archway and house",
+          "classification": "observed motif in Rider–Waite–Smith image; interpretation distinct"
+        },
+        {
+          "detail": "elder with dogs",
+          "classification": "observed motif in Rider–Waite–Smith image; interpretation distinct"
+        },
+        {
+          "detail": "couple and child",
+          "classification": "observed motif in Rider–Waite–Smith image; interpretation distinct"
+        },
+        {
+          "detail": "ten pentacles across the scene",
+          "classification": "observed motif in Rider–Waite–Smith image; interpretation distinct"
+        }
+      ],
+      "beginnerExplanation": "Inheritance includes habits and obligations, not only valuables.",
+      "readingExample": "A family discusses caring for an older relative. What would an equitable plan look like if money, time, and emotional labor were counted?",
+      "uprightQuestions": [
+        "What do I hope to pass forward?",
+        "Who belongs in my idea of family?",
+        "Which shared resource needs stewardship?"
+      ],
+      "reversedQuestions": [
+        "What tradition has become restrictive?",
+        "Are responsibilities and benefits distributed fairly?",
+        "Which foundation needs repair before it can support others?"
+      ],
+      "journalPrompt": "Make two lists: the inheritance you received and the inheritance you choose to create.",
+      "misconception": "The Ten does not promise marriage, children, or a fortune; family structures are diverse.",
+      "readingSummary": {
+        "upright": "Inheritance includes habits and obligations, not only valuables.",
+        "reversed": "Examine the limits or misuse of the card’s central resource or skill."
+      },
+      "relatedCardIds": [
+        "tarot-pentacles-09",
+        "tarot-pentacles-11"
+      ],
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite 1911 specific Pentacles description and historical upright/reversed divinatory lists"
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "supports": "Waite esoteric framework; context for Rider–Waite–Smith symbolic tradition"
+        }
+      ]
+    },
+    {
+      "id": "tarot-pentacles-11",
+      "name": "Page of Pentacles",
+      "arcana": "Minor Arcana",
+      "suit": "Pentacles",
+      "rank": "Page",
+      "number": 11,
+      "subtitle": "The Student of the Tangible",
+      "editorialStatus": "draft",
+      "researchStatus": "primary-source-text-checked-artwork-requires-asset-confirmation",
+      "candidateVersion": 1,
+      "uprightKeywords": [
+        "study",
+        "curiosity",
+        "first practice",
+        "careful observation",
+        "apprenticeship"
+      ],
+      "reversedKeywords": [
+        "distraction",
+        "impractical plans",
+        "waste",
+        "reluctance to learn"
+      ],
+      "chapters": {
+        "story": "## Chapter I — The Story\n### The Student of the Tangible\n\nA young figure stands in a broad landscape, gazing intently at a pentacle apparently held or hovering above raised hands. The Page seems almost unaware of the surrounding hills and flowers. One object has become a complete universe of attention.\n\nThe Page is the apprentice who takes a possibility seriously enough to investigate it. New skills, budgets, crafts, studies, and career paths often begin with concentrated wonder rather than polished talent. This card rewards careful questions: how does it work, what does it cost, and what would practising it teach me?\n\nThe Pentacles are often associated in modern Tarot with earth, resources, the body, and the material conditions of daily life. Yet no object in a card can determine the future. The scene offers a question about how we live with what is real, limited, shared, and made over time. This card’s distinctive concern is the student of the tangible: not merely what we possess, but what our choices allow us to sustain.\n\n### A note from the archive\nWaite specifically describes the Page’s absorbed observation and associates the card with study, application, news, and management. His reversal emphasizes extravagance and unfavorable news. Modern student-of-life language develops the visual image.",
+        "symbolism": "## Chapter II — Symbolism\n\nA young figure stands in a broad landscape, gazing intently at a pentacle apparently held or hovering above raised hands. The Page seems almost unaware of the surrounding hills and flowers. One object has become a complete universe of attention.\n\n### Details to notice\n- **Youth gazing at pentacle** — Look at its placement and relationship to the people and setting. The detail belongs to Smith’s visible composition; any moral or psychological meaning we draw is an interpretation rather than proof of what must occur.\n- **Slow posture** — Look at its placement and relationship to the people and setting. The detail belongs to Smith’s visible composition; any moral or psychological meaning we draw is an interpretation rather than proof of what must occur.\n- **Flowers and distant hills** — Look at its placement and relationship to the people and setting. The detail belongs to Smith’s visible composition; any moral or psychological meaning we draw is an interpretation rather than proof of what must occur.\n\n### The symbolic lesson\nAttention is a gift, but learning asks you to return to the world with what you found.",
+        "meanings": "## Chapter III — Meanings\n### Upright · Study, Curiosity, First Practice, Careful Observation, Apprenticeship\n\nThe Page is the apprentice who takes a possibility seriously enough to investigate it. New skills, budgets, crafts, studies, and career paths often begin with concentrated wonder rather than polished talent. This card rewards careful questions: how does it work, what does it cost, and what would practising it teach me?\n\nRather than treating this orientation as an instruction, identify the action it might illuminate. A resource could be money, but it might equally be attention, accessible support, time, practical knowledge, or physical energy. Consider what is possible within actual circumstances and what others involved have consented to.\n\n### Reversed · Distraction, Impractical Plans, Waste, Reluctance To Learn\n\nCuriosity may have become collection without application: more books, tools, or plans, but few experiments. Another possibility is shame about beginning at the beginning. Reversal asks whether you need a smaller learning task, better guidance, or permission to be inexperienced. It is not evidence of a permanently immature personality.\n\nA reversal does not automatically mean the opposite of an upright meaning, nor does it establish another person’s motives. Sometimes it calls for a boundary, sometimes for renewed action, and sometimes simply for a better description of the problem.\n\n**Essence — upright:** Attention is a gift, but learning asks you to return to the world with what you found.\n\n**Essence — reversed:** Re-examine where this card’s gift has become limited, neglected, or distorted.",
+        "life": "## Chapter IV — In Your Life\n### Work, study and creative practice\nThe Page is the apprentice who takes a possibility seriously enough to investigate it. New skills, budgets, crafts, studies, and career paths often begin with concentrated wonder rather than polished talent. This card rewards careful questions: how does it work, what does it cost, and what would practising it teach me?\n\nIn professional settings, translate the theme into observable terms: available hours, clear expectations, documented outcomes, and the willingness to revise. Talent alone is not a project plan.\n\n### Relationships and belonging\nCuriosity may have become collection without application: more books, tools, or plans, but few experiments. Another possibility is shame about beginning at the beginning. Reversal asks whether you need a smaller learning task, better guidance, or permission to be inexperienced. It is not evidence of a permanently immature personality.\n\nAsk whether support, attention, boundaries, or decision-making are mutual. Do not use the card to declare that another person is trustworthy or deceitful; relationships deserve evidence and direct conversation.\n\n### Money, resources and the body\nAttention is a gift, but learning asks you to return to the world with what you found. A prudent reading distinguishes a symbolic prompt from actual financial, medical, or legal advice. Where stakes are high, seek grounded information and qualified help.\n\n### A reading in practice\n**Question:** What would responsible action look like here?\n\nYou are considering a certification. What can you verify about the curriculum and cost before enrolling?",
+        "hiddenKnowledge": "## Chapter V — Hidden Knowledge\n### A historical reading, not a timeless rule\nWaite specifically describes the Page’s absorbed observation and associates the card with study, application, news, and management. His reversal emphasizes extravagance and unfavorable news. Modern student-of-life language develops the visual image.\n\nEarlier tarot suits often used coins or deniers rather than the pentacles pictured in this deck. Waite notes that the symbol should not be reduced to money alone. The Rider–Waite–Smith image is a twentieth-century design informed by older cartomancy and its creators’ esoteric interests; the modern psychological interpretation is a later layer.\n\n### A second look\nAttention is a gift, but learning asks you to return to the world with what you found. Read the composition as a conversation between image, history, and your own circumstances. Those three sources of meaning should remain distinguishable.",
+        "reflection": "## Chapter VI — Reflection\n### Upright questions\n1. What am I genuinely curious to learn?\n2. Which first practice is small enough to begin?\n3. What reliable information do I need?\n\n### Reversed questions\n1. Where am I mistaking research for practice?\n2. What purchase am I using to feel ready?\n3. How might I ask for beginner help?\n\n### The journal ritual\nChoose one skill and write a three-step experiment: observe, practise, assess.\n\n### A misconception worth unlearning\nThe Page does not identify a person’s age or guarantee a message about money.\n\n### The last word\n*Attention is a gift, but learning asks you to return to the world with what you found.*"
+      },
+      "overview": "A young figure stands in a broad landscape, gazing intently at a pentacle apparently held or hovering above raised hands. The Page seems almost unaware of the surrounding hills and flowers. One object has become a complete universe of attention. The Page is the apprentice who takes a possibility seriously enough to investigate it. New skills, budgets, crafts, studies, and career paths often begin with concentrated wonder rather than polished talent. This card rewards careful questions: how does it work, what does it cost, and what would practising it teach me?",
+      "historicalContext": "Waite specifically describes the Page’s absorbed observation and associates the card with study, application, news, and management. His reversal emphasizes extravagance and unfavorable news. Modern student-of-life language develops the visual image.",
+      "uprightInterpretation": "The Page is the apprentice who takes a possibility seriously enough to investigate it. New skills, budgets, crafts, studies, and career paths often begin with concentrated wonder rather than polished talent. This card rewards careful questions: how does it work, what does it cost, and what would practising it teach me?",
+      "reversedInterpretation": "Curiosity may have become collection without application: more books, tools, or plans, but few experiments. Another possibility is shame about beginning at the beginning. Reversal asks whether you need a smaller learning task, better guidance, or permission to be inexperienced. It is not evidence of a permanently immature personality.",
+      "visualSymbols": [
+        {
+          "detail": "Youth gazing at pentacle",
+          "classification": "observed motif in Rider–Waite–Smith image; interpretation distinct"
+        },
+        {
+          "detail": "slow posture",
+          "classification": "observed motif in Rider–Waite–Smith image; interpretation distinct"
+        },
+        {
+          "detail": "flowers and distant hills",
+          "classification": "observed motif in Rider–Waite–Smith image; interpretation distinct"
+        }
+      ],
+      "beginnerExplanation": "Attention is a gift, but learning asks you to return to the world with what you found.",
+      "readingExample": "You are considering a certification. What can you verify about the curriculum and cost before enrolling?",
+      "uprightQuestions": [
+        "What am I genuinely curious to learn?",
+        "Which first practice is small enough to begin?",
+        "What reliable information do I need?"
+      ],
+      "reversedQuestions": [
+        "Where am I mistaking research for practice?",
+        "What purchase am I using to feel ready?",
+        "How might I ask for beginner help?"
+      ],
+      "journalPrompt": "Choose one skill and write a three-step experiment: observe, practise, assess.",
+      "misconception": "The Page does not identify a person’s age or guarantee a message about money.",
+      "readingSummary": {
+        "upright": "Attention is a gift, but learning asks you to return to the world with what you found.",
+        "reversed": "Examine the limits or misuse of the card’s central resource or skill."
+      },
+      "relatedCardIds": [
+        "tarot-pentacles-10",
+        "tarot-pentacles-12"
+      ],
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite 1911 specific Pentacles description and historical upright/reversed divinatory lists"
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "supports": "Waite esoteric framework; context for Rider–Waite–Smith symbolic tradition"
+        }
+      ]
+    },
+    {
+      "id": "tarot-pentacles-12",
+      "name": "Knight of Pentacles",
+      "arcana": "Minor Arcana",
+      "suit": "Pentacles",
+      "rank": "Knight",
+      "number": 12,
+      "subtitle": "The Keeper of the Course",
+      "editorialStatus": "draft",
+      "researchStatus": "primary-source-text-checked-artwork-requires-asset-confirmation",
+      "candidateVersion": 1,
+      "uprightKeywords": [
+        "dependability",
+        "duty",
+        "patience",
+        "method",
+        "maintenance"
+      ],
+      "reversedKeywords": [
+        "stagnation",
+        "overwork",
+        "stubbornness",
+        "discouragement"
+      ],
+      "chapters": {
+        "story": "## Chapter I — The Story\n### The Keeper of the Course\n\nA rider sits on a heavy, motionless horse, presenting a pentacle over a tilled landscape. Unlike more dramatic knights, this figure is not visibly charging anywhere. The field suggests work whose rewards depend on a season rather than a heroic instant.\n\nThe Knight honors the uncelebrated virtues of keeping promises, showing up, checking details, and sustaining a workable routine. A plan is useful only when someone can live with it. Reliability can be its own quiet form of courage, especially when excitement has faded and maintenance remains.\n\nThe Pentacles are often associated in modern Tarot with earth, resources, the body, and the material conditions of daily life. Yet no object in a card can determine the future. The scene offers a question about how we live with what is real, limited, shared, and made over time. This card’s distinctive concern is the keeper of the course: not merely what we possess, but what our choices allow us to sustain.\n\n### A note from the archive\nWaite emphasizes the heavy, enduring horse and describes utility, responsibility, and rectitude; his reversal includes inertia, stagnation, placidity, and discouragement. “Slow but steady” is close to the visual tradition, though still a reading rather than a prediction.",
+        "symbolism": "## Chapter II — Symbolism\n\nA rider sits on a heavy, motionless horse, presenting a pentacle over a tilled landscape. Unlike more dramatic knights, this figure is not visibly charging anywhere. The field suggests work whose rewards depend on a season rather than a heroic instant.\n\n### Details to notice\n- **Still horse and armored rider** — Look at its placement and relationship to the people and setting. The detail belongs to Smith’s visible composition; any moral or psychological meaning we draw is an interpretation rather than proof of what must occur.\n- **Pentacle held outward** — Look at its placement and relationship to the people and setting. The detail belongs to Smith’s visible composition; any moral or psychological meaning we draw is an interpretation rather than proof of what must occur.\n- **Ploughed field** — Look at its placement and relationship to the people and setting. The detail belongs to Smith’s visible composition; any moral or psychological meaning we draw is an interpretation rather than proof of what must occur.\n\n### The symbolic lesson\nConstancy matters. So does knowing when the course has changed.",
+        "meanings": "## Chapter III — Meanings\n### Upright · Dependability, Duty, Patience, Method, Maintenance\n\nThe Knight honors the uncelebrated virtues of keeping promises, showing up, checking details, and sustaining a workable routine. A plan is useful only when someone can live with it. Reliability can be its own quiet form of courage, especially when excitement has faded and maintenance remains.\n\nRather than treating this orientation as an instruction, identify the action it might illuminate. A resource could be money, but it might equally be attention, accessible support, time, practical knowledge, or physical energy. Consider what is possible within actual circumstances and what others involved have consented to.\n\n### Reversed · Stagnation, Overwork, Stubbornness, Discouragement\n\nThe same steadiness may become inertia. A routine can protect progress or conceal the fact that circumstances changed. Perhaps rest is overdue, or diligence has turned into control. A reversed Knight asks for a review of method and morale—not an accusation of laziness. Sometimes a slower pace is exactly the responsible choice.\n\nA reversal does not automatically mean the opposite of an upright meaning, nor does it establish another person’s motives. Sometimes it calls for a boundary, sometimes for renewed action, and sometimes simply for a better description of the problem.\n\n**Essence — upright:** Constancy matters. So does knowing when the course has changed.\n\n**Essence — reversed:** Re-examine where this card’s gift has become limited, neglected, or distorted.",
+        "life": "## Chapter IV — In Your Life\n### Work, study and creative practice\nThe Knight honors the uncelebrated virtues of keeping promises, showing up, checking details, and sustaining a workable routine. A plan is useful only when someone can live with it. Reliability can be its own quiet form of courage, especially when excitement has faded and maintenance remains.\n\nIn professional settings, translate the theme into observable terms: available hours, clear expectations, documented outcomes, and the willingness to revise. Talent alone is not a project plan.\n\n### Relationships and belonging\nThe same steadiness may become inertia. A routine can protect progress or conceal the fact that circumstances changed. Perhaps rest is overdue, or diligence has turned into control. A reversed Knight asks for a review of method and morale—not an accusation of laziness. Sometimes a slower pace is exactly the responsible choice.\n\nAsk whether support, attention, boundaries, or decision-making are mutual. Do not use the card to declare that another person is trustworthy or deceitful; relationships deserve evidence and direct conversation.\n\n### Money, resources and the body\nConstancy matters. So does knowing when the course has changed. A prudent reading distinguishes a symbolic prompt from actual financial, medical, or legal advice. Where stakes are high, seek grounded information and qualified help.\n\n### A reading in practice\n**Question:** What would responsible action look like here?\n\nYou are maintaining a long-term health or savings routine. What makes it sustainable, and what sign would tell you to adjust?",
+        "hiddenKnowledge": "## Chapter V — Hidden Knowledge\n### A historical reading, not a timeless rule\nWaite emphasizes the heavy, enduring horse and describes utility, responsibility, and rectitude; his reversal includes inertia, stagnation, placidity, and discouragement. “Slow but steady” is close to the visual tradition, though still a reading rather than a prediction.\n\nEarlier tarot suits often used coins or deniers rather than the pentacles pictured in this deck. Waite notes that the symbol should not be reduced to money alone. The Rider–Waite–Smith image is a twentieth-century design informed by older cartomancy and its creators’ esoteric interests; the modern psychological interpretation is a later layer.\n\n### A second look\nConstancy matters. So does knowing when the course has changed. Read the composition as a conversation between image, history, and your own circumstances. Those three sources of meaning should remain distinguishable.",
+        "reflection": "## Chapter VI — Reflection\n### Upright questions\n1. Which commitment deserves consistency?\n2. What routine works because it is realistic?\n3. Where has patience already paid off?\n\n### Reversed questions\n1. What am I repeating without reassessing?\n2. Do I need rest rather than greater discipline?\n3. Which reliable method has become too rigid?\n\n### The journal ritual\nWrite a promise to your future self that you could reasonably keep for a month.\n\n### A misconception worth unlearning\nThe Knight does not declare that faster people are careless or that slower people are virtuous.\n\n### The last word\n*Constancy matters. So does knowing when the course has changed.*"
+      },
+      "overview": "A rider sits on a heavy, motionless horse, presenting a pentacle over a tilled landscape. Unlike more dramatic knights, this figure is not visibly charging anywhere. The field suggests work whose rewards depend on a season rather than a heroic instant. The Knight honors the uncelebrated virtues of keeping promises, showing up, checking details, and sustaining a workable routine. A plan is useful only when someone can live with it. Reliability can be its own quiet form of courage, especially when excitement has faded and maintenance remains.",
+      "historicalContext": "Waite emphasizes the heavy, enduring horse and describes utility, responsibility, and rectitude; his reversal includes inertia, stagnation, placidity, and discouragement. “Slow but steady” is close to the visual tradition, though still a reading rather than a prediction.",
+      "uprightInterpretation": "The Knight honors the uncelebrated virtues of keeping promises, showing up, checking details, and sustaining a workable routine. A plan is useful only when someone can live with it. Reliability can be its own quiet form of courage, especially when excitement has faded and maintenance remains.",
+      "reversedInterpretation": "The same steadiness may become inertia. A routine can protect progress or conceal the fact that circumstances changed. Perhaps rest is overdue, or diligence has turned into control. A reversed Knight asks for a review of method and morale—not an accusation of laziness. Sometimes a slower pace is exactly the responsible choice.",
+      "visualSymbols": [
+        {
+          "detail": "Still horse and armored rider",
+          "classification": "observed motif in Rider–Waite–Smith image; interpretation distinct"
+        },
+        {
+          "detail": "pentacle held outward",
+          "classification": "observed motif in Rider–Waite–Smith image; interpretation distinct"
+        },
+        {
+          "detail": "ploughed field",
+          "classification": "observed motif in Rider–Waite–Smith image; interpretation distinct"
+        }
+      ],
+      "beginnerExplanation": "Constancy matters. So does knowing when the course has changed.",
+      "readingExample": "You are maintaining a long-term health or savings routine. What makes it sustainable, and what sign would tell you to adjust?",
+      "uprightQuestions": [
+        "Which commitment deserves consistency?",
+        "What routine works because it is realistic?",
+        "Where has patience already paid off?"
+      ],
+      "reversedQuestions": [
+        "What am I repeating without reassessing?",
+        "Do I need rest rather than greater discipline?",
+        "Which reliable method has become too rigid?"
+      ],
+      "journalPrompt": "Write a promise to your future self that you could reasonably keep for a month.",
+      "misconception": "The Knight does not declare that faster people are careless or that slower people are virtuous.",
+      "readingSummary": {
+        "upright": "Constancy matters. So does knowing when the course has changed.",
+        "reversed": "Examine the limits or misuse of the card’s central resource or skill."
+      },
+      "relatedCardIds": [
+        "tarot-pentacles-11",
+        "tarot-pentacles-13"
+      ],
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite 1911 specific Pentacles description and historical upright/reversed divinatory lists"
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "supports": "Waite esoteric framework; context for Rider–Waite–Smith symbolic tradition"
+        }
+      ]
+    },
+    {
+      "id": "tarot-pentacles-13",
+      "name": "Queen of Pentacles",
+      "arcana": "Minor Arcana",
+      "suit": "Pentacles",
+      "rank": "Queen",
+      "number": 13,
+      "subtitle": "The Garden That Welcomes",
+      "editorialStatus": "draft",
+      "researchStatus": "primary-source-text-checked-artwork-requires-asset-confirmation",
+      "candidateVersion": 1,
+      "uprightKeywords": [
+        "nurture",
+        "practical generosity",
+        "grounded care",
+        "stewardship",
+        "resourcefulness"
+      ],
+      "reversedKeywords": [
+        "depletion",
+        "mistrust",
+        "neglected needs",
+        "overprotectiveness"
+      ],
+      "chapters": {
+        "story": "## Chapter I — The Story\n### The Garden That Welcomes\n\nA crowned figure sits in a lush garden with a pentacle resting in her lap. Flowers and greenery surround a throne carved with animal and vegetal forms; a rabbit appears in the foreground. The card feels abundant, but its central gesture is intimate: careful attention to something held.\n\nThe Queen joins care with competence. Cooking a meal, making a welcoming home, managing a budget, advocating for rest, or quietly building someone else’s confidence can all be expressions of practical intelligence. Nurture is not a fixed gender role, and it is not synonymous with endless sacrifice.\n\nThe Pentacles are often associated in modern Tarot with earth, resources, the body, and the material conditions of daily life. Yet no object in a card can determine the future. The scene offers a question about how we live with what is real, limited, shared, and made over time. This card’s distinctive concern is the garden that welcomes: not merely what we possess, but what our choices allow us to sustain.\n\n### A note from the archive\nWaite identifies the Queen with generosity, security, and breadth of soul, while recording fear and mistrust among reversals. The rabbit is visible in Smith’s image; any fixed claim about its intended symbolism should be labeled modern interpretation.",
+        "symbolism": "## Chapter II — Symbolism\n\nA crowned figure sits in a lush garden with a pentacle resting in her lap. Flowers and greenery surround a throne carved with animal and vegetal forms; a rabbit appears in the foreground. The card feels abundant, but its central gesture is intimate: careful attention to something held.\n\n### Details to notice\n- **Queen contemplating pentacle** — Look at its placement and relationship to the people and setting. The detail belongs to Smith’s visible composition; any moral or psychological meaning we draw is an interpretation rather than proof of what must occur.\n- **Lush garden and carved throne** — Look at its placement and relationship to the people and setting. The detail belongs to Smith’s visible composition; any moral or psychological meaning we draw is an interpretation rather than proof of what must occur.\n- **Rabbit in foreground** — Look at its placement and relationship to the people and setting. The detail belongs to Smith’s visible composition; any moral or psychological meaning we draw is an interpretation rather than proof of what must occur.\n\n### The symbolic lesson\nTrue hospitality includes a place for the host to rest.",
+        "meanings": "## Chapter III — Meanings\n### Upright · Nurture, Practical Generosity, Grounded Care, Stewardship, Resourcefulness\n\nThe Queen joins care with competence. Cooking a meal, making a welcoming home, managing a budget, advocating for rest, or quietly building someone else’s confidence can all be expressions of practical intelligence. Nurture is not a fixed gender role, and it is not synonymous with endless sacrifice.\n\nRather than treating this orientation as an instruction, identify the action it might illuminate. A resource could be money, but it might equally be attention, accessible support, time, practical knowledge, or physical energy. Consider what is possible within actual circumstances and what others involved have consented to.\n\n### Reversed · Depletion, Mistrust, Neglected Needs, Overprotectiveness\n\nCare may be flowing outward without enough returning. Perhaps you are trying to make everyone comfortable while quietly neglecting your own needs. Or anxiety about resources may cause you to guard too tightly. The reversal invites boundaries, realistic support, and recognition that tending a garden includes tending the gardener.\n\nA reversal does not automatically mean the opposite of an upright meaning, nor does it establish another person’s motives. Sometimes it calls for a boundary, sometimes for renewed action, and sometimes simply for a better description of the problem.\n\n**Essence — upright:** True hospitality includes a place for the host to rest.\n\n**Essence — reversed:** Re-examine where this card’s gift has become limited, neglected, or distorted.",
+        "life": "## Chapter IV — In Your Life\n### Work, study and creative practice\nThe Queen joins care with competence. Cooking a meal, making a welcoming home, managing a budget, advocating for rest, or quietly building someone else’s confidence can all be expressions of practical intelligence. Nurture is not a fixed gender role, and it is not synonymous with endless sacrifice.\n\nIn professional settings, translate the theme into observable terms: available hours, clear expectations, documented outcomes, and the willingness to revise. Talent alone is not a project plan.\n\n### Relationships and belonging\nCare may be flowing outward without enough returning. Perhaps you are trying to make everyone comfortable while quietly neglecting your own needs. Or anxiety about resources may cause you to guard too tightly. The reversal invites boundaries, realistic support, and recognition that tending a garden includes tending the gardener.\n\nAsk whether support, attention, boundaries, or decision-making are mutual. Do not use the card to declare that another person is trustworthy or deceitful; relationships deserve evidence and direct conversation.\n\n### Money, resources and the body\nTrue hospitality includes a place for the host to rest. A prudent reading distinguishes a symbolic prompt from actual financial, medical, or legal advice. Where stakes are high, seek grounded information and qualified help.\n\n### A reading in practice\n**Question:** What would responsible action look like here?\n\nYou are the person everyone calls for help. What can you offer lovingly without becoming the only support system?",
+        "hiddenKnowledge": "## Chapter V — Hidden Knowledge\n### A historical reading, not a timeless rule\nWaite identifies the Queen with generosity, security, and breadth of soul, while recording fear and mistrust among reversals. The rabbit is visible in Smith’s image; any fixed claim about its intended symbolism should be labeled modern interpretation.\n\nEarlier tarot suits often used coins or deniers rather than the pentacles pictured in this deck. Waite notes that the symbol should not be reduced to money alone. The Rider–Waite–Smith image is a twentieth-century design informed by older cartomancy and its creators’ esoteric interests; the modern psychological interpretation is a later layer.\n\n### A second look\nTrue hospitality includes a place for the host to rest. Read the composition as a conversation between image, history, and your own circumstances. Those three sources of meaning should remain distinguishable.",
+        "reflection": "## Chapter VI — Reflection\n### Upright questions\n1. What does practical care look like in my life?\n2. Which resource could make my space or routine kinder?\n3. How do I care for myself as well as others?\n\n### Reversed questions\n1. Where has nurture become obligation?\n2. What need of mine has gone unanswered?\n3. Which boundary would protect sustainable generosity?\n\n### The journal ritual\nPlan one ordinary act of care that is useful, affordable, and includes yourself.\n\n### A misconception worth unlearning\nThe Queen does not prescribe motherhood, femininity, or domestic labor.\n\n### The last word\n*True hospitality includes a place for the host to rest.*"
+      },
+      "overview": "A crowned figure sits in a lush garden with a pentacle resting in her lap. Flowers and greenery surround a throne carved with animal and vegetal forms; a rabbit appears in the foreground. The card feels abundant, but its central gesture is intimate: careful attention to something held. The Queen joins care with competence. Cooking a meal, making a welcoming home, managing a budget, advocating for rest, or quietly building someone else’s confidence can all be expressions of practical intelligence. Nurture is not a fixed gender role, and it is not synonymous with endless sacrifice.",
+      "historicalContext": "Waite identifies the Queen with generosity, security, and breadth of soul, while recording fear and mistrust among reversals. The rabbit is visible in Smith’s image; any fixed claim about its intended symbolism should be labeled modern interpretation.",
+      "uprightInterpretation": "The Queen joins care with competence. Cooking a meal, making a welcoming home, managing a budget, advocating for rest, or quietly building someone else’s confidence can all be expressions of practical intelligence. Nurture is not a fixed gender role, and it is not synonymous with endless sacrifice.",
+      "reversedInterpretation": "Care may be flowing outward without enough returning. Perhaps you are trying to make everyone comfortable while quietly neglecting your own needs. Or anxiety about resources may cause you to guard too tightly. The reversal invites boundaries, realistic support, and recognition that tending a garden includes tending the gardener.",
+      "visualSymbols": [
+        {
+          "detail": "Queen contemplating pentacle",
+          "classification": "observed motif in Rider–Waite–Smith image; interpretation distinct"
+        },
+        {
+          "detail": "lush garden and carved throne",
+          "classification": "observed motif in Rider–Waite–Smith image; interpretation distinct"
+        },
+        {
+          "detail": "rabbit in foreground",
+          "classification": "observed motif in Rider–Waite–Smith image; interpretation distinct"
+        }
+      ],
+      "beginnerExplanation": "True hospitality includes a place for the host to rest.",
+      "readingExample": "You are the person everyone calls for help. What can you offer lovingly without becoming the only support system?",
+      "uprightQuestions": [
+        "What does practical care look like in my life?",
+        "Which resource could make my space or routine kinder?",
+        "How do I care for myself as well as others?"
+      ],
+      "reversedQuestions": [
+        "Where has nurture become obligation?",
+        "What need of mine has gone unanswered?",
+        "Which boundary would protect sustainable generosity?"
+      ],
+      "journalPrompt": "Plan one ordinary act of care that is useful, affordable, and includes yourself.",
+      "misconception": "The Queen does not prescribe motherhood, femininity, or domestic labor.",
+      "readingSummary": {
+        "upright": "True hospitality includes a place for the host to rest.",
+        "reversed": "Examine the limits or misuse of the card’s central resource or skill."
+      },
+      "relatedCardIds": [
+        "tarot-pentacles-12",
+        "tarot-pentacles-14"
+      ],
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite 1911 specific Pentacles description and historical upright/reversed divinatory lists"
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "supports": "Waite esoteric framework; context for Rider–Waite–Smith symbolic tradition"
+        }
+      ]
+    },
+    {
+      "id": "tarot-pentacles-14",
+      "name": "King of Pentacles",
+      "arcana": "Minor Arcana",
+      "suit": "Pentacles",
+      "rank": "King",
+      "number": 14,
+      "subtitle": "The Weight of the Crown",
+      "editorialStatus": "draft",
+      "researchStatus": "primary-source-text-checked-artwork-requires-asset-confirmation",
+      "candidateVersion": 1,
+      "uprightKeywords": [
+        "stewardship",
+        "competence",
+        "prosperity",
+        "accountability",
+        "enduring structures"
+      ],
+      "reversedKeywords": [
+        "control",
+        "complacency",
+        "misuse of authority",
+        "brittle status"
+      ],
+      "chapters": {
+        "story": "## Chapter I — The Story\n### The Weight of the Crown\n\nA king sits among dense vines and architectural ornament, holding a pentacle and a scepter. Bulls appear as motifs on the throne. The landscape around him suggests prosperity made solid, but the figure is remarkably still: what has been accumulated must now be governed.\n\nThe King concerns decisions whose consequences extend beyond the decision-maker. Leadership, business knowledge, financial literacy, resource management, and long-term planning may all belong here. Wealth is not proof of wisdom; power becomes admirable when it is exercised accountably and in service of something larger than self-display.\n\nThe Pentacles are often associated in modern Tarot with earth, resources, the body, and the material conditions of daily life. Yet no object in a card can determine the future. The scene offers a question about how we live with what is real, limited, shared, and made over time. This card’s distinctive concern is the weight of the crown: not merely what we possess, but what our choices allow us to sustain.\n\n### A note from the archive\nWaite draws attention to the bull’s heads and associates the King with practical intelligence and business attainment; his reversal is unusually severe, naming corruption and peril. The softened modern “good provider” stereotype misses that ethical tension.",
+        "symbolism": "## Chapter II — Symbolism\n\nA king sits among dense vines and architectural ornament, holding a pentacle and a scepter. Bulls appear as motifs on the throne. The landscape around him suggests prosperity made solid, but the figure is remarkably still: what has been accumulated must now be governed.\n\n### Details to notice\n- **King with scepter and pentacle** — Look at its placement and relationship to the people and setting. The detail belongs to Smith’s visible composition; any moral or psychological meaning we draw is an interpretation rather than proof of what must occur.\n- **Bull heads on throne** — Look at its placement and relationship to the people and setting. The detail belongs to Smith’s visible composition; any moral or psychological meaning we draw is an interpretation rather than proof of what must occur.\n- **Vines and substantial architecture** — Look at its placement and relationship to the people and setting. The detail belongs to Smith’s visible composition; any moral or psychological meaning we draw is an interpretation rather than proof of what must occur.\n\n### The symbolic lesson\nStewardship is power measured by its consequences.",
+        "meanings": "## Chapter III — Meanings\n### Upright · Stewardship, Competence, Prosperity, Accountability, Enduring Structures\n\nThe King concerns decisions whose consequences extend beyond the decision-maker. Leadership, business knowledge, financial literacy, resource management, and long-term planning may all belong here. Wealth is not proof of wisdom; power becomes admirable when it is exercised accountably and in service of something larger than self-display.\n\nRather than treating this orientation as an instruction, identify the action it might illuminate. A resource could be money, but it might equally be attention, accessible support, time, practical knowledge, or physical energy. Consider what is possible within actual circumstances and what others involved have consented to.\n\n### Reversed · Control, Complacency, Misuse Of Authority, Brittle Status\n\nAuthority may be shielding complacency, greed, or fear of relinquishing control. A person may know how to accumulate but not how to share decisions or assess the consequences of their choices. Reversal can also describe insecurity beneath the appearance of success. Ask for evidence of conduct rather than labeling any powerful figure corrupt.\n\nA reversal does not automatically mean the opposite of an upright meaning, nor does it establish another person’s motives. Sometimes it calls for a boundary, sometimes for renewed action, and sometimes simply for a better description of the problem.\n\n**Essence — upright:** Stewardship is power measured by its consequences.\n\n**Essence — reversed:** Re-examine where this card’s gift has become limited, neglected, or distorted.",
+        "life": "## Chapter IV — In Your Life\n### Work, study and creative practice\nThe King concerns decisions whose consequences extend beyond the decision-maker. Leadership, business knowledge, financial literacy, resource management, and long-term planning may all belong here. Wealth is not proof of wisdom; power becomes admirable when it is exercised accountably and in service of something larger than self-display.\n\nIn professional settings, translate the theme into observable terms: available hours, clear expectations, documented outcomes, and the willingness to revise. Talent alone is not a project plan.\n\n### Relationships and belonging\nAuthority may be shielding complacency, greed, or fear of relinquishing control. A person may know how to accumulate but not how to share decisions or assess the consequences of their choices. Reversal can also describe insecurity beneath the appearance of success. Ask for evidence of conduct rather than labeling any powerful figure corrupt.\n\nAsk whether support, attention, boundaries, or decision-making are mutual. Do not use the card to declare that another person is trustworthy or deceitful; relationships deserve evidence and direct conversation.\n\n### Money, resources and the body\nStewardship is power measured by its consequences. A prudent reading distinguishes a symbolic prompt from actual financial, medical, or legal advice. Where stakes are high, seek grounded information and qualified help.\n\n### A reading in practice\n**Question:** What would responsible action look like here?\n\nYou are offered responsibility for a team budget. What safeguards would ensure transparency and fair decisions?",
+        "hiddenKnowledge": "## Chapter V — Hidden Knowledge\n### A historical reading, not a timeless rule\nWaite draws attention to the bull’s heads and associates the King with practical intelligence and business attainment; his reversal is unusually severe, naming corruption and peril. The softened modern “good provider” stereotype misses that ethical tension.\n\nEarlier tarot suits often used coins or deniers rather than the pentacles pictured in this deck. Waite notes that the symbol should not be reduced to money alone. The Rider–Waite–Smith image is a twentieth-century design informed by older cartomancy and its creators’ esoteric interests; the modern psychological interpretation is a later layer.\n\n### A second look\nStewardship is power measured by its consequences. Read the composition as a conversation between image, history, and your own circumstances. Those three sources of meaning should remain distinguishable.",
+        "reflection": "## Chapter VI — Reflection\n### Upright questions\n1. What resources am I responsible for?\n2. How do I measure success beyond accumulation?\n3. Whose well-being is affected by my choices?\n\n### Reversed questions\n1. Where has authority become control?\n2. What evidence would challenge my confidence?\n3. How can I share responsibility without abandoning it?\n\n### The journal ritual\nWrite your principles for stewarding money, time, or influence. What should remain true when you are not present?\n\n### A misconception worth unlearning\nThe King does not guarantee financial success or imply that wealth signifies virtue.\n\n### The last word\n*Stewardship is power measured by its consequences.*"
+      },
+      "overview": "A king sits among dense vines and architectural ornament, holding a pentacle and a scepter. Bulls appear as motifs on the throne. The landscape around him suggests prosperity made solid, but the figure is remarkably still: what has been accumulated must now be governed. The King concerns decisions whose consequences extend beyond the decision-maker. Leadership, business knowledge, financial literacy, resource management, and long-term planning may all belong here. Wealth is not proof of wisdom; power becomes admirable when it is exercised accountably and in service of something larger than self-display.",
+      "historicalContext": "Waite draws attention to the bull’s heads and associates the King with practical intelligence and business attainment; his reversal is unusually severe, naming corruption and peril. The softened modern “good provider” stereotype misses that ethical tension.",
+      "uprightInterpretation": "The King concerns decisions whose consequences extend beyond the decision-maker. Leadership, business knowledge, financial literacy, resource management, and long-term planning may all belong here. Wealth is not proof of wisdom; power becomes admirable when it is exercised accountably and in service of something larger than self-display.",
+      "reversedInterpretation": "Authority may be shielding complacency, greed, or fear of relinquishing control. A person may know how to accumulate but not how to share decisions or assess the consequences of their choices. Reversal can also describe insecurity beneath the appearance of success. Ask for evidence of conduct rather than labeling any powerful figure corrupt.",
+      "visualSymbols": [
+        {
+          "detail": "King with scepter and pentacle",
+          "classification": "observed motif in Rider–Waite–Smith image; interpretation distinct"
+        },
+        {
+          "detail": "bull heads on throne",
+          "classification": "observed motif in Rider–Waite–Smith image; interpretation distinct"
+        },
+        {
+          "detail": "vines and substantial architecture",
+          "classification": "observed motif in Rider–Waite–Smith image; interpretation distinct"
+        }
+      ],
+      "beginnerExplanation": "Stewardship is power measured by its consequences.",
+      "readingExample": "You are offered responsibility for a team budget. What safeguards would ensure transparency and fair decisions?",
+      "uprightQuestions": [
+        "What resources am I responsible for?",
+        "How do I measure success beyond accumulation?",
+        "Whose well-being is affected by my choices?"
+      ],
+      "reversedQuestions": [
+        "Where has authority become control?",
+        "What evidence would challenge my confidence?",
+        "How can I share responsibility without abandoning it?"
+      ],
+      "journalPrompt": "Write your principles for stewarding money, time, or influence. What should remain true when you are not present?",
+      "misconception": "The King does not guarantee financial success or imply that wealth signifies virtue.",
+      "readingSummary": {
+        "upright": "Stewardship is power measured by its consequences.",
+        "reversed": "Examine the limits or misuse of the card’s central resource or skill."
+      },
+      "relatedCardIds": [
+        "tarot-pentacles-13"
+      ],
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite 1911 specific Pentacles description and historical upright/reversed divinatory lists"
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "supports": "Waite esoteric framework; context for Rider–Waite–Smith symbolic tradition"
+        }
+      ]
+    }
+  ]
+}

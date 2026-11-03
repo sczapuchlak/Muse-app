@@ -1,0 +1,486 @@
+{
+  "collection": "Muse Tarot Grimoire",
+  "deck": "Rider–Waite–Smith",
+  "batch": "major-01",
+  "editorialVoice": "The Enchanted Scholar",
+  "status": "draft—NOT APPROVED OR FOR IMPORT",
+  "schemaNote": "Editorial transport format only; Codex must map to the existing Muse schema. Preserve canonical IDs, artwork, and private meanings.",
+  "archiveNote": "Original full Fool manuscript and complete 15-part blueprint were not recovered; no replacement is represented as verbatim. Magician previously expanded in chat; this batch is an edited structured adaptation.",
+  "cards": [
+    {
+      "id": "tarot-major-00",
+      "number": 0,
+      "name": "The Fool",
+      "arcana": "Major Arcana",
+      "subtitle": "The Threshold",
+      "editorialStatus": "draft",
+      "reviewBatch": "major-01",
+      "candidateVersion": 3,
+      "provenance": "expanded from recovered shorter draft; original long manuscript unavailable",
+      "keywords": {
+        "upright": [
+          "Beginning",
+          "Openness",
+          "Wonder",
+          "Thoughtful risk",
+          "Possibility"
+        ],
+        "reversed": [
+          "Hesitation",
+          "Recklessness",
+          "False starts",
+          "Readiness",
+          "Discernment"
+        ]
+      },
+      "chapters": {
+        "story": "The traveler has not yet reached a destination. That is the point. At the edge of a precipice, dressed in bright garments and carrying very little, The Fool stands in a moment that refuses to be explained by its outcome. We do not see the next step. We see the possibility of one.\n\nThe Fool occupies a peculiar place in tarot history. In early Italian tarot, the *matto* was a distinctive card used in play, often treated differently from the numbered trumps. The serene traveler familiar to modern readers is not the original or sole historical form of the Fool. Pamela Colman Smith's 1909 illustration and A. E. Waite's 1911 commentary offer a particular esoteric reimagining; Waite's period divinatory list also contains folly, extravagance and mania. Today's cheerful shorthand—fresh beginnings, trust the universe—is only one part of a much less comfortable inheritance.\n\nThe card invites openness without claiming that every leap is wise. Curiosity is a strength. So is noticing the cliff. Here the beginning of the journey is neither a promise of rescue nor a command to be fearless. It is the art of taking the unfamiliar seriously enough to approach it awake.",
+        "symbolism": "**The precipice.** The ledge is visible beneath the traveler's feet. Its existence keeps uncertainty concrete; the card does not show the consequence of moving forward. A modern reader might ask what risks deserve preparation.\n\n**The white dog.** A small dog rises at the traveler's side. Companionship, warning and exuberance are all possible readings, but none is proven exclusively by the image. Let the surrounding cards and the reader's response help distinguish them.\n\n**The rose and small bundle.** A flower and modest baggage accompany the figure. Waite comments on the flower and traveling pack. They can invite a practical inventory: what do you bring to a new experience, and what assumptions might you leave behind?\n\n**The sky and sun.** Bright open space gives the design its atmosphere of expansiveness. Hope and exposure inhabit the same landscape; light does not erase the drop.",
+        "meanings": {
+          "upright": "Upright, The Fool can describe the beginning of something whose shape has not yet settled: a new relationship, study, journey, creative experiment or identity. You may have enough interest to begin without possessing every answer. This is not the same as moving without thought. The traveler carries a few belongings; the dog and cliff make the scene more complicated than a motivational poster.\n\nConsider whether a reversible first attempt is available. One class might teach you more than another month of imaginary preparation. One honest conversation might reveal more than building an entire relationship in your head. Give curiosity a way to encounter reality without demanding certainty in advance.\n\nThere is delight here, but not a guarantee. The Fool invites attention to what might be learned by moving, together with respect for the ground beneath your feet.",
+          "reversed": "Reversed, The Fool can point in opposite directions, and the distinction matters. You may be rushing past a genuine hazard, mistaking excitement for adequate preparation. Or you may be so afraid of appearing inexperienced that you cannot begin something you have already considered carefully. Those are not the same problem and require different responses.\n\nLook for evidence. Are you ignoring a financial, physical or relational limit? Make the step smaller and gather information. Are you continually demanding perfect readiness? Give yourself permission to be a beginner. A reversal does not predict humiliation, disaster or failure. It asks whether your pace matches the situation—and whether fear or impulsiveness has quietly taken the driver's seat."
+        },
+        "inYourLife": "**Love.** Meeting someone can be an exploration rather than an immediate story about destiny. Reversed: notice the difference between genuine caution and endless avoidance, or between attraction and unexamined risk.\n\n**Work and creativity.** A prototype, a first lesson or a small application can convert an abstract desire into useful experience. Reversed: a false start may call for recalibrating scope rather than abandoning the work.\n\n**Resources.** Beginning costs something, even if only time and attention. Account for commitments before choosing a leap.\n\n**Example.** Asked whether to join a class, The Fool might suggest attending one session, observing how it feels and deciding afterward whether to continue.",
+        "hiddenKnowledge": "The unnumbered Fool and the conventional designation zero are not identical across every historical tarot system. In the Rider–Waite–Smith sequence the figure opens a visual pilgrimage, but the older card has a distinct game history. This prevents us from treating the familiar modern Fool's Journey story as a documented medieval teaching.\n\nBeside The Magician, The Fool represents openness before disciplined application; beside The World, the unresolved beginning contrasts with an image of completion. These comparisons are useful interpretive structures, not claims that every tarot maker intended one fixed narrative.",
+        "reflection": "**Upright questions:** What unfamiliar experience genuinely calls to me? What small step would let me learn without pretending to know the outcome? Who or what can help me near uncertainty?\n\n**Reversed questions:** What risk have I minimized? Am I delaying for a concrete reason or simply fearing novice status? What would readiness look like without certainty?\n\n**Journal ritual — The Threshold.** Describe one doorway in your life. On one side write what attracts you; on the other, what deserves caution. Finish with the smallest honest step that would teach you something.\n\n**Last word:** A beginning is not a promise. It is an invitation to meet what you do not yet know."
+      },
+      "misconception": "The Fool does not require a reckless leap or promise that chance will take care of you.",
+      "relatedCardIds": [
+        "tarot-major-01",
+        "tarot-major-21"
+      ],
+      "sources": [
+        {
+          "title": "A. E. Waite, The Pictorial Key to the Tarot, Part II (1911)",
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "type": "primary occult interpretation and iconographic description"
+        },
+        {
+          "title": "A. E. Waite, The Pictorial Key to the Tarot, Part III (1911)",
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "type": "primary period divinatory lists"
+        },
+        {
+          "title": "Tim Husband, Before Fortune-Telling: The History and Structure of Tarot Cards (Metropolitan Museum of Art, 2016)",
+          "url": "https://www.metmuseum.org/fr/perspectives/tarot-2",
+          "type": "museum historical background"
+        },
+        {
+          "title": "Whitney Museum, Pamela Colman Smith exhibition label",
+          "url": "https://whitneymedia.org/assets/generic_file/1993/At_the_Dawn_Exhibition_Labels_6.1.22.pdf",
+          "type": "museum attribution and design context"
+        }
+      ],
+      "reviewNotes": "Recovered structured Fool draft exists (candidate v2); this chapter-form expansion is a *new proposal*, not a verbatim restoration of the missing longer gold-standard Fool manuscript.",
+      "approvalDate": null
+    },
+    {
+      "id": "tarot-major-01",
+      "number": 1,
+      "name": "The Magician",
+      "arcana": "Major Arcana",
+      "subtitle": "The Conscious Creator",
+      "editorialStatus": "draft",
+      "reviewBatch": "major-01",
+      "candidateVersion": 3,
+      "provenance": "adapted from existing Magician draft and earlier chat expanded version",
+      "keywords": {
+        "upright": [
+          "Skill",
+          "Focus",
+          "Agency",
+          "Practice",
+          "Resourcefulness"
+        ],
+        "reversed": [
+          "Scattered effort",
+          "Performance",
+          "Untapped skill",
+          "Misalignment",
+          "Manipulation"
+        ]
+      },
+      "chapters": {
+        "story": "Before the Magician stands a table. On it are the instruments of all four suits. Nothing is hidden and everything still needs to be used. One hand points toward the sky, the other toward the earth. Here possibility becomes something more exacting: intention given a task.\n\nThe figure's ancestry is gloriously untidy. In earlier Italian and French packs, the *Bagatto* or *Bateleur* was a performer, juggler or conjurer rather than the assured occult adept Smith later illustrated. This contrast is not incidental. The skilled hand can make something extraordinary—or persuade spectators that something has happened when it has not.\n\nIn the 1909 Rider–Waite–Smith deck, the Magician's instruments and upward-and-downward gesture became the occasion for Waite's elaborate account of spiritual attainment. A modern reading may speak of deliberate attention, technique and self-directed action, but must not mistake this for the only or oldest historical meaning.\n\nThe Fool asks what might be possible. The Magician asks what you are prepared to do with the possibility, and whether your skill is joined to honesty.",
+        "symbolism": "**Four suit emblems.** Wand, cup, sword and pentacle lie on the table. Waite explicitly names them. Their popular modern associations—initiative, feeling, thought and material resources—make a useful inventory, although the objects do not themselves enforce a single interpretation.\n\n**Two hands, two directions.** The right hand raises a wand and the left points down. Waite describes the descent of spiritual grace from above to below. Modern readers often translate this into bringing an idea into practice; the historical and reflective readings should remain distinct.\n\n**Horizontal eight.** A figure-eight sign floats above the head. Waite writes of spiritual attainment and eternity; a reader may also explore recurrence and practice without interpreting the sign as proof of unlimited power.\n\n**Serpent belt.** A serpent encircles the waist with its tail in its mouth, recalling the ouroboros motif of cyclical continuity.\n\n**Roses and lilies.** Waite explicitly mentions cultivated flowers: aspiration is not merely felt, but tended. **Red cloak and white garment** may encourage a modern contrast between activity and intention; no universal original color code should be assumed.",
+        "meanings": {
+          "upright": "Upright, The Magician points toward making deliberate use of what is already available. A skill can remain dormant through lack of practice; an idea can remain enchanting because no one asks it to survive contact with reality. The table invites inventory rather than fantasy. What do you know? What do you still need to learn? Which collaborator, tool or hour of concentrated attention would change the situation?\n\nIn work, the Magician might favor a proposal supported by a demonstration. In relationships, it might encourage speaking clearly rather than expecting someone to infer your needs. In creative life, it suggests beginning with materials and constraints instead of waiting for an immaculate vision.\n\nThe card does not guarantee that desire will produce an outcome. It proposes that preparation and action deserve a chance to meet—and that the power to influence others brings obligations as well as opportunities.",
+          "reversed": "Reversed, the same four instruments remain visible. The question becomes why they are not being used honestly or effectively. Perhaps effort is dispersed among too many ambitions; perhaps you understate a genuine ability because beginning would make you vulnerable to critique. Or perhaps impressive presentation has moved ahead of actual capability.\n\nThe older street-performer tradition adds an ethical edge: persuasion can become misdirection. Yet a reversed card is not evidence of dishonesty or a diagnosis of another person's motives. Look instead for observable distinctions between what is promised, what is practiced and what is delivered.\n\nOne problem asks for focus; another, for courage; another, for a boundary or an apology. The reversal does not pronounce guilt. It asks whether action and intention still recognize one another."
+        },
+        "inYourLife": "**Love.** Upright may encourage direct communication and intentional participation; reversed asks whether charm is matched by consistent conduct, without accusing someone on the basis of a card.\n\n**Career and creativity.** Show your work. Build a small demonstration, learn a missing technique, or narrow a grand plan. Reversed: examine whether perfectionism or a polished pitch is replacing actual progress.\n\n**Money.** Inventory resources and verify promises. A convincing sales story is not financial evidence.\n\n**Example.** Asked about pitching an idea, the Magician invites a modest prototype and a precise account of what it can—and cannot—do.",
+        "hiddenKnowledge": "The historic Bateleur's tabletop performance and Waite's spiritual adept are related images with different claims. A compelling modern reading can hold both together: virtuosity is real, and appearances can still deceive. In Western esoteric systems, Mercury and the Hebrew letter Beth are commonly connected with this trump; those correspondences belong to later occult constructions, not fifteenth-century card-game origins. Their exact historical transmission should be checked against primary esoteric materials before being marked fully verified.\n\nThe Fool provides openness; the Magician turns toward skill. The High Priestess, next in sequence, complicates his outward demonstrations with silence, observation and what remains unknown.",
+        "reflection": "**Upright questions:** What resources are already within reach? What concrete action would test my intention? Where could I use influence responsibly?\n\n**Reversed questions:** Where am I confusing a polished plan with finished work? Which skill am I minimizing or exaggerating? What feedback might reconnect words with action?\n\n**Journal ritual — The Working Table.** Name a wand (energy), cup (relationships), sword (judgment) and pentacle (practical support) in your life. Use one in a small experiment this week. Record the result, not just the hope.\n\n**Last word:** Mastery does not require omnipotence. It requires attention, practice and a willingness to let reality answer back."
+      },
+      "misconception": "The Magician does not mean wishes alone change reality or that a confident person must be deceptive.",
+      "relatedCardIds": [
+        "tarot-major-00",
+        "tarot-major-02",
+        "tarot-major-08"
+      ],
+      "sources": [
+        {
+          "title": "A. E. Waite, The Pictorial Key to the Tarot, Part II (1911)",
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "type": "primary occult interpretation and iconographic description"
+        },
+        {
+          "title": "A. E. Waite, The Pictorial Key to the Tarot, Part III (1911)",
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "type": "primary period divinatory lists"
+        },
+        {
+          "title": "Tim Husband, Before Fortune-Telling: The History and Structure of Tarot Cards (Metropolitan Museum of Art, 2016)",
+          "url": "https://www.metmuseum.org/fr/perspectives/tarot-2",
+          "type": "museum historical background"
+        },
+        {
+          "title": "Whitney Museum, Pamela Colman Smith exhibition label",
+          "url": "https://whitneymedia.org/assets/generic_file/1993/At_the_Dawn_Exhibition_Labels_6.1.22.pdf",
+          "type": "museum attribution and design context"
+        }
+      ],
+      "reviewNotes": "A full expanded Magician v3 was drafted in chat; this batch version is edited for consistent fields and should be compared with that earlier full text before approval.",
+      "approvalDate": null
+    },
+    {
+      "id": "tarot-major-02",
+      "number": 2,
+      "name": "The High Priestess",
+      "arcana": "Major Arcana",
+      "subtitle": "Keeper of the Unsaid",
+      "editorialStatus": "draft",
+      "reviewBatch": "major-01",
+      "candidateVersion": 3,
+      "provenance": "expanded from recovered shorter draft",
+      "keywords": {
+        "upright": [
+          "Discernment",
+          "Inner attention",
+          "Patience",
+          "Mystery",
+          "Observation"
+        ],
+        "reversed": [
+          "Overinterpretation",
+          "Avoidance",
+          "Unspoken needs",
+          "Premature certainty",
+          "Disconnection"
+        ]
+      },
+      "chapters": {
+        "story": "She sits between dark and light pillars. A scroll rests partly hidden in her lap; a veil stretches behind her. No door swings open, no command is issued. The High Priestess makes an art of withholding the tidy answer.\n\nIn older tarot, this trump was frequently the *Papess*, a female counterpart to the Pope. Its later transformation into the High Priestess belongs to the development of occult tarot, not to evidence of a single secret priesthood preserved from antiquity. Smith and Waite made the seated figure a highly structured image of hidden and revealed knowledge. Her silence is neither emptiness nor automatic wisdom; it is a demand for careful attention.\n\nAfter the Magician's confident outward gesture, she introduces a necessary hesitation. The person who can act still needs to ask what remains unknown. Sometimes a feeling deserves quiet investigation. Sometimes the refusal to speak is only a more elegant way of avoiding an uncomfortable truth. The Priestess offers no license to read another mind. She teaches the difference between noticing and knowing.",
+        "symbolism": "**The pillars B and J.** A dark pillar and a pale pillar bear letters traditionally linked in Waite's explanation to the temple pillars Boaz and Jachin. Their contrast can support a modern reading about holding complexity rather than forcing immediate certainty.\n\n**The scroll marked TORA.** Waite describes a partially covered scroll and associates it with spoken and implied teaching. It signals that information is not wholly available, not that a reader has paranormal access to secrets.\n\n**The lunar crescent, crown and cross.** The crescent lies near her feet, a horned crown rises above her head and a solar cross appears on her chest. Waite supplies an esoteric account; specific goddess identifications commonly offered today require separate attribution rather than being treated as historical certainties.\n\n**The patterned veil.** A decorated curtain closes the background. The composition distinguishes an interior sanctuary from the exposed world, suggesting boundaries, privacy and the ethics of what may be disclosed.",
+        "meanings": {
+          "upright": "Upright, the Priestess asks for intelligent quiet. A response may be forming before words are adequate, or the relevant facts may simply not have arrived. You need not rush to declare a conclusion merely because a question feels urgent. Attend to the texture of your reaction: what are you observing, what are you remembering and what are you inferring?\n\nIn a relationship, the card may suggest listening rather than rehearsing an argument. In scholarship or creative work, it may favor reading, research and the patient collection of evidence. It can validate the importance of interior life without treating intuition as an infallible oracle.\n\nThe challenge is to keep stillness alive and investigative rather than passive. A careful question asked at the right moment may be more powerful than an immediate answer.",
+          "reversed": "Reversed, The High Priestess may indicate that silence has ceased to serve understanding. A need remains unspoken; a difficult conversation has been postponed under the attractive name of intuition. Alternatively, an uneasy suspicion may have hardened into certainty without adequate evidence. These are opposing errors, so the spread alone cannot tell you which is present.\n\nThe reversal asks for a kind distinction between privacy and secrecy, listening and avoidance, intuition and assertion. Write one observed fact beside one feeling. If another person is involved, ask what can be discussed respectfully rather than imagining a right to their hidden thoughts.\n\nNeither orientation demands that you dismiss your inner experience. Both ask you to hold it with care, modesty and intellectual honesty."
+        },
+        "inYourLife": "**Love.** Upright invites listening and attention to privacy; reversed may prompt a needed conversation, not surveillance or invented certainty about another person's feelings.\n\n**Work and learning.** Check incomplete information, read carefully and resist premature announcements. Reversed: seek clarification if endless research has become a way not to decide.\n\n**Wellbeing.** A quiet moment can help you name a need; it is not a substitute for professional advice when an actual health concern requires care.\n\n**Example.** Asked whether to share an unfinished idea, the Priestess may suggest consulting a trusted person before making a public declaration.",
+        "hiddenKnowledge": "The earlier *Papess* and the occult High Priestess should not be folded into one timeless identity. Waite draws an especially strong distinction between the public, institutional Hierophant and the inward, veiled Priestess. Their opposition can illuminate two modes of knowledge: what can be taught, published and tested, and what is private, emerging or difficult to articulate. Yet neither automatically outranks the other.\n\nThe Magician says, “Act with what you have.” The Priestess responds, “First discover whether you understand what you have.” Her apparent stillness can be an active form of inquiry.",
+        "reflection": "**Upright questions:** What do I know from observation, and what am I supplying from imagination? Where would quiet attention help? Whose privacy deserves respect?\n\n**Reversed questions:** Is my silence supporting thought or delaying a necessary conversation? What evidence could test my story? How could I express uncertainty plainly?\n\n**Journal ritual — The Covered Scroll.** Divide a page into Known, Felt and Unknown. Place one current question in each column. Identify a gentle, ethical way to learn more.\n\n**Last word:** Not every unanswered question is a mystery. Some are simply waiting for better information."
+      },
+      "misconception": "The Priestess does not prove telepathy, certify a hunch as fact or grant knowledge of other people’s private thoughts.",
+      "relatedCardIds": [
+        "tarot-major-01",
+        "tarot-major-05",
+        "tarot-major-18"
+      ],
+      "sources": [
+        {
+          "title": "A. E. Waite, The Pictorial Key to the Tarot, Part II (1911)",
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "type": "primary occult interpretation and iconographic description"
+        },
+        {
+          "title": "A. E. Waite, The Pictorial Key to the Tarot, Part III (1911)",
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "type": "primary period divinatory lists"
+        },
+        {
+          "title": "Tim Husband, Before Fortune-Telling: The History and Structure of Tarot Cards (Metropolitan Museum of Art, 2016)",
+          "url": "https://www.metmuseum.org/fr/perspectives/tarot-2",
+          "type": "museum historical background"
+        },
+        {
+          "title": "Whitney Museum, Pamela Colman Smith exhibition label",
+          "url": "https://whitneymedia.org/assets/generic_file/1993/At_the_Dawn_Exhibition_Labels_6.1.22.pdf",
+          "type": "museum attribution and design context"
+        }
+      ],
+      "reviewNotes": "Recovered shorter candidate v2; six-chapter expansion is newly composed and should not overwrite it without review.",
+      "approvalDate": null
+    },
+    {
+      "id": "tarot-major-03",
+      "number": 3,
+      "name": "The Empress",
+      "arcana": "Major Arcana",
+      "subtitle": "The Cultivated Garden",
+      "editorialStatus": "draft",
+      "reviewBatch": "major-01",
+      "candidateVersion": 1,
+      "provenance": "new draft",
+      "keywords": {
+        "upright": [
+          "Nurture",
+          "Fertility of ideas",
+          "Abundance",
+          "Pleasure",
+          "Sustenance"
+        ],
+        "reversed": [
+          "Overgiving",
+          "Neglect",
+          "Creative depletion",
+          "Possessiveness",
+          "Rebalancing"
+        ]
+      },
+      "chapters": {
+        "story": "She does not sit in an austere chamber. Around the Empress, grain ripens and water moves; a luxurious cushion and flowering surroundings make the world feel sensuous and alive. Hers is an authority that tends rather than commands.\n\nThe Empress is often introduced as a shorthand for motherhood, but such a reading is too small for the card and needlessly excludes many readers. She may speak of supporting a person, a place, a body, an artistic practice or an idea until it has room to flourish. Care is not a biological destiny. Nor is abundance merely the possession of beautiful things. A garden is abundant because countless conditions cooperate to sustain it.\n\nHistorically, an empress belonged to the secular hierarchy of the old tarot trumps. Smith's 1909 Empress, however, is also a vision of cultivated nature. Waite connects her with fecundity and the earthly paradise through the symbolic language and gender assumptions of his era. We can study that inheritance without requiring anyone to accept its narrow social roles.\n\nShe asks what is growing—and whether it is being nourished.",
+        "symbolism": "**The wheat.** Mature grain stands in front of the Empress. This is an image of cultivation and harvest: growth depends on seasons, labor and material conditions, not pure desire.\n\n**The forest and water.** Trees fill the background and water flows beyond the figure, contributing to an atmosphere of natural richness. Flow and replenishment are interpretive extensions, not measurements of a person's fortune.\n\n**The Venus shield.** Waite identifies the sign of Venus on a shield beside her. The association connects the image with beauty, desire and a particular Western esoteric visual language. It is not proof that everyone experiences femininity or love alike.\n\n**The twelve-star diadem and scepter.** Waite describes twelve stars and a scepter crowned by a globe. Celestial and worldly signs meet in the figure's authority; an exact one-to-one assignment of each star should not be asserted without a source.\n\n**The cushion and robe.** Soft furnishings and patterned clothing place comfort alongside sovereignty. Smith does not present care as labor alone; there is also rest and pleasure.",
+        "meanings": {
+          "upright": "Upright, the Empress can describe an undertaking that needs nourishment rather than constant measurement. An artistic practice may need unhurried time, a relationship may need warmth and reliability, and a physical space may need ordinary attention to make it welcoming. The card favors conditions in which life can develop: food, rest, community, patient learning and the permission to enjoy what already exists.\n\nIts abundance is not necessarily financial windfall, pregnancy or effortless success. What grows must be supported. Sometimes the generous action is offering help; sometimes it is accepting care or refusing to exhaust yourself in the attempt to provide everything for everyone.\n\nAn Empress reading asks you to notice the ecology of a situation. Which inputs are nourishing? Which have been neglected? What would sustainable generosity look like if the person offering it also mattered?",
+          "reversed": "Reversed, the Empress often invites examination of how care has become uneven. Perhaps you are giving so much attention to another person or project that your own reserves are thinning. Perhaps something you cherish has been neglected because you assume affection alone will sustain it. Or pleasure has become something you postpone until every obligation is fulfilled.\n\nThe reversal can also involve grasping: support offered with strings attached, the desire to protect something so completely that it cannot develop independently. These are hypotheses, not labels for a person.\n\nRather than reading the reversal as infertility, lack of femininity or some judgment on the body, return to what is visible in the image: cultivated land requires resources and boundaries. What needs more care, and what needs space?"
+        },
+        "inYourLife": "**Love.** Upright suggests warmth that respects the other's independence. Reversed asks whether care is reciprocal or smothering; tenderness should not become a debt.\n\n**Work and creativity.** Support the conditions that allow a project to develop, including rest and practical resources. Reversed: stop treating burnout as proof of devotion.\n\n**Money.** Consider what genuinely supports your quality of life and what merely imitates abundance. Neither orientation promises wealth.\n\n**Example.** Asked how to revive a creative practice, the Empress may suggest protecting a regular, welcoming hour for making work before judging its results.",
+        "hiddenKnowledge": "Waite's language of fertility and motherhood is historically important, but it comes from a specific early twentieth-century worldview. Modern readings can preserve the garden's symbolism without reducing women to reproduction or requiring that the seeker identify as female. Venus, as a planetary and mythological association, belongs to the iconographic and occult context of this particular card, not an ancient universal meaning attached to every tarot Empress.\n\nThe Emperor follows her in the sequence. They are often read as a complementary pair of nurture and structure, yet Waite explicitly cautions that the figures do not simply represent married life. A flourishing garden still needs pathways and boundaries; a well-built wall is useless if it protects nothing alive.",
+        "reflection": "**Upright questions:** What am I nurturing, and what nurtures me? Which pleasure have I mistaken for an indulgence I must earn? What conditions would help something important grow?\n\n**Reversed questions:** Where am I overgiving? What have I left unfed? Am I helping another person grow, or trying to control the shape of their growth?\n\n**Journal ritual — A Garden Ledger.** Name three things growing in your life. For each, write what feeds it, what drains it and what boundary would protect its development.\n\n**Last word:** Care is not endless giving. It is the wisdom of tending what can truly grow."
+      },
+      "misconception": "The Empress does not predict pregnancy, define womanhood or guarantee material abundance.",
+      "relatedCardIds": [
+        "tarot-major-02",
+        "tarot-major-04",
+        "tarot-major-17"
+      ],
+      "sources": [
+        {
+          "title": "A. E. Waite, The Pictorial Key to the Tarot, Part II (1911)",
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "type": "primary occult interpretation and iconographic description"
+        },
+        {
+          "title": "A. E. Waite, The Pictorial Key to the Tarot, Part III (1911)",
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "type": "primary period divinatory lists"
+        },
+        {
+          "title": "Tim Husband, Before Fortune-Telling: The History and Structure of Tarot Cards (Metropolitan Museum of Art, 2016)",
+          "url": "https://www.metmuseum.org/fr/perspectives/tarot-2",
+          "type": "museum historical background"
+        },
+        {
+          "title": "Whitney Museum, Pamela Colman Smith exhibition label",
+          "url": "https://whitneymedia.org/assets/generic_file/1993/At_the_Dawn_Exhibition_Labels_6.1.22.pdf",
+          "type": "museum attribution and design context"
+        }
+      ],
+      "reviewNotes": "Verify variant detail of robe pattern against retained artwork before production; no current Muse asset was inspected.",
+      "approvalDate": null
+    },
+    {
+      "id": "tarot-major-04",
+      "number": 4,
+      "name": "The Emperor",
+      "arcana": "Major Arcana",
+      "subtitle": "The Architecture of Responsibility",
+      "editorialStatus": "draft",
+      "reviewBatch": "major-01",
+      "candidateVersion": 1,
+      "provenance": "new draft",
+      "keywords": {
+        "upright": [
+          "Structure",
+          "Authority",
+          "Stewardship",
+          "Boundaries",
+          "Stability"
+        ],
+        "reversed": [
+          "Rigidity",
+          "Domination",
+          "Insecurity",
+          "Weak foundations",
+          "Reassessment"
+        ]
+      },
+      "chapters": {
+        "story": "Stone, mountains, armor and a throne: the Emperor inhabits a landscape that does not appear eager to accommodate anyone. Yet such severity has a purpose. Where the Empress asks what needs to grow, the Emperor asks what must hold.\n\nIt is easy to call this card “masculine energy” and stop there. That would confuse an inherited royal image with a universal truth about gender. The deeper subject is authority: how it is established, what justifies it, whom it protects and what happens when it begins to exist for its own sake.\n\nEmperors were familiar figures in European political and religious imagination when tarot first developed. Smith's later design gives the monarch an especially unyielding physical presence. Waite describes worldly executive power and the intellectual throne; his gendered assumptions belong to the historical document, not to a rule for contemporary readers.\n\nThe card is not simply cheering for control. A structure can be shelter or prison. An effective leader knows the difference—and knows that a plan is a promise to take responsibility for its consequences.",
+        "symbolism": "**Stone throne and mountains.** The hard materials make durability visible, but also suggest inflexibility. Stability can become a virtue or an obstacle depending on what circumstances demand.\n\n**Ram heads.** Rams decorate the throne, as Waite notes. Later esoteric systems associate the Emperor with Aries; we should identify that as a tradition, not a fact built into early tarot play.\n\n**Orb and ankh-shaped scepter.** Waite describes the globe and a form of *crux ansata* held by the figure. These emblems tie worldly jurisdiction to a more elaborate occult iconography.\n\n**Armor beneath the robe.** The visible armor suggests the capacity to defend and the expectation of conflict. In reflection it raises a question: what are you guarding, and from whom? The design alone cannot tell us whether such vigilance is necessary.\n\n**The austere color and landscape.** The card's severity distinguishes this form of authority from the Empress's lushness. Neither image supplies a universal rule about ideal leadership.",
+        "meanings": {
+          "upright": "Upright, the Emperor can represent the constructive side of structure: reliable commitments, clear boundaries, responsible leadership and systems sturdy enough to protect people and projects. There is kindness in a deadline that is realistic, a promise that is kept and a shared rule that applies fairly. Order can release energy otherwise spent improvising through preventable crises.\n\nThe card may ask you to define roles, establish a budget, protect your time or take responsibility for a decision no one else can reasonably make for you. Authority here is not the right to silence disagreement. Its best form is accountable and open to correction.\n\nIf the Empress shows the living garden, the Emperor may be its paths, irrigation plan and protective fence. What are your structures supporting? If you cannot answer that, the structure may have become the point rather than the means.",
+          "reversed": "Reversed, the Emperor asks whether a system has grown more important than the lives it was meant to support. Excessive control can disguise anxiety; rules may become inconsistent or harsh because someone fears uncertainty. At the other extreme, there may be too little structure: responsibilities avoided, commitments left undefined and others expected to carry the consequences.\n\nThese opposites require different remedies. If authority is coercive, strengthen boundaries and accountability. If responsibilities have been neglected, begin with one dependable routine or agreement. Avoid treating the orientation as a diagnosis of a parent, manager or partner.\n\nThe central issue is legitimacy. Can your expectations be explained, revised and shared? Does the arrangement protect genuine needs, or primarily preserve someone's sense of power?"
+        },
+        "inYourLife": "**Love.** Upright may highlight consistency, reliability and respect for boundaries. Reversed: distinguish a partner's fair expectations from controlling behavior; no card should be used to excuse coercion.\n\n**Work.** Clarify ownership, build repeatable systems and hold leadership accountable. Reversed: revisit micromanagement or neglected roles.\n\n**Finances.** Budgets and contingency plans are constructive forms of care. Reversed: a rigid plan that cannot absorb real life may be as unhelpful as none at all.\n\n**Example.** Asked about an ambitious project, the Emperor may encourage defining decision rights, milestones and a fallback plan before expanding.",
+        "hiddenKnowledge": "In Waite's commentary, the Emperor represents power in the visible world, not simply a husband matched to the Empress. This difference matters because popular “divine masculine/divine feminine” formulas can quietly erase the card's institutional, political and ethical dimensions. The figure's throne asks not merely who commands, but why their command should be trusted.\n\nThe Hierophant comes next with a different kind of authority: transmitted teaching and sanctioned ritual. One governs through administration and worldly rule; the other through recognized doctrine and institutions. Their shadow sides are related, but not identical.",
+        "reflection": "**Upright questions:** Which structure would make my life more sustainable? What responsibility is genuinely mine? Can I explain the purpose of a boundary I set?\n\n**Reversed questions:** Where have rules become inflexible? Where am I avoiding responsibility? Who bears the cost of the system I maintain?\n\n**Journal ritual — The Foundation.** Draw a simple floor plan for a current undertaking. Label its supports, weak walls and exits. Name one change that makes it safer without making it smaller than it needs to be.\n\n**Last word:** Real authority is measured not by what it can command, but by what it can sustain."
+      },
+      "misconception": "The Emperor does not prescribe gender roles or make authoritarian behavior virtuous.",
+      "relatedCardIds": [
+        "tarot-major-03",
+        "tarot-major-05",
+        "tarot-major-11"
+      ],
+      "sources": [
+        {
+          "title": "A. E. Waite, The Pictorial Key to the Tarot, Part II (1911)",
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "type": "primary occult interpretation and iconographic description"
+        },
+        {
+          "title": "A. E. Waite, The Pictorial Key to the Tarot, Part III (1911)",
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "type": "primary period divinatory lists"
+        },
+        {
+          "title": "Tim Husband, Before Fortune-Telling: The History and Structure of Tarot Cards (Metropolitan Museum of Art, 2016)",
+          "url": "https://www.metmuseum.org/fr/perspectives/tarot-2",
+          "type": "museum historical background"
+        },
+        {
+          "title": "Whitney Museum, Pamela Colman Smith exhibition label",
+          "url": "https://whitneymedia.org/assets/generic_file/1993/At_the_Dawn_Exhibition_Labels_6.1.22.pdf",
+          "type": "museum attribution and design context"
+        }
+      ],
+      "reviewNotes": "",
+      "approvalDate": null
+    },
+    {
+      "id": "tarot-major-05",
+      "number": 5,
+      "name": "The Hierophant",
+      "arcana": "Major Arcana",
+      "subtitle": "The Keeper of Traditions",
+      "editorialStatus": "draft",
+      "reviewBatch": "major-01",
+      "candidateVersion": 1,
+      "provenance": "new draft",
+      "keywords": {
+        "upright": [
+          "Teaching",
+          "Tradition",
+          "Community",
+          "Mentorship",
+          "Shared practice"
+        ],
+        "reversed": [
+          "Dogmatism",
+          "Hollow ritual",
+          "Alienation",
+          "Uncritical conformity",
+          "Reexamination"
+        ]
+      },
+      "chapters": {
+        "story": "Two students kneel before a richly dressed figure seated between pillars. Keys cross at his feet. The Hierophant appears as a guardian of something larger than any one person: instruction, ritual, belonging, an inherited way of understanding the world.\n\nThe earlier tarot figure was often named the Pope. Waite's later title, the Hierophant, moves the card toward a more general spiritual office while retaining ecclesiastical imagery. That history must remain visible. This is not simply “the card of conventional wisdom,” nor proof that every tradition is oppressive. Institutions preserve knowledge and create community; they can also resist change, exclude outsiders or confuse loyalty with truth.\n\nIf the High Priestess knows what remains veiled, the Hierophant speaks for what has been made public and teachable. The central challenge is to learn without surrendering discernment, and to question without pretending that every inherited practice lacks value.\n\nA good teacher does not demand that you stop thinking. A good tradition can explain what it protects and accept that it may need to grow.",
+        "symbolism": "**Triple crown and triple-cross staff.** Waite identifies these insignia as parts of the religious office depicted. They suggest layers of institutional authority; specific mystical correspondences require attribution rather than guesswork.\n\n**Blessing gesture.** The raised hand makes an ecclesiastical sign. Waite contrasts this visible gesture with the Priestess's refusal to reveal her teaching openly.\n\n**Crossed keys.** The pair at his feet evokes delegated authority and access within Christian iconography. In an individual reading the keys may raise questions about who controls entry, certification or belonging.\n\n**Two kneeling figures.** The students make this an image of transmission: knowledge is passed through a relationship, within rules and expectations. Their posture may suggest humility or hierarchy, depending on the question.\n\n**Pillars.** These are not, Waite says, the same temple pillars as the Priestess's. Similar design elements need not imply identical meanings.",
+        "meanings": {
+          "upright": "Upright, the Hierophant often asks what may be learned from a lineage of practice. You may benefit from an experienced teacher, a reliable framework, a community with shared values or a ceremony that gives an important transition its proper weight. No one learns every craft from first principles. To stand inside a tradition can be an act of gratitude to those who carried knowledge before you.\n\nThe card also raises questions about the institutions we trust: schools, religious communities, professional organizations, families and informal groups. What standards serve genuine understanding? Which expectations promote care, continuity or fairness?\n\nThe Hierophant is strongest when teaching remains alive rather than merely authoritative. Wisdom that cannot tolerate an honest question may be tradition in name but fear in practice.",
+          "reversed": "Reversed, the Hierophant may reflect a mismatch between inherited rules and lived conviction. You might feel excluded by a community, pressured to follow an outdated practice or impatient with teaching that no longer answers its own questions. But the reversal can also flag reflexive contrarianism: rejecting a mentor's advice before understanding the reasons for it.\n\nDistinguish meaningful dissent from the romance of being different. What is the actual cost of the rule? Who benefits? Whose voice was absent when it formed? Is there a wise part worth keeping even if the institution around it needs revision?\n\nReversed does not require abandoning religion, school, family or tradition. Sometimes reform begins with someone who cares enough to ask difficult questions from within."
+        },
+        "inYourLife": "**Love.** Shared rituals, values and public commitments can support connection. Reversed may ask whose expectations a relationship is serving—and whether both partners consent to them.\n\n**Learning and career.** Seek qualified guidance and understand a discipline's standards before improvising. Reversed: find an alternative teacher or challenge a gatekeeping practice with evidence.\n\n**Community.** Notice where belonging is genuinely mutual rather than purchased by silencing yourself.\n\n**Example.** Asked whether to train formally in a craft, the Hierophant may recommend studying with an experienced practitioner while retaining the right to evaluate the method.",
+        "hiddenKnowledge": "The historical Pope card reflects the religious-political world in which European tarot developed. Waite's Hierophant preserves recognizably Christian signs while interpreting the figure through his own esoteric outlook. It would be inaccurate to present every ceremonial object as an ancient, cross-cultural occult code.\n\nThe High Priestess is a revealing companion. She protects what is quiet or hidden; the Hierophant represents what an institution can transmit. Both can fail: secrecy may become evasion, and doctrine may become rigidity. The Lovers follows as a reminder that belonging and duty eventually meet personal choice.",
+        "reflection": "**Upright questions:** Which teacher or tradition has given me something worth keeping? What shared ritual makes belonging real? How do I distinguish expertise from mere status?\n\n**Reversed questions:** Which rule needs an honest explanation? Am I rejecting guidance before understanding it? How can I question an institution while respecting the people inside it?\n\n**Journal ritual — The Inheritance.** Write three lessons you received from others. Mark one to preserve, one to adapt and one to investigate before deciding. Record whose perspective is missing.\n\n**Last word:** A living tradition does not merely repeat its answers. It remembers why the questions mattered."
+      },
+      "misconception": "The Hierophant is not automatically a demand for conformity, nor is questioning tradition automatically enlightenment.",
+      "relatedCardIds": [
+        "tarot-major-02",
+        "tarot-major-04",
+        "tarot-major-06"
+      ],
+      "sources": [
+        {
+          "title": "A. E. Waite, The Pictorial Key to the Tarot, Part II (1911)",
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "type": "primary occult interpretation and iconographic description"
+        },
+        {
+          "title": "A. E. Waite, The Pictorial Key to the Tarot, Part III (1911)",
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "type": "primary period divinatory lists"
+        },
+        {
+          "title": "Tim Husband, Before Fortune-Telling: The History and Structure of Tarot Cards (Metropolitan Museum of Art, 2016)",
+          "url": "https://www.metmuseum.org/fr/perspectives/tarot-2",
+          "type": "museum historical background"
+        },
+        {
+          "title": "Whitney Museum, Pamela Colman Smith exhibition label",
+          "url": "https://whitneymedia.org/assets/generic_file/1993/At_the_Dawn_Exhibition_Labels_6.1.22.pdf",
+          "type": "museum attribution and design context"
+        }
+      ],
+      "reviewNotes": "",
+      "approvalDate": null
+    },
+    {
+      "id": "tarot-major-06",
+      "number": 6,
+      "name": "The Lovers",
+      "arcana": "Major Arcana",
+      "subtitle": "The Deliberate Union",
+      "editorialStatus": "draft",
+      "reviewBatch": "major-01",
+      "candidateVersion": 1,
+      "provenance": "new draft",
+      "keywords": {
+        "upright": [
+          "Choice",
+          "Intimacy",
+          "Alignment",
+          "Reciprocity",
+          "Vulnerability"
+        ],
+        "reversed": [
+          "Conflicting values",
+          "Idealization",
+          "Avoidance",
+          "Miscommunication",
+          "Reconsideration"
+        ]
+      },
+      "chapters": {
+        "story": "Under an immense angel, two figures stand uncovered before one another. Behind them rise different trees; a serpent curls around one of them. The landscape is both inviting and morally complicated. This is a card of relationship, certainly, but also of what becomes possible—and vulnerable—when a choice binds our lives to something beyond ourselves.\n\nOlder imagery of the Lovers was not always a simple picture of one blessed couple. Some European traditions presented a young figure between two others with Cupid above, an image that has invited readings about competing attachments or choices. Smith's Rider–Waite–Smith composition instead evokes Adam and Eve in Eden, and Waite explicitly interprets it through a Christian and esoteric lens.\n\nModern readers often hear the word Lovers and expect an announcement of romance. But an enduring relationship is more demanding than attraction, and choices about work, loyalty or personal values can involve the same difficult question: what are you agreeing to become responsible for?\n\nThis card asks whether desire, truth and commitment can look one another in the eye.",
+        "symbolism": "**Two uncovered figures.** Waite likens them to Adam and Eve before the Fall. The scene makes exposure central: connection involves being seen, while privacy and consent still matter.\n\n**Angel above.** A luminous winged figure extends its arms, an explicitly religious symbol in Waite's commentary. Modern readers may use it to contemplate ideals or conscience, without treating the image as a supernatural guarantee.\n\n**Two trees.** Waite identifies the Tree of Life behind the man and the Tree of Knowledge of Good and Evil behind the woman. The details refer to Genesis as understood through Waite's esoteric design; this is not an instruction to assign fixed moral qualities to men and women.\n\n**Serpent and fruit.** The serpent twines around the tree behind the woman. Knowledge, temptation and the consequences of decision are available interpretive themes, but the image should not be used to blame women for desire.\n\n**Sun and mountain.** Brightness does not eliminate distance. The mountain between the two figures can, for contemporary readers, evoke the work of reaching toward one another.",
+        "meanings": {
+          "upright": "Upright, the Lovers can represent a meaningful alignment of affection, values and chosen action. In romance it may point toward intimacy made possible through honesty and mutual consent, not a promise of a soulmate. Outside romance it can describe a consequential decision in which the technically easiest option is not necessarily the one most faithful to what matters to you.\n\nThe presence of two people does not mean that the answer must be another person. Sometimes the choice is about belonging to a community, committing to a creative path or reconciling two important parts of your life. Listen for competing loyalties and be precise about what each choice would ask of you.\n\nA healthy union leaves room for two real people. The upright card does not celebrate fusion at the cost of individuality; it considers whether connection can deepen without erasing either voice.",
+          "reversed": "Reversed, the Lovers may reflect disharmony between what you value, what you say and what you choose. A relationship may require a difficult conversation; a decision may be delayed because each option carries a loss. Or an idealized picture of perfect harmony may be preventing you from noticing ordinary incompatibilities.\n\nDo not jump from this reversal to infidelity, a breakup or an accusation against a partner. Those conclusions require evidence outside the cards. Ask instead whether consent is clear, expectations have been discussed and commitments are freely chosen. If a decision cannot satisfy every value, honesty about the trade-off is more useful than indefinite postponement.\n\nThe card's reversal is not a sentence against love. It is an invitation to notice the places where closeness or choice has become difficult to inhabit truthfully."
+        },
+        "inYourLife": "**Love.** Upright asks for reciprocal attraction, vulnerability and values expressed through behavior. Reversed invites honest discussion of misalignment, not amateur detective work.\n\n**Career and creativity.** A choice may concern integrity rather than prestige. Reversed: name the competing commitments and what each path costs.\n\n**Community and self.** Consider where belonging supports authenticity and where it demands self-erasure.\n\n**Example.** Asked about a new partnership, the Lovers could encourage clarifying shared expectations and decision-making habits before making a promise.",
+        "hiddenKnowledge": "The Lovers' historical imagery changed: the earlier choice-oriented or Cupid-centered image cannot simply be treated as the same composition as Smith's Eden scene. Waite explicitly departs from earlier forms and gives the card a spiritual reading of human relationship, temptation and consciousness. The story's Biblical imagery is part of the deck's Christian-inflected symbolism, not evidence that all cultures or readers must interpret love through Genesis.\n\nFollowing the Hierophant, the Lovers place learned values under the pressure of actual relationship. Tradition can tell us what promises mean; choosing to make one remains a personal act. The Chariot, next in the sequence, will ask what discipline can carry those commitments forward.",
+        "reflection": "**Upright questions:** Where do my choices reflect my values? What does reciprocity look like in action? What truth would help a connection deepen without losing individuality?\n\n**Reversed questions:** Which trade-off am I reluctant to name? Have I mistaken an ideal for an actual relationship? What conversation would replace assumption with clarity?\n\n**Journal ritual — The Choice.** Write two possible directions on facing pages. For each, list what it honors, what it costs and who is affected. Finish by naming what information you still need.\n\n**Last word:** Love is not proved by how fated it feels. It becomes visible in what people choose to honor."
+      },
+      "misconception": "The Lovers do not guarantee a soulmate, announce infidelity or require that all important unions be romantic.",
+      "relatedCardIds": [
+        "tarot-major-05",
+        "tarot-major-07",
+        "tarot-major-14"
+      ],
+      "sources": [
+        {
+          "title": "A. E. Waite, The Pictorial Key to the Tarot, Part II (1911)",
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "type": "primary occult interpretation and iconographic description"
+        },
+        {
+          "title": "A. E. Waite, The Pictorial Key to the Tarot, Part III (1911)",
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "type": "primary period divinatory lists"
+        },
+        {
+          "title": "Tim Husband, Before Fortune-Telling: The History and Structure of Tarot Cards (Metropolitan Museum of Art, 2016)",
+          "url": "https://www.metmuseum.org/fr/perspectives/tarot-2",
+          "type": "museum historical background"
+        },
+        {
+          "title": "Whitney Museum, Pamela Colman Smith exhibition label",
+          "url": "https://whitneymedia.org/assets/generic_file/1993/At_the_Dawn_Exhibition_Labels_6.1.22.pdf",
+          "type": "museum attribution and design context"
+        }
+      ],
+      "reviewNotes": "",
+      "approvalDate": null
+    }
+  ]
+}

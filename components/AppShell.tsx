@@ -51,8 +51,9 @@ function AppShellContent({ children, profile:initialProfile }: { children: React
         <MuseMagicBridge/><MuseAtmosphere/>
         <a className="muse-skip-link" href="#muse-main-content">Skip to content</a>
         <aside className="muse-rail" aria-label="Muse app navigation">
-          <Link className="muse-shell-brand" href="/" aria-label="Muse home"><span>muse</span><MuseStar size={28} /></Link>
-          <button type="button" className="muse-rail-toggle muse-edge" aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"} title={collapsed ? "Expand sidebar" : "Collapse sidebar"} aria-expanded={!collapsed} onClick={() => setCollapsed((value) => !value)}><span className={collapsed ? "chevron-right" : "chevron-left"}><MuseIcon name="chevron" size={16} /></span></button>
+          <div className="muse-rail-header"><Link className="muse-shell-brand" href="/" aria-label="Muse home"><span>muse</span><MuseStar size={28} /></Link>
+            <button type="button" className="muse-rail-toggle muse-edge" aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"} title={collapsed ? "Expand sidebar" : "Collapse sidebar"} aria-expanded={!collapsed} onClick={() => setCollapsed((value) => !value)}><span className={collapsed ? "chevron-right" : "chevron-left"}><MuseIcon name="chevron" size={16} /></span></button>
+          </div>
           <div className="muse-sidebar-atmosphere" aria-hidden="true"><MuseStar size={12} color="aqua" /><MuseStar size={17} color="pink" /></div>
           <nav className="muse-rail-navigation" aria-label="Main navigation">
             {desktopGroups.map((group) => <div className="muse-nav-group" key={group}>
@@ -61,8 +62,10 @@ function AppShellContent({ children, profile:initialProfile }: { children: React
             </div>)}
           </nav>
           <div className="muse-rail-footer"><ThemeSwitcher compact={collapsed}/>
-            {navigation.filter((item) => item.group === "Tools" && item.id !== "appearance").map((item) => <NavDestination key={item.id} item={item} path={path} compact={collapsed} />)}
-            <LogoutButton compact={collapsed}/>
+            <div className="muse-rail-utilities" aria-label="Account controls">
+              {navigation.filter((item) => item.group === "Tools" && item.id !== "appearance").map((item) => <NavDestination key={item.id} item={item} path={path} compact />)}
+              <LogoutButton compact/>
+            </div>
           </div>
         </aside>
         <div className="muse-app-main">

@@ -1,0 +1,1047 @@
+{
+  "collection": "Muse Tarot Grimoire",
+  "deck": "Rider–Waite–Smith",
+  "batch": "cups-01",
+  "editorialVoice": "The Enchanted Scholar",
+  "status": "DRAFT — AWAITING CREATIVE DIRECTOR REVIEW",
+  "schemaNote": "Editorial interchange format, not a verified application schema; Codex should map fields after approval. Do not alter existing artwork or personal records.",
+  "verification": "Waite 1911 Part III checked for all 14 card scenes and meanings; no inspection of current Muse asset map; no claims of approval or deployment.",
+  "cards": [
+    {
+      "id": "tarot-cups-01",
+      "name": "Ace of Cups",
+      "arcana": "Minor Arcana",
+      "suit": "Cups",
+      "rank": "Ace",
+      "number": 1,
+      "subtitle": "The Vessel That Overflows",
+      "editorialStatus": "draft",
+      "candidateVersion": 1,
+      "reviewBatch": "cups-01",
+      "researchStatus": "Waite primary description and divinatory text checked; individual artwork asset mapping not checked",
+      "keywords": {
+        "upright": [
+          "receptivity",
+          "affection",
+          "renewal",
+          "emotional openness",
+          "nourishment"
+        ],
+        "reversed": [
+          "emotional overwhelm",
+          "guardedness",
+          "instability",
+          "unmet need",
+          "replenishment"
+        ]
+      },
+      "chapters": {
+        "story": "A cup is offered before anyone has asked for it. It rises over a pool of lilies, streams falling from its rim, while a dove descends toward its opening. The picture is more ceremonial than sentimental. This is not simply a rosy promise that romance is coming; it is an image of receiving, offering, and being changed by what is received. As the first cup, it holds a possibility rather than a relationship already made. Its question is whether there is room in your life for feeling that has not yet been given a name. A vessel must be open to be filled, but it must also be able to hold what arrives. The card's richness is in that delicate balance.",
+        "symbolism": "Smith makes this Ace unmistakably different from the Ace of Wands. The hand emerges from a cloud, but its gift is a chalice rather than a sprouting branch. Five visible streams descend in common reproductions, while Waite describes four streams; our editorial text avoids building a doctrine around the disputed count. Water lilies gather beneath. Most specifically, the bird brings a cross-marked Eucharistic wafer toward the cup—a Christian sacramental image, not merely a generic white dove of peace. Waite's description emphasizes the host and water. A reader may use the overflowing vessel to consider emotional abundance, yet those modern associations should not replace the artwork's religious language.",
+        "meanings": {
+          "upright": "Upright, the Ace asks what kind of emotional beginning is possible now. That might be tenderness toward another person, renewed enjoyment after a dry season, an emerging friendship, or permission to acknowledge a feeling you have kept safely sealed away. The card does not specify whom you will love, or whether someone else will reciprocate. It favors receptivity joined to discernment: notice what genuinely nourishes you, and resist the temptation to mistake intensity for intimacy. In a creative life it may also describe the first return of enthusiasm after exhaustion, when a song or place unexpectedly makes you feel present again. Let the cup be an invitation to attend, not an instruction to pour yourself out without limit.",
+          "reversed": "Reversed, the cup may feel overturned, difficult to fill, or so full that its contents spill without direction. Perhaps a disappointment has made you guarded; perhaps you have become everyone's source of comfort while neglecting your own. There can also be an excess of emotion without a safe place to bring it. Waite's period meanings include instability and the false heart, but inversion does not prove insincerity in you or anyone else. Ask which boundary, conversation, rest, or support would make feeling more bearable. Sometimes opening the cup means allowing a little vulnerability. Sometimes it means admitting that a vessel cannot be asked to hold an ocean."
+        },
+        "inYourLife": "In relationships, distinguish the willingness to connect from evidence of mutual affection. In friendship, an ordinary offer of care can matter more than a grand declaration. For work, the Ace may signal renewed meaning in what you do—not proof that an opportunity is wise. Reversed, consider whether you need emotional space before accepting another commitment. In a reading about reaching out after an argument, it may suggest an honest opening without demanding a particular response.",
+        "hiddenKnowledge": "The Ace carries overt Eucharistic imagery: a dove, a cross-marked wafer, a vessel and water. A historically grounded reading can recognize this Christian influence while welcoming readers who do not share that theology. Waite's language of the true heart and holy table reflects his own esoteric-Christian outlook, not a rule imposed by the earliest tarot playing cards. The cup's modern role as the suit's emotional vocabulary is a later interpretive framework. Both histories can be studied without collapsing them into one origin story.",
+        "reflection": {
+          "uprightQuestions": [
+            "What feeling has recently asked for my attention?",
+            "Where am I willing to receive care instead of only giving it?",
+            "What would an emotionally honest beginning look like?"
+          ],
+          "reversedQuestions": [
+            "Where am I depleted or overflowing?",
+            "Which boundary protects tenderness rather than preventing it?",
+            "What support could help me name a difficult feeling?"
+          ],
+          "journalPrompt": "Draw an empty cup on the page. Write inside it what sustains you and outside it what drains you. Choose one practical way to replenish it.",
+          "misconception": "The Ace does not guarantee a new romance, pregnancy, or divine blessing."
+        }
+      },
+      "readingSummary": {
+        "upright": "Upright, the Ace asks what kind of emotional beginning is possible now.",
+        "reversed": "Reversed, the cup may feel overturned, difficult to fill, or so full that its contents spill without direction."
+      },
+      "historicalAnchor": {
+        "picturedScene": "A hand holding a cup rises from cloud above water lilies; streams descend and a dove bears a marked wafer toward the cup.",
+        "periodMeaning": "Waite lists true-heartedness, nourishment and abundance upright, with false-heartedness and instability reversed.",
+        "source": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3"
+      },
+      "relatedCardIds": [
+        "tarot-cups-02",
+        "tarot-cups-04",
+        "tarot-major-17"
+      ],
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite 1911 illustrated scene and published divinatory meanings; historical attribution, not proof of modern readings"
+        }
+      ],
+      "editorialNotes": "All modern applications are reflective possibilities, not predictions. Waite's gendered court signifiers are not adopted."
+    },
+    {
+      "id": "tarot-cups-02",
+      "name": "Two of Cups",
+      "arcana": "Minor Arcana",
+      "suit": "Cups",
+      "rank": "Two",
+      "number": 2,
+      "subtitle": "The Meeting of Equals",
+      "editorialStatus": "draft",
+      "candidateVersion": 1,
+      "reviewBatch": "cups-01",
+      "researchStatus": "Waite primary description and divinatory text checked; individual artwork asset mapping not checked",
+      "keywords": {
+        "upright": [
+          "reciprocity",
+          "affinity",
+          "dialogue",
+          "partnership",
+          "mutual recognition"
+        ],
+        "reversed": [
+          "imbalance",
+          "miscommunication",
+          "strained trust",
+          "unspoken terms",
+          "repair"
+        ]
+      },
+      "chapters": {
+        "story": "Two people meet beneath a strange suspended emblem. Each holds a cup; each faces the other. Neither is kneeling, enthroned, or disappearing into the other's silhouette. In the tarot's visual grammar, this is a moment of recognition, not possession. The card is often called romantic, and rightly so in many readings, but it also belongs to friendships, collaborations, reconciliations, and the rare pleasure of being understood. The image does not tell us what happens tomorrow. It shows a relationship at the point where two separate lives choose to acknowledge one another. Affection becomes more convincing when both people can keep hold of their own cup.",
+        "symbolism": "Smith's paired figures exchange cups rather than merging into a single vessel. Above them stands a caduceus—two serpents winding about a staff—and a winged lion-like head. Waite names the caduceus of Hermes and notes that versions of this sign occurred in older examples, but declines to explain its curious emblems. It would be unsound to assert one fixed ancient meaning for the lion or snakes in this specific card. As a modern visual reading, the symmetrical exchange can invite questions about balance and consent. The emblem hovering above suggests that human connection is not only private feeling; it also includes communication and agreement.",
+        "meanings": {
+          "upright": "Upright, the Two of Cups may describe a connection strengthened by mutual attention. Love is one possibility, but the central thread is reciprocity: each person gives, receives, and remains able to speak. This could be a new romance that develops through steady interest, a friendship restored by genuine apology, or a professional partnership built on complementary abilities. The card asks what each party actually contributes. It does not erase differences in circumstances or experience, and it certainly cannot guarantee another person's feelings. If this card appears when you are deciding whether to reach toward someone, consider a candid invitation and watch how it is answered. Connection is an exchange, not a performance by one person for an audience of one.",
+          "reversed": "Reversed, the exchange may be unequal or misunderstood. A gesture intended as care may feel intrusive; one person may be making every plan; a friendship may be held together by politeness rather than honest conversation. The reversal can also describe an internal divide between what you want from a relationship and what you are prepared to offer. It is not proof of betrayal, infidelity, or incompatibility. Some imbalances are temporary and repairable; others become patterns that deserve firmer boundaries. The practical question is whether both people can name the problem and participate in changing it. Mutuality need not mean identical gestures, but it requires respect that travels in both directions."
+        },
+        "inYourLife": "In love, the card rewards attention to follow-through as much as chemistry. In friendship, it may mark an honest moment of recognition. At work, it invites clear agreements rather than assuming goodwill will handle logistics. Reversed, listen for the difference between a difficult conversation and a relationship where only one person is permitted to have needs. A reading about reconciling might suggest initiating dialogue without promising reconciliation.",
+        "hiddenKnowledge": "The caduceus is associated with Hermes, a messenger and mediator in classical mythology, but the card does not authorize importing every later association of that symbol. Waite himself leaves its details largely unexplained. The conventional reading of Cups as emotional life makes partnership a natural modern theme, but the actual scene is an exchange between distinct figures. This is why equality and agency are useful questions, rather than universal facts asserted by an image.",
+        "reflection": {
+          "uprightQuestions": [
+            "What makes this connection genuinely mutual?",
+            "Where do I feel seen without having to perform?",
+            "What honest exchange would deepen trust?"
+          ],
+          "reversedQuestions": [
+            "Is one person carrying most of the relationship?",
+            "Which expectation has remained unspoken?",
+            "What would respectful repair require from both sides?"
+          ],
+          "journalPrompt": "Write two short columns: what I offer and what I receive. Notice differences without insisting they must be identical.",
+          "misconception": "Two of Cups is not a guarantee of soulmates, marriage, or another person’s consent."
+        }
+      },
+      "readingSummary": {
+        "upright": "Upright, the Two of Cups may describe a connection strengthened by mutual attention.",
+        "reversed": "Reversed, the exchange may be unequal or misunderstood."
+      },
+      "historicalAnchor": {
+        "picturedScene": "Two figures face one another and exchange cups beneath a winged lion head and caduceus.",
+        "periodMeaning": "Waite explicitly lists love, friendship, affinity, union, concord and sympathy.",
+        "source": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3"
+      },
+      "relatedCardIds": [
+        "tarot-cups-03",
+        "tarot-major-06",
+        "tarot-cups-06"
+      ],
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite 1911 illustrated scene and published divinatory meanings; historical attribution, not proof of modern readings"
+        }
+      ],
+      "editorialNotes": "All modern applications are reflective possibilities, not predictions. Waite's gendered court signifiers are not adopted."
+    },
+    {
+      "id": "tarot-cups-03",
+      "name": "Three of Cups",
+      "arcana": "Minor Arcana",
+      "suit": "Cups",
+      "rank": "Three",
+      "number": 3,
+      "subtitle": "The Circle of Witnesses",
+      "editorialStatus": "draft",
+      "candidateVersion": 1,
+      "reviewBatch": "cups-01",
+      "researchStatus": "Waite primary description and divinatory text checked; individual artwork asset mapping not checked",
+      "keywords": {
+        "upright": [
+          "friendship",
+          "celebration",
+          "solidarity",
+          "shared joy",
+          "community"
+        ],
+        "reversed": [
+          "social fatigue",
+          "exclusion",
+          "excess",
+          "fragile belonging",
+          "recalibration"
+        ]
+      },
+      "chapters": {
+        "story": "Three figures raise their cups within a garden. No individual dominates the scene; the occasion appears to belong to the circle itself. The Three of Cups gives joy a social form. Triumph feels different when someone witnessed how hard it was earned, and sorrow can feel less immovable when a friend arrives without asking for a polished explanation. This card is often pictured as a party, but its deeper subject is belonging: the ordinary rituals by which people tell one another, I am glad you are here. Not every celebration is loud. Some consist of three chairs, something warm to drink, and the exquisite relief of being able to laugh again.",
+        "symbolism": "Smith arranges three celebrants, each with a cup raised, amid produce and blossoms. The fruit and cultivated ground create an image of harvest and shared abundance; none of it constitutes an identifiable historical festival. Waite describes maidens pledging one another and links the image with completion, healing and pleasure. The number three may encourage comparison with the Two: a private exchange has become a little community. That comparison is a modern narrative reading, not a documented sequence planned by Smith. Notice also that the figures have their own positions in the circle: community need not abolish individuality.",
+        "meanings": {
+          "upright": "Upright, this card can invite celebration, friendship, and the healing force of participation. A difficult achievement may deserve recognition before you move to the next demand. A new community might make a solitary interest easier to sustain. There is also a moral lesson here: let other people have their moments without turning every gathering into a measurement of your own progress. The Three of Cups is not simply a promise of invitations and applause. It asks whom you gather with, how you show up for them, and whether your joy has room for more than one story. Sometimes the most generous thing you can do is witness another person's happiness without making it about you.",
+          "reversed": "Reversed, the celebration may feel forced or inaccessible. Perhaps a social circle has become competitive, a gathering leaves you drained, or the pressure to be cheerful makes honesty impossible. Excess—whether in consumption, obligation, or the performance of closeness—is one traditional possibility. Waite's list also includes straightforward completion, so the inversion was not originally a simple prediction of gossip or exclusion. Ask whether a boundary would restore pleasure, or whether a conversation is needed about who has been left outside the circle. Solitude may be restorative; isolation imposed by others is a different experience."
+        },
+        "inYourLife": "In friendships, look for people who celebrate without keeping score. In love, the card may emphasize wider support networks, not necessarily a third party. At work, recognize collective achievement and give credit accurately. Reversed, decide whether an event is worth attending for connection or whether your energy would be better spent with one trusted person. In a reading about celebrating a milestone, the card suggests marking it intentionally rather than rushing onward.",
+        "hiddenKnowledge": "The joy of this card is not an invention of contemporary self-help. Waite's text explicitly describes a happy issue and the possibility of solace or healing. Yet the modern phrase “chosen family” adds a contemporary vocabulary to an older image. That is an interpretation, not a translation of 1911. The garden setting also links the card to the recurring RWS language of cultivated life, while the suit's water imagery remains present in the vessels rather than an actual sea.",
+        "reflection": {
+          "uprightQuestions": [
+            "Who has helped make my recent joy possible?",
+            "What deserves a modest celebration?",
+            "How do I help others feel welcome?"
+          ],
+          "reversedQuestions": [
+            "Where has togetherness become obligation?",
+            "Who might feel excluded from my circle?",
+            "What would healthier celebration look like?"
+          ],
+          "journalPrompt": "Name three people who have witnessed different chapters of your life. Write one specific gratitude for each.",
+          "misconception": "The Three of Cups does not automatically signify a love triangle or pregnancy."
+        }
+      },
+      "readingSummary": {
+        "upright": "Upright, this card can invite celebration, friendship, and the healing force of participation.",
+        "reversed": "Reversed, the celebration may feel forced or inaccessible."
+      },
+      "historicalAnchor": {
+        "picturedScene": "Three women raise cups in a garden strewn with fruit and flowers.",
+        "periodMeaning": "Waite gives abundance, a happy conclusion, solace and healing upright; his reversed meanings include both completion and excess.",
+        "source": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3"
+      },
+      "relatedCardIds": [
+        "tarot-cups-02",
+        "tarot-cups-10",
+        "tarot-wands-04"
+      ],
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite 1911 illustrated scene and published divinatory meanings; historical attribution, not proof of modern readings"
+        }
+      ],
+      "editorialNotes": "All modern applications are reflective possibilities, not predictions. Waite's gendered court signifiers are not adopted."
+    },
+    {
+      "id": "tarot-cups-04",
+      "name": "Four of Cups",
+      "arcana": "Minor Arcana",
+      "suit": "Cups",
+      "rank": "Four",
+      "number": 4,
+      "subtitle": "The Offered Cup",
+      "editorialStatus": "draft",
+      "candidateVersion": 1,
+      "reviewBatch": "cups-01",
+      "researchStatus": "Waite primary description and divinatory text checked; individual artwork asset mapping not checked",
+      "keywords": {
+        "upright": [
+          "contemplation",
+          "discontent",
+          "discernment",
+          "pause",
+          "saturation"
+        ],
+        "reversed": [
+          "renewed notice",
+          "restless search",
+          "reconnection",
+          "unhelpful avoidance",
+          "curiosity"
+        ]
+      },
+      "chapters": {
+        "story": "The world has apparently brought someone another cup, and the response is not delight. Beneath a tree sits a figure whose attention has turned inward. Three cups remain within reach; a fourth appears from the clouds, unanswered. It is tempting to scold the figure for ingratitude, but the card's ambiguity is more instructive. A new offer can be generous and still be wrong for you. Rest can become avoidance, but constant receptivity can become exhaustion. The Four of Cups asks how to distinguish a needed pause from a habit of refusing experience before it has a chance to speak. There is dignity in a considered no, and sometimes courage in a carefully chosen yes.",
+        "symbolism": "Three vessels stand on the grass; a fourth is offered by a disembodied hand. The figure sits with folded arms beneath a tree. Waite explicitly calls attention to the figure's dissatisfaction and the offered “fairy gift.” The scene echoes the Ace's supernatural-seeming offer, but its recipient is visibly unenthused. Rather than assigning the cloud a fixed divine meaning, observe the difference between offer and acceptance. The fourth cup is present, not forced upon the figure. The tree provides a setting for shelter and stillness; the artwork itself cannot tell us whether that stillness is wise contemplation or resignation.",
+        "meanings": {
+          "upright": "Upright, the Four can describe emotional saturation. A familiar activity no longer brings pleasure; a promising opportunity arrives just when you have little appetite for it; or your attention has narrowed around what is missing. The response need not be immediate optimism. First ask whether you are tired, disappointed, grieving, bored, or genuinely uninterested. Each state suggests a different next step. A rest period may be needed, or perhaps the offered cup deserves a second look. The card encourages honest discernment instead of compulsory gratitude. Being offered something does not create an obligation to want it. But rejecting everything in advance can become its own form of captivity.",
+          "reversed": "Reversed, you may be ready to rejoin life after a period of withdrawal. Waite's earlier reversed meanings include novelty, instruction, and new relationships, which makes this a historically grounded possibility rather than a recent invention. Equally, the card might show restlessness masquerading as renewal: collecting fresh experiences without investigating why the old ones felt empty. Pay attention to whether curiosity has returned naturally or whether you are trying to escape discomfort through constant change. Neither case requires a sweeping decision. One conversation, outing, or small experiment can reveal whether the world is becoming interesting again."
+        },
+        "inYourLife": "In dating, you need not accept attention merely because it is offered. In work, ask whether boredom reflects poor fit or temporary fatigue. In creativity, a pause may help you recognize what still matters. Reversed, test re-engagement gently rather than saying yes to everything. A reading about an invitation could ask whether your hesitation is meaningful discernment or a reflex developed after disappointment.",
+        "hiddenKnowledge": "Waite's language is harsher than many contemporary descriptions; he calls the subject weary and sated. But his reversal explicitly opens toward new instruction and new relations, resisting a simplistic good/bad split. The image also teaches an ethical point: an invitation is an offer, not a command. Treating the Fourth Cup as proof that the person is “missing a blessing” imposes a moralizing certainty unsupported by the scene.",
+        "reflection": {
+          "uprightQuestions": [
+            "What am I genuinely tired of?",
+            "Which offer deserves curiosity rather than immediate rejection?",
+            "What would rest allow me to notice?"
+          ],
+          "reversedQuestions": [
+            "Am I becoming receptive or merely restless?",
+            "What small return to the world feels right?",
+            "Which old disappointment still shapes my responses?"
+          ],
+          "journalPrompt": "Describe the last invitation you declined. Separate how you felt from what you assumed would happen.",
+          "misconception": "The Four of Cups is not a verdict that you are ungrateful or failing to see a guaranteed opportunity."
+        }
+      },
+      "readingSummary": {
+        "upright": "Upright, the Four can describe emotional saturation.",
+        "reversed": "Reversed, you may be ready to rejoin life after a period of withdrawal."
+      },
+      "historicalAnchor": {
+        "picturedScene": "A seated figure beneath a tree studies three cups on the ground while another is offered by a cloud-borne hand.",
+        "periodMeaning": "Waite describes weariness and satiety upright, with novelty and new relations reversed.",
+        "source": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3"
+      },
+      "relatedCardIds": [
+        "tarot-cups-01",
+        "tarot-cups-08",
+        "tarot-major-09"
+      ],
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite 1911 illustrated scene and published divinatory meanings; historical attribution, not proof of modern readings"
+        }
+      ],
+      "editorialNotes": "All modern applications are reflective possibilities, not predictions. Waite's gendered court signifiers are not adopted."
+    },
+    {
+      "id": "tarot-cups-05",
+      "name": "Five of Cups",
+      "arcana": "Minor Arcana",
+      "suit": "Cups",
+      "rank": "Five",
+      "number": 5,
+      "subtitle": "What Remains",
+      "editorialStatus": "draft",
+      "candidateVersion": 1,
+      "reviewBatch": "cups-01",
+      "researchStatus": "Waite primary description and divinatory text checked; individual artwork asset mapping not checked",
+      "keywords": {
+        "upright": [
+          "grief",
+          "disappointment",
+          "unfinished care",
+          "perspective",
+          "repair"
+        ],
+        "reversed": [
+          "turning toward support",
+          "persistent sorrow",
+          "reconnection",
+          "unresolved loss",
+          "reassessment"
+        ]
+      },
+      "chapters": {
+        "story": "Three cups lie overturned before a person in a dark cloak. Two more stand behind, almost outside the field of attention. Beyond the river is a bridge and a building that may be reached, though no one is crossing. The Five of Cups is often summarized as “look at what remains,” but that advice can become cruel if offered too soon. Loss deserves recognition. The fallen cups matter. The upright vessels do not cancel them, nor does the bridge demand an immediate journey. This card lives in the interval between what has happened and what may yet be possible. Sometimes the first humane response is not to turn around. It is to acknowledge why turning feels difficult.",
+        "symbolism": "Smith shows three tipped cups, two standing ones, a cloaked figure, water, a bridge and distant buildings. Waite explicitly states that three have been taken and two remain. The visual arithmetic matters, but it should not be mistaken for an instruction to count blessings while suppressing sorrow. The bridge can support a modern reading of possible movement; Waite does not establish it as a fixed symbol of recovery. The figure's face is obscured, leaving the grief's exact cause unknown. That ambiguity protects the image from a single scripted backstory.",
+        "meanings": {
+          "upright": "Upright, the Five may reflect disappointment, bereavement, regret, or the pain of an outcome that did not match what you expected. It invites you to give loss its proper name without allowing it to describe every possible future. Sometimes something genuinely irreplaceable has gone; the remaining cups cannot substitute for it. They may instead represent supports, responsibilities, or pleasures that continue alongside grief. In a practical reading, consider what has been harmed, what can be repaired, and what must simply be mourned. The card is not an instruction to be positive. It is a reminder that your attention can expand when you are ready, without rewriting what happened.",
+          "reversed": "Reversed, the figure's attention may begin to move toward what remains, or grief may feel newly difficult to carry. Waite's period meanings include return, family connections and alliances, alongside false projects; they do not offer a neat universal “healing” rule. Reconciliation may become possible, but so may the recognition that restoration is not desired. Avoid using this card to promise that someone will come back. Ask instead whether returning to a relationship, place, or old hope would honor your present needs. Some bridges should be crossed. Others are best acknowledged from the shore."
+        },
+        "inYourLife": "In relationships, the Five can concern the gap between hoped-for and actual care. At work, it may invite a sober debrief after a failed proposal rather than a false triumph. In family life, grief and loyalty can coexist. Reversed, consider whether you are ready to seek support or whether others are rushing your process. A reading after a disappointment might focus on one trustworthy next action, without demanding closure.",
+        "hiddenKnowledge": "Waite's traditional list includes patrimony and inheritance, a reminder that an old divinatory vocabulary may concern property and expectations as well as emotion. The modern emphasis on grieving the three fallen cups is a reading grounded in Smith's picture, not the entire historical meaning. The standing two are visible evidence of remainder; what they mean in any life is unknown until the reader supplies context.",
+        "reflection": {
+          "uprightQuestions": [
+            "What specific loss needs acknowledgement?",
+            "What remains meaningful without replacing what went?",
+            "Who can witness this honestly?"
+          ],
+          "reversedQuestions": [
+            "Which return would be healing, and which would repeat harm?",
+            "Am I ready to look beyond the loss?",
+            "What does repair require that nostalgia cannot supply?"
+          ],
+          "journalPrompt": "Write about the three cups you lost without minimizing them. On another page, name the two forms of support still available.",
+          "misconception": "The card does not require immediate forgiveness, positivity, or a reunion."
+        }
+      },
+      "readingSummary": {
+        "upright": "Upright, the Five may reflect disappointment, bereavement, regret, or the pain of an outcome that did not match what you expected.",
+        "reversed": "Reversed, the figure's attention may begin to move toward what remains, or grief may feel newly difficult to carry."
+      },
+      "historicalAnchor": {
+        "picturedScene": "A cloaked figure faces three fallen cups while two stand behind; a bridge leads to buildings beyond a stream.",
+        "periodMeaning": "Waite calls it a card of loss where something remains, and also includes inheritance and disappointed expectations.",
+        "source": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3"
+      },
+      "relatedCardIds": [
+        "tarot-cups-06",
+        "tarot-cups-08",
+        "tarot-major-13"
+      ],
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite 1911 illustrated scene and published divinatory meanings; historical attribution, not proof of modern readings"
+        }
+      ],
+      "editorialNotes": "All modern applications are reflective possibilities, not predictions. Waite's gendered court signifiers are not adopted."
+    },
+    {
+      "id": "tarot-cups-06",
+      "name": "Six of Cups",
+      "arcana": "Minor Arcana",
+      "suit": "Cups",
+      "rank": "Six",
+      "number": 6,
+      "subtitle": "The Garden of Remembering",
+      "editorialStatus": "draft",
+      "candidateVersion": 1,
+      "reviewBatch": "cups-01",
+      "researchStatus": "Waite primary description and divinatory text checked; individual artwork asset mapping not checked",
+      "keywords": {
+        "upright": [
+          "memory",
+          "tenderness",
+          "nostalgia",
+          "early influences",
+          "generosity"
+        ],
+        "reversed": [
+          "idealized past",
+          "new chapter",
+          "revisiting patterns",
+          "maturity",
+          "future orientation"
+        ]
+      },
+      "chapters": {
+        "story": "In an old garden, a child offers another a cup filled with flowers. The air seems gentler than the world outside its walls. The Six of Cups carries a peculiar enchantment: the past can become vivid enough to feel present. A smell, a song, or a familiar street may return you to a younger self without asking permission. Yet nostalgia has two faces. Memory can preserve tenderness, and it can edit away the difficulty of an earlier life. This card invites a respectful encounter with what formed you—not an obligation to recreate it. The person you were deserves understanding, but the person you have become deserves a future.",
+        "symbolism": "The cups contain flowers rather than wine; figures of different sizes stand in a garden with buildings enclosing the scene. Waite describes children in an old garden and associates the image with memories. The offered cup can support an interpretation of generosity, though the picture does not certify the emotional histories of its figures. A guard-like adult or background figure appears in some reproduced scans, but the main event remains the floral exchange. It is best not to build a claim about protection or class on barely legible background details.",
+        "meanings": {
+          "upright": "Upright, the Six may direct attention to memory, childhood associations, or a gesture of kindness that reconnects you with an earlier part of yourself. A friendship from years ago may become important again; a family ritual may deserve adaptation; a creative practice abandoned in youth might be worth revisiting. The card encourages tenderness without insisting that earlier times were simpler or better. Ask what you truly remember and what you have learned since. Some old pleasures can travel into the present unchanged. Others need new conditions before they can become nourishing again. The point is not to go backward, but to discover what is worth carrying forward.",
+          "reversed": "Reversed, the past may feel confining, or you may be ready to relate to it differently. Waite's reversal turns toward the future and renewal, a striking historical detail often lost when the card is reduced to nostalgia. You might notice that an old friendship no longer fits, or recognize how a childhood expectation has shaped adult choices. Equally, you may be avoiding the past so thoroughly that important patterns remain unnamed. Reflection can be affectionate and unsparing at once. You need not idealize what happened to take something valuable from it."
+        },
+        "inYourLife": "In love, this is not proof that an ex will return; it may be a question about familiar patterns of attachment. In friendship, shared history can be comforting but is not a substitute for present reciprocity. In creativity, revisit old interests with an adult's resources. Reversed, consider how to honor memory without giving it authority over your next decision. A reading about moving home might ask which traditions to bring and which to leave.",
+        "hiddenKnowledge": "Waite preserves contradictory readings: some interpreters see childhood and things vanished, while others see new people and environments. His reversed meaning emphasizes the future. This is an unusually clear example of why Muse will not present traditional tarot as a single unchanging code. The card's poetry comes from the conversation between memory and renewal, not from pretending there was never disagreement.",
+        "reflection": {
+          "uprightQuestions": [
+            "Which memory still gives me strength?",
+            "What childhood pleasure could I meet differently now?",
+            "Where is kindness part of my history?"
+          ],
+          "reversedQuestions": [
+            "What am I romanticizing or unfairly condemning?",
+            "Which old role no longer fits?",
+            "What kind of future would honor my past without repeating it?"
+          ],
+          "journalPrompt": "Choose an object tied to an early memory. Record what actually happened, how you understood it then, and how you see it now.",
+          "misconception": "The Six of Cups does not promise a former partner’s return or prove that the past was innocent."
+        }
+      },
+      "readingSummary": {
+        "upright": "Upright, the Six may direct attention to memory, childhood associations, or a gesture of kindness that reconnects you with an earlier part of yourself.",
+        "reversed": "Reversed, the past may feel confining, or you may be ready to relate to it differently."
+      },
+      "historicalAnchor": {
+        "picturedScene": "Two children appear in a walled garden; cups contain white flowers and one child offers a cup.",
+        "periodMeaning": "Waite emphasizes childhood and memory, but explicitly also records a contrasting interpretation of new relations and environments; reversed he gives the future.",
+        "source": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3"
+      },
+      "relatedCardIds": [
+        "tarot-cups-05",
+        "tarot-cups-10",
+        "tarot-major-20"
+      ],
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite 1911 illustrated scene and published divinatory meanings; historical attribution, not proof of modern readings"
+        }
+      ],
+      "editorialNotes": "All modern applications are reflective possibilities, not predictions. Waite's gendered court signifiers are not adopted."
+    },
+    {
+      "id": "tarot-cups-07",
+      "name": "Seven of Cups",
+      "arcana": "Minor Arcana",
+      "suit": "Cups",
+      "rank": "Seven",
+      "number": 7,
+      "subtitle": "The Theatre of Possibility",
+      "editorialStatus": "draft",
+      "candidateVersion": 1,
+      "reviewBatch": "cups-01",
+      "researchStatus": "Waite primary description and divinatory text checked; individual artwork asset mapping not checked",
+      "keywords": {
+        "upright": [
+          "imagination",
+          "options",
+          "fantasy",
+          "longing",
+          "discernment"
+        ],
+        "reversed": [
+          "selection",
+          "focus",
+          "emerging clarity",
+          "rigidity",
+          "unfinished desire"
+        ]
+      },
+      "chapters": {
+        "story": "Seven cups float before a dark figure, each bearing a different impossible offering. Treasure, danger, glory, beauty, and mystery share the same cloudy stage. The Seven of Cups is a magnificent portrait of the mind when desire begins designing futures faster than judgment can evaluate them. Possibility is not the enemy; imagination allows us to conceive a world other than the one immediately before us. But fantasies are not contracts with reality. The card asks which dream might survive the useful indignity of specifics: a budget, a difficult conversation, a first attempt, an honest look at the cost. Some beautiful visions are worth building. Others are meant to be enjoyed briefly and released.",
+        "symbolism": "Smith sets seven chalices in clouds, each displaying a distinct apparition. The visible motifs are often described as a covered figure, head, serpent, castle or tower, jewels, victory wreath and dragon. Exact allegorical assignments for every cup are not established in Waite's description, which simply calls them visions of a fantastic spirit. Claims that each object definitively represents one of the seven deadly sins—or a fixed hierarchy of temptations—should therefore be marked as later interpretations, not documented original design instructions. The shadowy onlooker reinforces that we witness an encounter with images, not their actual possession.",
+        "meanings": {
+          "upright": "Upright, the Seven can describe an abundance of choices, seductive possibilities, or the way imagination fills gaps in evidence. An exciting career path may look flawless from a distance; someone met briefly may be carrying an entire future you have already written for them; a creative idea may sparkle precisely because no practical constraint has touched it yet. This card does not demand that you become cynical. It invites discernment as an act of respect for your own hopes. Choose a possibility worth investigating and ask what information would allow you to distinguish promise from projection. The presence of seven visions does not mean all are equally viable—or that you must select one immediately.",
+          "reversed": "Reversed, one possibility may finally come into focus. Waite links the reversal to determination and a project, which offers a productive alternative to the common idea that inversion always signals deception. But narrowing can also become rigid, particularly if you select an appealing story before examining the evidence. Are you moving from dreaming to decision, or from uncertainty to premature certainty? Test an option with a modest real-world action. If the cup proves empty, you have learned something; imagination can return to work with better materials."
+        },
+        "inYourLife": "In love, distinguish the person before you from the qualities you hope they possess. At work, compare actual roles and constraints instead of job-title fantasies. In creativity, capture ideas freely, then select one for a trial. Reversed, consider whether commitment has become possible or whether you are shutting out inconvenient facts. For a reading about multiple opportunities, the card recommends criteria before selection.",
+        "hiddenKnowledge": "The Seven is an excellent example of the RWS deck's pictorial invention: Smith stages psychological fantasy as a scene rather than presenting merely seven suit objects. Waite's own commentary emphasizes imagination and questions permanence. Modern language about “analysis paralysis” and “manifestation” may be useful metaphors, but they are not 1911 quotations. The dreamlike cloud should also not be mistaken for a scientifically defined dream symbol.",
+        "reflection": {
+          "uprightQuestions": [
+            "Which imagined future attracts me, and why?",
+            "What evidence would distinguish opportunity from projection?",
+            "Which option deserves a small experiment?"
+          ],
+          "reversedQuestions": [
+            "Am I choosing with clarity or rushing to escape uncertainty?",
+            "What cost have I not acknowledged?",
+            "Which enticing story can I release?"
+          ],
+          "journalPrompt": "Describe your three most tempting possibilities. For each, write one observable fact, one hope, and one unknown.",
+          "misconception": "The seven objects do not have one universally authenticated occult decoding."
+        }
+      },
+      "readingSummary": {
+        "upright": "Upright, the Seven can describe an abundance of choices, seductive possibilities, or the way imagination fills gaps in evidence.",
+        "reversed": "Reversed, one possibility may finally come into focus."
+      },
+      "historicalAnchor": {
+        "picturedScene": "A silhouetted figure faces seven cups suspended in clouds containing disparate visions, including a veiled form, snake, wreath, dragon, jewels, head and tower.",
+        "periodMeaning": "Waite describes fantastic visions and imagination without durable substance, while reversed he lists desire, will, determination and project.",
+        "source": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3"
+      },
+      "relatedCardIds": [
+        "tarot-cups-08",
+        "tarot-wands-02",
+        "tarot-major-18"
+      ],
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite 1911 illustrated scene and published divinatory meanings; historical attribution, not proof of modern readings"
+        }
+      ],
+      "editorialNotes": "All modern applications are reflective possibilities, not predictions. Waite's gendered court signifiers are not adopted."
+    },
+    {
+      "id": "tarot-cups-08",
+      "name": "Eight of Cups",
+      "arcana": "Minor Arcana",
+      "suit": "Cups",
+      "rank": "Eight",
+      "number": 8,
+      "subtitle": "The Necessary Departure",
+      "editorialStatus": "draft",
+      "candidateVersion": 1,
+      "reviewBatch": "cups-01",
+      "researchStatus": "Waite primary description and divinatory text checked; individual artwork asset mapping not checked",
+      "keywords": {
+        "upright": [
+          "departure",
+          "revaluation",
+          "uncertainty",
+          "search for meaning",
+          "disengagement"
+        ],
+        "reversed": [
+          "return",
+          "renewed engagement",
+          "avoidance",
+          "unfinished business",
+          "contentment"
+        ]
+      },
+      "chapters": {
+        "story": "Eight cups remain standing. The traveler does not destroy them, spill them, or take them along. Instead, a figure in red turns toward an uneven landscape beneath a strange night sky. The Eight of Cups is one of tarot's most moving departures because it refuses to provide a neat villain. Perhaps something once brought real happiness and no longer does. Perhaps a promising situation has become too small for a person's values. Leaving need not mean the past was fraudulent; staying need not mean failure. The card asks what it costs to continue and what it costs to go, with no assurance that the mountains beyond will be kinder.",
+        "symbolism": "Smith's eight vessels are arranged in two tiers with a noticeable space in the upper row. A figure carries a staff away across rugged terrain, beneath a moon-like disk and crescent. Waite describes the person as abandoning cups associated with former happiness or enterprise. Modern readers often treat the gap among the vessels as an explicitly “missing ninth cup,” but Waite does not give that explanation; it should remain an optional visual reflection. The destination is obscured, so claims of guaranteed spiritual enlightenment or a specific new relationship exceed what the image establishes.",
+        "meanings": {
+          "upright": "Upright, the Eight may describe a decision to leave something that no longer supports your values, even if it is comfortable or respectable. A role you worked hard to win can become confining. A social pattern can feel familiar but empty. A creative project may have done its work even though it remains unfinished. The card is not an instruction to resign, break up, or disappear. It asks what has changed, which needs remain unmet, and what alternatives exist. Sometimes leaving is necessary. Sometimes a candid renegotiation transforms the situation. The essential movement is toward honest evaluation rather than clinging to a story simply because you invested in it.",
+          "reversed": "Reversed, a return, a second look, or renewed contentment may be possible; Waite actually gives joy and feasting as reversed meanings. Conversely, you might be unable to depart despite recognizing a poor fit, or tempted to flee before trying repair. These possibilities must be separated by context. Ask whether the attachment rests on loyalty, fear, obligation, genuine affection, or a practical constraint. A delayed departure is not automatically weakness, and a return is not necessarily regression. The question is whether the choice is becoming more conscious."
+        },
+        "inYourLife": "In love, consider whether a relationship's present reality—not its opening promise—meets both people's needs. In work, assess whether growth remains available. In personal development, a change of path can be thoughtful rather than dramatic. Reversed, ask whether leaving is premature or whether returning is genuinely wanted. A reading about a move might invite a practical exit plan instead of romanticizing reinvention.",
+        "hiddenKnowledge": "A recent scholarly discussion of the Rider–Waite–Smith deck uses the Eight of Cups to explore place, movement, and the imagery's geographic imagination. That is scholarship about the artwork, not proof of one personal meaning. Waite admits antithetical traditional interpretations and treats the matter's decline as a frequent practical reading. This card teaches editorial humility: a striking image can suggest departure without authorizing a prediction that departure must occur.",
+        "reflection": {
+          "uprightQuestions": [
+            "Which commitment still feels alive, and which feels maintained by habit?",
+            "What would staying require to become honest?",
+            "What practical safeguards would support leaving?"
+          ],
+          "reversedQuestions": [
+            "Am I considering return for sound reasons or from fear?",
+            "What unfinished conversation matters?",
+            "Is there contentment here that I had overlooked?"
+          ],
+          "journalPrompt": "Write two letters you will not send: one from the part that wants to stay, one from the part that wants to leave.",
+          "misconception": "The Eight of Cups does not command abandonment of a relationship, job, or home."
+        }
+      },
+      "readingSummary": {
+        "upright": "Upright, the Eight may describe a decision to leave something that no longer supports your values, even if it is comfortable or respectable.",
+        "reversed": "Reversed, a return, a second look, or renewed contentment may be possible; Waite actually gives joy and feasting as reversed meanings."
+      },
+      "historicalAnchor": {
+        "picturedScene": "A red-cloaked figure walks away from eight cups toward rugged high ground under an unusual moon.",
+        "periodMeaning": "Waite describes desertion and decline of a matter but also notes conflicting favorable readings; his reversed list includes joy, happiness and feasting.",
+        "source": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3"
+      },
+      "relatedCardIds": [
+        "tarot-cups-07",
+        "tarot-cups-09",
+        "tarot-major-13"
+      ],
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite 1911 illustrated scene and published divinatory meanings; historical attribution, not proof of modern readings"
+        }
+      ],
+      "editorialNotes": "All modern applications are reflective possibilities, not predictions. Waite's gendered court signifiers are not adopted."
+    },
+    {
+      "id": "tarot-cups-09",
+      "name": "Nine of Cups",
+      "arcana": "Minor Arcana",
+      "suit": "Cups",
+      "rank": "Nine",
+      "number": 9,
+      "subtitle": "The Feast of Enough",
+      "editorialStatus": "draft",
+      "candidateVersion": 1,
+      "reviewBatch": "cups-01",
+      "researchStatus": "Waite primary description and divinatory text checked; individual artwork asset mapping not checked",
+      "keywords": {
+        "upright": [
+          "contentment",
+          "gratitude",
+          "pleasure",
+          "self-recognition",
+          "satisfaction"
+        ],
+        "reversed": [
+          "hollow success",
+          "excess",
+          "recalibration",
+          "misplaced expectation",
+          "authentic desire"
+        ]
+      },
+      "chapters": {
+        "story": "A satisfied figure sits before nine cups arranged like trophies upon a curved counter. The table is full; the person seems pleased. The Nine of Cups is frequently called the wish card, but the picture contains no genie, no contract, and no guarantee that the universe must provide. It portrays a moment of enough. This is an unfashionable achievement in a world endlessly prepared to sell us one more thing. It may be pleasure earned, a private success, or the relief of recognizing that something you wanted has actually arrived. Yet the figure sits alone, so the scene quietly asks what fulfillment means when no one else is required to applaud.",
+        "symbolism": "Waite describes someone who has feasted and appears materially provided for, with nine cups displayed behind them. Their folded arms and central posture can read as pride or contentment, but the image does not establish arrogance. Waite notes that the visible picture shows the material side while other aspects remain possible. The arcade-like cup display differs from the Seven's floating fantasies and the Ten's rainbow: this satisfaction is present and countable, not imagined or shared by an entire household. The modern label “wish card” is popular shorthand, not an original promise attached to every Nine.",
+        "meanings": {
+          "upright": "Upright, the Nine may invite you to acknowledge a pleasure or accomplishment without instantly moving the finish line. An important exam passed, a home made more comfortable, a meal savored without multitasking, or a skill earned through practice can all belong here. Satisfaction is not morally inferior because it is modest or personal. Ask whether you can recognize what you have enough of—and whether you have mistaken other people's criteria for your own. The card also cautions against treating comfort as evidence that all needs are met. A full shelf of cups can coexist with loneliness, unresolved conflict, or the wish for meaning beyond acquisition.",
+          "reversed": "Reversed, the performance of happiness may differ from actual feeling. Perhaps a long-desired achievement has arrived without the expected relief; perhaps pleasure has become numbing excess; perhaps you have dismissed genuine progress because it fails to look impressive enough. Waite's reversal is unusually mixed, including truth and freedom as well as faults and imperfections. The card therefore asks for candor rather than automatic disappointment. What is satisfying in practice? What leaves you empty afterward? A quiet revision of desires may be more useful than chasing a brighter trophy."
+        },
+        "inYourLife": "In relationships, enjoy mutual pleasure without expecting another person to complete your identity. In work, recognize a well-earned milestone. With money, allow yourself delight while noticing the difference between enjoying a purchase and needing continual purchases. Reversed, ask whose expectations determined the goal. For a reading about achieving something long sought, the card suggests taking stock before setting the next target.",
+        "hiddenKnowledge": "Waite's emphasis on physical well-being and satisfactions complicates the card's often inflated reputation for miraculous wish fulfillment. The art shows abundance in a finite room, not an infinite source of magic. A useful distinction from the Ten is scale: the Nine foregrounds personal satisfaction, while the Ten depicts a collective household scene. This is a comparative modern reading, not an inflexible sequence designed by Waite.",
+        "reflection": {
+          "uprightQuestions": [
+            "What is already enough today?",
+            "Which achievement deserves acknowledgement?",
+            "What pleasure feels restorative rather than distracting?"
+          ],
+          "reversedQuestions": [
+            "Which success looks better than it feels?",
+            "Am I seeking pleasure or avoiding discomfort?",
+            "What desire is truly mine?"
+          ],
+          "journalPrompt": "Write a list of nine satisfactions, from tiny to significant. Circle one you have neglected to enjoy.",
+          "misconception": "The Nine of Cups does not promise that every wish will be granted."
+        }
+      },
+      "readingSummary": {
+        "upright": "Upright, the Nine may invite you to acknowledge a pleasure or accomplishment without instantly moving the finish line.",
+        "reversed": "Reversed, the performance of happiness may differ from actual feeling."
+      },
+      "historicalAnchor": {
+        "picturedScene": "A seated figure folds arms before a curved display of nine cups.",
+        "periodMeaning": "Waite emphasizes feasting, comfort and satisfaction; reversals include both truth or liberty and mistakes or imperfections.",
+        "source": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3"
+      },
+      "relatedCardIds": [
+        "tarot-cups-07",
+        "tarot-cups-10",
+        "tarot-pentacles-09"
+      ],
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite 1911 illustrated scene and published divinatory meanings; historical attribution, not proof of modern readings"
+        }
+      ],
+      "editorialNotes": "All modern applications are reflective possibilities, not predictions. Waite's gendered court signifiers are not adopted."
+    },
+    {
+      "id": "tarot-cups-10",
+      "name": "Ten of Cups",
+      "arcana": "Minor Arcana",
+      "suit": "Cups",
+      "rank": "Ten",
+      "number": 10,
+      "subtitle": "The Shared Horizon",
+      "editorialStatus": "draft",
+      "candidateVersion": 1,
+      "reviewBatch": "cups-01",
+      "researchStatus": "Waite primary description and divinatory text checked; individual artwork asset mapping not checked",
+      "keywords": {
+        "upright": [
+          "belonging",
+          "harmony",
+          "shared care",
+          "home",
+          "collective joy"
+        ],
+        "reversed": [
+          "strained harmony",
+          "idealized family",
+          "unspoken conflict",
+          "repair",
+          "redefined belonging"
+        ]
+      },
+      "chapters": {
+        "story": "Across the sky stretches a rainbow bearing ten cups. Below it two adults gesture upward, while children dance nearby and a home stands in the landscape. The Ten of Cups offers a vision of shared happiness, but its traditional family scene is not a template everyone must reproduce. Belonging can take many shapes: friends who show up, a household of one that finally feels safe, a community chosen through years of care, or relatives learning to relate with greater honesty. This card concerns the extraordinary labor hidden inside the word harmony. A happy life is not one without disagreement. It is one where affection and respect can survive the necessary conversations.",
+        "symbolism": "Smith places all ten cups in a rainbow above the figures rather than on a table. Waite calls the adults husband and wife and notes their children and home. Those are elements of his period reading, not a rule that modern readers must be married or have children to understand fulfillment. The children's exuberance and the adults' upward gestures create different registers of joy in the same picture. The rainbow suggests a shared, almost atmospheric blessing, although “guaranteed happily ever after” is a later oversimplification. The visible house underscores the earthly setting of the ideal.",
+        "meanings": {
+          "upright": "Upright, the Ten may describe the desire to cultivate secure, affectionate belonging. It can point toward gratitude for a supportive relationship, a family gathering that genuinely feels safe, or a shared commitment pursued with patience. The card asks you to identify who belongs in your definition of home and how that belonging is maintained. It does not declare a particular domestic arrangement superior. Nor does it predict marriage, childbirth, reconciliation or permanence. A more useful reading asks which practices make collective well-being possible: listening, boundaries, shared responsibilities, humor, and space for difference. Harmony is not the absence of complicated people. It is care strong enough to make room for them.",
+          "reversed": "Reversed, the beautiful family picture may feel aspirational, oppressive, or painfully unlike your actual circumstances. A home can look harmonious from outside while carrying conflict behind the door. Alternatively, you may be dismissing genuine support because it does not resemble an inherited ideal. Waite's period reversed vocabulary is severe; this card need not forecast violence. If safety is an immediate concern, concrete support matters more than divination. Otherwise ask what needs to be spoken, which expectations are unrealistic, and whether belonging can be redefined on healthier terms. The reversal is not proof that a family is broken beyond repair."
+        },
+        "inYourLife": "In romance, look for the practices that sustain a partnership rather than a perfect tableau. In friendships, chosen family may express the same essential care. At work, a community of trust can matter without pretending colleagues are relatives. Reversed, consider whether maintaining appearances has become more important than wellbeing. A reading about hosting a gathering might suggest making the occasion welcoming instead of flawless.",
+        "hiddenKnowledge": "The Ten preserves an explicitly heteronormative Edwardian interpretation in Waite's prose. Muse should name that history while interpreting the larger visual theme without imposing marriage or parenthood as universal goals. The rainbow and dancing figures are actually depicted; readings of a predestined happy ending are not. The contrast with the Nine's single seated figure can help students see how one suit offers different scenes of satisfaction.",
+        "reflection": {
+          "uprightQuestions": [
+            "Who makes belonging feel real to me?",
+            "Which shared ritual deserves protection?",
+            "How can I contribute to harmony without erasing myself?"
+          ],
+          "reversedQuestions": [
+            "What ideal of family or happiness am I measuring myself against?",
+            "Where is a difficult conversation overdue?",
+            "Which connections actually support safety and care?"
+          ],
+          "journalPrompt": "Define “home” without using a housing type or a relationship label. List three behaviors that make it real.",
+          "misconception": "The Ten of Cups does not require a conventional family, promise children, or guarantee permanent happiness."
+        }
+      },
+      "readingSummary": {
+        "upright": "Upright, the Ten may describe the desire to cultivate secure, affectionate belonging.",
+        "reversed": "Reversed, the beautiful family picture may feel aspirational, oppressive, or painfully unlike your actual circumstances."
+      },
+      "historicalAnchor": {
+        "picturedScene": "A pair embrace and gesture toward a rainbow of ten cups; children dance near a home landscape.",
+        "periodMeaning": "Waite identifies a husband and wife, children, home and enduring love; reversed he gives indignation and violence.",
+        "source": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3"
+      },
+      "relatedCardIds": [
+        "tarot-cups-09",
+        "tarot-cups-03",
+        "tarot-pentacles-10"
+      ],
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite 1911 illustrated scene and published divinatory meanings; historical attribution, not proof of modern readings"
+        }
+      ],
+      "editorialNotes": "All modern applications are reflective possibilities, not predictions. Waite's gendered court signifiers are not adopted."
+    },
+    {
+      "id": "tarot-cups-11",
+      "name": "Page of Cups",
+      "arcana": "Minor Arcana",
+      "suit": "Cups",
+      "rank": "Page",
+      "number": 11,
+      "subtitle": "The Fish That Speaks",
+      "editorialStatus": "draft",
+      "candidateVersion": 1,
+      "reviewBatch": "cups-01",
+      "researchStatus": "Waite primary description and divinatory text checked; individual artwork asset mapping not checked",
+      "keywords": {
+        "upright": [
+          "curiosity",
+          "unexpected feeling",
+          "imagination",
+          "openness",
+          "creative message"
+        ],
+        "reversed": [
+          "emotional immaturity",
+          "distraction",
+          "shyness",
+          "overinterpretation",
+          "gentle learning"
+        ]
+      },
+      "chapters": {
+        "story": "The Page lifts a cup and finds a fish looking back. Neither appears entirely prepared for the encounter. In this wonderfully strange scene, imagination has acquired a face and chosen an inconvenient moment to introduce itself. The Page of Cups represents the learner in the realm of feelings, where curiosity matters more than polish. A new affection may be surprising; a poem may appear before its writer understands it; an unexpected apology may require a kinder answer than rehearsed defenses provide. The Page's talent is not knowing everything about the heart. It is remaining interested in what the heart is attempting to say.",
+        "symbolism": "Smith shows a standing young court figure wearing a decorated tunic and hat, holding a chalice from which a fish emerges. Water appears behind the figure. Waite specifically explains the fish as a picture of the mind taking form. This makes the Page's image unusually self-referential: an imagined thing becomes visible inside the scene. The fish is not evidence that the card literally predicts messages from spirits or pregnancy. The Page's attentive gaze is at least as important as the improbable visitor; it shows a posture of study, not ridicule.",
+        "meanings": {
+          "upright": "Upright, the Page may invite an exploratory relationship with emotions, art or an unexpected invitation. Instead of insisting that every feeling announce its final meaning, permit yourself to ask what is new here. A budding attraction might warrant conversation rather than a full imaginary romance. A creative impulse could become a sketch or rough draft. Someone's tentative expression of care may deserve a genuine hearing. The card honors emotional intelligence as something learned, not a mysterious gift that only the gifted possess. Being inexperienced does not make curiosity foolish. It does suggest asking questions, checking assumptions, and allowing real responses to reshape your first impressions.",
+          "reversed": "Reversed, the surprising fish may be ignored, overinterpreted, or treated as proof of an elaborate story. Emotional inexperience can appear as avoidance, impulsive confession, or fascination with what another person might mean rather than what they have said. Waite's reversed list includes deception and seduction, but the image cannot diagnose either. Perhaps the task is simply to grow more comfortable with uncertainty. Practice expressing one feeling in plain language and asking one honest question. A little sincerity may be more mature than a spectacular performance of sensitivity."
+        },
+        "inYourLife": "In love, the Page may indicate willingness to learn someone's emotional language, not a guaranteed admirer. In work, it can favor a creative draft or the humble question others are afraid to ask. In friendships, a thoughtful message can reopen connection. Reversed, check whether you are communicating or fantasizing about a response. A reading about sending an artistic submission might favor a small, sincere attempt.",
+        "hiddenKnowledge": "Waite explicitly describes the fish as the mind's images becoming forms, which gives us unusually secure textual evidence for discussing imagination. The court figure's historical assignment to a young man and Waite's physical-character classifications are period conventions; Muse treats Pages as modes of learning available to anyone. The fish is the card's marvel, but the Page's careful observation is its discipline.",
+        "reflection": {
+          "uprightQuestions": [
+            "What unexpected feeling deserves curiosity?",
+            "Where can I be a beginner without embarrassment?",
+            "What creative impulse could I test playfully?"
+          ],
+          "reversedQuestions": [
+            "Am I listening to a person or to my imagined version of them?",
+            "Which feeling am I ashamed to name?",
+            "How could I ask instead of assume?"
+          ],
+          "journalPrompt": "Write a short dialogue between yourself and the impossible fish in the cup. Then translate one answer into ordinary language.",
+          "misconception": "The Page is not automatically a child, a pregnancy announcement, or a literal romantic message."
+        }
+      },
+      "readingSummary": {
+        "upright": "Upright, the Page may invite an exploratory relationship with emotions, art or an unexpected invitation.",
+        "reversed": "Reversed, the surprising fish may be ignored, overinterpreted, or treated as proof of an elaborate story."
+      },
+      "historicalAnchor": {
+        "picturedScene": "A young figure in patterned clothing studies a fish rising from a cup held near the sea.",
+        "periodMeaning": "Waite notes a fish emerging from the cup as mental imagery taking form, and lists messages and reflective study; reversed includes seduction and artifice.",
+        "source": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3"
+      },
+      "relatedCardIds": [
+        "tarot-cups-01",
+        "tarot-cups-07",
+        "tarot-major-18"
+      ],
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite 1911 illustrated scene and published divinatory meanings; historical attribution, not proof of modern readings"
+        }
+      ],
+      "editorialNotes": "All modern applications are reflective possibilities, not predictions. Waite's gendered court signifiers are not adopted."
+    },
+    {
+      "id": "tarot-cups-12",
+      "name": "Knight of Cups",
+      "arcana": "Minor Arcana",
+      "suit": "Cups",
+      "rank": "Knight",
+      "number": 12,
+      "subtitle": "The Bearer of an Invitation",
+      "editorialStatus": "draft",
+      "candidateVersion": 1,
+      "reviewBatch": "cups-01",
+      "researchStatus": "Waite primary description and divinatory text checked; individual artwork asset mapping not checked",
+      "keywords": {
+        "upright": [
+          "courtesy",
+          "romantic idealism",
+          "approach",
+          "creativity",
+          "persuasion"
+        ],
+        "reversed": [
+          "empty charm",
+          "unreliable promise",
+          "evasiveness",
+          "emotional haste",
+          "grounding"
+        ]
+      },
+      "chapters": {
+        "story": "A mounted figure approaches without charging. The horse moves carefully; the rider carries a cup as though it might contain something easily spilled. This is not the Knight of Swords in pursuit of a battle. The Knight of Cups arrives with an offering: an invitation, a proposition, a story, a possible tenderness. The card's glamour lies in approach rather than conquest. Yet the romance of an elegant gesture is never the same as its reliability. The Knight asks whether a beautiful promise can travel the distance between arrival and follow-through. Charm opens a door. Character determines what happens after it.",
+        "symbolism": "Smith gives the Knight a winged helmet and winged boots, a cup extended in one hand, a river or stream crossing the landscape, and a horse moving at a controlled pace. Waite explicitly contrasts the figure with a warlike rider and relates the wings to imaginative graces. The wing imagery may invite comparisons with messenger figures, but the precise classical identity of the rider is not stated as fact by the picture. The cup remains level rather than brandished as a weapon. His visual movement is an approach, unlike the Eight's departure.",
+        "meanings": {
+          "upright": "Upright, the Knight can represent the decision to make an overture: to apologize, invite, pitch a creative idea, offer kindness, or express interest without demanding the desired reply. His graceful pace suggests that sensitivity and courage need not be opposites. A thoughtful approach can be persuasive precisely because it respects the other person's ability to decline. This card also acknowledges the power of beauty and imagination in motivating action. There is nothing wrong with being moved by a lovely vision—provided it is accompanied by practical consideration. Ask not only whether an offer is enchanting, but whether it has shape, timing, and responsibility behind it.",
+          "reversed": "Reversed, invitation may become performance. Someone might speak beautifully but avoid concrete commitments; alternatively, fear of rejection might prevent a genuine offer from being made. Waite's historical reversal emphasizes trickery and duplicity, but no card orientation establishes that a named person is deceptive. Look for evidence: clarity, consistency, mutually agreed plans and respect for boundaries. If you are the one making the offer, choose sincerity over elaborate persuasion. A modest promise kept is often more romantic than a magnificent one abandoned."
+        },
+        "inYourLife": "In dating, notice the difference between affection expressed and time actually made. In friendship, consider reaching out with a specific invitation. In work, the Knight may favor presenting an imaginative proposal with a clear next step. Reversed, insist that promises become details before investing heavily. A reading about a possible collaboration might encourage a thoughtful pitch rather than assuming enthusiasm equals agreement.",
+        "hiddenKnowledge": "The Knight's pace and winged attire are documented in Waite's description, which makes the imaginative messenger reading stronger than a generic “knight in shining armor” stereotype. However, the modern romantic archetype is not a guarantee of a specific suitor. The card belongs to a long tradition of court roles with historically gendered applications; Muse reads it as a pattern of action rather than a man's identity.",
+        "reflection": {
+          "uprightQuestions": [
+            "What invitation am I ready to make respectfully?",
+            "How can a sincere gesture become a concrete plan?",
+            "Where does imagination enrich my approach?"
+          ],
+          "reversedQuestions": [
+            "What promise lacks follow-through?",
+            "Am I mistaking charm for compatibility?",
+            "What detail would make an offer trustworthy?"
+          ],
+          "journalPrompt": "Write the loveliest invitation you can imagine, then rewrite it as a clear proposal with time, place, and room for a no.",
+          "misconception": "The Knight does not guarantee a romantic pursuer or establish that someone is lying."
+        }
+      },
+      "readingSummary": {
+        "upright": "Upright, the Knight can represent the decision to make an overture: to apologize, invite, pitch a creative idea, offer kindness, or express interest without demanding the desired reply.",
+        "reversed": "Reversed, invitation may become performance."
+      },
+      "historicalAnchor": {
+        "picturedScene": "A knight on a slow-moving horse extends a cup; the helmet and boots bear wings, and water runs through the landscape.",
+        "periodMeaning": "Waite describes quiet, graceful movement and the imagination, lists arrival and invitation upright, and deception or fraud reversed.",
+        "source": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3"
+      },
+      "relatedCardIds": [
+        "tarot-cups-02",
+        "tarot-cups-08",
+        "tarot-wands-12"
+      ],
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite 1911 illustrated scene and published divinatory meanings; historical attribution, not proof of modern readings"
+        }
+      ],
+      "editorialNotes": "All modern applications are reflective possibilities, not predictions. Waite's gendered court signifiers are not adopted."
+    },
+    {
+      "id": "tarot-cups-13",
+      "name": "Queen of Cups",
+      "arcana": "Minor Arcana",
+      "suit": "Cups",
+      "rank": "Queen",
+      "number": 13,
+      "subtitle": "The Keeper of Depths",
+      "editorialStatus": "draft",
+      "candidateVersion": 1,
+      "reviewBatch": "cups-01",
+      "researchStatus": "Waite primary description and divinatory text checked; individual artwork asset mapping not checked",
+      "keywords": {
+        "upright": [
+          "empathy",
+          "perception",
+          "care",
+          "receptivity",
+          "discernment"
+        ],
+        "reversed": [
+          "blurred boundaries",
+          "emotional depletion",
+          "projection",
+          "withdrawal",
+          "self-care"
+        ]
+      },
+      "chapters": {
+        "story": "Beside the water sits a queen whose attention is fixed upon a remarkable closed vessel. She is often called intuitive, but the artwork offers something more grounded and perhaps more impressive: sustained attention. She does not pour away the contents, display them for an audience, or pretend to know what they contain without looking. Her care is concentrated. The Queen of Cups invites us to consider empathy not as endless emotional absorption, but as the disciplined art of noticing what another person may need while remembering that they remain separate from us. Depth is not the same as drowning. Compassion is stronger when it knows its own shoreline.",
+        "symbolism": "Smith seats the Queen on a decorated throne close to water, holding an unusually elaborate lidded chalice. Waite describes her as someone who sees visions, then immediately clarifies that she also acts and that action sustains her dreaming. That qualification matters. The cup's lid is visible, but it does not prove the Queen is keeping a literal secret. The shore offers a suggestive boundary between solid ground and moving water, useful for contemporary discussion of emotional presence. The artwork itself does not license claims that a particular reader is psychic.",
+        "meanings": {
+          "upright": "Upright, the Queen can invite listening that is patient without becoming passive. Someone may need room to explain themselves rather than immediate advice; a difficult personal feeling may deserve words instead of dismissal. The card can also point toward artistic sensitivity, careful mentoring, or the ability to hold competing emotions without rushing to a verdict. Empathy should not be mistaken for guessing another person's thoughts. The Queen's intelligence includes asking, checking, and responding to what is actually said. When caring for others, notice whether you retain enough resources to care for yourself. A compassionate presence is not an inexhaustible public utility.",
+          "reversed": "Reversed, sensitivity may have lost its boundaries, or fear of emotional complexity may have driven you into distance. You might be absorbing everyone else's distress, mistaking an intuition for evidence, or hiding your own needs under the identity of being the caring one. Waite's reversed meanings are strikingly inconsistent and moralizing, including judgments about a woman's character; Muse does not reproduce them as diagnoses. Instead, ask what boundaries would make care sustainable. You are permitted to be generous without being permanently available, and to be private without becoming inaccessible."
+        },
+        "inYourLife": "In love, the Queen invites tenderness with honest communication. In friendship, listen without assuming you must fix everything. In leadership, she suggests noticing how decisions affect people without abandoning standards. Reversed, consider whether caregiving has become an expectation you cannot reasonably meet. A reading about a friend's difficult period might suggest asking what support is wanted rather than guessing.",
+        "hiddenKnowledge": "Waite's famous qualification that the Queen both sees and acts keeps her from becoming a stereotype of passive intuition. His period description also assigns her conventional feminine virtues and maternal roles. Muse can teach those historical values while declining to treat empathy as inherently female. Unlike the Page's open fish cup, her ornate vessel is closed; that comparison can generate fruitful study, though it remains a modern visual interpretation.",
+        "reflection": {
+          "uprightQuestions": [
+            "What does careful listening require in this situation?",
+            "Where do I need an emotional boundary?",
+            "How can I check an intuition respectfully?"
+          ],
+          "reversedQuestions": [
+            "Am I caring beyond my capacity?",
+            "Which feeling is mine and which belongs to someone else?",
+            "Where would a direct question serve better than a hunch?"
+          ],
+          "journalPrompt": "Describe an interaction in three parts: what I observed, what I felt, and what I assumed. Keep them separate.",
+          "misconception": "The Queen does not certify psychic ability or require women to be caretakers."
+        }
+      },
+      "readingSummary": {
+        "upright": "Upright, the Queen can invite listening that is patient without becoming passive.",
+        "reversed": "Reversed, sensitivity may have lost its boundaries, or fear of emotional complexity may have driven you into distance."
+      },
+      "historicalAnchor": {
+        "picturedScene": "A crowned figure by water contemplates an ornate closed cup with winged handles and a lid.",
+        "periodMeaning": "Waite calls her dreamlike yet active and associates her with loving intelligence, vision and wisdom; reversals include contradictory character judgments.",
+        "source": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3"
+      },
+      "relatedCardIds": [
+        "tarot-cups-11",
+        "tarot-cups-14",
+        "tarot-major-02"
+      ],
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite 1911 illustrated scene and published divinatory meanings; historical attribution, not proof of modern readings"
+        }
+      ],
+      "editorialNotes": "All modern applications are reflective possibilities, not predictions. Waite's gendered court signifiers are not adopted."
+    },
+    {
+      "id": "tarot-cups-14",
+      "name": "King of Cups",
+      "arcana": "Minor Arcana",
+      "suit": "Cups",
+      "rank": "King",
+      "number": 14,
+      "subtitle": "The Steady Hand at Sea",
+      "editorialStatus": "draft",
+      "candidateVersion": 1,
+      "reviewBatch": "cups-01",
+      "researchStatus": "Waite primary description and divinatory text checked; individual artwork asset mapping not checked",
+      "keywords": {
+        "upright": [
+          "composure",
+          "ethical care",
+          "judgment",
+          "creativity",
+          "emotional steadiness"
+        ],
+        "reversed": [
+          "suppression",
+          "misused influence",
+          "detachment",
+          "volatility",
+          "accountability"
+        ]
+      },
+      "chapters": {
+        "story": "A throne stands among restless waters. Its occupant holds a cup in one hand and a short sceptre in the other, while a ship and a dolphin animate the distance. The King of Cups does not command the sea to be still. The achievement in this picture is remaining present when it moves. Emotional maturity is often misunderstood as never feeling too much. This king suggests something more demanding: feelings may be powerful without being allowed to govern every response. There is room for grief, tenderness, anger and delight within a life guided by judgment. The card's question is how to remain accountable to your values when the water is not calm.",
+        "symbolism": "Smith sets the throne amid water, with a ship on one side and a dolphin on the other. Waite names both and explicitly associates water with Cups court cards. The figure holds a cup and short sceptre, joining a receptacle of feeling with an emblem of office. The image is not a promise of absolute emotional control, nor does it tell us whether the king is privately tranquil. Compare his active surroundings with the Queen's closer shoreline: both meet water differently. That visual contrast can support a lesson about modes of care, but it should not become a rigid gender distinction.",
+        "meanings": {
+          "upright": "Upright, the King may point toward responsible emotional leadership: making a hard decision without humiliating others, listening to criticism without collapsing, or offering support that respects everyone's autonomy. Waite's traditional list notably includes law, art, science and creative intelligence alongside fairness, broadening the card beyond the cliché of the calm boyfriend. In a creative or professional setting, feelings and standards can coexist. The King does not ask you to become unreadable. He asks what kind of response would align with your values after the first surge of emotion has passed. Good judgment is not a lack of feeling; it is feeling accompanied by responsibility.",
+          "reversed": "Reversed, composure may have become a mask for disconnection, or emotional influence may be wielded carelessly. Perhaps you insist you are fine while resentment accumulates; perhaps charm or authority shields someone from accountability. Waite's reversal includes dishonesty and injustice, but the card cannot establish guilt or diagnose manipulation. Watch observable conduct and the consequences of decisions. A healthier response may involve admitting hurt, seeking mediation, setting a boundary, or relinquishing control over another person's reaction. Emotional steadiness is not the ability to win every argument."
+        },
+        "inYourLife": "In relationships, the King favors consistency over theatrical reassurance. In work, it may suggest compassionate but clear leadership and decision-making. In family life, it invites emotional availability without trying to govern everyone's moods. Reversed, consider whether composure is being confused with silence or whether authority is preventing honest feedback. In a reading about a conflict, the card may encourage slowing a response without delaying necessary action.",
+        "hiddenKnowledge": "Waite's King is connected to creative intelligence, legal responsibility and fair dealing as well as the Cup's watery imagery. This is a historically documented basis for reading him as more than a sentimental archetype. His nineteenth- and early-twentieth-century court conventions do not require identifying the card with a man. The water surrounding the throne provides a more precise image: responsibility exercised amid conditions nobody completely controls.",
+        "reflection": {
+          "uprightQuestions": [
+            "What response would honor both my emotions and my values?",
+            "How can I lead with care without avoiding a hard decision?",
+            "Where do I need steadiness rather than control?"
+          ],
+          "reversedQuestions": [
+            "Am I hiding a feeling under a composed exterior?",
+            "How is my influence affecting others?",
+            "Which repair would demonstrate accountability?"
+          ],
+          "journalPrompt": "Describe a recent emotional surge. Write your first impulse, the action you chose, and the response you would choose with more time.",
+          "misconception": "The King does not demand emotional suppression or imply that only men can lead with steadiness."
+        }
+      },
+      "readingSummary": {
+        "upright": "Upright, the King may point toward responsible emotional leadership: making a hard decision without humiliating others, listening to criticism without collapsing, or offering support that respects everyone's autonomy.",
+        "reversed": "Reversed, composure may have become a mask for disconnection, or emotional influence may be wielded carelessly."
+      },
+      "historicalAnchor": {
+        "picturedScene": "A seated ruler holds cup and sceptre on a throne surrounded by water; a ship and leaping dolphin appear in the distance.",
+        "periodMeaning": "Waite gives responsibility, fairness, art and creative intelligence upright, but dishonesty and injustice reversed.",
+        "source": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3"
+      },
+      "relatedCardIds": [
+        "tarot-cups-13",
+        "tarot-major-04",
+        "tarot-swords-14"
+      ],
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite 1911 illustrated scene and published divinatory meanings; historical attribution, not proof of modern readings"
+        }
+      ],
+      "editorialNotes": "All modern applications are reflective possibilities, not predictions. Waite's gendered court signifiers are not adopted."
+    }
+  ]
+}
