@@ -1,5 +1,7 @@
 .muse-side-quests { display:grid; gap:var(--space-4); }
 .muse-side-quests .muse-whimsy-navigation { margin:0; }
+.muse-quest-week-context{display:inline-flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap}
+.muse-quest-countdown{display:inline-flex;align-items:center;gap:5px;padding:4px 9px;border:1px solid var(--selected-border);border-radius:999px;background:var(--selected-background);color:var(--selected-text);font-size:.72rem;white-space:nowrap}
 .muse-quest-header,.muse-quest-section-head { display:flex; align-items:start; justify-content:space-between; gap:var(--space-4); }
 .muse-quest-header h2 { display:flex; align-items:center; gap:var(--space-2); margin:0 0 var(--space-1); font-size:clamp(1.5rem,2.3vw,2.1rem); }
 .muse-quest-header p,.muse-quest-section-head p { margin:0 0 var(--space-1); }

@@ -1,5 +1,5 @@
 'use client';
-import {useEffect,useState} from 'react';
+import {useEffect,useState,type ReactNode} from 'react';
 import {MuseStar} from '@/components/MuseStar';
 import {zodiacLabel,type ZodiacSign} from '@/lib/cosmic-forecast';
 import {signInfo} from '@/lib/astrology/library';
@@ -40,12 +40,12 @@ function FullReading({forecast}:{forecast:Horoscope}){
  </article>;
 }
 /** Observatory detail shows the complete reading; Daily Edit starts with a compact source excerpt. */
-export function ForecastReading({sign,date,timeZone,category='overview',period='daily',full=false,service=observatoryForecasts}:{sign:ZodiacSign;date:string;timeZone:string;category?:ForecastCategory;period?:ForecastPeriod;full?:boolean;service?:typeof observatoryForecasts}){
+export function ForecastReading({sign,date,timeZone,category='overview',period='daily',full=false,service=observatoryForecasts,actions}:{sign:ZodiacSign;date:string;timeZone:string;category?:ForecastCategory;period?:ForecastPeriod;full?:boolean;service?:typeof observatoryForecasts;actions?:ReactNode}){
  const [response,setResponse]=useState<{key:string;result:HoroscopeResult}|null>(null),[expanded,setExpanded]=useState(false),[attempt,setAttempt]=useState(0),key=JSON.stringify([sign,date,timeZone,category,period,attempt]);
  useEffect(()=>{let active=true;service.request({sign,date,timeZone,category,period,language:'en'}).then(value=>{if(active)setResponse({key,result:value});});return()=>{active=false;};},[sign,date,timeZone,category,period,attempt,key,service]);
  const result=response?.key===key?response.result:null,showFull=full||expanded;
  return <div className="muse-forecast-reading" data-full={showFull}>
   {!result?<div className="muse-forecast-state" role="status"><MuseStar size={17} prismatic/><p>Looking to the sky for your current reading…</p></div>:result.status==='ready'?showFull?<FullReading forecast={result.forecast}/>:<div className="muse-forecast-compact-reading"><p className="muse-forecast-compact-sign"><span aria-hidden="true">{signInfo[sign].glyph}</span>{zodiacLabel(sign)} · <time dateTime={date}>{shortDate(date)}</time></p><p className="muse-forecast-compact-excerpt"><SourceWords text={result.forecast.preview}/></p><Attribution forecast={result.forecast}/></div>:<div className="muse-forecast-state" role={result.status==='error'?'alert':'status'}><MuseStar size={17} prismatic/><p>{result.message}</p></div>}
-  <div className="muse-cosmic-forecast-actions">{result?.status==='ready'&&!full&&<button className="muse-button button-ghost" type="button" aria-expanded={expanded} onClick={()=>setExpanded(!expanded)}>{expanded?'Show preview':'Read full forecast'}</button>}{result?.status==='error'&&<button className="muse-button button-ghost" type="button" onClick={()=>setAttempt(value=>value+1)}>Try again</button>}</div>
+  <div className="muse-cosmic-forecast-actions">{result?.status==='ready'&&!full&&<button className="muse-button button-ghost" type="button" aria-expanded={expanded} onClick={()=>setExpanded(!expanded)}>{expanded?'Show preview':'Read full forecast'}</button>}{result?.status==='error'&&<button className="muse-button button-ghost" type="button" onClick={()=>setAttempt(value=>value+1)}>Try again</button>}{actions}</div>
  </div>;
 }

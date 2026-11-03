@@ -27,12 +27,12 @@ function TaskRow({ task, onToggle }: { task: PlannedTask; onToggle: (id: string)
   </label></li>;
 }
 
-export function ScheduleCard({ selectedDate }: { selectedDate: string }) {
+export function ScheduleCard({ selectedDate, priorityTaskIds = [] }: { selectedDate: string; priorityTaskIds?: string[] }) {
   const { state, dispatch } = usePlanner();
   const items = [...state.tasks, ...state.events];
   const [adding, setAdding] = useState<"task" | "event" | null>(null);
   const anchorRef = useRef<HTMLButtonElement>(null);
-  const preview = planPreview(items, selectedDate);
+  const preview = planPreview(items, selectedDate, undefined, new Set(priorityTaskIds));
   function close() { setAdding(null); anchorRef.current?.focus(); }
   function toggleTask(id: string) {
     dispatch({ type: "task/toggle", id, now: new Date().toISOString() });

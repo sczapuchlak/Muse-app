@@ -15,3 +15,13 @@
 .muse-cosmic-forecast-compact .muse-cosmic-forecast-actions { gap:var(--space-3); margin-top:0; }
 .muse-cosmic-forecast-compact .muse-cosmic-forecast-actions .text-button { min-height:28px; font-size:.65rem; padding-block:var(--space-1); }
 @media(pointer:coarse) { .muse-cosmic-forecast-compact .muse-cosmic-forecast-actions .text-button { min-height:44px; } }
+.muse-cosmic-forecast .card-heading{align-items:center;margin-bottom:var(--space-2)}
+.muse-cosmic-forecast-heading-meta{display:flex;align-items:center;justify-content:flex-end;gap:5px 10px;flex-wrap:wrap;color:var(--text-muted);font-size:.72rem}
+.muse-cosmic-forecast-heading-meta strong{color:var(--foreground);font-weight:600}
+.muse-cosmic-forecast .muse-forecast-compact-sign{display:none}
+.muse-cosmic-forecast .muse-forecast-compact-excerpt{margin:0;line-height:1.55}
+.muse-cosmic-forecast .muse-forecast-attribution{margin:var(--space-2) 0 0;padding-top:var(--space-2);border-top:1px solid var(--glass-border);color:var(--text-muted);font-size:.7rem}
+.muse-cosmic-forecast .muse-cosmic-forecast-actions{display:flex;align-items:center;gap:var(--space-2);margin-top:var(--space-3);padding-top:var(--space-2);border-top:1px solid var(--glass-border)}
+.muse-cosmic-forecast .muse-cosmic-forecast-actions .muse-button{min-height:34px;padding:6px 10px;font-size:.72rem}
+.muse-cosmic-forecast-compact .muse-cosmic-forecast-actions{margin-top:var(--space-2)}
+@media(max-width:540px){.muse-cosmic-forecast .card-heading{align-items:flex-start}.muse-cosmic-forecast-heading-meta{justify-content:flex-start}}

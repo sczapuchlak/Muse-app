@@ -84,6 +84,11 @@ select option { background: var(--background); color: var(--foreground); }
 .muse-planning-canvas { min-width: 0; width: 100%; }
 .muse-planner-board { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); width: 100%; min-width: 0; align-items: stretch; gap: var(--space-3); }
 .muse-planner-toolbar { display:grid; grid-template-columns:minmax(140px,1fr) auto; align-items:center; gap:var(--space-2); width:100%; min-width:0; }
+.muse-planner-toolbar-left{display:flex;align-items:center;gap:var(--space-2);min-width:0}
+.muse-planner-toolbar-left .muse-planner-search{flex:1 1 220px;min-width:140px}
+.muse-planner-utility-row{display:flex;align-items:center;justify-content:flex-end;gap:var(--space-2)}
+.muse-planner-utility-row>.muse-icon-button{flex:none}
+.muse-task-workspace-icon{min-width:34px;min-height:34px;width:34px;padding:5px;display:inline-grid;place-items:center}
 .muse-planner-toolbar .muse-planner-search { display: flex; align-items: center; flex-direction: row; width:100%; max-width:none; min-width:0; gap: var(--space-2); padding-left: var(--space-2); border: 1px solid var(--glass-border); border-radius: var(--control-radius); background: var(--planning-control-background); color: var(--text-muted); }
 .muse-planner-search input { min-width: 0; min-height: var(--touch-target); border: 0; background: transparent; font-size: .8rem; }
 .muse-planner-search:focus-within { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
@@ -195,6 +200,9 @@ select option { background: var(--background); color: var(--foreground); }
 .muse-day-drop>.muse-day-content {flex:1 1 auto;min-height:0;overflow:auto;overscroll-behavior:contain;padding:0 2px;}
 .muse-planner-layout[data-height-mode="natural"] .muse-day-content {flex:0 0 auto;overflow:visible;}
 @container muse-content (max-width:820px){.muse-planner-layout .muse-day-content{flex:0 0 auto;overflow:visible;}}
+.muse-module-toolbar .muse-planner-toolbar{width:100%;grid-template-columns:minmax(240px,1fr) auto}
+.muse-task-secondary-row .muse-task-workspace-icon{flex:none;min-width:34px;min-height:34px;width:34px;padding:5px;border:1px solid var(--glass-border);border-radius:var(--control-radius);background:var(--surface-control);color:var(--navigation-accent)}
+@container muse-content (max-width:680px){.muse-module-toolbar .muse-planner-toolbar{grid-template-columns:minmax(0,1fr)}.muse-planner-toolbar-left{flex-wrap:wrap}.muse-planner-toolbar-left .muse-planner-search{flex-basis:100%}}
 
 /* Paired labels share a track, including the planned-date Move action. */
 .muse-task-details .muse-detail-fields > :is(div,label) { display:grid; grid-row:span 2; grid-template-rows:subgrid; gap:var(--space-1); min-width:0; align-items:end; }

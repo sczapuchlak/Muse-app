@@ -14,7 +14,7 @@ export function usePlannerHeight(ref:RefObject<HTMLDivElement|null>){
    const styles=getComputedStyle(page),gap=parseFloat(styles.getPropertyValue('--space-5'))||20;
    const minimum=parseFloat(styles.getPropertyValue('--planner-min-height'))||420;
    const padding=parseFloat(styles.paddingBottom)||gap;
-   const top=box.top+window.scrollY,bottom=viewport?.height??window.innerHeight;
+   const top=box.top-(viewport?.offsetTop??0),bottom=viewport?.height??window.innerHeight;
    const footer=Array.from(page.children)
     .filter(node=>node.tagName==='FOOTER'&&(node.compareDocumentPosition(board)&Node.DOCUMENT_POSITION_PRECEDING))
     .reduce((sum,node)=>sum+node.getBoundingClientRect().height,0);

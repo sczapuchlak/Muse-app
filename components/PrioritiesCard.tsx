@@ -29,7 +29,7 @@ export function PrioritiesCard(){
  const historical=today?date<today:day.priorities.some(item=>item.historical_day);
  const values=priorities.map(item=>item.task_id&&!historical?planner.state.tasks.find(task=>task.id===item.task_id)?.complete??priorityCompletion(item):priorityCompletion(item));
  const completed=values.filter(value=>value===true).length,unknown=values.filter(value=>value===null).length;
- function complete(priority:DailyPriority,value:boolean){if(priority.task_id)planner.dispatch({type:'priority/complete',id:priority.id,taskId:priority.task_id,priorityRevision:priority.revision,complete:value,now:new Date().toISOString()});else save(inputs.map(item=>item.id===priority.id?{...item,complete:value}:item));}
+ function complete(priority:DailyPriority,value:boolean){if(priority.task_id){const task=planner.state.tasks.find(item=>item.id===priority.task_id);if(task&&task.complete!==value)planner.dispatch({type:'task/toggle',id:task.id,now:new Date().toISOString()});}else save(inputs.map(item=>item.id===priority.id?{...item,complete:value}:item));}
  return <MuseCard id="priorities" className="card-full priorities-card"><DailyCapture date={date} group>
  <MuseMilestone achieved={day.priorities.length===3&&completed===3} kind="shooting"/>
  <CardHeading id="priorities" title="Today’s priorities"><span className="priority-count" role="status" aria-label={`${completed} of ${day.priorities.length} priorities complete${unknown?`, ${unknown} not known`:''}`}><strong>{completed}</strong> / {day.priorities.length}<span className="count-label">complete{unknown?` · ${unknown} not known`:''}</span></span></CardHeading>

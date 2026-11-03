@@ -1,5 +1,9 @@
 .muse-nourish-toolbar, .muse-nourish-toolbar nav { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-2); }
 .muse-nourish-toolbar { justify-content: space-between; margin-bottom: var(--module-toolbar-gap); }
+.muse-nourish-toolbar-days{flex:1 1 350px;max-width:520px;min-width:min(100%,320px);margin-left:auto}
+.muse-nourish-toolbar-days .muse-week-strip{width:100%;max-width:none;margin:0}
+.muse-nourish-toolbar{gap:var(--space-2) var(--space-4);margin-bottom:var(--space-3)}
+@media(max-width:760px){.muse-nourish-toolbar-days{flex-basis:100%;max-width:none;margin-left:0}}
 .muse-nourish-toolbar nav > button { min-width: var(--touch-target); }
 .muse-nourish-page > .muse-week-strip { max-width: none; width: 100%; margin: 0 0 var(--module-week-gap); }
 .muse-nourish-week { display: flex; flex-direction: column; gap: var(--space-3); }

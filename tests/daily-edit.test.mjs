@@ -532,7 +532,7 @@ test('compact Planner cards share inline timer/classification and retain manual 
  const {PlannerProvider}=load('components/PlannerStore'),{PlannerTaskCard}=load('components/planner/PlannerTaskCard'),{plannerSample}=load('lib/planner-sample');
  const state=plannerSample,task=state.tasks[0];
  const html=renderToStaticMarkup(React.createElement(PlannerProvider,{initialState:state},React.createElement(PlannerTaskCard,{task,onOpen(){}})));
- assert.ok(html.includes('draggable="true"'));assert.ok(html.includes('Timer for '+task.title));assert.ok(html.includes('Change workspace or group for '+task.title));assert.ok(!html.includes('muse-task-drag'));assert.ok(!html.includes('>Move</button>'));
+ assert.ok(html.includes('draggable="true"'));assert.ok(html.includes('Timer for '+task.title));assert.ok(html.includes('Workspace and tags for '+task.title));assert.ok(!html.includes('muse-task-drag'));assert.ok(!html.includes('>Move</button>'));
  const details=readFileSync(resolve(root,'components/planner/TaskDetails.tsx'),'utf8');assert.ok(details.includes('<TaskMoveControl'));assert.ok(details.includes('<MuseChoiceMenu'));assert.ok(!details.includes('<select'));
 });
 

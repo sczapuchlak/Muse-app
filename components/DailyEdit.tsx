@@ -29,7 +29,8 @@ import {useDailyData,DailySaveStatus,DailyCapture} from "./daily/DailyData";
 export function DailyEdit() {
   const [selectedDate, setSelectedDate] = useMuseDate(dailyEditSample.date.iso);
   const day = mockDay(selectedDate);
-  const {profile}=useDailyData();
+  const {profile,snapshot}=useDailyData();
+  const priorityTaskIds=snapshot.days[selectedDate]?.priorities.flatMap(item=>item.task_id?[item.task_id]:[])??[];
   return (
     <main className="muse-page">
       <DailyEditHeader date={day.date} greeting={day.greeting} profile={profile} onDateChange={setSelectedDate} />
@@ -44,7 +45,7 @@ export function DailyEdit() {
         </div>
         <div className="daily-working-right">
           <LittleRituals date={selectedDate}/>
-          <ScheduleCard selectedDate={selectedDate} />
+          <ScheduleCard selectedDate={selectedDate} priorityTaskIds={priorityTaskIds} />
           <WellnessCapture><MealsCard selectedDate={selectedDate} /></WellnessCapture>
           <DailyCapture date={selectedDate}><DayPulseCard date={selectedDate}/></DailyCapture>
           <DreamDayviewWidget date={selectedDate}/>

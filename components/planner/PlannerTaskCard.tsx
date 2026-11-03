@@ -33,7 +33,7 @@ export function PlannerTaskCard({ task, onOpen, showDueDate=false }: { showDueDa
       </label>
       <button className="muse-task-title muse-edge" type="button" onClick={(event) => onOpen(task, event.currentTarget)}>{task.title}</button>
     <TaskTimer task={task}/></div>
-    <div className="muse-task-secondary-row"><TaskClassification key={status?.discarded??0} task={task}/>{task.tagIds.length>0&&<div className="muse-task-tags">{task.tagIds.map((id)=>{const tag=state.tags.find((entry)=>entry.id===id);return tag?<span className="muse-task-tag" data-accent={tag.accent} style={accentStyle(tag.accent)} key={id}>#{tag.name}</span>:null;})}</div>}</div>
+    <div className="muse-task-secondary-row"><TaskClassification key={status?.discarded??0} task={task}/>{(task.tagIds.length>0||!!task.groupId)&&<div className="muse-task-tags">{task.groupId&&state.groups.filter(group=>group.id===task.groupId).map(group=><span className="muse-task-tag" data-accent={group.accent??'primary'} style={accentStyle(group.accent??'primary')} title={`Legacy workspace tag · ${workspace?.name??'Workspace'}`} key={group.id}>#{group.name}</span>)}{task.tagIds.map((id)=>{const tag=state.tags.find((entry)=>entry.id===id);return tag?<span className="muse-task-tag" data-accent={tag.accent} style={accentStyle(tag.accent)} key={id}>#{tag.name}</span>:null;})}</div>}</div>
     {showDueDate&&due&&<p className="muse-task-due-preview">Due {task.dueDate}</p>}
 
   </li>;

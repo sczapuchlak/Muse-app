@@ -8,6 +8,17 @@ export const questVibes=['Cozy','Adventurous','Creative','Social','Chaos Goblin'
 export type QuestPreference={experience:DrawExperience;vibe:QuestCategory};
 export const defaultQuestPreference:QuestPreference={experience:'balance',vibe:'Cozy'};
 
+/** Calendar-day countdown; ISO dates avoid timezone and daylight-saving drift. */
+export function questWeekCountdown(weekStart:string,today:string):string{
+ const start=Date.parse(`${weekStart}T12:00:00Z`),current=Date.parse(`${today}T12:00:00Z`);
+ if(!Number.isFinite(start)||!Number.isFinite(current))return '';
+ const elapsed=Math.round((current-start)/86400000);
+ if(elapsed<0)return `Starts in ${-elapsed} ${-elapsed===1?'day':'days'}`;
+ if(elapsed>6)return 'Week complete';
+ const remaining=6-elapsed;
+ return remaining===0?'Last day':`${remaining} ${remaining===1?'day':'days'} left`;
+}
+
 const shuffle=<T,>(items:T[],random:()=>number)=>{
  const copy=[...items];
  for(let i=copy.length-1;i>0;i--){const j=Math.floor(random()*(i+1));[copy[i],copy[j]]=[copy[j],copy[i]];}
