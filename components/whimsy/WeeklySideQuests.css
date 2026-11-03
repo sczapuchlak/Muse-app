@@ -80,3 +80,32 @@
 @media(max-width:600px) { .muse-quest-collectible { min-height:250px; } }
 @media(prefers-reduced-motion:reduce) { .muse-quest-collectible,.muse-quest-collectible[data-celebrate=true],.muse-quest-all-done[data-celebrate=true] > div { animation:none; transition:none; } }
 :root[data-magic=quiet] .muse-quest-collectible[data-celebrate=true],:root[data-magic=quiet] .muse-quest-all-done[data-celebrate=true] > div { animation:none; }
+
+/* The six draw cards keep their behavior and gain a quieter fortune-card finish. */
+.muse-quest-card{
+  isolation:isolate;overflow:hidden;min-height:250px;padding:clamp(18px,2vw,25px);
+  border:1px solid color-mix(in srgb,var(--accent-secondary) 34%,var(--glass-border));
+  border-radius:calc(var(--card-radius) + 2px);
+  background:radial-gradient(circle at 18% 7%,color-mix(in srgb,var(--accent-secondary) 18%,transparent),transparent 44%),radial-gradient(circle at 88% 88%,color-mix(in srgb,var(--accent-primary) 11%,transparent),transparent 48%),var(--glass-background);
+  box-shadow:var(--card-shadow),inset 0 1px 0 var(--glass-edge);
+  transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease;
+}
+.muse-quest-card::before{content:"";position:absolute;inset:7px;border:1px solid color-mix(in srgb,var(--accent-secondary) 28%,var(--glass-border));border-radius:calc(var(--card-radius) - 4px);pointer-events:none;z-index:-1}
+.muse-quest-card::after{content:"";position:absolute;inset:-50% auto -50% -70%;width:38%;transform:rotate(18deg);background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--accent-secondary) 10%,transparent),transparent);opacity:0;pointer-events:none;z-index:-1}
+.muse-quest-card:hover{transform:translateY(-3px);border-color:var(--selected-border);box-shadow:var(--card-shadow),0 13px 28px color-mix(in srgb,var(--accent-primary) 14%,transparent)}
+.muse-quest-card:hover::after{opacity:1;animation:muse-quest-glint .7s ease-out 1}
+.muse-quest-card[data-selected=true]{border-color:var(--selected-border);background:radial-gradient(circle at 12% 4%,color-mix(in srgb,var(--accent-secondary) 24%,transparent),transparent 48%),var(--glass-background);box-shadow:var(--card-shadow),0 0 0 2px color-mix(in srgb,var(--accent-primary) 25%,transparent),0 0 24px color-mix(in srgb,var(--accent-secondary) 20%,transparent)}
+.muse-quest-card .muse-quest-face{min-height:200px;gap:16px}
+.muse-quest-card .muse-quest-face .muse-star{filter:drop-shadow(0 0 10px color-mix(in srgb,var(--accent-secondary) 42%,transparent))}
+.muse-quest-card .muse-quest-face>span{font:italic clamp(1.2rem,2vw,1.45rem)/1.25 var(--font-serif,Georgia,serif);color:var(--foreground)}
+.muse-quest-card .muse-quest-reveal{gap:11px}
+.muse-quest-card .muse-quest-reveal>.small-label{color:var(--accent-primary);font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.muse-quest-card .muse-quest-reveal h3{font:italic clamp(1.24rem,2vw,1.5rem)/1.25 var(--font-serif,Georgia,serif)}
+.muse-quest-card .muse-quest-reveal>p{color:var(--text-muted);line-height:1.55}
+.muse-quest-card[data-revealed=true] .muse-quest-reveal{animation:muse-quest-reveal .32s ease-out both}
+@keyframes muse-quest-glint{from{left:-70%}to{left:130%}}
+@media(max-width:600px){.muse-quest-card{min-height:215px}.muse-quest-card .muse-quest-face{min-height:165px}}
+@media(prefers-reduced-motion:reduce){.muse-quest-card,.muse-quest-card:hover,.muse-quest-card:hover::after,.muse-quest-card[data-revealed=true] .muse-quest-reveal{animation:none;transition:none;transform:none}}
+:root[data-magic=quiet] .muse-quest-card,:root[data-magic=quiet] .muse-quest-card:hover,:root[data-magic=quiet] .muse-quest-card:hover::after,:root[data-magic=quiet] .muse-quest-card[data-revealed=true] .muse-quest-reveal{animation:none;transition:none;transform:none}
+.muse-quest-card::before,.muse-quest-card::after{z-index:0}
+.muse-quest-card>*{position:relative;z-index:1}

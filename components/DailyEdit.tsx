@@ -8,6 +8,7 @@ import { WaterCard } from "./WaterCard";
 import { ScheduleCard } from "./ScheduleCard";
 import { MealsCard } from "./MealsCard";
 import { MoodCard } from "./MoodCard";
+import {DailyReflectionCard} from './daily/DailyReflectionCard';
 import { DayPulseCard } from "./DayPulseCard";
 import { DayInThreeCard } from "./DayInThree";
 import {LittleRituals} from "./rituals/LittleRituals";
@@ -39,7 +40,7 @@ export function DailyEdit() {
           <PrioritiesCard />
           <WellnessCapture><MovementCard initialTypes={sampleMovementTypes.filter(type=>type.source==='starter')} initialDay={{date:selectedDate,typeIds:[]}} /></WellnessCapture>
           <WellnessCapture><WaterCard initialDay={{ date: selectedDate, total: 0 }} settings={day.water.settings} /></WellnessCapture>
-          <DailyCapture date={selectedDate}><MoodCard emotions={emotionCatalog} /><DayInThreeCard /></DailyCapture>
+          <DailyCapture date={selectedDate}><MoodCard emotions={emotionCatalog} /><DailyReflectionCard date={selectedDate}/><DayInThreeCard /></DailyCapture>
         </div>
         <div className="daily-working-right">
           <LittleRituals date={selectedDate}/>

@@ -450,7 +450,7 @@ The right-only reflection experiment is superseded: restore broad side-by-side M
 
 ## Explicit reference arrangement — current Daily Edit
 
-This supersedes the previous reflection-row/right-only experiments. Left is Forecast, Priorities, Movement, Water, Mood, Day in Three; right is Little Rituals, Plan, Meals, Day Pulse. Each is an independent natural-height stack with the same shared gap. Content growth moves only later cards in its own stack; preserve Ritual scrolling and all existing data/controls. There is no shared reflection row or nested reflection grid in Daily Edit. [DAILY_EDIT_STACKS](DAILY_EDIT_STACKS.md) records the final layout verification. Theme-picker copy and all palettes are unchanged by this correction.
+This supersedes the previous reflection-row/right-only experiments. Left is Forecast, Priorities, Movement, Water, Mood, Reflection, Day in Three; right is Little Rituals, Plan, Meals, Day Pulse. Reflection is an independent card with the same Morning/Evening selection and date/period records as Mood; each period keeps its own draft and saved text. Each card is in an independent natural-height stack with the same shared gap. Content growth moves only later cards in its own stack; preserve Ritual scrolling and all existing data/controls. There is no shared reflection row or nested reflection grid in Daily Edit. [DAILY_EDIT_STACKS](DAILY_EDIT_STACKS.md) records the earlier layout verification before the Reflection card was added. Theme-picker copy and all palettes are unchanged by this correction.
 
 ## Production readiness Phase 1 — authentication and self-deletion
 

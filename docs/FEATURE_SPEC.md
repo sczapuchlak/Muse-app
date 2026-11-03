@@ -470,7 +470,7 @@ All nine approved subtitles render in ThemeSwitcher and the mobile Appearance ch
 
 ## Daily Edit explicit reference stacks — implemented
 
-Parent placement now follows the clarified reference exactly: Forecast/Priorities/Movement/Water/Mood/Day in Three left, Rituals/Plan/Meals/Pulse right. The existing MoodCard, DayPulseCard and DayInThreeCard are rendered directly with the same DailyCapture owner boundary, not inside MoodCheckInLayout. Existing Wellness captures remain around their same cards. No child component behavior, Ritual sizing/scrolling, persistence, theme values or card padding changes. Responsive mobile progression uses the existing breakpoint and one gutter token. Verification: [DAILY_EDIT_STACKS](DAILY_EDIT_STACKS.md).
+Parent placement follows the clarified reference, with the approved Reflection addition: Forecast/Priorities/Movement/Water/Mood/Reflection/Day in Three left, Rituals/Plan/Meals/Pulse right. Reflection has the Morning/Evening segmented toggle and uses the existing date/period Mood record, separate drafts and explicit Save/Discard behavior. The existing MoodCard, DayPulseCard and DayInThreeCard are rendered directly with the same DailyCapture owner boundary, not inside MoodCheckInLayout. Existing Wellness captures remain around their same cards. Ritual sizing/scrolling, persistence, theme values and card padding are unchanged. Responsive mobile progression uses the existing breakpoint and one gutter token. Earlier layout verification: [DAILY_EDIT_STACKS](DAILY_EDIT_STACKS.md).
 
 ## Production readiness Phase 1 — authentication and self-deletion
 

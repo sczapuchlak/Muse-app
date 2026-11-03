@@ -1,10 +1,19 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {load} from './helpers.mjs';
+import {readFileSync} from 'node:fs';
+import {resolve} from 'node:path';
+import {root} from './helpers.mjs';
 const models=load('lib/collections/models'),insights=load('lib/collections/insights');
 const media=(id,kind,status,completed_on=null)=>({id,user_id:'owner',kind,title:id,creator:'Creator',cover_url:null,status,genres:['Fantasy'],rating:null,favorite:false,created_at:'2026-10-01T00:00:00Z',updated_at:'2026-10-01T00:00:00Z',completed_on});
 const series=(scope='released')=>({id:'series',kind:'movie',scope});
 const member=(id,sequence,release_state='released')=>({id,series_id:'series',media_id:id,book_id:null,sequence,release_state,role:'mainline'});
+test('Book editor offers the same Currently Reading status as shelf filters',()=>{
+ const source=readFileSync(resolve(root,'components/whimsy/Bookshelf.tsx'),'utf8');
+ assert.match(source,/reading:'Currently Reading'/);
+ assert.match(source,/MuseChoiceMenu label="Book status"[^\n]*options=\{Object\.entries\(bookStatus\)/);
+ assert.match(source,/MuseChoiceMenu label="Status"[^\n]*options=\{\[\{id:'',label:'All books'\},\.\.\.Object\.entries\(bookStatus\)/);
+});
 test('series progress distinguishes released, announced and selected denominators',()=>{
  const items=[media('one','movie','watched'),media('two','movie','planned')],members=[member('one',1),member('two',2,'announced')];
  let result=models.seriesProgress(series('released'),members,[],items);

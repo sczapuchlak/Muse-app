@@ -53,6 +53,33 @@ test('week strip has seven date actions and the official MuseStar selection', ()
   assert.ok(html.includes('viewBox="0 0 24 40"'));
 });
 
+test('Daily Edit reflection shows the selected Morning or Evening record and keeps drafts separate', () => {
+  const {DailyReflectionCard} = load('components/daily/DailyReflectionCard');
+  const {MuseSessionProvider} = load('components/MuseSession');
+  const date = '2026-10-29';
+  const checkins = ['morning', 'evening'].map((period) => ({
+    id: period, period, reflection: `${period} saved`, timeZone: 'America/Los_Angeles',
+    createdAt: 'now', updatedAt: 'now', emotionIds: [], causeTagIds: [],
+  }));
+  const days = dailyFixture({date, checkins});
+  function render(period, drafts = {}) {
+    const child = React.createElement(MuseSessionProvider, {
+      initialDate: date,
+      initialRecords: {'library/mood-sessions': {[date]: period}, 'library/reflection-drafts': drafts},
+    }, React.createElement(DailyReflectionCard, {date}));
+    return renderToStaticMarkup(dailyTestTree(child, days));
+  }
+  const morning = render('morning', {[`${date}/morning`]: 'morning draft', [`${date}/evening`]: 'evening draft'});
+  const evening = render('evening', {[`${date}/morning`]: 'morning draft', [`${date}/evening`]: 'evening draft'});
+  assert.match(morning, /aria-label="Reflection period"/);
+  assert.match(morning, /<textarea[^>]*id="daily-reflection-text"[^>]*>morning draft<\/textarea>/);
+  assert.match(evening, /<textarea[^>]*id="daily-reflection-text"[^>]*>evening draft<\/textarea>/);
+  assert.ok(morning.includes('morning saved') === false);
+  assert.ok(evening.includes('evening saved') === false);
+  assert.match(render('morning'), /<textarea[^>]*>morning saved<\/textarea>/);
+  assert.match(render('evening'), /<textarea[^>]*>evening saved<\/textarea>/);
+});
+
 test('greeting uses the supplied profile and gracefully handles an absent name', () => {
   assert.equal(personalizedGreeting('Make room for a little magic.', mockProfile.firstName), 'Make room for a little magic, Stephanie.');
   assert.equal(personalizedGreeting('Hello.', '  Alex  '), 'Hello, Alex.');
