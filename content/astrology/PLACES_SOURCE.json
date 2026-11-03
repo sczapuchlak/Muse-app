@@ -1,0 +1,21 @@
+{
+  "source": "https://download.geonames.org/export/dump/cities500.zip",
+  "license": "CC BY 4.0",
+  "attribution": "GeoNames \u00b7 https://www.geonames.org/",
+  "retrieved": "2026-11-02",
+  "sourceSha256": "74157e02b1a45d3bdc9ff76149bcef1e1521db5f59054ad5b6df85e3f97d4b69",
+  "rows": 236874,
+  "fields": [
+    "id",
+    "name",
+    "asciiName",
+    "aliases",
+    "latitude",
+    "longitude",
+    "country",
+    "region",
+    "timeZone",
+    "population"
+  ],
+  "scope": "cities with population >500 or administrative seats, with valid supplied timezone; not every named place"
+}

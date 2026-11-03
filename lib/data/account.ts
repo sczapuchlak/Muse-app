@@ -2,7 +2,7 @@ import type {SupabaseClient} from '@supabase/supabase-js';
 import type {Database,Json} from '@/lib/database.types';
 export type AccountProfile=Database['public']['Tables']['profiles']['Row'];
 export type AccountData={profile:AccountProfile;email:string};
-export type PreferencePatch=Partial<Pick<AccountProfile,'time_zone'|'cosmic_enabled'|'zodiac_sign'>>;
+export type PreferencePatch=Partial<Pick<AccountProfile,'time_zone'|'cosmic_enabled'|'zodiac_sign'|'default_forecast_category'|'default_forecast_period'|'daily_forecast_category'>>;
 export async function readAccount(client:SupabaseClient<Database>):Promise<AccountData>{const {data,error}=await client.auth.getUser();if(error||!data.user)throw error??Error('Sign in required');const result=await client.from('profiles').select('*').eq('id',data.user.id).single();if(result.error)throw result.error;return {profile:result.data,email:data.user.email??''};}
 export async function writePreferences(client:SupabaseClient<Database>,revision:number,id:string,patch:PreferencePatch){const {data,error}=await client.rpc('save_account_preferences',{p_expected_revision:revision,p_command_id:id,p_patch:patch as Json});if(error)throw error;if(data===null)throw Error('Save not acknowledged');return data;}
 export type AccountView={saved:AccountData|null;draft:PreferencePatch;loaded:boolean;pending:boolean;saving:boolean;error:string;conflict:boolean};

@@ -18,6 +18,7 @@ export function FortuneCollectionCard({item,kind,content,busy,onReopen,onRemove,
  const savedDate=new Intl.DateTimeFormat('en-US',{timeZone:item.timeZone,month:'short',day:'numeric',year:'numeric'}).format(new Date(item.savedAt));
  return <details className="muse-fortune-saved" style={accentStyle(accent)}>
   <summary className="muse-fortune-keepsake">
+   <span className="muse-fortune-artifact-glyph" aria-hidden="true">{{cookie:'✧',oracle:'◈',prophecy:'✦',curiosity:'⌁'}[kind??'curiosity']}</span>
    <span className="muse-fortune-keepsake-type small-label">{kind?fortuneLabels[kind]:'Saved discovery'}<MuseStar size={16} prismatic/></span>
    {category&&<span className="small-label"><ColorLabel color={accent}>{category}</ColorLabel></span>}
    <h4>{title}</h4><span className="muse-fortune-keepsake-preview">{body}</span>

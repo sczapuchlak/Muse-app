@@ -62,4 +62,4 @@ const match=result.stdout.match(/<pre id="result">([^<]+)<\/pre>/);
 assert.ok(match,'Browser must return layout measurements');
 const report=JSON.parse(match[1].replaceAll('&quot;','"').replaceAll('&amp;','&'));
 assert.deepEqual(report.failures,[],JSON.stringify(report.failures.slice(0,5)));
-console.log(`${production?'Production':'Source'} CSS: ${report.checked} layouts passed (5 experiences × 4 record states × 9 themes × 3 widths).`);
+console.log(`${production?'Production':'Source'} CSS: ${report.checked} layouts passed (${experiences.length} experiences × 4 record states × ${themes.length} themes × 3 widths).`);

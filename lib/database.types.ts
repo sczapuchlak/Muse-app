@@ -69,6 +69,68 @@ isOneToOne: false
       referencedColumns: ["user_id","id"]
     }
                   ]
+                },"astrology_activity": {
+                  Row: {
+                    "created_at": string,"date": string,"kind": string,"reference_id": string,"time_zone": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"date": string,"kind": string,"reference_id": string,"time_zone": string,"user_id": string
+                  }
+                  Update: {
+                    "created_at"?: string,"date"?: string,"kind"?: string,"reference_id"?: string,"time_zone"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
+                },"astrology_birth_profiles": {
+                  Row: {
+                    "created_at": string,"id": string,"payload": NonNullable<Json>,"revision": number,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"id": string,"payload": NonNullable<Json>,"revision"?: number,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "created_at"?: string,"id"?: string,"payload"?: NonNullable<Json>,"revision"?: number,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
+                },"astrology_journal_entries": {
+                  Row: {
+                    "created_at": string,"date": string,"id": string,"reference": Json | null,"revision": number,"text": string,"time_zone": string,"title": string,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"date": string,"id": string,"reference"?: Json | null,"revision"?: number,"text"?: string,"time_zone": string,"title"?: string,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "created_at"?: string,"date"?: string,"id"?: string,"reference"?: Json | null,"revision"?: number,"text"?: string,"time_zone"?: string,"title"?: string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
+                },"astrology_natal_charts": {
+                  Row: {
+                    "id": string,"payload": NonNullable<Json>,"profile_id": string,"profile_revision": number,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "id": string,"payload": NonNullable<Json>,"profile_id": string,"profile_revision": number,"user_id": string
+                  }
+                  Update: {
+                    "id"?: string,"payload"?: NonNullable<Json>,"profile_id"?: string,"profile_revision"?: number,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "astrology_natal_charts_user_id_profile_id_fkey"
+      columns: ["user_id","profile_id"]
+isOneToOne: false
+      referencedRelation: "astrology_birth_profiles"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
                 },"bills": {
                   Row: {
                     "amount_cents": number,"captured_time_zone": string,"card_id": string | null,"category_id": string | null,"created_at": string,"currency": string,"due_date": string,"id": string,"name": string,"note": string | null,"paid": boolean,"position": number,"recurrence": string,"recurring_id": string | null,"updated_at": string,"user_id": string
@@ -887,14 +949,14 @@ isOneToOne: false
                   ]
                 },"profiles": {
                   Row: {
-                    "cosmic_enabled": boolean,"created_at": string,"first_name": string,"id": string,"revision": number,"time_zone": string,"time_zone_confirmed_at": string | null,"updated_at": string,"zodiac_sign": string | null
+                    "cosmic_enabled": boolean,"created_at": string,"daily_forecast_category": string,"default_forecast_category": string,"default_forecast_period": string,"first_name": string,"id": string,"revision": number,"time_zone": string,"time_zone_confirmed_at": string | null,"updated_at": string,"zodiac_sign": string | null
                   }
                   ComputedFields: never
                   Insert: {
-                    "cosmic_enabled"?: boolean,"created_at"?: string,"first_name"?: string,"id": string,"revision"?: number,"time_zone"?: string,"time_zone_confirmed_at"?: string | null,"updated_at"?: string,"zodiac_sign"?: string | null
+                    "cosmic_enabled"?: boolean,"created_at"?: string,"daily_forecast_category"?: string,"default_forecast_category"?: string,"default_forecast_period"?: string,"first_name"?: string,"id": string,"revision"?: number,"time_zone"?: string,"time_zone_confirmed_at"?: string | null,"updated_at"?: string,"zodiac_sign"?: string | null
                   }
                   Update: {
-                    "cosmic_enabled"?: boolean,"created_at"?: string,"first_name"?: string,"id"?: string,"revision"?: number,"time_zone"?: string,"time_zone_confirmed_at"?: string | null,"updated_at"?: string,"zodiac_sign"?: string | null
+                    "cosmic_enabled"?: boolean,"created_at"?: string,"daily_forecast_category"?: string,"default_forecast_category"?: string,"default_forecast_period"?: string,"first_name"?: string,"id"?: string,"revision"?: number,"time_zone"?: string,"time_zone_confirmed_at"?: string | null,"updated_at"?: string,"zodiac_sign"?: string | null
                   }
                   Relationships: [
 
@@ -1828,6 +1890,9 @@ isOneToOne: false
 "priority_day_end":
 { Args: { "p_date": string,"p_zone": string }; Returns: string
                            },
+"read_astrology":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
 "read_constellations":
 { Args: Record<PropertyKey, never>; Returns: Json
                            },
@@ -1961,6 +2026,9 @@ isOneToOne: false
 { Args: { "p_before": string,"p_task_id": string }; Returns: {
               "complete": boolean,"completed_at": string
             }[]
+                           },
+"write_astrology":
+{ Args: { "p_command_id": string,"p_expected_revision": number,"p_operation": string,"p_record": Json,"p_user_id": string }; Returns: Json
                            }
           }
           Enums: {

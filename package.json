@@ -33,7 +33,10 @@
     "test:money": "node scripts/test-local-money.mjs",
     "test:insights": "node scripts/test-local-insights.mjs",
     "test:account-deletion": "node scripts/test-local-account-deletion.mjs",
-    "test:email-code": "node scripts/test-local-email-code.mjs"
+    "test:email-code": "node scripts/test-local-email-code.mjs",
+    "test:astrology": "node --test tests/astrology-*.test.mjs",
+    "test:astrology:db": "node scripts/test-local-astrology.mjs",
+    "test:astrology:ui": "node scripts/test-observatory-ui.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
@@ -42,6 +45,7 @@
     "@tiptap/pm": "^3.32.1",
     "@tiptap/react": "^3.32.1",
     "@tiptap/starter-kit": "^3.32.1",
+    "astronomy-engine": "2.1.19",
     "emojibase-data": "^18.0.0",
     "next": "16.4.3",
     "react": "19.3.0",

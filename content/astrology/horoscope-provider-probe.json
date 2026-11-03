@@ -1,0 +1,913 @@
+{
+  "observedAt": "2026-11-03T00:14:20.669150+00:00",
+  "rows": [
+    {
+      "period": "daily",
+      "sign": "aries",
+      "status": "200",
+      "elapsedMs": 179,
+      "date": "2026-11-02",
+      "returnedSign": "Aries",
+      "returnedPeriod": "daily",
+      "words": 85,
+      "sha256": "7f1ae5a96ef899b2a4bcca0e7f1314c25d67c9fb9f21b73bcc8292aae6d291db",
+      "fields": [
+        "date",
+        "period",
+        "sign",
+        "horoscope"
+      ],
+      "url": "https://freehoroscopeapi.com/api/v1/get-horoscope/daily?sign=aries",
+      "responseHeaders": {
+        "date": "Tue, 03 Nov 2026 00:12:10 GMT",
+        "content-type": "application/json",
+        "cf-cache-status": "HIT",
+        "access-control-allow-origin": "*",
+        "age": "1052"
+      }
+    },
+    {
+      "period": "daily",
+      "sign": "taurus",
+      "status": "200",
+      "elapsedMs": 70,
+      "date": "2026-11-02",
+      "returnedSign": "Taurus",
+      "returnedPeriod": "daily",
+      "words": 79,
+      "sha256": "b3e377a434eda824e55f32afdd3475393a14df24474795daf0672a553f1f40a5",
+      "fields": [
+        "date",
+        "period",
+        "sign",
+        "horoscope"
+      ],
+      "url": "https://freehoroscopeapi.com/api/v1/get-horoscope/daily?sign=taurus",
+      "responseHeaders": {
+        "date": "Tue, 03 Nov 2026 00:12:10 GMT",
+        "content-type": "application/json",
+        "cf-cache-status": "HIT",
+        "access-control-allow-origin": "*",
+        "age": "3416"
+      }
+    },
+    {
+      "period": "daily",
+      "sign": "gemini",
+      "status": "200",
+      "elapsedMs": 155,
+      "date": "2026-11-02",
+      "returnedSign": "Gemini",
+      "returnedPeriod": "daily",
+      "words": 86,
+      "sha256": "8b988911113d516aa505e4e4cb5886324549339037c06d1b5eb37bc7972461c3",
+      "fields": [
+        "date",
+        "period",
+        "sign",
+        "horoscope"
+      ],
+      "url": "https://freehoroscopeapi.com/api/v1/get-horoscope/daily?sign=gemini",
+      "responseHeaders": {
+        "date": "Tue, 03 Nov 2026 00:12:11 GMT",
+        "content-type": "application/json",
+        "cf-cache-status": "HIT",
+        "access-control-allow-origin": "*",
+        "age": "1519"
+      }
+    },
+    {
+      "period": "daily",
+      "sign": "cancer",
+      "status": "200",
+      "elapsedMs": 186,
+      "date": "2026-11-02",
+      "returnedSign": "Cancer",
+      "returnedPeriod": "daily",
+      "words": 83,
+      "sha256": "fe03a347b0962bc6db25f524e4686c3d934088494015ee43d04290bf8e367c3e",
+      "fields": [
+        "date",
+        "period",
+        "sign",
+        "horoscope"
+      ],
+      "url": "https://freehoroscopeapi.com/api/v1/get-horoscope/daily?sign=cancer",
+      "responseHeaders": {
+        "date": "Tue, 03 Nov 2026 00:12:11 GMT",
+        "content-type": "application/json",
+        "cf-cache-status": "HIT",
+        "access-control-allow-origin": "*",
+        "age": "1519"
+      }
+    },
+    {
+      "period": "daily",
+      "sign": "leo",
+      "status": "200",
+      "elapsedMs": 212,
+      "date": "2026-11-02",
+      "returnedSign": "Leo",
+      "returnedPeriod": "daily",
+      "words": 77,
+      "sha256": "fe0193f04419ca505ea31ffa83cc21ae49c40881648759b462bdf3a581dc1b66",
+      "fields": [
+        "date",
+        "period",
+        "sign",
+        "horoscope"
+      ],
+      "url": "https://freehoroscopeapi.com/api/v1/get-horoscope/daily?sign=leo",
+      "responseHeaders": {
+        "date": "Tue, 03 Nov 2026 00:12:11 GMT",
+        "content-type": "application/json",
+        "cf-cache-status": "HIT",
+        "access-control-allow-origin": "*",
+        "age": "4337"
+      }
+    },
+    {
+      "period": "daily",
+      "sign": "virgo",
+      "status": "200",
+      "elapsedMs": 183,
+      "date": "2026-11-02",
+      "returnedSign": "Virgo",
+      "returnedPeriod": "daily",
+      "words": 88,
+      "sha256": "dc1a742193b926c557cc6cdf32c9478987162dcddf1752dfce7376bf51c86f1c",
+      "fields": [
+        "date",
+        "period",
+        "sign",
+        "horoscope"
+      ],
+      "url": "https://freehoroscopeapi.com/api/v1/get-horoscope/daily?sign=virgo",
+      "responseHeaders": {
+        "date": "Tue, 03 Nov 2026 00:12:11 GMT",
+        "content-type": "application/json",
+        "cf-cache-status": "HIT",
+        "access-control-allow-origin": "*",
+        "age": "1520"
+      }
+    },
+    {
+      "period": "daily",
+      "sign": "libra",
+      "status": "200",
+      "elapsedMs": 121,
+      "date": "2026-11-02",
+      "returnedSign": "Libra",
+      "returnedPeriod": "daily",
+      "words": 82,
+      "sha256": "27a345708bc9dc935b0a6c28645dc09ba3d90a96f5b0df55fcdaa5bb86e303da",
+      "fields": [
+        "date",
+        "period",
+        "sign",
+        "horoscope"
+      ],
+      "url": "https://freehoroscopeapi.com/api/v1/get-horoscope/daily?sign=libra",
+      "responseHeaders": {
+        "date": "Tue, 03 Nov 2026 00:12:11 GMT",
+        "content-type": "application/json",
+        "cf-cache-status": "HIT",
+        "access-control-allow-origin": "*",
+        "age": "3417"
+      }
+    },
+    {
+      "period": "daily",
+      "sign": "scorpio",
+      "status": "200",
+      "elapsedMs": 83,
+      "date": "2026-11-03",
+      "returnedSign": "Scorpio",
+      "returnedPeriod": "daily",
+      "words": 89,
+      "sha256": "8f41c14fc72ab5bbca1b0bb2b98545f8433ffc473f77f2e1071fe44a3db86ea4",
+      "fields": [
+        "date",
+        "period",
+        "sign",
+        "horoscope"
+      ],
+      "url": "https://freehoroscopeapi.com/api/v1/get-horoscope/daily?sign=scorpio",
+      "responseHeaders": {
+        "date": "Tue, 03 Nov 2026 00:12:11 GMT",
+        "content-type": "application/json",
+        "cf-cache-status": "HIT",
+        "access-control-allow-origin": "*",
+        "age": "84"
+      }
+    },
+    {
+      "period": "daily",
+      "sign": "sagittarius",
+      "status": "200",
+      "elapsedMs": 84,
+      "date": "2026-11-02",
+      "returnedSign": "Sagittarius",
+      "returnedPeriod": "daily",
+      "words": 88,
+      "sha256": "3700016bf5f1f5008c8fa7ffb9d28a65357fe4ada10c6e6980b51b3d9f04471e",
+      "fields": [
+        "date",
+        "period",
+        "sign",
+        "horoscope"
+      ],
+      "url": "https://freehoroscopeapi.com/api/v1/get-horoscope/daily?sign=sagittarius",
+      "responseHeaders": {
+        "date": "Tue, 03 Nov 2026 00:12:11 GMT",
+        "content-type": "application/json",
+        "cf-cache-status": "HIT",
+        "access-control-allow-origin": "*",
+        "age": "4758"
+      }
+    },
+    {
+      "period": "daily",
+      "sign": "capricorn",
+      "status": "200",
+      "elapsedMs": 109,
+      "date": "2026-11-02",
+      "returnedSign": "Capricorn",
+      "returnedPeriod": "daily",
+      "words": 79,
+      "sha256": "922430c9e27e8c23cb609ea09fb1635dad731b93247ccd8e3d79824ce01aab81",
+      "fields": [
+        "date",
+        "period",
+        "sign",
+        "horoscope"
+      ],
+      "url": "https://freehoroscopeapi.com/api/v1/get-horoscope/daily?sign=capricorn",
+      "responseHeaders": {
+        "date": "Tue, 03 Nov 2026 00:12:12 GMT",
+        "content-type": "application/json",
+        "cf-cache-status": "HIT",
+        "access-control-allow-origin": "*",
+        "age": "1520"
+      }
+    },
+    {
+      "period": "daily",
+      "sign": "aquarius",
+      "status": "200",
+      "elapsedMs": 84,
+      "date": "2026-11-02",
+      "returnedSign": "Aquarius",
+      "returnedPeriod": "daily",
+      "words": 96,
+      "sha256": "d04cd8d6fb7efce4e2827471059b367efa5ecfae7a003aa0216bf57b1116458d",
+      "fields": [
+        "date",
+        "period",
+        "sign",
+        "horoscope"
+      ],
+      "url": "https://freehoroscopeapi.com/api/v1/get-horoscope/daily?sign=aquarius",
+      "responseHeaders": {
+        "date": "Tue, 03 Nov 2026 00:12:12 GMT",
+        "content-type": "application/json",
+        "cf-cache-status": "HIT",
+        "access-control-allow-origin": "*",
+        "age": "2424"
+      }
+    },
+    {
+      "period": "daily",
+      "sign": "pisces",
+      "status": "200",
+      "elapsedMs": 203,
+      "date": "2026-11-02",
+      "returnedSign": "Pisces",
+      "returnedPeriod": "daily",
+      "words": 82,
+      "sha256": "89805f2d68f5512de6d9dbb0f091bf83e94fb0a13fd156fb5d42364fcb89454e",
+      "fields": [
+        "date",
+        "period",
+        "sign",
+        "horoscope"
+      ],
+      "url": "https://freehoroscopeapi.com/api/v1/get-horoscope/daily?sign=pisces",
+      "responseHeaders": {
+        "date": "Tue, 03 Nov 2026 00:12:12 GMT",
+        "content-type": "application/json",
+        "cf-cache-status": "HIT",
+        "access-control-allow-origin": "*",
+        "age": "1520"
+      }
+    },
+    {
+      "period": "weekly",
+      "sign": "aries",
+      "status": "200",
+      "elapsedMs": 10307,
+      "date": "2026-10-26",
+      "returnedSign": "Aries",
+      "returnedPeriod": "weekly",
+      "words": 134,
+      "sha256": "3a8bcb8eda8964cf4ccf7fa8ad5abe4cd382612eab0e1f235a249afd39dcabe7",
+      "fields": [
+        "date",
+        "period",
+        "sign",
+        "horoscope"
+      ],
+      "url": "https://freehoroscopeapi.com/api/v1/get-horoscope/weekly?sign=aries",
+      "responseHeaders": {
+        "date": "Tue, 03 Nov 2026 00:12:22 GMT",
+        "content-type": "application/json",
+        "cf-cache-status": "STALE",
+        "access-control-allow-origin": "*"
+      }
+    },
+    {
+      "period": "weekly",
+      "sign": "taurus",
+      "status": "200",
+      "elapsedMs": 10619,
+      "date": "2026-10-26",
+      "returnedSign": "Taurus",
+      "returnedPeriod": "weekly",
+      "words": 125,
+      "sha256": "867f9efd0ca3f9a703fb385de53ce5bfba428c8c703cc1a3e3991c192e657f1e",
+      "fields": [
+        "date",
+        "period",
+        "sign",
+        "horoscope"
+      ],
+      "url": "https://freehoroscopeapi.com/api/v1/get-horoscope/weekly?sign=taurus",
+      "responseHeaders": {
+        "date": "Tue, 03 Nov 2026 00:12:33 GMT",
+        "content-type": "application/json",
+        "cf-cache-status": "STALE",
+        "access-control-allow-origin": "*"
+      }
+    },
+    {
+      "period": "weekly",
+      "sign": "gemini",
+      "status": "200",
+      "elapsedMs": 10166,
+      "date": "2026-10-26",
+      "returnedSign": "Gemini",
+      "returnedPeriod": "weekly",
+      "words": 118,
+      "sha256": "7b82fa14b0c6545f4065cdd17e88c4cbd265ede62c516c4fdb6a14c593350011",
+      "fields": [
+        "date",
+        "period",
+        "sign",
+        "horoscope"
+      ],
+      "url": "https://freehoroscopeapi.com/api/v1/get-horoscope/weekly?sign=gemini",
+      "responseHeaders": {
+        "date": "Tue, 03 Nov 2026 00:12:43 GMT",
+        "content-type": "application/json",
+        "cf-cache-status": "STALE",
+        "access-control-allow-origin": "*"
+      }
+    },
+    {
+      "period": "weekly",
+      "sign": "cancer",
+      "status": "200",
+      "elapsedMs": 10232,
+      "date": "2026-10-26",
+      "returnedSign": "Cancer",
+      "returnedPeriod": "weekly",
+      "words": 101,
+      "sha256": "1a4b077b40e6333d864674b6a490bfa3a6c91684dd172d81388b9745c6abcc35",
+      "fields": [
+        "date",
+        "period",
+        "sign",
+        "horoscope"
+      ],
+      "url": "https://freehoroscopeapi.com/api/v1/get-horoscope/weekly?sign=cancer",
+      "responseHeaders": {
+        "date": "Tue, 03 Nov 2026 00:12:53 GMT",
+        "content-type": "application/json",
+        "cf-cache-status": "STALE",
+        "access-control-allow-origin": "*"
+      }
+    },
+    {
+      "period": "weekly",
+      "sign": "leo",
+      "status": "200",
+      "elapsedMs": 10154,
+      "date": "2026-10-26",
+      "returnedSign": "Leo",
+      "returnedPeriod": "weekly",
+      "words": 128,
+      "sha256": "68d69286446243456c0222673e3220d58998630e61b613742d7c18ca22d48209",
+      "fields": [
+        "date",
+        "period",
+        "sign",
+        "horoscope"
+      ],
+      "url": "https://freehoroscopeapi.com/api/v1/get-horoscope/weekly?sign=leo",
+      "responseHeaders": {
+        "date": "Tue, 03 Nov 2026 00:13:03 GMT",
+        "content-type": "application/json",
+        "cf-cache-status": "STALE",
+        "access-control-allow-origin": "*"
+      }
+    },
+    {
+      "period": "weekly",
+      "sign": "virgo",
+      "status": "200",
+      "elapsedMs": 10157,
+      "date": "2026-10-26",
+      "returnedSign": "Virgo",
+      "returnedPeriod": "weekly",
+      "words": 123,
+      "sha256": "db12d17ee0c94dd28456bb1b3211419b2c5d1b6c030de65838f58c5026626967",
+      "fields": [
+        "date",
+        "period",
+        "sign",
+        "horoscope"
+      ],
+      "url": "https://freehoroscopeapi.com/api/v1/get-horoscope/weekly?sign=virgo",
+      "responseHeaders": {
+        "date": "Tue, 03 Nov 2026 00:13:14 GMT",
+        "content-type": "application/json",
+        "cf-cache-status": "STALE",
+        "access-control-allow-origin": "*"
+      }
+    },
+    {
+      "period": "weekly",
+      "sign": "libra",
+      "status": "200",
+      "elapsedMs": 10230,
+      "date": "2026-10-26",
+      "returnedSign": "Libra",
+      "returnedPeriod": "weekly",
+      "words": 124,
+      "sha256": "c89f3a18a73910f40e20a1f2624240d62e16e80bd79447d0fc9a8f7cce609f41",
+      "fields": [
+        "date",
+        "period",
+        "sign",
+        "horoscope"
+      ],
+      "url": "https://freehoroscopeapi.com/api/v1/get-horoscope/weekly?sign=libra",
+      "responseHeaders": {
+        "date": "Tue, 03 Nov 2026 00:13:24 GMT",
+        "content-type": "application/json",
+        "cf-cache-status": "STALE",
+        "access-control-allow-origin": "*"
+      }
+    },
+    {
+      "period": "weekly",
+      "sign": "scorpio",
+      "status": "200",
+      "elapsedMs": 10331,
+      "date": "2026-10-26",
+      "returnedSign": "Scorpio",
+      "returnedPeriod": "weekly",
+      "words": 108,
+      "sha256": "e40c90a48c79719dfdc83ed295755928d2166f6cee7a88cabcc8c9332735c8cf",
+      "fields": [
+        "date",
+        "period",
+        "sign",
+        "horoscope"
+      ],
+      "url": "https://freehoroscopeapi.com/api/v1/get-horoscope/weekly?sign=scorpio",
+      "responseHeaders": {
+        "date": "Tue, 03 Nov 2026 00:13:34 GMT",
+        "content-type": "application/json",
+        "cf-cache-status": "STALE",
+        "access-control-allow-origin": "*"
+      }
+    },
+    {
+      "period": "weekly",
+      "sign": "sagittarius",
+      "status": "200",
+      "elapsedMs": 10223,
+      "date": "2026-10-26",
+      "returnedSign": "Sagittarius",
+      "returnedPeriod": "weekly",
+      "words": 117,
+      "sha256": "2cae375c451136f06bee7fce7f1e0a542c9b013847102f8f985d37cda46b5dd1",
+      "fields": [
+        "date",
+        "period",
+        "sign",
+        "horoscope"
+      ],
+      "url": "https://freehoroscopeapi.com/api/v1/get-horoscope/weekly?sign=sagittarius",
+      "responseHeaders": {
+        "date": "Tue, 03 Nov 2026 00:13:44 GMT",
+        "content-type": "application/json",
+        "cf-cache-status": "STALE",
+        "access-control-allow-origin": "*"
+      }
+    },
+    {
+      "period": "weekly",
+      "sign": "capricorn",
+      "status": "200",
+      "elapsedMs": 10379,
+      "date": "2026-10-26",
+      "returnedSign": "Capricorn",
+      "returnedPeriod": "weekly",
+      "words": 133,
+      "sha256": "36335c55d3d8d3f32d41a667c09dc7ad75098251345c6a765a7967c9c14b29a8",
+      "fields": [
+        "date",
+        "period",
+        "sign",
+        "horoscope"
+      ],
+      "url": "https://freehoroscopeapi.com/api/v1/get-horoscope/weekly?sign=capricorn",
+      "responseHeaders": {
+        "date": "Tue, 03 Nov 2026 00:13:55 GMT",
+        "content-type": "application/json",
+        "cf-cache-status": "STALE",
+        "access-control-allow-origin": "*"
+      }
+    },
+    {
+      "period": "weekly",
+      "sign": "aquarius",
+      "status": "200",
+      "elapsedMs": 10139,
+      "date": "2026-10-26",
+      "returnedSign": "Aquarius",
+      "returnedPeriod": "weekly",
+      "words": 111,
+      "sha256": "97917f043d41101234c594d66853b30a0cf7c1c44df3c7a3397a3b836210030c",
+      "fields": [
+        "date",
+        "period",
+        "sign",
+        "horoscope"
+      ],
+      "url": "https://freehoroscopeapi.com/api/v1/get-horoscope/weekly?sign=aquarius",
+      "responseHeaders": {
+        "date": "Tue, 03 Nov 2026 00:14:05 GMT",
+        "content-type": "application/json",
+        "cf-cache-status": "STALE",
+        "access-control-allow-origin": "*"
+      }
+    },
+    {
+      "period": "weekly",
+      "sign": "pisces",
+      "status": "200",
+      "elapsedMs": 10178,
+      "date": "2026-10-26",
+      "returnedSign": "Pisces",
+      "returnedPeriod": "weekly",
+      "words": 111,
+      "sha256": "da6031dce486bde4bb93500511c059efdc22375a64435941e9a0e21f1d5fc1cf",
+      "fields": [
+        "date",
+        "period",
+        "sign",
+        "horoscope"
+      ],
+      "url": "https://freehoroscopeapi.com/api/v1/get-horoscope/weekly?sign=pisces",
+      "responseHeaders": {
+        "date": "Tue, 03 Nov 2026 00:14:15 GMT",
+        "content-type": "application/json",
+        "cf-cache-status": "STALE",
+        "access-control-allow-origin": "*"
+      }
+    },
+    {
+      "period": "monthly",
+      "sign": "aries",
+      "status": "200",
+      "elapsedMs": 132,
+      "date": "2026-11",
+      "returnedSign": "Aries",
+      "returnedPeriod": "monthly",
+      "words": 152,
+      "sha256": "f22b177bd41d2a7e7bd7a979d9374edfda3fc11fb5c432c9d43e2c71e767cfc6",
+      "fields": [
+        "date",
+        "period",
+        "sign",
+        "horoscope"
+      ],
+      "url": "https://freehoroscopeapi.com/api/v1/get-horoscope/monthly?sign=aries",
+      "responseHeaders": {
+        "date": "Tue, 03 Nov 2026 00:14:15 GMT",
+        "content-type": "application/json",
+        "cf-cache-status": "HIT",
+        "access-control-allow-origin": "*",
+        "age": "5340"
+      }
+    },
+    {
+      "period": "monthly",
+      "sign": "taurus",
+      "status": "200",
+      "elapsedMs": 537,
+      "date": "2026-11",
+      "returnedSign": "Taurus",
+      "returnedPeriod": "monthly",
+      "words": 123,
+      "sha256": "e2c2bd2029f086f9c1489586760c0af0153755f654f967c52f28d3b92ae14a23",
+      "fields": [
+        "date",
+        "period",
+        "sign",
+        "horoscope"
+      ],
+      "url": "https://freehoroscopeapi.com/api/v1/get-horoscope/monthly?sign=taurus",
+      "responseHeaders": {
+        "date": "Tue, 03 Nov 2026 00:14:16 GMT",
+        "content-type": "application/json",
+        "cf-cache-status": "EXPIRED",
+        "access-control-allow-origin": "*"
+      }
+    },
+    {
+      "period": "monthly",
+      "sign": "gemini",
+      "status": "200",
+      "elapsedMs": 575,
+      "date": "2026-11",
+      "returnedSign": "Gemini",
+      "returnedPeriod": "monthly",
+      "words": 147,
+      "sha256": "6c2806ab2eef282c8359532b04871bb6421ea662f5c6d127e4769e5d65bbe12a",
+      "fields": [
+        "date",
+        "period",
+        "sign",
+        "horoscope"
+      ],
+      "url": "https://freehoroscopeapi.com/api/v1/get-horoscope/monthly?sign=gemini",
+      "responseHeaders": {
+        "date": "Tue, 03 Nov 2026 00:14:16 GMT",
+        "content-type": "application/json",
+        "cf-cache-status": "EXPIRED",
+        "access-control-allow-origin": "*"
+      }
+    },
+    {
+      "period": "monthly",
+      "sign": "cancer",
+      "status": "200",
+      "elapsedMs": 255,
+      "date": "2026-11",
+      "returnedSign": "Cancer",
+      "returnedPeriod": "monthly",
+      "words": 138,
+      "sha256": "865f323072cceef4721c146cecb9575f7336f06ade9a3c34e6dd1cca1444350e",
+      "fields": [
+        "date",
+        "period",
+        "sign",
+        "horoscope"
+      ],
+      "url": "https://freehoroscopeapi.com/api/v1/get-horoscope/monthly?sign=cancer",
+      "responseHeaders": {
+        "date": "Tue, 03 Nov 2026 00:14:17 GMT",
+        "content-type": "application/json",
+        "cf-cache-status": "EXPIRED",
+        "access-control-allow-origin": "*"
+      }
+    },
+    {
+      "period": "monthly",
+      "sign": "leo",
+      "status": "200",
+      "elapsedMs": 607,
+      "date": "2026-11",
+      "returnedSign": "Leo",
+      "returnedPeriod": "monthly",
+      "words": 143,
+      "sha256": "8ef19ad64f734911f079a13127160019cf1b78498fb48947f4a299502d6b7eda",
+      "fields": [
+        "date",
+        "period",
+        "sign",
+        "horoscope"
+      ],
+      "url": "https://freehoroscopeapi.com/api/v1/get-horoscope/monthly?sign=leo",
+      "responseHeaders": {
+        "date": "Tue, 03 Nov 2026 00:14:17 GMT",
+        "content-type": "application/json",
+        "cf-cache-status": "EXPIRED",
+        "access-control-allow-origin": "*"
+      }
+    },
+    {
+      "period": "monthly",
+      "sign": "virgo",
+      "status": "200",
+      "elapsedMs": 778,
+      "date": "2026-11",
+      "returnedSign": "Virgo",
+      "returnedPeriod": "monthly",
+      "words": 159,
+      "sha256": "4611ce911f1632dc9e9c94b1c6c6279b0e3c9c83ec032b4d562830e811b152ff",
+      "fields": [
+        "date",
+        "period",
+        "sign",
+        "horoscope"
+      ],
+      "url": "https://freehoroscopeapi.com/api/v1/get-horoscope/monthly?sign=virgo",
+      "responseHeaders": {
+        "date": "Tue, 03 Nov 2026 00:14:18 GMT",
+        "content-type": "application/json",
+        "cf-cache-status": "EXPIRED",
+        "access-control-allow-origin": "*"
+      }
+    },
+    {
+      "period": "monthly",
+      "sign": "libra",
+      "status": "200",
+      "elapsedMs": 453,
+      "date": "2026-11",
+      "returnedSign": "Libra",
+      "returnedPeriod": "monthly",
+      "words": 125,
+      "sha256": "1ced5b1e1a0c283456a9ca668fb726d156c69999fbeea3f1a941cb896f50f46d",
+      "fields": [
+        "date",
+        "period",
+        "sign",
+        "horoscope"
+      ],
+      "url": "https://freehoroscopeapi.com/api/v1/get-horoscope/monthly?sign=libra",
+      "responseHeaders": {
+        "date": "Tue, 03 Nov 2026 00:14:18 GMT",
+        "content-type": "application/json",
+        "cf-cache-status": "EXPIRED",
+        "access-control-allow-origin": "*"
+      }
+    },
+    {
+      "period": "monthly",
+      "sign": "scorpio",
+      "status": "200",
+      "elapsedMs": 108,
+      "date": "2026-11",
+      "returnedSign": "Scorpio",
+      "returnedPeriod": "monthly",
+      "words": 145,
+      "sha256": "b1e0fb0d33c1a15f633272897f85f47543451233318eb1c01a287d64d5db5ade",
+      "fields": [
+        "date",
+        "period",
+        "sign",
+        "horoscope"
+      ],
+      "url": "https://freehoroscopeapi.com/api/v1/get-horoscope/monthly?sign=scorpio",
+      "responseHeaders": {
+        "date": "Tue, 03 Nov 2026 00:14:18 GMT",
+        "content-type": "application/json",
+        "cf-cache-status": "HIT",
+        "access-control-allow-origin": "*",
+        "age": "3034"
+      }
+    },
+    {
+      "period": "monthly",
+      "sign": "sagittarius",
+      "status": "200",
+      "elapsedMs": 577,
+      "date": "2026-11",
+      "returnedSign": "Sagittarius",
+      "returnedPeriod": "monthly",
+      "words": 150,
+      "sha256": "144decae81e546883784e0db8ee391bd0fb8947d052efa99cd4d9f37d9d8ff5d",
+      "fields": [
+        "date",
+        "period",
+        "sign",
+        "horoscope"
+      ],
+      "url": "https://freehoroscopeapi.com/api/v1/get-horoscope/monthly?sign=sagittarius",
+      "responseHeaders": {
+        "date": "Tue, 03 Nov 2026 00:14:19 GMT",
+        "content-type": "application/json",
+        "cf-cache-status": "EXPIRED",
+        "access-control-allow-origin": "*"
+      }
+    },
+    {
+      "period": "monthly",
+      "sign": "capricorn",
+      "status": "200",
+      "elapsedMs": 167,
+      "date": "2026-11",
+      "returnedSign": "Capricorn",
+      "returnedPeriod": "monthly",
+      "words": 123,
+      "sha256": "e5428a83898d0c218adf3d1a5e3f77600cb860dd5bd0cb5de5f887c41aa41e34",
+      "fields": [
+        "date",
+        "period",
+        "sign",
+        "horoscope"
+      ],
+      "url": "https://freehoroscopeapi.com/api/v1/get-horoscope/monthly?sign=capricorn",
+      "responseHeaders": {
+        "date": "Tue, 03 Nov 2026 00:14:19 GMT",
+        "content-type": "application/json",
+        "cf-cache-status": "EXPIRED",
+        "access-control-allow-origin": "*"
+      }
+    },
+    {
+      "period": "monthly",
+      "sign": "aquarius",
+      "status": "200",
+      "elapsedMs": 650,
+      "date": "2026-11",
+      "returnedSign": "Aquarius",
+      "returnedPeriod": "monthly",
+      "words": 148,
+      "sha256": "8e009d793450b85c1a74addfe18b6ef745bc553aac82103d69ce2208e0f8b44c",
+      "fields": [
+        "date",
+        "period",
+        "sign",
+        "horoscope"
+      ],
+      "url": "https://freehoroscopeapi.com/api/v1/get-horoscope/monthly?sign=aquarius",
+      "responseHeaders": {
+        "date": "Tue, 03 Nov 2026 00:14:20 GMT",
+        "content-type": "application/json",
+        "cf-cache-status": "EXPIRED",
+        "access-control-allow-origin": "*"
+      }
+    },
+    {
+      "period": "monthly",
+      "sign": "pisces",
+      "status": "200",
+      "elapsedMs": 560,
+      "date": "2026-11",
+      "returnedSign": "Pisces",
+      "returnedPeriod": "monthly",
+      "words": 116,
+      "sha256": "761555fc6bfa62fa988fcac80d1b4f5dff317ff1e8800e7b46afef7f90b162e7",
+      "fields": [
+        "date",
+        "period",
+        "sign",
+        "horoscope"
+      ],
+      "url": "https://freehoroscopeapi.com/api/v1/get-horoscope/monthly?sign=pisces",
+      "responseHeaders": {
+        "date": "Tue, 03 Nov 2026 00:14:20 GMT",
+        "content-type": "application/json",
+        "cf-cache-status": "EXPIRED",
+        "access-control-allow-origin": "*"
+      }
+    }
+  ],
+  "observedLocalDate": "2026-11-02",
+  "observedLocalTimeZone": "America/Los_Angeles",
+  "method": "Unauthenticated sequential GET, public zodiac sign only; no credentials or private user data. One coverage pass, not an uptime or rollover guarantee.",
+  "weeklyRevalidation": {
+    "sign": "aries",
+    "requestHeader": "Cache-Control: no-cache",
+    "status": 200,
+    "date": "2026-10-26",
+    "sha256": "3a8bcb8eda8964cf4ccf7fa8ad5abe4cd382612eab0e1f235a249afd39dcabe7",
+    "cacheStatus": "STALE"
+  },
+  "negativeCases": [
+    {
+      "case": "missing sign",
+      "httpStatus": 400,
+      "code": "missing_sign"
+    },
+    {
+      "case": "invalid sign",
+      "httpStatus": 400,
+      "code": "invalid_sign"
+    }
+  ],
+  "sigastra": {
+    "url": "https://sigastra.com/api/v1/daily?lang=en&sign=leo&full=1",
+    "httpStatus": 401,
+    "code": "key_required",
+    "context": "No Referer, credentials, registration or partner verification; no entitled forecast text tested."
+  },
+  "limits": "No daily/monthly boundary observation, future refresh verification, load test, contractual quota verification, or entitled Prokerala/FreeAstrologyAPI content test."
+}

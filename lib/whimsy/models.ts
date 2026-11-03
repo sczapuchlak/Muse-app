@@ -1,5 +1,5 @@
 /** Feature-specific contracts. No generic personal-event table or generated history. */
-export const whimsyExperiences=['side-quests','tarot','dreamscapes','fortunes','bookshelf'] as const;
+export const whimsyExperiences=['observatory','tarot','side-quests','dreamscapes','fortunes','bookshelf'] as const;
 export type WhimsyExperience=typeof whimsyExperiences[number];
 export type Owned={id:string;userId:string;revision:number;createdAt:string;updatedAt:string};
 export type LocalContext={date:string;timeZone:string};

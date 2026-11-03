@@ -1,4 +1,5 @@
 'use client';
+import {useAstrologyData} from '../astrology/AstrologyData';
 import {useWhimsyData} from '../whimsy/WhimsyData';
 import {whimsySources} from '@/lib/whimsy/persistence';
 import {useMemo} from 'react';
@@ -11,9 +12,9 @@ import {persistedInsights} from '@/lib/insights/persisted';
 import type {InsightSourceStatus} from '@/lib/insights/sources';
 /** Existing owner subscriptions handle local edits, focus/online and cross-window invalidation. */
 export function useInsightsSources(_date:string,today:string){
- const whimsy=useWhimsyData();
+ const whimsy=useWhimsyData(),astrology=useAstrologyData();
  const planner=usePlanner(),rituals=useRituals(),money=useMoney(),wellness=useWellness(),{snapshot,profile,store:dailyStore}=useDailyData();
- const input=useMemo(()=>({...persistedInsights({planner:planner.state,rituals:rituals.state,wellness:wellness.state,money:money.state,days:snapshot.days,influences:snapshot.influences,timeZone:profile.timeZone,today}),whimsy:whimsy.records?{sources:whimsySources(whimsy.records),status:whimsy.status}:undefined}),[whimsy.records,whimsy.status,planner.state,wellness.state,rituals.state,money.state,today,snapshot.days,snapshot.influences,profile.timeZone]);
+ const input=useMemo(()=>({...persistedInsights({planner:planner.state,rituals:rituals.state,wellness:wellness.state,money:money.state,days:snapshot.days,influences:snapshot.influences,timeZone:profile.timeZone,today}),astrology:{activity:astrology.records.activity,journal:astrology.records.journal.map(({id,date,reference})=>({id,date,reference})),status:{loaded:astrology.loaded,pending:astrology.busy,error:astrology.error}},whimsy:whimsy.records?{sources:whimsySources(whimsy.records),status:whimsy.status}:undefined}),[astrology.records,astrology.loaded,astrology.busy,astrology.error,whimsy.records,whimsy.status,planner.state,wellness.state,rituals.state,money.state,today,snapshot.days,snapshot.influences,profile.timeZone]);
  const sources:{name:string;status:InsightSourceStatus;retry:()=>void}[]=[
   {name:'Planner',status:planner.status??{loaded:false,error:'Planner is unavailable.'},retry:()=>{planner.store?.retry();void planner.store?.load(true);}},
   {name:'Rituals',status:rituals.status,retry:()=>rituals.store.retry()},
@@ -21,5 +22,5 @@ export function useInsightsSources(_date:string,today:string){
   {name:'Money',status:money.status,retry:()=>money.store.retry()},
   {name:'Feeling context',status:{loaded:!!snapshot.influencesLoaded,error:snapshot.rangeErrors.influences},retry:()=>{void dailyStore?.loadInfluences();}}
  ];
- return {input,sources};
+ return {input,sources,astrology};
 }

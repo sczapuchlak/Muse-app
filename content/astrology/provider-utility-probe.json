@@ -1,0 +1,96 @@
+{
+  "observedAt": "2026-11-03T01:12:59.228Z",
+  "rows": [
+    {
+      "kind": "horoscope",
+      "period": "daily",
+      "status": 200,
+      "elapsedMs": 192,
+      "date": "2026-11-02",
+      "sign": "Aries",
+      "words": 85,
+      "sha256": "7f1ae5a96ef899b2a4bcca0e7f1314c25d67c9fb9f21b73bcc8292aae6d291db",
+      "matchesPrevious": true,
+      "previousDate": "2026-11-02",
+      "cacheStatus": "HIT",
+      "age": "4690"
+    },
+    {
+      "kind": "horoscope",
+      "period": "weekly",
+      "status": 200,
+      "elapsedMs": 10477,
+      "date": "2026-10-26",
+      "sign": "Aries",
+      "words": 134,
+      "sha256": "3a8bcb8eda8964cf4ccf7fa8ad5abe4cd382612eab0e1f235a249afd39dcabe7",
+      "matchesPrevious": true,
+      "previousDate": "2026-10-26",
+      "cacheStatus": "STALE",
+      "age": null
+    },
+    {
+      "kind": "horoscope",
+      "period": "monthly",
+      "status": 200,
+      "elapsedMs": 68,
+      "date": "2026-11",
+      "sign": "Aries",
+      "words": 152,
+      "sha256": "f22b177bd41d2a7e7bd7a979d9374edfda3fc11fb5c432c9d43e2c71e767cfc6",
+      "matchesPrevious": true,
+      "previousDate": "2026-11",
+      "cacheStatus": "HIT",
+      "age": "1088"
+    },
+    {
+      "kind": "sun-moon-times",
+      "status": 200,
+      "date": "2024-03-10",
+      "timeZone": "Europe/London",
+      "keys": [
+        "date",
+        "timezone",
+        "location",
+        "sun",
+        "moon",
+        "rahukaalam"
+      ],
+      "sunKeys": [
+        "events",
+        "daylight",
+        "twilight_periods",
+        "twilight",
+        "photography"
+      ],
+      "moonKeys": [
+        "moonrise",
+        "moonset",
+        "phase_value",
+        "phase_description",
+        "details"
+      ],
+      "sunrise": null,
+      "moonrise": "2024-03-10T06:44:00+00:00"
+    },
+    {
+      "kind": "tarot-deck",
+      "status": 200,
+      "nhits": 78,
+      "cardsCount": 78,
+      "firstCardName": "The Magician",
+      "firstCardFields": [
+        "type",
+        "name_short",
+        "name",
+        "value",
+        "value_int",
+        "meaning_up",
+        "meaning_rev",
+        "desc"
+      ],
+      "firstCardMeaningFields": [],
+      "uniqueNames": 78
+    }
+  ]
+}

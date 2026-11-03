@@ -1,10 +1,12 @@
+import {astrologyRecap} from '@/lib/astrology/insights';
+import type {AstrologySnapshot} from '@/lib/astrology/models';
 import type {SupabaseClient} from '@supabase/supabase-js';
 import type {Database} from '@/lib/database.types';
 import {validDate,weekDates} from '@/lib/dates';
 import {whimsyMetrics,readingHabitContribution,whimsyWidgets,type WhimsyRange} from './integrations';
 import {readWhimsy,whimsySources,saveWhimsyRecord,type WhimsyDraft, type WhimsyRecords} from './persistence';
 import type {WhimsyExperience} from './models';
-export async function readWhimsyRecap(client:SupabaseClient<Database>,range:WhimsyRange){return whimsyMetrics(whimsySources(await readWhimsy(client)),range,{loaded:true});}
+export async function readWhimsyRecap(client:SupabaseClient<Database>,range:WhimsyRange){const records=await readWhimsy(client),astrology=await client.rpc('read_astrology'),snapshot=astrology.data as unknown as AstrologySnapshot|null;return {...whimsyMetrics(whimsySources(records),range,{loaded:true}),astrology:astrologyRecap(snapshot?{activity:snapshot.activity,journal:snapshot.journal,status:{loaded:!astrology.error,error:astrology.error?'Astrology source unavailable.':undefined}}:undefined,range)};}
 /** Source IDs only: private dream/journal excerpts never leak into a generic widget. */
 export function projectWhimsyWidgets(records:WhimsyRecords,date:string,today:string){if(!validDate(date)||!validDate(today))throw Error('Choose a valid local date');const enabled=records.widgets.filter(p=>p.enabled);return whimsyWidgets.filter(w=>enabled.some(p=>p.experience===w.experience)).map(w=>{const ids=w.experience==='side-quests'?records.questWeeks.filter(q=>q.weekStart===weekDates(date)[0]).map(q=>q.id):w.experience==='tarot'?records.tarot.filter(r=>r.date===date).map(r=>r.id):w.experience==='dreamscapes'?records.dreams.filter(r=>r.date===date).map(r=>r.id):w.experience==='fortunes'?records.fortunes.filter(r=>r.date===date).map(r=>r.id):date===today?records.books.filter(b=>b.status==='reading').map(b=>b.id):[];return {...w,date,sourceIds:ids,state:ids.length?'recorded' as const:'empty' as const};});}
 export async function readWhimsyDayview(client:SupabaseClient<Database>,date:string,today:string){return projectWhimsyWidgets(await readWhimsy(client),date,today);}

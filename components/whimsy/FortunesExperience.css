@@ -66,3 +66,4 @@
 @container fortune-collection (max-width:540px){.muse-fortune-collection-grid{grid-template-columns:minmax(0,1fr)}}
 @media(prefers-reduced-motion:reduce){.muse-fortune-saved,.muse-fortune-keepsake-type>.muse-star{transition:none}}
 :root[data-magic=quiet] .muse-fortune-keepsake .muse-star{filter:none}
+.muse-fortune-keepsake{position:relative;isolation:isolate}.muse-fortune-artifact-glyph{position:absolute;right:17px;top:34px;font-size:3.4rem;line-height:1;color:var(--item-accent,var(--accent-primary));opacity:.15;transform:rotate(-12deg);pointer-events:none}.muse-fortune-saved:hover .muse-fortune-artifact-glyph,.muse-fortune-saved:focus-within .muse-fortune-artifact-glyph{opacity:.28;transform:rotate(0)}@media(prefers-reduced-motion:reduce){.muse-fortune-artifact-glyph{transition:none}}

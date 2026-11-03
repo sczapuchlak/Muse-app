@@ -1,0 +1,165 @@
+{
+  "retrieved": "2026-11-02",
+  "cases": [
+    {
+      "body": "Sun",
+      "instant": "2000-01-01T12:00:00.000Z",
+      "longitude": 280.3689092,
+      "latitude": 0.0002381,
+      "source": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%2710%27&EPHEM_TYPE=%27OBSERVER%27&CENTER=%27500%40399%27&START_TIME=%272000-01-01%2012%3A00%27&STOP_TIME=%272000-01-01%2012%3A01%27&STEP_SIZE=%271m%27&QUANTITIES=%2731%27&CSV_FORMAT=%27YES%27&ANG_FORMAT=%27DEG%27",
+      "basis": "JPL Horizons observer geocentric apparent ecliptic of date; quantity 31; center 500@399"
+    },
+    {
+      "body": "Moon",
+      "instant": "2000-01-01T12:00:00.000Z",
+      "longitude": 223.323786,
+      "latitude": 5.1707422,
+      "source": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%27301%27&EPHEM_TYPE=%27OBSERVER%27&CENTER=%27500%40399%27&START_TIME=%272000-01-01%2012%3A00%27&STOP_TIME=%272000-01-01%2012%3A01%27&STEP_SIZE=%271m%27&QUANTITIES=%2731%27&CSV_FORMAT=%27YES%27&ANG_FORMAT=%27DEG%27",
+      "basis": "JPL Horizons observer geocentric apparent ecliptic of date; quantity 31; center 500@399"
+    },
+    {
+      "body": "Mercury",
+      "instant": "2000-01-01T12:00:00.000Z",
+      "longitude": 271.8892699,
+      "latitude": -0.994819,
+      "source": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%27199%27&EPHEM_TYPE=%27OBSERVER%27&CENTER=%27500%40399%27&START_TIME=%272000-01-01%2012%3A00%27&STOP_TIME=%272000-01-01%2012%3A01%27&STEP_SIZE=%271m%27&QUANTITIES=%2731%27&CSV_FORMAT=%27YES%27&ANG_FORMAT=%27DEG%27",
+      "basis": "JPL Horizons observer geocentric apparent ecliptic of date; quantity 31; center 500@399"
+    },
+    {
+      "body": "Venus",
+      "instant": "2000-01-01T12:00:00.000Z",
+      "longitude": 241.5657794,
+      "latitude": 2.0663548,
+      "source": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%27299%27&EPHEM_TYPE=%27OBSERVER%27&CENTER=%27500%40399%27&START_TIME=%272000-01-01%2012%3A00%27&STOP_TIME=%272000-01-01%2012%3A01%27&STEP_SIZE=%271m%27&QUANTITIES=%2731%27&CSV_FORMAT=%27YES%27&ANG_FORMAT=%27DEG%27",
+      "basis": "JPL Horizons observer geocentric apparent ecliptic of date; quantity 31; center 500@399"
+    },
+    {
+      "body": "Mars",
+      "instant": "2000-01-01T12:00:00.000Z",
+      "longitude": 327.9632921,
+      "latitude": -1.0677752,
+      "source": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%27499%27&EPHEM_TYPE=%27OBSERVER%27&CENTER=%27500%40399%27&START_TIME=%272000-01-01%2012%3A00%27&STOP_TIME=%272000-01-01%2012%3A01%27&STEP_SIZE=%271m%27&QUANTITIES=%2731%27&CSV_FORMAT=%27YES%27&ANG_FORMAT=%27DEG%27",
+      "basis": "JPL Horizons observer geocentric apparent ecliptic of date; quantity 31; center 500@399"
+    },
+    {
+      "body": "Jupiter",
+      "instant": "2000-01-01T12:00:00.000Z",
+      "longitude": 25.2530685,
+      "latitude": -1.2621868,
+      "source": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%27599%27&EPHEM_TYPE=%27OBSERVER%27&CENTER=%27500%40399%27&START_TIME=%272000-01-01%2012%3A00%27&STOP_TIME=%272000-01-01%2012%3A01%27&STEP_SIZE=%271m%27&QUANTITIES=%2731%27&CSV_FORMAT=%27YES%27&ANG_FORMAT=%27DEG%27",
+      "basis": "JPL Horizons observer geocentric apparent ecliptic of date; quantity 31; center 500@399"
+    },
+    {
+      "body": "Saturn",
+      "instant": "2000-01-01T12:00:00.000Z",
+      "longitude": 40.3956366,
+      "latitude": -2.4448533,
+      "source": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%27699%27&EPHEM_TYPE=%27OBSERVER%27&CENTER=%27500%40399%27&START_TIME=%272000-01-01%2012%3A00%27&STOP_TIME=%272000-01-01%2012%3A01%27&STEP_SIZE=%271m%27&QUANTITIES=%2731%27&CSV_FORMAT=%27YES%27&ANG_FORMAT=%27DEG%27",
+      "basis": "JPL Horizons observer geocentric apparent ecliptic of date; quantity 31; center 500@399"
+    },
+    {
+      "body": "Uranus",
+      "instant": "2000-01-01T12:00:00.000Z",
+      "longitude": 314.809168,
+      "latitude": -0.658324,
+      "source": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%27799%27&EPHEM_TYPE=%27OBSERVER%27&CENTER=%27500%40399%27&START_TIME=%272000-01-01%2012%3A00%27&STOP_TIME=%272000-01-01%2012%3A01%27&STEP_SIZE=%271m%27&QUANTITIES=%2731%27&CSV_FORMAT=%27YES%27&ANG_FORMAT=%27DEG%27",
+      "basis": "JPL Horizons observer geocentric apparent ecliptic of date; quantity 31; center 500@399"
+    },
+    {
+      "body": "Neptune",
+      "instant": "2000-01-01T12:00:00.000Z",
+      "longitude": 303.1930007,
+      "latitude": 0.2350026,
+      "source": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%27899%27&EPHEM_TYPE=%27OBSERVER%27&CENTER=%27500%40399%27&START_TIME=%272000-01-01%2012%3A00%27&STOP_TIME=%272000-01-01%2012%3A01%27&STEP_SIZE=%271m%27&QUANTITIES=%2731%27&CSV_FORMAT=%27YES%27&ANG_FORMAT=%27DEG%27",
+      "basis": "JPL Horizons observer geocentric apparent ecliptic of date; quantity 31; center 500@399"
+    },
+    {
+      "body": "Pluto",
+      "instant": "2000-01-01T12:00:00.000Z",
+      "longitude": 251.4547644,
+      "latitude": 10.8552605,
+      "source": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%27999%27&EPHEM_TYPE=%27OBSERVER%27&CENTER=%27500%40399%27&START_TIME=%272000-01-01%2012%3A00%27&STOP_TIME=%272000-01-01%2012%3A01%27&STEP_SIZE=%271m%27&QUANTITIES=%2731%27&CSV_FORMAT=%27YES%27&ANG_FORMAT=%27DEG%27",
+      "basis": "JPL Horizons observer geocentric apparent ecliptic of date; quantity 31; center 500@399"
+    },
+    {
+      "body": "Sun",
+      "instant": "2024-04-08T18:00:00.000Z",
+      "longitude": 19.3861885,
+      "latitude": -5.35e-05,
+      "source": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%2710%27&EPHEM_TYPE=%27OBSERVER%27&CENTER=%27500%40399%27&START_TIME=%272024-04-08%2018%3A00%27&STOP_TIME=%272024-04-08%2018%3A01%27&STEP_SIZE=%271m%27&QUANTITIES=%2731%27&CSV_FORMAT=%27YES%27&ANG_FORMAT=%27DEG%27",
+      "basis": "JPL Horizons observer geocentric apparent ecliptic of date; quantity 31; center 500@399"
+    },
+    {
+      "body": "Moon",
+      "instant": "2024-04-08T18:00:00.000Z",
+      "longitude": 19.1832147,
+      "latitude": 0.3292439,
+      "source": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%27301%27&EPHEM_TYPE=%27OBSERVER%27&CENTER=%27500%40399%27&START_TIME=%272024-04-08%2018%3A00%27&STOP_TIME=%272024-04-08%2018%3A01%27&STEP_SIZE=%271m%27&QUANTITIES=%2731%27&CSV_FORMAT=%27YES%27&ANG_FORMAT=%27DEG%27",
+      "basis": "JPL Horizons observer geocentric apparent ecliptic of date; quantity 31; center 500@399"
+    },
+    {
+      "body": "Mercury",
+      "instant": "2024-04-08T18:00:00.000Z",
+      "longitude": 24.8070865,
+      "latitude": 2.8363272,
+      "source": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%27199%27&EPHEM_TYPE=%27OBSERVER%27&CENTER=%27500%40399%27&START_TIME=%272024-04-08%2018%3A00%27&STOP_TIME=%272024-04-08%2018%3A01%27&STEP_SIZE=%271m%27&QUANTITIES=%2731%27&CSV_FORMAT=%27YES%27&ANG_FORMAT=%27DEG%27",
+      "basis": "JPL Horizons observer geocentric apparent ecliptic of date; quantity 31; center 500@399"
+    },
+    {
+      "body": "Venus",
+      "instant": "2024-04-08T18:00:00.000Z",
+      "longitude": 4.427195,
+      "latitude": -1.4965152,
+      "source": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%27299%27&EPHEM_TYPE=%27OBSERVER%27&CENTER=%27500%40399%27&START_TIME=%272024-04-08%2018%3A00%27&STOP_TIME=%272024-04-08%2018%3A01%27&STEP_SIZE=%271m%27&QUANTITIES=%2731%27&CSV_FORMAT=%27YES%27&ANG_FORMAT=%27DEG%27",
+      "basis": "JPL Horizons observer geocentric apparent ecliptic of date; quantity 31; center 500@399"
+    },
+    {
+      "body": "Mars",
+      "instant": "2024-04-08T18:00:00.000Z",
+      "longitude": 343.0401557,
+      "latitude": -1.2446853,
+      "source": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%27499%27&EPHEM_TYPE=%27OBSERVER%27&CENTER=%27500%40399%27&START_TIME=%272024-04-08%2018%3A00%27&STOP_TIME=%272024-04-08%2018%3A01%27&STEP_SIZE=%271m%27&QUANTITIES=%2731%27&CSV_FORMAT=%27YES%27&ANG_FORMAT=%27DEG%27",
+      "basis": "JPL Horizons observer geocentric apparent ecliptic of date; quantity 31; center 500@399"
+    },
+    {
+      "body": "Jupiter",
+      "instant": "2024-04-08T18:00:00.000Z",
+      "longitude": 49.042528,
+      "latitude": -0.8016821,
+      "source": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%27599%27&EPHEM_TYPE=%27OBSERVER%27&CENTER=%27500%40399%27&START_TIME=%272024-04-08%2018%3A00%27&STOP_TIME=%272024-04-08%2018%3A01%27&STEP_SIZE=%271m%27&QUANTITIES=%2731%27&CSV_FORMAT=%27YES%27&ANG_FORMAT=%27DEG%27",
+      "basis": "JPL Horizons observer geocentric apparent ecliptic of date; quantity 31; center 500@399"
+    },
+    {
+      "body": "Saturn",
+      "instant": "2024-04-08T18:00:00.000Z",
+      "longitude": 344.4536677,
+      "latitude": -1.6844014,
+      "source": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%27699%27&EPHEM_TYPE=%27OBSERVER%27&CENTER=%27500%40399%27&START_TIME=%272024-04-08%2018%3A00%27&STOP_TIME=%272024-04-08%2018%3A01%27&STEP_SIZE=%271m%27&QUANTITIES=%2731%27&CSV_FORMAT=%27YES%27&ANG_FORMAT=%27DEG%27",
+      "basis": "JPL Horizons observer geocentric apparent ecliptic of date; quantity 31; center 500@399"
+    },
+    {
+      "body": "Uranus",
+      "instant": "2024-04-08T18:00:00.000Z",
+      "longitude": 51.1703807,
+      "latitude": -0.2705906,
+      "source": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%27799%27&EPHEM_TYPE=%27OBSERVER%27&CENTER=%27500%40399%27&START_TIME=%272024-04-08%2018%3A00%27&STOP_TIME=%272024-04-08%2018%3A01%27&STEP_SIZE=%271m%27&QUANTITIES=%2731%27&CSV_FORMAT=%27YES%27&ANG_FORMAT=%27DEG%27",
+      "basis": "JPL Horizons observer geocentric apparent ecliptic of date; quantity 31; center 500@399"
+    },
+    {
+      "body": "Neptune",
+      "instant": "2024-04-08T18:00:00.000Z",
+      "longitude": 358.1896143,
+      "latitude": -1.2219124,
+      "source": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%27899%27&EPHEM_TYPE=%27OBSERVER%27&CENTER=%27500%40399%27&START_TIME=%272024-04-08%2018%3A00%27&STOP_TIME=%272024-04-08%2018%3A01%27&STEP_SIZE=%271m%27&QUANTITIES=%2731%27&CSV_FORMAT=%27YES%27&ANG_FORMAT=%27DEG%27",
+      "basis": "JPL Horizons observer geocentric apparent ecliptic of date; quantity 31; center 500@399"
+    },
+    {
+      "body": "Pluto",
+      "instant": "2024-04-08T18:00:00.000Z",
+      "longitude": 301.9674783,
+      "latitude": -2.9641103,
+      "source": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%27999%27&EPHEM_TYPE=%27OBSERVER%27&CENTER=%27500%40399%27&START_TIME=%272024-04-08%2018%3A00%27&STOP_TIME=%272024-04-08%2018%3A01%27&STEP_SIZE=%271m%27&QUANTITIES=%2731%27&CSV_FORMAT=%27YES%27&ANG_FORMAT=%27DEG%27",
+      "basis": "JPL Horizons observer geocentric apparent ecliptic of date; quantity 31; center 500@399"
+    }
+  ]
+}

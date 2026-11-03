@@ -1,0 +1,646 @@
+{
+  "method": "Synthetic test locations and dates only. UTC resolved by Muse IANA rules. Both engines compared as tropical geocentric apparent longitudes of date; provider outer planet barycenters may differ from Muse planetary centers.",
+  "provider": "FreeHoroscopeAPI Skyfield 1.55 / JPL DE421",
+  "cases": [
+    {
+      "id": "greenwich-2000",
+      "localCivilDate": "2000-01-01",
+      "localCivilTime": "12:00",
+      "timeZone": "UTC",
+      "utcInstant": "2000-01-01T12:00:00.000Z",
+      "httpStatus": 200,
+      "providerInstant": "2000-01-01T12:00:00Z",
+      "providerReferenceFrame": "geocentric apparent ecliptic and true equinox of date",
+      "localAscendant": 24.26613280700076,
+      "localMidheaven": 279.6110618554224,
+      "localCusps": [
+        0,
+        30,
+        60,
+        90,
+        120,
+        150,
+        180,
+        210,
+        240,
+        270,
+        300,
+        330
+      ],
+      "positions": [
+        {
+          "body": "Sun",
+          "museLongitude": 280.3687386398185,
+          "providerLongitude": 280.3689225724006,
+          "differenceArcminutes": 0.011035954926228442,
+          "museSign": "capricorn",
+          "providerSign": "Capricorn",
+          "museRetrograde": false,
+          "providerRetrograde": false
+        },
+        {
+          "body": "Moon",
+          "museLongitude": 223.3238911274741,
+          "providerLongitude": 223.32380023432404,
+          "differenceArcminutes": 0.005453589003536763,
+          "museSign": "scorpio",
+          "providerSign": "Scorpio",
+          "museRetrograde": false,
+          "providerRetrograde": false
+        },
+        {
+          "body": "Mercury",
+          "museLongitude": 271.88891206646304,
+          "providerLongitude": 271.8892831534986,
+          "differenceArcminutes": 0.022265222132773488,
+          "museSign": "capricorn",
+          "providerSign": "Capricorn",
+          "museRetrograde": false,
+          "providerRetrograde": false
+        },
+        {
+          "body": "Venus",
+          "museLongitude": 241.56523294036208,
+          "providerLongitude": 241.56579308502825,
+          "differenceArcminutes": 0.0336086799734403,
+          "museSign": "sagittarius",
+          "providerSign": "Sagittarius",
+          "museRetrograde": false,
+          "providerRetrograde": false
+        },
+        {
+          "body": "Mars",
+          "museLongitude": 327.96389907790285,
+          "providerLongitude": 327.9633055563196,
+          "differenceArcminutes": 0.0356112949953058,
+          "museSign": "aquarius",
+          "providerSign": "Aquarius",
+          "museRetrograde": false,
+          "providerRetrograde": false
+        },
+        {
+          "body": "Jupiter",
+          "museLongitude": 25.254199844874222,
+          "providerLongitude": 25.253086881939037,
+          "differenceArcminutes": 0.06677777611002966,
+          "museSign": "aries",
+          "providerSign": "Aries",
+          "museRetrograde": false,
+          "providerRetrograde": false
+        },
+        {
+          "body": "Saturn",
+          "museLongitude": 40.39612413717839,
+          "providerLongitude": 40.39566304174984,
+          "differenceArcminutes": 0.027665725715451117,
+          "museSign": "taurus",
+          "providerSign": "Taurus",
+          "museRetrograde": true,
+          "providerRetrograde": true
+        },
+        {
+          "body": "Uranus",
+          "museLongitude": 314.8061046271607,
+          "providerLongitude": 314.8091908490416,
+          "differenceArcminutes": 0.18517331285693217,
+          "museSign": "aquarius",
+          "providerSign": "Aquarius",
+          "museRetrograde": false,
+          "providerRetrograde": false
+        },
+        {
+          "body": "Neptune",
+          "museLongitude": 303.1954420594734,
+          "providerLongitude": 303.1930147957128,
+          "differenceArcminutes": 0.1456358256382373,
+          "museSign": "aquarius",
+          "providerSign": "Aquarius",
+          "museRetrograde": false,
+          "providerRetrograde": false
+        },
+        {
+          "body": "Pluto",
+          "museLongitude": 251.45473515991364,
+          "providerLongitude": 251.45478064305772,
+          "differenceArcminutes": 0.0027289886429571197,
+          "museSign": "sagittarius",
+          "providerSign": "Sagittarius",
+          "museRetrograde": false,
+          "providerRetrograde": false
+        }
+      ]
+    },
+    {
+      "id": "paris-1950",
+      "localCivilDate": "1950-06-15",
+      "localCivilTime": "12:00",
+      "timeZone": "Europe/Paris",
+      "utcInstant": "1950-06-15T11:00:00.000Z",
+      "httpStatus": 200,
+      "providerInstant": "1950-06-15T11:00:00Z",
+      "providerReferenceFrame": "geocentric apparent ecliptic and true equinox of date",
+      "localAscendant": 165.81897185884236,
+      "localMidheaven": 72.01270528111581,
+      "localCusps": [
+        150,
+        180,
+        210,
+        240,
+        270,
+        300,
+        330,
+        0,
+        30,
+        60,
+        90,
+        120
+      ],
+      "positions": [
+        {
+          "body": "Sun",
+          "museLongitude": 83.76996234645429,
+          "providerLongitude": 83.7701405576455,
+          "differenceArcminutes": 0.010692671476135729,
+          "museSign": "gemini",
+          "providerSign": "Gemini",
+          "museRetrograde": false,
+          "providerRetrograde": false
+        },
+        {
+          "body": "Moon",
+          "museLongitude": 81.49342491224115,
+          "providerLongitude": 81.49502227597975,
+          "differenceArcminutes": 0.09584182431581212,
+          "museSign": "gemini",
+          "providerSign": "Gemini",
+          "museRetrograde": false,
+          "providerRetrograde": false
+        },
+        {
+          "body": "Mercury",
+          "museLongitude": 61.045844733115985,
+          "providerLongitude": 61.04504958603555,
+          "differenceArcminutes": 0.04770882482716843,
+          "museSign": "gemini",
+          "providerSign": "Gemini",
+          "museRetrograde": false,
+          "providerRetrograde": false
+        },
+        {
+          "body": "Venus",
+          "museLongitude": 45.99220023004767,
+          "providerLongitude": 45.99265974255227,
+          "differenceArcminutes": 0.02757075027375322,
+          "museSign": "taurus",
+          "providerSign": "Taurus",
+          "museRetrograde": false,
+          "providerRetrograde": false
+        },
+        {
+          "body": "Mars",
+          "museLongitude": 181.35787797196315,
+          "providerLongitude": 181.3577986688499,
+          "differenceArcminutes": 0.0047581867943335965,
+          "museSign": "libra",
+          "providerSign": "Libra",
+          "museRetrograde": false,
+          "providerRetrograde": false
+        },
+        {
+          "body": "Jupiter",
+          "museLongitude": 337.2379608048743,
+          "providerLongitude": 337.2386157996125,
+          "differenceArcminutes": 0.039299684290199366,
+          "museSign": "pisces",
+          "providerSign": "Pisces",
+          "museRetrograde": false,
+          "providerRetrograde": false
+        },
+        {
+          "body": "Saturn",
+          "museLongitude": 163.40066182993178,
+          "providerLongitude": 163.40125176452162,
+          "differenceArcminutes": 0.035396075388689496,
+          "museSign": "virgo",
+          "providerSign": "Virgo",
+          "museRetrograde": false,
+          "providerRetrograde": false
+        },
+        {
+          "body": "Uranus",
+          "museLongitude": 94.47633115916176,
+          "providerLongitude": 94.4762512884683,
+          "differenceArcminutes": 0.004792241604718583,
+          "museSign": "cancer",
+          "providerSign": "Cancer",
+          "museRetrograde": false,
+          "providerRetrograde": false
+        },
+        {
+          "body": "Neptune",
+          "museLongitude": 194.60575088008147,
+          "providerLongitude": 194.6077391313178,
+          "differenceArcminutes": 0.11929507417789864,
+          "museSign": "libra",
+          "providerSign": "Libra",
+          "museRetrograde": true,
+          "providerRetrograde": true
+        },
+        {
+          "body": "Pluto",
+          "museLongitude": 136.28375699273465,
+          "providerLongitude": 136.28345715175288,
+          "differenceArcminutes": 0.017990458909480367,
+          "museSign": "leo",
+          "providerSign": "Leo",
+          "museRetrograde": false,
+          "providerRetrograde": false
+        }
+      ]
+    },
+    {
+      "id": "la-dst-2024",
+      "localCivilDate": "2024-03-10",
+      "localCivilTime": "01:30",
+      "timeZone": "America/Los_Angeles",
+      "utcInstant": "2024-03-10T09:30:00.000Z",
+      "httpStatus": 200,
+      "providerInstant": "2024-03-10T09:30:00Z",
+      "providerReferenceFrame": "geocentric apparent ecliptic and true equinox of date",
+      "localAscendant": 266.16074475523584,
+      "localMidheaven": 193.91647950716452,
+      "localCusps": [
+        240,
+        270,
+        300,
+        330,
+        0,
+        30,
+        60,
+        90,
+        120,
+        150,
+        180,
+        210
+      ],
+      "positions": [
+        {
+          "body": "Sun",
+          "museLongitude": 350.300514603079,
+          "providerLongitude": 350.300371858728,
+          "differenceArcminutes": 0.008564661061427614,
+          "museSign": "pisces",
+          "providerSign": "Pisces",
+          "museRetrograde": false,
+          "providerRetrograde": false
+        },
+        {
+          "body": "Moon",
+          "museLongitude": 350.59379433452636,
+          "providerLongitude": 350.5930806634414,
+          "differenceArcminutes": 0.04282026509372372,
+          "museSign": "pisces",
+          "providerSign": "Pisces",
+          "museRetrograde": false,
+          "providerRetrograde": false
+        },
+        {
+          "body": "Mercury",
+          "museLongitude": 0.4374579677142947,
+          "providerLongitude": 0.4368069277292867,
+          "differenceArcminutes": 0.03906239909838405,
+          "museSign": "aries",
+          "providerSign": "Aries",
+          "museRetrograde": false,
+          "providerRetrograde": false
+        },
+        {
+          "body": "Venus",
+          "museLongitude": 328.1255915555837,
+          "providerLongitude": 328.1254712630852,
+          "differenceArcminutes": 0.00721754990536283,
+          "museSign": "aquarius",
+          "providerSign": "Aquarius",
+          "museRetrograde": false,
+          "providerRetrograde": false
+        },
+        {
+          "body": "Mars",
+          "museLongitude": 320.2061426554013,
+          "providerLongitude": 320.2060620266527,
+          "differenceArcminutes": 0.0048377249163422675,
+          "museSign": "aquarius",
+          "providerSign": "Aquarius",
+          "museRetrograde": false,
+          "providerRetrograde": false
+        },
+        {
+          "body": "Jupiter",
+          "museLongitude": 42.99487093051778,
+          "providerLongitude": 42.99595791314512,
+          "differenceArcminutes": 0.06521895764308283,
+          "museSign": "taurus",
+          "providerSign": "Taurus",
+          "museRetrograde": false,
+          "providerRetrograde": false
+        },
+        {
+          "body": "Saturn",
+          "museLongitude": 341.0566841897455,
+          "providerLongitude": 341.05799657499443,
+          "differenceArcminutes": 0.07874311493196728,
+          "museSign": "pisces",
+          "providerSign": "Pisces",
+          "museRetrograde": false,
+          "providerRetrograde": false
+        },
+        {
+          "body": "Uranus",
+          "museLongitude": 49.87905115146128,
+          "providerLongitude": 49.87916077279996,
+          "differenceArcminutes": 0.006577280319106649,
+          "museSign": "taurus",
+          "providerSign": "Taurus",
+          "museRetrograde": false,
+          "providerRetrograde": false
+        },
+        {
+          "body": "Neptune",
+          "museLongitude": 357.094513459213,
+          "providerLongitude": 357.0913585439624,
+          "differenceArcminutes": 0.18929491503968165,
+          "museSign": "pisces",
+          "providerSign": "Pisces",
+          "museRetrograde": false,
+          "providerRetrograde": false
+        },
+        {
+          "body": "Pluto",
+          "museLongitude": 301.450059290363,
+          "providerLongitude": 301.45039466028345,
+          "differenceArcminutes": 0.02012219522612213,
+          "museSign": "aquarius",
+          "providerSign": "Aquarius",
+          "museRetrograde": false,
+          "providerRetrograde": false
+        }
+      ]
+    },
+    {
+      "id": "buenos-aires-2019",
+      "localCivilDate": "2019-07-20",
+      "localCivilTime": "10:10",
+      "timeZone": "America/Argentina/Buenos_Aires",
+      "utcInstant": "2019-07-20T13:10:00.000Z",
+      "httpStatus": 200,
+      "providerInstant": "2019-07-20T13:10:00Z",
+      "providerReferenceFrame": "geocentric apparent ecliptic and true equinox of date",
+      "localAscendant": 160.26294668111916,
+      "localMidheaven": 78.17452851074518,
+      "localCusps": [
+        150,
+        180,
+        210,
+        240,
+        270,
+        300,
+        330,
+        0,
+        30,
+        60,
+        90,
+        120
+      ],
+      "positions": [
+        {
+          "body": "Sun",
+          "museLongitude": 117.54770027964435,
+          "providerLongitude": 117.5477426597771,
+          "differenceArcminutes": 0.0025428079652556335,
+          "museSign": "cancer",
+          "providerSign": "Cancer",
+          "museRetrograde": false,
+          "providerRetrograde": false
+        },
+        {
+          "body": "Moon",
+          "museLongitude": 337.83500393441545,
+          "providerLongitude": 337.83491068365646,
+          "differenceArcminutes": 0.005595045536210819,
+          "museSign": "pisces",
+          "providerSign": "Pisces",
+          "museRetrograde": false,
+          "providerRetrograde": false
+        },
+        {
+          "body": "Mercury",
+          "museLongitude": 119.14608011779296,
+          "providerLongitude": 119.1464270182741,
+          "differenceArcminutes": 0.02081402887142758,
+          "museSign": "cancer",
+          "providerSign": "Cancer",
+          "museRetrograde": true,
+          "providerRetrograde": true
+        },
+        {
+          "body": "Venus",
+          "museLongitude": 110.73777983964646,
+          "providerLongitude": 110.73784691922349,
+          "differenceArcminutes": 0.004024774618756055,
+          "museSign": "cancer",
+          "providerSign": "Cancer",
+          "museRetrograde": false,
+          "providerRetrograde": false
+        },
+        {
+          "body": "Mars",
+          "museLongitude": 131.80136597101693,
+          "providerLongitude": 131.80144259853859,
+          "differenceArcminutes": 0.0045976512956258375,
+          "museSign": "leo",
+          "providerSign": "Leo",
+          "museRetrograde": false,
+          "providerRetrograde": false
+        },
+        {
+          "body": "Jupiter",
+          "museLongitude": 255.24789102435886,
+          "providerLongitude": 255.24583830449933,
+          "differenceArcminutes": 0.12316319157207545,
+          "museSign": "sagittarius",
+          "providerSign": "Sagittarius",
+          "museRetrograde": true,
+          "providerRetrograde": true
+        },
+        {
+          "body": "Saturn",
+          "museLongitude": 286.4246040040424,
+          "providerLongitude": 286.42521973427466,
+          "differenceArcminutes": 0.036943813938705716,
+          "museSign": "capricorn",
+          "providerSign": "Capricorn",
+          "museRetrograde": true,
+          "providerRetrograde": true
+        },
+        {
+          "body": "Uranus",
+          "museLongitude": 36.40818968522166,
+          "providerLongitude": 36.40732219603914,
+          "differenceArcminutes": 0.05204935094980101,
+          "museSign": "taurus",
+          "providerSign": "Taurus",
+          "museRetrograde": false,
+          "providerRetrograde": false
+        },
+        {
+          "body": "Neptune",
+          "museLongitude": 348.50927822749645,
+          "providerLongitude": 348.50513795092894,
+          "differenceArcminutes": 0.2484165940541061,
+          "museSign": "pisces",
+          "providerSign": "Pisces",
+          "museRetrograde": true,
+          "providerRetrograde": true
+        },
+        {
+          "body": "Pluto",
+          "museLongitude": 291.7486768012809,
+          "providerLongitude": 291.7488810670676,
+          "differenceArcminutes": 0.01225594720153822,
+          "museSign": "capricorn",
+          "providerSign": "Capricorn",
+          "museRetrograde": true,
+          "providerRetrograde": true
+        }
+      ]
+    },
+    {
+      "id": "kolkata-2001",
+      "localCivilDate": "2001-01-01",
+      "localCivilTime": "12:00",
+      "timeZone": "Asia/Kolkata",
+      "utcInstant": "2001-01-01T06:30:00.000Z",
+      "httpStatus": 200,
+      "providerInstant": "2001-01-01T06:30:00Z",
+      "providerReferenceFrame": "geocentric apparent ecliptic and true equinox of date",
+      "localAscendant": 22.12008927131137,
+      "localMidheaven": 285.52160643547455,
+      "localCusps": [
+        0,
+        30,
+        60,
+        90,
+        120,
+        150,
+        180,
+        210,
+        240,
+        270,
+        300,
+        330
+      ],
+      "positions": [
+        {
+          "body": "Sun",
+          "museLongitude": 280.9093046520027,
+          "providerLongitude": 280.9094854715241,
+          "differenceArcminutes": 0.010849171280824521,
+          "museSign": "capricorn",
+          "providerSign": "Capricorn",
+          "museRetrograde": false,
+          "providerRetrograde": false
+        },
+        {
+          "body": "Moon",
+          "museLongitude": 351.9872179682974,
+          "providerLongitude": 351.9868236224585,
+          "differenceArcminutes": 0.023660750334784098,
+          "museSign": "pisces",
+          "providerSign": "Pisces",
+          "museRetrograde": false,
+          "providerRetrograde": false
+        },
+        {
+          "body": "Mercury",
+          "museLongitude": 284.71135463538985,
+          "providerLongitude": 284.71105301899735,
+          "differenceArcminutes": 0.01809698355373257,
+          "museSign": "capricorn",
+          "providerSign": "Capricorn",
+          "museRetrograde": false,
+          "providerRetrograde": false
+        },
+        {
+          "body": "Venus",
+          "museLongitude": 327.2661414103096,
+          "providerLongitude": 327.265850507344,
+          "differenceArcminutes": 0.01745417793699744,
+          "museSign": "aquarius",
+          "providerSign": "Aquarius",
+          "museRetrograde": false,
+          "providerRetrograde": false
+        },
+        {
+          "body": "Mars",
+          "museLongitude": 215.09606092460058,
+          "providerLongitude": 215.096187077247,
+          "differenceArcminutes": 0.007569158785827312,
+          "museSign": "scorpio",
+          "providerSign": "Scorpio",
+          "museRetrograde": false,
+          "providerRetrograde": false
+        },
+        {
+          "body": "Jupiter",
+          "museLongitude": 62.16817515593635,
+          "providerLongitude": 62.16850671280426,
+          "differenceArcminutes": 0.01989341207263351,
+          "museSign": "gemini",
+          "providerSign": "Gemini",
+          "museRetrograde": true,
+          "providerRetrograde": true
+        },
+        {
+          "body": "Saturn",
+          "museLongitude": 54.58244876115208,
+          "providerLongitude": 54.57941027911478,
+          "differenceArcminutes": 0.18230892223527917,
+          "museSign": "taurus",
+          "providerSign": "Taurus",
+          "museRetrograde": true,
+          "providerRetrograde": true
+        },
+        {
+          "body": "Uranus",
+          "museLongitude": 318.66043418323045,
+          "providerLongitude": 318.663192391423,
+          "differenceArcminutes": 0.16549249155104917,
+          "museSign": "aquarius",
+          "providerSign": "Aquarius",
+          "museRetrograde": false,
+          "providerRetrograde": false
+        },
+        {
+          "body": "Neptune",
+          "museLongitude": 305.3396707921787,
+          "providerLongitude": 305.33676602130777,
+          "differenceArcminutes": 0.1742862522564792,
+          "museSign": "aquarius",
+          "providerSign": "Aquarius",
+          "museRetrograde": false,
+          "providerRetrograde": false
+        },
+        {
+          "body": "Pluto",
+          "museLongitude": 253.7776978370756,
+          "providerLongitude": 253.77772244337766,
+          "differenceArcminutes": 0.001476378124607436,
+          "museSign": "sagittarius",
+          "providerSign": "Sagittarius",
+          "museRetrograde": false,
+          "providerRetrograde": false
+        }
+      ]
+    }
+  ]
+}

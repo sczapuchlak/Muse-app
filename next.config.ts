@@ -11,6 +11,9 @@ const nextConfig: NextConfig = {
   },
   cacheComponents: true,
   partialPrefetching: true,
+  outputFileTracingIncludes: {
+    '/api/astrology/places': ['./content/astrology/places.json.gz'],
+  },
   turbopack: {
     rules: {
       "*.css": {

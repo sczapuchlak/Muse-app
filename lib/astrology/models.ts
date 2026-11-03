@@ -1,0 +1,15 @@
+import type {ZodiacSign} from '@/lib/cosmic-forecast';
+export type BirthPlace={id:string;name:string;latitude:number;longitude:number;timeZone:string};
+export type BirthProfile={date:string;time:string;accuracy:'exact'|'approximate'|'unknown';uncertaintyMinutes:number;fold?:'earlier'|'later';place:BirthPlace|null;zodiac:'tropical';houseSystem:'whole-sign'};
+export const planetIds=['Sun','Moon','Mercury','Venus','Mars','Jupiter','Saturn','Uranus','Neptune','Pluto'] as const;
+export type PlanetId=typeof planetIds[number];
+export type Placement={body:PlanetId;longitude:number;sign:ZodiacSign;degree:number;retrograde:boolean;house:number|null;possibleSigns:ZodiacSign[];uncertain:boolean};
+export type NatalAspect={a:PlanetId;b:PlanetId;kind:'conjunction'|'sextile'|'square'|'trine'|'opposition';angle:number;orb:number;uncertain:boolean};
+export type NatalChart={engine:'astronomy-engine';version:'2.1.19';zodiac:'tropical';houseSystem:'whole-sign';calculatedAt:string;instant:string|null;interval:{start:string;end:string};accuracy:BirthProfile['accuracy'];precisionArcminutes:number;placements:Placement[];ascendant:{longitude:number;sign:ZodiacSign;possibleSigns:ZodiacSign[]}|null;midheaven:number|null;cusps:number[];aspects:NatalAspect[];warnings:string[]};
+export type AstrologyReference={type:'reflection'|'placement'|'event'|'library'|'forecast';id:string;title:string;date?:string;instant?:string};
+export type CosmicJournalEntry={id:string;user_id:string;date:string;time_zone:string;title:string;text:string;reference:AstrologyReference|null;revision:number;created_at:string;updated_at:string};
+export const astrologyActivityKinds=['forecast-viewed','forecast-saved','journal-created','chart-created','chart-explored','library-viewed','event-saved'] as const;
+export type AstrologyActivityKind=typeof astrologyActivityKinds[number];
+export type AstrologyActivity={user_id:string;kind:AstrologyActivityKind;reference_id:string;date:string;time_zone:string;created_at:string};
+export type AstrologySnapshot={profile:{payload:BirthProfile;revision:number;id:string}|null;chart:{payload:NatalChart;profile_revision:number;id:string}|null;journal:CosmicJournalEntry[];activity:AstrologyActivity[]};
+export const emptyAstrology=():AstrologySnapshot=>({profile:null,chart:null,journal:[],activity:[]});
