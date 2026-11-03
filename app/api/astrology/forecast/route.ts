@@ -3,6 +3,7 @@ import {routeAuthClient,privateResponse} from '@/lib/auth/http';
 import {todayInTimeZone,validDate} from '@/lib/dates';
 import {createHoroscopeService,forecastRange,validForecastRequest,type ForecastRequest,type HoroscopeProvider,type HoroscopeResult} from '@/lib/astrology/forecast';
 import {zodiacSigns} from '@/lib/cosmic-forecast';
+import {forecastPreview,parseForecastContent,parseForecastKeyDates} from '@/lib/astrology/forecast-content';
 
 const unavailable:HoroscopeResult={status:'unavailable',reason:'not-published',message:'A current horoscope is not available yet. Please check back later.'};
 const validText=(value:unknown):value is string=>typeof value==='string'&&value.trim().length>0;
@@ -20,8 +21,10 @@ const provider:HoroscopeProvider={
   if(query.period==='daily'&&(!validDate(raw.date as string)||raw.date!==query.date))return unavailable;
   if(query.period==='weekly'&&(!validDate(raw.start_date as string)||!validDate(raw.end_date as string)||raw.start_date!==range.start||raw.end_date!==range.end))return unavailable;
   if(query.period==='monthly'&&(!Number.isInteger(raw.year)||!Number.isInteger(raw.month)||raw.year!==Number(query.date.slice(0,4))||raw.month!==Number(query.date.slice(5,7))))return unavailable;
-  const now=Date.now(),text=raw.content.trim(),preview=text.split(/\n\s*\n/).find(part=>part.trim()&&!part.trim().startsWith('✨'))??text;
-  return {status:'ready',cached:false,stale:false,forecast:{provider:'cosmyday',sign:query.sign,category:query.category,period:query.period,range,timeZone:query.timeZone,language:query.language,preview,text,attribution:'Forecast by CosmyDay',sourceUrl:'https://cosmyday.com',retrievedAt:new Date(now).toISOString(),expiresAt:new Date(now+900000).toISOString(),snapshot:'reference-only'}};
+  if(raw.closing!==undefined&&typeof raw.closing!=='string')return unavailable;
+  const keyDates=parseForecastKeyDates(raw.key_dates);if(keyDates===null)return unavailable;
+  const now=Date.now(),text=raw.content.trim(),sections=parseForecastContent(text),preview=forecastPreview(sections),closing=typeof raw.closing==='string'?raw.closing.trim():undefined;
+  return {status:'ready',cached:false,stale:false,forecast:{provider:'cosmyday',sign:query.sign,category:query.category,period:query.period,range,timeZone:query.timeZone,language:query.language,preview,text,sections,...(closing?{closing}:{}),...(keyDates.length?{keyDates}:{}),attribution:'Forecast by CosmyDay',sourceUrl:'https://cosmyday.com',retrievedAt:new Date(now).toISOString(),expiresAt:new Date(now+900000).toISOString(),snapshot:'reference-only'}};
  }
 };
 const service=createHoroscopeService(provider);

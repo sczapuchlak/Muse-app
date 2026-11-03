@@ -1,5 +1,6 @@
 import {zodiacSigns,type ZodiacSign} from '@/lib/cosmic-forecast';
 import {shiftDate,validDate,validTimeZone,weekDates} from '@/lib/dates';
+import type {ForecastEditorialBlock,ForecastKeyDate} from './forecast-content';
 
 export const forecastPeriods=['daily','weekly','monthly'] as const;
 export type ForecastPeriod=typeof forecastPeriods[number];
@@ -8,7 +9,7 @@ export type ForecastCategory=typeof forecastCategories[number];
 export const forecastCategoryLabels:Record<ForecastCategory,string>={overview:'Overview',love:'Love & Relationships',career:'Career & Work',money:'Money & Resources',creativity:'Creativity & Inspiration',social:'Social & Friendships',wellbeing:'Energy & Wellbeing',personal:'Personal',emotions:'Emotions',travel:'Travel',luck:'Luck'};
 export type ForecastRequest={sign:ZodiacSign;category:ForecastCategory;period:ForecastPeriod;date:string;timeZone:string;language:string};
 export type ForecastRange={start:string;end:string};
-export type Horoscope={provider:string;sign:ZodiacSign;category:ForecastCategory;period:ForecastPeriod;range:ForecastRange;timeZone:string;language:string;headline?:string;preview:string;text:string;attribution:string;sourceUrl:string;retrievedAt:string;expiresAt:string;snapshot:'reference-only'|'text'};
+export type Horoscope={provider:string;sign:ZodiacSign;category:ForecastCategory;period:ForecastPeriod;range:ForecastRange;timeZone:string;language:string;headline?:string;preview:string;text:string;sections?:ForecastEditorialBlock[];closing?:string;keyDates?:ForecastKeyDate[];attribution:string;sourceUrl:string;retrievedAt:string;expiresAt:string;snapshot:'reference-only'|'text'};
 export type HoroscopeResult={status:'ready';forecast:Horoscope;cached:boolean;stale:boolean}|{status:'unavailable';reason:'not-configured'|'unsupported'|'not-published';message:string}|{status:'error';code:'invalid-request'|'invalid-response'|'timeout'|'provider'|'rate-limited';message:string;retryAt?:string};
 export type HoroscopeCapabilities={id:string;version:string;signs:readonly ZodiacSign[];periods:Partial<Record<ForecastPeriod,readonly ForecastCategory[]>>;cacheMaxSeconds:number;staleMaxSeconds:number;snapshot:'reference-only'|'text'};
 export interface HoroscopeProvider{capabilities:HoroscopeCapabilities;fetch(request:ForecastRequest,signal:AbortSignal):Promise<HoroscopeResult>}
