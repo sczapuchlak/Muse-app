@@ -54,5 +54,10 @@ export function createHoroscopeService(provider:HoroscopeProvider,options:{now?:
  return {request,capabilities:provider.capabilities,clear:()=>cache.clear()};
 }
 
-/** Required live content awaits approval; these periods are unselected UI contracts, not vendor coverage. */
-export const observatoryForecasts=createHoroscopeService({capabilities:{id:'unselected',version:'1',signs:zodiacSigns,periods:{daily:['overview'],weekly:['overview'],monthly:['overview']},cacheMaxSeconds:0,staleMaxSeconds:0,snapshot:'reference-only'},async fetch(){return {status:'unavailable',reason:'not-configured',message:'Live horoscopes are awaiting an approved source. You can choose a default sign in My Cosmic Profile; local charts, the library and calendar work independently.'};}});
+/** Browser facade. Forecast text is fetched from Muse's private server route and never cached in the browser. */
+export const observatoryForecasts={capabilities:{id:'cosmyday',version:'1',signs:zodiacSigns,periods:{daily:['overview'],weekly:['overview'],monthly:['overview']} as HoroscopeCapabilities['periods']},async request(query:ForecastRequest):Promise<HoroscopeResult>{
+ if(!validForecastRequest(query))return {status:'error',code:'invalid-request',message:'Choose a valid forecast request.'};
+ if(query.category!=='overview')return {status:'unavailable',reason:'unsupported',message:'This source offers overview forecasts only.'};
+ try{const params=new URLSearchParams(query);const response=await fetch(`/api/astrology/forecast?${params}`,{cache:'no-store'});return await response.json() as HoroscopeResult;}
+ catch{return {status:'error',code:'provider',message:'The forecast could not load. Please try again.'};}
+}};
