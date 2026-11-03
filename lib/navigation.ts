@@ -17,6 +17,6 @@ export const navigation: NavItem[] = [
 
 export const desktopGroups = ["Everyday", "Reflect", "Life"] as const;
 export const mobilePrimaryIds = ["daily", "planner", "rituals"];
-export const mobileMoreIds = ["mood", "nourish", "insights", "money", "notes", "whimsy", "settings"];
+export const mobileMoreIds = ["mood", "nourish", "insights", "money", "notes", "whimsy", "appearance", "settings"];
 export function navItems(ids: string[]): NavItem[] { return ids.map((id) => navigation.find((item) => item.id === id)).filter((item): item is NavItem => Boolean(item)); }
 export function isActiveDestination(path: string, href: string): boolean { return href === "/" ? path === "/" : path === href || path.startsWith(`${href}/`); }

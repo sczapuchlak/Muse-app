@@ -497,3 +497,9 @@ The Cosmic Observatory is an approved sixth Whimsy experience. Real daily, weekl
 ## CosmyDay forecast MVP — approved November 2026
 
 CosmyDay is the approved no-cost source for the three overview horoscope periods. The earlier provider-unselected language above describes the previous implementation state. Daily Edit and Cosmic Observatory share the same authenticated server route. Only a forecast whose provider period covers the reader's current local date may be displayed. Source text is cached in server memory for at most 15 minutes, with no stale fallback, durable snapshot, account export or offline copy. Display a visible CosmyDay link with every forecast. Other life-area categories remain unsupported. Production release requires a separate approval.
+
+## Sidebar navigation and Collections placement — approved
+
+The desktop sidebar has one viewport-bounded vertical scroll region containing the brand, Everyday, Reflect, Life, theme control, Settings and Sign Out. On tall screens the theme and utility controls rest toward the bottom; on short screens every control scrolls with the rail. The main page scroll remains independent. Settings and Sign Out use compact icon controls with accessible labels and focus/hover help. The existing mobile bottom navigation and More menu retain their behavior.
+
+Collections is the approved future top-level Life destination between Mindspace and Whimsy. Its planned sections are Overview, Books, Movies, TV Shows, Games and My Collections; series details belong within the relevant media experiences and overview. The current Bookshelf remains in Whimsy until Collections has a functional destination and a separately reviewed move preserving all book records and deep links. Do not expose a placeholder Collections route as working navigation.
