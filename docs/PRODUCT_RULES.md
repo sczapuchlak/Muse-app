@@ -490,7 +490,7 @@ Bookshelf tracks reading as explicit owner-owned books and completed sessions. O
 
 ## Whimsy MVP navigation — approved local behavior
 
-The base `/whimsy` route opens The Cosmic Observatory directly. My Cosmic Profile is its default first section; explicit `?view=` links to other Observatory sections remain stable across refresh and browser navigation. The shared Whimsy tabs are ordered Observatory, Tarot, Dreamscapes, Fortunes, then Weekly Side Quests. Bookshelf is presented under Collections using its existing records and services; `/whimsy/bookshelf` redirects to `/collections?view=books`, and the saved widget preference remains valid. The old stacked-card overview is no longer in the normal flow; a useful cross-experience dashboard is future work.
+The base `/whimsy` route opens a five-experience overview hub. The Cosmic Observatory opens Horoscopes by default. My Cosmic Profile is a settings modal opened from a clearly labeled header button, not a primary section or Whimsy landing page; closing it preserves the current Observatory section. Explicit `?view=` links to Observatory content sections remain stable across refresh and browser navigation. The shared Whimsy tabs are ordered Observatory, Tarot, Dreamscapes, Fortunes, then Weekly Side Quests. Bookshelf is presented under Collections using its existing records and services; `/whimsy/bookshelf` redirects to `/collections?view=books`, and the saved widget preference remains valid. The five experience cards on the Whimsy overview lead directly to their existing destinations.
 
 ## Cosmic Observatory forecast decision — approved scope, provider unresolved
 

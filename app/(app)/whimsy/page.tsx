@@ -1,3 +1,3 @@
-import {redirect} from 'next/navigation';
+import {WhimsyFoundation} from '@/components/whimsy/WhimsyFoundation';
 
-export default function Page(){redirect('/whimsy/observatory');}
+export default function Page(){return <WhimsyFoundation/>;}

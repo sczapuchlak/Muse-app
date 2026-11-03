@@ -38,12 +38,20 @@ try{
  await navigate('/whimsy/tarot');
  await until(()=>location.origin===origin&&!!document.querySelector('.muse-tarot'),'Tarot loads from the worktree server');
  await evaluate(()=>[...document.querySelectorAll('.muse-rail-navigation a')].find(link=>link.textContent.trim()==='Whimsy').click());
- await until(()=>location.pathname==='/whimsy/observatory'&&!document.querySelector('#cosmic-profile')?.hidden,'Sidebar Whimsy opens Observatory profile');
+ await until(()=>location.pathname==='/whimsy'&&!!document.querySelector('.muse-whimsy-foundation-grid'),'Sidebar Whimsy opens the overview');
+ assert.equal(await evaluate(()=>document.querySelectorAll('.muse-whimsy-foundation-grid a[href^="/whimsy/"]').length),5);
+ await evaluate(()=>document.querySelector('.muse-whimsy-navigation a[href="/whimsy/observatory"]').click());
+ await until(()=>location.pathname==='/whimsy/observatory'&&!document.querySelector('#cosmic-forecast')?.hidden,'Observatory opens Horoscopes');
  await until(()=>document.querySelector('.muse-cosmic-save-status')?.textContent.includes('saved records loaded'),'Observatory hydrates and loads private records');
  assert.equal(await evaluate(()=>!!document.querySelector('.muse-whimsy-foundation-grid')),false);
  assert.deepEqual(await evaluate(()=>[...document.querySelectorAll('.muse-whimsy-navigation a')].map(link=>link.textContent.trim())),['The Cosmic Observatory','Tarot Sanctuary','Dreamscapes','Fortunes & Nonsense','Weekly Side Quests']);
  assert.equal(await evaluate(()=>document.querySelector('.muse-whimsy-navigation [aria-current=page]')?.textContent.trim()),'The Cosmic Observatory');
- assert.equal(await evaluate(()=>document.querySelector('.muse-cosmic-navigation [aria-current=page]')?.textContent.trim()),'My Cosmic Profile');
+ assert.equal(await evaluate(()=>document.querySelector('.muse-cosmic-navigation [aria-current=page]')?.textContent.trim()),'Horoscopes');
+ assert.equal(await evaluate(()=>[...document.querySelectorAll('.muse-cosmic-navigation button')].some(button=>button.textContent.trim()==='My Cosmic Profile')),false);
+ await evaluate(()=>[...document.querySelectorAll('.muse-whimsy-experience-actions button')].find(button=>button.textContent.trim()==='My Cosmic Profile').click());
+ await until(()=>!!document.querySelector('#cosmic-profile-settings[open]'),'Profile button opens settings');
+ await evaluate(()=>document.querySelector('#cosmic-profile-settings button[aria-label="Close My Cosmic Profile"]').click());
+ await until(()=>!document.querySelector('#cosmic-profile-settings[open]')&&!document.querySelector('#cosmic-forecast')?.hidden,'Closing profile preserves Horoscopes');
  await evaluate(()=>[...document.querySelectorAll('.muse-cosmic-navigation button')].find(button=>button.textContent.trim()==='Horoscopes').click());
  await until(()=>location.search==='?view=forecast'&&!document.querySelector('#cosmic-forecast').hidden,'Forecast section opens');
  await evaluate(()=>[...document.querySelectorAll('.muse-cosmic-navigation button')].find(button=>button.textContent.trim()==='Birth Chart').click());
@@ -61,7 +69,7 @@ try{
   await until(`()=>document.querySelector('.muse-whimsy-navigation a[aria-current=page]')?.getAttribute('href')==='/whimsy/${id}'`,`${id} deep link loads`);
  }
  await navigate('/whimsy');
- await until(()=>location.pathname==='/whimsy/observatory'&&!document.querySelector('#cosmic-profile')?.hidden,'Base Whimsy redirects to profile');
+ await until(()=>location.pathname==='/whimsy'&&!!document.querySelector('.muse-whimsy-foundation-grid'),'Base Whimsy opens overview');
  await navigate('/collections');
  await until(()=>!!document.querySelector('.muse-collections-overview')&&!!document.querySelector('.muse-rail-navigation a[href=\"/collections\"]'),'Collections overview and sidebar link load');
  await until(()=>document.querySelector('.muse-collections-overview')?.textContent.includes('Your museum starts with a story.'),'Empty collection uses real-record state');
