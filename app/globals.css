@@ -509,3 +509,6 @@ input[type="search"] { padding:var(--space-2) var(--space-3); line-height:1.45; 
 .movement-selection-status > button { flex-shrink:0; }
 
 @media(max-width:600px) { :root { --header-top-air:8px; } }
+
+.muse-movement-completion{flex:0 0 auto;min-height:36px;padding:6px 12px;font-size:.78rem;white-space:nowrap}
+.muse-movement-completion[data-completed=true]{color:var(--selected-text);background:var(--selected-background);border-color:var(--selected-border)}

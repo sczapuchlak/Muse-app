@@ -34,3 +34,12 @@
 .muse-cosmic-placement-detail .muse-cosmic-entry-hero{border-top:3px solid var(--accent-primary)}.muse-cosmic-placement-facts{padding:16px 18px;border:1px solid var(--glass-border);border-radius:15px;background:var(--surface-subtle)}.muse-cosmic-placement-facts .muse-cosmic-entry-badges{margin-block:10px}.muse-cosmic-placement-detail .muse-cosmic-entry-sections>section{border-left:3px solid var(--accent-primary)}
 
 .muse-observatory .muse-cosmic-profile-panel{max-height:none;overflow:visible;padding:0}
+
+/* Horoscope actions sit beside the sign keepsake without stretching across the page. */
+.muse-cosmic-forecast-head{align-items:center}
+.muse-cosmic-forecast-head>div:first-child{flex:1 1 210px;min-width:0}
+.muse-cosmic-forecast-summary{display:flex;align-items:center;justify-content:flex-end;gap:12px;flex:1 1 490px;min-width:0;flex-wrap:wrap}
+.muse-cosmic-forecast-summary .muse-cosmic-forecast-sign{flex:0 1 auto}
+.muse-cosmic-forecast-actions{justify-content:flex-end;gap:8px}
+.muse-cosmic-forecast-actions .muse-button{flex:0 0 auto;min-height:38px;padding:7px 11px;font-size:.78rem;white-space:nowrap}
+@media(max-width:720px){.muse-cosmic-forecast-summary{justify-content:flex-start;flex-basis:100%}.muse-cosmic-forecast-actions{justify-content:flex-start}}
