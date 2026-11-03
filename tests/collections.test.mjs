@@ -1,0 +1,35 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {load} from './helpers.mjs';
+const models=load('lib/collections/models'),insights=load('lib/collections/insights');
+const media=(id,kind,status,completed_on=null)=>({id,user_id:'owner',kind,title:id,creator:'Creator',cover_url:null,status,genres:['Fantasy'],rating:null,favorite:false,created_at:'2026-10-01T00:00:00Z',updated_at:'2026-10-01T00:00:00Z',completed_on});
+const series=(scope='released')=>({id:'series',kind:'movie',scope});
+const member=(id,sequence,release_state='released')=>({id,series_id:'series',media_id:id,book_id:null,sequence,release_state,role:'mainline'});
+test('series progress distinguishes released, announced and selected denominators',()=>{
+ const items=[media('one','movie','watched'),media('two','movie','planned')],members=[member('one',1),member('two',2,'announced')];
+ let result=models.seriesProgress(series('released'),members,[],items);
+ assert.equal(result.completed,1);assert.equal(result.total,1);assert.equal(result.status,'caught-up');
+ result=models.seriesProgress(series('announced'),members,[],items);
+ assert.equal(result.completed,1);assert.equal(result.total,2);assert.equal(result.status,'caught-up');
+ assert.equal(result.next.id,'two');
+ result=models.seriesProgress(series('selected'),members,[],items);
+ assert.equal(result.total,2);
+ result=models.seriesProgress(series('released'),[member('one',1)],[],items);
+ assert.equal(result.status,'completed');
+ result=models.seriesProgress(series('released'),[member('two',1)],[],items);
+ assert.equal(result.status,'not-started');
+ result=models.seriesProgress(series('released'),[],[],items);
+ assert.equal(result.percentage,null);
+});
+test('TV progress excludes announced, future, and special episodes from available denominator',()=>{
+ const episode=(id,season_number,episode_number,release_state='released',air_date='2026-11-01',special=false)=>({id,show_id:'show',season_number,episode_number,release_state,air_date,special});
+ const episodes=[episode('one',1,1),episode('two',1,2),episode('future',1,3,'announced'),episode('later',2,1,'released','2026-12-01'),episode('special',0,1,'released','2026-11-01',true)];
+ const activity=[{media_id:'show',episode_id:'one',kind:'episode-watch'}];
+ const result=models.tvProgress('show',episodes,activity,'2026-11-03');
+ assert.equal(result.available,2);assert.equal(result.watched,1);assert.equal(result.next.id,'two');assert.deepEqual(result.seasons,[{season:1,watched:1,available:2}]);
+});
+test('Collections metrics and recap count only dated owned records and preserve missing time',()=>{
+ const records=models.emptyCollections();records.media=[media('film','movie','watched','2026-11-02'),media('game','game','completed','2026-10-31')];records.activity=[{id:'view',media_id:'film',kind:'watch',activity_date:'2026-11-02',duration_minutes:null,episode_id:null},{id:'old',media_id:'game',kind:'play',activity_date:'2026-10-31',duration_minutes:30,episode_id:null}];
+ const range={start:'2026-11-01',end:'2026-11-30'},metrics=insights.collectionsMetrics(records,[],[],range),recap=insights.collectionRecap(records,[],[],range);
+ assert.equal(metrics.movies.completed,1);assert.equal(metrics.games.completed,0);assert.equal(metrics.movies.viewings,1);assert.equal(metrics.movies.sessionsMissingDuration,1);assert.equal(metrics.games.playSessions,0);assert.equal(recap.moviesCompleted,1);assert.equal(recap.missingDurationSessions,1);assert.equal(recap.recordedViewingMinutes,0);assert.equal(recap.timeline.length,1);
+});

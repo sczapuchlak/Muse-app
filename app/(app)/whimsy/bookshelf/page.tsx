@@ -1,2 +1,3 @@
-import {Bookshelf} from '@/components/whimsy/Bookshelf';
-export default function Page(){return <Bookshelf/>;}
+import {redirect} from 'next/navigation';
+
+export default function Page(){redirect('/collections?view=books');}

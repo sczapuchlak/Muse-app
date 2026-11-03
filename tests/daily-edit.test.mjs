@@ -159,9 +159,9 @@ test('picker footer is separate from results; shared CSS preserves alignment and
 test('global navigation covers every destination and keeps mobile primary/More choices centralized', () => {
   const { navigation, desktopGroups, mobilePrimaryIds, mobileMoreIds, navItems, isActiveDestination } = load('lib/navigation');
   assert.deepEqual(desktopGroups, ['Everyday','Reflect','Life']);
-  assert.equal(new Set(navigation.map((item) => item.href)).size, 11);
+  assert.equal(new Set(navigation.map((item) => item.href)).size, 12);
   assert.deepEqual(navItems(mobilePrimaryIds).map((item) => item.id), ['daily','planner','rituals']);
-  assert.deepEqual(navItems(mobileMoreIds).map((item) => item.id), ['mood','nourish','insights','money','notes','whimsy','settings']);
+  assert.deepEqual(navItems(mobileMoreIds).map((item) => item.id), ['mood','nourish','insights','money','notes','collections','whimsy','settings']);
   assert.equal(new Set([...mobilePrimaryIds,...mobileMoreIds]).size, navigation.filter(item=>item.id!=='appearance').length);
   assert.equal(isActiveDestination('/','/'), true);
   assert.equal(isActiveDestination('/planner','/'), false);

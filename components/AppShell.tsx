@@ -18,6 +18,7 @@ import {AccountPreferencesProvider,useAccountPreferences} from "./AccountPrefere
 import {ConstellationsProvider} from "./notes/ConstellationsStore";
 import {AstrologyDataProvider} from './astrology/AstrologyData';
 import {WhimsyDataProvider} from "./whimsy/WhimsyData";
+import {CollectionsDataProvider} from "./collections/CollectionsData";
 import {NotesProvider} from "./notes/NotesStore";
 import { PlannerProvider } from "./PlannerStore";
 import { MuseSessionProvider } from "./MuseSession";
@@ -46,7 +47,7 @@ function AppShellContent({ children, profile:initialProfile }: { children: React
   const moreActive = navItems(mobileMoreIds).some((item) => isActiveDestination(path, item.href));
   return (
     <MuseSessionProvider initialDate={todayInTimeZone(profile.timeZone)}><DailyDataProvider profile={profile}><DailyDateSync/>
-      <AstrologyDataProvider key={profile.id} userId={profile.id}><WhimsyDataProvider userId={profile.id} timeZone={profile.timeZone}><ConstellationsProvider profile={profile}><NotesProvider profile={profile}><PlannerProvider profile={profile}><WellnessProvider key={profile.id} userId={profile.id}><NourishProvider><MoneyProvider key={profile.id} userId={profile.id}><RitualProvider key={profile.id} userId={profile.id}><div className="muse-app-shell" data-rail={collapsed ? "collapsed" : "expanded"} data-module={path.split("/")[1]||"daily"}>
+      <AstrologyDataProvider key={profile.id} userId={profile.id}><WhimsyDataProvider userId={profile.id} timeZone={profile.timeZone}><CollectionsDataProvider userId={profile.id}><ConstellationsProvider profile={profile}><NotesProvider profile={profile}><PlannerProvider profile={profile}><WellnessProvider key={profile.id} userId={profile.id}><NourishProvider><MoneyProvider key={profile.id} userId={profile.id}><RitualProvider key={profile.id} userId={profile.id}><div className="muse-app-shell" data-rail={collapsed ? "collapsed" : "expanded"} data-module={path.split("/")[1]||"daily"}>
         <MuseMagicBridge/><MuseAtmosphere/>
         <a className="muse-skip-link" href="#muse-main-content">Skip to content</a>
         <aside className="muse-rail" aria-label="Muse app navigation">
@@ -82,7 +83,7 @@ function AppShellContent({ children, profile:initialProfile }: { children: React
           <p className="editor-label">More from Muse</p>
           <div className="muse-more-destinations">{navItems(mobileMoreIds).map((item) => <NavDestination key={item.id} item={item} path={path} onNavigate={() => setMoreOpen(false)} />)}<LogoutButton/></div>
         </GlassPopover>
-      </div></RitualProvider></MoneyProvider></NourishProvider></WellnessProvider></PlannerProvider></NotesProvider></ConstellationsProvider></WhimsyDataProvider></AstrologyDataProvider>
+      </div></RitualProvider></MoneyProvider></NourishProvider></WellnessProvider></PlannerProvider></NotesProvider></ConstellationsProvider></CollectionsDataProvider></WhimsyDataProvider></AstrologyDataProvider>
     </DailyDataProvider></MuseSessionProvider>
   );
 }

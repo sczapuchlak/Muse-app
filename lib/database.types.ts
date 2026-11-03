@@ -261,6 +261,158 @@ isOneToOne: false
       referencedColumns: ["user_id","id"]
     }
                   ]
+                },"collection_activity": {
+                  Row: {
+                    "activity_date": string,"created_at": string,"duration_minutes": number | null,"episode_id": string | null,"id": string,"kind": string,"media_id": string,"notes": string,"platform": string,"revision": number,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "activity_date": string,"created_at"?: string,"duration_minutes"?: number | null,"episode_id"?: string | null,"id": string,"kind": string,"media_id": string,"notes"?: string,"platform"?: string,"revision"?: number,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "activity_date"?: string,"created_at"?: string,"duration_minutes"?: number | null,"episode_id"?: string | null,"id"?: string,"kind"?: string,"media_id"?: string,"notes"?: string,"platform"?: string,"revision"?: number,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "collection_activity_user_id_episode_id_fkey"
+      columns: ["user_id","episode_id"]
+isOneToOne: false
+      referencedRelation: "collection_tv_episodes"
+      referencedColumns: ["user_id","id"]
+    },{
+      foreignKeyName: "collection_activity_user_id_media_id_fkey"
+      columns: ["user_id","media_id"]
+isOneToOne: false
+      referencedRelation: "collection_media_items"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+                },"collection_curated": {
+                  Row: {
+                    "accent": string,"created_at": string,"description": string,"icon": string,"id": string,"layout": string,"revision": number,"title": string,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "accent"?: string,"created_at"?: string,"description"?: string,"icon"?: string,"id": string,"layout"?: string,"revision"?: number,"title": string,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "accent"?: string,"created_at"?: string,"description"?: string,"icon"?: string,"id"?: string,"layout"?: string,"revision"?: number,"title"?: string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
+                },"collection_curated_members": {
+                  Row: {
+                    "book_id": string | null,"collection_id": string,"created_at": string,"id": string,"media_id": string | null,"position": number,"revision": number,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "book_id"?: string | null,"collection_id": string,"created_at"?: string,"id": string,"media_id"?: string | null,"position": number,"revision"?: number,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "book_id"?: string | null,"collection_id"?: string,"created_at"?: string,"id"?: string,"media_id"?: string | null,"position"?: number,"revision"?: number,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "collection_curated_members_user_id_book_id_fkey"
+      columns: ["user_id","book_id"]
+isOneToOne: false
+      referencedRelation: "whimsy_books"
+      referencedColumns: ["user_id","id"]
+    },{
+      foreignKeyName: "collection_curated_members_user_id_collection_id_fkey"
+      columns: ["user_id","collection_id"]
+isOneToOne: false
+      referencedRelation: "collection_curated"
+      referencedColumns: ["user_id","id"]
+    },{
+      foreignKeyName: "collection_curated_members_user_id_media_id_fkey"
+      columns: ["user_id","media_id"]
+isOneToOne: false
+      referencedRelation: "collection_media_items"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+                },"collection_media_items": {
+                  Row: {
+                    "cast_names": (string)[],"completed_on": string | null,"cover_url": string | null,"created_at": string,"creator": string,"description": string,"developer": string,"favorite": boolean,"genres": (string)[],"id": string,"kind": string,"notes": string,"platform_played": string,"platforms": (string)[],"playtime_minutes": number | null,"progress_percent": number | null,"provider": string | null,"provider_id": string | null,"publisher": string,"rating": number | null,"release_date": string | null,"review": string,"revision": number,"runtime_minutes": number | null,"started_on": string | null,"status": string,"tags": (string)[],"title": string,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "cast_names"?: (string)[],"completed_on"?: string | null,"cover_url"?: string | null,"created_at"?: string,"creator"?: string,"description"?: string,"developer"?: string,"favorite"?: boolean,"genres"?: (string)[],"id": string,"kind": string,"notes"?: string,"platform_played"?: string,"platforms"?: (string)[],"playtime_minutes"?: number | null,"progress_percent"?: number | null,"provider"?: string | null,"provider_id"?: string | null,"publisher"?: string,"rating"?: number | null,"release_date"?: string | null,"review"?: string,"revision"?: number,"runtime_minutes"?: number | null,"started_on"?: string | null,"status": string,"tags"?: (string)[],"title": string,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "cast_names"?: (string)[],"completed_on"?: string | null,"cover_url"?: string | null,"created_at"?: string,"creator"?: string,"description"?: string,"developer"?: string,"favorite"?: boolean,"genres"?: (string)[],"id"?: string,"kind"?: string,"notes"?: string,"platform_played"?: string,"platforms"?: (string)[],"playtime_minutes"?: number | null,"progress_percent"?: number | null,"provider"?: string | null,"provider_id"?: string | null,"publisher"?: string,"rating"?: number | null,"release_date"?: string | null,"review"?: string,"revision"?: number,"runtime_minutes"?: number | null,"started_on"?: string | null,"status"?: string,"tags"?: (string)[],"title"?: string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
+                },"collection_series": {
+                  Row: {
+                    "cover_url": string | null,"created_at": string,"description": string,"id": string,"kind": string,"revision": number,"scope": string,"title": string,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "cover_url"?: string | null,"created_at"?: string,"description"?: string,"id": string,"kind": string,"revision"?: number,"scope"?: string,"title": string,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "cover_url"?: string | null,"created_at"?: string,"description"?: string,"id"?: string,"kind"?: string,"revision"?: number,"scope"?: string,"title"?: string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
+                },"collection_series_members": {
+                  Row: {
+                    "book_id": string | null,"created_at": string,"id": string,"media_id": string | null,"release_state": string,"revision": number,"role": string,"sequence": number,"series_id": string,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "book_id"?: string | null,"created_at"?: string,"id": string,"media_id"?: string | null,"release_state"?: string,"revision"?: number,"role"?: string,"sequence": number,"series_id": string,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "book_id"?: string | null,"created_at"?: string,"id"?: string,"media_id"?: string | null,"release_state"?: string,"revision"?: number,"role"?: string,"sequence"?: number,"series_id"?: string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "collection_series_members_user_id_book_id_fkey"
+      columns: ["user_id","book_id"]
+isOneToOne: false
+      referencedRelation: "whimsy_books"
+      referencedColumns: ["user_id","id"]
+    },{
+      foreignKeyName: "collection_series_members_user_id_media_id_fkey"
+      columns: ["user_id","media_id"]
+isOneToOne: false
+      referencedRelation: "collection_media_items"
+      referencedColumns: ["user_id","id"]
+    },{
+      foreignKeyName: "collection_series_members_user_id_series_id_fkey"
+      columns: ["user_id","series_id"]
+isOneToOne: false
+      referencedRelation: "collection_series"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+                },"collection_tv_episodes": {
+                  Row: {
+                    "air_date": string | null,"created_at": string,"episode_number": number,"id": string,"release_state": string,"revision": number,"runtime_minutes": number | null,"season_number": number,"show_id": string,"special": boolean,"synopsis": string,"title": string,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "air_date"?: string | null,"created_at"?: string,"episode_number": number,"id": string,"release_state"?: string,"revision"?: number,"runtime_minutes"?: number | null,"season_number": number,"show_id": string,"special"?: boolean,"synopsis"?: string,"title"?: string,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "air_date"?: string | null,"created_at"?: string,"episode_number"?: number,"id"?: string,"release_state"?: string,"revision"?: number,"runtime_minutes"?: number | null,"season_number"?: number,"show_id"?: string,"special"?: boolean,"synopsis"?: string,"title"?: string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "collection_tv_episodes_user_id_show_id_fkey"
+      columns: ["user_id","show_id"]
+isOneToOne: false
+      referencedRelation: "collection_media_items"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
                 },"constellation_cards": {
                   Row: {
                     "created_at": string,"id": string,"payload": NonNullable<Json>,"updated_at": string,"user_id": string
@@ -2021,6 +2173,9 @@ isOneToOne: false
                            },
 "save_whimsy_record":
 { Args: { "p_command_id": string,"p_delete"?: boolean,"p_expected_revision": number,"p_kind": string,"p_record": Json }; Returns: Json
+                           },
+"swap_collection_members":
+{ Args: { "p_first": string,"p_first_revision": number,"p_second": string,"p_second_revision": number }; Returns: undefined
                            },
 "task_completion_before":
 { Args: { "p_before": string,"p_task_id": string }; Returns: {
