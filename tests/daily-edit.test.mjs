@@ -161,8 +161,8 @@ test('global navigation covers every destination and keeps mobile primary/More c
   assert.deepEqual(desktopGroups, ['Everyday','Reflect','Life']);
   assert.equal(new Set(navigation.map((item) => item.href)).size, 11);
   assert.deepEqual(navItems(mobilePrimaryIds).map((item) => item.id), ['daily','planner','rituals']);
-  assert.deepEqual(navItems(mobileMoreIds).map((item) => item.id), ['mood','nourish','insights','money','notes','whimsy','settings']);
-  assert.equal(new Set([...mobilePrimaryIds,...mobileMoreIds]).size, navigation.filter(item=>item.id!=='appearance').length);
+  assert.deepEqual(navItems(mobileMoreIds).map((item) => item.id), ['mood','nourish','insights','money','notes','whimsy','appearance','settings']);
+  assert.equal(new Set([...mobilePrimaryIds,...mobileMoreIds]).size, navigation.length);
   assert.equal(isActiveDestination('/','/'), true);
   assert.equal(isActiveDestination('/planner','/'), false);
   assert.equal(isActiveDestination('/planner/week','/planner'), true);

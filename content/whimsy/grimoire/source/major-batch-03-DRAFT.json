@@ -1,0 +1,515 @@
+{
+  "collection": "Muse Tarot Grimoire",
+  "deck": "Rider–Waite–Smith",
+  "batch": "major-03",
+  "editorialVoice": "The Enchanted Scholar",
+  "status": "draft—NOT APPROVED OR FOR IMPORT",
+  "schemaNote": "Editorial transport format only. Codex must map to existing Muse schema, preserving stable IDs, artwork mapping, and private user content. Do not publish automatically.",
+  "sourceMethod": "Waite Part II and Part III consulted for historical visual descriptions and period meanings. Modern psychological applications explicitly interpretive. Original 1909 scan URL pattern is a reference placeholder for follow-up asset verification, not a completed provenance audit.",
+  "cards": [
+    {
+      "id": "tarot-major-14",
+      "number": 14,
+      "name": "Temperance",
+      "arcana": "Major Arcana",
+      "subtitle": "The Patient Art of Blending",
+      "editorialStatus": "draft",
+      "reviewBatch": "major-03",
+      "candidateVersion": 1,
+      "provenance": "Original editorial candidate prepared for group review; no earlier approved manuscript recovered for this card",
+      "keywords": {
+        "upright": [
+          "Moderation",
+          "Integration",
+          "Patience",
+          "Adaptation",
+          "Steady care"
+        ],
+        "reversed": [
+          "Imbalance",
+          "Overcorrection",
+          "Competing needs",
+          "Impatience",
+          "Recalibration"
+        ]
+      },
+      "chapters": {
+        "story": "An angel pauses at the edge of a pool, passing water from one vessel to another. One foot rests on land; the other enters the water. A path rises toward distant hills beneath a pale, radiant crown. It is a quiet scene, but not a passive one: the figure is doing something precise.\n\nTemperance is not the demand to make every feeling small or every ambition respectable. Its older virtue concerns measured conduct; its modern reflective language concerns integration. We meet it after Death, a card that marks endings and transformations. What follows a profound change is not necessarily another dramatic revelation. Sometimes it is the patient task of learning to live differently.\n\nThe angel offers a kind of discipline too easily mistaken for dullness. Mixing is an experiment. What works in one proportion may fail in another. The art lies in observing the result and adjusting with care. A sustainable life is seldom assembled in one grand gesture.",
+        "symbolism": "**Two cups and the flowing water.** Waite draws attention to the movement of life’s essences between vessels. A reader may see cooperation, adaptation, and continuous adjustment. The impossible-looking flow is a visual mystery, not an instruction in physics.\n\n**One foot on earth, one in water.** The depicted positions are clear; the common reading of practical grounding alongside emotional receptivity is an interpretive extension.\n\n**The triangle within a square.** Waite describes a square bearing a triangle on the angel’s breast. It belongs to the esoteric design rather than an ordinary domestic illustration; an exact one-to-one psychological translation would be speculative.\n\n**The path and distant radiance.** Waite connects the distant crown-like light with attainment. As a contemporary metaphor, it suggests that a long horizon can be approached by modest, repeated acts.",
+        "meanings": {
+          "upright": "Upright, Temperance suggests adjustment rather than a dramatic ultimatum. Two commitments may both deserve care; a process may require calibration before it can become dependable. The card can be particularly helpful when you have been moving between extremes—total devotion followed by exhaustion, silence followed by an overwhelming confession, rigor followed by abandonment.\n\nIts discipline is responsive. You are not asked to endure an unhealthy situation merely because compromise sounds virtuous. Instead, ask what can be blended without losing its integrity, and what truly cannot. In a collaborative project, a successful mixture may mean agreeing on boundaries, workload, and time. In a personal practice, it may mean choosing a rhythm that survives ordinary life.\n\nThe essential question is not whether you can do everything. It is which combination can be sustained, and what evidence would tell you to adjust.",
+          "reversed": "Reversed, Temperance can describe a system that is not finding its proportions. You may be trying to reconcile irreconcilable demands, taking on the task of keeping everyone comfortable, or alternating between restriction and excess. The problem may be impatience—but it may also be an arrangement that gives you too little room to breathe.\n\nThe reversal should not automatically prescribe moderation. Sometimes a harmful compromise needs ending, not improving. Look for the actual source of friction. Is there insufficient time? A boundary no one respects? A goal whose ingredients do not belong together? If the answer is unclear, change one variable rather than overturning everything at once.\n\nThe angel's vessels remain useful even upside down: what is being poured out, what is replenished, and whose cup is expected to stay full?"
+        },
+        "inYourLife": "**Love:** A relationship may benefit from listening, flexible routines, and shared pacing. Reversed, accommodation may have become one-sided; asking for fairness is not a failure of harmony.\n\n**Work and study:** Combine methods, pilot a process, and resist confusing speed with improvement. Reversed, check for conflicting priorities or a team asked to absorb endless changes.\n\n**Money:** Planning and steady adjustment may be more useful than an all-or-nothing overhaul. This is not a prediction of financial outcomes.\n\n**Personal growth:** Think in habits and feedback loops. Balance is something you practice, not a permanent mood you achieve.",
+        "hiddenKnowledge": "**An old virtue, a new image.** Temperance is one of the classical cardinal virtues. In older artistic traditions she is sometimes shown mixing water and wine. Smith’s angel preserves the essential image of pouring between vessels while adding a path, pool, and overt esoteric signs.\n\n**Waite’s meanings are not a wellness slogan.** His printed divinatory list emphasizes economy, moderation, and management; his reversed list includes disunion and competing interests. A modern interpretation of emotional regulation may be illuminating, but it is not simply a quotation from 1911.\n\n**The neighboring cards.** Death ends an arrangement; Temperance asks what living after it entails. The Devil follows, pressing a sharper question: when does a habit become a bond we no longer choose?",
+        "reflection": "**Upright:** What in my life needs adjustment rather than replacement? Where does a slower rhythm protect something I value? What am I trying to combine, and does the mixture actually work?\n\n**Reversed:** Is my compromise reciprocal? Which competing demands are structurally incompatible? What small experiment could show me what needs to change?\n\n**Journal ritual — The Two Vessels:** Draw two cups. In one, write what you are giving. In the other, what restores you. Notice whether the exchange can continue as it is.\n\n*Harmony is not the absence of difference. It is the work of living responsibly with it.*"
+      },
+      "misconception": "Temperance is not an order to tolerate harm, repress emotion, or meet everyone halfway.",
+      "relatedCardIds": [
+        "tarot-major-13",
+        "tarot-major-15",
+        "tarot-major-11"
+      ],
+      "readingSummary": {
+        "upright": "Upright, Temperance suggests adjustment rather than a dramatic ultimatum.",
+        "reversed": "Reversed, Temperance can describe a system that is not finding its proportions."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "supports": "Waite’s primary-source image descriptions and his own esoteric interpretation; not proof of original historical intent"
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite’s 1911 published divinatory lists, sometimes substantially different from contemporary meanings"
+        },
+        {
+          "url": "https://commons.wikimedia.org/wiki/File:RWS1909_-_14_Temperance.jpeg",
+          "supports": "Reference only for original RWS image; individual file URL and Muse asset mapping require confirmation before publication"
+        }
+      ],
+      "reviewNotes": "Historically anchored to Waite’s primary text; associations described as modern readings are interpretive, not factual or predictive. Verify specific image provenance and any more granular historical claims during final copyedit."
+    },
+    {
+      "id": "tarot-major-15",
+      "number": 15,
+      "name": "The Devil",
+      "arcana": "Major Arcana",
+      "subtitle": "The Shape of the Chain",
+      "editorialStatus": "draft",
+      "reviewBatch": "major-03",
+      "candidateVersion": 1,
+      "provenance": "Original editorial candidate prepared for group review; no earlier approved manuscript recovered for this card",
+      "keywords": {
+        "upright": [
+          "Awareness",
+          "Desire",
+          "Honest appetite",
+          "Confronting patterns",
+          "Agency"
+        ],
+        "reversed": [
+          "Compulsion",
+          "Shame",
+          "Denial",
+          "Entrapment",
+          "Boundary work"
+        ]
+      },
+      "chapters": {
+        "story": "Two figures stand beneath a horned, winged creature. Their necks are encircled by chains attached to its pedestal. Above the creature’s head is an inverted pentagram; in one hand it holds a torch pointed down. The scene borrows the visual vocabulary of menace, but it is also strange and theatrical.\n\nThe Devil is often treated as the deck’s villain. That reading is too easy. The more searching question is what binds us—and what part desire, fear, habit, or circumstance plays in maintaining a bond. Some chains are psychological; others are material, social, or imposed. It is careless to pretend every form of confinement can be escaped by thinking differently.\n\nThis card asks for specificity. A pleasure is not automatically a vice. A strong attachment is not automatically an addiction. The appearance of a dark figure does not transform a complicated human situation into a moral verdict. Acknowledging an uncomfortable desire may be the first step toward choosing how to live with it.",
+        "symbolism": "**The chained pair.** The loops around their necks appear relatively loose in Smith’s image. Some modern readers see this as a hint that release is possible, but it cannot establish that all bonds are voluntary.\n\n**The horned figure and bat wings.** Waite calls the figure a parody of the imposing religious archetype of the Devil. The visual grammar draws on Western Christian and occult imagery; it should not be generalized to all spiritual traditions.\n\n**The downward torch.** The figure holds a flaming torch downward. As a reading metaphor, light can be used to expose or to distort; the image itself leaves the precise personal meaning open.\n\n**The inverted pentagram.** Prominent above the figure, this is an occult motif with shifting historical uses. It is not evidence that a person or situation is inherently evil.",
+        "meanings": {
+          "upright": "Upright, The Devil can be an invitation to examine attachment without flinching. Consider a habit that offers relief but carries a cost, a relationship sustained by fear of leaving, or an ambition that has begun to dictate the terms of your life. The card’s unsettling imagery may help you name what polite language has hidden.\n\nIt may also concern desire itself. Wanting pleasure, status, intimacy, or security is not shameful. The question becomes whether you can choose freely and respond to consequences, or whether the desire is managing you. In a reading about a difficult environment, take external constraints seriously: dependence, coercion, and practical risk require support and planning, not a lecture about willpower.\n\nWhere does an apparent choice actually have room to become a choice? That is a more useful question than asking whether you are good or bad.",
+          "reversed": "Reversed, The Devil can suggest that a binding pattern is being recognized, challenged, or reconfigured. Sometimes it indicates a hopeful break with secrecy or a first honest conversation. Sometimes it points to denial, where a person declares freedom while the underlying conditions remain unchanged. Reversed does not always mean liberated, just as upright does not always mean trapped.\n\nThe crucial evidence is behavioral: are boundaries being kept? Are resources available? Is safety increasing? Are you beginning to distinguish desire from obligation? A difficult pattern may require outside assistance, not merely private resolve.\n\nRead this reversal without moral theater. Shame often makes patterns harder to examine. The aim is not purity; it is a more truthful account of what has power in your life."
+        },
+        "inYourLife": "**Love:** Notice whether attraction is accompanied by respect, consent, and freedom. Reversed, examine whether changing patterns are supported by actions rather than declarations.\n\n**Work:** A prestigious role can become a golden cage. Identify actual obligations and alternatives before making a dramatic move.\n\n**Money:** The card can prompt an examination of spending or debt habits, without moralizing scarcity or treating poverty as a personal failing.\n\n**Personal growth:** Name the comfort, fear, or reward that sustains a pattern. Compassion and accountability can coexist.",
+        "hiddenKnowledge": "**Not a universal demon.** The visual figure belongs to a specifically Western Christian and esoteric vocabulary. It should not be imposed on other religions as though it were a neutral, universal archetype.\n\n**Waite’s surprising wording.** His divinatory list for this card includes force, violence, and fatality, while his reversed list also concerns weakness and blindness. The familiar modern story of ‘breaking free from limiting beliefs’ is a later, selective reinterpretation.\n\n**A dramatic sequence.** Temperance experiments with integration; The Devil asks what happens when an arrangement hardens into a dependency; The Tower asks what occurs when a structure cannot withstand a reckoning. This sequence is useful as a reading narrative, not an established historical origin story.",
+        "reflection": "**Upright:** Which attachment is costing more than I admit? Where do I have real choice, and where do I need support? What desire deserves acknowledgment rather than shame?\n\n**Reversed:** What has changed in practice, not just in intention? Am I mistaking denial for freedom? Which boundary or resource would make a new pattern possible?\n\n**Journal ritual — The Chain and Its Links:** Draw a chain with five links. Label each with a real pressure, reward, fear, or obligation. Circle what is yours to change; mark what requires help or a structural solution.\n\n*Freedom begins with seeing the chain clearly. That is not the same as pretending it is easy to break.*"
+      },
+      "misconception": "The Devil is not proof of addiction, evil character, or supernatural interference. Reversal does not guarantee release.",
+      "relatedCardIds": [
+        "tarot-major-14",
+        "tarot-major-16",
+        "tarot-major-08"
+      ],
+      "readingSummary": {
+        "upright": "Upright, The Devil can be an invitation to examine attachment without flinching.",
+        "reversed": "Reversed, The Devil can suggest that a binding pattern is being recognized, challenged, or reconfigured."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "supports": "Waite’s primary-source image descriptions and his own esoteric interpretation; not proof of original historical intent"
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite’s 1911 published divinatory lists, sometimes substantially different from contemporary meanings"
+        },
+        {
+          "url": "https://commons.wikimedia.org/wiki/File:RWS1909_-_15_Devil.jpeg",
+          "supports": "Reference only for original RWS image; individual file URL and Muse asset mapping require confirmation before publication"
+        }
+      ],
+      "reviewNotes": "Historically anchored to Waite’s primary text; associations described as modern readings are interpretive, not factual or predictive. Verify specific image provenance and any more granular historical claims during final copyedit."
+    },
+    {
+      "id": "tarot-major-16",
+      "number": 16,
+      "name": "The Tower",
+      "arcana": "Major Arcana",
+      "subtitle": "When the Crown Comes Down",
+      "editorialStatus": "draft",
+      "reviewBatch": "major-03",
+      "candidateVersion": 1,
+      "provenance": "Original editorial candidate prepared for group review; no earlier approved manuscript recovered for this card",
+      "keywords": {
+        "upright": [
+          "Revelation",
+          "Rupture",
+          "Reckoning",
+          "Disruption",
+          "Rebuilding"
+        ],
+        "reversed": [
+          "Resistance",
+          "Aftershock",
+          "Containment",
+          "Delayed reckoning",
+          "Recovery"
+        ]
+      },
+      "chapters": {
+        "story": "A bolt of lightning strikes the crown of a tall tower. Fire flares from its openings; two figures fall into the night. The image is unmistakably violent. Unlike a card that quietly invites reflection, The Tower depicts an event no one pictured has time to discuss before it happens.\n\nReaders often rush to rescue this card with an assurance that upheaval is secretly a blessing. We should resist that temptation. A loss can be a loss. An upheaval can be frightening, unjust, or simply exhausting. Not every collapse was necessary; not every shock will later feel worthwhile.\n\nYet the image raises a serious question about structures. What did this tower support? What assumptions, arrangements, or claims of security were built into it? What has the lightning made impossible to ignore? The card's value lies not in celebrating disaster but in distinguishing between the event, its consequences, and the choices that remain once the dust has settled.",
+        "symbolism": "**The lightning and broken crown.** The flash strikes from above and dislodges the tower’s crown. Waite connects the image with the destruction of a house of falsehood. A reflective reading may examine disrupted certainty, without asserting that victims deserved a reckoning.\n\n**The falling figures.** Two people tumble amid flames. Their presence matters: structural failure affects actual lives. Do not turn them into mere decoration in a reassuring story about personal growth.\n\n**The dark sky and falling sparks.** Smith fills the surrounding space with dramatic marks. Later commentators draw many occult correlations; Muse should distinguish such traditions from what can simply be observed.\n\n**The high, isolated tower.** Its elevated position invites questions of distance and exposure. The assertion that every tower represents arrogance is interpretation, not a fact about every reading.",
+        "meanings": {
+          "upright": "Upright, The Tower may describe a sudden revelation, a failed arrangement, a confrontation with unwelcome facts, or a change that arrives before a person feels prepared. It can also mark the collapse of a belief that had seemed secure. The card is intense because it refuses the fantasy that every transition can be made graceful.\n\nIf this image speaks to your circumstances, begin with what actually happened. What is damaged? What is uncertain? Who is affected? What practical protection or support is needed first? Only later might it be useful to ask what assumptions need rebuilding. A strong interpretation does not promise that the event was destined or that pain was deserved.\n\nSometimes the Tower is the external shock. Sometimes it is the moment you stop pretending the structure is sound. Both readings demand care before conclusions.",
+          "reversed": "Reversed, The Tower may suggest a feared disruption, an aftershock from a previous crisis, or efforts to postpone a necessary conversation. It can also signify work being done to limit damage or rebuild safety. A reversal cannot tell us that calamity has been ‘avoided’ or that worse catastrophe is coming.\n\nIf you are bracing for an imagined collapse, separate evidence from dread. If the disruption has already occurred, ask what stability can be restored without denying the damage. If a system is unsafe, caution and planning may be wiser than a spectacular act of destruction.\n\nThe reversed Tower is not the quiet version of a divine punishment. It asks what responsible attention looks like before, during, or after instability."
+        },
+        "inYourLife": "**Love:** An uncomfortable truth or rupture may require honest conversation and practical care. Reversed, a couple might be recovering or avoiding an unavoidable issue; behavior and safety decide the reading.\n\n**Work:** Failed assumptions, reorganizations, or a public mistake invite evidence-based repair rather than blame theater.\n\n**Money:** A prompt to check resilience, not a forecast of loss. Consider contingencies without catastrophizing.\n\n**Personal growth:** Distinguish insight from upheaval. Learning need not require a crisis, and crisis does not automatically confer wisdom.",
+        "hiddenKnowledge": "**The image has predecessors.** Earlier tarot towers were shown under names such as La Maison Dieu, with varied falling or struck-building imagery. The Rider–Waite–Smith design is part of that lineage, not a spontaneous invention of an unprecedented symbol.\n\n**Waite's severity.** His published meanings include ruin, adversity, and disgrace, with reversed readings that can include oppression and imprisonment. The modern ‘breakthrough’ interpretation is therefore a significant reframing and should be labeled as such.\n\n**What follows matters.** The Star succeeds The Tower. This order can tell a humane story: after upheaval, attention may turn to restoration. That sequence does not claim that every trauma happens for a reason.",
+        "reflection": "**Upright:** What has actually changed, and what remains intact? Who needs care before anyone searches for meaning? Which assumption has been contradicted by evidence?\n\n**Reversed:** Am I preparing responsibly or rehearsing catastrophe? Which repair is possible now? What help would make uncertainty safer to navigate?\n\n**Journal ritual — An Honest Inventory:** Divide a page into *damaged*, *uncertain*, and *still standing*. Write concrete observations in each column, then one protective next action.\n\n*When the crown falls, begin with the people beneath it.*"
+      },
+      "misconception": "The Tower does not mean catastrophe is certain, deserved, or secretly good for you.",
+      "relatedCardIds": [
+        "tarot-major-15",
+        "tarot-major-17",
+        "tarot-major-13"
+      ],
+      "readingSummary": {
+        "upright": "Upright, The Tower may describe a sudden revelation, a failed arrangement, a confrontation with unwelcome facts, or a change that arrives before a person feels prepared.",
+        "reversed": "Reversed, The Tower may suggest a feared disruption, an aftershock from a previous crisis, or efforts to postpone a necessary conversation."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "supports": "Waite’s primary-source image descriptions and his own esoteric interpretation; not proof of original historical intent"
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite’s 1911 published divinatory lists, sometimes substantially different from contemporary meanings"
+        },
+        {
+          "url": "https://commons.wikimedia.org/wiki/File:RWS1909_-_16_Tower.jpeg",
+          "supports": "Reference only for original RWS image; individual file URL and Muse asset mapping require confirmation before publication"
+        }
+      ],
+      "reviewNotes": "Historically anchored to Waite’s primary text; associations described as modern readings are interpretive, not factual or predictive. Verify specific image provenance and any more granular historical claims during final copyedit."
+    },
+    {
+      "id": "tarot-major-17",
+      "number": 17,
+      "name": "The Star",
+      "arcana": "Major Arcana",
+      "subtitle": "The Quiet Work of Hope",
+      "editorialStatus": "draft",
+      "reviewBatch": "major-03",
+      "candidateVersion": 1,
+      "provenance": "Original editorial candidate prepared for group review; no earlier approved manuscript recovered for this card",
+      "keywords": {
+        "upright": [
+          "Renewal",
+          "Hope",
+          "Openness",
+          "Restoration",
+          "Orientation"
+        ],
+        "reversed": [
+          "Discouragement",
+          "Depletion",
+          "Guardedness",
+          "Unrealistic hope",
+          "Replenishment"
+        ]
+      },
+      "chapters": {
+        "story": "After the shattered tower comes a quieter sky. A kneeling figure pours water from two vessels: one into a pool, the other over the ground. Above her shines a large star surrounded by seven smaller ones. A bird rests in a distant tree. No trumpet announces a victory. The scene is still enough to hear water move.\n\nThe Star is often described as hope, but that word deserves care. Hope is not certainty dressed in more attractive clothes. It may be a willingness to tend life without knowing exactly how it will unfold. Water returns to water; soil receives its share. The figure does not appear to be harvesting a reward. She is participating in a cycle of replenishment.\n\nThe Star's place after The Tower makes its gentleness distinctive. It does not erase what happened. It asks what becomes possible when the first work is simply to restore a little trust, energy, or attention.",
+        "symbolism": "**The large and seven smaller stars.** Waite describes an eight-pointed central star and seven lesser lights. They create a navigational atmosphere, but turning each star into a precise life prediction would exceed the image.\n\n**Two vessels and two destinations.** Water reaches both the pool and the earth. Modern readers often interpret this as inward renewal alongside contribution to the outer world; Waite’s own account is more esoteric.\n\n**The unclothed figure.** Nudity in this artwork can evoke exposure or simplicity. It does not demand personal disclosure or vulnerability without consent.\n\n**The distant bird and tree.** They appear in Smith’s scene and have attracted various occult identifications. We should not treat one species identification or fixed meaning as certain without stronger evidence.",
+        "meanings": {
+          "upright": "Upright, The Star invites patient renewal. After confusion, disappointment, or a period of overexertion, you may need to restore conditions in which curiosity and confidence can grow. A little hope can make practical action possible again, even when the larger outcome remains unsettled.\n\nThis card is especially useful when a person is exhausted by demands to ‘bounce back.’ Recovery is not a performance. It can involve quiet routines, honest support, creative play, or returning to what matters without requiring an inspirational explanation for suffering. The water in the picture moves in two directions; attention may need to go both inward and outward.\n\nThe Star is not evidence that everything will work out. It asks whether you can cultivate a source of steadiness while the future is still open.",
+          "reversed": "Reversed, The Star can describe a thinning sense of possibility. You might be unable to imagine improvement, reluctant to trust again, or giving so much that replenishment never happens. It may also ask whether optimism is outrunning practical evidence. Discouragement and unrealistic hope are different problems; the spread cannot tell you which exists without context.\n\nAvoid forcing yourself to feel hopeful on command. Ask what would make tomorrow more manageable, or which relationship, routine, or source of information deserves a gentler approach. The smallest act of care is not a failure of imagination.\n\nIf depletion persists, it is a reason to seek appropriate support, not proof of spiritual inadequacy. The reversed Star points toward tending the conditions of hope, not measuring your worth by how brightly you shine."
+        },
+        "inYourLife": "**Love:** Renewal may involve honesty, gentleness, and rebuilding trust over time. Reversed, disappointment may ask for boundaries as much as reassurance.\n\n**Work and creativity:** Return to purpose, inspiration, or a manageable experiment. Reversed, distinguish burnout from a genuinely unsuitable goal.\n\n**Money:** A long-term outlook may support steady decisions, but this is not a promise of unexpected fortune.\n\n**Personal growth:** Give recovery room. Not every improvement is measurable in a single day.",
+        "hiddenKnowledge": "**Waite is less uniformly optimistic than modern readers.** His divinatory list for The Star includes privation and loss, although he notes a contrasting reading of hope and bright prospects. This is an excellent example of why Muse must distinguish period meanings from contemporary consensus.\n\n**The water-bearer motif.** A human figure pouring water has a long symbolic life in art and astrology. Claims that every detail was borrowed from a single myth require more evidence than visual resemblance.\n\n**A narrative after The Tower.** Read together, The Tower and The Star offer a meaningful modern pairing: rupture followed not by instant triumph, but by careful restoration.",
+        "reflection": "**Upright:** What restores a little trust without asking me to ignore reality? Where am I already tending something worth keeping? What kind of support makes hope practical?\n\n**Reversed:** What has drained me? Am I asking optimism to do the work of evidence? Which small source of replenishment have I neglected?\n\n**Journal ritual — Water for the Earth:** Name one thing that needs rest and one that needs nourishing. Write an action for each that is within reach this week.\n\n*Hope need not be loud to be alive.*"
+      },
+      "misconception": "The Star is neither a guarantee of healing nor a demand to remain positive after harm.",
+      "relatedCardIds": [
+        "tarot-major-16",
+        "tarot-major-18",
+        "tarot-major-14"
+      ],
+      "readingSummary": {
+        "upright": "Upright, The Star invites patient renewal.",
+        "reversed": "Reversed, The Star can describe a thinning sense of possibility."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "supports": "Waite’s primary-source image descriptions and his own esoteric interpretation; not proof of original historical intent"
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite’s 1911 published divinatory lists, sometimes substantially different from contemporary meanings"
+        },
+        {
+          "url": "https://commons.wikimedia.org/wiki/File:RWS1909_-_17_Star.jpeg",
+          "supports": "Reference only for original RWS image; individual file URL and Muse asset mapping require confirmation before publication"
+        }
+      ],
+      "reviewNotes": "Historically anchored to Waite’s primary text; associations described as modern readings are interpretive, not factual or predictive. Verify specific image provenance and any more granular historical claims during final copyedit."
+    },
+    {
+      "id": "tarot-major-18",
+      "number": 18,
+      "name": "The Moon",
+      "arcana": "Major Arcana",
+      "subtitle": "The Road Through Uncertainty",
+      "editorialStatus": "draft",
+      "reviewBatch": "major-03",
+      "candidateVersion": 1,
+      "provenance": "Original editorial candidate prepared for group review; no earlier approved manuscript recovered for this card",
+      "keywords": {
+        "upright": [
+          "Ambiguity",
+          "Imagination",
+          "Instinct",
+          "Attentiveness",
+          "Dreamwork"
+        ],
+        "reversed": [
+          "Misreading",
+          "Anxiety",
+          "Overinterpretation",
+          "Avoidance",
+          "Clarification"
+        ]
+      },
+      "chapters": {
+        "story": "A moon with a solemn face shines over a winding path. Two towers mark the distant passage; below them, a dog and a wolf raise their heads, and a crayfish emerges from dark water. The landscape is recognizable but dreamlike. There is a road, yet no traveler visible to reassure us about where it leads.\n\nThe Moon concerns how we move when certainty is unavailable. In dim light, familiar shapes become strange. Imagination can make room for insight, but it can also supply frightening stories before evidence arrives. The card is powerful precisely because those two possibilities cannot always be separated on sight.\n\nThis is a natural companion for a dream journal, but not because dreams deliver universally coded prophecies. Dream images can be emotionally vivid and personally meaningful without serving as reliable predictions. The Moon asks us to honor experience while remaining curious about what has actually been observed.",
+        "symbolism": "**Moon and falling drops.** Waite describes the moon and descending drops in his esoteric explanation. The light is partial, making it a useful modern metaphor for incomplete information.\n\n**Dog and wolf.** Two canines call upward from opposite sides of the path. The familiar/domesticated and wild contrast is a common reflective reading, not an empirically established meaning.\n\n**Crayfish rising from the pool.** A crustacean appears at the water’s edge. Waite explicitly discusses its emergence as part of his symbolic narrative. Modern readers may connect it to feelings or impressions surfacing.\n\n**Road between towers.** The path runs toward distant heights. It offers direction without a guaranteed view of the destination.",
+        "meanings": {
+          "upright": "Upright, The Moon may appear when something important remains uncertain. You may have an uneasy reaction, an incomplete account, or a creative intuition that has not yet found language. It invites listening without converting every feeling into a fact.\n\nIn a relationship reading, the card can ask for more direct communication rather than inventing motives. In artistic work, it may encourage exploring ambiguity, association, and imagery without requiring an immediate explanation. In personal decisions, it often helps to sort what you know from what you suspect, and what you fear from what has happened.\n\nThere is room here for intuition as an experience of noticing—but no warrant for treating a hunch as proof. The Moon teaches navigation by partial light, which means moving carefully enough to notice when the landscape changes.",
+          "reversed": "Reversed, The Moon may suggest that confusion is easing, or that anxiety and overinterpretation are becoming harder to contain. These readings point in opposite directions. To choose between them, look at evidence: has new information actually appeared, or is a story simply becoming more persuasive through repetition?\n\nThe reversal may also concern avoiding uncertainty by demanding a premature answer. A person can cling to a reassuring narrative as tightly as a frightening one. Ask what conversation, document, observation, or rest period would help you see more clearly.\n\nThere is no shame in being unsure. The challenge is not to eliminate all ambiguity, but to avoid letting ambiguity make every decision for you."
+        },
+        "inYourLife": "**Love:** Communicate rather than mind-read. Reversed, clarity may be emerging—or rumination may need interrupting.\n\n**Work:** Check assumptions, contracts, and missing information before proceeding. Creative exploration can coexist with factual verification.\n\n**Money:** Verify details and seek qualified advice when needed; the card is not evidence of deception.\n\n**Dreams and self-reflection:** Record the dream’s emotion, imagery, and personal context. Resist fixed dictionaries that claim one universal meaning for every symbol.",
+        "hiddenKnowledge": "**A card with older lunar imagery.** Moon and towers appear in earlier tarot traditions, but Smith and Waite develop a striking specific landscape with canine figures and the emerging crayfish.\n\n**Waite’s historical divinatory list.** It emphasizes danger, hidden enemies, deception, and error. Muse’s more psychologically nuanced approach is a deliberate modern interpretation—not a denial that older reading traditions could be severe.\n\n**From The Star to The Sun.** The Moon stands between hopeful restoration and the bright exposure of The Sun. This modern narrative suggests that renewed hope does not end uncertainty; perception must still be tested.",
+        "reflection": "**Upright:** What is a fact, what is a feeling, and what is a story I am constructing? Which unknown could I investigate? What ambiguity might be creatively fruitful rather than threatening?\n\n**Reversed:** Has clarity arrived in evidence or only in confidence? What am I repeatedly interpreting without new information? Who could help me reality-check an assumption?\n\n**Journal ritual — Three Lanterns:** Divide a page into *observed*, *felt*, and *imagined*. Place each part of a worry where it belongs, without mocking any of them.\n\n*The path exists even when it cannot be seen all at once.*"
+      },
+      "misconception": "The Moon is not proof that someone is lying, that intuition is infallible, or that dreams predict events.",
+      "relatedCardIds": [
+        "tarot-major-17",
+        "tarot-major-19",
+        "tarot-major-02"
+      ],
+      "readingSummary": {
+        "upright": "Upright, The Moon may appear when something important remains uncertain.",
+        "reversed": "Reversed, The Moon may suggest that confusion is easing, or that anxiety and overinterpretation are becoming harder to contain."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "supports": "Waite’s primary-source image descriptions and his own esoteric interpretation; not proof of original historical intent"
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite’s 1911 published divinatory lists, sometimes substantially different from contemporary meanings"
+        },
+        {
+          "url": "https://commons.wikimedia.org/wiki/File:RWS1909_-_18_Moon.jpeg",
+          "supports": "Reference only for original RWS image; individual file URL and Muse asset mapping require confirmation before publication"
+        }
+      ],
+      "reviewNotes": "Historically anchored to Waite’s primary text; associations described as modern readings are interpretive, not factual or predictive. Verify specific image provenance and any more granular historical claims during final copyedit."
+    },
+    {
+      "id": "tarot-major-19",
+      "number": 19,
+      "name": "The Sun",
+      "arcana": "Major Arcana",
+      "subtitle": "The Courage to Be Seen",
+      "editorialStatus": "draft",
+      "reviewBatch": "major-03",
+      "candidateVersion": 1,
+      "provenance": "Original editorial candidate prepared for group review; no earlier approved manuscript recovered for this card",
+      "keywords": {
+        "upright": [
+          "Clarity",
+          "Vitality",
+          "Joy",
+          "Visibility",
+          "Confidence"
+        ],
+        "reversed": [
+          "Diminished joy",
+          "Exposure",
+          "Overconfidence",
+          "Fatigue",
+          "Reconnection"
+        ]
+      },
+      "chapters": {
+        "story": "A radiant sun looks directly upon a garden. Beneath it a child rides a white horse, holding a streaming red banner. Sunflowers rise beyond a wall, and the whole composition seems to have opened the shutters after a long night.\n\nIt is tempting to call The Sun uncomplicated happiness. Smith’s scene is certainly bright, and Waite’s divinatory tradition includes material happiness and contentment. Yet even a joyful card has something to teach beyond prediction. The Sun asks what becomes possible when a situation is seen clearly, when achievements can be acknowledged, or when delight is permitted to exist without apology.\n\nIts childlike figure need not mean childishness. One can become more experienced without giving up honest pleasure. Nor must joy be dramatic. Sometimes its most mature form is recognizing what is genuinely good while refusing to deny what remains unfinished.",
+        "symbolism": "**The large sun with a face.** Light dominates the scene. Readers commonly treat it as clarity, although illumination is not the same as having every answer.\n\n**Child on a white horse.** Waite links the child’s posture to a powerful esoteric image of life and triumph. In contemporary reflection, the scene may suggest confidence that is open rather than armored.\n\n**Red banner.** Its vivid movement adds celebration and visibility. Any fixed claim that it predicts a particular public success would be speculation.\n\n**Four prominent sunflowers and wall.** Sunflowers stand before a low boundary. They are visible details, with plausible associations of growth and warmth; numbers-based occult correspondences should be labeled separately if added.",
+        "meanings": {
+          "upright": "Upright, The Sun may signal a time to recognize success, share a contribution, or appreciate a relationship that feels straightforward and nourishing. It can also suggest that a previously confusing question is becoming easier to see, although apparent clarity should still be checked against reality.\n\nThe deeper invitation is permission: to enjoy the good without immediately bracing for its loss. Some people find celebration difficult because they are afraid of inviting disappointment, appearing boastful, or overlooking someone else’s struggle. The Sun does not ask for denial of complexity. It offers a chance to acknowledge a genuine accomplishment, warmth, or moment of connection.\n\nIf this is a card about action, make room for visibility. Let the work be seen, give proper credit, and say what has been learned. Joy can be generous rather than self-congratulatory.",
+          "reversed": "Reversed, The Sun can describe a joy that feels distant, an achievement that is hard to absorb, or confidence slipping into overstatement. You may be minimizing success because it is imperfect—or insisting everything is wonderful when something requires attention. These possibilities should be distinguished, not merged.\n\nSometimes the reversed Sun is simply a call to restore energy after prolonged effort. A cloudy period is not an indictment of gratitude. If circumstances are difficult, you do not owe anyone forced cheerfulness.\n\nLook at what is actually present. Is there something worth celebrating, but no space to do so? Is there a limit that enthusiasm has obscured? A clearer, kinder relationship with reality may be more useful than trying to turn your mood upside down."
+        },
+        "inYourLife": "**Love:** Straightforward warmth and mutual appreciation may deserve attention. Reversed, discuss unmet needs instead of performing happiness.\n\n**Work and creativity:** Share completed efforts, acknowledge collaborators, and assess achievements honestly. Reversed, check for burnout or inflated claims.\n\n**Money:** Celebrate grounded progress, not imagined windfalls; avoid treating the card as a guarantee of profit.\n\n**Personal growth:** Practice receiving good moments without demanding permanent perfection.",
+        "hiddenKnowledge": "**A strong historical divinatory association.** Waite’s upright list for The Sun explicitly includes happiness, marriage, and contentment; his reversed list suggests these in lesser degree. Muse can build modern reflective nuance around that foundation without attributing every contemporary psychological theme to him.\n\n**A visual change of register.** After The Moon’s uncertain path, The Sun presents an open, luminous garden. The contrast is visible in Smith’s artwork and provides a useful teaching pair: uncertainty versus apparent clarity.\n\n**Happiness has no single appearance.** The card’s radiant child is an image, not a norm for how all readers should feel or perform delight.",
+        "reflection": "**Upright:** What genuinely deserves celebration? Where is new clarity supported by evidence? Who helped make a good outcome possible?\n\n**Reversed:** Am I minimizing an achievement or overstating one? Where has enthusiasm concealed a limit? What kind of joy is accessible without forcing it?\n\n**Journal ritual — A Record of Light:** Write three specific things that went well, including a person or action that made each possible. Avoid general slogans; name the details.\n\n*Let the good be real, not perfect.*"
+      },
+      "misconception": "The Sun does not promise endless happiness or make sadness a failure to think positively.",
+      "relatedCardIds": [
+        "tarot-major-18",
+        "tarot-major-20",
+        "tarot-major-17"
+      ],
+      "readingSummary": {
+        "upright": "Upright, The Sun may signal a time to recognize success, share a contribution, or appreciate a relationship that feels straightforward and nourishing.",
+        "reversed": "Reversed, The Sun can describe a joy that feels distant, an achievement that is hard to absorb, or confidence slipping into overstatement."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "supports": "Waite’s primary-source image descriptions and his own esoteric interpretation; not proof of original historical intent"
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite’s 1911 published divinatory lists, sometimes substantially different from contemporary meanings"
+        },
+        {
+          "url": "https://commons.wikimedia.org/wiki/File:RWS1909_-_19_Sun.jpeg",
+          "supports": "Reference only for original RWS image; individual file URL and Muse asset mapping require confirmation before publication"
+        }
+      ],
+      "reviewNotes": "Historically anchored to Waite’s primary text; associations described as modern readings are interpretive, not factual or predictive. Verify specific image provenance and any more granular historical claims during final copyedit."
+    },
+    {
+      "id": "tarot-major-20",
+      "number": 20,
+      "name": "Judgement",
+      "arcana": "Major Arcana",
+      "subtitle": "The Call to Account",
+      "editorialStatus": "draft",
+      "reviewBatch": "major-03",
+      "candidateVersion": 1,
+      "provenance": "Original editorial candidate prepared for group review; no earlier approved manuscript recovered for this card",
+      "keywords": {
+        "upright": [
+          "Reckoning",
+          "Awakening",
+          "Honest review",
+          "Renewal",
+          "Responsibility"
+        ],
+        "reversed": [
+          "Self-condemnation",
+          "Avoided decision",
+          "Harsh verdict",
+          "Stagnation",
+          "Reassessment"
+        ]
+      },
+      "chapters": {
+        "story": "An angel sounds a trumpet over a sea of open coffins. Figures rise with their arms outstretched, responding to a summons that seems larger than any private ambition. Mountains stand in the distance. Unlike the solitary Magician directing energy, this scene gathers many lives into one immense moment of recognition.\n\nJudgement is an old and explicitly religious image, drawing on Christian Last Judgment iconography. Its appearance in the deck should not be flattened into a modern pep talk about reinventing yourself. There is awe here, and vulnerability, and a question of accountability.\n\nIn reflective reading, the card can become an invitation to take stock: what have your choices made possible? What deserves correction? What must be acknowledged before the next chapter begins? Renewal is not always a clean escape from one's past. Sometimes it begins by answering for it.",
+        "symbolism": "**Trumpeting angel.** Waite describes the great angel and trumpet. The scene’s roots in Christian judgment imagery are significant and should be named rather than presented as a culture-free universal symbol.\n\n**Rising figures and coffins.** People of different ages rise from the graves. The imagery signals resurrection within its iconographic tradition. Contemporary personal readings may reinterpret it as awakening, but not as a literal prediction.\n\n**Flag with a red cross.** The banner carries a visible cross, further anchoring the work in Christian visual vocabulary.\n\n**Distant mountains and water.** These features contribute to the scale of the scene, suggesting a world beyond any single person's private concerns.",
+        "meanings": {
+          "upright": "Upright, Judgement may suggest a moment of serious assessment. A decision is due, an old pattern is visible in retrospect, or a chance to act differently has become difficult to ignore. It is not simply about ‘following your calling.’ It can require acknowledging harm, repairing relationships, or admitting that a long-held version of yourself no longer fits the evidence.\n\nBecause the image includes a collective summons, it can also raise questions about responsibility beyond the self. Who was affected by a choice? Who has not been heard? What does meaningful accountability require now?\n\nThe hopeful aspect is not that the past vanishes. It is that recognition can create the conditions for different action. The trumpet does not complete the work on your behalf; it interrupts your ability to pretend that no answer is needed.",
+          "reversed": "Reversed, Judgement may indicate avoidance of a necessary review, but it can also reveal a person trapped in relentless self-criticism. These are almost opposite conditions. One requires greater accountability; the other requires mercy, proportion, and a way to move forward after taking responsibility.\n\nAsk whether there is a concrete action waiting to be done or merely a familiar cycle of condemnation. If amends are due, they should respect the people affected rather than seek instant absolution. If the issue has been addressed, continuing to punish yourself may not add anything useful.\n\nThe reversed card does not appoint you judge of another person's soul. It asks whether your evaluation is accurate, fair, and capable of informing the next step."
+        },
+        "inYourLife": "**Love:** A relationship may call for honest reckoning and repair. Reversed, avoid either denial or endless prosecution of past mistakes.\n\n**Work:** Review a project or career direction using evidence. Responsibility includes credit, consequences, and corrective action.\n\n**Money:** Assess choices and commitments without turning financial circumstances into a moral scorecard.\n\n**Personal growth:** Decide what can be changed and what must be accepted as part of your history.",
+        "hiddenKnowledge": "**The name matters.** Many decks use *Judgement* or *The Last Judgement*. Its specific Christian iconography predates modern tarot self-help language. Muse should retain that historical identification even when making the card accessible to secular readers.\n\n**Waite’s printed divination.** His list includes change of position, renewal, and outcome; the reversed list includes weakness and deliberation. The grand modern metaphor of awakening is interpretive, supported by imagery rather than identical to those keywords.\n\n**Before The World.** The card precedes completion. Its placement offers a fruitful narrative: what must be accounted for before a cycle can honestly be called complete?",
+        "reflection": "**Upright:** What truth has become clear enough to act on? Who is affected by my next decision? What repair or acknowledgment would make progress more responsible?\n\n**Reversed:** Am I refusing accountability or refusing myself any mercy? What evidence would make this assessment fairer? What action, rather than self-punishment, would help?\n\n**Journal ritual — The Honest Review:** Write *what happened*, *what I contributed*, *what was outside my control*, and *what comes next*. Do not erase anyone else from the story.\n\n*An awakening worth having changes what we do while awake.*"
+      },
+      "misconception": "Judgement does not authorize moral condemnation, promise supernatural rebirth, or mean that forgiveness must be immediate.",
+      "relatedCardIds": [
+        "tarot-major-19",
+        "tarot-major-21",
+        "tarot-major-11"
+      ],
+      "readingSummary": {
+        "upright": "Upright, Judgement may suggest a moment of serious assessment.",
+        "reversed": "Reversed, Judgement may indicate avoidance of a necessary review, but it can also reveal a person trapped in relentless self-criticism."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "supports": "Waite’s primary-source image descriptions and his own esoteric interpretation; not proof of original historical intent"
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite’s 1911 published divinatory lists, sometimes substantially different from contemporary meanings"
+        },
+        {
+          "url": "https://commons.wikimedia.org/wiki/File:RWS1909_-_20_Judgement.jpeg",
+          "supports": "Reference only for original RWS image; individual file URL and Muse asset mapping require confirmation before publication"
+        }
+      ],
+      "reviewNotes": "Historically anchored to Waite’s primary text; associations described as modern readings are interpretive, not factual or predictive. Verify specific image provenance and any more granular historical claims during final copyedit."
+    },
+    {
+      "id": "tarot-major-21",
+      "number": 21,
+      "name": "The World",
+      "arcana": "Major Arcana",
+      "subtitle": "The Circle and the Door",
+      "editorialStatus": "draft",
+      "reviewBatch": "major-03",
+      "candidateVersion": 1,
+      "provenance": "Original editorial candidate prepared for group review; no earlier approved manuscript recovered for this card",
+      "keywords": {
+        "upright": [
+          "Completion",
+          "Integration",
+          "Perspective",
+          "Milestone",
+          "Participation"
+        ],
+        "reversed": [
+          "Unfinished business",
+          "Fear of closure",
+          "Stagnation",
+          "Transition",
+          "Reorientation"
+        ]
+      },
+      "chapters": {
+        "story": "A figure dances within an oval wreath, holding a wand in each hand. At the corners appear four winged or living forms: human, eagle, lion, and bull. The dancer seems suspended in movement, neither arriving at a rigid endpoint nor turning away from what has been accomplished.\n\nThe World is the last numbered Major Arcana card in the Rider–Waite–Smith sequence. It is often described as completion, but the artwork refuses the stillness of a closed book. The wreath forms a boundary, yet the figure moves within it. There is wholeness here without the disappearance of motion.\n\nWhat does it mean to finish something? Sometimes it means a celebration. Sometimes it means recognizing a limit, ending a role, or allowing a chapter to stand as it is. Completion is not the same as perfection; many meaningful undertakings end with loose threads.\n\nAfter The World, a shuffled deck might bring The Fool again. The cycle closes, and life has the indecency to offer another beginning.",
+        "symbolism": "**Oval wreath and binding ribbons.** The dancer stands within a garland shaped like an opening or enclosing ring. Waite emphasizes the card’s completion and cosmic vision in his description. Later readers often see the wreath as culmination and renewal.\n\n**The central dancing figure.** The figure holds two wands and is wrapped in a flowing cloth. Avoid imposing a rigid gender identity from the image; Waite’s own symbolic language belongs to his historical context.\n\n**Four corner creatures.** Human or angel, eagle, lion, and bull recall the four living creatures in biblical and later esoteric iconography. Golden Dawn and other occult systems also linked such imagery to zodiacal or elemental correspondences; these are tradition-specific, not inherent proof of one universal code.\n\n**The open sky.** No ordinary earthly setting grounds the dancer. It gives the scene an expansive quality rather than promising literal travel.",
+        "meanings": {
+          "upright": "Upright, The World may suggest an authentic milestone: a project completed, a season understood, a relationship with a former identity changed. It invites you to recognize the work that brought you here and the people whose contributions belong in the story.\n\nThis is not an injunction to declare every area of life resolved. A person can finish one chapter while remaining a beginner in another. The card’s sense of integration comes from allowing varied experiences to belong to a coherent whole, not from forcing them into a flawless narrative.\n\nA good reading may ask whether you have actually made space to mark a completion. Sometimes we move so quickly into the next goal that we neglect to learn from what has ended. The World gives the moment its due—and then leaves the door available.",
+          "reversed": "Reversed, The World can describe an unfinished obligation, difficulty recognizing completion, or fear of what comes after a familiar role ends. It may also suggest that a supposed ‘ending’ is premature: something important has not yet been considered, repaired, or properly handed over.\n\nLook for the difference between perfectionism and responsibility. Some loose ends genuinely matter to other people; others are excuses to stay in a chapter whose work is finished. A final review, a farewell, or a smaller definition of done may be more helpful than one more endless attempt at polish.\n\nReversal does not mean failure. It can simply make closure a conscious act rather than a ceremony you assumed would happen automatically."
+        },
+        "inYourLife": "**Love:** Celebrate a relationship milestone or recognize what a bond has taught. Reversed, unfinished conversations or fear of transition may deserve attention.\n\n**Work and study:** Close the loop: document, hand off, acknowledge contributors, and learn from results. Reversed, define what still needs finishing.\n\n**Money:** Review a completed financial goal without treating the card as a guarantee of abundance.\n\n**Personal growth:** Honor the person you became while making room for another beginning.",
+        "hiddenKnowledge": "**The last trump and the larger cosmos.** Waite treats The World as a culminating spiritual image. Earlier tarot traditions also include a final world or cosmic card, though its artwork varies. This should not be conflated with the claim that the modern Major Arcana sequence was always conceived as one psychological journey.\n\n**The four living creatures.** Their biblical and occult histories are rich but distinct. Museum-level visual observation, Waite’s own claims, and later correspondences should be identified separately when we eventually add deeper expandable notes.\n\n**A useful companion to The Fool.** Card 0 faces an unknown threshold; card XXI moves within a completed circle. Reading them as an endless learning cycle is a compelling modern teaching device, not an original rule of fifteenth-century tarot.",
+        "reflection": "**Upright:** What deserves to be acknowledged as complete? Whose help belongs in the story? What have I learned that I can carry forward?\n\n**Reversed:** Which loose end is essential and which is perfectionism? What am I afraid will change when this ends? What would an honest handoff look like?\n\n**Journal ritual — The Closing Circle:** Draw a ring and place within it the people, skills, mistakes, joys, and lessons that shaped a completed chapter. Outside it, name one invitation you are ready to consider next.\n\n*The world does not stop because a story ends. That is part of its beauty.*"
+      },
+      "misconception": "The World does not promise a flawless life or imply that an unfinished project makes you incomplete.",
+      "relatedCardIds": [
+        "tarot-major-00",
+        "tarot-major-20",
+        "tarot-major-10"
+      ],
+      "readingSummary": {
+        "upright": "Upright, The World may suggest an authentic milestone: a project completed, a season understood, a relationship with a former identity changed.",
+        "reversed": "Reversed, The World can describe an unfinished obligation, difficulty recognizing completion, or fear of what comes after a familiar role ends."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "supports": "Waite’s primary-source image descriptions and his own esoteric interpretation; not proof of original historical intent"
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite’s 1911 published divinatory lists, sometimes substantially different from contemporary meanings"
+        },
+        {
+          "url": "https://commons.wikimedia.org/wiki/File:RWS1909_-_21_World.jpeg",
+          "supports": "Reference only for original RWS image; individual file URL and Muse asset mapping require confirmation before publication"
+        }
+      ],
+      "reviewNotes": "Historically anchored to Waite’s primary text; associations described as modern readings are interpretive, not factual or predictive. Verify specific image provenance and any more granular historical claims during final copyedit."
+    }
+  ]
+}

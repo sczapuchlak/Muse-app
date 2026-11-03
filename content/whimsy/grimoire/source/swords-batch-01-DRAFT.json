@@ -1,0 +1,974 @@
+{
+  "collection": "Muse Tarot Grimoire",
+  "batch": "Minor Arcana / Swords",
+  "status": "draft",
+  "count": 14,
+  "cards": [
+    {
+      "id": "tarot-swords-01",
+      "name": "Ace of Swords",
+      "suit": "Swords",
+      "rank": "Ace",
+      "arcana": "Minor Arcana",
+      "editorialStatus": "draft",
+      "researchStatus": "historical-primary-source-reviewed",
+      "candidateVersion": 1,
+      "chapters": [
+        {
+          "title": "The Story",
+          "subtitle": "The Blade of Clarity",
+          "body": "A sword rises from a cloud into a crown hung with greenery; distant mountains suggest a world in which certainty must still contend with difficult terrain. There is no wielder in sight, only the startling offer of a cutting instrument. The Ace of Swords is the beginning of a question, argument, decision, or discovery—not the guarantee of a happy answer. It brings the possibility of cutting through confusion, but also asks what a sharp truth might wound. A sword can separate what has been entangled; it can just as readily divide what needed understanding. This is the suit announcing itself without apology."
+        },
+        {
+          "title": "Symbolism",
+          "subtitle": "What Smith Actually Drew",
+          "body": "A cloud-borne hand grasps a vertical sword passing through a crown with hanging sprigs. The crown is a visible detail, not proof that every conclusion is morally crowned. The stark mountains in the background contrast with the swift promise of the foreground. Waite emphasized extreme force and conquest, a harsher starting point than the modern keyword “clarity.”"
+        },
+        {
+          "title": "Meanings",
+          "uprightKeywords": [],
+          "upright": "The upright Ace suggests a question finally ready to be articulated, or a difficult fact worth facing. Ask what is known, what remains inference, and which distinction has been lost beneath too many competing stories. A decisive conversation, clear brief, or carefully framed argument may help. But the sword does not reward certainty for its own sake: a strong claim needs evidence, and a true statement still needs timing and care. The card can favor a beginning in research, writing, or conflict resolution in which naming the issue is the first real accomplishment.",
+          "reversedKeywords": [],
+          "reversed": "Reversed, the same sharp capacity may be turned inward or used too hastily. An argument might have impressive logic but poor premises; an insight might arrive before its consequences have been considered. Equally, you may be avoiding a necessary truth because it threatens a comfortable arrangement. Review evidence, slow the urge to win, and distinguish precision from cruelty. Waite’s reversal was far less simply psychological: he noted disastrous force and, in another tradition, themes of increase and birth. Muse treats confusion and misuse as modern reflective possibilities, not his exclusive meaning."
+        },
+        {
+          "title": "In Your Life",
+          "subtitle": "Putting the Card to Work",
+          "body": "In relationships, tell the truth without treating honesty as permission to be unkind. At work, define the actual problem before offering solutions. In study, test a thesis against disconfirming evidence. A reversed card invites revision rather than a declaration that someone is dishonest."
+        },
+        {
+          "title": "Hidden Knowledge",
+          "subtitle": "A Note from the Historical Record",
+          "body": "Waite gave the Ace a startling list—triumph, conquest, and excess—and suggested that the crown might have significance beyond ordinary fortune-telling. Modern “new idea” readings soften that original intensity. The crown should make a reader ask who benefits from a supposedly victorious truth."
+        },
+        {
+          "title": "Reflection",
+          "uprightQuestions": [
+            "What conversation needs one clear sentence?",
+            "What detail in this scene changes the way I read it?",
+            "Where could a more careful choice matter?"
+          ],
+          "reversedQuestions": [
+            "Where am I confusing certainty with evidence?",
+            "Which assumption deserves a closer look?",
+            "How would I recognize a constructive next step?"
+          ],
+          "journalPrompt": "Draft a single claim you believe is true; write the strongest fair objection beneath it."
+        }
+      ],
+      "readingSummary": {
+        "upright": "The upright Ace suggests a question finally ready to be articulated, or a difficult fact worth facing.",
+        "reversed": "Reversed, the same sharp capacity may be turned inward or used too hastily."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite’s specific Swords image description and period divinatory meanings."
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "supports": "Waite’s stated esoteric framework and contextual distinctions."
+        }
+      ],
+      "editorialNote": "Historical meanings are identified as Waite’s; modern reflective meanings are not attributed to original deck creators. Exact local artwork mapping and repository schema not checked.",
+      "idStatus": "provisional — validate against canonical Muse IDs before Codex import"
+    },
+    {
+      "id": "tarot-swords-02",
+      "name": "Two of Swords",
+      "suit": "Swords",
+      "rank": "Two",
+      "arcana": "Minor Arcana",
+      "editorialStatus": "draft",
+      "researchStatus": "historical-primary-source-reviewed",
+      "candidateVersion": 1,
+      "chapters": [
+        {
+          "title": "The Story",
+          "subtitle": "The Guarded Truce",
+          "body": "On a stone seat beside water, a blindfolded person holds two long swords across the chest. The posture is perfectly balanced and visibly strenuous. It might be peace; it might be a ceasefire that can last only as long as nobody moves. The Two of Swords is frequently called indecision, but its image is subtler: choosing not to act can preserve safety, avoid a premature judgment, or prevent a feared confrontation. Still, balance maintained without seeing is vulnerable to what arrives from beyond the frame."
+        },
+        {
+          "title": "Symbolism",
+          "subtitle": "What Smith Actually Drew",
+          "body": "Two blades form an X across the seated figure while a blindfold limits sight; rocks and a crescent moon occupy the waterside background. The sea is not necessarily emotion in an original documented code, though modern readers often interpret it that way. Waite called the image an equilibrium and allowed qualified harmony, courage, friendship, and tenderness."
+        },
+        {
+          "title": "Meanings",
+          "uprightKeywords": [],
+          "upright": "Upright, the Two can indicate a protective pause between alternatives that both carry costs. A choice may require better information; there may be good reason to preserve a temporary truce. Consider what you gain by waiting, and what waiting itself changes. The balanced swords ask for deliberate restraint, not permanent paralysis. Where two people disagree, a provisional agreement can protect the relationship while the substance is examined. An undecided question is not always a failure.",
+          "reversedKeywords": [],
+          "reversed": "Reversed, the pose may become untenable: facts are being avoided, resentment is hidden beneath politeness, or the protective pause has begun to make the eventual decision harder. Alternatively, a rigid refusal to choose could finally loosen as the blindfold comes off. Waite’s reversed meanings centered on duplicity and falsehood, not the now-common interpretation of emotional overwhelm; that historical divergence belongs in the record. Seek a clearer view without turning uncertainty into suspicion."
+        },
+        {
+          "title": "In Your Life",
+          "subtitle": "Putting the Card to Work",
+          "body": "In love, establish whether “keeping the peace” means genuine consent or silence. At work, name a decision date and the information required. In friendship, a respectful pause can be wiser than forced agreement."
+        },
+        {
+          "title": "Hidden Knowledge",
+          "subtitle": "A Note from the Historical Record",
+          "body": "The Two is unusually favorable in Waite’s sometimes grim Swords suit: he mentions concord and even intimacy, then cautions that the suit qualifies these positive readings. It is a truce drawn with weapons still raised."
+        },
+        {
+          "title": "Reflection",
+          "uprightQuestions": [
+            "What is the purpose of my pause?",
+            "What detail in this scene changes the way I read it?",
+            "Where could a more careful choice matter?"
+          ],
+          "reversedQuestions": [
+            "What important fact am I refusing to look at?",
+            "Which assumption deserves a closer look?",
+            "How would I recognize a constructive next step?"
+          ],
+          "journalPrompt": "Write two competing choices and what each protects; name what evidence could move you."
+        }
+      ],
+      "readingSummary": {
+        "upright": "Upright, the Two can indicate a protective pause between alternatives that both carry costs.",
+        "reversed": "Reversed, the pose may become untenable: facts are being avoided, resentment is hidden beneath politeness, or the protective pause has begun to make the eventual decision harder."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite’s specific Swords image description and period divinatory meanings."
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "supports": "Waite’s stated esoteric framework and contextual distinctions."
+        }
+      ],
+      "editorialNote": "Historical meanings are identified as Waite’s; modern reflective meanings are not attributed to original deck creators. Exact local artwork mapping and repository schema not checked.",
+      "idStatus": "provisional — validate against canonical Muse IDs before Codex import"
+    },
+    {
+      "id": "tarot-swords-03",
+      "name": "Three of Swords",
+      "suit": "Swords",
+      "rank": "Three",
+      "arcana": "Minor Arcana",
+      "editorialStatus": "draft",
+      "researchStatus": "historical-primary-source-reviewed",
+      "candidateVersion": 1,
+      "chapters": [
+        {
+          "title": "The Story",
+          "subtitle": "The Shape of Heartbreak",
+          "body": "Three swords pierce a red heart against dark clouds and rain. There are no people to distract from the image. It is blunt, even theatrical, and its power lies in refusing to disguise pain as an elegant lesson. The Three of Swords allows sorrow to have its own shape: grief after separation, hurtful knowledge, a disappointment that cannot be argued away. It does not tell you that suffering is destined, deserved, or spiritually necessary. It suggests that something hurts and deserves to be acknowledged before it is hurried into meaning."
+        },
+        {
+          "title": "Symbolism",
+          "subtitle": "What Smith Actually Drew",
+          "body": "Three blades transfix a floating heart beneath rain-filled clouds; the heart is a symbolic image, not an anatomical scene. Waite’s text includes rupture, absence, delay, and division. The design offers few narrative clues about who caused the injury. An interpretation that immediately assigns blame adds facts the card does not contain."
+        },
+        {
+          "title": "Meanings",
+          "uprightKeywords": [],
+          "upright": "Upright, this card can describe a painful separation, the sting of a truthful discovery, or the disorientation of plans coming apart. It counsels neither emotional display nor stoicism. Sometimes the most practical act is admitting that an outcome mattered. If conflict is involved, let responsibility be specific; if grief is involved, avoid reducing the loss to a tidy lesson. A sword can reveal what happened, but it cannot mend a heart by explaining it. Repair may need time, accountability, companionship, or changed conditions.",
+          "reversedKeywords": [],
+          "reversed": "Reversed, the heart may be beginning to make room around its injury—or the mind may be rehearsing the same wound until it fills every view. Those are not the same experience. Notice whether reflection produces understanding or merely another round of self-accusation. Waite listed mental disorder and confusion in his reversal, language that should not be converted into diagnoses. In a supportive reading, ask what would make the next day gentler and what remains unresolved."
+        },
+        {
+          "title": "In Your Life",
+          "subtitle": "Putting the Card to Work",
+          "body": "In relationships, grief and conflict need different responses. At work, disappointments may require honest feedback and a revised plan. In personal life, allow a loss to be meaningful without asserting that the card predicted it."
+        },
+        {
+          "title": "Hidden Knowledge",
+          "subtitle": "A Note from the Historical Record",
+          "body": "Unlike many illustrated Swords cards, the Three is almost entirely emblematic. That lack of a human actor makes it especially tempting to project a particular betrayal into it. Waite did not require one villain; neither should Muse."
+        },
+        {
+          "title": "Reflection",
+          "uprightQuestions": [
+            "Which loss needs acknowledgment rather than explanation?",
+            "What detail in this scene changes the way I read it?",
+            "Where could a more careful choice matter?"
+          ],
+          "reversedQuestions": [
+            "Am I healing or rehearsing an old injury?",
+            "Which assumption deserves a closer look?",
+            "How would I recognize a constructive next step?"
+          ],
+          "journalPrompt": "Describe the hurt without assigning yourself a moral verdict; note what support is available."
+        }
+      ],
+      "readingSummary": {
+        "upright": "Upright, this card can describe a painful separation, the sting of a truthful discovery, or the disorientation of plans coming apart.",
+        "reversed": "Reversed, the heart may be beginning to make room around its injury—or the mind may be rehearsing the same wound until it fills every view."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite’s specific Swords image description and period divinatory meanings."
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "supports": "Waite’s stated esoteric framework and contextual distinctions."
+        }
+      ],
+      "editorialNote": "Historical meanings are identified as Waite’s; modern reflective meanings are not attributed to original deck creators. Exact local artwork mapping and repository schema not checked.",
+      "idStatus": "provisional — validate against canonical Muse IDs before Codex import"
+    },
+    {
+      "id": "tarot-swords-04",
+      "name": "Four of Swords",
+      "suit": "Swords",
+      "rank": "Four",
+      "arcana": "Minor Arcana",
+      "editorialStatus": "draft",
+      "researchStatus": "historical-primary-source-reviewed",
+      "candidateVersion": 1,
+      "chapters": [
+        {
+          "title": "The Story",
+          "subtitle": "The Chapel of Quiet",
+          "body": "A stone effigy lies with hands joined in prayer beneath stained glass; three swords hang on the wall and one lies below. The scene resembles a tomb, yet its stillness is not necessarily an ending. The Four of Swords creates a chamber apart from urgency: a place where thought can settle and exhausted judgment can recover. Rest is not an escape from living. It can be a deliberate refusal to make an important decision while too depleted to see it clearly. The card asks what kind of quiet is restorative—and when sanctuary becomes withdrawal."
+        },
+        {
+          "title": "Symbolism",
+          "subtitle": "What Smith Actually Drew",
+          "body": "A recumbent knightly effigy, joined hands, stained-glass window, and four swords establish a memorial or chapel setting. The kneeling figure in the window is visible but not a license to assign an exact doctrine without documentation. Waite described a tomb and linked the image to retreat and solitude."
+        },
+        {
+          "title": "Meanings",
+          "uprightKeywords": [],
+          "upright": "Upright, the Four suggests a pause from argument, emotional intensity, or ceaseless mental work. Seek a form of rest that actually restores agency: sleep, a protected day, quiet preparation, or fewer demands. A retreat can also allow a decision to mature outside public pressure. The card does not advise disappearing from every obligation; ask what must still be tended and what can wait. Rest should make life more possible, not smaller by default.",
+          "reversedKeywords": [],
+          "reversed": "Reversed, solitude may have crossed into avoidance or the respite may be ending before enough strength has returned. Another possibility is that useful structure—planning, conserving money, and setting boundaries—will help. These themes reflect Waite’s notably pragmatic reversed list, including circumspection and economy, not simply modern “burnout.” Assess whether reentry needs to be gradual or whether isolation has become a cost of its own."
+        },
+        {
+          "title": "In Your Life",
+          "subtitle": "Putting the Card to Work",
+          "body": "In relationships, ask for a pause with a clear return to conversation. At work, protect recovery from constant notifications. With conflict, separate quiet reflection from silent punishment."
+        },
+        {
+          "title": "Hidden Knowledge",
+          "subtitle": "A Note from the Historical Record",
+          "body": "The original image is more explicitly funerary than many modern “self-care” glosses admit. Waite’s reversed meanings also speak of administration and caution. The card is not just a nap; it is the ethics of withdrawing and returning."
+        },
+        {
+          "title": "Reflection",
+          "uprightQuestions": [
+            "Where would a deliberate pause improve my judgment?",
+            "What detail in this scene changes the way I read it?",
+            "Where could a more careful choice matter?"
+          ],
+          "reversedQuestions": [
+            "Has needed rest become a way to postpone contact?",
+            "Which assumption deserves a closer look?",
+            "How would I recognize a constructive next step?"
+          ],
+          "journalPrompt": "Design one restorative interval with a boundary and a return point."
+        }
+      ],
+      "readingSummary": {
+        "upright": "Upright, the Four suggests a pause from argument, emotional intensity, or ceaseless mental work.",
+        "reversed": "Reversed, solitude may have crossed into avoidance or the respite may be ending before enough strength has returned."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite’s specific Swords image description and period divinatory meanings."
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "supports": "Waite’s stated esoteric framework and contextual distinctions."
+        }
+      ],
+      "editorialNote": "Historical meanings are identified as Waite’s; modern reflective meanings are not attributed to original deck creators. Exact local artwork mapping and repository schema not checked.",
+      "idStatus": "provisional — validate against canonical Muse IDs before Codex import"
+    },
+    {
+      "id": "tarot-swords-05",
+      "name": "Five of Swords",
+      "suit": "Swords",
+      "rank": "Five",
+      "arcana": "Minor Arcana",
+      "editorialStatus": "draft",
+      "researchStatus": "historical-primary-source-reviewed",
+      "candidateVersion": 1,
+      "chapters": [
+        {
+          "title": "The Story",
+          "subtitle": "The Price of Winning",
+          "body": "A figure gathers swords on a bleak shore while two others walk away, their weapons abandoned. The winner seems to possess the field. But Smith does not paint a celebration, and the horizon offers no applause. The Five of Swords asks what a victory costs when relationships, dignity, or trust have been damaged. It is not a rule that all conflict is harmful; some boundaries need defending. The difficult question is whether proving yourself right has become more important than achieving the purpose for which you argued."
+        },
+        {
+          "title": "Symbolism",
+          "subtitle": "What Smith Actually Drew",
+          "body": "A foreground figure holds multiple swords and looks toward two departing figures; two swords lie abandoned. Water and a wind-tossed sky emphasize the exposed setting without prescribing a psychological meaning. Waite describes the foreground figure as master of the field and his divinatory vocabulary concerns humiliation and loss."
+        },
+        {
+          "title": "Meanings",
+          "uprightKeywords": [],
+          "upright": "Upright, consider whether a disagreement has produced a winner but no workable outcome. You may need to acknowledge harm, withdraw from a pointless contest, or stand firm where capitulation would create greater injustice. The card’s ethical challenge is not automatic compromise: it is proportion. Who has power? Who bears the costs? Is a dispute over facts, dignity, or control? A clean victory on paper can leave a badly damaged relationship.",
+          "reversedKeywords": [],
+          "reversed": "Reversed, the chance to repair may emerge after a painful clash, but so may the temptation to rewrite what happened. Apologies without changed behavior are another kind of victory performance. Waite’s reverse meaning remained largely severe, adding burial and obsequies rather than the familiar modern “reconciliation” promise. Let evidence of repair matter more than a desire for a pleasant ending."
+        },
+        {
+          "title": "In Your Life",
+          "subtitle": "Putting the Card to Work",
+          "body": "In love, distinguish a healthy boundary from scorekeeping. At work, consider whether public triumph undermines future collaboration. In community, not every disagreement needs an audience."
+        },
+        {
+          "title": "Hidden Knowledge",
+          "subtitle": "A Note from the Historical Record",
+          "body": "The composition forces the reader to notice both the possessor of the swords and the people who have lost them. A reading that only praises victory—or only condemns competition—misses that deliberately uncomfortable perspective."
+        },
+        {
+          "title": "Reflection",
+          "uprightQuestions": [
+            "What would winning this argument actually accomplish?",
+            "What detail in this scene changes the way I read it?",
+            "Where could a more careful choice matter?"
+          ],
+          "reversedQuestions": [
+            "What would meaningful repair require beyond an apology?",
+            "Which assumption deserves a closer look?",
+            "How would I recognize a constructive next step?"
+          ],
+          "journalPrompt": "Write the costs of a recent conflict from at least two viewpoints."
+        }
+      ],
+      "readingSummary": {
+        "upright": "Upright, consider whether a disagreement has produced a winner but no workable outcome.",
+        "reversed": "Reversed, the chance to repair may emerge after a painful clash, but so may the temptation to rewrite what happened."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite’s specific Swords image description and period divinatory meanings."
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "supports": "Waite’s stated esoteric framework and contextual distinctions."
+        }
+      ],
+      "editorialNote": "Historical meanings are identified as Waite’s; modern reflective meanings are not attributed to original deck creators. Exact local artwork mapping and repository schema not checked.",
+      "idStatus": "provisional — validate against canonical Muse IDs before Codex import"
+    },
+    {
+      "id": "tarot-swords-06",
+      "name": "Six of Swords",
+      "suit": "Swords",
+      "rank": "Six",
+      "arcana": "Minor Arcana",
+      "editorialStatus": "draft",
+      "researchStatus": "historical-primary-source-reviewed",
+      "candidateVersion": 1,
+      "chapters": [
+        {
+          "title": "The Story",
+          "subtitle": "The Passage Across",
+          "body": "A boat moves over quiet water carrying two passengers and a standing ferryman. Six swords are planted upright in the hull, traveling with them. The passage looks subdued rather than triumphant. Here the Swords suit offers a profound image of transition: leaving a difficult place does not mean leaving its memory or consequences behind. You can move toward safer circumstances while still carrying what happened. The crossing is real even when the arrival remains unseen."
+        },
+        {
+          "title": "Symbolism",
+          "subtitle": "What Smith Actually Drew",
+          "body": "A ferryman stands with a pole, a seated cloaked adult and smaller figure face away, and six upright swords travel in the boat. The scene includes differing textures of water. Waite emphasized a practical passage by boat and noted that the light load did not overtax the ferryman; later psychological “healing journey” language is an expansion."
+        },
+        {
+          "title": "Meanings",
+          "uprightKeywords": [],
+          "upright": "Upright, the Six can indicate a measured departure from conflict, travel, relocation, changing an unproductive conversation, or beginning to think more clearly. Movement may depend on accepting assistance. Ask what must be brought, what can be left, and what is not yet resolved. This is not an instruction to flee every difficulty. Sometimes the right passage is temporary distance that allows a more thoughtful return.",
+          "reversedKeywords": [],
+          "reversed": "Reversed, a necessary transition could be delayed by obligations, incomplete conversations, fear, or the absence of a workable destination. It may also invite saying aloud what has remained unspoken. Waite’s reverse meanings included declaration, publicity, confession, and even one account of a love proposal—not the now-standard idea that one is “stuck.” Preserve that difference and examine what communication would make a crossing possible."
+        },
+        {
+          "title": "In Your Life",
+          "subtitle": "Putting the Card to Work",
+          "body": "In relationships, change may involve boundaries rather than endings. At work, plan a transfer or conversation rather than abruptly vanishing. For grief, do not demand immediate arrival at peace."
+        },
+        {
+          "title": "Hidden Knowledge",
+          "subtitle": "A Note from the Historical Record",
+          "body": "The person who guides the boat deserves attention: this is one of the suit’s clearest images of help. A ferry crossing is not the same as solitary escape, and Waite explicitly commented on the ferryman’s manageable task."
+        },
+        {
+          "title": "Reflection",
+          "uprightQuestions": [
+            "What am I trying to move away from—and toward?",
+            "What detail in this scene changes the way I read it?",
+            "Where could a more careful choice matter?"
+          ],
+          "reversedQuestions": [
+            "What necessary declaration remains unsaid?",
+            "Which assumption deserves a closer look?",
+            "How would I recognize a constructive next step?"
+          ],
+          "journalPrompt": "Sketch the crossing: shore of departure, useful companions, cargo, and destination."
+        }
+      ],
+      "readingSummary": {
+        "upright": "Upright, the Six can indicate a measured departure from conflict, travel, relocation, changing an unproductive conversation, or beginning to think more clearly.",
+        "reversed": "Reversed, a necessary transition could be delayed by obligations, incomplete conversations, fear, or the absence of a workable destination."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite’s specific Swords image description and period divinatory meanings."
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "supports": "Waite’s stated esoteric framework and contextual distinctions."
+        }
+      ],
+      "editorialNote": "Historical meanings are identified as Waite’s; modern reflective meanings are not attributed to original deck creators. Exact local artwork mapping and repository schema not checked.",
+      "idStatus": "provisional — validate against canonical Muse IDs before Codex import"
+    },
+    {
+      "id": "tarot-swords-07",
+      "name": "Seven of Swords",
+      "suit": "Swords",
+      "rank": "Seven",
+      "arcana": "Minor Arcana",
+      "editorialStatus": "draft",
+      "researchStatus": "historical-primary-source-reviewed",
+      "candidateVersion": 1,
+      "chapters": [
+        {
+          "title": "The Story",
+          "subtitle": "The Clever Escape",
+          "body": "A figure tiptoes away from a camp carrying five swords, while two remain standing behind. The scene suggests cunning but withholds the full story. Is this a theft, a reconnaissance mission, an attempt to avoid an impossible confrontation, or a foolish plan that cannot succeed? The Seven of Swords is strongest when it refuses a premature verdict. Strategy can be wise; secrecy can also erode trust. The difference depends on motives, obligations, power, and consequences beyond the image."
+        },
+        {
+          "title": "Symbolism",
+          "subtitle": "What Smith Actually Drew",
+          "body": "Five swords are bundled awkwardly in the departing figure’s arms; two remain planted near a tented camp. A backward glance and careful steps suggest stealth, but do not establish who owns the swords. Waite explicitly said the card’s traditional meanings were divergent and uncertain."
+        },
+        {
+          "title": "Meanings",
+          "uprightKeywords": [],
+          "upright": "Upright, examine a plan that depends on discretion, independent thinking, or avoiding direct confrontation. Is privacy warranted, as in protecting a vulnerable person or preparing a sensitive conversation? Or are you concealing something owed to others? Cleverness is not inherently dishonorable, but it requires a clear accounting of whose interests are served. The card may also challenge you to abandon a performative battle and find a workable route around it.",
+          "reversedKeywords": [],
+          "reversed": "Reversed, strategy may collapse into rumor, self-justification, or excessive disclosure. Conversely, seeking trustworthy counsel could reveal a flaw before it becomes costly. Waite’s reverse list included both good advice and slander or idle talk, a much more ambiguous set than modern “secrets exposed.” Distinguish tact from evasion and consultation from gossip."
+        },
+        {
+          "title": "In Your Life",
+          "subtitle": "Putting the Card to Work",
+          "body": "In relationships, privacy differs from deception when shared agreements are honored. At work, protect confidential information without hiding mistakes. In creative projects, avoid mistaking a clever shortcut for completed work."
+        },
+        {
+          "title": "Hidden Knowledge",
+          "subtitle": "A Note from the Historical Record",
+          "body": "Waite effectively warns his reader not to force a single meaning: he acknowledges contradictory interpretations. This unusual moment of uncertainty is part of the card’s history, and an excellent lesson in responsible reading."
+        },
+        {
+          "title": "Reflection",
+          "uprightQuestions": [
+            "What is the ethical purpose of keeping this private?",
+            "What detail in this scene changes the way I read it?",
+            "Where could a more careful choice matter?"
+          ],
+          "reversedQuestions": [
+            "Whose counsel would challenge my preferred story?",
+            "Which assumption deserves a closer look?",
+            "How would I recognize a constructive next step?"
+          ],
+          "journalPrompt": "Describe a plan and record who knows, who is affected, and what disclosure is owed."
+        }
+      ],
+      "readingSummary": {
+        "upright": "Upright, examine a plan that depends on discretion, independent thinking, or avoiding direct confrontation.",
+        "reversed": "Reversed, strategy may collapse into rumor, self-justification, or excessive disclosure."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite’s specific Swords image description and period divinatory meanings."
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "supports": "Waite’s stated esoteric framework and contextual distinctions."
+        }
+      ],
+      "editorialNote": "Historical meanings are identified as Waite’s; modern reflective meanings are not attributed to original deck creators. Exact local artwork mapping and repository schema not checked.",
+      "idStatus": "provisional — validate against canonical Muse IDs before Codex import"
+    },
+    {
+      "id": "tarot-swords-08",
+      "name": "Eight of Swords",
+      "suit": "Swords",
+      "rank": "Eight",
+      "arcana": "Minor Arcana",
+      "editorialStatus": "draft",
+      "researchStatus": "historical-primary-source-reviewed",
+      "candidateVersion": 1,
+      "chapters": [
+        {
+          "title": "The Story",
+          "subtitle": "The Apparent Prison",
+          "body": "A blindfolded, bound figure stands among eight swords driven into muddy ground. A castle rises behind, but the path away is not plainly marked. The scene asks a difficult question: which restrictions are external and which might change with information, assistance, or a new perspective? It would be cruel to tell every trapped person that confinement exists only in their imagination. The Eight of Swords should encourage accurate appraisal of real limits alongside the possibilities for support and movement."
+        },
+        {
+          "title": "Symbolism",
+          "subtitle": "What Smith Actually Drew",
+          "body": "The figure’s wrists are bound and eyes covered; eight upright swords form an incomplete enclosure. Waterlogged ground and a distant fortress contribute to the atmosphere. Waite calls the confinement temporary rather than irretrievable, but he also lists actual crisis and censure. Neither image nor source authorizes minimizing real coercion."
+        },
+        {
+          "title": "Meanings",
+          "uprightKeywords": [],
+          "upright": "Upright, acknowledge the weight of a limiting situation without assuming every option has been exhausted. A lack of information, shame, threats, bureaucracy, or fear may narrow perceived choices. Seek an outside view where safe, identify what is controllable, and do not make personal optimism substitute for material help. The card can describe mental constriction, but it can just as readily prompt questions about power and circumstance.",
+          "reversedKeywords": [],
+          "reversed": "Reversed, new understanding might open a way forward—or formerly hidden risks might become apparent. Waite’s historical reversal is especially harsh, listing opposition, betrayal, and unforeseen trouble; modern liberation readings are not his stated default. Read the reversal as a request for a better map: what is genuinely changing, and what would make movement safer?"
+        },
+        {
+          "title": "In Your Life",
+          "subtitle": "Putting the Card to Work",
+          "body": "In relationships, heed evidence of control or intimidation rather than treating it as a mindset issue. In work, ask what constraints are formal and which are assumptions. For personal growth, invite help rather than assigning blame for feeling stuck."
+        },
+        {
+          "title": "Hidden Knowledge",
+          "subtitle": "A Note from the Historical Record",
+          "body": "Waite himself described temporary durance: “temporary” qualifies the image, but does not erase its bonds. That distinction lets Muse offer hope without the insulting claim that every prison is self-made."
+        },
+        {
+          "title": "Reflection",
+          "uprightQuestions": [
+            "Which limitation is documented rather than assumed?",
+            "What detail in this scene changes the way I read it?",
+            "Where could a more careful choice matter?"
+          ],
+          "reversedQuestions": [
+            "What practical support could change the available choices?",
+            "Which assumption deserves a closer look?",
+            "How would I recognize a constructive next step?"
+          ],
+          "journalPrompt": "Make two columns: actual constraints and untested assumptions; name one safe next inquiry."
+        }
+      ],
+      "readingSummary": {
+        "upright": "Upright, acknowledge the weight of a limiting situation without assuming every option has been exhausted.",
+        "reversed": "Reversed, new understanding might open a way forward—or formerly hidden risks might become apparent."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite’s specific Swords image description and period divinatory meanings."
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "supports": "Waite’s stated esoteric framework and contextual distinctions."
+        }
+      ],
+      "editorialNote": "Historical meanings are identified as Waite’s; modern reflective meanings are not attributed to original deck creators. Exact local artwork mapping and repository schema not checked.",
+      "idStatus": "provisional — validate against canonical Muse IDs before Codex import"
+    },
+    {
+      "id": "tarot-swords-09",
+      "name": "Nine of Swords",
+      "suit": "Swords",
+      "rank": "Nine",
+      "arcana": "Minor Arcana",
+      "editorialStatus": "draft",
+      "researchStatus": "historical-primary-source-reviewed",
+      "candidateVersion": 1,
+      "chapters": [
+        {
+          "title": "The Story",
+          "subtitle": "The Night Watch",
+          "body": "A person sits upright in bed, face hidden in hands. Nine swords line the dark wall above; there is no attacker in the room. The Nine of Swords depicts the intimate architecture of dread: after the world goes quiet, a thought can become unbearably loud. Whether the fear concerns something real, imagined, remembered, or uncertain, the experience deserves compassion. This card does not foretell tragedy, nor should it be used to diagnose a mental-health condition. It asks how fear feels, what evidence exists, and who might help the night become less lonely."
+        },
+        {
+          "title": "Symbolism",
+          "subtitle": "What Smith Actually Drew",
+          "body": "Nine horizontal swords hang against a dark field; a seated figure bends over a bed with patterned coverlet. The visual does not show the cause of distress. Waite used the language of desolation and attached severe outcomes to his divinatory list; modern anxiety readings are an interpretive shift."
+        },
+        {
+          "title": "Meanings",
+          "uprightKeywords": [],
+          "upright": "Upright, distinguish a frightening possibility from an established fact without denying the distress. Rumination can make uncertainty feel like certainty. A careful next step might involve writing down the feared outcome, asking what supports or contradicts it, talking with someone trustworthy, or seeking appropriate professional help when distress is persistent. Tarot cannot determine whether a feared event will occur. The person in the bed has a life beyond this moment, even if the card captures one terrible hour.",
+          "reversedKeywords": [],
+          "reversed": "Reversed, the sleepless cycle may be easing, or shame and suspicion may have become harder to share. Waite’s reversal mentions imprisonment and reasonable fear among other themes; it is not a historical assurance that anxiety is ending. Ask which habits bring perspective and which deepen isolation. If fear concerns actual danger, take it seriously and seek practical support rather than mere reassurance."
+        },
+        {
+          "title": "In Your Life",
+          "subtitle": "Putting the Card to Work",
+          "body": "In love, do not treat the card as proof of infidelity. At work, distinguish a genuine deadline risk from catastrophe rehearsal. In wellbeing, it is a reflection prompt, not a diagnosis or treatment plan."
+        },
+        {
+          "title": "Hidden Knowledge",
+          "subtitle": "A Note from the Historical Record",
+          "body": "Waite’s especially severe meanings reveal why historical fidelity matters: the modern Nine often speaks of anxiety and self-criticism, while his list also includes death and despair. Muse does not turn either into prediction."
+        },
+        {
+          "title": "Reflection",
+          "uprightQuestions": [
+            "What story becomes loudest when everything is quiet?",
+            "What detail in this scene changes the way I read it?",
+            "Where could a more careful choice matter?"
+          ],
+          "reversedQuestions": [
+            "What feeling am I ashamed to share?",
+            "Which assumption deserves a closer look?",
+            "How would I recognize a constructive next step?"
+          ],
+          "journalPrompt": "Write “I fear…” and “I know…” as separate sentences; identify a person or resource for support."
+        }
+      ],
+      "readingSummary": {
+        "upright": "Upright, distinguish a frightening possibility from an established fact without denying the distress.",
+        "reversed": "Reversed, the sleepless cycle may be easing, or shame and suspicion may have become harder to share."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite’s specific Swords image description and period divinatory meanings."
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "supports": "Waite’s stated esoteric framework and contextual distinctions."
+        }
+      ],
+      "editorialNote": "Historical meanings are identified as Waite’s; modern reflective meanings are not attributed to original deck creators. Exact local artwork mapping and repository schema not checked.",
+      "idStatus": "provisional — validate against canonical Muse IDs before Codex import"
+    },
+    {
+      "id": "tarot-swords-10",
+      "name": "Ten of Swords",
+      "suit": "Swords",
+      "rank": "Ten",
+      "arcana": "Minor Arcana",
+      "editorialStatus": "draft",
+      "researchStatus": "historical-primary-source-reviewed",
+      "candidateVersion": 1,
+      "chapters": [
+        {
+          "title": "The Story",
+          "subtitle": "The Last Blow",
+          "body": "A figure lies face down on dark earth beneath ten swords. The foreground is almost unbearably severe, but beyond it a narrow band of light meets the water. This card depicts extremity: an ending, collapse, exhaustion, or the moment a story can no longer continue in its former shape. It is not literal prophecy of death. Its severity deserves respect; neither “everything happens for a reason” nor “just start over” is adequate consolation. Something may truly be over. The next question is what care and accountability become possible after the ending is named."
+        },
+        {
+          "title": "Symbolism",
+          "subtitle": "What Smith Actually Drew",
+          "body": "Ten swords penetrate the prone figure; dark clouds sit above a distant illuminated horizon and water. Waite explicitly stated the card was not especially one of violent death, despite the violent picture. Treat the horizon as an observable visual contrast, not evidence that Smith encoded a guaranteed happy ending."
+        },
+        {
+          "title": "Meanings",
+          "uprightKeywords": [],
+          "upright": "Upright, the Ten can reflect a situation reaching its limit: the unsustainable project, the decisive ending, or the recognition that a repeated attempt is no longer helping. Acknowledge the actual damage and avoid manufacturing a silver lining. If there is responsibility to take, take it; if there is support to receive, allow it. Closure may be chosen or imposed. A good reading makes space for grief and for the practical work that follows, rather than celebrating collapse.",
+          "reversedKeywords": [],
+          "reversed": "Reversed, there may be a small reprieve or a recovery that feels fragile. Waite’s listed reversal intriguingly includes gain and success—but qualifies them as temporary. Modern readers may explore resilience or the difficulty of letting an ending be final. Which meaning fits depends on observable circumstances. Do not use the card to insist that a person should be healed already."
+        },
+        {
+          "title": "In Your Life",
+          "subtitle": "Putting the Card to Work",
+          "body": "In relationships, an ending needs dignity rather than dramatization. In work, identify whether a plan is salvageable or requires a clean stop. In personal change, remember that closure and immediate relief are not the same thing."
+        },
+        {
+          "title": "Hidden Knowledge",
+          "subtitle": "A Note from the Historical Record",
+          "body": "The Ten’s grisly imagery is routinely overstated as literal doom, even though Waite cautioned against that reading. His reversed suggestion of temporary advantage also complicates the simple “upright bad, reversed good” formula."
+        },
+        {
+          "title": "Reflection",
+          "uprightQuestions": [
+            "What is finished, even if I wish otherwise?",
+            "What detail in this scene changes the way I read it?",
+            "Where could a more careful choice matter?"
+          ],
+          "reversedQuestions": [
+            "Am I mistaking a temporary reprieve for a solved problem?",
+            "Which assumption deserves a closer look?",
+            "How would I recognize a constructive next step?"
+          ],
+          "journalPrompt": "Name an ending without attaching a lesson; then list the care, repairs, and next obligations it leaves."
+        }
+      ],
+      "readingSummary": {
+        "upright": "Upright, the Ten can reflect a situation reaching its limit: the unsustainable project, the decisive ending, or the recognition that a repeated attempt is no longer helping.",
+        "reversed": "Reversed, there may be a small reprieve or a recovery that feels fragile."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite’s specific Swords image description and period divinatory meanings."
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "supports": "Waite’s stated esoteric framework and contextual distinctions."
+        }
+      ],
+      "editorialNote": "Historical meanings are identified as Waite’s; modern reflective meanings are not attributed to original deck creators. Exact local artwork mapping and repository schema not checked.",
+      "idStatus": "provisional — validate against canonical Muse IDs before Codex import"
+    },
+    {
+      "id": "tarot-swords-page",
+      "name": "Page of Swords",
+      "suit": "Swords",
+      "rank": "Page",
+      "arcana": "Minor Arcana",
+      "editorialStatus": "draft",
+      "researchStatus": "historical-primary-source-reviewed",
+      "candidateVersion": 1,
+      "chapters": [
+        {
+          "title": "The Story",
+          "subtitle": "The Watchful Student",
+          "body": "A youthful figure moves across uneven ground holding a sword with both hands. Wind drives the clouds and twists the landscape; the Page looks over one shoulder as though information may arrive from any direction. This is the mind in its alert apprenticeship: curious, quick, and not always certain which signals deserve attention. The Page of Swords learns to ask better questions. The risk is confusing watchfulness with wisdom, or suspicion with insight."
+        },
+        {
+          "title": "Symbolism",
+          "subtitle": "What Smith Actually Drew",
+          "body": "A slender standing figure holds an upright sword while turning the head; the ground is rugged, and clouds are visibly wind-swept. Waite described vigilance, examination, spying, and oversight; the popular “curious student” figure is a later psychological reading of those traits."
+        },
+        {
+          "title": "Meanings",
+          "uprightKeywords": [],
+          "upright": "Upright, gather information, develop a new skill of argument, or speak up with a thoughtful question. The Page can bring an important message, a new topic of study, or a need to test assumptions. Curiosity is a virtue when accompanied by humility about what one does not know. Check a source before repeating a claim and keep the difference between inquiry and interrogation visible.",
+          "reversedKeywords": [],
+          "reversed": "Reversed, vigilance may become compulsive checking, gossip, premature conclusions, or reluctance to admit uncertainty. It may also show an unprepared beginning rather than a character defect. Waite’s reverse list turns sharply toward unforeseen trouble and harmful surveillance traits. Start with the practical correction: verify, listen, and speak proportionately."
+        },
+        {
+          "title": "In Your Life",
+          "subtitle": "Putting the Card to Work",
+          "body": "In relationships, ask directly rather than monitoring someone. At work, investigate facts without building a case from rumor. In learning, let a beginner’s question open discussion."
+        },
+        {
+          "title": "Hidden Knowledge",
+          "subtitle": "A Note from the Historical Record",
+          "body": "The Page is not pictured seated with a book. Smith illustrates learning through alertness and movement. The traditional meaning of spying means this card cannot be reduced to a cheerful “news arrives” symbol."
+        },
+        {
+          "title": "Reflection",
+          "uprightQuestions": [
+            "Which question would help more than my current assumption?",
+            "What detail in this scene changes the way I read it?",
+            "Where could a more careful choice matter?"
+          ],
+          "reversedQuestions": [
+            "Where has curiosity crossed into surveillance?",
+            "Which assumption deserves a closer look?",
+            "How would I recognize a constructive next step?"
+          ],
+          "journalPrompt": "Choose a strong belief and examine its source trail before sharing it."
+        }
+      ],
+      "readingSummary": {
+        "upright": "Upright, gather information, develop a new skill of argument, or speak up with a thoughtful question.",
+        "reversed": "Reversed, vigilance may become compulsive checking, gossip, premature conclusions, or reluctance to admit uncertainty."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite’s specific Swords image description and period divinatory meanings."
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "supports": "Waite’s stated esoteric framework and contextual distinctions."
+        }
+      ],
+      "editorialNote": "Historical meanings are identified as Waite’s; modern reflective meanings are not attributed to original deck creators. Exact local artwork mapping and repository schema not checked.",
+      "idStatus": "provisional — validate against canonical Muse IDs before Codex import"
+    },
+    {
+      "id": "tarot-swords-knight",
+      "name": "Knight of Swords",
+      "suit": "Swords",
+      "rank": "Knight",
+      "arcana": "Minor Arcana",
+      "editorialStatus": "draft",
+      "researchStatus": "historical-primary-source-reviewed",
+      "candidateVersion": 1,
+      "chapters": [
+        {
+          "title": "The Story",
+          "subtitle": "The Headlong Argument",
+          "body": "A rider charges forward, sword raised, as trees and clouds bend in the wind. The Knight of Swords is thought in motion—brilliant when urgency is warranted, destructive when speed replaces judgment. He is not a villain, and sometimes the world genuinely needs someone willing to act before a consensus forms. Yet the image barely leaves room for listening. The card asks whether conviction has been tested against reality and whether those in the rider’s path have been considered."
+        },
+        {
+          "title": "Symbolism",
+          "subtitle": "What Smith Actually Drew",
+          "body": "The horse gallops, the sword is raised, the cape and trees are driven by wind. Waite invoked chivalric bravery and a romantic knight, but his meanings also include wrath and war. The picture carries both daring and the hazard of an unstoppable charge."
+        },
+        {
+          "title": "Meanings",
+          "uprightKeywords": [],
+          "upright": "Upright, pursue a demanding idea, defend a principle, or communicate with bold precision. Energy can be useful when hesitation has become complacency. Even so, separate urgency from impatience. A good argument gains strength from evidence and from knowing when to stop speaking long enough to hear the answer. The Knight’s challenge is not to abandon speed, but to earn it through preparation.",
+          "reversedKeywords": [],
+          "reversed": "Reversed, the charge may become reckless rhetoric, needless antagonism, or a rush toward consequences nobody examined. Another reading is that you are holding back from a legitimate confrontation because you fear seeming forceful. Waite’s reversed warning concerned imprudence and incapacity. Check whether the problem is excessive speed or insufficient readiness, then choose a measured response."
+        },
+        {
+          "title": "In Your Life",
+          "subtitle": "Putting the Card to Work",
+          "body": "In relationships, directness should not become verbal dominance. At work, a rapid solution still needs stakeholder knowledge. In public debate, being correct does not eliminate responsibility for how one argues."
+        },
+        {
+          "title": "Hidden Knowledge",
+          "subtitle": "A Note from the Historical Record",
+          "body": "Waite compared the rider to a chivalric hero while preserving meanings of destructive conflict. That contradiction is the card’s moral engine: honorable purpose and dangerous momentum may travel together."
+        },
+        {
+          "title": "Reflection",
+          "uprightQuestions": [
+            "What deserves decisive action now?",
+            "What detail in this scene changes the way I read it?",
+            "Where could a more careful choice matter?"
+          ],
+          "reversedQuestions": [
+            "Where am I charging ahead without listening?",
+            "Which assumption deserves a closer look?",
+            "How would I recognize a constructive next step?"
+          ],
+          "journalPrompt": "Write the argument you want to make, then add the strongest objection before sending it."
+        }
+      ],
+      "readingSummary": {
+        "upright": "Upright, pursue a demanding idea, defend a principle, or communicate with bold precision.",
+        "reversed": "Reversed, the charge may become reckless rhetoric, needless antagonism, or a rush toward consequences nobody examined."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite’s specific Swords image description and period divinatory meanings."
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "supports": "Waite’s stated esoteric framework and contextual distinctions."
+        }
+      ],
+      "editorialNote": "Historical meanings are identified as Waite’s; modern reflective meanings are not attributed to original deck creators. Exact local artwork mapping and repository schema not checked.",
+      "idStatus": "provisional — validate against canonical Muse IDs before Codex import"
+    },
+    {
+      "id": "tarot-swords-queen",
+      "name": "Queen of Swords",
+      "suit": "Swords",
+      "rank": "Queen",
+      "arcana": "Minor Arcana",
+      "editorialStatus": "draft",
+      "researchStatus": "historical-primary-source-reviewed",
+      "candidateVersion": 1,
+      "chapters": [
+        {
+          "title": "The Story",
+          "subtitle": "The Clear-Eyed Witness",
+          "body": "A crowned figure sits beneath a pale sky, sword held upright in one hand and the other hand extended. Her posture is composed, but she does not appear untouched by experience. The Queen of Swords represents a hard-won kind of clarity: the capacity to name a truth without pretending that truth has never hurt. She invites discernment, boundaries, and exact language. The danger is a judgment so fiercely guarded that tenderness is excluded before it can be heard."
+        },
+        {
+          "title": "Symbolism",
+          "subtitle": "What Smith Actually Drew",
+          "body": "The Queen sits in profile with an upright sword and an outstretched left hand; a single bird and clouds appear in the sky. Waite associated the expression with suffering and traditionally listed widowhood and separation. A modern reading of analytical independence should acknowledge rather than erase those gendered period conventions."
+        },
+        {
+          "title": "Meanings",
+          "uprightKeywords": [],
+          "upright": "Upright, communicate honestly, set a boundary, or assess a situation without sentimental distortion. Clear seeing often comes from experience, including disappointment. This card can commend someone who refuses easy flattery and makes room for evidence. Yet discernment is not contempt: the Queen’s wisdom is strongest when it allows people complexity. In a reading, ask where compassion and precision need to sit beside one another.",
+          "reversedKeywords": [],
+          "reversed": "Reversed, sharp judgment may have hardened into unfairness, or fear of seeming cold may be preventing an essential boundary. Waite’s reverse list includes malice and deceit, but a reversed orientation does not justify labeling another person cruel. Look for specific conduct, and consider whether loneliness, exhaustion, or old hurt has narrowed the field of interpretation."
+        },
+        {
+          "title": "In Your Life",
+          "subtitle": "Putting the Card to Work",
+          "body": "In love, value consistency over rhetoric without testing people endlessly. At work, deliver necessary feedback respectfully. In family life, boundaries can coexist with warmth."
+        },
+        {
+          "title": "Hidden Knowledge",
+          "subtitle": "A Note from the Historical Record",
+          "body": "The historic Queen is not simply a universally powerful sovereign: Waite’s text emphasizes sorrow, widowhood, and privation. Muse retains that history while refusing to equate an independent woman with a tragic stereotype."
+        },
+        {
+          "title": "Reflection",
+          "uprightQuestions": [
+            "What truth have I learned through experience?",
+            "What detail in this scene changes the way I read it?",
+            "Where could a more careful choice matter?"
+          ],
+          "reversedQuestions": [
+            "Where might judgment be protecting an old wound?",
+            "Which assumption deserves a closer look?",
+            "How would I recognize a constructive next step?"
+          ],
+          "journalPrompt": "Write one boundary in language that is both unambiguous and humane."
+        }
+      ],
+      "readingSummary": {
+        "upright": "Upright, communicate honestly, set a boundary, or assess a situation without sentimental distortion.",
+        "reversed": "Reversed, sharp judgment may have hardened into unfairness, or fear of seeming cold may be preventing an essential boundary."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite’s specific Swords image description and period divinatory meanings."
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "supports": "Waite’s stated esoteric framework and contextual distinctions."
+        }
+      ],
+      "editorialNote": "Historical meanings are identified as Waite’s; modern reflective meanings are not attributed to original deck creators. Exact local artwork mapping and repository schema not checked.",
+      "idStatus": "provisional — validate against canonical Muse IDs before Codex import"
+    },
+    {
+      "id": "tarot-swords-king",
+      "name": "King of Swords",
+      "suit": "Swords",
+      "rank": "King",
+      "arcana": "Minor Arcana",
+      "editorialStatus": "draft",
+      "researchStatus": "historical-primary-source-reviewed",
+      "candidateVersion": 1,
+      "chapters": [
+        {
+          "title": "The Story",
+          "subtitle": "The Weight of Judgment",
+          "body": "A crowned ruler sits upright with a raised sword beneath a shifting sky. The King of Swords occupies a seat of judgment: words, rules, and decisions have consequences beyond the speaker. His achievement is not simply cleverness but the responsibility to reason openly and apply standards fairly. A clear verdict may protect; an unchecked certainty may punish. The card asks who is authorized to decide, who can challenge the decision, and whether power has made room for humility."
+        },
+        {
+          "title": "Symbolism",
+          "subtitle": "What Smith Actually Drew",
+          "body": "The ruler faces forward, sword raised, seated on a decorated throne with clouds and birds behind. Waite draws an explicit comparison with Justice and describes the authority of judgment, even matters of life and death by office. He does not present this merely as a kindly mentor."
+        },
+        {
+          "title": "Meanings",
+          "uprightKeywords": [],
+          "upright": "Upright, apply principles consistently, seek expert counsel, or take responsibility for a difficult judgment. In work, this can mean clear criteria, transparent rationale, and a willingness to revise when evidence changes. In personal life, it may mean refusing to confuse strong feelings with established facts. The King does not require you to become emotionally distant. Fairness is an ongoing practice, especially when a decision affects someone with less power.",
+          "reversedKeywords": [],
+          "reversed": "Reversed, authority can become dogma, cruelty, intimidating certainty, or rules used selectively. It may also point to an avoidance of responsibility: the title of authority without the discipline of reason. Waite’s reversal was explicitly severe. Still, a card is not proof that a boss, partner, or stranger intends harm. Examine procedures and actions before drawing conclusions."
+        },
+        {
+          "title": "In Your Life",
+          "subtitle": "Putting the Card to Work",
+          "body": "In relationships, intellectual superiority is no substitute for care. At work, explain decisions and make appeals possible. In community, ask whose expertise is present and whose voice is missing."
+        },
+        {
+          "title": "Hidden Knowledge",
+          "subtitle": "A Note from the Historical Record",
+          "body": "Waite’s description connects this King to the Justice trump, then emphasizes the power of office. That sharpens the modern ideal of “wise leadership”: reason without accountability can become a beautifully articulated abuse of power."
+        },
+        {
+          "title": "Reflection",
+          "uprightQuestions": [
+            "Where do my decisions affect other people?",
+            "What detail in this scene changes the way I read it?",
+            "Where could a more careful choice matter?"
+          ],
+          "reversedQuestions": [
+            "What evidence would make me change my mind?",
+            "Which assumption deserves a closer look?",
+            "How would I recognize a constructive next step?"
+          ],
+          "journalPrompt": "Draft fair criteria for a real decision; include how someone affected could question it."
+        }
+      ],
+      "readingSummary": {
+        "upright": "Upright, apply principles consistently, seek expert counsel, or take responsibility for a difficult judgment.",
+        "reversed": "Reversed, authority can become dogma, cruelty, intimidating certainty, or rules used selectively."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "supports": "Waite’s specific Swords image description and period divinatory meanings."
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "supports": "Waite’s stated esoteric framework and contextual distinctions."
+        }
+      ],
+      "editorialNote": "Historical meanings are identified as Waite’s; modern reflective meanings are not attributed to original deck creators. Exact local artwork mapping and repository schema not checked.",
+      "idStatus": "provisional — validate against canonical Muse IDs before Codex import"
+    }
+  ]
+}

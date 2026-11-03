@@ -1,0 +1,1073 @@
+{
+  "collection": "Muse Tarot Grimoire",
+  "deck": "Rider–Waite–Smith",
+  "batch": "wands-01",
+  "editorialVoice": "The Enchanted Scholar",
+  "status": "DRAFT — NOT APPROVED FOR IMPORT",
+  "schemaNote": "Editorial transport structure, not a guaranteed drop-in Muse database schema. Codex should adapt only after approval, preserving IDs, existing artwork and private records.",
+  "verification": "Waite 1911 Part III, Wands section checked for all 14 card scenes and period meanings. Primary artwork asset mapping remains unverified. No automatic publication.",
+  "cards": [
+    {
+      "id": "tarot-wands-01",
+      "name": "Ace of Wands",
+      "arcana": "Minor Arcana",
+      "suit": "Wands",
+      "rank": "Ace",
+      "number": 1,
+      "subtitle": "The First Spark",
+      "editorialStatus": "draft",
+      "candidateVersion": 1,
+      "reviewBatch": "wands-01",
+      "researchStatus": "primary-text-checked; asset-level inspection pending",
+      "keywords": {
+        "upright": [
+          "inspiration",
+          "initiative",
+          "creative opening",
+          "desire",
+          "enterprise"
+        ],
+        "reversed": [
+          "stalled ignition",
+          "waning interest",
+          "false start",
+          "reassessment",
+          "unspent potential"
+        ]
+      },
+      "chapters": {
+        "story": "A hand emerges from a cloud holding a living branch. There is no face to recognize, no owner to congratulate, and no finished work to admire. The picture catches an instant before commitment: something is offered, and the question of what to do with it has not yet been answered. Smith draws leaves from the wand, an image of vitality rather than a dead ceremonial rod. In the distance are hills and a small stronghold. The Ace is not a completed conquest; its strength is the possibility of one. In Waite's list, creation, invention, enterprise, beginnings, and origins accompany less familiar references to family and inheritance. Modern interpretations usually foreground the creative spark. They are useful, provided they do not mistake a beginning for a guarantee. The wand arrives alive. Whether its keeper can cultivate it is another story.",
+        "symbolism": "The outstretched hand and cloud are elements of Smith's Ace composition; they can be read as an opportunity that has not yet been earned or exhausted. The single leafy club is materially different from the many staffs carried in later Wands scenes: one emerging intention, not a social struggle or established burden. The distant landscape gives the branch a world in which something might be built, but the card does not identify a particular destination. Waite specifically describes a hand grasping a stout wand and names creation and enterprise among its period meanings. It would be misleading to say the cloud proves divine intervention. That is an interpretive possibility, not an observable fact.",
+        "meanings": {
+          "upright": "Upright, the Ace can indicate the moment a project begins to exert a pull on you. You may not have credentials, supplies, or certainty; what you have is a vivid reason to investigate. Think of the idea for a small business, an unexpected desire to study, a conversation that suggests a new collaboration, or the impulse to make something with your hands. The card favors an exploratory first step: sketch the concept, speak to a practitioner, reserve time, try a prototype. It does not demand that every exciting idea become a lifelong calling. Inspiration earns its value through testing and attention. Ask whether the spark is nourishing enough to tend beyond its first spectacular moment.",
+          "reversed": "Reversed, the spark may be blocked, poorly timed, or simply not worth chasing. A person can be full of ideas yet unable to choose one; another can feel strangely uninspired after months of exertion. The reversal may also point to pressure to feel passionate about something that no longer fits. Waite's historical reversed list is harsher, invoking decline and clouded joy; Muse treats those as period divinatory conventions, not forecasts. In practice, distinguish a genuine loss of interest from fatigue, fear, or missing resources. The smallest honest experiment is often more revealing than a grand vow to start again tomorrow."
+        },
+        "inYourLife": "In love, the Ace can signal curiosity or renewed initiative, not proof of mutual attraction. In work, it may mark a promising concept that still needs a business case. In creativity, it is permission to make a rough beginning. Reversed, check whether the enthusiasm belongs to you or to someone else's expectations. A reading about taking a course might suggest trying one lesson before buying a year's supplies.",
+        "hiddenKnowledge": "The Ace begins the suit's visual grammar: one sprouting branch, offered without a visible human biography. Later numbered cards put staffs in hands, plant them in earth, or carry them toward a destination. The suit's recurring leaves matter: Waite explicitly calls Wands a suit of life and animation. The often-taught link between Wands and the element of fire belongs to developed occult and modern tarot traditions; do not confuse it with the playing cards' original fifteenth-century purpose.",
+        "reflection": {
+          "uprightQuestions": [
+            "What idea keeps returning when nobody expects me to pursue it?",
+            "What is the smallest test that would teach me something real?",
+            "What resources would help this possibility take root?"
+          ],
+          "reversedQuestions": [
+            "Is my delay caused by fear, exhaustion, or honest disinterest?",
+            "Which beginning am I romanticizing more than I am preparing for?",
+            "What pressure could I release before trying again?"
+          ],
+          "journalPrompt": "Draw the first imperfect outline of an idea; write what attracts you and what a tiny experiment could reveal."
+        }
+      },
+      "beginnerExplanation": "Start with what is actually pictured in Ace of Wands. Notice the arrangement of the staffs and the figure’s actions before selecting one of the possible readings. Neither orientation predicts a fixed result.",
+      "readingExample": "A reading about taking a course might suggest trying one lesson before buying a year's supplies",
+      "misconception": "An Ace offers a beginning, not certainty or a destined career.",
+      "relatedCardIds": [
+        "tarot-wands-02"
+      ],
+      "readingSummary": {
+        "upright": "Upright, the Ace can indicate the moment a project begins to exert a pull on you.",
+        "reversed": "Reversed, the spark may be blocked, poorly timed, or simply not worth chasing."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "type": "primary-source",
+          "supports": "1911 image descriptions, divinatory conventions, and reversal comparison; Wands section"
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "type": "primary-source",
+          "supports": "Waite’s discussion of the illustrated Minor Arcana and interpretive limitations"
+        }
+      ],
+      "editorialNotes": "Historical Waite meanings are distinguished in prose from the original contemporary reflective reading. Artwork mapping and asset licensing not yet audited. No claim of reader-specific future certainty."
+    },
+    {
+      "id": "tarot-wands-02",
+      "name": "Two of Wands",
+      "arcana": "Minor Arcana",
+      "suit": "Wands",
+      "rank": "Two",
+      "number": 2,
+      "subtitle": "The World Beyond the Wall",
+      "editorialStatus": "draft",
+      "candidateVersion": 1,
+      "reviewBatch": "wands-01",
+      "researchStatus": "primary-text-checked; asset-level inspection pending",
+      "keywords": {
+        "upright": [
+          "planning",
+          "perspective",
+          "agency",
+          "choice",
+          "ambition"
+        ],
+        "reversed": [
+          "narrow horizon",
+          "unresolved choice",
+          "control anxiety",
+          "planning trap",
+          "surprise"
+        ]
+      },
+      "chapters": {
+        "story": "A figure stands upon battlements with a small globe in one hand and a staff in the other. A second wand is secured to the masonry. Beyond the wall lies an expansive shore and distant country. This is not the innocent astonishment of the Ace. Someone already has a position from which to look outward, and that advantage brings its own difficulty: what next? Waite offered sharply conflicting period meanings for this card—wealth and magnificence beside sorrow and dissatisfaction—and compared its wealthy observer to Alexander contemplating dominion. Modern readers commonly call it planning. The more interesting story is the loneliness or responsibility that can accompany a widened horizon. To see many possibilities is not yet to choose one.",
+        "symbolism": "The globe in the figure's hand is a literal depicted object, not proof that the person controls the world. One staff is held, one mounted: modern readers may explore the tension between movement and attachment, though Waite does not establish a fixed two-wand code. A wall provides both security and separation. The sea and country beyond it are visible, not yet crossed. Waite calls attention to a rose-and-cross and lily ornament on the left side of the scene; any specific theological meaning beyond his description requires its own evidence.",
+        "meanings": {
+          "upright": "Upright, the Two concerns the interval between recognizing options and making commitments. Perhaps a life that once seemed too small is beginning to open: a new job in another city, a creative partnership, a course of study, an invitation to travel. The card can encourage deliberate expansion, but also an inventory of what you would leave behind. Authority and resources do not erase uncertainty. Ask what information will actually improve the decision and when planning becomes a way to postpone it. The horizon is a direction for inquiry, not a mandate to conquer.",
+          "reversed": "Reversed, the Two can reveal an overprotected vantage point. You keep looking at maps but never leave the tower; alternatively you may feel pushed to make a choice without the support it requires. The reversal may also surface surprise or anxiety, closer to elements of Waite's period reversed meanings than the common modern label of fear of change. Distinguish the risks that deserve preparation from the fantasies of complete control. There is dignity in choosing to stay; there is less freedom in never admitting that staying is a choice."
+        },
+        "inYourLife": "In relationships, ask whether you are imagining a future together without discussing logistics and consent. In work, test the assumptions behind an expansion plan. In personal growth, compare genuine curiosity about elsewhere with contempt for what you already have. For a possible relocation, write down non-negotiables, information gaps, and a date for revisiting the decision.",
+        "hiddenKnowledge": "The Two is often paired with the Three as planning followed by expansion, but Waite's contrast is not so neatly sequential. His Two contains incompatible fortunes; his Three explicitly concerns trade, enterprise, and cooperation. That contradiction is educational: early printed divinatory lists were not standardized psychological textbooks. A sound reading considers picture, question, neighboring cards, and the reader's own circumstances.",
+        "reflection": {
+          "uprightQuestions": [
+            "What new horizon am I contemplating?",
+            "What does my current position make possible—and difficult?",
+            "Which decision needs an actual deadline?"
+          ],
+          "reversedQuestions": [
+            "Am I confusing control with preparation?",
+            "Which choice am I refusing to name?",
+            "What would make a measured risk more manageable?"
+          ],
+          "journalPrompt": "Sketch two possible futures, including their practical costs and their emotional appeal."
+        }
+      },
+      "beginnerExplanation": "Start with what is actually pictured in Two of Wands. Notice the arrangement of the staffs and the figure’s actions before selecting one of the possible readings. Neither orientation predicts a fixed result.",
+      "readingExample": "a possible relocation, write down non-negotiables, information gaps, and a date for revisiting the decision.",
+      "misconception": "Holding a globe does not mean the card promises dominion or inevitable expansion.",
+      "relatedCardIds": [
+        "tarot-wands-01",
+        "tarot-wands-03"
+      ],
+      "readingSummary": {
+        "upright": "Upright, the Two concerns the interval between recognizing options and making commitments.",
+        "reversed": "Reversed, the Two can reveal an overprotected vantage point."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "type": "primary-source",
+          "supports": "1911 image descriptions, divinatory conventions, and reversal comparison; Wands section"
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "type": "primary-source",
+          "supports": "Waite’s discussion of the illustrated Minor Arcana and interpretive limitations"
+        }
+      ],
+      "editorialNotes": "Historical Waite meanings are distinguished in prose from the original contemporary reflective reading. Artwork mapping and asset licensing not yet audited. No claim of reader-specific future certainty."
+    },
+    {
+      "id": "tarot-wands-03",
+      "name": "Three of Wands",
+      "arcana": "Minor Arcana",
+      "suit": "Wands",
+      "rank": "Three",
+      "number": 3,
+      "subtitle": "Ships on the Horizon",
+      "editorialStatus": "draft",
+      "candidateVersion": 1,
+      "reviewBatch": "wands-01",
+      "researchStatus": "primary-text-checked; asset-level inspection pending",
+      "keywords": {
+        "upright": [
+          "enterprise",
+          "collaboration",
+          "long view",
+          "outreach",
+          "expansion"
+        ],
+        "reversed": [
+          "revised expectations",
+          "delayed returns",
+          "unfinished partnership",
+          "narrowed scope",
+          "relief"
+        ]
+      },
+      "chapters": {
+        "story": "A cloaked figure looks across open water toward ships moving on the horizon. Three staffs have been planted behind and beside them. The pose is calm, almost proprietorial, but the vessels themselves are far away. Here is a person whose activity extends beyond the immediate reach of their own hands. Waite interpreted the card through trade, established strength, discovery, and cooperation. His language evokes a merchant watching a venture unfold. Muse can acknowledge that historical commercial imagination without romanticizing conquest or assuming every expansion is benign. The Three asks what happens after an idea leaves the safety of intention and enters relationships, markets, distances, and the wills of others.",
+        "symbolism": "The figure's back is turned to the viewer, directing our attention outward rather than toward a readable facial expression. The ships are real details in the art; they can signify ventures moving beyond one's direct control. The staffs are planted, not carried, suggesting an established position, although that suggestion is an interpretive observation. A cape wraps the figure against a spacious, sunlit background. Waite explicitly links the ships to enterprise and commerce, not necessarily personal travel or a promised arrival.",
+        "meanings": {
+          "upright": "Upright, the Three can suggest that early work has acquired momentum and now depends on collaboration, patience, or broader systems. You have sent the proposal, taught the first class, planted the garden, or launched the experiment; results travel on schedules that are not yours alone. This card encourages thoughtful follow-through rather than anxious checking. Ask who else has a role, where your responsibilities end, and how to assess progress without inventing certainty. Growth often requires allowing a project to become something other people can interact with—and change.",
+          "reversed": "Reversed, a venture may need a smaller scope, a changed partner, or revised expectations. There may be delays, but Waite's historical reversed meaning also includes the ending of difficulty: a reversal is not automatically a disaster. Perhaps a complicated arrangement is finally winding down; perhaps the ambitious plan can be made humane by shrinking it. The key question is whether you are responding to evidence or protecting the romance of an original vision. A ship that returns early is not always a failure; sometimes it brings useful news."
+        },
+        "inYourLife": "In love, this may concern long-distance plans or the work of coordinating two lives; avoid turning it into a prediction of someone's return. At work, consider supply chains, partnerships, and review milestones. Creatively, the Three may describe releasing a draft to collaborators. A reading about publishing could suggest soliciting two informed critiques rather than waiting alone for perfection.",
+        "hiddenKnowledge": "Waite's Three is unusually explicit about commerce and assistance. The modern phrase “your ships are coming in” often flattens it into guaranteed reward, but the actual scene shows vessels at a distance. The artist gives us perspective, not a tracking number. Historically rooted interpretation acknowledges trade and effort while leaving outcome unresolved.",
+        "reflection": {
+          "uprightQuestions": [
+            "What have I set in motion beyond my immediate reach?",
+            "Whose cooperation would make this stronger?",
+            "What evidence would count as meaningful progress?"
+          ],
+          "reversedQuestions": [
+            "What expectation needs adjusting?",
+            "Could a smaller project serve the underlying aim better?",
+            "Where might relief come from ending a difficult arrangement?"
+          ],
+          "journalPrompt": "Write a letter from the shore to your future collaborator: what do you need, offer, and not control?"
+        }
+      },
+      "beginnerExplanation": "Start with what is actually pictured in Three of Wands. Notice the arrangement of the staffs and the figure’s actions before selecting one of the possible readings. Neither orientation predicts a fixed result.",
+      "readingExample": "A reading about publishing could suggest soliciting two informed critiques rather than waiting alone for perfection",
+      "misconception": "The ships do not guarantee profit, promotion, or anyone’s arrival.",
+      "relatedCardIds": [
+        "tarot-wands-02",
+        "tarot-wands-04"
+      ],
+      "readingSummary": {
+        "upright": "Upright, the Three can suggest that early work has acquired momentum and now depends on collaboration, patience, or broader systems.",
+        "reversed": "Reversed, a venture may need a smaller scope, a changed partner, or revised expectations."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "type": "primary-source",
+          "supports": "1911 image descriptions, divinatory conventions, and reversal comparison; Wands section"
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "type": "primary-source",
+          "supports": "Waite’s discussion of the illustrated Minor Arcana and interpretive limitations"
+        }
+      ],
+      "editorialNotes": "Historical Waite meanings are distinguished in prose from the original contemporary reflective reading. Artwork mapping and asset licensing not yet audited. No claim of reader-specific future certainty."
+    },
+    {
+      "id": "tarot-wands-04",
+      "name": "Four of Wands",
+      "arcana": "Minor Arcana",
+      "suit": "Wands",
+      "rank": "Four",
+      "number": 4,
+      "subtitle": "The Garlanded Threshold",
+      "editorialStatus": "draft",
+      "candidateVersion": 1,
+      "reviewBatch": "wands-01",
+      "researchStatus": "primary-text-checked; asset-level inspection pending",
+      "keywords": {
+        "upright": [
+          "celebration",
+          "welcome",
+          "rest",
+          "belonging",
+          "shared achievement"
+        ],
+        "reversed": [
+          "quiet joy",
+          "private milestone",
+          "uneven belonging",
+          "fragile peace",
+          "restoration"
+        ]
+      },
+      "chapters": {
+        "story": "Four tall staffs support a garland, and two figures lift bouquets before a dwelling reached by a bridge. This is a scene in which achievement becomes social: something is made more real by being witnessed. Waite saw refuge, domestic harmony, peace, and a harvest-home. The Four is often called the card of celebration, but the artwork's architecture matters as much as its festivity. A threshold is a place people cross. Someone has arranged flowers, raised a structure, and made room for others. The question is not simply whether you have earned a party. It is whether the life you are building has places of welcome and repose inside it.",
+        "symbolism": "The four staffs form a frame rather than a prison; Smith suspends flowers from them to create a festive threshold. Two distant figures hold bouquets. A bridge and large building sit beyond, making arrival and settlement visible motifs. We cannot identify the figures' precise relationship or assume a wedding solely from the picture. Waite's descriptive reading centers refuge and concord, which supports domestic celebration more securely than any claim about a specific ceremony.",
+        "meanings": {
+          "upright": "Upright, this card invites recognition of a meaningful landing place: a completed stage, a reunion, a homecoming, or a group that makes room for you. Shared joy is not frivolous; it helps people mark what their work has made possible. Consider whether you have rushed past an achievement without savoring it, or whether you could thank the people who helped build its foundations. The Four favors celebration that is grounded in something real, however modest. A tiny kitchen dinner may embody this card more faithfully than a grand event performed for an audience.",
+          "reversed": "Reversed, the Four need not turn bitter. Waite specifically states that its reversed meaning remains favorable, an unusual feature worth preserving. A contemporary reversal can sometimes suggest a quieter celebration, a welcome that requires repair, or an occasion that looks harmonious while excluding someone. Such readings should come from context, not from treating every upside-down card as a warning. Ask whether you want to mark the milestone privately, whether the gathering feels safe, or whether rest itself is what has been missing."
+        },
+        "inYourLife": "In relationships, the Four asks what makes a shared space hospitable; it does not promise marriage. In work, celebrate a finished phase while documenting what made it succeed. In community, notice whose labor made the welcome possible. For a house move, the card may invite a modest ritual of arrival even when the boxes are not yet unpacked.",
+        "hiddenKnowledge": "A revealing historical footnote: Waite gives the Four of Wands positive upright and reversed divinatory meanings. Modern tarot shorthand often assigns instability to its reversal by default. Muse should teach readers that reversals have varied across periods and systems, and that a card's orientation can prompt emphasis or inquiry rather than an obligatory negation.",
+        "reflection": {
+          "uprightQuestions": [
+            "What small victory deserves witnesses?",
+            "Where do I feel genuinely welcomed?",
+            "Who helped make this possible?"
+          ],
+          "reversedQuestions": [
+            "Could I celebrate in a quieter way?",
+            "Does this gathering include the people it should?",
+            "What unfinished repair would make rest possible?"
+          ],
+          "journalPrompt": "Describe a place of welcome in sensory detail; thank someone who helped create it."
+        }
+      },
+      "beginnerExplanation": "Start with what is actually pictured in Four of Wands. Notice the arrangement of the staffs and the figure’s actions before selecting one of the possible readings. Neither orientation predicts a fixed result.",
+      "readingExample": "a house move, the card may invite a modest ritual of arrival even when the boxes are not yet unpacked.",
+      "misconception": "This card does not automatically mean a wedding, and its reversal is not traditionally wholly negative.",
+      "relatedCardIds": [
+        "tarot-wands-03",
+        "tarot-wands-05"
+      ],
+      "readingSummary": {
+        "upright": "Upright, this card invites recognition of a meaningful landing place: a completed stage, a reunion, a homecoming, or a group that makes room for you.",
+        "reversed": "Reversed, the Four need not turn bitter."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "type": "primary-source",
+          "supports": "1911 image descriptions, divinatory conventions, and reversal comparison; Wands section"
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "type": "primary-source",
+          "supports": "Waite’s discussion of the illustrated Minor Arcana and interpretive limitations"
+        }
+      ],
+      "editorialNotes": "Historical Waite meanings are distinguished in prose from the original contemporary reflective reading. Artwork mapping and asset licensing not yet audited. No claim of reader-specific future certainty."
+    },
+    {
+      "id": "tarot-wands-05",
+      "name": "Five of Wands",
+      "arcana": "Minor Arcana",
+      "suit": "Wands",
+      "rank": "Five",
+      "number": 5,
+      "subtitle": "The Beautiful Commotion",
+      "editorialStatus": "draft",
+      "candidateVersion": 1,
+      "reviewBatch": "wands-01",
+      "researchStatus": "primary-text-checked; asset-level inspection pending",
+      "keywords": {
+        "upright": [
+          "friction",
+          "competition",
+          "practice",
+          "many voices",
+          "creative tension"
+        ],
+        "reversed": [
+          "avoidable quarrel",
+          "misread stakes",
+          "withdrawal",
+          "conflict repair",
+          "misdirected effort"
+        ]
+      },
+      "chapters": {
+        "story": "Five young figures thrust staffs into the air, their colored garments making a lively tangle. No single person appears clearly victorious. Are they training, quarrelling, or playing at battle? Waite deliberately calls the scene mock combat and associates it with strenuous competition as well as more serious struggle. That ambiguity is the card's greatest gift. Not every disagreement is an emergency. Some friction sharpens ideas; some merely exhausts people. The Five is the point where several wills occupy the same patch of ground and discover that enthusiasm does not automatically produce coordination.",
+        "symbolism": "The staffs cross at different angles without making an obvious organized formation. Each figure seems occupied with a personal movement. Smith gives us neither a referee nor a clearly defined goal. These visible details support a reading about competing energies, but they do not establish whether the conflict is playful or dangerous. Waite himself leaves both sport and struggle in view, an important safeguard against sensationalizing the image.",
+        "meanings": {
+          "upright": "Upright, the Five may describe debate, creative rivalry, energetic workshops, or a team that has not yet agreed how to work together. There may be value in testing assumptions aloud. Perhaps your work improves when someone challenges it; perhaps a crowded collaboration simply needs roles and rules. Read the temperature of the actual situation. Healthy disagreement preserves dignity and allows correction. Harmful conflict humiliates, coerces, or makes progress impossible. The card does not advise you to remain in an unsafe confrontation just because it is “growth.”",
+          "reversed": "Reversed, the Five may indicate conflict moving underground, an argument finally cooling, or an effort to avoid all disagreement at too high a price. Waite's historical reversed list includes disputes and litigation, so a modern “peace at last” interpretation should not be passed off as his original definition. Ask whether resolution is genuine, whether boundaries have been stated, and whether the group has learned how to disagree. Withdrawing can be wise; so can returning to a conversation with clearer terms."
+        },
+        "inYourLife": "In relationships, distinguish a lively difference of opinion from a destructive pattern. At work, clarify the decision-maker before inviting more debate. In learning, competition may energize or intimidate depending on the environment. In a creative team reading, set a critique rule: every objection must name the specific concern and offer an alternative.",
+        "hiddenKnowledge": "Unlike the Seven, where one person confronts six raised staffs from above, the Five shows a more evenly tangled contest. Their closeness in the suit does not erase their difference: the Five is diffuse friction, the Seven a position under challenge. This is a useful lesson in visual reading—do not let a keyword like “conflict” replace noticing how a conflict is staged.",
+        "reflection": {
+          "uprightQuestions": [
+            "Where is useful disagreement being mistaken for personal hostility?",
+            "Which shared goal needs stating aloud?",
+            "What would fair rules look like here?"
+          ],
+          "reversedQuestions": [
+            "Am I avoiding a conversation that deserves care?",
+            "What is the actual stake, not just the noise?",
+            "How could I de-escalate without pretending we agree?"
+          ],
+          "journalPrompt": "Describe one disagreement from each person's plausible perspective, without assigning a villain."
+        }
+      },
+      "beginnerExplanation": "Start with what is actually pictured in Five of Wands. Notice the arrangement of the staffs and the figure’s actions before selecting one of the possible readings. Neither orientation predicts a fixed result.",
+      "readingExample": "In a creative team reading, set a critique rule: every objection must name the specific concern and offer an alternative",
+      "misconception": "Five crossed staffs do not prove betrayal or inevitable fighting.",
+      "relatedCardIds": [
+        "tarot-wands-04",
+        "tarot-wands-06"
+      ],
+      "readingSummary": {
+        "upright": "Upright, the Five may describe debate, creative rivalry, energetic workshops, or a team that has not yet agreed how to work together.",
+        "reversed": "Reversed, the Five may indicate conflict moving underground, an argument finally cooling, or an effort to avoid all disagreement at too high a price."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "type": "primary-source",
+          "supports": "1911 image descriptions, divinatory conventions, and reversal comparison; Wands section"
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "type": "primary-source",
+          "supports": "Waite’s discussion of the illustrated Minor Arcana and interpretive limitations"
+        }
+      ],
+      "editorialNotes": "Historical Waite meanings are distinguished in prose from the original contemporary reflective reading. Artwork mapping and asset licensing not yet audited. No claim of reader-specific future certainty."
+    },
+    {
+      "id": "tarot-wands-06",
+      "name": "Six of Wands",
+      "arcana": "Minor Arcana",
+      "suit": "Wands",
+      "rank": "Six",
+      "number": 6,
+      "subtitle": "The Laurel and the Crowd",
+      "editorialStatus": "draft",
+      "candidateVersion": 1,
+      "reviewBatch": "wands-01",
+      "researchStatus": "primary-text-checked; asset-level inspection pending",
+      "keywords": {
+        "upright": [
+          "recognition",
+          "public success",
+          "encouragement",
+          "visibility",
+          "accountability"
+        ],
+        "reversed": [
+          "approval hunger",
+          "private accomplishment",
+          "delayed acknowledgment",
+          "uneven credit",
+          "anxiety"
+        ]
+      },
+      "chapters": {
+        "story": "A rider moves through a group of attendants, a laurel wreath crowning both head and staff. The scene is unmistakably public. A victory becomes visible because others witness it. Waite calls the figure a triumphant victor, but also entertains news-bearing and the fulfillment of expectation. The Six asks how achievement changes when it is shared, praised, or interpreted by an audience. The laurel may be deserved; the crowd may be pleased; neither resolves the quieter question of what the success costs or who helped make it possible. Recognition is a social act, and social acts have responsibilities.",
+        "symbolism": "Smith depicts a horseman, surrounding attendants, and laurel ornaments. Laurels have a long classical association with honor and victory; here they are visible enough to ground that comparison, though assigning the scene a particular historical procession would go beyond the evidence. The horse is moving forward rather than standing at rest. The onlookers hold staffs, suggesting a shared context, not proof that everyone approves of the rider.",
+        "meanings": {
+          "upright": "Upright, the Six can invite you to accept earned praise and let others see work that might otherwise remain hidden. A milestone may deserve announcement, a teammate may deserve public thanks, or an idea may be ready for demonstration. The card also asks you to distinguish recognition from worth. Success that depends wholly on applause can become precarious when the room grows quiet. Be generous with credit and thoughtful about what you choose to put on display. A parade is a moment, not an identity.",
+          "reversed": "Reversed, praise may be delayed, misdirected, or more important to you than you wish to admit. Waite's reversed language includes fear, treachery, and delay; modern readers often foreground private victory or insecurity. Both are traditions of interpretation, not evidence that others are conspiring against you. Check whether your actual contribution has been overlooked, whether you need a clearer way to document results, or whether you can let an achievement matter without external confirmation."
+        },
+        "inYourLife": "In romance, public acknowledgment may matter, but no card can establish someone's private intentions. At work, request specific recognition and credit shared labor accurately. In personal growth, consider celebrating something no one else witnessed. For a performance review, the Six might suggest recording tangible outcomes rather than relying on charisma alone.",
+        "hiddenKnowledge": "The Four and Six are both celebratory, yet Smith composes them differently. The Four builds a space of shared refuge; the Six puts one figure in public view. The distinction helps avoid redundant meanings: one concerns belonging and rest, the other visibility, honor, and the ethics of being recognized.",
+        "reflection": {
+          "uprightQuestions": [
+            "What achievement have I minimized?",
+            "Whose contribution needs naming alongside mine?",
+            "How can I receive praise without being ruled by it?"
+          ],
+          "reversedQuestions": [
+            "Am I seeking meaningful feedback or indiscriminate approval?",
+            "Where has credit been distributed unfairly?",
+            "What would a private victory look like?"
+          ],
+          "journalPrompt": "Write the story of a recent achievement, including the unseen help behind it."
+        }
+      },
+      "beginnerExplanation": "Start with what is actually pictured in Six of Wands. Notice the arrangement of the staffs and the figure’s actions before selecting one of the possible readings. Neither orientation predicts a fixed result.",
+      "readingExample": "a performance review, the Six might suggest recording tangible outcomes rather than relying on charisma alone.",
+      "misconception": "Victory imagery is not a promise of fame or evidence that everyone admires you.",
+      "relatedCardIds": [
+        "tarot-wands-05",
+        "tarot-wands-07"
+      ],
+      "readingSummary": {
+        "upright": "Upright, the Six can invite you to accept earned praise and let others see work that might otherwise remain hidden.",
+        "reversed": "Reversed, praise may be delayed, misdirected, or more important to you than you wish to admit."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "type": "primary-source",
+          "supports": "1911 image descriptions, divinatory conventions, and reversal comparison; Wands section"
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "type": "primary-source",
+          "supports": "Waite’s discussion of the illustrated Minor Arcana and interpretive limitations"
+        }
+      ],
+      "editorialNotes": "Historical Waite meanings are distinguished in prose from the original contemporary reflective reading. Artwork mapping and asset licensing not yet audited. No claim of reader-specific future certainty."
+    },
+    {
+      "id": "tarot-wands-07",
+      "name": "Seven of Wands",
+      "arcana": "Minor Arcana",
+      "suit": "Wands",
+      "rank": "Seven",
+      "number": 7,
+      "subtitle": "The Uneven Ground",
+      "editorialStatus": "draft",
+      "candidateVersion": 1,
+      "reviewBatch": "wands-01",
+      "researchStatus": "primary-text-checked; asset-level inspection pending",
+      "keywords": {
+        "upright": [
+          "defense",
+          "conviction",
+          "boundaries",
+          "courage",
+          "pressure"
+        ],
+        "reversed": [
+          "indecision",
+          "defensive fatigue",
+          "unnecessary battle",
+          "repositioning",
+          "uncertainty"
+        ]
+      },
+      "chapters": {
+        "story": "A lone figure holds a staff against six others rising from below. The ground is rough, the stance active, the odds peculiar: outnumbered, yes, but elevated. Waite describes the vantage as a source of potential advantage and interprets the scene through valor, debate, negotiation, and competition. The Seven asks what it means to defend a position without making defensiveness a personality. Some convictions deserve courage. Some inherited positions deserve reconsideration. The wand in your hand may protect a genuine boundary—or a belief you have never examined.",
+        "symbolism": "One person stands on rocky higher ground, confronting six raised staffs whose holders are not visible. That absence matters: the picture shows opposition but tells us almost nothing about its motives. The figure's boots appear mismatched, a detail some readers enjoy treating as improvisation; there is no sound primary-source basis for claiming a fixed symbolic code. Waite's emphasis is the defender's vantage, not inevitable defeat.",
+        "meanings": {
+          "upright": "Upright, the Seven may describe the work of holding a principled boundary under pressure. You may need to explain a decision, advocate for your project, protect time, or withstand criticism. Courage here is not volume. It is knowing what you stand for, understanding the objections, and choosing responses proportionate to the stakes. Not every disagreement requires a speech. Ask whether your position can withstand good questions, and whether you are protecting what matters rather than merely enjoying a fight.",
+          "reversed": "Reversed, the defender may be tired, confused, or standing on a hill that is no longer worth the strain. Waite associates the reversal with perplexity and anxiety. A modern reading might also suggest withdrawing from an unwinnable argument or renegotiating the terms of conflict. Neither interpretation requires surrendering essential boundaries. Choose which commitments merit persistence and which have become expensive demonstrations of pride. Changing your mind after learning something is not weakness."
+        },
+        "inYourLife": "In relationships, use the card to ask what boundary is being contested, while grounding judgments in behavior. At work, prepare evidence for an unpopular but considered recommendation. In activism or advocacy, examine safety, allies, and sustainable effort. For an overwhelming meeting, write three non-negotiables and one point on which you can genuinely compromise.",
+        "hiddenKnowledge": "The Seven differs from the Five in its geometry: an elevated single defender facing multiple challengers. Waite includes intellectual debate and business negotiation, so reducing it to physical attack ignores its documented breadth. The image does not authorize the reader to imagine invisible enemies everywhere.",
+        "reflection": {
+          "uprightQuestions": [
+            "What principle am I trying to protect?",
+            "Which criticism might strengthen my position?",
+            "What help would make my boundary sustainable?"
+          ],
+          "reversedQuestions": [
+            "Am I exhausted by a fight I could leave?",
+            "Where is uncertainty asking for more evidence?",
+            "Which position could I revise without betraying my values?"
+          ],
+          "journalPrompt": "Name one hill worth defending and one hill you can walk away from."
+        }
+      },
+      "beginnerExplanation": "Start with what is actually pictured in Seven of Wands. Notice the arrangement of the staffs and the figure’s actions before selecting one of the possible readings. Neither orientation predicts a fixed result.",
+      "readingExample": "an overwhelming meeting, write three non-negotiables and one point on which you can genuinely compromise.",
+      "misconception": "Resistance is not automatically proof that you are right.",
+      "relatedCardIds": [
+        "tarot-wands-06",
+        "tarot-wands-08"
+      ],
+      "readingSummary": {
+        "upright": "Upright, the Seven may describe the work of holding a principled boundary under pressure.",
+        "reversed": "Reversed, the defender may be tired, confused, or standing on a hill that is no longer worth the strain."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "type": "primary-source",
+          "supports": "1911 image descriptions, divinatory conventions, and reversal comparison; Wands section"
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "type": "primary-source",
+          "supports": "Waite’s discussion of the illustrated Minor Arcana and interpretive limitations"
+        }
+      ],
+      "editorialNotes": "Historical Waite meanings are distinguished in prose from the original contemporary reflective reading. Artwork mapping and asset licensing not yet audited. No claim of reader-specific future certainty."
+    },
+    {
+      "id": "tarot-wands-08",
+      "name": "Eight of Wands",
+      "arcana": "Minor Arcana",
+      "suit": "Wands",
+      "rank": "Eight",
+      "number": 8,
+      "subtitle": "The Airborne Message",
+      "editorialStatus": "draft",
+      "candidateVersion": 1,
+      "reviewBatch": "wands-01",
+      "researchStatus": "primary-text-checked; asset-level inspection pending",
+      "keywords": {
+        "upright": [
+          "momentum",
+          "news",
+          "rapid development",
+          "coordination",
+          "timing"
+        ],
+        "reversed": [
+          "miscommunication",
+          "rush",
+          "delay",
+          "overload",
+          "course correction"
+        ]
+      },
+      "chapters": {
+        "story": "Eight staffs streak diagonally across an open landscape. For once there are no human faces, no hands gripping the branches, and no visible argument over who owns them. Motion itself becomes the subject. Waite reads the flying wands as swift activity approaching its destination, and even mentions messages and the arrows of love. Modern descriptions call it speed, but speed is not enough. Every moving thing has a direction, and the point of haste is whether it serves arrival. The Eight asks how to recognize momentum without being carried away by it.",
+        "symbolism": "All eight wands travel through the air at similar angles. Below them, a river and green land remain still. The contrast between movement above and quiet terrain below organizes the picture. Their destination is outside the image; Waite suggests they are nearing the end of a journey, not that the reader can know the outcome. There are no letters or phones depicted, so modern communication readings are analogies rooted in Waite's messenger language, not literal historical objects.",
+        "meanings": {
+          "upright": "Upright, the Eight may describe a project moving through a suddenly faster phase: decisions converge, replies arrive, logistics accelerate, and yesterday's distant prospect becomes today's concrete task. When movement is welcome, respond with attention rather than needless resistance. Confirm details, make the next decision, and preserve enough margin for the unexpected. In a relationship reading, it might suggest communication becoming lively; it cannot guarantee a message from a particular person. Speed amplifies whatever process is already underway, including its flaws.",
+          "reversed": "Reversed, velocity can become confusion. Several conversations happen at once; instructions are sent before they are understood; a deadline approaches without the necessary agreements. Alternatively the expected movement simply stalls. Waite's historical reversed list includes jealousy and domestic quarrels, so the modern “delayed travel” shorthand is not his whole tradition. Ask whether the problem is lack of motion or motion without coordination. A brief pause to correct direction may be the fastest route forward."
+        },
+        "inYourLife": "In work, confirm owners and deadlines before accelerating. In love, distinguish frequent messages from reliable commitment. In travel, double-check arrangements rather than reading the card as a ticket confirmation. For a launch week, the Eight could suggest making one visible checklist and deciding which decisions genuinely must happen today.",
+        "hiddenKnowledge": "The Eight's visual absence of people makes it stand apart in the suit. After scenes of bargaining, competition, applause, and defense, the result is represented as movement across space. Waite names both speed and “arrows of love,” reflecting the fluid way divinatory associations accumulated. Muse should teach these as historical attributions, not universal laws.",
+        "reflection": {
+          "uprightQuestions": [
+            "What is already moving that I should support?",
+            "Which detail requires confirmation before I act?",
+            "What would timely, clear communication look like?"
+          ],
+          "reversedQuestions": [
+            "Am I confusing urgency with importance?",
+            "Where has speed caused misunderstanding?",
+            "What small correction would prevent larger delay?"
+          ],
+          "journalPrompt": "Trace an unfolding project as eight arrows; label which steps are moving and which need direction."
+        }
+      },
+      "beginnerExplanation": "Start with what is actually pictured in Eight of Wands. Notice the arrangement of the staffs and the figure’s actions before selecting one of the possible readings. Neither orientation predicts a fixed result.",
+      "readingExample": "a launch week, the Eight could suggest making one visible checklist and deciding which decisions genuinely must happen today.",
+      "misconception": "The Eight does not guarantee a text, reunion, or immediate result.",
+      "relatedCardIds": [
+        "tarot-wands-07",
+        "tarot-wands-09"
+      ],
+      "readingSummary": {
+        "upright": "Upright, the Eight may describe a project moving through a suddenly faster phase: decisions converge, replies arrive, logistics accelerate, and yesterday's distant prospect becomes today's concrete task.",
+        "reversed": "Reversed, velocity can become confusion."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "type": "primary-source",
+          "supports": "1911 image descriptions, divinatory conventions, and reversal comparison; Wands section"
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "type": "primary-source",
+          "supports": "Waite’s discussion of the illustrated Minor Arcana and interpretive limitations"
+        }
+      ],
+      "editorialNotes": "Historical Waite meanings are distinguished in prose from the original contemporary reflective reading. Artwork mapping and asset licensing not yet audited. No claim of reader-specific future certainty."
+    },
+    {
+      "id": "tarot-wands-09",
+      "name": "Nine of Wands",
+      "arcana": "Minor Arcana",
+      "suit": "Wands",
+      "rank": "Nine",
+      "number": 9,
+      "subtitle": "The Watchful Guardian",
+      "editorialStatus": "draft",
+      "candidateVersion": 1,
+      "reviewBatch": "wands-01",
+      "researchStatus": "primary-text-checked; asset-level inspection pending",
+      "keywords": {
+        "upright": [
+          "resilience",
+          "readiness",
+          "boundaries",
+          "persistence",
+          "hard-won skill"
+        ],
+        "reversed": [
+          "hypervigilance",
+          "worn defenses",
+          "needed respite",
+          "recovery",
+          "reassessment"
+        ]
+      },
+      "chapters": {
+        "story": "A bandaged figure grips a staff while eight more stand behind like a rough fence. The gaze is turned sideways, as if someone—or something—may yet arrive. Waite interprets this as strength in opposition and the anticipation of an adversary. The Nine is not the triumph of effortless confidence. It is the less glamorous courage of someone who has already endured difficulty and must decide how long to remain on guard. Experience teaches; it can also make every approaching sound resemble an old threat.",
+        "symbolism": "Smith gives the figure a visible head bandage, a firm hold on one staff, and eight upright wands forming a backdrop. The wands resemble a defensive palisade, a comparison Waite explicitly makes. The figure is alert, but the image does not reveal a present attacker. This distinction is crucial: the card can invite questions about preparation and vigilance without proving danger or a psychological diagnosis.",
+        "meanings": {
+          "upright": "Upright, the Nine may describe the endurance required late in a long process. A student approaching exams, an organizer after repeated setbacks, or someone maintaining an important boundary may recognize the guarded stance. The card honors experience while asking whether your defenses still fit the circumstances. Perseverance is not simply staying forever. It can mean taking rest, recruiting allies, and making the next effort proportionate. You may be closer to completion than you think, but the card offers no objective timeline.",
+          "reversed": "Reversed, vigilance may have hardened into exhaustion or unnecessary suspicion. It could also mark a moment when old defenses can finally soften, or when genuine adversity exceeds what one person can handle alone. Waite's reversed list includes obstacles and calamity; modern readings of burnout and recovery are reflective extensions, not his exact terms. Examine observable demands. If the conditions are unsafe, seek practical support; if they are safe, experiment with lowering one small guard. Rest is not the enemy of strength."
+        },
+        "inYourLife": "In relationships, ask whether an old disappointment is shaping a new conversation, without dismissing genuine red flags. At work, define a stopping rule before taking on another late-stage crisis. In creative practice, pace the final revisions. In a boundary reading, the Nine can suggest distinguishing firm protection from constant anticipation of attack.",
+        "hiddenKnowledge": "The Nine's figure does not hold nine staffs: eight stand behind and one is held in front. This matters because the card stages memory and readiness, not simply “many burdens.” Compare the Ten, where every staff is carried in motion. Nine guards a position; Ten transports a weight.",
+        "reflection": {
+          "uprightQuestions": [
+            "Which difficulty has taught me a useful skill?",
+            "What boundary still serves me?",
+            "What support would make persistence sustainable?"
+          ],
+          "reversedQuestions": [
+            "Is my vigilance responding to current evidence or old expectations?",
+            "Where do I need rest rather than another strategy?",
+            "What protection could be softened safely?"
+          ],
+          "journalPrompt": "Write a note to the watchful figure: what must be guarded, and what may finally be set down?"
+        }
+      },
+      "beginnerExplanation": "Start with what is actually pictured in Nine of Wands. Notice the arrangement of the staffs and the figure’s actions before selecting one of the possible readings. Neither orientation predicts a fixed result.",
+      "readingExample": "In a boundary reading, the Nine can suggest distinguishing firm protection from constant anticipation of attack",
+      "misconception": "The card does not diagnose trauma or predict a coming attack.",
+      "relatedCardIds": [
+        "tarot-wands-08",
+        "tarot-wands-10"
+      ],
+      "readingSummary": {
+        "upright": "Upright, the Nine may describe the endurance required late in a long process.",
+        "reversed": "Reversed, vigilance may have hardened into exhaustion or unnecessary suspicion."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "type": "primary-source",
+          "supports": "1911 image descriptions, divinatory conventions, and reversal comparison; Wands section"
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "type": "primary-source",
+          "supports": "Waite’s discussion of the illustrated Minor Arcana and interpretive limitations"
+        }
+      ],
+      "editorialNotes": "Historical Waite meanings are distinguished in prose from the original contemporary reflective reading. Artwork mapping and asset licensing not yet audited. No claim of reader-specific future certainty."
+    },
+    {
+      "id": "tarot-wands-10",
+      "name": "Ten of Wands",
+      "arcana": "Minor Arcana",
+      "suit": "Wands",
+      "rank": "Ten",
+      "number": 10,
+      "subtitle": "The Weight of Getting There",
+      "editorialStatus": "draft",
+      "candidateVersion": 1,
+      "reviewBatch": "wands-01",
+      "researchStatus": "primary-text-checked; asset-level inspection pending",
+      "keywords": {
+        "upright": [
+          "responsibility",
+          "overload",
+          "success costs",
+          "obligation",
+          "completion"
+        ],
+        "reversed": [
+          "delegation",
+          "unsustainable effort",
+          "release",
+          "reorganization",
+          "avoided duty"
+        ]
+      },
+      "chapters": {
+        "story": "A person leans forward under ten long staffs, walking toward a settlement that is almost within sight. The bundle obstructs the figure's view. There is a cruel little irony in the distance: the destination appears close, yet the load makes every step laborious. Waite identifies oppression as the card's central meaning, while also noting that success and gain can produce their own pressure. The Ten is a portrait of achievement with no room left to enjoy it. What began as lively branches has become an unwieldy collection of duties. The card asks when ambition has turned into the conviction that everything must be carried alone.",
+        "symbolism": "Ten staffs fill the figure's arms and dominate the foreground. A small town or buildings appear ahead. The person's bent posture supports an observation about physical burden, but we cannot tell whether the load was freely chosen, imposed, or temporary. Waite explicitly pairs oppression with the paradoxical burdens of fortune and success. It would be historically inaccurate to describe the card only as “hard work pays off.”",
+        "meanings": {
+          "upright": "Upright, the Ten may appear when a worthwhile undertaking has accumulated responsibilities beyond its original design. You may be the reliable person everyone asks, the founder who cannot delegate, or the friend who arranges every detail because no one else seems to. The card asks what the load contains: necessary work, obligations accepted out of guilt, tasks that can be shared, and roles you have never questioned. Nearness to a goal does not justify every cost. Completing something may require changing how you carry it.",
+          "reversed": "Reversed, a person may begin setting down what is not theirs, discover that an arrangement is unsustainable, or resist a responsibility that truly needs attention. The reversal is not automatically liberation. Waite's historical list includes additional complications and intrigue. Modern readers may use the inversion to investigate both overwork and avoidance. Do not mistake relinquishing an unnecessary burden for abandonment—or martyrdom for virtue. Ask what must be finished, reassigned, postponed, or declined."
+        },
+        "inYourLife": "In relationships, consider the invisible logistics one person may carry. At work, list responsibilities and owners instead of rewarding endless rescue work. In health and well-being, be wary of treating burnout as a badge. For an overwhelmed project lead, the Ten might suggest renegotiating deliverables and explicitly asking who can take two tasks off the stack.",
+        "hiddenKnowledge": "Waite's mention of success becoming oppressive is one of the suit's sharpest historical observations. It complicates an easy story in which creative drive simply rises to a triumphant ending. Wands can grow from a single branch into a burden. Muse should preserve this critique of accumulation, not turn the Ten into a motivational slogan about grinding harder.",
+        "reflection": {
+          "uprightQuestions": [
+            "Which responsibilities genuinely belong to me?",
+            "What success has become heavier than expected?",
+            "Who can share the load without being set up to fail?"
+          ],
+          "reversedQuestions": [
+            "What am I ready to delegate or decline?",
+            "Am I avoiding a task that needs a clearer plan?",
+            "Which commitment can be renegotiated honestly?"
+          ],
+          "journalPrompt": "Write ten items you are carrying; circle what only you can do and cross out one unnecessary obligation."
+        }
+      },
+      "beginnerExplanation": "Start with what is actually pictured in Ten of Wands. Notice the arrangement of the staffs and the figure’s actions before selecting one of the possible readings. Neither orientation predicts a fixed result.",
+      "readingExample": "an overwhelmed project lead, the Ten might suggest renegotiating deliverables and explicitly asking who can take two tasks off the stack.",
+      "misconception": "The Ten is not an instruction to endure every burden until collapse.",
+      "relatedCardIds": [
+        "tarot-wands-09",
+        "tarot-wands-11"
+      ],
+      "readingSummary": {
+        "upright": "Upright, the Ten may appear when a worthwhile undertaking has accumulated responsibilities beyond its original design.",
+        "reversed": "Reversed, a person may begin setting down what is not theirs, discover that an arrangement is unsustainable, or resist a responsibility that truly needs attention."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "type": "primary-source",
+          "supports": "1911 image descriptions, divinatory conventions, and reversal comparison; Wands section"
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "type": "primary-source",
+          "supports": "Waite’s discussion of the illustrated Minor Arcana and interpretive limitations"
+        }
+      ],
+      "editorialNotes": "Historical Waite meanings are distinguished in prose from the original contemporary reflective reading. Artwork mapping and asset licensing not yet audited. No claim of reader-specific future certainty."
+    },
+    {
+      "id": "tarot-wands-11",
+      "name": "Page of Wands",
+      "arcana": "Minor Arcana",
+      "suit": "Wands",
+      "rank": "Page",
+      "number": 11,
+      "subtitle": "The Bearer of Strange News",
+      "editorialStatus": "draft",
+      "candidateVersion": 1,
+      "reviewBatch": "wands-01",
+      "researchStatus": "primary-text-checked; asset-level inspection pending",
+      "keywords": {
+        "upright": [
+          "curiosity",
+          "message",
+          "apprenticeship",
+          "experiment",
+          "fresh perspective"
+        ],
+        "reversed": [
+          "indecision",
+          "premature announcement",
+          "uncertain news",
+          "restlessness",
+          "learning curve"
+        ]
+      },
+      "chapters": {
+        "story": "A young-looking figure stands in a dry landscape, gazing attentively at a tall sprouting staff. The stance is still; the imagination seems anything but. Waite describes a herald whose tidings are unusual and whose faithfulness belongs to an older court-card vocabulary. Contemporary readers often meet the Page as a learner, messenger, or eager beginner. None of those roles requires a literal young person to enter your life. The Page represents a way of engaging: approaching the unknown with questions, excitement, and enough humility to admit the story has not yet been tested.",
+        "symbolism": "The Page studies a staff held upright, its leaves a point of visual continuity across the Wands suit. The background is arid, with distant mounds, and the clothing is richly patterned. Waite names proclamation and unusual tidings, which supports a messenger reading. The patterned garment does not, by itself, establish the figure's biography or a hidden geographical code.",
+        "meanings": {
+          "upright": "Upright, the Page may call for curiosity before mastery. Ask the beginner's question, bring an idea to a mentor, read the unfamiliar book, or share an invitation to collaborate. The excitement can be genuine even when the plan remains naive. The Page's gift is willingness to learn in public; the challenge is not to confuse announcements with achievements. A new message or opportunity may be worth investigating, but its quality depends on its content and context. The card does not promise that a particular person will contact you.",
+          "reversed": "Reversed, the Page may be hesitating to speak, scattering attention among fascinating starts, or announcing a grand vision before understanding its costs. Waite's reversal includes adverse news and indecision, while current reflective readings often emphasize restless enthusiasm. Those approaches can coexist as possibilities, not certainties. Before reacting, ask whether information is reliable, whether the speaker understands the matter, and whether a small test would be wiser than an immediate declaration."
+        },
+        "inYourLife": "In romance, the Page may suggest playful openness and the importance of asking honest questions. At work, it can signify a learning assignment or tentative proposal. Creatively, it celebrates an experiment that might fail usefully. For someone considering a workshop, the Page asks what they want to discover, not whether they will instantly be talented.",
+        "hiddenKnowledge": "Court-card identities were historically filtered through age, gender, status, and appearance conventions. Waite sometimes makes such assignments explicit. Muse treats the Page as a relational or developmental role, not a forecast of a dark-haired messenger. That is a modern editorial choice and should be named as such.",
+        "reflection": {
+          "uprightQuestions": [
+            "What am I willing to learn as a beginner?",
+            "Which question could open a useful conversation?",
+            "How can I test an exciting message?"
+          ],
+          "reversedQuestions": [
+            "Where am I announcing more than I have learned?",
+            "What information needs verification?",
+            "Am I delaying because I fear looking inexperienced?"
+          ],
+          "journalPrompt": "Write a curious letter to a skill you do not yet possess; ask three real questions."
+        }
+      },
+      "beginnerExplanation": "Start with what is actually pictured in Page of Wands. Notice the arrangement of the staffs and the figure’s actions before selecting one of the possible readings. Neither orientation predicts a fixed result.",
+      "readingExample": "someone considering a workshop, the Page asks what they want to discover, not whether they will instantly be talented.",
+      "misconception": "The Page does not necessarily represent a child, a literal messenger, or a fixed physical type.",
+      "relatedCardIds": [
+        "tarot-wands-10",
+        "tarot-wands-12"
+      ],
+      "readingSummary": {
+        "upright": "Upright, the Page may call for curiosity before mastery.",
+        "reversed": "Reversed, the Page may be hesitating to speak, scattering attention among fascinating starts, or announcing a grand vision before understanding its costs."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "type": "primary-source",
+          "supports": "1911 image descriptions, divinatory conventions, and reversal comparison; Wands section"
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "type": "primary-source",
+          "supports": "Waite’s discussion of the illustrated Minor Arcana and interpretive limitations"
+        }
+      ],
+      "editorialNotes": "Historical Waite meanings are distinguished in prose from the original contemporary reflective reading. Artwork mapping and asset licensing not yet audited. No claim of reader-specific future certainty."
+    },
+    {
+      "id": "tarot-wands-12",
+      "name": "Knight of Wands",
+      "arcana": "Minor Arcana",
+      "suit": "Wands",
+      "rank": "Knight",
+      "number": 12,
+      "subtitle": "The Rider Who Cannot Sit Still",
+      "editorialStatus": "draft",
+      "candidateVersion": 1,
+      "reviewBatch": "wands-01",
+      "researchStatus": "primary-text-checked; asset-level inspection pending",
+      "keywords": {
+        "upright": [
+          "adventure",
+          "mobilization",
+          "bold pursuit",
+          "transition",
+          "restless courage"
+        ],
+        "reversed": [
+          "impulsive move",
+          "friction",
+          "disrupted plans",
+          "reckless haste",
+          "recalibration"
+        ]
+      },
+      "chapters": {
+        "story": "An armored rider charges across a sunburnt landscape, a sprouting wand held ready while the horse lifts its front legs. The picture is full of departure. Waite notes that the Knight is traveling rather than engaging in a battle, and links the horse's movement with precipitous mood. The Knight is a character in whom energy becomes velocity. He has a destination—or at least the powerful sensation of needing to go. Courage can free a life from stagnant routines. It can also mistake motion for purpose. The Knight asks whether your appetite for change is accompanied by the judgment to carry it through.",
+        "symbolism": "The Knight wears armor and carries a wand rather than an extended sword. His horse rises energetically, with barren hills or pyramid-like mounds behind. Flames decorate his clothing and saddle equipment in the RWS image; interpreting these as the suit's fiery temperament is plausible within later occult traditions, not a claim of universal historical symbolism. Waite specifically distinguishes this rider's journey from war.",
+        "meanings": {
+          "upright": "Upright, the Knight suggests decisive travel, advocacy, experimentation, or the energetic phase of a creative plan. It can be useful when hesitation has become its own habit: make the call, book the trial, send the application, begin the difficult conversation. Yet momentum should still answer to reality. A bold move becomes credible when you have considered its effects on people, commitments, and practical resources. The Knight's courage is most admirable when paired with an ability to listen after arriving.",
+          "reversed": "Reversed, velocity may have outrun preparation. You could be changing direction to avoid discomfort, leaving people to manage the consequences, or experiencing a genuine interruption that demands patience. Waite's reversed meanings include rupture and discord; the modern focus on impulsivity develops from the rider's movement. Do not infer an imminent breakup or move from the card alone. Examine whether the plan needs restraint, repair, or a better destination."
+        },
+        "inYourLife": "In love, watch for the difference between intensity and sustainable care. In career, risk-taking needs a clear downside assessment. In travel, excitement still needs bookings and contingency plans. For a sudden urge to quit a job, the Knight might suggest writing a transition plan before making a dramatic exit.",
+        "hiddenKnowledge": "The Page observes and proclaims; the Knight departs. This court sequence can help readers distinguish curiosity from action, though court rankings do not encode inevitable psychological stages. Waite's practical language about travel and changed residence is a historical alternative to today's familiar “passion” keyword.",
+        "reflection": {
+          "uprightQuestions": [
+            "Where would courageous movement help?",
+            "What will this decision cost other people?",
+            "Which preparation would strengthen my freedom to act?"
+          ],
+          "reversedQuestions": [
+            "Am I moving toward something or away from a feeling?",
+            "What has haste disrupted?",
+            "What conversation should happen before departure?"
+          ],
+          "journalPrompt": "Plan a bold but reversible step; name one safeguard that protects the people affected."
+        }
+      },
+      "beginnerExplanation": "Start with what is actually pictured in Knight of Wands. Notice the arrangement of the staffs and the figure’s actions before selecting one of the possible readings. Neither orientation predicts a fixed result.",
+      "readingExample": "a sudden urge to quit a job, the Knight might suggest writing a transition plan before making a dramatic exit.",
+      "misconception": "The Knight's speed is not evidence that a passionate relationship or adventure will last.",
+      "relatedCardIds": [
+        "tarot-wands-11",
+        "tarot-wands-13"
+      ],
+      "readingSummary": {
+        "upright": "Upright, the Knight suggests decisive travel, advocacy, experimentation, or the energetic phase of a creative plan.",
+        "reversed": "Reversed, velocity may have outrun preparation."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "type": "primary-source",
+          "supports": "1911 image descriptions, divinatory conventions, and reversal comparison; Wands section"
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "type": "primary-source",
+          "supports": "Waite’s discussion of the illustrated Minor Arcana and interpretive limitations"
+        }
+      ],
+      "editorialNotes": "Historical Waite meanings are distinguished in prose from the original contemporary reflective reading. Artwork mapping and asset licensing not yet audited. No claim of reader-specific future certainty."
+    },
+    {
+      "id": "tarot-wands-13",
+      "name": "Queen of Wands",
+      "arcana": "Minor Arcana",
+      "suit": "Wands",
+      "rank": "Queen",
+      "number": 13,
+      "subtitle": "The Warmth of Her Own Fire",
+      "editorialStatus": "draft",
+      "candidateVersion": 1,
+      "reviewBatch": "wands-01",
+      "researchStatus": "primary-text-checked; asset-level inspection pending",
+      "keywords": {
+        "upright": [
+          "confidence",
+          "magnetism",
+          "hospitality",
+          "independence",
+          "generous presence"
+        ],
+        "reversed": [
+          "comparison",
+          "diminished confidence",
+          "exhausted warmth",
+          "jealousy",
+          "self-protection"
+        ]
+      },
+      "chapters": {
+        "story": "A crowned figure sits facing us, holding a flowering wand and a sunflower. A black cat rests at the throne's feet, an unexpected little sovereign of its own. The throne bears lions, and a desertlike landscape stretches beyond. Waite calls the Queen magnetic, friendly, and honorable while filtering the character through period gendered conventions. A contemporary reading need not confine such qualities to women. This Queen represents a particular style of authority: visible, inviting, rooted in self-possession rather than frantic proof. She does not need to extinguish anyone else's light to be seen.",
+        "symbolism": "The sunflower is held visibly in one hand and the wand in the other. Lions decorate the throne, and a black cat sits in the foreground. These are observable features; assigning the cat a universal meaning of witchcraft would be careless. It can prompt a modern reflection on independence, mystery, or companionship, but its documented intent is less certain. Waite's printed description emphasizes the Queen's magnetism and the life of the sprouting wand.",
+        "meanings": {
+          "upright": "Upright, the Queen may invite confident generosity: share your expertise, take pleasure in your craft, welcome others without diminishing yourself. She is at ease with visibility but not reducible to charm. Her presence can also ask what sustains the host, leader, or friend who seems endlessly capable. A confident person is allowed to have boundaries. In a work reading, this might mean claiming credit and mentoring colleagues; in creative practice, showing work without pretending it is finished or flawless.",
+          "reversed": "Reversed, warmth may feel difficult to access. Comparison, exhaustion, or the need to be liked may have taken over. Waite's period reversals include both practical virtues and, in certain card combinations, jealousy or deceit; they should not become a diagnosis of a malicious woman. The reversal could suggest regaining confidence privately, examining competitive instincts, or recognizing that you cannot be available to everyone at once. The Queen's self-possession is not dependent on continuous applause."
+        },
+        "inYourLife": "In love, ask whether attraction is accompanied by mutual respect and room for individuality. In work, consider leadership that encourages other people's confidence. In friendships, notice the person who hosts everything but rarely receives care. For an upcoming presentation, the Queen could recommend clear preparation and an unapologetic but collaborative delivery.",
+        "hiddenKnowledge": "The Wands Queen's cat attracts elaborate invented lore online. The historically responsible approach is to begin with the actual image, note Waite's broader characterization, and label newer cat symbolism as interpretive. Likewise, “feminine energy” is a modern shorthand that can obscure the card's useful qualities for readers of any gender.",
+        "reflection": {
+          "uprightQuestions": [
+            "Where am I ready to be visible?",
+            "How can I encourage others without neglecting myself?",
+            "What nourishes my confidence when nobody applauds?"
+          ],
+          "reversedQuestions": [
+            "Whose success am I comparing with mine?",
+            "Where has generosity become obligation?",
+            "What private practice might restore self-trust?"
+          ],
+          "journalPrompt": "Write a portrait of confidence that includes kindness, boundaries, and a right to rest."
+        }
+      },
+      "beginnerExplanation": "Start with what is actually pictured in Queen of Wands. Notice the arrangement of the staffs and the figure’s actions before selecting one of the possible readings. Neither orientation predicts a fixed result.",
+      "readingExample": "an upcoming presentation, the Queen could recommend clear preparation and an unapologetic but collaborative delivery.",
+      "misconception": "The Queen is not restricted to a woman or proof that a black cat signals occult danger.",
+      "relatedCardIds": [
+        "tarot-wands-12",
+        "tarot-wands-14"
+      ],
+      "readingSummary": {
+        "upright": "Upright, the Queen may invite confident generosity: share your expertise, take pleasure in your craft, welcome others without diminishing yourself.",
+        "reversed": "Reversed, warmth may feel difficult to access."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "type": "primary-source",
+          "supports": "1911 image descriptions, divinatory conventions, and reversal comparison; Wands section"
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "type": "primary-source",
+          "supports": "Waite’s discussion of the illustrated Minor Arcana and interpretive limitations"
+        }
+      ],
+      "editorialNotes": "Historical Waite meanings are distinguished in prose from the original contemporary reflective reading. Artwork mapping and asset licensing not yet audited. No claim of reader-specific future certainty."
+    },
+    {
+      "id": "tarot-wands-14",
+      "name": "King of Wands",
+      "arcana": "Minor Arcana",
+      "suit": "Wands",
+      "rank": "King",
+      "number": 14,
+      "subtitle": "The Steward of the Flame",
+      "editorialStatus": "draft",
+      "candidateVersion": 1,
+      "reviewBatch": "wands-01",
+      "researchStatus": "primary-text-checked; asset-level inspection pending",
+      "keywords": {
+        "upright": [
+          "vision",
+          "leadership",
+          "integrity",
+          "enterprise",
+          "stewardship"
+        ],
+        "reversed": [
+          "rigidity",
+          "domination",
+          "overconfidence",
+          "misused influence",
+          "accountability"
+        ]
+      },
+      "chapters": {
+        "story": "A crowned ruler sits on a throne adorned with lions and salamander-like creatures, holding a living wand. His face turns outward, as though the work of the kingdom extends beyond the frame. Waite emphasizes ardor and honorable character; period divinatory meanings describe a trustworthy figure, not merely a powerful one. The King of Wands is therefore more interesting than a cartoon of charismatic command. He asks what becomes of ambition when others depend on your decisions. Vision without stewardship is only appetite with an impressive title.",
+        "symbolism": "The King's flowering staff, crown, throne, and lion emblems are plainly depicted. Salamander motifs appear on his attire and throne. Their connection with fire is common in European folklore and later occult interpretation, but a precise original intent behind each motif cannot be demonstrated merely by looking. His posture is settled, in contrast to the Knight's rising horse; that juxtaposition makes a useful contemporary reading of directed rather than restless force.",
+        "meanings": {
+          "upright": "Upright, the King may represent leadership able to turn conviction into structure. You could be asked to make a decision, rally collaborators, or accept responsibility for a creative venture once it extends beyond yourself. Integrity matters more than theatrical certainty. Invite disagreement, communicate the goal, provide resources, and make room for others to develop their own authority. The King at his best understands that influence is a trust, not property. If the card describes someone else, evaluate actions and consistency rather than granting them automatic legitimacy because they appear confident.",
+          "reversed": "Reversed, leadership may become inflexible, possessive, or careless with others' contributions. Alternatively a capable person may avoid taking charge for fear of being judged. Waite's reversed King is notably nuanced—severe yet tolerant—so an automatic modern “tyrant” reading loses something of the historical tension. Ask whether decisions are transparent, whether criticism can be voiced without punishment, and whether the leader is willing to correct an error. Authority proves itself most clearly in its response to accountability."
+        },
+        "inYourLife": "In relationships, examine mutual autonomy rather than control disguised as protection. In work, set a clear vision and distribute power responsibly. In creativity, the King may invite you to manage a growing project without losing its original delight. For a new team leader, write down decisions that require consultation and the boundaries of your own authority.",
+        "hiddenKnowledge": "The King and Queen both hold flowering staffs and sit on animal-marked thrones. Their differences should not be reduced to “male leader” and “female nurturer.” The historical court-card framework used gender and social class; Muse treats them as complementary styles of exercising influence, open to every reader. The King's documentary anchor is Waite's emphasis on honesty and conscientiousness.",
+        "reflection": {
+          "uprightQuestions": [
+            "What vision am I responsible for sustaining?",
+            "How can I make influence more accountable?",
+            "Who should have more voice in this decision?"
+          ],
+          "reversedQuestions": [
+            "Where has confidence become rigidity?",
+            "What criticism am I refusing to hear?",
+            "What responsibility am I avoiding or concentrating too tightly?"
+          ],
+          "journalPrompt": "Draft a leader's oath in five lines: what you will build, protect, share, question, and correct."
+        }
+      },
+      "beginnerExplanation": "Start with what is actually pictured in King of Wands. Notice the arrangement of the staffs and the figure’s actions before selecting one of the possible readings. Neither orientation predicts a fixed result.",
+      "readingExample": "a new team leader, write down decisions that require consultation and the boundaries of your own authority.",
+      "misconception": "The King does not predict a powerful man or entitle anyone to control others.",
+      "relatedCardIds": [
+        "tarot-wands-13"
+      ],
+      "readingSummary": {
+        "upright": "Upright, the King may represent leadership able to turn conviction into structure.",
+        "reversed": "Reversed, leadership may become inflexible, possessive, or careless with others' contributions."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_3",
+          "type": "primary-source",
+          "supports": "1911 image descriptions, divinatory conventions, and reversal comparison; Wands section"
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/The_Pictorial_Key_to_the_Tarot/Part_2",
+          "type": "primary-source",
+          "supports": "Waite’s discussion of the illustrated Minor Arcana and interpretive limitations"
+        }
+      ],
+      "editorialNotes": "Historical Waite meanings are distinguished in prose from the original contemporary reflective reading. Artwork mapping and asset licensing not yet audited. No claim of reader-specific future certainty."
+    }
+  ]
+}
