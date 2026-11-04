@@ -4,16 +4,32 @@ import { authConfig } from "@/lib/auth/config";
 import {
   privateResponse,
   routeAuthClient,
-  trustedOrigin,
 } from "@/lib/auth/http";
 import { returnCookie, safeReturnPath } from "@/lib/auth/paths";
 
 export async function POST(request: NextRequest) {
   const { origin } = authConfig();
 
-  if (!trustedOrigin(request)) {
+  // Safari may omit the Origin header on same-origin form posts.
+  // Accept a verified same-origin browser request, but reject
+  // cross-origin requests and explicitly mismatched origins.
+  const requestOrigin = request.nextUrl.origin;
+  const browserOrigin = request.headers.get("origin");
+  const fetchSite = request.headers.get("sec-fetch-site");
+
+  const trustedRequest =
+    requestOrigin === origin &&
+    (
+      browserOrigin === origin ||
+      (browserOrigin === null && fetchSite === "same-origin")
+    );
+
+  if (!trustedRequest) {
     return privateResponse(
-      NextResponse.json({ error: "Forbidden" }, { status: 403 })
+      NextResponse.json(
+        { error: "Forbidden" },
+        { status: 403 }
+      )
     );
   }
 
