@@ -146,3 +146,8 @@
 .muse-grocery-icon:hover { color:var(--action-primary); background:var(--surface-hover); }
 @container muse-content (max-width:740px) { .muse-grocery-capture { grid-template-columns:minmax(0,1fr) minmax(0,1fr); } .muse-grocery-capture > label:first-child { grid-column:1/-1; } .muse-grocery-capture > button { grid-column:1/-1; justify-content:center; } }
 @media(pointer:coarse) { .muse-grocery-icon,.muse-grocery-check { width:44px; flex-basis:44px; } }
+/* Keep the weekday selector anchored to the right of week navigation. */
+.muse-nourish-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px 20px}
+.muse-nourish-toolbar nav{flex:0 1 auto;justify-content:flex-start}
+.muse-nourish-toolbar-days{flex:0 1 520px;width:min(100%,520px);max-width:520px;min-width:0;margin-left:auto}
+@media(max-width:900px){.muse-nourish-toolbar-days{flex-basis:100%;max-width:none;width:100%;margin-left:0}}

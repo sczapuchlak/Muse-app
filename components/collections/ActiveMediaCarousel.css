@@ -1,0 +1,17 @@
+.muse-active-carousel{display:grid;gap:9px;min-width:0;--carousel-visible:3;--carousel-gap:14px}
+.muse-active-carousel[data-count="1"]{--carousel-visible:1}
+.muse-active-carousel[data-count="2"]{--carousel-visible:2}
+.muse-active-carousel-viewport{min-width:0;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-inline:contain;touch-action:pan-x pan-y}
+.muse-active-carousel-viewport::-webkit-scrollbar{display:none}
+.muse-active-carousel-track{display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - (var(--carousel-visible) - 1)*var(--carousel-gap))/var(--carousel-visible));align-items:stretch;gap:var(--carousel-gap)}
+.muse-active-carousel-track>*{min-width:0;height:100%;box-sizing:border-box;scroll-snap-align:start}
+.muse-active-carousel-controls{display:flex;align-items:center;justify-content:flex-end;gap:7px}
+.muse-active-carousel-controls>.small-label{margin-right:5px;font-variant-numeric:tabular-nums}
+.muse-active-carousel-controls .muse-button{width:34px;min-width:34px;height:34px;min-height:34px;padding:5px;display:grid;place-items:center;background:var(--surface-control)}
+.muse-active-carousel-controls .muse-button:nth-of-type(1) svg{transform:rotate(90deg)}
+.muse-active-carousel-controls .muse-button:nth-of-type(2) svg{transform:rotate(-90deg)}
+.muse-active-carousel-controls .muse-button:disabled{opacity:.4;cursor:default}
+.muse-active-carousel-controls .muse-button:focus-visible{outline:2px solid var(--foreground);outline-offset:2px}
+@media(max-width:850px){.muse-active-carousel{--carousel-visible:2}.muse-active-carousel[data-count="1"]{--carousel-visible:1}}
+@media(max-width:600px){.muse-active-carousel,.muse-active-carousel[data-count="2"]{--carousel-visible:1}}
+@media(prefers-reduced-motion:reduce){.muse-active-carousel-viewport{scroll-behavior:auto}}

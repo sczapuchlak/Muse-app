@@ -44,13 +44,13 @@ export function DailyEdit() {
           <DailyCapture date={selectedDate}><MoodCard emotions={emotionCatalog} /><DailyReflectionCard date={selectedDate}/><DayInThreeCard /></DailyCapture>
         </div>
         <div className="daily-working-right">
+          <BooksDayviewWidget date={selectedDate}/>
           <LittleRituals date={selectedDate}/>
           <ScheduleCard selectedDate={selectedDate} priorityTaskIds={priorityTaskIds} />
           <WellnessCapture><MealsCard selectedDate={selectedDate} /></WellnessCapture>
           <DailyCapture date={selectedDate}><DayPulseCard date={selectedDate}/></DailyCapture>
           <DreamDayviewWidget date={selectedDate}/>
           <FortuneDayviewWidget date={selectedDate}/>
-          <BooksDayviewWidget date={selectedDate}/>
         </div>
       </div>
       <footer className="muse-footer"><DailySaveStatus date={selectedDate}/><PlannerPersistenceStatus compact/><WellnessSaveStatus/>Your daily entries, plan, meals, hydration and movement save to your account.</footer>
