@@ -270,31 +270,44 @@ if (!validLoginEmail(email)) {
 
       {view === "choices" && (
         <div className="muse-login-methods">
-          <form
-            method="post"
-            action="/auth/oauth/google"
-            className="muse-login-google-form"
-          >
-            <input
-              type="hidden"
-              name="next"
-              value={destination}
-            />
+         
+<button
+  type="button"
+  className="muse-button button-primary muse-login-method"
+  disabled={busy}
+  onClick={async () => {
+    if (inFlight.current) return;
 
-            <button
-              type="submit"
-              className="muse-button button-primary muse-login-method"
-              disabled={busy}
-            >
-              <span
-                className="muse-google-mark"
-                aria-hidden="true"
-              >
-                G
-              </span>
-              Continue with Google
-            </button>
-          </form>
+    inFlight.current = true;
+    setStatus("sending");
+    setError("");
+
+    try {
+      const client = createMuseBrowserClient();
+
+      const { error: authError } =
+        await client.auth.signInWithOAuth({
+          provider: "google",
+          options: {
+            redirectTo:
+              `${window.location.origin}/auth/oauth/callback`,
+          },
+        });
+
+      if (authError) throw authError;
+    } catch {
+      setError("Couldn't start Google sign-in. Please try again.");
+      setStatus("error");
+      inFlight.current = false;
+    }
+  }}
+>
+  <span className="muse-google-mark" aria-hidden="true">
+    G
+  </span>
+  Continue with Google
+</button>
+
 
           <button
             type="button"
