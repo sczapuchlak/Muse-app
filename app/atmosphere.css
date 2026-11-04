@@ -26,8 +26,8 @@
 .muse-galaxy-candy > i { position:absolute; width:9px; height:3px; background:var(--candy-color); border-radius:3px; transform:rotate(var(--candy-turn)); opacity:.75; box-shadow:0 0 9px color-mix(in srgb,var(--candy-color) 40%,transparent); }
 .muse-galaxy-candy > i:nth-child(3n) { width:4px; height:4px; }
 .muse-galaxy-candy > i:nth-child(4n) { width:6px; height:6px; border-radius:1px; }
-.muse-app-shell[data-module="mood"] .muse-atmosphere { background:var(--background); }
-.muse-app-shell[data-module="mood"] .muse-galaxy-grain { background:radial-gradient(ellipse 38% 17% at 12% 8%,color-mix(in srgb,var(--mood-red) 12%,transparent),transparent),radial-gradient(ellipse 40% 18% at 48% 4%,color-mix(in srgb,var(--mood-blue) 12%,transparent),transparent),radial-gradient(ellipse 40% 20% at 74% 17%,color-mix(in srgb,var(--mood-green) 12%,transparent),transparent),radial-gradient(ellipse 38% 17% at 93% 7%,color-mix(in srgb,var(--mood-yellow) 10%,transparent),transparent); }
+.muse-app-shell:is([data-module="mood"],:has(.muse-mood-page)) .muse-atmosphere { background:var(--background); }
+.muse-app-shell:is([data-module="mood"],:has(.muse-mood-page)) .muse-galaxy-grain { background:radial-gradient(ellipse 38% 17% at 12% 8%,color-mix(in srgb,var(--mood-red) 12%,transparent),transparent),radial-gradient(ellipse 40% 18% at 48% 4%,color-mix(in srgb,var(--mood-blue) 12%,transparent),transparent),radial-gradient(ellipse 40% 20% at 74% 17%,color-mix(in srgb,var(--mood-green) 12%,transparent),transparent),radial-gradient(ellipse 38% 17% at 93% 7%,color-mix(in srgb,var(--mood-yellow) 10%,transparent),transparent); }
 @keyframes muse-celestial-drift { from { transform:translate3d(0,-3px,0); } to { transform:translate3d(5px,5px,0); } }
 @keyframes muse-star-shimmer { 0%,8%,100% { opacity:var(--node-brightness,.4); } 3% { opacity:.95; } }
 @media(prefers-reduced-motion:no-preference){.muse-galaxy-star:nth-child(odd){animation:muse-galaxy-shimmer 24s ease-in-out var(--fleck-delay) infinite;}@keyframes muse-galaxy-shimmer{0%,60%,100%{opacity:.4}68%{opacity:.65}80%{opacity:.4}}}

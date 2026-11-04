@@ -62,6 +62,8 @@ A date-based command center: What matters? What am I doing? How am I caring for 
 
 ## Mood and insight semantics
 
+Mood is a top-level pill inside Wellness, alongside Plan, Saved Meals, and Grocery List; Wellness remains the sole main-sidebar destination. The existing Mood experience and date/period records stay canonical. Legacy `/mood` links redirect to the Wellness Mood view with their date query preserved. The Wellness default remains Plan.
+
 Feelings answer “What am I feeling?” Influences answer “What might be shaping it?” Day Pulse answers “How am I doing?” Keep them analytically separate; never collapse them into one score. Energy, stress, and overall day are independent optional 1–10 values. Missing is not zero or negative. Relationships between mood, influences, habits, and movement may be compared statistically; correlation never establishes causation.
 
 Capture structured data when useful: movement frequency, adherence/streaks, weekday emotions, influences, energy/stress/day trends, spending categories, plan versus actual, custom periods. Analytics should be colorful, satisfying, and statistically honest, supporting week/month/custom ranges where appropriate. Most Insights should use deterministic analytics. Muse does not require an AI product integration.
@@ -531,3 +533,9 @@ Collections overview date filters use the existing Muse calendar and allow a sel
 ## Collections consolidation — approved by issue #9
 
 Collections opens on its existing Overview with Board and Library modes; media chips are the primary category selector. The former top-level media row is hidden, while its routes remain valid for detail, creation, Reading Atlas, Series, and My Collections. Advanced filters are collapsed initially and retain their values when hidden. Per-user opening mode, media category, and In Progress shelf visibility are saved in Supabase Auth user metadata without a new table; temporary browsing choices do not change those defaults. The compact In Progress shelf projects the same canonical books and media, linking to their existing tracking flows. Genre selection adapts to existing comma-delimited Book text and media genre arrays without deleting unfamiliar saved values. One to three optional Book emojis use the existing review field.
+
+## Book and TV series organization — approved
+
+Book series group canonical book records in a user chosen reading order. Each book retains its own reading, rating, review, and session history. Series progress counts finished released mainline books; announced or unknown installments remain visible without being treated as read. A series is Caught Up when all known released mainline books are finished and its conclusion is ongoing or unknown. Completed requires an explicit concluded state and no announced installment. Book detail links to the series detail; the Series route remains contextual, without a new permanent navigation level.
+
+TV shows remain the parent records for optional season summaries and episode records. A season can be marked watched or tracked with simple manual counts; episode activity remains optional and independently preserved. Released seasons and episodes determine current progress; announced seasons and episodes do not reduce the available progress count. A TV series is Caught Up when all known released seasons are watched and its conclusion is ongoing or unknown. Completed requires an explicit concluded state and no announced season. Unknown conclusion never implies completion. Existing manual show status, series memberships, episode records, and viewing activity remain intact.

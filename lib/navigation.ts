@@ -6,7 +6,6 @@ export const navigation: NavItem[] = [
   { id: "planner", label: "Planner", href: "/planner", icon: "calendar", group: "Everyday", description: "A home for your plans, tasks, and events." },
   { id: "rituals", label: "Rituals", href: "/rituals", icon: "rituals", group: "Everyday", description: "Small rhythms that make a day your own." },
   { id: "nourish", label: "Wellness", href: "/nourish", icon: "heart-pulse", group: "Everyday", description: "Take care of yourself. You've got places to be." },
-  { id: "mood", label: "Mood", href: "/mood", icon: "mood", group: "Reflect", description: "A little more room to understand what you feel." },
   { id: "insights", label: "Insights", href: "/insights", icon: "insights", group: "Reflect", description: "A place to explore your patterns over time." },
   { id: "money", label: "Money", href: "/money", icon: "money", group: "Life", description: "A calmer view of your everyday finances." },
   { id: "notes", label: "Mindspace", href: "/notes", icon: "brain", group: "Life", description: "Somewhere for the thoughts you want to keep." },
@@ -18,6 +17,6 @@ export const navigation: NavItem[] = [
 
 export const desktopGroups = ["Everyday", "Reflect", "Life"] as const;
 export const mobilePrimaryIds = ["daily", "planner", "rituals"];
-export const mobileMoreIds = ["mood", "nourish", "insights", "money", "notes", "collections", "whimsy", "settings"];
+export const mobileMoreIds = ["nourish", "insights", "money", "notes", "collections", "whimsy", "settings"];
 export function navItems(ids: string[]): NavItem[] { return ids.map((id) => navigation.find((item) => item.id === id)).filter((item): item is NavItem => Boolean(item)); }
 export function isActiveDestination(path: string, href: string): boolean { return href === "/" ? path === "/" : path === href || path.startsWith(`${href}/`); }
