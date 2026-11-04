@@ -23,3 +23,10 @@
 @media(max-width:1000px){.muse-dream-list{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:650px){.muse-dream-list,.muse-dream-picker-list{grid-template-columns:minmax(0,1fr)}}
 .muse-dream-picker-filters{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.muse-dream-picker-filters select{min-height:40px;width:100%;border:1px solid var(--glass-border);border-radius:9px;padding:8px;background:var(--surface-subtle);color:var(--text-primary)}.muse-dream-decoder-prompts{border:1px solid var(--glass-border);border-radius:15px;padding:16px;background:var(--surface-subtle)}.muse-dream-decoder-prompts li{margin-block:6px}@media(max-width:650px){.muse-dream-picker-filters{grid-template-columns:minmax(0,1fr)}}
 .muse-dream-symbol-glyph{display:grid;place-items:center;width:42px;height:42px;border:1px solid var(--glass-border);border-radius:12px;color:var(--accent-primary);font-size:1.5rem;background:var(--surface-subtle)}.muse-dream-symbol-card:hover .muse-dream-symbol-glyph,.muse-dream-symbol-card:focus-visible .muse-dream-symbol-glyph{box-shadow:0 0 22px color-mix(in srgb,var(--accent-primary) 24%,transparent)}.muse-dream-atlas-symbol{display:flex;justify-content:space-between;gap:12px;width:100%;border:1px solid var(--glass-border);border-radius:10px;padding:8px 12px;margin-block:5px;background:var(--surface-subtle);color:var(--text-primary);cursor:pointer}.muse-dream-atlas-symbol:hover,.muse-dream-atlas-symbol:focus-visible{border-color:var(--accent-primary)}
+
+/* Diary display controls share the filters row without taking the whole width. */
+.muse-dream-section[aria-label="Dream Diary"] .muse-dream-toolbar>label:first-child{flex:0 1 220px;min-width:min(100%,180px)}
+.muse-dream-view-controls{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-left:auto}
+.muse-dream-view-controls .muse-button{min-height:40px;padding:7px 10px;gap:6px;font-size:.78rem}
+.muse-dream-view-controls [aria-pressed=true]{border-color:var(--selected-border);background:var(--selected-background);color:var(--selected-text)}
+@media(max-width:760px){.muse-dream-view-controls{margin-left:0;flex-basis:100%}}

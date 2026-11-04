@@ -14,6 +14,14 @@ test('Book editor offers the same Currently Reading status as shelf filters',()=
  assert.match(source,/MuseChoiceMenu label="Book status"[^\n]*options=\{Object\.entries\(bookStatus\)/);
  assert.match(source,/MuseChoiceMenu label="Status"[^\n]*options=\{\[\{id:'',label:'All books'\},\.\.\.Object\.entries\(bookStatus\)/);
 });
+test('active media shelves reuse existing items and statuses without excluding full-library records',()=>{
+ const items=[media('watching-film','movie','watching'),media('watched-film','movie','watched'),media('watching-show','tv','watching'),media('playing-game','game','playing'),media('planned-game','game','planned')];
+ assert.deepEqual(models.activeMediaItems(items,'movie').map(item=>item.id),['watching-film']);
+ assert.deepEqual(models.activeMediaItems(items,'tv').map(item=>item.id),['watching-show']);
+ assert.deepEqual(models.activeMediaItems(items,'game').map(item=>item.id),['playing-game']);
+ assert.strictEqual(models.activeMediaItems(items,'movie')[0],items[0]);
+ assert.equal(items.length,5);
+});
 test('series progress distinguishes released, announced and selected denominators',()=>{
  const items=[media('one','movie','watched'),media('two','movie','planned')],members=[member('one',1),member('two',2,'announced')];
  let result=models.seriesProgress(series('released'),members,[],items);

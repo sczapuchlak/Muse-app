@@ -12,3 +12,35 @@
 /* One canonical book, with shelf movement available wherever the book appears. */
 .muse-books-grid{align-items:stretch}.muse-books-card{height:100%;box-sizing:border-box;align-items:start}.muse-books-card-body{display:flex;flex-direction:column;gap:8px;height:100%}.muse-books-card .muse-books-actions{align-self:stretch;margin-top:auto}.muse-books-status-control{border:0;margin:0;padding:0;min-width:0}.muse-books-status-control .muse-choice-trigger{min-height:38px;padding:7px 10px;font-size:.82rem}.muse-books-card .muse-books-status-control{flex:1 1 100%;margin-top:5px}.muse-books-card .muse-books-status-control .muse-choice-trigger{width:100%;justify-content:space-between}.muse-books-shelf-item{display:grid;gap:10px;align-content:stretch}.muse-books-shelf-open{display:grid;gap:8px;align-content:start;min-width:0;border:0;background:none;color:inherit;text-align:left;cursor:pointer;padding:0}.muse-books-shelf-open:focus-visible{outline:2px solid var(--accent-primary);outline-offset:3px}.muse-books-shelf-open .muse-book-cover{max-width:none}.muse-books-shelf-item .muse-books-status-control{align-self:end}.muse-books-shelf-item .muse-books-status-control .muse-choice-trigger{width:100%;justify-content:space-between}.muse-books-next-read{gap:16px}.muse-books-next-choice{display:grid;grid-template-columns:70px minmax(0,1fr);gap:14px;padding:12px;border:1px solid var(--glass-border);border-radius:15px;background:var(--surface-subtle)}.muse-books-next-choice>div{display:grid;gap:8px;justify-items:start}.muse-books-next-choice h3,.muse-books-next-choice p{margin:0}.muse-books-next-choice .muse-book-cover{width:70px}
 @media(max-width:650px){.muse-books-card-body{grid-template-rows:none}.muse-books-card .muse-books-actions{grid-column:auto}.muse-books-status-control .muse-choice-trigger{font-size:.75rem}}
+
+/* Reading Desk and My Library share the canonical books without changing their actions. */
+.muse-books-grid{grid-template-columns:repeat(3,minmax(0,1fr));align-items:stretch}
+.muse-books-grid[data-count="0"],.muse-books-grid[data-count="1"]{grid-template-columns:minmax(0,1fr)}
+.muse-books-grid[data-count="2"]{grid-template-columns:repeat(2,minmax(0,1fr))}
+.muse-books-grid[data-count="3"]{grid-template-columns:repeat(3,minmax(0,1fr))}
+.muse-books-card{grid-template-columns:clamp(88px,10vw,126px) minmax(0,1fr);gap:14px;padding:16px}
+.muse-books-card-body{display:grid;grid-template-rows:auto minmax(2.5em,auto) minmax(1.35em,auto) auto minmax(2.8em,1fr) auto;gap:7px;min-height:100%}
+.muse-books-card h4{font-size:clamp(1.18rem,1.5vw,1.4rem);line-height:1.25;overflow-wrap:anywhere}
+.muse-books-card-author{min-height:1.35em}
+.muse-books-card-progress{display:grid;gap:5px;align-content:start}
+.muse-books-card-progress progress,.muse-books-progress-space{display:block;width:100%;height:7px}
+.muse-books-card-meta{display:grid;gap:4px;align-content:start}
+.muse-books-card-meta p:last-child{min-height:1.3em}
+.muse-books-card .muse-books-actions{align-self:end;margin-top:0}
+.muse-books-form{gap:14px;font-family:var(--font-ui)}
+.muse-books-form-section{width:100%;gap:9px}
+.muse-books-form-section legend{white-space:nowrap;margin-bottom:8px;font-family:var(--font-ui);line-height:1.3}
+.muse-books-dialog{gap:11px}
+.muse-books-dialog :is(input,textarea,button,.muse-choice-trigger){font-family:var(--font-ui)}
+.muse-books-cover-editor{grid-template-columns:124px minmax(0,1fr);gap:16px}
+.muse-books-cover-editor .muse-book-cover{width:124px;max-width:100%;aspect-ratio:2/3}
+.muse-book-cover>div{min-width:0;gap:8px}
+.muse-book-cover strong{display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden;font:italic clamp(.75rem,1.2vw,.98rem)/1.15 var(--font-serif,Georgia,serif);overflow-wrap:anywhere}
+.muse-books-delete{border-color:color-mix(in srgb,var(--urgency-ink) 50%,var(--glass-border));background:color-mix(in srgb,var(--urgency-ink) 9%,var(--surface-control));color:var(--urgency-ink)}
+.muse-books-delete:hover:enabled{border-color:var(--urgency-ink);background:color-mix(in srgb,var(--urgency-ink) 16%,var(--surface-control));color:var(--urgency-ink)}
+.muse-books-delete-confirm .muse-books-actions{justify-content:flex-end}
+.muse-bookshelf .button-primary{background:var(--action-fill);border-color:var(--action-fill);color:var(--on-accent)}
+.muse-bookshelf .button-primary:hover:enabled{background:var(--action-fill);border-color:var(--selected-border);color:var(--on-accent);box-shadow:0 4px 16px color-mix(in srgb,var(--action-fill) 28%,transparent)}
+@media(max-width:850px){.muse-books-grid,.muse-books-grid[data-count="3"]{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.muse-books-grid,.muse-books-grid[data-count="2"],.muse-books-grid[data-count="3"]{grid-template-columns:minmax(0,1fr)}.muse-books-card{grid-template-columns:88px minmax(0,1fr)}}
+@media(max-width:440px){.muse-books-cover-editor{grid-template-columns:96px minmax(0,1fr)}.muse-books-cover-editor .muse-book-cover{width:96px}.muse-books-form-section legend{white-space:normal}}

@@ -40,6 +40,8 @@
 .muse-cosmic-forecast-head>div:first-child{flex:1 1 210px;min-width:0}
 .muse-cosmic-forecast-summary{display:flex;align-items:center;justify-content:flex-end;gap:12px;flex:1 1 490px;min-width:0;flex-wrap:wrap}
 .muse-cosmic-forecast-summary .muse-cosmic-forecast-sign{flex:0 1 auto}
-.muse-cosmic-forecast-actions{justify-content:flex-end;gap:8px}
+.muse-cosmic-forecast-actions{display:flex;flex-direction:column;align-items:stretch;justify-content:center;flex-wrap:nowrap;gap:8px}
 .muse-cosmic-forecast-actions .muse-button{flex:0 0 auto;min-height:38px;padding:7px 11px;font-size:.78rem;white-space:nowrap}
-@media(max-width:720px){.muse-cosmic-forecast-summary{justify-content:flex-start;flex-basis:100%}.muse-cosmic-forecast-actions{justify-content:flex-start}}
+.muse-cosmic-profile-button{background:var(--surface-control);border-color:var(--glass-border);color:var(--foreground);gap:8px}
+.muse-cosmic-profile-button:hover:enabled{border-color:var(--selected-border);background:var(--surface-strong);color:var(--foreground)}
+@media(max-width:720px){.muse-cosmic-forecast-summary{justify-content:flex-start;flex-basis:100%}.muse-cosmic-forecast-actions{align-items:stretch}}

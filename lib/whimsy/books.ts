@@ -2,6 +2,9 @@ import {shiftDate,todayInTimeZone,validDate,validTimeZone,weekDates} from '@/lib
 import {readingByDay} from './integrations';
 import type {Book,ReadingGoal,ReadingSession} from './models';
 
+/** Reading Desk is a projection of the library, never a second set of books. */
+export const activeReadingBooks=(books:readonly Book[])=>books.filter(book=>book.status==='reading');
+
 export type ReadingTimer={bookId:string;phase:'running'|'paused'|'finishing'|'saving';date:string;timeZone:string;startedAt:string;startingPage?:number;sessionId:string;sessionCommandId:string;segments:{start:string;end:string}[];runningSince?:string;finishDraft?:{pages:number;startingPage:number;endingPage:number;notes:string};revision:number;updatedAt:string};
 export const activeSeconds=(segments:{start:string;end:string}[])=>segments.reduce((sum,s)=>sum+Math.max(0,(Date.parse(s.end)-Date.parse(s.start))/1000),0);
 /** Long running intervals are stored in bounded UTC chunks; duration remains exact. */

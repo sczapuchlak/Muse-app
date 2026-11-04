@@ -46,3 +46,15 @@
   .muse-books-toolbar>.muse-choice-menu:first-of-type{margin-left:0}
 }
 @media(max-width:430px){.muse-collections-quick-filters{width:100%}.muse-collections-quick-filters label{flex:1 1 130px}.muse-collections-quick-filters select{max-width:100%;width:100%}.muse-books-toolbar>label{flex-basis:100%}}
+.muse-collections-featured{display:grid;gap:12px;min-width:0}
+.muse-collections .button-primary{background:var(--action-fill);border-color:var(--action-fill);color:var(--on-accent)}
+.muse-collections .button-primary:hover:enabled{background:var(--action-fill);border-color:var(--selected-border);color:var(--on-accent);box-shadow:0 4px 16px color-mix(in srgb,var(--action-fill) 28%,transparent)}
+.muse-collections-featured-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.muse-collections-featured-grid[data-count="1"]{grid-template-columns:minmax(0,1fr)}
+.muse-collections-featured-grid[data-count="2"]{grid-template-columns:repeat(2,minmax(0,1fr))}
+.muse-collections-featured-grid[data-count="3"]{grid-template-columns:repeat(3,minmax(0,1fr))}
+.muse-collections-featured-grid .muse-collections-card{grid-template-columns:clamp(70px,8vw,105px) minmax(0,1fr);align-items:center;column-gap:14px}
+.muse-collections-featured-grid .muse-collections-cover{grid-row:1/5;max-width:105px}
+.muse-collections-featured-grid .muse-collections-card :is(strong,span){grid-column:2}
+@media(max-width:850px){.muse-collections-featured-grid,.muse-collections-featured-grid[data-count="3"]{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.muse-collections-featured-grid,.muse-collections-featured-grid[data-count="2"],.muse-collections-featured-grid[data-count="3"]{grid-template-columns:minmax(0,1fr)}}
