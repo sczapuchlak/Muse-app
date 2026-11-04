@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import React from 'react';
+import {readFileSync} from 'node:fs';
 import {renderToStaticMarkup} from 'react-dom/server';
 import {load} from './helpers.mjs';
 const {safeReturnPath,isPublicAuthPath,validLoginEmail,authNoticeMessage}=load('lib/auth/paths');
@@ -19,7 +20,10 @@ test('live login reuses approved branding and glass structure, while preview rem
  const {MuseLogin}=load('components/auth/MuseLogin'),{LoginPreview}=load('components/LoginPreview');
  const render=component=>renderToStaticMarkup(React.createElement(component));
  for(const html of [render(MuseLogin),render(LoginPreview)])for(const token of ['muse-login-story','muse-login-glass','muse-login-logo','muse-star-cluster','Welcome to Muse.'])assert.ok(html.includes(token),token);
- const live=render(MuseLogin);assert.ok(live.includes('action="/auth/link"'));assert.ok(live.includes('method="post"'));assert.ok(!live.includes('No email is sent'));
+ const live=render(MuseLogin);assert.ok(!live.includes('No email is sent'));
+ // The live email form submits through fetch rather than a native form action.
+ const loginSource=readFileSync(new URL('../components/auth/MuseLogin.tsx',import.meta.url),'utf8');
+ assert.match(loginSource,/fetch\("\/auth\/link",\s*\{\s*method:\s*"POST"/);
  const {museBrand}=load('lib/brand');
  for(const copy of [museBrand.mantra,museBrand.support,'You are the muse. You are the artist. Your life is the masterpiece.','YOUR OWN LITTLE CORNER OF THE UNIVERSE','Welcome to Muse.',"For everything you are and everything you're becoming."]){
    assert.ok(live.replace(/&#x27;|&apos;/g,"'").includes(copy),copy);

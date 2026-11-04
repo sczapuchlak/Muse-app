@@ -61,3 +61,19 @@ test('Collections restoration keeps one compact active shelf and direct add acti
  const media=readFileSync(root+'/components/collections/MediaLibrary.tsx','utf8');
  assert.match(media,/!items\.length&&<button type="button" className="muse-button button-primary"/);
 });
+
+test('Collections restoration coexists with series deep links and scrolling editors from main',()=>{
+ const source=readFileSync(root+'/components/collections/Collections.tsx','utf8');
+ assert.match(source,/params\.delete\('series'\)/);
+ assert.match(source,/<SeriesLibrary key=\{query\?\.get\('series'\)\?\?''\} initialSeriesId=\{query\?\.get\('series'\)\}/);
+ assert.match(source,/className="muse-collections-back"/);
+ for(const heading of ['Series in Progress','My Curated Collections'])assert.ok(source.includes(`<section className="muse-collections-board-section"><div className="muse-collections-board-heading"><h3>${heading}</h3></div>`),heading);
+ const media=readFileSync(root+'/components/collections/MediaLibrary.tsx','utf8');
+ assert.equal(media.match(/muse-collections-sticky-footer/g)?.length,1);
+ assert.equal(media.match(/\{error&&<p role="alert">\{error\}<\/p>\}/g)?.length,1);
+ assert.match(media,/className="muse-collections-editor-body"/);
+ assert.match(media,/sticky-footer"><button type="button" className="muse-button button-ghost" onClick=\{\(\)=>setForm\(null\)\}>Cancel<\/button><button type="submit" className="muse-button button-primary"/);
+ const books=readFileSync(root+'/components/whimsy/Bookshelf.tsx','utf8');
+ assert.match(books,/void saveBook\(\);\}\}><div className="muse-books-form-body">/);
+ assert.match(books,/<\/div><div className="muse-books-actions muse-books-form-footer"><button className="muse-button button-ghost" type="button" onClick=\{\(\)=>setBookForm\(null\)\}>Cancel<\/button><button className="muse-button button-primary" type="submit"/);
+});
