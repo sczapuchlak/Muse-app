@@ -31,6 +31,8 @@ test('Daily Edit features one saved current read and falls back without limiting
  assert.equal(books.featuredReadingBook([{...book,status:'finished'}],'book'),null);
  const source=readFileSync(root+'/components/whimsy/BooksDayviewWidget.tsx','utf8');
  assert.match(source,/featuredBookId/);assert.match(source,/saveWhimsyRecord\(client,'widgets'/);assert.match(source,/Choose featured book/);
+ assert.match(source,/<CardHeading id="daily-bookshelf" title="Bookshelf">/);
+ assert.doesNotMatch(source,/muse-card-header|Bookshelf <MuseStar/);
  const layout=readFileSync(root+'/components/DailyEdit.tsx','utf8');assert.ok(layout.indexOf('<BooksDayviewWidget')<layout.indexOf('<LittleRituals'));
  const toggle=readFileSync(root+'/components/whimsy/Bookshelf.tsx','utf8');assert.match(toggle,/existing\?\.featuredBookId\?\{featuredBookId:existing\.featuredBookId\}:\{\}/);
  const records={books:all,widgets:[{id:'pref',experience:'bookshelf',enabled:true,featuredBookId:'second'}],questWeeks:[],questCompletions:[],tarot:[],meanings:[],dreams:[],fortunes:[],saved:[],sessions:[],goals:[]};
