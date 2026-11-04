@@ -50,4 +50,5 @@ export async function proxy(request:NextRequest) {
     return privateResponse(NextResponse.redirect(new URL('/login?notice=unavailable',origin)));
   }
 }
-export const config={matcher:["/((?!_next/|favicon.ico|atmosphere/|(?:window|globe|next|vercel|file)\\.svg$).*)"]};
+// Public, credential-free assets: icons and the web app manifest must load before sign-in (iOS install, browser tabs).
+export const config={matcher:["/((?!_next/|favicon.ico|atmosphere/|(?:window|globe|next|vercel|file)\\.svg$|manifest\\.webmanifest$|(?:icon-192|icon-512|icon-maskable-512|apple-touch-icon|favicon-16x16|favicon-32x32)\\.png$).*)"]};
