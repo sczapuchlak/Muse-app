@@ -45,3 +45,19 @@
 .muse-cosmic-profile-button{background:var(--surface-control);border-color:var(--glass-border);color:var(--foreground);gap:8px}
 .muse-cosmic-profile-button:hover:enabled{border-color:var(--selected-border);background:var(--surface-strong);color:var(--foreground)}
 @media(max-width:720px){.muse-cosmic-forecast-summary{justify-content:flex-start;flex-basis:100%}.muse-cosmic-forecast-actions{align-items:stretch}}
+/* Calendar controls share one compact row; the native month picker keeps date semantics. */
+.muse-cosmic-calendar-controls{align-items:center;gap:8px}
+.muse-cosmic-calendar-controls .muse-cosmic-segment{display:inline-flex;gap:3px;margin-right:auto;padding:3px;border:1px solid var(--glass-border);border-radius:12px;background:var(--surface-control)}
+.muse-cosmic-calendar-controls .muse-cosmic-segment .muse-button{min-height:36px;padding:6px 10px}
+.muse-cosmic-calendar-controls .muse-cosmic-segment [aria-pressed=true]{border-color:var(--selected-border);background:var(--selected-background);color:var(--selected-text)}
+.muse-cosmic-calendar-controls>.muse-button{min-height:38px;padding:7px 11px;background:var(--surface-control)}
+.muse-cosmic-calendar-controls>.muse-button:last-child{background:var(--selected-background);border-color:var(--selected-border);color:var(--selected-text)}
+.muse-cosmic-month-selector{position:relative;display:grid!important;place-items:center;min-width:112px;min-height:38px;padding:6px 12px;border:1px solid var(--glass-border);border-radius:11px;background:var(--surface-control);font-size:.84rem;font-weight:600;cursor:pointer}
+.muse-cosmic-month-selector input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}
+.muse-cosmic-month-selector:focus-within{outline:2px solid var(--foreground);outline-offset:2px}
+@media(max-width:720px){.muse-cosmic-calendar-controls .muse-cosmic-segment{margin-right:0;flex-basis:100%;width:max-content}}
+.muse-cosmic-toolbar{align-items:end;gap:10px}
+.muse-cosmic-toolbar>label{flex:1 1 240px}
+.muse-cosmic-toolbar>.muse-choice-menu{flex:0 0 auto;max-width:min(100%,230px)}
+.muse-cosmic-toolbar .muse-choice-trigger{min-height:44px;width:auto;max-width:100%;background:var(--surface-control)}
+@media(max-width:600px){.muse-cosmic-toolbar>label{flex-basis:100%}.muse-cosmic-toolbar>.muse-choice-menu{max-width:calc(50% - 5px)}}

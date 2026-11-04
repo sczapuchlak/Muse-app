@@ -4,7 +4,7 @@ import {validDate,validTimeZone,weekDates} from '@/lib/dates';
 import type {Book,DreamEntry,FortuneAssignment,PersonalCardMeaning,QuestCompletion,QuestWeek,ReadingGoal,ReadingSession,SavedDiscovery,TarotReading,Owned,WhimsySources,WhimsyExperience} from './models';
 import type {WhimsyReadRepository,WhimsyWriteCommand} from './repository';
 import type {WhimsyRange} from './integrations';
-export type WidgetPreferenceRecord=Owned&{experience:WhimsyExperience;enabled:boolean};
+export type WidgetPreferenceRecord=Owned&{experience:WhimsyExperience;enabled:boolean;featuredBookId?:string|null};
 export type WhimsyRecords={questWeeks:QuestWeek[];questCompletions:QuestCompletion[];tarot:TarotReading[];meanings:PersonalCardMeaning[];dreams:DreamEntry[];fortunes:FortuneAssignment[];saved:SavedDiscovery[];books:Book[];sessions:ReadingSession[];goals:ReadingGoal[];widgets:WidgetPreferenceRecord[]};
 export type WhimsyKind=keyof WhimsyRecords;
 export type WhimsyRecord<K extends WhimsyKind>=WhimsyRecords[K][number];

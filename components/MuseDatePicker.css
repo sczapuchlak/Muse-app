@@ -16,3 +16,9 @@
 .muse-calendar-footer { display:flex; justify-content:space-between; align-items:center; gap:var(--space-2); margin-top:var(--space-3); padding-top:var(--space-3); border-top:1px solid var(--divider); }
 .muse-calendar-footer span { font-size:.67rem; color:var(--text-muted); }
 @media(pointer:coarse) { .muse-calendar-week button,.muse-calendar-navigation button { min-height:44px; } }
+.muse-optional-date-picker{display:flex;align-items:center;gap:3px;min-width:0}
+.muse-optional-date-picker .muse-date-picker-trigger{min-width:0;max-width:100%;justify-content:space-between;gap:7px}
+.muse-optional-date-picker .muse-date-picker-trigger span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.muse-optional-date-clear{flex:0 0 auto;width:28px;height:32px;border:0;border-radius:8px;background:transparent;color:var(--text-muted);cursor:pointer;font-size:1.2rem}
+.muse-optional-date-clear:hover{background:var(--surface-control);color:var(--foreground)}
+.muse-optional-date-clear:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}

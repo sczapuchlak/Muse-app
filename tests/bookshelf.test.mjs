@@ -1,5 +1,6 @@
 import test from 'node:test';import assert from 'node:assert/strict';import {readFileSync} from 'node:fs';import {load,root} from './helpers.mjs';
 const books=load('lib/whimsy/books');
+const connected=load('lib/whimsy/connected');
 const book={id:'book',title:'Example',status:'reading',reviewEmojis:[],startedOn:'2026-10-01',currentPage:30,positionUpdatedAt:'2026-10-01T12:00:00Z',createdAt:'2026-10-01T12:00:00Z'};
 const session={id:'s',bookId:'book',date:'2026-10-02',timeZone:'America/Los_Angeles',pages:15,startingPage:30,endingPage:45,activeSegments:[{start:'2026-10-02T18:00:00Z',end:'2026-10-02T18:20:00Z'},{start:'2026-10-02T18:30:00Z',end:'2026-10-02T18:40:00Z'}],createdAt:'2026-10-02T18:40:00Z',updatedAt:'2026-10-02T18:40:00Z'};
 test('pages read and current position are alternatives, with rereads never negative',()=>{assert.deepEqual(books.resolveReadingProgress(30,'pages',15,100),{pages:15,endingPage:45});assert.deepEqual(books.resolveReadingProgress(30,'position',45,100),{pages:15,endingPage:45});assert.deepEqual(books.resolveReadingProgress(30,'position',20,100),{pages:0,endingPage:20});assert.throws(()=>books.resolveReadingProgress(30,'pages',75,100),/exceeds/);});
@@ -20,5 +21,19 @@ test('Reading Desk derives every active card from canonical books, including spa
  const desk=source.split('aria-label="Reading Desk"')[1]?.split('aria-label="My Library"')[0]??'';
  for(const action of ['Start reading','Log manually','Details','BookStatusControl'])assert.ok(desk.includes(action));
  assert.match(source,/muse-books-card-author/);assert.match(source,/muse-books-progress-space/);assert.match(source,/muse-books-card-meta/);
+});
+test('Daily Edit features one saved current read and falls back without limiting Collections',()=>{
+ const active=[book,{...book,id:'second',title:'Second current read'},{...book,id:'third',title:'Third current read'}],all=[...active,{...book,id:'finished',status:'finished'}];
+ assert.equal(books.activeReadingBooks(all).length,3);
+ assert.strictEqual(books.featuredReadingBook(all,'second'),active[1]);
+ assert.strictEqual(books.featuredReadingBook(all,'finished'),active[0]);
+ assert.strictEqual(books.featuredReadingBook(all,'missing'),active[0]);
+ assert.equal(books.featuredReadingBook([{...book,status:'finished'}],'book'),null);
+ const source=readFileSync(root+'/components/whimsy/BooksDayviewWidget.tsx','utf8');
+ assert.match(source,/featuredBookId/);assert.match(source,/saveWhimsyRecord\(client,'widgets'/);assert.match(source,/Choose featured book/);
+ const layout=readFileSync(root+'/components/DailyEdit.tsx','utf8');assert.ok(layout.indexOf('<BooksDayviewWidget')<layout.indexOf('<LittleRituals'));
+ const toggle=readFileSync(root+'/components/whimsy/Bookshelf.tsx','utf8');assert.match(toggle,/existing\?\.featuredBookId\?\{featuredBookId:existing\.featuredBookId\}:\{\}/);
+ const records={books:all,widgets:[{id:'pref',experience:'bookshelf',enabled:true,featuredBookId:'second'}],questWeeks:[],questCompletions:[],tarot:[],meanings:[],dreams:[],fortunes:[],saved:[],sessions:[],goals:[]};
+ assert.deepEqual(connected.projectWhimsyWidgets(records,'2026-11-03','2026-11-03').find(item=>item.experience==='bookshelf')?.sourceIds,['second']);
 });
 test('draft content stays outside the runtime published libraries and has a durable progress manifest',()=>{const manifest=JSON.parse(readFileSync(root+'/content/whimsy/CONTENT_PROGRESS.json','utf8'));assert.equal(manifest.existingPublished,281);assert.equal(manifest.currentTotal,manifest.existingPublished+manifest.newDraft);assert.equal(manifest.remaining,manifest.target-manifest.currentTotal);const questModule=readFileSync(root+'/lib/whimsy/side-quests.ts','utf8'),fortuneModule=readFileSync(root+'/lib/whimsy/fortunes.ts','utf8');assert.ok(!questModule.includes('/drafts/'));assert.ok(!fortuneModule.includes('/drafts/'));});

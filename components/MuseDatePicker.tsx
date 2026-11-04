@@ -12,6 +12,12 @@ export function MuseDatePicker({date,today,onChange,label='Inspect a date'}:{dat
   return <><button type="button" ref={trigger} className="muse-button muse-date-picker-trigger" aria-label={`${label}: ${dateLabel(date)}, ${date.slice(0,4)}`} aria-haspopup="dialog" aria-expanded={open} aria-controls={id} onClick={()=>setOpen(!open)}><MuseIcon name="calendar" size={17}/><time dateTime={date}>{dateLabel(date)}, {date.slice(0,4)}</time><MuseIcon name="chevron" size={14}/></button><GlassPopover id={id} label="Choose a date" open={open} anchorRef={trigger} onClose={()=>setOpen(false)} width={360}><MuseCalendar date={date} today={today} onChange={value=>{onChange(value);setOpen(false);trigger.current?.focus();}}/></GlassPopover></>;
 }
 
+/** A compact, clearable date filter using the same calendar and keyboard controls. */
+export function MuseOptionalDatePicker({date,today,onChange,label}:{date:string;today:string;onChange:(date:string)=>void;label:string}){
+  const [open,setOpen]=useState(false),id=useId(),trigger=useRef<HTMLButtonElement>(null);
+  return <div className="muse-optional-date-picker"><button type="button" ref={trigger} className="muse-button muse-date-picker-trigger" aria-label={`${label}: ${date?`${dateLabel(date)}, ${date.slice(0,4)}`:'Any date'}`} aria-haspopup="dialog" aria-expanded={open} aria-controls={id} onClick={()=>setOpen(!open)}><MuseIcon name="calendar" size={16}/><span>{date?`${dateLabel(date)}, ${date.slice(0,4)}`:'Any date'}</span><MuseIcon name="chevron" size={13}/></button>{date&&<button type="button" className="muse-optional-date-clear" aria-label={`Clear ${label.toLowerCase()} filter`} title="Clear date" onClick={()=>onChange('')}>×</button>}<GlassPopover id={id} label={label} open={open} anchorRef={trigger} onClose={()=>setOpen(false)} width={360}><MuseCalendar date={date||today} today={today} onChange={value=>{onChange(value);setOpen(false);trigger.current?.focus();}}/></GlassPopover></div>;
+}
+
 export function MuseCalendar({date,today,onChange}:{date:string;today:string;onChange:(date:string)=>void}){
   const [focus,setFocus]=useState(date),[month,setMonth]=useState(date),grid=useRef<HTMLDivElement>(null),moveFocus=useRef(false),id=useId();
   useLayoutEffect(()=>{if(moveFocus.current){grid.current?.querySelector<HTMLButtonElement>(`[data-date="${focus}"]`)?.focus();moveFocus.current=false;}},[focus,month]);

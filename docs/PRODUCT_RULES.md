@@ -519,3 +519,11 @@ Daily Edit priorities and Planner task cards use the same task completion record
 ## UI Polish Batch 3 — approved Collections arrangement
 
 Books presents Reading Desk and My Library on the same screen. Reading Desk features every Currently Reading book from the canonical library record; My Library retains the complete collection, filters, sorting, and status movement. Reading Atlas remains a separate Books view. Movies, TV Shows, and Games may feature records with their existing Watching or Playing status above the complete category catalog. These featured areas create no separate records or statuses. Dreamscapes keeps its diary view controls with search and filters. Observatory keeps the sign summary card and places Explore Sign above Change Sign beside it; My Cosmic Profile remains a header button opening the existing settings modal.
+
+## UI Polish Batch 4 — approved display behavior
+
+The Daily Edit Bookshelf widget displays one explicitly chosen Currently Reading book, saved in the existing owner-scoped widget preference. A missing or no-longer-active choice falls back to the first current read without changing the saved choice. Collections retains every active book. Featured Reading, Watching and Playing shelves use a bounded horizontal carousel with three desktop, two tablet and one mobile cards visible; the full library remains below. The carousel does not truncate or duplicate saved records. Unsupported emoji remain valid saved Unicode but display a clear fallback on devices without the glyph.
+
+## UI Polish Batch 5 — approved control behavior
+
+Collections overview date filters use the existing Muse calendar and allow a selected date to be cleared. Filtering changes no collection records. Planner task cards show the workspace icon in its saved color beside independently editable tags. Workspace and tag pickers stay separate; older Group records remain available as legacy tags under tag management until their associations can be safely converted.

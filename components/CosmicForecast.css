@@ -25,3 +25,16 @@
 .muse-cosmic-forecast .muse-cosmic-forecast-actions .muse-button{min-height:34px;padding:6px 10px;font-size:.72rem}
 .muse-cosmic-forecast-compact .muse-cosmic-forecast-actions{margin-top:var(--space-2)}
 @media(max-width:540px){.muse-cosmic-forecast .card-heading{align-items:flex-start}.muse-cosmic-forecast-heading-meta{justify-content:flex-start}}
+.muse-cosmic-forecast-compact{padding:clamp(17px,2vw,24px)}
+.muse-cosmic-forecast-heading-meta strong{font-size:1rem;font-weight:700}
+.muse-cosmic-forecast-heading-meta>span{font-size:1.5rem;line-height:1;color:var(--accent-primary)}
+.muse-cosmic-forecast .muse-forecast-compact-reading{display:contents}
+.muse-cosmic-forecast .muse-forecast-reading{display:flex;flex-direction:column;gap:11px}
+.muse-cosmic-forecast .muse-forecast-compact-excerpt{font-size:.92rem;line-height:1.65;margin:0}
+.muse-cosmic-forecast .muse-cosmic-forecast-actions{order:2;border:0;padding:0;margin:0;gap:8px}
+.muse-cosmic-forecast .muse-forecast-compact-reading .muse-forecast-attribution{order:3;align-self:flex-end;text-align:right;border:0;padding:0;margin:0;font-size:.7rem}
+.muse-cosmic-forecast .muse-forecast-editorial-header,.muse-cosmic-forecast .muse-forecast-period-date,.muse-cosmic-forecast .muse-forecast-dateline{border:0}
+.muse-cosmic-forecast .muse-forecast-period-date{display:none}
+.muse-cosmic-forecast .muse-forecast-editorial{padding:15px 0;gap:13px;border:0;background:transparent}
+.muse-cosmic-forecast .muse-forecast-editorial-header{padding-bottom:0}
+.muse-cosmic-forecast .muse-forecast-editorial .muse-forecast-attribution{text-align:right;font-size:.7rem}

@@ -63,3 +63,17 @@
 .muse-tarot-entry-art .muse-tarot-art{height:82px;width:50px;min-width:50px;overflow:hidden;border-radius:4px;box-shadow:0 4px 12px #0003}.muse-tarot-entry-art .muse-tarot-art img{height:82px;width:50px;max-width:none;object-fit:cover}.muse-tarot-entry-art .muse-tarot-reversed-label{font-size:.55rem}.muse-tarot-entry-art .muse-tarot-art-fallback{font-size:.55rem}
 /* Grimoire browsing: a compact illustrated shelf within Muse's theme tokens. */
 .muse-tarot-library{gap:14px}.muse-tarot-library-card{padding:9px;border-radius:13px;background:var(--surface-control);text-decoration:none;overflow:hidden}.muse-tarot-library-card:before{content:'✦';position:absolute;top:13px;right:13px;z-index:1;display:grid;place-items:center;width:25px;height:25px;border-radius:50%;color:var(--foreground);background:var(--surface-control);border:1px solid var(--glass-border);font-size:.7rem;opacity:.82}.muse-tarot-library-card .muse-tarot-art{border:1px solid var(--glass-border);border-radius:6px;background:var(--surface-subtle)}.muse-tarot-library-card strong{font-size:1rem}.muse-tarot-library-card small{font-size:.73rem}.muse-tarot-library-card .muse-grimoire-card-kind{color:var(--text-muted);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase}.muse-tarot-library-card[data-arcana=major]{border-top:3px solid var(--accent-primary)}.muse-tarot-library-card[data-arcana=minor]{border-top:3px solid var(--accent-secondary)}
+/* Batch 4: one reading toolbar and a quieter ritual-table surface. */
+.muse-tarot-setup{grid-template-columns:minmax(0,1fr);gap:10px;padding-block:4px}
+.muse-tarot-setup-controls{display:grid;grid-template-columns:minmax(220px,1fr) max-content 42px;gap:10px;align-items:end}
+.muse-tarot-setup-controls>.muse-tarot-intention{grid-column:1;grid-row:1;max-width:none;min-width:0}
+.muse-tarot-setup-controls>div:first-of-type{grid-column:2;grid-row:1}
+.muse-tarot-setup-controls>div:last-of-type{grid-column:3;grid-row:1}
+.muse-tarot-selector{white-space:nowrap;background:var(--surface-control)}
+.muse-tarot-options-button{width:42px;min-width:42px;padding:7px;display:grid;place-items:center;background:var(--surface-control)}
+.muse-tarot-ritual{gap:16px;padding:clamp(20px,3vw,30px);background:radial-gradient(ellipse at 50% 8%,color-mix(in srgb,var(--accent-secondary) 14%,transparent),transparent 62%),var(--surface-strong);border-color:color-mix(in srgb,var(--selected-border) 35%,var(--glass-border))}
+.muse-tarot-welcome{max-width:700px;gap:clamp(18px,3vw,38px)}
+.muse-tarot-welcome>img{max-width:165px;box-shadow:0 16px 35px color-mix(in srgb,var(--foreground) 22%,transparent)}
+.muse-tarot-shuffle{background:var(--action-fill);border-color:var(--action-fill);color:var(--on-accent)}
+.muse-tarot-shuffle:hover:enabled{background:var(--action-fill);color:var(--on-accent);border-color:var(--selected-border)}
+@media(max-width:720px){.muse-tarot-setup-controls{grid-template-columns:minmax(0,1fr) 42px}.muse-tarot-setup-controls>.muse-tarot-intention{grid-column:1/-1;grid-row:1}.muse-tarot-setup-controls>div:first-of-type{grid-column:1;grid-row:2}.muse-tarot-setup-controls>div:last-of-type{grid-column:2;grid-row:2}}
