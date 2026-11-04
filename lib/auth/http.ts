@@ -13,10 +13,22 @@ export function routeAuthClient(request:NextRequest,response:NextResponse) {
   const {url,key,origin}=authConfig();
   return createServerClient<Database>(url,key,{cookies:{
     getAll:()=>request.cookies.getAll(),
-    setAll(values,headers){
-      for(const {name,value,options}of values)response.cookies.set(name,value,{...options,secure:origin.startsWith("https:")});
-      for(const [name,value]of Object.entries(headers))response.headers.set(name,value);
-    },
+    
+setAll(values, headers) {
+  for (const { name, value, options } of values) {
+    request.cookies.set(name, value);
+
+    response.cookies.set(name, value, {
+      ...options,
+      secure: origin.startsWith("https:"),
+    });
+  }
+
+  for (const [name, value] of Object.entries(headers)) {
+    response.headers.set(name, value);
+  }
+},
+
   }});
 }
 export function trustedOrigin(request:NextRequest) {

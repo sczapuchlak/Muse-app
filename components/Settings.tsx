@@ -1,5 +1,6 @@
 'use client';
 import {useMemo,useState} from 'react';
+import { SignInSettings } from "./auth/SignInSettings";
 import {MusePageHeader} from './MusePageHeader';
 import {MuseCard} from './MuseCard';
 import {CardHeading} from './CardHeading';
@@ -16,6 +17,8 @@ export function Settings({version}:{version:string}){const {store,status}=useAcc
  <form onSubmit={event=>{event.preventDefault();if(!p||!timeZone)return;store?.edit({time_zone:timeZone},zone?.revision??p.revision);setZone(null);}}><fieldset className="muse-daily-capture" disabled={!status.loaded||!!status.error||status.pending}><p className="editor-label">Your timezone</p><MuseChoiceMenu label="Timezone" valueLabel={options.find(option=>option.id===timeZone)?.label||timeZone||'Loading…'} options={options} searchable selectedIds={timeZone?[timeZone]:[]} onSelect={value=>{if(p)setZone({value,revision:p.revision});}}/>
  {p?.time_zone==='UTC'&&!p.time_zone_confirmed_at&&<p className="small-label" role="note">Your timezone is still the unconfirmed UTC default. Choose your timezone, or confirm UTC if it’s right for you.</p>}
  <p className="card-description">Used for Today and new entries. Daylight saving adjusts automatically. Travel won’t change it, and your past dates stay as recorded.</p><button className="muse-button" type="submit">{p?.time_zone==='UTC'&&!p.time_zone_confirmed_at?'Confirm timezone':'Save timezone'}</button></fieldset></form></div></MuseCard>
+
+<SignInSettings/>
  <CosmicSettings/>
  <MuseCard id="privacy-data"><CardHeading id="privacy-data" title="Privacy & your data" icon="notes"/><div className="muse-settings-fields"><section><h3>Export your data</h3><p className="card-description">Download saved profile preferences, daily entries and emotional check-ins, Planner records, Notes with their tags, and saved meals, groceries, hydration, movement, Rituals, and Money as JSON.</p><p className="small-label">Includes archived Notes and retained Planner history. Excludes unsaved drafts and this browser’s appearance and pane preferences.</p><button className="muse-button" type="button" disabled={exporting||!status.loaded} onClick={()=>void exportData()}>{exporting?'Preparing export…':'Export saved data'}</button>{exportMessage&&<p className="small-label" role={exportError?'alert':'status'}>{exportMessage}</p>}</section><section><h3>Delete account</h3><DeleteAccountButton/></section></div></MuseCard>
  <MuseCard id="about-muse"><CardHeading id="about-muse" title="About Muse" icon="sparkle"/><p className="muse-about-philosophy">You are the muse. You are the artist. Your life is the masterpiece.</p><p className="small-label">Muse · Version {version}</p></MuseCard>

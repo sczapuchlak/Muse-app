@@ -11,9 +11,21 @@ export function safeReturnPath(input: unknown): string {
     return `${url.pathname}${url.search}${url.hash}`;
   } catch { return "/"; }
 }
-export function isPublicAuthPath(path:string) {
-  return path === "/login" || path === "/login-preview" || ["/auth/link","/auth/verify","/auth/confirm","/auth/logout"].includes(path);
+export function isPublicAuthPath(path: string) {
+  return (
+    path === "/login" ||
+    path === "/login-preview" ||
+    [
+      "/auth/link",
+      "/auth/verify",
+      "/auth/confirm",
+      "/auth/logout",
+      "/auth/oauth/google",
+      "/auth/oauth/callback",
+    ].includes(path)
+  );
 }
+
 export function validLoginEmail(input:unknown): input is string {
   return typeof input === "string" && input.trim().length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.trim());
 }
@@ -27,6 +39,8 @@ export const authMessages:Record<string,string> = {
   "signed-out-local":"You’re signed out of this browser. Server session revocation could not be confirmed.",
   "session-expired":"Your session has ended. Sign in again to return to Muse.",
   "sent":"If this address has an invitation, a sign-in link is on its way. Check your email inbox.",
+"oauth-error": "Google sign-in couldn't be completed. Try again or use your email code.",
+
 };
 
 export function authNoticeMessage(notice:string):string|undefined{return Object.hasOwn(authMessages,notice)?authMessages[notice]:undefined;}

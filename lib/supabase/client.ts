@@ -1,8 +1,14 @@
+
 import { createBrowserClient } from "@supabase/ssr";
 import type { Database } from "@/lib/database.types";
 import { publicSupabaseConfig } from "./config";
 
 export function createMuseBrowserClient() {
   const { url, key } = publicSupabaseConfig();
-  return createBrowserClient<Database>(url, key);
+
+  return createBrowserClient<Database>(url, key, {
+    auth: {
+      experimental: { passkey: true },
+    },
+  });
 }
