@@ -24,3 +24,12 @@
 .muse-theme-name small { color:var(--text-muted); font-size:.65rem; white-space:normal; overflow-wrap:break-word; }
 
 .muse-theme-name > span { display:flex; align-items:center; gap:var(--space-1); }
+
+/* Sidebar "Themes" utility row: matches compact destination rows; the orb still shows the active theme. */
+.muse-rail-footer .muse-theme-root[data-variant="nav"] { margin-bottom: 0; }
+.muse-theme-root[data-variant="nav"] .muse-theme-trigger { gap: var(--space-3); min-height: 36px; margin: 1px 0; padding: var(--space-1) var(--space-3); border-color: transparent; background: transparent; color: var(--text-muted); font-size: .82rem; }
+.muse-theme-root[data-variant="nav"] .muse-theme-trigger:hover, .muse-theme-root[data-variant="nav"] .muse-theme-trigger[aria-expanded="true"] { color: var(--foreground); background: var(--surface-hover); }
+.muse-theme-root[data-variant="nav"] .muse-theme-orb { flex-basis: 12px; width: 12px; height: 12px; }
+.muse-theme-root[data-compact="true"][data-variant="nav"] .muse-theme-trigger { width: 100%; justify-content: center; padding-inline: var(--space-2); }
+/* Collapsed rail keeps the approved compact theme orb (PRODUCT_RULES: Theme). */
+.muse-theme-root[data-compact="true"][data-variant="nav"] .muse-theme-orb { flex-basis: 18px; width: 18px; height: 18px; }

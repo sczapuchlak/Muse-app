@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useRef, useState, type ReactNode } from "react";
-import { desktopGroups, isActiveDestination, mobileMoreIds, mobilePrimaryIds, navigation, navItems, type NavItem } from "@/lib/navigation";
+import { desktopGroups, isActiveDestination, isActiveItem, mobileMoreIds, mobilePrimaryIds, navigation, navItems, type NavItem } from "@/lib/navigation";
 import {WellnessProvider} from "./WellnessStore";
 import {todayInTimeZone} from "@/lib/dates";
 import {DailyDataProvider,DailyDateSync} from "./daily/DailyData";
@@ -29,7 +29,7 @@ import {LogoutButton} from "./auth/LogoutButton";
 import {MuseMagicBridge} from "./MuseMagic";
 
 function NavDestination({ item, path, compact = false, onNavigate }: { item: NavItem; path: string; compact?: boolean; onNavigate?: () => void }) {
-  const active = isActiveDestination(path, item.href);
+  const active = isActiveItem(path, item);
   return <Link href={item.href} className="muse-nav-link muse-edge" aria-current={active ? "page" : undefined}
     aria-label={compact ? item.label : undefined} title={compact ? item.label : undefined} onClick={onNavigate}>
     <MuseIcon name={item.icon} size={20} treatment="prismatic" /><span className="muse-nav-label">{item.label}</span>{active && <MuseStar size={17} className="muse-nav-active-star" />}
@@ -44,7 +44,7 @@ function AppShellContent({ children, profile:initialProfile }: { children: React
   const [collapsed, setCollapsed] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
   const moreRef = useRef<HTMLButtonElement>(null);
-  const moreActive = navItems(mobileMoreIds).some((item) => isActiveDestination(path, item.href));
+  const moreItems = navItems(mobileMoreIds), moreActive = moreItems.some((item) => isActiveItem(path, item));
   return (
     <MuseSessionProvider initialDate={todayInTimeZone(profile.timeZone)}><DailyDataProvider profile={profile}><DailyDateSync/>
       <AstrologyDataProvider key={profile.id} userId={profile.id}><WhimsyDataProvider userId={profile.id} timeZone={profile.timeZone}><CollectionsDataProvider userId={profile.id}><ConstellationsProvider profile={profile}><NotesProvider profile={profile}><PlannerProvider profile={profile}><WellnessProvider key={profile.id} userId={profile.id}><NourishProvider><MoneyProvider key={profile.id} userId={profile.id}><RitualProvider key={profile.id} userId={profile.id}><div className="muse-app-shell" data-rail={collapsed ? "collapsed" : "expanded"} data-module={path.split("/")[1]||"daily"}>
@@ -57,14 +57,14 @@ function AppShellContent({ children, profile:initialProfile }: { children: React
           <div className="muse-sidebar-atmosphere" aria-hidden="true"><MuseStar size={12} color="aqua" /><MuseStar size={17} color="pink" /></div>
           <nav className="muse-rail-navigation" aria-label="Main navigation">
             {desktopGroups.map((group) => <div className="muse-nav-group" key={group}>
-              <p className="muse-nav-group-label">{group}</p>
+              <p className="muse-nav-group-label">{group}{group === "Whimsy" && <MuseStar size={11} className="muse-nav-group-star" />}</p>
               {navigation.filter((item) => item.group === group).map((item) => <NavDestination key={item.id} item={item} path={path} compact={collapsed} />)}
             </div>)}
           </nav>
-          <div className="muse-rail-footer"><ThemeSwitcher compact={collapsed}/>
+          <div className="muse-rail-footer"><ThemeSwitcher compact={collapsed} variant="nav"/>
             <div className="muse-rail-utilities" aria-label="Account controls">
-              {navigation.filter((item) => item.group === "Tools" && item.id !== "appearance").map((item) => <NavDestination key={item.id} item={item} path={path} compact />)}
-              <LogoutButton compact/>
+              {navigation.filter((item) => item.group === "Tools" && item.id !== "appearance").map((item) => <NavDestination key={item.id} item={item} path={path} compact={collapsed} />)}
+              <LogoutButton compact={collapsed}/>
             </div>
           </div>
         </aside>
@@ -84,7 +84,7 @@ function AppShellContent({ children, profile:initialProfile }: { children: React
         </nav>
         <GlassPopover id="muse-more-navigation" label="More from Muse" open={moreOpen} anchorRef={moreRef} onClose={() => setMoreOpen(false)} width={340} align="end">
           <p className="editor-label">More from Muse</p>
-          <div className="muse-more-destinations">{navItems(mobileMoreIds).map((item) => <NavDestination key={item.id} item={item} path={path} onNavigate={() => setMoreOpen(false)} />)}<LogoutButton/></div>
+          <div className="muse-more-destinations">{[...desktopGroups, "Tools" as const].map((group) => { const items = moreItems.filter((item) => item.group === group); return items.length ? <div className="muse-more-group" key={group} role="group" aria-label={group === "Tools" ? "Account" : group}>{group !== "Tools" && <p className="muse-nav-group-label">{group}</p>}{items.map((item) => <NavDestination key={item.id} item={item} path={path} onNavigate={() => setMoreOpen(false)} />)}</div> : null; })}<LogoutButton/></div>
         </GlassPopover>
       </div></RitualProvider></MoneyProvider></NourishProvider></WellnessProvider></PlannerProvider></NotesProvider></ConstellationsProvider></CollectionsDataProvider></WhimsyDataProvider></AstrologyDataProvider>
     </DailyDataProvider></MuseSessionProvider>

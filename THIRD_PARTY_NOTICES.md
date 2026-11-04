@@ -1,8 +1,8 @@
 # Third-party notices
 
-## Lucide heart-pulse icon
+## Lucide icons
 
-SVG source: https://github.com/lucide-icons/lucide/blob/main/icons/heart-pulse.svg
+SVG sources (https://github.com/lucide-icons/lucide/blob/main/icons/): heart-pulse, wallet, flame, chart-no-axes-column-increasing, library, orbit, moon-star, wand-sparkles, palette and settings. Used as sidebar and app icons in `components/MuseIcon.tsx`.
 
 ISC License
 

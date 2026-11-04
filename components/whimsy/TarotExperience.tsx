@@ -14,7 +14,6 @@ import {useMuseDialog} from '@/components/useMuseDialog';
 import {createMuseBrowserClient} from '@/lib/supabase/client';
 import {dateLabel,shiftDate,todayInTimeZone,weekDates} from '@/lib/dates';
 import {useWhimsyData} from './WhimsyData';
-import {experiences} from './WhimsyFoundation';
 import {saveWhimsyRecord} from '@/lib/whimsy/persistence';
 import type {TarotReading} from '@/lib/whimsy/models';
 import {appendTarotFollowup,readTarotExtras,saveDailyDraw,saveReversals,type TarotDailyDraw,type TarotFollowup} from '@/lib/whimsy/tarot-persistence';
@@ -62,7 +61,7 @@ export function TarotExperience(){
  const filteredCards=tarotCards.filter(card=>(grimoireSection==='All'||card.section===grimoireSection)&&`${card.name} ${card.keywords.join(' ')} ${card.upright} ${card.reversed} ${card.symbolism} ${grimoireById(card.id)?grimoireSearchText(grimoireById(card.id)!):''}`.toLowerCase().includes(grimoireSearch.toLowerCase()));
  const readings=[...(records?.tarot??[])].filter(item=>`${item.question??''} ${item.reflection} ${item.tags?.join(' ')??''}`.toLowerCase().includes(journalSearch.toLowerCase())&&(!journalDate||item.date===journalDate)&&(!journalCard||item.cards.some(card=>card.card.contentId===journalCard))&&(!journalSpread||item.spreadId===journalSpread)&&(!journalTag||item.tags?.includes(journalTag))).sort((a,b)=>b.readAt.localeCompare(a.readAt));
  const insights=tarotInsights(records?.tarot??[]),journalTags=[...new Set((records?.tarot??[]).flatMap(item=>item.tags??[]))].sort();
- return <main className="muse-page muse-whimsy-page muse-tarot"><MusePageHeader title="Whimsy"/><nav className="muse-whimsy-navigation" aria-label="Whimsy experiences">{experiences.map(item=><Link key={item.id} className="muse-button button-ghost" href={`/whimsy/${item.id}`} aria-current={item.id==='tarot'?'page':undefined}>{item.name}</Link>)}</nav><WhimsyExperienceHeader title="The Reading Table" subtitle="The cards have thoughts. Whether they're helpful is between you and the universe." className="muse-tarot-header"/>
+ return <main className="muse-page muse-whimsy-page muse-tarot"><MusePageHeader title="Whimsy"/><WhimsyExperienceHeader title="The Reading Table" subtitle="The cards have thoughts. Whether they're helpful is between you and the universe." className="muse-tarot-header"/>
  <nav className="muse-tarot-tabs" aria-label="Tarot sections">{([['table','The Reading Table'],['grimoire','The Grimoire'],['journal','The Reading Journal']] as const).map(([id,label])=><button key={id} type="button" className="muse-button button-ghost" aria-current={tab===id?'page':undefined} onClick={()=>setTab(id)}>{label}</button>)}</nav>
  {!status.loaded||!extrasReady?<p role="status">Loading your private Tarot experience…</p>:null}{status.error?<p role="alert">{status.error} <button className="text-button" onClick={retry}>Retry</button></p>:null}{error&&<p className="muse-tarot-error" role="alert">{error} <button className="text-button" type="button" onClick={()=>{void reloadExtras();void retry();}}>Reload</button></p>}
  {tab==='table'&&status.loaded&&extrasReady&&<section className="muse-tarot-table" aria-label="Reading table">
