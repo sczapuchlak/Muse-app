@@ -116,3 +116,32 @@
 .muse-collections-series-book-row{display:flex;align-items:center;gap:12px;min-width:0}.muse-collections-series-book-row>.muse-book-cover{width:46px;flex:0 0 46px}.muse-collections-series-book-row>div:last-child{display:grid;gap:4px;min-width:0}.muse-collections-series-book-row strong{overflow-wrap:anywhere}.muse-collections-series-book-row span:last-child{color:var(--text-muted);font-size:.85rem}
 .muse-collections-seasons{display:grid;gap:12px;padding-top:14px;border-top:1px solid var(--glass-border)}.muse-collections-season-summary{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px;border:1px solid var(--glass-border);border-radius:12px;background:var(--surface-subtle)}.muse-collections-season-summary>div:first-child{display:grid;gap:3px}.muse-collections-season-summary span,.muse-collections-tv-progress{color:var(--text-muted);font-size:.85rem}.muse-collections-seasons .muse-collections-progress{height:7px}
 @media(max-width:650px){.muse-collections-season-summary{align-items:start;flex-direction:column}}
+
+/* The overview keeps its controls and the original cover-led library cards. */
+.muse-collections-overview{gap:12px}
+.muse-collections-search-add{grid-column:1;display:flex;align-items:end;gap:10px;min-width:0}
+.muse-collections-search-add>label{flex:1 1 auto;min-width:0}
+.muse-collections-search-add input{width:100%;box-sizing:border-box}
+.muse-collections-add-trigger{flex:0 0 auto;min-height:44px}
+.muse-collections-add-options{display:grid;gap:4px}
+.muse-collections-add-options .popover-choice{display:flex;align-items:center;gap:10px;width:100%}
+.muse-collections-toolbar-end .muse-icon-button{flex:0 0 auto}
+.muse-collections-secondary-actions .muse-button{min-height:36px;padding:6px 11px;border-color:var(--glass-border);background:var(--surface-control);font-size:.78rem}
+.muse-collections-in-progress{gap:8px}
+.muse-collections-in-progress .muse-collections-board-heading h3{font-size:clamp(1.16rem,1.6vw,1.4rem)}
+.muse-collections-active-card{display:grid;grid-template-columns:64px minmax(0,1fr);align-items:start;gap:10px;min-width:0;min-height:0;padding:10px;border:1px solid var(--glass-border);border-radius:var(--control-radius);background:var(--surface-subtle);color:var(--foreground);text-align:left;cursor:pointer}
+.muse-collections-active-card:hover{border-color:var(--selected-border);background:var(--surface-hover)}
+.muse-collections-active-card:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
+.muse-collections-active-card :is(.muse-book-cover,.muse-collections-cover){grid-column:1;width:64px;max-width:64px;align-self:start}
+.muse-collections-active-card .muse-collections-cover span{font-size:1.8rem}
+.muse-collections-active-copy{display:grid;align-content:start;gap:3px;min-width:0}
+.muse-collections-active-copy strong{font:italic 1rem/1.25 var(--font-serif,Georgia,serif);overflow-wrap:anywhere}
+.muse-collections-active-copy>span:not(.muse-collections-featured-action){font-size:.78rem;color:var(--text-muted);overflow-wrap:anywhere}
+.muse-collections-active-copy>small{font-size:.72rem;color:var(--text-muted)}
+.muse-collections-active-copy .muse-collections-featured-action{font-size:.76rem;margin-top:3px}
+.muse-collections-empty{justify-items:center;text-align:center;padding:clamp(24px,5vw,48px)}
+.muse-collections-empty p{max-width:48ch}
+.muse-collections-empty .muse-button{justify-self:center}
+@media(max-width:760px){.muse-collections-search-add{grid-column:1}.muse-collections-controls>.muse-collections-toolbar-end{justify-self:start}}
+@media(max-width:430px){.muse-collections-search-add{flex-wrap:wrap}.muse-collections-search-add>label{flex-basis:100%}.muse-collections-add-trigger{width:100%}}
+.muse-collections-form-grid>.muse-collections-form-wide{grid-column:1/-1}

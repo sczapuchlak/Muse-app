@@ -44,6 +44,7 @@
 @media(max-width:850px){.muse-books-grid,.muse-books-grid[data-count="3"]{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:700px){.muse-books-grid,.muse-books-grid[data-count="2"],.muse-books-grid[data-count="3"]{grid-template-columns:minmax(0,1fr)}.muse-books-card{grid-template-columns:88px minmax(0,1fr)}}
 @media(max-width:440px){.muse-books-cover-editor{grid-template-columns:96px minmax(0,1fr)}.muse-books-cover-editor .muse-book-cover{width:96px}.muse-books-form-section legend{white-space:normal}}
+.muse-books-section[aria-label="My Library"]>.muse-books-empty{justify-items:center;text-align:center;padding:clamp(24px,5vw,48px)}
 .muse-books-card{container-type:inline-size}
 .muse-books-card{grid-template-columns:clamp(88px,10vw,150px) minmax(0,1fr);gap:14px;padding:14px;align-items:start}
 .muse-books-card .muse-book-cover{max-width:150px;align-self:start}
