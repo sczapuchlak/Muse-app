@@ -4,33 +4,35 @@
 .muse-app-content { container: muse-content / inline-size; min-width: 0; }
 .muse-global-bar { display: flex; align-items: center; justify-content: flex-end; width: min(calc(100% - var(--page-padding) * 2), var(--page-max-width)); min-height: 64px; margin: 0 auto; padding-top: var(--space-4); }
 .muse-mobile-brand { display: none; }
-.muse-rail { position: fixed; inset: 0 auto auto 0; z-index: 40; display: flex; flex-direction: column; width: var(--muse-rail-width); height: 100vh; height: 100dvh; overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; scrollbar-width: thin; padding: var(--space-5) var(--space-3); border-right: 1px solid var(--glass-border); background: var(--glass-background); backdrop-filter: blur(var(--material-blur)) saturate(1.15); -webkit-backdrop-filter: blur(var(--material-blur)) saturate(1.15); transition: width var(--transition); }
-.muse-rail-header { position: relative; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 2px; flex: 0 0 auto; margin-bottom: var(--space-5); }
+.muse-rail { position: fixed; inset: 0 auto auto 0; z-index: 40; display: flex; flex-direction: column; width: var(--muse-rail-width); height: 100vh; height: 100dvh; overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; scrollbar-width: thin; padding: var(--space-4) var(--space-3); border-right: 1px solid var(--glass-border); background: var(--glass-background); backdrop-filter: blur(var(--material-blur)) saturate(1.15); -webkit-backdrop-filter: blur(var(--material-blur)) saturate(1.15); transition: width var(--transition); }
+.muse-rail-header { position: relative; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 2px; flex: 0 0 auto; margin-bottom: var(--space-2); padding-bottom: var(--space-2); border-bottom: 1px solid var(--divider); }
 .muse-shell-brand { display: inline-flex; align-items: center; justify-content: flex-start; gap: var(--space-2); min-width: 0; min-height: 44px; padding-inline: var(--space-2); color: var(--foreground); text-decoration: none; font-size: 1.9rem; font-weight: 650; letter-spacing: -.065em; }
 .muse-rail-navigation { flex: 0 0 auto; }
-.muse-nav-group + .muse-nav-group { margin-top: var(--space-5); }
-.muse-nav-group-label { margin: 0 var(--space-3) var(--space-2); color: var(--text-muted); font-size: .6rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 600; }
+.muse-nav-group + .muse-nav-group { margin-top: var(--space-2); padding-top: var(--space-2); border-top: 1px solid var(--divider); }
+.muse-nav-group-label { display: flex; align-items: center; gap: 6px; margin: 0 var(--space-3) var(--space-1); color: var(--text-muted); font-size: .6rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 600; }
+.muse-nav-group-star { flex: 0 0 auto; }
+/* Desktop rail rows are compact; the mobile More menu keeps full touch targets. */
+.muse-rail .muse-nav-link { min-height: 36px; padding-block: var(--space-1); margin: 1px 0; }
 .muse-nav-link { position: relative; display: flex; align-items: center; gap: var(--space-3); min-height: var(--touch-target); padding: var(--space-2) var(--space-3); margin: 2px 0; color: var(--text-muted); background: transparent; border: 1px solid transparent; border-radius: var(--control-radius); text-decoration: none; font-size: .82rem; }
 .muse-nav-link[aria-current="page"] { color: var(--navigation-text); background: var(--navigation-background); border-color: var(--selected-border); font-weight: 600; }
 .muse-nav-link:hover { color: var(--foreground); background: var(--surface-subtle); }
 .muse-nav-label { min-width: 0; white-space: nowrap; }
 .muse-nav-active-star { margin-left: auto; flex-shrink: 0; }
 .muse-rail-footer { position: relative; z-index: 1; flex: 0 0 auto; padding-top: var(--space-3); margin-top: auto; border-top: 1px solid var(--divider); }
-.muse-rail-utilities { display: flex; align-items: center; justify-content: flex-start; gap: var(--space-2); }
-.muse-rail-utilities .muse-nav-link { justify-content: center; width: var(--touch-target); min-width: var(--touch-target); height: var(--touch-target); padding: 0; }
-.muse-rail-utilities .muse-nav-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); }
-.muse-rail-utilities .muse-logout { width: auto; }
-.muse-rail-utilities .muse-nav-link:is(:hover,:focus-visible)::after { content: attr(aria-label); position: absolute; z-index: 4; left: 50%; bottom: calc(100% + 4px); transform: translateX(-50%); width: max-content; max-width: calc(var(--muse-rail-width) - 8px); padding: 5px 5px; border: 1px solid var(--glass-border); border-radius: var(--control-radius); background: var(--floating-background); color: var(--foreground); box-shadow: var(--floating-shadow); font-size: .68rem; font-weight: 600; line-height: 1.2; text-align: center; overflow-wrap: anywhere; pointer-events: none; }
+/* Bottom utilities: Themes, Settings and Sign out as labeled rows, separated from destinations. */
+.muse-rail-utilities { display: flex; flex-direction: column; align-items: stretch; gap: 0; }
 .muse-rail-collapse { display: flex; align-items: center; gap: var(--space-3); width: 100%; min-height: var(--touch-target); margin-top: var(--space-2); padding: var(--space-2) var(--space-3); color: var(--text-muted); border: 1px solid transparent; border-radius: var(--control-radius); background: transparent; font-size: .75rem; }
 [data-rail="collapsed"] .muse-rail { padding-inline: var(--space-2); }
 [data-rail="collapsed"] .muse-rail-header { flex-direction: column; gap: var(--space-2); }
 [data-rail="collapsed"] .muse-shell-brand { justify-content: center; padding: 0; }
-[data-rail="collapsed"] .muse-rail-utilities { flex-direction: column; gap: 0; }
 [data-rail="collapsed"] .muse-shell-brand > span, [data-rail="collapsed"] .muse-nav-label, [data-rail="collapsed"] .muse-nav-group-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); }
 [data-rail="collapsed"] .muse-nav-link, [data-rail="collapsed"] .muse-rail-collapse { justify-content: center; padding-inline: var(--space-2); }
 [data-rail="collapsed"] .muse-nav-active-star { position: absolute; right: 3px; top: 4px; width: 6px; height: 10px; }
 .muse-bottom-navigation { display: none; }
 .muse-more-destinations { display: flex; flex-direction: column; gap: var(--space-1); }
+.muse-more-group { display: flex; flex-direction: column; gap: var(--space-1); }
+.muse-more-group + .muse-more-group, .muse-more-destinations > .muse-logout { margin-top: var(--space-1); padding-top: var(--space-2); border-top: 1px solid var(--divider); }
+.muse-more-group > .muse-nav-group-label { margin-top: var(--space-1); }
 .muse-skip-link { position: fixed; z-index: 2000; top: -80px; left: var(--space-4); padding: var(--space-3); background: var(--floating-background); color: var(--foreground); border: 1px solid var(--glass-border); border-radius: var(--control-radius); }
 .muse-skip-link:focus { top: var(--space-3); }
 .muse-module-page { padding-top: var(--space-8); }

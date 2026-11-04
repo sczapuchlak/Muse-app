@@ -10,7 +10,8 @@ import { MuseIcon } from "./MuseIcon";
 import { GlassPopover } from "./GlassPopover";
 import "./ThemeSwitcher.css";
 
-export function ThemeSwitcher({compact=false}:{compact?:boolean}) {
+/** `variant="nav"` renders the sidebar "Themes" utility row; the default pill shows the active theme name. */
+export function ThemeSwitcher({compact=false,variant="pill"}:{compact?:boolean;variant?:"pill"|"nav"}) {
   const menuId=useId();
   const [open, setOpen] = useState(false);
   const activeId = useSyncExternalStore(subscribeThemePreference, readThemePreference, serverThemePreference);
@@ -23,13 +24,13 @@ export function ThemeSwitcher({compact=false}:{compact?:boolean}) {
   function close() { setOpen(false); triggerRef.current?.focus(); }
 
   return (
-    <div className="muse-theme-root" data-compact={compact}>
-      <button ref={triggerRef} className="muse-theme-trigger muse-edge" type="button" aria-haspopup="menu" aria-expanded={open} aria-controls={menuId} aria-label={`Theme: ${active.name}. Change theme or material`} title={compact?active.name:undefined}
+    <div className="muse-theme-root" data-compact={compact} data-variant={variant}>
+      <button ref={triggerRef} className="muse-theme-trigger muse-edge" type="button" aria-haspopup="menu" aria-expanded={open} aria-controls={menuId} aria-label={`Theme: ${active.name}. Change theme or material`} title={compact?(variant==="nav"?`Themes · ${active.name}`:active.name):undefined}
         onClick={() => setOpen((value) => !value)} onKeyDown={(event) => {
           if (event.key === "ArrowDown" || event.key === "ArrowUp") { event.preventDefault(); setOpen(true); }
         }}>
-        <span className="muse-theme-orb" style={{ "--theme-orb": active.preview } as CSSProperties} aria-hidden="true" />
-        <span className="muse-theme-active-name">{active.name}</span><MuseIcon name="chevron" size={14} />
+        {variant==="nav"?<><MuseIcon name="themes" size={20} treatment="prismatic" /><span className="muse-theme-active-name">Themes</span><span className="muse-theme-orb" style={{ "--theme-orb": active.preview } as CSSProperties} aria-hidden="true" /></>
+          :<><span className="muse-theme-orb" style={{ "--theme-orb": active.preview } as CSSProperties} aria-hidden="true" /><span className="muse-theme-active-name">{active.name}</span></>}<MuseIcon name="chevron" size={14} />
       </button>
       <GlassPopover id={menuId} label="Muse themes" role="menu" open={open} anchorRef={triggerRef} onClose={() => setOpen(false)} width={310} align="end">
         <div className="muse-theme-list" onKeyDown={(event) => {
