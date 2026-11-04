@@ -1,7 +1,7 @@
-.muse-daily-bookshelf{display:grid;gap:12px;min-width:0}
+.muse-daily-bookshelf{flex-shrink:0;gap:12px;min-width:0}
 .muse-daily-bookshelf .muse-card-header{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .muse-daily-bookshelf-settings{width:34px;min-width:34px;height:34px;min-height:34px;padding:5px;display:grid;place-items:center;background:var(--surface-control)}
-.muse-daily-bookshelf-feature{display:grid;grid-template-columns:86px minmax(0,1fr);align-items:start;gap:15px}
+.muse-daily-bookshelf-feature{display:grid;grid-template-columns:86px minmax(0,1fr);align-items:start;gap:15px;min-width:0}
 .muse-daily-bookshelf-feature .muse-book-cover{width:86px;max-width:100%}
 .muse-daily-bookshelf-feature>div:last-child{display:grid;align-content:start;gap:6px;min-width:0}
 .muse-daily-bookshelf-title{font:italic 1.2rem/1.25 var(--font-serif,Georgia,serif);overflow-wrap:anywhere}
