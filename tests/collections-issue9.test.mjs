@@ -42,3 +42,22 @@ test('Collections keeps old deep links, contextual Reading Atlas, and one filter
  assert.match(source,/setAdvancedOpen\(value=>!value\)/);
  assert.match(source,/preferences\.showInProgress&&inProgress\.length>0/);
 });
+
+test('Collections restoration keeps one compact active shelf and direct add actions',()=>{
+ const source=readFileSync(root+'/components/collections/Collections.tsx','utf8');
+ const css=readFileSync(root+'/components/collections/Collections.css','utf8');
+ assert.match(source,/kindFilter==='book'\?'Currently Reading'/);
+ assert.match(source,/kindFilter==='game'\?'Currently Playing'/);
+ assert.match(source,/aria-label=\{activeLabel\}/);
+ assert.match(source,/muse-collections-active-card/);
+ assert.match(source,/groups\.filter\(\(\[label\]\)=>!\(preferences\.showInProgress/);
+ assert.match(source,/aria-label="Full library"/);
+ assert.match(source,/muse-collections-search-add/);
+ assert.match(source,/role="menu" open=\{addOpen\}/);
+ assert.match(source,/onClick=\{\(\)=>go\(id,\{add:true\}\)\}/);
+ assert.doesNotMatch(source,/What are you adding\?/);
+ assert.match(source,/emptyCopy\[kindFilter\]/);
+ assert.match(css,/\.muse-collections-active-card\{display:grid;grid-template-columns:64px minmax\(0,1fr\)/);
+ const media=readFileSync(root+'/components/collections/MediaLibrary.tsx','utf8');
+ assert.match(media,/!items\.length&&<button type="button" className="muse-button button-primary"/);
+});
