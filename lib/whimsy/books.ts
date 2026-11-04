@@ -30,3 +30,8 @@ export function localReadingInstant(date:string,time:string,zone:string){if(!val
 export function validCoverUrl(value:string){if(!value)return true;try{const url=new URL(value);return url.protocol==='https:';}catch{return false;}}
 export function parseEmojiReview(value:string){if(!value.trim())return [];const graphemes=[...new Intl.Segmenter('en',{granularity:'grapheme'}).segment(value)].map(s=>s.segment),emoji=graphemes.filter(s=>/\p{Extended_Pictographic}/u.test(s));if(emoji.length>3||graphemes.some(s=>!s.trim()?false:!/\p{Extended_Pictographic}/u.test(s)))throw Error('Choose up to three emojis for the optional review.');return emoji;}
 export function todayForReading(zone:string){if(!validTimeZone(zone))throw Error('Set your IANA timezone before recording reading.');return todayInTimeZone(zone);}
+
+/** Optional lookup metadata (ISBN, publisher, publication date, description, source), carried through every book write. */
+export function bookMetadataFields(book:Pick<Book,'isbn'|'publisher'|'publishedDate'|'description'|'metadataSource'>){
+ return {...(book.isbn?{isbn:book.isbn}:{}),...(book.publisher?{publisher:book.publisher}:{}),...(book.publishedDate?{publishedDate:book.publishedDate}:{}),...(book.description?{description:book.description}:{}),...(book.metadataSource?{metadataSource:book.metadataSource}:{})};
+}
