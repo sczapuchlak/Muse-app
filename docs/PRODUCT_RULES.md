@@ -543,3 +543,8 @@ TV shows remain the parent records for optional season summaries and episode rec
 ## Installed app — approved
 
 Muse opens standalone when installed. Offline caching and service workers are not part of this decision and need separate approval. On iPhone, an installed app keeps its own session separate from Safari: email code and Google sign-in work inside the app, but an emailed magic link opens in Safari and signs Safari in, not the installed app. User-selectable themes are unchanged; only the status-bar color follows the active theme.
+
+## Book lookup — approved
+
+Book lookup only assists manual entry; saving a book never depends on an outside service. Imported values fill only empty fields or fields a previous import filled, so the reader's own entries are never overwritten; "Clear imported details" removes only imported values. Existing books are never changed by lookup; any future metadata refresh requires explicit confirmation. Missing information stays missing: page counts come only from edition-specific records (never work-level medians), formats map only when clearly stated, and genres map only onto Muse's existing book genres. Imported page counts set Total pages only, never the starting or current page. External text is stored and rendered as plain text, and covers must be HTTPS. Every book write (editor save and shelf status moves) carries the optional lookup fields so they are never silently dropped. The Google Books key is server-only and never exposed to the browser. Lookup uses free services only.
+
