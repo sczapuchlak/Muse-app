@@ -67,3 +67,9 @@
 .muse-books-emoji-field>.muse-button{justify-content:flex-start;min-height:44px;gap:7px}
 .muse-books-form .muse-date-picker-trigger{width:100%;justify-content:space-between;min-height:44px}
 .muse-books-form-footer{box-shadow:0 -7px 18px color-mix(in srgb,var(--foreground) 7%,transparent)}
+
+/* The Book editor's form is a flex column; only its middle region scrolls. */
+#bookshelf-book-editor .muse-books-form{min-height:0;flex:1 1 auto;overflow:hidden;padding:0;gap:0;}
+#bookshelf-book-editor .muse-books-form-body{display:grid;align-content:start;gap:14px;min-height:0;flex:1 1 auto;overflow-y:auto;overscroll-behavior:contain;padding:16px 22px 24px;scroll-padding-block:16px;}
+#bookshelf-book-editor .muse-books-form-footer{position:static;flex:0 0 auto;margin:0;padding:14px 22px 18px;border-top:1px solid var(--glass-border);box-shadow:none;background:var(--floating-background);}
+@media(max-width:650px){#bookshelf-book-editor .muse-books-form-body{padding:12px 15px 20px}#bookshelf-book-editor .muse-books-form-footer{margin:0;padding:12px 15px 16px}}
