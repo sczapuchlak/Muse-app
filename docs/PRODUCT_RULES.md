@@ -527,3 +527,7 @@ The Daily Edit Bookshelf widget displays one explicitly chosen Currently Reading
 ## UI Polish Batch 5 — approved control behavior
 
 Collections overview date filters use the existing Muse calendar and allow a selected date to be cleared. Filtering changes no collection records. Planner task cards show the workspace icon in its saved color beside independently editable tags. Workspace and tag pickers stay separate; older Group records remain available as legacy tags under tag management until their associations can be safely converted.
+
+## Collections consolidation — approved by issue #9
+
+Collections opens on its existing Overview with Board and Library modes; media chips are the primary category selector. The former top-level media row is hidden, while its routes remain valid for detail, creation, Reading Atlas, Series, and My Collections. Advanced filters are collapsed initially and retain their values when hidden. Per-user opening mode, media category, and In Progress shelf visibility are saved in Supabase Auth user metadata without a new table; temporary browsing choices do not change those defaults. The compact In Progress shelf projects the same canonical books and media, linking to their existing tracking flows. Genre selection adapts to existing comma-delimited Book text and media genre arrays without deleting unfamiliar saved values. One to three optional Book emojis use the existing review field.

@@ -68,3 +68,39 @@
 .muse-collections-date-filter .muse-optional-date-picker{width:100%}
 .muse-collections-overview>.muse-collections-filters>.muse-collections-checkbox{flex:0 0 auto;min-width:0;padding-bottom:9px}
 @media(max-width:650px){.muse-collections-quick-filters{width:auto}.muse-collections-quick-filters .muse-collections-choice-field{flex:0 1 auto}.muse-collections-overview>.muse-collections-filters>.muse-collections-date-filter{flex:1 1 145px}.muse-collections-overview>.muse-collections-filters>.muse-collections-tag-filter{flex:1 1 145px}}
+.muse-collections-header-actions,.muse-collections-secondary-actions,.muse-collections-toolbar-end{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.muse-collections-header-actions{justify-content:flex-end}
+.muse-collections-overview-heading{display:flex;align-items:end;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.muse-collections-overview-heading h2{font:italic clamp(1.35rem,2vw,1.8rem)/1.3 var(--font-serif,Georgia,serif)}
+.muse-collections-overview-heading p{margin-top:3px;color:var(--text-muted)}
+.muse-collections-overview{gap:16px}
+.muse-collections-controls{padding:12px;gap:9px 14px}
+.muse-collections-controls>.muse-collections-toolbar-end{grid-column:2;justify-self:end}
+.muse-collections-chips .muse-button{border-radius:999px}
+.muse-collections-chips [aria-pressed=true]{border-color:var(--selected-border);background:var(--selected-background);color:var(--selected-text)}
+.muse-collections-filter-trigger{gap:6px}
+.muse-collections-filter-count{display:inline-grid;place-items:center;min-width:18px;height:18px;border-radius:999px;background:var(--selected-background);color:var(--selected-text);font-size:.7rem}
+.muse-collections-advanced{grid-column:1/-1;display:grid;gap:10px;padding:12px 0 2px;border-top:1px solid var(--divider)}
+.muse-collections-advanced>.muse-collections-filters{display:flex;align-items:end;gap:10px;flex-wrap:wrap}
+.muse-collections-advanced .muse-collections-tag-filter{flex:1 1 160px;max-width:240px}
+.muse-collections-advanced .muse-collections-date-filter{flex:0 1 185px}
+.muse-collections-advanced>.muse-button{justify-self:start}
+.muse-collections-in-progress{display:grid;gap:10px;min-width:0}
+.muse-collections-progress-card{min-height:150px}
+.muse-collections-preferences{width:min(100%,430px)}
+.muse-collections-preferences .muse-collections-choice-field .muse-choice-trigger{max-width:none;width:100%;justify-content:space-between}
+.muse-collections-sticky-footer{position:sticky;bottom:-28px;justify-content:flex-end;margin:4px -22px -28px;padding:14px 22px 20px;border-top:1px solid var(--glass-border);background:var(--floating-background);box-shadow:0 -7px 18px color-mix(in srgb,var(--foreground) 7%,transparent);z-index:1}
+@media(max-width:760px){.muse-collections-controls>.muse-collections-toolbar-end{grid-column:1;justify-self:start}.muse-collections-advanced{grid-column:1}.muse-collections-advanced .muse-collections-date-filter{flex:1 1 145px}}
+.muse-collections-editor{display:flex;flex-direction:column;gap:16px;min-height:0;flex:1;max-height:none;overflow:auto;scroll-padding-block:16px 86px}
+.muse-collections-form-section{display:grid;gap:12px;margin:0;padding:0;border:0;min-width:0}
+.muse-collections-form-section legend{margin-bottom:10px;color:var(--accent-primary);font-size:.78rem;font-weight:650;letter-spacing:.1em;text-transform:uppercase}
+.muse-collections-editor .muse-genre-picker{min-width:0}
+.muse-collections-editor .muse-choice-trigger,.muse-collections-editor .muse-date-picker-trigger{width:100%;max-width:none;min-height:44px;justify-content:space-between}
+.muse-collections-editor .muse-collections-date-filter{display:grid;gap:6px}
+.muse-collections-additional{padding:12px 14px;border:1px solid var(--glass-border);border-radius:12px;background:var(--surface-subtle)}
+.muse-collections-additional summary{cursor:pointer;color:var(--foreground);font-weight:600}
+.muse-collections-additional[open]{display:grid;gap:12px}
+.muse-collections-additional .muse-collections-form-grid{margin-top:12px}
+.muse-collections-additional>label{margin-top:12px}
+.muse-collections-editor .muse-collections-sticky-footer{bottom:-28px}
+@media(max-width:650px){.muse-collections-sticky-footer{bottom:-24px;margin-inline:-16px;margin-bottom:-24px;padding:12px 16px 16px}.muse-collections-editor .muse-collections-form-grid{grid-template-columns:minmax(0,1fr)}}
