@@ -1,5 +1,6 @@
 "use client";
 import dynamic from 'next/dynamic';
+import {useSearchParams} from 'next/navigation';
 import {useLayoutEffect,useRef,useState,useSyncExternalStore} from 'react';
 import {MusePageHeader} from '../MusePageHeader';
 import {MuseIcon} from '../MuseIcon';
@@ -13,7 +14,7 @@ import {NotesSaveStatus} from './NotesStore';
 
 import {Constellations} from './Constellations';
 import {ConstellationsSaveStatus} from './ConstellationsStore';
-import {readMindspaceView,serverMindspaceView,subscribeMindspaceView,selectMindspaceView} from '@/lib/mindspace-preference';
+import {mindspaceView} from '@/lib/mindspace';
 import {NotesList} from './NotesList';
 import {NotesTagRail} from './NotesTagRail';
 import {NoteTagForm} from './NoteTags';
@@ -22,7 +23,7 @@ import './Notes.css';
 const NoteEditor=dynamic(()=>import('./NoteEditor').then((module)=>module.NoteEditor),{ssr:false,loading:()=> <section className="muse-notes-editor-pane muse-notes-editor-loading" aria-busy="true"><p>Opening your writing space…</p></section>});
 type NotesUI={filter:NotesFilter;selectedId:string|null;mobile:'tags'|'list'|'editor'};
 export function Notes(){const {state,dispatch,spark,status,profile}=useNotes(),[ui,setUi]=useMuseState<NotesUI>('notes-navigation',{filter:initialNotesFilter,selectedId:'note-muse',mobile:'list'},true),[tagEditor,setTagEditor]=useState<{tag?:NoteTag;anchor:HTMLElement}|null>(null),[confirm,setConfirm]=useState<{note?:Note;tag?:NoteTag;anchor:HTMLElement}|null>(null),[newId,setNewId]=useState<string|null>(null);
- const view=useSyncExternalStore(subscribeMindspaceView,readMindspaceView,serverMindspaceView),boardVisible=view==='constellations';
+ const view=mindspaceView(useSearchParams().get('view')),boardVisible=view==='constellations';
  const workspaceRef=useRef<HTMLDivElement>(null);
  const rawPanes=useSyncExternalStore(subscribeNotesPanes,readNotesPanes,serverNotesPanes),panes=parseNotesPanes(rawPanes),searchRef=useRef<HTMLInputElement>(null),tagAnchor=useRef<HTMLElement|null>(null);
  const notes=visibleNotes(state,ui.filter),base=state.notes.find((note)=>note.id===ui.selectedId),selected=base?resolvedNote(state,base):null;
@@ -38,7 +39,6 @@ export function Notes(){const {state,dispatch,spark,status,profile}=useNotes(),[
  <MusePageHeader title="Mindspace"/>
 
 
- <div className="muse-mindspace-views" role="group" aria-label="Mindspace view">{(['notes','constellations'] as const).map(option=><button key={option} className="choice-button" type="button" aria-pressed={view===option} onClick={()=>{selectMindspaceView(option);}}>{option==='notes'?'Notes':'Constellations'}</button>)}</div>
  <div hidden={!boardVisible}><Constellations/></div>
  <div ref={workspaceRef} hidden={boardVisible} className="muse-notes-workspace" inert={!status.loaded||!!status.error} aria-busy={!status.loaded} data-tags={panes.tagsVisible} data-focus={panes.focus||view==='constellations'} data-mobile={view==='constellations'?'editor':ui.mobile}>
  <span className="muse-notes-action-feedback">{spark}</span><NotesTagRail state={state} filter={ui.filter} dispatch={dispatch} onFilter={filter} onCreate={(anchor)=>{tagAnchor.current=anchor;setTagEditor({anchor});}} onRename={(tag,anchor)=>{tagAnchor.current=anchor;setTagEditor({tag,anchor});}} onDelete={(tag,anchor)=>setConfirm({tag,anchor})} onCollapse={()=>{changeNotesPanes({tagsVisible:false});setUi((current)=>({...current,mobile:'list'}));}}/>

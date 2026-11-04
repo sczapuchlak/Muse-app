@@ -1,5 +1,3 @@
-.muse-mindspace-views { display:flex; flex-wrap:wrap; gap:var(--space-2); margin-bottom:var(--space-4); }
-.muse-mindspace-views .choice-button { min-height:44px; }
 .muse-notes-workspace[hidden],.muse-constellations[hidden] { display:none; }
 .muse-constellations { display:flex; flex-direction:column; gap:var(--space-3); min-width:0; }
 .muse-board-search { display:flex; align-items:center; gap:var(--space-2); min-width:0; }
