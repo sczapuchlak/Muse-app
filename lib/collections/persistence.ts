@@ -3,17 +3,18 @@ import type {Database,TablesInsert,TablesUpdate} from '@/lib/database.types';
 import type {CollectionsSnapshot,MediaItem} from './models';
 
 export async function readCollections(client:SupabaseClient<Database>,userId:string):Promise<CollectionsSnapshot>{
- const [media,episodes,activity,series,seriesMembers,curated,curatedMembers]=await Promise.all([
+ const [media,episodes,seasons,activity,series,seriesMembers,curated,curatedMembers]=await Promise.all([
   client.from('collection_media_items').select('*').eq('user_id',userId),
   client.from('collection_tv_episodes').select('*').eq('user_id',userId),
+  client.from('collection_tv_seasons').select('*').eq('user_id',userId),
   client.from('collection_activity').select('*').eq('user_id',userId),
   client.from('collection_series').select('*').eq('user_id',userId),
   client.from('collection_series_members').select('*').eq('user_id',userId),
   client.from('collection_curated').select('*').eq('user_id',userId),
   client.from('collection_curated_members').select('*').eq('user_id',userId),
  ]);
- for(const result of [media,episodes,activity,series,seriesMembers,curated,curatedMembers])if(result.error)throw result.error;
- return {media:media.data??[],episodes:episodes.data??[],activity:activity.data??[],series:series.data??[],seriesMembers:seriesMembers.data??[],curated:curated.data??[],curatedMembers:curatedMembers.data??[]};
+ for(const result of [media,episodes,seasons,activity,series,seriesMembers,curated,curatedMembers])if(result.error)throw result.error;
+ return {media:media.data??[],episodes:episodes.data??[],seasons:seasons.data??[],activity:activity.data??[],series:series.data??[],seriesMembers:seriesMembers.data??[],curated:curated.data??[],curatedMembers:curatedMembers.data??[]};
 }
 
 export type MediaDraft=Omit<TablesInsert<'collection_media_items'>,'user_id'|'revision'|'created_at'|'updated_at'>;
@@ -30,6 +31,8 @@ export async function deleteMedia(client:SupabaseClient<Database>,userId:string,
 
 export async function saveEpisode(client:SupabaseClient<Database>,draft:TablesInsert<'collection_tv_episodes'>,expectedRevision=0){const result=expectedRevision===0?await client.from('collection_tv_episodes').insert(draft).select('*').single():await client.from('collection_tv_episodes').update(draft as TablesUpdate<'collection_tv_episodes'>).eq('id',draft.id).eq('user_id',draft.user_id).eq('revision',expectedRevision).select('*').maybeSingle();if(result.error)throw result.error;if(!result.data)throw Error('This episode changed elsewhere. Reload before saving.');return result.data;}
 export async function deleteEpisode(client:SupabaseClient<Database>,userId:string,id:string,revision:number){const result=await client.from('collection_tv_episodes').delete().eq('id',id).eq('user_id',userId).eq('revision',revision).select('id').maybeSingle();if(result.error)throw result.error;if(!result.data)throw Error('This episode changed elsewhere. Reload before removing it.');}
+export async function saveSeason(client:SupabaseClient<Database>,draft:TablesInsert<'collection_tv_seasons'>,expectedRevision=0){const result=expectedRevision===0?await client.from('collection_tv_seasons').insert(draft).select('*').single():await client.from('collection_tv_seasons').update(draft as TablesUpdate<'collection_tv_seasons'>).eq('id',draft.id).eq('user_id',draft.user_id).eq('revision',expectedRevision).select('*').maybeSingle();if(result.error)throw result.error;if(!result.data)throw Error('This season changed elsewhere. Reload before saving.');return result.data;}
+export async function deleteSeason(client:SupabaseClient<Database>,userId:string,id:string,revision:number){const result=await client.from('collection_tv_seasons').delete().eq('id',id).eq('user_id',userId).eq('revision',revision).select('id').maybeSingle();if(result.error)throw result.error;if(!result.data)throw Error('This season changed elsewhere. Reload before removing it.');}
 export async function saveActivity(client:SupabaseClient<Database>,draft:TablesInsert<'collection_activity'>,expectedRevision=0){const result=expectedRevision===0?await client.from('collection_activity').insert(draft).select('*').single():await client.from('collection_activity').update(draft as TablesUpdate<'collection_activity'>).eq('id',draft.id).eq('user_id',draft.user_id).eq('revision',expectedRevision).select('*').maybeSingle();if(result.error)throw result.error;if(!result.data)throw Error('This activity changed elsewhere. Reload before saving.');return result.data;}
 export async function deleteActivity(client:SupabaseClient<Database>,userId:string,id:string,revision:number){const result=await client.from('collection_activity').delete().eq('id',id).eq('user_id',userId).eq('revision',revision).select('id').maybeSingle();if(result.error)throw result.error;if(!result.data)throw Error('This activity changed elsewhere. Reload before removing it.');}
 

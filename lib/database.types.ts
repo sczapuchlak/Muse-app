@@ -335,28 +335,28 @@ isOneToOne: false
                   ]
                 },"collection_media_items": {
                   Row: {
-                    "cast_names": (string)[],"completed_on": string | null,"cover_url": string | null,"created_at": string,"creator": string,"description": string,"developer": string,"favorite": boolean,"genres": (string)[],"id": string,"kind": string,"notes": string,"platform_played": string,"platforms": (string)[],"playtime_minutes": number | null,"progress_percent": number | null,"provider": string | null,"provider_id": string | null,"publisher": string,"rating": number | null,"release_date": string | null,"review": string,"revision": number,"runtime_minutes": number | null,"started_on": string | null,"status": string,"tags": (string)[],"title": string,"updated_at": string,"user_id": string
+                    "cast_names": (string)[],"completed_on": string | null,"conclusion_state": string,"cover_url": string | null,"created_at": string,"creator": string,"description": string,"developer": string,"favorite": boolean,"genres": (string)[],"id": string,"kind": string,"notes": string,"platform_played": string,"platforms": (string)[],"playtime_minutes": number | null,"progress_percent": number | null,"provider": string | null,"provider_id": string | null,"publisher": string,"rating": number | null,"release_date": string | null,"review": string,"revision": number,"runtime_minutes": number | null,"started_on": string | null,"status": string,"tags": (string)[],"title": string,"updated_at": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "cast_names"?: (string)[],"completed_on"?: string | null,"cover_url"?: string | null,"created_at"?: string,"creator"?: string,"description"?: string,"developer"?: string,"favorite"?: boolean,"genres"?: (string)[],"id": string,"kind": string,"notes"?: string,"platform_played"?: string,"platforms"?: (string)[],"playtime_minutes"?: number | null,"progress_percent"?: number | null,"provider"?: string | null,"provider_id"?: string | null,"publisher"?: string,"rating"?: number | null,"release_date"?: string | null,"review"?: string,"revision"?: number,"runtime_minutes"?: number | null,"started_on"?: string | null,"status": string,"tags"?: (string)[],"title": string,"updated_at"?: string,"user_id": string
+                    "cast_names"?: (string)[],"completed_on"?: string | null,"conclusion_state"?: string,"cover_url"?: string | null,"created_at"?: string,"creator"?: string,"description"?: string,"developer"?: string,"favorite"?: boolean,"genres"?: (string)[],"id": string,"kind": string,"notes"?: string,"platform_played"?: string,"platforms"?: (string)[],"playtime_minutes"?: number | null,"progress_percent"?: number | null,"provider"?: string | null,"provider_id"?: string | null,"publisher"?: string,"rating"?: number | null,"release_date"?: string | null,"review"?: string,"revision"?: number,"runtime_minutes"?: number | null,"started_on"?: string | null,"status": string,"tags"?: (string)[],"title": string,"updated_at"?: string,"user_id": string
                   }
                   Update: {
-                    "cast_names"?: (string)[],"completed_on"?: string | null,"cover_url"?: string | null,"created_at"?: string,"creator"?: string,"description"?: string,"developer"?: string,"favorite"?: boolean,"genres"?: (string)[],"id"?: string,"kind"?: string,"notes"?: string,"platform_played"?: string,"platforms"?: (string)[],"playtime_minutes"?: number | null,"progress_percent"?: number | null,"provider"?: string | null,"provider_id"?: string | null,"publisher"?: string,"rating"?: number | null,"release_date"?: string | null,"review"?: string,"revision"?: number,"runtime_minutes"?: number | null,"started_on"?: string | null,"status"?: string,"tags"?: (string)[],"title"?: string,"updated_at"?: string,"user_id"?: string
+                    "cast_names"?: (string)[],"completed_on"?: string | null,"conclusion_state"?: string,"cover_url"?: string | null,"created_at"?: string,"creator"?: string,"description"?: string,"developer"?: string,"favorite"?: boolean,"genres"?: (string)[],"id"?: string,"kind"?: string,"notes"?: string,"platform_played"?: string,"platforms"?: (string)[],"playtime_minutes"?: number | null,"progress_percent"?: number | null,"provider"?: string | null,"provider_id"?: string | null,"publisher"?: string,"rating"?: number | null,"release_date"?: string | null,"review"?: string,"revision"?: number,"runtime_minutes"?: number | null,"started_on"?: string | null,"status"?: string,"tags"?: (string)[],"title"?: string,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
 
                   ]
                 },"collection_series": {
                   Row: {
-                    "cover_url": string | null,"created_at": string,"description": string,"id": string,"kind": string,"revision": number,"scope": string,"title": string,"updated_at": string,"user_id": string
+                    "conclusion_state": string,"cover_url": string | null,"created_at": string,"description": string,"id": string,"kind": string,"revision": number,"scope": string,"title": string,"updated_at": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "cover_url"?: string | null,"created_at"?: string,"description"?: string,"id": string,"kind": string,"revision"?: number,"scope"?: string,"title": string,"updated_at"?: string,"user_id": string
+                    "conclusion_state"?: string,"cover_url"?: string | null,"created_at"?: string,"description"?: string,"id": string,"kind": string,"revision"?: number,"scope"?: string,"title": string,"updated_at"?: string,"user_id": string
                   }
                   Update: {
-                    "cover_url"?: string | null,"created_at"?: string,"description"?: string,"id"?: string,"kind"?: string,"revision"?: number,"scope"?: string,"title"?: string,"updated_at"?: string,"user_id"?: string
+                    "conclusion_state"?: string,"cover_url"?: string | null,"created_at"?: string,"description"?: string,"id"?: string,"kind"?: string,"revision"?: number,"scope"?: string,"title"?: string,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
 
@@ -407,6 +407,26 @@ isOneToOne: false
                   Relationships: [
                     {
       foreignKeyName: "collection_tv_episodes_user_id_show_id_fkey"
+      columns: ["user_id","show_id"]
+isOneToOne: false
+      referencedRelation: "collection_media_items"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+                },"collection_tv_seasons": {
+                  Row: {
+                    "created_at": string,"id": string,"release_state": string,"revision": number,"season_number": number,"show_id": string,"total_episodes": number | null,"updated_at": string,"user_id": string,"watched": boolean,"watched_episodes": number
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"id": string,"release_state"?: string,"revision"?: number,"season_number": number,"show_id": string,"total_episodes"?: number | null,"updated_at"?: string,"user_id": string,"watched"?: boolean,"watched_episodes"?: number
+                  }
+                  Update: {
+                    "created_at"?: string,"id"?: string,"release_state"?: string,"revision"?: number,"season_number"?: number,"show_id"?: string,"total_episodes"?: number | null,"updated_at"?: string,"user_id"?: string,"watched"?: boolean,"watched_episodes"?: number
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "collection_tv_seasons_user_id_show_id_fkey"
       columns: ["user_id","show_id"]
 isOneToOne: false
       referencedRelation: "collection_media_items"
