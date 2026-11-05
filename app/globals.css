@@ -553,3 +553,13 @@ input[type="search"] { padding:var(--space-2) var(--space-3); line-height:1.45; 
  .muse-rituals-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-2)}
  .muse-rituals-actions>button{min-height:40px;padding-inline:8px;font-size:.82rem}
 }
+
+/* Wellness 1.0: optional minutes on a completed activity and a category per movement type. */
+.muse-movement-completion { flex-wrap: wrap; align-items: center; }
+.muse-movement-duration { display: inline-flex; align-items: center; gap: 4px; margin-inline-start: auto; font-size: .8rem; color: var(--text-muted); }
+.muse-movement-duration input { width: 4.5rem; min-height: 36px; padding: 4px 8px; }
+/* Native selects in Muse forms share the control look of the text inputs beside them. */
+:is(.muse-ritual-form,.muse-goal-form,.muse-insights-customize) select,.managed-type-category { min-height: var(--touch-target); width: 100%; padding: var(--space-2) var(--space-3); color: var(--foreground); background: var(--surface-control); border: 1px solid var(--glass-border); border-radius: var(--control-radius); }
+.managed-type-category { width: auto; min-height: 32px; padding: 2px 8px; }
+:is(.muse-ritual-form,.muse-goal-form,.muse-insights-customize) select:focus-visible { outline: 2px solid var(--focus-ring, var(--selected-border)); outline-offset: 2px; }
+.muse-ritual-tracking { display: grid; gap: var(--space-3); }

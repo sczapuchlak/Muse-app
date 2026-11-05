@@ -23,6 +23,7 @@ import {NotesProvider} from "./notes/NotesStore";
 import { PlannerProvider } from "./PlannerStore";
 import { MuseSessionProvider } from "./MuseSession";
 import { RitualProvider } from "./rituals/RitualStore";
+import { ConnectedRitualsProvider } from "./rituals/ConnectedRituals";
 import { MoneyProvider } from "./money/MoneyStore";
 import "./AppShell.css";
 import {LogoutButton} from "./auth/LogoutButton";
@@ -47,7 +48,7 @@ function AppShellContent({ children, profile:initialProfile }: { children: React
   const moreItems = navItems(mobileMoreIds), moreActive = moreItems.some((item) => isActiveItem(path, item));
   return (
     <MuseSessionProvider initialDate={todayInTimeZone(profile.timeZone)}><DailyDataProvider profile={profile}><DailyDateSync/>
-      <AstrologyDataProvider key={profile.id} userId={profile.id}><WhimsyDataProvider userId={profile.id} timeZone={profile.timeZone}><CollectionsDataProvider userId={profile.id}><ConstellationsProvider profile={profile}><NotesProvider profile={profile}><PlannerProvider profile={profile}><WellnessProvider key={profile.id} userId={profile.id}><NourishProvider><MoneyProvider key={profile.id} userId={profile.id}><RitualProvider key={profile.id} userId={profile.id}><div className="muse-app-shell" data-rail={collapsed ? "collapsed" : "expanded"} data-module={path.split("/")[1]||"daily"}>
+      <AstrologyDataProvider key={profile.id} userId={profile.id}><WhimsyDataProvider userId={profile.id} timeZone={profile.timeZone}><CollectionsDataProvider userId={profile.id}><ConstellationsProvider profile={profile}><NotesProvider profile={profile}><PlannerProvider profile={profile}><WellnessProvider key={profile.id} userId={profile.id}><NourishProvider><MoneyProvider key={profile.id} userId={profile.id}><RitualProvider key={profile.id} userId={profile.id}><ConnectedRitualsProvider timeZone={profile.timeZone}><div className="muse-app-shell" data-rail={collapsed ? "collapsed" : "expanded"} data-module={path.split("/")[1]||"daily"}>
         <MuseMagicBridge/><MuseAtmosphere/>
         <a className="muse-skip-link" href="#muse-main-content">Skip to content</a>
         <aside className="muse-rail" aria-label="Muse app navigation">
@@ -85,7 +86,7 @@ function AppShellContent({ children, profile:initialProfile }: { children: React
         <GlassPopover id="muse-more-navigation" label="More from Muse" open={moreOpen} anchorRef={moreRef} onClose={() => setMoreOpen(false)} width={340} align="end">
           <div className="muse-more-destinations">{[...desktopGroups, "Tools" as const].map((group) => { const items = moreItems.filter((item) => item.group === group); return items.length ? <div className="muse-more-group" key={group} role="group" aria-label={group === "Tools" ? "Account" : group}>{group !== "Tools" && <p className="muse-nav-group-label">{group}</p>}{items.map((item) => <NavDestination key={item.id} item={item} path={path} onNavigate={() => setMoreOpen(false)} />)}</div> : null; })}<LogoutButton/></div>
         </GlassPopover>
-      </div></RitualProvider></MoneyProvider></NourishProvider></WellnessProvider></PlannerProvider></NotesProvider></ConstellationsProvider></CollectionsDataProvider></WhimsyDataProvider></AstrologyDataProvider>
+      </div></ConnectedRitualsProvider></RitualProvider></MoneyProvider></NourishProvider></WellnessProvider></PlannerProvider></NotesProvider></ConstellationsProvider></CollectionsDataProvider></WhimsyDataProvider></AstrologyDataProvider>
     </DailyDataProvider></MuseSessionProvider>
   );
 }

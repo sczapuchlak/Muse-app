@@ -602,3 +602,37 @@ Stephanie approved importing the HeartYearning Dream Symbols Dataset with attrib
 - Planner keeps Filters and Task List in one compact toolbar row on mobile.
 - Dream Diary and Tarot journal filters fold behind Filters on mobile; active-filter counts include type and non-default sort.
 - Cosmic detail dialogs (placements, aspects, library entries) name the place in the dialog title (“Your birth chart”, “Astrology Library”) so the hero heading is never repeated, and the summary appears once.
+
+## Wellness goals and Connected Rituals (#30) — approved November 2026
+
+- **Track once, reflect everywhere.**
+  - A workout, water log, reading session, finished book or completed task has one owner.
+  - Connected Rituals, goals, Daily Edit and Insights derive from it and never copy it.
+  - Derived Ritual values are read-only; change the source record instead.
+- **History is preserved:**
+  - Goal changes apply from the current period.
+  - Pausing or retiring is a dated state, never a failure or a deletion.
+  - Ending or changing a Ritual connection stores exactly what was shown.
+  - Hydration days keep the goal that applied that day.
+- **Unknown is not missed.**
+  - No record means unknown.
+  - A recorded zero is real.
+  - A missing duration or nutrient makes the measurement incomplete, never zero.
+  - Copy is non-punitive: "Below target", not "Failed".
+- **Supported scope only.** Steps and sleep are not tracked, and external health connections need separate approval.
+
+## Unified Insights (#32) — approved November 2026
+
+- **Macro figures:**
+  - Each stays in its own unit, links to its owner and explains how it is counted.
+  - Nothing is combined into a score.
+  - A module without records is omitted, not shown as zero.
+- **Cross-module comparisons:**
+  - They are descriptive only, on shared local dates, with sample sizes.
+  - They are suppressed below five days per side.
+  - They never imply causation.
+  - They use completed records, not intentions.
+- **Personalization:**
+  - Overview always shows; other sections can be hidden without affecting data.
+  - The Daily Edit goals glance appears only with an active goal and can be turned off in Customize Insights.
+- **Recaps:** factual aggregates exist; any presentation needs separate approval.

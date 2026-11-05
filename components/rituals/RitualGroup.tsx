@@ -7,10 +7,12 @@ import { RitualWeekCell } from "./RitualWeekCell";
 import {MuseMilestone} from "../MuseMilestone";
 import {RitualLifecycle} from "./RitualLifecycle";
 import { useRituals } from "./RitualStore";
+import { useRitualView } from "./ConnectedRituals";
 
 type Props = { group: RitualGroupDefinition; week: string[]; today: string; selectedDate: string; archived?:boolean; onEdit: (ritual: RitualDefinition, anchor: HTMLElement) => void; onEditEntry: (ritual: RitualDefinition, date: string, anchor: HTMLElement, onComplete: (value: number | null) => void) => void };
 export function RitualGroup({ group, week, today, selectedDate, archived=false,onEdit, onEditEntry }: Props) {
-  const { state, dispatch } = useRituals();
+  const { dispatch } = useRituals();
+  const { state } = useRitualView();
   const rituals = state.rituals.filter((ritual) => ritual.groupId === group.id && (archived?ritual.status==='archived':ritual.status!=='archived'));
   const scheduled=rituals.filter(ritual=>ritual.type!=="weekly-target"&&ritualOpportunity(state,ritual,selectedDate));
   const groupComplete=scheduled.length>0&&scheduled.every(ritual=>ritualCell(state,ritual,selectedDate,today).status==="complete");

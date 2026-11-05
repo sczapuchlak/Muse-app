@@ -1,3 +1,4 @@
+import {validConnection,type RitualConnection} from './ritual-connection-rules';
 import {validAccent,validGradient,type AccentColor,type CustomGradient} from "./appearance-values";
 import { shiftDate, validDate, weekDates } from "./dates";
 import type { MuseIconName } from "@/components/MuseIcon";
@@ -12,9 +13,11 @@ export type RitualDefinition = {
   id: string; name: string; groupId: string; type: RitualType; goal: number; unit: string;
   status?:"active"|"paused"|"archived"; inactivePeriods?:{start:string;end:string|null;kind:"paused"|"archived"}[];
   recurrence: RitualRecurrence; startDate: string; createdAt: string;
+  /** Present when values derive from another module's records; null/absent means manual check-offs. */
+  connection?: RitualConnection | null;
 };
-export type RitualEntry = { id: string; ritualId: string; date: string; value: number; outcome?: "missed"; updatedAt: string };
-export type RitualState = { groups: RitualGroupDefinition[]; rituals: RitualDefinition[]; entries: RitualEntry[]; celebratedMilestones: string[] };
+export type RitualEntry = { id: string; ritualId: string; date: string; value: number; outcome?: "missed"; updatedAt: string; /** Display-only value derived from a connected tracker; never saved. */ derived?: true };
+export type RitualState = { groups: RitualGroupDefinition[]; rituals: RitualDefinition[]; entries: RitualEntry[]; celebratedMilestones: string[]; /** True once the server stores connections. */ connectionsEnabled?: boolean };
 export type RitualAction =
   | {type:"ritual/lifecycle";id:string;operation:"pause"|"resume"|"archive"|"restore"|"delete";today:string}
   | { type: "ritual/save"; ritual: RitualDefinition }
@@ -22,7 +25,8 @@ export type RitualAction =
   | { type: "group/toggle"; id: string }
   | { type: "group/delete"; id: string }
   | { type: "entry/cycle"; ritualId:string;date:string;today:string;now:string }
-  | { type: "entry/set"; ritualId: string; date: string; value: number | null; today: string; now: string };
+  | { type: "entry/set"; ritualId: string; date: string; value: number | null; today: string; now: string }
+  | { type: "ritual/connect"; id: string; connection: RitualConnection | null; materialize: { date: string; value: number }[]; today: string; now: string };
 export const ritualTypeLabels: Record<RitualType, string> = { checkbox: "Checkbox", numeric: "Quantity", duration: "Duration", "weekly-target": "Weekly target" };
 export const weekdayOptions = [{ day: 1, label: "Mon" }, { day: 2, label: "Tue" }, { day: 3, label: "Wed" }, { day: 4, label: "Thu" }, { day: 5, label: "Fri" }, { day: 6, label: "Sat" }, { day: 0, label: "Sun" }];
 function matchesSchedule(ritual:RitualDefinition,date:string){
@@ -126,6 +130,18 @@ export function ritualReducer(state: RitualState, action: RitualAction): RitualS
       if(status!=='active')periods.push({start:action.today,end:null,kind:status});
       return {...state,rituals:state.rituals.map(r=>r.id===action.id?{...r,status,inactivePeriods:periods}:r)};
     }
+    case "ritual/connect": {
+      const ritual = state.rituals.find((entry) => entry.id === action.id);
+      if (!state.connectionsEnabled || !ritual || !validDate(action.today) || (action.connection && !validConnection(ritual, action.connection))) return state;
+      // Store exactly the values that were shown while connected, so ending or changing a connection keeps history.
+      let entries = state.entries;
+      for (const item of action.materialize) {
+        if (!validDate(item.date) || item.date > action.today || !isScheduled(ritual, item.date) || !(item.value > 0 && item.value <= 1000000)) continue;
+        if ((ritual.type === "checkbox" && item.value !== 1) || (ritual.type === "weekly-target" && !Number.isInteger(item.value))) continue;
+        entries = [...entries.filter((entry) => entry.ritualId !== ritual.id || entry.date !== item.date), { id: `${ritual.id}/${item.date}`, ritualId: ritual.id, date: item.date, value: item.value, updatedAt: action.now }];
+      }
+      return { ...state, entries, rituals: state.rituals.map((entry) => entry.id === ritual.id ? { ...entry, connection: action.connection } : entry) };
+    }
     case "entry/cycle": {const current=entryFor(state,action.ritualId,action.date);return ritualReducer(state,{...action,type:"entry/set",value:current?.value===1?0:current?.value===0?null:1});}
     case "ritual/save": {
       const ritual = action.ritual;
@@ -135,7 +151,9 @@ export function ritualReducer(state: RitualState, action: RitualAction): RitualS
       // Protect the meaning of history until effective-dated schedule/goal changes exist.
       const locked = previous && state.entries.some((entry) => entry.ritualId === ritual.id);
       const lifecycle=previous?{...(previous.status?{status:previous.status}:{}),...(previous.inactivePeriods?{inactivePeriods:previous.inactivePeriods}:{})}:{};
-      const next = locked ? { ...previous, name: ritual.name.trim(), groupId: ritual.groupId } : { ...ritual,...lifecycle, name: ritual.name.trim(), goal: ritual.type === "checkbox" ? 1 : ritual.goal };
+      const connection = previous ? previous.connection : ritual.connection && validConnection(ritual, ritual.connection) ? ritual.connection : null;
+      const unlocked = { ...ritual,...lifecycle, name: ritual.name.trim(), goal: ritual.type === "checkbox" ? 1 : ritual.goal };
+      const next = locked ? { ...previous, name: ritual.name.trim(), groupId: ritual.groupId } : { ...unlocked, connection: connection && validConnection(unlocked, connection) ? connection : null };
       return { ...state, rituals: previous ? state.rituals.map((entry) => entry.id === ritual.id ? next : entry) : [...state.rituals, next] };
     }
     case "group/save": return !action.group.name.trim() || !validAccent(action.group.accent) || (action.group.gradient && typeof action.group.gradient !== "string" && !validGradient(action.group.gradient)) ? state : { ...state, groups: state.groups.some((group) => group.id === action.group.id) ? state.groups.map((group) => group.id === action.group.id ? { ...action.group, name: action.group.name.trim() } : group) : [...state.groups, { ...action.group, name: action.group.name.trim() }] };
@@ -144,6 +162,7 @@ export function ritualReducer(state: RitualState, action: RitualAction): RitualS
     case "entry/set": {
       const ritual = state.rituals.find((entry) => entry.id === action.ritualId);
       if (!ritual || !validDate(action.date) || !validDate(action.today) || action.date > action.today || !ritualOpportunity(state,ritual,action.date)) return state;
+      if (ritual.connection && action.date >= ritual.connection.since) return state; // Connected values are read-only; edit the source record.
       if (action.value !== null && (!Number.isFinite(action.value) || action.value < 0 || (ritual.type === "checkbox" && ![0, 1].includes(action.value)) || (ritual.type === "weekly-target" && !Number.isInteger(action.value)))) return state;
       const rest = state.entries.filter((entry) => entry.ritualId !== ritual.id || entry.date !== action.date);
       const next = { ...state, entries: action.value === null ? rest : [...rest, { id: `${ritual.id}/${action.date}`, ritualId: ritual.id, date: action.date, value: action.value, ...(action.value === 0 ? { outcome: "missed" as const } : {}), updatedAt: action.now }] };

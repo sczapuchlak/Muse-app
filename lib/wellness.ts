@@ -1,8 +1,13 @@
 import {nourishReducer,defaultGrocerySections,type NourishAction,type NourishState} from './nourish';
 import type {DailyMealAssignment,DailyMovement,MovementType} from './models';
 import type {DailyWater,WaterSettings} from './water';
-export type MovementRecord={id:string;date:string;typeId:string;timeZone?:string;createdAt?:string};
-export type WellnessState={assignments:DailyMealAssignment[];savedMeals:NourishState['savedMeals'];water:DailyWater[];waterSettings:WaterSettings|null;types:MovementType[];quickIds:string[];recentIds:string[];movement:DailyMovement[];activities:MovementRecord[];groceryItems:NourishState['groceryItems'];grocerySections:NourishState['grocerySections']};
+import type {WellnessGoal} from './wellness-goals';
+import type {MovementCategory} from './progress/movement';
+/** One completed activity per type and date. Duration is optional; unknown stays unknown, never zero. */
+export type MovementRecord={id:string;date:string;typeId:string;timeZone?:string;createdAt?:string;durationMinutes?:number|null};
+export type WellnessState={assignments:DailyMealAssignment[];savedMeals:NourishState['savedMeals'];water:DailyWater[];waterSettings:WaterSettings|null;types:MovementType[];quickIds:string[];recentIds:string[];movement:DailyMovement[];activities:MovementRecord[];groceryItems:NourishState['groceryItems'];grocerySections:NourishState['grocerySections'];
+ /** Versioned goals. Undefined until the server supports goals, so the UI never offers what cannot be saved. */
+ goals?:WellnessGoal[]};
 export const emptyWellness=():WellnessState=>({assignments:[],savedMeals:[],water:[],waterSettings:null,types:[],quickIds:[],recentIds:[],movement:[],activities:[],groceryItems:[],grocerySections:defaultGrocerySections.map(section=>({...section}))});
 export type WellnessAction=
  |{kind:'meal';action:NourishAction}
@@ -12,7 +17,10 @@ export type WellnessAction=
  |{kind:'movement';day?:DailyMovement;types:MovementType[];quickIds:string[];recentIds:string[]}
  |{kind:'movement/complete';date:string;typeId:string;complete:boolean;id:string}
  |{kind:'activity/save';record:MovementRecord}
- |{kind:'activity/remove';id:string};
+ |{kind:'activity/remove';id:string}
+ |{kind:'activity/duration';id:string;durationMinutes:number|null}
+ |{kind:'type/category';id:string;category:MovementCategory}
+ |{kind:'goal/save';goal:WellnessGoal};
 export function wellnessReducer(state:WellnessState,action:WellnessAction):WellnessState{
  switch(action.kind){
  case 'meal':{const next=nourishReducer(state,action.action);return {...state,assignments:next.assignments,savedMeals:next.savedMeals,groceryItems:next.groceryItems,grocerySections:next.grocerySections};}
@@ -23,5 +31,8 @@ export function wellnessReducer(state:WellnessState,action:WellnessAction):Welln
  case 'movement/complete':{const exists=state.activities.some(r=>r.date===action.date&&r.typeId===action.typeId);if(action.complete)return exists?state:{...state,activities:[...state.activities,{id:action.id,date:action.date,typeId:action.typeId}]};return {...state,activities:state.activities.filter(r=>r.date!==action.date||r.typeId!==action.typeId)};}
  case 'activity/save':return {...state,activities:state.activities.some(r=>r.id===action.record.id)?state.activities.map(r=>r.id===action.record.id?action.record:r):[...state.activities,action.record]};
  case 'activity/remove':return {...state,activities:state.activities.filter(r=>r.id!==action.id)};
+ case 'activity/duration':{const value=action.durationMinutes;if(value!==null&&!(Number.isInteger(value)&&value>=1&&value<=1440))return state;return {...state,activities:state.activities.map(r=>r.id===action.id?{...r,durationMinutes:value}:r)};}
+ case 'type/category':return {...state,types:state.types.map(t=>t.id===action.id?{...t,category:action.category}:t)};
+ case 'goal/save':{if(!state.goals)return state;const goals=state.goals.some(g=>g.id===action.goal.id)?state.goals.map(g=>g.id===action.goal.id?action.goal:g):[...state.goals,action.goal];return {...state,goals};}
  }
 }
