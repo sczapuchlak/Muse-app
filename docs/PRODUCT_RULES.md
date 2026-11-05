@@ -440,7 +440,7 @@ Approved Disco-only direction: near-black/neutral charcoal foundations with conc
 
 ## Final Daily Edit / birthday-light repair
 
-Daily Edit's independent left track is Forecast/Priorities/Movement/Water/Meals; right is Little Rituals/Plan/Mood/Day Pulse/Day in Three. Reflection must not sit after the shared tallest-column boundary. Preserve natural card sizes, one grid-gap token, existing owner captures and no duplicated records. Mobile orders Forecast, Priorities, Rituals, Plan, Movement, Water, Meals, Mood, Pulse, Day in Three. The dedicated Mood page is unchanged.
+Daily Edit's independent left track is Forecast/Priorities/Movement/Water/Meals; right is Little Rituals/Plan/Mood/Day Pulse/Day in Three. Reflection must not sit after the shared tallest-column boundary. Preserve natural card sizes, one grid-gap token, existing owner captures and no duplicated records. Mobile order (approved November 2026, superseding the earlier mobile order): Horoscope, Book, Plan, Priorities, Rituals, Water, Movement, Meals, Mood, Day Pulse, Reflection, Day in Three. Dreams and fortunes are not Daily Edit cards today; their placement is future/exploratory. The dedicated Mood page is unchanged.
 
 Only ISSYA BDAY! light receives stronger pearl surface separation and neon frosting accents. ISSYA BDAY XXX! dark, Disco and other theme tokens are protected. See [DAILY_EDIT_BIRTHDAY_REPAIR](DAILY_EDIT_BIRTHDAY_REPAIR.md) for validation and existing protected-theme test limitations.
 
@@ -506,7 +506,7 @@ CosmyDay is the approved no-cost source for the three overview horoscope periods
 
 ## Sidebar navigation and Collections placement — approved
 
-The desktop sidebar has one viewport-bounded vertical scroll region containing the brand, Everyday (Daily Edit, Planner, Rituals, Wellness, Insights), Life (Money, Mindspace, Collections), Whimsy (Astrology, Tarot, Dreams, Fortune & Fun), then the Themes, Settings and Sign Out utilities. There is no Reflect group. Each sidebar label is the page destination: Astrology opens the Cosmic Observatory on Horoscopes, Tarot opens Tarot Sanctuary, Dreams opens Dreamscapes, and Fortune & Fun opens Weekly Side Quests by default with Fortunes & Nonsense as its second view. Weekly Side Quests is not a separate sidebar destination, and Whimsy pages do not repeat a cross-experience navigation row. On tall screens the utilities rest toward the bottom; on short screens every control scrolls with the rail. The main page scroll remains independent. Expanded utilities are labeled rows; the collapsed rail shows icons with accessible labels and native tooltips. The mobile bottom navigation keeps Today/Planner/Rituals/More; More lists the remaining destinations under the same group headings.
+The desktop sidebar has one viewport-bounded vertical scroll region containing the brand, Everyday (Daily Edit, Planner, Rituals, Wellness, Insights), Life (Money, Mindspace, Collections), Whimsy (Astrology, Tarot, Dreams, Fortune & Fun), then the Themes, Settings and Sign Out utilities. There is no Reflect group. Each sidebar label is the page destination: Astrology opens the Cosmic Observatory on Horoscopes, Tarot opens Tarot Sanctuary, Dreams opens Dreamscapes, and Fortune & Fun opens Weekly Side Quests by default, with one tab row for Weekly Side Quests, Fortune Cookie, The Oracle, Tiny Prophecies, Curiosities and Your Collection (approved November 2026; the earlier Side Quests / Fortunes & Nonsense switcher and nested fortune tabs are retired, and existing links still resolve). Weekly Side Quests is not a separate sidebar destination, and Whimsy pages do not repeat a cross-experience navigation row. On tall screens the utilities rest toward the bottom; on short screens every control scrolls with the rail. The main page scroll remains independent. Expanded utilities are labeled rows; the collapsed rail shows icons with accessible labels and native tooltips. The mobile bottom navigation keeps Today/Planner/Rituals/More; More lists the remaining destinations under the same group headings.
 
 Collections is the approved future top-level Life destination between Mindspace and Whimsy. Its planned sections are Overview, Books, Movies, TV Shows, Games and My Collections; series details belong within the relevant media experiences and overview. The current Bookshelf remains in Whimsy until Collections has a functional destination and a separately reviewed move preserving all book records and deep links. Do not expose a placeholder Collections route as working navigation.
 
@@ -591,3 +591,14 @@ Reading Atlas has four sections, chosen with a compact segmented view selector (
 
 Stephanie approved importing the HeartYearning Dream Symbols Dataset with attribution (its stated terms: research and educational use; commercial use requires attribution with a link to tool.heartyearning.com). If the owner asks, it is removed. Muse’s own 36 entries stay as written and take precedence; an imported interpretation is always shown with its source and link, presented as a possibility rather than a fixed meaning. The Encyclopedia footer and entry pages credit HeartYearning. Settings → Open Source & Credits lists every third-party content source and software library with its license and required attribution; adding a library or content source means adding it there.
 
+
+## Mobile polish (issue #5) — approved November 2026
+
+- Mobile More lists Appearance (before Settings) once, under a single popover title; no second label repeats it.
+- Dialogs size to their content by default. Editors and pickers that scroll inside (book and media editors, feeling picker, dream picker) opt into the `tall` size. Mobile dialogs stay centered and within the safe area.
+- Week toolbars (Rituals, Nourish) use one joined ‹ This week › control without date-range text; the board itself shows the dates.
+- Money shows the reporting/paycheck period as a readable range (for example “Nov 1 – 30, 2026”), never raw ISO dates. Period and selected date remain separate.
+- Collections remembers the last chosen sort on the account with the other view preferences. On mobile, Status and Sort sit behind Filters.
+- Planner keeps Filters and Task List in one compact toolbar row on mobile.
+- Dream Diary and Tarot journal filters fold behind Filters on mobile; active-filter counts include type and non-default sort.
+- Cosmic detail dialogs (placements, aspects, library entries) name the place in the dialog title (“Your birth chart”, “Astrology Library”) so the hero heading is never repeated, and the summary appears once.

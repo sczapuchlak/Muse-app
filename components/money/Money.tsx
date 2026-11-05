@@ -22,6 +22,8 @@ import { useMoney } from "./MoneyStore";
 import "./Money.css";
 
 const sections=[{id:"overview",label:"Overview"},{id:"paychecks",label:"Paychecks"},{id:"spending",label:"Spending"},{id:"recurring",label:"Recurring"},{id:"cards",label:"Cards"},{id:"categories",label:"Categories"}] as const;
+/** A reporting period in words: “Nov 1 – 30, 2026”, “Nov 15 – Dec 14, 2026” or “Dec 15, 2026 – Jan 14, 2027”. */
+export function periodRangeLabel(start:string,end:string){const f=(d:string,o:Intl.DateTimeFormatOptions)=>new Intl.DateTimeFormat("en-US",{...o,timeZone:"UTC"}).format(new Date(`${d}T12:00:00Z`));if(start.slice(0,4)!==end.slice(0,4))return `${f(start,{month:"short",day:"numeric",year:"numeric"})} – ${f(end,{month:"short",day:"numeric",year:"numeric"})}`;if(start.slice(0,7)===end.slice(0,7))return `${f(start,{month:"short",day:"numeric"})} – ${Number(end.slice(8))}, ${end.slice(0,4)}`;return `${f(start,{month:"short",day:"numeric"})} – ${f(end,{month:"short",day:"numeric"})}, ${end.slice(0,4)}`;}
 export function Money() {const {profile}=useDailyData();
   const [selectedDate,setSelectedDate]=useMuseDate(dailyEditSample.date.iso);
   const {state,store}=useMoney(),query=useSearchParams(),router=useRouter(),today=useMuseToday(profile.timeZone),date=today||selectedDate;
@@ -41,7 +43,7 @@ export function Money() {const {profile}=useDailyData();
       {periodMode==="paycheck"&&<MuseChoiceMenu label="Reporting paycheck" valueLabel={paycheck?.name??"No paycheck"} selectedIds={paycheck?[paycheck.id]:[]} options={state.paychecks.map((item)=>({id:item.id,label:`${item.name} · ${item.periodStart}`}))} onSelect={setPaycheckId}/>}
       {periodMode==="month"&&<MoneyField label="Calendar month"><input className="date-input" type="month" value={month} onChange={(e)=>{if(/^\d{4}-\d{2}$/.test(e.target.value)&&validDate(`${e.target.value}-01`))setMonth(e.target.value);}}/></MoneyField>}
       {periodMode==="custom"&&<><MoneyField label="From"><input className="date-input" type="date" value={start} onChange={(e)=>setStart(e.target.value)}/></MoneyField><MoneyField label="Through"><input className="date-input" type="date" value={end} onChange={(e)=>setEnd(e.target.value)}/></MoneyField></>}
-      <p className="small-label">{period.start} – {period.end}</p>{periodMode==="custom"&&!customValid&&<p role="alert" className="field-error">Choose an end on or after the start. Showing the selected paycheck until then.</p>}
+      <p className="small-label muse-money-period-label">{periodMode==="paycheck"&&!paycheck?<>No paycheck covers this date yet · showing {periodRangeLabel(period.start,period.end)}</>:<>{periodRangeLabel(period.start,period.end)}{date>=period.start&&date<=period.end?` · includes ${new Intl.DateTimeFormat("en-US",{weekday:"short",month:"short",day:"numeric",timeZone:"UTC"}).format(new Date(`${date}T12:00:00Z`))}`:""}</>}</p>{periodMode==="custom"&&!customValid&&<p role="alert" className="field-error">Choose an end on or after the start. Showing the selected paycheck until then.</p>}
     </section>}
     {view==="overview"&&<MoneyOverview paycheck={paycheck} period={period} today={date} onOpen={setEditor} onSpending={()=>changeView("spending")} onRecurring={()=>changeView("recurring")}/>}
     {view==="paychecks"&&<MoneyPaychecks today={date} paycheck={paycheck} onSelect={setPaycheckId} onOpen={setEditor}/>}

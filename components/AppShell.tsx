@@ -83,7 +83,6 @@ function AppShellContent({ children, profile:initialProfile }: { children: React
           </button>
         </nav>
         <GlassPopover id="muse-more-navigation" label="More from Muse" open={moreOpen} anchorRef={moreRef} onClose={() => setMoreOpen(false)} width={340} align="end">
-          <p className="editor-label">More from Muse</p>
           <div className="muse-more-destinations">{[...desktopGroups, "Tools" as const].map((group) => { const items = moreItems.filter((item) => item.group === group); return items.length ? <div className="muse-more-group" key={group} role="group" aria-label={group === "Tools" ? "Account" : group}>{group !== "Tools" && <p className="muse-nav-group-label">{group}</p>}{items.map((item) => <NavDestination key={item.id} item={item} path={path} onNavigate={() => setMoreOpen(false)} />)}</div> : null; })}<LogoutButton/></div>
         </GlassPopover>
       </div></RitualProvider></MoneyProvider></NourishProvider></WellnessProvider></PlannerProvider></NotesProvider></ConstellationsProvider></CollectionsDataProvider></WhimsyDataProvider></AstrologyDataProvider>

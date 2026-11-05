@@ -54,7 +54,7 @@ export function MoodCard({ emotions }: MoodCardProps) {
             <button ref={addRef} type="button" className="choice-button add-control muse-feedback-anchor" aria-haspopup="dialog" aria-expanded={open} aria-controls="feeling-picker"
               onClick={(event) => {setPickerAnchor(event.currentTarget);setOpen((value) => !value);}}><MuseIcon name="plus" size={14} />Add feeling{spark}</button>
           </div>
-          {open&&<MuseModal id="feeling-picker" label="Find a feeling" title="Find a feeling" returnFocus={pickerAnchor} onClose={closePicker}>
+          {open&&<MuseModal size="tall" id="feeling-picker" label="Find a feeling" title="Find a feeling" returnFocus={pickerAnchor} onClose={closePicker}>
             <EmotionPicker emotions={emotions} selectedIds={checkIn.emotionIds} onToggle={toggleEmotion} onClose={closePicker} />
           </MuseModal>}
         </div>

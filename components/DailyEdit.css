@@ -5,14 +5,18 @@
 @container muse-content (max-width:880px) {
  .daily-working-grid { grid-template-columns:minmax(0,1fr); }
  .daily-working-left,.daily-working-right { display:contents; }
+ /* Approved mobile order: Horoscope, Book, Plan, Priorities, Rituals, Water, Movement, Meals, Mood, Day Pulse, Reflection, Day in Three. */
+ .daily-working-grid :is(.daily-working-left,.daily-working-right) > * { order:13; }
  .daily-working-grid .muse-cosmic-forecast { order:1; }
- .daily-working-grid .priorities-card { order:2; }
- .daily-working-grid .muse-little-rituals { order:3; }
- .daily-working-grid .schedule-card { order:4; }
- .daily-working-grid .movement-card { order:5; }
+ .daily-working-grid .muse-daily-bookshelf { order:2; }
+ .daily-working-grid .schedule-card { order:3; }
+ .daily-working-grid .priorities-card { order:4; }
+ .daily-working-grid .muse-little-rituals { order:5; }
  .daily-working-grid .water-card { order:6; }
- .daily-working-grid .meals-card { order:7; }
- .daily-working-grid .mood-card { order:8; }
- .daily-working-grid .day-pulse-card { order:9; }
- .daily-working-grid .day-in-three-card { order:10; }
+ .daily-working-grid .movement-card { order:7; }
+ .daily-working-grid .meals-card { order:8; }
+ .daily-working-grid .mood-card { order:9; }
+ .daily-working-grid .day-pulse-card { order:10; }
+ .daily-working-grid .muse-daily-reflection { order:11; }
+ .daily-working-grid .day-in-three-card { order:12; }
 }

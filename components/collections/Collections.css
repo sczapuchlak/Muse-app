@@ -145,3 +145,19 @@
 @media(max-width:760px){.muse-collections-search-add{grid-column:1}.muse-collections-controls>.muse-collections-toolbar-end{justify-self:start}}
 @media(max-width:430px){.muse-collections-search-add{flex-wrap:wrap}.muse-collections-search-add>label{flex-basis:100%}.muse-collections-add-trigger{width:100%}}
 .muse-collections-form-grid>.muse-collections-form-wide{grid-column:1/-1}
+
+/* Phones: Search + Add, then media, then Filters (left) with preferences and Board / Library (right).
+   Status and Sort live inside Filters; the saved sort is remembered. */
+@media(max-width:600px){
+ .muse-collections-controls{display:flex;flex-direction:column;align-items:stretch;gap:10px}
+ .muse-collections-controls>.muse-collections-search-add{order:1}
+ .muse-collections-controls>.muse-collections-chips{order:2;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+ .muse-collections-controls>.muse-collections-chips>button{flex:none}
+ .muse-collections-controls>.muse-collections-toolbar-end{order:3;display:flex;flex-wrap:nowrap;justify-content:space-between;width:100%}
+ .muse-collections-controls>.muse-collections-toolbar-end>.muse-collections-modes{margin-left:auto;display:inline-flex;gap:3px;padding:3px;border:1px solid var(--glass-border);border-radius:999px;background:var(--surface-subtle)}
+ .muse-collections-controls>.muse-collections-toolbar-end>.muse-collections-modes>.muse-button{min-height:36px;border-radius:999px}
+ .muse-collections-controls>.muse-collections-quick-filters{order:4;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ .muse-collections-controls:not([data-advanced=true])>.muse-collections-quick-filters{display:none}
+ .muse-collections-controls>.muse-collections-quick-filters .muse-choice-trigger{width:100%}
+ .muse-collections-controls>*:not(.muse-collections-search-add):not(.muse-collections-chips):not(.muse-collections-toolbar-end):not(.muse-collections-quick-filters){order:5}
+}

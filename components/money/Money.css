@@ -222,3 +222,22 @@
 .muse-money-ledger small,.muse-money-allocation-header { font-size:.76rem; }
 .muse-money-amount { font-variant-numeric:tabular-nums; }
 @container muse-content (max-width:600px) { .muse-recurring-totals > div,.muse-money-dashboard .muse-recurring-totals > div { grid-template-columns:minmax(0,1fr) auto; }.muse-recurring-totals small { grid-column:1/-1; }.muse-paycheck-navigation > .muse-choice-menu { width:100%; } }
+
+/* Period toolbar: period type and paycheck read as one group; the readable range sits right beneath them. */
+.muse-money-period-label{flex-basis:100%;margin:0!important;color:var(--text-muted)}
+@container muse-content (max-width:680px){
+ .muse-money-period{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-2);align-items:end}
+ .muse-money-period>.muse-choice-menu .muse-choice-trigger{min-height:44px;width:100%}
+ .muse-money-period>:is(.muse-money-field,.muse-money-period-label,.field-error){grid-column:1/-1}
+}
+
+/* Recurring controls: Search first, then All / Monthly / Yearly as one segmented control with Filters beside it. */
+.muse-recurring-toolbar .muse-filter-options{display:inline-flex;gap:3px;padding:3px;border:1px solid var(--glass-border);border-radius:999px;background:var(--surface-subtle)}
+.muse-recurring-toolbar .muse-filter-options>.choice-button{min-height:36px;padding:6px 14px;border:1px solid transparent;border-radius:999px;background:transparent}
+.muse-recurring-toolbar .muse-filter-options>.choice-button[aria-pressed=true]{border-color:var(--selected-border);background:var(--selected-background);color:var(--selected-text)}
+@container muse-content (max-width:680px){
+ .muse-recurring-toolbar{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"search search" "freq filters";gap:var(--space-2);align-items:center}
+ .muse-recurring-toolbar>input[type=search]{grid-area:search;width:100%;min-height:44px;box-sizing:border-box}
+ .muse-recurring-toolbar>.muse-filter-options{grid-area:freq;justify-self:start}
+ .muse-recurring-toolbar>.muse-button{grid-area:filters;min-height:40px}
+}
