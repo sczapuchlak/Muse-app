@@ -1,0 +1,33 @@
+/* First-run welcome: the sign-in frame's story + glass layout, with a compact three-step panel. */
+.muse-welcome .muse-welcome-tagline{font:italic clamp(1.15rem,2.2vw,1.45rem)/1.4 var(--font-serif,Georgia,serif);margin:4px 0 0}
+.muse-welcome-glass{display:grid;gap:4px;max-height:calc(100dvh - 48px);overflow-y:auto;overscroll-behavior:contain}
+.muse-welcome-step{display:grid;gap:10px}
+.muse-welcome-glass form.muse-welcome-step{margin:0}
+.muse-welcome-step h2:focus{outline:none}
+.muse-welcome-step input[type=text]{min-height:var(--touch-target);padding:var(--space-2) var(--space-3);color:var(--foreground);background:var(--surface-control);border:1px solid var(--glass-border);border-radius:var(--control-radius);font-size:1rem}
+.muse-welcome-step input[aria-invalid=true]{border-color:var(--accent-pop,var(--selected-border))}
+.muse-welcome-step .editor-actions{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:8px}
+.muse-welcome-error{margin:0;color:var(--foreground);border-left:3px solid var(--accent-pop,var(--accent-secondary));padding:8px 12px;border-radius:0 10px 10px 0;background:color-mix(in srgb,var(--accent-pop,var(--accent-secondary)) 9%,transparent)}
+.muse-welcome-appearance{margin:6px 0 0;padding:0;border:0;min-width:0;display:grid;gap:8px}
+.muse-welcome-appearance .muse-appearance-themes{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:0;gap:8px}
+.muse-welcome-appearance .muse-appearance-theme{padding:10px 12px}
+.muse-welcome-appearance [role=group]{display:flex;flex-wrap:wrap;gap:8px}
+.muse-welcome-progress{display:flex;gap:6px;margin:0 0 6px;padding:0;list-style:none}
+.muse-welcome-progress li{width:22px;height:5px;border-radius:999px;background:color-mix(in srgb,var(--foreground) 16%,transparent)}
+.muse-welcome-progress li[aria-current=step]{background:linear-gradient(90deg,var(--accent-primary),var(--accent-secondary))}
+@media (max-width:600px){
+ .muse-welcome-glass{max-height:none;overflow:visible;padding:22px}
+ /* After the first step, keep the story to the logo and title so the form starts near the top. */
+ .muse-welcome:not([data-step=hello]) .muse-login-story :is(.muse-welcome-tagline,.muse-login-invitation,.muse-star-cluster,[class*=cluster]){display:none}
+ .muse-welcome:not([data-step=hello]){align-content:start;gap:16px}
+ /* Two compact theme columns: a short preview strip with the name, subtitle hidden. */
+ .muse-welcome-appearance .muse-appearance-themes{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .muse-welcome-appearance .muse-appearance-theme{padding:8px;gap:6px}
+ .muse-welcome-appearance .muse-appearance-preview{height:34px}
+ .muse-welcome-appearance .muse-appearance-theme small{display:none}
+ .muse-welcome-appearance .muse-appearance-theme strong{font-size:.78rem}
+}
+/* Same standalone frame as sign-in: no rail, navigation or global bar, and no reserved rail width. */
+.muse-app-shell[data-module="welcome"] :is(.muse-rail,.muse-bottom-navigation,.muse-global-bar){display:none}
+.muse-app-shell[data-module="welcome"] .muse-app-main{margin-left:0;padding:0}
+.muse-app-shell[data-module="welcome"][data-rail]{--muse-rail-width:0px}

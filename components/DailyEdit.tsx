@@ -20,6 +20,8 @@ import {BooksDayviewWidget} from "./whimsy/BooksDayviewWidget";
 import {PlannerPersistenceStatus} from "./PlannerStore";
 import { CosmicForecast } from "./CosmicForecast";
 import { useMuseDate } from "./MuseSession";
+import { Suspense } from "react";
+import { WelcomeOrientation } from "./WelcomeOrientation";
 
 import "./DailyEdit.css";
 import { dailyEditSample } from "@/lib/daily-edit-data";
@@ -36,6 +38,7 @@ export function DailyEdit() {
   return (
     <main className="muse-page">
       <DailyEditHeader date={day.date} greeting={day.greeting} profile={profile} onDateChange={setSelectedDate} />
+      <Suspense fallback={null}><WelcomeOrientation /></Suspense>
       <h1 className="muse-daily-section-title" id="daily-edit">The Daily Edit</h1>
       <div className="daily-working-grid" key={`working/${selectedDate}`}>
         <div className="daily-working-left">

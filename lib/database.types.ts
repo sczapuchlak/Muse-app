@@ -2,7 +2,7 @@
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[]
 
 export type Database = {
-
+  
   "public": {
           Tables: {
             "allocation_groups": {
@@ -17,7 +17,7 @@ export type Database = {
                     "accent"?: string,"captured_time_zone"?: string,"created_at"?: string,"currency"?: string,"id"?: string,"name"?: string,"position"?: number,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"allocations": {
                   Row: {
@@ -81,7 +81,7 @@ isOneToOne: false
                     "created_at"?: string,"date"?: string,"kind"?: string,"reference_id"?: string,"time_zone"?: string,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"astrology_birth_profiles": {
                   Row: {
@@ -95,7 +95,7 @@ isOneToOne: false
                     "created_at"?: string,"id"?: string,"payload"?: NonNullable<Json>,"revision"?: number,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"astrology_journal_entries": {
                   Row: {
@@ -109,7 +109,7 @@ isOneToOne: false
                     "created_at"?: string,"date"?: string,"id"?: string,"reference"?: Json | null,"revision"?: number,"text"?: string,"time_zone"?: string,"title"?: string,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"astrology_natal_charts": {
                   Row: {
@@ -207,7 +207,7 @@ isOneToOne: false
                     "apr"?: number | null,"captured_time_zone"?: string,"created_at"?: string,"currency"?: string,"due_date"?: string | null,"id"?: string,"limit_cents"?: number | null,"minimum_cents"?: number | null,"name"?: string,"note"?: string | null,"opening_as_of"?: string,"opening_balance_cents"?: number,"planned_payment_cents"?: number | null,"position"?: number,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"checkin_emotions": {
                   Row: {
@@ -299,7 +299,7 @@ isOneToOne: false
                     "accent"?: string,"created_at"?: string,"description"?: string,"icon"?: string,"id"?: string,"layout"?: string,"revision"?: number,"title"?: string,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"collection_curated_members": {
                   Row: {
@@ -345,7 +345,7 @@ isOneToOne: false
                     "cast_names"?: (string)[],"completed_on"?: string | null,"conclusion_state"?: string,"cover_url"?: string | null,"created_at"?: string,"creator"?: string,"description"?: string,"developer"?: string,"favorite"?: boolean,"genres"?: (string)[],"id"?: string,"kind"?: string,"notes"?: string,"platform_played"?: string,"platforms"?: (string)[],"playtime_minutes"?: number | null,"progress_percent"?: number | null,"provider"?: string | null,"provider_id"?: string | null,"publisher"?: string,"rating"?: number | null,"release_date"?: string | null,"review"?: string,"revision"?: number,"runtime_minutes"?: number | null,"started_on"?: string | null,"status"?: string,"tags"?: (string)[],"title"?: string,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"collection_series": {
                   Row: {
@@ -359,7 +359,7 @@ isOneToOne: false
                     "conclusion_state"?: string,"cover_url"?: string | null,"created_at"?: string,"description"?: string,"id"?: string,"kind"?: string,"revision"?: number,"scope"?: string,"title"?: string,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"collection_series_members": {
                   Row: {
@@ -445,7 +445,7 @@ isOneToOne: false
                     "created_at"?: string,"id"?: string,"payload"?: NonNullable<Json>,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"constellation_commands": {
                   Row: {
@@ -459,7 +459,7 @@ isOneToOne: false
                     "id"?: string,"request_hash"?: string,"revision"?: number,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"constellation_tags": {
                   Row: {
@@ -473,7 +473,7 @@ isOneToOne: false
                     "color"?: string | null,"id"?: string,"name"?: string,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"constellation_versions": {
                   Row: {
@@ -487,7 +487,7 @@ isOneToOne: false
                     "revision"?: number,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"daily_priorities": {
                   Row: {
@@ -533,7 +533,7 @@ isOneToOne: false
                     "created_at"?: string,"day_in_three"?: (string)[],"energy"?: number | null,"id"?: string,"intention_emoji"?: string | null,"intention_text"?: string | null,"local_date"?: string,"overall_day"?: number | null,"revision"?: number,"stress"?: number | null,"time_zone"?: string,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"emotion_catalog": {
                   Row: {
@@ -547,7 +547,7 @@ isOneToOne: false
                     "definition"?: string | null,"emoji"?: string,"energy"?: never,"id"?: string,"name"?: string,"pleasantness"?: never,"quadrant"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"emotion_favorites": {
                   Row: {
@@ -601,7 +601,7 @@ isOneToOne: false
                     "id"?: string,"name"?: string,"position"?: number,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"hydration_days": {
                   Row: {
@@ -615,7 +615,7 @@ isOneToOne: false
                     "captured_time_zone"?: string,"created_at"?: string,"goal"?: number,"local_date"?: string,"quantity"?: number,"unit"?: string,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"hydration_settings": {
                   Row: {
@@ -629,7 +629,7 @@ isOneToOne: false
                     "goal"?: number,"quick_adds"?: (number)[],"unit"?: string,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"influence_tags": {
                   Row: {
@@ -643,7 +643,7 @@ isOneToOne: false
                     "archived_at"?: string | null,"created_at"?: string,"id"?: string,"label"?: string,"revision"?: number,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"meal_assignments": {
                   Row: {
@@ -677,7 +677,7 @@ isOneToOne: false
                     "accent"?: string,"archived"?: boolean,"captured_time_zone"?: string,"created_at"?: string,"currency"?: string,"icon_id"?: string | null,"id"?: string,"name"?: string,"position"?: number,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"money_commands": {
                   Row: {
@@ -691,7 +691,7 @@ isOneToOne: false
                     "id"?: string,"request_hash"?: string,"revision"?: number,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"money_deleted_ids": {
                   Row: {
@@ -705,7 +705,7 @@ isOneToOne: false
                     "collection"?: string,"deleted_at"?: string,"id"?: string,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"money_subcategories": {
                   Row: {
@@ -739,7 +739,7 @@ isOneToOne: false
                     "archived"?: boolean,"captured_time_zone"?: string,"created_at"?: string,"currency"?: string,"id"?: string,"name"?: string,"position"?: number,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"money_versions": {
                   Row: {
@@ -753,7 +753,7 @@ isOneToOne: false
                     "revision"?: number,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"mood_checkins": {
                   Row: {
@@ -813,7 +813,7 @@ isOneToOne: false
                     "captured_time_zone"?: string,"local_date"?: string,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"movement_preferences": {
                   Row: {
@@ -827,18 +827,18 @@ isOneToOne: false
                     "quick_ids"?: (string)[],"recent_ids"?: (string)[],"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"movement_records": {
                   Row: {
-                    "captured_time_zone": string,"created_at": string,"id": string,"local_date": string,"type_id": string,"updated_at": string,"user_id": string
+                    "captured_time_zone": string,"created_at": string,"duration_minutes": number | null,"id": string,"local_date": string,"type_id": string,"updated_at": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "captured_time_zone": string,"created_at"?: string,"id": string,"local_date": string,"type_id": string,"updated_at"?: string,"user_id": string
+                    "captured_time_zone": string,"created_at"?: string,"duration_minutes"?: number | null,"id": string,"local_date": string,"type_id": string,"updated_at"?: string,"user_id": string
                   }
                   Update: {
-                    "captured_time_zone"?: string,"created_at"?: string,"id"?: string,"local_date"?: string,"type_id"?: string,"updated_at"?: string,"user_id"?: string
+                    "captured_time_zone"?: string,"created_at"?: string,"duration_minutes"?: number | null,"id"?: string,"local_date"?: string,"type_id"?: string,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
                     {
@@ -851,17 +851,17 @@ isOneToOne: false
                   ]
                 },"movement_types": {
                   Row: {
-                    "archived": boolean,"id": string,"label": string,"origin": string,"user_id": string
+                    "archived": boolean,"category": string | null,"id": string,"label": string,"origin": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "archived"?: boolean,"id": string,"label": string,"origin": string,"user_id": string
+                    "archived"?: boolean,"category"?: string | null,"id": string,"label": string,"origin": string,"user_id": string
                   }
                   Update: {
-                    "archived"?: boolean,"id"?: string,"label"?: string,"origin"?: string,"user_id"?: string
+                    "archived"?: boolean,"category"?: string | null,"id"?: string,"label"?: string,"origin"?: string,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"note_tag_links": {
                   Row: {
@@ -921,7 +921,7 @@ isOneToOne: false
                     "accent"?: string | null,"created_at"?: string,"document"?: NonNullable<Json>,"id"?: string,"pinned"?: boolean,"plain_text"?: string,"revision"?: number,"search_vector"?: never,"status"?: string,"title"?: string,"trashed_at"?: string | null,"trashed_from"?: string | null,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"notes_commands": {
                   Row: {
@@ -935,7 +935,7 @@ isOneToOne: false
                     "id"?: string,"request_hash"?: string,"revision"?: number,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"notes_versions": {
                   Row: {
@@ -949,7 +949,7 @@ isOneToOne: false
                     "revision"?: number,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"paycheck_template_allocations": {
                   Row: {
@@ -1013,7 +1013,7 @@ isOneToOne: false
                     "captured_time_zone"?: string,"created_at"?: string,"currency"?: string,"expected_cents"?: number | null,"id"?: string,"name"?: string,"position"?: number,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"paychecks": {
                   Row: {
@@ -1047,7 +1047,7 @@ isOneToOne: false
                     "captured_time_zone"?: string,"created_at"?: string,"currency"?: string,"id"?: string,"name"?: string,"position"?: number,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"planner_commands": {
                   Row: {
@@ -1061,7 +1061,7 @@ isOneToOne: false
                     "id"?: string,"request_hash"?: string,"revision"?: number,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"planner_events": {
                   Row: {
@@ -1075,7 +1075,7 @@ isOneToOne: false
                     "created_at"?: string,"detail"?: string | null,"id"?: string,"local_date"?: string,"local_time"?: string,"revision"?: number,"time_zone"?: string,"title"?: string,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"planner_versions": {
                   Row: {
@@ -1089,7 +1089,7 @@ isOneToOne: false
                     "revision"?: number,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"preference_commands": {
                   Row: {
@@ -1103,7 +1103,7 @@ isOneToOne: false
                     "id"?: string,"request_hash"?: string,"revision"?: number,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"priority_commands": {
                   Row: {
@@ -1117,21 +1117,21 @@ isOneToOne: false
                     "id"?: string,"operation"?: string,"planner_revision"?: number | null,"priority_versions"?: Json | null,"request_hash"?: string,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"profiles": {
                   Row: {
-                    "cosmic_enabled": boolean,"created_at": string,"daily_forecast_category": string,"default_forecast_category": string,"default_forecast_period": string,"first_name": string,"id": string,"revision": number,"time_zone": string,"time_zone_confirmed_at": string | null,"updated_at": string,"zodiac_sign": string | null
+                    "cosmic_enabled": boolean,"created_at": string,"daily_forecast_category": string,"default_forecast_category": string,"default_forecast_period": string,"first_name": string,"id": string,"onboarded_at": string | null,"revision": number,"time_zone": string,"time_zone_confirmed_at": string | null,"updated_at": string,"zodiac_sign": string | null
                   }
                   ComputedFields: never
                   Insert: {
-                    "cosmic_enabled"?: boolean,"created_at"?: string,"daily_forecast_category"?: string,"default_forecast_category"?: string,"default_forecast_period"?: string,"first_name"?: string,"id": string,"revision"?: number,"time_zone"?: string,"time_zone_confirmed_at"?: string | null,"updated_at"?: string,"zodiac_sign"?: string | null
+                    "cosmic_enabled"?: boolean,"created_at"?: string,"daily_forecast_category"?: string,"default_forecast_category"?: string,"default_forecast_period"?: string,"first_name"?: string,"id": string,"onboarded_at"?: string | null,"revision"?: number,"time_zone"?: string,"time_zone_confirmed_at"?: string | null,"updated_at"?: string,"zodiac_sign"?: string | null
                   }
                   Update: {
-                    "cosmic_enabled"?: boolean,"created_at"?: string,"daily_forecast_category"?: string,"default_forecast_category"?: string,"default_forecast_period"?: string,"first_name"?: string,"id"?: string,"revision"?: number,"time_zone"?: string,"time_zone_confirmed_at"?: string | null,"updated_at"?: string,"zodiac_sign"?: string | null
+                    "cosmic_enabled"?: boolean,"created_at"?: string,"daily_forecast_category"?: string,"default_forecast_category"?: string,"default_forecast_period"?: string,"first_name"?: string,"id"?: string,"onboarded_at"?: string | null,"revision"?: number,"time_zone"?: string,"time_zone_confirmed_at"?: string | null,"updated_at"?: string,"zodiac_sign"?: string | null
                   }
                   Relationships: [
-
+                    
                   ]
                 },"recurring_commitments": {
                   Row: {
@@ -1197,7 +1197,7 @@ isOneToOne: false
                     "id"?: string,"request_hash"?: string,"revision"?: number,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"ritual_entries": {
                   Row: {
@@ -1231,7 +1231,7 @@ isOneToOne: false
                     "accent"?: string,"collapsed"?: boolean,"gradient"?: Json | null,"icon_id"?: string,"id"?: string,"name"?: string,"position"?: number,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"ritual_inactive_periods": {
                   Row: {
@@ -1265,7 +1265,7 @@ isOneToOne: false
                     "deleted_at"?: string,"id"?: string,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"ritual_versions_owner": {
                   Row: {
@@ -1279,18 +1279,18 @@ isOneToOne: false
                     "revision"?: number,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"rituals": {
                   Row: {
-                    "captured_time_zone": string,"created_at": string,"goal": number,"group_id": string,"id": string,"lifecycle_status": string,"name": string,"position": number,"recurrence": string,"start_date": string,"tracking_type": string,"unit": string,"updated_at": string,"user_id": string,"weekdays": (number)[]
+                    "captured_time_zone": string,"connection": Json | null,"created_at": string,"goal": number,"group_id": string,"id": string,"lifecycle_status": string,"name": string,"position": number,"recurrence": string,"start_date": string,"tracking_type": string,"unit": string,"updated_at": string,"user_id": string,"weekdays": (number)[]
                   }
                   ComputedFields: never
                   Insert: {
-                    "captured_time_zone": string,"created_at"?: string,"goal": number,"group_id": string,"id": string,"lifecycle_status"?: string,"name": string,"position": number,"recurrence": string,"start_date": string,"tracking_type": string,"unit": string,"updated_at"?: string,"user_id": string,"weekdays": (number)[]
+                    "captured_time_zone": string,"connection"?: Json | null,"created_at"?: string,"goal": number,"group_id": string,"id": string,"lifecycle_status"?: string,"name": string,"position": number,"recurrence": string,"start_date": string,"tracking_type": string,"unit": string,"updated_at"?: string,"user_id": string,"weekdays": (number)[]
                   }
                   Update: {
-                    "captured_time_zone"?: string,"created_at"?: string,"goal"?: number,"group_id"?: string,"id"?: string,"lifecycle_status"?: string,"name"?: string,"position"?: number,"recurrence"?: string,"start_date"?: string,"tracking_type"?: string,"unit"?: string,"updated_at"?: string,"user_id"?: string,"weekdays"?: (number)[]
+                    "captured_time_zone"?: string,"connection"?: Json | null,"created_at"?: string,"goal"?: number,"group_id"?: string,"id"?: string,"lifecycle_status"?: string,"name"?: string,"position"?: number,"recurrence"?: string,"start_date"?: string,"tracking_type"?: string,"unit"?: string,"updated_at"?: string,"user_id"?: string,"weekdays"?: (number)[]
                   }
                   Relationships: [
                     {
@@ -1313,7 +1313,7 @@ isOneToOne: false
                     "created_at"?: string,"id"?: string,"link"?: string | null,"meal_types"?: (string)[],"name"?: string,"note"?: string | null,"nutrition"?: Json | null,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"task_completion_events": {
                   Row: {
@@ -1413,7 +1413,7 @@ isOneToOne: false
                     "accent"?: string,"archived_at"?: string | null,"created_at"?: string,"icon_id"?: string | null,"id"?: string,"name"?: string,"revision"?: number,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"task_time_sessions": {
                   Row: {
@@ -1575,7 +1575,41 @@ isOneToOne: false
                     "id"?: string,"request_hash"?: string,"revision"?: number,"user_id"?: string
                   }
                   Relationships: [
-
+                    
+                  ]
+                },"wellness_goal_versions": {
+                  Row: {
+                    "direction": string,"effective_from": string,"goal_id": string,"recorded_at": string,"status": string,"target": number,"unit": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "direction": string,"effective_from": string,"goal_id": string,"recorded_at"?: string,"status": string,"target": number,"unit": string,"user_id": string
+                  }
+                  Update: {
+                    "direction"?: string,"effective_from"?: string,"goal_id"?: string,"recorded_at"?: string,"status"?: string,"target"?: number,"unit"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "wellness_goal_versions_user_id_goal_id_fkey"
+      columns: ["user_id","goal_id"]
+isOneToOne: false
+      referencedRelation: "wellness_goals"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+                },"wellness_goals": {
+                  Row: {
+                    "created_at": string,"id": string,"metric": string,"period": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"id": string,"metric": string,"period": string,"user_id": string
+                  }
+                  Update: {
+                    "created_at"?: string,"id"?: string,"metric"?: string,"period"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    
                   ]
                 },"wellness_versions": {
                   Row: {
@@ -1589,7 +1623,7 @@ isOneToOne: false
                     "revision"?: number,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"whimsy_books": {
                   Row: {
@@ -1603,7 +1637,7 @@ isOneToOne: false
                     "activity_date"?: string | null,"created_at"?: string,"id"?: string,"payload"?: NonNullable<Json>,"revision"?: number,"time_zone"?: string | null,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"whimsy_card_meanings": {
                   Row: {
@@ -1617,7 +1651,7 @@ isOneToOne: false
                     "activity_date"?: string | null,"created_at"?: string,"id"?: string,"payload"?: NonNullable<Json>,"revision"?: number,"time_zone"?: string | null,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"whimsy_commands": {
                   Row: {
@@ -1631,7 +1665,7 @@ isOneToOne: false
                     "id"?: string,"request_hash"?: string,"result"?: NonNullable<Json>,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"whimsy_content_links": {
                   Row: {
@@ -1665,7 +1699,7 @@ isOneToOne: false
                     "category"?: string,"content_id"?: string,"document"?: NonNullable<Json>,"experience"?: string,"version"?: number
                   }
                   Relationships: [
-
+                    
                   ]
                 },"whimsy_dream_custom_symbols": {
                   Row: {
@@ -1679,7 +1713,7 @@ isOneToOne: false
                     "created_at"?: string,"id"?: string,"name"?: string,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"whimsy_dream_entries": {
                   Row: {
@@ -1693,7 +1727,7 @@ isOneToOne: false
                     "activity_date"?: string,"created_at"?: string,"id"?: string,"payload"?: NonNullable<Json>,"revision"?: number,"time_zone"?: string,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"whimsy_dream_series": {
                   Row: {
@@ -1707,7 +1741,7 @@ isOneToOne: false
                     "created_at"?: string,"id"?: string,"name"?: string,"revision"?: number,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"whimsy_dream_series_entries": {
                   Row: {
@@ -1747,7 +1781,7 @@ isOneToOne: false
                     "meaning"?: string,"revision"?: number,"symbol_id"?: string,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"whimsy_fortune_assignments": {
                   Row: {
@@ -1761,7 +1795,7 @@ isOneToOne: false
                     "activity_date"?: string,"created_at"?: string,"id"?: string,"payload"?: NonNullable<Json>,"revision"?: number,"time_zone"?: string,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"whimsy_quest_completions": {
                   Row: {
@@ -1795,7 +1829,7 @@ isOneToOne: false
                     "experience"?: string,"revision"?: number,"updated_at"?: string,"user_id"?: string,"vibe"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"whimsy_quest_weeks": {
                   Row: {
@@ -1809,7 +1843,7 @@ isOneToOne: false
                     "activity_date"?: string,"created_at"?: string,"id"?: string,"payload"?: NonNullable<Json>,"revision"?: number,"time_zone"?: string,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"whimsy_reading_goals": {
                   Row: {
@@ -1823,7 +1857,7 @@ isOneToOne: false
                     "activity_date"?: string | null,"created_at"?: string,"id"?: string,"payload"?: NonNullable<Json>,"revision"?: number,"time_zone"?: string | null,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"whimsy_reading_sessions": {
                   Row: {
@@ -1937,7 +1971,7 @@ isOneToOne: false
                     "include_reversed"?: boolean,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"whimsy_tarot_readings": {
                   Row: {
@@ -1951,7 +1985,7 @@ isOneToOne: false
                     "activity_date"?: string,"created_at"?: string,"id"?: string,"payload"?: NonNullable<Json>,"revision"?: number,"time_zone"?: string,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"whimsy_widget_preferences": {
                   Row: {
@@ -1965,7 +1999,7 @@ isOneToOne: false
                     "activity_date"?: string | null,"created_at"?: string,"id"?: string,"payload"?: NonNullable<Json>,"revision"?: number,"time_zone"?: string | null,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"workspaces": {
                   Row: {
@@ -1979,7 +2013,7 @@ isOneToOne: false
                     "accent"?: string,"archived_at"?: string | null,"created_at"?: string,"icon_id"?: string | null,"id"?: string,"name"?: string,"revision"?: number,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 }
           }
@@ -2094,6 +2128,12 @@ isOneToOne: false
                            },
 "read_whimsy":
 { Args: Record<PropertyKey, never>; Returns: Json
+                           },
+"read_whimsy_page":
+{ Args: { "p_after_created_at"?: string,"p_after_id"?: string,"p_kind": string,"p_limit"?: number }; Returns: Json
+                           },
+"read_whimsy_record":
+{ Args: { "p_id": string,"p_kind": string }; Returns: Json
                            },
 "rename_priority_task":
 { Args: { "p_command_id": string,"p_expected_planner_revision": number,"p_id": string,"p_priority_revision": number,"p_title": string }; Returns: number
@@ -2323,7 +2363,7 @@ export type CompositeTypes<
 export const Constants = {
   "public": {
           Enums: {
-
+            
           }
         }
 } as const

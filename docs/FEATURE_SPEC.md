@@ -709,3 +709,23 @@ Issue #52 (sections 11–17). Dreamscapes is split into section components under
 - **Documented limitation:** one completed workout per movement type per day (see PRODUCT_RULES).
 - **Recaps:** engine only; the UI is deferred to Living Universe.
 - **Scope note:** Wellness → Goals holds measurable wellness targets only and does not overlap the future Aspirations feature under Rituals.
+
+## Invited-user onboarding (#29) — implemented on feature branch
+
+- **When it appears.** A brand-new invited account opens **Welcome to Muse** before Daily Edit, based on `profiles.onboarded_at`.
+  - The migration marks every existing account as onboarded, so no current user is sent through it.
+  - Before the migration runs, Muse behaves exactly as before.
+- **Steps.** Welcome, then Personalize (name; timezone detected from the device and changeable; theme and glass using the existing pickers and per-browser storage), then a confirmation.
+  - Nothing is saved until **Finish setup**, which is one idempotent save of name, timezone and completion.
+  - A failed save keeps every choice and explains how to retry.
+- **After setup.** Daily Edit shows a one-time, dismissible orientation (Planner, Rituals, Whimsy, Settings).
+  - `/welcome` redirects finished accounts home.
+  - Onboarding state is on the account, so it follows the person across devices.
+- **Settings.** The display name can be edited in Settings (it was not editable before). Timezone stays in Settings and theme in Appearance.
+- **Expired or used invitations** get their own guidance on the sign-in page.
+- **Not changed.** The authentication model (invite-only, passwordless: Google, passkeys, email codes and links), row-level security and data ownership.
+- **Tests.**
+  - `tests/onboarding.test.mjs` covers the routing and save rules.
+  - `scripts/test-local-onboarding.mjs` covers provisioning, persistence and isolation.
+  - `scripts/test-onboarding-ui.mjs` runs the real-browser flow on mobile and desktop.
+  - `scripts/test-local-auth.mjs` follows the real-inbox invitation through to onboarding.
