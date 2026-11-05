@@ -1,4 +1,5 @@
 'use client';
+import {contentCredits,softwareCredits} from "@/lib/credits";
 import {useMemo,useState} from 'react';
 import { SignInSettings } from "./auth/SignInSettings";
 import {MusePageHeader} from './MusePageHeader';
@@ -22,5 +23,6 @@ export function Settings({version}:{version:string}){const {store,status}=useAcc
  <CosmicSettings/>
  <MuseCard id="privacy-data"><CardHeading id="privacy-data" title="Privacy & your data" icon="notes"/><div className="muse-settings-fields"><section><h3>Export your data</h3><p className="card-description">Download saved profile preferences, daily entries and emotional check-ins, Planner records, Notes with their tags, and saved meals, groceries, hydration, movement, Rituals, and Money as JSON.</p><p className="small-label">Includes archived Notes and retained Planner history. Excludes unsaved drafts and this browser’s appearance and pane preferences.</p><button className="muse-button" type="button" disabled={exporting||!status.loaded} onClick={()=>void exportData()}>{exporting?'Preparing export…':'Export saved data'}</button>{exportMessage&&<p className="small-label" role={exportError?'alert':'status'}>{exportMessage}</p>}</section><section><h3>Delete account</h3><DeleteAccountButton/></section></div></MuseCard>
  <MuseCard id="about-muse"><CardHeading id="about-muse" title="About Muse" icon="sparkle"/><p className="muse-about-philosophy">You are the muse. You are the artist. Your life is the masterpiece.</p><p className="small-label">Muse · Version {version}</p></MuseCard>
+ <MuseCard id="credits"><CardHeading id="credits" title="Open Source & Credits" icon="sparkle"/><p className="card-description">Muse is made possible by the people and projects below. Thank you.</p>{([['Content & data',contentCredits],['Software',softwareCredits]] as const).map(([heading,list])=><section key={heading} className="muse-credits"><h3>{heading}</h3><ul>{list.map(credit=><li key={credit.name}><strong>{credit.name}</strong>{credit.by&&<span className="small-label"> · {credit.by}</span>}<p>{credit.use}</p><p className="small-label">{credit.license} {credit.links.map(link=><a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer">{link.label}</a>)}</p></li>)}</ul></section>)}</MuseCard>
  </div><footer className="muse-settings-save"><AccountSaveStatus dirty={!!zone} onDiscard={()=>setZone(null)}/></footer></main>;
 }

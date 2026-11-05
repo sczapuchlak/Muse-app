@@ -1,7 +1,48 @@
 import library from '@/content/whimsy/dream-symbols.json';
+import heartYearning from '@/content/whimsy/dream-symbols-heartyearning.json';
 import type {DreamEntry} from './models';
-export type DreamSymbol=(typeof library)[number];
-export const dreamSymbols:DreamSymbol[]=library;
+
+/** An interpretation from an outside source, always shown with its attribution and link. */
+export type SourcedInterpretation={title:string;text:string;source:string;url:string};
+export type DreamSymbol={id:string;name:string;category:string;aliases:string[];description:string;associations:string[];context:string;question:string;version:number;source:string;sourceUrl?:string;provider:'muse'|'heartyearning'|'personal';interpretations:SourcedInterpretation[]};
+
+/** HeartYearning Dream Symbols Dataset (985 entries, JSON, github.com/ljt-one/dream-symbols-dataset). Its terms ask
+ * for attribution with a link to tool.heartyearning.com; every imported entry and the Encyclopedia footer carry it. */
+export const HEARTYEARNING={name:'HeartYearning Dream Symbols Dataset',site:'https://tool.heartyearning.com',repository:'https://github.com/ljt-one/dream-symbols-dataset'} as const;
+type HeartYearningEntry={slug:string;keyword:string;icon?:string;category:string;summary:string;date?:string;url:string};
+/** Their categories mapped onto Muse's; zodiac, angel-number and crystal entries are not dream symbols and are left out. */
+const categoryMap:Record<string,string>={body:'Body and Health',spirit:'Supernatural and Fantasy',nature:'Nature and Elements',animals:'Animals',people:'People and Relationships',life:'Common Dream Scenarios'};
+const symbolKey=(text:string)=>text.toLocaleLowerCase('en').replace(/[^a-z ]/g,'').trim().replace(/\s+/g,' ').replace(/s$/,'');
+
+/**
+ * Muse's own 36 entries stay as written. A HeartYearning entry with the same name (or a Muse alias) adds its
+ * interpretation to the Muse entry instead of duplicating it; the rest become entries of their own. Repeated
+ * HeartYearning names or slugs keep the first. Ids are stable (`hy-<slug>`), so saved dreams and personal meanings
+ * keep working when the dataset is updated.
+ */
+function buildLibrary(){
+ const muse:DreamSymbol[]=library.map(item=>({...item,provider:'muse' as const,interpretations:[]}));
+ const byKey=new Map<string,DreamSymbol>();for(const item of muse)for(const name of [item.name,...item.aliases])byKey.set(symbolKey(name),item);
+ const seen=new Set<string>(),imported:DreamSymbol[]=[];
+ for(const entry of heartYearning as HeartYearningEntry[]){
+  const category=categoryMap[entry.category],key=symbolKey(entry.keyword);
+  if(!category||!entry.summary?.trim()||!key||seen.has(key)||seen.has(`slug:${entry.slug}`))continue;
+  seen.add(key);seen.add(`slug:${entry.slug}`);
+  const interpretation={title:entry.keyword,text:entry.summary.trim(),source:HEARTYEARNING.name,url:entry.url};
+  const existing=byKey.get(key);
+  if(existing){existing.interpretations.push(interpretation);continue;}
+  imported.push({id:`hy-${entry.slug}`,name:entry.keyword,category,aliases:[],description:entry.summary.trim(),associations:[],context:'',question:'',version:1,source:HEARTYEARNING.name,sourceUrl:entry.url,provider:'heartyearning',interpretations:[interpretation]});
+ }
+ return [...muse,...imported.sort((a,b)=>a.name.localeCompare(b.name))];
+}
+export const dreamSymbols:DreamSymbol[]=buildLibrary();
+/** Entries that are variations of a symbol: other entries whose name contains it as a whole word (e.g. Green Snake for Snake). */
+export function dreamVariations(symbol:Pick<DreamSymbol,'id'|'name'|'aliases'>,limit=24){
+ const words=[symbol.name,...symbol.aliases].map(symbolKey).filter(w=>w.length>2);
+ if(!words.length)return [];
+ const pattern=new RegExp(`\\b(${words.map(w=>w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|')})s?\\b`,'i');
+ return dreamSymbols.filter(item=>item.id!==symbol.id&&pattern.test(item.name)).slice(0,limit);
+}
 export const dreamCategories=[...new Set(dreamSymbols.map(item=>item.category))];
 export const dreamClassifications=['Ordinary','Lucid','Nightmare','Recurring','Dream fragment','Vivid','Daydream'];
 export function dreamSymbol(id:string){return dreamSymbols.find(item=>item.id===id);}
