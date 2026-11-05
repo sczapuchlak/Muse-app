@@ -18,6 +18,7 @@ import {shiftDate,validDate,weekDates} from '@/lib/dates';
 import {readingByDay} from './integrations';
 import type {Book,BookCompletion,ReadingSession} from './models';
 import type {ReadingTimer} from './books';
+import {sessionReadId} from './reading-cycles';
 
 export type ReadingPeriod='today'|'week'|'month'|'year'|'all';
 export type DateRange={start:string;end:string};
@@ -56,25 +57,27 @@ export function bookCompletions(book:Pick<Book,'id'|'completions'|'finishedOn'|'
  * Completion history after a status change or finish-date edit. Becoming Finished adds one completion (never a
  * duplicate of the latest); staying Finished with a new date corrects the latest; leaving Finished keeps history.
  */
-export function nextCompletions(book:Book|undefined,next:{status:Book['status'];finishedOn?:string;startedOn?:string},now:string,id:()=>string):BookCompletion[]{
- const history=book?bookCompletions(book).map(c=>c.id.startsWith('legacy:')?{...c,id:id()}:c):[];
+export function nextCompletions(book:Book|undefined,next:{status:Book['status'];finishedOn?:string;startedOn?:string;cycleId?:string},now:string,id:()=>string):BookCompletion[]{
+ // A pre-history completion keeps its derived id when first stored, so anything already pointing at it stays linked.
+ const history=book?bookCompletions(book):[];
  if(next.status!=='finished'||!next.finishedOn||!validDate(next.finishedOn))return history;
  const startedOn=next.startedOn&&validDate(next.startedOn)&&next.startedOn<=next.finishedOn?next.startedOn:undefined;
  const latest=history.at(-1);
  if(book?.status==='finished'&&latest){return [...history.slice(0,-1),{...latest,finishedOn:next.finishedOn,...(startedOn?{startedOn}:{})}];}
- if(latest&&latest.finishedOn===next.finishedOn&&latest.startedOn===startedOn)return history;
- return [...history,{id:id(),finishedOn:next.finishedOn,...(startedOn?{startedOn}:{}),recordedAt:now}];
+ // The read being finished is already recorded (a retried finish): never a second completion for one read.
+ if(next.cycleId&&history.some(c=>c.id===next.cycleId))return history;
+ // Without a cycle id, an identical latest finish is the same read; with one, a same-day reread is a new read.
+ if(!next.cycleId&&latest&&latest.finishedOn===next.finishedOn&&latest.startedOn===startedOn)return history;
+ const fresh=next.cycleId??id();
+ return [...history,{id:fresh,finishedOn:next.finishedOn,...(startedOn?{startedOn}:{}),recordedAt:now}];
 }
 export function completionEvents(books:Book[]){return books.flatMap(book=>bookCompletions(book).map((completion,index)=>({book,completion,reread:index>0})));}
 export function completionsIn(books:Book[],range:DateRange|null){
  const events=completionEvents(books).filter(e=>within(e.completion.finishedOn,range));
  return {count:events.length,uniqueTitles:new Set(events.map(e=>e.book.id)).size,rereads:events.filter(e=>e.reread).length,events};
 }
-/** Sessions belonging to one completed read: after the previous completion, up to and including this finish date. */
-export function cycleSessions(book:Book,sessions:ReadingSession[],completion:BookCompletion){
- const history=bookCompletions(book),index=history.findIndex(c=>c.id===completion.id),previous=index>0?history[index-1].finishedOn:undefined;
- return sessions.filter(s=>s.bookId===book.id&&s.date<=completion.finishedOn&&(!previous||s.date>previous));
-}
+/** Sessions belonging to one read: linked by cycle id, or older unlinked sessions only where the date makes it unambiguous. */
+export function cycleSessions(book:Book,sessions:ReadingSession[],completion:Pick<BookCompletion,'id'>){return sessions.filter(s=>s.bookId===book.id&&sessionReadId(book,s)===completion.id);}
 export const inclusiveCalendarDays=(start:string,end:string)=>validDate(start)&&validDate(end)&&end>=start?Math.round((Date.parse(`${end}T00:00:00Z`)-Date.parse(`${start}T00:00:00Z`))/86400000)+1:null;
 /** Averages across completed reads, each using only completions that have the measured value. */
 export function completedReadAverages(books:Book[],sessions:ReadingSession[]){

@@ -106,3 +106,27 @@
 .muse-books-delete-ack{display:flex!important;align-items:flex-start;gap:8px;font-size:.85rem}
 .muse-books-delete-ack>input{width:18px;height:18px;min-height:18px;margin-top:2px;accent-color:var(--accent-primary)}
 @media(max-width:600px){.muse-books-history-filters>label{flex-basis:100%}.muse-books-bars{height:110px;gap:3px}.muse-books-bars small{font-size:.56rem}}
+
+/* Finish Book: cover hero with a brief Star Shimmer (Muse Magic; no confetti). */
+.muse-finish-book-hero{position:relative;display:flex;align-items:center;gap:14px;padding:12px;border:1px solid var(--glass-border);border-radius:var(--radius-md,14px);background:color-mix(in srgb,var(--accent-primary) 6%,transparent)}
+.muse-finish-book-hero img,.muse-finish-book-cover{width:56px;height:84px;object-fit:cover;border-radius:6px;flex:none}
+.muse-finish-book-cover{display:grid;place-items:center;font-family:var(--font-display,serif);font-size:1.6rem;background:color-mix(in srgb,var(--accent-secondary) 18%,transparent)}
+.muse-finish-book-hero>div{display:grid;gap:2px;min-width:0}
+.muse-finish-book-hero strong{font-size:1.05rem;overflow-wrap:anywhere}
+.muse-finish-shimmer{position:absolute;top:8px;right:10px;display:flex;align-items:flex-start;gap:4px;pointer-events:none}
+.muse-finish-shimmer>*{opacity:0;animation:muse-finish-shimmer 900ms ease-out forwards;filter:drop-shadow(0 0 4px var(--accent-secondary))}
+.muse-finish-shimmer>:nth-child(2){animation-delay:120ms}.muse-finish-shimmer>:nth-child(3){animation-delay:240ms}
+@keyframes muse-finish-shimmer{0%{opacity:0;transform:scale(.6)}40%{opacity:1;transform:scale(1.08)}100%{opacity:.75;transform:scale(1)}}
+@media (prefers-reduced-motion: reduce){.muse-finish-shimmer>*{animation:none;opacity:.75}}
+:root[data-magic="quiet"] .muse-finish-shimmer{display:none}
+
+/* Per-read history: Earlier reads (editor) and Your reads (details). */
+.muse-books-read{display:grid!important;gap:8px;padding:10px 0;border-top:1px solid var(--glass-border)}
+.muse-books-read:first-of-type{border-top:0}
+.muse-books-read textarea{min-height:64px}
+.muse-books-unassigned{display:grid;gap:6px;padding:10px 12px;border:1px dashed var(--glass-border);border-radius:10px}
+.muse-books-read-history ol{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.muse-books-read-history li{display:grid;gap:2px;padding:10px 12px;border:1px solid var(--glass-border);border-radius:10px}
+.muse-books-read-history li p{margin:4px 0 0}
+.muse-books-unlinked{margin-top:12px}
+.muse-books-emoji-field small{display:block}
