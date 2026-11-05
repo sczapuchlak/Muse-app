@@ -16,3 +16,11 @@
 .muse-cosmic-settings-controls { display:grid;gap:var(--space-4);justify-items:start;min-width:0; }
 .muse-cosmic-settings > .small-label { margin-top:var(--space-4); }
 .muse-about-philosophy { margin-block:var(--space-4);font-size:1rem;line-height:1.7;color:var(--foreground); }
+
+/* Open Source & Credits */
+.muse-credits h3{margin:var(--space-4) 0 var(--space-2);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted)}
+.muse-credits ul{display:grid;gap:var(--space-3);margin:0;padding:0;list-style:none}
+.muse-credits li{padding-bottom:var(--space-3);border-bottom:1px solid var(--divider)}
+.muse-credits li:last-child{border-bottom:0}
+.muse-credits p{margin:2px 0 0}
+.muse-credits a{margin-right:var(--space-2);overflow-wrap:anywhere}

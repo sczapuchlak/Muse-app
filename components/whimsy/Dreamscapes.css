@@ -30,3 +30,5 @@
 .muse-dream-view-controls .muse-button{min-height:40px;padding:7px 10px;gap:6px;font-size:.78rem}
 .muse-dream-view-controls [aria-pressed=true]{border-color:var(--selected-border);background:var(--selected-background);color:var(--selected-text)}
 @media(max-width:760px){.muse-dream-view-controls{margin-left:0;flex-basis:100%}}
+
+.muse-dream-credit{margin-top:var(--space-4);text-align:center}
