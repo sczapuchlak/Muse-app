@@ -50,6 +50,8 @@ export function MovementCard({ initialTypes, initialDay }: Props) {
     if(complete)store.whenSaved(trigger);
   }
   const renaming = panel?.mode === "rename" ? types.find((type) => type.id === panel.id) : undefined;
+  // Durations and categories need the server that stores them (it also reports goal support).
+  const supportsDetails=state.goals!==undefined;
 
   function close() { setPanel(null); anchorRef.current?.focus(); }
   function selectIntoShelf(id: string) {
@@ -105,7 +107,7 @@ export function MovementCard({ initialTypes, initialDay }: Props) {
         </button>
       </div>
       <GlassPopover id="movement-menu" label={panel?.mode==='completion'?'Movement completion':'Saved movement types'} open={panel !== null} anchorRef={anchorRef} onClose={() => setPanel(null)} width={panel?.mode === "manage" ? 420 : 340}>
-        {panel?.mode==='completion'&&<><p className="editor-label">Movement · {initialDay.date}</p><p className="small-label">Selection is an intention. Mark what you actually did.</p><div className="popover-choice-list">{completionIds.map(id=>{const done=recorded.some(item=>item.typeId===id);return <div className="popover-footer" key={id}><span>{types.find(type=>type.id===id)?.name??'Movement'}{done&&<span className="small-label"> · Done</span>}</span><button type="button" className="muse-button button-ghost" disabled={!status.loaded||!!status.error} aria-label={`${done?'Undo completion for':'Mark done:'} ${types.find(type=>type.id===id)?.name??'movement'}`} onClick={()=>setCompleted(id,!done)}>{done?'Undo':'Mark Done'}</button></div>;})}</div><div className="popover-footer"><button type="button" className="text-button" onClick={close}>Close</button></div></>}
+        {panel?.mode==='completion'&&<><p className="editor-label">Movement · {initialDay.date}</p><p className="small-label">Selection is an intention. Mark what you actually did.</p><div className="popover-choice-list">{completionIds.map(id=>{const done=recorded.some(item=>item.typeId===id);const record=recorded.find(item=>item.typeId===id);return <div className="popover-footer muse-movement-completion" key={id}><span>{types.find(type=>type.id===id)?.name??'Movement'}{done&&<span className="small-label"> · Done</span>}</span>{record&&supportsDetails&&<DurationField key={`${record.id}/${record.durationMinutes??''}`} name={types.find(type=>type.id===id)?.name??'movement'} value={record.durationMinutes??null} disabled={!status.loaded||!!status.error} onSave={value=>dispatch({kind:'activity/duration',id:record.id,durationMinutes:value})}/>}<button type="button" className="muse-button button-ghost" disabled={!status.loaded||!!status.error} aria-label={`${done?'Undo completion for':'Mark done:'} ${types.find(type=>type.id===id)?.name??'movement'}`} onClick={()=>setCompleted(id,!done)}>{done?'Undo':'Mark Done'}</button></div>;})}</div><div className="popover-footer"><button type="button" className="text-button" onClick={close}>Close</button></div></>}
         {panel?.mode === "more" && <>
           <p className="editor-label">Saved movement types</p>
           <div className="popover-choice-list">
@@ -117,7 +119,8 @@ export function MovementCard({ initialTypes, initialDay }: Props) {
         </>}
         {panel?.mode === "manage" && <MovementTypeManager types={available} quickIds={quickIds}
           onToggleQuick={(id) => setQuickIds((ids) => toggleSelection(ids, id, MAX_QUICK_MOVEMENTS))}
-          onRename={(id) => setPanel({ mode: "rename", id })} onDelete={deleteType} />}
+          onRename={(id) => setPanel({ mode: "rename", id })} onDelete={deleteType}
+          onCategory={supportsDetails&&state.types.length?(id,category)=>dispatch({kind:'type/category',id,category}):undefined} />}
         {(panel?.mode === "more" || panel?.mode === "manage") && <div className="popover-footer">
           <button type="button" className="text-button" onClick={() => setPanel({ mode: "add" })}>+ Add new movement</button>
           <button type="button" className="text-button" onClick={close}>Done</button>
@@ -127,4 +130,12 @@ export function MovementCard({ initialTypes, initialDay }: Props) {
       </GlassPopover>
     </MuseCard>
   );
+}
+
+/** Optional minutes for one completed activity. Blank means unknown, never zero. */
+function DurationField({name,value,disabled,onSave}:{name:string;value:number|null;disabled:boolean;onSave:(value:number|null)=>void}){
+  const [draft,setDraft]=useState(value===null?'':String(value));
+  const parsed=draft.trim()===''?null:Number(draft),valid=parsed===null||(Number.isInteger(parsed)&&parsed>=1&&parsed<=1440);
+  function commit(){if(valid&&parsed!==value)onSave(parsed);}
+  return <label className="muse-movement-duration"><span className="sr-only">Minutes for {name}</span><input type="number" inputMode="numeric" min={1} max={1440} step={1} placeholder="min" value={draft} disabled={disabled} aria-invalid={!valid} onChange={event=>setDraft(event.target.value)} onBlur={commit} onKeyDown={event=>{if(event.key==='Enter'){event.preventDefault();commit();}}}/><span aria-hidden="true">min</span></label>;
 }

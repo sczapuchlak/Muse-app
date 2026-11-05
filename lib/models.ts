@@ -5,6 +5,8 @@ export type MovementType = {
   name: string;
   source: "starter" | "custom";
   archived: boolean;
+  /** Strength/cardio/mobility/other. Absent means the starter default (or Other for custom types). */
+  category?: "strength" | "cardio" | "mobility" | "other";
 };
 
 export type DailyMovement = { date: string; typeIds: string[] };

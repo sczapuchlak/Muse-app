@@ -23,6 +23,7 @@ import { MealEditor } from "./MealEditor";
 import { MealPlacementEditor } from "./MealPlacementEditor";
 import { SavedMealLibrary } from "./SavedMealLibrary";
 import { Mood } from "../mood/Mood";
+import { WellnessGoals } from "./WellnessGoals";
 import "./Nourish.css";
 
 type Editor={kind:"meal";date:string;slot:Slot;initial?:DailyMealAssignment;anchor:HTMLElement;onSaved:()=>void}|{kind:"place";meal:DailyMealAssignment;mode:"move"|"copy";anchor:HTMLElement};
@@ -32,7 +33,7 @@ export function Nourish() {const {profile}=useDailyData();
   const requested=query.get("date");
   const {state}=useNourish();
   // Wellness opens on Mood; meal links name view=plan explicitly.
-  const view=query.get("view")==="saved-meals"?"saved-meals":query.get("view")==="grocery"?"grocery":query.get("view")==="plan"?"plan":"mood";
+  const view=query.get("view")==="saved-meals"?"saved-meals":query.get("view")==="grocery"?"grocery":query.get("view")==="goals"?"goals":query.get("view")==="plan"?"plan":"mood";
   useEffect(()=>{if(validDate(requested))setDate(requested);},[requested,setDate]);
   function changeDate(next:string){setDate(next);router.replace(`/nourish?date=${next}&view=${view}`,{scroll:false});}
   const onOpen:MealOpen=(entryDate,slot,anchor,onSaved,initial)=>setEditor({kind:"meal",date:entryDate,slot,anchor,onSaved,initial});
@@ -40,7 +41,7 @@ export function Nourish() {const {profile}=useDailyData();
   const week=weekDates(date);
   return <main className="muse-page muse-nourish-page">
     <MusePageHeader title="Wellness"><DateNavigator date={date} onChange={changeDate}/></MusePageHeader>
-    <MuseSectionNav label="Wellness sections" current={view} items={[{id:"mood",label:"Mood"},{id:"plan",label:"Plan"},{id:"saved-meals",label:"Saved Meals"},{id:"grocery",label:"Grocery List"}].map((item)=>({...item,href:`/nourish?date=${date}&view=${item.id}`}))}/>
+    <MuseSectionNav label="Wellness sections" current={view} items={[{id:"mood",label:"Mood"},{id:"goals",label:"Goals"},{id:"plan",label:"Plan"},{id:"saved-meals",label:"Saved Meals"},{id:"grocery",label:"Grocery List"}].map((item)=>({...item,href:`/nourish?date=${date}&view=${item.id}`}))}/>
     {view==="mood"?<Mood embedded onDateChange={changeDate}/>:<><WellnessCapture>
     {view==="plan"&&<>
     <div className="muse-nourish-toolbar"><nav className="muse-week-jump" aria-label="Meal planning week"><button className="muse-button" type="button" aria-label="Previous meal planning week" onClick={()=>changeDate(shiftDate(date,-7))}>‹</button><button className="muse-button" type="button" disabled={!today} onClick={()=>changeDate(today)}>This week</button><button className="muse-button" type="button" aria-label="Next meal planning week" onClick={()=>changeDate(shiftDate(date,7))}>›</button></nav><div className="muse-nourish-toolbar-days"><WeekNavigator selectedDate={date} timeZone={profile.timeZone} onChange={changeDate}/></div><span className="muse-feedback-anchor" aria-hidden="true">{spark}</span></div>
@@ -48,10 +49,11 @@ export function Nourish() {const {profile}=useDailyData();
       {week.map((day)=><section className="muse-nourish-day" key={day} aria-label={dateLabel(day)} data-selected={day===date} data-today={day===today}><header className="muse-meal-day-heading"><h2><time dateTime={day}><span>{new Intl.DateTimeFormat("en-US",{weekday:"short",timeZone:"UTC"}).format(new Date(`${day}T12:00:00Z`))}</span><strong>{Number(day.slice(-2))}</strong></time></h2>{day===today&&<MuseStar size={24} color="aqua"/>}</header>{mealSlots.map((slot)=><MealSlot key={slot} date={day} slot={slot} onOpen={onOpen} onPlace={onPlace}/>) }<DailyNutrition meals={mealsFor(state,day)}/></section>)}
     </div>
     </>}
+    {view==="goals"&&<WellnessGoals today={today} timeZone={profile.timeZone}/>}
     {view==="saved-meals"&&<SavedMealLibrary/>}
     {view==="grocery"&&<GroceryList/>}
     {editor?.kind==="meal"&&<MealEditor date={editor.date} slot={editor.slot} initial={editor.initial} anchor={editor.anchor} onSaved={editor.onSaved} onClose={()=>setEditor(null)}/>}
     {editor?.kind==="place"&&<MealPlacementEditor meal={editor.meal} mode={editor.mode} anchor={editor.anchor} onSaved={trigger} onClose={()=>setEditor(null)}/>}
-    </WellnessCapture><footer className="muse-footer"><WellnessSaveStatus/>Meals and groceries save to your account.</footer></>}
+    </WellnessCapture><footer className="muse-footer"><WellnessSaveStatus/>{view==="goals"?"Goals and their history save to your account.":"Meals and groceries save to your account."}</footer></>}
   </main>;
 }

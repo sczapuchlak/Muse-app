@@ -1,5 +1,5 @@
 import type {PlannedTask} from '../models';
-import {ritualOpportunity,ritualCell,ritualStreak,weeklyValue} from '../rituals';
+import {ritualOpportunity,ritualCell,ritualStreak,weeklyValue,entryFor} from '../rituals';
 import {weekDates,shiftDate} from '../dates';
 import {within,localTimestampDate,type InsightRange,rangeDays} from './ranges';
 import type {NormalizedInsights} from './normalize';
@@ -27,5 +27,5 @@ export function ritualMetrics(input:NormalizedInsights,range:InsightRange){const
  const streakState={...state,entries:state.entries.filter((entry)=>entry.date<=streakDate)};
  const streaks=state.rituals.filter((ritual)=>ritual.startDate<=streakDate).map((ritual)=>({id:ritual.id,label:ritual.name,...ritualStreak(streakState,ritual,streakDate)}));
  const entries=state.entries.filter((entry)=>within(entry.date,range)&&entry.date<=input.today&&state.rituals.some((ritual)=>ritual.id===entry.ritualId&&ritualOpportunity(state,ritual,entry.date)));
- return {entries,opportunities,complete:count('complete'),partial:count('partial'),missed:count('missed'),unknown:count('unknown')+count('open'),byDate,byRitual,byGroup,weekly,streaks,streakDate,rate:opportunities.length?count('complete')/opportunities.length:null};
+ return {entries,opportunities,complete:count('complete'),connectedComplete:opportunities.filter((item)=>item.status==='complete'&&entryFor(state,item.ritual.id,item.date)?.derived).length,partial:count('partial'),missed:count('missed'),unknown:count('unknown')+count('open'),byDate,byRitual,byGroup,weekly,streaks,streakDate,rate:opportunities.length?count('complete')/opportunities.length:null};
 }

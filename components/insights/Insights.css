@@ -64,3 +64,18 @@
 .muse-insight-topic-list li{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-bottom:1px solid var(--divider);font-size:.9rem}
 .muse-insight-topic-list li:last-child{border-bottom:0}.muse-insight-topic-list small{color:var(--text-muted);white-space:nowrap}
 .muse-insight-method{margin-top:var(--space-2)}.muse-insight-method summary{cursor:pointer;font-size:.8rem;color:var(--text-muted)}.muse-insight-method p{margin-top:var(--space-2)}
+/* Across Muse: one tile per module total, tinted side accents, linked to the owning view. */
+.muse-across-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,190px),1fr));gap:12px;margin:var(--space-3) 0;padding:0;list-style:none}
+.muse-across-tile{display:grid;gap:2px;height:100%;padding:12px 14px;border-left:3px solid var(--accent-secondary);border-radius:0 12px 12px 0;background:color-mix(in srgb,var(--accent-secondary) 7%,var(--surface-subtle));color:inherit;text-decoration:none}
+.muse-across-grid li:nth-child(2n) .muse-across-tile{border-left-color:var(--accent-primary);background:color-mix(in srgb,var(--accent-primary) 6%,var(--surface-subtle))}
+.muse-across-tile:hover{background:var(--surface-hover)}
+.muse-across-tile:focus-visible{outline:2px solid var(--focus-ring,var(--selected-border));outline-offset:2px}
+.muse-across-label{font-size:.75rem;color:var(--text-muted)}
+.muse-across-tile strong{font-size:1.45rem;font-weight:600;font-variant-numeric:tabular-nums}
+.muse-across-detail,.muse-across-delta{font-size:.78rem;color:var(--text-muted)}
+.muse-across-delta{color:var(--foreground)}
+.muse-across-definitions{display:grid;gap:8px;margin:8px 0 0}.muse-across-definitions dt{font-weight:600;font-size:.85rem}.muse-across-definitions dd{margin:0;font-size:.85rem;color:var(--text-muted)}
+.muse-insights-customize{display:grid;gap:var(--space-4)}
+.muse-insights-customize select{width:100%}
+.muse-insights-customize-check{display:flex;gap:10px;align-items:flex-start;font-size:.9rem}
+.muse-insights-customize-check input{margin-top:3px}

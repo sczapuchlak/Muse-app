@@ -12,6 +12,8 @@ import {DailyReflectionCard} from './daily/DailyReflectionCard';
 import { DayPulseCard } from "./DayPulseCard";
 import { DayInThreeCard } from "./DayInThree";
 import {LittleRituals} from "./rituals/LittleRituals";
+import {WellnessGoalsGlance} from "./nourish/WellnessGoalsGlance";
+import "./nourish/WellnessGoals.css";
 import {DreamDayviewWidget} from "./whimsy/DreamDayviewWidget";
 import {FortuneDayviewWidget} from "./whimsy/FortuneDayviewWidget";
 import {BooksDayviewWidget} from "./whimsy/BooksDayviewWidget";
@@ -41,6 +43,7 @@ export function DailyEdit() {
           <PrioritiesCard />
           <WellnessCapture><MovementCard initialTypes={sampleMovementTypes.filter(type=>type.source==='starter')} initialDay={{date:selectedDate,typeIds:[]}} /></WellnessCapture>
           <WellnessCapture><WaterCard initialDay={{ date: selectedDate, total: 0 }} settings={day.water.settings} /></WellnessCapture>
+          <WellnessGoalsGlance date={selectedDate}/>
           <DailyCapture date={selectedDate}><MoodCard emotions={emotionCatalog} /><DailyReflectionCard date={selectedDate}/><DayInThreeCard /></DailyCapture>
         </div>
         <div className="daily-working-right">

@@ -525,3 +525,22 @@ Dreamscapes keeps the global theme, cosmic background and Whimsy header; its ide
 - Programmatically focused headings (`tabindex="-1"`) draw no focus outline; interactive controls keep their focus rings.
 - Mobile toolbars wrap into at most two rows: search full width, then filters and segmented modes; secondary filters fold behind a Filters button that shows an active count.
 - Workspace and choice popovers show the name above its supporting count, a selected state with border, background and check, and touch-height footer actions.
+
+## Goals, Across Muse and connected states — November 2026
+
+- **Goal cards and summary tiles:**
+  - They use the tinted side-accent panel: a 3px primary or secondary left edge on `surface-subtle`.
+  - Status chips always carry text (Met, Below target, No complete record, In progress, Paused, Not tracking).
+  - The 12-period strip uses the following:
+
+    | Status | Look |
+    | --- | --- |
+    | Met | solid primary |
+    | Below target | soft pop |
+    | In progress | dashed outline |
+    | Paused or inactive | hatched |
+    | No record | empty outline |
+
+    Its labels are available to assistive technology.
+- **Connected Ritual cells.** They keep the normal cell visuals, are read-only, and add a small ⟲ source mark. Their accessible label names the source and how many records it used.
+- **Native selects in Muse forms.** They share the text-input control look (touch height, `surface-control`, glass border, control radius).

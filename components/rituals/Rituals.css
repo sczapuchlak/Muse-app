@@ -117,3 +117,8 @@
 .muse-ritual-appearance > legend { font-weight:550; margin-bottom:var(--space-2); }
 .muse-ritual-appearance details { margin-top:var(--space-3); }
 .muse-ritual-appearance summary { cursor:pointer; min-height:var(--touch-target); display:flex; align-items:center; }
+/* Connected Rituals: same cell, read-only, with a small source mark. Values come from the owning module. */
+.muse-ritual-cell-control[data-connected="true"]{position:relative;cursor:default}
+.muse-ritual-connected-mark{position:absolute;inset-block-start:-5px;inset-inline-end:-5px;display:grid;place-items:center;width:15px;height:15px;border-radius:50%;font-size:.62rem;line-height:1;color:var(--selected-text);background:var(--selected-background);border:1px solid var(--selected-border)}
+.muse-ritual-connected-note{display:block;color:var(--accent-secondary)}
+.muse-ritual-threshold{display:flex;align-items:center;gap:8px}.muse-ritual-threshold input{max-width:9rem}

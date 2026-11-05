@@ -10,7 +10,7 @@ import { RitualWeekNavigator } from "./RitualWeekNavigator";
 import { useMuseDate } from "../MuseSession";
 import { useMuseToday } from "../useMuseToday";
 import {RitualSaveStatus,RitualCapture} from "./RitualStore";
-import { useRituals } from "./RitualStore";
+import { useRitualView } from "./ConnectedRituals";
 import { RitualGroup } from "./RitualGroup";
 import { RitualEditor } from "./RitualEditor";
 import { RitualGroupManager } from "./RitualGroupManager";
@@ -20,7 +20,7 @@ import "./Rituals.css";
 type Editor = { kind: "ritual"; ritual?: RitualDefinition; anchor: HTMLElement } | { kind: "groups"; anchor: HTMLElement } | { kind: "entry"; ritual: RitualDefinition; date: string; anchor: HTMLElement; apply: (value: number | null) => void };
 function RitualsView() {
   const {profile}=useDailyData();
-  const { state } = useRituals();
+  const { state } = useRitualView();
   const [date, setDate] = useMuseDate(dailyEditSample.date.iso);
   const [archived,setArchived]=useState(false);
   const [editor, setEditor] = useState<Editor | null>(null);

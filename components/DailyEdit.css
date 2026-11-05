@@ -14,6 +14,7 @@
  .daily-working-grid .muse-little-rituals { order:5; }
  .daily-working-grid .water-card { order:6; }
  .daily-working-grid .movement-card { order:7; }
+ .daily-working-grid .muse-goals-glance { order:7; } /* optional; right after Movement */
  .daily-working-grid .meals-card { order:8; }
  .daily-working-grid .mood-card { order:9; }
  .daily-working-grid .day-pulse-card { order:10; }

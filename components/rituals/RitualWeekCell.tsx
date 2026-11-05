@@ -7,10 +7,15 @@ import { MuseIcon } from "../MuseIcon";
 import { MuseStar } from "../MuseStar";
 import { useRitualFeedback } from "../MuseRitualFeedback";
 import { useRituals } from "./RitualStore";
+import { useRitualView } from "./ConnectedRituals";
+import { connectionLabel, connectionUnit } from "@/lib/ritual-connections";
 
 export function RitualWeekCell({ ritual, date, today, selected, onEditEntry }: { ritual: RitualDefinition; date: string; today: string; selected: boolean; onEditEntry: (ritual: RitualDefinition, date: string, anchor: HTMLElement, onComplete: (value: number | null) => void) => void }) {
   const { state, dispatch,store,status } = useRituals();
-  const cell = ritualCell(state, ritual, date, today);
+  const view = useRitualView();
+  const cell = ritualCell(view.state, ritual, date, today);
+  const connected = !!ritual.connection && date >= ritual.connection.since;
+  const derived = view.derived.get(`${ritual.id}/${date}`);
   const { trigger, effect } = useRitualFeedback();
   const statusLabel = cell.status === "unscheduled" ? "not scheduled" : cell.status === "upcoming" ? "upcoming" : cell.status === "missed" ? ritual.type === "weekly-target" ? "no session recorded; weekly goal tracked separately" : "explicitly missed" : cell.status === "unknown" ? "not logged; unknown" : cell.status === "available" ? "available to log; weekly goal" : cell.status === "complete" ? `complete${ritual.type === "checkbox" ? "" : `: ${cell.value} of ${ritual.goal} ${ritual.unit}`}` : cell.status === "partial" ? `partial: ${cell.value} of ${ritual.goal} ${ritual.unit}` : cell.status === "logged" ? `${cell.value} ${ritual.unit} logged toward the weekly goal` : "not logged yet";
   function record(value: number | null,cycle=false) {
@@ -21,8 +26,16 @@ export function RitualWeekCell({ ritual, date, today, selected, onEditEntry }: {
     if(feedback)store.whenSaved(()=>trigger(feedback.kind));
   }
   const disabled = !status.loaded||!!status.error||!today || cell.status === "unscheduled" || cell.status === "upcoming";
+  const source = ritual.connection ? connectionLabel(ritual.connection) : "";
+  const why = derived ? `${source}: ${new Intl.NumberFormat("en-US",{maximumFractionDigits:2}).format(derived.measured)} ${connectionUnit(ritual.connection!)} from ${derived.recordIds.length} ${derived.recordIds.length===1?"record":"records"}${derived.incomplete?" (some without a duration)":""}` : `${source}: nothing recorded yet`;
   return <div className="muse-ritual-week-cell" data-selected={selected} data-status={cell.status} data-recorded={cell.recorded} data-today={date === today}>
-    {cell.status==="unscheduled"?<span className="muse-ritual-unavailable" aria-label={`${ritual.name}, ${dateLabel(date)}: not scheduled`}>—</span>:<button className="muse-ritual-cell-control muse-edge" type="button" disabled={disabled} aria-label={`${ritual.name}, ${dateLabel(date)}: ${statusLabel}`} aria-haspopup={ritual.type==='checkbox'?undefined:'dialog'} title={`${dateLabel(date)} · ${statusLabel}`} onClick={(event) => {
+    {cell.status==="unscheduled"?<span className="muse-ritual-unavailable" aria-label={`${ritual.name}, ${dateLabel(date)}: not scheduled`}>—</span>:connected&&cell.status!=="upcoming"?<span className="muse-ritual-cell-control muse-edge" data-connected="true" role="img" aria-label={`${ritual.name}, ${dateLabel(date)}: ${statusLabel}. Connected — ${why}. Edit the source record to change it.`} title={`${dateLabel(date)} · ${statusLabel}\n${why}`}>
+      {cell.status === "complete" ? ritual.type==="checkbox"?<MuseIcon name="check" size={19}/>:<><span className="muse-ritual-completed-value">{new Intl.NumberFormat("en-US",{maximumFractionDigits:2}).format(cell.value!)}</span><span className="muse-ritual-completion-badge"><MuseIcon name="check" size={11}/></span></>
+        : cell.status === "partial" ? <MuseProgressRing value={cell.value!} goal={ritual.goal}><span>{cell.value}</span><small>{ritual.type === "duration" ? "m" : ritual.unit.length<=3?ritual.unit:""}</small></MuseProgressRing>
+        : cell.value !== null ? <span>{cell.value}</span>
+        : <span className="muse-ritual-unlogged" aria-hidden="true"/>}
+      <span className="muse-ritual-connected-mark" aria-hidden="true">⟲</span>
+    </span>:<button className="muse-ritual-cell-control muse-edge" type="button" disabled={disabled} aria-label={`${ritual.name}, ${dateLabel(date)}: ${statusLabel}`} aria-haspopup={ritual.type==='checkbox'?undefined:'dialog'} title={`${dateLabel(date)} · ${statusLabel}`} onClick={(event) => {
       if(ritual.type==='checkbox')record(null,true);else onEditEntry(ritual, date, event.currentTarget, record);
     }}>
       {cell.status === "upcoming" ? <MuseStar size={15}/>

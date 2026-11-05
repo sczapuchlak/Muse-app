@@ -631,3 +631,74 @@ Issue #31. The Dream Encyclopedia combines Muse’s 36 original entries (unchang
 
 Issue #52 (sections 11–17). Dreamscapes is split into section components under `components/whimsy/dreams/` (Diary, Decoder, Library, Atlas, shared parts) with deterministic helpers in `lib/whimsy/dreams.ts` (pagination, display titles, month groups, symbol constellation, emotion pairs, monthly/weekday rhythm). **Diary:** search with live count, type chips, Filters (symbol, feeling), removable active-filter chips, month-grouped journal cards (type tints, intensity dots, symbol pills, series tag; the whole card opens the entry), 12 per page, calendar with nightly glows and that night's dreams. **Decoder:** manuscript header, atmosphere, symbol tray (selecting a symbol illuminates it and opens its lens with Muse associations, attributed HeartYearning interpretation, your meaning and other dreams), sticky reflection side panel. **Library:** field-guide hero search (press /), category chips with counts, A–Z bar, source filter (Muse/HeartYearning/Yours), “From your dreams” shelf, compact results 24 per page. **Symbol pages:** one continuous full entry with numbered chapters; empty chapters are left out (no chapter navigation). **Atlas:** stat pills, symbol constellation (stars = symbols in 2+ dreams, lines = pairs sharing 2+ dreams), emotional traces and pairs, 12-month and weekday rhythm, kinds of dreams, series ribbons; selecting any pattern reveals its dreams, paged. The Atlas calendar moved to the Diary’s Calendar view. No data, content or schema changes. Tests: `tests/dreamscapes-refinement.test.mjs`.
 
+
+## Wellness Tracking 1.0: goals and Connected Rituals (#30) — implemented on feature branch
+
+**Phase A audit (November 2026).**
+- **Owners.** Wellness owns hydration days (one total per date, with that day's goal and unit), movement intentions (`movement_days`), completed movement records (`movement_records`, unique per type and date), movement types and meal assignments with optional nutrition. Rituals owns definitions and dated entries. Collections/Whimsy owns reading sessions and book completions. Planner owns tasks and completion events.
+- **Daily Edit.** It edits these same records; it has no separate copy.
+- **Not tracked.** Steps and sleep have no tracker and are listed as unsupported rather than invented. External health connections need separate approval.
+- **Weeks.** Muse has no configurable week start; weeks are Monday-first everywhere.
+
+**Implemented.**
+- **Shared progress engine.** `lib/progress/engine.ts` turns authoritative records into dated measurements, with record ids, recorded/complete flags and day/week/month/year periods. Wellness goals, Connected Rituals and Insights all use it. A future Goals module can reuse it with its own targets.
+- **Workout classification.**
+  - Movement types are Strength, Cardio, Mobility or Other.
+  - Starter types have code-level defaults (Upper/Lower Strength, Cardio/Walk Cardio, Yoga Mobility); custom types are Other until classified.
+  - Categories are set under Movement → Manage.
+- **Durations.** A completed activity may carry whole minutes (1–1440). A blank duration is unknown, never zero, and is reported as "untimed".
+- **Wellness Goals** (Wellness → Goals):
+  - Optional goals for workouts (day/week), strength or cardio workouts per week, workout minutes (day/week), and protein/calories/carbs/fat per day (at least or at most).
+  - Each goal is versioned. A change applies from the current period and earlier periods keep their target.
+  - Pause and Retire are versions too, so they are never failures. Goals are retired, not deleted.
+  - Each period is Met, Below target, No complete record, In progress, Paused or Not tracking. Adherence counts decided periods only.
+  - A meal missing the measured nutrient makes that day unknown.
+- **Hydration.** It keeps its existing tracker goal (saved per day), so it is reported, not duplicated as a second goal.
+- **Reporting.** The Goals view shows this week's tiles, goal cards with a 12-period strip, and a by-month table per year.
+- **Connected Rituals:**
+  - **Sources:** a Ritual can be manual or connected to water, workouts (any, a category or one type), workout minutes, reading minutes, pages read, books finished or tasks completed.
+  - **Type compatibility:** check-offs accept any source with a threshold, durations accept minutes, and weekly targets accept counts.
+  - **Derived values:** they are computed from source records and never stored. Edits and deletions recalculate them. Days without a record stay unknown, and connected cells are read-only and explain their source.
+  - **Starting a connection:** a new connected Ritual reflects records from its start date; an existing Ritual connects from today.
+  - **Changing or ending a connection:** the values that were shown are stored as ordinary entries, so history survives.
+- **Shared aggregates.** `lib/wellness-aggregates.ts` provides period summaries, series and hydration history for Insights and Recaps.
+
+**Data and migration.** `20261106000100_wellness_goals_connected_rituals.sql` is additive. It has been applied and tested locally only; staging and production need approval.
+- **Schema:** adds `movement_types.category`, `movement_records.duration_minutes`, the `wellness_goals` and `wellness_goal_versions` tables, and `rituals.connection`.
+- **Server rules:**
+  - Past goal versions cannot be rewritten, backdated or deleted.
+  - Clients that omit the new keys leave them untouched.
+  - Connections are validated against the Ritual type.
+- **Before the migration:** the app hides goals, durations, categories and connections and explains that a database update is needed.
+
+**Not in this issue.** Steps, sleep, Apple Health and other providers; monthly Rituals; mood and money connections; a global Goals module.
+
+## Unified Insights, cross-module analytics and recap foundations (#32) — implemented on feature branch
+
+**Phase A audit (November 2026).**
+- **Existing Insights.** It already reported each module with distinct planned/actual/unknown states, revelations, descriptive Pearson relationships (minimum ten pairs) and Collections/Astrology sections.
+- **Movement source.** The one movement relationship used intentions rather than completed records.
+- **Gaps.** There was no macro view across modules, no Wellness goal reporting, no section personalization and no recap-ready aggregate.
+- **Dependency on #30.** It is met by the shared progress engine and Wellness aggregates; nothing is recalculated in Insights.
+
+**Implemented.**
+- **Across Muse (Overview).**
+  - One tile per module total for the selected range: tasks completed, full ritual goals and their share of logged opportunities, workouts by category, workout minutes with untimed count, reading time and books, mood check-ins, and recorded spending.
+  - Each tile has a "How each is counted" definition, an optional previous-period difference and a link to its owner.
+  - No combined score. Modules without records are omitted.
+- **Wellness section.** Adds "Movement you recorded" (completed records by category, minutes, untimed sessions) and "Goals in this range". Goal results reuse #30's evaluation and count finished periods only. Hydration days met their own saved daily goal.
+- **Plans & Rituals.** Shows how many full goals came from connected trackers versus manual check-offs.
+- **Connections across Muse (Mood section).** Descriptive, side-by-side means on shared local dates:
+  - Energy on days with recorded movement;
+  - Overall Day on reading days;
+  - Stress on days with 3+ completed tasks.
+  
+  Each needs five days on each side, shows sample sizes, and states that it is not cause and effect.
+- **Customize Insights.** Hide sections (Overview always shows), choose the opening section and default period, and turn the Daily Edit goals glance on or off. Preferences are saved to the account (no migration), and hiding never removes records.
+- **Daily Edit Goals glance.** A compact card with active Wellness goals for the selected date's period.
+  - It appears only when a goal is active and the preference is on.
+  - On mobile it sits right after Movement.
+  - It logs nothing and reads the same records.
+- **Recap-ready aggregates.** `recapFacts()` returns factual week/month/year summaries for tasks, ritual consistency (with connected count), Wellness (workouts, categories, minutes, hydration, goal adherence), reading, mood and spending. A source that did not load is `null`, not zero. Presentation is a separate, future approval.
+
+**Not in this issue.** Animated or editorial Recaps, new trackers, Apple Health or bank connections, arbitrary scores, and a sidebar or Daily Edit redesign.
