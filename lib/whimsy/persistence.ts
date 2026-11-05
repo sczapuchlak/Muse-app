@@ -4,7 +4,9 @@ import {validDate,validTimeZone,weekDates} from '@/lib/dates';
 import type {Book,DreamEntry,FortuneAssignment,PersonalCardMeaning,QuestCompletion,QuestWeek,ReadingGoal,ReadingSession,SavedDiscovery,TarotReading,Owned,WhimsySources,WhimsyExperience} from './models';
 import type {WhimsyReadRepository,WhimsyWriteCommand} from './repository';
 import type {WhimsyRange} from './integrations';
-export type WidgetPreferenceRecord=Owned&{experience:WhimsyExperience;enabled:boolean;featuredBookId?:string|null};
+export type WidgetPreferenceRecord=Owned&{experience:WhimsyExperience;enabled:boolean;featuredBookId?:string|null;readingMilestones?:{seen:string[];since:string}};
+/** Bookshelf-only fields kept on its widget preference; every writer carries them so none is dropped. */
+export function bookshelfWidgetExtras(pref:Pick<WidgetPreferenceRecord,'featuredBookId'|'readingMilestones'>|undefined){return {...(pref?.featuredBookId?{featuredBookId:pref.featuredBookId}:{}),...(pref?.readingMilestones?{readingMilestones:pref.readingMilestones}:{})};}
 export type WhimsyRecords={questWeeks:QuestWeek[];questCompletions:QuestCompletion[];tarot:TarotReading[];meanings:PersonalCardMeaning[];dreams:DreamEntry[];fortunes:FortuneAssignment[];saved:SavedDiscovery[];books:Book[];sessions:ReadingSession[];goals:ReadingGoal[];widgets:WidgetPreferenceRecord[]};
 export type WhimsyKind=keyof WhimsyRecords;
 export type WhimsyRecord<K extends WhimsyKind>=WhimsyRecords[K][number];

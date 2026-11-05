@@ -22,6 +22,7 @@
     "test:bookshelf:db": "node scripts/test-local-bookshelf.mjs",
     "test:reading:db": "node scripts/test-local-reading-integrity.mjs",
     "test:cycles:db": "node scripts/test-local-reading-cycles.mjs",
+    "test:milestones:db": "node scripts/test-local-reading-milestones.mjs",
     "auth:invite": "node scripts/invite-local-user.mjs",
     "test:auth": "node scripts/test-local-auth.mjs",
     "test:daily": "node scripts/test-local-daily.mjs",
