@@ -124,7 +124,7 @@ try{
  await capture('little-rituals','.muse-little-rituals');
  await click('Manage','.movement-card button');await until(()=>!!document.querySelector('#movement-menu .managed-type-category'),'Category controls appear under Manage');
  await capture('movement-manage','#movement-menu');
- await evaluate(({dance})=>{const s=document.querySelector(`#movement-menu select[aria-label="Category for Dance"]`);Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype,'value').set.call(s,'cardio');s.dispatchEvent(new Event('change',{bubbles:true}));},{dance});
+ await evaluate(()=>{const s=document.querySelector(`#movement-menu select[aria-label="Category for Dance"]`);Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype,'value').set.call(s,'cardio');s.dispatchEvent(new Event('change',{bubbles:true}));});
  for(let i=0;i<40;i++){const s=await readWellness(a.c);if(s.state.types.find(t=>t.id===dance).category==='cardio')break;await new Promise(r=>setTimeout(r,150));}
  assert.equal((await readWellness(a.c)).state.types.find(t=>t.id===dance).category,'cardio','category saves to the movement type');
  await click('Done','#movement-menu button');

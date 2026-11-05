@@ -32,6 +32,7 @@ export function validLoginEmail(input:unknown): input is string {
 export const returnCookie = "muse-auth-return";
 export const authMessages:Record<string,string> = {
   "link-expired":"That link has expired or has already been used. Request a fresh one below.",
+  "invite-expired":"That invitation has expired or was already used. If you already accepted it, sign in here with Google, a passkey or an email code. Otherwise, ask the person who invited you to send a new invitation.",
   "invalid-link":"That sign-in link is incomplete or invalid. Request a fresh one below.",
   "unavailable":"Sign-in is temporarily unavailable. Please try again.",
   "signed-out":"You’re signed out.",

@@ -14,7 +14,8 @@ export async function GET(request:NextRequest){
     const {error}=await client.auth.verifyOtp({token_hash:token,type:type as "email"|"invite"});
     if(error){
       const unavailable=error.name==="AuthRetryableFetchError"||Number(error.status)>=500;
-      return privateResponse(NextResponse.redirect(new URL(`/login?notice=${unavailable?'unavailable':'link-expired'}`,origin)));
+      // An unusable invitation needs a fresh invite, not a sign-in link: the account may not be active yet.
+      return privateResponse(NextResponse.redirect(new URL(`/login?notice=${unavailable?'unavailable':type==='invite'?'invite-expired':'link-expired'}`,origin)));
     }
     response.cookies.set(returnCookie,"",{path:"/",httpOnly:true,sameSite:"lax",maxAge:0});
     return response;

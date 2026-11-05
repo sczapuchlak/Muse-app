@@ -646,3 +646,9 @@ Stephanie approved importing the HeartYearning Dream Symbols Dataset with attrib
 - **One completed workout per movement type per day.** `movement_records` is unique per account, date and type. Several sessions in a day are supported across different types; a second session of the same type is not recorded separately (its minutes can be combined in the duration). Supporting repeated same-type sessions is an open, separate decision that would need a data model change.
 - **Recaps.** The factual engine (`recapFacts()`) stays. No Recaps UI is built; it will be integrated into the broader Living Universe editorial experience later.
 - **Wellness → Goals vs Aspirations.** Wellness Goals are measurable wellness targets computed from Wellness records (workouts, minutes, planned nutrition; hydration via its tracker goal). They are not life goals, intentions or qualitative aspirations. The future Aspirations feature under Rituals owns those, and must not duplicate Wellness targets. It may reference them, reusing the shared progress engine rather than a second copy.
+
+## Invited-user onboarding (#29) — approved November 2026
+
+- Muse stays invite-only and passwordless; onboarding never creates or exposes another account's data.
+- Only accounts the server marks as not onboarded see onboarding. Existing accounts are never forced through it, and finishing it is one-way.
+- Onboarding saves only the person's own name, timezone and completion. Theme and glass stay per-browser preferences, chosen with the existing pickers.

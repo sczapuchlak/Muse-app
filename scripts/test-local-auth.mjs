@@ -1,3 +1,6 @@
+import {spawnSync} from 'node:child_process';
+import {existsSync as dockerExists} from 'node:fs';
+import {homedir} from 'node:os';
 import assert from 'node:assert/strict';
 import {loadEnvFile} from 'node:process';
 import {createClient} from '@supabase/supabase-js';
@@ -7,6 +10,7 @@ for(const value of [site,api])if(!value||!['localhost','127.0.0.1','[::1]'].incl
 if(!key)throw new Error('Run npm run db:env first.');
 const admin=createClient(api,key,{auth:{persistSession:false,autoRefreshToken:false}}),ids=[],email=`muse-auth-${crypto.randomUUID()}@example.test`;
 const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+const docker=process.env.MUSE_DOCKER_PATH||(dockerExists(homedir()+'/.docker/bin/docker')?homedir()+'/.docker/bin/docker':'docker');
 function browser(){const cookies=new Map();return {cookies,async request(path,options={}){const response=await fetch(new URL(path,site),{redirect:'manual',...options,headers:{cookie:[...cookies].map(([k,v])=>`${k}=${v}`).join('; '),...options.headers},signal:AbortSignal.timeout(45000)});for(const raw of response.headers.getSetCookie()){const pair=raw.split(';')[0],index=pair.indexOf('='),name=pair.slice(0,index),value=pair.slice(index+1);if(/max-age=0(?:;|$)/i.test(raw)||!value)cookies.delete(name);else cookies.set(name,value);}return response;}};}
 const origin=new URL(site).origin;
 async function inboxLink(address,type,seen=new Set()){
@@ -36,8 +40,14 @@ try{
  const invite=await admin.auth.admin.inviteUserByEmail(email,{redirectTo:`${origin}/auth/confirm`});if(invite.error)throw invite.error;ids.push(invite.data.user.id);
  const seen=new Set(),link=await inboxLink(email,'invite',seen),signed=browser();
  const confirmed=await signed.request(link);assert.equal(confirmed.status,307);assert.equal(new URL(confirmed.headers.get('location'),site).pathname,'/');assert.ok([...signed.cookies.keys()].some(name=>name.includes('auth-token')));
+ // A brand-new invited account sets up its universe before Daily Edit (#29).
+ const first=await signed.request('/'),firstBody=first.status>=300&&first.status<400?first.headers.get('location'):await first.text();assert.match(firstBody,/\/welcome/);assert.doesNotMatch(firstBody,/The Daily Edit/);
+ const welcome=await signed.request('/welcome');assert.equal(welcome.status,200);assert.match(await welcome.text(),/Welcome to Muse\./);
+ // Finishing setup is exercised through the UI in test-onboarding-ui; here, record it to continue the auth checks.
+ const finish=spawnSync(docker,['exec','-i','supabase_db_muse-local','psql','-U','postgres','-d','postgres','-At','-v','ON_ERROR_STOP=1'],{input:`update public.profiles set first_name='Invited',onboarded_at=clock_timestamp() where id='${invite.data.user.id}'`,encoding:'utf8'});assert.equal(finish.status,0,finish.stderr);
  const page=await signed.request('/');assert.equal(page.status,200);assert.match(await page.text(),/The Daily Edit/);
- const reused=await browser().request(link);assert.match(reused.headers.get('location'),/notice=link-expired/);
+ const done=await signed.request('/welcome');assert.ok(done.status>=300&&done.status<400?new URL(done.headers.get('location'),site).pathname==='/':/NEXT_REDIRECT|http-equiv="refresh"/.test(await done.text()),'finished accounts leave /welcome');
+ const reused=await browser().request(link);assert.match(reused.headers.get('location'),/notice=invite-expired/,'a used invitation explains how to recover');
  console.log('PASS actual inbox invitation, cookie callback, protected page and one-use link');
  await wait(1100); // Respect the local Auth email cooldown even on a warm development server.
  const linkResponse=await signed.request('/auth/link',{method:'POST',headers:{origin,'content-type':'application/json'},body:JSON.stringify({email,next:'/mood?date=2026-10-29'})});assert.equal(linkResponse.status,200);
