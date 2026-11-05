@@ -5,13 +5,14 @@ import {useWellness} from "../WellnessStore";
 import {MuseModal} from "../MuseModal";
 import {MuseIcon} from "../MuseIcon";
 import {weekDates} from "@/lib/dates";
-import {creatableGoalMetrics,currentVersion,goalHistory,goalMetricInfo,adherence,newGoal,withVersion,unsupportedGoalMetrics,type GoalMetric,type GoalPeriod,type GoalPeriodResult,type GoalPeriodStatus,type WellnessGoal,type GoalDirection} from "@/lib/wellness-goals";
+import {goalStatusLabel,creatableGoalMetrics,currentVersion,goalHistory,goalMetricInfo,adherence,newGoal,withVersion,unsupportedGoalMetrics,type GoalMetric,type GoalPeriod,type GoalPeriodResult,type GoalPeriodStatus,type WellnessGoal,type GoalDirection} from "@/lib/wellness-goals";
 import {hydrationHistory,wellnessPeriodSummary,wellnessSeries} from "@/lib/wellness-aggregates";
 import {movementCategoryLabels} from "@/lib/progress/movement";
 import type {ProgressSources} from "@/lib/progress/engine";
 import "./WellnessGoals.css";
 
 const statusLabels:Record<GoalPeriodStatus,string>={achieved:"Met","missed":"Below target",unknown:"No complete record","in-progress":"In progress",paused:"Paused",inactive:"Not tracking",upcoming:"Upcoming"};
+const label=(status:GoalPeriodStatus,goal?:WellnessGoal)=>goal?goalStatusLabel(status,goalMetricInfo[goal.metric].basis):statusLabels[status];
 const number=(value:number)=>new Intl.NumberFormat("en-US",{maximumFractionDigits:1}).format(value);
 const periodWord=(period:GoalPeriod)=>period==="week"?"week":"day";
 const rangeLabel=(result:GoalPeriodResult,period:GoalPeriod)=>{const f=(d:string,o:Intl.DateTimeFormatOptions)=>new Intl.DateTimeFormat("en-US",{...o,timeZone:"UTC"}).format(new Date(`${d}T12:00:00Z`));return period==="week"?`Week of ${f(result.start,{month:"short",day:"numeric"})}`:f(result.start,{weekday:"short",month:"short",day:"numeric"});};
@@ -66,8 +67,8 @@ export function WellnessGoals({today,timeZone}:{today:string;timeZone:string}){
  </section>;
 }
 
-function Strip({results,period}:{results:GoalPeriodResult[];period:GoalPeriod}){
- return <ol className="muse-goal-strip" aria-label={`Last ${results.length} ${period==="week"?"weeks":"days"}`}>{results.map(result=><li key={result.start} data-status={result.status} title={`${rangeLabel(result,period)} · ${statusLabels[result.status]}${result.target!==null?` · ${number(result.value)} of ${number(result.target)} ${result.unit}`:""}`}><span className="sr-only">{rangeLabel(result,period)}: {statusLabels[result.status]}</span></li>)}</ol>;
+function Strip({results,period,goal}:{results:GoalPeriodResult[];period:GoalPeriod;goal?:WellnessGoal}){
+ return <ol className="muse-goal-strip" aria-label={`Last ${results.length} ${period==="week"?"weeks":"days"}`}>{results.map(result=><li key={result.start} data-status={result.status} title={`${rangeLabel(result,period)} · ${label(result.status,goal)}${result.target!==null?` · ${number(result.value)} of ${number(result.target)} ${result.unit}`:""}`}><span className="sr-only">{rangeLabel(result,period)}: {label(result.status,goal)}</span></li>)}</ol>;
 }
 
 function GoalCard({goal,sources,today,onEdit,onStatus}:{goal:WellnessGoal;sources:ProgressSources;today:string;onEdit:(anchor:HTMLElement)=>void;onStatus:(status:"active"|"paused"|"inactive")=>void}){
@@ -75,10 +76,11 @@ function GoalCard({goal,sources,today,onEdit,onStatus}:{goal:WellnessGoal;source
  const current=results.at(-1),summary=adherence(results.slice(0,-1));
  const pct=current?.target?Math.min(100,current.value/current.target*100):0;
  return <article className="muse-goal-card" data-status={current?.status}>
-  <header><div><p className="small-label">{info.label} · per {periodWord(goal.period)}</p><h3>{version?.direction==="atMost"?"At most":"At least"} {number(version?.target??0)} {version?.unit}</h3></div><span className="muse-goal-chip" data-status={current?.status}>{current?statusLabels[current.status]:""}</span></header>
+  <header><div><p className="small-label">{info.label} · per {periodWord(goal.period)}</p><h3>{version?.direction==="atMost"?"At most":"At least"} {number(version?.target??0)} {version?.unit}</h3></div><span className="muse-goal-chip" data-status={current?.status}>{current?label(current.status,goal):""}</span></header>
   {current&&current.status!=="paused"&&current.status!=="inactive"&&<div className="muse-goal-progress"><div className="muse-goal-meter" role="meter" aria-valuemin={0} aria-valuemax={current.target??0} aria-valuenow={current.value} aria-label={`This ${periodWord(goal.period)}: ${number(current.value)} of ${number(current.target??0)} ${current.unit}`}><span style={{inlineSize:`${pct}%`}}/></div><p className="small-label">This {periodWord(goal.period)}: {number(current.value)} of {number(current.target??0)} {current.unit}{current.incompleteDays>0?` · ${current.incompleteDays} ${current.incompleteDays===1?"day is":"days are"} missing details`:""}</p></div>}
-  <Strip results={results} period={goal.period}/>
-  <p className="small-label">{summary.rate===null?"Not enough finished periods to summarize yet.":`Met ${summary.achieved} of ${summary.achieved+summary.missed} finished ${goal.period==="week"?"weeks":"days"} with a record`}{summary.unknown?` · ${summary.unknown} without a complete record`:""}{summary.paused?` · ${summary.paused} paused`:""}.</p>
+  <Strip results={results} period={goal.period} goal={goal}/>
+  {info.basis==="planned"&&<p className="small-label muse-goal-basis">From meals in your plan, not confirmed intake.</p>}
+  <p className="small-label">{summary.rate===null?"Not enough finished periods to summarize yet.":info.basis==="planned"?`Your plan met the target on ${summary.achieved} of ${summary.achieved+summary.missed} finished days with complete planned values`:`Met ${summary.achieved} of ${summary.achieved+summary.missed} finished ${goal.period==="week"?"weeks":"days"} with a record`}{summary.unknown?` · ${summary.unknown} without a complete record`:""}{summary.paused?` · ${summary.paused} paused`:""}.</p>
   {issue&&<p className="small-label" role="status">{issue}</p>}
   <footer><button type="button" className="text-button" onClick={event=>onEdit(event.currentTarget)}>Edit target</button>{version?.status==="active"&&<button type="button" className="text-button" onClick={()=>onStatus("paused")}>Pause</button>}{version?.status==="paused"&&<button type="button" className="text-button" onClick={()=>onStatus("active")}>Resume</button>}{version?.status!=="inactive"?<button type="button" className="text-button" onClick={()=>onStatus("inactive")}>Retire</button>:<button type="button" className="text-button" onClick={()=>onStatus("active")}>Restore</button>}</footer>
  </article>;
@@ -115,7 +117,7 @@ function GoalEditor({goal,initialMetric,goals,today,returnFocus,onSave,onClose}:
    {info.periods.length>1&&<fieldset disabled={!!goal}><legend>Period</legend><div className="muse-form-choice-list">{info.periods.map(item=><button key={item} type="button" className="choice-button" aria-pressed={period===item} onClick={()=>setPeriod(item)}>Per {item}</button>)}</div></fieldset>}
    {metric.startsWith("nutrition-")&&<fieldset><legend>Direction</legend><div className="muse-form-choice-list"><button type="button" className="choice-button" aria-pressed={direction==="atLeast"} onClick={()=>setDirection("atLeast")}>At least</button><button type="button" className="choice-button" aria-pressed={direction==="atMost"} onClick={()=>setDirection("atMost")}>At most</button></div></fieldset>}
    <label className="editor-label">Target<span className="muse-goal-target"><input data-autofocus type="number" required min={info.unit==="sessions"?1:0.1} step={info.unit==="sessions"?1:"any"} value={target} onChange={event=>setTarget(event.target.value)}/><span>{info.unit} per {period}</span></span></label>
-   {metric.startsWith("nutrition-")&&<p className="small-label">Measured from the nutrition you enter on meals in your plan. A day with any meal missing this value stays unknown rather than counting as a miss.</p>}
+   {metric.startsWith("nutrition-")&&<p className="small-label">Measured from the nutrition on meals in your plan — planned, not confirmed intake. Results read as “Plan meets target”. A day with any meal missing this value stays unknown.</p>}
    {duplicate&&<p role="alert" className="small-label">You already have this goal. Edit it instead so its history stays together.</p>}
    {error&&<p role="alert" className="small-label">{error}</p>}
    <p className="small-label">{goal?`Changes apply from ${effective}. Earlier ${period==="week"?"weeks":"days"} keep the target they had.`:`Starts ${effective}.`}</p>

@@ -636,3 +636,13 @@ Stephanie approved importing the HeartYearning Dream Symbols Dataset with attrib
   - Overview always shows; other sections can be hidden without affecting data.
   - The Daily Edit goals glance appears only with an active goal and can be turned off in Customize Insights.
 - **Recaps:** factual aggregates exist; any presentation needs separate approval.
+
+## Wellness goals follow-up decisions — approved November 2026
+
+- **Nutrition goals are planned, not consumed.**
+  - Protein, calorie, carb and fat goals measure meals in the plan.
+  - Every surface labels them "(planned)", and results read "Plan meets target" or "Plan below target", never "Met".
+  - Muse does not record confirmed intake.
+- **One completed workout per movement type per day.** `movement_records` is unique per account, date and type. Several sessions in a day are supported across different types; a second session of the same type is not recorded separately (its minutes can be combined in the duration). Supporting repeated same-type sessions is an open, separate decision that would need a data model change.
+- **Recaps.** The factual engine (`recapFacts()`) stays. No Recaps UI is built; it will be integrated into the broader Living Universe editorial experience later.
+- **Wellness → Goals vs Aspirations.** Wellness Goals are measurable wellness targets computed from Wellness records (workouts, minutes, planned nutrition; hydration via its tracker goal). They are not life goals, intentions or qualitative aspirations. The future Aspirations feature under Rituals owns those, and must not duplicate Wellness targets. It may reference them, reusing the shared progress engine rather than a second copy.

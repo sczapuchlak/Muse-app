@@ -15,16 +15,21 @@ export type GoalStatus='active'|'paused'|'inactive';
 export type GoalVersion={effectiveFrom:string;target:number;unit:string;direction:GoalDirection;status:GoalStatus;recordedAt:string};
 export type WellnessGoal={id:string;metric:GoalMetric;period:GoalPeriod;createdAt:string;versions:GoalVersion[]};
 
-export const goalMetricInfo:Record<GoalMetric,{label:string;unit:string;periods:GoalPeriod[];direction:GoalDirection;example:number;describe:string}>={
- workouts:{label:'Workouts',unit:'sessions',periods:['week','day'],direction:'atLeast',example:4,describe:'Any completed movement'},
- 'strength-workouts':{label:'Strength workouts',unit:'sessions',periods:['week'],direction:'atLeast',example:3,describe:'Movement types classified as Strength'},
- 'cardio-workouts':{label:'Cardio workouts',unit:'sessions',periods:['week'],direction:'atLeast',example:2,describe:'Movement types classified as Cardio'},
- 'workout-minutes':{label:'Workout minutes',unit:'min',periods:['week','day'],direction:'atLeast',example:150,describe:'Durations recorded on completed movement'},
- water:{label:'Hydration',unit:'oz',periods:['day'],direction:'atLeast',example:80,describe:'Daily water total'},
- 'nutrition-protein':{label:'Protein',unit:'g',periods:['day'],direction:'atLeast',example:100,describe:'Known protein across the day’s meals'},
- 'nutrition-calories':{label:'Calories',unit:'kcal',periods:['day'],direction:'atMost',example:2000,describe:'Known calories across the day’s meals'},
- 'nutrition-carbs':{label:'Carbs',unit:'g',periods:['day'],direction:'atLeast',example:200,describe:'Known carbs across the day’s meals'},
- 'nutrition-fat':{label:'Fat',unit:'g',periods:['day'],direction:'atLeast',example:60,describe:'Known fat across the day’s meals'},
+/**
+ * `recorded` goals measure what happened. `planned` goals (nutrition) measure meals in the plan, which are not confirmed
+ * intake, so their results are always worded as the plan meeting a target, never as the person achieving it.
+ */
+export type GoalBasis='recorded'|'planned';
+export const goalMetricInfo:Record<GoalMetric,{label:string;unit:string;periods:GoalPeriod[];direction:GoalDirection;example:number;describe:string;basis:GoalBasis}>={
+ workouts:{label:'Workouts',unit:'sessions',periods:['week','day'],direction:'atLeast',example:4,describe:'Any completed movement',basis:'recorded'},
+ 'strength-workouts':{label:'Strength workouts',unit:'sessions',periods:['week'],direction:'atLeast',example:3,describe:'Movement types classified as Strength',basis:'recorded'},
+ 'cardio-workouts':{label:'Cardio workouts',unit:'sessions',periods:['week'],direction:'atLeast',example:2,describe:'Movement types classified as Cardio',basis:'recorded'},
+ 'workout-minutes':{label:'Workout minutes',unit:'min',periods:['week','day'],direction:'atLeast',example:150,describe:'Durations recorded on completed movement',basis:'recorded'},
+ water:{label:'Hydration',unit:'oz',periods:['day'],direction:'atLeast',example:80,describe:'Daily water total',basis:'recorded'},
+ 'nutrition-protein':{label:'Protein (planned)',unit:'g',periods:['day'],direction:'atLeast',example:100,describe:'Known protein across the day’s planned meals',basis:'planned'},
+ 'nutrition-calories':{label:'Calories (planned)',unit:'kcal',periods:['day'],direction:'atMost',example:2000,describe:'Known calories across the day’s planned meals',basis:'planned'},
+ 'nutrition-carbs':{label:'Carbs (planned)',unit:'g',periods:['day'],direction:'atLeast',example:200,describe:'Known carbs across the day’s planned meals',basis:'planned'},
+ 'nutrition-fat':{label:'Fat (planned)',unit:'g',periods:['day'],direction:'atLeast',example:60,describe:'Known fat across the day’s planned meals',basis:'planned'},
 };
 /** Hydration keeps its existing tracker goal (saved per day), so it is reported, not duplicated as a second goal. */
 export const creatableGoalMetrics=goalMetrics.filter(metric=>metric!=='water');
@@ -108,3 +113,8 @@ export function goalResultsBetween(goal:WellnessGoal,sources:ProgressSources,sta
  return periodStarts(start,end,goal.period).filter(s=>s<=today).map(s=>evaluatePeriod(goal,measured.days,s,today));
 }
 export {nextPeriod,type Period};
+
+const recordedLabels:Record<GoalPeriodStatus,string>={achieved:'Met',missed:'Below target',unknown:'No complete record','in-progress':'In progress',paused:'Paused',inactive:'Not tracking',upcoming:'Upcoming'};
+const plannedLabels:Record<GoalPeriodStatus,string>={achieved:'Plan meets target',missed:'Plan below target',unknown:'Plan incomplete','in-progress':'Planned so far',paused:'Paused',inactive:'Not tracking',upcoming:'Upcoming'};
+/** Status wording for a goal; planned-nutrition goals never claim the target was achieved. */
+export function goalStatusLabel(status:GoalPeriodStatus,basis:GoalBasis='recorded'){return (basis==='planned'?plannedLabels:recordedLabels)[status];}

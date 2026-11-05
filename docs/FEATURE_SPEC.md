@@ -702,3 +702,10 @@ Issue #52 (sections 11–17). Dreamscapes is split into section components under
 - **Recap-ready aggregates.** `recapFacts()` returns factual week/month/year summaries for tasks, ritual consistency (with connected count), Wellness (workouts, categories, minutes, hydration, goal adherence), reading, mood and spending. A source that did not load is `null`, not zero. Presentation is a separate, future approval.
 
 **Not in this issue.** Animated or editorial Recaps, new trackers, Apple Health or bank connections, arbitrary scores, and a sidebar or Daily Edit redesign.
+
+## Wellness goals follow-ups — implemented on feature branch
+
+- **Planned nutrition labels.** Nutrition goals carry a `planned` basis. Their labels read "Protein (planned)" and so on. Their statuses are "Plan meets target", "Plan below target", "Plan incomplete" and "Planned so far". Cards note "From meals in your plan, not confirmed intake", and Insights and the Daily Edit glance use the same wording. Recorded goals keep "Met" and "Below target".
+- **Documented limitation:** one completed workout per movement type per day (see PRODUCT_RULES).
+- **Recaps:** engine only; the UI is deferred to Living Universe.
+- **Scope note:** Wellness → Goals holds measurable wellness targets only and does not overlap the future Aspirations feature under Rituals.
