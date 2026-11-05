@@ -4,13 +4,25 @@
 --   Before: every "prerequisite"/"safe to apply" row should be ok = true; "applied" rows are false.
 --   After:  every row should be ok = true, and the record counts must equal the "before" counts.
 
-with checks(item, ok, detail) as (
+-- Object inventory: the seven things 20261106000100 creates. Decides installed / partial / missing from the schema
+-- itself, not from migration history (history can be absent when SQL was run by hand).
+with objects(name, present) as (
+  select 'column movement_types.category', exists(select 1 from information_schema.columns where table_schema='public' and table_name='movement_types' and column_name='category')
+  union all select 'column movement_records.duration_minutes', exists(select 1 from information_schema.columns where table_schema='public' and table_name='movement_records' and column_name='duration_minutes')
+  union all select 'table wellness_goals', to_regclass('public.wellness_goals') is not null
+  union all select 'table wellness_goal_versions', to_regclass('public.wellness_goal_versions') is not null
+  union all select 'function muse_private.valid_ritual_connection', to_regprocedure('muse_private.valid_ritual_connection(jsonb,text)') is not null
+  union all select 'column rituals.connection', exists(select 1 from information_schema.columns where table_schema='public' and table_name='rituals' and column_name='connection')
+  union all select 'wrapped saves (muse_private.save_wellness_groceries, muse_private.save_rituals)', to_regprocedure('muse_private.save_wellness_groceries(bigint,uuid,jsonb)') is not null and to_regprocedure('muse_private.save_rituals(bigint,uuid,jsonb)') is not null
+),
+checks(item, ok, detail) as (
+  select 'WELLNESS MIGRATION STATUS', true, case when bool_and(present) then 'INSTALLED' when bool_or(present) then 'PARTIAL — stop; missing: '||string_agg(name,', ') filter (where not present) else 'MISSING — safe to apply' end||case when exists(select 1 from supabase_migrations.schema_migrations where version='20261106000100') then ' · history row present' else ' · no history row' end from objects
+  union all
   -- Prerequisites the migration builds on.
   select 'prerequisite: wellness pass A', exists(select 1 from supabase_migrations.schema_migrations where version='20261101000900'), 'tables + original save_wellness'
   union all select 'prerequisite: wellness MVP completion', exists(select 1 from supabase_migrations.schema_migrations where version='20261101001000'), 'grocery wrapper + muse_private.save_wellness'
   union all select 'prerequisite: rituals MVP', exists(select 1 from supabase_migrations.schema_migrations where version='20261101001100'), 'save_rituals'
   union all select 'prerequisite: ritual lifecycle', exists(select 1 from supabase_migrations.schema_migrations where version='20261101001200'), 'read_rituals with inactive periods'
-  union all select 'prerequisite: latest prior migration (paged reads)', exists(select 1 from supabase_migrations.schema_migrations where version='20261105000100'), 'history is current'
   union all select 'prerequisite: inner wellness save in muse_private', to_regprocedure('muse_private.save_wellness(bigint,uuid,jsonb)') is not null, 'called by the wrapper'
   union all select 'prerequisite: profile timezones set', not exists(select 1 from public.profiles where time_zone is null), 'saves require a timezone'
   -- Applied state (false before, true after).
@@ -25,9 +37,9 @@ with checks(item, ok, detail) as (
   union all select 'security: anon cannot read goal tables', not exists(select 1 from information_schema.role_table_grants where table_schema='public' and table_name in ('wellness_goals','wellness_goal_versions') and grantee='anon'), ''
   union all select 'security: authenticated can call public saves', has_function_privilege('authenticated','public.save_wellness(bigint,uuid,jsonb)','execute') and has_function_privilege('authenticated','public.save_rituals(bigint,uuid,jsonb)','execute'), ''
   union all select 'security: anon cannot call public saves', not has_function_privilege('anon','public.save_wellness(bigint,uuid,jsonb)','execute') and not has_function_privilege('anon','public.save_rituals(bigint,uuid,jsonb)','execute'), ''
-  union all select 'security: clients cannot call muse_private originals', to_regprocedure('muse_private.save_wellness_groceries(bigint,uuid,jsonb)') is null or (not has_function_privilege('authenticated','muse_private.save_wellness_groceries(bigint,uuid,jsonb)','execute') and not has_function_privilege('authenticated','muse_private.save_rituals(bigint,uuid,jsonb)','execute')), ''
+  union all select 'security: clients cannot call muse_private originals', case when to_regprocedure('muse_private.save_wellness_groceries(bigint,uuid,jsonb)') is null or to_regprocedure('muse_private.save_rituals(bigint,uuid,jsonb)') is null then true else not has_function_privilege('authenticated','muse_private.save_wellness_groceries(bigint,uuid,jsonb)','execute') and not has_function_privilege('authenticated','muse_private.save_rituals(bigint,uuid,jsonb)','execute') end, ''
   -- Additive: nothing was backfilled or inferred.
-  union all select 'additive: no ritual connected by the migration', not exists(select 1 from information_schema.columns where table_schema='public' and table_name='rituals' and column_name='connection') or (select count(*) from public.rituals where connection is not null)=0 or exists(select 1 from public.wellness_goals), 'connections only come from people'
+  union all select 'additive: no ritual connected by the migration', case when not exists(select 1 from information_schema.columns where table_schema='public' and table_name='rituals' and column_name='connection') then true else (xpath('/row/n/text()',query_to_xml('select (select count(*) from public.rituals where connection is not null)=0 or exists(select 1 from public.wellness_goals) as n',false,true,'')))[1]::text::boolean end, 'connections only come from people (evaluated lazily so this runs before the column exists)'
 )
 select item, ok, detail from checks
 union all
