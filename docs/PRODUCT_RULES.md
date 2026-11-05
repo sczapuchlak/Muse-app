@@ -72,7 +72,7 @@ Capture structured data when useful: movement frequency, adherence/streaks, week
 
 Approved stack: Next.js, React, TypeScript, Tailwind CSS, Supabase PostgreSQL/Auth/RLS, Vercel, PWA, private GitHub repository. The local database foundation and private authentication are implemented; domain UI persistence, hosted deployment and PWA installation remain planned. Independent private accounts are the ownership model; never treat the fictional Stephanie UI profile as the authenticated identity.
 
-Preview/staging uses test databases/data; production uses real databases/data. One codebase/repository, separate environment variables/databases. No account numbers in Money. No persistence of prototype domain records yet; theme, material, Muse Magic, Notes pane and optional Cosmic Forecast preferences may use localStorage.
+Preview/staging uses test databases/data; production uses real databases/data. One codebase/repository, separate environment variables/databases. No account numbers in Money. No persistence of prototype domain records yet; Muse Magic, Notes pane and optional Cosmic Forecast preferences may use localStorage. Theme, glass material and an applied Theme Atelier remix sync to the signed-in account (`appearance_preferences`), with this browser's copy kept for instant first paint and offline use.
 
 ## Evolving decisions
 
@@ -651,4 +651,19 @@ Stephanie approved importing the HeartYearning Dream Symbols Dataset with attrib
 
 - Muse stays invite-only and passwordless; onboarding never creates or exposes another account's data.
 - Only accounts the server marks as not onboarded see onboarding. Existing accounts are never forced through it, and finishing it is one-way.
-- Onboarding saves only the person's own name, timezone and completion. Theme and glass stay per-browser preferences, chosen with the existing pickers.
+- Onboarding saves only the person's own name, timezone and completion. Theme and glass are chosen with the existing pickers; once signed in they follow the account across devices (see Theme Atelier).
+
+## Theme Atelier — approved November 2026
+
+- **A theme remix studio, not a design-system editor.** #57 owns typography, component shapes, radii, border widths, spacing, sizing, layout and interaction structure; these are identical in every theme. Theme Atelier changes only per-theme colour, gradient, glass and atmosphere values (the token set in `app/themes.css`, plus the atmosphere layer lists and multipliers).
+- **One theme engine.** A remix is an official base theme plus sparse changes. Applying it keeps `data-theme` on the base and adds one generated, scoped rule (`data-atelier`), so materials, Disco light, birthday confetti and every theme-aware rule keep working. No parallel engine.
+- **Official themes are never modified or stored.** Editing an original always creates the person's own copy; "Back to original" removes every change.
+- **Experiments are isolated.** The editor previews in its own frame; the real app changes only on an explicit Apply of a saved theme. Choosing an official theme leaves any applied remix. Undo/redo, unsaved indicator, reset, drafts, save-as-new and comparison are standard.
+- **Applied appearance syncs across signed-in devices**; the newest change wins.
+- **Direct manipulation of glow spots**: + Add Glow creates a bloom on the preview canvas; handles (move, resize) show only while editing. Glows support colour and opacity, reach and softness, circle/ellipse, blending, duplicate, hide, delete and reorder. CSS radial glows cannot rotate; angled light uses linear/conic layers.
+- **Limits**: up to eight of the person's own layers on top of the editable, hideable, always-resettable built-in layers; six stops per layer; 200 saved themes per account.
+- **Mood colours** stay in Advanced and keep their semantic meaning.
+- **Disco Damage XXXTRA!** is unchanged; its first-shipped light and atmosphere are restorable inside a remix.
+- **Safety**: themes are private (owner-only RLS). Imported files are versioned JSON; only typed, allow-listed values are accepted and no CSS or script is ever executed.
+- **Readability** warnings (WCAG, measured on composited glass) never auto-correct creative choices.
+- **Handing themes to Muse**: Stephanie exports a file and hands it to Claude. A *new official theme* gets its own id, name and description, and inherits special theme effects (Disco light, glitter, foil; birthday confetti) only when explicitly chosen. An *update to an official theme* keeps its id and name. Before an update, the remixes built on that theme are frozen and today's version is kept as a frozen theme, unless she opts out; unfrozen remixes show a warning when their base has changed. Frozen themes keep every token, layer and glow; effects that belong to a theme id itself (e.g. Disco's glitter stars) still follow the official theme.

@@ -6,6 +6,7 @@ import { readThemePreference, selectTheme, serverThemePreference, subscribeTheme
 import { materials, readMaterial, selectMaterial, serverMaterial, subscribeMaterial } from "@/lib/material-preference";
 import {readMagic,serverMagic,subscribeMagic,magicLevels,selectMagic} from "@/lib/magic-preference";
 import { MuseStar } from "./MuseStar";
+import { readApplied, serverApplied, subscribeApplied } from "@/lib/atelier/applied";
 import { MuseIcon } from "./MuseIcon";
 import { GlassPopover } from "./GlassPopover";
 import "./ThemeSwitcher.css";
@@ -19,7 +20,9 @@ export function ThemeSwitcher({compact=false,variant="pill"}:{compact?:boolean;v
   const material = useSyncExternalStore(subscribeMaterial, readMaterial, serverMaterial);
   useLayoutEffect(() => { document.documentElement.setAttribute("data-material", material); }, [material]);
   const triggerRef = useRef<HTMLButtonElement>(null);
-  const active = themes.find((theme) => theme.id === activeId) ?? defaultTheme;
+  const applied = useSyncExternalStore(subscribeApplied, readApplied, serverApplied);
+  const official = themes.find((theme) => theme.id === activeId) ?? defaultTheme;
+  const active = applied ? { ...official, name: applied.name } : official;
   useLayoutEffect(() => { document.documentElement.setAttribute("data-theme", activeId); }, [activeId]);
   function close() { setOpen(false); triggerRef.current?.focus(); }
 
@@ -44,11 +47,11 @@ export function ThemeSwitcher({compact=false,variant="pill"}:{compact?:boolean;v
         }}>
           {themes.map((theme) => (
             <button key={theme.id} type="button" className="muse-theme-option muse-edge" role="menuitemradio" tabIndex={-1}
-              data-popover-autofocus={theme.id === activeId ? "true" : undefined} aria-checked={activeId === theme.id}
+              data-popover-autofocus={theme.id === activeId ? "true" : undefined} aria-checked={!applied && activeId === theme.id}
               onClick={() => { selectTheme(theme.id); close(); }}>
               <span className="muse-theme-orb" style={{ "--theme-orb": theme.preview } as CSSProperties} aria-hidden="true" />
               <span className="muse-theme-name"><span>{theme.name}{"family" in theme&&<MuseStar size={14} color="pink"/>}</span><small>{theme.subtitle}</small></span>
-              {activeId === theme.id && <MuseIcon name="check" size={16} />}
+              {!applied && activeId === theme.id && <MuseIcon name="check" size={16} />}
             </button>
           ))}
           <div className="muse-theme-materials" role="group" aria-label="Glass material"><p className="small-label">Glass material</p>{materials.map((value) => <button key={value} type="button" className="muse-theme-option muse-edge" role="menuitemradio" tabIndex={-1} aria-label={`${value === "crystal" ? "Crystal" : "Frosted"} glass`} aria-checked={material === value} onClick={() => selectMaterial(value)}><span className="muse-material-swatch" data-material={value} aria-hidden="true" /><span>{value === "crystal" ? "Crystal" : "Frosted"}</span>{material === value && <MuseIcon name="check" size={16} />}</button>)}</div>

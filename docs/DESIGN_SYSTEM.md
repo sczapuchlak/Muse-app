@@ -577,3 +577,25 @@ Module stylesheets reference roles; they never declare their own families, style
 **Rules:**
 - Practical modules (Planner, Money, Wellness, Rituals, Insights) stay in Plus Jakarta Sans apart from shared editorial moments such as the Daily Edit greeting.
 - To change the hierarchy, change the tokens in `app/typography.css`, not module CSS.
+
+
+## Theme Atelier: theme tokens vs. the design system
+
+The design system (#57) defines what components look like structurally; Theme Atelier lets a person remix their colours, gradients and atmosphere. The boundary is enforced in code: only per-theme tokens are editable (`lib/atelier/tokens.ts`), and a test fails if a radius, spacing, font or size token appears there.
+
+**Atmosphere layer tokens** (defaults are the exact official layers, so official themes render unchanged; verified computed-style identical across nine themes × two materials):
+
+| Token | Plane |
+| --- | --- |
+| `--atmosphere-bloom-layers` | `.muse-atmosphere::before` (header glow + four blooms over `--background`) |
+| `--atmosphere-pool-layers` | `.muse-atmosphere::after` (haze pools; Disco overrides with its localized pools) |
+| `--atmosphere-haze-layers` | `.muse-galaxy-grain::before` |
+| `--disco-spill-layers`, `--disco-caustic-layers`, `--disco-reflection-layers` | Disco-only light |
+| `--atmosphere-custom-layers`, `--atmosphere-custom-blend` | `.muse-atmosphere-studio` (a person's own layers and glows) |
+| `--atmosphere-vignette` | `.muse-atmosphere-vignette` (viewport vignette) |
+| `--atmosphere-filter`, `--atmosphere-star-opacity`, `--atmosphere-star-glow`, `--icon-glow` | tone, star and icon multipliers (default `none`/`1`) |
+| `data-atelier-stars` | star density (`none`/`sparse`/`rich`), independent of Muse Magic |
+
+Icon gradient angle and middle stop are SVG attributes, published by the applied theme through `lib/atelier/icon-gradient.ts`; the default reproduces the original diagonal exactly.
+
+`lib/atelier/catalog.generated.ts` is generated from these stylesheets (`node scripts/generate-atelier-catalog.mjs`); a test fails when it is stale.

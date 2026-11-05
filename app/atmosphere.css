@@ -1,14 +1,15 @@
 /* One continuous document-height environment behind every module and every scroll position. */
-.muse-atmosphere { position:absolute; inset:0; inset-inline-start:var(--muse-rail-width); z-index:-1; pointer-events:none; overflow:clip; }
-.muse-atmosphere::before { content:""; position:absolute; inset:0; background:
+/* Theme Atelier: every atmospheric plane reads one layer-list token. The defaults below are the exact layers the
+   official themes have always used, so official themes render unchanged; a remix replaces a list or a multiplier
+   (lib/atelier). Colours stay theme tokens; geometry of components is never involved. */
+:root {
+ --atmosphere-bloom-layers:
  radial-gradient(ellipse var(--hero-glow-size) at var(--page-hero-glow-position),var(--hero-glow),transparent 78%),
  radial-gradient(ellipse var(--bloom-size-1) at var(--page-bloom-position-1),var(--atmosphere-aqua),transparent 78%),
  radial-gradient(ellipse var(--bloom-size-2) at var(--page-bloom-position-2),var(--atmosphere-lavender),transparent 78%),
  radial-gradient(ellipse var(--bloom-size-3) at var(--page-bloom-position-3),var(--atmosphere-blush),transparent 80%),
- radial-gradient(ellipse var(--bloom-size-4) at var(--page-bloom-position-4),var(--atmosphere-blue-violet),transparent 82%),var(--background); }
-/* Large feathered pools cross content bands. Relative anchors cover the full document,
-   while upper viewport anchors keep each theme's established opening composition. */
-.muse-atmosphere::after { content:""; position:absolute; inset:0; background:
+ radial-gradient(ellipse var(--bloom-size-4) at var(--page-bloom-position-4),var(--atmosphere-blue-violet),transparent 82%);
+ --atmosphere-pool-layers:
  radial-gradient(ellipse 65% 22% at -8% 33%,var(--atmosphere-aqua),transparent 83%),
  radial-gradient(ellipse 61% 25% at 108% 43%,var(--atmosphere-blush),transparent 82%),
  radial-gradient(ellipse 65% 22% at 24% 62%,var(--atmosphere-blue-violet),transparent 84%),
@@ -16,11 +17,29 @@
  radial-gradient(ellipse 69% 20% at 18% 99%,var(--atmosphere-lavender),transparent 83%),
  radial-gradient(ellipse 45% 25% at 90% 102%,var(--atmosphere-blush),transparent 85%),
  radial-gradient(ellipse 45% 340px at 52% 0%,var(--haze-primary),transparent 85%),
- radial-gradient(ellipse 55% 32% at 71% 66%,var(--haze-secondary),transparent 87%); }
+ radial-gradient(ellipse 55% 32% at 71% 66%,var(--haze-secondary),transparent 87%);
+ --atmosphere-haze-layers:radial-gradient(ellipse 12% 3% at 7% 23%,var(--haze-primary),transparent 90%),radial-gradient(ellipse 16% 5% at 91% 49%,var(--haze-secondary),transparent 90%),radial-gradient(ellipse 18% 3% at 20% 83%,var(--haze-primary),transparent 90%);
+ --disco-reflection-layers:conic-gradient(from 160deg at 5% 4%,transparent 0 68%,color-mix(in srgb,var(--star-1) 10%,transparent) 69%,transparent 71%),conic-gradient(from 35deg at 96% 46%,transparent 0 73%,color-mix(in srgb,var(--accent-cyan) 8%,transparent) 74%,transparent 76%),conic-gradient(from 110deg at 11% 87%,transparent 0 62%,color-mix(in srgb,var(--accent-warm) 8%,transparent) 63%,transparent 65%);
+ --atmosphere-custom-layers:none;
+ --atmosphere-vignette:none;
+ --atmosphere-filter:none;
+ --atmosphere-star-opacity:1;
+ --atmosphere-star-glow:1;
+}
+.muse-atmosphere { position:absolute; inset:0; inset-inline-start:var(--muse-rail-width); z-index:-1; pointer-events:none; overflow:clip; }
+.muse-atmosphere::before { content:""; position:absolute; inset:0; background:
+ var(--atmosphere-bloom-layers),var(--background); filter:var(--atmosphere-filter); }
+/* Large feathered pools cross content bands. Relative anchors cover the full document,
+   while upper viewport anchors keep each theme's established opening composition. */
+.muse-atmosphere::after { content:""; position:absolute; inset:0; background:
+ var(--atmosphere-pool-layers); filter:var(--atmosphere-filter); }
+.muse-atmosphere-studio { position:absolute; inset:0; z-index:1; background:var(--atmosphere-custom-layers); background-blend-mode:var(--atmosphere-custom-blend,normal); filter:var(--atmosphere-filter); }
+.muse-atmosphere-vignette { position:fixed; inset:0; inset-inline-start:var(--muse-rail-width); z-index:2; background:var(--atmosphere-vignette); }
+@media(max-width:1023px){.muse-atmosphere-vignette { inset-inline-start:0; }}
 .muse-galaxy-grain,.muse-galaxy-candy { position:absolute; inset:0; z-index:1; }
-.muse-galaxy-fleck { position:absolute; width:var(--fleck-size); height:var(--fleck-size); border-radius:50%; background:var(--fleck-color); opacity:.25; box-shadow:0 0 7px var(--fleck-color); }
+.muse-galaxy-fleck { position:absolute; width:var(--fleck-size); height:var(--fleck-size); border-radius:50%; background:var(--fleck-color); opacity:.25; box-shadow:0 0 calc(7px * var(--atmosphere-star-glow)) var(--fleck-color); }
 .muse-galaxy-star { width:auto; height:auto; background:transparent; border-radius:0; opacity:.45; box-shadow:none; }
-.muse-galaxy-bokeh { opacity:.12; filter:blur(1px); box-shadow:0 0 12px var(--fleck-color); }
+.muse-galaxy-bokeh { opacity:.12; filter:blur(1px); box-shadow:0 0 calc(12px * var(--atmosphere-star-glow)) var(--fleck-color); }
 .muse-galaxy-candy { display:none; }
 :root[data-theme="issya-bday"] .muse-galaxy-candy,:root[data-theme="issya-bday-xxx"] .muse-galaxy-candy { display:block; }
 .muse-galaxy-candy > i { position:absolute; width:9px; height:3px; background:var(--candy-color); border-radius:3px; transform:rotate(var(--candy-turn)); opacity:.75; box-shadow:0 0 9px color-mix(in srgb,var(--candy-color) 40%,transparent); }
@@ -33,16 +52,20 @@
 @media(prefers-reduced-motion:no-preference){.muse-galaxy-star:nth-child(odd){animation:muse-galaxy-shimmer 24s ease-in-out var(--fleck-delay) infinite;}@keyframes muse-galaxy-shimmer{0%,60%,100%{opacity:.4}68%{opacity:.65}80%{opacity:.4}}}
 @media(max-width:1023px){.muse-atmosphere { inset-inline-start:0; }}
 /* Quiet clustered dust sits behind the content; no uniform tile or random re-render. */
-.muse-galaxy-fleck { opacity:var(--fleck-opacity,.25); }
-.muse-galaxy-bokeh { opacity:calc(var(--fleck-opacity,.25) * .45); }
-.muse-galaxy-grain::before { content:""; position:absolute; inset:0; opacity:.35; background:radial-gradient(ellipse 12% 3% at 7% 23%,var(--haze-primary),transparent 90%),radial-gradient(ellipse 16% 5% at 91% 49%,var(--haze-secondary),transparent 90%),radial-gradient(ellipse 18% 3% at 20% 83%,var(--haze-primary),transparent 90%); }
+.muse-galaxy-fleck { opacity:calc(var(--fleck-opacity,.25) * var(--atmosphere-star-opacity)); }
+.muse-galaxy-bokeh { opacity:calc(var(--fleck-opacity,.25) * .45 * var(--atmosphere-star-opacity)); }
+.muse-galaxy-grain::before { content:""; position:absolute; inset:0; opacity:.35; background:var(--atmosphere-haze-layers); }
 .muse-disco-reflections { display:none; position:absolute; inset:0; z-index:1; }
-:root[data-theme="disco-damage"] .muse-disco-reflections { display:block; background:conic-gradient(from 160deg at 5% 4%,transparent 0 68%,color-mix(in srgb,var(--star-1) 10%,transparent) 69%,transparent 71%),conic-gradient(from 35deg at 96% 46%,transparent 0 73%,color-mix(in srgb,var(--accent-cyan) 8%,transparent) 74%,transparent 76%),conic-gradient(from 110deg at 11% 87%,transparent 0 62%,color-mix(in srgb,var(--accent-warm) 8%,transparent) 63%,transparent 65%); }
+:root[data-theme="disco-damage"] .muse-disco-reflections { display:block; background:var(--disco-reflection-layers); }
 /* Continuous reflected light yields to header copy and temporal hit areas. */
 .muse-disco-reflections { mask-image:linear-gradient(180deg,transparent 0 160px,#000 280px); }
 
 /* Disco keeps black negative space; localized light replaces the broad shared wash. */
-:root[data-theme="disco-damage"] .muse-atmosphere::after { background:
+:root[data-theme="disco-damage"] { --atmosphere-pool-layers:
  radial-gradient(ellipse 210px 150px at 98% 32%,color-mix(in srgb,var(--accent-pink) 16%,transparent),transparent 80%),
  radial-gradient(ellipse 180px 160px at 1% 62%,color-mix(in srgb,var(--accent-aqua) 18%,transparent),transparent 80%),
  radial-gradient(ellipse 200px 130px at 92% 91%,color-mix(in srgb,var(--chart-3) 12%,transparent),transparent 82%); }
+
+/* Theme Atelier star density. Independent from Muse Magic levels, which still apply on top. */
+:root[data-atelier-stars="sparse"] .muse-galaxy-fleck:nth-child(2n) { display:none; }
+:root[data-atelier-stars="none"] :is(.muse-galaxy-fleck,.muse-disco-glitter) { display:none; }

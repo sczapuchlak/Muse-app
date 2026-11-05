@@ -1,0 +1,55 @@
+/* The preview stage reuses the real app shell; these rules only arrange the sample gallery and the glow handles. */
+html:has(.muse-atelier-stage){background:var(--background)}
+.muse-atelier-stage:not([data-ready]){visibility:hidden}
+.muse-atelier-stage .muse-app-content{display:grid;gap:22px;padding-bottom:120px}
+.muse-atelier-stage-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:18px;align-items:start}
+.muse-atelier-stage-card{min-width:0}
+.muse-atelier-rituals{list-style:none;margin:0 0 14px;padding:0;display:grid;gap:12px}
+.muse-atelier-rituals>li{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px}
+.muse-atelier-rituals strong{display:block;font-size:.95rem}
+.muse-atelier-rituals small{color:var(--text-muted);font-size:.8rem}
+.muse-atelier-progress{height:10px;border-radius:999px;background:var(--surface-control);overflow:hidden}
+.muse-atelier-progress>span{display:block;height:100%;border-radius:inherit;background:var(--water-progress-gradient,var(--completion-gradient));box-shadow:0 0 12px var(--water-glow)}
+.muse-atelier-dream h3{margin:0;font-size:clamp(1.5rem,2.6vw,2.1rem)}
+.muse-atelier-dream .type-quote{margin:0;color:var(--text-muted)}
+.muse-atelier-tarot{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center}
+.muse-atelier-tarot h3{margin:4px 0}
+.muse-atelier-tarot p{margin:0 0 8px;color:var(--text-muted)}
+.muse-atelier-books{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:16px}
+.muse-atelier-book{display:grid;gap:8px}
+.muse-atelier-book strong{font-size:.92rem}
+.muse-atelier-gallery-controls{display:grid;gap:16px}
+.muse-atelier-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.muse-atelier-row>button,.muse-atelier-row>a{display:inline-flex;align-items:center;gap:6px}
+.muse-atelier-row .muse-field-label{flex:1 1 220px}
+.muse-atelier-focus-sample{padding:8px 14px;border-radius:12px;outline:2px solid var(--focus-ring);outline-offset:2px;font-size:.85rem}
+.muse-atelier-chart{display:flex;align-items:flex-end;gap:8px;height:90px;margin-top:14px}
+.muse-atelier-chart>span{flex:1;height:var(--h);border-radius:8px 8px 3px 3px;background:var(--c)}
+.muse-atelier-static-popover{position:static!important;inset:auto!important;display:grid;gap:4px;max-width:320px;transform:none!important;opacity:1!important}
+.muse-atelier-static-modal{position:static!important;display:grid;gap:12px;inset:auto;margin:0;max-width:420px;padding:22px;border:1px solid var(--glass-border);border-radius:22px;background:var(--floating-background);box-shadow:var(--floating-shadow);color:var(--foreground)}
+.muse-atelier-static-modal h3,.muse-atelier-static-modal p{margin:0}
+.muse-atelier-type{display:grid;gap:8px}
+.muse-atelier-type>p{margin:0}
+.muse-atelier-type .type-display{font-size:2rem}
+.muse-atelier-type .type-quote{font-size:1.2rem}
+.muse-atelier-muted{color:var(--text-muted)}
+
+/* Glow handles: above the page while editing, never part of the theme. */
+.muse-glow-handles{position:absolute;z-index:2147483000;pointer-events:none}
+.muse-glow-handle{position:absolute;width:0;height:0}
+.muse-glow-reach{position:absolute;left:0;top:0;transform:translate(-50%,-50%);border-radius:50%;border:1.5px dashed color-mix(in srgb,var(--glow) 70%,#fff);opacity:.55}
+.muse-glow-handle[data-active] .muse-glow-reach{opacity:1;box-shadow:0 0 0 1px color-mix(in srgb,#000 35%,transparent)}
+.muse-glow-centre{position:absolute;left:0;top:0;width:34px;height:34px;margin:-17px 0 0 -17px;padding:0;border:0;border-radius:50%;background:transparent;pointer-events:auto;cursor:grab;touch-action:none}
+.muse-glow-centre:active{cursor:grabbing}
+.muse-glow-centre>span{position:absolute;inset:7px;border-radius:50%;background:var(--glow);border:2px solid #fff;box-shadow:0 0 0 1.5px rgba(0,0,0,.55),0 0 18px var(--glow)}
+.muse-glow-handle[data-active] .muse-glow-centre>span{inset:4px;border-width:3px}
+.muse-glow-centre:focus-visible{outline:3px solid #fff;outline-offset:2px;box-shadow:0 0 0 6px rgba(0,0,0,.6)}
+.muse-glow-size{position:absolute;width:18px;height:18px;margin:-9px 0 0 -9px;padding:0;border-radius:5px;border:2px solid #fff;background:rgba(0,0,0,.55);pointer-events:auto;cursor:nwse-resize;touch-action:none}
+.muse-glow-size:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.muse-glow-label{position:absolute;left:22px;top:-30px;padding:3px 9px;border-radius:999px;background:rgba(0,0,0,.72);color:#fff;font:600 12px/1.4 var(--font-ui);white-space:nowrap;pointer-events:none}
+.muse-glow-handle[data-built-in]:not([data-active]) .muse-glow-centre>span{inset:10px;border-width:1.5px;opacity:.85}
+.muse-glow-handle[data-built-in]:not([data-active]) .muse-glow-centre:hover>span{inset:7px;opacity:1}
+.muse-atelier-icon-strip{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;padding:16px 20px}
+.muse-atelier-icon-strip>span{display:grid;place-items:center;width:58px;height:58px;border-radius:16px;border:1px solid var(--glass-border);background:var(--surface-subtle)}
+.muse-atelier-icon-strip>span[data-active]{border-color:var(--selected-border);background:var(--selected-background)}
+.muse-atelier-icon-strip>span[data-active] .muse-prismatic-svg{filter:drop-shadow(0 0 calc(3px * var(--icon-glow, 1)) color-mix(in srgb,var(--icon-edge) 42%,transparent))}

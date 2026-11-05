@@ -1,6 +1,6 @@
 import { navigation } from "@/lib/navigation";
 import {whimsyExperiences} from '@/lib/whimsy/models';
-const destinations = new Set([...navigation.map(item => item.href),...whimsyExperiences.map(id=>`/whimsy/${id}`),'/mood']);
+const destinations = new Set([...navigation.map(item => item.href),...whimsyExperiences.map(id=>`/whimsy/${id}`),'/mood','/appearance/atelier','/atelier']);
 const base = "http://muse.local";
 /** Return paths never escape the app, target auth endpoints, or become protocol-relative. */
 export function safeReturnPath(input: unknown): string {
