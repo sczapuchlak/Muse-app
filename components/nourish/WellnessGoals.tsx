@@ -15,13 +15,15 @@ const statusLabels:Record<GoalPeriodStatus,string>={achieved:"Met","missed":"Bel
 const label=(status:GoalPeriodStatus,goal?:WellnessGoal)=>goal?goalStatusLabel(status,goalMetricInfo[goal.metric].basis):statusLabels[status];
 const number=(value:number)=>new Intl.NumberFormat("en-US",{maximumFractionDigits:1}).format(value);
 const periodWord=(period:GoalPeriod)=>period==="week"?"week":"day";
+const currentLabel=(period:GoalPeriod)=>period==="week"?"This week":"Today";
 const rangeLabel=(result:GoalPeriodResult,period:GoalPeriod)=>{const f=(d:string,o:Intl.DateTimeFormatOptions)=>new Intl.DateTimeFormat("en-US",{...o,timeZone:"UTC"}).format(new Date(`${d}T12:00:00Z`));return period==="week"?`Week of ${f(result.start,{month:"short",day:"numeric"})}`:f(result.start,{weekday:"short",month:"short",day:"numeric"});};
 
 /** Wellness goals: optional, versioned targets reported against the records Wellness already owns. */
 export function WellnessGoals({today,timeZone}:{today:string;timeZone:string}){
  const {state,status,dispatch}=useWellness();
  const [editor,setEditor]=useState<{goal?:WellnessGoal;metric?:GoalMetric;anchor:HTMLElement|null}|null>(null);
- const [year,setYear]=useState(()=>today.slice(0,4));
+ // "today" is unknown until the client clock resolves, so the year follows it until the person picks another.
+ const [chosenYear,setYear]=useState<string|null>(null),year=chosenYear??today.slice(0,4);
  if(!status.loaded||!today)return <p role="status" className="small-label">Loading your Wellness records…</p>;
  const sources:ProgressSources={timeZone,wellness:state};
  const goals=state.goals;
@@ -77,10 +79,9 @@ function GoalCard({goal,sources,today,onEdit,onStatus}:{goal:WellnessGoal;source
  const pct=current?.target?Math.min(100,current.value/current.target*100):0;
  return <article className="muse-goal-card" data-status={current?.status}>
   <header><div><p className="small-label">{info.label} · per {periodWord(goal.period)}</p><h3>{version?.direction==="atMost"?"At most":"At least"} {number(version?.target??0)} {version?.unit}</h3></div><span className="muse-goal-chip" data-status={current?.status}>{current?label(current.status,goal):""}</span></header>
-  {current&&current.status!=="paused"&&current.status!=="inactive"&&<div className="muse-goal-progress"><div className="muse-goal-meter" role="meter" aria-valuemin={0} aria-valuemax={current.target??0} aria-valuenow={current.value} aria-label={`This ${periodWord(goal.period)}: ${number(current.value)} of ${number(current.target??0)} ${current.unit}`}><span style={{inlineSize:`${pct}%`}}/></div><p className="small-label">This {periodWord(goal.period)}: {number(current.value)} of {number(current.target??0)} {current.unit}{current.incompleteDays>0?` · ${current.incompleteDays} ${current.incompleteDays===1?"day is":"days are"} missing details`:""}</p></div>}
+  {current&&current.status!=="paused"&&current.status!=="inactive"&&<div className="muse-goal-progress"><div className="muse-goal-meter" role="meter" aria-valuemin={0} aria-valuemax={current.target??0} aria-valuenow={current.value} aria-label={`${currentLabel(goal.period)}: ${number(current.value)} of ${number(current.target??0)} ${current.unit}`}><span style={{inlineSize:`${pct}%`}}/></div><p className="small-label">{currentLabel(goal.period)}: {number(current.value)} of {number(current.target??0)} {current.unit}{current.incompleteDays>0?` · ${current.incompleteDays} ${current.incompleteDays===1?"day is":"days are"} missing details`:""}</p></div>}
   <Strip results={results} period={goal.period} goal={goal}/>
-  {info.basis==="planned"&&<p className="small-label muse-goal-basis">From meals in your plan, not confirmed intake.</p>}
-  <p className="small-label">{summary.rate===null?"Not enough finished periods to summarize yet.":info.basis==="planned"?`Your plan met the target on ${summary.achieved} of ${summary.achieved+summary.missed} finished days with complete planned values`:`Met ${summary.achieved} of ${summary.achieved+summary.missed} finished ${goal.period==="week"?"weeks":"days"} with a record`}{summary.unknown?` · ${summary.unknown} without a complete record`:""}{summary.paused?` · ${summary.paused} paused`:""}.</p>
+  <p className="small-label">{summary.rate===null?"Not enough finished periods to summarize yet.":info.basis==="planned"?`From planned meals, not confirmed intake. The plan met the target on ${summary.achieved} of ${summary.achieved+summary.missed} finished days`:`Met ${summary.achieved} of ${summary.achieved+summary.missed} finished ${goal.period==="week"?"weeks":"days"} with a record`}{summary.unknown?` · ${summary.unknown} without a complete record`:""}{summary.paused?` · ${summary.paused} paused`:""}.</p>
   {issue&&<p className="small-label" role="status">{issue}</p>}
   <footer><button type="button" className="text-button" onClick={event=>onEdit(event.currentTarget)}>Edit target</button>{version?.status==="active"&&<button type="button" className="text-button" onClick={()=>onStatus("paused")}>Pause</button>}{version?.status==="paused"&&<button type="button" className="text-button" onClick={()=>onStatus("active")}>Resume</button>}{version?.status!=="inactive"?<button type="button" className="text-button" onClick={()=>onStatus("inactive")}>Retire</button>:<button type="button" className="text-button" onClick={()=>onStatus("active")}>Restore</button>}</footer>
  </article>;

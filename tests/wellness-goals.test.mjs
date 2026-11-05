@@ -163,7 +163,8 @@ test('nutrition goals are planned, never worded as achieved intake',async()=>{
  assert.equal(goals.goalStatusLabel('achieved'),'Met');
  const {readFileSync}=await import('node:fs');const {join}=await import('node:path');const {root}=await import('./helpers.mjs');
  const read=p=>readFileSync(join(root,p),'utf8');
- assert.match(read('components/nourish/WellnessGoals.tsx'),/not confirmed intake/);
+ assert.match(read('components/nourish/WellnessGoals.tsx'),/From planned meals, not confirmed intake/);
+ assert.match(read('components/nourish/WellnessGoals.tsx'),/chosenYear\?\?today\.slice\(0,4\)/,'the year follows today once it resolves');
  assert.match(read('components/nourish/WellnessGoalsGlance.tsx'),/goalStatusLabel\(result\.status,goalMetricInfo\[goal\.metric\]\.basis\)/);
  assert.match(read('components/insights/WellnessGoalInsights.tsx'),/Plan met/);
 });

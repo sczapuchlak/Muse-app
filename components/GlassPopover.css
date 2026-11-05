@@ -36,3 +36,6 @@
 
 /* Inside a modal, a popover sits over form text: back the glass with the page colour so nothing shows through. */
 dialog .muse-popover-panel { background: linear-gradient(var(--floating-background), var(--floating-background)), var(--background); }
+
+/* Phone-width popovers sit over busy content: back the glass with the page colour so text stays legible. */
+@media (max-width:600px){.muse-popover-panel{background:linear-gradient(var(--floating-background),var(--floating-background)),var(--background);}}
