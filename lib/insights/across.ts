@@ -64,7 +64,7 @@ export function crossModuleConnections(metrics:ReturnTypeOfMetrics,sources:Progr
 export function recapFacts({metrics,sources,goals,today}:{metrics:ReturnTypeOfMetrics;sources:ProgressSources;goals?:WellnessGoal[];today:string}){
  const range=metrics.range,w=sources.wellness?wellnessForRange(sources.wellness,range):null,tasks=measureDays({metric:'tasks-completed'},sources);
  const r=metrics.rituals,decided=r.complete+r.partial+r.missed;
- const goalRows=(goals??[]).filter(g=>currentVersion(g)).map(goal=>{const results=goalResultsBetween(goal,sources,range.start,range.end,today);const a=adherence(results.filter(x=>x.status!=='in-progress'));return {id:goal.id,label:goalMetricInfo[goal.metric].label,period:goal.period,...a};}).filter(g=>g.achieved+g.missed+g.unknown+g.paused>0);
+ const goalRows=(goals??[]).filter(g=>currentVersion(g)).map(goal=>{const results=goalResultsBetween(goal,sources,range.start,range.end,today);const a=adherence(results.filter(x=>x.status!=='in-progress'));return {id:goal.id,label:goalMetricInfo[goal.metric].label,period:goal.period,basis:goalMetricInfo[goal.metric].basis,...a};}).filter(g=>g.achieved+g.missed+g.unknown+g.paused>0);
  const money=metrics.money;
  return {
   range,

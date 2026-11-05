@@ -154,3 +154,16 @@ test('Rituals surfaces read the connected view while writes stay with the Ritual
  assert.match(read('components/nourish/Nourish.tsx'),/\{id:"goals",label:"Goals"\}/);
  assert.match(read('components/MovementCard.tsx'),/kind:'activity\/duration'/);
 });
+
+test('nutrition goals are planned, never worded as achieved intake',async()=>{
+ for(const m of ['nutrition-protein','nutrition-calories','nutrition-carbs','nutrition-fat']){assert.equal(goals.goalMetricInfo[m].basis,'planned');assert.match(goals.goalMetricInfo[m].label,/\(planned\)/);}
+ for(const m of ['workouts','strength-workouts','cardio-workouts','workout-minutes'])assert.equal(goals.goalMetricInfo[m].basis,'recorded');
+ assert.equal(goals.goalStatusLabel('achieved','planned'),'Plan meets target');
+ assert.equal(goals.goalStatusLabel('missed','planned'),'Plan below target');
+ assert.equal(goals.goalStatusLabel('achieved'),'Met');
+ const {readFileSync}=await import('node:fs');const {join}=await import('node:path');const {root}=await import('./helpers.mjs');
+ const read=p=>readFileSync(join(root,p),'utf8');
+ assert.match(read('components/nourish/WellnessGoals.tsx'),/not confirmed intake/);
+ assert.match(read('components/nourish/WellnessGoalsGlance.tsx'),/goalStatusLabel\(result\.status,goalMetricInfo\[goal\.metric\]\.basis\)/);
+ assert.match(read('components/insights/WellnessGoalInsights.tsx'),/Plan met/);
+});
