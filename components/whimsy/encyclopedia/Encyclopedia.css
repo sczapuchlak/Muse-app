@@ -10,7 +10,29 @@
 .muse-encyclopedia-sourced{margin:var(--space-3) 0 0;padding:var(--space-3) var(--space-4);border-left:2px solid var(--accent-secondary);border-radius:0 var(--control-radius) var(--control-radius) 0;background:color-mix(in srgb,var(--accent-secondary) 6%,transparent)}
 .muse-encyclopedia-sourced blockquote{margin:0}.muse-encyclopedia-sourced blockquote p{margin:0}
 .muse-encyclopedia-sourced figcaption{margin-top:var(--space-2)}
-.muse-encyclopedia-variations{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr));gap:var(--space-2);margin:var(--space-3) 0 0;padding:0;list-style:none}
-.muse-encyclopedia-variations li{display:grid;gap:2px;padding:var(--space-2) var(--space-3);border:1px solid var(--glass-border);border-radius:var(--control-radius)}
-.muse-encyclopedia-variations span{font-size:.82rem;color:var(--text-muted)}
+.muse-encyclopedia-variations{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr));gap:10px;margin:var(--space-2) 0 0;padding:0;list-style:none}
+.muse-encyclopedia-variation{display:flex;gap:12px;align-items:flex-start;height:100%;box-sizing:border-box;padding:12px 14px;border:1px solid var(--glass-border);border-radius:14px;background:var(--surface-subtle);color:var(--foreground,inherit);text-decoration:none;transition:border-color .2s,transform .2s,box-shadow .2s}
+.muse-encyclopedia-variation:hover,.muse-encyclopedia-variation:focus-visible{border-color:var(--selected-border);transform:translateY(-1px);box-shadow:0 8px 22px color-mix(in srgb,var(--accent-primary) 12%,transparent)}
+.muse-encyclopedia-variation-glyph{flex:none;display:grid;place-items:center;width:42px;height:42px;border-radius:50%;font-size:1.45rem;background:color-mix(in srgb,var(--accent-secondary) 10%,var(--surface-control,transparent))}
+.muse-encyclopedia-variation-body{display:grid;gap:3px;min-width:0}
+.muse-encyclopedia-variation-body strong{font:italic 1.08rem/1.25 var(--font-display,Georgia),Georgia,serif;font-weight:500}
+.muse-encyclopedia-variation-body>span{font-size:.84rem;color:var(--text-muted);display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden}
+.muse-encyclopedia-variation-body small{font-size:.7rem;letter-spacing:.04em;color:var(--text-muted)}
+@media (prefers-reduced-motion: reduce){.muse-encyclopedia-variation{transition:none}}
 .muse-encyclopedia-credit{margin-top:var(--space-6);text-align:center}
+/* Full entry: numbered chapters in one continuous read. */
+.muse-encyclopedia-chapter h2{display:flex;align-items:baseline;gap:10px}
+.muse-encyclopedia-numeral{font:italic .8rem var(--font-display,Georgia),serif;letter-spacing:.12em;color:var(--accent-secondary);min-width:2.2em}
+@keyframes muse-dream-reveal{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.muse-encyclopedia-chapter.muse-dream-reveal{animation:muse-dream-reveal 300ms ease-out both}
+@media (prefers-reduced-motion: reduce){.muse-encyclopedia-chapter.muse-dream-reveal{animation:none}}
+:root[data-magic="quiet"] .muse-encyclopedia-chapter.muse-dream-reveal{animation:none}
+/* Dream entries: the chapter column lines up with the hero card edge to edge. */
+.muse-dream-entry-page .muse-encyclopedia-reading{max-width:none;width:100%;margin-inline:0;justify-self:stretch}
+.muse-dream-entry-page .muse-encyclopedia-numeral{display:inline-grid;place-items:center;min-width:2.4em;height:1.9em;padding:0 .5em;border:1px solid color-mix(in srgb,var(--accent-secondary) 40%,var(--glass-border));border-radius:999px;font-size:.78rem;font-style:normal;letter-spacing:.1em;align-self:center}
+.muse-dream-entry-page .muse-encyclopedia-chapter h2{display:flex;align-items:center;gap:14px}
+/* A symbol's own picture in the field-guide hero, haloed in the theme's light. */
+.muse-encyclopedia-symbol{position:relative}
+.muse-encyclopedia-symbol-icon{display:grid;place-items:center;width:132px;height:132px;border-radius:50%;font-size:4.4rem;line-height:1;background:radial-gradient(circle,color-mix(in srgb,var(--accent-secondary) 22%,transparent),transparent 70%);filter:drop-shadow(0 0 18px color-mix(in srgb,var(--accent-secondary) 35%,transparent))}
+.muse-encyclopedia-symbol-star{position:absolute;top:6px;right:14px}
+@media(max-width:600px){.muse-encyclopedia-symbol-icon{width:96px;height:96px;font-size:3.2rem}}

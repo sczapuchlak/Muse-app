@@ -16,7 +16,9 @@ const nextConfig: NextConfig = {
   },
   turbopack: {
     rules: {
-      "*.css": {
+      // Only globals.css uses Tailwind. Running every component stylesheet through the Tailwind loader made
+      // Turbopack serve stale component CSS after edits; plain CSS uses Turbopack's built-in handling.
+      "globals.css": {
         loaders: ["@tailwindcss/turbopack"],
         as: "*.css",
       },

@@ -23,7 +23,7 @@ test('source chapter values are retained verbatim through every editorial format
 test('full-page routes and reading links use canonical IDs and return context',()=>{
  for(const file of ['app/(app)/whimsy/tarot/[cardId]/page.tsx','app/(app)/whimsy/dreamscapes/encyclopedia/[symbolId]/page.tsx'])assert.ok(existsSync(`${root}/${file}`));
  const href=grimoireEntryHref('tarot-swords-11',{from:'journal',reading:'12345678-1234-1234-1234-123456789abc',orientation:'reversed'});assert.equal(href,'/whimsy/tarot/tarot-swords-11?from=journal&orientation=reversed&reading=12345678-1234-1234-1234-123456789abc');
- const tarot=readFileSync(`${root}/components/whimsy/TarotExperience.tsx`,'utf8'),dream=readFileSync(`${root}/components/whimsy/Dreamscapes.tsx`,'utf8');assert.match(tarot,/Explore this card/);assert.match(tarot,/muse\.tarot\.table\.draft\.v1/);assert.doesNotMatch(tarot,/selectedCard&&tab==='grimoire'/);assert.match(dream,/symbolHref\(item\.id,'encyclopedia'\)/);assert.doesNotMatch(dream,/id="dream-symbol"/);
+ const tarot=readFileSync(`${root}/components/whimsy/TarotExperience.tsx`,'utf8'),dream=readFileSync(`${root}/components/whimsy/Dreamscapes.tsx`,'utf8');assert.match(tarot,/Explore this card/);assert.match(tarot,/muse\.tarot\.table\.draft\.v1/);assert.doesNotMatch(tarot,/selectedCard&&tab==='grimoire'/);assert.match(dream,/symbolHref\(id,'encyclopedia'\)/);assert.doesNotMatch(dream,/id="dream-symbol"/);
 });
 const {parseGrimoireReflection}=load('lib/whimsy/grimoire-reflection');
 test('all 78 source reflections expose separate questions and retain ritual and closing text',()=>{
