@@ -9,6 +9,7 @@ Muse has intentional product semantics and a documented design system. Before ch
 - Preserve distinctions between data even when concepts share a UI. Never silently remove established behavior for implementation convenience.
 - Update the appropriate docs when Stephanie approves a durable decision. Distinguish implemented, approved/planned, and future/exploratory behavior; brainstorming alone is not a rule.
 - Do not commit or push unless explicitly instructed.
+- Database migrations follow [DATABASE_RELEASES](docs/DATABASE_RELEASES.md): staging first; never target production without explicit approval.
 
 <!-- BEGIN:nextjs-agent-rules -->
 
