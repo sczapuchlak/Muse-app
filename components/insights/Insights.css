@@ -52,3 +52,15 @@
 .muse-insight-date-inspection li .muse-insight-action { margin-block:var(--space-1); }
 @container muse-content (max-width:600px) { .muse-insight-period-row { flex-wrap:wrap; }.muse-insight-period-row > .muse-insight-action { margin-left:auto; } }
 .muse-insight-source-note { margin-top:var(--module-section-gap); }
+
+/* Cosmic explorations: a compact two-column metric grid, a tidy topic list and the method in a disclosure. */
+.muse-insight-metric-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 18px;margin:0}
+.muse-insight-metric-grid>div{display:grid;gap:2px;padding:10px 12px;border-left:2px solid color-mix(in srgb,var(--accent-secondary) 55%,transparent);border-radius:0 10px 10px 0;background:color-mix(in srgb,var(--accent-secondary) 6%,transparent)}
+.muse-insight-metric-grid dt{font-size:.74rem;color:var(--text-muted)}
+.muse-insight-metric-grid dd{margin:0;display:grid;gap:2px;font-size:1.5rem;font-weight:600;line-height:1.1}
+.muse-insight-metric-grid dd small{font-size:.7rem;font-weight:400;color:var(--text-muted);line-height:1.3}
+.muse-insight-topic-list h3{margin:var(--space-3) 0 var(--space-2);font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);font-weight:600}
+.muse-insight-topic-list ul{display:grid;gap:4px;margin:0;padding:0;list-style:none}
+.muse-insight-topic-list li{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-bottom:1px solid var(--divider);font-size:.9rem}
+.muse-insight-topic-list li:last-child{border-bottom:0}.muse-insight-topic-list small{color:var(--text-muted);white-space:nowrap}
+.muse-insight-method{margin-top:var(--space-2)}.muse-insight-method summary{cursor:pointer;font-size:.8rem;color:var(--text-muted)}.muse-insight-method p{margin-top:var(--space-2)}

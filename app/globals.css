@@ -537,3 +537,19 @@ input[type="search"] { padding:var(--space-2) var(--space-3); line-height:1.45; 
 
 .muse-movement-completion{flex:0 0 auto;min-height:36px;padding:6px 12px;font-size:.78rem;white-space:nowrap}
 .muse-movement-completion[data-completed=true]{color:var(--selected-text);background:var(--selected-background);border-color:var(--selected-border)}
+
+/* Headings focused by code (so screen readers announce a new view) never show a keyboard focus ring. */
+:is(h1,h2,h3,h4,h5,legend)[tabindex="-1"]:focus { outline: none; }
+
+/* Week jump: ‹ This week › as one joined control (Rituals, Meal Planner). The weekday strip below shows the week. */
+.muse-week-jump{display:inline-flex;align-items:stretch;gap:0;flex-wrap:nowrap;border:1px solid var(--glass-border);border-radius:var(--control-radius,12px);overflow:hidden;background:var(--surface-control)}
+.muse-week-jump>.muse-button{min-height:40px;min-width:44px;border:0;border-radius:0;box-shadow:none;background:transparent}
+.muse-week-jump>.muse-button+.muse-button{border-left:1px solid var(--glass-border)}
+.muse-week-jump>.muse-button:hover:not(:disabled){background:var(--surface-hover)}
+@container muse-content (max-width:680px){
+ .muse-nourish-toolbar,.muse-rituals-toolbar{flex-direction:column;align-items:stretch}
+ .muse-nourish-toolbar>.muse-week-jump,.muse-rituals-toolbar>.muse-week-jump{align-self:center}
+ .muse-nourish-toolbar-days{margin-left:0;width:100%;max-width:none;flex-basis:auto}
+ .muse-rituals-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-2)}
+ .muse-rituals-actions>button{min-height:40px;padding-inline:8px;font-size:.82rem}
+}

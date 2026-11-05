@@ -95,3 +95,22 @@
     flex-wrap: wrap;
   }
 }
+
+/* Phones: the horoscope actions sit side by side (primary first, both the same height); stack only when very narrow. */
+@media (max-width: 720px) {
+  .muse-cosmic-forecast-actions { flex-direction: row; flex-wrap: wrap; align-self: stretch; width: 100%; }
+  .muse-cosmic-forecast-actions .muse-button { flex: 1 1 0; min-width: 0; min-height: 44px; }
+  .muse-cosmic-forecast-actions .muse-button:first-child { flex-grow: 1.3; }
+}
+@media (max-width: 330px) { .muse-cosmic-forecast-actions { flex-direction: column; } }
+/* Detail dialogs (placements, aspects, library entries): one open hero, then tinted side-accent panels. The dialog
+   title names the place ("Astrology Library", "Your birth chart"), so the hero heading is never repeated. */
+.muse-cosmic-dialog .muse-cosmic-entry{display:grid;gap:14px}
+.muse-cosmic-dialog .muse-cosmic-entry-hero,.muse-cosmic-dialog .muse-cosmic-entry[data-category] .muse-cosmic-entry-hero,.muse-cosmic-placement-detail .muse-cosmic-entry-hero{border:0;border-radius:0;padding:4px 0 6px;background:none}
+.muse-cosmic-dialog .muse-cosmic-lead{color:var(--foreground)}
+.muse-cosmic-placement-facts,.muse-cosmic-dialog .muse-cosmic-notice{border:0;border-left:3px solid var(--accent-secondary);border-radius:0 13px 13px 0;background:color-mix(in srgb,var(--accent-secondary) 7%,var(--surface-subtle));padding:14px 18px}
+.muse-cosmic-dialog .muse-cosmic-context{font-size:.95rem;line-height:1.5}
+.muse-cosmic-placement-facts h4{margin-bottom:2px}
+.muse-cosmic-dialog .muse-cosmic-entry-sections>section{background:color-mix(in srgb,var(--accent-primary) 5%,var(--surface-subtle))}
+.muse-cosmic-dialog .muse-cosmic-entry-sections>section h4{margin-bottom:4px}
+@media(max-width:650px){.muse-cosmic-dialog .muse-cosmic-entry-hero{padding:0 0 4px}.muse-cosmic-placement-facts,.muse-cosmic-dialog .muse-cosmic-notice,.muse-cosmic-dialog .muse-cosmic-entry-sections>section{padding:12px 14px}}

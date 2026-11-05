@@ -38,15 +38,19 @@ test('sign-in return destinations are unchanged by the sidebar reorganization',(
  assert.equal(safeReturnPath('/whimsy'),'/');
 });
 
-test('Fortune & Fun groups Weekly Side Quests (default) and Fortunes & Nonsense; experience rows are not duplicated',()=>{
- const {FortuneFunNavigation,fortuneFunViews}=load('components/whimsy/WhimsyFoundation');
- assert.deepEqual(fortuneFunViews.map(view=>view.id),['side-quests','fortunes']);
- const html=renderToStaticMarkup(React.createElement(FortuneFunNavigation,{current:'fortunes'}));
+test('Fortune & Fun is one tab bar: Side Quests and each fortune experience, with old links still resolving',()=>{
+ const {FortuneFunNavigation,fortuneFunTabs,fortuneFunHref}=load('components/whimsy/WhimsyFoundation');
+ assert.deepEqual(fortuneFunTabs.map(tab=>tab.id),['side-quests','cookie','oracle','prophecy','curiosity','collection']);
+ const html=renderToStaticMarkup(React.createElement(FortuneFunNavigation,{current:'side-quests'}));
  assert.match(html,/<nav class="muse-whimsy-navigation" aria-label="Fortune &amp; Fun">/);
- assert.match(html,/href="\/whimsy\/side-quests">Weekly Side Quests<\/a>/);
- assert.match(html,/aria-current="page" href="\/whimsy\/fortunes">Fortunes &amp; Nonsense<\/a>/);
+ assert.match(html,/aria-current="page" href="\/whimsy\/side-quests">/);
+ for(const [id,label] of [['cookie','Fortune Cookie'],['oracle','The Oracle'],['prophecy','Tiny Prophecies'],['curiosity','Curiosities']])assert.match(html,new RegExp(`href="/whimsy/fortunes\\?view=${id}">.*?${label}</a>`));
+ assert.equal(fortuneFunHref('side-quests'),'/whimsy/side-quests');
  assert.match(read('components/whimsy/WeeklySideQuests.tsx'),/<FortuneFunNavigation current="side-quests"\/>/);
- assert.match(read('components/whimsy/FortunesExperience.tsx'),/<FortuneFunNavigation current="fortunes"\/>/);
+ const fortunes=read('components/whimsy/FortunesExperience.tsx');
+ assert.match(fortunes,/<FortuneFunNavigation current=\{section\} onSelect=\{selectSection\}/);
+ assert.doesNotMatch(fortunes,/muse-fortune-tabs/,'no second, nested tab row');
+ assert.match(fortunes,/requested==='oracle'\|\|requested==='prophecy'\|\|requested==='curiosity'\|\|requested==='collection'\?requested:'cookie'/,'old /whimsy/fortunes links open Fortune Cookie; ?view= links open their tab');
  for(const file of ['components/astrology/CosmicObservatory.tsx','components/whimsy/TarotExperience.tsx','components/whimsy/Dreamscapes.tsx','components/whimsy/WeeklySideQuests.tsx','components/whimsy/FortunesExperience.tsx'])assert.ok(!read(file).includes('aria-label="Whimsy experiences"'),file);
  assert.match(read('components/astrology/CosmicObservatory.tsx'),/sections\.find\(\(\[id\]\)=>id===requestedView\)\?\.\[0\]\?\?'forecast'/,'Astrology opens on Horoscopes');
 });

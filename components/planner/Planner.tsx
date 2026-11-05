@@ -52,13 +52,12 @@ export function Planner() {
   function openTask(task: PlannedTask, anchor: HTMLElement) { setDetail({ id: task.id, anchor }); }
   function taskList(tasks: PlannedTask[]) { return <ul className="muse-planner-task-list">{tasks.map((task) => <PlannerTaskCard key={task.id} task={task} onOpen={openTask} />)}</ul>; }
   const inbox = filtered.filter((task) => !task.plannedDate);
-  function utilities(){return <PlannerUtilities search={search} onSearch={setSearch} filters={activeFilters} onFilter={setFilters} workspaceId={workspaceFilter} today={today} onToday={()=>{changeDate(today);setMobileView("day");}} onPrevious={()=>changeDate(shiftDate(date,-1))} onNext={()=>changeDate(shiftDate(date,1))}/>;}
+  function utilities(){return <PlannerUtilities taskList={<div className="muse-planner-mobile-tabs"><button className="muse-button" type="button" aria-haspopup="dialog" aria-expanded={mobileView==="inbox"} onClick={(event)=>{setInboxAnchor(event.currentTarget);setMobileView("inbox");}}>Task List · {inbox.length}</button></div>} search={search} onSearch={setSearch} filters={activeFilters} onFilter={setFilters} workspaceId={workspaceFilter} today={today} onToday={()=>{changeDate(today);setMobileView("day");}} onPrevious={()=>changeDate(shiftDate(date,-1))} onNext={()=>changeDate(shiftDate(date,1))}/>;}
   function rail(){return <PlannerRail workspaceId={workspaceFilter} onWorkspaceChange={(id)=>{setWorkspace(id);setFilters((current)=>({...current,groupId:""}));}} tasks={inbox} onOpen={openTask} groupId={groupFilter||undefined} tagIds={activeTags}/>;}
 
   return <main className="muse-page muse-planner-page">
     <MusePageHeader title="Planner"><DateNavigator date={date} onChange={changeDate}/></MusePageHeader>
     <PlannerCapture><div className="muse-module-toolbar">{utilities()}</div>
-    <div className="muse-planner-mobile-tabs"><button className="muse-button" type="button" aria-haspopup="dialog" aria-expanded={mobileView==="inbox"} onClick={(event)=>{setInboxAnchor(event.currentTarget);setMobileView("inbox");}}>Task List · {inbox.length}</button></div>
     <div className="muse-planner-mobile-week"><WeekNavigator selectedDate={date} timeZone={profile.timeZone} onChange={(next) => { changeDate(next); setMobileView("day"); }} /></div>
     {state.activeTimer && <p className="muse-planner-timer-status" role="status">Timer running: {state.tasks.find((task) => task.id === state.activeTimer?.taskId)?.title}. <button className="text-button" type="button" onClick={(event) => { if (state.activeTimer) setDetail({ id: state.activeTimer.taskId, anchor: event.currentTarget }); }}>Open timer</button></p>}
     <div ref={workspaceRef} className="muse-planner-layout">

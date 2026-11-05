@@ -188,10 +188,10 @@ test('global navigation covers every destination and keeps mobile primary/More c
   assert.deepEqual(desktopGroups, ['Everyday','Life','Whimsy']);
   assert.equal(new Set(navigation.map((item) => item.href)).size, 14);
   assert.deepEqual(navItems(mobilePrimaryIds).map((item) => item.id), ['daily','planner','rituals']);
-  assert.deepEqual(navItems(mobileMoreIds).map((item) => item.id), ['nourish','insights','money','notes','collections','astrology','tarot','dreams','fortune-fun','settings']);
+  assert.deepEqual(navItems(mobileMoreIds).map((item) => item.id), ['nourish','insights','money','notes','collections','astrology','tarot','dreams','fortune-fun','appearance','settings'],'mobile reaches Appearance through More');
   assert.equal(navigation.some((item)=>item.id==='mood'),false);
   assert.equal(navigation.find((item)=>item.id==='nourish')?.label,'Wellness');
-  assert.equal(new Set([...mobilePrimaryIds,...mobileMoreIds]).size, navigation.filter(item=>item.id!=='appearance').length);
+  assert.equal(new Set([...mobilePrimaryIds,...mobileMoreIds]).size, navigation.length,'every destination is reachable on mobile');
   assert.equal(isActiveDestination('/','/'), true);
   assert.equal(isActiveDestination('/planner','/'), false);
   assert.equal(isActiveDestination('/planner/week','/planner'), true);

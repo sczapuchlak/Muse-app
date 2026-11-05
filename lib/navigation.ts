@@ -22,7 +22,7 @@ export const navigation: NavItem[] = [
 
 export const desktopGroups = ["Everyday", "Life", "Whimsy"] as const;
 export const mobilePrimaryIds = ["daily", "planner", "rituals"];
-export const mobileMoreIds = ["nourish", "insights", "money", "notes", "collections", "astrology", "tarot", "dreams", "fortune-fun", "settings"];
+export const mobileMoreIds = ["nourish", "insights", "money", "notes", "collections", "astrology", "tarot", "dreams", "fortune-fun", "appearance", "settings"];
 export function navItems(ids: string[]): NavItem[] { return ids.map((id) => navigation.find((item) => item.id === id)).filter((item): item is NavItem => Boolean(item)); }
 export function isActiveDestination(path: string, href: string): boolean { return href === "/" ? path === "/" : path === href || path.startsWith(`${href}/`); }
 export function isActiveItem(path: string, item: Pick<NavItem, "href" | "matches">): boolean { return [item.href, ...(item.matches ?? [])].some((href) => isActiveDestination(path, href)); }

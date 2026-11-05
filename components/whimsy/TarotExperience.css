@@ -77,3 +77,15 @@
 .muse-tarot-shuffle{background:var(--action-fill);border-color:var(--action-fill);color:var(--on-accent)}
 .muse-tarot-shuffle:hover:enabled{background:var(--action-fill);color:var(--on-accent);border-color:var(--selected-border)}
 @media(max-width:720px){.muse-tarot-setup-controls{grid-template-columns:minmax(0,1fr) 42px}.muse-tarot-setup-controls>.muse-tarot-intention{grid-column:1/-1;grid-row:1}.muse-tarot-setup-controls>div:first-of-type{grid-column:1;grid-row:2}.muse-tarot-setup-controls>div:last-of-type{grid-column:2;grid-row:2}}
+
+/* Reading Journal filters on phones: Search, then Spreads · Cards · Tags in one row, then an optional date. */
+@media(max-width:600px){
+ .muse-tarot-journal-filters{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+ .muse-tarot-journal-filters>.muse-whimsy-search{grid-column:1/-1;order:0}
+ .muse-tarot-journal-filters>.muse-choice-menu{order:2;min-width:0}
+ .muse-tarot-journal-filters>.muse-choice-menu:nth-of-type(2){order:1}
+ .muse-tarot-journal-filters>.muse-choice-menu .muse-choice-trigger{min-height:44px;width:100%;padding-inline:10px;font-size:.82rem}
+ .muse-tarot-journal-filters>.muse-tarot-date-filter{grid-column:1/-1;order:3;display:flex;align-items:center;gap:10px}
+ .muse-tarot-journal-filters>.muse-tarot-date-filter input{flex:1;min-height:44px}
+}
+@media(max-width:340px){.muse-tarot-journal-filters{grid-template-columns:repeat(2,minmax(0,1fr))}}

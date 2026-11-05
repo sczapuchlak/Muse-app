@@ -114,7 +114,7 @@ Ritual/day intersections retain centered controls in fixed cell footprints. Part
 
 ## Large searchable picker pattern
 
-`MuseModal` uses a roughly 660px-wide, 75dvh desktop picker and a near-full-width 90dvh mobile sheet; short screens use the available height. Native modal focus containment/Escape and shared lifecycle return focus to the trigger. Results use a roving tab stop with arrow/Home/End navigation, so Tab can reach Done directly. Search/quadrant filters and Done are non-scrolling flex regions; only results have min-height:0/overflow-y:auto. Desktop results use two columns, narrow screens one. Quadrant controls may scroll horizontally, never as a second vertical area. The floating material retains its dedicated depth shadow and Crystal/Frosted optics. No new motion is required.
+`MuseModal` is content-sized by default (roughly 660px wide, at most min(760px, 85dvh), centered on mobile within safe areas). `size="tall"` keeps the fixed 75dvh desktop picker and the near-full-width 90dvh mobile sheet for editors and pickers with an inner scroller; short screens use the available height. Native modal focus containment/Escape and shared lifecycle return focus to the trigger. Results use a roving tab stop with arrow/Home/End navigation, so Tab can reach Done directly. Search/quadrant filters and Done are non-scrolling flex regions; only results have min-height:0/overflow-y:auto. Desktop results use two columns, narrow screens one. Quadrant controls may scroll horizontally, never as a second vertical area. The floating material retains its dedicated depth shadow and Crystal/Frosted optics. No new motion is required.
 
 ## Stable compact planning surfaces
 
@@ -517,3 +517,11 @@ Popover menus (`GlassPopover`) never squeeze their choices: when the space besid
 
 Dreamscapes keeps the global theme, cosmic background and Whimsy header; its identity comes from serif italics for titles, theme-toned dream-type glyphs (Lucid ◐ secondary, Nightmare ☾ pop, Recurring ↻ warm, Vivid ✦ primary, Ordinary · neutral), a left accent rule on journal cards, symbol “artifact” pills with category glyphs, and soft secondary-accent glows. Pagination is numbered with gaps and a “1–12 of 62” summary; search fields carry an icon, clear button and live count; view switches are segmented controls. Motion is brief: a 260ms reveal for lists, entries and revealed dreams, a glow when a symbol tile is selected, constellation lines that light around a chosen star, and a moonlit “☾ ✦” shimmer on confirmations. Quiet Muse Magic and reduced motion remove the animation and keep the static state. No confetti, particles or continuous motion.
 
+
+## Mobile polish standards — November 2026
+
+- Week jumps use the shared `.muse-week-jump` joined control (‹ This week ›), centered on narrow containers.
+- Detail dialogs use one open hero (no boxed hero inside the dialog), then tinted panels with a 3px side accent: secondary for facts and context notices, primary/secondary alternating for reading sections. Metadata stays as compact pills.
+- Programmatically focused headings (`tabindex="-1"`) draw no focus outline; interactive controls keep their focus rings.
+- Mobile toolbars wrap into at most two rows: search full width, then filters and segmented modes; secondary filters fold behind a Filters button that shows an active count.
+- Workspace and choice popovers show the name above its supporting count, a selected state with border, background and check, and touch-height footer actions.

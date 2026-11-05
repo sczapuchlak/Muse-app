@@ -216,3 +216,27 @@ select option { background: var(--background); color: var(--foreground); }
 .muse-task-details .muse-detail-fields :is(input,.muse-choice-trigger) { min-width:0; width:100%; min-height:44px; box-sizing:border-box; }
 .muse-task-details .muse-detail-fields .editor-label, .muse-task-details .muse-detail-fields > label > span { align-self:center; }
 @media(max-width:480px) { .muse-task-details .muse-detail-fields { grid-template-columns:minmax(0,1fr); } }
+
+/* Mobile toolbar: Search on its own row; Filters, Task List, the planning-day controls and Board Settings share one
+   compact row that wraps cleanly. Equal 40px heights; the day controls read as one joined group. */
+@container muse-content (max-width:680px){
+ .muse-module-toolbar .muse-planner-toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+ .muse-module-toolbar .muse-planner-toolbar-left{display:contents}
+ .muse-module-toolbar .muse-planner-toolbar-left .muse-planner-search{flex:1 1 100%;min-width:0}
+ .muse-module-toolbar .muse-planner-toolbar .muse-planner-mobile-tabs{display:flex;margin:0}
+ .muse-module-toolbar .muse-planner-toolbar :is(.muse-button,.muse-icon-button){min-height:40px;height:40px}
+ .muse-module-toolbar .muse-planner-utility-row{display:flex;align-items:center;gap:6px;margin-left:auto}
+ .muse-planning-window-nav{display:inline-flex;gap:0;border:1px solid var(--glass-border);border-radius:var(--control-radius,12px);overflow:hidden}
+ .muse-planning-window-nav>.muse-button{border:0;border-radius:0;min-width:40px;padding-inline:10px;box-shadow:none}
+ .muse-planning-window-nav>.muse-button+.muse-button{border-left:1px solid var(--glass-border)}
+}
+/* Task Details: every field shares the same left and right edges; labels sit close to their controls. */
+.muse-task-details :is(input:not([type=checkbox]):not([type=radio]),select,textarea,.muse-choice-menu,.muse-choice-trigger){width:100%;max-width:100%;box-sizing:border-box}
+.muse-task-details .editor-label{gap:6px}
+/* Workspace picker: name over its unscheduled count, a clear focus ring, and a roomy footer on touch screens. */
+.muse-workspace-choices .popover-choice>span{display:grid;gap:2px;min-width:0;text-align:left}
+.muse-workspace-choices .popover-choice>span>small{font-size:.75rem}
+.muse-workspace-choices .popover-choice:focus-visible{outline:2px solid var(--focus-ring,var(--selected-border));outline-offset:2px}
+.muse-workspace-choices .popover-choice[aria-pressed="true"] .small-label{color:inherit;opacity:.8}
+.muse-workspace-choices+.popover-footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+@media (pointer:coarse){.muse-workspace-choices+.popover-footer .text-button{min-height:var(--touch-target)}}
