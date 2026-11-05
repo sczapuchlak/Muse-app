@@ -33,3 +33,6 @@
 .muse-popover-title strong:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
 .muse-popover-title strong:focus-visible::after{content:attr(title);position:absolute;z-index:2;top:43px;left:var(--space-4);max-width:calc(100% - 2 * var(--space-4));padding:7px 10px;border:1px solid var(--glass-border);border-radius:var(--control-radius);background:var(--floating-background);box-shadow:var(--floating-shadow);font:normal .75rem/1.4 var(--font-ui);white-space:normal;overflow-wrap:anywhere}
 .muse-popover-close>button{flex:0 0 auto}
+
+/* Inside a modal, a popover sits over form text: back the glass with the page colour so nothing shows through. */
+dialog .muse-popover-panel { background: linear-gradient(var(--floating-background), var(--floating-background)), var(--background); }

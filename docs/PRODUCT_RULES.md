@@ -62,7 +62,7 @@ A date-based command center: What matters? What am I doing? How am I caring for 
 
 ## Mood and insight semantics
 
-Mood is a top-level pill inside Wellness, alongside Plan, Saved Meals, and Grocery List; Wellness remains the sole main-sidebar destination. The existing Mood experience and date/period records stay canonical. Legacy `/mood` links redirect to the Wellness Mood view with their date query preserved. The Wellness default remains Plan.
+Mood is a top-level pill inside Wellness, alongside Plan, Saved Meals, and Grocery List; Wellness remains the sole main-sidebar destination. The existing Mood experience and date/period records stay canonical. Legacy `/mood` links redirect to the Wellness Mood view with their date query preserved. **Mood is the first Wellness section and the default landing view** (approved by Stephanie, superseding the earlier Plan default); meal links (Daily Edit Meals, Insights) name `view=plan` explicitly.
 
 Feelings answer “What am I feeling?” Influences answer “What might be shaping it?” Day Pulse answers “How am I doing?” Keep them analytically separate; never collapse them into one score. Energy, stress, and overall day are independent optional 1–10 values. Missing is not zero or negative. Relationships between mood, influences, habits, and movement may be compared statistically; correlation never establishes causation.
 

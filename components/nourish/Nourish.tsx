@@ -31,7 +31,8 @@ export function Nourish() {const {profile}=useDailyData();
   const query=useSearchParams(),router=useRouter(),today=useMuseToday(profile.timeZone),{trigger,spark}=useMuseSpark();
   const requested=query.get("date");
   const {state}=useNourish();
-  const view=query.get("view")==="saved-meals"?"saved-meals":query.get("view")==="grocery"?"grocery":query.get("view")==="mood"?"mood":"plan";
+  // Wellness opens on Mood; meal links name view=plan explicitly.
+  const view=query.get("view")==="saved-meals"?"saved-meals":query.get("view")==="grocery"?"grocery":query.get("view")==="plan"?"plan":"mood";
   useEffect(()=>{if(validDate(requested))setDate(requested);},[requested,setDate]);
   function changeDate(next:string){setDate(next);router.replace(`/nourish?date=${next}&view=${view}`,{scroll:false});}
   const onOpen:MealOpen=(entryDate,slot,anchor,onSaved,initial)=>setEditor({kind:"meal",date:entryDate,slot,anchor,onSaved,initial});
@@ -39,7 +40,7 @@ export function Nourish() {const {profile}=useDailyData();
   const week=weekDates(date);
   return <main className="muse-page muse-nourish-page">
     <MusePageHeader title="Wellness"><DateNavigator date={date} onChange={changeDate}/></MusePageHeader>
-    <MuseSectionNav label="Wellness sections" current={view} items={[{id:"plan",label:"Plan"},{id:"saved-meals",label:"Saved Meals"},{id:"grocery",label:"Grocery List"},{id:"mood",label:"Mood"}].map((item)=>({...item,href:`/nourish?date=${date}&view=${item.id}`}))}/>
+    <MuseSectionNav label="Wellness sections" current={view} items={[{id:"mood",label:"Mood"},{id:"plan",label:"Plan"},{id:"saved-meals",label:"Saved Meals"},{id:"grocery",label:"Grocery List"}].map((item)=>({...item,href:`/nourish?date=${date}&view=${item.id}`}))}/>
     {view==="mood"?<Mood embedded onDateChange={changeDate}/>:<><WellnessCapture>
     {view==="plan"&&<>
     <div className="muse-nourish-toolbar"><nav aria-label="Meal planning week"><button className="muse-button" type="button" disabled={!today} onClick={()=>changeDate(today)}>This week</button><button className="muse-button" type="button" aria-label="Previous meal planning week" onClick={()=>changeDate(shiftDate(date,-7))}>←</button><button className="muse-button" type="button" aria-label="Next meal planning week" onClick={()=>changeDate(shiftDate(date,7))}>→</button><span className="small-label">{new Intl.DateTimeFormat("en-US",{month:"short",day:"numeric",timeZone:"UTC"}).format(new Date(`${week[0]}T12:00:00Z`))} – {new Intl.DateTimeFormat("en-US",{month:"short",day:"numeric",timeZone:"UTC"}).format(new Date(`${week[6]}T12:00:00Z`))}</span></nav><div className="muse-nourish-toolbar-days"><WeekNavigator selectedDate={date} timeZone={profile.timeZone} onChange={changeDate}/></div><span className="muse-feedback-anchor" aria-hidden="true">{spark}</span></div>
