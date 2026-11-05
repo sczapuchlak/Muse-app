@@ -10,6 +10,7 @@ import { useMuseSpark } from "../MuseSpark";
 import { SavedMealCard } from "./SavedMealCard";
 import { MealTypeSelector } from "./MealTypeSelector";
 import { NutritionFields,nutritionDraft,nutritionValue } from "./NutritionFields";
+import {MuseSearch} from '@/components/design/MuseSearch';
 
 function SavedMealEditor({initial,anchor,onClose,onSaved}:{initial?:SavedMeal;anchor:HTMLElement;onClose:()=>void;onSaved:()=>void}) {
   const {state,dispatch}=useNourish();
@@ -45,9 +46,9 @@ export function SavedMealLibrary() {
   const addAnchor=useRef<HTMLButtonElement>(null);
   return <section aria-label="Saved meals" className="muse-saved-view">
     <div className="muse-nourish-section-heading"><div><h2>Saved meals</h2><p className="card-description">The things you like coming back to. No recipe required.</p></div><button ref={addAnchor} className="muse-button button-primary muse-feedback-anchor" type="button" onClick={(event)=>setEditor({anchor:event.currentTarget})}>+ Add saved meal{spark}</button></div>
-    <div className="muse-library-toolbar"><input type="search" aria-label="Find a saved meal" placeholder="Find a meal…" value={query} onChange={(event)=>setQuery(event.target.value)}/><div className="muse-filter-options" role="group" aria-label="Filter saved meals by type"><button className="choice-button" type="button" aria-pressed={filter==="all"} onClick={()=>setFilter("all")}>All</button>{mealSlots.map((slot)=><button className="choice-button" type="button" key={slot} aria-pressed={filter===slot} onClick={()=>setFilter(slot)}>{mealLabels[slot]}</button>)}<MuseChoiceMenu label="Sort saved meals" variant="icon" valueLabel={sortOptions.find(o=>o.id===sort)!.label} options={sortOptions} selectedIds={[sort]} onSelect={id=>setSort(id as SavedMealSort)}/></div></div>
+    <div className="muse-library-toolbar"><MuseSearch label="Find a saved meal" value={query} onChange={setQuery} placeholder="Find a meal…"/><div className="muse-filter-options" role="group" aria-label="Filter saved meals by type"><button className="choice-button" type="button" aria-pressed={filter==="all"} onClick={()=>setFilter("all")}>All</button>{mealSlots.map((slot)=><button className="choice-button" type="button" key={slot} aria-pressed={filter===slot} onClick={()=>setFilter(slot)}>{mealLabels[slot]}</button>)}<MuseChoiceMenu label="Sort saved meals" variant="icon" valueLabel={sortOptions.find(o=>o.id===sort)!.label} options={sortOptions} selectedIds={[sort]} onSelect={id=>setSort(id as SavedMealSort)}/></div></div>
     <ul className="muse-saved-grid">{meals.map((meal)=><SavedMealCard key={meal.id} meal={meal} onEdit={(initial,anchor)=>setEditor({initial,anchor})} onRemove={()=>{dispatch({type:"saved/remove",id:meal.id});addAnchor.current?.focus();}}/>)}</ul>
-    {!meals.length&&<p className="muse-nourish-empty">{query||filter!=="all"?"No saved meals match. Try All or a different search.":"A good meal is worth remembering. Save your first one."}</p>}
+    {!meals.length&&<p className="muse-empty-state muse-nourish-empty" data-variant="quiet">{query||filter!=="all"?"No saved meals match. Try All or a different search.":"A good meal is worth remembering. Save your first one."}</p>}
     {editor&&<SavedMealEditor initial={editor.initial} anchor={editor.anchor} onClose={()=>setEditor(null)} onSaved={trigger}/>}
   </section>;
 }

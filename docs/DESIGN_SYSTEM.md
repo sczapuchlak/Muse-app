@@ -544,3 +544,36 @@ Dreamscapes keeps the global theme, cosmic background and Whimsy header; its ide
     Its labels are available to assistive technology.
 - **Connected Ritual cells.** They keep the normal cell visuals, are read-only, and add a small ⟲ source mark. Their accessible label names the source and how many records it used.
 - **Native selects in Muse forms.** They share the text-input control look (touch height, `surface-control`, glass border, control radius).
+
+## Typography (#57) — approved November 2026
+
+**Fonts** (loaded once in `app/layout.tsx` with `next/font`, self-hosted):
+- **Display/editorial: Fraunces (variable)** with axes `opsz`, `SOFT` and `WONK`. Approved settings are `"SOFT" 100, "WONK" 0`, optical size auto. They're set once on `html` and inherited; other fonts ignore them.
+- **Interface: Plus Jakarta Sans** (variable weight, true italics), filling `--font-interface` / `--font-ui`.
+
+**Verification:**
+- The self-hosted Fraunces at SOFT 100 / WONK 0, italic 400, matches Google Fonts' own rendering at the same settings to within 0.05% of glyph pixels.
+- The SOFT, WONK and italic differences are real, not synthetic.
+
+**One source of truth.** `app/typography.css` defines:
+- the font tokens (`--font-editorial`, with `--font-serif`, `--font-display` and `--font-whimsy` as aliases);
+- the axes;
+- the role weights;
+- the semantic classes.
+
+Module stylesheets reference roles; they never declare their own families, styles or weights.
+
+| Role | Class / tokens | Use |
+| --- | --- | --- |
+| Display | `.type-display` · italic · `--type-display-weight` (380) | Major editorial headings: module titles, heroes, empty-state headlines, `.whimsy` greetings |
+| Quote | `.type-quote` · italic · `--type-quote-weight` (360) | Atmospheric lines, taglines, reflective prompts (lighter weights only at large sizes) |
+| Reading | `.type-reading` · upright · `--type-reading-weight` (400) | Long Fraunces passages: dream stories, fortunes |
+| Editorial | `.type-editorial` · upright · `--type-editorial-weight` (460) | Selected literary headings: month headers, library sections |
+| Title | `.type-title` · upright · `--type-title-weight` (520) | Restrained titles: book titles, Tarot card names, journal and dream entry titles. Never large italics |
+| Heading | `.type-heading` · Plus Jakarta Sans 620 | Functional headings and section labels |
+| Body / Meta | `.type-body`, `.type-meta` | Body copy and 11–14 px metadata |
+| Numeric | `.type-numeric` · tabular, lining figures | Dates, statistics, money |
+
+**Rules:**
+- Practical modules (Planner, Money, Wellness, Rituals, Insights) stay in Plus Jakarta Sans apart from shared editorial moments such as the Daily Edit greeting.
+- To change the hierarchy, change the tokens in `app/typography.css`, not module CSS.

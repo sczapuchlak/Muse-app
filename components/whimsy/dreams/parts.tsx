@@ -1,6 +1,5 @@
 'use client';
-import {useId} from 'react';
-import {MuseIcon} from '@/components/MuseIcon';
+import {MuseSearch} from '@/components/design/MuseSearch';
 import {emotionCatalog} from '@/lib/emotions';
 import {dreamTypeMeta,pageWindow,type Page} from '@/lib/whimsy/dreams';
 
@@ -14,14 +13,9 @@ export function DreamTypeBadge({type,compact=false}:{type:string;compact?:boolea
  return <span className="muse-dream-type" data-tone={meta.tone} title={type}><span aria-hidden="true">{meta.glyph}</span>{compact?<span className="sr-only">{type}</span>:type}</span>;
 }
 
-/** Search with an icon, a clear button and a live result count. */
-export function DreamSearch({label,value,onChange,placeholder,count,noun}:{label:string;value:string;onChange:(value:string)=>void;placeholder:string;count?:number;noun?:[string,string]}){
- const id=useId();
- return <div className="muse-dream-search"><label htmlFor={id} className="sr-only">{label}</label><MuseIcon name="search" size={17}/>
-  <input id={id} type="search" value={value} placeholder={placeholder} onChange={e=>onChange(e.target.value)} onKeyDown={e=>{if(e.key==='Escape'&&value){e.preventDefault();onChange('');}}}/>
-  {value&&<button type="button" className="muse-dream-search-clear" aria-label={`Clear ${label.toLowerCase()}`} onClick={()=>onChange('')}><MuseIcon name="close" size={14}/></button>}
-  {count!==undefined&&noun&&<span className="muse-dream-search-count" role="status">{count} {count===1?noun[0]:noun[1]}</span>}
- </div>;
+/** Search with an icon, a clear button and a live result count: the shared MuseSearch with a Dreamscapes modifier. */
+export function DreamSearch(props:{label:string;value:string;onChange:(value:string)=>void;placeholder:string;count?:number;noun?:[string,string]}){
+ return <MuseSearch {...props} className="muse-dream-search"/>;
 }
 
 /** Numbered pagination with gaps, previous/next and a "1–12 of 62" summary. Hidden when everything fits. */

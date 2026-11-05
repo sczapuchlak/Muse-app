@@ -1,0 +1,85 @@
+/*
+ * Muse design language (#57). Shared, theme-aware patterns lifted from Dreamscapes, the visual reference.
+ * Modules use these classes and tokens instead of re-creating panels, chips, search fields or empty states.
+ * Everything derives from theme tokens (accents, surfaces, glass), so every theme and Frosted/Crystal glass
+ * inherits it; nothing here hard-codes a palette. Typography roles live in app/typography.css.
+ */
+:root{
+  --dl-line:var(--glass-border);
+  --dl-surface:var(--surface-subtle);
+  --dl-surface-raised:var(--surface-control);
+  --dl-radius-hero:22px;
+  --dl-radius-panel:18px;
+  --dl-radius-tile:14px;
+  --dl-radius-pill:999px;
+  --dl-pad-panel:clamp(16px,2.2vw,24px);
+  --dl-wash-primary:color-mix(in srgb,var(--accent-primary) 10%,transparent);
+  --dl-wash-secondary:color-mix(in srgb,var(--accent-secondary) 10%,transparent);
+  --dl-hero-wash:radial-gradient(100% 140% at 0% 0%,var(--dl-wash-primary),transparent 60%),radial-gradient(100% 140% at 100% 100%,var(--dl-wash-secondary),transparent 60%);
+  --dl-empty-wash:radial-gradient(120% 90% at 50% 0%,var(--dl-wash-secondary),transparent 70%);
+  --dl-hover-glow:0 8px 22px color-mix(in srgb,var(--accent-primary) 12%,transparent);
+  --dl-focus-ring:0 0 0 3px color-mix(in srgb,var(--accent-secondary) 22%,transparent);
+  --dl-kicker:var(--accent-secondary);
+}
+
+/* Kicker: the small, letter-spaced line above an editorial heading. Existing eyebrows share it. */
+:is(.muse-kicker,.muse-section-eyebrow){margin:0;font-family:var(--font-ui);font-size:.72rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--dl-kicker)}
+
+/* Section introduction: kicker, display heading, one supporting line. */
+.muse-section-intro{display:grid;gap:6px;min-width:0}
+.muse-section-intro>:is(h2,h3){margin:0;font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight);font-size:clamp(1.45rem,2.6vw,2rem);line-height:1.15}
+.muse-section-intro>p:not(.muse-kicker){margin:0;color:var(--text-muted);max-width:62ch}
+.muse-section-intro[data-tone=practical]>:is(h2,h3){font-family:var(--font-ui);font-style:normal;font-weight:var(--type-heading-weight);font-size:1.15rem}
+
+/* Surfaces. Hero: the two-accent wash; panel: the quiet glass card; accent note: left-accent tint. */
+.muse-hero{display:grid;gap:8px;padding:clamp(18px,3vw,28px);border:1px solid var(--dl-line);border-radius:var(--dl-radius-hero);background:var(--dl-hero-wash),var(--dl-surface);min-width:0}
+.muse-panel{padding:var(--dl-pad-panel);border:1px solid var(--dl-line);border-radius:var(--dl-radius-panel);background:var(--dl-surface);min-width:0}
+:is(a,button).muse-panel,.muse-panel[data-interactive]{transition:border-color .2s,transform .2s,box-shadow .2s}
+:is(a,button).muse-panel:is(:hover,:focus-visible),.muse-panel[data-interactive]:is(:hover,:focus-within){border-color:var(--selected-border);box-shadow:var(--dl-hover-glow)}
+.muse-accent-note{margin:0;padding:10px 14px;border-left:2px solid var(--accent-secondary);border-radius:0 12px 12px 0;background:color-mix(in srgb,var(--accent-secondary) 6%,transparent)}
+
+/* Tone pill: a small label coloured by --tone (defaults to the primary accent). */
+.muse-tone-pill{--tone:var(--accent-primary);display:inline-flex;align-items:center;gap:4px;padding:2px 9px;border-radius:var(--dl-radius-pill);font-size:.72rem;font-weight:500;letter-spacing:.02em;white-space:nowrap;color:color-mix(in srgb,var(--tone) 80%,var(--foreground));background:color-mix(in srgb,var(--tone) 12%,transparent);border:1px solid color-mix(in srgb,var(--tone) 28%,transparent)}
+
+/* Chip rows: filters and categories. Pressed uses the theme's selected state; rows scroll on narrow screens. */
+.muse-chip-row{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.muse-chip-row>:is(button,a){display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:4px 12px;border:1px solid var(--dl-line);border-radius:var(--dl-radius-pill);background:var(--dl-surface);color:var(--foreground);font:500 .8rem/1.2 var(--font-ui);text-decoration:none;cursor:pointer;transition:background .2s,border-color .2s}
+.muse-chip-row>:is(button,a):hover{background:var(--surface-hover,var(--dl-surface-raised))}
+.muse-chip-row>:is([aria-pressed=true],[aria-current]){border-color:var(--selected-border);background:var(--selected-background);color:var(--selected-text);box-shadow:0 0 0 1px var(--selected-border)}
+.muse-chip-row small{color:var(--text-muted);font-size:.7rem}
+
+/* Segmented switcher: a pill track of mutually exclusive views or modes. */
+.muse-segmented{display:inline-flex;flex-wrap:wrap;gap:3px;padding:3px;border:1px solid var(--dl-line);border-radius:var(--dl-radius-pill);background:var(--dl-surface);max-width:100%}
+.muse-segmented>:is(button,a){display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:36px;padding:6px 14px;border:1px solid transparent;border-radius:var(--dl-radius-pill);background:transparent;color:var(--text-muted);font:500 .82rem/1.2 var(--font-ui);text-decoration:none;cursor:pointer;transition:background .2s,color .2s}
+.muse-segmented>:is(button,a):hover{color:var(--foreground)}
+.muse-segmented>:is([aria-pressed=true],[aria-selected=true],[aria-current]){background:var(--selected-background);border-color:var(--selected-border);color:var(--selected-text);font-weight:600}
+
+/* Search field: icon, input, optional clear button and live count. */
+.muse-search{position:relative;display:flex;align-items:center;gap:8px;flex:1 1 260px;min-width:0;min-height:46px;padding:0 12px;border:1px solid var(--dl-line);border-radius:var(--dl-radius-tile);background:var(--dl-surface);color:var(--text-muted);transition:border-color .2s,box-shadow .2s}
+.muse-search:focus-within{border-color:var(--selected-border);box-shadow:var(--dl-focus-ring)}
+.muse-search input{flex:1;min-width:0;border:0;background:transparent;color:var(--foreground);font:400 .95rem/1.3 var(--font-ui);padding:10px 0;outline:none!important}
+.muse-search input::-webkit-search-cancel-button{display:none}
+.muse-search-clear{display:grid;place-items:center;width:28px;height:28px;border:0;border-radius:50%;background:transparent;color:var(--text-muted);cursor:pointer}
+.muse-search-clear:hover{background:var(--surface-hover,var(--dl-surface-raised));color:var(--foreground)}
+.muse-search-count{flex:none;font-size:.74rem;color:var(--text-muted);font-variant-numeric:tabular-nums}
+
+/* Empty states (data-variant raises specificity above older module rules). Editorial: centred, a soft glow, a display headline. Quiet: compact for practical modules. */
+.muse-empty-state[data-variant]{display:grid;justify-items:center;gap:10px;max-width:560px;margin:20px auto;padding:clamp(24px,5vw,44px);text-align:center;border:1px solid var(--dl-line);border-radius:22px;background:var(--dl-empty-wash),var(--dl-surface)}
+.muse-empty-state[data-variant]>:is(h2,h3,h4){margin:0;font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight);font-size:1.35rem;line-height:1.35}
+.muse-empty-state[data-variant]>p{margin:0;color:var(--text-muted);max-width:46ch}
+.muse-empty-state[data-variant]>.muse-empty-glyph{font-size:1.6rem;line-height:1;color:var(--accent-secondary)}
+.muse-empty-state[data-variant=quiet]{max-width:none;margin:0;justify-items:start;text-align:left;gap:6px;padding:14px 16px;border-style:dashed;border-radius:var(--dl-radius-tile);background:transparent}
+.muse-empty-state[data-variant=quiet]>:is(h2,h3,h4){font-family:var(--font-ui);font-style:normal;font-weight:var(--type-heading-weight);font-size:.95rem}
+
+/* Statistics: tinted side-accent tiles with tabular figures. */
+.muse-stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,140px),1fr));gap:10px;margin:0}
+.muse-stat{display:grid;gap:2px;padding:12px 14px;border-left:3px solid var(--accent-secondary);border-radius:0 12px 12px 0;background:color-mix(in srgb,var(--accent-secondary) 7%,var(--dl-surface))}
+.muse-stat:nth-child(2n){border-left-color:var(--accent-primary);background:color-mix(in srgb,var(--accent-primary) 6%,var(--dl-surface))}
+.muse-stat>:is(dt,span:first-child){font-size:.75rem;color:var(--text-muted)}
+.muse-stat>:is(dd,strong){margin:0;font:var(--type-numeric-weight) 1.4rem/1.2 var(--font-ui);font-variant-numeric:tabular-nums lining-nums}
+
+/* Shared focus treatment for the new controls; existing global focus rings stay in place elsewhere. */
+:is(.muse-chip-row,.muse-segmented)>:is(button,a):focus-visible{outline:2px solid var(--focus-ring,var(--selected-border));outline-offset:2px}
+@media (max-width:600px){.muse-chip-row[data-scroll]{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px;scrollbar-width:thin}.muse-chip-row[data-scroll]>*{flex:none}.muse-segmented{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}.muse-segmented>*{flex:none}}
+@media (prefers-reduced-motion:reduce){:is(.muse-panel,.muse-chip-row>*,.muse-segmented>*,.muse-search){transition:none}}
+:root[data-magic=quiet] :is(.muse-panel,.muse-chip-row>*,.muse-segmented>*,.muse-search){transition:none}

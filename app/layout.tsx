@@ -1,16 +1,28 @@
 import type { Metadata, Viewport } from "next";
-import { Geist } from "next/font/google";
+import { Fraunces, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import "./interactions.css";
+import "./typography.css";
+import "./design-language.css";
 import { motionTokens } from "@/lib/motion";
 import { defaultTheme } from "@/lib/themes";
 import { museBrand } from "@/lib/brand";
 import { pwaInk } from "@/lib/pwa";
 import { ThemeColorSync } from "@/components/ThemeColorSync";
 
-const geistSans = Geist({
+// Interface: Plus Jakarta Sans (variable weight, true italics) fills the existing --font-interface slot.
+const interfaceSans = Plus_Jakarta_Sans({
   variable: "--font-interface",
   subsets: ["latin"],
+  style: ["normal", "italic"],
+});
+// Editorial: Fraunces with its optical-size, Softness and Wonky axes all present, so the approved
+// "SOFT" 100 / "WONK" 0 settings in app/typography.css actually take effect (true italics included).
+const editorialSerif = Fraunces({
+  variable: "--font-fraunces",
+  subsets: ["latin"],
+  style: ["normal", "italic"],
+  axes: ["opsz", "SOFT", "WONK"],
 });
 
 export const metadata: Metadata = {
@@ -40,7 +52,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       data-theme={defaultTheme.id}
       data-material="crystal"
       style={motionTokens}
-      className={`${geistSans.variable} h-full antialiased`}
+      className={`${interfaceSans.variable} ${editorialSerif.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col"><ThemeColorSync />{children}</body>
     </html>

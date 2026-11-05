@@ -3,7 +3,7 @@
 .muse-daily-bookshelf-feature{display:grid;grid-template-columns:86px minmax(0,1fr);align-items:start;gap:15px;min-width:0}
 .muse-daily-bookshelf-feature .muse-book-cover{width:86px;max-width:100%}
 .muse-daily-bookshelf-feature>div:last-child{display:grid;align-content:start;gap:6px;min-width:0}
-.muse-daily-bookshelf-title{font:italic 1.2rem/1.25 var(--font-serif,Georgia,serif);overflow-wrap:anywhere}
+.muse-daily-bookshelf-title{font-family:var(--font-editorial);font-style:normal;font-weight:var(--type-title-weight);font-size:1.2rem;line-height:1.25;overflow-wrap:anywhere}
 .muse-daily-bookshelf-feature span{color:var(--text-muted);font-size:.83rem}
 .muse-daily-bookshelf-feature progress{width:min(100%,280px);height:7px;accent-color:var(--accent-primary)}
 .muse-daily-bookshelf-picker{display:grid;gap:8px;max-height:260px;overflow:auto;padding:8px}

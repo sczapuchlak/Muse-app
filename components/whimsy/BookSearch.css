@@ -13,7 +13,7 @@
 .muse-book-search-result { flex: none; display: grid; grid-template-columns: 40px minmax(0, 1fr); align-items: center; gap: 12px; min-height: 64px; padding: 6px 8px; border: 1px solid transparent; border-radius: calc(var(--control-radius) - 2px); color: var(--foreground); cursor: pointer; }
 .muse-book-search-result:hover, .muse-book-search-result[aria-selected="true"] { border-color: var(--selected-border); background: var(--surface-hover); }
 .muse-book-search-copy { display: grid; gap: 2px; min-width: 0; }
-.muse-book-search-copy strong { font: italic 1rem/1.25 var(--font-serif, Georgia, serif); overflow-wrap: anywhere; }
+.muse-book-search-copy strong {font-family:var(--font-editorial);font-style:normal;font-weight:var(--type-title-weight);font-size:1rem;line-height:1.25; overflow-wrap: anywhere; }
 .muse-book-search-copy span, .muse-book-search-copy small { color: var(--text-muted); font-size: .76rem; overflow-wrap: anywhere; }
 .muse-book-search-thumb { display: grid; place-items: center; overflow: hidden; border: 1px solid var(--glass-border); border-radius: 5px; background: var(--surface-control); color: var(--accent-primary); }
 .muse-book-search-thumb img { width: 100%; height: 100%; object-fit: cover; }

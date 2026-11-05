@@ -3,4 +3,4 @@
 .muse-whimsy-foundation-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr)); gap:var(--grid-gap); }
 .muse-whimsy-foundation-grid h2 { font-size:1.1rem; }
 
-.muse-whimsy-overview-intro{margin-bottom:var(--space-5);max-width:64ch}.muse-whimsy-overview-intro h2{font:italic clamp(1.5rem,2.5vw,2rem)/1.2 var(--font-serif,Georgia,serif);margin:0 0 var(--space-2)}.muse-whimsy-overview-intro p{color:var(--text-muted);line-height:1.6;margin:0}
+.muse-whimsy-overview-intro{margin-bottom:var(--space-5);max-width:64ch}.muse-whimsy-overview-intro h2{font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight);font-size:clamp(1.5rem,2.5vw,2rem);line-height:1.2;margin:0 0 var(--space-2)}.muse-whimsy-overview-intro p{color:var(--text-muted);line-height:1.6;margin:0}

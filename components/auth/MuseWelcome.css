@@ -1,5 +1,5 @@
 /* First-run welcome: the sign-in frame's story + glass layout, with a compact three-step panel. */
-.muse-welcome .muse-welcome-tagline{font:italic clamp(1.15rem,2.2vw,1.45rem)/1.4 var(--font-serif,Georgia,serif);margin:4px 0 0}
+.muse-welcome .muse-welcome-tagline{font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-quote-weight);font-size:clamp(1.15rem,2.2vw,1.45rem);line-height:1.4;margin:4px 0 0}
 .muse-welcome-glass{display:grid;gap:4px;max-height:calc(100dvh - 48px);overflow-y:auto;overscroll-behavior:contain}
 .muse-welcome-step{display:grid;gap:10px}
 .muse-welcome-glass form.muse-welcome-step{margin:0}
