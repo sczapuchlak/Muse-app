@@ -1,4 +1,5 @@
 import {readingByDay} from '@/lib/whimsy/integrations';
+import {completionEvents} from '@/lib/whimsy/reading-stats';
 import type {Book,ReadingSession} from '@/lib/whimsy/models';
 import {canonicalItems,seriesProgress,type CollectionsSnapshot} from './models';
 
@@ -7,7 +8,8 @@ const inRange=(date:string,range:CollectionRange)=>date>=range.start&&date<=rang
 /** Current-series state and dated media activity are kept distinct; historical series state is unknown. */
 export function collectionsMetrics(records:CollectionsSnapshot,books:Book[],sessions:ReadingSession[],range:CollectionRange){
  const reading=readingByDay(sessions).filter(day=>inRange(day.date,range)),activity=records.activity.filter(row=>inRange(row.activity_date,range)),items=canonicalItems(books,records.media),series=records.series.map(row=>({id:row.id,title:row.title,kind:row.kind,...seriesProgress(row,records.seriesMembers,books,records.media)}));
- const completedBooks=books.filter(book=>book.status==='finished'&&book.finishedOn&&inRange(book.finishedOn,range)),completedMedia=records.media.filter(item=>item.completed_on&&inRange(item.completed_on,range)&&((item.kind==='movie'&&item.status==='watched')||(item.kind==='tv'&&item.status==='completed')||(item.kind==='game'&&item.status==='completed')));
+ // One entry per finished read (rereads included), each with that read's own finish date.
+ const completedBooks=completionEvents(books).filter(e=>inRange(e.completion.finishedOn,range)).map(e=>({...e.book,finishedOn:e.completion.finishedOn,startedOn:e.completion.startedOn})),completedMedia=records.media.filter(item=>item.completed_on&&inRange(item.completed_on,range)&&((item.kind==='movie'&&item.status==='watched')||(item.kind==='tv'&&item.status==='completed')||(item.kind==='game'&&item.status==='completed')));
  const movieViews=activity.filter(row=>row.kind==='watch'||row.kind==='rewatch'),episodeViews=activity.filter(row=>row.kind==='episode-watch'||row.kind==='episode-rewatch'),gameSessions=activity.filter(row=>row.kind==='play'||row.kind==='replay');
  const duration=(rows:typeof activity)=>({recordedMinutes:rows.reduce((sum,row)=>sum+(row.duration_minutes??0),0),sessionsWithDuration:rows.filter(row=>row.duration_minutes!==null).length,sessionsMissingDuration:rows.filter(row=>row.duration_minutes===null).length});
  const genres=new Map<string,number>();for(const item of completedMedia)for(const genre of item.genres)genres.set(genre,(genres.get(genre)??0)+1);for(const book of completedBooks)if(book.genre)genres.set(book.genre,(genres.get(book.genre)??0)+1);

@@ -151,7 +151,9 @@ test('every book write keeps lookup metadata, and older books stay valid',()=>{
  const meta={isbn:'9781619634480',publisher:'Bloomsbury',publishedDate:'2017-05-02',description:'Text',metadataSource:{provider:'open-library',workKey:'/works/OL1W',importedAt:'2026-11-04T00:00:00.000Z'}};
  assert.deepEqual(bookMetadataFields({...meta,title:'ignored'}),meta);
  const shelf=read('components/whimsy/Bookshelf.tsx');
- assert.match(shelf,/finalThoughts:book\.finalThoughts,\.\.\.bookMetadataFields\(book\)\};await saveWhimsyRecord\(client,'books'/,'status moves keep metadata');
+ assert.match(shelf,/finalThoughts:book\.finalThoughts,\.\.\.bookCarryFields\(book\),\.\.\.changes\};\}/,'every shelf write starts from the complete record');
+ assert.match(shelf,/const record=bookRecord\(book,\{status:next/,'status moves use the complete record');
+ assert.match(read('lib/whimsy/books.ts'),/return \{\.\.\.bookMetadataFields\(book\),\.\.\.\(book\.completions\?\.length/,'carry fields include lookup metadata');
  assert.match(shelf,/\.\.\.bookMetadataFields\(\{isbn:bookForm\.isbn/,'editor saves metadata');
  assert.match(shelf,/!books\.some\(b=>b\.id===bookForm\.id\)&&<><BookSearch/,'search only when adding a new book');
  assert.match(shelf,/<p>\{detail\.description\}<\/p>/,'description renders as text');assert.ok(!/dangerouslySetInnerHTML/.test(shelf+read('components/whimsy/BookSearch.tsx')));

@@ -79,3 +79,30 @@
 /* Fields in a row share a top edge; a taller neighbour (genre chips) must not push inputs down. */
 .muse-books-fields{align-items:flex-start}
 .muse-books-fields>.muse-genre-picker>span{font-size:inherit}
+
+/* Reading Atlas essentials: period selector (a tertiary filter), activity bars, session history. Theme tokens only. */
+.muse-books-atlas-period{display:flex;flex-wrap:wrap;gap:6px}
+.muse-books-atlas-period>.muse-button{min-height:36px;padding:6px 12px;border-radius:999px;font-size:.8rem}
+.muse-books-atlas-period>[aria-pressed=true]{border-color:var(--selected-border);background:var(--selected-background);color:var(--selected-text)}
+.muse-books-atlas-days{margin:0}
+.muse-books-bars{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);align-items:end;gap:6px;height:140px;margin:0;padding:0;list-style:none}
+.muse-books-bars>li{display:grid;grid-template-rows:1fr auto;align-items:end;justify-items:center;gap:4px;height:100%;min-width:0}
+.muse-books-bar{display:block;width:100%;max-width:28px;height:var(--bar);min-height:2px;border-radius:6px 6px 2px 2px;background:linear-gradient(180deg,var(--accent-primary),color-mix(in srgb,var(--accent-secondary) 70%,var(--accent-primary)))}
+.muse-books-bars small{color:var(--text-muted);font-size:.62rem;white-space:nowrap}
+.muse-books-history-filters{display:flex;flex-wrap:wrap;align-items:end;gap:10px}
+.muse-books-history-filters>label{display:grid;gap:4px;flex:0 1 160px;min-width:0}
+.muse-books-history-filters>.muse-books-history-search{flex:1 1 200px}
+.muse-books-history-list{display:grid;margin:0;padding:0;list-style:none}
+.muse-books-history-list>li>div{display:grid;gap:3px;min-width:0}
+.muse-books-history-list>li>div>span{color:var(--text-muted);font-size:.8rem}
+.muse-books-history-list>li>div>p{margin:0;font-size:.8rem;overflow-wrap:anywhere}
+.muse-books-recovery{display:grid;gap:12px}
+.muse-books-recovery>.muse-button,.muse-books-recovery>.text-button{justify-self:start}
+.muse-books-unsynced{display:grid;gap:6px;margin-top:8px;padding:10px 12px;border:1px dashed var(--selected-border);border-radius:var(--control-radius);background:color-mix(in srgb,var(--accent-primary) 8%,var(--surface-subtle))}
+.muse-books-unsynced>p{margin:0;font-size:.82rem}
+.muse-books-unsynced>.text-button{justify-self:start}
+.muse-books-completion-row{display:flex;flex-wrap:wrap;align-items:end;gap:10px}
+.muse-books-completion-row>label{display:grid;gap:4px}
+.muse-books-delete-ack{display:flex!important;align-items:flex-start;gap:8px;font-size:.85rem}
+.muse-books-delete-ack>input{width:18px;height:18px;min-height:18px;margin-top:2px;accent-color:var(--accent-primary)}
+@media(max-width:600px){.muse-books-history-filters>label{flex-basis:100%}.muse-books-bars{height:110px;gap:3px}.muse-books-bars small{font-size:.56rem}}
