@@ -16,7 +16,7 @@ test('the Encyclopedia and entry pages credit HeartYearning and link to Open Sou
  const list=read('components/whimsy/Dreamscapes.tsx'),entry=read('components/whimsy/encyclopedia/DreamEncyclopediaEntry.tsx');
  for(const src of [list,entry]){assert.match(src,/powered by the <a href=\{HEARTYEARNING\.site\}/);assert.match(src,/href="\/settings#credits"/);}
  assert.match(entry,/<figcaption className="small-label">\{item\.title\} · <a href=\{item\.url\}/,'each interpretation names and links its source');
- assert.match(list,/filteredSymbols\.slice\(0,symbolLimit\)/,'the encyclopedia list pages instead of rendering every symbol');
+ assert.match(read('components/whimsy/dreams/DreamLibrary.tsx'),/const page=paginate\(results,pageNo,PAGE\)/,'the encyclopedia list pages instead of rendering every symbol');
  assert.match(list,/Search to find any of \$\{allSymbols\.length\} symbols\./,'the diary picker does not render every symbol');
 });
 
