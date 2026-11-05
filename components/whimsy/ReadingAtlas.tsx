@@ -1,37 +1,55 @@
 'use client';
-import {useState,type CSSProperties} from 'react';
+import {useEffect,useRef,useState,type CSSProperties} from 'react';
 import {MuseChoiceMenu} from '@/components/MuseChoiceMenu';
 import {dateLabel,shiftDate,todayInTimeZone} from '@/lib/dates';
 import type {Book,ReadingGoal,ReadingSession} from '@/lib/whimsy/models';
-import {activeSeconds,bookPosition,bookReadingStats,completedBookSeries,endOfPeriod,genreReadingStats,goalProgress,goalWindow,readingSeries} from '@/lib/whimsy/books';
+import {activeSeconds,bookPosition,bookReadingStats,endOfPeriod,goalProgress,goalWindow,readingSeries} from '@/lib/whimsy/books';
 import {readingByDay} from '@/lib/whimsy/integrations';
-import {activitySeries,bookProgress,completedReadAverages,completionEvents,inclusiveCalendarDays,periodRange,periodSummary,readingStreaks,type ReadingPeriod} from '@/lib/whimsy/reading-stats';
+import {activitySeries,bookProgress,inclusiveCalendarDays,periodRange,periodSummary,readingStreaks,type ReadingPeriod} from '@/lib/whimsy/reading-stats';
 import {SessionHistory} from './SessionHistory';
+import {MuseStar} from '@/components/MuseStar';
+import {readingMilestones,milestoneCelebration,type MilestoneState} from '@/lib/whimsy/reading-dna';
+import {ActivityBars,AtlasMetric,days,duration,hours,monthLabel,num,shortMonth,yearDate} from './atlas/parts';
+import {ReadingDNA} from './atlas/ReadingDNA';
+import {BooksMilestones} from './atlas/BooksMilestones';
+import {YearInReview} from './atlas/YearInReview';
+
+export type AtlasSection='overview'|'dna'|'books'|'year';
+const sections:Record<AtlasSection,string>={overview:'Overview',dna:'Reading DNA',books:'Books & Milestones',year:'Year in Review'};
 
 const periods={day:'Daily',week:'Weekly',month:'Monthly',year:'Yearly'};
 const overviewPeriods:Record<ReadingPeriod,string>={today:'Today',week:'This week',month:'This month',year:'This year',all:'All time'};
-const duration=(seconds:number)=>seconds?seconds<60?'Less than a minute':`${Math.round(seconds/60)} min`:'Time not recorded';
-const hours=(seconds:number)=>seconds<3600?duration(seconds):`${(seconds/3600).toFixed(seconds<36000?1:0)} h`;
-const monthLabel=(month:string)=>new Intl.DateTimeFormat('en-US',{month:'long',year:'numeric',timeZone:'UTC'}).format(new Date(`${month}-01T12:00:00Z`));
-const shortMonth=(start:string)=>new Intl.DateTimeFormat('en-US',{month:'short',timeZone:'UTC'}).format(new Date(`${start}T12:00:00Z`));
-const days=(n:number)=>`${n} ${n===1?'day':'days'}`;
 
-export function ReadingAtlas({timeZone,books,sessions,goals,today,range,setRange,calendarMonth,setCalendarMonth,selectedDay,setSelectedDay,onAddGoal,onRemoveGoal,onEditSession,onDeleteSession}:{timeZone:string;books:Book[];sessions:ReadingSession[];goals:ReadingGoal[];today:string;range:ReadingGoal['period'];setRange:(range:ReadingGoal['period'])=>void;calendarMonth:string;setCalendarMonth:(month:string)=>void;selectedDay:string;setSelectedDay:(day:string)=>void;onAddGoal:()=>void;onRemoveGoal:(goal:ReadingGoal)=>void;onEditSession:(session:ReadingSession)=>void;onDeleteSession:(session:ReadingSession)=>void}){
- const [period,setPeriod]=useState<ReadingPeriod>('all');
+export function ReadingAtlas({timeZone,books,sessions,goals,today,range,setRange,calendarMonth,setCalendarMonth,selectedDay,setSelectedDay,onAddGoal,onRemoveGoal,onEditSession,onDeleteSession,initialSection='overview',milestoneState,milestonesReady=false,onMilestonesSeen}:{initialSection?:AtlasSection;milestoneState?:MilestoneState;milestonesReady?:boolean;onMilestonesSeen?:(seen:string[])=>void;timeZone:string;books:Book[];sessions:ReadingSession[];goals:ReadingGoal[];today:string;range:ReadingGoal['period'];setRange:(range:ReadingGoal['period'])=>void;calendarMonth:string;setCalendarMonth:(month:string)=>void;selectedDay:string;setSelectedDay:(day:string)=>void;onAddGoal:()=>void;onRemoveGoal:(goal:ReadingGoal)=>void;onEditSession:(session:ReadingSession)=>void;onDeleteSession:(session:ReadingSession)=>void}){
+ const [period,setPeriod]=useState<ReadingPeriod>('all'),[section,setSection]=useState<AtlasSection>(initialSection);
+ // Milestones: celebrate only ones reached and never shown before (synced on the account); the first visit is a silent baseline.
+ const milestones=readingMilestones(books,sessions),achieved=milestones.filter(m=>m.achievedOn).map(m=>m.id),{celebrate,nextSeen}=milestoneCelebration(achieved,milestoneState);
+ const [celebrating,setCelebrating]=useState<string[]>([]),sent=useRef('');
+ if(milestonesReady&&celebrate.some(id=>!celebrating.includes(id)))setCelebrating([...celebrating,...celebrate.filter(id=>!celebrating.includes(id))]);
+ const unsaved=milestonesReady&&(!milestoneState||celebrate.length>0),key=JSON.stringify(nextSeen);
+ useEffect(()=>{if(!unsaved||!onMilestonesSeen||sent.current===key)return;sent.current=key;onMilestonesSeen(JSON.parse(key));},[unsaved,key,onMilestonesSeen]);
  const daily=readingByDay(sessions),summary=periodSummary(books,sessions,period,today),streak=readingStreaks(sessions,today);
  const readingDaysIn=(p:ReadingPeriod)=>{const r=periodRange(p,today)!;return daily.filter(d=>d.date>=r.start&&d.date<=r.end&&(d.seconds>0||d.pages>0)).length;};
- const series=readingSeries(sessions,range),genres=genreReadingStats(books,sessions),weekly=activitySeries(sessions,'week',12,today),monthly=activitySeries(sessions,'month',12,today);
- const events=completionEvents(books).sort((a,b)=>b.completion.finishedOn.localeCompare(a.completion.finishedOn)),averages=completedReadAverages(books,sessions),shelf=books.filter(b=>!b.archivedAt);
+ const series=readingSeries(sessions,range),weekly=activitySeries(sessions,'week',12,today),monthly=activitySeries(sessions,'month',12,today);
+ const shelf=books.filter(b=>!b.archivedAt),range_=periodRange(period,today);
  const monthStart=`${calendarMonth}-01`,monthEnd=endOfPeriod(monthStart,'month'),length=Number(monthEnd.slice(-2)),offset=(new Date(`${monthStart}T12:00:00Z`).getUTCDay()+6)%7,calendarDays=Array.from({length},(_,i)=>shiftDate(monthStart,i)),chosen=daily.find(d=>d.date===selectedDay),chosenSessions=sessions.filter(s=>s.date===selectedDay||chosen?.sessionIds.includes(s.id));
- const maxTime=Math.max(1,...series.map(s=>s.seconds)),maxPages=Math.max(1,...series.map(s=>s.pages)),maxDay=Math.max(1,...daily.map(d=>d.seconds||d.pages*60)),maxGenre=Math.max(1,...genres.map(g=>g.seconds));
+ const maxTime=Math.max(1,...series.map(s=>s.seconds)),maxPages=Math.max(1,...series.map(s=>s.pages)),maxDay=Math.max(1,...daily.map(d=>d.seconds||d.pages*60));
  const label=period==='all'?'all time':overviewPeriods[period].toLowerCase(),c=summary.completions;
  return <section className="muse-books-section" aria-label="Reading Atlas">
   <div className="muse-books-section-head"><div><h3>Reading Atlas</h3><p>A map of the time you spent among stories.</p></div><span className="small-label">Your reading, at a glance</span></div>
   {!sessions.length&&<div className="muse-books-empty"><h4>A reading life, taking shape.</h4><p>Your first logged session will bring time, pages, and rhythm into focus. Your shelf and goals are ready whenever you are.</p></div>}
-  <div className="muse-books-atlas-period" role="group" aria-label="Statistics period">{(Object.keys(overviewPeriods) as ReadingPeriod[]).map(id=><button key={id} type="button" className="muse-button button-ghost" aria-pressed={period===id} onClick={()=>setPeriod(id)}>{overviewPeriods[id]}</button>)}</div>
+  <div className="muse-atlas-sections" role="group" aria-label="Reading Atlas section">{(Object.keys(sections) as AtlasSection[]).map(id=><button key={id} type="button" aria-pressed={section===id} onClick={()=>setSection(id)}>{sections[id]}</button>)}</div>
+  {celebrating.length>0&&<div className="muse-atlas-celebration" role="status"><span className="muse-finish-shimmer" aria-hidden="true"><MuseStar size={16}/><MuseStar size={11} color="aqua"/><MuseStar size={9} color="pink"/></span>
+   <div><span className="small-label">{celebrating.length===1?'New milestone':'New milestones'}</span>{celebrating.map(id=>{const m=milestones.find(x=>x.id===id);return m?<strong key={id}>{m.title}{m.achievedOn?<small> · {yearDate(m.achievedOn)}</small>:null}</strong>:null;})}</div>
+   <button type="button" className="text-button" onClick={()=>setCelebrating([])}>Dismiss</button></div>}
+  {section!=='year'&&<div className="muse-books-atlas-period" role="group" aria-label="Statistics period">{(Object.keys(overviewPeriods) as ReadingPeriod[]).map(id=><button key={id} type="button" className="muse-button button-ghost" aria-pressed={period===id} onClick={()=>setPeriod(id)}>{overviewPeriods[id]}</button>)}</div>}
+  {section==='dna'&&<ReadingDNA books={books} sessions={sessions} range={range_} label={label} today={today}/>}
+  {section==='books'&&<BooksMilestones books={books} sessions={sessions} range={range_} label={label}/>}
+  {section==='year'&&<YearInReview books={books} sessions={sessions} today={today}/>}
+  {section==='overview'&&<>
   <div className="muse-books-stats muse-books-atlas-metrics" aria-live="polite">
    <AtlasMetric label="Reading time" value={summary.seconds?hours(summary.seconds):'—'} detail={summary.seconds?'Active time · pauses excluded':`No time recorded ${label}`}/>
-   <AtlasMetric label="Pages read" value={summary.sessions?String(summary.pages):'—'} detail="From saved sessions"/>
+   <AtlasMetric label="Pages read" value={summary.sessions?num(summary.pages):'—'} detail="From saved sessions"/>
    <AtlasMetric label="Books finished" value={String(c.count)} detail={c.count?`${c.uniqueTitles} ${c.uniqueTitles===1?'title':'titles'}${c.rereads?` · ${c.rereads} ${c.rereads===1?'reread':'rereads'}`:''}`:`None finished ${label}`}/>
    <AtlasMetric label="Reading days" value={summary.readingDays?String(summary.readingDays):'—'} detail="Each day counted once"/>
    <AtlasMetric label="Sessions" value={String(summary.sessions)} detail={summary.longest?`Longest ${duration(summary.longest.seconds)}`:'Saved reading sessions'}/>
@@ -56,22 +74,7 @@ export function ReadingAtlas({timeZone,books,sessions,goals,today,range,setRange
     <small>{readingDays} actual reading {readingDays===1?'day':'days'}{span!==null?` · ${days(span)} in reading span (inclusive)`:''}</small>
     <small>{p.pace.pagesPerHour!==null?`${p.pace.pagesPerHour.toFixed(1)} pages/hour`:'Pace needs a session with time and pages'}{p.averageSessionSeconds!==null?` · ${duration(p.averageSessionSeconds)} average session`:''}</small>
     {book.status!=='finished'&&p.total&&<small>{p.estimatedSecondsRemaining!==null?`About ${hours(p.estimatedSecondsRemaining)} left at your pace for this book`:'Time-left estimate appears after two timed sessions with pages'}</small>}</>:<span>No sessions logged for this book yet.</span>}</div>;})}</div>}</article>
-  <div className="muse-books-atlas-grid">
-   <article className="muse-books-panel"><h4>Genres you return to</h4>{!genres.length?<p>Add genres to your books to see their place in your reading life.</p>:<div className="muse-books-rhythm">{genres.map((genre,index)=><div key={genre.genre} style={{'--reading-color':index%2?'var(--accent-secondary)':'var(--accent-tertiary,var(--accent-primary))'} as CSSProperties}><div><strong>{genre.genre}</strong><span>{genre.seconds?duration(genre.seconds):'No timed sessions'} · {genre.pages} pages · {genre.booksFinished} {genre.booksFinished===1?'title':'titles'} finished</span></div>{genre.seconds>0&&<progress value={genre.seconds} max={maxGenre} aria-label={`${genre.genre}: ${duration(genre.seconds)}`}/>}</div>)}</div>}<p className="small-label">A book with several genres appears in each; totals elsewhere count it once.</p></article>
-   <article className="muse-books-panel"><h4>Completed books</h4>{!events.length?<p>A finished book belongs here whenever you reach its last page.</p>:<>
-    <p>{averages.averageCalendarDays!==null?`${averages.averageCalendarDays.toFixed(1)} calendar days on average (inclusive), from ${averages.datedCompletions} ${averages.datedCompletions===1?'read':'reads'} with a start date`:'Start dates not recorded'}{averages.averageActiveSeconds!==null?` · ${hours(averages.averageActiveSeconds)} average active time, from ${averages.timedCompletions} timed ${averages.timedCompletions===1?'read':'reads'}`:''}</p>
-    <div className="muse-books-finished-list">{events.map(({book,completion,reread})=><div key={`${book.id}:${completion.id}`}><strong>{book.title}{reread?' · reread':''}</strong><span>{dateLabel(completion.finishedOn)}{completion.startedOn?` · ${days(inclusiveCalendarDays(completion.startedOn,completion.finishedOn)??0)} (inclusive)`:''}{book.rating?` · ${book.rating}/5`:''} {book.reviewEmojis.join(' ')}</span></div>)}</div>
-    <div className="muse-books-rhythm">{completedBookSeries(books,'month').map(item=><div key={item.start}><div><span>{monthLabel(item.start.slice(0,7))}</span><strong>{item.count} finished</strong></div><progress value={item.count} max={Math.max(1,...completedBookSeries(books,'month').map(s=>s.count))} aria-label={`${monthLabel(item.start.slice(0,7))}: ${item.count} books finished`}/></div>)}</div>
-    <p className="small-label">Yearly: {completedBookSeries(books,'year').map(item=>`${item.start.slice(0,4)} · ${item.count}`).join(' · ')}</p></>}</article>
-  </div>
   <SessionHistory sessions={sessions} books={books} onEdit={onEditSession} onDelete={onDeleteSession}/>
+  </>}
  </section>;
-}
-function AtlasMetric({label,value,detail}:{label:string;value:string;detail:string}){return <div><span className="small-label">{label}</span><strong>{value}</strong><small>{detail}</small></div>;}
-/** A compact bar chart with a text equivalent; empty periods are real zeros, never estimates. */
-function ActivityBars({title,note,items}:{title:string;note:string;items:{key:string;label:string;short:string;value:number;text:string}[]}){
- const max=Math.max(1,...items.map(i=>i.value)),empty=items.every(i=>!i.value);
- return <article className="muse-books-panel"><div className="muse-books-panel-head"><h4>{title}</h4></div>
-  {empty?<p>Nothing recorded in this window yet.</p>:<ol className="muse-books-bars" aria-label={title}>{items.map(i=><li key={i.key} title={`${i.label}: ${i.text}`}><span className="muse-books-bar" style={{'--bar':`${Math.round(i.value/max*100)}%`} as CSSProperties} aria-hidden="true"/><span className="sr-only">{i.label}: {i.text}</span><small aria-hidden="true">{i.short}</small></li>)}</ol>}
-  <p className="small-label">{note}</p></article>;
 }
