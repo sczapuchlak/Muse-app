@@ -34,7 +34,7 @@ const emptyCopy:Record<Exclude<CollectionsPreferences['kind'],'all'>,[string,str
 
 export function Collections(){
  const query=useSearchParams(),view=views.find(id=>id===query?.get('view'))??'overview';
- const {records:whimsy,status,timeZone}=useWhimsyData(),collection=useCollectionsData(),books=whimsy?.books??[],items=canonicalItems(books,collection.records.media),today=todayInTimeZone(validTimeZone(timeZone)?timeZone:'UTC');
+ const {records:whimsy,status,timeZone}=useWhimsyData(),collection=useCollectionsData(),books=whimsy?.books??[],items=canonicalItems(books.filter(book=>!book.archivedAt),collection.records.media),today=todayInTimeZone(validTimeZone(timeZone)?timeZone:'UTC');
  const client=useMemo(()=>createMuseBrowserClient(),[]),[preferences,setPreferences]=useState(defaultCollectionsPreferences),[draftPreferences,setDraftPreferences]=useState(defaultCollectionsPreferences),[preferencesOpen,setPreferencesOpen]=useState(false),[preferenceBusy,setPreferenceBusy]=useState(false),[preferenceError,setPreferenceError]=useState('');
  const [search,setSearch]=useState(''),[kindFilter,setKindFilter]=useState<CollectionsPreferences['kind']>('all'),[sort,setSort]=useState('recent'),[statusFilter,setStatusFilter]=useState(''),[genreFilter,setGenreFilter]=useState(''),[ratingFilter,setRatingFilter]=useState(''),[tagFilter,setTagFilter]=useState(''),[seriesFilter,setSeriesFilter]=useState(''),[favoriteOnly,setFavoriteOnly]=useState(false),[addedAfter,setAddedAfter]=useState(''),[completedAfter,setCompletedAfter]=useState(''),[advancedOpen,setAdvancedOpen]=useState(false),[addOpen,setAddOpen]=useState(false);
  const addAnchor=useRef<HTMLButtonElement>(null);
