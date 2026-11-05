@@ -90,6 +90,8 @@
 .muse-dayprint .muse-mood-reflection-preview { white-space:pre-wrap; }
 .muse-dayprint .muse-mood-reflection-preview summary { cursor:pointer; padding-block:var(--space-2); color:var(--link-color,var(--accent-secondary)); }
 .muse-dayprint-summary { background:linear-gradient(145deg,color-mix(in srgb,var(--accent-secondary) 9%,transparent),transparent); border-radius:var(--control-radius); }
+/* The tinted summary is its own panel: padded on every side so the pulse meters never touch or overrun its edge. */
+.muse-dayprint-columns > .muse-dayprint-summary { padding:var(--space-4); border-left:0; box-sizing:border-box; }
 .muse-dayprint-vibe { display:block; font-size:1.7rem; letter-spacing:.15em; margin-bottom:var(--space-4); overflow-wrap:anywhere; }
 .muse-dayprint-pulse dl { display:grid; gap:var(--space-3); margin:0; }
 .muse-dayprint-pulse dl > div { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:var(--space-1); align-items:baseline; }

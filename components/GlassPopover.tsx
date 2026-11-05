@@ -41,6 +41,8 @@ function GlassPopoverLayer({ id, label, title, open, anchorRef, onClose, childre
       const box=anchor.getBoundingClientRect(),host=anchor.closest('dialog[open]'),hostBox=host?.getBoundingClientRect(),viewport=window.visualViewport;
       const bounds=popoverBounds({left:viewport?.offsetLeft??0,top:viewport?.offsetTop??0,right:(viewport?.offsetLeft??0)+(viewport?.width??window.innerWidth),bottom:(viewport?.offsetTop??0)+(viewport?.height??window.innerHeight)},hostBox);
       panel.style.maxWidth=`${Math.max(1,bounds.right-bounds.left)}px`;
+      // Phones: span the usable width so choices are never squeezed beside the trigger.
+      panel.style.width=bounds.right-bounds.left<480?`${Math.max(1,bounds.right-bounds.left)}px`:'';
       const placement=placePopover(box,bounds,panel.offsetWidth,panel.scrollHeight+2,align);
       panel.style.maxHeight=`${placement.maxHeight}px`;
       panel.style.left=`${placement.left-(hostBox?.left??0)}px`;
@@ -51,7 +53,9 @@ function GlassPopoverLayer({ id, label, title, open, anchorRef, onClose, childre
     resize.observe(panel);
     resize.observe(anchor);
     const frame = requestAnimationFrame(() => {
-      const focusTarget = panel.querySelector<HTMLElement>('[data-popover-autofocus]')??panel.querySelector<HTMLElement>('input')??panel.querySelector<HTMLElement>('button:not(:disabled), [tabindex="0"]');
+      // On touch screens a focused search field opens the keyboard and hides the choices; focus the panel instead.
+      const touch=window.matchMedia?.('(pointer: coarse)').matches;
+      const focusTarget = panel.querySelector<HTMLElement>('[data-popover-autofocus]')??(touch?null:panel.querySelector<HTMLElement>('input'))??(touch?null:panel.querySelector<HTMLElement>('button:not(:disabled), [tabindex="0"]'));
       (focusTarget ?? panel).focus();
     });
     function outside(event: PointerEvent) {

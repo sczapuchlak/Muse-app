@@ -177,3 +177,21 @@
 .muse-atlas-year-heading{margin:0 0 8px;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted)}
 .muse-atlas-three{text-align:center;justify-items:center}
 .muse-atlas-three-emojis{display:flex;justify-content:center;gap:clamp(10px,3vw,22px);margin:8px 0;font-size:clamp(2.4rem,8vw,3.4rem);line-height:1.1}
+
+/* Book details: series line beside the cover, inline Add to a series, quiet destructive action. */
+.muse-books-detail-head .muse-books-series-links{align-items:center;margin:2px 0}
+.muse-books-detail-head .muse-books-series-links .text-button{font-size:.85rem}
+.muse-books-add-series{display:grid;gap:10px;padding:14px;border:1px solid var(--selected-border);border-radius:14px;background:color-mix(in srgb,var(--accent-primary) 5%,var(--surface-subtle))}
+.muse-books-add-series .muse-books-panel-head{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.muse-books-add-series .muse-books-fields{grid-template-columns:repeat(auto-fit,minmax(min(100%,170px),1fr))}
+.muse-books-detail-empty{margin:0;padding:12px 14px;border:1px dashed var(--glass-border);border-radius:12px}
+.muse-books-detail-remove{margin-left:auto}
+@media(max-width:600px){.muse-books-detail-remove{margin-left:0}}
+
+/* Atlas Overview: charts stacked beside the calendar, stretching to its height so no card leaves a gap. */
+.muse-atlas-overview-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(14px,2vw,20px);align-items:stretch}
+.muse-atlas-stack{display:flex;flex-direction:column;gap:clamp(14px,2vw,20px);min-width:0}
+.muse-atlas-stack>*{flex:1 1 auto}
+.muse-atlas-stack .muse-books-bars{height:auto;min-height:140px;flex:1}
+.muse-atlas-stack>.muse-books-panel{display:flex;flex-direction:column}
+@media(max-width:900px){.muse-atlas-overview-grid{grid-template-columns:minmax(0,1fr)}}
