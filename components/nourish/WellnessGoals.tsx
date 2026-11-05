@@ -54,7 +54,7 @@ export function WellnessGoals({today,timeZone}:{today:string;timeZone:string}){
   {goals&&<div className="muse-goals-grid">
    <HydrationCard state={state} today={today}/>
    {live.map(goal=><GoalCard key={goal.id} goal={goal} sources={sources} today={today} onEdit={anchor=>setEditor({goal,anchor})} onStatus={next=>setStatus(goal,next)}/>)}
-   {!live.length&&<div className="muse-goals-empty"><p>No goals yet. Start with one that fits this season.</p><div>{(["workouts","strength-workouts","workout-minutes","nutrition-protein"] as GoalMetric[]).map(metric=><button key={metric} type="button" className="muse-button button-ghost" onClick={event=>setEditor({metric,anchor:event.currentTarget})}>{goalMetricInfo[metric].label}</button>)}</div></div>}
+   {!live.length&&<div className="muse-empty-state muse-goals-empty" data-variant="quiet"><p>No goals yet. Start with one that fits this season.</p><div>{(["workouts","strength-workouts","workout-minutes","nutrition-protein"] as GoalMetric[]).map(metric=><button key={metric} type="button" className="muse-button button-ghost" onClick={event=>setEditor({metric,anchor:event.currentTarget})}>{goalMetricInfo[metric].label}</button>)}</div></div>}
   </div>}
   {retired.length>0&&<details className="muse-goals-retired"><summary>Retired goals ({retired.length})</summary><div className="muse-goals-grid">{retired.map(goal=><GoalCard key={goal.id} goal={goal} sources={sources} today={today} onEdit={anchor=>setEditor({goal,anchor})} onStatus={next=>setStatus(goal,next)}/>)}</div></details>}
 

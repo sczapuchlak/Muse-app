@@ -1,0 +1,43 @@
+/*
+ * Muse typography (#57). The one place where fonts, editorial axes and the type hierarchy are decided.
+ * Fraunces brings the magic; Plus Jakarta Sans keeps everything usable. Modules use these roles instead of
+ * declaring their own families, styles or weights, so a hierarchy change happens here once.
+ */
+:root{
+  /* Families. --font-interface (Plus Jakarta Sans) and --font-fraunces come from next/font in app/layout.tsx. */
+  --font-editorial:var(--font-fraunces),Georgia,"Times New Roman",serif;
+  --font-ui:var(--font-interface),"Helvetica Neue",Arial,sans-serif;
+  /* Earlier names all resolve to the same editorial family, so nothing references a missing font. */
+  --font-serif:var(--font-editorial);
+  --font-display:var(--font-editorial);
+  --font-whimsy:var(--font-editorial);
+
+  /* Approved Fraunces settings: Softness 100, Wonky off, optical size automatic. Inherited by everything;
+     Plus Jakarta Sans has no SOFT/WONK axes and simply ignores them. */
+  --editorial-axes:"SOFT" 100,"WONK" 0;
+
+  /* Role weights (Fraunces is variable, so in-between weights are real). Lighter weights only at large sizes. */
+  --type-display-weight:380;   /* major editorial headings: Fraunces Soft Italic */
+  --type-quote-weight:360;     /* atmospheric lines and quotes: Fraunces Soft Italic */
+  --type-reading-weight:400;   /* long Fraunces passages (dream stories, fortunes): upright */
+  --type-editorial-weight:460; /* selected literary headings: Fraunces Soft Upright */
+  --type-title-weight:520;     /* book titles, card names, entry titles: restrained upright */
+  --type-heading-weight:620;   /* functional headings: Plus Jakarta Sans */
+  --type-meta-weight:500;
+  --type-numeric-weight:620;
+}
+html{font-variation-settings:var(--editorial-axes);font-optical-sizing:auto}
+
+/* Semantic roles for new and existing markup. Size is left to context unless a sensible default helps. */
+.type-display{font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight);letter-spacing:-.01em;line-height:1.1}
+.type-editorial{font-family:var(--font-editorial);font-style:normal;font-weight:var(--type-editorial-weight);line-height:1.25}
+.type-quote{font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-quote-weight);line-height:1.5}
+.type-reading{font-family:var(--font-editorial);font-style:normal;font-weight:var(--type-reading-weight);line-height:1.65}
+.type-title{font-family:var(--font-editorial);font-style:normal;font-weight:var(--type-title-weight);line-height:1.25}
+.type-heading{font-family:var(--font-ui);font-style:normal;font-weight:var(--type-heading-weight);letter-spacing:-.005em;line-height:1.3}
+.type-body{font-family:var(--font-ui);font-weight:400;line-height:1.55}
+.type-meta{font-family:var(--font-ui);font-size:.75rem;font-weight:var(--type-meta-weight);letter-spacing:.01em;line-height:1.4}
+.type-numeric{font-family:var(--font-ui);font-weight:var(--type-numeric-weight);font-variant-numeric:tabular-nums lining-nums}
+
+/* Shared numeric surfaces: statistics read in Plus Jakarta Sans with aligned figures. */
+:is(.muse-goals-tiles dd,.muse-across-tile strong,.muse-insight-small-metrics dd,.muse-dream-stat-grid strong,.muse-goals-table,.muse-insight-time dd){font-family:var(--font-ui);font-variant-numeric:tabular-nums lining-nums}

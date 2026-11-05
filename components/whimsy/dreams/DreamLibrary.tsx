@@ -25,18 +25,18 @@ export function DreamLibrary({symbols,categories,dreamCounts,search,setSearch,ca
  const browsing=!q&&!category&&!letter&&source==='all'&&page.page===0;
  return <section className="muse-dream-section muse-dream-library" aria-label="Symbol Encyclopedia">
   <div className="muse-dream-library-hero">
-   <p className="muse-dream-library-kicker">An enchanted field guide</p>
+   <p className="muse-kicker muse-dream-library-kicker">An enchanted field guide</p>
    <h3>{symbols.length.toLocaleString('en-US')} symbols to wander through</h3>
    <p className="small-label">Muse’s prompts and HeartYearning’s interpretations are possibilities for curiosity, not fixed meanings. Your personal meanings stay private.</p>
    <div ref={field}><DreamSearch label="Search symbols" value={search} onChange={v=>reset(()=>setSearch(v))} placeholder="Search a symbol, a feeling, an association…  (press / )" count={results.length} noun={['symbol','symbols']}/></div>
   </div>
-  <div className="muse-dream-chip-row" role="group" aria-label="Symbol category">
+  <div className="muse-chip-row muse-dream-chip-row" data-scroll role="group" aria-label="Symbol category">
    <button type="button" aria-pressed={!category} onClick={()=>reset(()=>setCategory(''))}>All <small>{bySource.filter(matchesText).length}</small></button>
    {categories.map(c=>{const n=bySource.filter(s=>s.category===c&&matchesText(s)).length;return n||category===c?<button type="button" key={c} aria-pressed={category===c} onClick={()=>reset(()=>setCategory(category===c?'':c))}><span aria-hidden="true">{categoryGlyph[c]??'✧'}</span>{c} <small>{n}</small></button>:null;})}
   </div>
   <div className="muse-dream-library-tools">
    <div className="muse-dream-alphabet" role="group" aria-label="Filter by first letter">{'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map(l=><button type="button" key={l} disabled={!letters.has(l)} aria-pressed={letter===l} onClick={()=>reset(()=>setLetter(letter===l?'':l))}>{l}</button>)}</div>
-   <div className="muse-dream-segmented" role="group" aria-label="Source">{(Object.keys(sources) as Source[]).map(s=><button type="button" key={s} aria-pressed={source===s} onClick={()=>reset(()=>setSource(s))}>{sources[s]}</button>)}</div>
+   <div className="muse-segmented muse-dream-segmented" role="group" aria-label="Source">{(Object.keys(sources) as Source[]).map(s=><button type="button" key={s} aria-pressed={source===s} onClick={()=>reset(()=>setSource(s))}>{sources[s]}</button>)}</div>
   </div>
   {browsing&&yours.length>0&&<section className="muse-dream-shelf" aria-label="Symbols from your dreams"><h4>From your dreams</h4><div>{yours.map(({symbol,n})=><Link key={symbol.id} href={symbolHref(symbol.id)} className="muse-dream-artifact"><span aria-hidden="true">{symbolGlyph(symbol)}</span>{symbol.name}<small>{n}</small></Link>)}</div></section>}
   {addSymbol}

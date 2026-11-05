@@ -9,7 +9,7 @@ import {ActivityBars,AtlasMetric,Insight,days,duration,hours,monthLabel,monthNam
 /** A literary scrapbook of one year, computed live from saved records (nothing is stored as a snapshot). */
 export function YearInReview({books,sessions,today}:{books:Book[];sessions:ReadingSession[];today:string}){
  const years=yearsWithReading(books,sessions),[chosen,setChosen]=useState(today.slice(0,4)),year=years.includes(chosen)?chosen:years[0];
- if(!year)return <div className="muse-books-empty"><h4>Your first year in books is waiting.</h4><p>Once you log a session or finish a book, its year will have a recap here.</p></div>;
+ if(!year)return <div className="muse-empty-state muse-books-empty" data-variant="editorial"><h4>Your first year in books is waiting.</h4><p>Once you log a session or finish a book, its year will have a recap here.</p></div>;
  const r=yearReview(books,sessions,year,today),n=r.numbers,isPersona=(p:Persona|{needed:number}):p is Persona=>'title' in p,progress=year===today.slice(0,4);
  return <div className="muse-atlas-section muse-atlas-year">
   <div className="muse-books-atlas-period" role="group" aria-label="Year">{years.map(y=><button key={y} type="button" className="muse-button button-ghost" aria-pressed={y===year} onClick={()=>setChosen(y)}>{y}</button>)}</div>

@@ -7,7 +7,7 @@
   /* Change the interface or greeting family here, independently. */
   --icon-transition:180ms ease;
   --font-ui: var(--font-interface), Arial, sans-serif;
-  --font-whimsy: var(--font-display, Georgia), serif;
+  --font-whimsy: var(--font-editorial);
 
   --page-max-width: 1200px;
   --page-padding: 24px;
@@ -68,7 +68,7 @@ p { margin: 0; }
   margin: 0 auto;
   padding: calc(var(--space-4) + var(--header-top-air,16px)) 0 calc(var(--space-6) + env(safe-area-inset-bottom));
 }
-.whimsy { font-family: var(--font-whimsy); font-style: italic; }
+.whimsy {font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight); }
 .muse-header { padding-bottom: var(--space-3); }
 .muse-brand-row, .greeting-row, .daily-title-row {
   display: flex;
