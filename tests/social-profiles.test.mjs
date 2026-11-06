@@ -40,7 +40,7 @@ test('banner and border presets: art-directed layers, two moods, stable ids',()=
  assert.equal(new Set(all.map(g=>g.id)).size,all.length,'unique ids');
  assert.ok(offered.length>=18&&offered.length<=24,`${offered.length} offered`);
  for(const family of ['soft','magic'])assert.ok(offered.filter(g=>g.family===family).length>=6,family);
- for(const g of all){assert.match(g.id,/^[a-z0-9-]{2,40}$/,g.id);assert.ok(g.layers.split('gradient(').length>2,`${g.id} is layered`);assert.doesNotMatch(g.layers,/conic-gradient/,`${g.id}: no colour wheels`);}
+ for(const g of all){assert.match(g.id,/^[a-z0-9-]{2,40}$/,g.id);if(!g.exclusive)assert.ok(g.layers.split('gradient(').length>2,`${g.id} is layered`);assert.doesNotMatch(g.layers,/conic-gradient/,`${g.id}: no colour wheels`);}
  for(const name of ['Nebula Noir','Milky Way','Aurora Dreams','Solar Flare','Desert Sunset'])assert.ok(offered.some(g=>g.name===name),name);
  // Every id ever offered keeps resolving, so saved profiles and Showcases never change on their own.
  for(const id of ['nebula-kiss','midnight-prism','vampire-velvet','secret-garden','mermaid-lagoon','disco-fever','moonstone','rosewater','blue-moon','champagne-toast','cosmic-candy','cherry-bomb','electric-cobalt','lime-wire','solar-flare','rainbow-riot','emerald-city','copper-kettle','olive-grove','golden-hour'])assert.equal(gradients.gradientById(id).id,id,id);
@@ -143,4 +143,16 @@ test('the creator mark is one of one and can never be self-assigned',()=>{
  assert.match(foundation,/grant update \(display_name, avatar_id, discoverable, participation\)/,'owners can only update their presentation');
  const avatar=readFileSync(join(root,'components/profile/MuseAvatar.tsx'),'utf8');assert.match(avatar,/creator\?'':className/);assert.match(avatar,/muse-creator-ring/);
  const nav=readFileSync(join(root,'components/social/ProfileNavIcon.css'),'utf8');assert.match(nav,/\.muse-nav-avatar\[data-creator\]::after\{/,'only the creator’s sidebar avatar is gold');
+});
+
+test('creator exclusives: two limited banners only the creator can pick, and a Creator tag',()=>{
+ const g=load('lib/profile/gradients',true);
+ assert.deepEqual(g.creatorGradients.map(x=>x.id),['supernova-haze','disco-cosmos']);
+ assert.ok(!g.offeredGradients.some(x=>x.exclusive),'never offered to everyone (banners or Showcase borders)');
+ for(const x of g.creatorGradients){assert.match(x.layers,/url\('\/banners\/[a-z-]+\.svg'\)/);assert.ok(existsSync(join(root,'public/banners',`${x.id}.svg`)),`${x.id} artwork bundled`);}
+ const sql=readFileSync(join(root,'supabase/migrations/20261112000100_creator_banners.sql'),'utf8');
+ assert.match(sql,/new\.banner_gradient in \('supernova-haze','disco-cosmos'\)/);assert.match(sql,/and creator\)/,'the database checks the creator mark');
+ const customizer=readFileSync(join(root,'components/profile/ProfileCustomizer.tsx'),'utf8');assert.match(customizer,/\{me\.identity\.creator&&<div className="muse-gradient-family muse-gradient-exclusive">/,'only the creator sees them');
+ const view=readFileSync(join(root,'components/profile/ProfileView.tsx'),'utf8');assert.match(view,/\{data\.creator&&<CreatorTag\/>\}/);
+ assert.match(view,/bannerAction&&<div className="muse-profile-banner-action">/,'Customize lives in the banner corner');
 });

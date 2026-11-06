@@ -6,7 +6,7 @@
  */
 export type GradientFamily='soft'|'magic';
 /** `stops` are the key colours (glow tint, checks); `layers` is the complete CSS background. */
-export type GradientPreset={id:string;name:string;family:GradientFamily;stops:string[];angle:number;layers:string;retired?:boolean};
+export type GradientPreset={id:string;name:string;family:GradientFamily;stops:string[];angle:number;layers:string;retired?:boolean;exclusive?:'creator'};
 
 /** A diffused colour field: an oversized ellipse whose centre sits where it never reads as a point. */
 const field=(x:number,y:number,w:number,h:number,color:string,reach=72)=>`radial-gradient(${Math.round(w*1.35)}% ${Math.round(h*1.35)}% at ${x}% ${y}%,${color} 0%,color-mix(in srgb,${color} 55%,transparent) ${Math.round(reach*.38)}%,color-mix(in srgb,${color} 18%,transparent) ${Math.round(reach*.7)}%,transparent ${reach}%)`;
@@ -46,10 +46,15 @@ export const gradientPresets:GradientPreset[]=[
  preset('cherry-bomb','Cherry Bomb','magic',['#ff0a54','#ff7a00'],135,[field(10,100,80,70,'#ff7a00cc'),sky(135,'#ff0a54','#ff3d6e')],true),
  preset('lime-wire','Acid Rave','magic',['#bef264','#22c55e','#06b6d4'],135,[field(0,0,80,80,'#bef264cc'),field(100,100,80,80,'#06b6d4cc'),sky(135,'#4ade80','#22c55e')],true),
  preset('olive-grove','Lava Lamp','magic',['#3a0a00','#ff4d00','#ffb800'],150,[field(20,30,60,70,'#ff4d00bb'),field(80,90,60,60,'#ffb80099'),sky(150,'#3a0a00','#6b1400')],true),
+ // Creator exclusives: one of one, offered only to the Muse creator (the database refuses them for anyone else).
+ {id:'supernova-haze',name:'Supernova Haze',family:'magic',stops:['#1c1a6e','#ff2db8','#55e2ff','#ffb08a'],angle:135,layers:"url('/banners/supernova-haze.svg') center / cover no-repeat, #2a1f7a",exclusive:'creator'},
+ {id:'disco-cosmos',name:'Disco Cosmos',family:'magic',stops:['#4a2aa6','#ffc09a','#ff6fc8','#7ff0ff'],angle:135,layers:"url('/banners/disco-cosmos.svg') center / cover no-repeat, #22163a",exclusive:'creator'},
 ];
 export const familyLabels:Record<GradientFamily,string>={soft:'Dreamy & luminous',magic:'Bold & electric'};
 /** The presets offered in pickers (retired ones still render when already chosen). */
-export const offeredGradients=gradientPresets.filter(preset=>!preset.retired);
+export const offeredGradients=gradientPresets.filter(preset=>!preset.retired&&!preset.exclusive);
+/** Limited-edition banners only the creator can choose (shown with a star). */
+export const creatorGradients=gradientPresets.filter(preset=>preset.exclusive==='creator');
 export const defaultGradient='nebula-kiss';
 export const gradientById=(id:string|null|undefined)=>gradientPresets.find(preset=>preset.id===id)??gradientPresets.find(preset=>preset.id===defaultGradient)!;
 export const gradientCss=(id:string|null|undefined)=>gradientById(id).layers;

@@ -10,7 +10,7 @@ import {sectionLabels,type ProfileDetails} from '@/lib/profile/model';
 import {MAX_BADGES,normalizeBadges} from '@/lib/profile/badges';
 import {BadgePicker} from './BadgePicker';
 import {AvatarPicker} from './AvatarPicker';
-import {offeredGradients,familyLabels,gradientCss,type GradientFamily} from '@/lib/profile/gradients';
+import {offeredGradients,creatorGradients,familyLabels,gradientCss,type GradientFamily} from '@/lib/profile/gradients';
 import {MuseIcon} from '../MuseIcon';
 import {ProfileView} from './ProfileView';
 import {useMyProfile} from './useMyProfile';
@@ -64,7 +64,7 @@ export function ProfileCustomizer(){
      <div className="muse-customizer-themes" role="radiogroup" aria-label="Profile theme">{themes.map(t=><button key={t.id} type="button" role="radio" aria-checked={draft.theme===t.id} onClick={()=>set({theme:t.id as ThemeId})}><span className="muse-customizer-orb" style={{background:t.preview}} aria-hidden="true"/><span>{t.name}</span></button>)}</div>
     </section>
     <section className="muse-panel"><h2 className="muse-kicker">Banner</h2>
-     <div className="muse-gradient-gallery" role="radiogroup" aria-label="Banner gradient">{families.map(f=><div key={f} className="muse-gradient-family"><p className="small-label">{familyLabels[f]}</p><div>{offeredGradients.filter(g=>g.family===f).map(g=><button key={g.id} type="button" role="radio" aria-checked={draft.bannerGradient===g.id} aria-label={g.name} title={g.name} style={{'--swatch':gradientCss(g.id)} as CSSProperties} onClick={()=>set({bannerGradient:g.id})}/>)}</div></div>)}</div>
+     <div className="muse-gradient-gallery" role="radiogroup" aria-label="Banner gradient">{families.map(f=><div key={f} className="muse-gradient-family"><p className="small-label">{familyLabels[f]}</p><div>{offeredGradients.filter(g=>g.family===f).map(g=><button key={g.id} type="button" role="radio" aria-checked={draft.bannerGradient===g.id} aria-label={g.name} title={g.name} style={{'--swatch':gradientCss(g.id)} as CSSProperties} onClick={()=>set({bannerGradient:g.id})}/>)}</div></div>)}{me.identity.creator&&<div className="muse-gradient-family muse-gradient-exclusive"><p className="small-label"><span aria-hidden="true">✦</span> Creator exclusives · only you have these</p><div>{creatorGradients.map(g=><button key={g.id} type="button" role="radio" aria-checked={draft.bannerGradient===g.id} aria-label={`${g.name}, creator exclusive`} title={`${g.name} ✦ Creator exclusive`} style={{'--swatch':gradientCss(g.id)} as CSSProperties} onClick={()=>set({bannerGradient:g.id})}/>)}</div></div>}</div>
     </section>
     <section className="muse-panel"><h2 className="muse-kicker">Badges</h2><p className="muse-atelier-hint">Pick up to {MAX_BADGES} that are painfully, specifically you. They sit beside your name, and they’re decorative: never earned or tracked. <span aria-live="polite">{chosen.length}/{MAX_BADGES} chosen.</span></p>
      <BadgePicker chosen={chosen} onChange={next=>set({badges:next})}/>

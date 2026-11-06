@@ -45,7 +45,6 @@ export function MyProfile(){
  const data:ProfileViewData={creator:identity.creator,displayName:identity.displayName,username:identity.username,avatarId:identity.avatarId,tagline:details.tagline,bio:details.bio,bannerGradient:details.bannerGradient,sections:details.sections,badges:details.badges,showcases:showcases.map(s=>toView(s))};
  const move=async(id:string,by:number)=>{const list=[...showcases];const i=list.findIndex(s=>s.id===id),j=i+by;if(j<0||j>=list.length)return;[list[i],list[j]]=[list[j],list[i]];const next=list.map((s,position)=>({...s,position}));setShowcases(next);try{await reorderShowcases(client,userId,next.map(s=>s.id));}catch{setNotice('That order did not save. Please try again.');}};
  const toolbar=<>
-  <Link className="muse-button button-primary muse-edge" href="/profile/customize"><MuseIcon name="wand" size={16}/>Customize profile</Link>
   <Link className="muse-button muse-edge" href="/profile/showcases/new"><MuseIcon name="plus" size={16}/>New Showcase</Link>
   <Link className="muse-button muse-edge" href="/friends"><MuseIcon name="people" size={16}/>Friends{requests>0&&<span className="muse-profile-count" aria-label={`${requests} friend request${requests===1?'':'s'}`}>{requests}</span>}</Link>
   <button type="button" className="muse-button muse-edge" aria-pressed={preview} onClick={()=>{setPreview(v=>!v);setFriendView(null);}}>{preview?'Back to editing view':'Preview as a friend'}</button>
@@ -57,7 +56,7 @@ export function MyProfile(){
   </div>
   {preview?(friendView==='private'?<div className="muse-empty-state" data-variant="editorial"><MuseStar size={22}/><h2>Friends can’t see your profile yet</h2><p>It’s private. Choose “Share with friends” in Customize profile when you’re ready.</p><button type="button" className="muse-button muse-edge" onClick={()=>setPreview(false)}>Back to editing view</button></div>
    :friendView?<ProfileView data={friendView} toolbar={toolbar} emptyShowcases={<p className="muse-atelier-hint">No Showcases are shared with friends yet.</p>}/>:<p className="small-label" role="status">Looking through a friend’s eyes…</p>)
-  :<ProfileView data={data} toolbar={toolbar} hiddenNote
+  :<ProfileView data={data} toolbar={toolbar} bannerAction={<Link className="muse-banner-action muse-edge" href="/profile/customize" aria-label="Customize profile" title="Customize profile"><MuseIcon name="wand" size={18}/><span>Customize</span></Link>} hiddenNote
     showcaseActions={id=>{const s=showcases.find(x=>x.id===id)!;const index=showcases.indexOf(s);return <span className="muse-showcase-owner">
      <span className="muse-tone-pill" title={visibilityLabels[s.visibility].detail}>{visibilityLabels[s.visibility].label}</span>
      <button type="button" className="muse-icon-button" aria-label={`Move ${s.title} up`} disabled={index===0} onClick={()=>move(id,-1)}>↑</button>
