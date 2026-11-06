@@ -100,11 +100,37 @@ do $$declare t text;begin foreach t in array array['muse_profiles','showcases','
  execute format('grant select on public.%I to service_role', t);
 end loop;end $$;
 
+-- ---- Deleted sources are revoked by the database, immediately ------------------------------------------------------
+-- A Showcase item points at one of the owner's records. If that record is deleted, friends must stop seeing the item
+-- at once, without waiting for the owner to open Muse. Two layers: profile_view() checks the source still exists on
+-- every read, and delete triggers on each source table mark the item missing (so the owner sees it flagged too).
+-- Tarot cards and dream symbols come from Muse's built-in library and cannot be deleted; victories have no source.
+create function muse_private.showcase_source_exists(owner uuid, kind text, source text) returns boolean language sql stable security definer set search_path = '' as $$
+ select case kind
+  when 'book' then exists (select 1 from public.whimsy_books where user_id = owner and id::text = source)
+  when 'media' then exists (select 1 from public.collection_media_items where user_id = owner and id::text = source)
+  when 'curated' then exists (select 1 from public.collection_curated where user_id = owner and id::text = source)
+  when 'ritual' then exists (select 1 from public.rituals where user_id = owner and id::text = source)
+  when 'side-quest' then exists (select 1 from public.whimsy_quest_completions where user_id = owner and id::text = source)
+  else true end;
+$$;
+create function muse_private.showcase_source_deleted() returns trigger language plpgsql security definer set search_path = '' as $$
+begin
+ update public.showcase_items set source_state = 'missing' where user_id = old.user_id and source_kind = tg_argv[0] and source_id = old.id::text and source_state <> 'missing';
+ return old;
+end $$;
+create trigger showcase_source_deleted after delete on public.whimsy_books for each row execute function muse_private.showcase_source_deleted('book');
+create trigger showcase_source_deleted after delete on public.collection_media_items for each row execute function muse_private.showcase_source_deleted('media');
+create trigger showcase_source_deleted after delete on public.collection_curated for each row execute function muse_private.showcase_source_deleted('curated');
+create trigger showcase_source_deleted after delete on public.rituals for each row execute function muse_private.showcase_source_deleted('ritual');
+create trigger showcase_source_deleted after delete on public.whimsy_quest_completions for each row execute function muse_private.showcase_source_deleted('side-quest');
+revoke all on function muse_private.showcase_source_exists(uuid,text,text), muse_private.showcase_source_deleted() from public, anon, authenticated;
+
 -- ---- What a friend sees ---------------------------------------------------------------------------------------------
 /**
  * The friend-facing profile. Returns null unless the caller is the owner or a current, unblocked friend AND the
  * owner shares the profile with friends. Even for the owner it returns only what friends would see, which is what
- * "Preview as a friend" shows. Drafts, private Showcases and items whose source is gone are never included.
+ * "Preview as a friend" shows. Drafts, private Showcases and items whose source is gone (checked live) are never included.
  */
 create function public.profile_view(p_profile uuid) returns jsonb language plpgsql stable security definer set search_path = '' as $$
 declare owner uuid := muse_private.user_for_public_id(p_profile); p public.muse_profiles;
@@ -118,7 +144,7 @@ begin
   'visibility', p.visibility,
   'profile', jsonb_build_object('tagline', p.tagline, 'bio', p.bio, 'bannerGradient', p.banner_gradient, 'theme', p.profile_theme, 'sections', p.sections, 'badges', to_jsonb(p.badges)),
   'showcases', coalesce((select jsonb_agg(jsonb_build_object('id', s.id, 'title', s.title, 'description', s.description, 'icon', s.icon, 'gradient', s.gradient, 'layout', s.layout,
-     'items', coalesce((select jsonb_agg(jsonb_build_object('id', i.id, 'kind', i.source_kind, 'display', i.display, 'note', i.note) order by i.position, i.created_at) from public.showcase_items i where i.showcase_id = s.id and i.source_state = 'ok'), '[]'::jsonb))
+     'items', coalesce((select jsonb_agg(jsonb_build_object('id', i.id, 'kind', i.source_kind, 'display', i.display, 'note', i.note) order by i.position, i.created_at) from public.showcase_items i where i.showcase_id = s.id and i.source_state = 'ok' and muse_private.showcase_source_exists(owner, i.source_kind, i.source_id)), '[]'::jsonb))
     order by s.position, s.created_at) from public.showcases s where s.user_id = owner and s.visibility = 'friends'), '[]'::jsonb));
 end $$;
 

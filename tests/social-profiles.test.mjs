@@ -92,6 +92,11 @@ test('profile sections, privacy defaults and the friend view',()=>{
  assert.match(sql,/not exists \(select 1 from jsonb_object_keys\(d\) k where k not in \('kind','title','subtitle','image','meta','rating','progress','status','glyph','date'\)\)/,'the database enforces the display allow-list');
  assert.match(sql,/select coalesce\(jsonb_typeof\(d\) = 'object'/,'a missing title fails the check');
  assert.doesNotMatch(sql,/storage\.|banner_path|avatar_path/,'no stored images');
+ for(const [table,kind] of [['whimsy_books','book'],['collection_media_items','media'],['collection_curated','curated'],['rituals','ritual'],['whimsy_quest_completions','side-quest']]){
+  assert.match(sql,new RegExp(`after delete on public\\.${table} for each row execute function muse_private\\.showcase_source_deleted\\('${kind}'\\)`),`${table} deletions revoke Showcase items`);
+  assert.match(sql,new RegExp(`when '${kind}' then exists \\(select 1 from public\\.${table} where user_id = owner`),`${kind} existence is checked on every read`);
+ }
+ assert.match(sql,/i\.source_state = 'ok' and muse_private\.showcase_source_exists\(owner, i\.source_kind, i\.source_id\)/,'the friend view checks sources live');
 });
 
 test('the profile theme is page-scoped and restores the visitor’s own theme',()=>{

@@ -209,3 +209,4 @@
  .muse-studio-items>li{grid-template-columns:auto 1fr auto}.muse-studio-grip{display:none}
 }
 @media(prefers-reduced-motion:reduce){.muse-avatar-grid>button,.muse-profile-starter,.muse-gradient-family button{transition:none}}
+.muse-item-picker-detail>button:disabled{opacity:.5;cursor:not-allowed}
