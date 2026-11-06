@@ -118,3 +118,59 @@ export function newThresholds(a:Pick<Aspiration,'celebrated'|'status'>,percent:n
  return [25,50,75,100].filter(t=>percent>=t&&!a.celebrated.includes(`p${t}`)).map(t=>`p${t}`);
 }
 export const weekStart=(today:string)=>weekDates(today)[0];
+
+// ---------- Renewal: a new aspiration for the next period; the earlier one is never changed ----------
+const lastDay=(y:number,m:number)=>new Date(Date.UTC(y,m,0)).toISOString().slice(0,10);
+/** The next period after an aspiration's target date, for monthly, quarterly and yearly aspirations. */
+export function nextPeriod(a:Pick<Aspiration,'timeframe'|'targetDate'|'startDate'>):{start:string;target:string}|null{
+ const anchor=a.targetDate??a.startDate;const y=Number(anchor.slice(0,4)),m=Number(anchor.slice(5,7));
+ if(a.timeframe==='year')return {start:`${y+1}-01-01`,target:`${y+1}-12-31`};
+ if(a.timeframe==='month'){const ny=m===12?y+1:y,nm=m===12?1:m+1;return {start:`${ny}-${String(nm).padStart(2,'0')}-01`,target:lastDay(ny,nm)};}
+ if(a.timeframe==='quarter'){const qEnd=Math.ceil(m/3)*3,ny=qEnd===12?y+1:y,startM=qEnd===12?1:qEnd+1;return {start:`${ny}-${String(startM).padStart(2,'0')}-01`,target:lastDay(ny,startM+2)};}
+ return null;
+}
+export const canRenew=(a:Aspiration,all:Aspiration[])=>!!nextPeriod(a)&&!all.some(x=>x.renewedFrom===a.id);
+/**
+ * The renewed aspiration: same name, measure, links and milestone steps (all unchecked), new dates, a fresh journal and
+ * celebrations. A Reading Challenge connection moves to the next year's challenge.
+ */
+export function renewedAspiration(a:Aspiration,id:string,now:string):Aspiration{
+ const p=nextPeriod(a)!;
+ const connection=a.connection?.kind==='reading-challenge'?{kind:'reading-challenge' as const,year:p.start.slice(0,4)}:a.connection;
+ return {...a,id,startDate:p.start,targetDate:p.target,status:'active',completedOn:null,reflection:null,celebrated:[],renewedFrom:a.id,connection,
+  milestones:a.milestones.map(m=>({id:`${m.id.slice(0,24)}-${id.slice(0,8)}`,title:m.title,...(m.description?{description:m.description}:{}),...(m.weight?{weight:m.weight}:{})})),
+  revision:0,createdAt:now,updatedAt:now};
+}
+/** Every period of a renewed aspiration, oldest first, each with its own record. */
+export function renewalChain(a:Aspiration,all:Aspiration[]){
+ const byId=new Map(all.map(x=>[x.id,x]));const back:Aspiration[]=[];let cur:Aspiration|undefined=a;const seen=new Set<string>();
+ while(cur&&!seen.has(cur.id)){seen.add(cur.id);back.unshift(cur);cur=cur.renewedFrom?byId.get(cur.renewedFrom):undefined;}
+ let next=all.find(x=>x.renewedFrom===a.id);while(next&&!seen.has(next.id)){seen.add(next.id);back.push(next);const id=next.id;next=all.find(x=>x.renewedFrom===id);}
+ return back;
+}
+
+// ---------- Manual order ----------
+/** Moves one aspiration within a list and returns only those whose position changed (so only they are saved). */
+export function reorder(list:Aspiration[],id:string,toIndex:number){
+ const from=list.findIndex(a=>a.id===id);if(from<0)return [];
+ const next=[...list];const [item]=next.splice(from,1);next.splice(Math.max(0,Math.min(toIndex,next.length)),0,item);
+ return next.map((a,i)=>({a,position:(i+1)*10})).filter(({a,position})=>a.position!==position).map(({a,position})=>({...a,position}));
+}
+
+// ---------- Insights: trends for a date range ----------
+export function aspirationTrends(aspirations:Aspiration[],range:{start:string;end:string}){
+ const inRange=(d?:string|null)=>!!d&&d>=range.start&&d<=range.end;
+ const due=aspirations.filter(a=>a.status!=='archived'||a.completedOn).filter(a=>inRange(a.targetDate));
+ const dueDone=due.filter(a=>a.completedOn&&a.completedOn<=a.targetDate!);
+ const completed=aspirations.filter(a=>inRange(a.completedOn));
+ const milestones=aspirations.flatMap(a=>a.milestones.filter(m=>inRange(m.completedOn)).map(m=>({aspiration:a,milestone:m})));
+ const categories=new Map<string,{completed:number;milestones:number;active:number}>();
+ for(const a of aspirations){if(a.status==='archived'&&!a.completedOn)continue;const r=categories.get(a.category)??{completed:0,milestones:0,active:0};
+  if(inRange(a.completedOn))r.completed++;r.milestones+=a.milestones.filter(m=>inRange(m.completedOn)).length;if(isOpen(a)&&a.startDate<=range.end)r.active++;categories.set(a.category,r);}
+ const byMonth=new Map<string,{completed:number;milestones:number}>();
+ for(const a of completed){const k=a.completedOn!.slice(0,7);const r=byMonth.get(k)??{completed:0,milestones:0};r.completed++;byMonth.set(k,r);}
+ for(const {milestone} of milestones){const k=milestone.completedOn!.slice(0,7);const r=byMonth.get(k)??{completed:0,milestones:0};r.milestones++;byMonth.set(k,r);}
+ return {dueCount:due.length,dueCompletedOnTime:dueDone.length,completionRate:due.length?dueDone.length/due.length:null,completed,milestones,
+  categories:[...categories].map(([category,v])=>({category,...v})).filter(c=>c.completed||c.milestones||c.active).sort((a,b)=>b.completed+b.milestones-a.completed-a.milestones||b.active-a.active),
+  byMonth:[...byMonth].sort(([a],[b])=>a.localeCompare(b)).map(([month,v])=>({month,...v}))};
+}

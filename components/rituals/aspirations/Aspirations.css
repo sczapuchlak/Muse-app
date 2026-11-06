@@ -99,10 +99,15 @@
 .muse-aspiration-record{display:grid;gap:10px;padding:12px 14px;border:1px solid var(--glass-border);border-radius:14px;background:var(--surface-subtle)}
 .muse-aspiration-record h3{margin:0}
 .muse-aspiration-milestones,.muse-aspiration-links,.muse-aspiration-journal,.muse-aspiration-candidates{margin:0;padding:0;list-style:none;display:grid;gap:6px}
-.muse-aspiration-milestones li{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:6px 0;border-bottom:1px solid var(--glass-border)}
+.muse-aspiration-milestones li{display:grid;gap:6px;padding:6px 0;border-bottom:1px solid var(--glass-border)}
+.muse-aspiration-milestone-row{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.muse-aspiration-milestone-extra{display:grid;gap:2px;padding-left:28px}
+.muse-aspiration-milestone-extra p{margin:0;font-size:.86rem}
+.muse-aspiration-milestone-form{display:grid;gap:10px;padding:12px;margin-left:28px;border:1px solid var(--glass-border);border-radius:12px;background:var(--surface-subtle)}
+.muse-aspiration-milestone-form label{display:grid;gap:5px;font-size:.88rem}
 .muse-aspiration-milestones label{display:flex;gap:10px;align-items:baseline;cursor:pointer;min-width:0}
 .muse-aspiration-milestones input{accent-color:var(--asp);width:18px;height:18px;flex:none}
-.muse-aspiration-milestones li[data-done] span{text-decoration:line-through;text-decoration-color:color-mix(in srgb,currentColor 40%,transparent);color:var(--text-muted)}
+.muse-aspiration-milestones li[data-done] .muse-aspiration-milestone-row label span{text-decoration:line-through;text-decoration-color:color-mix(in srgb,currentColor 40%,transparent);color:var(--text-muted)}
 .muse-aspiration-milestones small,.muse-aspiration-links small{color:var(--text-muted);font-size:.76rem}
 .muse-aspiration-milestone-tools{display:flex;gap:2px;flex:none}
 .muse-aspiration-milestone-tools .text-button{min-height:30px;min-width:30px;padding:0 4px}
@@ -116,3 +121,27 @@
 .muse-aspiration-delete{color:var(--text-muted)}
 @media (max-width:600px){.muse-aspirations-stats dd{font-size:1.2rem}.muse-aspiration-form,.muse-aspiration-detail{padding:4px 14px 18px}.muse-aspiration-journal li{grid-template-columns:minmax(0,1fr) auto}.muse-aspiration-journal time{grid-column:1/-1}}
 @media (prefers-reduced-motion:reduce){.muse-aspiration-ring .fill{transition:none}}
+.muse-aspiration-card[draggable=true]{cursor:grab}
+.muse-aspiration-card[data-dragging]{opacity:.5;border-style:dashed}
+.muse-aspiration-card[draggable=true]:active{cursor:grabbing}
+.muse-aspiration-periods{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.muse-aspiration-period{border:1px solid var(--glass-border);border-radius:999px;padding:4px 10px;background:transparent;color:inherit;font:inherit;font-size:.82rem;cursor:pointer;min-height:30px}
+.muse-aspiration-period[aria-current]{border-color:var(--selected-border);background:var(--surface-strong);cursor:default}
+.muse-aspiration-period:focus-visible{outline:2px solid var(--accent-primary);outline-offset:2px}
+@media (max-width:600px){.muse-aspiration-milestone-form,.muse-aspiration-milestone-extra{margin-left:0;padding-left:0}.muse-aspiration-milestone-form{padding:10px}}
+.muse-aspiration-insights{display:grid;gap:16px}
+.muse-aspiration-insights .muse-aspirations-stats>div{display:grid;gap:2px}
+.muse-aspiration-insights h3{margin:0 0 8px;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);font-weight:600}
+.muse-aspiration-insight-months ol,.muse-aspiration-insight-recorded ul{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+.muse-aspiration-insight-months li{display:grid;grid-template-columns:4.5rem minmax(0,1fr) auto;gap:10px;align-items:center;font-size:.86rem}
+.muse-aspiration-insight-months small{color:var(--text-muted);font-size:.76rem}
+.muse-aspiration-insight-bar{display:block;height:8px;border-radius:99px;background:linear-gradient(90deg,var(--accent-primary),var(--accent-secondary)) 0/var(--w) 100% no-repeat,var(--surface-control)}
+.muse-aspiration-insight-recorded li{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;padding-bottom:8px;border-bottom:1px solid var(--glass-border)}
+.muse-aspiration-insight-recorded li>span{display:grid;gap:2px;min-width:0}
+.muse-aspiration-insight-recorded small{color:var(--text-muted);font-size:.78rem}
+.muse-aspiration-insight-recorded .muse-aspiration-spark{--asp:var(--accent-primary);flex:0 0 min(40%,180px);height:36px}
+.muse-aspiration-table-wrap{overflow-x:auto;max-width:100%}
+.muse-aspiration-table{width:100%;border-collapse:collapse;font-size:.88rem;font-variant-numeric:tabular-nums}
+.muse-aspiration-table :is(th,td){padding:8px 10px;text-align:left;border-bottom:1px solid var(--glass-border);white-space:nowrap}
+.muse-aspiration-table thead th{font-size:.74rem;color:var(--text-muted);font-weight:600}
+@media (max-width:600px){.muse-aspiration-insight-months li{grid-template-columns:3.5rem minmax(0,1fr)}.muse-aspiration-insight-months small{grid-column:2}}

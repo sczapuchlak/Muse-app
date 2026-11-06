@@ -10,14 +10,14 @@ import {celebrate} from '@/lib/celebrate';
 import {pickLine} from '@/lib/celebration-copy';
 import {challengeFor,challengeProgress} from '@/lib/whimsy/reading-challenge';
 import type {Aspiration} from '@/lib/aspirations/models';
-import {aspirationProgress,aspirationStats,attention,inTimeFilter,isOpen,newThresholds,nextMilestone,sortAspirations,type Progress,type SortKey,type TimeFilter} from '@/lib/aspirations/progress';
+import {aspirationProgress,aspirationStats,attention,canRenew,inTimeFilter,isOpen,newThresholds,nextMilestone,nextPeriod,renewalChain,renewedAspiration,reorder,sortAspirations,type Progress,type SortKey,type TimeFilter} from '@/lib/aspirations/progress';
 import {aspirationSignals} from '@/lib/almanac/signals';
 import {surfaces} from '@/lib/almanac/select';
 import {AlmanacWhisper} from '../../almanac/AlmanacWhisper';
 import {useAspirations} from './useAspirations';
 import {AspirationEditor,blankAspiration} from './AspirationEditor';
 import {AspirationDetail} from './AspirationDetail';
-import {ProgressRing,progressText} from './parts';
+import {ProgressRing,periodLabel,progressText} from './parts';
 import './Aspirations.css';
 
 const filters:{id:TimeFilter;label:string}[]=[{id:'month',label:'This month'},{id:'quarter',label:'This quarter'},{id:'year',label:'This year'},{id:'someday',label:'Someday'},{id:'all',label:'All'}];
@@ -52,6 +52,9 @@ export function Aspirations(){
  },[aspirations,status.loaded,status.saving,today,progressOf,save]);
 
  const signals=useMemo(()=>today&&status.loaded?aspirationSignals(aspirations,updates,progressOf,today):[],[aspirations,updates,progressOf,today,status.loaded]);
+ const [dragging,setDragging]=useState<string|null>(null);
+ async function moveTo(list:Aspiration[],id:string,index:number){for(const changed of reorder(list,id,index)){if(!await save(changed))break;}}
+ async function renew(a:Aspiration){const next=renewedAspiration(a,crypto.randomUUID(),new Date().toISOString());await create(next);}
  async function create(a:Aspiration){const p=aspirationProgress(a,ctx);const saved=await save({...a,celebrated:newThresholds({...a,celebrated:[]},p.percent)});if(saved){setEditing(null);setOpenId(saved.id);}}
  if(!today)return <p className="small-label" role="status">Loading…</p>;
  const visible=sortAspirations(aspirations.filter(a=>isOpen(a)&&inTimeFilter(a,view.filter,today)),view.sort,a=>progressOf(a).percent);
@@ -74,34 +77,46 @@ export function Aspirations(){
    <div className="muse-aspirations-controls">
     <div role="group" aria-label="Timeframe" className="muse-aspiration-filter">{filters.map(f=><button key={f.id} type="button" aria-pressed={view.filter===f.id} onClick={()=>changeView({filter:f.id})}>{f.label}</button>)}</div>
     <label>Group<select id="aspirations-group" value={view.group} onChange={e=>changeView({group:e.target.value as Group})}><option value="none">None</option><option value="category">Category</option><option value="status">Status</option></select></label>
-    <label>Sort<select id="aspirations-sort" value={view.sort} onChange={e=>changeView({sort:e.target.value as SortKey})}><option value="target">Target date</option><option value="progress">Progress</option><option value="updated">Recently updated</option><option value="category">Category</option><option value="custom">Order added</option></select></label>
+    <label>Sort<select id="aspirations-sort" value={view.sort} onChange={e=>changeView({sort:e.target.value as SortKey})}><option value="target">Target date</option><option value="progress">Progress</option><option value="updated">Recently updated</option><option value="category">Category</option><option value="custom">Your order</option></select></label>
    </div>
    {challengeView&&(view.filter==='all'||view.filter==='year')&&<article className="muse-aspiration-card muse-aspiration-connected" data-accent="secondary">
     <ProgressRing percent={challengeView.percent} accent="secondary" size={56}/><div><span className="small-label">From Bookshelf · automatic</span><h3>{year} Reading Challenge</h3><p>{challengeView.done} of {challengeView.target} books{challengeView.reached?' · complete':''}</p>
      <div className="muse-aspiration-card-actions"><Link className="text-button" href="/whimsy/bookshelf?view=atlas">Open in Reading Atlas</Link><button type="button" className="text-button" onClick={()=>setEditing({...blankAspiration(today),title:`Read ${challengeView.target} books in ${year}`,category:'Learning',icon:'📚',progressKind:'connected',connection:{kind:'reading-challenge',year},targetDate:`${year}-12-31`})}>Add milestones and a why</button></div></div></article>}
    {!visible.length&&!challengeView?<div className="muse-aspirations-empty">{aspirations.some(isOpen)?<p>Nothing in this timeframe. Try “All”.</p>:<><MuseStar size={20}/><h3>Small rituals. Grand ambitions.</h3><p>What would you like to have done a few months from now? Start with a name; the rest can wait.</p><button type="button" className="muse-button button-primary" onClick={()=>setEditing(blankAspiration(today))}>Add your first aspiration</button></>}</div>
-    :groups.map(g=><div key={g.name||'all'} className="muse-aspirations-group">{g.name&&<h3>{g.name}</h3>}<div className="muse-aspirations-grid">{g.items.map(a=><AspirationCard key={a.id} a={a} progress={progressOf(a)} today={today} onOpen={()=>setOpenId(a.id)}/>)}</div></div>)}
+    :groups.map(g=><div key={g.name||'all'} className="muse-aspirations-group">{g.name&&<h3>{g.name}</h3>}
+     {view.sort==='custom'&&(view.filter!=='all'||view.group!=='none')&&<p className="small-label">Choose “All” with no grouping to arrange your order.</p>}
+     {view.sort==='custom'&&view.filter==='all'&&view.group==='none'&&<p className="small-label">Drag cards to arrange them, or use Earlier and Later.</p>}
+     <div className="muse-aspirations-grid">{g.items.map((a,i)=>{const arranging=view.sort==='custom'&&view.filter==='all'&&view.group==='none';
+      return <AspirationCard key={a.id} a={a} progress={progressOf(a)} today={today} onOpen={()=>setOpenId(a.id)}
+       arrange={arranging?{first:i===0,last:i===g.items.length-1,busy:status.saving,dragging:dragging===a.id,onEarlier:()=>void moveTo(g.items,a.id,i-1),onLater:()=>void moveTo(g.items,a.id,i+1),
+        onDragStart:()=>setDragging(a.id),onDragEnd:()=>setDragging(null),onDrop:dragged=>{const id=dragged||dragging;if(id&&id!==a.id)void moveTo(g.items,id,i);setDragging(null);}}:undefined}/>;})}</div></div>)}
    {stats.completedByMonth.some(m=>m.completed||m.milestones)&&<section className="muse-aspirations-year" aria-label={`Your ${year} in aspirations`}><h3>Your {year}, step by step</h3>
     <ol>{stats.completedByMonth.map(m=><li key={m.month} title={`${m.completed} aspirations, ${m.milestones} milestones`} style={{'--h':`${Math.round((m.completed+m.milestones)/maxMonth*100)}%`} as CSSProperties}><span className="sr-only">{m.month}: {m.completed} aspirations and {m.milestones} milestones completed</span><small aria-hidden="true">{new Date(`${m.month}-15T12:00:00Z`).toLocaleString('en-US',{month:'narrow',timeZone:'UTC'})}</small></li>)}</ol>
-    <p className="small-label">Milestones and aspirations completed each month, from what you checked off.{stats.byCategory.length?` Most of your aspirations are ${stats.byCategory[0].category}.`:''}</p></section>}
+    <p className="small-label">Milestones and aspirations completed each month, from what you checked off.{(()=>{const [a,b]=stats.byCategory,total=(c?:{active:number;completed:number})=>c?c.active+c.completed:0;return a&&total(a)>total(b)&&total(a)>1?` Most of your aspirations are ${a.category}.`:'';})()}</p></section>}
    {completed.length>0&&<details className="muse-aspirations-done"><summary>Completed ({completed.length})</summary><div className="muse-aspirations-grid">{completed.map(a=><AspirationCard key={a.id} a={a} progress={progressOf(a)} today={today} onOpen={()=>setOpenId(a.id)}/>)}</div></details>}
    {archived.length>0&&<details className="muse-aspirations-done"><summary>Archived ({archived.length})</summary><div className="muse-aspirations-grid">{archived.map(a=><AspirationCard key={a.id} a={a} progress={progressOf(a)} today={today} onOpen={()=>setOpenId(a.id)}/>)}</div></details>}
   </>}
   {editing&&<AspirationEditor initial={editing} today={today} busy={status.saving} error={status.error} onClose={()=>setEditing(null)} onSave={a=>void (a.revision===0?create(a):save(a).then(s=>{if(s)setEditing(null);}))}/>}
   {open&&!editing&&<AspirationDetail a={open} progress={progressOf(open)} updates={updates} ritualState={ritualState} tasks={planner.tasks} today={today} busy={status.saving} error={status.error}
    actions={{save,addUpdate,removeUpdate,remove}} onEdit={()=>setEditing(open)} onClose={()=>setOpenId(null)}
+   periods={renewalChain(open,aspirations)} renewLabel={canRenew(open,aspirations)?periodLabel({...open,...(()=>{const p=nextPeriod(open)!;return {startDate:p.start,targetDate:p.target};})()}):null} onRenew={()=>void renew(open)} onOpenPeriod={id=>setOpenId(id)}
    onMilestoneDone={m=>celebrate({kind:'starburst',stars:5,tier:'small',message:pickLine('aspirationMilestone'),detail:m.title,sound:'complete',key:`aspiration:${open.id}:m:${m.id}`})}
    onCompleted={a=>celebrate({kind:'constellation',stars:12,tier:'large',message:pickLine('aspiration'),detail:a.title,sound:'celebrate',key:`aspiration:${a.id}:complete`})}/>}
  </section>;
 }
 
-function AspirationCard({a,progress,today,onOpen}:{a:Aspiration;progress:Progress;today:string;onOpen:()=>void}){
+type Arrange={first:boolean;last:boolean;busy:boolean;dragging:boolean;onEarlier:()=>void;onLater:()=>void;onDragStart:()=>void;onDragEnd:()=>void;onDrop:(draggedId:string)=>void};
+function AspirationCard({a,progress,today,onOpen,arrange}:{a:Aspiration;progress:Progress;today:string;onOpen:()=>void;arrange?:Arrange}){
  const next=nextMilestone(a),late=a.targetDate&&a.targetDate<today&&isOpen(a);
- return <article className="muse-aspiration-card" data-accent={a.accent??'primary'} data-status={a.status}>
+ return <article className="muse-aspiration-card" data-accent={a.accent??'primary'} data-status={a.status} data-dragging={arrange?.dragging||undefined}
+  draggable={!!arrange&&!arrange.busy} onDragStart={arrange?e=>{e.dataTransfer.effectAllowed='move';e.dataTransfer.setData('text/plain',a.id);arrange.onDragStart();}:undefined} onDragEnd={arrange?.onDragEnd}
+  onDragOver={arrange?e=>{e.preventDefault();e.dataTransfer.dropEffect='move';}:undefined} onDrop={arrange?e=>{e.preventDefault();arrange.onDrop(e.dataTransfer.getData('text/plain'));}:undefined}>
   <ProgressRing percent={progress.percent} accent={a.accent} size={56}/>
   <div><span className="small-label">{a.icon?`${a.icon} `:''}{a.category}{a.targetDate?` · ${late?'was due':'by'} ${dateLabel(a.targetDate)}`:' · someday'}{a.status==='paused'?' · paused':a.status==='planned'?' · planned':''}</span>
    <h3><button type="button" className="muse-aspiration-open" onClick={onOpen}>{a.title}</button></h3>
    <p>{progressText(a,progress)}{progress.automatic&&progress.available?<small> · from {progress.source}</small>:null}</p>
-   {progress.percent===100&&isOpen(a)?<p className="muse-aspiration-ready">Ready to mark complete</p>:next?<p className="small-label">Next: {next.title}</p>:null}</div>
+   {progress.percent===100&&isOpen(a)?<p className="muse-aspiration-ready">Ready to mark complete</p>:next?<p className="small-label">Next: {next.title}</p>:null}
+   {a.renewedFrom&&<p className="small-label">Renewed for {periodLabel(a)}</p>}
+   {arrange&&<div className="muse-aspiration-card-actions"><button type="button" className="text-button" disabled={arrange.first||arrange.busy} onClick={arrange.onEarlier} aria-label={`Move ${a.title} earlier`}>← Earlier</button><button type="button" className="text-button" disabled={arrange.last||arrange.busy} onClick={arrange.onLater} aria-label={`Move ${a.title} later`}>Later →</button></div>}</div>
  </article>;
 }

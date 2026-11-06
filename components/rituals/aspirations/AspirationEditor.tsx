@@ -14,7 +14,7 @@ const connectionId=(c:AspirationConnection|null)=>c?.kind==='reading-challenge'?
 export function blankAspiration(today:string):Aspiration{
  const {start,target}=timeframeDates('year',today);
  return {id:crypto.randomUUID(),title:'',description:null,motivation:null,category:'Personal',icon:null,accent:null,startDate:start,targetDate:target,timeframe:'year',status:'active',
-  progressKind:'milestones',target:null,unit:null,connection:null,milestones:[],ritualIds:[],taskIds:[],reflection:null,completedOn:null,celebrated:[],position:Date.now()%1000000,revision:0,createdAt:new Date().toISOString(),updatedAt:new Date().toISOString()};
+  progressKind:'milestones',target:null,unit:null,connection:null,milestones:[],ritualIds:[],taskIds:[],reflection:null,completedOn:null,celebrated:[],position:Date.now()%1000000,renewedFrom:null,revision:0,createdAt:new Date().toISOString(),updatedAt:new Date().toISOString()};
 }
 
 /**
