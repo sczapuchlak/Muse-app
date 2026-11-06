@@ -776,3 +776,10 @@ specification, architecture and known conflicts: [STREAM](STREAM.md).
   Show Stream in navigation preference (Settings and Stream) that never changes posts or friendships.
 - Share to Stream dialogs in Bookshelf, Dreamscapes and Tarot; friend profiles show recent Stream posts the viewer may see.
 - Tests: `npm run test:stream:db` (79 multi-account checks), `npm run test:stream:ui` (18 browser checks), `tests/stream.test.mjs`.
+
+## More Muse Magic (#34) — implemented on feature branch (`feature/more-muse-magic-animations-etc`, awaiting review)
+
+IMPLEMENTED: motion tokens; Sound effects preference (Off by default) and a synthesized sound palette; the celebration orchestrator and layer (constellation, starburst, book ritual) with rotating copy; book completion ritual after a saved finish; three-star priority alignment; ritual chimes and streak tiers (3/7/14/30/100/365); water ripple and goal moment (existing gold finish kept); Side Quest seal and all-three moment; Tarot reveal and saved chimes; dream saved chime; Stream reaction chimes; press feedback, page arrival, modal lift, header twinkle and eased progress bars. Tests: `tests/muse-magic.test.mjs`.
+
+NOT YET: reading-goal and other personal-goal constellations (no single goal-completion event yet); card-to-detail transitions; drag-and-drop lift/settle polish beyond existing behaviour; Dream Spotlight transitions.
+

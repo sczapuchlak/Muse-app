@@ -1,6 +1,7 @@
 "use client";
 import {useState,type CSSProperties} from 'react';
 import {reactions,type ReactionId} from '@/lib/stream/model';
+import {playSound} from '@/lib/muse-sound';
 
 /** Particles per reaction: each reaction has its own small, one-shot gesture. */
 const burst:Record<ReactionId,string[]>={
@@ -17,7 +18,7 @@ const burst:Record<ReactionId,string[]>={
  */
 export function StreamReaction({kind,count,reacted,disabled,onToggle}:{kind:ReactionId;count:number;reacted:boolean;disabled?:boolean;onToggle:(on:boolean)=>Promise<boolean>}){
  const meta=reactions[kind];const [busy,setBusy]=useState(false);const [play,setPlay]=useState(0);
- async function toggle(){if(busy||disabled)return;setBusy(true);const next=!reacted;const ok=await onToggle(next);setBusy(false);if(ok&&next)setPlay(n=>n+1);}
+ async function toggle(){if(busy||disabled)return;setBusy(true);const next=!reacted;const ok=await onToggle(next);setBusy(false);if(ok&&next){setPlay(n=>n+1);playSound(kind==='celebrate'?'celebrate':'confirm');}}
  return <button type="button" className="muse-stream-reaction muse-edge" data-kind={kind} aria-pressed={reacted} disabled={disabled||busy} onClick={toggle}
   aria-label={`${reacted?meta.given:meta.label}${count?`, ${count}`:''}`}>
   <span className="muse-stream-reaction-emoji" aria-hidden="true" key={`e${play}`} data-played={play>0||undefined}>{meta.emoji}</span>

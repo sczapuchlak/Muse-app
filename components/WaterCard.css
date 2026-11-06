@@ -11,3 +11,13 @@
   @keyframes muse-water-finish { 0% { opacity:0; transform:scale(.5); } 20% { opacity:1; filter:brightness(1.65) drop-shadow(0 0 9px var(--achievement-gold)); } 44% { opacity:1; transform:scale(1.15); } 100% { opacity:1; transform:scale(1); } }
 }
 @media(prefers-reduced-motion:reduce) { .water-progress-goal .water-progress > span { transition:none; }.water-achievement-finish .muse-achievement-glint { animation:none; opacity:.2; } }
+
+/* Hydration ripple (#34): a soft wave at the fill edge and a few rising droplets. Instant, brief, never blocking. */
+.water-ripple{position:absolute;top:50%;left:min(var(--water-progress,0%),calc(100% - var(--water-finish-width,20px)));width:0;height:0;pointer-events:none}
+.water-ripple::before{content:"";position:absolute;left:-14px;top:-14px;width:28px;height:28px;border-radius:50%;border:2px solid color-mix(in srgb,var(--ink-aqua,#22d3ee) 70%,transparent);opacity:0;animation:water-ring var(--motion-orbital,580ms) var(--ease-out,ease-out)}
+.water-ripple i{position:absolute;left:-3px;top:-3px;width:6px;height:7px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;background:color-mix(in srgb,var(--ink-aqua,#22d3ee) 80%,#fff);opacity:0;animation:water-drop 700ms var(--ease-out,ease-out) forwards}
+.water-ripple i:nth-child(2){animation-delay:60ms;--x:-10px}.water-ripple i:nth-child(3){animation-delay:110ms;--x:9px}.water-ripple i:nth-child(4){animation-delay:160ms;--x:-4px}.water-ripple i:nth-child(5){animation-delay:200ms;--x:14px}
+:root[data-magic=magical] .water-ripple i:nth-child(n+4){display:none}
+@keyframes water-ring{0%{opacity:.9;transform:scale(.3)}100%{opacity:0;transform:scale(1.6)}}
+@keyframes water-drop{0%{opacity:0;transform:translate(0,0) scale(.6)}25%{opacity:1}100%{opacity:0;transform:translate(var(--x,0),-26px) scale(1)}}
+@media (prefers-reduced-motion:reduce){.water-ripple{display:none}}

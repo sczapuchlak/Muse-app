@@ -5,6 +5,10 @@ import {useWellness} from "./WellnessStore";
 import { useRef, useState, type CSSProperties } from "react";
 import { formatWaterAmount, type DailyWater, type WaterSettings } from "@/lib/water";
 import { AchievementBadge } from "./AchievementStar";
+import { useCelebrateOnCrossing } from "./useCelebrateOnCrossing";
+import { celebrate } from "@/lib/celebrate";
+import { pickLine } from "@/lib/celebration-copy";
+import { allowsMagic } from "@/lib/magic-preference";
 import { MuseCard } from "./MuseCard";
 import { CardHeading } from "./CardHeading";
 import { GlassPopover } from "./GlassPopover";
@@ -16,7 +20,7 @@ type WaterCardProps = { initialDay: DailyWater; settings: WaterSettings };
 type EditorMode = "add" | "edit" | "goal" | "manage" | null;
 
 export function WaterCard({ initialDay, settings }: WaterCardProps) {
-  const {state,dispatch}=useWellness();
+  const {state,dispatch:send,status}=useWellness();
   const day=state.water.find(day=>day.date===initialDay.date);
   const defaults=state.waterSettings??settings;
   const total=day?.total??0;
@@ -32,6 +36,12 @@ export function WaterCard({ initialDay, settings }: WaterCardProps) {
   const currentSettings={goal,unit,quickAdds};
   const achieved = goal > 0 && total >= goal;
   const progress = Math.min(100, Math.max(0, (total / goal) * 100));
+  // Hydration (#34): logging water ripples the bar with a few droplets (tactile, instant); reaching the goal, once
+  // saved, adds a short moment and chime. The existing gold-star finish stays exactly as it was.
+  const [ripple,setRipple]=useState(0);
+  const settled=status.loaded&&!status.pending&&!status.saving&&!status.error;
+  useCelebrateOnCrossing(achieved,settled,initialDay.date,()=>celebrate({kind:'starburst',message:pickLine('water'),detail:`${formatWaterAmount(total)} ${unit} today`,sound:'complete',key:`water:${initialDay.date}`}));
+  const dispatch:typeof send=(action)=>{if(action.kind==='water'&&(action.mode==='add'||action.amount>total)&&allowsMagic())setRipple(n=>n+1);send(action);};
 
   function closeEditor() {
     const trigger = editor === "goal" ? goalRef : editor === "edit" ? editRef : customRef;
@@ -82,6 +92,7 @@ export function WaterCard({ initialDay, settings }: WaterCardProps) {
         aria-valuetext={`${formatWaterAmount(total)} of ${formatWaterAmount(goal)} ${unit}${total >= goal ? ", goal reached" : ""}`}
         style={{ "--water-progress": `${progress}%` } as CSSProperties}
       ><span /></div>
+      {ripple>0&&<span key={ripple} className="water-ripple" style={{ "--water-progress": `${progress}%` } as CSSProperties} aria-hidden="true"><i/><i/><i/><i/><i/></span>}
       <span className="water-achievement-finish"><AchievementBadge achieved={achieved} label="Water goal achieved" size={28} replayOnReentry delay={220}/></span>
       <span className="sr-only" role="status">{achieved?'Water goal reached.':''}</span>
       </div>

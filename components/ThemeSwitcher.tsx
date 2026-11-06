@@ -9,6 +9,7 @@ import {readMagic,serverMagic,subscribeMagic,magicLevels,selectMagic} from "@/li
 import { readApplied, serverApplied, subscribeApplied } from "@/lib/atelier/applied";
 import { MuseIcon } from "./MuseIcon";
 import { GlassPopover } from "./GlassPopover";
+import { SoundToggle } from "./MuseMagic";
 import { ThemeOptions, themeListKeys } from "./ThemeOptions";
 import "./ThemeSwitcher.css";
 
@@ -44,7 +45,7 @@ export function ThemeSwitcher({compact=false,variant="pill"}:{compact?:boolean;v
           <ThemeOptions value={activeId} applied={!!applied} onSelect={(id) => { selectTheme(id as ThemeId); close(); }} />
           <div className="muse-theme-materials" role="group" aria-label="Glass material"><p className="small-label">Glass material</p>{materials.map((value) => <button key={value} type="button" className="muse-theme-option muse-edge" role="menuitemradio" tabIndex={-1} aria-label={`${value === "crystal" ? "Crystal" : "Frosted"} glass`} aria-checked={material === value} onClick={() => selectMaterial(value)}><span className="muse-material-swatch" data-material={value} aria-hidden="true" /><span>{value === "crystal" ? "Crystal" : "Frosted"}</span>{material === value && <MuseIcon name="check" size={16} />}</button>)}</div>
         </div>
-        <div className="muse-theme-materials"><p className="editor-label">Muse Magic</p><div role="group" aria-label="Muse Magic">{magicLevels.map(value=><button key={value} type="button" className="choice-button" aria-pressed={magic===value} onClick={()=>selectMagic(value)}>{value[0].toUpperCase()+value.slice(1)}</button>)}</div><p className="small-label">Your device’s reduced-motion preference takes priority.</p></div>
+        <div className="muse-theme-materials"><p className="editor-label">Muse Magic</p><div role="group" aria-label="Muse Magic">{magicLevels.map(value=><button key={value} type="button" className="choice-button" aria-pressed={magic===value} onClick={()=>selectMagic(value)}>{value[0].toUpperCase()+value.slice(1)}</button>)}</div><p className="small-label">Your device’s reduced-motion preference takes priority.</p><SoundToggle/></div>
       </GlassPopover>
     </div>
   );

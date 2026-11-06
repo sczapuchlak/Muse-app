@@ -614,3 +614,12 @@ Icon gradient angle and middle stop are SVG attributes, published by the applied
 - **Spoilers** use a striped placeholder with an explicit Reveal button; titles and safe metadata stay visible.
 - **Share to Stream** opens a native modal `<dialog>` over the current module so the person keeps their place.
 
+
+## Muse Magic motion & sound (#34)
+
+- **Tokens** (`lib/motion.ts`, CSS `--motion-*`, `--ease-*`): press 120, hover 180, settle 260, success 560, orbital 580, celebration 950, milestone 2600, scene 3600 (ms); easings `out`, `spring`, `inOut`. Never hard-code a new duration.
+- **Levels**: Everyday microinteractions (press compress, progress easing, modal lift, page arrival, header twinkle) → Satisfying completions (`useMuseSpark`, ritual orbital glint, water ripple) → Meaningful celebrations (`celebrate()` constellation/starburst) → Rare milestones (book ritual, large constellations at 100/365 days).
+- **Orchestrator** (`lib/celebrate.ts`, layer `components/MuseCelebrations.tsx`): call `celebrate()` from a success path only, with a `key` so it happens once. One moment at a time, never blocking (`pointer-events:none` except Skip), Escape/Skip dismiss, always announced via a polite live region. Primitives: `constellation` (3/7/12 stars, fine gold lines), `starburst`, `book` (cover sheen, gold arc, rising dust).
+- **Intensity**: Quiet = state feedback and announcements only; Magical = light particle counts; Extra = fuller dust and slightly longer moments. `prefers-reduced-motion` always wins.
+- **Sound** (`lib/muse-sound.ts`, preference `lib/sound-preference.ts`): synthesized bell palette `confirm`, `complete`, `reveal`, `seal`, `celebrate`, `book`; Off by default; independent of motion; plays only from success paths; never overlaps (a more important sound takes over, lesser ones are skipped); silent no-op without Web Audio.
+- **Copy** (`lib/celebration-copy.ts`): rotating, Muse-voiced lines; never "Great job", "Congratulations" or "Achievement unlocked".
