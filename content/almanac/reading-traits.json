@@ -1,0 +1,426 @@
+{
+ "family": "reading-traits",
+ "description": "Whispers about how someone reads, from Reading DNA traits and rhythm. Bookshelf only.",
+ "voice": "Literary and wry. Name the hour, the habit, the count. One image per line, at most.",
+ "entries": [
+  {
+   "id": "ALM-READ-001",
+   "version": 1,
+   "status": "approved",
+   "family": "reading-traits",
+   "format": "whisper",
+   "trigger": {
+    "signal": "reading.trait.night-owl"
+   },
+   "sensitivity": "ordinary",
+   "tone": [
+    "literary",
+    "wry"
+   ],
+   "variants": [
+    {
+     "id": "a",
+     "body": "{share} of your reading happens after 9 pm. Some stories prefer lamplight."
+    },
+    {
+     "id": "b",
+     "body": "Late chapters again. Your bookmark keeps night-shift hours."
+    },
+    {
+     "id": "c",
+     "body": "Your timed reading leans late, {share} of it after 9 pm. The owls approve."
+    },
+    {
+     "id": "d",
+     "body": "A lot of your reading happens at night. The twists wait for a quiet house."
+    }
+   ],
+   "variables": {
+    "share": {
+     "fact": "share",
+     "format": "percent"
+    }
+   },
+   "cooldownDays": 21,
+   "review": {
+    "author": "Claude",
+    "reviewedBy": "Claude (line approval delegated by Stephanie, 2026-11-06)",
+    "updatedAt": "2026-11-06"
+   }
+  },
+  {
+   "id": "ALM-READ-002",
+   "version": 1,
+   "status": "approved",
+   "family": "reading-traits",
+   "format": "whisper",
+   "trigger": {
+    "signal": "reading.trait.early-bird"
+   },
+   "sensitivity": "ordinary",
+   "tone": [
+    "literary",
+    "warm"
+   ],
+   "variants": [
+    {
+     "id": "a",
+     "body": "{share} of your reading happens before 9 am. First light, first chapter."
+    },
+    {
+     "id": "b",
+     "body": "You read while the day is still deciding what it wants to be."
+    },
+    {
+     "id": "c",
+     "body": "Early pages, again. The coffee and the plot are both still warm."
+    }
+   ],
+   "variables": {
+    "share": {
+     "fact": "share",
+     "format": "percent"
+    }
+   },
+   "cooldownDays": 21,
+   "review": {
+    "author": "Claude",
+    "reviewedBy": "Claude (line approval delegated by Stephanie, 2026-11-06)",
+    "updatedAt": "2026-11-06"
+   }
+  },
+  {
+   "id": "ALM-READ-003",
+   "version": 1,
+   "status": "approved",
+   "family": "reading-traits",
+   "format": "whisper",
+   "trigger": {
+    "signal": "reading.trait.weekend"
+   },
+   "sensitivity": "ordinary",
+   "tone": [
+    "wry"
+   ],
+   "variants": [
+    {
+     "id": "a",
+     "body": "{share} of your reading lands on Saturdays and Sundays. Weekends, spoken for."
+    },
+    {
+     "id": "b",
+     "body": "Your books keep weekend hours, and so, apparently, do you."
+    },
+    {
+     "id": "c",
+     "body": "Saturday and Sunday hold {share} of your reading. The rest of the week can wait its turn."
+    }
+   ],
+   "variables": {
+    "share": {
+     "fact": "share",
+     "format": "percent"
+    }
+   },
+   "cooldownDays": 21,
+   "review": {
+    "author": "Claude",
+    "reviewedBy": "Claude (line approval delegated by Stephanie, 2026-11-06)",
+    "updatedAt": "2026-11-06"
+   }
+  },
+  {
+   "id": "ALM-READ-004",
+   "version": 1,
+   "status": "approved",
+   "family": "reading-traits",
+   "format": "whisper",
+   "trigger": {
+    "signal": "reading.trait.steady"
+   },
+   "sensitivity": "ordinary",
+   "tone": [
+    "literary",
+    "steady"
+   ],
+   "variants": [
+    {
+     "id": "a",
+     "body": "You read on {readingDays} of {eligibleDays} days. Reading isn’t an occasion here. It’s the weather."
+    },
+    {
+     "id": "b",
+     "body": "{readingDays} reading days out of {eligibleDays}. It has quietly become part of the furniture."
+    },
+    {
+     "id": "c",
+     "body": "Most days have a few pages in them now, {readingDays} of {eligibleDays} to be exact."
+    }
+   ],
+   "variables": {
+    "readingDays": {
+     "fact": "readingDays",
+     "format": "count"
+    },
+    "eligibleDays": {
+     "fact": "eligibleDays",
+     "format": "count"
+    }
+   },
+   "cooldownDays": 21,
+   "review": {
+    "author": "Claude",
+    "reviewedBy": "Claude (line approval delegated by Stephanie, 2026-11-06)",
+    "updatedAt": "2026-11-06"
+   }
+  },
+  {
+   "id": "ALM-READ-005",
+   "version": 1,
+   "status": "approved",
+   "family": "reading-traits",
+   "format": "whisper",
+   "trigger": {
+    "signal": "reading.trait.long-haul"
+   },
+   "sensitivity": "ordinary",
+   "tone": [
+    "wry",
+    "literary"
+   ],
+   "variants": [
+    {
+     "id": "a",
+     "body": "Your sessions average {avg}. When you open a book, you move in."
+    },
+    {
+     "id": "b",
+     "body": "{avg} per sitting, on average. Long visits, suitcase unpacked."
+    },
+    {
+     "id": "c",
+     "body": "Once you start, the chapters get away from you. Average session: {avg}."
+    }
+   ],
+   "variables": {
+    "avg": {
+     "fact": "averageSeconds",
+     "format": "duration"
+    }
+   },
+   "cooldownDays": 21,
+   "review": {
+    "author": "Claude",
+    "reviewedBy": "Claude (line approval delegated by Stephanie, 2026-11-06)",
+    "updatedAt": "2026-11-06"
+   }
+  },
+  {
+   "id": "ALM-READ-006",
+   "version": 1,
+   "status": "approved",
+   "family": "reading-traits",
+   "format": "whisper",
+   "trigger": {
+    "signal": "reading.trait.little-often"
+   },
+   "sensitivity": "ordinary",
+   "tone": [
+    "warm"
+   ],
+   "variants": [
+    {
+     "id": "a",
+     "body": "About {avg} at a time, across {readingDays}. Whole worlds, a few pages at a sitting."
+    },
+    {
+     "id": "b",
+     "body": "A few pages here, a few there. It adds up to {readingDays} of reading."
+    },
+    {
+     "id": "c",
+     "body": "Your reading fits in the cracks of the day, and the cracks have been generous."
+    }
+   ],
+   "variables": {
+    "avg": {
+     "fact": "averageSeconds",
+     "format": "duration"
+    },
+    "readingDays": {
+     "fact": "readingDays",
+     "format": "count",
+     "plural": [
+      "day",
+      "days"
+     ]
+    }
+   },
+   "cooldownDays": 21,
+   "review": {
+    "author": "Claude",
+    "reviewedBy": "Claude (line approval delegated by Stephanie, 2026-11-06)",
+    "updatedAt": "2026-11-06"
+   }
+  },
+  {
+   "id": "ALM-READ-007",
+   "version": 1,
+   "status": "approved",
+   "family": "reading-traits",
+   "format": "whisper",
+   "trigger": {
+    "signal": "reading.trait.rereader"
+   },
+   "sensitivity": "ordinary",
+   "tone": [
+    "literary",
+    "warm"
+   ],
+   "variants": [
+    {
+     "id": "a",
+     "body": "{rereads} of your {reads} finished reads were returns. Some doors you keep opening."
+    },
+    {
+     "id": "b",
+     "body": "{rereadCount} lately. Same pages, different reader."
+    },
+    {
+     "id": "c",
+     "body": "Comfort reading, documented: {rereadCount} among {reads} finished."
+    }
+   ],
+   "variables": {
+    "rereads": {
+     "fact": "rereads",
+     "format": "count"
+    },
+    "rereadCount": {
+     "fact": "rereads",
+     "format": "count",
+     "plural": [
+      "reread",
+      "rereads"
+     ]
+    },
+    "reads": {
+     "fact": "reads",
+     "format": "count"
+    }
+   },
+   "cooldownDays": 21,
+   "review": {
+    "author": "Claude",
+    "reviewedBy": "Claude (line approval delegated by Stephanie, 2026-11-06)",
+    "updatedAt": "2026-11-06"
+   }
+  },
+  {
+   "id": "ALM-READ-008",
+   "version": 1,
+   "status": "approved",
+   "family": "reading-traits",
+   "format": "revelation",
+   "trigger": {
+    "signal": "reading.persona"
+   },
+   "sensitivity": "ordinary",
+   "tone": [
+    "literary",
+    "warm"
+   ],
+   "variants": [
+    {
+     "id": "a",
+     "title": "Your reading has a shape.",
+     "body": "Across {books} with a genre, Muse would call you {persona}. {topGenre} leads, though it isn’t the whole map."
+    },
+    {
+     "id": "b",
+     "title": "{persona}, for now.",
+     "body": "That’s the pattern across {books}, with {topGenre} out in front. Personalities shift as the shelf does."
+    },
+    {
+     "id": "c",
+     "title": "A reader with a type.",
+     "body": "Call it {persona}. {topGenre} keeps turning up on the shelf, {books} in."
+    }
+   ],
+   "variables": {
+    "persona": {
+     "fact": "persona",
+     "format": "label"
+    },
+    "topGenre": {
+     "fact": "topGenre",
+     "format": "label"
+    },
+    "books": {
+     "fact": "books",
+     "format": "count",
+     "plural": [
+      "finished book",
+      "finished books"
+     ]
+    }
+   },
+   "cooldownDays": 45,
+   "review": {
+    "author": "Claude",
+    "reviewedBy": "Claude (line approval delegated by Stephanie, 2026-11-06)",
+    "updatedAt": "2026-11-06"
+   },
+   "links": [
+    {
+     "label": "Open Reading DNA",
+     "href": "{signal.href}"
+    }
+   ]
+  },
+  {
+   "id": "ALM-READ-009",
+   "version": 1,
+   "status": "approved",
+   "family": "reading-traits",
+   "format": "whisper",
+   "trigger": {
+    "signal": "reading.rhythm.hour"
+   },
+   "sensitivity": "ordinary",
+   "tone": [
+    "wry"
+   ],
+   "variants": [
+    {
+     "id": "a",
+     "body": "{hour} is your reading hour, {weekday}s especially."
+    },
+    {
+     "id": "b",
+     "body": "If the house is quiet around {hour}, odds are you’re reading."
+    },
+    {
+     "id": "c",
+     "body": "The likeliest time to find you in a book: {hour}, on a {weekday}."
+    }
+   ],
+   "variables": {
+    "hour": {
+     "fact": "hour",
+     "format": "hour"
+    },
+    "weekday": {
+     "fact": "weekday",
+     "format": "label"
+    }
+   },
+   "cooldownDays": 21,
+   "review": {
+    "author": "Claude",
+    "reviewedBy": "Claude (line approval delegated by Stephanie, 2026-11-06)",
+    "updatedAt": "2026-11-06"
+   }
+  }
+ ]
+}

@@ -1,0 +1,438 @@
+{
+ "family": "little-revelations",
+ "description": "The existing Insights revelations, rewritten as rotating variants. Facts, thresholds and caveats are unchanged.",
+ "voice": "Clear first, charming second. Every card keeps its caveat: snapshots are snapshots, plans are not meals, unlogged is not missed.",
+ "entries": [
+  {
+   "id": "ALM-INSI-001",
+   "version": 1,
+   "status": "approved",
+   "family": "little-revelations",
+   "format": "revelation",
+   "trigger": {
+    "signal": "planner.planned-completion"
+   },
+   "sensitivity": "ordinary",
+   "tone": [
+    "plain",
+    "warm"
+   ],
+   "variants": [
+    {
+     "id": "a",
+     "title": "{completed} of {planned} planned tasks are done.",
+     "body": "A snapshot of the tasks planned in this range, as they stand right now. Rescheduling isn’t failure, and these aren’t completion dates."
+    },
+    {
+     "id": "b",
+     "title": "{completed} down, out of {planned} planned.",
+     "body": "This counts tasks planned for these dates and where they stand today. Plans move; that’s what plans are for."
+    },
+    {
+     "id": "c",
+     "title": "Planned {planned}, done {completed}.",
+     "body": "Today’s view of everything planned in this range. Anything you moved simply moved."
+    }
+   ],
+   "variables": {
+    "completed": {
+     "fact": "completed",
+     "format": "count"
+    },
+    "planned": {
+     "fact": "planned",
+     "format": "count"
+    }
+   },
+   "cooldownDays": 7,
+   "review": {
+    "author": "Claude",
+    "reviewedBy": "Claude (line approval delegated by Stephanie, 2026-11-06)",
+    "updatedAt": "2026-11-06"
+   },
+   "links": [
+    {
+     "label": "See the records",
+     "href": "{signal.href}"
+    }
+   ]
+  },
+  {
+   "id": "ALM-INSI-002",
+   "version": 1,
+   "status": "approved",
+   "family": "little-revelations",
+   "format": "revelation",
+   "trigger": {
+    "signal": "planner.completion-comparison",
+    "when": [
+     [
+      "direction",
+      "=",
+      "more"
+     ]
+    ]
+   },
+   "sensitivity": "ordinary",
+   "tone": [
+    "plain",
+    "warm"
+   ],
+   "variants": [
+    {
+     "id": "a",
+     "title": "{difference} than last period.",
+     "body": "{current} tasks finished on recorded dates, against {previous} in the equal-length period before. Completion timestamps only."
+    },
+    {
+     "id": "b",
+     "title": "A busier stretch, {difference}.",
+     "body": "Comparing equal-length periods by when tasks were actually finished, {current} now and {previous} before."
+    },
+    {
+     "id": "c",
+     "title": "The checklist moved faster.",
+     "body": "{current} dated completions this period and {previous} the one before. Same length, same rules."
+    }
+   ],
+   "variables": {
+    "difference": {
+     "fact": "difference",
+     "format": "count",
+     "plural": [
+      "more completed task",
+      "more completed tasks"
+     ]
+    },
+    "current": {
+     "fact": "current",
+     "format": "count"
+    },
+    "previous": {
+     "fact": "previous",
+     "format": "count"
+    }
+   },
+   "cooldownDays": 14,
+   "review": {
+    "author": "Claude",
+    "reviewedBy": "Claude (line approval delegated by Stephanie, 2026-11-06)",
+    "updatedAt": "2026-11-06"
+   },
+   "links": [
+    {
+     "label": "See the records",
+     "href": "{signal.href}"
+    }
+   ]
+  },
+  {
+   "id": "ALM-INSI-003",
+   "version": 1,
+   "status": "approved",
+   "family": "little-revelations",
+   "format": "revelation",
+   "trigger": {
+    "signal": "planner.completion-comparison",
+    "when": [
+     [
+      "direction",
+      "=",
+      "fewer"
+     ]
+    ]
+   },
+   "sensitivity": "ordinary",
+   "tone": [
+    "plain",
+    "warm"
+   ],
+   "variants": [
+    {
+     "id": "a",
+     "title": "{difference} than last period.",
+     "body": "{current} tasks finished on recorded dates, against {previous} before. Quieter stretches belong to the rhythm too."
+    },
+    {
+     "id": "b",
+     "title": "A gentler pace this period.",
+     "body": "{current} dated completions now, {previous} in the equal-length period before. Fewer boxes ticked is a count, not a verdict."
+    },
+    {
+     "id": "c",
+     "title": "The list took a breather.",
+     "body": "Comparing equal stretches by actual completion dates, {current} now and {previous} before."
+    }
+   ],
+   "variables": {
+    "difference": {
+     "fact": "difference",
+     "format": "count",
+     "plural": [
+      "fewer completed task",
+      "fewer completed tasks"
+     ]
+    },
+    "current": {
+     "fact": "current",
+     "format": "count"
+    },
+    "previous": {
+     "fact": "previous",
+     "format": "count"
+    }
+   },
+   "cooldownDays": 14,
+   "review": {
+    "author": "Claude",
+    "reviewedBy": "Claude (line approval delegated by Stephanie, 2026-11-06)",
+    "updatedAt": "2026-11-06"
+   },
+   "links": [
+    {
+     "label": "See the records",
+     "href": "{signal.href}"
+    }
+   ],
+   "sample": {
+    "direction": "fewer",
+    "current": 15,
+    "previous": 21,
+    "difference": 6
+   }
+  },
+  {
+   "id": "ALM-INSI-004",
+   "version": 1,
+   "status": "approved",
+   "family": "little-revelations",
+   "format": "revelation",
+   "trigger": {
+    "signal": "wellness.water-goals"
+   },
+   "sensitivity": "personal",
+   "tone": [
+    "plain",
+    "warm"
+   ],
+   "variants": [
+    {
+     "id": "a",
+     "title": "Water goal met on {metDays}.",
+     "body": "Out of {knownGoals} logged days with a goal. Days without a log aren’t counted as misses."
+    },
+    {
+     "id": "b",
+     "title": "Hydrated on {metDays}.",
+     "body": "That’s from {knownGoals} days with a goal on record. Unlogged days stay out of it."
+    },
+    {
+     "id": "c",
+     "title": "{met} of {knownGoals} logged days, goal reached.",
+     "body": "Only days you logged count here, so nothing is assumed about the rest."
+    }
+   ],
+   "variables": {
+    "metDays": {
+     "fact": "met",
+     "format": "count",
+     "plural": [
+      "logged day",
+      "logged days"
+     ]
+    },
+    "met": {
+     "fact": "met",
+     "format": "count"
+    },
+    "knownGoals": {
+     "fact": "knownGoals",
+     "format": "count"
+    }
+   },
+   "cooldownDays": 14,
+   "review": {
+    "author": "Claude",
+    "reviewedBy": "Claude (line approval delegated by Stephanie, 2026-11-06)",
+    "updatedAt": "2026-11-06"
+   },
+   "links": [
+    {
+     "label": "See the records",
+     "href": "{signal.href}"
+    }
+   ]
+  },
+  {
+   "id": "ALM-INSI-005",
+   "version": 1,
+   "status": "approved",
+   "family": "little-revelations",
+   "format": "revelation",
+   "trigger": {
+    "signal": "nourish.meal-rhythm"
+   },
+   "sensitivity": "ordinary",
+   "tone": [
+    "warm"
+   ],
+   "variants": [
+    {
+     "id": "a",
+     "title": "{plannedDays} had something to look forward to.",
+     "body": "{plans} meal plans in this range. These are plans, not a record of what was eaten."
+    },
+    {
+     "id": "b",
+     "title": "Meals on the calendar, {plannedDays}.",
+     "body": "{plans} plans across them. Future you has been well looked after."
+    },
+    {
+     "id": "c",
+     "title": "A little forethought, {plannedDays} of it.",
+     "body": "{plans} meal plans in this range. Planned, not necessarily eaten, and that’s fine."
+    }
+   ],
+   "variables": {
+    "plannedDays": {
+     "fact": "plannedDays",
+     "format": "count",
+     "plural": [
+      "day",
+      "days"
+     ]
+    },
+    "plans": {
+     "fact": "plans",
+     "format": "count"
+    }
+   },
+   "cooldownDays": 14,
+   "review": {
+    "author": "Claude",
+    "reviewedBy": "Claude (line approval delegated by Stephanie, 2026-11-06)",
+    "updatedAt": "2026-11-06"
+   },
+   "links": [
+    {
+     "label": "See the records",
+     "href": "{signal.href}"
+    }
+   ]
+  },
+  {
+   "id": "ALM-INSI-006",
+   "version": 1,
+   "status": "approved",
+   "family": "little-revelations",
+   "format": "revelation",
+   "trigger": {
+    "signal": "mood.often-felt"
+   },
+   "sensitivity": "sensitive",
+   "tone": [
+    "plain"
+   ],
+   "variants": [
+    {
+     "id": "a",
+     "title": "{feeling} has been part of the picture.",
+     "body": "Selected in {count} of your {checkins} check-ins. A check-in can hold more than one feeling."
+    },
+    {
+     "id": "b",
+     "title": "{feeling}, often.",
+     "body": "You named it in {count} of {checkins} check-ins. A count, not a conclusion."
+    },
+    {
+     "id": "c",
+     "title": "A feeling that keeps coming up.",
+     "body": "{feeling} appears in {count} of {checkins} check-ins. Feelings travel in company, so it is one of several."
+    }
+   ],
+   "variables": {
+    "feeling": {
+     "fact": "feeling",
+     "format": "label"
+    },
+    "count": {
+     "fact": "count",
+     "format": "count"
+    },
+    "checkins": {
+     "fact": "checkins",
+     "format": "count"
+    }
+   },
+   "cooldownDays": 21,
+   "review": {
+    "author": "Claude",
+    "reviewedBy": "Claude (line approval delegated by Stephanie, 2026-11-06)",
+    "updatedAt": "2026-11-06"
+   },
+   "links": [
+    {
+     "label": "See the records",
+     "href": "{signal.href}"
+    }
+   ]
+  },
+  {
+   "id": "ALM-INSI-007",
+   "version": 1,
+   "status": "approved",
+   "family": "little-revelations",
+   "format": "revelation",
+   "trigger": {
+    "signal": "money.top-category"
+   },
+   "sensitivity": "sensitive",
+   "tone": [
+    "plain"
+   ],
+   "variants": [
+    {
+     "id": "a",
+     "title": "{category} is your largest recorded spending category.",
+     "body": "{amount} across {transactions} recorded transactions in this range. Card payments, savings and expected charges aren’t counted as spending."
+    },
+    {
+     "id": "b",
+     "title": "The biggest share went to {category}.",
+     "body": "{amount} of recorded spending, from {transactions} transactions in this range. Only what you recorded counts."
+    },
+    {
+     "id": "c",
+     "title": "Top of the spending list, {category}.",
+     "body": "{amount} in this range across {transactions} recorded transactions. Payments, savings and expected charges are left out."
+    }
+   ],
+   "variables": {
+    "category": {
+     "fact": "category",
+     "format": "label"
+    },
+    "amount": {
+     "fact": "cents",
+     "format": "money"
+    },
+    "transactions": {
+     "fact": "transactions",
+     "format": "count"
+    }
+   },
+   "cooldownDays": 21,
+   "review": {
+    "author": "Claude",
+    "reviewedBy": "Claude (line approval delegated by Stephanie, 2026-11-06)",
+    "updatedAt": "2026-11-06"
+   },
+   "links": [
+    {
+     "label": "See the records",
+     "href": "{signal.href}"
+    }
+   ]
+  }
+ ]
+}
