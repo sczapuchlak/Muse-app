@@ -101,7 +101,9 @@ export const streamAdapters:Record<StreamSourceKind,StreamAdapter>={
   fields:[{id:'sun',label:'Sun sign',default:true},{id:'moon',label:'Moon sign',default:false},{id:'rising',label:'Rising sign',default:false}],
   texts:[],
   candidates:b=>b.chart?[{sourceId:b.chart.id,title:'My natal chart placements',subtitle:'Sun, Moon and Rising',glyph:'orbit',group:'Observatory'}]:[],
-  display:(b,id,approved)=>{const c=b.chart;if(!c||c.id!==id)return null;const sign=(body:string)=>c.payload.placements.find(p=>p.body===body);
+  display:(b,id,approved)=>{const c=b.chart;if(!c||c.id!==id)return null;
+   // Charts name bodies 'Sun', 'Moon'…; match case-insensitively so a stored chart always resolves.
+   const sign=(body:string)=>c.payload.placements.find(p=>String(p.body).toLowerCase()===body);
    const parts=[on(approved,'sun')&&sign('sun')&&!sign('sun')!.uncertain?`${cap(sign('sun')!.sign)} Sun`:null,on(approved,'moon')&&sign('moon')&&!sign('moon')!.uncertain?`${cap(sign('moon')!.sign)} Moon`:null,
     on(approved,'rising')&&c.payload.ascendant&&c.payload.ascendant.possibleSigns.length<=1?`${cap(c.payload.ascendant.sign)} Rising`:null].filter((x):x is string=>!!x);
    if(!parts.length)return null;return clean({kind:'astrology',title:parts.join(' · '),glyph:'orbit'});}},

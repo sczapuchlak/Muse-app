@@ -97,3 +97,14 @@ test('reports are reviewed only with the service key, never through an app route
  const script=read('scripts/stream-reports.mjs');assert.match(script,/Type muse-production to continue/);assert.doesNotMatch(script,/console\.log\([^)]*key/i,'never prints the key');
  assert.doesNotMatch(read('app/(app)/stream/page.tsx'),/report/i);
 });
+
+test('chart signs share from a real calculated chart, and never birth details',()=>{
+ const {calculateNatal}=load('lib/astrology/calculations');
+ const payload=calculateNatal({date:'2000-01-01',time:'12:00',accuracy:'exact',uncertaintyMinutes:0,place:{id:'s',name:'Synthetic place',latitude:51.4779,longitude:0,timeZone:'UTC'},zodiac:'tropical',houseSystem:'whole-sign'});
+ const b=bundle({chart:{id:'ch',payload}});
+ const d=A.streamAdapters.astrology.display(b,'ch',['sun','moon','rising'],{});
+ assert.equal(d.title,'Capricorn Sun · Scorpio Moon · Aries Rising','real charts name bodies “Sun”, “Moon”: they must still resolve');
+ assert.equal(A.streamAdapters.astrology.display(b,'ch',['sun'],{}).title,'Capricorn Sun');
+ assert.equal(A.streamAdapters.astrology.display(b,'ch',[],{}),null,'nothing ticked: nothing to share');
+ assert.doesNotMatch(JSON.stringify(d),/2000|12:00|Synthetic|51\.4|degree|house/i);
+});
