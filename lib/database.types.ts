@@ -97,6 +97,40 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
+                },"aspiration_updates": {
+                  Row: {
+                    "aspiration_id": string,"created_at": string,"id": string,"milestone_id": string | null,"note": string | null,"recorded_on": string,"user_id": string,"value": number | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "aspiration_id": string,"created_at"?: string,"id": string,"milestone_id"?: string | null,"note"?: string | null,"recorded_on": string,"user_id"?: string,"value"?: number | null
+                  }
+                  Update: {
+                    "aspiration_id"?: string,"created_at"?: string,"id"?: string,"milestone_id"?: string | null,"note"?: string | null,"recorded_on"?: string,"user_id"?: string,"value"?: number | null
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "aspiration_updates_aspiration_id_fkey"
+      columns: ["aspiration_id"]
+isOneToOne: false
+      referencedRelation: "aspirations"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"aspirations": {
+                  Row: {
+                    "accent": string | null,"category": string,"celebrated": (string)[],"completed_on": string | null,"connection": Json | null,"created_at": string,"description": string | null,"icon": string | null,"id": string,"milestones": NonNullable<Json>,"motivation": string | null,"position": number,"progress_kind": string,"reflection": string | null,"revision": number,"ritual_ids": (string)[],"start_date": string,"status": string,"target": number | null,"target_date": string | null,"task_ids": (string)[],"timeframe": string,"title": string,"unit": string | null,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "accent"?: string | null,"category"?: string,"celebrated"?: (string)[],"completed_on"?: string | null,"connection"?: Json | null,"created_at"?: string,"description"?: string | null,"icon"?: string | null,"id": string,"milestones"?: NonNullable<Json>,"motivation"?: string | null,"position"?: number,"progress_kind": string,"reflection"?: string | null,"revision"?: number,"ritual_ids"?: (string)[],"start_date": string,"status"?: string,"target"?: number | null,"target_date"?: string | null,"task_ids"?: (string)[],"timeframe"?: string,"title": string,"unit"?: string | null,"updated_at"?: string,"user_id"?: string
+                  }
+                  Update: {
+                    "accent"?: string | null,"category"?: string,"celebrated"?: (string)[],"completed_on"?: string | null,"connection"?: Json | null,"created_at"?: string,"description"?: string | null,"icon"?: string | null,"id"?: string,"milestones"?: NonNullable<Json>,"motivation"?: string | null,"position"?: number,"progress_kind"?: string,"reflection"?: string | null,"revision"?: number,"ritual_ids"?: (string)[],"start_date"?: string,"status"?: string,"target"?: number | null,"target_date"?: string | null,"task_ids"?: (string)[],"timeframe"?: string,"title"?: string,"unit"?: string | null,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
                 },"astrology_activity": {
                   Row: {
                     "created_at": string,"date": string,"kind": string,"reference_id": string,"time_zone": string,"user_id": string

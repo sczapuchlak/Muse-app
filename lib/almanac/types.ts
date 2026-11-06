@@ -9,7 +9,7 @@
 export type Sensitivity='ordinary'|'personal'|'sensitive';
 export const sensitivityRank:Record<Sensitivity,number>={ordinary:0,personal:1,sensitive:2};
 
-export type AlmanacModule='reading'|'rituals'|'planner'|'wellness'|'mood'|'money'|'nourish'|'dreams'|'tarot'|'cross'|'recap';
+export type AlmanacModule='reading'|'rituals'|'aspirations'|'planner'|'wellness'|'mood'|'money'|'nourish'|'dreams'|'tarot'|'cross'|'recap';
 export type FactType='count'|'ratio'|'hour'|'seconds'|'date'|'label'|'cents'|'boolean';
 
 /** One fact a signal provides. `label` facts are display names the person chose (a book or ritual title), never free text they wrote. */
