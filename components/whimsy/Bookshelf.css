@@ -195,3 +195,34 @@
 .muse-atlas-stack .muse-books-bars{height:auto;min-height:140px;flex:1}
 .muse-atlas-stack>.muse-books-panel{display:flex;flex-direction:column}
 @media(max-width:900px){.muse-atlas-overview-grid{grid-template-columns:minmax(0,1fr)}}
+
+/* Reading Challenge (#50): one goal record, compact on Bookshelf, full in Reading Atlas */
+.muse-challenge{display:grid;gap:14px}
+.muse-challenge-compact{margin-block:4px}
+.muse-challenge-year{min-height:36px;padding:4px 10px;border:1px solid var(--glass-border);border-radius:999px;background:var(--surface-control);color:var(--foreground);font:600 .82rem var(--font-ui)}
+.muse-challenge-summary{display:grid;grid-template-columns:auto minmax(0,1fr);gap:18px;align-items:center}
+.muse-challenge-dial{position:relative;width:96px;height:96px;display:grid;place-items:center}
+.muse-challenge-dial>span{position:absolute;display:grid;justify-items:center;line-height:1}
+.muse-challenge-dial strong{font-family:var(--font-editorial);font-size:1.9rem}
+.muse-challenge-dial small{color:var(--text-muted);font-size:.72rem;margin-top:3px}
+.muse-challenge-ring{width:96px;height:96px;transform:rotate(-90deg)}
+.muse-challenge-ring circle{fill:none;stroke-width:7;stroke-linecap:round}
+.muse-challenge-ring .track{stroke:color-mix(in srgb,var(--foreground) 10%,transparent)}
+.muse-challenge-ring .fill{stroke:var(--accent-secondary);transition:stroke-dashoffset var(--motion-celebration,950ms) var(--ease-out,ease-out)}
+.muse-challenge-ring[data-reached] .fill{stroke:var(--achievement-gold,#f5b52e);filter:drop-shadow(0 0 4px color-mix(in srgb,#f5b52e 60%,transparent))}
+.muse-challenge-words{display:grid;gap:4px;min-width:0}
+.muse-challenge-words p{margin:0}
+.muse-challenge-headline{display:flex;align-items:center;gap:6px;font-family:var(--font-editorial);font-size:1.15rem}
+.muse-challenge-empty{display:grid;gap:6px;margin:0;color:var(--text-muted)}
+.muse-challenge-editor{display:grid;gap:8px;padding:12px;border:1px dashed var(--glass-border);border-radius:var(--control-radius)}
+.muse-challenge-editor label{display:grid;gap:6px;font-weight:600}
+.muse-challenge-editor input{max-width:140px;min-height:40px;padding:6px 10px;border:1px solid var(--glass-border);border-radius:var(--control-radius);background:var(--surface-control);color:var(--foreground);font:inherit}
+.muse-challenge-shelf{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(52px,1fr));gap:10px}
+.muse-challenge-shelf>li{aspect-ratio:2/3;border-radius:6px;overflow:hidden}
+.muse-challenge-shelf>li>button{position:relative;display:block;width:100%;height:100%;padding:0;border:0;background:var(--surface-control);cursor:pointer;box-shadow:0 6px 14px -8px rgba(0,0,0,.6)}
+.muse-challenge-shelf img{width:100%;height:100%;object-fit:cover;display:block}
+.muse-challenge-blank{display:grid;place-items:center;height:100%;padding:4px;background:linear-gradient(160deg,var(--accent-secondary),var(--accent-primary));color:#fff;font:italic 600 .55rem/1.2 var(--font-editorial);text-align:center;overflow:hidden}
+.muse-challenge-reread{position:absolute;right:3px;bottom:3px;display:grid;place-items:center;width:16px;height:16px;border-radius:50%;background:rgba(0,0,0,.55);color:#fff}
+.muse-challenge-shelf>li[data-empty]{display:grid;place-items:center;border:1.5px dashed color-mix(in srgb,var(--foreground) 22%,transparent);color:var(--text-muted);font:600 .72rem var(--font-ui)}
+.muse-challenge-more{display:grid;place-items:center;color:var(--text-muted);font-weight:700}
+@media (max-width:600px){.muse-challenge-summary{grid-template-columns:1fr;justify-items:center;text-align:center}.muse-challenge-shelf{grid-template-columns:repeat(auto-fill,minmax(44px,1fr));gap:8px}}

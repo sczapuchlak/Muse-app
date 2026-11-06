@@ -13,6 +13,7 @@ export const celebrationCopy={
  streak100:['One hundred days. That deserves a little cosmic celebration.','A hundred little promises, kept.'],
  streak365:['A whole year of you showing up for you.','365 days. A universe of your own making.'],
  water:['Fully hydrated. Glowing, frankly.','Your water goal, beautifully met.','Hydration achieved. Very main character.'],
+ readingGoal:['Your literary universe just got bigger.','Every page, accounted for. Challenge complete.','A whole year’s worth of worlds, explored.'],
  quest:['Fate has been thoroughly entertained.','Quest complete. Chaos approved.','The universe acknowledges your nonsense.'],
  milestone:['Another star in your universe.','That deserves a little cosmic celebration.','You made something extraordinary happen.'],
 } as const;
