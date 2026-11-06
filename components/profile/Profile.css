@@ -96,10 +96,17 @@
 }
 
 /* ---- Avatars ---- */
-.muse-avatar-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:10px}
-.muse-avatar-grid>button{display:grid;place-items:center;padding:4px;border-radius:50%;border:2px solid transparent;background:transparent;cursor:pointer;transition:transform .15s}
+.muse-avatar-grid{--avatar-cell:calc(var(--avatar-size,64px) + 12px);display:grid;grid-template-columns:repeat(auto-fill,minmax(var(--avatar-cell),1fr));gap:10px;justify-items:center}
+/* The button is exactly the avatar plus its ring, so the ring always sits on the circle. */
+.muse-avatar-grid>button{position:relative;display:grid;place-items:center;width:var(--avatar-cell);height:var(--avatar-cell);padding:0;border:0;border-radius:50%;background:transparent;cursor:pointer;transition:transform .15s}
 .muse-avatar-grid>button:hover{transform:scale(1.06)}
-.muse-avatar-grid>button[aria-checked=true]{border-color:var(--selected-border);box-shadow:0 0 0 3px color-mix(in srgb,var(--selected-border) 30%,transparent)}
+/* Selected: a sparkly gold ring hugging the avatar, a warm glow and a small twinkle. */
+.muse-avatar-grid>button[aria-checked=true]::after{content:"";position:absolute;inset:1px;border-radius:50%;padding:3.5px;background:conic-gradient(from var(--ring-turn,0deg),#fff4c2,#f5b52e,#ffe9a0,#c98a12,#fff8dc,#f2a91b,#fff4c2);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;filter:drop-shadow(0 0 5px rgba(250,204,21,.75));pointer-events:none}
+.muse-avatar-grid>button[aria-checked=true]::before{content:"✦";position:absolute;z-index:1;top:-3px;right:-1px;font-size:15px;line-height:1;color:#fde68a;text-shadow:0 0 6px #facc15,0 0 12px rgba(250,204,21,.6);pointer-events:none}
+@property --ring-turn{syntax:'<angle>';inherits:false;initial-value:0deg}
+@media(prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) .muse-avatar-grid>button[aria-checked=true]::after{animation:muse-gold-ring 6s linear infinite}:root:not([data-magic=quiet]) .muse-avatar-grid>button[aria-checked=true]::before{animation:muse-twinkle 2.4s ease-in-out infinite}}
+@keyframes muse-gold-ring{to{--ring-turn:360deg}}
+@keyframes muse-twinkle{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.55;transform:scale(.75) rotate(20deg)}}
 .muse-avatar-grid>button:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
 
 /* ---- Setup ---- */
@@ -107,7 +114,7 @@
 .muse-profile-setup .muse-hero h1{margin:0;font-size:clamp(2rem,4vw,2.8rem)}
 .muse-profile-setup .muse-hero p{margin:0;max-width:62ch;color:var(--text-muted)}
 .muse-profile-setup-form{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(260px,1fr);gap:24px}
-.muse-profile-avatar-field{margin:0;padding:0;border:0;display:grid;gap:10px}
+.muse-profile-avatar-field{margin:0;padding:0;border:0;display:grid;gap:10px;min-width:0}
 .muse-profile-setup-fields{display:grid;gap:14px;align-content:start;justify-items:start}
 .muse-profile-setup-fields>label{width:100%}
 .muse-username-input{display:flex;align-items:center;gap:4px}
