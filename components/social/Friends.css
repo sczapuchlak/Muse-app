@@ -1,0 +1,21 @@
+/* Muse Social (#16): friends, requests, discovery and blocking. */
+.muse-friends{display:grid;gap:16px}
+.muse-friends-bar{display:flex;flex-wrap:wrap;align-items:center;gap:12px}
+.muse-friends-bar>a{display:inline-flex;align-items:center;gap:6px;text-decoration:none}
+.muse-friends-notice{margin:0;min-height:1.2em;font-size:.88rem;color:var(--text-muted)}
+.muse-friend-list{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.muse-friend-card{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:14px;padding:12px 14px}
+.muse-friend-name{display:grid;gap:2px;min-width:0}
+.muse-friend-name strong{font-size:1rem}
+.muse-friend-name small{color:var(--text-muted)}
+.muse-friend-actions{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:6px}
+.muse-friend-actions>a{text-decoration:none}
+.muse-friend-requests{display:grid;gap:22px}
+.muse-friend-requests h2{margin:0 0 8px}
+.muse-friend-find{display:grid;gap:10px}
+.muse-friend-settings{display:grid;gap:10px}
+.muse-friend-settings h2{margin:0}
+.muse-atelier-check{display:inline-flex;align-items:center;gap:8px;font-size:.88rem}
+.muse-atelier-hint{display:block;margin:0;font-size:.8rem;line-height:1.45;color:var(--text-muted)}
+.muse-atelier-danger{color:var(--urgency-ink)!important}
+@media(max-width:640px){.muse-friend-card{grid-template-columns:auto 1fr}.muse-friend-actions{grid-column:1/-1;justify-content:flex-start}}

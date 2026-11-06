@@ -569,6 +569,34 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"friend_requests": {
+                  Row: {
+                    "addressee": string,"created_at": string,"id": string,"requester": string,"responded_at": string | null,"status": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "addressee": string,"created_at"?: string,"id"?: string,"requester": string,"responded_at"?: string | null,"status"?: string
+                  }
+                  Update: {
+                    "addressee"?: string,"created_at"?: string,"id"?: string,"requester"?: string,"responded_at"?: string | null,"status"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
+                },"friendships": {
+                  Row: {
+                    "created_at": string,"user_high": string,"user_low": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"user_high": string,"user_low": string
+                  }
+                  Update: {
+                    "created_at"?: string,"user_high"?: string,"user_low"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
                 },"grocery_items": {
                   Row: {
                     "complete": boolean,"created_at": string,"id": string,"name": string,"note": string | null,"position": number,"quantity": string | null,"section_id": string,"updated_at": string,"user_id": string
@@ -859,6 +887,20 @@ isOneToOne: false
                   }
                   Update: {
                     "archived"?: boolean,"category"?: string | null,"id"?: string,"label"?: string,"origin"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
+                },"muse_profiles": {
+                  Row: {
+                    "badges": (string)[],"banner_gradient": string,"bio": string,"created_at": string,"profile_theme": string,"sections": NonNullable<Json>,"tagline": string,"updated_at": string,"user_id": string,"visibility": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "badges"?: (string)[],"banner_gradient"?: string,"bio"?: string,"created_at"?: string,"profile_theme": string,"sections"?: NonNullable<Json>,"tagline"?: string,"updated_at"?: string,"user_id": string,"visibility"?: string
+                  }
+                  Update: {
+                    "badges"?: (string)[],"banner_gradient"?: string,"bio"?: string,"created_at"?: string,"profile_theme"?: string,"sections"?: NonNullable<Json>,"tagline"?: string,"updated_at"?: string,"user_id"?: string,"visibility"?: string
                   }
                   Relationships: [
                     
@@ -1311,6 +1353,68 @@ isOneToOne: false
                   }
                   Update: {
                     "created_at"?: string,"id"?: string,"link"?: string | null,"meal_types"?: (string)[],"name"?: string,"note"?: string | null,"nutrition"?: Json | null,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
+                },"showcase_items": {
+                  Row: {
+                    "approved": (string)[],"created_at": string,"display": NonNullable<Json>,"id": string,"note": string,"position": number,"showcase_id": string,"snapshot_at": string,"source_id": string | null,"source_kind": string,"source_state": string,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "approved"?: (string)[],"created_at"?: string,"display": NonNullable<Json>,"id": string,"note"?: string,"position"?: number,"showcase_id": string,"snapshot_at"?: string,"source_id"?: string | null,"source_kind": string,"source_state"?: string,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "approved"?: (string)[],"created_at"?: string,"display"?: NonNullable<Json>,"id"?: string,"note"?: string,"position"?: number,"showcase_id"?: string,"snapshot_at"?: string,"source_id"?: string | null,"source_kind"?: string,"source_state"?: string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "showcase_items_user_id_showcase_id_fkey"
+      columns: ["user_id","showcase_id"]
+isOneToOne: false
+      referencedRelation: "showcases"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+                },"showcases": {
+                  Row: {
+                    "created_at": string,"description": string,"gradient": string,"icon": string,"id": string,"layout": string,"position": number,"published_at": string | null,"title": string,"updated_at": string,"user_id": string,"visibility": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"description"?: string,"gradient"?: string,"icon"?: string,"id": string,"layout"?: string,"position"?: number,"published_at"?: string | null,"title": string,"updated_at"?: string,"user_id": string,"visibility"?: string
+                  }
+                  Update: {
+                    "created_at"?: string,"description"?: string,"gradient"?: string,"icon"?: string,"id"?: string,"layout"?: string,"position"?: number,"published_at"?: string | null,"title"?: string,"updated_at"?: string,"user_id"?: string,"visibility"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
+                },"social_blocks": {
+                  Row: {
+                    "blocked": string,"blocker": string,"created_at": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "blocked": string,"blocker": string,"created_at"?: string
+                  }
+                  Update: {
+                    "blocked"?: string,"blocker"?: string,"created_at"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
+                },"social_identities": {
+                  Row: {
+                    "avatar_id": string,"created_at": string,"discoverable": boolean,"display_name": string,"participation": string,"public_id": string,"updated_at": string,"user_id": string,"username": string,"username_changed_at": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "avatar_id"?: string,"created_at"?: string,"discoverable"?: boolean,"display_name": string,"participation"?: string,"public_id"?: string,"updated_at"?: string,"user_id": string,"username": string,"username_changed_at"?: string
+                  }
+                  Update: {
+                    "avatar_id"?: string,"created_at"?: string,"discoverable"?: boolean,"display_name"?: string,"participation"?: string,"public_id"?: string,"updated_at"?: string,"user_id"?: string,"username"?: string,"username_changed_at"?: string
                   }
                   Relationships: [
                     
@@ -2050,6 +2154,9 @@ isOneToOne: false
             "backfill_priority_tasks":
 { Args: { "p_command_id": string,"p_expected_planner_revision": number }; Returns: number
                            },
+"can_view_as_friend":
+{ Args: { "owner": string }; Returns: boolean
+                           },
 "complete_linked_priority":
 { Args: { "p_command_id": string,"p_complete": boolean,"p_expected_planner_revision": number,"p_id": string,"p_priority_revision": number }; Returns: number
                            },
@@ -2095,6 +2202,12 @@ isOneToOne: false
                            },
 "priority_day_end":
 { Args: { "p_date": string,"p_zone": string }; Returns: string
+                           },
+"profile_lookup":
+{ Args: { "p_username": string }; Returns: string
+                           },
+"profile_view":
+{ Args: { "p_profile": string }; Returns: Json
                            },
 "read_astrology":
 { Args: Record<PropertyKey, never>; Returns: Json
@@ -2233,6 +2346,45 @@ isOneToOne: false
                            },
 "save_whimsy_record":
 { Args: { "p_command_id": string,"p_delete"?: boolean,"p_expected_revision": number,"p_kind": string,"p_record": Json }; Returns: Json
+                           },
+"social_accept":
+{ Args: { "p_target": string }; Returns: string
+                           },
+"social_block":
+{ Args: { "p_target": string }; Returns: undefined
+                           },
+"social_cancel_request":
+{ Args: { "p_target": string }; Returns: undefined
+                           },
+"social_create_identity":
+{ Args: { "p_display_name": string,"p_username": string }; Returns: string
+                           },
+"social_decline":
+{ Args: { "p_target": string }; Returns: undefined
+                           },
+"social_overview":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
+"social_remove_friend":
+{ Args: { "p_target": string }; Returns: undefined
+                           },
+"social_respond":
+{ Args: { "p_accept": boolean,"p_request": string }; Returns: string
+                           },
+"social_search":
+{ Args: { "p_query": string }; Returns: Json
+                           },
+"social_send_request":
+{ Args: { "p_target": string }; Returns: string
+                           },
+"social_set_username":
+{ Args: { "p_username": string }; Returns: string
+                           },
+"social_unblock":
+{ Args: { "p_target": string }; Returns: undefined
+                           },
+"social_username_status":
+{ Args: { "p_username": string }; Returns: string
                            },
 "swap_collection_members":
 { Args: { "p_first": string,"p_first_revision": number,"p_second": string,"p_second_revision": number }; Returns: undefined
