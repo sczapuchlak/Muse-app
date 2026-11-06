@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { createMuseBrowserClient } from "@/lib/supabase/client";
 import { MuseCard } from "../MuseCard";
 import { CardHeading } from "../CardHeading";
+import { passkeyMessage } from "@/lib/auth/passkey-errors";
 
 type Passkey = {
   id: string;
@@ -134,10 +135,11 @@ export function SignInSettings() {
 
       await refresh();
       setMessage("Your new passkey is ready!");
-    } catch {
-      setError(
-        "Passkey setup wasn't completed. Check your device and try again."
-      );
+    } catch (cause) {
+      const { problem, message } = passkeyMessage("register", cause);
+      // A device that already holds a Muse passkey is good news, not an error.
+      if (problem === "already-registered") setMessage(message);
+      else setError(message);
     } finally {
       setBusy(false);
     }
