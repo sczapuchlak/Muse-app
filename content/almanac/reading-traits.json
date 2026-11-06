@@ -6,7 +6,7 @@
   {
    "id": "ALM-READ-001",
    "version": 1,
-   "status": "approved",
+   "status": "published",
    "family": "reading-traits",
    "format": "whisper",
    "trigger": {
@@ -51,7 +51,7 @@
   {
    "id": "ALM-READ-002",
    "version": 1,
-   "status": "approved",
+   "status": "published",
    "family": "reading-traits",
    "format": "whisper",
    "trigger": {
@@ -92,7 +92,7 @@
   {
    "id": "ALM-READ-003",
    "version": 1,
-   "status": "approved",
+   "status": "published",
    "family": "reading-traits",
    "format": "whisper",
    "trigger": {
@@ -132,7 +132,7 @@
   {
    "id": "ALM-READ-004",
    "version": 1,
-   "status": "approved",
+   "status": "published",
    "family": "reading-traits",
    "format": "whisper",
    "trigger": {
@@ -177,7 +177,7 @@
   {
    "id": "ALM-READ-005",
    "version": 1,
-   "status": "approved",
+   "status": "published",
    "family": "reading-traits",
    "format": "whisper",
    "trigger": {
@@ -218,7 +218,7 @@
   {
    "id": "ALM-READ-006",
    "version": 1,
-   "status": "approved",
+   "status": "published",
    "family": "reading-traits",
    "format": "whisper",
    "trigger": {
@@ -266,7 +266,7 @@
   {
    "id": "ALM-READ-007",
    "version": 1,
-   "status": "approved",
+   "status": "published",
    "family": "reading-traits",
    "format": "whisper",
    "trigger": {
@@ -319,7 +319,7 @@
   {
    "id": "ALM-READ-008",
    "version": 1,
-   "status": "approved",
+   "status": "published",
    "family": "reading-traits",
    "format": "revelation",
    "trigger": {
@@ -381,7 +381,7 @@
   {
    "id": "ALM-READ-009",
    "version": 1,
-   "status": "approved",
+   "status": "published",
    "family": "reading-traits",
    "format": "whisper",
    "trigger": {

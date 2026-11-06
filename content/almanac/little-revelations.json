@@ -6,7 +6,7 @@
   {
    "id": "ALM-INSI-001",
    "version": 1,
-   "status": "approved",
+   "status": "published",
    "family": "little-revelations",
    "format": "revelation",
    "trigger": {
@@ -44,7 +44,7 @@
      "format": "count"
     }
    },
-   "cooldownDays": 7,
+   "cooldownDays": 1,
    "review": {
     "author": "Claude",
     "reviewedBy": "Claude (line approval delegated by Stephanie, 2026-11-06)",
@@ -60,7 +60,7 @@
   {
    "id": "ALM-INSI-002",
    "version": 1,
-   "status": "approved",
+   "status": "published",
    "family": "little-revelations",
    "format": "revelation",
    "trigger": {
@@ -113,7 +113,7 @@
      "format": "count"
     }
    },
-   "cooldownDays": 14,
+   "cooldownDays": 1,
    "review": {
     "author": "Claude",
     "reviewedBy": "Claude (line approval delegated by Stephanie, 2026-11-06)",
@@ -129,7 +129,7 @@
   {
    "id": "ALM-INSI-003",
    "version": 1,
-   "status": "approved",
+   "status": "published",
    "family": "little-revelations",
    "format": "revelation",
    "trigger": {
@@ -182,7 +182,7 @@
      "format": "count"
     }
    },
-   "cooldownDays": 14,
+   "cooldownDays": 1,
    "review": {
     "author": "Claude",
     "reviewedBy": "Claude (line approval delegated by Stephanie, 2026-11-06)",
@@ -204,7 +204,7 @@
   {
    "id": "ALM-INSI-004",
    "version": 1,
-   "status": "approved",
+   "status": "published",
    "family": "little-revelations",
    "format": "revelation",
    "trigger": {
@@ -250,7 +250,7 @@
      "format": "count"
     }
    },
-   "cooldownDays": 14,
+   "cooldownDays": 1,
    "review": {
     "author": "Claude",
     "reviewedBy": "Claude (line approval delegated by Stephanie, 2026-11-06)",
@@ -266,7 +266,7 @@
   {
    "id": "ALM-INSI-005",
    "version": 1,
-   "status": "approved",
+   "status": "published",
    "family": "little-revelations",
    "format": "revelation",
    "trigger": {
@@ -307,7 +307,7 @@
      "format": "count"
     }
    },
-   "cooldownDays": 14,
+   "cooldownDays": 1,
    "review": {
     "author": "Claude",
     "reviewedBy": "Claude (line approval delegated by Stephanie, 2026-11-06)",
@@ -323,7 +323,7 @@
   {
    "id": "ALM-INSI-006",
    "version": 1,
-   "status": "approved",
+   "status": "published",
    "family": "little-revelations",
    "format": "revelation",
    "trigger": {
@@ -364,7 +364,7 @@
      "format": "count"
     }
    },
-   "cooldownDays": 21,
+   "cooldownDays": 1,
    "review": {
     "author": "Claude",
     "reviewedBy": "Claude (line approval delegated by Stephanie, 2026-11-06)",
@@ -380,7 +380,7 @@
   {
    "id": "ALM-INSI-007",
    "version": 1,
-   "status": "approved",
+   "status": "published",
    "family": "little-revelations",
    "format": "revelation",
    "trigger": {
@@ -421,7 +421,7 @@
      "format": "count"
     }
    },
-   "cooldownDays": 21,
+   "cooldownDays": 1,
    "review": {
     "author": "Claude",
     "reviewedBy": "Claude (line approval delegated by Stephanie, 2026-11-06)",

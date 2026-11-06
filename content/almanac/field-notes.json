@@ -6,7 +6,7 @@
   {
    "id": "ALM-NOTE-001",
    "version": 1,
-   "status": "approved",
+   "status": "published",
    "family": "field-notes",
    "format": "field-note",
    "trigger": {
@@ -108,7 +108,7 @@
        "text": "Not every week needs a headline. This one left a few notes worth keeping."
       },
       {
-       "text": "The reading came in {readingDays}, {readingTime} in all.",
+       "text": "Reading filled {readingDays}, {readingTime} in all.",
        "requires": [
         "readingSeconds",
         "readingDays"
@@ -235,7 +235,7 @@
   {
    "id": "ALM-NOTE-002",
    "version": 1,
-   "status": "approved",
+   "status": "published",
    "family": "field-notes",
    "format": "field-note",
    "trigger": {

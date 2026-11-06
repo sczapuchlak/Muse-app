@@ -6,7 +6,7 @@
   {
    "id": "ALM-CONS-001",
    "version": 1,
-   "status": "approved",
+   "status": "published",
    "family": "constellations",
    "format": "constellation",
    "trigger": {
@@ -62,7 +62,7 @@
   {
    "id": "ALM-CONS-002",
    "version": 1,
-   "status": "approved",
+   "status": "published",
    "family": "constellations",
    "format": "constellation",
    "trigger": {

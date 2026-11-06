@@ -4,6 +4,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import {useSearchParams} from 'next/navigation';
 import {WhimsyExperienceHeader} from './WhimsyExperienceHeader';
+import {AlmanacWhisper} from '@/components/almanac/AlmanacWhisper';
+import {surfaces} from '@/lib/almanac/select';
+import {tarotSignals} from '@/lib/almanac/signals';
 import {MusePageHeader} from '@/components/MusePageHeader';
 import {MuseStar} from '@/components/MuseStar';
 import {MuseChoiceMenu} from '@/components/MuseChoiceMenu';
@@ -46,6 +49,7 @@ export function TarotExperience(){
  const [grimoireSection,setGrimoireSection]=useState(query?.get('section')??'All'),[grimoireSearch,setGrimoireSearch]=useState(query?.get('q')??''),[study,setStudy]=useState(query?.get('study')==='1'),[studyCard,setStudyCard]=useState('');
  const [journalSearch,setJournalSearch]=useState(''),[journalDate,setJournalDate]=useState(''),[journalCard,setJournalCard]=useState(''),[journalSpread,setJournalSpread]=useState(''),[journalTag,setJournalTag]=useState(''),[journalView,setJournalView]=useState<'timeline'|'calendar'>('timeline'),[calendarMonth,setCalendarMonth]=useState(todayInTimeZone(timeZone).slice(0,7)),[openReading,setOpenReading]=useState(query?.get('reading')??''),[followupDraft,setFollowupDraft]=useState(''),[followupId,setFollowupId]=useState(''),[savedEdit,setSavedEdit]=useState(false),[savedReflectionDraft,setSavedReflectionDraft]=useState(''),[savedTagsDraft,setSavedTagsDraft]=useState(''),[savedEditCommand,setSavedEditCommand]=useState('');
  const date=todayInTimeZone(timeZone),spread=spreadById(spreadId)??tarotSpreads[0],daily=extras.daily.find(item=>item.activity_date===date),selectedReading=records?.tarot.find(item=>item.id===openReading);
+ const tarotRecords=records?.tarot,almanacSignals=useMemo(()=>status.loaded?tarotSignals(tarotRecords??[],date):[],[status.loaded,tarotRecords,date]);
  const reloadExtras=useCallback(async()=>{try{const loaded=await readTarotExtras(client,userId);setExtras(loaded);setExtrasReady(true);setError('');}catch(e){setExtrasReady(false);setError(e instanceof Error?e.message:'Your Tarot records could not load.');}},[client,userId]);
  useEffect(()=>{const timer=window.setTimeout(()=>{void reloadExtras();},0);return()=>window.clearTimeout(timer);},[reloadExtras]);
  useEffect(()=>{const handle=()=>{void reloadExtras();};window.addEventListener('focus',handle);return()=>window.removeEventListener('focus',handle);},[reloadExtras]);
@@ -65,7 +69,7 @@ export function TarotExperience(){
  const filteredCards=tarotCards.filter(card=>(grimoireSection==='All'||card.section===grimoireSection)&&`${card.name} ${card.keywords.join(' ')} ${card.upright} ${card.reversed} ${card.symbolism} ${grimoireById(card.id)?grimoireSearchText(grimoireById(card.id)!):''}`.toLowerCase().includes(grimoireSearch.toLowerCase()));
  const readings=[...(records?.tarot??[])].filter(item=>`${item.question??''} ${item.reflection} ${item.tags?.join(' ')??''}`.toLowerCase().includes(journalSearch.toLowerCase())&&(!journalDate||item.date===journalDate)&&(!journalCard||item.cards.some(card=>card.card.contentId===journalCard))&&(!journalSpread||item.spreadId===journalSpread)&&(!journalTag||item.tags?.includes(journalTag))).sort((a,b)=>b.readAt.localeCompare(a.readAt));
  const insights=tarotInsights(records?.tarot??[]),journalTags=[...new Set((records?.tarot??[]).flatMap(item=>item.tags??[]))].sort();
- return <main className="muse-page muse-whimsy-page muse-tarot"><MusePageHeader title="Whimsy"/><WhimsyExperienceHeader title="Tarot" poetic="Cards, questions, and your own meanings." subtitle="The cards have thoughts. Whether they're helpful is between you and the universe." className="muse-tarot-header"/>
+ return <main className="muse-page muse-whimsy-page muse-tarot"><MusePageHeader title="Whimsy"/><WhimsyExperienceHeader title="Tarot" poetic="Cards, questions, and your own meanings." subtitle="The cards have thoughts. Whether they're helpful is between you and the universe." className="muse-tarot-header"/><AlmanacWhisper surface={surfaces.tarot} signals={almanacSignals} today={date}/>
  <nav className="muse-tarot-tabs" aria-label="Tarot sections">{([['table','The Reading Table'],['grimoire','The Grimoire'],['journal','The Reading Journal']] as const).map(([id,label])=><button key={id} type="button" className="muse-button button-ghost" aria-current={tab===id?'page':undefined} onClick={()=>setTab(id)}>{label}</button>)}</nav>
  {!status.loaded||!extrasReady?<p role="status">Loading your private Tarot experience…</p>:null}{status.error?<p role="alert">{status.error} <button className="text-button" onClick={retry}>Retry</button></p>:null}{error&&<p className="muse-tarot-error" role="alert">{error} <button className="text-button" type="button" onClick={()=>{void reloadExtras();void retry();}}>Reload</button></p>}
  {tab==='table'&&status.loaded&&extrasReady&&<section className="muse-tarot-table" aria-label="Reading table">

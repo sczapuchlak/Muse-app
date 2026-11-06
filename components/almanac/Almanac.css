@@ -1,0 +1,30 @@
+/* The Muse Almanac (#53): whispers, notes and constellations. Quiet by design: text first, no continuous motion. */
+.muse-almanac-whispers{display:grid;gap:6px;min-width:0}
+.muse-almanac-whisper{display:flex;align-items:center;gap:8px;margin:0;color:var(--text-muted);font-family:var(--font-editorial);font-style:italic;font-size:.98rem;line-height:1.45;min-width:0}
+.muse-almanac-whisper>span{min-width:0;overflow-wrap:anywhere}
+.muse-almanac-whisper strong{font-style:normal;font-family:var(--font-ui);font-weight:600;font-size:.9rem;color:var(--text-primary,inherit)}
+.muse-almanac-whisper>svg{flex:none}
+.muse-almanac-more{position:relative;flex:none}
+.muse-almanac-more>summary{list-style:none;cursor:pointer;display:grid;place-items:center;width:28px;height:28px;border-radius:50%;color:var(--text-muted);font-style:normal}
+.muse-almanac-more>summary::-webkit-details-marker{display:none}
+.muse-almanac-more>summary:hover{background:var(--surface-control)}
+.muse-almanac-more>summary:focus-visible{outline:2px solid var(--accent-primary);outline-offset:2px}
+.muse-almanac-more>div{position:absolute;right:0;top:32px;z-index:20;display:grid;gap:2px;min-width:200px;padding:8px;border:1px solid var(--glass-border);border-radius:12px;background:var(--surface-strong);box-shadow:0 12px 28px rgba(0,0,0,.18);font-family:var(--font-ui);font-style:normal}
+.muse-almanac-more .text-button{justify-self:start;text-align:left;font-size:.84rem;min-height:32px}
+.muse-almanac-note{display:grid;gap:10px}
+.muse-almanac-note h4{font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-editorial-weight);font-size:1.3rem;margin:0}
+.muse-almanac-note section{display:grid;gap:2px}
+.muse-almanac-note section>span{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted)}
+.muse-almanac-note p{margin:0;max-width:62ch;line-height:1.55}
+.muse-almanac-notes{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:18px}
+.muse-almanac-constellation{display:grid;gap:6px}
+.muse-almanac-constellation h4{margin:0;font-size:1.05rem}
+.muse-almanac-constellation p{margin:0;max-width:62ch}
+@media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) .muse-almanac-whisper{animation:muse-almanac-in .6s var(--ease-out,ease-out) both}}
+@keyframes muse-almanac-in{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:none}}
+.muse-almanac-settings{display:grid;gap:12px}
+.muse-almanac-settings fieldset{border:0;margin:0;padding:0;display:grid;gap:6px}
+.muse-almanac-check{display:block!important;font-size:.92rem;line-height:1.5;padding-left:26px;text-indent:-26px}
+.muse-almanac-check input{width:auto!important;min-height:0!important;margin:0 8px 0 0;vertical-align:-2px;accent-color:var(--accent-primary)}
+.muse-almanac-check small{text-indent:0}
+.muse-almanac-muted{margin:4px 0 0;padding:0;list-style:none;display:grid;gap:4px;text-transform:capitalize}

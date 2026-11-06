@@ -127,7 +127,8 @@ export function bookSuperlatives(books:Book[],sessions:ReadingSession[],range:Da
 }
 
 // ---------- Personality ----------
-export type Persona={title:string;line:string;evidence:string};
+/** `id` and `facts` carry the numbers behind a trait or persona for the Almanac (#53); the copy stays here. */
+export type Persona={title:string;line:string;evidence:string;id?:string;facts?:Record<string,number|string>};
 const genrePersonas:{match:RegExp;title:string;line:string}[]=[
  {match:/fantasy|romantasy/,title:'Fantasy Royalty',line:'Your reading kingdom keeps returning to other worlds.'},
  {match:/science fiction|sci-?fi|space opera|dystopia/,title:'The Starship Navigator',line:'Your finished shelf charts a course past the edge of the map.'},
@@ -150,10 +151,10 @@ export function genrePersona(books:Book[],range:DateRange|null):Persona|{needed:
  if(top.ids.size/n>=0.5){const persona=genrePersonas.find(p=>p.match.test(topKey));
   let line=persona?.line??`${top.name} is the thread running through your finished shelf.`;
   if(persona?.title==='Fantasy Royalty'){const dragons=emojiRanking(books,range).ranking.find(e=>emojiKey(e.emoji)==='🐉');if(dragons&&dragons.books>=2)line='Your reading kingdom has a suspicious number of dragons.';}
-  return {title:persona?.title??`The ${top.name} Devotee`,line,evidence:`${top.ids.size} of your ${n} finished books include ${top.name}.`};}
- if(ranked.length>=5&&top.ids.size/n<=0.3)return {title:'The Genre Explorer',line:'You refuse to stay in one literary lane.',evidence:`${ranked.length} genres across ${n} finished books, none in more than ${pct(top.ids.size,n)}% of them.`};
- if(ranked.length>=2){const [,second]=ranked[1],covered=new Set([...top.ids,...second.ids]).size;if(covered/n>=0.7)return {title:'The Two-World Reader',line:`You split your time between ${top.name} and ${second.name}.`,evidence:`${covered} of your ${n} finished books include ${top.name} or ${second.name}.`};}
- return {title:'The Curious Reader',line:'Your finished shelf wanders happily between genres.',evidence:`${ranked.length} genres across ${n} finished books; ${top.name} leads with ${top.ids.size}.`};
+  return {facts:{topGenre:top.name,books:n},title:persona?.title??`The ${top.name} Devotee`,line,evidence:`${top.ids.size} of your ${n} finished books include ${top.name}.`};}
+ if(ranked.length>=5&&top.ids.size/n<=0.3)return {facts:{topGenre:top.name,books:n},title:'The Genre Explorer',line:'You refuse to stay in one literary lane.',evidence:`${ranked.length} genres across ${n} finished books, none in more than ${pct(top.ids.size,n)}% of them.`};
+ if(ranked.length>=2){const [,second]=ranked[1],covered=new Set([...top.ids,...second.ids]).size;if(covered/n>=0.7)return {facts:{topGenre:top.name,books:n},title:'The Two-World Reader',line:`You split your time between ${top.name} and ${second.name}.`,evidence:`${covered} of your ${n} finished books include ${top.name} or ${second.name}.`};}
+ return {facts:{topGenre:top.name,books:n},title:'The Curious Reader',line:'Your finished shelf wanders happily between genres.',evidence:`${ranked.length} genres across ${n} finished books; ${top.name} leads with ${top.ids.size}.`};
 }
 /** Behavior traits, each only when its minimum data exists. Order is fixed; at most three are returned. */
 export function readingTraits(books:Book[],sessions:ReadingSession[],range:DateRange|null,today:string):Persona[]{
@@ -161,18 +162,18 @@ export function readingTraits(books:Book[],sessions:ReadingSession[],range:DateR
  const timedTotal=h.hours.reduce((a,b)=>a+b,0),share=(hours:number[])=>timedTotal?hours.reduce((n,x)=>n+h.hours[x],0)/timedTotal:0;
  const enoughTimed=h.timedSessions>=10&&timedTotal>=5*3600;
  const night=share([21,22,23,0,1,2]),morning=share([5,6,7,8]);
- if(enoughTimed&&night>=0.4)traits.push({title:'The Night Owl',line:'Your stories come out after dark.',evidence:`${pct(night*timedTotal,timedTotal)}% of your timed reading happens between 9 pm and 3 am.`});
- if(enoughTimed&&morning>=0.4)traits.push({title:'The Early Bird',line:'You read before the world wakes up.',evidence:`${pct(morning*timedTotal,timedTotal)}% of your timed reading happens between 5 and 9 am.`});
+ if(enoughTimed&&night>=0.4)traits.push({id:'night-owl',facts:{share:night,timedSessions:h.timedSessions},title:'The Night Owl',line:'Your stories come out after dark.',evidence:`${pct(night*timedTotal,timedTotal)}% of your timed reading happens between 9 pm and 3 am.`});
+ if(enoughTimed&&morning>=0.4)traits.push({id:'early-bird',facts:{share:morning,timedSessions:h.timedSessions},title:'The Early Bird',line:'You read before the world wakes up.',evidence:`${pct(morning*timedTotal,timedTotal)}% of your timed reading happens between 5 and 9 am.`});
  const weekTotal=h.anyTime?h.weekdays.reduce((n,w)=>n+w.seconds,0):h.readingDays,weekend=h.anyTime?h.weekdays[5].seconds+h.weekdays[6].seconds:h.weekdays[5].days+h.weekdays[6].days;
- if(h.readingDays>=10&&weekTotal>0&&weekend/weekTotal>=0.6)traits.push({title:'The Weekend Reader',line:'Saturdays and Sundays belong to your books.',evidence:`${pct(weekend,weekTotal)}% of your reading ${h.anyTime?'time':'days'} fall on weekends.`});
+ if(h.readingDays>=10&&weekTotal>0&&weekend/weekTotal>=0.6)traits.push({id:'weekend',facts:{share:weekend/weekTotal,readingDays:h.readingDays},title:'The Weekend Reader',line:'Saturdays and Sundays belong to your books.',evidence:`${pct(weekend,weekTotal)}% of your reading ${h.anyTime?'time':'days'} fall on weekends.`});
  const firstDay=readingByDay(sessions).filter(d=>within(d.date,range)&&(d.seconds>0||d.pages>0)).map(d=>d.date).sort()[0];
  const spanStart=range?(range.start>(firstDay??range.start)?range.start:firstDay??range.start):firstDay,spanEnd=range&&range.end<today?range.end:today;
  const eligible=spanStart&&spanEnd>=spanStart?inclusiveCalendarDays(spanStart,spanEnd)??0:0;
- if(eligible>=30&&h.readingDays/eligible>=0.6)traits.push({title:'The Steady Reader',line:'Reading is part of your rhythm, not an occasion.',evidence:`You read on ${h.readingDays} of ${eligible} days.`});
- if(h.timedSessions>=10&&h.averageSessionSeconds!==null&&h.averageSessionSeconds>=3600)traits.push({title:'The Long-Haul Reader',line:'Once you open a book, you stay a while.',evidence:`Your timed sessions average ${Math.round(h.averageSessionSeconds/60)} minutes.`});
- if(h.timedSessions>=10&&h.readingDays>=10&&h.averageSessionSeconds!==null&&h.averageSessionSeconds<=1200)traits.push({title:'Little and Often',line:'Short visits add up to whole worlds.',evidence:`Your timed sessions average ${Math.round(h.averageSessionSeconds/60)} minutes, across ${h.readingDays} reading days.`});
+ if(eligible>=30&&h.readingDays/eligible>=0.6)traits.push({id:'steady',facts:{readingDays:h.readingDays,eligibleDays:eligible},title:'The Steady Reader',line:'Reading is part of your rhythm, not an occasion.',evidence:`You read on ${h.readingDays} of ${eligible} days.`});
+ if(h.timedSessions>=10&&h.averageSessionSeconds!==null&&h.averageSessionSeconds>=3600)traits.push({id:'long-haul',facts:{averageSeconds:h.averageSessionSeconds,timedSessions:h.timedSessions},title:'The Long-Haul Reader',line:'Once you open a book, you stay a while.',evidence:`Your timed sessions average ${Math.round(h.averageSessionSeconds/60)} minutes.`});
+ if(h.timedSessions>=10&&h.readingDays>=10&&h.averageSessionSeconds!==null&&h.averageSessionSeconds<=1200)traits.push({id:'little-often',facts:{averageSeconds:h.averageSessionSeconds,readingDays:h.readingDays},title:'Little and Often',line:'Short visits add up to whole worlds.',evidence:`Your timed sessions average ${Math.round(h.averageSessionSeconds/60)} minutes, across ${h.readingDays} reading days.`});
  const reads=readsIn(books,range),rereads=reads.filter(e=>e.reread).length;
- if(rereads>=2&&rereads/reads.length>=0.2)traits.push({title:'The Comfort Rereader',line:'Some stories are worth going home to.',evidence:`${rereads} of your ${reads.length} finished reads were rereads.`});
+ if(rereads>=2&&rereads/reads.length>=0.2)traits.push({id:'rereader',facts:{rereads,reads:reads.length},title:'The Comfort Rereader',line:'Some stories are worth going home to.',evidence:`${rereads} of your ${reads.length} finished reads were rereads.`});
  return traits.slice(0,3);
 }
 
