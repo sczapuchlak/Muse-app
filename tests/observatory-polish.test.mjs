@@ -54,7 +54,8 @@ test('Mood page has honest empty history, independent Pulse and a secondary cate
 
 test('Daily Edit and Insights editorial collections remain stable for a local day, including DST',()=>{
  const {mantraLibrary,mantraWindow,nextMantraBoundary,selectMantra}=load('lib/mantras');assert.equal(Object.keys(mantraLibrary).length,2);
- for(const [module,lines] of Object.entries(mantraLibrary)){assert.equal(lines.length,5);assert.equal(new Set(lines).size,5);const start=new Date('2026-10-30T07:00:00Z'),end=new Date('2026-10-31T06:59:59Z');assert.equal(mantraWindow(start),mantraWindow(end));assert.equal(selectMantra(module,mantraWindow(start)),selectMantra(module,mantraWindow(end)));assert.notEqual(selectMantra(module,mantraWindow(start)),selectMantra(module,mantraWindow(nextMantraBoundary(start))));}
+ const {voiceProblems}=load('lib/almanac/voice-rules');
+ for(const [module,lines] of Object.entries(mantraLibrary)){assert.ok(lines.length>=20,`${module} has 20+ lines`);assert.equal(new Set(lines).size,lines.length);for(const line of lines)assert.deepEqual(voiceProblems(line),[],line);const start=new Date('2026-10-30T07:00:00Z'),end=new Date('2026-10-31T06:59:59Z');assert.equal(mantraWindow(start),mantraWindow(end));assert.equal(selectMantra(module,mantraWindow(start)),selectMantra(module,mantraWindow(end)));assert.notEqual(selectMantra(module,mantraWindow(start)),selectMantra(module,mantraWindow(nextMantraBoundary(start))));}
  assert.equal(nextMantraBoundary(new Date('2026-10-30T20:00:00Z')).toISOString(),'2026-10-31T07:00:00.000Z');
  assert.equal(nextMantraBoundary(new Date('2026-11-01T07:00:00Z')).toISOString(),'2026-11-02T08:00:00.000Z');
 });

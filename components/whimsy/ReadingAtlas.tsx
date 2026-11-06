@@ -15,6 +15,9 @@ import {BooksMilestones} from './atlas/BooksMilestones';
 import {YearInReview} from './atlas/YearInReview';
 import {ReadingChallenge} from './atlas/ReadingChallenge';
 import {Patterns} from './atlas/Patterns';
+import {AlmanacWhisper} from '../almanac/AlmanacWhisper';
+import {surfaces} from '@/lib/almanac/select';
+import type {Signal} from '@/lib/almanac/types';
 import type {CollectionsSnapshot} from '@/lib/collections/models';
 
 export type AtlasSection='overview'|'dna'|'patterns'|'books'|'year';
@@ -23,7 +26,7 @@ const sections:Record<AtlasSection,string>={overview:'Overview',dna:'Reading DNA
 const periods={day:'Daily',week:'Weekly',month:'Monthly',year:'Yearly'};
 const overviewPeriods:Record<ReadingPeriod,string>={today:'Today',week:'This week',month:'This month',year:'This year',all:'All time'};
 
-export function ReadingAtlas({timeZone,books,sessions,goals,today,range,setRange,calendarMonth,setCalendarMonth,selectedDay,setSelectedDay,onAddGoal,onRemoveGoal,onSaveChallenge,onOpenBook,challengeBusy=false,onEditSession,onDeleteSession,initialSection='overview',milestoneState,milestonesReady=false,onMilestonesSeen,collections}:{collections?:Pick<CollectionsSnapshot,'series'|'seriesMembers'|'media'>;initialSection?:AtlasSection;milestoneState?:MilestoneState;milestonesReady?:boolean;onMilestonesSeen?:(seen:string[])=>void;timeZone:string;books:Book[];sessions:ReadingSession[];goals:ReadingGoal[];today:string;range:ReadingGoal['period'];setRange:(range:ReadingGoal['period'])=>void;calendarMonth:string;setCalendarMonth:(month:string)=>void;selectedDay:string;setSelectedDay:(day:string)=>void;onAddGoal:()=>void;onRemoveGoal:(goal:ReadingGoal)=>void;onSaveChallenge?:(year:string,target:number,existing:ReadingGoal|null)=>void;onOpenBook?:(bookId:string)=>void;challengeBusy?:boolean;onEditSession:(session:ReadingSession)=>void;onDeleteSession:(session:ReadingSession)=>void}){
+export function ReadingAtlas({timeZone,books,sessions,goals,today,range,setRange,calendarMonth,setCalendarMonth,selectedDay,setSelectedDay,onAddGoal,onRemoveGoal,onSaveChallenge,onOpenBook,challengeBusy=false,onEditSession,onDeleteSession,initialSection='overview',milestoneState,milestonesReady=false,onMilestonesSeen,collections,almanacSignals=[]}:{almanacSignals?:Signal[];collections?:Pick<CollectionsSnapshot,'series'|'seriesMembers'|'media'>;initialSection?:AtlasSection;milestoneState?:MilestoneState;milestonesReady?:boolean;onMilestonesSeen?:(seen:string[])=>void;timeZone:string;books:Book[];sessions:ReadingSession[];goals:ReadingGoal[];today:string;range:ReadingGoal['period'];setRange:(range:ReadingGoal['period'])=>void;calendarMonth:string;setCalendarMonth:(month:string)=>void;selectedDay:string;setSelectedDay:(day:string)=>void;onAddGoal:()=>void;onRemoveGoal:(goal:ReadingGoal)=>void;onSaveChallenge?:(year:string,target:number,existing:ReadingGoal|null)=>void;onOpenBook?:(bookId:string)=>void;challengeBusy?:boolean;onEditSession:(session:ReadingSession)=>void;onDeleteSession:(session:ReadingSession)=>void}){
  const [period,setPeriod]=useState<ReadingPeriod>('all'),[section,setSection]=useState<AtlasSection>(initialSection);
  // Milestones: celebrate only ones reached and never shown before (synced on the account); the first visit is a silent baseline.
  const milestones=readingMilestones(books,sessions),achieved=milestones.filter(m=>m.achievedOn).map(m=>m.id),{celebrate,nextSeen}=milestoneCelebration(achieved,milestoneState);
@@ -50,7 +53,7 @@ export function ReadingAtlas({timeZone,books,sessions,goals,today,range,setRange
   {section==='patterns'&&<Patterns books={books} sessions={sessions} range={range_} label={label} series={collections?.series??[]} seriesMembers={collections?.seriesMembers??[]} media={collections?.media??[]} onOpenBook={onOpenBook}/>}
   {section==='books'&&<BooksMilestones books={books} sessions={sessions} range={range_} label={label}/>}
   {section==='year'&&<YearInReview books={books} sessions={sessions} today={today} goals={goals}/>}
-  {section==='overview'&&<>
+  {section==='overview'&&<><AlmanacWhisper surface={surfaces.atlas} signals={almanacSignals} today={today} className="muse-atlas-observations"/>
   <div className="muse-books-stats muse-books-atlas-metrics" aria-live="polite">
    <AtlasMetric label="Reading time" value={summary.seconds?hours(summary.seconds):'—'} detail={summary.seconds?'Active time · pauses excluded':`No time recorded ${label}`}/>
    <AtlasMetric label="Pages read" value={summary.sessions?num(summary.pages):'—'} detail="From saved sessions"/>

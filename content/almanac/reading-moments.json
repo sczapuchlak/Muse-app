@@ -6,7 +6,7 @@
   {
    "id": "ALM-BOOK-001",
    "version": 1,
-   "status": "approved",
+   "status": "published",
    "family": "reading-moments",
    "format": "whisper",
    "trigger": {
@@ -59,7 +59,7 @@
   {
    "id": "ALM-BOOK-002",
    "version": 1,
-   "status": "approved",
+   "status": "published",
    "family": "reading-moments",
    "format": "whisper",
    "trigger": {
@@ -111,7 +111,7 @@
   {
    "id": "ALM-BOOK-003",
    "version": 1,
-   "status": "approved",
+   "status": "published",
    "family": "reading-moments",
    "format": "whisper",
    "trigger": {
@@ -164,7 +164,7 @@
   {
    "id": "ALM-BOOK-004",
    "version": 1,
-   "status": "approved",
+   "status": "published",
    "family": "reading-moments",
    "format": "whisper",
    "trigger": {
@@ -217,7 +217,7 @@
   {
    "id": "ALM-BOOK-005",
    "version": 1,
-   "status": "approved",
+   "status": "published",
    "family": "reading-moments",
    "format": "whisper",
    "trigger": {
@@ -268,7 +268,7 @@
   {
    "id": "ALM-BOOK-006",
    "version": 1,
-   "status": "approved",
+   "status": "published",
    "family": "reading-moments",
    "format": "whisper",
    "trigger": {
@@ -328,7 +328,7 @@
   {
    "id": "ALM-BOOK-007",
    "version": 1,
-   "status": "approved",
+   "status": "published",
    "family": "reading-moments",
    "format": "whisper",
    "trigger": {
@@ -384,7 +384,7 @@
   {
    "id": "ALM-BOOK-008",
    "version": 1,
-   "status": "approved",
+   "status": "published",
    "family": "reading-moments",
    "format": "whisper",
    "trigger": {
@@ -445,7 +445,7 @@
   {
    "id": "ALM-BOOK-009",
    "version": 1,
-   "status": "approved",
+   "status": "published",
    "family": "reading-moments",
    "format": "revelation",
    "trigger": {
@@ -500,7 +500,7 @@
   {
    "id": "ALM-BOOK-010",
    "version": 1,
-   "status": "approved",
+   "status": "published",
    "family": "reading-moments",
    "format": "whisper",
    "trigger": {
@@ -551,7 +551,7 @@
   {
    "id": "ALM-BOOK-011",
    "version": 1,
-   "status": "approved",
+   "status": "published",
    "family": "reading-moments",
    "format": "whisper",
    "trigger": {
@@ -600,7 +600,7 @@
   {
    "id": "ALM-BOOK-012",
    "version": 1,
-   "status": "approved",
+   "status": "published",
    "family": "reading-moments",
    "format": "whisper",
    "trigger": {

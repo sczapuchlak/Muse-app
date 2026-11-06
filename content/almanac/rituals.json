@@ -6,7 +6,7 @@
   {
    "id": "ALM-RITE-001",
    "version": 1,
-   "status": "approved",
+   "status": "published",
    "family": "rituals",
    "format": "revelation",
    "trigger": {
@@ -64,7 +64,7 @@
   {
    "id": "ALM-RITE-002",
    "version": 1,
-   "status": "approved",
+   "status": "published",
    "family": "rituals",
    "format": "whisper",
    "trigger": {
@@ -124,7 +124,7 @@
   {
    "id": "ALM-RITE-003",
    "version": 1,
-   "status": "approved",
+   "status": "published",
    "family": "rituals",
    "format": "whisper",
    "trigger": {
@@ -188,7 +188,7 @@
   {
    "id": "ALM-RITE-004",
    "version": 1,
-   "status": "approved",
+   "status": "published",
    "family": "rituals",
    "format": "whisper",
    "trigger": {

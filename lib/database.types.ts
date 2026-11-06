@@ -69,6 +69,20 @@ isOneToOne: false
       referencedColumns: ["user_id","id"]
     }
                   ]
+                },"almanac_impressions": {
+                  Row: {
+                    "created_at": string,"dismissed_at": string | null,"entry_id": string,"shown_on": string,"signal_key": string,"surface": string,"user_id": string,"variant_id": string,"version": number
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"dismissed_at"?: string | null,"entry_id": string,"shown_on": string,"signal_key": string,"surface": string,"user_id"?: string,"variant_id": string,"version": number
+                  }
+                  Update: {
+                    "created_at"?: string,"dismissed_at"?: string | null,"entry_id"?: string,"shown_on"?: string,"signal_key"?: string,"surface"?: string,"user_id"?: string,"variant_id"?: string,"version"?: number
+                  }
+                  Relationships: [
+                    
+                  ]
                 },"appearance_preferences": {
                   Row: {
                     "atelier_theme": Json | null,"atelier_theme_id": string | null,"material": string,"theme": string,"updated_at": string,"user_id": string

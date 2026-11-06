@@ -605,7 +605,12 @@ Stephanie approved the #53 discovery recommendations on 2026-11-06 and delegated
 - **Storage.** The library lives in repo JSON, reviewed in PRs. Settings will live in auth user metadata (the Insights precedent). Impressions and dismissals will use a small owner-only table (ids and dates only), approved for P2 and released staging first.
 - **Little Revelations.** The existing Insights cards move onto the Almanac with the same facts, thresholds, caveats, basis and record links; only the words gain variants.
 - **Voice.** `docs/ALMANAC_VOICE.md` is the guide; `lib/almanac/voice-rules.ts` enforces its checkable parts for both Almanac lines and celebration copy.
-- **Part 1 scope.** Voice guide, schemas, signal catalog, validator, review sheet and the first approved families. No UI, no migration.
+- **Surfaces (implemented).** Whispers on Bookshelf (also when embedded in Collections), Rituals, Dreamscapes and Tarot; reading persona and record observations at the top of Reading Atlas Overview; Little Revelations on Insights in rotating Almanac words; Field Notes for the last completed week and month on Insights Overview; Constellations beside the existing comparisons in Insights → Mood & Energy. Nothing appears on Daily Edit.
+- **Sensitive setting.** It governs new, proactive observations (Whispers, Field Notes, Constellations). The existing Insights cards for mood and money were already shown before the Almanac and keep showing; only their words gain variants.
+- **Quietness.** Quiet shows only Insights (cards and one Field Note); Balanced allows one line per page; Chatty a little more. Off shows nothing and keeps the original Insights wording.
+- **Dismiss and mute.** "Don't show this again" retires that entry for the person; "Fewer like this" mutes its family until brought back in Settings. "Start fresh" clears the impression history but keeps settings.
+- **Field Notes honesty.** A note is shown only when Insights has loaded data for its whole period; a section whose source is missing or zero is left out.
+- **Mantras.** Daily Edit and Insights collections grew to 21 lines each, still one per profile-local day.
 
 ## Dream symbol library and credits — approved November 2026
 

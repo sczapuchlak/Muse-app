@@ -6,7 +6,7 @@
   {
    "id": "ALM-DREA-001",
    "version": 1,
-   "status": "approved",
+   "status": "published",
    "family": "dreams-and-tarot",
    "format": "whisper",
    "trigger": {
@@ -54,7 +54,7 @@
   {
    "id": "ALM-DREA-002",
    "version": 1,
-   "status": "approved",
+   "status": "published",
    "family": "dreams-and-tarot",
    "format": "whisper",
    "trigger": {
@@ -106,7 +106,7 @@
   {
    "id": "ALM-TARO-001",
    "version": 1,
-   "status": "approved",
+   "status": "published",
    "family": "dreams-and-tarot",
    "format": "whisper",
    "trigger": {
