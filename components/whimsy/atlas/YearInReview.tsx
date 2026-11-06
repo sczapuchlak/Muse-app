@@ -2,7 +2,7 @@
 import {useState} from 'react';
 import {MuseStar} from '@/components/MuseStar';
 import type {Book,ReadingSession} from '@/lib/whimsy/models';
-import {readOpinion} from '@/lib/whimsy/reading-cycles';
+import {readEmojis,readOpinion} from '@/lib/whimsy/reading-cycles';
 import {hourLabel,yearReview,yearsWithReading,type Persona} from '@/lib/whimsy/reading-dna';
 import {ActivityBars,AtlasMetric,Insight,days,duration,hours,monthLabel,monthName,num,plural,shortMonth,yearDate} from './parts';
 
@@ -44,7 +44,7 @@ export function YearInReview({books,sessions,today}:{books:Book[];sessions:Readi
    <Insight label="Highest rated" value={r.superlatives.highestRated?.book.title} detail={r.superlatives.highestRated&&`${r.superlatives.highestRated.rating}/5`} empty="No rated reads"/>
    <Insight label="Most time with" value={r.superlatives.mostTime?.book.title} detail={r.superlatives.mostTime&&hours(r.superlatives.mostTime.seconds)} empty="No timed sessions"/>
   </div>
-   {r.recent.length>0&&<div className="muse-books-finished-list"><span className="small-label">Recently finished</span>{r.recent.map(({book,completion,reread})=>{const o=readOpinion(book,completion);return <div key={`${book.id}:${completion.id}`}><strong>{book.title}{reread?' · reread':''}</strong><span>{yearDate(completion.finishedOn)}{o.rating?` · ${o.rating}/5`:''} {book.reviewEmojis.join(' ')}</span></div>;})}</div>}
+   {r.recent.length>0&&<div className="muse-books-finished-list"><span className="small-label">Recently finished</span>{r.recent.map(({book,completion,reread})=>{const o=readOpinion(book,completion);return <div key={`${book.id}:${completion.id}`}><strong>{book.title}{reread?' · reread':''}</strong><span>{yearDate(completion.finishedOn)}{o.rating?` · ${o.rating}/5`:''} {readEmojis(book,completion).join(' ')}</span></div>;})}</div>}
   </section>
   <ActivityBars title="Reading timeline" note={`Reading time by month in ${year}${progress?' (so far)':''}.`} items={r.months.map(m=>({key:m.month,label:monthLabel(m.month),short:shortMonth(m.month),value:m.seconds||m.pages,text:`${duration(m.seconds)} · ${m.pages} pages · ${m.finished} finished`}))}/>
   <section aria-label="Milestones this year" className="muse-books-panel"><h4>Milestones in {year}</h4>{r.milestones.length?<ol className="muse-atlas-milestones">{r.milestones.map(m=><li key={m.id}><span className="muse-atlas-milestone-star" aria-hidden="true">✦</span><strong>{m.title}</strong><small>{yearDate(m.achievedOn!)}</small></li>)}</ol>:<p>No new milestones{progress?' yet':''} this year.</p>}</section>

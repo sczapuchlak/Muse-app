@@ -122,14 +122,14 @@ test('Year in Review keeps annual and all-time apart and counts each read in its
  assert.deepEqual(y.emojis.top.map(e=>e.emoji),['🐉']);
 });
 
-test('Reading Atlas has four sections, each rendering honestly from empty and real data',()=>{
+test('Reading Atlas has five sections, each rendering honestly from empty and real data',()=>{
  const {ReadingAtlas}=load('components/whimsy/ReadingAtlas');const noop=()=>{};
  const base={books:[],sessions:[],goals:[],today:'2026-11-02',timeZone:LA,range:'month',setRange:noop,calendarMonth:'2026-11',setCalendarMonth:noop,selectedDay:'2026-11-02',setSelectedDay:noop,onAddGoal:noop,onRemoveGoal:noop,onEditSession:noop,onDeleteSession:noop};
  const data={books:[book('a',{genre:'Fantasy',totalPages:300,reviewEmojis:['🐉','✨'],completions:[done('a','2026-10-01','2026-09-20',{rating:5})]})],sessions:[session('a','2026-09-21',{timeZone:LA})]};
- for(const initialSection of ['overview','dna','books','year']){
+ for(const initialSection of ['overview','dna','patterns','books','year']){
   const empty=renderToStaticMarkup(createElement(ReadingAtlas,{...base,initialSection})),full=renderToStaticMarkup(createElement(ReadingAtlas,{...base,...data,initialSection}));
   for(const html of [empty,full])assert.doesNotMatch(html,/NaN|Infinity|undefined/,initialSection);
-  assert.match(full,/Overview.*Reading DNA.*Books &amp; Milestones.*Year in Review/);
+  assert.match(full,/Overview.*Reading DNA.*Patterns.*Books &amp; Milestones.*Year in Review/);
  }
  const dnaView=renderToStaticMarkup(createElement(ReadingAtlas,{...base,...data,initialSection:'dna'}));
  assert.match(dnaView,/Still taking shape/);assert.match(dnaView,/shares can add up to more than 100%/);assert.match(dnaView,/🐉/);

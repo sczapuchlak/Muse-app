@@ -14,14 +14,16 @@ import {ReadingDNA} from './atlas/ReadingDNA';
 import {BooksMilestones} from './atlas/BooksMilestones';
 import {YearInReview} from './atlas/YearInReview';
 import {ReadingChallenge} from './atlas/ReadingChallenge';
+import {Patterns} from './atlas/Patterns';
+import type {CollectionsSnapshot} from '@/lib/collections/models';
 
-export type AtlasSection='overview'|'dna'|'books'|'year';
-const sections:Record<AtlasSection,string>={overview:'Overview',dna:'Reading DNA',books:'Books & Milestones',year:'Year in Review'};
+export type AtlasSection='overview'|'dna'|'patterns'|'books'|'year';
+const sections:Record<AtlasSection,string>={overview:'Overview',dna:'Reading DNA',patterns:'Patterns',books:'Books & Milestones',year:'Year in Review'};
 
 const periods={day:'Daily',week:'Weekly',month:'Monthly',year:'Yearly'};
 const overviewPeriods:Record<ReadingPeriod,string>={today:'Today',week:'This week',month:'This month',year:'This year',all:'All time'};
 
-export function ReadingAtlas({timeZone,books,sessions,goals,today,range,setRange,calendarMonth,setCalendarMonth,selectedDay,setSelectedDay,onAddGoal,onRemoveGoal,onSaveChallenge,onOpenBook,challengeBusy=false,onEditSession,onDeleteSession,initialSection='overview',milestoneState,milestonesReady=false,onMilestonesSeen}:{initialSection?:AtlasSection;milestoneState?:MilestoneState;milestonesReady?:boolean;onMilestonesSeen?:(seen:string[])=>void;timeZone:string;books:Book[];sessions:ReadingSession[];goals:ReadingGoal[];today:string;range:ReadingGoal['period'];setRange:(range:ReadingGoal['period'])=>void;calendarMonth:string;setCalendarMonth:(month:string)=>void;selectedDay:string;setSelectedDay:(day:string)=>void;onAddGoal:()=>void;onRemoveGoal:(goal:ReadingGoal)=>void;onSaveChallenge?:(year:string,target:number,existing:ReadingGoal|null)=>void;onOpenBook?:(bookId:string)=>void;challengeBusy?:boolean;onEditSession:(session:ReadingSession)=>void;onDeleteSession:(session:ReadingSession)=>void}){
+export function ReadingAtlas({timeZone,books,sessions,goals,today,range,setRange,calendarMonth,setCalendarMonth,selectedDay,setSelectedDay,onAddGoal,onRemoveGoal,onSaveChallenge,onOpenBook,challengeBusy=false,onEditSession,onDeleteSession,initialSection='overview',milestoneState,milestonesReady=false,onMilestonesSeen,collections}:{collections?:Pick<CollectionsSnapshot,'series'|'seriesMembers'|'media'>;initialSection?:AtlasSection;milestoneState?:MilestoneState;milestonesReady?:boolean;onMilestonesSeen?:(seen:string[])=>void;timeZone:string;books:Book[];sessions:ReadingSession[];goals:ReadingGoal[];today:string;range:ReadingGoal['period'];setRange:(range:ReadingGoal['period'])=>void;calendarMonth:string;setCalendarMonth:(month:string)=>void;selectedDay:string;setSelectedDay:(day:string)=>void;onAddGoal:()=>void;onRemoveGoal:(goal:ReadingGoal)=>void;onSaveChallenge?:(year:string,target:number,existing:ReadingGoal|null)=>void;onOpenBook?:(bookId:string)=>void;challengeBusy?:boolean;onEditSession:(session:ReadingSession)=>void;onDeleteSession:(session:ReadingSession)=>void}){
  const [period,setPeriod]=useState<ReadingPeriod>('all'),[section,setSection]=useState<AtlasSection>(initialSection);
  // Milestones: celebrate only ones reached and never shown before (synced on the account); the first visit is a silent baseline.
  const milestones=readingMilestones(books,sessions),achieved=milestones.filter(m=>m.achievedOn).map(m=>m.id),{celebrate,nextSeen}=milestoneCelebration(achieved,milestoneState);
@@ -45,6 +47,7 @@ export function ReadingAtlas({timeZone,books,sessions,goals,today,range,setRange
    <button type="button" className="text-button" onClick={()=>setCelebrating([])}>Dismiss</button></div>}
   {section!=='year'&&<div className="muse-books-atlas-period" role="group" aria-label="Statistics period">{(Object.keys(overviewPeriods) as ReadingPeriod[]).map(id=><button key={id} type="button" className="muse-button button-ghost" aria-pressed={period===id} onClick={()=>setPeriod(id)}>{overviewPeriods[id]}</button>)}</div>}
   {section==='dna'&&<ReadingDNA books={books} sessions={sessions} range={range_} label={label} today={today}/>}
+  {section==='patterns'&&<Patterns books={books} sessions={sessions} range={range_} label={label} series={collections?.series??[]} seriesMembers={collections?.seriesMembers??[]} media={collections?.media??[]} onOpenBook={onOpenBook}/>}
   {section==='books'&&<BooksMilestones books={books} sessions={sessions} range={range_} label={label}/>}
   {section==='year'&&<YearInReview books={books} sessions={sessions} today={today}/>}
   {section==='overview'&&<>
