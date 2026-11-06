@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {readFileSync} from 'node:fs';
+import {readFileSync,existsSync,readdirSync} from 'node:fs';
+const awaitFs={existsSync,readdirSync};
 import {join} from 'node:path';
 import {root,load} from './helpers.mjs';
 
@@ -46,12 +47,14 @@ test('twenty border gradients with genuine colour range',()=>{
  assert.equal(gradients.gradientById('nope').id,'nebula-kiss','unknown ids fall back safely');
 });
 
-test('thirty original avatars: unique descriptive ids that render as self-contained artwork',()=>{
- const list=avatars.museAvatars;assert.equal(list.length,30);
- assert.equal(new Set(list.map(a=>a.id)).size,30);
- for(const a of list){assert.match(a.id,/^[a-z][a-z0-9-]{2,47}$/,a.id);const svg=avatars.avatarSvg(a.id);assert.match(svg,/^<svg viewBox="0 0 100 100"/);assert.doesNotMatch(svg,/<image|href=|url\(http|<script/i,'no external or embedded images');assert.ok(svg.includes(`aria-label="${a.name}"`));}
- assert.ok(list.some(a=>a.group==='Everyday life')&&list.some(a=>a.group==='Magical')&&list.some(a=>a.group==='Creatures'));
- assert.equal(avatars.avatarById('unknown').id,list[0].id);
+test('bundled Muse avatars: unique descriptive ids, one image each, only the id is stored',()=>{
+ const {existsSync,readdirSync}=awaitFs;const list=avatars.museAvatars;
+ assert.ok(list.length>=70,`${list.length} avatars`);assert.equal(new Set(list.map(a=>a.id)).size,list.length);
+ for(const a of list){assert.match(a.id,/^[a-z][a-z0-9-]{2,47}$/,a.id);assert.ok(existsSync(join(root,'public/avatars',`${a.id}.webp`)),`${a.id} artwork`);assert.ok(a.name.trim().length>1);}
+ assert.equal(readdirSync(join(root,'public/avatars')).length,list.length,'no orphan artwork files');
+ for(const group of avatars.avatarGroups)assert.ok(list.some(a=>a.group===group),group);
+ assert.equal(list[0].id,avatars.defaultAvatar,'the default comes first');assert.equal(avatars.avatarById('unknown').id,avatars.defaultAvatar);
+ assert.equal(avatars.avatarSrc('reading-dragon'),'/avatars/reading-dragon.webp');
 });
 
 test('safe adapters only ever produce fields the database accepts, and only the approved ones',()=>{

@@ -7,10 +7,9 @@ import {useThemeOverride} from '@/lib/theme-override';
 import {changeUsername,updateIdentity,usernameStatus,usernameHint,localUsernameStatus,type UsernameStatus} from '@/lib/social/identity';
 import {saveProfileDetails} from '@/lib/profile/persistence';
 import {profileBadges,sectionLabels,MAX_BADGES,type ProfileDetails} from '@/lib/profile/model';
-import {museAvatars} from '@/lib/profile/avatars';
+import {AvatarPicker} from './AvatarPicker';
 import {gradientPresets,familyLabels,gradientCss,type GradientFamily} from '@/lib/profile/gradients';
 import {MuseIcon} from '../MuseIcon';
-import {MuseAvatar} from './MuseAvatar';
 import {ProfileView} from './ProfileView';
 import {useMyProfile} from './useMyProfile';
 import './Profile.css';
@@ -50,7 +49,7 @@ export function ProfileCustomizer(){
   <div className="muse-customizer-layout">
    <div className="muse-customizer-controls">
     <section className="muse-panel"><h2 className="muse-kicker">Your portrait</h2>
-     <div className="muse-avatar-grid" role="radiogroup" aria-label="Avatars">{museAvatars.map(a=><button key={a.id} type="button" role="radio" aria-checked={avatarId===a.id} aria-label={a.name} title={a.name} onClick={()=>{setAvatarId(a.id);setSaved('');}}><MuseAvatar id={a.id} size={58} decorative/></button>)}</div>
+     <AvatarPicker value={avatarId} size={58} onChange={id=>{setAvatarId(id);setSaved('');}}/>
     </section>
     <section className="muse-panel muse-customizer-fields"><h2 className="muse-kicker">Name and words</h2>
      <label className="muse-field-label"><span className="small-label">Display name</span><input type="text" maxLength={60} value={name} onChange={e=>{setName(e.target.value);setSaved('');}}/></label>

@@ -8,7 +8,8 @@ import {createMuseBrowserClient} from '@/lib/supabase/client';
 import {createIdentity,usernameStatus,suggestUsername,usernameHint,localUsernameStatus,socialOverview,updateIdentity,type UsernameStatus} from '@/lib/social/identity';
 import {saveProfileDetails,readFriendView,reorderShowcases,markMissing,type Showcase} from '@/lib/profile/persistence';
 import {defaultProfile,starterIdeas,visibilityLabels} from '@/lib/profile/model';
-import {museAvatars,defaultAvatar} from '@/lib/profile/avatars';
+import {defaultAvatar} from '@/lib/profile/avatars';
+import {AvatarPicker} from './AvatarPicker';
 import {MuseIcon} from '../MuseIcon';
 import {MuseStar} from '../MuseStar';
 import {MuseAvatar} from './MuseAvatar';
@@ -92,7 +93,7 @@ function ProfileSetup({firstName,appTheme,hasIdentity,onCreate}:{firstName:strin
   </section>
   <form className="muse-panel muse-profile-setup-form" onSubmit={async event=>{event.preventDefault();if(!ready||busy)return;setBusy(true);setError('');try{await onCreate(username,displayName,avatarId,theme);}catch(cause){setError(cause instanceof Error&&/taken/.test(cause.message)?'Someone just took that username. Try another.':'That didn’t save. Please try again.');}finally{setBusy(false);}}}>
    <fieldset className="muse-profile-avatar-field"><legend className="editor-label">Pick your avatar</legend>
-    <div className="muse-avatar-grid" role="radiogroup" aria-label="Avatars">{museAvatars.map(a=><button key={a.id} type="button" role="radio" aria-checked={avatarId===a.id} aria-label={a.name} title={a.name} onClick={()=>setAvatarId(a.id)}><MuseAvatar id={a.id} size={64} decorative/></button>)}</div>
+    <AvatarPicker value={avatarId} onChange={setAvatarId}/>
    </fieldset>
    <div className="muse-profile-setup-fields">
     <MuseAvatar id={avatarId} size={112} label="Your avatar"/>
