@@ -14,3 +14,15 @@ export function validateAuthEndpoints(siteUrl:string|undefined,supabaseUrl:strin
   if(!local&&(site.protocol!=='https:'||api.protocol!=='https:'||site.hostname.endsWith('.localhost')||api.hostname.endsWith('.localhost')))throw Error('Hosted authentication requires explicit HTTPS origins.');
   return {origin:site.origin,url:api.origin,local};
 }
+
+/**
+ * Which origin this deployment serves. Production and the main staging site use SITE_URL. A Vercel *preview*
+ * deployment serves its own branch address (VERCEL_BRANCH_URL, set by Vercel), so sign-in, redirects and the
+ * canonical-host check keep you on the preview instead of sending you to SITE_URL. Only a plain *.vercel.app
+ * hostname is accepted; anything else falls back to SITE_URL.
+ */
+export function deploymentSiteUrl(env:{VERCEL_ENV?:string;VERCEL_BRANCH_URL?:string;SITE_URL?:string}){
+  const branch=env.VERCEL_BRANCH_URL?.trim().toLowerCase();
+  if(env.VERCEL_ENV==='preview'&&branch&&/^[a-z0-9](?:[a-z0-9-]{0,98}[a-z0-9])?\.vercel\.app$/.test(branch))return `https://${branch}`;
+  return env.SITE_URL;
+}
