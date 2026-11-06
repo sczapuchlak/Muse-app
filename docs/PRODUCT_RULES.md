@@ -692,3 +692,11 @@ Stephanie approved importing the HeartYearning Dream Symbols Dataset with attrib
 - **Hiding Stream** from navigation is separate from unpublishing posts and from pausing social participation.
 - Spec details, architecture and open conflicts: [STREAM](STREAM.md).
 
+## Muse Magic: delight, motion and sound (#34) — implemented on feature branch, awaiting review
+
+- **Celebrate only what was saved.** Celebrations and chimes follow successful persistence, happen once per moment (keyed), never replay for loaded history, reopened records or retries, and never block the page; every moment can be skipped.
+- **Existing Muse Magic controls everything.** Quiet keeps state feedback and spoken announcements with no decorative motion; Magical is light; Extra is fuller. Reduced motion always wins.
+- **Sound effects are Off by default**, a separate switch in Muse Magic (Appearance and the Themes menu), independent of motion. Sounds are short, original and never overlap; the shared system is reused by Stream reactions.
+- **Streaks celebrate consistency, never shame breaks.** Tiers at 3, 7, 14, 30, 100 and 365 use the existing streak count.
+- **Signature moments**: book completion ritual, three-star priority alignment, habit streak constellations, hydration ripple and goal moment, Side Quest seal and all-three completion, Tarot reveal and saved-reading chimes, saved-dream confirmation.
+

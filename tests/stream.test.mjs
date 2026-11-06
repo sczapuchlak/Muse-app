@@ -89,7 +89,7 @@ test('Stream sits in navigation, can be hidden, and Share to Stream is in-contex
 
 test('reaction animations play once, after success, and respect Muse Magic and reduced motion',()=>{
  const css=read('components/stream/Stream.css'),button=read('components/stream/StreamReaction.tsx');
- assert.match(button,/const ok=await onToggle\(next\);.*if\(ok&&next\)setPlay/s,'only after the database confirms');
+ assert.match(button,/const ok=await onToggle\(next\);.*if\(ok&&next\)\{setPlay/s,'only after the database confirms');
  for(const k of ['react','love','joy','cheer','celebrate'])assert.match(css,new RegExp(`muse-stream-burst\\[data-kind=${k}\\] i\\{`),k);
  assert.match(css,/@media \(prefers-reduced-motion:no-preference\)\{\s*:root:not\(\[data-magic=quiet\]\)/,'gated by reduced motion and Muse Magic');
  assert.match(css,/:root\[data-magic=extra\] \.muse-stream-burst\{--reach:1\.45\}/,'Extra magic reaches a little further');

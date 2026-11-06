@@ -35,6 +35,8 @@ import {ReadingAtlas} from './ReadingAtlas';
 import './Bookshelf.css';
 import {MuseSearch} from '@/components/design/MuseSearch';
 import {ShareToStream} from '../stream/ShareToStream';
+import {celebrate} from '@/lib/celebrate';
+import {pickLine} from '@/lib/celebration-copy';
 
 type Tab='books'|'atlas';
 type BookForm={id?:string;revision:number;positionUpdatedAt:string;title:string;author:string;genre:string;coverUrl:string;format:'physical'|'ebook'|'audiobook';totalPages:string;startingPage:string;currentPage:string;status:Book['status'];startedOn:string;finishedOn:string;rating:string;reviewEmojis:string;finalThoughts:string;isbn:string;publisher:string;publishedDate:string;description:string;metadataSource?:BookMetadataSource;imported?:{fields:Partial<ImportFields>;provider:string};reads:BookCompletion[];unassigned:Unassigned};
@@ -136,7 +138,10 @@ export function Bookshelf({embedded=false,initialBookId=null,initialAdd=false,in
   */
  async function moveBook(book:Book,next:Book['status'],details?:FinishDetails):Promise<boolean>{if(busy||next===book.status)return false;if(next==='finished'&&!details){setError('');setDetailId(null);setFinishing({bookId:book.id,reason:'shelf'});return false;}if(timer?.bookId===book.id&&next!=='reading'){setError('Finish or cancel the active timer before moving this book to another shelf.');return false;}setBusy(true);setError('');try{const base=preserveOpinions(book);
  // Finishing adds one completion for this read (never a second for the same read); leaving Finished keeps history.
- const record=bookRecord(base,shelfMove(base,next,today,details));await saveWhimsyRecord(client,'books',{record,expectedRevision:book.revision,commandId:writeId('book-status',{id:book.id,next,details},book.revision)});delete pendingWrites.current['book-status'];if(details)setFinishing(null);await retry();setMessage(details?`Finished “${book.title}”.`:`Moved “${book.title}” to ${bookStatus[next]}.`);return true;}catch(e){noteError(e);return false;}finally{setBusy(false);}}
+ const record=bookRecord(base,shelfMove(base,next,today,details));await saveWhimsyRecord(client,'books',{record,expectedRevision:book.revision,commandId:writeId('book-status',{id:book.id,next,details},book.revision)});delete pendingWrites.current['book-status'];if(details){setFinishing(null);
+  // The book completion ritual: only after the finish is saved, once per read (a retry or reopened book never replays it).
+  celebrate({kind:'book',message:pickLine('book'),detail:book.title,cover:book.coverUrl??null,sound:'book',key:`book:${book.id}:${details.finishedOn}:${bookCompletions(book).length+1}`});}
+  await retry();setMessage(details?`Finished “${book.title}”.`:`Moved “${book.title}” to ${bookStatus[next]}.`);return true;}catch(e){noteError(e);return false;}finally{setBusy(false);}}
  async function removeBook(book:Book){setBusy(true);setError('');try{await deleteBookWithSessions(client,book.id,book.revision,crypto.randomUUID());setDetailId(null);setDeleteTarget(null);setMessage('Book and sessions deleted.');await retry();}catch(e){noteError(e);}finally{setBusy(false);}}
  function openSession(book:Book,session?:ReadingSession){const form=blankSession(book.id,today);form.startingPage=String(bookPosition(book,sessions));form.cycleId=bookReads(book).at(-1)?.id??'';if(session){form.cycleId=session.cycleId??'';form.startingPage=session.startingPage===undefined?'':String(session.startingPage);form.id=session.id;form.revision=session.revision;form.date=session.date;form.minutes=String(Math.round(activeSeconds(session.activeSegments)/60));form.mode=session.reread?'reread':'pages';form.value=String(session.reread?session.endingPage??session.pages:session.pages);form.notes=session.notes??'';form.time=session.activeSegments[0]?new Intl.DateTimeFormat('en-GB',{timeZone:session.timeZone,hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date(session.activeSegments[0].start)):'12:00';}setDetailId(null);setSessionForm(form);setError('');}
  async function saveManualSession(){

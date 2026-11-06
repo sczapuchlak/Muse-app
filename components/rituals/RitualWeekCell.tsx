@@ -6,6 +6,7 @@ import { MuseProgressRing } from "../MuseProgressRing";
 import { MuseIcon } from "../MuseIcon";
 import { MuseStar } from "../MuseStar";
 import { useRitualFeedback } from "../MuseRitualFeedback";
+import { playSound } from "@/lib/muse-sound";
 import { useRituals } from "./RitualStore";
 import { useRitualView } from "./ConnectedRituals";
 import { connectionLabel, connectionUnit } from "@/lib/ritual-connections";
@@ -23,7 +24,8 @@ export function RitualWeekCell({ ritual, date, today, selected, onEditEntry }: {
     const next = ritualReducer(state, action);
     const feedback = ritualFeedback(state, next, ritual, date, today);
     dispatch(action);
-    if(feedback)store.whenSaved(()=>trigger(feedback.kind));
+    // Feedback and its chime follow the saved state, never the tap alone.
+    if(feedback)store.whenSaved(()=>{trigger(feedback.kind);playSound(feedback.kind==='constellation'?'celebrate':'complete');});
   }
   const disabled = !status.loaded||!!status.error||!today || cell.status === "unscheduled" || cell.status === "upcoming";
   const source = ritual.connection ? connectionLabel(ritual.connection) : "";

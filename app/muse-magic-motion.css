@@ -1,0 +1,24 @@
+/* Muse Magic motion language (#34). Everyday microinteractions share the motion tokens in lib/motion.ts.
+   Tactile press feedback is always on (it is state feedback, not decoration); decorative arrivals follow Muse Magic
+   and reduced motion. Transform/opacity only. */
+
+/* Level 1: buttons compress briefly when pressed */
+.muse-button:active:enabled,.choice-button:active:enabled,.muse-icon-button:active:enabled{transform:translateY(1px) scale(.97)}
+@media (prefers-reduced-motion:reduce){.muse-button:active:enabled,.choice-button:active:enabled,.muse-icon-button:active:enabled{transform:none}}
+
+@media (prefers-reduced-motion:no-preference){
+ /* Pages arrive softly (opacity only, so fixed-position children are never affected) */
+ :root:not([data-magic=quiet]) .muse-app-content>main{animation:muse-page-arrive var(--motion-settle,260ms) var(--ease-out,ease-out) both}
+ /* Modals open with a refined lift */
+ :root:not([data-magic=quiet]) .muse-modal[open]{animation:muse-modal-in var(--motion-settle,260ms) var(--ease-out,ease-out)}
+ :root:not([data-magic=quiet]) .muse-modal[open]::backdrop{animation:muse-fade-in var(--motion-settle,260ms) ease-out}
+ /* A small celestial flourish when entering a module: the header's stars twinkle once */
+ :root:not([data-magic=quiet]) .muse-header-signature>*{animation:muse-header-twinkle 1200ms var(--ease-out,ease-out) 120ms both}
+ :root[data-magic=extra] .muse-header-signature>*{animation-duration:1600ms}
+ /* Progress bars move between values instead of jumping */
+ :root:not([data-magic=quiet]) [role=progressbar]>span{transition:width var(--motion-settle,260ms) var(--ease-out,ease-out)}
+}
+@keyframes muse-page-arrive{from{opacity:.35}to{opacity:1}}
+@keyframes muse-modal-in{from{opacity:0;transform:translateY(10px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes muse-fade-in{from{opacity:0}to{opacity:1}}
+@keyframes muse-header-twinkle{0%{opacity:.4;transform:scale(.85) rotate(-8deg)}45%{opacity:1;transform:scale(1.12) rotate(4deg);filter:drop-shadow(0 0 6px color-mix(in srgb,var(--accent-secondary) 60%,transparent))}100%{opacity:1;transform:none;filter:none}}

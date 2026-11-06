@@ -10,6 +10,7 @@ import {DailyDataProvider,DailyDateSync} from "./daily/DailyData";
 import type {DailyProfile} from "@/lib/data/daily-store";
 import { MuseAtmosphere } from "./MuseAtmosphere";
 import { MuseIcon } from "./MuseIcon";
+import { MuseCelebrations } from "./MuseCelebrations";
 import { ProfileNavIcon } from "./social/ProfileNavIcon";
 import { useStreamNavigation } from "@/lib/stream/navigation-preference";
 import { MuseStar } from "./MuseStar";
@@ -54,7 +55,7 @@ function AppShellContent({ children, profile:initialProfile }: { children: React
   return (
     <MuseSessionProvider initialDate={todayInTimeZone(profile.timeZone)}><DailyDataProvider profile={profile}><DailyDateSync/>
       <AstrologyDataProvider key={profile.id} userId={profile.id}><WhimsyDataProvider userId={profile.id} timeZone={profile.timeZone}><CollectionsDataProvider userId={profile.id}><ConstellationsProvider profile={profile}><NotesProvider profile={profile}><PlannerProvider profile={profile}><WellnessProvider key={profile.id} userId={profile.id}><NourishProvider><MoneyProvider key={profile.id} userId={profile.id}><RitualProvider key={profile.id} userId={profile.id}><ConnectedRitualsProvider timeZone={profile.timeZone}><div className="muse-app-shell" data-rail={collapsed ? "collapsed" : "expanded"} data-module={path.split("/")[1]||"daily"}>
-        <MuseMagicBridge/><AppearanceBridge userId={profile.id}/><MuseAtmosphere/>
+        <MuseMagicBridge/><AppearanceBridge userId={profile.id}/><MuseAtmosphere/><MuseCelebrations/>
         <a className="muse-skip-link" href="#muse-main-content">Skip to content</a>
         <aside className="muse-rail" aria-label="Muse app navigation">
           <div className="muse-rail-header"><Link className="muse-shell-brand" href="/" aria-label="Muse home"><span>muse</span><MuseStar size={28} /></Link>
