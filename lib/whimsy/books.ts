@@ -2,6 +2,7 @@ import {shiftDate,todayInTimeZone,validDate,validTimeZone,weekDates} from '@/lib
 import {readingByDay} from './integrations';
 import type {Book,ReadingGoal,ReadingSession} from './models';
 import {averageSessionSeconds,bookCompletions,completionsIn,readingPace} from './reading-stats';
+import {canonicalGenre} from '@/lib/collections/genres';
 
 /** Reading Desk is a projection of the library, never a second set of books. */
 export const activeReadingBooks=(books:readonly Book[])=>books.filter(book=>book.status==='reading'&&!book.archivedAt);
@@ -44,9 +45,10 @@ export function parseEmojiReview(value:string){if(!value.trim())return [];const 
 /** Grouping key for emoji statistics: the same emoji with or without its emoji-style selector counts once; skin tones stay distinct. */
 export const emojiKey=(emoji:string)=>emoji.replace(/️/g,'');
 /** A book's genres from the comma-separated field, trimmed, de-duplicated case-insensitively, in the order written. */
-export function bookGenres(book:Pick<Book,'genre'>){const seen=new Set<string>();return (book.genre??'').split(',').map(v=>v.trim().replace(/\s+/g,' ')).filter(v=>{const key=genreKey(v);if(!v||seen.has(key))return false;seen.add(key);return true;});}
-/** Grouping key for genre statistics: case-insensitive, whitespace-normalized. Spelling variants are not merged. */
-export const genreKey=(genre:string)=>genre.trim().replace(/\s+/g,' ').toLocaleLowerCase('en');
+/** A book's genres for statistics: aliases resolved to one canonical label each (Sci-Fi and Science Fiction count once). The stored genre text is untouched. */
+export function bookGenres(book:Pick<Book,'genre'>){const seen=new Set<string>();return (book.genre??'').split(',').map(v=>canonicalGenre(v)).filter(v=>{const key=genreKey(v);if(!v||seen.has(key))return false;seen.add(key);return true;});}
+/** Grouping key for genre statistics: the canonical genre, case-insensitive and whitespace-normalized. */
+export const genreKey=(genre:string)=>canonicalGenre(genre).toLocaleLowerCase('en');
 export function todayForReading(zone:string){if(!validTimeZone(zone))throw Error('Set your IANA timezone before recording reading.');return todayInTimeZone(zone);}
 
 /** Optional lookup metadata (ISBN, publisher, publication date, description, source), carried through every book write. */
@@ -54,6 +56,6 @@ export function bookMetadataFields(book:Pick<Book,'isbn'|'publisher'|'publishedD
  return {...(book.isbn?{isbn:book.isbn}:{}),...(book.publisher?{publisher:book.publisher}:{}),...(book.publishedDate?{publishedDate:book.publishedDate}:{}),...(book.description?{description:book.description}:{}),...(book.metadataSource?{metadataSource:book.metadataSource}:{})};
 }
 /** Everything a book write must carry besides the edited fields, so nothing is silently dropped. */
-export function bookCarryFields(book:Pick<Book,'isbn'|'publisher'|'publishedDate'|'description'|'metadataSource'|'completions'|'archivedAt'|'cycleId'|'unassignedRating'|'unassignedReview'>){
- return {...bookMetadataFields(book),...(book.completions?.length?{completions:book.completions}:{}),...(book.archivedAt?{archivedAt:book.archivedAt}:{}),...(book.cycleId?{cycleId:book.cycleId}:{}),...(book.unassignedRating!==undefined?{unassignedRating:book.unassignedRating}:{}),...(book.unassignedReview?{unassignedReview:book.unassignedReview}:{})};
+export function bookCarryFields(book:Pick<Book,'isbn'|'publisher'|'publishedDate'|'description'|'metadataSource'|'completions'|'archivedAt'|'cycleId'|'unassignedRating'|'unassignedReview'>&Partial<Pick<Book,'unassignedEmojis'>>){
+ return {...bookMetadataFields(book),...(book.completions?.length?{completions:book.completions}:{}),...(book.archivedAt?{archivedAt:book.archivedAt}:{}),...(book.cycleId?{cycleId:book.cycleId}:{}),...(book.unassignedRating!==undefined?{unassignedRating:book.unassignedRating}:{}),...(book.unassignedReview?{unassignedReview:book.unassignedReview}:{}),...(book.unassignedEmojis?.length?{unassignedEmojis:book.unassignedEmojis}:{})};
 }

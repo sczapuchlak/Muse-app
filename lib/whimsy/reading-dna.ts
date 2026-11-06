@@ -25,6 +25,7 @@ import {shiftDate,validDate,validTimeZone} from '@/lib/dates';
 import {readingByDay} from './integrations';
 import type {Book,ReadingSession} from './models';
 import {bookGenres,emojiKey,genreKey} from './books';
+import {readEmojis} from './reading-cycles';
 import {averageSessionSeconds,completionEvents,inclusiveCalendarDays,longestSession,sessionSeconds,type DateRange} from './reading-stats';
 import {readOpinion} from './reading-cycles';
 
@@ -56,14 +57,29 @@ const pick=(rows:GenreRow[],value:(r:GenreRow)=>number)=>[...rows].filter(r=>val
 export function favoriteGenres(rows:GenreRow[]){return {mostRead:pick(rows,r=>r.reads),mostTime:pick(rows,r=>r.seconds),mostPages:pick(rows,r=>r.pages)};}
 
 // ---------- Emojis ----------
-export type EmojiCount={emoji:string;books:number;lastUse:string;slot:number};
+/** `books`: unique books whose reads in the range used the emoji (each book once). `reads`: finished reads that used it. */
+export type EmojiCount={emoji:string;books:number;reads:number;lastUse:string;slot:number};
+/** Emojis come from each read's own selection (#50); older book-level emojis count only where they are unambiguous. */
 export function emojiRanking(books:Book[],range:DateRange|null){
- const latest=new Map<string,string>();for(const e of readsIn(books,range)){const prev=latest.get(e.book.id);if(!prev||e.completion.finishedOn>prev)latest.set(e.book.id,e.completion.finishedOn);}
- const counts=new Map<string,EmojiCount>();let withEmojis=0;
- for(const book of books){const last=latest.get(book.id);if(!last)continue;const keys=new Map<string,string>();for(const e of book.reviewEmojis??[])if(!keys.has(emojiKey(e)))keys.set(emojiKey(e),e);if(keys.size)withEmojis++;
-  [...keys.keys()].forEach((key,slot)=>{const c=counts.get(key)??{emoji:keys.get(key)!,books:0,lastUse:'',slot};c.books++;if(last>c.lastUse||(last===c.lastUse&&slot<c.slot)){c.lastUse=last;c.slot=slot;}counts.set(key,c);});}
- return {ranking:[...counts.values()].sort((a,b)=>b.books-a.books||b.lastUse.localeCompare(a.lastUse)||a.slot-b.slot||a.emoji.localeCompare(b.emoji)),booksWithEmojis:withEmojis,finishedBooks:latest.size};
+ const counts=new Map<string,EmojiCount&{ids:Set<string>}>(),finished=new Set<string>(),withEmojis=new Set<string>();let readsWithEmojis=0;
+ for(const e of readsIn(books,range)){
+  finished.add(e.book.id);const keys=new Map<string,string>();for(const emoji of readEmojis(e.book,e.completion))if(!keys.has(emojiKey(emoji)))keys.set(emojiKey(emoji),emoji);
+  if(!keys.size)continue;withEmojis.add(e.book.id);readsWithEmojis++;const last=e.completion.finishedOn;
+  [...keys.keys()].forEach((key,slot)=>{const c=counts.get(key)??{emoji:keys.get(key)!,books:0,reads:0,lastUse:'',slot,ids:new Set<string>()};c.reads++;if(!c.ids.has(e.book.id)){c.ids.add(e.book.id);c.books++;}
+   if(last>c.lastUse||(last===c.lastUse&&slot<c.slot)){c.lastUse=last;c.slot=slot;}counts.set(key,c);});
+ }
+ const ranking=[...counts.values()].map(c=>({emoji:c.emoji,books:c.books,reads:c.reads,lastUse:c.lastUse,slot:c.slot})).sort((a,b)=>b.books-a.books||b.reads-a.reads||b.lastUse.localeCompare(a.lastUse)||a.slot-b.slot||a.emoji.localeCompare(b.emoji));
+ return {ranking,booksWithEmojis:withEmojis.size,readsWithEmojis,finishedBooks:finished.size};
 }
+/** Most-used emojis per canonical genre (books counted once per genre; multi-genre books count in each of their genres). */
+export function emojisByGenre(books:Book[],range:DateRange|null,limit=3){
+ const byGenre=new Map<string,{genre:string;books:Book[]}>();
+ for(const book of books)for(const g of bookGenres(book)){const k=genreKey(g);const r=byGenre.get(k)??{genre:g,books:[]};r.books.push(book);byGenre.set(k,r);}
+ return [...byGenre.values()].map(r=>{const e=emojiRanking(r.books,range);return {genre:r.genre,top:e.ranking.slice(0,limit),booksWithEmojis:e.booksWithEmojis};}).filter(r=>r.top.length).sort((a,b)=>b.booksWithEmojis-a.booksWithEmojis||a.genre.localeCompare(b.genre));
+}
+/** The top emojis of each year with finished reads, newest first (a reread counts in the year it was finished). */
+export function emojisByYear(books:Book[],limit=3){return yearsWithReading(books,[]).map(year=>({year,...yearInThreeEmojisTop(books,year,limit)})).filter(r=>r.top.length);}
+function yearInThreeEmojisTop(books:Book[],year:string,limit:number){const r=emojiRanking(books,yearRange(year));return {top:r.ranking.slice(0,limit),booksWithEmojis:r.booksWithEmojis};}
 /** The three emojis on the most books finished in a year (each book once, however many times it was finished). */
 export function yearInThreeEmojis(books:Book[],year:string){const r=emojiRanking(books,yearRange(year));return {top:r.ranking.slice(0,3),booksWithEmojis:r.booksWithEmojis,finishedBooks:r.finishedBooks};}
 

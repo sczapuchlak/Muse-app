@@ -11,6 +11,9 @@
  *   a read only when the book has exactly one finished read; with several reads it is preserved as
  *   unassignedRating/unassignedReview until the reader assigns it. Book-level rating/finalThoughts then mirror the
  *   latest rated/reviewed read so library cards and Collections keep working.
+ * - Emojis (0–3) follow the same rule (#50): each read keeps its own; older book-level emojis move to a read only when
+ *   the book has exactly one read, otherwise they are kept as unassignedEmojis. Rereads start with none. Book-level
+ *   reviewEmojis mirror the latest read that has emojis.
  */
 import {validDate} from '@/lib/dates';
 import type {Book,BookCompletion,ReadingSession} from './models';
@@ -57,10 +60,11 @@ export function readStats(book:Book,sessions:ReadingSession[],read:ReadEntry,tod
 }
 
 /** The rating and review of one finished read (a single-read book's older book-level values count as that read's). */
-export function readOpinion(book:Book,completion:BookCompletion):{rating?:number;review?:string}{
- const all=bookCompletions(book),own=(k:'rating'|'review')=>all.some(c=>c[k]!==undefined);
+export function readOpinion(book:Book,completion:BookCompletion):{rating?:number;review?:string;emojis?:string[]}{
+ const all=bookCompletions(book),own=(k:'rating'|'review'|'emojis')=>all.some(c=>c[k]!==undefined);
  const single=all.length===1;
- return {rating:completion.rating??(single&&!own('rating')&&book.unassignedRating===undefined?book.rating:undefined),review:completion.review??(single&&!own('review')&&!book.unassignedReview&&book.finalThoughts?.trim()?book.finalThoughts:undefined)};
+ const emojis=completion.emojis??(single&&!own('emojis')&&!book.unassignedEmojis?.length&&book.reviewEmojis?.length?book.reviewEmojis:undefined);
+ return {...(emojis?{emojis}:{}),rating:completion.rating??(single&&!own('rating')&&book.unassignedRating===undefined?book.rating:undefined),review:completion.review??(single&&!own('review')&&!book.unassignedReview&&book.finalThoughts?.trim()?book.finalThoughts:undefined)};
 }
 
 /**
@@ -73,20 +77,22 @@ export function preserveOpinions(book:Book):Book{
  if(book.rating!==undefined&&unassignedRating===undefined&&!all.some(c=>c.rating!==undefined)){if(all.length===1)completions=[{...completions[0],rating:book.rating}];else unassignedRating=book.rating;}
  const review=book.finalThoughts?.trim();
  if(review&&!unassignedReview&&!all.some(c=>c.review!==undefined)){if(all.length===1)completions=[{...completions[0],review}];else unassignedReview=review;}
- return {...book,completions,...(unassignedRating!==undefined?{unassignedRating}:{}),...(unassignedReview?{unassignedReview}:{})};
+ let unassignedEmojis=book.unassignedEmojis;
+ if(book.reviewEmojis?.length&&!unassignedEmojis?.length&&!all.some(c=>c.emojis!==undefined)){if(all.length===1)completions=[{...completions[0],emojis:book.reviewEmojis.slice(0,3)}];else unassignedEmojis=book.reviewEmojis.slice(0,3);}
+ return {...book,completions,...(unassignedRating!==undefined?{unassignedRating}:{}),...(unassignedReview?{unassignedReview}:{}),...(unassignedEmojis?.length?{unassignedEmojis}:{})};
 }
 
 /** Book-level rating and review shown on cards: the latest read that has one, else preserved older values. */
-export function mirroredOpinions(completions:BookCompletion[],book:Pick<Book,'unassignedRating'|'unassignedReview'>){
- const rated=completions.findLast(c=>c.rating!==undefined),reviewed=completions.findLast(c=>!!c.review);
- return {rating:rated?.rating??book.unassignedRating,finalThoughts:reviewed?.review??book.unassignedReview??''};
+export function mirroredOpinions(completions:BookCompletion[],book:Pick<Book,'unassignedRating'|'unassignedReview'>&Partial<Pick<Book,'unassignedEmojis'>>){
+ const rated=completions.findLast(c=>c.rating!==undefined),reviewed=completions.findLast(c=>!!c.review),emojied=completions.findLast(c=>!!c.emojis?.length);
+ return {rating:rated?.rating??book.unassignedRating,finalThoughts:reviewed?.review??book.unassignedReview??'',reviewEmojis:emojied?.emojis??book.unassignedEmojis??[]};
 }
 
 /** A reader-facing name for a read, e.g. "Read 2 · finished Mar 3, 2027" (date formatting supplied by the caller). */
 export function readLabel(read:ReadEntry,label:(date:string)=>string){return read.open?`Read ${read.number} · in progress`:`Read ${read.number} · finished ${label(read.finishedOn!)}`;}
 
 /** Book fields written by a read-related change; the rest of the record is carried unchanged by the caller. */
-export type ReadFields=Pick<Book,'status'|'rating'|'finalThoughts'>&Partial<Pick<Book,'startedOn'|'finishedOn'|'completions'|'cycleId'|'unassignedRating'|'unassignedReview'|'reviewEmojis'>>;
+export type ReadFields=Pick<Book,'status'|'rating'|'finalThoughts'>&Partial<Pick<Book,'startedOn'|'finishedOn'|'completions'|'cycleId'|'unassignedRating'|'unassignedReview'|'reviewEmojis'|'unassignedEmojis'>>;
 export type FinishOpinion={finishedOn:string;rating?:number;review?:string;reviewEmojis:string[]};
 /** Deterministic completion ids for one write, so a retried write never creates a second completion. */
 export const completionIdFactory=(book:Pick<Book,'id'|'revision'>)=>{let n=0;return ()=>`${book.id}-read-${book.revision}-${n++}`;};
@@ -100,12 +106,12 @@ export function shelfMove(original:Book,next:Book['status'],today:string,details
  const finishedOn=details?details.finishedOn:book.finishedOn,startedOn=next==='reading'?(book.status==='finished'?today:book.startedOn??today):book.startedOn;
  const closing=next==='finished'?openReadId(book)??newCycleId(book):undefined;
  const completions=nextCompletions(book,{status:next,finishedOn,startedOn:book.startedOn,cycleId:closing},`${today}T00:00:00.000Z`,completionIdFactory(book))
-  .map(c=>c.id===closing&&details?{...c,...(details.rating?{rating:details.rating}:{}),...(details.review?{review:details.review}:{})}:c);
+  .map(c=>c.id===closing&&details?{...c,...(details.rating?{rating:details.rating}:{}),...(details.review?{review:details.review}:{}),...(details.reviewEmojis.length?{emojis:details.reviewEmojis.slice(0,3)}:{})}:c);
  const cycleId=closing??(next!=='planned'&&(book.status==='finished'||!openReadId(book))?newCycleId(book):book.cycleId);
  // Book-level dates describe the current read (the server requires finish >= start). Earlier finishes stay in completions.
  const latest=completions.at(-1),dates=next==='finished'&&latest?{startedOn:latest.startedOn,finishedOn:latest.finishedOn}:{startedOn,finishedOn:completions.length?undefined:finishedOn};
- const mirror=completions.length?mirroredOpinions(completions,book):{rating:book.rating,finalThoughts:book.finalThoughts};
- return {status:next,...dates,...(completions.length?{completions}:{}),...(cycleId?{cycleId}:{}),...(book.unassignedRating!==undefined?{unassignedRating:book.unassignedRating}:{}),...(book.unassignedReview?{unassignedReview:book.unassignedReview}:{}),rating:mirror.rating,finalThoughts:mirror.finalThoughts,...(details?{reviewEmojis:details.reviewEmojis}:{})};
+ const mirror=completions.length?mirroredOpinions(completions,book):{rating:book.rating,finalThoughts:book.finalThoughts,reviewEmojis:book.reviewEmojis};
+ return {status:next,...dates,...(completions.length?{completions}:{}),...(cycleId?{cycleId}:{}),...(book.unassignedRating!==undefined?{unassignedRating:book.unassignedRating}:{}),...(book.unassignedReview?{unassignedReview:book.unassignedReview}:{}),...(book.unassignedEmojis?.length?{unassignedEmojis:book.unassignedEmojis}:{}),rating:mirror.rating,finalThoughts:mirror.finalThoughts,reviewEmojis:mirror.reviewEmojis??[]};
 }
 
 export type EditorReads={status:Book['status'];startedOn:string;finishedOn:string;reads:BookCompletion[];rating?:number;review:string;unassigned:{rating?:number;review?:string}};
@@ -129,5 +135,20 @@ export function editorReadFields(old:Book|undefined,form:EditorReads,book:Pick<B
  }else if(form.status==='finished')cycleId=completions.at(-1)?.id;
  else if((wasFinished||!cycleId)&&(form.status==='reading'||form.status==='paused'))cycleId=newCycleId(book);
  const latest=completions.at(-1),mirror=completions.length?mirroredOpinions(completions,{unassignedRating:unassigned.rating,unassignedReview:unassigned.review}):{rating:form.rating,finalThoughts:form.review.trim()};
- return {status:form.status,startedOn:form.status==='finished'&&latest?latest.startedOn:form.startedOn,finishedOn:form.status==='finished'?latest?.finishedOn:undefined,...(completions.length?{completions}:{}),...(cycleId?{cycleId}:{}),...(unassigned.rating!==undefined?{unassignedRating:unassigned.rating}:{}),...(unassigned.review?{unassignedReview:unassigned.review}:{}),rating:mirror.rating,finalThoughts:mirror.finalThoughts};
+ const keptEmojis=kept?.unassignedEmojis?.length?kept.unassignedEmojis:undefined,emojiMirror=completions.findLast(c=>!!c.emojis?.length)?.emojis??keptEmojis;
+ return {...(keptEmojis?{unassignedEmojis:keptEmojis}:{}),...(emojiMirror?{reviewEmojis:emojiMirror}:{}),status:form.status,startedOn:form.status==='finished'&&latest?latest.startedOn:form.startedOn,finishedOn:form.status==='finished'?latest?.finishedOn:undefined,...(completions.length?{completions}:{}),...(cycleId?{cycleId}:{}),...(unassigned.rating!==undefined?{unassignedRating:unassigned.rating}:{}),...(unassigned.review?{unassignedReview:unassigned.review}:{}),rating:mirror.rating,finalThoughts:mirror.finalThoughts};
+}
+
+/** One read's emojis for statistics. Older book-level emojis on a multi-read book count once, with its latest read. */
+export function readEmojis(book:Book,completion:BookCompletion):string[]{
+ const own=readOpinion(book,completion).emojis;if(own)return own;
+ const all=bookCompletions(book);
+ if(all.length>1&&!all.some(c=>c.emojis!==undefined)){const legacy=book.unassignedEmojis?.length?book.unassignedEmojis:book.reviewEmojis??[];return all.at(-1)?.id===completion.id?legacy:[];}
+ return [];
+}
+/** Set (or clear) the emojis of one finished read, keeping the book-level mirror in step. */
+export function withReadEmojis(original:Book,readId:string,emojis:string[]):Pick<Book,'completions'|'reviewEmojis'>&Partial<Pick<Book,'unassignedEmojis'>>{
+ const book=preserveOpinions(original),clean=emojis.slice(0,3);
+ const completions=bookCompletions(book).map(c=>c.id===readId?{...c,emojis:clean}:c);
+ return {completions,reviewEmojis:completions.findLast(c=>!!c.emojis?.length)?.emojis??book.unassignedEmojis??[],...(book.unassignedEmojis?.length?{unassignedEmojis:book.unassignedEmojis}:{})};
 }
