@@ -25,8 +25,16 @@ export function subscribeThemePreference(update: () => void) {
   return () => { window.removeEventListener("storage", storageChanged); window.removeEventListener(themeEvent, update); };
 }
 
-export function selectTheme(id: ThemeId) {
+/** The applied Theme Atelier remix (if any) lives beside the base theme id; see lib/atelier/applied.ts. */
+export const ATELIER_STORAGE_KEY = "muse.theme.atelier";
+export const ATELIER_EVENT = "muse-atelier-change";
+
+/** Choosing an official theme also leaves any applied Theme Atelier remix. */
+export function selectTheme(id: ThemeId, {keepAtelier = false}: {keepAtelier?: boolean} = {}) {
   sessionTheme = id;
-  try { window.localStorage.setItem(THEME_STORAGE_KEY, id); } catch { /* Still usable when storage is unavailable. */ }
+  try {
+    window.localStorage.setItem(THEME_STORAGE_KEY, id);
+    if (!keepAtelier && window.localStorage.getItem(ATELIER_STORAGE_KEY) !== null) { window.localStorage.removeItem(ATELIER_STORAGE_KEY); window.dispatchEvent(new Event(ATELIER_EVENT)); }
+  } catch { /* Still usable when storage is unavailable. */ }
   window.dispatchEvent(new Event(themeEvent));
 }

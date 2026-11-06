@@ -19,14 +19,15 @@ export function themeListKeys(event: KeyboardEvent<HTMLElement>, close: () => vo
 }
 
 /** The theme rows (orb, name, subtitle, check) used by the sidebar Themes menu and the profile theme picker. */
-export function ThemeOptions({ value, onSelect }: { value: string; onSelect: (id: string) => void }) {
+/** `applied` marks a custom Atelier theme as active, so no official theme shows as checked. */
+export function ThemeOptions({ value, onSelect, applied = false }: { value: string; onSelect: (id: string) => void; applied?: boolean }) {
   return <>{themes.map((theme) => (
     <button key={theme.id} type="button" className="muse-theme-option muse-edge" role="menuitemradio" tabIndex={-1}
-      data-popover-autofocus={theme.id === value ? "true" : undefined} aria-checked={value === theme.id}
+      data-popover-autofocus={theme.id === value ? "true" : undefined} aria-checked={!applied && value === theme.id}
       onClick={() => onSelect(theme.id)}>
       <span className="muse-theme-orb" style={{ "--theme-orb": theme.preview } as CSSProperties} aria-hidden="true" />
       <span className="muse-theme-name"><span>{theme.name}{"family" in theme && <MuseStar size={14} color="pink" />}</span><small>{theme.subtitle}</small></span>
-      {value === theme.id && <MuseIcon name="check" size={16} />}
+      {!applied && value === theme.id && <MuseIcon name="check" size={16} />}
     </button>
   ))}</>;
 }

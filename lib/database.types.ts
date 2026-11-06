@@ -69,6 +69,20 @@ isOneToOne: false
       referencedColumns: ["user_id","id"]
     }
                   ]
+                },"appearance_preferences": {
+                  Row: {
+                    "atelier_theme": Json | null,"atelier_theme_id": string | null,"material": string,"theme": string,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "atelier_theme"?: Json | null,"atelier_theme_id"?: string | null,"material": string,"theme": string,"updated_at": string,"user_id": string
+                  }
+                  Update: {
+                    "atelier_theme"?: Json | null,"atelier_theme_id"?: string | null,"material"?: string,"theme"?: string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
                 },"astrology_activity": {
                   Row: {
                     "created_at": string,"date": string,"kind": string,"reference_id": string,"time_zone": string,"user_id": string
@@ -130,6 +144,20 @@ isOneToOne: false
       referencedRelation: "astrology_birth_profiles"
       referencedColumns: ["user_id","id"]
     }
+                  ]
+                },"atelier_themes": {
+                  Row: {
+                    "base_theme": string,"created_at": string,"definition": NonNullable<Json>,"id": string,"name": string,"schema_version": number,"status": string,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "base_theme": string,"created_at"?: string,"definition": NonNullable<Json>,"id": string,"name": string,"schema_version": number,"status": string,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "base_theme"?: string,"created_at"?: string,"definition"?: NonNullable<Json>,"id"?: string,"name"?: string,"schema_version"?: number,"status"?: string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    
                   ]
                 },"bills": {
                   Row: {

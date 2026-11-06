@@ -6,6 +6,7 @@ import { readThemePreference, selectTheme, serverThemePreference, subscribeTheme
 import { readThemeOverride, serverThemeOverride, subscribeThemeOverride } from "@/lib/theme-override";
 import { materials, readMaterial, selectMaterial, serverMaterial, subscribeMaterial } from "@/lib/material-preference";
 import {readMagic,serverMagic,subscribeMagic,magicLevels,selectMagic} from "@/lib/magic-preference";
+import { readApplied, serverApplied, subscribeApplied } from "@/lib/atelier/applied";
 import { MuseIcon } from "./MuseIcon";
 import { GlassPopover } from "./GlassPopover";
 import { ThemeOptions, themeListKeys } from "./ThemeOptions";
@@ -20,7 +21,9 @@ export function ThemeSwitcher({compact=false,variant="pill"}:{compact?:boolean;v
   const material = useSyncExternalStore(subscribeMaterial, readMaterial, serverMaterial);
   useLayoutEffect(() => { document.documentElement.setAttribute("data-material", material); }, [material]);
   const triggerRef = useRef<HTMLButtonElement>(null);
-  const active = themes.find((theme) => theme.id === activeId) ?? defaultTheme;
+  const applied = useSyncExternalStore(subscribeApplied, readApplied, serverApplied);
+  const official = themes.find((theme) => theme.id === activeId) ?? defaultTheme;
+  const active = applied ? { ...official, name: applied.name } : official;
   // A profile being viewed may lend the page its theme; the person's own choice returns when they leave.
   const override = useSyncExternalStore(subscribeThemeOverride, readThemeOverride, serverThemeOverride);
   useLayoutEffect(() => { document.documentElement.setAttribute("data-theme", override ?? activeId); }, [activeId, override]);
@@ -37,7 +40,7 @@ export function ThemeSwitcher({compact=false,variant="pill"}:{compact?:boolean;v
       </button>
       <GlassPopover id={menuId} label="Muse themes" role="menu" open={open} anchorRef={triggerRef} onClose={() => setOpen(false)} width={310} align="end">
         <div className="muse-theme-list" onKeyDown={(event) => themeListKeys(event, () => setOpen(false))}>
-          <ThemeOptions value={activeId} onSelect={(id) => { selectTheme(id as ThemeId); close(); }} />
+          <ThemeOptions value={activeId} applied={!!applied} onSelect={(id) => { selectTheme(id as ThemeId); close(); }} />
           <div className="muse-theme-materials" role="group" aria-label="Glass material"><p className="small-label">Glass material</p>{materials.map((value) => <button key={value} type="button" className="muse-theme-option muse-edge" role="menuitemradio" tabIndex={-1} aria-label={`${value === "crystal" ? "Crystal" : "Frosted"} glass`} aria-checked={material === value} onClick={() => selectMaterial(value)}><span className="muse-material-swatch" data-material={value} aria-hidden="true" /><span>{value === "crystal" ? "Crystal" : "Frosted"}</span>{material === value && <MuseIcon name="check" size={16} />}</button>)}</div>
         </div>
         <div className="muse-theme-materials"><p className="editor-label">Muse Magic</p><div role="group" aria-label="Muse Magic">{magicLevels.map(value=><button key={value} type="button" className="choice-button" aria-pressed={magic===value} onClick={()=>selectMagic(value)}>{value[0].toUpperCase()+value.slice(1)}</button>)}</div><p className="small-label">Your device’s reduced-motion preference takes priority.</p></div>

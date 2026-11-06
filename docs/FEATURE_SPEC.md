@@ -715,7 +715,7 @@ Issue #52 (sections 11–17). Dreamscapes is split into section components under
 - **When it appears.** A brand-new invited account opens **Welcome to Muse** before Daily Edit, based on `profiles.onboarded_at`.
   - The migration marks every existing account as onboarded, so no current user is sent through it.
   - Before the migration runs, Muse behaves exactly as before.
-- **Steps.** Welcome, then Personalize (name; timezone detected from the device and changeable; theme and glass using the existing pickers and per-browser storage), then a confirmation.
+- **Steps.** Welcome, then Personalize (name; timezone detected from the device and changeable; theme and glass using the existing pickers, synced to the account once signed in), then a confirmation.
   - Nothing is saved until **Finish setup**, which is one idempotent save of name, timezone and completion.
   - A failed save keeps every choice and explains how to retry.
 - **After setup.** Daily Edit shows a one-time, dismissible orientation (Planner, Rituals, Whimsy, Settings).
@@ -730,13 +730,28 @@ Issue #52 (sections 11–17). Dreamscapes is split into section components under
   - `scripts/test-onboarding-ui.mjs` runs the real-browser flow on mobile and desktop.
   - `scripts/test-local-auth.mjs` follows the real-inbox invitation through to onboarding.
 
-## Muse Social (#16) and Personal Profiles & Showcase Studio (#26) — implemented on feature branch (`feature/social-16-profiles-26`, awaiting review)
+## Muse Social (#16) and Personal Profiles & Showcase Studio (#26) — released November 2026
 
-IMPLEMENTED (local; migrations applied to the local database only):
+IMPLEMENTED (merged to main; migrations applied to staging and production):
 - **Social foundation (#16)**: `social_identities` (username, display name, `avatar_id`, discoverable, participation), friend requests with one pending per pair, mutual friendships, blocking; security-definer commands for every lifecycle step; `can_view_as_friend()` shared authorization; `social_search` (opt-in, username only), `social_overview`. Friends page: friends, requests (incoming/outgoing), find people, blocked, discoverability and pause settings.
-- **Profiles (#26)**: first-visit setup (avatar from 30 illustrated characters, display name, username with live availability, profile theme), My Profile with Customize, New Showcase, Friends and Preview as a friend; customisation of portrait, name, username, tagline, about, profile theme, gradient banner, decorative badges, section order/visibility and sharing, with a live preview in the profile theme; friend profile at `/people/<username>`.
+- **Profiles (#26)**: first-visit setup (avatar from 117 bundled illustrated characters in four groups, display name, username with live availability, profile theme), My Profile with Customize, New Showcase, Friends and Preview as a friend; customisation of portrait, name, username, tagline, about, profile theme, gradient banner, decorative badges, section order/visibility and sharing, with a live preview in the profile theme; friend profile at `/people/<username>`.
 - **Showcase Studio**: starter ideas, title and line, icon picker (extended Muse icon set), 20 named gradient borders (dropdown and swatch gallery), five layouts (Gallery, Shelf, Spotlight, Collection cards, Mixed), item picker across eight modules with per-field approval and preview, captions, drag-and-drop and Alt+↑/↓ reordering, Update from source with before/after confirmation, drafts, Just me, Friends, delete.
 - **Database**: migrations `20261109000100_social_foundation.sql` and `20261109000200_profiles_showcases.sql`; owner-only RLS on profile tables; `profile_view()` returns only the friend-facing view; `profile_lookup()` never reveals unavailable profiles.
 - **Tests**: `scripts/test-local-social.mjs` (38 multi-account checks), `scripts/test-local-profiles.mjs` (22), `tests/social-profiles.test.mjs`, plus a two-account browser run.
 
 FUTURE/EXPLORATORY: Stream (#27) reusing the identity, authorization and adapters; custom avatar uploads; selected tarot readings, dream moments and note excerpts as Showcase sources; notifications for friend requests.
+
+## Theme Atelier — released November 2026 (work in progress; known issues being fixed in production)
+
+IMPLEMENTED (merged to main; migration applied to staging and production):
+- **Entry**: Settings → Appearance → Theme Atelier card; the quick theme picker stays in the rail and on Appearance.
+- **Library** (`/appearance/atelier`): official themes (Remix / Apply), My themes and Drafts (Edit, Apply, Duplicate, Rename, Export, Delete with confirmation), Import a theme file. Cards are miniature pages drawn with each theme's own tokens.
+- **Studio** (`/atelier?base=<theme>` or `?theme=<id>`): live preview of real Muse components in an isolated frame (sidebar with prismatic icons and states, atmosphere and stars, Daily Edit priorities, rituals with progress, Dreamscapes editorial panel, Tarot card, Bookshelf covers, buttons/segmented/chips/search/inputs, stats and charts, popover, dialog, empty states, type specimen); Desktop/Mobile (true breakpoints) and Crystal/Frosted preview; comparison with the original, last save or another theme; undo/redo (⌘Z/⇧⌘Z); reset to last save or original; save draft, save, save as new, export; Save & apply.
+- **Sections**: Atmosphere (base colour, bloom/haze colours, layer stack with built-in and own layers, position pad, size/position/angle/opacity, gradient stop bar, tone brightness/saturation, vignette, Disco restore), Light & stars (density, brightness, glow, colours), Colours (accent roles, palette, text, interaction, charts), Glass (Crystal and Frosted surfaces), Icons & gradients (icon gradient colours, angle, middle stop, glow; hover, selected, navigation and completion gradients; progress), Readability (13 live WCAG checks with Adjust), Advanced (every token, validated).
+- **Glows**: + Add Glow, on-canvas move/resize handles (hidden in normal preview), keyboard nudging, shape, reach, softness, blend.
+- **Overall glow**: glow strength (to 400%), glow size, vividness and brightness act on every built-in light layer at once; handles appear on every built-in bloom, haze pool and Disco spill as well as on added glows, and clicking one opens it for editing. The preview scrolls to what is being edited (icon strip for Icons).
+- **Drafts survive reloads**: unsaved work is kept in this browser and restored as one undoable step.
+- **Export with intent and freezing**: exports carry the editable remix, a complete resolved snapshot (every token, every plane, glows, effects, compiled CSS) and a base fingerprint. The exporter asks what the file is for: a remix, a new official theme (name, description, light/dark, and explicit opt-in to Disco light, Disco glitter, Disco foil/chrome glass or birthday confetti), or an update to the base official theme (lists the saved remixes that would change, freezes them and keeps today's version as a frozen theme, both on by default). Library cards show Frozen, offer Freeze appearance and Keep a frozen copy, and warn when an unfrozen remix's base has changed. `node scripts/atelier-integrate.mjs <file>` turns a handed-over file into the theme block or the exact update diff (read-only).
+- **Persistence**: `atelier_themes` and `appearance_preferences` (migration `20261108000100_theme_atelier.sql`), owner-only RLS.
+
+FUTURE/EXPLORATORY: sharing themes between accounts; animated atmosphere controls (Muse Magic stays separate); rotated radial glows (not possible with CSS gradients); including themes in the personal data export.

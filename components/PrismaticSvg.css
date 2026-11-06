@@ -13,8 +13,8 @@
 .muse-prismatic-svg[data-prism-tone="secondary"] { --icon-paint-start:var(--icon-gradient-middle); --icon-paint-middle:var(--icon-gradient-end); --icon-paint-end:var(--icon-gradient-start); }
 .muse-prismatic-svg[data-prism-tone="tertiary"] { --icon-paint-start:var(--icon-gradient-end); --icon-paint-middle:var(--icon-gradient-start); --icon-paint-end:var(--icon-gradient-middle); }
 @media(hover:hover) {
-  :is(a,button):enabled:hover > .muse-prismatic-svg,a:hover > .muse-prismatic-svg { filter:brightness(1.13) drop-shadow(0 0 3px color-mix(in srgb,var(--icon-edge) 35%,transparent)); }
+  :is(a,button):enabled:hover > .muse-prismatic-svg,a:hover > .muse-prismatic-svg { filter:brightness(1.13) drop-shadow(0 0 calc(3px * var(--icon-glow, 1)) color-mix(in srgb,var(--icon-edge) 35%,transparent)); }
 }
-:is(a,button):focus-visible > .muse-prismatic-svg { filter:brightness(1.1) drop-shadow(0 0 3px var(--icon-edge)); }
-:is([aria-current="page"],[aria-pressed="true"]) > .muse-prismatic-svg { filter:drop-shadow(0 0 3px color-mix(in srgb,var(--icon-edge) 42%,transparent)); }
+:is(a,button):focus-visible > .muse-prismatic-svg { filter:brightness(1.1) drop-shadow(0 0 calc(3px * var(--icon-glow, 1)) var(--icon-edge)); }
+:is([aria-current="page"],[aria-pressed="true"]) > .muse-prismatic-svg { filter:drop-shadow(0 0 calc(3px * var(--icon-glow, 1)) color-mix(in srgb,var(--icon-edge) 42%,transparent)); }
 @media(prefers-reduced-motion:reduce) { .muse-prismatic-svg { transition:none; } }

@@ -27,7 +27,8 @@ import { ConnectedRitualsProvider } from "./rituals/ConnectedRituals";
 import { MoneyProvider } from "./money/MoneyStore";
 import "./AppShell.css";
 import {LogoutButton} from "./auth/LogoutButton";
-import {MuseMagicBridge} from "./MuseMagic";
+import {MuseMagicBridge} from "./MuseMagic"
+import {AppearanceBridge} from "./atelier/AppearanceBridge";
 
 function NavDestination({ item, path, compact = false, onNavigate }: { item: NavItem; path: string; compact?: boolean; onNavigate?: () => void }) {
   const active = isActiveItem(path, item);
@@ -49,7 +50,7 @@ function AppShellContent({ children, profile:initialProfile }: { children: React
   return (
     <MuseSessionProvider initialDate={todayInTimeZone(profile.timeZone)}><DailyDataProvider profile={profile}><DailyDateSync/>
       <AstrologyDataProvider key={profile.id} userId={profile.id}><WhimsyDataProvider userId={profile.id} timeZone={profile.timeZone}><CollectionsDataProvider userId={profile.id}><ConstellationsProvider profile={profile}><NotesProvider profile={profile}><PlannerProvider profile={profile}><WellnessProvider key={profile.id} userId={profile.id}><NourishProvider><MoneyProvider key={profile.id} userId={profile.id}><RitualProvider key={profile.id} userId={profile.id}><ConnectedRitualsProvider timeZone={profile.timeZone}><div className="muse-app-shell" data-rail={collapsed ? "collapsed" : "expanded"} data-module={path.split("/")[1]||"daily"}>
-        <MuseMagicBridge/><MuseAtmosphere/>
+        <MuseMagicBridge/><AppearanceBridge userId={profile.id}/><MuseAtmosphere/>
         <a className="muse-skip-link" href="#muse-main-content">Skip to content</a>
         <aside className="muse-rail" aria-label="Muse app navigation">
           <div className="muse-rail-header"><Link className="muse-shell-brand" href="/" aria-label="Muse home"><span>muse</span><MuseStar size={28} /></Link>

@@ -580,7 +580,28 @@ Module stylesheets reference roles; they never declare their own families, style
 
 ## Profiles & Showcases (#26)
 
-- **Avatars**: thirty original illustrated characters drawn as code (`lib/profile/avatars.ts`): chibi bust, bold `#2a1a2e` outlines, anime eyes with lashes and shine, expressions (smile, laugh, wink, smirk, sleepy), blush hatching and glossy hair. Groups: Magical, Everyday life (lifting, cooking, baking, knitting, painting, gardening, gaming, music), Creatures (dragons, ghost, alien). Rendered by `MuseAvatar`; only the id is stored.
+- **Avatars**: 117 bundled illustrated characters (`public/avatars/<id>.webp`, catalogue in `lib/profile/avatars.ts`) in four groups: Magical, Celestial, Everyday life, Creatures. Only the `avatar_id` is stored; `MuseAvatar` renders the image in a circle. The picker marks the selection with a sparkly gold ring that turns slowly (still with reduced motion or Muse Magic Quiet).
 - **Showcase frame**: `ShowcaseView` draws a 2.5px gradient ring with a masked pseudo-element (works on translucent glass and every theme) and a soft glow from the gradient's middle stop. Card interiors keep the profile theme's surfaces. Items without artwork get a designed cover (gradient spine, kind icon, title in Fraunces Soft italic).
 - **Gradient presets** (`lib/profile/gradients.ts`): twenty layered mesh gradients (glowing radial blooms over a base wash) in Night magic, Holographic & dreamy, Neon & electric, Sunset & ember; ids are stable even when a preset is renamed or redesigned; a test keeps purple/pink-led presets to four or fewer.
 - **Motion**: Showcases fade up on arrival and covers lift on hover, only with motion allowed and Muse Magic not Quiet.
+
+## Theme Atelier: theme tokens vs. the design system
+
+The design system (#57) defines what components look like structurally; Theme Atelier lets a person remix their colours, gradients and atmosphere. The boundary is enforced in code: only per-theme tokens are editable (`lib/atelier/tokens.ts`), and a test fails if a radius, spacing, font or size token appears there.
+
+**Atmosphere layer tokens** (defaults are the exact official layers, so official themes render unchanged; verified computed-style identical across nine themes × two materials):
+
+| Token | Plane |
+| --- | --- |
+| `--atmosphere-bloom-layers` | `.muse-atmosphere::before` (header glow + four blooms over `--background`) |
+| `--atmosphere-pool-layers` | `.muse-atmosphere::after` (haze pools; Disco overrides with its localized pools) |
+| `--atmosphere-haze-layers` | `.muse-galaxy-grain::before` |
+| `--disco-spill-layers`, `--disco-caustic-layers`, `--disco-reflection-layers` | Disco-only light |
+| `--atmosphere-custom-layers`, `--atmosphere-custom-blend` | `.muse-atmosphere-studio` (a person's own layers and glows) |
+| `--atmosphere-vignette` | `.muse-atmosphere-vignette` (viewport vignette) |
+| `--atmosphere-filter`, `--atmosphere-star-opacity`, `--atmosphere-star-glow`, `--icon-glow` | tone, star and icon multipliers (default `none`/`1`) |
+| `data-atelier-stars` | star density (`none`/`sparse`/`rich`), independent of Muse Magic |
+
+Icon gradient angle and middle stop are SVG attributes, published by the applied theme through `lib/atelier/icon-gradient.ts`; the default reproduces the original diagonal exactly.
+
+`lib/atelier/catalog.generated.ts` is generated from these stylesheets (`node scripts/generate-atelier-catalog.mjs`); a test fails when it is stale.
