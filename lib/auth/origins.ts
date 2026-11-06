@@ -26,3 +26,13 @@ export function deploymentSiteUrl(env:{VERCEL_ENV?:string;VERCEL_BRANCH_URL?:str
   if(env.VERCEL_ENV==='preview'&&branch&&/^[a-z0-9](?:[a-z0-9-]{0,98}[a-z0-9])?\.vercel\.app$/.test(branch))return `https://${branch}`;
   return env.SITE_URL;
 }
+
+/**
+ * WebAuthn rule: a relying-party ID works for a site only when it equals the site's host or is a registrable parent
+ * of it (rpId "hellomuse.life" works on hellomuse.life and app.hellomuse.life; a vercel.app rpId never does).
+ */
+export function relyingPartyFits(rpId:string,siteUrl:string){
+ let host:string;try{host=new URL(siteUrl).hostname.toLowerCase();}catch{return false;}
+ const rp=rpId.trim().toLowerCase();
+ return !!rp&&!rp.includes('/')&&(host===rp||host.endsWith(`.${rp}`));
+}

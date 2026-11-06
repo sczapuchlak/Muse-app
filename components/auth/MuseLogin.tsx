@@ -15,6 +15,7 @@ import {
 import { createMuseBrowserClient } from "@/lib/supabase/client";
 import { MuseStar } from "../MuseStar";
 import { MuseLoginFrame } from "./MuseLoginFrame";
+import { passkeyMessage } from "@/lib/auth/passkey-errors";
 
 
 type View = "choices" | "email" | "code";
@@ -113,10 +114,11 @@ export function MuseLogin({
       }
 
       window.location.assign(destination);
-    } catch {
-      setError(
-        "Passkey sign-in wasn't completed. You can try again or use another method."
-      );
+    } catch (cause) {
+      // Plain-language reason (canceled, wrong address, missing passkey, expired, offline…); details stay in dev logs.
+      setError(cause instanceof Error && cause.message === "This Muse account isn't available."
+        ? "This Muse account isn't available."
+        : passkeyMessage("sign-in", cause).message);
       setStatus("error");
     } finally {
       inFlight.current = false;

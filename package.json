@@ -30,6 +30,7 @@
     "test:wellness-goals:db": "node scripts/test-local-wellness-goals.mjs",
     "test:onboarding:db": "node scripts/test-local-onboarding.mjs",
     "test:onboarding:ui": "node scripts/test-onboarding-ui.mjs",
+    "check:passkeys": "node scripts/check-passkey-rp.mjs",
     "test:stream:db": "node scripts/test-local-stream.mjs",
     "test:stream:ui": "node scripts/test-stream-ui.mjs",
     "test:theme:ui": "node scripts/test-theme-persistence-ui.mjs",
