@@ -18,3 +18,12 @@ export function ProgressRing({percent,accent,size=64}:{percent:number|null;accen
   <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r={r} className="track"/><circle cx="32" cy="32" r={r} className="fill" style={{strokeDasharray:c,strokeDashoffset:c*(1-v/100)}}/></svg>
   <span aria-hidden="true">{percent===null?'—':`${Math.round(v)}%`}</span></span>;
 }
+
+/** A short name for an aspiration's period: "2026", "Q4 2026", "November 2026", or its dates. */
+export function periodLabel(a:Pick<Aspiration,'timeframe'|'startDate'|'targetDate'>){
+ const d=a.targetDate??a.startDate,y=d.slice(0,4),m=Number(d.slice(5,7));
+ if(a.timeframe==='year')return y;
+ if(a.timeframe==='quarter')return `Q${Math.ceil(m/3)} ${y}`;
+ if(a.timeframe==='month')return new Intl.DateTimeFormat('en-US',{month:'long',year:'numeric',timeZone:'UTC'}).format(new Date(`${d.slice(0,7)}-15T12:00:00Z`));
+ return a.targetDate?`${a.startDate} – ${a.targetDate}`:`From ${a.startDate}`;
+}

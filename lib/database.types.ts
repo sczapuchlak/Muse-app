@@ -119,17 +119,23 @@ isOneToOne: false
                   ]
                 },"aspirations": {
                   Row: {
-                    "accent": string | null,"category": string,"celebrated": (string)[],"completed_on": string | null,"connection": Json | null,"created_at": string,"description": string | null,"icon": string | null,"id": string,"milestones": NonNullable<Json>,"motivation": string | null,"position": number,"progress_kind": string,"reflection": string | null,"revision": number,"ritual_ids": (string)[],"start_date": string,"status": string,"target": number | null,"target_date": string | null,"task_ids": (string)[],"timeframe": string,"title": string,"unit": string | null,"updated_at": string,"user_id": string
+                    "accent": string | null,"category": string,"celebrated": (string)[],"completed_on": string | null,"connection": Json | null,"created_at": string,"description": string | null,"icon": string | null,"id": string,"milestones": NonNullable<Json>,"motivation": string | null,"position": number,"progress_kind": string,"reflection": string | null,"renewed_from": string | null,"revision": number,"ritual_ids": (string)[],"start_date": string,"status": string,"target": number | null,"target_date": string | null,"task_ids": (string)[],"timeframe": string,"title": string,"unit": string | null,"updated_at": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "accent"?: string | null,"category"?: string,"celebrated"?: (string)[],"completed_on"?: string | null,"connection"?: Json | null,"created_at"?: string,"description"?: string | null,"icon"?: string | null,"id": string,"milestones"?: NonNullable<Json>,"motivation"?: string | null,"position"?: number,"progress_kind": string,"reflection"?: string | null,"revision"?: number,"ritual_ids"?: (string)[],"start_date": string,"status"?: string,"target"?: number | null,"target_date"?: string | null,"task_ids"?: (string)[],"timeframe"?: string,"title": string,"unit"?: string | null,"updated_at"?: string,"user_id"?: string
+                    "accent"?: string | null,"category"?: string,"celebrated"?: (string)[],"completed_on"?: string | null,"connection"?: Json | null,"created_at"?: string,"description"?: string | null,"icon"?: string | null,"id": string,"milestones"?: NonNullable<Json>,"motivation"?: string | null,"position"?: number,"progress_kind": string,"reflection"?: string | null,"renewed_from"?: string | null,"revision"?: number,"ritual_ids"?: (string)[],"start_date": string,"status"?: string,"target"?: number | null,"target_date"?: string | null,"task_ids"?: (string)[],"timeframe"?: string,"title": string,"unit"?: string | null,"updated_at"?: string,"user_id"?: string
                   }
                   Update: {
-                    "accent"?: string | null,"category"?: string,"celebrated"?: (string)[],"completed_on"?: string | null,"connection"?: Json | null,"created_at"?: string,"description"?: string | null,"icon"?: string | null,"id"?: string,"milestones"?: NonNullable<Json>,"motivation"?: string | null,"position"?: number,"progress_kind"?: string,"reflection"?: string | null,"revision"?: number,"ritual_ids"?: (string)[],"start_date"?: string,"status"?: string,"target"?: number | null,"target_date"?: string | null,"task_ids"?: (string)[],"timeframe"?: string,"title"?: string,"unit"?: string | null,"updated_at"?: string,"user_id"?: string
+                    "accent"?: string | null,"category"?: string,"celebrated"?: (string)[],"completed_on"?: string | null,"connection"?: Json | null,"created_at"?: string,"description"?: string | null,"icon"?: string | null,"id"?: string,"milestones"?: NonNullable<Json>,"motivation"?: string | null,"position"?: number,"progress_kind"?: string,"reflection"?: string | null,"renewed_from"?: string | null,"revision"?: number,"ritual_ids"?: (string)[],"start_date"?: string,"status"?: string,"target"?: number | null,"target_date"?: string | null,"task_ids"?: (string)[],"timeframe"?: string,"title"?: string,"unit"?: string | null,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
-                    
+                    {
+      foreignKeyName: "aspirations_renewed_from_fkey"
+      columns: ["renewed_from"]
+isOneToOne: false
+      referencedRelation: "aspirations"
+      referencedColumns: ["id"]
+    }
                   ]
                 },"astrology_activity": {
                   Row: {

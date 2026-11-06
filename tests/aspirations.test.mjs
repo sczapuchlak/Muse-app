@@ -105,3 +105,66 @@ test('Rituals keeps Habits intact and adds Aspirations as a tab',()=>{
  assert.equal(progressText(asp({progressKind:'numeric',unit:'dollars'}),{percent:0,current:null,target:3000,unit:'dollars',source:'you',automatic:false,available:true}),'0 of 3,000 dollars');
  assert.equal(progressText(asp(),{percent:null,current:0,target:0,unit:'milestones',source:'you',automatic:false,available:true,note:'Add a milestone to start measuring'}),'Add a milestone to start measuring');
 });
+
+test('renewal starts a new period and never touches the earlier one',()=>{
+ assert.deepEqual(P.nextPeriod({timeframe:'year',targetDate:'2026-12-31',startDate:'2026-01-01'}),{start:'2027-01-01',target:'2027-12-31'});
+ assert.deepEqual(P.nextPeriod({timeframe:'month',targetDate:'2026-12-31',startDate:'2026-12-01'}),{start:'2027-01-01',target:'2027-01-31'});
+ assert.deepEqual(P.nextPeriod({timeframe:'month',targetDate:'2027-01-31',startDate:'2027-01-01'}),{start:'2027-02-01',target:'2027-02-28'});
+ assert.deepEqual(P.nextPeriod({timeframe:'quarter',targetDate:'2026-12-31',startDate:'2026-10-01'}),{start:'2027-01-01',target:'2027-03-31'});
+ assert.deepEqual(P.nextPeriod({timeframe:'quarter',targetDate:'2026-06-30',startDate:'2026-04-01'}),{start:'2026-07-01',target:'2026-09-30'});
+ assert.equal(P.nextPeriod({timeframe:'someday',targetDate:null,startDate:'2026-01-01'}),null,'open-ended goals continue rather than renew');
+ const original=asp({timeframe:'year',targetDate:'2026-12-31',status:'completed',completedOn:'2026-12-20',reflection:'Lovely',celebrated:['p25','p100'],renewedFrom:null,
+  progressKind:'connected',connection:{kind:'reading-challenge',year:'2026'},milestones:[{id:'m1',title:'Classics',completedOn:'2026-05-01',weight:2,notes:'old notes',targetDate:'2026-06-01'}]});
+ const frozen=JSON.stringify(original);
+ const next=P.renewedAspiration(original,'new-id-123456','2027-01-01T00:00:00Z');
+ assert.equal(JSON.stringify(original),frozen,'the earlier period is unchanged');
+ assert.deepEqual([next.id,next.renewedFrom,next.status,next.completedOn,next.reflection,next.revision,next.startDate,next.targetDate],['new-id-123456',original.id,'active',null,null,0,'2027-01-01','2027-12-31']);
+ assert.deepEqual(next.celebrated,[],'the new period celebrates its own progress');
+ assert.deepEqual(next.connection,{kind:'reading-challenge',year:'2027'},'the next year’s challenge');
+ assert.deepEqual(next.milestones.map(m=>[m.title,m.completedOn,m.weight,m.notes,m.targetDate]),[['Classics',undefined,2,undefined,undefined]],'steps carry over unchecked, without old notes or dates');
+ assert.notEqual(next.milestones[0].id,'m1');
+ assert.equal(P.canRenew(original,[original]),true);assert.equal(P.canRenew(original,[original,next]),false,'renew once');
+ const third={...P.renewedAspiration(next,'third-id-99','2028-01-01T00:00:00Z')};
+ assert.deepEqual(P.renewalChain(next,[third,original,next]).map(a=>a.id),[original.id,next.id,third.id],'every period, oldest first');
+});
+
+test('manual order saves only what moved',()=>{
+ const list=['a','b','c','d'].map((id,i)=>asp({id,position:(i+1)*10}));
+ const changed=P.reorder(list,'d',0);
+ assert.deepEqual(changed.map(a=>[a.id,a.position]),[['d',10],['a',20],['b',30],['c',40]]);
+ assert.deepEqual(P.reorder(list,'b',1),[],'dropping in place saves nothing');
+ assert.deepEqual(P.reorder(list,'a',1).map(a=>a.id),['b','a']);
+ assert.deepEqual(P.sortAspirations(changed.concat([]),'custom',()=>null).map(a=>a.id),['d','a','b','c']);
+});
+
+test('milestone details: target dates feed Coming up, weights shape progress',()=>{
+ const a=asp({milestones:[{id:'1',title:'Pattern',targetDate:'2026-11-20',description:'Size 8',notes:'Ask Mom',taskId:'t1'},{id:'2',title:'Sew',weight:3,completedOn:'2026-11-02'}]});
+ assert.deepEqual(P.attention([a],today).upcomingMilestones.map(x=>x.milestone.title),['Pattern']);
+ assert.equal(P.aspirationProgress(a,{updates:[],today}).percent,75,'a 3-step milestone counts three times');
+ assert.equal(P.attention([asp({milestones:[{id:'x',title:'Far',targetDate:'2027-06-01'}]})],today).upcomingMilestones.length,0,'only the next 30 days');
+});
+
+test('Insights trends follow the selected range and count finishing on time honestly',()=>{
+ const range={start:'2026-10-01',end:'2026-12-31'};
+ const list=[asp({id:'a',category:'Creative',targetDate:'2026-11-30',status:'completed',completedOn:'2026-11-20',milestones:[{id:'1',title:'x',completedOn:'2026-10-05'},{id:'2',title:'y',completedOn:'2026-08-01'}]}),
+  asp({id:'b',category:'Learning',targetDate:'2026-12-15',status:'completed',completedOn:'2027-01-03'}),
+  asp({id:'c',category:'Learning',targetDate:'2026-12-31'}),asp({id:'d',category:'Home',targetDate:'2026-11-01',status:'archived'}),asp({id:'e',targetDate:null,timeframe:'someday'})];
+ const t=P.aspirationTrends(list,range);
+ assert.deepEqual([t.dueCount,t.dueCompletedOnTime],[3,1],'archived-unfinished and open-ended goals are not “due”; a late finish is not on time');
+ assert.equal(Math.round(t.completionRate*100),33);
+ assert.deepEqual(t.milestones.map(x=>x.milestone.id),['1'],'only milestones in range');
+ assert.deepEqual(t.byMonth,[{month:'2026-10',completed:0,milestones:1},{month:'2026-11',completed:1,milestones:0}]);
+ assert.deepEqual(t.categories.map(c=>[c.category,c.completed,c.milestones,c.active]),[['Creative',1,1,1],['Learning',0,0,1]],'archived-unfinished Home is left out');
+ assert.equal(P.aspirationTrends([],range).completionRate,null,'nothing due: no rate invented');
+});
+
+test('the renewal migration keeps history and ownership safe; surfaces are wired',()=>{
+ const sql=read('supabase/migrations/20261115000100_aspiration_renewals.sql');
+ assert.match(sql,/add column renewed_from uuid references public\.aspirations on delete set null/,'deleting an old period never deletes the new one');
+ assert.match(sql,/create unique index aspirations_one_renewal/);assert.match(sql,/aspiration_renewal_owner/);assert.doesNotMatch(sql,/\bdrop |delete from|update public\./i,'additive only');
+ assert.match(read('components/insights/Insights.tsx'),/<PlansInsights [^>]*\/><AspirationInsights range=\{range\}\/>/);
+ const detail=read('components/rituals/aspirations/AspirationDetail.tsx');assert.match(detail,/function MilestoneForm/);assert.match(detail,/Renew for \{renewLabel\}/);
+ const home=read('components/rituals/aspirations/Aspirations.tsx');assert.match(home,/draggable=\{!!arrange&&!arrange\.busy\}/);assert.match(home,/Move \$\{a\.title\} earlier/,'a keyboard and touch alternative to dragging');
+ const {periodLabel}=load('components/rituals/aspirations/parts');
+ assert.deepEqual([periodLabel({timeframe:'year',startDate:'2026-01-01',targetDate:'2026-12-31'}),periodLabel({timeframe:'quarter',startDate:'2026-10-01',targetDate:'2026-12-31'}),periodLabel({timeframe:'month',startDate:'2026-11-01',targetDate:'2026-11-30'})],['2026','Q4 2026','November 2026']);
+});

@@ -23,6 +23,8 @@ export type Aspiration={
  startDate:string;targetDate:string|null;timeframe:Timeframe;status:AspirationStatus;progressKind:ProgressKind;
  target:number|null;unit:string|null;connection:AspirationConnection|null;milestones:Milestone[];
  ritualIds:string[];taskIds:string[];reflection:string|null;completedOn:string|null;celebrated:string[];position:number;
+ /** The aspiration this one renews (a new period); the earlier one keeps its own history. */
+ renewedFrom:string|null;
  revision:number;createdAt:string;updatedAt:string;
 };
 
@@ -45,12 +47,12 @@ const asConnection=(v:unknown):AspirationConnection|null=>{if(!v||typeof v!=='ob
 export function fromRow(r:AspirationRow):Aspiration{
  return {id:r.id,title:r.title,description:r.description,motivation:r.motivation,category:r.category,icon:r.icon,accent:r.accent,startDate:r.start_date,targetDate:r.target_date,
   timeframe:r.timeframe as Timeframe,status:r.status as AspirationStatus,progressKind:r.progress_kind as ProgressKind,target:r.target,unit:r.unit,connection:asConnection(r.connection),
-  milestones:asMilestones(r.milestones),ritualIds:r.ritual_ids,taskIds:r.task_ids,reflection:r.reflection,completedOn:r.completed_on,celebrated:r.celebrated,position:r.position,
+  milestones:asMilestones(r.milestones),ritualIds:r.ritual_ids,taskIds:r.task_ids,reflection:r.reflection,completedOn:r.completed_on,celebrated:r.celebrated,position:r.position,renewedFrom:r.renewed_from,
   revision:r.revision,createdAt:r.created_at,updatedAt:r.updated_at};
 }
 export function toRow(a:Aspiration){
  return {id:a.id,title:a.title.trim(),description:a.description?.trim()||null,motivation:a.motivation?.trim()||null,category:a.category.trim()||'Personal',icon:a.icon||null,accent:a.accent||null,
   start_date:a.startDate,target_date:a.targetDate||null,timeframe:a.timeframe,status:a.status,progress_kind:a.progressKind,target:a.target,unit:a.unit?.trim()||null,
   connection:a.connection,milestones:a.milestones,ritual_ids:a.ritualIds,task_ids:a.taskIds,reflection:a.reflection?.trim()||null,completed_on:a.status==='completed'||a.status==='archived'?(a.completedOn??null):null,
-  celebrated:a.celebrated,position:a.position};
+  celebrated:a.celebrated,position:a.position,renewed_from:a.renewedFrom};
 }

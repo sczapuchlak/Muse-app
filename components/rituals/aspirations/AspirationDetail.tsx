@@ -7,14 +7,15 @@ import type {PlannedTask} from '@/lib/models';
 import type {RitualState} from '@/lib/rituals';
 import {statusLabels,type Aspiration,type AspirationUpdate,type Milestone} from '@/lib/aspirations/models';
 import {habitConsistency,milestoneProgress,progressHistory,type Progress} from '@/lib/aspirations/progress';
-import {ProgressRing,progressText} from './parts';
+import {ProgressRing,periodLabel,progressText} from './parts';
 
 type Actions={save:(a:Aspiration)=>Promise<Aspiration|null>;addUpdate:(u:Omit<AspirationUpdate,'createdAt'>)=>Promise<AspirationUpdate|null>;removeUpdate:(id:string)=>Promise<boolean|null>;remove:(a:Aspiration)=>Promise<boolean|null>};
 
 /** One aspiration, opened: progress, milestones, journal, supporting habits, linked tasks and finishing. */
-export function AspirationDetail({a,progress,updates,ritualState,tasks,today,busy,error,actions,onEdit,onClose,onMilestoneDone,onCompleted}:{a:Aspiration;progress:Progress;updates:AspirationUpdate[];ritualState:RitualState;tasks:PlannedTask[];today:string;busy:boolean;error:string;
+export function AspirationDetail({a,progress,updates,ritualState,tasks,today,busy,error,actions,onEdit,onClose,onMilestoneDone,onCompleted,periods=[a],renewLabel,onRenew,onOpenPeriod}:{periods?:Aspiration[];renewLabel?:string|null;onRenew?:()=>void;onOpenPeriod?:(id:string)=>void;a:Aspiration;progress:Progress;updates:AspirationUpdate[];ritualState:RitualState;tasks:PlannedTask[];today:string;busy:boolean;error:string;
  actions:Actions;onEdit:()=>void;onClose:()=>void;onMilestoneDone:(m:Milestone)=>void;onCompleted:(a:Aspiration)=>void}){
  const [value,setValue]=useState(''),[note,setNote]=useState(''),[on,setOn]=useState(today),[newMilestone,setNewMilestone]=useState(''),[finishing,setFinishing]=useState(false),[reflection,setReflection]=useState(a.reflection??'');
+ const [editingMilestone,setEditingMilestone]=useState<string|null>(null);
  const [confirmDelete,setConfirmDelete]=useState(false),[habitPick,setHabitPick]=useState(''),[taskSearch,setTaskSearch]=useState('');
  const journal=updates.filter(u=>u.aspirationId===a.id).sort((x,y)=>y.recordedOn.localeCompare(x.recordedOn)||y.createdAt.localeCompare(x.createdAt));
  const history=progressHistory(a,updates),m=milestoneProgress(a),valued=a.progressKind==='numeric'||a.progressKind==='manual';
@@ -31,6 +32,7 @@ export function AspirationDetail({a,progress,updates,ritualState,tasks,today,bus
  return <MuseModal id="aspiration-detail" label={a.title} title={`${a.icon?`${a.icon} `:''}${a.title}`} returnFocus={null} onClose={onClose} size="tall">
   <div className="muse-aspiration-detail" data-accent={a.accent??'primary'}>
    <p className="muse-aspiration-meta"><span className="muse-aspiration-chip" data-status={a.status}>{statusLabels[a.status]}</span>{a.category}{a.targetDate?` · by ${dateLabel(a.targetDate)}`:' · someday'}{a.completedOn?` · finished ${dateLabel(a.completedOn)}`:''}</p>
+   {periods.length>1&&<nav className="muse-aspiration-periods" aria-label="Periods of this aspiration"><span className="small-label">Periods</span>{periods.map(p=><button key={p.id} type="button" className="muse-aspiration-period" aria-current={p.id===a.id||undefined} disabled={p.id===a.id} onClick={()=>onOpenPeriod?.(p.id)}>{periodLabel(p)}{p.completedOn?' ✓':''}</button>)}</nav>}
    {a.motivation&&<blockquote className="muse-aspiration-why">{a.motivation}</blockquote>}
    {a.description&&<p className="muse-aspiration-notes">{a.description}</p>}
    <section className="muse-aspiration-progress" aria-label="Progress"><ProgressRing percent={progress.percent} accent={a.accent}/><div>
@@ -48,9 +50,11 @@ export function AspirationDetail({a,progress,updates,ritualState,tasks,today,bus
    {!valued&&open&&<form className="muse-aspiration-record" onSubmit={e=>{e.preventDefault();void record();}}><h3>Add a note</h3><div className="muse-aspiration-row"><label>Note<input id="aspiration-update-note" maxLength={1000} value={note} placeholder="A small win, a snag, a thought" onChange={e=>setNote(e.target.value)}/></label><button type="submit" className="muse-button" disabled={busy||!note.trim()}>Add</button></div></form>}
 
    <section aria-label="Milestones"><h3>Milestones {m.total?<small className="small-label">· {m.done} of {m.total}</small>:null}</h3>
-    {a.milestones.length?<ol className="muse-aspiration-milestones">{a.milestones.map((ms,i)=><li key={ms.id} data-done={!!ms.completedOn||undefined}>
-     <label><input type="checkbox" checked={!!ms.completedOn} disabled={busy} onChange={()=>void toggleMilestone(ms)}/><span>{ms.title}{ms.completedOn?<small> · {dateLabel(ms.completedOn)}</small>:ms.targetDate?<small> · by {dateLabel(ms.targetDate)}</small>:null}</span></label>
-     <span className="muse-aspiration-milestone-tools"><button type="button" className="text-button" aria-label={`Move ${ms.title} up`} disabled={busy||i===0} onClick={()=>move(i,-1)}>↑</button><button type="button" className="text-button" aria-label={`Move ${ms.title} down`} disabled={busy||i===a.milestones.length-1} onClick={()=>move(i,1)}>↓</button><button type="button" className="text-button" aria-label={`Remove ${ms.title}`} disabled={busy} onClick={()=>void save({milestones:a.milestones.filter(x=>x.id!==ms.id)})}>×</button></span></li>)}</ol>
+    {a.milestones.length?<ol className="muse-aspiration-milestones">{a.milestones.map((ms,i)=><li key={ms.id} data-done={!!ms.completedOn||undefined} data-editing={editingMilestone===ms.id||undefined}>
+     <div className="muse-aspiration-milestone-row"><label><input type="checkbox" checked={!!ms.completedOn} disabled={busy} onChange={()=>void toggleMilestone(ms)}/><span>{ms.title}{ms.completedOn?<small> · {dateLabel(ms.completedOn)}</small>:ms.targetDate?<small> · by {dateLabel(ms.targetDate)}</small>:null}{ms.weight&&ms.weight!==1?<small> · counts ×{ms.weight}</small>:null}</span></label>
+     <span className="muse-aspiration-milestone-tools"><button type="button" className="text-button" aria-expanded={editingMilestone===ms.id} aria-label={`Edit ${ms.title}`} disabled={busy} onClick={()=>setEditingMilestone(editingMilestone===ms.id?null:ms.id)}>Edit</button><button type="button" className="text-button" aria-label={`Move ${ms.title} up`} disabled={busy||i===0} onClick={()=>move(i,-1)}>↑</button><button type="button" className="text-button" aria-label={`Move ${ms.title} down`} disabled={busy||i===a.milestones.length-1} onClick={()=>move(i,1)}>↓</button><button type="button" className="text-button" aria-label={`Remove ${ms.title}`} disabled={busy} onClick={()=>void save({milestones:a.milestones.filter(x=>x.id!==ms.id)})}>×</button></span></div>
+     {editingMilestone!==ms.id&&(ms.description||ms.notes||ms.taskId)&&<div className="muse-aspiration-milestone-extra">{ms.description&&<p>{ms.description}</p>}{ms.notes&&<p className="small-label">{ms.notes}</p>}{ms.taskId&&(()=>{const t=tasks.find(x=>x.id===ms.taskId);return <p className="small-label">Task: {t?`${t.complete?'✓ ':''}${t.title}`:'no longer in the Planner'}</p>;})()}</div>}
+     {editingMilestone===ms.id&&<MilestoneForm milestone={ms} tasks={linkedTasks} busy={busy} onCancel={()=>setEditingMilestone(null)} onSave={next=>void save({milestones:a.milestones.map(x=>x.id===ms.id?next:x)}).then(s=>{if(s)setEditingMilestone(null);})}/>}</li>)}</ol>
      :<p className="small-label">{a.progressKind==='milestones'?'Break it into a few steps. Progress follows them.':'Optional: a few steps along the way.'}</p>}
     {open&&<form className="muse-aspiration-row" onSubmit={e=>{e.preventDefault();if(newMilestone.trim())void save({milestones:[...a.milestones,{id:crypto.randomUUID(),title:newMilestone.trim().slice(0,120)}]}).then(s=>{if(s)setNewMilestone('');});}}>
      <label className="sr-only" htmlFor="aspiration-new-milestone">New milestone</label><input id="aspiration-new-milestone" maxLength={120} value={newMilestone} placeholder="Add a milestone" onChange={e=>setNewMilestone(e.target.value)}/><button type="submit" className="muse-button" disabled={busy||!newMilestone.trim()}>Add</button></form>}
@@ -85,6 +89,7 @@ export function AspirationDetail({a,progress,updates,ritualState,tasks,today,bus
    {error&&<p role="alert" className="muse-aspiration-error">{error}</p>}
    <div className="muse-aspiration-actions">
     {open&&!finishing&&<button type="button" className="muse-button button-primary" disabled={busy} onClick={()=>setFinishing(true)}>Mark complete…</button>}
+    {renewLabel&&onRenew&&<button type="button" className="muse-button" disabled={busy} onClick={onRenew}>Renew for {renewLabel}</button>}
     <button type="button" className="muse-button" onClick={onEdit}>Edit</button>
     {a.status==='active'&&<button type="button" className="text-button" disabled={busy} onClick={()=>void save({status:'paused'})}>Pause</button>}
     {(a.status==='paused'||a.status==='planned')&&<button type="button" className="text-button" disabled={busy} onClick={()=>void save({status:'active'})}>{a.status==='paused'?'Resume':'Start'}</button>}
@@ -95,4 +100,21 @@ export function AspirationDetail({a,progress,updates,ritualState,tasks,today,bus
    </div>
   </div>
  </MuseModal>;
+}
+
+/** Details for one milestone: target date (feeds "Coming up"), description, notes, weight and a linked task. */
+function MilestoneForm({milestone,tasks,busy,onSave,onCancel}:{milestone:Milestone;tasks:PlannedTask[];busy:boolean;onSave:(m:Milestone)=>void;onCancel:()=>void}){
+ const [m,setM]=useState<Milestone>(milestone);const set=(p:Partial<Milestone>)=>setM(x=>({...x,...p}));const id=`milestone-${milestone.id}`;
+ const weightOk=m.weight===undefined||(m.weight>0&&m.weight<=100);
+ return <form className="muse-aspiration-milestone-form" onSubmit={e=>{e.preventDefault();if(!m.title.trim()||!weightOk)return;
+  const clean:Milestone={id:m.id,title:m.title.trim().slice(0,120),...(m.completedOn?{completedOn:m.completedOn}:{}),...(m.targetDate?{targetDate:m.targetDate}:{}),...(m.description?.trim()?{description:m.description.trim().slice(0,500)}:{}),...(m.notes?.trim()?{notes:m.notes.trim().slice(0,1000)}:{}),...(m.weight&&m.weight!==1?{weight:m.weight}:{}),...(m.taskId?{taskId:m.taskId}:{})};onSave(clean);}}>
+  <label>Milestone<input id={`${id}-title`} required maxLength={120} value={m.title} onChange={e=>set({title:e.target.value})}/></label>
+  <div className="muse-aspiration-row"><label>Target date<input id={`${id}-date`} type="date" value={m.targetDate??''} onChange={e=>set({targetDate:e.target.value||undefined})}/></label>
+   <label>Counts as <small className="small-label">· steps of progress</small><input id={`${id}-weight`} type="number" min={0.5} max={100} step={0.5} value={m.weight??1} onChange={e=>set({weight:e.target.value===''?undefined:Number(e.target.value)})}/></label></div>
+  <label>Description <small className="small-label">· optional</small><input id={`${id}-description`} maxLength={500} value={m.description??''} onChange={e=>set({description:e.target.value})}/></label>
+  <label>Notes <small className="small-label">· optional</small><textarea id={`${id}-notes`} rows={2} maxLength={1000} value={m.notes??''} onChange={e=>set({notes:e.target.value})}/></label>
+  <label>Linked task <small className="small-label">· from this aspiration’s Planner tasks</small><select id={`${id}-task`} value={m.taskId??''} onChange={e=>set({taskId:e.target.value||undefined})}><option value="">None</option>{tasks.map(t=><option key={t.id} value={t.id}>{t.title}</option>)}</select></label>
+  {!weightOk&&<p role="alert" className="muse-aspiration-error">A milestone counts as between 0.5 and 100 steps.</p>}
+  <div className="muse-aspiration-actions"><button type="submit" className="muse-button" disabled={busy||!m.title.trim()||!weightOk}>Save milestone</button><button type="button" className="text-button" onClick={onCancel}>Cancel</button></div>
+ </form>;
 }
