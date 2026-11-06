@@ -31,3 +31,21 @@
 .muse-app-shell[data-module="welcome"] :is(.muse-rail,.muse-bottom-navigation,.muse-global-bar){display:none}
 .muse-app-shell[data-module="welcome"] .muse-app-main{margin-left:0;padding:0}
 .muse-app-shell[data-module="welcome"][data-rail]{--muse-rail-width:0px}
+/* "Take Muse with you": a compact, optional install note inside the final step's card. */
+.muse-take-muse{display:grid;gap:10px;margin-top:4px;padding:14px;border:1px solid var(--glass-border);border-radius:var(--control-radius);background:color-mix(in srgb,var(--surface-control) 70%,transparent)}
+.muse-take-muse-head{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:start}
+.muse-take-muse-icon{display:grid;justify-items:center;gap:4px}
+.muse-take-muse-icon img{display:block;width:52px;height:52px;border-radius:12px;box-shadow:0 6px 16px color-mix(in srgb,#000 30%,transparent),0 0 0 1px color-mix(in srgb,var(--foreground) 12%,transparent)}
+.muse-take-muse-icon small{font:500 .68rem var(--font-ui);color:var(--text-muted)}
+.muse-take-muse h3{display:block;margin:0 0 4px;font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-title-weight);font-size:1.08rem;line-height:1.3}
+.muse-take-muse-head p{margin:0;font-size:.86rem;line-height:1.5;color:var(--text-muted)}
+.muse-take-muse>.muse-button{justify-self:start}
+.muse-take-muse-how summary{cursor:pointer;font:600 .84rem var(--font-ui);color:var(--foreground);border-radius:6px}
+.muse-take-muse-how summary:focus-visible{outline:2px solid var(--focus-ring,var(--selected-border));outline-offset:2px}
+.muse-take-muse-how[open] summary{margin-bottom:8px}
+.muse-take-muse-guide{display:grid;gap:4px;margin-bottom:8px}
+.muse-take-muse-guide ol{margin:0;padding-left:1.25em;display:grid;gap:3px;font-size:.86rem;line-height:1.45}
+.muse-take-muse>.small-label,.muse-take-muse-guide .small-label{margin:0}
+.muse-take-muse-done{margin:0;font-size:.88rem}
+@media (max-width:600px){.muse-take-muse{padding:12px}.muse-take-muse-head{gap:12px}}
+.muse-take-muse h3>svg,.muse-take-muse h3>span:first-child{display:inline-block;margin-right:6px;vertical-align:-1px}

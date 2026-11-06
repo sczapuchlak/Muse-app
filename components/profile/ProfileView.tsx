@@ -1,7 +1,8 @@
 "use client";
 import type {CSSProperties,ReactNode} from 'react';
 import {gradientCss} from '@/lib/profile/gradients';
-import {profileBadges,type ProfileSection} from '@/lib/profile/model';
+import type {ProfileSection} from '@/lib/profile/model';
+import {badgeById,badgeAccent,normalizeBadges,type ProfileBadge} from '@/lib/profile/badges';
 import {MuseIcon} from '../MuseIcon';
 import {MuseStar} from '../MuseStar';
 import {MuseAvatar} from './MuseAvatar';
@@ -13,11 +14,12 @@ export type ProfileViewData={displayName:string;username:string;avatarId:string;
 /** The profile as a little museum: banner, portrait, an introduction, badges and the Showcases themselves. */
 export function ProfileView({data,toolbar,showcaseActions,emptyShowcases,hiddenNote=false}:{data:ProfileViewData;toolbar?:ReactNode;showcaseActions?:(id:string)=>ReactNode;emptyShowcases?:ReactNode;hiddenNote?:boolean}){
  const sections=data.sections.filter(s=>!s.hidden||hiddenNote);
- const badges=data.badges.map(id=>profileBadges.find(b=>b.id===id)).filter((b):b is typeof profileBadges[number]=>!!b);
+ const badges=normalizeBadges(data.badges).map(id=>badgeById(id)).filter((b):b is ProfileBadge=>!!b);
+ const badgeSection=data.sections.find(s=>s.id==='badges');const showBadges=badges.length>0&&(!badgeSection?.hidden||hiddenNote);
  const block=(section:ProfileSection)=>{
   const muted=section.hidden?' muse-profile-hidden-section':'';
   if(section.id==='about')return (data.bio||section.hidden)&&<section key="about" className={`muse-profile-about${muted}`} aria-label="About me">{section.hidden&&<p className="muse-profile-hidden-label">Hidden from friends</p>}{data.bio?<p className="type-reading">{data.bio}</p>:<p className="muse-atelier-hint">No introduction yet.</p>}</section>;
-  if(section.id==='badges')return (badges.length>0||section.hidden)&&<section key="badges" className={`muse-profile-badges${muted}`} aria-label="Badges">{section.hidden&&<p className="muse-profile-hidden-label">Hidden from friends</p>}<ul>{badges.map(b=><li key={b.id}><MuseIcon name={b.icon} size={16} treatment="prismatic"/>{b.label}</li>)}</ul></section>;
+  if(section.id==='badges')return null; // Badges live in the identity area, beside the name and tagline.
   return <section key="showcases" className={`muse-profile-showcases${muted}`} aria-label="Showcases">{section.hidden&&<p className="muse-profile-hidden-label">Hidden from friends</p>}
    {data.showcases.length?data.showcases.map(showcase=><ShowcaseView key={showcase.id} showcase={showcase} actions={showcaseActions?.(showcase.id)}/>):emptyShowcases}
   </section>;
@@ -31,6 +33,7 @@ export function ProfileView({data,toolbar,showcaseActions,emptyShowcases,hiddenN
      <h1 className="type-display">{data.displayName}</h1>
      <p className="muse-profile-handle">@{data.username}</p>
      {data.tagline&&<p className="muse-profile-tagline type-quote">{data.tagline}</p>}
+     {showBadges&&<ul className={`muse-profile-badges muse-badge-list${badgeSection?.hidden?' muse-profile-hidden-section':''}`} aria-label={badgeSection?.hidden?'Badges (hidden from friends)':'Badges'}>{badges.map(b=><li key={b.id} className="muse-badge" style={{'--badge':badgeAccent(b.category)} as CSSProperties}><MuseIcon name={b.icon} size={16} treatment="prismatic"/>{b.label}</li>)}</ul>}
     </div>
     {toolbar&&<div className="muse-profile-toolbar">{toolbar}</div>}
    </div>

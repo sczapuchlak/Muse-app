@@ -19,14 +19,15 @@ export function ThemeSwitcher({compact=false,variant="pill"}:{compact?:boolean;v
   const activeId = useSyncExternalStore(subscribeThemePreference, readThemePreference, serverThemePreference);
   const magic=useSyncExternalStore(subscribeMagic,readMagic,serverMagic);
   const material = useSyncExternalStore(subscribeMaterial, readMaterial, serverMaterial);
-  useLayoutEffect(() => { document.documentElement.setAttribute("data-material", material); }, [material]);
+  // Effects write the live stored values: during hydration the hooks briefly hold the server default, which would flash.
+  useLayoutEffect(() => { document.documentElement.setAttribute("data-material", readMaterial()); }, [material]);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const applied = useSyncExternalStore(subscribeApplied, readApplied, serverApplied);
   const official = themes.find((theme) => theme.id === activeId) ?? defaultTheme;
   const active = applied ? { ...official, name: applied.name } : official;
   // A profile being viewed may lend the page its theme; the person's own choice returns when they leave.
   const override = useSyncExternalStore(subscribeThemeOverride, readThemeOverride, serverThemeOverride);
-  useLayoutEffect(() => { document.documentElement.setAttribute("data-theme", override ?? activeId); }, [activeId, override]);
+  useLayoutEffect(() => { document.documentElement.setAttribute("data-theme", readThemeOverride() ?? readThemePreference()); }, [activeId, override]);
   function close() { setOpen(false); triggerRef.current?.focus(); }
 
   return (

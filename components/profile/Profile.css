@@ -27,8 +27,20 @@
 .muse-profile-body{display:grid;gap:26px}
 .muse-profile-about{max-width:70ch;padding:4px clamp(4px,1vw,10px)}
 .muse-profile-about p{margin:0;font-size:1.08rem}
-.muse-profile-badges ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
-.muse-profile-badges li{display:inline-flex;align-items:center;gap:7px;padding:7px 13px;border-radius:999px;border:1px solid var(--dl-line);background:var(--dl-surface);font:600 .82rem var(--font-ui)}
+/* Personality badges: the familiar Muse pill with its icon; the border carries the category accent (--badge). */
+.muse-badge-list{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.muse-badge{display:inline-flex;align-items:center;gap:7px;max-width:100%;min-height:34px;padding:6px 13px;border:1px solid color-mix(in oklab,var(--badge,var(--dl-line)) 80%,transparent);border-radius:999px;background:var(--dl-surface);color:var(--foreground);font:600 .82rem/1.25 var(--font-ui);text-align:left;overflow-wrap:anywhere}
+.muse-badge svg{flex:none}
+button.muse-badge{font-weight:500;cursor:pointer;transition:background-color .15s,box-shadow .15s,border-color .15s}
+button.muse-badge:hover:not(:disabled){background:color-mix(in oklab,var(--badge) 9%,var(--dl-surface))}
+button.muse-badge[aria-pressed=true]{border-color:var(--badge);box-shadow:0 0 0 1px var(--badge),0 0 12px color-mix(in oklab,var(--badge) 45%,transparent)}
+button.muse-badge:disabled{opacity:.42;cursor:not-allowed}
+button.muse-badge:focus-visible{outline:2px solid var(--badge);outline-offset:2px}
+.muse-profile-badges{margin-top:12px}
+.muse-badge-picker{display:grid;gap:16px;margin-top:10px}
+.muse-badge-category{min-width:0;margin:0;padding:0;border:0}
+.muse-badge-category legend{display:flex;align-items:center;gap:8px;margin-bottom:8px;padding:0;color:var(--text-muted);font:600 .72rem var(--font-ui);letter-spacing:.12em;text-transform:uppercase}
+.muse-badge-category legend::before{content:"";width:8px;height:8px;border-radius:50%;border:1.5px solid var(--badge);box-shadow:0 0 6px color-mix(in oklab,var(--badge) 60%,transparent)}
 .muse-profile-showcases{display:grid;gap:22px}
 .muse-profile-hidden-section{opacity:.55}
 .muse-profile-hidden-label{margin:0 0 6px;font-size:.75rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.12em}
@@ -61,7 +73,8 @@
 .muse-showcase-spotlight{display:grid;gap:16px}
 .muse-showcase-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,120px),1fr));gap:14px}
 .muse-showcase-item{display:grid;gap:8px;align-content:start;min-width:0}
-.muse-showcase-item[data-variant=card]{grid-template-columns:auto 1fr;align-items:center;gap:12px;padding:12px;border-radius:var(--dl-radius-tile);border:1px solid var(--dl-line);background:color-mix(in srgb,var(--dl-surface) 60%,transparent)}
+.muse-showcase-item[data-variant=card]{position:relative;overflow:hidden;grid-template-columns:auto 1fr;align-items:center;gap:14px;padding:14px 16px 14px 19px;border-radius:var(--dl-radius-tile);border:1px solid var(--dl-line);background:color-mix(in srgb,var(--dl-surface) 60%,transparent)}
+.muse-showcase-item[data-variant=card]::before{content:"";position:absolute;inset:0 auto 0 0;width:4px;background:var(--showcase-gradient);opacity:.9}
 .muse-showcase-item[data-variant=feature]{grid-template-columns:minmax(120px,190px) 1fr;align-items:center;gap:20px;padding:14px;border-radius:var(--dl-radius-panel);background:color-mix(in srgb,var(--showcase-glow) 7%,transparent)}
 .muse-showcase-item[data-variant=feature] .muse-showcase-copy strong{font-size:1.3rem}
 .muse-showcase-art{display:block;overflow:hidden;border-radius:10px;aspect-ratio:2/3;background:var(--surface-control);box-shadow:0 8px 20px color-mix(in srgb,#000 22%,transparent)}
@@ -147,9 +160,6 @@
 .muse-gradient-family button:hover{transform:scale(1.08)}
 .muse-gradient-family button[aria-checked=true]{box-shadow:0 0 0 2px var(--selected-border),0 0 0 5px color-mix(in srgb,var(--selected-border) 25%,transparent)}
 .muse-gradient-family button:focus-visible{outline:2px solid var(--focus-ring);outline-offset:3px}
-.muse-gradient-select{display:flex;align-items:center;gap:10px}
-.muse-gradient-swatch{flex:none;width:44px;height:30px;border-radius:9px;background:var(--swatch);box-shadow:0 0 0 1px var(--dl-line)}
-.muse-gradient-select select{flex:1;min-height:38px;padding:4px 10px;border:1px solid var(--dl-line);border-radius:10px;background:var(--surface-control);color:var(--foreground);font:500 .88rem var(--font-ui)}
 .muse-studio-step{display:flex;align-items:center;gap:10px;font:600 .95rem var(--font-ui)}
 .muse-studio-step>span{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--selected-background);border:1px solid var(--selected-border);color:var(--selected-text);font-size:.78rem}
 .muse-studio-icon{display:flex;flex-wrap:wrap;align-items:center;gap:12px}
@@ -208,6 +218,7 @@
 @media(max-width:1100px){.muse-customizer-layout{grid-template-columns:1fr}.muse-customizer-preview{position:static;order:-1}}
 @media(max-width:760px){
  .muse-profile-identity{grid-template-columns:1fr;justify-items:center;text-align:center}
+ .muse-profile-badges{justify-content:center}
  .muse-profile-toolbar{justify-content:center}
  .muse-profile-setup-form{grid-template-columns:1fr}
  .muse-item-picker-body{grid-template-columns:1fr}.muse-item-picker-detail{position:static}

@@ -13,6 +13,7 @@ import {compileTheme} from '@/lib/atelier/model';
 import {setIconGeometry} from '@/lib/atelier/icon-gradient';
 import {readRemoteAppearance,writeRemoteAppearance} from '@/lib/atelier/persistence';
 import {createMuseBrowserClient} from '@/lib/supabase/client';
+import {readThemeOverride,serverThemeOverride,subscribeThemeOverride} from '@/lib/theme-override';
 
 const STAMP_KEY='muse.appearance.updated';
 const readStamp=()=>{try{return window.localStorage.getItem(STAMP_KEY);}catch{return null;}};
@@ -38,9 +39,12 @@ export function AppearanceBridge({userId}:{userId:string}){
  const theme=useSyncExternalStore(subscribeThemePreference,readThemePreference,serverThemePreference);
  const material=useSyncExternalStore(subscribeMaterial,readMaterial,serverMaterial);
  const applied=useSyncExternalStore(subscribeApplied,readApplied,serverApplied);
- useLayoutEffect(()=>{document.documentElement.setAttribute('data-theme',applied?.definition.base??theme);},[theme,applied]);
- useLayoutEffect(()=>{document.documentElement.setAttribute('data-material',material);},[material]);
- useAtelierStyle('applied',applied?.definition??null);
+ // A profile on screen may lend the page its theme (lib/theme-override); the person's own appearance returns after.
+ const override=useSyncExternalStore(subscribeThemeOverride,readThemeOverride,serverThemeOverride);
+ // Write live stored values, never the hydration-time server default (that would flash the default theme).
+ useLayoutEffect(()=>{document.documentElement.setAttribute('data-theme',readThemeOverride()??readApplied()?.definition.base??readThemePreference());},[theme,applied,override]);
+ useAtelierStyle('applied',override?null:applied?.definition??null);
+ useLayoutEffect(()=>{document.documentElement.setAttribute('data-material',readMaterial());},[material]);
 
  useEffect(()=>{
   const client=createMuseBrowserClient();let cancelled=false,timer:ReturnType<typeof setTimeout>|undefined;

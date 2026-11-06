@@ -10,6 +10,7 @@ import {DailyDataProvider,DailyDateSync} from "./daily/DailyData";
 import type {DailyProfile} from "@/lib/data/daily-store";
 import { MuseAtmosphere } from "./MuseAtmosphere";
 import { MuseIcon } from "./MuseIcon";
+import { ProfileNavIcon } from "./social/ProfileNavIcon";
 import { MuseStar } from "./MuseStar";
 import { ThemeSwitcher } from "./ThemeSwitcher";
 import { GlassPopover } from "./GlassPopover";
@@ -30,11 +31,11 @@ import {LogoutButton} from "./auth/LogoutButton";
 import {MuseMagicBridge} from "./MuseMagic"
 import {AppearanceBridge} from "./atelier/AppearanceBridge";
 
-function NavDestination({ item, path, compact = false, onNavigate }: { item: NavItem; path: string; compact?: boolean; onNavigate?: () => void }) {
+function NavDestination({ item, path, compact = false, onNavigate, userId }: { item: NavItem; path: string; compact?: boolean; onNavigate?: () => void; userId: string }) {
   const active = isActiveItem(path, item);
   return <Link href={item.href} className="muse-nav-link muse-edge" aria-current={active ? "page" : undefined}
     aria-label={compact ? item.label : undefined} title={compact ? item.label : undefined} onClick={onNavigate}>
-    <MuseIcon name={item.icon} size={20} treatment="prismatic" /><span className="muse-nav-label">{item.label}</span>{active && <MuseStar size={17} className="muse-nav-active-star" />}
+    {item.id === "profile" ? <ProfileNavIcon userId={userId} /> : <MuseIcon name={item.icon} size={20} treatment="prismatic" />}<span className="muse-nav-label">{item.label}</span>{active && <MuseStar size={17} className="muse-nav-active-star" />}
   </Link>;
 }
 
@@ -60,12 +61,12 @@ function AppShellContent({ children, profile:initialProfile }: { children: React
           <nav className="muse-rail-navigation" aria-label="Main navigation">
             {desktopGroups.map((group) => <div className="muse-nav-group" key={group}>
               <p className="muse-nav-group-label">{group}{group === "Whimsy" && <MuseStar size={11} className="muse-nav-group-star" />}</p>
-              {navigation.filter((item) => item.group === group).map((item) => <NavDestination key={item.id} item={item} path={path} compact={collapsed} />)}
+              {navigation.filter((item) => item.group === group).map((item) => <NavDestination key={item.id} item={item} path={path} userId={profile.id} compact={collapsed} />)}
             </div>)}
           </nav>
           <div className="muse-rail-footer"><ThemeSwitcher compact={collapsed} variant="nav"/>
             <div className="muse-rail-utilities" aria-label="Account controls">
-              {navigation.filter((item) => item.group === "Tools" && item.id !== "appearance").map((item) => <NavDestination key={item.id} item={item} path={path} compact={collapsed} />)}
+              {navigation.filter((item) => item.group === "Tools" && item.id !== "appearance").map((item) => <NavDestination key={item.id} item={item} path={path} userId={profile.id} compact={collapsed} />)}
               <LogoutButton compact={collapsed}/>
             </div>
           </div>
@@ -85,7 +86,7 @@ function AppShellContent({ children, profile:initialProfile }: { children: React
           </button>
         </nav>
         <GlassPopover id="muse-more-navigation" label="More from Muse" open={moreOpen} anchorRef={moreRef} onClose={() => setMoreOpen(false)} width={340} align="end">
-          <div className="muse-more-destinations">{[...desktopGroups, "Tools" as const].map((group) => { const items = moreItems.filter((item) => item.group === group); return items.length ? <div className="muse-more-group" key={group} role="group" aria-label={group === "Tools" ? "Account" : group}>{group !== "Tools" && <p className="muse-nav-group-label">{group}</p>}{items.map((item) => <NavDestination key={item.id} item={item} path={path} onNavigate={() => setMoreOpen(false)} />)}</div> : null; })}<LogoutButton/></div>
+          <div className="muse-more-destinations">{[...desktopGroups, "Tools" as const].map((group) => { const items = moreItems.filter((item) => item.group === group); return items.length ? <div className="muse-more-group" key={group} role="group" aria-label={group === "Tools" ? "Account" : group}>{group !== "Tools" && <p className="muse-nav-group-label">{group}</p>}{items.map((item) => <NavDestination key={item.id} item={item} path={path} userId={profile.id} onNavigate={() => setMoreOpen(false)} />)}</div> : null; })}<LogoutButton/></div>
         </GlassPopover>
       </div></ConnectedRitualsProvider></RitualProvider></MoneyProvider></NourishProvider></WellnessProvider></PlannerProvider></NotesProvider></ConstellationsProvider></CollectionsDataProvider></WhimsyDataProvider></AstrologyDataProvider>
     </DailyDataProvider></MuseSessionProvider>

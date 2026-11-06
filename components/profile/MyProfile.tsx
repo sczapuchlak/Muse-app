@@ -26,7 +26,8 @@ export function MyProfile(){
  const appTheme=useSyncExternalStore(subscribeThemePreference,readThemePreference,serverThemePreference);
  const [preview,setPreview]=useState(false);const [friendView,setFriendView]=useState<ProfileViewData|null|'private'>(null);
  const [requests,setRequests]=useState(0);const [notice,setNotice]=useState('');
- useThemeOverride(me.details?.theme??null);
+ // Your own museum wears your own theme; only "Preview as a friend" shows the theme visitors see.
+ useThemeOverride(preview?me.details?.theme??null:null);
  const {bundle,loaded}=useShowcaseSources();
  const {client,userId,showcases,setShowcases}=me;
  // Quietly hide items whose source was deleted (and restore any that came back) whenever the owner visits.
@@ -84,7 +85,6 @@ function ProfileSetup({firstName,appTheme,hasIdentity,onCreate}:{firstName:strin
  const local=hasIdentity?null:localUsernameStatus(username);
  useEffect(()=>{if(hasIdentity||local)return;const timer=setTimeout(()=>{usernameStatus(client,username).then(status=>setRemote({name:username,status}),()=>{});},350);return()=>clearTimeout(timer);},[username,client,hasIdentity,local]);
  const status=local??(remote?.name===username?remote.status:null);
- useThemeOverride(theme);
  const ready=displayName.trim().length>0&&(hasIdentity||status==='available');
  return <main className="muse-page muse-profile-setup">
   <section className="muse-hero">
