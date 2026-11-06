@@ -2,7 +2,7 @@
  * Almanac content validation (#53). Runs in `npm test` and from `node scripts/almanac.mjs`, so a broken or off-voice
  * entry fails before anyone reviews it. Structural validity is not editorial approval.
  */
-import type {AlmanacEntry,AlmanacFile,FactType,SignalSpec,VariableFormat} from './types';
+import type {AlmanacFile,FactType,SignalSpec,VariableFormat} from './types';
 import {sensitivityRank} from './types';
 import {conditionsHold,placeholders,renderVariant} from './render';
 import {formatLimits,formatsBarredWhenSensitive,maxExclamationsPerEntry,tonesBarredWhenSensitive,voiceProblems} from './voice-rules';
