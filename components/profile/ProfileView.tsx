@@ -9,7 +9,7 @@ import {MuseAvatar} from './MuseAvatar';
 import {ShowcaseView,type ShowcaseViewData} from './ShowcaseView';
 import './Profile.css';
 
-export type ProfileViewData={displayName:string;username:string;avatarId:string;tagline:string;bio:string;bannerGradient:string;sections:ProfileSection[];badges:string[];showcases:ShowcaseViewData[]};
+export type ProfileViewData={creator?:boolean;displayName:string;username:string;avatarId:string;tagline:string;bio:string;bannerGradient:string;sections:ProfileSection[];badges:string[];showcases:ShowcaseViewData[]};
 
 /** The profile as a little museum: banner, portrait, an introduction, badges and the Showcases themselves. */
 export function ProfileView({data,toolbar,showcaseActions,emptyShowcases,hiddenNote=false}:{data:ProfileViewData;toolbar?:ReactNode;showcaseActions?:(id:string)=>ReactNode;emptyShowcases?:ReactNode;hiddenNote?:boolean}){
@@ -28,7 +28,7 @@ export function ProfileView({data,toolbar,showcaseActions,emptyShowcases,hiddenN
   <header className="muse-profile-hero">
    <div className="muse-profile-banner" style={{'--banner':gradientCss(data.bannerGradient)} as CSSProperties} aria-hidden="true"><MuseStar size={16}/><MuseStar size={10}/><MuseStar size={22}/></div>
    <div className="muse-profile-identity">
-    <MuseAvatar id={data.avatarId} size={124} label={`${data.displayName}'s avatar`} className="muse-profile-portrait"/>
+    <MuseAvatar id={data.avatarId} size={124} label={`${data.displayName}'s avatar`} className="muse-profile-portrait" creator={data.creator}/>
     <div className="muse-profile-names">
      <h1 className="type-display">{data.displayName}</h1>
      <p className="muse-profile-handle">@{data.username}</p>

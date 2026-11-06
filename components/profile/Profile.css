@@ -15,9 +15,11 @@
 .muse-profile-banner::after{content:"";position:absolute;inset:0;background:radial-gradient(60% 90% at 80% 10%,rgba(255,255,255,.28),transparent 60%),radial-gradient(40% 60% at 10% 100%,rgba(0,0,0,.25),transparent 70%),linear-gradient(transparent 55%,color-mix(in srgb,var(--background) 45%,transparent))}
 .muse-profile-banner>svg{position:absolute;z-index:1;color:#fff;opacity:.85}
 .muse-profile-banner>svg:nth-child(1){left:12%;top:24%}.muse-profile-banner>svg:nth-child(2){left:30%;top:58%}.muse-profile-banner>svg:nth-child(3){right:14%;top:30%}
-.muse-profile-identity{position:relative;display:grid;grid-template-columns:auto 1fr;align-items:end;gap:6px 22px;padding:0 clamp(18px,3vw,32px) clamp(18px,3vw,28px)}
+.muse-profile-identity{position:relative;display:grid;grid-template-columns:auto 1fr;align-items:start;gap:6px 22px;padding:0 clamp(18px,3vw,32px) clamp(18px,3vw,28px)}
 .muse-profile-portrait{margin-top:-62px;border:5px solid var(--floating-background);box-shadow:0 10px 30px color-mix(in srgb,#000 25%,transparent);background:var(--floating-background)}
-.muse-profile-names{min-width:0;padding-top:14px}
+.muse-profile-names{min-width:0;padding-top:16px}
+/* The creator's portrait: the gold ring replaces the plain frame, keeping the same overlap with the banner. */
+.muse-creator-ring.muse-profile-portrait{border:0;padding:7px;background:var(--floating-background);box-shadow:0 10px 30px color-mix(in srgb,#000 25%,transparent)}
 .muse-profile-names h1{margin:0;font-size:clamp(2rem,4vw,2.9rem);line-height:1.05}
 .muse-profile-handle{margin:2px 0 0;font-size:.9rem;font-weight:600;color:var(--dl-kicker);letter-spacing:.02em}
 .muse-profile-tagline{margin:8px 0 0;font-size:1.1rem;color:var(--text-muted)}
@@ -37,7 +39,16 @@ button.muse-badge[aria-pressed=true]{border-color:var(--badge);box-shadow:0 0 0 
 button.muse-badge:disabled{opacity:.42;cursor:not-allowed}
 button.muse-badge:focus-visible{outline:2px solid var(--badge);outline-offset:2px}
 .muse-profile-badges{margin-top:12px}
-.muse-badge-picker{display:grid;gap:16px;margin-top:10px}
+.muse-badge-picker{display:grid;gap:12px;margin-top:10px}
+.muse-badge-chosen{display:grid;gap:6px;padding:10px 12px;border:1px dashed var(--glass-border);border-radius:var(--control-radius)}
+.muse-badge-chosen p{margin:0}
+.muse-badge-search{display:flex;align-items:center;gap:8px;min-height:40px;padding:0 12px;border:1px solid var(--glass-border);border-radius:999px;background:var(--surface-control);color:var(--text-muted)}
+.muse-badge-search input{flex:1;min-width:0;border:0;background:transparent;color:var(--foreground);font:inherit;outline:none}
+.muse-badge-search:focus-within{outline:2px solid var(--focus-ring,var(--selected-border));outline-offset:2px}
+.muse-badge-tabs{display:flex;flex-wrap:wrap;gap:6px}
+.muse-badge-tabs>button{flex:none;display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:4px 12px;border:1px solid color-mix(in oklab,var(--badge) 45%,transparent);border-radius:999px;background:transparent;color:var(--text-muted);font:600 .74rem var(--font-ui);cursor:pointer}
+.muse-badge-tabs>button[aria-selected=true]{color:var(--foreground);border-color:var(--badge);box-shadow:0 0 10px -2px color-mix(in oklab,var(--badge) 55%,transparent);background:color-mix(in oklab,var(--badge) 10%,transparent)}
+.muse-badge-tab-count{display:inline-grid;place-items:center;min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:var(--badge);color:#fff;font-size:.66rem}
 .muse-badge-category{min-width:0;margin:0;padding:0;border:0}
 .muse-badge-category legend{display:flex;align-items:center;gap:8px;margin-bottom:8px;padding:0;color:var(--text-muted);font:600 .72rem var(--font-ui);letter-spacing:.12em;text-transform:uppercase}
 .muse-badge-category legend::before{content:"";width:8px;height:8px;border-radius:50%;border:1.5px solid var(--badge);box-shadow:0 0 6px color-mix(in oklab,var(--badge) 60%,transparent)}

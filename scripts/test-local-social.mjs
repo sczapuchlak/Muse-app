@@ -33,7 +33,7 @@ try{
  must(await a.client.from('social_identities').update({discoverable:true}).eq('user_id',a.id));
  const found=must(await rpc(b,'social_search',{p_query:'@'+a.username.slice(0,4)}));
  check(found.length===1&&found[0].username===a.username,'discoverable people are found by username prefix');
- check(JSON.stringify(Object.keys(found[0]).sort())===JSON.stringify(['avatarId','displayName','id','relationship','username']),'search results never include auth ids or emails');
+ check(JSON.stringify(Object.keys(found[0]).sort())===JSON.stringify(['avatarId','creator','displayName','id','relationship','username']),'search results never include auth ids or emails');
  check(must(await rpc(b,'social_search',{p_query:'av'})).length===0,'searches need at least three characters');
  // Requests
  check(must(await rpc(b,'social_send_request',{p_target:a.pid}))==='outgoing','send a request');

@@ -1,9 +1,10 @@
 /* The chosen avatar in a thin sparkling gold ring (the same gold as the avatar picker's selection). */
 .muse-nav-avatar{position:relative;display:inline-grid;flex:none;place-items:center;margin:-3px;border-radius:50%}
 .muse-nav-avatar>img{display:block;border-radius:50%;object-fit:cover}
-.muse-nav-avatar::after{content:"";position:absolute;inset:0;border-radius:50%;padding:1.75px;background:conic-gradient(from var(--ring-turn,0deg),#fff4c2,#f5b52e,#ffe9a0,#c98a12,#fff8dc,#f2a91b,#fff4c2);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;filter:drop-shadow(0 0 3px rgba(250,204,21,.7));pointer-events:none}
-.muse-nav-avatar::before{content:"✦";position:absolute;z-index:1;top:-5px;right:-4px;font-size:9px;line-height:1;color:#fde68a;text-shadow:0 0 4px #facc15;pointer-events:none}
+.muse-nav-avatar:not([data-creator])::after{content:"";position:absolute;inset:0;border-radius:50%;box-shadow:0 0 0 1.5px var(--selected-border,var(--glass-edge))}
+.muse-nav-avatar[data-creator]::after{content:"";position:absolute;inset:0;border-radius:50%;padding:1.75px;background:conic-gradient(from var(--ring-turn,0deg),#fff4c2,#f5b52e,#ffe9a0,#c98a12,#fff8dc,#f2a91b,#fff4c2);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;filter:drop-shadow(0 0 3px rgba(250,204,21,.7));pointer-events:none}
+.muse-nav-avatar[data-creator]::before{content:"✦";position:absolute;z-index:1;top:-5px;right:-4px;font-size:9px;line-height:1;color:#fde68a;text-shadow:0 0 4px #facc15;pointer-events:none}
 @property --ring-turn{syntax:'<angle>';inherits:false;initial-value:0deg}
-@media(prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) .muse-nav-avatar::after{animation:muse-nav-ring 6s linear infinite}:root:not([data-magic=quiet]) .muse-nav-avatar::before{animation:muse-nav-twinkle 2.4s ease-in-out infinite}}
+@media(prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) .muse-nav-avatar[data-creator]::after{animation:muse-nav-ring 6s linear infinite}:root:not([data-magic=quiet]) .muse-nav-avatar[data-creator]::before{animation:muse-nav-twinkle 2.4s ease-in-out infinite}}
 @keyframes muse-nav-ring{to{--ring-turn:360deg}}
 @keyframes muse-nav-twinkle{0%,100%{opacity:.35;transform:scale(.8)}50%{opacity:1;transform:scale(1.1)}}

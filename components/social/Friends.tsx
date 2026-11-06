@@ -30,7 +30,7 @@ export function Friends(){
  if(me===undefined)return <main className="muse-page" aria-busy="true"><p className="small-label" role="status">Finding your people…</p></main>;
  if(me===null)return <main className="muse-page"><MusePageHeader title="Friends" description="Muse is private first. Friends are optional and always mutual."/><MuseEmptyState title="Create your profile first" headingLevel={2} action={<Link className="muse-button button-primary muse-edge" href="/profile">Create my profile</Link>}>Friends find you by your username, so you’ll pick one along with your avatar.</MuseEmptyState></main>;
  const card=(person:IdentityCard,actions:ReactNode,detail?:string)=><li key={person.id} className="muse-friend-card muse-panel" aria-busy={busy===person.id}>
-  <MuseAvatar id={person.avatarId} size={56} decorative/>
+  <MuseAvatar id={person.avatarId} size={56} decorative creator={person.creator}/>
   <span className="muse-friend-name"><strong>{person.displayName}</strong><small>@{person.username}{detail?` · ${detail}`:''}</small></span>
   <span className="muse-friend-actions">{confirm?.id===person.id?<><span className="small-label">{confirm.action==='block'?'Block? They won’t be able to find you or see anything you share.':'Remove this friend?'}</span><button type="button" className="muse-button muse-edge muse-atelier-danger" onClick={()=>act(person.id,()=>confirm.action==='block'?blockPerson(client,person.id):removeFriend(client,person.id),confirm.action==='block'?`Blocked ${person.displayName}.`:`Removed ${person.displayName}.`)}>{confirm.action==='block'?'Block':'Remove'}</button><button type="button" className="muse-button muse-edge" onClick={()=>setConfirm(null)}>Cancel</button></>:actions}</span>
  </li>;

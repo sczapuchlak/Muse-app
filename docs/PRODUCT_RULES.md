@@ -700,3 +700,9 @@ Stephanie approved importing the HeartYearning Dream Symbols Dataset with attrib
 - **Streaks celebrate consistency, never shame breaks.** Tiers at 3, 7, 14, 30, 100 and 365 use the existing streak count.
 - **Signature moments**: book completion ritual, three-star priority alignment, habit streak constellations, hydration ripple and goal moment, Side Quest seal and all-three completion, Tarot reveal and saved-reading chimes, saved-dream confirmation.
 
+## The creator mark and account dock — implemented on feature branch, awaiting review
+
+- **The creator mark is one of one.** A gold sparkle ring around the Muse creator's avatar, everywhere it appears (sidebar, profile, Stream, friends). It is a database flag (`social_identities.creator`) that members cannot set (not in the owner-updatable columns) and that a unique index limits to a single identity. It is granted once, deliberately, by the Muse team. Everyone else's sidebar avatar wears a quiet theme ring.
+- **Sidebar account area**: Stream, then the profile row labelled with the person's @username, then a dock of icons for Themes, Settings and Sign out.
+- **Badge picker**: chosen badges first (tap to remove), search, and one category at a time; same six-badge limit.
+

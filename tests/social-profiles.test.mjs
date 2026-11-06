@@ -132,3 +132,15 @@ test('the profile theme is page-scoped and restores the visitor’s own theme',(
  assert.match(prepaint.appearancePrePaintScript,/muse\.theme/);assert.match(prepaint.appearancePrePaintScript,/"astral"/);assert.match(prepaint.appearancePrePaintScript,/indexOf\(t\)>-1/,'only known theme ids');
  const nav=load('lib/navigation');const item=nav.navigation.find(n=>n.id==='profile');assert.equal(item.group,'Tools','My Profile lives in the account area');assert.ok(nav.mobileMoreIds.includes('profile'));
 });
+
+test('the creator mark is one of one and can never be self-assigned',()=>{
+ const sql=readFileSync(join(root,'supabase/migrations/20261111000100_creator_mark.sql'),'utf8');
+ assert.match(sql,/add column creator boolean not null default false/);
+ assert.match(sql,/create unique index social_identities_one_creator on public\.social_identities \(\(true\)\) where creator/,'one of one');
+ assert.match(sql,/'creator', i\.creator\)/,'identity cards carry it to friends');
+ assert.doesNotMatch(sql,/grant update/i,'not added to the owner-updatable columns');
+ const foundation=readFileSync(join(root,'supabase/migrations/20261109000100_social_foundation.sql'),'utf8');
+ assert.match(foundation,/grant update \(display_name, avatar_id, discoverable, participation\)/,'owners can only update their presentation');
+ const avatar=readFileSync(join(root,'components/profile/MuseAvatar.tsx'),'utf8');assert.match(avatar,/creator\?'':className/);assert.match(avatar,/muse-creator-ring/);
+ const nav=readFileSync(join(root,'components/social/ProfileNavIcon.css'),'utf8');assert.match(nav,/\.muse-nav-avatar\[data-creator\]::after\{/,'only the creator’s sidebar avatar is gold');
+});

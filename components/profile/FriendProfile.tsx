@@ -22,7 +22,7 @@ export function FriendProfile(){
  if(!view)return <main className="muse-page"><div className="muse-empty-state" data-variant="editorial"><MuseStar size={24}/><h1>This profile isn’t available</h1><p>It may be private, or you may not be friends yet.</p><Link className="muse-button muse-edge" href="/friends"><MuseIcon name="people" size={16}/>Friends</Link></div></main>;
  return <main className="muse-page muse-profile-page">
   <div className="muse-profile-status"><Link className="muse-button muse-edge" href="/friends"><MuseIcon name="arrow" size={16}/>Friends</Link><span>You’re visiting {view.identity.displayName}’s Muse. It’s shown in their theme.</span></div>
-  <ProfileView data={{displayName:view.identity.displayName,username:view.identity.username,avatarId:view.identity.avatarId,tagline:view.profile.tagline,bio:view.profile.bio,bannerGradient:view.profile.bannerGradient,sections:normalizeSections(view.profile.sections),badges:view.profile.badges,showcases:view.showcases.map(s=>({...s,items:s.items.map(i=>({id:i.id,display:i.display,note:i.note}))}))}}
+  <ProfileView data={{creator:view.identity.creator,displayName:view.identity.displayName,username:view.identity.username,avatarId:view.identity.avatarId,tagline:view.profile.tagline,bio:view.profile.bio,bannerGradient:view.profile.bannerGradient,sections:normalizeSections(view.profile.sections),badges:view.profile.badges,showcases:view.showcases.map(s=>({...s,items:s.items.map(i=>({id:i.id,display:i.display,note:i.note}))}))}}
    emptyShowcases={<p className="muse-atelier-hint">Nothing on display yet.</p>}/>
   <RecentStream authorId={view.identity.id} name={view.identity.displayName}/>
  </main>;

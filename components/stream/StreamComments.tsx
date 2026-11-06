@@ -24,7 +24,7 @@ export function StreamComments({postId,enabled,isAuthor,onCount}:{postId:string;
  return <section className="muse-stream-comments" aria-label="Comments">
   {list===null?<p className="small-label" role="status">Gathering the conversation…</p>:list.length===0?<p className="small-label">{enabled?'No comments yet. Say something kind.':'Comments are off for this post.'}</p>:
   <ol>{list.map(c=><li key={c.id}>
-   <MuseAvatar id={c.author.avatarId} size={30} decorative/>
+   <MuseAvatar id={c.author.avatarId} size={30} decorative creator={c.author.creator}/>
    <div className="muse-stream-comment-body">
     <p className="muse-stream-comment-meta">{c.mine?<strong>You</strong>:<Link href={`/people/${c.author.username}`}><strong>{c.author.displayName}</strong></Link>} <time dateTime={c.createdAt} title={fullTime(c.createdAt)}>{relativeTime(c.createdAt)}</time>{c.editedAt&&<span> · edited</span>}</p>
     {editing?.id===c.id?<div className="muse-stream-inline-edit"><textarea rows={2} maxLength={COMMENT_MAX} value={editing.body} aria-label="Edit your comment" onChange={e=>setEditing({id:c.id,body:e.target.value})}/><div className="muse-stream-row"><button type="button" className="muse-button button-primary muse-edge" disabled={busy} onClick={saveEdit}>Save</button><button type="button" className="text-button" onClick={()=>setEditing(null)}>Cancel</button></div></div>

@@ -8,8 +8,8 @@ import type {Database} from '@/lib/database.types';
 
 type Client=SupabaseClient<Database>;
 export type Relationship='none'|'outgoing'|'incoming'|'friends'|'blocked';
-export type IdentityCard={id:string;username:string;displayName:string;avatarId:string;relationship?:Relationship;since?:string};
-export type MyIdentity={publicId:string;username:string;displayName:string;avatarId:string;discoverable:boolean;participation:'active'|'paused';usernameChangedAt:string};
+export type IdentityCard={id:string;username:string;displayName:string;avatarId:string;creator?:boolean;relationship?:Relationship;since?:string};
+export type MyIdentity={publicId:string;username:string;displayName:string;avatarId:string;discoverable:boolean;participation:'active'|'paused';usernameChangedAt:string;creator:boolean};
 export type SocialOverview={friends:IdentityCard[];incoming:IdentityCard[];outgoing:IdentityCard[];blocked:IdentityCard[]};
 export type UsernameStatus='available'|'taken'|'reserved'|'invalid';
 
@@ -29,9 +29,9 @@ export const suggestUsername=(name:string)=>normalizeUsername(name).normalize('N
 
 const fail=(error:{message:string}|null)=>{if(error)throw new Error(error.message);};
 export async function readMyIdentity(client:Client,userId:string):Promise<MyIdentity|null>{
- const {data,error}=await client.from('social_identities').select('public_id,username,display_name,avatar_id,discoverable,participation,username_changed_at').eq('user_id',userId).maybeSingle();
+ const {data,error}=await client.from('social_identities').select('public_id,username,display_name,avatar_id,discoverable,participation,username_changed_at,creator').eq('user_id',userId).maybeSingle();
  fail(error);if(!data)return null;
- return {publicId:data.public_id,username:data.username,displayName:data.display_name,avatarId:data.avatar_id,discoverable:data.discoverable,participation:data.participation==='paused'?'paused':'active',usernameChangedAt:data.username_changed_at};
+ return {publicId:data.public_id,username:data.username,displayName:data.display_name,avatarId:data.avatar_id,discoverable:data.discoverable,participation:data.participation==='paused'?'paused':'active',usernameChangedAt:data.username_changed_at,creator:data.creator===true};
 }
 export async function usernameStatus(client:Client,value:string):Promise<UsernameStatus>{
  const local=localUsernameStatus(value);if(local)return local;
