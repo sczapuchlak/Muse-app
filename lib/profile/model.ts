@@ -17,14 +17,7 @@ export function normalizeSections(value:unknown):ProfileSection[]{
 export type ProfileVisibility='private'|'friends';
 export type ProfileDetails={tagline:string;bio:string;bannerGradient:string;theme:ThemeId;sections:ProfileSection[];badges:string[];visibility:ProfileVisibility};
 
-/** Decorative badges the owner chooses for themselves; nothing here is earned or computed. */
-export const profileBadges:{id:string;label:string;icon:MuseIconName}[]=[
- {id:'bookworm',label:'Bookworm',icon:'book'},{id:'night-owl',label:'Night owl',icon:'moon'},{id:'dreamer',label:'Dreamer',icon:'dreams'},{id:'stargazer',label:'Stargazer',icon:'orbit'},
- {id:'tarot-reader',label:'Tarot reader',icon:'tarot'},{id:'ritual-keeper',label:'Ritual keeper',icon:'flame'},{id:'collector',label:'Collector',icon:'bookshelf'},{id:'chaos-goblin',label:'Chaos goblin',icon:'wand'},
- {id:'plant-parent',label:'Plant parent',icon:'leaf'},{id:'coffee-fiend',label:'Coffee fiend',icon:'coffee'},{id:'music-lover',label:'Music lover',icon:'music'},{id:'wanderer',label:'Wanderer',icon:'compass'},
- {id:'artist',label:'Artist',icon:'palette'},{id:'gamer',label:'Gamer',icon:'gamepad'},{id:'film-buff',label:'Film buff',icon:'film'},{id:'baker',label:'Baker',icon:'cake'},
-];
-export const MAX_BADGES=6;
+export {profileBadges,MAX_BADGES} from './badges';
 
 export type ShowcaseLayout='gallery'|'shelf'|'spotlight'|'cards'|'mixed';
 export const showcaseLayouts:{id:ShowcaseLayout;label:string;description:string}[]=[

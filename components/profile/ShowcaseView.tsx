@@ -46,7 +46,7 @@ export function ShowcaseView({showcase,actions,emptyHint,headingLevel=3}:{showca
   :showcase.layout==='spotlight'?<div className="muse-showcase-spotlight"><ItemCard item={items[0]} variant="feature"/>{items.length>1&&<div className="muse-showcase-row">{items.slice(1).map(item=><ItemCard key={item.id} item={item} variant="tile"/>)}</div>}</div>
   :showcase.layout==='shelf'?<div className="muse-showcase-shelf" tabIndex={0} aria-label={`${showcase.title}, scroll for more`}>{items.map(item=><ItemCard key={item.id} item={item} variant="tile"/>)}</div>
   :showcase.layout==='cards'?<div className="muse-showcase-cards">{items.map(item=><ItemCard key={item.id} item={item} variant="card"/>)}</div>
-  :showcase.layout==='mixed'?<div className="muse-showcase-mixed">{withArt.length>0&&<div className="muse-showcase-gallery">{withArt.map(item=><ItemCard key={item.id} item={item} variant="tile"/>)}</div>}{withoutArt.length>0&&<div className="muse-showcase-cards">{withoutArt.map(item=><ItemCard key={item.id} item={item} variant="card"/>)}</div>}</div>
-  :<div className="muse-showcase-gallery">{items.map(item=><ItemCard key={item.id} item={item} variant={item.display.image?'tile':'card'}/>)}</div>}
+  // Gallery and Mixed compose the same way: image-led tiles in a grid, then text-led items as roomy cards.
+  :<div className="muse-showcase-mixed">{withArt.length>0&&<div className="muse-showcase-gallery">{withArt.map(item=><ItemCard key={item.id} item={item} variant="tile"/>)}</div>}{withoutArt.length>0&&<div className="muse-showcase-cards">{withoutArt.map(item=><ItemCard key={item.id} item={item} variant="card"/>)}</div>}</div>}
  </section>;
 }

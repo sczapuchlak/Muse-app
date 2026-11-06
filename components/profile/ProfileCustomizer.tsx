@@ -6,9 +6,10 @@ import {themes,type ThemeId} from '@/lib/themes';
 import {useThemeOverride} from '@/lib/theme-override';
 import {changeUsername,updateIdentity,usernameStatus,usernameHint,localUsernameStatus,type UsernameStatus} from '@/lib/social/identity';
 import {saveProfileDetails} from '@/lib/profile/persistence';
-import {profileBadges,sectionLabels,MAX_BADGES,type ProfileDetails} from '@/lib/profile/model';
+import {sectionLabels,type ProfileDetails} from '@/lib/profile/model';
+import {profileBadges,badgeCategories,MAX_BADGES,normalizeBadges} from '@/lib/profile/badges';
 import {AvatarPicker} from './AvatarPicker';
-import {gradientPresets,familyLabels,gradientCss,type GradientFamily} from '@/lib/profile/gradients';
+import {offeredGradients,familyLabels,gradientCss,type GradientFamily} from '@/lib/profile/gradients';
 import {MuseIcon} from '../MuseIcon';
 import {ProfileView} from './ProfileView';
 import {useMyProfile} from './useMyProfile';
@@ -32,12 +33,13 @@ export function ProfileCustomizer(){
  const dirty=JSON.stringify(draft)!==JSON.stringify(me.details)||name!==me.identity.displayName||avatarId!==me.identity.avatarId||usernameChanged;
  const canSave=dirty&&name.trim().length>0&&(!usernameChanged||status==='available');
  async function save(){if(!canSave||busy)return;setBusy(true);setError('');try{
-  await saveProfileDetails(me.client,me.userId,draft!);
+  await saveProfileDetails(me.client,me.userId,{...draft!,badges:normalizeBadges(draft!.badges)});
   if(name!==me.identity!.displayName||avatarId!==me.identity!.avatarId)await updateIdentity(me.client,me.userId,{displayName:name,avatarId});
   if(usernameChanged)await changeUsername(me.client,username);
   await me.reload();setSaved('Saved. Your profile is updated.');}catch(cause){setError(cause instanceof Error&&/taken|reserved|invalid/.test(cause.message)?'That username isn’t available. Try another.':'That didn’t save. Please try again.');}finally{setBusy(false);}}
- const sections=draft.sections,moveSection=(i:number,by:number)=>{const list=[...sections];const j=i+by;if(j<0||j>=list.length)return;[list[i],list[j]]=[list[j],list[i]];set({sections:list});};
+ const sections=draft.sections,moveSection=(i:number,by:number)=>{const list=[...sections];let j=i+by;while(list[j]?.id==='badges')j+=by;if(j<0||j>=list.length)return;[list[i],list[j]]=[list[j],list[i]];set({sections:list});};
  const families=Object.keys(familyLabels) as GradientFamily[];
+ const chosen=normalizeBadges(draft.badges);
  return <main className="muse-page muse-customizer">
   <header className="muse-customizer-bar">
    <Link className="muse-button muse-edge" href="/profile"><MuseIcon name="arrow" size={16}/>My profile</Link>
@@ -61,16 +63,17 @@ export function ProfileCustomizer(){
      <div className="muse-customizer-themes" role="radiogroup" aria-label="Profile theme">{themes.map(t=><button key={t.id} type="button" role="radio" aria-checked={draft.theme===t.id} onClick={()=>set({theme:t.id as ThemeId})}><span className="muse-customizer-orb" style={{background:t.preview}} aria-hidden="true"/><span>{t.name}</span></button>)}</div>
     </section>
     <section className="muse-panel"><h2 className="muse-kicker">Banner</h2>
-     <div className="muse-gradient-gallery" role="radiogroup" aria-label="Banner gradient">{families.map(f=><div key={f} className="muse-gradient-family"><p className="small-label">{familyLabels[f]}</p><div>{gradientPresets.filter(g=>g.family===f).map(g=><button key={g.id} type="button" role="radio" aria-checked={draft.bannerGradient===g.id} aria-label={g.name} title={g.name} style={{'--swatch':gradientCss(g.id)} as CSSProperties} onClick={()=>set({bannerGradient:g.id})}/>)}</div></div>)}</div>
+     <div className="muse-gradient-gallery" role="radiogroup" aria-label="Banner gradient">{families.map(f=><div key={f} className="muse-gradient-family"><p className="small-label">{familyLabels[f]}</p><div>{offeredGradients.filter(g=>g.family===f).map(g=><button key={g.id} type="button" role="radio" aria-checked={draft.bannerGradient===g.id} aria-label={g.name} title={g.name} style={{'--swatch':gradientCss(g.id)} as CSSProperties} onClick={()=>set({bannerGradient:g.id})}/>)}</div></div>)}</div>
     </section>
-    <section className="muse-panel"><h2 className="muse-kicker">Badges</h2><p className="muse-atelier-hint">Pick up to {MAX_BADGES} that feel like you. They’re decorative, never earned or tracked.</p>
-     <div className="muse-chip-row">{profileBadges.map(b=>{const on=draft.badges.includes(b.id);return <button key={b.id} type="button" aria-pressed={on} disabled={!on&&draft.badges.length>=MAX_BADGES} onClick={()=>set({badges:on?draft.badges.filter(x=>x!==b.id):[...draft.badges,b.id]})}><MuseIcon name={b.icon} size={14}/>{b.label}</button>;})}</div>
+    <section className="muse-panel"><h2 className="muse-kicker">Badges</h2><p className="muse-atelier-hint">Pick up to {MAX_BADGES} that are painfully, specifically you. They sit beside your name, and they’re decorative: never earned or tracked. <span aria-live="polite">{chosen.length}/{MAX_BADGES} chosen.</span></p>
+     <div className="muse-badge-picker">{badgeCategories.map(c=><fieldset key={c.id} className="muse-badge-category" style={{'--badge':c.accent} as CSSProperties}><legend>{c.label}</legend><div className="muse-badge-list">{profileBadges.filter(b=>b.category===c.id).map(b=>{const on=chosen.includes(b.id);return <button key={b.id} type="button" className="muse-badge" aria-pressed={on} disabled={!on&&chosen.length>=MAX_BADGES} onClick={()=>set({badges:on?chosen.filter(x=>x!==b.id):[...chosen,b.id]})}><MuseIcon name={b.icon} size={14}/>{b.label}{on&&<MuseIcon name="check" size={13}/>}</button>;})}</div></fieldset>)}</div>
     </section>
     <section className="muse-panel"><h2 className="muse-kicker">Arrangement</h2>
-     <ol className="muse-customizer-sections">{sections.map((s,i)=><li key={s.id}><span>{sectionLabels[s.id]}</span>
-      <button type="button" className="muse-icon-button" aria-label={`Move ${sectionLabels[s.id]} up`} disabled={i===0} onClick={()=>moveSection(i,-1)}>↑</button>
-      <button type="button" className="muse-icon-button" aria-label={`Move ${sectionLabels[s.id]} down`} disabled={i===sections.length-1} onClick={()=>moveSection(i,1)}>↓</button>
+     <ol className="muse-customizer-sections">{sections.map((s,i)=>s.id==='badges'?null:<li key={s.id}><span>{sectionLabels[s.id]}</span>
+      <button type="button" className="muse-icon-button" aria-label={`Move ${sectionLabels[s.id]} up`} disabled={i===sections.findIndex(x=>x.id!=='badges')} onClick={()=>moveSection(i,-1)}>↑</button>
+      <button type="button" className="muse-icon-button" aria-label={`Move ${sectionLabels[s.id]} down`} disabled={i===sections.findLastIndex(x=>x.id!=='badges')} onClick={()=>moveSection(i,1)}>↓</button>
       <label className="muse-atelier-check"><input type="checkbox" checked={!s.hidden} onChange={e=>set({sections:sections.map(x=>x.id===s.id?{...x,hidden:!e.target.checked}:x)})}/>Show</label></li>)}</ol>
+     <label className="muse-atelier-check"><input type="checkbox" checked={!sections.find(x=>x.id==='badges')?.hidden} onChange={e=>set({sections:sections.map(x=>x.id==='badges'?{...x,hidden:!e.target.checked}:x)})}/>Show my badges beside my name</label>
     </section>
     <section className="muse-panel"><h2 className="muse-kicker">Sharing</h2>
      <div className="muse-segmented" role="group" aria-label="Who can see your profile"><button type="button" aria-pressed={draft.visibility==='private'} onClick={()=>set({visibility:'private'})}>Only me</button><button type="button" aria-pressed={draft.visibility==='friends'} onClick={()=>set({visibility:'friends'})}>Share with friends</button></div>

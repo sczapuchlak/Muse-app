@@ -59,6 +59,7 @@ test('sidebar shell keeps the Whimsy sparkle, Themes utility, and labeled bottom
  const shell=read('components/AppShell.tsx');
  assert.match(shell,/group === "Whimsy" && <MuseStar size=\{11\} className="muse-nav-group-star" \/>/);
  assert.match(shell,/<ThemeSwitcher compact=\{collapsed\} variant="nav"\/>/);
- assert.match(shell,/<NavDestination key=\{item\.id\} item=\{item\} path=\{path\} compact=\{collapsed\} \/>/);
+ assert.match(shell,/<NavDestination key=\{item\.id\} item=\{item\} path=\{path\} userId=\{profile\.id\} compact=\{collapsed\} \/>/);
+ assert.match(shell,/item\.id === "profile" \? <ProfileNavIcon userId=\{userId\} \/>/,"My Profile shows the chosen avatar");
  assert.match(read('components/ThemeSwitcher.tsx'),/aria-label=\{`Theme: \$\{active\.name\}\. Change theme or material`\}/);
 });

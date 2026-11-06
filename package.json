@@ -30,6 +30,7 @@
     "test:wellness-goals:db": "node scripts/test-local-wellness-goals.mjs",
     "test:onboarding:db": "node scripts/test-local-onboarding.mjs",
     "test:onboarding:ui": "node scripts/test-onboarding-ui.mjs",
+    "test:theme:ui": "node scripts/test-theme-persistence-ui.mjs",
     "auth:invite": "node scripts/invite-local-user.mjs",
     "test:auth": "node scripts/test-local-auth.mjs",
     "test:daily": "node scripts/test-local-daily.mjs",

@@ -3,11 +3,10 @@
 import Link from 'next/link';
 import {useParams,useRouter,useSearchParams} from 'next/navigation';
 import {useEffect,useMemo,useState,type CSSProperties,type DragEvent,type KeyboardEvent} from 'react';
-import {useThemeOverride} from '@/lib/theme-override';
 import {saveShowcase,deleteShowcase,type Showcase,type ShowcaseItem} from '@/lib/profile/persistence';
 import {showcaseLayouts,starterIdeas,visibilityLabels,type ShowcaseLayout,type ShowcaseVisibility} from '@/lib/profile/model';
 import {adapters,displayChanged,type ShowcaseDisplay} from '@/lib/profile/adapters';
-import {gradientPresets,familyLabels,gradientCss,gradientById,type GradientFamily} from '@/lib/profile/gradients';
+import {offeredGradients,familyLabels,gradientCss,gradientById,type GradientFamily} from '@/lib/profile/gradients';
 import {MuseIcon,type MuseIconName} from '../MuseIcon';
 import {MuseIconPicker} from '../MuseIconPicker';
 import {ShowcaseView} from './ShowcaseView';
@@ -24,7 +23,6 @@ export function ShowcaseStudio(){
  const [draft,setDraft]=useState<Showcase|null>(null);const [baseline,setBaseline]=useState('');const [removed,setRemoved]=useState<string[]>([]);
  const [picking,setPicking]=useState(false);const [busy,setBusy]=useState(false);const [status,setStatus]=useState('');const [confirmDelete,setConfirmDelete]=useState(false);
  const [compare,setCompare]=useState<{id:string;fresh:ShowcaseDisplay}|null>(null);const [leaveArmed,setLeaveArmed]=useState(false);const [dragging,setDragging]=useState<number|null>(null);
- useThemeOverride(me.details?.theme??null);
  useEffect(()=>{if(me.loaded&&(!me.identity||!me.details))router.replace('/profile');},[me.loaded,me.identity,me.details,router]);
  if(me.loaded&&me.details&&!draft){
   const existing=me.showcases.find(s=>s.id===params.id);
@@ -71,8 +69,7 @@ export function ShowcaseStudio(){
     </section>
     <section className="muse-panel"><h2 className="muse-studio-step"><span>2</span>Choose an icon</h2><div className="muse-studio-icon"><span className="muse-showcase-icon" aria-hidden="true"><MuseIcon name={draft.icon as MuseIconName} size={22} treatment="prismatic"/></span><MuseIconPicker value={draft.icon as MuseIconName} onChange={v=>set({icon:v||'sparkle'})}/></div></section>
     <section className="muse-panel"><h2 className="muse-studio-step"><span>3</span>Pick a border</h2>
-     <label className="muse-field-label"><span className="small-label">Border gradient</span><span className="muse-gradient-select"><span className="muse-gradient-swatch" style={{'--swatch':gradientCss(draft.gradient)} as CSSProperties} aria-hidden="true"/><select value={draft.gradient} onChange={e=>set({gradient:e.target.value})}>{families.map(f=><optgroup key={f} label={familyLabels[f]}>{gradientPresets.filter(g=>g.family===f).map(g=><option key={g.id} value={g.id}>{g.name}</option>)}</optgroup>)}</select></span></label>
-     <div className="muse-gradient-gallery" role="radiogroup" aria-label="Border gradients">{families.map(f=><div key={f} className="muse-gradient-family"><p className="small-label">{familyLabels[f]}</p><div>{gradientPresets.filter(g=>g.family===f).map(g=><button key={g.id} type="button" role="radio" aria-checked={draft.gradient===g.id} aria-label={g.name} title={g.name} style={{'--swatch':gradientCss(g.id)} as CSSProperties} onClick={()=>set({gradient:g.id})}/>)}</div></div>)}</div>
+     <div className="muse-gradient-gallery" role="radiogroup" aria-label="Border gradients">{families.map(f=><div key={f} className="muse-gradient-family"><p className="small-label">{familyLabels[f]}</p><div>{offeredGradients.filter(g=>g.family===f).map(g=><button key={g.id} type="button" role="radio" aria-checked={draft.gradient===g.id} aria-label={g.name} title={g.name} style={{'--swatch':gradientCss(g.id)} as CSSProperties} onClick={()=>set({gradient:g.id})}/>)}</div></div>)}</div>
      <p className="muse-atelier-hint">{preset.name}</p>
     </section>
     <section className="muse-panel"><h2 className="muse-studio-step"><span>4</span>Choose a layout</h2>

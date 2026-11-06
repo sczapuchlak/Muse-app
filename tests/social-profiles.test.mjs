@@ -35,16 +35,31 @@ test('the social foundation is private by default and enforced in the database',
 });
 
 // ---------------- #26 Profiles & Showcases ----------------
-test('twenty border gradients with genuine colour range',()=>{
- const presets=gradients.gradientPresets;
- assert.equal(presets.length,20);assert.equal(new Set(presets.map(g=>g.id)).size,20);
- for(const family of ['dark','light','bright','earthy'])assert.ok(presets.filter(g=>g.family===family).length>=4,family);
- const hue=hex=>{const [r,g,b]=[1,3,5].map(i=>parseInt(hex.slice(i,i+2),16)/255),max=Math.max(r,g,b),min=Math.min(r,g,b),d=max-min;if(d<.08)return null;let h=max===r?((g-b)/d)%6:max===g?(b-r)/d+2:(r-g)/d+4;return (h*60+360)%360;};
- const dominant=g=>{const hues=g.stops.map(hue).filter(h=>h!==null);return hues.length?hues[Math.floor(hues.length/2)]:null;};
- const purplePink=presets.filter(g=>{const h=dominant(g);return h!==null&&h>=260&&h<=345;}).length;
- assert.ok(purplePink<=4,`only ${purplePink} purple/pink-led presets`);
- assert.ok(presets.some(g=>g.stops.length===2)&&presets.some(g=>g.stops.length===3)&&presets.some(g=>g.stops.length>=5),'two-colour, three-colour and multicolour');
+test('banner and border presets: art-directed layers, two moods, stable ids',()=>{
+ const all=gradients.gradientPresets,offered=gradients.offeredGradients;
+ assert.equal(new Set(all.map(g=>g.id)).size,all.length,'unique ids');
+ assert.ok(offered.length>=18&&offered.length<=24,`${offered.length} offered`);
+ for(const family of ['soft','magic'])assert.ok(offered.filter(g=>g.family===family).length>=6,family);
+ for(const g of all){assert.match(g.id,/^[a-z0-9-]{2,40}$/,g.id);assert.ok(g.layers.split('gradient(').length>2,`${g.id} is layered`);assert.doesNotMatch(g.layers,/conic-gradient/,`${g.id}: no colour wheels`);}
+ for(const name of ['Nebula Noir','Milky Way','Aurora Dreams','Solar Flare','Desert Sunset'])assert.ok(offered.some(g=>g.name===name),name);
+ // Every id ever offered keeps resolving, so saved profiles and Showcases never change on their own.
+ for(const id of ['nebula-kiss','midnight-prism','vampire-velvet','secret-garden','mermaid-lagoon','disco-fever','moonstone','rosewater','blue-moon','champagne-toast','cosmic-candy','cherry-bomb','electric-cobalt','lime-wire','solar-flare','rainbow-riot','emerald-city','copper-kettle','olive-grove','golden-hour'])assert.equal(gradients.gradientById(id).id,id,id);
  assert.equal(gradients.gradientById('nope').id,'nebula-kiss','unknown ids fall back safely');
+ for(const s of model.starterIdeas)assert.ok(offered.some(g=>g.id===s.gradient),`${s.id} starter uses an offered preset`);
+});
+
+test('personality badges: six accented categories, icons, legacy ids preserved',()=>{
+ const badges=load('lib/profile/badges');const list=badges.profileBadges;
+ assert.ok(list.length>=50&&list.length<=60,`${list.length} badges`);
+ assert.equal(new Set(list.map(b=>b.id)).size,list.length,'unique ids');assert.equal(new Set(list.map(b=>b.label.toLowerCase())).size,list.length,'no duplicate wording');
+ assert.deepEqual(badges.badgeCategories.map(c=>c.label),['Books & Fictional Crushes','Theater & Entertainment','Creative Pursuits','Pets & Everyday Life','Mystical & Cosmic','Gaming & Personality']);
+ assert.equal(new Set(badges.badgeCategories.map(c=>c.accent)).size,6,'distinct accents');
+ for(const b of list){assert.match(b.id,/^[a-z0-9-]+$/,b.id);assert.ok(b.icon,b.id);assert.ok(badges.badgeCategories.some(c=>c.id===b.category),b.id);}
+ for(const label of ['I ❤️ Pointy-Eared Pretty Boys','One More Chapter (Liar)','Collector of Unfinished Hobbies','Broadway Is a Personality Trait','Fangs, Fae & Bad Decisions'])assert.ok(list.some(b=>b.label===label),label);
+ for(const banned of [/chaos goblin/i,/hex appeal/i,/cat staff/i])assert.ok(!list.some(b=>banned.test(b.label)),String(banned));
+ for(const id of ['bookworm','night-owl','dreamer','stargazer','tarot-reader','ritual-keeper','collector','chaos-goblin','plant-parent','coffee-fiend','music-lover','wanderer','artist','gamer','film-buff','baker'])assert.ok(badges.badgeById(id),`legacy ${id}`);
+ assert.deepEqual(badges.normalizeBadges(['coffee-fiend','caffeine-dependent','nope','chaos-goblin','a','b','c','d','e','f','night-owl']),['caffeine-dependent','adhd-whirlwind','night-owl']);
+ assert.equal(badges.MAX_BADGES,6);
 });
 
 test('bundled Muse avatars: unique descriptive ids, one image each, only the id is stored',()=>{
@@ -101,8 +116,19 @@ test('profile sections, privacy defaults and the friend view',()=>{
 
 test('the profile theme is page-scoped and restores the visitor’s own theme',()=>{
  const override=read('lib/theme-override.ts');assert.match(override,/return\(\)=>set\(null\)/,'leaving clears it');
- assert.match(read('components/ThemeSwitcher.tsx'),/setAttribute\("data-theme", override \?\? activeId\)/);
+ assert.match(read('components/ThemeSwitcher.tsx'),/setAttribute\("data-theme", readThemeOverride\(\) \?\? readThemePreference\(\)\)/);
  assert.doesNotMatch(override,/localStorage|selectTheme|data-material/,'never saved; Crystal/Frosted untouched');
- for(const file of ['components/profile/MyProfile.tsx','components/profile/FriendProfile.tsx','components/profile/ProfileCustomizer.tsx','components/profile/ShowcaseStudio.tsx'])assert.match(read(file),/useThemeOverride\(/,file);
+ // Another person's profile, Preview as a friend and the Customize live preview wear the profile theme...
+ assert.match(read('components/profile/FriendProfile.tsx'),/useThemeOverride\(view\?\.profile\.theme/);
+ assert.match(read('components/profile/ProfileCustomizer.tsx'),/useThemeOverride\(/);
+ assert.match(read('components/profile/MyProfile.tsx'),/useThemeOverride\(preview\?/,'own museum: only while previewing as a friend');
+ // ...and the person's own pages never switch theme on their own.
+ assert.doesNotMatch(read('components/profile/ShowcaseStudio.tsx'),/useThemeOverride/);
+ assert.equal((read('components/profile/MyProfile.tsx').match(/useThemeOverride\(/g)||[]).length,1,'setup does not repaint the page');
+ assert.match(read('components/atelier/AppearanceBridge.tsx'),/readThemeOverride\(\)\?\?readApplied\(\)\?\.definition\.base\?\?readThemePreference\(\)/,'the Atelier bridge honours the page-scoped theme');
+ // A full page load paints the saved theme first (no flash of the default theme).
+ const layout=read('app/layout.tsx'),prepaint=load('lib/appearance-prepaint');
+ assert.match(layout,/appearancePrePaintScript/);assert.match(layout,/suppressHydrationWarning/);
+ assert.match(prepaint.appearancePrePaintScript,/muse\.theme/);assert.match(prepaint.appearancePrePaintScript,/"astral"/);assert.match(prepaint.appearancePrePaintScript,/indexOf\(t\)>-1/,'only known theme ids');
  const nav=load('lib/navigation');const item=nav.navigation.find(n=>n.id==='profile');assert.equal(item.group,'Tools','My Profile lives in the account area');assert.ok(nav.mobileMoreIds.includes('profile'));
 });

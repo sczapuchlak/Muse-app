@@ -6,6 +6,7 @@ import "./typography.css";
 import "./design-language.css";
 import { motionTokens } from "@/lib/motion";
 import { defaultTheme } from "@/lib/themes";
+import { appearancePrePaintScript } from "@/lib/appearance-prepaint";
 import { museBrand } from "@/lib/brand";
 import { pwaInk } from "@/lib/pwa";
 import { ThemeColorSync } from "@/components/ThemeColorSync";
@@ -53,7 +54,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       data-material="crystal"
       style={motionTokens}
       className={`${interfaceSans.variable} ${editorialSerif.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
+      {/* Apply this browser's saved theme and glass before first paint, so a full load never flashes the default theme. */}
+      <head><script dangerouslySetInnerHTML={{ __html: appearancePrePaintScript }} /></head>
       <body className="min-h-full flex flex-col"><ThemeColorSync />{children}</body>
     </html>
   );
