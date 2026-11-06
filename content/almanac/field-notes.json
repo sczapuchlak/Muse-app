@@ -1,0 +1,469 @@
+{
+ "family": "field-notes",
+ "description": "Weekly and monthly notes built on recapFacts. A source that did not load, or a zero, leaves its section out. Mood is not included.",
+ "voice": "Unhurried and specific, like a friend reading back your week. No grades, no comparisons with other people, no closing pep talk.",
+ "entries": [
+  {
+   "id": "ALM-NOTE-001",
+   "version": 1,
+   "status": "approved",
+   "family": "field-notes",
+   "format": "field-note",
+   "trigger": {
+    "signal": "recap.week"
+   },
+   "sensitivity": "personal",
+   "tone": [
+    "warm",
+    "literary"
+   ],
+   "variants": [
+    {
+     "id": "a",
+     "title": "The week, in brief.",
+     "body": [
+      {
+       "text": "A week on the record. Here is what it kept."
+      },
+      {
+       "heading": "Planner",
+       "text": "{tasks} finished on the planner.",
+       "requires": [
+        "tasks"
+       ],
+       "when": [
+        [
+         "tasks",
+         ">",
+         0
+        ]
+       ]
+      },
+      {
+       "heading": "Rituals",
+       "text": "{rituals} met. Each one a small promise, kept on schedule.",
+       "requires": [
+        "ritualFullGoals"
+       ],
+       "when": [
+        [
+         "ritualFullGoals",
+         ">",
+         0
+        ]
+       ]
+      },
+      {
+       "heading": "Reading",
+       "text": "{readingTime} of reading across {readingDays}.",
+       "requires": [
+        "readingSeconds",
+        "readingDays"
+       ],
+       "when": [
+        [
+         "readingSeconds",
+         ">",
+         0
+        ]
+       ]
+      },
+      {
+       "text": "{books} finished, first page to last.",
+       "requires": [
+        "booksFinished"
+       ],
+       "when": [
+        [
+         "booksFinished",
+         ">",
+         0
+        ]
+       ]
+      },
+      {
+       "heading": "Movement",
+       "text": "{workouts} on record.",
+       "requires": [
+        "workouts"
+       ],
+       "when": [
+        [
+         "workouts",
+         ">",
+         0
+        ]
+       ]
+      },
+      {
+       "text": "That’s the week. The next one is unwritten."
+      }
+     ]
+    },
+    {
+     "id": "b",
+     "title": "Field notes from the last seven days.",
+     "body": [
+      {
+       "text": "Not every week needs a headline. This one left a few notes worth keeping."
+      },
+      {
+       "text": "The reading came in {readingDays}, {readingTime} in all.",
+       "requires": [
+        "readingSeconds",
+        "readingDays"
+       ],
+       "when": [
+        [
+         "readingSeconds",
+         ">",
+         0
+        ]
+       ]
+      },
+      {
+       "text": "{books} reached the final page.",
+       "requires": [
+        "booksFinished"
+       ],
+       "when": [
+        [
+         "booksFinished",
+         ">",
+         0
+        ]
+       ]
+      },
+      {
+       "text": "Your rituals held their shape: {rituals}.",
+       "requires": [
+        "ritualFullGoals"
+       ],
+       "when": [
+        [
+         "ritualFullGoals",
+         ">",
+         0
+        ]
+       ]
+      },
+      {
+       "text": "The planner lost {tasks} to the done pile.",
+       "requires": [
+        "tasks"
+       ],
+       "when": [
+        [
+         "tasks",
+         ">",
+         0
+        ]
+       ]
+      },
+      {
+       "text": "You moved, too: {workouts}.",
+       "requires": [
+        "workouts"
+       ],
+       "when": [
+        [
+         "workouts",
+         ">",
+         0
+        ]
+       ]
+      },
+      {
+       "text": "Filed away. On to the next page."
+      }
+     ]
+    }
+   ],
+   "variables": {
+    "tasks": {
+     "fact": "tasks",
+     "format": "count",
+     "plural": [
+      "task",
+      "tasks"
+     ]
+    },
+    "rituals": {
+     "fact": "ritualFullGoals",
+     "format": "count",
+     "plural": [
+      "full ritual goal",
+      "full ritual goals"
+     ]
+    },
+    "readingTime": {
+     "fact": "readingSeconds",
+     "format": "duration"
+    },
+    "readingDays": {
+     "fact": "readingDays",
+     "format": "count",
+     "plural": [
+      "day",
+      "days"
+     ]
+    },
+    "books": {
+     "fact": "booksFinished",
+     "format": "count",
+     "plural": [
+      "book",
+      "books"
+     ]
+    },
+    "workouts": {
+     "fact": "workouts",
+     "format": "count",
+     "plural": [
+      "workout",
+      "workouts"
+     ]
+    }
+   },
+   "cooldownDays": 6,
+   "review": {
+    "author": "Claude",
+    "reviewedBy": "Claude (line approval delegated by Stephanie, 2026-11-06)",
+    "updatedAt": "2026-11-06"
+   }
+  },
+  {
+   "id": "ALM-NOTE-002",
+   "version": 1,
+   "status": "approved",
+   "family": "field-notes",
+   "format": "field-note",
+   "trigger": {
+    "signal": "recap.month"
+   },
+   "sensitivity": "personal",
+   "tone": [
+    "warm",
+    "literary"
+   ],
+   "variants": [
+    {
+     "id": "a",
+     "title": "{month}, in brief.",
+     "body": [
+      {
+       "text": "{month} is on the shelf now. A few things it held:"
+      },
+      {
+       "heading": "Reading",
+       "text": "{readingTime} of reading across {readingDays}.",
+       "requires": [
+        "readingSeconds",
+        "readingDays"
+       ],
+       "when": [
+        [
+         "readingSeconds",
+         ">",
+         0
+        ]
+       ]
+      },
+      {
+       "text": "{books} finished, start to last page.",
+       "requires": [
+        "booksFinished"
+       ],
+       "when": [
+        [
+         "booksFinished",
+         ">",
+         0
+        ]
+       ]
+      },
+      {
+       "heading": "Rituals",
+       "text": "{rituals}, each on its own scheduled day.",
+       "requires": [
+        "ritualFullGoals"
+       ],
+       "when": [
+        [
+         "ritualFullGoals",
+         ">",
+         0
+        ]
+       ]
+      },
+      {
+       "heading": "Planner",
+       "text": "{tasks} completed.",
+       "requires": [
+        "tasks"
+       ],
+       "when": [
+        [
+         "tasks",
+         ">",
+         0
+        ]
+       ]
+      },
+      {
+       "heading": "Movement",
+       "text": "{workouts} recorded.",
+       "requires": [
+        "workouts"
+       ],
+       "when": [
+        [
+         "workouts",
+         ">",
+         0
+        ]
+       ]
+      },
+      {
+       "text": "Months like this are easy to forget while they’re happening. Now you won’t."
+      }
+     ]
+    },
+    {
+     "id": "b",
+     "title": "Notes on {month}.",
+     "body": [
+      {
+       "text": "Looking back over {month}, the record is quietly specific."
+      },
+      {
+       "text": "There were {readingDays} with a book open, {readingTime} altogether.",
+       "requires": [
+        "readingSeconds",
+        "readingDays"
+       ],
+       "when": [
+        [
+         "readingSeconds",
+         ">",
+         0
+        ]
+       ]
+      },
+      {
+       "text": "{books} reached their last page.",
+       "requires": [
+        "booksFinished"
+       ],
+       "when": [
+        [
+         "booksFinished",
+         ">",
+         0
+        ]
+       ]
+      },
+      {
+       "text": "The rituals logged {rituals}.",
+       "requires": [
+        "ritualFullGoals"
+       ],
+       "when": [
+        [
+         "ritualFullGoals",
+         ">",
+         0
+        ]
+       ]
+      },
+      {
+       "text": "{tasks} crossed off the planner.",
+       "requires": [
+        "tasks"
+       ],
+       "when": [
+        [
+         "tasks",
+         ">",
+         0
+        ]
+       ]
+      },
+      {
+       "text": "{workouts} on record, too.",
+       "requires": [
+        "workouts"
+       ],
+       "when": [
+        [
+         "workouts",
+         ">",
+         0
+        ]
+       ]
+      },
+      {
+       "text": "That was {month}. It counted."
+      }
+     ]
+    }
+   ],
+   "variables": {
+    "tasks": {
+     "fact": "tasks",
+     "format": "count",
+     "plural": [
+      "task",
+      "tasks"
+     ]
+    },
+    "rituals": {
+     "fact": "ritualFullGoals",
+     "format": "count",
+     "plural": [
+      "full ritual goal",
+      "full ritual goals"
+     ]
+    },
+    "readingTime": {
+     "fact": "readingSeconds",
+     "format": "duration"
+    },
+    "readingDays": {
+     "fact": "readingDays",
+     "format": "count",
+     "plural": [
+      "day",
+      "days"
+     ]
+    },
+    "books": {
+     "fact": "booksFinished",
+     "format": "count",
+     "plural": [
+      "book",
+      "books"
+     ]
+    },
+    "workouts": {
+     "fact": "workouts",
+     "format": "count",
+     "plural": [
+      "workout",
+      "workouts"
+     ]
+    },
+    "month": {
+     "fact": "month",
+     "format": "label"
+    }
+   },
+   "cooldownDays": 25,
+   "review": {
+    "author": "Claude",
+    "reviewedBy": "Claude (line approval delegated by Stephanie, 2026-11-06)",
+    "updatedAt": "2026-11-06"
+   }
+  }
+ ]
+}

@@ -1,0 +1,159 @@
+{
+ "family": "dreams-and-tarot",
+ "description": "Playful whispers for recurring dream symbols and tarot cards. Their own pages only.",
+ "voice": "Mischievous and openly not literal. Muse notices repetition; it never interprets what it means for the person.",
+ "entries": [
+  {
+   "id": "ALM-DREA-001",
+   "version": 1,
+   "status": "approved",
+   "family": "dreams-and-tarot",
+   "format": "whisper",
+   "trigger": {
+    "signal": "dreams.recurring-symbol"
+   },
+   "sensitivity": "personal",
+   "tone": [
+    "playful"
+   ],
+   "variants": [
+    {
+     "id": "a",
+     "body": "{symbol} has turned up in {dreams}. Your sleep has a recurring cast."
+    },
+    {
+     "id": "b",
+     "body": "{symbol}, again. {dreams} now. The night shift has favorites."
+    },
+    {
+     "id": "c",
+     "body": "Your dreams keep booking {symbol}, {dreams} so far."
+    }
+   ],
+   "variables": {
+    "symbol": {
+     "fact": "symbol",
+     "format": "label"
+    },
+    "dreams": {
+     "fact": "dreams",
+     "format": "count",
+     "plural": [
+      "dream",
+      "dreams"
+     ]
+    }
+   },
+   "cooldownDays": 21,
+   "review": {
+    "author": "Claude",
+    "reviewedBy": "Claude (line approval delegated by Stephanie, 2026-11-06)",
+    "updatedAt": "2026-11-06"
+   }
+  },
+  {
+   "id": "ALM-DREA-002",
+   "version": 1,
+   "status": "approved",
+   "family": "dreams-and-tarot",
+   "format": "whisper",
+   "trigger": {
+    "signal": "dreams.symbol-pair"
+   },
+   "sensitivity": "personal",
+   "tone": [
+    "playful"
+   ],
+   "variants": [
+    {
+     "id": "a",
+     "body": "{first} and {second} keep arriving together. Dreams have plus-ones too."
+    },
+    {
+     "id": "b",
+     "body": "Another night of {first} with {second}. That’s {dreams} for the pair."
+    },
+    {
+     "id": "c",
+     "body": "{first}, meet {second}. Again. {dreams} and counting."
+    }
+   ],
+   "variables": {
+    "first": {
+     "fact": "first",
+     "format": "label"
+    },
+    "second": {
+     "fact": "second",
+     "format": "label"
+    },
+    "dreams": {
+     "fact": "dreams",
+     "format": "count",
+     "plural": [
+      "dream",
+      "dreams"
+     ]
+    }
+   },
+   "cooldownDays": 21,
+   "review": {
+    "author": "Claude",
+    "reviewedBy": "Claude (line approval delegated by Stephanie, 2026-11-06)",
+    "updatedAt": "2026-11-06"
+   }
+  },
+  {
+   "id": "ALM-TARO-001",
+   "version": 1,
+   "status": "approved",
+   "family": "dreams-and-tarot",
+   "format": "whisper",
+   "trigger": {
+    "signal": "tarot.recurring-card"
+   },
+   "sensitivity": "ordinary",
+   "tone": [
+    "playful"
+   ],
+   "variants": [
+    {
+     "id": "a",
+     "body": "{card} has come up {draws} in {days} days. It would like a word."
+    },
+    {
+     "id": "b",
+     "body": "{card}, back again. The deck is not being subtle."
+    },
+    {
+     "id": "c",
+     "body": "{draws} in {days} days for {card}. A nudge or a coincidence, your call."
+    }
+   ],
+   "variables": {
+    "card": {
+     "fact": "card",
+     "format": "label"
+    },
+    "draws": {
+     "fact": "draws",
+     "format": "count",
+     "plural": [
+      "time",
+      "times"
+     ]
+    },
+    "days": {
+     "fact": "days",
+     "format": "count"
+    }
+   },
+   "cooldownDays": 21,
+   "review": {
+    "author": "Claude",
+    "reviewedBy": "Claude (line approval delegated by Stephanie, 2026-11-06)",
+    "updatedAt": "2026-11-06"
+   }
+  }
+ ]
+}

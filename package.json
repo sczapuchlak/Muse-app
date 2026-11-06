@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "test": "node --test tests/*.test.mjs",
+    "almanac": "node scripts/almanac.mjs",
     "test:whimsy-layout": "node scripts/test-whimsy-layout.mjs",
     "test:fortunes-ui": "node scripts/test-fortunes-ui.mjs",
     "db:start": "node scripts/supabase-local.mjs start",

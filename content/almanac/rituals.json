@@ -1,0 +1,229 @@
+{
+ "family": "rituals",
+ "description": "Rituals rhythm, streaks and returns. Rituals and Insights.",
+ "voice": "Steady and admiring. Streaks count scheduled opportunities, never calendar days. Never mention a miss or a break.",
+ "entries": [
+  {
+   "id": "ALM-RITE-001",
+   "version": 1,
+   "status": "approved",
+   "family": "rituals",
+   "format": "revelation",
+   "trigger": {
+    "signal": "rituals.rhythm"
+   },
+   "sensitivity": "ordinary",
+   "tone": [
+    "steady",
+    "warm"
+   ],
+   "variants": [
+    {
+     "id": "a",
+     "title": "You keep returning to {ritual}.",
+     "body": "{complete} full goals out of {recorded} logged opportunities, the highest share among your rituals. Days you didn’t log aren’t counted against it."
+    },
+    {
+     "id": "b",
+     "title": "Back to {ritual}.",
+     "body": "{complete} of {recorded} logged opportunities met in full. Quietly, it has become something your weeks are built around."
+    },
+    {
+     "id": "c",
+     "title": "{ritual} has staying power.",
+     "body": "Of {recorded} logged chances, {complete} were full goals. That’s the steadiest rhythm in your rituals right now."
+    }
+   ],
+   "variables": {
+    "ritual": {
+     "fact": "ritual",
+     "format": "label"
+    },
+    "complete": {
+     "fact": "complete",
+     "format": "count"
+    },
+    "recorded": {
+     "fact": "recorded",
+     "format": "count"
+    }
+   },
+   "cooldownDays": 14,
+   "review": {
+    "author": "Claude",
+    "reviewedBy": "Claude (line approval delegated by Stephanie, 2026-11-06)",
+    "updatedAt": "2026-11-06"
+   },
+   "links": [
+    {
+     "label": "See the records",
+     "href": "{signal.href}"
+    }
+   ]
+  },
+  {
+   "id": "ALM-RITE-002",
+   "version": 1,
+   "status": "approved",
+   "family": "rituals",
+   "format": "whisper",
+   "trigger": {
+    "signal": "rituals.streak",
+    "when": [
+     [
+      "unit",
+      "=",
+      "scheduled days"
+     ],
+     [
+      "count",
+      ">=",
+      5
+     ]
+    ]
+   },
+   "sensitivity": "ordinary",
+   "tone": [
+    "steady"
+   ],
+   "variants": [
+    {
+     "id": "a",
+     "body": "{ritual}, {count} running. The rhythm is holding."
+    },
+    {
+     "id": "b",
+     "body": "{count} in a row for {ritual}. Less a streak than a groove now."
+    },
+    {
+     "id": "c",
+     "body": "{ritual} has met every one of its last {count}."
+    }
+   ],
+   "variables": {
+    "ritual": {
+     "fact": "ritual",
+     "format": "label"
+    },
+    "count": {
+     "fact": "count",
+     "format": "count",
+     "plural": [
+      "scheduled day",
+      "scheduled days"
+     ]
+    }
+   },
+   "cooldownDays": 10,
+   "review": {
+    "author": "Claude",
+    "reviewedBy": "Claude (line approval delegated by Stephanie, 2026-11-06)",
+    "updatedAt": "2026-11-06"
+   }
+  },
+  {
+   "id": "ALM-RITE-003",
+   "version": 1,
+   "status": "approved",
+   "family": "rituals",
+   "format": "whisper",
+   "trigger": {
+    "signal": "rituals.streak",
+    "when": [
+     [
+      "unit",
+      "=",
+      "weeks"
+     ],
+     [
+      "count",
+      ">=",
+      3
+     ]
+    ]
+   },
+   "sensitivity": "ordinary",
+   "tone": [
+    "steady"
+   ],
+   "variants": [
+    {
+     "id": "a",
+     "body": "{count} running for {ritual}. The week keeps its promise."
+    },
+    {
+     "id": "b",
+     "body": "{ritual}, {count} in a row. Your weeks have a backbone."
+    },
+    {
+     "id": "c",
+     "body": "{count} in a row, and {ritual} made it into every one."
+    }
+   ],
+   "variables": {
+    "ritual": {
+     "fact": "ritual",
+     "format": "label"
+    },
+    "count": {
+     "fact": "count",
+     "format": "count",
+     "plural": [
+      "week",
+      "weeks"
+     ]
+    }
+   },
+   "cooldownDays": 10,
+   "review": {
+    "author": "Claude",
+    "reviewedBy": "Claude (line approval delegated by Stephanie, 2026-11-06)",
+    "updatedAt": "2026-11-06"
+   },
+   "sample": {
+    "unit": "weeks",
+    "count": 8
+   }
+  },
+  {
+   "id": "ALM-RITE-004",
+   "version": 1,
+   "status": "approved",
+   "family": "rituals",
+   "format": "whisper",
+   "trigger": {
+    "signal": "rituals.return"
+   },
+   "sensitivity": "ordinary",
+   "tone": [
+    "warm"
+   ],
+   "variants": [
+    {
+     "id": "a",
+     "body": "{ritual}, back in the rhythm. It kept your place."
+    },
+    {
+     "id": "b",
+     "body": "Hello again, {ritual}. Some rituals wait patiently."
+    },
+    {
+     "id": "c",
+     "body": "{ritual} returns. Picking a thread back up still counts as weaving."
+    }
+   ],
+   "variables": {
+    "ritual": {
+     "fact": "ritual",
+     "format": "label"
+    }
+   },
+   "cooldownDays": 21,
+   "review": {
+    "author": "Claude",
+    "reviewedBy": "Claude (line approval delegated by Stephanie, 2026-11-06)",
+    "updatedAt": "2026-11-06"
+   }
+  }
+ ]
+}

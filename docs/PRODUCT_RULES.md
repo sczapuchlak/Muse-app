@@ -594,6 +594,19 @@ Reading Atlas has five sections, chosen with a compact segmented view selector (
 - **Keepsake.** Year in Review offers "Make a keepsake": a PNG of a year or of all time, drawn in the browser and saved only to the device (nothing uploaded or stored). The person chooses each section and the shape (4:5 post, 9:16 story); reviews are private writing and stay out unless ticked. Covers are not drawn. Sections that do not fit the shape are named, never silently dropped.
 - **Living Universe.** `challengeSignals` and the pure `lib/whimsy/atlas-insights.ts` outputs are the factual inputs for the future Living Universe engine; no editorial copy is generated from them yet.
 
+## The Muse Almanac and Living Universe voice (#53) — approved November 2026
+
+Stephanie approved the #53 discovery recommendations on 2026-11-06 and delegated line-level copy approval ("I don't need to approve every one"); she reviews by exception.
+
+- **Architecture.** Signals (facts from existing module functions, never recalculated) → the Almanac (versioned words in `content/almanac/`) → a pure, deterministic selector → surfaces. Signals carry no prose; entries carry no math. No generative AI or external text service at runtime.
+- **Formats.** Whispers (one line in context), Little Revelations (cards with evidence), Field Notes (weekly/monthly, the Recaps presentation), Constellations (rare, opt-in cross-module comparisons). New formats can be added without restructuring.
+- **Mantras.** The seven fixed module mantras stay as module identity. Daily Edit and Insights keep their once-per-local-day rotation, and their collections may grow to 20+ lines. The rotating, personal voice lives in Whispers. The eight-hour rotation stays retired.
+- **Defaults.** Sensitive observations (mood, money, body metrics) are off until the person turns them on. Cross-module observations default on only for non-sensitive pairs. Nothing is shared automatically.
+- **Storage.** The library lives in repo JSON, reviewed in PRs. Settings will live in auth user metadata (the Insights precedent). Impressions and dismissals will use a small owner-only table (ids and dates only), approved for P2 and released staging first.
+- **Little Revelations.** The existing Insights cards move onto the Almanac with the same facts, thresholds, caveats, basis and record links; only the words gain variants.
+- **Voice.** `docs/ALMANAC_VOICE.md` is the guide; `lib/almanac/voice-rules.ts` enforces its checkable parts for both Almanac lines and celebration copy.
+- **Part 1 scope.** Voice guide, schemas, signal catalog, validator, review sheet and the first approved families. No UI, no migration.
+
 ## Dream symbol library and credits — approved November 2026
 
 Stephanie approved importing the HeartYearning Dream Symbols Dataset with attribution (its stated terms: research and educational use; commercial use requires attribution with a link to tool.heartyearning.com). If the owner asks, it is removed. Muse’s own 36 entries stay as written and take precedence; an imported interpretation is always shown with its source and link, presented as a possibility rather than a fixed meaning. The Encyclopedia footer and entry pages credit HeartYearning. Settings → Open Source & Credits lists every third-party content source and software library with its license and required attribution; adding a library or content source means adding it there.

@@ -1,0 +1,119 @@
+{
+ "family": "constellations",
+ "description": "Rare cross-module comparisons. Opt-in, sensitive, always with both sample sizes, never causal.",
+ "voice": "Plain and careful. Two facts side by side, the sample sizes stated, and an honest limit on what it means.",
+ "entries": [
+  {
+   "id": "ALM-CONS-001",
+   "version": 1,
+   "status": "approved",
+   "family": "constellations",
+   "format": "constellation",
+   "trigger": {
+    "signal": "cross.reading-day"
+   },
+   "sensitivity": "sensitive",
+   "tone": [
+    "plain"
+   ],
+   "variants": [
+    {
+     "id": "a",
+     "title": "Reading and your Overall Day.",
+     "body": "On the {withN} rated days you read, Overall Day averaged {withMean}. On {withoutN} other rated days, {withoutMean}. A pattern to notice, not a prescription."
+    },
+    {
+     "id": "b",
+     "title": "Your reading days, side by side.",
+     "body": "{withN} rated days with reading averaged {withMean} for Overall Day, and {withoutN} days without averaged {withoutMean}. Muse can see that they travel together, not why."
+    }
+   ],
+   "variables": {
+    "withN": {
+     "fact": "withN",
+     "format": "count"
+    },
+    "withoutN": {
+     "fact": "withoutN",
+     "format": "count"
+    },
+    "withMean": {
+     "fact": "withMean",
+     "format": "number"
+    },
+    "withoutMean": {
+     "fact": "withoutMean",
+     "format": "number"
+    }
+   },
+   "cooldownDays": 45,
+   "review": {
+    "author": "Claude",
+    "reviewedBy": "Claude (line approval delegated by Stephanie, 2026-11-06)",
+    "updatedAt": "2026-11-06"
+   },
+   "links": [
+    {
+     "label": "See the comparison",
+     "href": "/insights"
+    }
+   ]
+  },
+  {
+   "id": "ALM-CONS-002",
+   "version": 1,
+   "status": "approved",
+   "family": "constellations",
+   "format": "constellation",
+   "trigger": {
+    "signal": "cross.movement-energy"
+   },
+   "sensitivity": "sensitive",
+   "tone": [
+    "plain"
+   ],
+   "variants": [
+    {
+     "id": "a",
+     "title": "Movement and Energy.",
+     "body": "On {withN} rated days with recorded movement, Energy averaged {withMean}. On {withoutN} other rated days, {withoutMean}. Two signals side by side, nothing more."
+    },
+    {
+     "id": "b",
+     "title": "Days you moved, compared.",
+     "body": "Energy averaged {withMean} across {withN} days with movement on record, and {withoutMean} across {withoutN} days without. It describes; it doesn’t explain."
+    }
+   ],
+   "variables": {
+    "withN": {
+     "fact": "withN",
+     "format": "count"
+    },
+    "withoutN": {
+     "fact": "withoutN",
+     "format": "count"
+    },
+    "withMean": {
+     "fact": "withMean",
+     "format": "number"
+    },
+    "withoutMean": {
+     "fact": "withoutMean",
+     "format": "number"
+    }
+   },
+   "cooldownDays": 45,
+   "review": {
+    "author": "Claude",
+    "reviewedBy": "Claude (line approval delegated by Stephanie, 2026-11-06)",
+    "updatedAt": "2026-11-06"
+   },
+   "links": [
+    {
+     "label": "See the comparison",
+     "href": "/insights"
+    }
+   ]
+  }
+ ]
+}

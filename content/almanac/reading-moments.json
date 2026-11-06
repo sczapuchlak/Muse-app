@@ -1,0 +1,649 @@
+{
+ "family": "reading-moments",
+ "description": "Whispers and revelations for reading milestones, streaks, the yearly challenge and authors. Bookshelf and Reading Atlas.",
+ "voice": "Admiring without grading. The fact is the compliment; let the book or number carry it.",
+ "entries": [
+  {
+   "id": "ALM-BOOK-001",
+   "version": 1,
+   "status": "approved",
+   "family": "reading-moments",
+   "format": "whisper",
+   "trigger": {
+    "signal": "reading.milestone",
+    "when": [
+     [
+      "metric",
+      "=",
+      "books"
+     ]
+    ]
+   },
+   "sensitivity": "ordinary",
+   "tone": [
+    "literary",
+    "warm"
+   ],
+   "variants": [
+    {
+     "id": "a",
+     "body": "{title}. Every one of them a whole world."
+    },
+    {
+     "id": "b",
+     "body": "{title}. The shelf remembers each one."
+    },
+    {
+     "id": "c",
+     "body": "{title}, and the shelf is starting to read like a biography."
+    }
+   ],
+   "variables": {
+    "title": {
+     "fact": "title",
+     "format": "label"
+    }
+   },
+   "cooldownDays": 60,
+   "review": {
+    "author": "Claude",
+    "reviewedBy": "Claude (line approval delegated by Stephanie, 2026-11-06)",
+    "updatedAt": "2026-11-06"
+   },
+   "sample": {
+    "title": "Ten books finished",
+    "metric": "books",
+    "threshold": 10
+   }
+  },
+  {
+   "id": "ALM-BOOK-002",
+   "version": 1,
+   "status": "approved",
+   "family": "reading-moments",
+   "format": "whisper",
+   "trigger": {
+    "signal": "reading.milestone",
+    "when": [
+     [
+      "metric",
+      "=",
+      "pages"
+     ]
+    ]
+   },
+   "sensitivity": "ordinary",
+   "tone": [
+    "wry"
+   ],
+   "variants": [
+    {
+     "id": "a",
+     "body": "{title}. That’s a lot of paper turned into elsewhere."
+    },
+    {
+     "id": "b",
+     "body": "{title} read. Somewhere, a bookmark is very tired."
+    },
+    {
+     "id": "c",
+     "body": "{title}, one at a time, which is the only way they come."
+    }
+   ],
+   "variables": {
+    "title": {
+     "fact": "title",
+     "format": "label"
+    }
+   },
+   "cooldownDays": 60,
+   "review": {
+    "author": "Claude",
+    "reviewedBy": "Claude (line approval delegated by Stephanie, 2026-11-06)",
+    "updatedAt": "2026-11-06"
+   },
+   "sample": {
+    "title": "1,000 pages",
+    "metric": "pages",
+    "threshold": 1000
+   }
+  },
+  {
+   "id": "ALM-BOOK-003",
+   "version": 1,
+   "status": "approved",
+   "family": "reading-moments",
+   "format": "whisper",
+   "trigger": {
+    "signal": "reading.milestone",
+    "when": [
+     [
+      "metric",
+      "=",
+      "hours"
+     ]
+    ]
+   },
+   "sensitivity": "ordinary",
+   "tone": [
+    "wry",
+    "literary"
+   ],
+   "variants": [
+    {
+     "id": "a",
+     "body": "{title}. Time well misplaced."
+    },
+    {
+     "id": "b",
+     "body": "{title}, logged. The clock never noticed you leave."
+    },
+    {
+     "id": "c",
+     "body": "{title}. That’s a lot of evenings spent somewhere else."
+    }
+   ],
+   "variables": {
+    "title": {
+     "fact": "title",
+     "format": "label"
+    }
+   },
+   "cooldownDays": 60,
+   "review": {
+    "author": "Claude",
+    "reviewedBy": "Claude (line approval delegated by Stephanie, 2026-11-06)",
+    "updatedAt": "2026-11-06"
+   },
+   "sample": {
+    "title": "Fifty reading hours",
+    "metric": "hours",
+    "threshold": 50
+   }
+  },
+  {
+   "id": "ALM-BOOK-004",
+   "version": 1,
+   "status": "approved",
+   "family": "reading-moments",
+   "format": "whisper",
+   "trigger": {
+    "signal": "reading.milestone",
+    "when": [
+     [
+      "metric",
+      "=",
+      "days"
+     ]
+    ]
+   },
+   "sensitivity": "ordinary",
+   "tone": [
+    "steady",
+    "warm"
+   ],
+   "variants": [
+    {
+     "id": "a",
+     "body": "{title}. Reading has become a place you go back to."
+    },
+    {
+     "id": "b",
+     "body": "{title}, each one counted once and kept."
+    },
+    {
+     "id": "c",
+     "body": "{title}. Your calendar is turning into a reading log."
+    }
+   ],
+   "variables": {
+    "title": {
+     "fact": "title",
+     "format": "label"
+    }
+   },
+   "cooldownDays": 60,
+   "review": {
+    "author": "Claude",
+    "reviewedBy": "Claude (line approval delegated by Stephanie, 2026-11-06)",
+    "updatedAt": "2026-11-06"
+   },
+   "sample": {
+    "title": "100 reading days",
+    "metric": "days",
+    "threshold": 100
+   }
+  },
+  {
+   "id": "ALM-BOOK-005",
+   "version": 1,
+   "status": "approved",
+   "family": "reading-moments",
+   "format": "whisper",
+   "trigger": {
+    "signal": "reading.streak",
+    "when": [
+     [
+      "current",
+      ">=",
+      3
+     ]
+    ]
+   },
+   "sensitivity": "ordinary",
+   "tone": [
+    "wry"
+   ],
+   "variants": [
+    {
+     "id": "a",
+     "body": "{current} in a row with a book. Don’t look now, it’s a habit."
+    },
+    {
+     "id": "b",
+     "body": "Reading streak: {current}. Tonight’s chapter is already expecting you."
+    },
+    {
+     "id": "c",
+     "body": "{current} straight of pages. The story has your number."
+    }
+   ],
+   "variables": {
+    "current": {
+     "fact": "current",
+     "format": "count",
+     "plural": [
+      "day",
+      "days"
+     ]
+    }
+   },
+   "cooldownDays": 10,
+   "review": {
+    "author": "Claude",
+    "reviewedBy": "Claude (line approval delegated by Stephanie, 2026-11-06)",
+    "updatedAt": "2026-11-06"
+   }
+  },
+  {
+   "id": "ALM-BOOK-006",
+   "version": 1,
+   "status": "approved",
+   "family": "reading-moments",
+   "format": "whisper",
+   "trigger": {
+    "signal": "reading.challenge.progress",
+    "when": [
+     [
+      "threshold",
+      "=",
+      25
+     ]
+    ]
+   },
+   "sensitivity": "ordinary",
+   "tone": [
+    "warm"
+   ],
+   "variants": [
+    {
+     "id": "a",
+     "body": "{done} of {target} for {year}. A quarter of the shelf, filled."
+    },
+    {
+     "id": "b",
+     "body": "The first quarter of your {year} challenge is done, {done} books in."
+    },
+    {
+     "id": "c",
+     "body": "A quarter of the way to {target}. The shelf is filling in."
+    }
+   ],
+   "variables": {
+    "done": {
+     "fact": "done",
+     "format": "count"
+    },
+    "target": {
+     "fact": "target",
+     "format": "count"
+    },
+    "year": {
+     "fact": "year",
+     "format": "label"
+    }
+   },
+   "cooldownDays": 30,
+   "review": {
+    "author": "Claude",
+    "reviewedBy": "Claude (line approval delegated by Stephanie, 2026-11-06)",
+    "updatedAt": "2026-11-06"
+   },
+   "sample": {
+    "done": 6,
+    "target": 24,
+    "threshold": 25
+   }
+  },
+  {
+   "id": "ALM-BOOK-007",
+   "version": 1,
+   "status": "approved",
+   "family": "reading-moments",
+   "format": "whisper",
+   "trigger": {
+    "signal": "reading.challenge.progress",
+    "when": [
+     [
+      "threshold",
+      "=",
+      50
+     ]
+    ]
+   },
+   "sensitivity": "ordinary",
+   "tone": [
+    "wry",
+    "warm"
+   ],
+   "variants": [
+    {
+     "id": "a",
+     "body": "Halfway, {done} of {target}. The second half has better plot twists, probably."
+    },
+    {
+     "id": "b",
+     "body": "{done} of {target}. Half a shelf of {year}’s worlds."
+    },
+    {
+     "id": "c",
+     "body": "Half your {year} challenge, finished. The rest of the shelf is listening."
+    }
+   ],
+   "variables": {
+    "done": {
+     "fact": "done",
+     "format": "count"
+    },
+    "target": {
+     "fact": "target",
+     "format": "count"
+    },
+    "year": {
+     "fact": "year",
+     "format": "label"
+    }
+   },
+   "cooldownDays": 30,
+   "review": {
+    "author": "Claude",
+    "reviewedBy": "Claude (line approval delegated by Stephanie, 2026-11-06)",
+    "updatedAt": "2026-11-06"
+   }
+  },
+  {
+   "id": "ALM-BOOK-008",
+   "version": 1,
+   "status": "approved",
+   "family": "reading-moments",
+   "format": "whisper",
+   "trigger": {
+    "signal": "reading.challenge.progress",
+    "when": [
+     [
+      "threshold",
+      "=",
+      75
+     ]
+    ]
+   },
+   "sensitivity": "ordinary",
+   "tone": [
+    "literary",
+    "warm"
+   ],
+   "variants": [
+    {
+     "id": "a",
+     "body": "{done} of {target}. Three quarters there, and the ending is in sight."
+    },
+    {
+     "id": "b",
+     "body": "The last stretch of your {year} challenge, {done} books down."
+    },
+    {
+     "id": "c",
+     "body": "Three quarters done. The final chapters of {year} are yours to fill."
+    }
+   ],
+   "variables": {
+    "done": {
+     "fact": "done",
+     "format": "count"
+    },
+    "target": {
+     "fact": "target",
+     "format": "count"
+    },
+    "year": {
+     "fact": "year",
+     "format": "label"
+    }
+   },
+   "cooldownDays": 30,
+   "review": {
+    "author": "Claude",
+    "reviewedBy": "Claude (line approval delegated by Stephanie, 2026-11-06)",
+    "updatedAt": "2026-11-06"
+   },
+   "sample": {
+    "done": 18,
+    "target": 24,
+    "threshold": 75
+   }
+  },
+  {
+   "id": "ALM-BOOK-009",
+   "version": 1,
+   "status": "approved",
+   "family": "reading-moments",
+   "format": "revelation",
+   "trigger": {
+    "signal": "reading.challenge.record"
+   },
+   "sensitivity": "ordinary",
+   "tone": [
+    "warm",
+    "wry"
+   ],
+   "variants": [
+    {
+     "id": "a",
+     "title": "Your biggest reading year yet.",
+     "body": "{done} finished reads in {year}, past your previous best of {previousBest}. Every one counts, rereads included."
+    },
+    {
+     "id": "b",
+     "title": "A new personal record.",
+     "body": "{year} has outread every year before it, with {done} against a previous high of {previousBest}."
+    },
+    {
+     "id": "c",
+     "title": "{year} just outread the rest.",
+     "body": "{done} finished reads so far. The old record was {previousBest}. The shelf would like a word about space."
+    }
+   ],
+   "variables": {
+    "done": {
+     "fact": "done",
+     "format": "count"
+    },
+    "previousBest": {
+     "fact": "previousBest",
+     "format": "count"
+    },
+    "year": {
+     "fact": "year",
+     "format": "label"
+    }
+   },
+   "cooldownDays": 90,
+   "review": {
+    "author": "Claude",
+    "reviewedBy": "Claude (line approval delegated by Stephanie, 2026-11-06)",
+    "updatedAt": "2026-11-06"
+   },
+   "magic": {
+    "kind": "glint"
+   }
+  },
+  {
+   "id": "ALM-BOOK-010",
+   "version": 1,
+   "status": "approved",
+   "family": "reading-moments",
+   "format": "whisper",
+   "trigger": {
+    "signal": "reading.authors.new",
+    "when": [
+     [
+      "newAuthors",
+      ">=",
+      3
+     ]
+    ]
+   },
+   "sensitivity": "ordinary",
+   "tone": [
+    "warm"
+   ],
+   "variants": [
+    {
+     "id": "a",
+     "body": "{newAuthors} you hadn’t read before. The shelf is making friends."
+    },
+    {
+     "id": "b",
+     "body": "New voices on the shelf lately: {newAuthors}."
+    },
+    {
+     "id": "c",
+     "body": "Lately the shelf is full of strangers, {newAuthors} you’ve never read before."
+    }
+   ],
+   "variables": {
+    "newAuthors": {
+     "fact": "newAuthors",
+     "format": "count",
+     "plural": [
+      "author",
+      "authors"
+     ]
+    }
+   },
+   "cooldownDays": 21,
+   "review": {
+    "author": "Claude",
+    "reviewedBy": "Claude (line approval delegated by Stephanie, 2026-11-06)",
+    "updatedAt": "2026-11-06"
+   }
+  },
+  {
+   "id": "ALM-BOOK-011",
+   "version": 1,
+   "status": "approved",
+   "family": "reading-moments",
+   "format": "whisper",
+   "trigger": {
+    "signal": "reading.author.returning"
+   },
+   "sensitivity": "ordinary",
+   "tone": [
+    "wry",
+    "warm"
+   ],
+   "variants": [
+    {
+     "id": "a",
+     "body": "{author}, again. {reads} this time around. Some voices you just trust."
+    },
+    {
+     "id": "b",
+     "body": "You keep coming back to {author}, {reads} and counting."
+    },
+    {
+     "id": "c",
+     "body": "{reads} by {author}. At this point they should send a card."
+    }
+   ],
+   "variables": {
+    "author": {
+     "fact": "author",
+     "format": "label"
+    },
+    "reads": {
+     "fact": "reads",
+     "format": "count",
+     "plural": [
+      "finished read",
+      "finished reads"
+     ]
+    }
+   },
+   "cooldownDays": 30,
+   "review": {
+    "author": "Claude",
+    "reviewedBy": "Claude (line approval delegated by Stephanie, 2026-11-06)",
+    "updatedAt": "2026-11-06"
+   }
+  },
+  {
+   "id": "ALM-BOOK-012",
+   "version": 1,
+   "status": "approved",
+   "family": "reading-moments",
+   "format": "whisper",
+   "trigger": {
+    "signal": "reading.speed.swift"
+   },
+   "sensitivity": "ordinary",
+   "tone": [
+    "wry"
+   ],
+   "variants": [
+    {
+     "id": "a",
+     "body": "{title} in {days}. It did not stand a chance."
+    },
+    {
+     "id": "b",
+     "body": "Start to finish in {days}. {title} had you."
+    },
+    {
+     "id": "c",
+     "body": "{days} with {title}. Some books refuse to be put down."
+    }
+   ],
+   "variables": {
+    "title": {
+     "fact": "title",
+     "format": "label"
+    },
+    "days": {
+     "fact": "days",
+     "format": "count",
+     "plural": [
+      "day",
+      "days"
+     ]
+    }
+   },
+   "cooldownDays": 14,
+   "review": {
+    "author": "Claude",
+    "reviewedBy": "Claude (line approval delegated by Stephanie, 2026-11-06)",
+    "updatedAt": "2026-11-06"
+   }
+  }
+ ]
+}
