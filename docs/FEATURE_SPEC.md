@@ -729,3 +729,14 @@ Issue #52 (sections 11–17). Dreamscapes is split into section components under
   - `scripts/test-local-onboarding.mjs` covers provisioning, persistence and isolation.
   - `scripts/test-onboarding-ui.mjs` runs the real-browser flow on mobile and desktop.
   - `scripts/test-local-auth.mjs` follows the real-inbox invitation through to onboarding.
+
+## Muse Social (#16) and Personal Profiles & Showcase Studio (#26) — implemented on feature branch (`feature/social-16-profiles-26`, awaiting review)
+
+IMPLEMENTED (local; migrations applied to the local database only):
+- **Social foundation (#16)**: `social_identities` (username, display name, `avatar_id`, discoverable, participation), friend requests with one pending per pair, mutual friendships, blocking; security-definer commands for every lifecycle step; `can_view_as_friend()` shared authorization; `social_search` (opt-in, username only), `social_overview`. Friends page: friends, requests (incoming/outgoing), find people, blocked, discoverability and pause settings.
+- **Profiles (#26)**: first-visit setup (avatar from 30 illustrated characters, display name, username with live availability, profile theme), My Profile with Customize, New Showcase, Friends and Preview as a friend; customisation of portrait, name, username, tagline, about, profile theme, gradient banner, decorative badges, section order/visibility and sharing, with a live preview in the profile theme; friend profile at `/people/<username>`.
+- **Showcase Studio**: starter ideas, title and line, icon picker (extended Muse icon set), 20 named gradient borders (dropdown and swatch gallery), five layouts (Gallery, Shelf, Spotlight, Collection cards, Mixed), item picker across eight modules with per-field approval and preview, captions, drag-and-drop and Alt+↑/↓ reordering, Update from source with before/after confirmation, drafts, Just me, Friends, delete.
+- **Database**: migrations `20261109000100_social_foundation.sql` and `20261109000200_profiles_showcases.sql`; owner-only RLS on profile tables; `profile_view()` returns only the friend-facing view; `profile_lookup()` never reveals unavailable profiles.
+- **Tests**: `scripts/test-local-social.mjs` (38 multi-account checks), `scripts/test-local-profiles.mjs` (22), `tests/social-profiles.test.mjs`, plus a two-account browser run.
+
+FUTURE/EXPLORATORY: Stream (#27) reusing the identity, authorization and adapters; custom avatar uploads; selected tarot readings, dream moments and note excerpts as Showcase sources; notifications for friend requests.

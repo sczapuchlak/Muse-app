@@ -9,6 +9,7 @@ export const extraIcons={
  laptop:['Laptop','Work'],briefcase:['Briefcase','Work'],study:['Learning','Learning'],graduation:['Study','Learning'],
  cat:['Cat','Pets'],paw:['Paw','Pets'],brush:['Beauty brush','Beauty'],mirror:['Mirror','Beauty'],bottle:['Skincare','Beauty'],comb:['Hair care','Beauty'],
  broom:['Cleaning','Home'],laundry:['Laundry','Home'],shopping:['Shopping','Money'],wallet:['Wallet','Money'],
+ trophy:['Trophy','Milestones'],crown:['Crown','Milestones'],gem:['Gem','Milestones'],feather:['Feather','Creativity'],
  palette:['Art','Creativity'],music:['Music','Creativity'],camera:['Photography','Creativity'],people:['Social','Relationships'],
 } as const;
 export type ExtraIconName=keyof typeof extraIcons;

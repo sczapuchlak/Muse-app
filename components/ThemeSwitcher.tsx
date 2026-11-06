@@ -3,6 +3,7 @@
 import { useId, useLayoutEffect, useRef, useState, useSyncExternalStore, type CSSProperties } from "react";
 import { defaultTheme, themes } from "@/lib/themes";
 import { readThemePreference, selectTheme, serverThemePreference, subscribeThemePreference } from "@/lib/theme-preference";
+import { readThemeOverride, serverThemeOverride, subscribeThemeOverride } from "@/lib/theme-override";
 import { materials, readMaterial, selectMaterial, serverMaterial, subscribeMaterial } from "@/lib/material-preference";
 import {readMagic,serverMagic,subscribeMagic,magicLevels,selectMagic} from "@/lib/magic-preference";
 import { MuseStar } from "./MuseStar";
@@ -20,7 +21,9 @@ export function ThemeSwitcher({compact=false,variant="pill"}:{compact?:boolean;v
   useLayoutEffect(() => { document.documentElement.setAttribute("data-material", material); }, [material]);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const active = themes.find((theme) => theme.id === activeId) ?? defaultTheme;
-  useLayoutEffect(() => { document.documentElement.setAttribute("data-theme", activeId); }, [activeId]);
+  // A profile being viewed may lend the page its theme; the person's own choice returns when they leave.
+  const override = useSyncExternalStore(subscribeThemeOverride, readThemeOverride, serverThemeOverride);
+  useLayoutEffect(() => { document.documentElement.setAttribute("data-theme", override ?? activeId); }, [activeId, override]);
   function close() { setOpen(false); triggerRef.current?.focus(); }
 
   return (

@@ -577,3 +577,10 @@ Module stylesheets reference roles; they never declare their own families, style
 **Rules:**
 - Practical modules (Planner, Money, Wellness, Rituals, Insights) stay in Plus Jakarta Sans apart from shared editorial moments such as the Daily Edit greeting.
 - To change the hierarchy, change the tokens in `app/typography.css`, not module CSS.
+
+## Profiles & Showcases (#26)
+
+- **Avatars**: thirty original illustrated characters drawn as code (`lib/profile/avatars.ts`): chibi bust, bold `#2a1a2e` outlines, anime eyes with lashes and shine, expressions (smile, laugh, wink, smirk, sleepy), blush hatching and glossy hair. Groups: Magical, Everyday life (lifting, cooking, baking, knitting, painting, gardening, gaming, music), Creatures (dragons, ghost, alien). Rendered by `MuseAvatar`; only the id is stored.
+- **Showcase frame**: `ShowcaseView` draws a 2.5px gradient ring with a masked pseudo-element (works on translucent glass and every theme) and a soft glow from the gradient's middle stop. Card interiors keep the profile theme's surfaces. Items without artwork get a designed cover (gradient spine, kind icon, title in Fraunces Soft italic).
+- **Gradient presets** (`lib/profile/gradients.ts`): Dark & moody, Light & dreamy, Bright & electric, Rich & earthy; a test keeps purple/pink-led presets to four or fewer.
+- **Motion**: Showcases fade up on arrival and covers lift on hover, only with motion allowed and Muse Magic not Quiet.

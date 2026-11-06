@@ -186,9 +186,9 @@ test('picker footer is separate from results; shared CSS preserves alignment and
 test('global navigation covers every destination and keeps mobile primary/More choices centralized', () => {
   const { navigation, desktopGroups, mobilePrimaryIds, mobileMoreIds, navItems, isActiveDestination } = load('lib/navigation');
   assert.deepEqual(desktopGroups, ['Everyday','Life','Whimsy']);
-  assert.equal(new Set(navigation.map((item) => item.href)).size, 14);
+  assert.equal(new Set(navigation.map((item) => item.href)).size, 15);
   assert.deepEqual(navItems(mobilePrimaryIds).map((item) => item.id), ['daily','planner','rituals']);
-  assert.deepEqual(navItems(mobileMoreIds).map((item) => item.id), ['nourish','insights','money','notes','collections','astrology','tarot','dreams','fortune-fun','appearance','settings'],'mobile reaches Appearance through More');
+  assert.deepEqual(navItems(mobileMoreIds).map((item) => item.id), ['nourish','insights','money','notes','collections','astrology','tarot','dreams','fortune-fun','profile','appearance','settings'],'mobile reaches My Profile and Appearance through More');
   assert.equal(navigation.some((item)=>item.id==='mood'),false);
   assert.equal(navigation.find((item)=>item.id==='nourish')?.label,'Wellness');
   assert.equal(new Set([...mobilePrimaryIds,...mobileMoreIds]).size, navigation.length,'every destination is reachable on mobile');
