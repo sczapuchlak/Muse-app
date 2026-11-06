@@ -11,6 +11,7 @@ import type {DailyProfile} from "@/lib/data/daily-store";
 import { MuseAtmosphere } from "./MuseAtmosphere";
 import { MuseIcon } from "./MuseIcon";
 import { ProfileNavIcon } from "./social/ProfileNavIcon";
+import { useStreamNavigation } from "@/lib/stream/navigation-preference";
 import { MuseStar } from "./MuseStar";
 import { ThemeSwitcher } from "./ThemeSwitcher";
 import { GlassPopover } from "./GlassPopover";
@@ -47,7 +48,9 @@ function AppShellContent({ children, profile:initialProfile }: { children: React
   const [collapsed, setCollapsed] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
   const moreRef = useRef<HTMLButtonElement>(null);
-  const moreItems = navItems(mobileMoreIds), moreActive = moreItems.some((item) => isActiveItem(path, item));
+  // Stream can be hidden from navigation (a per-account preference); its page and posts are untouched.
+  const showStream = useStreamNavigation(profile.id);
+  const moreItems = navItems(mobileMoreIds).filter((item) => showStream || item.id !== "stream"), moreActive = moreItems.some((item) => isActiveItem(path, item));
   return (
     <MuseSessionProvider initialDate={todayInTimeZone(profile.timeZone)}><DailyDataProvider profile={profile}><DailyDateSync/>
       <AstrologyDataProvider key={profile.id} userId={profile.id}><WhimsyDataProvider userId={profile.id} timeZone={profile.timeZone}><CollectionsDataProvider userId={profile.id}><ConstellationsProvider profile={profile}><NotesProvider profile={profile}><PlannerProvider profile={profile}><WellnessProvider key={profile.id} userId={profile.id}><NourishProvider><MoneyProvider key={profile.id} userId={profile.id}><RitualProvider key={profile.id} userId={profile.id}><ConnectedRitualsProvider timeZone={profile.timeZone}><div className="muse-app-shell" data-rail={collapsed ? "collapsed" : "expanded"} data-module={path.split("/")[1]||"daily"}>
@@ -66,7 +69,7 @@ function AppShellContent({ children, profile:initialProfile }: { children: React
           </nav>
           <div className="muse-rail-footer"><ThemeSwitcher compact={collapsed} variant="nav"/>
             <div className="muse-rail-utilities" aria-label="Account controls">
-              {navigation.filter((item) => item.group === "Tools" && item.id !== "appearance").map((item) => <NavDestination key={item.id} item={item} path={path} userId={profile.id} compact={collapsed} />)}
+              {navigation.filter((item) => item.group === "Tools" && item.id !== "appearance" && (showStream || item.id !== "stream")).map((item) => <NavDestination key={item.id} item={item} path={path} userId={profile.id} compact={collapsed} />)}
               <LogoutButton compact={collapsed}/>
             </div>
           </div>

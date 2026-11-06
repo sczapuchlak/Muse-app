@@ -1,0 +1,155 @@
+/* Stream of Consciousness (#27): an editorial, single-column feed that wears every Muse theme. */
+.muse-stream{max-width:780px;margin-inline:auto;display:grid;gap:18px;align-content:start}
+.muse-stream-header-actions{display:flex;flex-wrap:wrap;gap:8px}
+.muse-stream-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.muse-stream-count{display:inline-grid;place-items:center;min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:color-mix(in srgb,var(--accent-pop) 22%,transparent);color:var(--foreground);font:700 .7rem var(--font-ui)}
+.muse-stream-bell .muse-stream-count{background:var(--accent-pop);color:var(--on-accent,#fff)}
+
+/* Composer */
+.muse-stream-composer{display:grid;gap:14px;padding:clamp(16px,2.6vw,24px)}
+.muse-stream-composer-head{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:start}
+.muse-stream-is{display:grid;gap:6px;min-width:0}
+.muse-stream-is>span{font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-title-weight);font-size:clamp(1.15rem,2.4vw,1.4rem)}
+.muse-stream-is textarea,.muse-stream-edit textarea,.muse-stream-consent textarea,.muse-stream-comment-form textarea,.muse-stream-inline-edit textarea{width:100%;min-height:var(--touch-target);padding:10px 12px;border:1px solid var(--glass-border);border-radius:var(--control-radius);background:var(--surface-control);color:var(--foreground);font:inherit;resize:vertical}
+.muse-stream-is textarea{font-family:var(--font-editorial);font-size:1.1rem}
+.muse-stream-shortcuts{display:flex;flex-wrap:wrap;gap:8px}
+.muse-stream-shortcut{display:inline-flex;align-items:center;gap:7px;min-height:38px;padding:6px 13px;border:1px solid var(--dl-line);border-radius:999px;background:var(--dl-surface);color:var(--foreground);font:500 .82rem var(--font-ui);cursor:pointer}
+.muse-stream-shortcut:hover{background:var(--surface-hover)}
+.muse-stream-shortcut[aria-pressed=true]{border-color:var(--selected-border);background:var(--selected-background);color:var(--selected-text)}
+.muse-stream-picker ul{list-style:none;margin:0;padding:0;display:grid;gap:6px;max-height:300px;overflow-y:auto;overscroll-behavior:contain}
+.muse-stream-picker button{display:grid;grid-template-columns:40px minmax(0,1fr) auto;align-items:center;gap:10px;width:100%;padding:8px 10px;border:1px solid var(--dl-line);border-radius:12px;background:transparent;color:var(--foreground);text-align:left;cursor:pointer}
+.muse-stream-picker button:hover,.muse-stream-picker button:focus-visible{background:var(--surface-hover)}
+.muse-stream-picker img{width:40px;height:52px;object-fit:cover;border-radius:6px}
+.muse-stream-picker-glyph{display:grid;place-items:center;width:40px;height:40px;border-radius:12px;background:color-mix(in srgb,var(--accent-secondary) 14%,var(--dl-surface))}
+.muse-stream-picker strong{display:block;font-size:.9rem;overflow-wrap:anywhere}.muse-stream-picker small{display:block;color:var(--text-muted);font-size:.76rem}
+.muse-stream-picker-group{max-width:9em;text-align:right}
+.muse-stream-consent{display:grid;gap:10px;padding:12px;border:1px dashed var(--glass-border);border-radius:var(--control-radius)}
+.muse-stream-consent fieldset{margin:0;padding:0;border:0;min-width:0}
+.muse-stream-fields{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:6px}
+.muse-stream-composer-foot{display:grid;gap:10px}
+.muse-stream-audience-line{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:0;font-size:.86rem;color:var(--text-muted)}
+.muse-stream-friends{margin:0;padding:0;border:0;min-width:0}
+.muse-stream-friends ul{list-style:none;margin:6px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.muse-stream-friends label{display:inline-flex;align-items:center;gap:8px;padding:4px 10px 4px 4px;border:1px solid var(--dl-line);border-radius:999px;cursor:pointer}
+.muse-stream-friends label[data-on]{border-color:var(--selected-border);background:var(--selected-background)}
+.muse-stream-friends input{position:absolute;opacity:0;width:1px;height:1px}
+.muse-stream-friends label:focus-within{outline:2px solid var(--focus-ring,var(--selected-border));outline-offset:2px}
+.muse-stream-friends span{display:grid;font-size:.82rem}.muse-stream-friends small{color:var(--text-muted);font-size:.7rem}
+.muse-stream-filters{padding:2px 0}
+
+/* Feed */
+.muse-stream-feed{list-style:none;margin:0;padding:0;display:grid;gap:16px}
+.muse-stream-older{justify-self:center}.muse-stream-end{justify-self:center;display:flex;align-items:center;gap:6px}
+.muse-stream-focus{display:grid;gap:8px;padding:12px;border:1px solid var(--selected-border);border-radius:var(--dl-radius-panel)}
+
+/* Post card: one system, five presentations */
+.muse-stream-post{position:relative;display:grid;gap:12px;padding:clamp(16px,2.4vw,22px);border:1px solid var(--dl-line);border-radius:var(--dl-radius-panel);background:var(--glass-background,var(--dl-surface));overflow:hidden}
+.muse-stream-post-head{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:start}
+.muse-stream-post-head a{border-radius:50%}
+.muse-stream-headline{margin:0;font:400 1rem/1.35 var(--font-ui);overflow-wrap:anywhere}
+.muse-stream-headline strong{font-weight:700}
+.muse-stream-headline em{font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-title-weight)}
+.muse-stream-post-meta{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;margin:3px 0 0;font-size:.76rem;color:var(--text-muted)}
+.muse-stream-post-meta a{color:inherit}
+.muse-stream-audience,.muse-stream-kind{display:inline-flex;align-items:center;gap:4px}
+.muse-stream-audience[data-audience=private]{color:var(--foreground)}
+.muse-stream-status-text{margin:0;font-family:var(--font-editorial);font-size:clamp(1.2rem,2.6vw,1.45rem);line-height:1.4;white-space:pre-wrap;overflow-wrap:anywhere}
+.muse-stream-commentary{margin:0;font-size:1rem;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere}
+.muse-stream-decoration{display:inline-flex;justify-self:start;align-items:center;gap:6px;margin:0;padding:3px 10px;border:1px solid color-mix(in srgb,var(--accent-pop) 45%,transparent);border-radius:999px;font:600 .74rem var(--font-ui)}
+.muse-stream-activity{display:grid;gap:10px}
+.muse-stream-activity .muse-showcase-item{--showcase-glow:var(--accent-secondary);--showcase-gradient:linear-gradient(135deg,var(--accent-primary),var(--accent-secondary))}
+.muse-stream-excerpt{margin:0;padding:6px 14px;border-left:3px solid var(--accent-secondary);font-family:var(--font-editorial);font-style:italic;font-size:1rem;white-space:pre-wrap}
+.muse-stream-post[data-tone=literary]{border-left:4px solid var(--accent-warm,var(--accent-pop))}
+.muse-stream-post[data-tone=literary] .muse-stream-commentary{font-family:var(--font-editorial);font-size:1.05rem}
+.muse-stream-post[data-tone=mystical]{background:radial-gradient(120% 90% at 100% 0%,color-mix(in srgb,var(--accent-secondary) 16%,transparent),transparent 60%),var(--glass-background,var(--dl-surface))}
+.muse-stream-post[data-tone=mystical]::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.55;background:radial-gradient(1.4px 1.4px at 12% 20%,var(--foreground),transparent),radial-gradient(1.2px 1.2px at 78% 14%,var(--foreground),transparent),radial-gradient(1px 1px at 90% 70%,var(--foreground),transparent),radial-gradient(1.2px 1.2px at 30% 85%,var(--foreground),transparent)}
+.muse-stream-post[data-tone=celebratory]{border-color:color-mix(in srgb,#f5b52e 55%,var(--dl-line));box-shadow:0 0 0 1px color-mix(in srgb,#f5b52e 18%,transparent),0 10px 30px -18px color-mix(in srgb,#f5b52e 70%,transparent)}
+.muse-stream-post[data-tone=celebratory]::before{content:"";position:absolute;inset:0 0 auto;height:3px;background:linear-gradient(90deg,#fff4c2,#f5b52e,#ff8fb1,#f5b52e,#fff4c2)}
+.muse-stream-post[data-tone=feeling]{background:radial-gradient(110% 80% at 0% 100%,color-mix(in srgb,var(--accent-pop) 12%,transparent),transparent 60%),var(--glass-background,var(--dl-surface))}
+
+/* Options */
+.muse-stream-options{position:relative}
+.muse-stream-menu{position:absolute;right:0;top:calc(100% + 6px);z-index:5;display:grid;gap:2px;min-width:230px;padding:6px}
+.muse-stream-menu>button,.muse-stream-menu>a,.muse-stream-confirm>button{display:flex;align-items:center;gap:8px;width:100%;min-height:40px;padding:6px 10px;border:0;border-radius:10px;background:transparent;color:var(--foreground);font:500 .84rem var(--font-ui);text-align:left;text-decoration:none;cursor:pointer}
+.muse-stream-menu>button:hover,.muse-stream-menu>a:hover,.muse-stream-confirm>button:hover{background:var(--surface-hover)}
+.muse-stream-confirm{display:grid;gap:4px;padding:6px}.muse-stream-confirm p{margin:0}
+
+/* Spoilers: nothing readable until deliberately revealed */
+.muse-stream-spoiler{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;border-radius:12px;background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--foreground) 7%,transparent) 0 8px,transparent 8px 16px)}
+.muse-stream-spoiler p{margin:0;font-weight:600}
+
+/* Actions: one primary reaction, then Comment */
+.muse-stream-actions{display:flex;flex-wrap:wrap;gap:8px;padding-top:4px;border-top:1px solid var(--dl-line)}
+.muse-stream-reaction,.muse-stream-comment-toggle{position:relative;display:inline-flex;align-items:center;gap:7px;min-height:var(--touch-target);padding:6px 14px;border:1px solid var(--dl-line);border-radius:999px;background:transparent;color:var(--foreground);font:600 .84rem var(--font-ui);cursor:pointer}
+.muse-stream-reaction:hover,.muse-stream-comment-toggle:hover{background:var(--surface-hover)}
+.muse-stream-reaction[aria-pressed=true]{border-color:var(--selected-border);background:var(--selected-background);color:var(--selected-text)}
+.muse-stream-reaction:focus-visible,.muse-stream-comment-toggle:focus-visible{outline:2px solid var(--focus-ring,var(--selected-border));outline-offset:2px}
+.muse-stream-reaction-emoji{display:inline-block;font-size:1.05rem;line-height:1}
+.muse-stream-burst{position:absolute;left:12px;top:50%;width:24px;height:0;pointer-events:none}
+.muse-stream-burst i{position:absolute;left:0;top:-.5em;font-style:normal;font-size:.8rem;line-height:1;opacity:0}
+
+/* One-shot reaction gestures. Only with motion allowed and Muse Magic above Quiet; Extra reaches a little further. */
+@media (prefers-reduced-motion:no-preference){
+ :root:not([data-magic=quiet]) .muse-stream-reaction-emoji[data-played]{animation:muse-stream-pop .45s cubic-bezier(.3,1.6,.5,1)}
+ :root:not([data-magic=quiet]) .muse-stream-burst{--reach:1}
+ :root[data-magic=extra] .muse-stream-burst{--reach:1.45}
+ /* React: four sparkles twinkle outward */
+ :root:not([data-magic=quiet]) .muse-stream-burst[data-kind=react] i{color:var(--accent-secondary);animation:muse-stream-sparkle .8s ease-out forwards;animation-delay:calc(var(--i) * 40ms)}
+ /* Send Love: hearts drift up and soften */
+ :root:not([data-magic=quiet]) .muse-stream-burst[data-kind=love] i{animation:muse-stream-float 1.1s ease-out forwards;animation-delay:calc(var(--i) * 120ms)}
+ /* Share Joy: petals bloom in a ring */
+ :root:not([data-magic=quiet]) .muse-stream-burst[data-kind=joy] i{color:#f6c445;animation:muse-stream-bloom .9s ease-out forwards}
+ /* Cheer: the megaphone bounces, sound-wave marks ripple out */
+ :root:not([data-magic=quiet]) .muse-stream-reaction[data-kind=cheer] .muse-stream-reaction-emoji[data-played]{animation:muse-stream-bounce .6s ease-in-out}
+ :root:not([data-magic=quiet]) .muse-stream-burst[data-kind=cheer] i{color:var(--accent-pop);animation:muse-stream-wave .7s ease-out forwards;animation-delay:calc(var(--i) * 90ms)}
+ /* Celebrate: a small, gentle sprinkle of confetti */
+ :root:not([data-magic=quiet]) .muse-stream-burst[data-kind=celebrate] i{font-size:.55rem;animation:muse-stream-confetti 1s ease-in forwards;animation-delay:calc(var(--i) * 35ms)}
+ .muse-stream-burst[data-kind=celebrate] i:nth-child(3n){color:#f5b52e}.muse-stream-burst[data-kind=celebrate] i:nth-child(3n+1){color:var(--accent-pop)}.muse-stream-burst[data-kind=celebrate] i:nth-child(3n+2){color:var(--accent-secondary)}
+}
+@keyframes muse-stream-pop{0%{transform:scale(1)}40%{transform:scale(1.45)}100%{transform:scale(1)}}
+@keyframes muse-stream-bounce{0%,100%{transform:translateY(0) rotate(0)}30%{transform:translateY(-5px) rotate(-12deg)}60%{transform:translateY(0) rotate(8deg)}}
+@keyframes muse-stream-sparkle{0%{opacity:0;transform:rotate(calc(var(--i) / var(--n) * 360deg)) translateX(4px) scale(.4)}35%{opacity:1}100%{opacity:0;transform:rotate(calc(var(--i) / var(--n) * 360deg)) translateX(calc(26px * var(--reach))) scale(1)}}
+@keyframes muse-stream-float{0%{opacity:0;transform:translate(calc((var(--i) - 1) * 9px),0) scale(.6)}25%{opacity:1}100%{opacity:0;transform:translate(calc((var(--i) - 1) * 14px),calc(-46px * var(--reach))) scale(1.1)}}
+@keyframes muse-stream-bloom{0%{opacity:0;transform:rotate(calc(var(--i) / var(--n) * 360deg)) translateX(0) scale(.3)}40%{opacity:1}100%{opacity:0;transform:rotate(calc(var(--i) / var(--n) * 360deg + 40deg)) translateX(calc(22px * var(--reach))) scale(1)}}
+@keyframes muse-stream-wave{0%{opacity:0;transform:translateX(14px) scaleY(.6)}40%{opacity:.9}100%{opacity:0;transform:translateX(calc(34px * var(--reach))) scaleY(1.2)}}
+@keyframes muse-stream-confetti{0%{opacity:0;transform:translate(calc((var(--i) - 4) * 6px),-26px) rotate(0)}20%{opacity:1}100%{opacity:0;transform:translate(calc((var(--i) - 4) * 9px * var(--reach)),18px) rotate(220deg)}}
+
+/* Comments */
+.muse-stream-comments{display:grid;gap:10px}
+.muse-stream-comments ol{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.muse-stream-comments li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px}
+.muse-stream-comment-meta{margin:0;font-size:.78rem;color:var(--text-muted)}.muse-stream-comment-meta a{color:var(--foreground);text-decoration:none}
+.muse-stream-comment-text{margin:2px 0 0;white-space:pre-wrap;overflow-wrap:anywhere}
+.muse-stream-comment-actions,.muse-stream-report{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;font-size:.78rem}
+.muse-stream-comment-form{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:end}
+.muse-stream-inline-edit{display:grid;gap:6px}
+.muse-stream-edit{display:grid;gap:12px}
+.muse-stream-notice{margin:0}
+
+/* Notifications and settings */
+.muse-stream-notes{list-style:none;margin:0;padding:0;display:grid;gap:2px;max-height:min(60vh,460px);overflow-y:auto}
+.muse-stream-notes a{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;padding:8px;border-radius:12px;color:var(--foreground);text-decoration:none;font-size:.86rem}
+.muse-stream-notes a:hover{background:var(--surface-hover)}
+.muse-stream-notes li[data-unread] a{background:color-mix(in srgb,var(--accent-pop) 9%,transparent)}
+.muse-stream-notes small,.muse-stream-notes time{display:block;color:var(--text-muted);font-size:.74rem}
+.muse-stream-settings{display:grid;gap:8px}
+.muse-stream-settings h2{margin:0}
+
+/* Share to Stream dialog (opens over any module) */
+.muse-stream-dialog{width:min(640px,calc(100vw - 24px));max-height:calc(100dvh - 32px);padding:0;border:1px solid var(--glass-border);border-radius:var(--dl-radius-panel);background:var(--floating-background,var(--background));color:var(--foreground);overflow:auto}
+.muse-stream-dialog::backdrop{background:color-mix(in srgb,#000 45%,transparent)}
+.muse-stream-dialog-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px 0}
+.muse-stream-dialog-head h2{margin:0}
+.muse-stream-dialog .muse-stream-composer{border:0;background:transparent;box-shadow:none}
+
+@media (max-width:600px){
+ .muse-stream-composer-head{grid-template-columns:1fr}.muse-stream-composer-head>.muse-avatar{display:none}
+ .muse-stream-post-head{grid-template-columns:auto minmax(0,1fr) auto;gap:10px}
+ .muse-stream-menu{position:fixed;left:12px;right:12px;top:auto;bottom:calc(env(safe-area-inset-bottom,0px) + 84px);min-width:0}
+ .muse-stream-comment-form{grid-template-columns:1fr}
+ .muse-stream-picker-group{display:none}.muse-stream-picker button{grid-template-columns:40px minmax(0,1fr)}
+}
+@media (prefers-reduced-motion:reduce){.muse-stream-reaction,.muse-stream-shortcut{transition:none}}
+.muse-stream-recent{display:grid;gap:12px;max-width:780px;margin-top:8px}
+.muse-stream-consent .small-label,.muse-stream-composer-foot .small-label{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:0}
+.muse-stream-share-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:10px}

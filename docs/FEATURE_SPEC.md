@@ -758,3 +758,21 @@ IMPLEMENTED (merged to main; migration applied to staging and production):
 - **Persistence**: `atelier_themes` and `appearance_preferences` (migration `20261108000100_theme_atelier.sql`), owner-only RLS.
 
 FUTURE/EXPLORATORY: sharing themes between accounts; animated atmosphere controls (Muse Magic stays separate); rotated radial glows (not possible with CSS gradients); including themes in the personal data export.
+
+## Stream of Consciousness (#27) — implemented on feature branch (`feature/stream-27`, awaiting review)
+
+IMPLEMENTED (local; migration `20261110000100_stream.sql` applied to the local database only). Full consolidated
+specification, architecture and known conflicts: [STREAM](STREAM.md).
+- `/stream`: "[Name] is…" composer with optional flourishes and shortcuts (Reading, Watching, Feeling, Dreaming,
+  Celebrating; More: Tarot, Side Quests, Rituals, Fortunes, Astrology, Money milestone); granular field consent with
+  sensitive records unticked; Only me by default, Friends or Selected friends; preview before publishing; duplicate-safe.
+- Chronological feed with the original filters (All, Reading & Watching, Life Updates, Whimsy, Celebrations), keyset
+  "Show earlier moments", the "Quiet in the universe today" empty state, and a single-post view for notifications.
+- Cards: literary, mystical, celebratory, feeling and classic status presentations; one contextual primary reaction plus
+  Comment; spoilers; post options (edit, audience, comments on/off, unpublish to Only me, delete; report for others).
+- Reactions with one-shot gestures per kind (React, Send Love, Share Joy, Cheer, Celebrate), gated by Muse Magic and
+  reduced motion. Chronological comments with author moderation and reporting.
+- In-app notifications (reactions, comments, friend requests, accepted requests) with per-category preferences; a
+  Show Stream in navigation preference (Settings and Stream) that never changes posts or friendships.
+- Share to Stream dialogs in Bookshelf, Dreamscapes and Tarot; friend profiles show recent Stream posts the viewer may see.
+- Tests: `npm run test:stream:db` (79 multi-account checks), `npm run test:stream:ui` (18 browser checks), `tests/stream.test.mjs`.
