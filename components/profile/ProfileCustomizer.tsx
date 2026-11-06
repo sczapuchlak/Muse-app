@@ -7,7 +7,8 @@ import {useThemeOverride} from '@/lib/theme-override';
 import {changeUsername,updateIdentity,usernameStatus,usernameHint,localUsernameStatus,type UsernameStatus} from '@/lib/social/identity';
 import {saveProfileDetails} from '@/lib/profile/persistence';
 import {sectionLabels,type ProfileDetails} from '@/lib/profile/model';
-import {profileBadges,badgeCategories,MAX_BADGES,normalizeBadges} from '@/lib/profile/badges';
+import {MAX_BADGES,normalizeBadges} from '@/lib/profile/badges';
+import {BadgePicker} from './BadgePicker';
 import {AvatarPicker} from './AvatarPicker';
 import {offeredGradients,familyLabels,gradientCss,type GradientFamily} from '@/lib/profile/gradients';
 import {MuseIcon} from '../MuseIcon';
@@ -66,7 +67,7 @@ export function ProfileCustomizer(){
      <div className="muse-gradient-gallery" role="radiogroup" aria-label="Banner gradient">{families.map(f=><div key={f} className="muse-gradient-family"><p className="small-label">{familyLabels[f]}</p><div>{offeredGradients.filter(g=>g.family===f).map(g=><button key={g.id} type="button" role="radio" aria-checked={draft.bannerGradient===g.id} aria-label={g.name} title={g.name} style={{'--swatch':gradientCss(g.id)} as CSSProperties} onClick={()=>set({bannerGradient:g.id})}/>)}</div></div>)}</div>
     </section>
     <section className="muse-panel"><h2 className="muse-kicker">Badges</h2><p className="muse-atelier-hint">Pick up to {MAX_BADGES} that are painfully, specifically you. They sit beside your name, and they’re decorative: never earned or tracked. <span aria-live="polite">{chosen.length}/{MAX_BADGES} chosen.</span></p>
-     <div className="muse-badge-picker">{badgeCategories.map(c=><fieldset key={c.id} className="muse-badge-category" style={{'--badge':c.accent} as CSSProperties}><legend>{c.label}</legend><div className="muse-badge-list">{profileBadges.filter(b=>b.category===c.id).map(b=>{const on=chosen.includes(b.id);return <button key={b.id} type="button" className="muse-badge" aria-pressed={on} disabled={!on&&chosen.length>=MAX_BADGES} onClick={()=>set({badges:on?chosen.filter(x=>x!==b.id):[...chosen,b.id]})}><MuseIcon name={b.icon} size={14}/>{b.label}{on&&<MuseIcon name="check" size={13}/>}</button>;})}</div></fieldset>)}</div>
+     <BadgePicker chosen={chosen} onChange={next=>set({badges:next})}/>
     </section>
     <section className="muse-panel"><h2 className="muse-kicker">Arrangement</h2>
      <ol className="muse-customizer-sections">{sections.map((s,i)=>s.id==='badges'?null:<li key={s.id}><span>{sectionLabels[s.id]}</span>
@@ -81,7 +82,7 @@ export function ProfileCustomizer(){
     </section>
    </div>
    <div className="muse-customizer-preview" aria-label="Live preview"><p className="small-label">Live preview · how friends will see it</p>
-    <ProfileView data={{displayName:name||'Your name',username,avatarId,tagline:draft.tagline,bio:draft.bio,bannerGradient:draft.bannerGradient,sections:draft.sections,badges:draft.badges,showcases:me.showcases.filter(s=>s.visibility==='friends').map(s=>({id:s.id,title:s.title,description:s.description,icon:s.icon,gradient:s.gradient,layout:s.layout,items:s.items.filter(i=>i.sourceState==='ok').map(i=>({id:i.id,display:i.display,note:i.note}))}))}}
+    <ProfileView data={{creator:me.identity.creator,displayName:name||'Your name',username,avatarId,tagline:draft.tagline,bio:draft.bio,bannerGradient:draft.bannerGradient,sections:draft.sections,badges:draft.badges,showcases:me.showcases.filter(s=>s.visibility==='friends').map(s=>({id:s.id,title:s.title,description:s.description,icon:s.icon,gradient:s.gradient,layout:s.layout,items:s.items.filter(i=>i.sourceState==='ok').map(i=>({id:i.id,display:i.display,note:i.note}))}))}}
      emptyShowcases={<p className="muse-atelier-hint">Showcases you share with friends appear here.</p>}/>
    </div>
   </div>

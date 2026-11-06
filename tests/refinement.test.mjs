@@ -83,6 +83,6 @@ test('Daily Edit uses a full abstract field, with stars left of date and no hero
  const html=renderToStaticMarkup(React.createElement(MuseHeader,{date:{iso:'2026-10-29',label:''},profile:mockProfile,greeting:'Make room for a little magic.',onDateChange(){}}));
  assert.ok(html.includes('muse-star-cluster'));assert.ok(!html.includes('muse-profile-constellation'));assert.ok(!html.includes('muse-theme-root'));
  assert.ok(html.indexOf('muse-star-cluster')<html.indexOf('class="muse-date-navigation"')||html.indexOf('muse-star-cluster')<html.indexOf('aria-label="Previous day"'));
- const source=readFileSync(resolve(root,'components/AppShell.tsx'),'utf8');assert.ok(source.includes('<div className="muse-rail-footer"><ThemeSwitcher'));
+ const source=readFileSync(resolve(root,'components/AppShell.tsx'),'utf8');assert.ok(source.includes('<div className="muse-rail-footer">')&&source.includes('<ThemeSwitcher variant="dock"/>'),'the theme picker lives in the rail footer dock');
  const artwork=readFileSync(resolve(root,'components/PageCelestial.tsx'),'utf8');assert.ok(!artwork.includes('CelestialPath'));assert.ok(artwork.includes('compositions[motif]'));
 });

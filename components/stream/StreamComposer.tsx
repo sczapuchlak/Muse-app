@@ -69,7 +69,7 @@ export function StreamComposer({initial,onPublished,onCancel,autoFocus=false}:{i
 
  return <section className="muse-stream-composer muse-panel" aria-label="Write a status">
   <div className="muse-stream-composer-head">
-   <MuseAvatar id={me.avatarId} size={44} decorative/>
+   <MuseAvatar id={me.avatarId} size={44} decorative creator={me.creator}/>
    <label className="muse-stream-is"><span>{me.displayName} is…</span>
     <textarea rows={2} maxLength={BODY_MAX} value={body} autoFocus={autoFocus} placeholder={source?'Add your thoughts (optional)':'reading three books and finishing none.'} onChange={e=>setBody(e.target.value)}/></label>
   </div>

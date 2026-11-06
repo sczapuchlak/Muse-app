@@ -623,3 +623,9 @@ Icon gradient angle and middle stop are SVG attributes, published by the applied
 - **Intensity**: Quiet = state feedback and announcements only; Magical = light particle counts; Extra = fuller dust and slightly longer moments. `prefers-reduced-motion` always wins.
 - **Sound** (`lib/muse-sound.ts`, preference `lib/sound-preference.ts`): synthesized bell palette `confirm`, `complete`, `reveal`, `seal`, `celebrate`, `book`; Off by default; independent of motion; plays only from success paths; never overlaps (a more important sound takes over, lesser ones are skipped); silent no-op without Web Audio.
 - **Copy** (`lib/celebration-copy.ts`): rotating, Muse-voiced lines; never "Great job", "Congratulations" or "Achievement unlocked".
+
+## Account dock and creator ring
+
+- **Account dock** (`.muse-rail-dock`): a slim glass pill with a gradient hairline holding 42px round icon buttons (`.muse-dock-button`; Themes uses `ThemeSwitcher variant="dock"` with a theme dot). Hover glows and lifts 1px; the current page gets the selected ring; the collapsed rail stacks it vertically.
+- **Creator ring** (`MuseAvatar creator`, `.muse-creator-ring`): a conic gold band scaled to the avatar (≈4.5% of its size), a soft glow and a twinkling ✦; it turns slowly only with motion allowed and Muse Magic above Quiet, and always shows.
+

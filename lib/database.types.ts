@@ -1435,14 +1435,14 @@ isOneToOne: false
                   ]
                 },"social_identities": {
                   Row: {
-                    "avatar_id": string,"created_at": string,"discoverable": boolean,"display_name": string,"participation": string,"public_id": string,"updated_at": string,"user_id": string,"username": string,"username_changed_at": string
+                    "avatar_id": string,"created_at": string,"creator": boolean,"discoverable": boolean,"display_name": string,"participation": string,"public_id": string,"updated_at": string,"user_id": string,"username": string,"username_changed_at": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "avatar_id"?: string,"created_at"?: string,"discoverable"?: boolean,"display_name": string,"participation"?: string,"public_id"?: string,"updated_at"?: string,"user_id": string,"username": string,"username_changed_at"?: string
+                    "avatar_id"?: string,"created_at"?: string,"creator"?: boolean,"discoverable"?: boolean,"display_name": string,"participation"?: string,"public_id"?: string,"updated_at"?: string,"user_id": string,"username": string,"username_changed_at"?: string
                   }
                   Update: {
-                    "avatar_id"?: string,"created_at"?: string,"discoverable"?: boolean,"display_name"?: string,"participation"?: string,"public_id"?: string,"updated_at"?: string,"user_id"?: string,"username"?: string,"username_changed_at"?: string
+                    "avatar_id"?: string,"created_at"?: string,"creator"?: boolean,"discoverable"?: boolean,"display_name"?: string,"participation"?: string,"public_id"?: string,"updated_at"?: string,"user_id"?: string,"username"?: string,"username_changed_at"?: string
                   }
                   Relationships: [
                     

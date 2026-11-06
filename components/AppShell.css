@@ -91,3 +91,22 @@
 .priority-actions {display:flex;align-items:center;gap:var(--space-1);}
 .priority-add {display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-2);margin-top:var(--space-3);}
 .priority-add input {flex:1;min-width:0;}
+
+/* Account dock: Themes, Settings and Sign out as a slim glass pill of icons under Stream and the profile row. */
+.muse-rail-dock{position:relative;display:flex;align-items:center;justify-content:space-around;gap:4px;margin:var(--space-2) 2px 2px;padding:5px;border-radius:999px;
+ background:color-mix(in srgb,var(--surface-subtle,var(--glass-background)) 70%,transparent);box-shadow:inset 0 1px 0 color-mix(in srgb,#fff 8%,transparent)}
+.muse-rail-dock::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;
+ background:linear-gradient(110deg,color-mix(in srgb,var(--accent-secondary) 55%,transparent),color-mix(in srgb,var(--accent-primary) 30%,transparent),color-mix(in srgb,var(--accent-pop) 55%,transparent));
+ -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:.75}
+.muse-rail-dock .muse-logout{display:contents}
+.muse-dock-button,.muse-rail-dock .muse-theme-root[data-variant="dock"] .muse-theme-trigger{position:relative;display:grid;place-items:center;width:42px;height:42px;min-height:0;padding:0;border:1px solid transparent;border-radius:50%;background:transparent;color:var(--text-muted);text-decoration:none;cursor:pointer;
+ transition:background-color var(--motion-hover,180ms) var(--ease-out,ease-out),color var(--motion-hover,180ms),box-shadow var(--motion-hover,180ms),transform var(--motion-press,120ms) var(--ease-out,ease-out)}
+.muse-dock-button:hover,.muse-theme-root[data-variant="dock"] .muse-theme-trigger:hover,.muse-theme-root[data-variant="dock"] .muse-theme-trigger[aria-expanded="true"]{color:var(--foreground);background:var(--surface-hover);box-shadow:0 0 14px -4px color-mix(in srgb,var(--accent-secondary) 70%,transparent)}
+.muse-dock-button[aria-current="page"]{color:var(--navigation-text);border-color:var(--selected-border);background:var(--navigation-background)}
+.muse-dock-button:focus-visible,.muse-theme-root[data-variant="dock"] .muse-theme-trigger:focus-visible{outline:2px solid var(--focus-ring,var(--selected-border));outline-offset:2px}
+.muse-rail-dock .muse-theme-root[data-variant="dock"]{width:auto;min-width:0;justify-self:auto;margin:0}
+.muse-theme-root[data-variant="dock"] .muse-theme-trigger>svg:last-child{display:none}
+.muse-theme-root[data-variant="dock"] .muse-dock-orb{position:absolute;right:7px;bottom:7px;width:10px;height:10px;flex:none;border:1.5px solid var(--floating-background,var(--background))}
+@media (prefers-reduced-motion:no-preference){.muse-dock-button:hover,.muse-theme-root[data-variant="dock"] .muse-theme-trigger:hover{transform:translateY(-1px)}}
+/* Collapsed rail: the dock stands up as a slim vertical capsule */
+.muse-rail-dock[data-compact]{flex-direction:column;margin-inline:auto;width:52px;padding:5px 0}

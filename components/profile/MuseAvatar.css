@@ -1,0 +1,16 @@
+/* The creator mark: a one-of-one gold sparkle ring. Scales with the avatar; turns slowly; still with reduced motion
+   or Quiet Muse Magic (the ring itself always shows). */
+.muse-creator-ring{--ring:max(2px,calc(var(--avatar-px) * .045));position:relative;display:inline-grid;place-items:center;flex:none;padding:calc(var(--ring) + 1px);border-radius:50%;isolation:isolate}
+.muse-creator-ring::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:50%;padding:var(--ring);
+ background:conic-gradient(from var(--creator-turn,0deg),#fff4c2,#f5b52e,#ffe9a0,#c98a12,#fff8dc,#f2a91b,#fff4c2);
+ -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;
+ filter:drop-shadow(0 0 calc(var(--ring) * 1.6) rgba(250,204,21,.7))}
+.muse-creator-ring>.muse-avatar{position:relative}
+.muse-creator-spark{position:absolute;top:2%;right:4%;font-size:max(9px,calc(var(--avatar-px) * .2));line-height:1;color:#fde68a;text-shadow:0 0 6px #facc15,0 0 12px rgba(250,204,21,.55);pointer-events:none;transform:translate(25%,-25%)}
+@property --creator-turn{syntax:'<angle>';inherits:false;initial-value:0deg}
+@media (prefers-reduced-motion:no-preference){
+ :root:not([data-magic=quiet]) .muse-creator-ring::before{animation:muse-creator-turn 7s linear infinite}
+ :root:not([data-magic=quiet]) .muse-creator-spark{animation:muse-creator-twinkle 2.8s ease-in-out infinite}
+}
+@keyframes muse-creator-turn{to{--creator-turn:360deg}}
+@keyframes muse-creator-twinkle{0%,100%{opacity:.45;transform:translate(25%,-25%) scale(.8)}50%{opacity:1;transform:translate(25%,-25%) scale(1.15)}}

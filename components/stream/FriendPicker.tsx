@@ -10,6 +10,6 @@ export function FriendPicker({value,onChange}:{value:string[];onChange:(ids:stri
  return <fieldset className="muse-stream-friends"><legend className="small-label">Choose friends ({value.length} selected)</legend>
   <ul>{friends.map(f=>{const on=value.includes(f.id);return <li key={f.id}><label data-on={on||undefined}>
    <input type="checkbox" checked={on} onChange={e=>onChange(e.target.checked?[...value,f.id]:value.filter(x=>x!==f.id))}/>
-   <MuseAvatar id={f.avatarId} size={28} decorative/><span>{f.displayName}<small>@{f.username}</small></span></label></li>;})}</ul>
+   <MuseAvatar id={f.avatarId} size={28} decorative creator={f.creator}/><span>{f.displayName}<small>@{f.username}</small></span></label></li>;})}</ul>
  </fieldset>;
 }

@@ -44,7 +44,7 @@ export function StreamPostCard({post,onChange,onRemove,preview=false,headingLeve
 
  return <article className="muse-stream-post" data-tone={tone} data-spoiler={post.spoiler||undefined} aria-labelledby={`post-${post.id}`}>
   <header className="muse-stream-post-head">
-   {post.mine?<MuseAvatar id={post.author.avatarId} size={44} decorative/>:<Link href={`/people/${post.author.username}`} aria-label={`${post.author.displayName}’s profile`} tabIndex={preview?-1:undefined}><MuseAvatar id={post.author.avatarId} size={44} decorative/></Link>}
+   {post.mine?<MuseAvatar id={post.author.avatarId} size={44} decorative creator={post.author.creator}/>:<Link href={`/people/${post.author.username}`} aria-label={`${post.author.displayName}’s profile`} tabIndex={preview?-1:undefined}><MuseAvatar id={post.author.avatarId} size={44} decorative creator={post.author.creator}/></Link>}
    <div className="muse-stream-post-who">
     <Heading id={`post-${post.id}`} className="muse-stream-headline">{headline}</Heading>
     <p className="muse-stream-post-meta">

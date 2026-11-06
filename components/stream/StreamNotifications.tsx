@@ -28,7 +28,7 @@ export function StreamNotifications(){
   <GlassPopover id="stream-notifications" label="Notifications" open={open} anchorRef={anchor} onClose={()=>{setOpen(false);setList(l=>l?.map(n=>({...n,read:true}))??l);}} width={360} align="end">
    {list===null?<p className="small-label" role="status">Checking…</p>:list.length===0?<p className="small-label">All quiet. Reactions, comments and friend requests will appear here.</p>:
     <ol className="muse-stream-notes">{list.map(n=><li key={n.id} data-unread={!n.read||undefined}><Link href={href(n)} onClick={()=>setOpen(false)}>
-     <MuseAvatar id={n.actor.avatarId} size={32} decorative/>
+     <MuseAvatar id={n.actor.avatarId} size={32} decorative creator={n.actor.creator}/>
      <span><strong>{n.actor.displayName}</strong> {describe(n)}{n.excerpt&&<small>“{n.excerpt}”</small>}<time dateTime={n.createdAt} title={fullTime(n.createdAt)}>{relativeTime(n.createdAt)}</time></span></Link></li>)}</ol>}
   </GlassPopover>
  </>;

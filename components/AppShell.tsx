@@ -11,7 +11,7 @@ import type {DailyProfile} from "@/lib/data/daily-store";
 import { MuseAtmosphere } from "./MuseAtmosphere";
 import { MuseIcon } from "./MuseIcon";
 import { MuseCelebrations } from "./MuseCelebrations";
-import { ProfileNavIcon } from "./social/ProfileNavIcon";
+import { ProfileNavIcon, ProfileNavLabel } from "./social/ProfileNavIcon";
 import { useStreamNavigation } from "@/lib/stream/navigation-preference";
 import { MuseStar } from "./MuseStar";
 import { ThemeSwitcher } from "./ThemeSwitcher";
@@ -37,7 +37,7 @@ function NavDestination({ item, path, compact = false, onNavigate, userId }: { i
   const active = isActiveItem(path, item);
   return <Link href={item.href} className="muse-nav-link muse-edge" aria-current={active ? "page" : undefined}
     aria-label={compact ? item.label : undefined} title={compact ? item.label : undefined} onClick={onNavigate}>
-    {item.id === "profile" ? <ProfileNavIcon userId={userId} /> : <MuseIcon name={item.icon} size={20} treatment="prismatic" />}<span className="muse-nav-label">{item.label}</span>{active && <MuseStar size={17} className="muse-nav-active-star" />}
+    {item.id === "profile" ? <ProfileNavIcon userId={userId} /> : <MuseIcon name={item.icon} size={20} treatment="prismatic" />}<span className="muse-nav-label">{item.id === "profile" ? <ProfileNavLabel userId={userId} fallback={item.label} /> : item.label}</span>{active && <MuseStar size={17} className="muse-nav-active-star" />}
   </Link>;
 }
 
@@ -68,10 +68,15 @@ function AppShellContent({ children, profile:initialProfile }: { children: React
               {navigation.filter((item) => item.group === group).map((item) => <NavDestination key={item.id} item={item} path={path} userId={profile.id} compact={collapsed} />)}
             </div>)}
           </nav>
-          <div className="muse-rail-footer"><ThemeSwitcher compact={collapsed} variant="nav"/>
-            <div className="muse-rail-utilities" aria-label="Account controls">
-              {navigation.filter((item) => item.group === "Tools" && item.id !== "appearance" && (showStream || item.id !== "stream")).map((item) => <NavDestination key={item.id} item={item} path={path} userId={profile.id} compact={collapsed} />)}
-              <LogoutButton compact={collapsed}/>
+          <div className="muse-rail-footer">
+            <div className="muse-rail-utilities" aria-label="You">
+              {navigation.filter((item) => (item.id === "stream" && showStream) || item.id === "profile").map((item) => <NavDestination key={item.id} item={item} path={path} userId={profile.id} compact={collapsed} />)}
+            </div>
+            {/* Themes, Settings and Sign out as a small dock of icons, so the account area breathes. */}
+            <div className="muse-rail-dock" role="group" aria-label="Account controls" data-compact={collapsed||undefined}>
+              <ThemeSwitcher variant="dock"/>
+              <Link href="/settings" className="muse-dock-button muse-edge" aria-label="Settings" title="Settings" aria-current={isActiveItem(path, navigation.find((item) => item.id === "settings")!) ? "page" : undefined}><MuseIcon name="gear" size={19} treatment="prismatic"/></Link>
+              <LogoutButton compact variant="dock"/>
             </div>
           </div>
         </aside>
