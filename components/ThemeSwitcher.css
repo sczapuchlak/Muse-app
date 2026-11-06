@@ -33,3 +33,7 @@
 .muse-theme-root[data-compact="true"][data-variant="nav"] .muse-theme-trigger { width: 100%; justify-content: center; padding-inline: var(--space-2); }
 /* Collapsed rail keeps the approved compact theme orb (PRODUCT_RULES: Theme). */
 .muse-theme-root[data-compact="true"][data-variant="nav"] .muse-theme-orb { flex-basis: 18px; width: 18px; height: 18px; }
+
+/* Form-field theme picker (profile theme): same menu as the sidebar, field-shaped trigger. */
+.muse-theme-select { justify-self: stretch; width: 100%; max-width: 360px; }
+.muse-theme-select .muse-theme-trigger { width: 100%; justify-content: flex-start; border-radius: var(--control-radius); font-size: .9rem; }

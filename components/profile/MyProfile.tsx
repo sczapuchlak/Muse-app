@@ -1,7 +1,6 @@
 "use client";
 import Link from 'next/link';
 import {useEffect,useMemo,useState,useSyncExternalStore,type CSSProperties} from 'react';
-import {themes} from '@/lib/themes';
 import {readThemePreference,serverThemePreference,subscribeThemePreference} from '@/lib/theme-preference';
 import {useThemeOverride} from '@/lib/theme-override';
 import {createMuseBrowserClient} from '@/lib/supabase/client';
@@ -10,6 +9,7 @@ import {saveProfileDetails,readFriendView,reorderShowcases,markMissing,type Show
 import {defaultProfile,starterIdeas,visibilityLabels} from '@/lib/profile/model';
 import {defaultAvatar} from '@/lib/profile/avatars';
 import {AvatarPicker} from './AvatarPicker';
+import {ThemeSelect} from '../ThemeOptions';
 import {MuseIcon} from '../MuseIcon';
 import {MuseStar} from '../MuseStar';
 import {MuseAvatar} from './MuseAvatar';
@@ -99,7 +99,7 @@ function ProfileSetup({firstName,appTheme,hasIdentity,onCreate}:{firstName:strin
     <MuseAvatar id={avatarId} size={112} label="Your avatar"/>
     <label className="muse-field-label"><span className="small-label">Display name</span><input type="text" required maxLength={60} value={displayName} onChange={e=>setDisplayName(e.target.value)} placeholder="What friends will call you"/></label>
     {!hasIdentity&&<label className="muse-field-label"><span className="small-label">Username</span><span className="muse-username-input"><span aria-hidden="true">@</span><input type="text" required maxLength={30} value={username} onChange={e=>setUsername(e.target.value.toLowerCase())} aria-describedby="username-status" autoCapitalize="none" spellCheck={false}/></span><small id="username-status" className={status==='available'?'muse-username-ok':status?'field-error':'muse-atelier-hint'} aria-live="polite">{status?usernameHint[status]:'Checking…'}</small></label>}
-    <label className="muse-field-label"><span className="small-label">Profile theme</span><select value={theme} onChange={e=>setTheme(e.target.value)}>{themes.map(t=><option key={t.id} value={t.id}>{t.name}</option>)}</select><small className="muse-atelier-hint">Visitors see this theme. Your own Muse keeps its theme.</small></label>
+    <div className="muse-field-label"><span className="small-label">Profile theme</span><ThemeSelect label="Profile theme" value={theme} onChange={setTheme}/><small className="muse-atelier-hint">Visitors see this theme. Your own Muse keeps its theme.</small></div>
     {error&&<p className="field-error" role="alert">{error}</p>}
     <button type="submit" className="muse-button button-primary muse-edge" disabled={!ready||busy}>{busy?'Opening the doors…':'Create my profile'}</button>
    </div>

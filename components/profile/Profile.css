@@ -143,7 +143,7 @@
 .muse-customizer-sections>li>span{flex:1}
 .muse-gradient-gallery{display:grid;gap:10px}
 .muse-gradient-family>div{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
-.muse-gradient-family button{width:38px;height:38px;border-radius:12px;border:2px solid var(--floating-background);background:var(--swatch);box-shadow:0 0 0 1px var(--dl-line);cursor:pointer;transition:transform .15s}
+.muse-gradient-family button{width:46px;height:46px;border-radius:14px;border:2px solid var(--floating-background);background:var(--swatch);box-shadow:0 0 0 1px var(--dl-line);cursor:pointer;transition:transform .15s}
 .muse-gradient-family button:hover{transform:scale(1.08)}
 .muse-gradient-family button[aria-checked=true]{box-shadow:0 0 0 2px var(--selected-border),0 0 0 5px color-mix(in srgb,var(--selected-border) 25%,transparent)}
 .muse-gradient-family button:focus-visible{outline:2px solid var(--focus-ring);outline-offset:3px}
