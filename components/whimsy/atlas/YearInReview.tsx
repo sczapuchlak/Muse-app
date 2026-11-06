@@ -1,14 +1,15 @@
 'use client';
 import {useState} from 'react';
 import {MuseStar} from '@/components/MuseStar';
-import type {Book,ReadingSession} from '@/lib/whimsy/models';
+import type {Book,ReadingGoal,ReadingSession} from '@/lib/whimsy/models';
+import {KeepsakeExport} from './KeepsakeExport';
 import {readEmojis,readOpinion} from '@/lib/whimsy/reading-cycles';
 import {hourLabel,yearReview,yearsWithReading,type Persona} from '@/lib/whimsy/reading-dna';
 import {ActivityBars,AtlasMetric,Insight,days,duration,hours,monthLabel,monthName,num,plural,shortMonth,yearDate} from './parts';
 
 /** A literary scrapbook of one year, computed live from saved records (nothing is stored as a snapshot). */
-export function YearInReview({books,sessions,today}:{books:Book[];sessions:ReadingSession[];today:string}){
- const years=yearsWithReading(books,sessions),[chosen,setChosen]=useState(today.slice(0,4)),year=years.includes(chosen)?chosen:years[0];
+export function YearInReview({books,sessions,today,goals=[]}:{books:Book[];sessions:ReadingSession[];today:string;goals?:ReadingGoal[]}){
+ const years=yearsWithReading(books,sessions),[chosen,setChosen]=useState(today.slice(0,4)),[keepsake,setKeepsake]=useState(false),year=years.includes(chosen)?chosen:years[0];
  if(!year)return <div className="muse-empty-state muse-books-empty" data-variant="editorial"><h4>Your first year in books is waiting.</h4><p>Once you log a session or finish a book, its year will have a recap here.</p></div>;
  const r=yearReview(books,sessions,year,today),n=r.numbers,isPersona=(p:Persona|{needed:number}):p is Persona=>'title' in p,progress=year===today.slice(0,4);
  return <div className="muse-atlas-section muse-atlas-year">
@@ -16,7 +17,9 @@ export function YearInReview({books,sessions,today}:{books:Book[];sessions:Readi
   <header className="muse-atlas-year-hero"><span className="muse-atlas-year-stars" aria-hidden="true"><MuseStar size={18}/><MuseStar size={12} color="aqua"/><MuseStar size={10} color="pink"/></span>
    <span className="small-label">{progress?'Your year so far':'Your year in reading'}</span><h4>{year}</h4>
    <p>{n.reads?`${plural(n.reads,'finished read')}${n.rereads?` (${plural(n.uniqueBooks,'book')}, ${plural(n.rereads,'reread')})`:''}, ${num(n.pages)} pages and ${n.seconds?hours(n.seconds):'no timed reading'} across ${plural(n.readingDays,'reading day')}.`:`${num(n.pages)} pages and ${n.seconds?hours(n.seconds):'no timed reading'} across ${plural(n.readingDays,'reading day')}; no finished books ${progress?'yet':'that year'}.`}</p>
+   <button type="button" className="muse-button button-ghost muse-keepsake-open" onClick={()=>setKeepsake(true)}>Make a keepsake</button>
   </header>
+  {keepsake&&<KeepsakeExport books={books} sessions={sessions} goals={goals} year={year} today={today} onClose={()=>setKeepsake(false)}/>}
   <section aria-label="The numbers"><h4 className="muse-atlas-year-heading">The numbers</h4><div className="muse-books-stats muse-books-atlas-metrics">
    <AtlasMetric label="Books finished" value={String(n.reads)} detail={n.reads?`${plural(n.uniqueBooks,'title')}${n.rereads?` · ${plural(n.rereads,'reread')}`:''}`:'None finished'}/>
    <AtlasMetric label="Pages read" value={num(n.pages)} detail="From saved sessions"/>

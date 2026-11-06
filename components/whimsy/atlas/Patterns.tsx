@@ -38,7 +38,8 @@ export function Patterns({books,sessions,range,label,series,seriesMembers,media,
    <Insight label="Average rating" value={ratings.average!==null?`${ratings.average}/5`:undefined} detail={ratings.rated?`${plural(ratings.rated,'rated read')} ${label}`:undefined} empty="No rated reads in this period"/>
    <Insight label="Typical time to finish" value={speed.typicalDays!==null?days(speed.typicalDays):undefined} detail={speed.reads?`Median of ${plural(speed.reads,'read')} with a start date`:undefined} empty="Needs finished reads with a start date"/>
    <Insight label="Favorite time of day" value={topBand?bandNames[topBand[0]].split(' (')[0]:undefined} detail={topBand?`${hours(topBand[1])} of active time`:undefined} empty="Needs timed sessions"/>
-   <Insight label="New authors" value={authors.authors.length?String(authors.newAuthors):undefined} detail={authors.authors.length?`${plural(authors.returningAuthors,'returning author')}`:undefined} empty="No finished books with an author"/>
+   {range?<Insight label="New authors" value={authors.authors.length?String(authors.newAuthors):undefined} detail={authors.authors.length?plural(authors.returningAuthors,'returning author'):undefined} empty="No finished books with an author"/>
+    :<Insight label="Authors read" value={authors.authors.length?String(authors.authors.length):undefined} detail={authors.authors[0]?`Most read: ${authors.authors[0].author}`:undefined} empty="No finished books with an author"/>}
   </div>
 
   <article className="muse-books-panel"><div className="muse-books-panel-head"><h4>Ratings</h4><span className="small-label">{label}</span></div>
@@ -72,7 +73,7 @@ export function Patterns({books,sessions,range,label,series,seriesMembers,media,
     <p className="small-label">Calendar days, counting the start and finish days, for each read’s own dates.{speed.missingStart?` ${plural(speed.missingStart,'read')} without a start date not included.`:''}</p></article>
   </div>
 
-  <article className="muse-books-panel"><div className="muse-books-panel-head"><h4>Authors</h4><span className="small-label">{authors.authors.length?`${authors.newAuthors} new · ${authors.returningAuthors} returning`:label}</span></div>
+  <article className="muse-books-panel"><div className="muse-books-panel-head"><h4>Authors</h4><span className="small-label">{authors.authors.length&&range?`${authors.newAuthors} new · ${authors.returningAuthors} returning`:label}</span></div>
    {!authors.authors.length?<p>Finished books with an author will gather here.</p>:<ol className="muse-atlas-rows">{authors.authors.slice(0,8).map(a=><Row key={a.author} label={`${a.author}${a.isNew&&range?' · new':''}`} value={a.reads} max={authors.authors[0].reads} text={`${plural(a.books,'book')}${a.reads>a.books?` · ${plural(a.reads,'read')}`:''}`} books={a.bookList} onOpenBook={onOpenBook}/>)}</ol>}
    <p className="small-label">Co-authors each count. “New” means your first finished read by them falls in this period.{authors.unknownAuthorReads?` ${plural(authors.unknownAuthorReads,'read')} without an author not shown.`:''}</p>
   </article>

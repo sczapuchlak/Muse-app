@@ -49,7 +49,7 @@ export function ReadingAtlas({timeZone,books,sessions,goals,today,range,setRange
   {section==='dna'&&<ReadingDNA books={books} sessions={sessions} range={range_} label={label} today={today}/>}
   {section==='patterns'&&<Patterns books={books} sessions={sessions} range={range_} label={label} series={collections?.series??[]} seriesMembers={collections?.seriesMembers??[]} media={collections?.media??[]} onOpenBook={onOpenBook}/>}
   {section==='books'&&<BooksMilestones books={books} sessions={sessions} range={range_} label={label}/>}
-  {section==='year'&&<YearInReview books={books} sessions={sessions} today={today}/>}
+  {section==='year'&&<YearInReview books={books} sessions={sessions} today={today} goals={goals}/>}
   {section==='overview'&&<>
   <div className="muse-books-stats muse-books-atlas-metrics" aria-live="polite">
    <AtlasMetric label="Reading time" value={summary.seconds?hours(summary.seconds):'—'} detail={summary.seconds?'Active time · pauses excluded':`No time recorded ${label}`}/>

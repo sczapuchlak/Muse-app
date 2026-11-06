@@ -260,3 +260,16 @@
 .muse-atlas-emoji-rows>li{display:flex;justify-content:space-between;align-items:center;gap:10px;padding-bottom:8px;border-bottom:1px solid var(--glass-border);font-size:.86rem}
 .muse-atlas-emoji-set{display:flex;gap:6px;font-size:1.3rem}
 @media(max-width:600px){.muse-atlas-heatmap{grid-template-columns:2rem repeat(24,minmax(0,1fr));gap:1px}.muse-atlas-heat-hour{font-size:.5rem}.muse-atlas-heat-cell{border-radius:2px;min-height:6px}}
+/* #50 Keepsake export */
+.muse-keepsake-open{justify-self:start;margin-top:4px}
+.muse-keepsake{grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);align-items:start;gap:20px}
+.muse-keepsake-preview{display:grid;place-items:center;padding:12px;border:1px solid var(--glass-border);border-radius:16px;background:var(--surface-subtle)}
+.muse-keepsake-preview canvas{display:block;width:100%;height:auto;max-height:62dvh;object-fit:contain;border-radius:10px;box-shadow:0 12px 30px rgba(0,0,0,.25)}
+.muse-keepsake-preview[data-shape=story] canvas{width:auto;max-width:100%}
+.muse-keepsake-options{display:grid;gap:14px;min-width:0}
+.muse-keepsake-options fieldset{border:0;margin:0;padding:0;display:grid;gap:6px;min-width:0}
+.muse-keepsake-choice{display:flex;flex-wrap:wrap;gap:6px 18px}
+.muse-keepsake-sections{display:grid;gap:6px}
+.muse-keepsake-options label{display:flex!important;gap:8px;align-items:baseline;font-size:.9rem}
+.muse-keepsake-options input{width:auto!important;min-height:0!important;accent-color:var(--accent-primary)}
+@media(max-width:720px){.muse-keepsake{grid-template-columns:minmax(0,1fr)}.muse-keepsake-preview canvas{max-height:46dvh}}

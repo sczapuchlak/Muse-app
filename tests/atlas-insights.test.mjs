@@ -67,3 +67,61 @@ test('Patterns renders honestly with sparse, multi-year and reread histories',()
  assert.match(full,/5\/5/);assert.match(full,/Show 1 book/);assert.match(full,/Show as a table/);assert.match(full,/🐉/);
  assert.match(full,/2024.*🌙/s,'each year keeps its own read’s emojis');
 });
+
+test('keepsake: reviews stay out unless chosen, sections follow the choices, and sparse years stay honest',()=>{
+ const k=load('lib/whimsy/keepsake');
+ assert.ok(!k.defaultKeepsakeSections.includes('reviews'),'reviews are opt-in');
+ const books=[book('a',{title:'Earthsea',genre:'Fantasy',completions:[done('a','2025-03-01',null,{rating:4,review:'Old magic.'}),done('a','2026-02-01',null,{rating:5,review:'A private thought about this book.',emojis:['🐉']})]}),book('b',{title:'Dune',completions:[done('b','2026-06-01',null,{rating:3})]})];
+ const goals=[{...own('g'),period:'year',unit:'books',start:'2026-01-01',end:'2026-12-31',target:4,recurs:false}];
+ const base={books,sessions:[],goals,today:'2026-11-06'};
+ const y=k.keepsakeContent({...base,year:'2026',include:k.defaultKeepsakeSections});
+ assert.deepEqual(y.reviews,[],'no review text by default');assert.doesNotMatch(JSON.stringify(y),/private thought/);
+ assert.deepEqual(y.challenge,{done:2,target:4});assert.deepEqual(y.emojis,['🐉']);assert.deepEqual(y.favorites.map(f=>[f.title,f.rating]),[['Earthsea',5],['Dune',3]]);
+ assert.equal(y.timeline.length,12);assert.equal(y.kicker,'My year in reading, so far');
+ assert.deepEqual(k.keepsakeContent({...base,year:'2026',include:['reviews']}).reviews,[{title:'Earthsea',text:'A private thought about this book.'}]);
+ const all=k.keepsakeContent({...base,year:null,include:k.defaultKeepsakeSections});
+ assert.equal(all.challenge,null,'no single-year challenge on all time');assert.deepEqual(all.timeline.map(t=>[t.label,t.value]),[['’25',1],['’26',2]]);
+ assert.equal(all.stats.find(s=>s.label==='Rereads').value,'1');assert.equal(all.favorites.length,2,'each book once');
+ const empty=k.keepsakeContent({books:[],sessions:[],goals:[],today:'2026-11-06',year:'2026',include:k.defaultKeepsakeSections});
+ assert.deepEqual([empty.emojis,empty.favorites,empty.timeline,empty.persona,empty.challenge],[[],[],[],null,null]);
+ assert.equal(empty.stats[0].value,'0');
+ assert.deepEqual(k.keepsakeContent({...base,year:'2026',include:[]}).stats,[]);
+});
+
+test('genre aliases resolve for statistics only, and unknown genres pass through untouched',()=>{
+ const g=load('lib/collections/genres');const b=load('lib/whimsy/books');
+ for(const v of ['sci-fi','SciFi',' SF ','science-fiction'])assert.equal(g.canonicalGenre(v),'Science Fiction',v);
+ assert.equal(g.canonicalGenre('Cozy Mystery Vibes'),'Cozy Mystery Vibes');
+ const book={genre:'sci-fi, Science Fiction, fantasy'};
+ assert.deepEqual(b.bookGenres(book),['Science Fiction','Fantasy'],'aliases of one genre count once per book');
+ assert.equal(book.genre,'sci-fi, Science Fiction, fantasy','saved text is never rewritten');
+ assert.equal(b.genreKey('SF'),b.genreKey('Science Fiction'));
+});
+
+test('emojis belong to each read; legacy book emojis count once, at the latest read',()=>{
+ const c=load('lib/whimsy/reading-cycles');
+ const legacy=book('a',{reviewEmojis:['🐉'],completions:[done('a','2025-01-01'),done('a','2026-01-01')]});
+ assert.deepEqual(legacy.completions.map(x=>c.readEmojis(legacy,x)),[[],['🐉']]);
+ const single=book('s',{reviewEmojis:['🌙'],completions:[done('s','2026-01-01')]});assert.deepEqual(c.readEmojis(single,single.completions[0]),['🌙']);
+ const next=c.withReadEmojis(legacy,'a-2025-01-01',['🌊','✨','🔥','extra']);
+ assert.deepEqual(next.completions[0].emojis,['🌊','✨','🔥'],'at most three');
+ assert.deepEqual(next.unassignedEmojis,['🐉'],'older book emojis are kept, not lost');
+ const after={...legacy,...next};assert.deepEqual(after.completions.map(x=>c.readEmojis(after,x)),[['🌊','✨','🔥'],[]]);
+ const cleared=c.withReadEmojis(after,'a-2025-01-01',[]);assert.deepEqual(cleared.completions[0].emojis,[]);assert.deepEqual(cleared.reviewEmojis,['🐉'],'mirror falls back to the kept emojis');
+});
+
+test('Reading Challenge: pinned year wins, rereads count in their finish year, pace is neutral, signals are factual',()=>{
+ const r=load('lib/whimsy/reading-challenge');
+ const goal=(id,start,target,recurs,updatedAt='2026-01-01T00:00:00Z')=>({...own(id),updatedAt,period:'year',unit:'books',start,end:`${start.slice(0,4)}-12-31`,target,recurs});
+ const repeating=goal('r','2024-01-01',10,true),pinned=goal('p','2026-01-01',4,false);
+ assert.equal(r.challengeFor([repeating,pinned],'2026').id,'p');assert.equal(r.challengeFor([repeating,pinned],'2025').id,'r');assert.equal(r.challengeFor([repeating],'2023'),null,'not before it started');
+ assert.equal(r.challengeFor([{...pinned,period:'month'}],'2026'),null,'only yearly books goals');
+ const books=[book('a',{completions:[done('a','2025-12-31'),done('a','2026-01-02')]}),book('b',{completions:[done('b','2026-03-01')]}),book('c',{status:'reading'})];
+ const p=r.challengeProgress(pinned,books,'2026','2026-07-02');
+ assert.deepEqual([p.done,p.target,p.percent,p.remaining,p.reached],[2,4,50,2,false]);assert.equal(p.reads[0].reread,true,'the reread counts in 2026');
+ assert.equal(p.pace.status,'on-pace');
+ assert.equal(r.challengeProgress(pinned,books,'2026','2027-02-01').pace,null,'no pace for a finished year');
+ assert.equal(r.challengeProgress(pinned,[],'2026','2026-01-01').done,0,'sparse: an empty shelf');
+ const s=r.challengeSignals(p,books);assert.deepEqual(s.thresholds,[25,50]);assert.equal(s.personalRecord,true,'2 beats 2025’s 1');assert.equal(s.firstFinishOfYear.finishedOn,'2026-01-02');
+ assert.deepEqual(r.challengeYears([pinned],books,'2026-11-06'),['2027','2026','2025']);
+});
