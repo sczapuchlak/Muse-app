@@ -606,3 +606,11 @@ The design system (#57) defines what components look like structurally; Theme At
 Icon gradient angle and middle stop are SVG attributes, published by the applied theme through `lib/atelier/icon-gradient.ts`; the default reproduces the original diagonal exactly.
 
 `lib/atelier/catalog.generated.ts` is generated from these stylesheets (`node scripts/generate-atelier-catalog.mjs`); a test fails when it is stale.
+
+## Stream of Consciousness (#27)
+
+- **One card system, five presentations** (`data-tone` on `.muse-stream-post`): `status` (editorial serif status text), `literary` (warm left rule, serif commentary), `mystical` (secondary-accent glow and a sparse star layer), `celebratory` (gold edge and soft glow), `feeling` (soft pop-accent wash). Activity snapshots reuse the Showcase `ItemCard`.
+- **Actions**: exactly one primary reaction pill and one Comment pill per post. Reaction gestures (`muse-stream-burst`) are one-shot, distinct per kind, played only after a confirmed reaction, and gated by `prefers-reduced-motion` and Muse Magic (Quiet = none, Extra reaches further). No sound.
+- **Spoilers** use a striped placeholder with an explicit Reveal button; titles and safe metadata stay visible.
+- **Share to Stream** opens a native modal `<dialog>` over the current module so the person keeps their place.
+

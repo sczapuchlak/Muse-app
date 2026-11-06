@@ -14,7 +14,7 @@ const icon=(name:string|undefined,fallback:MuseIconName):MuseIconName=>(name as 
 const kindIcon:Record<string,MuseIconName>={book:'book',movie:'film',tv:'television',game:'gamepad','tarot-card':'tarot','dream-symbol':'dreams','side-quest':'wand'};
 
 function Stars({value}:{value:number}){return <span className="muse-showcase-stars" aria-label={`${value} out of 5`}>{[1,2,3,4,5].map(n=><span key={n} aria-hidden="true" data-on={n<=Math.round(value)||undefined}>★</span>)}</span>;}
-function ItemCard({item,variant}:{item:ShowcaseViewItem;variant:'tile'|'card'|'feature'}){
+export function ItemCard({item,variant}:{item:ShowcaseViewItem;variant:'tile'|'card'|'feature'}){
  const d=item.display,date=d.date?new Date(`${d.date}T12:00:00`).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'}):null;
  return <article className="muse-showcase-item" data-variant={variant} data-kind={d.kind} data-missing={item.missing||undefined}>
   {d.image?<span className="muse-showcase-art" data-kind={d.kind}><img src={d.image} alt="" loading="lazy" referrerPolicy="no-referrer"/></span>

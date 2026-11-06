@@ -681,3 +681,14 @@ Stephanie approved importing the HeartYearning Dream Symbols Dataset with attrib
 - **Safety**: themes are private (owner-only RLS). Imported files are versioned JSON; only typed, allow-listed values are accepted and no CSS or script is ever executed.
 - **Readability** warnings (WCAG, measured on composited glass) never auto-correct creative choices.
 - **Handing themes to Muse**: Stephanie exports a file and hands it to Claude. A *new official theme* gets its own id, name and description, and inherits special theme effects (Disco light, glitter, foil; birthday confetti) only when explicitly chosen. An *update to an official theme* keeps its id and name. Before an update, the remixes built on that theme are frozen and today's version is kept as a frozen theme, unless she opts out; unfrozen remixes show a warning when their base has changed. Frozen themes keep every token, layer and glow; effects that belong to a theme id itself (e.g. Disco's glitter stars) still follow the official theme.
+
+## Stream of Consciousness (#27) — implemented on feature branch, awaiting review
+
+- **Optional and private first.** Stream needs a social identity; new posts are Only me until the author chooses Friends or Selected friends. Nothing is ever posted automatically.
+- **Chronological only.** No ranking, trending, follower counts or engagement streaks. Never fake friend activity.
+- **Canonical records, frozen snapshots.** Activity posts reference a real saved record and keep only the fields approved at publish time. Sensitive records (moods, dreams, tarot readings, astrology, money) start with nothing extra ticked. Deleting a post never deletes its source; deleting the source hides the post.
+- **One contextual reaction plus Comment.** React (statuses, reading/watching, Whimsy), Send Love (difficult moods), Share Joy (happy moods), Cheer (habit milestones), Celebrate (celebrations and money). Mixed moods are neutral unless the author picks a tone.
+- **Money milestones** use a dedicated shape: a fixed headline and optional date. Never names, amounts, balances, limits, APR, accounts or transactions.
+- **Hiding Stream** from navigation is separate from unpublishing posts and from pausing social participation.
+- Spec details, architecture and open conflicts: [STREAM](STREAM.md).
+

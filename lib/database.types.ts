@@ -1447,6 +1447,146 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
+                },"stream_comments": {
+                  Row: {
+                    "author": string,"body": string,"created_at": string,"edited_at": string | null,"id": string,"post_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "author": string,"body": string,"created_at"?: string,"edited_at"?: string | null,"id": string,"post_id": string
+                  }
+                  Update: {
+                    "author"?: string,"body"?: string,"created_at"?: string,"edited_at"?: string | null,"id"?: string,"post_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "stream_comments_post_id_fkey"
+      columns: ["post_id"]
+isOneToOne: false
+      referencedRelation: "stream_posts"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"stream_notifications": {
+                  Row: {
+                    "actor": string,"comment_id": string | null,"created_at": string,"id": string,"kind": string,"post_id": string | null,"reaction": string | null,"read_at": string | null,"recipient": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "actor": string,"comment_id"?: string | null,"created_at"?: string,"id"?: string,"kind": string,"post_id"?: string | null,"reaction"?: string | null,"read_at"?: string | null,"recipient": string
+                  }
+                  Update: {
+                    "actor"?: string,"comment_id"?: string | null,"created_at"?: string,"id"?: string,"kind"?: string,"post_id"?: string | null,"reaction"?: string | null,"read_at"?: string | null,"recipient"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "stream_notifications_comment_id_fkey"
+      columns: ["comment_id"]
+isOneToOne: false
+      referencedRelation: "stream_comments"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "stream_notifications_post_id_fkey"
+      columns: ["post_id"]
+isOneToOne: false
+      referencedRelation: "stream_posts"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"stream_post_members": {
+                  Row: {
+                    "member": string,"post_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "member": string,"post_id": string
+                  }
+                  Update: {
+                    "member"?: string,"post_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "stream_post_members_post_id_fkey"
+      columns: ["post_id"]
+isOneToOne: false
+      referencedRelation: "stream_posts"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"stream_posts": {
+                  Row: {
+                    "audience": string,"author": string,"body": string,"category": string | null,"comments_enabled": boolean,"created_at": string,"decoration": string | null,"display": Json | null,"edited_at": string | null,"id": string,"kind": string,"primary_reaction": string,"source_id": string | null,"source_kind": string | null,"source_state": string,"spoiler": boolean
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "audience"?: string,"author": string,"body"?: string,"category"?: string | null,"comments_enabled"?: boolean,"created_at"?: string,"decoration"?: string | null,"display"?: Json | null,"edited_at"?: string | null,"id": string,"kind": string,"primary_reaction"?: string,"source_id"?: string | null,"source_kind"?: string | null,"source_state"?: string,"spoiler"?: boolean
+                  }
+                  Update: {
+                    "audience"?: string,"author"?: string,"body"?: string,"category"?: string | null,"comments_enabled"?: boolean,"created_at"?: string,"decoration"?: string | null,"display"?: Json | null,"edited_at"?: string | null,"id"?: string,"kind"?: string,"primary_reaction"?: string,"source_id"?: string | null,"source_kind"?: string | null,"source_state"?: string,"spoiler"?: boolean
+                  }
+                  Relationships: [
+                    
+                  ]
+                },"stream_preferences": {
+                  Row: {
+                    "notify_comments": boolean,"notify_friend_accepted": boolean,"notify_friend_requests": boolean,"notify_reactions": boolean,"show_in_navigation": boolean,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "notify_comments"?: boolean,"notify_friend_accepted"?: boolean,"notify_friend_requests"?: boolean,"notify_reactions"?: boolean,"show_in_navigation"?: boolean,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "notify_comments"?: boolean,"notify_friend_accepted"?: boolean,"notify_friend_requests"?: boolean,"notify_reactions"?: boolean,"show_in_navigation"?: boolean,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
+                },"stream_reactions": {
+                  Row: {
+                    "created_at": string,"post_id": string,"reaction": string,"reactor": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"post_id": string,"reaction": string,"reactor": string
+                  }
+                  Update: {
+                    "created_at"?: string,"post_id"?: string,"reaction"?: string,"reactor"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "stream_reactions_post_id_fkey"
+      columns: ["post_id"]
+isOneToOne: false
+      referencedRelation: "stream_posts"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"stream_reports": {
+                  Row: {
+                    "comment_id": string | null,"created_at": string,"id": string,"note": string,"post_id": string,"reason": string,"reporter": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "comment_id"?: string | null,"created_at"?: string,"id"?: string,"note"?: string,"post_id": string,"reason": string,"reporter": string
+                  }
+                  Update: {
+                    "comment_id"?: string | null,"created_at"?: string,"id"?: string,"note"?: string,"post_id"?: string,"reason"?: string,"reporter"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "stream_reports_comment_id_fkey"
+      columns: ["comment_id"]
+isOneToOne: false
+      referencedRelation: "stream_comments"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "stream_reports_post_id_fkey"
+      columns: ["post_id"]
+isOneToOne: false
+      referencedRelation: "stream_posts"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"task_completion_events": {
                   Row: {
                     "complete": boolean,"id": string,"local_date": string,"occurred_at": string,"planned_date": string | null,"task_id": string,"time_zone": string,"title": string,"user_id": string,"workspace_id": string
@@ -2375,6 +2515,9 @@ isOneToOne: false
 "save_whimsy_record":
 { Args: { "p_command_id": string,"p_delete"?: boolean,"p_expected_revision": number,"p_kind": string,"p_record": Json }; Returns: Json
                            },
+"set_stream_preferences":
+{ Args: { "p_comments": boolean,"p_friend_accepted": boolean,"p_friend_requests": boolean,"p_reactions": boolean,"p_show_in_navigation": boolean }; Returns: Json
+                           },
 "social_accept":
 { Args: { "p_target": string }; Returns: string
                            },
@@ -2413,6 +2556,48 @@ isOneToOne: false
                            },
 "social_username_status":
 { Args: { "p_username": string }; Returns: string
+                           },
+"stream_comment":
+{ Args: { "p_body": string,"p_id": string,"p_post": string }; Returns: Json
+                           },
+"stream_comments":
+{ Args: { "p_post": string }; Returns: Json
+                           },
+"stream_delete":
+{ Args: { "p_id": string }; Returns: undefined
+                           },
+"stream_delete_comment":
+{ Args: { "p_id": string }; Returns: undefined
+                           },
+"stream_edit":
+{ Args: { "p_audience"?: string,"p_body": string,"p_comments_enabled"?: boolean,"p_decoration"?: string,"p_id": string,"p_members"?: (string)[],"p_spoiler"?: boolean }; Returns: Json
+                           },
+"stream_edit_comment":
+{ Args: { "p_body": string,"p_id": string }; Returns: Json
+                           },
+"stream_feed":
+{ Args: { "p_author"?: string,"p_before"?: string,"p_before_id"?: string,"p_category"?: string,"p_limit"?: number }; Returns: Json
+                           },
+"stream_mark_notifications_read":
+{ Args: Record<PropertyKey, never>; Returns: undefined
+                           },
+"stream_notifications":
+{ Args: { "p_limit"?: number }; Returns: Json
+                           },
+"stream_post":
+{ Args: { "p_id": string }; Returns: Json
+                           },
+"stream_preferences":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
+"stream_publish":
+{ Args: { "p_audience"?: string,"p_body": string,"p_category"?: string,"p_comments_enabled"?: boolean,"p_decoration"?: string,"p_display"?: Json,"p_id": string,"p_members"?: (string)[],"p_primary_reaction"?: string,"p_source_id"?: string,"p_source_kind"?: string,"p_spoiler"?: boolean }; Returns: Json
+                           },
+"stream_react":
+{ Args: { "p_on": boolean,"p_post": string }; Returns: Json
+                           },
+"stream_report":
+{ Args: { "p_comment"?: string,"p_note"?: string,"p_post": string,"p_reason"?: string }; Returns: undefined
                            },
 "swap_collection_members":
 { Args: { "p_first": string,"p_first_revision": number,"p_second": string,"p_second_revision": number }; Returns: undefined

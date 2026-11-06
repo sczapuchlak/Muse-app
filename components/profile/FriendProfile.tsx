@@ -9,6 +9,7 @@ import {normalizeSections} from '@/lib/profile/model';
 import {MuseIcon} from '../MuseIcon';
 import {MuseStar} from '../MuseStar';
 import {ProfileView} from './ProfileView';
+import {RecentStream} from '../stream/RecentStream';
 import './Profile.css';
 
 /** A friend's profile, in their theme. Unavailable profiles look the same whether they are private, missing or blocked. */
@@ -23,5 +24,6 @@ export function FriendProfile(){
   <div className="muse-profile-status"><Link className="muse-button muse-edge" href="/friends"><MuseIcon name="arrow" size={16}/>Friends</Link><span>You’re visiting {view.identity.displayName}’s Muse. It’s shown in their theme.</span></div>
   <ProfileView data={{displayName:view.identity.displayName,username:view.identity.username,avatarId:view.identity.avatarId,tagline:view.profile.tagline,bio:view.profile.bio,bannerGradient:view.profile.bannerGradient,sections:normalizeSections(view.profile.sections),badges:view.profile.badges,showcases:view.showcases.map(s=>({...s,items:s.items.map(i=>({id:i.id,display:i.display,note:i.note}))}))}}
    emptyShowcases={<p className="muse-atelier-hint">Nothing on display yet.</p>}/>
+  <RecentStream authorId={view.identity.id} name={view.identity.displayName}/>
  </main>;
 }

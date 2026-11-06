@@ -16,6 +16,7 @@ export const navigation: NavItem[] = [
   { id: "tarot", label: "Tarot", href: "/whimsy/tarot", icon: "tarot", group: "Whimsy", description: "Cards, questions, and your own meanings." },
   { id: "dreams", label: "Dreams", href: "/whimsy/dreamscapes", icon: "dreams", group: "Whimsy", description: "Remember the worlds you visited in your sleep." },
   { id: "fortune-fun", label: "Fortune & Fun", href: "/whimsy/side-quests", matches: ["/whimsy/fortunes"], icon: "wand", group: "Whimsy", description: "Small adventures, curiosities, and a little delightful nonsense." },
+  { id: "stream", label: "Stream", href: "/stream", icon: "sparkle", group: "Tools", description: "Little moments from your friends, in order. Optional and private first." },
   { id: "profile", label: "My Profile", href: "/profile", matches: ["/friends", "/people"], icon: "people", group: "Tools", description: "Your little museum: profile, Showcases and friends." },
   { id: "appearance", label: "Appearance", href: "/appearance", icon: "appearance", group: "Tools", description: "Make Muse feel like you. Use the global theme control for quick theme and glass choices." },
   { id: "settings", label: "Settings", href: "/settings", icon: "gear", group: "Tools", description: "Your preferences will live here." },
@@ -23,7 +24,7 @@ export const navigation: NavItem[] = [
 
 export const desktopGroups = ["Everyday", "Life", "Whimsy"] as const;
 export const mobilePrimaryIds = ["daily", "planner", "rituals"];
-export const mobileMoreIds = ["nourish", "insights", "money", "notes", "collections", "astrology", "tarot", "dreams", "fortune-fun", "profile", "appearance", "settings"];
+export const mobileMoreIds = ["nourish", "insights", "money", "notes", "collections", "astrology", "tarot", "dreams", "fortune-fun", "stream", "profile", "appearance", "settings"];
 export function navItems(ids: string[]): NavItem[] { return ids.map((id) => navigation.find((item) => item.id === id)).filter((item): item is NavItem => Boolean(item)); }
 export function isActiveDestination(path: string, href: string): boolean { return href === "/" ? path === "/" : path === href || path.startsWith(`${href}/`); }
 export function isActiveItem(path: string, item: Pick<NavItem, "href" | "matches">): boolean { return [item.href, ...(item.matches ?? [])].some((href) => isActiveDestination(path, href)); }
