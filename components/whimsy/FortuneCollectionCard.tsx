@@ -5,6 +5,7 @@ import {MuseStar} from '@/components/MuseStar';
 import {accentStyle} from '@/lib/appearance-values';
 import {curiosityCategoryAccents,fortuneLabels,safeSourceUrl,type FortuneContent,type FortuneKind} from '@/lib/whimsy/fortunes';
 import type {SavedDiscovery} from '@/lib/whimsy/models';
+import {ShareToStream} from '../stream/ShareToStream';
 
 /** The saved snapshot remains readable even if its original assignment is unavailable. */
 export function FortuneCollectionCard({item,kind,content,busy,onReopen,onRemove,onSaveNote}:{item:SavedDiscovery;kind?:FortuneKind;content?:FortuneContent;busy:boolean;onReopen?:()=>void;onRemove:()=>void;onSaveNote:(note:string)=>Promise<boolean>}){
@@ -32,6 +33,7 @@ export function FortuneCollectionCard({item,kind,content,busy,onReopen,onRemove,
    <div className="muse-fortune-actions">
     {onReopen&&<button className="text-button" type="button" disabled={busy} onClick={onReopen}>Reopen experience</button>}
     <button className="text-button" type="button" disabled={busy} onClick={()=>{setDraft(item.note??'');setEditing(true);}}>Add or edit note</button>
+    <ShareToStream kind="fortune" id={item.id} category="fortunes" label="Share" className="text-button"/>
     <button className="text-button" type="button" disabled={busy} onClick={onRemove}>Remove</button>
    </div>
    {editing&&<form className="muse-fortune-note" onSubmit={async event=>{event.preventDefault();if(!busy&&await onSaveNote(draft))setEditing(false);}}>

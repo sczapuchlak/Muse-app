@@ -1,6 +1,7 @@
 "use client";
 import Link from 'next/link';
-import {useRef,useState} from 'react';
+import {useEffect,useRef,useState} from 'react';
+import {createPortal} from 'react-dom';
 import type {StreamCategory,StreamSourceKind} from '@/lib/stream/model';
 import {MuseIcon} from '../MuseIcon';
 import {StreamEnvContext} from './StreamContext';
@@ -22,13 +23,16 @@ function ShareDialogBody({kind,id,category,onDone}:{kind:StreamSourceKind;id:str
  */
 export function ShareToStream({kind,id,category,label='Share to Stream',className='muse-button muse-edge'}:{kind:StreamSourceKind;id:string;category?:StreamCategory;label?:string;className?:string}){
  const dialog=useRef<HTMLDialogElement>(null);const [open,setOpen]=useState(false);const [notice,setNotice]=useState('');
+ // The dialog lives at the page root, so a share opened from inside another dialog (book details, a ritual editor…)
+ // is centred and never inherits that dialog's form styles.
+ const [host,setHost]=useState<HTMLElement|null>(null);useEffect(()=>{const t=window.setTimeout(()=>setHost(document.body),0);return ()=>window.clearTimeout(t);},[]);
  const close=(message:string)=>{dialog.current?.close();setOpen(false);setNotice(message);};
  return <>
   <button type="button" className={className} onClick={()=>{setNotice('');setOpen(true);requestAnimationFrame(()=>dialog.current?.showModal());}}><MuseIcon name="sparkle" size={15}/>{label}</button>
   {notice&&<span className="small-label" role="status">{notice} <Link href="/stream">Open Stream</Link></span>}
-  <dialog ref={dialog} className="muse-stream-dialog" aria-label="Share to Stream" onClose={()=>setOpen(false)} onCancel={()=>setOpen(false)}>
+  {host&&createPortal(<dialog ref={dialog} className="muse-stream-dialog" aria-label="Share to Stream" onClose={e=>{e.stopPropagation();setOpen(false);}} onCancel={e=>{e.stopPropagation();setOpen(false);}} onClick={e=>e.stopPropagation()} onKeyDown={e=>e.stopPropagation()}>
    <div className="muse-stream-dialog-head"><h2 className="type-heading">Share to Stream</h2><button type="button" className="muse-icon-button" aria-label="Close" onClick={()=>close('')}><MuseIcon name="close" size={18}/></button></div>
    {open&&<ShareDialogBody kind={kind} id={id} category={category} onDone={close}/>}
-  </dialog>
+  </dialog>,host)}
  </>;
 }

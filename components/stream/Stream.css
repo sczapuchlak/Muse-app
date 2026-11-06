@@ -136,7 +136,7 @@
 .muse-stream-settings h2{margin:0}
 
 /* Share to Stream dialog (opens over any module) */
-.muse-stream-dialog{width:min(640px,calc(100vw - 24px));max-height:calc(100dvh - 32px);padding:0;border:1px solid var(--glass-border);border-radius:var(--dl-radius-panel);background:var(--floating-background,var(--background));color:var(--foreground);overflow:auto}
+.muse-stream-dialog{position:fixed;inset:0;margin:auto;height:fit-content;width:min(640px,calc(100vw - 24px));max-height:calc(100dvh - 32px);padding:0;border:1px solid var(--glass-border);border-radius:var(--dl-radius-panel);background:linear-gradient(var(--floating-background,transparent),var(--floating-background,transparent)),var(--background);color:var(--foreground);overflow:auto}
 .muse-stream-dialog::backdrop{background:color-mix(in srgb,#000 45%,transparent)}
 .muse-stream-dialog-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px 0}
 .muse-stream-dialog-head h2{margin:0}

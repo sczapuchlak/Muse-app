@@ -184,6 +184,33 @@ try{
  check(recent.length>0&&recent.every(p=>p.author.username===ava.username)&&!recent.some(p=>p.id===picked.id||p.id===quiet.id),'a profile’s recent posts obey the same audiences');
  check(must(await rpc(dee,'stream_feed',{p_author:ava.pid})).length===0,'non-friends see no recent activity');
 
+ // #69 Aspirations: shareable to Celebrating, owned by their author, hidden only when deleted (archiving keeps the post).
+ const aspId=crypto.randomUUID();
+ must(await ava.client.from('aspirations').insert({id:aspId,user_id:ava.id,title:'Learn to sew a skirt',start_date:'2026-01-01',progress_kind:'milestones',motivation:'Private why'}));
+ const asp={p_category:'celebrating',p_source_kind:'aspiration',p_source_id:aspId,p_primary_reaction:'celebrate',p_audience:'friends'};
+ const aspPost=must(await publish(ava,{...asp,p_display:{kind:'aspiration',title:'Learn to sew a skirt',status:'In progress',progress:25,glyph:'sparkle'}}));
+ const aspSeen=must(await rpc(eve,'stream_post',{p_id:aspPost.id}));check(aspSeen.display?.title==='Learn to sew a skirt'&&!JSON.stringify(aspSeen).includes('Private why'),'friends see the aspiration snapshot, never its why');
+ check(!!(await publish(bea,{...asp,p_display:{kind:'aspiration',title:'Not mine'}})).error,'nobody can share someone else’s aspiration');
+ check(!!(await publish(ava,{...asp,p_category:'reading',p_display:{kind:'aspiration',title:'x'}})).error,'aspirations belong to Celebrating only');
+ must(await ava.client.from('aspirations').update({status:'archived'}).eq('id',aspId));
+ check((await feedIds(eve)).includes(aspPost.id),'archiving an aspiration keeps what was already shared');
+ must(await ava.client.from('aspirations').delete().eq('id',aspId));
+ check(!(await feedIds(eve)).includes(aspPost.id),'deleting the aspiration hides its post');
+ check(must(await rpc(ava,'stream_post',{p_id:aspPost.id})).sourceMissing===true,'the author sees the source is gone');
+
+ // #69 Reports: only the service role can review or resolve; resolving never deletes a post.
+ const reported=must(await publish(ava,{p_body:'a post someone reports',p_audience:'friends'}));
+ must(await rpc(eve,'stream_report',{p_post:reported.id,p_reason:'unkind',p_note:'not nice'}));
+ check(!!(await rpc(bea,'stream_reports_review',{})).error&&!!(await rpc(ava,'stream_reports_review',{})).error,'people cannot read reports');
+ const open=must(await admin.rpc('stream_reports_review',{p_include_resolved:false})).filter(r=>r.postId===reported.id);
+ check(open.length===1&&open[0].reason==='unkind','the Muse team sees the report with its post');
+ check(!!(await rpc(bea,'stream_report_resolve',{p_report:open[0].id,p_resolution:'unpublished'})).error,'people cannot resolve reports');
+ check(!!(await admin.rpc('stream_report_resolve',{p_report:open[0].id,p_resolution:'comment-removed'})).error,'a post report cannot remove a comment');
+ must(await admin.rpc('stream_report_resolve',{p_report:open[0].id,p_resolution:'unpublished',p_note:'reviewed'}));
+ check(!(await feedIds(eve)).includes(reported.id)&&must(await rpc(ava,'stream_post',{p_id:reported.id})).audience==='private','unpublishing returns the post to Only me');
+ check(sql(`select count(*) from public.stream_posts where id='${reported.id}'`)==='1','the post itself is kept for its author');
+ check(must(await admin.rpc('stream_reports_review',{p_include_resolved:false})).every(r=>r.postId!==reported.id),'resolved reports leave the open list');
+
  // Paused participation.
  must(await ava.client.from('social_identities').update({participation:'paused'}).eq('user_id',ava.id));
  check(!!(await publish(ava,{p_body:'hello?'})).error,'paused accounts cannot post');

@@ -102,6 +102,7 @@ button.muse-badge:focus-visible{outline:2px solid var(--badge);outline-offset:2p
 .muse-showcase-kind{font:600 .66rem var(--font-ui);letter-spacing:.12em;text-transform:uppercase;color:var(--dl-kicker)}
 .muse-showcase-subtitle{color:var(--text-muted);font-size:.85rem}
 .muse-showcase-meta{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:.78rem;color:var(--text-muted)}
+.muse-showcase-meta>span:not(.muse-tone-pill)+span:not(.muse-tone-pill)::before{content:"·";margin-right:6px;opacity:.7}
 .muse-showcase-stars span{color:color-mix(in srgb,var(--text-muted) 45%,transparent)}
 .muse-showcase-stars span[data-on]{color:var(--accent-warm)}
 .muse-showcase-progress{display:block;height:6px;border-radius:999px;background:var(--surface-control);overflow:hidden}
