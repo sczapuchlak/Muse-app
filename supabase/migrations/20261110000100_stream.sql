@@ -5,6 +5,9 @@
 -- or deleting a source record revokes access immediately. Activity posts reference a real saved Muse record and keep
 -- only the privacy-safe snapshot the author approved at publish time (validated like Showcase items); the snapshot
 -- never updates on its own and deleting a post never touches its source. New posts default to Only Me.
+-- Each post has one contextual primary reaction (React, Send Love, Share Joy, Cheer or Celebrate) chosen by its kind;
+-- viewers either give it or not. Authors can switch comments off per post and remove comments; anyone who can see a
+-- post can report it. Hiding Stream from navigation is a separate per-account preference that never touches posts.
 
 -- ---- Tables ---------------------------------------------------------------------------------------------------------
 create table public.stream_posts (
@@ -13,11 +16,13 @@ create table public.stream_posts (
  kind text not null check (kind in ('status','activity')),
  body text not null default '' check (char_length(body) <= 1000),
  decoration text check (decoration is null or decoration in ('magical','in-my-feelings','choosing-chaos','hermit-era','thriving')),
- category text check (category is null or category in ('reading','watching','feeling','dreaming','celebrating','tarot','side-quests','rituals')),
- source_kind text check (source_kind is null or source_kind in ('book','media','mood','dream','tarot-reading','ritual','side-quest')),
+ category text check (category is null or category in ('reading','watching','feeling','dreaming','celebrating','tarot','side-quests','rituals','fortunes','astrology','money')),
+ source_kind text check (source_kind is null or source_kind in ('book','media','mood','dream','tarot-reading','ritual','side-quest','fortune','astrology','money-milestone')),
  source_id text check (source_id is null or char_length(source_id) <= 200),
  display jsonb,
  spoiler boolean not null default false,
+ primary_reaction text not null default 'react' check (primary_reaction in ('react','love','joy','cheer','celebrate')),
+ comments_enabled boolean not null default true,
  audience text not null default 'private' check (audience in ('private','friends','selected')),
  source_state text not null default 'ok' check (source_state in ('ok','missing')),
  created_at timestamptz not null default clock_timestamp(),
@@ -27,7 +32,12 @@ create table public.stream_posts (
      or (kind = 'activity' and source_kind is not null and source_id is not null and display is not null and category is not null)),
  -- Each shortcut accepts only the record types that belong to it.
  check (kind = 'status' or (category, source_kind) in (('reading','book'),('watching','media'),('feeling','mood'),('dreaming','dream'),
-  ('celebrating','book'),('celebrating','ritual'),('celebrating','side-quest'),('tarot','tarot-reading'),('side-quests','side-quest'),('rituals','ritual')))
+  ('celebrating','book'),('celebrating','ritual'),('celebrating','side-quest'),('tarot','tarot-reading'),('side-quests','side-quest'),('rituals','ritual'),
+  ('fortunes','fortune'),('astrology','astrology'),('money','money-milestone'),('celebrating','money-milestone'))),
+ -- The one reaction suits the moment: moods choose Send Love, Share Joy or a neutral React; habit milestones Cheer;
+ -- celebrations and money milestones Celebrate; everything else React.
+ check (case when category = 'feeling' then primary_reaction in ('react','love','joy') when category = 'rituals' then primary_reaction = 'cheer'
+  when category in ('celebrating','money') then primary_reaction = 'celebrate' else primary_reaction = 'react' end)
 );
 create index stream_posts_feed on public.stream_posts (created_at desc, id desc);
 create index stream_posts_author on public.stream_posts (author, created_at desc);
@@ -76,16 +86,32 @@ create index stream_notifications_recipient on public.stream_notifications (reci
 -- One reaction notification per person and post: changing a reaction updates it rather than stacking more.
 create unique index stream_notifications_one_reaction on public.stream_notifications (recipient, actor, post_id) where kind = 'reaction';
 
-create table public.notification_preferences (
+-- Per-account Stream preferences: in-app notification categories and whether Stream appears in navigation.
+-- Hiding Stream is not unpublishing and not pausing social participation; posts and friendships are untouched.
+create table public.stream_preferences (
  user_id uuid primary key references auth.users(id) on delete cascade,
- reactions boolean not null default true,
- comments boolean not null default true,
- friends boolean not null default true,
+ show_in_navigation boolean not null default true,
+ notify_reactions boolean not null default true,
+ notify_comments boolean not null default true,
+ notify_friend_requests boolean not null default true,
+ notify_friend_accepted boolean not null default true,
  updated_at timestamptz not null default clock_timestamp()
 );
 
+-- Reports go to the Muse team (service role) only; reporters never see each other or a queue.
+create table public.stream_reports (
+ id uuid primary key default gen_random_uuid(),
+ reporter uuid not null references auth.users(id) on delete cascade,
+ post_id uuid not null references public.stream_posts(id) on delete cascade,
+ comment_id uuid references public.stream_comments(id) on delete cascade,
+ reason text not null check (reason in ('unkind','spam','private-info','other')),
+ note text not null default '' check (char_length(note) <= 500),
+ created_at timestamptz not null default clock_timestamp()
+);
+create unique index stream_reports_once on public.stream_reports (reporter, post_id, coalesce(comment_id, '00000000-0000-0000-0000-000000000000'::uuid));
+
 -- Function-only access: nobody reads or writes these tables directly.
-do $$declare t text;begin foreach t in array array['stream_posts','stream_post_members','stream_reactions','stream_comments','stream_notifications','notification_preferences'] loop
+do $$declare t text;begin foreach t in array array['stream_posts','stream_post_members','stream_reactions','stream_comments','stream_notifications','stream_preferences','stream_reports'] loop
  execute format('alter table public.%I enable row level security', t);
  execute format('revoke all on public.%I from public, anon, authenticated', t);
  execute format('grant select on public.%I to service_role', t);
@@ -98,12 +124,21 @@ create function muse_private.valid_stream_display(d jsonb) returns boolean langu
   and (d->'excerpt' is null or (jsonb_typeof(d->'excerpt') = 'string' and char_length(d->>'excerpt') between 1 and 280)), false);
 $$;
 alter table public.stream_posts add constraint stream_posts_display check (display is null or muse_private.valid_stream_display(display));
+-- Money milestones have a dedicated shape: a fixed headline and an optional date. Never names, amounts, balances,
+-- limits, APR, account or card details, or transactions.
+alter table public.stream_posts add constraint stream_posts_money_shape check (source_kind is distinct from 'money-milestone' or (
+ (display - array['kind','title','glyph','date']) = '{}'::jsonb
+ and display->>'title' in ('Paid off a credit card','Paid a bill on time')));
 
 create function muse_private.stream_source_exists(owner uuid, kind text, source text) returns boolean language sql stable security definer set search_path = '' as $$
  select case kind
   when 'mood' then exists (select 1 from public.mood_checkins where user_id = owner and id::text = source)
   when 'dream' then exists (select 1 from public.whimsy_dream_entries where user_id = owner and id::text = source)
   when 'tarot-reading' then exists (select 1 from public.whimsy_tarot_readings where user_id = owner and id::text = source)
+  when 'fortune' then exists (select 1 from public.whimsy_saved_discoveries where user_id = owner and id::text = source)
+  when 'astrology' then exists (select 1 from public.astrology_natal_charts where user_id = owner and id::text = source)
+  when 'money-milestone' then exists (select 1 from public.bills where user_id = owner and id::text = source and paid)
+   or exists (select 1 from public.cards where user_id = owner and id::text = source)
   else muse_private.showcase_source_exists(owner, kind, source) end;
 $$;
 
@@ -119,6 +154,10 @@ create trigger stream_source_deleted after delete on public.whimsy_dream_entries
 create trigger stream_source_deleted after delete on public.whimsy_tarot_readings for each row execute function muse_private.stream_source_deleted('tarot-reading');
 create trigger stream_source_deleted after delete on public.rituals for each row execute function muse_private.stream_source_deleted('ritual');
 create trigger stream_source_deleted after delete on public.whimsy_quest_completions for each row execute function muse_private.stream_source_deleted('side-quest');
+create trigger stream_source_deleted after delete on public.whimsy_saved_discoveries for each row execute function muse_private.stream_source_deleted('fortune');
+create trigger stream_source_deleted after delete on public.astrology_natal_charts for each row execute function muse_private.stream_source_deleted('astrology');
+create trigger stream_source_deleted after delete on public.bills for each row execute function muse_private.stream_source_deleted('money-milestone');
+create trigger stream_source_deleted after delete on public.cards for each row execute function muse_private.stream_source_deleted('money-milestone');
 
 -- ---- Authorization --------------------------------------------------------------------------------------------------
 /** May `viewer` see post `p` right now? Authors always; others only while every condition holds. */
@@ -138,8 +177,9 @@ begin
 end $$;
 
 create function muse_private.wants_notification(recipient uuid, kind text) returns boolean language sql stable security definer set search_path = '' as $$
- select coalesce((select case kind when 'reaction' then n.reactions when 'comment' then n.comments else n.friends end
-  from public.notification_preferences n where n.user_id = recipient), true);
+ select coalesce((select case kind when 'reaction' then n.notify_reactions when 'comment' then n.notify_comments
+   when 'friend-request' then n.notify_friend_requests when 'friend-accepted' then n.notify_friend_accepted end
+  from public.stream_preferences n where n.user_id = recipient), true);
 $$;
 
 -- ---- Post shape returned to readers (author card, snapshot, reactions, comment count; never auth ids) -----------
@@ -153,10 +193,11 @@ create function muse_private.post_json(viewer uuid, p public.stream_posts) retur
   'spoiler', p.spoiler, 'createdAt', p.created_at, 'editedAt', p.edited_at,
   'audience', case when p.author = viewer then p.audience end,
   'members', case when p.author = viewer and p.audience = 'selected' then (select coalesce(jsonb_agg(muse_private.identity_card(m.member)), '[]'::jsonb) from public.stream_post_members m where m.post_id = p.id) end,
-  'reactions', (select coalesce(jsonb_object_agg(r.reaction, r.n), '{}'::jsonb) from (
-    select x.reaction, count(*) n from public.stream_reactions x
-    where x.post_id = p.id and not muse_private.is_blocked(viewer, x.reactor) and muse_private.can_see_post(x.reactor, p) group by x.reaction) r),
-  'myReaction', (select x.reaction from public.stream_reactions x where x.post_id = p.id and x.reactor = viewer),
+  'primaryReaction', p.primary_reaction, 'commentsEnabled', p.comments_enabled,
+  -- Counts include only people the viewer could see interacting: never blocked people, never former audience.
+  'reactionCount', (select count(*) from public.stream_reactions x
+    where x.post_id = p.id and not muse_private.is_blocked(viewer, x.reactor) and muse_private.can_see_post(x.reactor, p)),
+  'reacted', exists (select 1 from public.stream_reactions x where x.post_id = p.id and x.reactor = viewer),
   'commentCount', (select count(*) from public.stream_comments c where c.post_id = p.id and not muse_private.is_blocked(viewer, c.author) and muse_private.can_see_post(c.author, p)));
 $$;
 
@@ -171,7 +212,12 @@ begin
  select coalesce(jsonb_agg(muse_private.post_json(uid, p) order by p.created_at desc, p.id desc), '[]'::jsonb) into result from (
   select * from public.stream_posts p
   where (p_before is null or (p.created_at, p.id) < (p_before, coalesce(p_before_id, 'ffffffff-ffff-ffff-ffff-ffffffffffff'::uuid)))
-   and (p_category is null or p.category = p_category or (p_category = 'status' and p.kind = 'status'))
+   -- Filters: All (null), Reading & Watching, Life Updates, Whimsy, Celebrations.
+   and (p_category is null
+    or (p_category = 'reading-watching' and p.category in ('reading','watching'))
+    or (p_category = 'life' and (p.kind = 'status' or p.category = 'feeling'))
+    or (p_category = 'whimsy' and p.category in ('dreaming','tarot','side-quests','fortunes','astrology'))
+    or (p_category = 'celebrations' and p.category in ('celebrating','rituals','money')))
    and (author_filter is null or p.author = author_filter)
    and muse_private.can_see_post(uid, p)
   order by p.created_at desc, p.id desc limit greatest(1, least(coalesce(p_limit, 20), 30))) p;
@@ -206,7 +252,8 @@ end $$;
 
 /** Idempotent on the client-chosen id, so a double tap or a retry never posts twice. */
 create function public.stream_publish(p_id uuid, p_body text, p_decoration text default null, p_category text default null, p_source_kind text default null,
- p_source_id text default null, p_display jsonb default null, p_spoiler boolean default false, p_audience text default 'private', p_members uuid[] default '{}')
+ p_source_id text default null, p_display jsonb default null, p_spoiler boolean default false, p_audience text default 'private', p_members uuid[] default '{}',
+ p_primary_reaction text default 'react', p_comments_enabled boolean default true)
  returns jsonb language plpgsql security definer set search_path = '' as $$
 declare uid uuid := auth.uid(); existing public.stream_posts; post public.stream_posts; kind text := case when p_source_kind is null then 'status' else 'activity' end;
 begin
@@ -218,15 +265,16 @@ begin
  end if;
  if kind = 'activity' and not muse_private.stream_source_exists(uid, p_source_kind, p_source_id) then
   raise exception 'Choose something you have saved in Muse' using errcode = '22023'; end if;
- insert into public.stream_posts (id, author, kind, body, decoration, category, source_kind, source_id, display, spoiler, audience)
-  values (p_id, uid, kind, coalesce(btrim(p_body), ''), p_decoration, p_category, p_source_kind, p_source_id, p_display, coalesce(p_spoiler, false), coalesce(p_audience, 'private'))
+ insert into public.stream_posts (id, author, kind, body, decoration, category, source_kind, source_id, display, spoiler, audience, primary_reaction, comments_enabled)
+  values (p_id, uid, kind, coalesce(btrim(p_body), ''), p_decoration, p_category, p_source_kind, p_source_id, p_display, coalesce(p_spoiler, false), coalesce(p_audience, 'private'),
+   coalesce(p_primary_reaction, 'react'), coalesce(p_comments_enabled, true))
   returning * into post;
  perform muse_private.set_post_members(uid, post, p_members);
  return muse_private.post_json(uid, post);
 end $$;
 
 /** Authors may reword a post, change its flourish, spoiler flag and audience (Unpublish = Only me). The snapshot stays as published. */
-create function public.stream_edit(p_id uuid, p_body text, p_decoration text default null, p_spoiler boolean default false, p_audience text default null, p_members uuid[] default null) returns jsonb language plpgsql security definer set search_path = '' as $$
+create function public.stream_edit(p_id uuid, p_body text, p_decoration text default null, p_spoiler boolean default false, p_audience text default null, p_members uuid[] default null, p_comments_enabled boolean default null) returns jsonb language plpgsql security definer set search_path = '' as $$
 declare uid uuid := auth.uid(); post public.stream_posts;
 begin
  perform muse_private.require_identity(uid);
@@ -234,7 +282,7 @@ begin
  if not found then raise exception 'That post is not yours to edit' using errcode = '22023'; end if;
  if post.kind = 'status' and char_length(btrim(coalesce(p_body, ''))) = 0 then raise exception 'A status needs a few words' using errcode = '22023'; end if;
  update public.stream_posts set body = coalesce(btrim(p_body), ''), decoration = p_decoration, spoiler = coalesce(p_spoiler, false),
-  audience = coalesce(p_audience, audience), edited_at = clock_timestamp() where id = post.id returning * into post;
+  audience = coalesce(p_audience, audience), comments_enabled = coalesce(p_comments_enabled, comments_enabled), edited_at = clock_timestamp() where id = post.id returning * into post;
  -- Keep the explicit list unless the author changes audience or names people again.
  if p_audience is not null or p_members is not null then
   if post.audience = 'selected' and p_members is null then
@@ -254,24 +302,22 @@ begin
 end $$;
 
 -- ---- Reactions -------------------------------------------------------------------------------------------------------
-/** Set, change (another kind) or remove (null) the caller's one reaction to a post. */
-create function public.stream_react(p_post uuid, p_reaction text) returns jsonb language plpgsql security definer set search_path = '' as $$
+/** Give (true) or take back (false) the post's one contextual reaction. Never duplicated. */
+create function public.stream_react(p_post uuid, p_on boolean) returns jsonb language plpgsql security definer set search_path = '' as $$
 declare uid uuid := auth.uid(); post public.stream_posts;
 begin
  perform muse_private.require_stream(uid);
  select * into post from public.stream_posts where id = p_post;
  if not found or not muse_private.can_see_post(uid, post) then raise exception 'That post is not available' using errcode = '22023'; end if;
- if p_reaction is null then
+ if p_on then
+  insert into public.stream_reactions (post_id, reactor, reaction) values (post.id, uid, post.primary_reaction) on conflict (post_id, reactor) do nothing;
+  if found and post.author <> uid and muse_private.wants_notification(post.author, 'reaction') then
+   insert into public.stream_notifications (recipient, actor, kind, post_id, reaction) values (post.author, uid, 'reaction', post.id, post.primary_reaction)
+    on conflict (recipient, actor, post_id) where kind = 'reaction' do nothing;
+  end if;
+ else
   delete from public.stream_reactions where post_id = post.id and reactor = uid;
   delete from public.stream_notifications where kind = 'reaction' and actor = uid and post_id = post.id;
- else
-  if p_reaction not in ('react','love','joy','cheer','celebrate') then raise exception 'Unknown reaction' using errcode = '22023'; end if;
-  insert into public.stream_reactions (post_id, reactor, reaction) values (post.id, uid, p_reaction)
-   on conflict (post_id, reactor) do update set reaction = excluded.reaction, created_at = clock_timestamp();
-  if post.author <> uid and muse_private.wants_notification(post.author, 'reaction') then
-   insert into public.stream_notifications (recipient, actor, kind, post_id, reaction) values (post.author, uid, 'reaction', post.id, p_reaction)
-    on conflict (recipient, actor, post_id) where kind = 'reaction' do update set reaction = excluded.reaction, created_at = clock_timestamp(), read_at = null;
-  end if;
  end if;
  return muse_private.post_json(uid, post);
 end $$;
@@ -300,6 +346,7 @@ begin
  perform muse_private.require_stream(uid);
  select * into post from public.stream_posts where id = p_post;
  if not found or not muse_private.can_see_post(uid, post) then raise exception 'That post is not available' using errcode = '22023'; end if;
+ if not post.comments_enabled then raise exception 'Comments are off for this post' using errcode = '22023'; end if;
  select * into c from public.stream_comments where id = p_id;
  if found then
   if c.author <> uid or c.post_id <> post.id then raise exception 'That comment cannot be saved' using errcode = '22023'; end if;
@@ -324,6 +371,17 @@ begin
  return muse_private.comment_json(uid, c, post.author);
 end $$;
 
+/** Report a post or one of its comments to the Muse team. Only people who can see the post may report it; once each. */
+create function public.stream_report(p_post uuid, p_comment uuid default null, p_reason text default 'other', p_note text default '') returns void language plpgsql security definer set search_path = '' as $$
+declare uid uuid := auth.uid(); post public.stream_posts;
+begin
+ perform muse_private.require_stream(uid);
+ select * into post from public.stream_posts where id = p_post;
+ if not found or not muse_private.can_see_post(uid, post) or post.author = uid then raise exception 'That post is not available' using errcode = '22023'; end if;
+ if p_comment is not null and not exists (select 1 from public.stream_comments where id = p_comment and post_id = post.id) then raise exception 'That comment is not available' using errcode = '22023'; end if;
+ insert into public.stream_reports (reporter, post_id, comment_id, reason, note) values (uid, post.id, p_comment, p_reason, left(coalesce(btrim(p_note), ''), 500)) on conflict do nothing;
+end $$;
+
 /** A comment's author, or the post's author, may remove it. */
 create function public.stream_delete_comment(p_id uuid) returns void language plpgsql security definer set search_path = '' as $$
 declare uid uuid := auth.uid();
@@ -338,9 +396,9 @@ end $$;
 -- Friend requests and acceptances notify through the existing request lifecycle (no new discovery or friendship logic).
 create function muse_private.notify_friend_request() returns trigger language plpgsql security definer set search_path = '' as $$
 begin
- if tg_op = 'INSERT' and new.status = 'pending' and muse_private.wants_notification(new.addressee, 'friend') then
+ if tg_op = 'INSERT' and new.status = 'pending' and muse_private.wants_notification(new.addressee, 'friend-request') then
   insert into public.stream_notifications (recipient, actor, kind) values (new.addressee, new.requester, 'friend-request');
- elsif tg_op = 'UPDATE' and new.status = 'accepted' and old.status = 'pending' and muse_private.wants_notification(new.requester, 'friend') then
+ elsif tg_op = 'UPDATE' and new.status = 'accepted' and old.status = 'pending' and muse_private.wants_notification(new.requester, 'friend-accepted') then
   insert into public.stream_notifications (recipient, actor, kind) values (new.requester, new.addressee, 'friend-accepted');
  end if;
  return new;
@@ -357,7 +415,7 @@ begin
    'createdAt', n.created_at, 'read', n.read_at is not null) order by n.created_at desc), '[]'::jsonb) into result
  from (select * from public.stream_notifications x where x.recipient = uid
    and not muse_private.is_blocked(uid, x.actor)
-   and muse_private.wants_notification(uid, case x.kind when 'reaction' then 'reaction' when 'comment' then 'comment' else 'friend' end)
+   and muse_private.wants_notification(uid, x.kind)
    order by x.created_at desc limit greatest(1, least(coalesce(p_limit, 30), 100))) n
  left join public.stream_posts p on p.id = n.post_id
  where n.post_id is null or muse_private.can_see_post(n.actor, p);
@@ -370,21 +428,24 @@ begin
  update public.stream_notifications set read_at = clock_timestamp() where recipient = auth.uid() and read_at is null;
 end $$;
 
-create function public.notification_prefs() returns jsonb language plpgsql stable security definer set search_path = '' as $$
-declare uid uuid := auth.uid(); n public.notification_preferences;
+create function public.stream_preferences() returns jsonb language plpgsql stable security definer set search_path = '' as $$
+declare uid uuid := auth.uid(); n public.stream_preferences;
 begin
  if uid is null then raise exception 'Sign in required' using errcode = '42501'; end if;
- select * into n from public.notification_preferences where user_id = uid;
- return jsonb_build_object('reactions', coalesce(n.reactions, true), 'comments', coalesce(n.comments, true), 'friends', coalesce(n.friends, true));
+ select * into n from public.stream_preferences where user_id = uid;
+ return jsonb_build_object('showInNavigation', coalesce(n.show_in_navigation, true), 'reactions', coalesce(n.notify_reactions, true), 'comments', coalesce(n.notify_comments, true),
+  'friendRequests', coalesce(n.notify_friend_requests, true), 'friendAccepted', coalesce(n.notify_friend_accepted, true));
 end $$;
 
-create function public.set_notification_prefs(p_reactions boolean, p_comments boolean, p_friends boolean) returns jsonb language plpgsql security definer set search_path = '' as $$
+create function public.set_stream_preferences(p_show_in_navigation boolean, p_reactions boolean, p_comments boolean, p_friend_requests boolean, p_friend_accepted boolean) returns jsonb language plpgsql security definer set search_path = '' as $$
 declare uid uuid := auth.uid();
 begin
  if uid is null then raise exception 'Sign in required' using errcode = '42501'; end if;
- insert into public.notification_preferences (user_id, reactions, comments, friends) values (uid, p_reactions, p_comments, p_friends)
-  on conflict (user_id) do update set reactions = excluded.reactions, comments = excluded.comments, friends = excluded.friends, updated_at = clock_timestamp();
- return public.notification_prefs();
+ insert into public.stream_preferences (user_id, show_in_navigation, notify_reactions, notify_comments, notify_friend_requests, notify_friend_accepted)
+  values (uid, p_show_in_navigation, p_reactions, p_comments, p_friend_requests, p_friend_accepted)
+  on conflict (user_id) do update set show_in_navigation = excluded.show_in_navigation, notify_reactions = excluded.notify_reactions, notify_comments = excluded.notify_comments,
+   notify_friend_requests = excluded.notify_friend_requests, notify_friend_accepted = excluded.notify_friend_accepted, updated_at = clock_timestamp();
+ return public.stream_preferences();
 end $$;
 
 -- ---- Grants ----------------------------------------------------------------------------------------------------------
@@ -394,10 +455,10 @@ revoke all on function muse_private.stream_source_exists(uuid,text,text), muse_p
 revoke all on function muse_private.valid_stream_display(jsonb) from public, anon;
 grant execute on function muse_private.valid_stream_display(jsonb) to authenticated;
 do $$declare f text;begin foreach f in array array[
- 'stream_feed(timestamptz,uuid,text,integer,uuid)','stream_post(uuid)','stream_publish(uuid,text,text,text,text,text,jsonb,boolean,text,uuid[])','stream_edit(uuid,text,text,boolean,text,uuid[])',
- 'stream_delete(uuid)','stream_react(uuid,text)','stream_comments(uuid)','stream_comment(uuid,uuid,text)',
+ 'stream_feed(timestamptz,uuid,text,integer,uuid)','stream_post(uuid)','stream_publish(uuid,text,text,text,text,text,jsonb,boolean,text,uuid[],text,boolean)','stream_edit(uuid,text,text,boolean,text,uuid[],boolean)',
+ 'stream_delete(uuid)','stream_react(uuid,boolean)','stream_comments(uuid)','stream_comment(uuid,uuid,text)','stream_report(uuid,uuid,text,text)',
  'stream_edit_comment(uuid,text)','stream_delete_comment(uuid)','stream_notifications(integer)','stream_mark_notifications_read()',
- 'notification_prefs()','set_notification_prefs(boolean,boolean,boolean)'] loop
+ 'stream_preferences()','set_stream_preferences(boolean,boolean,boolean,boolean,boolean)'] loop
  execute format('revoke all on function public.%s from public, anon', f);
  execute format('grant execute on function public.%s to authenticated', f);
 end loop;end $$;

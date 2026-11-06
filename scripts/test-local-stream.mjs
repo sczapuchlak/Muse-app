@@ -78,17 +78,19 @@ try{
  await befriend(ava,eve);
  check(!(await feedIds(eve)).includes(picked.id)&&(await feedIds(eve)).includes(loudId),'a new friend sees friends posts but never older selected posts');
 
- // Reactions: one per person, changeable, removable, permission-checked, never duplicated.
- must(await rpc(bea,'stream_react',{p_post:loudId,p_reaction:'love'}));must(await rpc(bea,'stream_react',{p_post:loudId,p_reaction:'love'}));
- let post=must(await rpc(cal,'stream_post',{p_id:loudId}));check(post.reactions.love===1,'a repeated reaction is not duplicated');
- must(await rpc(bea,'stream_react',{p_post:loudId,p_reaction:'joy'}));post=must(await rpc(bea,'stream_post',{p_id:loudId}));
- check(post.reactions.joy===1&&!post.reactions.love&&post.myReaction==='joy','changing a reaction replaces it');
- check(!!(await rpc(dee,'stream_react',{p_post:loudId,p_reaction:'love'})).error,'people who cannot see a post cannot react');
- check(!!(await rpc(bea,'stream_react',{p_post:quiet.id,p_reaction:'love'})).error,'not even on a private post they guessed');
- check(!!(await rpc(bea,'stream_react',{p_post:loudId,p_reaction:'like'})).error,'reactions come from Muse’s set');
+ // Reactions: one contextual primary reaction per post; given once, taken back, permission-checked.
+ must(await rpc(bea,'stream_react',{p_post:loudId,p_on:true}));must(await rpc(bea,'stream_react',{p_post:loudId,p_on:true}));
+ let post=must(await rpc(cal,'stream_post',{p_id:loudId}));check(post.reactionCount===1&&post.primaryReaction==='react','a repeated reaction is not duplicated; statuses use React');
+ check(must(await rpc(bea,'stream_post',{p_id:loudId})).reacted===true,'the reactor sees their own reaction');
+ check(!!(await rpc(dee,'stream_react',{p_post:loudId,p_on:true})).error,'people who cannot see a post cannot react');
+ check(!!(await rpc(bea,'stream_react',{p_post:quiet.id,p_on:true})).error,'not even on a private post they guessed');
  let notes=must(await rpc(ava,'stream_notifications',{}));check(notes.filter(n=>n.kind==='reaction'&&n.postId===loudId).length===1,'one reaction notification per person and post');
- must(await rpc(cal,'stream_react',{p_post:loudId,p_reaction:'cheer'}));must(await rpc(cal,'stream_react',{p_post:loudId,p_reaction:null}));
- check(!must(await rpc(ava,'stream_post',{p_id:loudId})).reactions.cheer,'a reaction can be removed');
+ must(await rpc(cal,'stream_react',{p_post:loudId,p_on:true}));must(await rpc(cal,'stream_react',{p_post:loudId,p_on:false}));
+ check(must(await rpc(ava,'stream_post',{p_id:loudId})).reactionCount===1,'a reaction can be taken back');
+ // The primary reaction suits the post: moods Love/Joy/neutral, rituals Cheer, celebrations Celebrate, others React.
+ check(!!(await publish(ava,{p_body:'x',p_primary_reaction:'celebrate'})).error,'a status cannot claim Celebrate');
+ check(!!(await publish(ava,{...book,p_primary_reaction:'love'})).error,'reading posts use React');
+ check(must(await publish(ava,{p_category:'feeling',p_source_kind:'mood',p_source_id:moodId,p_display:{kind:'mood',title:'Hopeful'},p_primary_reaction:'joy'})).primaryReaction==='joy','happy moods can Share Joy');
 
  // Comments.
  const c1=crypto.randomUUID(),c2=crypto.randomUUID();
@@ -100,6 +102,15 @@ try{
  must(await rpc(bea,'stream_edit_comment',{p_id:c1,p_body:'Same, honestly. All three.'}));
  check(!!(await rpc(cal,'stream_edit_comment',{p_id:c1,p_body:'hijack'})).error&&!!(await rpc(cal,'stream_delete_comment',{p_id:c1})).error,'only the comment’s author edits it; others cannot remove it');
  must(await rpc(ava,'stream_delete_comment',{p_id:c2}));check(must(await rpc(bea,'stream_comments',{p_post:loudId})).length===1,'post authors can moderate their conversation');
+ must(await rpc(ava,'stream_edit',{p_id:loudId,p_body:loudArgs.p_body,p_decoration:'choosing-chaos',p_comments_enabled:false}));
+ check(!!(await rpc(bea,'stream_comment',{p_post:loudId,p_id:crypto.randomUUID(),p_body:'hello'})).error,'authors can switch comments off per post');
+ check(must(await rpc(bea,'stream_post',{p_id:loudId})).commentsEnabled===false,'readers see that comments are off');
+ must(await rpc(ava,'stream_edit',{p_id:loudId,p_body:loudArgs.p_body,p_decoration:'choosing-chaos',p_comments_enabled:true}));
+ // Reporting reaches the Muse team only.
+ must(await rpc(bea,'stream_report',{p_post:loudId,p_reason:'unkind',p_note:'test'}));must(await rpc(bea,'stream_report',{p_post:loudId,p_reason:'unkind'}));
+ check(sql(`select count(*) from public.stream_reports where post_id='${loudId}'`)==='1','a report is recorded once');
+ check(!!(await rpc(dee,'stream_report',{p_post:loudId,p_reason:'spam'})).error,'only people who can see a post can report it');
+ check(!!(await ava.client.from('stream_reports').select('*')).error,'nobody can read reports from the app');
 
  // Spoilers never leak into notifications.
  const spoil=must(await publish(ava,{...book,p_body:'Kaz dies at the end',p_spoiler:true,p_display:{kind:'book',title:'Six of Crows',progress:90}}));
@@ -108,10 +119,11 @@ try{
  check(sn&&!sn.excerpt.includes('Kaz'),'spoiler text never appears in notifications');
 
  // Notification preferences.
- must(await rpc(ava,'set_notification_prefs',{p_reactions:false,p_comments:true,p_friends:true}));
- must(await rpc(cal,'stream_react',{p_post:later.id,p_reaction:'celebrate'}));
+ must(await rpc(ava,'set_stream_preferences',{p_show_in_navigation:true,p_reactions:false,p_comments:true,p_friend_requests:true,p_friend_accepted:true}));
+ must(await rpc(cal,'stream_react',{p_post:later.id,p_on:true}));
  check(!must(await rpc(ava,'stream_notifications',{})).some(n=>n.kind==='reaction'),'switched-off kinds are neither created nor shown');
- must(await rpc(ava,'set_notification_prefs',{p_reactions:true,p_comments:true,p_friends:true}));
+ must(await rpc(ava,'set_stream_preferences',{p_show_in_navigation:false,p_reactions:true,p_comments:true,p_friend_requests:true,p_friend_accepted:true}));
+ check(must(await rpc(ava,'stream_preferences',{})).showInNavigation===false&&(await feedIds(bea)).includes(loudId),'hiding Stream from navigation never unpublishes anything');
  check(must(await rpc(ava,'stream_notifications',{})).some(n=>n.kind==='friend-accepted'),'friend acceptances notify through the existing request flow');
 
  // Editing, audience changes and unpublishing.
@@ -127,7 +139,7 @@ try{
  must(await rpc(ava,'social_remove_friend',{p_target:cal.pid}));
  check(!(await feedIds(cal)).includes(loudId)&&!!(await rpc(cal,'stream_react',{p_post:loudId,p_reaction:'love'})).error,'unfriending revokes access immediately');
  const afterUnfriend=must(await rpc(bea,'stream_comments',{p_post:loudId}));check(!afterUnfriend.some(c=>c.body==='Cal was here'),'a former friend’s comments leave the conversation');
- check(must(await rpc(bea,'stream_post',{p_id:later.id})).reactions.celebrate===undefined,'a former friend’s reactions leave the counts');
+ check(must(await rpc(bea,'stream_post',{p_id:later.id})).reactionCount===0,'a former friend’s reactions leave the counts');
 
  // Blocking revokes everything both ways.
  must(await rpc(ava,'social_block',{p_target:bea.pid}));
@@ -150,6 +162,22 @@ try{
  const dream=must(await publish(ava,{p_category:'dreaming',p_source_kind:'dream',p_source_id:dreamId,p_display:{kind:'dream',title:'The library that floated'},p_audience:'friends'}));
  must(await rpc(ava,'stream_delete',{p_id:dream.id}));
  check(sql(`select count(*) from public.whimsy_dream_entries where id='${dreamId}'`)==='1','deleting a post never deletes its source record');
+
+ // Filters: All, Reading & Watching, Life Updates, Whimsy, Celebrations.
+ const rw=must(await rpc(ava,'stream_feed',{p_category:'reading-watching'}));check(rw.length>0&&rw.every(p=>['reading','watching'].includes(p.category)),'Reading & Watching filter');
+ const life=must(await rpc(ava,'stream_feed',{p_category:'life'}));check(life.length>0&&life.every(p=>p.kind==='status'||p.category==='feeling'),'Life Updates filter');
+
+ // Money milestones: a dedicated shape referencing a real paid bill; never amounts or names.
+ const billId=crypto.randomUUID();
+ sql(`insert into public.bills(id,user_id,name,amount_cents,due_date,recurrence,paid,captured_time_zone) values ('${billId}','${ava.id}','Rent at 12 Main St',185000,'2026-11-01','monthly',true,'UTC')`);
+ const money={p_category:'money',p_source_kind:'money-milestone',p_source_id:billId,p_primary_reaction:'celebrate',p_audience:'friends'};
+ check(!!(await publish(ava,{...money,p_display:{kind:'money-milestone',title:'Paid $1,850 rent'}})).error,'money milestones accept only the fixed headlines');
+ check(!!(await publish(ava,{...money,p_display:{kind:'money-milestone',title:'Paid a bill on time',subtitle:'Rent at 12 Main St'}})).error,'money milestones carry no names or details');
+ const paid=must(await publish(ava,{...money,p_display:{kind:'money-milestone',title:'Paid a bill on time',glyph:'trophy'}}));
+ check(!JSON.stringify(must(await rpc(eve,'stream_post',{p_id:paid.id}))).match(/1850|Main St/),'friends see the milestone, never the bill');
+ const unpaid=crypto.randomUUID();sql(`insert into public.bills(id,user_id,name,amount_cents,due_date,recurrence,paid,captured_time_zone) values ('${unpaid}','${ava.id}','Phone',5000,'2026-11-02','monthly',false,'UTC')`);
+ check(!!(await publish(ava,{...money,p_source_id:unpaid,p_display:{kind:'money-milestone',title:'Paid a bill on time'}})).error,'an unpaid bill is not a milestone');
+ const cele=must(await rpc(ava,'stream_feed',{p_category:'celebrations'}));check(cele.some(p=>p.id===paid.id)&&cele.every(p=>['celebrating','rituals','money'].includes(p.category)),'Celebrations filter');
 
  // Profile recent activity: only what the viewer may see.
  const recent=must(await rpc(eve,'stream_feed',{p_author:ava.pid}));
