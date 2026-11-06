@@ -13,14 +13,17 @@ import {ActivityBars,AtlasMetric,days,duration,hours,monthLabel,num,shortMonth,y
 import {ReadingDNA} from './atlas/ReadingDNA';
 import {BooksMilestones} from './atlas/BooksMilestones';
 import {YearInReview} from './atlas/YearInReview';
+import {ReadingChallenge} from './atlas/ReadingChallenge';
+import {Patterns} from './atlas/Patterns';
+import type {CollectionsSnapshot} from '@/lib/collections/models';
 
-export type AtlasSection='overview'|'dna'|'books'|'year';
-const sections:Record<AtlasSection,string>={overview:'Overview',dna:'Reading DNA',books:'Books & Milestones',year:'Year in Review'};
+export type AtlasSection='overview'|'dna'|'patterns'|'books'|'year';
+const sections:Record<AtlasSection,string>={overview:'Overview',dna:'Reading DNA',patterns:'Patterns',books:'Books & Milestones',year:'Year in Review'};
 
 const periods={day:'Daily',week:'Weekly',month:'Monthly',year:'Yearly'};
 const overviewPeriods:Record<ReadingPeriod,string>={today:'Today',week:'This week',month:'This month',year:'This year',all:'All time'};
 
-export function ReadingAtlas({timeZone,books,sessions,goals,today,range,setRange,calendarMonth,setCalendarMonth,selectedDay,setSelectedDay,onAddGoal,onRemoveGoal,onEditSession,onDeleteSession,initialSection='overview',milestoneState,milestonesReady=false,onMilestonesSeen}:{initialSection?:AtlasSection;milestoneState?:MilestoneState;milestonesReady?:boolean;onMilestonesSeen?:(seen:string[])=>void;timeZone:string;books:Book[];sessions:ReadingSession[];goals:ReadingGoal[];today:string;range:ReadingGoal['period'];setRange:(range:ReadingGoal['period'])=>void;calendarMonth:string;setCalendarMonth:(month:string)=>void;selectedDay:string;setSelectedDay:(day:string)=>void;onAddGoal:()=>void;onRemoveGoal:(goal:ReadingGoal)=>void;onEditSession:(session:ReadingSession)=>void;onDeleteSession:(session:ReadingSession)=>void}){
+export function ReadingAtlas({timeZone,books,sessions,goals,today,range,setRange,calendarMonth,setCalendarMonth,selectedDay,setSelectedDay,onAddGoal,onRemoveGoal,onSaveChallenge,onOpenBook,challengeBusy=false,onEditSession,onDeleteSession,initialSection='overview',milestoneState,milestonesReady=false,onMilestonesSeen,collections}:{collections?:Pick<CollectionsSnapshot,'series'|'seriesMembers'|'media'>;initialSection?:AtlasSection;milestoneState?:MilestoneState;milestonesReady?:boolean;onMilestonesSeen?:(seen:string[])=>void;timeZone:string;books:Book[];sessions:ReadingSession[];goals:ReadingGoal[];today:string;range:ReadingGoal['period'];setRange:(range:ReadingGoal['period'])=>void;calendarMonth:string;setCalendarMonth:(month:string)=>void;selectedDay:string;setSelectedDay:(day:string)=>void;onAddGoal:()=>void;onRemoveGoal:(goal:ReadingGoal)=>void;onSaveChallenge?:(year:string,target:number,existing:ReadingGoal|null)=>void;onOpenBook?:(bookId:string)=>void;challengeBusy?:boolean;onEditSession:(session:ReadingSession)=>void;onDeleteSession:(session:ReadingSession)=>void}){
  const [period,setPeriod]=useState<ReadingPeriod>('all'),[section,setSection]=useState<AtlasSection>(initialSection);
  // Milestones: celebrate only ones reached and never shown before (synced on the account); the first visit is a silent baseline.
  const milestones=readingMilestones(books,sessions),achieved=milestones.filter(m=>m.achievedOn).map(m=>m.id),{celebrate,nextSeen}=milestoneCelebration(achieved,milestoneState);
@@ -44,8 +47,9 @@ export function ReadingAtlas({timeZone,books,sessions,goals,today,range,setRange
    <button type="button" className="text-button" onClick={()=>setCelebrating([])}>Dismiss</button></div>}
   {section!=='year'&&<div className="muse-books-atlas-period" role="group" aria-label="Statistics period">{(Object.keys(overviewPeriods) as ReadingPeriod[]).map(id=><button key={id} type="button" className="muse-button button-ghost" aria-pressed={period===id} onClick={()=>setPeriod(id)}>{overviewPeriods[id]}</button>)}</div>}
   {section==='dna'&&<ReadingDNA books={books} sessions={sessions} range={range_} label={label} today={today}/>}
+  {section==='patterns'&&<Patterns books={books} sessions={sessions} range={range_} label={label} series={collections?.series??[]} seriesMembers={collections?.seriesMembers??[]} media={collections?.media??[]} onOpenBook={onOpenBook}/>}
   {section==='books'&&<BooksMilestones books={books} sessions={sessions} range={range_} label={label}/>}
-  {section==='year'&&<YearInReview books={books} sessions={sessions} today={today}/>}
+  {section==='year'&&<YearInReview books={books} sessions={sessions} today={today} goals={goals}/>}
   {section==='overview'&&<>
   <div className="muse-books-stats muse-books-atlas-metrics" aria-live="polite">
    <AtlasMetric label="Reading time" value={summary.seconds?hours(summary.seconds):'—'} detail={summary.seconds?'Active time · pauses excluded':`No time recorded ${label}`}/>
@@ -59,6 +63,7 @@ export function ReadingAtlas({timeZone,books,sessions,goals,today,range,setRange
   </div>
   <p className="small-label muse-books-atlas-days">Reading days · this week {readingDaysIn('week')} · this month {readingDaysIn('month')} · this year {readingDaysIn('year')}</p>
   {/* Goals span the width; the two charts stack beside the calendar and stretch to its height (no gaps); rhythm, a list, spans the width below. */}
+  {onSaveChallenge&&<ReadingChallenge variant="full" books={books} goals={goals} today={today} busy={challengeBusy} onSave={onSaveChallenge} onRemove={onRemoveGoal} onOpenBook={onOpenBook}/>}
   <article className="muse-books-panel muse-books-goals-panel"><div className="muse-books-panel-head"><div><span className="small-label">A LITTLE INTENTION</span><h4>Your goals</h4></div><button type="button" className="muse-button button-ghost" onClick={onAddGoal}>+ Goal</button></div>{!goals.length?<p>No goals yet. Reading counts without one, too.</p>:<div className="muse-books-goals-grid">{goals.map(goal=>{const progress=goalProgress(goal,books,sessions,today),window=goalWindow(goal,today),percent=Math.round(progress/goal.target*100);return <div className="muse-books-goal" key={goal.id}><div><strong>{periods[goal.period]} · {goal.target} {goal.unit}</strong><span>{Math.round(progress)} / {goal.target} {goal.unit}</span></div><progress value={Math.min(progress,goal.target)} max={goal.target} aria-label={`${periods[goal.period]} goal: ${Math.round(progress)} of ${goal.target} ${goal.unit}`}/><small>{dateLabel(window.start)} – {dateLabel(window.end)}{goal.unit==='books'?' · each finished read counts':''}</small><div><span className="small-label">{percent>=100?'Goal reached ✦':`${percent}% of your goal`}</span><button type="button" className="text-button" onClick={()=>onRemoveGoal(goal)}>Remove goal</button></div></div>;})}</div>}</article>
   <div className="muse-atlas-overview-grid">
    <div className="muse-atlas-stack">

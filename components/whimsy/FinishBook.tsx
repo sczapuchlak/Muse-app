@@ -20,11 +20,11 @@ export type FinishDetails={finishedOn:string;rating?:number;review?:string;revie
 export function FinishBook({book,today,busy,error,reason,onFinish,onClose}:{book:Book;today:string;busy:boolean;error?:string;reason:'shelf'|'last-page';onFinish:(details:FinishDetails)=>void;onClose:()=>void}){
  const history=bookCompletions(book),reread=history.length>0,previous=history.at(-1)?.finishedOn;
  const draft={rating:reread?undefined:book.rating,review:reread?undefined:book.finalThoughts?.trim()||undefined};
- const [finishedOn,setFinishedOn]=useState(today),[rating,setRating]=useState<number|null>(draft.rating??null),[emojis,setEmojis]=useState(book.reviewEmojis),[review,setReview]=useState(draft.review??''),[problem,setProblem]=useState('');
+ const [finishedOn,setFinishedOn]=useState(today),[rating,setRating]=useState<number|null>(draft.rating??null),[emojis,setEmojis]=useState(reread?[]:book.reviewEmojis),[review,setReview]=useState(draft.review??''),[problem,setProblem]=useState('');
  function save(skip:boolean){
   setProblem('');
   if(previous&&finishedOn<previous){setProblem(`This read has to finish on or after your previous finish (${dateLabel(previous)}, ${previous.slice(0,4)}).`);return;}
-  onFinish(skip?{finishedOn,...draft,reviewEmojis:book.reviewEmojis}:{finishedOn,...(rating?{rating}:{}),...(review.trim()?{review:review.trim()}:{}),reviewEmojis:emojis});
+  onFinish(skip?{finishedOn,...draft,reviewEmojis:reread?[]:book.reviewEmojis}:{finishedOn,...(rating?{rating}:{}),...(review.trim()?{review:review.trim()}:{}),reviewEmojis:emojis});
  }
  return <MuseModal id="bookshelf-finish-book" label="Finish book" title={reason==='last-page'?'You reached the last page':reread?'Another read, finished':'You finished it'} returnFocus={null} onClose={onClose}>
   <form className="muse-books-dialog muse-finish-book" onSubmit={e=>{e.preventDefault();save(false);}}>
