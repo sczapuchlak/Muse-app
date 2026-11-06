@@ -15,6 +15,8 @@ import type {Revelation} from '@/lib/insights/revelations';
 import type {CrossConnection} from '@/lib/insights/across';
 import {symbolConstellation,symbolDreamCounts} from '@/lib/whimsy/dreams';
 import {tarotById,tarotInsights} from '@/lib/whimsy/tarot';
+import type {Aspiration,AspirationUpdate} from '@/lib/aspirations/models';
+import type {Progress} from '@/lib/aspirations/progress';
 
 type Facts=Signal['facts'];
 const empty={sampleSize:0,basis:'',recordIds:[] as string[],range:null};
@@ -107,4 +109,21 @@ export function tarotSignals(readings:TarotReading[],today:string):Signal[]{
  const [topId,count]=tarotInsights(recentReadings.map(r=>({cards:r.cards,spreadId:r.spreadId,date:r.date}))).topCards[0]??[];
  const card=topId?tarotById(topId):undefined;
  return card&&count>=3?[makeSignal('tarot.recurring-card',{card:card.name,draws:count,days:30},{observedOn:today,strength:.5,href:'/whimsy/tarot'})]:[];
+}
+
+// ---------- Aspirations ----------
+/** Milestones done this week, past-halfway goals, recent finishes, and goals moving again after 3+ quiet weeks. */
+export function aspirationSignals(aspirations:Aspiration[],updates:Pick<AspirationUpdate,'aspirationId'|'recordedOn'>[],percentOf:(a:Aspiration)=>Pick<Progress,'percent'|'available'>,today:string):Signal[]{
+ const out:Signal[]=[],href='/rituals?view=aspirations',week=shiftDate(today,-6);
+ for(const a of aspirations){
+  if(a.status==='archived')continue;
+  const done=a.milestones.filter(m=>m.completedOn),latest=done.filter(m=>m.completedOn!>=week).sort((x,y)=>y.completedOn!.localeCompare(x.completedOn!))[0];
+  if(latest&&a.status!=='completed')out.push(makeSignal('aspirations.milestone',{aspiration:a.title,milestone:latest.title,done:done.length,total:a.milestones.length},{observedOn:latest.completedOn!,strength:.7,href}));
+  if(a.status==='completed'&&a.completedOn&&a.completedOn>=shiftDate(today,-13))out.push(makeSignal('aspirations.complete',{aspiration:a.title},{observedOn:a.completedOn,strength:.9,href}));
+  if(a.status==='active'){const p=percentOf(a);if(p.available&&p.percent!==null&&p.percent>=50&&p.percent<100)out.push(makeSignal('aspirations.halfway',{aspiration:a.title,share:p.percent/100},{observedOn:today,strength:.45,href}));
+   const dates=[...new Set([...updates.filter(u=>u.aspirationId===a.id).map(u=>u.recordedOn),...done.map(m=>m.completedOn!)])].sort();
+   const last=dates.at(-1),before=dates.at(-2);
+   if(last&&before&&last>=shiftDate(today,-2)&&before<=shiftDate(last,-21))out.push(makeSignal('aspirations.return',{aspiration:a.title},{observedOn:last,strength:.65,href}));}
+ }
+ return out;
 }

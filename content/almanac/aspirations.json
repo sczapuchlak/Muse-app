@@ -1,0 +1,190 @@
+{
+ "family": "aspirations",
+ "description": "Whispers for long-term goals: milestones, halfway, finishing and returning. Rituals → Aspirations only.",
+ "voice": "Admiring and unhurried. Long things take long; never count the days a goal sat still.",
+ "entries": [
+  {
+   "id": "ALM-ASPI-001",
+   "version": 1,
+   "status": "published",
+   "family": "aspirations",
+   "format": "whisper",
+   "trigger": {
+    "signal": "aspirations.milestone"
+   },
+   "sensitivity": "personal",
+   "tone": [
+    "warm",
+    "steady"
+   ],
+   "variants": [
+    {
+     "id": "a",
+     "body": "{milestone}, done. {aspiration} is {done} of {total} along."
+    },
+    {
+     "id": "b",
+     "body": "Another step on {aspiration}: {milestone}."
+    },
+    {
+     "id": "c",
+     "body": "{milestone}. One more stone on the path to {aspiration}."
+    }
+   ],
+   "variables": {
+    "aspiration": {
+     "fact": "aspiration",
+     "format": "label"
+    },
+    "milestone": {
+     "fact": "milestone",
+     "format": "label"
+    },
+    "done": {
+     "fact": "done",
+     "format": "count"
+    },
+    "total": {
+     "fact": "total",
+     "format": "count",
+     "plural": [
+      "step",
+      "steps"
+     ]
+    }
+   },
+   "cooldownDays": 7,
+   "review": {
+    "author": "Claude",
+    "reviewedBy": "Claude (line approval delegated by Stephanie, 2026-11-06)",
+    "updatedAt": "2026-11-06"
+   }
+  },
+  {
+   "id": "ALM-ASPI-002",
+   "version": 1,
+   "status": "published",
+   "family": "aspirations",
+   "format": "whisper",
+   "trigger": {
+    "signal": "aspirations.halfway"
+   },
+   "sensitivity": "personal",
+   "tone": [
+    "literary",
+    "warm"
+   ],
+   "variants": [
+    {
+     "id": "a",
+     "body": "{aspiration} is {share} of the way there. The far shore is in view."
+    },
+    {
+     "id": "b",
+     "body": "Past halfway on {aspiration}. More done than not."
+    },
+    {
+     "id": "c",
+     "body": "{share} into {aspiration}. The middle is the hardest part to see from inside."
+    }
+   ],
+   "variables": {
+    "aspiration": {
+     "fact": "aspiration",
+     "format": "label"
+    },
+    "share": {
+     "fact": "share",
+     "format": "percent"
+    }
+   },
+   "cooldownDays": 21,
+   "review": {
+    "author": "Claude",
+    "reviewedBy": "Claude (line approval delegated by Stephanie, 2026-11-06)",
+    "updatedAt": "2026-11-06"
+   }
+  },
+  {
+   "id": "ALM-ASPI-003",
+   "version": 1,
+   "status": "published",
+   "family": "aspirations",
+   "format": "whisper",
+   "trigger": {
+    "signal": "aspirations.complete"
+   },
+   "sensitivity": "personal",
+   "tone": [
+    "warm",
+    "literary"
+   ],
+   "variants": [
+    {
+     "id": "a",
+     "body": "{aspiration}, finished. Someday turned out to be recently."
+    },
+    {
+     "id": "b",
+     "body": "You finished {aspiration}. It belongs to the record now."
+    },
+    {
+     "id": "c",
+     "body": "{aspiration}, from a wish to a thing you did."
+    }
+   ],
+   "variables": {
+    "aspiration": {
+     "fact": "aspiration",
+     "format": "label"
+    }
+   },
+   "cooldownDays": 30,
+   "review": {
+    "author": "Claude",
+    "reviewedBy": "Claude (line approval delegated by Stephanie, 2026-11-06)",
+    "updatedAt": "2026-11-06"
+   }
+  },
+  {
+   "id": "ALM-ASPI-004",
+   "version": 1,
+   "status": "published",
+   "family": "aspirations",
+   "format": "whisper",
+   "trigger": {
+    "signal": "aspirations.return"
+   },
+   "sensitivity": "personal",
+   "tone": [
+    "warm"
+   ],
+   "variants": [
+    {
+     "id": "a",
+     "body": "Back to {aspiration}. It waited for you."
+    },
+    {
+     "id": "b",
+     "body": "{aspiration} is moving again. Pauses are part of long things."
+    },
+    {
+     "id": "c",
+     "body": "Picking {aspiration} back up. The thread was still there."
+    }
+   ],
+   "variables": {
+    "aspiration": {
+     "fact": "aspiration",
+     "format": "label"
+    }
+   },
+   "cooldownDays": 21,
+   "review": {
+    "author": "Claude",
+    "reviewedBy": "Claude (line approval delegated by Stephanie, 2026-11-06)",
+    "updatedAt": "2026-11-06"
+   }
+  }
+ ]
+}

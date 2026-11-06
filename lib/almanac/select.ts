@@ -28,6 +28,7 @@ export type Surface={
 export const surfaces={
  bookshelf:{id:'bookshelf',formats:['whisper'],modules:['reading'],budget:{quiet:0,balanced:1,chatty:2}},
  rituals:{id:'rituals',formats:['whisper'],modules:['rituals'],budget:{quiet:0,balanced:1,chatty:2}},
+ aspirations:{id:'aspirations',formats:['whisper'],modules:['aspirations'],budget:{quiet:0,balanced:1,chatty:2}},
  dreams:{id:'dreams',formats:['whisper'],modules:['dreams'],budget:{quiet:0,balanced:1,chatty:1}},
  tarot:{id:'tarot',formats:['whisper'],modules:['tarot'],budget:{quiet:0,balanced:1,chatty:1}},
  atlas:{id:'atlas',formats:['revelation'],modules:['reading'],budget:{quiet:0,balanced:1,chatty:2}},

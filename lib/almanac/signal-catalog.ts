@@ -48,6 +48,16 @@ export const signalCatalog:Record<string,SignalSpec>={
  'rituals.return':{module:'rituals',sensitivity:'ordinary',source:'ritualStreak + ritual records (P1 helper)',means:'A ritual met again today after at least 7 scheduled opportunities without a full goal. Never says it was missed.',
   facts:{ritual:{type:'label',example:'Evening walk'},gapOpportunities:{type:'count',example:9}}},
 
+ // ---------- Aspirations (lib/aspirations/progress.ts) — titles are names the person chose ----------
+ 'aspirations.milestone':{module:'aspirations',sensitivity:'personal',source:'aspiration milestones',means:'A milestone completed in the last 7 days.',
+  facts:{aspiration:{type:'label',example:'Learn to sew a skirt'},milestone:{type:'label',example:'Cut the fabric'},done:{type:'count',example:3},total:{type:'count',example:5}}},
+ 'aspirations.halfway':{module:'aspirations',sensitivity:'personal',source:'aspirationProgress',means:'An open aspiration between 50% and 99% of the way.',
+  facts:{aspiration:{type:'label',example:'Save for Lisbon'},share:{type:'ratio',example:.62}}},
+ 'aspirations.complete':{module:'aspirations',sensitivity:'personal',source:'aspiration completion',means:'An aspiration marked complete in the last 14 days.',
+  facts:{aspiration:{type:'label',example:'Build my website'}}},
+ 'aspirations.return':{module:'aspirations',sensitivity:'personal',source:'aspiration journal',means:'New progress in the last 3 days after 21+ days without any.',
+  facts:{aspiration:{type:'label',example:'Learn conversational French'}}},
+
  // ---------- Planner, Wellness, Mood, Money, Nourish (lib/insights/revelations.ts — the current Little Revelations) ----------
  'planner.planned-completion':{module:'planner',sensitivity:'ordinary',source:'generateRevelations planned-completion',means:'Tasks planned in the range, with their current completion state (a snapshot, not history).',
   facts:{completed:{type:'count',example:14},planned:{type:'count',example:19}}},

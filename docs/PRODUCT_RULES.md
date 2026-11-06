@@ -594,6 +594,19 @@ Reading Atlas has five sections, chosen with a compact segmented view selector (
 - **Keepsake.** Year in Review offers "Make a keepsake": a PNG of a year or of all time, drawn in the browser and saved only to the device (nothing uploaded or stored). The person chooses each section and the shape (4:5 post, 9:16 story); reviews are private writing and stay out unless ticked. Covers are not drawn. Sections that do not fit the shape are named, never silently dropped.
 - **Living Universe.** `challengeSignals` and the pure `lib/whimsy/atlas-insights.ts` outputs are the factual inputs for the future Living Universe engine; no editorial copy is generated from them yet.
 
+## Aspirations (#54) — approved November 2026
+
+Rituals has two tabs: **Habits** (the existing Rituals, unchanged) and **Aspirations** (`/rituals?view=aspirations`). There is no separate Goals destination.
+
+- **One authority per number.** An aspiration owns its own target, milestones and journal. Connected progress is read at display time from the authoritative module through the shared progress engine (books finished, reading time, pages, tasks completed, workouts, workout minutes, water) or the Reading Challenge, never copied. The Reading Challenge shows in Aspirations automatically; its target is edited only in Bookshelf, so every place agrees.
+- **Progress kinds.** Milestones (equal weights by default; optional weights), a number (latest dated journal value), a percentage, done or not yet, and from Muse. Each has exactly one calculation. Unknown progress is shown as unknown, never zero.
+- **Savings.** Money has planned allocations but no confirmed savings balance, so savings aspirations use recorded numbers, labeled "Updated by you".
+- **Supporting habits and tasks.** Links are ids only. A habit shows its own consistency (last 30 days, current streak) beside the aspiration and never moves its progress. Linking a Planner task never changes it; unlinking or deleting an aspiration never deletes habits, tasks, books or transactions.
+- **History.** Journal entries are added, never edited; completing a milestone adds an entry. Completing asks for an optional reflection. Archiving keeps the completion date; reopening clears it.
+- **Celebrations.** Milestones, quarter thresholds and completion use `celebrate()` with the person's Muse Magic and sound settings; each threshold is stored on the aspiration so it celebrates once across devices. A new aspiration records thresholds it already meets as a silent baseline.
+- **Living Universe.** Aspirations speak through the Almanac (milestone done, past halfway, finished, moving again after 3+ quiet weeks); quiet stretches are never counted out loud.
+- **Privacy.** Owner-only tables; nothing is shared or shown on profiles.
+
 ## The Muse Almanac and Living Universe voice (#53) — approved November 2026
 
 Stephanie approved the #53 discovery recommendations on 2026-11-06 and delegated line-level copy approval ("I don't need to approve every one"); she reviews by exception.

@@ -16,6 +16,9 @@ export const celebrationCopy={
  readingGoal:['Your literary universe just got bigger.','Every page, accounted for. Challenge complete.','A whole year’s worth of worlds, explored.'],
  quest:['Fate has been thoroughly entertained.','Quest complete. Chaos approved.','The universe acknowledges your nonsense.'],
  milestone:['Another star in your universe.','That deserves a little cosmic celebration.','You made something extraordinary happen.'],
+ aspirationMilestone:['One step closer, and it counts.','A milestone, crossed off and kept.','Another stone on the path.','That one took doing. Done.'],
+ aspirationProgress:['Look how far this has come.','A quarter more of the way there.','The distance is starting to show.'],
+ aspiration:['You said you would. You did.','A grand ambition, now a thing you did.','Finished. Let it be a big deal.','From someday to done.'],
 } as const;
 export type CopyContext=keyof typeof celebrationCopy;
 
