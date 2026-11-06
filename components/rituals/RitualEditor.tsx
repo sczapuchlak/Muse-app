@@ -8,6 +8,7 @@ import { useWellness } from "../WellnessStore";
 import { compatibleMetrics, connectionUnit, materializeConnection, type ConnectionMetric, type RitualConnection } from "@/lib/ritual-connections";
 import { metricInfo } from "@/lib/progress/engine";
 import { movementCategories, movementCategoryLabels, type MovementCategory } from "@/lib/progress/movement";
+import {ShareToStream} from '../stream/ShareToStream';
 
 const sourceLabels: Record<ConnectionMetric, string> = { water: "Water", workouts: "Workouts", "workout-minutes": "Workout minutes", "reading-minutes": "Reading time", "reading-pages": "Pages read", "books-finished": "Books finished", "tasks-completed": "Tasks completed" };
 const defaultThreshold: Partial<Record<ConnectionMetric, number>> = { water: 64, "workout-minutes": 20, "reading-minutes": 20, "reading-pages": 10 };
@@ -80,7 +81,7 @@ export function RitualEditor({ initial, date, returnFocus, onClose }: { initial?
       </fieldset>
       {locked && <p className="small-label">This ritual has history. Its type, goal, and schedule stay fixed to preserve those entries. You can change its name or group; create a new ritual for a new rhythm.</p>}
       {type === "weekly-target" && <p className="small-label">The goal applies to the whole week. Available days are opportunities to log, not separate daily obligations.</p>}
-      <div className="editor-actions"><button className="muse-button button-primary" type="submit" disabled={!valid||!status.loaded||!!status.error}>{initial ? "Save ritual" : "Add ritual"}</button><button className="text-button" type="button" onClick={onClose}>Cancel</button></div>
+      <div className="editor-actions"><button className="muse-button button-primary" type="submit" disabled={!valid||!status.loaded||!!status.error}>{initial ? "Save ritual" : "Add ritual"}</button><button className="text-button" type="button" onClick={onClose}>Cancel</button>{initial&&<ShareToStream kind="ritual" id={initial.id} category="rituals" label="Share this ritual" className="text-button"/>}</div>
     </form>
   </MuseDrawer>;
 }

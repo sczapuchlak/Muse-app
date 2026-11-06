@@ -5,6 +5,8 @@ import {useAstrologyData} from '../astrology/AstrologyData';
 import {useMoney} from '../money/MoneyStore';
 import {useDailyData} from '../daily/DailyData';
 import {useShowcaseSources} from '../profile/useShowcaseSources';
+import {useCollectionsData} from '../collections/CollectionsData';
+import {useAspirations} from '../rituals/aspirations/useAspirations';
 import {createMuseBrowserClient} from '@/lib/supabase/client';
 import {readDays} from '@/lib/data/daily';
 import {shiftDate,todayInTimeZone} from '@/lib/dates';
@@ -16,7 +18,7 @@ import type {StreamBundle,StreamMood} from '@/lib/stream/adapters';
  */
 export function useStreamSources(){
  const {bundle:base,loaded:baseLoaded}=useShowcaseSources();
- const whimsy=useWhimsyData(),astrology=useAstrologyData(),money=useMoney(),{profile}=useDailyData();
+ const whimsy=useWhimsyData(),astrology=useAstrologyData(),money=useMoney(),{profile}=useDailyData(),collections=useCollectionsData(),aspirations=useAspirations();
  const [moods,setMoods]=useState<StreamMood[]|null>(null);
  useEffect(()=>{let cancelled=false;const end=todayInTimeZone(profile.timeZone),start=shiftDate(end,-60);
   readDays(createMuseBrowserClient(),start,end).then(days=>{if(cancelled)return;
@@ -24,6 +26,8 @@ export function useStreamSources(){
   },()=>{if(!cancelled)setMoods([]);});
   return()=>{cancelled=true;};},[profile.timeZone]);
  const bundle=useMemo<StreamBundle>(()=>({...base,moods:moods??[],dreams:whimsy.records?.dreams??[],tarot:whimsy.records?.tarot??[],fortunes:whimsy.records?.fortunes??[],saved:whimsy.records?.saved??[],
-  chart:astrology.records.chart?{id:astrology.records.chart.id,payload:astrology.records.chart.payload}:null,cards:money.state?.cards??[],bills:money.state?.bills??[]}),[base,moods,whimsy.records,astrology.records.chart,money.state]);
+  chart:astrology.records.chart?{id:astrology.records.chart.id,payload:astrology.records.chart.payload}:null,cards:money.state?.cards??[],bills:money.state?.bills??[],
+  sessions:whimsy.records?.sessions??[],episodes:collections.records.episodes,seasons:collections.records.seasons,activity:collections.records.activity,aspirations:aspirations.aspirations,aspirationUpdates:aspirations.updates}),
+  [base,moods,whimsy.records,astrology.records.chart,money.state,collections.records,aspirations.aspirations,aspirations.updates]);
  return {bundle,loaded:baseLoaded&&moods!==null};
 }

@@ -92,7 +92,7 @@ export function StreamComposer({initial,onPublished,onCancel,autoFocus=false}:{i
    <div className="muse-stream-row"><p className="small-label"><MuseIcon name="info" size={13}/>{adapter.privacy}</p><button type="button" className="text-button" onClick={()=>{setSource(null);setApproved(null);setTexts({});}}>Choose something else</button></div>
    {sensitiveKinds.includes(source.kind)&&<p className="muse-accent-note">This is personal, so nothing extra is ticked. Choose exactly what to share.</p>}
    <fieldset><legend className="small-label">Share these details</legend><div className="muse-stream-fields">{fieldsFor(source.kind,bundle,source.id).map(f=><label key={f.id} className="muse-atelier-check">
-    <input type="checkbox" checked={chosen.includes(f.id)} disabled={f.locked} onChange={e=>setApproved(e.target.checked?[...chosen,f.id]:chosen.filter(x=>x!==f.id))}/>{f.label}</label>)}</div></fieldset>
+    <input type="checkbox" checked={chosen.includes(f.id)} disabled={f.locked} onChange={e=>{setApproved(e.target.checked?[...chosen,f.id]:chosen.filter(x=>x!==f.id));if(e.target.checked&&f.id==='episode-title')setSpoiler(true);}}/>{f.label}</label>)}</div></fieldset>
    {adapter.texts.map(t=><label key={t.id} className="muse-field-label"><span className="small-label">{t.label}</span>
     <textarea rows={2} maxLength={t.max} value={texts[t.id]??''} onChange={e=>setTexts({...texts,[t.id]:e.target.value})}/><small className="muse-atelier-hint">{t.hint}</small>
     {t.seed&&!texts[t.id]&&<button type="button" className="text-button" onClick={()=>setTexts({...texts,[t.id]:(t.seed!(bundle,source.id)).slice(0,t.max)})}>Start from my reflection</button>}</label>)}

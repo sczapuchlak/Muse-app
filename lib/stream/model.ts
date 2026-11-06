@@ -14,24 +14,30 @@ export const audienceOptions:{id:StreamAudience;label:string;detail:string}[]=[
 ];
 
 export type StreamCategory='reading'|'watching'|'feeling'|'dreaming'|'celebrating'|'tarot'|'side-quests'|'rituals'|'fortunes'|'astrology'|'money';
-export type StreamSourceKind='book'|'media'|'mood'|'dream'|'tarot-reading'|'ritual'|'side-quest'|'fortune'|'astrology'|'money-milestone';
+export type StreamSourceKind='book'|'media'|'mood'|'dream'|'tarot-reading'|'ritual'|'side-quest'|'fortune'|'astrology'|'money-milestone'|'aspiration';
+/**
+ * Money milestones are no longer offered for new posts (#69). The kind stays so earlier posts keep rendering and can
+ * still be edited, unpublished or deleted; the database still accepts it for those posts.
+ */
+export const retiredKinds:StreamSourceKind[]=['money-milestone'];
 /** Composer shortcuts: each accepts only the record types that belong to it (mirrors the database check). */
 export const shortcuts:{id:StreamCategory;label:string;icon:MuseIconName;kinds:StreamSourceKind[];home:{href:string;label:string}}[]=[
  {id:'reading',label:'Reading',icon:'book',kinds:['book'],home:{href:'/whimsy/bookshelf',label:'Bookshelf'}},
  {id:'watching',label:'Watching',icon:'film',kinds:['media'],home:{href:'/collections',label:'Collections'}},
  {id:'feeling',label:'Feeling',icon:'mood',kinds:['mood'],home:{href:'/mood',label:'Mood'}},
  {id:'dreaming',label:'Dreaming',icon:'dreams',kinds:['dream'],home:{href:'/whimsy/dreamscapes',label:'Dreamscapes'}},
- {id:'celebrating',label:'Celebrating',icon:'sparkle',kinds:['book','ritual','side-quest','money-milestone'],home:{href:'/rituals',label:'Rituals'}},
+ {id:'celebrating',label:'Celebrating',icon:'sparkle',kinds:['aspiration','book','ritual','side-quest'],home:{href:'/rituals?view=aspirations',label:'Aspirations'}},
  {id:'tarot',label:'Tarot',icon:'tarot',kinds:['tarot-reading'],home:{href:'/whimsy/tarot',label:'Tarot'}},
  {id:'side-quests',label:'Side Quests',icon:'wand',kinds:['side-quest'],home:{href:'/whimsy/side-quests',label:'Side Quests'}},
  {id:'rituals',label:'Rituals',icon:'rituals',kinds:['ritual'],home:{href:'/rituals',label:'Rituals'}},
  {id:'fortunes',label:'Fortunes',icon:'favorite',kinds:['fortune'],home:{href:'/whimsy/fortunes',label:'Fortunes'}},
  {id:'astrology',label:'Astrology',icon:'orbit',kinds:['astrology'],home:{href:'/whimsy/observatory',label:'Observatory'}},
- {id:'money',label:'Money milestone',icon:'money',kinds:['money-milestone'],home:{href:'/money',label:'Money'}},
 ];
 /** The first five are the classic shortcuts; the rest sit behind "More". */
 export const primaryShortcutCount=5;
-export const shortcutById=(id:string|null|undefined)=>shortcuts.find(s=>s.id===id);
+/** Retired categories: earlier posts still find their label and icon; they are never offered for new posts. */
+const retiredShortcuts:typeof shortcuts=[{id:'money',label:'Money milestone',icon:'money',kinds:['money-milestone'],home:{href:'/money',label:'Money'}}];
+export const shortcutById=(id:string|null|undefined)=>shortcuts.find(s=>s.id===id)??retiredShortcuts.find(s=>s.id===id);
 /** The original feed filters. */
 export const feedFilters:{id:string|null;label:string}[]=[{id:null,label:'All'},{id:'reading-watching',label:'Reading & Watching'},{id:'life',label:'Life Updates'},{id:'whimsy',label:'Whimsy'},{id:'celebrations',label:'Celebrations'}];
 

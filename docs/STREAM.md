@@ -66,16 +66,51 @@ and the genuine conflicts found during the architecture audit. FEATURE_SPEC and 
 - **Client**: `lib/stream/` (model, adapters, persistence), `components/stream/` (feed, composer, cards, reactions,
   comments, notifications, Share to Stream), route `/stream`.
 
-## Genuine conflicts and missing dependencies
+## Stream 2.0 (#69) — implemented on feature branch
 
-1. **Make Muse Yours does not exist yet.** Stream adds an account-synced *Show Stream in navigation* preference
-   (`stream_preferences.show_in_navigation`), shown in Settings and on Stream, designed to move into Make Muse Yours.
-2. **No sound preference exists in Muse.** Reaction animations are silent; nothing to respect yet.
-3. **No favourite tarot cards** are stored anywhere, so they cannot be shared. Readings and daily draws can.
-4. **No financial milestone records exist.** Milestones reference a real *paid bill* or a *card* (offered only when its
-   balance is paid off) with fixed, amount-free headlines enforced by the database.
-5. **Astrology "educational discoveries"** have no saved record beyond view activity, so only chart placements (Sun,
-   Moon, Rising; signs only) are shareable for now.
-6. **Season/episode context and reading-session updates** are not exposed by the existing adapters; posts show the
-   title, progress, status and rating the adapters already support.
-7. **Reports** are stored for the Muse team (service role). There is no moderation dashboard yet.
+What changed in this pass, and what each piece depends on. Migration `20261116000100_stream_v2.sql` (additive).
+
+**Complete before #69 and kept as is:** feed, composer, audiences, snapshots, contextual reactions (one primary
+reaction per post, played only after the database confirms), comments, spoilers, notifications, blocking, reporting,
+profile recent activity, the *Show Stream in navigation* setting.
+
+**Muse Magic (#34, merged).** Reactions already used the shared Muse Magic levels (Quiet: no flourish, feedback kept;
+Magical; Extra: a wider burst) and reduced motion. #69 gives each reaction its own sound from the shared palette
+(`reactionSounds`: React confirm, Send Love reveal, Share Joy complete, Cheer seal, Celebrate celebrate), still only after
+success and only when Sound effects are on. There is no Stream-specific sound setting.
+
+**Share to Stream entry points.** Bookshelf, Dreamscapes and Tarot (existing), plus Collections (movie, TV and game
+details), Rituals (the ritual editor, with its current streak), Side Quests (a completed quest), Fortunes (a saved
+fortune or curiosity), the Observatory (Sun, Moon and Rising signs only), Mood (a check-in in the history) and
+Aspirations (the aspiration detail). Every entry opens the same composer: canonical source reference, snapshot at
+publication, optional words, field-by-field choice, Only me by default, preview, explicit publish. The share dialog now
+opens at the page root, centred, so it never inherits another dialog's styles, and Escape closes only the share dialog.
+
+**Collections moments.** From existing records only: books can add *the day I started* and *my latest reading session*
+(pages and active time); TV shows can add *my latest episode* (season and number), *its episode title* (opting in also
+turns on spoiler protection) and *latest season I finished*. Series completion and movie finishes come from the
+existing status field. Nothing new is tracked.
+
+**Aspirations.** New source kind `aspiration` (Celebrating). Shares the name, progress, milestones done, category and
+finish date the author ticks; never the why, notes, journal or reflection unless the author writes or trims words in the
+composer. Archiving an aspiration keeps what was shared; deleting it hides its posts like any deleted source.
+
+**Money.** Not offered for new posts: no Money shortcut, no money-milestone records under Celebrating, no share entry
+point. The database still accepts `money-milestone` and the `money` category, and the client keeps a retired label, so
+earlier money posts keep rendering and can still be edited, unpublished or deleted. Nothing published was removed.
+
+**Reports.** Reviewed by the Muse team with `node scripts/stream-reports.mjs` (local by default; hosted projects need
+`STREAM_REVIEW_URL` and `STREAM_REVIEW_SECRET_KEY` for that one command, and production asks for the project name). It
+calls `stream_reports_review` and `stream_report_resolve`, executable only by the service role. Resolutions: no action,
+return the post to Only me (never deleted), or remove the reported comment. There is no admin route, and ordinary people
+can neither read nor resolve reports.
+
+## Deferred and known limitations
+
+1. **Make Muse Yours** is separate. *Show Stream in navigation* stays the interim setting.
+2. **Favourite tarot cards** are still not stored, so they cannot be shared. Readings and daily draws can.
+3. **Wellness milestones** (water, movement goals) have no Stream source yet; Mood check-ins are shareable.
+4. **Astrology discoveries** have no saved record beyond view activity; only chart signs are shareable.
+5. **Reporting:** no in-app moderation queue, no reporter notification of the outcome, no appeal flow. Reviewing needs the
+   service key, so only someone with hosted access can do it.
+6. **Original Sections 6–19** remain the addendum summaries above, not the original text.

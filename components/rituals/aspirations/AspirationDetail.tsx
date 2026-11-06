@@ -8,6 +8,7 @@ import type {RitualState} from '@/lib/rituals';
 import {statusLabels,type Aspiration,type AspirationUpdate,type Milestone} from '@/lib/aspirations/models';
 import {habitConsistency,milestoneProgress,progressHistory,type Progress} from '@/lib/aspirations/progress';
 import {ProgressRing,periodLabel,progressText} from './parts';
+import {ShareToStream} from '../../stream/ShareToStream';
 
 type Actions={save:(a:Aspiration)=>Promise<Aspiration|null>;addUpdate:(u:Omit<AspirationUpdate,'createdAt'>)=>Promise<AspirationUpdate|null>;removeUpdate:(id:string)=>Promise<boolean|null>;remove:(a:Aspiration)=>Promise<boolean|null>};
 
@@ -91,6 +92,7 @@ export function AspirationDetail({a,progress,updates,ritualState,tasks,today,bus
     {open&&!finishing&&<button type="button" className="muse-button button-primary" disabled={busy} onClick={()=>setFinishing(true)}>Mark complete…</button>}
     {renewLabel&&onRenew&&<button type="button" className="muse-button" disabled={busy} onClick={onRenew}>Renew for {renewLabel}</button>}
     <button type="button" className="muse-button" onClick={onEdit}>Edit</button>
+    {a.status!=='archived'&&<ShareToStream kind="aspiration" id={a.id} category="celebrating" className="text-button"/>}
     {a.status==='active'&&<button type="button" className="text-button" disabled={busy} onClick={()=>void save({status:'paused'})}>Pause</button>}
     {(a.status==='paused'||a.status==='planned')&&<button type="button" className="text-button" disabled={busy} onClick={()=>void save({status:'active'})}>{a.status==='paused'?'Resume':'Start'}</button>}
     {a.status==='completed'&&<button type="button" className="text-button" disabled={busy} onClick={()=>void save({status:'active',completedOn:null})}>Reopen</button>}

@@ -14,10 +14,17 @@ import {tarotCards,tarotSpreads} from '@/lib/whimsy/tarot';
 import {dreamSymbols} from '@/lib/whimsy/dreams';
 import {emotionCatalog} from '@/lib/emotions';
 import type {StreamSourceKind} from './model';
+import type {ReadingSession} from '@/lib/whimsy/models';
+import {activeSeconds} from '@/lib/whimsy/books';
+import type {Episode,MediaActivity,Season} from '@/lib/collections/models';
+import type {Aspiration,AspirationUpdate} from '@/lib/aspirations/models';
+import {aspirationProgress,milestoneProgress} from '@/lib/aspirations/progress';
 
 export type StreamMood={id:string;date:string;period:'morning'|'evening';emotionIds:string[]};
 export type StreamBundle=SourceBundle&{moods:StreamMood[];dreams:DreamEntry[];tarot:TarotReading[];fortunes:FortuneAssignment[];saved:SavedDiscovery[];
- chart:{id:string;payload:NatalChart}|null;cards:CreditCard[];bills:MoneyBill[]};
+ chart:{id:string;payload:NatalChart}|null;cards:CreditCard[];bills:MoneyBill[];
+ /** #69: moments behind books and TV, and aspirations. Optional so older callers keep working. */
+ sessions?:ReadingSession[];episodes?:Episode[];seasons?:Season[];activity?:MediaActivity[];aspirations?:Aspiration[];aspirationUpdates?:AspirationUpdate[]};
 export type StreamDisplay=ShowcaseDisplay&{excerpt?:string};
 /** Words the author writes (or trims) in the composer for this record. */
 export type TextField={id:'note'|'summary'|'excerpt';label:string;hint:string;max:number;seed?:(b:StreamBundle,id:string)=>string};
@@ -33,11 +40,41 @@ const day=(iso:string)=>new Date(`${iso.slice(0,10)}T12:00:00`).toLocaleDateStri
 const cap=(v:string)=>v.charAt(0).toUpperCase()+v.slice(1);
 function savedFortune(b:StreamBundle,sv:SavedDiscovery){const a=b.fortunes.find(x=>x.id===sv.assignmentId);const content=a&&fortuneById(a.content.contentId);
  const title=sv.snapshot?.title??content?.title,body=sv.snapshot?.body??content?.body;if(!title)return null;return {title,body:body??'',label:a?fortuneLabels[a.kind]:'Fortunes'};}
+/** A Showcase adapter plus Stream-only "moment" fields that add up to two short lines from existing records. */
+function withMoments(kind:'book'|'media',extra:FieldOption[],privacy:string,moments:(b:StreamBundle,id:string,approved:string[])=>string[]):StreamAdapter{
+ const a=showcaseAdapters[kind];
+ return {kind,label:a.label,icon:a.icon,privacy,fields:[...a.fields,...extra],texts:[],candidates:b=>a.candidates(b),
+  display:(b,id,approved)=>{const d=a.display(b,id,approved);if(!d)return null;const meta=[...(d.meta??[]),...moments(b,id,approved)].slice(0,4);return clean({...d,meta});}};
+}
 const reuse=(kind:'book'|'media'|'ritual'|'side-quest'):StreamAdapter=>{const a=showcaseAdapters[kind];
  return {kind,label:a.label,icon:a.icon,privacy:a.privacy,fields:a.fields,texts:[],candidates:b=>a.candidates(b),display:(b,id,approved)=>a.display(b,id,approved)};};
 
 export const streamAdapters:Record<StreamSourceKind,StreamAdapter>={
- book:reuse('book'),media:reuse('media'),ritual:reuse('ritual'),'side-quest':reuse('side-quest'),
+ book:withMoments('book',[{id:'started',label:'The day I started',default:false},{id:'session',label:'My latest reading session (pages and time)',default:false}],
+  'Never your notes, timers or session history. Your latest session’s pages and time only if you tick it.',(b,id,a)=>{const book=b.books.find(x=>x.id===id);if(!book)return [];const out:string[]=[];
+   if(on(a,'started')&&book.startedOn)out.push(`Started ${day(book.startedOn)}`);
+   if(on(a,'session')){const last=(b.sessions??[]).filter(x=>x.bookId===id).sort((x,y)=>y.date.localeCompare(x.date))[0];
+    if(last){const min=Math.round(activeSeconds(last.activeSegments)/60);const parts=[last.pages?`${last.pages} page${last.pages===1?'':'s'}`:null,min?`${min} min`:null].filter(Boolean);if(parts.length)out.push(`Read ${parts.join(' · ')} on ${day(last.date)}`);}}
+   return out;}),
+ media:withMoments('media',[{id:'episode',label:'My latest episode (season and number)',default:false},{id:'episode-title',label:'Its episode title (may be a spoiler)',default:false},{id:'season',label:'Latest season I finished',default:false}],
+  'Never your reviews, notes, tags or watch history. Episode and season details only if you tick them.',(b,id,a)=>{const out:string[]=[];
+   if(on(a,'episode')){const ids=new Set((b.episodes??[]).filter(e=>e.show_id===id).map(e=>e.id));
+    const last=(b.activity??[]).filter(x=>x.media_id===id&&x.episode_id&&ids.has(x.episode_id)).sort((x,y)=>y.activity_date.localeCompare(x.activity_date))[0];
+    const ep=last&&(b.episodes??[]).find(e=>e.id===last.episode_id);
+    if(ep)out.push(clip(`Watched S${ep.season_number} · E${ep.episode_number}${on(a,'episode-title')&&ep.title?` “${ep.title}”`:''}`,80)!);}
+   if(on(a,'season')){const done=(b.seasons??[]).filter(x=>x.show_id===id&&x.watched).sort((x,y)=>y.season_number-x.season_number)[0];if(done)out.push(`Finished season ${done.season_number}`);}
+   return out;}),
+ ritual:reuse('ritual'),'side-quest':reuse('side-quest'),
+ aspiration:{kind:'aspiration',label:'Aspirations',icon:'sparkle',privacy:'Only the name and what you tick. Never your why, notes, journal or reflection unless you write a line here.',
+  fields:[{id:'title',label:'Aspiration',default:true,locked:true},{id:'progress',label:'Progress',default:true},{id:'milestones',label:'Milestones done',default:false},{id:'category',label:'Category',default:false},{id:'finished',label:'Date finished',default:false}],
+  texts:[{id:'excerpt',label:'A few words (optional)',hint:'Starts empty. Use “Start from my reflection” to copy it in, then trim.',max:280,seed:(b,id)=>b.aspirations?.find(x=>x.id===id)?.reflection??''}],
+  candidates:b=>(b.aspirations??[]).filter(x=>x.status!=='archived').map(x=>({sourceId:x.id,title:clip(x.title,80)!,subtitle:x.status==='completed'&&x.completedOn?`Finished ${day(x.completedOn)}`:x.category,glyph:x.status==='completed'?'trophy':'sparkle',group:x.status==='completed'?'Finished':'In progress'})),
+  display:(b,id,approved,text)=>{const x=b.aspirations?.find(y=>y.id===id);if(!x)return null;
+   const p=x.progressKind==='connected'?null:aspirationProgress(x,{updates:b.aspirationUpdates??[],today:b.today});const m=milestoneProgress(x);
+   const meta=[on(approved,'milestones')&&m.total?`${m.done} of ${m.total} milestones`:null,on(approved,'category')?clip(x.category,80):null].filter((v):v is string=>!!v);
+   return clean({kind:'aspiration',title:clip(x.title)!,status:x.status==='completed'?'Finished':x.status==='paused'?'Paused':'In progress',
+    progress:on(approved,'progress')&&p?.percent!=null?Math.round(p.percent):undefined,meta,excerpt:clip(text.excerpt,280),glyph:x.status==='completed'?'trophy':'sparkle',
+    date:on(approved,'finished')&&x.completedOn?x.completedOn:undefined});}},
  mood:{kind:'mood',label:'Mood check-ins',icon:'mood',privacy:'Only the feelings you pick and a line you write. Never your reflection or influences.',
   // Each emotion is its own approvable field, so mixed feelings stay mixed and nothing is shared by default beyond what you tick.
   fields:[{id:'date',label:'Date',default:true}],
@@ -90,6 +127,9 @@ export const streamAdapters:Record<StreamSourceKind,StreamAdapter>={
 /** Approvable fields, expanding a mood's emotions into one checkbox each (all ticked to start; untick to keep private). */
 export function fieldsFor(kind:StreamSourceKind,bundle:StreamBundle,sourceId:string):FieldOption[]{
  const base=streamAdapters[kind].fields;
+ // Episode and season moments only apply to TV shows.
+ if(kind==='media'){const item=bundle.media.find(m=>m.id===sourceId);return item?.kind==='tv'?base:base.filter(f=>!['episode','episode-title','season'].includes(f.id));}
+ if(kind==='book'){const hasSession=(bundle.sessions??[]).some(x=>x.bookId===sourceId),book=bundle.books.find(b=>b.id===sourceId);return base.filter(f=>(f.id!=='session'||hasSession)&&(f.id!=='started'||!!book?.startedOn));}
  if(kind!=='mood')return base;
  const mood=bundle.moods.find(m=>m.id===sourceId);
  return [...(mood?.emotionIds??[]).slice(0,4).map(e=>({id:`emotion:${e}`,label:emotionName(e)??'Feeling',default:true})),...base];
