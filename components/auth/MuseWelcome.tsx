@@ -12,6 +12,7 @@ import {MuseStarCluster} from "../MuseStarCluster";
 import {MuseChoiceMenu} from "../MuseChoiceMenu";
 import {ThemeChoices,MaterialChoices} from "../AppearanceChoices";
 import {LoginAtmosphere} from "./LoginAtmosphere";
+import {TakeMuseWithYou} from "./TakeMuseWithYou";
 import "../AppShell.css";
 import "../LoginPreview.css";
 import "./MuseWelcome.css";
@@ -83,6 +84,7 @@ export function MuseWelcome({profile}:{profile:Profile}){
    {step==="done"&&<div className="muse-welcome-step">
     <h2 id="welcome-step-title" ref={heading} tabIndex={-1}>Welcome home, {savedName}.</h2>
     <p className="card-description">Your universe is ready. You can change your name and timezone in Settings, and your theme in Appearance, whenever you like.</p>
+    <TakeMuseWithYou/>
     <div className="editor-actions"><button type="button" className="muse-button button-primary" onClick={()=>router.replace("/?welcome=1")}>Enter Muse</button></div>
    </div>}
   </section>
