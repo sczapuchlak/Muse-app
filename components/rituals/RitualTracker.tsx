@@ -1,5 +1,6 @@
 "use client";
-import { useMemo, type CSSProperties } from "react";
+import { useMemo, useRef, type CSSProperties } from "react";
+import { usePlannerHeight } from "../planner/usePlannerHeight";
 import { accentStyle } from "@/lib/appearance-values";
 import { dateLabel, weekDates } from "@/lib/dates";
 import { ritualFeedback, ritualReducer, ritualStreak, type RitualDefinition, type RitualState } from "@/lib/rituals";
@@ -29,8 +30,7 @@ export function RitualTracker({ period, layout, habitId, date, today, rituals, o
   const slice = (r: RitualDefinition) => slices.get(r.id) ?? habitState(state, r);
   if (!rituals.length) return <p className="muse-tracker-empty">Add a ritual to start a tracker.</p>;
 
-  if (layout === "grid") {
-    if (period === "month") {
+  if (layout === "grid" && period === "month") {
       const days = monthDates(date);
       return <div className="muse-tracker muse-tracker-grid" style={{ "--days": days.length } as CSSProperties}>
         <div className="muse-tracker-grid-head" aria-hidden="true"><span />{days.map((d) => <span key={d} data-today={d === today || undefined} data-weekend={[0, 6].includes(new Date(`${d}T12:00:00Z`).getUTCDay()) || undefined}><b>{weekdayLetters[(new Date(`${d}T12:00:00Z`).getUTCDay() + 6) % 7]}</b>{Number(d.slice(8))}</span>)}<span>Month</span></div>
@@ -41,19 +41,6 @@ export function RitualTracker({ period, layout, habitId, date, today, rituals, o
             <span className="muse-tracker-share" title={r.type === "category" ? `${s.met} of ${s.decided} days logged` : `${s.met} of ${s.decided} met`}>{s.decided ? `${s.met}/${s.decided}` : "—"}</span>
           </div>; })}
       </div>;
-    }
-    // Year grid: one square per month, shaded by the share of decided goals met that month.
-    const months = monthKeys(date);
-    return <div className="muse-tracker muse-tracker-grid" data-period="year" style={{ "--days": 12 } as CSSProperties}>
-      <div className="muse-tracker-grid-head" aria-hidden="true"><span />{months.map((m) => <span key={m} data-today={today.startsWith(m) || undefined}>{monthShort(m)}</span>)}<span>Year</span></div>
-      {rituals.map((r) => { const yearShare = share(slice(r), r, months.flatMap((m) => monthDates(`${m}-01`)), today);
-        return <div key={r.id} className="muse-tracker-grid-row" style={groupStyle(state, r)}>
-          <span className="muse-tracker-name">{r.name}</span>
-          {months.map((m) => { const s = share(slice(r), r, monthDates(`${m}-01`), today);
-            return <button key={m} type="button" className="muse-tracker-square" data-level={ratioLevel(s.ratio)} data-empty={s.decided === 0 || undefined} aria-label={`${r.name}, ${monthShort(m)}: ${s.decided ? `${s.met} of ${s.decided} ${r.type === "category" ? "days logged" : "goals met"}` : "nothing decided"}. Open the month`} title={s.decided ? `${s.met} of ${s.decided}` : "Nothing decided"} onClick={() => onDate(`${m}-01`, "month", "grid")} />; })}
-          <span className="muse-tracker-share">{yearShare.decided ? `${Math.round((yearShare.ratio ?? 0) * 100)}%` : "—"}</span>
-        </div>; })}
-    </div>;
   }
 
   if (layout === "focus") {
@@ -62,50 +49,23 @@ export function RitualTracker({ period, layout, habitId, date, today, rituals, o
     const s = share(st, habit, dates, today);
     const head = <div className="muse-tracker-focus-head"><h3>{habit.name}</h3><p>{s.decided ? habit.type === "category" ? `${s.met} of ${s.decided} days logged` : `${s.met} of ${s.decided} met` : "Nothing decided yet"} · streak {streak.count} {streak.unit}</p></div>;
     if (period === "week") return <div className="muse-tracker muse-tracker-focus" style={groupStyle(state, habit)}>{head}
-      <div className="muse-tracker-focus-week">{weekDates(date).map((d) => <div key={d} data-today={d === today || undefined}><span>{new Intl.DateTimeFormat("en-US", { weekday: "short", timeZone: "UTC" }).format(new Date(`${d}T12:00:00Z`))} {Number(d.slice(8))}</span><RitualWeekCell ritual={habit} date={d} today={today} selected={d === date} onEditEntry={onEditEntry} /></div>)}</div>
+      <div className="muse-tracker-focus-week">{weekDates(date).map((d) => <div key={d} className={d === today ? "muse-today-ring" : undefined} data-today={d === today || undefined}><span>{new Intl.DateTimeFormat("en-US", { weekday: "short", timeZone: "UTC" }).format(new Date(`${d}T12:00:00Z`))} {Number(d.slice(8))}</span><RitualWeekCell ritual={habit} date={d} today={today} selected={d === date} onEditEntry={onEditEntry} /></div>)}</div>
       <CategoryLegend ritual={habit} /></div>;
     if (period === "month") return <div className="muse-tracker muse-tracker-focus" style={groupStyle(state, habit)}>{head}
       <MonthCalendar date={date} today={today} render={(d) => <RitualWeekCell ritual={habit} date={d} today={today} selected={d === date} onEditEntry={onEditEntry} />} />
       <CategoryLegend ritual={habit} /></div>;
-    return <div className="muse-tracker muse-tracker-focus" style={groupStyle(state, habit)}>{head}
-      <div className="muse-tracker-minis">{monthKeys(date).map((m) => <section key={m} aria-label={monthShort(m)}><button type="button" className="text-button" onClick={() => onDate(`${m}-01`, "month", "focus")}>{monthShort(m)}</button>
-        <MonthCalendar date={`${m}-01`} today={today} mini render={(d) => <PixelSquare ritual={habit} s={square(st, habit, d, today)} />} /></section>)}</div>
-      <CategoryLegend ritual={habit} /></div>;
+    return <YearSheet ritual={habit} sliceState={st} rituals={rituals} sliceOf={slice} date={date} today={today} onMonth={(m) => onDate(`${m}-01`, "month", "focus")} style={groupStyle(state, habit)} />;
   }
 
-  // Heatmap: one habit, or every habit's share of the day ("All rituals"). Month calendar, or a Year in Pixels.
-  const dayPixel = (d: string): { level: Square["level"]; label: string; color?: string; status?: string } => {
-    if (habit) { const s = square(slice(habit), habit, d, today), c = categoryOf(habit, s); return { level: s.level, label: squareLabel(habit, s, c?.label), color: c?.color, status: s.status }; }
-    let met = 0, decided = 0;
-    for (const r of rituals) { if (r.type === "weekly-target") continue; const s = square(slice(r), r, d, today); if (["unscheduled", "open", "upcoming", "unknown"].includes(s.status)) continue; decided++; if (s.level === 4) met++; }
-    return { level: d > today ? 0 : ratioLevel(decided ? met / decided : null), label: decided ? `${met} of ${decided} rituals met` : d > today ? "upcoming" : "nothing decided", status: d > today ? "upcoming" : decided ? "decided" : "unknown" };
-  };
-  const pixel = (d: string) => { const p = dayPixel(d); return <span className="muse-tracker-square" data-level={p.level} data-status={p.status} data-today={d === today || undefined} style={p.color ? { "--category": p.color } as CSSProperties : undefined} data-category={p.color ? true : undefined} role="img" aria-label={`${dateLabel(d)}: ${p.label}`} title={`${dateLabel(d)} · ${p.label}`} />; };
-  const style = habit ? groupStyle(state, habit) : undefined;
-  if (period === "month") return <div className="muse-tracker muse-tracker-heat" style={style}>
-    <MonthCalendar date={date} today={today} heat render={pixel} />
-    <HeatLegend ritual={habit} /></div>;
-  const months = monthKeys(date);
-  return <div className="muse-tracker muse-tracker-heat" style={style}>
-    <div className="muse-tracker-pixels" role="group" aria-label={`Year in pixels, ${date.slice(0, 4)}`}>
-      <span aria-hidden="true" />{Array.from({ length: 31 }, (_, i) => <span key={`h${i}`} className="muse-tracker-pixel-day" aria-hidden="true">{i === 0 || (i + 1) % 5 === 0 ? i + 1 : ""}</span>)}
-      {months.map((m) => [<button key={m} type="button" className="muse-tracker-pixel-month" onClick={() => onDate(`${m}-01`, "month", "heatmap")}>{monthShort(m)}<span className="sr-only">: open the month</span></button>,
-        ...Array.from({ length: 31 }, (_, i) => { const d = `${m}-${String(i + 1).padStart(2, "0")}`; return monthDates(`${m}-01`).includes(d) ? <span key={d} className="muse-tracker-pixel">{pixel(d)}</span> : <span key={d} aria-hidden="true" />; })])}
-    </div>
-    <HeatLegend ritual={habit} /></div>;
+  return null;
 }
 
 /** A Monday-first month calendar; `render` draws each date. */
-function MonthCalendar({ date, today, render, mini = false, heat = false }: { date: string; today: string; render: (d: string) => React.ReactNode; mini?: boolean; heat?: boolean }) {
-  return <div className="muse-tracker-calendar" data-mini={mini || undefined} data-heat={heat || undefined}>
+function MonthCalendar({ date, today, render, mini = false }: { date: string; today: string; render: (d: string) => React.ReactNode; mini?: boolean }) {
+  return <div className="muse-tracker-calendar" data-mini={mini || undefined}>
     {!mini && weekdayLetters.map((l, i) => <span key={i} className="muse-tracker-cal-head" aria-hidden="true">{l}</span>)}
-    {calendarWeeks(date).flat().map((d, i) => d ? <div key={d} className="muse-tracker-cal-day" data-today={d === today || undefined}>{!mini && <span className="muse-tracker-cal-num">{Number(d.slice(8))}</span>}{render(d)}</div> : <span key={`b${i}`} aria-hidden="true" />)}
+    {calendarWeeks(date).flat().map((d, i) => d ? <div key={d} className={`muse-tracker-cal-day${d === today ? " muse-today-ring" : ""}`} data-today={d === today || undefined}>{!mini && <span className="muse-tracker-cal-num">{Number(d.slice(8))}</span>}{render(d)}</div> : <span key={`b${i}`} aria-hidden="true" />)}
   </div>;
-}
-
-function PixelSquare({ ritual, s }: { ritual: RitualDefinition; s: Square }) {
-  const c = categoryOf(ritual, s);
-  return <span className="muse-tracker-square" data-level={s.level} data-status={s.status} data-category={c ? true : undefined} style={c ? { "--category": c.color } as CSSProperties : undefined} role="img" aria-label={`${dateLabel(s.date)}: ${squareLabel(ritual, s, c?.label)}`} title={`${dateLabel(s.date)} · ${squareLabel(ritual, s, c?.label)}`} />;
 }
 
 /** A compact, editable square for the month grid: same actions as the week cell (cycle a checkbox, or open the entry sheet). */
@@ -122,21 +82,84 @@ function TrackerCell({ ritual, date, today, sliceState, onEditEntry }: { ritual:
     if (feedback) store.whenSaved(() => { trigger(feedback.kind); playSound(feedback.kind === "constellation" ? "celebrate" : "complete"); });
   }
   const label = `${ritual.name}, ${dateLabel(date)}: ${squareLabel(ritual, s, c?.label)}${connected ? ". Connected; edit the source record" : ""}`;
-  return <span className="muse-tracker-cellwrap"><button type="button" className="muse-tracker-square" data-level={s.level} data-status={s.status} data-today={date === today || undefined} data-category={c ? true : undefined}
+  return <span className="muse-tracker-cellwrap"><button type="button" className={`muse-tracker-square${date === today ? " muse-today-ring" : ""}`} data-level={s.level} data-status={s.status} data-today={date === today || undefined} data-category={c ? true : undefined}
     style={c ? { "--category": c.color } as CSSProperties : undefined} disabled={disabled} aria-label={label} title={label}
-    onClick={(e) => { if (ritual.type === "checkbox") record(null, true); else onEditEntry(ritual, date, e.currentTarget, record); }}>{s.status === "missed" ? "×" : ""}</button>{effect}</span>;
+    onClick={(e) => { if (ritual.type === "checkbox") record(null, true); else onEditEntry(ritual, date, e.currentTarget, record); }}></button>{effect}</span>;
 }
 
 function CategoryLegend({ ritual }: { ritual: RitualDefinition }) {
   if (ritual.type !== "category" || !ritual.categories?.length) return null;
   return <ul className="muse-tracker-legend" aria-label={`${ritual.name} categories`}>{ritual.categories.map((c) => <li key={c.id}><span className="muse-tracker-square" data-category style={{ "--category": c.color } as CSSProperties} aria-hidden="true" />{c.label}</li>)}</ul>;
 }
-function HeatLegend({ ritual }: { ritual: RitualDefinition | null }) {
-  if (ritual?.type === "category") return <CategoryLegend ritual={ritual} />;
-  return <ul className="muse-tracker-legend" aria-label="Key">
-    <li><span className="muse-tracker-square" data-level={0} data-status="unknown" aria-hidden="true" />{ritual ? "Not logged" : "Nothing decided"}</li>
-    <li><span className="muse-tracker-scale" aria-hidden="true">{([1, 2, 3, 4] as const).map((l) => <span key={l} className="muse-tracker-square" data-level={l} />)}</span>{ritual ? "Partial → complete" : "Fewer → all rituals met"}</li>
-    {ritual && <li><span className="muse-tracker-square" data-status="missed" aria-hidden="true">×</span>Missed</li>}
-    <li><span className="muse-tracker-square" data-status="unscheduled" aria-hidden="true" />Not scheduled</li>
-  </ul>;
+/**
+ * The bullet-journal year tracker: months across the top (J–D), days 1–31 down the side, every day of the year in one
+ * sheet sized to the window (the Planner's height measurement), with the key (and day counts) beside it and a
+ * Month / Review column: each month's most common category, or its share of goals met.
+ */
+function YearSheet({ ritual, sliceState, rituals, sliceOf, date, today, onMonth, style }: { ritual: RitualDefinition | null; sliceState: RitualState | null; rituals: RitualDefinition[]; sliceOf: (r: RitualDefinition) => RitualState; date: string; today: string; onMonth: (month: string) => void; style?: CSSProperties }) {
+  const frame = useRef<HTMLDivElement>(null);
+  usePlannerHeight(frame, `${ritual?.id}/${date.slice(0, 4)}`);
+  const months = monthKeys(date), year = date.slice(0, 4), todayMonth = today.slice(0, 7), todayDay = Number(today.slice(8)), thisYear = today.startsWith(year);
+  const days = useMemo(() => months.flatMap((m) => monthDates(`${m}-01`)), [months]);
+  const day = (d: string): { level: Square["level"]; status: string; color?: string; categoryId?: string; label: string } => {
+    if (ritual && sliceState) { if (d < ritual.startDate) return { level: 0, status: "before", label: "before this ritual began" }; const s = square(sliceState, ritual, d, today), c = categoryOf(ritual, s); return { level: s.level, status: s.status, color: c?.color, categoryId: c?.id, label: squareLabel(ritual, s, c?.label) }; }
+    let met = 0, decided = 0;
+    for (const r of rituals) { if (r.type === "weekly-target") continue; const s = square(sliceOf(r), r, d, today); if (["unscheduled", "open", "upcoming", "unknown"].includes(s.status)) continue; decided++; if (s.level === 4) met++; }
+    return { level: d > today ? 0 : ratioLevel(decided ? met / decided : null), status: d > today ? "upcoming" : decided ? "decided" : "unknown", label: decided ? `${met} of ${decided} rituals met` : d > today ? "upcoming" : "nothing decided" };
+  };
+  const cells = new Map(days.map((d) => [d, day(d)]));
+  const counts = new Map<string, number>(); for (const c of cells.values()) if (c.categoryId) counts.set(c.categoryId, (counts.get(c.categoryId) ?? 0) + 1);
+  const yearShare = ritual && sliceState ? share(sliceState, ritual, days, today) : null;
+  const streak = ritual && sliceState ? ritualStreak(sliceState, ritual, today) : null;
+  type Review = { color?: string; ratio: number; label: string; short: string; tag?: string };
+  const review = (m: string): Review | null => {
+    const dates = monthDates(`${m}-01`).filter((d) => d <= today && (!ritual || d >= ritual.startDate));
+    if (!dates.length || !ritual || !sliceState) return null;
+    if (ritual.type === "category") {
+      const tally = new Map<string, number>(); for (const d of dates) { const id = cells.get(d)?.categoryId; if (id) tally.set(id, (tally.get(id) ?? 0) + 1); }
+      const total = [...tally.values()].reduce((x, y) => x + y, 0), top = [...tally].sort((x, y) => y[1] - x[1])[0], c = top && ritual.categories?.find((x) => x.id === top[0]);
+      return c ? { color: c.color, ratio: total / dates.length, label: `mostly ${c.label}: ${top[1]} of ${total} logged days`, short: `${total}d`, tag: c.label } : null;
+    }
+    const sh = share(sliceState, ritual, dates, today);
+    return sh.decided ? { ratio: sh.ratio ?? 0, label: `${sh.met} of ${sh.decided} met`, short: `${sh.met}/${sh.decided}` } : null;
+  };
+  const chips = ritual?.type === "category" ? [`${[...counts.values()].reduce((a, b) => a + b, 0)} days logged`, `${ritual.categories?.length ?? 0} categories`] : yearShare ? [`${yearShare.met} of ${yearShare.decided} met`, ...(yearShare.ratio !== null ? [`${Math.round(yearShare.ratio * 100)}%`] : [])] : [];
+  if (streak && streak.count > 0) chips.push(`${streak.count}-${streak.unit === "weeks" ? "week" : "day"} streak`);
+  return <div className="muse-tracker muse-tracker-sheetwrap" style={style}>
+    <header className="muse-sheet-head"><h3 className="muse-sheet-title">{ritual ? ritual.name : "All rituals"} <span>{year}</span></h3>
+      {chips.length > 0 && <ul className="muse-sheet-chips">{chips.map((c) => <li key={c}>{c}</li>)}</ul>}</header>
+    <div ref={frame} className="muse-sheet-layout">
+      <div className="muse-sheet" role="group" aria-label={`${ritual?.name ?? "All rituals"}, ${year}: months across, days down`}>
+        <span className="muse-sheet-corner" aria-hidden="true" />{months.map((m, mi) => <button key={m} type="button" className="muse-sheet-month" data-current={thisYear && m === todayMonth || undefined} style={{ "--m": mi } as CSSProperties} onClick={() => onMonth(m)} title={`Open ${monthShort(m)}`}>{monthShort(m).slice(0, 1)}<span className="sr-only">{monthShort(m)}: open the month</span></button>)}
+        {Array.from({ length: 31 }, (_, i) => [<span key={`n${i}`} className="muse-sheet-day" data-current={thisYear && i + 1 === todayDay || undefined} aria-hidden="true">{i + 1}</span>,
+          ...months.map((m, mi) => { const d = `${m}-${String(i + 1).padStart(2, "0")}`, p = cells.get(d);
+            const cross = thisYear && (m === todayMonth || i + 1 === todayDay) || undefined;
+            if (!p) return <span key={d} className="muse-sheet-slot" data-void aria-hidden="true" />;
+            return <span key={d} className="muse-sheet-slot" data-cross={cross}><span className={`muse-sheet-cell${d === today ? " muse-today-ring" : ""}`} data-level={p.level} data-status={p.status} data-category={p.color ? true : undefined} data-today={d === today || undefined}
+              style={{ "--m": mi, ...(p.color ? { "--category": p.color } : {}) } as CSSProperties} role="img" aria-label={`${dateLabel(d)}: ${p.label}`} title={`${dateLabel(d)} · ${p.label}`}></span></span>; })])}
+      </div>
+      <aside className="muse-sheet-side">
+        <section className="muse-sheet-panel" aria-label="Key">
+          <h4>Key</h4>
+          {ritual?.type === "category" ? <ul className="muse-sheet-key">{ritual.categories!.map((c) => <li key={c.id}><span className="muse-sheet-swatch" data-category style={{ "--category": c.color } as CSSProperties} aria-hidden="true" /><span>{c.label}</span><b>{counts.get(c.id) ?? 0}<small>days</small></b></li>)}</ul>
+            : <ul className="muse-sheet-key" data-compact>
+              <li><span className="muse-sheet-swatch" data-level="4" aria-hidden="true" /><span>Complete</span></li>
+              <li><span className="muse-sheet-swatch" data-kind="partial" aria-hidden="true" /><span>Partial</span></li>
+              <li><span className="muse-sheet-swatch" data-kind="missed" aria-hidden="true" /><span>Missed</span></li>
+              <li><span className="muse-sheet-swatch" data-kind="empty" aria-hidden="true" /><span>Not logged</span></li>
+              <li><span className="muse-sheet-swatch" data-kind="off" aria-hidden="true" /><span>Not scheduled</span></li>
+            </ul>}
+        </section>
+        <section className="muse-sheet-panel muse-sheet-reviewpanel" aria-label="Month review">
+          <h4>Month review</h4>
+          <ol className="muse-sheet-months">{months.map((m) => { const r = review(m);
+            return <li key={m} data-current={thisYear && m === todayMonth || undefined}>
+              <button type="button" className="muse-sheet-mname" onClick={() => onMonth(m)}>{monthShort(m)}</button>
+              <span className="muse-sheet-bar" aria-label={r ? `${monthShort(m)}: ${r.label}` : `${monthShort(m)}: nothing yet`} role="img">{r && <i style={{ "--w": `${Math.max(8, Math.round(r.ratio * 100))}%`, ...(r.color ? { "--category": r.color } : {}) } as CSSProperties} data-category={r.color ? true : undefined}>{r.tag && <em>{r.tag}</em>}</i>}</span>
+              <small>{r?.short ?? ""}</small>
+            </li>; })}</ol>
+        </section>
+      </aside>
+    </div>
+  </div>;
 }

@@ -6,11 +6,9 @@ import {ritualCell,ritualOpportunity,weeklyValue,type RitualDefinition,type Ritu
 import {shiftDate,weekDates} from './dates';
 
 export type TrackerPeriod='week'|'month'|'year';
-export type TrackerLayout='grid'|'focus'|'heatmap';
+export type TrackerLayout='grid'|'focus';
 export const trackerPeriods:{id:TrackerPeriod;label:string}[]=[{id:'week',label:'Week'},{id:'month',label:'Month'},{id:'year',label:'Year'}];
-export const trackerLayouts:{id:TrackerLayout;label:string}[]=[{id:'grid',label:'Grid'},{id:'focus',label:'Focus'},{id:'heatmap',label:'Heatmap'}];
-/** A heatmap of one week says nothing a week grid doesn't; it shows the month instead. */
-export const effectivePeriod=(period:TrackerPeriod,layout:TrackerLayout):TrackerPeriod=>layout==='heatmap'&&period==='week'?'month':period;
+export const trackerLayouts:{id:TrackerLayout;label:string}[]=[{id:'grid',label:'Grid'},{id:'focus',label:'Focus'}];
 
 const pad=(n:number)=>String(n).padStart(2,'0');
 export const daysInMonth=(year:number,month:number)=>new Date(Date.UTC(year,month,0)).getUTCDate();

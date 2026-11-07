@@ -916,3 +916,11 @@ Rituals → **Habits | Aspirations | Bucket List** (`?view=bucket`). One long-ru
 - **Safari photos:** Safari can't encode WebP (the canvas quietly returns PNG), so storage refused the upload. Bucket List photos now fall back to JPEG there. Migration `20261121000200_private_images_jpeg.sql` lets the private bucket and its owner-only upload policy accept `.jpg` in the same folder layout.
 - **Constellations in Safari:** cards still validate `.webp` paths on save, so Safari shows a clear "try Chrome or Firefox" message instead of a failed retry. Supporting JPEG on cards needs their save function updated (follow-up).
 - **Dates:** "Completed on" uses the Muse date picker instead of the browser's.
+
+**Habit trackers revision (2026-11-07, approved by Stephanie).**
+- **Layouts:** Heatmap is removed ("not helpful"); Layout is now **Grid | Focus**, and a saved Heatmap choice opens Focus.
+- **Focus · Year** is the paper year tracker from her reference: the ritual's name, months across (J–D), days 1–31 down in ruled touching cells, non-days hatched, the key beside it, and a **Month / Review** column. For categorical rituals the review is the month's most common category; for the others it's the month's share of goals met. A month letter opens that month.
+- **Today** wears the shared rainbow `.muse-today-ring` in every tracker view.
+- **Year Grid removed** (2026-11-07, "what is that"): Year always opens the year sheet; Layout offers Grid only for Week and Month.
+- **Year sheet fits the window** using the Planner's height measurement (31 rows share the height; minimum 400px). Polish: a rounded ruled frame, a soft sheen on filled cells, today's row and column faintly lit, a month-by-month fill-in (off with reduced motion or Quiet Muse Magic), stat chips by the title, and day counts in the key.
+- **Year sheet side panels** (2026-11-07): the side is two soft cards. The **Key** has category rows with day counts, or a compact two-column key for the other types. The **Month review** gives each month a glowing bar: its share of goals met with a met/decided count, or for categorical rituals its most common category (named on the bar) with logged days. Rows share the sheet's height. **Missed** is a diagonal strike through the cell, the same in the key, the sheet and the month grid. Days before a ritual's start date are blank, not hatched.
