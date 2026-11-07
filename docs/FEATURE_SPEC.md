@@ -798,3 +798,50 @@ Voice and content foundations only; nothing is shown in the app yet and no migra
 Migration `20261114000100_aspirations.sql`: owner-only `aspirations` (milestones as JSON, habit/task ids, connection, celebrated thresholds, revision via the Collections touch trigger) and append-only `aspiration_updates` (a trigger checks the aspiration belongs to the same person). Pure logic in `lib/aspirations/` (`models.ts`, `progress.ts`: progress for each kind, timeframe filters and default dates, attention lists, sorting, habit consistency, stats, history, thresholds; `persistence.ts` with revision-checked writes). UI in `components/rituals/aspirations/` (`Aspirations` home with stats, coming up and recently done, timeframe filter, grouping, sorting, a connected Reading Challenge card, a monthly "step by step" chart, completed and archived sections; `AspirationEditor` with progressive disclosure; `AspirationDetail` with progress, record progress, milestones with reorder, supporting habits, Planner task links, journal, complete/pause/archive/delete). Rituals gains Habits/Aspirations tabs. Almanac: four aspiration signals and the `aspirations` family; celebration copy gains aspiration lines. Tests: `tests/aspirations.test.mjs`.
 
 **Wrap-up (same issue).** Milestone detail editing (`MilestoneForm` in `AspirationDetail`), renewal (`nextPeriod`, `renewedAspiration`, `renewalChain`, migration `20261115000100_aspiration_renewals.sql` adding `renewed_from` with a one-renewal unique index, `on delete set null` and an ownership trigger), manual ordering (`reorder`, drag and drop plus Earlier/Later), and Insights → Plans & Rituals (`components/insights/AspirationInsights.tsx`, `aspirationTrends`). Theme QA covered all nine themes on desktop, the detail dialog and mobile.
+
+## Planner 2.0 — Agenda (#79) — implemented on feature branch (staging migrations only)
+
+Information architecture (reconciled across #79, #81, #83, #84, #85): Planner → **Tasks | Agenda | Reflections** (`?view=`), Rituals → Habits | Aspirations | Bucket List. No other Planner destinations. Tasks is the existing board (#81 adds Running List). Reflections is a placeholder until #83.
+
+**Agenda toolbar.** One view menu (Day, Week, Month, Future Log), previous/Today/next, the period title, + Event, Customize layout (Week and Day), and a settings popover (show completed tasks, canceled events, Muse Marks; plus a key to every symbol). Hiding is display-only and shows a "Hiding …" note with Show everything. View choices persist per device (`muse.planner.agenda`).
+
+**Week.** Two horizontally navigable spreads of four equal, full-height columns (Mon–Thu; Fri–Sun + the planning column: notes or a checklist, title/type on the account, content per week in `planner_week_sections`). Narrower screens show 3, 2 or 1 columns. No task-list sidebar in Agenda.
+
+**Shared section template** (`lib/agenda-layout.ts`, table `planner_agenda_layouts`, versioned). One ordered list of sections for all seven days: same order, same height preset (Collapsed, Compact, Standard, Tall), so bands line up. Content scrolls inside a band and its header shows the count, so nothing is silently hidden.
+- Events and the first Tasks section are permanent.
+- Optional sections: Movement, Reading (minutes or pages that day, or the page reached that day), Meals, Water, Custom notes (`planner_day_notes`), and additional Tasks sections.
+- Customize layout reorders by dragging or with ↑/↓ buttons, renames, resizes, configures, adds and removes, and resets with confirmation.
+- Removing a section never touches the records it showed.
+
+**Workspace-aware Tasks sections.**
+- Each Tasks section shows all workspaces or the ones chosen. Unchecking the last choice is blocked, so a section never silently becomes "all".
+- A removed workspace shows a recoverable warning instead of widening to all.
+- Overlapping sections get a gentle note; a task in both is still one record.
+- Per-section completed visibility (follow the Agenda setting, always show, always hide) overrides the Agenda setting.
+- **Filter precedence:** the Tasks tab's workspace, group and tag filters do not filter the Agenda (they aren't visible there); each section's own scope decides.
+
+**Native events** (migration `20261118000100`).
+- All-day events (no time stored), multi-day events (one record with `end_date`), end time, location, notes, and a status (confirmed, tentative, canceled) that is never task completion.
+- Edit, reschedule and delete (with confirmation), all through `planner_event_command` on the Planner revision, so Agenda, Dayview and Insights stay in sync.
+- Dayview shows multi-day and all-day events, labels canceled and tentative ones, and its event entry is the same native event.
+
+**Task states** come only from existing fields: open, completed, overdue (planned earlier, still open; flagged in place and never moved for you, with "Migrate to today"), unscheduled, and ★ for a task that is one of the day's three priorities. "Move to a date…" is the keyboard alternative to dragging.
+
+**Muse Marks** (`lib/muse-marks.ts`, table `planner_marks`).
+- A curated icon, color and optional label on a date or date range, or on a task or event.
+- Visual-only by default. A Mark may optionally point at an existing event, task, movement type, book or Aspiration; linked event and task Marks follow the record's current date.
+- A Mark whose source was deleted stays, shown as unlinked.
+- Marks never log activity, complete anything or count toward progress.
+
+**Movement.** Planning uses Dayview's existing movement selection, which Dayview already treats as an intention. "Done" comes only from logged activity, and moving a plan never touches logged activity. No new tracker. Reading reads Bookshelf sessions only, and no Ritual or Aspiration progress is ever written from the Agenda.
+
+**Day, Month and Future Log.**
+- **Day** (Daily Planner): a focus panel (intention, three priorities read from Dayview, Marks, Open in Dayview) plus the same sections in a flowing layout.
+- **Month:** cells show Marks, the first events, open and overdue task counts and a priority star. Selecting a date shows its details beside the grid, with Open day, Open week, + Event and + Mark.
+- **Future Log:** twelve month sections with chronological entries: event ranges like "7–9", Marks, tentative and canceled states, and tasks. Each month has + plan and + Mark, and its heading jumps to that month.
+
+**Persistence and export.** The template is on the account (all devices). Marks and notes are per record. All four new tables are owner-only (RLS, four policies each) and included in the personal data export.
+
+**Scheduled Board Task List (§12, approved 2026-11-06).** Planner → Tasks keeps its board; its Task List (`PlannerRail`, `TaskListRow`, `ScheduleMenu`, pure `lib/task-list.ts`) is now a distinct pinned source: own header (title, count, workspace, search, Filters incl. ★ Priorities only), scopes To plan (overdue then unscheduled) / Overdue / Scheduled / All (remembered per device), grouped dense rows with priority, overdue, date, due, workspace, group, tags, subtasks, repeat and estimate facts, and a Schedule menu (no Details needed). Drag list → day, day → day and day → list still work; while dragging, every day is labeled as a destination. Day cards show the same ★/› markers. No database change; every action is the same `task/place` on the one task record, so Agenda and Dayview update. This is separate from #81's Running List, which will add a Tasks view selector without replacing this board.
+
+**Not built here:** Google Calendar (out of scope), recurring events, a task sidebar inside Agenda (intentionally none), and Ritual auto-completion from reading (left to Rituals' own rules).

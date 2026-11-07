@@ -19,8 +19,15 @@ export type PlannedTask = {
   recurrence?: { frequency: "daily" | "weekly" | "monthly"; interval: number; until?: string };
   createdAt: string;
 };
+export type EventStatus = "confirmed" | "tentative" | "canceled";
+/**
+ * A native Muse event. `date` is the (first) local day; `endDate` makes it multi-day as ONE record. All-day events
+ * have no time (`dateTime` is the date at 00:00 only for sorting, and `time` reads "All day"). Status is never task
+ * completion: a canceled event is not an attended one.
+ */
 export type DayEvent = {
   id: string; kind: "event"; title: string; date: string; dateTime: string; time: string; detail?: string;
+  allDay?: boolean; endDate?: string; endTime?: string; location?: string; status?: EventStatus;
 };
 export type ContextTag = { id: string; name: string; archived?:boolean };
 export type EmotionQuadrant = "red" | "blue" | "green" | "yellow";

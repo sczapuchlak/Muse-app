@@ -418,19 +418,21 @@ test('drag placement and accessible order commands preserve task identity, dates
   assert.equal(planner.formatPlannedMinutes(60),'1h');
 });
 
-test('Planner rail is a workspace-driven unscheduled source without a day header', () => {
+test('Task List is a pinned, workspace-driven source with its own search, filters and scopes (#79 §12)', () => {
   const {PlannerProvider}=load('components/PlannerStore');
   const {PlannerRail}=load('components/planner/PlannerRail');
   const state=freshPlanner(); state.workspaces.push({id:'studio',name:'Studio',accent:'pop'});
-  const html=renderToStaticMarkup(React.createElement(PlannerProvider,{initialState:state},React.createElement(PlannerRail,{workspaceId:'studio',tasks:[],onWorkspaceChange(){},onOpen(){}})));
-  assert.ok(html.includes('aria-label="Task List"'));
+  const props={workspaceId:'studio',tasks:[],onWorkspaceChange(){},onOpen(){},today:'2026-11-06',boardDays:['2026-11-06','2026-11-07','2026-11-08'],priorityIds:new Set(),search:'',onSearch(){},filters:{groupId:'',tagIds:[],status:'all'},onFilter(){},onAnnounce(){}};
+  const html=renderToStaticMarkup(React.createElement(PlannerProvider,{initialState:state},React.createElement(PlannerRail,props)));
+  assert.match(html,/<h2 id="[^"]+-title">Task List<\/h2>/,'its own named header');
   assert.ok(html.includes('aria-label="Workspace: Studio"'));
-  assert.ok(!html.includes('>Unscheduled<'));
-  assert.ok(!html.includes('Ideas waiting for their day'));
-  assert.ok(!html.includes('muse-new-workspace'));
-  assert.ok(html.includes('New Inbox task'));
-  assert.ok(!html.includes('<time'));
-  assert.ok(!html.includes('<select'));
+  assert.ok(html.includes('aria-label="Search tasks (list and days)"'),'search lives in the list');
+  assert.ok(html.includes('>Filters'),'filters live in the list');
+  for(const scope of ['To plan','Overdue','Scheduled','All'])assert.ok(html.includes(`>${scope}</button>`),scope);
+  assert.ok(html.includes('Drop here to unschedule'));
+  assert.ok(html.includes('New Inbox task'),'capture stays anchored at the bottom');
+  assert.ok(!html.includes('Ideas waiting for their day'));assert.ok(!html.includes('muse-new-workspace'));
+  assert.ok(!html.includes('<time'),'not a day column');assert.ok(!html.includes('<select'));
 });
 
 test('all six themes supply readable planning materials and dark cards visibly separate from containers', () => {

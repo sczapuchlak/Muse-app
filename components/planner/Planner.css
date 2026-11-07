@@ -240,3 +240,84 @@ select option { background: var(--background); color: var(--foreground); }
 .muse-workspace-choices .popover-choice[aria-pressed="true"] .small-label{color:inherit;opacity:.8}
 .muse-workspace-choices+.popover-footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 @media (pointer:coarse){.muse-workspace-choices+.popover-footer .text-button{min-height:var(--touch-target)}}
+
+/* ---------- Scheduled Board Task List (#79 §12): a pinned source, unlike the dated destinations. ----------
+   The list is one anchored sheet with an accent spine, a header band and dense divided rows; days stay glass cards
+   holding task cards. Both use the shared planning tokens, so every theme and material keeps the hierarchy. */
+.muse-planner-layout { grid-template-columns: minmax(280px, 320px) minmax(0, 1fr); }
+.muse-task-list { position: relative; padding: 0; gap: 0; }
+.muse-task-list::before { content: ""; position: absolute; inset: 14px auto 14px 0; width: 3px; border-radius: 0 3px 3px 0; background: var(--muse-edge-gradient, var(--accent-primary)); pointer-events: none; }
+.muse-task-list-head { display: grid; gap: var(--space-2); padding: var(--space-4) var(--space-4) var(--space-3) calc(var(--space-4) + 3px); border-bottom: 1px solid var(--divider); background: color-mix(in srgb, var(--planning-control-background) 55%, transparent); }
+.muse-task-list-title { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-2); }
+.muse-task-list-title h2 { margin: 0; font-family: var(--font-editorial); font-style: italic; font-weight: var(--type-editorial-weight); font-size: 1.3rem; line-height: 1.1; }
+.muse-task-list-count { min-width: 1.8em; padding: 1px 8px; border-radius: 999px; text-align: center; font-size: .72rem; font-variant-numeric: tabular-nums; color: var(--selected-text); background: var(--selected-background); border: 1px solid var(--selected-border); }
+.muse-task-list-head .muse-workspace-trigger { min-height: 36px; padding-block: 4px; font-size: .8rem; }
+.muse-task-list-tools { display: flex; gap: var(--space-1); min-width: 0; }
+.muse-task-list-tools .muse-planner-search { display: flex; flex: 1 1 auto; align-items: center; gap: var(--space-1); min-width: 0; padding-left: var(--space-2); border: 1px solid var(--glass-border); border-radius: var(--control-radius); background: var(--planning-control-background); color: var(--text-muted); }
+.muse-task-list-tools .muse-planner-search input { min-height: 34px; font-size: .78rem; color: var(--foreground); }
+.muse-task-list-tools .muse-planner-search input:focus { outline: 0; }
+.muse-task-list-tools > .muse-button { min-height: 36px; padding-inline: var(--space-2); font-size: .74rem; flex: none; }
+.muse-task-list-scopes.muse-chip-row { gap: 4px; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+.muse-task-list-scopes.muse-chip-row > button { min-height: 28px; padding: 2px 9px; font-size: .72rem; flex: none; }
+.muse-task-list .muse-task-list-body { position: relative; padding: 0 0 var(--space-2); margin: 0; border-radius: 0; }
+.muse-task-list-group h3 { position: sticky; top: 0; z-index: 1; margin: 0; padding: var(--space-2) var(--space-4) 4px calc(var(--space-4) + 3px); font-size: .62rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted); background: var(--planning-rail-background); }
+.muse-task-list-group h3 span { font-weight: 500; letter-spacing: 0; }
+.muse-task-list-group[data-group=overdue] h3 { color: var(--urgency-ink); }
+.muse-task-list-rows { margin: 0; padding: 0; list-style: none; }
+.muse-list-row { --organization-accent: var(--accent-primary); position: relative; display: flex; flex-wrap: wrap; align-items: flex-start; gap: 2px 6px; padding: 7px var(--space-3) 7px calc(var(--space-4) + 3px); border-bottom: 1px solid var(--divider); cursor: grab; transition: background var(--transition); }
+@media (hover: hover) { .muse-list-row:hover { background: var(--surface-hover, var(--planning-control-background)); } }
+.muse-list-row[data-dragging] { opacity: .55; background: var(--selected-background); }
+.muse-list-row[data-drop-before] { box-shadow: inset 0 2px 0 var(--focus-ring); }
+.muse-list-check { position: relative; display: grid; place-items: center; width: 22px; height: 22px; margin-top: 1px; flex: none; cursor: pointer; }
+.muse-list-check input { position: absolute; inset: -6px; opacity: 0; margin: 0; cursor: pointer; }
+.muse-list-check span { display: grid; place-items: center; width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid var(--selected-border); color: var(--selected-text); }
+.muse-list-check input:focus-visible + span { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.muse-list-row[data-complete] .muse-list-check span { background: var(--selected-border); color: var(--background); }
+.muse-list-main { flex: 1 1 0; min-width: 0; display: grid; gap: 1px; }
+.muse-list-title { all: unset; cursor: pointer; font-size: .82rem; line-height: 1.35; font-weight: 500; overflow-wrap: anywhere; border-radius: 4px; }
+.muse-list-title:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.muse-list-row[data-complete] .muse-list-title { color: var(--text-muted); text-decoration: line-through; }
+.muse-list-facts { display: flex; flex-wrap: wrap; gap: 1px 8px; margin: 0; font-size: .66rem; color: var(--text-muted); }
+.muse-list-flag { display: inline-flex; align-items: center; gap: 3px; font-weight: 600; }
+.muse-list-flag[data-kind=priority] { color: var(--accent-warm, var(--selected-text)); }
+.muse-list-flag[data-kind=overdue] { color: var(--urgency-ink); }
+.muse-list-flag[data-kind=date] { font-weight: 500; }
+.muse-list-workspace { display: inline-flex; align-items: center; gap: 4px; }
+.muse-list-workspace i { width: 6px; height: 6px; border-radius: 50%; background: var(--organization-accent); }
+.muse-list-tag { color: var(--organization-accent, var(--text-muted)); }
+.muse-list-row .muse-task-inline-timer { min-height: 28px; min-width: 0; padding: 0 4px; }
+.muse-list-row .muse-task-timer-panel { flex: 1 0 100%; margin-block: var(--space-1); }
+.muse-schedule-trigger { display: grid; place-items: center; width: 30px; height: 28px; flex: none; padding: 0; border: 1px solid transparent; border-radius: var(--control-radius); background: transparent; color: var(--text-muted); cursor: pointer; }
+.muse-schedule-trigger:hover, .muse-schedule-trigger[aria-expanded=true] { color: var(--selected-text); border-color: var(--glass-border); background: var(--planning-control-background); }
+.muse-schedule-trigger:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; }
+@media (hover: hover) and (pointer: fine) { .muse-list-row:not(:hover):not(:focus-within) .muse-schedule-trigger:not([aria-expanded=true]) { opacity: .45; } }
+@media (pointer: coarse) { .muse-schedule-trigger { width: var(--touch-target); height: var(--touch-target); } .muse-list-check { width: 34px; height: 34px; } .muse-list-row { padding-block: 8px; } }
+.muse-schedule-menu { display: grid; gap: var(--space-2); }
+.muse-schedule-menu .popover-choice { display: flex; justify-content: space-between; gap: var(--space-2); }
+.muse-schedule-custom { display: flex; align-items: flex-end; gap: var(--space-2); }
+.muse-schedule-custom label { display: grid; gap: 4px; flex: 1; font-size: .75rem; color: var(--text-muted); }
+.muse-schedule-custom input { min-height: 36px; width: 100%; box-sizing: border-box; border: 1px solid var(--glass-border); border-radius: var(--control-radius); background: var(--surface-control); color: var(--foreground); font: inherit; padding: 4px 8px; }
+.muse-task-list > .muse-task-quick-add { margin: 0; padding: var(--space-3) var(--space-4) var(--space-4) calc(var(--space-4) + 3px); border-top: 1px solid var(--divider); }
+.muse-task-flags { padding: 0 var(--space-1) 2px 30px; }
+.muse-planner-task[data-state=overdue] { border-style: dashed; }
+/* Drag feedback: while any task is dragged, every day announces itself as a destination and the list as the way back. */
+.muse-drop-hint { display: none; }
+.muse-planner-layout[data-dragging] .muse-drop-hint { display: block; position: absolute; z-index: 2; left: 50%; transform: translateX(-50%); margin: 0; padding: 3px 10px; border-radius: 999px; white-space: nowrap; pointer-events: none; font-size: .7rem; font-weight: 600; color: var(--selected-text); background: var(--selected-background); border: 1px solid var(--selected-border); }
+.muse-planner-layout[data-dragging] .muse-day-drop .muse-drop-hint { bottom: var(--space-3); }
+.muse-planner-layout[data-dragging] .muse-task-list-body .muse-drop-hint { top: var(--space-2); }
+.muse-planner-layout[data-dragging] .muse-day-drop { outline: 2px dashed color-mix(in srgb, var(--selected-border) 70%, transparent); outline-offset: -5px; }
+.muse-planner-layout[data-dragging] .muse-task-list-body { outline: 2px dashed color-mix(in srgb, var(--selected-border) 45%, transparent); outline-offset: -4px; }
+.muse-planner-layout[data-dragging] :is(.muse-day-drop, .muse-task-list-body)[data-drop-active="true"] { outline-style: solid; outline-color: var(--focus-ring); }
+.muse-planner-layout[data-dragging] :is(.muse-day-drop, .muse-task-list-body)[data-drop-active="true"] .muse-drop-hint { background: var(--selected-border); color: var(--background); }
+@media (prefers-reduced-motion: reduce) { .muse-list-row { transition: none; } }
+/* Mobile: the same list in the sheet, at full width. */
+.muse-planner-sheet-body .muse-task-list, :root[data-material] .muse-planner-sheet-body .muse-task-list { border: 0; background: transparent; background-image: none; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; }
+/* The sheet already says "Task List"; keep the heading for screen readers and show just the count. */
+.muse-planner-sheet-body .muse-task-list-title h2 { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.muse-planner-sheet-body .muse-task-list-title { justify-content: flex-end; margin-bottom: -4px; }
+.muse-planner-sheet-body .muse-task-list::before { display: none; }
+.muse-planner-sheet-body .muse-task-list-head { padding-inline: 0; background: transparent; }
+.muse-planner-sheet-body :is(.muse-list-row, .muse-task-list-group h3) { padding-left: var(--space-3); }
+.muse-planner-sheet-body .muse-task-list > .muse-task-quick-add { padding-inline: 0; }
+
+.muse-task-quick-add button { display: inline-grid; place-items: center; padding: 0; line-height: 0; }

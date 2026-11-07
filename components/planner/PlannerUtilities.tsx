@@ -1,12 +1,27 @@
 "use client";
 import {useId,useRef,useState,type ReactNode} from 'react';
-import type { PlannerFilters as Filters } from "@/lib/planner";
-import { MuseIcon } from "../MuseIcon";
-import {MuseIconButton} from '../MuseIconButton';
 import {GlassPopover} from '../GlassPopover';
-import { PlannerFilters } from "./PlannerFilters";
+import {MuseIcon} from '../MuseIcon';
 import {PlannerOrganizationPanel} from './PlannerOrganization';
-export function PlannerUtilities({search,onSearch,filters,onFilter,workspaceId,today,onToday,onPrevious,onNext,taskList}:{search:string;onSearch:(value:string)=>void;filters:Filters;onFilter:(value:Filters)=>void;workspaceId:string;today:string;onToday:()=>void;onPrevious:()=>void;onNext:()=>void;taskList?:ReactNode}) {
+import {PeriodTitle} from './PeriodTitle';
+
+/**
+ * The Scheduled Board toolbar, built on the same pattern as Agenda's: ‹ Today › and the date (a day picker) on the
+ * left; board controls on the right as outlined buttons. Search and Filters live in the Task List header (#79 §12).
+ */
+export function PlannerUtilities({date,title,onDate,today,onToday,onPrevious,onNext,taskList}:{date:string;title:string;onDate:(date:string)=>void;today:string;onToday:()=>void;onPrevious:()=>void;onNext:()=>void;taskList?:ReactNode}) {
   const [settingsOpen,setSettingsOpen]=useState(false),anchor=useRef<HTMLElement|null>(null),id=useId();
-  return <div className="muse-planner-toolbar"><div className="muse-planner-toolbar-left"><label className="muse-planner-search"><MuseIcon name="search" size={16}/><input aria-label="Search Planner tasks" type="search" value={search} onChange={(event)=>onSearch(event.target.value)} placeholder="Search tasks…"/></label><PlannerFilters value={filters} onChange={onFilter} workspaceId={workspaceId}/>{taskList}</div><div className="muse-planner-utility-row"><nav className="muse-planning-window-nav" aria-label="Rolling planning window"><button className="muse-button" type="button" disabled={!today} onClick={onToday}>Today</button><button className="muse-button" type="button" aria-label="Previous planning day" onClick={onPrevious}>←</button><button className="muse-button" type="button" aria-label="Next planning day" onClick={onNext}>→</button></nav><MuseIconButton icon="settings" label="Board Settings" aria-haspopup="dialog" aria-expanded={settingsOpen} aria-controls={id} onClick={event=>{anchor.current=event.currentTarget;setSettingsOpen(value=>!value);}}/><GlassPopover id={id} label="Board Settings" open={settingsOpen} anchorRef={anchor} onClose={()=>setSettingsOpen(false)} width={390} scrollMode="content"><PlannerOrganizationPanel onClose={()=>{setSettingsOpen(false);anchor.current?.focus();}}/></GlassPopover></div></div>;
+  return <div className="muse-agenda-toolbar muse-planner-bar">
+    <PeriodTitle title={title} date={date} onChange={onDate}/>
+    <div className="muse-agenda-tools">
+    <nav className="muse-agenda-nav" aria-label="Rolling planning window">
+      <button className="muse-button" type="button" aria-label="Previous planning day" onClick={onPrevious}>‹</button>
+      <button className="muse-button" type="button" disabled={!today} onClick={onToday}>Today</button>
+      <button className="muse-button" type="button" aria-label="Next planning day" onClick={onNext}>›</button>
+    </nav>
+      {taskList}
+      <button className="muse-button muse-agenda-icon" type="button" aria-label="Board Settings" aria-haspopup="dialog" aria-expanded={settingsOpen} aria-controls={id} onClick={event=>{anchor.current=event.currentTarget;setSettingsOpen(value=>!value);}}><MuseIcon name="settings" size={16}/></button>
+      <GlassPopover id={id} label="Board Settings" open={settingsOpen} anchorRef={anchor} onClose={()=>setSettingsOpen(false)} width={390} scrollMode="content"><PlannerOrganizationPanel onClose={()=>{setSettingsOpen(false);anchor.current?.focus();}}/></GlassPopover>
+    </div>
+  </div>;
 }

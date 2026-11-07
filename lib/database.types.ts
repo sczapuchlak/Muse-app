@@ -1173,6 +1173,20 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
+                },"planner_agenda_layouts": {
+                  Row: {
+                    "created_at": string,"revision": number,"schema_version": number,"sections": NonNullable<Json>,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"revision"?: number,"schema_version"?: number,"sections": NonNullable<Json>,"updated_at"?: string,"user_id"?: string
+                  }
+                  Update: {
+                    "created_at"?: string,"revision"?: number,"schema_version"?: number,"sections"?: NonNullable<Json>,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
                 },"planner_commands": {
                   Row: {
                     "id": string,"request_hash": string,"revision": number,"user_id": string
@@ -1187,16 +1201,44 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
-                },"planner_events": {
+                },"planner_day_notes": {
                   Row: {
-                    "created_at": string,"detail": string | null,"id": string,"local_date": string,"local_time": string,"revision": number,"time_zone": string,"title": string,"updated_at": string,"user_id": string
+                    "body": string,"created_at": string,"local_date": string,"revision": number,"section_id": string,"updated_at": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "created_at"?: string,"detail"?: string | null,"id": string,"local_date": string,"local_time": string,"revision"?: number,"time_zone": string,"title": string,"updated_at"?: string,"user_id": string
+                    "body"?: string,"created_at"?: string,"local_date": string,"revision"?: number,"section_id": string,"updated_at"?: string,"user_id"?: string
                   }
                   Update: {
-                    "created_at"?: string,"detail"?: string | null,"id"?: string,"local_date"?: string,"local_time"?: string,"revision"?: number,"time_zone"?: string,"title"?: string,"updated_at"?: string,"user_id"?: string
+                    "body"?: string,"created_at"?: string,"local_date"?: string,"revision"?: number,"section_id"?: string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
+                },"planner_events": {
+                  Row: {
+                    "all_day": boolean,"created_at": string,"detail": string | null,"end_date": string | null,"end_time": string | null,"id": string,"local_date": string,"local_time": string | null,"location": string | null,"revision": number,"status": string,"time_zone": string,"title": string,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "all_day"?: boolean,"created_at"?: string,"detail"?: string | null,"end_date"?: string | null,"end_time"?: string | null,"id": string,"local_date": string,"local_time"?: string | null,"location"?: string | null,"revision"?: number,"status"?: string,"time_zone": string,"title": string,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "all_day"?: boolean,"created_at"?: string,"detail"?: string | null,"end_date"?: string | null,"end_time"?: string | null,"id"?: string,"local_date"?: string,"local_time"?: string | null,"location"?: string | null,"revision"?: number,"status"?: string,"time_zone"?: string,"title"?: string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
+                },"planner_marks": {
+                  Row: {
+                    "color": string,"created_at": string,"end_date": string | null,"icon": string,"id": string,"label": string,"link_id": string | null,"link_kind": string | null,"local_date": string,"revision": number,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "color"?: string,"created_at"?: string,"end_date"?: string | null,"icon": string,"id"?: string,"label"?: string,"link_id"?: string | null,"link_kind"?: string | null,"local_date": string,"revision"?: number,"updated_at"?: string,"user_id"?: string
+                  }
+                  Update: {
+                    "color"?: string,"created_at"?: string,"end_date"?: string | null,"icon"?: string,"id"?: string,"label"?: string,"link_id"?: string | null,"link_kind"?: string | null,"local_date"?: string,"revision"?: number,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
                     
@@ -1211,6 +1253,20 @@ isOneToOne: false
                   }
                   Update: {
                     "revision"?: number,"user_id"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
+                },"planner_week_sections": {
+                  Row: {
+                    "created_at": string,"items": NonNullable<Json>,"notes": string,"revision": number,"updated_at": string,"user_id": string,"week_start": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"items"?: NonNullable<Json>,"notes"?: string,"revision"?: number,"updated_at"?: string,"user_id"?: string,"week_start": string
+                  }
+                  Update: {
+                    "created_at"?: string,"items"?: NonNullable<Json>,"notes"?: string,"revision"?: number,"updated_at"?: string,"user_id"?: string,"week_start"?: string
                   }
                   Relationships: [
                     
@@ -1617,14 +1673,14 @@ isOneToOne: false
                   ]
                 },"stream_reports": {
                   Row: {
-                    "comment_id": string | null,"created_at": string,"id": string,"note": string,"post_id": string,"reason": string,"reporter": string
+                    "comment_id": string | null,"created_at": string,"id": string,"note": string,"post_id": string,"reason": string,"reporter": string,"resolution": string | null,"resolution_note": string,"resolved_at": string | null
                   }
                   ComputedFields: never
                   Insert: {
-                    "comment_id"?: string | null,"created_at"?: string,"id"?: string,"note"?: string,"post_id": string,"reason": string,"reporter": string
+                    "comment_id"?: string | null,"created_at"?: string,"id"?: string,"note"?: string,"post_id": string,"reason": string,"reporter": string,"resolution"?: string | null,"resolution_note"?: string,"resolved_at"?: string | null
                   }
                   Update: {
-                    "comment_id"?: string | null,"created_at"?: string,"id"?: string,"note"?: string,"post_id"?: string,"reason"?: string,"reporter"?: string
+                    "comment_id"?: string | null,"created_at"?: string,"id"?: string,"note"?: string,"post_id"?: string,"reason"?: string,"reporter"?: string,"resolution"?: string | null,"resolution_note"?: string,"resolved_at"?: string | null
                   }
                   Relationships: [
                     {
@@ -2422,6 +2478,9 @@ isOneToOne: false
 "planner_command":
 { Args: { "p_action": Json,"p_command_id": string,"p_expected_revision": number }; Returns: number
                            },
+"planner_event_command":
+{ Args: { "p_action": Json,"p_command_id": string,"p_expected_revision": number }; Returns: number
+                           },
 "priority_day_end":
 { Args: { "p_date": string,"p_zone": string }; Returns: string
                            },
@@ -2652,6 +2711,12 @@ isOneToOne: false
                            },
 "stream_report":
 { Args: { "p_comment"?: string,"p_note"?: string,"p_post": string,"p_reason"?: string }; Returns: undefined
+                           },
+"stream_report_resolve":
+{ Args: { "p_note"?: string,"p_report": string,"p_resolution": string }; Returns: Json
+                           },
+"stream_reports_review":
+{ Args: { "p_include_resolved"?: boolean }; Returns: Json
                            },
 "swap_collection_members":
 { Args: { "p_first": string,"p_first_revision": number,"p_second": string,"p_second_revision": number }; Returns: undefined

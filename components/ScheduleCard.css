@@ -21,3 +21,6 @@
 .schedule-card .muse-plan-title, .schedule-card .muse-plan-eventContent h4 { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
 .schedule-card .muse-plan-eventContent p { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
 .muse-plan-check { position: relative; overflow: visible; }
+/* #79: canceled and tentative events read as such on Dayview too (words, not only styling). */
+.muse-plan-event[data-status=canceled] h4{text-decoration:line-through;opacity:.7}
+.muse-plan-event[data-status=tentative] h4{font-style:italic}
