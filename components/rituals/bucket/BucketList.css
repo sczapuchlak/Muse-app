@@ -153,7 +153,9 @@
 .muse-bucket-form[data-scroll]{display:flex;flex-direction:column;flex:1 1 auto;min-height:0;gap:0;padding-bottom:0}
 .muse-bucket-form-body{display:grid;gap:14px;flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:2px 2px 14px;margin:0 -2px}
 .muse-bucket-form[data-scroll]>.muse-aspiration-actions{flex:none;padding:12px 0 2px;border-top:1px solid var(--divider)}
-.muse-bucket-form .muse-choice-menu,.muse-bucket-form .muse-choice-trigger{width:100%}
+.muse-bucket-form .muse-choice-menu,.muse-bucket-form .muse-choice-trigger,.muse-bucket-form .muse-date-picker-trigger{width:100%}
+.muse-bucket-form .muse-date-picker-trigger{justify-content:flex-start;min-height:42px}
+.muse-bucket-form .muse-date-picker-trigger>svg:last-child,.muse-bucket-form .muse-date-picker-trigger>span:last-child{margin-left:auto}
 .muse-bucket-form .editor-label{margin-bottom:5px;font-size:.9rem;color:var(--foreground)}
 /* Short windows: a pinned row would leave a sliver of fields, so the whole dialog scrolls instead. */
 @media (max-height:640px){.muse-modal[data-size=tall]:has(>.muse-bucket-form[data-scroll]){overflow-y:auto}.muse-bucket-form[data-scroll]{flex:none}.muse-bucket-form-body{overflow:visible}}

@@ -123,3 +123,15 @@ test('Rituals has Habits | Aspirations | Bucket List tabs; Insights and export i
  assert.match(read('app/api/account/export/route.ts'),/client\.from\('bucket_entries'\)\.select\('\*'\)/);
  assert.match(read('components/rituals/bucket/BucketList.tsx'),/muse-today-ring/,'the selected year uses the shared rainbow ring');
 });
+
+test('Safari photos: Bucket List falls back to JPEG; storage accepts .jpg in the same owner folders',()=>{
+ const sql=read('supabase/migrations/20261121000200_private_images_jpeg.sql');
+ assert.match(sql,/allowed_mime_types=array\['image\/webp','image\/jpeg'\]/);
+ assert.match(sql,/\(storage.foldername\(name\)\)\[1\]=\(select auth.uid\(\)\)::text/);
+ assert.match(sql,/\\\.\(webp\|jpg\)\$/);
+ const up=read('lib/data/constellation-images.ts');
+ assert.match(up,/blob.type==='image\/webp'/,'detects a browser that cannot encode WebP');
+ assert.match(up,/Try Chrome or Firefox/,'Constellations explains instead of a failed retry');
+ assert.match(read('components/rituals/bucket/useBucketList.ts'),/allowJpeg:true/);
+ assert.doesNotMatch(read('components/rituals/bucket/BucketEditor.tsx'),/type="date"/,'Muse date picker, not the browser default');
+});

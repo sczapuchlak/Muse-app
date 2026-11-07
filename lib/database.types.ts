@@ -1429,14 +1429,14 @@ isOneToOne: false
                   ]
                 },"ritual_entries": {
                   Row: {
-                    "captured_time_zone": string,"created_at": string,"local_date": string,"outcome": string,"ritual_id": string,"updated_at": string,"user_id": string,"value": number
+                    "captured_time_zone": string,"category": string | null,"created_at": string,"local_date": string,"outcome": string,"ritual_id": string,"updated_at": string,"user_id": string,"value": number
                   }
                   ComputedFields: never
                   Insert: {
-                    "captured_time_zone": string,"created_at"?: string,"local_date": string,"outcome": string,"ritual_id": string,"updated_at"?: string,"user_id": string,"value": number
+                    "captured_time_zone": string,"category"?: string | null,"created_at"?: string,"local_date": string,"outcome": string,"ritual_id": string,"updated_at"?: string,"user_id": string,"value": number
                   }
                   Update: {
-                    "captured_time_zone"?: string,"created_at"?: string,"local_date"?: string,"outcome"?: string,"ritual_id"?: string,"updated_at"?: string,"user_id"?: string,"value"?: number
+                    "captured_time_zone"?: string,"category"?: string | null,"created_at"?: string,"local_date"?: string,"outcome"?: string,"ritual_id"?: string,"updated_at"?: string,"user_id"?: string,"value"?: number
                   }
                   Relationships: [
                     {
@@ -1511,14 +1511,14 @@ isOneToOne: false
                   ]
                 },"rituals": {
                   Row: {
-                    "captured_time_zone": string,"connection": Json | null,"created_at": string,"goal": number,"group_id": string,"id": string,"lifecycle_status": string,"name": string,"position": number,"recurrence": string,"start_date": string,"tracking_type": string,"unit": string,"updated_at": string,"user_id": string,"weekdays": (number)[]
+                    "captured_time_zone": string,"categories": Json | null,"connection": Json | null,"created_at": string,"goal": number,"group_id": string,"id": string,"lifecycle_status": string,"name": string,"position": number,"recurrence": string,"start_date": string,"tracking_type": string,"unit": string,"updated_at": string,"user_id": string,"weekdays": (number)[]
                   }
                   ComputedFields: never
                   Insert: {
-                    "captured_time_zone": string,"connection"?: Json | null,"created_at"?: string,"goal": number,"group_id": string,"id": string,"lifecycle_status"?: string,"name": string,"position": number,"recurrence": string,"start_date": string,"tracking_type": string,"unit": string,"updated_at"?: string,"user_id": string,"weekdays": (number)[]
+                    "captured_time_zone": string,"categories"?: Json | null,"connection"?: Json | null,"created_at"?: string,"goal": number,"group_id": string,"id": string,"lifecycle_status"?: string,"name": string,"position": number,"recurrence": string,"start_date": string,"tracking_type": string,"unit": string,"updated_at"?: string,"user_id": string,"weekdays": (number)[]
                   }
                   Update: {
-                    "captured_time_zone"?: string,"connection"?: Json | null,"created_at"?: string,"goal"?: number,"group_id"?: string,"id"?: string,"lifecycle_status"?: string,"name"?: string,"position"?: number,"recurrence"?: string,"start_date"?: string,"tracking_type"?: string,"unit"?: string,"updated_at"?: string,"user_id"?: string,"weekdays"?: (number)[]
+                    "captured_time_zone"?: string,"categories"?: Json | null,"connection"?: Json | null,"created_at"?: string,"goal"?: number,"group_id"?: string,"id"?: string,"lifecycle_status"?: string,"name"?: string,"position"?: number,"recurrence"?: string,"start_date"?: string,"tracking_type"?: string,"unit"?: string,"updated_at"?: string,"user_id"?: string,"weekdays"?: (number)[]
                   }
                   Relationships: [
                     {
