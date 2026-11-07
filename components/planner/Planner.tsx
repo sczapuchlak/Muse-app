@@ -62,7 +62,7 @@ export function Planner() {
   return <main className="muse-page muse-planner-page">
     <MusePageHeader title="Planner">{tab === "tasks" && <DateNavigator date={date} onChange={changeDate}/>}</MusePageHeader>
     <MuseSectionNav label="Planner views" current={tab} items={plannerTabs.map((t) => ({ id: t.id, label: t.label, href: `/planner?${t.id === "tasks" ? "" : `view=${t.id}&`}date=${date}` }))}/>
-    <PlannerCapture>{tab === "agenda" && <Agenda date={date} today={today} onDate={changeDate} onOpen={openTask} sidebar={rail()} workspaceId={workspaceFilter || undefined} groupId={groupFilter || undefined} tagIds={activeTags}/>}
+    <PlannerCapture>{tab === "agenda" && <Agenda date={date} today={today} onDate={changeDate} onOpen={openTask} workspaceId={workspaceFilter || undefined} groupId={groupFilter || undefined} tagIds={activeTags}/>}
     {tab === "reflections" && <section className="muse-planner-reflections muse-empty-state" data-variant="editorial"><h2>Reflections</h2><p>Weekly, monthly and yearly reviews will live here: a quiet place to look back at what you planned, finished and felt.</p></section>}
     {tab === "tasks" && <><div className="muse-module-toolbar">{utilities()}</div>
     <div className="muse-planner-mobile-week"><WeekNavigator selectedDate={date} timeZone={profile.timeZone} onChange={(next) => { changeDate(next); setMobileView("day"); }} /></div>

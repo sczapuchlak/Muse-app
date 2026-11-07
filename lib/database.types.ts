@@ -1215,6 +1215,20 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
+                },"planner_week_sections": {
+                  Row: {
+                    "created_at": string,"items": NonNullable<Json>,"notes": string,"revision": number,"updated_at": string,"user_id": string,"week_start": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"items"?: NonNullable<Json>,"notes"?: string,"revision"?: number,"updated_at"?: string,"user_id"?: string,"week_start": string
+                  }
+                  Update: {
+                    "created_at"?: string,"items"?: NonNullable<Json>,"notes"?: string,"revision"?: number,"updated_at"?: string,"user_id"?: string,"week_start"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
                 },"preference_commands": {
                   Row: {
                     "id": string,"request_hash": string,"revision": number,"user_id": string
@@ -1617,14 +1631,14 @@ isOneToOne: false
                   ]
                 },"stream_reports": {
                   Row: {
-                    "comment_id": string | null,"created_at": string,"id": string,"note": string,"post_id": string,"reason": string,"reporter": string
+                    "comment_id": string | null,"created_at": string,"id": string,"note": string,"post_id": string,"reason": string,"reporter": string,"resolution": string | null,"resolution_note": string,"resolved_at": string | null
                   }
                   ComputedFields: never
                   Insert: {
-                    "comment_id"?: string | null,"created_at"?: string,"id"?: string,"note"?: string,"post_id": string,"reason": string,"reporter": string
+                    "comment_id"?: string | null,"created_at"?: string,"id"?: string,"note"?: string,"post_id": string,"reason": string,"reporter": string,"resolution"?: string | null,"resolution_note"?: string,"resolved_at"?: string | null
                   }
                   Update: {
-                    "comment_id"?: string | null,"created_at"?: string,"id"?: string,"note"?: string,"post_id"?: string,"reason"?: string,"reporter"?: string
+                    "comment_id"?: string | null,"created_at"?: string,"id"?: string,"note"?: string,"post_id"?: string,"reason"?: string,"reporter"?: string,"resolution"?: string | null,"resolution_note"?: string,"resolved_at"?: string | null
                   }
                   Relationships: [
                     {
@@ -2652,6 +2666,12 @@ isOneToOne: false
                            },
 "stream_report":
 { Args: { "p_comment"?: string,"p_note"?: string,"p_post": string,"p_reason"?: string }; Returns: undefined
+                           },
+"stream_report_resolve":
+{ Args: { "p_note"?: string,"p_report": string,"p_resolution": string }; Returns: Json
+                           },
+"stream_reports_review":
+{ Args: { "p_include_resolved"?: boolean }; Returns: Json
                            },
 "swap_collection_members":
 { Args: { "p_first": string,"p_first_revision": number,"p_second": string,"p_second_revision": number }; Returns: undefined

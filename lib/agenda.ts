@@ -60,3 +60,25 @@ export function agendaTitle(view:AgendaView,date:string){
  if(view==='month')return fmt({month:'long',year:'numeric'},date);
  return `${date.slice(0,4)} · Future Log`;
 }
+
+// ---------- Weekly spreads (#79 final layout): Mon–Thu, then Fri–Sun + the planning column ----------
+export type WeekSlot={kind:'day';date:string}|{kind:'planning'};
+/** Eight equal columns: the seven days (Monday first) and the customizable planning column last. */
+export function weekSlots(date:string):WeekSlot[]{return [...weekDates(date).map(d=>({kind:'day' as const,date:d})),{kind:'planning'}];}
+export const SPREAD_SIZE=4;
+/** Which spread (0: Mon–Thu, 1: Fri–Sun + planning) a date sits in. */
+export const spreadFor=(date:string)=>weekDates(date).indexOf(date)>=SPREAD_SIZE?1:0;
+
+export type PlanningKind='notes'|'checklist';
+export type PlanningConfig={kind:PlanningKind;title:string};
+export const defaultPlanningConfig:PlanningConfig={kind:'checklist',title:'Weekly priorities'};
+export function parsePlanningConfig(value:unknown):PlanningConfig{
+ const v=value&&typeof value==='object'?value as Record<string,unknown>:{};
+ const kind=v.kind==='notes'||v.kind==='checklist'?v.kind:defaultPlanningConfig.kind;
+ const title=typeof v.title==='string'&&v.title.trim()?v.title.trim().slice(0,40):kind==='notes'?'Week notes':defaultPlanningConfig.title;
+ return {kind,title};
+}
+export type PlanningItem={id:string;text:string;done:boolean};
+export function parsePlanningItems(value:unknown):PlanningItem[]{
+ return Array.isArray(value)?value.filter((i):i is PlanningItem=>!!i&&typeof i==='object'&&typeof (i as PlanningItem).id==='string'&&typeof (i as PlanningItem).text==='string').slice(0,40).map(i=>({id:i.id,text:i.text.slice(0,200),done:!!i.done})):[];
+}

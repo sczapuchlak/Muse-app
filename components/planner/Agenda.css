@@ -7,18 +7,39 @@
 .muse-agenda-check{display:inline-flex;align-items:center;gap:6px;font-size:.88rem}
 .muse-agenda-check input{accent-color:var(--accent-primary)}
 .muse-agenda-body{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;min-width:0}
-.muse-agenda-body[data-sidebar]{grid-template-columns:minmax(220px,260px) minmax(0,1fr)}
-.muse-agenda-sidebar{min-width:0;max-height:calc(100dvh - 220px);overflow:auto;position:sticky;top:12px;align-self:start}
 .muse-agenda-content{min-width:0;overflow-x:auto}
-/* Week: comfortable columns like the Tasks board (about three on desktop), in a snapping horizontal track. */
-.muse-agenda-week-wrap{position:relative;min-width:0;padding-inline:20px}
-.muse-agenda-week{display:grid;grid-auto-flow:column;grid-auto-columns:clamp(250px,calc((100% - 20px) / 3),340px);gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:4px;padding:2px 4px 10px;overscroll-behavior-x:contain}
-.muse-agenda-week>.muse-agenda-day{scroll-snap-align:start}
-.muse-agenda-week:focus-visible{outline:2px solid var(--accent-primary);outline-offset:2px;border-radius:16px}
-.muse-agenda-step{position:absolute;top:10px;z-index:2;width:34px;height:34px;border-radius:50%;border:1px solid var(--glass-border);background:var(--surface-strong);color:inherit;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.12)}
-.muse-agenda-step[data-dir=back]{left:-4px}.muse-agenda-step[data-dir=forward]{right:-4px}
-.muse-agenda-step:focus-visible{outline:2px solid var(--accent-primary);outline-offset:2px}
-.muse-agenda-day{display:grid;grid-template-rows:auto auto 1fr;gap:8px;align-content:start;padding:10px;border:1px solid var(--glass-border);border-radius:16px;background:var(--surface-subtle);min-width:0}
+/* Week (final layout): two spreads of four equal, full-height columns — Mon–Thu, then Fri–Sun + planning.
+   Narrower screens show fewer columns instead of squeezing four. */
+.muse-agenda-week-wrap{display:grid;gap:8px;min-width:0}
+.muse-agenda-spread-nav{display:flex;align-items:center;justify-content:flex-end;gap:8px}
+.muse-agenda-step{width:34px;height:34px;border-radius:50%;border:1px solid var(--glass-border);background:var(--surface-strong);color:inherit;cursor:pointer}
+.muse-agenda-step:disabled{opacity:.35;cursor:default}
+.muse-agenda-step:focus-visible,.muse-agenda-week:focus-visible{outline:2px solid var(--accent-primary);outline-offset:2px}
+.muse-agenda-week{--cols:4;--gap:10px;display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - (var(--cols) - 1) * var(--gap)) / var(--cols));gap:var(--gap);overflow-x:auto;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;padding-bottom:10px;align-items:stretch;min-height:min(70dvh,640px)}
+.muse-agenda-week>*{scroll-snap-align:start}
+@media (min-width:1300px){.muse-agenda-week>*{scroll-snap-align:none}.muse-agenda-week>:nth-child(4n+1){scroll-snap-align:start}}
+@media (max-width:1299px){.muse-agenda-week{--cols:3}}
+@media (max-width:1050px){.muse-agenda-week{--cols:2}}
+@media (max-width:640px){.muse-agenda-week{--cols:1;grid-auto-columns:88%}}
+/* The planning column */
+.muse-agenda-planning{grid-template-rows:auto auto 1fr auto}
+.muse-agenda-planning-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding-bottom:6px;border-bottom:1px solid var(--glass-border)}
+.muse-agenda-planning-head h3{margin:0;font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-editorial-weight);font-size:1.15rem}
+.muse-agenda-planning-settings{display:grid;gap:8px;font-size:.88rem}
+.muse-agenda-planning-settings label{display:grid;gap:4px}
+.muse-agenda-planning-settings fieldset{border:0;margin:0;padding:0;display:flex;gap:12px;flex-wrap:wrap}
+.muse-agenda-planning-settings fieldset label{display:flex;gap:6px;align-items:center}
+.muse-agenda-planning-actions{display:flex;gap:10px;align-items:center}
+.muse-agenda-planning :is(input:not([type=checkbox]):not([type=radio]),textarea){width:100%;box-sizing:border-box;border:1px solid var(--glass-border);border-radius:10px;background:var(--surface-control);color:inherit;font:inherit;padding:8px 10px}
+.muse-agenda-planning-notes{min-height:220px;height:100%;resize:vertical;line-height:1.5}
+.muse-agenda-planning-list{display:grid;gap:8px;align-content:start}
+.muse-agenda-planning-list ul{margin:0;padding:0;list-style:none;display:grid;gap:6px}
+.muse-agenda-planning-list li{display:flex;justify-content:space-between;gap:6px;align-items:flex-start;font-size:.92rem}
+.muse-agenda-planning-list li label{display:flex;gap:8px;align-items:flex-start;min-width:0}
+.muse-agenda-planning-list li input{accent-color:var(--accent-primary);margin-top:3px}
+.muse-agenda-planning-list li span{overflow-wrap:break-word;min-width:0}
+.muse-agenda-planning-list li[data-done] span{text-decoration:line-through;color:var(--text-muted)}
+.muse-agenda-day{display:grid;grid-template-rows:auto auto 1fr;height:100%;box-sizing:border-box;gap:8px;align-content:start;padding:10px;border:1px solid var(--glass-border);border-radius:16px;background:var(--surface-subtle);min-width:0}
 .muse-agenda-day[data-today]{border-color:var(--selected-border);box-shadow:0 0 0 1px var(--selected-border) inset}
 .muse-agenda-day[data-wide]{max-width:760px}
 .muse-agenda-day-heading{all:unset;cursor:pointer;display:flex;align-items:baseline;gap:6px;border-radius:8px}
@@ -56,9 +77,7 @@
 .muse-agenda-log-month li{display:flex;gap:8px;font-size:.84rem}
 .muse-agenda-log-month li span{color:var(--text-muted);font-variant-numeric:tabular-nums;min-width:1.5em}
 .muse-planner-reflections{padding:28px;text-align:center}
-@media (max-width:900px){.muse-agenda-body[data-sidebar]{grid-template-columns:minmax(0,1fr)}.muse-agenda-sidebar{position:static;max-height:none}}
-@media (max-width:1100px){.muse-agenda-week{grid-auto-columns:clamp(240px,calc((100% - 10px) / 2),360px)}}
-@media (max-width:640px){.muse-agenda-week-wrap{padding-inline:0}.muse-agenda-week{grid-auto-columns:86%}.muse-agenda-step{display:none}.muse-agenda-title{flex-basis:100%;order:-1}}
+@media (max-width:640px){.muse-agenda-title{flex-basis:100%;order:-1}}
 /* Agenda task card: readable title first; details and quieter actions one step away. */
 .muse-agenda-task-list{margin:0;padding:0;list-style:none;display:grid;gap:6px}
 .muse-agenda-task{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:start;gap:8px;padding:8px 6px 8px 10px;border:1px solid var(--glass-border);border-radius:12px;background:var(--surface-control);cursor:grab}

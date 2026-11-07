@@ -1,7 +1,8 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import type { PlannedTask } from "@/lib/models";
-import { agendaRange, agendaTitle, agendaViews, dayItems, defaultAgendaPreferences, futureLogMonths, monthGrid, monthItems, parseAgendaPreferences, type AgendaPreferences, type AgendaView } from "@/lib/agenda";
+import { agendaRange, agendaTitle, agendaViews, dayItems, defaultAgendaPreferences, futureLogMonths, monthGrid, monthItems, parseAgendaPreferences, SPREAD_SIZE, weekSlots, type AgendaPreferences, type AgendaView } from "@/lib/agenda";
+import { WeekPlanningColumn } from "./WeekPlanningColumn";
 import { MuseChoiceMenu } from "../MuseChoiceMenu";
 import { GlassPopover } from "../GlassPopover";
 import { PlanEntryForm } from "../PlanEntryForm";
@@ -20,16 +21,18 @@ const monthName = (m: string) => new Intl.DateTimeFormat("en-US", { month: "long
  * The Agenda tab (#79): Day, Week, Month and Future Log over the same records as Tasks. Hiding completed tasks only
  * changes what is shown; dropping a task on a day reschedules the one canonical task.
  */
-export function Agenda({ date, today, onDate, onOpen, sidebar, workspaceId, groupId, tagIds }: { date: string; today: string; onDate: (date: string) => void; onOpen: (task: PlannedTask, anchor: HTMLElement) => void; sidebar: React.ReactNode; workspaceId?: string; groupId?: string; tagIds?: string[] }) {
+export function Agenda({ date, today, onDate, onOpen, workspaceId, groupId, tagIds }: { date: string; today: string; onDate: (date: string) => void; onOpen: (task: PlannedTask, anchor: HTMLElement) => void; workspaceId?: string; groupId?: string; tagIds?: string[] }) {
   const { state, dispatch } = usePlanner();
   const [prefs, setPrefs] = useState<AgendaPreferences>(defaultAgendaPreferences);
   useEffect(() => { const t = window.setTimeout(() => { try { setPrefs(parseAgendaPreferences(JSON.parse(window.localStorage.getItem(prefsKey) ?? "{}"))); } catch { /* defaults */ } }, 0); return () => window.clearTimeout(t); }, []);
   const update = (patch: Partial<AgendaPreferences>) => setPrefs((p) => { const next = { ...p, ...patch }; try { window.localStorage.setItem(prefsKey, JSON.stringify(next)); } catch { /* this device only */ } return next; });
   const [adding, setAdding] = useState<string | null>(null);
   const anchor = useRef<HTMLElement | null>(null), track = useRef<HTMLDivElement>(null);
-  // Week: bring the chosen day (today by default) into view inside the track, without scrolling the page.
-  useEffect(() => { if (prefs.view !== "week") return; const t = track.current, col = t?.querySelector<HTMLElement>(`[data-day="${date}"]`) ?? t?.querySelector<HTMLElement>(`[data-day="${today}"]`); if (t && col) t.scrollTo({ left: col.offsetLeft - t.offsetLeft - 4, behavior: "auto" }); }, [prefs.view, date, today]);
-  const step = (dir: 1 | -1) => { const t = track.current, col = t?.querySelector<HTMLElement>(".muse-agenda-day"); if (t && col) t.scrollBy({ left: dir * (col.offsetWidth + 10), behavior: "smooth" }); };
+  // Week: two spreads (Mon–Thu, Fri–Sun + planning). Open on the spread holding the chosen day; never scroll the page.
+  const [spread, setSpread] = useState(0);
+  const goSpread = (n: number) => { const t = track.current, col = t?.children[n * SPREAD_SIZE] as HTMLElement | undefined; if (t && col) t.scrollTo({ left: col.offsetLeft - t.offsetLeft, behavior: "smooth" }); };
+  useEffect(() => { if (prefs.view !== "week") return; const t = track.current; const target = t?.querySelector<HTMLElement>(`[data-day="${date}"]`) ?? t?.querySelector<HTMLElement>(`[data-day="${today}"]`); if (t && target) t.scrollTo({ left: target.offsetLeft - t.offsetLeft, behavior: "auto" }); }, [prefs.view, date, today]);
+  const onTrackScroll = () => { const t = track.current, second = t?.children[SPREAD_SIZE] as HTMLElement | undefined; if (t && second) setSpread(t.scrollLeft + 8 >= second.offsetLeft - t.offsetLeft ? 1 : 0); };
   const view = prefs.view, range = agendaRange(view, date);
   const tasks = state.tasks.filter((t) => (!workspaceId || t.workspaceId === workspaceId) && (!groupId || t.groupId === groupId) && (!tagIds?.length || tagIds.every((id) => t.tagIds.includes(id))));
   const open = (day: string, view: AgendaView) => { onDate(day); update({ view }); };
@@ -60,13 +63,19 @@ export function Agenda({ date, today, onDate, onOpen, sidebar, workspaceId, grou
       </div>
       <h2 className="muse-agenda-title">{agendaTitle(view, date)}</h2>
       <label className="muse-agenda-check"><input type="checkbox" checked={prefs.showCompleted} onChange={(e) => update({ showCompleted: e.target.checked })} /> Show completed</label>
-      <button type="button" className="muse-button button-ghost" aria-pressed={prefs.showSidebar} onClick={() => update({ showSidebar: !prefs.showSidebar })}>Task list</button>
     </div>
-    <div className="muse-agenda-body" data-sidebar={prefs.showSidebar || undefined}>
-      {prefs.showSidebar && <aside className="muse-agenda-sidebar" aria-label="Unscheduled tasks">{sidebar}</aside>}
+    <div className="muse-agenda-body">
       <div className="muse-agenda-content">
         {view === "day" && dayColumn(date, true)}
-        {view === "week" && <div className="muse-agenda-week-wrap"><button type="button" className="muse-agenda-step" data-dir="back" aria-label="Show earlier days" onClick={() => step(-1)}>‹</button><div className="muse-agenda-week" ref={track} tabIndex={0} aria-label="Week days, scroll sideways for more">{range.days.map((d) => dayColumn(d))}</div><button type="button" className="muse-agenda-step" data-dir="forward" aria-label="Show later days" onClick={() => step(1)}>›</button></div>}
+        {view === "week" && <div className="muse-agenda-week-wrap">
+          <div className="muse-agenda-spread-nav" role="group" aria-label="Week spreads">
+            <button type="button" className="muse-agenda-step" aria-label="Monday to Thursday" disabled={spread === 0} onClick={() => goSpread(0)}>‹</button>
+            <span className="small-label" aria-live="polite">{spread === 0 ? "Mon – Thu" : "Fri – Sun · planning"}</span>
+            <button type="button" className="muse-agenda-step" aria-label="Friday to Sunday and planning" disabled={spread === 1} onClick={() => goSpread(1)}>›</button>
+          </div>
+          <div className="muse-agenda-week" ref={track} tabIndex={0} onScroll={onTrackScroll} aria-label="Week, two spreads; scroll sideways">
+            {weekSlots(date).map((slot) => slot.kind === "day" ? dayColumn(slot.date) : <WeekPlanningColumn key={`planning-${range.days[0]}`} weekStart={range.days[0]} />)}
+          </div></div>}
         {view === "month" && <div className="muse-agenda-month" role="grid" aria-label={agendaTitle("month", date)}>
           <div role="row" className="muse-agenda-month-row muse-agenda-weekdays">{["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((d) => <span role="columnheader" key={d}>{d}</span>)}</div>
           {monthGrid(date).map((week, i) => <div role="row" className="muse-agenda-month-row" key={i}>{week.map((d, j) => {

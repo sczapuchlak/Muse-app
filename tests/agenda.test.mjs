@@ -45,10 +45,19 @@ test('Planner wires the tabs and Agenda reuses the existing task, drop and event
  for(const piece of ['AgendaTaskCard','PlanningDropZone','TaskQuickAdd','PlanEntryForm','dispatch({ type: "event/add"'])assert.ok(agenda.includes(piece),piece);
 });
 
-test('Weekly Agenda shows about three readable days in one continuous, scrollable week',()=>{
+test('Weekly Agenda: two spreads of four equal columns, the last one a customizable planning column',()=>{
+ const slots=A.weekSlots('2026-11-06');
+ assert.deepEqual(slots.map(x=>x.kind==='day'?x.date.slice(8):x.kind),['02','03','04','05','06','07','08','planning'],'Mon–Thu, then Fri–Sun + planning');
+ assert.equal(A.SPREAD_SIZE,4);assert.deepEqual(['2026-11-02','2026-11-05','2026-11-06','2026-11-08'].map(A.spreadFor),[0,0,1,1]);
+ assert.deepEqual(A.parsePlanningConfig({kind:'notes',title:'  '}),{kind:'notes',title:'Week notes'});
+ assert.deepEqual(A.parsePlanningConfig({kind:'video',title:'x'.repeat(60)}).title.length,40);
+ assert.deepEqual(A.parsePlanningItems([{id:'a',text:'Call Mom',done:1},{nope:1},'x']),[{id:'a',text:'Call Mom',done:true}]);
  const css=read('components/planner/Agenda.css');
- assert.match(css,/grid-auto-columns:clamp\(250px,calc\(\(100% - 20px\) \/ 3\),340px\)/,'three comfortable columns on desktop');
- assert.match(css,/scroll-snap-type:x mandatory/);assert.match(css,/max-width:1100px\)\{\.muse-agenda-week\{grid-auto-columns:clamp\(240px/,'two on tablet');
- const card=read('components/planner/AgendaTaskCard.tsx');
- assert.match(card,/TASK_DRAG_TYPE/);assert.match(card,/useTaskPlacement/);assert.match(card,/MuseOverflowMenu/);assert.doesNotMatch(card,/TaskTimer/,'no reserved timer column');
+ assert.match(css,/grid-auto-columns:calc\(\(100% - \(var\(--cols\) - 1\) \* var\(--gap\)\) \/ var\(--cols\)\)/,'equal columns');
+ assert.match(css,/\.muse-agenda-week\{--cols:4;/);assert.match(css,/max-width:1050px\)\{\.muse-agenda-week\{--cols:2\}/,'fewer columns, never squeezed');
+ assert.match(css,/nth-child\(4n\+1\)\{scroll-snap-align:start\}/,'snaps by spread on wide screens');
+ const agenda=read('components/planner/Agenda.tsx');assert.doesNotMatch(agenda,/muse-agenda-sidebar|Task list<\/button>/,'no Tasks-board sidebar in Agenda');
+ const card=read('components/planner/AgendaTaskCard.tsx');assert.match(card,/TASK_DRAG_TYPE/);assert.match(card,/MuseOverflowMenu/);assert.doesNotMatch(card,/TaskTimer/);
+ const sql=read('supabase/migrations/20261117000100_planner_week_sections.sql');
+ assert.match(sql,/primary key \(user_id, week_start\)/);assert.match(sql,/extract\(isodow from week_start\) = 1/);assert.equal((sql.match(/create policy owner_/g)??[]).length,4);
 });
