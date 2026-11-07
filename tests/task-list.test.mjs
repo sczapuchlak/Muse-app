@@ -45,5 +45,5 @@ test('Scheduled Board wiring: list is a distinct source, days are labeled destin
  assert.doesNotMatch(read('components/planner/PlannerUtilities.tsx'),/Search Planner tasks/,'search moved from the board toolbar into the list');
  assert.match(css,/\.muse-task-list::before\{|\.muse-task-list::before \{/,'accent spine marks the list as the source');
  assert.match(css,/\.muse-planner-layout\[data-dragging\] \.muse-day-drop \{ outline: 2px dashed/,'every day is a visible destination while dragging');
- assert.doesNotMatch(read('components/planner/Agenda.tsx'),/PlannerRail|TaskListRow/,'no task sidebar in Agenda');
+ assert.doesNotMatch(read('components/planner/Agenda.tsx'),/PlannerRail/,'no task sidebar in Agenda (it reuses only the row)');
 });

@@ -38,6 +38,7 @@ export class PlannerStore{
   if(action.type==='tag/save')return 'Tag: '+action.tag.name;
   if(action.type==='event/add')return `Event: ${action.event.title} · ${action.event.date}`;
   if(action.type==='event/save')return `Event: ${action.event.title} · ${action.event.date}${action.event.endDate?` – ${action.event.endDate}`:''}`;
+  if(action.type==='task/completeOn')return `Complete ${task?.title??'task'} on ${action.date}`;
   if(action.type==='event/delete')return `Delete event: ${this.view.state.events.find(item=>item.id===action.id)?.title??'event'}`;
   return `${action.type.replaceAll('/',' ')}: ${task?.title??'Planner item'}`;
  }).join('\n\n');}

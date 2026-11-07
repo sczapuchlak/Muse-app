@@ -10,6 +10,8 @@ type AgendaData = {
   layout: AgendaLayout; changeLayout: (change: LayoutChange) => void;
   marks: MuseMark[]; saveMark: (mark: Omit<MuseMark, "revision"> & { revision?: number }) => Promise<boolean>; removeMark: (id: string) => Promise<boolean>;
   note: (sectionId: string, date: string) => DayNote; setNote: (note: DayNote) => void;
+  /** Live height while a section is being dragged (not saved until release). */
+  preview: Record<string, number>; setPreview: (id: string, px: number | null) => void;
 };
 const Context = createContext<AgendaData | null>(null);
 const message = (e: unknown, fallback: string) => e instanceof Error && e.message ? e.message : fallback;
@@ -21,6 +23,8 @@ const message = (e: unknown, fallback: string) => e instanceof Error && e.messag
 export function AgendaDataProvider({ start, end, children }: { start: string; end: string; children: ReactNode }) {
   const client = useMemo(() => createMuseBrowserClient(), []);
   const [userId, setUserId] = useState(""), [loaded, setLoaded] = useState(false), [status, setStatus] = useState("");
+  const [preview, setPreviewState] = useState<Record<string, number>>({});
+  const setPreview = useCallback((id: string, px: number | null) => setPreviewState((p) => { const n = { ...p }; if (px === null) delete n[id]; else n[id] = px; return n; }), []);
   const [layout, setLayout] = useState<AgendaLayout>(defaultLayout), [marks, setMarks] = useState<MuseMark[]>([]), [notes, setNotes] = useState<DayNote[]>([]);
   const layoutRef = useRef({ layout: defaultLayout(), revision: 0 }), layoutQueue = useRef<Promise<void>>(Promise.resolve());
   const noteTimers = useRef(new Map<string, number>()), noteRevisions = useRef(new Map<string, number>());
@@ -71,7 +75,7 @@ export function AgendaDataProvider({ start, end, children }: { start: string; en
     }, 700));
   }, [client, userId]);
 
-  const value = useMemo<AgendaData>(() => ({ userId, loaded, status, layout, changeLayout: change, marks, saveMark: save, removeMark: remove, note, setNote }), [userId, loaded, status, layout, change, marks, save, remove, note, setNote]);
+  const value = useMemo<AgendaData>(() => ({ userId, loaded, status, layout, changeLayout: change, marks, saveMark: save, removeMark: remove, note, setNote, preview, setPreview }), [userId, loaded, status, layout, change, marks, save, remove, note, setNote, preview, setPreview]);
   return <Context.Provider value={value}>{children}</Context.Provider>;
 }
 export function useAgendaData() { const v = useContext(Context); if (!v) throw Error("Agenda data needs its provider"); return v; }

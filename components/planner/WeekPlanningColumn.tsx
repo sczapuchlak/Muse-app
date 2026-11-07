@@ -18,7 +18,7 @@ export function WeekPlanningColumn({ weekStart }: { weekStart: string }) {
   async function persist(next: WeekSection) { setStatus("Saving…"); try { const saved = await saveWeekSection(client, userId, next); latest.current = saved; setSection((cur) => cur && cur.weekStart === saved.weekStart ? { ...cur, revision: saved.revision } : cur); setStatus("Saved"); } catch (e) { setStatus(e instanceof Error ? e.message : "Couldn’t save."); } }
   function change(patch: Partial<WeekSection>, delay = 0) { if (!section) return; const next = { ...section, ...patch, revision: latest.current?.revision ?? section.revision }; setSection(next); if (timer.current) window.clearTimeout(timer.current); timer.current = window.setTimeout(() => void persist(next), delay); }
   async function saveConfig(next: PlanningConfig) { setConfig(next); setEditing(false); try { setConfig(await savePlanningConfig(client, next)); } catch { setStatus("Couldn’t save the column settings."); } }
-  return <section className="muse-agenda-day muse-agenda-planning" aria-label={config.title}>
+  return <section className="muse-agenda-day muse-agenda-planning muse-planner-surface" aria-label={config.title}>
     <header className="muse-agenda-planning-head"><h3>{config.title}</h3>
       <button type="button" className="muse-agenda-add" aria-expanded={editing} aria-label="Customize this column" onClick={() => setEditing(!editing)}><MuseIcon name="settings" size={13} /></button></header>
     {editing && <form className="muse-agenda-planning-settings" onSubmit={(e) => { e.preventDefault(); const f = new FormData(e.currentTarget); void saveConfig({ kind: f.get("kind") as PlanningKind, title: String(f.get("title") ?? "") }); }}>

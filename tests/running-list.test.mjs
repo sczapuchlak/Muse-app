@@ -46,26 +46,41 @@ test('sections: unscheduled open tasks stay in Active every week; Completed this
  assert.deepEqual(R.weekSummary(done,week,today),{week:1,today:1},'counted once per task');
 });
 
-test('weekday strip: ✓ on the completion day, ○ on the planned day, only today acts',()=>{
+test('weekday strip: × on the completion day, ○ on the planned day, any day up to today acts',()=>{
  const t=task('t',{plannedDate:'2026-11-04'});
  const cells=R.weekStrip(t,week,undefined,today);
- assert.deepEqual(cells.map(c=>[c.date.slice(8),c.planned,c.completed,c.actionable]).filter(c=>c[1]||c[2]||c[3]),[['04',true,false,false],['06',false,false,true]]);
- assert.match(cells[4].label,/Friday, November 6\. Complete today/);assert.match(cells[2].label,/Wednesday, November 4: planned/);
+ assert.deepEqual(cells.map(c=>c.actionable),[true,true,true,true,true,false,false],'today and earlier can be marked; future days only show the plan');
+ assert.match(cells[4].label,/Friday, November 6\. Mark done today/);assert.match(cells[1].label,/Tuesday, November 3\. Mark done on Tuesday, November 3/);assert.match(cells[2].label,/Wednesday, November 4: planned/);
  const doneEarlier=task('d',{complete:true,plannedDate:'2026-11-03'});
- assert.ok(R.weekStrip(doneEarlier,week,'2026-11-05',today).every(c=>!c.actionable),'completed on another day: nothing to click, no overwrite');
- assert.ok(R.weekStrip(doneEarlier,week,'2026-11-06',today).find(c=>c.today).actionable,'completed today: today can reopen');
+ const strip=R.weekStrip(doneEarlier,week,'2026-11-05',today);
+ assert.equal(strip[3].action,'reopen','its × reopens it');assert.equal(strip[1].action,'complete','another past day moves the completion there');
+ assert.ok(R.weekStrip(doneEarlier,week,'2026-11-05','2026-11-04').every((c,i)=>i<3?c.actionable:!c.actionable),'never in the future');
+ // Marking a past day is one canonical action that keeps the planned date.
+ const s0={tasks:[t],events:[],workspaces:[{id:'w1',name:'W',accent:'primary'}],groups:[],tags:[],activeTimer:null};
+ const marked=P.plannerReducer(s0,{type:'task/completeOn',id:'t',date:'2026-11-03',now:'2026-11-06T18:00:00Z'}).tasks[0];
+ assert.deepEqual([marked.complete,marked.plannedDate,R.completionDays([marked],[],'America/Los_Angeles').get('t')],[true,'2026-11-04','2026-11-03']);
  // Completing never touches the planned date (one task/toggle on the same record).
  const state={tasks:[t],events:[],workspaces:[{id:'w1',name:'W',accent:'primary'}],groups:[],tags:[],activeTimer:null};
  const after=P.plannerReducer(state,{type:'task/toggle',id:'t',now:'2026-11-06T18:00:00Z'}).tasks;
  assert.equal(after.length,1);assert.equal(after[0].plannedDate,'2026-11-04');assert.equal(after[0].complete,true);
 });
 
-test('wiring: a view inside Tasks, no date on quick add, destination asked for with All workspaces, no new tables',()=>{
+test('wiring: a view inside Tasks, no date on quick add, destination asked for with All workspaces',()=>{
  const planner=read('components/planner/Planner.tsx'),list=read('components/planner/RunningList.tsx'),utils=read('components/planner/PlannerUtilities.tsx');
  assert.match(utils,/label="Tasks view"/);assert.match(planner,/tasksView === "running" && <RunningList/);assert.match(planner,/tasksView === "board" &&/,'the Scheduled Board stays');
  assert.match(list,/createTask\(title, destination, crypto\.randomUUID\(\), new Date\(\)\.toISOString\(\), undefined\)/,'never auto-schedules');
- assert.match(list,/label="Add to workspace"/);assert.match(list,/role="img" aria-label=\{c\.label\}/,'past cells are read-only with full-date labels');
+ assert.match(list,/label="Add to workspace"/);assert.match(list,/task\/completeOn/,'past cells complete on that day');
  assert.doesNotMatch(list,/canceled|cancelled/i,'no invented canceled status');
  assert.doesNotMatch(read('lib/running-list.ts'),/from ['"]@\/lib\/supabase|\.from\(/,'reads canonical tasks only');
  assert.match(read('lib/planner.ts'),/"task\/toggle"/);
+});
+
+test('manual order and complete-on migrations: separate from task dates, owner-only, bounded to the past year',()=>{
+ assert.deepEqual(R.moveInOrder(['a','b','c'],'c','a'),['c','a','b']);assert.deepEqual(R.stepInOrder(['a','b','c'],['x','a','b','c'],'b',-1),['x','b','a','c']);
+ assert.deepEqual(R.applyRunningOrder([task('a'),task('b'),task('c')],['c','a']).map(t=>t.id),['c','a','b'],'unknown tasks keep their order after');
+ const order=read('supabase/migrations/20261119000100_planner_running_order.sql');
+ assert.equal((order.match(/create policy owner_/g)??[]).length,4);assert.doesNotMatch(order,/update public\.tasks|alter table public\.tasks/,'never touches task dates or board order');
+ const on=read('supabase/migrations/20261119000200_planner_complete_on.sql');
+ assert.match(on,/p_local_date > today or p_local_date < today - 366/);assert.match(on,/insert into public\.task_completion_events/);assert.doesNotMatch(on,/set planned_date/);
+ assert.match(on,/revoke all on function public\.planner_complete_on/);
 });

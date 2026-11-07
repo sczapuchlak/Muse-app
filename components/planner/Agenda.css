@@ -35,7 +35,7 @@
 .muse-agenda-planning-list li input{accent-color:var(--accent-primary);margin-top:3px}
 .muse-agenda-planning-list li span{overflow-wrap:break-word;min-width:0}
 .muse-agenda-planning-list li[data-done] span{text-decoration:line-through;color:var(--text-muted)}
-.muse-agenda-day{position:relative;display:flex;flex-direction:column;height:100%;box-sizing:border-box;gap:8px;padding:12px;border:1px solid var(--glass-border);border-radius:16px;background:var(--surface-subtle);min-width:0}
+.muse-agenda-day{position:relative;display:flex;flex-direction:column;height:100%;box-sizing:border-box;gap:8px;padding:12px;min-width:0}
 .muse-agenda-day-heading{all:unset;cursor:pointer;display:flex;align-items:baseline;gap:6px;border-radius:8px}
 .muse-agenda-day-heading span{font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted)}
 .muse-agenda-day-heading strong{font-size:1.25rem;font-variant-numeric:tabular-nums}
@@ -272,3 +272,42 @@ button.muse-mark{cursor:pointer}button.muse-mark:focus-visible{outline:2px solid
 /* Day sections scroll inside the column, so today's ring stays put around the whole card. */
 .muse-agenda-day-body{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;gap:8px;overflow-y:auto;overscroll-behavior-y:contain;scrollbar-width:thin}
 .muse-agenda-today-word{font-style:normal;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted)}
+/* ---------- Sizing (feedback 2026-11-06): bands share one dragged height across the week, shrink to fit the column
+   instead of growing the page, scroll inside themselves, and the last band fills what's left (no dead space). ---------- */
+.muse-agenda-day-body{overflow:hidden}
+.muse-agenda-day-body .muse-agenda-section[data-flow=fixed]{height:auto;min-height:2.75rem}
+.muse-agenda-day-body>.muse-agenda-section[data-flow=fixed]{flex:0 1 var(--section-h)}
+.muse-agenda-day-body>.muse-agenda-drop-wrap{display:flex;flex-direction:column;flex:0 1 auto;min-height:2.75rem}
+.muse-agenda-drop-wrap>.muse-agenda-section[data-flow=fixed]{flex:1 1 var(--section-h);min-height:0}
+.muse-agenda-day-body>:last-child:not([data-size=collapsed]){flex-grow:1}
+.muse-agenda-day-body>.muse-agenda-section[data-size=collapsed]{flex:none}
+.muse-agenda-resize{position:absolute;left:0;right:0;bottom:0;height:9px;cursor:ns-resize;z-index:3;border-radius:6px}
+.muse-agenda-resize::after{content:"";position:absolute;left:50%;top:50%;width:36px;height:4px;margin:-2px 0 0 -18px;border-radius:4px;background:var(--glass-border);opacity:0;transition:opacity .15s}
+.muse-agenda-section:hover>.muse-agenda-resize::after,.muse-agenda-resize:focus-visible::after,.muse-agenda-resize:active::after{opacity:1;background:var(--selected-border)}
+.muse-agenda-resize:focus-visible{outline:2px solid var(--focus-ring);outline-offset:-2px}
+@media (hover:none){.muse-agenda-resize::after{opacity:.6}}
+/* Task rows inside Agenda: the same compact rows as the Task List, a little tighter for narrow columns. */
+.muse-agenda-rows{margin:0 -2px}
+.muse-agenda-rows .muse-list-title .muse-mark{width:16px;height:16px;margin-right:4px;vertical-align:-3px}
+.muse-agenda-rows .muse-schedule-trigger{width:26px;height:24px}
+.muse-list-more .muse-overflow-trigger{width:26px;height:24px;min-height:0;flex-basis:26px}
+@media (hover:hover) and (pointer:fine){.muse-list-row:not(:hover):not(:focus-within) .muse-list-more{opacity:0}}
+/* Same row as the Task List: no extra surface; it sits on the day like it sits on the list. */
+.muse-agenda-rows .muse-list-row{background:transparent;padding-inline:4px}
+.muse-agenda-rows .muse-list-row:last-child{border-bottom:0}
+/* Compact connected bands: Movement and Water sit as small as Events. */
+.muse-agenda-badge{padding:1px 5px 1px 7px;font-size:.74rem;gap:4px}
+.muse-agenda-badge .muse-overflow-trigger{width:20px;height:20px;flex-basis:20px}
+.muse-agenda-badges{gap:3px!important}
+.muse-agenda-water-head{display:inline-flex;align-items:center;gap:6px}
+.muse-agenda-water.water-progress{margin:2px 0 0;align-self:center}
+.muse-agenda-choice{display:inline-flex;align-items:center;gap:8px}
+.muse-agenda-create{display:grid;gap:6px;margin-top:10px;padding-top:10px;border-top:1px solid var(--divider)}
+.muse-agenda-create>div{display:flex;gap:6px}
+.muse-agenda-create input{flex:1;min-width:0;min-height:38px;border:1px solid var(--glass-border);border-radius:var(--control-radius);background:var(--surface-control);color:inherit;font:inherit;padding:4px 10px}
+/* Mark icon grid: the radio stays invisible over its tile; the icon sits centered in a fixed tile. */
+.muse-mark-icons label{width:34px;height:34px}
+.muse-mark-icons label>input[type=radio]{position:absolute;inset:0;width:100%;height:100%;opacity:0;margin:0;appearance:none;-webkit-appearance:none;border:0;background:none;min-height:0;cursor:pointer}
+.muse-mark-icons label>span{width:34px;height:34px;box-sizing:border-box}
+.muse-agenda-week{padding-inline:1px}
+.muse-agenda-rows.muse-task-list-rows{display:block;gap:0}

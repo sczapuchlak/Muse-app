@@ -41,6 +41,8 @@ export type AgendaSection={
  completed?:CompletedChoice;
  /** Reading only. */
  metric?:ReadingMetric;
+ /** A dragged height in px (shared by all seven days). Absent means the size preset. */
+ height?:number;
 };
 export type AgendaLayout={version:number;sections:AgendaSection[]};
 
@@ -56,6 +58,10 @@ export const isPermanent=(s:Pick<AgendaSection,'id'>)=>s.id===EVENTS_ID||s.id===
 /** Only one of each connected section makes sense; Tasks and notes may repeat (e.g. Work and Personal). */
 export const repeatable=(type:SectionType)=>type==='tasks'||type==='notes';
 export const sectionRem=(size:SectionSize)=>sectionSizes.find(s=>s.id===size)!.rem;
+export const MIN_SECTION_PX=44,MAX_SECTION_PX=720;
+export const clampHeight=(px:number)=>Math.round(Math.max(MIN_SECTION_PX,Math.min(MAX_SECTION_PX,px)));
+/** The band height in px: a dragged height wins over the preset. */
+export const sectionPx=(s:Pick<AgendaSection,'size'|'height'>)=>s.height??Math.round(sectionRem(s.size)*16);
 
 const idPattern=/^[A-Za-z0-9-]{1,64}$/;
 function parseSection(value:unknown):AgendaSection|null{
@@ -67,6 +73,7 @@ function parseSection(value:unknown):AgendaSection|null{
  const section:AgendaSection={id:v.id,type,title,size};
  if(type==='tasks'){section.workspaceIds=Array.isArray(v.workspaceIds)?[...new Set(v.workspaceIds.filter((x):x is string=>typeof x==='string'&&x.length<=80))].slice(0,20):[];section.completed=v.completed==='show'||v.completed==='hide'?v.completed:'inherit';}
  if(type==='reading')section.metric=readingMetrics.find(m=>m.id===v.metric)?.id??'minutes';
+ if(typeof v.height==='number'&&Number.isFinite(v.height))section.height=clampHeight(v.height);
  return section;
 }
 /** Saved template → a valid one. Permanent sections are restored if missing; duplicates and extras are dropped. */

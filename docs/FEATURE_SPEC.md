@@ -846,23 +846,26 @@ Information architecture (reconciled across #79, #81, #83, #84, #85): Planner �
 
 **Not built here:** Google Calendar (out of scope), recurring events, a task sidebar inside Agenda (intentionally none), and Ritual auto-completion from reading (left to Rituals' own rules).
 
-## Planner 2.0 — Running List (#81) — implemented on feature branch (no migration)
+## Planner 2.0 — Running List (#81) — implemented on feature branch (staging migrations only)
 
-Planner → Tasks has two views of the same task records, chosen in the toolbar's view menu and remembered per device: **Scheduled Board** (#79, unchanged) and **Running List** (`components/planner/RunningList.tsx`, pure logic in `lib/running-list.ts`).
+Planner → Tasks has two views of the same task records, chosen in the toolbar's view menu and remembered per device: **Scheduled Board** (#79) and **Running List** (`components/planner/RunningList.tsx`, pure logic in `lib/running-list.ts`).
 
-- **Running List.** One continuous list. **Active** holds every open task matching the workspace, search and Filters, scheduled or not; it never drops a task for lacking a date. **Completed this week** holds tasks completed in the chosen week. ‹ Today › moves by week. Scope chips: All, Unscheduled, Scheduled. Order: your saved order, newest first, or planned date. Search, Filters (including ★ Priorities only) and the workspace switcher are shared with the board.
-- **Weekday strip (Mon–Sun).**
-  - ✓ marks the day a task was actually completed, taken from the server's completion history in the person's timezone.
-  - ○ marks its planned day.
-  - Blank days mean nothing, and there are no missed marks.
-  - Only **today's** cell is interactive: it completes the task, or reopens it if it was completed today. Earlier days are read-only history, with full-date accessible labels.
-  - Completing never changes the planned date and records exactly one completion event.
-- **Quick add** never assigns a date. With All workspaces selected it asks which workspace instead of guessing.
-- **Row actions:** complete or reopen, open Details, and the shared Schedule menu.
-- **Weekly summary:** "N completed this week · N today", counted once per task.
-- **Not supported, by decision (2026-11-06):**
-  - **Backdating:** past cells can't complete a task, because the server owns completion time.
-  - **Canceled status:** none exists or was added. Cancellation is a future enhancement, and deleting is not canceling.
-  - **Recurrence:** a repeating task is one record with its latest completion, marked ↻. Muse has no per-occurrence history; a real recurring-task engine is a separate future feature.
-  - **Manual reorder:** not available in the Running List, because reordering across dates would change planned dates. The list keeps the board's saved order.
-  - **Multi-workspace selection:** not available; the shared filter model is one workspace or all.
+- **Bullet-journal layout (approved redesign, 2026-11-06).**
+  - Seven weekday columns (M–S with dates) on the left, one row per task, and the task on the right, under a TO DO heading.
+  - A gentle rainbow wave links each task's marks to its neon checkbox; a faint dotted line appears when the week has no mark.
+  - Today's column is a soft band.
+  - Clear **Active** and **Completed this week** headers with counts. When Active is empty, it shows an "All clear" note.
+  - Full width like other screens. Toolbar: search, Add task and workspace on the left; Filters, Show (All, Unscheduled, Scheduled) and Order on the right.
+- **Marks.** **×** (neon, `--success-primary`) is the day a task was actually completed, from the shared completion history in the person's timezone, so completing in any Muse view places it. **○** is the planned day. A planned day that is also the completion day shows the × inside a ring.
+- **Completing on a day.** Any day from today back (within a year) can be clicked. A blank day marks the task done on that day (`planner_complete_on`, migration `20261119000200`, with that local date recorded); its × reopens the task. Future days only show the plan. Completing never changes the planned date and records one event.
+- **Manual order.** Drag the handle, or use ↑/↓ on it, or Move up/down in the row's menu. The order is stored separately in `planner_running_orders` (migration `20261119000100`), so reordering never changes a planned date, completion history or the board's day order.
+- **Quick add** never assigns a date, and asks which workspace to use when All workspaces is selected. The workspace label on a row is a chip that moves the task to another workspace.
+- **Not supported:** a canceled status (future enhancement; deleting is not canceling); recurring occurrences (a repeating task is one record with its latest completion, marked ↻; a recurring-task engine is separate future work); multi-workspace selection.
+
+**Agenda polish (same release).**
+- Agenda Tasks sections render the exact Task List row, so both tabs behave the same.
+- Sections size by dragging their bottom edge (or arrow keys); the height is shared by all seven days and saved with the layout. Sections shrink to fit the column and scroll inside, the last section fills the remainder, and the page never grows.
+- Movement "+" opens a popover of Dayview's movement types, plus creating a new type that joins the shared Wellness list.
+- Water "+" adds water with Daily's quick amounts and progress bar.
+- Agenda day cards use the planner card material (Frosted and Crystal).
+- One rainbow today ring, shared by Tasks and Agenda.
