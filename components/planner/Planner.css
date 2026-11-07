@@ -320,4 +320,58 @@ select option { background: var(--background); color: var(--foreground); }
 .muse-planner-sheet-body :is(.muse-list-row, .muse-task-list-group h3) { padding-left: var(--space-3); }
 .muse-planner-sheet-body .muse-task-list > .muse-task-quick-add { padding-inline: 0; }
 
-.muse-task-quick-add button { display: inline-grid; place-items: center; padding: 0; line-height: 0; }
+.muse-task-quick-add button[type=submit] { display: inline-grid; place-items: center; padding: 0; line-height: 0; }
+
+/* ---------- Running List (#81): one continuous list, a Mon–Sun strip of real completion days. ----------
+   Same sheet language as the Task List (accent spine, header band, divided rows) so the two read as siblings. */
+.muse-running-list { position: relative; display: flex; flex-direction: column; min-width: 0; border: 1px solid var(--glass-border); border-radius: var(--card-radius); background: var(--planning-rail-background); box-shadow: var(--card-shadow); overflow: hidden; }
+.muse-running-list::before { content: ""; position: absolute; inset: 14px auto 14px 0; width: 3px; border-radius: 0 3px 3px 0; background: var(--muse-edge-gradient, var(--accent-primary)); pointer-events: none; }
+.muse-running-head { display: grid; gap: var(--space-2); padding: var(--space-4) var(--space-4) var(--space-3) calc(var(--space-4) + 3px); border-bottom: 1px solid var(--divider); background: color-mix(in srgb, var(--planning-control-background) 55%, transparent); }
+.muse-running-head .muse-task-list-title h2 { margin: 0; font-family: var(--font-editorial); font-style: italic; font-weight: var(--type-editorial-weight); font-size: 1.3rem; }
+.muse-running-summary { margin: 0; font-size: .78rem; color: var(--text-muted); }
+.muse-running-tools { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+.muse-running-tools > .muse-planner-workspaces { min-width: 180px; }
+.muse-running-tools .muse-planner-search { display: flex; flex: 1 1 200px; align-items: center; gap: var(--space-1); min-width: 160px; padding-left: var(--space-2); border: 1px solid var(--glass-border); border-radius: var(--control-radius); background: var(--planning-control-background); color: var(--text-muted); }
+.muse-running-tools .muse-planner-search input { min-height: 36px; font-size: .8rem; color: var(--foreground); border: 0; background: transparent; }
+.muse-running-tools .muse-planner-search input:focus { outline: 0; }
+.muse-running-tools :is(.muse-button, .muse-choice-trigger, .muse-workspace-trigger) { min-height: 38px; height: 38px; padding-block: 0; font-size: .78rem; }
+.muse-running-body { display: flex; flex-direction: column; min-height: 0; height: var(--planner-surface-height, 70dvh); min-height: 320px; box-sizing: border-box; }
+.muse-running-scroll { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+/* One grid for the week header and every row, so the seven markers line up in columns. */
+.muse-running-weekhead, .muse-running-row { display: grid; grid-template-columns: 28px minmax(0, 1fr) repeat(7, 32px) 34px; align-items: center; column-gap: 4px; padding-inline: calc(var(--space-4) + 3px) var(--space-3); }
+.muse-running-weekhead { position: sticky; top: 0; z-index: 2; padding-block: 6px; font-size: .66rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--text-muted); background: var(--planning-rail-background); border-bottom: 1px solid var(--divider); }
+.muse-running-weekhead > span:nth-child(n+3):nth-child(-n+9) { display: grid; justify-items: center; line-height: 1.1; }
+.muse-running-weekhead small { font-size: .62rem; font-weight: 500; letter-spacing: 0; }
+.muse-running-weekhead [data-today] { color: var(--selected-text); }
+.muse-running-group h3 { position: sticky; top: 33px; z-index: 1; margin: 0; padding: var(--space-2) var(--space-4) 4px calc(var(--space-4) + 3px); font-size: .62rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted); background: var(--planning-rail-background); }
+.muse-running-group h3 span { font-weight: 500; letter-spacing: 0; }
+.muse-running-group .muse-planner-empty { padding: var(--space-3) var(--space-4) var(--space-3) calc(var(--space-4) + 3px); }
+.muse-running-rows { margin: 0; padding: 0; list-style: none; }
+.muse-running-row { padding-block: 7px; border-bottom: 1px solid var(--divider); }
+@media (hover: hover) { .muse-running-row:hover { background: var(--surface-hover, var(--planning-control-background)); } }
+.muse-running-row[data-complete] .muse-list-title { color: var(--text-muted); text-decoration: line-through; }
+.muse-running-strip { display: contents; }
+.muse-strip-cell { position: relative; display: grid; place-items: center; width: 32px; height: 30px; padding: 0; border: 0; border-radius: 8px; background: transparent; color: var(--selected-text); font: inherit; }
+.muse-strip-cell[data-today] { background: color-mix(in srgb, var(--selected-background) 70%, transparent); }
+button.muse-strip-cell { cursor: pointer; border: 1px dashed var(--selected-border); }
+button.muse-strip-cell:hover { background: var(--selected-background); }
+button.muse-strip-cell:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; }
+.muse-strip-cell[data-completed] { color: var(--background); background: var(--selected-border); }
+.muse-strip-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--text-muted); opacity: .45; }
+.muse-strip-planned { width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--selected-border); }
+.muse-running-add { margin: 0; padding: var(--space-3) var(--space-4) var(--space-4) calc(var(--space-4) + 3px); border-top: 1px solid var(--divider); align-items: center; }
+.muse-running-add .muse-choice-menu { flex: none; }
+@media (prefers-reduced-motion: reduce) { .muse-running-row { transition: none; } }
+/* Narrow screens: the week strip moves under the title as seven roomy cells, each with its full date label. */
+@container muse-content (max-width: 640px) {
+  .muse-running-weekhead { grid-template-columns: repeat(7, minmax(0, 1fr)); padding-inline: var(--space-3); }
+  .muse-running-weekhead > span:nth-child(-n+2), .muse-running-weekhead > span:last-child { display: none; }
+  .muse-running-row { grid-template-columns: 34px minmax(0, 1fr) 40px; row-gap: 4px; padding-inline: var(--space-3); }
+  .muse-running-strip { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); grid-column: 1 / -1; grid-row: 2; gap: 2px; }
+  .muse-running-strip .muse-strip-cell { width: auto; height: 36px; }
+  .muse-running-head, .muse-running-group h3, .muse-running-add { padding-inline: var(--space-3); }
+  .muse-running-group h3 { top: 41px; }
+  .muse-running-body { height: auto; min-height: 0; }
+  .muse-running-scroll { overflow: visible; }
+}
+.muse-running-add .muse-choice-trigger { flex: none; width: auto; min-width: 150px; height: var(--touch-target); font-size: .78rem; }

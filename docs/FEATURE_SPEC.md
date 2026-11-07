@@ -845,3 +845,24 @@ Information architecture (reconciled across #79, #81, #83, #84, #85): Planner �
 **Scheduled Board Task List (§12, approved 2026-11-06).** Planner → Tasks keeps its board; its Task List (`PlannerRail`, `TaskListRow`, `ScheduleMenu`, pure `lib/task-list.ts`) is now a distinct pinned source: own header (title, count, workspace, search, Filters incl. ★ Priorities only), scopes To plan (overdue then unscheduled) / Overdue / Scheduled / All (remembered per device), grouped dense rows with priority, overdue, date, due, workspace, group, tags, subtasks, repeat and estimate facts, and a Schedule menu (no Details needed). Drag list → day, day → day and day → list still work; while dragging, every day is labeled as a destination. Day cards show the same ★/› markers. No database change; every action is the same `task/place` on the one task record, so Agenda and Dayview update. This is separate from #81's Running List, which will add a Tasks view selector without replacing this board.
 
 **Not built here:** Google Calendar (out of scope), recurring events, a task sidebar inside Agenda (intentionally none), and Ritual auto-completion from reading (left to Rituals' own rules).
+
+## Planner 2.0 — Running List (#81) — implemented on feature branch (no migration)
+
+Planner → Tasks has two views of the same task records, chosen in the toolbar's view menu and remembered per device: **Scheduled Board** (#79, unchanged) and **Running List** (`components/planner/RunningList.tsx`, pure logic in `lib/running-list.ts`).
+
+- **Running List.** One continuous list. **Active** holds every open task matching the workspace, search and Filters, scheduled or not; it never drops a task for lacking a date. **Completed this week** holds tasks completed in the chosen week. ‹ Today › moves by week. Scope chips: All, Unscheduled, Scheduled. Order: your saved order, newest first, or planned date. Search, Filters (including ★ Priorities only) and the workspace switcher are shared with the board.
+- **Weekday strip (Mon–Sun).**
+  - ✓ marks the day a task was actually completed, taken from the server's completion history in the person's timezone.
+  - ○ marks its planned day.
+  - Blank days mean nothing, and there are no missed marks.
+  - Only **today's** cell is interactive: it completes the task, or reopens it if it was completed today. Earlier days are read-only history, with full-date accessible labels.
+  - Completing never changes the planned date and records exactly one completion event.
+- **Quick add** never assigns a date. With All workspaces selected it asks which workspace instead of guessing.
+- **Row actions:** complete or reopen, open Details, and the shared Schedule menu.
+- **Weekly summary:** "N completed this week · N today", counted once per task.
+- **Not supported, by decision (2026-11-06):**
+  - **Backdating:** past cells can't complete a task, because the server owns completion time.
+  - **Canceled status:** none exists or was added. Cancellation is a future enhancement, and deleting is not canceling.
+  - **Recurrence:** a repeating task is one record with its latest completion, marked ↻. Muse has no per-occurrence history; a real recurring-task engine is a separate future feature.
+  - **Manual reorder:** not available in the Running List, because reordering across dates would change planned dates. The list keeps the board's saved order.
+  - **Multi-workspace selection:** not available; the shared filter model is one workspace or all.

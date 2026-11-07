@@ -25,20 +25,8 @@ export function TaskListRow({ task, today, boardDays, priority, showWorkspace, o
   const blocked = useRef(false);
   useEffect(() => { const reset = () => setDropBefore(false); document.addEventListener("dragend", reset); return () => document.removeEventListener("dragend", reset); }, []);
   const status = taskState(task, today), workspace = state.workspaces.find((w) => w.id === task.workspaceId);
-  const group = state.groups.find((g) => g.id === task.groupId), tags = task.tagIds.flatMap((id) => state.tags.find((t) => t.id === id) ?? []);
-  const doneSubtasks = task.subtasks.filter((s) => s.complete).length, running = state.activeTimer?.taskId === task.id;
-  const facts: ReactNode[] = [];
-  if (priority) facts.push(<span key="p" className="muse-list-flag" data-kind="priority" title="One of the day’s three priorities"><span aria-hidden="true">★</span> Priority</span>);
-  if (status === "overdue") facts.push(<span key="o" className="muse-list-flag" data-kind="overdue" title={taskStateLabels.overdue}><span aria-hidden="true">›</span> Overdue · {shortDay(task.plannedDate!)}</span>);
-  else if (task.plannedDate) facts.push(<span key="d" className="muse-list-flag" data-kind="date"><MuseIcon name="calendar" size={11} /> {shortDay(task.plannedDate)}</span>);
-  if (task.dueDate && !task.complete) facts.push(<span key="due">Due {shortDay(task.dueDate)}</span>);
-  if (showWorkspace && workspace) facts.push(<span key="w" className="muse-list-workspace" style={accentStyle(workspace.accent)}><i aria-hidden="true" />{workspace.name}</span>);
-  if (group) facts.push(<span key="g">{group.name}</span>);
-  for (const t of tags.slice(0, 2)) facts.push(<span key={`t${t.id}`} className="muse-list-tag" style={accentStyle(t.accent)}>#{t.name}</span>);
-  if (tags.length > 2) facts.push(<span key="tm">+{tags.length - 2}</span>);
-  if (task.subtasks.length) facts.push(<span key="s" title="Subtasks done">{doneSubtasks}/{task.subtasks.length}</span>);
-  if (task.recurrence) facts.push(<span key="r" title={`Repeats ${task.recurrence.frequency}`}>↻ {task.recurrence.frequency}</span>);
-  if (task.estimatedMinutes) facts.push(<span key="e" title="Estimate">{formatPlannedMinutes(task.estimatedMinutes)}</span>);
+  const running = state.activeTimer?.taskId === task.id;
+  const facts = taskFacts({ task, today, priority, showWorkspace, state });
 
   return <li className="muse-list-row" data-state={status} data-complete={task.complete || undefined} data-dragging={dragging || undefined} data-drop-before={dropBefore || undefined} style={accentStyle(workspace?.accent)} draggable={canEdit}
     onPointerDownCapture={(e) => { blocked.current = !!(e.target as Element).closest("button,input,label,a,textarea,select,[data-no-drag]"); }}
@@ -58,4 +46,25 @@ export function TaskListRow({ task, today, boardDays, priority, showWorkspace, o
     {(running || task.actualMinutes > 0) && <TaskTimer task={task} />}
     <ScheduleMenu task={task} today={today} boardDays={boardDays} place={place} onPlaced={onPlaced} />
   </li>;
+}
+
+/** One quiet line of facts for a list row (Task List and Running List share it): ★, overdue or planned date, due,
+ * workspace, group, tags, subtasks, repeat and estimate. Read-only; editing stays in Details. */
+export function taskFacts({ task, today, priority, showWorkspace, state, hidePlanned = false }: { task: PlannedTask; today: string; priority: boolean; showWorkspace: boolean; state: ReturnType<typeof usePlanner>["state"]; hidePlanned?: boolean }): ReactNode[] {
+  const status = taskState(task, today), workspace = state.workspaces.find((w) => w.id === task.workspaceId);
+  const group = state.groups.find((g) => g.id === task.groupId), tags = task.tagIds.flatMap((id) => state.tags.find((t) => t.id === id) ?? []);
+  const doneSubtasks = task.subtasks.filter((s) => s.complete).length;
+  const facts: ReactNode[] = [];
+  if (priority) facts.push(<span key="p" className="muse-list-flag" data-kind="priority" title="One of the day’s three priorities"><span aria-hidden="true">★</span> Priority</span>);
+  if (status === "overdue") facts.push(<span key="o" className="muse-list-flag" data-kind="overdue" title={taskStateLabels.overdue}><span aria-hidden="true">›</span> Overdue · {shortDay(task.plannedDate!)}</span>);
+  else if (task.plannedDate && !hidePlanned) facts.push(<span key="d" className="muse-list-flag" data-kind="date"><MuseIcon name="calendar" size={11} /> {shortDay(task.plannedDate)}</span>);
+  if (task.dueDate && !task.complete) facts.push(<span key="due">Due {shortDay(task.dueDate)}</span>);
+  if (showWorkspace && workspace) facts.push(<span key="w" className="muse-list-workspace" style={accentStyle(workspace.accent)}><i aria-hidden="true" />{workspace.name}</span>);
+  if (group) facts.push(<span key="g">{group.name}</span>);
+  for (const t of tags.slice(0, 2)) facts.push(<span key={`t${t.id}`} className="muse-list-tag" style={accentStyle(t.accent)}>#{t.name}</span>);
+  if (tags.length > 2) facts.push(<span key="tm">+{tags.length - 2}</span>);
+  if (task.subtasks.length) facts.push(<span key="s" title="Subtasks done">{doneSubtasks}/{task.subtasks.length}</span>);
+  if (task.recurrence) facts.push(<span key="r" title={`Repeats ${task.recurrence.frequency}. Muse keeps one task and its latest completion, not separate occurrences.`}>↻ {task.recurrence.frequency}</span>);
+  if (task.estimatedMinutes) facts.push(<span key="e" title="Estimate">{formatPlannedMinutes(task.estimatedMinutes)}</span>);
+  return facts;
 }

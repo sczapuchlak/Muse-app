@@ -15,6 +15,9 @@ import { PlannerUtilities } from "./PlannerUtilities";
 import { MuseDrawer } from "../MuseDrawer";
 import { useMuseToday } from "../useMuseToday";
 import { PlannerRail } from "./PlannerRail";
+import { RunningList } from "./RunningList";
+import { parseTasksView, type TasksView } from "@/lib/running-list";
+import { weekDates } from "@/lib/dates";
 import { PlanningDropZone } from "./PlanningDropZone";
 import { MuseStar } from "../MuseStar";
 import { WeekNavigator } from "../WeekNavigator";
@@ -30,7 +33,6 @@ export function Planner() {
   const { state,status } = usePlanner();
   const {profile}=useDailyData();
   const workspaceRef=useRef<HTMLDivElement>(null);
-  usePlannerHeight(workspaceRef);
   const [date, setDate] = useMuseDate(dailyEditSample.date.iso);
   const query = useSearchParams();
   const requestedDate = query.get("date");
@@ -53,17 +55,23 @@ export function Planner() {
   const days = Array.from({ length: PLANNING_WINDOW_DAYS }, (_, index) => shiftDate(date, index));
   // ★ comes from Dayview's three daily priorities (the only priority Muse has), for today and the visible days.
   const dailySnapshot = useDailyData().snapshot;
-  const priorityStart = today && today < date ? today : date;
-  useDailyRange(priorityStart, days[days.length - 1]);
-  const priorityIds = new Set(Object.entries(dailySnapshot.days).filter(([d]) => d >= priorityStart && d <= days[days.length - 1]).flatMap(([, day]) => day.priorities.map((p) => p.task_id)).filter((x): x is string => !!x));
+  const weekOfDate = weekDates(date), priorityStart = [today, date, weekOfDate[0]].filter(Boolean).sort()[0], priorityEnd = [days[days.length - 1], weekOfDate[6]].sort()[1];
+  useDailyRange(priorityStart, priorityEnd);
+  const priorityIds = new Set(Object.entries(dailySnapshot.days).filter(([d]) => d >= priorityStart && d <= priorityEnd).flatMap(([, day]) => day.priorities.map((p) => p.task_id)).filter((x): x is string => !!x));
   const filtered = filterPlannerTasks(state.tasks, workspaceFilter, activeFilters, search).filter((task) => !filters.priorityOnly || priorityIds.has(task.id));
   const [dragging, setDragging] = useState(false);
+  // Scheduled Board | Running List (#81): two views of the same tasks, remembered per device.
+  const [tasksView, setTasksView] = useState<TasksView>("board");
+  useEffect(() => { const t = window.setTimeout(() => { try { setTasksView(parseTasksView(window.localStorage.getItem("muse.planner.tasksView"))); } catch { /* default */ } }, 0); return () => window.clearTimeout(t); }, []);
+  const chooseView = (v: TasksView) => { setTasksView(v); try { window.localStorage.setItem("muse.planner.tasksView", v); } catch { /* this device only */ } };
+  const runningWeek = weekOfDate;
+  usePlannerHeight(workspaceRef, tasksView);
   const fmtDay = (d: string, year = false) => new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", ...(year ? { year: "numeric" } : {}), timeZone: "UTC" }).format(new Date(`${d}T12:00:00Z`));
-  const boardTitle = `${fmtDay(days[0])} – ${fmtDay(days[days.length - 1], true)}`;
+  const boardTitle = tasksView === "running" ? `${fmtDay(runningWeek[0])} – ${fmtDay(runningWeek[6], true)}` : `${fmtDay(days[0])} – ${fmtDay(days[days.length - 1], true)}`;
   function openTask(task: PlannedTask, anchor: HTMLElement) { setDetail({ id: task.id, anchor }); }
   function taskList(tasks: PlannedTask[]) { return <ul className="muse-planner-task-list">{tasks.map((task) => <PlannerTaskCard key={task.id} task={task} onOpen={openTask} today={today} priority={priorityIds.has(task.id)} />)}</ul>; }
   const inbox = filtered.filter((task) => !task.plannedDate);
-  function utilities(){return <PlannerUtilities date={date} onDate={changeDate} title={boardTitle} taskList={<div className="muse-planner-mobile-tabs"><button className="muse-button" type="button" aria-haspopup="dialog" aria-expanded={mobileView==="inbox"} onClick={(event)=>{setInboxAnchor(event.currentTarget);setMobileView("inbox");}}>Task List · {inbox.length}</button></div>} today={today} onToday={()=>{changeDate(today);setMobileView("day");}} onPrevious={()=>changeDate(shiftDate(date,-1))} onNext={()=>changeDate(shiftDate(date,1))}/>;}
+  function utilities(){return <PlannerUtilities date={date} onDate={changeDate} title={boardTitle} taskList={<div className="muse-planner-mobile-tabs"><button className="muse-button" type="button" aria-haspopup="dialog" aria-expanded={mobileView==="inbox"} onClick={(event)=>{setInboxAnchor(event.currentTarget);setMobileView("inbox");}}>Task List · {inbox.length}</button></div>} today={today} onToday={()=>{changeDate(today);setMobileView("day");}} onPrevious={()=>changeDate(tasksView==="running"?shiftDate(date,-7):shiftDate(date,-1))} onNext={()=>changeDate(tasksView==="running"?shiftDate(date,7):shiftDate(date,1))} view={tasksView} onView={chooseView}/>;}
   function rail(){return <PlannerRail workspaceId={workspaceFilter} onWorkspaceChange={(id)=>{setWorkspace(id);setFilters((current)=>({...current,groupId:""}));}} tasks={filtered} onOpen={openTask} groupId={groupFilter||undefined} tagIds={activeTags}
     today={today} boardDays={days} priorityIds={priorityIds} search={search} onSearch={setSearch} filters={activeFilters} onFilter={setFilters} onAnnounce={setAnnouncement}/>;}
 
@@ -73,7 +81,9 @@ export function Planner() {
     <PlannerCapture>{tab === "agenda" && <Agenda date={date} today={today} onDate={changeDate} onOpen={openTask} workspaceId={workspaceFilter || undefined}/>}
     {tab === "reflections" && <section className="muse-planner-reflections muse-empty-state" data-variant="editorial"><h2>Reflections</h2><p>Weekly, monthly and yearly reviews will live here: a quiet place to look back at what you planned, finished and felt.</p></section>}
     {tab === "tasks" && <>{utilities()}
-    <div className="muse-planner-mobile-week"><WeekNavigator selectedDate={date} timeZone={profile.timeZone} onChange={(next) => { changeDate(next); setMobileView("day"); }} /></div>
+    {tasksView === "running" && <RunningList tasks={filtered} weekOf={date} today={today} timeZone={profile.timeZone} workspaceId={workspaceFilter} onWorkspaceChange={(id)=>{setWorkspace(id);setFilters((current)=>({...current,groupId:""}));}}
+      search={search} onSearch={setSearch} filters={activeFilters} onFilter={setFilters} priorityIds={priorityIds} onOpen={openTask} onAnnounce={setAnnouncement}/>}
+    {tasksView === "board" && <><div className="muse-planner-mobile-week"><WeekNavigator selectedDate={date} timeZone={profile.timeZone} onChange={(next) => { changeDate(next); setMobileView("day"); }} /></div>
     {state.activeTimer && <p className="muse-planner-timer-status" role="status">Timer running: {state.tasks.find((task) => task.id === state.activeTimer?.taskId)?.title}. <button className="text-button" type="button" onClick={(event) => { if (state.activeTimer) setDetail({ id: state.activeTimer.taskId, anchor: event.currentTarget }); }}>Open timer</button></p>}
     <div ref={workspaceRef} className="muse-planner-layout" data-dragging={dragging || undefined}
       onDragStartCapture={(e) => { if (e.dataTransfer.types.includes(TASK_DRAG_TYPE) || (e.target as Element).closest?.("[draggable=true]")) setDragging(true); }}
@@ -99,7 +109,7 @@ export function Planner() {
         })}
       </div>
       </div>
-    </div></>}
+    </div></>}</>}
     {mobileView==="inbox"&&<MuseDrawer title="Task List" returnFocus={inboxAnchor} onClose={()=>setMobileView("day")}><div className="muse-planner-sheet-body">{rail()}</div></MuseDrawer>}
     <div className="muse-sr-only" role="status">{announcement}</div>
     {detail && <TaskDetails key={`${detail.id}/${status?.discarded??0}`} taskId={detail.id} returnFocus={detail.anchor} onClose={() => { setDetail(null); setAnnouncement("Task details closed. Check the Planner save status for pending changes."); }} />}
