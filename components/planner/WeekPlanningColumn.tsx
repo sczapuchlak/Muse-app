@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { MuseIcon } from "../MuseIcon";
 import { createMuseBrowserClient } from "@/lib/supabase/client";
 import { defaultPlanningConfig, type PlanningConfig, type PlanningKind } from "@/lib/agenda";
 import { readPlanningConfig, readWeekSection, saveWeekSection, savePlanningConfig, type WeekSection } from "@/lib/planner-week";
@@ -19,7 +20,7 @@ export function WeekPlanningColumn({ weekStart }: { weekStart: string }) {
   async function saveConfig(next: PlanningConfig) { setConfig(next); setEditing(false); try { setConfig(await savePlanningConfig(client, next)); } catch { setStatus("Couldn’t save the column settings."); } }
   return <section className="muse-agenda-day muse-agenda-planning" aria-label={config.title}>
     <header className="muse-agenda-planning-head"><h3>{config.title}</h3>
-      <button type="button" className="muse-agenda-add" aria-expanded={editing} aria-label="Customize this column" onClick={() => setEditing(!editing)}>⚙</button></header>
+      <button type="button" className="muse-agenda-add" aria-expanded={editing} aria-label="Customize this column" onClick={() => setEditing(!editing)}><MuseIcon name="settings" size={13} /></button></header>
     {editing && <form className="muse-agenda-planning-settings" onSubmit={(e) => { e.preventDefault(); const f = new FormData(e.currentTarget); void saveConfig({ kind: f.get("kind") as PlanningKind, title: String(f.get("title") ?? "") }); }}>
       <label>Title<input name="title" id="agenda-planning-title" maxLength={40} defaultValue={config.title} /></label>
       <fieldset><legend>Type</legend>

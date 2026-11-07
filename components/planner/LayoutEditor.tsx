@@ -2,9 +2,11 @@
 import { useState } from "react";
 import { isPermanent, newSectionId, overlappingTaskSections, readingMetrics, repeatable, sectionSizes, sectionTypes, sectionWorkspaces, type AgendaSection, type CompletedChoice, type ReadingMetric, type SectionSize, type SectionType } from "@/lib/agenda-layout";
 import { usePlanner } from "../PlannerStore";
+import { MuseChoiceMenu } from "../MuseChoiceMenu";
 import { useAgendaData } from "./AgendaData";
 
 const typeLabel = (t: SectionType) => sectionTypes.find((x) => x.id === t)!.label;
+const completedChoices = [{ id: "inherit", label: "Follow the Agenda setting" }, { id: "show", label: "Always show" }, { id: "hide", label: "Always hide" }];
 
 /**
  * Customize layout (#79 §3.7–3.9, Workstream A §5): one template for all seven days. Reorder by dragging or with the
@@ -15,7 +17,7 @@ export function LayoutEditor({ onClose }: { onClose: () => void }) {
   const { layout, changeLayout, status } = useAgendaData();
   const { state } = usePlanner();
   const [dragId, setDragId] = useState<string | null>(null), [over, setOver] = useState<number | null>(null), [confirmReset, setConfirmReset] = useState(false);
-  const [addType, setAddType] = useState<SectionType | "">(""), [announce, setAnnounce] = useState("");
+  const [announce, setAnnounce] = useState("");
   const sections = layout.sections, workspaceIds = state.workspaces.map((w) => w.id);
   const available = sectionTypes.filter((t) => repeatable(t.id) || !sections.some((s) => s.type === t.id));
   const overlaps = overlappingTaskSections(sections, workspaceIds);
@@ -40,12 +42,9 @@ export function LayoutEditor({ onClose }: { onClose: () => void }) {
               <span className="small-label">{typeLabel(s.type)}{isPermanent(s) ? " · always shown" : ""}</span>
             </div>
             <div className="muse-layout-line">
-              <label>Height <select value={s.size} onChange={(e) => changeLayout({ type: "update", id: s.id, patch: { size: e.target.value as SectionSize } })}>
-                {sectionSizes.map((z) => <option key={z.id} value={z.id}>{z.label}</option>)}</select></label>
-              {s.type === "reading" && <label>Show <select value={s.metric} onChange={(e) => changeLayout({ type: "update", id: s.id, patch: { metric: e.target.value as ReadingMetric } })}>
-                {readingMetrics.map((m) => <option key={m.id} value={m.id}>{m.label}</option>)}</select></label>}
-              {s.type === "tasks" && <label>Completed <select value={s.completed} onChange={(e) => changeLayout({ type: "update", id: s.id, patch: { completed: e.target.value as CompletedChoice } })}>
-                <option value="inherit">Follow the Agenda setting</option><option value="show">Always show</option><option value="hide">Always hide</option></select></label>}
+              <span className="muse-layout-choice"><span>Height</span><MuseChoiceMenu label={`Height of ${s.title}`} valueLabel={sectionSizes.find((z) => z.id === s.size)!.label} options={sectionSizes.map((z) => ({ id: z.id, label: z.label }))} selectedIds={[s.size]} onSelect={(id) => changeLayout({ type: "update", id: s.id, patch: { size: id as SectionSize } })} /></span>
+              {s.type === "reading" && <span className="muse-layout-choice"><span>Show</span><MuseChoiceMenu label={`What ${s.title} shows`} valueLabel={readingMetrics.find((m) => m.id === s.metric)?.label ?? "Minutes read that day"} options={readingMetrics.map((m) => ({ id: m.id, label: m.label }))} selectedIds={[s.metric ?? "minutes"]} onSelect={(id) => changeLayout({ type: "update", id: s.id, patch: { metric: id as ReadingMetric } })} /></span>}
+              {s.type === "tasks" && <span className="muse-layout-choice"><span>Completed</span><MuseChoiceMenu label={`Completed tasks in ${s.title}`} valueLabel={completedChoices.find((c) => c.id === (s.completed ?? "inherit"))!.label} options={completedChoices} selectedIds={[s.completed ?? "inherit"]} onSelect={(id) => changeLayout({ type: "update", id: s.id, patch: { completed: id as CompletedChoice } })} /></span>}
             </div>
             {scope && <fieldset className="muse-layout-workspaces"><legend>Workspaces</legend>
               <label><input type="checkbox" checked={!s.workspaceIds?.length} onChange={(e) => changeLayout({ type: "update", id: s.id, patch: { workspaceIds: e.target.checked ? [] : [workspaceIds[0]].filter(Boolean) } })} /> All workspaces</label>
@@ -65,11 +64,11 @@ export function LayoutEditor({ onClose }: { onClose: () => void }) {
       })}
     </ol>
     {overlaps.length > 0 && <p className="small-label" role="note">Heads up: {overlaps.map(([a, b]) => `“${a}” and “${b}”`).join(", ")} share a workspace, so some tasks show in both. They’re still one task.</p>}
-    <form className="muse-layout-add" onSubmit={(e) => { e.preventDefault(); if (!addType) return; changeLayout({ type: "add", section: { id: newSectionId(addType), type: addType, ...(addType === "tasks" ? { workspaceIds: [], completed: "inherit" } : {}) } }); setAnnounce(`${typeLabel(addType)} added to every day.`); setAddType(""); }}>
-      <label>Add a section <select value={addType} onChange={(e) => setAddType(e.target.value as SectionType | "")}>
-        <option value="">Choose…</option>{available.map((t) => <option key={t.id} value={t.id}>{t.label} — {t.hint}</option>)}</select></label>
-      <button type="submit" className="muse-button" disabled={!addType || sections.length >= 16}>Add</button>
-    </form>
+    <div className="muse-layout-add">
+      <span>Add a section</span>
+      <MuseChoiceMenu label="Add a section" valueLabel={sections.length >= 16 ? "Layout is full" : "Choose a section…"} options={available.map((t) => ({ id: t.id, label: `${t.label} — ${t.hint}` }))} selectedIds={[]}
+        onSelect={(id) => { const type = id as SectionType; if (sections.length >= 16) return; changeLayout({ type: "add", section: { id: newSectionId(type), type, ...(type === "tasks" ? { workspaceIds: [], completed: "inherit" } : {}) } }); setAnnounce(`${typeLabel(type)} added to every day.`); }} />
+    </div>
     <div className="muse-layout-reset">{confirmReset
       ? <span role="group" aria-label="Confirm reset">Go back to just Events and Tasks? Your notes, Marks and records stay. <button type="button" className="text-button" onClick={() => { changeLayout({ type: "reset" }); setConfirmReset(false); setAnnounce("Layout reset to Events and Tasks."); }}>Reset layout</button><button type="button" className="text-button" onClick={() => setConfirmReset(false)}>Keep mine</button></span>
       : <button type="button" className="text-button" onClick={() => setConfirmReset(true)}>Reset to default…</button>}</div>

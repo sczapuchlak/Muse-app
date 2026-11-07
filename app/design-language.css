@@ -83,3 +83,9 @@
 @media (max-width:600px){.muse-chip-row[data-scroll]{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px;scrollbar-width:thin}.muse-chip-row[data-scroll]>*{flex:none}.muse-segmented{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}.muse-segmented>*{flex:none}}
 @media (prefers-reduced-motion:reduce){:is(.muse-panel,.muse-chip-row>*,.muse-segmented>*,.muse-search){transition:none}}
 :root[data-magic=quiet] :is(.muse-panel,.muse-chip-row>*,.muse-segmented>*,.muse-search){transition:none}
+
+/* Today, in every Planner view (Tasks board and Agenda): one thin, continuous rainbow ring around the whole card,
+   drawn with Muse's edge gradient. Color is never the only cue — the card also says "Today". */
+.muse-today-ring{position:relative}
+.muse-today-ring.muse-today-ring::after{content:"";position:absolute;inset:-1px;height:auto;padding:2px;border-radius:inherit;opacity:1;background:var(--muse-edge-gradient);
+ -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);pointer-events:none;z-index:1}

@@ -21,6 +21,8 @@ import { EventEditor } from "./EventEditor";
 import { LayoutEditor } from "./LayoutEditor";
 import { AgendaLegend, MarkEditor, MarkGlyph, MarkStrip } from "./MuseMarks";
 import "./Agenda.css";
+import { usePlannerHeight } from "./usePlannerHeight";
+import { PeriodTitle } from "./PeriodTitle";
 
 const prefsKey = "muse.planner.agenda";
 const weekday = (d: string, style: "short" | "long" = "short") => new Intl.DateTimeFormat("en-US", { weekday: style, timeZone: "UTC" }).format(new Date(`${d}T12:00:00Z`));
@@ -64,6 +66,7 @@ function AgendaBody({ date, today, onDate, onOpen, workspaceId, prefs, update, s
 
   // Week: two spreads (Mon–Thu, Fri–Sun + planning). Open on the spread holding the chosen day; never scroll the page.
   const [spread, setSpread] = useState(0);
+  usePlannerHeight(track, prefs.view); // the week fills the window down to the bottom padding
   const goSpread = (n: number) => { const t = track.current, col = t?.children[n * SPREAD_SIZE] as HTMLElement | undefined; if (t && col) t.scrollTo({ left: col.offsetLeft - t.offsetLeft, behavior: "smooth" }); };
   useEffect(() => { if (prefs.view !== "week") return; const t = track.current; const target = t?.querySelector<HTMLElement>(`[data-day="${date}"]`) ?? t?.querySelector<HTMLElement>(`[data-day="${today}"]`); if (t && target) t.scrollTo({ left: target.offsetLeft - t.offsetLeft, behavior: "auto" }); }, [prefs.view, date, today]);
   const onTrackScroll = () => { const t = track.current, second = t?.children[SPREAD_SIZE] as HTMLElement | undefined; if (t && second) setSpread(t.scrollLeft + 8 >= second.offsetLeft - t.offsetLeft ? 1 : 0); };
@@ -83,16 +86,16 @@ function AgendaBody({ date, today, onDate, onOpen, workspaceId, prefs, update, s
   function dayHeader(day: string, ctx: DayContext) {
     const own = prefs.showMarks ? dayMarks(marks, day) : [];
     return <header className="muse-agenda-day-head">
-      <button type="button" className="muse-agenda-day-heading" onClick={() => open(day, "day")} aria-label={`Open ${weekday(day, "long")} ${day} in Day view`}><span>{weekday(day)}</span><strong>{dayNumber(day)}</strong></button>
+      <button type="button" className="muse-agenda-day-heading" onClick={() => open(day, "day")} aria-label={`Open ${weekday(day, "long")} ${day} in Day view`}><span>{weekday(day)}</span><strong>{dayNumber(day)}</strong>{day === today && <em className="muse-agenda-today-word">Today</em>}</button>
       <MarkStrip marks={own} labels={false} onEdit={(m, a) => ctx.onMark(a, m)} />
       <button type="button" className="muse-agenda-add muse-agenda-mark-add" aria-label={`Add a Mark on ${day}`} title="Add a Mark" onClick={(e) => ctx.onMark(e.currentTarget)}><MuseIcon name="favorite" size={12} /></button>
     </header>;
   }
   function dayColumn(day: string) {
     const ctx = context(day, "fixed");
-    return <section key={day} data-day={day} className="muse-agenda-day" data-today={day === today || undefined} aria-label={`${weekday(day, "long")} ${day}`}>
+    return <section key={day} data-day={day} className={`muse-agenda-day${day === today ? " muse-today-ring" : ""}`} data-today={day === today || undefined} aria-label={`${weekday(day, "long")} ${day}${day === today ? ", today" : ""}`}>
       {dayHeader(day, ctx)}
-      {agenda.layout.sections.map((s) => <AgendaSectionView key={s.id} section={s} ctx={ctx} />)}
+      <div className="muse-agenda-day-body">{agenda.layout.sections.map((s) => <AgendaSectionView key={s.id} section={s} ctx={ctx} />)}</div>
     </section>;
   }
   function dailyPlanner() {
@@ -140,7 +143,7 @@ function AgendaBody({ date, today, onDate, onOpen, workspaceId, prefs, update, s
             <button type="button" className="muse-button button-ghost" onClick={() => open(sel, "week")}>Open week</button>
             <button type="button" className="muse-button button-ghost" onClick={(e) => ctx.onEvent(e.currentTarget)}>+ Event</button>
             <button type="button" className="muse-button button-ghost" onClick={(e) => ctx.onMark(e.currentTarget)}>+ Mark</button>
-            <button type="button" className="muse-agenda-add" aria-label="Close details" onClick={() => setSelected(null)}>×</button></div></header>
+            <button type="button" className="muse-agenda-add" aria-label="Close details" onClick={() => setSelected(null)}><MuseIcon name="close" size={12} /></button></div></header>
           <MarkStrip marks={own} onEdit={(m, a) => ctx.onMark(a, m)} />
           {ctx.events.length > 0 && <ul className="muse-agenda-detail-events">{ctx.events.map((e) => <EventLine key={e.id} event={e} day={sel} ctx={ctx} />)}</ul>}
           {tasks.length > 0 ? <ul className="muse-agenda-task-list">{tasks.map((t) => <AgendaTaskCard key={t.id} task={t} onOpen={onOpen} today={today} priority={ctx.priorityIds.has(t.id)} />)}</ul> : !ctx.events.length && <p className="muse-agenda-empty">Nothing planned yet.</p>}
@@ -161,7 +164,7 @@ function AgendaBody({ date, today, onDate, onOpen, workspaceId, prefs, update, s
       return <section key={m} className="muse-agenda-log-month" data-current={m === today.slice(0, 7) || undefined} aria-labelledby={`log-${m}`}>
         <header><h3 id={`log-${m}`}><button type="button" className="text-button" onClick={() => open(first, "month")} aria-label={`Open ${monthName(m)} in Month view`}>{monthName(m)}</button></h3>
           <span className="muse-agenda-log-add">
-            <button type="button" className="muse-agenda-add" aria-label={`Add a plan in ${monthName(m)}`} title="Add an event or plan" onClick={(e) => openEditor(e.currentTarget, { kind: "event", date: m === today.slice(0, 7) ? today : first })}>+</button>
+            <button type="button" className="muse-agenda-add" aria-label={`Add a plan in ${monthName(m)}`} title="Add an event or plan" onClick={(e) => openEditor(e.currentTarget, { kind: "event", date: m === today.slice(0, 7) ? today : first })}><MuseIcon name="plus" size={13} /></button>
             <button type="button" className="muse-agenda-add" aria-label={`Add a Mark in ${monthName(m)}`} title="Add a Mark" onClick={(e) => openEditor(e.currentTarget, { kind: "mark", date: m === today.slice(0, 7) ? today : first })}><MuseIcon name="favorite" size={12} /></button></span></header>
         {entries.length ? <ul>{entries.map((x) => <li key={x.key}>{x.node}</li>)}</ul> : <p className="muse-agenda-empty">Nothing planned yet</p>}
       </section>;
@@ -170,17 +173,22 @@ function AgendaBody({ date, today, onDate, onOpen, workspaceId, prefs, update, s
 
   return <section className="muse-agenda" aria-label="Agenda">
     <div className="muse-agenda-toolbar">
-      <MuseChoiceMenu label="Agenda view" valueLabel={agendaViews.find((v) => v.id === view)!.label} options={agendaViews.map((v) => ({ id: v.id, label: v.label }))} selectedIds={[view]} onSelect={(id) => { update({ view: id as AgendaView }); setSelected(null); }} />
-      <div className="muse-agenda-nav" role="group" aria-label="Move through the Agenda">
-        <button type="button" className="muse-button" aria-label="Previous" onClick={() => onDate(range.previous)}>‹</button>
-        <button type="button" className="muse-button" onClick={() => onDate(today)}>Today</button>
-        <button type="button" className="muse-button" aria-label="Next" onClick={() => onDate(range.next)}>›</button>
-      </div>
-      <h2 className="muse-agenda-title">{agendaTitle(view, date)}</h2>
+      <PeriodTitle title={agendaTitle(view, date)} date={date} onChange={onDate} />
       <div className="muse-agenda-tools">
+        <div className="muse-agenda-nav" role="group" aria-label="Move through the Agenda">
+          <button type="button" className="muse-button" aria-label="Previous" onClick={() => onDate(range.previous)}>‹</button>
+          <button type="button" className="muse-button" onClick={() => onDate(today)}>Today</button>
+          <button type="button" className="muse-button" aria-label="Next" onClick={() => onDate(range.next)}>›</button>
+        </div>
+        <MuseChoiceMenu label="Agenda view" valueLabel={agendaViews.find((v) => v.id === view)!.label} options={agendaViews.map((v) => ({ id: v.id, label: v.label }))} selectedIds={[view]} onSelect={(id) => { update({ view: id as AgendaView }); setSelected(null); }} />
         <button type="button" className="muse-button" onClick={(e) => openEditor(e.currentTarget, { kind: "event", date: view === "year" || view === "month" ? (date.slice(0, 7) === today.slice(0, 7) ? today : date) : date })}>+ Event</button>
         {(view === "week" || view === "day") && <button type="button" className="muse-button" aria-pressed={customizing} onClick={() => setCustomizing(!customizing)}>Customize layout</button>}
-        <button type="button" className="muse-button" aria-label="View settings and key" aria-expanded={editor?.kind === "settings"} onClick={(e) => openEditor(e.currentTarget, { kind: "settings" })}><MuseIcon name="settings" size={16} /></button>
+        <button type="button" className="muse-button muse-agenda-icon" aria-label="View settings and key" aria-expanded={editor?.kind === "settings"} onClick={(e) => openEditor(e.currentTarget, { kind: "settings" })}><MuseIcon name="settings" size={16} /></button>
+        {view === "week" && <div className="muse-agenda-spread-nav" role="group" aria-label="Week spreads">
+          <button type="button" className="muse-button muse-agenda-icon" aria-label="Monday to Thursday" disabled={spread === 0} onClick={() => goSpread(0)}>‹</button>
+          <span className="small-label" aria-live="polite">{spread === 0 ? "Mon – Thu" : "Fri – Sun"}</span>
+          <button type="button" className="muse-button muse-agenda-icon" aria-label="Friday to Sunday and planning" disabled={spread === 1} onClick={() => goSpread(1)}>›</button>
+        </div>}
       </div>
     </div>
     {hiding.length > 0 && <p className="muse-agenda-hiding small-label" role="status">Hiding {hiding.join(", ")}. <button type="button" className="text-button" onClick={() => update({ showCompleted: true, showCanceled: true, showMarks: true })}>Show everything</button></p>}
@@ -188,19 +196,13 @@ function AgendaBody({ date, today, onDate, onOpen, workspaceId, prefs, update, s
     {customizing && (view === "week" || view === "day") && <LayoutEditor onClose={() => setCustomizing(false)} />}
     <div className="muse-agenda-content">
       {view === "day" && dailyPlanner()}
-      {view === "week" && <div className="muse-agenda-week-wrap">
-        <div className="muse-agenda-spread-nav" role="group" aria-label="Week spreads">
-          <button type="button" className="muse-agenda-step" aria-label="Monday to Thursday" disabled={spread === 0} onClick={() => goSpread(0)}>‹</button>
-          <span className="small-label" aria-live="polite">{spread === 0 ? "Mon – Thu" : "Fri – Sun · planning"}</span>
-          <button type="button" className="muse-agenda-step" aria-label="Friday to Sunday and planning" disabled={spread === 1} onClick={() => goSpread(1)}>›</button>
-        </div>
-        <div className="muse-agenda-week" ref={track} tabIndex={0} onScroll={onTrackScroll} aria-label="Week, two spreads; scroll sideways">
+      {view === "week" && <div className="muse-agenda-week" ref={track} tabIndex={0} onScroll={onTrackScroll} aria-label="Week, two spreads; scroll sideways">
           {weekSlots(date).map((slot) => slot.kind === "day" ? dayColumn(slot.date) : <WeekPlanningColumn key={`planning-${range.days[0]}`} weekStart={range.days[0]} />)}
-        </div></div>}
+        </div>}
       {view === "month" && monthView()}
       {view === "year" && futureLog()}
     </div>
-    <GlassPopover id="agenda-editor" label={editor?.kind === "settings" ? "Agenda settings" : editor?.kind === "mark" ? "Muse Mark" : "Event"} open={editor !== null} anchorRef={anchor} onClose={() => setEditor(null)} width={editor?.kind === "settings" ? 320 : 380}>
+    <GlassPopover id="agenda-editor" label={editor?.kind === "settings" ? "Agenda settings" : editor?.kind === "mark" ? (editor.mark ? "Edit Mark" : "New Mark") : editor?.kind === "event" && editor.event ? "Edit event" : "New event"} open={editor !== null} anchorRef={anchor} onClose={() => setEditor(null)} width={editor?.kind === "settings" ? 320 : 380}>
       {editor?.kind === "event" && <EventEditor key={editor.event?.id ?? `new-${editor.date}`} event={editor.event} date={editor.date} onDone={closeEditor} />}
       {editor?.kind === "mark" && <MarkEditor key={editor.mark?.id ?? `new-${editor.date}-${editor.link?.id ?? ""}`} mark={editor.mark} date={editor.date} link={editor.link} onDone={closeEditor} />}
       {editor?.kind === "settings" && <div className="muse-agenda-settings">

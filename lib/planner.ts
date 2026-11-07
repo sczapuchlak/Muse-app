@@ -109,7 +109,8 @@ export function formatPlannedMinutes(minutes: number): string {
 }
 
 export const PLANNING_WINDOW_DAYS = 3;
-export type PlannerFilters = { groupId: string; tagIds: string[]; status: "all" | "open" | "complete";timeboxedOnly?:boolean };
+/** priorityOnly: tasks linked to one of Dayview's three daily priorities (no separate priority field exists). */
+export type PlannerFilters = { groupId: string; tagIds: string[]; status: "all" | "open" | "complete";timeboxedOnly?:boolean;priorityOnly?:boolean };
 export const emptyPlannerFilters: PlannerFilters = { groupId: "", tagIds: [], status: "all" };
 export function filterPlannerTasks(tasks: PlannedTask[], workspaceId: string, filters: PlannerFilters, search: string): PlannedTask[] {
   const query = search.trim().toLocaleLowerCase("en-US");

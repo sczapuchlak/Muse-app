@@ -2,7 +2,8 @@
 import {useLayoutEffect,type RefObject} from 'react';
 
 /** Surrounding chrome determines height. Task content/workspace selection never does. */
-export function usePlannerHeight(ref:RefObject<HTMLDivElement|null>){
+/** `key` re-attaches when the measured element is swapped (e.g. Agenda switching views). */
+export function usePlannerHeight(ref:RefObject<HTMLDivElement|null>,key:unknown=null){
  useLayoutEffect(()=>{
   const board=ref.current,page=board?.closest('main');
   if(!board||!page)return;
@@ -14,7 +15,8 @@ export function usePlannerHeight(ref:RefObject<HTMLDivElement|null>){
    const styles=getComputedStyle(page),gap=parseFloat(styles.getPropertyValue('--space-5'))||20;
    const minimum=parseFloat(styles.getPropertyValue('--planner-min-height'))||420;
    const padding=parseFloat(styles.paddingBottom)||gap;
-   const top=box.top-(viewport?.offsetTop??0),bottom=viewport?.height??window.innerHeight;
+   // Measure from the top of the document, so a scrolled page never yields a short or tall board.
+   const top=box.top+window.scrollY-(viewport?.offsetTop??0),bottom=viewport?.height??window.innerHeight;
    const footer=Array.from(page.children)
     .filter(node=>node.tagName==='FOOTER'&&(node.compareDocumentPosition(board)&Node.DOCUMENT_POSITION_PRECEDING))
     .reduce((sum,node)=>sum+node.getBoundingClientRect().height,0);
@@ -25,6 +27,8 @@ export function usePlannerHeight(ref:RefObject<HTMLDivElement|null>){
   const resize=new ResizeObserver(measure);
   function observeChrome(){
    Array.from(page!.children).filter(node=>node.tagName==='HEADER'||node.classList.contains('muse-module-toolbar')||node.classList.contains('muse-planner-timer-status')||node.tagName==='FOOTER').forEach(node=>resize.observe(node));
+   // Anything above the board (tabs, toolbars, banners, the layout editor) can move it; re-measure when it does.
+   for(let node:Element|null=board!;node&&node!==page;node=node.parentElement){if(node!==board)resize.observe(node);for(let sib=node.previousElementSibling;sib;sib=sib.previousElementSibling)resize.observe(sib);}
    measure();
   }
   observeChrome();
@@ -32,5 +36,5 @@ export function usePlannerHeight(ref:RefObject<HTMLDivElement|null>){
   mutation.observe(page,{childList:true});
   window.addEventListener('resize',measure);viewport?.addEventListener('resize',measure);
   return()=>{resize.disconnect();mutation.disconnect();window.removeEventListener('resize',measure);viewport?.removeEventListener('resize',measure);};
- },[ref]);
+ },[ref,key]);
 }

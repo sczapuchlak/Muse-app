@@ -1,4 +1,5 @@
 "use client";
+import { MuseIcon } from "../MuseIcon";
 import {accentStyle} from "@/lib/appearance-values";
 import { useEffect, useState } from "react";
 import type { PlannedTask } from "@/lib/models";
@@ -47,7 +48,7 @@ export function TaskDetails({ taskId, onClose, returnFocus }: { taskId: string; 
       <label className="editor-label">Notes<textarea rows={3} value={task.notes ?? ""} onChange={(event) => update({ notes: event.target.value })} placeholder="A little context…" /></label>
       <section className="muse-detail-section" aria-labelledby="task-subtasks"><h3 id="task-subtasks">Subtasks <span className="small-label">{task.subtasks.filter((item) => item.complete).length}/{task.subtasks.length}</span></h3>
         <ul className="muse-subtask-list">{task.subtasks.map((item) => <SubtaskRow key={item.id} item={item} onChange={(next) => update({ subtasks: task.subtasks.map((entry) => entry.id === item.id ? next : entry) })} onDelete={() => update({ subtasks: task.subtasks.filter((entry) => entry.id !== item.id) })} />)}</ul>
-        <form className="muse-task-quick-add" onSubmit={(event) => { event.preventDefault(); if (!subtask.trim()) return; update({ subtasks: [...task.subtasks, { id: crypto.randomUUID(), title: subtask.trim(), complete: false }] }); setSubtask(""); }}><input type="text" maxLength={160} aria-label="New subtask title" placeholder="Add a subtask…" value={subtask} onChange={(event) => setSubtask(event.target.value)} /><button type="submit" disabled={!subtask.trim()} aria-label="Add subtask">+</button></form>
+        <form className="muse-task-quick-add" onSubmit={(event) => { event.preventDefault(); if (!subtask.trim()) return; update({ subtasks: [...task.subtasks, { id: crypto.randomUUID(), title: subtask.trim(), complete: false }] }); setSubtask(""); }}><input type="text" maxLength={160} aria-label="New subtask title" placeholder="Add a subtask…" value={subtask} onChange={(event) => setSubtask(event.target.value)} /><button type="submit" disabled={!subtask.trim()} aria-label="Add subtask"><MuseIcon name="plus" size={16} /></button></form>
       </section>
       <section className="muse-detail-section" aria-labelledby="task-time"><h3 id="task-time">Time spent</h3><div className="muse-task-timer"><output aria-label="Actual time spent">{Math.floor(task.actualMinutes + runningMinutes(state, taskId, now))}m actual</output><button type="button" className="muse-button" disabled={task.complete} onClick={() => dispatch(running ? { type: "timer/pause", now: new Date().toISOString() } : { type: "timer/start", id: taskId, now: new Date().toISOString() })}>{running ? "Pause timer" : "Start timer"}</button></div></section>
       <button className="text-button muse-delete-task" type="button" onClick={() => { dispatch({ type: "task/delete", id: taskId, now: new Date().toISOString() }); onClose(); }}>Delete task</button>

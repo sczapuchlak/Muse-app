@@ -75,7 +75,7 @@ export function EventLine({ event, day, ctx }: { event: DayEvent; day?: string; 
 
 function EventsSection({ section, ctx }: { section: AgendaSection; ctx: DayContext }) {
   return <Band section={section} ctx={ctx} count={ctx.events.length}
-    action={<button type="button" className="muse-agenda-add" aria-label={`Add an event on ${ctx.day}`} onClick={(e) => ctx.onEvent(e.currentTarget)}>+</button>}>
+    action={<button type="button" className="muse-agenda-add" aria-label={`Add an event on ${ctx.day}`} onClick={(e) => ctx.onEvent(e.currentTarget)}><MuseIcon name="plus" size={13} /></button>}>
     {ctx.events.length ? <ul>{ctx.events.map((ev) => <EventLine key={ev.id} event={ev} day={ctx.day} ctx={ctx} />)}</ul>
       : <button type="button" className="muse-agenda-empty muse-agenda-empty-action" onClick={(e) => ctx.onEvent(e.currentTarget)}>Nothing booked · add an event</button>}
   </Band>;
@@ -118,7 +118,7 @@ function MovementSection({ section, ctx }: { section: AgendaSection; ctx: DayCon
   }
   function move(id: string, to: string) { plan(ctx.day, (l) => l.filter((x) => x !== id)); plan(to, (l) => l.includes(id) ? l : [...l, id]); }
   const week = weekDates(ctx.day).filter((d) => d !== ctx.day);
-  return <Band section={section} ctx={ctx} count={ids.length} action={ready ? <button type="button" className="muse-agenda-add" aria-expanded={picking} aria-label={`Plan movement on ${ctx.day}`} onClick={() => setPicking(!picking)}>+</button> : undefined}>
+  return <Band section={section} ctx={ctx} count={ids.length} action={ready ? <button type="button" className="muse-agenda-add" aria-expanded={picking} aria-label={`Plan movement on ${ctx.day}`} onClick={() => setPicking(!picking)}><MuseIcon name="plus" size={13} /></button> : undefined}>
     {picking && <div className="muse-agenda-picker muse-chip-row" role="group" aria-label="Movement to plan">{types.filter((t) => !t.archived).map((t) =>
       <button key={t.id} type="button" aria-pressed={planned.includes(t.id)} onClick={() => plan(ctx.day, (l) => l.includes(t.id) ? l.filter((x) => x !== t.id) : [...l, t.id])}>{t.name}</button>)}
       <button type="button" className="text-button" onClick={() => setPicking(false)}>Done</button></div>}
