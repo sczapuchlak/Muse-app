@@ -85,3 +85,20 @@ export async function saveDayNote(client:Client,userId:string,note:DayNote):Prom
  if(!result.data)throw Error('This note changed on another device. Reload to see the latest.');
  return {sectionId:result.data.section_id,date:result.data.local_date,body:result.data.body,revision:result.data.revision};
 }
+
+// ---------- Running List manual order (#81) ----------
+export async function readRunningOrder(client:Client,userId:string):Promise<{ids:string[];revision:number}>{
+ const {data,error}=await client.from('planner_running_orders').select('task_ids,revision').eq('user_id',userId).maybeSingle();
+ if(error)throw error;
+ const ids=Array.isArray(data?.task_ids)?(data!.task_ids as unknown[]).filter((x):x is string=>typeof x==='string').slice(0,5000):[];
+ return {ids,revision:data?.revision??0};
+}
+/** Insert the first time, then a revision-checked update, like every other owner record. */
+export async function saveRunningOrder(client:Client,userId:string,ids:string[],revision:number):Promise<number>{
+ const task_ids=[...new Set(ids)].slice(0,5000);
+ const r=revision===0
+  ?await client.from('planner_running_orders').insert({user_id:userId,task_ids}).select('revision').single()
+  :await client.from('planner_running_orders').update({task_ids}).eq('user_id',userId).eq('revision',revision).select('revision').maybeSingle();
+ if(r.error)throw r.error;if(!r.data)throw Error('Your list order changed on another device. Reload to see it.');
+ return r.data.revision;
+}

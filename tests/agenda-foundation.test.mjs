@@ -77,8 +77,8 @@ test('task states come from existing fields only; overdue tasks are never moved 
  assert.equal(A.taskState(task('a',undefined),'2026-11-06'),'unscheduled');
  assert.equal(A.taskState(task('a','2026-11-01',{complete:true}),'2026-11-06'),'complete');
  assert.deepEqual(A.dayItems([task('old','2026-11-01')],[],'2026-11-06',true).tasks,[],'an overdue task stays on its own day');
- const card=read('components/planner/AgendaTaskCard.tsx');
- assert.match(card,/Migrate to today/);assert.match(card,/Move to a date…/);assert.match(card,/Overdue/);assert.match(card,/Priority/);
+ const row=read('components/planner/TaskListRow.tsx'),menu=read('components/planner/ScheduleMenu.tsx');
+ assert.match(menu,/Migrate to today/);assert.match(menu,/Another day/);assert.match(row,/Overdue/);assert.match(row,/Priority/);
 });
 
 test('Muse Marks: visual-only by default, linked Marks follow their source, missing sources degrade, never activity',()=>{

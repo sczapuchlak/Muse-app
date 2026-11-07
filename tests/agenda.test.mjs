@@ -42,7 +42,7 @@ test('Planner wires the tabs and Agenda reuses the existing task, drop and event
  const planner=read('components/planner/Planner.tsx');
  assert.match(planner,/<MuseSectionNav label="Planner views"/);assert.match(planner,/tab === "agenda" && <Agenda /);
  const agenda=read('components/planner/Agenda.tsx')+read('components/planner/AgendaSections.tsx')+read('components/planner/EventEditor.tsx');
- for(const piece of ['AgendaTaskCard','PlanningDropZone','TaskQuickAdd','EventEditor','dispatch({ type: "event/save"'])assert.ok(agenda.includes(piece),piece);
+ for(const piece of ['TaskListRow','PlanningDropZone','TaskQuickAdd','EventEditor','dispatch({ type: "event/save"'])assert.ok(agenda.includes(piece),piece);
 });
 
 test('Weekly Agenda: two spreads of four equal columns, the last one a customizable planning column',()=>{
@@ -57,7 +57,7 @@ test('Weekly Agenda: two spreads of four equal columns, the last one a customiza
  assert.match(css,/\.muse-agenda-week\{--cols:4;/);assert.match(css,/max-width:1050px\)\{\.muse-agenda-week\{--cols:2\}/,'fewer columns, never squeezed');
  assert.match(css,/nth-child\(4n\+1\)\{scroll-snap-align:start\}/,'snaps by spread on wide screens');
  const agenda=read('components/planner/Agenda.tsx');assert.doesNotMatch(agenda,/muse-agenda-sidebar|Task list<\/button>/,'no Tasks-board sidebar in Agenda');
- const card=read('components/planner/AgendaTaskCard.tsx');assert.match(card,/TASK_DRAG_TYPE/);assert.match(card,/MuseOverflowMenu/);assert.doesNotMatch(card,/TaskTimer/);
+ const card=read('components/planner/TaskListRow.tsx');assert.match(card,/TASK_DRAG_TYPE/);assert.match(card,/MuseOverflowMenu/);assert.match(card,/reorderWithinDate/,'Agenda uses the Task List row, reordering within its day');
  const sql=read('supabase/migrations/20261117000100_planner_week_sections.sql');
  assert.match(sql,/primary key \(user_id, week_start\)/);assert.match(sql,/extract\(isodow from week_start\) = 1/);assert.equal((sql.match(/create policy owner_/g)??[]).length,4);
 });

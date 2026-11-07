@@ -25,6 +25,8 @@ export type PlannerAction =
   | { type: "task/move"; id: string; date: string | undefined }
   | { type: "task/place"; id: string; date: string | undefined; beforeId?: string }
   | { type: "task/toggle"; id: string; now: string }
+  /** Running List: complete on a chosen local day (today or earlier). The server records that day. */
+  | { type: "task/completeOn"; id: string; date: string; now: string }
   | { type: "task/delete"; id: string; now: string }
   | { type: "event/add"; event: DayEvent }
   | { type: "event/save"; event: DayEvent }
@@ -80,6 +82,13 @@ export function plannerReducer(state: PlannerState, action: PlannerAction): Plan
     case "task/toggle": {
       const next = state.activeTimer?.taskId === action.id ? pause(state, action.now) : state;
       return { ...next, tasks: next.tasks.map((task) => task.id === action.id ? { ...task, complete: !task.complete, completedAt: task.complete ? undefined : action.now } : task) };
+    }
+    case "task/completeOn": {
+      if (!validDate(action.date)) return state;
+      const next = state.activeTimer?.taskId === action.id ? pause(state, action.now) : state;
+      // Noon of the chosen day stands in until the server's echo, which records the exact local day.
+      const at = `${action.date}T12:00:00.000Z`;
+      return { ...next, tasks: next.tasks.map((task) => task.id === action.id ? { ...task, complete: true, completedAt: at } : task) };
     }
     case "task/delete": {
       const next = state.activeTimer?.taskId === action.id ? pause(state, action.now) : state;

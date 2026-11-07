@@ -1,22 +1,23 @@
 "use client";
-import { useState, type CSSProperties, type ReactNode } from "react";
+import { useId, useRef, useState, type CSSProperties, type FormEvent, type PointerEvent as ReactPointerEvent, type ReactNode } from "react";
 import type { DayEvent, PlannedTask } from "@/lib/models";
 import { mealLabels, mealSlots } from "@/lib/models";
 import { eventDays, eventWhen, taskState } from "@/lib/agenda";
-import { sectionRem, sectionWorkspaces, showCompletedFor, type AgendaSection } from "@/lib/agenda-layout";
+import { clampHeight, MAX_SECTION_PX, MIN_SECTION_PX, sectionPx, sectionWorkspaces, showCompletedFor, type AgendaSection } from "@/lib/agenda-layout";
 import { itemMark, type ResolvedMark } from "@/lib/muse-marks";
 import { movementCategory } from "@/lib/progress/movement";
-import { formatWaterAmount } from "@/lib/water";
+import { formatWaterAmount, parseWaterAmount } from "@/lib/water";
 import { sessionSeconds } from "@/lib/whimsy/reading-stats";
 import { weekDates } from "@/lib/dates";
 import { sampleMovementTypes } from "@/lib/sample-taxonomies";
-import { MAX_QUICK_MOVEMENTS } from "@/lib/selections";
+import { MAX_QUICK_MOVEMENTS, movementNameError, normalizeMovementName } from "@/lib/selections";
 import { MuseIcon, type MuseIconName } from "../MuseIcon";
 import { MuseOverflowMenu } from "../MuseOverflowMenu";
+import { GlassPopover } from "../GlassPopover";
 import { usePlanner } from "../PlannerStore";
 import { useWellness } from "../WellnessStore";
 import { useWhimsyData } from "../whimsy/WhimsyData";
-import { AgendaTaskCard } from "./AgendaTaskCard";
+import { TaskListRow } from "./TaskListRow";
 import { PlanningDropZone } from "./PlanningDropZone";
 import { TaskQuickAdd } from "./TaskQuickAdd";
 import { MarkGlyph } from "./MuseMarks";
@@ -39,11 +40,23 @@ const categoryAccent: Record<string, string> = { strength: "pop", cardio: "warm"
  * the content scrolls inside it and the header always shows how many items there are, so nothing is silently hidden.
  */
 function Band({ section, ctx, count, action, children }: { section: AgendaSection; ctx: DayContext; count?: number; action?: ReactNode; children: ReactNode }) {
-  const style = ctx.flow === "fixed" ? { "--section-h": `${sectionRem(section.size)}rem` } as CSSProperties : undefined;
-  const headingId = `agenda-${section.id}-${ctx.day}`;
-  return <div className="muse-agenda-section" data-section={section.type} data-size={section.size} data-flow={ctx.flow} style={style} role="group" aria-labelledby={headingId}>
+  const { preview, setPreview, changeLayout } = useAgendaData();
+  const px = preview[section.id] ?? sectionPx(section);
+  const style = ctx.flow === "fixed" ? { "--section-h": `${px}px` } as CSSProperties : undefined;
+  const headingId = `agenda-${section.id}-${ctx.day}`, collapsed = section.size === "collapsed" && !section.height && ctx.flow === "fixed";
+  const commit = (next: number) => { setPreview(section.id, null); changeLayout({ type: "update", id: section.id, patch: { height: clampHeight(next) } }); };
+  // Drag the bottom edge (or use the arrow keys) to size this band in every day at once.
+  function drag(e: ReactPointerEvent<HTMLDivElement>) {
+    const start = e.clientY, from = px, el = e.currentTarget; el.setPointerCapture(e.pointerId); let last = from;
+    const moveTo = (ev: PointerEvent) => { last = clampHeight(from + ev.clientY - start); setPreview(section.id, last); };
+    const end = () => { el.removeEventListener("pointermove", moveTo); el.removeEventListener("pointerup", end); el.removeEventListener("pointercancel", end); commit(last); };
+    el.addEventListener("pointermove", moveTo); el.addEventListener("pointerup", end); el.addEventListener("pointercancel", end);
+  }
+  return <div className="muse-agenda-section" data-section={section.type} data-size={section.height ? "custom" : section.size} data-flow={ctx.flow} style={style} role="group" aria-labelledby={headingId}>
     <div className="muse-agenda-section-head"><h3 id={headingId}>{section.title}{count ? <span className="muse-agenda-count"> · {count}</span> : null}</h3>{action}</div>
-    {section.size === "collapsed" && ctx.flow === "fixed" ? null : <div className="muse-agenda-section-body" tabIndex={-1}>{children}</div>}
+    {collapsed ? null : <div className="muse-agenda-section-body" tabIndex={-1}>{children}</div>}
+    {ctx.flow === "fixed" && <div className="muse-agenda-resize" role="separator" aria-orientation="horizontal" tabIndex={0} aria-label={`Resize ${section.title} for every day`} aria-valuenow={px} aria-valuemin={MIN_SECTION_PX} aria-valuemax={MAX_SECTION_PX}
+      onPointerDown={drag} onKeyDown={(e) => { if (e.key === "ArrowUp" || e.key === "ArrowDown") { e.preventDefault(); commit(px + (e.key === "ArrowDown" ? 16 : -16)); } }} />}
   </div>;
 }
 
@@ -91,8 +104,7 @@ function TasksSection({ section, ctx }: { section: AgendaSection; ctx: DayContex
   return <PlanningDropZone date={ctx.day} className="muse-agenda-drop-wrap">
     <Band section={section} ctx={ctx} count={visible.length} action={hidden > 0 ? <span className="small-label">{hidden} done hidden</span> : undefined}>
       {scope.missing.length > 0 && <p className="muse-agenda-warning" role="note">A workspace this section showed was removed. Choose its workspaces again in Customize layout.</p>}
-      {visible.length ? <ul className="muse-agenda-task-list">{visible.map((t) => <AgendaTaskCard key={t.id} task={t} onOpen={ctx.onOpenTask} today={ctx.today} priority={ctx.priorityIds.has(t.id)}
-        mark={ctx.showMarks ? itemMark(ctx.marks, "task", t.id) : undefined} onMark={(a, mark) => ctx.onMark(a, mark, { kind: "task", id: t.id, title: t.title })} />)}</ul>
+      {visible.length ? <ul className="muse-task-list-rows muse-agenda-rows">{visible.map((t) => <TaskListRow key={t.id} task={t} today={ctx.today} boardDays={[ctx.day]} priority={ctx.priorityIds.has(t.id)} showWorkspace onOpen={ctx.onOpenTask} onPlaced={() => {}} reorderWithinDate />)}</ul>
         : <p className="muse-agenda-empty">{taskState({ complete: false, plannedDate: ctx.day }, ctx.today) === "overdue" ? "Nothing left open." : "A little breathing room."}</p>}
       {(scope.all || scope.ids.length > 0) && <TaskQuickAdd date={ctx.day} workspaceId={quickWorkspace} />}
     </Band>
@@ -105,31 +117,44 @@ function TasksSection({ section, ctx }: { section: AgendaSection; ctx: DayContex
  */
 function MovementSection({ section, ctx }: { section: AgendaSection; ctx: DayContext }) {
   const { state, store, dispatch, status } = useWellness();
-  const [picking, setPicking] = useState(false);
+  const [open, setOpen] = useState(false), [name, setName] = useState(""), [error, setError] = useState("");
+  const anchor = useRef<HTMLButtonElement>(null), id = useId();
   const planned = state.movement.find((d) => d.date === ctx.day)?.typeIds ?? [];
   const done = new Set(state.activities.filter((a) => a.date === ctx.day).map((a) => a.typeId));
   // Same fallback as Dayview's Movement card: before anything is saved, the starter types are the vocabulary.
   const types = state.types.length ? state.types : starterTypes;
   const ids = [...new Set([...planned, ...done])], ready = status.loaded && !status.error;
-  function plan(date: string, change: (ids: string[]) => string[]) {
+  function save(date: string, change: (ids: string[]) => string[], nextTypes?: typeof types) {
     const s = store.getSnapshot().state, current = s.movement.find((d) => d.date === date)?.typeIds ?? [];
-    const saved = s.types.length > 0;
-    dispatch({ kind: "movement", types: saved ? s.types : starterTypes, quickIds: saved ? s.quickIds : starterTypes.slice(0, MAX_QUICK_MOVEMENTS).map((t) => t.id), recentIds: s.recentIds, day: { date, typeIds: change(current) } });
+    const saved = s.types.length > 0, base = saved ? s.types : starterTypes;
+    dispatch({ kind: "movement", types: nextTypes ?? base, quickIds: saved ? s.quickIds : starterTypes.slice(0, MAX_QUICK_MOVEMENTS).map((t) => t.id), recentIds: s.recentIds, day: { date, typeIds: change(current) } });
   }
-  function move(id: string, to: string) { plan(ctx.day, (l) => l.filter((x) => x !== id)); plan(to, (l) => l.includes(id) ? l : [...l, id]); }
+  function move(typeId: string, to: string) { save(ctx.day, (l) => l.filter((x) => x !== typeId)); save(to, (l) => l.includes(typeId) ? l : [...l, typeId]); }
+  /** A new type joins the shared Wellness vocabulary, so Dayview's movement list has it too. */
+  function create(e: FormEvent) {
+    e.preventDefault(); const problem = movementNameError(name, types); if (problem) { setError(problem); return; }
+    const t = { id: crypto.randomUUID(), name: normalizeMovementName(name), source: "custom" as const, archived: false };
+    save(ctx.day, (l) => [...l, t.id], [...types, t]); setName(""); setError("");
+  }
   const week = weekDates(ctx.day).filter((d) => d !== ctx.day);
-  return <Band section={section} ctx={ctx} count={ids.length} action={ready ? <button type="button" className="muse-agenda-add" aria-expanded={picking} aria-label={`Plan movement on ${ctx.day}`} onClick={() => setPicking(!picking)}><MuseIcon name="plus" size={13} /></button> : undefined}>
-    {picking && <div className="muse-agenda-picker muse-chip-row" role="group" aria-label="Movement to plan">{types.filter((t) => !t.archived).map((t) =>
-      <button key={t.id} type="button" aria-pressed={planned.includes(t.id)} onClick={() => plan(ctx.day, (l) => l.includes(t.id) ? l.filter((x) => x !== t.id) : [...l, t.id])}>{t.name}</button>)}
-      <button type="button" className="text-button" onClick={() => setPicking(false)}>Done</button></div>}
-    {ids.length ? <ul className="muse-agenda-badges">{ids.map((id) => {
-      const type = types.find((t) => t.id === id), cat = type ? movementCategory(type) : "other", isPlanned = planned.includes(id), isDone = done.has(id);
-      return <li key={id} className="muse-agenda-badge" data-accent={categoryAccent[cat]} data-done={isDone || undefined}>
-        <MuseIcon name={categoryIcon[cat]} size={13} /><span>{type?.name ?? "Movement"}</span>
+  return <Band section={section} ctx={ctx} count={ids.length} action={ready ? <button ref={anchor} type="button" className="muse-agenda-add" aria-haspopup="dialog" aria-expanded={open} aria-controls={id} aria-label={`Plan movement on ${ctx.day}`} onClick={() => setOpen(!open)}><MuseIcon name="plus" size={13} /></button> : undefined}>
+    <GlassPopover id={id} label={`Plan movement · ${weekdayShort(ctx.day)} ${Number(ctx.day.slice(8))}`} open={open} anchorRef={anchor} onClose={() => setOpen(false)} width={300} scrollMode="content">
+      <p className="small-label">Planning is an intention, the same as choosing it on Dayview. Mark what you actually did there.</p>
+      <div className="popover-choice-list" role="group" aria-label="Movement types">{types.filter((t) => !t.archived).map((t) =>
+        <button key={t.id} type="button" className="popover-choice" aria-pressed={planned.includes(t.id)} onClick={() => save(ctx.day, (l) => l.includes(t.id) ? l.filter((x) => x !== t.id) : [...l, t.id])}>
+          <span className="muse-agenda-choice"><MuseIcon name={categoryIcon[movementCategory(t)]} size={14} />{t.name}</span>{planned.includes(t.id) && <MuseIcon name="check" size={14} />}</button>)}</div>
+      <form className="muse-agenda-create" onSubmit={create}><label className="editor-label" htmlFor={`${id}-new`}>New movement type</label>
+        <div><input id={`${id}-new`} value={name} maxLength={40} placeholder="Pilates, Hike…" onChange={(e) => { setName(e.target.value); setError(""); }} /><button type="submit" className="muse-button" disabled={!name.trim()}>Add</button></div>
+        {error && <p className="small-label" role="alert">{error}</p>}</form>
+    </GlassPopover>
+    {ids.length ? <ul className="muse-agenda-badges">{ids.map((typeId) => {
+      const type = types.find((t) => t.id === typeId), cat = type ? movementCategory(type) : "other", isPlanned = planned.includes(typeId), isDone = done.has(typeId);
+      return <li key={typeId} className="muse-agenda-badge" data-accent={categoryAccent[cat]} data-done={isDone || undefined}>
+        <MuseIcon name={categoryIcon[cat]} size={12} /><span>{type?.name ?? "Movement"}</span>
         <span className="muse-agenda-badge-state">{isDone ? "✓ done" : "planned"}</span>
         {isPlanned && ready && <span data-no-drag><MuseOverflowMenu label={`${type?.name ?? "Movement"} on ${ctx.day}`} actions={[
-          ...week.map((d) => ({ id: `move-${d}`, label: `Move plan to ${weekdayShort(d)} ${Number(d.slice(8))}`, onSelect: () => move(id, d) })),
-          { id: "remove", label: isDone ? "Remove from plan (keeps what you did)" : "Remove from plan", onSelect: () => plan(ctx.day, (l) => l.filter((x) => x !== id)) },
+          ...week.map((d) => ({ id: `move-${d}`, label: `Move plan to ${weekdayShort(d)} ${Number(d.slice(8))}`, onSelect: () => move(typeId, d) })),
+          { id: "remove", label: isDone ? "Remove from plan (keeps what you did)" : "Remove from plan", onSelect: () => save(ctx.day, (l) => l.filter((x) => x !== typeId)) },
         ]} /></span>}
       </li>;
     })}</ul> : <p className="muse-agenda-empty">{ready ? "Rest, or plan something" : status.error ? "Movement couldn’t load." : "Loading…"}</p>}
@@ -161,12 +186,24 @@ function MealsSection({ section, ctx }: { section: AgendaSection; ctx: DayContex
   </Band>;
 }
 
+/** Water uses Wellness's own records and the same bar colors as the Daily dashboard; adding here adds there. */
 function WaterSection({ section, ctx }: { section: AgendaSection; ctx: DayContext }) {
-  const { state } = useWellness();
-  const day = state.water.find((w) => w.date === ctx.day), unit = day?.unit ?? state.waterSettings?.unit ?? "oz", goal = day?.goal ?? state.waterSettings?.goal;
-  const text = day?.total ? `${formatWaterAmount(day.total)}${goal ? ` / ${formatWaterAmount(goal)}` : ""} ${unit}` : "";
-  return <Band section={section} ctx={ctx} action={text ? <span className="small-label">{text}</span> : undefined}>
-    {text ? <div className="muse-agenda-meter" role="img" aria-label={`Water: ${text}`}><span style={{ width: `${Math.min(100, goal ? (day!.total / goal) * 100 : 100)}%` }} /></div> : <p className="muse-agenda-empty">Nothing logged</p>}
+  const { state, dispatch, status } = useWellness();
+  const [open, setOpen] = useState(false), [custom, setCustom] = useState("");
+  const anchor = useRef<HTMLButtonElement>(null), id = useId();
+  const settings = state.waterSettings ?? { goal: 64, unit: "oz" as const, quickAdds: [8, 12, 16, 24] };
+  const day = state.water.find((w) => w.date === ctx.day), unit = day?.unit ?? settings.unit, goal = day?.goal ?? settings.goal, total = day?.total ?? 0;
+  const add = (amount: number) => { if (amount > 0) dispatch({ kind: "water", date: ctx.day, mode: "add", amount, settings }); };
+  const text = `${formatWaterAmount(total)}${goal ? ` / ${formatWaterAmount(goal)}` : ""} ${unit}`;
+  return <Band section={section} ctx={ctx} action={<span className="muse-agenda-water-head"><span className="small-label">{text}</span>
+      {status.loaded && !status.error && <button ref={anchor} type="button" className="muse-agenda-add" aria-haspopup="dialog" aria-expanded={open} aria-controls={id} aria-label={`Add water on ${ctx.day}`} onClick={() => setOpen(!open)}><MuseIcon name="plus" size={13} /></button>}</span>}>
+    <GlassPopover id={id} label={`Add water · ${weekdayShort(ctx.day)} ${Number(ctx.day.slice(8))}`} open={open} anchorRef={anchor} onClose={() => setOpen(false)} width={260}>
+      <div className="muse-chip-row" role="group" aria-label="Quick amounts">{settings.quickAdds.map((n) => <button key={n} type="button" onClick={() => add(n)}>+{formatWaterAmount(n)} {unit}</button>)}</div>
+      <form className="muse-agenda-create" onSubmit={(e) => { e.preventDefault(); const n = parseWaterAmount(custom); if (n) { add(n); setCustom(""); } }}>
+        <label className="editor-label" htmlFor={`${id}-amt`}>Another amount ({unit})</label>
+        <div><input id={`${id}-amt`} inputMode="decimal" value={custom} onChange={(e) => setCustom(e.target.value)} placeholder="20" /><button type="submit" className="muse-button" disabled={!parseWaterAmount(custom)}>Add</button></div></form>
+    </GlassPopover>
+    <div className="water-progress muse-agenda-water" role="img" aria-label={`Water: ${text}`} style={{ "--water-progress": `${Math.min(100, goal ? (total / goal) * 100 : 0)}%` } as CSSProperties}><span /></div>
   </Band>;
 }
 

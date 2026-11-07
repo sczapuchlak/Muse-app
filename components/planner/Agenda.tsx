@@ -16,7 +16,7 @@ import { useAspirations } from "../rituals/aspirations/useAspirations";
 import { useDailyData, useDailyRange } from "../daily/DailyData";
 import { AgendaDataProvider, useAgendaData } from "./AgendaData";
 import { AgendaSectionView, EventLine, type DayContext } from "./AgendaSections";
-import { AgendaTaskCard } from "./AgendaTaskCard";
+import { TaskListRow } from "./TaskListRow";
 import { EventEditor } from "./EventEditor";
 import { LayoutEditor } from "./LayoutEditor";
 import { AgendaLegend, MarkEditor, MarkGlyph, MarkStrip } from "./MuseMarks";
@@ -93,7 +93,7 @@ function AgendaBody({ date, today, onDate, onOpen, workspaceId, prefs, update, s
   }
   function dayColumn(day: string) {
     const ctx = context(day, "fixed");
-    return <section key={day} data-day={day} className={`muse-agenda-day${day === today ? " muse-today-ring" : ""}`} data-today={day === today || undefined} aria-label={`${weekday(day, "long")} ${day}${day === today ? ", today" : ""}`}>
+    return <section key={day} data-day={day} className={`muse-agenda-day muse-planner-surface${day === today ? " muse-today-ring" : ""}`} data-today={day === today || undefined} aria-label={`${weekday(day, "long")} ${day}${day === today ? ", today" : ""}`}>
       {dayHeader(day, ctx)}
       <div className="muse-agenda-day-body">{agenda.layout.sections.map((s) => <AgendaSectionView key={s.id} section={s} ctx={ctx} />)}</div>
     </section>;
@@ -146,7 +146,7 @@ function AgendaBody({ date, today, onDate, onOpen, workspaceId, prefs, update, s
             <button type="button" className="muse-agenda-add" aria-label="Close details" onClick={() => setSelected(null)}><MuseIcon name="close" size={12} /></button></div></header>
           <MarkStrip marks={own} onEdit={(m, a) => ctx.onMark(a, m)} />
           {ctx.events.length > 0 && <ul className="muse-agenda-detail-events">{ctx.events.map((e) => <EventLine key={e.id} event={e} day={sel} ctx={ctx} />)}</ul>}
-          {tasks.length > 0 ? <ul className="muse-agenda-task-list">{tasks.map((t) => <AgendaTaskCard key={t.id} task={t} onOpen={onOpen} today={today} priority={ctx.priorityIds.has(t.id)} />)}</ul> : !ctx.events.length && <p className="muse-agenda-empty">Nothing planned yet.</p>}
+          {tasks.length > 0 ? <ul className="muse-task-list-rows muse-agenda-rows">{tasks.map((t) => <TaskListRow key={t.id} task={t} onOpen={onOpen} today={today} boardDays={[sel]} priority={ctx.priorityIds.has(t.id)} showWorkspace onPlaced={() => {}} reorderWithinDate />)}</ul> : !ctx.events.length && <p className="muse-agenda-empty">Nothing planned yet.</p>}
         </>;
       })()}</section>}
     </div>;

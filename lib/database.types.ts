@@ -1243,6 +1243,20 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
+                },"planner_running_orders": {
+                  Row: {
+                    "created_at": string,"revision": number,"task_ids": NonNullable<Json>,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"revision"?: number,"task_ids"?: NonNullable<Json>,"updated_at"?: string,"user_id"?: string
+                  }
+                  Update: {
+                    "created_at"?: string,"revision"?: number,"task_ids"?: NonNullable<Json>,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
                 },"planner_versions": {
                   Row: {
                     "revision": number,"user_id": string
@@ -2477,6 +2491,9 @@ isOneToOne: false
                            },
 "planner_command":
 { Args: { "p_action": Json,"p_command_id": string,"p_expected_revision": number }; Returns: number
+                           },
+"planner_complete_on":
+{ Args: { "p_command_id": string,"p_expected_revision": number,"p_local_date": string,"p_task_id": string }; Returns: number
                            },
 "planner_event_command":
 { Args: { "p_action": Json,"p_command_id": string,"p_expected_revision": number }; Returns: number

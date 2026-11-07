@@ -24,7 +24,7 @@ export function LayoutEditor({ onClose }: { onClose: () => void }) {
   const move = (s: AgendaSection, to: number) => { changeLayout({ type: "move", id: s.id, to }); setAnnounce(`${s.title} moved to position ${Math.max(1, Math.min(sections.length, to + 1))} of ${sections.length}, in every day.`); };
 
   return <section className="muse-layout-editor" aria-label="Customize weekly layout">
-    <header><div><h3>Weekly layout</h3><p className="small-label">One layout for every day. Changes apply to Monday through Sunday at once.</p></div>
+    <header><div><h3>Weekly layout</h3><p className="small-label">One layout for every day. Changes apply to Monday through Sunday at once. Tip: drag the bottom edge of any section in the week to size it.</p></div>
       <button type="button" className="muse-button button-primary" onClick={onClose}>Done</button></header>
     <ol className="muse-layout-list" onDragOver={(e) => { if (dragId) e.preventDefault(); }}>
       {sections.map((s, i) => {
@@ -42,7 +42,7 @@ export function LayoutEditor({ onClose }: { onClose: () => void }) {
               <span className="small-label">{typeLabel(s.type)}{isPermanent(s) ? " · always shown" : ""}</span>
             </div>
             <div className="muse-layout-line">
-              <span className="muse-layout-choice"><span>Height</span><MuseChoiceMenu label={`Height of ${s.title}`} valueLabel={sectionSizes.find((z) => z.id === s.size)!.label} options={sectionSizes.map((z) => ({ id: z.id, label: z.label }))} selectedIds={[s.size]} onSelect={(id) => changeLayout({ type: "update", id: s.id, patch: { size: id as SectionSize } })} /></span>
+              <span className="muse-layout-choice"><span>Height</span><MuseChoiceMenu label={`Height of ${s.title}`} valueLabel={s.height ? `Custom · ${s.height}px` : sectionSizes.find((z) => z.id === s.size)!.label} options={sectionSizes.map((z) => ({ id: z.id, label: z.label }))} selectedIds={[s.size]} onSelect={(id) => changeLayout({ type: "update", id: s.id, patch: { size: id as SectionSize, height: undefined } })} /></span>
               {s.type === "reading" && <span className="muse-layout-choice"><span>Show</span><MuseChoiceMenu label={`What ${s.title} shows`} valueLabel={readingMetrics.find((m) => m.id === s.metric)?.label ?? "Minutes read that day"} options={readingMetrics.map((m) => ({ id: m.id, label: m.label }))} selectedIds={[s.metric ?? "minutes"]} onSelect={(id) => changeLayout({ type: "update", id: s.id, patch: { metric: id as ReadingMetric } })} /></span>}
               {s.type === "tasks" && <span className="muse-layout-choice"><span>Completed</span><MuseChoiceMenu label={`Completed tasks in ${s.title}`} valueLabel={completedChoices.find((c) => c.id === (s.completed ?? "inherit"))!.label} options={completedChoices} selectedIds={[s.completed ?? "inherit"]} onSelect={(id) => changeLayout({ type: "update", id: s.id, patch: { completed: id as CompletedChoice } })} /></span>}
             </div>

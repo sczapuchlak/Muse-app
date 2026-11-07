@@ -845,3 +845,27 @@ Information architecture (reconciled across #79, #81, #83, #84, #85): Planner �
 **Scheduled Board Task List (§12, approved 2026-11-06).** Planner → Tasks keeps its board; its Task List (`PlannerRail`, `TaskListRow`, `ScheduleMenu`, pure `lib/task-list.ts`) is now a distinct pinned source: own header (title, count, workspace, search, Filters incl. ★ Priorities only), scopes To plan (overdue then unscheduled) / Overdue / Scheduled / All (remembered per device), grouped dense rows with priority, overdue, date, due, workspace, group, tags, subtasks, repeat and estimate facts, and a Schedule menu (no Details needed). Drag list → day, day → day and day → list still work; while dragging, every day is labeled as a destination. Day cards show the same ★/› markers. No database change; every action is the same `task/place` on the one task record, so Agenda and Dayview update. This is separate from #81's Running List, which will add a Tasks view selector without replacing this board.
 
 **Not built here:** Google Calendar (out of scope), recurring events, a task sidebar inside Agenda (intentionally none), and Ritual auto-completion from reading (left to Rituals' own rules).
+
+## Planner 2.0 — Running List (#81) — implemented on feature branch (staging migrations only)
+
+Planner → Tasks has two views of the same task records, chosen in the toolbar's view menu and remembered per device: **Scheduled Board** (#79) and **Running List** (`components/planner/RunningList.tsx`, pure logic in `lib/running-list.ts`).
+
+- **Bullet-journal layout (approved redesign, 2026-11-06).**
+  - Seven weekday columns (M–S with dates) on the left, one row per task, and the task on the right, under a TO DO heading.
+  - A gentle rainbow wave links each task's marks to its neon checkbox; a faint dotted line appears when the week has no mark.
+  - Today's column is a soft band.
+  - Clear **Active** and **Completed this week** headers with counts. When Active is empty, it shows an "All clear" note.
+  - Full width like other screens. Toolbar: search, Add task and workspace on the left; Filters, Show (All, Unscheduled, Scheduled) and Order on the right.
+- **Marks.** **×** (neon, `--success-primary`) is the day a task was actually completed, from the shared completion history in the person's timezone, so completing in any Muse view places it. **○** is the planned day. A planned day that is also the completion day shows the × inside a ring.
+- **Completing on a day.** Any day from today back (within a year) can be clicked. A blank day marks the task done on that day (`planner_complete_on`, migration `20261119000200`, with that local date recorded); its × reopens the task. Future days only show the plan. Completing never changes the planned date and records one event.
+- **Manual order.** Drag the handle, or use ↑/↓ on it, or Move up/down in the row's menu. The order is stored separately in `planner_running_orders` (migration `20261119000100`), so reordering never changes a planned date, completion history or the board's day order.
+- **Quick add** never assigns a date, and asks which workspace to use when All workspaces is selected. The workspace label on a row is a chip that moves the task to another workspace.
+- **Not supported:** a canceled status (future enhancement; deleting is not canceling); recurring occurrences (a repeating task is one record with its latest completion, marked ↻; a recurring-task engine is separate future work); multi-workspace selection.
+
+**Agenda polish (same release).**
+- Agenda Tasks sections render the exact Task List row, so both tabs behave the same.
+- Sections size by dragging their bottom edge (or arrow keys); the height is shared by all seven days and saved with the layout. Sections shrink to fit the column and scroll inside, the last section fills the remainder, and the page never grows.
+- Movement "+" opens a popover of Dayview's movement types, plus creating a new type that joins the shared Wellness list.
+- Water "+" adds water with Daily's quick amounts and progress bar.
+- Agenda day cards use the planner card material (Frosted and Crystal).
+- One rainbow today ring, shared by Tasks and Agenda.
