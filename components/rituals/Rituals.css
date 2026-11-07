@@ -122,3 +122,101 @@
 .muse-ritual-connected-mark{position:absolute;inset-block-start:-5px;inset-inline-end:-5px;display:grid;place-items:center;width:15px;height:15px;border-radius:50%;font-size:.62rem;line-height:1;color:var(--selected-text);background:var(--selected-background);border:1px solid var(--selected-border)}
 .muse-ritual-connected-note{display:block;color:var(--accent-secondary)}
 .muse-ritual-threshold{display:flex;align-items:center;gap:8px}.muse-ritual-threshold input{max-width:9rem}
+
+/* ---------- Habit trackers (#85): Week / Month / Year × Grid / Focus / Heatmap over the same Rituals records. ----------
+   Squares use the ritual group's accent (--organization-accent) at four fill levels; categories use their own stored
+   color. Missed (×), not scheduled (hatched) and not logged (outline) stay visibly distinct from "low". */
+.muse-rituals-toolbar{flex-wrap:wrap}
+.muse-tracker-controls{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-2)}
+.muse-tracker-controls .muse-choice-trigger{height:38px;min-height:38px;box-sizing:border-box;padding-block:0}
+.muse-tracker-title{align-self:center;margin-left:var(--space-2);font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-editorial-weight);font-size:1.25rem;white-space:nowrap}
+.muse-tracker{--tracker:var(--organization-accent,var(--accent-primary));--sq:18px;display:grid;gap:var(--space-3);padding:var(--space-4);min-width:0;border:1px solid var(--glass-border);border-top-color:var(--glass-edge);border-radius:var(--card-radius);background:var(--planning-container-background,var(--glass-background));box-shadow:var(--card-shadow)}
+.muse-tracker-empty{margin:0;padding:var(--space-5);text-align:center;color:var(--text-muted)}
+
+.muse-tracker-square{all:unset;box-sizing:border-box;display:inline-grid;place-items:center;width:var(--sq);height:var(--sq);border-radius:5px;font-size:.7rem;line-height:1;color:var(--text-muted);border:1.5px solid color-mix(in srgb,var(--tracker) 35%,var(--glass-border));background:transparent}
+.muse-tracker-square[data-level="1"]{background:color-mix(in srgb,var(--tracker) 28%,transparent);border-color:transparent}
+.muse-tracker-square[data-level="2"]{background:color-mix(in srgb,var(--tracker) 50%,transparent);border-color:transparent}
+.muse-tracker-square[data-level="3"]{background:color-mix(in srgb,var(--tracker) 72%,transparent);border-color:transparent}
+.muse-tracker-square[data-level="4"]{background:var(--tracker);border-color:transparent;box-shadow:0 0 8px color-mix(in srgb,var(--tracker) 45%,transparent)}
+.muse-tracker-square[data-category]{background:var(--category);border-color:transparent;box-shadow:0 0 6px color-mix(in srgb,var(--category) 40%,transparent)}
+.muse-tracker-square[data-status=missed]{border-style:solid;border-color:color-mix(in srgb,var(--foreground) 35%,transparent);color:var(--foreground);font-weight:700}
+.muse-tracker-square[data-status=unscheduled]{border-color:transparent;background:repeating-linear-gradient(45deg,color-mix(in srgb,var(--foreground) 12%,transparent) 0 2px,transparent 2px 5px);opacity:.7}
+.muse-tracker-square[data-status=upcoming],.muse-tracker-square[data-status=open]{border-style:dashed;opacity:.6}
+.muse-tracker-square[data-status=unknown]{border-color:color-mix(in srgb,var(--glass-border) 90%,transparent)}
+.muse-tracker-square[data-today]{outline:2px solid var(--selected-border);outline-offset:1px}
+button.muse-tracker-square:not(:disabled){cursor:pointer}
+button.muse-tracker-square:not(:disabled):hover{transform:scale(1.15)}
+button.muse-tracker-square:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){button.muse-tracker-square:hover{transform:none}}
+.muse-tracker-cellwrap{position:relative;display:grid;place-items:center}
+
+/* Grid: rituals as rows, dates (or months) as columns; scrolls sideways inside itself on narrow screens. */
+.muse-tracker-grid{overflow-x:auto;--name:minmax(9rem,14rem)}
+.muse-tracker-grid-head,.muse-tracker-grid-row{display:grid;grid-template-columns:var(--name) repeat(var(--days),minmax(var(--sq),1fr)) 3.2rem;align-items:center;column-gap:3px;min-width:calc(14rem + var(--days) * 21px + 3.2rem)}
+.muse-tracker-grid[data-period=year]{--sq:28px}
+.muse-tracker-grid[data-period=year] .muse-tracker-grid-head,.muse-tracker-grid[data-period=year] .muse-tracker-grid-row{column-gap:6px;min-width:calc(14rem + 12 * 34px + 3.2rem)}
+.muse-tracker-grid-head{padding-bottom:6px;border-bottom:1px solid var(--divider);font-size:.7rem;color:var(--text-muted);text-align:center}
+.muse-tracker-grid-head>span{display:grid;gap:1px;justify-items:center}
+.muse-tracker-grid-head b{font-weight:700;color:var(--foreground);font-size:.66rem}
+.muse-tracker-grid-head [data-weekend]{color:color-mix(in srgb,var(--text-muted) 70%,transparent)}
+.muse-tracker-grid-head [data-today]{color:var(--selected-text)}
+.muse-tracker-grid-row{min-height:30px;border-bottom:1px dashed color-mix(in srgb,var(--divider) 70%,transparent);justify-items:center}
+.muse-tracker-name{justify-self:start;padding-right:8px;font-size:.88rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
+.muse-tracker-name::before{content:"";display:inline-block;width:8px;height:8px;margin-right:8px;border-radius:50%;background:var(--tracker);vertical-align:1px}
+.muse-tracker-share{font-size:.74rem;font-variant-numeric:tabular-nums;color:var(--text-muted)}
+
+/* Focus: one ritual, large. Week and Month reuse the real week cell (same logging, labels and feedback). */
+.muse-tracker-focus-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:var(--space-2)}
+.muse-tracker-focus-head h3{margin:0;font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-editorial-weight);font-size:1.4rem}
+.muse-tracker-focus-head h3::before{content:"";display:inline-block;width:10px;height:10px;margin-right:10px;border-radius:50%;background:var(--tracker);vertical-align:2px}
+.muse-tracker-focus-head p{margin:0;font-size:.84rem;color:var(--text-muted)}
+.muse-tracker-focus-week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:var(--space-2)}
+.muse-tracker-focus-week>div{display:grid;justify-items:center;gap:6px;padding:10px 4px;border-radius:12px;background:var(--surface-subtle)}
+.muse-tracker-focus-week>div[data-today]{box-shadow:0 0 0 1px var(--selected-border)}
+.muse-tracker-focus-week>div>span{font-size:.78rem;color:var(--text-muted)}
+.muse-tracker-calendar{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+.muse-tracker-cal-head{text-align:center;font-size:.72rem;font-weight:700;letter-spacing:.08em;color:var(--text-muted)}
+.muse-tracker-cal-day{position:relative;display:grid;justify-items:center;gap:2px;padding:4px 2px;border-radius:10px;background:var(--surface-subtle);min-width:0}
+.muse-tracker-cal-day[data-today]{box-shadow:0 0 0 1px var(--selected-border)}
+.muse-tracker-cal-num{font-size:.7rem;color:var(--text-muted);justify-self:start;padding-left:4px}
+.muse-tracker-calendar .muse-ritual-week-cell{min-height:0}
+.muse-tracker-calendar[data-mini]{gap:3px;--sq:13px;grid-template-columns:repeat(7,var(--sq));justify-content:start}
+.muse-tracker-calendar[data-mini] .muse-tracker-cal-day{padding:0;background:none}
+.muse-tracker-calendar[data-mini] .muse-tracker-square{border-radius:3px}
+.muse-tracker-calendar[data-heat]{--sq:clamp(22px,5vw,40px);max-width:420px}
+.muse-tracker-calendar[data-heat] .muse-tracker-cal-day{background:none;padding:0}
+.muse-tracker-calendar[data-heat] .muse-tracker-cal-num{display:none}
+.muse-tracker-minis{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:var(--space-3)}
+.muse-tracker-minis section{display:grid;gap:4px}
+.muse-tracker-minis .text-button{justify-self:start;font-size:.82rem}
+
+/* Year in Pixels: months as columns, days as rows. */
+/* Year in Pixels: one row per month, one column per day (1–31), so a whole year fits the width. */
+.muse-tracker-pixels{display:grid;grid-template-columns:2.6rem repeat(31,minmax(0,1fr));gap:3px;max-width:1100px}
+.muse-tracker-pixel{display:block;aspect-ratio:1}
+.muse-tracker-pixels .muse-tracker-pixel>.muse-tracker-square{width:100%;height:100%;border-radius:3px}
+.muse-tracker-pixel-month{all:unset;cursor:pointer;align-self:center;font-size:.74rem;font-weight:600;color:var(--text-muted);border-radius:4px}
+.muse-tracker-pixel-month:hover,.muse-tracker-pixel-month:focus-visible{color:var(--selected-text);outline:2px solid var(--focus-ring)}
+.muse-tracker-pixel-day{font-size:.62rem;color:var(--text-muted);text-align:center}
+.muse-tracker-legend{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.78rem;color:var(--text-muted)}
+.muse-tracker-legend li{display:inline-flex;align-items:center;gap:6px}
+.muse-tracker-legend .muse-tracker-square{--sq:14px}
+.muse-tracker-scale{display:inline-flex;gap:2px}
+
+/* Categorical habits in the week cell and entry sheet. */
+.muse-ritual-category-dot{display:grid;place-items:center;width:26px;height:26px;border-radius:8px;background:var(--category,var(--accent-primary));color:#fff;font-weight:700;font-size:.8rem;text-shadow:0 1px 2px rgb(0 0 0 / .35)}
+.muse-ritual-category-choices{display:flex;flex-wrap:wrap;gap:8px}
+.muse-ritual-category-choices .choice-button{display:inline-flex;align-items:center;gap:8px}
+.muse-ritual-category-choices i{width:14px;height:14px;border-radius:4px;background:var(--category)}
+.muse-ritual-categories ul{list-style:none;margin:0 0 8px;padding:0;display:grid;gap:6px}
+.muse-ritual-categories li{display:flex;align-items:center;gap:8px}
+.muse-ritual-categories input[type=color]{width:36px;height:30px;padding:0;border:1px solid var(--glass-border);border-radius:6px;background:transparent}
+.muse-ritual-categories input[type=text]{flex:1;min-width:0}
+
+@media (max-width:720px){
+ .muse-tracker{padding:var(--space-3)}
+ .muse-tracker-focus-week{grid-template-columns:repeat(4,minmax(0,1fr))}
+ .muse-tracker-grid{--name:minmax(6.5rem,8rem)}
+ .muse-tracker-grid-head,.muse-tracker-grid-row{min-width:calc(8rem + var(--days) * 21px + 3.2rem)}
+}
+.muse-tracker-controls{margin-left:auto}

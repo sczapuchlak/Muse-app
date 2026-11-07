@@ -894,3 +894,25 @@ Rituals → **Habits | Aspirations | Bucket List** (`?view=bucket`). One long-ru
 **Shared surface (same branch).** `.muse-planner-surface`'s base now lives in `app/design-language.css` (it was only in `Planner.css`, so the Bucket List looked translucent on Frosted). Bucket List and Planner cards now compute identically on Frosted and Crystal.
 
 **Agenda fix (same branch).** The Week track's single grid row was auto-sized, so tall section layouts grew the row past the measured window height and the page scrolled. The row is now `minmax(0,1fr)`, so days shrink their sections and scroll inside them.
+
+## Rituals — Habit trackers (#85) — implemented on feature branch (local + staging migration)
+
+**Audit (2026-11-06).** Existing: weekly grid, checkbox/quantity/duration/weekly-target tracking, groups, recurrence, streaks, lifecycle, connected rituals, Insights. Partial: Grid (week only). Missing: Month and Year periods, Focus and Heatmap layouts, a ritual selector, categorical tracking. This issue adds only the missing pieces.
+
+- **Controls.** Habits has a ‹ This week/month/year › stepper on the left (with the period title), and on the right **Period** (Week, Month, Year), **Layout** (Grid, Focus, Heatmap) and, for Focus and Heatmap, a **Ritual** menu. All are shared `MuseChoiceMenu` dropdowns, remembered per device (`muse.rituals.tracker`). **Week + Grid is the original screen, unchanged** (week strip, summary, groups, legend). A one-week heatmap isn't offered; Heatmap shows the month instead.
+- **One data source.** Every view is `lib/ritual-tracker.ts` over the same `RitualState`, read through `useRitualView` (so connected rituals show their source values and stay read-only). Each square is `ritualCell`, the week grid's own rule, so complete, partial, explicitly missed, unknown, upcoming and not scheduled stay distinct in every view. No view stores anything.
+- **Grid.** Month: rituals × days, editable compact squares (checkbox cycles; others open the usual entry sheet) and a "met/decided" count. Year: rituals × months shaded by the share of decided goals met; a month opens that month.
+- **Focus** (one ritual). Week: seven large real week cells. Month: a Monday-first calendar of real week cells. Year: twelve mini months. The header shows met/decided and the streak.
+- **Heatmap.** Month: a calendar of squares. Year: Year in Pixels (12 month rows × 31 days). Either one ritual or "All rituals" (each day's share of decided rituals met). Squares use the ritual group's accent at four levels; missed shows ×, not scheduled is hatched, not logged is an outline.
+- **Shares are honest.** Only decided days count: unknown, open and future days are never failures. Weekly targets count finished weeks.
+- **Categorical tracking** (migration `20261121000100_ritual_categories.sql`).
+  - New type **Category** with a legend of up to 12 named, colored categories (default Strength / Cardio / Rest). Each day you pick one in the entry sheet; Missed and Clear keep their meanings. Stored as the category id with value 1. Nothing is inferred or converted to pass/fail.
+  - Used categories can be renamed or recolored, never removed. Categorical rituals can't be connected.
+  - Views color squares with the category and show its legend. Shares report coverage ("days logged") instead of "met".
+  - Server: the public `save_rituals` wrapper validates the legend and entries and writes `rituals.categories` / `ritual_entries.category` after the unchanged core save (the Connected Rituals pattern); `read_rituals` returns them (`categoriesEnabled`), so the export includes them. Before the migration, the Category type is hidden.
+- **Not in this issue:** reusing these visualizations inside Insights, vertical tracker layouts, Daily Edit surfacing.
+
+**Bucket List follow-ups (same branch as #85).**
+- **Safari photos:** Safari can't encode WebP (the canvas quietly returns PNG), so storage refused the upload. Bucket List photos now fall back to JPEG there. Migration `20261121000200_private_images_jpeg.sql` lets the private bucket and its owner-only upload policy accept `.jpg` in the same folder layout.
+- **Constellations in Safari:** cards still validate `.webp` paths on save, so Safari shows a clear "try Chrome or Firefox" message instead of a failed retry. Supporting JPEG on cards needs their save function updated (follow-up).
+- **Dates:** "Completed on" uses the Muse date picker instead of the browser's.

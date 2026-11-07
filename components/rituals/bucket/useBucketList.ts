@@ -49,6 +49,6 @@ export function useBucketList(today:string){
  const saveMany=(changed:BucketEntry[])=>run(async()=>{for(const e of changed){const saved=await saveBucketEntry(client,userId,e);setEntries(list=>[...list.filter(x=>x.id!==saved.id),saved]);}return true;});
  const remove=(e:BucketEntry)=>run(async()=>{await deleteBucketEntry(client,userId,e);setEntries(list=>list.filter(x=>x.id!==e.id));
   try{await removeBoardImages(images(e));}catch{/* the files stay private; deleting the account removes them */}return true;});
- const upload=(entryId:string,file:File)=>run(async()=>uploadBoardImage(userId,entryId,file));
+ const upload=(entryId:string,file:File)=>run(async()=>uploadBoardImage(userId,entryId,file,{allowJpeg:true}));
  return {list,stored,entries,status,reload,save,saveMany,saveList,remove,upload};
 }

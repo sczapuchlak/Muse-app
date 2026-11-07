@@ -8,16 +8,20 @@ export const ritualGradients = ["primary-secondary", "secondary-pop", "pop-prima
 export type RitualGradient = typeof ritualGradients[number] | CustomGradient;
 export type RitualGroupDefinition = { id: string; name: string; accent: RitualAccent; icon: MuseIconName; collapsed: boolean; gradient?: RitualGradient };
 export type RitualRecurrence = { kind: "daily" } | { kind: "weekly"; weekday: number } | { kind: "weekdays"; weekdays: number[] };
-export type RitualType = "checkbox" | "numeric" | "duration" | "weekly-target";
+export type RitualType = "checkbox" | "numeric" | "duration" | "weekly-target" | "category";
+/** A categorical habit's legend (#85), e.g. Strength / Cardio / Rest. Colors are stored hex values. */
+export type RitualCategory = { id: string; label: string; color: string };
 export type RitualDefinition = {
   id: string; name: string; groupId: string; type: RitualType; goal: number; unit: string;
   status?:"active"|"paused"|"archived"; inactivePeriods?:{start:string;end:string|null;kind:"paused"|"archived"}[];
   recurrence: RitualRecurrence; startDate: string; createdAt: string;
   /** Present when values derive from another module's records; null/absent means manual check-offs. */
   connection?: RitualConnection | null;
+  /** Categorical habits only: the legend. A used category can be renamed or recolored, never removed. */
+  categories?: RitualCategory[];
 };
-export type RitualEntry = { id: string; ritualId: string; date: string; value: number; outcome?: "missed"; updatedAt: string; /** Display-only value derived from a connected tracker; never saved. */ derived?: true };
-export type RitualState = { groups: RitualGroupDefinition[]; rituals: RitualDefinition[]; entries: RitualEntry[]; celebratedMilestones: string[]; /** True once the server stores connections. */ connectionsEnabled?: boolean };
+export type RitualEntry = { id: string; ritualId: string; date: string; value: number; outcome?: "missed"; updatedAt: string; /** Categorical habits: the chosen category id (value is 1). */ category?: string; /** Display-only value derived from a connected tracker; never saved. */ derived?: true };
+export type RitualState = { groups: RitualGroupDefinition[]; rituals: RitualDefinition[]; entries: RitualEntry[]; celebratedMilestones: string[]; /** True once the server stores connections. */ connectionsEnabled?: boolean; /** True once the server stores categorical habits (#85). */ categoriesEnabled?: boolean };
 export type RitualAction =
   | {type:"ritual/lifecycle";id:string;operation:"pause"|"resume"|"archive"|"restore"|"delete";today:string}
   | { type: "ritual/save"; ritual: RitualDefinition }
@@ -26,8 +30,13 @@ export type RitualAction =
   | { type: "group/delete"; id: string }
   | { type: "entry/cycle"; ritualId:string;date:string;today:string;now:string }
   | { type: "entry/set"; ritualId: string; date: string; value: number | null; today: string; now: string }
+  | { type: "entry/category"; ritualId: string; date: string; category: string | null; today: string; now: string }
   | { type: "ritual/connect"; id: string; connection: RitualConnection | null; materialize: { date: string; value: number }[]; today: string; now: string };
-export const ritualTypeLabels: Record<RitualType, string> = { checkbox: "Checkbox", numeric: "Quantity", duration: "Duration", "weekly-target": "Weekly target" };
+export const ritualTypeLabels: Record<RitualType, string> = { checkbox: "Checkbox", numeric: "Quantity", duration: "Duration", "weekly-target": "Weekly target", category: "Category" };
+export const categoryPalette = ["#e0457b", "#2f8fe0", "#4cb944", "#f08a24", "#8a63d2", "#1fb5a8", "#e8c22c", "#8a8f98"] as const;
+const validCategories = (list: unknown): list is RitualCategory[] => Array.isArray(list) && list.length >= 1 && list.length <= 12 && new Set(list.map((c) => c?.id)).size === list.length && list.every((c) => c && typeof c.id === "string" && /^[A-Za-z0-9-]{1,40}$/.test(c.id) && typeof c.label === "string" && c.label.trim().length >= 1 && c.label.trim().length <= 40 && typeof c.color === "string" && /^#[0-9a-fA-F]{6}$/.test(c.color));
+/** Categories a habit's history uses; these must stay in its legend. */
+export const usedCategories = (state: RitualState, ritualId: string) => new Set(state.entries.filter((e) => e.ritualId === ritualId && e.category).map((e) => e.category!));
 export const weekdayOptions = [{ day: 1, label: "Mon" }, { day: 2, label: "Tue" }, { day: 3, label: "Wed" }, { day: 4, label: "Thu" }, { day: 5, label: "Fri" }, { day: 6, label: "Sat" }, { day: 0, label: "Sun" }];
 function matchesSchedule(ritual:RitualDefinition,date:string){
   if(date<ritual.startDate)return false;
@@ -147,23 +156,34 @@ export function ritualReducer(state: RitualState, action: RitualAction): RitualS
       const ritual = action.ritual;
       if (!ritual.name.trim() || !validDate(ritual.startDate) || !Number.isFinite(ritual.goal) || ritual.goal <= 0 || !validRecurrence(ritual.recurrence) || !state.groups.some((group) => group.id === ritual.groupId)) return state;
       if (ritual.type === "weekly-target" && !Number.isInteger(ritual.goal)) return state;
+      if (ritual.type === "category" && !validCategories(ritual.categories)) return state;
       const previous = state.rituals.find((entry) => entry.id === ritual.id);
       // Protect the meaning of history until effective-dated schedule/goal changes exist.
       const locked = previous && state.entries.some((entry) => entry.ritualId === ritual.id);
       const lifecycle=previous?{...(previous.status?{status:previous.status}:{}),...(previous.inactivePeriods?{inactivePeriods:previous.inactivePeriods}:{})}:{};
       const connection = previous ? previous.connection : ritual.connection && validConnection(ritual, ritual.connection) ? ritual.connection : null;
       const unlocked = { ...ritual,...lifecycle, name: ritual.name.trim(), goal: ritual.type === "checkbox" ? 1 : ritual.goal };
-      const next = locked ? { ...previous, name: ritual.name.trim(), groupId: ritual.groupId } : { ...unlocked, connection: connection && validConnection(unlocked, connection) ? connection : null };
+      // A categorical legend stays editable after history exists (rename, recolor, add), but a used category is kept.
+      if (previous?.type === "category" && ritual.categories) { const keep = usedCategories(state, ritual.id); if (![...keep].every((id) => ritual.categories!.some((c) => c.id === id))) return state; }
+      const legend = previous?.type === "category" && validCategories(ritual.categories) ? { categories: ritual.categories.map((c) => ({ ...c, label: c.label.trim() })) } : {};
+      const next = locked ? { ...previous, name: ritual.name.trim(), groupId: ritual.groupId, ...legend } : { ...unlocked, ...(ritual.type === "category" ? { categories: ritual.categories!.map((c) => ({ ...c, label: c.label.trim() })), connection: null } : { categories: undefined }), connection: ritual.type === "category" ? null : connection && validConnection(unlocked, connection) ? connection : null };
       return { ...state, rituals: previous ? state.rituals.map((entry) => entry.id === ritual.id ? next : entry) : [...state.rituals, next] };
     }
     case "group/save": return !action.group.name.trim() || !validAccent(action.group.accent) || (action.group.gradient && typeof action.group.gradient !== "string" && !validGradient(action.group.gradient)) ? state : { ...state, groups: state.groups.some((group) => group.id === action.group.id) ? state.groups.map((group) => group.id === action.group.id ? { ...action.group, name: action.group.name.trim() } : group) : [...state.groups, { ...action.group, name: action.group.name.trim() }] };
     case "group/toggle": return { ...state, groups: state.groups.map((group) => group.id === action.id ? { ...group, collapsed: !group.collapsed } : group) };
     case "group/delete": return state.groups.length <= 1 || state.rituals.some((ritual) => ritual.groupId === action.id) ? state : { ...state, groups: state.groups.filter((group) => group.id !== action.id) };
+    case "entry/category": {
+      const ritual = state.rituals.find((entry) => entry.id === action.ritualId);
+      if (!ritual || ritual.type !== "category" || (action.category !== null && !ritual.categories?.some((c) => c.id === action.category))) return state;
+      const set = ritualReducer(state, { type: "entry/set", ritualId: action.ritualId, date: action.date, value: action.category === null ? null : 1, today: action.today, now: action.now });
+      if (set === state || action.category === null) return set;
+      return { ...set, entries: set.entries.map((e) => e.ritualId === ritual.id && e.date === action.date ? { ...e, category: action.category! } : e) };
+    }
     case "entry/set": {
       const ritual = state.rituals.find((entry) => entry.id === action.ritualId);
       if (!ritual || !validDate(action.date) || !validDate(action.today) || action.date > action.today || !ritualOpportunity(state,ritual,action.date)) return state;
       if (ritual.connection && action.date >= ritual.connection.since) return state; // Connected values are read-only; edit the source record.
-      if (action.value !== null && (!Number.isFinite(action.value) || action.value < 0 || (ritual.type === "checkbox" && ![0, 1].includes(action.value)) || (ritual.type === "weekly-target" && !Number.isInteger(action.value)))) return state;
+      if (action.value !== null && (!Number.isFinite(action.value) || action.value < 0 || ((ritual.type === "checkbox" || ritual.type === "category") && ![0, 1].includes(action.value)) || (ritual.type === "weekly-target" && !Number.isInteger(action.value)))) return state;
       const rest = state.entries.filter((entry) => entry.ritualId !== ritual.id || entry.date !== action.date);
       const next = { ...state, entries: action.value === null ? rest : [...rest, { id: `${ritual.id}/${action.date}`, ritualId: ritual.id, date: action.date, value: action.value, ...(action.value === 0 ? { outcome: "missed" as const } : {}), updatedAt: action.now }] };
       const feedback = ritualFeedback(state, next, ritual, action.date, action.today);

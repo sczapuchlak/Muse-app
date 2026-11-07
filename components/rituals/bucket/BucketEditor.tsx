@@ -3,6 +3,7 @@ import {useState} from 'react';
 import Link from 'next/link';
 import {MuseModal} from '@/components/MuseModal';
 import {MuseChoiceMenu} from '@/components/MuseChoiceMenu';
+import {MuseDatePicker} from '@/components/MuseDatePicker';
 import {dateLabel} from '@/lib/dates';
 import type {BoardImage} from '@/lib/constellation-board';
 import type {Aspiration} from '@/lib/aspirations/models';
@@ -43,7 +44,7 @@ export function CompleteSheet({entry,list,today,busy,error,upload,onDone,onClose
  return <MuseModal id="bucket-complete" label="Mark a dream done" title="You did it" returnFocus={null} onClose={onClose}>
   <form className="muse-aspiration-form muse-bucket-form" onSubmit={e=>{e.preventDefault();if(valid)onDone(completeEntry(entry,date,{story:c.story?.trim()||undefined,location:c.location?.trim()||undefined,memory:c.memory?.trim()||undefined,photos:c.photos}));}}>
    <p className="muse-bucket-complete-title">{entry.number&&list.showNumbers?`${entry.number}. `:''}{entry.title}</p>
-   <label>Completed on<input type="date" required max={today} value={date} onChange={e=>setDate(e.target.value)}/></label>
+   <div><p className="editor-label">Completed on</p><MuseDatePicker date={date||today} today={today} label="Completed on" onChange={setDate}/></div>
    {y&&<p className="small-label muse-bucket-complete-year"><YearSwatch list={list} year={y} size="sm"/> Highlighted in {y}’s color</p>}
    <button type="button" className="text-button" aria-expanded={more} onClick={()=>setMore(!more)}>{more?'Fewer details':'Add the story, a place, photos'}</button>
    {more&&<><StoryFields c={c} set={p=>setC(x=>({...x,...p}))}/><Photos photos={c.photos??[]} busy={busy} upload={upload} onChange={photos=>setC(x=>({...x,photos}))}/></>}
@@ -98,7 +99,7 @@ export function BucketEditor({initial,list,today,categories,aspirations,busy,err
     </fieldset>
    </div>}
    {done&&<fieldset className="muse-bucket-done-fields"><legend>Completed</legend>
-    <label>Completed on<input type="date" max={today} value={e.completedOn??''} onChange={ev=>set({completedOn:ev.target.value||null})}/></label>
+    <div><p className="editor-label">Completed on</p><MuseDatePicker date={e.completedOn??today} today={today} label="Completed on" onChange={d=>set({completedOn:d})}/></div>
     {yearOf(e.completedOn)&&<p className="small-label muse-bucket-complete-year"><YearSwatch list={list} year={yearOf(e.completedOn)!} size="sm"/> Shown in {yearOf(e.completedOn)}’s color. Changing the date’s year moves it to that year’s color.</p>}
     <StoryFields c={e.completion} set={p=>set({completion:{...e.completion,...p}})}/>
     <Photos photos={e.completion.photos??[]} busy={busy} upload={upload} onChange={photos=>set({completion:{...e.completion,photos}})}/>

@@ -21,7 +21,7 @@ test('Programmatically focused headings never draw a focus box around dialog tit
 
 test('Week jumps are one centered control without range text',()=>{
  for(const file of ['components/rituals/Rituals.tsx','components/nourish/Nourish.tsx']){
-  const text=source(file);assert.match(text,/className="[^"]*muse-week-jump/);assert.match(text,/This week/);
+  const text=source(file);assert.match(text,/className="[^"]*muse-week-jump/);assert.match(text,/This week|This \{noun\}/,'Rituals says This week/month/year with its period');
  }
  assert.match(source('app/globals.css'),/\.muse-week-jump/);
 });
