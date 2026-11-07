@@ -100,7 +100,8 @@ test('migration adds categories through the wrapper and keeps rituals owner-read
 
 test('Habits keeps Week + Grid as the original screen and adds period/layout/ritual controls', () => {
   const ui = read('components/rituals/Rituals.tsx');
-  assert.match(ui, /classic = period === "week" && tracker.layout === "grid"/);
+  assert.match(ui, /layout: TrackerLayout = period === "year" \? "focus" : tracker.layout, classic = period === "week" && layout === "grid"/, 'Year is always the year sheet; Week + Grid is the original screen');
+  assert.match(ui, /trackerLayouts.filter\(\(l\) => period !== "year" \|\| l.id === "focus"\)/);
   assert.match(ui, /<MuseChoiceMenu label="Period"/);
   assert.match(ui, /<MuseChoiceMenu label="Layout"/);
   assert.match(ui, /<MuseChoiceMenu label="Ritual"/);

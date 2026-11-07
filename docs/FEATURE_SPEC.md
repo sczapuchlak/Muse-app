@@ -921,3 +921,5 @@ Rituals → **Habits | Aspirations | Bucket List** (`?view=bucket`). One long-ru
 - **Layouts:** Heatmap is removed ("not helpful"); Layout is now **Grid | Focus**, and a saved Heatmap choice opens Focus.
 - **Focus · Year** is the paper year tracker from her reference: the ritual's name, months across (J–D), days 1–31 down in ruled touching cells, non-days hatched, the key beside it, and a **Month / Review** column. For categorical rituals the review is the month's most common category; for the others it's the month's share of goals met. A month letter opens that month.
 - **Today** wears the shared rainbow `.muse-today-ring` in every tracker view.
+- **Year Grid removed** (2026-11-07, "what is that"): Year always opens the year sheet; Layout offers Grid only for Week and Month.
+- **Year sheet fits the window** using the Planner's height measurement (31 rows share the height; minimum 400px). Polish: a rounded ruled frame, a soft sheen on filled cells, today's row and column faintly lit, a month-by-month fill-in (off with reduced motion or Quiet Muse Magic), stat chips by the title, and day counts in the key.
