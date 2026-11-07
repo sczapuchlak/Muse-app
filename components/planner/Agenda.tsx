@@ -6,7 +6,7 @@ import { MuseChoiceMenu } from "../MuseChoiceMenu";
 import { GlassPopover } from "../GlassPopover";
 import { PlanEntryForm } from "../PlanEntryForm";
 import { usePlanner } from "../PlannerStore";
-import { PlannerTaskCard } from "./PlannerTaskCard";
+import { AgendaTaskCard } from "./AgendaTaskCard";
 import { PlanningDropZone } from "./PlanningDropZone";
 import { TaskQuickAdd } from "./TaskQuickAdd";
 import "./Agenda.css";
@@ -26,14 +26,17 @@ export function Agenda({ date, today, onDate, onOpen, sidebar, workspaceId, grou
   useEffect(() => { const t = window.setTimeout(() => { try { setPrefs(parseAgendaPreferences(JSON.parse(window.localStorage.getItem(prefsKey) ?? "{}"))); } catch { /* defaults */ } }, 0); return () => window.clearTimeout(t); }, []);
   const update = (patch: Partial<AgendaPreferences>) => setPrefs((p) => { const next = { ...p, ...patch }; try { window.localStorage.setItem(prefsKey, JSON.stringify(next)); } catch { /* this device only */ } return next; });
   const [adding, setAdding] = useState<string | null>(null);
-  const anchor = useRef<HTMLElement | null>(null);
+  const anchor = useRef<HTMLElement | null>(null), track = useRef<HTMLDivElement>(null);
+  // Week: bring the chosen day (today by default) into view inside the track, without scrolling the page.
+  useEffect(() => { if (prefs.view !== "week") return; const t = track.current, col = t?.querySelector<HTMLElement>(`[data-day="${date}"]`) ?? t?.querySelector<HTMLElement>(`[data-day="${today}"]`); if (t && col) t.scrollTo({ left: col.offsetLeft - t.offsetLeft - 4, behavior: "auto" }); }, [prefs.view, date, today]);
+  const step = (dir: 1 | -1) => { const t = track.current, col = t?.querySelector<HTMLElement>(".muse-agenda-day"); if (t && col) t.scrollBy({ left: dir * (col.offsetWidth + 10), behavior: "smooth" }); };
   const view = prefs.view, range = agendaRange(view, date);
   const tasks = state.tasks.filter((t) => (!workspaceId || t.workspaceId === workspaceId) && (!groupId || t.groupId === groupId) && (!tagIds?.length || tagIds.every((id) => t.tagIds.includes(id))));
   const open = (day: string, view: AgendaView) => { onDate(day); update({ view }); };
 
   function dayColumn(day: string, wide = false) {
     const items = dayItems(tasks, state.events, day, prefs.showCompleted);
-    return <section key={day} className="muse-agenda-day" data-today={day === today || undefined} data-wide={wide || undefined} aria-label={`${weekday(day, "long")} ${day}`}>
+    return <section key={day} data-day={day} className="muse-agenda-day" data-today={day === today || undefined} data-wide={wide || undefined} aria-label={`${weekday(day, "long")} ${day}`}>
       <header><button type="button" className="muse-agenda-day-heading" onClick={() => open(day, "day")} aria-label={`Open ${weekday(day, "long")} in Day view`}><span>{weekday(day)}</span><strong>{dayNumber(day)}</strong></button></header>
       <div className="muse-agenda-section" data-section="events">
         <div className="muse-agenda-section-head"><h3>Events</h3><button type="button" className="muse-agenda-add" aria-label={`Add an event on ${day}`} onClick={(e) => { anchor.current = e.currentTarget; setAdding(day); }}>+</button></div>
@@ -41,7 +44,7 @@ export function Agenda({ date, today, onDate, onOpen, sidebar, workspaceId, grou
       </div>
       <PlanningDropZone date={day} className="muse-agenda-section muse-agenda-drop">
         <div className="muse-agenda-section-head"><h3>Tasks</h3>{items.hiddenComplete > 0 && <span className="small-label">{items.hiddenComplete} done</span>}</div>
-        {items.tasks.length ? <ul className="muse-planner-task-list">{items.tasks.map((t) => <PlannerTaskCard key={t.id} task={t} onOpen={onOpen} />)}</ul> : <p className="muse-agenda-empty">A little breathing room.</p>}
+        {items.tasks.length ? <ul className="muse-agenda-task-list">{items.tasks.map((t) => <AgendaTaskCard key={t.id} task={t} onOpen={onOpen} />)}</ul> : <p className="muse-agenda-empty">A little breathing room.</p>}
         <TaskQuickAdd date={day} workspaceId={workspaceId} groupId={groupId} tagIds={tagIds} />
       </PlanningDropZone>
     </section>;
@@ -63,7 +66,7 @@ export function Agenda({ date, today, onDate, onOpen, sidebar, workspaceId, grou
       {prefs.showSidebar && <aside className="muse-agenda-sidebar" aria-label="Unscheduled tasks">{sidebar}</aside>}
       <div className="muse-agenda-content">
         {view === "day" && dayColumn(date, true)}
-        {view === "week" && <div className="muse-agenda-week">{range.days.map((d) => dayColumn(d))}</div>}
+        {view === "week" && <div className="muse-agenda-week-wrap"><button type="button" className="muse-agenda-step" data-dir="back" aria-label="Show earlier days" onClick={() => step(-1)}>‹</button><div className="muse-agenda-week" ref={track} tabIndex={0} aria-label="Week days, scroll sideways for more">{range.days.map((d) => dayColumn(d))}</div><button type="button" className="muse-agenda-step" data-dir="forward" aria-label="Show later days" onClick={() => step(1)}>›</button></div>}
         {view === "month" && <div className="muse-agenda-month" role="grid" aria-label={agendaTitle("month", date)}>
           <div role="row" className="muse-agenda-month-row muse-agenda-weekdays">{["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((d) => <span role="columnheader" key={d}>{d}</span>)}</div>
           {monthGrid(date).map((week, i) => <div role="row" className="muse-agenda-month-row" key={i}>{week.map((d, j) => {

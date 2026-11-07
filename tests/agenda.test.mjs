@@ -42,5 +42,13 @@ test('Planner wires the tabs and Agenda reuses the existing task, drop and event
  const planner=read('components/planner/Planner.tsx');
  assert.match(planner,/<MuseSectionNav label="Planner views"/);assert.match(planner,/tab === "agenda" && <Agenda /);
  const agenda=read('components/planner/Agenda.tsx');
- for(const piece of ['PlannerTaskCard','PlanningDropZone','TaskQuickAdd','PlanEntryForm','dispatch({ type: "event/add"'])assert.ok(agenda.includes(piece),piece);
+ for(const piece of ['AgendaTaskCard','PlanningDropZone','TaskQuickAdd','PlanEntryForm','dispatch({ type: "event/add"'])assert.ok(agenda.includes(piece),piece);
+});
+
+test('Weekly Agenda shows about three readable days in one continuous, scrollable week',()=>{
+ const css=read('components/planner/Agenda.css');
+ assert.match(css,/grid-auto-columns:clamp\(250px,calc\(\(100% - 20px\) \/ 3\),340px\)/,'three comfortable columns on desktop');
+ assert.match(css,/scroll-snap-type:x mandatory/);assert.match(css,/max-width:1100px\)\{\.muse-agenda-week\{grid-auto-columns:clamp\(240px/,'two on tablet');
+ const card=read('components/planner/AgendaTaskCard.tsx');
+ assert.match(card,/TASK_DRAG_TYPE/);assert.match(card,/useTaskPlacement/);assert.match(card,/MuseOverflowMenu/);assert.doesNotMatch(card,/TaskTimer/,'no reserved timer column');
 });
