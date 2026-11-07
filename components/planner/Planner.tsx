@@ -3,6 +3,9 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { dateLabel, shiftDate } from "@/lib/dates";
 import { dailyEditSample } from "@/lib/daily-edit-data";
+import { parsePlannerTab, plannerTabs } from "@/lib/agenda";
+import { Agenda } from "./Agenda";
+import { MuseSectionNav } from "../MuseSectionNav";
 import { PLANNING_WINDOW_DAYS, emptyPlannerFilters, filterPlannerTasks, formatPlannedMinutes, validDate, type PlannerFilters as Filters } from "@/lib/planner";
 import type { PlannedTask } from "@/lib/models";
 import { useMuseDate } from "../MuseSession";
@@ -32,6 +35,7 @@ export function Planner() {
   const [date, setDate] = useMuseDate(dailyEditSample.date.iso);
   const query = useSearchParams();
   const requestedDate = query.get("date");
+  const tab = parsePlannerTab(query.get("view"));
   const router = useRouter();
   useEffect(() => { if (validDate(requestedDate)) setDate(requestedDate); }, [requestedDate, setDate]);
   const [workspaceId, setWorkspace] = useState("");
@@ -42,7 +46,7 @@ export function Planner() {
   const [search, setSearch] = useState("");
   const [detail, setDetail] = useState<{ id: string; anchor: HTMLElement } | null>(null);
   const [announcement, setAnnouncement] = useState("");
-  function changeDate(next: string) { setDate(next); router.replace(`/planner?date=${next}`, { scroll: false }); }
+  function changeDate(next: string) { setDate(next); router.replace(`/planner?${tab === "tasks" ? "" : `view=${tab}&`}date=${next}`, { scroll: false }); }
   const workspaceFilter = state.workspaces.some((entry) => entry.id === workspaceId) ? workspaceId : "";
   const groupFilter = state.groups.some((entry) => entry.id === filters.groupId && (!workspaceFilter || entry.workspaceId === workspaceFilter)) ? filters.groupId : "";
   const activeTags = filters.tagIds.filter((id) => state.tags.some((entry) => entry.id === id));
@@ -56,8 +60,11 @@ export function Planner() {
   function rail(){return <PlannerRail workspaceId={workspaceFilter} onWorkspaceChange={(id)=>{setWorkspace(id);setFilters((current)=>({...current,groupId:""}));}} tasks={inbox} onOpen={openTask} groupId={groupFilter||undefined} tagIds={activeTags}/>;}
 
   return <main className="muse-page muse-planner-page">
-    <MusePageHeader title="Planner"><DateNavigator date={date} onChange={changeDate}/></MusePageHeader>
-    <PlannerCapture><div className="muse-module-toolbar">{utilities()}</div>
+    <MusePageHeader title="Planner">{tab === "tasks" && <DateNavigator date={date} onChange={changeDate}/>}</MusePageHeader>
+    <MuseSectionNav label="Planner views" current={tab} items={plannerTabs.map((t) => ({ id: t.id, label: t.label, href: `/planner?${t.id === "tasks" ? "" : `view=${t.id}&`}date=${date}` }))}/>
+    <PlannerCapture>{tab === "agenda" && <Agenda date={date} today={today} onDate={changeDate} onOpen={openTask} sidebar={rail()} workspaceId={workspaceFilter || undefined} groupId={groupFilter || undefined} tagIds={activeTags}/>}
+    {tab === "reflections" && <section className="muse-planner-reflections muse-empty-state" data-variant="editorial"><h2>Reflections</h2><p>Weekly, monthly and yearly reviews will live here: a quiet place to look back at what you planned, finished and felt.</p></section>}
+    {tab === "tasks" && <><div className="muse-module-toolbar">{utilities()}</div>
     <div className="muse-planner-mobile-week"><WeekNavigator selectedDate={date} timeZone={profile.timeZone} onChange={(next) => { changeDate(next); setMobileView("day"); }} /></div>
     {state.activeTimer && <p className="muse-planner-timer-status" role="status">Timer running: {state.tasks.find((task) => task.id === state.activeTimer?.taskId)?.title}. <button className="text-button" type="button" onClick={(event) => { if (state.activeTimer) setDetail({ id: state.activeTimer.taskId, anchor: event.currentTarget }); }}>Open timer</button></p>}
     <div ref={workspaceRef} className="muse-planner-layout">
@@ -82,7 +89,7 @@ export function Planner() {
         })}
       </div>
       </div>
-    </div>
+    </div></>}
     {mobileView==="inbox"&&<MuseDrawer title="Task List" returnFocus={inboxAnchor} onClose={()=>setMobileView("day")}><div className="muse-planner-sheet-body">{rail()}</div></MuseDrawer>}
     <div className="muse-sr-only" role="status">{announcement}</div>
     {detail && <TaskDetails key={`${detail.id}/${status?.discarded??0}`} taskId={detail.id} returnFocus={detail.anchor} onClose={() => { setDetail(null); setAnnouncement("Task details closed. Check the Planner save status for pending changes."); }} />}
