@@ -4,7 +4,7 @@
 select option { background: var(--background); color: var(--foreground); }
 .muse-planner-toolbar input { font-size: .82rem; }
 /* One planner card surface (tokens only), shared by Scheduled Board days, Agenda days and the Running List sheet. */
-.muse-planner-surface, .muse-day-drop { border: 1px solid var(--glass-border); border-top-color: var(--glass-edge); border-radius: var(--card-radius); background: var(--planning-container-background); box-shadow: var(--card-shadow); backdrop-filter: blur(var(--material-blur)); }
+.muse-day-drop { border: 1px solid var(--glass-border); border-top-color: var(--glass-edge); border-radius: var(--card-radius); background: var(--planning-container-background); box-shadow: var(--card-shadow); backdrop-filter: blur(var(--material-blur)); }
 .muse-inbox-drop { min-height: 160px; padding: var(--space-2) 0; border-radius: var(--control-radius); }
 .muse-planner-day { min-width: 0; scroll-snap-align: start; }
 .muse-day-drop { height: var(--planner-surface-height); min-height: 0; display: flex; flex-direction: column; padding: var(--space-3); transition: border-color var(--transition), background var(--transition); }

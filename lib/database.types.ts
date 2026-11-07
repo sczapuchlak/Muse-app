@@ -245,6 +245,40 @@ isOneToOne: false
       referencedColumns: ["user_id","id"]
     }
                   ]
+                },"bucket_entries": {
+                  Row: {
+                    "archived_at": string | null,"aspiration_id": string | null,"category": string | null,"completed_on": string | null,"completion": NonNullable<Json>,"cover": Json | null,"created_at": string,"history": NonNullable<Json>,"icon": string | null,"id": string,"links": NonNullable<Json>,"notes": string | null,"number": number | null,"position": number,"revision": number,"status": string,"tags": (string)[],"target_year": number | null,"title": string,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "archived_at"?: string | null,"aspiration_id"?: string | null,"category"?: string | null,"completed_on"?: string | null,"completion"?: NonNullable<Json>,"cover"?: Json | null,"created_at"?: string,"history"?: NonNullable<Json>,"icon"?: string | null,"id": string,"links"?: NonNullable<Json>,"notes"?: string | null,"number"?: number | null,"position"?: number,"revision"?: number,"status"?: string,"tags"?: (string)[],"target_year"?: number | null,"title": string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Update: {
+                    "archived_at"?: string | null,"aspiration_id"?: string | null,"category"?: string | null,"completed_on"?: string | null,"completion"?: NonNullable<Json>,"cover"?: Json | null,"created_at"?: string,"history"?: NonNullable<Json>,"icon"?: string | null,"id"?: string,"links"?: NonNullable<Json>,"notes"?: string | null,"number"?: number | null,"position"?: number,"revision"?: number,"status"?: string,"tags"?: (string)[],"target_year"?: number | null,"title"?: string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "bucket_entries_aspiration_id_fkey"
+      columns: ["aspiration_id"]
+isOneToOne: false
+      referencedRelation: "aspirations"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"bucket_lists": {
+                  Row: {
+                    "completion_style": string,"created_at": string,"horizon_end": number,"horizon_start": number,"revision": number,"show_numbers": boolean,"title": string,"updated_at": string,"user_id": string,"year_colors": NonNullable<Json>
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "completion_style"?: string,"created_at"?: string,"horizon_end": number,"horizon_start": number,"revision"?: number,"show_numbers"?: boolean,"title"?: string,"updated_at"?: string,"user_id"?: string,"year_colors"?: NonNullable<Json>
+                  }
+                  Update: {
+                    "completion_style"?: string,"created_at"?: string,"horizon_end"?: number,"horizon_start"?: number,"revision"?: number,"show_numbers"?: boolean,"title"?: string,"updated_at"?: string,"user_id"?: string,"year_colors"?: NonNullable<Json>
+                  }
+                  Relationships: [
+                    
+                  ]
                 },"card_payments": {
                   Row: {
                     "allocation_id": string | null,"amount_cents": number,"captured_time_zone": string,"card_id": string,"created_at": string,"currency": string,"id": string,"local_date": string,"note": string | null,"paycheck_id": string | null,"position": number,"updated_at": string,"user_id": string

@@ -98,7 +98,7 @@ test('aspirations speak through the Almanac, and only from real changes',()=>{
 
 test('Rituals keeps Habits intact and adds Aspirations as a tab',()=>{
  const rituals=read('components/rituals/Rituals.tsx');
- assert.match(rituals,/<MuseSectionNav label="Rituals views"/);assert.match(rituals,/view === "aspirations" \? <Aspirations \/> : <RitualCapture>/);
+ assert.match(rituals,/<MuseSectionNav label="Rituals views"/);assert.match(rituals,/view === "aspirations" \? <Aspirations \/> : view === "bucket" \? .*<BucketList today=\{today\} \/>.* : <RitualCapture>/);
  assert.match(rituals,/<Suspense /,'search params need a boundary');
  const {ProgressRing,progressText}=load('components/rituals/aspirations/parts');
  assert.match(renderToStaticMarkup(createElement(ProgressRing,{percent:null})),/Progress unknown/);
