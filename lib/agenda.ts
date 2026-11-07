@@ -11,14 +11,13 @@ export type PlannerTab=typeof plannerTabs[number]['id'];
 export const agendaViews=[{id:'day',label:'Day'},{id:'week',label:'Week'},{id:'month',label:'Month'},{id:'year',label:'Future Log'}] as const;
 export type AgendaView=typeof agendaViews[number]['id'];
 
-export type AgendaPreferences={view:AgendaView;showCompleted:boolean;showSidebar:boolean};
-export const defaultAgendaPreferences:AgendaPreferences={view:'week',showCompleted:true,showSidebar:true};
+export type AgendaPreferences={view:AgendaView;showCompleted:boolean;showCanceled:boolean;showMarks:boolean};
+export const defaultAgendaPreferences:AgendaPreferences={view:'week',showCompleted:true,showCanceled:true,showMarks:true};
 /** Saved per device; anything unrecognised falls back to the defaults. */
 export function parseAgendaPreferences(value:unknown):AgendaPreferences{
  const v=value&&typeof value==='object'?value as Record<string,unknown>:{};
- return {view:agendaViews.some(a=>a.id===v.view)?v.view as AgendaView:defaultAgendaPreferences.view,
-  showCompleted:typeof v.showCompleted==='boolean'?v.showCompleted:defaultAgendaPreferences.showCompleted,
-  showSidebar:typeof v.showSidebar==='boolean'?v.showSidebar:defaultAgendaPreferences.showSidebar};
+ const flag=(k:'showCompleted'|'showCanceled'|'showMarks')=>typeof v[k]==='boolean'?v[k] as boolean:defaultAgendaPreferences[k];
+ return {view:agendaViews.some(a=>a.id===v.view)?v.view as AgendaView:defaultAgendaPreferences.view,showCompleted:flag('showCompleted'),showCanceled:flag('showCanceled'),showMarks:flag('showMarks')};
 }
 export const parsePlannerTab=(value:string|null|undefined):PlannerTab=>plannerTabs.some(t=>t.id===value)?value as PlannerTab:'tasks';
 
@@ -42,17 +41,50 @@ export function monthGrid(date:string):(string|null)[][]{
 }
 export const futureLogMonths=(date:string)=>Array.from({length:12},(_,i)=>`${date.slice(0,4)}-${String(i+1).padStart(2,'0')}`);
 
-/** One day's events (by time) and tasks (in their saved order). Hiding completed tasks never changes them. */
-export function dayItems(tasks:PlannedTask[],events:DayEvent[],day:string,showCompleted:boolean){
- return {events:events.filter(e=>e.date===day).sort((a,b)=>a.dateTime.localeCompare(b.dateTime)),
-  tasks:tasks.filter(t=>t.plannedDate===day&&(showCompleted||!t.complete)),
-  hiddenComplete:showCompleted?0:tasks.filter(t=>t.plannedDate===day&&t.complete).length};
+/** The last day an event covers (one record, however many days it spans). */
+export const eventEnd=(e:Pick<DayEvent,'date'|'endDate'>)=>e.endDate&&e.endDate>e.date?e.endDate:e.date;
+export const eventOnDay=(e:Pick<DayEvent,'date'|'endDate'>,day:string)=>e.date<=day&&day<=eventEnd(e);
+/** All-day and multi-day events first, then timed ones by start time. */
+const eventOrder=(a:DayEvent,b:DayEvent)=>Number(!a.allDay)-Number(!b.allDay)||a.dateTime.localeCompare(b.dateTime)||a.title.localeCompare(b.title);
+export type AgendaVisibility={showCompleted:boolean;showCanceled?:boolean};
+const visibleEvent=(e:DayEvent,v:AgendaVisibility)=>v.showCanceled!==false||e.status!=='canceled';
+/** One day's events (in time order) and tasks (in their saved order). Hiding never changes a record. */
+export function dayItems(tasks:PlannedTask[],events:DayEvent[],day:string,visibility:boolean|AgendaVisibility){
+ const v=typeof visibility==='boolean'?{showCompleted:visibility}:visibility;
+ const onDay=events.filter(e=>eventOnDay(e,day));
+ return {events:onDay.filter(e=>visibleEvent(e,v)).sort(eventOrder),
+  tasks:tasks.filter(t=>t.plannedDate===day&&(v.showCompleted||!t.complete)),
+  hiddenComplete:v.showCompleted?0:tasks.filter(t=>t.plannedDate===day&&t.complete).length,
+  hiddenCanceled:onDay.filter(e=>!visibleEvent(e,v)).length};
 }
-/** Everything scheduled in a month, for the Future Log. */
-export function monthItems(tasks:PlannedTask[],events:DayEvent[],month:string,showCompleted:boolean){
- return {events:events.filter(e=>e.date.startsWith(month)).sort((a,b)=>a.dateTime.localeCompare(b.dateTime)),
-  tasks:tasks.filter(t=>t.plannedDate?.startsWith(month)&&(showCompleted||!t.complete)).sort((a,b)=>(a.plannedDate??'').localeCompare(b.plannedDate??''))};
+/** Everything scheduled in a month, for the Future Log. A multi-day event appears once, in each month it touches. */
+export function monthItems(tasks:PlannedTask[],events:DayEvent[],month:string,visibility:boolean|AgendaVisibility){
+ const v=typeof visibility==='boolean'?{showCompleted:visibility}:visibility,first=`${month}-01`,last=`${month}-31`;
+ return {events:events.filter(e=>e.date<=last&&eventEnd(e)>=first&&visibleEvent(e,v)).sort((a,b)=>a.date.localeCompare(b.date)||eventOrder(a,b)),
+  tasks:tasks.filter(t=>t.plannedDate?.startsWith(month)&&(v.showCompleted||!t.complete)).sort((a,b)=>(a.plannedDate??'').localeCompare(b.plannedDate??''))};
 }
+/** "10–18", "Sep 28 – Oct 2", or just the day number, for compact Future Log and Month entries. */
+export function eventDays(e:Pick<DayEvent,'date'|'endDate'>,month?:string){
+ const end=eventEnd(e),d=(x:string)=>String(Number(x.slice(8))),md=(x:string)=>new Intl.DateTimeFormat('en-US',{month:'short',day:'numeric',timeZone:'UTC'}).format(new Date(`${x}T12:00:00Z`));
+ if(end===e.date)return d(e.date);
+ return e.date.slice(0,7)===end.slice(0,7)&&(!month||month===e.date.slice(0,7))?`${d(e.date)}–${d(end)}`:`${md(e.date)} – ${md(end)}`;
+}
+/** When an event happens, in words: "All day", "2:00 PM", "2:00 PM – 3:30 PM". */
+export function eventWhen(e:DayEvent){
+ if(e.allDay)return 'All day';
+ if(!e.endTime)return e.time;
+ const [h,m]=e.endTime.split(':');return `${e.time} – ${Number(h)%12||12}:${m} ${Number(h)>=12?'PM':'AM'}`;
+}
+
+/**
+ * A task's planning state from its existing fields only (no new status is stored): completed, overdue (planned for a
+ * past day and still open — never moved for you), scheduled, or unscheduled.
+ */
+export type TaskState='complete'|'overdue'|'scheduled'|'unscheduled';
+export function taskState(t:Pick<PlannedTask,'complete'|'plannedDate'>,today:string):TaskState{
+ if(t.complete)return 'complete';if(!t.plannedDate)return 'unscheduled';return t.plannedDate<today?'overdue':'scheduled';
+}
+export const taskStateLabels:Record<TaskState,string>={complete:'Completed',overdue:'Overdue — still open from an earlier day',scheduled:'Scheduled',unscheduled:'Not scheduled'};
 export function agendaTitle(view:AgendaView,date:string){
  const fmt=(o:Intl.DateTimeFormatOptions,d:string)=>new Intl.DateTimeFormat('en-US',{...o,timeZone:'UTC'}).format(new Date(`${d}T12:00:00Z`));
  if(view==='day')return fmt({weekday:'long',month:'long',day:'numeric',year:'numeric'},date);

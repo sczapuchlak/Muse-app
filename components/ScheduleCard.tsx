@@ -14,8 +14,8 @@ import { useMuseSpark } from "./MuseSpark";
 import "./ScheduleCard.css";
 
 function EventRow({ event }: { event: DayEvent }) {
-  return <li className="muse-plan-event">
-    <time dateTime={event.dateTime}>{event.time}</time><div className="muse-plan-eventContent"><h4 title={event.title}>{event.title}</h4>{event.detail && <p title={event.detail}>{event.detail}</p>}</div>
+  return <li className="muse-plan-event" data-status={event.status === "confirmed" ? undefined : event.status}>
+    <time dateTime={event.allDay ? event.date : event.dateTime}>{event.time}</time><div className="muse-plan-eventContent"><h4 title={event.title}>{event.title}</h4>{event.status === "canceled" ? <p>Canceled</p> : event.status === "tentative" ? <p>Tentative</p> : event.detail && <p title={event.detail}>{event.detail}</p>}</div>
   </li>;
 }
 
@@ -48,7 +48,7 @@ export function ScheduleCard({ selectedDate, priorityTaskIds = [] }: { selectedD
       <div className="muse-plan-section" role="group" aria-labelledby="plan-schedule-title">
         <div className="muse-plan-heading"><h3 id="plan-schedule-title">Schedule</h3><button type="button" className="muse-button button-ghost" aria-expanded={adding === "event"} aria-controls="plan-entry" onClick={(event) => { anchorRef.current = event.currentTarget; setAdding("event"); }}>+ Add event</button></div>
         <ul className="muse-plan-list">{preview.visibleEvents.map((event) => <EventRow key={event.id} event={event} />)}</ul>
-        {!preview.events.length && <p className="small-label">No timed events.</p>}
+        {!preview.events.length && <p className="small-label">No events.</p>}
         {preview.hiddenEvents > 0 && overflowButton("event", preview.events.length)}
       </div>
       <div className="muse-plan-section" role="group" aria-labelledby="plan-tasks-title">

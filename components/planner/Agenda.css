@@ -22,7 +22,7 @@
 @media (max-width:1050px){.muse-agenda-week{--cols:2}}
 @media (max-width:640px){.muse-agenda-week{--cols:1;grid-auto-columns:88%}}
 /* The planning column */
-.muse-agenda-planning{grid-template-rows:auto auto 1fr auto}
+.muse-agenda-planning{display:grid;grid-template-rows:auto auto 1fr auto}
 .muse-agenda-planning-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding-bottom:6px;border-bottom:1px solid var(--glass-border)}
 .muse-agenda-planning-head h3{margin:0;font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-editorial-weight);font-size:1.15rem}
 .muse-agenda-planning-settings{display:grid;gap:8px;font-size:.88rem}
@@ -39,24 +39,19 @@
 .muse-agenda-planning-list li input{accent-color:var(--accent-primary);margin-top:3px}
 .muse-agenda-planning-list li span{overflow-wrap:break-word;min-width:0}
 .muse-agenda-planning-list li[data-done] span{text-decoration:line-through;color:var(--text-muted)}
-.muse-agenda-day{display:grid;grid-template-rows:auto auto 1fr;height:100%;box-sizing:border-box;gap:8px;align-content:start;padding:10px;border:1px solid var(--glass-border);border-radius:16px;background:var(--surface-subtle);min-width:0}
+.muse-agenda-day{display:flex;flex-direction:column;height:100%;box-sizing:border-box;gap:8px;padding:10px;border:1px solid var(--glass-border);border-radius:16px;background:var(--surface-subtle);min-width:0}
 .muse-agenda-day[data-today]{border-color:var(--selected-border);box-shadow:0 0 0 1px var(--selected-border) inset}
-.muse-agenda-day[data-wide]{max-width:760px}
 .muse-agenda-day-heading{all:unset;cursor:pointer;display:flex;align-items:baseline;gap:6px;border-radius:8px}
 .muse-agenda-day-heading span{font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted)}
 .muse-agenda-day-heading strong{font-size:1.25rem;font-variant-numeric:tabular-nums}
 .muse-agenda-day[data-today] .muse-agenda-day-heading strong{color:var(--accent-primary)}
 .muse-agenda-day-heading:focus-visible,.muse-agenda-add:focus-visible,.muse-agenda-cell-date:focus-visible{outline:2px solid var(--accent-primary);outline-offset:2px}
-.muse-agenda-section{display:grid;gap:6px;align-content:start;min-width:0;padding-top:6px;border-top:1px solid var(--glass-border)}
+.muse-agenda-section{display:grid;grid-template-rows:auto minmax(0,1fr);gap:6px;align-content:start;min-width:0;padding-top:6px;border-top:1px solid var(--glass-border)}
 .muse-agenda-section-head{display:flex;align-items:center;justify-content:space-between;gap:6px}
 .muse-agenda-section h3{margin:0;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);font-weight:600}
 .muse-agenda-section ul{margin:0;padding:0;list-style:none;display:grid;gap:4px}
-.muse-agenda-section[data-section=events] li{display:flex;gap:6px;font-size:.84rem;min-width:0}
-.muse-agenda-section[data-section=events] time{color:var(--text-muted);font-variant-numeric:tabular-nums;white-space:nowrap}
-.muse-agenda-section[data-section=events] span{overflow-wrap:anywhere}
 .muse-agenda-add{width:26px;height:26px;border-radius:50%;border:1px solid var(--glass-border);background:var(--surface-control);color:inherit;cursor:pointer;line-height:1}
 .muse-agenda-empty{margin:0;font-size:.8rem;color:var(--text-muted)}
-.muse-agenda-drop{min-height:90px}
 .muse-agenda-month{display:grid;gap:4px;min-width:640px}
 .muse-agenda-month-row{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
 .muse-agenda-weekdays span{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);padding:0 6px}
@@ -75,7 +70,6 @@
 .muse-agenda-log-month h3{margin:0;font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-editorial-weight);font-size:1.1rem}
 .muse-agenda-log-month h3 .text-button{padding:0;font:inherit}
 .muse-agenda-log-month li{display:flex;gap:8px;font-size:.84rem}
-.muse-agenda-log-month li span{color:var(--text-muted);font-variant-numeric:tabular-nums;min-width:1.5em}
 .muse-planner-reflections{padding:28px;text-align:center}
 @media (max-width:640px){.muse-agenda-title{flex-basis:100%;order:-1}}
 /* Agenda task card: readable title first; details and quieter actions one step away. */
@@ -97,3 +91,149 @@
 .muse-agenda-task:hover .muse-agenda-task-more,.muse-agenda-task:focus-within .muse-agenda-task-more{opacity:1}
 @media (hover:none){.muse-agenda-task-more{opacity:1}}
 @media (prefers-reduced-motion:reduce){.muse-agenda-task-more{transition:none}}
+
+/* ---------- Shared section template (#79 §3.6): every day gives a band the same height, so bands line up. ---------- */
+.muse-agenda-day-head{display:flex;align-items:center;gap:6px;min-height:34px;min-width:0}
+.muse-agenda-day-head .muse-mark-strip{flex:1 1 auto;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+.muse-agenda-mark-add{display:grid;place-items:center;margin-left:auto;opacity:.6;flex:0 0 auto}
+.muse-agenda-day-head:hover .muse-agenda-mark-add,.muse-agenda-mark-add:focus-visible{opacity:1}
+@media (hover:none){.muse-agenda-mark-add{opacity:1}}
+.muse-agenda-section[data-flow=fixed]{height:var(--section-h);flex:0 0 auto;box-sizing:border-box;overflow:hidden}
+.muse-agenda-section[data-flow=fixed][data-size=collapsed]{grid-template-rows:auto}
+.muse-agenda-section-body{min-height:0;overflow-y:auto;overscroll-behavior:contain;display:grid;gap:6px;align-content:start;scrollbar-width:thin}
+.muse-agenda-section-body:focus-visible{outline:2px solid var(--accent-primary);outline-offset:2px}
+.muse-agenda-count{font-weight:500;letter-spacing:0;text-transform:none}
+.muse-agenda-drop-wrap{position:relative;display:block;flex:0 0 auto;min-width:0;border-radius:10px}
+.muse-agenda-drop-wrap .muse-drop-feedback{top:4px;right:8px}
+.muse-agenda-empty-action{all:unset;cursor:pointer;font-size:.8rem;color:var(--text-muted);border-radius:6px}
+.muse-agenda-empty-action:hover{color:inherit}.muse-agenda-empty-action:focus-visible{outline:2px solid var(--accent-primary);outline-offset:2px}
+.muse-agenda-warning{margin:0;font-size:.78rem;padding:6px 8px;border-radius:10px;border:1px dashed var(--accent-warm,var(--selected-border));background:var(--surface-control)}
+/* Events: concise chronological lines; status is a symbol AND words, never color alone. */
+.muse-agenda-event{display:flex;align-items:baseline;gap:5px;font-size:.84rem;min-width:0}
+.muse-agenda-symbol{color:var(--text-muted);font-size:.78rem;width:.9em;text-align:center;flex:0 0 auto}
+.muse-agenda-event-button{all:unset;cursor:pointer;display:flex;gap:6px;min-width:0;flex:1;border-radius:6px}
+.muse-agenda-event-button:focus-visible{outline:2px solid var(--accent-primary);outline-offset:2px}
+.muse-agenda-event-button time{color:var(--text-muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.muse-agenda-event-button>span{overflow-wrap:anywhere;min-width:0}
+.muse-agenda-event-button small{color:var(--text-muted)}
+.muse-agenda-event[data-status=canceled] .muse-agenda-event-button>span,.muse-agenda-log-entry[data-status=canceled]{text-decoration:line-through;color:var(--text-muted)}
+.muse-agenda-event[data-status=tentative] .muse-agenda-event-button>span{font-style:italic}
+.muse-agenda-event[data-continues] time{opacity:.6}
+/* Connected bands: compact colored badges (Movement, Reading), lines (Meals), a meter (Water), a note. */
+.muse-agenda-badges{display:flex!important;flex-wrap:wrap;gap:4px!important}
+.muse-agenda-badge{--badge:var(--accent-primary);display:inline-flex;align-items:center;gap:5px;max-width:100%;padding:3px 6px 3px 8px;border-radius:999px;font-size:.78rem;background:color-mix(in srgb,var(--badge) 14%,transparent);border:1px solid color-mix(in srgb,var(--badge) 40%,transparent);color:inherit}
+.muse-agenda-badge[data-accent=secondary]{--badge:var(--accent-secondary)}.muse-agenda-badge[data-accent=pop]{--badge:var(--accent-pop)}.muse-agenda-badge[data-accent=warm]{--badge:var(--accent-warm)}
+.muse-agenda-badge>span:first-of-type{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.muse-agenda-badge-state{font-size:.7rem;color:var(--text-muted);white-space:nowrap}
+.muse-agenda-badge:not([data-done]){background:transparent}
+.muse-agenda-badge[data-done]{font-weight:600}
+.muse-agenda-badge .muse-overflow-trigger{width:22px;height:22px;flex-basis:22px;min-height:0}
+.muse-agenda-badge>span[data-no-drag]{display:inline-flex}
+.muse-agenda-picker{padding:6px;border-radius:12px;background:var(--surface-control)}
+.muse-agenda-lines li{display:flex;gap:6px;font-size:.8rem;min-width:0}.muse-agenda-lines li .small-label{min-width:4.6em}
+.muse-agenda-meter{height:8px;border-radius:999px;background:var(--surface-control);overflow:hidden;align-self:center}
+.muse-agenda-meter span{display:block;height:100%;background:var(--accent-info,var(--accent-primary));border-radius:inherit}
+.muse-agenda-note{width:100%;height:100%;min-height:2.4em;box-sizing:border-box;resize:none;border:0;border-radius:8px;background:var(--surface-control);color:inherit;font:inherit;font-size:.84rem;padding:6px 8px}
+.muse-agenda-section[data-flow=auto] .muse-agenda-note{min-height:5em;resize:vertical}
+/* Task card states */
+.muse-agenda-task-main{display:grid;gap:4px;min-width:0}
+.muse-agenda-task-title{display:inline}
+.muse-agenda-task-title .muse-mark{margin-right:4px;vertical-align:-2px}
+.muse-agenda-task-state{display:flex;flex-wrap:wrap;gap:8px;font-size:.72rem;color:var(--text-muted)}
+.muse-agenda-task[data-state=overdue]{border-style:dashed}
+.muse-agenda-task-move{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:.8rem}
+.muse-agenda-task-move label{display:flex;gap:6px;align-items:center}
+.muse-agenda-task-move input{font:inherit;border:1px solid var(--glass-border);border-radius:8px;background:var(--surface-control);color:inherit;padding:2px 6px}
+/* Muse Marks */
+.muse-mark{--mark:var(--organization-accent,var(--accent-primary));display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;color:var(--mark);background:color-mix(in srgb,var(--mark) 16%,transparent);border:1px solid color-mix(in srgb,var(--mark) 35%,transparent);flex:0 0 auto;padding:0;font:inherit;line-height:0}
+button.muse-mark{cursor:pointer}button.muse-mark:focus-visible{outline:2px solid var(--accent-primary);outline-offset:2px}
+.muse-mark[data-missing]{border-style:dashed;opacity:.65}
+.muse-agenda-task-title .muse-mark,.muse-agenda-event .muse-mark,.muse-agenda-log-month .muse-mark{width:18px;height:18px}
+.muse-mark-strip{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0;list-style:none;min-width:0}
+.muse-mark-strip li{display:inline-flex;align-items:center;gap:4px;font-size:.8rem}
+.muse-mark-editor,.muse-event-editor{display:grid;gap:10px}
+.muse-mark-editor fieldset,.muse-event-editor fieldset{border:0;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.muse-mark-editor legend,.muse-event-editor legend{font-size:.8rem;margin-bottom:4px;color:var(--text-muted)}
+.muse-mark-icons label,.muse-mark-colors label{position:relative;display:grid;place-items:center;cursor:pointer}
+.muse-mark-icons input,.muse-mark-colors input{position:absolute;inset:0;opacity:0;margin:0;cursor:pointer}
+.muse-mark-icons span{display:grid;place-items:center;width:32px;height:32px;border-radius:10px;border:1px solid var(--glass-border);color:var(--organization-accent,var(--accent-primary));background:var(--surface-control)}
+.muse-mark-colors span{width:24px;height:24px;border-radius:50%;background:var(--organization-accent,var(--accent-primary));border:2px solid var(--surface-strong)}
+.muse-mark-icons input:checked+span,.muse-mark-colors input:checked+span{box-shadow:0 0 0 2px var(--selected-border)}
+.muse-mark-icons input:focus-visible+span,.muse-mark-colors input:focus-visible+span{outline:2px solid var(--accent-primary);outline-offset:2px}
+.muse-mark-field,.muse-event-editor>label,.muse-event-row label{display:grid;gap:4px;font-size:.84rem}
+.muse-mark-dates,.muse-event-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px}
+.muse-event-inline{display:flex!important;gap:6px;align-items:center;font-size:.86rem}
+.muse-event-status label{display:flex;gap:4px;align-items:center;font-size:.84rem;margin-right:8px}
+.muse-mark-editor :is(input:not([type=radio]):not([type=checkbox]),select),.muse-event-editor :is(input:not([type=radio]):not([type=checkbox]),select,textarea){width:100%;box-sizing:border-box;border:1px solid var(--glass-border);border-radius:10px;background:var(--surface-control);color:inherit;font:inherit;padding:7px 9px}
+.muse-mark-confirm{display:inline-flex;gap:8px;align-items:center;font-size:.84rem}
+/* Toolbar, settings and the filter note */
+.muse-agenda-tools{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.muse-agenda-tools .muse-button{min-height:38px}
+.muse-agenda-tools [aria-pressed=true]{border-color:var(--selected-border);background:var(--selected-background);color:var(--selected-text)}
+.muse-agenda-hiding{margin:-4px 0 0}
+.muse-agenda-settings{display:grid;gap:8px}
+.muse-agenda-legend{display:grid;gap:6px;padding-top:8px;border-top:1px solid var(--glass-border)}
+.muse-agenda-legend ul{margin:0;padding:0;list-style:none;display:grid;gap:4px;font-size:.82rem}
+.muse-agenda-legend li{display:flex;gap:8px;align-items:center}.muse-agenda-legend li>span{display:inline-grid;place-items:center;width:1.2em;color:var(--text-muted)}
+/* Customize layout */
+.muse-layout-editor{display:grid;gap:12px;padding:14px;border:1px solid var(--selected-border);border-radius:16px;background:var(--surface-subtle)}
+.muse-layout-editor>header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.muse-layout-editor h3{margin:0;font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-editorial-weight);font-size:1.15rem}
+.muse-layout-list{margin:0;padding:0;list-style:none;display:grid;gap:6px}
+.muse-layout-row{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:start;padding:8px 10px;border:1px solid var(--glass-border);border-radius:12px;background:var(--surface-control)}
+.muse-layout-row[data-dragging]{opacity:.5}.muse-layout-row[data-over]{box-shadow:0 -3px 0 var(--accent-primary)}
+.muse-layout-grip{cursor:grab;color:var(--text-muted);padding-top:6px;letter-spacing:-2px}
+.muse-layout-main{display:grid;gap:6px;min-width:0}
+.muse-layout-line{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;font-size:.84rem}
+.muse-layout-line label{display:flex;gap:6px;align-items:center}
+.muse-layout-editor :is(input:not([type=checkbox]),select){border:1px solid var(--glass-border);border-radius:9px;background:var(--surface-strong);color:inherit;font:inherit;padding:5px 8px;max-width:100%}
+.muse-layout-title input{font-weight:600;width:14em}
+.muse-layout-workspaces{border:0;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.84rem}
+.muse-layout-workspaces legend{color:var(--text-muted);font-size:.78rem;margin-bottom:2px}
+.muse-layout-workspaces label{display:flex;gap:5px;align-items:center}
+.muse-layout-actions{display:flex;gap:4px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.muse-layout-actions .muse-button{min-height:32px;padding:4px 10px}
+.muse-layout-add{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:.86rem}
+.muse-layout-add label{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.muse-layout-add select{max-width:min(100%,32em)}
+.muse-layout-reset{font-size:.84rem}
+@media (max-width:640px){.muse-layout-row{grid-template-columns:minmax(0,1fr)}.muse-layout-grip{display:none}.muse-layout-actions{justify-content:flex-start}.muse-layout-title input{width:100%}}
+/* Daily planner: related to Dayview, larger and flowing (bands keep their content height here). */
+.muse-agenda-daily{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+.muse-agenda-focus{display:grid;gap:8px;padding:14px;border:1px solid var(--glass-border);border-radius:16px;background:var(--surface-subtle)}
+.muse-agenda-focus-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.muse-agenda-focus h3{margin:0;font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-editorial-weight);font-size:1.25rem}
+.muse-agenda-intention{margin:0;font-size:1rem}
+.muse-agenda-priorities{margin:0;padding:0;list-style:none;display:grid;gap:4px}
+.muse-agenda-priorities li{display:flex;gap:8px;align-items:baseline}.muse-agenda-priorities li>span{color:var(--accent-warm,var(--accent-primary))}
+.muse-agenda-focus-marks{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.muse-agenda-daily-sections{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:12px;align-items:start}
+.muse-agenda-daily-sections>.muse-agenda-section,.muse-agenda-daily-sections>.muse-agenda-drop-wrap{padding:12px;border:1px solid var(--glass-border);border-radius:14px;background:var(--surface-subtle)}
+.muse-agenda-daily-sections .muse-agenda-section-body{max-height:28rem}
+/* Month: scannable cells; select a date for details without losing the month. */
+.muse-agenda-month-wrap{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+@media (min-width:1200px){.muse-agenda-month-wrap:has(.muse-agenda-day-detail){grid-template-columns:minmax(0,1fr) 340px;align-items:start}}
+.muse-agenda-cell-select{all:unset;cursor:pointer;display:flex;align-items:center;gap:6px;border-radius:8px;min-height:24px}
+.muse-agenda-cell-select:focus-visible{outline:2px solid var(--accent-primary);outline-offset:2px}
+.muse-agenda-cell[data-selected]{border-color:var(--selected-border);box-shadow:0 0 0 1px var(--selected-border) inset}
+.muse-agenda-cell-marks{display:inline-flex;gap:2px}.muse-agenda-cell-marks .muse-mark{width:18px;height:18px}
+.muse-agenda-cell li[data-status=canceled]{text-decoration:line-through;color:var(--text-muted)}
+.muse-agenda-cell-meta{display:flex;gap:8px;font-size:.72rem;color:var(--text-muted)}
+.muse-agenda-cell-meta [data-overdue]{color:inherit;font-weight:600}
+.muse-agenda-day-detail{display:grid;gap:10px;align-content:start;padding:14px;border:1px solid var(--selected-border);border-radius:16px;background:var(--surface-subtle)}
+.muse-agenda-day-detail header{display:grid;gap:8px}
+.muse-agenda-day-detail h3{margin:0;font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-editorial-weight);font-size:1.15rem}
+.muse-agenda-detail-actions{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.muse-agenda-detail-actions .muse-button{min-height:32px;padding:4px 10px}
+.muse-agenda-detail-events{margin:0;padding:0;list-style:none;display:grid;gap:4px}
+/* Future Log */
+.muse-agenda-log-month header{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.muse-agenda-log-add{display:flex;gap:4px}
+.muse-agenda-log-add .muse-agenda-add{display:grid;place-items:center}
+.muse-agenda-log-month li{align-items:baseline;gap:6px!important}
+.muse-agenda-log-day{all:unset;cursor:pointer;color:var(--text-muted);font-variant-numeric:tabular-nums;min-width:2.2em;font-size:.8rem;border-radius:5px}
+.muse-agenda-log-day:hover{color:inherit}.muse-agenda-log-day:focus-visible,.muse-agenda-log-entry:focus-visible{outline:2px solid var(--accent-primary);outline-offset:2px}
+.muse-agenda-log-entry{all:unset;cursor:pointer;overflow-wrap:anywhere;border-radius:5px}
+.muse-agenda-log-entry[data-status=tentative]{font-style:italic}
+@media (prefers-reduced-motion:reduce){.muse-agenda-week{scroll-behavior:auto}}
+.muse-agenda-daily-sections .muse-agenda-section{border-top:0;padding-top:0}

@@ -14,7 +14,7 @@ test('Planner has exactly Tasks, Agenda and Reflections; Agenda has Day, Week, M
  assert.deepEqual(A.agendaViews.map(v=>v.label),['Day','Week','Month','Future Log']);
  assert.equal(A.parsePlannerTab('calendar'),'tasks','old or unknown tabs fall back to Tasks');
  assert.equal(A.parsePlannerTab('agenda'),'agenda');
- assert.deepEqual(A.parseAgendaPreferences({view:'year',showCompleted:false,junk:1}),{view:'year',showCompleted:false,showSidebar:true});
+ assert.deepEqual(A.parseAgendaPreferences({view:'year',showCompleted:false,junk:1}),{view:'year',showCompleted:false,showCanceled:true,showMarks:true});
  assert.deepEqual(A.parseAgendaPreferences({view:'calendar'}),A.defaultAgendaPreferences);
 });
 
@@ -41,8 +41,8 @@ test('views read the same records; hiding completed never changes them',()=>{
 test('Planner wires the tabs and Agenda reuses the existing task, drop and event components',()=>{
  const planner=read('components/planner/Planner.tsx');
  assert.match(planner,/<MuseSectionNav label="Planner views"/);assert.match(planner,/tab === "agenda" && <Agenda /);
- const agenda=read('components/planner/Agenda.tsx');
- for(const piece of ['AgendaTaskCard','PlanningDropZone','TaskQuickAdd','PlanEntryForm','dispatch({ type: "event/add"'])assert.ok(agenda.includes(piece),piece);
+ const agenda=read('components/planner/Agenda.tsx')+read('components/planner/AgendaSections.tsx')+read('components/planner/EventEditor.tsx');
+ for(const piece of ['AgendaTaskCard','PlanningDropZone','TaskQuickAdd','EventEditor','dispatch({ type: "event/save"'])assert.ok(agenda.includes(piece),piece);
 });
 
 test('Weekly Agenda: two spreads of four equal columns, the last one a customizable planning column',()=>{

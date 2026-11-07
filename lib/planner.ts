@@ -27,6 +27,8 @@ export type PlannerAction =
   | { type: "task/toggle"; id: string; now: string }
   | { type: "task/delete"; id: string; now: string }
   | { type: "event/add"; event: DayEvent }
+  | { type: "event/save"; event: DayEvent }
+  | { type: "event/delete"; id: string }
   | { type: "workspace/save"; workspace: Workspace }
   | { type: "workspace/delete"; id: string }
   | { type: "group/save"; group: TaskGroup }
@@ -84,6 +86,8 @@ export function plannerReducer(state: PlannerState, action: PlannerAction): Plan
       return { ...next, tasks: next.tasks.filter((task) => task.id !== action.id) };
     }
     case "event/add": return state.events.some((event) => event.id === action.event.id) ? state : { ...state, events: [...state.events, action.event] };
+    case "event/save": return !action.event.title.trim() ? state : { ...state, events: replace(state.events, { ...action.event, title: action.event.title.trim() }) };
+    case "event/delete": return { ...state, events: state.events.filter((event) => event.id !== action.id) };
     case "workspace/save": return !action.workspace.name.trim() || !validAccent(action.workspace.accent) ? state : { ...state, workspaces: replace(state.workspaces, action.workspace) };
     case "workspace/delete": return state.workspaces.length <= 1 || state.tasks.some((task) => task.workspaceId === action.id) || state.groups.some((group) => group.workspaceId === action.id) ? state : { ...state, workspaces: state.workspaces.filter((entry) => entry.id !== action.id) };
     case "group/save": return !action.group.name.trim() || (action.group.accent && !validAccent(action.group.accent)) || !state.workspaces.some((entry) => entry.id === action.group.workspaceId) ? state : { ...state, groups: replace(state.groups, action.group), tasks: state.tasks.map((task) => task.groupId === action.group.id && task.workspaceId !== action.group.workspaceId ? { ...task, groupId: undefined } : task) };
