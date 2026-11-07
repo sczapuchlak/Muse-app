@@ -869,3 +869,28 @@ Planner → Tasks has two views of the same task records, chosen in the toolbar'
 - Water "+" adds water with Daily's quick amounts and progress bar.
 - Agenda day cards use the planner card material (Frosted and Crystal).
 - One rainbow today ring, shared by Tasks and Agenda.
+
+## Rituals — Bucket List (#84) — implemented on feature branch (local migration only)
+
+Rituals → **Habits | Aspirations | Bucket List** (`?view=bucket`). One long-running list per person, modeled on Stephanie's handwritten bullet-journal list: a key of colored year circles on top, a dense numbered list, and each dream highlighted in the color of the year it came true.
+
+- **Data** (migration `20261120000100_bucket_list.sql`, owner-only, RLS with four policies per table, revision trigger shared with Collections/Aspirations):
+  - `bucket_lists`: one row per person: title, time horizon (start/end year, up to 100 years), `year_colors` (year → stored hex), completion treatment (highlight, cross off, stamp) and show numbers. The row is created on the first real save, not on a visit.
+  - `bucket_entries`: permanent optional number (unique per person, never reused or renumbered), fractional manual position, title, notes, category, tags, emoji, status (Dreaming, Planned, In progress, Completed), optional target year (empty = Someday), URL links, cover photo, optional `aspiration_id` (on delete set null, ownership trigger), `completed_on`, the completion story (story, place, favorite memory, photos) and `history` of earlier completions. Archive is a timestamp and keeps everything.
+  - Photos reuse the private `constellation-images` storage under the person's folder (no new bucket). They're removed when the entry or photo is removed, and account deletion already clears that folder.
+  - `links` accepts `{kind:'constellation',id}` for the future Pinboard/Constellations connection (ids only, never copies). No UI for it yet.
+- **Year colors.** A year's default color depends only on the year. Each year also has a pattern (solid, stripes, dots, grid, waves, cross) and is always shown in text (’26), so color is never the only cue. Defaults are saved into the list the first time a year is used, so later palette changes can't recolor history. Changing a year's color recolors everything completed that year, like redrawing the key; changing a completion date's year moves the dream to that year's color. The key shows the horizon plus any year with a completion; choosing a year filters to it, and the selected year wears the shared rainbow ring.
+- **Completing.** The heart beside the number opens a short sheet: the date (defaults to today, never future) picks the color, and the story, place, memory and photos are optional. Once done, the heart fills with the year's color, the whole line is highlighted like a marker stroke, and the ’26 year chip appears. It celebrates with the shared celebration (respects reduced motion and Quiet Muse Magic). Tapping a filled heart reopens: the completion moves into `history` and the story is kept. A dream returns to Planned if it has a target year, otherwise Dreaming.
+- **Views** (view menu, remembered per device with the sort in `muse.bucket.view`):
+  - **Classic list**: three notebook columns spanning the toolbar (two, then one, on narrower widths). It fills like a notebook page, down column 1 and then the next, with at least 12 lines per column. Each line is number, heart, title. Completed dreams use the chosen treatment in their year's color (highlight by default). The next numbered line is always an add field.
+  - **Collectible cards**: cover photo or emoji, number, category and status, plus a keepsake line (date, place, memory) and a year ribbon.
+  - **Timeline**: ten-year pages, each year showing what came true and what's hoped for, then Someday. Nothing is forced into a year. This year wears the rainbow ring.
+- **Organizing.** Search covers title, notes, #tags, number, place and story. Filters: status, category, tags, completed year, and archived instead. Sorts: Your order, Number, Target year, Recently completed, Recently added, A–Z. Reordering (drag the handle, ↑/↓ on it, or Move up/down in the menu) is only offered in Your order with no search or filters, and writes one position.
+- **Aspirations.** A dream may link an existing Aspiration or "Turn into an aspiration" (creates a milestones aspiration with the title, category, emoji, notes and target year, then links it). They keep separate progress and neither completes the other. When a linked aspiration is completed, the list offers to cross off the dream.
+- **Insights → Plans & Rituals:** "Dreams that came true" in the selected range, by year and category. Deliberately no percent-of-list metric. `completedBetween` / `bucketTrends` are ready for monthly and yearly Reflections (#83).
+- **Export** includes the list and entries; photo files download separately, like Constellations.
+- **Not built:** Constellations/Pinboard linking UI, mood boards per dream, Stream/Almanac signals, linking Planner events from a completion.
+
+**Shared surface (same branch).** `.muse-planner-surface`'s base now lives in `app/design-language.css` (it was only in `Planner.css`, so the Bucket List looked translucent on Frosted). Bucket List and Planner cards now compute identically on Frosted and Crystal.
+
+**Agenda fix (same branch).** The Week track's single grid row was auto-sized, so tall section layouts grew the row past the measured window height and the page scrolled. The row is now `minmax(0,1fr)`, so days shrink their sections and scroll inside them.

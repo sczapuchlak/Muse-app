@@ -18,6 +18,7 @@ export const celebrationCopy={
  milestone:['Another star in your universe.','That deserves a little cosmic celebration.','You made something extraordinary happen.'],
  aspirationMilestone:['One step closer, and it counts.','A milestone, crossed off and kept.','Another stone on the path.','That one took doing. Done.'],
  aspirationProgress:['Look how far this has come.','A quarter more of the way there.','The distance is starting to show.'],
+ bucket:['One for the list. Crossed off in color.','Someday turned up. It was today.','A dream, now a memory.','Highlight it. You really did that.'],
  aspiration:['You said you would. You did.','A grand ambition, now a thing you did.','Finished. Let it be a big deal.','From someday to done.'],
 } as const;
 export type CopyContext=keyof typeof celebrationCopy;

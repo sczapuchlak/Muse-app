@@ -87,6 +87,9 @@
 /* Today, in every Planner view (Tasks board and Agenda): one thin, continuous rainbow ring around the whole card,
    drawn with Muse's edge colors as a conic sweep so every side carries the full rainbow (a straight
    left-to-right gradient left the sides one color). Color is never the only cue — the card also says "Today". */
+/* The shared planner card surface (Planner Tasks/Agenda, Rituals Bucket List). Global so every page gets the same solid
+   base under the Frosted/Crystal material layers in materials.css, not just pages that load Planner.css. */
+.muse-planner-surface{border:1px solid var(--glass-border);border-top-color:var(--glass-edge);border-radius:var(--card-radius);background:var(--planning-container-background);box-shadow:var(--card-shadow);backdrop-filter:blur(var(--material-blur))}
 .muse-today-ring{position:relative}
 .muse-today-ring.muse-today-ring::after{content:"";position:absolute;inset:0;height:auto;padding:3px;-webkit-mask-composite:xor;mask-composite:exclude;box-shadow:none;filter:saturate(1.25);border-radius:inherit;opacity:1;background:conic-gradient(from 210deg,var(--hover-start),var(--hover-middle),var(--hover-end),var(--hover-middle),var(--hover-start));
  -webkit-mask:linear-gradient(black 0 0) content-box,linear-gradient(black 0 0);-webkit-mask-composite:xor;mask:linear-gradient(black 0 0) content-box exclude,linear-gradient(black 0 0);pointer-events:none;z-index:1}

@@ -1,0 +1,186 @@
+/* Rituals → Bucket List (#84). Inspired by a handwritten bullet-journal list: a key of colored year circles on top, a
+   dense numbered list flowing in columns, and completed dreams highlighted in their year's color like a marker.
+   Year colors are stored hex values (--year) so a year looks the same in every theme. Patterns (data-pattern) and the
+   year in text keep years distinguishable without relying on color alone. */
+.muse-bucket{display:grid;gap:var(--space-3);padding:var(--space-4) var(--space-5) var(--space-5);min-width:0;container-type:inline-size}
+.muse-bucket-head{display:grid;gap:var(--space-3);min-width:0}
+.muse-bucket-titlebar{display:flex;align-items:baseline;justify-content:space-between;gap:var(--space-3);flex-wrap:wrap}
+.muse-bucket-titlebar h2{margin:0;font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-editorial-weight);font-size:1.7rem}
+.muse-bucket-summary{margin:0;font-size:.84rem;color:var(--text-muted)}
+
+/* ---------- Year patterns: drawn over a swatch's color in a neutral ink so every theme can read them. ---------- */
+.muse-bucket-swatch{--ink:rgb(255 255 255 / .55);display:inline-block;flex:none;width:18px;height:18px;border-radius:50%;background-color:var(--year);box-shadow:0 0 0 1.5px color-mix(in srgb,var(--year) 55%,var(--foreground));background-size:6px 6px}
+.muse-bucket-swatch[data-size=sm]{width:12px;height:12px;background-size:4px 4px}
+[data-pattern=stripes]:is(.muse-bucket-swatch){background-image:repeating-linear-gradient(45deg,var(--ink) 0 1.5px,transparent 1.5px 4px);background-size:auto}
+[data-pattern=dots]:is(.muse-bucket-swatch){background-image:radial-gradient(var(--ink) 1.1px,transparent 1.5px)}
+[data-pattern=grid]:is(.muse-bucket-swatch){background-image:linear-gradient(var(--ink) 1px,transparent 1px),linear-gradient(90deg,var(--ink) 1px,transparent 1px)}
+[data-pattern=waves]:is(.muse-bucket-swatch){background-image:radial-gradient(circle at 50% 100%,transparent 1.6px,var(--ink) 1.7px 2.4px,transparent 2.5px)}
+[data-pattern=cross]:is(.muse-bucket-swatch){background-image:repeating-linear-gradient(45deg,var(--ink) 0 1px,transparent 1px 4px),repeating-linear-gradient(-45deg,var(--ink) 0 1px,transparent 1px 4px);background-size:auto}
+
+/* ---------- The key ---------- */
+.muse-bucket-key{display:flex;flex-wrap:wrap;align-items:center;gap:6px 4px;padding-bottom:var(--space-2);border-bottom:1px solid var(--divider)}
+.muse-bucket-key-label{margin-right:6px;font-size:.72rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--text-muted)}
+.muse-bucket-keyitem{all:unset;display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:2px 10px 2px 4px;border-radius:999px;border:1px solid transparent;cursor:pointer;font-size:.92rem;font-variant-numeric:tabular-nums;color:var(--foreground)}
+.muse-bucket-keyitem .muse-bucket-swatch{width:22px;height:22px}
+.muse-bucket-keyitem small{min-width:1.4em;padding:0 6px;border-radius:999px;font-size:.7rem;text-align:center;background:var(--surface-control);color:var(--text-muted)}
+.muse-bucket-keyitem:hover{background:var(--surface-hover,var(--surface-subtle))}
+.muse-bucket-keyitem[aria-pressed=true]{background:var(--selected-background);color:var(--selected-text)}
+/* The selected year wears Muse's shared rainbow ring (the same one as Today in the Planner). */
+.muse-bucket-keyitem.muse-today-ring::after{padding:2px}
+.muse-bucket-keyitem:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
+.muse-bucket-settings{margin-left:auto;width:38px;height:38px;min-height:38px;padding:0;display:inline-grid;place-items:center}
+
+/* ---------- Toolbar: search + add on the left, filters/sort/view on the right; one 38px height. ---------- */
+.muse-bucket-tools{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-2)}
+.muse-bucket-tools :is(.muse-button,.muse-choice-trigger){height:38px;min-height:38px;box-sizing:border-box;padding-block:0;display:inline-flex;align-items:center;gap:6px}
+.muse-bucket-search{display:flex;align-items:center;gap:var(--space-2);flex:0 1 320px;min-width:180px;padding-left:var(--space-2);border:1px solid var(--glass-border);border-radius:var(--control-radius);background:var(--planning-control-background,var(--surface-control));color:var(--text-muted)}
+.muse-bucket-search input{flex:1;min-width:0;height:36px;border:0;background:transparent;color:var(--foreground);font-size:.86rem}
+.muse-bucket-search input:focus{outline:0}
+.muse-bucket-search:focus-within{outline:2px solid var(--focus-ring);outline-offset:2px}
+.muse-bucket-filters{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-2);margin-left:auto}
+.muse-bucket-filterpanel{display:grid;gap:8px;padding:4px}
+.muse-bucket-filterpanel .editor-label{margin:4px 0 0}
+.muse-bucket-inline{display:flex!important;align-items:center;gap:8px;font-size:.88rem}
+.muse-bucket-notice{margin:0;padding:8px 12px;border-radius:10px;border:1px solid var(--glass-border);background:var(--surface-subtle);font-size:.88rem}
+.muse-bucket-hint{margin:0}
+.muse-bucket-quiet{margin:0;font-size:.84rem;color:var(--text-muted);font-style:italic}
+
+/* ---------- Classic List: numbered lines that flow into notebook columns on wide screens. ---------- */
+/* Three notebook columns spanning exactly the toolbar: the first starts under the search, the last ends under View.
+   Column-major like a notebook page (down column 1, then 2, then 3); --rows3/--rows2 come from the entry count. */
+.muse-bucket-classic{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(var(--rows3,12),auto);grid-auto-flow:column;column-gap:var(--space-5);align-content:start;align-items:start}
+@container (max-width:900px){.muse-bucket-classic{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(var(--rows2,12),auto)}}
+@container (max-width:560px){.muse-bucket-classic{grid-template-columns:minmax(0,1fr);grid-template-rows:none;grid-auto-flow:row}}
+.muse-bucket-row{position:relative;display:flex;align-items:flex-start;gap:6px;break-inside:avoid;min-height:34px;padding:3px 0;border-radius:8px;border-bottom:1px dashed color-mix(in srgb,var(--divider) 70%,transparent)}
+.muse-bucket-row:hover,.muse-bucket-row:focus-within{background:var(--surface-subtle)}
+.muse-bucket-row[data-dragging]{opacity:.45}
+.muse-bucket-num{flex:none;min-width:1.9em;padding-top:5px;text-align:right;font-size:.86rem;font-variant-numeric:tabular-nums;color:var(--text-muted)}
+.muse-bucket-main{flex:1;min-width:0;padding-top:4px}
+.muse-bucket-title{all:unset;cursor:pointer;font-size:.95rem;line-height:1.4;overflow-wrap:anywhere;border-radius:4px}
+.muse-bucket-title:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
+.muse-bucket-facts{margin:1px 0 0;font-size:.74rem;color:var(--text-muted);display:flex;flex-wrap:wrap;gap:2px 8px}
+.muse-bucket-tag{color:var(--selected-text)}
+.muse-bucket-stamp{flex:none;padding-top:4px}
+.muse-bucket-more{flex:none;opacity:1}
+.muse-bucket-more .muse-overflow-trigger{width:28px;height:28px;min-height:0;flex-basis:28px}
+@media (hover:hover) and (pointer:fine){.muse-bucket-row:not(:hover):not(:focus-within) .muse-bucket-more{opacity:0}}
+/* The handle sits in the gutter, so the checkbox (not the handle) lines up with the search bar. */
+.muse-bucket-handle{all:unset;position:absolute;left:-19px;top:3px;display:grid;place-items:center;width:18px;height:28px;cursor:grab;color:var(--text-muted);border-radius:6px}
+.muse-bucket-handle:focus-visible{outline:2px solid var(--focus-ring)}
+@media (hover:hover) and (pointer:fine){.muse-bucket-row:not(:hover):not(:focus-within) .muse-bucket-handle{opacity:0}}
+
+/* The heart: an outline while it's a dream, filled with the year's color (plus a little pop) once it came true. */
+.muse-bucket-heart{all:unset;display:grid;place-items:center;flex:none;width:28px;height:28px;border-radius:50%;cursor:pointer;color:var(--text-muted)}
+.muse-bucket-heart:hover{color:var(--selected-text);background:var(--surface-hover,var(--surface-subtle))}
+.muse-bucket-heart:focus-visible{outline:2px solid var(--focus-ring);outline-offset:1px}
+.muse-bucket-heart-icon{fill:transparent;stroke:currentColor;stroke-width:1.8;stroke-linejoin:round;transition:fill .2s,transform .2s}
+.muse-bucket-heart:hover .muse-bucket-heart-icon{transform:scale(1.1)}
+.muse-bucket-heart-icon[data-filled]{fill:var(--year);stroke:color-mix(in srgb,var(--year) 65%,var(--foreground));animation:muse-bucket-heart-pop .35s ease-out}
+@keyframes muse-bucket-heart-pop{0%{transform:scale(.6)}60%{transform:scale(1.25)}100%{transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){.muse-bucket-heart-icon{transition:none;animation:none!important}}
+:root[data-magic=quiet] .muse-bucket-heart-icon{animation:none!important}
+.muse-bucket-addmark{flex:none;width:28px;height:28px;display:grid;place-items:center;color:var(--glass-border);opacity:.8}
+
+/* Completion treatments. Highlight: a marker stroke behind the words, in the year's color. */
+/* Highlight (default): the whole line is marked in the year's color, like a highlighter across a notebook line. */
+.muse-bucket-classic[data-style=highlight] .muse-bucket-row[data-done]{background:linear-gradient(100deg,color-mix(in srgb,var(--year) 14%,transparent),color-mix(in srgb,var(--year) 44%,transparent) 1.2em calc(100% - 1.2em),color-mix(in srgb,var(--year) 22%,transparent));border-radius:.35em .7em .5em .8em;border-bottom-color:transparent}
+.muse-bucket-classic[data-style=highlight] .muse-bucket-row[data-done]:hover{background:linear-gradient(100deg,color-mix(in srgb,var(--year) 20%,transparent),color-mix(in srgb,var(--year) 52%,transparent) 1.2em calc(100% - 1.2em),color-mix(in srgb,var(--year) 28%,transparent))}
+.muse-bucket-classic[data-style=highlight] .muse-bucket-row[data-done] :is(.muse-bucket-num,.muse-bucket-facts){color:var(--foreground)}
+.muse-bucket-card[data-done] .muse-bucket-card-body h3 .muse-bucket-title-text{background:linear-gradient(100deg,transparent .2em,color-mix(in srgb,var(--year) 52%,transparent) .3em calc(100% - .2em),transparent);background-size:100% 78%;background-position:0 60%;background-repeat:no-repeat;-webkit-box-decoration-break:clone;box-decoration-break:clone;padding:0 .25em;margin:0 -.25em;border-radius:.3em .5em .4em .6em}
+/* Cross off: a line through it in the year's color. */
+.muse-bucket-classic[data-style=strike] .muse-bucket-row[data-done] .muse-bucket-title-text{text-decoration:line-through;text-decoration-color:var(--year);text-decoration-thickness:3px;color:var(--text-muted)}
+/* Stamp: the words stay plain; the year stamp carries the color. */
+.muse-bucket-classic[data-style=stamp] .muse-bucket-row[data-done] .muse-bucket-yearchip{padding:2px 8px;border:1.5px solid var(--year);transform:rotate(-4deg);font-weight:700}
+.muse-bucket-yearchip{display:inline-flex;align-items:center;gap:4px;padding:1px 6px;border-radius:999px;font-size:.72rem;font-weight:600;font-variant-numeric:tabular-nums;color:var(--foreground);background:color-mix(in srgb,var(--year) 18%,transparent)}
+
+/* The add line is a row like the others: an empty checkbox slot, the next number, then the field — so it starts
+   exactly where rows start (under the search bar) and is one column wide. */
+.muse-bucket-addrow{border-bottom:0}
+.muse-bucket-addrow:hover,.muse-bucket-addrow:focus-within{background:transparent}
+.muse-bucket-quickadd{display:flex;align-items:center;gap:6px;flex:1;min-width:0}
+.muse-bucket-addline{max-width:calc((100% - 2 * var(--space-5)) / 3)}
+@container (max-width:900px){.muse-bucket-addline{max-width:calc((100% - var(--space-5)) / 2)}}
+@container (max-width:560px){.muse-bucket-addline{max-width:none}}
+.muse-bucket-quickadd .muse-bucket-num{padding-top:0}
+.muse-bucket-quickadd input{flex:1;min-width:0;height:34px;padding:0 10px;border:1px dashed var(--glass-border);border-radius:var(--control-radius);background:transparent;color:var(--foreground);font-size:.92rem}
+.muse-bucket-quickadd .muse-button{width:34px;height:34px;min-height:34px;padding:0;display:inline-grid;place-items:center}
+.muse-bucket-empty{display:grid;justify-items:center;gap:4px;padding:var(--space-5) var(--space-3);text-align:center;color:var(--text-muted)}
+.muse-bucket-empty h3{margin:0;color:var(--foreground);font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-editorial-weight)}
+.muse-bucket-empty p{margin:0}
+.muse-bucket-empty>span{font-size:1.4rem;color:var(--selected-text)}
+
+/* ---------- Collectible Cards ---------- */
+.muse-bucket-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,220px),1fr));gap:var(--space-3)}
+.muse-bucket-card{display:grid;grid-template-rows:auto 1fr;overflow:hidden;border:1px solid var(--glass-border);border-radius:var(--card-radius);background:var(--surface-subtle);min-width:0}
+.muse-bucket-card[data-done]{border-color:color-mix(in srgb,var(--year) 60%,var(--glass-border));box-shadow:inset 0 3px 0 var(--year)}
+.muse-bucket-card-art{position:relative;display:grid;place-items:center;aspect-ratio:16/10;background:linear-gradient(135deg,var(--surface-control),var(--surface-subtle))}
+.muse-bucket-card[data-done] .muse-bucket-card-art{background:linear-gradient(135deg,color-mix(in srgb,var(--year) 30%,var(--surface-control)),var(--surface-subtle))}
+.muse-bucket-card-photo{width:100%;height:100%;object-fit:cover}
+.muse-bucket-photo-wait{display:block;width:100%;height:100%;background:var(--surface-control)}
+.muse-bucket-card-emoji{font-size:2.4rem;line-height:1}
+.muse-bucket-card-num{position:absolute;top:8px;left:10px;padding:1px 8px;border-radius:999px;font-size:.72rem;font-variant-numeric:tabular-nums;background:var(--surface-strong);color:var(--foreground)}
+.muse-bucket-card-ribbon{position:absolute;top:8px;right:10px}
+.muse-bucket-card-ribbon .muse-bucket-yearchip{background:var(--surface-strong);box-shadow:0 0 0 1.5px var(--year)}
+.muse-bucket-card-body{display:grid;align-content:start;gap:4px;padding:10px 12px 8px;min-width:0}
+.muse-bucket-card-body h3{margin:0;font-size:1rem;font-weight:600;line-height:1.35}
+.muse-bucket-card-body p{margin:0}
+.muse-bucket-card-keepsake{font-size:.8rem;color:var(--foreground)}
+.muse-bucket-card-note{font-size:.8rem;color:var(--text-muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.muse-bucket-card-foot{display:flex;align-items:center;gap:4px;margin-top:4px;font-size:.78rem;color:var(--text-muted)}
+.muse-bucket-card-foot .muse-bucket-more{margin-left:auto}
+
+/* ---------- Timeline ---------- */
+.muse-bucket-timeline{display:grid;gap:var(--space-3)}
+.muse-bucket-timeline-nav{display:flex;align-items:center;gap:var(--space-2);font-variant-numeric:tabular-nums}
+.muse-bucket-timeline-nav .muse-button{width:38px;height:38px;min-height:38px;padding:0}
+.muse-bucket-years{list-style:none;margin:0;padding:0;display:grid;align-items:start;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:var(--space-3)}
+.muse-bucket-year,.muse-bucket-someday{display:grid;align-content:start;gap:8px;padding:10px 12px;border-radius:var(--card-radius);border:1px solid var(--glass-border);border-left:4px solid var(--year,var(--glass-border));background:var(--surface-subtle);min-width:0}
+/* This year: the shared rainbow ring. */
+.muse-bucket-year.muse-today-ring{border-left-color:var(--year)}
+.muse-bucket-year h3,.muse-bucket-someday h3{display:flex;align-items:center;gap:8px;margin:0;font-size:1.05rem;font-variant-numeric:tabular-nums}
+.muse-bucket-year h3 small{font-size:.72rem;font-weight:500;color:var(--selected-text)}
+.muse-bucket-year-count{margin-left:auto;font-size:.74rem;font-weight:500;color:var(--text-muted)}
+.muse-bucket-year .small-label{margin:0}
+.muse-bucket-pills{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.muse-bucket-pill{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:5px;max-width:100%;padding:3px 10px;border-radius:999px;font-size:.82rem;border:1px dashed var(--glass-border);color:var(--foreground)}
+.muse-bucket-pill[data-done]{border-style:solid;border-color:color-mix(in srgb,var(--year) 60%,transparent);background:color-mix(in srgb,var(--year) 30%,transparent)}
+.muse-bucket-pill small{color:var(--text-muted);font-size:.7rem}
+.muse-bucket-pill .muse-bucket-title-text{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.muse-bucket-pill:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
+
+/* ---------- Forms ---------- */
+/* Tall editors: the fields scroll inside; Save/Cancel stay pinned below a quiet divider (as in Collections editors). */
+.muse-bucket-form[data-scroll]{display:flex;flex-direction:column;flex:1 1 auto;min-height:0;gap:0;padding-bottom:0}
+.muse-bucket-form-body{display:grid;gap:14px;flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:2px 2px 14px;margin:0 -2px}
+.muse-bucket-form[data-scroll]>.muse-aspiration-actions{flex:none;padding:12px 0 2px;border-top:1px solid var(--divider)}
+.muse-bucket-form .muse-choice-menu,.muse-bucket-form .muse-choice-trigger{width:100%}
+.muse-bucket-form .editor-label{margin-bottom:5px;font-size:.9rem;color:var(--foreground)}
+/* Short windows: a pinned row would leave a sliver of fields, so the whole dialog scrolls instead. */
+@media (max-height:640px){.muse-modal[data-size=tall]:has(>.muse-bucket-form[data-scroll]){overflow-y:auto}.muse-bucket-form[data-scroll]{flex:none}.muse-bucket-form-body{overflow:visible}}
+.muse-bucket-static{margin:0;min-height:42px;display:flex;align-items:center;color:var(--text-muted)}
+/* The completion sheet is short: fit its content rather than the shared modal's full height. */
+#bucket-complete{height:fit-content}
+.muse-bucket-complete-title{margin:0;font-family:var(--font-editorial);font-style:italic;font-size:1.25rem}
+.muse-bucket-complete-year{display:flex;align-items:center;gap:6px;margin:0}
+.muse-bucket-photos{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.muse-bucket-photos figure{display:grid;gap:2px;justify-items:center;margin:0}
+.muse-bucket-thumb{width:84px;height:84px;object-fit:cover;border-radius:10px;border:1px solid var(--glass-border)}
+.muse-bucket-addphoto{cursor:pointer}
+.muse-bucket-link{display:flex;gap:10px;align-items:center;margin:0;font-size:.88rem;overflow-wrap:anywhere}
+.muse-bucket-linkadd{display:flex;gap:8px}
+.muse-bucket-linkadd input{flex:1}
+.muse-bucket-colorlist{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:6px 12px}
+.muse-bucket-colorlist li{display:flex;align-items:center;gap:8px;font-variant-numeric:tabular-nums}
+.muse-bucket-colorlist input[type=color]{width:36px;height:28px;padding:0;border:1px solid var(--glass-border);border-radius:6px;background:transparent;margin-left:auto;min-height:0!important}
+.muse-bucket-done-fields{padding:10px 12px!important;border:1px solid var(--glass-border)!important;border-radius:12px}
+
+/* No gutter for the handle on narrow widths or touch: reorder there with Move up/down in each row's menu. */
+@container (max-width:720px){.muse-bucket-handle,.muse-bucket-hint{display:none}}
+@media (hover:none){.muse-bucket-handle,.muse-bucket-hint{display:none}}
+@media (max-width:720px){
+ .muse-bucket{padding:var(--space-3)}
+ .muse-bucket-search{flex:1 1 100%}
+ .muse-bucket-filters{margin-left:0}
+ .muse-bucket-settings{margin-left:0}
+}
+@media (prefers-reduced-motion:reduce){.muse-bucket-row,.muse-bucket-keyitem{transition:none}}

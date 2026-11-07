@@ -11,7 +11,10 @@
 /* Week (final layout): two spreads of four equal, full-height columns — Mon–Thu, then Fri–Sun + planning.
    Narrower screens show fewer columns instead of squeezing four. */
 .muse-agenda-week:focus-visible{outline:2px solid var(--accent-primary);outline-offset:2px}
-.muse-agenda-week{--cols:4;--gap:10px;display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - (var(--cols) - 1) * var(--gap)) / var(--cols));gap:var(--gap);overflow-x:auto;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;padding-bottom:0;align-items:stretch;height:var(--planner-surface-height,min(70dvh,640px));box-sizing:border-box}
+.muse-agenda-week{--cols:4;--gap:10px;display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - (var(--cols) - 1) * var(--gap)) / var(--cols));gap:var(--gap);overflow-x:auto;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;padding-bottom:0;align-items:stretch;height:var(--planner-surface-height,min(70dvh,640px));box-sizing:border-box;grid-template-rows:minmax(0,1fr)}
+/* The one row is the track's height, never the day content's: without this an auto row grows to fit tall sections and
+   the week overflows the window (2026-11-06). Days then shrink their sections and scroll inside them. */
+.muse-agenda-week>.muse-agenda-day{min-height:0}
 .muse-agenda-week>*{scroll-snap-align:start}
 @media (min-width:1300px){.muse-agenda-week>*{scroll-snap-align:none}.muse-agenda-week>:nth-child(4n+1){scroll-snap-align:start}}
 @media (max-width:1299px){.muse-agenda-week{--cols:3}}
