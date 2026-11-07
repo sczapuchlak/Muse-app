@@ -108,7 +108,8 @@ test('Habits keeps Week + Grid as the original screen and adds period/layout/rit
   const tracker = read('components/rituals/RitualTracker.tsx');
   assert.match(tracker, /<RitualWeekCell ritual=\{habit\}/, 'Focus reuses the real week cell');
   assert.match(tracker, /function YearSheet/, 'Year is the paper sheet: months across, days down');
-  assert.match(tracker, /muse-sheet-review/, 'with a Month \/ Review column');
+  assert.match(tracker, /muse-sheet-months/, 'with a month review beside it');
+  assert.match(tracker, /d < ritual.startDate\) return \{ level: 0, status: "before"/, 'days before a ritual began are blank, not hatched');
   assert.match(tracker, /muse-today-ring/, 'today wears the shared rainbow ring');
   assert.match(ui, /v.layout === "grid" \? "grid" : v.layout \? "focus" : "grid"/, 'an old Heatmap choice opens Focus');
 });
