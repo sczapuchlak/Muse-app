@@ -24,8 +24,7 @@ test('period dates and calendar helpers', () => {
   assert.equal(T.shiftMonth('2026-01-15', -1), '2025-12-01');
   assert.equal(T.shiftPeriod('week', '2026-11-06', -1), '2026-10-30');
   assert.equal(T.periodTitle('month', '2026-11-06'), 'November 2026');
-  assert.equal(T.effectivePeriod('week', 'heatmap'), 'month', 'a one-week heatmap shows the month');
-  assert.equal(T.effectivePeriod('week', 'grid'), 'week');
+  assert.deepEqual(T.trackerLayouts.map((l) => l.id), ['grid', 'focus'], 'Heatmap is hidden (not useful)');
 });
 
 test('squares use the one ritualCell rule: complete, partial levels, missed, unknown and unscheduled stay distinct', () => {
@@ -105,5 +104,10 @@ test('Habits keeps Week + Grid as the original screen and adds period/layout/rit
   assert.match(ui, /<MuseChoiceMenu label="Period"/);
   assert.match(ui, /<MuseChoiceMenu label="Layout"/);
   assert.match(ui, /<MuseChoiceMenu label="Ritual"/);
-  assert.match(read('components/rituals/RitualTracker.tsx'), /<RitualWeekCell ritual=\{habit\}/, 'Focus reuses the real week cell');
+  const tracker = read('components/rituals/RitualTracker.tsx');
+  assert.match(tracker, /<RitualWeekCell ritual=\{habit\}/, 'Focus reuses the real week cell');
+  assert.match(tracker, /function YearSheet/, 'Year is the paper sheet: months across, days down');
+  assert.match(tracker, /muse-sheet-review/, 'with a Month \/ Review column');
+  assert.match(tracker, /muse-today-ring/, 'today wears the shared rainbow ring');
+  assert.match(ui, /v.layout === "grid" \? "grid" : v.layout \? "focus" : "grid"/, 'an old Heatmap choice opens Focus');
 });

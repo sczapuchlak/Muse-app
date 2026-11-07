@@ -143,7 +143,8 @@
 .muse-tracker-square[data-status=unscheduled]{border-color:transparent;background:repeating-linear-gradient(45deg,color-mix(in srgb,var(--foreground) 12%,transparent) 0 2px,transparent 2px 5px);opacity:.7}
 .muse-tracker-square[data-status=upcoming],.muse-tracker-square[data-status=open]{border-style:dashed;opacity:.6}
 .muse-tracker-square[data-status=unknown]{border-color:color-mix(in srgb,var(--glass-border) 90%,transparent)}
-.muse-tracker-square[data-today]{outline:2px solid var(--selected-border);outline-offset:1px}
+/* Today wears the shared rainbow ring (.muse-today-ring), thinner on small squares. */
+.muse-tracker-square.muse-today-ring::after,.muse-sheet-cell.muse-today-ring::after{padding:2px}
 button.muse-tracker-square:not(:disabled){cursor:pointer}
 button.muse-tracker-square:not(:disabled):hover{transform:scale(1.15)}
 button.muse-tracker-square:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
@@ -172,32 +173,43 @@ button.muse-tracker-square:focus-visible{outline:2px solid var(--focus-ring);out
 .muse-tracker-focus-head p{margin:0;font-size:.84rem;color:var(--text-muted)}
 .muse-tracker-focus-week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:var(--space-2)}
 .muse-tracker-focus-week>div{display:grid;justify-items:center;gap:6px;padding:10px 4px;border-radius:12px;background:var(--surface-subtle)}
-.muse-tracker-focus-week>div[data-today]{box-shadow:0 0 0 1px var(--selected-border)}
 .muse-tracker-focus-week>div>span{font-size:.78rem;color:var(--text-muted)}
 .muse-tracker-calendar{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
 .muse-tracker-cal-head{text-align:center;font-size:.72rem;font-weight:700;letter-spacing:.08em;color:var(--text-muted)}
 .muse-tracker-cal-day{position:relative;display:grid;justify-items:center;gap:2px;padding:4px 2px;border-radius:10px;background:var(--surface-subtle);min-width:0}
-.muse-tracker-cal-day[data-today]{box-shadow:0 0 0 1px var(--selected-border)}
 .muse-tracker-cal-num{font-size:.7rem;color:var(--text-muted);justify-self:start;padding-left:4px}
 .muse-tracker-calendar .muse-ritual-week-cell{min-height:0}
 .muse-tracker-calendar[data-mini]{gap:3px;--sq:13px;grid-template-columns:repeat(7,var(--sq));justify-content:start}
 .muse-tracker-calendar[data-mini] .muse-tracker-cal-day{padding:0;background:none}
 .muse-tracker-calendar[data-mini] .muse-tracker-square{border-radius:3px}
-.muse-tracker-calendar[data-heat]{--sq:clamp(22px,5vw,40px);max-width:420px}
-.muse-tracker-calendar[data-heat] .muse-tracker-cal-day{background:none;padding:0}
-.muse-tracker-calendar[data-heat] .muse-tracker-cal-num{display:none}
-.muse-tracker-minis{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:var(--space-3)}
-.muse-tracker-minis section{display:grid;gap:4px}
-.muse-tracker-minis .text-button{justify-self:start;font-size:.82rem}
-
-/* Year in Pixels: months as columns, days as rows. */
-/* Year in Pixels: one row per month, one column per day (1–31), so a whole year fits the width. */
-.muse-tracker-pixels{display:grid;grid-template-columns:2.6rem repeat(31,minmax(0,1fr));gap:3px;max-width:1100px}
-.muse-tracker-pixel{display:block;aspect-ratio:1}
-.muse-tracker-pixels .muse-tracker-pixel>.muse-tracker-square{width:100%;height:100%;border-radius:3px}
-.muse-tracker-pixel-month{all:unset;cursor:pointer;align-self:center;font-size:.74rem;font-weight:600;color:var(--text-muted);border-radius:4px}
-.muse-tracker-pixel-month:hover,.muse-tracker-pixel-month:focus-visible{color:var(--selected-text);outline:2px solid var(--focus-ring)}
-.muse-tracker-pixel-day{font-size:.62rem;color:var(--text-muted);text-align:center}
+/* Year sheet (Focus · Year): the paper year tracker — months across, days 1–31 down, ruled cells that touch, the key
+   and a Month / Review column beside it. Cells fill with the ritual's color by level, or with the category's color. */
+.muse-sheet-title{margin:0;font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-editorial-weight);font-size:1.6rem}
+.muse-sheet-title span{font-size:1rem;color:var(--text-muted);margin-left:6px}
+.muse-sheet-layout{display:flex;flex-wrap:wrap;align-items:flex-start;gap:var(--space-5)}
+.muse-sheet{--cell:clamp(18px,2.3vw,26px);display:grid;grid-template-columns:1.8rem repeat(12,var(--cell));grid-auto-rows:calc(var(--cell) * .78);gap:0}
+.muse-sheet-month{all:unset;cursor:pointer;text-align:center;font-size:.72rem;font-weight:700;letter-spacing:.04em;color:var(--text-muted);padding-bottom:4px;border-radius:4px;align-self:end}
+.muse-sheet-month:hover,.muse-sheet-month:focus-visible{color:var(--selected-text);outline:2px solid var(--focus-ring)}
+.muse-sheet-day{font-size:.62rem;color:var(--text-muted);text-align:right;padding-right:6px;align-self:center;font-variant-numeric:tabular-nums}
+.muse-sheet-slot{display:block;border-right:1px solid var(--sheet-line);border-bottom:1px solid var(--sheet-line)}
+.muse-sheet{--sheet-line:color-mix(in srgb,var(--foreground) 22%,transparent)}
+.muse-sheet>.muse-sheet-slot:nth-child(13n+2){border-left:1px solid var(--sheet-line)}
+.muse-sheet>.muse-sheet-slot:nth-child(-n+26){border-top:1px solid var(--sheet-line)}
+.muse-sheet-slot[data-void]{background:repeating-linear-gradient(45deg,color-mix(in srgb,var(--foreground) 8%,transparent) 0 1px,transparent 1px 4px)}
+.muse-sheet-cell{display:grid;place-items:center;width:100%;height:100%;box-sizing:border-box;font-size:.62rem;color:var(--foreground)}
+.muse-sheet-cell[data-level="1"]{background:color-mix(in srgb,var(--tracker) 28%,transparent)}
+.muse-sheet-cell[data-level="2"]{background:color-mix(in srgb,var(--tracker) 50%,transparent)}
+.muse-sheet-cell[data-level="3"]{background:color-mix(in srgb,var(--tracker) 72%,transparent)}
+.muse-sheet-cell[data-level="4"]{background:var(--tracker)}
+.muse-sheet-cell[data-category]{background:var(--category)}
+.muse-sheet-cell[data-status=unscheduled]{background:repeating-linear-gradient(45deg,color-mix(in srgb,var(--foreground) 12%,transparent) 0 1px,transparent 1px 4px)}
+.muse-sheet-side{display:grid;gap:var(--space-4);align-content:start;min-width:12rem}
+.muse-sheet-side .muse-tracker-legend{flex-direction:column;gap:8px}
+.muse-sheet-review{border-collapse:collapse;font-size:.74rem;width:10rem}
+.muse-sheet-review th,.muse-sheet-review td{border:1px solid color-mix(in srgb,var(--foreground) 22%,transparent);padding:0 8px;height:18px;text-align:left;font-weight:500;color:var(--text-muted)}
+.muse-sheet-review thead th{font-weight:700;color:var(--foreground)}
+.muse-sheet-review td{padding:0;width:55%}
+.muse-sheet-review td .muse-sheet-cell{height:17px}
 .muse-tracker-legend{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.78rem;color:var(--text-muted)}
 .muse-tracker-legend li{display:inline-flex;align-items:center;gap:6px}
 .muse-tracker-legend .muse-tracker-square{--sq:14px}
@@ -215,6 +227,7 @@ button.muse-tracker-square:focus-visible{outline:2px solid var(--focus-ring);out
 
 @media (max-width:720px){
  .muse-tracker{padding:var(--space-3)}
+ .muse-sheet{--cell:calc((100vw - 7rem) / 12)}
  .muse-tracker-focus-week{grid-template-columns:repeat(4,minmax(0,1fr))}
  .muse-tracker-grid{--name:minmax(6.5rem,8rem)}
  .muse-tracker-grid-head,.muse-tracker-grid-row{min-width:calc(8rem + var(--days) * 21px + 3.2rem)}

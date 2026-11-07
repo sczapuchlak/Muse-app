@@ -916,3 +916,8 @@ Rituals → **Habits | Aspirations | Bucket List** (`?view=bucket`). One long-ru
 - **Safari photos:** Safari can't encode WebP (the canvas quietly returns PNG), so storage refused the upload. Bucket List photos now fall back to JPEG there. Migration `20261121000200_private_images_jpeg.sql` lets the private bucket and its owner-only upload policy accept `.jpg` in the same folder layout.
 - **Constellations in Safari:** cards still validate `.webp` paths on save, so Safari shows a clear "try Chrome or Firefox" message instead of a failed retry. Supporting JPEG on cards needs their save function updated (follow-up).
 - **Dates:** "Completed on" uses the Muse date picker instead of the browser's.
+
+**Habit trackers revision (2026-11-07, approved by Stephanie).**
+- **Layouts:** Heatmap is removed ("not helpful"); Layout is now **Grid | Focus**, and a saved Heatmap choice opens Focus.
+- **Focus · Year** is the paper year tracker from her reference: the ritual's name, months across (J–D), days 1–31 down in ruled touching cells, non-days hatched, the key beside it, and a **Month / Review** column. For categorical rituals the review is the month's most common category; for the others it's the month's share of goals met. A month letter opens that month.
+- **Today** wears the shared rainbow `.muse-today-ring` in every tracker view.
