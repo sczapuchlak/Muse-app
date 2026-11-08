@@ -62,3 +62,18 @@ test('Settings shows a Google Calendar card separate from Sign-in',async()=>{
  const html=renderToStaticMarkup(React.createElement(GoogleCalendarSettings));assert.match(html,/never changes your Google Calendar/);
  assert.match(read('components/Settings.tsx'),/id="google-calendar"/);
 });
+test('Daily Edit shows today\'s visible Google events read-only beside Muse events, including multi-day ones',async()=>{
+ const {planPreview}=load('lib/plan-preview'),{eventProjection}=load('lib/data/planner');
+ const muse=eventProjection({id:'m1',title:'Muse lunch',local_date:'2026-11-10',local_time:'12:00',detail:null});
+ const trip=toDayEvent(toRow('primary',{id:'trip',summary:'Trip',start:{date:'2026-11-09'},end:{date:'2026-11-12'}},'UTC'),{name:'Personal',color:'#33b679'});
+ const call=toDayEvent(toRow('primary',{id:'call',summary:'Call',start:{dateTime:'2026-11-10T18:00:00Z'},end:{dateTime:'2026-11-10T18:30:00Z'}},'America/New_York'),{name:'Work',color:'#039be5'});
+ const p=planPreview([muse,trip,call],'2026-11-10');
+ assert.deepEqual(p.events.map(e=>e.title),['Trip','Muse lunch','Call']);assert.equal(p.events.filter(e=>e.source==='google').length,2);
+ const card=read('components/ScheduleCard.tsx');
+ assert.match(card,/useGoogleEvents\(selectedDate, selectedDate\)/);assert.match(card,/GoogleEventDetails/);assert.doesNotMatch(card,/event\/add", event: (google|googleEvent)/);
+ assert.doesNotMatch(read('components/google/GoogleCalendarStore.ts'),/fetch\("\/api\/google\/sync"[^)]*\)[^;]*useGoogleEvents/);
+});
+test('Google styles load wherever a Google event can appear',()=>{
+ assert.match(read('components/google/GoogleSourceDot.tsx'),/import "\.\/GoogleCalendar\.css"/);
+ assert.doesNotMatch(read('components/planner/Agenda.css'),/muse-google-dot/);
+});

@@ -22,11 +22,12 @@ Status: **Phase 1 (read-only) implemented on `feature/google-calendar-35-plan`.*
 | Browser store (read-only, follows database access rules) | `components/google/GoogleCalendarStore.ts` |
 | Settings card: connect, show or hide calendars, refresh, reconnect, disconnect with confirmation | `components/google/GoogleCalendarSettings.tsx` |
 | Agenda: Day, Week and Month merge Google events and show a calendar-color dot; read-only details link to Google; the Future Log is unchanged | `components/planner/Agenda.tsx`, `AgendaSections.tsx`, `components/google/GoogleEventDetails.tsx` |
+| Daily Edit "Today's plan" → Schedule: the selected day's Google events (visible calendars, multi-day included), with the calendar color as the row's accent line; read-only details | `components/ScheduleCard.tsx`, `components/google/GoogleSourceDot.tsx` |
 | Tests | `tests/google-calendar.test.mjs` |
 
 **Known limits in phase 1:**
 - Changing your Muse time zone applies to Google events at the next full sync. Disconnecting and reconnecting forces one.
-- Daily Edit's "Today's plan" and Muse Marks don't include Google events yet.
+- Muse Marks don't attach to Google events yet.
 - Sync happens when a page opens or you choose Refresh. There is no background job yet.
 
 ## Setup (Stephanie)
@@ -80,6 +81,6 @@ Apply `20261128000100_google_calendar.sql` with the existing staging process (`n
 
 ## Later phases (not built)
 
-- **Phase 2:** scheduled background sync, Daily Edit's "Today's plan", Muse Marks on Google events, an automatic re-sync when the time zone changes, and a published (verified) OAuth app.
+- **Phase 2:** scheduled background sync, Muse Marks on Google events, an automatic re-sync when the time zone changes, and a published (verified) OAuth app.
 - **Phase 3 (write):** an incremental `calendar.events` scope; a per-event "Also add to Google" that is off by default and stores `planner_events.google_event_id`; edits guarded with `etag`/If-Match.
 - **Phase 4:** push notifications and multiple Google accounts (the schema already allows several connections).

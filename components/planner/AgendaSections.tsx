@@ -1,6 +1,7 @@
 "use client";
 import { useId, useMemo, useRef, useState, type CSSProperties, type FormEvent, type PointerEvent as ReactPointerEvent, type ReactNode } from "react";
 import type { DayEvent, PlannedTask } from "@/lib/models";
+import { GoogleSourceDot } from "../google/GoogleSourceDot";
 import { mealLabels, mealSlots } from "@/lib/models";
 import { eventDays, eventWhen, taskState } from "@/lib/agenda";
 import { clampHeight, MAX_SECTION_PX, MIN_SECTION_PX, sectionPx, sectionWorkspaces, showCompletedFor, type AgendaSection } from "@/lib/agenda-layout";
@@ -92,11 +93,6 @@ export function EventLine({ event, day, ctx }: { event: DayEvent; day?: string; 
       <time dateTime={event.allDay ? event.date : event.dateTime}>{event.allDay ? "All day" : event.time}</time><span>{event.title}{event.seriesId && <span className="muse-repeat-mark" title="Repeating event" aria-label=", repeats">↻</span>}{span && <small>{span}</small>}</span>
     </button>
   </li>;
-}
-
-/** Google Calendar (#35): a small dot in the calendar's own color marks a read-only Google event. */
-export function GoogleSourceDot({ event }: { event: DayEvent }) {
-  return <span className="muse-google-dot" style={event.color ? { "--google-calendar": event.color } as CSSProperties : undefined} title={`Google Calendar${event.calendarName ? ` · ${event.calendarName}` : ""}`} aria-hidden="true" />;
 }
 
 function EventsSection({ section, ctx }: { section: AgendaSection; ctx: DayContext }) {

@@ -1,7 +1,7 @@
 "use client";
 import type { DayEvent } from "@/lib/models";
 import { eventDays, eventWhen } from "@/lib/agenda";
-import { GoogleSourceDot } from "../planner/AgendaSections";
+import { GoogleSourceDot } from "./GoogleSourceDot";
 
 /** A Google Calendar event in Muse is read-only in phase 1 (#35): details plus a link to change it in Google. */
 export function GoogleEventDetails({ event, onDone }: { event: DayEvent; onDone: () => void }) {

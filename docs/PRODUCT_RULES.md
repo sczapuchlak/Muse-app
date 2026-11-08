@@ -793,7 +793,7 @@ A Little Moment is its own record (one per local date). It is never stored in Da
 - Stephanie owns the Google Cloud project and OAuth client. Preview starts on a Testing-mode client, where Google expires refresh tokens after 7 days; Muse shows this as "Reconnect".
 - Refresh and access tokens are encrypted on the server (AES-256-GCM, `GOOGLE_TOKEN_KEY` in hosting secrets). `google_tokens` has no browser grants; tokens, the client secret and the key never reach the browser or logs.
 - Google events are a cache (`google_events`), unique per connection, calendar and Google event id, so syncing never duplicates. They are never copied into `planner_events`, and Google events stay distinct from Muse events and tasks.
-- Google events appear in Planner Agenda Day, Week and Month, read-only, with their calendar's color dot. The Future Log stays an intentional space: Google events do not appear there automatically (explicit linking/importing may be considered later).
+- Google events appear in Planner Agenda Day, Week and Month and in Daily Edit's Schedule, read-only, with their calendar's color dot. The Future Log stays an intentional space: Google events do not appear there automatically (explicit linking/importing may be considered later).
 - People choose which calendars show. New primary and owned calendars start visible; shared and subscribed ones start hidden. Hiding only hides in Muse.
 - Disconnect revokes Muse's access with Google and deletes the connection, tokens, calendars and cached events. Muse's own events are never touched.
 - Future (approved direction, not built): publishing a Muse event to Google is per event and off by default.

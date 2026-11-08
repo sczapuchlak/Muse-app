@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState, type CSSProperties } from "react";
+import "./GoogleCalendar.css";
 import { connectionStatus } from "@/lib/google/calendars";
 import { disconnectGoogle, setCalendarVisible, syncGoogle, useGoogleCalendar } from "./GoogleCalendarStore";
 

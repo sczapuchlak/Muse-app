@@ -463,10 +463,3 @@ button.muse-mark{cursor:pointer}button.muse-mark:focus-visible{outline:2px solid
 .muse-agenda-week{scrollbar-width:none;-ms-overflow-style:none}
 .muse-agenda-week::-webkit-scrollbar{display:none;width:0;height:0}
 
-/* Google Calendar (#35): read-only events carry their calendar's color as a small dot. */
-.muse-google-dot{display:inline-block;flex:0 0 auto;width:7px;height:7px;margin-top:.45em;border-radius:50%;background:var(--google-calendar,var(--text-muted));box-shadow:0 0 0 1px color-mix(in srgb,var(--text-muted) 35%,transparent)}
-.muse-google-event{display:grid;gap:8px}
-.muse-google-event h3{margin:0}
-.muse-google-event .editor-label{display:flex;align-items:center;gap:6px}
-.muse-google-event .muse-google-dot{margin-top:0}
-.muse-google-event-actions{display:flex;flex-wrap:wrap;gap:8px}
