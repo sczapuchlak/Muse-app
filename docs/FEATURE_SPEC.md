@@ -960,3 +960,11 @@ Rituals → **Habits | Aspirations | Bucket List** (`?view=bucket`). One long-ru
 ## Daily Edit priorities — close out past days (approved 2026-11-07)
 - Whether a day is over now uses the person's current profile time zone, not the zone captured on that day's record. Before, a record with another zone (e.g. from travel) made same-day linked priorities read-only hours early.
 - A linked priority on a past day can be checked off: it completes the task on that day (Running List's `planner_complete_on`, which records the local day) and shows as done for that day. Unchecking reopens the task, unless the day-end record already says it was done (that history isn't rewritten). Standalone priorities were already editable.
+
+**Habits Month · Grid redesign (2026-11-07, from Stephanie's paper habit tracker).**
+- **Layout:** habits run down the left, days 1–31 across with weekday letters, in ruled touching cells with shaded weekends.
+- **Marks:** each done day is a glossy dot in that day's ink (a seven-color cycle like gel pens); categorical rituals keep their category colors. Partial is a smaller dot, missed is a diagonal slash, and not-scheduled days are hatched.
+- **Today:** the header wears the rainbow ring and the column is softly lit.
+- **Totals:** a Done row of badges that glow with how full each day was, plus each ritual's met/decided count for the month.
+- **Polish:** an editorial title with stat chips (done this month, today, best day), dots that pop in day by day (off with reduced motion or Quiet Muse Magic), and a key in one row.
+- **Behavior:** same records and tap-to-log as every view. The whole cell is the tap target. On phones, the habit names stay pinned while the days scroll.

@@ -113,3 +113,13 @@ test('Habits keeps Week + Grid as the original screen and adds period/layout/rit
   assert.match(tracker, /muse-today-ring/, 'today wears the shared rainbow ring');
   assert.match(ui, /v.layout === "grid" \? "grid" : v.layout \? "focus" : "grid"/, 'an old Heatmap choice opens Focus');
 });
+
+test('Month · Grid is the paper habit tracker: ruled grid, a dot per done day in that day\'s ink, daily totals', () => {
+  const t = read('components/rituals/RitualTracker.tsx'), css = read('components/rituals/Rituals.css');
+  assert.match(t, /className="muse-mgrid"/);
+  assert.match(t, /<TrackerCell ritual=\{r\} date=\{d\} today=\{today\} sliceState=\{slice\(r\)\} onEditEntry=\{onEditEntry\} dot \/>/, 'same tap-to-log cell, drawn as a dot');
+  assert.match(t, /const dayInk = \[/);
+  assert.match(t, /muse-mgrid-foot/, 'daily totals row');
+  assert.match(css, /\.muse-mgrid-slot>\.muse-tracker-cellwrap\{width:100%;height:100%/, 'the whole cell is tappable');
+  assert.match(css, /\.muse-sheet-side \.muse-tracker-legend\{flex-direction:column/, 'only the year sheet stacks its key');
+});
