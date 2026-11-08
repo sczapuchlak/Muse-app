@@ -44,6 +44,28 @@ Keep dark/light inputs, placeholders, secondary text, disabled controls, dropdow
 
 Use plain prefixed component CSS: the current Turbopack CSS transform does not reliably export CSS-module class mappings. Revisit that pipeline separately before introducing modules.
 
+## Surface roles and theme atmospheres (#111) — implemented on feature branch, awaiting review
+
+A theme is no longer one card colour. `app/surfaces.css` turns raw theme tones into roles:
+
+| Role | Token | Used by |
+|---|---|---|
+| Canvas | `--background` + `--atmosphere-*-layers` | The page atmosphere, gradients only |
+| Sidebar | `--surface-sidebar` (`--tone-sidebar`) | The navigation rail, in its own coordinated hue |
+| Primary | `--surface-primary` (= `--glass-background`) | Default cards |
+| Alternate / alternate-2 | `--surface-alt`, `--surface-alt-2` (`--tone-alt*`) | Peer cards in a second and third hue family |
+| Featured | `--surface-featured` (+ `-ink`, `-muted`, `-accent`) | Rare, deliberate lighter or brighter cards |
+| Secondary / interactive | `--surface-subtle`, `--surface-control`, `--surface-hover`, `--selected-*` | Nested panels and controls, tinted in a different hue from the card |
+
+Rules:
+- Roles are hue families, not brightness steps of one hue. Each role theme has at least four distinct card hues (tested).
+- Peer groups rotate primary · alt · primary · alt-2 · primary · alt · primary (Future Log months, Week columns, collection cards, Settings cards). Daily Edit assigns roles per card so side-by-side cards differ. Tasks day columns alternate primary/alt; task cards use the alt-2-derived planning tone.
+- Featured is rare: today's priorities and the current Future Log month. A featured card re-points text, links, selected states and nested tints, so a light card inside a dark theme stays readable without per-component overrides.
+- Every tone has a Frosted counterpart (`--frosted-tone-*`). Crystal tones stay opaque enough (about .86–.92) to keep their own hue over a vivid atmosphere.
+- Only themes listed in `app/surfaces.css` opt in; all other themes render exactly as before.
+- Role themes define their own atmosphere composition (`--atmosphere-bloom/pool/haze-layers` in the theme block): different structures per theme, not one template with swapped colours. Theme Atelier edits them as layers.
+- Theme review (Appearance → Theme review) compares themes on real screens; lab palettes (`themeExperiments` in `lib/themes.ts`) never appear in the regular pickers.
+
 ## Reusable interaction language
 
 `app/interactions.css` provides theme-aware gradient borders for actual interactive surfaces through `.muse-edge` and shared control selectors. Silky restrained transitions; optional tiny lift; no bouncing. Keyboard focus is equally visible. Static MuseCard surfaces must not falsely advertise clickability.

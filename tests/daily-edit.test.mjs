@@ -123,10 +123,12 @@ test('long plan markup renders only preview rows with correct View all actions a
 
 test('every theme supplies the same complete visual token set and the correct light/dark mode', () => {
   const expected = Object.keys(palettes.iridescent).sort();
-  assert.equal(themes.length, 9);
+  assert.equal(themes.length, 13);
   assert.ok(expected.length >= 70);
+  // #111 surface-role themes may add sidebar/alt/featured tones and their own atmosphere compositions.
+  const roleOnly = (name) => /^--(frosted-)?tone-/.test(name) || /^--atmosphere-(bloom|pool|haze)-layers$/.test(name);
   for (const theme of themes) {
-    assert.deepEqual(Object.keys(palettes[theme.id]).sort(), expected, theme.id);
+    assert.deepEqual(Object.keys(palettes[theme.id]).filter((name) => !roleOnly(name)).sort(), expected, theme.id);
     assert.equal(palettes[theme.id]['--color-scheme'], theme.mode);
     for (const value of Object.values(palettes[theme.id])) for (const [, reference] of value.matchAll(/var\((--[\w-]+)/g)) assert.ok(reference in palettes[theme.id], reference);
     const alpha = color(palettes[theme.id]['--glass-background'])[3];
@@ -381,11 +383,11 @@ test('theme identities cover semantic navigation, selected, focus, success and p
     for (const theme of themes) assert.ok(palettes[theme.id][`--${role}`], `${theme.id}: ${role}`);
   }
   assert.equal(new Set(themes.map((theme) => palettes[theme.id]['--selected-background'])).size, themes.length);
-  assert.equal(palettes.astral['--accent-primary'], '#327dff');
-  assert.equal(palettes.astral['--focus-ring'], '#17eaff');
-  assert.equal(palettes.astral['--water-gradient-end'], '#26f0ff');
-  assert.equal(palettes['prism-noir']['--atmosphere-blush'], 'rgba(223, 30, 157, .45)');
-  assert.equal(palettes['prism-noir']['--water-gradient-end'], '#ff35c5');
+  assert.equal(palettes.astral['--accent-primary'], '#43d6e8');
+  assert.equal(palettes.astral['--focus-ring'], '#5fe6ff');
+  assert.equal(palettes.astral['--water-gradient-end'], '#62f0b0');
+  assert.equal(palettes['prism-noir']['--atmosphere-blush'], 'rgba(240,95,184,0.42)');
+  assert.equal(palettes['prism-noir']['--water-gradient-end'], '#ff5fc1');
 });
 
 test('Planner adapts to one focused mobile day and retains Move alternatives and native-modal focus semantics', () => {
@@ -464,7 +466,7 @@ test('all six themes supply readable planning materials and dark cards visibly s
   }
   assert.equal(palettes.afterglow['--background'],'#0d0e11');
   assert.equal(palettes.afterglow['--color-scheme'],'dark');
-  assert.equal(palettes['prism-noir']['--glass-background'],'rgba(9, 8, 17, .64)');
+  assert.equal(palettes['prism-noir']['--glass-background'],'rgba(34,21,47,0.74)');
 });
 
 test('Crystal and Frosted keep all six theme surfaces readable while Frosted increases opacity', () => {

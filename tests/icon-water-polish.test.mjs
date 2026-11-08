@@ -40,7 +40,7 @@ test('every existing theme supplies a distinct sharp icon palette with readable 
   for(const role of ['gradient-start','gradient-middle','gradient-end','gradient-highlight','edge'])assert.match(tokens[`--icon-${role}`],/^#[\da-f]{6}$/i);
   signatures.add(['start','middle','end'].map((key)=>tokens[`--icon-gradient-${key}`]).join('/'));
   for(const key of ['start','middle','end']){const a=luminance(tokens[`--icon-gradient-${key}`]),b=luminance(tokens['--background']);assert.ok((Math.max(a,b)+.05)/(Math.min(a,b)+.05)>=3,`${theme.id} ${key}`);}
- }assert.equal(signatures.size,9);
+ }assert.equal(signatures.size,13);
 });
 
 test('goal observations celebrate true threshold crossings once, rearm Water below goal and keep other milestone guards',()=>{

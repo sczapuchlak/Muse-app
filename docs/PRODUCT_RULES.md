@@ -797,3 +797,11 @@ A Little Moment is its own record (one per local date). It is never stored in Da
 - People choose which calendars show. New primary and owned calendars start visible; shared and subscribed ones start hidden. Hiding only hides in Muse.
 - Disconnect revokes Muse's access with Google and deletes the connection, tokens, calendars and cached events. Muse's own events are never touched.
 - Future (approved direction, not built): publishing a Muse event to Google is per event and off by default.
+
+## Theme collection renovation (#111) — approved 2026-11-08; implemented on feature branch, awaiting review
+
+- Curses, Pretty Toxic and Midnight Ballerina keep their names and ids but get completely new palettes (violet storm, poisoned pomegranate, midnight aurora). Palette descriptions are internal references only.
+- New official themes: Bubblegum Baby (light), Hot Summer Nights (dark), Booze Piñata (light), Northern Lights Out (dark).
+- The Dreamstorm direction for Midnight Ballerina is a Theme Lab palette (`dreamstorm-lab`), shown only in Appearance → Theme review, never in the regular pickers. If chosen, its tokens move onto `astral` and the lab entry is removed.
+- No monochromatic card walls: sidebar, canvas, cards, nested panels and featured cards use coordinated but different hue families (see DESIGN_SYSTEM "Surface roles"). Backgrounds stay CSS gradients only.
+- No database migration: theme ids are free-form text in existing columns. Existing Atelier remixes based on the three renovated themes inherit the new base palettes.

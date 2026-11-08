@@ -1130,3 +1130,10 @@ In edit mode every section can be renamed, resized (full / wide / half / third o
 - **Sync:** incremental per calendar with Google sync tokens; first sync reads 60 days back and a year ahead with recurring events expanded; a 410 restarts that calendar cleanly. Opening Settings or the Planner Agenda syncs once per page load. Times use the Muse profile time zone.
 - **Agenda:** Day, Week and Month list Google events beside Muse events, with a color dot; selecting one opens read-only details with "Open in Google Calendar". Daily Edit's "Today's plan" Schedule lists the day's Google events the same way (calendar-color accent line, read-only details). The Future Log and Muse Marks are unchanged.
 - See `docs/GOOGLE_CALENDAR_PLAN.md` for setup and later phases.
+
+## Theme collection renovation (#111) — implemented on feature branch (no migration)
+
+- **Themes:** Curses, Pretty Toxic and Midnight Ballerina renovated in place; Bubblegum Baby, Hot Summer Nights, Booze Piñata and Northern Lights Out added (13 official themes). Dreamstorm is a Theme Lab palette.
+- **Surface roles:** `app/surfaces.css` gives role themes a distinct sidebar, alternate card families, featured cards and hue-shifted nested panels, in Crystal and Frosted.
+- **Atmospheres:** each role theme has its own gradient composition in its theme block; Theme Atelier reads it as editable layers. The Atelier colour catalog is regenerated (`node scripts/generate-atelier-catalog.mjs`).
+- **Theme review:** Appearance → Theme review starts a per-tab review; a floating bar steps through the eight reviewed looks, switches Crystal/Frosted and jumps to Future Log, Daily Edit, Tasks, Week, Mindspace, Collections and Settings. Done restores the earlier theme; Keep this keeps the current one.

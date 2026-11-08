@@ -1,7 +1,7 @@
 "use client";
 
 import { useId, useLayoutEffect, useRef, useState, useSyncExternalStore, type CSSProperties } from "react";
-import { defaultTheme, themes, type ThemeId } from "@/lib/themes";
+import { themeEntry, type ThemeId } from "@/lib/themes";
 import { readThemePreference, selectTheme, serverThemePreference, subscribeThemePreference } from "@/lib/theme-preference";
 import { readThemeOverride, serverThemeOverride, subscribeThemeOverride } from "@/lib/theme-override";
 import { materials, readMaterial, selectMaterial, serverMaterial, subscribeMaterial } from "@/lib/material-preference";
@@ -24,7 +24,7 @@ export function ThemeSwitcher({compact=false,variant="pill"}:{compact?:boolean;v
   useLayoutEffect(() => { document.documentElement.setAttribute("data-material", readMaterial()); }, [material]);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const applied = useSyncExternalStore(subscribeApplied, readApplied, serverApplied);
-  const official = themes.find((theme) => theme.id === activeId) ?? defaultTheme;
+  const official = themeEntry(activeId);
   const active = applied ? { ...official, name: applied.name } : official;
   // A profile being viewed may lend the page its theme; the person's own choice returns when they leave.
   const override = useSyncExternalStore(subscribeThemeOverride, readThemeOverride, serverThemeOverride);

@@ -71,7 +71,8 @@ export function parseLayer(source:string,definition:Pick<AtelierDefinition,'base
 }
 export function planeSource(plane:PlaneId,base:ThemeId){
  if(plane==='pool'&&base==='disco-damage')return defaultPlaneSources.discoPool;
- return defaultPlaneSources[plane];
+ // #111: themes with their own atmospheric composition define the plane's layer list in their theme block.
+ return officialTokenValues[base]?.[planeVariables[plane]]??defaultPlaneSources[plane];
 }
 /** The official layers of a plane for this base, as editable specs. */
 export function builtInLayers(plane:PlaneId,definition:Pick<AtelierDefinition,'base'|'tokens'>):LayerSpec[]{

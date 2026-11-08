@@ -1,0 +1,69 @@
+/*
+ * Surface roles (#111). Themes give the sidebar, peer cards and featured panels their own coordinated hue families,
+ * instead of one card color everywhere. Themes supply raw tones (--tone-*, --frosted-tone-*) in app/themes.css; this
+ * file turns them into roles. Nested panels keep using --surface-subtle / --surface-control, which role-aware themes
+ * tint in a different hue (the "secondary" and "interactive" roles). Themes without tones render exactly as before.
+ */
+:root {
+  --surface-primary: var(--glass-background);
+  --surface-sidebar: var(--tone-sidebar, var(--glass-background));
+  --surface-sidebar-edge: var(--tone-sidebar-edge, var(--glass-border));
+  --surface-alt: var(--tone-alt, var(--glass-background));
+  --surface-alt-2: var(--tone-alt-2, var(--surface-alt));
+  --surface-featured: var(--tone-featured, var(--glass-background));
+  --surface-featured-ink: var(--tone-featured-ink, var(--foreground));
+  --surface-featured-muted: var(--tone-featured-muted, var(--text-muted));
+  --surface-featured-accent: var(--tone-featured-accent, var(--ink-purple));
+}
+:root[data-material="frosted"] {
+  --surface-sidebar: var(--frosted-tone-sidebar, var(--tone-sidebar, var(--glass-background)));
+  --surface-alt: var(--frosted-tone-alt, var(--tone-alt, var(--glass-background)));
+  --surface-alt-2: var(--frosted-tone-alt-2, var(--tone-alt-2, var(--surface-alt)));
+  --surface-featured: var(--frosted-tone-featured, var(--tone-featured, var(--glass-background)));
+}
+
+/* Role assignment. Only themes built with surface tones opt in, so every other theme keeps its established look. */
+:root:is([data-theme="prism-noir"],[data-theme="nightbloom"],[data-theme="astral"],[data-theme="dreamstorm-lab"],[data-theme="bubblegum-baby"],[data-theme="hot-summer-nights"],[data-theme="booze-pinata"],[data-theme="northern-lights-out"]) {
+
+  /* Peer groups: a 7-step rhythm (primary · alt · primary · alt-2 · primary · alt · primary) so neighbours differ in
+     hue without stripes in 2-, 3- or 4-column grids. Daily Edit's cards sit inside capture wrappers, so they take
+     their roles by card, chosen so side-by-side cards differ. */
+  & :is(.muse-settings-col > .muse-card, .muse-agenda-year > .muse-agenda-log-month, .muse-collections-grid > .muse-collections-card, .muse-agenda-week > .muse-agenda-day):is(:nth-child(7n+2), :nth-child(7n+6)),
+  & :is(#movement, #mood, #little-rituals, #day-pulse),
+  & .muse-day-drop:nth-of-type(2n),
+  & .muse-notes-list-pane,
+  & [data-surface="alt"] { background-color: var(--surface-alt); }
+
+  & :is(.muse-settings-col > .muse-card, .muse-agenda-year > .muse-agenda-log-month, .muse-collections-grid > .muse-collections-card, .muse-agenda-week > .muse-agenda-day):nth-child(7n+4),
+  & :is(#water, #day-in-three, #daily-bookshelf, #meals, #daily-fortune),
+  & .muse-notes-tag-rail,
+  & [data-surface="alt-2"] { background-color: var(--surface-alt-2); }
+
+  /* Featured: rare, deliberate. A light card in a dark theme (or a bright one in a light theme) re-points text,
+     links and nested-panel tints so every component inside stays readable without its own override. */
+  & :is(#priorities, .muse-agenda-log-month[data-current], [data-surface="featured"]) {
+    background-color: var(--surface-featured);
+    color: var(--surface-featured-ink);
+    --foreground: var(--surface-featured-ink);
+    --text-muted: var(--surface-featured-muted);
+    --ink-purple: var(--surface-featured-accent);
+    --ink-aqua: var(--surface-featured-accent);
+    --ink-pink: var(--surface-featured-accent);
+    --link-ink: var(--surface-featured-accent);
+    --selected-text: var(--surface-featured-ink);
+    --navigation-text: var(--surface-featured-accent);
+    --filter-selected-text: var(--surface-featured-accent);
+    --urgency-ink: var(--surface-featured-accent);
+    --information-accent: var(--surface-featured-accent);
+    --nav-icon: var(--surface-featured-accent);
+    --surface-subtle: color-mix(in srgb, var(--surface-featured-ink) 6%, transparent);
+    --surface-hover: color-mix(in srgb, var(--surface-featured-ink) 11%, transparent);
+    --surface-control: color-mix(in srgb, var(--surface-featured-ink) 8%, transparent);
+    --divider: color-mix(in srgb, var(--surface-featured-ink) 16%, transparent);
+    --glass-border: color-mix(in srgb, var(--surface-featured-ink) 22%, transparent);
+    --glass-edge: rgba(255, 255, 255, .7);
+    --selected-border: var(--surface-featured-accent);
+    --selected-background: color-mix(in srgb, var(--surface-featured-accent) 14%, transparent);
+    border-color: color-mix(in srgb, var(--surface-featured-accent) 45%, transparent);
+  }
+}

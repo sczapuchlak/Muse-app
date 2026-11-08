@@ -1,0 +1,23 @@
+/* Theme review (#111): one compact floating control, always in the floating material so every theme stays legible. */
+.muse-review-bar { position:fixed; z-index:60; left:50%; bottom:max(16px, env(safe-area-inset-bottom)); transform:translateX(-50%); width:min(1040px, calc(100vw - 32px)); display:flex; flex-wrap:wrap; align-items:center; gap:8px 14px; padding:8px 12px; border:1px solid var(--glass-border); border-radius:18px; background:var(--floating-background); box-shadow:var(--floating-shadow); color:var(--foreground); font-size:.8rem; }
+.muse-review-bar button, .muse-review-bar a { min-height:32px; padding:0 10px; border:1px solid var(--glass-border); border-radius:10px; background:var(--surface-control); color:var(--foreground); font:inherit; text-decoration:none; display:inline-flex; align-items:center; cursor:pointer; }
+.muse-review-bar :is(button,a):hover { background:var(--surface-hover); }
+.muse-review-bar :is(button,a):focus-visible { outline:2px solid var(--focus-ring); outline-offset:2px; }
+.muse-review-bar button[aria-pressed="true"] { border-color:var(--selected-border); background:var(--selected-background); color:var(--selected-text); }
+.muse-review-theme { display:flex; align-items:center; gap:8px; min-width:0; }
+.muse-review-step { width:32px; justify-content:center; padding:0 !important; font-size:1rem; }
+.muse-review-swatch { width:26px; height:26px; flex:none; border-radius:50%; box-shadow:inset 0 0 0 1px rgba(255,255,255,.4); }
+.muse-review-name { display:grid; line-height:1.2; min-width:120px; }
+.muse-review-name small { color:var(--text-muted); font-size:.7rem; }
+.muse-review-materials, .muse-review-screens, .muse-review-end { display:flex; flex-wrap:wrap; gap:6px; }
+.muse-review-screens { flex:1; }
+@media (max-width: 1023px) { .muse-review-bar { bottom:calc(76px + env(safe-area-inset-bottom)); } .muse-review-screens { order:3; flex-basis:100%; overflow-x:auto; flex-wrap:nowrap; } }
+.muse-review-grid { list-style:none; margin:var(--space-4) 0 0; padding:0; display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:var(--space-4); }
+.muse-review-card { display:grid; gap:6px; align-content:start; padding:var(--space-4); border:1px solid var(--glass-border); border-radius:var(--card-radius); background:var(--glass-background); }
+.muse-review-card[data-active] { border-color:var(--selected-border); }
+.muse-review-card small { color:var(--text-muted); }
+.muse-review-card .muse-review-lab { color:var(--ink-pink); font-weight:600; }
+.muse-review-card .muse-button { justify-self:start; margin-top:4px; }
+.muse-review-preview { height:84px; border-radius:12px; box-shadow:inset 0 0 0 1px rgba(255,255,255,.25); }
+.muse-review-links { display:flex; flex-wrap:wrap; gap:8px; }
+.muse-theme-review { padding-bottom:120px; }
