@@ -925,6 +925,38 @@ Rituals → **Habits | Aspirations | Bucket List** (`?view=bucket`). One long-ru
 - **Year sheet fits the window** using the Planner's height measurement (31 rows share the height; minimum 400px). Polish: a rounded ruled frame, a soft sheen on filled cells, today's row and column faintly lit, a month-by-month fill-in (off with reduced motion or Quiet Muse Magic), stat chips by the title, and day counts in the key.
 - **Year sheet side panels** (2026-11-07): the side is two soft cards. The **Key** has category rows with day counts, or a compact two-column key for the other types. The **Month review** gives each month a glowing bar: its share of goals met with a met/decided count, or for categorical rituals its most common category (named on the bar) with logged days. Rows share the sheet's height. **Missed** is a diagonal strike through the cell, the same in the key, the sheet and the month grid. Days before a ritual's start date are blank, not hatched.
 
+## Planner Foundation — Recurrence 2.0 (#89) — phase 1 on feature branch (no database change)
+
+**Audit (2026-11-07).** Tasks store recurrence as three columns on the task row (`recurrence_frequency` daily/weekly/monthly, `recurrence_interval`, `recurrence_until`), written through the Planner command; a repeating task is one record marked ↻, and completing it doesn't produce the next occurrence. `task_completion_events` holds real completion history. Native events (`planner_events`) have no recurrence. Money has its own small interval engine (`lib/recurring.ts`), which stays separate.
+
+**Phase 1 (implemented):**
+- **`lib/recurrence.ts`:** one pure rule engine for tasks and events.
+  - Rules: daily, weekly on chosen weekdays, monthly on a day (clamped to month end, so Jan 31 → Feb 28 → Mar 31) or the nth/last weekday, and yearly. Intervals, and an end by date or count.
+  - It works on civil dates in the saved timezone, so DST can't move an occurrence. Each schedule is computed from the series anchor, so occurrence identity is (series id, scheduled date).
+  - Helpers: windows with skipped dates, next/upcoming, membership, last date, "this and future" splitting, plain-language labels and presets, and `fromLegacy`, which reads today's task columns without rewriting them.
+- **`components/planner/RecurrenceEditor.tsx`:** the shared repeat editor (presets for the start date, a Custom panel, Ends: never / on a date / after N times, a live summary with the next dates) and `RecurrenceScopeChoice` (This one / This and future / Entire series).
+- Tests: `tests/recurrence.test.mjs` (month ends, leap years, nth/last weekday, DST weekends, until/count, skipped dates, labels, legacy conversion).
+
+**Phases 2–3 (implemented, local + staging migration `20261122000100_recurrence.sql`):**
+- **Data:**
+  - A recurring task stays one task record (the series) with `recurrence_rule` anchored on its planned date. The older recurrence columns are read through `fromLegacy` and cleared when a rule is saved.
+  - `task_occurrences` (owner-read RLS) stores only what happened to a date: completed (real `completed_at` plus the local `completed_on`), skipped, or moved (`moved_to`). Nothing is generated ahead and no history is fabricated.
+  - `task_completion_events.occurrence_date` names the occurrence completed.
+  - Events: `planner_events.recurrence_rule`, plus `planner_event_exceptions` for a canceled, moved, edited or deleted single date (overrides: title, time/clock, end time, location, notes, status, all-day).
+  - All writes go through the revision-checked, idempotent `planner_recurrence_command`: task/rule, task/split, occurrence complete/skip/move, event/rule, event/occurrence and event/split. Future occurrences can't be completed. `read_planner_recurrence` returns rules, occurrences and exceptions. The export includes `recurringTaskHistory` and `recurringEventExceptions`.
+- **Projection** (`lib/planner-occurrences.ts`):
+  - Every view swaps a series for its dated occurrences, with stable ids `series::YYYY-MM-DD` (the scheduled date, even when moved), so each occurrence appears once per date and is counted once.
+  - `translateAction` turns ordinary actions on an occurrence into recurrence changes: toggle → complete or reopen that date, drag to a day → move, drag to the list or delete → skip, edits → the series. Existing controls work unchanged.
+- **Views:**
+  - The Scheduled Board days, Agenda (Day, Week, Month, Future Log), Dayview and Running List all read the projection.
+  - In the Running List, a series is one row: ○ on its due days, × on the day each occurrence was done, and each mark acts on its own occurrence.
+  - The Task List shows a series as Scheduled, never overdue (its occurrences carry their own state).
+  - A shared ↻ mark appears on occurrences in every view.
+- **Editing:**
+  - Task Details has a Repeat section: the shared editor with an explicit Apply. From a later occurrence it offers This and future (split) or Entire series, plus Skip this date.
+  - The event editor has Repeat and, on an occurrence, This one (an exception: moved, edited or canceled), This and future (split) or Entire series. Delete removes this date or the whole series.
+- **Counts:** Insights' plans count completion events (one per occurrence). The progress engine (Connected Rituals' "tasks completed", Across Muse) keys series completions by task and occurrence date.
+- **Not done:** times other than all-day/start for events beyond the existing fields, and per-occurrence subtasks (subtasks belong to the series).
 ## Daily Edit priorities — close out past days (approved 2026-11-07)
 - Whether a day is over now uses the person's current profile time zone, not the zone captured on that day's record. Before, a record with another zone (e.g. from travel) made same-day linked priorities read-only hours early.
 - A linked priority on a past day can be checked off: it completes the task on that day (Running List's `planner_complete_on`, which records the local day) and shows as done for that day. Unchecking reopens the task, unless the day-end record already says it was done (that history isn't rewritten). Standalone priorities were already editable.

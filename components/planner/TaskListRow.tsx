@@ -1,5 +1,7 @@
 "use client";
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import { taskRule } from "@/lib/planner-occurrences";
+import { ruleLabel } from "@/lib/recurrence";
 import type { PlannedTask } from "@/lib/models";
 import { accentStyle } from "@/lib/appearance-values";
 import { formatPlannedMinutes } from "@/lib/planner";
@@ -69,7 +71,7 @@ export function taskFacts({ task, today, priority, showWorkspace, state, hidePla
   for (const t of tags.slice(0, 2)) facts.push(<span key={`t${t.id}`} className="muse-list-tag" style={accentStyle(t.accent)}>#{t.name}</span>);
   if (tags.length > 2) facts.push(<span key="tm">+{tags.length - 2}</span>);
   if (task.subtasks.length) facts.push(<span key="s" title="Subtasks done">{doneSubtasks}/{task.subtasks.length}</span>);
-  if (task.recurrence) facts.push(<span key="r" title={`Repeats ${task.recurrence.frequency}. Muse keeps one task and its latest completion, not separate occurrences.`}>↻ {task.recurrence.frequency}</span>);
+  { const rule = taskRule(task); if (rule && task.plannedDate) { const label = ruleLabel(rule, task.seriesId ? (task.occurrenceDate ?? task.plannedDate) : task.plannedDate); facts.push(<span key="r" className="muse-list-repeat" title={`${label}. Each date is its own occurrence.`}>↻ {label.split(" · ")[0]}</span>); } }
   if (task.estimatedMinutes) facts.push(<span key="e" title="Estimate">{formatPlannedMinutes(task.estimatedMinutes)}</span>);
   return facts;
 }

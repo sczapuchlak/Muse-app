@@ -1,3 +1,4 @@
+import {isSeries,occurrenceId,projectTasks,type TaskOccurrence} from './planner-occurrences';
 /**
  * Running List (#81): a continuous, bullet-journal style view of the SAME canonical tasks as the Scheduled Board,
  * Agenda and Dayview. A task never needs a date to be here. The weekday strip shows two different facts that are
@@ -50,14 +51,29 @@ export function runningSections(tasks:PlannedTask[],done:Map<string,string>,week
  return {week,active,completed};
 }
 
-export type StripCell={date:string;completed:boolean;planned:boolean;today:boolean;actionable:boolean;action:'complete'|'reopen'|null;label:string};
+export type StripCell={date:string;completed:boolean;planned:boolean;today:boolean;actionable:boolean;action:'complete'|'reopen'|null;label:string;
+ /** Recurring series (#89): the occurrence this cell completes or reopens. */
+ occurrence?:string};
 const long=(d:string)=>new Intl.DateTimeFormat('en-US',{weekday:'long',month:'long',day:'numeric',timeZone:'UTC'}).format(new Date(`${d}T12:00:00Z`));
 /**
  * Seven cells. Any day from today back (within a year) can be clicked: a blank day marks the task done on that day,
  * its × reopens it. Future days only show the plan. The completion day always comes from recorded history.
  */
-export function weekStrip(task:PlannedTask,week:string[],completedOn:string|undefined,today:string):StripCell[]{
+export function weekStrip(task:PlannedTask,week:string[],completedOn:string|undefined,today:string,occurrences:TaskOccurrence[]=[]):StripCell[]{
  const oldest=shiftDate(today,-366);
+ // Recurring series (#89): ○ on each date it's due this week, × on the day each occurrence was actually done. Only due
+ // days are actionable, and each acts on its own occurrence; the series row itself is never "done".
+ if(isSeries(task)){
+  const shown=projectTasks([task],occurrences,week[0],week[6]),done=occurrences.filter(o=>o.taskId===task.id&&o.status==='completed');
+  return week.map(date=>{
+   const due=shown.find(t=>t.plannedDate===date),doneHere=done.find(o=>o.completedOn===date),isToday=date===today;
+   const target=due?.complete?due.id:doneHere?occurrenceId(task.id,doneHere.date):due?.id;
+   const actionable=!!target&&date<=today&&date>=oldest,action=!actionable?null:(due?.complete||doneHere&&!due)?'reopen':'complete';
+   const facts=[doneHere&&'completed',due&&(due.complete?'due and done':'due')].filter(Boolean).join(' and ');
+   const verb=action==='reopen'?'. Reopen':action==='complete'?'. Mark this occurrence done':'';
+   return {date,completed:!!doneHere,planned:!!due,today:isToday,actionable,action,label:`${long(date)}${facts?`: ${facts}`:''}${verb}`,...(actionable?{occurrence:target}:{})};
+  });
+ }
  return week.map(date=>{
   const completed=!!task.complete&&completedOn===date,planned=task.plannedDate===date,isToday=date===today;
   const actionable=date<=today&&date>=oldest,action=!actionable?null:completed?'reopen':'complete';

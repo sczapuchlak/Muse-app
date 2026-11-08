@@ -9,6 +9,10 @@ import { MuseChoiceMenu } from "../MuseChoiceMenu";
 import { TaskMoveControl } from "./TaskMoveControl";
 import { MuseDrawer } from "../MuseDrawer";
 import { useMuseSpark } from "../MuseSpark";
+import { RecurrenceEditor, RecurrenceScopeChoice } from "./RecurrenceEditor";
+import { resolveTask, splitChange, taskRule } from "@/lib/planner-occurrences";
+import { ruleLabel, type EditScope, type RecurrenceRule } from "@/lib/recurrence";
+import { dateLabel, todayInTimeZone } from "@/lib/dates";
 
 type Subtask = PlannedTask["subtasks"][number];
 function SubtaskRow({ item, onChange, onDelete }: { item: Subtask; onChange: (item: Subtask) => void; onDelete: () => void }) {
@@ -22,7 +26,8 @@ function SubtaskRow({ item, onChange, onDelete }: { item: Subtask; onChange: (it
 
 export function TaskDetails({ taskId, onClose, returnFocus }: { taskId: string; onClose: () => void; returnFocus: HTMLElement | null }) {
   const { state, dispatch,canEdit } = usePlanner();
-  const task = state.tasks.find((entry) => entry.id === taskId);
+  // Recurrence 2.0 (#89): an occurrence id resolves to its series, shown with that date's state.
+  const resolved = resolveTask(state, taskId), task = resolved?.task;
   const titleDraft=usePlannerDraft(`task-title/${taskId}`,task?.title??''),title=titleDraft.value;
   const [subtask, setSubtask] = useState("");
   const [now, setNow] = useState(() => new Date().toISOString());
@@ -35,7 +40,8 @@ export function TaskDetails({ taskId, onClose, returnFocus }: { taskId: string; 
   return <MuseDrawer title="Task details" onClose={() => { if(saveTitle())onClose(); }} returnFocus={returnFocus}>
     <PlannerPersistenceStatus activityOnly/><PlannerCapture><div className="muse-task-details">
       <label className="editor-label">Title<input type="text" required maxLength={160} value={title} onChange={(event) => {titleDraft.set(event.target.value);}} onBlur={saveTitle} /></label>
-      <label className="muse-detail-complete"><input type="checkbox" checked={task.complete} onChange={(event) => { if (event.target.checked) trigger(); dispatch({ type: "task/toggle", id: taskId, now: new Date().toISOString() }); }} />Completed{spark}</label>
+      {resolved?.series && !resolved.occurrenceDate ? <p className="small-label muse-detail-complete">↻ Repeats. Each date is checked off on its own day.</p> : <label className="muse-detail-complete"><input type="checkbox" checked={task.complete} onChange={(event) => { if (event.target.checked) trigger(); dispatch({ type: "task/toggle", id: taskId, now: new Date().toISOString() }); }} />{resolved?.occurrenceDate ? "Done for this date" : "Completed"}{spark}</label>}
+      <RepeatSection key={taskId} taskId={taskId} />
       <div className="muse-detail-fields">
         <div><p className="editor-label">Workspace</p><MuseChoiceMenu label="Task workspace" valueLabel={state.workspaces.find((item)=>item.id===task.workspaceId)?.name??"Workspace"} options={state.workspaces.map((item)=>({id:item.id,label:item.name,accent:item.accent}))} selectedIds={[task.workspaceId]} onSelect={(workspaceId)=>update({workspaceId})}/></div>
         <div><p className="editor-label">Legacy workspace tag</p><MuseChoiceMenu label="Legacy workspace tag" valueLabel={state.groups.find((item)=>item.id===task.groupId)?.name??"No legacy tag"} options={[{id:"",label:"No legacy tag"},...state.groups.filter((item)=>item.workspaceId===task.workspaceId).map((item)=>({id:item.id,label:item.name}))]} selectedIds={[task.groupId??""]} onSelect={(groupId)=>update({groupId:groupId||undefined})}/></div>
@@ -54,4 +60,33 @@ export function TaskDetails({ taskId, onClose, returnFocus }: { taskId: string; 
       <button className="text-button muse-delete-task" type="button" onClick={() => { dispatch({ type: "task/delete", id: taskId, now: new Date().toISOString() }); onClose(); }}>Delete task</button>
     </div></PlannerCapture>
   </MuseDrawer>;
+}
+
+/**
+ * Repeat (#89): the shared recurrence editor for a task. From a later occurrence, the change applies to "this and
+ * future" (the series is split there) or the entire series; the first date always edits the series. Changes are
+ * applied with an explicit button, so typing an interval never fires a change per keystroke.
+ */
+function RepeatSection({ taskId }: { taskId: string }) {
+  const { state, dispatch, canEdit, timeZone } = usePlanner();
+  const resolved = resolveTask(state, taskId);
+  const base = resolved?.series ?? resolved?.task ?? null, rule = base ? taskRule(base) : null, start = base?.plannedDate;
+  const fromDate = resolved?.occurrenceDate ?? null, later = !!fromDate && !!start && fromDate > start;
+  const [draft, setDraft] = useState<RecurrenceRule | null>(rule), [scope, setScope] = useState<EditScope>(later ? "future" : "series");
+  const today = timeZone ? todayInTimeZone(timeZone) : new Date().toISOString().slice(0, 10);
+  if (!base) return null;
+  if (!start) return <p className="small-label muse-task-repeat">Give it a planned date to make it repeat.</p>;
+  const changed = JSON.stringify(draft) !== JSON.stringify(rule), now = () => new Date().toISOString();
+  function apply() {
+    if (!base || !start) return;
+    if (later && scope === "future" && rule) dispatch({ type: "recurrence", now: now(), change: splitChange("task", base.id, start, rule, fromDate!, draft, crypto.randomUUID()) });
+    else dispatch({ type: "recurrence", now: now(), change: { op: "task/rule", taskId: base.id, rule: draft } });
+  }
+  return <section className="muse-task-repeat" aria-label="Repeat">
+    <RecurrenceEditor value={draft} start={start} today={today} onChange={setDraft} />
+    {later && rule && changed && <RecurrenceScopeChoice value={scope} onChange={setScope} allowed={["future", "series"]} />}
+    {changed && <div className="editor-actions"><button type="button" className="muse-button button-primary" disabled={!canEdit} onClick={apply}>{draft ? "Apply repeat" : "Stop repeating"}</button><button type="button" className="text-button" onClick={() => setDraft(rule)}>Cancel</button></div>}
+    {fromDate && <div className="muse-occurrence-actions"><p className="small-label">The {dateLabel(fromDate)} date of “{base.title}”{rule ? ` · ${ruleLabel(rule, start)}` : ""}.</p>
+      <button type="button" className="muse-button" disabled={!canEdit} onClick={() => dispatch({ type: "task/delete", id: taskId, now: now() })}>Skip this date</button></div>}
+  </section>;
 }

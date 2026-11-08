@@ -1,3 +1,4 @@
+import {isSeries} from './planner-occurrences';
 /**
  * Agenda (#79): the Planner's time-based views over the SAME task and event records the Tasks tab, Dayview and
  * Insights use. Nothing here stores or copies records; it only selects and arranges them. Pure, so every view can
@@ -81,8 +82,10 @@ export function eventWhen(e:DayEvent){
  * past day and still open — never moved for you), scheduled, or unscheduled.
  */
 export type TaskState='complete'|'overdue'|'scheduled'|'unscheduled';
-export function taskState(t:Pick<PlannedTask,'complete'|'plannedDate'>,today:string):TaskState{
- if(t.complete)return 'complete';if(!t.plannedDate)return 'unscheduled';return t.plannedDate<today?'overdue':'scheduled';
+export function taskState(t:Pick<PlannedTask,'complete'|'plannedDate'>&Partial<Pick<PlannedTask,'rule'|'recurrence'|'seriesId'>>,today:string):TaskState{
+ if(t.complete)return 'complete';
+ // A recurring series is ongoing, never overdue as a whole; its dated occurrences carry their own state.
+ if(isSeries(t))return 'scheduled';if(!t.plannedDate)return 'unscheduled';return t.plannedDate<today?'overdue':'scheduled';
 }
 export const taskStateLabels:Record<TaskState,string>={complete:'Completed',overdue:'Overdue — still open from an earlier day',scheduled:'Scheduled',unscheduled:'Not scheduled'};
 export function agendaTitle(view:AgendaView,date:string){

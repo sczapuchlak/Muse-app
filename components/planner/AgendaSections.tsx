@@ -81,7 +81,7 @@ export function EventLine({ event, day, ctx }: { event: DayEvent; day?: string; 
     <span className="muse-agenda-symbol" aria-hidden="true">{statusSymbol(event)}</span>
     {mark && <MarkGlyph mark={mark} size={13} onSelect={(a) => ctx.onMark(a, mark, { kind: "event", id: event.id, title: event.title })} />}
     <button type="button" className="muse-agenda-event-button" onClick={(e) => ctx.onEvent(e.currentTarget, event)} aria-label={`${statusWords(event)}: ${event.title}, ${eventWhen(event)}${span}. Edit`}>
-      <time dateTime={event.allDay ? event.date : event.dateTime}>{event.allDay ? "All day" : event.time}</time><span>{event.title}{span && <small>{span}</small>}</span>
+      <time dateTime={event.allDay ? event.date : event.dateTime}>{event.allDay ? "All day" : event.time}</time><span>{event.title}{event.seriesId && <span className="muse-repeat-mark" title="Repeating event" aria-label=", repeats">↻</span>}{span && <small>{span}</small>}</span>
     </button>
   </li>;
 }

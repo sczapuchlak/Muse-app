@@ -32,7 +32,7 @@ export function PlannerTaskCard({ task, onOpen, showDueDate=false, today, priori
         <input className="check-input" type="checkbox" checked={task.complete} aria-label={`Complete task: ${task.title}`} onChange={(event) => { if (event.target.checked) trigger(); dispatch({ type: "task/toggle", id: task.id, now: new Date().toISOString() }); }} />
         <span className="priority-check" aria-hidden="true">{task.complete && <MuseIcon name="check" size={13} />}{spark}</span>
       </label>
-      <button className="muse-task-title muse-edge" type="button" onClick={(event) => onOpen(task, event.currentTarget)}>{task.title}</button>
+      <button className="muse-task-title muse-edge" type="button" onClick={(event) => onOpen(task, event.currentTarget)}>{task.title}{task.seriesId && <span className="muse-repeat-mark" title="Repeats · this is one date of the series" aria-label=", repeats">↻</span>}</button>
     <TaskTimer task={task}/></div>
     {(priority || overdue) && <p className="muse-list-facts muse-task-flags">{priority && <span className="muse-list-flag" data-kind="priority" title="One of the day’s three priorities"><span aria-hidden="true">★</span> Priority</span>}{overdue && <span className="muse-list-flag" data-kind="overdue" title={taskStateLabels.overdue}><span aria-hidden="true">›</span> Overdue</span>}</p>}
     <div className="muse-task-secondary-row"><TaskClassification key={status?.discarded??0} task={task}/></div>
