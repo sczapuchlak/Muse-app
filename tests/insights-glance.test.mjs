@@ -89,7 +89,7 @@ test('#97 non-destructive: detailed Insights hidden behind a flag, not deleted; 
  for(const f of ['Insights','Overview','PlansInsights','MoodInsights','MoneyInsights','NourishInsights','AstrologyInsights','CollectionsInsights','InsightsCustomize','DateInspection','PeriodComparison'])assert.ok(existsSync(resolve(root,`components/insights/${f}.tsx`)),f);
  const classic=read('components/insights/Insights.tsx');for(const id of ['overview','plans','mood','money','nourish','astrology','collections'])assert.match(classic,new RegExp(`id:'${id}'`),id);
  const glance=read('components/insights/glance/InsightsGlance.tsx');
- assert.match(glance,/<Dayprint /);assert.match(glance,/editHref=\{\(r\) => `\/mood\?date=/,'edits go back to Mood');
+ assert.match(glance,/<DayPortrait /);assert.match(read('components/insights/glance/DayPortrait.tsx'),/href=\{`\/mood\?date=\$\{date\}`\}/,'edits go back to Mood');
  assert.doesNotMatch(glance,/store\?\.edit|dispatch\(|saveMark|\.insert\(|\.update\(/,'Insights is read-only');
  const mood=read('components/mood/Mood.tsx');
  assert.doesNotMatch(mood,/<Dayprint /,'Mood no longer hosts the Dayprint portrait');
@@ -102,3 +102,41 @@ test('#97 non-destructive: detailed Insights hidden behind a flag, not deleted; 
 });
 import {readdirSync} from 'node:fs';
 function readdir(p){return readdirSync(resolve(root,p));}
+
+test('#97 polish: per-week rate uses elapsed days, categories come from saved types, bright-day notes are the person’s own words',()=>{
+ const month=G.glanceRange('month','2026-11-04');
+ assert.deepEqual(G.movementRate(6,month,'2026-11-14'),{weeks:2,perWeek:3},'14 elapsed days = 2 weeks; future days never dilute the rate');
+ assert.deepEqual(G.movementRate(0,month,'2026-10-01'),{weeks:0,perWeek:null});
+ const acts=[{id:'a',date:'2026-11-02',typeId:'walk'},{id:'b',date:'2026-11-03',typeId:'lift'},{id:'c',date:'2026-11-04',typeId:'mystery'},{id:'d',date:'2026-12-01',typeId:'walk'}];
+ assert.deepEqual(G.movementByCategory(acts,[{id:'walk',category:'cardio'},{id:'lift',category:'strength'},{id:'mystery'}],month),{strength:1,cardio:1,mobility:0,other:1});
+ const notes=[{...emptyCheckIn('2026-11-02','morning'),reflection:'Sunny walk'},{...emptyCheckIn('2026-11-02','evening'),reflection:'  Dinner with Mom  '},{...emptyCheckIn('2026-11-03','evening'),reflection:'   '}];
+ assert.equal(G.dayNote(notes,'2026-11-02'),'Dinner with Mom','evening reflection first');
+ assert.equal(G.dayNote(notes,'2026-11-03'),'','blank reflections never become a note');assert.equal(G.dayNote(notes,'2026-11-09'),'');
+});
+
+test('#97 polish: the year by month keeps missing months empty and never mixes water units',()=>{
+ const year=G.glanceRange('year','2026-06-01');
+ const days={'2026-03-02':day('2026-03-02',{overall_day:8,day_in_three:['🌷','☕','📚']},[priority('p',{standalone_complete:true})])};
+ const checkIns=[{...emptyCheckIn('2026-03-02','evening'),emotionIds:['emotion-calm']}];
+ const months=G.yearByMonth(year,days,checkIns,emotionCatalog,[{date:'2026-03-02',total:60,unit:'oz'},{date:'2026-03-03',total:2000,unit:'mL'}],'oz',[{id:'x',date:'2026-03-05',typeId:'walk'}]);
+ assert.equal(months.length,12);
+ const march=months.find(m=>m.month==='2026-03');
+ assert.deepEqual([march.rating,march.ratedDays,march.water,march.waterDays,march.movement,march.prioritiesDone,march.prioritiesPlanned,march.topEmoji,march.checkIns],[8,1,60,1,1,1,1,'🌷',1]);
+ const jan=months.find(m=>m.month==='2026-01');assert.deepEqual([jan.rating,jan.water,jan.movement,jan.recordedDays],[null,null,0,0]);
+});
+
+test('#97 polish: no page-wide rainbow frame, tips + keys explain every visual, pills instead of bare links',()=>{
+ const css=read('components/insights/glance/Glance.css');
+ for(const cls of ['muse-glance-mini','muse-glance-cell','muse-glance-months button'])assert.match(css,new RegExp(`\\.${cls.replace(' ','\\s')}\\{all:unset;position:relative`),`${cls} anchors its own today ring`);
+ assert.match(css,/@media \(hover:none\)\{\.muse-glance-tip\{display:none\}\}/,'touch relies on the visible keys');
+ const S=load('components/insights/glance/GlanceSections');
+ const range=G.glanceRange('week','2026-11-04');
+ const strip=renderToStaticMarkup(React.createElement(S.DayStrip,{range,days:{'2026-11-03':day('2026-11-03',{overall_day:8})},checkIns:[],today:'2026-11-07',onOpen:()=>{}}));
+ assert.match(strip,/How to read this/);assert.match(strip,/Overall Day \(1–10\)/);assert.match(strip,/feelings from check-ins/);assert.match(strip,/muse-glance-tip/);
+ const daily=G.dailyGlance({'2026-11-03':day('2026-11-03',{overall_day:9})},[],emotionCatalog,range);
+ const bright=renderToStaticMarkup(React.createElement(S.GoodDays,{daily,days:{},checkIns:[],onOpen:()=>{}}));
+ assert.match(bright,/Add why it was bright/);assert.match(bright,/href="\/mood\?date=2026-11-03"/,'notes are written in Mood, never invented');
+ assert.doesNotMatch(read('components/insights/glance/GlanceSections.tsx')+read('components/insights/glance/DayPortrait.tsx')+read('components/insights/glance/ReadingSection.tsx'),/className="text-button"/,'no bare text links');
+ const year=renderToStaticMarkup(React.createElement(S.YearStats,{daily,booksFinished:2,workouts:5}));
+ assert.match(year,/books finished/);assert.match(year,/workouts/);
+});

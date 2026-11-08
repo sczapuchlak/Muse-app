@@ -693,6 +693,17 @@ Approved 2026-11-07 as one pass, reviewed at the end. A presentation-layer simpl
 
 **What was hidden, where it lives, how to restore.** The detailed Insights (Overview, Plans & Rituals, Mood & Energy, Money, Wellness, Astrology, Collections, plus Customize, Inspect a date and period comparison) are unchanged in `components/insights/Insights.tsx` and its siblings, with their tests. They are hidden by `CLASSIC_INSIGHTS=false` in `lib/insights/flags.ts`; set it to true to make them the Insights page again (their `?view=` links then work). Mood still logs, edits, deletes and shares check-ins; its week history is now a compact check-in list with "Open Dayprint" links into Insights → Day.
 
+**Polish pass (approved 2026-11-07).**
+- **Layout:** one three-column grid with consistent gutters. Week rows stretch to equal height; Month and Year use three independent stacked columns so no card stretches into empty space; Day puts Priorities, Meals and Bookshelf in one row.
+- **Today ring:** the rainbow ring stays on its own card. A reset had let it attach to the whole page as a permanent frame; that's fixed and tested.
+- **Cards and controls:** bold headings with gradient icon badges, and pills instead of bare text links.
+- **Explaining the visuals:** every visual mark (mini Dayprints, calendar days, month bars, yearly columns, Day Pulse capsules) has a hover/focus tip and an accessible label, plus a visible key so touch devices get the same explanation.
+- **Day:** a new Dayprint portrait (`DayPortrait`) with Day in Three bubbles, an Overall Day ring, Energy/Stress capsules, an intention quote, water and movement, and morning/evening mood cards. "Daily Edit" and "Edit in Mood" pills lead to editing. The original `Dayprint` component is kept unchanged.
+- **Month:** a compact calendar (about a third of the width). Movement shows workouts, active days, per week (workouts ÷ weeks elapsed so far) and counts by each type's saved category. Intentions appear as a dated list.
+- **Year:** a five-number stat strip; month-by-month Overall Day; a year of feelings (stacked family columns); the year in emoji; monthly bars for movement, water (one unit, never mixed) and priorities done. Each has a compact empty state.
+- **Bright days:** highlight cards with the rating, date and Day in Three. The optional "why it was bright" is the day's own Mood reflection (evening first, else morning). Without one there's an "Add why it was bright" pill to Mood. Nothing is generated and nothing new is stored.
+- **Bookshelf:** compact in every period; book cards no wider than about 420px that wrap into rows.
+
 **Out of scope:** Rituals analytics, Reflections, money/task/astrology/tarot analytics, rebuilding the old dashboards.
 
 ## Unified Insights, cross-module analytics and recap foundations (#32) — implemented on feature branch
