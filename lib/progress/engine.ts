@@ -1,4 +1,5 @@
 import {shiftDate,validDate,weekDates} from '../dates';
+import {isSeries} from '@/lib/planner-occurrences';
 import type {WellnessState} from '../wellness';
 import type {WaterUnit} from '../water';
 import type {PlannerState} from '../planner';
@@ -51,12 +52,14 @@ function add(days:Map<string,DayMeasure>,date:string,value:number,recordId:strin
  days.set(date,day);
 }
 
-/** The latest event per task decides: reopened tasks stop counting, re-completed tasks count once on the latest date. */
+/** The latest event per task (per occurrence for a recurring series) decides: reopened tasks stop counting, re-completed tasks count once on the latest date. */
 export function taskCompletionDates(planner:Pick<PlannerState,'tasks'|'completionHistory'>,timeZone:string){
  const result=new Map<string,string>();
  if(planner.completionHistory?.length){
+  // A recurring series (#89) completes once per occurrence: its history is keyed by task and occurrence date.
+  const series=new Set(planner.tasks.filter(isSeries).map(t=>t.id)),key=(e:{taskId:string;plannedDate?:string})=>series.has(e.taskId)&&e.plannedDate?`${e.taskId}::${e.plannedDate}`:e.taskId;
   const latest=new Map<string,{complete:boolean;at:string;date:string}>();
-  for(const event of planner.completionHistory){const previous=latest.get(event.taskId);if(!previous||event.occurredAt>=previous.at)latest.set(event.taskId,{complete:event.complete,at:event.occurredAt,date:event.localDate});}
+  for(const event of planner.completionHistory){const k=key(event),previous=latest.get(k);if(!previous||event.occurredAt>=previous.at)latest.set(k,{complete:event.complete,at:event.occurredAt,date:event.localDate});}
   for(const [taskId,event] of latest)if(event.complete&&validDate(event.date))result.set(taskId,event.date);
   return result;
  }

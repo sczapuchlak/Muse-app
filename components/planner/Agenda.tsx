@@ -23,6 +23,8 @@ import { AgendaLegend, MarkEditor, MarkGlyph, MarkStrip } from "./MuseMarks";
 import "./Agenda.css";
 import { usePlannerHeight } from "./usePlannerHeight";
 import { PeriodTitle } from "./PeriodTitle";
+import { projectEvents, projectTasks } from "@/lib/planner-occurrences";
+import { shiftDate } from "@/lib/dates";
 
 const prefsKey = "muse.planner.agenda";
 const weekday = (d: string, style: "short" | "long" = "short") => new Intl.DateTimeFormat("en-US", { weekday: style, timeZone: "UTC" }).format(new Date(`${d}T12:00:00Z`));
@@ -71,13 +73,17 @@ function AgendaBody({ date, today, onDate, onOpen, workspaceId, prefs, update, s
   useEffect(() => { if (prefs.view !== "week") return; const t = track.current; const target = t?.querySelector<HTMLElement>(`[data-day="${date}"]`) ?? t?.querySelector<HTMLElement>(`[data-day="${today}"]`); if (t && target) t.scrollTo({ left: target.offsetLeft - t.offsetLeft, behavior: "auto" }); }, [prefs.view, date, today]);
   const onTrackScroll = () => { const t = track.current, second = t?.children[SPREAD_SIZE] as HTMLElement | undefined; if (t && second) setSpread(t.scrollLeft + 8 >= second.offsetLeft - t.offsetLeft ? 1 : 0); };
   const view = prefs.view, range = agendaRange(view, date), visibility = { showCompleted: prefs.showCompleted, showCanceled: prefs.showCanceled };
+  // Recurrence 2.0 (#89): recurring tasks and events as dated occurrences, over everything this view can show.
+  const windowFrom = shiftDate(date, -45), windowTo = shiftDate(date, view === "year" ? 400 : 45);
+  const tasksShown = useMemo(() => projectTasks(state.tasks, state.occurrences, windowFrom, windowTo), [state.tasks, state.occurrences, windowFrom, windowTo]);
+  const eventsShown = useMemo(() => projectEvents(state.events, state.eventExceptions, windowFrom, windowTo), [state.events, state.eventExceptions, windowFrom, windowTo]);
   const open = (day: string, v: AgendaView) => { onDate(day); update({ view: v }); setSelected(null); };
 
   const marks = useMemo(() => agenda.marks.map((m) => resolveMark(m, { events: state.events, tasks: state.tasks, movementTypes: wellness.state.types, books: whimsy.records?.books ?? [], aspirations: aspirations.aspirations })),
     [agenda.marks, state.events, state.tasks, wellness.state.types, whimsy.records?.books, aspirations.aspirations]);
   const priorityIds = (day: string) => new Set((daily.snapshot.days[day]?.priorities ?? []).map((p) => p.task_id).filter((x): x is string => !!x));
   const context = (day: string, flow: DayContext["flow"]): DayContext => {
-    const items = dayItems(state.tasks, state.events, day, { showCompleted: true, showCanceled: prefs.showCanceled });
+    const items = dayItems(tasksShown, eventsShown, day, { showCompleted: true, showCanceled: prefs.showCanceled });
     return { day, today, tasks: items.tasks, events: items.events, showCompleted: prefs.showCompleted, showMarks: prefs.showMarks, marks, priorityIds: priorityIds(day), fallbackWorkspaceId: workspaceId, flow, onOpenTask: onOpen,
       onEvent: (a, event) => openEditor(a, { kind: "event", date: day, event }), onMark: (a, mark, link) => openEditor(a, { kind: "mark", date: day, mark, link }) };
   };
@@ -122,7 +128,7 @@ function AgendaBody({ date, today, onDate, onOpen, workspaceId, prefs, update, s
         <div role="row" className="muse-agenda-month-row muse-agenda-weekdays">{["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((d) => <span role="columnheader" key={d}>{d}</span>)}</div>
         {monthGrid(date).map((week, i) => <div role="row" className="muse-agenda-month-row" key={i}>{week.map((d, j) => {
           if (!d) return <span role="gridcell" key={j} className="muse-agenda-cell" data-outside />;
-          const items = dayItems(state.tasks, state.events, d, visibility), own = prefs.showMarks ? dayMarks(marks, d) : [];
+          const items = dayItems(tasksShown, eventsShown, d, visibility), own = prefs.showMarks ? dayMarks(marks, d) : [];
           const open = items.tasks.filter((t) => !t.complete).length, overdue = items.tasks.some((t) => taskState(t, today) === "overdue"), star = items.tasks.some((t) => priorityIds(d).has(t.id));
           const summary = [items.events.length && `${items.events.length} event${items.events.length > 1 ? "s" : ""}`, items.tasks.length && `${open} of ${items.tasks.length} tasks open`, own.length && `${own.length} Mark${own.length > 1 ? "s" : ""}`].filter(Boolean).join(", ") || "Nothing planned";
           return <div role="gridcell" key={d} className="muse-agenda-cell" data-today={d === today || undefined} data-selected={sel === d || undefined}>
@@ -154,7 +160,7 @@ function AgendaBody({ date, today, onDate, onOpen, workspaceId, prefs, update, s
 
   function futureLog() {
     return <div className="muse-agenda-year">{futureLogMonths(date).map((m) => {
-      const items = monthItems(state.tasks, state.events, m, visibility), first = `${m}-01`, last = `${m}-31`;
+      const items = monthItems(tasksShown, eventsShown, m, visibility), first = `${m}-01`, last = `${m}-31`;
       const own = prefs.showMarks ? marks.filter((x) => x.linkKind !== "event" && x.linkKind !== "task" && x.start <= last && x.end >= first) : [];
       const entries = [
         ...items.events.map((e) => ({ key: `e${e.id}`, sort: e.date < first ? first : e.date, node: <FutureEvent event={e} month={m} marks={marks} showMarks={prefs.showMarks} onEdit={(a) => openEditor(a, { kind: "event", date: e.date, event: e })} onDay={() => open(e.date < first ? first : e.date, "day")} /> })),

@@ -1249,16 +1249,36 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
-                },"planner_events": {
+                },"planner_event_exceptions": {
                   Row: {
-                    "all_day": boolean,"created_at": string,"detail": string | null,"end_date": string | null,"end_time": string | null,"id": string,"local_date": string,"local_time": string | null,"location": string | null,"revision": number,"status": string,"time_zone": string,"title": string,"updated_at": string,"user_id": string
+                    "canceled": boolean,"created_at": string,"event_id": string,"moved_to": string | null,"occurrence_date": string,"overrides": NonNullable<Json>,"updated_at": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "all_day"?: boolean,"created_at"?: string,"detail"?: string | null,"end_date"?: string | null,"end_time"?: string | null,"id": string,"local_date": string,"local_time"?: string | null,"location"?: string | null,"revision"?: number,"status"?: string,"time_zone": string,"title": string,"updated_at"?: string,"user_id": string
+                    "canceled"?: boolean,"created_at"?: string,"event_id": string,"moved_to"?: string | null,"occurrence_date": string,"overrides"?: NonNullable<Json>,"updated_at"?: string,"user_id": string
                   }
                   Update: {
-                    "all_day"?: boolean,"created_at"?: string,"detail"?: string | null,"end_date"?: string | null,"end_time"?: string | null,"id"?: string,"local_date"?: string,"local_time"?: string | null,"location"?: string | null,"revision"?: number,"status"?: string,"time_zone"?: string,"title"?: string,"updated_at"?: string,"user_id"?: string
+                    "canceled"?: boolean,"created_at"?: string,"event_id"?: string,"moved_to"?: string | null,"occurrence_date"?: string,"overrides"?: NonNullable<Json>,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "planner_event_exceptions_event_id_fkey"
+      columns: ["event_id"]
+isOneToOne: false
+      referencedRelation: "planner_events"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"planner_events": {
+                  Row: {
+                    "all_day": boolean,"created_at": string,"detail": string | null,"end_date": string | null,"end_time": string | null,"id": string,"local_date": string,"local_time": string | null,"location": string | null,"recurrence_rule": Json | null,"revision": number,"status": string,"time_zone": string,"title": string,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "all_day"?: boolean,"created_at"?: string,"detail"?: string | null,"end_date"?: string | null,"end_time"?: string | null,"id": string,"local_date": string,"local_time"?: string | null,"location"?: string | null,"recurrence_rule"?: Json | null,"revision"?: number,"status"?: string,"time_zone": string,"title": string,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "all_day"?: boolean,"created_at"?: string,"detail"?: string | null,"end_date"?: string | null,"end_time"?: string | null,"id"?: string,"local_date"?: string,"local_time"?: string | null,"location"?: string | null,"recurrence_rule"?: Json | null,"revision"?: number,"status"?: string,"time_zone"?: string,"title"?: string,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
                     
@@ -1747,14 +1767,14 @@ isOneToOne: false
                   ]
                 },"task_completion_events": {
                   Row: {
-                    "complete": boolean,"id": string,"local_date": string,"occurred_at": string,"planned_date": string | null,"task_id": string,"time_zone": string,"title": string,"user_id": string,"workspace_id": string
+                    "complete": boolean,"id": string,"local_date": string,"occurred_at": string,"occurrence_date": string | null,"planned_date": string | null,"task_id": string,"time_zone": string,"title": string,"user_id": string,"workspace_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "complete": boolean,"id"?: string,"local_date": string,"occurred_at": string,"planned_date"?: string | null,"task_id": string,"time_zone": string,"title": string,"user_id": string,"workspace_id": string
+                    "complete": boolean,"id"?: string,"local_date": string,"occurred_at": string,"occurrence_date"?: string | null,"planned_date"?: string | null,"task_id": string,"time_zone": string,"title": string,"user_id": string,"workspace_id": string
                   }
                   Update: {
-                    "complete"?: boolean,"id"?: string,"local_date"?: string,"occurred_at"?: string,"planned_date"?: string | null,"task_id"?: string,"time_zone"?: string,"title"?: string,"user_id"?: string,"workspace_id"?: string
+                    "complete"?: boolean,"id"?: string,"local_date"?: string,"occurred_at"?: string,"occurrence_date"?: string | null,"planned_date"?: string | null,"task_id"?: string,"time_zone"?: string,"title"?: string,"user_id"?: string,"workspace_id"?: string
                   }
                   Relationships: [
                     {
@@ -1782,6 +1802,26 @@ isOneToOne: false
       columns: ["user_id","workspace_id"]
 isOneToOne: false
       referencedRelation: "workspaces"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+                },"task_occurrences": {
+                  Row: {
+                    "completed_at": string | null,"completed_on": string | null,"created_at": string,"moved_to": string | null,"occurrence_date": string,"status": string,"task_id": string,"time_zone": string,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "completed_at"?: string | null,"completed_on"?: string | null,"created_at"?: string,"moved_to"?: string | null,"occurrence_date": string,"status": string,"task_id": string,"time_zone": string,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "completed_at"?: string | null,"completed_on"?: string | null,"created_at"?: string,"moved_to"?: string | null,"occurrence_date"?: string,"status"?: string,"task_id"?: string,"time_zone"?: string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "task_occurrences_user_id_task_id_fkey"
+      columns: ["user_id","task_id"]
+isOneToOne: false
+      referencedRelation: "tasks"
       referencedColumns: ["user_id","id"]
     }
                   ]
@@ -1867,14 +1907,14 @@ isOneToOne: false
                   ]
                 },"tasks": {
                   Row: {
-                    "actual_minutes_baseline": number,"captured_time_zone": string,"complete": boolean,"completed_at": string | null,"created_at": string,"deleted_at": string | null,"detail": string | null,"due_date": string | null,"estimated_minutes": number | null,"group_id": string | null,"id": string,"initial_complete": boolean,"initial_completed_at": string | null,"local_time_slot": string | null,"notes": string | null,"origin_priority_id": string | null,"planned_date": string | null,"position": number,"recurrence_frequency": string | null,"recurrence_interval": number | null,"recurrence_until": string | null,"revision": number,"title": string,"updated_at": string,"user_id": string,"workspace_id": string
+                    "actual_minutes_baseline": number,"captured_time_zone": string,"complete": boolean,"completed_at": string | null,"created_at": string,"deleted_at": string | null,"detail": string | null,"due_date": string | null,"estimated_minutes": number | null,"group_id": string | null,"id": string,"initial_complete": boolean,"initial_completed_at": string | null,"local_time_slot": string | null,"notes": string | null,"origin_priority_id": string | null,"planned_date": string | null,"position": number,"recurrence_frequency": string | null,"recurrence_interval": number | null,"recurrence_rule": Json | null,"recurrence_until": string | null,"revision": number,"title": string,"updated_at": string,"user_id": string,"workspace_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "actual_minutes_baseline"?: number,"captured_time_zone": string,"complete"?: boolean,"completed_at"?: string | null,"created_at"?: string,"deleted_at"?: string | null,"detail"?: string | null,"due_date"?: string | null,"estimated_minutes"?: number | null,"group_id"?: string | null,"id": string,"initial_complete"?: boolean,"initial_completed_at"?: string | null,"local_time_slot"?: string | null,"notes"?: string | null,"origin_priority_id"?: string | null,"planned_date"?: string | null,"position"?: number,"recurrence_frequency"?: string | null,"recurrence_interval"?: number | null,"recurrence_until"?: string | null,"revision"?: number,"title": string,"updated_at"?: string,"user_id": string,"workspace_id": string
+                    "actual_minutes_baseline"?: number,"captured_time_zone": string,"complete"?: boolean,"completed_at"?: string | null,"created_at"?: string,"deleted_at"?: string | null,"detail"?: string | null,"due_date"?: string | null,"estimated_minutes"?: number | null,"group_id"?: string | null,"id": string,"initial_complete"?: boolean,"initial_completed_at"?: string | null,"local_time_slot"?: string | null,"notes"?: string | null,"origin_priority_id"?: string | null,"planned_date"?: string | null,"position"?: number,"recurrence_frequency"?: string | null,"recurrence_interval"?: number | null,"recurrence_rule"?: Json | null,"recurrence_until"?: string | null,"revision"?: number,"title": string,"updated_at"?: string,"user_id": string,"workspace_id": string
                   }
                   Update: {
-                    "actual_minutes_baseline"?: number,"captured_time_zone"?: string,"complete"?: boolean,"completed_at"?: string | null,"created_at"?: string,"deleted_at"?: string | null,"detail"?: string | null,"due_date"?: string | null,"estimated_minutes"?: number | null,"group_id"?: string | null,"id"?: string,"initial_complete"?: boolean,"initial_completed_at"?: string | null,"local_time_slot"?: string | null,"notes"?: string | null,"origin_priority_id"?: string | null,"planned_date"?: string | null,"position"?: number,"recurrence_frequency"?: string | null,"recurrence_interval"?: number | null,"recurrence_until"?: string | null,"revision"?: number,"title"?: string,"updated_at"?: string,"user_id"?: string,"workspace_id"?: string
+                    "actual_minutes_baseline"?: number,"captured_time_zone"?: string,"complete"?: boolean,"completed_at"?: string | null,"created_at"?: string,"deleted_at"?: string | null,"detail"?: string | null,"due_date"?: string | null,"estimated_minutes"?: number | null,"group_id"?: string | null,"id"?: string,"initial_complete"?: boolean,"initial_completed_at"?: string | null,"local_time_slot"?: string | null,"notes"?: string | null,"origin_priority_id"?: string | null,"planned_date"?: string | null,"position"?: number,"recurrence_frequency"?: string | null,"recurrence_interval"?: number | null,"recurrence_rule"?: Json | null,"recurrence_until"?: string | null,"revision"?: number,"title"?: string,"updated_at"?: string,"user_id"?: string,"workspace_id"?: string
                   }
                   Relationships: [
                     {
@@ -2532,6 +2572,9 @@ isOneToOne: false
 "planner_event_command":
 { Args: { "p_action": Json,"p_command_id": string,"p_expected_revision": number }; Returns: number
                            },
+"planner_recurrence_command":
+{ Args: { "p_action": Json,"p_command_id": string,"p_expected_revision": number }; Returns: number
+                           },
 "priority_day_end":
 { Args: { "p_date": string,"p_zone": string }; Returns: string
                            },
@@ -2557,6 +2600,9 @@ isOneToOne: false
 { Args: Record<PropertyKey, never>; Returns: Json
                            },
 "read_planner":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
+"read_planner_recurrence":
 { Args: Record<PropertyKey, never>; Returns: Json
                            },
 "read_quest_preference":

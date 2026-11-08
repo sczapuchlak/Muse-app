@@ -27,6 +27,7 @@ import { TaskQuickAdd } from "./TaskQuickAdd";
 import { TaskDetails } from "./TaskDetails";
 import "./Planner.css";
 import {usePlannerHeight} from "./usePlannerHeight";
+import { projectTasks } from "@/lib/planner-occurrences";
 import {MuseMilestone} from "../MuseMilestone";
 
 export function Planner() {
@@ -71,6 +72,8 @@ export function Planner() {
   function openTask(task: PlannedTask, anchor: HTMLElement) { setDetail({ id: task.id, anchor }); }
   function taskList(tasks: PlannedTask[]) { return <ul className="muse-planner-task-list">{tasks.map((task) => <PlannerTaskCard key={task.id} task={task} onOpen={openTask} today={today} priority={priorityIds.has(task.id)} />)}</ul>; }
   const inbox = filtered.filter((task) => !task.plannedDate);
+  // Recurrence 2.0 (#89): each board day shows the occurrences due that day (one per series per date).
+  const boardTasks = projectTasks(filtered, state.occurrences, days[0], days[days.length - 1]), boardCanonical = projectTasks(state.tasks, state.occurrences, days[0], days[days.length - 1]);
   function utilities(){return <PlannerUtilities date={date} onDate={changeDate} title={boardTitle} taskList={<div className="muse-planner-mobile-tabs"><button className="muse-button" type="button" aria-haspopup="dialog" aria-expanded={mobileView==="inbox"} onClick={(event)=>{setInboxAnchor(event.currentTarget);setMobileView("inbox");}}>Task List · {inbox.length}</button></div>} today={today} onToday={()=>{changeDate(today);setMobileView("day");}} onPrevious={()=>changeDate(tasksView==="running"?shiftDate(date,-7):shiftDate(date,-1))} onNext={()=>changeDate(tasksView==="running"?shiftDate(date,7):shiftDate(date,1))} view={tasksView} onView={chooseView}/>;}
   function rail(){return <PlannerRail workspaceId={workspaceFilter} onWorkspaceChange={(id)=>{setWorkspace(id);setFilters((current)=>({...current,groupId:""}));}} tasks={filtered} onOpen={openTask} groupId={groupFilter||undefined} tagIds={activeTags}
     today={today} boardDays={days} priorityIds={priorityIds} search={search} onSearch={setSearch} filters={activeFilters} onFilter={setFilters} onAnnounce={setAnnouncement}/>;}
@@ -92,8 +95,8 @@ export function Planner() {
       <div className="muse-planning-canvas">
       <div className="muse-planner-board" id="planner-events" aria-label="Three-day rolling planning board">
         {days.map((day, index) => {
-          const tasks = filtered.filter((task) => task.plannedDate === day);
-          const canonicalTasks=state.tasks.filter(task=>task.plannedDate===day);
+          const tasks = boardTasks.filter((task) => task.plannedDate === day);
+          const canonicalTasks=boardCanonical.filter(task=>task.plannedDate===day);
           const events = state.events.filter((event) => event.date === day).sort((a, b) => a.dateTime.localeCompare(b.dateTime));
           const estimated = tasks.reduce((total, task) => total + (task.estimatedMinutes ?? 0), 0);
           const label = dateLabel(day);

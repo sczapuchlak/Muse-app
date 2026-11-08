@@ -1,3 +1,4 @@
+import { applyRecurrence, translateAction } from './planner-occurrences';
 import {validAccent,type AccentColor} from "./appearance-values";
 import { validDate } from "./dates";
 export { validDate } from "./dates";
@@ -12,6 +13,8 @@ export type TaskTag = { id: string; name: string; accent: PlannerAccent; icon?:M
 export type TaskCompletion={id:string;taskId:string;complete:boolean;occurredAt:string;localDate:string;timeZone:string;title:string;workspaceId:string;plannedDate?:string};
 export type PlannerState = {
   completionHistory?:TaskCompletion[];
+  /** Recurrence 2.0 (#89): what happened to individual dates of recurring tasks, and recurring-event exceptions. */
+  occurrences?: import('./planner-occurrences').TaskOccurrence[]; eventExceptions?: import('./planner-occurrences').EventException[];
   tasks: PlannedTask[]; events: DayEvent[]; workspaces: Workspace[]; groups: TaskGroup[]; tags: TaskTag[];
   activeTimer: { taskId: string; startedAt: string } | null;
 };
@@ -38,7 +41,8 @@ export type PlannerAction =
   | { type: "tag/save"; tag: TaskTag }
   | { type: "tag/delete"; id: string }
   | { type: "timer/start"; id: string; now: string }
-  | { type: "timer/pause"; now: string };
+  | { type: "timer/pause"; now: string }
+  | { type: "recurrence"; change: import("./planner-occurrences").RecurrenceChange; now: string; today?: string };
 
 export function createTask(title: string, workspaceId: string, id: string, createdAt: string, plannedDate?: string): PlannedTask {
   return { id, kind: "task", title: title.trim(), workspaceId, tagIds: [], plannedDate, complete: false, actualMinutes: 0, subtasks: [], createdAt };
@@ -62,6 +66,9 @@ function normalizeTask(state: PlannerState, task: PlannedTask): PlannedTask {
 }
 /** One domain reducer for both surfaces. Rescheduling only changes plannedDate. */
 export function plannerReducer(state: PlannerState, action: PlannerAction): PlannerState {
+  // Recurrence 2.0 (#89): actions on an occurrence id become recurrence changes (toggle → that date, drag → move, …).
+  const translated = translateAction(action, state) as PlannerAction;
+  if (translated !== action) return plannerReducer(state, translated);
   switch (action.type) {
     case 'priority/create': return state; // The server creates the task and designation atomically.
     case 'priority/title': return plannerReducer(state,{type:'task/update',id:action.taskId,patch:{title:action.title}});
@@ -95,7 +102,9 @@ export function plannerReducer(state: PlannerState, action: PlannerAction): Plan
       return { ...next, tasks: next.tasks.filter((task) => task.id !== action.id) };
     }
     case "event/add": return state.events.some((event) => event.id === action.event.id) ? state : { ...state, events: [...state.events, action.event] };
-    case "event/save": return !action.event.title.trim() ? state : { ...state, events: replace(state.events, { ...action.event, title: action.event.title.trim() }) };
+    case "event/save": { if (!action.event.title.trim()) return state; const prior = state.events.find((e) => e.id === action.event.id);
+      // Saving details never drops a series rule (#89); only a recurrence change sets or clears it.
+      return { ...state, events: replace(state.events, { ...action.event, title: action.event.title.trim(), ...(prior?.rule && !action.event.rule ? { rule: prior.rule } : {}) }) }; }
     case "event/delete": return { ...state, events: state.events.filter((event) => event.id !== action.id) };
     case "workspace/save": return !action.workspace.name.trim() || !validAccent(action.workspace.accent) ? state : { ...state, workspaces: replace(state.workspaces, action.workspace) };
     case "workspace/delete": return state.workspaces.length <= 1 || state.tasks.some((task) => task.workspaceId === action.id) || state.groups.some((group) => group.workspaceId === action.id) ? state : { ...state, workspaces: state.workspaces.filter((entry) => entry.id !== action.id) };
@@ -108,6 +117,7 @@ export function plannerReducer(state: PlannerState, action: PlannerAction): Plan
       return { ...pause(state, action.now), activeTimer: { taskId: action.id, startedAt: action.now } };
     }
     case "timer/pause": return pause(state, action.now);
+    case "recurrence": return applyRecurrence(state, action.change, action.now, action.today ?? action.now.slice(0, 10));
   }
 }
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { projectEvents, projectTasks } from "@/lib/planner-occurrences";
 import Link from "next/link";
 import type { DayEvent, PlannedTask } from "@/lib/models";
 import { planPreview } from "@/lib/plan-preview";
@@ -15,7 +16,7 @@ import "./ScheduleCard.css";
 
 function EventRow({ event }: { event: DayEvent }) {
   return <li className="muse-plan-event" data-status={event.status === "confirmed" ? undefined : event.status}>
-    <time dateTime={event.allDay ? event.date : event.dateTime}>{event.time}</time><div className="muse-plan-eventContent"><h4 title={event.title}>{event.title}</h4>{event.status === "canceled" ? <p>Canceled</p> : event.status === "tentative" ? <p>Tentative</p> : event.detail && <p title={event.detail}>{event.detail}</p>}</div>
+    <time dateTime={event.allDay ? event.date : event.dateTime}>{event.time}</time><div className="muse-plan-eventContent"><h4 title={event.title}>{event.title}{event.seriesId && <span className="muse-repeat-mark" aria-label=", repeats" title="Repeating event">↻</span>}</h4>{event.status === "canceled" ? <p>Canceled</p> : event.status === "tentative" ? <p>Tentative</p> : event.detail && <p title={event.detail}>{event.detail}</p>}</div>
   </li>;
 }
 
@@ -29,7 +30,8 @@ function TaskRow({ task, onToggle }: { task: PlannedTask; onToggle: (id: string)
 
 export function ScheduleCard({ selectedDate, priorityTaskIds = [] }: { selectedDate: string; priorityTaskIds?: string[] }) {
   const { state, dispatch } = usePlanner();
-  const items = [...state.tasks, ...state.events];
+  // Recurrence 2.0 (#89): the selected day's occurrences of recurring tasks and events.
+  const items = [...projectTasks(state.tasks, state.occurrences, selectedDate, selectedDate), ...projectEvents(state.events, state.eventExceptions, selectedDate, selectedDate)];
   const [adding, setAdding] = useState<"task" | "event" | null>(null);
   const anchorRef = useRef<HTMLButtonElement>(null);
   const preview = planPreview(items, selectedDate, undefined, new Set(priorityTaskIds));

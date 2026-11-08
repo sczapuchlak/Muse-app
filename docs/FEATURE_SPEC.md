@@ -937,6 +937,23 @@ Rituals → **Habits | Aspirations | Bucket List** (`?view=bucket`). One long-ru
 - **`components/planner/RecurrenceEditor.tsx`:** the shared repeat editor (presets for the start date, a Custom panel, Ends: never / on a date / after N times, a live summary with the next dates) and `RecurrenceScopeChoice` (This one / This and future / Entire series).
 - Tests: `tests/recurrence.test.mjs` (month ends, leap years, nth/last weekday, DST weekends, until/count, skipped dates, labels, legacy conversion).
 
-**Next phases (planned):**
-- **Phase 2, data:** an owner-only `task_occurrences` table (series id + scheduled date → completed/skipped/rescheduled-to, with the actual completion timestamp kept separately in `task_completion_events`), a `recurrence` rule on tasks (legacy columns read through `fromLegacy`), event recurrence plus `planner_event_exceptions` (canceled or moved dates, overridden fields), Planner command support for scoped edits, export, and RLS.
-- **Phase 3, views:** project occurrences into the Scheduled Board, Running List, Agenda (Day/Week/Month/Future Log), Dayview and Insights, so each occurrence is counted once.
+**Phases 2–3 (implemented, local + staging migration `20261122000100_recurrence.sql`):**
+- **Data:**
+  - A recurring task stays one task record (the series) with `recurrence_rule` anchored on its planned date. The older recurrence columns are read through `fromLegacy` and cleared when a rule is saved.
+  - `task_occurrences` (owner-read RLS) stores only what happened to a date: completed (real `completed_at` plus the local `completed_on`), skipped, or moved (`moved_to`). Nothing is generated ahead and no history is fabricated.
+  - `task_completion_events.occurrence_date` names the occurrence completed.
+  - Events: `planner_events.recurrence_rule`, plus `planner_event_exceptions` for a canceled, moved, edited or deleted single date (overrides: title, time/clock, end time, location, notes, status, all-day).
+  - All writes go through the revision-checked, idempotent `planner_recurrence_command`: task/rule, task/split, occurrence complete/skip/move, event/rule, event/occurrence and event/split. Future occurrences can't be completed. `read_planner_recurrence` returns rules, occurrences and exceptions. The export includes `recurringTaskHistory` and `recurringEventExceptions`.
+- **Projection** (`lib/planner-occurrences.ts`):
+  - Every view swaps a series for its dated occurrences, with stable ids `series::YYYY-MM-DD` (the scheduled date, even when moved), so each occurrence appears once per date and is counted once.
+  - `translateAction` turns ordinary actions on an occurrence into recurrence changes: toggle → complete or reopen that date, drag to a day → move, drag to the list or delete → skip, edits → the series. Existing controls work unchanged.
+- **Views:**
+  - The Scheduled Board days, Agenda (Day, Week, Month, Future Log), Dayview and Running List all read the projection.
+  - In the Running List, a series is one row: ○ on its due days, × on the day each occurrence was done, and each mark acts on its own occurrence.
+  - The Task List shows a series as Scheduled, never overdue (its occurrences carry their own state).
+  - A shared ↻ mark appears on occurrences in every view.
+- **Editing:**
+  - Task Details has a Repeat section: the shared editor with an explicit Apply. From a later occurrence it offers This and future (split) or Entire series, plus Skip this date.
+  - The event editor has Repeat and, on an occurrence, This one (an exception: moved, edited or canceled), This and future (split) or Entire series. Delete removes this date or the whole series.
+- **Counts:** Insights' plans count completion events (one per occurrence). The progress engine (Connected Rituals' "tasks completed", Across Muse) keys series completions by task and occurrence date.
+- **Not done:** times other than all-day/start for events beyond the existing fields, and per-occurrence subtasks (subtasks belong to the series).

@@ -1,5 +1,9 @@
 "use client";
 import { useState, type FormEvent } from "react";
+import { RecurrenceEditor, RecurrenceScopeChoice } from "./RecurrenceEditor";
+import { splitChange } from "@/lib/planner-occurrences";
+import type { EditScope, RecurrenceRule } from "@/lib/recurrence";
+import { shiftDate, todayInTimeZone } from "@/lib/dates";
 import type { DayEvent, EventStatus } from "@/lib/models";
 import { clockLabel } from "@/lib/data/planner";
 import { markIconName, markIcons, type MarkIcon } from "@/lib/muse-marks";
@@ -14,7 +18,12 @@ const statuses: { id: EventStatus; label: string }[] = [{ id: "confirmed", label
  * the event's own (tentative, canceled), never a task-style completion. Changing dates here moves it in every view.
  */
 export function EventEditor({ event, date, defaultStatus = "confirmed", onDone }: { event?: DayEvent; date: string; defaultStatus?: EventStatus; onDone: () => void }) {
-  const { dispatch, canEdit } = usePlanner();
+  const { dispatch, canEdit, state, timeZone } = usePlanner();
+  // Recurrence 2.0 (#89): editing a date of a recurring event asks how far the change reaches.
+  const series = event?.seriesId ? state.events.find((e) => e.id === event.seriesId) ?? null : event?.rule ? event : null;
+  const occDate = event?.seriesId ? event.occurrenceDate ?? null : null, seriesStart = series?.date ?? null;
+  const [rule, setRule] = useState<RecurrenceRule | null>(series?.rule ?? null), [scope, setScope] = useState<EditScope>(occDate ? "occurrence" : "series");
+  const today = timeZone ? todayInTimeZone(timeZone) : date;
   const { marks, saveMark, removeMark } = useAgendaData();
   const existingMark = event ? marks.find((m) => m.linkKind === "event" && m.linkId === event.id) : undefined;
   const [title, setTitle] = useState(event?.title ?? ""), [allDay, setAllDay] = useState(event?.allDay ?? false);
@@ -29,8 +38,30 @@ export function EventEditor({ event, date, defaultStatus = "confirmed", onDone }
     const next: DayEvent = { id: event?.id ?? crypto.randomUUID(), kind: "event", title: title.trim(), date: start, dateTime: `${start}T${allDay ? "00:00" : time}`, time: allDay ? "All day" : clockLabel(time),
       ...(allDay ? { allDay: true } : {}), ...(end && end > start ? { endDate: end } : {}), ...(!allDay && endTime ? { endTime } : {}),
       ...(location.trim() ? { location: location.trim() } : {}), ...(detail.trim() ? { detail: detail.trim() } : {}), status };
-    dispatch({ type: "event/save", event: next });
-    if (markIcon) void saveMark({ ...(existingMark ?? { id: crypto.randomUUID(), color: "primary", label: "" }), date: start, icon: markIcon, linkKind: "event", linkId: next.id });
+    const now = new Date().toISOString(), seriesRule = series?.rule ?? null, ruleChanged = JSON.stringify(rule) !== JSON.stringify(seriesRule);
+    let linkId = next.id;
+    if (occDate && series && scope === "occurrence") {
+      // One date: an exception on the series (moved, edited or canceled). The series itself is untouched.
+      dispatch({ type: "recurrence", now, change: { op: "event/occurrence", eventId: series.id, date: occDate, canceled: status === "canceled", movedTo: start !== occDate ? start : null,
+        overrides: { title: next.title, time: next.time, ...(allDay ? {} : { clock: time }), ...(next.endTime ? { endTime: next.endTime } : {}), ...(next.location ? { location: next.location } : {}), ...(next.detail ? { detail: next.detail } : {}), status: status === "canceled" ? series.status ?? "confirmed" : status, allDay: !!next.allDay } } });
+      linkId = series.id;
+    } else if (occDate && series && seriesRule && scope === "future" && occDate > series.date) {
+      // This and future: the series ends before this date; a new series starts here with these details.
+      const newId = crypto.randomUUID();
+      dispatch({ type: "recurrence", now, change: splitChange("event", series.id, series.date, seriesRule, occDate, rule, newId, next.title) });
+      dispatch({ type: "event/save", event: { ...next, id: newId } });
+      linkId = newId;
+    } else if (series) {
+      // Entire series: details apply to every date; the anchor date stays unless it was edited from the first date.
+      const anchor = occDate ? series.date : start;
+      dispatch({ type: "event/save", event: { ...next, id: series.id, date: anchor, dateTime: `${anchor}${next.dateTime.slice(10)}`, ...(next.endDate ? { endDate: shiftDate(anchor, Math.round((Date.parse(`${next.endDate}T12:00:00Z`) - Date.parse(`${start}T12:00:00Z`)) / 86400000)) } : {}) } });
+      if (ruleChanged) dispatch({ type: "recurrence", now, change: { op: "event/rule", eventId: series.id, rule } });
+      linkId = series.id;
+    } else {
+      dispatch({ type: "event/save", event: next });
+      if (rule) dispatch({ type: "recurrence", now, change: { op: "event/rule", eventId: next.id, rule } });
+    }
+    if (markIcon) void saveMark({ ...(existingMark ?? { id: crypto.randomUUID(), color: "primary", label: "" }), date: start, icon: markIcon, linkKind: "event", linkId });
     else if (existingMark) void removeMark(existingMark.id);
     onDone();
   }
@@ -45,6 +76,8 @@ export function EventEditor({ event, date, defaultStatus = "confirmed", onDone }
       <label><span>From</span><input type="time" required value={time} onChange={(e) => setTime(e.target.value)} /></label>
       <label><span>Until <small>optional</small></span><input type="time" value={endTime} onChange={(e) => setEndTime(e.target.value)} /></label>
     </div>}
+    {(!occDate || scope !== "occurrence") && <RecurrenceEditor value={rule} start={occDate && scope === "future" ? occDate : seriesStart ?? start} today={today} onChange={setRule} />}
+    {occDate && series && <RecurrenceScopeChoice value={scope} onChange={setScope} allowed={occDate > series.date ? ["occurrence", "future", "series"] : ["occurrence", "series"]} />}
     <label><span>Where <small>optional</small></span><input type="text" maxLength={200} value={location} onChange={(e) => setLocation(e.target.value)} /></label>
     <label><span>Notes <small>optional</small></span><textarea rows={2} maxLength={5000} value={detail} onChange={(e) => setDetail(e.target.value)} /></label>
     <fieldset className="muse-event-status"><legend>Status</legend>
@@ -57,7 +90,7 @@ export function EventEditor({ event, date, defaultStatus = "confirmed", onDone }
       <button type="submit" className="muse-button button-primary" disabled={!canEdit}>{event ? "Save event" : "Add event"}</button>
       <button type="button" className="muse-button button-ghost" onClick={onDone}>Cancel</button>
       {event && (confirming
-        ? <span className="muse-mark-confirm" role="group" aria-label="Confirm deleting this event">Delete for good?<button type="button" className="text-button" onClick={() => { dispatch({ type: "event/delete", id: event.id }); if (existingMark) void removeMark(existingMark.id); onDone(); }}>Delete</button><button type="button" className="text-button" onClick={() => setConfirming(false)}>Keep</button></span>
+        ? <span className="muse-mark-confirm" role="group" aria-label="Confirm deleting this event">Delete for good?<button type="button" className="text-button" onClick={() => { if (occDate && series && scope === "occurrence") dispatch({ type: "recurrence", now: new Date().toISOString(), change: { op: "event/occurrence", eventId: series.id, date: occDate, overrides: { deleted: true } } }); else { dispatch({ type: "event/delete", id: series?.id ?? event.id }); if (existingMark) void removeMark(existingMark.id); } onDone(); }}>{occDate && scope === "occurrence" ? "Delete this date" : series ? "Delete series" : "Delete"}</button><button type="button" className="text-button" onClick={() => setConfirming(false)}>Keep</button></span>
         : <button type="button" className="text-button" disabled={!canEdit} onClick={() => setConfirming(true)}>Delete</button>)}
     </div>
     {event && status !== "canceled" && <p className="small-label">Not happening? Choose Canceled to keep it on record without deleting it.</p>}

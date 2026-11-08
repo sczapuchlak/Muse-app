@@ -7,6 +7,7 @@ import { createMuseBrowserClient } from "@/lib/supabase/client";
 import { readRunningOrder, saveRunningOrder } from "@/lib/planner-week";
 import { applyRunningOrder, completionDays, markSpan, moveInOrder, parseRunningSort, parseScheduleScope, runningSections, runningSorts, scheduleScopes, stepInOrder, weekStrip, weekSummary, type RunningSort, type ScheduleScope, type StripCell } from "@/lib/running-list";
 import { MuseChoiceMenu } from "../MuseChoiceMenu";
+import { isSeries } from "@/lib/planner-occurrences";
 import { MuseIcon } from "../MuseIcon";
 import { MuseOverflowMenu } from "../MuseOverflowMenu";
 import { useMuseSpark } from "../MuseSpark";
@@ -109,12 +110,14 @@ function RunningRow({ task, week, done, today, priority, showWorkspace, onOpen, 
   const { spark, trigger } = useMuseSpark();
   const place = useTaskPlacement(trigger);
   const [over, setOver] = useState(false), [dragging, setDragging] = useState(false), grab = useRef(false), titleRef = useRef<HTMLButtonElement>(null);
-  const cells = weekStrip(task, week, done.get(task.id), today), span = markSpan(cells);
+  const cells = weekStrip(task, week, done.get(task.id), today, state.occurrences), span = markSpan(cells);
   const facts = taskFacts({ task, today, priority, showWorkspace, state, hidePlanned: !!task.plannedDate && week.includes(task.plannedDate) });
   // One task/toggle on the canonical record: the board, Agenda and Dayview update from the same change.
-  const toggle = () => { if (!task.complete) trigger(); dispatch({ type: "task/toggle", id: task.id, now: new Date().toISOString() }); onAnnounce(task.complete ? `${task.title} reopened.` : `${task.title} completed today.`); };
+  const series = isSeries(task), todayCell = cells.find((c) => c.today);
+  const toggle = () => { if (series) { if (todayCell?.occurrence) cellAction(todayCell); return; } if (!task.complete) trigger(); dispatch({ type: "task/toggle", id: task.id, now: new Date().toISOString() }); onAnnounce(task.complete ? `${task.title} reopened.` : `${task.title} completed today.`); };
   // A blank day marks it done that day (today is an ordinary completion); its × reopens it.
   const cellAction = (c: StripCell) => {
+    if (c.occurrence) { if (c.action === "complete") trigger(); dispatch({ type: "task/toggle", id: c.occurrence, now: new Date().toISOString() }); onAnnounce(c.action === "reopen" ? `${task.title} reopened for that day.` : `${task.title} done for ${longDay(c.date)}.`); return; }
     if (c.action === "reopen" || (c.action === "complete" && c.today && !task.complete)) { toggle(); return; }
     trigger(); dispatch({ type: "task/completeOn", id: task.id, date: c.date, now: new Date().toISOString() }); onAnnounce(`${task.title} marked done on ${longDay(c.date)}.`);
   };

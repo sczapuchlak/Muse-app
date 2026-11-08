@@ -17,6 +17,10 @@ export type PlannedTask = {
   notes?: string; detail?: string; estimatedMinutes?: number; actualMinutes: number;
   subtasks: { id: string; title: string; complete: boolean }[];
   recurrence?: { frequency: "daily" | "weekly" | "monthly"; interval: number; until?: string };
+  /** Recurrence 2.0 (#89): the series rule, anchored on plannedDate. */
+  rule?: import("./recurrence").RecurrenceRule;
+  /** Set on a projected occurrence: the series task id and the scheduled date this occurrence belongs to. */
+  seriesId?: string; occurrenceDate?: string;
   createdAt: string;
 };
 export type EventStatus = "confirmed" | "tentative" | "canceled";
@@ -28,6 +32,8 @@ export type EventStatus = "confirmed" | "tentative" | "canceled";
 export type DayEvent = {
   id: string; kind: "event"; title: string; date: string; dateTime: string; time: string; detail?: string;
   allDay?: boolean; endDate?: string; endTime?: string; location?: string; status?: EventStatus;
+  /** Recurrence 2.0 (#89): the series rule, anchored on `date`; and, on a projected occurrence, its series and date. */
+  rule?: import("./recurrence").RecurrenceRule; seriesId?: string; occurrenceDate?: string;
 };
 export type ContextTag = { id: string; name: string; archived?:boolean };
 export type EmotionQuadrant = "red" | "blue" | "green" | "yellow";
