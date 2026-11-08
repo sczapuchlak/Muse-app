@@ -4,8 +4,10 @@
  * section are permanent. Optional sections only *display* existing records; removing one deletes no data.
  * Pure and versioned: unknown fields and types are dropped, and a broken template falls back to the default.
  */
+import {markIcons,type MarkIcon} from './muse-marks';
+import {parseSectionStyle,parseStarter,type SectionStyle} from './planner-customization';
 export const LAYOUT_SCHEMA_VERSION=1;
-export const MAX_SECTIONS=16;
+export const MAX_SECTIONS=24;
 
 export const sectionTypes=[
  {id:'events',label:'Events',hint:'Native Muse events for the day.'},
@@ -14,7 +16,9 @@ export const sectionTypes=[
  {id:'reading',label:'Reading',hint:'Bookshelf reading sessions for the day.'},
  {id:'meals',label:'Meals',hint:'Meals already planned on Dayview.'},
  {id:'water',label:'Water',hint:'Hydration you logged that day.'},
- {id:'notes',label:'Custom notes',hint:'A short note per day, for anything else.'},
+ {id:'notes',label:'Freeform notes',hint:'Writing space per day: journaling, ideas, anything.'},
+ {id:'checklist',label:'Checklist',hint:'Planner-only checkboxes per day, like a packing list. Never a Muse task.'},
+ {id:'list',label:'Simple list',hint:'A plain list per day, like places to visit. No checkboxes.'},
 ] as const;
 export type SectionType=typeof sectionTypes[number]['id'];
 export const sectionSizes=[
@@ -43,11 +47,22 @@ export type AgendaSection={
  metric?:ReadingMetric;
  /** A dragged height in px (shared by all seven days). Absent means the size preset. */
  height?:number;
+ /** Optional decorative icon beside the title, from the Muse Marks icon library (#87). Absent means none. */
+ icon?:MarkIcon;
+ /** #87: optional background, accent, header, divider and sticker. Absent means the theme default. */
+ style?:SectionStyle;
+ /** #87: hidden from the Agenda (content kept). Permanent sections are never hidden. */
+ hidden?:boolean;
+ /** #87: Checklist/List starter items that fill each new day; Notes starter text. */
+ starter?:string[];
+ starterBody?:string;
+ /** #87: the Saved Section this one was saved to or inserted from (for "Update saved"). Never a live link. */
+ savedFrom?:string;
 };
 export type AgendaLayout={version:number;sections:AgendaSection[]};
 
-const defaultTitles:Record<SectionType,string>={events:'Events',tasks:'Tasks',movement:'Movement',reading:'Reading',meals:'Meals',water:'Water',notes:'Notes'};
-const defaultSizes:Record<SectionType,SectionSize>={events:'standard',tasks:'tall',movement:'compact',reading:'compact',meals:'compact',water:'collapsed',notes:'compact'};
+const defaultTitles:Record<SectionType,string>={events:'Events',tasks:'Tasks',movement:'Movement',reading:'Reading',meals:'Meals',water:'Water',notes:'Notes',checklist:'Checklist',list:'List'};
+const defaultSizes:Record<SectionType,SectionSize>={events:'standard',tasks:'tall',movement:'compact',reading:'compact',meals:'compact',water:'collapsed',notes:'compact',checklist:'standard',list:'standard'};
 export const EVENTS_ID='events',TASKS_ID='tasks';
 export const defaultLayout=():AgendaLayout=>({version:LAYOUT_SCHEMA_VERSION,sections:[
  {id:EVENTS_ID,type:'events',title:'Events',size:'standard'},
@@ -56,7 +71,9 @@ export const defaultLayout=():AgendaLayout=>({version:LAYOUT_SCHEMA_VERSION,sect
 /** Events and the original Tasks section can be resized, renamed and moved, never removed. */
 export const isPermanent=(s:Pick<AgendaSection,'id'>)=>s.id===EVENTS_ID||s.id===TASKS_ID;
 /** Only one of each connected section makes sense; Tasks and notes may repeat (e.g. Work and Personal). */
-export const repeatable=(type:SectionType)=>type==='tasks'||type==='notes';
+export const repeatable=(type:SectionType)=>type==='tasks'||hasContent(type);
+/** Sections whose content is written in the Planner itself (Planner-only, never tasks). */
+export const hasContent=(type:SectionType)=>type==='notes'||type==='checklist'||type==='list';
 export const sectionRem=(size:SectionSize)=>sectionSizes.find(s=>s.id===size)!.rem;
 export const MIN_SECTION_PX=44,MAX_SECTION_PX=720;
 export const clampHeight=(px:number)=>Math.round(Math.max(MIN_SECTION_PX,Math.min(MAX_SECTION_PX,px)));
@@ -73,7 +90,13 @@ function parseSection(value:unknown):AgendaSection|null{
  const section:AgendaSection={id:v.id,type,title,size};
  if(type==='tasks'){section.workspaceIds=Array.isArray(v.workspaceIds)?[...new Set(v.workspaceIds.filter((x):x is string=>typeof x==='string'&&x.length<=80))].slice(0,20):[];section.completed=v.completed==='show'||v.completed==='hide'?v.completed:'inherit';}
  if(type==='reading')section.metric=readingMetrics.find(m=>m.id===v.metric)?.id??'minutes';
+ if(typeof v.icon==='string'&&markIcons.some(i=>i.id===v.icon))section.icon=v.icon as MarkIcon;
  if(typeof v.height==='number'&&Number.isFinite(v.height))section.height=clampHeight(v.height);
+ const style=parseSectionStyle(v.style);if(style)section.style=style;
+ if(v.hidden===true&&v.id!==EVENTS_ID&&v.id!==TASKS_ID)section.hidden=true;
+ if(type==='checklist'||type==='list'){const starter=parseStarter(v.starter);if(starter.length)section.starter=starter;}
+ if(typeof v.savedFrom==='string'&&idPattern.test(v.savedFrom))section.savedFrom=v.savedFrom;
+ if(type==='notes'&&typeof v.starterBody==='string'&&v.starterBody.trim())section.starterBody=v.starterBody.slice(0,2000);
  return section;
 }
 /** Saved template → a valid one. Permanent sections are restored if missing; duplicates and extras are dropped. */
@@ -92,6 +115,8 @@ export type LayoutChange=
  |{type:'remove';id:string}
  |{type:'move';id:string;to:number}
  |{type:'update';id:string;patch:Partial<Omit<AgendaSection,'id'|'type'>>}
+ |{type:'duplicate';id:string;newId:string}
+ |{type:'insert';section:AgendaSection}
  |{type:'reset'};
 /** Every layout edit goes through here, so permanent sections and limits hold no matter which control was used. */
 export function changeLayout(layout:AgendaLayout,change:LayoutChange):AgendaLayout{
@@ -102,6 +127,14 @@ export function changeLayout(layout:AgendaLayout,change:LayoutChange):AgendaLayo
   const s=parseSection({...change.section,title:change.section.title||defaultTitles[change.section.type],size:change.section.size??defaultSizes[change.section.type]});
   return s?{...layout,sections:[...sections,s]}:layout;
  }
+ if(change.type==='duplicate'||change.type==='insert'){
+  if(sections.length>=MAX_SECTIONS)return layout;
+  const src=change.type==='duplicate'?sections.find(s=>s.id===change.id):change.section;
+  if(!src||!repeatable(src.type)&&sections.some(s=>s.type===src.type))return layout;
+  const id=change.type==='duplicate'?change.newId:src.id;if(sections.some(s=>s.id===id))return layout;
+  const copy=parseSection({...src,id,hidden:false,title:change.type==='duplicate'?`${src.title} copy`.slice(0,32):src.title});if(!copy)return layout;
+  const at=change.type==='duplicate'?sections.indexOf(src)+1:sections.length;const next=[...sections];next.splice(at,0,copy);return {...layout,sections:next};
+ }
  if(change.type==='remove'){const target=sections.find(s=>s.id===change.id);return !target||isPermanent(target)?layout:{...layout,sections:sections.filter(s=>s.id!==change.id)};}
  if(change.type==='move'){
   const from=sections.findIndex(s=>s.id===change.id);if(from<0)return layout;
@@ -111,6 +144,8 @@ export function changeLayout(layout:AgendaLayout,change:LayoutChange):AgendaLayo
  const next=sections.map(s=>s.id===change.id?parseSection({...s,...change.patch,id:s.id,type:s.type})??s:s);
  return {...layout,sections:next};
 }
+/** The sections the Agenda draws (hidden ones stay in the template, with their content). */
+export const visibleSections=(layout:AgendaLayout)=>layout.sections.filter(s=>!s.hidden);
 export const newSectionId=(type:SectionType)=>`${type}-${Math.random().toString(36).slice(2,10)}`;
 
 /** Tasks a Tasks section shows on a day. Missing workspaces are reported, never silently widened to "all". */

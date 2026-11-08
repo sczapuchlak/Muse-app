@@ -15,6 +15,7 @@ import { useWhimsyData } from "../whimsy/WhimsyData";
 import { useAspirations } from "../rituals/aspirations/useAspirations";
 import { useDailyData, useDailyRange } from "../daily/DailyData";
 import { AgendaDataProvider, useAgendaData } from "./AgendaData";
+import { visibleSections } from "@/lib/agenda-layout";
 import { AgendaSectionView, EventLine, type DayContext } from "./AgendaSections";
 import { TaskListRow } from "./TaskListRow";
 import { EventEditor } from "./EventEditor";
@@ -101,7 +102,7 @@ function AgendaBody({ date, today, onDate, onOpen, workspaceId, prefs, update, s
     const ctx = context(day, "fixed");
     return <section key={day} data-day={day} className={`muse-agenda-day muse-planner-surface${day === today ? " muse-today-ring" : ""}`} data-today={day === today || undefined} aria-label={`${weekday(day, "long")} ${day}${day === today ? ", today" : ""}`}>
       {dayHeader(day, ctx)}
-      <div className="muse-agenda-day-body">{agenda.layout.sections.map((s) => <AgendaSectionView key={s.id} section={s} ctx={ctx} />)}</div>
+      <div className="muse-agenda-day-body">{visibleSections(agenda.layout).map((s) => <AgendaSectionView key={s.id} section={s} ctx={ctx} />)}</div>
     </section>;
   }
   function dailyPlanner() {
@@ -117,7 +118,7 @@ function AgendaBody({ date, today, onDate, onOpen, workspaceId, prefs, update, s
         })}</ol>}
         <div className="muse-agenda-focus-marks"><MarkStrip marks={own} onEdit={(m, a) => ctx.onMark(a, m)} /><button type="button" className="muse-button button-ghost" onClick={(e) => ctx.onMark(e.currentTarget)}>+ Mark</button></div>
       </section>
-      <div className="muse-agenda-daily-sections">{agenda.layout.sections.map((s) => <AgendaSectionView key={s.id} section={s} ctx={ctx} />)}</div>
+      <div className="muse-agenda-daily-sections">{visibleSections(agenda.layout).map((s) => <AgendaSectionView key={s.id} section={s} ctx={ctx} />)}</div>
     </div>;
   }
 

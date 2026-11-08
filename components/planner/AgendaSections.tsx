@@ -1,10 +1,12 @@
 "use client";
-import { useId, useRef, useState, type CSSProperties, type FormEvent, type PointerEvent as ReactPointerEvent, type ReactNode } from "react";
+import { useId, useMemo, useRef, useState, type CSSProperties, type FormEvent, type PointerEvent as ReactPointerEvent, type ReactNode } from "react";
 import type { DayEvent, PlannedTask } from "@/lib/models";
 import { mealLabels, mealSlots } from "@/lib/models";
 import { eventDays, eventWhen, taskState } from "@/lib/agenda";
 import { clampHeight, MAX_SECTION_PX, MIN_SECTION_PX, sectionPx, sectionWorkspaces, showCompletedFor, type AgendaSection } from "@/lib/agenda-layout";
-import { itemMark, type ResolvedMark } from "@/lib/muse-marks";
+import { itemMark, markIconName, type ResolvedMark } from "@/lib/muse-marks";
+import { accentCss } from "@/lib/appearance-values";
+import { DEFAULT_OPACITY, MAX_ITEMS, MAX_ITEM_TEXT, paintCss, starterItems, stickerGlyph, uncheckAll, type SectionItem } from "@/lib/planner-customization";
 import { movementCategory } from "@/lib/progress/movement";
 import { formatWaterAmount, parseWaterAmount } from "@/lib/water";
 import { sessionSeconds } from "@/lib/whimsy/reading-stats";
@@ -42,7 +44,9 @@ const categoryAccent: Record<string, string> = { strength: "pop", cardio: "warm"
 function Band({ section, ctx, count, action, children }: { section: AgendaSection; ctx: DayContext; count?: number; action?: ReactNode; children: ReactNode }) {
   const { preview, setPreview, changeLayout } = useAgendaData();
   const px = preview[section.id] ?? sectionPx(section);
-  const style = ctx.flow === "fixed" ? { "--section-h": `${px}px` } as CSSProperties : undefined;
+  const look = section.style;
+  const style = { ...(ctx.flow === "fixed" ? { "--section-h": `${px}px` } : {}), ...(look?.background ? { "--section-paint": paintCss(look.background), "--section-paint-opacity": `${(look.opacity ?? DEFAULT_OPACITY) / 100}` } : {}),
+    ...(look?.accent ? { "--section-accent": accentCss(look.accent) } : {}) } as CSSProperties;
   const headingId = `agenda-${section.id}-${ctx.day}`, collapsed = section.size === "collapsed" && !section.height && ctx.flow === "fixed";
   const commit = (next: number) => { setPreview(section.id, null); changeLayout({ type: "update", id: section.id, patch: { height: clampHeight(next) } }); };
   // Drag the bottom edge (or use the arrow keys) to size this band in every day at once.
@@ -52,8 +56,10 @@ function Band({ section, ctx, count, action, children }: { section: AgendaSectio
     const end = () => { el.removeEventListener("pointermove", moveTo); el.removeEventListener("pointerup", end); el.removeEventListener("pointercancel", end); commit(last); };
     el.addEventListener("pointermove", moveTo); el.addEventListener("pointerup", end); el.addEventListener("pointercancel", end);
   }
-  return <div className="muse-agenda-section" data-section={section.type} data-size={section.height ? "custom" : section.size} data-flow={ctx.flow} style={style} role="group" aria-labelledby={headingId}>
-    <div className="muse-agenda-section-head"><h3 id={headingId}>{section.title}{count ? <span className="muse-agenda-count"> · {count}</span> : null}</h3>{action}</div>
+  return <div className="muse-agenda-section" data-section={section.type} data-size={section.height ? "custom" : section.size} data-flow={ctx.flow}
+    data-painted={look?.background ? look.background.kind : undefined} data-header={look?.header} data-divider={look?.divider} style={style} role="group" aria-labelledby={headingId}>
+    {look?.sticker && <span className="muse-agenda-sticker" aria-hidden="true">{stickerGlyph(look.sticker)}</span>}
+    <div className="muse-agenda-section-head"><h3 id={headingId}>{section.icon && <span className="muse-agenda-section-icon" aria-hidden="true"><MuseIcon name={markIconName(section.icon) as MuseIconName} size={13} /></span>}{section.title}{count ? <span className="muse-agenda-count"> · {count}</span> : null}</h3>{action}</div>
     {collapsed ? null : <div className="muse-agenda-section-body" tabIndex={-1}>{children}</div>}
     {ctx.flow === "fixed" && <div className="muse-agenda-resize" role="separator" aria-orientation="horizontal" tabIndex={0} aria-label={`Resize ${section.title} for every day`} aria-valuenow={px} aria-valuemin={MIN_SECTION_PX} aria-valuemax={MAX_SECTION_PX}
       onPointerDown={drag} onKeyDown={(e) => { if (e.key === "ArrowUp" || e.key === "ArrowDown") { e.preventDefault(); commit(px + (e.key === "ArrowDown" ? 16 : -16)); } }} />}
@@ -69,6 +75,7 @@ export function AgendaSectionView({ section, ctx }: { section: AgendaSection; ct
     case "meals": return <MealsSection section={section} ctx={ctx} />;
     case "water": return <WaterSection section={section} ctx={ctx} />;
     case "notes": return <NotesSection section={section} ctx={ctx} />;
+    case "checklist": case "list": return <ItemsSection section={section} ctx={ctx} />;
   }
 }
 
@@ -210,7 +217,41 @@ function WaterSection({ section, ctx }: { section: AgendaSection; ctx: DayContex
 function NotesSection({ section, ctx }: { section: AgendaSection; ctx: DayContext }) {
   const { note, setNote, userId } = useAgendaData();
   const n = note(section.id, ctx.day);
+  // A Notes starter is a prompt (placeholder) until the person writes; it is never saved on their behalf.
   return <Band section={section} ctx={ctx}>
-    <textarea className="muse-agenda-note" aria-label={`${section.title} for ${ctx.day}`} maxLength={500} disabled={!userId} value={n.body} placeholder="…" onChange={(e) => setNote({ ...n, body: e.target.value })} />
+    <textarea className="muse-agenda-note" aria-label={`${section.title} for ${ctx.day}`} maxLength={5000} disabled={!userId} value={n.body} placeholder={section.starterBody ?? "…"} onChange={(e) => setNote({ ...n, body: e.target.value })} />
+  </Band>;
+}
+
+/**
+ * Checklist and Simple List sections (#87): Planner-only items for one day. They are never Muse tasks: checking one
+ * off completes nothing elsewhere. A day with nothing saved yet shows the section's starter items; the first edit saves
+ * that day's own copy, so other days and the template are never changed.
+ */
+function ItemsSection({ section, ctx }: { section: AgendaSection; ctx: DayContext }) {
+  const { note, setNote, userId } = useAgendaData();
+  const saved = note(section.id, ctx.day), [draft, setDraft] = useState("");
+  const starterKey = (section.starter ?? []).join("\n");
+  const fallback = useMemo(() => starterItems(starterKey ? starterKey.split("\n") : []), [starterKey]);
+  const fresh = saved.revision === 0 && !saved.items.length && !saved.body;
+  const items: SectionItem[] = fresh ? fallback : saved.items;
+  const checklist = section.type === "checklist", done = items.filter((i) => i.done).length;
+  const save = (next: SectionItem[], delay = 400) => setNote({ ...saved, items: next.slice(0, MAX_ITEMS) }, delay);
+  const add = (e: FormEvent) => { e.preventDefault(); const text = draft.trim().slice(0, MAX_ITEM_TEXT); if (!text) return; save([...items, { id: crypto.randomUUID(), text, done: false }], 0); setDraft(""); };
+  const label = `${section.title} for ${ctx.day}`;
+  return <Band section={section} ctx={ctx} count={checklist ? undefined : items.length}
+    action={<span className="muse-agenda-items-head">{checklist && items.length > 0 && <span className="small-label">{done}/{items.length}</span>}
+      {checklist && done > 0 && <MuseOverflowMenu label={`${section.title} options`} actions={[{ id: "reset", label: "Uncheck all", onSelect: () => save(uncheckAll(items), 0) }]} />}</span>}>
+    {items.length > 0 && <ul className="muse-agenda-items" data-kind={section.type} aria-label={label}>{items.map((item) => <li key={item.id} data-done={checklist && item.done || undefined}>
+      {checklist ? <label className="priority-completion muse-agenda-item-check"><input type="checkbox" className="check-input" checked={item.done} disabled={!userId} aria-label={item.text} onChange={() => save(items.map((i) => i.id === item.id ? { ...i, done: !i.done } : i), 0)} />
+        <span className="priority-check" aria-hidden="true">{item.done && <MuseIcon name="check" size={12} />}</span></label>
+        : <span className="muse-agenda-bullet" aria-hidden="true">–</span>}
+      <input className="muse-agenda-item-text" value={item.text} maxLength={MAX_ITEM_TEXT} disabled={!userId} aria-label={`Edit “${item.text}”`}
+        onChange={(e) => save(items.map((i) => i.id === item.id ? { ...i, text: e.target.value } : i), 700)}
+        onBlur={(e) => { if (!e.target.value.trim()) save(items.filter((i) => i.id !== item.id), 0); }} />
+      <button type="button" className="muse-agenda-item-remove" disabled={!userId} aria-label={`Remove “${item.text}” from this day`} onClick={() => save(items.filter((i) => i.id !== item.id), 0)}><MuseIcon name="close" size={11} /></button>
+    </li>)}</ul>}
+    {items.length < MAX_ITEMS && <form className="muse-agenda-item-add" onSubmit={add}>
+      <input value={draft} maxLength={MAX_ITEM_TEXT} disabled={!userId} placeholder={checklist ? "Add an item…" : "Add to the list…"} aria-label={`Add to ${label}`} onChange={(e) => setDraft(e.target.value)} /></form>}
   </Band>;
 }

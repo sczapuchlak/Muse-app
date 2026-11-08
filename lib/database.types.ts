@@ -1235,16 +1235,30 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
-                },"planner_day_notes": {
+                },"planner_customizations": {
                   Row: {
-                    "body": string,"created_at": string,"local_date": string,"revision": number,"section_id": string,"updated_at": string,"user_id": string
+                    "created_at": string,"library": NonNullable<Json>,"revision": number,"schema_version": number,"updated_at": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "body"?: string,"created_at"?: string,"local_date": string,"revision"?: number,"section_id": string,"updated_at"?: string,"user_id"?: string
+                    "created_at"?: string,"library"?: NonNullable<Json>,"revision"?: number,"schema_version"?: number,"updated_at"?: string,"user_id"?: string
                   }
                   Update: {
-                    "body"?: string,"created_at"?: string,"local_date"?: string,"revision"?: number,"section_id"?: string,"updated_at"?: string,"user_id"?: string
+                    "created_at"?: string,"library"?: NonNullable<Json>,"revision"?: number,"schema_version"?: number,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
+                },"planner_day_notes": {
+                  Row: {
+                    "body": string,"created_at": string,"items": NonNullable<Json>,"local_date": string,"revision": number,"section_id": string,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "body"?: string,"created_at"?: string,"items"?: NonNullable<Json>,"local_date": string,"revision"?: number,"section_id": string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Update: {
+                    "body"?: string,"created_at"?: string,"items"?: NonNullable<Json>,"local_date"?: string,"revision"?: number,"section_id"?: string,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
                     
@@ -1285,14 +1299,14 @@ isOneToOne: false
                   ]
                 },"planner_marks": {
                   Row: {
-                    "color": string,"created_at": string,"end_date": string | null,"icon": string,"id": string,"label": string,"link_id": string | null,"link_kind": string | null,"local_date": string,"revision": number,"updated_at": string,"user_id": string
+                    "color": string,"created_at": string,"end_date": string | null,"gradient": Json | null,"icon": string,"id": string,"label": string,"link_id": string | null,"link_kind": string | null,"local_date": string,"meaning": string | null,"revision": number,"updated_at": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "color"?: string,"created_at"?: string,"end_date"?: string | null,"icon": string,"id"?: string,"label"?: string,"link_id"?: string | null,"link_kind"?: string | null,"local_date": string,"revision"?: number,"updated_at"?: string,"user_id"?: string
+                    "color"?: string,"created_at"?: string,"end_date"?: string | null,"gradient"?: Json | null,"icon": string,"id"?: string,"label"?: string,"link_id"?: string | null,"link_kind"?: string | null,"local_date": string,"meaning"?: string | null,"revision"?: number,"updated_at"?: string,"user_id"?: string
                   }
                   Update: {
-                    "color"?: string,"created_at"?: string,"end_date"?: string | null,"icon"?: string,"id"?: string,"label"?: string,"link_id"?: string | null,"link_kind"?: string | null,"local_date"?: string,"revision"?: number,"updated_at"?: string,"user_id"?: string
+                    "color"?: string,"created_at"?: string,"end_date"?: string | null,"gradient"?: Json | null,"icon"?: string,"id"?: string,"label"?: string,"link_id"?: string | null,"link_kind"?: string | null,"local_date"?: string,"meaning"?: string | null,"revision"?: number,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
                     
