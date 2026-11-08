@@ -142,3 +142,34 @@ export function readingGlance(books:Book[],sessions:ReadingSession[],range:Glanc
   books:[...perBook].map(([id,x])=>({book:books.find(b=>b.id===id),...x})).filter((x):x is {book:Book;pages:number;seconds:number}=>!!x.book).sort((a,b)=>b.seconds-a.seconds||b.pages-a.pages)};
 }
 export function readingDuration(seconds:number){const m=Math.round(seconds/60);if(m<60)return `${m} min`;const h=Math.floor(m/60),r=m%60;return r?`${h} h ${r} min`:`${h} h`;}
+
+// ---------- Polish pass (#97): per-week rates, categories, notes and the year by month ----------
+/** Workouts per week over the days that have actually happened in the period (never future days). */
+export function movementRate(sessions:number,range:GlanceRange,today:string){
+ const elapsed=range.days.filter(d=>!today||d<=today).length;
+ return {weeks:Math.round(elapsed/7*10)/10,perWeek:elapsed?Math.round(sessions/(elapsed/7)*10)/10:null};
+}
+export type MovementCategory='strength'|'cardio'|'mobility'|'other';
+/** Recorded sessions by the type's own saved category (absent category stays "other"). */
+export function movementByCategory(activities:MovementRecord[],types:{id:string;category?:MovementCategory}[],range:GlanceRange){
+ const out:Record<MovementCategory,number>={strength:0,cardio:0,mobility:0,other:0};
+ for(const a of activities)if(a.date>=range.start&&a.date<=range.end)out[types.find(t=>t.id===a.typeId)?.category??'other']++;
+ return out;
+}
+/** The day's own words: its evening reflection, else its morning one. Never generated. */
+export function dayNote(checkIns:EmotionalCheckIn[],date:string){
+ const own=checkIns.filter(c=>c.date===date&&c.reflection.trim());
+ return (own.find(c=>c.period==='evening')??own[0])?.reflection.trim()??'';
+}
+export type MonthSummary={month:string;rating:number|null;ratedDays:number;families:Record<EmotionQuadrant,number>;checkIns:number;
+ water:number|null;waterDays:number;movement:number;prioritiesDone:number;prioritiesPlanned:number;topEmoji?:string;recordedDays:number};
+/** Year view: one honest summary per month; water uses one unit (the most logged one) and never mixes units. */
+export function yearByMonth(range:GlanceRange,days:Record<string,DayData|undefined>,checkIns:EmotionalCheckIn[],catalog:Pick<Emotion,'id'|'quadrant'>[],water:DailyWater[],waterUnit:WaterUnit|undefined,activities:MovementRecord[]):MonthSummary[]{
+ const months=[...new Set(range.days.map(d=>d.slice(0,7)))];
+ return months.map(month=>{
+  const mr=glanceRange('month',`${month}-01`),d=dailyGlance(days,checkIns,catalog,mr);
+  const w=waterUnit?water.filter(x=>x.date.startsWith(month)&&(x.unit??waterUnit)===waterUnit&&Number.isFinite(x.total)&&x.total>=0):[];
+  return {month,rating:d.rating.average,ratedDays:d.rating.days,families:d.families,checkIns:d.checkIns,water:w.length?Math.round(avg(w.map(x=>x.total))!):null,waterDays:w.length,
+   movement:activities.filter(a=>a.date.startsWith(month)).length,prioritiesDone:d.priorities.completed,prioritiesPlanned:d.priorities.planned,topEmoji:d.dayInThree[0]?.emoji,recordedDays:d.recordedDays};
+ });
+}
