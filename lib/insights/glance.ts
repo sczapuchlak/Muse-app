@@ -70,8 +70,8 @@ export function dailyGlance(days:Record<string,DayData|undefined>,checkIns:Emoti
  const ratings:DayRating[]=range.days.map(date=>{const r=days[date]?.record;return {date,overallDay:r?.overall_day??null,energy:r?.energy??null,stress:r?.stress??null};});
  const rated=ratings.filter((r):r is DayRating&{overallDay:number}=>r.overallDay!==null);
  const top=Math.max(...rated.map(r=>r.overallDay),-Infinity);
- // "Good days" = the top-rated recorded days (8+ on the 0–10 scale), best first.
- const best=rated.filter(r=>r.overallDay>=8||r.overallDay===top&&rated.length>0&&top>=7).sort((a,b)=>b.overallDay-a.overallDay||a.date.localeCompare(b.date)).slice(0,5).map(r=>({date:r.date,value:r.overallDay}));
+ // "Good days" = the top-rated recorded days (8+ on the 0–10 scale), best first. Capped at 60 (#105 shows them in a carousel).
+ const best=rated.filter(r=>r.overallDay>=8||r.overallDay===top&&rated.length>0&&top>=7).sort((a,b)=>b.overallDay-a.overallDay||a.date.localeCompare(b.date)).slice(0,60).map(r=>({date:r.date,value:r.overallDay}));
  const energy=ratings.flatMap(r=>r.energy===null?[]:[r.energy]),stress=ratings.flatMap(r=>r.stress===null?[]:[r.stress]);
  const inRange=checkIns.filter(c=>c.date>=range.start&&c.date<=range.end);
  const counts=new Map<string,number>(),families={red:0,yellow:0,blue:0,green:0} as Record<EmotionQuadrant,number>;

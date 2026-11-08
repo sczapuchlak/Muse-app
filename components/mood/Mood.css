@@ -131,3 +131,7 @@
 .muse-mood-checkin-reflection{margin:0;font-size:.86rem;color:var(--text-secondary,var(--foreground))}
 .muse-mood-checkin-actions{display:flex;align-items:center;gap:4px}
 @media (max-width:640px){.muse-mood-checkin-row{grid-template-columns:minmax(0,1fr) auto}.muse-mood-checkin-row>.small-label{grid-column:1/-1}}
+
+/* #105 Little Moment beside the day's check-ins */
+.muse-mood-memory{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px;margin:0;padding:8px 12px;border-radius:12px;border-left:3px solid var(--accent-pop,var(--accent-primary));background:color-mix(in srgb,var(--accent-pop,var(--accent-primary)) 8%,transparent);font-family:var(--font-editorial);font-style:italic}
+.muse-mood-memory-label{font:700 .68rem var(--font-ui);font-style:normal;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted)}

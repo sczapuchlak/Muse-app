@@ -8,6 +8,7 @@ import { CardHeading } from "./CardHeading";
 import { MuseStar } from "./MuseStar";
 import {useDailyDay,DailyCapture} from "./daily/DailyData";
 import "./DayPulseCard.css";
+import { LittleMoment } from "./memories/LittleMoment";
 
 type SignalProps = { signal: typeof pulseSignals[number]; value: number | null; onChange: (value: number | null) => void };
 
@@ -50,5 +51,7 @@ export function DayPulseCard({ date }: { date: string }) {
     <DailyCapture date={date}><CardHeading id="day-pulse" title="Day Pulse" icon="insights"><button type="button" className="text-button" disabled={!hasValues} aria-label="Reset all Day Pulse values" onClick={() => update({ energy: null, stress: null, overallDay: null })}>Reset</button></CardHeading>
     <p className="muse-pulse-copy">{pulseDescription}</p>
     <div className="muse-pulse-signals">{pulseSignals.map((signal) => <PulseControl key={signal.id} signal={signal} value={checkIn[signal.id]} onChange={(value) => change(signal.id, value)} />)}</div>
-  </DailyCapture></MuseCard>;
+  </DailyCapture>
+  {/* Little Moment (#105) lives in Day Pulse but saves on its own: Reset and ratings never touch it. */}
+  <LittleMoment date={date} /></MuseCard>;
 }

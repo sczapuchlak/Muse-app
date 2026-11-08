@@ -15,8 +15,9 @@ import { emotionCatalog } from "@/lib/emotions";
 import { validDate } from "@/lib/dates";
 import { dailyGlance, glancePeriods, glanceRange, glanceTitle, movementByCategory, movementGlance, movementRate, readingGlance, currentlyReading, shiftGlance, waterGlance, yearByMonth, type GlancePeriod } from "@/lib/insights/glance";
 import { formatWaterAmount } from "@/lib/water";
-import { DayPriorities, DayStrip, EmotionSnapshot, GoodDays, IntentionsList, MonthBars, MonthCalendar, MovementCard, PlannedMeals, PrioritiesSummary, RatingSummary, ThreeFavorites, WaterSummary, YearFeelings, YearMonths, YearStats, plural } from "./GlanceSections";
+import { DayPriorities, DayStrip, EmotionSnapshot, GoodDays, IntentionsList, LittleMoments, MonthBars, MonthCalendar, MovementCard, PlannedMeals, PrioritiesSummary, RatingSummary, ThreeFavorites, WaterSummary, YearFeelings, YearMonths, YearStats, plural } from "./GlanceSections";
 import { DayPortrait } from "./DayPortrait";
+import { useMemoryRange } from "../../memories/useMemories";
 import { ReadingSection } from "./ReadingSection";
 import "../Insights.css";
 import "./Glance.css";
@@ -54,6 +55,7 @@ export function InsightsGlance() {
   const open = (d: string, p: GlancePeriod = "day") => { setDate(d); setPeriod(p); window.scrollTo({ top: 0, behavior: "smooth" }); };
   const future = !!today && range.start > today, partial = !!today && range.end > today && range.start <= today;
   const title = glanceTitle(range);
+  const moments = useMemoryRange(range.start, range.end);
   const rate = useMemo(() => movementRate(movement.sessions, range, today), [movement.sessions, range, today]);
   const byCategory = useMemo(() => movementByCategory(wellness.state.activities, wellness.state.types, range), [wellness.state.activities, wellness.state.types, range]);
   const months = useMemo(() => period === "year" ? yearByMonth(range, snapshot.days, checkIns, emotionCatalog, wellness.state.water, water[0]?.unit, wellness.state.activities) : [], [period, range, snapshot.days, checkIns, wellness.state.water, water, wellness.state.activities]);
@@ -79,7 +81,7 @@ export function InsightsGlance() {
 
     <div className="muse-glance-layout" data-period={period} aria-busy={!days.loaded}>
       {period === "day" && <>
-        <div data-area="hero"><DayPortrait date={range.start} day={snapshot.days[range.start]} checkIns={checkIns} influences={snapshot.influences} waterLoaded={wellness.status.loaded}
+        <div data-area="hero"><DayPortrait memory={moments.memories[0] ?? null} date={range.start} day={snapshot.days[range.start]} checkIns={checkIns} influences={snapshot.influences} waterLoaded={wellness.status.loaded}
           water={wellness.state.water.find((w) => w.date === range.start)}
           activities={wellness.state.activities.filter((a) => a.date === range.start).map((a) => wellness.state.types.find((t) => t.id === a.typeId)?.name ?? "Recorded activity")} /></div>
         <DayPriorities day={snapshot.days[range.start]} area="a" />
@@ -89,6 +91,7 @@ export function InsightsGlance() {
 
       {period === "week" && <>
         <div data-area="hero"><DayStrip range={range} days={snapshot.days} checkIns={checkIns} today={today} onOpen={(d) => open(d)} /></div>
+        <div data-area="hero"><LittleMoments memories={moments.memories} checkIns={checkIns} onOpen={(d) => open(d)} period="week" /></div>
         <RatingSummary daily={daily} />
         <PrioritiesSummary summary={daily.priorities} />
         <WaterSummary water={water} loaded={wellness.status.loaded} />
@@ -118,12 +121,14 @@ export function InsightsGlance() {
             {readingCard()}
           </div>
         </div>
-        <div data-area="hero"><IntentionsList intentions={daily.intentions} onOpen={(d) => open(d)} limit={31} /></div>
+        <div data-area="hero"><LittleMoments memories={moments.memories} checkIns={checkIns} onOpen={(d) => open(d)} period="month" /></div>
+        <div data-area="hero"><IntentionsList intentions={daily.intentions} onOpen={(d) => open(d)} carousel /></div>
       </>}
 
       {period === "year" && <>
         <div data-area="stats"><YearStats daily={daily} booksFinished={reading.completed.length} workouts={movement.sessions} /></div>
         <div data-area="hero"><YearMonths range={range} ratings={daily.ratings} days={snapshot.days} onOpen={(d) => open(d, "month")} /></div>
+        <div data-area="hero"><LittleMoments memories={moments.memories} checkIns={checkIns} onOpen={(d) => open(d)} period="year" /></div>
         <div data-area="cols" className="muse-glance-cols">
           <div className="muse-glance-col">
             <YearFeelings months={months} />

@@ -774,3 +774,6 @@ Stephanie approved importing the HeartYearning Dream Symbols Dataset with attrib
 - Reflections is personal, user-authored memory; it never derives content from, or writes to, other modules (Insights stays the automatic summary).
 - Changing a layout or removing a section never silently loses content: content carries over, removal with content is confirmed, and Hide is offered.
 - Level 10 Life ratings are structured per area and period; weekly, monthly and yearly ratings are independent assessments; areas keep stable ids and are archived, not deleted.
+
+## Daily Memories (#105)
+A Little Moment is its own record (one per local date). It is never stored in Day Pulse, Mood notes or Day in Three, and resetting or clearing those never removes it.

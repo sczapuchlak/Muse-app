@@ -1,0 +1,35 @@
+/* Little Moment (#105): a small, charming field inside Day Pulse and Mood, with a soft accent bar like a journal margin. */
+.muse-little-moment{position:relative;display:grid;gap:8px;margin-top:var(--space-4,16px);padding:12px 14px 12px 18px;border-radius:16px;border:1px solid var(--glass-border);
+ background:linear-gradient(120deg,color-mix(in srgb,var(--accent-pop,var(--accent-primary)) 10%,transparent),transparent 60%),var(--surface-subtle)}
+.muse-little-moment::before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:4px;border-radius:999px;background:linear-gradient(180deg,var(--accent-primary),var(--accent-pop,var(--accent-secondary)))}
+.muse-little-moment>header{display:flex;align-items:center;gap:6px}
+.muse-little-moment h3{margin:0;font-size:.9rem;font-weight:700}
+.muse-little-moment-mark{display:inline-grid;color:var(--accent-pop,var(--accent-primary))}
+.muse-little-moment-optional{margin-left:auto;font-size:.72rem;color:var(--text-muted)}
+.muse-little-moment-quiet{margin:0;color:var(--text-muted)}
+.muse-little-moment-saved{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:start;gap:10px}
+.muse-little-moment-saved p{margin:0;font-family:var(--font-editorial);font-style:italic;font-size:1.02rem;line-height:1.45;overflow-wrap:anywhere}
+.muse-little-moment-saved>p:first-child{grid-column:1/3}
+.muse-little-moment-emoji{font-size:1.4rem;line-height:1}
+.muse-little-moment-tools{display:flex;align-items:center;gap:4px}
+.muse-little-moment-icon{display:grid;place-items:center;width:30px;height:30px;border-radius:10px;border:1px solid transparent;background:transparent;color:var(--text-muted);cursor:pointer}
+.muse-little-moment-icon:hover{color:var(--foreground);border-color:var(--glass-border)}
+.muse-little-moment-form{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.muse-little-moment-input{flex:1 1 220px;min-width:0;min-height:40px;padding:8px 12px;border-radius:12px;border:1px solid var(--glass-border);background:var(--surface-control);color:var(--foreground);font:inherit;font-size:.92rem}
+.muse-little-moment-emoji-pick{display:grid;place-items:center;width:40px;height:40px;border-radius:12px;border:1px dashed var(--glass-border);background:transparent;color:var(--accent-pop,var(--accent-primary));font-size:1.2rem;cursor:pointer}
+.muse-little-moment-pill{min-height:34px;padding:4px 13px;border-radius:999px;border:1px solid var(--glass-border);background:var(--surface-subtle);color:var(--foreground);font:inherit;font-size:.82rem;font-weight:600;cursor:pointer}
+.muse-little-moment-pill[data-primary]{border-color:transparent;background:linear-gradient(135deg,var(--accent-primary),var(--accent-pop,var(--accent-secondary)));color:#fff}
+.muse-little-moment-pill:disabled{opacity:.5;cursor:default}
+.muse-little-moment-confirm{display:inline-flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:.8rem}
+.muse-little-moment-error{margin:0;font-size:.82rem}
+:is(.muse-little-moment-icon,.muse-little-moment-pill,.muse-little-moment-emoji-pick):focus-visible{outline:2px solid var(--focus-ring,var(--accent-primary));outline-offset:2px}
+.muse-little-moment[data-compact]{margin-top:0}
+/* A memory card in Insights' Little Moments carousel: colored date bar beside the memory, like the journal log. */
+.muse-moment-card{display:grid;grid-template-columns:6px minmax(0,1fr);gap:12px;height:100%;padding:12px;border-radius:16px;border:1px solid var(--glass-border);background:var(--surface-subtle);box-sizing:border-box}
+.muse-moment-card>i{border-radius:999px;background:var(--moment-color,linear-gradient(180deg,var(--accent-primary),var(--accent-pop,var(--accent-secondary))))}
+.muse-moment-card-body{display:grid;gap:4px;align-content:start;min-width:0}
+.muse-moment-card time{font:700 .72rem var(--font-ui);letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted)}
+.muse-moment-card p{margin:0;font-family:var(--font-editorial);font-style:italic;font-size:.98rem;line-height:1.4;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:4;overflow:hidden;overflow-wrap:anywhere}
+.muse-moment-card p[data-open]{display:block;-webkit-line-clamp:unset}
+.muse-moment-card button{justify-self:start;padding:0;border:0;background:none;color:var(--accent-primary);font:600 .76rem var(--font-ui);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.muse-moment-card-emoji{font-size:1.2rem;line-height:1}
