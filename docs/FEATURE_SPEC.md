@@ -957,3 +957,6 @@ Rituals → **Habits | Aspirations | Bucket List** (`?view=bucket`). One long-ru
   - The event editor has Repeat and, on an occurrence, This one (an exception: moved, edited or canceled), This and future (split) or Entire series. Delete removes this date or the whole series.
 - **Counts:** Insights' plans count completion events (one per occurrence). The progress engine (Connected Rituals' "tasks completed", Across Muse) keys series completions by task and occurrence date.
 - **Not done:** times other than all-day/start for events beyond the existing fields, and per-occurrence subtasks (subtasks belong to the series).
+## Daily Edit priorities — close out past days (approved 2026-11-07)
+- Whether a day is over now uses the person's current profile time zone, not the zone captured on that day's record. Before, a record with another zone (e.g. from travel) made same-day linked priorities read-only hours early.
+- A linked priority on a past day can be checked off: it completes the task on that day (Running List's `planner_complete_on`, which records the local day) and shows as done for that day. Unchecking reopens the task, unless the day-end record already says it was done (that history isn't rewritten). Standalone priorities were already editable.
