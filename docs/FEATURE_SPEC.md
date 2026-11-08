@@ -1058,3 +1058,42 @@ One sweep for desktop consistency. Migration `20261124000100_ui_cleanup_1.sql` (
 - **Collections → Music:** albums (title, artist, cover, release date, rating, favorite, notes, up to three favorite tracks; statuses Want to Listen / On Repeat / Listened) in their own Music view and in the overview. Share from an album’s details as "is listening to …" (explicit, never automatic). The Stream composer has a Listening shortcut (albums only; Watching now excludes albums). Featuring an album on a profile uses the existing Showcase picker ("Movies, TV, games & music").
 - **Mindspace board:** bold card titles; drag cards to arrange ("Your arrangement" sort, chosen automatically on first drag, and exact order kept). Drag a card’s corner to resize, or use Size: Standard/Wide/Tall/Large in its menu, where Move earlier/later is the keyboard alternative. Duplicate makes an independent card (new ids; images stay with the original). Tags keep the five theme colors plus an optional custom solid or gradient. A Board settings button holds Show dates, Compact text and Reset arrangement (confirmed; cards stay). The arrangement lives in `notes_board`; cards are unchanged.
 - **Bucket List:** a dream’s number can be changed to one already used. The two dreams swap numbers (the other is cleared first, so numbers stay unique), where it used to fail with "Another dream already has that number."
+
+
+## Planner → Reflections — Modular Memory Book MVP (#99, closes the #83 placeholder) — implemented on feature branch (staging migration only)
+
+**Where:** Planner → Tasks | Agenda | **Reflections** (the third tab). One Week / Month / Year selector with previous / Today / next and the shared `PeriodTitle` picker. Weeks run Monday–Sunday (the same period math as Insights). The period is remembered per device (`muse.reflections.period`). Past and future periods can be opened and edited.
+
+**Layouts (two per period, six personalities):**
+- **Week:** Little Moments (cozy lined paper and washi tape) and Weekly Favorites (playful tilted stickers, colorful edges).
+- **Month:** Monthly Highlights (editorial rules and big serif heads, no boxes) and The Monthly Edit (magazine masthead).
+- **Year:** My Year in Moments (sentimental, centered, polaroids) and The Yearbook (confetti and badges).
+
+A new period opens a picker with a mini preview of each layout. Every layout includes an optional Level 10 Life section.
+
+**Modules (`lib/reflections/model.ts`):**
+- Memories (title, date, story, up to 8 photos, caption).
+- Photo moments (single / pair / gallery, with captions).
+- On repeat (song, artist, note, https link, artwork; a decorative equalizer line, never fake playback controls).
+- Books & stories, and Watching (movie or show), each with cover or poster, 1–5 stars and a note.
+- Favorites (name, category, image, why).
+- Highlights (win, achievement, experience, moment, milestone).
+- Guided reflection (gratitude, lessons, challenges, growth, what made me happy, intentions, or your own question; multiple answers).
+- Freeform writing.
+- Level 10 Life.
+
+In edit mode every section can be renamed, resized (full / wide / half / third on a 6-column grid), moved up or down, hidden (content kept) or removed. Removing a section with content asks first and offers Hide instead. "Add a section" opens the library; Level 10 Life is limited to one per review.
+
+**Finished view vs. editing:** the finished page shows only sections with content (plus Level 10 Life) and packs them densely, with no editing controls. "✎ Edit" opens editing. "Mark complete" / "Reopen as draft" sets the status. Changes autosave about 0.7s after typing, in order, revision-checked.
+
+**Changing layouts never deletes content.** `switchLayout` seeds the new layout. Each old section with content fills an empty new section of the same type (and same guided prompt) or is carried over after the new sections. A preview says what moves before you confirm. Level 10 ratings are separate rows and are always kept.
+
+**Level 10 Life:** ten default areas (Health & fitness, Career, Finances, Family, Friends, Romance, Personal growth, Fun & recreation, Home & environment, Spirituality), each with its own color. Areas can be renamed and recolored, and archived rather than deleted (stable ids keep history meaningful). Ratings are 1–10 bars with an optional note, saved per area and period. Weekly, monthly and yearly ratings are independent and never computed from one another. Seeding the defaults is idempotent (unique user + position).
+
+**Media and Collections:** songs, books, shows and favorites are the review's own content. Nothing is added to or changed in Collections or Bookshelf (the UI says so).
+
+**Images:** reuse the private `constellation-images` bucket and `uploadBoardImage` (owner folder, signed URLs, a JPEG fallback for Safari) under the review's id, or an https image link. Removed uploads are cleaned up best-effort; a missing image shows "Image unavailable".
+
+**Data:** migration `20261125000100_reflections.sql` adds owner-only `reflection_reviews` (one per user, period and start; layout and modules as a bounded, validated document; draft or complete), `life_areas` (stable ids, unique slot, archived not deleted) and `life_ratings` (1–10, note, unique per area and period; a composite foreign key keeps areas yours and blocks deleting rated areas). Included in the personal export.
+
+**Not built (per MVP):** Insights dashboards, automatic summaries, streaming or playback, Collections sync, freeform canvas, global layout presets, PDF export, AI writing, Level 10 Life trend views (the data is structured for them). Adding new life areas beyond the ten isn't built yet; archiving and renaming are.

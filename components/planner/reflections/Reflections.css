@@ -1,0 +1,207 @@
+/* Planner → Reflections (#99): a modular memory book. One 6-column grid; six layouts with their own personalities. */
+.muse-reflections{--r-gap:clamp(14px,1.8vw,22px);--r-grad:linear-gradient(135deg,var(--accent-primary),var(--accent-pop,var(--accent-secondary)));display:grid;gap:var(--r-gap)}
+.muse-reflections-toolbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 16px}
+.muse-reflections-toolbar .muse-agenda-title{font-size:clamp(1.35rem,2.3vw,1.8rem)}
+.muse-reflections-tools{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.muse-reflections-nav{display:flex;gap:6px}
+.muse-reflections-quiet{margin:0;color:var(--text-muted);font-size:.86rem}
+.muse-reflections-alert{margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:8px;color:var(--foreground);font-size:.86rem}
+.muse-reflections-kicker{display:flex;align-items:center;gap:6px;margin:0 0 4px;font-size:.74rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text-muted)}
+.muse-reflections-badge{margin-left:6px;padding:2px 8px;border-radius:999px;background:color-mix(in srgb,var(--success-primary) 20%,transparent);color:var(--foreground);letter-spacing:.04em;text-transform:none;font-size:.72rem}
+.muse-reflections-pill{display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:5px 14px;border-radius:999px;border:1px solid color-mix(in srgb,var(--accent-primary) 35%,var(--glass-border));background:color-mix(in srgb,var(--accent-primary) 10%,var(--surface-subtle));color:var(--foreground);font:inherit;font-size:.84rem;font-weight:600;text-decoration:none;cursor:pointer;white-space:nowrap}
+.muse-reflections-pill:hover{border-color:transparent;background:linear-gradient(var(--surface-subtle),var(--surface-subtle)) padding-box,var(--r-grad) border-box}
+.muse-reflections-pill:disabled{opacity:.5;cursor:default}
+:is(.muse-reflections-pill,.muse-reflections-icon,.muse-reflections-additem,.muse-reflections-add-trigger,.muse-reflections-layout,.muse-reflections-library button):focus-visible{outline:2px solid var(--focus-ring,var(--accent-primary));outline-offset:2px}
+.muse-reflections-icon{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:10px;border:1px solid var(--glass-border);background:var(--surface-subtle);color:var(--foreground);font:inherit;cursor:pointer}
+.muse-reflections-icon:disabled{opacity:.35;cursor:default}
+.muse-reflections-icon[aria-pressed=true]{color:var(--text-muted)}
+.muse-reflections-input{width:100%;min-width:0;box-sizing:border-box;min-height:40px;padding:8px 12px;border:1px solid var(--glass-border);border-radius:12px;background:var(--surface-control);color:var(--foreground);font:inherit;font-size:.92rem}
+textarea.muse-reflections-input{resize:vertical;line-height:1.5}
+.muse-reflections-longform{min-height:180px;font-family:var(--font-editorial);font-size:1.02rem;line-height:1.6}
+.muse-reflections-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+
+/* ---------- Layout picker ---------- */
+.muse-reflections-picker{display:grid;gap:18px;padding:clamp(20px,3vw,36px);border-radius:28px;border:1px solid var(--glass-border);background:var(--glass-background)}
+.muse-reflections-picker header h2{margin:0 0 4px;font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight);font-size:clamp(1.5rem,2.6vw,2.1rem)}
+.muse-reflections-layouts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:16px}
+.muse-reflections-layout{all:unset;box-sizing:border-box;display:grid;gap:8px;align-content:start;padding:16px;border-radius:22px;border:1px solid var(--glass-border);background:var(--surface-subtle);cursor:pointer;position:relative}
+.muse-reflections-layout:hover,.muse-reflections-layout[aria-pressed=true]{border-color:transparent;background:linear-gradient(var(--surface-subtle),var(--surface-subtle)) padding-box,var(--r-grad) border-box}
+.muse-reflections-layout strong{font-size:1.15rem;font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight)}
+.muse-reflections-layout span{color:var(--text-muted);font-size:.88rem}
+.muse-reflections-layout small{color:var(--text-muted);font-size:.74rem;line-height:1.45}
+.muse-reflections-mini{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;padding:10px;border-radius:14px;min-height:120px;align-content:start;background:var(--mini-bg,var(--surface-control))}
+.muse-reflections-mini span{display:grid;place-items:center;min-height:30px;border-radius:8px;background:var(--mini-tile,color-mix(in srgb,var(--accent-primary) 16%,transparent));font-size:.9rem}
+.muse-reflections-mini span[data-size=full]{grid-column:span 6}.muse-reflections-mini span[data-size=wide]{grid-column:span 4}.muse-reflections-mini span[data-size=half]{grid-column:span 3}.muse-reflections-mini span[data-size=third]{grid-column:span 2}
+.muse-reflections-mini[data-mood=cozy]{--mini-bg:repeating-linear-gradient(transparent 0 13px,color-mix(in srgb,var(--glass-border) 70%,transparent) 13px 14px),var(--surface-control);--mini-tile:color-mix(in srgb,#f4a259 22%,transparent)}
+.muse-reflections-mini[data-mood=playful] span{--mini-tile:color-mix(in srgb,#f45cad 24%,transparent);transform:rotate(-1.5deg)}.muse-reflections-mini[data-mood=playful] span:nth-child(2n){transform:rotate(1.5deg);--mini-tile:color-mix(in srgb,#2ec4b6 24%,transparent)}
+.muse-reflections-mini[data-mood=editorial] span{--mini-tile:transparent;border-bottom:2px solid color-mix(in srgb,var(--accent-pop,var(--accent-primary)) 50%,transparent);border-radius:0}
+.muse-reflections-mini[data-mood=magazine]{--mini-bg:linear-gradient(160deg,color-mix(in srgb,#5b5fd6 30%,transparent),color-mix(in srgb,#f07ab3 22%,transparent))}
+.muse-reflections-mini[data-mood=sentimental] span{--mini-tile:#fff;color:#000;box-shadow:0 2px 6px rgb(0 0 0 / .25);border-radius:3px}
+.muse-reflections-mini[data-mood=yearbook]{--mini-bg:radial-gradient(circle at 20% 20%,color-mix(in srgb,#ffd166 30%,transparent),transparent 40%),radial-gradient(circle at 80% 70%,color-mix(in srgb,#4d96ff 28%,transparent),transparent 45%),var(--surface-control)}
+
+/* ---------- The book ---------- */
+.muse-reflections-book{position:relative;display:grid;gap:var(--r-gap);padding:clamp(18px,3vw,40px);border-radius:30px;border:1px solid var(--glass-border);background:var(--book-bg,var(--glass-background));overflow:hidden}
+.muse-reflections-cover{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:14px;padding-bottom:6px;border-bottom:1px solid var(--glass-border)}
+.muse-reflections-cover h2{margin:0;font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight);font-size:clamp(1.7rem,3.2vw,2.6rem);line-height:1.1}
+.muse-reflections-title-input{all:unset;box-sizing:border-box;width:min(100%,640px);font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight);font-size:clamp(1.5rem,3vw,2.3rem);border-bottom:1px dashed var(--glass-border);padding:2px 0}
+.muse-reflections-title-input:focus-visible{border-bottom-color:var(--selected-border)}
+.muse-reflections-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:var(--r-gap);align-items:start}
+.muse-reflections-module{grid-column:span 6;display:grid;gap:12px;min-width:0;padding:clamp(14px,1.8vw,22px);border-radius:22px;border:1px solid var(--glass-border);background:var(--module-bg,var(--surface-subtle));position:relative}
+.muse-reflections-module[data-size=wide]{grid-column:span 4}.muse-reflections-module[data-size=half]{grid-column:span 3}.muse-reflections-module[data-size=third]{grid-column:span 2}
+.muse-reflections-module[data-hidden]{opacity:.55;border-style:dashed}
+.muse-reflections-module-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px}
+.muse-reflections-module-head h3{display:flex;align-items:center;gap:8px;margin:0;font-size:1.05rem;font-weight:750}
+.muse-reflections-module-title{all:unset;box-sizing:border-box;flex:1 1 200px;min-width:0;font-weight:750;font-size:1.05rem;border-bottom:1px dashed var(--glass-border);padding:2px 0}
+.muse-reflections-module-tools{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.muse-reflections-module-tools .muse-choice-trigger{min-height:30px;height:30px;padding-block:0;font-size:.78rem}
+.muse-reflections-confirm{display:grid;gap:10px;padding:14px;border-radius:16px;border:1px solid color-mix(in srgb,var(--accent-pop,var(--accent-primary)) 40%,var(--glass-border));background:var(--surface-subtle)}
+.muse-reflections-confirm p,.muse-reflections-confirm ul{margin:0;font-size:.9rem}
+.muse-reflections-confirm ul{padding-left:18px;display:grid;gap:4px;color:var(--text-muted)}
+.muse-button[data-destructive]{color:color-mix(in srgb,var(--accent-pop) 70%,var(--foreground));border-color:color-mix(in srgb,var(--accent-pop) 45%,var(--glass-border))}
+.muse-reflections-empty{grid-column:1/-1;display:grid;justify-items:center;gap:10px;padding:40px 16px;text-align:center}
+.muse-reflections-empty p{margin:0;font-family:var(--font-editorial);font-style:italic;font-size:1.2rem}
+/* Add a section */
+.muse-reflections-add{display:grid;gap:12px}
+.muse-reflections-add-trigger{display:flex;align-items:center;justify-content:center;gap:8px;min-height:52px;border-radius:18px;border:1.5px dashed var(--glass-border);background:transparent;color:var(--foreground);font:inherit;font-weight:700;cursor:pointer}
+.muse-reflections-add-trigger:hover{border-color:var(--selected-border);background:var(--surface-subtle)}
+.muse-reflections-library{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,220px),1fr));gap:10px}
+.muse-reflections-library button{display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto auto;column-gap:10px;align-items:center;text-align:left;padding:12px;border-radius:16px;border:1px solid var(--glass-border);background:var(--surface-subtle);color:var(--foreground);font:inherit;cursor:pointer}
+.muse-reflections-library button:hover{border-color:var(--selected-border)}
+.muse-reflections-library span{grid-row:1/3;font-size:1.5rem}
+.muse-reflections-library small{color:var(--text-muted);font-size:.76rem}
+
+/* ---------- Editing lists ---------- */
+.muse-reflections-editlist{display:grid;gap:10px}
+.muse-reflections-edititem{display:grid;gap:8px;padding:12px;border-radius:16px;border:1px dashed var(--glass-border);background:color-mix(in srgb,var(--surface-control) 60%,transparent)}
+.muse-reflections-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.muse-reflections-row>.muse-reflections-input{flex:1 1 180px}
+.muse-reflections-additem{justify-self:start;display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:5px 14px;border-radius:999px;border:1px dashed var(--glass-border);background:transparent;color:var(--text-muted);font:inherit;font-size:.86rem;font-weight:600;cursor:pointer}
+.muse-reflections-additem:hover{color:var(--foreground);border-style:solid;border-color:var(--selected-border)}
+.muse-reflections-imagefield{display:grid;gap:6px;flex:1 1 220px}
+.muse-reflections-imagepick{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.muse-reflections-imagepick .muse-reflections-input{flex:1 1 180px;min-height:34px;font-size:.82rem}
+.muse-reflections-imagepreview{display:flex;align-items:center;gap:10px}
+.muse-reflections-imagepreview img{width:56px;height:56px;object-fit:cover;border-radius:10px}
+.muse-reflections-photostrip{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.muse-reflections-photostrip>div{position:relative;display:flex;align-items:center;gap:4px}
+.muse-reflections-photostrip img{width:72px;height:72px;object-fit:cover;border-radius:10px}
+.muse-reflections-photogrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
+.muse-reflections-photogrid img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:12px}
+.muse-reflections-loading,.muse-reflections-missing{display:grid;place-items:center;min-height:60px;border-radius:12px;background:var(--surface-control);color:var(--text-muted);font-size:.74rem}
+.muse-reflections-stars{display:inline-flex;gap:2px;color:#ffd166;font-size:1rem;letter-spacing:1px}
+.muse-reflections-stars i{font-style:normal;color:color-mix(in srgb,var(--text-muted) 40%,transparent)}
+.muse-reflections-stars button{all:unset;cursor:pointer;font-size:1.25rem;color:color-mix(in srgb,var(--text-muted) 45%,transparent)}
+.muse-reflections-stars button[aria-pressed=true]{color:#ffd166}
+.muse-reflections-stars button:focus-visible{outline:2px solid var(--focus-ring,var(--accent-primary));border-radius:4px}
+
+/* ---------- Finished presentation ---------- */
+.muse-reflections-memories{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:16px}
+.muse-reflections-memory{margin:0;display:grid;gap:10px;padding:14px;border-radius:18px;background:var(--memory-bg,color-mix(in srgb,var(--background) 40%,transparent));border:1px solid var(--glass-border)}
+.muse-reflections-memory figcaption{display:grid;gap:4px}
+.muse-reflections-memory time{font:700 .72rem var(--font-ui);letter-spacing:.1em;text-transform:uppercase;color:var(--accent-pop,var(--accent-primary))}
+.muse-reflections-memory strong{font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight);font-size:1.2rem}
+.muse-reflections-memory p{margin:0;line-height:1.55;white-space:pre-line}
+.muse-reflections-memory small{color:var(--text-muted)}
+.muse-reflections-polaroids{display:flex;gap:6px}
+.muse-reflections-polaroids img{flex:1 1 0;min-width:0;aspect-ratio:1;object-fit:cover;border-radius:6px;border:5px solid #fff;box-shadow:0 4px 12px rgb(0 0 0 / .25)}
+.muse-reflections-polaroids img:nth-child(2){transform:rotate(2deg)}.muse-reflections-polaroids img:nth-child(3){transform:rotate(-2deg)}
+.muse-reflections-photos{display:grid;gap:10px}
+.muse-reflections-photos[data-variant=single]{grid-template-columns:1fr}.muse-reflections-photos[data-variant=pair]{grid-template-columns:repeat(2,1fr)}
+.muse-reflections-photos[data-variant=gallery]{grid-template-columns:repeat(auto-fill,minmax(min(100%,160px),1fr))}
+.muse-reflections-photos figure{margin:0;display:grid;gap:6px}
+.muse-reflections-photos img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:14px}
+.muse-reflections-photos[data-variant=single] img{aspect-ratio:16/10}
+.muse-reflections-photos figcaption{font-family:var(--font-editorial);font-style:italic;color:var(--text-muted);font-size:.9rem}
+.muse-reflections-songs{display:grid;gap:10px;margin:0;padding:0;list-style:none}
+.muse-reflections-song{display:grid;grid-template-columns:64px minmax(0,1fr);gap:12px;align-items:center;padding:10px;border-radius:18px;
+ background:linear-gradient(135deg,hsl(var(--hue,280deg) 70% 60% / .18),transparent 70%),color-mix(in srgb,var(--background) 45%,transparent);border:1px solid var(--glass-border)}
+.muse-reflections-art{display:grid;place-items:center;width:64px;height:64px;border-radius:12px;overflow:hidden;background:var(--r-grad);color:#fff;font-size:1.6rem}
+.muse-reflections-art img{width:100%;height:100%;object-fit:cover}
+.muse-reflections-song-body{display:grid;gap:3px;min-width:0}
+.muse-reflections-song-body strong{font-size:1rem}
+.muse-reflections-song-body span{color:var(--text-muted);font-size:.86rem}
+.muse-reflections-song-body p{margin:2px 0 0;font-size:.86rem}
+.muse-reflections-song-body .muse-reflections-pill{justify-self:start;min-height:28px;padding:2px 11px;font-size:.76rem;margin-top:4px}
+/* A quiet equalizer line: decoration only, never a play button. */
+.muse-reflections-wave{display:block;height:6px;max-width:160px;border-radius:999px;background:repeating-linear-gradient(90deg,hsl(var(--hue,280deg) 70% 65%) 0 3px,transparent 3px 6px);opacity:.6}
+.muse-reflections-shelf{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,120px),1fr));gap:14px;margin:0;padding:0;list-style:none}
+.muse-reflections-shelf li{display:grid;gap:4px;align-content:start}
+.muse-reflections-cover-art{display:grid;place-items:center;aspect-ratio:2/3;border-radius:8px;overflow:hidden;background:var(--r-grad);font-size:2rem;box-shadow:0 6px 16px rgb(0 0 0 / .25)}
+.muse-reflections-cover-art img{width:100%;height:100%;object-fit:cover}
+.muse-reflections-shelf strong{font-size:.9rem;line-height:1.25}
+.muse-reflections-shelf span{color:var(--text-muted);font-size:.78rem}
+.muse-reflections-shelf p{margin:0;font-size:.8rem;line-height:1.4}
+.muse-reflections-favorites{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,200px),1fr));gap:12px;margin:0;padding:0;list-style:none}
+.muse-reflections-favorites li{display:grid;grid-template-columns:56px minmax(0,1fr);gap:10px;align-items:start;padding:10px;border-radius:16px;border:1px solid var(--glass-border);background:color-mix(in srgb,var(--background) 40%,transparent)}
+.muse-reflections-favorites img,.muse-reflections-fav-glyph{width:56px;height:56px;object-fit:cover;border-radius:12px;display:grid;place-items:center;font-size:1.6rem;background:color-mix(in srgb,var(--accent-pop,var(--accent-primary)) 16%,transparent)}
+.muse-reflections-favorites small{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-pop,var(--accent-primary))}
+.muse-reflections-favorites strong{display:block}
+.muse-reflections-favorites p{margin:2px 0 0;font-size:.84rem;line-height:1.4}
+.muse-reflections-highlights{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.muse-reflections-highlights li{display:flex;gap:10px;align-items:baseline;padding:8px 12px;border-radius:14px;background:color-mix(in srgb,var(--background) 40%,transparent);border-left:3px solid var(--accent-pop,var(--accent-primary));line-height:1.45}
+.muse-reflections-guided{display:grid;gap:8px}
+.muse-reflections-question{margin:0;font-family:var(--font-editorial);font-style:italic;font-size:1.05rem;color:var(--text-muted)}
+.muse-reflections-guided ul{margin:0;padding-left:20px;display:grid;gap:6px;line-height:1.5}
+.muse-reflections-guided li::marker{content:"✦  ";color:var(--accent-pop,var(--accent-primary))}
+.muse-reflections-writing{font-family:var(--font-editorial);font-size:1.05rem;line-height:1.7}
+.muse-reflections-writing p{margin:0 0 .9em}
+/* Level 10 Life: colored 10-step bars, bullet-journal style */
+.muse-reflections-l10{display:grid;gap:12px}
+.muse-reflections-l10-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:10px 24px;margin:0;padding:0;list-style:none}
+.muse-reflections-l10-grid li{display:grid;grid-template-columns:minmax(110px,1fr) auto 2ch;grid-template-areas:"label bar value" "note note note";align-items:center;gap:4px 10px}
+.muse-reflections-l10-label{grid-area:label;font-weight:600;font-size:.9rem}
+.muse-reflections-l10-bar{grid-area:bar;display:inline-flex;gap:3px}
+.muse-reflections-l10-bar>*{display:block;width:14px;height:18px;border-radius:4px;border:1px solid color-mix(in srgb,var(--area) 55%,var(--glass-border));background:transparent;padding:0;cursor:inherit}
+.muse-reflections-l10-bar>[data-on]{background:var(--area);border-color:var(--area)}
+.muse-reflections-l10-bar>button{cursor:pointer}
+.muse-reflections-l10-bar>button:hover{background:color-mix(in srgb,var(--area) 50%,transparent)}
+.muse-reflections-l10-bar>button:focus-visible{outline:2px solid var(--focus-ring,var(--accent-primary));outline-offset:2px}
+.muse-reflections-l10-value{grid-area:value;font:800 1rem var(--font-ui);text-align:right;color:var(--area)}
+.muse-reflections-l10-note{grid-area:note;font-size:.8rem;color:var(--text-muted)}
+input.muse-reflections-l10-note{min-height:32px;padding:4px 10px}
+.muse-reflections-l10-manage summary{cursor:pointer;color:var(--text-muted);font-size:.86rem}
+.muse-reflections-l10-manage[open]{display:grid;gap:8px}
+.muse-reflections-l10-manage input[type=color]{width:36px;height:32px;border:0;padding:0;background:none;cursor:pointer}
+.muse-reflections-l10-manage [data-archived] .muse-reflections-input{opacity:.55}
+
+/* ---------- Six personalities ---------- */
+/* Little Moments: cozy lined paper and washi tape. */
+.muse-reflections-book[data-mood=cozy] .muse-reflections-module{--module-bg:repeating-linear-gradient(transparent 0 27px,color-mix(in srgb,var(--glass-border) 55%,transparent) 27px 28px),color-mix(in srgb,#f4a259 6%,var(--surface-subtle))}
+.muse-reflections-book[data-mood=cozy] .muse-reflections-module::before{content:"";position:absolute;top:-9px;left:24px;width:78px;height:18px;border-radius:3px;transform:rotate(-3deg);opacity:.75;pointer-events:none;
+ background:repeating-linear-gradient(45deg,color-mix(in srgb,#f4a259 70%,transparent) 0 6px,color-mix(in srgb,#ffd166 70%,transparent) 6px 12px)}
+.muse-reflections-book[data-mood=cozy] .muse-reflections-module:nth-child(2n)::before{left:auto;right:28px;transform:rotate(4deg);background:repeating-linear-gradient(45deg,color-mix(in srgb,#f45cad 60%,transparent) 0 6px,color-mix(in srgb,#ffb3d1 60%,transparent) 6px 12px)}
+/* Weekly Favorites: playful stickers, tilted cards, colorful edges. */
+.muse-reflections-book[data-mood=playful] .muse-reflections-module{border-width:2px;border-color:color-mix(in srgb,#f45cad 45%,var(--glass-border));transform:rotate(-.4deg)}
+.muse-reflections-book[data-mood=playful] .muse-reflections-module:nth-child(2n){transform:rotate(.5deg);border-color:color-mix(in srgb,#2ec4b6 45%,var(--glass-border))}
+.muse-reflections-book[data-mood=playful] .muse-reflections-module:nth-child(3n){border-color:color-mix(in srgb,#ffd166 50%,var(--glass-border))}
+.muse-reflections-book[data-mood=playful] .muse-reflections-module-head h3{display:inline-flex;padding:4px 12px;border-radius:999px;background:var(--r-grad);color:#fff}
+.muse-reflections-book[data-mood=playful][data-editing] .muse-reflections-module{transform:none}
+/* Monthly Highlights: editorial rules, big serif heads, no boxes. */
+.muse-reflections-book[data-mood=editorial] .muse-reflections-module{--module-bg:transparent;border:0;border-top:3px solid color-mix(in srgb,var(--accent-pop,var(--accent-primary)) 60%,transparent);border-radius:0;padding-inline:0}
+.muse-reflections-book[data-mood=editorial] .muse-reflections-module-head h3{font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight);font-size:1.6rem}
+.muse-reflections-book[data-mood=editorial] .muse-reflections-module-head h3 span{display:none}
+/* The Monthly Edit: a magazine masthead and dark, bold spreads. */
+.muse-reflections-book[data-mood=magazine]{--book-bg:linear-gradient(165deg,color-mix(in srgb,#5b5fd6 18%,var(--glass-background)),color-mix(in srgb,#f07ab3 12%,var(--glass-background)))}
+.muse-reflections-book[data-mood=magazine] .muse-reflections-cover h2{font-style:normal;text-transform:uppercase;letter-spacing:.04em;font-size:clamp(2rem,4.4vw,3.4rem);background:var(--r-grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.muse-reflections-book[data-mood=magazine] .muse-reflections-module-head h3{text-transform:uppercase;letter-spacing:.14em;font-size:.82rem}
+.muse-reflections-book[data-mood=magazine] .muse-reflections-module{--module-bg:color-mix(in srgb,var(--background) 55%,transparent)}
+/* My Year in Moments: soft, centered, polaroid keepsake. */
+.muse-reflections-book[data-mood=sentimental] .muse-reflections-cover{justify-content:center;text-align:center;border-bottom-style:dashed}
+.muse-reflections-book[data-mood=sentimental] .muse-reflections-cover>div:first-child{display:grid;justify-items:center}
+.muse-reflections-book[data-mood=sentimental] .muse-reflections-module{--module-bg:color-mix(in srgb,#fff 5%,var(--surface-subtle));box-shadow:0 10px 30px rgb(0 0 0 / .15)}
+.muse-reflections-book[data-mood=sentimental] .muse-reflections-module-head{justify-content:center}
+.muse-reflections-book[data-mood=sentimental] .muse-reflections-memory{background:#fff;color:#2a2230;border:0;box-shadow:0 6px 18px rgb(0 0 0 / .2);padding-bottom:22px}
+.muse-reflections-book[data-mood=sentimental] .muse-reflections-memory small{color:#6a6070}
+/* The Yearbook: confetti, badges and bold color. */
+.muse-reflections-book[data-mood=yearbook]{--book-bg:radial-gradient(circle at 8% 6%,color-mix(in srgb,#ffd166 22%,transparent),transparent 22%),radial-gradient(circle at 92% 12%,color-mix(in srgb,#4d96ff 20%,transparent),transparent 24%),radial-gradient(circle at 70% 96%,color-mix(in srgb,#f45cad 18%,transparent),transparent 26%),var(--glass-background)}
+.muse-reflections-book[data-mood=yearbook] .muse-reflections-module-head h3::after{content:"★";margin-left:6px;color:#ffd166}
+.muse-reflections-book[data-mood=yearbook] .muse-reflections-module{border-radius:26px;border-width:2px}
+
+@media (prefers-reduced-motion:no-preference){.muse-reflections-layout,.muse-reflections-module{transition:transform .2s ease,border-color .2s ease}.muse-reflections-layout:hover{transform:translateY(-2px)}}
+@media (max-width:980px){.muse-reflections-module[data-size=third]{grid-column:span 3}.muse-reflections-module[data-size=wide]{grid-column:span 6}}
+@media (max-width:640px){.muse-reflections-grid{grid-template-columns:minmax(0,1fr)}.muse-reflections-module[data-size]{grid-column:1/-1}.muse-reflections-book{padding:16px;border-radius:22px}
+ .muse-reflections-book[data-mood=playful] .muse-reflections-module{transform:none}.muse-reflections-tools{width:100%}.muse-reflections-l10-grid li{grid-template-columns:minmax(0,1fr) auto 2ch}.muse-reflections-l10-bar>*{width:11px}}
+
+.muse-reflections-icon[data-wide]{width:auto;padding:0 10px;font-size:.76rem;font-weight:600}
+/* The finished page packs sections tightly, since empty ones are left out. */
+.muse-reflections-book:not([data-editing]) .muse-reflections-grid{grid-auto-flow:row dense}

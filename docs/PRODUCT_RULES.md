@@ -767,3 +767,10 @@ Stephanie approved importing the HeartYearning Dream Symbols Dataset with attrib
 - Stream custom tags are the author’s own; a post keeps a snapshot of its tag, so renaming or deleting a tag never changes or strips earlier posts. Albums are shared to Stream only when the person chooses to.
 - Mindspace arrangement (order, sizes, custom tag colors, board settings) is presentation only and never changes or deletes cards.
 - Bucket List numbers stay unique; choosing a taken number swaps the two dreams.
+
+
+## Planner → Reflections (#99) — approved November 2026
+
+- Reflections is personal, user-authored memory; it never derives content from, or writes to, other modules (Insights stays the automatic summary).
+- Changing a layout or removing a section never silently loses content: content carries over, removal with content is confirmed, and Hide is offered.
+- Level 10 Life ratings are structured per area and period; weekly, monthly and yearly ratings are independent assessments; areas keep stable ids and are archived, not deleted.
