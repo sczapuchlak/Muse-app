@@ -678,6 +678,23 @@ Issue #52 (sections 11–17). Dreamscapes is split into section components under
 
 **Not in this issue.** Steps, sleep, Apple Health and other providers; monthly Rituals; mood and money connections; a global Goals module.
 
+## Insights 2.0 — Life at a Glance (#97) — implemented on feature branch (no migration)
+
+Approved 2026-11-07 as one pass, reviewed at the end. A presentation-layer simplification: no data, table, calculation or module connection was removed.
+
+**What shows now.** `/insights` renders `InsightsGlance` (`components/insights/glance/`, pure logic in `lib/insights/glance.ts`): one Day / Week / Month / Year selector (`.muse-segmented`), previous / Today / next, and the shared `PeriodTitle` day picker (styles moved to `components/planner/PeriodTitle.css` so Planner and Insights share them). The period is remembered per device (`muse.insights.period`); `?period=` and `?date=` links work.
+- **Day:** the Dayprint (moved from Mood; read-only here, "Edit in Mood" links to `/mood?date=…`), the day's priorities with their recorded outcome, planned meals, and Bookshelf.
+- **Week:** seven mini Dayprints (Day in Three, Overall Day bar, feeling-family dots; empty days dashed, future days faded, today ringed); tiles for Overall Day (with Energy/Stress), Priorities and Water; How it felt, Day in Three favorites, Bright days, Movement, Intentions; Bookshelf.
+- **Month:** a calendar glowing by Overall Day (unrated days outlined, never shaded as zero) with each day's first Day in Three emoji, then the same cards.
+- **Year:** month-by-month bars of the average Overall Day with the month's most-chosen Day in Three, then the same cards (no intentions list).
+- **Bookshelf:** "Now reading" is the current nightstand (status reading, not archived), clearly labeled as current; "Reading this period" uses sessions dated in the period (time split at local midnight, pages on the session date), finished books by finish date. Progress shows as Percent, Pages or Time, saved on the account (`readingProgress` in the Insights preferences metadata, no migration). Time mode says "reading time, not progress"; a book without total pages never gets an invented percent.
+
+**Data rules.** Every number comes from existing records: Daily Edit (`daily_records`, `daily_priorities`, check-ins via `emotionalRecords`), Wellness (water, recorded movement, planned meals) and Bookshelf. Averages count only recorded days and say how many. A recorded value is real even when low; a missing day is never zero. Priorities use the canonical `priorityCompletion` and keep done / open / not recorded apart. Water in different units is never totalled. A feeling counts once per check-in. Insights 2.0 writes nothing.
+
+**What was hidden, where it lives, how to restore.** The detailed Insights (Overview, Plans & Rituals, Mood & Energy, Money, Wellness, Astrology, Collections, plus Customize, Inspect a date and period comparison) are unchanged in `components/insights/Insights.tsx` and its siblings, with their tests. They are hidden by `CLASSIC_INSIGHTS=false` in `lib/insights/flags.ts`; set it to true to make them the Insights page again (their `?view=` links then work). Mood still logs, edits, deletes and shares check-ins; its week history is now a compact check-in list with "Open Dayprint" links into Insights → Day.
+
+**Out of scope:** Rituals analytics, Reflections, money/task/astrology/tarot analytics, rebuilding the old dashboards.
+
 ## Unified Insights, cross-module analytics and recap foundations (#32) — implemented on feature branch
 
 **Phase A audit (November 2026).**

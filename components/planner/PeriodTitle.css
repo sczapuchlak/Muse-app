@@ -1,0 +1,5 @@
+/* The period title that opens a day picker (Planner and Insights). */
+.muse-period-title{all:unset;cursor:pointer;border-radius:8px;font:inherit}
+.muse-period-title:hover{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px}
+.muse-period-title:focus-visible{outline:2px solid var(--accent-primary);outline-offset:3px}
+.muse-agenda-title{margin:0 4px 0 0;font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-editorial-weight);font-size:clamp(1.15rem,1.8vw,1.45rem);flex:1 1 auto;min-width:0}

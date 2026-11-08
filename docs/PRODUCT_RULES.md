@@ -665,6 +665,14 @@ Stephanie approved importing the HeartYearning Dream Symbols Dataset with attrib
   - Copy is non-punitive: "Below target", not "Failed".
 - **Supported scope only.** Steps and sleep are not tracked, and external health connections need separate approval.
 
+## Insights 2.0 — Life at a Glance (#97) — approved November 2026
+
+- Insights is one page with a Day / Week / Month / Year selector over Daily Edit, Dayprint and Bookshelf. The detailed module Insights are hidden behind `CLASSIC_INSIGHTS` (lib/insights/flags.ts), not deleted.
+- The Dayprint's home is Insights → Day. Mood keeps all check-in logging, editing, deleting and sharing, with a compact history that links to the Dayprint.
+- Insights is read-only and derives everything from canonical records; it never stores summaries.
+- Missing days are never zeros; averages state how many days they rest on; water units are never mixed; priority outcomes keep done / open / not recorded apart.
+- "Now reading" is a current snapshot and is labeled as such; period reading stats only use sessions and finishes dated in the period. Reading time is never shown as completion.
+
 ## Unified Insights (#32) — approved November 2026
 
 - **Macro figures:**
