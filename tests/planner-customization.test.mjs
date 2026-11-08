@@ -111,5 +111,5 @@ test('#87 migration: additive, owner-only library, bounded content',()=>{
 test('#87 the customization library is in the personal data export',()=>{
  const route=read('app/api/account/export/route.ts');
  assert.match(route,/client\.from\('planner_customizations'\)\.select\('\*'\)/);assert.match(route,/customizationLibrary:plannerCustomizations\.data/);
- assert.match(route,/plannerCustomizations\.error\)throw/);
+ assert.match(route,/plannerCustomizations\.error(?:\|\|[A-Za-z.]+)*\)throw/);
 });

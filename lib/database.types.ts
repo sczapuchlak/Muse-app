@@ -789,6 +789,40 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
+                },"life_areas": {
+                  Row: {
+                    "archived_at": string | null,"color": string,"created_at": string,"id": string,"label": string,"position": number,"revision": number,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "archived_at"?: string | null,"color"?: string,"created_at"?: string,"id"?: string,"label": string,"position"?: number,"revision"?: number,"updated_at"?: string,"user_id"?: string
+                  }
+                  Update: {
+                    "archived_at"?: string | null,"color"?: string,"created_at"?: string,"id"?: string,"label"?: string,"position"?: number,"revision"?: number,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
+                },"life_ratings": {
+                  Row: {
+                    "area_id": string,"created_at": string,"id": string,"note": string,"period": string,"period_end": string,"period_start": string,"rating": number,"revision": number,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "area_id": string,"created_at"?: string,"id"?: string,"note"?: string,"period": string,"period_end": string,"period_start": string,"rating": number,"revision"?: number,"updated_at"?: string,"user_id"?: string
+                  }
+                  Update: {
+                    "area_id"?: string,"created_at"?: string,"id"?: string,"note"?: string,"period"?: string,"period_end"?: string,"period_start"?: string,"rating"?: number,"revision"?: number,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "life_ratings_user_id_area_id_fkey"
+      columns: ["user_id","area_id"]
+isOneToOne: false
+      referencedRelation: "life_areas"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
                 },"meal_assignments": {
                   Row: {
                     "captured_time_zone": string,"created_at": string,"id": string,"local_date": string,"note": string | null,"nutrition": Json | null,"position": number,"saved_meal_id": string | null,"slot": string,"title": string,"updated_at": string,"user_id": string
@@ -1460,6 +1494,20 @@ isOneToOne: false
       referencedRelation: "recurring_commitments"
       referencedColumns: ["user_id","id"]
     }
+                  ]
+                },"reflection_reviews": {
+                  Row: {
+                    "created_at": string,"id": string,"layout": string,"modules": NonNullable<Json>,"period": string,"period_end": string,"period_start": string,"revision": number,"status": string,"title": string,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"id"?: string,"layout": string,"modules"?: NonNullable<Json>,"period": string,"period_end": string,"period_start": string,"revision"?: number,"status"?: string,"title"?: string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Update: {
+                    "created_at"?: string,"id"?: string,"layout"?: string,"modules"?: NonNullable<Json>,"period"?: string,"period_end"?: string,"period_start"?: string,"revision"?: number,"status"?: string,"title"?: string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    
                   ]
                 },"ritual_commands": {
                   Row: {

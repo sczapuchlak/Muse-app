@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { dateLabel, shiftDate } from "@/lib/dates";
 import { dailyEditSample } from "@/lib/daily-edit-data";
 import { parsePlannerTab, plannerTabs } from "@/lib/agenda";
+import { Reflections } from "./reflections/Reflections";
 import { Agenda } from "./Agenda";
 import { MuseSectionNav } from "../MuseSectionNav";
 import { PLANNING_WINDOW_DAYS, emptyPlannerFilters, filterPlannerTasks, formatPlannedMinutes, validDate, type PlannerFilters as Filters } from "@/lib/planner";
@@ -82,7 +83,7 @@ export function Planner() {
     <MusePageHeader title="Planner"/>
     <MuseSectionNav label="Planner views" current={tab} items={plannerTabs.map((t) => ({ id: t.id, label: t.label, href: `/planner?${t.id === "tasks" ? "" : `view=${t.id}&`}date=${date}` }))}/>
     <PlannerCapture>{tab === "agenda" && <Agenda date={date} today={today} onDate={changeDate} onOpen={openTask} workspaceId={workspaceFilter || undefined}/>}
-    {tab === "reflections" && <section className="muse-planner-reflections muse-empty-state" data-variant="editorial"><h2>Reflections</h2><p>Weekly, monthly and yearly reviews will live here: a quiet place to look back at what you planned, finished and felt.</p></section>}
+    {tab === "reflections" && <Reflections date={date} today={today} onDate={changeDate} userId={profile.id} />}
     {tab === "tasks" && <>{utilities()}
     {tasksView === "running" && <RunningList tasks={filtered} weekOf={date} today={today} timeZone={profile.timeZone} workspaceId={workspaceFilter} onWorkspaceChange={(id)=>{setWorkspace(id);setFilters((current)=>({...current,groupId:""}));}}
       search={search} onSearch={setSearch} filters={activeFilters} onFilter={setFilters} priorityIds={priorityIds} onOpen={openTask} onAnnounce={setAnnouncement}/>}
