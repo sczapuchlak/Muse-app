@@ -152,7 +152,7 @@ function ModuleFrame({ module: m, editing, first, last, onChange, onMove, onRemo
         <MuseChoiceMenu label={`Size of ${m.title}`} valueLabel={sizeLabel[m.size]} options={moduleSizes.map((s) => ({ id: s, label: sizeLabel[s] }))} selectedIds={[m.size]} onSelect={(s) => onChange({ ...m, size: s as ModuleSize }, 0)} />
         <button type="button" className="muse-reflections-icon" disabled={first} aria-label={`Move ${m.title} earlier`} onClick={() => onMove(-1)}>↑</button>
         <button type="button" className="muse-reflections-icon" disabled={last} aria-label={`Move ${m.title} later`} onClick={() => onMove(1)}>↓</button>
-        <button type="button" className="muse-reflections-icon" aria-pressed={!!m.hidden} aria-label={m.hidden ? `Show ${m.title}` : `Hide ${m.title}`} title={m.hidden ? "Show in the finished page" : "Hide from the finished page (content kept)"} data-wide onClick={() => onChange({ ...m, hidden: !m.hidden || undefined }, 0)}>{m.hidden ? "Show" : "Hide"}</button>
+        <button type="button" className="muse-reflections-icon" aria-pressed={!!m.hidden} aria-label={m.hidden ? `Show ${m.title}` : `Hide ${m.title}`} title={m.hidden ? "Show in the finished page" : "Hide from the finished page (content kept)"} onClick={() => onChange({ ...m, hidden: !m.hidden || undefined }, 0)}><MuseIcon name={m.hidden ? "eye-off" : "eye"} size={16} /></button>
         <button type="button" className="muse-reflections-icon" aria-label={`Remove ${m.title}`} onClick={() => hasContent(m) ? setConfirm(true) : onRemove()}>×</button>
       </div>}
     </header>
