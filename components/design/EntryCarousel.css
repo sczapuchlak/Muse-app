@@ -1,0 +1,18 @@
+/* Shared paged carousel for dated entries (#105). The track is a grid of exactly one page: stable height, no sideways page scroll. */
+.muse-entry-carousel{display:grid;gap:10px;min-width:0}
+.muse-entry-carousel-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:30px}
+.muse-entry-carousel-where{font-size:.8rem;font-weight:600;color:var(--text-muted)}
+.muse-entry-carousel-where small{font-weight:500}
+.muse-entry-carousel-arrows{display:inline-flex;gap:6px}
+.muse-entry-carousel-arrows button{display:grid;place-items:center;width:32px;height:32px;border-radius:50%;border:1px solid var(--glass-border);background:var(--surface-subtle);color:var(--foreground);cursor:pointer}
+.muse-entry-carousel-arrows button:first-child svg{transform:rotate(90deg)}.muse-entry-carousel-arrows button:last-child svg{transform:rotate(-90deg)}
+.muse-entry-carousel-arrows button:hover:not(:disabled){border-color:var(--selected-border)}
+.muse-entry-carousel-arrows button:disabled{opacity:.35;cursor:default}
+.muse-entry-carousel-arrows button:focus-visible,.muse-entry-carousel-track:focus-visible{outline:2px solid var(--focus-ring,var(--accent-primary));outline-offset:2px}
+.muse-entry-carousel-track{display:grid;gap:12px;min-width:0;border-radius:16px;touch-action:pan-y}
+.muse-entry-carousel-item{min-width:0;display:grid}
+.muse-entry-carousel-dots{display:flex;justify-content:center;gap:5px}
+.muse-entry-carousel-dots i{width:6px;height:6px;border-radius:50%;background:var(--glass-border)}
+.muse-entry-carousel-dots i[data-on]{width:16px;border-radius:999px;background:linear-gradient(90deg,var(--accent-primary),var(--accent-pop,var(--accent-secondary)))}
+@media (prefers-reduced-motion:no-preference){.muse-entry-carousel-item{animation:muse-entry-in .22s ease-out both}}
+@keyframes muse-entry-in{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}

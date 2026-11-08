@@ -8,14 +8,15 @@ import type { ContextTag } from "@/lib/models";
 import type { DayData } from "@/lib/data/daily";
 import type { DailyWater } from "@/lib/water";
 import { formatWaterAmount } from "@/lib/water";
+import type { DailyMemory } from "@/lib/memories";
 import { Ring, TipBox, longDay } from "./GlanceSections";
 
 /**
  * The Dayprint in Insights (#97 polish): the day's portrait in the same colorful language as the week's mini
  * Dayprints. Read-only; every piece links back to where it is edited (Mood, Daily Edit). Shows only what was recorded.
  */
-export function DayPortrait({ date, day, checkIns, influences, water, activities, waterLoaded }: {
-  date: string; day?: DayData; checkIns: EmotionalCheckIn[]; influences: ContextTag[]; water?: DailyWater; activities: string[]; waterLoaded: boolean;
+export function DayPortrait({ date, day, checkIns, influences, water, activities, waterLoaded, memory }: {
+  memory?: DailyMemory | null; date: string; day?: DayData; checkIns: EmotionalCheckIn[]; influences: ContextTag[]; water?: DailyWater; activities: string[]; waterLoaded: boolean;
 }) {
   const r = day?.record, three = r?.day_in_three ?? [], sessions = uniqueMoodRecords(checkIns.filter((c) => c.date === date));
   const pulse = { overall: r?.overall_day ?? null, energy: r?.energy ?? null, stress: r?.stress ?? null };
@@ -53,6 +54,7 @@ export function DayPortrait({ date, day, checkIns, influences, water, activities
       </section>
 
       <section className="muse-glance-portrait-intention" aria-label="Intention">
+        {memory && <div className="muse-glance-portrait-moment"><h3>✦ Little Moment</h3><p>{memory.emoji && <span aria-hidden="true">{memory.emoji} </span>}{memory.body}</p></div>}
         <h3>Intention</h3>
         {r?.intention_text || r?.intention_emoji
           ? <blockquote><span aria-hidden="true">{r.intention_emoji ?? "✦"}</span><p>{r.intention_text}</p></blockquote>

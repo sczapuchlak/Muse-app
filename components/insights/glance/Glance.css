@@ -320,3 +320,14 @@
  .muse-glance-tools{width:100%}
  .muse-glance-rating{grid-template-columns:minmax(0,1fr)}
 }
+
+/* #105 Little Moment in the Day portrait; Bright Days and Intentions as carousel items */
+.muse-glance-portrait-moment{display:grid;gap:6px;padding:12px 14px;border-radius:16px;border-left:4px solid var(--accent-pop,var(--accent-primary));background:color-mix(in srgb,var(--accent-pop,var(--accent-primary)) 8%,transparent)}
+.muse-glance-portrait-moment p{margin:0;font-family:var(--font-editorial);font-style:italic;font-size:1.08rem;line-height:1.45}
+.muse-glance-bright-item{display:grid;gap:8px;align-content:start;padding:12px;border-radius:18px;border:1px solid var(--glass-border);background:radial-gradient(90% 80% at 0% 0%,color-mix(in srgb,var(--accent-pop,var(--accent-primary)) 16%,transparent),transparent 70%),var(--surface-subtle)}
+.muse-glance-bright-item .muse-glance-pill{justify-self:start}
+.muse-glance-intention-card{display:grid;grid-template-columns:auto auto minmax(0,1fr);gap:12px;align-items:center;padding:8px 10px;border-radius:16px;background:var(--surface-subtle);border:1px solid var(--glass-border)}
+.muse-glance-intention-card .muse-glance-intention-text{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden}
+.muse-moment-date{all:unset;cursor:pointer}
+.muse-moment-date:hover{text-decoration:underline}
+.muse-moment-date:focus-visible{outline:2px solid var(--focus-ring,var(--accent-primary));border-radius:4px}

@@ -1097,3 +1097,10 @@ In edit mode every section can be renamed, resized (full / wide / half / third o
 **Data:** migration `20261125000100_reflections.sql` adds owner-only `reflection_reviews` (one per user, period and start; layout and modules as a bounded, validated document; draft or complete), `life_areas` (stable ids, unique slot, archived not deleted) and `life_ratings` (1–10, note, unique per area and period; a composite foreign key keeps areas yours and blocks deleting rated areas). Included in the personal export.
 
 **Not built (per MVP):** Insights dashboards, automatic summaries, streaming or playback, Collections sync, freeform canvas, global layout presets, PDF export, AI writing, Level 10 Life trend views (the data is structured for them). Adding new life areas beyond the ten isn't built yet; archiving and renaming are.
+
+## Daily Memories — Little Moments (#105) — implemented on feature branch (staging migration only)
+- One memory per person per local date (`daily_memories`, unique `user_id + local_date`, owner-only RLS). Text up to 500 characters plus an optional emoji. Saving again edits that one record; delete asks for confirmation.
+- Entered as **Little Moment** inside Day Pulse on Daily Edit, but saved independently: Day Pulse Reset never touches it, and Day in Three is unchanged.
+- Wellness → Mood shows and edits the same record, separate from Mood notes. History includes memory-only days.
+- Insights: Dayprint shows the day's memory; Week/Month/Year show a **Little Moments** carousel. **Bright Days** and month **Intentions** use the same shared `EntryCarousel` (arrows, swipe, trackpad, ←/→/Home/End, position text, one page mounted at a time, no horizontal page scroll). The Bright Days criteria are unchanged.
+- Memories are read by date range (`readMemories`) so Reflections can use them later. They are included in the account data export.

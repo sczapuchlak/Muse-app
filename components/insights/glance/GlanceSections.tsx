@@ -1,5 +1,9 @@
 "use client";
 import Link from "next/link";
+import { useState } from "react";
+import { EntryCarousel } from "../../design/EntryCarousel";
+import type { DailyMemory } from "@/lib/memories";
+import "../../memories/Memories.css";
 import type { CSSProperties, ReactNode } from "react";
 import { MuseIcon, type MuseIconName } from "../../MuseIcon";
 import type { DayData, DailyPriority } from "@/lib/data/daily";
@@ -233,12 +237,13 @@ export function ThreeFavorites({ daily, area, title = "Day in Three" }: { daily:
 }
 
 /** Bright days as little highlight cards: date, rating, the day's own emojis, and the day's own words if any. */
-export function GoodDays({ daily, days, checkIns, onOpen, area, limit = 4 }: { daily: DailyGlance; days: Record<string, DayData | undefined>; checkIns: EmotionalCheckIn[]; onOpen: (d: string) => void; area?: string; limit?: number }) {
-  const best = daily.rating.best.slice(0, limit);
+/** Bright days as little highlight cards in a compact carousel (#105): stable height however many qualify. */
+export function GoodDays({ daily, days, checkIns, onOpen, area }: { daily: DailyGlance; days: Record<string, DayData | undefined>; checkIns: EmotionalCheckIn[]; onOpen: (d: string) => void; area?: string; limit?: number }) {
+  const best = daily.rating.best;
   return <GlanceCard id="glance-good" title="Bright days" icon="favorite" area={area} tone="warm" note={best.length ? "Your highest-rated days. Notes are your own Mood reflections." : undefined}>
     {!best.length ? <Empty emoji="🌤️">{daily.rating.days ? "No standout days yet." : "No days rated yet."}</Empty>
-      : <ul className="muse-glance-bright">{best.map((b) => { const note = dayNote(checkIns, b.date), three = days[b.date]?.record?.day_in_three ?? [];
-        return <li key={b.date}>
+      : <EntryCarousel items={best} label="Bright days" minWidth={190} itemKey={(b) => b.date} describe={(b) => shortDay(b.date)} render={(b) => { const note = dayNote(checkIns, b.date), three = days[b.date]?.record?.day_in_three ?? [];
+        return <div className="muse-glance-bright-item">
           <button type="button" className="muse-glance-bright-card" onClick={() => onOpen(b.date)} aria-label={`${longDay(b.date)}, Overall Day ${b.value} of 10. Open the day`}>
             <span className="muse-glance-bright-score" aria-hidden="true">{b.value}<small>/10</small></span>
             <span className="muse-glance-bright-date">{shortDay(b.date)}<small>{new Intl.DateTimeFormat("en-US", { weekday: "long", timeZone: "UTC" }).format(new Date(`${b.date}T12:00:00Z`))}</small></span>
@@ -246,14 +251,37 @@ export function GoodDays({ daily, days, checkIns, onOpen, area, limit = 4 }: { d
           </button>
           {note ? <p className="muse-glance-bright-note">“{note.length > 120 ? `${note.slice(0, 120)}…` : note}”</p>
             : <Link className="muse-glance-pill" data-size="sm" href={`/mood?date=${b.date}`}>✎ Add why it was bright</Link>}
-        </li>; })}</ul>}
+        </div>; }} />}
   </GlanceCard>;
 }
 
-export function IntentionsList({ intentions, onOpen, area, limit = 7 }: { intentions: DailyGlance["intentions"]; onOpen: (d: string) => void; area?: string; limit?: number }) {
-  const shown = intentions.slice(-limit).reverse();
-  return <GlanceCard id="glance-intentions" title="Intentions" icon="notes" area={area} note={intentions.length > shown.length ? `${intentions.length - shown.length} earlier intentions not shown.` : undefined}>
+/** Little Moments (#105): the period's daily memories in a compact carousel; the color bar follows that day's mood. */
+export function LittleMoments({ memories, checkIns, onOpen, area, period }: { memories: DailyMemory[]; checkIns: EmotionalCheckIn[]; onOpen: (d: string) => void; area?: string; period: string }) {
+  return <GlanceCard id="glance-moments" title="Little moments" icon="sparkle" area={area} tone="pop" note={memories.length ? `${plural(memories.length, "memory", "memories")} this ${period}. One a day, from Day Pulse.` : undefined}>
+    {!memories.length ? <Empty emoji="✨">No little moments this {period} yet. Add one in Day Pulse on Daily Edit.</Empty>
+      : <EntryCarousel items={memories} label="Little moments" minWidth={220} startAtEnd itemKey={(m) => m.id} describe={(m) => shortDay(m.date)} render={(m) => <MomentCard memory={m} quadrant={familyOf(checkIns.filter((c) => c.date === m.date).flatMap((c) => c.emotionIds))[0]} onOpen={onOpen} />} />}
+  </GlanceCard>;
+}
+function MomentCard({ memory: m, quadrant, onOpen }: { memory: DailyMemory; quadrant?: EmotionQuadrant; onOpen: (d: string) => void }) {
+  const [open, setOpen] = useState(false), long = m.body.length > 140;
+  return <article className="muse-moment-card" aria-label={`${longDay(m.date)}: ${m.body}`}>
+    <i data-quadrant={quadrant} style={quadrant ? { "--moment-color": "var(--quadrant-color)" } as CSSProperties : undefined} aria-hidden="true" />
+    <div className="muse-moment-card-body">
+      <time dateTime={m.date}><button type="button" className="muse-moment-date" onClick={() => onOpen(m.date)} aria-label={`Open ${longDay(m.date)}`}>{shortDay(m.date)} · {new Intl.DateTimeFormat("en-US", { weekday: "short", timeZone: "UTC" }).format(new Date(`${m.date}T12:00:00Z`))}</button></time>
+      {m.emoji && <span className="muse-moment-card-emoji" aria-hidden="true">{m.emoji}</span>}
+      <p data-open={open || undefined}>{m.body}</p>
+      {long && <button type="button" aria-expanded={open} onClick={() => setOpen(!open)}>{open ? "Show less" : "Read all"}</button>}
+    </div>
+  </article>;
+}
+
+export function IntentionsList({ intentions, onOpen, area, limit = 7, carousel = false }: { intentions: DailyGlance["intentions"]; onOpen: (d: string) => void; area?: string; limit?: number; carousel?: boolean }) {
+  const shown = carousel ? [...intentions].reverse() : intentions.slice(-limit).reverse();
+  return <GlanceCard id="glance-intentions" title="Intentions" icon="notes" area={area} note={!carousel && intentions.length > shown.length ? `${intentions.length - shown.length} earlier intentions not shown.` : undefined}>
     {!intentions.length ? <Empty emoji="🌱">No intentions set.</Empty>
+      : carousel ? <EntryCarousel items={shown} label="Intentions" minWidth={240} itemKey={(x) => x.date} describe={(x) => shortDay(x.date)} render={(x) => <div className="muse-glance-intention-card">
+        <button type="button" className="muse-glance-datechip" onClick={() => onOpen(x.date)} aria-label={`Open ${longDay(x.date)}`}><small>{new Intl.DateTimeFormat("en-US", { month: "short", timeZone: "UTC" }).format(new Date(`${x.date}T12:00:00Z`))}</small><strong>{Number(x.date.slice(8))}</strong></button>
+        <span className="muse-glance-intention-emoji" aria-hidden="true">{x.emoji ?? "✦"}</span><span className="muse-glance-intention-text">{x.text || "—"}</span></div>} />
       : <ol className="muse-glance-intentions">{shown.map((x) => <li key={x.date}>
         <button type="button" className="muse-glance-datechip" onClick={() => onOpen(x.date)} aria-label={`Open ${longDay(x.date)}`}><small>{new Intl.DateTimeFormat("en-US", { month: "short", timeZone: "UTC" }).format(new Date(`${x.date}T12:00:00Z`))}</small><strong>{Number(x.date.slice(8))}</strong></button>
         <span className="muse-glance-intention-emoji" aria-hidden="true">{x.emoji ?? "✦"}</span>

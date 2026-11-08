@@ -605,6 +605,20 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
+                },"daily_memories": {
+                  Row: {
+                    "body": string,"created_at": string,"emoji": string | null,"id": string,"local_date": string,"revision": number,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "body": string,"created_at"?: string,"emoji"?: string | null,"id"?: string,"local_date": string,"revision"?: number,"updated_at"?: string,"user_id"?: string
+                  }
+                  Update: {
+                    "body"?: string,"created_at"?: string,"emoji"?: string | null,"id"?: string,"local_date"?: string,"revision"?: number,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
                 },"daily_priorities": {
                   Row: {
                     "completed_at": string | null,"completion_origin": string,"created_at": string,"daily_record_id": string,"id": string,"legacy_backfilled_at": string | null,"legacy_complete": boolean | null,"linked_at": string | null,"materialized_at": string | null,"materialized_task_id": string | null,"position": number,"revision": number,"standalone_complete": boolean | null,"task_id": string | null,"text": string,"updated_at": string,"user_id": string

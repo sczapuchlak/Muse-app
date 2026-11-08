@@ -660,3 +660,6 @@ Bucket List (Rituals, #84) follows the handwritten bullet-journal reference: an 
 - Settings-style toggles use `.muse-check-row`.
 - Pages use the standard page width; two-column compositions (Settings, Stream) use independent columns so cards never stretch beside taller neighbors.
 - Empty planning slots are quiet dashed "+" buttons; filled items are tinted chips.
+
+## EntryCarousel (#105)
+`components/design/EntryCarousel.tsx` is the shared pattern for dated entry lists that could grow long (Little Moments, Bright Days, Intentions). It fits as many cards as the width allows, keeps its height stable, mounts only the current page, and supports arrows, swipe, trackpad and keyboard. Use it instead of new one-off scrollers.
