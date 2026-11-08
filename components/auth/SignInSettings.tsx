@@ -20,6 +20,8 @@ export function SignInSettings() {
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  /** #98: a server with passkeys switched off (e.g. local development) is a setting, not an error. */
+  const [passkeysOff, setPasskeysOff] = useState(false);
 
   async function refresh() {
     const client = createMuseBrowserClient();
@@ -30,21 +32,26 @@ export function SignInSettings() {
         client.auth.passkey.list(),
       ]);
 
-    if (identityResult.error) {
-      throw identityResult.error;
+    // Each source loads on its own, so one failing never hides the other.
+    if (!identityResult.error) {
+      setGoogleLinked(
+        identityResult.data.identities.some(
+          identity => identity.provider === "google"
+        )
+      );
     }
 
-    setGoogleLinked(
-      identityResult.data.identities.some(
-        identity => identity.provider === "google"
-      )
-    );
-
-    if (passkeyResult.error) {
-      throw passkeyResult.error;
+    const passkeyError = passkeyResult.error as { code?: string } | null;
+    if (passkeyError?.code === "passkey_disabled") {
+      setPasskeysOff(true);
+      setPasskeys([]);
+    } else if (!passkeyError) {
+      setPasskeysOff(false);
+      setPasskeys(passkeyResult.data ?? []);
     }
 
-    setPasskeys(passkeyResult.data ?? []);
+    if (identityResult.error) throw identityResult.error;
+    if (passkeyError && passkeyError.code !== "passkey_disabled") throw passkeyError;
   }
 
   useEffect(() => {
@@ -218,6 +225,11 @@ export function SignInSettings() {
             PIN, or another supported passkey.
           </p>
 
+          {passkeysOff ? (
+            <p className="small-label">
+              Passkeys aren’t turned on for this Muse server.
+            </p>
+          ) : (
           <button
             type="button"
             className="muse-button"
@@ -226,6 +238,7 @@ export function SignInSettings() {
           >
             {busy ? "Please wait…" : "Add a passkey"}
           </button>
+          )}
 
           {passkeys.length > 0 && (
             <ul className="muse-passkey-list">
@@ -258,7 +271,7 @@ export function SignInSettings() {
             </ul>
           )}
 
-          {!loading && passkeys.length === 0 && (
+          {!loading && !passkeysOff && passkeys.length === 0 && (
             <p className="small-label">
               No passkeys registered yet.
             </p>

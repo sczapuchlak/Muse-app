@@ -8,7 +8,6 @@
 
 .muse-cosmic-forecast-compact { width:100%; padding:var(--space-3) var(--space-4); border-radius:var(--floating-radius); text-align:left; }
 .muse-cosmic-forecast-compact .card-heading { margin-bottom:0; }
-.muse-cosmic-forecast-compact .card-heading h2 { font-size:.8rem; }
 .muse-cosmic-forecast-compact .muse-cosmic-forecast-meta { margin-block:var(--space-1); font-size:.65rem; }
 .muse-cosmic-forecast-compact .muse-cosmic-preview { font-size:.8rem; line-height:1.45; margin-block:var(--space-1); }
 .muse-cosmic-forecast-compact .small-label { font-size:.62rem; }
@@ -38,3 +37,10 @@
 .muse-cosmic-forecast .muse-forecast-editorial{padding:15px 0;gap:13px;border:0;background:transparent}
 .muse-cosmic-forecast .muse-forecast-editorial-header{padding-bottom:0}
 .muse-cosmic-forecast .muse-forecast-editorial .muse-forecast-attribution{text-align:right;font-size:.7rem}
+
+/* #98: heading matches other Daily Edit titles; body uses the content font; Preferences is a quiet corner link;
+   the CosmyDay link stays (its terms require it wherever the forecast appears) as a small line under the text. */
+.muse-cosmic-forecast .muse-forecast-compact-excerpt,.muse-cosmic-forecast .muse-forecast-editorial :is(p,li){font-family:var(--font-ui);font-style:normal;font-weight:400}
+.muse-cosmic-pref-link{color:var(--text-muted);font-size:.78rem;font-weight:500;text-decoration:underline;text-decoration-color:color-mix(in srgb,var(--text-muted) 50%,transparent);text-underline-offset:3px}
+.muse-cosmic-pref-link:hover{color:var(--foreground)}
+.muse-cosmic-forecast .muse-cosmic-forecast-actions{flex-wrap:wrap}

@@ -1,4 +1,5 @@
 "use client";
+import {TagChip} from './StreamTags';
 import Link from 'next/link';
 import {useState,type ReactNode} from 'react';
 import {activityVerb,audienceOptions,BODY_MAX,cardTone,decorationById,decorations,fullTime,relativeTime,reportReasons,shortcutById,type StreamAudience,type StreamPost} from '@/lib/stream/model';
@@ -75,7 +76,7 @@ export function StreamPostCard({post,onChange,onRemove,preview=false,headingLeve
   </header>
 
   {editing?<EditPost post={post} busy={busy} onCancel={()=>setEditing(false)} onSave={changes=>patch(changes,'Saved.')}/>:<>
-   {decoration&&<p className="muse-stream-decoration"><span aria-hidden="true">{decoration.emoji}</span>{decoration.label}</p>}
+   {decoration&&<p className="muse-stream-decoration"><span aria-hidden="true">{decoration.emoji}</span>{decoration.label}</p>}{post.tag&&<p className="muse-stream-tagline"><TagChip tag={post.tag}/></p>}
    {post.sourceMissing&&post.mine&&<p className="muse-accent-note">The record this post shared was removed, so friends no longer see it. You can delete the post.</p>}
    {post.kind==='status'?<Spoiler active={post.spoiler}><p className="muse-stream-status-text">{post.body}</p></Spoiler>:<>
     {display&&<div className="muse-stream-activity">

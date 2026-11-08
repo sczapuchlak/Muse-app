@@ -151,3 +151,49 @@
 .muse-nourish-toolbar nav{flex:0 1 auto;justify-content:flex-start}
 .muse-nourish-toolbar-days{flex:0 1 520px;width:min(100%,520px);max-width:520px;min-width:0;margin-left:auto}
 @media(max-width:900px){.muse-nourish-toolbar-days{flex-basis:100%;max-width:none;width:100%;margin-left:0}}
+
+/* ---------- #98 meal planner facelift: compact rows, chips for meals, quiet empty slots ---------- */
+/* Week strip lines up with the right edge of the plan (the spark anchor no longer takes a flex slot). */
+.muse-nourish-toolbar{position:relative}
+.muse-nourish-toolbar>.muse-feedback-anchor{position:absolute;right:0;top:0;pointer-events:none}
+.muse-nourish-toolbar-days .muse-week-strip{margin:0 0 0 auto}
+.muse-nourish-week{gap:var(--space-2)}
+.muse-meal-week-heading{padding:0 var(--space-4);font-weight:700}
+.muse-nourish-day{align-items:start;padding:var(--space-3) var(--space-4);gap:var(--space-3);border-radius:20px}
+.muse-nourish-day[data-today="true"]{border-color:color-mix(in srgb,var(--accent-primary) 45%,var(--glass-border))}
+.muse-meal-day-heading{flex-direction:row;align-items:baseline;gap:var(--space-2);padding:6px 0 0}
+.muse-meal-day-heading time{flex-direction:row;align-items:baseline;gap:6px}
+.muse-meal-day-heading strong{font-size:1.25rem}
+.muse-meal-slot{min-height:0;padding:0;border:0;background:transparent;gap:6px}
+.muse-meal-entries{display:grid;gap:6px;padding:0;max-height:none}
+.muse-meal-entry+.muse-meal-entry{margin-top:0}
+.muse-meal-entry{position:relative;display:grid;gap:2px;padding:8px 10px;border-radius:14px;border:1px solid color-mix(in srgb,var(--accent-primary) 28%,var(--planning-task-border,var(--glass-border)));
+ background:linear-gradient(135deg,color-mix(in srgb,var(--accent-primary) 12%,transparent),color-mix(in srgb,var(--accent-pop,var(--accent-secondary)) 8%,transparent)),var(--planning-task-background,var(--surface-subtle))}
+.muse-meal-title{min-height:0;font-size:.88rem;font-weight:600;line-height:1.3;white-space:normal}
+.muse-meal-meta{margin-top:2px;gap:4px}
+.muse-meal-action{min-height:24px;padding:1px 9px;border-radius:999px;border:1px solid var(--glass-border);background:var(--surface-subtle);color:var(--text-muted);font:inherit;font-size:.7rem;font-weight:600;cursor:pointer}
+.muse-meal-action:hover{color:var(--foreground);border-color:var(--selected-border)}
+.muse-meal-action:focus-visible{outline:2px solid var(--focus-ring,var(--accent-primary));outline-offset:2px}
+@media (hover:hover) and (pointer:fine){.muse-meal-entry:not(:hover):not(:focus-within) .muse-meal-meta{display:none}}
+.muse-meal-add{align-self:stretch;display:flex;align-items:center;justify-content:center;gap:6px;min-height:34px;margin:0;padding:4px 10px;border-radius:12px;border:1px dashed var(--glass-border);background:transparent;color:var(--text-muted);font:inherit;font-size:.8rem;cursor:pointer}
+.muse-meal-slot:not([data-empty]) .muse-meal-add{align-self:flex-start;min-height:26px;padding:0 10px;border-radius:999px}
+.muse-meal-add:hover{color:var(--foreground);border-style:solid;border-color:var(--selected-border);background:var(--surface-subtle)}
+.muse-meal-add:focus-visible{outline:2px solid var(--focus-ring,var(--accent-primary));outline-offset:2px}
+.muse-meal-add span{font-weight:700}
+.muse-meal-slot[data-drop-active="true"]{outline:2px dashed var(--selected-border);outline-offset:3px;border-radius:12px}
+/* Saved meals: a compact drawer under the week, not a destination of its own. */
+.muse-saved-meals-drawer{margin-top:var(--space-5);border:1px solid var(--glass-border);border-radius:20px;background:var(--glass-background);padding:0 var(--space-4)}
+.muse-saved-meals-drawer>summary{display:flex;align-items:baseline;gap:var(--space-3);padding:var(--space-4) 0;cursor:pointer;list-style:none}
+.muse-saved-meals-drawer>summary::-webkit-details-marker{display:none}
+.muse-saved-meals-drawer>summary::before{content:"›";display:inline-block;transition:transform .15s ease;font-weight:700}
+.muse-saved-meals-drawer[open]>summary::before{transform:rotate(90deg)}
+.muse-saved-meals-drawer>summary span{font-weight:700;font-size:1rem}
+.muse-saved-meals-drawer>summary small{color:var(--text-muted);font-size:.8rem}
+.muse-saved-meals-drawer[open]{padding-bottom:var(--space-4)}
+@media (prefers-reduced-motion:reduce){.muse-saved-meals-drawer>summary::before{transition:none}}
+.muse-nourish-toolbar-days .muse-week-strip{justify-content:space-between}
+/* Meal chip: title and its Move/Copy on one line, so hidden actions never leave a gap. */
+.muse-meal-entry{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px}
+.muse-meal-entry>.muse-meal-title{flex:1 1 auto;width:auto;min-width:0}
+.muse-meal-entry>.muse-meal-meta{margin:0;flex:none}
+.muse-meal-entry>:not(.muse-meal-title):not(.muse-meal-meta){flex-basis:100%}

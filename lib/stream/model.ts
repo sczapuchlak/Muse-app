@@ -13,7 +13,7 @@ export const audienceOptions:{id:StreamAudience;label:string;detail:string}[]=[
  {id:'selected',label:'Selected friends',detail:'Only the friends you pick. New friends never join later.'},
 ];
 
-export type StreamCategory='reading'|'watching'|'feeling'|'dreaming'|'celebrating'|'tarot'|'side-quests'|'rituals'|'fortunes'|'astrology'|'money';
+export type StreamCategory='reading'|'watching'|'listening'|'feeling'|'dreaming'|'celebrating'|'tarot'|'side-quests'|'rituals'|'fortunes'|'astrology'|'money';
 export type StreamSourceKind='book'|'media'|'mood'|'dream'|'tarot-reading'|'ritual'|'side-quest'|'fortune'|'astrology'|'money-milestone'|'aspiration';
 /**
  * Money milestones are no longer offered for new posts (#69). The kind stays so earlier posts keep rendering and can
@@ -21,12 +21,14 @@ export type StreamSourceKind='book'|'media'|'mood'|'dream'|'tarot-reading'|'ritu
  */
 export const retiredKinds:StreamSourceKind[]=['money-milestone'];
 /** Composer shortcuts: each accepts only the record types that belong to it (mirrors the database check). */
-export const shortcuts:{id:StreamCategory;label:string;icon:MuseIconName;kinds:StreamSourceKind[];home:{href:string;label:string}}[]=[
+/** `only` narrows a shared record type to this shortcut (albums are media but belong to Listening). */
+export const shortcuts:{id:StreamCategory;label:string;icon:MuseIconName;kinds:StreamSourceKind[];home:{href:string;label:string};only?:(group:string)=>boolean}[]=[
  {id:'reading',label:'Reading',icon:'book',kinds:['book'],home:{href:'/whimsy/bookshelf',label:'Bookshelf'}},
- {id:'watching',label:'Watching',icon:'film',kinds:['media'],home:{href:'/collections',label:'Collections'}},
+ {id:'watching',label:'Watching',icon:'film',kinds:['media'],home:{href:'/collections',label:'Collections'},only:group=>group!=='Albums'},
  {id:'feeling',label:'Feeling',icon:'mood',kinds:['mood'],home:{href:'/mood',label:'Mood'}},
  {id:'dreaming',label:'Dreaming',icon:'dreams',kinds:['dream'],home:{href:'/whimsy/dreamscapes',label:'Dreamscapes'}},
  {id:'celebrating',label:'Celebrating',icon:'sparkle',kinds:['aspiration','book','ritual','side-quest'],home:{href:'/rituals?view=aspirations',label:'Aspirations'}},
+ {id:'listening',label:'Listening',icon:'music',kinds:['media'],home:{href:'/collections?view=music',label:'Music'},only:group=>group==='Albums'},
  {id:'tarot',label:'Tarot',icon:'tarot',kinds:['tarot-reading'],home:{href:'/whimsy/tarot',label:'Tarot'}},
  {id:'side-quests',label:'Side Quests',icon:'wand',kinds:['side-quest'],home:{href:'/whimsy/side-quests',label:'Side Quests'}},
  {id:'rituals',label:'Rituals',icon:'rituals',kinds:['ritual'],home:{href:'/rituals',label:'Rituals'}},
@@ -44,7 +46,7 @@ export const feedFilters:{id:string|null;label:string}[]=[{id:null,label:'All'},
 /** Optional decorative flourishes for statuses. Never Wellness moods, never analytics. */
 export const decorations:{id:string;emoji:string;label:string}[]=[
  {id:'magical',emoji:'✨',label:'Feeling Magical'},{id:'in-my-feelings',emoji:'☁️',label:'In My Feelings'},{id:'choosing-chaos',emoji:'🔥',label:'Choosing Chaos'},
- {id:'hermit-era',emoji:'🌙',label:'In My Hermit Era'},{id:'thriving',emoji:'💖',label:'Thriving Suspiciously'},
+ {id:'hermit-era',emoji:'🌙',label:'In My Hermit Era'},{id:'thriving',emoji:'💖',label:'Thriving'},
 ];
 export const decorationById=(id:string|null|undefined)=>decorations.find(d=>d.id===id);
 
@@ -67,7 +69,7 @@ export function primaryReactionFor(category:StreamCategory|null|undefined,moodTo
 /** Card presentation family: literary, mystical, celebratory, or the classic status. */
 export function cardTone(post:{kind:string;category:string|null}):'status'|'literary'|'mystical'|'celebratory'|'feeling'{
  if(post.kind==='status')return 'status';
- if(post.category==='reading'||post.category==='watching')return 'literary';
+ if(post.category==='reading'||post.category==='watching'||post.category==='listening')return 'literary';
  if(post.category==='feeling')return 'feeling';
  if(['celebrating','rituals','money'].includes(post.category??''))return 'celebratory';
  return 'mystical';
@@ -77,14 +79,15 @@ export function cardTone(post:{kind:string;category:string|null}):'status'|'lite
 export function activityVerb(category:string|null|undefined,display:ShowcaseDisplay|null){
  switch(category){
   case 'reading':return display?.progress===100||display?.status==='Finished'?'finished':'is reading';
-  case 'watching':return 'is watching';case 'feeling':return 'is feeling';case 'dreaming':return 'dreamt of';
+  case 'watching':return 'is watching';case 'listening':return 'is listening to';case 'feeling':return 'is feeling';case 'dreaming':return 'dreamt of';
   case 'celebrating':return 'is celebrating';case 'tarot':return 'pulled';case 'side-quests':return 'completed';case 'rituals':return 'is keeping';
   case 'fortunes':return 'saved a fortune:';case 'astrology':return 'is a';case 'money':return 'just';
   default:return 'shared';
  }
 }
 
-export type StreamPost={id:string;author:IdentityCard;mine:boolean;kind:'status'|'activity';body:string;decoration:string|null;category:StreamCategory|null;sourceKind:StreamSourceKind|null;
+/** `tag` (#98): a snapshot of the person's own Stream tag, if one was chosen. */
+export type StreamPost={id:string;author:IdentityCard;mine:boolean;kind:'status'|'activity';body:string;decoration:string|null;tag?:import('./tags').StreamTagSnapshot|null;category:StreamCategory|null;sourceKind:StreamSourceKind|null;
  display:(ShowcaseDisplay&{excerpt?:string})|null;sourceMissing:boolean;spoiler:boolean;createdAt:string;editedAt:string|null;audience?:StreamAudience|null;members?:IdentityCard[]|null;
  primaryReaction:ReactionId;commentsEnabled:boolean;reactionCount:number;reacted:boolean;commentCount:number};
 export type StreamComment={id:string;author:IdentityCard;body:string;createdAt:string;editedAt:string|null;mine:boolean;canRemove:boolean};

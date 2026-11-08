@@ -2,7 +2,7 @@
 import {useCallback,useEffect,useMemo,useRef,useState} from 'react';
 import {createMuseBrowserClient} from '@/lib/supabase/client';
 import type {BucketEntry,BucketList} from '@/lib/bucket-list/models';
-import {defaultList,withYearColor,yearOf} from '@/lib/bucket-list/logic';
+import {defaultList,withYearColor,yearOf,renumberSwap} from '@/lib/bucket-list/logic';
 import {deleteBucketEntry,loadBucketList,saveBucketEntry,saveBucketList} from '@/lib/bucket-list/persistence';
 import {removeBoardImages,uploadBoardImage} from '@/lib/data/constellation-images';
 
@@ -40,7 +40,12 @@ export function useBucketList(today:string){
   return current;
  }
  const saveList=(next:BucketList)=>run(async()=>writeList(listRef.current?{...next,revision:listRef.current.revision}:{...next,revision:0}));
- const save=(e:BucketEntry)=>run(async()=>{await ensureList(yearOf(e.completedOn));const saved=await saveBucketEntry(client,userId,e);
+ const save=(e:BucketEntry)=>run(async()=>{await ensureList(yearOf(e.completedOn));
+  // Taking a number another dream has swaps the two (cleared first, so the numbers stay unique at every step).
+  const swap=renumberSwap(entriesRef.current,e);
+  if(swap){const cleared=await saveBucketEntry(client,userId,{...swap.other,number:null});setEntries(list=>[...list.filter(x=>x.id!==cleared.id),cleared]);entriesRef.current=entriesRef.current.map(x=>x.id===cleared.id?cleared:x);}
+  const saved=await saveBucketEntry(client,userId,e);
+  if(swap){const cleared=entriesRef.current.find(x=>x.id===swap.other.id)!;const moved=await saveBucketEntry(client,userId,{...cleared,number:swap.number});setEntries(list=>[...list.filter(x=>x.id!==moved.id),moved]);}
   const before=entriesRef.current.find(x=>x.id===e.id);setEntries(list=>[...list.filter(x=>x.id!==saved.id),saved]);
   // Photos removed in the editor are removed from private storage once the entry no longer points at them.
   if(before){const kept=new Set(images(saved).map(i=>i.path)),gone=images(before).filter(i=>!kept.has(i.path));if(gone.length)try{await removeBoardImages(gone);}catch{/* stays private; account deletion removes it */}}

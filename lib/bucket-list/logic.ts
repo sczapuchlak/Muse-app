@@ -47,6 +47,16 @@ export function reopenEntry(e:BucketEntry,today:string):BucketEntry{
 
 /** Next permanent number: one more than the largest ever used in this list (deleted numbers are not reused). */
 export const nextNumber=(entries:Pick<BucketEntry,'number'>[])=>Math.max(0,...entries.map(e=>e.number??0))+1;
+/**
+ * #98: renumbering like a handwritten list. Choosing a number another dream already has swaps the two: that dream
+ * takes this one's old number (or the next free number, for a new or unnumbered dream). Null when no swap is needed.
+ */
+export function renumberSwap<T extends Pick<BucketEntry,'id'|'number'>>(entries:T[],edited:Pick<BucketEntry,'id'|'number'>){
+ if(edited.number==null)return null;
+ const other=entries.find(e=>e.id!==edited.id&&e.number===edited.number);if(!other)return null;
+ const previous=entries.find(e=>e.id===edited.id)?.number??null;
+ return {other,number:previous!=null&&previous!==edited.number?previous:nextNumber(entries)};
+}
 export const nextPosition=(entries:Pick<BucketEntry,'position'>[])=>entries.length?Math.max(...entries.map(e=>e.position))+1:1;
 /** Your order: by position, then number, then creation. */
 export const byPosition=(a:BucketEntry,b:BucketEntry)=>a.position-b.position||(a.number??Infinity)-(b.number??Infinity)||a.createdAt.localeCompare(b.createdAt);

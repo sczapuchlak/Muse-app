@@ -16,6 +16,8 @@ import {surfaces} from '@/lib/almanac/select';
 import {AlmanacWhisper} from '../../almanac/AlmanacWhisper';
 import {useAspirations} from './useAspirations';
 import {AspirationEditor,blankAspiration} from './AspirationEditor';
+import {MuseChoiceMenu} from '@/components/MuseChoiceMenu';
+const sortLabels:Record<SortKey,string>={target:'Target date',progress:'Progress',updated:'Recently updated',category:'Category',custom:'Your order'};
 import {AspirationDetail} from './AspirationDetail';
 import {ProgressRing,periodLabel,progressText} from './parts';
 import './Aspirations.css';
@@ -76,8 +78,8 @@ export function Aspirations(){
    </div>}
    <div className="muse-aspirations-controls">
     <div role="group" aria-label="Timeframe" className="muse-aspiration-filter">{filters.map(f=><button key={f.id} type="button" aria-pressed={view.filter===f.id} onClick={()=>changeView({filter:f.id})}>{f.label}</button>)}</div>
-    <label>Group<select id="aspirations-group" value={view.group} onChange={e=>changeView({group:e.target.value as Group})}><option value="none">None</option><option value="category">Category</option><option value="status">Status</option></select></label>
-    <label>Sort<select id="aspirations-sort" value={view.sort} onChange={e=>changeView({sort:e.target.value as SortKey})}><option value="target">Target date</option><option value="progress">Progress</option><option value="updated">Recently updated</option><option value="category">Category</option><option value="custom">Your order</option></select></label>
+    <div className="muse-aspiration-choice" data-inline><span>Group</span><MuseChoiceMenu label="Group" valueLabel={{none:'None',category:'Category',status:'Status'}[view.group]} selectedIds={[view.group]} options={[{id:'none',label:'None'},{id:'category',label:'Category'},{id:'status',label:'Status'}]} onSelect={id=>changeView({group:id as Group})}/></div>
+    <div className="muse-aspiration-choice" data-inline><span>Sort</span><MuseChoiceMenu label="Sort" valueLabel={sortLabels[view.sort]} selectedIds={[view.sort]} options={(Object.keys(sortLabels) as SortKey[]).map(id=>({id,label:sortLabels[id]}))} onSelect={id=>changeView({sort:id as SortKey})}/></div>
    </div>
    {challengeView&&(view.filter==='all'||view.filter==='year')&&<article className="muse-aspiration-card muse-aspiration-connected" data-accent="secondary">
     <ProgressRing percent={challengeView.percent} accent="secondary" size={56}/><div><span className="small-label">From Bookshelf · automatic</span><h3>{year} Reading Challenge</h3><p>{challengeView.done} of {challengeView.target} books{challengeView.reached?' · complete':''}</p>
