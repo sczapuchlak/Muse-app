@@ -77,7 +77,7 @@ test('each reaction has its own sound from the shared palette, after success onl
 });
 
 test('Share to Stream sits where people finish or save something meaningful',()=>{
- const places={'components/collections/MediaLibrary.tsx':/<ShareToStream kind="media" id=\{detail\.id\} category="watching"/,
+ const places={'components/collections/MediaLibrary.tsx':/<ShareToStream kind="media" id=\{detail\.id\} category=(?:"watching"|\{kind==='album'\?'listening':'watching'\})/,
   'components/rituals/RitualEditor.tsx':/\{initial&&<ShareToStream kind="ritual" id=\{initial\.id\}/,
   'components/whimsy/WeeklySideQuests.tsx':/\{done&&\(\(\)=>\{const c=completions\.find[^}]*\}*[^<]*<ShareToStream kind="side-quest"/,
   'components/whimsy/FortuneCollectionCard.tsx':/<ShareToStream kind="fortune" id=\{item\.id\}/,

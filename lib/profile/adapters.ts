@@ -31,7 +31,7 @@ const clean=(display:ShowcaseDisplay):ShowcaseDisplay=>Object.fromEntries(Object
 const bookStatus:Record<Book['status'],string>={planned:'Want to read',reading:'Reading',finished:'Finished',paused:'Paused'};
 /** Rituals take their icon from their group. */
 const ritualIcon=(s:SourceBundle,groupId:string)=>{const icon=s.rituals?.groups.find(g=>g.id===groupId)?.icon;return icon&&/^[a-z][a-z-]{1,30}$/.test(icon)?icon:'rituals';};
-const kindLabel:Record<string,string>={movie:'Movies',tv:'TV',game:'Games'};
+const kindLabel:Record<string,string>={movie:'Movies',tv:'TV',game:'Games',album:'Albums'};
 
 export const adapters:Record<SourceKind,Adapter>={
  book:{kind:'book',label:'Books',icon:'book',privacy:'Never your reading sessions, notes or timers.',
@@ -39,7 +39,7 @@ export const adapters:Record<SourceKind,Adapter>={
   candidates:s=>s.books.map(b=>({sourceId:b.id,title:b.title,subtitle:b.author,image:https(b.coverUrl),group:bookStatus[b.status]})),
   display:(s,id,a)=>{const b=s.books.find(x=>x.id===id);if(!b)return null;const progress=b.status==='finished'?100:b.totalPages&&b.currentPage?Math.min(100,Math.round(b.currentPage/b.totalPages*100)):undefined;
    return clean({kind:'book',title:clip(b.title)!,subtitle:on(a,'author')?clip(b.author):undefined,image:on(a,'cover')?https(b.coverUrl):undefined,status:on(a,'status')?bookStatus[b.status]:undefined,progress:on(a,'progress')?progress:undefined,rating:on(a,'rating')&&b.rating?Math.max(0,Math.min(5,b.rating)):undefined,date:on(a,'finished')&&b.finishedOn&&/^\d{4}-\d{2}-\d{2}$/.test(b.finishedOn)?b.finishedOn:undefined});}},
- media:{kind:'media',label:'Movies, TV & games',icon:'film',privacy:'Never your reviews, notes, tags or episode history.',
+ media:{kind:'media',label:'Movies, TV, games & music',icon:'film',privacy:'Never your reviews, notes, tags or episode history.',
   fields:[{id:'title',label:'Title',default:true,locked:true},{id:'creator',label:'Creator or studio',default:true},{id:'cover',label:'Poster or cover',default:true},{id:'status',label:'Status',default:false},{id:'progress',label:'Progress',default:false},{id:'rating',label:'My rating',default:false}],
   candidates:s=>s.media.map(m=>({sourceId:m.id,title:m.title,subtitle:m.creator||m.developer||undefined,image:https(m.cover_url),group:kindLabel[m.kind]??'Media'})),
   display:(s,id,a)=>{const m=s.media.find(x=>x.id===id);if(!m)return null;

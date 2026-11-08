@@ -226,3 +226,7 @@
  .muse-dream-section[aria-label="Dream Diary"] .muse-dream-controls>.muse-dream-search{grid-column:1/-1}
  .muse-dream-section[aria-label="Dream Diary"] .muse-dream-controls>.muse-choice-menu{grid-column:1/-1;order:5}
 }
+
+/* #98: with no source picker, the alphabet is centered under the search and categories. */
+.muse-dream-library .muse-dream-library-tools{justify-content:center}
+.muse-dream-library .muse-dream-alphabet{justify-content:center}

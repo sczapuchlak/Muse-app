@@ -7,6 +7,7 @@ export const genrePresets:Record<GenreKind,string[]>={
  book:[...common,'Romantasy','Contemporary Romance','Historical Romance','Historical Fiction','Literary Fiction','Contemporary Fiction','Young Adult','Biography','Memoir','History','Self-Help','Graphic Novel','Poetry'],
  movie:[...common,'Action','Animation','Documentary','Family','Musical','Crime','War','Western'],
  tv:[...common,'Animation','Documentary','Reality','Crime','Sitcom','Miniseries','Family'],
+ album:['Pop','Rock','Indie','Alternative','Hip-Hop','R&B','Country','Folk','Electronic','Dance','Jazz','Classical','Soundtrack','Metal','Punk','Soul','K-Pop','Latin','Singer-Songwriter'],
  game:['RPG','Action RPG','CRPG','Strategy','Turn-Based Strategy','Adventure','Action','Simulation','Puzzle','Survival','Horror','Platformer','Cozy','Open World','Roguelike','Visual Novel','Sports','Racing']
 };
 export const splitGenres=(value:string)=>[...new Set(value.split(',').map(part=>part.trim()).filter(Boolean))];

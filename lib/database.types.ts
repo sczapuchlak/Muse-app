@@ -451,14 +451,14 @@ isOneToOne: false
                   ]
                 },"collection_media_items": {
                   Row: {
-                    "cast_names": (string)[],"completed_on": string | null,"conclusion_state": string,"cover_url": string | null,"created_at": string,"creator": string,"description": string,"developer": string,"favorite": boolean,"genres": (string)[],"id": string,"kind": string,"notes": string,"platform_played": string,"platforms": (string)[],"playtime_minutes": number | null,"progress_percent": number | null,"provider": string | null,"provider_id": string | null,"publisher": string,"rating": number | null,"release_date": string | null,"review": string,"revision": number,"runtime_minutes": number | null,"started_on": string | null,"status": string,"tags": (string)[],"title": string,"updated_at": string,"user_id": string
+                    "cast_names": (string)[],"completed_on": string | null,"conclusion_state": string,"cover_url": string | null,"created_at": string,"creator": string,"description": string,"developer": string,"favorite": boolean,"favorite_tracks": (string)[],"genres": (string)[],"id": string,"kind": string,"notes": string,"platform_played": string,"platforms": (string)[],"playtime_minutes": number | null,"progress_percent": number | null,"provider": string | null,"provider_id": string | null,"publisher": string,"rating": number | null,"release_date": string | null,"review": string,"revision": number,"runtime_minutes": number | null,"started_on": string | null,"status": string,"tags": (string)[],"title": string,"updated_at": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "cast_names"?: (string)[],"completed_on"?: string | null,"conclusion_state"?: string,"cover_url"?: string | null,"created_at"?: string,"creator"?: string,"description"?: string,"developer"?: string,"favorite"?: boolean,"genres"?: (string)[],"id": string,"kind": string,"notes"?: string,"platform_played"?: string,"platforms"?: (string)[],"playtime_minutes"?: number | null,"progress_percent"?: number | null,"provider"?: string | null,"provider_id"?: string | null,"publisher"?: string,"rating"?: number | null,"release_date"?: string | null,"review"?: string,"revision"?: number,"runtime_minutes"?: number | null,"started_on"?: string | null,"status": string,"tags"?: (string)[],"title": string,"updated_at"?: string,"user_id": string
+                    "cast_names"?: (string)[],"completed_on"?: string | null,"conclusion_state"?: string,"cover_url"?: string | null,"created_at"?: string,"creator"?: string,"description"?: string,"developer"?: string,"favorite"?: boolean,"favorite_tracks"?: (string)[],"genres"?: (string)[],"id": string,"kind": string,"notes"?: string,"platform_played"?: string,"platforms"?: (string)[],"playtime_minutes"?: number | null,"progress_percent"?: number | null,"provider"?: string | null,"provider_id"?: string | null,"publisher"?: string,"rating"?: number | null,"release_date"?: string | null,"review"?: string,"revision"?: number,"runtime_minutes"?: number | null,"started_on"?: string | null,"status": string,"tags"?: (string)[],"title": string,"updated_at"?: string,"user_id": string
                   }
                   Update: {
-                    "cast_names"?: (string)[],"completed_on"?: string | null,"conclusion_state"?: string,"cover_url"?: string | null,"created_at"?: string,"creator"?: string,"description"?: string,"developer"?: string,"favorite"?: boolean,"genres"?: (string)[],"id"?: string,"kind"?: string,"notes"?: string,"platform_played"?: string,"platforms"?: (string)[],"playtime_minutes"?: number | null,"progress_percent"?: number | null,"provider"?: string | null,"provider_id"?: string | null,"publisher"?: string,"rating"?: number | null,"release_date"?: string | null,"review"?: string,"revision"?: number,"runtime_minutes"?: number | null,"started_on"?: string | null,"status"?: string,"tags"?: (string)[],"title"?: string,"updated_at"?: string,"user_id"?: string
+                    "cast_names"?: (string)[],"completed_on"?: string | null,"conclusion_state"?: string,"cover_url"?: string | null,"created_at"?: string,"creator"?: string,"description"?: string,"developer"?: string,"favorite"?: boolean,"favorite_tracks"?: (string)[],"genres"?: (string)[],"id"?: string,"kind"?: string,"notes"?: string,"platform_played"?: string,"platforms"?: (string)[],"playtime_minutes"?: number | null,"progress_percent"?: number | null,"provider"?: string | null,"provider_id"?: string | null,"publisher"?: string,"rating"?: number | null,"release_date"?: string | null,"review"?: string,"revision"?: number,"runtime_minutes"?: number | null,"started_on"?: string | null,"status"?: string,"tags"?: (string)[],"title"?: string,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
                     
@@ -1077,6 +1077,20 @@ isOneToOne: false
                   }
                   Update: {
                     "accent"?: string | null,"created_at"?: string,"document"?: NonNullable<Json>,"id"?: string,"pinned"?: boolean,"plain_text"?: string,"revision"?: number,"search_vector"?: never,"status"?: string,"title"?: string,"trashed_at"?: string | null,"trashed_from"?: string | null,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
+                },"notes_board": {
+                  Row: {
+                    "created_at": string,"layout": NonNullable<Json>,"revision": number,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"layout"?: NonNullable<Json>,"revision"?: number,"updated_at"?: string,"user_id"?: string
+                  }
+                  Update: {
+                    "created_at"?: string,"layout"?: NonNullable<Json>,"revision"?: number,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
                     
@@ -1707,14 +1721,14 @@ isOneToOne: false
                   ]
                 },"stream_posts": {
                   Row: {
-                    "audience": string,"author": string,"body": string,"category": string | null,"comments_enabled": boolean,"created_at": string,"decoration": string | null,"display": Json | null,"edited_at": string | null,"id": string,"kind": string,"primary_reaction": string,"source_id": string | null,"source_kind": string | null,"source_state": string,"spoiler": boolean
+                    "audience": string,"author": string,"body": string,"category": string | null,"comments_enabled": boolean,"created_at": string,"decoration": string | null,"display": Json | null,"edited_at": string | null,"id": string,"kind": string,"primary_reaction": string,"source_id": string | null,"source_kind": string | null,"source_state": string,"spoiler": boolean,"tag": Json | null
                   }
                   ComputedFields: never
                   Insert: {
-                    "audience"?: string,"author": string,"body"?: string,"category"?: string | null,"comments_enabled"?: boolean,"created_at"?: string,"decoration"?: string | null,"display"?: Json | null,"edited_at"?: string | null,"id": string,"kind": string,"primary_reaction"?: string,"source_id"?: string | null,"source_kind"?: string | null,"source_state"?: string,"spoiler"?: boolean
+                    "audience"?: string,"author": string,"body"?: string,"category"?: string | null,"comments_enabled"?: boolean,"created_at"?: string,"decoration"?: string | null,"display"?: Json | null,"edited_at"?: string | null,"id": string,"kind": string,"primary_reaction"?: string,"source_id"?: string | null,"source_kind"?: string | null,"source_state"?: string,"spoiler"?: boolean,"tag"?: Json | null
                   }
                   Update: {
-                    "audience"?: string,"author"?: string,"body"?: string,"category"?: string | null,"comments_enabled"?: boolean,"created_at"?: string,"decoration"?: string | null,"display"?: Json | null,"edited_at"?: string | null,"id"?: string,"kind"?: string,"primary_reaction"?: string,"source_id"?: string | null,"source_kind"?: string | null,"source_state"?: string,"spoiler"?: boolean
+                    "audience"?: string,"author"?: string,"body"?: string,"category"?: string | null,"comments_enabled"?: boolean,"created_at"?: string,"decoration"?: string | null,"display"?: Json | null,"edited_at"?: string | null,"id"?: string,"kind"?: string,"primary_reaction"?: string,"source_id"?: string | null,"source_kind"?: string | null,"source_state"?: string,"spoiler"?: boolean,"tag"?: Json | null
                   }
                   Relationships: [
                     
@@ -1778,6 +1792,20 @@ isOneToOne: false
       referencedRelation: "stream_posts"
       referencedColumns: ["id"]
     }
+                  ]
+                },"stream_tags": {
+                  Row: {
+                    "created_at": string,"icon": string | null,"id": string,"name": string,"paint": Json | null,"position": number,"revision": number,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"icon"?: string | null,"id"?: string,"name": string,"paint"?: Json | null,"position"?: number,"revision"?: number,"updated_at"?: string,"user_id"?: string
+                  }
+                  Update: {
+                    "created_at"?: string,"icon"?: string | null,"id"?: string,"name"?: string,"paint"?: Json | null,"position"?: number,"revision"?: number,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    
                   ]
                 },"task_completion_events": {
                   Row: {
@@ -2828,6 +2856,9 @@ isOneToOne: false
                            },
 "stream_reports_review":
 { Args: { "p_include_resolved"?: boolean }; Returns: Json
+                           },
+"stream_set_tag":
+{ Args: { "p_id": string,"p_tag": Json }; Returns: undefined
                            },
 "swap_collection_members":
 { Args: { "p_first": string,"p_first_revision": number,"p_second": string,"p_second_revision": number }; Returns: undefined

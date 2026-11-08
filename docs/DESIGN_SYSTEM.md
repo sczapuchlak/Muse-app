@@ -651,3 +651,12 @@ Bucket List (Rituals, #84) follows the handwritten bullet-journal reference: an 
 - Hero numbers use the UI face with tabular figures and a primary→pop gradient fill; units and sample sizes sit beside them in muted text.
 - Visuals are single-series and quiet: Overall Day as gradient capsules (week), a calendar tinted by rating (month; unrated days outlined), monthly capsules (year). Feelings use the existing mood-family colors (`data-quadrant`) with words, never color alone. Every mark has a hover title and an accessible label.
 - Today uses `.muse-today-ring`. Empty states are short and honest. Hover lift only without reduced motion.
+
+
+## UI Cleanup 1 (#98)
+
+- One search field everywhere: `MuseSearch` (icon, input, clear) with the prismatic `.muse-edge` on hover and focus; never a bordered input inside a bordered field.
+- Dropdowns use `MuseChoiceMenu`; no native `<select>` styling in new or touched screens.
+- Settings-style toggles use `.muse-check-row`.
+- Pages use the standard page width; two-column compositions (Settings, Stream) use independent columns so cards never stretch beside taller neighbors.
+- Empty planning slots are quiet dashed "+" buttons; filled items are tinted chips.

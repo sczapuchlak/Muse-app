@@ -119,3 +119,11 @@
 .muse-quest-card::before{border-color:color-mix(in srgb,var(--accent-secondary) 16%,var(--glass-border))}
 .muse-quest-card[data-selected=true]{background:radial-gradient(circle at 12% 4%,color-mix(in srgb,var(--accent-secondary) 15%,transparent),transparent 55%),var(--surface-strong);border-color:var(--selected-border);box-shadow:var(--card-shadow),0 0 0 2px color-mix(in srgb,var(--accent-primary) 22%,transparent),0 0 18px color-mix(in srgb,var(--accent-secondary) 14%,transparent)}
 .muse-quest-selected-mark{display:inline-flex;align-items:center;gap:5px;align-self:flex-start;padding:4px 9px;border:1px solid var(--selected-border);border-radius:999px;background:var(--selected-background);color:var(--selected-text);font-size:.72rem;font-weight:700}
+
+/* #98: the sealed week breathes — title, subtitle, progress and quest tiles each get their own space. */
+.muse-quest-week{display:grid;gap:var(--space-5)}
+.muse-quest-week>.muse-quest-section-head{margin:0;gap:var(--space-3)}
+.muse-quest-week>.muse-quest-section-head h2{font-size:clamp(1.4rem,2.2vw,1.75rem);line-height:1.2}
+.muse-quest-week>.muse-quest-section-head p{margin:var(--space-2) 0 0;line-height:1.5}
+.muse-quest-week>.muse-quest-progress{margin:0;height:auto}
+.muse-quest-week>.muse-quest-progress .muse-quest-progress-segment{height:8px}

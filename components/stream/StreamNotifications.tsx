@@ -42,7 +42,7 @@ export function StreamSettings({compact=false}:{compact?:boolean}){
  if(!prefs)return null;
  async function set(patch:Partial<StreamPreferences>){const next={...prefs!,...patch};setPrefs(next);setSaved('');
   try{const result=await saveStreamPreferences(clientRef.current!,next);setPrefs(result);publishStreamNavigation(result.showInNavigation);setSaved('Saved.');}catch{setSaved('That didn’t save.');}}
- const box=(key:keyof StreamPreferences,label:string)=><label key={key} className="muse-atelier-check"><input type="checkbox" checked={prefs[key]} onChange={e=>set({[key]:e.target.checked})}/>{label}</label>;
+ const box=(key:keyof StreamPreferences,label:string)=><label key={key} className="muse-check-row"><input type="checkbox" checked={prefs[key]} onChange={e=>set({[key]:e.target.checked})}/>{label}</label>;
  return <section className={compact?'muse-stream-settings':'muse-stream-settings muse-panel'} aria-label="Stream settings">
   {!compact&&<h2 className="muse-kicker">Stream settings</h2>}
   {box('showInNavigation','Show Stream in my navigation')}

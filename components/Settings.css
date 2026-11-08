@@ -1,6 +1,9 @@
 .muse-settings-layout { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--grid-gap);align-items:start; }
 .muse-settings-layout > * { min-width:0; }
 .muse-settings-layout > .muse-card { grid-column:auto; }
+/* #98: two independent columns, so a short card never leaves a gap beside a tall one. */
+.muse-settings-col { display:grid;gap:var(--grid-gap);align-content:start;min-width:0; }
+.muse-settings-col > .muse-card { grid-column:auto;margin:0; }
 .muse-settings-fields { display:grid;gap:var(--space-5);margin-top:var(--space-4); }
 .muse-settings-fields label { display:grid;gap:var(--space-2);font-size:.8rem; }
 .muse-settings-fields input { width:100%;min-width:0; }
@@ -24,3 +27,8 @@
 .muse-credits li:last-child{border-bottom:0}
 .muse-credits p{margin:2px 0 0}
 .muse-credits a{margin-right:var(--space-2);overflow-wrap:anywhere}
+
+.muse-credits-software{margin-top:var(--space-4)}
+.muse-credits-software>summary{cursor:pointer;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted)}
+.muse-credits-software ul{margin-top:var(--space-3);gap:var(--space-2)}
+.muse-credits-software li{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 6px;padding-bottom:var(--space-2)}

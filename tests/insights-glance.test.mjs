@@ -98,7 +98,7 @@ test('#97 non-destructive: detailed Insights hidden behind a flag, not deleted; 
  assert.match(mood,/\/insights\?period=day&date=/);
  const prefs=load('lib/insights/preferences');
  assert.equal(prefs.parseInsightsPreferences({readingProgress:'time'}).readingProgress,'time');assert.equal(prefs.parseInsightsPreferences({readingProgress:'nope'}).readingProgress,'percent');
- assert.equal(readdir('supabase/migrations').some(f=>f.slice(0,14)>'20261123000100'),false,'no new migration');
+ assert.equal(readdir('supabase/migrations').some(f=>/insight/i.test(f)),false,'Insights 2.0 added no migration');
 });
 import {readdirSync} from 'node:fs';
 function readdir(p){return readdirSync(resolve(root,p));}

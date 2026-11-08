@@ -1,5 +1,5 @@
 /* Stream of Consciousness (#27): an editorial, single-column feed that wears every Muse theme. */
-.muse-stream{max-width:780px;margin-inline:auto;display:grid;gap:18px;align-content:start}
+.muse-stream{display:grid;gap:18px;align-content:start}
 .muse-stream-header-actions{display:flex;flex-wrap:wrap;gap:8px}
 .muse-stream-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
 .muse-stream-count{display:inline-grid;place-items:center;min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:color-mix(in srgb,var(--accent-pop) 22%,transparent);color:var(--foreground);font:700 .7rem var(--font-ui)}
@@ -153,3 +153,37 @@
 .muse-stream-recent{display:grid;gap:12px;max-width:780px;margin-top:8px}
 .muse-stream-consent .small-label,.muse-stream-composer-foot .small-label{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:0}
 .muse-stream-share-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:10px}
+
+/* ---------- #98 Stream layout: standard page width; creating on the left, the feed on the right ---------- */
+.muse-stream-layout{display:grid;grid-template-columns:minmax(320px,420px) minmax(0,1fr);gap:clamp(18px,2.4vw,32px);align-items:start}
+.muse-stream-create{position:sticky;top:16px;display:grid;gap:12px;min-width:0}
+.muse-stream-feedcol{display:grid;gap:16px;min-width:0;max-width:760px}
+.muse-stream-feedhead{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px}
+.muse-stream-col-title{margin:0;font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight);font-size:clamp(1.25rem,1.8vw,1.5rem)}
+.muse-stream-feedhead .muse-stream-filters{margin:0}
+.muse-stream-header-actions{display:flex;align-items:center;gap:8px}
+@media (max-width:1060px){.muse-stream-layout{grid-template-columns:minmax(0,1fr)}.muse-stream-create{position:static}.muse-stream-feedcol{max-width:none}}
+/* Custom tags */
+.muse-stream-tagrow{display:grid;gap:10px}
+.muse-stream-decorations{flex-wrap:wrap}
+.muse-stream-tag{position:relative;display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:4px 12px;border-radius:999px;border:1px solid var(--glass-border);background:var(--surface-subtle);color:var(--foreground);font:inherit;font-size:.84rem;cursor:pointer;white-space:nowrap}
+.muse-stream-tag[data-painted]{border:1.5px solid transparent;background:linear-gradient(color-mix(in srgb,var(--background) 88%,var(--foreground) 4%),color-mix(in srgb,var(--background) 88%,var(--foreground) 4%)) padding-box,var(--tag-border) border-box}
+.muse-stream-tagline{margin:0;display:flex}
+span.muse-stream-tag{cursor:default}
+.muse-stream-tag[aria-pressed=true]{box-shadow:0 0 0 2px var(--selected-border)}
+.muse-stream-tag:focus-visible,.muse-stream-tag-new:focus-visible{outline:2px solid var(--focus-ring,var(--accent-primary));outline-offset:2px}
+.muse-stream-tag-new{display:inline-flex;align-items:center;gap:5px;min-height:34px;padding:4px 12px;border-radius:999px;border:1px dashed var(--glass-border);background:transparent;color:var(--text-muted);font:inherit;font-size:.82rem;cursor:pointer}
+.muse-stream-tag-new:hover{color:var(--foreground);border-style:solid;border-color:var(--selected-border)}
+.muse-stream-tag-new[data-quiet]{border-style:solid;border-color:transparent}
+.muse-stream-tag-editor{display:grid;gap:12px;padding:14px;border:1px solid var(--glass-border);border-radius:18px;background:var(--surface-subtle)}
+.muse-stream-tag-preview{display:flex}
+.muse-stream-tag-name{display:grid;gap:5px;font-size:.88rem}
+.muse-stream-tag-icons{display:flex;flex-wrap:wrap;gap:6px;border:0;margin:0;padding:0}
+.muse-stream-tag-icons legend{font-size:.88rem;margin-bottom:6px}
+.muse-stream-tag-icons label{position:relative;cursor:pointer}
+.muse-stream-tag-icons input{position:absolute;inset:0;opacity:0;margin:0;cursor:pointer}
+.muse-stream-tag-icons span{display:grid;place-items:center;min-width:34px;height:34px;padding:0 6px;box-sizing:border-box;border-radius:10px;border:1px solid var(--glass-border);background:var(--surface-control);font-size:1rem}
+.muse-stream-tag-icons label:first-of-type span{font-size:.76rem;color:var(--text-muted)}
+.muse-stream-tag-icons input:checked+span{box-shadow:0 0 0 2px var(--selected-border)}
+.muse-stream-tag-icons input:focus-visible+span{outline:2px solid var(--focus-ring,var(--accent-primary));outline-offset:2px}
+.muse-stream-tag-confirm{display:inline-flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:.84rem}

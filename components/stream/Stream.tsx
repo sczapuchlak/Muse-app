@@ -72,9 +72,13 @@ export function Stream(){
    <button type="button" className="text-button" onClick={()=>{setFocus(undefined);router.replace('/stream',{scroll:false});}}>Back to the whole stream</button>
   </section>}
 
+  <div className="muse-stream-layout">
+  <aside className="muse-stream-create" aria-label="Share a moment"><h2 className="muse-stream-col-title">Share a moment</h2>
   <StreamComposer key={share?`${share.kind}:${share.id}`:'composer'} initial={share} autoFocus={writing} onPublished={post=>{setPosts(list=>[post,...(list??[]).filter(p=>p.id!==post.id)]);if(share)router.replace('/stream',{scroll:false});}}/>
 
-  <div className="muse-chip-row muse-stream-filters" role="group" aria-label="Show">{feedFilters.map(f=><button key={f.id??'all'} type="button" aria-pressed={filter===f.id} onClick={()=>{setFilter(f.id);setPosts(null);}}>{f.label}</button>)}</div>
+  </aside>
+  <section className="muse-stream-feedcol" aria-label="Your stream"><div className="muse-stream-feedhead"><h2 className="muse-stream-col-title">The stream</h2>
+  <div className="muse-chip-row muse-stream-filters" role="group" aria-label="Show">{feedFilters.map(f=><button key={f.id??'all'} type="button" aria-pressed={filter===f.id} onClick={()=>{setFilter(f.id);setPosts(null);}}>{f.label}</button>)}</div></div>
 
   {error&&<p className="field-error" role="alert">{error} <button type="button" className="text-button" onClick={()=>load(filter)}>Retry</button></p>}
   {posts===null?<p className="small-label" role="status">Listening for little moments…</p>:posts.length===0?
@@ -87,6 +91,7 @@ export function Stream(){
    <ol className="muse-stream-feed">{posts.map(p=><li key={p.id}><StreamPostCard post={p} onChange={replace} onRemove={removed}/></li>)}</ol>}
   {posts&&more&&<button type="button" className="muse-button muse-edge muse-stream-older" disabled={loadingMore} onClick={older}>{loadingMore?'Loading…':'Show earlier moments'}</button>}
   {posts&&posts.length>0&&!more&&<p className="small-label muse-stream-end"><MuseStar size={12}/> You’re all caught up.</p>}
+  </section></div>
  </main></StreamEnvContext.Provider>;
 }
 

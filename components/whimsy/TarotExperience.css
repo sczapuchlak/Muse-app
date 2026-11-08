@@ -93,3 +93,10 @@
 /* #57: shared design language inside Tarot. The journal empty state keeps its card-back art, centred. */
 .muse-tarot-journal-empty .muse-tarot-empty-art{display:flex;justify-content:center}
 .muse-tarot-journal-view{align-self:center}
+
+/* #98: reading menu — each choice grows with its text (no overlap), roomy, aligned diagrams, clear selected/hover states. */
+.muse-tarot-spread-options{display:flex;flex-direction:column;gap:6px}
+.muse-tarot-spread-options .muse-tarot-spread-choice{display:grid;grid-template-columns:52px minmax(0,1fr);align-items:center;gap:12px;height:auto;min-height:64px;padding:10px 12px;white-space:normal;flex:none}
+.muse-tarot-spread-choice strong{font-size:.88rem;line-height:1.3}
+.muse-tarot-spread-choice small{display:block;line-height:1.4}
+.muse-tarot-spread-choice[aria-pressed=true]{border-color:var(--selected-border);background:var(--selected-background,color-mix(in srgb,var(--accent-primary) 14%,var(--surface-subtle)))}

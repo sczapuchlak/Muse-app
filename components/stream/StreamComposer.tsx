@@ -1,8 +1,10 @@
 "use client";
+import {StreamTagPicker} from './StreamTags';
+import {setPostTag,type StreamTagSnapshot} from '@/lib/stream/tags';
 /* eslint-disable @next/next/no-img-element -- covers come from book and film services; next/image would proxy them. */
 import Link from 'next/link';
 import {useMemo,useState} from 'react';
-import {audienceOptions,BODY_MAX,decorations,primaryReactionFor,primaryShortcutCount,reactions,shortcuts,shortcutById,type StreamAudience,type StreamCategory,type StreamPost,type StreamSourceKind} from '@/lib/stream/model';
+import {audienceOptions,BODY_MAX,primaryReactionFor,primaryShortcutCount,reactions,shortcuts,shortcutById,type StreamAudience,type StreamCategory,type StreamPost,type StreamSourceKind} from '@/lib/stream/model';
 import {streamAdapters,fieldsFor,defaultApprovedFor,moodTone,sensitiveKinds,type StreamCandidate} from '@/lib/stream/adapters';
 import {moneyAmountPattern} from '@/lib/profile/adapters';
 import {friendlyError,publishPost} from '@/lib/stream/persistence';
@@ -25,7 +27,7 @@ export function StreamComposer({initial,onPublished,onCancel,autoFocus=false}:{i
  const {client,me,friends}=useStreamEnv();const {bundle,loaded}=useStreamSources();
  const firstCategory=initial?.category??shortcuts.find(s=>initial&&s.kinds.includes(initial.kind))?.id??null;
  const [step,setStep]=useState<'write'|'preview'>('write');const [id,setId]=useState(()=>crypto.randomUUID());
- const [body,setBody]=useState('');const [decoration,setDecoration]=useState<string|null>(null);
+ const [body,setBody]=useState('');const [decoration,setDecoration]=useState<string|null>(null);const [customTag,setCustomTag]=useState<StreamTagSnapshot|null>(null);
  const [category,setCategory]=useState<StreamCategory|null>(firstCategory);const [more,setMore]=useState(!!firstCategory&&shortcuts.findIndex(s=>s.id===firstCategory)>=primaryShortcutCount);
  const [source,setSource]=useState<{kind:StreamSourceKind;id:string}|null>(initial?{kind:initial.kind,id:initial.id}:null);
  const [approved,setApproved]=useState<string[]|null>(null);const [texts,setTexts]=useState<Record<string,string>>({});
@@ -36,7 +38,7 @@ export function StreamComposer({initial,onPublished,onCancel,autoFocus=false}:{i
  const chosen=source&&loaded?(approved??defaultApprovedFor(source.kind,bundle,source.id)):[];
  const adapter=source?streamAdapters[source.kind]:null;
  const display=source&&adapter&&loaded?adapter.display(bundle,source.id,chosen,texts):null;
- const candidates=useMemo(()=>shortcut&&loaded?shortcut.kinds.flatMap(k=>streamAdapters[k].candidates(bundle).map(c=>({...c,kind:k}))):[],[shortcut,bundle,loaded]);
+ const candidates=useMemo(()=>shortcut&&loaded?shortcut.kinds.flatMap(k=>streamAdapters[k].candidates(bundle).filter(c=>!shortcut.only||shortcut.only(c.group)).map(c=>({...c,kind:k}))):[],[shortcut,bundle,loaded]);
  const autoTone=source?.kind==='mood'?moodTone(bundle,source.id,chosen):'react';
  const primary=primaryReactionFor(category,source?.kind==='mood'?(tone==='auto'?autoTone:tone):undefined);
  const amountWarning=(source?.kind==='money-milestone'||category==='money')&&moneyAmountPattern.test(body);
@@ -45,13 +47,16 @@ export function StreamComposer({initial,onPublished,onCancel,autoFocus=false}:{i
 
  function pickShortcut(next:StreamCategory|null){setCategory(next);setSource(null);setApproved(null);setTexts({});setTone('auto');setError('');}
  function pickSource(c:StreamCandidate&{kind:StreamSourceKind}){setSource({kind:c.kind,id:c.sourceId});setApproved(null);setTexts({});setTone('auto');}
- function reset(){setStep('write');setId(crypto.randomUUID());setBody('');setDecoration(null);pickShortcut(null);setSpoiler(false);setAudience('private');setMembers([]);setComments(true);}
+ function reset(){setStep('write');setId(crypto.randomUUID());setBody('');setDecoration(null);setCustomTag(null);pickShortcut(null);setSpoiler(false);setAudience('private');setMembers([]);setComments(true);}
  async function publish(){if(problem||busy)return;setBusy(true);setError('');
   try{const post=await publishPost(client,{id,body,decoration:source?null:decoration,category:source?category:null,sourceKind:source?.kind??null,sourceId:source?.id??null,display:source?display:null,
-   spoiler,audience,members:audience==='selected'?members:[],primaryReaction:primary,commentsEnabled:comments});onPublished(post);reset();}
+   spoiler,audience,members:audience==='selected'?members:[],primaryReaction:primary,commentsEnabled:comments});
+   // A custom tag is set right after publishing (a snapshot on the post); a tag failure never unpublishes the post.
+   let tagged=post;if(!source&&customTag){try{await setPostTag(client,post.id,customTag);tagged={...post,tag:customTag};}catch{/* the post is live; the tag can be added by editing */}}
+   onPublished(tagged);reset();}
   catch(e){setError(friendlyError(e,'That didn’t publish. Nothing was shared; your words are still here.'));}finally{setBusy(false);}}
 
- const draft:StreamPost={id,author:{id:me.publicId,username:me.username,displayName:me.displayName,avatarId:me.avatarId},mine:true,kind:source?'activity':'status',body:body.trim(),decoration:source?null:decoration,
+ const draft:StreamPost={id,author:{id:me.publicId,username:me.username,displayName:me.displayName,avatarId:me.avatarId},mine:true,kind:source?'activity':'status',body:body.trim(),decoration:source?null:decoration,tag:source?null:customTag,
   category:source?category:null,sourceKind:source?.kind??null,display,sourceMissing:false,spoiler,createdAt:new Date().toISOString(),editedAt:null,audience,
   members:audience==='selected'?friends.filter(f=>members.includes(f.id)):null,primaryReaction:primary,commentsEnabled:comments,reactionCount:0,reacted:false,commentCount:0};
 
@@ -73,7 +78,7 @@ export function StreamComposer({initial,onPublished,onCancel,autoFocus=false}:{i
    <label className="muse-stream-is"><span>{me.displayName} is…</span>
     <textarea rows={2} maxLength={BODY_MAX} value={body} autoFocus={autoFocus} placeholder={source?'Add your thoughts (optional)':'reading three books and finishing none.'} onChange={e=>setBody(e.target.value)}/></label>
   </div>
-  {!source&&<div className="muse-chip-row muse-stream-decorations" role="group" aria-label="Optional flourish">{decorations.map(d=><button key={d.id} type="button" aria-pressed={decoration===d.id} onClick={()=>setDecoration(decoration===d.id?null:d.id)}><span aria-hidden="true">{d.emoji}</span>{d.label}</button>)}</div>}
+  {!source&&<StreamTagPicker client={client} decoration={decoration} onDecoration={setDecoration} custom={customTag} onCustom={setCustomTag}/>}
 
   <div className="muse-stream-shortcuts" role="group" aria-label="Share a moment from Muse">
    {shortcuts.slice(0,more?shortcuts.length:primaryShortcutCount).map(s=><button key={s.id} type="button" className="muse-stream-shortcut" aria-pressed={category===s.id} onClick={()=>pickShortcut(category===s.id?null:s.id)}><MuseIcon name={s.icon} size={15} treatment="prismatic"/>{s.label}</button>)}
