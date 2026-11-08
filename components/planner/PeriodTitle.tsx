@@ -1,6 +1,7 @@
 "use client";
 import { useId, useRef, useState } from "react";
 import { GlassPopover } from "../GlassPopover";
+import "./PeriodTitle.css";
 
 /**
  * The Planner toolbar's date title (Tasks and Agenda share it): reads as the period ("Nov 6 – Nov 8, 2026") and

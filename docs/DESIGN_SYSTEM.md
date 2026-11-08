@@ -644,3 +644,10 @@ Bucket List (Rituals, #84) follows the handwritten bullet-journal reference: an 
 - **Gradient Marks** are filled chips with a white symbol and a soft shadow; solid Marks keep the tinted chip.
 - **Checklist rows** use the shared `priority-completion` / `check-input` / `priority-check` checkbox (sized to 18px for bands) with inline-editable text. Simple List rows use a dash.
 - No new motion was added; everything respects reduced motion.
+
+## Insights 2.0 — Life at a Glance (#97)
+
+- One page, one shared `.muse-segmented` period selector, the shared `PeriodTitle`, and `muse-card` glance cards with small uppercase prismatic headings.
+- Hero numbers use the UI face with tabular figures and a primary→pop gradient fill; units and sample sizes sit beside them in muted text.
+- Visuals are single-series and quiet: Overall Day as gradient capsules (week), a calendar tinted by rating (month; unrated days outlined), monthly capsules (year). Feelings use the existing mood-family colors (`data-quadrant`) with words, never color alone. Every mark has a hover title and an accessible label.
+- Today uses `.muse-today-ring`. Empty states are short and honest. Hover lift only without reduced motion.

@@ -3,7 +3,6 @@
 .muse-agenda-toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px}
 .muse-agenda-nav{display:flex;gap:6px}
 .muse-agenda-nav .muse-button{min-height:38px;padding:6px 12px}
-.muse-agenda-title{margin:0 4px 0 0;font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-editorial-weight);font-size:clamp(1.15rem,1.8vw,1.45rem);flex:1 1 auto;min-width:0}
 .muse-agenda-check{display:inline-flex;align-items:center;gap:6px;font-size:.88rem}
 .muse-agenda-check input{accent-color:var(--accent-primary)}
 .muse-agenda-body{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;min-width:0}
@@ -264,9 +263,6 @@ button.muse-mark{cursor:pointer}button.muse-mark:focus-visible{outline:2px solid
 .muse-layout-choice{display:inline-flex;align-items:center;gap:6px}
 .muse-layout-editor .muse-choice-trigger{min-height:34px;height:34px;padding-block:0;font-size:.82rem}
 .muse-layout-add{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:.86rem}
-.muse-period-title{all:unset;cursor:pointer;border-radius:8px;font:inherit}
-.muse-period-title:hover{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px}
-.muse-period-title:focus-visible{outline:2px solid var(--accent-primary);outline-offset:3px}
 /* The Scheduled Board uses the same toolbar; it sits just above the board. */
 .muse-planner-bar{margin-bottom:var(--module-toolbar-gap,14px)}
 .muse-planner-bar .muse-planner-mobile-tabs{margin:0}

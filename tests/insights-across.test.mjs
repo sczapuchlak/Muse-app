@@ -59,9 +59,9 @@ test('recap facts reuse owners and keep unknowns explicit',()=>{
 });
 
 test('Insights preferences parse safely and hidden sections cannot be the default',()=>{
- assert.deepEqual(prefs.parseInsightsPreferences(null),{hidden:[],defaultView:'overview',defaultRange:'30',dailyGoals:true});
- assert.deepEqual(prefs.parseInsightsPreferences({hidden:['money','money','nope'],defaultView:'money',defaultRange:'5',dailyGoals:'yes'}),{hidden:['money'],defaultView:'overview',defaultRange:'30',dailyGoals:true});
- assert.deepEqual(prefs.parseInsightsPreferences({hidden:['astrology'],defaultView:'nourish',defaultRange:'year',dailyGoals:false}),{hidden:['astrology'],defaultView:'nourish',defaultRange:'year',dailyGoals:false});
+ assert.deepEqual(prefs.parseInsightsPreferences(null),{hidden:[],defaultView:'overview',defaultRange:'30',dailyGoals:true,readingProgress:'percent'});
+ assert.deepEqual(prefs.parseInsightsPreferences({hidden:['money','money','nope'],defaultView:'money',defaultRange:'5',dailyGoals:'yes'}),{hidden:['money'],defaultView:'overview',defaultRange:'30',dailyGoals:true,readingProgress:'percent'});
+ assert.deepEqual(prefs.parseInsightsPreferences({hidden:['astrology'],defaultView:'nourish',defaultRange:'year',dailyGoals:false}),{hidden:['astrology'],defaultView:'nourish',defaultRange:'year',dailyGoals:false,readingProgress:'percent'});
 });
 
 test('Insights wiring: customize, macro panel, connections, Wellness goals and the Daily Edit glance',()=>{

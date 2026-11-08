@@ -1,0 +1,125 @@
+/* Insights 2.0 — Life at a Glance (#97). Editorial, calm, made of the shared card, segmented control and tokens. */
+.muse-glance{--glance-gap:clamp(14px,1.8vw,20px)}
+.muse-glance-toolbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 16px;margin-bottom:6px}
+.muse-glance-toolbar .muse-agenda-title{font-size:clamp(1.35rem,2.4vw,1.85rem)}
+.muse-glance-tools{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.muse-glance-nav{display:flex;gap:6px}
+.muse-glance-nav .muse-button{min-height:38px}
+.muse-glance-lede{margin:0 0 var(--glance-gap);color:var(--text-muted);font-size:.9rem}
+.muse-glance-body{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--glance-gap)}
+.muse-glance-body>*{grid-column:1/-1}
+.muse-glance-tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--glance-gap)}
+.muse-glance-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:var(--glance-gap);align-items:start}
+.muse-glance-card{display:grid;gap:12px;align-content:start;min-width:0}
+.muse-glance .muse-glance-card{grid-column:auto}
+.muse-glance .muse-glance-card[data-wide]{grid-column:1/-1}
+.muse-glance-card-title{display:flex;align-items:center;gap:8px;margin:0;font-size:.78rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted)}
+.muse-glance-empty{margin:0;color:var(--text-muted);font-size:.9rem}
+.muse-glance-note{margin:0;color:var(--text-muted);font-size:.76rem;line-height:1.45}
+/* Hero numbers: statistics in the UI face with aligned figures. */
+.muse-glance-hero{margin:0;display:flex;align-items:baseline;gap:4px;font-family:var(--font-ui);font-variant-numeric:tabular-nums lining-nums}
+.muse-glance-hero strong{font-size:clamp(2rem,3.6vw,2.6rem);line-height:1;font-weight:700;background:linear-gradient(135deg,var(--accent-primary),var(--accent-pop,var(--accent-secondary)));-webkit-background-clip:text;background-clip:text;color:transparent}
+.muse-glance-hero small{color:var(--text-muted);font-size:.9rem}
+.muse-glance-pair{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0}
+.muse-glance-pair div{padding:8px 10px;border-radius:12px;background:var(--surface-subtle);border:1px solid var(--glass-border)}
+.muse-glance-pair dt{font-size:.72rem;color:var(--text-muted)}
+.muse-glance-pair dd{margin:2px 0 0;font-family:var(--font-ui);font-variant-numeric:tabular-nums;font-weight:600}
+.muse-glance-pair small{font-weight:400;color:var(--text-muted);font-size:.72rem}
+.muse-glance-meter{display:block;position:relative;height:6px;border-radius:999px;background:color-mix(in srgb,var(--glass-border) 70%,transparent);overflow:hidden}
+.muse-glance-meter>span{position:absolute;inset:0 auto 0 0;border-radius:inherit;background:linear-gradient(90deg,var(--accent-primary),var(--accent-pop,var(--accent-secondary)))}
+/* Week: seven tiny Dayprints */
+.muse-glance-week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px}
+.muse-glance-mini{all:unset;box-sizing:border-box;display:grid;grid-template-rows:auto 1.6rem 84px auto 10px;justify-items:center;gap:6px;padding:12px 6px 10px;border-radius:18px;border:1px solid var(--glass-border);background:var(--surface-subtle);cursor:pointer;min-width:0;text-align:center}
+.muse-glance-mini:hover{border-color:var(--selected-border)}
+.muse-glance-mini:focus-visible{outline:2px solid var(--focus-ring,var(--accent-primary));outline-offset:2px}
+.muse-glance-mini[data-future]{opacity:.45}
+.muse-glance-mini[data-empty]:not([data-future]){border-style:dashed}
+.muse-glance-mini-day{display:grid;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted)}
+.muse-glance-mini-day strong{font-size:1.15rem;letter-spacing:0;color:var(--foreground);font-family:var(--font-ui)}
+.muse-glance-mini-three{font-size:1.05rem;letter-spacing:.05em;white-space:nowrap;overflow:hidden;max-width:100%}
+.muse-glance-dash{color:var(--text-muted);font-size:.8rem}
+.muse-glance-mini-bar{position:relative;width:12px;height:100%;border-radius:999px;background:color-mix(in srgb,var(--glass-border) 60%,transparent)}
+.muse-glance-mini-bar>i{position:absolute;left:0;right:0;bottom:0;height:calc(var(--rating) * 100%);border-radius:999px;background:linear-gradient(0deg,var(--accent-primary),var(--accent-pop,var(--accent-secondary)))}
+.muse-glance-mini-bar[data-missing]{background:transparent;border:1px dashed var(--glass-border);box-sizing:border-box}
+.muse-glance-mini-rating{font-family:var(--font-ui);font-variant-numeric:tabular-nums;font-weight:600;font-size:.9rem}
+.muse-glance-mini-feelings{display:flex;gap:3px;justify-content:center}
+.muse-glance-mini-feelings i,.muse-glance-family-key i{width:8px;height:8px;border-radius:50%;background:var(--quadrant-color)}
+/* Month: a calendar that glows by Overall Day */
+.muse-glance-calendar{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+.muse-glance-weekday{font-size:.7rem;text-align:center;color:var(--text-muted);letter-spacing:.06em;text-transform:uppercase}
+.muse-glance-cell{all:unset;box-sizing:border-box;position:relative;display:grid;place-items:start;height:clamp(44px,5.6vw,72px);padding:6px 8px;border-radius:12px;cursor:pointer;border:1px dashed var(--glass-border);font-family:var(--font-ui);font-size:.8rem;color:var(--foreground);min-width:0}
+.muse-glance-cell[data-rated]{border-style:solid;border-color:transparent;background:color-mix(in srgb,var(--accent-primary) calc(var(--rating) * 70%),var(--surface-subtle))}
+.muse-glance-cell[data-future]{opacity:.4}
+.muse-glance-cell em{position:absolute;right:6px;bottom:4px;font-style:normal;font-size:1rem}
+.muse-glance-cell:hover{outline:1px solid var(--selected-border)}
+.muse-glance-cell:focus-visible{outline:2px solid var(--focus-ring,var(--accent-primary));outline-offset:2px}
+.muse-glance-legend{display:inline-flex;gap:3px;margin-right:8px;vertical-align:-2px}
+.muse-glance-legend i{width:14px;height:10px;border-radius:3px;background:color-mix(in srgb,var(--accent-primary) calc(var(--rating) * 70%),var(--surface-subtle))}
+/* Year: month by month */
+.muse-glance-months{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:8px;margin:0;padding:0;list-style:none}
+.muse-glance-months button{all:unset;box-sizing:border-box;display:grid;grid-template-rows:1.4rem 120px auto auto;justify-items:center;gap:6px;width:100%;padding:8px 2px;border-radius:14px;cursor:pointer}
+.muse-glance-months button:hover{background:var(--surface-subtle)}
+.muse-glance-months button:focus-visible{outline:2px solid var(--focus-ring,var(--accent-primary))}
+.muse-glance-month-bar{position:relative;width:16px;height:100%;border-radius:999px;background:color-mix(in srgb,var(--glass-border) 60%,transparent)}
+.muse-glance-month-bar>i{position:absolute;left:0;right:0;bottom:0;border-radius:999px;background:linear-gradient(0deg,var(--accent-primary),var(--accent-pop,var(--accent-secondary)))}
+.muse-glance-month-bar[data-missing]{background:transparent;border:1px dashed var(--glass-border);box-sizing:border-box}
+.muse-glance-month-value{font-family:var(--font-ui);font-variant-numeric:tabular-nums;font-weight:600;font-size:.85rem}
+.muse-glance-month-name{font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted)}
+/* Feelings */
+.muse-glance-feelings{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
+.muse-glance-feelings li{display:inline-flex;align-items:center;gap:4px}
+.muse-glance-families{display:flex;gap:2px;height:10px;border-radius:999px;overflow:hidden}
+.muse-glance-families i{display:block;min-width:6px;background:var(--quadrant-color)}
+.muse-glance-family-key{display:flex;flex-wrap:wrap;gap:4px 14px;margin:0;padding:0;list-style:none;font-size:.78rem}
+.muse-glance-family-key li{display:inline-flex;align-items:center;gap:6px}
+/* Day in Three favorites */
+.muse-glance-emoji{display:flex;flex-wrap:wrap;align-items:end;gap:10px 14px;margin:0;padding:0;list-style:none}
+.muse-glance-emoji li{display:grid;justify-items:center;gap:2px}
+.muse-glance-emoji li span{font-size:1.5rem;line-height:1}
+.muse-glance-emoji li[data-rank="1"] span{font-size:2.4rem}
+.muse-glance-emoji li[data-rank="2"] span{font-size:2rem}
+.muse-glance-emoji li[data-rank="3"] span{font-size:1.75rem}
+.muse-glance-emoji small{font-family:var(--font-ui);font-size:.72rem;color:var(--text-muted)}
+/* Lists */
+.muse-glance-good,.muse-glance-intentions,.muse-glance-meals,.muse-glance-priorities{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.muse-glance-good li{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.muse-glance-good-score{font-family:var(--font-ui);font-variant-numeric:tabular-nums;font-weight:700}
+.muse-glance-good-score small{font-weight:400;color:var(--text-muted)}
+.muse-glance-intentions li,.muse-glance-meals li{display:grid;grid-template-columns:4.5rem minmax(0,1fr);gap:8px;align-items:baseline;font-size:.9rem}
+.muse-glance-priorities li{display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:8px;align-items:baseline}
+.muse-glance-priorities li[data-done] span:nth-child(2){color:var(--text-muted);text-decoration:line-through}
+.muse-glance-priority-mark{font-weight:700;color:var(--accent-primary);text-align:center}
+.muse-glance-priorities li[data-done] .muse-glance-priority-mark{color:var(--success-primary)}
+.muse-glance-tags{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0;list-style:none}
+.muse-glance-tags li{padding:4px 10px;border-radius:999px;border:1px solid var(--glass-border);background:var(--surface-subtle);font-size:.82rem}
+/* Bookshelf */
+.muse-glance-reading-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px}
+.muse-glance-subhead{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;margin-top:4px}
+.muse-glance-subhead h3{margin:0;font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight);font-size:1.15rem}
+.muse-glance-books{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr));gap:12px;margin:0;padding:0;list-style:none}
+.muse-glance-book{display:grid;grid-template-columns:64px minmax(0,1fr);gap:14px;align-items:center;padding:12px;border-radius:16px;border:1px solid var(--glass-border);background:var(--surface-subtle)}
+.muse-glance-book .muse-book-cover{width:64px;aspect-ratio:2/3}
+.muse-glance-book-body{display:grid;gap:4px;min-width:0}
+.muse-glance-book-body>strong{line-height:1.25}
+.muse-glance-book-progress{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:4px 10px;margin:4px 0 0;font-family:var(--font-ui);font-variant-numeric:tabular-nums;font-size:.86rem}
+.muse-glance-book-progress>.small-label{grid-column:1/-1}
+p.muse-glance-book-progress{display:block}
+.muse-glance-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin:0}
+.muse-glance-stats div{padding:10px 12px;border-radius:14px;border:1px solid var(--glass-border);background:var(--surface-subtle)}
+.muse-glance-stats dt{font-size:.72rem;color:var(--text-muted)}
+.muse-glance-stats dd{margin:2px 0 0;font-family:var(--font-ui);font-variant-numeric:tabular-nums;font-weight:700;font-size:1.2rem}
+.muse-glance-finished{display:flex;flex-wrap:wrap;gap:12px;margin:0;padding:0;list-style:none}
+.muse-glance-finished li{display:grid;grid-template-columns:44px minmax(0,1fr);gap:10px;align-items:center;max-width:260px}
+.muse-glance-finished .muse-book-cover{width:44px;aspect-ratio:2/3}
+.muse-glance-finished li>span{display:grid;gap:2px}
+/* Day view: Dayprint leads */
+.muse-glance[data-period=day] .muse-dayprint{margin:0}
+@media (prefers-reduced-motion:no-preference){.muse-glance-mini,.muse-glance-cell,.muse-glance-months button{transition:border-color .18s ease,background .18s ease,transform .18s ease}.muse-glance-mini:hover{transform:translateY(-2px)}}
+@media (max-width:900px){.muse-glance-tiles{grid-template-columns:minmax(0,1fr)}.muse-glance-months{grid-template-columns:repeat(6,minmax(0,1fr))}.muse-glance-months button{grid-template-rows:1.4rem 80px auto auto}}
+@media (max-width:640px){
+ .muse-glance-week{grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+ .muse-glance-mini{grid-template-rows:auto 1.2rem 60px auto 8px;padding:8px 2px;border-radius:12px}
+ .muse-glance-mini-three{font-size:.7rem;letter-spacing:0}
+ .muse-glance-calendar{gap:3px}.muse-glance-cell{padding:3px 4px;font-size:.7rem;border-radius:8px}.muse-glance-cell em{font-size:.75rem;right:2px;bottom:1px}
+ .muse-glance-tools{width:100%}
+}

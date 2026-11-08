@@ -118,3 +118,16 @@
 .muse-daily-reflection .muse-reflection-editor{margin-top:var(--space-3)}
 .muse-daily-reflection textarea{display:block;width:100%;min-height:110px;margin-top:var(--space-3);resize:vertical}
 .muse-daily-reflection .muse-mood-period button:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
+
+/* #97: Mood keeps a compact check-in history; the Dayprint portrait lives in Insights. */
+.muse-mood-checkin-history{list-style:none;margin:var(--space-4) 0 0;padding:0;display:grid;gap:var(--space-4)}
+.muse-mood-checkin-history>li{display:grid;gap:var(--space-2);padding:var(--space-3) var(--space-4);border:1px solid var(--glass-border);border-radius:var(--card-radius,16px);background:var(--surface-subtle)}
+.muse-mood-checkin-history>li[data-selected]{border-color:var(--selected-border)}
+.muse-mood-checkin-day{display:flex;align-items:baseline;justify-content:space-between;gap:var(--space-3)}
+.muse-mood-checkin-day h3{margin:0;font-size:.95rem}
+.muse-mood-checkin-history ul{list-style:none;margin:0;padding:0;display:grid;gap:var(--space-2)}
+.muse-mood-checkin-row{display:grid;grid-template-columns:72px minmax(0,1fr) auto;gap:var(--space-3);align-items:start}
+.muse-mood-checkin-body{display:grid;gap:4px;min-width:0}
+.muse-mood-checkin-reflection{margin:0;font-size:.86rem;color:var(--text-secondary,var(--foreground))}
+.muse-mood-checkin-actions{display:flex;align-items:center;gap:4px}
+@media (max-width:640px){.muse-mood-checkin-row{grid-template-columns:minmax(0,1fr) auto}.muse-mood-checkin-row>.small-label{grid-column:1/-1}}
