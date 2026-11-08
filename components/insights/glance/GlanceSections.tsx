@@ -316,3 +316,19 @@ export function PlannedMeals({ meals, loaded, area }: { meals: DailyMealAssignme
       : <ul className="muse-glance-meals">{sorted.map((m) => <li key={m.id}><span className="muse-glance-meal-emoji" aria-hidden="true">{emoji[m.slot] ?? "🍽️"}</span><span><small>{mealLabels[m.slot]}</small>{m.title}</span></li>)}</ul>}
   </GlanceCard>;
 }
+
+/**
+ * #104 §12: the month's intentions as one chronological list, 1st → last day of the selected month only. Thin rows
+ * flow into columns so 28–31 days stay compact; days without an intention stay visible but quiet, future days fade.
+ */
+export function MonthIntentions({ days, intentions, today, onOpen, area }: { days: string[]; intentions: DailyGlance["intentions"]; today: string; onOpen: (d: string) => void; area?: string }) {
+  const byDate = new Map(intentions.map((x) => [x.date, x]));
+  const weekday = (d: string) => new Intl.DateTimeFormat("en-US", { weekday: "short", timeZone: "UTC" }).format(new Date(`${d}T12:00:00Z`));
+  return <GlanceCard id="glance-intentions" title="Intentions" icon="notes" area={area} note={`${intentions.length} of ${days.filter((d) => d <= today).length} days so far had an intention.`}>
+    <ol className="muse-glance-month-intentions">{days.map((d) => { const x = byDate.get(d), future = d > today;
+      return <li key={d} data-empty={!x || undefined} data-future={future || undefined} data-today={d === today || undefined}>
+        <button type="button" className="muse-glance-daycell" onClick={() => onOpen(d)} aria-label={`Open ${longDay(d)}`} disabled={future}><strong>{Number(d.slice(8))}</strong><small>{weekday(d)}</small></button>
+        {x ? <span className="muse-glance-intention-line" title={x.text}><span aria-hidden="true">{x.emoji ?? "✦"}</span> {x.text || "—"}</span> : <span className="muse-glance-intention-line" aria-label="No intention">{future ? "" : "—"}</span>}
+      </li>; })}</ol>
+  </GlanceCard>;
+}

@@ -1,4 +1,5 @@
 "use client";
+import { TaskDensityToggle } from "./TaskDensityToggle";
 import {useId,useRef,useState,type ReactNode} from 'react';
 import {GlassPopover} from '../GlassPopover';
 import {MuseIcon} from '../MuseIcon';
@@ -24,7 +25,7 @@ export function PlannerUtilities({date,title,onDate,today,onToday,onPrevious,onN
       <MuseChoiceMenu label="Tasks view" valueLabel={tasksViews.find(v=>v.id===view)!.label} options={tasksViews.map(v=>({id:v.id,label:v.label}))} selectedIds={[view]} onSelect={id=>onView(id as TasksView)}/>
       {view==='board'&&taskList}
       <button className="muse-button muse-agenda-icon" type="button" aria-label="Board Settings" aria-haspopup="dialog" aria-expanded={settingsOpen} aria-controls={id} onClick={event=>{anchor.current=event.currentTarget;setSettingsOpen(value=>!value);}}><MuseIcon name="settings" size={16}/></button>
-      <GlassPopover id={id} label="Board Settings" open={settingsOpen} anchorRef={anchor} onClose={()=>setSettingsOpen(false)} width={390} scrollMode="content"><PlannerOrganizationPanel onClose={()=>{setSettingsOpen(false);anchor.current?.focus();}}/></GlassPopover>
+      <GlassPopover id={id} label="Board Settings" open={settingsOpen} anchorRef={anchor} onClose={()=>setSettingsOpen(false)} width={390} scrollMode="content"><TaskDensityToggle/><PlannerOrganizationPanel onClose={()=>{setSettingsOpen(false);anchor.current?.focus();}}/></GlassPopover>
     </div>
   </div>;
 }

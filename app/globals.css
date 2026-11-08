@@ -125,8 +125,8 @@ p { margin: 0; }
   border-top-color: var(--glass-edge);
   border-bottom-color: var(--glass-aqua-edge);
   border-radius: var(--card-radius);
-  backdrop-filter: blur(var(--material-blur));
   -webkit-backdrop-filter: blur(var(--material-blur));
+  backdrop-filter: blur(var(--material-blur));
   box-shadow: var(--card-shadow);
   container-type: inline-size;
 }
@@ -563,3 +563,30 @@ input[type="search"] { padding:var(--space-2) var(--space-3); line-height:1.45; 
 .managed-type-category { width: auto; min-height: 32px; padding: 2px 8px; }
 :is(.muse-ritual-form,.muse-goal-form,.muse-insights-customize) select:focus-visible { outline: 2px solid var(--focus-ring, var(--selected-border)); outline-offset: 2px; }
 .muse-ritual-tracking { display: grid; gap: var(--space-3); }
+
+/* #104 Mobile stability: iOS zooms into any field under 16px when it is focused, which leaves the PWA shifted.
+   Touch screens get a 16px minimum on text fields; pinch-zoom stays available for accessibility. */
+@media (pointer: coarse) {
+  :is(input:not([type="checkbox"], [type="radio"], [type="range"], [type="color"], [type="file"]), textarea, select) { font-size: max(16px, 1em) !important; } /* a floor, so it must beat component sizes */
+}
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+
+/* #104 §3 Dropdown consistency, at the root: where the browser supports customizable <select> (Chromium), every
+   remaining native select opens a Muse-styled list — glass panel, same hover/selected/focus states as MuseChoiceMenu —
+   while keeping native keyboard, screen reader and form behavior. Elsewhere (iOS Safari) the native picker stays,
+   which is the right control on a phone. */
+@supports (appearance: base-select) {
+  select { appearance: base-select; }
+  select::picker-icon { color: var(--text-muted); transition: rotate .15s ease; }
+  select:open::picker-icon { rotate: 180deg; }
+  ::picker(select) {
+    appearance: base-select; margin-block: 6px; padding: 6px; border: 1px solid var(--glass-border); border-top-color: var(--glass-edge);
+    border-radius: var(--card-radius); background: var(--floating-background, var(--glass-background)); box-shadow: var(--floating-shadow, var(--card-shadow));
+    color: var(--foreground); max-height: min(360px, 70dvh); overflow-y: auto;
+  }
+  select option { display: flex; align-items: center; gap: var(--space-2); min-height: 34px; padding: 6px 12px; border: 1px solid transparent; border-radius: var(--control-radius); color: var(--foreground); font: inherit; }
+  select option:hover, select option:focus-visible { border-color: var(--glass-border); background: var(--surface-hover); outline: none; }
+  select option:checked { border-color: var(--selected-border); color: var(--selected-text, var(--foreground)); background: var(--selected-background); }
+  select option::checkmark { color: var(--accent-primary); }
+  select option:disabled { opacity: .5; }
+}

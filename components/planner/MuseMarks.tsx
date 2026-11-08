@@ -92,7 +92,7 @@ export function MarkEditor({ mark, date, link, onDone }: { mark?: MuseMark; date
 }
 
 /** My Marks and themed collections: one tap fills symbol, color, name and meaning. Only the style is copied. */
-function MarkQuickPick({ saved, onPick }: { saved: MarkStyle[]; onPick: (style: Omit<MarkStyle, "id">) => void }) {
+export function MarkQuickPick({ saved, onPick }: { saved: MarkStyle[]; onPick: (style: Omit<MarkStyle, "id">) => void }) {
   const tabs = [...(saved.length ? [{ id: "mine", label: "My Marks" }] : []), ...markCollections.map((c) => ({ id: c.id, label: c.label }))];
   const [tab, setTab] = useState(tabs[0].id);
   const list: Omit<MarkStyle, "id">[] = tab === "mine" ? saved : markCollections.find((c) => c.id === tab)?.marks ?? [];

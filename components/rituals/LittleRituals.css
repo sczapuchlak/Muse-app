@@ -10,3 +10,21 @@
 .muse-little-rituals footer { flex-shrink:0; padding-top:var(--space-3); border-top:1px solid var(--divider); margin-top:var(--space-3); }
 @container muse-content (max-width:880px) { .muse-little-rituals { max-height:30rem; min-height:0; } }
 /* Nested authored tracks must not inherit the dashboard's twelve-column spans. */
+
+/* #104 §7: breathing room under the title, category names in their saved colors, tighter rows, compact footer. */
+.muse-little-list{padding-top:var(--space-4)}
+.muse-little-group+.muse-little-group{margin-top:var(--space-3)}
+.muse-little-group h3{gap:8px;margin:0 0 4px;font-size:.74rem;font-weight:750;letter-spacing:.08em;color:var(--custom-accent-ink,color-mix(in srgb,var(--organization-accent,var(--accent-primary)) 75%,var(--foreground)))}
+.muse-little-group h3::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,color-mix(in srgb,var(--organization-accent,var(--accent-primary)) 45%,transparent),transparent)}
+.muse-little-group-icon{display:grid;place-items:center;width:22px;height:22px;border-radius:7px;background:linear-gradient(135deg,color-mix(in srgb,var(--organization-accent,var(--accent-primary)) 30%,transparent),color-mix(in srgb,var(--organization-accent,var(--accent-primary)) 10%,transparent));color:var(--custom-accent-ink,var(--organization-accent))}
+.muse-little-row{grid-template-columns:minmax(0,1fr) auto;min-height:34px;padding:2px 2px 2px 30px;border-radius:10px}
+.muse-little-row:hover{background:color-mix(in srgb,var(--surface-hover) 60%,transparent)}
+.muse-little-row>:last-child{justify-self:end}
+.muse-little-row .muse-ritual-cell-control{min-width:30px;width:30px;height:30px;padding:2px;font-size:.72rem}
+@media (pointer:coarse){.muse-little-row .muse-ritual-cell-control{min-width:38px;width:38px;height:38px}}
+.muse-little-rituals footer{display:flex;justify-content:flex-end;padding-top:var(--space-2);margin-top:var(--space-2)}
+.muse-little-view{display:inline-flex;align-items:center;gap:4px;padding:5px 12px;border:1px solid var(--glass-border);border-radius:999px;background:var(--surface-control);color:var(--foreground);font-size:.76rem;font-weight:600;text-decoration:none}
+.muse-little-view:hover{border-color:var(--interactive-border,var(--selected-border));background:var(--surface-hover)}
+.muse-little-view:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
+.muse-little-view svg{transform:rotate(-90deg)}
+.muse-little-row .muse-ritual-week-cell{min-height:0;min-width:0}

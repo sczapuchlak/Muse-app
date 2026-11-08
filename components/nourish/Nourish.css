@@ -1,10 +1,10 @@
-.muse-nourish-toolbar, .muse-nourish-toolbar nav { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-2); }
+.muse-nourish-toolbar, .muse-nourish-toolbar .muse-week-jump { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-2); }
 .muse-nourish-toolbar { justify-content: space-between; margin-bottom: var(--module-toolbar-gap); }
 .muse-nourish-toolbar-days{flex:1 1 350px;max-width:520px;min-width:min(100%,320px);margin-left:auto}
 .muse-nourish-toolbar-days .muse-week-strip{width:100%;max-width:none;margin:0}
 .muse-nourish-toolbar{gap:var(--space-2) var(--space-4);margin-bottom:var(--space-3)}
 @media(max-width:760px){.muse-nourish-toolbar-days{flex-basis:100%;max-width:none;margin-left:0}}
-.muse-nourish-toolbar nav > button { min-width: var(--touch-target); }
+.muse-nourish-toolbar .muse-week-jump > button { min-width: var(--touch-target); }
 .muse-nourish-page > .muse-week-strip { max-width: none; width: 100%; margin: 0 0 var(--module-week-gap); }
 .muse-nourish-week { display: flex; flex-direction: column; gap: var(--space-3); }
 .muse-meal-week-heading, .muse-nourish-day { display: grid; grid-template-columns: 80px repeat(4,minmax(130px,1fr)); gap: var(--space-3); }
@@ -148,7 +148,7 @@
 @media(pointer:coarse) { .muse-grocery-icon,.muse-grocery-check { width:44px; flex-basis:44px; } }
 /* Keep the weekday selector anchored to the right of week navigation. */
 .muse-nourish-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px 20px}
-.muse-nourish-toolbar nav{flex:0 1 auto;justify-content:flex-start}
+.muse-nourish-toolbar .muse-week-jump{flex:0 1 auto;justify-content:flex-start}
 .muse-nourish-toolbar-days{flex:0 1 520px;width:min(100%,520px);max-width:520px;min-width:0;margin-left:auto}
 @media(max-width:900px){.muse-nourish-toolbar-days{flex-basis:100%;max-width:none;width:100%;margin-left:0}}
 
@@ -197,3 +197,37 @@
 .muse-meal-entry>.muse-meal-title{flex:1 1 auto;width:auto;min-width:0}
 .muse-meal-entry>.muse-meal-meta{margin:0;flex:none}
 .muse-meal-entry>:not(.muse-meal-title):not(.muse-meal-meta){flex-basis:100%}
+
+/* My Meals (#104): one frosted sheet for the week, days as rows, meals as color-coded chips — no box in a box. */
+.muse-meal-slot[data-slot="breakfast"],.muse-meal-week-heading [data-slot="breakfast"]{--meal-ink:var(--chart-4)}
+.muse-meal-slot[data-slot="lunch"],.muse-meal-week-heading [data-slot="lunch"]{--meal-ink:var(--chart-6)}
+.muse-meal-slot[data-slot="dinner"],.muse-meal-week-heading [data-slot="dinner"]{--meal-ink:var(--chart-1)}
+.muse-meal-slot[data-slot="snacks"],.muse-meal-week-heading [data-slot="snacks"]{--meal-ink:var(--chart-3)}
+.muse-nourish-week{gap:0;padding:6px 8px;border:1px solid var(--glass-border);border-top-color:var(--glass-edge);border-radius:var(--card-radius);background:var(--glass-background)}
+.muse-meal-week-heading{padding:10px 12px 8px;border-bottom:1px solid var(--divider)}
+.muse-meal-week-heading [data-slot]{display:inline-flex;align-items:center;gap:7px;color:color-mix(in srgb,var(--meal-ink) 70%,var(--foreground))}
+.muse-meal-week-heading [data-slot]::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--meal-ink);box-shadow:0 0 8px color-mix(in srgb,var(--meal-ink) 60%,transparent)}
+:root .muse-nourish-week .muse-nourish-day,:root[data-material] .muse-nourish-week .muse-nourish-day{position:relative;padding:10px 12px;border:0;border-radius:14px;background:transparent;background-image:none;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;}
+.muse-nourish-week .muse-nourish-day+.muse-nourish-day::before{content:"";position:absolute;inset:0 12px auto;height:1px;background:var(--divider)}
+:root .muse-nourish-week .muse-nourish-day:hover{background:color-mix(in srgb,var(--surface-hover) 55%,transparent)}
+:root .muse-nourish-week .muse-nourish-day[data-today="true"]{background:linear-gradient(90deg,color-mix(in srgb,var(--accent-primary) 13%,transparent),transparent 60%)}
+:root .muse-nourish-week .muse-nourish-day[data-selected="true"]{box-shadow:inset 3px 0 0 var(--accent-primary)}
+.muse-nourish-day[data-today="true"] .muse-meal-day-heading strong{background:var(--icon-gradient,linear-gradient(135deg,var(--accent-primary),var(--accent-pop)));-webkit-background-clip:text;background-clip:text;color:transparent}
+.muse-nourish-week .muse-meal-entry,:root[data-material] .muse-nourish-week .muse-meal-entry{padding:6px 10px;border:1px solid color-mix(in srgb,var(--meal-ink) 38%,transparent);border-radius:12px;background:linear-gradient(120deg,color-mix(in srgb,var(--meal-ink) 20%,transparent),color-mix(in srgb,var(--meal-ink) 7%,transparent));box-shadow:none}
+.muse-nourish-week .muse-meal-entry .muse-meal-title{font-weight:600}
+.muse-nourish-week .muse-meal-slot[data-empty] .muse-meal-add{justify-content:flex-start;min-height:32px;border:0;color:var(--text-muted);opacity:.55}
+.muse-nourish-week .muse-meal-slot:not([data-empty]) .muse-meal-add{min-height:22px;padding:0 8px;border:0;opacity:.6}
+.muse-nourish-week .muse-nourish-day:hover .muse-meal-add,.muse-nourish-week .muse-meal-add:focus-visible{opacity:1}
+.muse-nourish-week .muse-meal-add:hover{color:var(--foreground);background:color-mix(in srgb,var(--meal-ink) 14%,transparent)}
+@media (hover:none){.muse-nourish-week .muse-meal-add{opacity:1}}
+.muse-nourish-week .muse-meal-slot:not([data-empty]){flex-direction:row;flex-wrap:wrap;align-items:flex-start;gap:4px}
+.muse-nourish-week .muse-meal-slot:not([data-empty]) .muse-meal-entries{flex:1 1 0;min-width:0;display:grid;gap:4px}
+.muse-nourish-week .muse-meal-slot:not([data-empty]) .muse-meal-add{align-self:center;width:24px;min-width:24px;padding:0;justify-content:center;border-radius:50%}
+.muse-nourish-week .muse-nourish-day:not([data-selected="false"])~.muse-nourish-day::before{display:block}
+@container muse-content (max-width: 760px){
+ .muse-nourish-week .muse-nourish-day::before{display:none}
+ .muse-nourish-week .muse-meal-slot,.muse-nourish-week .muse-meal-slot:not([data-empty]){display:grid;grid-template-columns:76px minmax(0,1fr) auto;align-items:center;gap:6px;padding:4px 0}
+ .muse-nourish-week .muse-meal-slot-title{margin:0;color:color-mix(in srgb,var(--meal-ink) 75%,var(--foreground))}
+ .muse-nourish-week .muse-meal-slot[data-empty] .muse-meal-entries{display:none}
+ .muse-nourish-week .muse-meal-slot[data-empty] .muse-meal-add{grid-column:2 / -1;min-height:36px}
+}

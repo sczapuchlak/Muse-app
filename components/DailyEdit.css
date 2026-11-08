@@ -21,3 +21,16 @@
  .daily-working-grid .muse-daily-reflection { order:11; }
  .daily-working-grid .day-in-three-card { order:12; }
 }
+
+/* #104 §7: a little color on Daily Edit section titles — each card gets its own theme ink and a soft icon chip.
+   Layout and hierarchy are unchanged. */
+.daily-working-grid .muse-card{--card-ink:var(--chart-1)}
+.daily-working-grid :is(#priorities,#little-rituals){--card-ink:var(--chart-1)}
+.daily-working-grid :is(#cosmic-forecast,#schedule){--card-ink:var(--chart-5)}
+.daily-working-grid :is(#water,#day-pulse){--card-ink:var(--chart-6)}
+.daily-working-grid :is(#movement,#meals){--card-ink:var(--chart-3)}
+.daily-working-grid :is(#mood,#daily-reflection,#day-in-three){--card-ink:var(--chart-2)}
+.daily-working-grid .card-heading h2{color:color-mix(in srgb,var(--card-ink) 34%,var(--foreground))}
+.daily-working-grid .card-heading-icon{width:26px;height:26px;border-radius:9px;color:var(--card-ink);background:linear-gradient(135deg,color-mix(in srgb,var(--card-ink) 24%,transparent),color-mix(in srgb,var(--card-ink) 6%,transparent));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--card-ink) 22%,transparent)}
+.daily-working-grid .muse-card>.card-heading{position:relative}
+.daily-working-grid .muse-card>.card-heading::after{content:"";position:absolute;left:0;bottom:-6px;width:42px;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--card-ink),transparent)}

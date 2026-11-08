@@ -727,6 +727,20 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
+                },"future_log_entries": {
+                  Row: {
+                    "color": string | null,"created_at": string,"done": boolean,"gradient": Json | null,"icon": string | null,"id": string,"local_date": string | null,"month": string,"note": string | null,"position": number,"revision": number,"title": string,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "color"?: string | null,"created_at"?: string,"done"?: boolean,"gradient"?: Json | null,"icon"?: string | null,"id"?: string,"local_date"?: string | null,"month": string,"note"?: string | null,"position"?: number,"revision"?: number,"title": string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Update: {
+                    "color"?: string | null,"created_at"?: string,"done"?: boolean,"gradient"?: Json | null,"icon"?: string | null,"id"?: string,"local_date"?: string | null,"month"?: string,"note"?: string | null,"position"?: number,"revision"?: number,"title"?: string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
                 },"grocery_items": {
                   Row: {
                     "complete": boolean,"created_at": string,"id": string,"name": string,"note": string | null,"position": number,"quantity": string | null,"section_id": string,"updated_at": string,"user_id": string
@@ -1621,14 +1635,14 @@ isOneToOne: false
                   ]
                 },"rituals": {
                   Row: {
-                    "captured_time_zone": string,"categories": Json | null,"connection": Json | null,"created_at": string,"goal": number,"group_id": string,"id": string,"lifecycle_status": string,"name": string,"position": number,"recurrence": string,"start_date": string,"tracking_type": string,"unit": string,"updated_at": string,"user_id": string,"weekdays": (number)[]
+                    "captured_time_zone": string,"categories": Json | null,"connection": Json | null,"created_at": string,"emoji": string | null,"goal": number,"group_id": string,"id": string,"lifecycle_status": string,"name": string,"position": number,"recurrence": string,"start_date": string,"times_per_week": number | null,"tracking_type": string,"unit": string,"updated_at": string,"user_id": string,"weekdays": (number)[]
                   }
                   ComputedFields: never
                   Insert: {
-                    "captured_time_zone": string,"categories"?: Json | null,"connection"?: Json | null,"created_at"?: string,"goal": number,"group_id": string,"id": string,"lifecycle_status"?: string,"name": string,"position": number,"recurrence": string,"start_date": string,"tracking_type": string,"unit": string,"updated_at"?: string,"user_id": string,"weekdays": (number)[]
+                    "captured_time_zone": string,"categories"?: Json | null,"connection"?: Json | null,"created_at"?: string,"emoji"?: string | null,"goal": number,"group_id": string,"id": string,"lifecycle_status"?: string,"name": string,"position": number,"recurrence": string,"start_date": string,"times_per_week"?: number | null,"tracking_type": string,"unit": string,"updated_at"?: string,"user_id": string,"weekdays": (number)[]
                   }
                   Update: {
-                    "captured_time_zone"?: string,"categories"?: Json | null,"connection"?: Json | null,"created_at"?: string,"goal"?: number,"group_id"?: string,"id"?: string,"lifecycle_status"?: string,"name"?: string,"position"?: number,"recurrence"?: string,"start_date"?: string,"tracking_type"?: string,"unit"?: string,"updated_at"?: string,"user_id"?: string,"weekdays"?: (number)[]
+                    "captured_time_zone"?: string,"categories"?: Json | null,"connection"?: Json | null,"created_at"?: string,"emoji"?: string | null,"goal"?: number,"group_id"?: string,"id"?: string,"lifecycle_status"?: string,"name"?: string,"position"?: number,"recurrence"?: string,"start_date"?: string,"times_per_week"?: number | null,"tracking_type"?: string,"unit"?: string,"updated_at"?: string,"user_id"?: string,"weekdays"?: (number)[]
                   }
                   Relationships: [
                     {

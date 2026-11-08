@@ -49,3 +49,17 @@
 .muse-take-muse-done{margin:0;font-size:.88rem}
 @media (max-width:600px){.muse-take-muse{padding:12px}.muse-take-muse-head{gap:12px}}
 .muse-take-muse h3>svg,.muse-take-muse h3>span:first-child{display:inline-block;margin-right:6px;vertical-align:-1px}
+
+/* #104 §1: on desktop the personalize step gets the room it needs — a wider panel, name and timezone side by side,
+   atmospheres in 2–3 columns. The welcome step and mobile keep their original single-column proportions. */
+.muse-welcome-fields{display:grid;gap:10px}.muse-welcome-field{display:grid;gap:8px;align-content:start;min-width:0}
+@media (min-width:1000px){
+ .muse-welcome[data-step=personalize]{max-width:1360px;grid-template-columns:minmax(260px,.7fr) minmax(0,1.6fr)}
+ .muse-welcome[data-step=personalize] .muse-welcome-glass{max-height:calc(100dvh - 64px)}
+ .muse-welcome[data-step=personalize] .muse-welcome-fields{grid-template-columns:minmax(0,1fr) minmax(0,1.2fr) auto;gap:18px}
+ .muse-welcome[data-step=personalize] .muse-welcome-appearance .muse-appearance-themes{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .muse-welcome[data-step=personalize] .muse-login-story h1{font-size:clamp(2.4rem,3.6vw,3.4rem)}
+}
+@media (min-width:1000px) and (max-width:1199px){.muse-welcome[data-step=personalize] .muse-welcome-appearance .muse-appearance-themes{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width:721px) and (max-width:999px){.muse-welcome[data-step=personalize] .muse-welcome-appearance .muse-appearance-themes{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width:1000px){.muse-welcome[data-step=personalize] .muse-appearance-preview{height:44px}.muse-welcome[data-step=personalize] .muse-appearance-theme{gap:6px}.muse-welcome[data-step=personalize] .muse-welcome-step{gap:8px}}

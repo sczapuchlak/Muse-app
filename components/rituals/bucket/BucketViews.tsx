@@ -1,10 +1,11 @@
 'use client';
 /* eslint-disable @next/next/no-img-element -- private, short-lived signed URLs; next/image would proxy them. */
-import {useEffect,useState,type CSSProperties,type KeyboardEvent,type ReactNode} from 'react';
+import {useEffect,useRef,useState,type CSSProperties,type KeyboardEvent,type ReactNode} from 'react';
 import {MuseIcon} from '../../MuseIcon';
 import {MuseOverflowMenu,type OverflowAction} from '../../MuseOverflowMenu';
 import {dateLabel} from '@/lib/dates';
 import {boardImageUrl} from '@/lib/data/constellation-images';
+import {defaultFrame,photoFrame,type PhotoFrame} from '@/lib/bucket-list/models';
 import type {BoardImage} from '@/lib/constellation-board';
 import {statusLabels,type BucketEntry,type BucketList} from '@/lib/bucket-list/models';
 import {shortYear,yearColor,yearOf,yearPattern,type TimelineYear} from '@/lib/bucket-list/logic';
@@ -73,7 +74,8 @@ export function ClassicList({list,entries,actions,arrange,addRow}:{list:BucketLi
 export function BucketPhoto({image,full=false,className}:{image:BoardImage;full?:boolean;className?:string}){
  const [src,setSrc]=useState('');
  useEffect(()=>{let live=true;boardImageUrl(full?image.path:image.thumbnailPath).then(u=>{if(live)setSrc(u);}).catch(()=>{});return ()=>{live=false;};},[image,full]);
- return src?<img className={className} src={src} alt={image.alt||''} width={image.width} height={image.height} loading="lazy"/>:<span className={`${className??''} muse-bucket-photo-wait`} aria-hidden="true"/>;
+ const f=photoFrame(image),style={objectPosition:`${f.x}% ${f.y}%`,...(f.zoom>1?{transform:`scale(${f.zoom})`,transformOrigin:`${f.x}% ${f.y}%`}:{})};
+ return src?<img className={className} src={src} alt={image.alt||''} width={image.width} height={image.height} loading="lazy" style={style}/>:<span className={`${className??''} muse-bucket-photo-wait`} aria-hidden="true"/>;
 }
 
 /** Collectible Cards: a card per dream; completed ones keep a keepsake (photo, place, date) in their year's color. */
@@ -111,5 +113,28 @@ export function TimelineView({list,years,someday,today,actions}:{list:BucketList
   </li>)}</ol>
   <section className="muse-bucket-someday" aria-label="Someday"><h3>Someday <span className="muse-bucket-year-count">{someday.length}</span></h3>
    {someday.length?<ul className="muse-bucket-pills">{someday.map(e=>pill(e,false))}</ul>:<p className="muse-bucket-quiet">Every open dream has a year in mind.</p>}</section>
+ </div>;
+}
+
+/**
+ * #104 §10: position and zoom a photo inside the card frame. Drag (mouse or touch) or use arrow keys; the preview is the
+ * exact card shape, so what you see is what every card shows on desktop and mobile. The upload itself is never changed.
+ */
+export function PhotoFramer({image,onChange}:{image:BoardImage;onChange:(frame:PhotoFrame)=>void}){
+ const f=photoFrame(image),drag=useRef<{x:number;y:number;fx:number;fy:number;w:number;h:number}|null>(null);
+ const move=(x:number,y:number)=>onChange({...f,x:Math.min(100,Math.max(0,x)),y:Math.min(100,Math.max(0,y))});
+ return <div className="muse-bucket-framer">
+  <div className="muse-bucket-framer-stage muse-bucket-card-art" role="slider" tabIndex={0} aria-label="Photo position. Drag or use arrow keys." aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(f.x)} aria-valuetext={`${Math.round(f.x)}% across, ${Math.round(f.y)}% down`}
+   onPointerDown={ev=>{const r=ev.currentTarget.getBoundingClientRect();drag.current={x:ev.clientX,y:ev.clientY,fx:f.x,fy:f.y,w:r.width,h:r.height};ev.currentTarget.setPointerCapture(ev.pointerId);}}
+   onPointerMove={ev=>{const d=drag.current;if(!d)return;const k=100/f.zoom;move(d.fx-(ev.clientX-d.x)/d.w*k,d.fy-(ev.clientY-d.y)/d.h*k);}}
+   onPointerUp={()=>{drag.current=null;}} onPointerCancel={()=>{drag.current=null;}}
+   onKeyDown={ev=>{const step=ev.shiftKey?10:2;const m:Record<string,[number,number]>={ArrowLeft:[-step,0],ArrowRight:[step,0],ArrowUp:[0,-step],ArrowDown:[0,step]};const v=m[ev.key];if(v){ev.preventDefault();move(f.x+v[0],f.y+v[1]);}}}>
+   <BucketPhoto image={image} full className="muse-bucket-card-photo"/>
+   <span className="muse-bucket-framer-hint" aria-hidden="true">Drag to position</span>
+  </div>
+  <div className="muse-bucket-framer-controls">
+   <label><span className="small-label">Zoom</span><input type="range" min={1} max={3} step={0.05} value={f.zoom} onChange={ev=>onChange({...f,zoom:Number(ev.target.value)})}/></label>
+   <button type="button" className="text-button" onClick={()=>onChange(defaultFrame)}>Reset</button>
+  </div>
  </div>;
 }

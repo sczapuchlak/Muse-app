@@ -6,7 +6,7 @@ import type {MovementCategory} from './progress/movement';
 type RitualType="checkbox"|"numeric"|"duration"|"weekly-target"|"category";
 export const connectionMetrics=['water','workouts','workout-minutes','reading-minutes','reading-pages','books-finished','tasks-completed'] as const;
 export type ConnectionMetric=typeof connectionMetrics[number];
-export type RitualConnection={metric:ConnectionMetric;since:string;category?:MovementCategory;typeId?:string;unit?:WaterUnit;threshold?:number};
+export type RitualConnection={metric:ConnectionMetric;since:string;category?:MovementCategory;typeId?:string;unit?:WaterUnit;threshold?:number;/** #104: water only — grade each date against that day's shared water goal instead of the ritual's own goal. */followGoal?:boolean};
 
 /** Which tracker kinds fit each Ritual type: counts for weekly targets, minutes for durations, anything for check-offs. */
 export function compatibleMetrics(type:RitualType):ConnectionMetric[]{
@@ -20,5 +20,6 @@ export function validConnection(ritual:{type:RitualType},connection:RitualConnec
  if(!connectionMetrics.includes(connection.metric)||!compatibleMetrics(ritual.type).includes(connection.metric)||!validDate(connection.since))return false;
  if(connection.threshold!==undefined&&!(Number.isFinite(connection.threshold)&&connection.threshold>0&&connection.threshold<=1000000))return false;
  if(connection.unit!==undefined&&!['oz','mL'].includes(connection.unit))return false;
+ if(connection.followGoal!==undefined&&(typeof connection.followGoal!=='boolean'||connection.metric!=='water'))return false;
  return true;
 }

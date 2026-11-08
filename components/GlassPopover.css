@@ -17,8 +17,8 @@
   border-radius: var(--floating-radius);
   background: var(--floating-background);
   box-shadow: var(--floating-shadow);
-  backdrop-filter: blur(var(--material-blur)) saturate(1.3);
   -webkit-backdrop-filter: blur(var(--material-blur)) saturate(1.3);
+  backdrop-filter: blur(var(--material-blur)) saturate(1.3);
   overscroll-behavior: contain;
 }
 /* The emotion picker owns its scrolling results; its footer stays outside them. */

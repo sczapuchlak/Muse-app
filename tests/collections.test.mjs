@@ -28,7 +28,8 @@ test('series progress distinguishes released, announced and selected denominator
  assert.equal(result.completed,1);assert.equal(result.total,1);assert.equal(result.status,'caught-up');
  result=models.seriesProgress(series('announced'),members,[],items);
  assert.equal(result.completed,1);assert.equal(result.total,2);assert.equal(result.availableTotal,1);assert.equal(result.percentage,100);assert.equal(result.status,'caught-up');
- assert.equal(result.next.id,'two');
+ // #104: an announced installment is never "Next up"; only released, unfinished ones are.
+ assert.equal(result.next,null);
  result=models.seriesProgress(series('selected'),members,[],items);
  assert.equal(result.total,2);
  result=models.seriesProgress(series('released'),[member('one',1)],[],items);

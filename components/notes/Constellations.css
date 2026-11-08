@@ -117,3 +117,13 @@
 .muse-board-settings{display:grid;gap:10px}
 @media (max-width:420px){.muse-constellation-results:not([data-layout=list]) .muse-thought-card:is([data-size=wide],[data-size=large]){grid-column:auto}}
 @media (prefers-reduced-motion:no-preference){.muse-thought-card{transition:box-shadow .15s ease,opacity .15s ease}}
+
+/* #104 §13A: tag creation — labelled field with a built-in #, a live preview, clear action hierarchy. */
+.muse-tag-field{display:grid;gap:6px}
+.muse-tag-input{display:flex;align-items:center;gap:4px;min-height:42px;padding:0 12px;border:1px solid var(--glass-border);border-radius:var(--control-radius);background:var(--surface-control)}
+.muse-tag-input:focus-within{border-color:var(--selected-border);box-shadow:0 0 0 3px color-mix(in srgb,var(--focus-ring) 30%,transparent)}
+.muse-tag-input>span{color:color-mix(in srgb,var(--accent-primary) 70%,var(--foreground));font-weight:700}
+.muse-tag-input input{flex:1;min-width:0;border:0!important;background:transparent!important;box-shadow:none!important;outline:none;padding:8px 0;color:var(--foreground)}
+.muse-tag-preview{display:flex;align-items:center;gap:8px;margin:0}
+.muse-board-tag-popover .muse-board-popover-actions{display:flex;justify-content:flex-end;gap:8px}
+.muse-board-search-empty{display:grid;justify-items:center;gap:10px;text-align:center}.muse-board-search-empty p{margin:0}.muse-board-search-empty .muse-board-popover-actions{justify-content:center;align-items:center}

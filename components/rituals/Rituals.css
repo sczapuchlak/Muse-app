@@ -316,3 +316,18 @@ button.muse-tracker-square:focus-visible{outline:2px solid var(--focus-ring);out
 .muse-mgrid-inks{display:inline-flex;gap:2px}
 .muse-mgrid-inks i{width:9px;height:9px}
 .muse-mgrid-slot>.muse-tracker-cellwrap{width:100%;height:100%;display:grid}
+
+/* #104 §6 */
+.muse-ritual-group-tools{display:inline-flex;align-items:center;gap:6px}
+.muse-ritual-group-add{width:36px;min-width:36px;min-height:36px;padding:0;display:grid;place-items:center;color:var(--custom-accent-ink,var(--organization-accent,var(--accent-primary)))}
+.muse-ritual-emoji,.muse-little-emoji{display:inline-block;margin-right:6px;font-size:1.05em;line-height:1}
+.muse-ritual-name-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:end}
+.muse-rituals-summary-line{margin:0;color:var(--text-muted);font-size:.85rem}.muse-rituals-summary-line strong{color:var(--foreground);font-size:1rem}
+.muse-rituals-summary-line{margin:4px 0 2px}
+/* Denser rows on desktop; touch keeps full-size targets. */
+@media (pointer:fine){
+ .muse-ritual-row{padding-block:10px;min-height:0}
+ .muse-ritual-row .muse-ritual-cell-control{min-width:36px;width:36px;height:36px}
+ .muse-ritual-description>p{margin:2px 0}
+}
+.muse-ritual-group-header .muse-ritual-group-icon{color:var(--custom-accent-ink,var(--organization-accent))}

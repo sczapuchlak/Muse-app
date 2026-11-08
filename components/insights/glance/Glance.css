@@ -331,3 +331,41 @@
 .muse-moment-date{all:unset;cursor:pointer}
 .muse-moment-date:hover{text-decoration:underline}
 .muse-moment-date:focus-visible{outline:2px solid var(--focus-ring,var(--accent-primary));border-radius:4px}
+
+/* #104 Dayprint: three equal tiles on top (Day in Three · Day Pulse · Little Moment), intention and moods below. */
+.muse-glance-portrait-grid{grid-template-columns:minmax(0,1fr) minmax(0,1.25fr) minmax(0,1.25fr);grid-template-areas:"three pulse moment" "intent intent moods"}
+.muse-glance-portrait-grid>.muse-glance-portrait-moment{grid-area:moment;margin:0;border-left:0;background:linear-gradient(150deg,color-mix(in srgb,var(--accent-primary) 14%,transparent),transparent 70%),var(--surface-subtle)}
+.muse-glance-portrait-grid>.muse-glance-portrait-moment p{margin:0;font-family:var(--font-editorial);font-style:italic;font-size:1.02rem;line-height:1.45;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.muse-glance-portrait-grid>.muse-glance-portrait-moment .muse-glance-sub{font-family:inherit;font-style:normal;font-size:.82rem}
+@media (max-width:1100px){.muse-glance-portrait-grid{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-areas:"three pulse" "moment moment" "intent intent" "moods moods"}}
+@media (max-width:640px){.muse-glance-portrait-grid{grid-template-columns:minmax(0,1fr);grid-template-areas:"three" "pulse" "moment" "intent" "moods"}}
+
+/* #104 Month: a gapless grid. Every slot stretches to its row, and its card fills the slot. */
+.muse-glance-month-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-areas:"cal rating prio" "cal feel move" "bright water read" "bright three read";gap:var(--glance-gap);align-items:stretch}
+.muse-glance-month-grid>div{display:flex;min-width:0}
+.muse-glance-month-grid>div>*{flex:1 1 auto;min-width:0}
+@media (max-width:1100px){.muse-glance-month-grid{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-areas:"cal cal" "rating prio" "feel move" "bright water" "bright three" "read read"}}
+@media (max-width:700px){.muse-glance-month-grid{grid-template-columns:minmax(0,1fr);grid-template-areas:"cal" "rating" "prio" "feel" "move" "bright" "water" "three" "read"}}
+/* Month intentions: chronological, thin rows, flowing into columns. */
+.muse-glance-month-intentions{margin:0;padding:0;list-style:none;columns:3 220px;column-gap:22px}
+.muse-glance-month-intentions li{break-inside:avoid;display:grid;grid-template-columns:44px minmax(0,1fr);align-items:center;gap:8px;min-height:30px;padding:2px 4px;border-radius:8px}
+.muse-glance-month-intentions li:hover{background:color-mix(in srgb,var(--surface-hover) 55%,transparent)}
+.muse-glance-month-intentions li[data-empty] .muse-glance-intention-line{color:var(--text-muted);opacity:.6}
+.muse-glance-month-intentions li[data-future]{opacity:.45}
+.muse-glance-month-intentions li[data-today] .muse-glance-daycell{box-shadow:inset 0 0 0 1.5px var(--accent-primary)}
+.muse-glance-intention-line{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.86rem}
+/* Date cells: a clear number with the weekday beside it — readable, not a tiny circular badge. */
+.muse-glance-daycell{all:unset;cursor:pointer;display:flex;align-items:baseline;gap:4px;padding:2px 6px;border-radius:8px;font-variant-numeric:tabular-nums}
+.muse-glance-daycell strong{font-size:.95rem;font-weight:700;color:var(--foreground)}
+.muse-glance-daycell small{font-size:.66rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:color-mix(in srgb,var(--accent-secondary) 70%,var(--foreground))}
+.muse-glance-daycell:hover{background:color-mix(in srgb,var(--accent-primary) 14%,transparent)}
+.muse-glance-daycell:focus-visible{outline:2px solid var(--focus-ring);outline-offset:1px}
+.muse-glance-daycell:disabled{cursor:default}
+/* The older round date chips get readable contrast too (Week view keeps its layout). */
+.muse-glance-datechip small{font-size:.62rem!important;font-weight:700;letter-spacing:.06em;color:color-mix(in srgb,#fff 88%,transparent)!important;opacity:1!important}
+/* #104: a clear visual vocabulary — card titles get a soft rounded-square tile, date cells stay typographic,
+   rings stay round, emoji empty states stay bare. */
+.muse-glance .muse-glance-card-title .muse-glance-badge{border-radius:10px;width:30px;height:30px;background:linear-gradient(140deg,color-mix(in srgb,var(--glance-ink,var(--accent-primary)) 30%,transparent),color-mix(in srgb,var(--glance-ink,var(--accent-primary)) 8%,transparent));color:var(--glance-ink,var(--accent-primary));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--glance-ink,var(--accent-primary)) 30%,transparent)}
+.muse-glance .muse-glance-card{--glance-ink:var(--chart-1)}
+.muse-glance .muse-glance-card[data-tone="warm"]{--glance-ink:var(--chart-4)}.muse-glance .muse-glance-card[data-tone="cool"]{--glance-ink:var(--chart-6)}.muse-glance .muse-glance-card[data-tone="pop"]{--glance-ink:var(--chart-3)}
+.muse-glance .muse-glance-card-title{color:color-mix(in srgb,var(--glance-ink) 30%,var(--foreground))}

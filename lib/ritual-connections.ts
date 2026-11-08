@@ -12,7 +12,9 @@ import {movementCategoryLabels} from './progress/movement';
  */
 export {connectionMetrics,compatibleMetrics,validConnection,type ConnectionMetric,type RitualConnection} from './ritual-connection-rules';
 import {validConnection,type RitualConnection} from './ritual-connection-rules';
-export type DerivedValue={ritualId:string;date:string;value:number;measured:number;recordIds:string[];incomplete:boolean};
+export type DerivedValue={ritualId:string;date:string;value:number;measured:number;recordIds:string[];incomplete:boolean;goal?:number};
+/** #104: the shared water goal for a date — the goal saved with that day's log, else the current setting. */
+export function waterGoalFor(sources:ProgressSources,date:string,unit:string){const day=sources.wellness?.water.find(w=>w.date===date),s=sources.wellness?.waterSettings;const goal=day?.goal??s?.goal,u=day?.unit??s?.unit??'oz';if(!goal||goal<=0)return undefined;return u===unit?goal:u==='oz'?Math.round(goal*29.5735):Math.round(goal/29.5735*10)/10;}
 
 export const connectionSpec=(c:RitualConnection):MetricSpec=>({metric:c.metric,category:c.category,typeId:c.typeId,unit:c.unit});
 
@@ -24,8 +26,8 @@ export function connectionLabel(c:Pick<RitualConnection,'metric'|'category'|'uni
 export function connectionUnit(c:Pick<RitualConnection,'metric'|'unit'>){return c.metric==='water'?(c.unit??'oz'):metricInfo[c.metric].unit;}
 
 /** Derived value for one measured day, shaped to the Ritual type. Zero is never derived: no record is not a "missed". */
-function shape(ritual:RitualDefinition,connection:RitualConnection,day:DayMeasure){
- if(ritual.type==='checkbox')return day.value>=(connection.threshold??1)?1:0;
+function shape(ritual:RitualDefinition,connection:RitualConnection,day:DayMeasure,sharedGoal?:number){
+ if(ritual.type==='checkbox')return day.value>=(sharedGoal??connection.threshold??1)?1:0;
  if(ritual.type==='weekly-target')return Math.floor(day.value);
  return Math.round(day.value*100)/100;
 }
@@ -39,8 +41,9 @@ export function derivedValues(ritual:RitualDefinition,sources:ProgressSources,to
  const values:DerivedValue[]=[];
  for(const day of days.values()){
   if(day.date<connection.since||day.date>today||!isScheduled(ritual,day.date))continue;
-  const value=shape(ritual,connection,day);
-  if(value>0&&value<=1000000)values.push({ritualId:ritual.id,date:day.date,value,measured:day.value,recordIds:day.recordIds,incomplete:!day.complete});
+  const shared=connection.followGoal&&connection.metric==='water'?waterGoalFor(sources,day.date,connection.unit??'oz'):undefined;
+  const value=shape(ritual,connection,day,shared),goal=ritual.type==='checkbox'?undefined:shared;
+  if(value>0&&value<=1000000)values.push({ritualId:ritual.id,date:day.date,value,measured:day.value,recordIds:day.recordIds,incomplete:!day.complete,...(goal?{goal}:{})});
  }
  return {values:values.sort((a,b)=>a.date.localeCompare(b.date)),available,issue};
 }
@@ -55,7 +58,7 @@ export function withConnections(state:RitualState,sources:ProgressSources,today:
  if(!connected.length||!validDate(today))return {state,derived,issues,unavailable};
  for(const ritual of connected){const result=derivedValues(ritual,sources,today,cache);if(!result.available)unavailable=true;if(result.issue)issues.push(result.issue);for(const value of result.values)derived.set(`${value.ritualId}/${value.date}`,value);}
  const entries:RitualEntry[]=state.entries.filter(e=>!derived.has(`${e.ritualId}/${e.date}`));
- for(const value of derived.values())entries.push({id:`${value.ritualId}/${value.date}`,ritualId:value.ritualId,date:value.date,value:value.value,updatedAt:'',derived:true});
+ for(const value of derived.values())entries.push({id:`${value.ritualId}/${value.date}`,ritualId:value.ritualId,date:value.date,value:value.value,updatedAt:'',derived:true,...(value.goal?{goal:value.goal}:{})});
  return {state:{...state,entries},derived,issues,unavailable};
 }
 

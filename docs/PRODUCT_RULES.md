@@ -777,3 +777,11 @@ Stephanie approved importing the HeartYearning Dream Symbols Dataset with attrib
 
 ## Daily Memories (#105)
 A Little Moment is its own record (one per local date). It is never stored in Day Pulse, Mood notes or Day in Three, and resetting or clearing those never removes it.
+
+## UI Fixes 2.0 (#104)
+- Future Log entries are their own records; they never become events or tasks without an explicit action. Tasks and intentions do not populate the Future Log.
+- Water goals: a logged day keeps its own goal; unlogged days use the current shared goal; there is one default. A connected Water ritual follows the shared goal only when chosen.
+- "Times per week" rituals count distinct completed days; days without a check-in are never "missed".
+- Series "Next up" is never an announced installment; missing whole numbers are reported, never assumed.
+- Reflections pages are set and concise: three wins, three memories; older pages keep their content.
+- Money summaries keep projected (paycheck, planned) and actual (recorded spending) apart.

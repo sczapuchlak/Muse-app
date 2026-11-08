@@ -3,8 +3,8 @@ import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, 
 import { createMuseBrowserClient } from "@/lib/supabase/client";
 import { boardImageUrl, removeBoardImages, uploadBoardImage } from "@/lib/data/constellation-images";
 import { glanceRange, glanceTitle, shiftGlance } from "@/lib/insights/glance";
-import { guidedPrompts, hasContent, layoutById, layoutsFor, moduleImages, moduleSizes, moduleType, moduleTypes, newModule, periods, seedModules, storedImages, switchLayout,
-  type GuidedPrompt, type LayoutId, type LifeArea, type LifeRating, type ModuleContent, type ModuleSize, type ModuleType, type ReflectionImage, type ReflectionModule, type ReflectionPeriod } from "@/lib/reflections/model";
+import { canAddItem, guidedPrompts, hasContent, layoutById, layoutsFor, moduleType, periods, seedModules, switchLayout,
+  type GuidedPrompt, type LayoutId, type LifeArea, type LifeRating, type ModuleContent, type ModuleType, type ReflectionImage, type ReflectionModule, type ReflectionPeriod } from "@/lib/reflections/model";
 import { clearRating, readLifeAreas, readRatings, readReview, saveLifeArea, saveRating, saveReview, type Review } from "@/lib/reflections/persistence";
 import { MuseIcon } from "../../MuseIcon";
 import { MuseStar } from "../../MuseStar";
@@ -14,7 +14,6 @@ import "./Reflections.css";
 
 type Client = ReturnType<typeof createMuseBrowserClient>;
 const uid = () => crypto.randomUUID();
-const sizeLabel: Record<ModuleSize, string> = { full: "Full width", wide: "Wide", half: "Half", third: "Third" };
 const periodKey = "muse.reflections.period";
 const isPeriod = (v: unknown): v is ReflectionPeriod => periods.some((p) => p.id === v);
 
@@ -87,7 +86,7 @@ function LayoutPreview({ id }: { id: LayoutId }) {
 function LayoutPicker({ period, future, onPick, current, onCancel }: { period: ReflectionPeriod; future?: boolean; onPick: (id: LayoutId) => void; current?: string; onCancel?: () => void }) {
   return <div className="muse-reflections-picker">
     {!current && <header><p className="muse-reflections-kicker">A fresh page <MuseStar size={14} prismatic /></p><h2>How would you like to remember this {period}?</h2>
-      <p className="muse-reflections-quiet">{future ? "This hasn’t happened yet, but you can set up the page now." : "Pick a starting layout. Every section can be renamed, moved, added or removed later."}</p></header>}
+      <p className="muse-reflections-quiet">{future ? "This hasn’t happened yet, but you can set up the page now." : "Pick a starting layout. Each layout is a short, set page: three favorites, three wins and a few reflections."}</p></header>}
     <div className="muse-reflections-layouts">{layoutsFor(period).map((l) => <button key={l.id} type="button" className="muse-reflections-layout" data-mood={l.mood} aria-pressed={current === l.id} onClick={() => onPick(l.id)}>
       <LayoutPreview id={l.id} /><strong>{l.name}</strong><span>{l.tagline}</span><small>{l.seeds.map((s) => s.title ?? moduleType(s.type).defaultTitle).join(" · ")}</small></button>)}</div>
     {onCancel && <button type="button" className="muse-reflections-pill" onClick={onCancel}>Keep my current layout</button>}
@@ -97,7 +96,7 @@ function LayoutPicker({ period, future, onPick, current, onCancel }: { period: R
 // ---------- The review ----------
 type Change = (fn: (r: Review) => Review, delay?: number) => void;
 function ReviewBook({ review, editing, setEditing, status, change, client, upload, today }: { review: Review; editing: boolean; setEditing: (v: boolean) => void; status: string; change: Change; client: () => Client; upload: (f: File, id: string) => Promise<ReflectionImage>; today: string }) {
-  const layout = layoutById(review.layout), [adding, setAdding] = useState(false), [switching, setSwitching] = useState<null | "pick" | LayoutId>(null);
+  const layout = layoutById(review.layout), [switching, setSwitching] = useState<null | "pick" | LayoutId>(null);
   const setModules = (fn: (m: ReflectionModule[]) => ReflectionModule[], delay?: number) => change((r) => ({ ...r, modules: fn(r.modules) }), delay);
   const visible = review.modules.filter((m) => editing || (!m.hidden && (hasContent(m) || m.type === "level10")));
   const plan = typeof switching === "string" && switching !== "pick" ? switchLayout(review.modules, switching) : null;
@@ -125,40 +124,24 @@ function ReviewBook({ review, editing, setEditing, status, change, client, uploa
     </div>}
 
     <div className="muse-reflections-grid">
-      {visible.map((m) => <ModuleFrame key={m.id} module={m} editing={editing} first={review.modules[0]?.id === m.id} last={review.modules.at(-1)?.id === m.id}
+      {visible.map((m) => <ModuleFrame key={m.id} module={m} editing={editing}
         onChange={(next, delay) => setModules((list) => list.map((x) => x.id === m.id ? next : x), delay)}
-        onMove={(dir) => setModules((list) => { const i = list.findIndex((x) => x.id === m.id), j = i + dir; if (j < 0 || j >= list.length) return list; const n = [...list]; [n[i], n[j]] = [n[j], n[i]]; return n; }, 0)}
-        onRemove={() => { const gone = storedImages(moduleImages(m)); setModules((list) => list.filter((x) => x.id !== m.id), 0); if (gone.length) void removeBoardImages(gone.map((g) => ({ ...g, name: "", mime: "image/webp" })) as never).catch(() => {}); }}>
+      >
         <ModuleBody module={m} editing={editing} review={review} client={client} upload={upload} today={today} onChange={(content, delay) => setModules((list) => list.map((x) => x.id === m.id ? { ...x, content } as ReflectionModule : x), delay)} />
       </ModuleFrame>)}
       {!editing && visible.length === 0 && <div className="muse-reflections-empty"><MuseStar size={20} prismatic /><p>This page is waiting for its first memory.</p><button type="button" className="muse-button button-primary" onClick={() => setEditing(true)}>Start writing</button></div>}
     </div>
 
-    {editing && <div className="muse-reflections-add">
-      <button type="button" className="muse-reflections-add-trigger" aria-expanded={adding} onClick={() => setAdding(!adding)}><MuseIcon name="plus" size={16} />Add a section</button>
-      {adding && <div className="muse-reflections-library" role="group" aria-label="Section library">{moduleTypes.filter((t) => t.repeatable || !review.modules.some((m) => m.type === t.id)).map((t) =>
-        <button key={t.id} type="button" onClick={() => { setModules((list) => [...list, newModule(t.id, uid())], 0); setAdding(false); }}><span aria-hidden="true">{t.emoji}</span><strong>{t.label}</strong><small>{t.hint}</small></button>)}</div>}
-    </div>}
   </article>;
 }
 
-function ModuleFrame({ module: m, editing, first, last, onChange, onMove, onRemove, children }: { module: ReflectionModule; editing: boolean; first: boolean; last: boolean; onChange: (m: ReflectionModule, delay?: number) => void; onMove: (dir: -1 | 1) => void; onRemove: () => void; children: ReactNode }) {
-  const [confirm, setConfirm] = useState(false), meta = moduleType(m.type);
+function ModuleFrame({ module: m, editing, onChange, children }: { module: ReflectionModule; editing: boolean; onChange: (m: ReflectionModule, delay?: number) => void; children: ReactNode }) {
+  const meta = moduleType(m.type);
   return <section className="muse-reflections-module" data-type={m.type} data-size={m.size} data-hidden={m.hidden || undefined} aria-label={m.title}>
     <header className="muse-reflections-module-head">
       {editing ? <input className="muse-reflections-module-title" aria-label="Section title" maxLength={60} value={m.title} onChange={(e) => onChange({ ...m, title: e.target.value })} />
         : <h3><span aria-hidden="true">{meta.emoji}</span>{m.title}</h3>}
-      {editing && <div className="muse-reflections-module-tools" role="group" aria-label={`Arrange ${m.title}`}>
-        <MuseChoiceMenu label={`Size of ${m.title}`} valueLabel={sizeLabel[m.size]} options={moduleSizes.map((s) => ({ id: s, label: sizeLabel[s] }))} selectedIds={[m.size]} onSelect={(s) => onChange({ ...m, size: s as ModuleSize }, 0)} />
-        <button type="button" className="muse-reflections-icon" disabled={first} aria-label={`Move ${m.title} earlier`} onClick={() => onMove(-1)}>↑</button>
-        <button type="button" className="muse-reflections-icon" disabled={last} aria-label={`Move ${m.title} later`} onClick={() => onMove(1)}>↓</button>
-        <button type="button" className="muse-reflections-icon" aria-pressed={!!m.hidden} aria-label={m.hidden ? `Show ${m.title}` : `Hide ${m.title}`} title={m.hidden ? "Show in the finished page" : "Hide from the finished page (content kept)"} onClick={() => onChange({ ...m, hidden: !m.hidden || undefined }, 0)}><MuseIcon name={m.hidden ? "eye-off" : "eye"} size={16} /></button>
-        <button type="button" className="muse-reflections-icon" aria-label={`Remove ${m.title}`} onClick={() => hasContent(m) ? setConfirm(true) : onRemove()}>×</button>
-      </div>}
     </header>
-    {confirm && <div className="muse-reflections-confirm" role="alertdialog" aria-label={`Remove ${m.title}`}><p>Remove “{m.title}” and everything in it? You can hide it instead and keep the content.</p>
-      <div className="muse-reflections-actions"><button type="button" className="muse-reflections-pill" onClick={() => { onChange({ ...m, hidden: true }, 0); setConfirm(false); }}>Hide instead</button>
-        <button type="button" className="muse-button" data-destructive onClick={() => { setConfirm(false); onRemove(); }}>Remove section</button><button type="button" className="muse-reflections-pill" onClick={() => setConfirm(false)}>Keep</button></div></div>}
     {children}
   </section>;
 }
@@ -225,7 +208,7 @@ function Memories({ module, editing, onChange, upload, review }: Body) {
     <div className="muse-reflections-photostrip">{m.photos.map((ph) => <div key={ph.id}><Picture image={ph} /><Remove label="Remove photo" onClick={() => { if (!("url" in ph)) void removeBoardImages([{ ...ph, name: "", mime: "image/webp" }] as never).catch(() => {}); ops.update(m.id, { photos: m.photos.filter((x) => x.id !== ph.id) }); }} /></div>)}
       {m.photos.length < 8 && <ImageField label="Photo" upload={upload} reviewId={review.id} onChange={(img) => img && ops.update(m.id, { photos: [...m.photos, img] })} />}</div>
     <Field label="Caption (optional)" value={m.caption} onChange={(caption) => ops.update(m.id, { caption })} />
-  </div>)}<AddItem onClick={() => ops.add({ id: uid(), title: "", text: "", caption: "", photos: [] })}>Add a memory</AddItem></div>;
+  </div>)}{canAddItem("memories", c.items.length) && <AddItem onClick={() => ops.add({ id: uid(), title: "", text: "", caption: "", photos: [] })}>Add a memory</AddItem>}</div>;
 }
 
 function Photos({ module, editing, onChange, upload, review }: Body) {
@@ -235,7 +218,7 @@ function Photos({ module, editing, onChange, upload, review }: Body) {
     <div className="muse-segmented" role="group" aria-label="Photo layout">{(["single", "pair", "gallery"] as const).map((v) => <button key={v} type="button" aria-pressed={c.variant === v} onClick={() => onChange({ ...c, variant: v }, 0)}>{v === "single" ? "Single" : v === "pair" ? "Pair" : "Gallery"}</button>)}</div>
     <div className="muse-reflections-photogrid">{c.items.map((i) => <div key={i.id} className="muse-reflections-edititem">{i.photo ? <Picture image={i.photo} /> : <ImageField label="Photo" upload={upload} reviewId={review.id} onChange={(photo) => ops.update(i.id, { photo })} />}
       <Field label="Caption" value={i.caption} onChange={(caption) => ops.update(i.id, { caption })} /><Remove label="Remove photo" onClick={() => { if (i.photo && !("url" in i.photo)) void removeBoardImages([{ ...i.photo, name: "", mime: "image/webp" }] as never).catch(() => {}); ops.remove(i.id); }} /></div>)}</div>
-    {c.items.length < 12 && <AddItem onClick={() => ops.add({ id: uid(), caption: "" })}>Add a photo</AddItem>}</div>;
+    {canAddItem("photos", c.items.length) && <AddItem onClick={() => ops.add({ id: uid(), caption: "" })}>Add a photo</AddItem>}</div>;
 }
 
 function Music({ module, editing, onChange, upload, review }: Body) {
@@ -249,7 +232,7 @@ function Music({ module, editing, onChange, upload, review }: Body) {
     <Field label="Why it was on repeat (optional)" value={s.note} onChange={(note) => ops.update(s.id, { note })} max={600} />
     <div className="muse-reflections-row"><input className="muse-reflections-input" aria-label="Link (optional, https)" placeholder="Link (optional, https)" value={s.link ?? ""} onChange={(e) => ops.update(s.id, { link: /^https:\/\/\S+$/.test(e.target.value) ? e.target.value : e.target.value ? s.link : undefined })} />
       <ImageField label="Artwork" image={s.art} upload={upload} reviewId={review.id} onChange={(art) => ops.update(s.id, { art })} /></div>
-  </div>)}<AddItem onClick={() => ops.add({ id: uid(), title: "", artist: "", note: "" })}>Add a song</AddItem></div>;
+  </div>)}{canAddItem("music", c.items.length) && <AddItem onClick={() => ops.add({ id: uid(), title: "", artist: "", note: "" })}>Add a song</AddItem>}</div>;
 }
 
 function Shelf({ module, editing, onChange, upload, review }: Body) {
@@ -267,7 +250,7 @@ function Shelf({ module, editing, onChange, upload, review }: Body) {
       <Remove label={`Remove ${i.title || "item"}`} onClick={() => ops.remove(i.id)} /></div>
     <div className="muse-reflections-row"><Stars value={i.rating} label="Rating" onChange={(rating) => ops.update(i.id, { rating })} /><ImageField label={books ? "Cover" : "Poster"} image={imageOf(i)} upload={upload} reviewId={review.id} onChange={(img) => ops.update(i.id, books ? { cover: img } : { poster: img })} /></div>
     <Field label="A note (optional)" value={i.note} onChange={(note) => ops.update(i.id, { note })} max={600} />
-  </div>)}<AddItem onClick={() => ops.add(books ? { id: uid(), title: "", author: "", note: "" } as Item : { id: uid(), title: "", kind: "movie", note: "" } as Item)}>{books ? "Add a book" : "Add a movie or show"}</AddItem>
+  </div>)}{canAddItem(module.type, items.length) && <AddItem onClick={() => ops.add(books ? { id: uid(), title: "", author: "", note: "" } as Item : { id: uid(), title: "", kind: "movie", note: "" } as Item)}>{books ? "Add a book" : "Add a movie or show"}</AddItem>}
     <p className="muse-reflections-quiet">These stay in this reflection; Collections and Bookshelf aren’t changed.</p></div>;
 }
 
@@ -279,7 +262,7 @@ function Favorites({ module, editing, onChange, upload, review }: Body) {
     <div className="muse-reflections-row"><Field label="Favorite" value={f.name} onChange={(name) => ops.update(f.id, { name })} /><Field label="Category (food, place, find…)" value={f.category} onChange={(category) => ops.update(f.id, { category })} max={60} /><Remove label={`Remove ${f.name || "favorite"}`} onClick={() => ops.remove(f.id)} /></div>
     <Field label="Why you loved it (optional)" value={f.description} onChange={(description) => ops.update(f.id, { description })} max={600} />
     <ImageField label="Image" image={f.image} upload={upload} reviewId={review.id} onChange={(image) => ops.update(f.id, { image })} />
-  </div>)}<AddItem onClick={() => ops.add({ id: uid(), name: "", category: "", description: "" })}>Add a favorite</AddItem></div>;
+  </div>)}{canAddItem("favorites", c.items.length) && <AddItem onClick={() => ops.add({ id: uid(), name: "", category: "", description: "" })}>Add a favorite</AddItem>}</div>;
 }
 
 const highlightKinds = [{ id: "win", label: "Win", emoji: "🏆" }, { id: "achievement", label: "Achievement", emoji: "🎖️" }, { id: "experience", label: "Experience", emoji: "✨" }, { id: "moment", label: "Moment", emoji: "💫" }, { id: "milestone", label: "Milestone", emoji: "🌟" }] as const;
@@ -289,7 +272,7 @@ function Highlights({ module, editing, onChange }: Body) {
   return <div className="muse-reflections-editlist">{c.items.map((h) => <div key={h.id} className="muse-reflections-row">
     <MuseChoiceMenu label="Kind of highlight" valueLabel={`${highlightKinds.find((k) => k.id === h.kind)!.emoji} ${highlightKinds.find((k) => k.id === h.kind)!.label}`} options={highlightKinds.map((k) => ({ id: k.id, label: `${k.emoji} ${k.label}` }))} selectedIds={[h.kind]} onSelect={(kind) => ops.update(h.id, { kind: kind as typeof h.kind })} />
     <Field label="Highlight" value={h.text} onChange={(text) => ops.update(h.id, { text })} max={400} /><Remove label="Remove highlight" onClick={() => ops.remove(h.id)} /></div>)}
-    <AddItem onClick={() => ops.add({ id: uid(), text: "", kind: "win" })}>Add a highlight</AddItem></div>;
+    {canAddItem("highlights", c.items.length) && <AddItem onClick={() => ops.add({ id: uid(), text: "", kind: "win" })}>Add a win</AddItem>}</div>;
 }
 
 function Guided({ module, editing, onChange }: Body) {
@@ -301,7 +284,7 @@ function Guided({ module, editing, onChange }: Body) {
       {c.prompt === "custom" && <Field label="Your question" value={c.question} onChange={(q) => onChange({ ...c, question: q })} />}</div>
     {question && c.prompt !== "custom" && <p className="muse-reflections-question">{question}</p>}
     {c.entries.map((e) => <div key={e.id} className="muse-reflections-row"><Field label="Answer" value={e.text} onChange={(text) => ops.update(e.id, { text })} max={1000} multiline /><Remove label="Remove answer" onClick={() => ops.remove(e.id)} /></div>)}
-    <AddItem onClick={() => ops.add({ id: uid(), text: "" })}>Add an answer</AddItem></div>;
+    {canAddItem("guided", c.entries.length) && <AddItem onClick={() => ops.add({ id: uid(), text: "" })}>Add an answer</AddItem>}</div>;
 }
 
 function Writing({ module, editing, onChange }: Body) {

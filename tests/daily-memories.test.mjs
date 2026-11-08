@@ -36,7 +36,7 @@ test('#105 carousels: Little Moments, Bright Days and month Intentions page comp
  assert.match(end,/10 of 10/,'memories open on the most recent page');
  const S=read('components/insights/glance/GlanceSections.tsx');
  assert.match(S,/<EntryCarousel items=\{best\} label="Bright days"/);assert.match(S,/<EntryCarousel items=\{memories\} label="Little moments"/);
- assert.match(read('components/insights/glance/InsightsGlance.tsx'),/<IntentionsList intentions=\{daily\.intentions\} onOpen=\{\(d\) => open\(d\)\} carousel \/>/);
+ assert.match(read('components/insights/glance/InsightsGlance.tsx'),/<MonthIntentions days=\{range\.days\} intentions=\{daily\.intentions\}/,'#104: month intentions are a chronological list');
  const G=load('lib/insights/glance'),days={},ci=[];for(let i=1;i<=20;i++){const d=`2026-11-${String(i).padStart(2,'0')}`;days[d]={record:{date:d,intention_text:'',intention_emoji:null,day_in_three:[],energy:null,stress:null,overall_day:9},priorities:[],checkins:[]};}
  assert.equal(G.dailyGlance(days,ci,[],G.glanceRange('month','2026-11-04')).rating.best.length,20,'same Bright Days criteria; the carousel can show them all');
 });

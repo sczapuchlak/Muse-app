@@ -21,6 +21,9 @@ import { TaskListRow } from "./TaskListRow";
 import { EventEditor } from "./EventEditor";
 import { LayoutEditor } from "./LayoutEditor";
 import { AgendaLegend, MarkEditor, MarkGlyph, MarkStrip } from "./MuseMarks";
+import { TaskDensityToggle } from "./TaskDensityToggle";
+import { FutureEntryEditor, FutureEntryGlyph, useFutureLog } from "./FutureLog";
+import type { FutureEntry } from "@/lib/future-log";
 import "./Agenda.css";
 import { usePlannerHeight } from "./usePlannerHeight";
 import { PeriodTitle } from "./PeriodTitle";
@@ -55,13 +58,13 @@ export function Agenda(props: Props) {
   return <AgendaDataProvider start={start} end={end}><AgendaBody {...props} prefs={prefs} update={update} start={start} end={end} /></AgendaDataProvider>;
 }
 
-type Editor = { kind: "event"; date: string; event?: DayEvent; status?: "confirmed" | "tentative" } | { kind: "mark"; date: string; mark?: ResolvedMark; link?: { kind: "event" | "task"; id: string; title: string } } | { kind: "settings" };
+type Editor = { kind: "future"; month: string; entry?: FutureEntry } | { kind: "event"; date: string; event?: DayEvent; status?: "confirmed" | "tentative"; title?: string } | { kind: "mark"; date: string; mark?: ResolvedMark; link?: { kind: "event" | "task"; id: string; title: string } } | { kind: "settings" };
 
 function AgendaBody({ date, today, onDate, onOpen, workspaceId, prefs, update, start, end }: Props & { prefs: AgendaPreferences; update: (p: Partial<AgendaPreferences>) => void; start: string; end: string }) {
   const { state } = usePlanner();
   const agenda = useAgendaData(), wellness = useWellness(), whimsy = useWhimsyData(), aspirations = useAspirations();
   const daily = useDailyData(); useDailyRange(prefs.view === "year" ? today : start, prefs.view === "year" ? today : end);
-  const [editor, setEditor] = useState<Editor | null>(null), [customizing, setCustomizing] = useState(false), [selected, setSelected] = useState<string | null>(null);
+  const [editor, setEditor] = useState<Editor | null>(null), [expanded, setExpanded] = useState<string | null>(null), future = useFutureLog(date.slice(0, 4)), [customizing, setCustomizing] = useState(false), [selected, setSelected] = useState<string | null>(null);
   const track = useRef<HTMLDivElement>(null), [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const anchor = useMemo(() => ({ current: anchorEl }), [anchorEl]);
   const openEditor = (a: HTMLElement, e: Editor) => { setAnchorEl(a); setEditor(e); };
@@ -160,20 +163,23 @@ function AgendaBody({ date, today, onDate, onOpen, workspaceId, prefs, update, s
   }
 
   function futureLog() {
+    // Future Log (#104 §5): lightweight entries, events and Marks only. Tasks and intentions stay in Day, Week and Month.
     return <div className="muse-agenda-year">{futureLogMonths(date).map((m) => {
-      const items = monthItems(tasksShown, eventsShown, m, visibility), first = `${m}-01`, last = `${m}-31`;
+      const items = monthItems([], eventsShown, m, visibility), first = `${m}-01`, last = `${m}-31`;
       const own = prefs.showMarks ? marks.filter((x) => x.linkKind !== "event" && x.linkKind !== "task" && x.start <= last && x.end >= first) : [];
       const entries = [
+        ...future.forMonth(m).map((f) => ({ key: `f${f.id}`, sort: f.date ?? `${m}-32`, node: <><span className="muse-agenda-log-day">{f.date ? dayNumber(f.date) : ""}</span><FutureEntryGlyph entry={f} /><button type="button" className="muse-agenda-log-entry" data-done={f.done || undefined} title={f.note ?? undefined} onClick={(e) => openEditor(e.currentTarget, { kind: "future", month: m, entry: f })}>{f.title}</button></> })),
         ...items.events.map((e) => ({ key: `e${e.id}`, sort: e.date < first ? first : e.date, node: <FutureEvent event={e} month={m} marks={marks} showMarks={prefs.showMarks} onEdit={(a) => openEditor(a, { kind: "event", date: e.date, event: e })} onDay={() => open(e.date < first ? first : e.date, "day")} /> })),
         ...own.map((x) => ({ key: `m${x.id}`, sort: x.start < first ? first : x.start, node: <><button type="button" className="muse-agenda-log-day" onClick={() => open(x.start < first ? first : x.start, "day")}>{eventDays({ date: x.start, endDate: x.end }, m)}</button><MarkGlyph mark={x} onSelect={(a) => openEditor(a, { kind: "mark", date: x.start, mark: x })} /><span>{x.title || "Marked"}</span></> })),
-        ...items.tasks.map((t) => ({ key: `t${t.id}`, sort: t.plannedDate!, node: <><button type="button" className="muse-agenda-log-day" onClick={() => open(t.plannedDate!, "day")}>{dayNumber(t.plannedDate!)}</button><span className="muse-agenda-symbol" aria-hidden="true">{t.complete ? "✓" : taskState(t, today) === "overdue" ? "›" : "•"}</span><span data-done={t.complete || undefined}>{t.title}<span className="sr-only">{t.complete ? " (completed task)" : " (task)"}</span></span></> })),
       ].sort((a, b) => a.sort.localeCompare(b.sort));
-      return <section key={m} className="muse-agenda-log-month" data-current={m === today.slice(0, 7) || undefined} aria-labelledby={`log-${m}`}>
+      const open_ = expanded === m, shown = open_ ? entries : entries.slice(0, 4);
+      return <section key={m} className="muse-agenda-log-month" data-current={m === today.slice(0, 7) || undefined} data-past={m < today.slice(0, 7) || undefined} aria-labelledby={`log-${m}`}>
         <header><h3 id={`log-${m}`}><button type="button" className="text-button" onClick={() => open(first, "month")} aria-label={`Open ${monthName(m)} in Month view`}>{monthName(m)}</button></h3>
           <span className="muse-agenda-log-add">
-            <button type="button" className="muse-agenda-add" aria-label={`Add a plan in ${monthName(m)}`} title="Add an event or plan" onClick={(e) => openEditor(e.currentTarget, { kind: "event", date: m === today.slice(0, 7) ? today : first })}><MuseIcon name="plus" size={13} /></button>
-            <button type="button" className="muse-agenda-add" aria-label={`Add a Mark in ${monthName(m)}`} title="Add a Mark" onClick={(e) => openEditor(e.currentTarget, { kind: "mark", date: m === today.slice(0, 7) ? today : first })}><MuseIcon name="favorite" size={12} /></button></span></header>
-        {entries.length ? <ul>{entries.map((x) => <li key={x.key}>{x.node}</li>)}</ul> : <p className="muse-agenda-empty">Nothing planned yet</p>}
+            <button type="button" className="muse-agenda-add" aria-label={`Add to the Future Log in ${monthName(m)}`} title="Add a plan, trip or date" onClick={(e) => openEditor(e.currentTarget, { kind: "future", month: m })}><MuseIcon name="plus" size={13} /></button>
+            <button type="button" className="muse-agenda-add" aria-label={`Add an event in ${monthName(m)}`} title="Add a scheduled event" onClick={(e) => openEditor(e.currentTarget, { kind: "event", date: m === today.slice(0, 7) ? today : first })}><MuseIcon name="calendar" size={12} /></button></span></header>
+        {entries.length ? <ul>{shown.map((x) => <li key={x.key}>{x.node}</li>)}</ul> : <button type="button" className="muse-agenda-log-empty" onClick={(e) => openEditor(e.currentTarget, { kind: "future", month: m })}>+ Add a plan</button>}
+        {entries.length > 4 && <button type="button" className="text-button muse-agenda-log-more" aria-expanded={open_} onClick={() => setExpanded(open_ ? null : m)}>{open_ ? "Show less" : `+${entries.length - 4} more`}</button>}
       </section>;
     })}</div>;
   }
@@ -188,7 +194,8 @@ function AgendaBody({ date, today, onDate, onOpen, workspaceId, prefs, update, s
           <button type="button" className="muse-button" aria-label="Next" onClick={() => onDate(range.next)}>›</button>
         </div>
         <MuseChoiceMenu label="Agenda view" valueLabel={agendaViews.find((v) => v.id === view)!.label} options={agendaViews.map((v) => ({ id: v.id, label: v.label }))} selectedIds={[view]} onSelect={(id) => { update({ view: id as AgendaView }); setSelected(null); }} />
-        <button type="button" className="muse-button" onClick={(e) => openEditor(e.currentTarget, { kind: "event", date: view === "year" || view === "month" ? (date.slice(0, 7) === today.slice(0, 7) ? today : date) : date })}>+ Event</button>
+        {/* #104: Day, Week and Future Log add from inside their sections; Month has no other add, so it keeps this one. */}
+        {view === "month" && <button type="button" className="muse-button" onClick={(e) => openEditor(e.currentTarget, { kind: "event", date: date.slice(0, 7) === today.slice(0, 7) ? today : date })}>+ Event</button>}
         {(view === "week" || view === "day") && <button type="button" className="muse-button" aria-pressed={customizing} onClick={() => setCustomizing(!customizing)}>Customize layout</button>}
         <button type="button" className="muse-button muse-agenda-icon" aria-label="View settings and key" aria-expanded={editor?.kind === "settings"} onClick={(e) => openEditor(e.currentTarget, { kind: "settings" })}><MuseIcon name="settings" size={16} /></button>
         {view === "week" && <div className="muse-agenda-spread-nav" role="group" aria-label="Week spreads">
@@ -209,8 +216,9 @@ function AgendaBody({ date, today, onDate, onOpen, workspaceId, prefs, update, s
       {view === "month" && monthView()}
       {view === "year" && futureLog()}
     </div>
-    <GlassPopover id="agenda-editor" label={editor?.kind === "settings" ? "Agenda settings" : editor?.kind === "mark" ? (editor.mark ? "Edit Mark" : "New Mark") : editor?.kind === "event" && editor.event ? "Edit event" : "New event"} open={editor !== null} anchorRef={anchor} onClose={() => setEditor(null)} width={editor?.kind === "settings" ? 320 : 380}>
-      {editor?.kind === "event" && <EventEditor key={editor.event?.id ?? `new-${editor.date}`} event={editor.event} date={editor.date} onDone={closeEditor} />}
+    <GlassPopover id="agenda-editor" label={editor?.kind === "future" ? (editor.entry ? "Edit Future Log entry" : "Add to the Future Log") : editor?.kind === "settings" ? "Agenda settings" : editor?.kind === "mark" ? (editor.mark ? "Edit Mark" : "New Mark") : editor?.kind === "event" && editor.event ? "Edit event" : "New event"} open={editor !== null} anchorRef={anchor} onClose={() => setEditor(null)} width={editor?.kind === "settings" ? 320 : 380}>
+      {editor?.kind === "event" && <EventEditor key={editor.event?.id ?? `new-${editor.date}-${editor.title ?? ""}`} event={editor.event} date={editor.date} initialTitle={editor.title} onDone={closeEditor} />}
+      {editor?.kind === "future" && <FutureEntryEditor key={editor.entry?.id ?? `new-${editor.month}`} entry={editor.entry} month={editor.month} year={date.slice(0, 4)} onDone={closeEditor} onMakeEvent={(title, d) => setEditor({ kind: "event", date: d, title })} />}
       {editor?.kind === "mark" && <MarkEditor key={editor.mark?.id ?? `new-${editor.date}-${editor.link?.id ?? ""}`} mark={editor.mark} date={editor.date} link={editor.link} onDone={closeEditor} />}
       {editor?.kind === "settings" && <div className="muse-agenda-settings">
         <p className="editor-label">Show</p>
@@ -218,6 +226,7 @@ function AgendaBody({ date, today, onDate, onOpen, workspaceId, prefs, update, s
         <label className="muse-agenda-check"><input type="checkbox" checked={prefs.showCanceled} onChange={(e) => update({ showCanceled: e.target.checked })} /> Canceled events</label>
         <label className="muse-agenda-check"><input type="checkbox" checked={prefs.showMarks} onChange={(e) => update({ showMarks: e.target.checked })} /> Muse Marks</label>
         <p className="small-label">Hiding never changes a task, event or Mark. A Tasks section can also show or hide completed tasks on its own (Customize layout).</p>
+        <TaskDensityToggle />
         <AgendaLegend />
       </div>}
     </GlassPopover>

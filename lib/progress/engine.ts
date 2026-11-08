@@ -18,7 +18,7 @@ export type ProgressMetric='water'|'workouts'|'workout-minutes'|'reading-minutes
 export type MetricSpec={metric:ProgressMetric;category?:MovementCategory;typeId?:string;unit?:WaterUnit};
 export type ProgressSources={
  timeZone:string;
- wellness?:Pick<WellnessState,'water'|'activities'|'types'|'assignments'>;
+ wellness?:Pick<WellnessState,'water'|'activities'|'types'|'assignments'>&Partial<Pick<WellnessState,'waterSettings'>>;
  reading?:{sessions:readonly ReadingSession[];books:readonly Book[]};
  planner?:Pick<PlannerState,'tasks'|'completionHistory'>;
 };

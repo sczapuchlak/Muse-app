@@ -9,7 +9,7 @@ import {AlmanacWhisper} from "../almanac/AlmanacWhisper";
 import {surfaces} from "@/lib/almanac/select";
 import {ritualSignals} from "@/lib/almanac/signals";
 import { dailyEditSample } from "@/lib/daily-edit-data";
-import { dateLabel, weekDates } from "@/lib/dates";
+import { weekDates } from "@/lib/dates";
 import { entryFor, weekSummary, type RitualDefinition } from "@/lib/rituals";
 import { MusePageHeader } from "../MusePageHeader";
 import { DateNavigator } from "../DateNavigator";
@@ -27,7 +27,7 @@ import { MuseChoiceMenu } from "../MuseChoiceMenu";
 import { periodTitle, shiftPeriod, trackerLayouts, trackerPeriods, type TrackerLayout, type TrackerPeriod } from "@/lib/ritual-tracker";
 import "./Rituals.css";
 
-type Editor = { kind: "ritual"; ritual?: RitualDefinition; anchor: HTMLElement } | { kind: "groups"; anchor: HTMLElement } | { kind: "entry"; ritual: RitualDefinition; date: string; anchor: HTMLElement; apply: (value: number | null) => void };
+type Editor = { kind: "ritual"; ritual?: RitualDefinition; groupId?: string; anchor: HTMLElement } | { kind: "groups"; anchor: HTMLElement } | { kind: "entry"; ritual: RitualDefinition; date: string; anchor: HTMLElement; apply: (value: number | null) => void };
 function RitualsView() {
   const {profile}=useDailyData();
   const requested = useSearchParams()?.get("view");
@@ -59,13 +59,13 @@ function RitualsView() {
       {layout !== "grid" && trackable.length > 0 && <MuseChoiceMenu label="Ritual" searchable valueLabel={trackable.find((r) => r.id === focusId)?.name ?? "All rituals"} options={[...trackable.map((r) => ({ id: r.id, label: r.name, accent: state.groups.find((g) => g.id === r.groupId)?.accent }))]} selectedIds={[focusId]} onSelect={(id) => changeTracker({ habitId: id })} />}
     </div><div className="muse-rituals-actions"><button className="muse-button button-ghost" type="button" aria-pressed={archived} onClick={()=>setArchived(value=>!value)}>{archived?"Back to tracking":"View archived"}</button><button className="muse-button" type="button" onClick={(event) => setEditor({ kind: "groups", anchor: event.currentTarget })}>Manage groups</button><button className="muse-button button-primary" type="button" onClick={(event) => setEditor({ kind: state.groups.length?"ritual":"groups", anchor: event.currentTarget })}>+ Add ritual</button></div></div>
     {!classic && <RitualTracker period={period} layout={layout} habitId={focusId} date={date} today={today} rituals={trackable} onDate={(d, p, l) => { setDate(d); changeTracker({ ...(p ? { period: p } : {}), ...(l ? { layout: l } : {}) }); }} onEditEntry={(ritual, entryDate, anchor, apply) => setEditor({ kind: "entry", ritual, date: entryDate, anchor, apply })} />}
-    {classic && <><div className="muse-rituals-week-context"><RitualWeekNavigator selectedDate={date} today={today} onChange={setDate}/><p className="small-label">{dateLabel(date)} · {today && date > today ? "Upcoming days are ready to plan, then log when they arrive." : "Past scheduled days remain editable."}</p></div>
-    <dl className="muse-rituals-summary"><div><dt>Complete</dt><dd>{today ? summary.completed : "…"}<span>{summary.partial} partial · {summary.missed} explicitly missed</span></dd></div><div><dt>Not logged</dt><dd>{today ? summary.unknown : "…"}<span>past scheduled days · unknown</span></dd></div><div><dt>Weekly goals met</dt><dd>{today ? `${summary.weeklyMet} / ${summary.weeklyTargets}` : "…"}<span>separate from daily goals</span></dd></div></dl>
+    {classic && <><div className="muse-rituals-week-context"><RitualWeekNavigator selectedDate={date} today={today} onChange={setDate}/></div>
+    <p className="muse-rituals-summary-line" aria-label="This week">{today ? <><strong>{summary.completed}</strong> complete{summary.partial ? <> · {summary.partial} partial</> : null}{summary.unknown ? <> · {summary.unknown} not logged</> : null}</> : "…"}</p>
     <AlmanacWhisper surface={surfaces.rituals} signals={almanacSignals} today={today} className="muse-rituals-whisper"/>
-    <div className="muse-ritual-groups">{state.groups.map((group) => <RitualGroup key={group.id} group={group} archived={archived} week={week} selectedDate={date} today={today} onEdit={(ritual, anchor) => setEditor({ kind: "ritual", ritual, anchor })} onEditEntry={(ritual, entryDate, anchor, apply) => setEditor({ kind: "entry", ritual, date: entryDate, anchor, apply })} />)}</div>
+    <div className="muse-ritual-groups">{state.groups.map((group) => <RitualGroup key={group.id} group={group} archived={archived} week={week} selectedDate={date} today={today} onEdit={(ritual, anchor) => setEditor({ kind: "ritual", ritual, anchor })} onAdd={(groupId, anchor) => setEditor({ kind: "ritual", groupId, anchor })} onEditEntry={(ritual, entryDate, anchor, apply) => setEditor({ kind: "entry", ritual, date: entryDate, anchor, apply })} />)}</div>
     <div className="muse-ritual-legend" aria-label="Week status legend"><span><i data-status="complete" />Complete</span><span><i data-status="partial" />Partial progress</span><span>× Explicitly missed</span><span>○ Not logged / unknown</span><span><i data-status="upcoming" />Upcoming</span><span>— Not scheduled</span></div>
     <p className="small-label muse-ritual-semantics" data-classic>Partial progress is its own state. Past blanks stay unknown until you log them. Weekly targets accumulate across available days; unscheduled days never count against a streak.</p></>}
-    {editor?.kind === "ritual" && <RitualEditor key={editor.ritual?.id ?? "new"} initial={editor.ritual} date={date} returnFocus={editor.anchor} onClose={() => setEditor(null)} />}
+    {editor?.kind === "ritual" && <RitualEditor key={editor.ritual?.id ?? `new-${editor.groupId ?? ""}`} initial={editor.ritual} groupId={editor.groupId} date={date} returnFocus={editor.anchor} onClose={() => setEditor(null)} />}
     {editor?.kind === "groups" && <RitualGroupManager returnFocus={editor.anchor} onClose={() => setEditor(null)} />}
     {editor?.kind === "entry" && <RitualEntryEditor ritual={editor.ritual} date={editor.date} current={entryFor(state, editor.ritual.id, editor.date)?.value ?? null} returnFocus={editor.anchor} onApply={editor.apply} onClose={() => setEditor(null)} />}
     </RitualCapture>}<footer className="muse-footer">{view === "bucket" ? "Your bucket list is private and saves to your account." : <><RitualSaveStatus/>Rituals and your recorded progress save to your account.</>}</footer>

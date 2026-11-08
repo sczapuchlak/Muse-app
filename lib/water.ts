@@ -8,6 +8,9 @@ export type WaterSettings = {
   quickAdds: readonly number[];
 };
 
+/** #104: the one default used everywhere until a person saves their own water settings. */
+export const defaultWaterSettings: WaterSettings = { goal: 100, unit: "oz", quickAdds: [12, 24, 32, 40] };
+
 export function parseWaterAmount(value: string, allowZero = false): number | null {
   if (value.trim() === "") return null;
   const amount = Number(value);

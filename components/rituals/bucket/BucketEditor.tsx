@@ -7,9 +7,9 @@ import {MuseDatePicker} from '@/components/MuseDatePicker';
 import {dateLabel} from '@/lib/dates';
 import type {BoardImage} from '@/lib/constellation-board';
 import type {Aspiration} from '@/lib/aspirations/models';
-import {bucketCategories,completionStyles,statusLabels,type BucketEntry,type BucketList,type BucketStatus,type CompletionStyle} from '@/lib/bucket-list/models';
+import {withFrame,bucketCategories,completionStyles,statusLabels,type BucketEntry,type BucketList,type BucketStatus,type CompletionStyle} from '@/lib/bucket-list/models';
 import {completeEntry,defaultYearColor,range,reopenEntry,yearColor,yearOf,yearPattern} from '@/lib/bucket-list/logic';
-import {BucketPhoto,YearSwatch} from './BucketViews';
+import {BucketPhoto,PhotoFramer,YearSwatch} from './BucketViews';
 import '../aspirations/Aspirations.css';
 
 export function blankEntry(number:number,position:number):BucketEntry{
@@ -88,7 +88,7 @@ export function BucketEditor({initial,list,today,categories,aspirations,busy,err
      {e.links.filter(l=>l.kind==='url').map((l,i)=>l.kind==='url'&&<p key={i} className="muse-bucket-link"><a href={l.url} target="_blank" rel="noreferrer">{l.label||new URL(l.url).hostname}</a><button type="button" className="text-button" onClick={()=>set({links:e.links.filter(x=>x!==l)})}>Remove</button></p>)}
      <div className="muse-bucket-linkadd"><input aria-label="Add a link" value={link} placeholder="https://…" onChange={ev=>setLink(ev.target.value)}/><button type="button" className="muse-button" disabled={!cleanUrl(link)||e.links.length>=30} onClick={()=>{const url=cleanUrl(link);if(url){set({links:[...e.links,{kind:'url',url}]});setLink('');}}}>Add link</button></div>
     </fieldset>
-    <fieldset><legend>Cover photo</legend>{e.cover?<div className="muse-bucket-photos"><figure><BucketPhoto image={e.cover} className="muse-bucket-thumb"/><button type="button" className="text-button" onClick={()=>set({cover:null})}>Remove</button></figure></div>
+    <fieldset><legend>Cover photo</legend>{e.cover?<div className="muse-bucket-cover-edit"><PhotoFramer image={e.cover} onChange={frame=>set({cover:withFrame(e.cover!,frame)})}/><button type="button" className="text-button" onClick={()=>set({cover:null})}>Remove photo</button></div>
      :<Photos photos={[]} busy={busy} upload={upload} onChange={p=>set({cover:p[0]??null})}/>}</fieldset>
     <fieldset><legend>Aspiration</legend>
      <p className="small-label">Link one when you want milestones. The dream and the aspiration keep their own progress; neither completes the other.</p>

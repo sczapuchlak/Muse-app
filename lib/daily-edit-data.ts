@@ -1,5 +1,5 @@
+import { defaultWaterSettings } from "./water";
 import { nourishSeedAssignments } from "./nourish-sample";
-import type { WaterSettings } from "./water";
 import type { DailyMovement, DayEvent, MoodCheckIn, PlannedTask } from "./models";
 
 // Sample data for the UI. Replace this module with the daily data source later.
@@ -20,7 +20,7 @@ export const dailyEditSample = {
   water: {
     date: "2026-10-29",
     total: 72,
-    settings: { goal: 100, unit: "oz", quickAdds: [12, 24, 32, 40] } satisfies WaterSettings,
+    settings: defaultWaterSettings,
   },
   schedule: [
     { id: "focus", kind: "event", date: "2026-10-29", time: "9:00 AM", dateTime: "2026-10-29T09:00", title: "Project focus time", detail: "Design review & final edits" },

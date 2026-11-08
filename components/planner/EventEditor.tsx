@@ -17,7 +17,7 @@ const statuses: { id: EventStatus; label: string }[] = [{ id: "confirmed", label
  * Create or edit one native event (#79 §11). All-day events have no time; a date range stays ONE record; status is
  * the event's own (tentative, canceled), never a task-style completion. Changing dates here moves it in every view.
  */
-export function EventEditor({ event, date, defaultStatus = "confirmed", onDone }: { event?: DayEvent; date: string; defaultStatus?: EventStatus; onDone: () => void }) {
+export function EventEditor({ event, date, defaultStatus = "confirmed", initialTitle = "", onDone }: { event?: DayEvent; date: string; defaultStatus?: EventStatus; initialTitle?: string; onDone: () => void }) {
   const { dispatch, canEdit, state, timeZone } = usePlanner();
   // Recurrence 2.0 (#89): editing a date of a recurring event asks how far the change reaches.
   const series = event?.seriesId ? state.events.find((e) => e.id === event.seriesId) ?? null : event?.rule ? event : null;
@@ -26,7 +26,7 @@ export function EventEditor({ event, date, defaultStatus = "confirmed", onDone }
   const today = timeZone ? todayInTimeZone(timeZone) : date;
   const { marks, saveMark, removeMark } = useAgendaData();
   const existingMark = event ? marks.find((m) => m.linkKind === "event" && m.linkId === event.id) : undefined;
-  const [title, setTitle] = useState(event?.title ?? ""), [allDay, setAllDay] = useState(event?.allDay ?? false);
+  const [title, setTitle] = useState(event?.title ?? initialTitle), [allDay, setAllDay] = useState(event?.allDay ?? false);
   const [start, setStart] = useState(event?.date ?? date), [end, setEnd] = useState(event?.endDate ?? "");
   const [time, setTime] = useState(event && !event.allDay ? event.dateTime.slice(11, 16) : "09:00"), [endTime, setEndTime] = useState(event?.endTime ?? "");
   const [location, setLocation] = useState(event?.location ?? ""), [detail, setDetail] = useState(event?.detail ?? ""), [status, setStatus] = useState<EventStatus>(event?.status ?? defaultStatus);
