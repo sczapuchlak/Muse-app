@@ -4,11 +4,11 @@ import type { DayEvent, PlannedTask } from "@/lib/models";
 import { mealLabels, mealSlots } from "@/lib/models";
 import { eventDays, eventWhen, taskState } from "@/lib/agenda";
 import { clampHeight, MAX_SECTION_PX, MIN_SECTION_PX, sectionPx, sectionWorkspaces, showCompletedFor, type AgendaSection } from "@/lib/agenda-layout";
-import { itemMark, markIconName, type ResolvedMark } from "@/lib/muse-marks";
+import { itemMark, markColors, markIconName, markIcons, type ResolvedMark } from "@/lib/muse-marks";
 import { accentCss } from "@/lib/appearance-values";
 import { DEFAULT_OPACITY, MAX_ITEMS, MAX_ITEM_TEXT, paintCss, starterItems, stickerGlyph, uncheckAll, type SectionItem } from "@/lib/planner-customization";
 import { movementCategory } from "@/lib/progress/movement";
-import { formatWaterAmount, parseWaterAmount } from "@/lib/water";
+import { defaultWaterSettings, formatWaterAmount, parseWaterAmount } from "@/lib/water";
 import { sessionSeconds } from "@/lib/whimsy/reading-stats";
 import { weekDates } from "@/lib/dates";
 import { sampleMovementTypes } from "@/lib/sample-taxonomies";
@@ -59,7 +59,7 @@ function Band({ section, ctx, count, action, children }: { section: AgendaSectio
   return <div className="muse-agenda-section" data-section={section.type} data-size={section.height ? "custom" : section.size} data-flow={ctx.flow}
     data-painted={look?.background ? look.background.kind : undefined} data-header={look?.header} data-divider={look?.divider} style={style} role="group" aria-labelledby={headingId}>
     {look?.sticker && <span className="muse-agenda-sticker" aria-hidden="true">{stickerGlyph(look.sticker)}</span>}
-    <div className="muse-agenda-section-head"><h3 id={headingId}>{section.icon && <span className="muse-agenda-section-icon" aria-hidden="true"><MuseIcon name={markIconName(section.icon) as MuseIconName} size={13} /></span>}{section.title}{count ? <span className="muse-agenda-count"> · {count}</span> : null}</h3>{action}</div>
+    <div className="muse-agenda-section-head"><h3 id={headingId}><SectionMarkButton section={section} />{section.title}{count ? <span className="muse-agenda-count"> · {count}</span> : null}</h3>{action}</div>
     {collapsed ? null : <div className="muse-agenda-section-body" tabIndex={-1}>{children}</div>}
     {ctx.flow === "fixed" && <div className="muse-agenda-resize" role="separator" aria-orientation="horizontal" tabIndex={0} aria-label={`Resize ${section.title} for every day`} aria-valuenow={px} aria-valuemin={MIN_SECTION_PX} aria-valuemax={MAX_SECTION_PX}
       onPointerDown={drag} onKeyDown={(e) => { if (e.key === "ArrowUp" || e.key === "ArrowDown") { e.preventDefault(); commit(px + (e.key === "ArrowDown" ? 16 : -16)); } }} />}
@@ -198,11 +198,14 @@ function WaterSection({ section, ctx }: { section: AgendaSection; ctx: DayContex
   const { state, dispatch, status } = useWellness();
   const [open, setOpen] = useState(false), [custom, setCustom] = useState("");
   const anchor = useRef<HTMLButtonElement>(null), id = useId();
-  const settings = state.waterSettings ?? { goal: 64, unit: "oz" as const, quickAdds: [8, 12, 16, 24] };
+  // #104 §9A: one rule everywhere — a logged day keeps the goal it was logged with; any other day uses the current
+  // shared goal, falling back to the same default Daily Edit uses (it used to fall back to a different 64 oz).
+  const settings = state.waterSettings ?? defaultWaterSettings;
   const day = state.water.find((w) => w.date === ctx.day), unit = day?.unit ?? settings.unit, goal = day?.goal ?? settings.goal, total = day?.total ?? 0;
+  const historical = !!day?.goal && !!state.waterSettings && day.goal !== state.waterSettings.goal;
   const add = (amount: number) => { if (amount > 0) dispatch({ kind: "water", date: ctx.day, mode: "add", amount, settings }); };
   const text = `${formatWaterAmount(total)}${goal ? ` / ${formatWaterAmount(goal)}` : ""} ${unit}`;
-  return <Band section={section} ctx={ctx} action={<span className="muse-agenda-water-head"><span className="small-label">{text}</span>
+  return <Band section={section} ctx={ctx} action={<span className="muse-agenda-water-head"><span className="small-label" title={historical ? "The goal you had when this day was logged" : undefined}>{text}{historical && <span className="sr-only"> (goal that day)</span>}</span>
       {status.loaded && !status.error && <button ref={anchor} type="button" className="muse-agenda-add" aria-haspopup="dialog" aria-expanded={open} aria-controls={id} aria-label={`Add water on ${ctx.day}`} onClick={() => setOpen(!open)}><MuseIcon name="plus" size={13} /></button>}</span>}>
     <GlassPopover id={id} label={`Add water · ${weekdayShort(ctx.day)} ${Number(ctx.day.slice(8))}`} open={open} anchorRef={anchor} onClose={() => setOpen(false)} width={260}>
       <div className="muse-chip-row" role="group" aria-label="Quick amounts">{settings.quickAdds.map((n) => <button key={n} type="button" onClick={() => add(n)}>+{formatWaterAmount(n)} {unit}</button>)}</div>
@@ -254,4 +257,27 @@ function ItemsSection({ section, ctx }: { section: AgendaSection; ctx: DayContex
     {items.length < MAX_ITEMS && <form className="muse-agenda-item-add" onSubmit={add}>
       <input value={draft} maxLength={MAX_ITEM_TEXT} disabled={!userId} placeholder={checklist ? "Add an item…" : "Add to the list…"} aria-label={`Add to ${label}`} onChange={(e) => setDraft(e.target.value)} /></form>}
   </Band>;
+}
+
+/**
+ * #104 §9C: the section's Muse Mark is chosen right on its title. It changes the shared weekly template (every day
+ * shows the same section the same way), exactly like Customize layout does — no separate setting.
+ */
+function SectionMarkButton({ section }: { section: AgendaSection }) {
+  const { changeLayout } = useAgendaData();
+  const anchor = useRef<HTMLButtonElement>(null), [open, setOpen] = useState(false), id = useId();
+  const look = section.style;
+  const update = (patch: Partial<Omit<AgendaSection, "id" | "type">>) => changeLayout({ type: "update", id: section.id, patch });
+  return <>
+    <button ref={anchor} type="button" className="muse-agenda-section-icon muse-agenda-section-mark" data-empty={!section.icon || undefined} aria-label={section.icon ? `Change the Mark for ${section.title}` : `Add a Mark to ${section.title}`} title="Choose a Mark for this section" aria-haspopup="dialog" aria-expanded={open} onClick={() => setOpen((v) => !v)}>
+      <MuseIcon name={section.icon ? markIconName(section.icon) as MuseIconName : "sparkle"} size={13} /></button>
+    <GlassPopover id={id} label={`Mark for ${section.title}`} open={open} anchorRef={anchor} onClose={() => setOpen(false)} width={300}>
+      <fieldset className="muse-mark-icons"><legend className="sr-only">Symbol</legend>
+        <label title="None"><input type="radio" name={`${id}-icon`} checked={!section.icon} onChange={() => update({ icon: undefined })} aria-label="No Mark" /><span>–</span></label>
+        {markIcons.map((i) => <label key={i.id} title={i.label}><input type="radio" name={`${id}-icon`} checked={section.icon === i.id} onChange={() => update({ icon: i.id })} aria-label={i.label} /><span><MuseIcon name={markIconName(i.id) as MuseIconName} size={15} /></span></label>)}
+      </fieldset>
+      <div className="muse-chip-row" role="group" aria-label="Section color">{[undefined, ...markColors].map((c) => <button key={c ?? "theme"} type="button" className="muse-section-color" aria-pressed={look?.accent === c} aria-label={c ? `${c} color` : "Theme color"} style={c ? { background: accentCss(c) } : undefined} onClick={() => update({ style: { ...(look ?? {}), accent: c } })} />)}</div>
+      <p className="small-label">Applies to this section on every day.</p>
+    </GlassPopover>
+  </>;
 }

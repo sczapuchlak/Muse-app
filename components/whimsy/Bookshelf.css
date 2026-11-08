@@ -273,3 +273,4 @@
 .muse-keepsake-options label{display:flex!important;gap:8px;align-items:baseline;font-size:.9rem}
 .muse-keepsake-options input{width:auto!important;min-height:0!important;accent-color:var(--accent-primary)}
 @media(max-width:720px){.muse-keepsake{grid-template-columns:minmax(0,1fr)}.muse-keepsake-preview canvas{max-height:46dvh}}
+.muse-bookshelf-headless{display:none}

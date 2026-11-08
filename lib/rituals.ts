@@ -19,8 +19,12 @@ export type RitualDefinition = {
   connection?: RitualConnection | null;
   /** Categorical habits only: the legend. A used category can be renamed or recolored, never removed. */
   categories?: RitualCategory[];
+  /** #104: "X times per week" (1–7). Available every day; the week is met by this many distinct completed days. */
+  timesPerWeek?: number | null;
+  /** #104: optional emoji shown beside the habit. Cosmetic, so it stays editable after history exists. */
+  emoji?: string | null;
 };
-export type RitualEntry = { id: string; ritualId: string; date: string; value: number; outcome?: "missed"; updatedAt: string; /** Categorical habits: the chosen category id (value is 1). */ category?: string; /** Display-only value derived from a connected tracker; never saved. */ derived?: true };
+export type RitualEntry = { id: string; ritualId: string; date: string; value: number; outcome?: "missed"; updatedAt: string; /** Categorical habits: the chosen category id (value is 1). */ category?: string; /** Display-only value derived from a connected tracker; never saved. */ derived?: true; /** #104: that date's goal when a connected ritual follows a shared goal (water). */ goal?: number };
 export type RitualState = { groups: RitualGroupDefinition[]; rituals: RitualDefinition[]; entries: RitualEntry[]; celebratedMilestones: string[]; /** True once the server stores connections. */ connectionsEnabled?: boolean; /** True once the server stores categorical habits (#85). */ categoriesEnabled?: boolean };
 export type RitualAction =
   | {type:"ritual/lifecycle";id:string;operation:"pause"|"resume"|"archive"|"restore"|"delete";today:string}
@@ -44,6 +48,7 @@ function matchesSchedule(ritual:RitualDefinition,date:string){
   return ritual.recurrence.kind === "daily" || (ritual.recurrence.kind === "weekly" ? ritual.recurrence.weekday === weekday : ritual.recurrence.weekdays.includes(weekday));
 }
 export function isScheduled(ritual:RitualDefinition,date:string){return matchesSchedule(ritual,date)&&!ritual.inactivePeriods?.some(period=>period.start<=date&&(!period.end||date<period.end));}
+export function rhythmLabel(ritual: Pick<RitualDefinition, "recurrence" | "timesPerWeek">) { return ritual.timesPerWeek ? `${ritual.timesPerWeek}× a week` : recurrenceLabel(ritual.recurrence); }
 export function recurrenceLabel(recurrence: RitualRecurrence) {
   if (recurrence.kind === "daily") return "Every day";
   const days = recurrence.kind === "weekly" ? [recurrence.weekday] : recurrence.weekdays;
@@ -56,6 +61,13 @@ export function weeklyValue(state: RitualState, ritual: RitualDefinition, date: 
   const week = weekDates(date);
   return state.entries.filter((entry) => entry.ritualId === ritual.id && week.includes(entry.date)&&matchesSchedule(ritual,entry.date)).reduce((sum, entry) => sum + entry.value, 0);
 }
+/** #104: an "X times per week" ritual — any day counts, none is a separate obligation. */
+export const flexible = (ritual: RitualDefinition) => !!ritual.timesPerWeek && ritual.type !== "weekly-target" && ritual.type !== "category";
+/** Distinct days this week the ritual was completed (a day counts once however many times it was logged). */
+export function weeklyDays(state: RitualState, ritual: RitualDefinition, date: string) {
+  const week = weekDates(date);
+  return new Set(state.entries.filter((e) => e.ritualId === ritual.id && week.includes(e.date) && e.outcome !== "missed" && e.value > 0 && e.value >= (e.goal ?? ritual.goal)).map((e) => e.date)).size;
+}
 export function ritualCell(state: RitualState, ritual: RitualDefinition, date: string, today: string) {
   const entry = entryFor(state, ritual.id, date);
   const value = entry?.value ?? null;
@@ -65,8 +77,9 @@ export function ritualCell(state: RitualState, ritual: RitualDefinition, date: s
   else if (today && date > today) status = "upcoming";
   else if (recorded && (entry.outcome === "missed" || value === 0)) status = "missed";
   else if (ritual.type === "weekly-target") status = value !== null && value > 0 ? "logged" : "available";
-  else if (value !== null && value >= ritual.goal) status = "complete";
+  else if (value !== null && value >= (entry?.goal ?? ritual.goal)) status = "complete";
   else if (value !== null && value > 0) status = "partial";
+  else if (flexible(ritual)) status = "available";
   else if (today && date < today) status = "unknown";
   else status = "open";
   return { status, value, recorded };
@@ -75,14 +88,15 @@ export function ritualCell(state: RitualState, ritual: RitualDefinition, date: s
 /** Consecutive scheduled opportunities, never consecutive calendar days. An open day/week is not a missed opportunity. */
 export function ritualStreak(state: RitualState, ritual: RitualDefinition, today: string): { count: number; start: string | null; unit: "scheduled days" | "weeks" } {
   let count = 0, start: string | null = null;
-  const unit = ritual.type === "weekly-target" ? "weeks" : "scheduled days";
+  const weekly = ritual.type === "weekly-target" || flexible(ritual), unit = weekly ? "weeks" : "scheduled days";
   if (!validDate(today) || today < ritual.startDate) return { count, start, unit };
-  if (ritual.type === "weekly-target") {
+  const met = (monday: string) => flexible(ritual) ? weeklyDays(state, ritual, monday) >= ritual.timesPerWeek! : weeklyValue(state, ritual, monday) >= ritual.goal;
+  if (weekly) {
     let monday = weekDates(today)[0];
-    if (weeklyValue(state, ritual, monday) < ritual.goal) monday = shiftDate(monday, -7);
+    if (!met(monday)) monday = shiftDate(monday, -7);
     while (shiftDate(monday, 6) >= ritual.startDate) {
       if(!weekDates(monday).some(date=>ritualOpportunity(state,ritual,date))){monday=shiftDate(monday,-7);continue;}
-      if (weeklyValue(state, ritual, monday) < ritual.goal) break;
+      if (!met(monday)) break;
       count++; start = monday; monday = shiftDate(monday, -7);
     }
   } else {
@@ -103,13 +117,13 @@ export function ritualStreak(state: RitualState, ritual: RitualDefinition, today
   return { count, start, unit };
 }
 export function weekSummary(state: RitualState, week: string[], today: string) {
-  const daily = state.rituals.filter((ritual) => ritual.type !== "weekly-target");
+  const daily = state.rituals.filter((ritual) => ritual.type !== "weekly-target" && !flexible(ritual));
   const elapsed = daily.flatMap((ritual) => week.filter((date) => today && date <= today && ritualOpportunity(state,ritual,date)).map((date) => ({ ritual, date })));
   const countStatus = (status: ReturnType<typeof ritualCell>["status"]) => elapsed.filter(({ ritual, date }) => ritualCell(state, ritual, date, today).status === status).length;
   const completed = elapsed.filter(({ ritual, date }) => ritualCell(state, ritual, date, today).status === "complete").length;
   const logged = state.entries.filter((entry) => week.includes(entry.date) && today && entry.date <= today).length;
-  const targets = state.rituals.filter((ritual) => ritual.type === "weekly-target" && week.some((date) => ritualOpportunity(state,ritual,date)));
-  return { completed, partial: countStatus("partial"), missed: countStatus("missed"), unknown: countStatus("unknown"), scheduled: elapsed.length, logged, weeklyMet: targets.filter((ritual) => weeklyValue(state, ritual, week[0]) >= ritual.goal).length, weeklyTargets: targets.length };
+  const targets = state.rituals.filter((ritual) => (ritual.type === "weekly-target" || flexible(ritual)) && week.some((date) => ritualOpportunity(state,ritual,date)));
+  return { completed, partial: countStatus("partial"), missed: countStatus("missed"), unknown: countStatus("unknown"), scheduled: elapsed.length, logged, weeklyMet: targets.filter((ritual) => flexible(ritual) ? weeklyDays(state, ritual, week[0]) >= ritual.timesPerWeek! : weeklyValue(state, ritual, week[0]) >= ritual.goal).length, weeklyTargets: targets.length };
 }
 export function ritualFeedback(before: RitualState, after: RitualState, ritual: RitualDefinition, date: string, today: string): { kind: "orbital" | "constellation"; key?: string; keys?: string[] } | null {
   const previousEntry = entryFor(before, ritual.id, date), nextEntry = entryFor(after, ritual.id, date);
@@ -157,6 +171,7 @@ export function ritualReducer(state: RitualState, action: RitualAction): RitualS
       if (!ritual.name.trim() || !validDate(ritual.startDate) || !Number.isFinite(ritual.goal) || ritual.goal <= 0 || !validRecurrence(ritual.recurrence) || !state.groups.some((group) => group.id === ritual.groupId)) return state;
       if (ritual.type === "weekly-target" && !Number.isInteger(ritual.goal)) return state;
       if (ritual.type === "category" && !validCategories(ritual.categories)) return state;
+      if (ritual.timesPerWeek != null && (!Number.isInteger(ritual.timesPerWeek) || ritual.timesPerWeek < 1 || ritual.timesPerWeek > 7 || ritual.recurrence.kind !== "daily" || ritual.type === "weekly-target" || ritual.type === "category")) return state;
       const previous = state.rituals.find((entry) => entry.id === ritual.id);
       // Protect the meaning of history until effective-dated schedule/goal changes exist.
       const locked = previous && state.entries.some((entry) => entry.ritualId === ritual.id);
@@ -166,7 +181,8 @@ export function ritualReducer(state: RitualState, action: RitualAction): RitualS
       // A categorical legend stays editable after history exists (rename, recolor, add), but a used category is kept.
       if (previous?.type === "category" && ritual.categories) { const keep = usedCategories(state, ritual.id); if (![...keep].every((id) => ritual.categories!.some((c) => c.id === id))) return state; }
       const legend = previous?.type === "category" && validCategories(ritual.categories) ? { categories: ritual.categories.map((c) => ({ ...c, label: c.label.trim() })) } : {};
-      const next = locked ? { ...previous, name: ritual.name.trim(), groupId: ritual.groupId, ...legend } : { ...unlocked, ...(ritual.type === "category" ? { categories: ritual.categories!.map((c) => ({ ...c, label: c.label.trim() })), connection: null } : { categories: undefined }), connection: ritual.type === "category" ? null : connection && validConnection(unlocked, connection) ? connection : null };
+      const emoji = ritual.emoji?.trim() ? ritual.emoji.trim().slice(0, 16) : null;
+      const next = locked ? { ...previous, name: ritual.name.trim(), groupId: ritual.groupId, emoji, ...legend } : { ...unlocked, emoji, ...(ritual.type === "category" ? { categories: ritual.categories!.map((c) => ({ ...c, label: c.label.trim() })), connection: null } : { categories: undefined }), connection: ritual.type === "category" ? null : connection && validConnection(unlocked, connection) ? connection : null };
       return { ...state, rituals: previous ? state.rituals.map((entry) => entry.id === ritual.id ? next : entry) : [...state.rituals, next] };
     }
     case "group/save": return !action.group.name.trim() || !validAccent(action.group.accent) || (action.group.gradient && typeof action.group.gradient !== "string" && !validGradient(action.group.gradient)) ? state : { ...state, groups: state.groups.some((group) => group.id === action.group.id) ? state.groups.map((group) => group.id === action.group.id ? { ...action.group, name: action.group.name.trim() } : group) : [...state.groups, { ...action.group, name: action.group.name.trim() }] };

@@ -69,3 +69,13 @@ export function entryToRow(e:BucketEntry){
   tags:[...new Set(e.tags.map(t=>t.trim().replace(/^#/,'')).filter(Boolean))].slice(0,20),icon:e.icon||null,status:completed?'completed':e.status==='completed'?'dreaming':e.status,
   target_year:e.targetYear,links:e.links,cover:e.cover,aspiration_id:e.aspirationId,completed_on:completed?e.completedOn:null,completion:e.completion,history:e.history,archived_at:e.archivedAt};
 }
+
+/**
+ * #104 §10: how a photo sits in its card frame — a focal point (0–100%) and zoom (1–3). Stored beside the image in
+ * the same JSON; the original upload is never cropped, so the frame can be changed any time.
+ */
+export type PhotoFrame={x:number;y:number;zoom:number};
+export const defaultFrame:PhotoFrame={x:50,y:50,zoom:1};
+const clamp=(n:unknown,lo:number,hi:number,d:number)=>typeof n==='number'&&Number.isFinite(n)?Math.min(hi,Math.max(lo,n)):d;
+export function photoFrame(image:unknown):PhotoFrame{const f=(image as {frame?:Partial<PhotoFrame>}|null)?.frame;return f&&typeof f==='object'?{x:clamp(f.x,0,100,50),y:clamp(f.y,0,100,50),zoom:clamp(f.zoom,1,3,1)}:defaultFrame;}
+export function withFrame<T extends object>(image:T,frame:PhotoFrame):T&{frame:PhotoFrame}{return {...image,frame:{x:Math.round(frame.x*10)/10,y:Math.round(frame.y*10)/10,zoom:Math.round(frame.zoom*100)/100}};}

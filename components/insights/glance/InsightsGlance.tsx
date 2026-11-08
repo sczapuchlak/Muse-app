@@ -15,7 +15,7 @@ import { emotionCatalog } from "@/lib/emotions";
 import { validDate } from "@/lib/dates";
 import { dailyGlance, glancePeriods, glanceRange, glanceTitle, movementByCategory, movementGlance, movementRate, readingGlance, currentlyReading, shiftGlance, waterGlance, yearByMonth, type GlancePeriod } from "@/lib/insights/glance";
 import { formatWaterAmount } from "@/lib/water";
-import { DayPriorities, DayStrip, EmotionSnapshot, GoodDays, IntentionsList, LittleMoments, MonthBars, MonthCalendar, MovementCard, PlannedMeals, PrioritiesSummary, RatingSummary, ThreeFavorites, WaterSummary, YearFeelings, YearMonths, YearStats, plural } from "./GlanceSections";
+import { DayPriorities, DayStrip, EmotionSnapshot, GoodDays, IntentionsList, MonthIntentions, LittleMoments, MonthBars, MonthCalendar, MovementCard, PlannedMeals, PrioritiesSummary, RatingSummary, ThreeFavorites, WaterSummary, YearFeelings, YearMonths, YearStats, plural } from "./GlanceSections";
 import { DayPortrait } from "./DayPortrait";
 import { useMemoryRange } from "../../memories/useMemories";
 import { ReadingSection } from "./ReadingSection";
@@ -104,25 +104,20 @@ export function InsightsGlance() {
       </>}
 
       {period === "month" && <>
-        <div data-area="cols" className="muse-glance-cols">
-          <div className="muse-glance-col">
-            <MonthCalendar range={range} days={snapshot.days} today={today} onOpen={(d) => open(d)} />
-            <GoodDays daily={daily} days={snapshot.days} checkIns={checkIns} onOpen={(d) => open(d)} limit={4} />
-          </div>
-          <div className="muse-glance-col">
-            <RatingSummary daily={daily} />
-            <EmotionSnapshot daily={daily} />
-            <WaterSummary water={water} loaded={wellness.status.loaded} />
-          </div>
-          <div className="muse-glance-col">
-            <PrioritiesSummary summary={daily.priorities} />
-            <MovementCard movement={movement} loaded={wellness.status.loaded} perWeek={rate.perWeek} weeks={rate.weeks} byCategory={byCategory} />
-            <ThreeFavorites daily={daily} />
-            {readingCard()}
-          </div>
+        {/* #104: one gapless grid — cards in a row share a height; long content scrolls or pages inside its card. */}
+        <div data-area="cols" className="muse-glance-month-grid">
+          <div style={{ gridArea: "cal" }}><MonthCalendar range={range} days={snapshot.days} today={today} onOpen={(d) => open(d)} /></div>
+          <div style={{ gridArea: "rating" }}><RatingSummary daily={daily} /></div>
+          <div style={{ gridArea: "prio" }}><PrioritiesSummary summary={daily.priorities} /></div>
+          <div style={{ gridArea: "feel" }}><EmotionSnapshot daily={daily} /></div>
+          <div style={{ gridArea: "move" }}><MovementCard movement={movement} loaded={wellness.status.loaded} perWeek={rate.perWeek} weeks={rate.weeks} byCategory={byCategory} /></div>
+          <div style={{ gridArea: "bright" }}><GoodDays daily={daily} days={snapshot.days} checkIns={checkIns} onOpen={(d) => open(d)} limit={4} /></div>
+          <div style={{ gridArea: "water" }}><WaterSummary water={water} loaded={wellness.status.loaded} /></div>
+          <div style={{ gridArea: "three" }}><ThreeFavorites daily={daily} /></div>
+          <div style={{ gridArea: "read" }}>{readingCard()}</div>
         </div>
         <div data-area="hero"><LittleMoments memories={moments.memories} checkIns={checkIns} onOpen={(d) => open(d)} period="month" /></div>
-        <div data-area="hero"><IntentionsList intentions={daily.intentions} onOpen={(d) => open(d)} carousel /></div>
+        <div data-area="hero"><MonthIntentions days={range.days} intentions={daily.intentions} today={today} onOpen={(d) => open(d)} /></div>
       </>}
 
       {period === "year" && <>

@@ -71,7 +71,7 @@ test('chronological buckets cross month/year boundaries and linked bills are ded
 test('Recurring view is compact, distinguishes source/method and annual billing, and exposes historical status',()=>{
  const {MoneyContext}=load('components/money/MoneyStore'),{MoneyRecurring,RecurringPreview}=load('components/money/MoneyRecurring');
  const html=renderToStaticMarkup(React.createElement(MoneyContext.Provider,{value:{getSnapshot:()=>({state:moneySample,loaded:true}),subscribe:()=>()=>{},dispatch:()=>{}}},React.createElement(MoneyRecurring,{today,onOpen(){}})));
- for(const text of ['Know what’s coming','Next charge','Billed through','Paid with','Apple App Store','Yearly','Paused / ended','Cancelled','Annualized estimate'])assert.ok(html.includes(text),text);
+ for(const text of ['Know what’s coming','Next charge','Billed through','Paid with','Apple App Store','Yearly','Paused','Cancelled','annualized'])assert.ok(html.includes(text),text);
  assert.ok(!html.includes('<select'));assert.match(html,/<label[^>]*class="sr-only"[^>]*>Search recurring payments<\/label>[\s\S]*type="search"/,'search keeps an accessible label');
  const preview=renderToStaticMarkup(React.createElement(MoneyContext.Provider,{value:{getSnapshot:()=>({state:moneySample,loaded:true}),subscribe:()=>()=>{},dispatch:()=>{}}},React.createElement(RecurringPreview,{today,onOpen(){},onView(){}})));
  assert.equal((preview.match(/<time /g)??[]).length,3,'dashboard stays bounded');

@@ -1,4 +1,5 @@
 "use client";
+import { useTaskDensity } from "@/lib/task-density-preference";
 import { useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { dateLabel, shiftDate } from "@/lib/dates";
@@ -63,7 +64,7 @@ export function Planner() {
   const filtered = filterPlannerTasks(state.tasks, workspaceFilter, activeFilters, search).filter((task) => !filters.priorityOnly || priorityIds.has(task.id));
   const [dragging, setDragging] = useState(false);
   // Scheduled Board | Running List (#81): two views of the same tasks, remembered per device.
-  const [tasksView, setTasksView] = useState<TasksView>("board");
+  const [tasksView, setTasksView] = useState<TasksView>("board"), density = useTaskDensity();
   useEffect(() => { const t = window.setTimeout(() => { try { setTasksView(parseTasksView(window.localStorage.getItem("muse.planner.tasksView"))); } catch { /* default */ } }, 0); return () => window.clearTimeout(t); }, []);
   const chooseView = (v: TasksView) => { setTasksView(v); try { window.localStorage.setItem("muse.planner.tasksView", v); } catch { /* this device only */ } };
   const runningWeek = weekOfDate;
@@ -79,7 +80,7 @@ export function Planner() {
   function rail(){return <PlannerRail workspaceId={workspaceFilter} onWorkspaceChange={(id)=>{setWorkspace(id);setFilters((current)=>({...current,groupId:""}));}} tasks={filtered} onOpen={openTask} groupId={groupFilter||undefined} tagIds={activeTags}
     today={today} boardDays={days} priorityIds={priorityIds} search={search} onSearch={setSearch} filters={activeFilters} onFilter={setFilters} onAnnounce={setAnnouncement}/>;}
 
-  return <main className="muse-page muse-planner-page">
+  return <main className="muse-page muse-planner-page" data-task-density={density}>
     <MusePageHeader title="Planner"/>
     <MuseSectionNav label="Planner views" current={tab} items={plannerTabs.map((t) => ({ id: t.id, label: t.label, href: `/planner?${t.id === "tasks" ? "" : `view=${t.id}&`}date=${date}` }))}/>
     <PlannerCapture>{tab === "agenda" && <Agenda date={date} today={today} onDate={changeDate} onOpen={openTask} workspaceId={workspaceFilter || undefined}/>}

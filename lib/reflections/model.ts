@@ -118,27 +118,33 @@ export function moduleImages(m:ReflectionModule):ReflectionImage[]{
 // ---------- Layouts ----------
 export type LayoutId='little-moments'|'weekly-favorites'|'monthly-highlights'|'monthly-edit'|'year-in-moments'|'yearbook';
 type Seed={type:ModuleType;title?:string;size?:ModuleSize;prompt?:GuidedPrompt;variant?:'single'|'pair'|'gallery'};
+/**
+ * #104: every layout is a fixed, concise page — one full-width story, two pairs, then Level 10 Life — so the page
+ * reads as a whole with no gaps. Wins and memories hold three each (see MAX_ITEMS). Older pages keep their sections.
+ */
 export const layouts:{id:LayoutId;period:ReflectionPeriod;name:string;tagline:string;mood:string;seeds:Seed[]}[]=[
- {id:'little-moments',period:'week',name:'Little Moments',tagline:'A cozy weekly journal.',mood:'cozy',seeds:[
-  {type:'memories',title:'Favorite moment',size:'full'},{type:'highlights',title:'Weekly wins',size:'half'},{type:'guided',prompt:'gratitude',size:'half'},
-  {type:'memories',title:'Little memories',size:'wide'},{type:'guided',prompt:'lessons',size:'third'},{type:'guided',prompt:'intentions',title:'Next week’s intentions',size:'half'},{type:'level10',size:'full'}]},
- {id:'weekly-favorites',period:'week',name:'Weekly Favorites',tagline:'A playful, visual weekly recap.',mood:'playful',seeds:[
-  {type:'photos',title:'This week in pictures',variant:'gallery',size:'full'},{type:'music',title:'Song of the week',size:'third'},{type:'watching',title:'What I watched',size:'third'},{type:'books',title:'What I read',size:'third'},
-  {type:'highlights',title:'Weekly highlights',size:'half'},{type:'favorites',title:'Things that made me happy',size:'half'},{type:'level10',size:'full'}]},
- {id:'monthly-highlights',period:'month',name:'Monthly Highlights',tagline:'A colorful editorial recap.',mood:'editorial',seeds:[
-  {type:'memories',title:'Favorite memories',size:'wide'},{type:'photos',title:'In pictures',variant:'pair',size:'third'},{type:'highlights',title:'Biggest wins',size:'half'},
-  {type:'guided',prompt:'challenges',title:'Challenges & lessons',size:'half'},{type:'guided',prompt:'gratitude',title:'Things I’m grateful for',size:'half'},{type:'favorites',title:'Favorite discoveries',size:'half'},{type:'level10',size:'full'}]},
- {id:'monthly-edit',period:'month',name:'The Monthly Edit',tagline:'A magazine-inspired month.',mood:'magazine',seeds:[
-  {type:'music',title:'Songs on repeat',size:'half'},{type:'books',title:'Books & stories',size:'half'},{type:'watching',title:'Movies & shows',size:'third'},
-  {type:'photos',title:'Favorite photos',variant:'gallery',size:'wide'},{type:'favorites',title:'Personal favorites',size:'half'},{type:'memories',title:'Memorable moments',size:'half'},{type:'level10',size:'full'}]},
- {id:'year-in-moments',period:'year',name:'My Year in Moments',tagline:'A sentimental annual keepsake.',mood:'sentimental',seeds:[
-  {type:'memories',title:'Month by month',size:'full'},{type:'highlights',title:'Biggest milestones',size:'half'},{type:'memories',title:'Favorite experiences',size:'half'},
-  {type:'photos',title:'Meaningful photos',variant:'gallery',size:'full'},{type:'guided',prompt:'growth',size:'full'},{type:'level10',size:'full'}]},
- {id:'yearbook',period:'year',name:'The Yearbook',tagline:'A playful annual favorites collection.',mood:'yearbook',seeds:[
-  {type:'music',title:'Songs & albums of the year',size:'third'},{type:'books',title:'Favorite books',size:'third'},{type:'watching',title:'Movies & shows',size:'third'},
-  {type:'favorites',title:'Favorite experiences',size:'half'},{type:'favorites',title:'Personal discoveries',size:'half'},{type:'highlights',title:'Biggest wins',size:'half'},
-  {type:'guided',prompt:'intentions',title:'Lessons & intentions',size:'half'},{type:'level10',size:'full'}]},
+ {id:'little-moments',period:'week',name:'Little Moments',tagline:'Three moments, three wins, one week.',mood:'cozy',seeds:[
+  {type:'memories',title:'Favorite moments',size:'full'},{type:'highlights',title:'Weekly wins',size:'half'},{type:'guided',prompt:'gratitude',size:'half'},
+  {type:'guided',prompt:'lessons',size:'half'},{type:'guided',prompt:'intentions',title:'Next week’s intentions',size:'half'},{type:'level10',size:'full'}]},
+ {id:'weekly-favorites',period:'week',name:'Weekly Favorites',tagline:'The week in pictures and favorites.',mood:'playful',seeds:[
+  {type:'photos',title:'This week in pictures',variant:'gallery',size:'full'},{type:'highlights',title:'Weekly wins',size:'half'},{type:'favorites',title:'Things that made me happy',size:'half'},
+  {type:'music',title:'Song of the week',size:'half'},{type:'books',title:'What I read',size:'half'},{type:'level10',size:'full'}]},
+ {id:'monthly-highlights',period:'month',name:'Monthly Highlights',tagline:'Three memories, three wins, one month.',mood:'editorial',seeds:[
+  {type:'memories',title:'Favorite memories',size:'full'},{type:'highlights',title:'Biggest wins',size:'half'},{type:'guided',prompt:'gratitude',title:'Things I’m grateful for',size:'half'},
+  {type:'guided',prompt:'challenges',title:'Challenges & lessons',size:'half'},{type:'favorites',title:'Favorite discoveries',size:'half'},{type:'level10',size:'full'}]},
+ {id:'monthly-edit',period:'month',name:'The Monthly Edit',tagline:'What you listened to, read and loved.',mood:'magazine',seeds:[
+  {type:'photos',title:'Favorite photos',variant:'gallery',size:'full'},{type:'music',title:'Songs on repeat',size:'half'},{type:'books',title:'Books & stories',size:'half'},
+  {type:'watching',title:'Movies & shows',size:'half'},{type:'memories',title:'Memorable moments',size:'half'},{type:'level10',size:'full'}]},
+ {id:'year-in-moments',period:'year',name:'My Year in Moments',tagline:'The year, in its best three of everything.',mood:'sentimental',seeds:[
+  {type:'memories',title:'Favorite moments of the year',size:'full'},{type:'highlights',title:'Biggest milestones',size:'half'},{type:'guided',prompt:'growth',size:'half'},
+  {type:'guided',prompt:'gratitude',size:'half'},{type:'guided',prompt:'intentions',title:'Carrying forward',size:'half'},{type:'level10',size:'full'}]},
+ {id:'yearbook',period:'year',name:'The Yearbook',tagline:'Favorites of the year.',mood:'yearbook',seeds:[
+  {type:'photos',title:'The year in pictures',variant:'gallery',size:'full'},{type:'music',title:'Songs & albums of the year',size:'half'},{type:'books',title:'Favorite books',size:'half'},
+  {type:'watching',title:'Movies & shows',size:'half'},{type:'highlights',title:'Biggest wins',size:'half'},{type:'level10',size:'full'}]},
 ];
+/** #104: a set, concise page — wins and memories hold three each. Older pages with more keep them; only adding stops. */
+export const MAX_ITEMS:Partial<Record<ModuleType,number>>={highlights:3,memories:3,music:3,books:3,watching:3,favorites:3,guided:3,photos:6};
+export const canAddItem=(type:ModuleType,count:number)=>count<(MAX_ITEMS[type]??Infinity);
 export const layoutsFor=(p:ReflectionPeriod)=>layouts.filter(l=>l.period===p);
 export const layoutById=(id:string)=>layouts.find(l=>l.id===id);
 export function seedModules(layout:LayoutId,makeId:()=>string=()=>crypto.randomUUID()):ReflectionModule[]{

@@ -24,3 +24,9 @@
 .muse-choice-menu[data-variant="chip"] .muse-choice-trigger:focus-visible { outline:2px solid var(--focus-ring); outline-offset:2px; }
 
 .muse-choice-menu[data-variant="icon"] .muse-choice-trigger { width:40px; min-height:40px; padding:8px; }
+
+/* Bare choice lists (#104): no repeated heading, compact rows; touch keeps the 44px target. */
+.muse-popover-panel[data-bare] { padding:6px; }
+.muse-popover-panel[data-bare] .muse-choice-options { margin-top:0; gap:2px; }
+.muse-popover-panel[data-bare] > input[type="search"] { margin-bottom:4px; }
+@media (pointer:fine) { .muse-popover-panel[data-bare] .popover-choice { min-height:34px; padding-block:6px; } }

@@ -241,3 +241,59 @@
  .muse-recurring-toolbar>.muse-filter-options{grid-area:freq;justify-self:start}
  .muse-recurring-toolbar>.muse-button{grid-area:filters;min-height:40px}
 }
+
+/* ===== #104 §11 Money refresh — visual only; no calculation lives here. ===== */
+[data-tile-accent="primary"],[data-bucket-accent="primary"]{--tile-ink:var(--chart-1)}
+[data-tile-accent="secondary"],[data-bucket-accent="secondary"]{--tile-ink:var(--chart-2)}
+[data-tile-accent="pop"],[data-bucket-accent="pop"]{--tile-ink:var(--chart-3)}
+[data-tile-accent="warm"],[data-bucket-accent="warm"]{--tile-ink:var(--chart-4)}
+[data-tile-accent="info"],[data-bucket-accent="info"]{--tile-ink:var(--chart-6)}
+[data-bucket-accent="muted"]{--tile-ink:var(--text-muted)}
+/* Stat tiles: shared by the recurring totals and the spending summary. */
+.muse-money-tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:10px;margin:0}
+.muse-money-tiles>div{--tile-ink:var(--chart-1);position:relative;display:grid;gap:2px;align-content:start;padding:14px 16px;border:1px solid color-mix(in srgb,var(--tile-ink) 28%,var(--glass-border));border-radius:16px;background:linear-gradient(150deg,color-mix(in srgb,var(--tile-ink) 16%,transparent),transparent 70%),var(--glass-background);overflow:hidden}
+.muse-recurring-totals.muse-money-tiles>div:nth-child(1){--tile-ink:var(--chart-3)}.muse-recurring-totals.muse-money-tiles>div:nth-child(2){--tile-ink:var(--chart-1)}.muse-recurring-totals.muse-money-tiles>div:nth-child(3){--tile-ink:var(--chart-6)}
+.muse-money-tiles dt{display:flex;gap:6px;align-items:baseline;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:color-mix(in srgb,var(--tile-ink) 70%,var(--foreground))}
+.muse-money-tiles dt small{letter-spacing:0;text-transform:none;color:var(--text-muted);font-size:.68rem}
+.muse-money-tiles dd{margin:2px 0 0;font-size:1.45rem;font-weight:650;font-variant-numeric:tabular-nums;color:var(--foreground)}
+.muse-money-tiles>div>small{font-size:.72rem;color:var(--text-muted)}
+.muse-spending-summary{margin-bottom:12px}
+.muse-money-dashboard .muse-recurring-totals.muse-money-tiles{grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr))}
+.muse-money-dashboard .muse-recurring-totals.muse-money-tiles>div{display:grid}
+/* Recurring: each window is its own accented band; rows are compact and hover softly. */
+.muse-recurring-bucket{--tile-ink:var(--chart-1);position:relative;padding:4px 0 6px 14px;margin-block:6px}
+.muse-recurring-bucket::before{content:"";position:absolute;left:0;top:6px;bottom:6px;width:3px;border-radius:3px;background:linear-gradient(var(--tile-ink),color-mix(in srgb,var(--tile-ink) 20%,transparent))}
+.muse-recurring-bucket h3{display:flex;align-items:center;gap:8px;margin:4px 0 6px;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:color-mix(in srgb,var(--tile-ink) 75%,var(--foreground))}
+.muse-recurring-count{padding:0 7px;border-radius:999px;background:color-mix(in srgb,var(--tile-ink) 18%,transparent);font-size:.68rem;letter-spacing:0}
+.muse-recurring-bucket[data-bucket-accent="warm"] .muse-recurring-row,.muse-recurring-bucket[data-bucket-accent="muted"] .muse-recurring-row{opacity:.78}
+.muse-recurring-row{border-radius:12px;border-bottom-color:transparent;transition:background-color .15s ease}
+.muse-recurring-row+.muse-recurring-row{border-top:1px solid var(--divider)}
+.muse-recurring-row:hover,.muse-recurring-row:focus-within{background:color-mix(in srgb,var(--tile-ink) 9%,transparent)}
+.muse-recurring-row:hover+.muse-recurring-row{border-top-color:transparent}
+/* Transactions: amount and payment method sit together; metadata stays on one line where it fits. */
+.muse-money-ledger li{border-radius:10px;padding-inline:6px}
+.muse-money-ledger li:hover,.muse-money-ledger li:focus-within{background:color-mix(in srgb,var(--surface-hover) 55%,transparent)}
+.muse-money-amount-group{display:grid;justify-items:end;gap:2px}
+.muse-money-method-chip{padding:0 7px;border:1px solid var(--glass-border);border-radius:999px;font-size:.66rem;color:var(--text-muted);white-space:nowrap;max-width:14ch;overflow:hidden;text-overflow:ellipsis}
+.muse-money-tags{color:var(--text-muted);font-size:.7rem}
+/* Supporting notes live under the content, quietly. */
+.muse-money-footnote{margin:10px 2px 0;font-size:.72rem;color:var(--text-muted)}
+details.muse-money-footnote>summary{cursor:pointer;width:max-content}
+details.muse-money-footnote[open]>summary{margin-bottom:4px}
+.muse-money-panel-heading h2{position:relative}
+.muse-money-panel-heading h2::after{content:"";position:absolute;left:0;bottom:-5px;width:36px;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--accent-primary),transparent)}
+/* Compact recurring rows: name with its category and status on one line; soft hover instead of a gray block. */
+.muse-recurring-open{min-height:48px;padding-block:6px}
+.muse-recurring-open:hover{background:transparent}
+.muse-recurring-name{display:flex;flex-direction:column;gap:2px}
+.muse-recurring-name>small{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.muse-recurring-name .muse-bill-status{margin-top:0;padding:0 7px;border-radius:999px;font-size:.62rem}
+.muse-recurring-totals.muse-money-tiles>div,.muse-money-dashboard .muse-recurring-totals.muse-money-tiles>div{display:grid;justify-content:stretch;align-items:start}
+.muse-recurring-totals.muse-money-tiles dd{white-space:nowrap}
+.muse-recurring-totals.muse-money-tiles,.muse-money-dashboard .muse-recurring-totals.muse-money-tiles{grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}
+.muse-recurring-totals.muse-money-tiles>div,.muse-money-dashboard .muse-recurring-totals.muse-money-tiles>div{grid-template-columns:minmax(0,1fr);gap:2px}
+.muse-recurring-totals.muse-money-tiles dd{text-align:left;font-size:1.45rem}
+.muse-recurring-totals.muse-money-tiles dt{font-size:.7rem}
+.muse-recurring-totals.muse-money-tiles small{grid-column:auto;font-size:.72rem;margin:0}
+.muse-recurring-name{flex-direction:row;align-items:center;flex-wrap:wrap;column-gap:10px}
+.muse-recurring-open{min-height:44px}

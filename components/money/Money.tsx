@@ -16,7 +16,7 @@ import { useMuseSpark } from "../MuseSpark";
 import { MoneyField } from "./MoneyFields";
 import { MoneyEditors,type MoneyEditorRequest } from "./MoneyEditors";
 import { MoneyRecurring } from "./MoneyRecurring";
-import { MoneyOverview,MoneyPaychecks,MoneyTransactions,MoneyCards,MoneyCategories } from "./MoneyViews";
+import { MoneyOverview,MoneyPaychecks,MoneyTransactions,MoneyCards,MoneyCategories ,SpendingSummary} from "./MoneyViews";
 import {MoneyCapture,MoneySaveStatus} from "./MoneyStore";
 import { useMoney } from "./MoneyStore";
 import "./Money.css";
@@ -48,6 +48,7 @@ export function Money() {const {profile}=useDailyData();
     </section>}
     {view==="overview"&&<MoneyOverview paycheck={paycheck} period={period} today={date} onOpen={setEditor} onSpending={()=>changeView("spending")} onRecurring={()=>changeView("recurring")}/>}
     {view==="paychecks"&&<MoneyPaychecks today={date} paycheck={paycheck} onSelect={setPaycheckId} onOpen={setEditor}/>}
+    {view==="spending"&&<SpendingSummary paycheck={periodMode==="paycheck"?paycheck:undefined} period={period}/>}
     {view==="spending"&&<section className="muse-money-panel"><div className="muse-money-spending-tools"><MuseSearch label="Search transactions" className="muse-money-search" value={search} onChange={setSearch} placeholder="Find a transaction…"/><button className="muse-button" ref={filterRef} type="button" aria-expanded={filtersOpen} aria-controls="money-spending-filters" aria-haspopup="dialog" onClick={()=>setFiltersOpen((open)=>!open)}>Filters{filterCount?` · ${filterCount}`:""}</button><button className="muse-button button-primary" type="button" onClick={(e)=>setEditor({kind:"transaction",anchor:e.currentTarget})}>+ Add transaction</button><span className="small-label">{formatMoney(spendingTotal(state,period))} recorded this period</span></div><MoneyTransactions period={period} search={search} category={category} tag={tag} card={card} onOpen={setEditor}/></section>}
     {view==="recurring"&&<MoneyRecurring today={date} onOpen={setEditor}/>}
     {view==="cards"&&<MoneyCards onOpen={setEditor}/>}

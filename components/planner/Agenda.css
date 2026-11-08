@@ -423,3 +423,42 @@ button.muse-mark{cursor:pointer}button.muse-mark:focus-visible{outline:2px solid
 .muse-layout-editor .muse-section-preview[data-header=pill] h3{color:color-mix(in srgb,var(--section-accent,var(--accent-primary)) 50%,var(--foreground))}
 .muse-layout-editor .muse-section-preview[data-header=serif] h3{font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight);text-transform:none;letter-spacing:0;font-size:.98rem;color:var(--foreground)}
 .muse-saved-actions .text-button{padding-inline:0}
+
+/* Future Log (#104 §5): a bullet-journal year spread — 12 compact frosted month cards with colored headings. */
+.muse-agenda-year{grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+@container (max-width:1000px){.muse-agenda-year{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:1100px){.muse-agenda-year{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:820px){.muse-agenda-year{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.muse-agenda-year{grid-template-columns:minmax(0,1fr)}}
+.muse-agenda-log-month{--log-ink:var(--chart-1);position:relative;min-height:150px;grid-template-rows:auto 1fr auto;padding:12px 14px 10px;border-radius:18px;background:var(--glass-background);overflow:hidden}
+.muse-agenda-log-month:nth-child(6n+2){--log-ink:var(--chart-2)}.muse-agenda-log-month:nth-child(6n+3){--log-ink:var(--chart-3)}.muse-agenda-log-month:nth-child(6n+4){--log-ink:var(--chart-4)}.muse-agenda-log-month:nth-child(6n+5){--log-ink:var(--chart-5)}.muse-agenda-log-month:nth-child(6n){--log-ink:var(--chart-6)}
+.muse-agenda-log-month::before{content:"";position:absolute;inset:0 0 auto;height:3px;background:linear-gradient(90deg,var(--log-ink),color-mix(in srgb,var(--log-ink) 10%,transparent))}
+.muse-agenda-log-month h3{color:color-mix(in srgb,var(--log-ink) 72%,var(--foreground))}
+.muse-agenda-log-month[data-current]{border-color:color-mix(in srgb,var(--log-ink) 60%,var(--glass-border));box-shadow:0 0 0 1px color-mix(in srgb,var(--log-ink) 35%,transparent),var(--card-shadow)}
+.muse-agenda-log-month[data-past]{opacity:.72}
+.muse-agenda-log-month li{min-width:0;font-size:.8rem;line-height:1.35}
+.muse-agenda-log-month .muse-agenda-log-entry{all:unset;cursor:pointer;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;border-radius:5px}
+.muse-agenda-log-month .muse-agenda-log-entry:hover{color:color-mix(in srgb,var(--log-ink) 70%,var(--foreground))}
+.muse-agenda-log-month .muse-agenda-log-entry[data-done]{text-decoration:line-through;color:var(--text-muted)}
+.muse-future-bullet{flex:none;width:7px;height:7px;margin:0 5px;align-self:center;border-radius:50%;background:var(--item-accent,var(--log-ink))}
+.muse-agenda-log-empty{all:unset;cursor:pointer;align-self:center;justify-self:start;padding:6px 10px;border:1px dashed color-mix(in srgb,var(--log-ink) 40%,var(--glass-border));border-radius:999px;color:var(--text-muted);font-size:.76rem}
+.muse-agenda-log-empty:hover{color:var(--foreground);border-style:solid}
+.muse-agenda-log-empty:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
+.muse-agenda-log-more{justify-self:start;font-size:.74rem;color:color-mix(in srgb,var(--log-ink) 70%,var(--foreground))}
+.muse-future-editor{display:grid;gap:10px}
+.muse-future-when{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.muse-future-when .muse-mark-field{flex:1 1 140px}
+.muse-future-style>summary{cursor:pointer;font-size:.8rem;color:var(--text-muted)}.muse-future-style[open]{display:grid;gap:10px}
+.muse-agenda-log-month h3 .text-button{color:inherit;text-decoration:none}.muse-agenda-log-month h3 .text-button:hover{text-decoration:underline;text-underline-offset:3px}
+
+/* #104 §9C: the section Mark is a button on the title; empty sections show a faint sparkle that brightens on hover. */
+.muse-agenda-section-mark{all:unset;cursor:pointer;display:inline-grid;place-items:center;width:20px;height:20px;margin-right:6px;border-radius:6px;vertical-align:-4px;color:var(--section-accent,var(--accent-primary));background:color-mix(in srgb,var(--section-accent,var(--accent-primary)) 16%,transparent)}
+.muse-agenda-section-mark[data-empty]{background:transparent;opacity:.35}
+.muse-agenda-section:hover .muse-agenda-section-mark[data-empty],.muse-agenda-section-mark:focus-visible{opacity:.9}
+.muse-agenda-section-mark:hover{background:color-mix(in srgb,var(--section-accent,var(--accent-primary)) 26%,transparent);opacity:1}
+.muse-agenda-section-mark:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
+.muse-section-color{width:24px;height:24px;border-radius:50%;border:1px solid var(--glass-border);background:var(--icon-gradient,linear-gradient(135deg,var(--accent-primary),var(--accent-pop)))}
+.muse-section-color[aria-pressed="true"]{outline:2px solid var(--foreground);outline-offset:2px}
+@media (pointer:coarse){.muse-agenda-section-mark[data-empty]{opacity:.6}}
+/* #104 §9D: the week still scrolls sideways (trackpad, touch, keyboard, Fri–Sun buttons) without a visible scrollbar over the page. */
+.muse-agenda-week{scrollbar-width:none;-ms-overflow-style:none}
+.muse-agenda-week::-webkit-scrollbar{display:none;width:0;height:0}

@@ -44,3 +44,4 @@
 .muse-cosmic-pref-link{color:var(--text-muted);font-size:.78rem;font-weight:500;text-decoration:underline;text-decoration-color:color-mix(in srgb,var(--text-muted) 50%,transparent);text-underline-offset:3px}
 .muse-cosmic-pref-link:hover{color:var(--foreground)}
 .muse-cosmic-forecast .muse-cosmic-forecast-actions{flex-wrap:wrap}
+.muse-cosmic-forecast .muse-cosmic-pref-link{margin-left:auto;align-self:center;font-size:.78rem}.muse-cosmic-forecast-actions,.muse-cosmic-forecast :is(.muse-forecast-actions,[class*="forecast-actions"]){display:flex;align-items:center;gap:8px;width:100%}

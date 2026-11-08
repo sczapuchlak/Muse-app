@@ -35,9 +35,9 @@
   box-shadow: var(--surface-feedback-shadow), var(--material-depth-shadow), inset 0 1px 0 color-mix(in srgb, var(--glass-edge) 75%, transparent), inset 1px 0 0 color-mix(in srgb, var(--accent-secondary) 14%, transparent), inset -1px -1px 0 color-mix(in srgb, var(--accent-warm) 12%, transparent);
 }
 /* Blur only primary glass sheets and existing floating surfaces, never each nested entry. */
-:root[data-material] :is(.muse-card, .muse-insight-panel, .muse-notes-workspace, .muse-money-panel, .muse-planning-rail, .muse-day-drop, .muse-planner-surface, .muse-ritual-group, .muse-nourish-day, .muse-grocery-section, .muse-popover-panel, .muse-drawer, .muse-modal) {
-  backdrop-filter: blur(var(--material-blur)) saturate(var(--material-saturation));
+:root[data-material] :is(.muse-card, .muse-insight-panel, .muse-notes-workspace, .muse-money-panel, .muse-planning-rail, .muse-day-drop, .muse-planner-surface, .muse-ritual-group, .muse-nourish-day, .muse-grocery-section, .muse-popover-panel, .muse-drawer, .muse-modal, .muse-collections-controls, .muse-fortune-stage, .muse-nourish-week, .muse-stream-composer, .muse-series-hero, .muse-series-rows) {
   -webkit-backdrop-filter: blur(var(--material-blur)) saturate(var(--material-saturation));
+  backdrop-filter: blur(var(--material-blur)) saturate(var(--material-saturation));
 }
 
 /* Quieter painted refraction at the nested task/meal level, with no added blur. */
@@ -63,3 +63,11 @@
 :root[data-theme="disco-damage"] :is(.muse-button,.choice-button):not(.button-primary):hover { background-image:var(--disco-foil); border-color:var(--accent-aqua); box-shadow:var(--disco-state-glow); }
 :root[data-theme="disco-damage"] :is(.choice-button[aria-pressed="true"],.muse-button[aria-expanded="true"]) { background-image:var(--disco-foil); border-color:var(--selected-border); box-shadow:var(--disco-state-glow); }
 :root[data-theme="disco-damage"] :is(button,a,input,textarea,[tabindex]):focus-visible { outline-color:var(--focus-ring); }
+
+/* Page sheets (#104): panels that sit directly on the page background use the same glass as cards, so Frosted and
+   Crystal read as one app. Nested copies keep the lighter subtle surface. Blur for the top-level
+   ones comes from the shared blur list above. */
+:root[data-material] :is(.muse-hero, .muse-panel, .muse-empty-state[data-variant]:not([data-variant="quiet"]), .muse-collections-controls, .muse-fortune-stage, .muse-books-panel, .muse-nourish-week):not(:is(.muse-card, .muse-panel, .muse-hero, .muse-insight-panel, .muse-books-panel, .muse-modal, .muse-drawer, .muse-popover-panel) *) {
+  background-color: var(--glass-background);
+  box-shadow: var(--card-shadow), inset 0 1px 0 color-mix(in srgb, var(--glass-edge) 75%, transparent);
+}

@@ -16,7 +16,7 @@ export function MuseChoiceMenu({ label, valueLabel, options, selectedIds, multip
   function close() { setOpen(false); anchor.current?.focus(); }
   return <div className="muse-choice-menu" data-variant={variant}>
     <button ref={anchor} className="muse-choice-trigger muse-button" data-accent={options.find((option)=>selectedIds.includes(option.id))?.accent} type="button" aria-label={`${label}: ${valueLabel}`} aria-haspopup="dialog" aria-expanded={open} aria-controls={id} onClick={() => { setSearch(""); setOpen((value) => !value); }} onKeyDown={(event) => { if (["ArrowDown", "ArrowUp"].includes(event.key)) { event.preventDefault(); setOpen(true); } }}>{variant==="icon"?<MuseIcon name="sort" size={18}/>:<span className="muse-choice-value"><ColorLabel color={options.find((option)=>selectedIds.includes(option.id))?.accent}>{valueLabel}</ColorLabel></span>}{variant!=="icon"&&<MuseIcon name="chevron" size={14} />}</button>
-    <GlassPopover id={id} label={label} open={open} anchorRef={anchor} onClose={() => setOpen(false)} width={300} scrollMode="content">
+    <GlassPopover id={id} label={label} open={open} anchorRef={anchor} onClose={() => setOpen(false)} width={300} scrollMode="content" bare={!multiple}>
       {(searchable??options.length > 6) && <input type="search" aria-label={`Search ${label.toLowerCase()}`} placeholder="Find…" value={search} onChange={(event) => setSearch(event.target.value)} />}
       <div className="popover-choice-list muse-choice-options" role="group" aria-label={label} onKeyDown={(event) => {
         if (!["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)) return;

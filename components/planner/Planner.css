@@ -312,7 +312,7 @@ select option { background: var(--background); color: var(--foreground); }
 .muse-planner-layout[data-dragging] :is(.muse-day-drop, .muse-task-list-body)[data-drop-active="true"] .muse-drop-hint { background: var(--selected-border); color: var(--background); }
 @media (prefers-reduced-motion: reduce) { .muse-list-row { transition: none; } }
 /* Mobile: the same list in the sheet, at full width. */
-.muse-planner-sheet-body .muse-task-list, :root[data-material] .muse-planner-sheet-body .muse-task-list { border: 0; background: transparent; background-image: none; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; }
+.muse-planner-sheet-body .muse-task-list, :root[data-material] .muse-planner-sheet-body .muse-task-list { border: 0; background: transparent; background-image: none; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none;  }
 /* The sheet already says "Task List"; keep the heading for screen readers and show just the count. */
 .muse-planner-sheet-body .muse-task-list-title h2 { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .muse-planner-sheet-body .muse-task-list-title { justify-content: flex-end; margin-bottom: -4px; }
@@ -442,3 +442,29 @@ button.muse-running-cell[data-completed]:hover::after { content: "Reopen"; posit
 .muse-list-workspace-chip .muse-choice-trigger svg { width: 11px; height: 11px; }
 @media (prefers-reduced-motion: reduce) { .muse-running-row .muse-running-line { filter: none; } }
 .muse-list-facts { display: flex; flex-wrap: wrap; align-items: center; }
+
+/* #104 §8 Compact task cards (default). Same component and behavior as Spacious; only spacing and chip size change. */
+[data-task-density="compact"] .muse-planner-task{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:6px;row-gap:3px;padding:7px 9px;border-radius:12px}
+[data-task-density="compact"] .muse-planner-task>.muse-task-title-row{grid-column:1 / -1;min-height:0;gap:7px}
+[data-task-density="compact"] .muse-planner-task .muse-task-title{font-size:.84rem;line-height:1.3;padding-block:1px}
+[data-task-density="compact"] .muse-planner-task .priority-check{width:16px;height:16px}
+[data-task-density="compact"] .muse-planner-task :is(.muse-task-flags,.muse-task-secondary-row,.muse-task-due-preview){grid-column:1 / -1;margin:0;padding-left:23px;min-height:0;font-size:.68rem;line-height:1.3}
+[data-task-density="compact"] .muse-planner-task .muse-task-flags+.muse-task-secondary-row{margin-top:-1px}
+[data-task-density="compact"] .muse-planner-task .muse-task-secondary-row :is(button,a,span){min-height:0}
+[data-task-density="compact"] .muse-planner-task .muse-task-secondary-row>*{gap:4px;flex-wrap:wrap}
+[data-task-density="compact"] .muse-planner-task .muse-task-secondary-row :is(.muse-tag-chip,.muse-classification-chip,[class*="chip"]){padding:1px 6px;border-radius:999px;font-size:.66rem}
+[data-task-density="compact"] .muse-planner-task-list{gap:5px}
+@media (pointer:coarse){[data-task-density="compact"] .muse-planner-task{padding:9px 10px}}
+@media (pointer:fine){[data-task-density="compact"] .muse-planner-task :is(.muse-task-completion,.muse-task-title,.muse-task-inline-timer){min-height:26px;height:auto}
+ [data-task-density="compact"] .muse-planner-task .muse-task-completion .check-input{height:26px}}
+/* Flags and workspace/tags share one line. */
+[data-task-density="compact"] .muse-planner-task{grid-template-columns:auto minmax(0,1fr)}
+[data-task-density="compact"] .muse-planner-task>.muse-task-flags{grid-column:1;align-self:center;padding-right:0}
+[data-task-density="compact"] .muse-planner-task>.muse-task-flags+.muse-task-secondary-row{grid-column:2;padding-left:4px;margin-top:0}
+[data-task-density="compact"] .muse-planner-task .muse-task-tag{padding:1px 7px;font-size:.66rem;min-height:0}
+[data-task-density="compact"] .muse-planner-task .muse-task-workspace-icon svg{width:13px;height:13px}
+[data-task-density="compact"] .muse-planner-task .muse-task-secondary-row{min-width:0;overflow:hidden}
+[data-task-density="compact"] .muse-planner-task :is(.muse-task-classification,.muse-task-tags){flex-wrap:nowrap;min-width:0;gap:3px}
+[data-task-density="compact"] .muse-planner-task .muse-task-classification>*{flex:none}
+[data-task-density="compact"] .muse-planner-task .muse-task-tags{overflow:hidden;flex:0 1 auto}
+[data-task-density="spacious"] .muse-agenda .muse-task-list-rows>li{padding-block:10px}

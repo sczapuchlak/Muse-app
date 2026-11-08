@@ -4,7 +4,7 @@
 .muse-app-content { container: muse-content / inline-size; min-width: 0; }
 .muse-global-bar { display: flex; align-items: center; justify-content: flex-end; width: min(calc(100% - var(--page-padding) * 2), var(--page-max-width)); min-height: 64px; margin: 0 auto; padding-top: var(--space-4); }
 .muse-mobile-brand { display: none; }
-.muse-rail { position: fixed; inset: 0 auto auto 0; z-index: 40; display: flex; flex-direction: column; width: var(--muse-rail-width); height: 100vh; height: 100dvh; overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; scrollbar-width: thin; padding: var(--space-4) var(--space-3); border-right: 1px solid var(--glass-border); background: var(--glass-background); backdrop-filter: blur(var(--material-blur)) saturate(1.15); -webkit-backdrop-filter: blur(var(--material-blur)) saturate(1.15); transition: width var(--transition); }
+.muse-rail { position: fixed; inset: 0 auto auto 0; z-index: 40; display: flex; flex-direction: column; width: var(--muse-rail-width); height: 100vh; height: 100dvh; overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; scrollbar-width: thin; padding: var(--space-4) var(--space-3); border-right: 1px solid var(--glass-border); background: var(--glass-background); -webkit-backdrop-filter: blur(var(--material-blur)) saturate(1.15); backdrop-filter: blur(var(--material-blur)) saturate(1.15);  transition: width var(--transition); }
 .muse-rail-header { position: relative; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 2px; flex: 0 0 auto; margin-bottom: var(--space-2); padding-bottom: var(--space-2); border-bottom: 1px solid var(--divider); }
 .muse-shell-brand { display: inline-flex; align-items: center; justify-content: flex-start; gap: var(--space-2); min-width: 0; min-height: 44px; padding-inline: var(--space-2); color: var(--foreground); text-decoration: none; font-size: 1.9rem; font-weight: 650; letter-spacing: -.065em; }
 .muse-rail-navigation { flex: 0 0 auto; }
@@ -45,7 +45,7 @@
   .muse-app-main { margin-inline-start: 0; padding-bottom: calc(100px + env(safe-area-inset-bottom)); }
   .muse-global-bar { justify-content: space-between; }
   .muse-mobile-brand { display: inline-flex; }
-  .muse-bottom-navigation { position: fixed; z-index: 50; left: 50%; bottom: calc(var(--space-3) + env(safe-area-inset-bottom)); transform: translateX(-50%); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-1); width: min(calc(100% - var(--space-8)), 440px); padding: 6px; border: 1px solid var(--glass-border); border-top-color: var(--glass-edge); border-radius: 22px; background: var(--floating-background); box-shadow: var(--floating-shadow); backdrop-filter: blur(var(--material-blur)); -webkit-backdrop-filter: blur(var(--material-blur)); }
+  .muse-bottom-navigation { position: fixed; z-index: 50; left: 50%; bottom: calc(var(--space-3) + env(safe-area-inset-bottom)); transform: translateX(-50%); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-1); width: min(calc(100% - var(--space-8)), 440px); padding: 6px; border: 1px solid var(--glass-border); border-top-color: var(--glass-edge); border-radius: 22px; background: var(--floating-background); box-shadow: var(--floating-shadow); -webkit-backdrop-filter: blur(var(--material-blur)); backdrop-filter: blur(var(--material-blur));  }
   .muse-bottom-link { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-1); min-height: 56px; padding: var(--space-1); color: var(--text-muted); background: transparent; border: 1px solid transparent; border-radius: var(--floating-radius); text-decoration: none; font-size: .65rem; }
   .muse-bottom-link[aria-current="page"], .muse-bottom-link[data-active="true"], .muse-bottom-link[aria-expanded="true"] { color: var(--navigation-text); border-color: var(--selected-border); background: var(--navigation-background); }
   .muse-bottom-glint { position: absolute; top: 4px; right: 18%; }
@@ -105,6 +105,7 @@
 .muse-dock-button[aria-current="page"]{color:var(--navigation-text);border-color:var(--selected-border);background:var(--navigation-background)}
 .muse-dock-button:focus-visible,.muse-theme-root[data-variant="dock"] .muse-theme-trigger:focus-visible{outline:2px solid var(--focus-ring,var(--selected-border));outline-offset:2px}
 .muse-rail-dock .muse-theme-root[data-variant="dock"]{width:auto;min-width:0;justify-self:auto;margin:0}
+.muse-theme-root[data-variant="dock"] .muse-theme-trigger{justify-content:center;place-content:center}
 .muse-theme-root[data-variant="dock"] .muse-theme-trigger>svg:last-child{display:none}
 .muse-theme-root[data-variant="dock"] .muse-dock-orb{position:absolute;right:7px;bottom:7px;width:10px;height:10px;flex:none;border:1.5px solid var(--floating-background,var(--background))}
 @media (prefers-reduced-motion:no-preference){.muse-dock-button:hover,.muse-theme-root[data-variant="dock"] .muse-theme-trigger:hover{transform:translateY(-1px)}}

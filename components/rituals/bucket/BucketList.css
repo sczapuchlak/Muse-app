@@ -186,3 +186,15 @@
  .muse-bucket-settings{margin-left:0}
 }
 @media (prefers-reduced-motion:reduce){.muse-bucket-row,.muse-bucket-keyitem{transition:none}}
+
+/* #104 §10: every card photo sits inside the same 16:10 frame — photos never stretch the card on any screen. */
+.muse-bucket-card-art{overflow:hidden;min-height:0;contain:paint}
+.muse-bucket-card-photo{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover}
+.muse-bucket-card-art .muse-bucket-photo-wait{position:absolute;inset:0}
+.muse-bucket-cover-edit{display:grid;gap:8px}
+.muse-bucket-framer{display:grid;gap:8px;max-width:420px}
+.muse-bucket-framer-stage{border-radius:14px;border:1px solid var(--glass-border);cursor:grab;touch-action:none;user-select:none}
+.muse-bucket-framer-stage:active{cursor:grabbing}
+.muse-bucket-framer-stage:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
+.muse-bucket-framer-hint{position:absolute;left:8px;bottom:8px;padding:2px 8px;border-radius:999px;background:var(--surface-strong);font-size:.7rem;color:var(--text-muted);pointer-events:none}
+.muse-bucket-framer-controls{display:flex;align-items:center;gap:12px}.muse-bucket-framer-controls label{display:flex;align-items:center;gap:8px;flex:1}.muse-bucket-framer-controls input[type=range]{flex:1}

@@ -36,6 +36,10 @@ export function seriesProgress(series:Series,members:SeriesMember[],books:Book[]
  const releasedDone=released.length>0&&released.every(row=>row.item&&completed(row.item));
  const future=resolved.some(row=>row.member.release_state==='announced');
  const status=!resolved.length?'not-started':paused?'on-hold':releasedDone?(series.conclusion_state==='concluded'&&!future?'completed':'caught-up'):hasProgress?'in-progress':'not-started';
- return {completed:done,total:scope.length,availableTotal:availableScope.length,percentage:availableScope.length?done/availableScope.length*100:null,next:scope.find(row=>row.item&&!completed(row.item))?.item??null,status,ordered:resolved};
+ // #104 §2: "Next up" is the first *released* installment not yet finished, never an announced one; whole-number
+ // gaps in the order (e.g. #1 and #3 entered, #2 not) are reported so a partly entered series is never treated as complete.
+ const whole=own.map(m=>m.sequence).filter(n=>Number.isInteger(n)&&n>=1),max=whole.length?Math.max(...whole):0;
+ const missing=Array.from({length:max},(_,i)=>i+1).filter(n=>!whole.includes(n));
+ return {completed:done,total:scope.length,availableTotal:availableScope.length,percentage:availableScope.length?done/availableScope.length*100:null,next:availableScope.find(row=>row.item&&!completed(row.item))?.item??null,missing,status,ordered:resolved};
 }
 export function collectionMembers(collectionId:string,members:CuratedMember[],items:CanonicalItem[]){return members.filter(member=>member.collection_id===collectionId).sort((a,b)=>a.position-b.position).map(member=>items.find(item=>item.id===(member.book_id??member.media_id))).filter((item):item is CanonicalItem=>!!item);}

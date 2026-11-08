@@ -20,10 +20,12 @@ type GlassPopoverProps = {
   align?: "start" | "end";
   role?: "dialog" | "menu";
   scrollMode?: "panel" | "content";
+  /** Simple choice lists: no visible header (the trigger already names the field); Escape and outside clicks still close. */
+  bare?: boolean;
 };
 
 /** Escape card containment; stay inside the active native modal focus boundary when present. */
-function GlassPopoverLayer({ id, label, title, open, anchorRef, onClose, children, width = 340, align = "start", role = "dialog", scrollMode = "panel" }: GlassPopoverProps) {
+function GlassPopoverLayer({ id, label, title, open, anchorRef, onClose, children, width = 340, align = "start", role = "dialog", scrollMode = "panel", bare = false }: GlassPopoverProps) {
   const [host,setHost]=useState<Element|null>(null);
   useLayoutEffect(()=>{const owner=anchorRef.current?.closest('dialog[open]')??document.body;const frame=requestAnimationFrame(()=>setHost(owner));return()=>cancelAnimationFrame(frame);},[anchorRef]);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -92,8 +94,8 @@ function GlassPopoverLayer({ id, label, title, open, anchorRef, onClose, childre
   }, [open, anchorRef, align, host]);
 
   if (!open || !host) return null;
-  return createPortal(<div ref={panelRef} id={id} className={`muse-popover-panel${scrollMode === "content" ? " muse-popover-content-scroll" : ""}`} role={role} aria-label={label} tabIndex={-1}
-    style={{ "--popover-width": `${width}px` } as CSSProperties}>{role==="dialog"&&<div className="muse-popover-close"><p className="muse-popover-title">{title??label}</p><MuseCloseButton onClose={()=>{onClose();anchorRef.current?.focus();}} label={`Close ${label}`}/></div>}{children}</div>, host);
+  return createPortal(<div ref={panelRef} id={id} data-bare={bare||undefined} className={`muse-popover-panel${scrollMode === "content" ? " muse-popover-content-scroll" : ""}`} role={role} aria-label={label} tabIndex={-1}
+    style={{ "--popover-width": `${width}px` } as CSSProperties}>{role==="dialog"&&!bare&&<div className="muse-popover-close"><p className="muse-popover-title">{title??label}</p><MuseCloseButton onClose={()=>{onClose();anchorRef.current?.focus();}} label={`Close ${label}`}/></div>}{children}</div>, host);
 }
 
 export function GlassPopover(props:GlassPopoverProps){return props.open?<GlassPopoverLayer {...props}/>:null;}

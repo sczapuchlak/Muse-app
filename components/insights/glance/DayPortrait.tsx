@@ -53,8 +53,13 @@ export function DayPortrait({ date, day, checkIns, influences, water, activities
         </div>
       </section>
 
+      {/* #104: Little Moment is its own tile, the same size as Day in Three, so the top row has no gap. */}
+      <section className="muse-glance-portrait-moment" aria-label="Little Moment">
+        <h3>✦ Little Moment</h3>
+        {memory ? <p>{memory.emoji && <span aria-hidden="true">{memory.emoji} </span>}{memory.body}</p> : <p className="muse-glance-sub">No little moment saved. Add one in Day Pulse.</p>}
+      </section>
+
       <section className="muse-glance-portrait-intention" aria-label="Intention">
-        {memory && <div className="muse-glance-portrait-moment"><h3>✦ Little Moment</h3><p>{memory.emoji && <span aria-hidden="true">{memory.emoji} </span>}{memory.body}</p></div>}
         <h3>Intention</h3>
         {r?.intention_text || r?.intention_emoji
           ? <blockquote><span aria-hidden="true">{r.intention_emoji ?? "✦"}</span><p>{r.intention_text}</p></blockquote>

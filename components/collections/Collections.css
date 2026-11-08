@@ -171,3 +171,6 @@
 .muse-album-track-fields{display:grid;gap:8px;border:0;margin:0;padding:0;min-width:0}
 .muse-album-track-fields legend{font-size:.9rem;margin-bottom:6px}
 .muse-album-track-fields legend small{color:var(--text-muted);font-size:.76rem}
+/* #104: the overview grid track must be allowed to shrink, or the toolbar's nowrap row widens the page on phones. */
+.muse-collections-overview{grid-template-columns:minmax(0,1fr)}.muse-collections-controls,.muse-collections-controls>*{min-width:0;max-width:100%}
+@media(max-width:430px){.muse-collections-controls>.muse-collections-toolbar-end{flex-wrap:wrap;row-gap:8px}}

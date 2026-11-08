@@ -78,12 +78,13 @@ export function StreamComposer({initial,onPublished,onCancel,autoFocus=false}:{i
    <label className="muse-stream-is"><span>{me.displayName} is…</span>
     <textarea rows={2} maxLength={BODY_MAX} value={body} autoFocus={autoFocus} placeholder={source?'Add your thoughts (optional)':'reading three books and finishing none.'} onChange={e=>setBody(e.target.value)}/></label>
   </div>
-  {!source&&<StreamTagPicker client={client} decoration={decoration} onDecoration={setDecoration} custom={customTag} onCustom={setCustomTag}/>}
+  {/* #104: two labelled groups — how you're feeling (decoration tags) and what you're sharing (Muse shortcuts). */}
+  {!source&&<div className="muse-stream-group" data-kind="mood"><p className="muse-stream-group-label">Mood</p><StreamTagPicker client={client} decoration={decoration} onDecoration={setDecoration} custom={customTag} onCustom={setCustomTag}/></div>}
 
-  <div className="muse-stream-shortcuts" role="group" aria-label="Share a moment from Muse">
+  <div className="muse-stream-group" data-kind="share"><p className="muse-stream-group-label">Share about</p><div className="muse-stream-shortcuts" role="group" aria-label="Share a moment from Muse">
    {shortcuts.slice(0,more?shortcuts.length:primaryShortcutCount).map(s=><button key={s.id} type="button" className="muse-stream-shortcut" aria-pressed={category===s.id} onClick={()=>pickShortcut(category===s.id?null:s.id)}><MuseIcon name={s.icon} size={15} treatment="prismatic"/>{s.label}</button>)}
    {!more&&<button type="button" className="muse-stream-shortcut" onClick={()=>setMore(true)}><MuseIcon name="more" size={15}/>More</button>}
-  </div>
+  </div></div>
 
   {shortcut&&!source&&<div className="muse-stream-picker">
    {!loaded?<p className="small-label" role="status">Opening your {shortcut.label.toLowerCase()}…</p>:candidates.length===0?
@@ -106,16 +107,15 @@ export function StreamComposer({initial,onPublished,onCancel,autoFocus=false}:{i
   </div>}
 
   <div className="muse-stream-composer-foot">
-   <MuseSegmented label="Who can see it" value={audience} options={audienceOptions.map(a=>({id:a.id,label:a.label}))} onChange={setAudience}/>
-   <p className="small-label">{audienceOptions.find(a=>a.id===audience)?.detail}</p>
+   <div className="muse-stream-group" data-kind="audience"><p className="muse-stream-group-label">Who sees it</p>
+   <div className="muse-stream-audience" role="radiogroup" aria-label="Who can see it">{audienceOptions.map(a=><button key={a.id} type="button" role="radio" aria-checked={audience===a.id} onClick={()=>setAudience(a.id)}><MuseIcon name={a.id==='private'?'focus':a.id==='selected'?'favorite':'people'} size={14}/>{a.label}</button>)}</div>
+   <p className="small-label muse-stream-audience-detail">{audienceOptions.find(a=>a.id===audience)?.detail}</p></div>
    {audience==='selected'&&<FriendPicker value={members} onChange={setMembers}/>}
-   <div className="muse-stream-row">
-    {(source||category)&&<label className="muse-atelier-check"><input type="checkbox" checked={spoiler} onChange={e=>setSpoiler(e.target.checked)}/>Contains spoilers</label>}
-    <label className="muse-atelier-check"><input type="checkbox" checked={comments} onChange={e=>setComments(e.target.checked)}/>Allow comments</label>
-   </div>
    {problem&&(body||source||category)&&<p className="small-label" role="status">{problem}</p>}
-   <div className="muse-stream-row"><button type="button" className="muse-button button-primary muse-edge" disabled={!!problem||!loaded&&!!source} onClick={()=>setStep('preview')}>Preview</button>
-    {(onCancel||body||source)&&<button type="button" className="text-button" onClick={()=>{reset();onCancel?.();}}>Cancel</button>}</div>
+   <div className="muse-stream-row muse-stream-actions">
+    <span className="muse-stream-options">{(source||category)&&<label className="muse-atelier-check"><input type="checkbox" checked={spoiler} onChange={e=>setSpoiler(e.target.checked)}/>Contains spoilers</label>}
+    <label className="muse-atelier-check"><input type="checkbox" checked={comments} onChange={e=>setComments(e.target.checked)}/>Allow comments</label></span>
+    <span className="muse-stream-buttons">{(onCancel||body||source)&&<button type="button" className="text-button" onClick={()=>{reset();onCancel?.();}}>Cancel</button>}<button type="button" className="muse-button button-primary muse-edge" disabled={!!problem||!loaded&&!!source} onClick={()=>setStep('preview')}>Preview</button></span></div>
   </div>
  </section>;
 }

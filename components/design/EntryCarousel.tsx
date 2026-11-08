@@ -13,7 +13,11 @@ export function EntryCarousel<T>({ items, label, render, itemKey, describe, minW
   items: T[]; label: string; render: (item: T) => ReactNode; itemKey: (item: T) => string; describe: (item: T) => string; minWidth?: number; startAtEnd?: boolean;
 }) {
   const box = useRef<HTMLDivElement>(null), [perPage, setPerPage] = useState(3), [page, setPage] = useState<number | null>(null);
-  useEffect(() => { const el = box.current; if (!el) return; const ro = new ResizeObserver(([e]) => setPerPage(Math.max(1, Math.floor((e.contentRect.width + 12) / (minWidth + 12))))); ro.observe(el); return () => ro.disconnect(); }, [minWidth]);
+  // #104: the region keeps the tallest height it has shown, so paging never shortens it and moves the page up.
+  const [minH, setMinH] = useState(0), lastWidth = useRef(0);
+  useEffect(() => { const el = box.current; if (!el) return; const ro = new ResizeObserver(([e]) => {
+    const w = e.contentRect.width; if (Math.abs(w - lastWidth.current) > 1) { lastWidth.current = w; setMinH(0); }
+    setPerPage(Math.max(1, Math.floor((w + 12) / (minWidth + 12)))); setMinH((h) => Math.max(h, e.borderBoxSize?.[0]?.blockSize ?? e.contentRect.height)); }); ro.observe(el); return () => ro.disconnect(); }, [minWidth]);
   const pages = Math.max(1, Math.ceil(items.length / perPage)), current = Math.min(page ?? (startAtEnd ? pages - 1 : 0), pages - 1);
   const go = (p: number) => setPage(Math.max(0, Math.min(pages - 1, p)));
   const touch = useRef<{ x: number; y: number } | null>(null), wheel = useRef(0), wheelAt = useRef(0);
@@ -29,7 +33,7 @@ export function EntryCarousel<T>({ items, label, render, itemKey, describe, minW
       </span>}
     </div>
     <div ref={box} className="muse-entry-carousel-track" tabIndex={pages > 1 ? 0 : -1} aria-label={`${label}: ${position}. Use the left and right arrow keys to browse.`}
-      style={{ gridTemplateColumns: `repeat(${perPage}, minmax(0, 1fr))` }}
+      style={{ gridTemplateColumns: `repeat(${perPage}, minmax(0, 1fr))`, minHeight: minH || undefined }}
       onKeyDown={(e) => { if (e.target !== e.currentTarget) return; if (e.key === "ArrowRight") { e.preventDefault(); go(current + 1); } if (e.key === "ArrowLeft") { e.preventDefault(); go(current - 1); } if (e.key === "Home") { e.preventDefault(); go(0); } if (e.key === "End") { e.preventDefault(); go(pages - 1); } }}
       onTouchStart={(e) => { touch.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }; }}
       onTouchEnd={(e) => { const s = touch.current; touch.current = null; if (!s) return; const dx = e.changedTouches[0].clientX - s.x, dy = e.changedTouches[0].clientY - s.y; if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.2) go(current + (dx < 0 ? 1 : -1)); }}

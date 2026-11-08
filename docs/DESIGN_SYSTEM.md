@@ -663,3 +663,11 @@ Bucket List (Rituals, #84) follows the handwritten bullet-journal reference: an 
 
 ## EntryCarousel (#105)
 `components/design/EntryCarousel.tsx` is the shared pattern for dated entry lists that could grow long (Little Moments, Bright Days, Intentions). It fits as many cards as the width allows, keeps its height stable, mounts only the current page, and supports arrows, swipe, trackpad and keyboard. Use it instead of new one-off scrollers.
+
+## Surfaces & shared controls (#104)
+- **Page sheets:** any panel sitting directly on the page uses `--glass-background` (materials.css "Page sheets"); nested surfaces use `--surface-subtle`.
+- **Choice menus:** single-choice `MuseChoiceMenu` uses the bare `GlassPopover` (no heading). Native selects are styled through `appearance: base-select`.
+- **Mobile:** touch fields are ≥16px; never disable pinch zoom.
+- **Color vocabulary:** card titles use a rounded-square tinted tile in the card's chart ink; dates are typographic cells; rings stay round. Category colors come from `--chart-1…6`.
+- **Stat tiles:** `.muse-money-tiles` (label · value · note) with `data-tile-accent`.
+- **Task density:** `data-task-density="compact|spacious"` on the Planner page.

@@ -70,14 +70,18 @@ export function MuseWelcome({profile}:{profile:Profile}){
    </div>}
    {step==="personalize"&&<form className="muse-welcome-step" onSubmit={finish} noValidate>
     <h2 id="welcome-step-title" ref={heading} tabIndex={-1}>Personalize your universe</h2>
+    <div className="muse-welcome-fields"><div className="muse-welcome-field">
     <label className="editor-label" htmlFor="welcome-name">What should Muse call you?</label>
     <input id="welcome-name" type="text" autoComplete="given-name" maxLength={DISPLAY_NAME_MAX} value={name} aria-invalid={touched&&!!nameProblem} aria-describedby={touched&&nameProblem?"welcome-name-error":undefined} onChange={event=>setName(event.target.value)} onBlur={()=>setTouched(true)}/>
     {touched&&nameProblem&&<p id="welcome-name-error" className="small-label muse-welcome-error" role="alert">{nameProblem}</p>}
+    </div><div className="muse-welcome-field">
     <p className="editor-label">Your timezone</p>
     <MuseChoiceMenu label="Timezone" valueLabel={options.find(option=>option.id===timeZone)?.label??timeZone} options={options} searchable selectedIds={[timeZone]} onSelect={setTimeZone}/>
     <p className="small-label">{profile.timeZoneConfirmed?"Your saved timezone.":"Detected from this device."} Muse uses it for “today” and for dating new entries. Travel won’t change it.</p>
+    </div>
+    <fieldset className="muse-welcome-appearance muse-welcome-field"><legend className="editor-label">Glass</legend><MaterialChoices label="Glass"/><p className="small-label">Theme and glass are saved on this device; change them any time in Appearance.</p></fieldset>
+    </div>
     <fieldset className="muse-welcome-appearance"><legend className="editor-label">Choose your atmosphere</legend><ThemeChoices/></fieldset>
-    <fieldset className="muse-welcome-appearance"><legend className="editor-label">Glass</legend><MaterialChoices label="Glass"/><p className="small-label">Theme and glass are saved on this device; you can change them any time in Appearance.</p></fieldset>
     {error&&<p className="muse-welcome-error" role="alert">{error}</p>}
     <div className="editor-actions"><button type="submit" className="muse-button button-primary" disabled={saving}>{saving?"Saving…":"Finish setup"}</button><button type="button" className="text-button" disabled={saving} onClick={()=>setStep("hello")}>Back</button></div>
    </form>}

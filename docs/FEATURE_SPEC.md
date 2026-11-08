@@ -1104,3 +1104,21 @@ In edit mode every section can be renamed, resized (full / wide / half / third o
 - Wellness → Mood shows and edits the same record, separate from Mood notes. History includes memory-only days.
 - Insights: Dayprint shows the day's memory; Week/Month/Year show a **Little Moments** carousel. **Bright Days** and month **Intentions** use the same shared `EntryCarousel` (arrows, swipe, trackpad, ←/→/Home/End, position text, one page mounted at a time, no horizontal page scroll). The Bright Days criteria are unchanged.
 - Memories are read by date range (`readMemories`) so Reflections can use them later. They are included in the account data export.
+
+## UI Fixes 2.0 — Schnazzification & Consistency (#104) — implemented on feature branch (staging migrations only)
+- **Shared design system:** page-level panels (empty states, toolbars, heroes, stages) use the card glass in Frosted and Crystal instead of the nested subtle surface. Single-choice `MuseChoiceMenu` lists open bare (no repeated heading). Native `<select>` lists use Muse styling where the browser supports `appearance: base-select`. Touch screens get a 16px field minimum (no iOS focus zoom); pinch zoom is untouched. Dock theme icon is centered.
+- **Future Log:** its own lightweight entries (`future_log_entries`: month, optional day, title, note, optional Mark icon/color, done). Entries never create events or tasks; "Make it an event" opens the event editor explicitly. Tasks and Daily Edit priorities no longer appear in the Future Log (they stay in Day/Week/Month). 12 colored month cards, 4 entries shown with "+N more".
+- **Daily Edit:** colored title ink and icon tiles per card; Little Rituals uses saved category colors, compact rows and a pill "View Rituals"; connection metadata hidden (tracking unchanged).
+- **Tasks:** one Compact/Spacious preference (`muse.planner.taskDensity`, Compact default) for every planner task card; same component and behavior.
+- **Agenda:** "+ Event" only in Month (other views add in place); section titles carry a Mark picker (shared weekly template); week scrollbar hidden, scrolling kept.
+- **Water:** one default (`defaultWaterSettings`, 100 oz) everywhere. A logged day keeps the goal it was logged with; other days use the current goal. A Water-connected ritual may follow that shared goal per date (`connection.followGoal`).
+- **Rituals:** "Times per week" (1–7, `rituals.times_per_week`): available daily, met by distinct completed days. Optional habit emoji (`rituals.emoji`). "+" on each category header preselects it. Redundant summary text removed.
+- **Collections → Series:** hero header, Next up (first released unfinished installment only), gap reporting, compact rows with icon actions and confirm-before-detach. "+ Add Book" → Create new book (existing Add Book flow, joins the series as the next installment) or Connect existing.
+- **Bucket List:** every card photo sits in a fixed 16:10 frame; drag/zoom positioning saved as `frame {x,y,zoom}` on the image JSON (upload untouched).
+- **Money:** stat tiles; Recurring split into accented windows (Next 7 days … Paused, Ended); compact rows with method chip; footnotes moved under content; Spending summary (income · planned · spent · left to assign). No calculation changed.
+- **Onboarding:** personalize step widens on desktop (name/timezone/glass in one row, 3-column atmospheres).
+- **Insights:** gapless Month grid; month Intentions as a chronological 1→last-day list; Dayprint Little Moment tile; readable date cells; carousels keep their height while paging.
+- **Mindspace:** tag creation field with # prefix and preview; Enter on an empty search drafts a thought (or a tag for `#query`) without saving; corner resize no longer starts a card drag.
+- **Stream:** composer and feed are equal columns; composer grouped into Mood · Share about · Who sees it.
+- **Reflections:** fixed concise layouts (one full story, two pairs, Level 10 Life); wins and memories hold three each; theme-colored frosted sections; no add/move/resize chrome. Existing pages keep all sections.
+- **Whimsy:** Weekly Draw week/countdown sits with the quests. Cosmic Forecast Preferences sit bottom-right.

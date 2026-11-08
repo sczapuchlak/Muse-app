@@ -33,3 +33,4 @@
 .muse-moment-card p[data-open]{display:block;-webkit-line-clamp:unset}
 .muse-moment-card button{justify-self:start;padding:0;border:0;background:none;color:var(--accent-primary);font:600 .76rem var(--font-ui);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
 .muse-moment-card-emoji{font-size:1.2rem;line-height:1}
+.muse-moment-date,.muse-moment-card time{text-decoration:none}
