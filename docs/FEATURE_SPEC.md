@@ -139,7 +139,7 @@ APPROVED/PLANNED: Supabase queries/aggregations and private durable history, eff
 
 ## Future / exploratory
 
-Not v1: Aspirations/goals; Muse Circle; selective sharing between independent private accounts; Google Calendar read-only integration; Apple Health only with suitable native companion architecture; broader optional zodiac/constellation profile personalization.
+Not v1: Aspirations/goals; Muse Circle; selective sharing between independent private accounts; Apple Health only with suitable native companion architecture; broader optional zodiac/constellation profile personalization.
 
 Cosmic Forecast now provides the optional Daily Edit card, manual sign/visibility preferences and expandable explicitly illustrative preview. Evaluate a live provider separately; no astrology API is connected. Detailed Cosmic Forecast is APPROVED/PLANNED in WHIMSY_ROADMAP.md; provider selection and broader profile/zodiac personalization remain future decisions, never mandatory clutter.
 
@@ -874,7 +874,7 @@ Information architecture (reconciled across #79, #81, #83, #84, #85): Planner �
 
 **Scheduled Board Task List (§12, approved 2026-11-06).** Planner → Tasks keeps its board; its Task List (`PlannerRail`, `TaskListRow`, `ScheduleMenu`, pure `lib/task-list.ts`) is now a distinct pinned source: own header (title, count, workspace, search, Filters incl. ★ Priorities only), scopes To plan (overdue then unscheduled) / Overdue / Scheduled / All (remembered per device), grouped dense rows with priority, overdue, date, due, workspace, group, tags, subtasks, repeat and estimate facts, and a Schedule menu (no Details needed). Drag list → day, day → day and day → list still work; while dragging, every day is labeled as a destination. Day cards show the same ★/› markers. No database change; every action is the same `task/place` on the one task record, so Agenda and Dayview update. This is separate from #81's Running List, which will add a Tasks view selector without replacing this board.
 
-**Not built here:** Google Calendar (out of scope), recurring events, a task sidebar inside Agenda (intentionally none), and Ritual auto-completion from reading (left to Rituals' own rules).
+**Not built here:** Google Calendar (later, #35 — see `docs/GOOGLE_CALENDAR_PLAN.md`), recurring events, a task sidebar inside Agenda (intentionally none), and Ritual auto-completion from reading (left to Rituals' own rules).
 
 ## Planner Customization (#87) — implemented on feature branch (staging migration only)
 
@@ -1122,3 +1122,11 @@ In edit mode every section can be renamed, resized (full / wide / half / third o
 - **Stream:** composer and feed are equal columns; composer grouped into Mood · Share about · Who sees it.
 - **Reflections:** fixed concise layouts (one full story, two pairs, Level 10 Life); wins and memories hold three each; theme-colored frosted sections; no add/move/resize chrome. Existing pages keep all sections.
 - **Whimsy:** Weekly Draw week/countdown sits with the quests. Cosmic Forecast Preferences sit bottom-right.
+
+## Google Calendar — read-only (#35, phase 1) — implemented on feature branch (no hosted migration yet)
+
+- **Settings → Google Calendar** (right column, under Sign-in): Connect, per-calendar "Show in Planner" checkboxes with calendar colors, sync status and time, Refresh now, Reconnect when access expired, and Disconnect with confirmation.
+- **Routes:** `GET /api/google/connect` (per-user state cookie, 10 min) → Google consent → `GET /api/google/callback` → Settings with an outcome. `POST /api/google/sync` (origin-checked; skips if synced in the last 10 minutes unless forced) and `POST /api/google/disconnect`.
+- **Sync:** incremental per calendar with Google sync tokens; first sync reads 60 days back and a year ahead with recurring events expanded; a 410 restarts that calendar cleanly. Opening Settings or the Planner Agenda syncs once per page load. Times use the Muse profile time zone.
+- **Agenda:** Day, Week and Month list Google events beside Muse events, with a color dot; selecting one opens read-only details with "Open in Google Calendar". Daily Edit's "Today's plan" Schedule lists the day's Google events the same way (calendar-color accent line, read-only details). The Future Log and Muse Marks are unchanged.
+- See `docs/GOOGLE_CALENDAR_PLAN.md` for setup and later phases.

@@ -462,3 +462,4 @@ button.muse-mark{cursor:pointer}button.muse-mark:focus-visible{outline:2px solid
 /* #104 §9D: the week still scrolls sideways (trackpad, touch, keyboard, Fri–Sun buttons) without a visible scrollbar over the page. */
 .muse-agenda-week{scrollbar-width:none;-ms-overflow-style:none}
 .muse-agenda-week::-webkit-scrollbar{display:none;width:0;height:0}
+

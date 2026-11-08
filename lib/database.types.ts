@@ -741,6 +741,80 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
+                },"google_calendars": {
+                  Row: {
+                    "access_role": string,"calendar_id": string,"color": string | null,"connection_id": string,"id": string,"is_primary": boolean,"name": string,"sync_token": string | null,"updated_at": string,"user_id": string,"visible": boolean
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "access_role"?: string,"calendar_id": string,"color"?: string | null,"connection_id": string,"id"?: string,"is_primary"?: boolean,"name"?: string,"sync_token"?: string | null,"updated_at"?: string,"user_id": string,"visible"?: boolean
+                  }
+                  Update: {
+                    "access_role"?: string,"calendar_id"?: string,"color"?: string | null,"connection_id"?: string,"id"?: string,"is_primary"?: boolean,"name"?: string,"sync_token"?: string | null,"updated_at"?: string,"user_id"?: string,"visible"?: boolean
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "google_calendars_connection_id_fkey"
+      columns: ["connection_id"]
+isOneToOne: false
+      referencedRelation: "google_connections"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"google_connections": {
+                  Row: {
+                    "created_at": string,"email": string,"google_sub": string,"id": string,"last_error": string | null,"last_synced_at": string | null,"scopes": (string)[],"status": string,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"email"?: string,"google_sub": string,"id"?: string,"last_error"?: string | null,"last_synced_at"?: string | null,"scopes"?: (string)[],"status"?: string,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "created_at"?: string,"email"?: string,"google_sub"?: string,"id"?: string,"last_error"?: string | null,"last_synced_at"?: string | null,"scopes"?: (string)[],"status"?: string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
+                },"google_events": {
+                  Row: {
+                    "all_day": boolean,"calendar_id": string,"connection_id": string,"end_date": string | null,"end_time": string | null,"etag": string | null,"event_id": string,"html_link": string | null,"id": string,"location": string | null,"start_date": string,"start_time": string | null,"status": string,"time_zone": string | null,"title": string,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "all_day"?: boolean,"calendar_id": string,"connection_id": string,"end_date"?: string | null,"end_time"?: string | null,"etag"?: string | null,"event_id": string,"html_link"?: string | null,"id"?: string,"location"?: string | null,"start_date": string,"start_time"?: string | null,"status"?: string,"time_zone"?: string | null,"title"?: string,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "all_day"?: boolean,"calendar_id"?: string,"connection_id"?: string,"end_date"?: string | null,"end_time"?: string | null,"etag"?: string | null,"event_id"?: string,"html_link"?: string | null,"id"?: string,"location"?: string | null,"start_date"?: string,"start_time"?: string | null,"status"?: string,"time_zone"?: string | null,"title"?: string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "google_events_connection_id_fkey"
+      columns: ["connection_id"]
+isOneToOne: false
+      referencedRelation: "google_connections"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"google_tokens": {
+                  Row: {
+                    "access_ciphertext": string | null,"access_expires_at": string | null,"connection_id": string,"refresh_ciphertext": string,"updated_at": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "access_ciphertext"?: string | null,"access_expires_at"?: string | null,"connection_id": string,"refresh_ciphertext": string,"updated_at"?: string
+                  }
+                  Update: {
+                    "access_ciphertext"?: string | null,"access_expires_at"?: string | null,"connection_id"?: string,"refresh_ciphertext"?: string,"updated_at"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "google_tokens_connection_id_fkey"
+      columns: ["connection_id"]
+isOneToOne: true
+      referencedRelation: "google_connections"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"grocery_items": {
                   Row: {
                     "complete": boolean,"created_at": string,"id": string,"name": string,"note": string | null,"position": number,"quantity": string | null,"section_id": string,"updated_at": string,"user_id": string

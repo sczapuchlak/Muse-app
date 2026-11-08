@@ -32,3 +32,10 @@
 .muse-credits-software>summary{cursor:pointer;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted)}
 .muse-credits-software ul{margin-top:var(--space-3);gap:var(--space-2)}
 .muse-credits-software li{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 6px;padding-bottom:var(--space-2)}
+
+/* Google Calendar (#35) */
+.muse-google-settings section{display:grid;gap:10px;justify-items:start}
+.muse-google-calendars{display:grid;gap:8px;border:0;padding:0;margin:0}
+.muse-google-calendars .muse-google-dot{margin-top:.5em}
+.muse-google-confirm{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.muse-google-settings [data-tone=warning]{color:var(--text)}

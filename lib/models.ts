@@ -34,6 +34,8 @@ export type DayEvent = {
   allDay?: boolean; endDate?: string; endTime?: string; location?: string; status?: EventStatus;
   /** Recurrence 2.0 (#89): the series rule, anchored on `date`; and, on a projected occurrence, its series and date. */
   rule?: import("./recurrence").RecurrenceRule; seriesId?: string; occurrenceDate?: string;
+  /** Google Calendar (#35): a read-only event from a connected calendar. Never stored in planner_events. */
+  source?: "google"; color?: string; calendarName?: string; link?: string;
 };
 export type ContextTag = { id: string; name: string; archived?:boolean };
 export type EmotionQuadrant = "red" | "blue" | "green" | "yellow";

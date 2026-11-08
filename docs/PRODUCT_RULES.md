@@ -785,3 +785,15 @@ A Little Moment is its own record (one per local date). It is never stored in Da
 - Series "Next up" is never an announced installment; missing whole numbers are reported, never assumed.
 - Reflections pages are set and concise: three wins, three memories; older pages keep their content.
 - Money summaries keep projected (paycheck, planned) and actual (recorded spending) apart.
+
+## Google Calendar (#35) — phase 1 approved 2026-11-08; implemented on feature branch, no hosted migration yet
+
+- Read-only in phase 1. Muse requests only `calendar.readonly` (plus `openid`/`email`) and never creates, edits or deletes Google events. Write scopes are not requested until an approved later phase.
+- Calendar authorization is separate from "Sign in with Google": its own OAuth flow, consent and Settings card.
+- Stephanie owns the Google Cloud project and OAuth client. Preview starts on a Testing-mode client, where Google expires refresh tokens after 7 days; Muse shows this as "Reconnect".
+- Refresh and access tokens are encrypted on the server (AES-256-GCM, `GOOGLE_TOKEN_KEY` in hosting secrets). `google_tokens` has no browser grants; tokens, the client secret and the key never reach the browser or logs.
+- Google events are a cache (`google_events`), unique per connection, calendar and Google event id, so syncing never duplicates. They are never copied into `planner_events`, and Google events stay distinct from Muse events and tasks.
+- Google events appear in Planner Agenda Day, Week and Month and in Daily Edit's Schedule, read-only, with their calendar's color dot. The Future Log stays an intentional space: Google events do not appear there automatically (explicit linking/importing may be considered later).
+- People choose which calendars show. New primary and owned calendars start visible; shared and subscribed ones start hidden. Hiding only hides in Muse.
+- Disconnect revokes Muse's access with Google and deletes the connection, tokens, calendars and cached events. Muse's own events are never touched.
+- Future (approved direction, not built): publishing a Muse event to Google is per event and off by default.
