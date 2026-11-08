@@ -86,11 +86,17 @@ export function EventLine({ event, day, ctx }: { event: DayEvent; day?: string; 
   const span = event.endDate ? ` (${eventDays(event)})` : "";
   return <li className="muse-agenda-event" data-status={event.status === "confirmed" ? undefined : event.status} data-continues={day && day > event.date || undefined}>
     <span className="muse-agenda-symbol" aria-hidden="true">{statusSymbol(event)}</span>
+    {event.source === "google" && <GoogleSourceDot event={event} />}
     {mark && <MarkGlyph mark={mark} size={13} onSelect={(a) => ctx.onMark(a, mark, { kind: "event", id: event.id, title: event.title })} />}
-    <button type="button" className="muse-agenda-event-button" onClick={(e) => ctx.onEvent(e.currentTarget, event)} aria-label={`${statusWords(event)}: ${event.title}, ${eventWhen(event)}${span}. Edit`}>
+    <button type="button" className="muse-agenda-event-button" data-source={event.source} onClick={(e) => ctx.onEvent(e.currentTarget, event)} aria-label={`${statusWords(event)}: ${event.title}, ${eventWhen(event)}${span}.${event.source === "google" ? ` From Google Calendar${event.calendarName ? ` · ${event.calendarName}` : ""}. Details` : " Edit"}`}>
       <time dateTime={event.allDay ? event.date : event.dateTime}>{event.allDay ? "All day" : event.time}</time><span>{event.title}{event.seriesId && <span className="muse-repeat-mark" title="Repeating event" aria-label=", repeats">↻</span>}{span && <small>{span}</small>}</span>
     </button>
   </li>;
+}
+
+/** Google Calendar (#35): a small dot in the calendar's own color marks a read-only Google event. */
+export function GoogleSourceDot({ event }: { event: DayEvent }) {
+  return <span className="muse-google-dot" style={event.color ? { "--google-calendar": event.color } as CSSProperties : undefined} title={`Google Calendar${event.calendarName ? ` · ${event.calendarName}` : ""}`} aria-hidden="true" />;
 }
 
 function EventsSection({ section, ctx }: { section: AgendaSection; ctx: DayContext }) {

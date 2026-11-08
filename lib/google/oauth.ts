@@ -1,10 +1,16 @@
 import "server-only";
+import { authConfig } from "@/lib/auth/config";
 /** Google OAuth 2.0 for Calendar (#35). Read-only scope in phase 1; write is requested later, incrementally. */
-export const READ_SCOPES = ["openid", "email", "https://www.googleapis.com/auth/calendar.readonly"];
+export const CALENDAR_READ = "https://www.googleapis.com/auth/calendar.readonly";
+export const READ_SCOPES = ["openid", "email", CALENDAR_READ];
+/** The redirect uses Muse's one canonical origin (SITE_URL, or a Vercel preview's branch address), like sign-in does. */
 export function googleConfig() {
-  const id = process.env.GOOGLE_CLIENT_ID, secret = process.env.GOOGLE_CLIENT_SECRET, site = process.env.SITE_URL;
-  return id && secret && site && process.env.GOOGLE_TOKEN_KEY ? { id, secret, redirect: `${site.replace(/\/$/, "")}/api/google/callback` } : null;
+  const id = process.env.GOOGLE_CLIENT_ID, secret = process.env.GOOGLE_CLIENT_SECRET;
+  if (!id || !secret || !process.env.GOOGLE_TOKEN_KEY) return null;
+  return { id, secret, redirect: `${authConfig().origin}/api/google/callback` };
 }
+/** Google lets people untick the Calendar box on the consent screen; without it there is nothing to read. */
+export const grantsCalendarRead = (scope?: string) => (scope ?? "").split(" ").includes(CALENDAR_READ);
 export function authUrl(state: string) {
   const c = googleConfig(); if (!c) throw new Error("Google Calendar is not configured.");
   const q = new URLSearchParams({ client_id: c.id, redirect_uri: c.redirect, response_type: "code", scope: READ_SCOPES.join(" "), access_type: "offline", prompt: "consent", include_granted_scopes: "true", state });

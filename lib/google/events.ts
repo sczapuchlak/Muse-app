@@ -2,6 +2,8 @@
  * Google Calendar (#35) — pure mapping, shared by the server sync and the Planner. Google events become the same
  * DayEvent shape Muse already shows, marked `source: "google"` and read-only.
  */
+import type { DayEvent } from "@/lib/models";
+import { clockLabel } from "@/lib/data/planner";
 export type GoogleApiEvent = { id: string; etag?: string; status?: string; summary?: string; location?: string; htmlLink?: string;
   start?: { date?: string; dateTime?: string; timeZone?: string }; end?: { date?: string; dateTime?: string; timeZone?: string } };
 export type GoogleEventRow = { calendar_id: string; event_id: string; etag: string | null; title: string; location: string | null; start_date: string; start_time: string | null;
@@ -24,11 +26,9 @@ export function toRow(calendarId: string, e: GoogleApiEvent, timeZone: string): 
   const s = localParts(e.start.dateTime, timeZone), en = e.end?.dateTime ? localParts(e.end.dateTime, timeZone) : null;
   return { ...base, start_date: s.date, start_time: s.time, end_date: en && en.date !== s.date ? en.date : null, end_time: en?.time ?? null, all_day: false };
 }
-export type GoogleDayEvent = { id: string; kind: "event"; title: string; date: string; dateTime: string; time: string; allDay?: boolean; endDate?: string; endTime?: string; location?: string;
-  status?: "confirmed" | "tentative"; source: "google"; color?: string; calendarName?: string; link?: string };
-export function toDayEvent(r: GoogleEventRow & { id?: string }, cal?: { name: string; color: string | null }): GoogleDayEvent {
-  return { id: `google:${r.calendar_id}:${r.event_id}`, kind: "event", title: r.title, date: r.start_date, dateTime: r.all_day ? r.start_date : `${r.start_date}T${r.start_time}`,
-    time: r.all_day ? "" : (r.start_time ?? "").slice(0, 5), allDay: r.all_day || undefined, endDate: r.end_date ?? undefined, endTime: r.end_time?.slice(0, 5) ?? undefined,
+export function toDayEvent(r: GoogleEventRow & { id?: string }, cal?: { name: string; color: string | null }): DayEvent {
+  return { id: `google:${r.calendar_id}:${r.event_id}`, kind: "event", title: r.title, date: r.start_date, dateTime: `${r.start_date}T${r.all_day ? "00:00" : (r.start_time ?? "00:00").slice(0, 5)}`,
+    time: r.all_day ? "All day" : clockLabel((r.start_time ?? "00:00").slice(0, 5)), allDay: r.all_day || undefined, endDate: r.end_date ?? undefined, endTime: r.end_time?.slice(0, 5) ?? undefined,
     location: r.location ?? undefined, status: r.status === "tentative" ? "tentative" : "confirmed", source: "google", color: cal?.color ?? undefined, calendarName: cal?.name, link: r.html_link ?? undefined };
 }
 export const isGoogleEvent = (e: { id: string; source?: string }) => e.source === "google" || e.id.startsWith("google:");

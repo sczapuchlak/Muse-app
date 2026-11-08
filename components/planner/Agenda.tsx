@@ -29,6 +29,8 @@ import { usePlannerHeight } from "./usePlannerHeight";
 import { PeriodTitle } from "./PeriodTitle";
 import { projectEvents, projectTasks } from "@/lib/planner-occurrences";
 import { shiftDate } from "@/lib/dates";
+import { useGoogleEvents } from "../google/GoogleCalendarStore";
+import { GoogleEventDetails } from "../google/GoogleEventDetails";
 
 const prefsKey = "muse.planner.agenda";
 const weekday = (d: string, style: "short" | "long" = "short") => new Intl.DateTimeFormat("en-US", { weekday: style, timeZone: "UTC" }).format(new Date(`${d}T12:00:00Z`));
@@ -58,7 +60,7 @@ export function Agenda(props: Props) {
   return <AgendaDataProvider start={start} end={end}><AgendaBody {...props} prefs={prefs} update={update} start={start} end={end} /></AgendaDataProvider>;
 }
 
-type Editor = { kind: "future"; month: string; entry?: FutureEntry } | { kind: "event"; date: string; event?: DayEvent; status?: "confirmed" | "tentative"; title?: string } | { kind: "mark"; date: string; mark?: ResolvedMark; link?: { kind: "event" | "task"; id: string; title: string } } | { kind: "settings" };
+type Editor = { kind: "google"; event: DayEvent } | { kind: "future"; month: string; entry?: FutureEntry } | { kind: "event"; date: string; event?: DayEvent; status?: "confirmed" | "tentative"; title?: string } | { kind: "mark"; date: string; mark?: ResolvedMark; link?: { kind: "event" | "task"; id: string; title: string } } | { kind: "settings" };
 
 function AgendaBody({ date, today, onDate, onOpen, workspaceId, prefs, update, start, end }: Props & { prefs: AgendaPreferences; update: (p: Partial<AgendaPreferences>) => void; start: string; end: string }) {
   const { state } = usePlanner();
@@ -81,15 +83,18 @@ function AgendaBody({ date, today, onDate, onOpen, workspaceId, prefs, update, s
   const windowFrom = shiftDate(date, -45), windowTo = shiftDate(date, view === "year" ? 400 : 45);
   const tasksShown = useMemo(() => projectTasks(state.tasks, state.occurrences, windowFrom, windowTo), [state.tasks, state.occurrences, windowFrom, windowTo]);
   const eventsShown = useMemo(() => projectEvents(state.events, state.eventExceptions, windowFrom, windowTo), [state.events, state.eventExceptions, windowFrom, windowTo]);
+  // Google Calendar (#35): read-only events join Day, Week and Month beside Muse's own. The Future Log stays intentional (Muse events only).
+  const google = useGoogleEvents(windowFrom, windowTo);
+  const eventsWithGoogle = useMemo(() => google.length ? [...eventsShown, ...google] : eventsShown, [eventsShown, google]);
   const open = (day: string, v: AgendaView) => { onDate(day); update({ view: v }); setSelected(null); };
 
   const marks = useMemo(() => agenda.marks.map((m) => resolveMark(m, { events: state.events, tasks: state.tasks, movementTypes: wellness.state.types, books: whimsy.records?.books ?? [], aspirations: aspirations.aspirations })),
     [agenda.marks, state.events, state.tasks, wellness.state.types, whimsy.records?.books, aspirations.aspirations]);
   const priorityIds = (day: string) => new Set((daily.snapshot.days[day]?.priorities ?? []).map((p) => p.task_id).filter((x): x is string => !!x));
   const context = (day: string, flow: DayContext["flow"]): DayContext => {
-    const items = dayItems(tasksShown, eventsShown, day, { showCompleted: true, showCanceled: prefs.showCanceled });
+    const items = dayItems(tasksShown, eventsWithGoogle, day, { showCompleted: true, showCanceled: prefs.showCanceled });
     return { day, today, tasks: items.tasks, events: items.events, showCompleted: prefs.showCompleted, showMarks: prefs.showMarks, marks, priorityIds: priorityIds(day), fallbackWorkspaceId: workspaceId, flow, onOpenTask: onOpen,
-      onEvent: (a, event) => openEditor(a, { kind: "event", date: day, event }), onMark: (a, mark, link) => openEditor(a, { kind: "mark", date: day, mark, link }) };
+      onEvent: (a, event) => openEditor(a, event?.source === "google" ? { kind: "google", event } : { kind: "event", date: day, event }), onMark: (a, mark, link) => openEditor(a, { kind: "mark", date: day, mark, link }) };
   };
   const hiding = [!prefs.showCompleted && "completed tasks", !prefs.showCanceled && "canceled events", !prefs.showMarks && "Marks"].filter(Boolean) as string[];
 
@@ -132,7 +137,7 @@ function AgendaBody({ date, today, onDate, onOpen, workspaceId, prefs, update, s
         <div role="row" className="muse-agenda-month-row muse-agenda-weekdays">{["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((d) => <span role="columnheader" key={d}>{d}</span>)}</div>
         {monthGrid(date).map((week, i) => <div role="row" className="muse-agenda-month-row" key={i}>{week.map((d, j) => {
           if (!d) return <span role="gridcell" key={j} className="muse-agenda-cell" data-outside />;
-          const items = dayItems(tasksShown, eventsShown, d, visibility), own = prefs.showMarks ? dayMarks(marks, d) : [];
+          const items = dayItems(tasksShown, eventsWithGoogle, d, visibility), own = prefs.showMarks ? dayMarks(marks, d) : [];
           const open = items.tasks.filter((t) => !t.complete).length, overdue = items.tasks.some((t) => taskState(t, today) === "overdue"), star = items.tasks.some((t) => priorityIds(d).has(t.id));
           const summary = [items.events.length && `${items.events.length} event${items.events.length > 1 ? "s" : ""}`, items.tasks.length && `${open} of ${items.tasks.length} tasks open`, own.length && `${own.length} Mark${own.length > 1 ? "s" : ""}`].filter(Boolean).join(", ") || "Nothing planned";
           return <div role="gridcell" key={d} className="muse-agenda-cell" data-today={d === today || undefined} data-selected={sel === d || undefined}>
@@ -216,7 +221,8 @@ function AgendaBody({ date, today, onDate, onOpen, workspaceId, prefs, update, s
       {view === "month" && monthView()}
       {view === "year" && futureLog()}
     </div>
-    <GlassPopover id="agenda-editor" label={editor?.kind === "future" ? (editor.entry ? "Edit Future Log entry" : "Add to the Future Log") : editor?.kind === "settings" ? "Agenda settings" : editor?.kind === "mark" ? (editor.mark ? "Edit Mark" : "New Mark") : editor?.kind === "event" && editor.event ? "Edit event" : "New event"} open={editor !== null} anchorRef={anchor} onClose={() => setEditor(null)} width={editor?.kind === "settings" ? 320 : 380}>
+    <GlassPopover id="agenda-editor" label={editor?.kind === "google" ? "Google Calendar event" : editor?.kind === "future" ? (editor.entry ? "Edit Future Log entry" : "Add to the Future Log") : editor?.kind === "settings" ? "Agenda settings" : editor?.kind === "mark" ? (editor.mark ? "Edit Mark" : "New Mark") : editor?.kind === "event" && editor.event ? "Edit event" : "New event"} open={editor !== null} anchorRef={anchor} onClose={() => setEditor(null)} width={editor?.kind === "settings" ? 320 : 380}>
+      {editor?.kind === "google" && <GoogleEventDetails event={editor.event} onDone={closeEditor} />}
       {editor?.kind === "event" && <EventEditor key={editor.event?.id ?? `new-${editor.date}-${editor.title ?? ""}`} event={editor.event} date={editor.date} initialTitle={editor.title} onDone={closeEditor} />}
       {editor?.kind === "future" && <FutureEntryEditor key={editor.entry?.id ?? `new-${editor.month}`} entry={editor.entry} month={editor.month} year={date.slice(0, 4)} onDone={closeEditor} onMakeEvent={(title, d) => setEditor({ kind: "event", date: d, title })} />}
       {editor?.kind === "mark" && <MarkEditor key={editor.mark?.id ?? `new-${editor.date}-${editor.link?.id ?? ""}`} mark={editor.mark} date={editor.date} link={editor.link} onDone={closeEditor} />}
