@@ -924,3 +924,19 @@ Rituals → **Habits | Aspirations | Bucket List** (`?view=bucket`). One long-ru
 - **Year Grid removed** (2026-11-07, "what is that"): Year always opens the year sheet; Layout offers Grid only for Week and Month.
 - **Year sheet fits the window** using the Planner's height measurement (31 rows share the height; minimum 400px). Polish: a rounded ruled frame, a soft sheen on filled cells, today's row and column faintly lit, a month-by-month fill-in (off with reduced motion or Quiet Muse Magic), stat chips by the title, and day counts in the key.
 - **Year sheet side panels** (2026-11-07): the side is two soft cards. The **Key** has category rows with day counts, or a compact two-column key for the other types. The **Month review** gives each month a glowing bar: its share of goals met with a met/decided count, or for categorical rituals its most common category (named on the bar) with logged days. Rows share the sheet's height. **Missed** is a diagonal strike through the cell, the same in the key, the sheet and the month grid. Days before a ritual's start date are blank, not hatched.
+
+## Planner Foundation — Recurrence 2.0 (#89) — phase 1 on feature branch (no database change)
+
+**Audit (2026-11-07).** Tasks store recurrence as three columns on the task row (`recurrence_frequency` daily/weekly/monthly, `recurrence_interval`, `recurrence_until`), written through the Planner command; a repeating task is one record marked ↻, and completing it doesn't produce the next occurrence. `task_completion_events` holds real completion history. Native events (`planner_events`) have no recurrence. Money has its own small interval engine (`lib/recurring.ts`), which stays separate.
+
+**Phase 1 (implemented):**
+- **`lib/recurrence.ts`:** one pure rule engine for tasks and events.
+  - Rules: daily, weekly on chosen weekdays, monthly on a day (clamped to month end, so Jan 31 → Feb 28 → Mar 31) or the nth/last weekday, and yearly. Intervals, and an end by date or count.
+  - It works on civil dates in the saved timezone, so DST can't move an occurrence. Each schedule is computed from the series anchor, so occurrence identity is (series id, scheduled date).
+  - Helpers: windows with skipped dates, next/upcoming, membership, last date, "this and future" splitting, plain-language labels and presets, and `fromLegacy`, which reads today's task columns without rewriting them.
+- **`components/planner/RecurrenceEditor.tsx`:** the shared repeat editor (presets for the start date, a Custom panel, Ends: never / on a date / after N times, a live summary with the next dates) and `RecurrenceScopeChoice` (This one / This and future / Entire series).
+- Tests: `tests/recurrence.test.mjs` (month ends, leap years, nth/last weekday, DST weekends, until/count, skipped dates, labels, legacy conversion).
+
+**Next phases (planned):**
+- **Phase 2, data:** an owner-only `task_occurrences` table (series id + scheduled date → completed/skipped/rescheduled-to, with the actual completion timestamp kept separately in `task_completion_events`), a `recurrence` rule on tasks (legacy columns read through `fromLegacy`), event recurrence plus `planner_event_exceptions` (canceled or moved dates, overridden fields), Planner command support for scoped edits, export, and RLS.
+- **Phase 3, views:** project occurrences into the Scheduled Board, Running List, Agenda (Day/Week/Month/Future Log), Dayview and Insights, so each occurrence is counted once.

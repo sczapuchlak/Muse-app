@@ -1,0 +1,21 @@
+/* Recurrence 2.0 (#89): the shared repeat editor and edit-scope choice. Built from the shared dropdown, chips and date
+   picker; only layout lives here. */
+.muse-recurrence{display:grid;gap:12px;min-width:0}
+.muse-recurrence .muse-choice-trigger,.muse-recurrence .muse-date-picker-trigger{width:100%;justify-content:space-between}
+.muse-recurrence-custom{display:grid;gap:10px;padding:12px;border-radius:12px;background:var(--surface-subtle);box-shadow:inset 0 0 0 1px var(--glass-border)}
+.muse-recurrence-every{display:flex;align-items:center;gap:8px}
+.muse-recurrence-every input{width:4.2rem;min-height:38px;padding:0 10px;border:1px solid var(--glass-border);border-radius:var(--control-radius);background:var(--surface-control);color:var(--foreground);font:inherit}
+.muse-recurrence-every .muse-choice-trigger{width:auto;min-width:7rem}
+.muse-recurrence-days>button{min-width:36px;justify-content:center;padding-inline:0}
+.muse-recurrence-ends{display:grid;gap:8px}
+.muse-recurrence-ends .editor-label{margin:0}
+.muse-recurrence-count{display:inline-flex;align-items:center;gap:8px;font-size:.88rem}
+.muse-recurrence-count input{width:5rem;min-height:38px;padding:0 10px;border:1px solid var(--glass-border);border-radius:var(--control-radius);background:var(--surface-control);color:var(--foreground);font:inherit}
+.muse-recurrence-summary{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:12px;color:var(--selected-text);background:var(--selected-background);border:1px solid var(--selected-border)}
+.muse-recurrence-summary strong{display:block;color:var(--foreground);font-weight:600}
+.muse-recurrence-summary p{margin:2px 0 0;font-size:.8rem;color:var(--text-muted)}
+.muse-recurrence-scope{display:grid;gap:6px;margin:0;padding:0;border:0}
+.muse-recurrence-scope label{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:12px;border:1px solid var(--glass-border);cursor:pointer}
+.muse-recurrence-scope label[data-selected]{border-color:var(--selected-border);background:var(--selected-background)}
+.muse-recurrence-scope strong{display:block;font-size:.9rem}
+.muse-recurrence-scope small{color:var(--text-muted);font-size:.78rem}
