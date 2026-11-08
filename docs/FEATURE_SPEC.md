@@ -812,6 +812,7 @@ Information architecture (reconciled across #79, #81, #83, #84, #85): Planner �
 - Optional sections: Movement, Reading (minutes or pages that day, or the page reached that day), Meals, Water, Custom notes (`planner_day_notes`), and additional Tasks sections.
 - Customize layout reorders by dragging or with ↑/↓ buttons, renames, resizes, configures, adds and removes, and resets with confirmation.
 - Removing a section never touches the records it showed.
+- **Resizing, icons, styling and custom sections:** see Planner Customization (#87) below.
 
 **Workspace-aware Tasks sections.**
 - Each Tasks section shows all workspaces or the ones chosen. Unchecking the last choice is blocked, so a section never silently becomes "all".
@@ -832,6 +833,7 @@ Information architecture (reconciled across #79, #81, #83, #84, #85): Planner �
 - Visual-only by default. A Mark may optionally point at an existing event, task, movement type, book or Aspiration; linked event and task Marks follow the record's current date.
 - A Mark whose source was deleted stays, shown as unlinked.
 - Marks never log activity, complete anything or count toward progress.
+- #87 adds gradients, meanings, My Marks and themed collections (see Planner Customization below).
 
 **Movement.** Planning uses Dayview's existing movement selection, which Dayview already treats as an intention. "Done" comes only from logged activity, and moving a plan never touches logged activity. No new tracker. Reading reads Bookshelf sessions only, and no Ritual or Aspiration progress is ever written from the Agenda.
 
@@ -845,6 +847,47 @@ Information architecture (reconciled across #79, #81, #83, #84, #85): Planner �
 **Scheduled Board Task List (§12, approved 2026-11-06).** Planner → Tasks keeps its board; its Task List (`PlannerRail`, `TaskListRow`, `ScheduleMenu`, pure `lib/task-list.ts`) is now a distinct pinned source: own header (title, count, workspace, search, Filters incl. ★ Priorities only), scopes To plan (overdue then unscheduled) / Overdue / Scheduled / All (remembered per device), grouped dense rows with priority, overdue, date, due, workspace, group, tags, subtasks, repeat and estimate facts, and a Schedule menu (no Details needed). Drag list → day, day → day and day → list still work; while dragging, every day is labeled as a destination. Day cards show the same ★/› markers. No database change; every action is the same `task/place` on the one task record, so Agenda and Dayview update. This is separate from #81's Running List, which will add a Tasks view selector without replacing this board.
 
 **Not built here:** Google Calendar (out of scope), recurring events, a task sidebar inside Agenda (intentionally none), and Ritual auto-completion from reading (left to Rituals' own rules).
+
+## Planner Customization (#87) — implemented on feature branch (staging migration only)
+
+Approved 2026-11-07 as one implementation pass, with polish to follow after Stephanie's visual review. Full Saved Planner Layout Presets, Planning Modes and recurrence (#89) are out of scope.
+
+**Migration** `20261123000100_planner_customization.sql` (additive): `planner_marks.gradient` (jsonb) and `.meaning` (≤200); `planner_day_notes.items` (jsonb array ≤60) and body up to 5000 characters; the layout allows up to 24 sections; new owner-only `planner_customizations` (one versioned library document per person; RLS, four owner policies, no anon; in the personal export). Applied to local and staging (verified 2026-11-07); production only with approval.
+
+**Resizing.** Every band except the last has its own drag handle (or arrow keys), Events included; the last band fills the column, so it has none. The old Events handle sat at the bottom of the day card because sections weren't positioned.
+
+**Custom Muse Marks** (`lib/muse-marks.ts`, `lib/planner-customization.ts`, `MarkEditor`).
+- Symbol from the curated library, a solid color or a gradient (`MusePaintPicker`), a name (label) and an optional meaning.
+- `color` always stores a solid fallback (the gradient's first stop), so older clients still draw the Mark.
+- "Start from": My Marks (saved favorites) and themed collections (Vacation, Work, Wellness, Cozy, Personal). Picking one copies its style into the new Mark; nothing stays linked.
+- "Save this style to My Marks". The settings key lists My Marks with their meanings, so color is never the only signal. Removing a saved style never removes placed Marks.
+- Gradient Marks are a filled chip with a light symbol. They show wherever `MarkGlyph` is used: Week, Day, Month and Future Log, plus task and event rows.
+- Marks remain metadata: they never change a task's status, schedule or completion.
+
+**Section styling** (`style` on each layout section; no extra table).
+- Background: theme default, solid or gradient. Strength (opacity) runs from 5–60% on its own layer, so text keeps full contrast.
+- Accent for header, icon and divider (mixed toward the text color for readability). Header style: Classic small caps, Editorial serif, Tinted label or Underlined.
+- Divider: Fine line, Dotted, Dashed, Double, Flourish or None. Optional sticker.
+- A live preview, and "Reset to theme default". Theme defaults apply whenever nothing is set.
+
+**Decoration vs. Marks.** Stickers are typographic ornaments (✦ ✿ ☾ ♡ …), tucked in a section's lower corner, `aria-hidden` and non-interactive. They never use Mark icons and never attach to dates or records.
+
+**Custom Planner sections.** Three new section types: Checklist, Simple List and Freeform Notes (the former Custom notes).
+- Content is per section per day in `planner_day_notes`. It belongs only to the Planner: checking an item never creates, completes or touches a task, habit or anything else.
+- Checklist and List sections can have starter items. A day with nothing saved shows the starter items; the first edit saves that day's own copy, so other days and the template never change. Checklist has "Uncheck all".
+- A Notes section can have a starter prompt, shown as a placeholder and never saved as the person's writing.
+- In Customize layout every section can be renamed, restyled, reordered, resized and given an icon. Optional sections can also be hidden or shown (content kept) and duplicated (the copy has the same setup and starts empty).
+- Removing a content section asks "Remove, keep what I wrote" or "Delete section and its content" (permanent). Connected sections (Movement, Reading, …) still just remove from the layout. Events and the first Tasks section can't be hidden or removed.
+
+**Saved Sections** (in the library).
+- "Save as section…" on a Checklist, List or Notes section stores its type, title, size, icon, style and, optionally, its starter content. A section remembers its template (`savedFrom`), so it can "Update" that template or "Save as a new copy".
+- My Saved Sections in Customize layout shows a preview card for each template (title, style, icon, first items), with search once there are more than four.
+- Insert (optionally blank, skipping starter content), Edit (name, title, starter content), Duplicate, and Delete (confirmed).
+- Inserting creates an independent section; editing or deleting a template never changes sections already in the Planner.
+
+**Palette.** The paint picker offers the theme accents (they follow the theme), curated solids and gradients, the person's saved colors and gradients ("Save to my colors/gradients"), and a custom gradient (2–3 stops, four directions) through the existing `MuseGradientBuilder`.
+
+**Decisions made in the implementation pass:** section content is per day, because the Agenda template is per day; the Week planning column stays the per-week space. Starter items are copied per day, never live-linked. Opacity is capped at 60%. Only content sections can be saved as templates.
 
 ## Planner 2.0 — Running List (#81) — implemented on feature branch (staging migrations only)
 
@@ -870,7 +913,7 @@ Planner → Tasks has two views of the same task records, chosen in the toolbar'
 - Agenda day cards use the planner card material (Frosted and Crystal).
 - One rainbow today ring, shared by Tasks and Agenda.
 
-## Rituals — Bucket List (#84) — implemented on feature branch (local migration only)
+## Rituals — Bucket List (#84) — implemented on feature branch (staging migration only)
 
 Rituals → **Habits | Aspirations | Bucket List** (`?view=bucket`). One long-running list per person, modeled on Stephanie's handwritten bullet-journal list: a key of colored year circles on top, a dense numbered list, and each dream highlighted in the color of the year it came true.
 

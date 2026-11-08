@@ -3,6 +3,7 @@ import type {SupabaseClient} from '@supabase/supabase-js';
 import type {Database,Json} from './database.types';
 import {defaultLayout,LAYOUT_SCHEMA_VERSION,parseLayout,type AgendaLayout} from './agenda-layout';
 import {markFromRow,markToRow,type MuseMark} from './muse-marks';
+import {emptyLibrary,LIBRARY_VERSION,parseItems,parseLibrary,type Library,type SectionItem} from './planner-customization';
 import {parsePlanningConfig,parsePlanningItems,type PlanningConfig,type PlanningItem} from './agenda';
 
 type Client=SupabaseClient<Database>;
@@ -45,7 +46,7 @@ export async function saveAgendaLayout(client:Client,userId:string,layout:Agenda
  return {layout:parseLayout({sections:result.data.sections}),revision:result.data.revision};
 }
 
-const markColumns='id,local_date,end_date,icon,color,label,link_kind,link_id,revision';
+const markColumns='id,local_date,end_date,icon,color,gradient,meaning,label,link_kind,link_id,revision';
 /** Marks touching a date window (ranges included). Linked event/task Marks are read regardless of their stored date. */
 export async function readMarks(client:Client,userId:string,start:string,end:string):Promise<MuseMark[]>{
  const [dated,items]=await Promise.all([
@@ -70,20 +71,40 @@ export async function saveMark(client:Client,userId:string,mark:MuseMark|Omit<Mu
 /** Removing a Mark removes only the Mark, never the record it pointed at. */
 export async function deleteMark(client:Client,userId:string,id:string){const {error}=await client.from('planner_marks').delete().eq('user_id',userId).eq('id',id);if(error)throw error;}
 
-export type DayNote={sectionId:string;date:string;body:string;revision:number};
+export type DayNote={sectionId:string;date:string;body:string;items:SectionItem[];revision:number};
+const noteColumns='section_id,local_date,body,items,revision';
+const noteFrom=(r:{section_id:string;local_date:string;body:string;items:unknown;revision:number}):DayNote=>({sectionId:r.section_id,date:r.local_date,body:r.body,items:parseItems(r.items),revision:r.revision});
 export async function readDayNotes(client:Client,userId:string,start:string,end:string):Promise<DayNote[]>{
- const {data,error}=await client.from('planner_day_notes').select('section_id,local_date,body,revision').eq('user_id',userId).gte('local_date',start).lte('local_date',end).limit(2000);
+ const {data,error}=await client.from('planner_day_notes').select(noteColumns).eq('user_id',userId).gte('local_date',start).lte('local_date',end).limit(2000);
  if(error)throw error;
- return data.map(r=>({sectionId:r.section_id,date:r.local_date,body:r.body,revision:r.revision}));
+ return data.map(noteFrom);
 }
 export async function saveDayNote(client:Client,userId:string,note:DayNote):Promise<DayNote>{
- const body=note.body.slice(0,500);
+ const row={body:note.body.slice(0,5000),items:parseItems(note.items) as unknown as NonNullable<Json>};
  const result=note.revision===0
-  ?await client.from('planner_day_notes').insert({user_id:userId,section_id:note.sectionId,local_date:note.date,body}).select('section_id,local_date,body,revision').single()
-  :await client.from('planner_day_notes').update({body}).eq('user_id',userId).eq('section_id',note.sectionId).eq('local_date',note.date).eq('revision',note.revision).select('section_id,local_date,body,revision').maybeSingle();
+  ?await client.from('planner_day_notes').insert({user_id:userId,section_id:note.sectionId,local_date:note.date,...row}).select(noteColumns).single()
+  :await client.from('planner_day_notes').update(row).eq('user_id',userId).eq('section_id',note.sectionId).eq('local_date',note.date).eq('revision',note.revision).select(noteColumns).maybeSingle();
  if(result.error)throw result.error;
- if(!result.data)throw Error('This note changed on another device. Reload to see the latest.');
- return {sectionId:result.data.section_id,date:result.data.local_date,body:result.data.body,revision:result.data.revision};
+ if(!result.data)throw Error('This section changed on another device. Reload to see the latest.');
+ return noteFrom(result.data);
+}
+/** Permanently deletes everything written in one custom section (every day). Only after the person confirms. */
+export async function deleteSectionContent(client:Client,userId:string,sectionId:string){const {error}=await client.from('planner_day_notes').delete().eq('user_id',userId).eq('section_id',sectionId);if(error)throw error;}
+
+// ---------- Customization library (#87) ----------
+export async function readLibrary(client:Client,userId:string):Promise<{library:Library;revision:number}>{
+ const {data,error}=await client.from('planner_customizations').select('library,revision').eq('user_id',userId).maybeSingle();
+ if(error)throw error;
+ return data?{library:parseLibrary(data.library),revision:data.revision}:{library:emptyLibrary(),revision:0};
+}
+export async function saveLibrary(client:Client,userId:string,library:Library,revision:number):Promise<{library:Library;revision:number}>{
+ const row={schema_version:LIBRARY_VERSION,library:parseLibrary(library) as unknown as NonNullable<Json>};
+ const result=revision===0
+  ?await client.from('planner_customizations').insert({user_id:userId,...row}).select('library,revision').single()
+  :await client.from('planner_customizations').update(row).eq('user_id',userId).eq('revision',revision).select('library,revision').maybeSingle();
+ if(result.error)throw result.error;
+ if(!result.data)throw Error('Your saved styles changed on another device. Reload to see the latest.');
+ return {library:parseLibrary(result.data.library),revision:result.data.revision};
 }
 
 // ---------- Running List manual order (#81) ----------

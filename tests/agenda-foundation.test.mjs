@@ -124,9 +124,20 @@ test('migration: additive event fields, separate event command on the Planner re
 test('Agenda shell: one view menu, contextual settings, layout customization, hidden-filter note, eight weekly slots',()=>{
  const a=read('components/planner/Agenda.tsx');
  assert.match(a,/Customize layout/);assert.match(a,/View settings and key/);assert.match(a,/Hiding \{hiding\.join/);
- assert.match(a,/agenda\.layout\.sections\.map\(\(s\) => <AgendaSectionView/,'every day renders the same template');
+ assert.match(a,/(agenda\.layout\.sections|visibleSections\(agenda\.layout\))\.map\(\(s\) => <AgendaSectionView/,'every day renders the same template');
  assert.equal(A.weekSlots('2026-11-06').length,8,'seven days + the planning column');
  assert.doesNotMatch(read('components/planner/Planner.tsx'),/tagIds=\{activeTags\}\/>\}/,'Tasks-tab filters do not silently filter the Agenda');
  const css=read('components/planner/Agenda.css');assert.match(css,/\[data-flow=fixed\]\{height:var\(--section-h\)/,'bands share one height across days');
  assert.match(css,/\.muse-agenda-section-body\{min-height:0;overflow-y:auto/,'overflow scrolls inside the band, never hidden');
+});
+
+test('#87 sections: optional icon from the Muse Marks library, unknown icons dropped, every band anchors its own resize handle',()=>{
+ const base=L.defaultLayout();
+ const withIcon=L.changeLayout(base,{type:'update',id:'events',patch:{icon:'suitcase'}});
+ assert.equal(withIcon.sections[0].icon,'suitcase');
+ assert.equal(L.changeLayout(withIcon,{type:'update',id:'events',patch:{icon:undefined}}).sections[0].icon,undefined);
+ assert.equal(L.parseLayout({sections:[{id:'events',type:'events',title:'Events',size:'standard',icon:'rocket'}]}).sections[0].icon,undefined);
+ const css=read('components/planner/Agenda.css');
+ assert.match(css,/\.muse-agenda-section\{position:relative\}/);
+ assert.match(css,/:last-child>\.muse-agenda-resize\{display:none\}|:last-child>\.muse-agenda-resize,|last-child \.muse-agenda-resize/);
 });

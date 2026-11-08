@@ -284,6 +284,10 @@ button.muse-mark{cursor:pointer}button.muse-mark:focus-visible{outline:2px solid
 .muse-agenda-drop-wrap>.muse-agenda-section[data-flow=fixed]{flex:1 1 var(--section-h);min-height:0}
 .muse-agenda-day-body>:last-child:not([data-size=collapsed]){flex-grow:1}
 .muse-agenda-day-body>.muse-agenda-section[data-size=collapsed]{flex:none}
+/* #87: each band anchors its own handle (Events' handle used to land at the bottom of the day card). The last band fills what's left, so it has no handle. */
+.muse-agenda-section{position:relative}
+.muse-agenda-day-body>:last-child .muse-agenda-resize,.muse-agenda-day-body>.muse-agenda-section:last-child>.muse-agenda-resize{display:none}
+.muse-agenda-section-icon{display:inline-block;vertical-align:-2px;margin-right:5px;color:var(--accent-primary)}
 .muse-agenda-resize{position:absolute;left:0;right:0;bottom:0;height:9px;cursor:ns-resize;z-index:3;border-radius:6px}
 .muse-agenda-resize::after{content:"";position:absolute;left:50%;top:50%;width:36px;height:4px;margin:-2px 0 0 -18px;border-radius:4px;background:var(--glass-border);opacity:0;transition:opacity .15s}
 .muse-agenda-section:hover>.muse-agenda-resize::after,.muse-agenda-resize:focus-visible::after,.muse-agenda-resize:active::after{opacity:1;background:var(--selected-border)}
@@ -314,3 +318,112 @@ button.muse-mark{cursor:pointer}button.muse-mark:focus-visible{outline:2px solid
 .muse-mark-icons label>span{width:34px;height:34px;box-sizing:border-box}
 .muse-agenda-week{padding-inline:1px}
 .muse-agenda-rows.muse-task-list-rows{display:block;gap:0}
+/* ---------- Planner Customization (#87) ---------- */
+/* Section paint sits on its own layer so its opacity never fades the text; content stays above it. */
+.muse-agenda-section[data-painted]{padding-inline:8px;padding-bottom:6px;border-radius:10px}
+.muse-agenda-section[data-painted]::before{content:"";position:absolute;inset:0;border-radius:inherit;background:var(--section-paint);opacity:var(--section-paint-opacity,.18);pointer-events:none;z-index:0}
+.muse-agenda-section>*:not(.muse-agenda-resize){position:relative;z-index:1}
+.muse-agenda-daily-sections>.muse-agenda-section[data-painted]{padding:12px}
+/* Accent: header, icon and divider; mixed with the text color so it stays readable in every theme. */
+.muse-agenda-section-icon{color:var(--section-accent,var(--accent-primary))}
+.muse-agenda-section[style*="--section-accent"] h3{color:color-mix(in srgb,var(--section-accent) 50%,var(--foreground))}
+.muse-agenda-section[data-header=serif] h3{font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight);text-transform:none;letter-spacing:0;font-size:.98rem;color:var(--foreground)}
+.muse-agenda-section[data-header=pill] h3{display:inline-flex;align-items:center;padding:2px 8px;border-radius:999px;background:color-mix(in srgb,var(--section-accent,var(--accent-primary)) 16%,transparent);color:color-mix(in srgb,var(--section-accent,var(--accent-primary)) 50%,var(--foreground))}
+.muse-agenda-section[data-header=underline] h3{text-decoration:underline;text-decoration-color:var(--section-accent,var(--accent-primary));text-decoration-thickness:2px;text-underline-offset:4px}
+.muse-agenda-section[data-divider=none]{border-top-color:transparent}
+.muse-agenda-section[data-divider=dotted]{border-top:2px dotted color-mix(in srgb,var(--section-accent,var(--glass-border)) 55%,var(--glass-border))}
+.muse-agenda-section[data-divider=dashed]{border-top:1px dashed color-mix(in srgb,var(--section-accent,var(--glass-border)) 55%,var(--glass-border))}
+.muse-agenda-section[data-divider=double]{border-top:3px double color-mix(in srgb,var(--section-accent,var(--glass-border)) 55%,var(--glass-border))}
+.muse-agenda-section[data-divider=flourish]{border-top-color:transparent;padding-top:12px}
+.muse-agenda-section[data-divider=flourish]::after{content:"— ❦ —";position:absolute;top:-2px;left:0;right:0;text-align:center;font-size:.7rem;line-height:1;letter-spacing:.2em;color:color-mix(in srgb,var(--section-accent,var(--accent-primary)) 55%,var(--text-muted));pointer-events:none;z-index:1}
+/* Stickers: decoration only, tucked in the lower corner, never interactive. */
+.muse-agenda-sticker{position:absolute!important;right:8px;bottom:6px;font-size:1.05rem;line-height:1;transform:rotate(-12deg);color:var(--section-accent,var(--accent-pop,var(--accent-primary)));opacity:.8;pointer-events:none;z-index:1!important}
+/* Checklist and Simple List */
+.muse-agenda-items{margin:0;padding:0;list-style:none;display:grid;gap:2px}
+.muse-agenda-items li{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:6px;min-height:26px}
+.muse-agenda-item-check{flex:0 0 26px;width:26px;height:26px}
+.muse-agenda-item-check .priority-check{width:18px;height:18px}
+.muse-agenda-bullet{width:14px;text-align:center;color:var(--section-accent,var(--text-muted))}
+.muse-agenda-item-text{all:unset;box-sizing:border-box;min-width:0;width:100%;font-size:.84rem;padding:2px 4px;border-radius:6px;color:var(--foreground)}
+.muse-agenda-item-text:focus-visible{outline:2px solid var(--focus-ring,var(--accent-primary));background:var(--surface-control)}
+.muse-agenda-items li[data-done] .muse-agenda-item-text{text-decoration:line-through;color:var(--text-muted)}
+.muse-agenda-item-remove{all:unset;display:grid;place-items:center;width:22px;height:22px;border-radius:6px;color:var(--text-muted);cursor:pointer}
+.muse-agenda-item-remove:focus-visible{outline:2px solid var(--focus-ring,var(--accent-primary))}
+@media (hover:hover) and (pointer:fine){.muse-agenda-items li:not(:hover):not(:focus-within) .muse-agenda-item-remove{opacity:0}}
+.muse-agenda-item-add input{all:unset;box-sizing:border-box;width:100%;font-size:.82rem;padding:4px 6px;border-radius:8px;border:1px dashed var(--glass-border);color:var(--foreground)}
+.muse-agenda-item-add input:focus-visible{border-style:solid;border-color:var(--selected-border)}
+.muse-agenda-items-head{display:inline-flex;align-items:center;gap:4px}
+.muse-agenda-items-head .muse-overflow-trigger{width:22px;height:22px;min-height:0;flex-basis:22px}
+/* Gradient Marks: filled chip with a light symbol, so they read the same in light and dark themes. */
+.muse-mark[data-paint=gradient]{background:var(--mark-gradient);color:#fff;border-color:transparent}
+.muse-mark[data-paint=gradient] svg{filter:drop-shadow(0 1px 1px rgb(0 0 0 / .35))}
+.muse-mark-icons label[data-paint=gradient] input:checked+span{color:#fff}
+.muse-mark-quick{display:grid;gap:6px}
+.muse-mark-quick .muse-chip-row>button{min-height:28px;padding:2px 10px;font-size:.76rem}
+.muse-mark-quick-list{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0;list-style:none}
+.muse-mark-quick-list button{display:inline-flex;align-items:center;gap:6px;padding:3px 10px 3px 4px;border-radius:999px;border:1px solid var(--glass-border);background:var(--surface-control);color:var(--foreground);font:inherit;font-size:.8rem;cursor:pointer}
+.muse-mark-quick-list button:hover{border-color:var(--selected-border)}
+.muse-mark-quick-list button:focus-visible{outline:2px solid var(--focus-ring,var(--accent-primary));outline-offset:2px}
+.muse-mark-key ul{margin:0;padding:0;list-style:none;display:grid;gap:4px}
+.muse-mark-key li{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:8px;font-size:.82rem}
+/* Paint picker (shared) */
+.muse-paint-picker{border:0;margin:0;padding:0;display:grid;gap:10px;min-width:0}
+.muse-paint-picker>legend{font-size:.8rem;margin-bottom:6px;color:var(--text-muted)}
+.muse-paint-picker .muse-chip-row>button{min-height:28px;padding:2px 10px;font-size:.76rem}
+.muse-paint-swatches,.muse-paint-gradients{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.muse-paint-swatches .muse-color-swatch{width:22px;height:22px}
+.muse-paint-gradient{width:34px;height:22px;border-radius:8px;border:1px solid var(--glass-border);cursor:pointer;padding:0}
+.muse-paint-gradient[aria-pressed=true],.muse-paint-swatches .muse-color-swatch[aria-pressed=true]{box-shadow:0 0 0 2px var(--surface-strong),0 0 0 4px var(--selected-border)}
+.muse-paint-gradient:focus-visible{outline:2px solid var(--focus-ring,var(--accent-primary));outline-offset:2px}
+.muse-paint-custom summary{cursor:pointer;font-size:.8rem;color:var(--text-muted)}
+.muse-paint-custom[open] summary{margin-bottom:8px}
+/* Customize layout: per-section tools, panels and the saved library */
+.muse-layout-row[data-hidden] .muse-layout-main>.muse-layout-line:first-child{opacity:.6}
+.muse-layout-swatch{position:relative;display:inline-grid;place-items:center;flex:none;width:26px;height:26px;border-radius:8px;border:1px solid var(--glass-border);overflow:hidden;color:var(--section-accent,var(--accent-primary));font-size:.85rem}
+.muse-layout-swatch::before{content:"";position:absolute;inset:0;background:var(--section-paint,transparent);opacity:calc(var(--section-paint-opacity,.18) * 2)}
+.muse-layout-swatch>*{position:relative}
+.muse-layout-tools{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:.84rem}
+.muse-layout-panel{display:grid;gap:12px;padding:12px;border:1px solid var(--glass-border);border-radius:12px;background:var(--surface-subtle)}
+.muse-layout-panel p{margin:0}
+.muse-layout-panel .muse-button[data-destructive]{color:color-mix(in srgb,var(--accent-pop) 70%,var(--foreground));border-color:color-mix(in srgb,var(--accent-pop) 45%,var(--glass-border))}
+.muse-layout-style{grid-template-columns:minmax(0,1fr)}
+.muse-layout-style-preview{max-width:280px}
+.muse-layout-opacity{display:grid;gap:4px;font-size:.84rem;max-width:280px}
+.muse-layout-opacity small,.muse-layout-starter small{font-size:.72rem;color:var(--text-muted)}
+.muse-layout-accent{display:grid;gap:6px}
+.muse-layout-accent .muse-chip-row{align-items:center}
+.muse-layout-accent .muse-chip-row>button{min-height:28px;padding:2px 10px;font-size:.76rem}
+.muse-layout-stickers{border:0;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.muse-layout-stickers legend{font-size:.8rem;margin-bottom:6px;color:var(--text-muted)}
+.muse-layout-stickers legend small{font-size:.72rem}
+.muse-layout-stickers label{position:relative;cursor:pointer}
+.muse-layout-stickers input{position:absolute;inset:0;opacity:0;margin:0;cursor:pointer}
+.muse-layout-stickers span{display:grid;place-items:center;min-width:32px;height:32px;padding:0 6px;box-sizing:border-box;border-radius:10px;border:1px solid var(--glass-border);background:var(--surface-control);font-size:1rem;color:var(--accent-primary)}
+.muse-layout-stickers label:first-of-type span{font-size:.76rem;color:var(--text-muted)}
+.muse-layout-stickers input:checked+span{box-shadow:0 0 0 2px var(--selected-border)}
+.muse-layout-stickers input:focus-visible+span{outline:2px solid var(--focus-ring,var(--accent-primary));outline-offset:2px}
+.muse-layout-starter{display:grid;gap:4px;font-size:.84rem}
+.muse-layout-starter textarea,.muse-layout-starter input,.muse-saved-editor input,.muse-saved-editor textarea,.muse-saved-tools input[type=search]{width:100%;box-sizing:border-box;border:1px solid var(--glass-border);border-radius:10px;background:var(--surface-control);color:var(--foreground);font:inherit;font-size:.86rem;padding:6px 10px}
+.muse-saved-sections{display:grid;gap:10px}
+.muse-saved-sections>summary{cursor:pointer;font-size:.9rem;font-weight:600}
+.muse-saved-tools{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;margin-top:8px}
+.muse-saved-tools input[type=search]{max-width:240px}
+.muse-saved-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px;margin:8px 0 0;padding:0;list-style:none}
+.muse-saved-card{display:grid;gap:8px;align-content:start;padding:10px;border:1px solid var(--glass-border);border-radius:12px;background:var(--surface-subtle);min-width:0}
+.muse-saved-meta{display:grid;gap:2px;font-size:.86rem}
+.muse-saved-actions{display:flex;flex-wrap:wrap;align-items:center;gap:4px 12px;font-size:.84rem}
+.muse-saved-actions .muse-button{min-height:30px;padding-block:0}
+.muse-saved-editor{display:grid;gap:8px;font-size:.84rem}
+.muse-saved-editor label{display:grid;gap:4px}
+/* Static preview of a band (style panel and saved cards) */
+.muse-section-preview{position:relative;min-height:84px;border:1px solid var(--glass-border);border-radius:10px;padding:8px 10px 10px;background:var(--surface-control)}
+.muse-section-preview[data-divider=flourish]{padding-top:14px}
+.muse-section-preview-lines li{grid-template-columns:auto minmax(0,1fr);font-size:.78rem;min-height:20px;color:var(--foreground)}
+.muse-section-preview-box{width:11px;height:11px;border-radius:3px;border:1.5px solid var(--section-accent,var(--glass-border))}
+.muse-section-preview-box[data-kind=dash]{border:0;border-top:1.5px solid var(--section-accent,var(--text-muted));height:0;border-radius:0}
+@media (max-width:640px){.muse-saved-grid{grid-template-columns:minmax(0,1fr)}.muse-layout-style-preview,.muse-layout-opacity{max-width:none}}
+.muse-layout-editor .muse-section-preview h3{margin:0;font-family:inherit;font-style:normal;font-weight:600;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;line-height:1.3;color:var(--text-muted)}
+.muse-layout-editor .muse-section-preview[style*="--section-accent"] h3{color:color-mix(in srgb,var(--section-accent) 50%,var(--foreground))}
+.muse-layout-editor .muse-section-preview[data-header=pill] h3{color:color-mix(in srgb,var(--section-accent,var(--accent-primary)) 50%,var(--foreground))}
+.muse-layout-editor .muse-section-preview[data-header=serif] h3{font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight);text-transform:none;letter-spacing:0;font-size:.98rem;color:var(--foreground)}
+.muse-saved-actions .text-button{padding-inline:0}

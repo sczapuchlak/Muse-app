@@ -4,8 +4,8 @@
  * progress. Linked event and task Marks follow their record's current date; if the record is gone the Mark stays,
  * marked as unlinked, rather than disappearing or inventing data.
  */
-import type {AccentColor} from './appearance-values';
-import {validAccent} from './appearance-values';
+import type {AccentColor,CustomGradient} from './appearance-values';
+import {isHexColor,validAccent,validGradient} from './appearance-values';
 import {validDate} from './dates';
 import type {DayEvent,PlannedTask} from './models';
 
@@ -25,16 +25,24 @@ export const markLinkKinds=[
 ] as const;
 export type MarkLinkKind=typeof markLinkKinds[number]['id'];
 
-export type MuseMark={id:string;date:string;endDate?:string;icon:MarkIcon;color:AccentColor;label:string;linkKind?:MarkLinkKind;linkId?:string;revision:number};
-export type MarkRow={id:string;local_date:string;end_date:string|null;icon:string;color:string;label:string;link_kind:string|null;link_id:string|null;revision:number};
+/** #87: `gradient` (optional) paints the Mark; `color` stays the solid fallback. `meaning` says what it stands for. */
+export type MuseMark={id:string;date:string;endDate?:string;icon:MarkIcon;color:AccentColor;gradient?:CustomGradient;meaning?:string;label:string;linkKind?:MarkLinkKind;linkId?:string;revision:number};
+export type MarkRow={id:string;local_date:string;end_date:string|null;icon:string;color:string;gradient?:unknown;meaning?:string|null;label:string;link_kind:string|null;link_id:string|null;revision:number};
+export function markGradient(value:unknown):CustomGradient|undefined{
+ if(!value||typeof value!=='object')return undefined;const v=value as {colors?:unknown;angle?:unknown};
+ const colors=Array.isArray(v.colors)?v.colors.filter((c):c is `#${string}`=>typeof c==='string'&&isHexColor(c)).slice(0,3):[];
+ const g={colors:colors as CustomGradient['colors'],angle:typeof v.angle==='number'?v.angle:135};
+ return colors.length>=2&&validGradient(g)?g:undefined;
+}
 
 export function markFromRow(r:MarkRow):MuseMark|null{
  if(!validDate(r.local_date)||!markIcons.some(i=>i.id===r.icon))return null;
  const kind=markLinkKinds.find(k=>k.id===r.link_kind)?.id;
  return {id:r.id,date:r.local_date,...(r.end_date&&r.end_date>r.local_date?{endDate:r.end_date}:{}),icon:r.icon as MarkIcon,color:validAccent(r.color)?r.color as AccentColor:'primary',label:r.label.slice(0,40),
+  ...(markGradient(r.gradient)?{gradient:markGradient(r.gradient)}:{}),...(r.meaning?.trim()?{meaning:r.meaning.trim().slice(0,200)}:{}),
   ...(kind&&r.link_id?{linkKind:kind,linkId:r.link_id}:{}),revision:r.revision};
 }
-export const markToRow=(m:Omit<MuseMark,'revision'>)=>({id:m.id,local_date:m.date,end_date:m.endDate&&m.endDate>m.date?m.endDate:null,icon:m.icon,color:m.color,label:m.label.trim().slice(0,40),link_kind:m.linkKind??null,link_id:m.linkKind?m.linkId??null:null});
+export const markToRow=(m:Omit<MuseMark,'revision'>)=>({id:m.id,local_date:m.date,end_date:m.endDate&&m.endDate>m.date?m.endDate:null,icon:m.icon,color:m.gradient?m.gradient.colors[0]:m.color,gradient:(m.gradient?{colors:m.gradient.colors.filter(Boolean),angle:m.gradient.angle}:null) as {colors:string[];angle:number}|null,meaning:m.meaning?.trim().slice(0,200)||null,label:m.label.trim().slice(0,40),link_kind:m.linkKind??null,link_id:m.linkKind?m.linkId??null:null});
 
 export type MarkSources={events:DayEvent[];tasks:PlannedTask[];movementTypes:{id:string;name:string}[];books:{id:string;title:string}[];aspirations:{id:string;title:string}[]};
 export type ResolvedMark=MuseMark&{start:string;end:string;title:string;linked:boolean;missing:boolean;href?:string};
