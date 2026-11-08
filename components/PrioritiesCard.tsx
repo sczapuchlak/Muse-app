@@ -7,14 +7,15 @@ import {dailyTextDisplay,priorityCompletion} from '@/lib/data/daily-projections'
 import {MuseCard} from './MuseCard';import {CardHeading} from './CardHeading';import {MuseIcon} from './MuseIcon';import {EditableText} from './EditableText';import {useMuseSpark} from './MuseSpark';import {EmojiButton} from './EmojiPicker';import {useCelebrateOnCrossing} from './useCelebrateOnCrossing';import {celebrate} from '@/lib/celebrate';import {pickLine} from '@/lib/celebration-copy';import {allowsMagic} from '@/lib/magic-preference';import {MuseStar} from './MuseStar';
 import {usePlanner} from './PlannerStore';import './PrioritiesCard.css';import {PriorityTaskLink} from './PriorityTaskLink';
 import {useMuseToday} from './useMuseToday';
+import {todayInTimeZone} from '@/lib/dates';
 /** Three stars that light with each completed priority and connect when all three are done. */
 function PriorityStars({lit,aligned}:{lit:number;aligned:boolean}){return <span className="priority-stars" data-aligned={aligned||undefined} aria-hidden="true"><svg viewBox="0 0 60 20"><path d="M8 13 L30 6 L52 12"/></svg>{[0,1,2].map(i=><span key={i} data-lit={i<lit||undefined}><MuseStar size={i===1?15:12}/></span>)}</span>;}
 function PriorityItem({priority,complete,historical,disabled,onToggle,onEdit,children}:{priority:DailyPriority;complete:boolean|null;historical:boolean;disabled:boolean;onToggle:()=>void;onEdit:(title:string)=>void;children:React.ReactNode}){
  const unavailable=priority.task_unavailable===true||!priority.task_id;
  const {trigger,spark}=useMuseSpark(),check=useRef<HTMLInputElement>(null);
  useEffect(()=>{if(check.current)check.current.indeterminate=complete===null;},[complete]);
- return <li><div className={`priority-item${complete===true?' is-complete':''}`}><label className="priority-completion" title={historical&&priority.task_id?'Day-end history. Current task actions are in the link menu.':complete===null?'Completion is not known for this day.':undefined}>
- <input ref={check} type="checkbox" className="check-input" checked={complete===true} aria-checked={complete===null?'mixed':complete} aria-label={`${historical&&priority.task_id?'Historical priority':'Complete priority'}: ${priority.text}`} disabled={disabled||unavailable||!!priority.task_id&&historical} onChange={event=>{if(event.target.checked)trigger();onToggle();}}/>
+ return <li><div className={`priority-item${complete===true?' is-complete':''}`}><label className="priority-completion" title={historical&&priority.task_id?(priorityCompletion(priority)===true?'Done at the end of that day.':'Forgot to check it off? This completes the task on that day.'):complete===null?'Completion is not known for this day.':undefined}>
+ <input ref={check} type="checkbox" className="check-input" checked={complete===true} aria-checked={complete===null?'mixed':complete} aria-label={`${historical&&priority.task_id?'Close out priority for that day':'Complete priority'}: ${priority.text}`} disabled={disabled||unavailable||!!priority.task_id&&historical&&priorityCompletion(priority)===true} onChange={event=>{if(event.target.checked)trigger();onToggle();}}/>
  <span className="priority-check" aria-hidden="true">{complete===true&&<MuseIcon name="check" size={15}/>} {complete===null?'?':null}{spark}</span></label>
  <span className="priority-text">{unavailable?<span>{priority.text}</span>:<EditableText disabled={disabled} value={priority.text} label="Edit priority" maxLength={160} onSave={onEdit}/>}{unavailable&&<small className="small-label">Kept for history</small>}{historical&&priority.task_id&&<small className="small-label">Day-end status{complete===null?' · not known':''}</small>}</span>
  <span className="priority-number" aria-hidden="true">0{priority.position+1}</span>{children}</div></li>;
@@ -23,20 +24,24 @@ export function PrioritiesCard(){
  const [date]=useMuseDate(''),{day,store,patch,status,profile}=useDailyDay(date),planner=usePlanner(),[title,setTitle]=useState(''),capture=useRef<{id:string;date:string;text:string}|null>(null);
  useEffect(()=>store?.subscribe(()=>{const pending=capture.current;if(pending&&store.getSnapshot().days[pending.date]?.priorities.some(item=>item.id===pending.id)){capture.current=null;if(pending.date===date)setTitle(value=>value===pending.text?'':value);}}),[store,date]);
  useEffect(()=>{if(!planner.store||!store)return;const plannerStore=planner.store;let last=plannerStore.getSnapshot().discarded;return plannerStore.subscribe(()=>{const discarded=plannerStore.getSnapshot().discarded;if(discarded===last)return;last=discarded;const pending=capture.current;if(pending)void store.load(pending.date,true).then(()=>{if(capture.current!==pending)return;if(pending.date===date&&store.getSnapshot().days[pending.date]?.priorities.some(item=>item.id===pending.id))setTitle(value=>value===pending.text?'':value);capture.current=null;});});},[planner.store,store,date]);
- const today=useMuseToday(day.record?.time_zone??profile.timeZone);
+ // Whether a day is over depends on where the person is now (profile zone), not the zone captured on that day's record.
+ const today=useMuseToday(profile.timeZone);
  useEffect(()=>{if(today)void store?.load(date,true);},[today,date,store]);
  const priorities=day.priorities.map(item=>{const task=planner.state.tasks.find(task=>task.id===item.task_id);return task?{...item,text:task.title}:item;});
  const inputs:PriorityInput[]=priorities.map(item=>({id:item.id,text:item.text,complete:item.task_id?null:item.standalone_complete,taskId:item.task_id}));
  const save=(items:PriorityInput[])=>store?.edit(date,{kind:'priorities',items,plannerRevision:planner.status?.revision});
  const historical=today?date<today:day.priorities.some(item=>item.historical_day);
- const values=priorities.map(item=>item.task_id&&!historical?planner.state.tasks.find(task=>task.id===item.task_id)?.complete??priorityCompletion(item):priorityCompletion(item));
+ const completedOnOrBefore=(taskId:string)=>{const task=planner.state.tasks.find(t=>t.id===taskId);return !!task?.complete&&!!task.completedAt&&todayInTimeZone(profile.timeZone,new Date(task.completedAt))<=date;};
+ const values=priorities.map(item=>item.task_id&&!historical?planner.state.tasks.find(task=>task.id===item.task_id)?.complete??priorityCompletion(item):item.task_id&&historical&&priorityCompletion(item)!==true&&completedOnOrBefore(item.task_id)?true:priorityCompletion(item));
  const completed=values.filter(value=>value===true).length,unknown=values.filter(value=>value===null).length;
  // The Three-Star Alignment: each completed priority lights a star; all three, once saved, align them.
  const aligned=day.priorities.length===3&&completed===3;
  const settled=!!status?.loaded&&!status.pending&&!status.saving&&!status.error&&(!planner.status||(planner.status.loaded&&!planner.status.pending&&!planner.status.error));
  const [shimmer,setShimmer]=useState(0);
  useCelebrateOnCrossing(aligned,settled,date,()=>{if(celebrate({kind:'constellation',stars:3,tier:'small',message:pickLine('priorities'),sound:'celebrate',key:`priorities:${date}`})&&allowsMagic())setShimmer(n=>n+1);});
- function complete(priority:DailyPriority,value:boolean){if(priority.task_id){const task=planner.state.tasks.find(item=>item.id===priority.task_id);if(task&&task.complete!==value)planner.dispatch({type:'task/toggle',id:task.id,now:new Date().toISOString()});}else save(inputs.map(item=>item.id===priority.id?{...item,complete:value}:item));}
+ function complete(priority:DailyPriority,value:boolean){if(priority.task_id){const task=planner.state.tasks.find(item=>item.id===priority.task_id);if(!task)return;const now=new Date().toISOString();
+  if(historical&&value&&!task.complete){planner.dispatch({type:'task/completeOn',id:task.id,date,now});return;}
+  if(task.complete!==value)planner.dispatch({type:'task/toggle',id:task.id,now});}else save(inputs.map(item=>item.id===priority.id?{...item,complete:value}:item));}
  return <MuseCard id="priorities" className="card-full priorities-card">{shimmer>0&&<span key={shimmer} className="priority-shimmer" aria-hidden="true"/>}<DailyCapture date={date} group>
  <CardHeading id="priorities" title="Today’s priorities"><PriorityStars lit={Math.min(3,completed)} aligned={aligned}/><span className="priority-count" role="status" aria-label={`${completed} of ${day.priorities.length} priorities complete${unknown?`, ${unknown} not known`:''}`}><strong>{completed}</strong> / {day.priorities.length}<span className="count-label">complete{unknown?` · ${unknown} not known`:''}</span></span></CardHeading>
  <div className="daily-intention"><span className="editor-label">Today’s intention</span><EmojiButton value={day.record?.intention_emoji??null} label="Intention emoji" onChange={value=>patch({intention_emoji:value})}/><IntentionInput key={`${date}/${status?.discarded??0}`} value={day.record?.intention_text??''} onChange={value=>patch({intention_text:value||null})}/></div>
