@@ -14,6 +14,9 @@ import { RitualWeekCell } from "./RitualWeekCell";
 type EditEntry = (ritual: RitualDefinition, date: string, anchor: HTMLElement, onComplete: (value: number | null) => void) => void;
 type Props = { period: TrackerPeriod; layout: TrackerLayout; habitId: string | "all"; date: string; today: string; rituals: RitualDefinition[]; onDate: (date: string, period?: TrackerPeriod, layout?: TrackerLayout) => void; onEditEntry: EditEntry };
 
+/** One ink per day of the month, cycling like a row of gel pens (pink → purple). */
+const dayInk = ["#f06fa3", "#f59a4a", "#f2c93b", "#7cc95a", "#5fb7e6", "#45c2a6", "#b685e0"];
+const periodTitleOf = (d: string) => new Intl.DateTimeFormat("en-US", { month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(`${d.slice(0, 7)}-15T12:00:00Z`));
 const weekdayLetters = ["M", "T", "W", "T", "F", "S", "S"];
 const monthShort = (key: string) => new Intl.DateTimeFormat("en-US", { month: "short", timeZone: "UTC" }).format(new Date(`${key}-15T12:00:00Z`));
 const groupStyle = (state: RitualState, ritual: RitualDefinition) => accentStyle(state.groups.find((g) => g.id === ritual.groupId)?.accent);
@@ -31,16 +34,37 @@ export function RitualTracker({ period, layout, habitId, date, today, rituals, o
   if (!rituals.length) return <p className="muse-tracker-empty">Add a ritual to start a tracker.</p>;
 
   if (layout === "grid" && period === "month") {
-      const days = monthDates(date);
-      return <div className="muse-tracker muse-tracker-grid" style={{ "--days": days.length } as CSSProperties}>
-        <div className="muse-tracker-grid-head" aria-hidden="true"><span />{days.map((d) => <span key={d} data-today={d === today || undefined} data-weekend={[0, 6].includes(new Date(`${d}T12:00:00Z`).getUTCDay()) || undefined}><b>{weekdayLetters[(new Date(`${d}T12:00:00Z`).getUTCDay() + 6) % 7]}</b>{Number(d.slice(8))}</span>)}<span>Month</span></div>
-        {rituals.map((r) => { const s = share(slice(r), r, days, today);
-          return <div key={r.id} className="muse-tracker-grid-row" style={groupStyle(state, r)}>
-            <span className="muse-tracker-name">{r.name}</span>
-            {days.map((d) => <TrackerCell key={d} ritual={r} date={d} today={today} sliceState={slice(r)} onEditEntry={onEditEntry} />)}
-            <span className="muse-tracker-share" title={r.type === "category" ? `${s.met} of ${s.decided} days logged` : `${s.met} of ${s.decided} met`}>{s.decided ? `${s.met}/${s.decided}` : "—"}</span>
+    // The paper habit tracker: habits down the left, every day across, ruled touching cells, a dot per done day in
+    // that day's rainbow color (categories keep theirs), a slash for missed, shaded weekends and daily totals.
+    const days = monthDates(date), weekday = (d: string) => new Date(`${d}T12:00:00Z`).getUTCDay();
+    const daily = rituals.filter((r) => r.type !== "weekly-target");
+    const doneBy = new Map(days.map((d) => [d, d <= today ? daily.reduce((n, r) => n + (square(slice(r), r, d, today).level === 4 ? 1 : 0), 0) : 0]));
+    const total = [...doneBy.values()].reduce((a, b) => a + b, 0), best = Math.max(0, ...doneBy.values()), maxDay = Math.max(1, daily.length);
+    const chips = [`${total} done this month`, ...(days.includes(today) ? [`today ${doneBy.get(today)} of ${daily.length}`] : []), ...(best ? [`best day ${best}`] : [])];
+    return <div className="muse-tracker muse-mgrid-wrap">
+      <header className="muse-sheet-head"><h3 className="muse-sheet-title">Habit tracker <span>{periodTitleOf(date)}</span></h3><ul className="muse-sheet-chips">{chips.map((c) => <li key={c}>{c}</li>)}</ul></header>
+      <div className="muse-mgrid" role="grid" aria-label={`Habit tracker, ${periodTitleOf(date)}`} style={{ "--days": days.length } as CSSProperties}>
+        <div className="muse-mgrid-row muse-mgrid-head" role="row">
+          <span className="muse-mgrid-name" role="columnheader">Habits</span>
+          {days.map((d) => <span key={d} role="columnheader" className={`muse-mgrid-day${d === today ? " muse-today-ring" : ""}`} data-weekend={[0, 6].includes(weekday(d)) || undefined} data-today={d === today || undefined}>
+            <b>{weekdayLetters[(weekday(d) + 6) % 7]}</b>{Number(d.slice(8))}</span>)}
+          <span className="muse-mgrid-total" role="columnheader">Month</span>
+        </div>
+        {rituals.map((r) => { const sh = share(slice(r), r, days, today);
+          return <div key={r.id} className="muse-mgrid-row" role="row" style={groupStyle(state, r)}>
+            <span className="muse-mgrid-name" role="rowheader" title={r.name}>{r.name}</span>
+            {days.map((d) => <span key={d} role="gridcell" className="muse-mgrid-slot" data-weekend={[0, 6].includes(weekday(d)) || undefined} data-today={d === today || undefined} style={{ "--day": dayInk[(Number(d.slice(8)) - 1) % dayInk.length], "--i": Number(d.slice(8)) } as CSSProperties}>
+              <TrackerCell ritual={r} date={d} today={today} sliceState={slice(r)} onEditEntry={onEditEntry} dot /></span>)}
+            <span className="muse-mgrid-total" title={r.type === "category" ? `${sh.met} of ${sh.decided} days logged` : `${sh.met} of ${sh.decided} met`}>{sh.decided ? `${sh.met}/${sh.decided}` : "—"}</span>
           </div>; })}
-      </div>;
+        <div className="muse-mgrid-row muse-mgrid-foot" role="row">
+          <span className="muse-mgrid-name" role="rowheader">Done</span>
+          {days.map((d) => { const n = doneBy.get(d) ?? 0; return <span key={d} role="gridcell" className="muse-mgrid-count" data-weekend={[0, 6].includes(weekday(d)) || undefined} data-today={d === today || undefined}>{d <= today && <b style={{ "--day": dayInk[(Number(d.slice(8)) - 1) % dayInk.length], "--fill": `${Math.round(n / maxDay * 100)}%` } as CSSProperties} data-zero={n === 0 || undefined} aria-label={`${n} done on ${dateLabel(d)}`}>{n}</b>}</span>; })}
+          <span className="muse-mgrid-total" />
+        </div>
+      </div>
+      <ul className="muse-tracker-legend muse-mgrid-key" aria-label="Key"><li><i data-k="done" />Done</li><li><i data-k="partial" />Partial</li><li><i data-k="missed" />Missed</li><li><i data-k="off" />Not scheduled</li><li><span className="muse-mgrid-inks" aria-hidden="true">{dayInk.map((c) => <i key={c} style={{ background: c }} />)}</span>A new ink each day</li></ul>
+    </div>;
   }
 
   if (layout === "focus") {
@@ -69,7 +93,7 @@ function MonthCalendar({ date, today, render, mini = false }: { date: string; to
 }
 
 /** A compact, editable square for the month grid: same actions as the week cell (cycle a checkbox, or open the entry sheet). */
-function TrackerCell({ ritual, date, today, sliceState, onEditEntry }: { ritual: RitualDefinition; date: string; today: string; sliceState: RitualState; onEditEntry: EditEntry }) {
+function TrackerCell({ ritual, date, today, sliceState, onEditEntry, dot = false }: { ritual: RitualDefinition; date: string; today: string; sliceState: RitualState; onEditEntry: EditEntry; dot?: boolean }) {
   const { state, dispatch, store, status } = useRituals();
   const { trigger, effect } = useRitualFeedback();
   const s = square(sliceState, ritual, date, today), c = categoryOf(ritual, s);
@@ -82,7 +106,7 @@ function TrackerCell({ ritual, date, today, sliceState, onEditEntry }: { ritual:
     if (feedback) store.whenSaved(() => { trigger(feedback.kind); playSound(feedback.kind === "constellation" ? "celebrate" : "complete"); });
   }
   const label = `${ritual.name}, ${dateLabel(date)}: ${squareLabel(ritual, s, c?.label)}${connected ? ". Connected; edit the source record" : ""}`;
-  return <span className="muse-tracker-cellwrap"><button type="button" className={`muse-tracker-square${date === today ? " muse-today-ring" : ""}`} data-level={s.level} data-status={s.status} data-today={date === today || undefined} data-category={c ? true : undefined}
+  return <span className="muse-tracker-cellwrap"><button type="button" className={dot ? "muse-mgrid-dot" : `muse-tracker-square${date === today ? " muse-today-ring" : ""}`} data-level={s.level} data-status={s.status} data-today={date === today || undefined} data-category={c ? true : undefined}
     style={c ? { "--category": c.color } as CSSProperties : undefined} disabled={disabled} aria-label={label} title={label}
     onClick={(e) => { if (ritual.type === "checkbox") record(null, true); else onEditEntry(ritual, date, e.currentTarget, record); }}></button>{effect}</span>;
 }

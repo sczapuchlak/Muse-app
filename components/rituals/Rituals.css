@@ -151,20 +151,6 @@ button.muse-tracker-square:focus-visible{outline:2px solid var(--focus-ring);out
 @media (prefers-reduced-motion:reduce){button.muse-tracker-square:hover{transform:none}}
 .muse-tracker-cellwrap{position:relative;display:grid;place-items:center}
 
-/* Grid: rituals as rows, dates (or months) as columns; scrolls sideways inside itself on narrow screens. */
-.muse-tracker-grid{overflow-x:auto;--name:minmax(9rem,14rem)}
-.muse-tracker-grid-head,.muse-tracker-grid-row{display:grid;grid-template-columns:var(--name) repeat(var(--days),minmax(var(--sq),1fr)) 3.2rem;align-items:center;column-gap:3px;min-width:calc(14rem + var(--days) * 21px + 3.2rem)}
-.muse-tracker-grid[data-period=year]{--sq:28px}
-.muse-tracker-grid[data-period=year] .muse-tracker-grid-head,.muse-tracker-grid[data-period=year] .muse-tracker-grid-row{column-gap:6px;min-width:calc(14rem + 12 * 34px + 3.2rem)}
-.muse-tracker-grid-head{padding-bottom:6px;border-bottom:1px solid var(--divider);font-size:.7rem;color:var(--text-muted);text-align:center}
-.muse-tracker-grid-head>span{display:grid;gap:1px;justify-items:center}
-.muse-tracker-grid-head b{font-weight:700;color:var(--foreground);font-size:.66rem}
-.muse-tracker-grid-head [data-weekend]{color:color-mix(in srgb,var(--text-muted) 70%,transparent)}
-.muse-tracker-grid-head [data-today]{color:var(--selected-text)}
-.muse-tracker-grid-row{min-height:30px;border-bottom:1px dashed color-mix(in srgb,var(--divider) 70%,transparent);justify-items:center}
-.muse-tracker-name{justify-self:start;padding-right:8px;font-size:.88rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
-.muse-tracker-name::before{content:"";display:inline-block;width:8px;height:8px;margin-right:8px;border-radius:50%;background:var(--tracker);vertical-align:1px}
-.muse-tracker-share{font-size:.74rem;font-variant-numeric:tabular-nums;color:var(--text-muted)}
 
 /* Focus: one ritual, large. Week and Month reuse the real week cell (same logging, labels and feedback). */
 .muse-tracker-focus-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:var(--space-2)}
@@ -253,7 +239,7 @@ button.muse-tracker-square:focus-visible{outline:2px solid var(--focus-ring);out
 @media (prefers-reduced-motion:reduce){.muse-sheet-bar i{animation:none}}
 :root[data-magic=quiet] .muse-sheet-bar i{animation:none}
 @media (max-width:900px){.muse-sheet-layout{grid-template-columns:minmax(0,1fr);height:auto;min-height:0}.muse-sheet{height:calc(31 * 18px + 30px)}.muse-sheet-side{grid-template-rows:auto auto}.muse-sheet-months{grid-template-rows:none}}
-.muse-tracker-legend{flex-direction:column;gap:8px}
+.muse-sheet-side .muse-tracker-legend{flex-direction:column;gap:8px}
 .muse-tracker-legend{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.78rem;color:var(--text-muted)}
 .muse-tracker-legend li{display:inline-flex;align-items:center;gap:6px}
 .muse-tracker-legend .muse-tracker-square{--sq:14px}
@@ -272,7 +258,61 @@ button.muse-tracker-square:focus-visible{outline:2px solid var(--focus-ring);out
 @media (max-width:720px){
  .muse-tracker{padding:var(--space-3)}
  .muse-tracker-focus-week{grid-template-columns:repeat(4,minmax(0,1fr))}
- .muse-tracker-grid{--name:minmax(6.5rem,8rem)}
- .muse-tracker-grid-head,.muse-tracker-grid-row{min-width:calc(8rem + var(--days) * 21px + 3.2rem)}
-}
+  }
 .muse-tracker-controls{margin-left:auto}
+
+/* Month · Grid (2026-11-07, from Stephanie's paper habit tracker): habits down the left, every day across, ruled
+   touching cells, a dot per done day in that day's ink (categories keep their colors), a slash for missed, shaded
+   weekends, a rainbow today column and daily totals. Same records and tap-to-log as every other view. */
+.muse-mgrid-wrap{padding:var(--space-4);overflow-x:auto}
+.muse-mgrid{--line:color-mix(in srgb,var(--foreground) 18%,transparent);--name:minmax(9rem,13rem);display:grid;min-width:calc(9rem + var(--days) * 24px + 3.4rem);border-radius:14px;overflow:hidden;box-shadow:inset 0 0 0 1px var(--line);background:color-mix(in srgb,var(--surface-subtle) 65%,transparent)}
+.muse-mgrid-row{display:grid;grid-template-columns:var(--name) repeat(var(--days),minmax(22px,1fr)) 3.4rem;min-height:30px}
+.muse-mgrid-row>*{border-right:1px solid var(--line);border-bottom:1px solid var(--line);min-width:0}
+.muse-mgrid-row>:last-child{border-right:0}
+.muse-mgrid-foot>*{border-bottom:0}
+.muse-mgrid-name{display:flex;align-items:center;padding:0 12px;font-size:.84rem;font-weight:600;letter-spacing:.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.muse-mgrid-row:not(.muse-mgrid-head):not(.muse-mgrid-foot) .muse-mgrid-name::before{content:"";flex:none;width:8px;height:8px;margin-right:8px;border-radius:50%;background:var(--organization-accent,var(--accent-primary))}
+.muse-mgrid-head .muse-mgrid-name,.muse-mgrid-foot .muse-mgrid-name{font-size:.68rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--text-muted)}
+.muse-mgrid-day{position:relative;display:grid;justify-items:center;align-content:center;gap:1px;padding:5px 0;font-size:.7rem;font-variant-numeric:tabular-nums;color:var(--text-muted)}
+.muse-mgrid-day b{font-size:.66rem;font-weight:800;color:var(--foreground)}
+.muse-mgrid-day.muse-today-ring::after{padding:2px;border-radius:8px}
+.muse-mgrid-day[data-today]{color:var(--foreground)}
+[data-weekend]:is(.muse-mgrid-day,.muse-mgrid-slot,.muse-mgrid-count){background:color-mix(in srgb,var(--foreground) 5%,transparent)}
+.muse-mgrid-slot{display:grid;place-items:center;padding:2px}
+.muse-mgrid-total,.muse-mgrid-count{display:grid;place-items:center;font-size:.72rem;font-variant-numeric:tabular-nums;color:var(--text-muted)}
+.muse-mgrid-head .muse-mgrid-total{font-size:.62rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+.muse-mgrid-count{font-weight:700;color:var(--foreground)}
+/* The tappable cell: empty until done; then a dot in the day's ink (smaller for partial). */
+.muse-mgrid-dot{all:unset;box-sizing:border-box;position:relative;display:grid;place-items:center;width:100%;height:100%;min-height:22px;cursor:pointer;border-radius:6px}
+.muse-mgrid-dot:disabled{cursor:default}
+.muse-mgrid-dot:not(:disabled):hover{background:color-mix(in srgb,var(--day) 14%,transparent)}
+.muse-mgrid-dot:focus-visible{outline:2px solid var(--focus-ring);outline-offset:-2px}
+.muse-mgrid-dot::after{content:"";width:min(78%,18px);aspect-ratio:1;border-radius:50%;transform:scale(0);transition:transform .2s ease-out;background:radial-gradient(circle at 35% 30%,rgb(255 255 255 / .45),transparent 45%),var(--ink,var(--day))}
+.muse-mgrid-dot:is([data-level="1"],[data-level="2"],[data-level="3"],[data-level="4"],[data-category])::after{transform:scale(1)}
+.muse-mgrid-dot[data-level="1"]::after{transform:scale(.45);opacity:.75}
+.muse-mgrid-dot[data-level="2"]::after{transform:scale(.6);opacity:.85}
+.muse-mgrid-dot[data-level="3"]::after{transform:scale(.8)}
+.muse-mgrid-dot[data-category]{--ink:var(--category)}
+.muse-mgrid-dot[data-status=missed]::after{transform:none;width:70%;height:2px;aspect-ratio:auto;border-radius:2px;background:color-mix(in srgb,var(--foreground) 55%,transparent);rotate:-45deg}
+.muse-mgrid-dot[data-status=unscheduled]{background:repeating-linear-gradient(45deg,color-mix(in srgb,var(--foreground) 10%,transparent) 0 1px,transparent 1px 4px)}
+.muse-mgrid-dot[data-status=upcoming]{opacity:.5}
+@media (prefers-reduced-motion:reduce){.muse-mgrid-dot::after{transition:none}}
+@media (max-width:720px){.muse-mgrid-wrap{padding:var(--space-2)}.muse-mgrid{--name:minmax(6.5rem,8rem);min-width:calc(6.5rem + var(--days) * 24px + 3.4rem)}.muse-mgrid-name{position:sticky;left:0;z-index:1;background:var(--planning-container-background,var(--surface-strong))}}
+/* Month grid polish: today's column lit, dots cascade in, totals glow with how full the day was, a little key. */
+.muse-mgrid-wrap{display:grid;gap:var(--space-3)}
+.muse-mgrid-slot[data-today],.muse-mgrid-count[data-today]{background:linear-gradient(180deg,color-mix(in srgb,var(--selected-border) 14%,transparent),color-mix(in srgb,var(--selected-border) 8%,transparent))}
+.muse-mgrid-dot::after{box-shadow:0 0 8px color-mix(in srgb,var(--ink,var(--day)) 55%,transparent)}
+.muse-mgrid-dot:is([data-level="4"],[data-category])::after{animation:muse-mgrid-pop .4s cubic-bezier(.3,1.6,.5,1) both;animation-delay:calc(var(--i,0) * 18ms)}
+@keyframes muse-mgrid-pop{from{transform:scale(0)}to{transform:scale(1)}}
+:root[data-magic=quiet] .muse-mgrid-dot::after{animation:none!important}
+@media (prefers-reduced-motion:reduce){.muse-mgrid-dot::after{animation:none!important}}
+.muse-mgrid-count b{display:grid;place-items:center;min-width:20px;height:20px;padding:0 4px;border-radius:999px;font-size:.68rem;color:#fff;text-shadow:0 1px 2px rgb(0 0 0 / .35);background:color-mix(in srgb,var(--day) var(--fill),color-mix(in srgb,var(--foreground) 14%,transparent));box-shadow:0 0 calc(var(--fill) / 6) color-mix(in srgb,var(--day) 60%,transparent)}
+.muse-mgrid-count b[data-zero]{color:var(--text-muted);text-shadow:none;background:transparent;box-shadow:inset 0 0 0 1px var(--line)}
+.muse-mgrid-key i{display:inline-block;width:12px;height:12px;border-radius:50%}
+.muse-mgrid-key i[data-k=done]{background:radial-gradient(circle at 35% 30%,rgb(255 255 255 / .45),transparent 45%),#f06fa3;box-shadow:0 0 6px #f06fa3}
+.muse-mgrid-key i[data-k=partial]{transform:scale(.6);background:#f2c93b}
+.muse-mgrid-key i[data-k=missed]{border-radius:0;height:2px;width:14px;rotate:-45deg;background:color-mix(in srgb,var(--foreground) 55%,transparent)}
+.muse-mgrid-key i[data-k=off]{border-radius:3px;background:repeating-linear-gradient(45deg,color-mix(in srgb,var(--foreground) 22%,transparent) 0 1px,transparent 1px 3px)}
+.muse-mgrid-inks{display:inline-flex;gap:2px}
+.muse-mgrid-inks i{width:9px;height:9px}
+.muse-mgrid-slot>.muse-tracker-cellwrap{width:100%;height:100%;display:grid}
