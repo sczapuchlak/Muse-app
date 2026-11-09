@@ -162,6 +162,7 @@ test('sync: Agenda hides a Muse event\'s Google copy (shown once), background sy
  assert.match(read('lib/auth/paths.ts'),/"\/api\/google\/cron"/);
  const sql=read('supabase/migrations/20261202000300_google_calendar_write.sql');
  assert.match(sql,/cron\.schedule\('muse-google-sync', '\*\/30 \* \* \* \*'/);assert.match(sql,/if target is null or secret is null/);
+ assert.match(sql,/'x-vercel-protection-bypass', bypass/,'Preview behind Vercel protection can be reached with the automation bypass');
  assert.match(sql,/grant select on public\.google_event_links to authenticated;/);assert.doesNotMatch(sql,/grant[^;]*(insert|update|delete)[^;]*google_event_links to authenticated/);
  assert.match(sql,/muse_event_id uuid not null unique references public\.planner_events on delete cascade/);
  const sync=read('lib/google/sync.ts');assert.match(sync,/Date\.now\(\) - started > budget/);assert.match(sync,/neq\("status", "needs-reconnect"\)/);

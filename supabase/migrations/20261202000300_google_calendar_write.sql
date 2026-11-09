@@ -36,17 +36,21 @@ create policy owner_read on public.google_event_links for select to authenticate
 alter table public.google_connections add column last_background_sync_at timestamptz;
 -- pg_cron runs every 30 minutes and, through pg_net, asks Muse's /api/google/cron route to sync.
 --    The URL and the shared secret live in Supabase Vault (`google_sync_url`, `google_sync_secret`), set once per
---    environment. Until both exist the job does nothing, so this migration is safe everywhere.
+--    environment. Until both exist the job does nothing, so this migration is safe everywhere. A Vercel Preview behind
+--    Deployment Protection also needs `google_sync_bypass` (Vercel's "Protection Bypass for Automation" secret).
 create extension if not exists pg_cron;
 create extension if not exists pg_net with schema extensions;
 create or replace function muse_private.request_google_sync() returns void language plpgsql security definer set search_path = '' as $$
-declare target text; secret text;
+declare target text; secret text; bypass text;
 begin
  select decrypted_secret into target from vault.decrypted_secrets where name = 'google_sync_url' limit 1;
  select decrypted_secret into secret from vault.decrypted_secrets where name = 'google_sync_secret' limit 1;
+ select decrypted_secret into bypass from vault.decrypted_secrets where name = 'google_sync_bypass' limit 1;
  if target is null or secret is null or target !~ '^https?://' then return; end if;
  perform net.http_post(url := target, body := '{}'::jsonb,
-  headers := jsonb_build_object('authorization', 'Bearer ' || secret, 'content-type', 'application/json'), timeout_milliseconds := 55000);
+  headers := jsonb_build_object('authorization', 'Bearer ' || secret, 'content-type', 'application/json')
+   || case when bypass is null then '{}'::jsonb else jsonb_build_object('x-vercel-protection-bypass', bypass) end,
+  timeout_milliseconds := 55000);
 end $$;
 revoke all on function muse_private.request_google_sync() from public, anon, authenticated;
 select cron.schedule('muse-google-sync', '*/30 * * * *', 'select muse_private.request_google_sync()');

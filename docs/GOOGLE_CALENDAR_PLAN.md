@@ -128,6 +128,7 @@ Nothing hosted has changed yet. The migration has run on the local database only
    select vault.create_secret('https://<your Muse host>/api/google/cron', 'google_sync_url');
    select vault.create_secret('<GOOGLE_SYNC_SECRET value>', 'google_sync_secret');
    ```
+   - If the deployment uses Vercel Deployment Protection (Previews usually do), also add Vercel → Settings → Deployment Protection → **Protection Bypass for Automation**, then `select vault.create_secret('<that bypass secret>', 'google_sync_bypass');`.
    - To check: `select jobname, schedule from cron.job;` should list `muse-google-sync`.
    - After about 30 minutes, Settings → Google Calendar should say "In the background … (last N minutes ago)".
    - To turn it off: `select cron.unschedule('muse-google-sync');`
