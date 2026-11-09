@@ -9,7 +9,10 @@ export type MovementType = {
   category?: "strength" | "cardio" | "mobility" | "other";
 };
 
-export type DailyMovement = { date: string; typeIds: string[] };
+/** What happened to a planned movement besides completing it (#112). Completed is a movement record, never an outcome. */
+export type MovementOutcome = "skipped" | "rest" | "sick";
+/** A day's planned movement (intentions) and, per planned type, an optional outcome. */
+export type DailyMovement = { date: string; typeIds: string[]; outcomes?: Record<string, MovementOutcome> };
 export type PlannedTask = {
   id: string; kind: "task"; title: string; complete: boolean; completedAt?: string;
   workspaceId: string; groupId?: string; tagIds: string[];
@@ -36,6 +39,8 @@ export type DayEvent = {
   rule?: import("./recurrence").RecurrenceRule; seriesId?: string; occurrenceDate?: string;
   /** Google Calendar (#35): a read-only event from a connected calendar. Never stored in planner_events. */
   source?: "google"; color?: string; calendarName?: string; link?: string;
+  /** #112: where a Google event lives (for editing) and, for one occurrence of a repeating Google event, its series. */
+  google?: { connectionId: string; calendarId: string; eventId: string; etag: string | null; recurringEventId: string | null; writable: boolean };
 };
 export type ContextTag = { id: string; name: string; archived?:boolean };
 export type EmotionQuadrant = "red" | "blue" | "green" | "yellow";

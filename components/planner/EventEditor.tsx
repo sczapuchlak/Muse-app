@@ -1,5 +1,6 @@
 "use client";
 import { useState, type FormEvent } from "react";
+import { FutureLogToggle } from "./FutureLogLink";
 import { RecurrenceEditor, RecurrenceScopeChoice } from "./RecurrenceEditor";
 import { splitChange } from "@/lib/planner-occurrences";
 import type { EditScope, RecurrenceRule } from "@/lib/recurrence";
@@ -10,6 +11,9 @@ import { markIconName, markIcons, type MarkIcon } from "@/lib/muse-marks";
 import { MuseIcon, type MuseIconName } from "../MuseIcon";
 import { usePlanner } from "../PlannerStore";
 import { useAgendaData } from "./AgendaData";
+import { applyMirror, GoogleMirrorSection, mirrorOff, type MirrorChoice } from "../google/GoogleMirror";
+import { googleWrite, GoogleWriteFailure, useGoogleDestinations, useGoogleLink } from "../google/GoogleCalendarStore";
+import { GoogleEventEditor } from "../google/GoogleEventEditor";
 
 const statuses: { id: EventStatus; label: string }[] = [{ id: "confirmed", label: "Confirmed" }, { id: "tentative", label: "Tentative" }, { id: "canceled", label: "Canceled" }];
 
@@ -18,7 +22,12 @@ const statuses: { id: EventStatus; label: string }[] = [{ id: "confirmed", label
  * the event's own (tentative, canceled), never a task-style completion. Changing dates here moves it in every view.
  */
 export function EventEditor({ event, date, defaultStatus = "confirmed", initialTitle = "", onDone }: { event?: DayEvent; date: string; defaultStatus?: EventStatus; initialTitle?: string; onDone: () => void }) {
-  const { dispatch, canEdit, state, timeZone } = usePlanner();
+  const { dispatch, canEdit, state, timeZone, store } = usePlanner();
+  // #112 Google: a new event can be saved straight to a Google calendar; a Muse event can also be added to Google.
+  const destinations = useGoogleDestinations(), [saveTo, setSaveTo] = useState("muse");
+  const link = useGoogleLink(event && !event.seriesId && !event.rule ? event.id : undefined);
+  const [mirrorEdit, setMirrorEdit] = useState<MirrorChoice | null>(null), mirror = mirrorEdit ?? (link ? { ...mirrorOff, enabled: true } : mirrorOff);
+  const [deleteInGoogle, setDeleteInGoogle] = useState(false), [googleProblem, setGoogleProblem] = useState("");
   // Recurrence 2.0 (#89): editing a date of a recurring event asks how far the change reaches.
   const series = event?.seriesId ? state.events.find((e) => e.id === event.seriesId) ?? null : event?.rule ? event : null;
   const occDate = event?.seriesId ? event.occurrenceDate ?? null : null, seriesStart = series?.date ?? null;
@@ -60,12 +69,33 @@ export function EventEditor({ event, date, defaultStatus = "confirmed", initialT
     } else {
       dispatch({ type: "event/save", event: next });
       if (rule) dispatch({ type: "recurrence", now, change: { op: "event/rule", eventId: next.id, rule } });
+      // The Muse event is saved first; its Google copy follows once Muse confirms the save.
+      else if (mirror.enabled || link) applyMirror(store, next.id, mirror, link);
     }
     if (markIcon) void saveMark({ ...(existingMark ?? { id: crypto.randomUUID(), color: "primary", label: "" }), date: start, icon: markIcon, linkKind: "event", linkId });
     else if (existingMark) void removeMark(existingMark.id);
     onDone();
   }
+  const editable = destinations.filter((d) => d.editing && !d.reconnect);
+  const saveToChoice = !event && editable.length > 0 && <label className="muse-event-save-to"><span>Save to</span>
+    <select value={saveTo} onChange={(e) => setSaveTo(e.target.value)}>
+      <option value="muse">Muse</option>
+      {editable.map((d) => <option key={d.id} value={`${d.connection_id}|${d.calendar_id}`}>Google · {d.name}</option>)}
+    </select></label>;
+  if (!event && saveTo !== "muse") {
+    const [connectionId, calendarId] = saveTo.split("|");
+    return <div className="muse-event-editor">{saveToChoice}
+      <GoogleEventEditor key={saveTo} target={{ connectionId, calendarId }} date={start} initialTitle={title} timeZone={timeZone ?? "UTC"} onDone={onDone}
+        onSaveInMuse={(f) => { setTitle(f.title); setStart(f.date); setEnd(f.endDate ?? ""); setAllDay(f.allDay); if (f.time) setTime(f.time); setEndTime(f.endTime ?? ""); setLocation(f.location ?? ""); setDetail(f.description ?? ""); setSaveTo("muse"); }} /></div>;
+  }
+  /** Deleting a Muse event that has a Google copy: delete the copy only when asked, and keep the Muse event if that fails. */
+  async function removeGoogleCopyThen(deleteMuse: () => void) {
+    if (!link || !deleteInGoogle) { deleteMuse(); return; }
+    try { await googleWrite({ action: "unlink", museEventId: link.muse_event_id, deleteInGoogle: true, confirmed: true }); deleteMuse(); }
+    catch (x) { setGoogleProblem(`${x instanceof GoogleWriteFailure ? x.message : "Google Calendar couldn’t be reached."} Your Muse event wasn’t deleted.`); }
+  }
   return <form className="muse-event-editor" onSubmit={submit}>
+    {saveToChoice}
     <input id={`event-title-${id}`} aria-label="Event title" type="text" required maxLength={160} value={title} placeholder="Dentist, London trip…" onChange={(e) => setTitle(e.target.value)} />
     <label className="muse-event-inline"><input type="checkbox" checked={allDay} onChange={(e) => setAllDay(e.target.checked)} /> All day</label>
     <div className="muse-event-row">
@@ -86,11 +116,15 @@ export function EventEditor({ event, date, defaultStatus = "confirmed", initialT
       <label title="No Mark"><input type="radio" name={`event-mark-${id}`} value="" checked={markIcon === ""} onChange={() => setMarkIcon("")} aria-label="No Mark" /><span><MuseIcon name="close" size={13} /></span></label>
       {markIcons.map((i) => <label key={i.id} title={i.label}><input type="radio" name={`event-mark-${id}`} value={i.id} checked={markIcon === i.id} onChange={() => setMarkIcon(i.id)} aria-label={i.label} /><span><MuseIcon name={markIconName(i.id) as MuseIconName} size={15} /></span></label>)}
     </fieldset>
+    <GoogleMirrorSection museEventId={event && !event.seriesId ? event.id : undefined} recurring={!!rule || !!series} value={mirror} onChange={setMirrorEdit}
+      onUseGoogle={(f) => { setTitle(f.title.replace(/^Canceled · /, "")); setStart(f.date); setEnd(f.endDate ?? ""); setAllDay(f.allDay); if (f.time) setTime(f.time); setEndTime(f.endTime ?? ""); setLocation(f.location ?? ""); setDetail(f.description ?? ""); setStatus(f.tentative ? "tentative" : "confirmed"); setMirrorEdit({ ...mirror, enabled: true, force: true }); }} />
+    {googleProblem && <p className="muse-agenda-warning" role="alert">{googleProblem}</p>}
     <div className="editor-actions">
       <button type="submit" className="muse-button button-primary" disabled={!canEdit}>{event ? "Save event" : "Add event"}</button>
       <button type="button" className="muse-button button-ghost" onClick={onDone}>Cancel</button>
+      {event && <FutureLogToggle source={{ kind: "event", id: event.id.split("::")[0] }} title={event.title} date={event.date} endDate={event.endDate ?? null} />}
       {event && (confirming
-        ? <span className="muse-mark-confirm" role="group" aria-label="Confirm deleting this event">Delete for good?<button type="button" className="text-button" onClick={() => { if (occDate && series && scope === "occurrence") dispatch({ type: "recurrence", now: new Date().toISOString(), change: { op: "event/occurrence", eventId: series.id, date: occDate, overrides: { deleted: true } } }); else { dispatch({ type: "event/delete", id: series?.id ?? event.id }); if (existingMark) void removeMark(existingMark.id); } onDone(); }}>{occDate && scope === "occurrence" ? "Delete this date" : series ? "Delete series" : "Delete"}</button><button type="button" className="text-button" onClick={() => setConfirming(false)}>Keep</button></span>
+        ? <span className="muse-mark-confirm" role="group" aria-label="Confirm deleting this event">Delete for good?{link && <label className="muse-event-inline muse-google-also-delete"><input type="checkbox" checked={deleteInGoogle} onChange={(e) => setDeleteInGoogle(e.target.checked)} /> Also delete it from Google Calendar</label>}<button type="button" className="text-button" onClick={() => void removeGoogleCopyThen(() => { if (occDate && series && scope === "occurrence") dispatch({ type: "recurrence", now: new Date().toISOString(), change: { op: "event/occurrence", eventId: series.id, date: occDate, overrides: { deleted: true } } }); else { dispatch({ type: "event/delete", id: series?.id ?? event.id }); if (existingMark) void removeMark(existingMark.id); } onDone(); })}>{occDate && scope === "occurrence" ? "Delete this date" : series ? "Delete series" : "Delete"}</button><button type="button" className="text-button" onClick={() => setConfirming(false)}>Keep</button></span>
         : <button type="button" className="text-button" disabled={!canEdit} onClick={() => setConfirming(true)}>Delete</button>)}
     </div>
     {event && status !== "canceled" && <p className="small-label">Not happening? Choose Canceled to keep it on record without deleting it.</p>}

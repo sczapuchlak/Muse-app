@@ -840,3 +840,31 @@ A Little Moment is its own record (one per local date). It is never stored in Da
 - **Rituals on phones:** View archived and Manage groups move into a ⋯ menu beside a compact + Add; period/layout choices stay visible.
 - **The phone nav stays fixed.** The More menu docks above it with CSS rather than measuring the button, so iOS viewport glitches can't strand it.
 - **Pending decision:** `viewport-fit=cover` would let the status-bar backing work wherever iOS reports a top inset. It reverses the PWA-install choice to leave the viewport unchanged (guarded by a test), so it is not applied yet.
+
+## UI Updates 4.0 (#112) — implemented on feature branch, awaiting review
+
+- **Movement has planned versus completed.** Planned activities are intentions. Each one has a status: Planned, Completed, Skipped, Rest / Recovery or Sick / Injured.
+  - Only Completed counts toward movement done; it is the existing movement record.
+  - Unresolved plans stay Planned; nothing is inferred.
+  - The status can be changed for past days.
+  - The Movement card has two rows: planned chips with a multi-select picker, then one status per movement.
+- **The Future Log is curated.**
+  - Nothing appears in it automatically. Muse and Google events no longer do.
+  - Tasks, events, Aspirations and milestones, and Bucket List dreams are added explicitly with "Show in Future Log". Each becomes a reference that shows the source's current title, date and done state; it is never a copy and has no done state of its own.
+  - Removing it never touches the source.
+  - Standalone entries work as before.
+- **Money → Spending sorting and filtering.**
+  - Six sorts: newest, oldest, amount high to low and low to high, A–Z and Z–A. The sort is remembered on this device.
+  - Filters cover category, tag and "Paid with" (cards and payment methods).
+  - With a filter on, the total reads "$X in N shown · $Y recorded this period". A category filter counts only that category's share of split transactions.
+- **Midnight Ballerina:** Money tiles use the card ink. The theme swatch matches the real theme: midnight navy, an aqua/lilac/pink aurora and pale aqua cards.
+- **Whimsy collections:** Reading Journal entries and its calendar, saved fortunes and the Encyclopedia sheets use the shared card surface with Frosted or Crystal. Dense grids skip per-card blur.
+- **Wellness:** Day in Three still meets Day Pulse. Its emojis and prompt are centered and larger, with no added padding.
+- **Google Calendar two-way editing** (approved 2026-11-09; see GOOGLE_CALENDAR_PLAN, Phase 3):
+  - Edit permission is requested only when needed.
+  - Muse events stay authoritative. "Also add to Google" is off by default and keeps a reference, never a copy in Muse.
+  - Nothing is duplicated: Muse chooses Google ids, and a linked copy shows once.
+  - Conflicts are always the person's choice; nothing is overwritten silently.
+  - Deleting in Google always needs explicit confirmation.
+  - A failed Google write never loses the Muse event.
+  - Background sync runs every 30 minutes through Supabase pg_cron.

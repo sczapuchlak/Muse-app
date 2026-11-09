@@ -1,7 +1,7 @@
 /** Registry metadata; all visual tokens live in app/themes.css. */
 export const themes = [
   { id: "iridescent", name: "Glitter!", subtitle: "Light, pastel, and a little magical.", mode: "light", preview: "linear-gradient(135deg, #05b8d2, #8138d6, #d93691)" },
-  { id: "astral", name: "Midnight Ballerina!", subtitle: "A glowing pastel cloud in a midnight-navy sky.", mode: "dark", preview: "linear-gradient(135deg, #08122e, #ff6fb5, #ffb36b, #b79cff, #3fd6f0)" },
+  { id: "astral", name: "Midnight Ballerina!", subtitle: "A glowing pastel cloud in a midnight-navy sky.", mode: "dark", preview: "linear-gradient(135deg, #08122e 0%, #08122e 30%, #2fb8d0 52%, #b79cff 70%, #ff6fb5 86%, #e4f7fb 100%)" },
   { id: "nightbloom", name: "Pretty Toxic!", subtitle: "Poisoned pomegranates in a midnight garden.", mode: "dark", preview: "linear-gradient(135deg, #13090c, #4b0b1b, #c42647, #153d2c, #f36b9b)" },
   { id: "solstice", name: "Sunburnt & Sinful!", subtitle: "All-day sunshine. All-day trouble.", mode: "light", preview: "linear-gradient(135deg, #fff5eb, #e79279, #c83480, #0aa5b5)" },
   { id: "prism-noir", name: "Curses!", subtitle: "A little witchcraft. A lot of hexes.", mode: "dark", preview: "linear-gradient(135deg, #07040f, #4712c4, #ffdefd, #2dd4bf, #c6ff34)" },

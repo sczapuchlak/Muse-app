@@ -519,3 +519,10 @@ button.muse-future-mini-day:is([data-col="5"],[data-col="6"]) .muse-future-mini-
   .muse-agenda-toolbar[data-rows] .muse-agenda-tools>.muse-choice-menu .muse-choice-trigger{justify-content:space-between}
   .muse-agenda-toolbar[data-rows] .muse-planner-mobile-tabs{display:flex;margin:0}
 }
+
+/* ---------- #112 Future Log references: a quiet source tag, the source's done state, and a "no longer there" state.
+   Standalone entries look exactly as before. ---------- */
+.muse-future-source{flex:none;display:inline-flex;align-items:center;padding:1px 7px;border:1px solid var(--glass-border);border-radius:var(--pill-radius,999px);font-size:.62rem;letter-spacing:.04em;color:var(--text-muted);white-space:nowrap}
+.muse-agenda-log-entry[data-missing]{color:var(--text-muted);font-style:italic}
+.muse-future-reference{display:grid;gap:6px;justify-items:start;padding:10px 12px;border:1px solid var(--glass-border);border-radius:var(--control-radius,12px);background:var(--surface-subtle)}
+.muse-future-reference strong{font-size:1rem}

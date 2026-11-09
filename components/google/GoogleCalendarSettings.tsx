@@ -4,7 +4,7 @@ import "./GoogleCalendar.css";
 import { GlassPopover } from "../GlassPopover";
 import { MuseIcon } from "../MuseIcon";
 import { connectionStatus } from "@/lib/google/calendars";
-import { disconnectGoogle, setCalendarVisible, syncGoogle, useGoogleCalendar, type GoogleCalendar } from "./GoogleCalendarStore";
+import { allowEditingHref, canWrite, disconnectGoogle, googleWrite, setCalendarVisible, syncGoogle, useGoogleCalendar, type GoogleCalendar } from "./GoogleCalendarStore";
 
 const outcomes: Record<string, string> = {
   connected: "Google Calendar is connected.",
@@ -14,11 +14,21 @@ const outcomes: Record<string, string> = {
   unconfigured: "Google Calendar isn’t set up on this Muse server yet.",
   "signed-out": "Sign in to Muse, then connect Google Calendar.",
   failed: "Google Calendar couldn’t be connected. Nothing changed; please try again.",
+  editing: "Muse can now add and edit events in your Google Calendar.",
+  "no-write": "Muse still can’t edit Google Calendar: the permission to change events was left unticked. It still shows your events.",
 };
+/** “12 minutes ago”, “2 hours ago”, or a date. */
+export function ago(iso: string, now = Date.now()) {
+  const m = Math.round((now - Date.parse(iso)) / 60000);
+  if (m < 1) return "just now"; if (m < 60) return `${m} minute${m === 1 ? "" : "s"} ago`;
+  const h = Math.round(m / 60); if (h < 24) return `${h} hour${h === 1 ? "" : "s"} ago`;
+  return when(iso);
+}
 const when = (iso: string) => new Intl.DateTimeFormat(undefined, { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }).format(new Date(iso));
 
-/** Settings → Google Calendar (#35, phase 1, read-only). Separate from "Sign in with Google". */
+/** Settings → Google Calendar. Separate from "Sign in with Google". Read-only until you allow editing (#112). */
 export function GoogleCalendarSettings() {
+  const [now] = useState(() => Date.now());
   const s = useGoogleCalendar(), [outcome, setOutcome] = useState(""), [confirming, setConfirming] = useState<string | null>(null), [busy, setBusy] = useState(false), [error, setError] = useState("");
   useEffect(() => {
     const url = new URL(window.location.href), o = url.searchParams.get("google");
@@ -32,20 +42,29 @@ export function GoogleCalendarSettings() {
     try { await disconnectGoogle(id); setConfirming(null); setOutcome("Google Calendar is disconnected. Your Muse events are unchanged."); } catch (e) { setError(e instanceof Error ? e.message : "That didn’t work."); } finally { setBusy(false); }
   }
   return <div className="muse-settings-fields muse-google-settings">
-    <p className="card-description">See events from your Google calendars in Planner Day, Week and Month. Muse only reads them: it never changes your Google Calendar, and Google events stay separate from your Muse events and tasks.</p>
+    <p className="card-description">See events from your Google calendars in Planner Day, Week and Month. Google events stay separate from your Muse events and tasks. If you allow it, Muse can also add and edit Google events, and add chosen Muse events to Google. Muse never deletes anything in Google without asking.</p>
     {outcome && <p className="small-label" role="status">{outcome}</p>}
     {!s.loaded ? <p className="small-label">Loading…</p> : !s.connections.length ? <section>
       <a className="muse-button" href="/api/google/connect">Connect Google Calendar</a>
       <p className="small-label">This is separate from signing in with Google. You choose which calendars to show, and you can disconnect at any time.</p>
     </section> : s.connections.map((c) => {
-      const st = connectionStatus(c), cals = s.calendars.filter((k) => k.connection_id === c.id);
+      const st = connectionStatus(c), cals = s.calendars.filter((k) => k.connection_id === c.id), editing = canWrite(c);
+      const stuck = s.links.filter((l) => l.connection_id === c.id && (l.state === "error" || l.state === "pending")), conflicts = s.links.filter((l) => l.connection_id === c.id && (l.state === "conflict" || l.state === "missing"));
       return <section key={c.id} aria-label={`Google Calendar ${c.email}`}>
         <div className="muse-google-account">
           <div><h3>{c.email || "Google account"}</h3>
-            <p className="small-label" role={st.tone === "warning" ? "alert" : undefined} data-tone={st.tone}>{st.text}{st.tone === "ok" && c.last_synced_at ? ` · ${when(c.last_synced_at)}` : ""}</p></div>
+            <p className="small-label" role={st.tone === "warning" ? "alert" : undefined} data-tone={st.tone}>{st.text}{st.tone === "ok" && c.last_synced_at ? ` ${ago(c.last_synced_at, now)}` : ""}</p></div>
           {c.status === "needs-reconnect" ? <a className="muse-button" href="/api/google/connect">Reconnect Google Calendar</a>
             : <button type="button" className="muse-button button-ghost" disabled={s.syncing} onClick={() => void syncGoogle(true)}>{s.syncing ? "Syncing…" : "Refresh now"}</button>}
         </div>
+        <dl className="muse-google-facts">
+          <div><dt>Muse can</dt><dd>{editing ? "See and edit events" : "See events"}{!editing && c.status !== "needs-reconnect" && <> · <a href={allowEditingHref("/settings")}>Allow editing</a></>}</dd></div>
+          <div><dt>Stays up to date</dt><dd>{c.last_background_sync_at && now - Date.parse(c.last_background_sync_at) < 3 * 3600_000 ? `In the background about every 30 minutes, even when Muse is closed (last ${ago(c.last_background_sync_at, now)}).` : "When you open Planner or Daily Edit. Background checks aren’t running on this Muse server yet."} Refresh now checks right away.</dd></div>
+          {c.status === "needs-reconnect" && <div><dt>Needs you</dt><dd>Google stopped accepting Muse’s access (it was removed, your password changed, or a test connection reached Google’s 7-day limit). Reconnect to pick up where it left off; nothing in Muse is lost.</dd></div>}
+        </dl>
+        {stuck.length > 0 && <p className="small-label muse-google-attention" role="status">{stuck.length} Muse {stuck.length === 1 ? "event hasn’t" : "events haven’t"} reached Google yet. Muse retries in the background.
+          <button type="button" className="text-button" disabled={busy} onClick={() => { setBusy(true); void Promise.allSettled(stuck.map((l) => googleWrite({ action: "push", museEventId: l.muse_event_id }))).finally(() => setBusy(false)); }}>Retry now</button></p>}
+        {conflicts.length > 0 && <p className="small-label muse-google-attention" role="status">{conflicts.length} Muse {conflicts.length === 1 ? "event was" : "events were"} changed or deleted in Google. Open {conflicts.length === 1 ? "it" : "them"} in Planner to choose which version to keep.</p>}
         {cals.length > 0 && <CalendarPicker id={c.id} calendars={cals} />}
         {confirming === c.id ? <div className="muse-google-confirm" role="group" aria-label="Confirm disconnect">
           <p className="small-label">Disconnect removes Muse’s access and its copy of these calendars. Your Google Calendar and your Muse events are not changed.</p>

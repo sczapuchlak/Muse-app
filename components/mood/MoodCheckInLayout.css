@@ -33,3 +33,12 @@
 .muse-mood-checkin-layout[data-layout="reflection"] > .day-pulse-card { align-self:start; }
 /* #12: the left stack fills the row beside Day Pulse — Day in Three grows to meet it, so no awkward gap opens below. */
 .muse-mood-checkin-layout:not([data-layout]) .muse-mood-checkin-stack { grid-template-rows: auto 1fr; align-content: stretch; }
+/* #112 Day in Three keeps meeting Day Pulse (above), but its content now uses that height instead of sitting at the
+   top over empty space: the prompt and the three emojis are centred in the card and the chosen emojis read larger.
+   No padding is added and Mood keeps its own spacing. Phones (one column) size naturally. */
+@container muse-content (min-width: 881px) {
+  .muse-mood-checkin-layout:not([data-layout]) .day-in-three-card { display: flex; flex-direction: column; }
+  .muse-mood-checkin-layout:not([data-layout]) .day-in-three-card .muse-day-three { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; gap: var(--space-2); }
+  .muse-mood-checkin-layout:not([data-layout]) .day-in-three-card .muse-day-three-list { justify-content: center; margin-top: 0; }
+  .muse-mood-checkin-layout:not([data-layout]) .day-in-three-card .muse-emoji-trigger { min-width: 56px; min-height: 56px; font-size: 1.9rem; }
+}

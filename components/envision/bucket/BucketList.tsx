@@ -1,4 +1,5 @@
 'use client';
+import {useFutureReferences} from '@/components/planner/FutureLogLink';
 import {useEffect,useMemo,useRef,useState,type FormEvent} from 'react';
 import {MuseIcon} from '../../MuseIcon';
 import {MuseChoiceMenu} from '../../MuseChoiceMenu';
@@ -32,6 +33,8 @@ export function BucketList({today}:{today:string}){
  const [filter,setFilter]=useState<BucketFilter>(emptyFilter),[modal,setModal]=useState<Modal>(null),[dragging,setDragging]=useState<string|null>(null);
  const [filtersOpen,setFiltersOpen]=useState(false),filtersRef=useRef<HTMLButtonElement>(null),[draft,setDraft]=useState('');
  const [notice,setNotice]=useState('');
+ // #112 Explicit inclusion in the Future Log (a reference; the dream itself is unchanged).
+ const links=useFutureReferences();
 
  const ordered=useMemo(()=>[...entries].sort(byPosition),[entries]);
  const visible=useMemo(()=>sortEntries(entries.filter(e=>matches(e,filter)),prefs.sort),[entries,filter,prefs.sort]);
@@ -65,6 +68,7 @@ export function BucketList({today}:{today:string}){
    ...(e.status==='completed'?[{id:'reopen',label:'Reopen',onSelect:()=>void reopen(e)}]:[{id:'done',label:'Mark done…',onSelect:()=>setModal({kind:'complete',entry:e})}]),
    ...(arranging&&!e.archivedAt?[{id:'up',label:'Move up',onSelect:()=>{const i=live.findIndex(x=>x.id===e.id);if(i>0)void move(e.id,i-1);}},{id:'down',label:'Move down',onSelect:()=>{const i=live.findIndex(x=>x.id===e.id);if(i<live.length-1)void move(e.id,i+1);}}]:[]),
    e.archivedAt?{id:'restore',label:'Restore to the list',onSelect:()=>void save({...e,archivedAt:null})}:{id:'archive',label:'Archive',onSelect:()=>void save({...e,archivedAt:new Date().toISOString()})},
+   ...(links.ready&&!e.archivedAt?[links.has({kind:'bucket',id:e.id})?{id:'future',label:'Remove from Future Log',onSelect:()=>void links.remove({kind:'bucket',id:e.id}).catch(()=>undefined)}:{id:'future',label:'Show in Future Log',onSelect:()=>void links.add({kind:'bucket',id:e.id},e.title,null,null,e.targetYear?`${e.targetYear}-01`:undefined).catch(()=>undefined)}]:[]),
    {id:'delete',label:'Delete permanently',destructive:true,onSelect:()=>void remove(e)},
   ],
  };

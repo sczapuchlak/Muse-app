@@ -1,0 +1,6 @@
+/* #112 "Show in Future Log" toggle, used in Planner, Envision and the Bucket List. */
+.muse-future-toggle-wrap{display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap}
+.muse-future-toggle{display:inline-flex;align-items:center;gap:6px}
+.muse-future-toggle[aria-pressed=true]{color:var(--selected-text)}
+.muse-future-toggle-error{color:var(--urgency-ink)}
+.muse-task-detail-actions{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--space-2)}

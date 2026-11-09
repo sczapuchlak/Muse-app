@@ -29,18 +29,21 @@ Write down the answers before you build. Put them in the PR description or the f
 
 | Record | Owner (navigation) | Table(s) | Referenced by | How |
 |---|---|---|---|---|
-| Aspiration | Envision → Aspirations | `aspirations`, `aspiration_updates` | Intentions, Bucket List, Muse Marks, Lists, Agenda, Insights, Stream, Almanac | id; Intentions keeps a name snapshot |
-| Bucket List dream | Envision → Bucket List | `bucket_lists`, `bucket_entries` | Intentions, Insights | id; Intentions keeps a name snapshot |
+| Aspiration | Envision → Aspirations | `aspirations`, `aspiration_updates` | Intentions, Bucket List, Muse Marks, Lists, Agenda, Insights, Stream, Almanac, Future Log | id; Intentions and Future Log keep a name snapshot |
+| Bucket List dream | Envision → Bucket List | `bucket_lists`, `bucket_entries` | Intentions, Insights, Future Log | id; Intentions and Future Log keep a name snapshot |
 | Vision Board | Envision → Vision Boards (planned) | none yet | Intentions, Aspirations (future) | id (future) |
-| Task | Planner → Tasks | `tasks` (+ `task_occurrences`) | Daily Edit priorities, Aspirations, Lists, Intentions | id; an Intention priority stores the `taskId` it made |
-| Muse event | Planner → Agenda | `planner_events` | Intentions (Looking forward to), Daily Edit | id + occurrence date snapshot |
-| Google event | Planner → Agenda (read-only cache) | `google_events` | Agenda, Daily Edit | display only; never copied |
+| Task | Planner → Tasks | `tasks` (+ `task_occurrences`) | Daily Edit priorities, Aspirations, Lists, Intentions, Future Log | id; an Intention priority stores the `taskId` it made; Future Log references the series id |
+| Muse event | Planner → Agenda | `planner_events` | Intentions (Looking forward to), Daily Edit, Future Log | id + occurrence date snapshot; Future Log references the series id |
+| Google event | Google Calendar (Muse keeps a cache) | `google_events` | Agenda, Daily Edit | shown, never copied into Muse; editable through Google when editing is allowed (#112) |
+| Muse event's Google copy | Planner → Agenda ("Also add to Google") | `google_event_links` | Agenda (hides the copy so it shows once) | reference: Muse event id → Google id `muse<uuid>`, etag and state; the Muse event stays authoritative |
 | Intention page | Planner → Intentions | `intention_pages` | Reflections (link only) | period + start |
 | Reflection | Planner → Reflections | `reflection_reviews`, `life_areas`, `life_ratings` | Intentions (link only) | period + start |
 | Ritual (habit) | Rituals | `rituals`, `ritual_entries`, `ritual_groups` | Aspirations, Intentions, Daily Edit, Wellness, Insights | id; Intentions keeps a name snapshot |
 | Daily intention | Daily Edit | `daily_records` | Insights | separate from Intentions; never overwritten by them |
 | Lists | Mindspace → Lists | `lists`, `list_*` | Planner (linked tasks), Aspirations | id |
 | Insights | Insights | none (derived) | none | reads other modules; stores nothing |
+| Future Log entry | Planner → Agenda → Future Log | `future_log_entries` | none | standalone entries are their own record; a reference (#112) stores only `source_kind` + `source_id` + a name snapshot, has no done state of its own, and one record can be referenced once |
+| Planned movement and its outcome | Daily Edit / Wellness → Movement | `movement_day_types`, `movement_day_outcomes` (#112), `movement_records` | Insights, Wellness goals, Connected Rituals | Completed is only `movement_records`; Skipped, Rest and Sick are outcomes and never count as done |
 
 ## Lifecycles worth knowing
 
@@ -60,3 +63,13 @@ Write down the answers before you build. Put them in the PR description or the f
 | Intentions → Vision Board preview | Planned: add a `vision-board` section type that references a board id once Vision Boards exists |
 | Daily Edit showing the week's or month's intention | Future idea: read the page; never copy it into daily records |
 | Insights over Intentions | Not planned yet |
+
+## Integration status (#112)
+
+| Integration | Status |
+|---|---|
+| Show in Future Log: Planner tasks and events, Aspirations and milestones, Bucket List dreams (explicit, a reference) | Working |
+| Future Log follows a source's title, date and done state; a gone source keeps its name snapshot | Working |
+| Future Log no longer shows events (Muse or Google) automatically | Working |
+| Google events in the Future Log | Depends on Google Phase 3 (stable links). See GOOGLE_CALENDAR_PLAN |
+| Google two-way editing and background sync | Built on the feature branch; needs the Google scope, a secret and the migration (GOOGLE_CALENDAR_PLAN, Phase 3) |

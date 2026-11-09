@@ -32,10 +32,11 @@ test('connection status explains reconnects and errors in plain words',()=>{
  assert.match(connectionStatus({status:'needs-reconnect',last_synced_at:null,last_error:null}).text,/Reconnect/);
  assert.deepEqual(connectionStatus({status:'active',last_synced_at:'2026-11-08T00:00:00Z',last_error:null}),{tone:'ok',text:'Synced'});
 });
-test('phase 1 is read-only: only the readonly Calendar scope, no Google writes',()=>{
+test('reading stays read-only: connecting asks only for the readonly scope; editing (#112) is a separate, incremental grant',()=>{
  const oauth=read('lib/google/oauth.ts'),sync=read('lib/google/sync.ts');
- assert.match(oauth,/calendar\.readonly/);assert.doesNotMatch(oauth,/auth\/calendar"|calendar\.events/);
- assert.doesNotMatch(sync,/method:\s*"(POST|PUT|PATCH|DELETE)"/);
+ assert.match(oauth,/export const READ_SCOPES = \["openid", "email", CALENDAR_READ\]/);assert.doesNotMatch(oauth,/auth\/calendar"/);
+ assert.match(oauth,/scope: \(write \? WRITE_SCOPES : READ_SCOPES\)/);
+ assert.doesNotMatch(sync,/method:\s*"(POST|PUT|PATCH|DELETE)"/,'the read sync never writes to Google');
 });
 test('tokens stay server-side: no browser grants, encrypted, server-only modules',()=>{
  const sql=read('supabase/migrations/20261128000100_google_calendar.sql');
@@ -48,18 +49,19 @@ test('tokens stay server-side: no browser grants, encrypted, server-only modules
  const [v,iv,tag,body]=sealed.split('.');assert.throws(()=>open([v,iv,tag,body.slice(0,-2)+'AA'].join('.')));
 });
 test('OAuth callback checks a per-user state cookie before exchanging a code',()=>{
- const cb=read('app/api/google/callback/route.ts');assert.ok(cb.indexOf('same(cookie')<cb.indexOf('exchangeCode(code)'));assert.match(cb,/\$\{state\}\.\$\{user\.id\}/);
+ const cb=read('app/api/google/callback/route.ts');assert.ok(cb.indexOf('same(bound')<cb.indexOf('exchangeCode(code)'));assert.match(cb,/\$\{state\}\.\$\{user\.id\}/);
  for(const r of ['sync','disconnect'])assert.match(read(`app/api/google/${r}/route.ts`),/trustedOrigin\(request\)/);
 });
 test('Agenda shows Google events in Day, Week and Month but keeps the Future Log intentional',()=>{
  const a=read('components/planner/Agenda.tsx');
  assert.match(a,/dayItems\(tasksShown, eventsWithGoogle, day/);assert.match(a,/dayItems\(tasksShown, eventsWithGoogle, d, visibility\)/);
- assert.match(a,/monthItems\(\[\], eventsShown, m, visibility\)/);
+ // #112: the Future Log is curated: no events (Muse or Google) appear there automatically.
+ assert.doesNotMatch(a,/monthItems\(/);assert.match(a,/Curated: only what you added/);
  assert.match(a,/event\?\.source === "google" \? \{ kind: "google", event \}/);
 });
 test('Settings shows a Google Calendar card separate from Sign-in',async()=>{
  const React=await import('react'),{renderToStaticMarkup}=await import('react-dom/server'),{GoogleCalendarSettings}=load('components/google/GoogleCalendarSettings');
- const html=renderToStaticMarkup(React.createElement(GoogleCalendarSettings));assert.match(html,/never changes your Google Calendar/);
+ const html=renderToStaticMarkup(React.createElement(GoogleCalendarSettings));assert.match(html,/never deletes anything in Google without asking/);assert.match(html,/Google events stay separate from your Muse events/);
  assert.match(read('components/Settings.tsx'),/id="google-calendar"/);
 });
 test('Daily Edit shows today\'s visible Google events read-only beside Muse events, including multi-day ones',async()=>{

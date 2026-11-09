@@ -39,3 +39,30 @@
 .daily-working-grid .muse-card .card-heading+*{margin-top:0}
 /* The card's own header replaces the embedded section's divider. */
 .day-in-three-card .muse-day-three{border-top:0;padding-top:0;margin-top:0}
+
+/* #112 Movement: two compact rows. Planned chips with a multi-select picker, then one status per movement. Only
+   Completed counts toward movement done. Reuses the shared chip, choice-menu and duration tokens. */
+.movement-plan-row{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-2);margin-top:var(--space-3);min-width:0}
+.movement-row-label{flex:none;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted)}
+.movement-plan-chips{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0;list-style:none;min-width:0}
+.movement-plan-chip{display:inline-flex;align-items:center;gap:2px;min-height:32px;padding:2px 4px 2px 12px;border:1px solid var(--selected-border);border-radius:var(--pill-radius,999px);background:var(--selected-background);color:var(--selected-text);font-size:.82rem}
+.movement-plan-chip .chip-label{max-width:16ch;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.movement-chip-remove{display:grid;place-items:center;width:26px;height:26px;padding:0;border:0;border-radius:50%;background:transparent;color:inherit;cursor:pointer}
+.movement-chip-remove:hover:not(:disabled){background:var(--surface-hover)}
+.movement-chip-remove:focus-visible{outline:2px solid var(--focus-ring);outline-offset:1px}
+.movement-plan-trigger{display:inline-flex;align-items:center;gap:6px;min-height:32px;margin-left:auto}
+.movement-outcome-rows{display:grid;gap:0;margin:var(--space-3) 0 0;padding:0;list-style:none}
+.movement-outcome-row{display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:var(--space-2);min-height:44px;padding:4px 0;border-top:1px solid var(--divider)}
+.movement-outcome-row .muse-movement-duration{grid-column:2}
+.movement-outcome-row .muse-choice-menu{grid-column:3}
+.movement-outcome-row .muse-choice-trigger{min-height:34px;height:34px;padding-block:0;font-size:.8rem;min-width:9.5em;justify-content:space-between}
+.movement-outcome-name{min-width:0;overflow-wrap:anywhere;font-size:.86rem}
+.movement-outcome-row[data-status=completed] .movement-outcome-name{font-weight:600}
+.movement-outcome-row:is([data-status=skipped],[data-status=rest],[data-status=sick]) .movement-outcome-name{color:var(--text-muted)}
+.movement-outcome-empty{margin:var(--space-2) 0 0}
+@container muse-content (max-width:640px){
+  .movement-plan-trigger{margin-left:0}
+  .movement-outcome-row{grid-template-columns:minmax(0,1fr) auto}
+  .movement-outcome-row .muse-movement-duration{grid-column:1;grid-row:2}
+  .movement-outcome-row .muse-choice-menu{grid-column:2;grid-row:1}
+}

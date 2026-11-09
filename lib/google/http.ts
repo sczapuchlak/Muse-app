@@ -14,9 +14,11 @@ export async function signedInUser(request: NextRequest) {
   const { data, error } = await routeAuthClient(request, base).auth.getUser();
   return { base, user: error ? null : data.user };
 }
-/** Back to Settings with a short outcome code the page explains. */
-export function toSettings(base: NextResponse, outcome: string) {
-  const url = new URL("/settings", authConfig().origin);
-  url.searchParams.set("google", outcome); url.hash = "google-calendar";
+/** Back to Settings (or, after "Allow editing", the Muse page it started from) with a short outcome code. */
+export function toSettings(base: NextResponse, outcome: string, next?: string | null) {
+  const url = new URL(safeNext(next) ?? "/settings", authConfig().origin);
+  url.searchParams.set("google", outcome); if (!safeNext(next)) url.hash = "google-calendar";
   return carry(base, NextResponse.redirect(url, 303));
 }
+/** Only Muse's own Planner and Settings pages are valid return paths (never another site). */
+export function safeNext(next?: string | null) { return next && /^\/(planner|settings)(\?[\w=&%.-]*)?$/.test(next) ? next : null; }
