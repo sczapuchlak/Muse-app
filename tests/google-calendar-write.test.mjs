@@ -168,3 +168,13 @@ test('sync: Agenda hides a Muse event\'s Google copy (shown once), background sy
  const sync=read('lib/google/sync.ts');assert.match(sync,/Date\.now\(\) - started > budget/);assert.match(sync,/neq\("status", "needs-reconnect"\)/);
  for(const f of ['lib/google/write.ts','lib/google/access.ts'])assert.match(read(f),/^import "server-only";/);
 });
+
+test('callback diagnostics: the failing step and a short error code are logged and shown, never codes, tokens or personal data',()=>{
+ const cb=read('app/api/google/callback/route.ts');
+ for(const step of ['token-exchange','identity','admin-client','save-connection','encrypt-tokens','save-tokens'])assert.match(cb,new RegExp(`"${step}"`),step);
+ assert.match(cb,/console\.error\(JSON\.stringify\(\{ event: "google_callback_failed", step, reason \}\)\)/);
+ assert.doesNotMatch(cb,/console\.[a-z]+\([^)]*(code\b|refresh_token|access_token|email|who\.)/,'nothing sensitive is logged');
+ assert.match(cb,/replace\(\/\[\^a-z0-9:_-\]\/gi, ""\)/,'the outcome shown in the URL is sanitized');
+ assert.match(read('lib/google/oauth.ts'),/googleError: typeof j\.error === "string" \? j\.error\.slice\(0, 40\)/);
+ assert.match(read('components/google/GoogleCalendarSettings.tsx'),/Details for support/);
+});
