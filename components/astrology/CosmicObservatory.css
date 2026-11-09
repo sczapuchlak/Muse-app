@@ -35,6 +35,32 @@
 
 .muse-observatory .muse-cosmic-profile-panel{max-height:none;overflow:visible;padding:0}
 
+/* Astro 101 keeps its diagrams and source entries in the existing Library. */
+.muse-cosmic-astro101{display:grid;gap:16px;padding:20px;border:1px solid var(--glass-border);border-radius:20px;background:var(--surface-subtle)}
+.muse-cosmic-astro101>div{display:grid;gap:5px}
+.muse-cosmic-astro101 h4{font-family:var(--font-editorial);font-size:1.4rem}
+.muse-cosmic-astro101 ol{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;list-style:none;margin:0;padding:0}
+.muse-cosmic-astro101 li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-content:start;padding:15px;border:1px solid var(--glass-border);border-radius:15px;background:var(--surface-control)}
+.muse-cosmic-astro101-number{color:var(--accent-primary);font-family:var(--font-editorial);font-size:1.2rem;font-weight:700;line-height:1.3}
+.muse-cosmic-astro101-lesson{display:grid;gap:10px;align-content:start;min-width:0}
+.muse-cosmic-astro101-lesson h5{margin:0;font-size:1rem;line-height:1.35}
+.muse-cosmic-astro101-lesson p{font-size:.85rem}
+.muse-cosmic-astro101-lesson .text-button{justify-self:start;text-align:left}
+.muse-cosmic-astro101-diagram{display:flex;align-items:center;gap:5px;flex-wrap:wrap;min-height:46px}
+.muse-cosmic-astro101-diagram span{padding:5px 8px;border:1px solid var(--selected-border);border-radius:9px;background:color-mix(in srgb,var(--accent-primary) 10%,var(--surface-subtle));font-size:.78rem;line-height:1.3}
+@media(max-width:600px){.muse-cosmic-astro101{padding:15px}.muse-cosmic-astro101 ol{grid-template-columns:minmax(0,1fr)}}
+
+.muse-chart-tools{min-width:0}.muse-chart-directory{grid-template-columns:repeat(4,minmax(0,1fr))}.muse-chart-directory [aria-pressed=true]{border-color:var(--selected-border);box-shadow:0 0 16px color-mix(in srgb,var(--accent-primary) 18%,transparent)}
+.muse-chart-form,.muse-chart-person,.muse-chart-results{display:grid;gap:16px;min-width:0}.muse-chart-person{border:1px solid var(--glass-border);border-radius:15px;padding:16px}.muse-chart-person legend{padding-inline:6px;font-weight:700}.muse-chart-person .muse-cosmic-form-grid{gap:12px}
+.muse-chart-results{border:1px solid var(--glass-border);border-radius:18px;background:var(--surface-subtle);padding:20px}.muse-chart-results>.muse-natal-wheel{max-width:550px;margin:auto}.muse-chart-position-list{list-style:none;margin:0;padding:0;display:grid;gap:5px;grid-template-columns:repeat(2,minmax(0,1fr))}.muse-chart-position-list li{display:flex;justify-content:space-between;gap:10px;padding:9px 11px;border:1px solid var(--glass-border);border-radius:10px;background:var(--surface-control);font-size:.86rem}.muse-chart-position-list li span:last-child{text-align:right}.muse-chart-aspects{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.muse-chart-aspects .muse-cosmic-tile{padding:13px}
+.muse-chart-overlay{display:grid;gap:7px;justify-items:center}.muse-chart-overlay svg{display:block;width:min(100%,540px);aspect-ratio:1}.muse-chart-overlay circle{fill:none;stroke:var(--glass-border);stroke-width:2}.muse-chart-overlay .muse-chart-leader{stroke:var(--text-muted);stroke-width:1}.muse-chart-overlay text{text-anchor:middle;dominant-baseline:central;font-size:19px;paint-order:stroke;stroke:var(--surface-subtle);stroke-width:3}.muse-chart-overlay .muse-chart-sign{fill:var(--foreground);font-size:18px}.muse-chart-overlay .muse-chart-one{fill:var(--accent-primary)}.muse-chart-overlay .muse-chart-two{fill:var(--accent-secondary)}.muse-chart-legend{display:flex;gap:20px;flex-wrap:wrap;font-size:.85rem}.muse-chart-legend span{display:flex;align-items:center;gap:6px}.muse-chart-legend i{display:inline-block;width:13px;height:13px;border-radius:50%;background:var(--accent-primary)}.muse-chart-legend [data-ring=two]{background:var(--accent-secondary)}
+.muse-chart-tools-disclosure{margin-top:24px;border:1px solid var(--glass-border);border-radius:18px;background:var(--surface-subtle)}.muse-chart-tools-disclosure>summary{cursor:pointer;padding:18px 20px;min-height:52px;font-weight:700}.muse-chart-tools-disclosure[open]>summary{border-bottom:1px solid var(--glass-border)}.muse-chart-tools-disclosure>.muse-chart-tools{padding:20px}
+.muse-chart-overlay .muse-chart-center{fill:var(--foreground);font-size:21px;font-weight:700}.muse-chart-themes{display:grid;gap:12px}.muse-chart-theme-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.muse-chart-theme-grid article{gap:8px}.muse-chart-theme-grid h5{margin:0;font-size:1rem}.muse-chart-theme-grid ul{margin:0;padding-left:20px;font-size:.83rem;line-height:1.5}
+.muse-cosmic-snapshot{display:grid;gap:14px}.muse-cosmic-snapshot>div:first-child{display:grid;gap:5px}.muse-cosmic-snapshot-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.muse-cosmic-snapshot-grid article{align-content:start}.muse-cosmic-snapshot h5,.muse-cosmic-axes h5{margin:0;font-size:1rem}.muse-cosmic-snapshot-grid article>strong{font-family:var(--font-editorial);font-size:1.3rem}.muse-cosmic-snapshot-grid article>p{font-size:.82rem}.muse-cosmic-distribution{display:grid;gap:7px}.muse-cosmic-distribution>div{display:grid;grid-template-columns:70px minmax(0,1fr) 18px;gap:7px;align-items:center;font-size:.79rem}.muse-cosmic-distribution meter{width:100%;height:13px;accent-color:var(--accent-primary)}.muse-cosmic-axes{display:grid;gap:8px}.muse-cosmic-axes>div{display:flex;gap:8px;flex-wrap:wrap}.muse-cosmic-axes .muse-button{text-align:left}.muse-cosmic-snapshot>.small-label .text-button{display:inline;padding:0}
+@media(max-width:1000px){.muse-chart-directory{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:650px){.muse-chart-directory,.muse-chart-aspects,.muse-chart-position-list{grid-template-columns:minmax(0,1fr)}.muse-chart-results{padding:14px}.muse-chart-tools-disclosure>.muse-chart-tools{padding:14px}}
+@media(max-width:650px){.muse-chart-theme-grid{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:1000px){.muse-cosmic-snapshot-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:650px){.muse-cosmic-snapshot-grid{grid-template-columns:minmax(0,1fr)}}
+
 /* Horoscope actions sit beside the sign keepsake without stretching across the page. */
 .muse-cosmic-forecast-head{align-items:center}
 .muse-cosmic-forecast-head>div:first-child{flex:1 1 210px;min-width:0}

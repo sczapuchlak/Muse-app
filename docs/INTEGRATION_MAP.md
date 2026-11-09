@@ -84,3 +84,7 @@ Write down the answers before you build. Put them in the PR description or the f
 | Aspirations / Bucket List showing the boards that reference them | Future |
 | Reflections looking back at a period’s board | Future |
 | Background removal | Option A (Apple Photos cutout + Paste, guided on iPhone/iPad). Integrated button: future, needs approval |
+
+## Cosmic Observatory chart tools (#28)
+
+The existing private birth profile remains the only saved astrology birth record. Temporary natal, synastry, composite and transit requests may reuse it as input, but results and another person's birth details stay in memory for the current browser session and are not written to a new table. An explicit reflection action creates a normal Cosmic Journal entry referencing an existing library concept, not a copy of a chart or someone else's birth details. Saved comparison profiles and chart-result references remain future work requiring an owner-scoped lifecycle, export and deletion review.

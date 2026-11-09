@@ -9,16 +9,16 @@ const {astrologyMetrics,astrologyRecap}=load('lib/astrology/insights');
 const {AstrologyStore}=load('lib/astrology/store'),{emptyAstrology}=load('lib/astrology/models');
 const {wheelLabels}=load('lib/astrology/wheel');
 const {AstrologyEntryDetail}=load('components/astrology/AstrologyEntryDetail');
-const {PlacementDetail}=load('components/astrology/CosmicChart');
+const {PlacementDetail,CosmicChart}=load('components/astrology/CosmicChart');
 const {CosmicCalendar}=load('components/astrology/CosmicCalendar');
 const {AstrologyLibrary}=load('components/astrology/AstrologyLibrary');
 const {calculateNatal}=load('lib/astrology/calculations');
 const escape=value=>renderToStaticMarkup(React.createElement('span',null,value)).slice(6,-7);
 const range={start:'2026-11-01',end:'2026-11-30'},status={loaded:true};
 const activity=(kind,reference_id,date='2026-11-02')=>({user_id:'synthetic-owner',kind,reference_id,date,time_zone:'America/Los_Angeles',created_at:'2026-11-03T00:01:00Z'});
-test('58 original library entries have stable valid relationships, substantive sections, and all requested topics',()=>{
- assert.equal(astrologyLibrary.length,58);assert.equal(new Set(astrologyLibrary.map(e=>e.id)).size,58);
- assert.deepEqual(Object.fromEntries([...new Set(astrologyLibrary.map(e=>e.category))].map(c=>[c,astrologyLibrary.filter(e=>e.category===c).length])),{Signs:12,Planets:10,Houses:12,Elements:4,Modalities:3,Aspects:5,Concepts:12});
+test('60 original library entries have stable valid relationships, substantive sections, and all requested topics',()=>{
+ assert.equal(astrologyLibrary.length,60);assert.equal(new Set(astrologyLibrary.map(e=>e.id)).size,60);
+ assert.deepEqual(Object.fromEntries([...new Set(astrologyLibrary.map(e=>e.category))].map(c=>[c,astrologyLibrary.filter(e=>e.category===c).length])),{Signs:12,Planets:10,Houses:12,Elements:4,Modalities:3,Aspects:5,Concepts:14});
  for(const entry of astrologyLibrary){assert.equal(entry.author,'Muse original editorial');assert.ok(entry.summary.length>40);assert.ok(entry.sections.length);assert.ok(entry.sections.every(s=>s.title&&s.text.length>18));assert.ok(entry.sources.every(s=>new URL(s.url).protocol==='https:'));for(const id of entry.related)assert.ok(libraryEntry(id),`${entry.id} -> ${id}`);}
  assert.ok(searchAstrologyLibrary('RETROGRADE','Concepts').some(e=>e.id==='concept-retrograde'));assert.equal(searchAstrologyLibrary('no-such-constellation-123','').length,0);
  for(const sign of astrologyLibrary.filter(e=>e.category==='Signs'))assert.ok(sign.sections.some(s=>s.title==='Love & relationships'));
@@ -30,9 +30,18 @@ test('opened library and placement experiences render complete interpretations i
  const full=renderToStaticMarkup(React.createElement(PlacementDetail,{placement:chart.placements[0],chart,onLibrary(){}}));
  assert.ok(full.includes('Interpretive tradition'));assert.ok(full.includes('Career &amp; creativity'));assert.ok(full.includes(escape(libraryEntry('sign-capricorn').sections.at(-1).text)));
 });
+test('natal snapshot derives angles, lunar phase and distributions from calculated placements',()=>{
+ const chart=calculateNatal({date:'2000-01-01',time:'12:00',accuracy:'exact',uncertaintyMinutes:0,place:{id:'synthetic',name:'Synthetic reference',latitude:51.4779,longitude:0,timeZone:'UTC'},zodiac:'tropical',houseSystem:'whole-sign'});
+ const html=renderToStaticMarkup(React.createElement(CosmicChart,{chart,onPlanet(){},onLibrary(){},onDelete(){},onProfile(){}}));
+ for(const label of ['My Cosmic Snapshot','Approximate natal lunar phase','Elements','Modalities','Ascendant','Descendant','Midheaven','IC'])assert.ok(html.includes(label));
+ assert.ok(html.includes('Moon–Sun ecliptic separation'));
+});
 test('Library exploration starts with seven real collections and Calendar tolerates an unresolved local date during server render',()=>{
  const library=renderToStaticMarkup(React.createElement(AstrologyLibrary,{onOpen(){}}));
  assert.equal((library.match(/class="muse-cosmic-collection"/g)??[]).length,7);
+ assert.ok(library.includes('aria-labelledby="cosmic-astro101-heading"'));
+ assert.equal((library.match(/class="muse-cosmic-astro101-lesson"/g)??[]).length,7);
+ for(const title of ['What is a birth chart?','Meet the Big Three','Read a placement','Understand an aspect','Natal sky and moving sky','Compare two charts','Understand a composite'])assert.ok(library.includes(title));
  const calendar=renderToStaticMarkup(React.createElement(CosmicCalendar,{today:'',timeZone:'UTC',active:false,onOpen(){},onLibrary(){},onReflect(){}}));
  assert.ok(calendar.includes('Calculating celestial events'));
  assert.ok(!calendar.includes('Invalid Date'));
