@@ -122,3 +122,10 @@
   --icon-gradient-middle: var(--tone-card-icon-2);
   --icon-gradient-end: var(--tone-card-icon-3);
 }
+
+/* Malibu Mugshot: navigation icons a smidge deeper than the vivid page palette. */
+:root[data-theme="bubblegum-baby"] :is(.muse-rail, .muse-bottom-navigation) {
+  --icon-gradient-start: #e8007f;
+  --icon-gradient-middle: #00aec6;
+  --icon-gradient-end: #18c46e;
+}
