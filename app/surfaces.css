@@ -21,6 +21,10 @@
   & .muse-quest-progress-segment { background: color-mix(in srgb, var(--glass-background) 75%, transparent); border-color: color-mix(in srgb, var(--foreground) 20%, transparent); }
   & .muse-quest-progress-segment[data-complete=true] { background: var(--card-border-gradient); border-color: transparent; box-shadow: 0 0 10px color-mix(in srgb, var(--accent-primary) 38%, transparent); }
 
+  /* Task cards sit inside scrolling day lists, which clip a large drop shadow into a grey rectangle on light cards.
+     Nested task cards take a small, soft shadow instead. */
+  & :is(.muse-planner-task, .muse-meal-entry):not(#\#) { --material-depth-shadow: 0 2px 8px color-mix(in srgb, var(--foreground) 9%, transparent); }
+
   /* Phone navigation is the sidebar's layer too, never a card. */
   & .muse-bottom-navigation { background: var(--surface-sidebar); }
 

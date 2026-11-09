@@ -258,7 +258,7 @@ select option { background: var(--background); color: var(--foreground); }
 .muse-task-list-tools .muse-planner-search input { min-height: 34px; font-size: .78rem; color: var(--foreground); }
 .muse-task-list-tools .muse-planner-search input:focus { outline: 0; }
 .muse-task-list-tools > .muse-button { min-height: 36px; padding-inline: var(--space-2); font-size: .74rem; flex: none; }
-.muse-task-list-scopes.muse-chip-row { gap: 4px; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+.muse-task-list-scopes.muse-chip-row { gap: 4px; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; padding: 3px; margin: -3px; } /* room for the selected ring, which the scroll box would otherwise clip */
 .muse-task-list-scopes.muse-chip-row > button { min-height: 28px; padding: 2px 9px; font-size: .72rem; flex: none; }
 .muse-task-list .muse-task-list-body { position: relative; padding: 0 0 var(--space-2); margin: 0; border-radius: 0; }
 .muse-task-list-group h3 { position: sticky; top: 0; z-index: 1; margin: 0; padding: var(--space-2) var(--space-4) 4px calc(var(--space-4) + 3px); font-size: .62rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted); background: var(--planning-rail-background); }
