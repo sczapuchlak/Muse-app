@@ -860,4 +860,11 @@ A Little Moment is its own record (one per local date). It is never stored in Da
 - **Midnight Ballerina:** Money tiles use the card ink. The theme swatch matches the real theme: midnight navy, an aqua/lilac/pink aurora and pale aqua cards.
 - **Whimsy collections:** Reading Journal entries and its calendar, saved fortunes and the Encyclopedia sheets use the shared card surface with Frosted or Crystal. Dense grids skip per-card blur.
 - **Wellness:** Day in Three still meets Day Pulse. Its emojis and prompt are centered and larger, with no added padding.
-- **Google two-way editing** is designed, not built (GOOGLE_CALENDAR_PLAN, Phase 3). It needs approval for the write scope.
+- **Google Calendar two-way editing** (approved 2026-11-09; see GOOGLE_CALENDAR_PLAN, Phase 3):
+  - Edit permission is requested only when needed.
+  - Muse events stay authoritative. "Also add to Google" is off by default and keeps a reference, never a copy in Muse.
+  - Nothing is duplicated: Muse chooses Google ids, and a linked copy shows once.
+  - Conflicts are always the person's choice; nothing is overwritten silently.
+  - Deleting in Google always needs explicit confirmation.
+  - A failed Google write never loses the Muse event.
+  - Background sync runs every 30 minutes through Supabase pg_cron.

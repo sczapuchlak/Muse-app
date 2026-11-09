@@ -22,6 +22,8 @@ export function isPublicAuthPath(path: string) {
       "/auth/logout",
       "/auth/oauth/google",
       "/auth/oauth/callback",
+      // #112 Background Google sync from Supabase pg_cron: no session; the route itself requires the shared secret.
+      "/api/google/cron",
     ].includes(path)
   );
 }

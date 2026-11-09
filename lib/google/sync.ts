@@ -1,9 +1,12 @@
 import "server-only";
 import type { createMuseAdminClient } from "@/lib/supabase/admin";
-import { open, seal } from "./crypto";
-import { refreshAccess, revoke } from "./oauth";
+import { open } from "./crypto";
+import { revoke } from "./oauth";
+import { accessToken, GoogleReconnectError, profileTimeZone } from "./access";
+export { GoogleReconnectError } from "./access";
 import { toRow, type GoogleApiEvent } from "./events";
 import { defaultVisible, syncWindow } from "./calendars";
+import { reconcileLinks, retryLinks } from "./write";
 
 /**
  * Google Calendar read-only sync (#35, phase 1). Server only: it runs with the admin client because tokens have no
@@ -16,30 +19,11 @@ const API = "https://www.googleapis.com/calendar/v3";
 export const THROTTLE_MS = 3 * 60 * 1000;
 const MAX_PAGES = 40, CHUNK = 500;
 
-export class GoogleReconnectError extends Error {}
 class SyncTokenExpired extends Error {}
 
 /** A short, person-facing reason. Never includes tokens or Google's raw response. */
 const reason = (e: unknown) => e instanceof GoogleReconnectError ? e.message : "Google Calendar couldn’t be reached. Muse will try again.";
 
-async function accessToken(admin: Admin, connectionId: string) {
-  const { data, error } = await admin.from("google_tokens").select("*").eq("connection_id", connectionId).maybeSingle();
-  if (error) throw error;
-  if (!data) throw new GoogleReconnectError("Reconnect Google Calendar to continue.");
-  if (data.access_ciphertext && data.access_expires_at && Date.parse(data.access_expires_at) - Date.now() > 60_000) return open(data.access_ciphertext);
-  try {
-    const t = await refreshAccess(open(data.refresh_ciphertext));
-    const patch = { access_ciphertext: seal(t.access_token), access_expires_at: new Date(Date.now() + t.expires_in * 1000).toISOString(), updated_at: new Date().toISOString(),
-      ...(t.refresh_token ? { refresh_ciphertext: seal(t.refresh_token) } : {}) };
-    const saved = await admin.from("google_tokens").update(patch).eq("connection_id", connectionId);
-    if (saved.error) throw saved.error;
-    return t.access_token;
-  } catch (e) {
-    // invalid_grant: revoked, password change, or the 7-day expiry of a Testing-mode OAuth client.
-    if ((e as { revoked?: boolean }).revoked) throw new GoogleReconnectError("Google access expired or was removed. Reconnect to keep seeing your calendars.");
-    throw e;
-  }
-}
 
 async function google<T>(token: string, path: string, params: Record<string, string>): Promise<T> {
   const r = await fetch(`${API}${path}?${new URLSearchParams(params)}`, { headers: { authorization: `Bearer ${token}` }, cache: "no-store", signal: AbortSignal.timeout(15_000) });
@@ -108,13 +92,9 @@ async function syncCalendar(admin: Admin, conn: Connection, token: string, cal: 
   if (nextSyncToken) { const r = await admin.from("google_calendars").update({ sync_token: nextSyncToken }).eq("connection_id", conn.id).eq("calendar_id", cal.calendar_id); if (r.error) throw r.error; }
 }
 
-async function profileTimeZone(admin: Admin, userId: string) {
-  const { data } = await admin.from("profiles").select("time_zone").eq("id", userId).maybeSingle();
-  return data?.time_zone || "UTC";
-}
 
 /** Syncs one connection's visible calendars and records the outcome on the connection. Never throws. */
-export async function syncConnection(admin: Admin, conn: Connection, opts: { calendars?: boolean } = {}) {
+export async function syncConnection(admin: Admin, conn: Connection, opts: { calendars?: boolean; background?: boolean } = {}) {
   try {
     const timeZone = await profileTimeZone(admin, conn.user_id);
     let token = await accessToken(admin, conn.id);
@@ -122,7 +102,10 @@ export async function syncConnection(admin: Admin, conn: Connection, opts: { cal
     const { data: cals, error } = await admin.from("google_calendars").select("calendar_id,sync_token").eq("connection_id", conn.id).eq("visible", true);
     if (error) throw error;
     for (const cal of cals ?? []) await syncCalendar(admin, conn, token, cal, timeZone);
-    await admin.from("google_connections").update({ status: "active", last_error: null, last_synced_at: new Date().toISOString(), updated_at: new Date().toISOString() }).eq("id", conn.id);
+    // #112: compare each Muse→Google copy with what Google now has (edited or deleted in Google).
+    await reconcileLinks(admin, conn, token);
+    const now = new Date().toISOString();
+    await admin.from("google_connections").update({ status: "active", last_error: null, last_synced_at: now, updated_at: now, ...(opts.background ? { last_background_sync_at: now } : {}) }).eq("id", conn.id);
     return true;
   } catch (e) {
     await admin.from("google_connections").update({ status: e instanceof GoogleReconnectError ? "needs-reconnect" : "error", last_error: reason(e), updated_at: new Date().toISOString() }).eq("id", conn.id);
@@ -150,4 +133,24 @@ export async function disconnect(admin: Admin, userId: string, connectionId: str
   const r = await admin.from("google_connections").delete().eq("id", conn.id).eq("user_id", userId);
   if (r.error) throw r.error;
   return true;
+}
+
+/**
+ * #112 Background sync, called by pg_cron (through /api/google/cron) every 30 minutes, also while Muse is closed.
+ * It syncs the connections that are due (oldest first, within a time budget so one run never overlaps the next),
+ * skips ones waiting for a reconnect, then retries Muse→Google copies that failed earlier.
+ */
+export const BACKGROUND_DUE_MS = 25 * 60 * 1000;
+export async function syncDue(admin: Admin, opts: { limit?: number; budgetMs?: number; now?: number } = {}) {
+  const started = opts.now ?? Date.now(), budget = opts.budgetMs ?? 45_000, due = new Date(started - BACKGROUND_DUE_MS).toISOString();
+  const { data, error } = await admin.from("google_connections").select("id,user_id,status,last_synced_at").neq("status", "needs-reconnect")
+    .or(`last_synced_at.is.null,last_synced_at.lt.${due}`).order("last_synced_at", { ascending: true, nullsFirst: true }).limit(opts.limit ?? 25);
+  if (error) throw error;
+  let synced = 0, failed = 0;
+  for (const conn of data ?? []) {
+    if (Date.now() - started > budget) break;
+    if (await syncConnection(admin, conn, { background: true })) synced++; else failed++;
+  }
+  const retried = Date.now() - started > budget ? 0 : await retryLinks(admin, { limit: 50 });
+  return { due: data?.length ?? 0, synced, failed, retried };
 }

@@ -1,8 +1,11 @@
 import "server-only";
 import { authConfig } from "@/lib/auth/config";
-/** Google OAuth 2.0 for Calendar (#35). Read-only scope in phase 1; write is requested later, incrementally. */
+/** Google OAuth 2.0 for Calendar. Read-only by default (#35); event editing (#112) is asked for only when someone first
+ *  creates, edits or deletes a Google event from Muse, and adds to what was already granted (incremental authorization). */
 export const CALENDAR_READ = "https://www.googleapis.com/auth/calendar.readonly";
+export const CALENDAR_WRITE = "https://www.googleapis.com/auth/calendar.events";
 export const READ_SCOPES = ["openid", "email", CALENDAR_READ];
+export const WRITE_SCOPES = [...READ_SCOPES, CALENDAR_WRITE];
 /** The redirect uses Muse's one canonical origin (SITE_URL, or a Vercel preview's branch address), like sign-in does. */
 export function googleConfig() {
   const id = process.env.GOOGLE_CLIENT_ID, secret = process.env.GOOGLE_CLIENT_SECRET;
@@ -11,9 +14,11 @@ export function googleConfig() {
 }
 /** Google lets people untick the Calendar box on the consent screen; without it there is nothing to read. */
 export const grantsCalendarRead = (scope?: string) => (scope ?? "").split(" ").includes(CALENDAR_READ);
-export function authUrl(state: string) {
+/** Editing needs calendar.events. Scopes are stored per connection, so this also answers "can Muse edit?" later. */
+export const grantsCalendarWrite = (scopes?: string | string[]) => (Array.isArray(scopes) ? scopes : (scopes ?? "").split(" ")).includes(CALENDAR_WRITE);
+export function authUrl(state: string, write = false) {
   const c = googleConfig(); if (!c) throw new Error("Google Calendar is not configured.");
-  const q = new URLSearchParams({ client_id: c.id, redirect_uri: c.redirect, response_type: "code", scope: READ_SCOPES.join(" "), access_type: "offline", prompt: "consent", include_granted_scopes: "true", state });
+  const q = new URLSearchParams({ client_id: c.id, redirect_uri: c.redirect, response_type: "code", scope: (write ? WRITE_SCOPES : READ_SCOPES).join(" "), access_type: "offline", prompt: "consent", include_granted_scopes: "true", state });
   return `https://accounts.google.com/o/oauth2/v2/auth?${q}`;
 }
 type TokenResponse = { access_token: string; expires_in: number; refresh_token?: string; scope?: string; id_token?: string };

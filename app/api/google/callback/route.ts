@@ -2,7 +2,7 @@ import { timingSafeEqual } from "node:crypto";
 import { type NextRequest } from "next/server";
 import { createMuseAdminClient } from "@/lib/supabase/admin";
 import { seal } from "@/lib/google/crypto";
-import { exchangeCode, googleConfig, grantsCalendarRead, identity, revoke } from "@/lib/google/oauth";
+import { exchangeCode, googleConfig, grantsCalendarRead, grantsCalendarWrite, identity, revoke } from "@/lib/google/oauth";
 import { syncConnection } from "@/lib/google/sync";
 import { signedInUser, STATE_COOKIE, toSettings } from "@/lib/google/http";
 
@@ -10,11 +10,12 @@ const same = (a: string, b: string) => { const x = Buffer.from(a), y = Buffer.fr
 
 export async function GET(request: NextRequest) {
   const { base, user } = await signedInUser(request);
-  const done = (outcome: string) => { const r = toSettings(base, outcome); r.cookies.set(STATE_COOKIE, "", { path: "/api/google", maxAge: 0 }); return r; };
+  const [bound = "", mode = "r", next = ""] = (request.cookies.get(STATE_COOKIE)?.value ?? "").split("|"), wantsWrite = mode === "w";
+  const done = (outcome: string) => { const r = toSettings(base, outcome, next); r.cookies.set(STATE_COOKIE, "", { path: "/api/google", maxAge: 0 }); return r; };
   if (!user) return done("signed-out");
   if (!googleConfig()) return done("unconfigured");
-  const q = request.nextUrl.searchParams, cookie = request.cookies.get(STATE_COOKIE)?.value ?? "", state = q.get("state") ?? "";
-  if (!state || !same(cookie, `${state}.${user.id}`)) return done("expired");
+  const q = request.nextUrl.searchParams, state = q.get("state") ?? "";
+  if (!state || !same(bound, `${state}.${user.id}`)) return done("expired");
   if (q.get("error")) return done("declined");
   const code = q.get("code");
   if (!code) return done("failed");
@@ -31,6 +32,8 @@ export async function GET(request: NextRequest) {
       access_expires_at: new Date(Date.now() + t.expires_in * 1000).toISOString(), updated_at: now });
     if (saved.error) throw saved.error;
     await syncConnection(admin, conn, { calendars: true }); // records its own status; a slow first sync never blocks connecting
+    // Asked for editing but unticked it on Google's screen: still connected, still read-only. Nothing is revoked.
+    if (wantsWrite) return done(grantsCalendarWrite(t.scope) ? "editing" : "no-write");
     return done("connected");
   } catch { return done("failed"); }
 }

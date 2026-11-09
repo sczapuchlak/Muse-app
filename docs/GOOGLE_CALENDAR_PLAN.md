@@ -1,13 +1,13 @@
 # Google Calendar integration (#35)
 
-Status: **Phase 1 (read-only) implemented on `feature/google-calendar-35-plan`.** The migration has not been applied to Preview or Production. Nothing is deployed or merged.
+Status: **Phase 1 (read-only) is live.** **Phase 3 (two-way editing and background sync) is built on `feature/web-ui-112`**; its migration is local only and needs the setup below.
 
 ## Decisions (approved by Stephanie, 2026-11-08)
 
 1. **Google Cloud:** Stephanie owns the Cloud project and OAuth credentials. Preview starts with a Testing-mode OAuth client. In Testing mode, Google expires refresh tokens after 7 days, and Muse shows "Reconnect" when that happens. Calendar authorization is separate from "Sign in with Google".
 2. **Tokens:** they are encrypted on the server with AES-256-GCM, using a dedicated `GOOGLE_TOKEN_KEY` stored in hosting secrets. Refresh tokens, the client secret and the key never reach the browser. The tokens table has no browser access at all, and every other table is readable only by its owner.
 3. **Showing events:** Google events appear in Planner Agenda Day, Week and Month. They keep their Google identity and never become Muse records, so there are no duplicates. They are **not** added to the Future Log automatically. Explicitly linking or importing selected events may be considered later.
-4. **Muse events to Google:** this is a future capability, per event and off by default. Phase 1 creates, edits and deletes nothing in Google and requests no write scopes.
+4. **Muse events to Google:** per event and off by default ("Also add to Google", phase 3). Connecting still requests only read access; editing is a separate, incremental permission.
 
 ## Implemented (phase 1)
 
@@ -79,50 +79,74 @@ Apply `20261128000100_google_calendar.sql` with the existing staging process (`n
 14. **Security spot-check:** in DevTools Network, no response should contain a token. With the browser Supabase client, a `select` on `google_tokens` should fail.
 15. A second Muse account must not see the first account's calendars or events.
 
-## Later phases (not built)
+## Phase 3: two-way editing and background sync (#112) — approved 2026-11-09, built on the feature branch
 
-- **Phase 2:** scheduled background sync, Muse Marks on Google events, an automatic re-sync when the time zone changes, and a published (verified) OAuth app.
-- **Phase 3 (write):** an incremental `calendar.events` scope; a per-event "Also add to Google" that is off by default and stores `planner_events.google_event_id`; edits guarded with `etag`/If-Match.
-- **Phase 4:** push notifications and multiple Google accounts (the schema already allows several connections).
+Nothing hosted has changed yet. The migration has run on the local database only, and no Google Cloud setting has changed. The setup steps below are yours.
 
-## Phase 3 design: two-way editing (#112) — proposed, not built, needs approval
+### What it does
+- **Edit and create Google events from Muse.** If you allow editing, events in calendars you can edit in Google become editable in the Agenda. A new event's **Save to** can be Muse or one of those calendars. Supported fields are title, all-day, dates, times, location and notes.
+- **Delete in Google only after asking.** Deleting a Google event, or a Muse event's Google copy, always needs an explicit confirmation. The server refuses a delete without it.
+- **"Also add to Google"** (off by default) on a Muse event. The Muse event stays the authoritative record, and its copy in Google is a reference with a state: Sending, In Google, Didn't reach Google yet, Changed in Google, or Deleted in Google.
+- **Background sync** about every 30 minutes, even when Muse is closed, plus the existing sync when a page opens and Refresh now.
 
-**Why it isn't built yet.** Writing to Google needs the `calendar.events` scope. That means changing the consent screen in your Google Cloud project, asking you (and any test users) to grant more access, and writing to real calendars. #112 asks for the architecture and tradeoffs before implementation, and writes have always been a separate approval. Everything below is the recommendation.
-
-**What's in place today (audited 2026-11-09).**
-- Read-only scope with tokens encrypted on the server. Incremental sync uses a `syncToken` for each calendar.
-- Sync runs when a page opens or you choose Refresh, at most every 10 minutes. There is **no background job**, so "updates automatically" only holds while Muse is open.
-
-### Recommended approach
-1. **Incremental authorization.** The first time someone creates or edits a Google event, Muse asks for `calendar.events` only (with `include_granted_scopes`). Read-only users are never asked. The granted scopes are already stored and checked per connection.
-2. **Writes on the server.** A new route, `app/api/google/events`, handles create, update and delete with the user's tokens and returns the saved event. The browser never calls Google directly.
-   - Every write carries an idempotency key, sent to Google as the event id (Google accepts client-supplied ids). A retried create can therefore never make a duplicate.
-   - Edits send `If-Match: <etag>`. A 412 response means the event changed in Google: Muse reloads it and shows "This changed in Google — review it" instead of overwriting.
-3. **Muse events with "Also add to Google"** (off by default).
-   - Store `planner_events.google_link` = { connection, calendar, event id, etag }. It's a reference, so the Muse event stays the one authoritative record.
-   - Saving the Muse event pushes the supported fields (title, date, time, description, location).
-   - The Google copy appears in the Agenda once, as the Muse event, de-duplicated by that link.
-   - Deleting asks "Delete in Google too?" with Keep as the default.
-4. **Background freshness without paid services.**
-   - (a) **Supabase `pg_cron` + `pg_net`**, calling a protected sync route every 15–30 minutes for active connections. Both are included in the Supabase plan.
-   - (b) Keep the on-open stale check as it is.
-   - (c) **Later: Google push channels** (`events.watch`). These need a public HTTPS webhook and renewal about every 7 days, which (a) can handle. Recommend starting with (a)+(b) and adding (c) only if 15–30 minutes feels slow.
-   - Vercel Hobby cron jobs only run once a day, so they aren't enough on their own.
-
-### Conflicts and edge cases
-| Situation | Behavior |
+### Architecture
+| Concern | How |
 |---|---|
-| Changed in Google | The next sync updates the cached event and its `etag`. A linked Muse event shows a "Changed in Google" note; there is no silent overwrite in either direction. |
-| Changed in Muse | Pushed with `If-Match`. On a 412 conflict, show both versions and let the person choose. |
-| Both changed | The same as a 412: nothing is lost, and the person chooses. |
-| Deleted in Google | The cached event is removed. A linked Muse event keeps its data and shows "No longer in Google" plus Re-add. |
-| Deleted in Muse | Asks whether to delete in Google too. The default keeps it in Google. |
-| Disconnected or expired access | Writes are blocked with a "Reconnect to save to Google" message, and the Muse event still saves. Retries reuse the same idempotency key. |
-| Failed request | A clear error with Retry. The Muse save is never rolled back. |
-| Recurring events | Phase 3 edits single events and whole series only. Editing one occurrence uses Google's instance ids; "this and following" is out of scope. |
-| Time zone changes | Writes use the event's own time zone. A Muse time zone change triggers a full re-sync, as in phase 1. |
+| Permission | Connecting still asks only for `calendar.readonly`. **Allow editing** sends you back to Google for `calendar.events` with `include_granted_scopes`, so read-only users are never asked. Unticking it on Google's screen keeps the connection read-only and revokes nothing (`no-write`). Granted scopes are stored per connection and checked on the server for every write. |
+| Where writes happen | `POST /api/google/events`, same-origin and signed-in only. Its actions are `create`, `update`, `delete`, `push`, `google-version` and `unlink`. Tokens stay on the server (`lib/google/access.ts`, `lib/google/write.ts`); the browser never calls Google. |
+| No duplicates | Muse chooses every Google id: `muse<event uuid>` for a Muse event's copy, and `musec<key>` for a create, where the key is fixed when the form opens. A retry gets Google's 409 and finds the existing event instead of creating another. In the Agenda, a Muse event's Google copy is hidden, so it shows once, as the Muse event. |
+| No silent overwrites | Edits and deletes send `If-Match: <etag>`. A 412 response returns Google's current version, and you choose **Use Google's version** or **Save mine anyway** (or, for a copy, **Keep Muse's version**). The overwrite then targets only the version you just saw. |
+| Changes made in Google | After each sync, every copy is compared with Google. A different etag means **Changed in Google** (you choose); a deleted copy becomes **Deleted in Google**, and saving the Muse event restores it under the same id. Neither is overwritten automatically. |
+| Failed writes | The Muse event is saved first, and its copy is pushed only after the Planner confirms that save. The link row is written before Google is called. A failure records the copy's state and message, the Muse event is never touched, and background sync retries `pending` and `error` copies. |
+| Recurring events | A Google occurrence is edited or deleted by its own instance id (that date only); whole-series changes stay in Google Calendar. Repeating Muse events can't be mirrored yet (see limitations). |
+| Disconnected or expired access | Writes stop with a reconnect message. Settings and the editor offer **Reconnect**, and nothing in Muse is lost. |
+| Background sync | Supabase **pg_cron** runs `muse_private.request_google_sync()` every 30 minutes. It reads the URL and secret from **Vault** and uses **pg_net** to POST to `/api/google/cron` with `Authorization: Bearer <GOOGLE_SYNC_SECRET>`. The route compares the secret in constant time and answers 404 without it. It syncs connections not synced for 25 minutes (oldest first, up to 25 per run, within a 45-second budget, skipping ones that need a reconnect), then retries failed copies. Each background run stamps `last_background_sync_at`, so Settings says honestly whether background sync is running. |
+| Schema (`20261202000300_google_calendar_write.sql`) | `google_events` gains `description` and `recurring_event_id`. A new `google_event_links` table holds one row per Muse event, unique per Google event, with owner read only and server writes. `google_connections` gains `last_background_sync_at`. The migration also enables `pg_cron` and `pg_net`, defines the no-op-until-configured function, and creates the job `muse-google-sync`. |
 
-### Approvals needed
-1. Adding `calendar.events` to the consent screen. Testing mode keeps the 7-day refresh-token limit; publishing the app removes it but needs Google verification.
-2. A migration adding `planner_events.google_link` and any write-receipt table.
-3. Enabling `pg_cron`/`pg_net` and adding a sync secret.
+### Cost and limits (checked 2026-11-09)
+- `pg_cron`, `pg_net` and Vault are all available on the staging project (pg_cron 1.6.4, pg_net 0.20.4, Vault installed). They are part of every Supabase plan, including Free, at no extra charge; the job uses a little database time every 30 minutes.
+- The job calls one Vercel Function every 30 minutes, about 1,440 a month, well inside Hobby's included invocations. The route caps itself at 60 seconds (`maxDuration`), within Hobby's limit.
+- The Google Calendar API is free, and these volumes are far below its quotas.
+- A Vercel Cron alone wouldn't work, because Hobby cron jobs run only once a day. That's why the schedule lives in Supabase.
+
+### Remaining limitations
+- **Repeating Muse events** aren't mirrored to Google, because their per-date exceptions don't map one-to-one onto Google's. Add them in Google instead.
+- **Google series** can only be edited one occurrence at a time from Muse; edit the whole series in Google Calendar.
+- A **canceled** Muse event stays in Google with "Canceled · " in its title, because Google's own "cancelled" status deletes the event, and deleting always needs your confirmation.
+- Editing covers title, dates, times, location, notes and tentative. Attendees, reminders, colors and attachments are kept as Google has them and aren't editable in Muse.
+- Background sync waits up to about 30 minutes, longer in the rare case of many connections. Google push notifications (phase 4) could make it near-instant.
+- Testing-mode OAuth still expires refresh tokens after 7 days. Publishing (verifying) the app removes that limit.
+
+### Setup (Stephanie) — needed before this works anywhere hosted
+1. **Google Cloud Console → APIs & Services → OAuth consent screen → Data access (Scopes) → Add or remove scopes.** Add `https://www.googleapis.com/auth/calendar.events` next to `calendar.readonly`, then save. It's a sensitive scope, so it's fine in Testing mode for your test users; publishing the app later needs Google's verification.
+2. **Vercel → Project → Settings → Environment Variables**, separately for Preview and Production (server-only, never `NEXT_PUBLIC_`):
+   - `GOOGLE_SYNC_SECRET` = the output of `openssl rand -base64 48`. Use a different value per environment. It must be at least 32 characters, or the route refuses it.
+   - Redeploy after adding it.
+3. **Database:** with approval, apply the migration to staging (`npm run db:push:staging`), then later to production. It does nothing in the background until step 4.
+4. **Turn on background sync for each environment.** In the Supabase SQL editor for that project, using the same secret as step 2 and that environment's Muse address:
+   ```sql
+   select vault.create_secret('https://<your Muse host>/api/google/cron', 'google_sync_url');
+   select vault.create_secret('<GOOGLE_SYNC_SECRET value>', 'google_sync_secret');
+   ```
+   - To check: `select jobname, schedule from cron.job;` should list `muse-google-sync`.
+   - After about 30 minutes, Settings → Google Calendar should say "In the background … (last N minutes ago)".
+   - To turn it off: `select cron.unschedule('muse-google-sync');`
+5. In Muse: Settings → Google Calendar → **Allow editing**, and approve the new permission on Google's screen.
+
+### Testing checklist (Preview)
+1. Allow editing; untick the permission on Google's screen. Settings should still show "See events", and the connection should be intact.
+2. Allow editing properly; Settings should show "See and edit events".
+3. Create a Google event from **Save to** and double-click Save. Google should show exactly one event.
+4. Edit it in Muse and it should change in Google. Edit it in Google, then save the old form in Muse: you should get the conflict choice.
+5. Delete from Muse. It should ask first, then the event should be gone from Google.
+6. Turn on **Also add to Google** for a Muse event. One Google copy should appear, with no duplicate in the Agenda.
+   - Edit it in Google and refresh: it should show **Changed in Google** with both choices.
+   - Delete it in Google and refresh: it should show **Deleted in Google**, and saving should restore it.
+7. Turn off Wi-Fi and save a mirrored Muse event. The Muse event should be saved and the copy should show "Didn't reach Google yet"; it should succeed on Retry or in the background.
+8. Remove Muse's access in your Google account. Saving should show Reconnect, and Muse events should be intact.
+9. Repeating Google event: edit one date and only that date should change. A repeating Muse event can't be mirrored, and Muse says so.
+10. After step 4 of setup, wait 30+ minutes with Muse closed; Settings should show a recent background check.
+
+## Later phases (not built)
+- Muse Marks on Google events, an automatic full re-sync when your Muse time zone changes, and publishing (verifying) the OAuth app.
+- **Phase 4:** Google push notifications (`events.watch`, renewed by the same scheduler) for near-instant updates; mirroring repeating Muse events; whole-series edits; multiple Google accounts in the UI (the schema already allows several connections).

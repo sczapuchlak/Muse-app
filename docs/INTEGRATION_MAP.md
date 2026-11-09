@@ -34,7 +34,8 @@ Write down the answers before you build. Put them in the PR description or the f
 | Vision Board | Envision → Vision Boards (planned) | none yet | Intentions, Aspirations (future) | id (future) |
 | Task | Planner → Tasks | `tasks` (+ `task_occurrences`) | Daily Edit priorities, Aspirations, Lists, Intentions, Future Log | id; an Intention priority stores the `taskId` it made; Future Log references the series id |
 | Muse event | Planner → Agenda | `planner_events` | Intentions (Looking forward to), Daily Edit, Future Log | id + occurrence date snapshot; Future Log references the series id |
-| Google event | Planner → Agenda (read-only cache) | `google_events` | Agenda, Daily Edit | display only; never copied |
+| Google event | Google Calendar (Muse keeps a cache) | `google_events` | Agenda, Daily Edit | shown, never copied into Muse; editable through Google when editing is allowed (#112) |
+| Muse event's Google copy | Planner → Agenda ("Also add to Google") | `google_event_links` | Agenda (hides the copy so it shows once) | reference: Muse event id → Google id `muse<uuid>`, etag and state; the Muse event stays authoritative |
 | Intention page | Planner → Intentions | `intention_pages` | Reflections (link only) | period + start |
 | Reflection | Planner → Reflections | `reflection_reviews`, `life_areas`, `life_ratings` | Intentions (link only) | period + start |
 | Ritual (habit) | Rituals | `rituals`, `ritual_entries`, `ritual_groups` | Aspirations, Intentions, Daily Edit, Wellness, Insights | id; Intentions keeps a name snapshot |
@@ -71,4 +72,4 @@ Write down the answers before you build. Put them in the PR description or the f
 | Future Log follows a source's title, date and done state; a gone source keeps its name snapshot | Working |
 | Future Log no longer shows events (Muse or Google) automatically | Working |
 | Google events in the Future Log | Depends on Google Phase 3 (stable links). See GOOGLE_CALENDAR_PLAN |
-| Google two-way editing | Proposed; needs approval (GOOGLE_CALENDAR_PLAN, Phase 3) |
+| Google two-way editing and background sync | Built on the feature branch; needs the Google scope, a secret and the migration (GOOGLE_CALENDAR_PLAN, Phase 3) |

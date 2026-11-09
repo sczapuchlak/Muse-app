@@ -25,3 +25,21 @@
 .muse-google-checklist{display:grid;gap:2px;max-height:min(50vh,320px);overflow-y:auto;overscroll-behavior:contain;margin-bottom:var(--space-2)}
 .muse-google-checklist .muse-check-row{display:flex;align-items:center;gap:10px;min-height:var(--touch-target);padding:0 6px;border-radius:10px}
 .muse-google-checklist .muse-check-row:hover{background:var(--surface-hover)}
+
+/* #112 Editing: permission and background-sync facts, attention notes, conflicts and the mirror section. */
+.muse-google-facts{display:grid;gap:6px;margin:0}
+.muse-google-facts>div{display:grid;grid-template-columns:minmax(110px,max-content) minmax(0,1fr);gap:4px 12px;font-size:.84rem}
+.muse-google-facts dt{color:var(--text-muted)}
+.muse-google-facts dd{margin:0}
+.muse-google-attention{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;padding:8px 10px;border-left:2px solid var(--urgency-ink,var(--accent-pop));border-radius:0 10px 10px 0;background:var(--surface-subtle)}
+.muse-google-problem{display:grid;gap:8px;padding:10px 12px;border:1px solid var(--glass-border);border-left:2px solid var(--urgency-ink,var(--accent-pop));border-radius:var(--control-radius,12px);background:var(--surface-subtle)}
+.muse-google-problem p{margin:0}
+.muse-google-conflict{display:grid;gap:8px}
+.muse-google-mirror{display:grid;gap:8px;margin:0;padding:10px 12px;border:1px solid var(--glass-border);border-radius:var(--control-radius,12px)}
+.muse-google-mirror legend{padding:0 4px;font-size:.78rem;color:var(--text-muted)}
+.muse-google-link{display:grid;gap:6px}
+.muse-google-link[data-state=error] strong,.muse-google-link[data-state=conflict] strong,.muse-google-link[data-state=missing] strong{color:var(--urgency-ink,var(--accent-pop))}
+.muse-google-unlink{display:grid;gap:4px;margin:0;padding:0;border:0}
+.muse-event-save-to{display:grid;gap:4px;font-size:.84rem}
+.muse-google-notes{white-space:pre-wrap}
+@container muse-content (max-width:640px){.muse-google-facts>div{grid-template-columns:minmax(0,1fr)}}

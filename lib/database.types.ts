@@ -763,28 +763,54 @@ isOneToOne: false
                   ]
                 },"google_connections": {
                   Row: {
-                    "created_at": string,"email": string,"google_sub": string,"id": string,"last_error": string | null,"last_synced_at": string | null,"scopes": (string)[],"status": string,"updated_at": string,"user_id": string
+                    "created_at": string,"email": string,"google_sub": string,"id": string,"last_background_sync_at": string | null,"last_error": string | null,"last_synced_at": string | null,"scopes": (string)[],"status": string,"updated_at": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "created_at"?: string,"email"?: string,"google_sub": string,"id"?: string,"last_error"?: string | null,"last_synced_at"?: string | null,"scopes"?: (string)[],"status"?: string,"updated_at"?: string,"user_id": string
+                    "created_at"?: string,"email"?: string,"google_sub": string,"id"?: string,"last_background_sync_at"?: string | null,"last_error"?: string | null,"last_synced_at"?: string | null,"scopes"?: (string)[],"status"?: string,"updated_at"?: string,"user_id": string
                   }
                   Update: {
-                    "created_at"?: string,"email"?: string,"google_sub"?: string,"id"?: string,"last_error"?: string | null,"last_synced_at"?: string | null,"scopes"?: (string)[],"status"?: string,"updated_at"?: string,"user_id"?: string
+                    "created_at"?: string,"email"?: string,"google_sub"?: string,"id"?: string,"last_background_sync_at"?: string | null,"last_error"?: string | null,"last_synced_at"?: string | null,"scopes"?: (string)[],"status"?: string,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
                     
                   ]
-                },"google_events": {
+                },"google_event_links": {
                   Row: {
-                    "all_day": boolean,"calendar_id": string,"connection_id": string,"end_date": string | null,"end_time": string | null,"etag": string | null,"event_id": string,"html_link": string | null,"id": string,"location": string | null,"start_date": string,"start_time": string | null,"status": string,"time_zone": string | null,"title": string,"updated_at": string,"user_id": string
+                    "calendar_id": string,"connection_id": string,"created_at": string,"etag": string | null,"google_event_id": string,"id": string,"last_error": string | null,"muse_event_id": string,"pushed_at": string | null,"state": string,"updated_at": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "all_day"?: boolean,"calendar_id": string,"connection_id": string,"end_date"?: string | null,"end_time"?: string | null,"etag"?: string | null,"event_id": string,"html_link"?: string | null,"id"?: string,"location"?: string | null,"start_date": string,"start_time"?: string | null,"status"?: string,"time_zone"?: string | null,"title"?: string,"updated_at"?: string,"user_id": string
+                    "calendar_id": string,"connection_id": string,"created_at"?: string,"etag"?: string | null,"google_event_id": string,"id"?: string,"last_error"?: string | null,"muse_event_id": string,"pushed_at"?: string | null,"state"?: string,"updated_at"?: string,"user_id": string
                   }
                   Update: {
-                    "all_day"?: boolean,"calendar_id"?: string,"connection_id"?: string,"end_date"?: string | null,"end_time"?: string | null,"etag"?: string | null,"event_id"?: string,"html_link"?: string | null,"id"?: string,"location"?: string | null,"start_date"?: string,"start_time"?: string | null,"status"?: string,"time_zone"?: string | null,"title"?: string,"updated_at"?: string,"user_id"?: string
+                    "calendar_id"?: string,"connection_id"?: string,"created_at"?: string,"etag"?: string | null,"google_event_id"?: string,"id"?: string,"last_error"?: string | null,"muse_event_id"?: string,"pushed_at"?: string | null,"state"?: string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "google_event_links_connection_id_fkey"
+      columns: ["connection_id"]
+isOneToOne: false
+      referencedRelation: "google_connections"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "google_event_links_muse_event_id_fkey"
+      columns: ["muse_event_id"]
+isOneToOne: true
+      referencedRelation: "planner_events"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"google_events": {
+                  Row: {
+                    "all_day": boolean,"calendar_id": string,"connection_id": string,"description": string | null,"end_date": string | null,"end_time": string | null,"etag": string | null,"event_id": string,"html_link": string | null,"id": string,"location": string | null,"recurring_event_id": string | null,"start_date": string,"start_time": string | null,"status": string,"time_zone": string | null,"title": string,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "all_day"?: boolean,"calendar_id": string,"connection_id": string,"description"?: string | null,"end_date"?: string | null,"end_time"?: string | null,"etag"?: string | null,"event_id": string,"html_link"?: string | null,"id"?: string,"location"?: string | null,"recurring_event_id"?: string | null,"start_date": string,"start_time"?: string | null,"status"?: string,"time_zone"?: string | null,"title"?: string,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "all_day"?: boolean,"calendar_id"?: string,"connection_id"?: string,"description"?: string | null,"end_date"?: string | null,"end_time"?: string | null,"etag"?: string | null,"event_id"?: string,"html_link"?: string | null,"id"?: string,"location"?: string | null,"recurring_event_id"?: string | null,"start_date"?: string,"start_time"?: string | null,"status"?: string,"time_zone"?: string | null,"title"?: string,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
                     {
