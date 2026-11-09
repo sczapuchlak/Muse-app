@@ -25,7 +25,12 @@ type TokenResponse = { access_token: string; expires_in: number; refresh_token?:
 async function token(body: Record<string, string>): Promise<TokenResponse> {
   const r = await fetch("https://oauth2.googleapis.com/token", { method: "POST", headers: { "content-type": "application/x-www-form-urlencoded" }, body: new URLSearchParams(body) });
   const j = await r.json().catch(() => ({}));
-  if (!r.ok) { const e = new Error(j.error === "invalid_grant" ? "Google access was revoked or expired. Reconnect to continue." : "Google sign-in failed."); (e as Error & { revoked?: boolean }).revoked = j.error === "invalid_grant"; throw e; }
+  if (!r.ok) {
+    const e = new Error(j.error === "invalid_grant" ? "Google access was revoked or expired. Reconnect to continue." : "Google sign-in failed.");
+    // Google's short error code (e.g. invalid_client, invalid_grant) — safe to log; never the request body.
+    Object.assign(e, { revoked: j.error === "invalid_grant", googleError: typeof j.error === "string" ? j.error.slice(0, 40) : `http_${r.status}` });
+    throw e;
+  }
   return j as TokenResponse;
 }
 export function exchangeCode(code: string) { const c = googleConfig()!; return token({ code, client_id: c.id, client_secret: c.secret, redirect_uri: c.redirect, grant_type: "authorization_code" }); }

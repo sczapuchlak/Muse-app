@@ -33,7 +33,10 @@ export function GoogleCalendarSettings() {
   useEffect(() => {
     const url = new URL(window.location.href), o = url.searchParams.get("google");
     if (!o) return;
-    const t = window.setTimeout(() => setOutcome(outcomes[o] ?? ""), 0);
+    // "failed:<step>:<reason>" carries a short, safe diagnosis from the callback (no codes, tokens or personal data).
+    const [kind, step, reason] = o.split(":");
+    const text = outcomes[kind] ?? "";
+    const t = window.setTimeout(() => setOutcome(kind === "failed" && step ? `${text} (Details for support: ${step.replace(/-/g, " ")}${reason ? ` · ${reason}` : ""})` : text), 0);
     url.searchParams.delete("google"); window.history.replaceState(null, "", url);
     return () => window.clearTimeout(t);
   }, []);
