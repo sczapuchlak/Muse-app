@@ -178,3 +178,10 @@ test('callback diagnostics: the failing step and a short error code are logged a
  assert.match(read('lib/google/oauth.ts'),/googleError: typeof j\.error === "string" \? j\.error\.slice\(0, 40\)/);
  assert.match(read('components/google/GoogleCalendarSettings.tsx'),/Details for support/);
 });
+
+test('Settings: access is a status pill, Allow editing and Refresh now are real buttons; OAuth links unchanged',()=>{
+ const s=read('components/google/GoogleCalendarSettings.tsx');
+ assert.match(s,/editing \? "View & edit enabled" : "View only"/);
+ assert.match(s,/<a className="muse-button muse-google-allow" href=\{allowEditingHref\("\/settings"\)\}>Allow editing<\/a>/);
+ assert.match(s,/className="muse-button muse-google-refresh"/);assert.doesNotMatch(s,/button-ghost" disabled=\{s\.syncing\}/);
+});

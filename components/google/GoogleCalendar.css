@@ -43,3 +43,10 @@
 .muse-event-save-to{display:grid;gap:4px;font-size:.84rem}
 .muse-google-notes{white-space:pre-wrap}
 @container muse-content (max-width:640px){.muse-google-facts>div{grid-template-columns:minmax(0,1fr)}}
+
+/* Settings: the permission level is a status pill; "Allow editing" and "Refresh now" are real buttons. */
+.muse-google-access{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px}
+.muse-google-access-status{--tone:var(--text-muted);font-size:.78rem;padding:3px 10px}
+.muse-google-access-status[data-access=edit]{--tone:var(--success-primary,var(--accent-secondary))}
+.muse-google-access .muse-button,.muse-google-refresh{min-height:36px;padding-block:6px;font-size:.84rem}
+.muse-google-facts>div{align-items:center}
