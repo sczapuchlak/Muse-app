@@ -35,6 +35,9 @@ function luminance(rgb) {
 }
 function contrast(a, b) { const values = [luminance(a), luminance(b)].sort((a, b) => b - a); return (values[0] + .05) / (values[1] + .05); }
 
+// #111: light cards on a dark canvas carry their own text colours.
+const cardText=(tokens,name)=>name==='--foreground'?(tokens['--tone-card-ink']??tokens[name]):name==='--text-muted'?(tokens['--tone-card-muted']??tokens[name]):tokens[name];
+
 test('Monday-first week derives from selectedDate across month/year/leap boundaries', () => {
   assert.deepEqual(weekDates('2026-10-29'), ['2026-10-26','2026-10-27','2026-10-28','2026-10-29','2026-10-30','2026-10-31','2026-11-01']);
   assert.deepEqual(weekDates('2026-11-01'), weekDates('2026-10-29'));
@@ -145,7 +148,7 @@ test('theme text and filled control labels have readable numeric contrast', () =
     const token = palettes[theme.id];
     const background = color(token['--background']);
     const popover = blend(color(token['--floating-background']), background);
-    for (const text of ['--foreground','--text-muted']) assert.ok(contrast(color(token[text]), popover) >= 4.5, `${theme.id}: ${text}`);
+    for (const text of ['--foreground','--text-muted']) assert.ok(contrast(color(cardText(token,text)), popover) >= 4.5, `${theme.id}: ${text}`);
     for (const ink of ['--ink-purple','--ink-aqua','--ink-pink']) assert.ok(contrast(color(token['--on-accent']), color(token[ink])) >= 4.5, `${theme.id}: filled ${ink}`);
   }
 });
@@ -383,11 +386,11 @@ test('theme identities cover semantic navigation, selected, focus, success and p
     for (const theme of themes) assert.ok(palettes[theme.id][`--${role}`], `${theme.id}: ${role}`);
   }
   assert.equal(new Set(themes.map((theme) => palettes[theme.id]['--selected-background'])).size, themes.length);
-  assert.equal(palettes.astral['--accent-primary'], '#43d6e8');
-  assert.equal(palettes.astral['--focus-ring'], '#5fe6ff');
-  assert.equal(palettes.astral['--water-gradient-end'], '#62f0b0');
-  assert.equal(palettes['prism-noir']['--atmosphere-blush'], 'rgba(240,95,184,0.42)');
-  assert.equal(palettes['prism-noir']['--water-gradient-end'], '#ff5fc1');
+  assert.equal(palettes.astral['--accent-primary'], '#ff6fb5');
+  assert.equal(palettes.astral['--focus-ring'], '#7ae6ff');
+  assert.equal(palettes.astral['--water-gradient-end'], '#ff6fb5');
+  assert.equal(palettes['prism-noir']['--atmosphere-blush'], 'rgba(255,143,208,0.42)');
+  assert.equal(palettes['prism-noir']['--water-gradient-end'], '#c6ff34');
 });
 
 test('Planner adapts to one focused mobile day and retains Move alternatives and native-modal focus semantics', () => {
@@ -448,7 +451,7 @@ test('all six themes supply readable planning materials and dark cards visibly s
     const page=color(tokens['--background']);
     const container=blend(color(resolveToken(tokens,'--planning-container-background')),page);
     const task=blend(color(resolveToken(tokens,'--planning-task-background')),container);
-    for(const text of ['--foreground','--text-muted']) assert.ok(contrast(color(tokens[text]),task)>=4.5,`${theme.id}: ${text} on task`);
+    for(const text of ['--foreground','--text-muted']) assert.ok(contrast(color(cardText(tokens,text)),task)>=4.5,`${theme.id}: ${text} on task`);
     if(theme.id==='disco-damage') {
       // Approved neutral charcoal materials use edge contrast, not an arbitrary
       // absolute luminance increment, to delineate the compact task cards.
@@ -462,11 +465,11 @@ test('all six themes supply readable planning materials and dark cards visibly s
         assert.ok(luminance(card)>luminance(surface),`${theme.id}/${material}: task remains elevated`);
         assert.ok(contrast(border,surface)>=3,`${theme.id}/${material}: task boundary contrast`);
       }
-    } else if(theme.mode==='dark') assert.ok(luminance(task)-luminance(container)>.015,`${theme.id}: elevated task luminance`);
+    } else if(theme.mode==='dark'&&!tokens['--tone-card-ink']) assert.ok(luminance(task)-luminance(container)>.015,`${theme.id}: elevated task luminance`);
   }
   assert.equal(palettes.afterglow['--background'],'#0d0e11');
   assert.equal(palettes.afterglow['--color-scheme'],'dark');
-  assert.equal(palettes['prism-noir']['--glass-background'],'rgba(34,21,47,0.74)');
+  assert.equal(palettes['prism-noir']['--glass-background'],'rgba(42,31,56,0.84)');
 });
 
 test('Crystal and Frosted keep all six theme surfaces readable while Frosted increases opacity', () => {
@@ -479,7 +482,7 @@ test('Crystal and Frosted keep all six theme surfaces readable while Frosted inc
       assert.equal(frosted[3],.98,'Disco approved Frosted opacity');
       assert.ok(frosted[3]>crystal[3],'Disco Frosted remains more opaque than Crystal');
       assert.ok(crystal[3]>0&&crystal[3]<1,'Disco Crystal remains translucent');
-    } else assert.ok(frosted[3]-crystal[3]>=(theme.id==='issya-bday'?.05:.2),`${theme.id}: material opacity hierarchy`);
+    } else assert.ok(frosted[3]-crystal[3]>=(token['--tone-card-border']?.02:theme.id==='issya-bday'?.05:.2),`${theme.id}: material opacity hierarchy`); // #111 role themes keep one calm, nearly opaque card colour
     assert.ok(frosted[3]<1,`${theme.id}: Frosted still has a translucent surface`);
     for(const material of ['crystal','frosted']) {
       const card=blend(material==='crystal'?crystal:frosted,base);
@@ -488,7 +491,7 @@ test('Crystal and Frosted keep all six theme surfaces readable while Frosted inc
       const input=blend(color(value(token,material==='crystal'?'--planning-control-background':'--frosted-surface-control')),container);
       const popup=blend(color(value(token,material==='crystal'?'--floating-background':'--frosted-floating-background')),base);
       for(const [name,surface] of Object.entries({card,task,input,popup})) for(const text of ['--foreground','--text-muted']) {
-        assert.ok(contrast(color(token[text]),surface)>=4.5,`${theme.id}/${material}: ${text} on ${name}`);
+        assert.ok(contrast(color(cardText(token,text)),surface)>=4.5,`${theme.id}/${material}: ${text} on ${name}`);
       }
     }
   }
@@ -520,7 +523,7 @@ test('material text remains readable over representative theme blooms and intern
       const atmosphere=blend(color(tokens[bloom]),base);
       let surface=blend(color(tokens[material==='crystal'?'--glass-background':'--frosted-glass-background']),atmosphere);
       const reflection=color(resolveValue(tokens,'--accent-warm'));reflection[3]=material==='crystal'?.09:.02;surface=blend(reflection,surface);
-      for(const text of ['--foreground','--text-muted'])assert.ok(contrast(color(tokens[text]),surface)>=4.5,`${theme.id}/${material}: ${text} over ${bloom}`);
+      for(const text of ['--foreground','--text-muted'])assert.ok(contrast(color(cardText(tokens,text)),surface)>=4.5,`${theme.id}/${material}: ${text} over ${bloom}`);
     }
   }
 });

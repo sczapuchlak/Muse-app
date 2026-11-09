@@ -800,8 +800,8 @@ A Little Moment is its own record (one per local date). It is never stored in Da
 
 ## Theme collection renovation (#111) — approved 2026-11-08; implemented on feature branch, awaiting review
 
-- Curses, Pretty Toxic and Midnight Ballerina keep their names and ids but get completely new palettes (violet storm, poisoned pomegranate, midnight aurora). Palette descriptions are internal references only.
-- New official themes: Bubblegum Baby (light), Hot Summer Nights (dark), Booze Piñata (light), Northern Lights Out (dark).
-- The Dreamstorm direction for Midnight Ballerina is a Theme Lab palette (`dreamstorm-lab`), shown only in Appearance → Theme review, never in the regular pickers. If chosen, its tokens move onto `astral` and the lab entry is removed.
-- No monochromatic card walls: sidebar, canvas, cards, nested panels and featured cards use coordinated but different hue families (see DESIGN_SYSTEM "Surface roles"). Backgrounds stay CSS gradients only.
-- No database migration: theme ids are free-form text in existing columns. Existing Atelier remixes based on the three renovated themes inherit the new base palettes.
+- Curses, Pretty Toxic and Midnight Ballerina keep their names and ids with completely new palettes. Bubblegum Baby is renamed **Malibu Mugshot** (id `bubblegum-baby` kept so saved preferences still work).
+- New official themes: Malibu Mugshot (light), Hot Summer Nights (dark), Booze Piñata (dark, neon citrus on black), Northern Lights Out (dark).
+- Art direction (2026-11-08 correction): one card surface per theme; the background carries the personality; the sidebar is a distinct layer; the palette lives in thin gradient outlines, icons and accents. No patchwork of card colours.
+- Dreamstorm stays a Theme Lab palette (`dreamstorm-lab`), only in Appearance → Theme review.
+- Backgrounds are CSS gradients only. No database migration.

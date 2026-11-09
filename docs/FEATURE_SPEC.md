@@ -1133,7 +1133,7 @@ In edit mode every section can be renamed, resized (full / wide / half / third o
 
 ## Theme collection renovation (#111) — implemented on feature branch (no migration)
 
-- **Themes:** Curses, Pretty Toxic and Midnight Ballerina renovated in place; Bubblegum Baby, Hot Summer Nights, Booze Piñata and Northern Lights Out added (13 official themes). Dreamstorm is a Theme Lab palette.
-- **Surface roles:** `app/surfaces.css` gives role themes a distinct sidebar, alternate card families, featured cards and hue-shifted nested panels, in Crystal and Frosted.
-- **Atmospheres:** each role theme has its own gradient composition in its theme block; Theme Atelier reads it as editable layers. The Atelier colour catalog is regenerated (`node scripts/generate-atelier-catalog.mjs`).
-- **Theme review:** Appearance → Theme review starts a per-tab review; a floating bar steps through the eight reviewed looks, switches Crystal/Frosted and jumps to Future Log, Daily Edit, Tasks, Week, Mindspace, Collections and Settings. Done restores the earlier theme; Keep this keeps the current one.
+- **Themes:** Curses (violet storm with lime and teal accents), Pretty Toxic (black cherry, dusty-rose cards, forest sidebar), Midnight Ballerina (rainbow cloud over navy, icy cards), Malibu Mugshot (formerly Bubblegum Baby: glossy hot-pink glass, pale lavender cards, baby-pink sidebar), Hot Summer Nights (electric sunset bands, teal-blue cards), Booze Piñata (dark: neon citrus slices on black, cream cards), Northern Lights Out (aurora curtains, navy cards). Dreamstorm is a Theme Lab palette.
+- **System:** `app/surfaces.css` gives role themes one card surface, a distinct sidebar (desktop and phone), gradient card outlines, and dark card ink where cards are light on a dark canvas.
+- **Atmospheres:** each role theme has its own gradient composition in its theme block; Theme Atelier reads it as editable layers. Regenerate the catalog after editing themes (`node scripts/generate-atelier-catalog.mjs`).
+- **Theme review:** Appearance → Theme review starts a per-tab review with a floating bar to step through themes, switch Crystal/Frosted and jump between screens.

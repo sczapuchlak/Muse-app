@@ -46,25 +46,21 @@ Use plain prefixed component CSS: the current Turbopack CSS transform does not r
 
 ## Surface roles and theme atmospheres (#111) — implemented on feature branch, awaiting review
 
-A theme is no longer one card colour. `app/surfaces.css` turns raw theme tones into roles:
+In a role theme the **background is the centrepiece**; content stays calm.
 
-| Role | Token | Used by |
+| Role | Token | Rule |
 |---|---|---|
-| Canvas | `--background` + `--atmosphere-*-layers` | The page atmosphere, gradients only |
-| Sidebar | `--surface-sidebar` (`--tone-sidebar`) | The navigation rail, in its own coordinated hue |
-| Primary | `--surface-primary` (= `--glass-background`) | Default cards |
-| Alternate / alternate-2 | `--surface-alt`, `--surface-alt-2` (`--tone-alt*`) | Peer cards in a second and third hue family |
-| Featured | `--surface-featured` (+ `-ink`, `-muted`, `-accent`) | Rare, deliberate lighter or brighter cards |
-| Secondary / interactive | `--surface-subtle`, `--surface-control`, `--surface-hover`, `--selected-*` | Nested panels and controls, tinted in a different hue from the card |
+| Canvas | `--background` + `--atmosphere-bloom/pool/haze-layers` | Layered CSS gradients only: several light sources, dark and luminous zones, directional light. Each theme has its own composition. |
+| Sidebar | `--surface-sidebar` (`--tone-sidebar`) | Its own layer, clearly distinct from the canvas. Navigation styling is unchanged. Phone navigation uses the same layer. |
+| Card surface | `--glass-background` (+ `--planning-*` for Planner) | **One surface per theme.** No alternating or per-widget card colours. Nested panels, inputs and chips are lighter/darker variations of it. |
+| Card outline | `--card-border-gradient` (`--tone-card-border`) | A thin masked gradient ring in the theme's palette sequence; the fill stays one colour. |
+| Card ink | `--tone-card-ink/-muted/-accent` | Only for light cards on a dark canvas (Midnight Ballerina, Pretty Toxic, Booze Piñata): everything painted with the card surface re-points text, links, chart inks and nested tints. |
+| Accents | `--accent-*`, `--icon-gradient-*`, `--chart-*`, `--selected-*`, `--focus-ring` | Carry the full palette in icons, underlines, progress, selected and focus states. Text labels stay neutral. |
 
-Rules:
-- Roles are hue families, not brightness steps of one hue. Each role theme has at least four distinct card hues (tested).
-- Peer groups rotate primary · alt · primary · alt-2 · primary · alt · primary (Future Log months, Week columns, collection cards, Settings cards). Daily Edit assigns roles per card so side-by-side cards differ. Tasks day columns alternate primary/alt; task cards use the alt-2-derived planning tone.
-- Featured is rare: today's priorities and the current Future Log month. A featured card re-points text, links, selected states and nested tints, so a light card inside a dark theme stays readable without per-component overrides.
-- Every tone has a Frosted counterpart (`--frosted-tone-*`). Crystal tones stay opaque enough (about .86–.92) to keep their own hue over a vivid atmosphere.
+- Cards are nearly opaque (about .84–.97) so a vivid atmosphere never turns them into a patchwork; the canvas shows around and between them.
 - Only themes listed in `app/surfaces.css` opt in; all other themes render exactly as before.
-- Role themes define their own atmosphere composition (`--atmosphere-bloom/pool/haze-layers` in the theme block): different structures per theme, not one template with swapped colours. Theme Atelier edits them as layers.
-- Theme review (Appearance → Theme review) compares themes on real screens; lab palettes (`themeExperiments` in `lib/themes.ts`) never appear in the regular pickers.
+- Theme Atelier edits each theme's atmosphere as layers (its catalog reads the theme block).
+- Theme review (Appearance → Theme review) compares themes on real screens; lab palettes (`themeExperiments`) never appear in regular pickers.
 
 ## Reusable interaction language
 

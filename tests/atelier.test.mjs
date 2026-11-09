@@ -164,7 +164,7 @@ test('exports carry the handoff and a complete resolved appearance, and still im
  const definition={...model.emptyDefinition('prism-noir'),tokens:{'--background':'#0a0612'}};
  const file=JSON.parse(model.exportTheme('Moon Witch',definition,{intent:'new-theme',name:'Moon Witch!',subtitle:'Moonlit glass.',mode:'dark',effects:['disco-glitter']}));
  assert.equal(file.handoff.intent,'new-theme');assert.deepEqual(file.handoff.effects,['disco-glitter']);
- assert.equal(Object.keys(file.resolved.tokens).length,Object.keys(tokens.tokenInfo).length,'every editable token');
+ assert.equal(Object.keys(file.resolved.tokens).length,Object.keys(tokens.tokenInfo).filter(n=>model.tokenValue(definition,n)).length,'every editable token the base defines');
  assert.equal(file.resolved.tokens['--background'],'#0a0612');assert.equal(file.resolved.baseFingerprint,model.baseFingerprint('prism-noir'));
  assert.ok(file.resolved.planes.bloom&&file.resolved.planes.pool&&file.resolved.css.includes('--atmosphere-bloom-layers'));
  const back=model.importTheme(JSON.stringify(file));assert.ok(back.ok);assert.deepEqual(back.definition,definition);

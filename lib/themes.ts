@@ -1,18 +1,18 @@
 /** Registry metadata; all visual tokens live in app/themes.css. */
 export const themes = [
   { id: "iridescent", name: "Glitter!", subtitle: "Light, pastel, and a little magical.", mode: "light", preview: "linear-gradient(135deg, #05b8d2, #8138d6, #d93691)" },
-  { id: "astral", name: "Midnight Ballerina!", subtitle: "Midnight aurora: petrol teal, sea glass, cyan and mint.", mode: "dark", preview: "linear-gradient(135deg, #080d20, #183c50, #287b94, #8ce8e8, #9ef5c8)" },
+  { id: "astral", name: "Midnight Ballerina!", subtitle: "A glowing pastel cloud in a midnight-navy sky.", mode: "dark", preview: "linear-gradient(135deg, #08122e, #ff6fb5, #ffb36b, #b79cff, #3fd6f0)" },
   { id: "nightbloom", name: "Pretty Toxic!", subtitle: "Poisoned pomegranates in a midnight garden.", mode: "dark", preview: "linear-gradient(135deg, #13090c, #4b0b1b, #c42647, #153d2c, #f36b9b)" },
   { id: "solstice", name: "Sunburnt & Sinful!", subtitle: "All-day sunshine. All-day trouble.", mode: "light", preview: "linear-gradient(135deg, #fff5eb, #e79279, #c83480, #0aa5b5)" },
-  { id: "prism-noir", name: "Curses!", subtitle: "A little witchcraft. A lot of hexes.", mode: "dark", preview: "linear-gradient(135deg, #100d1d, #482d59, #b08dbd, #f05fb8, #6f7dff)" },
+  { id: "prism-noir", name: "Curses!", subtitle: "A little witchcraft. A lot of hexes.", mode: "dark", preview: "linear-gradient(135deg, #07040f, #4712c4, #ffdefd, #2dd4bf, #c6ff34)" },
   { id: "afterglow", name: "Neon Hangover!", subtitle: "Soft pastels for when the neon gets too loud.", mode: "dark", preview: "linear-gradient(135deg, #0d0e11, #29efff, #cd78ff, #ff3eaf)" },
   { id: "issya-bday", name: "ISSYA BDAY!", family:"birthday", variant:"Frosting", subtitle: "Sweet frosting and a little birthday magic.", mode: "light", preview: "radial-gradient(circle at 25% 28%,#ff1599 0 13%,transparent 14%),radial-gradient(circle at 73% 72%,#a2e600 0 14%,transparent 15%),linear-gradient(130deg,#fffefd 30%,#00cfe8 49%,#fffefd 63%,#ff7621)" },
   { id: "issya-bday-xxx", name: "ISSYA BDAY XXX!", family:"birthday", variant:"After Hours", subtitle: "After hours, when the party gets a little wild.", mode: "dark", preview: "radial-gradient(circle at 25% 28%,#ff1599 0 13%,transparent 14%),radial-gradient(circle at 73% 72%,#a2e600 0 14%,transparent 15%),linear-gradient(130deg,#030304 30%,#00cfe8 49%,#030304 63%,#ff7621)" },
   { id: "disco-damage", name: "Disco Damage XXXTRA!", subtitle: "LFG. It's party time!", mode: "dark", preview: "conic-gradient(from 40deg,#050507 0 55%,#00eeff 61%,#c6ff00 66%,#f6f7f8 69%,#9d59ff 73%,#ff159b 79%,#ff711c 84%,#050507 90%)" },
-  { id: "bubblegum-baby", name: "Bubblegum Baby!", subtitle: "Glossy pink pearl with lilac, aqua and ice-blue shine.", mode: "light", preview: "linear-gradient(135deg, #f5b4d2, #ff3cad, #c77cff, #8ec5ff, #7ffff3)" },
-  { id: "hot-summer-nights", name: "Hot Summer Nights!", subtitle: "Rooftop after sunset: navy, plum, coral and gold.", mode: "dark", preview: "linear-gradient(135deg, #142b4f, #2c2a5e, #743b50, #ff703b, #ffb74b)" },
-  { id: "booze-pinata", name: "Booze Piñata!", subtitle: "A tropical cocktail party that got slightly out of hand.", mode: "light", preview: "linear-gradient(135deg, #ff2d8d, #ff9a00, #ffd600, #7cff00, #00e5ff, #00b6e6)" },
-  { id: "northern-lights-out", name: "Northern Lights Out!", subtitle: "Electric ribbons of cyan, emerald, violet and pink over a dark forest.", mode: "dark", preview: "linear-gradient(135deg, #050a18, #00e6c3, #2fe37a, #7a5cff, #ff4fb8)" },
+  { id: "bubblegum-baby", name: "Malibu Mugshot!", subtitle: "Glossy Barbie-pink glass with a little cyan trouble.", mode: "light", preview: "linear-gradient(135deg, #ffcfe7, #ff369b, #fe006f, #8cf4f3, #29fe8c)" },
+  { id: "hot-summer-nights", name: "Hot Summer Nights!", subtitle: "Rooftop after sunset: navy, plum, coral and gold.", mode: "dark", preview: "linear-gradient(180deg, #0a1260, #5a1458, #f0323c, #ff6e28, #ffb52e)" },
+  { id: "booze-pinata", name: "Booze Piñata!", subtitle: "A tropical cocktail party that got slightly out of hand.", mode: "dark", preview: "radial-gradient(circle at 22% 30%,#ff2d8d 0 22%,transparent 23%),radial-gradient(circle at 70% 60%,#7cff00 0 12%,#00e5ff 13% 24%,transparent 25%),radial-gradient(circle at 88% 18%,#ffd600 0 10%,#ff9a00 11% 18%,transparent 19%),#050507" },
+  { id: "northern-lights-out", name: "Northern Lights Out!", subtitle: "Electric ribbons of cyan, emerald, violet and pink over a dark forest.", mode: "dark", preview: "linear-gradient(135deg, #2838eb, #3cebaa, #a03cff, #ff64d2, #aae650)" },
 ] as const;
 
 /**
