@@ -12,7 +12,7 @@ import { MuseIcon } from "../MuseIcon";
 import { usePlanner } from "../PlannerStore";
 import { useWellness } from "../WellnessStore";
 import { useWhimsyData } from "../whimsy/WhimsyData";
-import { useAspirations } from "../rituals/aspirations/useAspirations";
+import { useAspirations } from "../envision/aspirations/useAspirations";
 import { useDailyData, useDailyRange } from "../daily/DailyData";
 import { AgendaDataProvider, useAgendaData } from "./AgendaData";
 import { visibleSections } from "@/lib/agenda-layout";

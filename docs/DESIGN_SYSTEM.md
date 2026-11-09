@@ -689,3 +689,12 @@ Bucket List (Rituals, #84) follows the handwritten bullet-journal reference: an 
 - **Color vocabulary:** card titles use a rounded-square tinted tile in the card's chart ink; dates are typographic cells; rings stay round. Category colors come from `--chart-1…6`.
 - **Stat tiles:** `.muse-money-tiles` (label · value · note) with `data-tile-accent`.
 - **Task density:** `data-task-density="compact|spacious"` on the Planner page.
+
+## Envision and Planner Intentions (#117) — implemented on feature branch, awaiting review
+
+- **Envision** uses the shared page header (mantra "MANIFESTING, BUT MAKE IT ORGANIZED", placeholder copy for Stephanie to approve), `MuseSectionNav` tabs, and a new `envision` nav icon: a horizon peak with a sparkle, in the prismatic treatment like every other icon. The Vision Boards empty state is one glass panel: a still collage made only of theme accents (no images, no motion) beside an editorial heading. It has no fake buttons.
+- **Intentions** reuses Reflections' primitives (`.muse-reflections-pill/-icon/-input/-additem/-confirm/-library/-add-trigger`, the toolbar, `PeriodTitle`, `.muse-segmented`) and adds `components/planner/intentions/Intentions.css` for the page itself:
+  - Writing looks like ink on a ruled page: borderless until hovered or focused, in the editorial face.
+  - Priorities are numbered with gradient-ringed numerals.
+  - References to other modules' records are rounded chips that link home. A dashed chip means the record is no longer there; a muted "now …" note means it was renamed.
+- **Personality by period:** week is tighter; month centres a large editorial theme; quarter adds a steady accent rule down each section; year sets the word of the year large in the theme gradient. They share one surface and token set and work in every theme and in Frosted.

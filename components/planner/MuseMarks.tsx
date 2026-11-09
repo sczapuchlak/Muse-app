@@ -10,7 +10,7 @@ import { MuseIcon, type MuseIconName } from "../MuseIcon";
 import { usePlanner } from "../PlannerStore";
 import { useWellness } from "../WellnessStore";
 import { useWhimsyData } from "../whimsy/WhimsyData";
-import { useAspirations } from "../rituals/aspirations/useAspirations";
+import { useAspirations } from "../envision/aspirations/useAspirations";
 import { useAgendaData } from "./AgendaData";
 
 const iconLabel = (icon: MarkIcon) => markIcons.find((i) => i.id === icon)?.label ?? icon;
@@ -139,7 +139,7 @@ export function AgendaLegend() {
     <ul>{statusLegend.map((s) => <li key={s.label}><span aria-hidden="true">{s.symbol}</span>{s.label}</li>)}
       <li><span aria-hidden="true"><MuseIcon name="favorite" size={12} /></span>Muse Mark — a symbol you chose; it never counts as activity</li></ul>
     <MyMarksKey />
-    <p className="small-label">Marks on Bookshelf, Aspirations or movement open those pages; see <Link href="/rituals?view=aspirations">Aspirations</Link> for real progress.</p>
+    <p className="small-label">Marks on Bookshelf, Aspirations or movement open those pages; see <Link href="/envision">Aspirations</Link> for real progress.</p>
   </div>;
 }
 

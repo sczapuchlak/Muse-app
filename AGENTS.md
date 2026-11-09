@@ -4,6 +4,7 @@ Muse has intentional product semantics and a documented design system. Before ch
 - Read [PRODUCT_RULES](docs/PRODUCT_RULES.md) for product/architecture decisions.
 - Read [DESIGN_SYSTEM](docs/DESIGN_SYSTEM.md) for UI changes.
 - Read the relevant [FEATURE_SPEC](docs/FEATURE_SPEC.md) section before implementing a feature.
+- Before a major feature, run the **Muse Cohesion Check** in the [Integration Map](docs/INTEGRATION_MAP.md): one authoritative home per record, references instead of copies, optional connections, and name snapshots so later edits never rewrite saved history. Update the map when ownership or relationships change.
 - Treat documented approved decisions as source of truth unless Stephanie explicitly changes them.
 - Extend existing components, semantic tokens, interactions, and architecture; avoid one-off imitations.
 - Preserve distinctions between data even when concepts share a UI. Never silently remove established behavior for implementation convenience.

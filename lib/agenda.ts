@@ -7,7 +7,8 @@ import {isSeries} from './planner-occurrences';
 import {shiftDate,weekDates} from './dates';
 import type {DayEvent,PlannedTask} from './models';
 
-export const plannerTabs=[{id:'tasks',label:'Tasks'},{id:'agenda',label:'Agenda'},{id:'reflections',label:'Reflections'}] as const;
+/** #117: Intentions (before) sits beside Tasks; Reflections (after) stays last. */
+export const plannerTabs=[{id:'tasks',label:'Tasks'},{id:'intentions',label:'Intentions'},{id:'agenda',label:'Agenda'},{id:'reflections',label:'Reflections'}] as const;
 export type PlannerTab=typeof plannerTabs[number]['id'];
 export const agendaViews=[{id:'day',label:'Day'},{id:'week',label:'Week'},{id:'month',label:'Month'},{id:'year',label:'Future Log'}] as const;
 export type AgendaView=typeof agendaViews[number]['id'];

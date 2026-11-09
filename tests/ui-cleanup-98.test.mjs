@@ -21,7 +21,7 @@ test('#12 Bucket List: choosing a number moves the dream there; the dreams betwe
  assert.deepEqual(renumberShift(entries,{id:'b',number:9}).shifts,[],'a free number moves the card without renumbering others');
  const gap=renumberShift([e('a',1,1),e('b',2,2),e('c',5,3),e('n',null,4)],{id:'n',number:2});
  assert.deepEqual(gap.shifts,[{id:'b',number:3}],'a gap in the numbers absorbs the shift');
- assert.match(read('components/rituals/bucket/useBucketList.ts'),/number:null\}\)[\s\S]*for\(const s of shift\?\.shifts[\s\S]*position:shift\.position/,'cleared first, then shifted, then placed');
+ assert.match(read('components/envision/bucket/useBucketList.ts'),/number:null\}\)[\s\S]*for\(const s of shift\?\.shifts[\s\S]*position:shift\.position/,'cleared first, then shifted, then placed');
 });
 
 test('#98 Mindspace board: arrangement, moves, sizes and independent duplicates',()=>{
@@ -74,7 +74,7 @@ test('#98 UI fixes: shared search, Muse dropdowns, Dream sources, saved meals, s
  assert.match(read('components/design/MuseSearch.tsx'),/muse-search muse-edge/);
  assert.match(read('app/design-language.css'),/\.muse-search\.muse-search input:is\(\[type=search\],\[type=text\]\)/);
  assert.doesNotMatch(read('components/whimsy/TarotExperience.tsx'),/noun=\{\["card","cards"\]\}/,'no duplicate count inside the Grimoire search');
- for(const f of ['components/rituals/aspirations/Aspirations.tsx','components/rituals/aspirations/AspirationEditor.tsx'])assert.doesNotMatch(read(f),/<select/,`${f} uses Muse dropdowns`);
+ for(const f of ['components/envision/aspirations/Aspirations.tsx','components/envision/aspirations/AspirationEditor.tsx'])assert.doesNotMatch(read(f),/<select/,`${f} uses Muse dropdowns`);
  assert.doesNotMatch(read('components/whimsy/dreams/DreamLibrary.tsx'),/aria-label="Source"/);
  const nourish=read('components/nourish/Nourish.tsx');assert.match(nourish,/muse-saved-meals-drawer/);assert.doesNotMatch(nourish,/label:"Saved Meals"/);
  const signin=read('components/auth/SignInSettings.tsx');assert.match(signin,/passkey_disabled/);assert.match(signin,/Each source loads on its own/);

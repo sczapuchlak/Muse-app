@@ -12,7 +12,7 @@ import { MuseIcon } from "../MuseIcon";
 import { GlassPopover } from "../GlassPopover";
 import { MuseModal } from "../MuseModal";
 import { EmojiButton } from "../EmojiPicker";
-import { useAspirations } from "../rituals/aspirations/useAspirations";
+import { useAspirations } from "../envision/aspirations/useAspirations";
 import { addItem, addSection, bundleOf, copyList, deleteList, deleteSection, moveItem, moveSection, removeEvent, resetChecklist, syncTaskCopies, toggleItem, updateItem, updateList, updateSection, useLists } from "./ListsStore";
 import { effectiveEvents, linkedTask, plannerEvents, toggleViaPlanner } from "./taskLink";
 import { ItemDetails } from "./ItemDetails";

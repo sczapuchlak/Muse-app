@@ -116,12 +116,14 @@ test('migration is owner-only and keeps aspiration links independent',()=>{
  assert.doesNotMatch(sql,/to anon/);
 });
 
-test('Rituals has Habits | Aspirations | Bucket List tabs; Insights and export include the list',()=>{
- const rituals=read('components/rituals/Rituals.tsx');
- assert.match(rituals,/\{ id: "bucket", label: "Bucket List", href: "\/rituals\?view=bucket" \}/);
+test('#117: Envision has Aspirations | Vision Boards | Bucket List; Insights and export include the list',()=>{
+ const E=load('lib/envision');
+ assert.deepEqual(E.envisionTabs.map(t=>t.label),['Aspirations','Vision Boards','Bucket List']);
+ assert.equal(E.parseEnvisionTab('bucket'),'bucket');assert.equal(E.parseEnvisionTab('habits'),'aspirations','unknown views open Aspirations');
+ assert.match(read('next.config.ts'),/key: "view", value: "bucket" \}\], destination: "\/envision"/,'old /rituals?view=bucket links still work');
  assert.match(read('components/insights/Insights.tsx'),/<BucketInsights range=\{range\} today=\{today\}\/>/);
  assert.match(read('app/api/account/export/route.ts'),/client\.from\('bucket_entries'\)\.select\('\*'\)/);
- assert.match(read('components/rituals/bucket/BucketList.tsx'),/muse-today-ring/,'the selected year uses the shared rainbow ring');
+ assert.match(read('components/envision/bucket/BucketList.tsx'),/muse-today-ring/,'the selected year uses the shared rainbow ring');
 });
 
 test('Safari photos: Bucket List falls back to JPEG; storage accepts .jpg in the same owner folders',()=>{
@@ -132,6 +134,6 @@ test('Safari photos: Bucket List falls back to JPEG; storage accepts .jpg in the
  const up=read('lib/data/constellation-images.ts');
  assert.match(up,/blob.type==='image\/webp'/,'detects a browser that cannot encode WebP');
  assert.match(up,/Try Chrome or Firefox/,'Constellations explains instead of a failed retry');
- assert.match(read('components/rituals/bucket/useBucketList.ts'),/allowJpeg:true/);
- assert.doesNotMatch(read('components/rituals/bucket/BucketEditor.tsx'),/type="date"/,'Muse date picker, not the browser default');
+ assert.match(read('components/envision/bucket/useBucketList.ts'),/allowJpeg:true/);
+ assert.doesNotMatch(read('components/envision/bucket/BucketEditor.tsx'),/type="date"/,'Muse date picker, not the browser default');
 });

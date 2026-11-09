@@ -27,7 +27,7 @@ export const shortcuts:{id:StreamCategory;label:string;icon:MuseIconName;kinds:S
  {id:'watching',label:'Watching',icon:'film',kinds:['media'],home:{href:'/collections',label:'Collections'},only:group=>group!=='Albums'},
  {id:'feeling',label:'Feeling',icon:'mood',kinds:['mood'],home:{href:'/mood',label:'Mood'}},
  {id:'dreaming',label:'Dreaming',icon:'dreams',kinds:['dream'],home:{href:'/whimsy/dreamscapes',label:'Dreamscapes'}},
- {id:'celebrating',label:'Celebrating',icon:'sparkle',kinds:['aspiration','book','ritual','side-quest'],home:{href:'/rituals?view=aspirations',label:'Aspirations'}},
+ {id:'celebrating',label:'Celebrating',icon:'sparkle',kinds:['aspiration','book','ritual','side-quest'],home:{href:'/envision',label:'Aspirations'}},
  {id:'listening',label:'Listening',icon:'music',kinds:['media'],home:{href:'/collections?view=music',label:'Music'},only:group=>group==='Albums'},
  {id:'tarot',label:'Tarot',icon:'tarot',kinds:['tarot-reading'],home:{href:'/whimsy/tarot',label:'Tarot'}},
  {id:'side-quests',label:'Side Quests',icon:'wand',kinds:['side-quest'],home:{href:'/whimsy/side-quests',label:'Side Quests'}},

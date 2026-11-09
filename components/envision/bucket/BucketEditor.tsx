@@ -97,7 +97,7 @@ export function BucketEditor({initial,list,today,categories,aspirations,busy,err
      <div className="muse-aspiration-row"><div><p className="editor-label">Linked aspiration</p><MuseChoiceMenu label="Linked aspiration" valueLabel={linked?.title??'None'} searchable
       options={[{id:'',label:'None'},...aspirations.filter(a=>a.status!=='archived'||a.id===e.aspirationId).map(a=>({id:a.id,label:a.title}))]} selectedIds={[e.aspirationId??'']} onSelect={id=>set({aspirationId:id||null})}/></div>
       {!e.aspirationId&&!isNew&&<button type="button" className="muse-button" disabled={busy} onClick={()=>onPromote({...e,tags:tagText.split(/[\s,]+/).map(t=>t.replace(/^#/,'')).filter(Boolean)})}>Turn into an aspiration</button>}</div>
-     {linked&&<p className="small-label"><Link href="/rituals?view=aspirations">Open “{linked.title}” in Aspirations</Link>{linked.status==='completed'?' · completed':''}</p>}
+     {linked&&<p className="small-label"><Link href="/envision">Open “{linked.title}” in Aspirations</Link>{linked.status==='completed'?' · completed':''}</p>}
     </fieldset>
    </div>}
    {done&&<fieldset className="muse-bucket-done-fields"><legend>Completed</legend>

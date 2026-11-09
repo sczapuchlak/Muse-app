@@ -9,6 +9,7 @@ export const navigation: NavItem[] = [
   { id: "rituals", label: "Rituals", href: "/rituals", icon: "flame", group: "Everyday", description: "Small rhythms that make a day your own." },
   { id: "nourish", label: "Wellness", href: "/nourish", icon: "heart-pulse", group: "Everyday", description: "Take care of yourself. You've got places to be." },
   { id: "insights", label: "Insights", href: "/insights", icon: "chart", group: "Everyday", description: "A place to explore your patterns over time." },
+  { id: "envision", label: "Envision", href: "/envision", icon: "envision", group: "Life", description: "A home for the life you're imagining: aspirations, vision boards and your bucket list." },
   { id: "money", label: "Money", href: "/money", icon: "money", group: "Life", description: "A calmer view of your everyday finances." },
   { id: "notes", label: "Mindspace", href: "/notes", icon: "brain", group: "Life", description: "Somewhere for the thoughts you want to keep." },
   { id: "collections", label: "Collections", href: "/collections", icon: "bookshelf", group: "Life", description: "A little museum of your favorite things." },
@@ -24,7 +25,7 @@ export const navigation: NavItem[] = [
 
 export const desktopGroups = ["Everyday", "Life", "Whimsy"] as const;
 export const mobilePrimaryIds = ["daily", "planner", "rituals"];
-export const mobileMoreIds = ["nourish", "insights", "money", "notes", "collections", "astrology", "tarot", "dreams", "fortune-fun", "stream", "profile", "appearance", "settings"];
+export const mobileMoreIds = ["nourish", "insights", "envision", "money", "notes", "collections", "astrology", "tarot", "dreams", "fortune-fun", "stream", "profile", "appearance", "settings"];
 export function navItems(ids: string[]): NavItem[] { return ids.map((id) => navigation.find((item) => item.id === id)).filter((item): item is NavItem => Boolean(item)); }
 export function isActiveDestination(path: string, href: string): boolean { return href === "/" ? path === "/" : path === href || path.startsWith(`${href}/`); }
 export function isActiveItem(path: string, item: Pick<NavItem, "href" | "matches">): boolean { return [item.href, ...(item.matches ?? [])].some((href) => isActiveDestination(path, href)); }

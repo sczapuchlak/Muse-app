@@ -92,7 +92,7 @@ test('#104 Bucket List: crop is a saved focal point + zoom; the upload is never 
   assert.deepEqual(M.photoFrame({frame:{x:140,y:-5,zoom:9}}),{x:100,y:0,zoom:3},'clamped');
   const img={id:'i',path:'a.webp',thumbnailPath:'t.webp',name:'',alt:'',width:4000,height:3000,mime:'image/webp'};
   const framed=M.withFrame(img,{x:33.333,y:70,zoom:1.756});assert.equal(framed.path,'a.webp');assert.deepEqual(framed.frame,{x:33.3,y:70,zoom:1.76});
-  assert.match(read('components/rituals/bucket/BucketList.css'),/\.muse-bucket-card-photo\{position:absolute;inset:0/);
+  assert.match(read('components/envision/bucket/BucketList.css'),/\.muse-bucket-card-photo\{position:absolute;inset:0/);
 });
 
 test('#104 Money: the summary keeps projection and actual apart and invents nothing without a paycheck',()=>{

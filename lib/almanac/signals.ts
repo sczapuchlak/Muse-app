@@ -114,7 +114,7 @@ export function tarotSignals(readings:TarotReading[],today:string):Signal[]{
 // ---------- Aspirations ----------
 /** Milestones done this week, past-halfway goals, recent finishes, and goals moving again after 3+ quiet weeks. */
 export function aspirationSignals(aspirations:Aspiration[],updates:Pick<AspirationUpdate,'aspirationId'|'recordedOn'>[],percentOf:(a:Aspiration)=>Pick<Progress,'percent'|'available'>,today:string):Signal[]{
- const out:Signal[]=[],href='/rituals?view=aspirations',week=shiftDate(today,-6);
+ const out:Signal[]=[],href='/envision',week=shiftDate(today,-6);
  for(const a of aspirations){
   if(a.status==='archived')continue;
   const done=a.milestones.filter(m=>m.completedOn),latest=done.filter(m=>m.completedOn!>=week).sort((x,y)=>y.completedOn!.localeCompare(x.completedOn!))[0];

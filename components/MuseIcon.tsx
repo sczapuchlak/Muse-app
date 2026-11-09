@@ -26,6 +26,8 @@ const paths = {
   grip: <path d="M8 5h.01M16 5h.01M8 12h.01M16 12h.01M8 19h.01M16 19h.01" />,
   filter: <><path d="M4 6h16M7 12h10M10 18h4" /></>,
   check: <path d="m5 12 4 4L19 6" />,
+  // Envision: a horizon peak with a sparkle above it.
+  envision: <><path d="m3 20 6.5-11 4 6.5 2.5-4L21 20Z" /><path d="M18 3v4M16 5h4" /></>,
   home: <><path d="m3 10 9-7 9 7M5 9v12h14V9M9 21v-7h6v7" /></>,
   rituals: <><path d="M7 20h10M8 17V9h8v8M12 3c-3 3-2 5 0 5s3-2 0-5Z" /></>,
   insights: <><path d="M4 4v16h16M8 15l4-5 4 2 4-6" /></>,

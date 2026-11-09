@@ -22,7 +22,7 @@ type Prefs={view:View;sort:BucketSort};
 function readPrefs():Prefs{try{const v=JSON.parse(window.localStorage.getItem(prefsKey)??'{}');return {view:views.some(x=>x.id===v.view)?v.view:'classic',sort:bucketSorts.some(s=>s.id===v.sort)?v.sort:'custom'};}catch{return {view:'classic',sort:'custom'};}}
 type Modal={kind:'edit';entry:BucketEntry}|{kind:'complete';entry:BucketEntry}|{kind:'settings'}|null;
 
-/** Rituals → Bucket List (#84): one long-running list of dreams, colored by the year each came true. */
+/** Envision → Bucket List (#84, moved from Rituals in #117): one long-running list of dreams, colored by the year each came true. */
 export function BucketList({today}:{today:string}){
  const {list,entries,status,save,saveMany,saveList,remove,upload}=useBucketList(today);
  const asp=useAspirations();

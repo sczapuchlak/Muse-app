@@ -6,6 +6,7 @@ import { dateLabel, shiftDate } from "@/lib/dates";
 import { dailyEditSample } from "@/lib/daily-edit-data";
 import { parsePlannerTab, plannerTabs } from "@/lib/agenda";
 import { Reflections } from "./reflections/Reflections";
+import { Intentions } from "./intentions/Intentions";
 import { Agenda } from "./Agenda";
 import { MuseSectionNav } from "../MuseSectionNav";
 import { PLANNING_WINDOW_DAYS, emptyPlannerFilters, filterPlannerTasks, formatPlannedMinutes, validDate, type PlannerFilters as Filters } from "@/lib/planner";
@@ -84,7 +85,8 @@ export function Planner() {
     <MusePageHeader title="Planner"/>
     <MuseSectionNav label="Planner views" current={tab} items={plannerTabs.map((t) => ({ id: t.id, label: t.label, href: `/planner?${t.id === "tasks" ? "" : `view=${t.id}&`}date=${date}` }))}/>
     <PlannerCapture>{tab === "agenda" && <Agenda date={date} today={today} onDate={changeDate} onOpen={openTask} workspaceId={workspaceFilter || undefined}/>}
-    {tab === "reflections" && <Reflections date={date} today={today} onDate={changeDate} userId={profile.id} />}
+    {tab === "intentions" && <Intentions date={date} today={today} onDate={changeDate} requestedPeriod={query.get("period")} />}
+    {tab === "reflections" && <Reflections date={date} today={today} onDate={changeDate} userId={profile.id} requestedPeriod={query.get("period")} />}
     {tab === "tasks" && <>{utilities()}
     {tasksView === "running" && <RunningList tasks={filtered} weekOf={date} today={today} timeZone={profile.timeZone} workspaceId={workspaceFilter} onWorkspaceChange={(id)=>{setWorkspace(id);setFilters((current)=>({...current,groupId:""}));}}
       search={search} onSearch={setSearch} filters={activeFilters} onFilter={setFilters} priorityIds={priorityIds} onOpen={openTask} onAnnounce={setAnnouncement}/>}
