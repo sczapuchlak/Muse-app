@@ -6,7 +6,11 @@ import { glanceRange, glanceTitle, shiftGlance } from "@/lib/insights/glance";
 import { canAddItem, guidedPrompts, hasContent, layoutById, layoutsFor, moduleType, periods, seedModules, switchLayout,
   type GuidedPrompt, type LayoutId, type LifeArea, type LifeRating, type ModuleContent, type ModuleType, type ReflectionImage, type ReflectionModule, type ReflectionPeriod } from "@/lib/reflections/model";
 import { clearRating, readLifeAreas, readRatings, readReview, saveLifeArea, saveRating, saveReview, type Review } from "@/lib/reflections/persistence";
+import Link from "next/link";
+import { hasIntentions } from "@/lib/intentions/persistence";
+import { intentionName, intentionRange } from "@/lib/intentions/periods";
 import { MuseIcon } from "../../MuseIcon";
+import "../intentions/Intentions.css";
 import { MuseStar } from "../../MuseStar";
 import { MuseChoiceMenu } from "../../MuseChoiceMenu";
 import { PeriodTitle } from "../PeriodTitle";
@@ -21,10 +25,11 @@ const isPeriod = (v: unknown): v is ReflectionPeriod => periods.some((p) => p.id
  * Planner → Reflections (#99): a modular memory book for a week, month or year. Starts from one of two layouts per
  * period; every section is the person's own words and pictures. Autosaves; nothing here touches other modules.
  */
-export function Reflections({ date, today, onDate, userId }: { date: string; today: string; onDate: (d: string) => void; userId: string }) {
+export function Reflections({ date, today, onDate, userId, requestedPeriod }: { date: string; today: string; onDate: (d: string) => void; userId: string; requestedPeriod?: string | null }) {
   const clientRef = useRef<Client | null>(null), client = useCallback(() => clientRef.current ??= createMuseBrowserClient(), []);
-  const [period, setPeriodState] = useState<ReflectionPeriod>("week");
-  useEffect(() => { const t = window.setTimeout(() => { try { const v = localStorage.getItem(periodKey); if (isPeriod(v)) setPeriodState(v); } catch { /* defaults */ } }, 0); return () => window.clearTimeout(t); }, []);
+  const [period, setPeriodState] = useState<ReflectionPeriod>(isPeriod(requestedPeriod) ? requestedPeriod : "week");
+  // #117: a link's ?period= (from Intentions) wins; otherwise the last period used on this device.
+  useEffect(() => { const t = window.setTimeout(() => { try { if (isPeriod(requestedPeriod)) { setPeriodState(requestedPeriod); localStorage.setItem(periodKey, requestedPeriod); return; } const v = localStorage.getItem(periodKey); if (isPeriod(v)) setPeriodState(v); } catch { /* defaults */ } }, 0); return () => window.clearTimeout(t); }, [requestedPeriod]);
   const setPeriod = (p: ReflectionPeriod) => { setPeriodState(p); try { localStorage.setItem(periodKey, p); } catch { /* this device */ } };
   const range = useMemo(() => glanceRange(period, date || today), [period, date, today]);
   const upload = useCallback(async (file: File, reviewId: string): Promise<ReflectionImage> => { const img = await uploadBoardImage(userId, reviewId, file, { allowJpeg: true }); return { id: img.id, path: img.path, thumbnailPath: img.thumbnailPath, alt: "", width: img.width, height: img.height }; }, [userId]);
@@ -41,7 +46,16 @@ export function Reflections({ date, today, onDate, userId }: { date: string; tod
       </div>
     </div>
     <PeriodBook key={`${period}/${range.start}`} period={period} start={range.start} end={range.end} today={today} client={client} upload={upload} />
+    <IntentionsLink period={period} start={range.start} client={client} />
   </section>;
+}
+
+/** #117: the same period's Intentions (the "before" to this "after"). Neither page needs the other to exist. */
+function IntentionsLink({ period, start, client }: { period: ReflectionPeriod; start: string; client: () => Client }) {
+  const [exists, setExists] = useState<boolean | null>(null);
+  useEffect(() => { let live = true; hasIntentions(client(), period, start).then((v) => { if (live) setExists(v); }).catch(() => { if (live) setExists(null); }); return () => { live = false; }; }, [client, period, start]);
+  const name = intentionName(intentionRange(period, start));
+  return <p className="muse-intentions-pair"><span className="muse-reflections-quiet">Before</span><Link className="muse-reflections-pill" href={`/planner?view=intentions&period=${period}&date=${start}`}>{exists ? `See your intentions for ${name}` : `Set intentions for ${name}`} <MuseIcon name="arrow" size={14} /></Link></p>;
 }
 
 /** One period's page. Keyed by period and start, so moving to another period starts fresh. */

@@ -9,8 +9,9 @@ const read=f=>readFileSync(resolve(root,f),'utf8');
 const task=(id,plannedDate,complete=false)=>({id,kind:'task',title:id,complete,workspaceId:'w',tagIds:[],plannedDate,actualMinutes:0,subtasks:[],createdAt:'2026-11-01T00:00:00Z'});
 const event=(id,date,time)=>({id,kind:'event',title:id,date,dateTime:`${date}T${time}:00`,time});
 
-test('Planner has exactly Tasks, Agenda and Reflections; Agenda has Day, Week, Month and Future Log',()=>{
- assert.deepEqual(A.plannerTabs.map(t=>t.label),['Tasks','Agenda','Reflections']);
+test('Planner has exactly Tasks, Intentions, Agenda and Reflections (#117); Agenda has Day, Week, Month and Future Log',()=>{
+ assert.deepEqual(A.plannerTabs.map(t=>t.label),['Tasks','Intentions','Agenda','Reflections']);
+ assert.equal(A.parsePlannerTab('intentions'),'intentions');
  assert.deepEqual(A.agendaViews.map(v=>v.label),['Day','Week','Month','Future Log']);
  assert.equal(A.parsePlannerTab('calendar'),'tasks','old or unknown tabs fall back to Tasks');
  assert.equal(A.parsePlannerTab('agenda'),'agenda');

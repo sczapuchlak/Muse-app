@@ -1146,3 +1146,29 @@ In edit mode every section can be renamed, resized (full / wide / half / third o
 - **Items:** notes, section, priority, due date (one-off), schedule (presets daily → yearly, every N days/weeks/months/years, specific weekdays; flexible / preferred / date), this period's skip / move / history with undo, custom field values, Send to Planner / unlink.
 - **Fields:** up to 8 per list (text, number, date, select, url, checkbox); optional desktop table view.
 - **Data:** `lists`, `list_sections`, `list_items`, `list_item_events` (owner RLS; unique per item, period and kind). Included in Export your data.
+
+## Envision & Planner Intentions (#117) — implemented on feature branch (local migration only)
+
+Rules: PRODUCT_RULES "Envision & Planner Intentions (#117)". Ownership and references: [Integration Map](INTEGRATION_MAP.md).
+
+**Envision** (`/envision`, sidebar Life group, first; mobile More under Life)
+- Tabs: Aspirations (default, `/envision`) | Vision Boards (`?view=vision-boards`) | Bucket List (`?view=bucket`), using the shared `MuseSectionNav`.
+- Moved, not rewritten: `components/envision/aspirations` and `components/envision/bucket` (git moves of the former `components/rituals/*`). No data migration. `?open=<aspiration id>` opens an aspiration's details.
+- Old links: `next.config.ts` redirects `/rituals?view=aspirations|bucket` to `/envision` with the query kept; Rituals also replaces the URL on the client as a fallback. Internal links (Insights, Muse Marks, Almanac, Stream, Bucket List editor) point at Envision.
+- Vision Boards: an empty state with a still collage made only of theme accents, and links to Aspirations, Bucket List and Intentions. No controls.
+
+**Rituals**: Habits only. The tabs row is gone; the date navigator always shows.
+
+**Planner → Intentions** (`/planner?view=intentions[&period=week|month|quarter|year][&date=YYYY-MM-DD]`)
+- Toolbar: period title (opens the shared day picker to jump anywhere), Week / Month / Quarter / Year, ‹ This … ›. The period is remembered per device; a `period` link wins and is remembered.
+- An empty period shows its template (name, tagline, sections) with **Begin this …** or **Start with a blank page**. Nothing is saved until one is pressed.
+- Templates (`lib/intentions/model.ts`):
+  - Week, "The Week Ahead": a little intention, this week's priorities, what matters most, looking forward to.
+  - Month, "A New Chapter": theme, my intention, top priorities, aspirations I'm nurturing, looking forward to, rituals to focus on, things I want to try, a promise to myself.
+  - Quarter, "The Season Ahead": the season ahead, key aspirations, milestones, personal growth, what to prioritize, what to simplify.
+  - Year, "The Year I'm Imagining": word of the year, personal vision, major aspirations, Bucket List experiences, life areas to nurture, a promise to myself.
+- Section types: theme (word + meaning), writing (intention, promise, vision or custom), list (try, matters, milestones, growth, simplify, areas or custom; 12 items), priorities (5; optional link to an aspiration or task; **Make it a task**), looking forward to (12; optional Agenda event in the period), aspirations / rituals / bucket (12 references, each with a note and a small live summary).
+- Writing is edited in place and autosaves (700 ms, in order, revision-checked; a pending edit is saved when you move to another period). **Arrange sections** shows title editing, ↑/↓, Hide/Show, Remove (with confirmation when it has content; Hide is offered instead), Add a section and Clear this page. Collapse is a per-section chevron and is saved.
+- Below the page: a link to the same period's Reflection (week, month and year), and Reflections links back to Intentions.
+- Data: `intention_pages` (migration `20261201000100_intentions`): `period`, `period_start`, `period_end`, `sections` jsonb (≤30 sections, ≤200 KB), `revision`. Unique per user, period and start. A check constraint keeps period dates aligned. Owner-only RLS (4 policies, no anon). Included in Export your data.
+- Tests: `tests/intentions.test.mjs`. Hosted verification: `scripts/verify-hosted-intentions.sql`.

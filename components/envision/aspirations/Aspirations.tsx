@@ -1,7 +1,8 @@
 'use client';
 import Link from 'next/link';
 import {useCallback,useEffect,useMemo,useRef,useState,type CSSProperties} from 'react';
-import {useRitualView} from '../ConnectedRituals';
+import {useSearchParams} from 'next/navigation';
+import {useRitualView} from '../../rituals/ConnectedRituals';
 import {usePlanner} from '../../PlannerStore';
 import {useWhimsyData} from '../../whimsy/WhimsyData';
 import {MuseStar} from '../../MuseStar';
@@ -35,6 +36,9 @@ export function Aspirations(){
  useEffect(()=>{const t=window.setTimeout(()=>setView(readView()),0);return ()=>window.clearTimeout(t);},[]);
  const changeView=(patch:Partial<typeof view>)=>setView(v=>{const next={...v,...patch};try{window.localStorage.setItem(viewKey,JSON.stringify(next));}catch{/* per device only */}return next;});
  const [editing,setEditing]=useState<Aspiration|null>(null),[openId,setOpenId]=useState<string|null>(null);
+ // #117: `?open=<id>` (from Intentions and other modules) opens that aspiration once, when it's loaded.
+ const requestedOpen=useSearchParams()?.get('open')??null,openedRequest=useRef<string|null>(null);
+ useEffect(()=>{if(!requestedOpen||openedRequest.current===requestedOpen||!aspirations.some(a=>a.id===requestedOpen))return;openedRequest.current=requestedOpen;const t=window.setTimeout(()=>setOpenId(requestedOpen),0);return ()=>window.clearTimeout(t);},[requestedOpen,aspirations]);
  const books=whimsy.records?.books,goals=whimsy.records?.goals;
  const ctx=useMemo(()=>({updates,sources,books,readingGoals:goals,today:today||''}),[updates,sources,books,goals,today]);
  const progressMap=useMemo(()=>new Map<string,Progress>(aspirations.map(a=>[a.id,aspirationProgress(a,ctx)])),[aspirations,ctx]);

@@ -1,5 +1,5 @@
 /**
- * Bucket List (#84): one long-running list of dreams in Rituals, inspired by a handwritten bullet-journal list with a
+ * Bucket List (#84): one long-running list of dreams in Envision (moved from Rituals in #117), inspired by a handwritten bullet-journal list with a
  * color key — every year gets a color, and a dream completed in that year is highlighted in it. The list's settings
  * (title, horizon, year colors, completion treatment) live on one `bucket_lists` row; each dream is a `bucket_entries`
  * row. Year colors are stored hex values, never theme tokens, so the record of a year looks the same in every theme.

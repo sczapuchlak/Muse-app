@@ -13,12 +13,12 @@ const group=name=>navigation.filter(item=>item.group===name).map(item=>[item.lab
 test('sidebar groups match the approved Everyday / Life / Whimsy structure and icons',()=>{
  assert.deepEqual(desktopGroups,['Everyday','Life','Whimsy']);
  assert.deepEqual(group('Everyday'),[['Daily Edit','/','home'],['Planner','/planner','calendar'],['Rituals','/rituals','flame'],['Wellness','/nourish','heart-pulse'],['Insights','/insights','chart']]);
- assert.deepEqual(group('Life'),[['Money','/money','money'],['Mindspace','/notes','brain'],['Collections','/collections','bookshelf']]);
+ assert.deepEqual(group('Life'),[['Envision','/envision','envision'],['Money','/money','money'],['Mindspace','/notes','brain'],['Collections','/collections','bookshelf']]);
  assert.deepEqual(group('Whimsy'),[['Astrology','/whimsy/observatory','orbit'],['Tarot','/whimsy/tarot','tarot'],['Dreams','/whimsy/dreamscapes','dreams'],['Fortune & Fun','/whimsy/side-quests','wand']]);
  assert.equal(navigation.find(item=>item.id==='settings').icon,'gear');
  assert.ok(!navigation.some(item=>/Reflect|Weekly Side Quests|Fortunes & Nonsense|^Whimsy$|^Mood$/.test(item.group+' '+item.label)));
  const icons=read('components/MuseIcon.tsx');
- for(const name of ['flame','chart','bookshelf','orbit','tarot','dreams','wand','themes','gear'])assert.match(icons,new RegExp(`\\n  ${name}: `),name);
+ for(const name of ['flame','envision','chart','bookshelf','orbit','tarot','dreams','wand','themes','gear'])assert.match(icons,new RegExp(`\\n  ${name}: `),name);
 });
 
 test('active destinations cover nested and grouped routes',()=>{

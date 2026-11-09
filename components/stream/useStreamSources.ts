@@ -6,7 +6,7 @@ import {useMoney} from '../money/MoneyStore';
 import {useDailyData} from '../daily/DailyData';
 import {useShowcaseSources} from '../profile/useShowcaseSources';
 import {useCollectionsData} from '../collections/CollectionsData';
-import {useAspirations} from '../rituals/aspirations/useAspirations';
+import {useAspirations} from '../envision/aspirations/useAspirations';
 import {createMuseBrowserClient} from '@/lib/supabase/client';
 import {readDays} from '@/lib/data/daily';
 import {shiftDate,todayInTimeZone} from '@/lib/dates';

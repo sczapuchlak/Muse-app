@@ -1,5 +1,5 @@
 /**
- * Aspirations (#54): longer-term goals beside Habits in Rituals. An aspiration owns its target, milestones and journal.
+ * Aspirations (#54): longer-term goals in Envision (moved from Rituals in #117). An aspiration owns its target, milestones and journal.
  * Connected progress is read from the authoritative module (progress engine, Reading Challenge) at display time and
  * never stored here; habit and task links are ids only.
  */

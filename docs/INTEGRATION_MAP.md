@@ -1,0 +1,62 @@
+# Muse Integration Map
+
+One life, one system. Muse is a personal life operating system, not a set of separate tools. This page records which module owns each kind of record, how other modules may refer to it, and the check to run before building a major feature. Approved in #117 (November 2026).
+
+**The cycle:** Envision → Intend → Live → Reflect → Understand → Envision again. This is the product model behind Muse. It is not a required workflow or a navigation structure: people can start anywhere and use any module on its own.
+
+## Muse Cohesion Check (run before every major feature)
+
+Write down the answers before you build. Put them in the PR description or the feature's spec section.
+
+1. **Authoritative source.** Which module owns the new record? It has exactly one home.
+2. **Related owners.** Which existing modules already own related information?
+3. **Duplicates.** Could this create a second copy of an Aspiration, Task, Ritual, Bucket List dream, event or memory? If so, use a reference instead.
+4. **Optional relationships.** Which connections help? None may be required unless the relationship is intrinsic.
+5. **Patterns.** Which navigation patterns, components and tokens already exist for this? Extend them rather than imitate them.
+6. **Place in the cycle.** What happens before and after this experience?
+7. **Now or later.** Which integrations work now, and which are only prepared for the future? Say which in the docs.
+
+## Principles
+
+- **One authoritative record.** Other modules hold its id, never a copy of it.
+- **Connections are optional.** Nothing requires using another feature, unless the link is intrinsic. For example, a Task always belongs to a Workspace.
+- **Complete journeys.** Link to the related page before and after, such as Intentions ↔ Reflections for the same period.
+- **Live references vs. saved snapshots.** A live view reads the current record. A saved page keeps a small snapshot (name, date) of what it pointed at. Editing or deleting the record later never rewrites an older page; the page shows "now …" or "no longer there".
+- **Explicit actions only.** A module never creates or changes another module's records in the background. Turning an Intention priority into a Task is a button the person presses, and it happens once.
+- **Different personalities, one design system.** Envision is aspirational, Planner purposeful, Rituals encouraging, Reflections thoughtful. All use the same tokens and components.
+
+## Record ownership
+
+| Record | Owner (navigation) | Table(s) | Referenced by | How |
+|---|---|---|---|---|
+| Aspiration | Envision → Aspirations | `aspirations`, `aspiration_updates` | Intentions, Bucket List, Muse Marks, Lists, Agenda, Insights, Stream, Almanac | id; Intentions keeps a name snapshot |
+| Bucket List dream | Envision → Bucket List | `bucket_lists`, `bucket_entries` | Intentions, Insights | id; Intentions keeps a name snapshot |
+| Vision Board | Envision → Vision Boards (planned) | none yet | Intentions, Aspirations (future) | id (future) |
+| Task | Planner → Tasks | `tasks` (+ `task_occurrences`) | Daily Edit priorities, Aspirations, Lists, Intentions | id; an Intention priority stores the `taskId` it made |
+| Muse event | Planner → Agenda | `planner_events` | Intentions (Looking forward to), Daily Edit | id + occurrence date snapshot |
+| Google event | Planner → Agenda (read-only cache) | `google_events` | Agenda, Daily Edit | display only; never copied |
+| Intention page | Planner → Intentions | `intention_pages` | Reflections (link only) | period + start |
+| Reflection | Planner → Reflections | `reflection_reviews`, `life_areas`, `life_ratings` | Intentions (link only) | period + start |
+| Ritual (habit) | Rituals | `rituals`, `ritual_entries`, `ritual_groups` | Aspirations, Intentions, Daily Edit, Wellness, Insights | id; Intentions keeps a name snapshot |
+| Daily intention | Daily Edit | `daily_records` | Insights | separate from Intentions; never overwritten by them |
+| Lists | Mindspace → Lists | `lists`, `list_*` | Planner (linked tasks), Aspirations | id |
+| Insights | Insights | none (derived) | none | reads other modules; stores nothing |
+
+## Lifecycles worth knowing
+
+- **Renaming or deleting a referenced record:** references stay readable (name snapshot). Nothing is cascaded into Intentions.
+- **Deleting an Intentions page:** only the page is deleted. Aspirations, Rituals, dreams, Tasks and events are untouched.
+- **Hiding an Intentions section** keeps its content. Deleting a section that has content asks for confirmation first.
+- **Aspirations and the Bucket List moved from Rituals to Envision (#117).** Same records, settings and components. `/rituals?view=aspirations|bucket` redirects to `/envision` with the query intact.
+- **Intentions ↔ Reflections:** each links to the same period on the other side. Neither needs the other to exist, and neither writes to the other. Quarters exist only in Intentions.
+
+## Integration status (#117)
+
+| Integration | Status |
+|---|---|
+| Intentions → Aspirations, Rituals, Bucket List, Agenda events (choose and reference) | Working |
+| Intention priority → Task (explicit, once) | Working |
+| Intentions ↔ Reflections links for the same period | Working (week, month, year) |
+| Intentions → Vision Board preview | Planned: add a `vision-board` section type that references a board id once Vision Boards exists |
+| Daily Edit showing the week's or month's intention | Future idea: read the page; never copy it into daily records |
+| Insights over Intentions | Not planned yet |

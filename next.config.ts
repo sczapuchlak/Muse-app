@@ -10,6 +10,14 @@ const nextConfig: NextConfig = {
     agentFeedback: true,
   },
   cacheComponents: true,
+  // Envision (#117): Aspirations and the Bucket List moved out of Rituals. Old links keep working; the query
+  // (view, open, date…) is passed through unchanged.
+  async redirects() {
+    return [
+      { source: "/rituals", has: [{ type: "query", key: "view", value: "aspirations" }], destination: "/envision", permanent: false },
+      { source: "/rituals", has: [{ type: "query", key: "view", value: "bucket" }], destination: "/envision", permanent: false },
+    ];
+  },
   partialPrefetching: true,
   outputFileTracingIncludes: {
     '/api/astrology/places': ['./content/astrology/places.json.gz'],

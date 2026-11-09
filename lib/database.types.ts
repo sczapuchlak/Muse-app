@@ -891,6 +891,20 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
+                },"intention_pages": {
+                  Row: {
+                    "created_at": string,"id": string,"period": string,"period_end": string,"period_start": string,"revision": number,"sections": NonNullable<Json>,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"id"?: string,"period": string,"period_end": string,"period_start": string,"revision"?: number,"sections"?: NonNullable<Json>,"updated_at"?: string,"user_id"?: string
+                  }
+                  Update: {
+                    "created_at"?: string,"id"?: string,"period"?: string,"period_end"?: string,"period_start"?: string,"revision"?: number,"sections"?: NonNullable<Json>,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
                 },"life_areas": {
                   Row: {
                     "archived_at": string | null,"color": string,"created_at": string,"id": string,"label": string,"position": number,"revision": number,"updated_at": string,"user_id": string

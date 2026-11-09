@@ -1,0 +1,87 @@
+/* Planner → Intentions (#117). Shares Reflections' primitives (pills, icons, inputs, add/confirm, toolbar) from
+   Reflections.css; this file is the page itself. One theme-aware surface, writing that looks like ink on a page,
+   and a slightly different personality per period. */
+.muse-intentions{--i-gap:clamp(14px,1.8vw,22px);--r-grad:linear-gradient(135deg,var(--accent-primary),var(--accent-pop,var(--accent-secondary)));display:grid;gap:var(--i-gap)}
+
+/* ---------- Empty period ---------- */
+.muse-intentions-start{display:grid;gap:14px;justify-items:start;padding:clamp(20px,3.5vw,40px);border-radius:28px;border:1px solid var(--glass-border);background:var(--glass-background)}
+.muse-intentions-start h2{margin:0;font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight);font-size:clamp(1.55rem,2.8vw,2.2rem);line-height:1.15}
+.muse-intentions-template{display:grid;gap:10px;width:min(100%,560px);padding:14px 16px;border-radius:18px;background:var(--surface-subtle);border:1px solid var(--glass-border)}
+.muse-intentions-template-head{display:grid;gap:2px}
+.muse-intentions-template-head strong{font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight);font-size:1.1rem}
+.muse-intentions-template-head span{color:var(--text-muted);font-size:.86rem}
+.muse-intentions-template ol{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0;list-style:none}
+.muse-intentions-template li{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;background:var(--surface-control);font-size:.8rem}
+
+/* ---------- The page ---------- */
+.muse-intentions-page{display:grid;gap:var(--i-gap);padding:clamp(18px,3vw,36px);border-radius:30px;border:1px solid var(--glass-border);background:var(--glass-background)}
+.muse-intentions-cover{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 14px;padding-bottom:10px;border-bottom:1px solid var(--glass-border)}
+.muse-intentions-cover h2{margin:0}
+.muse-intentions-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--i-gap);align-items:start}
+.muse-intentions-section{display:grid;gap:10px;min-width:0;padding:clamp(14px,1.8vw,20px);border-radius:22px;border:1px solid var(--glass-border);background:var(--surface-subtle)}
+.muse-intentions-section:is([data-type=theme],[data-type=writing]){grid-column:1/-1}
+.muse-intentions-section[data-hidden]{opacity:.55;border-style:dashed}
+.muse-intentions-section-head{display:flex;align-items:center;gap:8px}
+.muse-intentions-section-head h3{flex:1;margin:0;font-size:1.02rem;font-weight:750}
+.muse-intentions-section-head .muse-reflections-module-title{flex:1}
+.muse-intentions-section-icon{font-size:1.1rem}
+.muse-intentions-collapse svg{transition:transform .18s ease}
+.muse-intentions-section[data-collapsed] .muse-intentions-collapse svg{transform:rotate(-90deg)}
+.muse-intentions-section-body{display:grid;gap:10px;min-width:0}
+
+/* Writing looks like ink on the page until you touch it. */
+.muse-intentions-writing,.muse-intentions-line,.muse-intentions-word-input{width:100%;min-width:0;box-sizing:border-box;border:1px solid transparent;border-radius:12px;background:transparent;color:var(--foreground);font:inherit}
+.muse-intentions-writing{padding:8px 10px;resize:vertical;font-family:var(--font-editorial);font-size:1.05rem;line-height:1.75;background-image:repeating-linear-gradient(transparent 0 calc(1.75em - 1px),color-mix(in srgb,var(--glass-border) 80%,transparent) calc(1.75em - 1px) 1.75em);background-position:0 8px;background-attachment:local}
+.muse-intentions-writing[data-prompt=promise]{font-style:italic;text-align:center;font-size:1.15rem}
+.muse-intentions-line{min-height:38px;padding:6px 10px;border-bottom-color:var(--glass-border);border-radius:10px 10px 0 0}
+.muse-intentions-word-input{padding:4px 10px;font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight);font-size:clamp(1.5rem,2.8vw,2.2rem)}
+:is(.muse-intentions-writing,.muse-intentions-line,.muse-intentions-word-input):hover{border-color:var(--glass-border)}
+:is(.muse-intentions-writing,.muse-intentions-line,.muse-intentions-word-input):focus-visible{outline:none;border-color:var(--selected-border,var(--accent-primary));background-color:var(--surface-control)}
+:is(.muse-intentions-writing,.muse-intentions-line,.muse-intentions-word-input)::placeholder{color:var(--text-muted);opacity:.85}
+.muse-intentions-theme{display:grid;gap:4px}
+
+.muse-intentions-list ul,.muse-intentions-linked ul{display:grid;gap:6px;margin:0;padding:0;list-style:none}
+.muse-intentions-list .muse-reflections-row>.muse-intentions-line{flex:1 1 180px}
+.muse-intentions-priorities ol{display:grid;gap:10px;margin:0;padding:0;list-style:none}
+.muse-intentions-priorities li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:start}
+.muse-intentions-number{display:grid;place-items:center;width:30px;height:30px;margin-top:4px;border-radius:50%;border:1.5px solid transparent;background:linear-gradient(var(--surface-subtle),var(--surface-subtle)) padding-box,var(--r-grad) border-box;font-weight:800;font-size:.85rem}
+.muse-intentions-priority{display:grid;gap:6px;min-width:0}
+.muse-intentions-priority .muse-reflections-row>.muse-intentions-line{flex:1 1 180px}
+.muse-intentions-priority-links{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.muse-intentions-priority-links .muse-reflections-pill{min-height:30px;padding-block:3px;font-size:.78rem}
+.muse-intentions-linked li{display:grid;gap:4px;padding:8px 10px;border-radius:14px;background:color-mix(in srgb,var(--surface-control) 60%,transparent)}
+.muse-intentions-linked-head{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
+.muse-intentions-linked-head .muse-reflections-icon{margin-left:auto}
+
+/* A reference to a record another module owns: its name as chosen, linking home. */
+.muse-intentions-ref{display:inline-flex;flex-wrap:wrap;align-items:baseline;gap:6px;max-width:100%;padding:3px 10px;border-radius:999px;border:1px solid color-mix(in srgb,var(--accent-secondary) 40%,var(--glass-border));background:color-mix(in srgb,var(--accent-secondary) 10%,var(--surface-subtle));font-size:.86rem;font-weight:650}
+.muse-intentions-ref a{color:var(--foreground);text-decoration:none}
+.muse-intentions-ref a:hover{text-decoration:underline;text-decoration-color:var(--accent-secondary)}
+.muse-intentions-ref small{color:var(--text-muted);font-weight:500;font-size:.74rem}
+.muse-intentions-ref[data-kind=aspiration]{border-color:color-mix(in srgb,var(--accent-primary) 40%,var(--glass-border));background:color-mix(in srgb,var(--accent-primary) 10%,var(--surface-subtle))}
+.muse-intentions-ref[data-missing]{border-style:dashed;background:transparent;color:var(--text-muted)}
+
+.muse-intentions-pair{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px;margin:0}
+.muse-intentions-clear{justify-self:start;color:var(--text-muted)}
+
+/* ---------- Personalities ---------- */
+/* Week: short and practical — tighter and quicker to scan. */
+.muse-intentions-page[data-period=week]{gap:14px;padding:clamp(16px,2.4vw,26px)}
+.muse-intentions-page[data-period=week] .muse-intentions-section{padding:14px}
+.muse-intentions-page[data-period=week] .muse-intentions-writing{font-size:1rem}
+/* Month: the classic opening page — the theme leads, large and editorial. */
+.muse-intentions-page[data-period=month] .muse-intentions-section[data-type=theme]{border:0;background:transparent;padding-inline:0;text-align:center}
+.muse-intentions-page[data-period=month] .muse-intentions-section[data-type=theme] .muse-intentions-section-head{justify-content:center}
+.muse-intentions-page[data-period=month] .muse-intentions-section[data-type=theme] .muse-intentions-section-head h3{flex:initial;font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--text-muted)}
+.muse-intentions-page[data-period=month] .muse-intentions-section[data-type=theme] :is(.muse-intentions-word-input,.muse-intentions-writing){text-align:center}
+/* Quarter: strategic — a steady accent rule down each section. */
+.muse-intentions-page[data-period=quarter] .muse-intentions-section{border-left:3px solid color-mix(in srgb,var(--accent-secondary) 70%,transparent)}
+.muse-intentions-page[data-period=quarter] .muse-intentions-section[data-type=theme]{border-left-color:var(--accent-primary)}
+/* Year: big-picture — a word of the year set large. */
+.muse-intentions-page[data-period=year] .muse-intentions-section[data-type=theme] .muse-intentions-word-input{font-size:clamp(2rem,4.6vw,3.4rem);background:var(--r-grad);-webkit-background-clip:text;background-clip:text;color:transparent;caret-color:var(--foreground)}
+.muse-intentions-page[data-period=year] .muse-intentions-section[data-type=theme] .muse-intentions-word-input:focus-visible{background:var(--surface-control);color:var(--foreground)}
+
+@media (max-width:760px){
+  .muse-intentions-grid{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){.muse-intentions-collapse svg{transition:none}}

@@ -1,10 +1,7 @@
 "use client";
 import {useDailyData} from "../daily/DailyData";
 import { Suspense, useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "next/navigation";
-import { MuseSectionNav } from "../MuseSectionNav";
-import { Aspirations } from "./aspirations/Aspirations";
-import { BucketList } from "./bucket/BucketList";
+import { useRouter, useSearchParams } from "next/navigation";
 import {AlmanacWhisper} from "../almanac/AlmanacWhisper";
 import {surfaces} from "@/lib/almanac/select";
 import {ritualSignals} from "@/lib/almanac/signals";
@@ -30,8 +27,9 @@ import "./Rituals.css";
 type Editor = { kind: "ritual"; ritual?: RitualDefinition; groupId?: string; anchor: HTMLElement } | { kind: "groups"; anchor: HTMLElement } | { kind: "entry"; ritual: RitualDefinition; date: string; anchor: HTMLElement; apply: (value: number | null) => void };
 function RitualsView() {
   const {profile}=useDailyData();
-  const requested = useSearchParams()?.get("view");
-  const view = requested === "aspirations" || requested === "bucket" ? requested : "habits";
+  // Envision (#117): Aspirations and the Bucket List moved to /envision; old ?view= links redirect there (next.config).
+  const requested = useSearchParams()?.get("view"), router = useRouter();
+  useEffect(() => { if (requested === "aspirations" || requested === "bucket") router.replace(`/envision?${new URLSearchParams(window.location.search)}`); }, [requested, router]);
   const { state } = useRitualView();
   const [date, setDate] = useMuseDate(dailyEditSample.date.iso);
   const [archived,setArchived]=useState(false);
@@ -49,9 +47,8 @@ function RitualsView() {
   const noun = period === "week" ? "week" : period === "month" ? "month" : "year";
   const almanacSignals = useMemo(() => today ? ritualSignals(state, today) : [], [state, today]);
   return <main className="muse-page muse-rituals-page">
-    <MusePageHeader title="Rituals">{view === "habits" && <DateNavigator date={date} onChange={setDate} />}</MusePageHeader>
-    <MuseSectionNav label="Rituals views" current={view} items={[{ id: "habits", label: "Habits", href: "/rituals" }, { id: "aspirations", label: "Aspirations", href: "/rituals?view=aspirations" }, { id: "bucket", label: "Bucket List", href: "/rituals?view=bucket" }]} />
-    {view === "aspirations" ? <Aspirations /> : view === "bucket" ? (today ? <BucketList today={today} /> : <p className="small-label" role="status">Loading…</p>) : <RitualCapture>
+    <MusePageHeader title="Rituals"><DateNavigator date={date} onChange={setDate} /></MusePageHeader>
+    <RitualCapture>
     <div className="muse-rituals-toolbar"><nav className="muse-ritual-week-navigation muse-week-jump" aria-label={`Ritual ${noun} navigation`}><button className="muse-button" type="button" aria-label={`Previous ${noun}`} onClick={() => setDate(shiftPeriod(period, date, -1))}>‹</button><button className="muse-button" type="button" disabled={!today} onClick={() => setDate(today)}>This {noun}</button><button className="muse-button" type="button" aria-label={`Next ${noun}`} onClick={() => setDate(shiftPeriod(period, date, 1))}>›</button></nav>{!classic && <span className="muse-tracker-title">{periodTitle(period, date)}</span>}
     <div className="muse-tracker-controls">
       <MuseChoiceMenu label="Period" valueLabel={trackerPeriods.find((p) => p.id === period)!.label} options={trackerPeriods} selectedIds={[period]} onSelect={(id) => changeTracker({ period: id as TrackerPeriod })} />
@@ -68,7 +65,7 @@ function RitualsView() {
     {editor?.kind === "ritual" && <RitualEditor key={editor.ritual?.id ?? `new-${editor.groupId ?? ""}`} initial={editor.ritual} groupId={editor.groupId} date={date} returnFocus={editor.anchor} onClose={() => setEditor(null)} />}
     {editor?.kind === "groups" && <RitualGroupManager returnFocus={editor.anchor} onClose={() => setEditor(null)} />}
     {editor?.kind === "entry" && <RitualEntryEditor ritual={editor.ritual} date={editor.date} current={entryFor(state, editor.ritual.id, editor.date)?.value ?? null} returnFocus={editor.anchor} onApply={editor.apply} onClose={() => setEditor(null)} />}
-    </RitualCapture>}<footer className="muse-footer">{view === "bucket" ? "Your bucket list is private and saves to your account." : <><RitualSaveStatus/>Rituals and your recorded progress save to your account.</>}</footer>
+    </RitualCapture><footer className="muse-footer"><RitualSaveStatus/>Rituals and your recorded progress save to your account.</footer>
   </main>;
 }
 export function Rituals() { return <Suspense fallback={<main className="muse-page muse-rituals-page" aria-busy="true"><h1>Rituals</h1></main>}><RitualsView /></Suspense>; }

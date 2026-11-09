@@ -96,11 +96,12 @@ test('aspirations speak through the Almanac, and only from real changes',()=>{
  assert.ok(!almanacLibrary.filter(e=>e.trigger.signal==='aspirations.return').some(e=>Object.keys(e.variables).length>1),'the quiet weeks are never counted out loud');
 });
 
-test('Rituals keeps Habits intact and adds Aspirations as a tab',()=>{
- const rituals=read('components/rituals/Rituals.tsx');
- assert.match(rituals,/<MuseSectionNav label="Rituals views"/);assert.match(rituals,/view === "aspirations" \? <Aspirations \/> : view === "bucket" \? .*<BucketList today=\{today\} \/>.* : <RitualCapture>/);
- assert.match(rituals,/<Suspense /,'search params need a boundary');
- const {ProgressRing,progressText}=load('components/rituals/aspirations/parts');
+test('#117: Aspirations lives in Envision; Rituals keeps Habits intact and old links redirect',()=>{
+ const rituals=read('components/rituals/Rituals.tsx'),envision=read('components/envision/Envision.tsx');
+ assert.doesNotMatch(rituals,/<Aspirations|<BucketList|MuseSectionNav/,'Rituals is Habits only, with no extra tabs');assert.match(rituals,/<RitualCapture>/);
+ assert.match(envision,/view === "aspirations" && <Aspirations \/>/);assert.match(envision,/<Suspense /,'search params need a boundary');
+ assert.match(read('next.config.ts'),/source: "\/rituals", has: \[\{ type: "query", key: "view", value: "aspirations" \}\], destination: "\/envision"/);
+ const {ProgressRing,progressText}=load('components/envision/aspirations/parts');
  assert.match(renderToStaticMarkup(createElement(ProgressRing,{percent:null})),/Progress unknown/);
  assert.equal(progressText(asp({progressKind:'numeric',unit:'dollars'}),{percent:0,current:null,target:3000,unit:'dollars',source:'you',automatic:false,available:true}),'0 of 3,000 dollars');
  assert.equal(progressText(asp(),{percent:null,current:0,target:0,unit:'milestones',source:'you',automatic:false,available:true,note:'Add a milestone to start measuring'}),'Add a milestone to start measuring');
@@ -163,8 +164,8 @@ test('the renewal migration keeps history and ownership safe; surfaces are wired
  assert.match(sql,/add column renewed_from uuid references public\.aspirations on delete set null/,'deleting an old period never deletes the new one');
  assert.match(sql,/create unique index aspirations_one_renewal/);assert.match(sql,/aspiration_renewal_owner/);assert.doesNotMatch(sql,/\bdrop |delete from|update public\./i,'additive only');
  assert.match(read('components/insights/Insights.tsx'),/<PlansInsights [^>]*\/><AspirationInsights range=\{range\}\/>/);
- const detail=read('components/rituals/aspirations/AspirationDetail.tsx');assert.match(detail,/function MilestoneForm/);assert.match(detail,/Renew for \{renewLabel\}/);
- const home=read('components/rituals/aspirations/Aspirations.tsx');assert.match(home,/draggable=\{!!arrange&&!arrange\.busy\}/);assert.match(home,/Move \$\{a\.title\} earlier/,'a keyboard and touch alternative to dragging');
- const {periodLabel}=load('components/rituals/aspirations/parts');
+ const detail=read('components/envision/aspirations/AspirationDetail.tsx');assert.match(detail,/function MilestoneForm/);assert.match(detail,/Renew for \{renewLabel\}/);
+ const home=read('components/envision/aspirations/Aspirations.tsx');assert.match(home,/draggable=\{!!arrange&&!arrange\.busy\}/);assert.match(home,/Move \$\{a\.title\} earlier/,'a keyboard and touch alternative to dragging');
+ const {periodLabel}=load('components/envision/aspirations/parts');
  assert.deepEqual([periodLabel({timeframe:'year',startDate:'2026-01-01',targetDate:'2026-12-31'}),periodLabel({timeframe:'quarter',startDate:'2026-10-01',targetDate:'2026-12-31'}),periodLabel({timeframe:'month',startDate:'2026-11-01',targetDate:'2026-11-30'})],['2026','Q4 2026','November 2026']);
 });
