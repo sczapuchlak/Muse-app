@@ -729,14 +729,14 @@ isOneToOne: false
                   ]
                 },"future_log_entries": {
                   Row: {
-                    "color": string | null,"created_at": string,"done": boolean,"end_date": string | null,"gradient": Json | null,"icon": string | null,"id": string,"local_date": string | null,"month": string,"note": string | null,"position": number,"revision": number,"title": string,"updated_at": string,"user_id": string
+                    "color": string | null,"created_at": string,"done": boolean,"end_date": string | null,"gradient": Json | null,"icon": string | null,"id": string,"local_date": string | null,"month": string,"note": string | null,"position": number,"revision": number,"source_id": string | null,"source_kind": string | null,"title": string,"updated_at": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "color"?: string | null,"created_at"?: string,"done"?: boolean,"end_date"?: string | null,"gradient"?: Json | null,"icon"?: string | null,"id"?: string,"local_date"?: string | null,"month": string,"note"?: string | null,"position"?: number,"revision"?: number,"title": string,"updated_at"?: string,"user_id"?: string
+                    "color"?: string | null,"created_at"?: string,"done"?: boolean,"end_date"?: string | null,"gradient"?: Json | null,"icon"?: string | null,"id"?: string,"local_date"?: string | null,"month": string,"note"?: string | null,"position"?: number,"revision"?: number,"source_id"?: string | null,"source_kind"?: string | null,"title": string,"updated_at"?: string,"user_id"?: string
                   }
                   Update: {
-                    "color"?: string | null,"created_at"?: string,"done"?: boolean,"end_date"?: string | null,"gradient"?: Json | null,"icon"?: string | null,"id"?: string,"local_date"?: string | null,"month"?: string,"note"?: string | null,"position"?: number,"revision"?: number,"title"?: string,"updated_at"?: string,"user_id"?: string
+                    "color"?: string | null,"created_at"?: string,"done"?: boolean,"end_date"?: string | null,"gradient"?: Json | null,"icon"?: string | null,"id"?: string,"local_date"?: string | null,"month"?: string,"note"?: string | null,"position"?: number,"revision"?: number,"source_id"?: string | null,"source_kind"?: string | null,"title"?: string,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
                     
@@ -1152,6 +1152,32 @@ isOneToOne: false
       columns: ["user_id","daily_record_id"]
 isOneToOne: false
       referencedRelation: "daily_records"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+                },"movement_day_outcomes": {
+                  Row: {
+                    "local_date": string,"outcome": string,"type_id": string,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "local_date": string,"outcome": string,"type_id": string,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "local_date"?: string,"outcome"?: string,"type_id"?: string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "movement_day_outcomes_user_id_local_date_fkey"
+      columns: ["user_id","local_date"]
+isOneToOne: false
+      referencedRelation: "movement_days"
+      referencedColumns: ["user_id","local_date"]
+    },{
+      foreignKeyName: "movement_day_outcomes_user_id_type_id_fkey"
+      columns: ["user_id","type_id"]
+isOneToOne: false
+      referencedRelation: "movement_types"
       referencedColumns: ["user_id","id"]
     }
                   ]

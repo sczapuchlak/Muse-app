@@ -1,5 +1,6 @@
 "use client";
 import { useState, type FormEvent } from "react";
+import { FutureLogToggle } from "./FutureLogLink";
 import { RecurrenceEditor, RecurrenceScopeChoice } from "./RecurrenceEditor";
 import { splitChange } from "@/lib/planner-occurrences";
 import type { EditScope, RecurrenceRule } from "@/lib/recurrence";
@@ -89,6 +90,7 @@ export function EventEditor({ event, date, defaultStatus = "confirmed", initialT
     <div className="editor-actions">
       <button type="submit" className="muse-button button-primary" disabled={!canEdit}>{event ? "Save event" : "Add event"}</button>
       <button type="button" className="muse-button button-ghost" onClick={onDone}>Cancel</button>
+      {event && <FutureLogToggle source={{ kind: "event", id: event.id.split("::")[0] }} title={event.title} date={event.date} endDate={event.endDate ?? null} />}
       {event && (confirming
         ? <span className="muse-mark-confirm" role="group" aria-label="Confirm deleting this event">Delete for good?<button type="button" className="text-button" onClick={() => { if (occDate && series && scope === "occurrence") dispatch({ type: "recurrence", now: new Date().toISOString(), change: { op: "event/occurrence", eventId: series.id, date: occDate, overrides: { deleted: true } } }); else { dispatch({ type: "event/delete", id: series?.id ?? event.id }); if (existingMark) void removeMark(existingMark.id); } onDone(); }}>{occDate && scope === "occurrence" ? "Delete this date" : series ? "Delete series" : "Delete"}</button><button type="button" className="text-button" onClick={() => setConfirming(false)}>Keep</button></span>
         : <button type="button" className="text-button" disabled={!canEdit} onClick={() => setConfirming(true)}>Delete</button>)}

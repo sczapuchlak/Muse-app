@@ -1,7 +1,8 @@
 "use client";
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore, type FormEvent } from "react";
 import { createMuseBrowserClient } from "@/lib/supabase/client";
-import { deleteFutureEntry, entriesOn, entryEnd, readFutureLog, saveFutureEntry, sortEntries, validEntry, FUTURE_NOTE_MAX, FUTURE_TITLE_MAX, type FutureEntry } from "@/lib/future-log";
+import { deleteFutureEntry, entriesOn, entryEnd, futureSourceLabels, monthKey, presentEntry, readFutureLog, resolveFutureSources, saveFutureEntry, sortEntries, sourceKey, validEntry, FUTURE_NOTE_MAX, FUTURE_TITLE_MAX, type FutureEntry, type FutureSource, type ResolvedSource } from "@/lib/future-log";
+import { forgetFutureReference } from "./FutureLogLink";
 import { markIconName, markIcons } from "@/lib/muse-marks";
 import { accentStyle } from "@/lib/appearance-values";
 import { paintAccent, type MarkStyle, type Paint } from "@/lib/planner-customization";
@@ -30,6 +31,8 @@ function load(year: string, force = false) {
   pending.set(year, run); return run;
 }
 const none: FutureEntry[] = [];
+/** Reload a year after a reference is added or removed from another module (#112). */
+export const refreshFutureLog = (year: string) => { if (snap.byYear[year] || pending.has(year)) void load(year, true); };
 const put = (year: string, list: FutureEntry[]) => emit({ byYear: { ...snap.byYear, [year]: list } });
 
 export function useFutureLog(year: string) {
@@ -42,9 +45,32 @@ export function useFutureLog(year: string) {
     if (!isNew && e.month.slice(0, 4) !== year) put(year, (snap.byYear[year] ?? []).filter((x) => x.id !== saved.id));
     return saved;
   }, [year]);
-  const remove = useCallback(async (id: string) => { await deleteFutureEntry(db(), id); put(year, (snap.byYear[year] ?? []).filter((x) => x.id !== id)); }, [year]);
-  const forMonth = useCallback((m: string) => sortEntries((entries ?? []).filter((e) => e.month === m)), [entries]);
+  // #112 References show their source's current title, dates and done state.
+  const resolved = useResolvedSources(entries ?? none, save);
+  const forMonth = useCallback((m: string) => sortEntries((entries ?? []).filter((e) => e.month === m).map((e) => presentEntry(e, resolved))), [entries, resolved]);
+  const remove = useCallback(async (id: string) => { const gone = (snap.byYear[year] ?? []).find((x) => x.id === id); await deleteFutureEntry(db(), id); put(year, (snap.byYear[year] ?? []).filter((x) => x.id !== id)); if (gone?.source) forgetFutureReference(gone.source); }, [year]);
   return { loaded: !!entries, error: s.error, entries: entries ?? none, forMonth, save, remove, retry: () => load(year, true) };
+}
+
+/** Reads the referenced records for the loaded entries. When a source's date moved to another month, the reference
+ *  follows it (one quiet update), so the Future Log never shows a stale copy of the date. */
+const resolvedCache = new Map<string, ResolvedSource>();
+function useResolvedSources(entries: FutureEntry[], save: (e: FutureEntry, isNew: boolean) => Promise<FutureEntry>) {
+  const [map, setMap] = useState<Map<string, ResolvedSource>>(() => new Map(resolvedCache));
+  const sources = entries.filter((e) => e.source).map((e) => e.source!), key = sources.map(sourceKey).sort().join("|");
+  useEffect(() => {
+    if (!sources.length) return; let live = true;
+    resolveFutureSources(db(), sources).then((next) => {
+      if (!live) return; for (const [k, v] of next) resolvedCache.set(k, v); setMap(next);
+      for (const e of entries) {
+        const r = e.source && next.get(sourceKey(e.source));
+        if (r?.date && (monthKey(r.date) !== e.month || r.date !== e.date)) void save({ ...e, title: r.title, month: monthKey(r.date), date: r.date, endDate: r.endDate && r.endDate > r.date && r.endDate <= shiftDate(r.date, 366) ? r.endDate : null }, false).catch(() => undefined);
+      }
+    }, () => undefined);
+    return () => { live = false; };
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- keyed on the referenced records, not array identity
+  }, [key]);
+  return map;
 }
 
 export function FutureEntryGlyph({ entry }: { entry: FutureEntry }) {
@@ -52,7 +78,8 @@ export function FutureEntryGlyph({ entry }: { entry: FutureEntry }) {
   return <MarkGlyph mark={{ icon: entry.icon, color: entry.color ?? "primary", gradient: entry.gradient, title: entry.title, linked: false, missing: false }} size={13} />;
 }
 
-export function FutureEntryEditor({ entry, month, year, onDone, onMakeEvent }: { entry?: FutureEntry; month: string; year: string; onDone: () => void; onMakeEvent: (title: string, date: string) => void }) {
+export function FutureEntryEditor({ entry, month, year, onDone, onMakeEvent, onOpenSource }: { entry?: FutureEntry & { missing?: boolean }; month: string; year: string; onDone: () => void; onMakeEvent: (title: string, date: string) => void; onOpenSource?: (source: FutureSource, anchor: HTMLElement) => void }) {
+  const reference = entry?.source ?? null;
   const { save, remove, forMonth } = useFutureLog(year);
   const { library, changeLibrary } = useAgendaData();
   const [d, setD] = useState<FutureEntry>(() => entry ?? { id: crypto.randomUUID(), month, date: null, title: "", note: null, icon: null, color: "primary", done: false, position: forMonth(month).length, revision: 1 });
@@ -68,13 +95,18 @@ export function FutureEntryEditor({ entry, month, year, onDone, onMakeEvent }: {
   }
   const first = `${d.month}-01`, last = `${d.month}-${String(new Date(Date.UTC(+d.month.slice(0, 4), +d.month.slice(5, 7), 0)).getUTCDate()).padStart(2, "0")}`;
   return <form className="muse-future-editor" onSubmit={submit}>
-    <label className="muse-mark-field"><span>What’s coming up</span>
-      <input autoFocus required maxLength={FUTURE_TITLE_MAX} value={d.title} placeholder="Mom’s birthday, Lisbon trip, Concert…" onChange={(e) => set({ title: e.target.value })} /></label>
-    <div className="muse-future-when" role="group" aria-label="When">
+    {reference ? <div className="muse-future-reference">
+      <span className="muse-future-source">{futureSourceLabels[reference.kind]}</span>
+      <strong>{d.title}</strong>
+      <span className="small-label">{entry?.missing ? "The original is no longer there; this keeps the name it had." : `${futureWhen(d)} · from its ${futureSourceLabels[reference.kind].toLowerCase()}. Edit it there; it’s never copied.`}</span>
+      {!entry?.missing && onOpenSource && <button type="button" className="muse-button" onClick={(e) => onOpenSource(reference, e.currentTarget)}>Open original</button>}
+    </div> : <label className="muse-mark-field"><span>What’s coming up</span>
+      <input autoFocus required maxLength={FUTURE_TITLE_MAX} value={d.title} placeholder="Mom’s birthday, Lisbon trip, Concert…" onChange={(e) => set({ title: e.target.value })} /></label>}
+    {!reference && <div className="muse-future-when" role="group" aria-label="When">
       <button type="button" className="choice-button" data-chip-size="compact" aria-pressed={!d.date} onClick={() => set({ date: null, endDate: null })}>Sometime this month</button>
       <label className="muse-mark-field"><span className="sr-only">Day</span><input type="date" min={first} max={last} value={d.date ?? ""} onChange={(e) => { const v = e.target.value || null; set({ date: v, endDate: v && d.endDate && d.endDate > v ? d.endDate : null }); }} /></label>
       {d.date && <label className="muse-mark-field muse-future-through"><span>Through <small>optional · trips</small></span><input type="date" min={shiftDate(d.date, 1)} max={shiftDate(d.date, 366)} value={d.endDate ?? ""} onChange={(e) => set({ endDate: e.target.value || null })} /></label>}
-    </div>
+    </div>}
     <label className="muse-mark-field"><span>Note <small>optional</small></span>
       <input maxLength={FUTURE_NOTE_MAX} value={d.note ?? ""} placeholder="Book flights by March…" onChange={(e) => set({ note: e.target.value || null })} /></label>
     <details className="muse-future-style" open={styled || undefined} onToggle={(e) => { if ((e.currentTarget as HTMLDetailsElement).open && !d.icon) { setStyled(true); set({ icon: "star" }); } }}>
@@ -90,15 +122,15 @@ export function FutureEntryEditor({ entry, month, year, onDone, onMakeEvent }: {
         onForget={(x) => changeLibrary("color" in x ? { type: "palette/remove-color", color: x.color } : { type: "palette/remove-gradient", gradient: x.gradient })} />
       {styled && <button type="button" className="text-button" onClick={() => { setStyled(false); set({ icon: null, gradient: undefined }); }}>Use a simple bullet</button>}
     </details>
-    {entry && <label className="muse-agenda-check"><input type="checkbox" checked={d.done} onChange={(e) => set({ done: e.target.checked })} /> Done or happened</label>}
+    {entry && !reference && <label className="muse-agenda-check"><input type="checkbox" checked={d.done} onChange={(e) => set({ done: e.target.checked })} /> Done or happened</label>}
     {error && <p className="muse-agenda-warning" role="alert">{error}</p>}
     <div className="editor-actions">
       <button type="submit" className="muse-button button-primary" disabled={busy}>{entry ? "Save" : "Add to Future Log"}</button>
       <button type="button" className="muse-button button-ghost" onClick={onDone}>Cancel</button>
-      {entry && <button type="button" className="text-button" title="Opens the event editor with this title and date. The entry stays until you remove it." onClick={() => onMakeEvent(d.title, d.date ?? first)}>Make it an event</button>}
+      {entry && !reference && <button type="button" className="text-button" title="Opens the event editor with this title and date. The entry stays until you remove it." onClick={() => onMakeEvent(d.title, d.date ?? first)}>Make it an event</button>}
       {entry && (confirming
         ? <span className="muse-mark-confirm" role="group" aria-label="Confirm removing this entry">Remove it?<button type="button" className="text-button" onClick={async () => { try { await remove(entry.id); onDone(); } catch (x) { setError(x instanceof Error ? x.message : "That wasn’t removed."); } }}>Remove</button><button type="button" className="text-button" onClick={() => setConfirming(false)}>Keep</button></span>
-        : <button type="button" className="text-button" onClick={() => setConfirming(true)}>Remove</button>)}
+        : <button type="button" className="text-button" onClick={() => setConfirming(true)}>{reference ? "Remove from Future Log" : "Remove"}</button>)}
     </div>
   </form>;
 }

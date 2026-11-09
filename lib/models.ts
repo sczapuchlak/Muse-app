@@ -9,7 +9,10 @@ export type MovementType = {
   category?: "strength" | "cardio" | "mobility" | "other";
 };
 
-export type DailyMovement = { date: string; typeIds: string[] };
+/** What happened to a planned movement besides completing it (#112). Completed is a movement record, never an outcome. */
+export type MovementOutcome = "skipped" | "rest" | "sick";
+/** A day's planned movement (intentions) and, per planned type, an optional outcome. */
+export type DailyMovement = { date: string; typeIds: string[]; outcomes?: Record<string, MovementOutcome> };
 export type PlannedTask = {
   id: string; kind: "task"; title: string; complete: boolean; completedAt?: string;
   workspaceId: string; groupId?: string; tagIds: string[];

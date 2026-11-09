@@ -1,4 +1,5 @@
 'use client';
+import {FutureLogToggle} from '@/components/planner/FutureLogLink';
 import {AspirationLists} from '../../lists/ListsSurfaces';
 import Link from 'next/link';
 import {useState} from 'react';
@@ -55,7 +56,7 @@ export function AspirationDetail({a,progress,updates,ritualState,tasks,today,bus
    <section aria-label="Milestones"><h3>Milestones {m.total?<small className="small-label">· {m.done} of {m.total}</small>:null}</h3>
     {a.milestones.length?<ol className="muse-aspiration-milestones">{a.milestones.map((ms,i)=><li key={ms.id} data-done={!!ms.completedOn||undefined} data-editing={editingMilestone===ms.id||undefined}>
      <div className="muse-aspiration-milestone-row"><label><input type="checkbox" checked={!!ms.completedOn} disabled={busy} onChange={()=>void toggleMilestone(ms)}/><span>{ms.title}{ms.completedOn?<small> · {dateLabel(ms.completedOn)}</small>:ms.targetDate?<small> · by {dateLabel(ms.targetDate)}</small>:null}{ms.weight&&ms.weight!==1?<small> · counts ×{ms.weight}</small>:null}</span></label>
-     <span className="muse-aspiration-milestone-tools"><button type="button" className="text-button" aria-expanded={editingMilestone===ms.id} aria-label={`Edit ${ms.title}`} disabled={busy} onClick={()=>setEditingMilestone(editingMilestone===ms.id?null:ms.id)}>Edit</button><button type="button" className="text-button" aria-label={`Move ${ms.title} up`} disabled={busy||i===0} onClick={()=>move(i,-1)}>↑</button><button type="button" className="text-button" aria-label={`Move ${ms.title} down`} disabled={busy||i===a.milestones.length-1} onClick={()=>move(i,1)}>↓</button><button type="button" className="text-button" aria-label={`Remove ${ms.title}`} disabled={busy} onClick={()=>void save({milestones:a.milestones.filter(x=>x.id!==ms.id)})}>×</button></span></div>
+     <span className="muse-aspiration-milestone-tools"><FutureLogToggle compact source={{kind:"milestone",id:`${a.id}:${ms.id}`}} title={ms.title} date={ms.targetDate??null}/><button type="button" className="text-button" aria-expanded={editingMilestone===ms.id} aria-label={`Edit ${ms.title}`} disabled={busy} onClick={()=>setEditingMilestone(editingMilestone===ms.id?null:ms.id)}>Edit</button><button type="button" className="text-button" aria-label={`Move ${ms.title} up`} disabled={busy||i===0} onClick={()=>move(i,-1)}>↑</button><button type="button" className="text-button" aria-label={`Move ${ms.title} down`} disabled={busy||i===a.milestones.length-1} onClick={()=>move(i,1)}>↓</button><button type="button" className="text-button" aria-label={`Remove ${ms.title}`} disabled={busy} onClick={()=>void save({milestones:a.milestones.filter(x=>x.id!==ms.id)})}>×</button></span></div>
      {editingMilestone!==ms.id&&(ms.description||ms.notes||ms.taskId)&&<div className="muse-aspiration-milestone-extra">{ms.description&&<p>{ms.description}</p>}{ms.notes&&<p className="small-label">{ms.notes}</p>}{ms.taskId&&(()=>{const t=tasks.find(x=>x.id===ms.taskId);return <p className="small-label">Task: {t?`${t.complete?'✓ ':''}${t.title}`:'no longer in the Planner'}</p>;})()}</div>}
      {editingMilestone===ms.id&&<MilestoneForm milestone={ms} tasks={linkedTasks} busy={busy} onCancel={()=>setEditingMilestone(null)} onSave={next=>void save({milestones:a.milestones.map(x=>x.id===ms.id?next:x)}).then(s=>{if(s)setEditingMilestone(null);})}/>}</li>)}</ol>
      :<p className="small-label">{a.progressKind==='milestones'?'Break it into a few steps. Progress follows them.':'Optional: a few steps along the way.'}</p>}
@@ -94,6 +95,7 @@ export function AspirationDetail({a,progress,updates,ritualState,tasks,today,bus
     {open&&!finishing&&<button type="button" className="muse-button button-primary" disabled={busy} onClick={()=>setFinishing(true)}>Mark complete…</button>}
     {renewLabel&&onRenew&&<button type="button" className="muse-button" disabled={busy} onClick={onRenew}>Renew for {renewLabel}</button>}
     <button type="button" className="muse-button" onClick={onEdit}>Edit</button>
+    <FutureLogToggle source={{kind:"aspiration",id:a.id}} title={a.title} date={a.targetDate}/>
     {a.status!=='archived'&&<ShareToStream kind="aspiration" id={a.id} category="celebrating" className="text-button"/>}
     {a.status==='active'&&<button type="button" className="text-button" disabled={busy} onClick={()=>void save({status:'paused'})}>Pause</button>}
     {(a.status==='paused'||a.status==='planned')&&<button type="button" className="text-button" disabled={busy} onClick={()=>void save({status:'active'})}>{a.status==='paused'?'Resume':'Start'}</button>}

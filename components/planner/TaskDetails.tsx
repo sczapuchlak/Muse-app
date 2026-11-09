@@ -1,4 +1,5 @@
 "use client";
+import { FutureLogToggle } from "./FutureLogLink";
 import { MuseIcon } from "../MuseIcon";
 import {accentStyle} from "@/lib/appearance-values";
 import { useEffect, useState } from "react";
@@ -57,7 +58,8 @@ export function TaskDetails({ taskId, onClose, returnFocus }: { taskId: string; 
         <form className="muse-task-quick-add" onSubmit={(event) => { event.preventDefault(); if (!subtask.trim()) return; update({ subtasks: [...task.subtasks, { id: crypto.randomUUID(), title: subtask.trim(), complete: false }] }); setSubtask(""); }}><input type="text" maxLength={160} aria-label="New subtask title" placeholder="Add a subtask…" value={subtask} onChange={(event) => setSubtask(event.target.value)} /><button type="submit" disabled={!subtask.trim()} aria-label="Add subtask"><MuseIcon name="plus" size={16} /></button></form>
       </section>
       <section className="muse-detail-section" aria-labelledby="task-time"><h3 id="task-time">Time spent</h3><div className="muse-task-timer"><output aria-label="Actual time spent">{Math.floor(task.actualMinutes + runningMinutes(state, taskId, now))}m actual</output><button type="button" className="muse-button" disabled={task.complete} onClick={() => dispatch(running ? { type: "timer/pause", now: new Date().toISOString() } : { type: "timer/start", id: taskId, now: new Date().toISOString() })}>{running ? "Pause timer" : "Start timer"}</button></div></section>
-      <button className="text-button muse-delete-task" type="button" onClick={() => { dispatch({ type: "task/delete", id: taskId, now: new Date().toISOString() }); onClose(); }}>Delete task</button>
+      <div className="muse-task-detail-actions"><FutureLogToggle source={{ kind: "task", id: taskId.split("::")[0] }} title={task.title} date={task.plannedDate ?? task.dueDate ?? null} />
+      <button className="text-button muse-delete-task" type="button" onClick={() => { dispatch({ type: "task/delete", id: taskId, now: new Date().toISOString() }); onClose(); }}>Delete task</button></div>
     </div></PlannerCapture>
   </MuseDrawer>;
 }

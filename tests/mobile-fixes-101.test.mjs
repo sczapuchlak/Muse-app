@@ -52,6 +52,6 @@ test('#101 the phone nav stays fixed; the More menu docks above it; the planner 
 
 test('#101 light-card themes: newly found surfaces use the card ink, and phone popovers back onto the card',()=>{
  const s=read('app/surfaces.css');
- assert.match(s,/:root:is\(\[data-theme="astral"\],\[data-theme="nightbloom"\]\) :is\(\.muse-profile-hero, \.muse-showcase, \.muse-envision-empty, \.muse-intentions-start,/);
+ assert.match(s,/:root:is\(\[data-theme="astral"\],\[data-theme="nightbloom"\]\) :is\([^)]*\.muse-profile-hero, \.muse-showcase, \.muse-envision-empty, \.muse-intentions-start,/);
  assert.match(s,/\.muse-popover-panel,dialog \.muse-popover-panel\)\{background:linear-gradient\(var\(--floating-background\),var\(--floating-background\)\),var\(--glass-background\)\}/);
 });

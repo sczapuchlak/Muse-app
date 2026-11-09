@@ -109,7 +109,7 @@ test('#104 Future Log: own entries only; dated entries stay inside their month; 
   assert.equal(F.validEntry({month:'2026-12',date:'2027-01-01',title:'x'}),'That day is outside this month.');
   assert.equal(F.validEntry({month:'2026-12',date:null,title:'  '}),'Give it a few words.');
   const sorted=F.sortEntries([{id:'a',month:'2026-12',date:null,title:'Plan',position:0},{id:'b',month:'2026-12',date:'2026-12-12',title:'Bday',position:1}]);assert.equal(sorted[0].id,'b','dated first');
-  const agenda=read('components/planner/Agenda.tsx');assert.match(agenda,/monthItems\(\[\], eventsShown, m, visibility\)/,'tasks are not passed to the Future Log');
+  const agenda=read('components/planner/Agenda.tsx');assert.doesNotMatch(agenda,/monthItems\(/,'#112: nothing (tasks, events) is passed to the Future Log automatically');
   const sql=read('supabase/migrations/20261127000100_future_log.sql');assert.match(sql,/date_trunc\('month', local_date\)::date = month/);assert.match(sql,/enable row level security/);
 });
 

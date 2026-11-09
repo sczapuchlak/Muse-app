@@ -102,7 +102,7 @@ test('Money sections render one shared model, compact ledger, vivid charts and M
  const paycheck=render(views.MoneyPaychecks,{paycheck:moneySample.paychecks[0],onSelect(){}});assert.ok(paycheck.includes('Use template'));assert.ok(paycheck.includes('Save changes to template'));assert.ok(paycheck.includes('$218.00'));
  const cards=render(views.MoneyCards,{});assert.ok(cards.includes('utilization unknown'));assert.ok(cards.includes('Unknown'));assert.ok(cards.includes('Record payment'));
  const categories=render(views.MoneyCategories,{});assert.ok(categories.includes('Subcategories')||categories.includes('Skincare'));assert.ok(categories.includes('Archive category'));
- const ledger=render(views.MoneyTransactions,{period,search:'Sephora',tag:'treat'});assert.ok(ledger.includes('Sephora'));assert.ok(!ledger.includes('Whole Foods'));assert.ok(!ledger.includes('<select'));
+ const ledger=render(views.MoneyTransactions,{period,filters:{search:'Sephora',category:'',tag:'treat',payment:''}});assert.ok(ledger.includes('Sephora'));assert.ok(!ledger.includes('Whole Foods'));assert.ok(!ledger.includes('<select'));
  for(const html of [overview,paycheck,cards,categories])assert.ok(!html.includes('<select'));
 });
 

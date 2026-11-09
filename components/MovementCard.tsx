@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, type CSSProperties, type Dispatch, type SetStateAction } from "react";
+import { useRef, useState, type Dispatch, type SetStateAction } from "react";
 import type { DailyMovement, MovementType } from "@/lib/models";
 import { MAX_QUICK_MOVEMENTS, promoteMovement, movementNameError, normalizeMovementName, toggleSelection } from "@/lib/selections";
 import { MuseCard } from "./MuseCard";
@@ -9,12 +9,14 @@ import { MuseIcon } from "./MuseIcon";
 import { InlineTextEditor } from "./InlineTextEditor";
 import { MovementTypeManager } from "./MovementTypeManager";
 import { GlassPopover } from "./GlassPopover";
+import { MuseChoiceMenu } from "./MuseChoiceMenu";
+import { movementRows, movementStatuses, type MovementStatus } from "@/lib/movement-status";
 import {useWellness} from "./WellnessStore";
 
 import {useMuseSpark} from "./MuseSpark";
 
 type Props = { initialTypes: MovementType[]; initialDay: DailyMovement };
-type Panel = { mode: "more" | "add" | "manage" | "completion" } | { mode: "rename"; id: string } | null;
+type Panel = { mode: "more" | "add" | "manage" } | { mode: "rename"; id: string } | null;
 
 export function MovementCard({ initialTypes, initialDay }: Props) {
   const {trigger,spark}=useMuseSpark();
@@ -41,14 +43,6 @@ export function MovementCard({ initialTypes, initialDay }: Props) {
   const available = types.filter((type) => !type.archived);
   const quick = quickIds.map((id) => available.find((type) => type.id === id)).filter((type): type is MovementType => Boolean(type));
   const others = available.filter((type) => !quickIds.includes(type.id));
-  const selectedNames = types.filter((type) => day.typeIds.includes(type.id)).map((type) => type.name).join(", ");
-  const recorded=state.activities.filter(item=>item.date===initialDay.date);
-  const completionIds=[...new Set([...day.typeIds,...recorded.map(item=>item.typeId)])];
-  const completedNames=recorded.map(item=>types.find(type=>type.id===item.typeId)?.name).filter(Boolean).join(', ');
-  function setCompleted(typeId:string,complete:boolean){
-    dispatch({kind:'movement/complete',date:initialDay.date,typeId,complete,id:crypto.randomUUID()});
-    if(complete)store.whenSaved(trigger);
-  }
   const renaming = panel?.mode === "rename" ? types.find((type) => type.id === panel.id) : undefined;
   // Durations and categories need the server that stores them (it also reports goal support).
   const supportsDetails=state.goals!==undefined;
@@ -88,33 +82,47 @@ export function MovementCard({ initialTypes, initialDay }: Props) {
     setDay((current) => ({ ...current, typeIds: current.typeIds.filter((value) => value !== id) }));
   }
 
+  // #112 Two rows: what you plan (chips + a multi-select picker), then what happened to each (one status each).
+  const rows=movementRows(day,state.activities);
+  const statusOptions=movementStatuses.filter(option=>state.movementOutcomes||option.id==='planned'||option.id==='completed').map(option=>({id:option.id,label:option.label}));
+  const nameOf=(id:string)=>types.find(type=>type.id===id)?.name??'Movement';
+  const locked=!status.loaded||!!status.error;
+  function setStatus(typeId:string,next:MovementStatus){
+    dispatch({kind:'movement/status',date:initialDay.date,typeId,status:next,id:crypto.randomUUID()});
+    if(next==='completed')store.whenSaved(trigger);
+  }
   return (
     <MuseCard id="movement" className="movement-card">
       <CardHeading id="movement" title="Movement" icon="movement">
         <button type="button" className="text-button" aria-expanded={panel?.mode === "manage"} aria-controls="movement-menu"
           onClick={(event) => { anchorRef.current = event.currentTarget; setPanel((current) => current?.mode === "manage" ? null : { mode: "manage" }); }}>Manage</button>
       </CardHeading>
-      <span className="muse-movement-feedback">{spark}</span><div className="movement-selection-status"><p className="card-description movement-selection-summary" title={selectedNames || "Today’s intention · Select any"}>{selectedNames ? `Selected: ${selectedNames}` : "Today’s intention · Select any"}{completedNames&&<span className="small-label"> · Completed: {completedNames}</span>}</p><button type="button" className="muse-button button-ghost muse-movement-completion" data-completed={recorded.length>0} disabled={!completionIds.length||!status.loaded||!!status.error} aria-expanded={panel?.mode==='completion'} aria-controls="movement-menu" onClick={event=>{anchorRef.current=event.currentTarget;setPanel({mode:'completion'});}}>{recorded.length?'Completed · Review':'Mark Done'}</button></div>
-      <div className="movement-quick-row" role="group" aria-label="Quick movement types" style={{ "--quick-columns": quick.length + 1 } as CSSProperties}>
-        {quick.map((type) => (
-          <button type="button" className="choice-button movement-quick-chip" key={type.id} title={type.name} aria-pressed={day.typeIds.includes(type.id)} onClick={() => toggleDay(type.id)}>
-            <span className="chip-label">{type.name}</span><span className="choice-mark"><MuseIcon name="check" size={12} /></span>
-          </button>
-        ))}
-        <button type="button" className="choice-button movement-more" aria-expanded={panel?.mode === "more"} aria-controls="movement-menu"
+      <span className="muse-movement-feedback">{spark}</span>
+      <div className="movement-plan-row" role="group" aria-label="Planned movement">
+        <span className="movement-row-label">Planned</span>
+        <ul className="movement-plan-chips" aria-label="Planned movement types">
+          {day.typeIds.map(id=><li key={id}><span className="movement-plan-chip"><span className="chip-label">{nameOf(id)}</span><button type="button" className="movement-chip-remove" aria-label={`Remove ${nameOf(id)} from today’s plan`} disabled={locked} onClick={()=>toggleDay(id)}><MuseIcon name="close" size={12}/></button></span></li>)}
+        </ul>
+        <button type="button" className="choice-button movement-plan-trigger" aria-haspopup="dialog" aria-expanded={panel?.mode === "more"} aria-controls="movement-menu" disabled={locked}
           onClick={(event) => { anchorRef.current = event.currentTarget; setPanel((current) => current?.mode === "more" ? null : { mode: "more" }); }}>
-          More<MuseIcon name="chevron" size={12} />
+          {day.typeIds.length?'Edit plan':'Plan movement'}<MuseIcon name="chevron" size={12} />
         </button>
       </div>
-      <GlassPopover id="movement-menu" label={panel?.mode==='completion'?'Movement completion':'Saved movement types'} open={panel !== null} anchorRef={anchorRef} onClose={() => setPanel(null)} width={panel?.mode === "manage" ? 420 : 340}>
-        {panel?.mode==='completion'&&<><p className="editor-label">Movement · {new Intl.DateTimeFormat('en-US',{weekday:'short',month:'short',day:'numeric',timeZone:'UTC'}).format(new Date(`${initialDay.date}T12:00:00Z`))}</p><p className="small-label">Selection is an intention. Mark what you actually did.</p><div className="popover-choice-list">{completionIds.map(id=>{const done=recorded.some(item=>item.typeId===id);const record=recorded.find(item=>item.typeId===id);return <div className="popover-footer muse-movement-completion" key={id}><span>{types.find(type=>type.id===id)?.name??'Movement'}{done&&<span className="small-label"> · Done</span>}</span>{record&&supportsDetails&&<DurationField key={`${record.id}/${record.durationMinutes??''}`} name={types.find(type=>type.id===id)?.name??'movement'} value={record.durationMinutes??null} disabled={!status.loaded||!!status.error} onSave={value=>dispatch({kind:'activity/duration',id:record.id,durationMinutes:value})}/>}<button type="button" className="muse-button button-ghost" disabled={!status.loaded||!!status.error} aria-label={`${done?'Undo completion for':'Mark done:'} ${types.find(type=>type.id===id)?.name??'movement'}`} onClick={()=>setCompleted(id,!done)}>{done?'Undo':'Mark Done'}</button></div>;})}</div><div className="popover-footer"><button type="button" className="text-button" onClick={close}>Close</button></div></>}
+      {rows.length>0?<ul className="movement-outcome-rows" aria-label="How it went">
+        {rows.map(row=>{const record=state.activities.find(item=>item.date===initialDay.date&&item.typeId===row.typeId);return <li className="movement-outcome-row" key={row.typeId} data-status={row.status}>
+          <span className="movement-outcome-name">{nameOf(row.typeId)}{!row.planned&&<span className="small-label"> · not planned</span>}</span>
+          {record&&supportsDetails&&<DurationField key={`${record.id}/${record.durationMinutes??''}`} name={nameOf(row.typeId)} value={record.durationMinutes??null} disabled={locked} onSave={value=>dispatch({kind:'activity/duration',id:record.id,durationMinutes:value})}/>}
+          <MuseChoiceMenu label={`Status for ${nameOf(row.typeId)}`} valueLabel={movementStatuses.find(option=>option.id===row.status)!.label} options={statusOptions} selectedIds={[row.status]} onSelect={id=>{if(!locked)setStatus(row.typeId,id as MovementStatus);}}/>
+        </li>;})}
+      </ul>:<p className="small-label movement-outcome-empty">Plan something, then mark how it went. Only Completed counts as movement done.</p>}
+      <GlassPopover id="movement-menu" label={panel?.mode==='more'?'Plan movement':'Saved movement types'} open={panel !== null} anchorRef={anchorRef} onClose={() => setPanel(null)} width={panel?.mode === "manage" ? 420 : 340}>
         {panel?.mode === "more" && <>
-          <p className="editor-label">Saved movement types</p>
+          <p className="editor-label">Plan movement</p>
           <div className="popover-choice-list">
-            {others.map((type) => <button key={type.id} type="button" className="popover-choice" aria-pressed={day.typeIds.includes(type.id)} onClick={() => { toggleDay(type.id, true); requestAnimationFrame(() => document.getElementById("movement-menu")?.querySelector<HTMLButtonElement>("button")?.focus()); }}>
+            {[...quick,...others].map((type) => <button key={type.id} type="button" className="popover-choice" aria-pressed={day.typeIds.includes(type.id)} onClick={() => toggleDay(type.id, !quickIds.includes(type.id))}>
               <span>{type.name}</span>{day.typeIds.includes(type.id) && <MuseIcon name="check" size={15} />}
             </button>)}
-            {!others.length && <p className="small-label">All saved types are in quick options.</p>}
+            {!available.length && <p className="small-label">Add a movement type to start.</p>}
           </div>
         </>}
         {panel?.mode === "manage" && <MovementTypeManager types={available} quickIds={quickIds}

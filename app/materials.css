@@ -72,14 +72,15 @@
   box-shadow: var(--card-shadow), inset 0 1px 0 color-mix(in srgb, var(--glass-edge) 75%, transparent);
 }
 
-/* #12 Whimsy (Tarot, Dreamscapes, Cosmic Observatory): their primary containers are glass sheets like every other
+/* #12, #112 Whimsy (Tarot, Dreamscapes, Cosmic Observatory, Fortunes, the Encyclopedias): their primary containers are glass sheets like every other
    Muse card — the material's fill, blur and border — while their own decorative gradients (background-image) stay on
    top. Nested panels inside them keep the lighter --surface-subtle, which the material already re-points. */
 :root[data-material] :is(.muse-tarot-ritual, .muse-tarot-spread-table, .muse-tarot-study-layout, .muse-tarot-library-card, .muse-tarot-reflect,
   .muse-dream-result, .muse-dream-library-hero, .muse-dream-atlas-card, .muse-dream-calendar, .muse-dream-entry, .muse-dream-manuscript, .muse-dream-tile, .muse-dream-studio-side, .muse-dream-revealed,
   .muse-cosmic-forecast-sign, .muse-cosmic-panel, .muse-cosmic-tile, .muse-cosmic-collection, .muse-cosmic-library-intro, .muse-cosmic-lunar-strip, .muse-cosmic-month-grid,
   .muse-cosmic-featured-event, .muse-cosmic-entry-hero, .muse-cosmic-event-hero, .muse-cosmic-calendar-selected, .muse-forecast-editorial,
-  .muse-dream-empty-state, .muse-tarot-journal-empty, .muse-cosmic-empty) {
+  .muse-dream-empty-state, .muse-tarot-journal-empty, .muse-cosmic-empty,
+  .muse-tarot-entry, .muse-tarot-calendar-grid, .muse-fortune-saved, .muse-encyclopedia-hero, .muse-encyclopedia-chapter, .muse-encyclopedia-chapters) {
   background-color: var(--glass-background);
   border-color: var(--glass-border);
   -webkit-backdrop-filter: blur(var(--material-blur)) saturate(var(--material-saturation));
@@ -87,3 +88,5 @@
 }
 /* Grimoire cards sit in a dense grid: same fill, no per-card blur (cheaper, and the page sheet already blurs). */
 :root[data-material] .muse-tarot-library-card { -webkit-backdrop-filter: none; backdrop-filter: none; }
+/* #112 Saved-record collections (Reading Journal entries, saved fortunes) are dense grids too: card fill, no per-card blur. */
+:root[data-material] :is(.muse-tarot-entry, .muse-fortune-saved) { -webkit-backdrop-filter: none; backdrop-filter: none; }

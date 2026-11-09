@@ -54,7 +54,8 @@ test('OAuth callback checks a per-user state cookie before exchanging a code',()
 test('Agenda shows Google events in Day, Week and Month but keeps the Future Log intentional',()=>{
  const a=read('components/planner/Agenda.tsx');
  assert.match(a,/dayItems\(tasksShown, eventsWithGoogle, day/);assert.match(a,/dayItems\(tasksShown, eventsWithGoogle, d, visibility\)/);
- assert.match(a,/monthItems\(\[\], eventsShown, m, visibility\)/);
+ // #112: the Future Log is curated: no events (Muse or Google) appear there automatically.
+ assert.doesNotMatch(a,/monthItems\(/);assert.match(a,/Curated: only what you added/);
  assert.match(a,/event\?\.source === "google" \? \{ kind: "google", event \}/);
 });
 test('Settings shows a Google Calendar card separate from Sign-in',async()=>{
