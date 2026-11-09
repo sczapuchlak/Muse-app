@@ -1,4 +1,6 @@
 "use client";
+import { MuseChoiceMenu } from "../MuseChoiceMenu";
+import { frequencyGroups, itemGroups, itemSorts, sortItems, type ItemGroup, type ItemSort } from "@/lib/lists/order";
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type DragEvent, type FormEvent, type KeyboardEvent } from "react";
 import { accentCss } from "@/lib/appearance-values";
 import { listAccents, progress, LIMITS, type ListField, type ListItem, type ListSection, type MuseList } from "@/lib/lists/model";
@@ -43,7 +45,10 @@ export function ListView({ listId, today, onBack, onOpen }: { listId: string; to
 
   const toggle = (item: ListItem) => linkedTask(item, planner) ? toggleViaPlanner(item, dispatch, today) : void toggleItem(item, today);
   const openDetail = (id: string, anchor: HTMLElement) => setDetail({ id, anchor });
-  const ctx: RowCtx = { list, today, eventsOf, sections: b.sections, toggle, openDetail };
+  // #12: display-only grouping and sorting; "My order" by section is the saved manual order (and the only drag mode).
+  const manual = list.itemGroup === "section" && list.itemSort === "manual";
+  const order = (xs: ListItem[]) => sortItems(xs, list.itemSort, (id) => eventsOf.get(id) ?? [], today);
+  const ctx: RowCtx = { list, today, eventsOf, sections: b.sections, toggle, openDetail, order, manual };
   const unsorted = b.items.filter((i) => !i.sectionId || !b.sections.some((x) => x.id === i.sectionId));
   const style = { "--list-accent": accentCss(list.accent) } as CSSProperties;
 
@@ -63,6 +68,10 @@ export function ListView({ listId, today, onBack, onOpen }: { listId: string; to
       {scheduled ? <div className="muse-chip-row muse-list-views" role="group" aria-label="List view">
         {(["all", "week", "due", "history"] as View[]).map((v) => <button key={v} type="button" aria-pressed={view === v} onClick={() => setView(v)}>{v === "all" ? "All items" : v === "week" ? "This week" : v === "due" ? "Due" : "History"}</button>)}
       </div> : <span />}
+      {view === "all" && !(list.tableView && list.fields.length > 0) && <div className="muse-list-arrange">
+        <MuseChoiceMenu label="Group by" valueLabel={`Group: ${itemGroups.find((g) => g.id === list.itemGroup)!.label}`} options={itemGroups} selectedIds={[list.itemGroup]} onSelect={(id) => void updateList(list.id, { itemGroup: id as ItemGroup })} />
+        <MuseChoiceMenu label="Sort by" valueLabel={`Sort: ${itemSorts.find((g) => g.id === list.itemSort)!.label}`} options={itemSorts} selectedIds={[list.itemSort]} onSelect={(id) => void updateList(list.id, { itemSort: id as ItemSort })} />
+      </div>}
       {view === "all" && !(list.tableView && list.fields.length > 0) && <div className="muse-segmented muse-list-columns" role="group" aria-label="Section columns">
         {([0, 1, 2, 3] as const).map((n) => <button key={n} type="button" aria-pressed={list.columns === n} title={n ? `${n} column${n > 1 ? "s" : ""}` : "As many as fit"} onClick={() => void updateList(list.id, { columns: n })}>{n ? n : "Auto"}</button>)}
       </div>}
@@ -71,8 +80,11 @@ export function ListView({ listId, today, onBack, onOpen }: { listId: string; to
     {view === "all" && <>
       {list.tableView && list.fields.length > 0 ? <TableView ctx={ctx} items={b.items} /> : <>
         <div className="muse-list-sections" data-columns={list.columns}>
-        {(unsorted.length > 0 || b.sections.length === 0) && <SectionBlock ctx={ctx} section={null} items={unsorted} />}
-        {b.sections.map((sec, i) => <SectionBlock key={sec.id} ctx={ctx} section={sec} items={b.items.filter((it) => it.sectionId === sec.id)} first={i === 0} last={i === b.sections.length - 1} />)}
+        {list.itemGroup === "section" ? <>
+          {(unsorted.length > 0 || b.sections.length === 0) && <SectionBlock ctx={ctx} section={null} items={unsorted} />}
+          {b.sections.map((sec, i) => <SectionBlock key={sec.id} ctx={ctx} section={sec} items={b.items.filter((it) => it.sectionId === sec.id)} first={i === 0} last={i === b.sections.length - 1} />)}
+        </> : list.itemGroup === "frequency" ? frequencyGroups(b.items).map((g) => <SectionBlock key={g.label} ctx={ctx} section={null} title={g.label} items={g.items} />)
+          : <SectionBlock ctx={ctx} section={null} title="All items" items={b.items} />}
         </div>
       </>}
       <AddSection listId={list.id} />
@@ -90,20 +102,20 @@ export function ListView({ listId, today, onBack, onOpen }: { listId: string; to
   </section>;
 }
 
-type RowCtx = { list: MuseList; today: string; eventsOf: Map<string, ListEvent[]>; sections: ListSection[]; toggle: (i: ListItem) => void; openDetail: (id: string, a: HTMLElement) => void };
+type RowCtx = { list: MuseList; today: string; eventsOf: Map<string, ListEvent[]>; sections: ListSection[]; toggle: (i: ListItem) => void; openDetail: (id: string, a: HTMLElement) => void; order: (items: ListItem[]) => ListItem[]; manual: boolean };
 
-function SectionBlock({ ctx, section, items, first, last }: { ctx: RowCtx; section: ListSection | null; items: ListItem[]; first?: boolean; last?: boolean }) {
+function SectionBlock({ ctx, section, items, first, last, title }: { ctx: RowCtx; section: ListSection | null; items: ListItem[]; first?: boolean; last?: boolean; /** A display group (frequency / all items) instead of a section. */ title?: string }) {
   const [over, setOver] = useState(false), [confirm, setConfirm] = useState<HTMLElement | null>(null);
-  const sorted = [...items].sort((a, b) => a.position - b.position), prog = progress(sorted, sorted.flatMap((i) => ctx.eventsOf.get(i.id) ?? []), ctx.today);
+  const sorted = ctx.order(items), prog = progress(sorted, sorted.flatMap((i) => ctx.eventsOf.get(i.id) ?? []), ctx.today);
   const collapsed = !!section?.collapsed;
   const onDrop = (e: DragEvent) => { e.preventDefault(); setOver(false); const id = e.dataTransfer.getData("text/muse-list-item"); if (id) void moveItem(id, section?.id ?? null, sorted.length); };
   return <section className="muse-list-section" data-over={over || undefined} style={section?.accent ? { "--section-accent": accentCss(section.accent) } as CSSProperties : undefined}
-    onDragOver={(e) => { if (e.dataTransfer.types.includes("text/muse-list-item")) { e.preventDefault(); setOver(true); } }} onDragLeave={() => setOver(false)} onDrop={onDrop}>
+    onDragOver={(e) => { if (ctx.manual && !title && e.dataTransfer.types.includes("text/muse-list-item")) { e.preventDefault(); setOver(true); } }} onDragLeave={() => setOver(false)} onDrop={onDrop}>
     <header className="muse-list-section-head">
       {section ? <>
         <button type="button" className="muse-lists-mini" aria-expanded={!collapsed} aria-label={`${collapsed ? "Expand" : "Collapse"} ${section.title}`} onClick={() => void updateSection(section.id, { collapsed: !collapsed })}><span aria-hidden="true" className="muse-list-chevron" data-open={!collapsed || undefined}>›</span></button>
         <InlineText className="muse-list-section-title" value={section.title} max={LIMITS.sectionTitle} label="Section name" onSave={(title) => updateSection(section.id, { title })} />
-      </> : <h3 className="muse-list-section-title">{ctx.sections.length ? "Unsorted" : "Items"}</h3>}
+      </> : <h3 className="muse-list-section-title">{title ?? (ctx.sections.length ? "Unsorted" : "Items")}</h3>}
       <small className="muse-list-count">{prog.done}/{prog.total}</small>
       {section && <span className="muse-list-section-tools">
         <button type="button" className="muse-lists-mini" aria-label={`Move ${section.title} up`} disabled={first} onClick={() => void moveSection(section.id, -1)}>↑</button>
@@ -132,7 +144,7 @@ function ItemRow({ ctx, item, index }: { ctx: RowCtx; item: ListItem; index: num
   if (item.priority === "high") chips.push({ text: "High", tone: "due" });
   for (const f of ctx.list.fields) { const v = item.fieldValues[f.id]; if (v !== undefined && v !== null && v !== "" && v !== false) chips.push({ text: f.type === "checkbox" ? f.name : f.type === "number" ? `${f.name} ${v}` : String(v) }); }
   if (item.linkKind === "task") chips.push({ text: "Planner" });
-  return <li className="muse-list-item" data-done={done || undefined} draggable onDragStart={(e) => { e.dataTransfer.setData("text/muse-list-item", item.id); e.dataTransfer.effectAllowed = "move"; }}
+  return <li className="muse-list-item" data-done={done || undefined} draggable={ctx.manual} onDragStart={(e) => { e.dataTransfer.setData("text/muse-list-item", item.id); e.dataTransfer.effectAllowed = "move"; }}
     onDragOver={(e) => { if (e.dataTransfer.types.includes("text/muse-list-item")) e.preventDefault(); }}
     onDrop={(e) => { const id = e.dataTransfer.getData("text/muse-list-item"); if (id && id !== item.id) { e.preventDefault(); e.stopPropagation(); void moveItem(id, item.sectionId, index); } }}>
     <label className="muse-list-check"><input type="checkbox" checked={done} onChange={() => { if (!done) trigger(); ctx.toggle(item); }} aria-label={`${done ? "Mark not done" : "Mark done"}: ${item.title}`} /><span aria-hidden="true">{done && <MuseIcon name="check" size={12} />}{spark}</span></label>
@@ -223,7 +235,7 @@ function HistoryView({ ctx, items }: { ctx: RowCtx; items: ListItem[] }) {
     <span className="muse-list-history-kind">{r.kind === "completed" ? "✓" : r.kind === "skipped" ? "↷" : "·"}</span>
     <span><strong>{r.item.title}</strong><small>{r.kind === "completed" ? `Done ${shortDate(r.date)}` : r.kind === "skipped" ? `Skipped · ${shortDate(r.periodStart)}–${shortDate(r.periodEnd)}` : `Missed · ${shortDate(r.periodStart)}–${shortDate(r.periodEnd)}`}</small></span>
     {r.kind !== "missed" && r.item.linkKind !== "task" && <button type="button" className="text-button" onClick={() => void removeEvent(r.item.id, r.periodStart, r.kind as ListEvent["kind"])}>Undo</button>}
-  </li>) : <li className="small-label">No history yet. Completed, skipped and missed periods show up here.</li>}</ul>;
+  </li>) : <li className="small-label muse-list-history-empty">No history yet. Completed, skipped and missed periods show up here.</li>}</ul>;
 }
 
 function ListSettings({ list, today, onBack, onOpen, onClose }: { list: MuseList; today: string; onBack: () => void; onOpen: (id: string) => void; onClose: () => void }) {

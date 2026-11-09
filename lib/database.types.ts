@@ -999,14 +999,14 @@ isOneToOne: false
                   ]
                 },"lists": {
                   Row: {
-                    "accent": string,"archived_at": string | null,"aspiration_id": string | null,"created_at": string,"description": string | null,"end_date": string | null,"fields": NonNullable<Json>,"icon": string | null,"id": string,"is_template": boolean,"pinned": boolean,"position": number,"preset": string,"section_columns": number,"show_in_agenda": boolean,"show_in_daily": boolean,"start_date": string | null,"table_view": boolean,"title": string,"updated_at": string,"user_id": string
+                    "accent": string,"archived_at": string | null,"aspiration_id": string | null,"created_at": string,"description": string | null,"end_date": string | null,"fields": NonNullable<Json>,"icon": string | null,"id": string,"is_template": boolean,"item_group": string,"item_sort": string,"pinned": boolean,"position": number,"preset": string,"section_columns": number,"show_in_agenda": boolean,"show_in_daily": boolean,"start_date": string | null,"table_view": boolean,"title": string,"updated_at": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "accent"?: string,"archived_at"?: string | null,"aspiration_id"?: string | null,"created_at"?: string,"description"?: string | null,"end_date"?: string | null,"fields"?: NonNullable<Json>,"icon"?: string | null,"id": string,"is_template"?: boolean,"pinned"?: boolean,"position"?: number,"preset"?: string,"section_columns"?: number,"show_in_agenda"?: boolean,"show_in_daily"?: boolean,"start_date"?: string | null,"table_view"?: boolean,"title": string,"updated_at"?: string,"user_id"?: string
+                    "accent"?: string,"archived_at"?: string | null,"aspiration_id"?: string | null,"created_at"?: string,"description"?: string | null,"end_date"?: string | null,"fields"?: NonNullable<Json>,"icon"?: string | null,"id": string,"is_template"?: boolean,"item_group"?: string,"item_sort"?: string,"pinned"?: boolean,"position"?: number,"preset"?: string,"section_columns"?: number,"show_in_agenda"?: boolean,"show_in_daily"?: boolean,"start_date"?: string | null,"table_view"?: boolean,"title": string,"updated_at"?: string,"user_id"?: string
                   }
                   Update: {
-                    "accent"?: string,"archived_at"?: string | null,"aspiration_id"?: string | null,"created_at"?: string,"description"?: string | null,"end_date"?: string | null,"fields"?: NonNullable<Json>,"icon"?: string | null,"id"?: string,"is_template"?: boolean,"pinned"?: boolean,"position"?: number,"preset"?: string,"section_columns"?: number,"show_in_agenda"?: boolean,"show_in_daily"?: boolean,"start_date"?: string | null,"table_view"?: boolean,"title"?: string,"updated_at"?: string,"user_id"?: string
+                    "accent"?: string,"archived_at"?: string | null,"aspiration_id"?: string | null,"created_at"?: string,"description"?: string | null,"end_date"?: string | null,"fields"?: NonNullable<Json>,"icon"?: string | null,"id"?: string,"is_template"?: boolean,"item_group"?: string,"item_sort"?: string,"pinned"?: boolean,"position"?: number,"preset"?: string,"section_columns"?: number,"show_in_agenda"?: boolean,"show_in_daily"?: boolean,"start_date"?: string | null,"table_view"?: boolean,"title"?: string,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
                     

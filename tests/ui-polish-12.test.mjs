@@ -87,3 +87,16 @@ test('#12 small pieces: list columns, Allocation label, Crystal hidden, shared t
  assert.match(read('app/globals.css'),/\.muse-filter-toolbar \{ display:flex/);
  assert.match(read('components/whimsy/TarotExperience.tsx'),/muse-filter-toolbar/);
 });
+
+test('#12 Lists: group and sort are display-only, by real intervals, persisted per list',()=>{
+ const O=load('lib/lists/order');
+ const rule=(freq,interval)=>({rule:{freq,interval},anchor:'2026-11-02',mode:'flexible',since:'2026-11-02'});
+ const it=(id,pos,schedule,title=id)=>({id,title,position:pos,createdAt:'',schedule,completedAt:null,dueDate:null});
+ const items=[it('yearly',1,rule('yearly',1)),it('once',2,null),it('daily',3,rule('daily',1)),it('custom',4,rule('weekly',5)),it('biweek',5,rule('weekly',2)),it('quarter',6,rule('monthly',3))];
+ assert.deepEqual(O.sortItems(items,'frequency',()=>[],'2026-11-08').map(i=>i.id),['daily','biweek','custom','quarter','yearly','once'],'real intervals, one-time last');
+ assert.deepEqual(O.sortItems(items,'manual',()=>[],'2026-11-08').map(i=>i.id),items.map(i=>i.id));
+ assert.deepEqual(items.map(i=>i.position),[1,2,3,4,5,6],'sorting never rewrites positions');
+ assert.deepEqual(O.frequencyGroups(items).map(g=>g.label),['Daily','Every 2 weeks','Quarterly','Yearly','Custom','One-time']);
+ assert.match(read('supabase/migrations/20261130000300_list_columns.sql'),/item_group[\s\S]*item_sort/);
+ assert.match(read('components/lists/ListView.tsx'),/draggable=\{ctx\.manual\}/);
+});
