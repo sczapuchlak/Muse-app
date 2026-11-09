@@ -65,7 +65,7 @@
 
 /* Light cards on a dark canvas (Midnight Ballerina, Pretty Toxic): everything painted with the card surface re-points
    its text, links, chart inks and nested tints to the card's own ink, so components stay readable unchanged. */
-:root:is([data-theme="astral"],[data-theme="nightbloom"]) :is(.muse-goals-tiles > div, .muse-goal-card, .muse-goals-empty, .muse-goals-table-wrap, .muse-lists-card, .muse-list-section, .muse-list-day, .muse-list-table-wrap, .muse-quest-card, .muse-quest-collectible, .muse-collections-controls, .muse-empty-state, .muse-tarot-ritual, .muse-fortune-stage, .muse-books-panel, .muse-hero, .muse-panel, .muse-collections-card, .muse-collections-active-card, .muse-glance-mini, .muse-cosmic-library-intro, .muse-cosmic-collection, .muse-cosmic-tile, .muse-cosmic-forecast-sign, .muse-dream-library-hero, .muse-dream-result, .muse-little-moment, .muse-appearance-theme, .muse-cosmic-lunar-strip, .muse-cosmic-month-grid, .muse-cosmic-calendar-selected, .muse-cosmic-featured-event, .muse-lists-card, .muse-list-section, .muse-list-day, .muse-list-table-wrap, .date-navigation, .muse-segmented, .muse-search, .muse-card, .muse-agenda-log-month, .muse-appearance-theme, .muse-thought-capture, .muse-thought-card, .muse-glance-moves, .muse-glance-waterline, .muse-glance-yearstats li, .muse-insight-panel, .muse-money-panel, .muse-mood-history-list > li, .muse-notes-workspace, .muse-grocery-section, .muse-nourish-week, .muse-saved-meal, .muse-saved-meals-drawer, .muse-reflections-picker, .muse-series-hero, .muse-series-rows, .muse-stream-post, .muse-review-card, .muse-quest-card, .muse-quest-history details, .muse-planning-rail, .muse-day-drop, .muse-planner-surface, .muse-ritual-group, .muse-nourish-day, .muse-popover-panel, .muse-drawer, .muse-modal) {
+:root:is([data-theme="astral"],[data-theme="nightbloom"]) :is(.muse-profile-hero, .muse-showcase, .muse-envision-empty, .muse-intentions-start, .muse-goals-tiles > div, .muse-goal-card, .muse-goals-empty, .muse-goals-table-wrap, .muse-lists-card, .muse-list-section, .muse-list-day, .muse-list-table-wrap, .muse-quest-card, .muse-quest-collectible, .muse-collections-controls, .muse-empty-state:not(.muse-lists-empty), .muse-tarot-ritual, .muse-fortune-stage, .muse-books-panel, .muse-hero, .muse-panel, .muse-collections-card, .muse-collections-active-card, .muse-glance-mini, .muse-cosmic-library-intro, .muse-cosmic-collection, .muse-cosmic-tile, .muse-cosmic-forecast-sign, .muse-dream-library-hero, .muse-dream-result, .muse-little-moment, .muse-appearance-theme, .muse-cosmic-lunar-strip, .muse-cosmic-month-grid, .muse-cosmic-calendar-selected, .muse-cosmic-featured-event, .muse-lists-card, .muse-list-section, .muse-list-day, .muse-list-table-wrap, .date-navigation, .muse-segmented, .muse-search, .muse-card, .muse-agenda-log-month, .muse-appearance-theme, .muse-thought-capture, .muse-thought-card, .muse-glance-moves, .muse-glance-waterline, .muse-glance-yearstats li, .muse-insight-panel, .muse-money-panel, .muse-mood-history-list > li, .muse-notes-workspace, .muse-grocery-section, .muse-nourish-week, .muse-saved-meal, .muse-saved-meals-drawer, .muse-reflections-picker, .muse-series-hero, .muse-series-rows, .muse-stream-post, .muse-review-card, .muse-quest-card, .muse-quest-history details, .muse-planning-rail, .muse-day-drop, .muse-planner-surface, .muse-ritual-group, .muse-nourish-day, .muse-popover-panel, .muse-drawer, .muse-modal) {
   color: var(--tone-card-ink);
   --foreground: var(--tone-card-ink);
   --text-muted: var(--tone-card-muted);
@@ -109,7 +109,7 @@
    switchers, date navigation, search) read as solid white slabs. On the canvas they are translucent midnight glass with
    the page's own light text instead — the same role the tinted card colour plays in the other dark themes. Bars inside
    cards keep the light-card look. */
-:root[data-theme="astral"] :is(.date-navigation, .muse-segmented, .muse-search):not(:is(.muse-card, .muse-panel, .muse-insight-panel, .muse-glance-mini, .muse-glance-card, .muse-reflections-book, .muse-money-panel, .muse-ritual-group, .muse-collections-card, .muse-popover-panel, .muse-modal, .muse-drawer) *):not(#\#):not(#\#) {
+:root[data-theme="astral"] :is(.date-navigation, .muse-segmented, .muse-search):not(:is(.muse-card, .muse-collections-controls, .muse-panel, .muse-insight-panel, .muse-glance-mini, .muse-glance-card, .muse-reflections-book, .muse-money-panel, .muse-ritual-group, .muse-collections-card, .muse-popover-panel, .muse-modal, .muse-drawer) *):not(#\#):not(#\#) {
   --foreground: inherit; --text-muted: inherit; --selected-text: inherit; --selected-background: inherit; --selected-border: inherit;
   --glass-border: inherit; --surface-subtle: inherit; --surface-hover: inherit; --surface-control: inherit; --divider: inherit;
   --interactive-border: inherit; --focus-ring: inherit; --link-ink: inherit; --information-accent: inherit; --nav-icon: inherit;
@@ -146,3 +146,15 @@
   --icon-gradient-middle: #00aec6;
   --icon-gradient-end: #18c46e;
 }
+
+/* #101 Light-card themes, found by a rendered contrast scan at phone width:
+   - Phone popovers are backed with a solid layer so busy content can't show through (GlassPopover.css). In these themes
+     that layer must be the light card, since popover text uses the card's dark ink (the "More" menu read dark on dark).
+   - The Insights hover tip is a dark chip inside a light card: it keeps the canvas's light ink.
+   - A few labels use an accent colour as text, which disappears on the light card; they use the card's own accent. */
+@media (max-width:600px){:root:is([data-theme="astral"],[data-theme="nightbloom"]) :is(.muse-popover-panel,dialog .muse-popover-panel){background:linear-gradient(var(--floating-background),var(--floating-background)),var(--glass-background)}}
+:root:is([data-theme="astral"],[data-theme="nightbloom"]) .muse-glance-tip{--foreground:var(--theme-canvas-ink,#f2f7ff);--text-muted:color-mix(in srgb,var(--theme-canvas-ink,#f2f7ff) 72%,transparent);color:var(--foreground)}
+:root[data-theme="nightbloom"] .muse-glance-tip{--theme-canvas-ink:#fff0f3}
+:root:is([data-theme="astral"],[data-theme="nightbloom"]) :is(.muse-card,.muse-panel) :is(.add-control,.muse-username-ok),
+:root:is([data-theme="astral"],[data-theme="nightbloom"]) .muse-agenda-day[data-today] .muse-agenda-day-heading strong{color:var(--tone-card-accent)}
+:root:is([data-theme="astral"],[data-theme="nightbloom"]) .muse-little-moment-pill[data-primary]{color:#fff;background:var(--tone-card-accent)}

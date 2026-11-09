@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { desktopGroups, isActiveDestination, isActiveItem, mobileMoreIds, mobilePrimaryIds, navigation, navItems, type NavItem } from "@/lib/navigation";
 import {WellnessProvider} from "./WellnessStore";
 import {todayInTimeZone} from "@/lib/dates";
@@ -33,6 +33,7 @@ import { ThemeReviewBar } from "./ThemeReviewBar";
 import {LogoutButton} from "./auth/LogoutButton";
 import {MuseMagicBridge} from "./MuseMagic"
 import {AppearanceBridge} from "./atelier/AppearanceBridge";
+import {MobileDensityBridge} from "./MobileDensity";
 
 function NavDestination({ item, path, compact = false, onNavigate, userId }: { item: NavItem; path: string; compact?: boolean; onNavigate?: () => void; userId: string }) {
   const active = isActiveItem(path, item);
@@ -50,13 +51,30 @@ function AppShellContent({ children, profile:initialProfile }: { children: React
   const [collapsed, setCollapsed] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
   const moreRef = useRef<HTMLButtonElement>(null);
+  const bottomNavRef = useRef<HTMLElement>(null);
+  // #101 iOS Safari can leave the fixed bottom nav stranded mid-screen after the keyboard closes or the toolbar
+  // collapses (the visual viewport changes size but fixed boxes keep their old position). Re-anchoring it once the
+  // viewport settles makes WebKit recompute the position. The nav stays position: fixed; this only refreshes it.
+  useEffect(() => {
+    const nav = bottomNavRef.current, viewport = window.visualViewport;
+    if (!nav) return;
+    let frame = 0, timer = 0;
+    const settle = () => { cancelAnimationFrame(frame); frame = requestAnimationFrame(() => { nav.style.bottom = "auto"; void nav.offsetHeight; nav.style.bottom = ""; }); };
+    const later = () => { window.clearTimeout(timer); timer = window.setTimeout(settle, 300); };
+    viewport?.addEventListener("resize", later);
+    window.addEventListener("focusout", later);
+    window.addEventListener("orientationchange", later);
+    window.addEventListener("pageshow", settle);
+    document.addEventListener("visibilitychange", settle);
+    return () => { cancelAnimationFrame(frame); window.clearTimeout(timer); viewport?.removeEventListener("resize", later); window.removeEventListener("focusout", later); window.removeEventListener("orientationchange", later); window.removeEventListener("pageshow", settle); document.removeEventListener("visibilitychange", settle); };
+  }, []);
   // Stream can be hidden from navigation (a per-account preference); its page and posts are untouched.
   const showStream = useStreamNavigation(profile.id);
   const moreItems = navItems(mobileMoreIds).filter((item) => showStream || item.id !== "stream"), moreActive = moreItems.some((item) => isActiveItem(path, item));
   return (
     <MuseSessionProvider initialDate={todayInTimeZone(profile.timeZone)}><DailyDataProvider profile={profile}><DailyDateSync/>
       <AstrologyDataProvider key={profile.id} userId={profile.id}><WhimsyDataProvider userId={profile.id} timeZone={profile.timeZone}><CollectionsDataProvider userId={profile.id}><ConstellationsProvider profile={profile}><NotesProvider profile={profile}><PlannerProvider profile={profile}><WellnessProvider key={profile.id} userId={profile.id}><NourishProvider><MoneyProvider key={profile.id} userId={profile.id}><RitualProvider key={profile.id} userId={profile.id}><ConnectedRitualsProvider timeZone={profile.timeZone}><div className="muse-app-shell" data-rail={collapsed ? "collapsed" : "expanded"} data-module={path.split("/")[1]||"daily"}>
-        <MuseMagicBridge/><AppearanceBridge userId={profile.id}/><MuseAtmosphere/><MuseCelebrations/>
+        <MuseMagicBridge/><MobileDensityBridge/><AppearanceBridge userId={profile.id}/><MuseAtmosphere/><MuseCelebrations/>
         <a className="muse-skip-link" href="#muse-main-content">Skip to content</a>
         <aside className="muse-rail" aria-label="Muse app navigation">
           <div className="muse-rail-header"><Link className="muse-shell-brand" href="/" aria-label="Muse home"><span>muse</span><MuseStar size={28} /></Link>
@@ -87,7 +105,7 @@ function AppShellContent({ children, profile:initialProfile }: { children: React
           </div>
           <div className="muse-app-content" id="muse-main-content" tabIndex={-1}>{children}</div><ThemeReviewBar />
         </div>
-        <nav className="muse-bottom-navigation" aria-label="Mobile navigation">
+        <nav ref={bottomNavRef} className="muse-bottom-navigation" aria-label="Mobile navigation">
           {navItems(mobilePrimaryIds).map((item) => <Link key={item.id} href={item.href} className="muse-bottom-link muse-edge" aria-current={isActiveDestination(path, item.href) ? "page" : undefined}>
             <MuseIcon name={item.icon} size={21} treatment="prismatic" /><span>{item.id === "daily" ? "Today" : item.label}</span>{isActiveDestination(path, item.href) && <MuseStar size={12} className="muse-bottom-glint" />}
           </Link>)}

@@ -44,3 +44,12 @@ export function validDate(value: string | null | undefined): value is string {
 
 /** Configuration errors must be shown explicitly, never replaced with a mock/device zone. */
 export function validTimeZone(value:string|null|undefined):value is string{if(!value?.trim())return false;try{new Intl.DateTimeFormat('en-US',{timeZone:value}).format(0);return true;}catch{return false;}}
+
+/** Short period label for narrow toolbars (#101): "Nov 12 – 14", "Nov 30 – Dec 2"; the year only when it isn't this year. */
+export function compactDateRange(start: string, end: string, today: string): string {
+  const month = (iso: string) => new Intl.DateTimeFormat("en-US", { month: "short", timeZone: "UTC" }).format(new Date(`${iso}T12:00:00Z`));
+  const day = (iso: string) => Number(iso.slice(8, 10));
+  const year = start.slice(0, 4) !== end.slice(0, 4) || (today && start.slice(0, 4) !== today.slice(0, 4)) ? `, ${end.slice(0, 4)}` : "";
+  if (start === end) return `${month(start)} ${day(start)}${year}`;
+  return start.slice(0, 7) === end.slice(0, 7) ? `${month(start)} ${day(start)} – ${day(end)}${year}` : `${month(start)} ${day(start)} – ${month(end)} ${day(end)}${year}`;
+}

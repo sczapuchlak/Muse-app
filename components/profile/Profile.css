@@ -10,7 +10,7 @@
 .muse-profile-status>a{display:inline-flex;align-items:center;gap:6px;text-decoration:none}
 .muse-profile-status>a svg,.muse-customizer-bar>a svg,.muse-friends-bar>a svg{transform:rotate(180deg)}
 .muse-profile{display:grid;gap:26px}
-.muse-profile-hero{position:relative;border-radius:var(--dl-radius-hero);border:1px solid var(--dl-line);background:var(--dl-surface);overflow:hidden}
+.muse-profile-hero{position:relative;border-radius:var(--dl-radius-hero);border:1px solid var(--dl-line);background:var(--glass-background);overflow:hidden}
 .muse-profile-banner{position:relative;height:clamp(130px,22vw,210px);background:var(--banner);overflow:hidden}
 .muse-profile-banner::after{content:"";position:absolute;inset:0;background:radial-gradient(60% 90% at 80% 10%,rgba(255,255,255,.28),transparent 60%),radial-gradient(40% 60% at 10% 100%,rgba(0,0,0,.25),transparent 70%),linear-gradient(transparent 55%,color-mix(in srgb,var(--background) 45%,transparent))}
 .muse-profile-banner>svg{position:absolute;z-index:1;color:#fff;opacity:.85}
@@ -62,7 +62,7 @@ button.muse-badge:focus-visible{outline:2px solid var(--badge);outline-offset:2p
 .muse-profile-starter small{color:var(--text-muted)}
 
 /* ---- Showcase: a gradient-framed exhibit ---- */
-.muse-showcase{position:relative;display:grid;gap:16px;padding:clamp(16px,2.4vw,24px);border-radius:var(--dl-radius-hero);background:var(--dl-surface);box-shadow:0 14px 40px color-mix(in srgb,var(--showcase-glow) 14%,transparent);isolation:isolate}
+.muse-showcase{position:relative;display:grid;gap:16px;padding:clamp(16px,2.4vw,24px);border-radius:var(--dl-radius-hero);background:var(--glass-background);box-shadow:0 14px 40px color-mix(in srgb,var(--showcase-glow) 14%,transparent);isolation:isolate}
 .muse-showcase::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;padding:2.5px;background:var(--showcase-gradient);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
 .muse-showcase-header{display:flex;flex-wrap:wrap;align-items:center;gap:12px}
 .muse-showcase-icon{display:grid;place-items:center;width:42px;height:42px;flex:none;border-radius:14px;background:color-mix(in srgb,var(--showcase-glow) 16%,var(--dl-surface));box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--showcase-glow) 55%,transparent)}
@@ -271,3 +271,6 @@ button.muse-badge:focus-visible{outline:2px solid var(--badge);outline-offset:2p
 .muse-gradient-exclusive>p{color:var(--achievement-gold,#f5b52e);font-weight:700}
 .muse-gradient-exclusive button{position:relative;width:62px;box-shadow:0 0 0 1.5px #f5b52e,0 0 12px -2px rgba(245,181,46,.7)}
 .muse-gradient-exclusive button::after{content:"✦";position:absolute;top:-7px;right:-6px;font-size:13px;line-height:1;color:#fde68a;text-shadow:0 0 6px #facc15}
+/* #101 The profile hero and showcases are cards: they use the theme's card surface, and the Frosted/Crystal material
+   layers and blur come from the shared lists in materials.css. Before, they used the subtle tint, so the
+   page showed straight through. Showcase glows and the banner art are unchanged. */

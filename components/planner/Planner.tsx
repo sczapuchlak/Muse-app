@@ -20,7 +20,7 @@ import { useMuseToday } from "../useMuseToday";
 import { PlannerRail } from "./PlannerRail";
 import { RunningList } from "./RunningList";
 import { parseTasksView, type TasksView } from "@/lib/running-list";
-import { weekDates } from "@/lib/dates";
+import { compactDateRange, weekDates } from "@/lib/dates";
 import { PlanningDropZone } from "./PlanningDropZone";
 import { MuseStar } from "../MuseStar";
 import { WeekNavigator } from "../WeekNavigator";
@@ -77,7 +77,9 @@ export function Planner() {
   const inbox = filtered.filter((task) => !task.plannedDate);
   // Recurrence 2.0 (#89): each board day shows the occurrences due that day (one per series per date).
   const boardTasks = projectTasks(filtered, state.occurrences, days[0], days[days.length - 1]), boardCanonical = projectTasks(state.tasks, state.occurrences, days[0], days[days.length - 1]);
-  function utilities(){return <PlannerUtilities date={date} onDate={changeDate} title={boardTitle} taskList={<div className="muse-planner-mobile-tabs"><button className="muse-button" type="button" aria-haspopup="dialog" aria-expanded={mobileView==="inbox"} onClick={(event)=>{setInboxAnchor(event.currentTarget);setMobileView("inbox");}}>Task List · {inbox.length}</button></div>} today={today} onToday={()=>{changeDate(today);setMobileView("day");}} onPrevious={()=>changeDate(tasksView==="running"?shiftDate(date,-7):shiftDate(date,-1))} onNext={()=>changeDate(tasksView==="running"?shiftDate(date,7):shiftDate(date,1))} view={tasksView} onView={chooseView}/>;}
+  const compactTitle = tasksView === "running" ? compactDateRange(runningWeek[0], runningWeek[6], today) : compactDateRange(days[0], days[days.length - 1], today);
+  const showingToday = tasksView === "running" ? runningWeek.includes(today) : date === today;
+  function utilities(){return <PlannerUtilities date={date} onDate={changeDate} title={boardTitle} compactTitle={compactTitle} showingToday={showingToday} taskList={<div className="muse-planner-mobile-tabs"><button className="muse-button" type="button" aria-haspopup="dialog" aria-expanded={mobileView==="inbox"} onClick={(event)=>{setInboxAnchor(event.currentTarget);setMobileView("inbox");}}>Task List · {inbox.length}</button></div>} today={today} onToday={()=>{changeDate(today);setMobileView("day");}} onPrevious={()=>changeDate(tasksView==="running"?shiftDate(date,-7):shiftDate(date,-1))} onNext={()=>changeDate(tasksView==="running"?shiftDate(date,7):shiftDate(date,1))} view={tasksView} onView={chooseView}/>;}
   function rail(){return <PlannerRail workspaceId={workspaceFilter} onWorkspaceChange={(id)=>{setWorkspace(id);setFilters((current)=>({...current,groupId:""}));}} tasks={filtered} onOpen={openTask} groupId={groupFilter||undefined} tagIds={activeTags}
     today={today} boardDays={days} priorityIds={priorityIds} search={search} onSearch={setSearch} filters={activeFilters} onFilter={setFilters} onAnnounce={setAnnouncement}/>;}
 

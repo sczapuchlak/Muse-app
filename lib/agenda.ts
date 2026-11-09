@@ -4,7 +4,7 @@ import {isSeries} from './planner-occurrences';
  * Insights use. Nothing here stores or copies records; it only selects and arranges them. Pure, so every view can
  * be tested without a browser.
  */
-import {shiftDate,weekDates} from './dates';
+import {compactDateRange,shiftDate,weekDates} from './dates';
 import type {DayEvent,PlannedTask} from './models';
 
 /** #117: Intentions (before) sits beside Tasks; Reflections (after) stays last. */
@@ -94,6 +94,16 @@ export function agendaTitle(view:AgendaView,date:string){
  if(view==='day')return fmt({weekday:'long',month:'long',day:'numeric',year:'numeric'},date);
  if(view==='week'){const w=weekDates(date);return `${fmt({month:'short',day:'numeric'},w[0])} – ${fmt({month:'short',day:'numeric',year:'numeric'},w[6])}`;}
  if(view==='month')return fmt({month:'long',year:'numeric'},date);
+ return `${date.slice(0,4)} · Future Log`;
+}
+
+/** The shorter title for the narrow two-row toolbar (#101); the year appears only when it isn't the current one. */
+export function compactAgendaTitle(view:AgendaView,date:string,today:string){
+ const fmt=(o:Intl.DateTimeFormatOptions,d:string)=>new Intl.DateTimeFormat('en-US',{...o,timeZone:'UTC'}).format(new Date(`${d}T12:00:00Z`));
+ const otherYear=!!today&&date.slice(0,4)!==today.slice(0,4);
+ if(view==='day')return fmt({weekday:'short',month:'short',day:'numeric',...(otherYear?{year:'numeric'}:{})},date);
+ if(view==='week'){const w=weekDates(date);return compactDateRange(w[0],w[6],today);}
+ if(view==='month')return fmt({month:'long',...(otherYear?{year:'numeric'}:{})},date);
  return `${date.slice(0,4)} · Future Log`;
 }
 

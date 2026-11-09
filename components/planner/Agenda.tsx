@@ -2,7 +2,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import type { DayEvent, PlannedTask } from "@/lib/models";
-import { agendaRange, agendaTitle, agendaViews, dayItems, defaultAgendaPreferences, eventDays, futureLogMonths, monthGrid, monthItems, parseAgendaPreferences, SPREAD_SIZE, taskState, weekSlots, type AgendaPreferences, type AgendaView } from "@/lib/agenda";
+import { agendaRange, agendaTitle, agendaViews, compactAgendaTitle, dayItems, defaultAgendaPreferences, eventDays, futureLogMonths, monthGrid, monthItems, parseAgendaPreferences, SPREAD_SIZE, taskState, weekSlots, type AgendaPreferences, type AgendaView } from "@/lib/agenda";
 import { dayMarks, resolveMark, type ResolvedMark } from "@/lib/muse-marks";
 
 import { WeekPlanningColumn } from "./WeekPlanningColumn";
@@ -193,18 +193,23 @@ function AgendaBody({ date, today, onDate, onOpen, workspaceId, prefs, update, s
   }
 
   return <section className="muse-agenda" aria-label="Agenda">
-    <div className="muse-agenda-toolbar">
-      <PeriodTitle title={agendaTitle(view, date)} date={date} onChange={onDate} />
+    <div className="muse-agenda-toolbar" data-rows="date-actions">
+      <div className="muse-toolbar-period">
+        <PeriodTitle title={agendaTitle(view, date)} compactTitle={compactAgendaTitle(view, date, today)} date={date} onChange={onDate} />
+        {today && !(view === "year" ? date.slice(0, 4) === today.slice(0, 4) : range.days.includes(today)) && <button type="button" className="muse-button muse-toolbar-today" onClick={() => onDate(today)}>Today</button>}
+      </div>
       <div className="muse-agenda-tools">
         <div className="muse-agenda-nav" role="group" aria-label="Move through the Agenda">
           <button type="button" className="muse-button" aria-label="Previous" onClick={() => onDate(range.previous)}>‹</button>
-          <button type="button" className="muse-button" onClick={() => onDate(today)}>Today</button>
+          <button type="button" className="muse-button muse-agenda-today" onClick={() => onDate(today)}>Today</button>
           <button type="button" className="muse-button" aria-label="Next" onClick={() => onDate(range.next)}>›</button>
         </div>
         <MuseChoiceMenu label="Agenda view" valueLabel={agendaViews.find((v) => v.id === view)!.label} options={agendaViews.map((v) => ({ id: v.id, label: v.label }))} selectedIds={[view]} onSelect={(id) => { update({ view: id as AgendaView }); setSelected(null); }} />
         {/* #104: Day, Week and Future Log add from inside their sections; Month has no other add, so it keeps this one. */}
-        {view === "month" && <button type="button" className="muse-button" onClick={(e) => openEditor(e.currentTarget, { kind: "event", date: date.slice(0, 7) === today.slice(0, 7) ? today : date })}>+ Event</button>}
-        {(view === "week" || view === "day") && <button type="button" className="muse-button" aria-pressed={customizing} onClick={() => setCustomizing(!customizing)}>Customize layout</button>}
+        <div className="muse-toolbar-secondary">
+          {view === "month" && <button type="button" className="muse-button" onClick={(e) => openEditor(e.currentTarget, { kind: "event", date: date.slice(0, 7) === today.slice(0, 7) ? today : date })}>+ Event</button>}
+          {(view === "week" || view === "day") && <button type="button" className="muse-button" aria-pressed={customizing} onClick={() => setCustomizing(!customizing)}>Customize layout</button>}
+        </div>
         <button type="button" className="muse-button muse-agenda-icon" aria-label="View settings and key" aria-expanded={editor?.kind === "settings"} onClick={(e) => openEditor(e.currentTarget, { kind: "settings" })}><MuseIcon name="settings" size={16} /></button>
         {view === "week" && <div className="muse-agenda-spread-nav" role="group" aria-label="Week spreads">
           <button type="button" className="muse-button muse-agenda-icon" aria-label="Monday to Thursday" disabled={spread === 0} onClick={() => goSpread(0)}>‹</button>

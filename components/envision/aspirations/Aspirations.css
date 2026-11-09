@@ -154,3 +154,15 @@
 #aspiration-editor .muse-aspiration-form{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain}
 #aspiration-editor .muse-aspiration-actions{position:sticky;bottom:-18px;z-index:2;margin:0 -14px -18px;padding:12px 14px;background:color-mix(in srgb,var(--background) 55%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-top:1px solid var(--glass-border)}
 .muse-aspiration-form legend{display:block;float:none;width:auto;padding:0;font-size:.9rem;font-weight:500;line-height:1.4;white-space:normal}
+
+/* #101 Phones: the timeframe pill stays one line and scrolls (with the shared end fade) instead of dropping "All" to a
+   second line; Group and Sort share the next row as two equal halves. */
+@container muse-content (max-width:640px){
+  .muse-aspirations-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-2)}
+  .muse-aspiration-filter{grid-column:1/-1;display:flex;flex-wrap:nowrap;overflow-x:auto;max-width:100%}
+  .muse-aspiration-filter button{flex:none;white-space:nowrap}
+  .muse-aspiration-choice[data-inline]{min-width:0}
+  .muse-aspiration-choice[data-inline]>span{flex:none;font-size:.82rem;color:var(--text-muted)}
+  .muse-aspiration-choice[data-inline] .muse-choice-menu{flex:1 1 auto;min-width:0}
+  .muse-aspiration-choice[data-inline] .muse-choice-trigger{width:100%;min-width:0;min-height:var(--touch-target,44px)}
+}

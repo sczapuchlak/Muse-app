@@ -215,3 +215,16 @@ span.muse-stream-tag{cursor:default}
 @media (pointer:coarse){.muse-stream-audience>button{min-height:44px}}
 @media (max-width:420px){.muse-stream-audience{grid-template-columns:minmax(0,1fr)}}
 .muse-stream-feedhead{flex-wrap:nowrap;min-height:44px}.muse-stream-feedhead .muse-stream-filters{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;min-width:0;justify-content:flex-end}.muse-stream-feedhead .muse-stream-filters::-webkit-scrollbar{display:none}.muse-stream-feedhead .muse-stream-filters>button{flex:none}.muse-stream-create>.muse-stream-col-title{min-height:44px;display:flex;align-items:center;margin:0}
+
+/* #101 Phones. The feed column's track is pinned to the available width; before, the non-wrapping filter chips set its
+   minimum and pushed the feed (and its empty state) past the right edge. "The stream" sits above its filters, which
+   scroll from the start with the shared end fade. The creator ring keeps its circle instead of stretching across the
+   one-column composer head. */
+.muse-stream-feedcol{grid-template-columns:minmax(0,1fr)}
+@container muse-content (max-width:640px){
+  .muse-stream-feedhead{flex-wrap:wrap;gap:var(--space-2)}
+  .muse-stream-feedhead .muse-stream-col-title{flex:1 1 100%}
+  .muse-stream-feedhead .muse-stream-filters{flex:1 1 100%;justify-content:flex-start}
+  .muse-stream-composer-head>.muse-creator-ring{justify-self:center}
+}
+@media (max-width:600px){.muse-stream-composer-head>.muse-creator-ring{justify-self:center;width:auto}}

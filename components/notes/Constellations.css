@@ -127,3 +127,13 @@
 .muse-tag-preview{display:flex;align-items:center;gap:8px;margin:0}
 .muse-board-tag-popover .muse-board-popover-actions{display:flex;justify-content:flex-end;gap:8px}
 .muse-board-search-empty{display:grid;justify-items:center;gap:10px;text-align:center}.muse-board-search-empty p{margin:0}.muse-board-search-empty .muse-board-popover-actions{justify-content:center;align-items:center}
+
+/* #101 Phone board: two equal columns with even gutters, independent of the desktop masonry sizes. Desktop Wide/Large
+   spans don't apply here; a card spans both columns only when "On phone: full width" is chosen in its ⋯ menu.
+   Cards keep their natural height (the masonry rows still measure each card). */
+@container muse-content (max-width:640px){
+  .muse-constellation-results:not([data-layout=list]) .muse-constellation-board{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;justify-content:stretch}
+  .muse-constellation-results:not([data-layout=list]) .muse-thought-card:is([data-size=wide],[data-size=large]){grid-column:auto}
+  .muse-constellation-results:not([data-layout=list]) .muse-thought-card[data-phone-wide]{grid-column:1/-1}
+  .muse-thought-card{padding:10px}
+}

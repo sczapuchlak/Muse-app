@@ -78,7 +78,7 @@ export function Stream(){
 
   </aside>
   <section className="muse-stream-feedcol" aria-label="Your stream"><div className="muse-stream-feedhead"><h2 className="muse-stream-col-title">The stream</h2>
-  <div className="muse-chip-row muse-stream-filters" role="group" aria-label="Show">{feedFilters.map(f=><button key={f.id??'all'} type="button" aria-pressed={filter===f.id} onClick={()=>{setFilter(f.id);setPosts(null);}}>{f.label}</button>)}</div></div>
+  <div className="muse-chip-row muse-stream-filters" data-scroll role="group" aria-label="Show">{feedFilters.map(f=><button key={f.id??'all'} type="button" aria-pressed={filter===f.id} onClick={()=>{setFilter(f.id);setPosts(null);}}>{f.label}</button>)}</div></div>
 
   {error&&<p className="field-error" role="alert">{error} <button type="button" className="text-button" onClick={()=>load(filter)}>Retry</button></p>}
   {posts===null?<p className="small-label" role="status">Listening for little moments…</p>:posts.length===0?

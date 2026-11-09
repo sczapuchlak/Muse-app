@@ -143,7 +143,7 @@
 .muse-collections-empty p{max-width:48ch}
 .muse-collections-empty .muse-button{justify-self:center}
 @media(max-width:760px){.muse-collections-search-add{grid-column:1}.muse-collections-controls>.muse-collections-toolbar-end{justify-self:start}}
-@media(max-width:430px){.muse-collections-search-add{flex-wrap:wrap}.muse-collections-search-add>.muse-search{flex-basis:100%}.muse-collections-add-trigger{width:100%}}
+/* #101 Phones keep search and Add on one row (shared .muse-search-row); Add becomes the square + button. */
 .muse-collections-form-grid>.muse-collections-form-wide{grid-column:1/-1}
 
 /* Phones: Search + Add, then media, then Filters (left) with preferences and Board / Library (right).

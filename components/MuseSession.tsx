@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, type Dispatch, type ReactNode, type SetStateAction } from "react";
+import { createContext, useCallback, useContext, useEffect, useRef, useState, type Dispatch, type ReactNode, type SetStateAction } from "react";
 
 import {validDate} from "@/lib/dates";
 
@@ -10,14 +10,18 @@ const MuseSession = createContext<Session | null>(null);
 
 export function MuseSessionProvider({ initialDate, initialRecords = {}, children }: { initialDate: string; initialRecords?: Records; children: ReactNode }) {
   const [date, setDateState] = useState(initialDate);
-  const setDate:Dispatch<SetStateAction<string>>=(next)=>{
-    const value=typeof next==='function'?next(date):next;
+  // Stable identity (#101): pages re-sync from the URL in effects keyed on setDate, so a new function every render made
+  // them re-apply the old ?date= while a navigation was still pending (Planner's Today briefly snapped back).
+  const current=useRef(date);useEffect(()=>{current.current=date;},[date]);
+  const setDate=useCallback<Dispatch<SetStateAction<string>>>((next)=>{
+    const value=typeof next==='function'?next(current.current):next;
     if(!validDate(value))return;
     setDateState(value);
     if(typeof window!=='undefined'&&['/','/mood','/insights','/rituals','/money'].includes(window.location.pathname)){
       const url=new URL(window.location.href);url.searchParams.set('date',value);window.history.replaceState(null,'',url);
     }
-  };
+    current.current=value;
+  },[]);
   const [records, setRecords] = useState<Records>(initialRecords);
   return <MuseSession.Provider value={{ date, setDate, records, setRecords }}>{children}</MuseSession.Provider>;
 }

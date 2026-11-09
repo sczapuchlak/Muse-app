@@ -31,7 +31,8 @@ test('#98 Mindspace board: arrangement, moves, sizes and independent duplicates'
  assert.deepEqual(B.arrange(cards,[id(2),id(1)]).map(c=>c.id),[id(3),id(2),id(1)],'unplaced (new) cards first, then your order');
  assert.deepEqual(B.moveCard([id(3),id(2),id(1)],[id(2),id(1),id(9)],id(1),0),[id(1),id(3),id(2),id(9)],'hidden (filtered) cards keep their place');
  const parsed=B.parseBoardLayout({order:[id(1),id(1),'bad'],sizes:{[id(1)]:'wide',[id(2)]:'standard',[id(3)]:'huge'},tagPaints:{[id(1)]:{kind:'solid',color:'pop'},[id(2)]:{kind:'nope'}},settings:{showDates:false}});
- assert.deepEqual(parsed,{order:[id(1)],sizes:{[id(1)]:'wide'},tagPaints:{[id(1)]:{kind:'solid',color:'pop'}},settings:{showDates:false,compactText:false}});
+ assert.deepEqual(parsed,{order:[id(1)],sizes:{[id(1)]:'wide'},phoneWide:[],tagPaints:{[id(1)]:{kind:'solid',color:'pop'}},settings:{showDates:false,compactText:false}});
+ assert.deepEqual(B.parseBoardLayout({phoneWide:[id(2),id(2),'bad']}).phoneWide,[id(2)],'#101 phone full-width cards: valid, unique ids only');
  const card={id:id(1),title:'Ideas',text:'t',items:[{id:'i1',text:'x',complete:true}],images:[{id:'img'}],tagIds:['t1'],pinned:true,accent:'pop',createdAt:'a',updatedAt:'a'};
  let n=0;const copy=B.duplicateCard(card,id(7),'now',()=>`new-${n++}`);
  assert.equal(copy.id,id(7));assert.equal(copy.title,'Ideas (copy)');assert.deepEqual(copy.images,[],'images stay with the original');

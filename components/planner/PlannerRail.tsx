@@ -29,7 +29,7 @@ export function PlannerRail({ workspaceId, onWorkspaceChange, tasks, onOpen, gro
     ? "Nothing matches your search and filters." : scope === "plan" ? "Nothing waiting to be planned. Add a task when it comes to you." : "Nothing here right now.";
   return <aside className="muse-planning-rail muse-task-list" aria-labelledby={`${uid}-title`}>
     <header className="muse-task-list-head">
-      <div className="muse-task-list-title"><h2 id={`${uid}-title`}>Task List</h2><span className="muse-task-list-count" aria-label={`${count} shown`}>{count}</span></div>
+      <div className="muse-task-list-title"><h2 id={`${uid}-title`}>Task List</h2><span className="muse-task-list-count" aria-label={`${count} shown`}>{count}<span className="muse-task-list-count-word" aria-hidden="true"> shown</span></span></div>
       <PlannerWorkspaceMenu workspaceId={workspaceId} onChange={onWorkspaceChange} />
       <div className="muse-task-list-tools">
         <label className="muse-planner-search"><MuseIcon name="search" size={15} /><input aria-label="Search tasks (list and days)" type="search" value={search} onChange={(e) => onSearch(e.target.value)} placeholder="Search…" /></label>

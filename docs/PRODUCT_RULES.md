@@ -828,3 +828,15 @@ A Little Moment is its own record (one per local date). It is never stored in Da
 - **Daily Edit's daily intention stays independent.** Intentions never read or write it.
 - **Reflections pairing.** Intentions and Reflections link to the same period both ways ("Set / See intentions", "Reflect on / Read your reflection"). Neither requires or writes the other. Quarters have no Reflections.
 - **Future-ready:** linking a Vision Board to an Intentions page once Vision Boards exists. No image storage is built for it now.
+
+## Mobile UX refinement (#101) — approved 2026-11-09; implemented on feature branch, awaiting review
+
+- **Desktop is unchanged.** Every rule below applies only at phone widths (content ≤640px; ≤820px where Planner already switches layouts).
+- **Phone density** (Appearance → Phone layout) is Comfortable (default) or Compact. It is per device, like Muse Magic, and only changes spacing tokens at phone widths. Touch targets never shrink.
+- **Mindspace phone board:** two equal columns. A card spans both only when "On phone: full width" is chosen in its ⋯ menu; there is no automatic sizing by content length. The choice lives in the board layout record (`notes_board.layout.phoneWide`), never on the note itself. Desktop sizes (Wide/Large) don't affect the phone and vice versa.
+- **Planner Tasks/Agenda toolbar on phones** sits below the section tabs as two aligned rows: ‹ date › / view · Task List (or the section's action) · settings. Today appears next to the date only when the visible range excludes today. The date picker, arrows, weekday strip and Today share one date state.
+- **Task List modal keeps its full size** (it holds all upcoming tasks). Its count reads "N shown" (tasks shown by the current scope and filters).
+- **Search + Add** share one row on phones wherever Add means "add another of what this search finds" (Bucket List, Collections, Money spending, Money recurring, Mindspace). Section-header Adds on desktop stay where they are; the phone row gets the matching + button.
+- **Rituals on phones:** View archived and Manage groups move into a ⋯ menu beside a compact + Add; period/layout choices stay visible.
+- **The phone nav stays fixed.** The More menu docks above it with CSS rather than measuring the button, so iOS viewport glitches can't strand it.
+- **Pending decision:** `viewport-fit=cover` would let the status-bar backing work wherever iOS reports a top inset. It reverses the PWA-install choice to leave the viewport unchanged (guarded by a test), so it is not applied yet.
