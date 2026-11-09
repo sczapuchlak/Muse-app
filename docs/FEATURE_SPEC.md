@@ -1137,3 +1137,12 @@ In edit mode every section can be renamed, resized (full / wide / half / third o
 - **System:** `app/surfaces.css` gives role themes one card surface, a distinct sidebar (desktop and phone), gradient card outlines, and dark card ink where cards are light on a dark canvas.
 - **Atmospheres:** each role theme has its own gradient composition in its theme block; Theme Atelier reads it as editable layers. Regenerate the catalog after editing themes (`node scripts/generate-atelier-catalog.mjs`).
 - **Theme review:** Appearance → Theme review starts a per-tab review with a floating bar to step through themes, switch Crystal/Frosted and jump between screens.
+
+## Mindspace Lists (#110) — implemented on feature branch (migration `20261129000100_lists.sql`, not yet on staging)
+
+- **Routes:** `/notes` (Sticky Board), `/notes?view=lists` (library), `/notes?view=lists&list=<id>` (a list), `/notes?view=notes` (hidden Notes editor).
+- **Library:** search, Lists / Templates / Archived, sort (updated, name, most due), pinned first; cards show icon, counts, due count and a progress ring; menu: open, duplicate / use template, save as template, archive, delete.
+- **A list:** inline title/description/emoji, progress, collapsible sections with done/total, Enter-to-add items, drag to reorder or move between sections (arrow buttons and a section picker as keyboard/touch alternatives), Unsorted area. Views: All, This week (days + "any day this week"), Due, History.
+- **Items:** notes, section, priority, due date (one-off), schedule (presets daily → yearly, every N days/weeks/months/years, specific weekdays; flexible / preferred / date), this period's skip / move / history with undo, custom field values, Send to Planner / unlink.
+- **Fields:** up to 8 per list (text, number, date, select, url, checkbox); optional desktop table view.
+- **Data:** `lists`, `list_sections`, `list_items`, `list_item_events` (owner RLS; unique per item, period and kind). Included in Export your data.

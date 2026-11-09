@@ -1,6 +1,7 @@
 import type {Note,NoteDocument} from './notes';
-export type MindspaceView='notes'|'constellations';
-export function mindspaceView(raw:string|null):MindspaceView{return raw==='notes'?'notes':'constellations';}
+/** Mindspace views: Sticky Board (internally `constellations`, the default), Lists (#110), and the hidden Notes editor (`?view=notes`, kept for existing links and data). */
+export type MindspaceView='notes'|'constellations'|'lists';
+export function mindspaceView(raw:string|null):MindspaceView{return raw==='notes'?'notes':raw==='lists'?'lists':'constellations';}
 export function captureNoteContent(text:string):{document:NoteDocument;plainText:string}{const plainText=text.trim();return {plainText,document:{type:'doc',content:plainText.split('\n').map(line=>({type:'paragraph',...(line?{content:[{type:'text',text:line}]}:{})}))}};}
 export type ChecklistPreview={path:number[];text:string;checked:boolean};
 function textOf(node:NoteDocument):string{return node.text??(node.content??[]).map(textOf).join(node.type==='paragraph'?'':' ');}

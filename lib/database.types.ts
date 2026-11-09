@@ -925,6 +925,92 @@ isOneToOne: false
       referencedColumns: ["user_id","id"]
     }
                   ]
+                },"list_item_events": {
+                  Row: {
+                    "id": string,"item_id": string,"kind": string,"list_id": string,"moved_to": string | null,"occurred_on": string | null,"period_end": string,"period_start": string,"recorded_at": string,"source": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "id"?: string,"item_id": string,"kind": string,"list_id": string,"moved_to"?: string | null,"occurred_on"?: string | null,"period_end": string,"period_start": string,"recorded_at"?: string,"source"?: string,"user_id"?: string
+                  }
+                  Update: {
+                    "id"?: string,"item_id"?: string,"kind"?: string,"list_id"?: string,"moved_to"?: string | null,"occurred_on"?: string | null,"period_end"?: string,"period_start"?: string,"recorded_at"?: string,"source"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "list_item_events_user_id_item_id_fkey"
+      columns: ["user_id","item_id"]
+isOneToOne: false
+      referencedRelation: "list_items"
+      referencedColumns: ["user_id","id"]
+    },{
+      foreignKeyName: "list_item_events_user_id_list_id_fkey"
+      columns: ["user_id","list_id"]
+isOneToOne: false
+      referencedRelation: "lists"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+                },"list_items": {
+                  Row: {
+                    "completed_at": string | null,"completed_on": string | null,"created_at": string,"due_date": string | null,"field_values": NonNullable<Json>,"id": string,"link_id": string | null,"link_kind": string | null,"list_id": string,"notes": string | null,"position": number,"priority": string | null,"schedule": Json | null,"section_id": string | null,"title": string,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "completed_at"?: string | null,"completed_on"?: string | null,"created_at"?: string,"due_date"?: string | null,"field_values"?: NonNullable<Json>,"id": string,"link_id"?: string | null,"link_kind"?: string | null,"list_id": string,"notes"?: string | null,"position"?: number,"priority"?: string | null,"schedule"?: Json | null,"section_id"?: string | null,"title": string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Update: {
+                    "completed_at"?: string | null,"completed_on"?: string | null,"created_at"?: string,"due_date"?: string | null,"field_values"?: NonNullable<Json>,"id"?: string,"link_id"?: string | null,"link_kind"?: string | null,"list_id"?: string,"notes"?: string | null,"position"?: number,"priority"?: string | null,"schedule"?: Json | null,"section_id"?: string | null,"title"?: string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "list_items_user_id_list_id_fkey"
+      columns: ["user_id","list_id"]
+isOneToOne: false
+      referencedRelation: "lists"
+      referencedColumns: ["user_id","id"]
+    },{
+      foreignKeyName: "list_items_user_id_section_id_fkey"
+      columns: ["user_id","section_id"]
+isOneToOne: false
+      referencedRelation: "list_sections"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+                },"list_sections": {
+                  Row: {
+                    "accent": string | null,"collapsed": boolean,"icon": string | null,"id": string,"list_id": string,"position": number,"title": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "accent"?: string | null,"collapsed"?: boolean,"icon"?: string | null,"id": string,"list_id": string,"position"?: number,"title": string,"user_id"?: string
+                  }
+                  Update: {
+                    "accent"?: string | null,"collapsed"?: boolean,"icon"?: string | null,"id"?: string,"list_id"?: string,"position"?: number,"title"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "list_sections_user_id_list_id_fkey"
+      columns: ["user_id","list_id"]
+isOneToOne: false
+      referencedRelation: "lists"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+                },"lists": {
+                  Row: {
+                    "accent": string,"archived_at": string | null,"aspiration_id": string | null,"created_at": string,"description": string | null,"end_date": string | null,"fields": NonNullable<Json>,"icon": string | null,"id": string,"is_template": boolean,"pinned": boolean,"position": number,"preset": string,"show_in_agenda": boolean,"show_in_daily": boolean,"start_date": string | null,"table_view": boolean,"title": string,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "accent"?: string,"archived_at"?: string | null,"aspiration_id"?: string | null,"created_at"?: string,"description"?: string | null,"end_date"?: string | null,"fields"?: NonNullable<Json>,"icon"?: string | null,"id": string,"is_template"?: boolean,"pinned"?: boolean,"position"?: number,"preset"?: string,"show_in_agenda"?: boolean,"show_in_daily"?: boolean,"start_date"?: string | null,"table_view"?: boolean,"title": string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Update: {
+                    "accent"?: string,"archived_at"?: string | null,"aspiration_id"?: string | null,"created_at"?: string,"description"?: string | null,"end_date"?: string | null,"fields"?: NonNullable<Json>,"icon"?: string | null,"id"?: string,"is_template"?: boolean,"pinned"?: boolean,"position"?: number,"preset"?: string,"show_in_agenda"?: boolean,"show_in_daily"?: boolean,"start_date"?: string | null,"table_view"?: boolean,"title"?: string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
                 },"meal_assignments": {
                   Row: {
                     "captured_time_zone": string,"created_at": string,"id": string,"local_date": string,"note": string | null,"nutrition": Json | null,"position": number,"saved_meal_id": string | null,"slot": string,"title": string,"updated_at": string,"user_id": string

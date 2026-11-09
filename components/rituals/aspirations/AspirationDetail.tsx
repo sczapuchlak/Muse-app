@@ -1,4 +1,5 @@
 'use client';
+import {AspirationLists} from '../../lists/ListsSurfaces';
 import Link from 'next/link';
 import {useState} from 'react';
 import {MuseModal} from '@/components/MuseModal';
@@ -50,6 +51,7 @@ export function AspirationDetail({a,progress,updates,ritualState,tasks,today,bus
     <button type="submit" className="muse-button" disabled={busy||(value===''&&!note.trim())}>Add to the journal</button></form>}
    {!valued&&open&&<form className="muse-aspiration-record" onSubmit={e=>{e.preventDefault();void record();}}><h3>Add a note</h3><div className="muse-aspiration-row"><label>Note<input id="aspiration-update-note" maxLength={1000} value={note} placeholder="A small win, a snag, a thought" onChange={e=>setNote(e.target.value)}/></label><button type="submit" className="muse-button" disabled={busy||!note.trim()}>Add</button></div></form>}
 
+   <AspirationLists aspirationId={a.id}/>
    <section aria-label="Milestones"><h3>Milestones {m.total?<small className="small-label">· {m.done} of {m.total}</small>:null}</h3>
     {a.milestones.length?<ol className="muse-aspiration-milestones">{a.milestones.map((ms,i)=><li key={ms.id} data-done={!!ms.completedOn||undefined} data-editing={editingMilestone===ms.id||undefined}>
      <div className="muse-aspiration-milestone-row"><label><input type="checkbox" checked={!!ms.completedOn} disabled={busy} onChange={()=>void toggleMilestone(ms)}/><span>{ms.title}{ms.completedOn?<small> · {dateLabel(ms.completedOn)}</small>:ms.targetDate?<small> · by {dateLabel(ms.targetDate)}</small>:null}{ms.weight&&ms.weight!==1?<small> · counts ×{ms.weight}</small>:null}</span></label>

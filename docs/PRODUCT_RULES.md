@@ -805,3 +805,12 @@ A Little Moment is its own record (one per local date). It is never stored in Da
 - Art direction (2026-11-08 correction): one card surface per theme; the background carries the personality; the sidebar is a distinct layer; the palette lives in thin gradient outlines, icons and accents. No patchwork of card colours.
 - Dreamstorm stays a Theme Lab palette (`dreamstorm-lab`), only in Appearance → Theme review.
 - Backgrounds are CSS gradients only. No database migration.
+
+## Mindspace Lists (#110) — approved 2026-11-09; implemented on feature branch, awaiting review
+
+- Mindspace tabs: **Sticky Board | Lists**. Sticky Board is the former Constellations board (same route, data and behaviour); its "Lists" filter is renamed **Checklists**. The full Notes editor stays reachable only at `?view=notes` (hidden, data kept).
+- One flexible list system. Presets (checklist, scheduled, project) are starting points only; any list can gain sections, schedules or fields later. Simple one-off checklists need no scheduling or fields.
+- Scheduling is per item, on Planner's recurrence rules, with one period model: flexible (any day in the period), preferred day (movable within the period) or specific date. Only completed, skipped and rescheduled are stored, with the period's dates; missed periods are derived; nothing is generated ahead of time. The checkbox resets each period; history stays.
+- Templates and duplicates are independent copies (structure, fields, schedules) without completion, history or links. Starters: Blank, Travel Essentials, Home Reset, Project Plan — offered, never created automatically.
+- Linked Planner tasks: while linked, the Planner is the one source of truth for completion, per occurrence for recurring items. Lists keeps a history copy, so unlinking or deleting the task never loses history. The schedule is edited in one place (locked in Lists while linked). Deleting a list item leaves the task in the Planner.
+- Daily Edit and Agenda summaries are opt-in per list, off by default, compact (one line / one small count), and leave out linked items so nothing appears twice. Aspirations show supporting lists read-only.
