@@ -8,7 +8,8 @@ export const READ_SCOPES = ["openid", "email", CALENDAR_READ];
 export const WRITE_SCOPES = [...READ_SCOPES, CALENDAR_WRITE];
 /** The redirect uses Muse's one canonical origin (SITE_URL, or a Vercel preview's branch address), like sign-in does. */
 export function googleConfig() {
-  const id = process.env.GOOGLE_CLIENT_ID, secret = process.env.GOOGLE_CLIENT_SECRET;
+  // Trimmed: a space or line break pasted into a hosting dashboard otherwise makes Google answer invalid_client.
+  const id = process.env.GOOGLE_CLIENT_ID?.trim(), secret = process.env.GOOGLE_CLIENT_SECRET?.trim();
   if (!id || !secret || !process.env.GOOGLE_TOKEN_KEY) return null;
   return { id, secret, redirect: `${authConfig().origin}/api/google/callback` };
 }
@@ -39,4 +40,12 @@ export async function revoke(tokenValue: string) { await fetch(`https://oauth2.g
 /** The id_token's sub and email (it came straight from Google's token endpoint over TLS, so its payload is trusted here). */
 export function identity(idToken?: string) {
   try { const p = JSON.parse(Buffer.from((idToken ?? "").split(".")[1], "base64url").toString("utf8")); return { sub: String(p.sub ?? ""), email: String(p.email ?? "") }; } catch { return { sub: "", email: "" }; }
+}
+
+/** Safe facts for an invalid_client diagnosis: the client ID's project number (public; it is in Google's consent URL) and
+ *  whether either stored value had surrounding whitespace. Never the values themselves. */
+export function clientHints() {
+  const raw = [process.env.GOOGLE_CLIENT_ID ?? "", process.env.GOOGLE_CLIENT_SECRET ?? ""];
+  const project = /^(\d{6,20})-/.exec(raw[0].trim())?.[1] ?? "unknown";
+  return `cid${project}:ws${raw.some((v) => v !== v.trim()) ? 1 : 0}`;
 }

@@ -2,7 +2,7 @@ import { timingSafeEqual } from "node:crypto";
 import { type NextRequest } from "next/server";
 import { createMuseAdminClient } from "@/lib/supabase/admin";
 import { seal } from "@/lib/google/crypto";
-import { exchangeCode, googleConfig, grantsCalendarRead, grantsCalendarWrite, identity, revoke } from "@/lib/google/oauth";
+import { clientHints, exchangeCode, googleConfig, grantsCalendarRead, grantsCalendarWrite, identity, revoke } from "@/lib/google/oauth";
 import { syncConnection } from "@/lib/google/sync";
 import { signedInUser, STATE_COOKIE, toSettings } from "@/lib/google/http";
 
@@ -53,6 +53,6 @@ export async function GET(request: NextRequest) {
     return done("connected");
   } catch (e) {
     const x = e as { googleError?: string; code?: string; name?: string };
-    return failed(x.googleError ?? (x.code ? `db_${x.code}` : x.name ?? "error"));
+    return failed(x.googleError === "invalid_client" ? `invalid_client:${clientHints()}` : x.googleError ?? (x.code ? `db_${x.code}` : x.name ?? "error"));
   }
 }
