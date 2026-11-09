@@ -13,9 +13,9 @@
 :root[data-material="frosted"] { --surface-sidebar: var(--frosted-tone-sidebar, var(--tone-sidebar, var(--glass-background))); }
 
 :root:is([data-theme="prism-noir"],[data-theme="nightbloom"],[data-theme="astral"],[data-theme="dreamstorm-lab"],[data-theme="bubblegum-baby"],[data-theme="hot-summer-nights"],[data-theme="booze-pinata"],[data-theme="northern-lights-out"]) {
-  /* Some components (Weekly Draw cards) paint with --surface-strong, which only Tarot defines; without it the whole
-     background is dropped and the card goes see-through. Role themes give it the card surface. */
-  --surface-strong: var(--glass-background);
+  /* Weekly Draw cards paint with --surface-strong, which only Tarot defines, so they went see-through. They get the
+     card surface directly (defining --surface-strong globally would change many other components). */
+  & .muse-quest-card:not(#\#) { background: var(--glass-background); }
 
   /* Weekly Draw progress: a frosted track, and completed segments in the theme's own gradient. */
   & .muse-quest-progress-segment { background: color-mix(in srgb, var(--glass-background) 75%, transparent); border-color: color-mix(in srgb, var(--foreground) 20%, transparent); }
@@ -65,7 +65,7 @@
 
 /* Light cards on a dark canvas (Midnight Ballerina, Pretty Toxic): everything painted with the card surface re-points
    its text, links, chart inks and nested tints to the card's own ink, so components stay readable unchanged. */
-:root:is([data-theme="astral"],[data-theme="nightbloom"]) :is(.muse-collections-controls, .muse-empty-state, .muse-tarot-ritual, .muse-fortune-stage, .muse-books-panel, .muse-hero, .muse-panel, .muse-collections-card, .muse-collections-active-card, .muse-glance-mini, .muse-cosmic-library-intro, .muse-cosmic-collection, .muse-cosmic-tile, .muse-cosmic-forecast-sign, .muse-dream-library-hero, .muse-dream-result, .muse-little-moment, .muse-appearance-theme, .muse-cosmic-lunar-strip, .muse-cosmic-month-grid, .muse-cosmic-calendar-selected, .muse-cosmic-featured-event, .date-navigation, .muse-segmented, .muse-search, .muse-card, .muse-agenda-log-month, .muse-appearance-theme, .muse-thought-capture, .muse-thought-card, .muse-glance-moves, .muse-glance-waterline, .muse-glance-yearstats li, .muse-insight-panel, .muse-money-panel, .muse-mood-history-list > li, .muse-notes-workspace, .muse-grocery-section, .muse-nourish-week, .muse-saved-meal, .muse-saved-meals-drawer, .muse-reflections-picker, .muse-series-hero, .muse-series-rows, .muse-stream-post, .muse-review-card, .muse-quest-card, .muse-quest-history details, .muse-planning-rail, .muse-day-drop, .muse-planner-surface, .muse-ritual-group, .muse-nourish-day, .muse-popover-panel, .muse-drawer, .muse-modal) {
+:root:is([data-theme="astral"],[data-theme="nightbloom"]) :is(.muse-quest-card, .muse-quest-collectible, .muse-collections-controls, .muse-empty-state, .muse-tarot-ritual, .muse-fortune-stage, .muse-books-panel, .muse-hero, .muse-panel, .muse-collections-card, .muse-collections-active-card, .muse-glance-mini, .muse-cosmic-library-intro, .muse-cosmic-collection, .muse-cosmic-tile, .muse-cosmic-forecast-sign, .muse-dream-library-hero, .muse-dream-result, .muse-little-moment, .muse-appearance-theme, .muse-cosmic-lunar-strip, .muse-cosmic-month-grid, .muse-cosmic-calendar-selected, .muse-cosmic-featured-event, .date-navigation, .muse-segmented, .muse-search, .muse-card, .muse-agenda-log-month, .muse-appearance-theme, .muse-thought-capture, .muse-thought-card, .muse-glance-moves, .muse-glance-waterline, .muse-glance-yearstats li, .muse-insight-panel, .muse-money-panel, .muse-mood-history-list > li, .muse-notes-workspace, .muse-grocery-section, .muse-nourish-week, .muse-saved-meal, .muse-saved-meals-drawer, .muse-reflections-picker, .muse-series-hero, .muse-series-rows, .muse-stream-post, .muse-review-card, .muse-quest-card, .muse-quest-history details, .muse-planning-rail, .muse-day-drop, .muse-planner-surface, .muse-ritual-group, .muse-nourish-day, .muse-popover-panel, .muse-drawer, .muse-modal) {
   color: var(--tone-card-ink);
   --foreground: var(--tone-card-ink);
   --text-muted: var(--tone-card-muted);
