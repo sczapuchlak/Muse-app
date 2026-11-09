@@ -127,3 +127,6 @@
 .muse-quest-week>.muse-quest-section-head p{margin:var(--space-2) 0 0;line-height:1.5}
 .muse-quest-week>.muse-quest-progress{margin:0;height:auto}
 .muse-quest-week>.muse-quest-progress .muse-quest-progress-segment{height:8px}
+/* Safari: keep the hover glint clipped to the card while it lifts (it can escape overflow:hidden during the
+   transform). */
+.muse-quest-card{contain:paint}

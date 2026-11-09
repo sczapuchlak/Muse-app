@@ -6,14 +6,15 @@ import {root,load} from './helpers.mjs';
 import {renderCatalog} from '../scripts/generate-atelier-catalog.mjs';
 
 const read=path=>readFileSync(join(root,path),'utf8');
-const model=load('lib/atelier/model'),values=load('lib/atelier/css-values'),tokens=load('lib/atelier/tokens'),{themes}=load('lib/themes');
+const model=load('lib/atelier/model'),values=load('lib/atelier/css-values'),tokens=load('lib/atelier/tokens'),{themes,allThemes}=load('lib/themes');
 
 test('the catalog is generated from the CSS that renders the official themes',()=>{
  assert.equal(read('lib/atelier/catalog.generated.ts'),renderCatalog(),'run node scripts/generate-atelier-catalog.mjs');
  const {officialTokenValues}=load('lib/atelier/catalog.generated');
- assert.deepEqual(Object.keys(officialTokenValues).sort(),themes.map(t=>t.id).sort(),'every registry theme has tokens');
+ assert.deepEqual(Object.keys(officialTokenValues).sort(),allThemes.map(t=>t.id).sort(),'every registry theme (and Theme Lab palette) has tokens');
  const names=JSON.stringify(Object.keys(officialTokenValues.iridescent));
- for(const theme of themes)assert.equal(JSON.stringify(Object.keys(officialTokenValues[theme.id])),names,`${theme.id} defines the shared token set`);
+ const roleOnly=n=>/^--(frosted-)?tone-/.test(n)||/^--atmosphere-(bloom|pool|haze)-layers$/.test(n);
+ for(const theme of themes)assert.equal(JSON.stringify(Object.keys(officialTokenValues[theme.id]).filter(n=>!roleOnly(n))),names,`${theme.id} defines the shared token set (plus optional #111 surface tones)`);
 });
 
 test('Theme Atelier only reaches theme colour and atmosphere tokens, never the universal design system',()=>{
@@ -163,7 +164,7 @@ test('exports carry the handoff and a complete resolved appearance, and still im
  const definition={...model.emptyDefinition('prism-noir'),tokens:{'--background':'#0a0612'}};
  const file=JSON.parse(model.exportTheme('Moon Witch',definition,{intent:'new-theme',name:'Moon Witch!',subtitle:'Moonlit glass.',mode:'dark',effects:['disco-glitter']}));
  assert.equal(file.handoff.intent,'new-theme');assert.deepEqual(file.handoff.effects,['disco-glitter']);
- assert.equal(Object.keys(file.resolved.tokens).length,Object.keys(tokens.tokenInfo).length,'every editable token');
+ assert.equal(Object.keys(file.resolved.tokens).length,Object.keys(tokens.tokenInfo).filter(n=>model.tokenValue(definition,n)).length,'every editable token the base defines');
  assert.equal(file.resolved.tokens['--background'],'#0a0612');assert.equal(file.resolved.baseFingerprint,model.baseFingerprint('prism-noir'));
  assert.ok(file.resolved.planes.bloom&&file.resolved.planes.pool&&file.resolved.css.includes('--atmosphere-bloom-layers'));
  const back=model.importTheme(JSON.stringify(file));assert.ok(back.ok);assert.deepEqual(back.definition,definition);

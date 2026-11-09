@@ -1130,3 +1130,10 @@ In edit mode every section can be renamed, resized (full / wide / half / third o
 - **Sync:** incremental per calendar with Google sync tokens; first sync reads 60 days back and a year ahead with recurring events expanded; a 410 restarts that calendar cleanly. Opening Settings or the Planner Agenda syncs once per page load. Times use the Muse profile time zone.
 - **Agenda:** Day, Week and Month list Google events beside Muse events, with a color dot; selecting one opens read-only details with "Open in Google Calendar". Daily Edit's "Today's plan" Schedule lists the day's Google events the same way (calendar-color accent line, read-only details). The Future Log and Muse Marks are unchanged.
 - See `docs/GOOGLE_CALENDAR_PLAN.md` for setup and later phases.
+
+## Theme collection renovation (#111) — implemented on feature branch (no migration)
+
+- **Themes:** Curses (violet storm with lime and teal accents), Pretty Toxic (black cherry, dusty-rose cards, forest sidebar), Midnight Ballerina (rainbow cloud over navy, icy cards), Malibu Mugshot (formerly Bubblegum Baby: glossy hot-pink glass, pale lavender cards, baby-pink sidebar), Hot Summer Nights (electric sunset bands, teal-blue cards), Booze Piñata (dark: neon citrus slices on black, cream cards), Northern Lights Out (aurora curtains, navy cards). Dreamstorm is a Theme Lab palette.
+- **System:** `app/surfaces.css` gives role themes one card surface, a distinct sidebar (desktop and phone), gradient card outlines, and dark card ink where cards are light on a dark canvas.
+- **Atmospheres:** each role theme has its own gradient composition in its theme block; Theme Atelier reads it as editable layers. Regenerate the catalog after editing themes (`node scripts/generate-atelier-catalog.mjs`).
+- **Theme review:** Appearance → Theme review starts a per-tab review with a floating bar to step through themes, switch Crystal/Frosted and jump between screens.

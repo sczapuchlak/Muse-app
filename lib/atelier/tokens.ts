@@ -26,6 +26,8 @@ const entries:[string,string,TokenSection,string?][]=[
  ['--ink-aqua','Aqua ink','text'],['--ink-purple','Purple ink','text'],['--ink-pink','Pink ink','text'],
  ['--glass-background','Card glass','surfaces'],['--glass-border','Card border','surfaces'],['--glass-edge','Glass highlight edge','surfaces'],['--glass-aqua-edge','Glass tinted edge','surfaces'],
  ['--surface-subtle','Quiet surface','surfaces'],['--surface-control','Control surface','surfaces'],['--surface-hover','Hover surface','surfaces'],['--floating-background','Popovers and menus','surfaces'],
+ ['--tone-sidebar','Sidebar','surfaces','The navigation rail’s own colour.'],['--tone-sidebar-edge','Sidebar edge','surfaces'],['--tone-alt','Alternate card','surfaces','A second hue family for neighbouring cards.'],['--tone-alt-2','Second alternate card','surfaces'],['--tone-featured','Featured card','surfaces','The occasional lighter or brighter card.'],['--tone-featured-ink','Featured card text','text'],['--tone-featured-muted','Featured card muted text','text'],['--tone-featured-accent','Featured card accent text','text'],
+ ['--frosted-tone-sidebar','Frosted sidebar','frosted'],['--frosted-tone-alt','Frosted alternate card','frosted'],['--frosted-tone-alt-2','Frosted second alternate card','frosted'],['--frosted-tone-featured','Frosted featured card','frosted'],
  ['--divider','Dividers','surfaces'],['--interactive-border','Control border','surfaces'],['--water-control-border','Water control border','surfaces'],
  ['--planning-container-background','Planner container','surfaces'],['--planning-rail-background','Planner rail','surfaces'],['--planning-task-background','Planner task','surfaces'],['--planning-task-border','Planner task border','surfaces'],['--planning-control-background','Planner controls','surfaces'],
  ['--frosted-glass-background','Frosted card glass','frosted'],['--frosted-floating-background','Frosted popovers','frosted'],['--frosted-surface-subtle','Frosted quiet surface','frosted'],['--frosted-surface-control','Frosted control surface','frosted'],['--frosted-surface-hover','Frosted hover surface','frosted'],
@@ -39,8 +41,11 @@ const entries:[string,string,TokenSection,string?][]=[
 ];
 const humanise=(name:string)=>name.replace(/^--/,'').replace(/-/g,' ').replace(/^./,c=>c.toUpperCase());
 
-/** Every official theme defines the same token set; the reference theme supplies the list. */
-export const themeTokenNames:readonly string[]=Object.keys(officialTokenValues.iridescent);
+/** Atmosphere layer lists are edited as planes (lib/atelier/model.ts), never as single tokens. */
+const planeTokens=new Set(['--atmosphere-bloom-layers','--atmosphere-pool-layers','--atmosphere-haze-layers']);
+/** Every theme token any official theme defines. Surface-role themes (#111) add sidebar/alt/featured tones that older
+ *  themes don't have; editors skip a token a base leaves empty. */
+export const themeTokenNames:readonly string[]=[...new Set(Object.values(officialTokenValues).flatMap(Object.keys))].filter(name=>!planeTokens.has(name));
 export const themeTokenSet:ReadonlySet<string>=new Set(themeTokenNames);
 /** Tokens that may be referenced through var() in values (theme tokens plus the atmosphere and material roles). */
 export const referenceableTokens:ReadonlySet<string>=new Set([...themeTokenNames,'--frosted-glass-background']);

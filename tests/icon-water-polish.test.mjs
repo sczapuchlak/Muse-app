@@ -39,8 +39,11 @@ test('every existing theme supplies a distinct sharp icon palette with readable 
  for(const theme of themes){const block=css.split(`:root[data-theme="${theme.id}"] {`)[1]?.split('}')[0];assert.ok(block,theme.id);const tokens=Object.fromEntries([...block.matchAll(/(--[\w-]+):\s*([^;]+);/g)].map((match)=>[match[1],match[2]]));
   for(const role of ['gradient-start','gradient-middle','gradient-end','gradient-highlight','edge'])assert.match(tokens[`--icon-${role}`],/^#[\da-f]{6}$/i);
   signatures.add(['start','middle','end'].map((key)=>tokens[`--icon-gradient-${key}`]).join('/'));
-  for(const key of ['start','middle','end']){const a=luminance(tokens[`--icon-gradient-${key}`]),b=luminance(tokens['--background']);assert.ok((Math.max(a,b)+.05)/(Math.min(a,b)+.05)>=3,`${theme.id} ${key}`);}
- }assert.equal(signatures.size,9);
+  // #111 role themes paint icons mostly on their one card surface (light cards use their own card icon colours).
+  const card=tokens['--tone-card-border']?(()=>{const m=tokens['--glass-background'].match(/rgba\((\d+),(\d+),(\d+),([\d.]+)\)/),bg=[1,3,5].map(i=>parseInt(tokens['--background'].slice(i,i+2),16)),c=[1,2,3].map(i=>Math.round(+m[i]*+m[4]+bg[i-1]*(1-+m[4])));return '#'+c.map(v=>v.toString(16).padStart(2,'0')).join('');})():tokens['--background'];
+  const iconFor=key=>tokens[`--tone-card-icon-${({start:1,middle:2,end:3})[key]}`]??tokens[`--icon-gradient-${key}`];
+  for(const key of ['start','middle','end']){const a=luminance(iconFor(key)),b=luminance(card);assert.ok((Math.max(a,b)+.05)/(Math.min(a,b)+.05)>=3,`${theme.id} ${key}`);}
+ }assert.equal(signatures.size,13);
 });
 
 test('goal observations celebrate true threshold crossings once, rearm Water below goal and keep other milestone guards',()=>{

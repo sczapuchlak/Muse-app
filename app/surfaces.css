@@ -1,0 +1,131 @@
+/*
+ * Surface roles (#111). In a role theme the BACKGROUND carries the personality: cards share ONE surface per theme
+ * (--glass-background and the planning tokens), the sidebar is its own layer, and the palette lives in thin gradient
+ * outlines, icons and accents. Themes supply raw tones (--tone-*) in app/themes.css. Themes without tones render
+ * exactly as before.
+ */
+:root {
+  --surface-primary: var(--glass-background);
+  --surface-sidebar: var(--tone-sidebar, var(--glass-background));
+  --surface-sidebar-edge: var(--tone-sidebar-edge, var(--glass-border));
+  --card-border-gradient: var(--tone-card-border, none);
+}
+:root[data-material="frosted"] { --surface-sidebar: var(--frosted-tone-sidebar, var(--tone-sidebar, var(--glass-background))); }
+
+:root:is([data-theme="prism-noir"],[data-theme="nightbloom"],[data-theme="astral"],[data-theme="dreamstorm-lab"],[data-theme="bubblegum-baby"],[data-theme="hot-summer-nights"],[data-theme="booze-pinata"],[data-theme="northern-lights-out"]) {
+  /* Weekly Draw cards paint with --surface-strong, which only Tarot defines, so they went see-through. They get the
+     card surface directly (defining --surface-strong globally would change many other components). */
+  & .muse-quest-card:not(#\#) { background: var(--glass-background); }
+
+  /* Weekly Draw progress: a frosted track, and completed segments in the theme's own gradient. */
+  & .muse-quest-progress-segment { background: color-mix(in srgb, var(--glass-background) 75%, transparent); border-color: color-mix(in srgb, var(--foreground) 20%, transparent); }
+  & .muse-quest-progress-segment[data-complete=true] { background: var(--card-border-gradient); border-color: transparent; box-shadow: 0 0 10px color-mix(in srgb, var(--accent-primary) 38%, transparent); }
+
+  /* Task cards sit inside scrolling day lists, which clip a large drop shadow into a grey rectangle on light cards.
+     Nested task cards take a small, soft shadow instead. */
+  & :is(.muse-planner-task, .muse-meal-entry):not(#\#) { --material-depth-shadow: 0 2px 8px color-mix(in srgb, var(--foreground) 9%, transparent); }
+
+  /* Weekly Draw cards glow on hover instead of lifting: in Safari a moving card makes nearby frosted (blurred)
+     elements re-render, which flashes across the screen. */
+  & .muse-quest-card:hover:not(#\#) { transform: none; }
+
+  /* Phone navigation is the sidebar's layer too, never a card. */
+  & .muse-bottom-navigation { background: var(--surface-sidebar); }
+
+  /* Future Log months are cards too: the one card surface, not a translucent wash. */
+  & .muse-agenda-log-month { background-color: var(--glass-background); }
+
+  /* Tiles and control bars that sit directly on the canvas are frosted cards too (found by a page-by-page audit). */
+  & :is(.muse-collections-card, .muse-collections-active-card, .muse-glance-mini, .muse-cosmic-library-intro, .muse-cosmic-collection, .muse-cosmic-tile, .muse-cosmic-forecast-sign, .muse-dream-library-hero, .muse-dream-result, .muse-little-moment, .muse-appearance-theme, .muse-cosmic-lunar-strip, .muse-cosmic-month-grid, .muse-cosmic-calendar-selected, .muse-cosmic-featured-event):not(#\#) { /* :not(#\#) outranks per-component washes */
+    background-color: var(--glass-background);
+    -webkit-backdrop-filter: blur(var(--material-blur)) saturate(var(--material-saturation));
+    backdrop-filter: blur(var(--material-blur)) saturate(var(--material-saturation));
+  }
+  & :is(.date-navigation, .muse-segmented, .muse-search):not(#\#) { background-color: var(--glass-background); } /* solid, no blur: small bars don't need it */
+
+  /* Thin luminous outline in the theme's gradient sequence. A masked ring, so the card fill stays one calm colour. */
+  & :is(.muse-card, .muse-agenda-log-month, .muse-planning-rail, .muse-planner-surface, .muse-insight-panel, .muse-money-panel, .muse-notes-workspace, .muse-ritual-group, .muse-collections-card, .muse-collections-active-card, .muse-glance-mini, .muse-cosmic-library-intro, .muse-cosmic-collection, .muse-cosmic-tile, .muse-cosmic-forecast-sign, .muse-dream-library-hero, .muse-dream-result, .muse-little-moment, .muse-appearance-theme, .muse-cosmic-lunar-strip, .muse-cosmic-month-grid, .muse-cosmic-calendar-selected, .muse-cosmic-featured-event) {
+    position: relative;
+    border-color: transparent;
+  }
+  & :is(.muse-card, .muse-agenda-log-month, .muse-planning-rail, .muse-planner-surface, .muse-insight-panel, .muse-money-panel, .muse-notes-workspace, .muse-ritual-group, .muse-collections-card, .muse-collections-active-card, .muse-glance-mini, .muse-cosmic-library-intro, .muse-cosmic-collection, .muse-cosmic-tile, .muse-cosmic-forecast-sign, .muse-dream-library-hero, .muse-dream-result, .muse-little-moment, .muse-appearance-theme, .muse-cosmic-lunar-strip, .muse-cosmic-month-grid, .muse-cosmic-calendar-selected, .muse-cosmic-featured-event)::after {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: var(--card-border-gradient);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+    opacity: .8;
+    pointer-events: none;
+  }
+}
+
+/* Light cards on a dark canvas (Midnight Ballerina, Pretty Toxic): everything painted with the card surface re-points
+   its text, links, chart inks and nested tints to the card's own ink, so components stay readable unchanged. */
+:root:is([data-theme="astral"],[data-theme="nightbloom"]) :is(.muse-quest-card, .muse-quest-collectible, .muse-collections-controls, .muse-empty-state, .muse-tarot-ritual, .muse-fortune-stage, .muse-books-panel, .muse-hero, .muse-panel, .muse-collections-card, .muse-collections-active-card, .muse-glance-mini, .muse-cosmic-library-intro, .muse-cosmic-collection, .muse-cosmic-tile, .muse-cosmic-forecast-sign, .muse-dream-library-hero, .muse-dream-result, .muse-little-moment, .muse-appearance-theme, .muse-cosmic-lunar-strip, .muse-cosmic-month-grid, .muse-cosmic-calendar-selected, .muse-cosmic-featured-event, .date-navigation, .muse-segmented, .muse-search, .muse-card, .muse-agenda-log-month, .muse-appearance-theme, .muse-thought-capture, .muse-thought-card, .muse-glance-moves, .muse-glance-waterline, .muse-glance-yearstats li, .muse-insight-panel, .muse-money-panel, .muse-mood-history-list > li, .muse-notes-workspace, .muse-grocery-section, .muse-nourish-week, .muse-saved-meal, .muse-saved-meals-drawer, .muse-reflections-picker, .muse-series-hero, .muse-series-rows, .muse-stream-post, .muse-review-card, .muse-quest-card, .muse-quest-history details, .muse-planning-rail, .muse-day-drop, .muse-planner-surface, .muse-ritual-group, .muse-nourish-day, .muse-popover-panel, .muse-drawer, .muse-modal) {
+  color: var(--tone-card-ink);
+  --foreground: var(--tone-card-ink);
+  --text-muted: var(--tone-card-muted);
+  --ink-purple: var(--tone-card-accent);
+  --ink-aqua: var(--tone-card-accent);
+  --ink-pink: var(--tone-card-accent);
+  --link-ink: var(--tone-card-accent);
+  --selected-text: var(--tone-card-ink);
+  --navigation-text: var(--tone-card-accent);
+  --filter-selected-text: var(--tone-card-accent);
+  --urgency-ink: var(--tone-card-accent);
+  --information-accent: var(--tone-card-accent);
+  --nav-icon: var(--tone-card-accent);
+  --chart-1: color-mix(in srgb, var(--accent-primary) 62%, var(--tone-card-ink));
+  --chart-2: color-mix(in srgb, var(--accent-secondary) 62%, var(--tone-card-ink));
+  --chart-3: color-mix(in srgb, var(--accent-pop) 62%, var(--tone-card-ink));
+  --chart-4: color-mix(in srgb, var(--accent-warm) 62%, var(--tone-card-ink));
+  --chart-5: color-mix(in srgb, var(--accent-blue-violet) 62%, var(--tone-card-ink));
+  --chart-6: color-mix(in srgb, var(--accent-cyan) 55%, var(--tone-card-ink));
+  /* Text boxes and nested panels are a lighter version of the card, never a darker coloured one. */
+  --surface-subtle: rgba(255, 255, 255, .32);
+  --surface-hover: color-mix(in srgb, var(--tone-card-ink) 10%, rgba(255, 255, 255, .4));
+  --surface-control: rgba(255, 255, 255, .58);
+  --hover-start: var(--tone-card-icon-1);
+  --hover-middle: var(--tone-card-icon-2);
+  --hover-end: var(--tone-card-icon-3);
+  --divider: color-mix(in srgb, var(--tone-card-ink) 15%, transparent);
+  --glass-border: color-mix(in srgb, var(--tone-card-ink) 20%, transparent);
+  --interactive-border: color-mix(in srgb, var(--tone-card-ink) 22%, transparent);
+  --selected-border: var(--tone-card-accent);
+  --selected-background: color-mix(in srgb, var(--tone-card-accent) 13%, transparent);
+  --focus-ring: var(--tone-card-accent);
+  /* Icons on the light card use the theme's deeper card icon colours. */
+  --icon-gradient-start: var(--tone-card-icon-1);
+  --icon-gradient-middle: var(--tone-card-icon-2);
+  --icon-gradient-end: var(--tone-card-icon-3);
+}
+
+/* Interaction states (#111): hover and selected show the theme's rainbow ring at full strength, a soft glow and a
+   soft glow. (No large inset-shadow tint: Safari mis-paints very large shadows across the screen.) */
+:root:is([data-theme="prism-noir"],[data-theme="nightbloom"],[data-theme="astral"],[data-theme="dreamstorm-lab"],[data-theme="bubblegum-baby"],[data-theme="hot-summer-nights"],[data-theme="booze-pinata"],[data-theme="northern-lights-out"]) {
+  & :is(.muse-edge, .muse-button, .choice-button, .inline-edit-value, .popover-choice, .emotion-option)::before { padding: 1.5px; }
+  & :is(.muse-edge, .muse-button, .choice-button, .inline-edit-value, .popover-choice, .emotion-option):is([aria-pressed="true"], [aria-checked="true"], [aria-selected="true"])::before { opacity: 1; }
+  & :is(.muse-edge, .muse-button, .choice-button, .inline-edit-value, .popover-choice, .emotion-option):is([aria-pressed="true"], [aria-checked="true"], [aria-selected="true"]) { box-shadow: 0 0 12px color-mix(in srgb, var(--hover-middle) 34%, transparent); }
+}
+@media (hover: hover) and (pointer: fine) {
+  :root:is([data-theme="prism-noir"],[data-theme="nightbloom"],[data-theme="astral"],[data-theme="dreamstorm-lab"],[data-theme="bubblegum-baby"],[data-theme="hot-summer-nights"],[data-theme="booze-pinata"],[data-theme="northern-lights-out"]) :is(.muse-edge, .muse-button, .choice-button, .inline-edit-value, .popover-choice, .emotion-option):not(:disabled):hover { box-shadow: 0 0 16px color-mix(in srgb, var(--hover-start) 42%, transparent); }
+  :root:is([data-theme="prism-noir"],[data-theme="nightbloom"],[data-theme="astral"],[data-theme="dreamstorm-lab"],[data-theme="bubblegum-baby"],[data-theme="hot-summer-nights"],[data-theme="booze-pinata"],[data-theme="northern-lights-out"]) :is(.muse-edge, .muse-button, .choice-button, .inline-edit-value, .popover-choice, .emotion-option):not(:disabled):hover::before { opacity: 1; }
+}
+
+/* Malibu Mugshot: vivid icons on the canvas and navigation; inside the pale cards, the deeper card icon colours. */
+:root[data-theme="bubblegum-baby"] :is(.muse-card, .muse-agenda-log-month, .muse-planning-rail, .muse-planner-surface, .muse-insight-panel, .muse-money-panel, .muse-notes-workspace, .muse-ritual-group, .muse-quest-card, .muse-quest-collectible, .muse-collections-card, .muse-collections-active-card, .muse-glance-mini, .muse-cosmic-tile, .muse-dream-result, .muse-little-moment) {
+  --icon-gradient-start: var(--tone-card-icon-1);
+  --icon-gradient-middle: var(--tone-card-icon-2);
+  --icon-gradient-end: var(--tone-card-icon-3);
+}
+
+/* Malibu Mugshot: navigation icons a smidge deeper than the vivid page palette. */
+:root[data-theme="bubblegum-baby"] :is(.muse-rail, .muse-bottom-navigation) {
+  --icon-gradient-start: #e8007f;
+  --icon-gradient-middle: #00aec6;
+  --icon-gradient-end: #18c46e;
+}

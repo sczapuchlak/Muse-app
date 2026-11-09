@@ -44,6 +44,24 @@ Keep dark/light inputs, placeholders, secondary text, disabled controls, dropdow
 
 Use plain prefixed component CSS: the current Turbopack CSS transform does not reliably export CSS-module class mappings. Revisit that pipeline separately before introducing modules.
 
+## Surface roles and theme atmospheres (#111) — implemented on feature branch, awaiting review
+
+In a role theme the **background is the centrepiece**; content stays calm.
+
+| Role | Token | Rule |
+|---|---|---|
+| Canvas | `--background` + `--atmosphere-bloom/pool/haze-layers` | Layered CSS gradients only: several light sources, dark and luminous zones, directional light. Each theme has its own composition. |
+| Sidebar | `--surface-sidebar` (`--tone-sidebar`) | Its own layer, clearly distinct from the canvas. Navigation styling is unchanged. Phone navigation uses the same layer. |
+| Card surface | `--glass-background` (+ `--planning-*` for Planner) | **One surface per theme.** No alternating or per-widget card colours. Nested panels, inputs and chips are lighter/darker variations of it. |
+| Card outline | `--card-border-gradient` (`--tone-card-border`) | A thin masked gradient ring in the theme's palette sequence; the fill stays one colour. |
+| Card ink | `--tone-card-ink/-muted/-accent` | Only for light cards on a dark canvas (Midnight Ballerina, Pretty Toxic, Booze Piñata): everything painted with the card surface re-points text, links, chart inks and nested tints. |
+| Accents | `--accent-*`, `--icon-gradient-*`, `--chart-*`, `--selected-*`, `--focus-ring` | Carry the full palette in icons, underlines, progress, selected and focus states. Text labels stay neutral. |
+
+- Cards are nearly opaque (about .84–.97) so a vivid atmosphere never turns them into a patchwork; the canvas shows around and between them.
+- Only themes listed in `app/surfaces.css` opt in; all other themes render exactly as before.
+- Theme Atelier edits each theme's atmosphere as layers (its catalog reads the theme block).
+- Theme review (Appearance → Theme review) compares themes on real screens; lab palettes (`themeExperiments`) never appear in regular pickers.
+
 ## Reusable interaction language
 
 `app/interactions.css` provides theme-aware gradient borders for actual interactive surfaces through `.muse-edge` and shared control selectors. Silky restrained transitions; optional tiny lift; no bouncing. Keyboard focus is equally visible. Static MuseCard surfaces must not falsely advertise clickability.

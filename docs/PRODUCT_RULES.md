@@ -797,3 +797,11 @@ A Little Moment is its own record (one per local date). It is never stored in Da
 - People choose which calendars show. New primary and owned calendars start visible; shared and subscribed ones start hidden. Hiding only hides in Muse.
 - Disconnect revokes Muse's access with Google and deletes the connection, tokens, calendars and cached events. Muse's own events are never touched.
 - Future (approved direction, not built): publishing a Muse event to Google is per event and off by default.
+
+## Theme collection renovation (#111) — approved 2026-11-08; implemented on feature branch, awaiting review
+
+- Curses, Pretty Toxic and Midnight Ballerina keep their names and ids with completely new palettes. Bubblegum Baby is renamed **Malibu Mugshot** (id `bubblegum-baby` kept so saved preferences still work).
+- New official themes: Malibu Mugshot (light), Hot Summer Nights (dark), Booze Piñata (dark, neon citrus on black), Northern Lights Out (dark).
+- Art direction (2026-11-08 correction): one card surface per theme; the background carries the personality; the sidebar is a distinct layer; the palette lives in thin gradient outlines, icons and accents. No patchwork of card colours.
+- Dreamstorm stays a Theme Lab palette (`dreamstorm-lab`), only in Appearance → Theme review.
+- Backgrounds are CSS gradients only. No database migration.
