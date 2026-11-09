@@ -712,3 +712,12 @@ Shared, in `app/design-language.css`; use them instead of page-specific phone pa
 - **Safe areas:** the shell fades content before the floating nav. The top band backs the status bar wherever a top inset is reported.
 - **Light-card themes** (Midnight Ballerina, Pretty Toxic): any new component painted with the card surface joins the ink list in `app/surfaces.css`. Check new screens with a rendered contrast scan at phone width; phone popovers back onto the card surface in these themes.
 - **Profile** hero and showcases are cards (card surface + material), not subtle tints.
+
+## Vision Boards (#118)
+
+- The chrome is ordinary Muse: `.muse-planner-surface` editor panel, 38px toolbars of `.muse-button`, `MuseChoiceMenu`, `GlassPopover` panels, `SaveIndicator`, the editorial italic board title. Phone toolbars scroll in one row with `.muse-scroll-fade`.
+- The board is the person's artwork, not chrome: it keeps its own pinned colors in every theme and material, sitting on a quiet checkerboard "table".
+- Photos default to a white print border and soft shadow; transparent cutouts have no frame and can take a die-cut outline. Text uses Editorial (Fraunces), Clean (Plus Jakarta Sans) or Label (spaced caps), with optional label tape.
+- Stickers are the shared decoration glyphs plus Muse Marks drawn from Muse's own icon set, defaulting to the theme accent at the moment they're added (then pinned).
+- Selection handles use Muse purple; touch devices get larger handles.
+- The cutout guide is iPhone/iPad only: a quiet `text-button` trigger, a `GlassPopover` (a bottom sheet on phones) with italic accent numerals, and a pill-shaped one-time tip with a prismatic star and a 32px dismiss button.

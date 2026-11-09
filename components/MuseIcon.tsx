@@ -79,3 +79,6 @@ export function MuseIcon({ name, size = 20, treatment = 'plain', tone = 'primary
     </svg>
   );
 }
+
+/** The raw shapes, so other drawing surfaces (Vision Board stickers) reuse the exact same symbols. */
+export { paths as museIconShapes };

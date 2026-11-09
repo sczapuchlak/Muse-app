@@ -15,3 +15,6 @@ const shapes:Record<ExtraIconName,React.ReactNode>={
  palette:<><path d="M12 2C-2 2-2 22 10 22c7 0 0-7 5-7 12 1 9-13-3-13Z"/><circle cx="7" cy="9" r="1"/><circle cx="12" cy="6" r="1"/><circle cx="17" cy="9" r="1"/></>,music:<><path d="M9 18V4l12-2v14M9 8l12-2"/><ellipse cx="6" cy="19" rx="3" ry="2"/><ellipse cx="18" cy="17" rx="3" ry="2"/></>,camera:<><rect x="2" y="6" width="20" height="15" rx="2"/><circle cx="12" cy="13" r="4"/><path d="m6 6 2-4h8l2 4"/></>,people:<><circle cx="9" cy="7" r="4"/><path d="M1 22v-4a8 8 0 0 1 16 0v4M17 3c7 0 7 8 0 8M18 14q5 0 5 8"/></>
 };
 export default function ExtendedMuseIcon({name,size=20,treatment='plain',tone='primary'}:{name:ExtraIconName;size?:number;treatment?:'plain'|'prismatic';tone?:PrismaticTone}){return treatment==='prismatic'?<PrismaticSvg width={size} height={size} viewBox="0 0 24 24" tone={tone}>{shapes[name]}</PrismaticSvg>:<svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">{shapes[name]}</svg>;}
+
+/** The raw shapes, so other drawing surfaces (Vision Board stickers) reuse the exact same symbols. */
+export { shapes as extendedIconShapes };

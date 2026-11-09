@@ -1155,7 +1155,7 @@ Rules: PRODUCT_RULES "Envision & Planner Intentions (#117)". Ownership and refer
 - Tabs: Aspirations (default, `/envision`) | Vision Boards (`?view=vision-boards`) | Bucket List (`?view=bucket`), using the shared `MuseSectionNav`.
 - Moved, not rewritten: `components/envision/aspirations` and `components/envision/bucket` (git moves of the former `components/rituals/*`). No data migration. `?open=<aspiration id>` opens an aspiration's details.
 - Old links: `next.config.ts` redirects `/rituals?view=aspirations|bucket` to `/envision` with the query kept; Rituals also replaces the URL on the client as a fallback. Internal links (Insights, Muse Marks, Almanac, Stream, Bucket List editor) point at Envision.
-- Vision Boards: an empty state with a still collage made only of theme accents, and links to Aspirations, Bucket List and Intentions. No controls.
+- Vision Boards: an empty state with a still collage made only of theme accents, and links to Aspirations, Bucket List and Intentions. No controls. (Superseded by #118: see "Envision → Vision Boards".)
 
 **Rituals**: Habits only. The tabs row is gone; the date navigator always shows.
 
@@ -1172,3 +1172,12 @@ Rules: PRODUCT_RULES "Envision & Planner Intentions (#117)". Ownership and refer
 - Below the page: a link to the same period's Reflection (week, month and year), and Reflections links back to Intentions.
 - Data: `intention_pages` (migration `20261201000100_intentions`): `period`, `period_start`, `period_end`, `sections` jsonb (≤30 sections, ≤200 KB), `revision`. Unique per user, period and start. A check constraint keeps period dates aligned. Owner-only RLS (4 policies, no anon). Included in Export your data.
 - Tests: `tests/intentions.test.mjs`. Hosted verification: `scripts/verify-hosted-intentions.sql`.
+
+## Envision → Vision Boards (#118) — implemented on feature branch (local migration only)
+
+Rules: PRODUCT_RULES "Envision → Vision Boards (#118)". Full detail, data model, editor behavior and background-removal options: [VISION_BOARDS](VISION_BOARDS.md).
+- **Library** (`/envision?view=vision-boards`): search, Period filter, Sort (Recently edited, Newest, A–Z), cards with lazy live previews; create, open, rename/details, duplicate (shares files), delete (confirmed). Empty state: the earlier collage with "Create your first board".
+- **Editor** (`?board=<id>`): photos (upload, paste, drop), text, stickers and Muse Marks, background color/gradient; drag, resize, rotate, layers, lock, duplicate, delete, undo/redo; crop to 7 shapes; border, shadow, sticker outline for transparent images; optional link to an Aspiration or dream; autosave with recovery copy and conflict handling.
+- **Intentions:** new optional section "Vision board" (up to 3 boards) with previews. Existing templates unchanged.
+- **Cutouts (iPhone/iPad only):** Paste button, a "Make a cutout" guide to Apple's Photos cutout, and a one-time dismissible tip. Muse doesn't remove backgrounds itself.
+- **Migration** `20261203000100_vision_boards.sql`: table, derived `asset_paths`, PNG in the private bucket, shared-file delete guard. Verify with `scripts/verify-hosted-vision-boards.sql`.

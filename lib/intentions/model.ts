@@ -13,9 +13,9 @@
 import type { IntentionPeriod } from "./periods";
 
 // ---------- References to records other modules own ----------
-export type RefKind = "aspiration" | "ritual" | "bucket" | "task" | "event";
+export type RefKind = "aspiration" | "ritual" | "bucket" | "task" | "event" | "board";
 export type Ref = { kind: RefKind; id: string; label: string; date?: string };
-const refKinds: RefKind[] = ["aspiration", "ritual", "bucket", "task", "event"];
+const refKinds: RefKind[] = ["aspiration", "ritual", "bucket", "task", "event", "board"];
 
 const str = (v: unknown, max: number) => typeof v === "string" ? v.slice(0, max) : "";
 const idOk = (v: unknown): v is string => typeof v === "string" && /^[A-Za-z0-9-]{1,64}$/.test(v);
@@ -60,12 +60,14 @@ export type SectionContent = {
   aspirations: { items: LinkItem[] };
   rituals: { items: LinkItem[] };
   bucket: { items: LinkItem[] };
+  /** #118: Vision Boards shown on the page (references; the board itself stays in Envision). */
+  boards: { items: LinkItem[] };
 };
 export type SectionType = keyof SectionContent;
 export type IntentionSection<T extends SectionType = SectionType> = { id: string; type: T; title: string; hidden?: boolean; collapsed?: boolean; content: SectionContent[T] };
 
 /** How many entries a section holds. Priorities stay three to five, like a paper planner page. */
-export const MAX_ITEMS: Record<Exclude<SectionType, "theme" | "writing">, number> = { list: 12, priorities: 5, forward: 12, aspirations: 12, rituals: 12, bucket: 12 };
+export const MAX_ITEMS: Record<Exclude<SectionType, "theme" | "writing">, number> = { list: 12, priorities: 5, forward: 12, aspirations: 12, rituals: 12, bucket: 12, boards: 3 };
 export const MAX_SECTIONS = 30;
 
 /** The sections a person can add. `key` names a section kind (a type plus its prompt). */
@@ -77,6 +79,7 @@ export const sectionKinds = [
   { key: "aspirations", type: "aspirations", title: "Aspirations I'm nurturing", emoji: "🌱", hint: "Choose from your Aspirations in Envision." },
   { key: "rituals", type: "rituals", title: "Habits & rituals to focus on", emoji: "🔁", hint: "Choose rituals to give extra care." },
   { key: "bucket", type: "bucket", title: "Bucket List experiences", emoji: "🗺️", hint: "Dreams from your Bucket List to chase." },
+  { key: "boards", type: "boards", title: "Vision board", emoji: "🖼️", hint: "Show a board from Envision." },
   { key: "try", type: "list", prompt: "try", title: "Things I want to try", emoji: "🧪", hint: "Experiments and new experiences." },
   { key: "promise", type: "writing", prompt: "promise", title: "A promise to myself", emoji: "🤞", hint: "A mantra or a commitment." },
   { key: "matters", type: "list", prompt: "matters", title: "What matters most", emoji: "💗", hint: "The few things that count." },
@@ -144,13 +147,13 @@ function parseContent(type: SectionType, v: unknown): SectionContent[SectionType
     case "list": return { prompt: (Object.keys(listPrompts) as ListPrompt[]).find((p) => p === o.prompt) ?? "custom", items: items(o.items, MAX_ITEMS.list).map((x) => ({ id: x.id as string, text: str(x.text, 300) })) };
     case "priorities": return { items: items(o.items, MAX_ITEMS.priorities).map((x) => { const r = ref(x.ref, ["aspiration", "task"]); return { id: x.id as string, text: str(x.text, 200), ...(r ? { ref: r } : {}), ...(recordIdOk(x.taskId) ? { taskId: x.taskId } : {}) }; }) };
     case "forward": return { items: items(o.items, MAX_ITEMS.forward).map((x) => { const e = ref(x.event, ["event"]); return { id: x.id as string, text: str(x.text, 200), ...(e ? { event: e } : {}) }; }) };
-    case "aspirations": case "rituals": case "bucket": {
-      const kind: RefKind = type === "aspirations" ? "aspiration" : type === "rituals" ? "ritual" : "bucket";
+    case "aspirations": case "rituals": case "bucket": case "boards": {
+      const kind: RefKind = type === "aspirations" ? "aspiration" : type === "rituals" ? "ritual" : type === "boards" ? "board" : "bucket";
       return { items: items(o.items, MAX_ITEMS[type]).flatMap((x) => { const r = ref(x.ref, [kind]); return r ? [{ id: x.id as string, ref: r, note: str(x.note, 300) }] : []; }) };
     }
   }
 }
-const sectionTypes: SectionType[] = ["theme", "writing", "list", "priorities", "forward", "aspirations", "rituals", "bucket"];
+const sectionTypes: SectionType[] = ["theme", "writing", "list", "priorities", "forward", "aspirations", "rituals", "bucket", "boards"];
 export function parseSections(v: unknown): IntentionSection[] {
   const seen = new Set<string>(), out: IntentionSection[] = [];
   for (const raw of Array.isArray(v) ? v : []) {
@@ -194,7 +197,7 @@ export function removeSection(list: IntentionSection[], id: string, confirmed = 
 }
 export const canAddItem = (type: SectionType, count: number) => type === "theme" || type === "writing" ? false : count < MAX_ITEMS[type];
 /** Ids already chosen in a linking section, so a record isn't added twice. */
-export const chosenIds = (s: IntentionSection<"aspirations" | "rituals" | "bucket">) => new Set(s.content.items.map((i) => i.ref.id));
+export const chosenIds = (s: IntentionSection<"aspirations" | "rituals" | "bucket" | "boards">) => new Set(s.content.items.map((i) => i.ref.id));
 
 /** Display for a reference: the name as it was chosen, plus what changed since (renamed or no longer there). */
 export function refStatus(r: Ref, live: { label: string } | undefined): { label: string; note?: string; missing: boolean } {

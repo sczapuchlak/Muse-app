@@ -818,7 +818,7 @@ A Little Moment is its own record (one per local date). It is never stored in Da
 ## Envision & Planner Intentions (#117) — implemented on feature branch, awaiting review
 
 - **One life, one system.** Each record has one home; other modules reference it by id. See the [Integration Map](INTEGRATION_MAP.md) and run its Cohesion Check before major features. Envision → Intend → Live → Reflect → Understand is the product model, not a required workflow.
-- **Envision** is a Life destination (first in Life) with **Aspirations | Vision Boards | Bucket List**. Aspirations and the Bucket List moved from Rituals unchanged (records, settings, order, links). `/rituals?view=aspirations` and `?view=bucket` redirect to Envision with the query kept. Vision Boards shows an empty state until its own feature is built; no placeholder editor.
+- **Envision** is a Life destination (first in Life) with **Aspirations | Vision Boards | Bucket List**. Aspirations and the Bucket List moved from Rituals unchanged (records, settings, order, links). `/rituals?view=aspirations` and `?view=bucket` redirect to Envision with the query kept. Vision Boards shows an empty state until its own feature is built; no placeholder editor. (Superseded by #118: Vision Boards is built; see below.)
 - **Rituals** is Habits only, with no section tabs. Nothing was added to fill the space.
 - **Planner tabs:** Tasks | Intentions | Agenda | Reflections.
 - **Intentions = before, Reflections = after.** One page per person, period (week, month, quarter, year) and period start, enforced by the database. Weeks run Monday–Sunday; quarters are calendar quarters; "today" comes from the Muse timezone. Any period can be planned ahead, revisited or left empty without penalty.
@@ -868,3 +868,11 @@ A Little Moment is its own record (one per local date). It is never stored in Da
   - Deleting in Google always needs explicit confirmation.
   - A failed Google write never loses the Muse event.
   - Background sync runs every 30 minutes through Supabase pg_cron.
+
+## Envision → Vision Boards (#118) — implemented on feature branch, awaiting review
+
+- A board owns its composition and the image files it uploaded; see [VISION_BOARDS](VISION_BOARDS.md). Aspirations, dreams and Intentions are referenced, never copied, and a board never creates Tasks, goals or Rituals.
+- Boards are private, use a fixed coordinate system (landscape, portrait or square) and reopen identically on every screen. Phones zoom and pan; they never rearrange a collage into a grid.
+- The board's background and colors are stored as hex, so a board looks the same in every Muse theme.
+- Deleting a board needs confirmation and never touches linked records. Image files are removed only once no board uses them.
+- Background removal (approved 2026-11-09, Option A): Muse never removes backgrounds itself. On iPhone and iPad it guides people to Apple's Photos cutout (press and hold, Copy) and pastes the result with its transparency kept. No API or in-browser model in v1; an integrated button (e.g. Photoroom) needs a separate approval.
