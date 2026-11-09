@@ -13,6 +13,14 @@
 :root[data-material="frosted"] { --surface-sidebar: var(--frosted-tone-sidebar, var(--tone-sidebar, var(--glass-background))); }
 
 :root:is([data-theme="prism-noir"],[data-theme="nightbloom"],[data-theme="astral"],[data-theme="dreamstorm-lab"],[data-theme="bubblegum-baby"],[data-theme="hot-summer-nights"],[data-theme="booze-pinata"],[data-theme="northern-lights-out"]) {
+  /* Some components (Weekly Draw cards) paint with --surface-strong, which only Tarot defines; without it the whole
+     background is dropped and the card goes see-through. Role themes give it the card surface. */
+  --surface-strong: var(--glass-background);
+
+  /* Weekly Draw progress: a frosted track, and completed segments in the theme's own gradient. */
+  & .muse-quest-progress-segment { background: color-mix(in srgb, var(--glass-background) 75%, transparent); border-color: color-mix(in srgb, var(--foreground) 20%, transparent); }
+  & .muse-quest-progress-segment[data-complete=true] { background: var(--card-border-gradient); border-color: transparent; box-shadow: 0 0 10px color-mix(in srgb, var(--accent-primary) 38%, transparent); }
+
   /* Phone navigation is the sidebar's layer too, never a card. */
   & .muse-bottom-navigation { background: var(--surface-sidebar); }
 
