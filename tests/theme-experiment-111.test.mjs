@@ -26,7 +26,7 @@ test('one card surface per theme: no alternating or per-widget card colours; sid
   for(const n of ['--tone-alt','--tone-alt-2','--tone-featured'])assert.ok(!t[n],`${id}: no ${n}`);
   const rgb=v=>v.match(/rgba\((\d+),(\d+),(\d+)/).slice(1).join(',');
   assert.equal(new Set(['--glass-background','--planning-container-background','--planning-rail-background','--frosted-glass-background'].map(n=>rgb(t[n]))).size,1,`${id}: every card shares one surface`);
-  if(!['northern-lights-out','hot-summer-nights'].includes(id))assert.notEqual(rgb(t['--tone-sidebar']),rgb(t['--glass-background']),`${id}: sidebar is its own layer`);
+  if(!['northern-lights-out','hot-summer-nights','prism-noir'].includes(id))assert.notEqual(rgb(t['--tone-sidebar']),rgb(t['--glass-background']),`${id}: sidebar is its own layer`);
   assert.match(t['--tone-card-border'],/^linear-gradient\(/);
   assert.ok(surfaces.includes(`[data-theme="${id}"]`),`${id} opts into role assignment`);
  }

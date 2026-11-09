@@ -61,9 +61,13 @@
   --chart-4: color-mix(in srgb, var(--accent-warm) 62%, var(--tone-card-ink));
   --chart-5: color-mix(in srgb, var(--accent-blue-violet) 62%, var(--tone-card-ink));
   --chart-6: color-mix(in srgb, var(--accent-cyan) 55%, var(--tone-card-ink));
-  --surface-subtle: color-mix(in srgb, var(--tone-card-ink) 6%, transparent);
-  --surface-hover: color-mix(in srgb, var(--tone-card-ink) 11%, transparent);
-  --surface-control: color-mix(in srgb, var(--tone-card-ink) 8%, transparent);
+  /* Text boxes and nested panels are a lighter version of the card, never a darker coloured one. */
+  --surface-subtle: rgba(255, 255, 255, .32);
+  --surface-hover: color-mix(in srgb, var(--tone-card-ink) 10%, rgba(255, 255, 255, .4));
+  --surface-control: rgba(255, 255, 255, .58);
+  --hover-start: var(--tone-card-icon-1);
+  --hover-middle: var(--tone-card-icon-2);
+  --hover-end: var(--tone-card-icon-3);
   --divider: color-mix(in srgb, var(--tone-card-ink) 15%, transparent);
   --glass-border: color-mix(in srgb, var(--tone-card-ink) 20%, transparent);
   --interactive-border: color-mix(in srgb, var(--tone-card-ink) 22%, transparent);
@@ -74,4 +78,16 @@
   --icon-gradient-start: var(--tone-card-icon-1);
   --icon-gradient-middle: var(--tone-card-icon-2);
   --icon-gradient-end: var(--tone-card-icon-3);
+}
+
+/* Interaction states (#111): hover and selected show the theme's rainbow ring at full strength, a soft glow and a
+   visible tint over whatever fill the control already has (inset shadow, so primary fills keep their colour). */
+:root:is([data-theme="prism-noir"],[data-theme="nightbloom"],[data-theme="astral"],[data-theme="dreamstorm-lab"],[data-theme="bubblegum-baby"],[data-theme="hot-summer-nights"],[data-theme="booze-pinata"],[data-theme="northern-lights-out"]) {
+  & :is(.muse-edge, .muse-button, .choice-button, .inline-edit-value, .popover-choice, .emotion-option)::before { padding: 1.5px; }
+  & :is(.muse-edge, .muse-button, .choice-button, .inline-edit-value, .popover-choice, .emotion-option):is([aria-pressed="true"], [aria-checked="true"], [aria-selected="true"])::before { opacity: 1; }
+  & :is(.muse-edge, .muse-button, .choice-button, .inline-edit-value, .popover-choice, .emotion-option):is([aria-pressed="true"], [aria-checked="true"], [aria-selected="true"]) { box-shadow: inset 0 0 0 999px color-mix(in srgb, var(--hover-middle) 20%, transparent); }
+}
+@media (hover: hover) and (pointer: fine) {
+  :root:is([data-theme="prism-noir"],[data-theme="nightbloom"],[data-theme="astral"],[data-theme="dreamstorm-lab"],[data-theme="bubblegum-baby"],[data-theme="hot-summer-nights"],[data-theme="booze-pinata"],[data-theme="northern-lights-out"]) :is(.muse-edge, .muse-button, .choice-button, .inline-edit-value, .popover-choice, .emotion-option):not(:disabled):hover { box-shadow: inset 0 0 0 999px color-mix(in srgb, var(--hover-middle) 16%, transparent), 0 0 16px color-mix(in srgb, var(--hover-start) 40%, transparent); }
+  :root:is([data-theme="prism-noir"],[data-theme="nightbloom"],[data-theme="astral"],[data-theme="dreamstorm-lab"],[data-theme="bubblegum-baby"],[data-theme="hot-summer-nights"],[data-theme="booze-pinata"],[data-theme="northern-lights-out"]) :is(.muse-edge, .muse-button, .choice-button, .inline-edit-value, .popover-choice, .emotion-option):not(:disabled):hover::before { opacity: 1; }
 }

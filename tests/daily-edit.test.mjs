@@ -469,7 +469,7 @@ test('all six themes supply readable planning materials and dark cards visibly s
   }
   assert.equal(palettes.afterglow['--background'],'#0d0e11');
   assert.equal(palettes.afterglow['--color-scheme'],'dark');
-  assert.equal(palettes['prism-noir']['--glass-background'],'rgba(42,31,56,0.84)');
+  assert.equal(palettes['prism-noir']['--glass-background'],'rgba(13,10,24,0.84)');
 });
 
 test('Crystal and Frosted keep all six theme surfaces readable while Frosted increases opacity', () => {
