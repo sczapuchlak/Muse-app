@@ -1601,11 +1601,11 @@
 }
 
 :root[data-theme="bubblegum-baby"] {
-  --icon-gradient-start: #e0007a;
-  --icon-gradient-middle: #00849a;
-  --icon-gradient-end: #0d8a3a;
+  --icon-gradient-start: #ff2e8a;
+  --icon-gradient-middle: #00d4e6;
+  --icon-gradient-end: #29fe8c;
   --icon-gradient-highlight: #ffffff;
-  --icon-edge: #00b8cc;
+  --icon-edge: #00e5ff;
   --action-fill: #e0007a;
   --background: #ff4fa0;
   --foreground: #33061f;
@@ -1656,7 +1656,7 @@
   --accent-primary: #e0007a;
   --accent-secondary: #00c2d6;
   --accent-pop: #ff4c30;
-  --selected-background: linear-gradient(115deg, rgba(224,0,122,0.2), rgba(0,194,214,0.16));
+  --selected-background: linear-gradient(115deg, rgba(255,46,138,.34), rgba(0,212,230,.30) 55%, rgba(41,254,140,.26));
   --selected-border: #ff2e8a;
   --selected-text: #8a0052;
   --navigation-text: #ff2e8a;
