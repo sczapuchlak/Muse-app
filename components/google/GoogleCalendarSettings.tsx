@@ -34,7 +34,7 @@ export function GoogleCalendarSettings() {
     const url = new URL(window.location.href), o = url.searchParams.get("google");
     if (!o) return;
     // "failed:<step>:<reason>" carries a short, safe diagnosis from the callback (no codes, tokens or personal data).
-    const [kind, step, reason] = o.split(":");
+    const [kind, step, ...rest] = o.split(":"), reason = rest.join(" · ");
     const text = outcomes[kind] ?? "";
     const t = window.setTimeout(() => setOutcome(kind === "failed" && step ? `${text} (Details for support: ${step.replace(/-/g, " ")}${reason ? ` · ${reason}` : ""})` : text), 0);
     url.searchParams.delete("google"); window.history.replaceState(null, "", url);

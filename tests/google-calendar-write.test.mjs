@@ -185,3 +185,11 @@ test('Settings: access is a status pill, Allow editing and Refresh now are real 
  assert.match(s,/<a className="muse-button muse-google-allow" href=\{allowEditingHref\("\/settings"\)\}>Allow editing<\/a>/);
  assert.match(s,/className="muse-button muse-google-refresh"/);assert.doesNotMatch(s,/button-ghost" disabled=\{s\.syncing\}/);
 });
+
+test('OAuth client values are trimmed; invalid_client hints are public-only (project number, whitespace yes/no)',()=>{
+ process.env.GOOGLE_CLIENT_ID=' 123456789012-abc.apps.googleusercontent.com\n';process.env.GOOGLE_CLIENT_SECRET='GOCSPX-secretvalue ';process.env.GOOGLE_TOKEN_KEY=Buffer.alloc(32,7).toString('base64');
+ const O=load('lib/google/oauth',true);
+ assert.equal(O.clientHints(),'cid123456789012:ws1');
+ assert.doesNotMatch(O.clientHints(),/secretvalue|abc/,'never the values');
+ assert.match(read('lib/google/oauth.ts'),/GOOGLE_CLIENT_ID\?\.trim\(\), secret = process\.env\.GOOGLE_CLIENT_SECRET\?\.trim\(\)/);
+});
