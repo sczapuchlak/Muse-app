@@ -25,6 +25,10 @@
      Nested task cards take a small, soft shadow instead. */
   & :is(.muse-planner-task, .muse-meal-entry):not(#\#) { --material-depth-shadow: 0 2px 8px color-mix(in srgb, var(--foreground) 9%, transparent); }
 
+  /* Weekly Draw cards glow on hover instead of lifting: in Safari a moving card makes nearby frosted (blurred)
+     elements re-render, which flashes across the screen. */
+  & .muse-quest-card:hover:not(#\#) { transform: none; }
+
   /* Phone navigation is the sidebar's layer too, never a card. */
   & .muse-bottom-navigation { background: var(--surface-sidebar); }
 
@@ -32,11 +36,12 @@
   & .muse-agenda-log-month { background-color: var(--glass-background); }
 
   /* Tiles and control bars that sit directly on the canvas are frosted cards too (found by a page-by-page audit). */
-  & :is(.muse-collections-card, .muse-collections-active-card, .muse-glance-mini, .muse-cosmic-library-intro, .muse-cosmic-collection, .muse-cosmic-tile, .muse-cosmic-forecast-sign, .muse-dream-library-hero, .muse-dream-result, .muse-little-moment, .muse-appearance-theme, .muse-cosmic-lunar-strip, .muse-cosmic-month-grid, .muse-cosmic-calendar-selected, .muse-cosmic-featured-event, .date-navigation, .muse-segmented, .muse-search):not(#\#) { /* :not(#\#) outranks per-component washes */
+  & :is(.muse-collections-card, .muse-collections-active-card, .muse-glance-mini, .muse-cosmic-library-intro, .muse-cosmic-collection, .muse-cosmic-tile, .muse-cosmic-forecast-sign, .muse-dream-library-hero, .muse-dream-result, .muse-little-moment, .muse-appearance-theme, .muse-cosmic-lunar-strip, .muse-cosmic-month-grid, .muse-cosmic-calendar-selected, .muse-cosmic-featured-event):not(#\#) { /* :not(#\#) outranks per-component washes */
     background-color: var(--glass-background);
     -webkit-backdrop-filter: blur(var(--material-blur)) saturate(var(--material-saturation));
     backdrop-filter: blur(var(--material-blur)) saturate(var(--material-saturation));
   }
+  & :is(.date-navigation, .muse-segmented, .muse-search):not(#\#) { background-color: var(--glass-background); } /* solid, no blur: small bars don't need it */
 
   /* Thin luminous outline in the theme's gradient sequence. A masked ring, so the card fill stays one calm colour. */
   & :is(.muse-card, .muse-agenda-log-month, .muse-planning-rail, .muse-planner-surface, .muse-insight-panel, .muse-money-panel, .muse-notes-workspace, .muse-ritual-group, .muse-collections-card, .muse-collections-active-card, .muse-glance-mini, .muse-cosmic-library-intro, .muse-cosmic-collection, .muse-cosmic-tile, .muse-cosmic-forecast-sign, .muse-dream-library-hero, .muse-dream-result, .muse-little-moment, .muse-appearance-theme, .muse-cosmic-lunar-strip, .muse-cosmic-month-grid, .muse-cosmic-calendar-selected, .muse-cosmic-featured-event) {
