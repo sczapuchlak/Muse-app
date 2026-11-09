@@ -15,6 +15,7 @@ import { useMuseSpark } from "./MuseSpark";
 import { useGoogleEvents } from "./google/GoogleCalendarStore";
 import { GoogleEventDetails } from "./google/GoogleEventDetails";
 import { GoogleSourceDot } from "./google/GoogleSourceDot";
+import { ListsDailyLine } from "./lists/ListsSurfaces";
 import "./ScheduleCard.css";
 
 function EventRow({ event, onGoogle }: { event: DayEvent; onGoogle: (event: DayEvent, anchor: HTMLButtonElement) => void }) {
@@ -66,6 +67,7 @@ export function ScheduleCard({ selectedDate, priorityTaskIds = [] }: { selectedD
         <ul className="muse-plan-list">{preview.visibleEvents.map((event) => <EventRow key={event.id} event={event} onGoogle={(e, a) => { googleAnchor.current = a; setGoogleEvent(e); }} />)}</ul>
         {!preview.events.length && <p className="small-label">No events.</p>}
         {preview.hiddenEvents > 0 && overflowButton("event", preview.events.length)}
+        <ListsDailyLine date={selectedDate} />
       </div>
       <div className="muse-plan-section" role="group" aria-labelledby="plan-tasks-title">
         <div className="muse-plan-heading"><h3 id="plan-tasks-title">Tasks</h3><button type="button" className="muse-button button-ghost" aria-expanded={adding === "task"} aria-controls="plan-entry" onClick={(event) => { anchorRef.current = event.currentTarget; setAdding("task"); }}>+ Add task</button></div>

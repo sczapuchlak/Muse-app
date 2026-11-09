@@ -31,6 +31,7 @@ import { projectEvents, projectTasks } from "@/lib/planner-occurrences";
 import { shiftDate } from "@/lib/dates";
 import { useGoogleEvents } from "../google/GoogleCalendarStore";
 import { GoogleEventDetails } from "../google/GoogleEventDetails";
+import { ListsAgendaChip } from "../lists/ListsSurfaces";
 
 const prefsKey = "muse.planner.agenda";
 const weekday = (d: string, style: "short" | "long" = "short") => new Intl.DateTimeFormat("en-US", { weekday: style, timeZone: "UTC" }).format(new Date(`${d}T12:00:00Z`));
@@ -103,6 +104,7 @@ function AgendaBody({ date, today, onDate, onOpen, workspaceId, prefs, update, s
     return <header className="muse-agenda-day-head">
       <button type="button" className="muse-agenda-day-heading" onClick={() => open(day, "day")} aria-label={`Open ${weekday(day, "long")} ${day} in Day view`}><span>{weekday(day)}</span><strong>{dayNumber(day)}</strong>{day === today && <em className="muse-agenda-today-word">Today</em>}</button>
       <MarkStrip marks={own} labels={false} onEdit={(m, a) => ctx.onMark(a, m)} />
+      <ListsAgendaChip day={day} />
       <button type="button" className="muse-agenda-add muse-agenda-mark-add" aria-label={`Add a Mark on ${day}`} title="Add a Mark" onClick={(e) => ctx.onMark(e.currentTarget)}><MuseIcon name="favorite" size={12} /></button>
     </header>;
   }
