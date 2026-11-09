@@ -22,7 +22,7 @@ import { EventEditor } from "./EventEditor";
 import { LayoutEditor } from "./LayoutEditor";
 import { AgendaLegend, MarkEditor, MarkGlyph, MarkStrip } from "./MuseMarks";
 import { TaskDensityToggle } from "./TaskDensityToggle";
-import { FutureEntryEditor, FutureEntryGlyph, useFutureLog } from "./FutureLog";
+import { FutureEntryEditor, FutureEntryGlyph, FutureMiniMonth, futureWhen, useFutureLog } from "./FutureLog";
 import type { FutureEntry } from "@/lib/future-log";
 import "./Agenda.css";
 import { usePlannerHeight } from "./usePlannerHeight";
@@ -175,7 +175,7 @@ function AgendaBody({ date, today, onDate, onOpen, workspaceId, prefs, update, s
       const items = monthItems([], eventsShown, m, visibility), first = `${m}-01`, last = `${m}-31`;
       const own = prefs.showMarks ? marks.filter((x) => x.linkKind !== "event" && x.linkKind !== "task" && x.start <= last && x.end >= first) : [];
       const entries = [
-        ...future.forMonth(m).map((f) => ({ key: `f${f.id}`, sort: f.date ?? `${m}-32`, node: <><span className="muse-agenda-log-day">{f.date ? dayNumber(f.date) : ""}</span><FutureEntryGlyph entry={f} /><button type="button" className="muse-agenda-log-entry" data-done={f.done || undefined} title={f.note ?? undefined} onClick={(e) => openEditor(e.currentTarget, { kind: "future", month: m, entry: f })}>{f.title}</button></> })),
+        ...future.forMonth(m).map((f) => ({ key: `f${f.id}`, sort: f.date ?? `${m}-32`, node: <><span className="muse-agenda-log-day">{f.date ? (f.endDate ? eventDays({ date: f.date, endDate: f.endDate }, m) : dayNumber(f.date)) : ""}</span><FutureEntryGlyph entry={f} /><button type="button" className="muse-agenda-log-entry" data-done={f.done || undefined} title={[futureWhen(f), f.note].filter(Boolean).join(" · ")} onClick={(e) => openEditor(e.currentTarget, { kind: "future", month: m, entry: f })}>{f.title}</button></> })),
         ...items.events.map((e) => ({ key: `e${e.id}`, sort: e.date < first ? first : e.date, node: <FutureEvent event={e} month={m} marks={marks} showMarks={prefs.showMarks} onEdit={(a) => openEditor(a, { kind: "event", date: e.date, event: e })} onDay={() => open(e.date < first ? first : e.date, "day")} /> })),
         ...own.map((x) => ({ key: `m${x.id}`, sort: x.start < first ? first : x.start, node: <><button type="button" className="muse-agenda-log-day" onClick={() => open(x.start < first ? first : x.start, "day")}>{eventDays({ date: x.start, endDate: x.end }, m)}</button><MarkGlyph mark={x} onSelect={(a) => openEditor(a, { kind: "mark", date: x.start, mark: x })} /><span>{x.title || "Marked"}</span></> })),
       ].sort((a, b) => a.sort.localeCompare(b.sort));
@@ -185,6 +185,7 @@ function AgendaBody({ date, today, onDate, onOpen, workspaceId, prefs, update, s
           <span className="muse-agenda-log-add">
             <button type="button" className="muse-agenda-add" aria-label={`Add to the Future Log in ${monthName(m)}`} title="Add a plan, trip or date" onClick={(e) => openEditor(e.currentTarget, { kind: "future", month: m })}><MuseIcon name="plus" size={13} /></button>
             <button type="button" className="muse-agenda-add" aria-label={`Add an event in ${monthName(m)}`} title="Add a scheduled event" onClick={(e) => openEditor(e.currentTarget, { kind: "event", date: m === today.slice(0, 7) ? today : first })}><MuseIcon name="calendar" size={12} /></button></span></header>
+        <FutureMiniMonth month={m} entries={future.entries} onOpen={(a, f) => openEditor(a, { kind: "future", month: f.month, entry: f })} />
         {entries.length ? <ul>{shown.map((x) => <li key={x.key}>{x.node}</li>)}</ul> : <button type="button" className="muse-agenda-log-empty" onClick={(e) => openEditor(e.currentTarget, { kind: "future", month: m })}>+ Add a plan</button>}
         {entries.length > 4 && <button type="button" className="text-button muse-agenda-log-more" aria-expanded={open_} onClick={() => setExpanded(open_ ? null : m)}>{open_ ? "Show less" : `+${entries.length - 4} more`}</button>}
       </section>;

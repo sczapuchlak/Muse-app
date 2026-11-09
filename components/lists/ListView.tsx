@@ -59,14 +59,21 @@ export function ListView({ listId, today, onBack, onOpen }: { listId: string; to
       <button ref={settingsAnchor} type="button" className="muse-button muse-lists-icon" aria-label="List settings" aria-expanded={settings} onClick={() => setSettings(true)}><MuseIcon name="settings" size={16} /></button>
     </header>
     {prog.total > 0 && <div className="muse-list-progress" role="progressbar" aria-valuenow={prog.pct} aria-valuemin={0} aria-valuemax={100} aria-label="List progress"><span style={{ width: `${prog.pct}%` }} /></div>}
-    {scheduled && <div className="muse-chip-row muse-list-views" role="group" aria-label="List view">
-      {(["all", "week", "due", "history"] as View[]).map((v) => <button key={v} type="button" aria-pressed={view === v} onClick={() => setView(v)}>{v === "all" ? "All items" : v === "week" ? "This week" : v === "due" ? "Due" : "History"}</button>)}
-    </div>}
+    <div className="muse-list-viewbar">
+      {scheduled ? <div className="muse-chip-row muse-list-views" role="group" aria-label="List view">
+        {(["all", "week", "due", "history"] as View[]).map((v) => <button key={v} type="button" aria-pressed={view === v} onClick={() => setView(v)}>{v === "all" ? "All items" : v === "week" ? "This week" : v === "due" ? "Due" : "History"}</button>)}
+      </div> : <span />}
+      {view === "all" && !(list.tableView && list.fields.length > 0) && <div className="muse-segmented muse-list-columns" role="group" aria-label="Section columns">
+        {([0, 1, 2, 3] as const).map((n) => <button key={n} type="button" aria-pressed={list.columns === n} title={n ? `${n} column${n > 1 ? "s" : ""}` : "As many as fit"} onClick={() => void updateList(list.id, { columns: n })}>{n ? n : "Auto"}</button>)}
+      </div>}
+    </div>
 
     {view === "all" && <>
       {list.tableView && list.fields.length > 0 ? <TableView ctx={ctx} items={b.items} /> : <>
+        <div className="muse-list-sections" data-columns={list.columns}>
         {(unsorted.length > 0 || b.sections.length === 0) && <SectionBlock ctx={ctx} section={null} items={unsorted} />}
         {b.sections.map((sec, i) => <SectionBlock key={sec.id} ctx={ctx} section={sec} items={b.items.filter((it) => it.sectionId === sec.id)} first={i === 0} last={i === b.sections.length - 1} />)}
+        </div>
       </>}
       <AddSection listId={list.id} />
     </>}

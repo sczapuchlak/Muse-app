@@ -8,7 +8,7 @@ import { MuseDrawer } from "../MuseDrawer";
 import { useRituals } from "./RitualStore";
 import { useRitualView } from "./ConnectedRituals";
 import { useWellness } from "../WellnessStore";
-import { compatibleMetrics, connectionUnit, materializeConnection, type ConnectionMetric, type RitualConnection } from "@/lib/ritual-connections";
+import { compatibleMetrics, connectionUnit, firstWaterDay, materializeConnection, type ConnectionMetric, type RitualConnection } from "@/lib/ritual-connections";
 import { metricInfo } from "@/lib/progress/engine";
 import { movementCategories, movementCategoryLabels, type MovementCategory } from "@/lib/progress/movement";
 import {ShareToStream} from '../stream/ShareToStream';
@@ -35,6 +35,10 @@ export function RitualEditor({ initial, groupId: presetGroup, date, returnFocus,
   const [times, setTimes] = useState(initial?.timesPerWeek ?? 3);
   const [followGoal, setFollowGoal] = useState(initial?.connection?.followGoal ?? (!initial && true));
   const waterGoal = wellness.state.waterSettings?.goal;
+  // #12: a water ritual can include saved intake from before it existed (evidence only; empty days stay unknown).
+  const firstWater = firstWaterDay(view.sources) ?? firstWaterDay({ timeZone: "UTC", wellness: wellness.state });
+  const [withHistory, setWithHistory] = useState(true);
+  const looksLikeWater = /water|hydrat|💧/i.test(`${name} ${emoji ?? ""}`);
   const [days, setDays] = useState<number[]>(initial?.recurrence.kind === "weekdays" ? initial.recurrence.weekdays : initial?.recurrence.kind === "weekly" ? [initial.recurrence.weekday] : [1, 3, 5]);
   const [startDate, setStartDate] = useState(initial?.startDate ?? date);
   // Categorical legend (#85): starts with a workout-style example the person can rename.
@@ -53,6 +57,7 @@ export function RitualEditor({ initial, groupId: presetGroup, date, returnFocus,
     if (type === "checkbox") next.threshold = Number(threshold) > 0 ? Number(threshold) : 1;
     return next;
   }
+  const backfillStart = mode === "connected" && state.connectionsEnabled && chosenMetric === "water" && withHistory && firstWater && firstWater < startDate ? firstWater : null;
   const valid = name.trim() && Number.isFinite(Number(goal)) && Number(goal) > 0 && Number(goal)<=1000000 && (kind === "daily" || kind === "times" || days.length > 0) && (type !== "category" || legendValid);
   function submit(event: FormEvent) {
     event.preventDefault(); if (!valid||!status.loaded||status.error) return;
@@ -60,11 +65,12 @@ export function RitualEditor({ initial, groupId: presetGroup, date, returnFocus,
     const recurrence: RitualRecurrence = kind === "daily" || kind === "times" ? { kind: "daily" } : kind === "weekly" ? { kind, weekday: days[0] } : { kind, weekdays: days };
     const now = new Date().toISOString(), today = view.today || date;
     // A new connected ritual reflects records from its start date; an existing one connects from today, keeping manual history.
-    const nextConnection = connection(initial ? today : startDate);
-    dispatch({ type: "ritual/save", ritual: { id:captureId, name, groupId, type, goal: type === "category" ? 1 : Number(goal), unit: type === "duration" ? "min" : type === "weekly-target" ? "times" : type === "checkbox" ? "check-in" : type === "category" ? "category" : unit.trim(), startDate, createdAt: initial?.createdAt ?? now, recurrence, timesPerWeek: flexibleWeek ? times : null, emoji, connection: initial ? initial.connection : type === "category" ? null : nextConnection, ...(type === "category" ? { categories } : {}) } });
+    const start = backfillStart ?? startDate;
+    const nextConnection = connection(initial ? today : start);
+    dispatch({ type: "ritual/save", ritual: { id:captureId, name, groupId, type, goal: type === "category" ? 1 : Number(goal), unit: type === "duration" ? "min" : type === "weekly-target" ? "times" : type === "checkbox" ? "check-in" : type === "category" ? "category" : unit.trim(), startDate: start, createdAt: initial?.createdAt ?? now, recurrence, timesPerWeek: flexibleWeek ? times : null, emoji, connection: initial ? initial.connection : type === "category" ? null : nextConnection, ...(type === "category" ? { categories } : {}) } });
     if (initial && state.connectionsEnabled && !sameConnection(initial.connection, nextConnection)) {
       // Ending or changing a connection stores exactly what was shown, so history survives the change of mode.
-      const materialize = initial.connection ? materializeConnection(initial, view.sources, today) : [];
+      const materialize = initial.connection ? materializeConnection(initial, view.sources, today, state) : [];
       dispatch({ type: "ritual/connect", id: initial.id, connection: nextConnection, materialize, today, now });
     }
     onClose();
@@ -93,13 +99,15 @@ export function RitualEditor({ initial, groupId: presetGroup, date, returnFocus,
       {type !== "category" && <fieldset className="muse-ritual-tracking"><legend>Tracking</legend>
         <div className="muse-form-choice-list" role="group" aria-label="Tracking mode"><button type="button" className="choice-button" aria-pressed={mode === "manual"} onClick={() => setMode("manual")}>I check it off</button><button type="button" className="choice-button" aria-pressed={mode === "connected"} disabled={!state.connectionsEnabled} onClick={() => setMode("connected")}>Connected to a tracker</button></div>
         {!state.connectionsEnabled && <p className="small-label">Connected tracking needs the latest database update before it can be saved.</p>}
+        {mode === "manual" && state.connectionsEnabled && looksLikeWater && compatibleMetrics(type).includes("water") && <p className="small-label muse-ritual-suggest">Track this from the water you log in Daily Edit? <button type="button" className="text-button" onClick={() => { setMode("connected"); setMetric("water"); setFollowGoal(true); }}>Connect to water{waterGoal ? ` (${waterGoal} ${wellness.state.waterSettings?.unit ?? "oz"} goal)` : ""}</button></p>}
         {mode === "connected" && state.connectionsEnabled && <>
           <span className="editor-label">Source<MuseChoiceMenu label="Source" valueLabel={`${sourceLabels[chosenMetric]} · ${metricInfo[chosenMetric].owner}`} options={available.map((value) => ({ id: value, label: `${sourceLabels[value]} · ${metricInfo[value].owner}` }))} selectedIds={[chosenMetric]} onSelect={(id) => { const next = id as ConnectionMetric; setMetric(next); setThreshold(String(defaultThreshold[next] ?? 1)); }} /></span>
           {(chosenMetric === "workouts" || chosenMetric === "workout-minutes") && <span className="editor-label">Which movement{(() => { const opts = [{ id: "any", label: "Any movement" }, ...movementCategories.filter((value) => value !== "other").map((value) => ({ id: `category:${value}`, label: `${movementCategoryLabels[value]} (by category)` })), ...movementTypes.map((item) => ({ id: `type:${item.id}`, label: item.name }))]; return <MuseChoiceMenu label="Which movement" valueLabel={opts.find((o) => o.id === scope)?.label ?? "Any movement"} options={opts} selectedIds={[scope]} onSelect={setScope} />; })()}</span>}
           {chosenMetric === "water" && <span className="editor-label">Unit<MuseChoiceMenu label="Water unit" valueLabel={waterUnit} options={[{ id: "oz", label: "oz" }, { id: "mL", label: "mL" }]} selectedIds={[waterUnit]} onSelect={(id) => setWaterUnit(id as "oz" | "mL")} /></span>}
           {chosenMetric === "water" && type !== "weekly-target" && <label className="muse-agenda-check"><input type="checkbox" checked={followGoal} onChange={(e) => setFollowGoal(e.target.checked)} /> Use my water goal{waterGoal ? ` (${waterGoal} ${wellness.state.waterSettings?.unit ?? "oz"} now)` : ""} — each day uses the goal it had in Daily Edit</label>}
+          {chosenMetric === "water" && firstWater && firstWater < startDate && <label className="muse-agenda-check"><input type="checkbox" checked={withHistory} onChange={(e) => setWithHistory(e.target.checked)} /> Include earlier water logs (from {new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" }).format(new Date(`${firstWater}T12:00:00Z`))}){initial ? " — days you checked off by hand keep your entry" : ""}</label>}
           {type === "checkbox" && !(chosenMetric === "water" && followGoal) && <label className="editor-label">Counts as done at<span className="muse-ritual-threshold"><input type="number" min={0.01} step="any" value={threshold} onChange={(event) => setThreshold(event.target.value)} /><span>{connectionUnit({ metric: chosenMetric, unit: waterUnit })}</span></span></label>}
-          <p className="small-label">Values come from {metricInfo[chosenMetric].owner}. Log there or in Daily Edit and this ritual follows; edits and deletions there update it. Days without a record stay unknown, never missed. {initial ? "It connects from today; earlier entries stay as they are. Switching back to manual keeps everything shown so far." : "It reflects records from its start date."}</p>
+          <p className="small-label">Values come from {metricInfo[chosenMetric].owner}. Log there or in Daily Edit and this ritual follows; edits and deletions there update it. Days without a record stay unknown, never missed. {initial ? "It connects from today; earlier entries stay as they are. Switching back to manual keeps everything shown so far." : "It reflects records from its start date."}{chosenMetric === "water" ? " A day is done when that day’s intake reaches that day’s goal." : ""}</p>
         </>}
       </fieldset>}
       {locked && <p className="small-label">This ritual has history. Its type, goal, and schedule stay fixed to preserve those entries. You can change its name or group; create a new ritual for a new rhythm.</p>}

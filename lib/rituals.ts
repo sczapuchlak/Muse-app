@@ -29,6 +29,8 @@ export type RitualState = { groups: RitualGroupDefinition[]; rituals: RitualDefi
 export type RitualAction =
   | {type:"ritual/lifecycle";id:string;operation:"pause"|"resume"|"archive"|"restore"|"delete";today:string}
   | { type: "ritual/save"; ritual: RitualDefinition }
+  /** #12: reorder within a group or move to another group. Lands before `before` (a ritual id), else at the group's end. Identity, history and settings are untouched. */
+  | { type: "ritual/move"; id: string; groupId: string; before: string | null }
   | { type: "group/save"; group: RitualGroupDefinition }
   | { type: "group/toggle"; id: string }
   | { type: "group/delete"; id: string }
@@ -152,6 +154,16 @@ export function ritualReducer(state: RitualState, action: RitualAction): RitualS
       const periods=(ritual.inactivePeriods??[]).filter(p=>p.end||p.start!==action.today).map(p=>p.end?p:{...p,end:action.today});
       if(status!=='active')periods.push({start:action.today,end:null,kind:status});
       return {...state,rituals:state.rituals.map(r=>r.id===action.id?{...r,status,inactivePeriods:periods}:r)};
+    }
+    case "ritual/move": {
+      const ritual = state.rituals.find((entry) => entry.id === action.id);
+      if (!ritual || !state.groups.some((group) => group.id === action.groupId) || action.before === action.id) return state;
+      const moved = ritual.groupId === action.groupId ? ritual : { ...ritual, groupId: action.groupId }, rest = state.rituals.filter((entry) => entry.id !== action.id);
+      const anchor = action.before ? rest.findIndex((entry) => entry.id === action.before && entry.groupId === action.groupId) : -1;
+      const lastInGroup = rest.reduce((at, entry, index) => entry.groupId === action.groupId ? index : at, -1);
+      const at = anchor >= 0 ? anchor : lastInGroup >= 0 ? lastInGroup + 1 : rest.length;
+      const rituals = [...rest.slice(0, at), moved, ...rest.slice(at)];
+      return rituals.every((entry, index) => entry === state.rituals[index]) ? state : { ...state, rituals };
     }
     case "ritual/connect": {
       const ritual = state.rituals.find((entry) => entry.id === action.id);

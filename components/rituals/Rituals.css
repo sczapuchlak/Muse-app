@@ -119,8 +119,9 @@
 .muse-ritual-appearance summary { cursor:pointer; min-height:var(--touch-target); display:flex; align-items:center; }
 /* Connected Rituals: same cell, read-only, with a small source mark. Values come from the owning module. */
 .muse-ritual-cell-control[data-connected="true"]{position:relative;cursor:default}
-.muse-ritual-connected-mark{position:absolute;inset-block-start:-5px;inset-inline-end:-5px;display:grid;place-items:center;width:15px;height:15px;border-radius:50%;font-size:.62rem;line-height:1;color:var(--selected-text);background:var(--selected-background);border:1px solid var(--selected-border)}
-.muse-ritual-connected-note{display:block;color:var(--accent-secondary)}
+/* #12: the source is named once on the row ("⟲ From Wellness"), not as a badge on every ring, so nothing overlaps
+   the completion circles. Each cell still states the source in its label and tooltip. */
+.muse-ritual-connected-note{display:inline-flex;align-items:center;margin-left:6px;padding:0 6px;border-radius:var(--pill-radius);font-size:.68rem;line-height:1.5;color:var(--selected-text);background:var(--selected-background);border:1px solid var(--selected-border);white-space:nowrap}
 .muse-ritual-threshold{display:flex;align-items:center;gap:8px}.muse-ritual-threshold input{max-width:9rem}
 
 /* ---------- Habit trackers (#85): Week / Month / Year × Grid / Focus / Heatmap over the same Rituals records. ----------
@@ -331,3 +332,7 @@ button.muse-tracker-square:focus-visible{outline:2px solid var(--focus-ring);out
  .muse-ritual-description>p{margin:2px 0}
 }
 .muse-ritual-group-header .muse-ritual-group-icon{color:var(--custom-accent-ink,var(--organization-accent))}
+/* #12 reordering: rows can be dragged on desktop; the drop point shows as an accent line above the target row. */
+@media (hover:hover) and (pointer:fine){.muse-ritual-row[draggable=true]{cursor:grab}.muse-ritual-row[draggable=true] :is(button,a){cursor:pointer}}
+.muse-ritual-row[data-drop]{box-shadow:inset 0 2px 0 var(--organization-accent,var(--accent-primary))}
+[id^="ritual-group-body-"][data-drop]{box-shadow:inset 0 -2px 0 var(--organization-accent,var(--accent-primary))}

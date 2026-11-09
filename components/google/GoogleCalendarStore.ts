@@ -19,7 +19,18 @@ let snap: Snap = { loaded: false, connections: [], calendars: [], rows: [], wind
 const listeners = new Set<() => void>();
 const emit = (p: Partial<Snap>) => { snap = { ...snap, ...p }; listeners.forEach((l) => l()); };
 const subscribe = (l: () => void) => { listeners.add(l); return () => listeners.delete(l); };
-let synced = false;
+/** #12: automatic sync at most every ~3 minutes (matches the server), never overlapping. */
+const AUTO_SYNC_MS = 3 * 60 * 1000;
+let lastAuto = 0, accountLoad: Promise<void> | null = null;
+/** One account read at a time, shared by every component that mounts together (Agenda, Daily Edit, Settings). */
+const reloadAccount = () => accountLoad ??= loadAccount().finally(() => { accountLoad = null; });
+/** Sync when Agenda or Daily Edit opens or the page becomes visible again, if the last sync is older than ~3 minutes. */
+export function autoSyncGoogle(now = Date.now()) {
+  if (!snap.connections.length || snap.syncing) return false;
+  const last = Math.max(lastAuto, ...snap.connections.map((c) => (c.last_synced_at ? Date.parse(c.last_synced_at) : 0)));
+  if (now - last < AUTO_SYNC_MS) return false;
+  lastAuto = now; void syncGoogle(); return true;
+}
 
 async function loadAccount() {
   const [c, k] = await Promise.all([
@@ -66,11 +77,11 @@ export async function disconnectGoogle(id: string) {
   emit({ connections: snap.connections.filter((c) => c.id !== id), calendars: snap.calendars.filter((c) => c.connection_id !== id), rows: snap.rows.filter((r) => r.connection_id !== id) });
 }
 
-/** Connection status and calendars (Settings). Loads once; syncs once per page load in the background. */
+/** Connection status and calendars. Reloads on mount and syncs in the background when the last sync is ~3+ minutes old. */
 export function useGoogleCalendar() {
   const s = useSyncExternalStore(subscribe, () => snap, () => snap);
   useEffect(() => {
-    loadAccount().then(() => { if (!synced && snap.connections.length) { synced = true; void syncGoogle(); } }, () => emit({ loaded: true, error: "Google Calendar settings couldn’t load." }));
+    reloadAccount().then(() => { autoSyncGoogle(); }, () => emit({ loaded: true, error: "Google Calendar settings couldn’t load." }));
   }, []);
   return s;
 }
@@ -80,6 +91,12 @@ export function useGoogleEvents(from: string, to: string): DayEvent[] {
   const s = useGoogleCalendar();
   const ready = s.loaded && s.connections.length > 0;
   useEffect(() => { if (ready) loadEvents(from, to).catch(() => { /* Google events are optional; Muse's own still show */ }); }, [ready, from, to]);
+  useEffect(() => {
+    if (!ready) return;
+    const back = () => { if (document.visibilityState === "visible") autoSyncGoogle(); };
+    document.addEventListener("visibilitychange", back);
+    return () => document.removeEventListener("visibilitychange", back);
+  }, [ready]);
   return useMemo(() => {
     const cals = new Map(s.calendars.filter((c) => c.visible).map((c) => [`${c.connection_id}|${c.calendar_id}`, c]));
     return s.rows.flatMap((r) => { const c = cals.get(`${r.connection_id}|${r.calendar_id}`); return c ? [toDayEvent(r, c)] : []; });

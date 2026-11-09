@@ -23,7 +23,7 @@ const eventFromRow = (r: Record<string, unknown>): ListEvent => ({ id: String(r.
   periodStart: String(r.period_start), periodEnd: String(r.period_end), movedTo: (r.moved_to as string) ?? undefined, occurredOn: (r.occurred_on as string) ?? undefined,
   recordedAt: String(r.recorded_at), source: (r.source as ListEvent["source"]) ?? "list" });
 const listRow = (l: MuseList) => ({ id: l.id, title: l.title.trim(), description: l.description, icon: l.icon, accent: l.accent, preset: l.preset, is_template: l.isTemplate, pinned: l.pinned,
-  archived_at: l.archivedAt, start_date: l.startDate, end_date: l.endDate, fields: l.fields, table_view: l.tableView, show_in_daily: l.showInDaily, show_in_agenda: l.showInAgenda,
+  archived_at: l.archivedAt, start_date: l.startDate, end_date: l.endDate, fields: l.fields, table_view: l.tableView, section_columns: l.columns, show_in_daily: l.showInDaily, show_in_agenda: l.showInAgenda,
   aspiration_id: l.aspirationId, position: l.position });
 const sectionRow = (s: ListSection) => ({ id: s.id, list_id: s.listId, title: s.title.trim(), icon: s.icon, accent: s.accent, position: s.position, collapsed: s.collapsed });
 const itemRow = (i: ListItem) => ({ id: i.id, list_id: i.listId, section_id: i.sectionId, title: i.title.trim(), notes: i.notes, position: i.position, priority: i.priority, due_date: i.dueDate,
@@ -70,7 +70,7 @@ async function insertBundle(b: ListBundle) {
 export async function createList(opts: { starterId: string; title?: string; preset?: ListPreset; today: string }) {
   const st = starters.find((x) => x.id === opts.starterId) ?? starters[0], listId = uuid(), stamp = now();
   const list: MuseList = { id: listId, title: (opts.title?.trim() || st.title).slice(0, 120), description: st.id === "blank" ? null : st.description, icon: st.icon, accent: st.accent,
-    preset: opts.preset ?? st.preset, isTemplate: false, pinned: false, archivedAt: null, startDate: null, endDate: null, fields: st.fields ?? [], tableView: false,
+    preset: opts.preset ?? st.preset, isTemplate: false, pinned: false, archivedAt: null, startDate: null, endDate: null, fields: st.fields ?? [], tableView: false, columns: 0,
     showInDaily: false, showInAgenda: false, aspirationId: null, position: snap.lists.length, createdAt: stamp, updatedAt: stamp };
   const sections: ListSection[] = [], items: ListItem[] = [];
   st.sections.forEach((sec, si) => {

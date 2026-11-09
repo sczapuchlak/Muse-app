@@ -97,7 +97,7 @@
 .muse-dream-artifact>span{color:var(--accent-secondary)}.muse-dream-artifact small{color:var(--text-muted);margin-left:2px}
 .muse-dream-artifact:hover{border-color:var(--selected-border);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent-secondary) 12%,transparent)}
 .muse-dream-series-tag{display:inline-flex;gap:4px;padding:2px 8px;border-radius:999px;font-size:.72rem;color:var(--accent-warm,var(--accent-primary));background:color-mix(in srgb,var(--accent-warm,var(--accent-primary)) 10%,transparent)}
-.muse-dreamscapes .muse-dream-calendar{max-width:640px;padding:14px;border:1px solid var(--glass-border);border-radius:18px;background:var(--surface-subtle)}
+.muse-dreamscapes .muse-dream-calendar{max-width:none;padding:14px;border:1px solid var(--glass-border);border-radius:18px;background:var(--surface-subtle)}
 .muse-dream-calendar-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}.muse-dream-calendar-head>div{display:grid;text-align:center}.muse-dream-calendar-head strong{font-family:var(--font-editorial);font-style:normal;font-weight:var(--type-editorial-weight);font-size:1.15rem;line-height:normal}
 .muse-dreamscapes .muse-dream-days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;text-align:center}
 .muse-dreamscapes .muse-dream-days>button{display:grid;place-items:center;gap:1px;min-height:46px;padding:4px;border:1px solid transparent;border-radius:10px;background:transparent;color:var(--text-primary,inherit);cursor:pointer;transition:background .2s,border-color .2s}
@@ -230,3 +230,7 @@
 /* #98: with no source picker, the alphabet is centered under the search and categories. */
 .muse-dream-library .muse-dream-library-tools{justify-content:center}
 .muse-dream-library .muse-dream-alphabet{justify-content:center}
+/* #12: Dreamscapes sections span the content area like other Muse modules. The outer section (and its empty state,
+   calendar and toolbars) is full width; the grids inside it keep their own columns. */
+.muse-dreamscapes > :is(section, .muse-dream-section){width:100%;min-width:0}
+.muse-dreamscapes .muse-empty-state[data-variant]:not([data-variant="quiet"]){max-width:none;width:100%;margin:0;box-sizing:border-box}

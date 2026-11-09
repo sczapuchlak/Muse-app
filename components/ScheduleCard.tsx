@@ -1,6 +1,7 @@
 "use client";
 
-import { useRef, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { MuseChoiceMenu } from "./MuseChoiceMenu";
 import { projectEvents, projectTasks } from "@/lib/planner-occurrences";
 import Link from "next/link";
 import type { DayEvent, PlannedTask } from "@/lib/models";
@@ -44,7 +45,10 @@ export function ScheduleCard({ selectedDate, priorityTaskIds = [] }: { selectedD
   // Recurrence 2.0 (#89): the selected day's occurrences of recurring tasks and events.
   // Google Calendar (#35): today's read-only events from visible calendars, from the same synced cache as Agenda.
   const google = useGoogleEvents(selectedDate, selectedDate);
-  const items = [...projectTasks(state.tasks, state.occurrences, selectedDate, selectedDate), ...projectEvents(state.events, state.eventExceptions, selectedDate, selectedDate), ...google];
+  // #12: Today's plan can follow one workspace (this device's choice); today's priorities always show.
+  const [workspace, chooseWorkspace] = useDailyWorkspace(), wsValid = state.workspaces.some((w) => w.id === workspace) ? workspace : "";
+  const priorities = new Set(priorityTaskIds), dayTasks = projectTasks(state.tasks, state.occurrences, selectedDate, selectedDate).filter((t) => !wsValid || t.workspaceId === wsValid || priorities.has(t.id));
+  const items = [...dayTasks, ...projectEvents(state.events, state.eventExceptions, selectedDate, selectedDate), ...google];
   const [googleEvent, setGoogleEvent] = useState<DayEvent | null>(null);
   const googleAnchor = useRef<HTMLButtonElement>(null);
   const [adding, setAdding] = useState<"task" | "event" | null>(null);
@@ -70,7 +74,7 @@ export function ScheduleCard({ selectedDate, priorityTaskIds = [] }: { selectedD
         <ListsDailyLine date={selectedDate} />
       </div>
       <div className="muse-plan-section" role="group" aria-labelledby="plan-tasks-title">
-        <div className="muse-plan-heading"><h3 id="plan-tasks-title">Tasks</h3><button type="button" className="muse-button button-ghost" aria-expanded={adding === "task"} aria-controls="plan-entry" onClick={(event) => { anchorRef.current = event.currentTarget; setAdding("task"); }}>+ Add task</button></div>
+        <div className="muse-plan-heading"><h3 id="plan-tasks-title">Tasks</h3>{state.workspaces.length > 1 && <MuseChoiceMenu label="Workspace shown in Today’s plan" valueLabel={state.workspaces.find((w) => w.id === wsValid)?.name ?? "All workspaces"} options={[{ id: "", label: "All workspaces" }, ...state.workspaces.map((w) => ({ id: w.id, label: w.name }))]} selectedIds={[wsValid]} onSelect={chooseWorkspace} />}<button type="button" className="muse-button button-ghost" aria-expanded={adding === "task"} aria-controls="plan-entry" onClick={(event) => { anchorRef.current = event.currentTarget; setAdding("task"); }}>+ Add task</button></div>
         <ul className="muse-plan-list">{preview.visibleTasks.map((task) => <TaskRow key={task.id} task={task} onToggle={toggleTask} />)}</ul>
         {!preview.tasks.length && <p className="small-label">No tasks planned.</p>}
         {preview.hiddenTasks > 0 && overflowButton("task", preview.tasks.length)}
@@ -84,4 +88,12 @@ export function ScheduleCard({ selectedDate, priorityTaskIds = [] }: { selectedD
 
     </PlannerCapture></MuseCard>
   );
+}
+
+const dailyWorkspaceKey = "muse.daily.workspace";
+/** The workspace Today's plan follows on this device ("" = all), like Agenda's other per-device view choices. */
+function useDailyWorkspace(): [string, (id: string) => void] {
+  const [id, setId] = useState("");
+  useEffect(() => { const t = window.setTimeout(() => { try { setId(window.localStorage.getItem(dailyWorkspaceKey) ?? ""); } catch { /* all */ } }, 0); return () => window.clearTimeout(t); }, []);
+  return [id, (next) => { setId(next); try { if (next) window.localStorage.setItem(dailyWorkspaceKey, next); else window.localStorage.removeItem(dailyWorkspaceKey); } catch { /* this device only */ } }];
 }

@@ -124,22 +124,17 @@ export function InsightsGlance() {
         <div data-area="stats"><YearStats daily={daily} booksFinished={reading.completed.length} workouts={movement.sessions} /></div>
         <div data-area="hero"><YearMonths range={range} ratings={daily.ratings} days={snapshot.days} onOpen={(d) => open(d, "month")} /></div>
         <div data-area="hero"><LittleMoments memories={moments.memories} checkIns={checkIns} onOpen={(d) => open(d)} period="year" /></div>
-        <div data-area="cols" className="muse-glance-cols">
-          <div className="muse-glance-col">
-            <YearFeelings months={months} />
-            <MonthBars id="glance-year-move" title="Movement" icon="movement" tone="pop" months={months} emoji="🏃" emptyText="No movement recorded this year."
-              value={(m) => m.movement || null} format={(m, v) => `${plural(v, "workout")}`} unitNote={`${plural(movement.sessions, "workout")} across ${plural(movement.days, "active day")}.`} />
-          </div>
-          <div className="muse-glance-col">
-            <ThreeFavorites daily={daily} title="The year in emoji" />
-            <MonthBars id="glance-year-water" title="Water" icon="water" tone="cool" months={months} emoji="💧" emptyText="No water logged this year."
-              value={(m) => m.water} format={(m, v) => `${formatWaterAmount(v)} ${water[0]?.unit ?? ""} a day · ${plural(m.waterDays, "logged day")}`} unitNote={water[0] ? `Average per logged day, in ${water[0].unit}.${water.length > 1 ? " Other units are kept apart." : ""}` : undefined} />
-          </div>
-          <div className="muse-glance-col">
-            <MonthBars id="glance-year-priorities" title="Priorities done" icon="favorite" months={months} emoji="⭐" emptyText="No priorities completed this year."
-              value={(m) => m.prioritiesDone || null} format={(m, v) => `${v} of ${m.prioritiesPlanned} done`} unitNote={`${daily.priorities.completed} of ${daily.priorities.planned} priorities done this year.`} />
-            {readingCard()}
-          </div>
+        {/* #12: a gapless 3×2 grid — every card stretches to its row, so nothing leaves a hole. */}
+        <div data-area="cols" className="muse-glance-year-grid">
+          <div style={{ gridArea: "feel" }}><YearFeelings months={months} /></div>
+          <div style={{ gridArea: "emoji" }}><ThreeFavorites daily={daily} title="The year in emoji" /></div>
+          <div style={{ gridArea: "prio" }}><MonthBars id="glance-year-priorities" title="Priorities done" icon="favorite" months={months} emoji="⭐" emptyText="No priorities completed this year."
+              value={(m) => m.prioritiesDone || null} format={(m, v) => `${v} of ${m.prioritiesPlanned} done`} unitNote={`${daily.priorities.completed} of ${daily.priorities.planned} priorities done this year.`} /></div>
+          <div style={{ gridArea: "move" }}><MonthBars id="glance-year-move" title="Movement" icon="movement" tone="pop" months={months} emoji="🏃" emptyText="No movement recorded this year."
+              value={(m) => m.movement || null} format={(m, v) => `${plural(v, "workout")}`} unitNote={`${plural(movement.sessions, "workout")} across ${plural(movement.days, "active day")}.`} /></div>
+          <div style={{ gridArea: "water" }}><MonthBars id="glance-year-water" title="Water" icon="water" tone="cool" months={months} emoji="💧" emptyText="No water logged this year."
+              value={(m) => m.water} format={(m, v) => `${formatWaterAmount(v)} ${water[0]?.unit ?? ""} a day · ${plural(m.waterDays, "logged day")}`} unitNote={water[0] ? `Average per logged day, in ${water[0].unit}.${water.length > 1 ? " Other units are kept apart." : ""}` : undefined} /></div>
+          <div style={{ gridArea: "read" }}>{readingCard()}</div>
         </div>
         <div data-area="hero"><GoodDays daily={daily} days={snapshot.days} checkIns={checkIns} onOpen={(d) => open(d)} limit={6} /></div>
       </>}

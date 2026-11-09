@@ -369,3 +369,9 @@
 .muse-glance .muse-glance-card{--glance-ink:var(--chart-1)}
 .muse-glance .muse-glance-card[data-tone="warm"]{--glance-ink:var(--chart-4)}.muse-glance .muse-glance-card[data-tone="cool"]{--glance-ink:var(--chart-6)}.muse-glance .muse-glance-card[data-tone="pop"]{--glance-ink:var(--chart-3)}
 .muse-glance .muse-glance-card-title{color:color-mix(in srgb,var(--glance-ink) 30%,var(--foreground))}
+/* #12 Year: the six measures as one gapless grid (same rules as Month) — rows align and every card fills its slot. */
+.muse-glance-year-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-areas:"feel emoji prio" "move water read";gap:var(--glance-gap);align-items:stretch}
+.muse-glance-year-grid>div{display:flex;min-width:0}
+.muse-glance-year-grid>div>*{flex:1 1 auto;min-width:0;margin:0}
+@media (max-width:1100px){.muse-glance-year-grid{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-areas:"feel emoji" "move water" "prio read"}}
+@media (max-width:700px){.muse-glance-year-grid{grid-template-columns:minmax(0,1fr);grid-template-areas:"feel" "emoji" "move" "water" "prio" "read"}}

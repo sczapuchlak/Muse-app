@@ -15,7 +15,7 @@ export type ItemLinkKind = "task" | "aspiration" | "bucket" | "media";
 export type MuseList = {
   id: string; title: string; description: string | null; icon: string | null; accent: ListAccent; preset: ListPreset;
   isTemplate: boolean; pinned: boolean; archivedAt: string | null; startDate: string | null; endDate: string | null;
-  fields: ListField[]; tableView: boolean; showInDaily: boolean; showInAgenda: boolean; aspirationId: string | null;
+  fields: ListField[]; tableView: boolean; /** Section layout: 0 = auto, else 1–3 columns. */ columns: 0 | 1 | 2 | 3; showInDaily: boolean; showInAgenda: boolean; aspirationId: string | null;
   position: number; createdAt: string; updatedAt: string;
 };
 export type ListSection = { id: string; listId: string; title: string; icon: string | null; accent: ListAccent | null; position: number; collapsed: boolean };
@@ -60,7 +60,7 @@ export function listFromRow(r: Record<string, unknown>): MuseList {
   return { id: String(r.id), title: String(r.title), description: (r.description as string) ?? null, icon: (r.icon as string) ?? null,
     accent: (listAccents as readonly string[]).includes(String(r.accent)) ? r.accent as ListAccent : "primary", preset: (r.preset as ListPreset) ?? "checklist",
     isTemplate: !!r.is_template, pinned: !!r.pinned, archivedAt: (r.archived_at as string) ?? null, startDate: (r.start_date as string) ?? null, endDate: (r.end_date as string) ?? null,
-    fields: Array.isArray(r.fields) ? r.fields as ListField[] : [], tableView: !!r.table_view, showInDaily: !!r.show_in_daily, showInAgenda: !!r.show_in_agenda,
+    fields: Array.isArray(r.fields) ? r.fields as ListField[] : [], tableView: !!r.table_view, columns: ([0, 1, 2, 3].includes(Number(r.section_columns)) ? Number(r.section_columns) : 0) as MuseList["columns"], showInDaily: !!r.show_in_daily, showInAgenda: !!r.show_in_agenda,
     aspirationId: (r.aspiration_id as string) ?? null, position: Number(r.position ?? 0), createdAt: String(r.created_at ?? ""), updatedAt: String(r.updated_at ?? "") };
 }
 export function sectionFromRow(r: Record<string, unknown>): ListSection {

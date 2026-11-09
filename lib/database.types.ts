@@ -313,14 +313,14 @@ isOneToOne: false
                   ]
                 },"cards": {
                   Row: {
-                    "apr": number | null,"captured_time_zone": string,"created_at": string,"currency": string,"due_date": string | null,"id": string,"limit_cents": number | null,"minimum_cents": number | null,"name": string,"note": string | null,"opening_as_of": string,"opening_balance_cents": number,"planned_payment_cents": number | null,"position": number,"updated_at": string,"user_id": string
+                    "accent": string | null,"apr": number | null,"captured_time_zone": string,"created_at": string,"currency": string,"due_date": string | null,"id": string,"limit_cents": number | null,"minimum_cents": number | null,"name": string,"note": string | null,"opening_as_of": string,"opening_balance_cents": number,"planned_payment_cents": number | null,"position": number,"updated_at": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "apr"?: number | null,"captured_time_zone": string,"created_at"?: string,"currency"?: string,"due_date"?: string | null,"id": string,"limit_cents"?: number | null,"minimum_cents"?: number | null,"name": string,"note"?: string | null,"opening_as_of": string,"opening_balance_cents": number,"planned_payment_cents"?: number | null,"position"?: number,"updated_at"?: string,"user_id": string
+                    "accent"?: string | null,"apr"?: number | null,"captured_time_zone": string,"created_at"?: string,"currency"?: string,"due_date"?: string | null,"id": string,"limit_cents"?: number | null,"minimum_cents"?: number | null,"name": string,"note"?: string | null,"opening_as_of": string,"opening_balance_cents": number,"planned_payment_cents"?: number | null,"position"?: number,"updated_at"?: string,"user_id": string
                   }
                   Update: {
-                    "apr"?: number | null,"captured_time_zone"?: string,"created_at"?: string,"currency"?: string,"due_date"?: string | null,"id"?: string,"limit_cents"?: number | null,"minimum_cents"?: number | null,"name"?: string,"note"?: string | null,"opening_as_of"?: string,"opening_balance_cents"?: number,"planned_payment_cents"?: number | null,"position"?: number,"updated_at"?: string,"user_id"?: string
+                    "accent"?: string | null,"apr"?: number | null,"captured_time_zone"?: string,"created_at"?: string,"currency"?: string,"due_date"?: string | null,"id"?: string,"limit_cents"?: number | null,"minimum_cents"?: number | null,"name"?: string,"note"?: string | null,"opening_as_of"?: string,"opening_balance_cents"?: number,"planned_payment_cents"?: number | null,"position"?: number,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
                     
@@ -729,14 +729,14 @@ isOneToOne: false
                   ]
                 },"future_log_entries": {
                   Row: {
-                    "color": string | null,"created_at": string,"done": boolean,"gradient": Json | null,"icon": string | null,"id": string,"local_date": string | null,"month": string,"note": string | null,"position": number,"revision": number,"title": string,"updated_at": string,"user_id": string
+                    "color": string | null,"created_at": string,"done": boolean,"end_date": string | null,"gradient": Json | null,"icon": string | null,"id": string,"local_date": string | null,"month": string,"note": string | null,"position": number,"revision": number,"title": string,"updated_at": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "color"?: string | null,"created_at"?: string,"done"?: boolean,"gradient"?: Json | null,"icon"?: string | null,"id"?: string,"local_date"?: string | null,"month": string,"note"?: string | null,"position"?: number,"revision"?: number,"title": string,"updated_at"?: string,"user_id"?: string
+                    "color"?: string | null,"created_at"?: string,"done"?: boolean,"end_date"?: string | null,"gradient"?: Json | null,"icon"?: string | null,"id"?: string,"local_date"?: string | null,"month": string,"note"?: string | null,"position"?: number,"revision"?: number,"title": string,"updated_at"?: string,"user_id"?: string
                   }
                   Update: {
-                    "color"?: string | null,"created_at"?: string,"done"?: boolean,"gradient"?: Json | null,"icon"?: string | null,"id"?: string,"local_date"?: string | null,"month"?: string,"note"?: string | null,"position"?: number,"revision"?: number,"title"?: string,"updated_at"?: string,"user_id"?: string
+                    "color"?: string | null,"created_at"?: string,"done"?: boolean,"end_date"?: string | null,"gradient"?: Json | null,"icon"?: string | null,"id"?: string,"local_date"?: string | null,"month"?: string,"note"?: string | null,"position"?: number,"revision"?: number,"title"?: string,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
                     
@@ -999,14 +999,14 @@ isOneToOne: false
                   ]
                 },"lists": {
                   Row: {
-                    "accent": string,"archived_at": string | null,"aspiration_id": string | null,"created_at": string,"description": string | null,"end_date": string | null,"fields": NonNullable<Json>,"icon": string | null,"id": string,"is_template": boolean,"pinned": boolean,"position": number,"preset": string,"show_in_agenda": boolean,"show_in_daily": boolean,"start_date": string | null,"table_view": boolean,"title": string,"updated_at": string,"user_id": string
+                    "accent": string,"archived_at": string | null,"aspiration_id": string | null,"created_at": string,"description": string | null,"end_date": string | null,"fields": NonNullable<Json>,"icon": string | null,"id": string,"is_template": boolean,"pinned": boolean,"position": number,"preset": string,"section_columns": number,"show_in_agenda": boolean,"show_in_daily": boolean,"start_date": string | null,"table_view": boolean,"title": string,"updated_at": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "accent"?: string,"archived_at"?: string | null,"aspiration_id"?: string | null,"created_at"?: string,"description"?: string | null,"end_date"?: string | null,"fields"?: NonNullable<Json>,"icon"?: string | null,"id": string,"is_template"?: boolean,"pinned"?: boolean,"position"?: number,"preset"?: string,"show_in_agenda"?: boolean,"show_in_daily"?: boolean,"start_date"?: string | null,"table_view"?: boolean,"title": string,"updated_at"?: string,"user_id"?: string
+                    "accent"?: string,"archived_at"?: string | null,"aspiration_id"?: string | null,"created_at"?: string,"description"?: string | null,"end_date"?: string | null,"fields"?: NonNullable<Json>,"icon"?: string | null,"id": string,"is_template"?: boolean,"pinned"?: boolean,"position"?: number,"preset"?: string,"section_columns"?: number,"show_in_agenda"?: boolean,"show_in_daily"?: boolean,"start_date"?: string | null,"table_view"?: boolean,"title": string,"updated_at"?: string,"user_id"?: string
                   }
                   Update: {
-                    "accent"?: string,"archived_at"?: string | null,"aspiration_id"?: string | null,"created_at"?: string,"description"?: string | null,"end_date"?: string | null,"fields"?: NonNullable<Json>,"icon"?: string | null,"id"?: string,"is_template"?: boolean,"pinned"?: boolean,"position"?: number,"preset"?: string,"show_in_agenda"?: boolean,"show_in_daily"?: boolean,"start_date"?: string | null,"table_view"?: boolean,"title"?: string,"updated_at"?: string,"user_id"?: string
+                    "accent"?: string,"archived_at"?: string | null,"aspiration_id"?: string | null,"created_at"?: string,"description"?: string | null,"end_date"?: string | null,"fields"?: NonNullable<Json>,"icon"?: string | null,"id"?: string,"is_template"?: boolean,"pinned"?: boolean,"position"?: number,"preset"?: string,"section_columns"?: number,"show_in_agenda"?: boolean,"show_in_daily"?: boolean,"start_date"?: string | null,"table_view"?: boolean,"title"?: string,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
                     
@@ -3002,6 +3002,9 @@ isOneToOne: false
                            },
 "save_whimsy_record":
 { Args: { "p_command_id": string,"p_delete"?: boolean,"p_expected_revision": number,"p_kind": string,"p_record": Json }; Returns: Json
+                           },
+"set_card_accents":
+{ Args: { "p_accents": Json }; Returns: undefined
                            },
 "set_stream_preferences":
 { Args: { "p_comments": boolean,"p_friend_accepted": boolean,"p_friend_requests": boolean,"p_reactions": boolean,"p_show_in_navigation": boolean }; Returns: Json

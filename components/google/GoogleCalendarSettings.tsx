@@ -1,8 +1,10 @@
 "use client";
-import { useEffect, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import "./GoogleCalendar.css";
+import { GlassPopover } from "../GlassPopover";
+import { MuseIcon } from "../MuseIcon";
 import { connectionStatus } from "@/lib/google/calendars";
-import { disconnectGoogle, setCalendarVisible, syncGoogle, useGoogleCalendar } from "./GoogleCalendarStore";
+import { disconnectGoogle, setCalendarVisible, syncGoogle, useGoogleCalendar, type GoogleCalendar } from "./GoogleCalendarStore";
 
 const outcomes: Record<string, string> = {
   connected: "Google Calendar is connected.",
@@ -38,14 +40,13 @@ export function GoogleCalendarSettings() {
     </section> : s.connections.map((c) => {
       const st = connectionStatus(c), cals = s.calendars.filter((k) => k.connection_id === c.id);
       return <section key={c.id} aria-label={`Google Calendar ${c.email}`}>
-        <h3>{c.email || "Google account"}</h3>
-        <p className="small-label" role={st.tone === "warning" ? "alert" : undefined} data-tone={st.tone}>{st.text}{st.tone === "ok" && c.last_synced_at ? ` · ${when(c.last_synced_at)}` : ""}</p>
-        {c.status === "needs-reconnect" ? <a className="muse-button" href="/api/google/connect">Reconnect Google Calendar</a>
-          : <button type="button" className="muse-button button-ghost" disabled={s.syncing} onClick={() => void syncGoogle(true)}>{s.syncing ? "Syncing…" : "Refresh now"}</button>}
-        {cals.length > 0 && <fieldset className="muse-google-calendars"><legend className="editor-label">Show in Planner</legend>
-          {cals.map((k) => <label key={k.id} className="muse-check-row"><input type="checkbox" checked={k.visible} onChange={(e) => void setCalendarVisible(k, e.target.checked)} />
-            <span className="muse-google-dot" style={k.color ? { "--google-calendar": k.color } as CSSProperties : undefined} aria-hidden="true" />{k.name}{k.is_primary && <span className="small-label"> · primary</span>}</label>)}
-          <p className="small-label">Hiding a calendar only hides it in Muse. Nothing is deleted in Google.</p></fieldset>}
+        <div className="muse-google-account">
+          <div><h3>{c.email || "Google account"}</h3>
+            <p className="small-label" role={st.tone === "warning" ? "alert" : undefined} data-tone={st.tone}>{st.text}{st.tone === "ok" && c.last_synced_at ? ` · ${when(c.last_synced_at)}` : ""}</p></div>
+          {c.status === "needs-reconnect" ? <a className="muse-button" href="/api/google/connect">Reconnect Google Calendar</a>
+            : <button type="button" className="muse-button button-ghost" disabled={s.syncing} onClick={() => void syncGoogle(true)}>{s.syncing ? "Syncing…" : "Refresh now"}</button>}
+        </div>
+        {cals.length > 0 && <CalendarPicker id={c.id} calendars={cals} />}
         {confirming === c.id ? <div className="muse-google-confirm" role="group" aria-label="Confirm disconnect">
           <p className="small-label">Disconnect removes Muse’s access and its copy of these calendars. Your Google Calendar and your Muse events are not changed.</p>
           <button type="button" className="muse-button" disabled={busy} onClick={() => void remove(c.id)}>{busy ? "Disconnecting…" : "Disconnect"}</button>
@@ -54,5 +55,27 @@ export function GoogleCalendarSettings() {
       </section>;
     })}
     {(error || s.error) && <p className="small-label" role="alert">{error || s.error}</p>}
+  </div>;
+}
+
+/** #12: a compact calendar chooser — one button with the shown calendars as small chips, and a scrollable checklist
+ * in a popover — so the Settings card stays short however many calendars an account has. */
+function CalendarPicker({ id, calendars }: { id: string; calendars: GoogleCalendar[] }) {
+  const [open, setOpen] = useState(false), anchor = useRef<HTMLButtonElement>(null), shown = calendars.filter((k) => k.visible);
+  const dot = (k: GoogleCalendar) => <span className="muse-google-dot" style={k.color ? { "--google-calendar": k.color } as CSSProperties : undefined} aria-hidden="true" />;
+  return <div className="muse-google-picker">
+    <span className="editor-label" id={`google-cals-${id}`}>Show in Planner</span>
+    <button ref={anchor} type="button" className="muse-button button-ghost muse-google-picker-trigger" aria-haspopup="dialog" aria-expanded={open} aria-describedby={`google-cals-${id}`} onClick={() => setOpen((v) => !v)}>
+      <span className="muse-google-dots" aria-hidden="true">{shown.slice(0, 5).map((k) => <span key={k.id}>{dot(k)}</span>)}</span>
+      Calendars · {shown.length} of {calendars.length} shown<MuseIcon name="chevron" size={14} />
+    </button>
+    {shown.length > 0 && <ul className="muse-google-chips" aria-label="Calendars shown in Planner">{shown.map((k) => <li key={k.id}>{dot(k)}<span>{k.name}</span></li>)}</ul>}
+    <GlassPopover id={`google-cals-pop-${id}`} label="Choose calendars to show" title="Calendars" open={open} anchorRef={anchor} onClose={() => setOpen(false)} width={320}>
+      <div className="muse-google-checklist" role="group" aria-label="Calendars to show in Planner">
+        {calendars.map((k) => <label key={k.id} className="muse-check-row"><input type="checkbox" checked={k.visible} onChange={(e) => void setCalendarVisible(k, e.target.checked)} />
+          {dot(k)}<span>{k.name}{k.is_primary && <span className="small-label"> · primary</span>}</span></label>)}
+      </div>
+      <p className="small-label">Hiding a calendar only hides it in Muse. Nothing is deleted in Google.</p>
+    </GlassPopover>
   </div>;
 }
