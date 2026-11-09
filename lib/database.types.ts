@@ -2377,6 +2377,20 @@ isOneToOne: false
       referencedColumns: ["user_id","id"]
     }
                   ]
+                },"vision_boards": {
+                  Row: {
+                    "asset_paths": (string)[],"background": NonNullable<Json>,"created_at": string,"description": string | null,"elements": NonNullable<Json>,"id": string,"period": string | null,"period_start": string | null,"revision": number,"size": string,"theme": string | null,"title": string,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "asset_paths"?: (string)[],"background"?: NonNullable<Json>,"created_at"?: string,"description"?: string | null,"elements"?: NonNullable<Json>,"id"?: string,"period"?: string | null,"period_start"?: string | null,"revision"?: number,"size"?: string,"theme"?: string | null,"title": string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Update: {
+                    "asset_paths"?: (string)[],"background"?: NonNullable<Json>,"created_at"?: string,"description"?: string | null,"elements"?: NonNullable<Json>,"id"?: string,"period"?: string | null,"period_start"?: string | null,"revision"?: number,"size"?: string,"theme"?: string | null,"title"?: string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
                 },"wellness_commands": {
                   Row: {
                     "id": string,"request_hash": string,"revision": number,"user_id": string

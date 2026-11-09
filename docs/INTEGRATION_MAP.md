@@ -31,7 +31,7 @@ Write down the answers before you build. Put them in the PR description or the f
 |---|---|---|---|---|
 | Aspiration | Envision → Aspirations | `aspirations`, `aspiration_updates` | Intentions, Bucket List, Muse Marks, Lists, Agenda, Insights, Stream, Almanac, Future Log | id; Intentions and Future Log keep a name snapshot |
 | Bucket List dream | Envision → Bucket List | `bucket_lists`, `bucket_entries` | Intentions, Insights, Future Log | id; Intentions and Future Log keep a name snapshot |
-| Vision Board | Envision → Vision Boards (planned) | none yet | Intentions, Aspirations (future) | id (future) |
+| Vision Board | Envision → Vision Boards (#118) | `vision_boards` (+ its private image files) | Intentions (“Vision board” section) | id + name snapshot. A board element may point at one Aspiration or Bucket List dream by id + name snapshot; nothing is copied or created |
 | Task | Planner → Tasks | `tasks` (+ `task_occurrences`) | Daily Edit priorities, Aspirations, Lists, Intentions, Future Log | id; an Intention priority stores the `taskId` it made; Future Log references the series id |
 | Muse event | Planner → Agenda | `planner_events` | Intentions (Looking forward to), Daily Edit, Future Log | id + occurrence date snapshot; Future Log references the series id |
 | Google event | Google Calendar (Muse keeps a cache) | `google_events` | Agenda, Daily Edit | shown, never copied into Muse; editable through Google when editing is allowed (#112) |
@@ -60,7 +60,7 @@ Write down the answers before you build. Put them in the PR description or the f
 | Intentions → Aspirations, Rituals, Bucket List, Agenda events (choose and reference) | Working |
 | Intention priority → Task (explicit, once) | Working |
 | Intentions ↔ Reflections links for the same period | Working (week, month, year) |
-| Intentions → Vision Board preview | Planned: add a `vision-board` section type that references a board id once Vision Boards exists |
+| Intentions → Vision Board preview | Working (#118): optional `boards` section, up to 3 board references with a live preview |
 | Daily Edit showing the week's or month's intention | Future idea: read the page; never copy it into daily records |
 | Insights over Intentions | Not planned yet |
 
@@ -73,3 +73,14 @@ Write down the answers before you build. Put them in the PR description or the f
 | Future Log no longer shows events (Muse or Google) automatically | Working |
 | Google events in the Future Log | Depends on Google Phase 3 (stable links). See GOOGLE_CALENDAR_PLAN |
 | Google two-way editing and background sync | Built on the feature branch; needs the Google scope, a secret and the migration (GOOGLE_CALENDAR_PLAN, Phase 3) |
+
+## Integration status (#118)
+
+| Integration | Status |
+|---|---|
+| Board element → Aspiration or Bucket List dream (optional reference, name snapshot, “now …” / “no longer there”) | Working |
+| Intentions “Vision board” section (reference + live preview, links to the board) | Working |
+| Board with a period → that period’s Intentions (link) | Working |
+| Aspirations / Bucket List showing the boards that reference them | Future |
+| Reflections looking back at a period’s board | Future |
+| Background removal | Option A (Apple Photos cutout + Paste, guided on iPhone/iPad). Integrated button: future, needs approval |

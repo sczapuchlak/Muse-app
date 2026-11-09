@@ -14,6 +14,9 @@ import { usePlanner } from "../../PlannerStore";
 import { useRitualView } from "../../rituals/ConnectedRituals";
 import { useAspirations } from "../../envision/aspirations/useAspirations";
 import { useBucketList } from "../../envision/bucket/useBucketList";
+import { useVisionBoards } from "../../envision/vision/useVisionBoards";
+import { LazyPreview } from "../../envision/vision/BoardThumb";
+import { periodLabel } from "@/lib/vision-boards/model";
 import { MuseChoiceMenu } from "../../MuseChoiceMenu";
 import { MuseIcon } from "../../MuseIcon";
 import { MuseStar } from "../../MuseStar";
@@ -140,12 +143,14 @@ function useLookups(range: IntentionRange, today: string) {
   const { state: rituals } = useRitualView();
   const asp = useAspirations();
   const bucket = useBucketList(today);
+  const vision = useVisionBoards();
   const events = useMemo(() => projectEvents(planner.events, planner.eventExceptions, range.start, range.end).filter((e) => e.status !== "canceled"), [planner.events, planner.eventExceptions, range.start, range.end]);
   return {
     aspirations: asp.aspirations.filter((a) => a.status !== "archived"), aspirationsLoaded: asp.status.loaded,
     aspiration: (id: string) => asp.aspirations.find((a) => a.id === id),
     rituals: rituals.rituals.filter((r) => r.status !== "archived"), ritual: (id: string) => rituals.rituals.find((r) => r.id === id),
     dreams: bucket.entries.filter((e) => !e.archivedAt), dreamsLoaded: bucket.status.loaded, dream: (id: string) => bucket.entries.find((e) => e.id === id),
+    boards: vision.boards, boardsLoaded: vision.status.loaded, board: (id: string) => vision.boards.find((b) => b.id === id),
     tasks: planner.tasks, task: (id: string) => planner.tasks.find((t) => t.id === id),
     events, event: (id: string) => planner.events.find((e) => e.id === id),
     workspaces: planner.workspaces, dispatch, canEdit,
@@ -155,10 +160,11 @@ function liveLabel(r: Ref, L: Lookups): { label: string } | undefined {
   if (r.kind === "aspiration") { const a = L.aspiration(r.id); return a && { label: a.title }; }
   if (r.kind === "ritual") { const x = L.ritual(r.id); return x && { label: x.name }; }
   if (r.kind === "bucket") { const d = L.dream(r.id); return d && { label: d.title }; }
+  if (r.kind === "board") { const b = L.board(r.id); return b && { label: b.title }; }
   if (r.kind === "task") { const t = L.task(r.id); return t && { label: t.title }; }
   const e = L.event(r.id); return e && { label: e.title };
 }
-const refHref = (r: Ref, range: IntentionRange) => r.kind === "aspiration" ? `/envision?open=${r.id}` : r.kind === "bucket" ? "/envision?view=bucket" : r.kind === "ritual" ? "/rituals"
+const refHref = (r: Ref, range: IntentionRange) => r.kind === "aspiration" ? `/envision?open=${r.id}` : r.kind === "bucket" ? "/envision?view=bucket" : r.kind === "board" ? `/envision?view=vision-boards&board=${r.id}` : r.kind === "ritual" ? "/rituals"
   : r.kind === "event" ? `/planner?view=agenda&date=${r.date ?? range.start}` : "/planner";
 const shortDate = (d: string) => new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", timeZone: "UTC" }).format(new Date(`${d}T12:00:00Z`));
 
@@ -263,7 +269,7 @@ function TextList({ section: s, onChange }: BodyProps) {
 
 function RefChip({ r, L, range }: { r: Ref; L: Lookups; range: IntentionRange }) {
   const st = refStatus(r, liveLabel(r, L));
-  const kind = r.kind === "aspiration" ? "Aspiration" : r.kind === "task" ? "Task" : r.kind === "event" ? "Event" : r.kind === "ritual" ? "Ritual" : "Dream";
+  const kind = r.kind === "aspiration" ? "Aspiration" : r.kind === "task" ? "Task" : r.kind === "event" ? "Event" : r.kind === "ritual" ? "Ritual" : r.kind === "board" ? "Vision board" : "Dream";
   return <span className="muse-intentions-ref" data-kind={r.kind} data-missing={st.missing || undefined}>
     <span className="muse-sr-only">{kind}: </span>{st.missing ? <span>{st.label}</span> : <Link href={refHref(r, range)}>{st.label}</Link>}
     {r.date && <small>{shortDate(r.date)}</small>}{st.note && <small>{st.note}</small>}
@@ -336,17 +342,18 @@ function Forward({ section: s, range, L, onChange }: BodyProps) {
 /** Aspirations, Rituals or Bucket List dreams chosen for this period: references with a small live summary. */
 function Linked({ section: s, range, L, onChange }: BodyProps) {
   const c = s.content as SectionContent["aspirations"], set = (items: LinkItem[], delay?: number) => onChange({ items }, delay);
-  const kind = s.type === "aspirations" ? "aspiration" : s.type === "rituals" ? "ritual" : "bucket";
+  const kind = s.type === "aspirations" ? "aspiration" : s.type === "rituals" ? "ritual" : s.type === "boards" ? "board" : "bucket";
   const taken = chosenIds(s as IntentionSection<"aspirations">);
-  const pool = kind === "aspiration" ? L.aspirations.map((a) => ({ id: a.id, label: a.title })) : kind === "ritual" ? L.rituals.map((r) => ({ id: r.id, label: r.name })) : L.dreams.map((d) => ({ id: d.id, label: d.title }));
+  const pool = kind === "aspiration" ? L.aspirations.map((a) => ({ id: a.id, label: a.title })) : kind === "ritual" ? L.rituals.map((r) => ({ id: r.id, label: r.name })) : kind === "board" ? L.boards.map((b) => ({ id: b.id, label: b.title })) : L.dreams.map((d) => ({ id: d.id, label: d.title }));
   const options = pool.filter((o) => !taken.has(o.id));
-  const noun = kind === "aspiration" ? "aspiration" : kind === "ritual" ? "ritual" : "dream";
+  const noun = kind === "aspiration" ? "aspiration" : kind === "ritual" ? "ritual" : kind === "board" ? "board" : "dream";
   const article = kind === "aspiration" ? "an" : "a";
-  const home = kind === "aspiration" ? { href: "/envision", label: "Aspirations in Envision" } : kind === "ritual" ? { href: "/rituals", label: "Rituals" } : { href: "/envision?view=bucket", label: "your Bucket List" };
+  const home = kind === "aspiration" ? { href: "/envision", label: "Aspirations in Envision" } : kind === "ritual" ? { href: "/rituals", label: "Rituals" } : kind === "board" ? { href: "/envision?view=vision-boards", label: "Vision Boards in Envision" } : { href: "/envision?view=bucket", label: "your Bucket List" };
   function summary(id: string): string | undefined {
     if (kind === "aspiration") { const a = L.aspiration(id); if (!a) return; const done = a.milestones.filter((m) => !!m.completedOn).length;
       return [a.status === "completed" ? "Completed" : a.status === "paused" ? "Paused" : undefined, a.milestones.length ? `${done} of ${a.milestones.length} milestones` : undefined, a.targetDate ? `target ${shortDate(a.targetDate)}` : undefined].filter(Boolean).join(" · ") || undefined; }
     if (kind === "ritual") { const r = L.ritual(id); return r ? rhythmLabel(r) : undefined; }
+    if (kind === "board") { const b = L.board(id); return b ? [periodLabel(b.period, b.periodStart), `${b.elements.length} ${b.elements.length === 1 ? "piece" : "pieces"}`].filter(Boolean).join(" · ") : undefined; }
     const d = L.dream(id); if (!d) return;
     return d.status === "completed" ? `Done${d.completedOn ? ` ${d.completedOn.slice(0, 4)}` : ""}` : [d.status === "planned" ? "Planned" : d.status === "in_progress" ? "In progress" : "Dreaming", d.targetYear ? `for ${d.targetYear}` : undefined].filter(Boolean).join(" · ");
   }
@@ -354,7 +361,8 @@ function Linked({ section: s, range, L, onChange }: BodyProps) {
     {c.items.length > 0 && <ul>{c.items.map((it) => { const info = summary(it.ref.id);
       return <li key={it.id}>
         <div className="muse-intentions-linked-head"><RefChip r={it.ref} L={L} range={range} />{info && <small className="muse-reflections-quiet">{info}</small>}<Remove label={`Remove ${it.ref.label}`} onClick={() => set(c.items.filter((x) => x.id !== it.id), 0)} /></div>
-        <input className="muse-intentions-line" aria-label={`Note about ${it.ref.label}`} maxLength={300} value={it.note} placeholder={kind === "ritual" ? "Why it matters this time…" : "This period, I’ll…"} onChange={(e) => set(c.items.map((x) => x.id === it.id ? { ...x, note: e.target.value } : x))} />
+        {kind === "board" && (() => { const board = L.board(it.ref.id); return board ? <Link href={refHref(it.ref, range)} className="muse-intentions-board" aria-label={`Open the board ${board.title}`}><LazyPreview board={board} /></Link> : null; })()}
+        <input className="muse-intentions-line" aria-label={`Note about ${it.ref.label}`} maxLength={300} value={it.note} placeholder={kind === "ritual" ? "Why it matters this time…" : kind === "board" ? "What this board means for this period…" : "This period, I’ll…"} onChange={(e) => set(c.items.map((x) => x.id === it.id ? { ...x, note: e.target.value } : x))} />
       </li>; })}</ul>}
     {canAddItem(s.type, c.items.length) && (options.length > 0
       ? <MuseChoiceMenu label={`Choose ${article} ${noun}`} valueLabel={`＋ Choose ${article} ${noun}`} variant="chip" searchable options={options} selectedIds={[]} onSelect={(id) => { const o = options.find((x) => x.id === id); if (o) set([...c.items, { id: uid(), ref: { kind, id, label: o.label }, note: "" }], 0); }} />
