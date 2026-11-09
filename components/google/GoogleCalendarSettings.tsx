@@ -58,10 +58,13 @@ export function GoogleCalendarSettings() {
           <div><h3>{c.email || "Google account"}</h3>
             <p className="small-label" role={st.tone === "warning" ? "alert" : undefined} data-tone={st.tone}>{st.text}{st.tone === "ok" && c.last_synced_at ? ` ${ago(c.last_synced_at, now)}` : ""}</p></div>
           {c.status === "needs-reconnect" ? <a className="muse-button" href="/api/google/connect">Reconnect Google Calendar</a>
-            : <button type="button" className="muse-button button-ghost" disabled={s.syncing} onClick={() => void syncGoogle(true)}>{s.syncing ? "Syncing…" : "Refresh now"}</button>}
+            : <button type="button" className="muse-button muse-google-refresh" disabled={s.syncing} onClick={() => void syncGoogle(true)}>{s.syncing ? "Syncing…" : "Refresh now"}</button>}
         </div>
         <dl className="muse-google-facts">
-          <div><dt>Muse can</dt><dd>{editing ? "See and edit events" : "See events"}{!editing && c.status !== "needs-reconnect" && <> · <a href={allowEditingHref("/settings")}>Allow editing</a></>}</dd></div>
+          <div><dt>Access</dt><dd className="muse-google-access">
+            <span className="muse-tone-pill muse-google-access-status" data-access={editing ? "edit" : "view"}>{editing ? "View & edit enabled" : "View only"}</span>
+            {!editing && c.status !== "needs-reconnect" && <a className="muse-button muse-google-allow" href={allowEditingHref("/settings")}>Allow editing</a>}
+          </dd></div>
           <div><dt>Stays up to date</dt><dd>{c.last_background_sync_at && now - Date.parse(c.last_background_sync_at) < 3 * 3600_000 ? `In the background about every 30 minutes, even when Muse is closed (last ${ago(c.last_background_sync_at, now)}).` : "When you open Planner or Daily Edit. Background checks aren’t running on this Muse server yet."} Refresh now checks right away.</dd></div>
           {c.status === "needs-reconnect" && <div><dt>Needs you</dt><dd>Google stopped accepting Muse’s access (it was removed, your password changed, or a test connection reached Google’s 7-day limit). Reconnect to pick up where it left off; nothing in Muse is lost.</dd></div>}
         </dl>
