@@ -294,19 +294,17 @@
   --frosted-tone-sidebar: rgba(7,13,38,0.98);
   --tone-sidebar-edge: rgba(183,156,255,0.26);
   --tone-card-border: linear-gradient(135deg,#ff6fb5,#ffb36b 22%,#b79cff 45%,#3fd6f0 70%,#4f7dff);
-  --atmosphere-bloom-layers: radial-gradient(ellipse 6% 4svh at 33% 3svh,rgba(255,236,120,.58) 0,transparent 74%),
- radial-gradient(ellipse 7% 4svh at 28% 5svh,rgba(80,200,255,.58) 0,transparent 74%),
- radial-gradient(ellipse 16% 8svh at 31% 4svh,rgba(255,120,170,.58) 0,rgba(150,120,255,.28) 50%,transparent 78%),
- radial-gradient(ellipse 5% 4svh at 63% 7svh,rgba(255,236,120,.5) 0,transparent 74%),
- radial-gradient(ellipse 6% 4svh at 67% 10svh,rgba(90,240,170,.46) 0,transparent 74%),
- radial-gradient(ellipse 15% 9svh at 64% 9svh,rgba(255,150,200,.52) 0,rgba(130,140,255,.26) 50%,transparent 78%),
- radial-gradient(ellipse 12% 3svh at 64% 13svh,rgba(255,140,120,.44) 0,transparent 78%),
- radial-gradient(ellipse 6% 5svh at 97% 19svh,rgba(90,240,170,.58) 0,transparent 74%),
- radial-gradient(ellipse 14% 9svh at 96% 22svh,rgba(255,150,90,.58) 0,rgba(255,111,181,.34) 40%,transparent 78%),
- radial-gradient(ellipse 8% 5svh at 92% 25svh,rgba(120,170,255,.52) 0,transparent 76%),
+  --atmosphere-bloom-layers: radial-gradient(ellipse 30% 26svh at 0% 0svh,rgba(60,90,230,.5) 0,transparent 76%),
+ radial-gradient(ellipse 28% 26svh at 100% 0svh,rgba(110,80,230,.48) 0,transparent 76%),
+ radial-gradient(ellipse 24% 44svh at 22% 20svh,rgba(63,214,240,.46) 0,rgba(90,240,190,.18) 46%,transparent 78%),
+ radial-gradient(ellipse 10% 34svh at 34% 10svh,rgba(140,240,255,.24) 0,transparent 78%),
+ radial-gradient(ellipse 28% 46svh at 76% 18svh,rgba(255,111,181,.48) 0,rgba(183,156,255,.34) 44%,transparent 78%),
+ radial-gradient(ellipse 10% 30svh at 88% 26svh,rgba(183,156,255,.34) 0,transparent 78%),
+ radial-gradient(ellipse 12% 34svh at 50% 6svh,rgba(5,10,30,.55) 0,transparent 80%),
+ radial-gradient(ellipse 30% 20svh at 52% 44svh,rgba(255,150,120,.38) 0,rgba(255,111,181,.2) 50%,transparent 78%),
  radial-gradient(ellipse 30% 22svh at 8% 72svh,rgba(230,90,110,.44) 0,rgba(120,60,150,.22) 50%,transparent 78%),
  radial-gradient(ellipse 30% 22svh at 94% 74svh,rgba(200,90,140,.4) 0,transparent 78%),
- linear-gradient(180deg,#0c1b40 0,#0a1636 40%,#08122e 70%,#070f28 100%);
+ linear-gradient(180deg,#0e1d48 0,#0b1840 30%,#09133a 60%,#070f28 100%);
   --atmosphere-pool-layers: radial-gradient(ellipse 40% 13% at -4% 18%,rgba(255,111,181,0.3) 0,transparent 82%),
  radial-gradient(ellipse 40% 13% at 104% 28%,rgba(63,214,240,0.3) 0,transparent 82%),
  radial-gradient(ellipse 44% 13% at 40% 38%,rgba(255,179,107,0.3) 0,transparent 82%),
@@ -2265,14 +2263,17 @@
   --frosted-tone-sidebar: rgba(3,8,24,0.98);
   --tone-sidebar-edge: rgba(138,92,255,0.26);
   --tone-card-border: linear-gradient(135deg,#2fe37a,#00e6c3 24%,#3fd8ff 48%,#8a5cff 74%,#ff4fd0);
-  --atmosphere-bloom-layers: radial-gradient(ellipse 40% 30svh at 0% 0svh,rgba(40,60,235,.66) 0,transparent 76%),
- radial-gradient(ellipse 34% 28svh at 100% 0svh,rgba(70,50,230,.62) 0,transparent 76%),
- radial-gradient(ellipse 22% 42svh at 18% 22svh,rgba(60,235,170,.74) 0,rgba(40,180,200,.3) 45%,transparent 78%),
- radial-gradient(ellipse 10% 30svh at 34% 10svh,rgba(80,255,200,.36) 0,transparent 78%),
- radial-gradient(ellipse 26% 44svh at 76% 18svh,rgba(170,70,255,.76) 0,rgba(110,40,220,.32) 45%,transparent 78%),
- radial-gradient(ellipse 10% 26svh at 90% 30svh,rgba(80,255,200,.3) 0,transparent 78%),
- radial-gradient(ellipse 24% 22svh at 50% 46svh,rgba(255,100,210,.58) 0,rgba(200,80,255,.3) 45%,transparent 76%),
- radial-gradient(ellipse 60% 10svh at 40% 62svh,rgba(170,230,80,.46) 0,rgba(60,220,160,.22) 50%,transparent 80%),
+  --atmosphere-bloom-layers: radial-gradient(ellipse 34% 30svh at 0% 0svh,rgba(40,60,235,.62) 0,transparent 76%),
+ radial-gradient(ellipse 32% 28svh at 100% 0svh,rgba(70,50,230,.58) 0,transparent 76%),
+ radial-gradient(ellipse 22% 44svh at 18% 22svh,rgba(60,235,170,.66) 0,rgba(40,180,200,.28) 46%,transparent 78%),
+ radial-gradient(ellipse 9% 36svh at 30% 12svh,rgba(90,255,210,.38) 0,transparent 78%),
+ radial-gradient(ellipse 8% 30svh at 8% 30svh,rgba(60,235,170,.3) 0,transparent 78%),
+ radial-gradient(ellipse 26% 46svh at 76% 18svh,rgba(170,70,255,.7) 0,rgba(110,40,220,.3) 46%,transparent 78%),
+ radial-gradient(ellipse 9% 34svh at 63% 14svh,rgba(200,120,255,.38) 0,transparent 78%),
+ radial-gradient(ellipse 10% 26svh at 92% 30svh,rgba(80,255,200,.28) 0,transparent 78%),
+ radial-gradient(ellipse 10% 34svh at 47% 8svh,rgba(3,6,20,.55) 0,transparent 80%),
+ radial-gradient(ellipse 26% 24svh at 50% 46svh,rgba(255,100,210,.56) 0,rgba(200,80,255,.28) 46%,transparent 78%),
+ radial-gradient(ellipse 70% 16svh at 42% 64svh,rgba(170,230,80,.36) 0,rgba(60,220,160,.18) 50%,transparent 82%),
  linear-gradient(180deg,#0b1450 0,#0a0f3a 30%,#120a3a 55%,#050a22 80%,#020406 100%);
   --atmosphere-pool-layers: radial-gradient(ellipse 40% 13% at -4% 18%,rgba(47,227,122,0.32) 0,transparent 82%),
  radial-gradient(ellipse 40% 13% at 104% 28%,rgba(138,92,255,0.32) 0,transparent 82%),
@@ -2283,8 +2284,9 @@
  radial-gradient(ellipse 40% 13% at -4% 82%,rgba(138,92,255,0.32) 0,transparent 82%),
  radial-gradient(ellipse 40% 13% at 104% 90%,rgba(0,230,195,0.32) 0,transparent 82%),
  radial-gradient(ellipse 44% 13% at 30% 99%,rgba(255,79,208,0.32) 0,transparent 82%),
- radial-gradient(ellipse 90% 22% at 70% 72%,transparent 60%,rgba(0,230,195,.3) 70%,rgba(63,216,255,.12) 76%,transparent 84%),
- radial-gradient(ellipse 80% 20% at 20% 58%,transparent 62%,rgba(138,92,255,.3) 72%,transparent 84%),
+ radial-gradient(ellipse 22% 18% at 14% 58%,rgba(60,235,170,.32) 0,rgba(40,180,200,.12) 50%,transparent 80%),
+ radial-gradient(ellipse 24% 18% at 86% 70%,rgba(170,70,255,.34) 0,transparent 80%),
+ radial-gradient(ellipse 30% 12% at 50% 84%,rgba(255,100,210,.24) 0,transparent 82%),
  radial-gradient(ellipse 120% 10% at 50% 102%,rgba(2,6,4,.92) 0,transparent 86%);
   --atmosphere-haze-layers: radial-gradient(ellipse 15% 3% at 9% 24%,rgba(47,227,122,.3) 0,transparent 90%),
  radial-gradient(ellipse 18% 4% at 88% 50%,rgba(138,92,255,.28) 0,transparent 90%),
