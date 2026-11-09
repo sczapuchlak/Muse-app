@@ -91,9 +91,11 @@ export function BucketList({today}:{today:string}){
     <button type="button" className="muse-button muse-bucket-settings" aria-label="List settings and year colors" onClick={()=>setModal({kind:'settings'})}><MuseIcon name="settings" size={16}/></button>
    </div>
    <div className="muse-bucket-tools">
-    <label className="muse-bucket-search"><MuseIcon name="search" size={16}/><input type="search" aria-label="Search your bucket list" placeholder="Search dreams, #tags, places…" value={filter.query} onChange={e=>setFilter(f=>({...f,query:e.target.value}))}/></label>
-    <button type="button" className="muse-button button-primary" onClick={()=>setModal({kind:'edit',entry:blankEntry(nextNumber(entries),nextPosition(entries))})}><MuseIcon name="plus" size={14}/> Add dream</button>
-    <div className="muse-bucket-filters">
+    <div className="muse-search-row muse-bucket-search-row">
+     <label className="muse-bucket-search"><MuseIcon name="search" size={16}/><input type="search" aria-label="Search your bucket list" placeholder="Search dreams, #tags, places…" value={filter.query} onChange={e=>setFilter(f=>({...f,query:e.target.value}))}/></label>
+     <button type="button" className="muse-button button-primary muse-search-add" onClick={()=>setModal({kind:'edit',entry:blankEntry(nextNumber(entries),nextPosition(entries))})}><MuseIcon name="plus" size={14}/><span className="muse-search-add-label">Add dream</span></button>
+    </div>
+    <div className="muse-bucket-filters muse-control-row">
      <button ref={filtersRef} type="button" className="muse-button" aria-expanded={filtersOpen} onClick={()=>setFiltersOpen(o=>!o)}><MuseIcon name="filter" size={14}/> Filters{filters?` · ${filters}`:''}</button>
      <MuseChoiceMenu label="Sort" valueLabel={bucketSorts.find(s=>s.id===prefs.sort)!.label} options={bucketSorts.map(s=>({id:s.id,label:s.label}))} selectedIds={[prefs.sort]} onSelect={id=>changePrefs({sort:id as BucketSort})}/>
      <MuseChoiceMenu label="View" valueLabel={views.find(v=>v.id===prefs.view)!.label} options={views} selectedIds={[prefs.view]} onSelect={id=>changePrefs({view:id as View})}/>

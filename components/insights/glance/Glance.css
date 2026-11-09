@@ -375,3 +375,12 @@
 .muse-glance-year-grid>div>*{flex:1 1 auto;min-width:0;margin:0}
 @media (max-width:1100px){.muse-glance-year-grid{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-areas:"feel emoji" "move water" "prio read"}}
 @media (max-width:700px){.muse-glance-year-grid{grid-template-columns:minmax(0,1fr);grid-template-areas:"feel" "emoji" "move" "water" "prio" "read"}}
+
+/* #101 Phones: Overall Day keeps its ring beside Energy and Stress (stacking left the ring alone above an empty half),
+   with slightly tighter tiles. Values and calculations are unchanged. */
+@container muse-content (max-width:640px){
+  .muse-glance-rating{grid-template-columns:auto minmax(0,1fr);gap:12px}
+  .muse-glance-rating .muse-glance-ring[data-size=lg]{--size:84px}
+  .muse-glance-pair div{padding:7px 10px}
+  .muse-glance-pair dd{font-size:1rem}
+}

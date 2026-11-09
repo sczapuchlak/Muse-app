@@ -246,6 +246,9 @@ select option { background: var(--background); color: var(--foreground); }
    The list is one anchored sheet with an accent spine, a header band and dense divided rows; days stay glass cards
    holding task cards. Both use the shared planning tokens, so every theme and material keeps the hierarchy. */
 .muse-planner-layout { grid-template-columns: minmax(280px, 320px) minmax(0, 1fr); }
+/* #101 The rail is hidden on narrow screens; the rule above came later than the narrow override and kept a 320px track,
+   so the focused day stopped short of the right edge. The board takes the full width again. */
+@container muse-content (max-width: 820px) { .muse-planner-layout { grid-template-columns: minmax(0, 1fr); } }
 .muse-task-list { position: relative; padding: 0; gap: 0; }
 .muse-task-list::before { content: ""; position: absolute; inset: 14px auto 14px 0; width: 3px; border-radius: 0 3px 3px 0; background: var(--muse-edge-gradient, var(--accent-primary)); pointer-events: none; }
 .muse-task-list-head { display: grid; gap: var(--space-2); padding: var(--space-4) var(--space-4) var(--space-3) calc(var(--space-4) + 3px); border-bottom: 1px solid var(--divider); background: color-mix(in srgb, var(--planning-control-background) 55%, transparent); }
@@ -315,7 +318,14 @@ select option { background: var(--background); color: var(--foreground); }
 .muse-planner-sheet-body .muse-task-list, :root[data-material] .muse-planner-sheet-body .muse-task-list { border: 0; background: transparent; background-image: none; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none;  }
 /* The sheet already says "Task List"; keep the heading for screen readers and show just the count. */
 .muse-planner-sheet-body .muse-task-list-title h2 { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-.muse-planner-sheet-body .muse-task-list-title { justify-content: flex-end; margin-bottom: -4px; }
+.muse-planner-sheet-body .muse-task-list-title { justify-content: flex-start; margin-bottom: -4px; }
+/* #101 The count is how many tasks the current scope/filters show. In the sheet the "Task List" heading lives in the
+   drawer title, so the count reads as words ("3 shown") instead of a lone floating badge. */
+.muse-task-list-count-word { display: none; }
+.muse-planner-sheet-body .muse-task-list-count { min-width: 0; padding: 0; border: 0; background: none; color: var(--text-muted); font-size: .78rem; text-align: left; }
+.muse-planner-sheet-body .muse-task-list-count-word { display: inline; }
+/* The sheet is the container here, so the rail's theme ring would draw a second frame that the flush controls touch. */
+.muse-planner-sheet-body .muse-planning-rail:not(#\#)::after { content: none; }
 .muse-planner-sheet-body .muse-task-list::before { display: none; }
 .muse-planner-sheet-body .muse-task-list-head { padding-inline: 0; background: transparent; }
 .muse-planner-sheet-body :is(.muse-list-row, .muse-task-list-group h3) { padding-left: var(--space-3); }

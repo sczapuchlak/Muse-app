@@ -106,3 +106,46 @@
 .muse-check-row input[type=checkbox]{flex:none;width:18px;height:18px;min-height:0;margin:2px 0 0;accent-color:var(--accent-primary)}
 .muse-check-row small{display:block}
 .muse-check-group{display:grid;gap:8px}
+
+/* ---------- Issue 101: shared mobile patterns ----------
+   Breakpoints: phones ≤640px of content width (container `muse-content`), compact tablet ≤820px. Components whose content
+   needs a different threshold keep their own; new mobile rules use these two.
+
+   Search + Add: the search takes the remaining width; on phones the Add action becomes a square icon button beside it.
+   Its visible label moves offscreen and stays the accessible name. */
+.muse-search-row{display:flex;align-items:stretch;gap:var(--space-2);min-width:0}
+:where(.muse-search-row>:first-child){flex:1 1 auto;min-width:0}
+.muse-search-row>.muse-search-add{flex:none;display:inline-flex;align-items:center;justify-content:center;gap:6px;white-space:nowrap;height:auto}
+@container muse-content (max-width:640px){
+  :where(.muse-search-row){flex:1 1 auto;width:100%;box-sizing:border-box}
+  .muse-search-row>.muse-search-add{width:var(--touch-target,44px);min-width:var(--touch-target,44px);min-height:var(--touch-target,44px);padding:0}
+  .muse-search-add-label{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+}
+/* Balanced control row: on phones the controls share the row edge to edge at one height, instead of wrapping unevenly. */
+@container muse-content (max-width:640px){
+  .muse-control-row{display:flex;flex-wrap:nowrap;gap:var(--space-2);width:100%;min-width:0}
+  .muse-control-row>*{flex:1 1 auto;min-width:0}
+  .muse-control-row :is(.muse-button,.muse-choice-trigger){width:100%;min-width:0;min-height:var(--touch-target,44px);justify-content:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+}
+/* Scrolling chip rows: one line that scrolls sideways, with a soft fade at the end so it reads as "more this way".
+   The end padding lets the last chip scroll fully clear of the fade; the block padding keeps selected rings unclipped. */
+@container muse-content (max-width:640px){
+  :is(.muse-chip-row,.muse-segmented)[data-scroll]{flex-wrap:nowrap;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;padding:3px 28px 3px 3px;margin:-3px -3px -3px -3px;
+    -webkit-mask-image:linear-gradient(to right,black calc(100% - 28px),transparent);mask-image:linear-gradient(to right,black calc(100% - 28px),transparent)}
+  :is(.muse-chip-row,.muse-segmented)[data-scroll]::-webkit-scrollbar{display:none}
+  :is(.muse-chip-row,.muse-segmented)[data-scroll]>*{flex:none}
+}
+/* Phone-only / wide-only twins, for when a phone row needs an action the desktop places elsewhere (e.g. Add in a
+   section header). Exactly one of the pair is ever displayed, so there is never a duplicate visible control. */
+.muse-phone-only:not(#\#){display:none}
+@container muse-content (max-width:640px){.muse-wide-only:not(#\#){display:none}.muse-phone-only:not(#\#){display:inline-flex}}
+/* The same end fade for wrappers that already scroll their own row (e.g. Mindspace's tag filters). */
+@container muse-content (max-width:640px){
+  .muse-scroll-fade{overscroll-behavior-x:contain;scrollbar-width:none;padding-right:28px;-webkit-mask-image:linear-gradient(to right,black calc(100% - 28px),transparent);mask-image:linear-gradient(to right,black calc(100% - 28px),transparent)}
+  .muse-scroll-fade::-webkit-scrollbar{display:none}
+}
+/* Compact phone density (Appearance → Phone layout; per device, default Comfortable). Only spacing tokens change, so
+   every module tightens together; control heights and touch targets are unchanged. Desktop never reads this. */
+@container muse-content (max-width:640px){
+  :root[data-mobile-density=compact] .muse-page{--page-padding:12px;--card-padding:14px;--grid-gap:10px;--card-heading-gap:var(--space-3);--module-section-gap:16px;--module-nav-gap:10px;--module-toolbar-gap:10px;--module-week-gap:10px;--header-copy-gap:6px}
+}

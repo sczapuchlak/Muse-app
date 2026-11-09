@@ -38,6 +38,8 @@
 .muse-bucket-search input:focus{outline:0}
 .muse-bucket-search:focus-within{outline:2px solid var(--focus-ring);outline-offset:2px}
 .muse-bucket-filters{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-2);margin-left:auto}
+@container muse-content (min-width:641px){.muse-bucket-search-row{flex:0 1 auto}.muse-bucket-search-row>.muse-bucket-search{flex:0 1 320px}}
+@container muse-content (max-width:640px){.muse-bucket-search-row>.muse-bucket-search{flex:1 1 auto}.muse-bucket-tools :is(.muse-button,.muse-choice-trigger){height:var(--touch-target,44px);min-height:var(--touch-target,44px)}.muse-bucket-search input{height:42px}}
 .muse-bucket-filterpanel{display:grid;gap:8px;padding:4px}
 .muse-bucket-filterpanel .editor-label{margin:4px 0 0}
 .muse-bucket-inline{display:flex!important;align-items:center;gap:8px;font-size:.88rem}
@@ -181,7 +183,7 @@
 @media (hover:none){.muse-bucket-handle,.muse-bucket-hint{display:none}}
 @media (max-width:720px){
  .muse-bucket{padding:var(--space-3)}
- .muse-bucket-search{flex:1 1 100%}
+ .muse-bucket-search{flex:1 1 auto}
  .muse-bucket-filters{margin-left:0}
  .muse-bucket-settings{margin-left:0}
 }

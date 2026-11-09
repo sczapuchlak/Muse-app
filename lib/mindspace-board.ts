@@ -12,15 +12,17 @@ type Client=ReturnType<typeof createMuseBrowserClient>;
 export const cardSizes=[{id:'standard',label:'Standard'},{id:'wide',label:'Wide'},{id:'tall',label:'Tall'},{id:'large',label:'Large'}] as const;
 export type CardSize=typeof cardSizes[number]['id'];
 export type BoardSettings={showDates:boolean;compactText:boolean};
-export type BoardLayout={order:string[];sizes:Record<string,CardSize>;tagPaints:Record<string,Paint>;settings:BoardSettings};
+/** `phoneWide` (#101): cards shown full width in the phone's two-column board. Phone-only; desktop sizes are separate. */
+export type BoardLayout={order:string[];sizes:Record<string,CardSize>;phoneWide:string[];tagPaints:Record<string,Paint>;settings:BoardSettings};
 export const defaultBoardSettings:BoardSettings={showDates:true,compactText:false};
-export const emptyBoardLayout=():BoardLayout=>({order:[],sizes:{},tagPaints:{},settings:{...defaultBoardSettings}});
+export const emptyBoardLayout=():BoardLayout=>({order:[],sizes:{},phoneWide:[],tagPaints:{},settings:{...defaultBoardSettings}});
 const idOk=(v:unknown):v is string=>typeof v==='string'&&/^[0-9a-f-]{8,64}$/i.test(v);
 
 export function parseBoardLayout(value:unknown):BoardLayout{
  const v=value&&typeof value==='object'?value as Record<string,unknown>:{},out=emptyBoardLayout();
  if(Array.isArray(v.order))out.order=[...new Set(v.order.filter(idOk))].slice(0,1000);
  if(v.sizes&&typeof v.sizes==='object')for(const [id,size] of Object.entries(v.sizes as Record<string,unknown>))if(idOk(id)&&cardSizes.some(s=>s.id===size)&&size!=='standard')out.sizes[id]=size as CardSize;
+ if(Array.isArray(v.phoneWide))out.phoneWide=[...new Set(v.phoneWide.filter(idOk))].slice(0,1000);
  if(v.tagPaints&&typeof v.tagPaints==='object')for(const [id,p] of Object.entries(v.tagPaints as Record<string,unknown>)){const paint=parsePaint(p);if(idOk(id)&&paint)out.tagPaints[id]=paint;}
  const s=v.settings&&typeof v.settings==='object'?v.settings as Record<string,unknown>:{};
  out.settings={showDates:typeof s.showDates==='boolean'?s.showDates:true,compactText:s.compactText===true};

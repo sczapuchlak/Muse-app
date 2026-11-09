@@ -698,3 +698,17 @@ Bucket List (Rituals, #84) follows the handwritten bullet-journal reference: an 
   - Priorities are numbered with gradient-ringed numerals.
   - References to other modules' records are rounded chips that link home. A dashed chip means the record is no longer there; a muted "now …" note means it was renamed.
 - **Personality by period:** week is tighter; month centres a large editorial theme; quarter adds a steady accent rule down each section; year sets the word of the year large in the theme gradient. They share one surface and token set and work in every theme and in Frosted.
+
+## Mobile patterns (#101)
+
+Shared, in `app/design-language.css`; use them instead of page-specific phone patches.
+
+- **Breakpoints:** phones are `@container muse-content (max-width:640px)`; compact tablet is 820px. Components whose content needs a different threshold may keep their own.
+- **`.muse-search-row`** wraps a search and its Add. On phones the search takes the remaining width and the Add (`.muse-search-add` with a `.muse-search-add-label`) becomes a square + whose label stays the accessible name.
+- **`.muse-control-row`:** phone controls share the row edge to edge at one height instead of wrapping unevenly.
+- **Two-row toolbars:** when a phone toolbar needs two rows, both share the same outer edges and the 44px control height (Planner/Agenda `[data-rows]`, Rituals). They never wrap at random.
+- **Scrolling chip rows:** `[data-scroll]` on `.muse-chip-row`/`.muse-segmented`, or `.muse-scroll-fade` on a wrapper that already scrolls. One line, an end fade, and end padding so the last chip clears the fade.
+- **`.muse-phone-only` / `.muse-wide-only`:** twins for an action that desktop places elsewhere. Exactly one is ever displayed.
+- **Safe areas:** the shell fades content before the floating nav. The top band backs the status bar wherever a top inset is reported.
+- **Light-card themes** (Midnight Ballerina, Pretty Toxic): any new component painted with the card surface joins the ink list in `app/surfaces.css`. Check new screens with a rendered contrast scan at phone width; phone popovers back onto the card surface in these themes.
+- **Profile** hero and showcases are cards (card surface + material), not subtle tints.

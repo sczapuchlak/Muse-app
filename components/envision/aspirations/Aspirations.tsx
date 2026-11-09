@@ -81,7 +81,7 @@ export function Aspirations(){
     {soon.recentMilestones.length>0&&<div><h3>Recently done</h3><ul>{soon.recentMilestones.slice(0,5).map(({aspiration,milestone})=><li key={milestone.id}><MuseStar size={10}/><span>{milestone.title}</span><small>{aspiration.title} · {dateLabel(milestone.completedOn!)}</small></li>)}</ul></div>}
    </div>}
    <div className="muse-aspirations-controls">
-    <div role="group" aria-label="Timeframe" className="muse-aspiration-filter">{filters.map(f=><button key={f.id} type="button" aria-pressed={view.filter===f.id} onClick={()=>changeView({filter:f.id})}>{f.label}</button>)}</div>
+    <div role="group" aria-label="Timeframe" className="muse-aspiration-filter muse-scroll-fade">{filters.map(f=><button key={f.id} type="button" aria-pressed={view.filter===f.id} onClick={()=>changeView({filter:f.id})}>{f.label}</button>)}</div>
     <div className="muse-aspiration-choice" data-inline><span>Group</span><MuseChoiceMenu label="Group" valueLabel={{none:'None',category:'Category',status:'Status'}[view.group]} selectedIds={[view.group]} options={[{id:'none',label:'None'},{id:'category',label:'Category'},{id:'status',label:'Status'}]} onSelect={id=>changeView({group:id as Group})}/></div>
     <div className="muse-aspiration-choice" data-inline><span>Sort</span><MuseChoiceMenu label="Sort" valueLabel={sortLabels[view.sort]} selectedIds={[view.sort]} options={(Object.keys(sortLabels) as SortKey[]).map(id=>({id,label:sortLabels[id]}))} onSelect={id=>changeView({sort:id as SortKey})}/></div>
    </div>

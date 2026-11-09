@@ -49,7 +49,22 @@
   .muse-bottom-link { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-1); min-height: 56px; padding: var(--space-1); color: var(--text-muted); background: transparent; border: 1px solid transparent; border-radius: var(--floating-radius); text-decoration: none; font-size: .65rem; }
   .muse-bottom-link[aria-current="page"], .muse-bottom-link[data-active="true"], .muse-bottom-link[aria-expanded="true"] { color: var(--navigation-text); border-color: var(--selected-border); background: var(--navigation-background); }
   .muse-bottom-glint { position: absolute; top: 4px; right: 18%; }
+  /* #101 Safe areas. A soft blur fades content out before it reaches the floating nav. The top band backs the status bar
+     wherever the browser reports a top inset (it is zero-height otherwise, so it never adds space). Both are translucent, so theme gradients still read through, and neither takes pointer events. */
+  .muse-global-bar { padding-top: calc(var(--space-4) + env(safe-area-inset-top)); }
+  .muse-app-main { padding-inline: env(safe-area-inset-left) env(safe-area-inset-right); }
+  .muse-app-shell::before, .muse-app-shell::after { content: ""; position: fixed; left: 0; right: 0; pointer-events: none; }
+  .muse-app-shell::before { top: 0; z-index: 45; height: env(safe-area-inset-top); background: color-mix(in srgb, var(--background) 78%, transparent); -webkit-backdrop-filter: blur(14px) saturate(140%); backdrop-filter: blur(14px) saturate(140%); }
+  .muse-app-shell::after { bottom: 0; z-index: 49; height: calc(56px + env(safe-area-inset-bottom)); background: linear-gradient(to bottom, transparent, color-mix(in srgb, var(--background) 62%, transparent)); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); -webkit-mask-image: linear-gradient(to bottom, transparent, black 70%); mask-image: linear-gradient(to bottom, transparent, black 70%); }
 }
+/* #101 The More menu on phones docks directly above the nav with CSS rather than measuring the More button: iOS can
+   report a stale position for fixed elements after the viewport changes, which left the menu floating far above the
+   nav. The panel scrolls inside itself when the list is taller than the space available. */
+@media (max-width: 1023px) {
+  #muse-more-navigation.muse-popover-panel { left: max(var(--space-4), env(safe-area-inset-left)) !important; right: max(var(--space-4), env(safe-area-inset-right)); top: auto !important; bottom: calc(var(--space-3) + 92px + env(safe-area-inset-bottom)) !important; width: auto !important; max-width: 440px !important; margin-inline: auto; max-height: calc(100dvh - 120px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important; }
+}
+/* Pages that hide the app chrome (welcome, login preview) don't get the bands either. */
+.muse-app-shell:is([data-module="welcome"],[data-module="login-preview"])::before, .muse-app-shell:is([data-module="welcome"],[data-module="login-preview"])::after { content: none; }
 @container muse-content (max-width: 760px) {
   .daily-grid > .muse-card { grid-column: 1 / -1; }
   .priority-list { grid-template-columns: 1fr; gap: 0; }

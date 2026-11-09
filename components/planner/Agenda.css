@@ -490,3 +490,32 @@ button.muse-future-mini-day:is([data-col="5"],[data-col="6"]) .muse-future-mini-
 .muse-future-mini-list button:focus-visible{outline:2px solid var(--accent-primary);outline-offset:-2px}
 .muse-future-mini-list span{display:grid;min-width:0}.muse-future-mini-list small{color:var(--text-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .muse-agenda-log-month:has(.muse-future-mini-tip){overflow:visible}
+
+/* ---------- #101 Two-row toolbar on narrow screens (Tasks and Agenda share it). Desktop keeps the one-row layout above;
+   the wrappers below are display:contents there. On phones the same controls sit on a six-column grid so both rows
+   share the outer edges and one 44px height:  [‹][   date · Today   ][›]  /  [ view ▾ ][ secondary ][⚙]
+   Today appears only when the visible range doesn't include today, next to a shorter date label. ---------- */
+.muse-toolbar-period,.muse-toolbar-secondary{display:contents}
+.muse-toolbar-period>.muse-agenda-title{flex:0 1 auto}
+.muse-period-title-compact,.muse-toolbar-today{display:none}
+@container muse-content (max-width:640px){
+  .muse-agenda-toolbar[data-rows]{display:grid;grid-template-columns:var(--touch-target,44px) repeat(4,minmax(0,1fr)) var(--touch-target,44px);gap:var(--space-2);align-items:center}
+  .muse-agenda-toolbar[data-rows] :is(.muse-agenda-tools,.muse-agenda-nav,.muse-toolbar-secondary){display:contents}
+  .muse-agenda-toolbar[data-rows] .muse-toolbar-period{grid-row:1;grid-column:2/6;display:flex;align-items:center;justify-content:center;gap:var(--space-2);min-width:0}
+  .muse-agenda-toolbar[data-rows] .muse-agenda-title{flex:0 1 auto;min-width:0;margin:0;font-size:1.2rem;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .muse-agenda-toolbar[data-rows] .muse-period-title-full{display:none}
+  .muse-agenda-toolbar[data-rows] .muse-period-title-compact{display:inline}
+  .muse-agenda-toolbar[data-rows] .muse-toolbar-today{display:inline-flex;align-items:center;flex:none;height:30px;min-height:30px;padding:0 12px;font-size:.8rem;border-radius:var(--pill-radius,999px)}
+  .muse-agenda-toolbar[data-rows] .muse-agenda-today{display:none}
+  .muse-agenda-toolbar[data-rows] .muse-agenda-nav>:first-child{grid-row:1;grid-column:1}
+  .muse-agenda-toolbar[data-rows] .muse-agenda-nav>:last-child{grid-row:1;grid-column:6}
+  .muse-agenda-toolbar[data-rows] .muse-agenda-tools>.muse-choice-menu{grid-row:2;grid-column:1/4;min-width:0}
+  .muse-agenda-toolbar[data-rows]:not(:has(.muse-toolbar-secondary>*)) .muse-agenda-tools>.muse-choice-menu{grid-column:1/6}
+  .muse-agenda-toolbar[data-rows] .muse-toolbar-secondary>*{grid-row:2;grid-column:4/6;min-width:0;margin:0}
+  .muse-agenda-toolbar[data-rows] .muse-agenda-tools>.muse-agenda-icon{grid-row:2;grid-column:6}
+  .muse-agenda-toolbar[data-rows] .muse-agenda-spread-nav{grid-row:3;grid-column:1/-1;justify-content:center}
+  .muse-agenda-toolbar[data-rows] :is(.muse-agenda-nav>.muse-button,.muse-agenda-tools>.muse-agenda-icon,.muse-toolbar-secondary .muse-button,.muse-agenda-tools>.muse-choice-menu .muse-choice-trigger){width:100%;height:var(--touch-target,44px);min-height:var(--touch-target,44px);padding-inline:var(--space-3);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .muse-agenda-toolbar[data-rows] :is(.muse-agenda-nav>.muse-button,.muse-agenda-tools>.muse-agenda-icon){padding-inline:0!important}
+  .muse-agenda-toolbar[data-rows] .muse-agenda-tools>.muse-choice-menu .muse-choice-trigger{justify-content:space-between}
+  .muse-agenda-toolbar[data-rows] .muse-planner-mobile-tabs{display:flex;margin:0}
+}
