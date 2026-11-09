@@ -21,6 +21,7 @@
 .muse-vision-card-head h3 a:hover{text-decoration:underline;text-decoration-color:var(--accent-secondary);text-underline-offset:3px}
 .muse-vision-card .small-label{margin:0}
 .muse-vision-theme{margin:0;font-size:.74rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)}
+.muse-vision-empty-action{margin:16px 0 0}
 .muse-vision-confirm{display:grid;gap:12px;max-width:440px}
 .muse-vision-confirm p{margin:0;line-height:1.5}
 .muse-vision-confirm [data-destructive]{color:var(--urgency-ink)}

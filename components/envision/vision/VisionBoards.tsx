@@ -104,8 +104,8 @@ function EmptyLibrary({ onCreate }: { onCreate: () => void }) {
       <p className="muse-envision-kicker">Vision Boards <MuseStar size={13} prismatic /></p>
       <h2 id="muse-vision-boards-title">A canvas for the life you’re imagining</h2>
       <p>Collage photos, words and stickers into a board for a season, a dream or a whole year. Nothing on a board becomes a task or a goal unless you decide it should.</p>
-      <p><button type="button" className="muse-button button-primary" onClick={onCreate}><MuseIcon name="plus" size={14} /> Create your first board</button></p>
       <p className="muse-envision-quiet">Pieces can point at your <Link href="/envision">Aspirations</Link> or <Link href="/envision?view=bucket">Bucket List</Link>, and <Link href="/planner?view=intentions">Intentions</Link> in Planner can show a board for the period.</p>
+      <p className="muse-vision-empty-action"><button type="button" className="muse-button button-primary" onClick={onCreate}><MuseIcon name="plus" size={14} /> Create your first board</button></p>
     </div>
   </section>;
 }
