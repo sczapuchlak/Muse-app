@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useSyncExternalStore } from "react";
 import { themeEntry } from "@/lib/themes";
 import { readThemePreference, selectTheme, serverThemePreference, subscribeThemePreference } from "@/lib/theme-preference";
-import { materials, readMaterial, selectMaterial, serverMaterial, subscribeMaterial } from "@/lib/material-preference";
+import { offeredMaterials, readMaterial, selectMaterial, serverMaterial, subscribeMaterial } from "@/lib/material-preference";
 import { endReview, keepReviewedTheme, prepareScreen, readReview, reviewScreens, serverReview, stepReview, subscribeReview } from "@/lib/theme-review";
 import "./ThemeReviewBar.css";
 
@@ -21,7 +21,7 @@ export function ThemeReviewBar() {
       <span className="muse-review-name"><strong>{entry.name}</strong>{direction && <small>Lab · {direction}</small>}</span>
       <button type="button" className="muse-review-step" aria-label="Next theme" onClick={() => selectTheme(stepReview(theme, 1))}>›</button>
     </div>
-    <div className="muse-review-materials" role="group" aria-label="Glass material">{materials.map((m) => <button key={m} type="button" aria-pressed={material === m} onClick={() => selectMaterial(m)}>{m === "crystal" ? "Crystal" : "Frosted"}</button>)}</div>
+    {offeredMaterials.length>1&&<div className="muse-review-materials" role="group" aria-label="Glass material">{offeredMaterials.map((m) => <button key={m} type="button" aria-pressed={material === m} onClick={() => selectMaterial(m)}>{m === "crystal" ? "Crystal" : "Frosted"}</button>)}</div>}
     <nav className="muse-review-screens" aria-label="Review screens">{reviewScreens.map((s) => <Link key={s.id} href={s.href} onClick={() => prepareScreen("agendaView" in s ? s.agendaView : undefined)}>{s.label}</Link>)}</nav>
     <div className="muse-review-end"><button type="button" onClick={keepReviewedTheme} title="End the review and keep this theme">Keep this</button><button type="button" onClick={endReview} title="End the review and go back to your earlier theme">Done</button></div>
   </aside>;

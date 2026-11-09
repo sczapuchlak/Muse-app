@@ -36,7 +36,7 @@
   & .muse-agenda-log-month { background-color: var(--glass-background); }
 
   /* Tiles and control bars that sit directly on the canvas are frosted cards too (found by a page-by-page audit). */
-  & :is(.muse-collections-card, .muse-collections-active-card, .muse-glance-mini, .muse-cosmic-library-intro, .muse-cosmic-collection, .muse-cosmic-tile, .muse-cosmic-forecast-sign, .muse-dream-library-hero, .muse-dream-result, .muse-little-moment, .muse-appearance-theme, .muse-cosmic-lunar-strip, .muse-cosmic-month-grid, .muse-cosmic-calendar-selected, .muse-cosmic-featured-event, .muse-lists-card, .muse-list-section, .muse-list-day, .muse-list-table-wrap):not(#\#) { /* :not(#\#) outranks per-component washes */
+  & :is(.muse-goals-tiles > div, .muse-goal-card, .muse-goals-empty, .muse-goals-table-wrap, .muse-collections-card, .muse-collections-active-card, .muse-glance-mini, .muse-cosmic-library-intro, .muse-cosmic-collection, .muse-cosmic-tile, .muse-cosmic-forecast-sign, .muse-dream-library-hero, .muse-dream-result, .muse-little-moment, .muse-appearance-theme, .muse-cosmic-lunar-strip, .muse-cosmic-month-grid, .muse-cosmic-calendar-selected, .muse-cosmic-featured-event, .muse-lists-card, .muse-list-section, .muse-list-day, .muse-list-table-wrap):not(#\#) { /* :not(#\#) outranks per-component washes */
     background-color: var(--glass-background);
     -webkit-backdrop-filter: blur(var(--material-blur)) saturate(var(--material-saturation));
     backdrop-filter: blur(var(--material-blur)) saturate(var(--material-saturation));
@@ -65,18 +65,19 @@
 
 /* Light cards on a dark canvas (Midnight Ballerina, Pretty Toxic): everything painted with the card surface re-points
    its text, links, chart inks and nested tints to the card's own ink, so components stay readable unchanged. */
-:root:is([data-theme="astral"],[data-theme="nightbloom"]) :is(.muse-lists-card, .muse-list-section, .muse-list-day, .muse-list-table-wrap, .muse-quest-card, .muse-quest-collectible, .muse-collections-controls, .muse-empty-state, .muse-tarot-ritual, .muse-fortune-stage, .muse-books-panel, .muse-hero, .muse-panel, .muse-collections-card, .muse-collections-active-card, .muse-glance-mini, .muse-cosmic-library-intro, .muse-cosmic-collection, .muse-cosmic-tile, .muse-cosmic-forecast-sign, .muse-dream-library-hero, .muse-dream-result, .muse-little-moment, .muse-appearance-theme, .muse-cosmic-lunar-strip, .muse-cosmic-month-grid, .muse-cosmic-calendar-selected, .muse-cosmic-featured-event, .muse-lists-card, .muse-list-section, .muse-list-day, .muse-list-table-wrap, .date-navigation, .muse-segmented, .muse-search, .muse-card, .muse-agenda-log-month, .muse-appearance-theme, .muse-thought-capture, .muse-thought-card, .muse-glance-moves, .muse-glance-waterline, .muse-glance-yearstats li, .muse-insight-panel, .muse-money-panel, .muse-mood-history-list > li, .muse-notes-workspace, .muse-grocery-section, .muse-nourish-week, .muse-saved-meal, .muse-saved-meals-drawer, .muse-reflections-picker, .muse-series-hero, .muse-series-rows, .muse-stream-post, .muse-review-card, .muse-quest-card, .muse-quest-history details, .muse-planning-rail, .muse-day-drop, .muse-planner-surface, .muse-ritual-group, .muse-nourish-day, .muse-popover-panel, .muse-drawer, .muse-modal) {
+:root:is([data-theme="astral"],[data-theme="nightbloom"]) :is(.muse-goals-tiles > div, .muse-goal-card, .muse-goals-empty, .muse-goals-table-wrap, .muse-lists-card, .muse-list-section, .muse-list-day, .muse-list-table-wrap, .muse-quest-card, .muse-quest-collectible, .muse-collections-controls, .muse-empty-state, .muse-tarot-ritual, .muse-fortune-stage, .muse-books-panel, .muse-hero, .muse-panel, .muse-collections-card, .muse-collections-active-card, .muse-glance-mini, .muse-cosmic-library-intro, .muse-cosmic-collection, .muse-cosmic-tile, .muse-cosmic-forecast-sign, .muse-dream-library-hero, .muse-dream-result, .muse-little-moment, .muse-appearance-theme, .muse-cosmic-lunar-strip, .muse-cosmic-month-grid, .muse-cosmic-calendar-selected, .muse-cosmic-featured-event, .muse-lists-card, .muse-list-section, .muse-list-day, .muse-list-table-wrap, .date-navigation, .muse-segmented, .muse-search, .muse-card, .muse-agenda-log-month, .muse-appearance-theme, .muse-thought-capture, .muse-thought-card, .muse-glance-moves, .muse-glance-waterline, .muse-glance-yearstats li, .muse-insight-panel, .muse-money-panel, .muse-mood-history-list > li, .muse-notes-workspace, .muse-grocery-section, .muse-nourish-week, .muse-saved-meal, .muse-saved-meals-drawer, .muse-reflections-picker, .muse-series-hero, .muse-series-rows, .muse-stream-post, .muse-review-card, .muse-quest-card, .muse-quest-history details, .muse-planning-rail, .muse-day-drop, .muse-planner-surface, .muse-ritual-group, .muse-nourish-day, .muse-popover-panel, .muse-drawer, .muse-modal) {
   color: var(--tone-card-ink);
   --foreground: var(--tone-card-ink);
   --text-muted: var(--tone-card-muted);
-  --ink-purple: var(--tone-card-accent);
-  --ink-aqua: var(--tone-card-accent);
-  --ink-pink: var(--tone-card-accent);
+  /* #12: each ink keeps its own hue on light cards (deeper, for contrast) so counters and labels stay differentiated. */
+  --ink-purple: var(--tone-card-ink-purple, var(--tone-card-accent));
+  --ink-aqua: var(--tone-card-ink-aqua, var(--tone-card-accent));
+  --ink-pink: var(--tone-card-ink-pink, var(--tone-card-accent));
   --link-ink: var(--tone-card-accent);
   --selected-text: var(--tone-card-ink);
   --navigation-text: var(--tone-card-accent);
   --filter-selected-text: var(--tone-card-accent);
-  --urgency-ink: var(--tone-card-accent);
+  --urgency-ink: var(--tone-card-ink-pink, var(--tone-card-accent));
   --information-accent: var(--tone-card-accent);
   --nav-icon: var(--tone-card-accent);
   --chart-1: color-mix(in srgb, var(--accent-primary) 62%, var(--tone-card-ink));
@@ -102,6 +103,22 @@
   --icon-gradient-start: var(--tone-card-icon-1);
   --icon-gradient-middle: var(--tone-card-icon-2);
   --icon-gradient-end: var(--tone-card-icon-3);
+}
+
+/* #12 Midnight Ballerina: its card surface is near-white, so control bars sitting directly on the night sky (period
+   switchers, date navigation, search) read as solid white slabs. On the canvas they are translucent midnight glass with
+   the page's own light text instead — the same role the tinted card colour plays in the other dark themes. Bars inside
+   cards keep the light-card look. */
+:root[data-theme="astral"] :is(.date-navigation, .muse-segmented, .muse-search):not(:is(.muse-card, .muse-panel, .muse-insight-panel, .muse-glance-mini, .muse-glance-card, .muse-reflections-book, .muse-money-panel, .muse-ritual-group, .muse-collections-card, .muse-popover-panel, .muse-modal, .muse-drawer) *):not(#\#):not(#\#) {
+  --foreground: inherit; --text-muted: inherit; --selected-text: inherit; --selected-background: inherit; --selected-border: inherit;
+  --glass-border: inherit; --surface-subtle: inherit; --surface-hover: inherit; --surface-control: inherit; --divider: inherit;
+  --interactive-border: inherit; --focus-ring: inherit; --link-ink: inherit; --information-accent: inherit; --nav-icon: inherit;
+  --ink-purple: inherit; --ink-aqua: inherit; --ink-pink: inherit; --filter-selected-text: inherit; --navigation-text: inherit;
+  color: var(--foreground);
+  background-color: rgba(18, 32, 74, .52);
+  border-color: rgba(242, 247, 255, .2);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  backdrop-filter: blur(14px) saturate(140%);
 }
 
 /* Interaction states (#111): hover and selected show the theme's rainbow ring at full strength, a soft glow and a

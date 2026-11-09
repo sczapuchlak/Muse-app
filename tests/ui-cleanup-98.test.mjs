@@ -5,15 +5,23 @@ import {resolve} from 'node:path';
 import {load,root} from './helpers.mjs';
 const read=f=>readFileSync(resolve(root,f),'utf8');
 
-test('#98 Bucket List: choosing a taken number swaps the two dreams instead of failing',()=>{
- const {renumberSwap}=load('lib/bucket-list/logic');
- const entries=[{id:'a',number:1},{id:'b',number:2},{id:'c',number:null}];
- assert.deepEqual(renumberSwap(entries,{id:'b',number:1}),{other:entries[0],number:2},'b takes 1, a takes b’s old 2');
- assert.equal(renumberSwap(entries,{id:'b',number:5}),null,'a free number needs no swap');
- assert.equal(renumberSwap(entries,{id:'b',number:null}),null);
- assert.deepEqual(renumberSwap(entries,{id:'c',number:1}),{other:entries[0],number:3},'an unnumbered dream gives the other the next free number');
- assert.deepEqual(renumberSwap(entries,{id:'new',number:2}),{other:entries[1],number:3});
- assert.match(read('components/rituals/bucket/useBucketList.ts'),/number:null\}\)[\s\S]*saveBucketEntry\(client,userId,e\)[\s\S]*number:swap\.number/,'cleared first so numbers stay unique at every step');
+test('#12 Bucket List: choosing a number moves the dream there; the dreams between shift by one',()=>{
+ const {renumberShift,byPosition}=load('lib/bucket-list/logic');
+ const e=(id,number,position)=>({id,number,position,createdAt:''});
+ const entries=[e('a',1,1),e('b',2,2),e('c',3,3),e('d',4,4),e('x',null,5)];
+ const up=renumberShift(entries,{id:'d',number:2});
+ assert.deepEqual(up.shifts,[{id:'c',number:4},{id:'b',number:3}],'moving up pushes 2–3 down, highest first so numbers stay unique');
+ assert.ok(up.position>1&&up.position<2,'and the card lands between No. 1 and the old No. 2');
+ const down=renumberShift(entries,{id:'a',number:3});
+ assert.deepEqual(down.shifts,[{id:'b',number:1},{id:'c',number:2}],'moving down pulls 2–3 up, lowest first');
+ const after=entries.map(x=>({...x,...(down.shifts.find(s=>s.id===x.id)??{}),...(x.id==='a'?{number:3,position:down.position}:{})})).sort(byPosition);
+ assert.deepEqual(after.filter(x=>x.number).map(x=>x.number),[1,2,3,4],'visual order and numbers agree');
+ assert.equal(renumberShift(entries,{id:'b',number:2}),null,'unchanged');
+ assert.equal(renumberShift(entries,{id:'b',number:null}),null);
+ assert.deepEqual(renumberShift(entries,{id:'b',number:9}).shifts,[],'a free number moves the card without renumbering others');
+ const gap=renumberShift([e('a',1,1),e('b',2,2),e('c',5,3),e('n',null,4)],{id:'n',number:2});
+ assert.deepEqual(gap.shifts,[{id:'b',number:3}],'a gap in the numbers absorbs the shift');
+ assert.match(read('components/rituals/bucket/useBucketList.ts'),/number:null\}\)[\s\S]*for\(const s of shift\?\.shifts[\s\S]*position:shift\.position/,'cleared first, then shifted, then placed');
 });
 
 test('#98 Mindspace board: arrangement, moves, sizes and independent duplicates',()=>{

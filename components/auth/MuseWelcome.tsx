@@ -11,6 +11,7 @@ import {MuseStar} from "../MuseStar";
 import {MuseStarCluster} from "../MuseStarCluster";
 import {MuseChoiceMenu} from "../MuseChoiceMenu";
 import {ThemeChoices,MaterialChoices} from "../AppearanceChoices";
+import {offeredMaterials} from "@/lib/material-preference";
 import {LoginAtmosphere} from "./LoginAtmosphere";
 import {TakeMuseWithYou} from "./TakeMuseWithYou";
 import "../AppShell.css";
@@ -79,7 +80,7 @@ export function MuseWelcome({profile}:{profile:Profile}){
     <MuseChoiceMenu label="Timezone" valueLabel={options.find(option=>option.id===timeZone)?.label??timeZone} options={options} searchable selectedIds={[timeZone]} onSelect={setTimeZone}/>
     <p className="small-label">{profile.timeZoneConfirmed?"Your saved timezone.":"Detected from this device."} Muse uses it for “today” and for dating new entries. Travel won’t change it.</p>
     </div>
-    <fieldset className="muse-welcome-appearance muse-welcome-field"><legend className="editor-label">Glass</legend><MaterialChoices label="Glass"/><p className="small-label">Theme and glass are saved on this device; change them any time in Appearance.</p></fieldset>
+    {offeredMaterials.length>1&&<fieldset className="muse-welcome-appearance muse-welcome-field"><legend className="editor-label">Glass</legend><MaterialChoices label="Glass"/><p className="small-label">Theme and glass are saved on this device; change them any time in Appearance.</p></fieldset>}
     </div>
     <fieldset className="muse-welcome-appearance"><legend className="editor-label">Choose your atmosphere</legend><ThemeChoices/></fieldset>
     {error&&<p className="muse-welcome-error" role="alert">{error}</p>}

@@ -12,7 +12,9 @@ import { defaultVisible, syncWindow } from "./calendars";
 type Admin = ReturnType<typeof createMuseAdminClient>;
 type Connection = { id: string; user_id: string; status: string; last_synced_at: string | null };
 const API = "https://www.googleapis.com/calendar/v3";
-const MAX_PAGES = 40, CHUNK = 500, THROTTLE_MS = 10 * 60 * 1000;
+// #12: automatic syncs are skipped within ~3 minutes of the last one (manual Refresh now forces a sync).
+export const THROTTLE_MS = 3 * 60 * 1000;
+const MAX_PAGES = 40, CHUNK = 500;
 
 export class GoogleReconnectError extends Error {}
 class SyncTokenExpired extends Error {}

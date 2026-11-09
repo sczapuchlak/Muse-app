@@ -47,16 +47,6 @@ export function reopenEntry(e:BucketEntry,today:string):BucketEntry{
 
 /** Next permanent number: one more than the largest ever used in this list (deleted numbers are not reused). */
 export const nextNumber=(entries:Pick<BucketEntry,'number'>[])=>Math.max(0,...entries.map(e=>e.number??0))+1;
-/**
- * #98: renumbering like a handwritten list. Choosing a number another dream already has swaps the two: that dream
- * takes this one's old number (or the next free number, for a new or unnumbered dream). Null when no swap is needed.
- */
-export function renumberSwap<T extends Pick<BucketEntry,'id'|'number'>>(entries:T[],edited:Pick<BucketEntry,'id'|'number'>){
- if(edited.number==null)return null;
- const other=entries.find(e=>e.id!==edited.id&&e.number===edited.number);if(!other)return null;
- const previous=entries.find(e=>e.id===edited.id)?.number??null;
- return {other,number:previous!=null&&previous!==edited.number?previous:nextNumber(entries)};
-}
 export const nextPosition=(entries:Pick<BucketEntry,'position'>[])=>entries.length?Math.max(...entries.map(e=>e.position))+1:1;
 /** Your order: by position, then number, then creation. */
 export const byPosition=(a:BucketEntry,b:BucketEntry)=>a.position-b.position||(a.number??Infinity)-(b.number??Infinity)||a.createdAt.localeCompare(b.createdAt);
@@ -141,3 +131,37 @@ export function bucketTrends(entries:BucketEntry[],start:string,end:string){
   byYear:[...years].map(([year,count])=>({year,count})).sort((a,b)=>a.year-b.year)};
 }
 
+
+/**
+ * #12: choosing a number moves the dream to that place in the list. Dreams between its old and new number shift by
+ * one (so numbers stay unique and in order), and the dream's position follows its number so the cards reorder too.
+ * Returns the number changes in a collision-free order (the edited dream is cleared first by the caller) and the
+ * edited dream's new position. Null when nothing else needs to change. Unnumbered dreams keep their place.
+ */
+export function renumberShift(entries:BucketEntry[],edited:Pick<BucketEntry,'id'|'number'>){
+ if(edited.number==null)return null;
+ const previous=entries.find(e=>e.id===edited.id)?.number??null,target=edited.number;
+ if(previous===target)return null;
+ const others=entries.filter(e=>e.id!==edited.id&&e.number!=null);
+ if(!others.some(e=>e.number===target)&&previous!=null)return {shifts:[] as {id:string;number:number}[],position:positionForNumber(entries,edited.id,target)};
+ // Moving up the list (to a smaller number) pushes the dreams in [target, previous) down by one; moving down pulls
+ // (previous, target] up by one. A new or unnumbered dream pushes everything from target onwards.
+ const up=previous==null||target<previous;
+ const affected=others.filter(e=>up?e.number!>=target&&(previous==null||e.number!<previous):e.number!>previous!&&e.number!<=target);
+ // Only shift a contiguous run: a gap in the numbers absorbs the move (handwritten lists skip numbers).
+ const run:BucketEntry[]=[];
+ if(up){let n=target;for(const e of [...affected].sort((a,b)=>a.number!-b.number!)){if(e.number!==n)break;run.push(e);n++;}}
+ else{let n=target;for(const e of [...affected].sort((a,b)=>b.number!-a.number!)){if(e.number!==n)break;run.push(e);n--;}}
+ const shifts=(up?[...run].sort((a,b)=>b.number!-a.number!):[...run].sort((a,b)=>a.number!-b.number!)).map(e=>({id:e.id,number:e.number!+(up?1:-1)}));
+ const renumbered=entries.map(e=>{const s=shifts.find(x=>x.id===e.id);return s?{...e,number:s.number}:e.id===edited.id?{...e,number:target}:e;});
+ return {shifts,position:positionForNumber(renumbered,edited.id,target)};
+}
+/** A position that places `id` right before the first dream numbered above it (else right after the one below it). */
+function positionForNumber(entries:BucketEntry[],id:string,number:number){
+ const ordered=[...entries].filter(e=>e.id!==id).sort(byPosition);
+ const at=ordered.findIndex(e=>e.number!=null&&e.number>number);
+ if(at>=0){const after=ordered[at],prev=ordered[at-1];return prev?(prev.position+after.position)/2:after.position-1;}
+ const below=[...ordered].reverse().find(e=>e.number!=null&&e.number<number);
+ if(below){const next=ordered[ordered.indexOf(below)+1];return next?(below.position+next.position)/2:below.position+1;}
+ return entries.find(e=>e.id===id)?.position??1;
+}

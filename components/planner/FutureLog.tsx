@@ -1,7 +1,7 @@
 "use client";
-import { useCallback, useEffect, useState, useSyncExternalStore, type FormEvent } from "react";
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore, type FormEvent } from "react";
 import { createMuseBrowserClient } from "@/lib/supabase/client";
-import { deleteFutureEntry, readFutureLog, saveFutureEntry, sortEntries, validEntry, FUTURE_NOTE_MAX, FUTURE_TITLE_MAX, type FutureEntry } from "@/lib/future-log";
+import { deleteFutureEntry, entriesOn, entryEnd, readFutureLog, saveFutureEntry, sortEntries, validEntry, FUTURE_NOTE_MAX, FUTURE_TITLE_MAX, type FutureEntry } from "@/lib/future-log";
 import { markIconName, markIcons } from "@/lib/muse-marks";
 import { accentStyle } from "@/lib/appearance-values";
 import { paintAccent, type MarkStyle, type Paint } from "@/lib/planner-customization";
@@ -9,6 +9,9 @@ import { MusePaintPicker, paintSwatchStyle } from "../MusePaintPicker";
 import { MuseIcon, type MuseIconName } from "../MuseIcon";
 import { MarkGlyph, MarkQuickPick } from "./MuseMarks";
 import { useAgendaData } from "./AgendaData";
+import { shiftDate } from "@/lib/dates";
+import { GlassPopover } from "../GlassPopover";
+import { monthGrid } from "@/lib/agenda";
 
 /**
  * Future Log (#104 §5): one shared, in-memory view of the year's lightweight entries. Entries never become events
@@ -26,6 +29,7 @@ function load(year: string, force = false) {
   const run = readFutureLog(db(), year).then((list) => emit({ byYear: { ...snap.byYear, [year]: list }, error: "" }), (e) => emit({ error: e instanceof Error ? e.message : "The Future Log couldn’t load." })).finally(() => pending.delete(year));
   pending.set(year, run); return run;
 }
+const none: FutureEntry[] = [];
 const put = (year: string, list: FutureEntry[]) => emit({ byYear: { ...snap.byYear, [year]: list } });
 
 export function useFutureLog(year: string) {
@@ -40,7 +44,7 @@ export function useFutureLog(year: string) {
   }, [year]);
   const remove = useCallback(async (id: string) => { await deleteFutureEntry(db(), id); put(year, (snap.byYear[year] ?? []).filter((x) => x.id !== id)); }, [year]);
   const forMonth = useCallback((m: string) => sortEntries((entries ?? []).filter((e) => e.month === m)), [entries]);
-  return { loaded: !!entries, error: s.error, forMonth, save, remove, retry: () => load(year, true) };
+  return { loaded: !!entries, error: s.error, entries: entries ?? none, forMonth, save, remove, retry: () => load(year, true) };
 }
 
 export function FutureEntryGlyph({ entry }: { entry: FutureEntry }) {
@@ -67,8 +71,9 @@ export function FutureEntryEditor({ entry, month, year, onDone, onMakeEvent }: {
     <label className="muse-mark-field"><span>What’s coming up</span>
       <input autoFocus required maxLength={FUTURE_TITLE_MAX} value={d.title} placeholder="Mom’s birthday, Lisbon trip, Concert…" onChange={(e) => set({ title: e.target.value })} /></label>
     <div className="muse-future-when" role="group" aria-label="When">
-      <button type="button" className="choice-button" data-chip-size="compact" aria-pressed={!d.date} onClick={() => set({ date: null })}>Sometime this month</button>
-      <label className="muse-mark-field"><span className="sr-only">Day</span><input type="date" min={first} max={last} value={d.date ?? ""} onChange={(e) => set({ date: e.target.value || null })} /></label>
+      <button type="button" className="choice-button" data-chip-size="compact" aria-pressed={!d.date} onClick={() => set({ date: null, endDate: null })}>Sometime this month</button>
+      <label className="muse-mark-field"><span className="sr-only">Day</span><input type="date" min={first} max={last} value={d.date ?? ""} onChange={(e) => { const v = e.target.value || null; set({ date: v, endDate: v && d.endDate && d.endDate > v ? d.endDate : null }); }} /></label>
+      {d.date && <label className="muse-mark-field muse-future-through"><span>Through <small>optional · trips</small></span><input type="date" min={shiftDate(d.date, 1)} max={shiftDate(d.date, 366)} value={d.endDate ?? ""} onChange={(e) => set({ endDate: e.target.value || null })} /></label>}
     </div>
     <label className="muse-mark-field"><span>Note <small>optional</small></span>
       <input maxLength={FUTURE_NOTE_MAX} value={d.note ?? ""} placeholder="Book flights by March…" onChange={(e) => set({ note: e.target.value || null })} /></label>
@@ -96,4 +101,45 @@ export function FutureEntryEditor({ entry, month, year, onDone, onMakeEvent }: {
         : <button type="button" className="text-button" onClick={() => setConfirming(true)}>Remove</button>)}
     </div>
   </form>;
+}
+
+const shortDay = (d: string) => new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", timeZone: "UTC" }).format(new Date(`${d}T12:00:00Z`));
+const longDay = (d: string) => new Intl.DateTimeFormat("en-US", { weekday: "long", month: "long", day: "numeric", timeZone: "UTC" }).format(new Date(`${d}T12:00:00Z`));
+export const futureWhen = (e: FutureEntry) => { const end = entryEnd(e); return !e.date ? "Sometime this month" : end && end !== e.date ? `${shortDay(e.date)} – ${shortDay(end)}` : shortDay(e.date); };
+
+/**
+ * #12: a compact calendar for one Future Log month. Only Future Log entries highlight days (never events, tasks or
+ * Google events); a trip highlights its whole range as one band. Hover or focus shows a tooltip; a click or tap
+ * opens a small list of that day's entries, and choosing one opens the entry's usual editor.
+ */
+export function FutureMiniMonth({ month, entries, onOpen }: { month: string; entries: FutureEntry[]; onOpen: (anchor: HTMLElement, entry: FutureEntry) => void }) {
+  const [openDay, setOpenDay] = useState<string | null>(null), anchor = useRef<HTMLButtonElement | null>(null);
+  const first = `${month}-01`, last = `${month}-31`;
+  const dated = entries.filter((e) => e.date && e.date <= last && entryEnd(e)! >= first);
+  const cells = monthGrid(first).flat(), on = (day: string) => entriesOn(dated, day);
+  const items = openDay ? on(openDay) : [];
+  return <div className="muse-future-mini">
+    <div className="muse-future-mini-grid" role="group" aria-label={`${longDay(first).split(" ")[1]} at a glance`}>
+      {["M", "T", "W", "T", "F", "S", "S"].map((d, i) => <span key={`h${i}`} className="muse-future-mini-weekday" aria-hidden="true">{d}</span>)}
+      {cells.map((day, i) => {
+        if (!day) return <span key={i} aria-hidden="true" />;
+        const here = on(day), n = Number(day.slice(8)), col = i % 7;
+        if (!here.length) return <span key={i} className="muse-future-mini-day">{n}</span>;
+        const joins = (other: string) => on(other).some((e) => here.includes(e));
+        const prev = shiftDate(day, -1), next = shiftDate(day, 1);
+        const start = col === 0 || prev < first || !joins(prev), end = col === 6 || !next.startsWith(month) || !joins(next);
+        const lead = here.find((e) => entryEnd(e) !== e.date) ?? here[0];
+        return <button key={i} type="button" className="muse-future-mini-day" data-on data-start={start || undefined} data-end={end || undefined} data-many={here.length > 1 || undefined} data-col={col}
+          style={accentStyle(lead.color ?? "primary")} aria-haspopup="dialog" aria-expanded={openDay === day}
+          aria-label={`${longDay(day)}: ${here.map((e) => e.title).join(", ")}`}
+          onClick={(e) => { anchor.current = e.currentTarget; setOpenDay(openDay === day ? null : day); }}>
+          {n}<span className="muse-future-mini-tip" aria-hidden="true">{here.slice(0, 3).map((e) => <span key={e.id}><strong>{e.title}</strong> {futureWhen(e)}</span>)}{here.length > 3 && <span>+{here.length - 3} more</span>}</span>
+        </button>;
+      })}
+    </div>
+    <GlassPopover id={`future-mini-${month}`} label="Future Log plans on this day" title={openDay ? longDay(openDay) : undefined} open={!!openDay} anchorRef={anchor} onClose={() => setOpenDay(null)} width={280}>
+      <ul className="muse-future-mini-list">{items.map((e) => <li key={e.id}><button type="button" onClick={() => { const a = anchor.current; setOpenDay(null); if (a) onOpen(a, e); }}>
+        <FutureEntryGlyph entry={e} /><span><strong>{e.title}</strong><small>{futureWhen(e)}{e.note ? ` · ${e.note}` : ""}</small></span></button></li>)}</ul>
+    </GlassPopover>
+  </div>;
 }

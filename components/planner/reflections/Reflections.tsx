@@ -135,13 +135,28 @@ function ReviewBook({ review, editing, setEditing, status, change, client, uploa
   </article>;
 }
 
+/** #12: a gentle line for a section that's still empty while editing — an invitation, not a blank box. */
+const invitations: Partial<Record<ModuleType, string>> = {
+  memories: "A dinner, a walk, a laugh — the little stories worth keeping.",
+  highlights: "Big or small, every win counts. Name a few.",
+  favorites: "The finds you’d tell a friend about.",
+  photos: "A few pictures that hold this chapter.",
+  music: "The songs that played on repeat.",
+  books: "What you read, and what stayed with you.",
+  watching: "The movies and shows you loved (or couldn’t stop talking about).",
+};
+const isEmptyContent = (m: ReflectionModule) => m.type !== "level10" && m.type !== "guided" && m.type !== "writing" && !hasContent(m);
+
 function ModuleFrame({ module: m, editing, onChange, children }: { module: ReflectionModule; editing: boolean; onChange: (m: ReflectionModule, delay?: number) => void; children: ReactNode }) {
-  const meta = moduleType(m.type);
-  return <section className="muse-reflections-module" data-type={m.type} data-size={m.size} data-hidden={m.hidden || undefined} aria-label={m.title}>
+  const meta = moduleType(m.type), prompt = m.type === "guided" ? (m.content as ModuleContent["guided"]).prompt : undefined;
+  const invite = editing && isEmptyContent(m) ? invitations[m.type] : undefined;
+  return <section className="muse-reflections-module" data-type={m.type} data-prompt={prompt} data-size={m.size} data-hidden={m.hidden || undefined} data-empty={invite ? true : undefined} aria-label={m.title}>
     <header className="muse-reflections-module-head">
+      <span className="muse-reflections-module-icon" aria-hidden="true">{meta.emoji}</span>
       {editing ? <input className="muse-reflections-module-title" aria-label="Section title" maxLength={60} value={m.title} onChange={(e) => onChange({ ...m, title: e.target.value })} />
-        : <h3><span aria-hidden="true">{meta.emoji}</span>{m.title}</h3>}
+        : <h3>{m.title}</h3>}
     </header>
+    {invite && <p className="muse-reflections-invite">{invite}</p>}
     {children}
   </section>;
 }
@@ -294,6 +309,11 @@ function Writing({ module, editing, onChange }: Body) {
 }
 
 // ---------- Level 10 Life ----------
+/** #12: a little personality per life area, matched by name so renamed or custom areas still get a fitting icon. */
+const areaIcons: [RegExp, string][] = [[/health|fitness|body|wellness/i, "💪"], [/financ|money|wealth/i, "💰"], [/friend|social/i, "🫶"], [/growth|learn|mind/i, "🌱"],
+  [/home|environment|space/i, "🏡"], [/career|work|business/i, "💼"], [/family|kid/i, "👨‍👩‍👧"], [/romance|love|partner|relationship/i, "💞"], [/fun|recreation|play|hobb/i, "🎉"],
+  [/spirit|faith|soul/i, "🔮"], [/creat|art/i, "🎨"], [/travel|advent/i, "✈️"]];
+const areaIcon = (label: string) => areaIcons.find(([re]) => re.test(label))?.[1] ?? "✦";
 function Level10({ review, client, editing }: { review: Review; client: () => Client; editing: boolean }) {
   const [areas, setAreas] = useState<LifeArea[] | null>(null), [ratings, setRatings] = useState<LifeRating[]>([]), [error, setError] = useState(""), [manage, setManage] = useState(false);
   useEffect(() => { let live = true; Promise.all([readLifeAreas(client()), readRatings(client(), review.period, review.start)]).then(([a, r]) => { if (live) { setAreas(a); setRatings(r); } }).catch((e) => { if (live) setError(e instanceof Error ? e.message : "Level 10 Life couldn’t load."); }); return () => { live = false; }; }, [client, review.period, review.start]);
@@ -313,7 +333,8 @@ function Level10({ review, client, editing }: { review: Review; client: () => Cl
   return <div className="muse-reflections-l10">
     <p className="muse-reflections-quiet">{rated.length ? `${rated.length} of ${active.length} areas rated · average ${avg}.` : editing ? "Tap a bar to rate each area from 1 to 10." : "No ratings for this period yet."} This {review.period}’s ratings stand on their own; they aren’t averaged from other periods.</p>
     <ul className="muse-reflections-l10-grid">{active.map((a) => { const r = ratings.find((x) => x.areaId === a.id);
-      return <li key={a.id} style={{ "--area": a.color } as CSSProperties}>
+      return <li key={a.id} style={{ "--area": a.color } as CSSProperties} data-rated={r ? true : undefined}>
+        <span className="muse-reflections-l10-icon" aria-hidden="true">{areaIcon(a.label)}</span>
         <span className="muse-reflections-l10-label">{a.label}</span>
         <span className="muse-reflections-l10-bar" role={editing ? "radiogroup" : "img"} aria-label={editing ? `Rate ${a.label}` : `${a.label}: ${r ? `${r.rating} of 10` : "not rated"}`}>
           {Array.from({ length: 10 }, (_, i) => editing

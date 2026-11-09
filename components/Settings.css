@@ -39,3 +39,8 @@
 .muse-google-calendars .muse-google-dot{margin-top:.5em}
 .muse-google-confirm{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .muse-google-settings [data-tone=warning]{color:var(--text)}
+/* #12 Shared settings rhythm: every settings group (Google, passkeys, calendars…) is a column with one gap, so
+   buttons never sit tight against labels, descriptions or the list below. Buttons keep their natural width. */
+.muse-settings-fields section { display:grid; gap:var(--space-3); align-content:start; }
+.muse-settings-fields section > :is(h3, .card-description, .small-label, .muse-passkey-list) { margin:0; }
+.muse-settings-fields section > :is(.muse-button, .text-button, a.muse-button) { justify-self:start; }

@@ -2,7 +2,7 @@
 import {useCallback,useEffect,useMemo,useRef,useState} from 'react';
 import {createMuseBrowserClient} from '@/lib/supabase/client';
 import type {BucketEntry,BucketList} from '@/lib/bucket-list/models';
-import {defaultList,withYearColor,yearOf,renumberSwap} from '@/lib/bucket-list/logic';
+import {defaultList,withYearColor,yearOf,renumberShift} from '@/lib/bucket-list/logic';
 import {deleteBucketEntry,loadBucketList,saveBucketEntry,saveBucketList} from '@/lib/bucket-list/persistence';
 import {removeBoardImages,uploadBoardImage} from '@/lib/data/constellation-images';
 
@@ -40,12 +40,15 @@ export function useBucketList(today:string){
   return current;
  }
  const saveList=(next:BucketList)=>run(async()=>writeList(listRef.current?{...next,revision:listRef.current.revision}:{...next,revision:0}));
- const save=(e:BucketEntry)=>run(async()=>{await ensureList(yearOf(e.completedOn));
-  // Taking a number another dream has swaps the two (cleared first, so the numbers stay unique at every step).
-  const swap=renumberSwap(entriesRef.current,e);
-  if(swap){const cleared=await saveBucketEntry(client,userId,{...swap.other,number:null});setEntries(list=>[...list.filter(x=>x.id!==cleared.id),cleared]);entriesRef.current=entriesRef.current.map(x=>x.id===cleared.id?cleared:x);}
-  const saved=await saveBucketEntry(client,userId,e);
-  if(swap){const cleared=entriesRef.current.find(x=>x.id===swap.other.id)!;const moved=await saveBucketEntry(client,userId,{...cleared,number:swap.number});setEntries(list=>[...list.filter(x=>x.id!==moved.id),moved]);}
+ const save=(entry:BucketEntry)=>run(async()=>{let e=entry;await ensureList(yearOf(e.completedOn));
+  // #12: taking a number moves the dream to that place; the dreams in between shift by one. The edited dream is
+  // cleared first and the others shift in a collision-free order, so numbers stay unique at every step.
+  const shift=renumberShift(entriesRef.current,e);
+  const put=(x:BucketEntry)=>{setEntries(list=>[...list.filter(y=>y.id!==x.id),x]);entriesRef.current=[...entriesRef.current.filter(y=>y.id!==x.id),x];};
+  const existing=entriesRef.current.find(x=>x.id===e.id);
+  if(shift?.shifts.length&&existing?.number!=null){put(await saveBucketEntry(client,userId,{...existing,number:null}));e={...e,revision:entriesRef.current.find(x=>x.id===e.id)!.revision};}
+  for(const s of shift?.shifts??[]){const cur=entriesRef.current.find(x=>x.id===s.id)!;put(await saveBucketEntry(client,userId,{...cur,number:s.number}));}
+  const saved=await saveBucketEntry(client,userId,shift?{...e,position:shift.position}:e);
   const before=entriesRef.current.find(x=>x.id===e.id);setEntries(list=>[...list.filter(x=>x.id!==saved.id),saved]);
   // Photos removed in the editor are removed from private storage once the entry no longer points at them.
   if(before){const kept=new Set(images(saved).map(i=>i.path)),gone=images(before).filter(i=>!kept.has(i.path));if(gone.length)try{await removeBoardImages(gone);}catch{/* stays private; account deletion removes it */}}

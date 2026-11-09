@@ -5,7 +5,7 @@
 .muse-lists-search input { flex: 1; min-width: 0; border: 0; background: transparent; color: var(--foreground); font: inherit; outline: none; }
 .muse-lists-new { gap: 6px; }
 .muse-lists-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: var(--space-3); }
-.muse-lists-card { position: relative; display: grid; gap: 6px; padding: 12px 12px 8px; border: 1px solid var(--glass-border); border-top: 3px solid var(--list-accent, var(--accent-primary)); border-radius: 16px; background: var(--glass-background); box-shadow: var(--card-shadow); min-width: 0; }
+.muse-lists-card { position: relative; display: grid; gap: 6px; padding: 12px 12px 8px; border: 1px solid var(--glass-border); border-radius: 16px; background: var(--glass-background); box-shadow: var(--card-shadow); min-width: 0; }
 .muse-lists-card-open { all: unset; cursor: pointer; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 10px; border-radius: 10px; }
 .muse-lists-card-open:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 3px; }
 .muse-lists-card-icon { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 10px; font-size: 1.1rem; background: color-mix(in srgb, var(--list-accent, var(--accent-primary)) 16%, transparent); }
@@ -27,7 +27,7 @@
 .muse-lists-empty { display: grid; justify-items: center; gap: 8px; padding: var(--space-6); text-align: center; }
 .muse-lists-modal-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: var(--space-3); }
 .muse-lists-new-form { display: grid; gap: 8px; }
-.muse-lists-new-form > input { min-height: 40px; }
+.muse-lists-new-form > input { min-height: 40px; padding: var(--space-2) var(--space-3); box-sizing: border-box; border-radius: var(--control-radius); }
 .muse-lists-starts { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 6px; max-height: 320px; overflow-y: auto; padding: 2px; }
 .muse-lists-start { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px; align-items: center; padding: 8px; border: 1px solid var(--glass-border); border-radius: 12px; cursor: pointer; }
 .muse-lists-start input { position: absolute; opacity: 0; pointer-events: none; }
@@ -143,3 +143,25 @@
 .muse-lists-agenda-chip { display: inline-flex; align-items: center; gap: 3px; padding: 0 6px; min-height: 20px; border: 1px solid var(--glass-border); border-radius: 999px; color: var(--text-muted); font-size: .66rem; text-decoration: none; }
 .muse-lists-agenda-chip:hover { color: var(--foreground); border-color: var(--selected-border); }
 .muse-lists-aspiration a { color: var(--link-ink); }
+
+/* #12 follow-up: sections sit in columns instead of full-width rows — Auto fits as many as the width allows
+   (each at least ~320px), or the list's chosen 1, 2 or 3 columns. Phones always stack. */
+.muse-list-viewbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2) var(--space-3); }
+.muse-list-columns button { min-width: 2.6em; }
+.muse-list-sections { display: grid; gap: var(--space-3); align-items: start; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); }
+.muse-list-sections[data-columns="1"] { grid-template-columns: minmax(0, 1fr); }
+.muse-list-sections[data-columns="2"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.muse-list-sections[data-columns="3"] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.muse-list-sections > * { min-width: 0; margin: 0; }
+@container muse-content (max-width: 900px) { .muse-list-sections[data-columns="3"] { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@container muse-content (max-width: 620px) { .muse-list-sections[data-columns] { grid-template-columns: minmax(0, 1fr); } }
+
+/* #12 follow-up: Group by / Sort by sit beside the columns picker and wrap neatly on phones. */
+.muse-list-arrange { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-left: auto; }
+.muse-list-arrange .muse-choice-trigger { min-height: 36px; font-size: .8rem; }
+@container muse-content (max-width: 620px) { .muse-list-viewbar { justify-content: flex-start; } .muse-list-arrange { margin-left: 0; } }
+/* History's empty message spans the whole row (it was squeezed into the icon column). */
+.muse-list-history > .muse-list-history-empty { display: block; grid-column: 1 / -1; }
+/* Cards and sections let the theme's gradient ring run the full perimeter: list and section accents are drawn
+   inside the edge (an inset line) rather than as a thicker solid border that covered the ring. */
+.muse-list-section { border-left-width: 1px; box-shadow: inset 3px 0 0 var(--section-accent, var(--list-accent, var(--accent-primary))); }

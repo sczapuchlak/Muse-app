@@ -4,7 +4,7 @@ import { useId, useLayoutEffect, useRef, useState, useSyncExternalStore, type CS
 import { themeEntry, type ThemeId } from "@/lib/themes";
 import { readThemePreference, selectTheme, serverThemePreference, subscribeThemePreference } from "@/lib/theme-preference";
 import { readThemeOverride, serverThemeOverride, subscribeThemeOverride } from "@/lib/theme-override";
-import { materials, readMaterial, selectMaterial, serverMaterial, subscribeMaterial } from "@/lib/material-preference";
+import { offeredMaterials, readMaterial, selectMaterial, serverMaterial, subscribeMaterial } from "@/lib/material-preference";
 import {readMagic,serverMagic,subscribeMagic,magicLevels,selectMagic} from "@/lib/magic-preference";
 import { readApplied, serverApplied, subscribeApplied } from "@/lib/atelier/applied";
 import { MuseIcon } from "./MuseIcon";
@@ -43,7 +43,7 @@ export function ThemeSwitcher({compact=false,variant="pill"}:{compact?:boolean;v
       <GlassPopover id={menuId} label="Muse themes" role="menu" open={open} anchorRef={triggerRef} onClose={() => setOpen(false)} width={310} align="end">
         <div className="muse-theme-list" onKeyDown={(event) => themeListKeys(event, () => setOpen(false))}>
           <ThemeOptions value={activeId} applied={!!applied} onSelect={(id) => { selectTheme(id as ThemeId); close(); }} />
-          <div className="muse-theme-materials" role="group" aria-label="Glass material"><p className="small-label">Glass material</p>{materials.map((value) => <button key={value} type="button" className="muse-theme-option muse-edge" role="menuitemradio" tabIndex={-1} aria-label={`${value === "crystal" ? "Crystal" : "Frosted"} glass`} aria-checked={material === value} onClick={() => selectMaterial(value)}><span className="muse-material-swatch" data-material={value} aria-hidden="true" /><span>{value === "crystal" ? "Crystal" : "Frosted"}</span>{material === value && <MuseIcon name="check" size={16} />}</button>)}</div>
+          {offeredMaterials.length>1&&<div className="muse-theme-materials" role="group" aria-label="Glass material"><p className="small-label">Glass material</p>{offeredMaterials.map((value) => <button key={value} type="button" className="muse-theme-option muse-edge" role="menuitemradio" tabIndex={-1} aria-label={`${value === "crystal" ? "Crystal" : "Frosted"} glass`} aria-checked={material === value} onClick={() => selectMaterial(value)}><span className="muse-material-swatch" data-material={value} aria-hidden="true" /><span>{value === "crystal" ? "Crystal" : "Frosted"}</span>{material === value && <MuseIcon name="check" size={16} />}</button>)}</div>}
         </div>
         <div className="muse-theme-materials"><p className="editor-label">Muse Magic</p><div role="group" aria-label="Muse Magic">{magicLevels.map(value=><button key={value} type="button" className="choice-button" aria-pressed={magic===value} onClick={()=>selectMagic(value)}>{value[0].toUpperCase()+value.slice(1)}</button>)}</div><p className="small-label">Your device’s reduced-motion preference takes priority.</p><SoundToggle/></div>
       </GlassPopover>

@@ -15,7 +15,6 @@ import { MoodCheckInLayout } from './MoodCheckInLayout';
 import {useWellness,WellnessSaveStatus} from '../WellnessStore';
 import {useMuseToday} from '../useMuseToday';
 import Link from 'next/link';
-import {LittleMoment} from '../memories/LittleMoment';
 import {useMemoryRange} from '../memories/useMemories';
 import type {DailyMemory} from '@/lib/memories';
 import {MuseIconButton} from '../MuseIconButton';
@@ -53,8 +52,7 @@ export function Mood({embedded=false,onDateChange}:{embedded?:boolean;onDateChan
  return <Root className={embedded?'muse-mood-page':'muse-page muse-mood-page'} aria-labelledby={embedded?'mood-title':undefined}>{embedded?<h2 className="sr-only" id="mood-title">Mood</h2>:<MusePageHeader title="Mood"><DateNavigator date={date} onChange={setDate}/></MusePageHeader>}
 
  <DailyCapture date={date}><MoodCheckInLayout date={date} emotions={emotionCatalog}/></DailyCapture>
- {/* #105: the day's Little Moment, saved on its own (never part of Mood notes). */}
- <LittleMoment date={date}/>
+ {/* #12: the day's Little Moment lives in the Day Pulse card above (saved on its own, never part of Mood notes); it isn't repeated here. */}
  <div className="muse-mood-grid">
  <MuseCard id="mood-reflection" className="muse-mood-reflection"><CardHeading id="mood-reflection" title="A little reflection" icon="notes"><button className="muse-button button-ghost" type="button" onClick={()=>setPrompt((value)=>(value+1)%prompts.length)}>Another prompt</button></CardHeading><DailyCapture date={date}><ReflectionEditor date={date} prompt={prompts[prompt]}/></DailyCapture></MuseCard>
  <MuseCard id="mood-meter"><CardHeading id="mood-meter" title="Emotional Landscape" icon="mood"/><p className="card-description">Different families of feeling. More than one can belong.</p><div className="muse-mood-meter">{(['red','yellow','blue','green'] as EmotionQuadrant[]).map((key)=><div key={key} data-quadrant={key}><strong><i className="quadrant-dot"/>{moodQuadrants[key].label}</strong><small>{moodQuadrants[key].energy} energy · {moodQuadrants[key].pleasantness}</small><p>{emotionCatalog.filter((emotion)=>emotion.quadrant===key&&record.emotionIds.includes(emotion.id)).map((emotion)=>emotion.name).join(' · ')||'—'}</p></div>)}</div><p className="small-label">These are emotional families, separate from your Day Pulse Energy score.</p></MuseCard></div>

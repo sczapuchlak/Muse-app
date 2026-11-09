@@ -188,9 +188,13 @@ span.muse-stream-tag{cursor:default}
 .muse-stream-tag-icons input:focus-visible+span{outline:2px solid var(--focus-ring,var(--accent-primary));outline-offset:2px}
 .muse-stream-tag-confirm{display:inline-flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:.84rem}
 
-/* #104 Stream: composer and feed are the same size — two equal columns of the shared frosted card — and the
-   composer reads in clear groups: what you're saying, your mood, what you're sharing, who sees it. */
-.muse-stream-layout{grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}
+/* #12 Stream: one full-width column — the composer, then the feed — each a full-width card in the shared content
+   width, stacked vertically on every screen. The composer reads in clear groups: what you're saying, your mood,
+   what you're sharing, who sees it. */
+.muse-stream-layout{grid-template-columns:minmax(0,1fr);align-items:start}
+.muse-stream-create{position:static}
+.muse-stream-layout,.muse-stream-feedcol,.muse-stream-feed{gap:var(--grid-gap)}
+.muse-stream-post{border-radius:var(--card-radius);padding:var(--card-padding)}
 .muse-stream-feedcol{max-width:none}
 .muse-stream-feedcol .muse-empty-state[data-variant]{max-width:none;margin:0}
 .muse-stream-create .muse-stream-composer{border-radius:var(--card-radius)}
@@ -209,6 +213,5 @@ span.muse-stream-tag{cursor:default}
 .muse-stream-actions{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-top:12px;border-top:1px solid var(--divider)}
 .muse-stream-options,.muse-stream-buttons{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 @media (pointer:coarse){.muse-stream-audience>button{min-height:44px}}
-@media (max-width:1060px){.muse-stream-layout{grid-template-columns:minmax(0,1fr)}}
 @media (max-width:420px){.muse-stream-audience{grid-template-columns:minmax(0,1fr)}}
 .muse-stream-feedhead{flex-wrap:nowrap;min-height:44px}.muse-stream-feedhead .muse-stream-filters{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;min-width:0;justify-content:flex-end}.muse-stream-feedhead .muse-stream-filters::-webkit-scrollbar{display:none}.muse-stream-feedhead .muse-stream-filters>button{flex:none}.muse-stream-create>.muse-stream-col-title{min-height:44px;display:flex;align-items:center;margin:0}

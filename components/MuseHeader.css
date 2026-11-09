@@ -17,3 +17,7 @@
 
 .muse-daily-header-right { display:grid; grid-template-columns:minmax(0,1fr); grid-auto-rows:auto; align-items:start; gap:var(--space-2); width:100%; min-width:0; }
 .muse-daily-header-right > :is(.date-navigation,.muse-week-strip) { width:100%; max-width:none; margin:0; grid-column:1; }
+/* #12: the greeting wraps, so its stars sit inline after the last word — the same "right after the title" placement
+   as every other page — instead of after the greeting's (wider) box or pinned to the far edge. */
+.muse-inline-signature{display:inline-flex;vertical-align:middle;margin-left:.4em;padding:0}
+.muse-editorial-header .muse-inline-signature{margin-left:.45em}

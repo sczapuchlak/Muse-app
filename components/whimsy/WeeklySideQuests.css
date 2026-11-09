@@ -130,3 +130,8 @@
 /* Safari: keep the hover glint clipped to the card while it lifts (it can escape overflow:hidden during the
    transform). */
 .muse-quest-card{contain:paint}
+/* #12: progress, the week and its countdown read as one cluster — count on top, week context beneath it. */
+.muse-quest-progress-cluster{display:grid;justify-items:end;gap:4px;flex:none;text-align:right}
+.muse-quest-progress-cluster>span:first-child{color:var(--information-accent,var(--accent));font-weight:700}
+.muse-quest-progress-cluster .muse-quest-week-context{font-size:.8rem;color:var(--text-muted)}
+@media(max-width:600px){.muse-quest-progress-cluster{justify-items:start;text-align:left}.muse-quest-progress-cluster .muse-quest-week-context{justify-content:flex-start}}

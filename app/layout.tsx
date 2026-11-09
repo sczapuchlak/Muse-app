@@ -52,7 +52,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="en"
       data-theme={defaultTheme.id}
-      data-material="crystal"
+      data-material="frosted"
       style={motionTokens}
       className={`${interfaceSans.variable} ${editorialSerif.variable} h-full antialiased`}
       suppressHydrationWarning

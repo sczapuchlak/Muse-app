@@ -293,6 +293,9 @@ export const officialTokenValues:Record<string,Record<string,string>>={
   "--tone-card-ink": "#0b2440",
   "--tone-card-muted": "#3d5872",
   "--tone-card-accent": "#7a2a8f",
+  "--tone-card-ink-purple": "#5b3fd6",
+  "--tone-card-ink-aqua": "#00718a",
+  "--tone-card-ink-pink": "#b3175f",
   "--tone-card-icon-1": "#c2186b",
   "--tone-card-icon-2": "#5b3fd6",
   "--tone-card-icon-3": "#00788f"

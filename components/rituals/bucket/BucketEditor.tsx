@@ -12,6 +12,8 @@ import {completeEntry,defaultYearColor,range,reopenEntry,yearColor,yearOf,yearPa
 import {BucketPhoto,PhotoFramer,YearSwatch} from './BucketViews';
 import '../aspirations/Aspirations.css';
 
+/** #12: dreams are short, card-sized titles. Longer titles saved earlier are kept as they are (never cut). */
+export const BUCKET_TITLE_MAX=26;
 export function blankEntry(number:number,position:number):BucketEntry{
  const now=new Date().toISOString();
  return {id:crypto.randomUUID(),number,position,title:'',notes:null,category:null,tags:[],icon:null,status:'dreaming',targetYear:null,links:[],cover:null,aspirationId:null,
@@ -64,11 +66,11 @@ export function BucketEditor({initial,list,today,categories,aspirations,busy,err
  const isNew=initial.revision===0,done=e.status==='completed',thisYear=Number(today.slice(0,4));
  const linked=aspirations.find(a=>a.id===e.aspirationId)??null;
  const allCategories=[...new Set([...bucketCategories,...categories])];
- const problem=!e.title.trim()?'Give it a name.':done&&(!e.completedOn||e.completedOn>today)?'Choose a completion date on or before today.':'';
+ const problem=!e.title.trim()?'Give it a name.':e.title.length>BUCKET_TITLE_MAX&&e.title!==initial?.title&&e.title.length>(initial?.title.length??0)?`Keep it to ${BUCKET_TITLE_MAX} characters.`:done&&(!e.completedOn||e.completedOn>today)?'Choose a completion date on or before today.':'';
  function submit(){if(problem)return;const tags=tagText.split(/[\s,]+/).map(t=>t.replace(/^#/,'').trim()).filter(Boolean);onSave({...e,tags});}
  return <MuseModal id="bucket-editor" label={isNew?'New dream':'Edit dream'} title={isNew?'A new dream':'Edit dream'} returnFocus={null} onClose={onClose} size="tall">
   <form className="muse-aspiration-form muse-bucket-form" data-scroll onSubmit={ev=>{ev.preventDefault();submit();}}><div className="muse-bucket-form-body">
-   <label>The dream<input id="bucket-title" required maxLength={200} value={e.title} placeholder="See the northern lights" autoFocus onChange={ev=>set({title:ev.target.value})}/></label>
+   <label>The dream<input id="bucket-title" required maxLength={Math.max(BUCKET_TITLE_MAX,initial?.title.length??0)} value={e.title} placeholder="See the northern lights" autoFocus aria-describedby="bucket-title-count" onChange={ev=>set({title:ev.target.value})}/><small id="bucket-title-count" className="muse-bucket-count" data-over={e.title.length>BUCKET_TITLE_MAX||undefined} aria-live="polite">{e.title.length} / {BUCKET_TITLE_MAX}{e.title.length>BUCKET_TITLE_MAX?' · saved before the limit; shorten it if you like':''}</small></label>
    <div className="muse-aspiration-row">
     <div><p className="editor-label">Hoping for</p><MuseChoiceMenu label="Hoping for" valueLabel={e.targetYear?String(e.targetYear):'Someday'}
      options={[{id:'',label:'Someday'},...range(Math.min(thisYear,list.horizonStart),Math.max(list.horizonEnd,e.targetYear??0,thisYear+10)).map(y=>({id:String(y),label:String(y)}))]} selectedIds={[e.targetYear?String(e.targetYear):'']} onSelect={id=>set({targetYear:id?Number(id):null})}/></div>

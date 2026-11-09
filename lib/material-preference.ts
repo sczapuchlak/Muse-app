@@ -3,10 +3,16 @@ export type Material = typeof materials[number];
 export const MATERIAL_STORAGE_KEY = "muse.material";
 const changeEvent = "muse-material-change";
 let sessionMaterial: Material | null = null;
-export const serverMaterial = (): Material => "crystal";
+/**
+ * #12: Crystal is temporarily hidden while its button and surface states are refined; Frosted is the only material
+ * offered. A saved "crystal" choice is kept as saved but shows as Frosted. Add "crystal" back here to offer it again.
+ */
+export const offeredMaterials: readonly Material[] = ["frosted"];
+export const effectiveMaterial = (value: string | null | undefined): Material => (offeredMaterials as readonly string[]).includes(value ?? "") ? value as Material : "frosted";
+export const serverMaterial = (): Material => "frosted";
 export function readMaterial(): Material {
-  if (sessionMaterial) return sessionMaterial;
-  try { return window.localStorage.getItem(MATERIAL_STORAGE_KEY) === "frosted" ? "frosted" : "crystal"; } catch { return "crystal"; }
+  if (sessionMaterial) return effectiveMaterial(sessionMaterial);
+  try { return effectiveMaterial(window.localStorage.getItem(MATERIAL_STORAGE_KEY) ?? "frosted"); } catch { return "frosted"; }
 }
 export function selectMaterial(material: Material) {
   sessionMaterial = material;

@@ -32,7 +32,7 @@ function shape(ritual:RitualDefinition,connection:RitualConnection,day:DayMeasur
  return Math.round(day.value*100)/100;
 }
 
-export function derivedValues(ritual:RitualDefinition,sources:ProgressSources,today:string,cache=new Map<string,Map<string,DayMeasure>>()):{values:DerivedValue[];available:boolean;issue?:string}{
+export function derivedValues(ritual:RitualDefinition,sources:ProgressSources,today:string,cache=new Map<string,Map<string,DayMeasure>>(),/** Dates with a stored (manual) entry. */manual?:Set<string>):{values:DerivedValue[];available:boolean;issue?:string}{
  const connection=ritual.connection;
  if(!connection||!validConnection(ritual,connection))return {values:[],available:false};
  const key=JSON.stringify(connectionSpec(connection));
@@ -40,7 +40,10 @@ export function derivedValues(ritual:RitualDefinition,sources:ProgressSources,to
  if(!days){const measured=measureDays(connectionSpec(connection),sources);days=measured.days;issue=measured.issue;available=measured.available;if(measured.available)cache.set(key,days);}
  const values:DerivedValue[]=[];
  for(const day of days.values()){
-  if(day.date<connection.since||day.date>today||!isScheduled(ritual,day.date))continue;
+  // Water (#12): days before the connection date also use the saved intake (evidence only) unless a manual entry
+  // already exists for that day — manual history always wins before `since`.
+  if(day.date>today||!isScheduled(ritual,day.date))continue;
+  if(day.date<connection.since&&(connection.metric!=='water'||manual?.has(day.date)))continue;
   const shared=connection.followGoal&&connection.metric==='water'?waterGoalFor(sources,day.date,connection.unit??'oz'):undefined;
   const value=shape(ritual,connection,day,shared),goal=ritual.type==='checkbox'?undefined:shared;
   if(value>0&&value<=1000000)values.push({ritualId:ritual.id,date:day.date,value,measured:day.value,recordIds:day.recordIds,incomplete:!day.complete,...(goal?{goal}:{})});
@@ -56,13 +59,16 @@ export function withConnections(state:RitualState,sources:ProgressSources,today:
  const derived=new Map<string,DerivedValue>(),cache=new Map<string,Map<string,DayMeasure>>(),issues:string[]=[];let unavailable=false;
  const connected=state.rituals.filter(r=>r.connection);
  if(!connected.length||!validDate(today))return {state,derived,issues,unavailable};
- for(const ritual of connected){const result=derivedValues(ritual,sources,today,cache);if(!result.available)unavailable=true;if(result.issue)issues.push(result.issue);for(const value of result.values)derived.set(`${value.ritualId}/${value.date}`,value);}
+ for(const ritual of connected){const result=derivedValues(ritual,sources,today,cache,manualDates(state,ritual.id));if(!result.available)unavailable=true;if(result.issue)issues.push(result.issue);for(const value of result.values)derived.set(`${value.ritualId}/${value.date}`,value);}
  const entries:RitualEntry[]=state.entries.filter(e=>!derived.has(`${e.ritualId}/${e.date}`));
  for(const value of derived.values())entries.push({id:`${value.ritualId}/${value.date}`,ritualId:value.ritualId,date:value.date,value:value.value,updatedAt:'',derived:true,...(value.goal?{goal:value.goal}:{})});
  return {state:{...state,entries},derived,issues,unavailable};
 }
 
 /** Entries to store when a connection ends or changes: exactly the derived values that were being shown. */
-export function materializeConnection(ritual:RitualDefinition,sources:ProgressSources,today:string){
- return derivedValues(ritual,sources,today).values.map(v=>({date:v.date,value:v.value}));
+export function materializeConnection(ritual:RitualDefinition,sources:ProgressSources,today:string,state?:RitualState){
+ return derivedValues(ritual,sources,today,undefined,state?manualDates(state,ritual.id):undefined).values.map(v=>({date:v.date,value:v.value}));
 }
+const manualDates=(state:RitualState,ritualId:string)=>new Set(state.entries.filter(e=>e.ritualId===ritualId&&!e.derived).map(e=>e.date));
+/** Earliest day with recorded water intake (connecting water can include history from here). */
+export const firstWaterDay=(sources:ProgressSources)=>sources.wellness?.water.filter(d=>(d.total??0)>0).map(d=>d.date).sort()[0];

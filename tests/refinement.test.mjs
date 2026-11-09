@@ -27,10 +27,13 @@ test('material preference restores independently, updates immediately and tolera
     let preference=load('lib/material-preference',true);
     assert.equal(preference.readMaterial(),'frosted');
     let updates=0; const stop=preference.subscribeMaterial(()=>updates++);
-    preference.selectMaterial('crystal'); assert.equal(preference.readMaterial(),'crystal');
+    // #12: Crystal is hidden for now — a saved "crystal" stays saved but shows as Frosted; Frosted is the only offer.
+    assert.deepEqual([...preference.offeredMaterials],['frosted']);
+    preference.selectMaterial('crystal'); assert.equal(preference.readMaterial(),'frosted'); assert.equal(storage.get('muse.material'),'crystal');
     preference.selectMaterial('frosted'); assert.equal(updates,2); stop();
     preference=load('lib/material-preference',true); assert.equal(preference.readMaterial(),'frosted');
-    storage.set('muse.material','unknown'); assert.equal(preference.readMaterial(),'crystal');
+    storage.set('muse.material','crystal'); assert.equal(preference.readMaterial(),'frosted');
+    storage.set('muse.material','unknown'); assert.equal(preference.readMaterial(),'frosted');
     window.localStorage.setItem=()=>{throw Error('blocked');};
     preference.selectMaterial('frosted'); assert.equal(preference.readMaterial(),'frosted');
     assert.equal(storage.get('muse.theme'),undefined);

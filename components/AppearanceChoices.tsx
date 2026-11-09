@@ -2,7 +2,7 @@
 import {useSyncExternalStore,type CSSProperties} from 'react';
 import {themes} from '@/lib/themes';
 import {readThemePreference,serverThemePreference,subscribeThemePreference,selectTheme} from '@/lib/theme-preference';
-import {materials,readMaterial,serverMaterial,subscribeMaterial,selectMaterial} from '@/lib/material-preference';
+import {offeredMaterials,readMaterial,serverMaterial,subscribeMaterial,selectMaterial} from '@/lib/material-preference';
 import {MuseIcon} from './MuseIcon';
 import {readApplied,serverApplied,subscribeApplied} from '@/lib/atelier/applied';
 import './AppearanceSettings.css';
@@ -16,5 +16,5 @@ export function ThemeChoices(){
 /** Crystal or Frosted glass, stored in this browser like the theme. */
 export function MaterialChoices({label='Glass material'}:{label?:string}){
  const material=useSyncExternalStore(subscribeMaterial,readMaterial,serverMaterial);
- return <div role="group" aria-label={label}>{materials.map((value)=><button className="choice-button" type="button" key={value} aria-pressed={material===value} onClick={()=>selectMaterial(value)}>{value==='crystal'?'Crystal':'Frosted'}</button>)}</div>;
+ return <div role="group" aria-label={label}>{offeredMaterials.map((value)=><button className="choice-button" type="button" key={value} aria-pressed={material===value} onClick={()=>selectMaterial(value)}>{value==='crystal'?'Crystal':'Frosted'}</button>)}</div>;
 }

@@ -463,3 +463,30 @@ button.muse-mark{cursor:pointer}button.muse-mark:focus-visible{outline:2px solid
 .muse-agenda-week{scrollbar-width:none;-ms-overflow-style:none}
 .muse-agenda-week::-webkit-scrollbar{display:none;width:0;height:0}
 
+
+/* #12 Future Log mini calendars: compact, theme-aware. Highlighted days are Future Log entries only; a trip is one
+   continuous band with rounded ends. Several plans on a day add a small dot instead of more color. */
+.muse-future-mini{margin:2px 0 4px}
+.muse-future-mini-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));row-gap:2px;font-size:.66rem;line-height:1;font-variant-numeric:tabular-nums;text-align:center}
+.muse-future-mini-weekday{padding-bottom:3px;color:var(--text-muted);font-size:.58rem;letter-spacing:.04em}
+.muse-future-mini-day{position:relative;display:grid;place-items:center;height:20px;color:color-mix(in srgb,var(--text-muted) 85%,transparent)}
+button.muse-future-mini-day{all:unset;box-sizing:border-box;position:relative;display:grid;place-items:center;height:20px;cursor:pointer;font-weight:600;color:var(--foreground);
+  background:color-mix(in srgb,var(--item-accent) 22%,transparent);touch-action:manipulation}
+button.muse-future-mini-day[data-start]{border-top-left-radius:999px;border-bottom-left-radius:999px}
+button.muse-future-mini-day[data-end]{border-top-right-radius:999px;border-bottom-right-radius:999px}
+button.muse-future-mini-day[data-start][data-end]{background:color-mix(in srgb,var(--item-accent) 30%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--item-accent) 55%,transparent)}
+button.muse-future-mini-day[data-many]::after{content:"";position:absolute;top:2px;right:3px;width:4px;height:4px;border-radius:50%;background:var(--foreground);opacity:.7}
+button.muse-future-mini-day:hover,button.muse-future-mini-day[aria-expanded=true]{background:color-mix(in srgb,var(--item-accent) 42%,transparent)}
+button.muse-future-mini-day:focus-visible{outline:2px solid var(--accent-primary);outline-offset:1px;z-index:2}
+.muse-future-mini-tip{position:absolute;bottom:calc(100% + 6px);left:50%;z-index:5;display:none;width:max-content;max-width:220px;padding:6px 8px;border:1px solid var(--glass-border);border-radius:10px;
+  background:linear-gradient(var(--floating-background),var(--floating-background)),var(--background);color:var(--foreground);box-shadow:var(--floating-shadow);font-size:.68rem;font-weight:400;line-height:1.35;text-align:left;transform:translateX(-50%);pointer-events:none}
+.muse-future-mini-tip>span{display:block;overflow-wrap:anywhere}.muse-future-mini-tip strong{font-weight:600}
+button.muse-future-mini-day:is([data-col="0"],[data-col="1"]) .muse-future-mini-tip{left:0;transform:none}
+button.muse-future-mini-day:is([data-col="5"],[data-col="6"]) .muse-future-mini-tip{left:auto;right:0;transform:none}
+@media (hover:hover){button.muse-future-mini-day:is(:hover,:focus-visible):not([aria-expanded=true]) .muse-future-mini-tip{display:block}}
+.muse-future-mini-list{display:grid;gap:4px;margin:0;padding:0;list-style:none}
+.muse-future-mini-list button{all:unset;box-sizing:border-box;display:flex;align-items:center;gap:8px;width:100%;padding:8px;border-radius:10px;cursor:pointer;min-height:var(--touch-target)}
+.muse-future-mini-list button:hover{background:var(--hover-background,color-mix(in srgb,var(--accent-primary) 10%,transparent))}
+.muse-future-mini-list button:focus-visible{outline:2px solid var(--accent-primary);outline-offset:-2px}
+.muse-future-mini-list span{display:grid;min-width:0}.muse-future-mini-list small{color:var(--text-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.muse-agenda-log-month:has(.muse-future-mini-tip){overflow:visible}

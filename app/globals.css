@@ -14,6 +14,9 @@
   --page-padding: 24px;
   --card-radius: 22px;
   --card-padding: 20px;
+  /* Shared card header rhythm: title row height and the space between a header (and its accent line) and content. */
+  --card-heading-row: 28px;
+  --card-heading-gap: var(--space-4);
   --grid-gap: 16px;
   --space-1: 4px;
   --space-2: 8px;
@@ -136,7 +139,10 @@ p { margin: 0; }
 .priorities-card > .muse-daily-capture { display:block; width:100%; }
 .schedule-card { grid-column: span 7; }
 .meals-card { grid-column: span 5; }
-.card-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2) var(--space-3); }
+.card-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2) var(--space-3); min-height: var(--card-heading-row); }
+/* Header actions (Manage, Open Planner) keep their full touch target but overlap the card padding instead of
+   growing the row, so every card title sits the same distance from the card's top edge. */
+.card-heading > .muse-card-heading-actions { margin-block: calc((var(--card-heading-row) - var(--touch-target)) / 2); }
 .card-heading h2 {
   display: flex;
   align-items: center;
@@ -571,6 +577,11 @@ input[type="search"] { padding:var(--space-2) var(--space-3); line-height:1.45; 
   :is(input:not([type="checkbox"], [type="radio"], [type="range"], [type="color"], [type="file"]), textarea, select) { font-size: max(16px, 1em) !important; } /* a floor, so it must beat component sizes */
 }
 html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+/* #12 iPhone PWA: no double-tap zoom anywhere (pinch-zoom and text scaling stay available), and decorations or
+   hidden tooltips that poke past the edge never make the page scroll sideways. `clip` keeps sticky headers working. */
+html { touch-action: manipulation; }
+body, main { overflow-x: clip; }
+@media (pointer: coarse) { [contenteditable="true"] { font-size: max(16px, 1em); } }
 
 /* #104 §3 Dropdown consistency, at the root: where the browser supports customizable <select> (Chromium), every
    remaining native select opens a Muse-styled list — glass panel, same hover/selected/focus states as MuseChoiceMenu —
@@ -590,4 +601,22 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
   select option:checked { border-color: var(--selected-border); color: var(--selected-text, var(--foreground)); background: var(--selected-background); }
   select option::checkmark { color: var(--accent-primary); }
   select option:disabled { opacity: .5; }
+}
+
+/* #12 Shared filter toolbar: search, dates, dropdowns and view toggles in one row with one control height and
+   predictable wrapping. Pages add `muse-filter-toolbar` instead of their own grid/flex rules, so alignment can't drift. */
+:root { --toolbar-control-height: 44px; }
+.muse-filter-toolbar { display:flex; flex-wrap:wrap; align-items:center; gap:var(--space-2) var(--space-3); min-width:0; }
+.muse-filter-toolbar > * { flex:0 1 auto; min-width:0; margin:0; }
+.muse-filter-toolbar > :is(.muse-search, .muse-whimsy-search) { flex:1 1 260px; }
+.muse-filter-toolbar :is(.muse-choice-trigger, .muse-search, .muse-filter-field) { min-height:var(--toolbar-control-height); height:var(--toolbar-control-height); box-sizing:border-box; }
+.muse-filter-toolbar > .muse-segmented { min-height:var(--toolbar-control-height); box-sizing:border-box; align-self:center; }
+.muse-filter-field { display:inline-flex; align-items:center; gap:var(--space-2); padding:0 var(--space-2) 0 var(--space-3); border:1px solid var(--glass-border); border-radius:var(--control-radius); background:var(--surface-control); color:var(--foreground); }
+.muse-filter-field > span { flex:none; font-size:.74rem; color:var(--text-muted); white-space:nowrap; }
+.muse-filter-field > input { flex:1 1 auto; min-width:0; height:100%; min-height:0; margin:0; padding:0; border:0; background:transparent; color:inherit; font:inherit; font-size:.85rem; }
+.muse-filter-field:focus-within { border-color:var(--focus-ring); }
+@media (max-width:600px) {
+  .muse-filter-toolbar > * { flex:1 1 calc(50% - var(--space-2)); }
+  .muse-filter-toolbar > :is(.muse-search, .muse-whimsy-search, .muse-segmented, .muse-filter-field) { flex-basis:100%; }
+  .muse-filter-toolbar .muse-choice-trigger { width:100%; }
 }
