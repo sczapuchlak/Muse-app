@@ -19,12 +19,19 @@
   /* Future Log months are cards too: the one card surface, not a translucent wash. */
   & .muse-agenda-log-month { background-color: var(--glass-background); }
 
+  /* Tiles and control bars that sit directly on the canvas are frosted cards too (found by a page-by-page audit). */
+  & :is(.muse-collections-card, .muse-collections-active-card, .muse-glance-mini, .muse-cosmic-library-intro, .muse-cosmic-collection, .muse-cosmic-tile, .muse-cosmic-forecast-sign, .muse-dream-library-hero, .muse-dream-result, .muse-little-moment, .muse-appearance-theme, .muse-cosmic-lunar-strip, .muse-cosmic-month-grid, .muse-cosmic-calendar-selected, .muse-cosmic-featured-event, .date-navigation, .muse-segmented, .muse-search):not(#\#) { /* :not(#\#) outranks per-component washes */
+    background-color: var(--glass-background);
+    -webkit-backdrop-filter: blur(var(--material-blur)) saturate(var(--material-saturation));
+    backdrop-filter: blur(var(--material-blur)) saturate(var(--material-saturation));
+  }
+
   /* Thin luminous outline in the theme's gradient sequence. A masked ring, so the card fill stays one calm colour. */
-  & :is(.muse-card, .muse-agenda-log-month, .muse-planning-rail, .muse-planner-surface, .muse-insight-panel, .muse-money-panel, .muse-notes-workspace, .muse-ritual-group) {
+  & :is(.muse-card, .muse-agenda-log-month, .muse-planning-rail, .muse-planner-surface, .muse-insight-panel, .muse-money-panel, .muse-notes-workspace, .muse-ritual-group, .muse-collections-card, .muse-collections-active-card, .muse-glance-mini, .muse-cosmic-library-intro, .muse-cosmic-collection, .muse-cosmic-tile, .muse-cosmic-forecast-sign, .muse-dream-library-hero, .muse-dream-result, .muse-little-moment, .muse-appearance-theme, .muse-cosmic-lunar-strip, .muse-cosmic-month-grid, .muse-cosmic-calendar-selected, .muse-cosmic-featured-event) {
     position: relative;
     border-color: transparent;
   }
-  & :is(.muse-card, .muse-agenda-log-month, .muse-planning-rail, .muse-planner-surface, .muse-insight-panel, .muse-money-panel, .muse-notes-workspace, .muse-ritual-group)::after {
+  & :is(.muse-card, .muse-agenda-log-month, .muse-planning-rail, .muse-planner-surface, .muse-insight-panel, .muse-money-panel, .muse-notes-workspace, .muse-ritual-group, .muse-collections-card, .muse-collections-active-card, .muse-glance-mini, .muse-cosmic-library-intro, .muse-cosmic-collection, .muse-cosmic-tile, .muse-cosmic-forecast-sign, .muse-dream-library-hero, .muse-dream-result, .muse-little-moment, .muse-appearance-theme, .muse-cosmic-lunar-strip, .muse-cosmic-month-grid, .muse-cosmic-calendar-selected, .muse-cosmic-featured-event)::after {
     content: "";
     position: absolute;
     inset: -1px;
@@ -41,7 +48,7 @@
 
 /* Light cards on a dark canvas (Midnight Ballerina, Pretty Toxic): everything painted with the card surface re-points
    its text, links, chart inks and nested tints to the card's own ink, so components stay readable unchanged. */
-:root:is([data-theme="astral"],[data-theme="nightbloom"]) :is(.muse-card, .muse-agenda-log-month, .muse-appearance-theme, .muse-thought-capture, .muse-thought-card, .muse-glance-moves, .muse-glance-waterline, .muse-glance-yearstats li, .muse-insight-panel, .muse-money-panel, .muse-mood-history-list > li, .muse-notes-workspace, .muse-grocery-section, .muse-nourish-week, .muse-saved-meal, .muse-saved-meals-drawer, .muse-reflections-picker, .muse-series-hero, .muse-series-rows, .muse-stream-post, .muse-review-card, .muse-quest-card, .muse-quest-history details, .muse-planning-rail, .muse-day-drop, .muse-planner-surface, .muse-ritual-group, .muse-nourish-day, .muse-popover-panel, .muse-drawer, .muse-modal) {
+:root:is([data-theme="astral"],[data-theme="nightbloom"]) :is(.muse-collections-controls, .muse-empty-state, .muse-tarot-ritual, .muse-fortune-stage, .muse-books-panel, .muse-hero, .muse-panel, .muse-collections-card, .muse-collections-active-card, .muse-glance-mini, .muse-cosmic-library-intro, .muse-cosmic-collection, .muse-cosmic-tile, .muse-cosmic-forecast-sign, .muse-dream-library-hero, .muse-dream-result, .muse-little-moment, .muse-appearance-theme, .muse-cosmic-lunar-strip, .muse-cosmic-month-grid, .muse-cosmic-calendar-selected, .muse-cosmic-featured-event, .date-navigation, .muse-segmented, .muse-search, .muse-card, .muse-agenda-log-month, .muse-appearance-theme, .muse-thought-capture, .muse-thought-card, .muse-glance-moves, .muse-glance-waterline, .muse-glance-yearstats li, .muse-insight-panel, .muse-money-panel, .muse-mood-history-list > li, .muse-notes-workspace, .muse-grocery-section, .muse-nourish-week, .muse-saved-meal, .muse-saved-meals-drawer, .muse-reflections-picker, .muse-series-hero, .muse-series-rows, .muse-stream-post, .muse-review-card, .muse-quest-card, .muse-quest-history details, .muse-planning-rail, .muse-day-drop, .muse-planner-surface, .muse-ritual-group, .muse-nourish-day, .muse-popover-panel, .muse-drawer, .muse-modal) {
   color: var(--tone-card-ink);
   --foreground: var(--tone-card-ink);
   --text-muted: var(--tone-card-muted);
