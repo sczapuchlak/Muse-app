@@ -131,10 +131,11 @@ export async function googleWrite(body: Record<string, unknown>) {
 }
 /** "Allow editing": adds calendar.events to what was granted, then comes back to `next`. */
 export const allowEditingHref = (next: string) => `/api/google/connect?write=1&next=${encodeURIComponent(next)}`;
-/** Calendars Muse could write to, with whether editing is already allowed on their connection. */
+/** Calendars Muse could write to: editable in Google AND shown in Muse. Hiding a calendar in Settings also keeps it out of
+ *  every "Save to" / "Also add to Google" choice, so a calendar you never want touched can simply stay hidden. */
 export function useGoogleDestinations() {
   const s = useGoogleCalendar();
-  return useMemo(() => s.calendars.filter((c) => writableRole(c.access_role)).map((c) => {
+  return useMemo(() => s.calendars.filter((c) => c.visible && writableRole(c.access_role)).map((c) => {
     const conn = s.connections.find((x) => x.id === c.connection_id);
     return { ...c, email: conn?.email ?? "", editing: !!conn && canWrite(conn), reconnect: conn?.status === "needs-reconnect" };
   }), [s.calendars, s.connections]);

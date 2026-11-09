@@ -157,7 +157,7 @@ test('linked copies: edits carry the last etag; a Google-side change becomes a c
  assert.equal(admin.db.google_event_links[0].state,'synced');
 });
 test('sync: Agenda hides a Muse event\'s Google copy (shown once), background sync is secret-only and budgeted',()=>{
- const store=read('components/google/GoogleCalendarStore.ts');assert.match(store,/mirrored\.has\(`\$\{key\}\|\$\{r\.event_id\}`\)/);assert.doesNotMatch(store,/google_tokens|refresh|GOOGLE_/);
+ const store=read('components/google/GoogleCalendarStore.ts');assert.match(store,/s\.calendars\.filter\(\(c\) => c\.visible && writableRole\(c\.access_role\)\)/,'hidden calendars are never write targets');assert.match(store,/mirrored\.has\(`\$\{key\}\|\$\{r\.event_id\}`\)/);assert.doesNotMatch(store,/google_tokens|refresh|GOOGLE_/);
  const cron=read('app/api/google/cron/route.ts');assert.match(cron,/timingSafeEqual/);assert.match(cron,/secret\.length < 32/);assert.match(cron,/status: 404/);
  assert.match(read('lib/auth/paths.ts'),/"\/api\/google\/cron"/);
  const sql=read('supabase/migrations/20261202000300_google_calendar_write.sql');
