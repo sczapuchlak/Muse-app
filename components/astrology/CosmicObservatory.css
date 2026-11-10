@@ -140,3 +140,8 @@
 .muse-cosmic-dialog .muse-cosmic-entry-sections>section{background:color-mix(in srgb,var(--accent-primary) 5%,var(--surface-subtle))}
 .muse-cosmic-dialog .muse-cosmic-entry-sections>section h4{margin-bottom:4px}
 @media(max-width:650px){.muse-cosmic-dialog .muse-cosmic-entry-hero{padding:0 0 4px}.muse-cosmic-placement-facts,.muse-cosmic-dialog .muse-cosmic-notice,.muse-cosmic-dialog .muse-cosmic-entry-sections>section{padding:12px 14px}}
+.muse-chart-saved{display:grid;gap:.75rem}
+.muse-chart-saved ul{list-style:none;margin:0;padding:0;display:grid;gap:.5rem}
+.muse-chart-saved li{display:flex;align-items:center;flex-wrap:wrap;gap:.4rem 1rem;padding:.65rem .75rem;border:1px solid var(--border);border-radius:var(--radius-md)}
+.muse-chart-saved li>span{color:var(--muted-foreground);font-size:.86rem}
+.muse-chart-saved li .muse-cosmic-actions{margin-inline-start:auto}

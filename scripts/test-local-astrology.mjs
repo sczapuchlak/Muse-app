@@ -13,6 +13,14 @@ try{
  const a=await owner(),b=await owner(),commandId=uuid(),profileId=uuid(),chartId=uuid(),record={id:profileId,chartId,profile,chart:calculateNatal(profile)};
  const write=(owner,operation,p_record,expected=0,id=uuid(),userId=owner.id)=>owner.client.rpc('write_astrology',{p_user_id:userId,p_operation:operation,p_record,p_expected_revision:expected,p_command_id:id});
  assert.ok((await anon.rpc('read_astrology')).error);assert.ok((await b.client.from('astrology_birth_profiles').insert({user_id:a.id,id:uuid(),payload:profile})).error);
+ const comparisonId=uuid(),comparison={user_id:a.id,id:comparisonId,name:'A friend',payload:profile};
+ assert.ok((await anon.from('astrology_comparison_profiles').select('id')).error);
+ assert.ok((await b.client.from('astrology_comparison_profiles').insert(comparison)).error);
+ assert.equal(must(await a.client.from('astrology_comparison_profiles').insert(comparison).select('revision').single()).revision,1);
+ assert.equal(must(await b.client.from('astrology_comparison_profiles').select('id').eq('id',comparisonId)).length,0);
+ assert.equal(must(await a.client.from('astrology_comparison_profiles').update({name:'A sibling',revision:2}).eq('id',comparisonId).eq('revision',1).select('revision').single()).revision,2);
+ assert.equal(must(await a.client.from('astrology_comparison_profiles').update({name:'Stale',revision:3}).eq('id',comparisonId).eq('revision',1).select()).length,0);
+ assert.equal(must(await a.client.from('astrology_comparison_profiles').delete().eq('id',comparisonId).eq('revision',2).select('id')).length,1);
  assert.ok((await write(b,'profile-save',record,0,uuid(),a.id)).error);
  const saved=must(await write(a,'profile-save',record,0,commandId));assert.equal(saved.revision,1);
  assert.deepEqual(must(await write(a,'profile-save',{...record,chart:{...record.chart,calculatedAt:new Date().toISOString()}},0,commandId)),saved);
@@ -34,6 +42,6 @@ try{
  must(await write(a,'profile-delete',{confirmation:'DELETE'},2));snapshot=must(await a.client.rpc('read_astrology'));assert.equal(snapshot.profile,null);assert.equal(snapshot.chart,null);assert.equal(snapshot.journal.length,1);assert.equal(snapshot.activity.filter(row=>row.kind.startsWith('chart-')).length,0);
  must(await write(a,'journal-delete',{id:journal.id},2));assert.equal(must(await a.client.rpc('read_astrology')).journal.length,0);
  must(await write(a,'history-clear',{confirmation:'DELETE'}));assert.equal(must(await a.client.rpc('read_astrology')).activity.length,0);
- const cascadeId=uuid();must(await write(b,'profile-save',{id:uuid(),chartId:uuid(),profile,chart:calculateNatal(profile)}));must(await write(b,'journal-save',{...journal,id:cascadeId}));must(await write(b,'activity',{kind:'library-viewed',reference_id:'sign-aries'}));must(await admin.auth.admin.deleteUser(b.id));users.splice(users.indexOf(b.id),1);for(const table of ['astrology_birth_profiles','astrology_natal_charts','astrology_journal_entries','astrology_activity'])assert.equal(must(await admin.from(table).select('user_id').eq('user_id',b.id)).length,0);
- console.log('PASS local Observatory profile/chart/journal CRUD, revisions, idempotency, restart persistence, preferences, deduplicated activity, owner isolation, anonymous/direct-write denial, scoped deletion, populated account-deletion cascades and history clearing.');
+ const cascadeId=uuid();must(await write(b,'profile-save',{id:uuid(),chartId:uuid(),profile,chart:calculateNatal(profile)}));must(await write(b,'journal-save',{...journal,id:cascadeId}));must(await write(b,'activity',{kind:'library-viewed',reference_id:'sign-aries'}));must(await b.client.from('astrology_comparison_profiles').insert({user_id:b.id,id:uuid(),name:'Family',payload:profile}));must(await admin.auth.admin.deleteUser(b.id));users.splice(users.indexOf(b.id),1);for(const table of ['astrology_birth_profiles','astrology_natal_charts','astrology_comparison_profiles','astrology_journal_entries','astrology_activity'])assert.equal(must(await admin.from(table).select('user_id').eq('user_id',b.id)).length,0);
+ console.log('PASS local Observatory profile/chart/journal and comparison-profile CRUD, revisions, idempotency, restart persistence, preferences, deduplicated activity, owner isolation, anonymous/direct-write denial, scoped deletion, populated account-deletion cascades and history clearing.');
 }finally{for(const id of users)must(await admin.auth.admin.deleteUser(id));console.log('Disposable astrology test accounts removed.');}

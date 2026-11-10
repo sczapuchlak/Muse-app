@@ -1,6 +1,7 @@
 import type {ZodiacSign} from '@/lib/cosmic-forecast';
 export type BirthPlace={id:string;name:string;latitude:number;longitude:number;timeZone:string};
 export type BirthProfile={date:string;time:string;accuracy:'exact'|'approximate'|'unknown';uncertaintyMinutes:number;fold?:'earlier'|'later';place:BirthPlace|null;zodiac:'tropical';houseSystem:'whole-sign'};
+export type ComparisonProfile={id:string;name:string;payload:BirthProfile;revision:number;created_at:string;updated_at:string};
 export const planetIds=['Sun','Moon','Mercury','Venus','Mars','Jupiter','Saturn','Uranus','Neptune','Pluto'] as const;
 export type PlanetId=typeof planetIds[number];
 export type Placement={body:PlanetId;longitude:number;sign:ZodiacSign;degree:number;retrograde:boolean;house:number|null;possibleSigns:ZodiacSign[];uncertain:boolean};

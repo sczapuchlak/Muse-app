@@ -165,6 +165,19 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
+                },"astrology_comparison_profiles": {
+                  Row: {
+                    "created_at": string,"id": string,"name": string,"payload": NonNullable<Json>,"revision": number,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"id": string,"name": string,"payload": NonNullable<Json>,"revision"?: number,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "created_at"?: string,"id"?: string,"name"?: string,"payload"?: NonNullable<Json>,"revision"?: number,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                  ]
                 },"astrology_journal_entries": {
                   Row: {
                     "created_at": string,"date": string,"id": string,"reference": Json | null,"revision": number,"text": string,"time_zone": string,"title": string,"updated_at": string,"user_id": string

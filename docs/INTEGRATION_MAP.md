@@ -44,6 +44,7 @@ Write down the answers before you build. Put them in the PR description or the f
 | Insights | Insights | none (derived) | none | reads other modules; stores nothing |
 | Future Log entry | Planner → Agenda → Future Log | `future_log_entries` | none | standalone entries are their own record; a reference (#112) stores only `source_kind` + `source_id` + a name snapshot, has no done state of its own, and one record can be referenced once |
 | Planned movement and its outcome | Daily Edit / Wellness → Movement | `movement_day_types`, `movement_day_outcomes` (#112), `movement_records` | Insights, Wellness goals, Connected Rituals | Completed is only `movement_records`; Skipped, Rest and Sick are outcomes and never count as done |
+| Comparison birth profile | Cosmic Observatory → Birth Chart | `astrology_comparison_profiles` (#28) | Synastry and Composite chart tools | private input by id; calculated chart results are temporary and never copied into this record |
 
 ## Lifecycles worth knowing
 
@@ -87,4 +88,4 @@ Write down the answers before you build. Put them in the PR description or the f
 
 ## Cosmic Observatory chart tools (#28)
 
-The existing private birth profile remains the only saved astrology birth record. Temporary natal, synastry, composite and transit requests may reuse it as input, but results and another person's birth details stay in memory for the current browser session and are not written to a new table. An explicit reflection action creates a normal Cosmic Journal entry referencing an existing library concept, not a copy of a chart or someone else's birth details. Saved comparison profiles and chart-result references remain future work requiring an owner-scoped lifecycle, export and deletion review.
+The existing private birth profile remains the authoritative record for the user's birth details. `astrology_comparison_profiles` owns optional, named details for other people used in synastry and composite tools. Each record is private, reusable in either chart position, included in personal export, and independently deletable; it does not copy the user's profile or store chart results. Temporary natal, synastry, composite and transit results remain in memory for the current browser session. An explicit reflection action creates a normal Cosmic Journal entry referencing an existing library concept, not a copy of a chart or someone else's birth details. Chart-result references remain future work requiring a snapshot and deletion design.
