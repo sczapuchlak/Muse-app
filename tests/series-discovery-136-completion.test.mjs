@@ -131,3 +131,13 @@ test('edition formats never enter a reading order; edition-only series are not o
  assert.deepEqual(out.map(m=>m.title),['A Court of Thorns and Roses','A Court of Mist and Fury','Wings and Embers','A Court of Silver Flames - Feyre Bonus Chapter'],'bonus works stay; adaptations and split editions go');
  for(const t of ['Heir of Fire','The Assassin and the Healer','A Court of Silver Flames - Azriel Bonus Chapter'])assert.ok(!editionTitle(t),t);
 });
+
+test('finishing the core story finishes the series; every additional work is an optional extra (#136)',()=>{
+ const {seriesCompletion}=load('lib/books/series-view');
+ const shelf=(read,extraRead,{primary=7,released=7,extra=3}={})=>({primaryCount:primary,readCount:read,releasedCount:released,primaryUpcoming:primary-released,additional:Array.from({length:extra}),additionalReadCount:extraRead});
+ assert.equal(seriesCompletion(shelf(3,1)).badge,null);
+ assert.deepEqual(seriesCompletion(shelf(7,1)),{complete:true,caughtUp:false,all:false,badge:'Core complete'},'7 of 7 primary is complete even with unread novellas');
+ assert.equal(seriesCompletion(shelf(7,3)).badge,'All works complete');
+ assert.equal(seriesCompletion(shelf(6,0,{released:6})).badge,'Caught up','an announced primary book keeps the series open');
+ assert.equal(seriesCompletion(shelf(0,0,{primary:0,released:0,extra:0})).badge,null);
+});

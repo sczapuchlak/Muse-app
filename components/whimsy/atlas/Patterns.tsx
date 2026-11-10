@@ -79,7 +79,7 @@ export function Patterns({books,sessions,range,label,series,seriesMembers,media,
   </article>
 
   {shelves.length>0&&<article className="muse-books-panel"><div className="muse-books-panel-head"><h4>Series</h4><span className="small-label">From Collections</span></div>
-   <ul className="muse-atlas-series">{shelves.map(({series:s,progress:p})=><li key={s.id}><div><strong>{s.title}</strong><small>{p.availableTotal?`${p.completed} of ${p.availableTotal} released`:'Release order not set'}{p.status==='completed'?' · complete':p.status==='caught-up'?' · caught up':''}</small></div>
+   <ul className="muse-atlas-series">{shelves.map(({series:s,progress:p})=><li key={s.id}><div><strong>{s.title}</strong><small>{p.availableTotal?`${p.completed} of ${p.availableTotal} ${s.kind==='book'&&s.catalog_source?'primary books read':'released'}`:'Release order not set'}{s.kind==='book'&&s.catalog_source?(p.availableTotal&&p.completed>=p.availableTotal?(p.total>p.availableTotal?' · caught up':' · core complete'):''):p.status==='completed'?' · complete':p.status==='caught-up'?' · caught up':''}</small></div>
     {p.percentage!==null&&<progress value={p.completed} max={p.availableTotal} aria-label={`${s.title}: ${p.completed} of ${p.availableTotal}`}/>}
     {p.next&&<span className="small-label">Next: {p.next.kind==='book'&&onOpenBook?<button type="button" className="text-button" onClick={()=>onOpenBook(p.next!.id)}>{p.next.title}</button>:p.next.title}</span>}</li>)}</ul>
    <p className="small-label">Progress follows the series order and scope set in Collections.</p></article>}

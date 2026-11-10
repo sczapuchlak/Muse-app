@@ -60,6 +60,17 @@ export function seriesShelf(series:Series,members:SeriesMember[],books:Book[],to
  const authors=series.catalog_author||[...new Set(primary.map(e=>e.author).filter(Boolean))].slice(0,2).join(', ');
  return {primary,additional,collections,primaryCount:primary.length,catalogPrimaryCount,basis,releasedCount:released.length,readCount,additionalReadCount:additional.filter(e=>e.state==='read').length,ownedCount:works.filter(e=>e.book).length,readingCount:primary.filter(e=>e.state==='reading').length,upcomingCount:works.filter(e=>e.state==='upcoming').length,next,nextRelease,firstYear:years.length?Math.min(...years):null,percent:primary.length?Math.round(readCount/primary.length*100):0,primaryUpcoming:primary.length-released.length,authors};
 }
+/**
+ * Completion (#136): finishing the core story is finishing the series. `complete` = every primary book read;
+ * `caughtUp` = every released primary book read with more announced; `all` = every primary and additional work
+ * read (an optional extra). Collections never count.
+ */
+export function seriesCompletion(shelf:Pick<SeriesShelf,'primaryCount'|'readCount'|'releasedCount'|'primaryUpcoming'|'additional'|'additionalReadCount'>){
+ const complete=shelf.primaryCount>0&&shelf.readCount>=shelf.primaryCount;
+ const caughtUp=!complete&&shelf.primaryUpcoming>0&&shelf.releasedCount>0&&shelf.readCount>=shelf.releasedCount;
+ const all=complete&&shelf.additional.length>0&&shelf.additionalReadCount>=shelf.additional.length;
+ return {complete,caughtUp,all,badge:all?'All works complete':complete?'Core complete':caughtUp?'Caught up':null};
+}
 /** When primary books could not be confirmed from the catalog, a short honest note; otherwise null. */
 export function primaryBasisNote(shelf:Pick<SeriesShelf,'basis'|'primaryCount'|'catalogPrimaryCount'>){
  if(shelf.basis==='mismatch')return `The catalog lists ${shelf.catalogPrimaryCount} primary books; ${shelf.primaryCount} are numbered as main installments here, and progress follows those ${shelf.primaryCount}.`;

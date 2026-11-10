@@ -11,7 +11,7 @@ import type {Book,ReadingGoal,ReadingSession} from '@/lib/whimsy/models';
 import type {ReadingTimer} from '@/lib/whimsy/books';
 import {activeSeconds,bookPosition,bookReadingStats,sittingClock} from '@/lib/whimsy/books';
 import {bookCompletions} from '@/lib/whimsy/reading-stats';
-import {seriesShelf,shelfStateLabel,type ShelfEntry} from '@/lib/books/series-view';
+import {seriesCompletion,seriesShelf,shelfStateLabel,type ShelfEntry} from '@/lib/books/series-view';
 import {bookHref,currentReturn,goBack,rememberReturn,seriesHref} from '@/lib/books/return-nav';
 import {BookAtmosphere} from './BookAtmosphere';
 import {BookJournal} from './BookJournal';
@@ -109,7 +109,7 @@ export function BookPage(props:BookPageProps){
  const seriesSection=primary&&shelf?<section className="muse-book-series-section" aria-labelledby="book-series-heading">
   <header className="muse-book-series-head">
    <div><span className="small-label">{positionText?`${positionText} in the series${isPrimary?'':' · additional work'}`:'The series'}</span><h2 id="book-series-heading"><Link href={seriesHref(seriesKey!,`book:${book.id}`)} onClick={event=>{if(event.metaKey||event.ctrlKey)return;event.preventDefault();openSeries();}}>{primary.series.title}</Link></h2></div>
-   <div className="muse-book-series-chips">{shelf.primaryCount>0&&<span className="muse-book-chip" data-tone="accent">{shelf.primaryCount} primary {shelf.primaryCount===1?'book':'books'}</span>}{shelf.additional.length>0&&<span className="muse-book-chip">+{shelf.additional.length} additional {shelf.additional.length===1?'work':'works'}</span>}<span className="muse-book-chip">{shelf.readCount} of {shelf.primaryCount} read</span></div>
+   <div className="muse-book-series-chips">{shelf.primaryCount>0&&<span className="muse-book-chip" data-tone="accent">{shelf.primaryCount} primary {shelf.primaryCount===1?'book':'books'}</span>}{shelf.additional.length>0&&<span className="muse-book-chip">+{shelf.additional.length} additional {shelf.additional.length===1?'work':'works'}</span>}{seriesCompletion(shelf).badge?<span className="muse-book-chip" data-tone="done"><MuseIcon name="check" size={12}/>{seriesCompletion(shelf).badge}</span>:<span className="muse-book-chip">{shelf.readCount} of {shelf.primaryCount} read</span>}</div>
   </header>
   <div className="muse-book-series-meter" role="meter" aria-label={`${primary.series.title} progress`} aria-valuemin={0} aria-valuemax={100} aria-valuenow={shelf.percent}><span style={{width:`${shelf.percent}%`}}/></div>
   <ol ref={stripRef} className="muse-book-series-strip" aria-label={`${primary.series.title}, in reading order`}>{strip.map(entry=>{const current=entry.book?.id===book.id;return <li key={entry.key} data-current={current||undefined} data-state={entry.state}>

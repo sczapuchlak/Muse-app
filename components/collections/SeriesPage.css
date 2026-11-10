@@ -110,3 +110,20 @@
 .muse-series-page-empty-note{font-size:.86rem;color:var(--text-muted);padding:12px 0}
 .muse-series-page-footnote{padding:0 4px}
 .muse-series-page-bundles summary .muse-book-page-section-title{font-family:var(--font-editorial);font-weight:var(--type-editorial-weight);font-size:clamp(1.3rem,2vw,1.55rem);letter-spacing:-.01em}
+
+/* Completion card (#136): core completion leads; additional works are an optional extra */
+.muse-series-progress-head{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.muse-series-core-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 11px;border-radius:999px;border:1px solid color-mix(in srgb,var(--success-primary) 50%,var(--glass-border));background:color-mix(in srgb,var(--success-primary) 16%,transparent);color:var(--foreground);font:600 .76rem/1.2 var(--font-ui);animation:muse-core-in var(--motion-settle,260ms) var(--ease-out,ease-out) both}
+.muse-series-core-badge svg{color:var(--success-primary)}
+.muse-series-core-badge[data-tone="caught-up"]{border-color:color-mix(in srgb,var(--accent-secondary) 50%,var(--glass-border));background:color-mix(in srgb,var(--accent-secondary) 14%,transparent)}
+.muse-series-core-badge[data-tone="caught-up"] svg{color:var(--accent-secondary)}
+.muse-series-page-count em{margin-left:auto;font-style:normal;font-weight:700;font-size:1.05rem;color:var(--foreground)}
+.muse-series-page-progress[data-complete] .muse-series-page-count em{color:var(--success-primary)}
+.muse-book-series-meter[data-complete]>span{background:var(--success-primary)}
+.muse-book-series-meter[data-tone="optional"]{height:5px}
+.muse-book-series-meter[data-tone="optional"]>span{background:var(--accent-secondary)}
+.muse-series-progress-extra{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:12px;border-top:1px solid var(--glass-border)}
+.muse-series-progress-extra>div:first-child{display:grid;gap:2px;min-width:0}.muse-series-progress-extra strong{font-size:.88rem}.muse-series-progress-extra small{font-size:.74rem;color:var(--text-muted)}
+.muse-series-progress-mini{display:grid;gap:4px;justify-items:end;flex:0 0 96px}.muse-series-progress-mini>.muse-book-series-meter{width:100%}.muse-series-progress-mini small{font-size:.68rem;color:var(--text-muted)}
+@keyframes muse-core-in{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.muse-series-core-badge{animation:none}}

@@ -11,7 +11,7 @@ import type {Series,SeriesMember} from '@/lib/collections/models';
 import type {SeriesCatalog} from '@/lib/books/series-discovery';
 import {fetchSeriesCatalog} from '@/lib/books/add-book';
 import {catalogNeedsRefresh,saveDiscoveredSeries} from '@/lib/books/series-save';
-import {catalogSeriesView,primaryBasisNote,seriesShelf,seriesSummary,shelfStateLabel,type ShelfEntry} from '@/lib/books/series-view';
+import {catalogSeriesView,primaryBasisNote,seriesCompletion,seriesShelf,seriesSummary,shelfStateLabel,type ShelfEntry} from '@/lib/books/series-view';
 import {bookHref,currentReturn,goBack,parseSeriesKey,rememberReturn} from '@/lib/books/return-nav';
 import {validCoverUrl,todayForReading} from '@/lib/whimsy/books';
 import {validTimeZone} from '@/lib/dates';
@@ -131,6 +131,7 @@ export function SeriesRoute({seriesKey}:{seriesKey:string}){
   </>}</span>
  </li>;};
  const spines=shelf.primary,basisNote=primaryBasisNote(shelf);
+ const core=seriesCompletion(shelf);
 
  return <main className="muse-page muse-series-route">
   {crumbs}
@@ -146,11 +147,15 @@ export function SeriesRoute({seriesKey}:{seriesKey:string}){
     <p className="muse-series-page-summary">{summary}</p>
     {description&&<SeriesDescription text={description}/>}
    </div>
-   <aside className="muse-card muse-series-page-progress" aria-label="Your progress">
-    <div className="muse-series-page-count"><strong className="type-numeric">{shelf.readCount}</strong><span>of {shelf.primaryCount} {shelf.primaryCount===1?'primary book':'primary books'} read</span></div>
-    <div className="muse-book-series-meter" role="meter" aria-label={`Primary series progress: ${shelf.readCount} of ${shelf.primaryCount} read`} aria-valuemin={0} aria-valuemax={100} aria-valuenow={shelf.percent}><span style={{width:`${shelf.percent}%`}}/></div>
-    <p className="muse-series-page-owned">{shelf.primary.filter(e=>e.book).length} on your shelf{shelf.readingCount?` · ${shelf.readingCount} reading now`:''}{shelf.primaryUpcoming?` · ${shelf.primaryUpcoming} still to come`:''}</p>{basisNote&&<p className="muse-series-page-basis" role="note">{basisNote}</p>}
-    {shelf.next?<div className="muse-series-page-next"><span className="small-label">Next in order</span><div><SeriesCover title={shelf.next.title} coverUrl={shelf.next.coverUrl} color={shelf.next.coverColor} ghost={!shelf.next.book} size="sm"/><span><strong className="type-title">{shelf.next.title}</strong><small>{shelf.next.book?shelfStateLabel[shelf.next.state]:'Not on your shelf yet'}</small></span></div>{shelf.next.book?<button type="button" className="muse-button button-primary" onClick={()=>openBook(shelf.next!.book!.id)}>Open book</button>:<button type="button" className="muse-button button-primary" disabled={!!quick.pending} onClick={()=>void add(shelf.next!,'planned')}>{quick.pending===shelf.next.key?'Adding…':'Add to Want to Read'}</button>}</div>:shelf.readCount&&shelf.readCount>=shelf.releasedCount?<p className="muse-series-page-done">Every released book is read. A whole world, finished.</p>:null}
+   <aside className="muse-card muse-series-page-progress" aria-label="Your progress" data-complete={core.complete||undefined}>
+    <div className="muse-series-progress-head"><span className="small-label">Primary series</span>{core.badge&&<span className="muse-series-core-badge" data-tone={core.all?'all':core.complete?'core':'caught-up'}><MuseIcon name="check" size={13}/>{core.badge}</span>}</div>
+    <div className="muse-series-page-count"><strong className="type-numeric">{shelf.readCount}</strong><span>of {shelf.primaryCount} read</span><em className="type-numeric">{shelf.percent}%</em></div>
+    <div className="muse-book-series-meter" data-complete={core.complete||undefined} role="meter" aria-label={`Primary series progress: ${shelf.readCount} of ${shelf.primaryCount} read`} aria-valuemin={0} aria-valuemax={100} aria-valuenow={shelf.percent}><span style={{width:`${shelf.percent}%`}}/></div>
+    <p className="muse-series-page-owned">{core.complete?`You’ve finished all ${shelf.primaryCount} primary ${shelf.primaryCount===1?'book':'books'}.`:core.caughtUp?`Every released primary book is read · ${shelf.primaryUpcoming} still to come.`:<>{shelf.primary.filter(e=>e.book).length} on your shelf{shelf.readingCount?` · ${shelf.readingCount} reading now`:''}{shelf.primaryUpcoming?` · ${shelf.primaryUpcoming} still to come`:''}</>}</p>
+    {basisNote&&<p className="muse-series-page-basis" role="note">{basisNote}</p>}
+    {shelf.additional.length>0&&<div className="muse-series-progress-extra"><div><strong>Additional works</strong><small>{shelf.additionalReadCount} of {shelf.additional.length} read · prequels, novellas and companions</small></div><div className="muse-series-progress-mini"><div className="muse-book-series-meter" data-tone="optional" role="meter" aria-label={`Additional works: ${shelf.additionalReadCount} of ${shelf.additional.length} read`} aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(shelf.additionalReadCount/shelf.additional.length*100)}><span style={{width:`${Math.round(shelf.additionalReadCount/shelf.additional.length*100)}%`}}/></div><small>Optional</small></div></div>}
+    {shelf.collections.length>0&&<div className="muse-series-progress-extra"><div><strong>Collections &amp; box sets</strong><small>Bundles and collected editions</small></div><span className="muse-book-chip">Not counted</span></div>}
+    {!core.complete&&!core.caughtUp&&shelf.next?<div className="muse-series-page-next"><span className="small-label">Next in order</span><div><SeriesCover title={shelf.next.title} coverUrl={shelf.next.coverUrl} color={shelf.next.coverColor} ghost={!shelf.next.book} size="sm"/><span><strong className="type-title">{shelf.next.title}</strong><small>{shelf.next.book?shelfStateLabel[shelf.next.state]:'Not on your shelf yet'}</small></span></div>{shelf.next.book?<button type="button" className="muse-button button-primary" onClick={()=>openBook(shelf.next!.book!.id)}>Open book</button>:<button type="button" className="muse-button button-primary" disabled={!!quick.pending} onClick={()=>void add(shelf.next!,'planned')}>{quick.pending===shelf.next.key?'Adding…':'Add to Want to Read'}</button>}</div>:null}
    </aside>
   </header>
   {(notice||problem||quick.error)&&<p className="muse-series-page-message" role={problem||quick.error?'alert':'status'} data-tone={problem||quick.error?'error':undefined}>{problem||quick.error||notice}</p>}
