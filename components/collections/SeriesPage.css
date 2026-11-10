@@ -1,14 +1,12 @@
 /* Series page (#136). Shares crumbs, chips, meters and skeletons with the Book page (BookPage.css). */
 .muse-series-route{display:flex;flex-direction:column;gap:clamp(18px,2.6vw,28px);padding-top:clamp(6px,1.4vw,18px);padding-bottom:56px;min-width:0}
 .muse-series-route :is(h1,h2,h3,p){margin:0}
-.muse-series-route>.muse-book-page-crumbs{grid-area:auto}
 
 /* Hero: the shelf spans the page; identity and progress sit beneath it */
-.muse-series-page-hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,340px);grid-template-areas:"shelf shelf" "identity progress";gap:clamp(18px,2.6vw,30px) clamp(22px,3vw,40px);align-items:start}
-.muse-series-shelf{grid-area:shelf;position:relative;padding:clamp(18px,2.4vw,28px) clamp(16px,2.4vw,32px) 0;border-radius:var(--dl-radius-hero);background:radial-gradient(ellipse 70% 120% at 50% 110%,color-mix(in srgb,var(--accent-primary) 20%,transparent),transparent 70%),radial-gradient(ellipse 40% 80% at 10% 0%,color-mix(in srgb,var(--accent-secondary) 14%,transparent),transparent 70%),color-mix(in srgb,var(--glass-background) 80%,transparent);border:1px solid var(--glass-border);border-top-color:var(--glass-edge);-webkit-backdrop-filter:blur(var(--material-blur));backdrop-filter:blur(var(--material-blur));overflow:hidden}
+.muse-series-shelf{position:relative;padding:clamp(18px,2.4vw,28px) clamp(16px,2.4vw,32px) 0;border-radius:var(--dl-radius-hero);background:radial-gradient(ellipse 70% 120% at 50% 110%,color-mix(in srgb,var(--accent-primary) 20%,transparent),transparent 70%),radial-gradient(ellipse 40% 80% at 10% 0%,color-mix(in srgb,var(--accent-secondary) 14%,transparent),transparent 70%),color-mix(in srgb,var(--glass-background) 80%,transparent);border:1px solid var(--glass-border);border-top-color:var(--glass-edge);-webkit-backdrop-filter:blur(var(--material-blur));backdrop-filter:blur(var(--material-blur));overflow:hidden}
 .muse-series-shelf-plank{display:block;height:14px;margin:0 calc(-1*clamp(16px,2.4vw,32px));background:linear-gradient(color-mix(in srgb,var(--glass-edge) 80%,transparent),color-mix(in srgb,var(--foreground) 10%,transparent));box-shadow:0 -1px 0 rgba(255,255,255,.4) inset,0 8px 18px rgba(10,8,24,.12)}
 
-.muse-series-page-identity{grid-area:identity;display:grid;gap:10px;justify-items:start;min-width:0}
+.muse-series-page-identity{display:grid;gap:10px;justify-items:start;min-width:0}
 .muse-series-page-identity h1{font-size:clamp(2rem,4vw,3.2rem);line-height:1.04;letter-spacing:-.025em;text-wrap:balance}
 .muse-series-page-chips{display:flex;flex-wrap:wrap;gap:6px}
 .muse-series-page-chips .muse-book-chip svg{color:var(--accent-primary)}
@@ -21,7 +19,7 @@
 .muse-series-page-description p[data-clamped]{max-height:6.6em;overflow:hidden;mask-image:linear-gradient(#000 55%,transparent)}
 .muse-series-page-description .text-button{justify-self:start;font-weight:600}
 
-.muse-series-page-progress{grid-area:progress;display:grid;gap:12px;padding:20px;border-radius:var(--dl-radius-hero)}
+.muse-series-page-progress{display:grid;gap:12px;padding:20px;border-radius:var(--dl-radius-hero)}
 .muse-series-page-count{display:flex;align-items:baseline;gap:8px;color:var(--text-muted)}
 .muse-series-page-count strong{font-family:var(--font-editorial);font-weight:var(--type-title-weight);font-size:2.3rem;line-height:1;color:var(--foreground)}
 .muse-series-page-owned{font-size:.8rem;color:var(--text-muted)}
@@ -70,7 +68,6 @@
 .muse-series-page-skeleton{display:grid;gap:22px}
 @keyframes muse-search-in{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
 
-@media(max-width:900px){.muse-series-page-hero{grid-template-columns:minmax(0,1fr);grid-template-areas:"shelf" "identity" "progress"}}
 @media(max-width:620px){
  .muse-series-shelf{padding:16px 12px 0}
  .muse-series-page-identity h1{font-size:clamp(1.7rem,7.4vw,2.2rem)}
@@ -115,8 +112,6 @@
 
 /* ---------- Final Series Detail pass (#136) ---------- */
 /* Layout: the bookcase stands alone; identity and progress share the row beneath it. */
-.muse-series-page-hero{grid-template-columns:minmax(0,1fr) minmax(280px,340px);grid-template-areas:"identity progress"}
-.muse-series-route>.muse-series-shelf{grid-area:auto}
 
 /* The enchanted bookcase: built from each theme's own palette and background, so a dark theme stays a jewel box
    and a light theme becomes a pastel parlour. Ornament and starlight stay quiet next to the covers. */
@@ -185,7 +180,7 @@
 .muse-series-card-copy strong{font-size:.96rem;line-height:1.2;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .muse-series-card-actions{display:flex;align-items:center;gap:6px;margin-top:2px}
 
-@media(max-width:900px){.muse-series-page-hero{grid-template-columns:minmax(0,1fr);grid-template-areas:"identity" "progress"}.muse-series-page-row{grid-template-columns:40px minmax(0,1fr) auto}.muse-series-page-synopsis{display:none}}
+@media(max-width:900px){.muse-series-page-row{grid-template-columns:40px minmax(0,1fr) auto}.muse-series-page-synopsis{display:none}}
 @media(max-width:620px){
  .muse-series-shelf{padding:34px 14px 0}.muse-series-shelf-plank{margin:0 -14px}
  .muse-series-page-order-head{align-items:flex-start}.muse-series-page-tools{width:100%;justify-content:space-between}
@@ -201,15 +196,7 @@
 
 /* Two columns beside everything: the bookcase and the identity on the left, the progress card on the right.
    Plain grid columns (no row spanning) so every browser lays it out the same way. */
-.muse-series-top{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,340px);gap:clamp(18px,2.6vw,30px);align-items:start}
-.muse-series-top-main{display:flex;flex-direction:column;gap:clamp(16px,2vw,24px);min-width:0}
-.muse-series-top .muse-series-page-progress{align-self:start}
-.muse-series-top-main .muse-series-page-identity{padding-inline:4px}
 .muse-series-page-description p{max-width:68ch}
-@media(max-width:900px){.muse-series-top{grid-template-columns:minmax(0,1fr)}}
-.muse-series-top .muse-series-page-progress,.muse-series-top .muse-series-page-identity{grid-area:auto;grid-column:auto;grid-row:auto}
-.muse-series-top>.muse-series-page-progress{grid-column:2;grid-row:1}
-@media(max-width:900px){.muse-series-top>.muse-series-page-progress{grid-column:1;grid-row:2}}
 
 /* ---------- Compact, ornamented miniature bookcase (#136) ---------- */
 /* The case grows with its books (never a big empty display box) and stays inside its column. */
@@ -281,10 +268,6 @@
 .muse-series-page-since{color:var(--text-muted)}
 .muse-series-page-head .muse-series-page-chips{margin-top:4px}
 .muse-series-page-head .muse-series-page-description{max-width:72ch;margin-top:2px}
-.muse-series-top{align-items:center}
-.muse-series-top .muse-series-shelf{align-self:center;justify-self:center}
-@media(max-width:900px){.muse-series-top .muse-series-shelf{justify-self:stretch}}
-.muse-series-top>.muse-series-shelf{grid-area:auto;grid-column:1;grid-row:1}
 .muse-series-card-cover{width:100%}
 .muse-series-card{grid-template-rows:auto 1fr auto;align-content:stretch}
 .muse-series-card-actions{align-self:end}
@@ -298,3 +281,10 @@
 .muse-series-card-copy{flex:1 1 auto}
 .muse-series-card-art{flex:0 0 auto}
 .muse-series-grid{align-items:stretch}
+
+/* Hero (#136), content-driven: title block, then one top-aligned row (bookcase | progress), then the books.
+   No reserved rows, fixed heights, centering or offsets; the route's flex gap is the only vertical spacing. */
+.muse-series-top{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,340px);gap:clamp(16px,2.4vw,28px);align-items:start}
+.muse-series-top>.muse-series-shelf{justify-self:start;align-self:start}
+.muse-series-top>.muse-series-page-progress{align-self:start;grid-column:2;grid-row:1}/* .muse-card spans 6 dashboard columns by default; this row has exactly two */
+@media(max-width:900px){.muse-series-top{grid-template-columns:minmax(0,1fr)}.muse-series-top>.muse-series-shelf{justify-self:stretch;grid-column:1;grid-row:1}.muse-series-top>.muse-series-page-progress{grid-column:1;grid-row:2}}
