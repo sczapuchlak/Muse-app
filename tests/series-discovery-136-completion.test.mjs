@@ -100,3 +100,20 @@ test('series and book routes are addressable, contextual, and never revive the s
  assert.match(read('components/collections/Collections.tsx'),/<Bookshelf surface="desk" embedded\/>/,'Reading Desk lives in Collections › Books');
  assert.match(read('app/(app)/collections/reading-atlas/page.tsx'),/ReadingAtlasRoute/);
 });
+
+test('a real catalog normalizes to one work per position: translations, split volumes and bundles fold away (#136 Staging QA)',()=>{
+ const {normalizeSeriesEntries,bundleTitle}=load('lib/books/series-discovery');
+ const e=(id,title,position,readers,{featured=true,role}={})=>({member:{source:'hardcover',id:String(id),title,author:'Sarah J. Maas',position,positionLabel:position===null?'':String(position),role:role??(bundleTitle(title)?'collection':featured?'mainline':'optional')},readers,featured});
+ const rows=[e(1,'The Assassin and the Pirate Lord',0.1,4000),e(2,'The Assassin and the Healer',0.2,3800),e(10,'Throne of Glass',1,90000),e(30,'アサシンの王女 上',1,14),e(38,'The Captain and the Prince',1.1,900),e(39,'The Assassin and the Princess',1.5,700),
+  e(11,'Crown of Midnight',2,70000),e(31,'تاج نیمه شب',2,6),e(12,'Heir of Fire',3,60000),e(13,'Queen of Shadows',4,55000),e(14,'Empire of Storms',5,50000),e(32,'Império de Tempestades - Tomo 1',5,9),e(33,'Empire of Storms - Viharok birodalma',5,4),e(34,'Throne of Glass Series: 5-6',5,30),
+  e(15,'Tower of Dawn',6,45000),e(16,'Kingdom of Ash',7,48000),e(35,'Tuhkan valtiatar - osa 1',7,5,{featured:false}),e(36,'Tuhkan valtiatar - osa 2',7,4,{featured:false}),e(37,'The Complete Throne of Glass Collection Full Series',null,40),e(40,'Unlisted translation',null,2),e(41,'Throne of Glass Coloring Book',null,2500)];
+ const out=normalizeSeriesEntries(rows);
+ const works=out.filter(m=>m.role!=='collection');
+ assert.deepEqual(works.filter(m=>m.position!==null).map(m=>m.title),['The Assassin and the Pirate Lord','The Assassin and the Healer','Throne of Glass','The Captain and the Prince','The Assassin and the Princess','Crown of Midnight','Heir of Fire','Queen of Shadows','Empire of Storms','Tower of Dawn','Kingdom of Ash']);
+ assert.deepEqual(works.filter(m=>m.position===null).map(m=>m.title),['Throne of Glass Coloring Book'],'a real companion stays; an unread stray record does not');
+ assert.deepEqual(out.filter(m=>m.role==='collection').map(m=>m.title).sort(),['The Complete Throne of Glass Collection Full Series','Throne of Glass Series: 5-6']);
+ assert.equal(works.filter(m=>Number.isInteger(m.position)).length,7,'seven primary novels, from data rather than a hardcoded count');
+ const japaneseOnly=normalizeSeriesEntries([e(1,'Book',1,500),e(2,'外伝',1.5,40)]);assert.equal(japaneseOnly.length,2,'a distinct work keeps its own position whatever its language');
+ for(const t of ['A Court of Thorns and Roses Box Set','Books 1-3','The Complete Collection'])assert.ok(bundleTitle(t),t);
+ for(const t of ['Throne of Glass','Crown of Midnight','A Court of Silver Flames','The Assassin and the Healer'])assert.ok(!bundleTitle(t),t);
+});

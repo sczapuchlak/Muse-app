@@ -23,6 +23,18 @@ const books=[
  {id:1015,title:'Tower of Dawn',isbn:'9781681195773',release_date:'2017-09-05',pages:664,series:[[100,6,true]]},
  {id:1016,title:'Kingdom of Ash',isbn:'9781619636101',release_date:'2018-10-23',pages:980,series:[[100,7,true]]},
  {id:1020,title:"The Assassin's Blade",isbn:'9781619632116',release_date:'2014-03-04',pages:435,series:[[100,0.1,true,true]]},
+ // Real-world noise seen in Hardcover's Throne of Glass catalog: translations at the same position, split
+ // translated volumes, unflagged bundles, and legitimate in-between novellas.
+ {id:1030,title:'アサシンの王女 上',release_date:'2014-06-01',pages:340,users:14,series:[[100,1,true]]},
+ {id:1031,title:'تاج نیمه شب',release_date:'2017-01-01',pages:288,users:6,series:[[100,2,true]]},
+ {id:1032,title:'Império de Tempestades - Tomo 1',release_date:'2016-10-01',pages:478,users:9,series:[[100,5,true]]},
+ {id:1033,title:'Empire of Storms - Viharok birodalma',release_date:'2016-11-01',pages:776,users:4,series:[[100,5,true]]},
+ {id:1034,title:'Throne of Glass Series: 5-6',release_date:'2018-01-01',users:30,series:[[100,5,true]]},
+ {id:1035,title:'Tuhkan valtiatar - osa 1',release_date:'2018-11-01',pages:695,users:5,series:[[100,7,false]]},
+ {id:1036,title:'Tuhkan valtiatar - osa 2',release_date:'2018-11-01',pages:477,users:4,series:[[100,7,false]]},
+ {id:1037,title:'The Complete Throne of Glass Collection Full Series',release_date:'2021-01-01',pages:1800,users:40,series:[[100,null,true]]},
+ {id:1038,title:'The Captain and the Prince',release_date:'2013-01-01',pages:10,users:900,series:[[100,1.1,true]]},
+ {id:1039,title:'The Assassin and the Princess',users:700,series:[[100,1.5,true]]},
  // A Court of Thorns and Roses (series 200)
  {id:2001,title:'A Court of Thorns and Roses',isbn:'9781619634442',release_date:'2015-05-05',pages:419,series:[[200,1,true]],description:'When nineteen-year-old huntress Feyre kills a wolf in the woods, a terrifying creature arrives to demand retribution. Dragged to a treacherous magical land she knows about only from legends, Feyre discovers that her captor is not truly a beast, but one of the lethal, immortal faeries who once ruled her world.',genres:['Fantasy','Romance']},
  {id:2002,title:'A Court of Mist and Fury',isbn:'9781619634466',release_date:'2016-05-03',pages:626,series:[[200,2,true]],description:'Feyre has undergone more trials than one human woman can carry in her heart. Though she’s now been granted the powers and lifespan of the High Fae, she is haunted by her time Under the Mountain.',genres:['Fantasy','Romance']},
@@ -31,15 +43,15 @@ const books=[
  {id:2005,title:'A Court of Silver Flames',isbn:'9781681196282',release_date:'2021-02-16',pages:757,series:[[200,4,true]]},
  {id:2006,title:'A Court of Thorns and Roses Book Six',release_date:'2027-01-12',series:[[200,5,true]]},
  {id:2010,title:'A Court of Thorns and Roses Paperback Box Set',release_date:'2020-06-02',series:[[200,1,true,true]],image:{url:null,color:'#9c2d3f'}},
-].map(b=>({...b,image:b.image?.url!==undefined?b.image:cover(b.isbn),contributions:[{author:sjm}],canonical_id:null,release_year:Number(b.release_date.slice(0,4)),cached_tags:tags(b.genres??['Fantasy'])}));
+].map(b=>({...b,image:b.image?.url!==undefined?b.image:cover(b.isbn),contributions:[{author:sjm}],canonical_id:null,users_count:b.users??50000,release_year:b.release_date?Number(b.release_date.slice(0,4)):null,cached_tags:tags(b.genres??['Fantasy'])}));
 const series=[
  {id:100,name:'Throne of Glass',description:'Celaena Sardothien, a teenage assassin, is offered a chance at freedom—if she will become the King’s Champion in a deadly tournament.',is_completed:true,author:sjm},
  {id:200,name:'A Court of Thorns and Roses',description:'A sweeping romantic fantasy of faerie courts, curses and the bonds that hold a world together.',is_completed:false,author:sjm},
 ];
 const rows=s=>books.flatMap(b=>b.series.filter(([id])=>id===s.id).map(([,position,featured,compilation])=>({position,featured,compilation:!!compilation,book:b})));
 const norm=x=>String(x??'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
-const hit=s=>{const all=rows(s);return {id:s.id,name:s.name,author:s.author,books_count:all.length,primary_books_count:all.filter(r=>!r.compilation&&Number.isInteger(r.position)).length,book_series:all.filter(r=>!r.compilation).sort((a,b)=>a.position-b.position).slice(0,10).map(r=>({position:r.position,book:{title:r.book.title,image:r.book.image}}))};};
-const bookOut=b=>({id:b.id,title:b.title,description:b.description??null,release_date:b.release_date,release_year:b.release_year,pages:b.pages??null,canonical_id:null,image:b.image,cached_tags:b.cached_tags,contributions:b.contributions,book_series:b.series.map(([series_id,position,featured,compilation])=>({series_id,position,featured,compilation:!!compilation,series:hit(series.find(s=>s.id===series_id))}))});
+const hit=s=>{const all=rows(s);return {id:s.id,name:s.name,author:s.author,books_count:all.length,primary_books_count:7,book_series:all.filter(r=>!r.compilation).sort((a,b)=>(a.position??99)-(b.position??99)).slice(0,10).map(r=>({position:r.position,book:{title:r.book.title,image:r.book.image}}))};};
+const bookOut=b=>({id:b.id,title:b.title,compilation:false,users_count:b.users_count,description:b.description??null,release_date:b.release_date??null,release_year:b.release_year,pages:b.pages??null,canonical_id:null,image:b.image,cached_tags:b.cached_tags,contributions:b.contributions,book_series:b.series.map(([series_id,position,featured,compilation])=>({series_id,position,featured,compilation:!!compilation,series:hit(series.find(s=>s.id===series_id))}))});
 const matches=q=>{const t=norm(q);return books.filter(b=>norm(b.title).includes(t)||t.split(' ').every(w=>norm(b.title).includes(w))).map(b=>b.id);};
 function answer({query,variables}){
  if(query.includes('bookHits:search'))return {bookHits:{ids:matches(variables.query).slice(0,12)},seriesHits:{ids:series.filter(s=>norm(s.name).includes(norm(variables.query))||norm(variables.query).includes(norm(s.name))).map(s=>s.id)}};

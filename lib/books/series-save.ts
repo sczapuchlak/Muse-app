@@ -2,7 +2,7 @@ import type {SupabaseClient} from '@supabase/supabase-js';
 import type {Database} from '@/lib/database.types';
 import type {Book} from '@/lib/whimsy/models';
 import type {CollectionsSnapshot,Series,SeriesMember} from '@/lib/collections/models';
-import {saveSeries,saveSeriesMember} from '@/lib/collections/persistence';
+import {deleteSeriesMember,saveSeries,saveSeriesMember} from '@/lib/collections/persistence';
 import type {SeriesCatalog} from './series-discovery';
 import {planSeriesCatalog} from './series-catalog';
 
@@ -25,13 +25,25 @@ export async function saveDiscoveredSeries(client:SupabaseClient<Database>,userI
  const conclusion=existing&&existing.conclusion_state!=='unknown'?existing.conclusion_state:catalog.completed===true?'concluded':catalog.completed===false?'ongoing':'unknown';
  const series=await saveSeries(client,{id:existing?.id??crypto.randomUUID(),user_id:userId,kind:'book',title:existing?.title??catalog.title,description:existing?.description||catalog.description||'',cover_url:existing?.cover_url??null,scope:existing?.scope??'released',conclusion_state:conclusion,catalog_source:catalog.source,catalog_id:catalog.id,catalog_author:catalog.author??existing?.catalog_author??'',catalog_primary_count:catalog.primaryCount??null,catalog_total_count:catalog.totalCount??null,catalog_completed:catalog.completed??null,catalog_refreshed_at:new Date().toISOString()},existing?.revision??0);
  const members=records.seriesMembers.filter(m=>m.series_id===series.id);
- const results=await Promise.allSettled(planSeriesCatalog(catalog,members,books).map(plan=>{
+ const results:PromiseSettledResult<unknown>[]=await Promise.allSettled(planSeriesCatalog(catalog,members,books).map(plan=>{
   const old=plan.existing;
   return saveSeriesMember(client,{id:old?.id??crypto.randomUUID(),user_id:userId,series_id:series.id,...plan.fields},old?.revision??0);
  }));
+ // Catalog-only rows the normalized catalog no longer lists (translations, duplicate records, bundles shown
+ // elsewhere) are removed. Anything the reader touched stays: an owned book, a star or a manual correction.
+ const listed=new Set(catalog.members.map(m=>`${m.source}:${m.id}`));
+ const stale=members.filter(m=>m.catalog_source===catalog.source&&m.catalog_id&&!listed.has(`${m.catalog_source}:${m.catalog_id}`)&&!m.book_id&&!m.media_id&&!m.starred&&!m.manual_override&&!m.hidden);
+ results.push(...await Promise.allSettled(stale.map(m=>deleteSeriesMember(client,userId,m.id,m.revision))));
  const failed=results.find((r):r is PromiseRejectedResult=>r.status==='rejected');
  if(failed)throw failed.reason instanceof Error?failed.reason:Error(typeof failed.reason?.message==='string'?failed.reason.message:'Some installments could not be saved. Refresh the series to retry.');
  return series;
 }
 /** The saved member row for one catalog installment, after a save. */
 export function memberFor(members:SeriesMember[],seriesId:string,source:string,id:string){return members.find(m=>m.series_id===seriesId&&m.catalog_source===source&&m.catalog_id===id)??null;}
+/** Catalogs saved before series normalisation (#136, 2026-11-10) are refreshed once into the current shape. */
+export const CATALOG_SHAPE_SINCE='2026-11-10T19:50:00Z';
+export function catalogNeedsRefresh(series:Pick<Series,'catalog_source'|'catalog_refreshed_at'>,members:Pick<SeriesMember,'catalog_cover_url'|'catalog_cover_color'>[],now:number){
+ if(series.catalog_source!=='hardcover')return false;
+ const at=series.catalog_refreshed_at?Date.parse(series.catalog_refreshed_at):0;
+ return !at||at<Date.parse(CATALOG_SHAPE_SINCE)||now-at>30*24*60*60_000||!members.some(m=>m.catalog_cover_url||m.catalog_cover_color);
+}

@@ -44,8 +44,7 @@
 
 /* Reading companion */
 .muse-book-panel{grid-area:panel;position:sticky;top:clamp(14px,2vw,24px);display:grid;gap:18px;padding:clamp(18px,2vw,22px);border-radius:var(--dl-radius-hero);overflow:hidden;animation:muse-book-arrive var(--motion-settle,260ms) var(--ease-out,ease-out) 60ms both}
-.muse-book-panel::before{content:"";position:absolute;inset:0 0 auto;height:140px;background:radial-gradient(ellipse 90% 100% at 20% 0%,color-mix(in srgb,var(--book-atmosphere) 18%,transparent),transparent 75%);pointer-events:none}
-.muse-book-panel>*{position:relative}
+/* No pseudo-element decoration here: role themes draw the card's masked outline ring on ::before. */
 .muse-book-panel-heading{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .muse-book-panel-reads{font-size:.74rem;color:var(--text-muted)}
 .muse-book-panel-progress{display:grid;gap:8px}
@@ -62,13 +61,14 @@
 .muse-book-panel-actions{display:flex;flex-wrap:wrap;gap:8px}.muse-book-panel-actions .muse-button{flex:1 1 130px;min-height:40px;display:inline-flex;align-items:center;justify-content:center;gap:7px;font-size:.84rem}
 /* The sitting chooser, recomposed for the companion */
 .muse-book-panel .muse-book-sitting-choice{padding:16px;gap:12px;border-radius:16px}
-.muse-book-panel .muse-book-sitting-head{flex-direction:column;align-items:stretch;gap:10px}
+/* Grid, not a wrapping column flexbox: WebKit mis-wraps flex-flow:column wrap without a fixed height,
+   which hid the goal text and stretched Begin across the panel in Safari. */
+.muse-book-panel .muse-book-sitting-head,.muse-book-panel .muse-book-sitting-bottom,.muse-book-panel .muse-book-sitting-action{display:grid;grid-template-columns:minmax(0,1fr);align-items:start;gap:10px}
 .muse-book-panel .muse-book-sitting-head h3{font-size:1.28rem}
 .muse-book-panel .muse-book-sitting-modes{width:100%}.muse-book-panel .muse-book-sitting-modes button{flex:1;min-height:38px;padding-inline:8px;font-size:.82rem}
 .muse-book-panel .muse-book-sitting-intro{font-size:.8rem}
 .muse-book-panel .muse-book-sitting-presets{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.muse-book-panel .muse-book-sitting-preset,.muse-book-panel .muse-book-sitting-custom{min-height:52px}.muse-book-panel .muse-book-sitting-preset{font-size:1.1rem}
-.muse-book-panel .muse-book-sitting-bottom{flex-direction:column;align-items:stretch;gap:12px}
-.muse-book-panel .muse-book-sitting-action{justify-items:stretch}.muse-book-panel .muse-book-sitting-action .button-primary{width:100%;min-height:46px;font-size:.95rem}
+.muse-book-panel .muse-book-sitting-action{justify-items:stretch;gap:6px}.muse-book-panel .muse-book-sitting-action .button-primary{width:100%;min-height:46px;font-size:.95rem}
 .muse-book-panel .muse-book-sitting-feedback{font-size:.74rem}
 /* A live sitting */
 .muse-book-session{display:grid;justify-items:center;gap:6px;padding:20px 16px 16px;border:1px solid var(--selected-border);border-radius:18px;background:radial-gradient(ellipse 80% 70% at 50% 0%,color-mix(in srgb,var(--accent-primary) 16%,transparent),transparent 80%),var(--surface-subtle);text-align:center}

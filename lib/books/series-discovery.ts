@@ -35,7 +35,7 @@ const norm=(x:string)=>x.toLowerCase().normalize('NFKD').replace(/[̀-ͯ]/g,'').
 
 type RawImage={url?:unknown;color?:unknown}|null;
 type RawSeries={id?:number;name?:string;books_count?:number;primary_books_count?:number|null;author?:{name?:string}|null;book_series?:{position?:unknown;book?:{title?:string;image?:RawImage}|null}[]};
-type RawBook={id?:number;title?:string;description?:string|null;release_date?:string|null;release_year?:number|null;pages?:number|null;canonical_id?:number|null;image?:RawImage;cached_tags?:unknown;contributions?:{author?:{name?:string}|null}[];book_series?:{series_id?:number;position?:unknown;featured?:boolean;compilation?:boolean}[]};
+type RawBook={id?:number;title?:string;compilation?:boolean|null;users_count?:number|null;description?:string|null;release_date?:string|null;release_year?:number|null;pages?:number|null;canonical_id?:number|null;image?:RawImage;cached_tags?:unknown;contributions?:{author?:{name?:string}|null}[];book_series?:{series_id?:number;position?:unknown;featured?:boolean;compilation?:boolean}[]};
 const SERIES_HIT='id name books_count primary_books_count author{name} book_series(where:{compilation:{_eq:false},position:{_is_null:false},book:{canonical_id:{_is_null:true}}},order_by:{position:asc},limit:10){position book{title image{url}}}';
 const BOOK_FIELDS='id title description release_date release_year pages canonical_id image{url color} cached_tags contributions(limit:3){author{name}} book_series{series_id position featured compilation}';
 
@@ -61,6 +61,30 @@ export function orderCatalogMembers(members:CatalogMember[]){
  const sorted=[...members].sort((a,b)=>rank(a)-rank(b)||(a.position===null?1:0)-(b.position===null?1:0)||(a.position??0)-(b.position??0)||a.title.localeCompare(b.title));
  const seen=new Set<string>();
  return sorted.filter(m=>{const key=`${m.role==='collection'?'c':'m'}:${m.position??'x'}:${norm(m.title)}`;if(seen.has(key))return false;seen.add(key);return true;});
+}
+
+/** Omnibus, box set and multi-volume bundle titles, for catalogs that do not flag them as compilations. */
+export function bundleTitle(title:string){
+ return /\b(box(ed)?\s*set|boxset|omnibus|bundle|collection|complete (series|saga|set)|books?\s*\d+\s*(-|–|to|&|and)\s*\d+|series\s*:?\s*\d+\s*(-|–)\s*\d+|volumes?\s*\d+\s*(-|–)\s*\d+)\b/i.test(title);
+}
+export type CatalogEntry={member:CatalogMember;readers:number;featured:boolean};
+/**
+ * One work per reading position (#136). Catalogs list translations and other editions of the same installment
+ * as separate records at the same position; the record most readers have (then the featured one) represents
+ * the work. A distinct work with its own position is kept whatever its language. Unpositioned entries need
+ * a readership of their own, and bundles stay in Collections & box sets.
+ */
+export function normalizeSeriesEntries(entries:CatalogEntry[]):CatalogMember[]{
+ const works=entries.filter(e=>e.member.role!=='collection'),bundles=entries.filter(e=>e.member.role==='collection');
+ const best=(a:CatalogEntry,b:CatalogEntry)=>b.readers-a.readers||Number(b.featured)-Number(a.featured)||(a.member.releaseDate??'9999').localeCompare(b.member.releaseDate??'9999');
+ const byPosition=new Map<number,CatalogEntry[]>();
+ for(const e of works)if(e.member.position!==null)byPosition.set(e.member.position,[...(byPosition.get(e.member.position)??[]),e]);
+ const positioned=[...byPosition.values()].map(group=>[...group].sort(best)[0]);
+ const top=Math.max(0,...positioned.map(e=>e.readers)),floor=Math.max(3,Math.round(top*.02));
+ const kept=new Set(positioned.map(e=>norm(e.member.title)));
+ const unpositioned=works.filter(e=>e.member.position===null&&e.readers>=floor&&!kept.has(norm(e.member.title)));
+ const seenBundles=new Set<string>(),uniqueBundles=bundles.sort(best).filter(e=>{const key=norm(e.member.title);if(seenBundles.has(key))return false;seenBundles.add(key);return true;});
+ return orderCatalogMembers([...positioned,...unpositioned,...uniqueBundles].map(e=>e.member));
 }
 
 export function createSeriesResolver({fetcher=fetch,hardcoverKey=()=>process.env.HARDCOVER_API_KEY,timeoutMs=9000,now=()=>Date.now()}:{fetcher?:Fetcher;hardcoverKey?:()=>string|undefined;timeoutMs?:number;now?:()=>number}={}){
@@ -134,20 +158,22 @@ export function createSeriesResolver({fetcher=fetch,hardcoverKey=()=>process.env
   return id===null?null:{id,position:position(rows.find(row=>row.series_id===id)?.position)};
  }
  async function hardcoverSeries(seriesId:number):Promise<SeriesCatalog|null>{
-  const result=await gql('query($id:Int!){series_by_pk(id:$id){id name description books_count primary_books_count is_completed author{name} book_series(order_by:{position:asc},limit:100){position featured compilation book{id title release_date release_year pages canonical_id image{url color} contributions(limit:1){author{name}}}}}}',{id:seriesId});
+  const result=await gql('query($id:Int!){series_by_pk(id:$id){id name description books_count primary_books_count is_completed author{name} book_series(order_by:{position:asc},limit:100){position featured compilation book{id title release_date release_year pages canonical_id compilation users_count image{url color} contributions(limit:1){author{name}}}}}}',{id:seriesId});
   const series=result?.series_by_pk as {id?:number;name?:string;description?:string|null;books_count?:number;primary_books_count?:number|null;is_completed?:boolean|null;author?:{name?:string}|null;book_series?:{position?:unknown;featured?:boolean;compilation?:boolean;book?:RawBook|null}[]}|null;
   if(!series?.id||!series.name)return null;
   const today=new Date(now()).toISOString().slice(0,10);
-  const members=(series.book_series??[]).map((row):CatalogMember|null=>{
+  const entries=(series.book_series??[]).map((row):CatalogEntry|null=>{
    const book=row.book,id=book?.id,name=text(book?.title,300),pos=position(row.position);
    if(typeof id!=='number'||!name||book?.canonical_id)return null;
    const releaseDate=isoDate(book?.release_date),releaseYear=positiveInt(book?.release_year)??(releaseDate?Number(releaseDate.slice(0,4)):undefined),cover=safeCoverUrl(book?.image?.url),color=hexColor(book?.image?.color),pages=positiveInt(book?.pages);
-   return {source:'hardcover',id:String(id),title:name,author:text(book?.contributions?.[0]?.author?.name)||text(series.author?.name),position:pos,positionLabel:pos===null?'':label(pos),role:row.compilation?'collection':row.featured?'mainline':'optional',
+   const member:CatalogMember={source:'hardcover',id:String(id),title:name,author:text(book?.contributions?.[0]?.author?.name)||text(series.author?.name),position:pos,positionLabel:pos===null?'':label(pos),role:row.compilation||book?.compilation||bundleTitle(name)?'collection':row.featured?'mainline':'optional',
     ...(releaseDate?{releaseDate}:{}),...(releaseYear?{releaseYear}:{}),releaseState:releaseDate?(releaseDate>today?'announced':'released'):releaseYear?(releaseYear>Number(today.slice(0,4))?'announced':'released'):'unknown',
     ...(cover?{coverUrl:cover}:{}),...(color?{coverColor:color}:{}),...(pages?{pages}:{})};
-  }).filter((m):m is CatalogMember=>!!m);
+   return {member,readers:typeof book?.users_count==='number'?book.users_count:0,featured:!!row.featured};
+  }).filter((e):e is CatalogEntry=>!!e);
+  const members=normalizeSeriesEntries(entries);
   if(!members.length)return null;
-  return {source:'hardcover',id:String(series.id),title:text(series.name),author:text(series.author?.name),description:optional(series.description,2000),primaryCount:typeof series.primary_books_count==='number'?series.primary_books_count:undefined,totalCount:typeof series.books_count==='number'?series.books_count:undefined,...(typeof series.is_completed==='boolean'?{completed:series.is_completed}:{}),members:orderCatalogMembers(members),complete:false};
+  return {source:'hardcover',id:String(series.id),title:text(series.name),author:text(series.author?.name),description:optional(series.description,2000),primaryCount:typeof series.primary_books_count==='number'?series.primary_books_count:undefined,totalCount:members.filter(m=>m.role!=='collection').length,...(typeof series.is_completed==='boolean'?{completed:series.is_completed}:{}),members:orderCatalogMembers(members),complete:false};
  }
  async function hardcover(seed:SeriesSeed):Promise<SeriesCatalog|null>{
   if(!hardcoverKey()?.trim())return null;

@@ -4,10 +4,9 @@ import {createMuseBrowserClient} from '@/lib/supabase/client';
 import type {Book} from '@/lib/whimsy/models';
 import type {Series,SeriesMember} from '@/lib/collections/models';
 import {enrichmentChanges,lookupCatalogBook} from '@/lib/books/add-book';
-import {saveDiscoveredSeries} from '@/lib/books/series-save';
+import {catalogNeedsRefresh,saveDiscoveredSeries} from '@/lib/books/series-save';
 import {collectionsChanged,useCollectionsData} from '@/components/collections/CollectionsData';
 
-const MONTH=30*24*60*60_000;
 const missKey=(id:string)=>`muse-series-miss:${id}`;
 const missed=(id:string)=>{try{return !!sessionStorage.getItem(missKey(id));}catch{return false;}};
 const markMissed=(id:string)=>{try{sessionStorage.setItem(missKey(id),'1');}catch{/* retried next visit */}};
@@ -29,7 +28,7 @@ export function useBookCatalog(book:Book,books:Book[],onEnrich:(changes:Partial<
   const primary=memberships.find(x=>x.series.kind==='book')?.series??null;
   const removed=records.seriesMembers.some(m=>m.book_id===book.id&&m.hidden);
   const primaryMembers=primary?records.seriesMembers.filter(m=>m.series_id===primary.id):[];
-  const stale=!!primary&&primary.catalog_source==='hardcover'&&(!primary.catalog_refreshed_at||Date.now()-Date.parse(primary.catalog_refreshed_at)>MONTH||!primaryMembers.some(m=>m.catalog_cover_url||m.catalog_cover_color));
+  const stale=!!primary&&catalogNeedsRefresh(primary,primaryMembers,Date.now());
   const needsSeries=!primary&&!removed;
   const needsDetails=!book.metadataSource?.enrichedAt&&(!book.description||!book.publishedDate||!book.genre||!book.coverUrl);
   if((!needsSeries&&!stale&&!needsDetails)||missed(book.id))return;

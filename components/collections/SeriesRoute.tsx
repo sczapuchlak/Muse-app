@@ -10,7 +10,7 @@ import {deleteSeries,saveSeriesMember} from '@/lib/collections/persistence';
 import type {Series,SeriesMember} from '@/lib/collections/models';
 import type {SeriesCatalog} from '@/lib/books/series-discovery';
 import {fetchSeriesCatalog} from '@/lib/books/add-book';
-import {saveDiscoveredSeries} from '@/lib/books/series-save';
+import {catalogNeedsRefresh,saveDiscoveredSeries} from '@/lib/books/series-save';
 import {catalogSeriesView,seriesShelf,seriesSummary,shelfStateLabel,type ShelfEntry} from '@/lib/books/series-view';
 import {bookHref,currentReturn,goBack,parseSeriesKey,rememberReturn} from '@/lib/books/return-nav';
 import {validCoverUrl,todayForReading} from '@/lib/whimsy/books';
@@ -23,7 +23,6 @@ import {SeriesLibrary} from './SeriesLibrary';
 import '@/components/whimsy/BookPage.css';
 import './SeriesPage.css';
 
-const MONTH=30*24*60*60_000;
 const longDate=(iso:string)=>{const d=new Date(`${iso}T12:00:00Z`);return Number.isNaN(d.getTime())?iso:d.toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric',timeZone:'UTC'});};
 
 /**
@@ -47,7 +46,7 @@ export function SeriesRoute({seriesKey}:{seriesKey:string}){
  // The saved series for this route: by id, or the saved copy of the catalog series it names.
  const saved:Series|null='savedId' in parsed?records.series.find(s=>s.id===parsed.savedId)??null:records.series.find(s=>s.catalog_source===parsed.source&&s.catalog_id===parsed.id)??null;
  const source='savedId' in parsed?saved?.catalog_source??null:parsed.source,catalogId='savedId' in parsed?saved?.catalog_id??null:parsed.id;
- const stale=!!saved&&saved.catalog_source==='hardcover'&&(!saved.catalog_refreshed_at||mountedAt-Date.parse(saved.catalog_refreshed_at)>MONTH||!records.seriesMembers.some(m=>m.series_id===saved.id&&(m.catalog_cover_url||m.catalog_cover_color)));
+ const stale=!!saved&&catalogNeedsRefresh(saved,records.seriesMembers.filter(m=>m.series_id===saved.id),mountedAt);
  useEffect(()=>{
   if(!loaded)return;
   if('savedId' in parsed&&!saved){const frame=requestAnimationFrame(()=>setState('missing'));return()=>cancelAnimationFrame(frame);}

@@ -17,7 +17,7 @@ test('Hardcover is first and stores ordered lightweight references, fractional p
   return response({series_by_pk:{id:22,name:'A Court of Thorns and Roses',description:'Series description',books_count:9,primary_books_count:6,author:{name:seed.author},book_series:[{position:1,featured:true,compilation:false,book:{id:11,title:seed.title,release_date:'2015-05-05',contributions:[]}},{position:2.1,featured:false,compilation:false,book:{id:12,title:'A related novella',release_date:null,contributions:[]}}]}});
  }});
  const catalog=await resolver.resolve(seed);
- assert.equal(catalog.source,'hardcover');assert.equal(catalog.primaryCount,6);assert.equal(catalog.totalCount,9);assert.deepEqual(catalog.members.map(m=>m.position),[1,2.1]);assert.equal(catalog.members[1].role,'optional');assert.ok(calls.every(c=>c.url.includes('api.hardcover.app')));
+ assert.equal(catalog.source,'hardcover');assert.equal(catalog.primaryCount,6);assert.equal(catalog.totalCount,2,'the total counts normalized works, never raw catalog records');assert.deepEqual(catalog.members.map(m=>m.position),[1,2.1]);assert.equal(catalog.members[1].role,'optional');assert.ok(calls.every(c=>c.url.includes('api.hardcover.app')));
  await resolver.resolve(seed);assert.equal(calls.length,3,'a second open uses the in-process cache');
  await resolver.resolve(seed,{refresh:true});assert.equal(calls.length,6,'explicit refresh refetches');
 });

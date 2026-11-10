@@ -26,7 +26,7 @@ Catalog enrichment fills only empty book-level fields: synopsis, first publicati
 
 ## Ordering
 
-Hardcover `book_series.position` is the reading order (prequels `0.x`, novellas `x.y` in place); unpositioned companions follow; `compilation` rows are listed separately. Duplicate Hardcover records (`canonical_id` set) are dropped. "Next in order" prefers the first unread whole-number book. Counts and release information are shown only when the catalog supplies them; the series summary sentence is assembled only from supplied values.
+Hardcover `book_series.position` is the reading order (prequels `0.x`, novellas `x.y` in place). Hardcover lists translations and other-edition records as separate books at the same position, so the catalog is normalized to **one work per position**: the record most readers have (then the featured one) represents it, and distinct works with their own position are kept whatever their language. Unpositioned entries need their own readership (≥2% of the series' most-read book, minimum 3). Bundles — `compilation` on the series row or book, or bundle titles such as "Series: 5-6", "Box Set", "Complete … Collection", "Books 1-3" — are listed under Collections & box sets. Duplicate records (`canonical_id`) are dropped. Counts shown are normalized works, not raw catalog rows. Saved series from before normalization refresh once (`CATALOG_SHAPE_SINCE`), removing catalog-only rows the reader never owned, starred or corrected. "Next in order" prefers the first unread whole-number book. Counts and release information are shown only when the catalog supplies them; the series summary sentence is assembled only from supplied values.
 
 ## Hardcover setup
 

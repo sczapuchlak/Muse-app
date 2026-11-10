@@ -1,8 +1,9 @@
 'use client';
 /* eslint-disable @next/next/no-img-element -- edition covers are external HTTPS images, as elsewhere in Books. */
-import {useMemo,useRef,useState,type ReactNode} from 'react';
+import {useId,useMemo,useRef,useState,type ReactNode} from 'react';
 import {MuseModal} from '@/components/MuseModal';
 import {MuseIcon} from '@/components/MuseIcon';
+import {GlassPopover} from '@/components/GlassPopover';
 import {useMuseSpark} from '@/components/MuseSpark';
 import {createMuseBrowserClient} from '@/lib/supabase/client';
 import {todayForReading} from '@/lib/whimsy/books';
@@ -99,12 +100,15 @@ export function QuickAddToast({toast,onOpen,onDismiss,spark}:{toast:{book:Book;e
  </div>;
 }
 
-/** Bookmark + status split button for a result or installment that is not on the shelf. */
+/** Bookmark + status split button for a result or installment that is not on the shelf. The shelf menu is the
+ * shared GlassPopover, so it escapes scrolling lists and stays above neighbouring rows at any width. */
 export function QuickAddButton({busy,disabled,onAdd,label}:{busy:boolean;disabled?:boolean;onAdd:(status:QuickStatus)=>void;label:string}){
- const [open,setOpen]=useState(false);
+ const [open,setOpen]=useState(false),anchor=useRef<HTMLButtonElement>(null),id=useId();
  return <span className="muse-quick-add" data-open={open||undefined}>
   <button type="button" className="muse-quick-add-main" disabled={disabled||busy} aria-label={`Add ${label} to Want to Read`} onClick={event=>{event.stopPropagation();onAdd('planned');}}>{busy?<span className="muse-quick-add-spinner" aria-hidden="true"/>:<MuseIcon name="bookmark" size={18}/>}</button>
-  <button type="button" className="muse-quick-add-more" disabled={disabled||busy} aria-label={`Choose a shelf for ${label}`} aria-expanded={open} onClick={event=>{event.stopPropagation();setOpen(v=>!v);}}><MuseIcon name="chevron" size={16}/></button>
-  {open&&<span className="muse-quick-add-menu" role="menu" onClick={event=>event.stopPropagation()}>{(Object.keys(quickStatusLabel) as QuickStatus[]).map(id=><button key={id} type="button" role="menuitem" onClick={()=>{setOpen(false);onAdd(id);}}>{quickStatusLabel[id]}</button>)}</span>}
+  <button ref={anchor} type="button" className="muse-quick-add-more" disabled={disabled||busy} aria-label={`Choose a shelf for ${label}`} aria-haspopup="menu" aria-expanded={open} onClick={event=>{event.stopPropagation();setOpen(v=>!v);}}><MuseIcon name="chevron" size={16}/></button>
+  <GlassPopover id={`quick-add-${id}`} label={`Add ${label} to a shelf`} role="menu" open={open} anchorRef={anchor} onClose={()=>setOpen(false)} width={220} align="end" bare>
+   <div className="popover-choice-list muse-quick-add-menu">{(Object.keys(quickStatusLabel) as QuickStatus[]).map(status=><button key={status} type="button" role="menuitem" className="popover-choice" onClick={()=>{setOpen(false);onAdd(status);}}><span>{quickStatusLabel[status]}</span></button>)}</div>
+  </GlassPopover>
  </span>;
 }

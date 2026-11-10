@@ -7,9 +7,6 @@
 .muse-quick-add>button:focus-visible{outline:2px solid var(--focus-ring);outline-offset:-2px}
 .muse-quick-add>button:disabled{opacity:.55;cursor:default}
 .muse-quick-add[data-open] .muse-quick-add-more svg{transform:rotate(180deg)}
-.muse-quick-add-menu{position:absolute;z-index:5;right:0;top:calc(100% + 6px);display:grid;min-width:188px;padding:6px;border:1px solid var(--glass-border);border-radius:14px;background:var(--floating-background);box-shadow:var(--floating-shadow,0 14px 30px rgba(0,0,0,.18));-webkit-backdrop-filter:blur(var(--material-blur));backdrop-filter:blur(var(--material-blur));animation:muse-quick-pop var(--motion-hover,180ms) var(--ease-out,ease-out) both}
-.muse-quick-add-menu button{min-height:42px;padding:8px 12px;border:0;border-radius:10px;background:none;color:var(--foreground);font:500 .86rem var(--font-ui);text-align:left;cursor:pointer}
-.muse-quick-add-menu button:hover,.muse-quick-add-menu button:focus-visible{background:var(--selected-background);color:var(--selected-text)}
 .muse-quick-add-spinner{width:16px;height:16px;border-radius:50%;border:2px solid color-mix(in srgb,var(--accent-primary) 25%,transparent);border-top-color:var(--accent-primary);animation:muse-quick-spin .8s linear infinite}
 
 .muse-edition-sheet{display:grid;gap:14px;padding:4px 2px 8px;min-width:0}
@@ -34,4 +31,4 @@
 @keyframes muse-quick-rise{from{opacity:0;transform:translate(-50%,14px)}to{opacity:1;transform:translate(-50%,0)}}
 @keyframes muse-quick-spin{to{transform:rotate(360deg)}}
 @media(max-width:720px){.muse-quick-toast{bottom:calc(96px + env(safe-area-inset-bottom))}.muse-edition-sheet-list li{grid-template-columns:44px minmax(0,1fr) auto;gap:10px}.muse-edition-sheet-cover{width:44px}}
-@media(prefers-reduced-motion:reduce){.muse-quick-add-menu,.muse-edition-sheet-list li,.muse-quick-toast{animation:none}.muse-quick-add-spinner{animation-duration:2.4s}}
+@media(prefers-reduced-motion:reduce){.muse-edition-sheet-list li,.muse-quick-toast{animation:none}.muse-quick-add-spinner{animation-duration:2.4s}}
