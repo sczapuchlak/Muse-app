@@ -215,3 +215,15 @@
 }
 @media(prefers-reduced-motion:reduce){.muse-series-card{animation:none}.muse-series-card-cover{transition:none}}
 @media(min-width:901px){.muse-series-page-row{grid-template-columns:44px minmax(220px,1fr) minmax(0,1.35fr) 148px}.muse-series-page-row-actions{justify-content:flex-end}}
+
+/* Two columns beside everything: the bookcase and the identity on the left, the progress card on the right.
+   Plain grid columns (no row spanning) so every browser lays it out the same way. */
+.muse-series-top{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,340px);gap:clamp(18px,2.6vw,30px);align-items:start}
+.muse-series-top-main{display:flex;flex-direction:column;gap:clamp(16px,2vw,24px);min-width:0}
+.muse-series-top .muse-series-page-progress{align-self:start}
+.muse-series-top-main .muse-series-page-identity{padding-inline:4px}
+.muse-series-page-description p{max-width:68ch}
+@media(max-width:900px){.muse-series-top{grid-template-columns:minmax(0,1fr)}}
+.muse-series-top .muse-series-page-progress,.muse-series-top .muse-series-page-identity{grid-area:auto;grid-column:auto;grid-row:auto}
+.muse-series-top>.muse-series-page-progress{grid-column:2;grid-row:1}
+@media(max-width:900px){.muse-series-top>.muse-series-page-progress{grid-column:1;grid-row:2}}
