@@ -3,10 +3,10 @@ import {useEffect,useState} from 'react';
 import type {BookSeriesHit,SeriesHit} from '@/lib/books/series-discovery';
 import './Series.css';
 
-type CatalogSearch={term:string;results:SeriesHit[];bookSeries:BookSeriesHit[]};
+export type CatalogSearch={term:string;results:SeriesHit[];bookSeries:BookSeriesHit[]};
 /** One debounced request supplies both series-name results and book-result badges. */
-export function useSeriesSearch(query:string){
- const term=query.trim(),[data,setData]=useState<CatalogSearch>({term:'',results:[],bookSeries:[]}),[pending,setPending]=useState('');
+export function useSeriesSearch(query:string,initial?:CatalogSearch){
+ const term=query.trim(),[data,setData]=useState<CatalogSearch>(initial??{term:'',results:[],bookSeries:[]}),[pending,setPending]=useState('');
  useEffect(()=>{
   if(term.length<3)return;
   const controller=new AbortController();
@@ -22,7 +22,7 @@ export function useSeriesSearch(query:string){
   },350);
   return()=>{window.clearTimeout(timer);controller.abort();};
  },[term]);
- return {results:data.term===term?data.results:[],bookSeries:data.term===term?data.bookSeries:[],loading:pending===term&&term.length>=3};
+ return {results:data.term===term?data.results:[],bookSeries:data.term===term?data.bookSeries:[],loading:pending===term&&term.length>=3,data};
 }
 
 export function SeriesBadge({position,series,onOpen}:{position:number|null;series:Pick<SeriesHit,'title'|'primaryCount'|'totalCount'>;onOpen:()=>void}){

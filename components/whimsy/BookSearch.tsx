@@ -2,13 +2,15 @@
 import {useEffect,useId,useRef,useState,type KeyboardEvent} from 'react';
 import {sameEdition,withEdition,type BookCandidate} from '@/lib/books/metadata';
 import type {SeriesHit} from '@/lib/books/series-discovery';
-import {SeriesBadge,SeriesSearchResults,useSeriesSearch} from '@/components/collections/SeriesSearchResults';
+import {SeriesBadge,SeriesSearchResults,useSeriesSearch,type CatalogSearch} from '@/components/collections/SeriesSearchResults';
 import {savedSeriesBadgesForResult,seriesBadgesForResult,type SavedSeriesBadge} from '@/lib/books/series-search';
 import {MuseIcon} from '../MuseIcon';
 import './BookSearch.css';
 
 type SearchState={status:'idle'|'loading'|'done'|'error';results:BookCandidate[];message?:string;attribution:string[]};
 type EditionState={status:'idle'|'loading'|'done'|'error';editions:BookCandidate[]};
+export type BookSearchSnapshot={query:string;search:SearchState;open:boolean;active:number;chosen:BookCandidate|null;edition:string|null;editions:EditionState;catalog:CatalogSearch};
+export type BookSeriesSelection={hit:SeriesHit}|{savedId:string};
 const MIN_QUERY=3,DEBOUNCE_MS=350;
 
 async function post<T>(url:string,body:unknown,signal:AbortSignal):Promise<T>{
@@ -35,10 +37,13 @@ const editionLine=(e:BookCandidate)=>[e.formatLabel??'Format not listed',e.year,
  * Finds a book by title, author or ISBN and hands the chosen book (and edition) to the editor.
  * It never saves: the editor stays fully editable and manual entry is always available.
  */
-export function BookSearch({onImport,onEditions,onManual,onOpenSeries,savedSeries,onOpenSavedSeries}:{onImport:(book:BookCandidate)=>void;onEditions:(editions:BookCandidate[])=>void;onManual:()=>void;onOpenSeries:(hit:SeriesHit)=>void;savedSeries:SavedSeriesBadge[];onOpenSavedSeries:(id:string)=>void}){
- const id=useId(),listId=`${id}-results`,[query,setQuery]=useState(''),[search,setSearch]=useState<SearchState>({status:'idle',results:[],attribution:[]});
- const [open,setOpen]=useState(false),[active,setActive]=useState(-1),[chosen,setChosen]=useState<BookCandidate|null>(null),[edition,setEdition]=useState<string|null>(null),[editions,setEditions]=useState<EditionState>({status:'idle',editions:[]});
- const catalog=useSeriesSearch(query);
+export function BookSearch({onImport,onEditions,onManual,onOpenSeries,savedSeries,onOpenSavedSeries,onSeriesMatch,initialSnapshot,onSnapshot}:{onImport:(book:BookCandidate)=>void;onEditions:(editions:BookCandidate[])=>void;onManual:()=>void;onOpenSeries:(hit:SeriesHit)=>void;savedSeries:SavedSeriesBadge[];onOpenSavedSeries:(id:string)=>void;onSeriesMatch?:(selection:BookSeriesSelection|null)=>void;initialSnapshot?:BookSearchSnapshot|null;onSnapshot?:(snapshot:BookSearchSnapshot)=>void}){
+ const id=useId(),listId=`${id}-results`,[query,setQuery]=useState(initialSnapshot?.query??''),[search,setSearch]=useState<SearchState>(initialSnapshot?.search??{status:'idle',results:[],attribution:[]});
+ const [open,setOpen]=useState(initialSnapshot?.open??false),[active,setActive]=useState(initialSnapshot?.active??-1),[chosen,setChosen]=useState<BookCandidate|null>(initialSnapshot?.chosen??null),[edition,setEdition]=useState<string|null>(initialSnapshot?.edition??null),[editions,setEditions]=useState<EditionState>(initialSnapshot?.editions??{status:'idle',editions:[]});
+ const catalog=useSeriesSearch(query,initialSnapshot?.catalog);
+ const seriesSelectionRef=useRef('');
+ useEffect(()=>{onSnapshot?.({query,search,open,active,chosen,edition,editions,catalog:catalog.data});},[query,search,open,active,chosen,edition,editions,catalog.data,onSnapshot]);
+ useEffect(()=>{if(!chosen)return;const saved=savedSeriesBadgesForResult(chosen.title,chosen.authors,savedSeries)[0],found=seriesBadgesForResult(chosen.title,chosen.authors,catalog.bookSeries)[0],key=saved?`saved:${saved.seriesId}`:found?`catalog:${found.series.id}`:'none';if(seriesSelectionRef.current===key)return;seriesSelectionRef.current=key;onSeriesMatch?.(saved?{savedId:saved.seriesId}:found?{hit:found.series}:null);},[chosen,savedSeries,catalog.bookSeries,onSeriesMatch]);
  const searchAbort=useRef<AbortController|null>(null),editionAbort=useRef<AbortController|null>(null),debounce=useRef<ReturnType<typeof setTimeout>|null>(null);
  useEffect(()=>()=>{if(debounce.current)clearTimeout(debounce.current);searchAbort.current?.abort();editionAbort.current?.abort();},[]);
  /** Debounced from typing; a newer query cancels the older request so stale results never replace fresh ones. */
@@ -55,6 +60,7 @@ export function BookSearch({onImport,onEditions,onManual,onOpenSeries,savedSerie
 
  function choose(book:BookCandidate){
   setChosen(book);setEdition(book.editionKey??book.key);setOpen(false);setActive(-1);onImport(book);
+  const saved=savedSeriesBadgesForResult(book.title,book.authors,savedSeries)[0],found=seriesBadgesForResult(book.title,book.authors,catalog.bookSeries)[0];seriesSelectionRef.current=saved?`saved:${saved.seriesId}`:found?`catalog:${found.series.id}`:'none';onSeriesMatch?.(saved?{savedId:saved.seriesId}:found?{hit:found.series}:null);
   editionAbort.current?.abort();const controller=new AbortController();editionAbort.current=controller;
   if(!book.workKey&&!book.isbn13){setEditions({status:'done',editions:[]});onEditions([]);return;}
   setEditions({status:'loading',editions:[]});

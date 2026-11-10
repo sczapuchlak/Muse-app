@@ -28,5 +28,5 @@ export function useBookSeriesDiscovery(book:Book,books:Book[]){
   // Intentionally once per open book; provider refreshes are handled by the Series Detail action.
   // eslint-disable-next-line react-hooks/exhaustive-deps
  },[book.id,loaded]);
- return {memberships,state};
+  return {memberships,state,records};
 }
