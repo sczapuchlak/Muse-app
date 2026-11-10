@@ -156,5 +156,5 @@ test('every book write keeps lookup metadata, and older books stay valid',()=>{
  assert.match(read('lib/whimsy/books.ts'),/return \{\.\.\.bookMetadataFields\(book\),\.\.\.\(book\.completions\?\.length/,'carry fields include lookup metadata');
  assert.match(shelf,/\.\.\.bookMetadataFields\(\{isbn:bookForm\.isbn/,'editor saves metadata');
  assert.match(shelf,/!books\.some\(b=>b\.id===bookForm\.id\)&&<><BookSearch/,'search only when adding a new book');
- assert.match(read('components/whimsy/BookDetail.tsx'),/<p>\{book\.description\}<\/p>/,'description renders as text');assert.ok(!/dangerouslySetInnerHTML/.test(shelf+read('components/whimsy/BookSearch.tsx')));
+ assert.match(read('components/whimsy/BookPage.tsx'),/<p key=\{index\}>\{paragraph\}<\/p>/,'description renders as text');assert.ok(!/dangerouslySetInnerHTML/.test(shelf+read('components/whimsy/BookSearch.tsx')+read('components/whimsy/BookPage.tsx')+read('components/collections/SeriesRoute.tsx')));
 });

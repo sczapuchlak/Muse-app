@@ -63,6 +63,10 @@ const paths = {
   mood: <><circle cx="12" cy="12" r="9" /><path d="M8 14a4 4 0 0 0 8 0M8 9h.01M16 9h.01" /></>,
   moon: <path d="M20.8 13a9 9 0 0 1-9.8-9.8A9 9 0 1 0 20.8 13Z" />,
   plus: <path d="M12 5v14M5 12h14" />,
+  bookmark: <><path d="M7 3.5h10a1 1 0 0 1 1 1V21l-6-4-6 4V4.5a1 1 0 0 1 1-1Z"/><path d="M12 7.5v6M9 10.5h6"/></>,
+  play: <path d="M8 5.5v13a.6.6 0 0 0 .9.5l10.2-6.5a.6.6 0 0 0 0-1L8.9 5a.6.6 0 0 0-.9.5Z"/>,
+  pause: <path d="M8.5 5v14M15.5 5v14"/>,
+  series: <><path d="M4 20V6.5M8 20V4.5M12.5 20l-1.8-14.6M16 20V7h4v13"/><path d="M3 20.5h18"/></>,
   minus: <path d="M5 12h14" />,
   arrow: <path d="M5 12h14m-5-5 5 5-5 5" />,
 };

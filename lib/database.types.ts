@@ -177,6 +177,7 @@ isOneToOne: false
                     "created_at"?: string,"id"?: string,"name"?: string,"payload"?: NonNullable<Json>,"revision"?: number,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
+                    
                   ]
                 },"astrology_journal_entries": {
                   Row: {
@@ -255,6 +256,32 @@ isOneToOne: false
       columns: ["user_id","recurring_id"]
 isOneToOne: false
       referencedRelation: "recurring_commitments"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+                },"book_journal_entries": {
+                  Row: {
+                    "body": string,"book_id": string,"book_title_snapshot": string,"chapter": string,"created_at": string,"cycle_id": string | null,"id": string,"kind": string,"page_label": string,"personal_note": string,"revision": number,"saved_on": string,"session_id": string | null,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "body": string,"book_id": string,"book_title_snapshot": string,"chapter"?: string,"created_at"?: string,"cycle_id"?: string | null,"id": string,"kind": string,"page_label"?: string,"personal_note"?: string,"revision"?: number,"saved_on": string,"session_id"?: string | null,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "body"?: string,"book_id"?: string,"book_title_snapshot"?: string,"chapter"?: string,"created_at"?: string,"cycle_id"?: string | null,"id"?: string,"kind"?: string,"page_label"?: string,"personal_note"?: string,"revision"?: number,"saved_on"?: string,"session_id"?: string | null,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "book_journal_entries_user_id_book_id_fkey"
+      columns: ["user_id","book_id"]
+isOneToOne: false
+      referencedRelation: "whimsy_books"
+      referencedColumns: ["user_id","id"]
+    },{
+      foreignKeyName: "book_journal_entries_user_id_session_id_fkey"
+      columns: ["user_id","session_id"]
+isOneToOne: false
+      referencedRelation: "whimsy_reading_sessions"
       referencedColumns: ["user_id","id"]
     }
                   ]
@@ -476,42 +503,30 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
-                },"book_journal_entries": {
-                  Row: {
-                    "id": string,"user_id": string,"book_id": string,"book_title_snapshot": string,"kind": string,"body": string,"personal_note": string,"page_label": string,"chapter": string,"saved_on": string,"cycle_id": string | null,"session_id": string | null,"revision": number,"created_at": string,"updated_at": string
-                  }
-                  ComputedFields: never
-                  Insert: {
-                    "id": string,"user_id": string,"book_id": string,"book_title_snapshot": string,"kind": string,"body": string,"personal_note"?: string,"page_label"?: string,"chapter"?: string,"saved_on": string,"cycle_id"?: string | null,"session_id"?: string | null,"revision"?: number,"created_at"?: string,"updated_at"?: string
-                  }
-                  Update: {
-                    "id"?: string,"user_id"?: string,"book_id"?: string,"book_title_snapshot"?: string,"kind"?: string,"body"?: string,"personal_note"?: string,"page_label"?: string,"chapter"?: string,"saved_on"?: string,"cycle_id"?: string | null,"session_id"?: string | null,"revision"?: number,"created_at"?: string,"updated_at"?: string
-                  }
-                  Relationships: []
                 },"collection_series": {
                   Row: {
-                    "catalog_author": string,"catalog_id": string | null,"catalog_primary_count": number | null,"catalog_refreshed_at": string | null,"catalog_source": string | null,"catalog_total_count": number | null,"conclusion_state": string,"cover_url": string | null,"created_at": string,"description": string,"id": string,"kind": string,"revision": number,"scope": string,"title": string,"updated_at": string,"user_id": string
+                    "catalog_author": string,"catalog_completed": boolean | null,"catalog_id": string | null,"catalog_primary_count": number | null,"catalog_refreshed_at": string | null,"catalog_source": string | null,"catalog_total_count": number | null,"conclusion_state": string,"cover_url": string | null,"created_at": string,"description": string,"id": string,"kind": string,"revision": number,"scope": string,"title": string,"updated_at": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "catalog_author"?: string,"catalog_id"?: string | null,"catalog_primary_count"?: number | null,"catalog_refreshed_at"?: string | null,"catalog_source"?: string | null,"catalog_total_count"?: number | null,"conclusion_state"?: string,"cover_url"?: string | null,"created_at"?: string,"description"?: string,"id": string,"kind": string,"revision"?: number,"scope"?: string,"title": string,"updated_at"?: string,"user_id": string
+                    "catalog_author"?: string,"catalog_completed"?: boolean | null,"catalog_id"?: string | null,"catalog_primary_count"?: number | null,"catalog_refreshed_at"?: string | null,"catalog_source"?: string | null,"catalog_total_count"?: number | null,"conclusion_state"?: string,"cover_url"?: string | null,"created_at"?: string,"description"?: string,"id": string,"kind": string,"revision"?: number,"scope"?: string,"title": string,"updated_at"?: string,"user_id": string
                   }
                   Update: {
-                    "catalog_author"?: string,"catalog_id"?: string | null,"catalog_primary_count"?: number | null,"catalog_refreshed_at"?: string | null,"catalog_source"?: string | null,"catalog_total_count"?: number | null,"conclusion_state"?: string,"cover_url"?: string | null,"created_at"?: string,"description"?: string,"id"?: string,"kind"?: string,"revision"?: number,"scope"?: string,"title"?: string,"updated_at"?: string,"user_id"?: string
+                    "catalog_author"?: string,"catalog_completed"?: boolean | null,"catalog_id"?: string | null,"catalog_primary_count"?: number | null,"catalog_refreshed_at"?: string | null,"catalog_source"?: string | null,"catalog_total_count"?: number | null,"conclusion_state"?: string,"cover_url"?: string | null,"created_at"?: string,"description"?: string,"id"?: string,"kind"?: string,"revision"?: number,"scope"?: string,"title"?: string,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
                     
                   ]
                 },"collection_series_members": {
                   Row: {
-                    "book_id": string | null,"catalog_author": string,"catalog_id": string | null,"catalog_release_date": string | null,"catalog_source": string | null,"catalog_title": string | null,"created_at": string,"hidden": boolean,"id": string,"manual_override": boolean,"media_id": string | null,"position_known": boolean,"release_state": string,"revision": number,"role": string,"sequence": number,"series_id": string,"starred": boolean,"updated_at": string,"user_id": string
+                    "book_id": string | null,"catalog_author": string,"catalog_cover_color": string | null,"catalog_cover_url": string | null,"catalog_id": string | null,"catalog_pages": number | null,"catalog_release_date": string | null,"catalog_release_year": number | null,"catalog_source": string | null,"catalog_title": string | null,"created_at": string,"hidden": boolean,"id": string,"manual_override": boolean,"media_id": string | null,"position_known": boolean,"release_state": string,"revision": number,"role": string,"sequence": number,"series_id": string,"starred": boolean,"updated_at": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "book_id"?: string | null,"catalog_author"?: string,"catalog_id"?: string | null,"catalog_release_date"?: string | null,"catalog_source"?: string | null,"catalog_title"?: string | null,"created_at"?: string,"hidden"?: boolean,"id": string,"manual_override"?: boolean,"media_id"?: string | null,"position_known"?: boolean,"release_state"?: string,"revision"?: number,"role"?: string,"sequence": number,"series_id": string,"starred"?: boolean,"updated_at"?: string,"user_id": string
+                    "book_id"?: string | null,"catalog_author"?: string,"catalog_cover_color"?: string | null,"catalog_cover_url"?: string | null,"catalog_id"?: string | null,"catalog_pages"?: number | null,"catalog_release_date"?: string | null,"catalog_release_year"?: number | null,"catalog_source"?: string | null,"catalog_title"?: string | null,"created_at"?: string,"hidden"?: boolean,"id": string,"manual_override"?: boolean,"media_id"?: string | null,"position_known"?: boolean,"release_state"?: string,"revision"?: number,"role"?: string,"sequence": number,"series_id": string,"starred"?: boolean,"updated_at"?: string,"user_id": string
                   }
                   Update: {
-                    "book_id"?: string | null,"catalog_author"?: string,"catalog_id"?: string | null,"catalog_release_date"?: string | null,"catalog_source"?: string | null,"catalog_title"?: string | null,"created_at"?: string,"hidden"?: boolean,"id"?: string,"manual_override"?: boolean,"media_id"?: string | null,"position_known"?: boolean,"release_state"?: string,"revision"?: number,"role"?: string,"sequence"?: number,"series_id"?: string,"starred"?: boolean,"updated_at"?: string,"user_id"?: string
+                    "book_id"?: string | null,"catalog_author"?: string,"catalog_cover_color"?: string | null,"catalog_cover_url"?: string | null,"catalog_id"?: string | null,"catalog_pages"?: number | null,"catalog_release_date"?: string | null,"catalog_release_year"?: number | null,"catalog_source"?: string | null,"catalog_title"?: string | null,"created_at"?: string,"hidden"?: boolean,"id"?: string,"manual_override"?: boolean,"media_id"?: string | null,"position_known"?: boolean,"release_state"?: string,"revision"?: number,"role"?: string,"sequence"?: number,"series_id"?: string,"starred"?: boolean,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
                     {
@@ -2921,9 +2936,6 @@ isOneToOne: false
 "discard_reading_timer":
 { Args: { "p_command_id": string,"p_expected_revision": number }; Returns: Json
                            },
-"start_book_reading_timer":
-{ Args: { "p_book_record": Json,"p_expected_book_revision": number,"p_timer_payload": Json,"p_command_id": string }; Returns: Json
-                           },
 "ensure_daily_record":
 { Args: { "p_date": string }; Returns: {
               "created_at": string,
@@ -3158,6 +3170,9 @@ isOneToOne: false
                            },
 "social_username_status":
 { Args: { "p_username": string }; Returns: string
+                           },
+"start_book_reading_timer":
+{ Args: { "p_book_record": Json,"p_command_id": string,"p_expected_book_revision": number,"p_timer_payload": Json }; Returns: Json
                            },
 "stream_comment":
 { Args: { "p_body": string,"p_id": string,"p_post": string }; Returns: Json

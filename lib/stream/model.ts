@@ -23,7 +23,7 @@ export const retiredKinds:StreamSourceKind[]=['money-milestone'];
 /** Composer shortcuts: each accepts only the record types that belong to it (mirrors the database check). */
 /** `only` narrows a shared record type to this shortcut (albums are media but belong to Listening). */
 export const shortcuts:{id:StreamCategory;label:string;icon:MuseIconName;kinds:StreamSourceKind[];home:{href:string;label:string};only?:(group:string)=>boolean}[]=[
- {id:'reading',label:'Reading',icon:'book',kinds:['book'],home:{href:'/whimsy/bookshelf',label:'Bookshelf'}},
+ {id:'reading',label:'Reading',icon:'book',kinds:['book'],home:{href:'/collections?kind=book',label:'Books'}},
  {id:'watching',label:'Watching',icon:'film',kinds:['media'],home:{href:'/collections',label:'Collections'},only:group=>group!=='Albums'},
  {id:'feeling',label:'Feeling',icon:'mood',kinds:['mood'],home:{href:'/mood',label:'Mood'}},
  {id:'dreaming',label:'Dreaming',icon:'dreams',kinds:['dream'],home:{href:'/whimsy/dreamscapes',label:'Dreamscapes'}},

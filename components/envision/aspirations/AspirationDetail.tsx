@@ -41,7 +41,7 @@ export function AspirationDetail({a,progress,updates,ritualState,tasks,today,bus
    <section className="muse-aspiration-progress" aria-label="Progress"><ProgressRing percent={progress.percent} accent={a.accent}/><div>
     <strong>{progressText(a,progress)}</strong>
     <small className="small-label">{progress.automatic?`Counted automatically from ${progress.source}`:'Updated by you'}{progress.note?` · ${progress.note}`:''}</small>
-    {a.connection?.kind==='reading-challenge'&&<Link className="text-button" href="/whimsy/bookshelf?view=atlas">Edit the challenge in Reading Atlas</Link>}
+    {a.connection?.kind==='reading-challenge'&&<Link className="text-button" href="/collections/reading-atlas">Edit the challenge in Reading Atlas</Link>}
    </div></section>
    {history.length>1&&<ol className="muse-aspiration-spark" aria-label="Progress over time">{history.slice(-12).map((p,i)=>{const max=a.progressKind==='manual'?100:Math.max(a.target??0,...history.map(h=>h.value));return <li key={i} title={`${dateLabel(p.date)}: ${p.value}`} style={{'--h':`${max?Math.max(4,p.value/max*100):4}%`} as React.CSSProperties}><span className="sr-only">{dateLabel(p.date)}: {p.value}</span></li>;})}</ol>}
 

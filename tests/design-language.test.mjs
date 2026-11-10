@@ -33,7 +33,7 @@ test('shared patterns exist once and the reference module uses them',()=>{
 
 test('modules adopt the shared search, switchers, chips and empty states',()=>{
  const uses=(file,pattern)=>assert.match(read(file),pattern,file);
- for(const file of ['components/whimsy/TarotExperience.tsx','components/whimsy/Bookshelf.tsx','components/collections/Collections.tsx','components/collections/MediaLibrary.tsx','components/astrology/AstrologyLibrary.tsx','components/astrology/CosmicJournal.tsx','components/money/Money.tsx','components/money/MoneyRecurring.tsx','components/nourish/SavedMealLibrary.tsx','components/whimsy/FortunesExperience.tsx'])uses(file,/<MuseSearch /);
+ for(const file of ['components/whimsy/TarotExperience.tsx','components/collections/Collections.tsx','components/collections/MediaLibrary.tsx','components/astrology/AstrologyLibrary.tsx','components/astrology/CosmicJournal.tsx','components/money/Money.tsx','components/money/MoneyRecurring.tsx','components/nourish/SavedMealLibrary.tsx','components/whimsy/FortunesExperience.tsx'])uses(file,/<MuseSearch /);
  uses('components/whimsy/TarotExperience.tsx',/className="muse-segmented muse-tarot-journal-view"/);
  uses('components/whimsy/TarotExperience.tsx',/className="muse-chip-row muse-tarot-filters"/);
  uses('components/astrology/CosmicObservatory.tsx',/className="muse-segmented muse-cosmic-period-selector"/);

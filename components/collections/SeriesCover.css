@@ -1,0 +1,10 @@
+/* One installment's cover (#136). Ghosts are books not on the reader's shelf: the art stays recognisable
+   but recedes, with a dashed edge, so ownership reads at a glance without hiding the series. */
+.muse-series-cover{position:relative;display:block;container-type:inline-size;width:100%;aspect-ratio:2/3;border-radius:5px 8px 8px 5px;overflow:hidden;background:color-mix(in srgb,var(--series-cover-tint,var(--accent-secondary)) 70%,#14101f);box-shadow:inset 3px 0 0 rgba(0,0,0,.18),0 6px 14px rgba(10,8,24,.16)}
+.muse-series-cover img{display:block;width:100%;height:100%;object-fit:cover}
+.muse-series-cover::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.22),transparent 6%,rgba(255,255,255,.12) 8%,transparent 12%);pointer-events:none}
+.muse-series-cover-fallback{position:absolute;inset:0;display:grid;align-content:end;padding:12% 10%;background:radial-gradient(120% 70% at 20% 0%,rgba(255,255,255,.22),transparent 60%),linear-gradient(160deg,color-mix(in srgb,var(--series-cover-tint,var(--accent-primary)) 88%,white 6%),color-mix(in srgb,var(--series-cover-tint,var(--accent-secondary)) 70%,#0d0b16))}
+.muse-series-cover-fallback strong{font-family:var(--font-editorial);font-weight:var(--type-title-weight);font-size:clamp(6.5px,15cqi,15px);line-height:1.12;color:#fffaf4;text-shadow:0 1px 2px rgba(0,0,0,.35);display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:normal;word-break:normal;hyphens:auto}
+.muse-series-cover[data-ghost]{opacity:.62;filter:saturate(.55);outline:1.5px dashed color-mix(in srgb,var(--foreground) 35%,transparent);outline-offset:2px;box-shadow:none}
+.muse-series-cover[data-ghost]:hover{opacity:.9;filter:none}
+@media(prefers-reduced-motion:no-preference){.muse-series-cover[data-ghost]{transition:opacity var(--motion-hover,180ms) ease,filter var(--motion-hover,180ms) ease}}

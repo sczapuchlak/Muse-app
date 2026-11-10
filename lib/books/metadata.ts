@@ -15,7 +15,7 @@ export type BookCandidate={
  coverUrl?:string;thumbnailUrl?:string;description?:string;genres:string[];
  volumeId?:string;workKey?:string;editionKey?:string;editionCount?:number;
 };
-export type BookMetadataSource={provider:BookProvider;volumeId?:string;workKey?:string;editionKey?:string;importedAt:string};
+export type BookMetadataSource={provider:BookProvider|'hardcover';volumeId?:string;workKey?:string;editionKey?:string;importedAt:string;/** Hardcover work id, recorded when the catalog confidently matches this book (#136). */hardcoverId?:string;/** When catalog enrichment last checked this book. */enrichedAt?:string};
 
 const MAX_TEXT=4000,MAX_FIELD=300;
 const str=(value:unknown,max=MAX_FIELD)=>typeof value==='string'&&value.trim()?plainText(value).slice(0,max).trim()||undefined:undefined;

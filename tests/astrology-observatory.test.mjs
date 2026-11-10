@@ -72,7 +72,7 @@ test('reads do not race acknowledged writes, and failed reload preserves private
  fail=true;await store.load(true);assert.equal(store.getSnapshot().records.journal[0].id,'new');assert.ok(store.getSnapshot().error);
 });
 test('five Whimsy tabs preserve the Bookshelf redirect, widgets, and one Daily Edit forecast',()=>{
- const {experiences}=load('components/whimsy/WhimsyFoundation'),{whimsyWidgets}=load('lib/whimsy/integrations');assert.equal(experiences.length,5);assert.equal(whimsyWidgets.length,5);assert.ok(readFileSync(root+'/app/(app)/whimsy/bookshelf/page.tsx','utf8').includes('/collections?view=books'));
+ const {experiences}=load('components/whimsy/WhimsyFoundation'),{whimsyWidgets}=load('lib/whimsy/integrations');assert.equal(experiences.length,5);assert.equal(whimsyWidgets.length,5);assert.ok(readFileSync(root+'/app/(app)/whimsy/bookshelf/page.tsx','utf8').includes('/collections?kind=book')&&readFileSync(root+'/app/(app)/whimsy/bookshelf/page.tsx','utf8').includes('/collections/reading-atlas'));
  for(const e of experiences)assert.ok(readFileSync(root+`/app/(app)/whimsy/${e.id}/page.tsx`,'utf8'));
  const daily=readFileSync(root+'/components/DailyEdit.tsx','utf8');assert.equal((daily.match(/<CosmicForecast\b/g)||[]).length,1);
  const forecast=readFileSync(root+'/components/CosmicForecast.tsx','utf8');assert.ok(forecast.includes('ForecastReading'));assert.ok(!forecast.includes('legacyForecastContent'));

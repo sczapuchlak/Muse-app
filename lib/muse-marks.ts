@@ -57,7 +57,7 @@ export function resolveMark(m:MuseMark,s:MarkSources):ResolvedMark{
  if(m.linkKind==='task'){const t=s.tasks.find(x=>x.id===m.linkId);if(!t)return {...base,missing:true};return {...base,start:t.plannedDate??m.date,end:t.plannedDate??m.date,title:m.label||t.title,linked:true};}
  const list=m.linkKind==='movement'?s.movementTypes.map(x=>({id:x.id,title:x.name})):m.linkKind==='book'?s.books:s.aspirations;
  const found=list.find(x=>x.id===m.linkId);if(!found)return {...base,missing:true};
- return {...base,title:m.label||found.title,linked:true,href:m.linkKind==='book'?'/whimsy/bookshelf':m.linkKind==='aspiration'?'/envision':'/'};
+ return {...base,title:m.label||found.title,linked:true,href:m.linkKind==='book'?`/collections/books/${encodeURIComponent(found.id)}`:m.linkKind==='aspiration'?'/envision':'/'};
 }
 /** Marks to draw on one day: date Marks (incl. ranges), not the ones riding on a specific task or event row. */
 export function dayMarks(marks:ResolvedMark[],day:string){return marks.filter(m=>m.linkKind!=='event'&&m.linkKind!=='task'&&m.start<=day&&day<=m.end);}

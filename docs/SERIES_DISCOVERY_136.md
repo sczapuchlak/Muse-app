@@ -1,28 +1,37 @@
-# Series Discovery #136 — local implementation and credential setup
+# Books & Series Discovery #136 — implementation notes
 
-## Product and ownership
+Status: implemented on `fix/136-unified-series-search` (PR #140). Staging migrations: `20261206000100_series_discovery.sql` (applied earlier) and `20261210000100_series_catalog_art.sql`. Production: **not approved, not applied.**
 
-`collection_series` and `collection_series_members` remain the one series owner. A discovered installment is a member reference with title, source ID, position, role and optional release date; `book_id` is null until it matches or is deliberately added to an existing Library book. The book, edition, sessions, journal, ratings and reading cycles remain in their existing owners. Removing a member sets a persistent hidden/manual override; it does not delete a book. Refresh never deletes saved members. A stronger saved source is retained if a weaker fallback responds.
+## Product shape
 
-Discovery is triggered by opening an individual book and skipped while its saved series refresh is younger than 30 days. An in-process 12-hour cache also avoids repeated requests inside the server. Refresh Series bypasses that cache and records a new successful refresh time. If a refresh fails, the saved catalog remains visible. Unknown publication status and incomplete series counts remain unknown. A book with no discovered series is cached for the current browser session; retry on a future visit remains possible.
+- **Collections is the only Books home.** Collections › Books shows the Reading Desk (timer, nightstand, Reading Challenge, next read) above the library. Reading Atlas is `/collections/reading-atlas`. The old standalone Books view and `/whimsy/bookshelf` redirect here (a `book` link opens that book; `view=atlas` opens the Atlas).
+- **Book page** `/collections/books/<id>`: identity with the series chip, synopsis, ordered series strip, the reading companion (the existing timer and session write paths), and Sittings / Journal / Reads / Details.
+- **Series page** `/collections/series/<saved id>` or `/collections/series/<source>-<catalog id>`. A catalog series is rendered as found; it is saved only when the reader adds or stars one of its books. Saved series keep manual corrections, stars and hidden installments.
+- **Add Book** is one search with a Books · Series switch. Book results carry series chips, a preview and Quick Add (bookmark = Want to Read; ▾ = choose a shelf). "Which edition?" appears only when editions differ in format, length, publisher, year or language. "Add with details…" and manual entry use the full editor.
+- **Context:** Back from a book or series returns to the search, book, series or Collections it was opened from (browser history, so scroll and search state are restored). The Add Book search survives for the browser session until the dialog is closed.
 
-Existing Library and Add Book searches show a clickable series badge directly on each matching book when saved membership or a bounded Hardcover catalog lookup supplies reliable metadata. Series-name matches also appear as clearly labeled Series results. Both open `SeriesLibrary` without adding a Library book or fetching editions. Book detail badges open that same view. There is no separate Series search action or Collections overview Series button; the contextual Collections route remains for deep-link and non-book franchise compatibility.
+## Data
+
+`collection_series` / `collection_series_members` remain the one series owner. Members may be catalog-only (no `book_id`). New nullable columns: `catalog_cover_url`, `catalog_cover_color`, `catalog_pages`, `catalog_release_year` on members, `catalog_completed` on series, and role `collection` for omnibus/box sets (never counted toward progress, never auto-linked to an owned book). A saved book records its Hardcover work in `metadataSource.hardcoverId` (+ `enrichedAt`).
+
+Catalog enrichment fills only empty book-level fields: synopsis, first publication date, genre (mapped to Muse genres), missing artwork. It never sets a saved book's page count and never replaces a reader's value. Quick Add saves the chosen edition's cover, pages, ISBN, publisher and date; the catalog fills only what that edition lacks.
+
+## Root causes fixed
+
+1. *"Could not open series."* — opening a catalog series forced a save, and Hardcover installments without a release date were written as `''` into a `date` column. Dates are now strict ISO or absent, and viewing never saves.
+2. *Lost search / legacy Books detour* — the Series modal replaced the Add Book dialog and "Back" went to the Books page. Series is now a page with contextual Back.
+3. *New books without their series* — the matched series was never saved with the book. Quick Add saves it; any book without a series is matched (by Hardcover id, then ISBN, then exact title/author) when its page opens.
+4. *Hidden synopsis* — the description was stored but collapsed; it is now visible, and Hardcover fills it when the edition had none.
+5. *Empty start date on Want to Read adds* — omitted rather than written as `''`.
+
+## Ordering
+
+Hardcover `book_series.position` is the reading order (prequels `0.x`, novellas `x.y` in place); unpositioned companions follow; `compilation` rows are listed separately. Duplicate Hardcover records (`canonical_id` set) are dropped. "Next in order" prefers the first unread whole-number book. Counts and release information are shown only when the catalog supplies them; the series summary sentence is assembled only from supplied values.
 
 ## Hardcover setup
 
-1. Open [Hardcover API settings](https://hardcover.app/account/api) while signed in and create a named Personal Access Token with an expiration date.
-2. Grant **`read:catalog`** only. This includes `read:catalog:data` for books, editions, series and `book_series`, and `read:catalog:search` for series/book search. No Library, journal or write scopes are used.
-3. Set the server environment variable `HARDCOVER_API_KEY` in local `.env.local` and the deployment environment's secret settings. Restart the server after local changes. Never use a `NEXT_PUBLIC_` variable, paste the token into the browser, or commit it.
-4. After applying the local migration, open an owned book from a known series and use Refresh Series; test the existing Books search for book badges and series-name results. If Hardcover returns 401, renew the token; if 403, verify `read:catalog`.
+Server-only `HARDCOVER_API_KEY` with `read:catalog` (set in the Staging Vercel project; secrets cannot be pulled locally). Without it, saved series and the Wikidata/Open Library fallbacks still work, and search shows book results without series chips.
 
-No token was present in the implementation environment. Live catalog coverage and account-specific responses are therefore **unverified**. Mocked contract tests check the documented query shape and parsing; they do not establish actual counts for example series.
+## Local QA
 
-## Verified public API surface
-
-Hardcover's [published GraphQL schema](https://github.com/hardcoverapp/hardcover-docs/blob/main/schema.graphql) exposes `search` with `query_type`, `series_by_pk`, `series` with `id`, `name`, `description`, `books_count`, `primary_books_count`, `is_completed`, `author` and `book_series`; `book_series` exposes `position` as a float, `featured`, `compilation`, and `book`; `books` exposes `release_date` and contributors. [Scope capabilities](https://github.com/hardcoverapp/hardcover-docs/blob/main/capabilities.json) list those operations under `read:catalog`. [Getting Started](https://github.com/hardcoverapp/hardcover-docs/blob/main/src/content/docs/api/Getting-Started.mdx) documents bearer PATs, beta status, limits and server-side secret handling. Schema availability is verified; live values, the meaning of `featured` for all catalogs, and release-date coverage require credential testing. Muse treats `featured && !compilation` as its provisional mainline indicator and labels other entries optional. A source count is never synthesized from the number of returned rows.
-
-## Migration and validation
-
-Migration: `supabase/migrations/20261206000100_series_discovery.sql`. It adds nullable catalog metadata and ghost/member correction fields to existing series tables and expands the member check constraint; it does not move or rewrite personal books or history. The SQL **passed against local Supabase inside a BEGIN/ROLLBACK transaction** and was applied to Staging through the guarded workflow. Staging history and a read-only schema dump confirmed the new objects. The shared local ledger contains unrelated version `20261204000100` absent from this checkout; it was not repaired or included in #136. Production still has #136 pending, and this search correction must pass Staging QA before its migration or deployment.
-
-Known limits: Hardcover's public API has not been exercised with a real credential; multiple equally featured series on one book are left unresolved rather than guessed; Hardcover's `book_series` query is bounded to 100 references, so very large catalogs may be partial; Google Books search availability and edition quality depend on its existing integration. Open Library can return unordered subject matches. Manual correction is always available.
+`scripts/hardcover-fixture.mjs` serves Hardcover-shaped fixture data (Throne of Glass, A Court of Thorns and Roses) for local development; start `next dev` with `HARDCOVER_API_KEY=fixture HARDCOVER_API_URL=http://127.0.0.1:4555/graphql` (the override is ignored in production builds). `scripts/qa/books-harness.mjs` creates a disposable local account and drives headless Chrome for the journeys. Fixture data verifies UI and flows only; live catalog coverage must be checked on Staging.

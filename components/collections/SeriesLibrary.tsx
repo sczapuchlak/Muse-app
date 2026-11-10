@@ -31,7 +31,7 @@ const memberForm=(row:SeriesMember):MemberForm=>({id:row.id,revision:row.revisio
 
 const plural=(n:number,one:string,many=`${one}s`)=>`${n} ${n===1?one:many}`;
 const kindNoun:Record<string,[string,string]>={book:['book','books'],movie:['movie','movies'],tv:['show','shows'],game:['game','games'],mixed:['installment','installments']};
-const itemHref=(item:{kind:string;id:string})=>`/collections?view=${item.kind==='book'?'books':item.kind==='movie'?'movies':item.kind==='tv'?'tv':item.kind==='album'?'music':'games'}&${item.kind==='book'?'book':'item'}=${item.id}`;
+const itemHref=(item:{kind:string;id:string})=>item.kind==='book'?`/collections/books/${item.id}`:`/collections?view=${item.kind==='movie'?'movies':item.kind==='tv'?'tv':item.kind==='album'?'music':'games'}&item=${item.id}`;
 const roleOptions=[{id:'mainline',label:'Mainline'},{id:'optional',label:'Optional'},{id:'spin-off',label:'Spin-off'}];
 const releaseOptions=[{id:'released',label:'Released'},{id:'announced',label:'Announced'},{id:'unknown',label:'Unknown'}];
 const kindOptions=[{id:'book',label:'Books'},{id:'movie',label:'Movies'},{id:'tv',label:'TV Shows'},{id:'game',label:'Games'},{id:'mixed',label:'Mixed universe'}];

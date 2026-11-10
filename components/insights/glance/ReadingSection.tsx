@@ -24,7 +24,7 @@ export function ReadingSection({ period, reading, nightstand, status, onRetry, m
     {status.error ? <p role="alert">Bookshelf couldn’t load. <button type="button" className="muse-glance-pill" onClick={onRetry}>Retry</button></p>
       : !status.loaded ? <Empty>Loading your books…</Empty> : <div className="muse-glance-reading">
       <div className="muse-glance-subhead"><h3>Now reading</h3><span>as of today</span></div>
-      {!nightstand.length ? <p className="muse-glance-empty"><span aria-hidden="true">📚</span>Nothing marked as reading. <Link className="muse-glance-pill" data-size="sm" href="/whimsy/bookshelf">Open Bookshelf</Link></p>
+      {!nightstand.length ? <p className="muse-glance-empty"><span aria-hidden="true">📚</span>Nothing marked as reading. <Link className="muse-glance-pill" data-size="sm" href="/collections?kind=book">Open Bookshelf</Link></p>
         : <ul className="muse-glance-books">{nightstand.map((x) => <li key={x.book.id} className="muse-glance-book">
           <BookCover book={x.book} />
           <div className="muse-glance-book-body">

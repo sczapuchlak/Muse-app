@@ -89,7 +89,7 @@ test('Muse Marks: visual-only by default, linked Marks follow their source, miss
  const r=[star,plane,book].map(m=>M.resolveMark(m,sources));
  assert.deepEqual([r[0].linked,r[0].start,r[0].missing],[false,'2026-11-10',false],'Scenario 4: a star on a date, nothing linked');
  assert.deepEqual([r[1].start,r[1].end,r[1].title],['2026-09-10','2026-09-18','London'],'linked event Mark follows the event’s dates and name');
- assert.equal(r[2].title,'Piranesi');assert.equal(r[2].href,'/whimsy/bookshelf');
+ assert.equal(r[2].title,'Piranesi');assert.equal(r[2].href,'/collections/books/b1','a book Mark opens that book’s page in Collections');
  const gone=M.resolveMark(plane,{...sources,events:[]});assert.deepEqual([gone.missing,gone.start],[true,'2026-09-01'],'deleted source: Mark stays, marked unlinked');
  assert.deepEqual(M.dayMarks(r,'2026-11-10').map(m=>m.id),['m1']);assert.equal(M.itemMark(r,'event','london').id,'m2');
  assert.equal(M.markFromRow({id:'x',local_date:'2026-01-01',end_date:null,icon:'rocket',color:'pop',label:'',link_kind:null,link_id:null,revision:1}),null,'only curated icons');
