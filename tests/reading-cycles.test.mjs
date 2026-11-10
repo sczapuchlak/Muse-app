@@ -126,7 +126,8 @@ test('editing or deleting a session recalculates only its read',()=>{
 
 test('timed and manual sessions are linked to their read in the app',()=>{
  const shelf=read('components/whimsy/Bookshelf.tsx');
- assert.match(shelf,/const cycleId=await ensureOpenRead\(book\);const start=\{bookId:book\.id,cycleId,/,'the timer records the read when it starts');
+ assert.match(shelf,/const cycleId=fields\?\.cycleId\?\?book\.cycleId\?\?await ensureOpenRead\(book\);/,'the timer records the read when it starts');
+ assert.match(shelf,/startBookReadingTimer\(client,command\.record,command\.revision,command\.timer,/,'the automatic status and timer start save together');
  assert.match(shelf,/\.\.\.\(saving\.cycleId\?\{cycleId:saving\.cycleId\}:\{\}\)\},expectedRevision:0/,'the timed session saves the timer\'s read');
  assert.equal((shelf.match(/\.\.\.\(timer\.cycleId\?\{cycleId:timer\.cycleId\}:\{\}\)/g)??[]).length,2,'pause, resume and finish keep the read on the timer');
  assert.match(shelf,/\.\.\.\(t\.cycleId\?\{cycleId:t\.cycleId\}:\{\}\)/,'long-stretch corrections keep the read');
