@@ -476,6 +476,18 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
+                },"book_journal_entries": {
+                  Row: {
+                    "id": string,"user_id": string,"book_id": string,"book_title_snapshot": string,"kind": string,"body": string,"personal_note": string,"page_label": string,"chapter": string,"saved_on": string,"cycle_id": string | null,"session_id": string | null,"revision": number,"created_at": string,"updated_at": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "id": string,"user_id": string,"book_id": string,"book_title_snapshot": string,"kind": string,"body": string,"personal_note"?: string,"page_label"?: string,"chapter"?: string,"saved_on": string,"cycle_id"?: string | null,"session_id"?: string | null,"revision"?: number,"created_at"?: string,"updated_at"?: string
+                  }
+                  Update: {
+                    "id"?: string,"user_id"?: string,"book_id"?: string,"book_title_snapshot"?: string,"kind"?: string,"body"?: string,"personal_note"?: string,"page_label"?: string,"chapter"?: string,"saved_on"?: string,"cycle_id"?: string | null,"session_id"?: string | null,"revision"?: number,"created_at"?: string,"updated_at"?: string
+                  }
+                  Relationships: []
                 },"collection_series": {
                   Row: {
                     "conclusion_state": string,"cover_url": string | null,"created_at": string,"description": string,"id": string,"kind": string,"revision": number,"scope": string,"title": string,"updated_at": string,"user_id": string
@@ -2905,6 +2917,12 @@ isOneToOne: false
                            },
 "delete_whimsy_book":
 { Args: { "p_book_id": string,"p_command_id": string,"p_expected_revision": number }; Returns: Json
+                           },
+"discard_reading_timer":
+{ Args: { "p_command_id": string,"p_expected_revision": number }; Returns: Json
+                           },
+"start_book_reading_timer":
+{ Args: { "p_book_record": Json,"p_expected_book_revision": number,"p_timer_payload": Json,"p_command_id": string }; Returns: Json
                            },
 "ensure_daily_record":
 { Args: { "p_date": string }; Returns: {

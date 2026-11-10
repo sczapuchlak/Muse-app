@@ -1,5 +1,6 @@
 import type {Tables} from '@/lib/database.types';
 import type {Book} from '@/lib/whimsy/models';
+import {bookCompletions} from '@/lib/whimsy/reading-stats';
 
 export type MediaItem=Tables<'collection_media_items'>;
 export type Episode=Tables<'collection_tv_episodes'>;
@@ -16,7 +17,7 @@ export function activeMediaItems(items:readonly MediaItem[],kind:MediaKind){cons
 export type CanonicalItem={id:string;kind:'book'|MediaKind;title:string;creator:string;coverUrl:string|null;status:string;genre:string;rating:number|null;favorite:boolean;createdAt:string;updatedAt:string;book?:Book;media?:MediaItem};
 export function canonicalItems(books:Book[],media:MediaItem[]):CanonicalItem[]{return [...books.map(book=>({id:book.id,kind:'book' as const,title:book.title,creator:book.author??'',coverUrl:book.coverUrl??null,status:book.status,genre:book.genre??'',rating:book.rating??null,favorite:false,createdAt:book.createdAt,updatedAt:book.updatedAt,book})),...media.map(item=>({id:item.id,kind:item.kind as MediaKind,title:item.title,creator:item.creator,coverUrl:item.cover_url,status:item.status,genre:item.genres.join(', '),rating:item.rating,favorite:item.favorite,createdAt:item.created_at,updatedAt:item.updated_at,media:item}))];}
 export const mediaStatusLabels:Record<MediaKind,Record<string,string>>={album:{planned:'Want to Listen',listening:'On Repeat',listened:'Listened'},movie:{planned:'Want to Watch',watching:'Watching',watched:'Watched',dnf:'Did Not Finish'},tv:{planned:'Want to Watch',watching:'Watching','caught-up':'Caught Up',completed:'Completed',paused:'On Hold',dnf:'Did Not Finish'},game:{backlog:'Backlog',playing:'Currently Playing',paused:'On Hold',completed:'Completed',dnf:'Did Not Finish'}};
-export function completed(item:CanonicalItem){return item.kind==='book'?item.status==='finished':item.kind==='movie'?item.status==='watched':item.kind==='album'?item.status==='listened':item.status==='completed';}
+export function completed(item:CanonicalItem){return item.kind==='book'?item.status==='finished'||!!item.book&&bookCompletions(item.book).length>0:item.kind==='movie'?item.status==='watched':item.kind==='album'?item.status==='listened':item.status==='completed';}
 export function releasedEpisodes(showId:string,episodes:Episode[],today:string,includeSpecials=false){return episodes.filter(episode=>episode.show_id===showId&&(includeSpecials||!episode.special)&&episode.release_state==='released'&&(!episode.air_date||episode.air_date<=today)).sort((a,b)=>a.season_number-b.season_number||a.episode_number-b.episode_number);}
 export function tvProgress(showId:string,episodes:Episode[],activity:MediaActivity[],today:string,seasons:Season[]=[],conclusionState='unknown'){
  const availableEpisodes=releasedEpisodes(showId,episodes,today),watchedIds=new Set(activity.filter(row=>row.media_id===showId&&row.episode_id&&['episode-watch','episode-rewatch'].includes(row.kind)).map(row=>row.episode_id));

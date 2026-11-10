@@ -577,6 +577,17 @@ One library book, many reads. Book-level metadata (title, author, cover, genre, 
 - **Book in Three Emojis.** Optional, zero to three emojis per book from the shared picker, counted by grapheme, one set shared across rereads.
 - **Statistics.** Completed reads, unique books and rereads stay distinct; each completion counts in the year it finished; sessions, pages and time count on the days they happened. Per-read statistics use only that read's sessions and update immediately after edits. No migration: all of this is optional fields inside existing book, session and timer records.
 
+## Living Library (#135) — approved 2026-11-09, local implementation
+
+Books is the reading hub inside Collections. Opening a canonical book should bring its cover, reading action, progress, series context, sessions, journal, read history and edition information together. The Reading Desk, Library and Book detail remain views over the same book, session, timer and series records. A completed distinct book remains completed for series progress while a reread is in progress; rereads do not create another series book. Current reading status and historical completion remain separate facts.
+
+Quotes and thoughts are book-owned private journal entries. Capture needs no timer. An entry may optionally reference a read or session; deleting a session clears the optional link and keeps the writing. Session notes, per-read reviews and independent Mindspace Notes retain their own meanings. A book's permanent deletion removes its journal with the book; archiving preserves it. Journal entries are included in account export.
+
+Starting a timer from a planned or finished book may transition it to reading, preserving read history. Discarding the unsaved timer requires the named Muse confirmation and restores the previous book status only if the automatically changed book has not since been edited. Saved sessions remain separately editable and deletable. The book atmosphere is local to its detail view and never changes the global theme. Cover-derived colors have a theme-aware fallback; covers remain optional. Large-library controls browse complete canonical records while visible covers render in batches.
+
+The book's existing recoverable timer offers an open sitting (count up) and an optional timed sitting (count down to a chosen minute target, then count overtime). Reaching the target never stops or saves the session. Actual active segments, excluding pauses, are the only source of saved time, daily goal progress and streaks. A target celebration occurs once per sitting on the device while Muse is visible; sound follows Muse's independent sound preference and reading haptics have their own off-by-default preference. Browsers may suppress background sound or vibration.
+
+
 ## Reading DNA, milestones and Year in Review — approved
 
 Reading Atlas has five sections, chosen with a compact segmented view selector (not page tabs): **Overview** (core statistics, Reading Challenge, goals, activity charts, rhythm, calendar, per-book progress, session history), **Reading DNA** (personality, favorite genres, genre breakdown, habits, book emojis), **Patterns** (see #50 below), **Books & Milestones** (superlatives, milestones, completion history with per-read ratings) and **Year in Review**. The period selector (today/week/month/year/all) applies to the first four; Year in Review has its own year selector listing only years with reading. Every figure is calculated live from saved records (`lib/whimsy/reading-dna.ts`); nothing is stored as a snapshot.

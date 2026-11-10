@@ -141,7 +141,7 @@ test('archived books leave the shelf but their history keeps counting',()=>{
  assert.deepEqual(books.bookCarryFields({archivedAt:'t',completions:[{id:'a',finishedOn:'2026-01-01',recordedAt:'x'}]}),{completions:[{id:'a',finishedOn:'2026-01-01',recordedAt:'x'}],archivedAt:'t'});
  assert.match(read('components/collections/Collections.tsx'),/canonicalItems\(books\.filter\(book=>!book\.archivedAt\)/);
  const shelf=read('components/whimsy/Bookshelf.tsx');
- assert.match(shelf,/shelfStatus==='archived'\?!!b\.archivedAt:!b\.archivedAt/,'library hides archived books unless asked');
+ assert.match(read('lib/books/library.ts'),/filters\.status==='archived'\?!book\.archivedAt:!!book\.archivedAt/,'library hides archived books unless asked');
  assert.match(shelf,/disabled=\{busy\|\|\(deleteInfo\.hasHistory&&!deleteForever\)\}/,'permanent deletion of history needs explicit acknowledgement');
 });
 

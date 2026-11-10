@@ -84,7 +84,7 @@ test('Stream sits in navigation, can be hidden, and Share to Stream is in-contex
  assert.match(read('components/AppShell.tsx'),/showStream \|\| item\.id !== "stream"/,'hiding Stream only filters navigation');
  assert.match(read('components/stream/StreamNotifications.tsx'),/Hiding Stream only tidies your navigation/);
  const share=read('components/stream/ShareToStream.tsx');assert.match(share,/<dialog/);assert.match(share,/showModal/,'opens over the current page');
- for(const f of ['components/whimsy/Bookshelf.tsx','components/whimsy/Dreamscapes.tsx','components/whimsy/TarotExperience.tsx'])assert.match(read(f),/<ShareToStream /,f);
+ for(const f of ['components/whimsy/BookDetail.tsx','components/whimsy/Dreamscapes.tsx','components/whimsy/TarotExperience.tsx'])assert.match(read(f),/<ShareToStream /,f);
 });
 
 test('reaction animations play once, after success, and respect Muse Magic and reduced motion',()=>{
