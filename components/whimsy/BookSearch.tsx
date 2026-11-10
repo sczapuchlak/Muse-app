@@ -8,6 +8,7 @@ import {savedSeriesFor} from '@/lib/books/series-save';
 import {catalogSeriesKey} from '@/lib/books/return-nav';
 import {existingLibraryBook,type QuickStatus} from '@/lib/books/add-book';
 import {useCollectionsData} from '@/components/collections/CollectionsData';
+import {bookSeriesPrimary} from '@/lib/collections/models';
 import {SeriesCover} from '@/components/collections/SeriesCover';
 import {useWhimsyData} from './WhimsyData';
 import {QuickAddButton} from './QuickAdd';
@@ -18,6 +19,8 @@ type SearchState={status:'idle'|'loading'|'done'|'error';results:BookCandidate[]
 type EditionState={status:'idle'|'loading'|'done'|'error';editions:BookCandidate[]};
 type Tab='books'|'series';
 type Snapshot={at:number;query:string;tab:Tab;search:SearchState;catalog:CatalogSearch;expanded:string|null};
+/** Series chips per book result, remembered for the session so refining a query never drops them. */
+const chipMemo=new Map<string,BookSeriesHit[]>();
 const MIN_QUERY=3,DEBOUNCE_MS=350,SNAPSHOT_KEY='muse.books.add-search',SNAPSHOT_TTL=45*60_000;
 const readSnapshot=():Snapshot|null=>{try{const value=JSON.parse(sessionStorage.getItem(SNAPSHOT_KEY)??'null') as Snapshot|null;return value&&Date.now()-value.at<SNAPSHOT_TTL?value:null;}catch{return null;}};
 /** Forget the Add Book search once the dialog is closed on purpose. */
@@ -62,6 +65,14 @@ export function BookSearch({stage,onImport,onEditions,onManual,onReview,onBackTo
  const [expanded,setExpanded]=useState<string|null>(initial?.expanded??null),[chosen,setChosen]=useState<BookCandidate|null>(null),[edition,setEdition]=useState<string|null>(null),[editions,setEditions]=useState<EditionState>({status:'idle',editions:[]});
  const catalog=useSeriesSearch(query,initial?.catalog);
  const {records:whimsy}=useWhimsyData(),{records}=useCollectionsData(),books=(whimsy?.books??[]).filter(b=>!b.archivedAt);
+ const [chipVersion,setChipVersion]=useState(0);
+ useEffect(()=>{
+  const pending=search.results.filter(b=>!chipMemo.has(b.key));if(search.status!=='done'||!pending.length)return;
+  const controller=new AbortController();
+  post<{chips:Record<string,BookSeriesHit[]>}>('/api/books/series',{action:'chips',books:pending.slice(0,12).map(b=>({key:b.key,title:b.title,authors:b.authors,isbn13:b.isbn13}))},controller.signal)
+   .then(data=>{for(const b of pending.slice(0,12))chipMemo.set(b.key,data.chips?.[b.key]??[]);setChipVersion(v=>v+1);}).catch(()=>{});
+  return()=>controller.abort();
+ },[search]);
  const searchAbort=useRef<AbortController|null>(null),editionAbort=useRef<AbortController|null>(null),debounce=useRef<ReturnType<typeof setTimeout>|null>(null);
  useEffect(()=>()=>{if(debounce.current)clearTimeout(debounce.current);searchAbort.current?.abort();editionAbort.current?.abort();},[]);
  useEffect(()=>{if(stage==='search'&&!initial?.query)inputRef.current?.focus({preventScroll:true});},[stage,initial]);
@@ -119,7 +130,7 @@ export function BookSearch({stage,onImport,onEditions,onManual,onReview,onBackTo
    {search.status==='loading'&&!search.results.length&&<ul className="muse-book-results" aria-hidden="true">{[0,1,2].map(i=><li key={i} className="muse-book-result muse-book-result-skeleton"><span/><span><i/><i/><i/></span></li>)}</ul>}
    {ready&&search.results.length>0&&<ul className="muse-book-results" aria-label="Matching books" data-loading={search.status==='loading'||undefined}>{search.results.map(book=>{
     const owned=existingLibraryBook(books,book),saved=owned?ownedSeries(owned):[];
-    const hits=saved.length?[]:seriesBadgesForResult(book.title,book.authors,catalog.bookSeries);
+    const memo=chipVersion>=0?chipMemo.get(book.key):undefined,hits=saved.length?[]:memo?.length?memo:seriesBadgesForResult(book.title,book.authors,catalog.bookSeries);
     const open=expanded===book.key;
     return <li key={book.key} className="muse-book-result" data-expanded={open||undefined}>
      <div className="muse-book-result-row">
@@ -133,7 +144,7 @@ export function BookSearch({stage,onImport,onEditions,onManual,onReview,onBackTo
       </button>
       <span className="muse-book-result-action">{owned?<button type="button" className="muse-book-result-owned" onClick={()=>onOpenBook(owned.id)}><MuseIcon name="check" size={14}/>On your shelf</button>:<QuickAddButton label={book.title} busy={quickPending===book.key} disabled={!!quickPending&&quickPending!==book.key} onAdd={status=>onQuickAdd(book,status,hits[0])}/>}</span>
      </div>
-     {(saved.length>0||hits.length>0)&&<div className="muse-book-result-series">{saved.map(({member,series})=><button key={member.id} type="button" className="muse-search-series-badge" onClick={()=>onOpenSeries(series!.id,series!.title)}><MuseIcon name="series" size={13}/>{member.position_known?`#${Number(member.sequence)}${series!.catalog_primary_count?` of ${series!.catalog_primary_count}`:''} in `:''}{series!.title}</button>)}{hits.slice(0,1).map(hit=><button key={`${hit.bookId}:${hit.series.id}`} type="button" className="muse-search-series-badge" onClick={()=>openHit(hit.series)}><MuseIcon name="series" size={13}/>{hit.position!==null?`#${hit.position}${hit.series.primaryCount!==null?` of ${hit.series.primaryCount}`:''} in `:'Part of '}{hit.series.title}</button>)}</div>}
+     {(saved.length>0||hits.length>0)&&<div className="muse-book-result-series">{saved.map(({member,series})=><button key={member.id} type="button" className="muse-search-series-badge" onClick={()=>onOpenSeries(series!.id,series!.title)}><MuseIcon name="series" size={13}/>{member.position_known?`#${Number(member.sequence)}${series!.catalog_primary_count&&Number.isInteger(Number(member.sequence))?` of ${series!.catalog_primary_count}`:''} in `:''}{series!.title}</button>)}{hits.slice(0,1).map(hit=><button key={`${hit.bookId}:${hit.series.id}`} type="button" className="muse-search-series-badge" onClick={()=>openHit(hit.series)}><MuseIcon name="series" size={13}/>{hit.position!==null?`#${hit.position}${hit.series.primaryCount!==null&&Number.isInteger(hit.position)?` of ${hit.series.primaryCount}`:''} in `:'Part of '}{hit.series.title}</button>)}</div>}
      {open&&<div className="muse-book-result-preview">
       {book.description?<p className="type-reading">{book.description.length>420?`${book.description.slice(0,420).replace(/\s+\S*$/,'')}…`:book.description}</p>:<p className="muse-book-result-preview-empty">No synopsis from this source. You can add one after saving.</p>}
       <div className="muse-book-result-preview-actions">{book.editionCount&&book.editionCount>1?<span className="small-label">{book.editionCount} editions</span>:null}{!owned&&<button type="button" className="muse-button button-ghost" onClick={()=>review(book)}>Add with details…</button>}</div>
@@ -146,8 +157,8 @@ export function BookSearch({stage,onImport,onEditions,onManual,onReview,onBackTo
    {catalog.loading&&!seriesCount&&<ul className="muse-series-results" aria-hidden="true">{[0,1].map(i=><li key={i} className="muse-book-result-skeleton"><span/><span><i/><i/></span></li>)}</ul>}
    {seriesCount>0&&<ul className="muse-series-results" aria-label="Matching series">
     {savedSeriesRows.map(series=>{const members=records.seriesMembers.filter(m=>m.series_id===series.id&&!m.hidden&&m.role!=='collection').sort((a,b)=>a.sequence-b.sequence),covers=members.map(m=>books.find(b=>b.id===m.book_id)?.coverUrl||m.catalog_cover_url).filter((c):c is string=>!!c).slice(0,3),owned=members.filter(m=>m.book_id).length;
-     return <li key={series.id}><button type="button" onClick={()=>onOpenSeries(series.id,series.title)}><SeriesFan covers={covers} title={series.title}/><span className="muse-series-result-copy"><strong><Highlight text={series.title} query={term}/></strong><span>{series.catalog_author?`by ${series.catalog_author}`:'Your series'}</span><small>{series.catalog_primary_count??members.length} books · {owned} on your shelf</small></span><MuseIcon name="arrow" size={16}/></button></li>;})}
-    {catalogRows.map(hit=><li key={`${hit.source}:${hit.id}`}><button type="button" onClick={()=>openHit(hit)}><SeriesFan covers={hit.covers??(hit.coverUrl?[hit.coverUrl]:[])} title={hit.title}/><span className="muse-series-result-copy"><strong><Highlight text={hit.title} query={term}/></strong><span>{hit.author?`by ${hit.author}`:'Author not listed'}</span><small>{[hit.primaryCount!==null?`${hit.primaryCount} books`:hit.totalCount!==null?`${hit.totalCount} entries`:null,hit.sampleTitles?.length?hit.sampleTitles.join(', '):null].filter(Boolean).join(' · ')}</small></span><MuseIcon name="arrow" size={16}/></button></li>)}
+     return <li key={series.id}><button type="button" onClick={()=>onOpenSeries(series.id,series.title)}><SeriesFan covers={covers} title={series.title}/><span className="muse-series-result-copy"><strong><Highlight text={series.title} query={term}/></strong><span>{series.catalog_author?`by ${series.catalog_author}`:'Your series'}</span><small>{bookSeriesPrimary(records.seriesMembers.filter(m=>m.series_id===series.id)).primary.length} primary books · {owned} on your shelf</small></span><MuseIcon name="arrow" size={16}/></button></li>;})}
+    {catalogRows.map(hit=><li key={`${hit.source}:${hit.id}`}><button type="button" onClick={()=>openHit(hit)}><SeriesFan covers={hit.covers??(hit.coverUrl?[hit.coverUrl]:[])} title={hit.title}/><span className="muse-series-result-copy"><strong><Highlight text={hit.title} query={term}/></strong><span>{hit.author?`by ${hit.author}`:'Author not listed'}</span><small>{[hit.primaryCount!==null?`${hit.primaryCount} primary books`:hit.totalCount!==null?`${hit.totalCount} entries`:null,hit.sampleTitles?.length?hit.sampleTitles.join(', '):null].filter(Boolean).join(' · ')}</small></span><MuseIcon name="arrow" size={16}/></button></li>)}
    </ul>}
   </>}
   <button type="button" className="text-button muse-book-search-manual" onClick={onManual}>Can’t find it? Add it by hand <MuseIcon name="arrow" size={14}/></button>

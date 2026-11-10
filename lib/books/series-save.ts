@@ -40,8 +40,8 @@ export async function saveDiscoveredSeries(client:SupabaseClient<Database>,userI
 }
 /** The saved member row for one catalog installment, after a save. */
 export function memberFor(members:SeriesMember[],seriesId:string,source:string,id:string){return members.find(m=>m.series_id===seriesId&&m.catalog_source===source&&m.catalog_id===id)??null;}
-/** Catalogs saved before series normalisation (#136, 2026-11-10) are refreshed once into the current shape. */
-export const CATALOG_SHAPE_SINCE='2026-11-10T19:50:00Z';
+/** Catalogs saved before the current normalisation (#136: translations, bundles, edition formats) refresh once. */
+export const CATALOG_SHAPE_SINCE='2026-11-10T20:13:00Z';
 export function catalogNeedsRefresh(series:Pick<Series,'catalog_source'|'catalog_refreshed_at'>,members:Pick<SeriesMember,'catalog_cover_url'|'catalog_cover_color'>[],now:number){
  if(series.catalog_source!=='hardcover')return false;
  const at=series.catalog_refreshed_at?Date.parse(series.catalog_refreshed_at):0;

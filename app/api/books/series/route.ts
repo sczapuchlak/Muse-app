@@ -18,6 +18,10 @@ export async function POST(request:NextRequest){
    const query=field(body.query,120);if(query.length<2)return privateResponse(NextResponse.json({error:'Enter a series name.'},{status:400}));
    return ready.respond({...await seriesResolver.searchCatalog(query),configured:!!process.env.HARDCOVER_API_KEY});
   }
+  if(body.action==='chips'){
+   const books=(Array.isArray(body.books)?body.books:[]).slice(0,12).map((b:unknown)=>{const o=(b&&typeof b==='object'?b:{}) as Record<string,unknown>;return {key:field(o.key,200),title:field(o.title,300),authors:(Array.isArray(o.authors)?o.authors:[]).map(a=>field(a,150)).filter(Boolean).slice(0,3),isbn13:field(o.isbn13,20)||undefined};}).filter((b:{key:string;title:string})=>b.key&&b.title);
+   return ready.respond({chips:await seriesResolver.seriesForBooks(books)});
+  }
   const hardcoverBookId=/^\d{1,12}$/.test(field(body.hardcoverBookId,12))?field(body.hardcoverBookId,12):undefined;
   const seed:SeriesSeed={title:field(body.title,300),author:field(body.author,150),isbn:field(body.isbn,20),workKey:field(body.workKey,40),...(source?{source,sourceId:field(body.sourceId,120)}:{}),...(hardcoverBookId?{hardcoverBookId}:{})};
   if(body.action==='book'){

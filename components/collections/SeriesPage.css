@@ -87,7 +87,7 @@
 @media(max-width:900px){.muse-series-page-hero{grid-template-columns:minmax(0,1fr);grid-template-areas:"shelf" "identity" "progress"}}
 @media(max-width:620px){
  .muse-series-shelf{padding:16px 12px 0}
- .muse-series-shelf-books{justify-content:flex-start;height:150px}
+ .muse-series-shelf-books{justify-content:safe center;height:150px}
  .muse-series-spine{flex-basis:28px}
  .muse-series-page-identity h1{font-size:clamp(1.7rem,7.4vw,2.2rem)}
  .muse-series-page-order{padding:16px}
@@ -98,3 +98,15 @@
 }
 @media(prefers-reduced-motion:reduce){.muse-series-spine,.muse-series-page-row{animation:none;transition:none}.muse-series-spine[data-skeleton]{animation:none}}
 :root[data-muse-magic="quiet"] .muse-series-spine{animation:none}
+
+/* Primary / additional / collections (#136) */
+.muse-series-page-section-count{margin-left:6px;padding:1px 9px;border-radius:999px;background:color-mix(in srgb,var(--accent-primary) 14%,transparent);font:600 .78rem/1.5 var(--font-ui);vertical-align:middle}
+.muse-series-page-basis{font-size:.76rem;line-height:1.4;color:var(--text-muted);padding:8px 10px;border-radius:10px;border:1px dashed var(--glass-border)}
+.muse-series-page-additional .muse-series-page-pos{font-size:1rem}
+.muse-series-page-bundles{padding-block:6px}
+.muse-series-page-bundles .muse-series-page-collections{margin:0;border:0;padding:0}
+.muse-series-page-bundles summary{flex-wrap:wrap;gap:6px 8px;min-height:56px}
+.muse-series-page-bundles summary small{flex-basis:100%;order:3;font:400 .8rem var(--font-ui);color:var(--text-muted);margin-top:-4px}
+.muse-series-page-empty-note{font-size:.86rem;color:var(--text-muted);padding:12px 0}
+.muse-series-page-footnote{padding:0 4px}
+.muse-series-page-bundles summary .muse-book-page-section-title{font-family:var(--font-editorial);font-weight:var(--type-editorial-weight);font-size:clamp(1.3rem,2vw,1.55rem);letter-spacing:-.01em}

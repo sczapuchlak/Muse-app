@@ -67,6 +67,15 @@ export function orderCatalogMembers(members:CatalogMember[]){
 export function bundleTitle(title:string){
  return /\b(box(ed)?\s*set|boxset|omnibus|bundle|collection|complete (series|saga|set)|books?\s*\d+\s*(-|–|to|&|and)\s*\d+|series\s*:?\s*\d+\s*(-|–)\s*\d+|volumes?\s*\d+\s*(-|–)\s*\d+)\b/i.test(title);
 }
+/**
+ * Another format of a work already in the series rather than a work of its own: audio dramatizations, split or
+ * partial editions and similar. These are editions, so they never appear in a reading order.
+ */
+export function editionTitle(title:string){
+ return /\b(dramati[sz]ed adaptation|audio ?drama|full[- ]cast|split edition|abridged|movie tie-?in)\b/i.test(title)||/\bpart\s+\d+\s+of\s+\d+\b/i.test(title);
+}
+/** Series that only repackage another series as an edition (dramatizations, split editions). */
+const editionSeries=(name:string)=>/\((dramati[sz]ed adaptation|split edition|audio ?drama|full[- ]cast)[^)]*\)/i.test(name)||/\b(dramati[sz]ed adaptation|split edition)\b/i.test(name);
 export type CatalogEntry={member:CatalogMember;readers:number;featured:boolean};
 /**
  * One work per reading position (#136). Catalogs list translations and other editions of the same installment
@@ -75,7 +84,7 @@ export type CatalogEntry={member:CatalogMember;readers:number;featured:boolean};
  * a readership of their own, and bundles stay in Collections & box sets.
  */
 export function normalizeSeriesEntries(entries:CatalogEntry[]):CatalogMember[]{
- const works=entries.filter(e=>e.member.role!=='collection'),bundles=entries.filter(e=>e.member.role==='collection');
+ const works=entries.filter(e=>e.member.role!=='collection'&&!editionTitle(e.member.title)),bundles=entries.filter(e=>e.member.role==='collection'&&!editionTitle(e.member.title));
  const best=(a:CatalogEntry,b:CatalogEntry)=>b.readers-a.readers||Number(b.featured)-Number(a.featured)||(a.member.releaseDate??'9999').localeCompare(b.member.releaseDate??'9999');
  const byPosition=new Map<number,CatalogEntry[]>();
  for(const e of works)if(e.member.position!==null)byPosition.set(e.member.position,[...(byPosition.get(e.member.position)??[]),e]);
@@ -182,7 +191,7 @@ export function createSeriesResolver({fetcher=fetch,hardcoverKey=()=>process.env
   const featured=featuredSeriesOf(book);
   return featured?hardcoverSeries(featured.id):null;
  }
- async function searchSeries(query:string):Promise<SeriesHit[]>{if(!hardcoverKey()?.trim())return [];const found=await gql('query($query:String!){search(query:$query,query_type:"series",per_page:10){ids}}',{query:query.slice(0,120)});const ids=((found?.search as {ids?:number[]}|undefined)?.ids??[]).filter(id=>Number.isInteger(id));if(!ids.length)return [];const data=await gql(`query($ids:[Int!]!){series(where:{id:{_in:$ids}},limit:10){${SERIES_HIT}}}`,{ids});const rows=((data?.series as RawSeries[]|undefined)??[]).filter(s=>typeof s.id==='number'&&!!s.name);return ids.map(id=>rows.find(row=>row.id===id)).filter((s):s is RawSeries=>!!s).map(seriesHit);}
+ async function searchSeries(query:string):Promise<SeriesHit[]>{if(!hardcoverKey()?.trim())return [];const found=await gql('query($query:String!){search(query:$query,query_type:"series",per_page:10){ids}}',{query:query.slice(0,120)});const ids=((found?.search as {ids?:number[]}|undefined)?.ids??[]).filter(id=>Number.isInteger(id));if(!ids.length)return [];const data=await gql(`query($ids:[Int!]!){series(where:{id:{_in:$ids}},limit:10){${SERIES_HIT}}}`,{ids});const rows=((data?.series as RawSeries[]|undefined)??[]).filter(s=>typeof s.id==='number'&&!!s.name);return ids.map(id=>rows.find(row=>row.id===id)).filter((s):s is RawSeries=>!!s&&!editionSeries(text(s.name))).map(seriesHit);}
  /** Two bounded Hardcover queries enrich a typed search, never one request per book result. */
  async function searchCatalog(query:string):Promise<{results:SeriesHit[];bookSeries:BookSeriesHit[]}>{
   if(!hardcoverKey()?.trim())return {results:[],bookSeries:[]};
@@ -193,10 +202,33 @@ export function createSeriesResolver({fetcher=fetch,hardcoverKey=()=>process.env
    if(!bookIds.length&&!seriesIds.length)return {results:[],bookSeries:[]};
    const data=await gql(`query($bookIds:[Int!]!,$seriesIds:[Int!]!){books(where:{id:{_in:$bookIds}},limit:12){id title contributions(limit:3){author{name}} book_series{position featured compilation series{${SERIES_HIT}}}} series(where:{id:{_in:$seriesIds}},limit:6){${SERIES_HIT}}}`,{bookIds,seriesIds});
    const rows=((data?.series as RawSeries[]|undefined)??[]).filter(s=>typeof s.id==='number'&&!!s.name);
-   const results=seriesIds.map(id=>rows.find(row=>row.id===id)).filter((s):s is RawSeries=>!!s).map(seriesHit);
+   const results=seriesIds.map(id=>rows.find(row=>row.id===id)).filter((s):s is RawSeries=>!!s&&!editionSeries(text(s.name))).map(seriesHit);
    const books=(data?.books as {id?:number;title?:string;contributions?:{author?:{name?:string}}[];book_series?:{position?:unknown;featured?:boolean;compilation?:boolean;series?:RawSeries|null}[]}[]|undefined)??[];
-   const bookSeries=books.flatMap(book=>{if(typeof book.id!=='number'||!book.title)return [];return (book.book_series??[]).filter(row=>row.series?.id&&row.series.name&&!row.compilation).sort((a,b)=>Number(!!b.featured)-Number(!!a.featured)).slice(0,3).map(row=>({bookId:String(book.id),title:text(book.title),author:text(book.contributions?.[0]?.author?.name),position:position(row.position),featured:!!row.featured,series:seriesHit(row.series!)}));});
+   const bookSeries=books.flatMap(book=>{if(typeof book.id!=='number'||!book.title)return [];return (book.book_series??[]).filter(row=>row.series?.id&&row.series.name&&!row.compilation&&!editionSeries(text(row.series.name))).sort((a,b)=>Number(!!b.featured)-Number(!!a.featured)).slice(0,3).map(row=>({bookId:String(book.id),title:text(book.title),author:text(book.contributions?.[0]?.author?.name),position:position(row.position),featured:!!row.featured,series:seriesHit(row.series!)}));});
    return {results,bookSeries};
+  });
+ }
+ /**
+  * Series chips for the books a search actually shows (#136): one bounded batch by ISBN, then exact title,
+  * independent of how the catalog's own search ranks a partial query. Keyed by the caller's book keys.
+  */
+ async function seriesForBooks(list:{key:string;title:string;authors:string[];isbn13?:string}[]):Promise<Record<string,BookSeriesHit[]>>{
+  if(!hardcoverKey()?.trim()||!list.length)return {};
+  const items=list.slice(0,12),isbns=[...new Set(items.map(b=>isbnDigits(b.isbn13??'')).filter(i=>/^97[89]\d{10}$/.test(i)))],titles=[...new Set(items.map(b=>text(b.title,300)).filter(Boolean))];
+  return cached(`chips:${JSON.stringify(items.map(b=>[b.title,b.authors[0]??'',b.isbn13??'']))}`,false,async()=>{
+   const editions=isbns.length?await gql('query($isbns:[String!]!){editions(where:{isbn_13:{_in:$isbns}},limit:40){isbn_13 book_id}}',{isbns}):null;
+   const byIsbn=new Map(((editions?.editions as {isbn_13?:string;book_id?:number}[]|undefined)??[]).filter(e=>e.isbn_13&&typeof e.book_id==='number').map(e=>[e.isbn_13!,e.book_id!]));
+   const data=await gql(`query($ids:[Int!]!,$titles:[String!]!){books(where:{_or:[{id:{_in:$ids}},{title:{_in:$titles}}]},limit:60,order_by:{users_count:desc}){id title canonical_id users_count contributions(limit:3){author{name}} book_series{position featured compilation series{${SERIES_HIT}}}}}`,{ids:[...new Set(byIsbn.values())],titles});
+   const books=((data?.books as (Omit<RawBook,"book_series">&{book_series?:{position?:unknown;featured?:boolean;compilation?:boolean;series?:RawSeries|null}[]})[]|undefined)??[]).filter(b=>typeof b.id==='number');
+   const out:Record<string,BookSeriesHit[]>={};
+   for(const item of items){
+    const isbn=isbnDigits(item.isbn13??''),viaIsbn=byIsbn.has(isbn)?books.find(b=>b.id===byIsbn.get(isbn)):undefined;
+    const sameTitle=books.filter(b=>norm(text(b.title))===norm(item.title)&&!b.canonical_id&&(!item.authors.length||b.contributions?.some(c=>item.authors.some(a=>norm(text(c.author?.name))===norm(a)))));
+    const book=viaIsbn??sameTitle[0];if(!book)continue;
+    const rows=(book.book_series??[]).filter(row=>row.series?.id&&row.series.name&&!row.compilation&&!editionSeries(text(row.series.name))).sort((a,b)=>Number(!!b.featured)-Number(!!a.featured));
+    if(rows.length)out[item.key]=rows.slice(0,2).map(row=>({bookId:String(book.id),title:text(book.title),author:text(book.contributions?.[0]?.author?.name),position:position(row.position),featured:!!row.featured,series:seriesHit(row.series!)}));
+   }
+   return out;
   });
  }
  async function resolve(seed:SeriesSeed,{refresh=false}:{refresh?:boolean}={}):Promise<SeriesCatalog|null>{
@@ -229,5 +261,5 @@ export function createSeriesResolver({fetcher=fetch,hardcoverKey=()=>process.env
    return {book,catalog,position:at};
   });
  }
- return {resolve,searchSeries,searchCatalog,lookupBook};
+ return {resolve,searchSeries,searchCatalog,lookupBook,seriesForBooks};
 }

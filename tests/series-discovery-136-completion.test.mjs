@@ -5,7 +5,6 @@ import {load,root} from './helpers.mjs';
 
 const {createSeriesResolver,orderCatalogMembers}=load('lib/books/series-discovery');
 const {planSeriesCatalog,matchCatalogBook}=load('lib/books/series-catalog');
-const {seriesShelf,seriesSummary,catalogSeriesView}=load('lib/books/series-view');
 const {distinctEditions,enrichFields,enrichmentChanges,existingLibraryBook}=load('lib/books/add-book');
 const {parseSeriesKey,catalogSeriesKey,bookHref,seriesHref}=load('lib/books/return-nav');
 const read=path=>readFileSync(`${root}/${path}`,'utf8');
@@ -67,24 +66,31 @@ test('the edition question is asked only when editions differ in ways a reader n
  assert.equal(distinctEditions(base,[same,paperback]).length,2);
 });
 
-test('the series shelf keeps reading order, ownership and an honest next book; the summary only states known facts',()=>{
- const catalog={source:'hardcover',id:'22',title:'Throne of Glass',author:'Sarah J. Maas',primaryCount:3,totalCount:6,completed:false,complete:false,members:orderCatalogMembers([
-  {source:'hardcover',id:'1',title:'Prequel',author:'Sarah J. Maas',position:0.1,positionLabel:'0.1',role:'mainline',releaseYear:2012,releaseState:'released'},
-  {source:'hardcover',id:'2',title:'Throne of Glass',author:'Sarah J. Maas',position:1,positionLabel:'1',role:'mainline',releaseYear:2012,releaseState:'released'},
-  {source:'hardcover',id:'3',title:'Crown of Midnight',author:'Sarah J. Maas',position:2,positionLabel:'2',role:'mainline',releaseYear:2013,releaseState:'released'},
-  {source:'hardcover',id:'4',title:'Book Three',author:'Sarah J. Maas',position:3,positionLabel:'3',role:'mainline',releaseDate:'2027-01-12',releaseState:'announced'},
-  {source:'hardcover',id:'5',title:'Companion',author:'Sarah J. Maas',position:null,positionLabel:'',role:'mainline',releaseState:'released'},
-  {source:'hardcover',id:'6',title:'Box Set',author:'Sarah J. Maas',position:1,positionLabel:'1',role:'collection',releaseState:'released'}])};
+test('primary books alone define the shelf and completion; additional works and collections are separate (#136)',()=>{
+ const {seriesShelf,seriesSummary,catalogSeriesView,primaryBasisNote}=load('lib/books/series-view');
+ const {seriesProgress}=load('lib/collections/models');
+ const m=(id,title,position,extra={})=>({source:'hardcover',id,title,author:'Sarah J. Maas',position,positionLabel:position===null?'':String(position),role:'mainline',releaseState:'released',releaseYear:2012,...extra});
+ const withNovellas={source:'hardcover',id:'22',title:'Throne of Glass',author:'Sarah J. Maas',primaryCount:3,completed:true,complete:false,members:orderCatalogMembers([
+  m('1','The Assassin and the Pirate Lord',0.1),m('2','Throne of Glass',1),m('3','The Captain and the Prince',1.1),m('4','Crown of Midnight',2),m('5','Heir of Fire',3),
+  m('6','Companion Coloring Book',null),m('7','Box Set',null,{role:'collection'})])};
  const read={id:'b2',title:'Throne of Glass',author:'Sarah J. Maas',status:'finished',reviewEmojis:[],completions:[{id:'r',finishedOn:'2025-01-01',recordedAt:'x'}]};
- const view=catalogSeriesView(catalog,[read],'u');assert.ok(view.series.id.startsWith('catalog:'),'a catalog view is never a saved row');
- const shelf=seriesShelf(view.series,view.members,[read],today);
- assert.deepEqual(shelf.main.map(e=>e.positionLabel),['#0.1','#1','#2','#3']);assert.deepEqual(shelf.companions.map(e=>e.title),['Companion']);assert.deepEqual(shelf.collections.map(e=>e.title),['Box Set']);
- assert.equal(shelf.readCount,1);assert.equal(shelf.releasedCount,2,'progress counts released primary books only');assert.equal(shelf.next.title,'Crown of Midnight','the next primary book, not a prequel');
- assert.equal(shelf.upcomingCount,1);assert.equal(shelf.nextRelease.title,'Book Three');
- const summary=seriesSummary(view.series,shelf);
- assert.match(summary,/^Throne of Glass is a 6-book series with 3 primary works, first released in 2012, by Sarah J\. Maas\./);assert.match(summary,/1 book is still to come; the next is expected/);
- const sparse=seriesSummary({...view.series,catalog_total_count:null,catalog_primary_count:null,catalog_author:''},{...shelf,firstYear:null,authors:'',upcomingCount:0});
- assert.equal(sparse,'Throne of Glass is a series.','missing facts stay missing');
+ const novella={id:'b3',title:'The Assassin and the Pirate Lord',author:'Sarah J. Maas',status:'finished',reviewEmojis:[],completions:[{id:'r2',finishedOn:'2025-01-02',recordedAt:'x'}]};
+ const view=catalogSeriesView(withNovellas,[read,novella],'u'),shelf=seriesShelf(view.series,view.members,[read,novella],today);
+ assert.deepEqual(shelf.primary.map(e=>e.positionLabel),['#1','#2','#3'],'the main shelf is the primary novels in order');
+ assert.deepEqual(shelf.additional.map(e=>e.title),['The Assassin and the Pirate Lord','The Captain and the Prince','Companion Coloring Book'],'novellas keep their positions; companions follow');
+ assert.deepEqual(shelf.collections.map(e=>e.title),['Box Set']);
+ assert.equal(shelf.primaryCount,3);assert.equal(shelf.readCount,1);assert.equal(shelf.percent,33,'progress is read of every primary book');assert.equal(shelf.releasedCount,3,'reading a novella never changes the denominator');assert.equal(shelf.additionalReadCount,1,'additional works are tracked on their own');
+ assert.equal(shelf.next.title,'Crown of Midnight');assert.equal(shelf.basis,'catalog');assert.equal(primaryBasisNote(shelf),null);
+ const progress=seriesProgress({...view.series,id:view.series.id},view.members,[read,novella],[]);
+ assert.equal(progress.availableTotal,3,'Collections cards and Atlas use the same primary definition');assert.equal(progress.completed,1);
+ assert.match(seriesSummary(view.series,shelf),/^Throne of Glass is a 3-book series by Sarah J\. Maas, first released in 2012, with 3 additional works\. Every book has been published\.$/);
+ const plain={...withNovellas,id:'30',title:'Crescent City',primaryCount:3,completed:false,members:[m('a','House of Earth and Blood',1),m('b','House of Sky and Breath',2),m('c','House of Flame and Shadow',3)]};
+ const plainView=catalogSeriesView(plain,[],'u'),plainShelf=seriesShelf(plainView.series,plainView.members,[],today);
+ assert.equal(plainShelf.primaryCount,3);assert.equal(plainShelf.additional.length,0,'a series without novellas has no Additional works section');
+ const mismatch=seriesShelf({...plainView.series,catalog_primary_count:4},plainView.members,[],today);assert.equal(mismatch.basis,'mismatch');assert.match(primaryBasisNote(mismatch),/lists 4 primary books; 3 are numbered/);
+ const unordered={...plain,primaryCount:undefined,members:[m('x','One',null),m('y','Two',null)]},uv=catalogSeriesView(unordered,[],'u'),us=seriesShelf(uv.series,uv.members,[],today);
+ assert.equal(us.basis,'unordered');assert.equal(us.primaryCount,2,'without any order every work counts, and the page says so');
+ const sparse=seriesSummary({...plainView.series,catalog_author:''},{...plainShelf,primaryCount:0,firstYear:null,authors:'',additional:[],upcomingCount:0});assert.equal(sparse,'Crescent City is a series.','missing facts stay missing');
 });
 
 test('series and book routes are addressable, contextual, and never revive the standalone Books page',()=>{
@@ -116,4 +122,12 @@ test('a real catalog normalizes to one work per position: translations, split vo
  const japaneseOnly=normalizeSeriesEntries([e(1,'Book',1,500),e(2,'外伝',1.5,40)]);assert.equal(japaneseOnly.length,2,'a distinct work keeps its own position whatever its language');
  for(const t of ['A Court of Thorns and Roses Box Set','Books 1-3','The Complete Collection'])assert.ok(bundleTitle(t),t);
  for(const t of ['Throne of Glass','Crown of Midnight','A Court of Silver Flames','The Assassin and the Healer'])assert.ok(!bundleTitle(t),t);
+});
+
+test('edition formats never enter a reading order; edition-only series are not offered (#136 Staging QA)',()=>{
+ const {normalizeSeriesEntries,editionTitle}=load('lib/books/series-discovery');
+ const e=(id,title,position,readers=5000)=>({member:{source:'hardcover',id:String(id),title,author:'Sarah J. Maas',position,positionLabel:String(position),role:'mainline'},readers,featured:true});
+ const out=normalizeSeriesEntries([e(1,'A Court of Thorns and Roses',1,90000),e(2,'A Court of Thorns and Roses (Dramatized Adaptation), Part 1 of 2',1.1),e(3,'A Court of Thorns and Roses (Dramatized Adaptation), Part 2 of 2',1.2),e(4,'A Court of Mist and Fury',2,80000),e(5,'Wings and Embers',2.1,3000),e(6,'A Court of Silver Flame (Split Edition), Part 2 of 2',4.2),e(7,'A Court of Silver Flames - Feyre Bonus Chapter',5.1,2000)]);
+ assert.deepEqual(out.map(m=>m.title),['A Court of Thorns and Roses','A Court of Mist and Fury','Wings and Embers','A Court of Silver Flames - Feyre Bonus Chapter'],'bonus works stay; adaptations and split editions go');
+ for(const t of ['Heir of Fire','The Assassin and the Healer','A Court of Silver Flames - Azriel Bonus Chapter'])assert.ok(!editionTitle(t),t);
 });

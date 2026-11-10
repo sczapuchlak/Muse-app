@@ -35,6 +35,10 @@ const books=[
  {id:1037,title:'The Complete Throne of Glass Collection Full Series',release_date:'2021-01-01',pages:1800,users:40,series:[[100,null,true]]},
  {id:1038,title:'The Captain and the Prince',release_date:'2013-01-01',pages:10,users:900,series:[[100,1.1,true]]},
  {id:1039,title:'The Assassin and the Princess',users:700,series:[[100,1.5,true]]},
+ // Crescent City (series 300): primary books only, no novellas.
+ {id:3001,title:'House of Earth and Blood',isbn:'9781635574043',release_date:'2020-03-03',pages:803,series:[[300,1,true]]},
+ {id:3002,title:'House of Sky and Breath',isbn:'9781635574074',release_date:'2022-02-15',pages:805,series:[[300,2,true]]},
+ {id:3003,title:'House of Flame and Shadow',isbn:'9781635574104',release_date:'2024-01-30',pages:849,series:[[300,3,true]]},
  // A Court of Thorns and Roses (series 200)
  {id:2001,title:'A Court of Thorns and Roses',isbn:'9781619634442',release_date:'2015-05-05',pages:419,series:[[200,1,true]],description:'When nineteen-year-old huntress Feyre kills a wolf in the woods, a terrifying creature arrives to demand retribution. Dragged to a treacherous magical land she knows about only from legends, Feyre discovers that her captor is not truly a beast, but one of the lethal, immortal faeries who once ruled her world.',genres:['Fantasy','Romance']},
  {id:2002,title:'A Court of Mist and Fury',isbn:'9781619634466',release_date:'2016-05-03',pages:626,series:[[200,2,true]],description:'Feyre has undergone more trials than one human woman can carry in her heart. Though she’s now been granted the powers and lifespan of the High Fae, she is haunted by her time Under the Mountain.',genres:['Fantasy','Romance']},
@@ -42,22 +46,31 @@ const books=[
  {id:2004,title:'A Court of Frost and Starlight',isbn:'9781681196312',release_date:'2018-05-01',pages:229,series:[[200,3.1,true]]},
  {id:2005,title:'A Court of Silver Flames',isbn:'9781681196282',release_date:'2021-02-16',pages:757,series:[[200,4,true]]},
  {id:2006,title:'A Court of Thorns and Roses Book Six',release_date:'2027-01-12',series:[[200,5,true]]},
+ {id:2020,title:'A Court of Thorns and Roses (Dramatized Adaptation), Part 1 of 2',release_date:'2022-01-01',users:300,series:[[200,1.1,true],[201,1,true]]},
+ {id:2021,title:'A Court of Thorns and Roses (Dramatized Adaptation), Part 2 of 2',release_date:'2022-01-01',users:280,series:[[200,1.2,true],[201,2,true]]},
+ {id:2022,title:'Wings and Embers',release_date:'2016-05-03',pages:16,users:3000,series:[[200,2.1,true]],image:{url:null,color:'#111111'}},
+ {id:2023,title:'A Court of Silver Flame (Split Edition), Part 2 of 2',release_date:'2021-02-16',pages:382,users:200,series:[[200,4.2,true]]},
+ {id:2024,title:'A Court of Silver Flames - Feyre Bonus Chapter',pages:40,users:1500,series:[[200,4.1,true]]},
  {id:2010,title:'A Court of Thorns and Roses Paperback Box Set',release_date:'2020-06-02',series:[[200,1,true,true]],image:{url:null,color:'#9c2d3f'}},
 ].map(b=>({...b,image:b.image?.url!==undefined?b.image:cover(b.isbn),contributions:[{author:sjm}],canonical_id:null,users_count:b.users??50000,release_year:b.release_date?Number(b.release_date.slice(0,4)):null,cached_tags:tags(b.genres??['Fantasy'])}));
 const series=[
  {id:100,name:'Throne of Glass',description:'Celaena Sardothien, a teenage assassin, is offered a chance at freedom—if she will become the King’s Champion in a deadly tournament.',is_completed:true,author:sjm},
+ {id:300,name:'Crescent City',description:'A half-Fae, half-human woman seeks revenge in a city of angels, shifters and Fae.',is_completed:false,author:sjm},
+ {id:201,name:'A Court of Thorns and Roses (Dramatized Adaptation)',description:null,is_completed:false,author:null},
  {id:200,name:'A Court of Thorns and Roses',description:'A sweeping romantic fantasy of faerie courts, curses and the bonds that hold a world together.',is_completed:false,author:sjm},
 ];
 const rows=s=>books.flatMap(b=>b.series.filter(([id])=>id===s.id).map(([,position,featured,compilation])=>({position,featured,compilation:!!compilation,book:b})));
 const norm=x=>String(x??'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
-const hit=s=>{const all=rows(s);return {id:s.id,name:s.name,author:s.author,books_count:all.length,primary_books_count:7,book_series:all.filter(r=>!r.compilation).sort((a,b)=>(a.position??99)-(b.position??99)).slice(0,10).map(r=>({position:r.position,book:{title:r.book.title,image:r.book.image}}))};};
+const hit=s=>{const all=rows(s);return {id:s.id,name:s.name,author:s.author,books_count:all.length,primary_books_count:all.filter(r=>!r.compilation&&Number.isInteger(r.position)&&r.book.users_count>100).length,book_series:all.filter(r=>!r.compilation).sort((a,b)=>(a.position??99)-(b.position??99)).slice(0,10).map(r=>({position:r.position,book:{title:r.book.title,image:r.book.image}}))};};
 const bookOut=b=>({id:b.id,title:b.title,compilation:false,users_count:b.users_count,description:b.description??null,release_date:b.release_date??null,release_year:b.release_year,pages:b.pages??null,canonical_id:null,image:b.image,cached_tags:b.cached_tags,contributions:b.contributions,book_series:b.series.map(([series_id,position,featured,compilation])=>({series_id,position,featured,compilation:!!compilation,series:hit(series.find(s=>s.id===series_id))}))});
 const matches=q=>{const t=norm(q);return books.filter(b=>norm(b.title).includes(t)||t.split(' ').every(w=>norm(b.title).includes(w))).map(b=>b.id);};
 function answer({query,variables}){
  if(query.includes('bookHits:search'))return {bookHits:{ids:matches(variables.query).slice(0,12)},seriesHits:{ids:series.filter(s=>norm(s.name).includes(norm(variables.query))||norm(variables.query).includes(norm(s.name))).map(s=>s.id)}};
  if(query.includes('query_type:"series"'))return {search:{ids:series.filter(s=>norm(s.name).includes(norm(variables.query))).map(s=>s.id)}};
  if(query.includes('query_type:"book"'))return {search:{ids:matches(variables.query).slice(0,8)}};
+ if(query.includes('isbn_13:{_in'))return {editions:books.filter(b=>variables.isbns.includes(b.isbn)).map(b=>({isbn_13:b.isbn,book_id:b.id}))};
  if(query.includes('editions(where'))return {editions:books.filter(b=>b.isbn===variables.isbn).map(b=>({book_id:b.id}))};
+ if(query.includes('_or:[')){const t=new Set((variables.titles??[]).map(norm));return {books:books.filter(b=>(variables.ids??[]).includes(b.id)||t.has(norm(b.title))).sort((a,b)=>b.users_count-a.users_count).map(bookOut)};}
  if(query.includes('series_by_pk')){const s=series.find(x=>x.id===variables.id);return {series_by_pk:s?{...s,...hit(s),book_series:rows(s).map(r=>({position:r.position,featured:r.featured,compilation:r.compilation,book:bookOut(r.book)}))}:null};}
  const out={};
  if(query.includes('books(where')){const ids=variables.ids??variables.bookIds??[];out.books=books.filter(b=>ids.includes(b.id)).map(bookOut);}

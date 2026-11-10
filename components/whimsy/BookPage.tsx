@@ -62,10 +62,12 @@ export function BookPage(props:BookPageProps){
 
  const primary=catalog.memberships.find(m=>m.series.kind==='book')??catalog.memberships[0]??null;
  const shelf=primary?seriesShelf(primary.series,catalog.records.seriesMembers.filter(m=>m.series_id===primary.series.id),books,today):null;
- const strip=shelf?[...shelf.main,...shelf.companions.filter(e=>e.book?.id===book.id)]:[];
+ // The primary books; a novella or companion being viewed joins the strip at its own position.
+ const current=shelf?.additional.find(e=>e.book?.id===book.id),strip=shelf?(current?[...shelf.primary,current].sort((a,b)=>(a.position??999)-(b.position??999)):shelf.primary):[];
+ const isPrimary=!!shelf?.primary.some(e=>e.book?.id===book.id);
  const seriesKey=primary?primary.series.id:null;
- const ofCount=primary?primary.series.catalog_primary_count??shelf?.main.filter(e=>Number.isInteger(e.position)).length??null:null;
- const positionText=primary&&primary.member.position_known?`#${Number(primary.member.sequence)}${ofCount?` of ${ofCount}`:''}`:primary?'Part of':'';
+ // "#3 of 7" only for a primary book; a novella keeps its own position ("#0.5") without a denominator.
+ const positionText=primary&&primary.member.position_known?`#${Number(primary.member.sequence)}${isPrimary&&shelf?.primaryCount?` of ${shelf.primaryCount}`:''}`:primary?'Part of':'';
 
  const year=yearOf(book.publishedDate),facts=[year,book.publisher,book.totalPages?`${book.totalPages} pages`:null,book.format?formatLabel[book.format]:null].filter(Boolean) as string[];
  const genres=(book.genre??'').split(',').map(g=>g.trim()).filter(Boolean);
@@ -106,8 +108,8 @@ export function BookPage(props:BookPageProps){
 
  const seriesSection=primary&&shelf?<section className="muse-book-series-section" aria-labelledby="book-series-heading">
   <header className="muse-book-series-head">
-   <div><span className="small-label">{positionText?`${positionText} in the series`:'The series'}</span><h2 id="book-series-heading"><Link href={seriesHref(seriesKey!,`book:${book.id}`)} onClick={event=>{if(event.metaKey||event.ctrlKey)return;event.preventDefault();openSeries();}}>{primary.series.title}</Link></h2></div>
-   <div className="muse-book-series-chips">{shelf.primaryCount>0&&<span className="muse-book-chip" data-tone="accent">{shelf.primaryCount} primary {shelf.primaryCount===1?'book':'books'}</span>}{shelf.totalCount>shelf.primaryCount&&<span className="muse-book-chip">{shelf.totalCount} in series</span>}<span className="muse-book-chip">{shelf.readCount} of {shelf.releasedCount} read</span></div>
+   <div><span className="small-label">{positionText?`${positionText} in the series${isPrimary?'':' · additional work'}`:'The series'}</span><h2 id="book-series-heading"><Link href={seriesHref(seriesKey!,`book:${book.id}`)} onClick={event=>{if(event.metaKey||event.ctrlKey)return;event.preventDefault();openSeries();}}>{primary.series.title}</Link></h2></div>
+   <div className="muse-book-series-chips">{shelf.primaryCount>0&&<span className="muse-book-chip" data-tone="accent">{shelf.primaryCount} primary {shelf.primaryCount===1?'book':'books'}</span>}{shelf.additional.length>0&&<span className="muse-book-chip">+{shelf.additional.length} additional {shelf.additional.length===1?'work':'works'}</span>}<span className="muse-book-chip">{shelf.readCount} of {shelf.primaryCount} read</span></div>
   </header>
   <div className="muse-book-series-meter" role="meter" aria-label={`${primary.series.title} progress`} aria-valuemin={0} aria-valuemax={100} aria-valuenow={shelf.percent}><span style={{width:`${shelf.percent}%`}}/></div>
   <ol ref={stripRef} className="muse-book-series-strip" aria-label={`${primary.series.title}, in reading order`}>{strip.map(entry=>{const current=entry.book?.id===book.id;return <li key={entry.key} data-current={current||undefined} data-state={entry.state}>

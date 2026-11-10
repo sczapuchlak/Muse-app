@@ -35,3 +35,9 @@ Server-only `HARDCOVER_API_KEY` with `read:catalog` (set in the Staging Vercel p
 ## Local QA
 
 `scripts/hardcover-fixture.mjs` serves Hardcover-shaped fixture data (Throne of Glass, A Court of Thorns and Roses) for local development; start `next dev` with `HARDCOVER_API_KEY=fixture HARDCOVER_API_URL=http://127.0.0.1:4555/graphql` (the override is ignored in production builds). `scripts/qa/books-harness.mjs` creates a disposable local account and drives headless Chrome for the journeys. Fixture data verifies UI and flows only; live catalog coverage must be checked on Staging.
+
+## Primary books, additional works, collections
+
+One definition everywhere (`bookSeriesPrimary` in `lib/collections/models.ts`): a catalog book series' **primary books** are its works at whole-number positions. They form the main shelf, the "#3 of 7" denominator on search chips and book pages, and series completion ("0 of 7 primary books read"; unreleased primary books are noted, not subtracted). **Additional works** — prequels and novellas at fractional positions, unpositioned companions, books whose own series is another — keep their real positions, covers and status controls and are tracked separately. **Collections & box sets** are listed apart and never counted. Edition formats (dramatized/audio-drama/full-cast adaptations, split editions, "Part N of M") are editions of a work already present and never appear; edition-only catalog series are not offered in search. When the catalog's own primary count differs from the whole-numbered works, or the catalog marks none, or gives no order, the Series page says so (`primaryBasisNote`). Series a reader assembled keep their own mainline roles.
+
+Search chips are resolved for the books a search shows (ISBN, then exact title + author) and remembered for the session, so refining a query never drops them.
