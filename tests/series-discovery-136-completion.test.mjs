@@ -141,3 +141,12 @@ test('finishing the core story finishes the series; every additional work is an 
  assert.equal(seriesCompletion(shelf(6,0,{released:6})).badge,'Caught up','an announced primary book keeps the series open');
  assert.equal(seriesCompletion(shelf(0,0,{primary:0,released:0,extra:0})).badge,null);
 });
+
+test('the spine row is a reusable, series-agnostic component; decoration stays ornamental (#136)',()=>{
+ const spines=read('components/collections/BookSpines.tsx'),decor=read('components/collections/ShelfTrinkets.tsx'),route=read('components/collections/SeriesRoute.tsx');
+ assert.match(spines,/export function BookSpines/);assert.doesNotMatch(spines,/series|Series/i.source?/ShelfEntry|seriesShelf|SeriesMember/:/x/,'spines know nothing about series records');
+ assert.match(route,/<BookSpines entries=\{spineEntries\}/,'the Series page renders its shelf through the shared spines');
+ assert.match(decor,/aria-hidden="true"/);assert.match(read('components/collections/SeriesPage.css'),/\.muse-shelf-trinkets\{[^}]*pointer-events:none/,'trinkets never intercept a tap');
+ const {trinketFor}=load('components/collections/ShelfTrinkets');
+ assert.equal(trinketFor(['Romantasy']),'crystal');assert.equal(trinketFor(['Contemporary Romance']),'rose');assert.equal(trinketFor(['Mystery']),'magnifier');assert.equal(trinketFor([]),'candle');
+});

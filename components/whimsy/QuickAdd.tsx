@@ -102,9 +102,9 @@ export function QuickAddToast({toast,onOpen,onDismiss,spark}:{toast:{book:Book;e
 
 /** Bookmark + status split button for a result or installment that is not on the shelf. The shelf menu is the
  * shared GlassPopover, so it escapes scrolling lists and stays above neighbouring rows at any width. */
-export function QuickAddButton({busy,disabled,onAdd,label}:{busy:boolean;disabled?:boolean;onAdd:(status:QuickStatus)=>void;label:string}){
+export function QuickAddButton({busy,disabled,onAdd,label,size}:{busy:boolean;disabled?:boolean;onAdd:(status:QuickStatus)=>void;label:string;size?:'sm'}){
  const [open,setOpen]=useState(false),anchor=useRef<HTMLButtonElement>(null),id=useId();
- return <span className="muse-quick-add" data-open={open||undefined}>
+ return <span className="muse-quick-add" data-size={size} data-open={open||undefined}>
   <button type="button" className="muse-quick-add-main" disabled={disabled||busy} aria-label={`Add ${label} to Want to Read`} onClick={event=>{event.stopPropagation();onAdd('planned');}}>{busy?<span className="muse-quick-add-spinner" aria-hidden="true"/>:<MuseIcon name="bookmark" size={18}/>}</button>
   <button ref={anchor} type="button" className="muse-quick-add-more" disabled={disabled||busy} aria-label={`Choose a shelf for ${label}`} aria-haspopup="menu" aria-expanded={open} onClick={event=>{event.stopPropagation();setOpen(v=>!v);}}><MuseIcon name="chevron" size={16}/></button>
   <GlassPopover id={`quick-add-${id}`} label={`Add ${label} to a shelf`} role="menu" open={open} anchorRef={anchor} onClose={()=>setOpen(false)} width={220} align="end" bare>

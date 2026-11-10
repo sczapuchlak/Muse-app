@@ -6,19 +6,6 @@
 /* Hero: the shelf spans the page; identity and progress sit beneath it */
 .muse-series-page-hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,340px);grid-template-areas:"shelf shelf" "identity progress";gap:clamp(18px,2.6vw,30px) clamp(22px,3vw,40px);align-items:start}
 .muse-series-shelf{grid-area:shelf;position:relative;padding:clamp(18px,2.4vw,28px) clamp(16px,2.4vw,32px) 0;border-radius:var(--dl-radius-hero);background:radial-gradient(ellipse 70% 120% at 50% 110%,color-mix(in srgb,var(--accent-primary) 20%,transparent),transparent 70%),radial-gradient(ellipse 40% 80% at 10% 0%,color-mix(in srgb,var(--accent-secondary) 14%,transparent),transparent 70%),color-mix(in srgb,var(--glass-background) 80%,transparent);border:1px solid var(--glass-border);border-top-color:var(--glass-edge);-webkit-backdrop-filter:blur(var(--material-blur));backdrop-filter:blur(var(--material-blur));overflow:hidden}
-.muse-series-shelf-books{display:flex;align-items:flex-end;justify-content:center;gap:clamp(3px,.5vw,6px);height:clamp(170px,21vw,236px);overflow-x:auto;scrollbar-width:none;padding:0 4px}
-.muse-series-shelf-books::-webkit-scrollbar{display:none}
-.muse-series-spine{position:relative;flex:0 0 clamp(34px,4vw,56px);height:var(--spine-h,88%);display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:10px 0 8px;border-radius:4px 4px 2px 2px;background:linear-gradient(90deg,rgba(0,0,0,.34),rgba(0,0,0,.08) 18%,rgba(255,255,255,.16) 32%,rgba(0,0,0,.08) 48%,rgba(0,0,0,.28)),var(--spine-art,none) center/auto 140% no-repeat,linear-gradient(170deg,color-mix(in srgb,var(--spine-tint,var(--accent-primary)) 85%,white 8%),color-mix(in srgb,var(--spine-tint,var(--accent-secondary)) 80%,#100c1c));color:#fff8f0;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08),0 -1px 0 rgba(255,255,255,.2) inset,2px 0 6px rgba(0,0,0,.18);transform-origin:bottom center;animation:muse-spine-rise var(--motion-settle,260ms) var(--ease-out,ease-out) var(--spine-delay,0ms) both;transition:transform var(--motion-hover,180ms) var(--ease-out,ease-out),opacity var(--motion-hover,180ms) ease}
-.muse-series-spine::before{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(rgba(0,0,0,.18),rgba(0,0,0,.42));pointer-events:none}
-.muse-series-spine>*{position:relative}
-.muse-series-spine em{flex:1;min-height:0;writing-mode:vertical-rl;transform:rotate(180deg);font:600 clamp(.58rem,.78vw,.76rem)/1.1 var(--font-ui);font-style:normal;letter-spacing:.02em;text-transform:uppercase;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-shadow:0 1px 2px rgba(0,0,0,.5)}
-.muse-series-spine small{font:700 .62rem/1 var(--font-ui);opacity:.92;margin-top:6px}
-.muse-series-spine b{position:absolute;top:-8px;left:50%;translate:-50% 0;display:grid;place-items:center;width:16px;height:16px;border-radius:50%;background:var(--success-primary);color:var(--background,#fff);box-shadow:0 2px 6px rgba(0,0,0,.25)}
-.muse-series-spine:not([data-owned]){opacity:.42;filter:saturate(.45);outline:1px dashed color-mix(in srgb,var(--foreground) 40%,transparent);outline-offset:-1px}
-.muse-series-spine[data-next]{transform:translateY(-10px);opacity:1;filter:none;box-shadow:0 0 0 2px var(--accent-primary),0 14px 22px color-mix(in srgb,var(--accent-primary) 30%,transparent)}
-.muse-series-spine[data-state="reading"]{transform:translateY(-6px)}
-.muse-series-spine[data-skeleton]{background:color-mix(in srgb,var(--foreground) 9%,transparent);box-shadow:none;animation:muse-book-breathe 1.6s ease-in-out infinite}
-.muse-series-shelf:hover .muse-series-spine:not([data-skeleton]):hover{transform:translateY(-8px)}
 .muse-series-shelf-plank{display:block;height:14px;margin:0 calc(-1*clamp(16px,2.4vw,32px));background:linear-gradient(color-mix(in srgb,var(--glass-edge) 80%,transparent),color-mix(in srgb,var(--foreground) 10%,transparent));box-shadow:0 -1px 0 rgba(255,255,255,.4) inset,0 8px 18px rgba(10,8,24,.12)}
 
 .muse-series-page-identity{grid-area:identity;display:grid;gap:10px;justify-items:start;min-width:0}
@@ -81,14 +68,11 @@
 .muse-series-page-source{margin-top:14px;color:var(--text-muted)}
 .muse-series-page-empty{display:grid;justify-items:center;gap:12px;padding:clamp(32px,6vw,72px) 20px;text-align:center}
 .muse-series-page-skeleton{display:grid;gap:22px}
-@keyframes muse-spine-rise{from{opacity:0;transform:translateY(14px) scaleY(.94)}}
 @keyframes muse-search-in{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
 
 @media(max-width:900px){.muse-series-page-hero{grid-template-columns:minmax(0,1fr);grid-template-areas:"shelf" "identity" "progress"}}
 @media(max-width:620px){
  .muse-series-shelf{padding:16px 12px 0}
- .muse-series-shelf-books{justify-content:safe center;height:150px}
- .muse-series-spine{flex-basis:28px}
  .muse-series-page-identity h1{font-size:clamp(1.7rem,7.4vw,2.2rem)}
  .muse-series-page-order{padding:16px}
  .muse-series-page-row{grid-template-columns:30px minmax(0,1fr);grid-template-areas:"pos main" ". actions";row-gap:6px;column-gap:8px}
@@ -96,8 +80,7 @@
  .muse-series-page-row-actions{grid-area:actions;justify-content:flex-end}
  .muse-series-page-row[data-owned] {grid-template-areas:"pos main actions";grid-template-columns:30px minmax(0,1fr) auto}
 }
-@media(prefers-reduced-motion:reduce){.muse-series-spine,.muse-series-page-row{animation:none;transition:none}.muse-series-spine[data-skeleton]{animation:none}}
-:root[data-muse-magic="quiet"] .muse-series-spine{animation:none}
+@media(prefers-reduced-motion:reduce){.muse-series-page-row{animation:none;transition:none}}
 
 /* Primary / additional / collections (#136) */
 .muse-series-page-section-count{margin-left:6px;padding:1px 9px;border-radius:999px;background:color-mix(in srgb,var(--accent-primary) 14%,transparent);font:600 .78rem/1.5 var(--font-ui);vertical-align:middle}
@@ -227,3 +210,81 @@
 .muse-series-top .muse-series-page-progress,.muse-series-top .muse-series-page-identity{grid-area:auto;grid-column:auto;grid-row:auto}
 .muse-series-top>.muse-series-page-progress{grid-column:2;grid-row:1}
 @media(max-width:900px){.muse-series-top>.muse-series-page-progress{grid-column:1;grid-row:2}}
+
+/* ---------- Compact, ornamented miniature bookcase (#136) ---------- */
+/* The case grows with its books (never a big empty display box) and stays inside its column. */
+.muse-series-shelf{
+ --spine-w:clamp(34px,4vw,56px);--pad:clamp(22px,3vw,40px);--zone:clamp(54px,6vw,78px);
+ width:min(100%,calc(var(--count,7)*(var(--spine-w) + 6px) + 2*var(--zone) + 2*var(--pad)));min-width:min(100%,300px);align-self:flex-start;
+ padding-inline:calc(var(--pad) + var(--zone) - 14px)}
+.muse-series-shelf-books{height:clamp(150px,17vw,200px)}
+.muse-series-shelf-plank{margin-inline:calc(-1*(var(--pad) + var(--zone) - 14px))}
+
+/* Fairy lights, swagged under the canopy; they breathe, never flash */
+.muse-shelf-lights{position:absolute;z-index:1;left:3%;right:3%;top:24px;height:16px;pointer-events:none;
+ background:
+  radial-gradient(circle at 50% 78%,#fff7da 0 2.2px,color-mix(in srgb,var(--case-glow) 70%,transparent) 2.6px,transparent 7px) 0 0/30px 16px repeat-x,
+  radial-gradient(ellipse 52% 100% at 50% 0,transparent 66%,color-mix(in srgb,var(--case-wood) 80%,var(--foreground)) 68%,transparent 72%) 0 0/30px 12px repeat-x;
+ animation:muse-case-twinkle 3.4s ease-in-out infinite alternate}
+
+/* Trinkets stand on the plank at either end, clear of the books */
+.muse-shelf-trinkets{position:absolute;z-index:1;left:0;right:0;bottom:17px;display:flex;justify-content:space-between;align-items:flex-end;padding-inline:clamp(14px,2.2vw,26px);pointer-events:none}
+.muse-shelf-trinket-left,.muse-shelf-trinket-right{display:flex;align-items:flex-end;gap:2px}
+.muse-trinket{display:block;width:clamp(30px,3.4vw,44px);height:auto;overflow:visible;filter:drop-shadow(0 4px 4px color-mix(in srgb,black 30%,transparent))}
+.muse-shelf-trinket-right .muse-trinket[data-trinket="stack"]{width:clamp(26px,3vw,38px);margin-left:-4px}
+.muse-trinket .t-pot,.muse-trinket .t-stand,.muse-trinket .t-candle{fill:var(--case-wood)}
+.muse-trinket .t-leaf-a{fill:color-mix(in srgb,var(--success-primary) 70%,white)}
+.muse-trinket .t-leaf-b{fill:color-mix(in srgb,var(--accent-secondary) 65%,white)}
+.muse-trinket .t-leaf-c,.muse-trinket .t-stem{fill:var(--success-primary);stroke:var(--success-primary)}
+.muse-trinket .t-bloom{fill:var(--accent-pop,var(--accent-primary))}
+.muse-trinket .t-gem-a{fill:color-mix(in srgb,var(--accent-secondary) 70%,white)}
+.muse-trinket .t-gem-b{fill:color-mix(in srgb,var(--accent-primary) 70%,white)}
+.muse-trinket .t-ring,.muse-trinket .t-steam{stroke:color-mix(in srgb,var(--accent-warm,var(--accent-pop)) 70%,white)}
+.muse-trinket .t-lens{fill:color-mix(in srgb,var(--accent-secondary) 25%,transparent)}
+.muse-trinket .t-flame{fill:var(--case-glow)}
+.muse-trinket .t-glow{fill:var(--case-glow);stroke:var(--case-glow)}
+.muse-trinket .t-steam{opacity:.7}
+
+@media(max-width:620px){
+ .muse-series-shelf{--zone:34px;--pad:14px;width:100%;padding-inline:calc(var(--pad) + var(--zone) - 8px)}
+ .muse-series-shelf-plank{margin-inline:calc(-1*(var(--pad) + var(--zone) - 8px))}
+ .muse-shelf-trinkets{padding-inline:8px}
+ .muse-trinket{width:26px}.muse-shelf-trinket-right .muse-trinket[data-trinket="stack"]{display:none}
+ .muse-series-shelf-books{height:140px}
+}
+@media(max-width:900px) and (min-width:621px){.muse-series-shelf{width:min(100%,calc(var(--count,7)*(var(--spine-w) + 6px) + 2*var(--zone) + 2*var(--pad)))}}
+@media(prefers-reduced-motion:reduce){.muse-shelf-lights{animation:none}}
+:root[data-muse-magic="quiet"] .muse-shelf-lights{animation:none}
+
+/* ---------- Grid polish (#136): denser, smaller covers, editorial type. Not-owned books keep their muted look. ---------- */
+.muse-series-grid{grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:18px 14px;margin-top:4px}
+.muse-series-card{gap:7px;position:relative}
+.muse-series-card-art{position:relative}
+.muse-series-card-cover .muse-series-cover{box-shadow:0 8px 14px -8px color-mix(in srgb,black 45%,transparent)}
+.muse-series-card .muse-book-series-badge-pos{right:-3px;bottom:-3px;min-width:20px;padding:1px 5px;font-size:.62rem;border-radius:6px}
+.muse-series-card .muse-book-series-mark{left:4px;top:4px;width:17px;height:17px}
+.muse-series-card-wish{position:absolute;top:5px;right:5px;display:grid;place-items:center;width:28px;height:28px;padding:0;border:1px solid color-mix(in srgb,var(--foreground) 18%,transparent);border-radius:50%;background:color-mix(in srgb,var(--floating-background) 88%,transparent);color:var(--text-muted);cursor:pointer;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);transition:color var(--motion-hover,180ms) ease,transform var(--motion-hover,180ms) ease}
+.muse-series-card-wish:hover{color:var(--accent-warm,var(--accent-primary));transform:scale(1.08)}
+.muse-series-card-wish[aria-pressed="true"]{color:var(--accent-warm,var(--accent-primary))}.muse-series-card-wish[aria-pressed="true"] svg{fill:currentColor}
+.muse-series-card-wish:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
+.muse-series-card-copy{gap:2px}
+.muse-series-card-copy strong{font-size:.84rem;line-height:1.22;font-weight:var(--type-title-weight);-webkit-line-clamp:2}
+.muse-series-card-facts{font-size:.7rem;color:var(--text-muted);font-variant-numeric:tabular-nums}
+.muse-series-card .muse-series-signals{gap:4px;margin-top:3px}
+.muse-series-card .muse-series-own,.muse-series-card .muse-series-status{padding:1px 7px;font-size:.62rem;line-height:1.5}
+.muse-series-card-actions{margin-top:1px}
+@media(max-width:620px){.muse-series-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px 10px}.muse-series-card-copy strong{font-size:.78rem}.muse-series-card .muse-series-own,.muse-series-card .muse-series-status{font-size:.58rem;padding:1px 6px}.muse-series-card-wish{width:26px;height:26px;top:4px;right:4px}}
+
+/* Hierarchy (#136): identity first, then the bookcase beside the progress panel, then the books */
+.muse-series-page-head{display:grid;gap:8px;justify-items:start;padding-inline:2px}
+.muse-series-page-head h1{font-size:clamp(2rem,4vw,3.2rem)}
+.muse-series-page-since{color:var(--text-muted)}
+.muse-series-page-head .muse-series-page-chips{margin-top:4px}
+.muse-series-page-head .muse-series-page-description{max-width:72ch;margin-top:2px}
+.muse-series-top{align-items:center}
+.muse-series-top .muse-series-shelf{align-self:center;justify-self:center}
+@media(max-width:900px){.muse-series-top .muse-series-shelf{justify-self:stretch}}
+.muse-series-top>.muse-series-shelf{grid-area:auto;grid-column:1;grid-row:1}
+.muse-series-card-cover{width:100%}
+.muse-series-card{grid-template-rows:auto 1fr auto;align-content:stretch}
+.muse-series-card-actions{align-self:end}

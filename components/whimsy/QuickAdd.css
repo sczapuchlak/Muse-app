@@ -32,3 +32,10 @@
 @keyframes muse-quick-spin{to{transform:rotate(360deg)}}
 @media(max-width:720px){.muse-quick-toast{bottom:calc(96px + env(safe-area-inset-bottom))}.muse-edition-sheet-list li{grid-template-columns:44px minmax(0,1fr) auto;gap:10px}.muse-edition-sheet-cover{width:44px}}
 @media(prefers-reduced-motion:reduce){.muse-edition-sheet-list li,.muse-quick-toast{animation:none}.muse-quick-add-spinner{animation-duration:2.4s}}
+
+/* Compact variant for dense grids */
+.muse-quick-add[data-size="sm"]{border-radius:11px}
+.muse-quick-add[data-size="sm"]>button{min-width:34px;min-height:34px;padding:0 6px}
+.muse-quick-add[data-size="sm"] .muse-quick-add-more{min-width:28px}
+.muse-quick-add[data-size="sm"] svg{width:15px;height:15px}
+@media(max-width:620px){.muse-quick-add[data-size="sm"]>button{min-height:36px}}
