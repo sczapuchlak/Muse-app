@@ -288,3 +288,13 @@
 .muse-series-card-cover{width:100%}
 .muse-series-card{grid-template-rows:auto 1fr auto;align-content:stretch}
 .muse-series-card-actions{align-self:end}
+
+/* Safari-safe layout (#136): plain stacking instead of grid rows for the section cards and book cards. */
+.muse-series-page-order{display:flex;flex-direction:column;gap:4px;align-content:normal}
+.muse-series-page-order>*{min-width:0;flex:0 0 auto}
+.muse-series-grid{align-items:start;grid-auto-rows:auto;align-content:start}
+.muse-series-card{display:flex;flex-direction:column;gap:7px;grid-template-rows:none;align-content:normal}
+.muse-series-card-actions{align-self:flex-start;margin-top:auto}
+.muse-series-card-copy{flex:1 1 auto}
+.muse-series-card-art{flex:0 0 auto}
+.muse-series-grid{align-items:stretch}
