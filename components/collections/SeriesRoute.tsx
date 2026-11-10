@@ -41,6 +41,9 @@ export function SeriesRoute({seriesKey}:{seriesKey:string}){
  const menuAnchor=useRef<HTMLButtonElement>(null);
  const quick=useQuickAdd();
  const [mountedAt]=useState(()=>Date.now());
+ const [layout,setLayoutState]=useState<'list'|'grid'>('list');
+ useEffect(()=>{const frame=requestAnimationFrame(()=>{try{const v=localStorage.getItem('muse.series.layout');if(v==='grid'||v==='list')setLayoutState(v);}catch{/* list by default */}});return()=>cancelAnimationFrame(frame);},[]);
+ const setLayout=(v:'list'|'grid')=>{setLayoutState(v);try{localStorage.setItem('muse.series.layout',v);}catch{/* this visit only */}};
  useEffect(()=>{const frame=requestAnimationFrame(()=>setBack(currentReturn()));return()=>cancelAnimationFrame(frame);},[seriesKey]);
 
  // The saved series for this route: by id, or the saved copy of the catalog series it names.
@@ -70,6 +73,15 @@ export function SeriesRoute({seriesKey}:{seriesKey:string}){
  // eslint-disable-next-line react-hooks/exhaustive-deps
  },[loaded,seriesKey,saved?.id,stale,nonce]);
 
+ // Saved, current series: the catalog is still read quietly for each installment's short synopsis.
+ useEffect(()=>{
+  if(!loaded||!saved||stale||catalog||!source||!catalogId)return;
+  const controller=new AbortController();
+  fetchSeriesCatalog(source,catalogId,saved.title,false,controller.signal).then(found=>{if(!controller.signal.aborted&&found)setCatalog(found);}).catch(()=>{});
+  return()=>controller.abort();
+ // eslint-disable-next-line react-hooks/exhaustive-deps
+ },[loaded,saved?.id,stale,source,catalogId]);
+ const synopses=useMemo(()=>new Map((catalog?.members??[]).filter(m=>m.description).map(m=>[`${m.source}:${m.id}`,m.description!])),[catalog]);
  const view=useMemo(()=>saved?{series:saved,members:records.seriesMembers.filter(m=>m.series_id===saved.id)}:catalog?catalogSeriesView(catalog,books,userId):null,[saved,records.seriesMembers,catalog,books,userId]);
  const shelf=view?seriesShelf(view.series,view.members,books,today):null;
 
@@ -115,31 +127,49 @@ export function SeriesRoute({seriesKey}:{seriesKey:string}){
 
  const {series}=view,summary=seriesSummary(series,shelf),description=series.description?.trim()??'';
  const statusChip=series.catalog_completed===true||series.conclusion_state==='concluded'?{label:'All books published',tone:'done'}:shelf.upcomingCount?{label:shelf.nextRelease?.releaseDate?`Next: ${longDate(shelf.nextRelease.releaseDate)}`:'More to come',tone:'upcoming'}:series.conclusion_state==='ongoing'||series.catalog_completed===false?{label:'Ongoing',tone:'upcoming'}:null;
- const row=(entry:ShelfEntry)=>{const owned=!!entry.book,current=entry.state==='reading';return <li key={entry.key} id={`installment-${entry.member.id}`} className="muse-series-page-row" data-state={entry.state} data-owned={owned||undefined}>
+ const synopsisFor=(entry:ShelfEntry)=>entry.book?.description?.trim()||synopses.get(`${entry.member.catalog_source}:${entry.member.catalog_id}`)||'';
+ /** Ownership and reading are separate facts: on your shelf or not; read, reading, paused, not started, or wished for. */
+ const signals=(entry:ShelfEntry)=>{
+  const owned=!!entry.book;
+  const reading=entry.state==='upcoming'?{tone:'upcoming',label:entry.releaseDate?`Coming ${longDate(entry.releaseDate)}`:'Upcoming'}:entry.state==='read'?{tone:'read',label:'Finished'}:entry.state==='reading'?{tone:'reading',label:'Reading now'}:entry.state==='paused'?{tone:'paused',label:'Paused'}:entry.state==='planned'?{tone:'wish',label:'Want to read'}:entry.starred?{tone:'wish',label:'Want to read'}:owned?{tone:'quiet',label:'Not started'}:null;
+  return <span className="muse-series-signals"><span className="muse-series-own" data-owned={owned||undefined}>{owned?<><MuseIcon name="check" size={11}/>On your shelf</>:'Not on your shelf'}</span>{reading&&<span className="muse-series-status" data-tone={reading.tone}>{reading.tone==='read'&&<MuseIcon name="check" size={11}/>}{reading.tone==='wish'&&!owned&&<MuseIcon name="favorite" size={11}/>}{reading.label}</span>}</span>;
+ };
+ const actions=(entry:ShelfEntry)=>entry.book?<button type="button" className="muse-icon-button" aria-label={`Open ${entry.title}`} onClick={()=>openBook(entry.book!.id)}><MuseIcon name="arrow" size={16}/></button>:<>
+  <button type="button" className="muse-icon-button muse-series-page-star" aria-pressed={entry.starred} aria-label={entry.starred?`Remove ${entry.title} from Want to read`:`Want to read ${entry.title}`} title={entry.starred?'On your wishlist':'Add to your wishlist'} disabled={busy} onClick={()=>void star(entry)}><MuseIcon name="favorite" size={17}/></button>
+  {entry.state!=='upcoming'&&<QuickAddButton label={entry.title} busy={quick.pending===entry.key} disabled={!!quick.pending&&quick.pending!==entry.key} onAdd={status=>void add(entry,status)}/>}
+ </>;
+ const meta=(entry:ShelfEntry)=>[entry.year,entry.pages?`${entry.pages} pages`:null,entry.author&&entry.author!==shelf.authors?entry.author:null].filter(Boolean).join(' · ');
+ const row=(entry:ShelfEntry)=>{const owned=!!entry.book,synopsis=synopsisFor(entry);return <li key={entry.key} id={`installment-${entry.member.id}`} className="muse-series-page-row" data-state={entry.state} data-owned={owned||undefined}>
   <span className="muse-series-page-pos type-numeric">{entry.positionLabel||'·'}</span>
   <button type="button" className="muse-series-page-row-main" disabled={!owned} onClick={()=>entry.book&&openBook(entry.book.id)} aria-label={owned?`Open ${entry.title}`:undefined}>
    <SeriesCover title={entry.title} coverUrl={entry.coverUrl} color={entry.coverColor} ghost={!owned} size="sm"/>
-   <span className="muse-series-page-row-copy">
-    <strong className="type-title">{entry.title}</strong>
-    <span className="muse-series-page-row-meta">{[entry.year,entry.pages?`${entry.pages} pages`:null,entry.author&&entry.author!==shelf.authors?entry.author:null].filter(Boolean).join(' · ')||'Details not listed'}</span>
-    <span className="muse-series-page-state" data-state={entry.state}>{entry.state==='read'&&<MuseIcon name="check" size={12}/>}{entry.state==='upcoming'&&entry.releaseDate?`Coming ${longDate(entry.releaseDate)}`:current&&entry.book?.totalPages?`Reading now`:shelfStateLabel[entry.state]}{entry.position===null&&entry.role!=='collection'?' · companion':''}</span>
-   </span>
+   <span className="muse-series-page-row-copy"><strong className="type-title">{entry.title}</strong>{meta(entry)&&<span className="muse-series-page-row-meta">{meta(entry)}</span>}{signals(entry)}</span>
   </button>
-  <span className="muse-series-page-row-actions">{owned?<button type="button" className="muse-icon-button" aria-label={`Open ${entry.title}`} onClick={()=>openBook(entry.book!.id)}><MuseIcon name="arrow" size={16}/></button>:<>
-   <button type="button" className="muse-icon-button muse-series-page-star" aria-pressed={entry.starred} aria-label={entry.starred?`Remove star from ${entry.title}`:`Star ${entry.title}`} disabled={busy} onClick={()=>void star(entry)}><MuseIcon name="favorite" size={17}/></button>
-   {entry.state!=='upcoming'&&<QuickAddButton label={entry.title} busy={quick.pending===entry.key} disabled={!!quick.pending&&quick.pending!==entry.key} onAdd={status=>void add(entry,status)}/>}
-  </>}</span>
+  {synopsis?<p className="muse-series-page-synopsis">{synopsis}</p>:<span className="muse-series-page-synopsis" aria-hidden="true"/>}
+  <span className="muse-series-page-row-actions">{actions(entry)}</span>
  </li>;};
+ const card=(entry:ShelfEntry)=>{const owned=!!entry.book;return <li key={entry.key} id={`installment-${entry.member.id}`} className="muse-series-card" data-state={entry.state} data-owned={owned||undefined}>
+  <button type="button" className="muse-series-card-cover" disabled={!owned} onClick={()=>entry.book&&openBook(entry.book.id)} aria-label={owned?`Open ${entry.title}`:entry.title}>
+   <SeriesCover title={entry.title} coverUrl={entry.coverUrl} color={entry.coverColor} ghost={!owned} size="md"/>
+   {entry.positionLabel&&<span className="muse-book-series-badge-pos">{entry.positionLabel}</span>}
+   {entry.state==='read'&&<span className="muse-book-series-mark" data-mark="read" aria-hidden="true"><MuseIcon name="check" size={12}/></span>}
+  </button>
+  <div className="muse-series-card-copy"><strong className="type-title">{entry.title}</strong>{meta(entry)&&<span className="muse-series-page-row-meta">{meta(entry)}</span>}{signals(entry)}</div>
+  <div className="muse-series-card-actions">{actions(entry)}</div>
+ </li>;};
+ const list=(entries:ShelfEntry[])=>layout==='grid'?<ol className="muse-series-grid">{entries.map(card)}</ol>:<ol className="muse-series-page-rows">{entries.map(row)}</ol>;
  const spines=shelf.primary,basisNote=primaryBasisNote(shelf);
  const core=seriesCompletion(shelf);
+ const layoutToggle=<div className="muse-segmented muse-series-layout" role="group" aria-label="Show books as"><button type="button" aria-pressed={layout==='list'} onClick={()=>setLayout('list')}>List</button><button type="button" aria-pressed={layout==='grid'} onClick={()=>setLayout('grid')}>Grid</button></div>;
 
  return <main className="muse-page muse-series-route">
   {crumbs}
+  <div className="muse-series-shelf" role="img" aria-label={`${series.title}: ${spines.filter(e=>e.book).length} of ${spines.length} primary books on your shelf`}>
+   <span className="muse-series-shelf-glow" aria-hidden="true"/>
+   <div className="muse-series-shelf-books">{spines.map((entry,index)=>{const art=entry.coverUrl&&validCoverUrl(entry.coverUrl)?entry.coverUrl:null;return <span key={entry.key} className="muse-series-spine" data-owned={!!entry.book||undefined} data-state={entry.state} data-next={shelf.next?.key===entry.key||undefined} style={{'--spine-art':art?`url("${art.replace(/"/g,'%22')}")`:'none','--spine-tint':entry.coverColor??undefined,'--spine-h':`${82+((index*37)%18)}%`,'--spine-delay':`${index*35}ms`} as CSSProperties}><em>{entry.title}</em>{entry.positionLabel&&<small className="type-numeric">{entry.positionLabel.slice(1)}</small>}{entry.state==='read'&&<b aria-hidden="true"><MuseIcon name="check" size={10}/></b>}</span>;})}</div>
+   <span className="muse-series-shelf-plank" aria-hidden="true"/>
+  </div>
   <header className="muse-series-page-hero">
-   <div className="muse-series-shelf" role="img" aria-label={`${series.title}: ${spines.filter(e=>e.book).length} of ${spines.length} primary books on your shelf`}>
-    <div className="muse-series-shelf-books">{spines.map((entry,index)=>{const art=entry.coverUrl&&validCoverUrl(entry.coverUrl)?entry.coverUrl:null;return <span key={entry.key} className="muse-series-spine" data-owned={!!entry.book||undefined} data-state={entry.state} data-next={shelf.next?.key===entry.key||undefined} style={{'--spine-art':art?`url("${art.replace(/"/g,'%22')}")`:'none','--spine-tint':entry.coverColor??undefined,'--spine-h':`${82+((index*37)%18)}%`,'--spine-delay':`${index*35}ms`} as CSSProperties}><em>{entry.title}</em>{entry.positionLabel&&<small className="type-numeric">{entry.positionLabel.slice(1)}</small>}{entry.state==='read'&&<b aria-hidden="true"><MuseIcon name="check" size={10}/></b>}</span>;})}</div>
-    <span className="muse-series-shelf-plank" aria-hidden="true"/>
-   </div>
    <div className="muse-series-page-identity">
     <div className="muse-series-page-chips"><span className="muse-book-chip" data-tone="accent"><MuseIcon name="series" size={13}/>{shelf.primaryCount} primary {shelf.primaryCount===1?'book':'books'}</span>{shelf.additional.length>0&&<span className="muse-book-chip">+{shelf.additional.length} additional {shelf.additional.length===1?'work':'works'}</span>}{statusChip&&<span className="muse-book-chip" data-tone={statusChip.tone}>{statusChip.label}</span>}{!saved&&<span className="muse-book-chip" data-tone="quiet">From the catalog</span>}</div>
     <h1 className="type-title">{series.title}</h1>
@@ -159,23 +189,22 @@ export function SeriesRoute({seriesKey}:{seriesKey:string}){
    </aside>
   </header>
   {(notice||problem||quick.error)&&<p className="muse-series-page-message" role={problem||quick.error?'alert':'status'} data-tone={problem||quick.error?'error':undefined}>{problem||quick.error||notice}</p>}
-  <section className="muse-card muse-series-page-order" aria-labelledby="series-order-heading">
+  <section className="muse-card muse-series-page-order" data-layout={layout} aria-labelledby="series-order-heading">
    <header className="muse-series-page-order-head"><div><h2 id="series-order-heading" className="muse-book-page-section-title">Primary series <span className="muse-series-page-section-count type-numeric">{shelf.primaryCount}</span></h2><p>The main books in reading order. Series progress follows these.</p></div>
-    {saved&&<><button ref={menuAnchor} type="button" className="muse-button button-ghost" aria-haspopup="menu" aria-expanded={menuOpen} onClick={()=>setMenuOpen(v=>!v)}>Manage <MuseIcon name="chevron" size={14}/></button>
+    <div className="muse-series-page-tools">{layoutToggle}{saved&&<><button ref={menuAnchor} type="button" className="muse-button button-ghost" aria-haspopup="menu" aria-expanded={menuOpen} onClick={()=>setMenuOpen(v=>!v)}>Manage <MuseIcon name="chevron" size={14}/></button>
     <GlassPopover id="series-manage" label="Manage series" open={menuOpen} anchorRef={menuAnchor} onClose={()=>setMenuOpen(false)} width={250} bare><div className="popover-choice-list">
      {saved.catalog_source&&<button type="button" className="popover-choice" disabled={busy} onClick={()=>{setMenuOpen(false);void refresh();}}><span><MuseIcon name="undo" size={14}/> Refresh from catalog</span></button>}
      <button type="button" className="popover-choice" onClick={()=>{setMenuOpen(false);setCorrecting(true);}}><span><MuseIcon name="edit" size={14}/> Correct installments</span></button>
      <button type="button" className="popover-choice" disabled={busy} onClick={()=>{setMenuOpen(false);void remove();}}><span><MuseIcon name="trash" size={14}/> Remove series</span></button>
-    </div></GlassPopover></>}
+    </div></GlassPopover></>}</div>
    </header>
-   <ol className="muse-series-page-rows">{shelf.primary.map(row)}</ol>
-   {!shelf.primary.length&&<p className="muse-series-page-empty-note">No primary books are listed for this series yet.</p>}
+   {shelf.primary.length?list(shelf.primary):<p className="muse-series-page-empty-note">No primary books are listed for this series yet.</p>}
   </section>
-  {shelf.additional.length>0&&<section className="muse-card muse-series-page-order muse-series-page-additional" aria-labelledby="series-additional-heading">
+  {shelf.additional.length>0&&<section className="muse-card muse-series-page-order muse-series-page-additional" data-layout={layout} aria-labelledby="series-additional-heading">
    <header className="muse-series-page-order-head"><div><h2 id="series-additional-heading" className="muse-book-page-section-title">Additional works <span className="muse-series-page-section-count type-numeric">{shelf.additional.length}</span></h2><p>Prequels, novellas and companion stories, at their place in the order. Tracked on their own; they don’t change series progress.</p></div><span className="muse-book-chip">{shelf.additionalReadCount} of {shelf.additional.length} read</span></header>
-   <ol className="muse-series-page-rows">{shelf.additional.map(row)}</ol>
+   {list(shelf.additional)}
   </section>}
-  {shelf.collections.length>0&&<section className="muse-card muse-series-page-order muse-series-page-bundles" aria-label="Collections and box sets"><details className="muse-series-page-collections"><summary><span className="muse-book-page-section-title">Collections &amp; box sets</span> <span className="muse-series-page-section-count type-numeric">{shelf.collections.length}</span><small>Bundles and collected editions. Never counted toward progress.</small></summary><ol className="muse-series-page-rows">{shelf.collections.map(row)}</ol></details></section>}
+  {shelf.collections.length>0&&<section className="muse-card muse-series-page-order muse-series-page-bundles" data-layout={layout} aria-label="Collections and box sets"><details className="muse-series-page-collections"><summary><span className="muse-book-page-section-title">Collections &amp; box sets</span> <span className="muse-series-page-section-count type-numeric">{shelf.collections.length}</span><small>Bundles and collected editions. Never counted toward progress.</small></summary>{list(shelf.collections)}</details></section>}
   <section className="muse-series-page-footnote">
    <p className="small-label muse-series-page-source">{series.catalog_source?`Series details from ${series.catalog_source==='hardcover'?'Hardcover':series.catalog_source==='wikidata'?'Wikidata':'Open Library'}${series.catalog_refreshed_at?` · refreshed ${longDate(series.catalog_refreshed_at.slice(0,10))}`:''}. Counts follow the catalog and may change as books are announced.`:'A series you put together. Everything here follows your own order.'}</p>
   </section>
@@ -188,5 +217,5 @@ function SeriesDescription({text}:{text:string}){
  return <div className="muse-series-page-description"><p className="type-reading" data-clamped={long&&!open||undefined}>{text}</p>{long&&<button type="button" className="text-button" aria-expanded={open} onClick={()=>setOpen(v=>!v)}>{open?'Show less':'Read more'}</button>}</div>;
 }
 function SeriesSkeleton(){
- return <div className="muse-series-page-skeleton" aria-label="Opening series"><div className="muse-series-shelf"><div className="muse-series-shelf-books">{Array.from({length:9},(_,i)=><span key={i} className="muse-series-spine" data-skeleton style={{'--spine-h':`${82+((i*37)%18)}%`} as CSSProperties}/>)}</div><span className="muse-series-shelf-plank"/></div><div className="muse-skeleton-lines"><span/><span/><span/></div></div>;
+ return <div className="muse-series-page-skeleton" aria-label="Opening series"><div className="muse-series-shelf"><span className="muse-series-shelf-glow" aria-hidden="true"/><div className="muse-series-shelf-books">{Array.from({length:9},(_,i)=><span key={i} className="muse-series-spine" data-skeleton style={{'--spine-h':`${82+((i*37)%18)}%`} as CSSProperties}/>)}</div><span className="muse-series-shelf-plank"/></div><div className="muse-skeleton-lines"><span/><span/><span/></div></div>;
 }

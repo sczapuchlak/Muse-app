@@ -127,3 +127,91 @@
 .muse-series-progress-mini{display:grid;gap:4px;justify-items:end;flex:0 0 96px}.muse-series-progress-mini>.muse-book-series-meter{width:100%}.muse-series-progress-mini small{font-size:.68rem;color:var(--text-muted)}
 @keyframes muse-core-in{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){.muse-series-core-badge{animation:none}}
+
+
+
+/* ---------- Final Series Detail pass (#136) ---------- */
+/* Layout: the bookcase stands alone; identity and progress share the row beneath it. */
+.muse-series-page-hero{grid-template-columns:minmax(0,1fr) minmax(280px,340px);grid-template-areas:"identity progress"}
+.muse-series-route>.muse-series-shelf{grid-area:auto}
+
+/* The enchanted bookcase: built from each theme's own palette and background, so a dark theme stays a jewel box
+   and a light theme becomes a pastel parlour. Ornament and starlight stay quiet next to the covers. */
+.muse-series-shelf{
+ --case-wall:color-mix(in srgb,var(--accent-secondary) 20%,var(--background));
+ --case-wall-deep:color-mix(in srgb,var(--accent-primary) 24%,var(--background));
+ --case-wood:color-mix(in srgb,var(--accent-pop,var(--accent-primary)) 46%,var(--background));
+ --case-lip:color-mix(in srgb,var(--accent-pop,var(--accent-primary)) 32%,white 30%);
+ --case-glow:color-mix(in srgb,var(--accent-warm,var(--accent-pop,var(--accent-primary))) 55%,white);
+ position:relative;isolation:isolate;padding:clamp(40px,4vw,52px) clamp(22px,3vw,40px) 0;
+ border:1px solid color-mix(in srgb,var(--case-wood) 60%,transparent);border-radius:var(--dl-radius-hero);overflow:hidden;
+ background:
+  radial-gradient(1.5px 1.5px at 12% 22%,var(--case-glow),transparent 60%),radial-gradient(1px 1px at 23% 58%,var(--case-glow),transparent 60%),
+  radial-gradient(1.5px 1.5px at 81% 18%,var(--case-glow),transparent 60%),radial-gradient(1px 1px at 92% 64%,var(--case-glow),transparent 60%),radial-gradient(1px 1px at 68% 34%,var(--case-glow),transparent 60%),
+  repeating-linear-gradient(90deg,color-mix(in srgb,var(--foreground) 4%,transparent) 0 1px,transparent 1px 34px),
+  radial-gradient(ellipse 80% 70% at 50% 110%,color-mix(in srgb,var(--accent-primary) 26%,transparent),transparent 70%),
+  linear-gradient(180deg,var(--case-wall-deep),var(--case-wall) 60%,color-mix(in srgb,var(--case-wall) 80%,var(--accent-pop,var(--accent-primary)) 20%));
+ box-shadow:inset 18px 0 22px -18px color-mix(in srgb,black 45%,transparent),inset -18px 0 22px -18px color-mix(in srgb,black 45%,transparent),inset 0 1px 0 color-mix(in srgb,white 30%,transparent),0 22px 40px -22px color-mix(in srgb,black 55%,transparent);
+ -webkit-backdrop-filter:none;backdrop-filter:none
+}
+/* Scalloped canopy with a fine ornamental rule beneath it */
+.muse-series-shelf::before{content:"";position:absolute;z-index:0;inset:0 0 auto;height:30px;background:linear-gradient(var(--case-lip),var(--case-lip)) 0 22px/100% 1px no-repeat,radial-gradient(circle at 13px -3px,var(--case-wood) 13px,transparent 13.5px) 0 0/26px 20px repeat-x,linear-gradient(var(--case-wood),var(--case-wood)) 0 0/100% 6px no-repeat;opacity:.9;pointer-events:none}
+/* A few points of starlight that breathe, never sparkle wildly */
+.muse-series-shelf::after{content:"";position:absolute;z-index:0;inset:34px 0 auto;height:40%;background:radial-gradient(2px 2px at 18% 30%,var(--case-glow),transparent 70%),radial-gradient(2px 2px at 76% 44%,var(--case-glow),transparent 70%),radial-gradient(1.5px 1.5px at 44% 16%,var(--case-glow),transparent 70%);pointer-events:none;animation:muse-case-twinkle 4s ease-in-out infinite alternate}
+.muse-series-shelf-glow{position:absolute;z-index:0;left:50%;bottom:6px;width:min(80%,640px);height:70%;transform:translateX(-50%);background:radial-gradient(ellipse at 50% 100%,color-mix(in srgb,var(--case-glow) 38%,transparent),transparent 70%);pointer-events:none}
+.muse-series-shelf>.muse-series-shelf-books,.muse-series-shelf>.muse-series-shelf-plank{position:relative;z-index:1}
+.muse-series-shelf-books{filter:drop-shadow(0 10px 10px color-mix(in srgb,black 28%,transparent))}
+.muse-series-shelf-plank{display:block;height:18px;margin:0 calc(-1*clamp(22px,3vw,40px));border-radius:0;background:linear-gradient(180deg,var(--case-lip) 0 3px,var(--case-wood) 3px 11px,color-mix(in srgb,var(--case-wood) 70%,black) 11px);box-shadow:0 -1px 0 color-mix(in srgb,white 40%,transparent) inset}
+@keyframes muse-case-twinkle{from{opacity:.45}to{opacity:1}}
+@media(prefers-reduced-motion:reduce){.muse-series-shelf::after{animation:none}}
+:root[data-muse-magic="quiet"] .muse-series-shelf::after{animation:none}
+
+/* Section tools */
+.muse-series-page-tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.muse-series-layout button{min-height:36px;padding-inline:14px;font-size:.8rem}
+
+/* Ownership and reading: two quiet, distinct signals */
+.muse-series-signals{display:flex;flex-wrap:wrap;gap:5px;margin-top:2px}
+.muse-series-own,.muse-series-status{display:inline-flex;align-items:center;gap:4px;padding:2px 9px;border-radius:999px;font:600 .68rem/1.5 var(--font-ui);white-space:nowrap}
+.muse-series-own{border:1px dashed color-mix(in srgb,var(--foreground) 32%,transparent);color:var(--text-muted)}
+.muse-series-own[data-owned]{border:1px solid color-mix(in srgb,var(--success-primary) 45%,transparent);background:color-mix(in srgb,var(--success-primary) 12%,transparent);color:var(--foreground)}
+.muse-series-own[data-owned] svg{color:var(--success-primary)}
+.muse-series-status{color:var(--foreground);background:color-mix(in srgb,var(--foreground) 7%,transparent)}
+.muse-series-status[data-tone="read"]{background:color-mix(in srgb,var(--success-primary) 20%,transparent)}
+.muse-series-status[data-tone="reading"]{background:color-mix(in srgb,var(--accent-primary) 20%,transparent)}
+.muse-series-status[data-tone="wish"]{background:color-mix(in srgb,var(--accent-secondary) 18%,transparent)}
+.muse-series-status[data-tone="wish"] svg{color:var(--accent-warm,var(--accent-secondary));fill:currentColor}
+.muse-series-status[data-tone="upcoming"]{background:color-mix(in srgb,var(--accent-warm,var(--accent-pop)) 20%,transparent)}
+.muse-series-status[data-tone="quiet"]{color:var(--text-muted)}
+
+/* List view: [#] [cover + details] [synopsis] [actions], same compact height */
+.muse-series-page-row{grid-template-columns:44px minmax(220px,1fr) minmax(0,1.35fr) auto;gap:16px;padding:8px 0}
+.muse-series-page-row-main{grid-template-columns:48px minmax(0,1fr)}
+.muse-series-page-row-copy{gap:2px}
+.muse-series-page-synopsis{margin:0;font-size:.8rem;line-height:1.45;color:var(--text-muted);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;max-width:62ch}
+
+/* Grid view: cover-forward cards */
+.muse-series-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:22px 18px;list-style:none;margin:6px 0 0;padding:0}
+.muse-series-card{display:grid;align-content:start;gap:9px;min-width:0;animation:muse-search-in var(--motion-settle,260ms) var(--ease-out,ease-out) both}
+.muse-series-card-cover{position:relative;display:block;padding:0;border:0;background:none;border-radius:8px;transition:transform var(--motion-hover,180ms) var(--ease-out,ease-out)}
+.muse-series-card-cover:not(:disabled){cursor:pointer}.muse-series-card-cover:not(:disabled):hover{transform:translateY(-4px)}
+.muse-series-card-cover:disabled{cursor:default}
+.muse-series-card-cover:focus-visible{outline:2px solid var(--focus-ring);outline-offset:3px}
+.muse-series-card-cover .muse-series-cover{box-shadow:0 12px 22px -10px color-mix(in srgb,black 45%,transparent)}
+.muse-series-card-copy{display:grid;gap:3px;min-width:0}
+.muse-series-card-copy strong{font-size:.96rem;line-height:1.2;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.muse-series-card-actions{display:flex;align-items:center;gap:6px;margin-top:2px}
+
+@media(max-width:900px){.muse-series-page-hero{grid-template-columns:minmax(0,1fr);grid-template-areas:"identity" "progress"}.muse-series-page-row{grid-template-columns:40px minmax(0,1fr) auto}.muse-series-page-synopsis{display:none}}
+@media(max-width:620px){
+ .muse-series-shelf{padding:34px 14px 0}.muse-series-shelf-plank{margin:0 -14px}
+ .muse-series-page-order-head{align-items:flex-start}.muse-series-page-tools{width:100%;justify-content:space-between}
+ .muse-series-page-row{grid-template-columns:30px minmax(0,1fr);grid-template-areas:"pos main" ". actions";row-gap:6px;column-gap:8px}
+ .muse-series-page-row[data-owned]{grid-template-areas:"pos main actions";grid-template-columns:30px minmax(0,1fr) auto}
+ .muse-series-page-row-main{grid-template-columns:46px minmax(0,1fr)}
+ .muse-series-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 14px}
+ .muse-series-card-actions{justify-content:space-between}
+ .muse-series-card .muse-quick-add>button{min-width:40px;min-height:40px}
+}
+@media(prefers-reduced-motion:reduce){.muse-series-card{animation:none}.muse-series-card-cover{transition:none}}
+@media(min-width:901px){.muse-series-page-row{grid-template-columns:44px minmax(220px,1fr) minmax(0,1.35fr) 148px}.muse-series-page-row-actions{justify-content:flex-end}}

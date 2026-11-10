@@ -8,7 +8,7 @@ import {isbnDigits,mapGenres,normalizePublishedDate,plainText,safeCoverUrl} from
 export type CatalogSource='hardcover'|'wikidata'|'open-library';
 /** `collection` marks an omnibus/box set; `optional` is a book whose primary series is another one. */
 export type CatalogRole='mainline'|'optional'|'collection';
-export type CatalogMember={source:CatalogSource;id:string;title:string;author:string;position:number|null;positionLabel:string;workKey?:string;role?:CatalogRole;releaseDate?:string;releaseYear?:number;releaseState?:'released'|'announced'|'unknown';coverUrl?:string;coverColor?:string;pages?:number};
+export type CatalogMember={source:CatalogSource;id:string;title:string;author:string;position:number|null;positionLabel:string;workKey?:string;role?:CatalogRole;releaseDate?:string;releaseYear?:number;releaseState?:'released'|'announced'|'unknown';coverUrl?:string;coverColor?:string;pages?:number;description?:string};
 export type SeriesCatalog={source:CatalogSource;id:string;title:string;members:CatalogMember[];complete:false;author?:string;description?:string;primaryCount?:number;totalCount?:number;completed?:boolean};
 export type SeriesHit={source:'hardcover';id:string;title:string;author:string;primaryCount:number|null;totalCount:number|null;sampleTitles?:string[];coverUrl?:string;covers?:string[]};
 export type BookSeriesHit={bookId:string;title:string;author:string;position:number|null;featured:boolean;series:SeriesHit};
@@ -167,7 +167,7 @@ export function createSeriesResolver({fetcher=fetch,hardcoverKey=()=>process.env
   return id===null?null:{id,position:position(rows.find(row=>row.series_id===id)?.position)};
  }
  async function hardcoverSeries(seriesId:number):Promise<SeriesCatalog|null>{
-  const result=await gql('query($id:Int!){series_by_pk(id:$id){id name description books_count primary_books_count is_completed author{name} book_series(order_by:{position:asc},limit:100){position featured compilation book{id title release_date release_year pages canonical_id compilation users_count image{url color} contributions(limit:1){author{name}}}}}}',{id:seriesId});
+  const result=await gql('query($id:Int!){series_by_pk(id:$id){id name description books_count primary_books_count is_completed author{name} book_series(order_by:{position:asc},limit:100){position featured compilation book{id title description release_date release_year pages canonical_id compilation users_count image{url color} contributions(limit:1){author{name}}}}}}',{id:seriesId});
   const series=result?.series_by_pk as {id?:number;name?:string;description?:string|null;books_count?:number;primary_books_count?:number|null;is_completed?:boolean|null;author?:{name?:string}|null;book_series?:{position?:unknown;featured?:boolean;compilation?:boolean;book?:RawBook|null}[]}|null;
   if(!series?.id||!series.name)return null;
   const today=new Date(now()).toISOString().slice(0,10);
@@ -177,7 +177,7 @@ export function createSeriesResolver({fetcher=fetch,hardcoverKey=()=>process.env
    const releaseDate=isoDate(book?.release_date),releaseYear=positiveInt(book?.release_year)??(releaseDate?Number(releaseDate.slice(0,4)):undefined),cover=safeCoverUrl(book?.image?.url),color=hexColor(book?.image?.color),pages=positiveInt(book?.pages);
    const member:CatalogMember={source:'hardcover',id:String(id),title:name,author:text(book?.contributions?.[0]?.author?.name)||text(series.author?.name),position:pos,positionLabel:pos===null?'':label(pos),role:row.compilation||book?.compilation||bundleTitle(name)?'collection':row.featured?'mainline':'optional',
     ...(releaseDate?{releaseDate}:{}),...(releaseYear?{releaseYear}:{}),releaseState:releaseDate?(releaseDate>today?'announced':'released'):releaseYear?(releaseYear>Number(today.slice(0,4))?'announced':'released'):'unknown',
-    ...(cover?{coverUrl:cover}:{}),...(color?{coverColor:color}:{}),...(pages?{pages}:{})};
+    ...(cover?{coverUrl:cover}:{}),...(color?{coverColor:color}:{}),...(pages?{pages}:{}),...(book?.description?{description:plainText(book.description,420)}:{})};
    return {member,readers:typeof book?.users_count==='number'?book.users_count:0,featured:!!row.featured};
   }).filter((e):e is CatalogEntry=>!!e);
   const members=normalizeSeriesEntries(entries);
