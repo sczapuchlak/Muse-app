@@ -288,3 +288,15 @@
 .muse-series-top>.muse-series-shelf{justify-self:start;align-self:start}
 .muse-series-top>.muse-series-page-progress{align-self:start;grid-column:2;grid-row:1}/* .muse-card spans 6 dashboard columns by default; this row has exactly two */
 @media(max-width:900px){.muse-series-top{grid-template-columns:minmax(0,1fr)}.muse-series-top>.muse-series-shelf{justify-self:stretch;grid-column:1;grid-row:1}.muse-series-top>.muse-series-page-progress{grid-column:1;grid-row:2}}
+
+/* Grid readability pass (#136): a little wider, more air, steadier titles, easier-to-read badges. */
+.muse-series-grid{grid-template-columns:repeat(auto-fill,minmax(122px,1fr));gap:22px 22px}
+.muse-series-card-copy strong{font-size:.88rem;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.5em;overflow-wrap:break-word}
+.muse-series-card-facts{font-size:.74rem;min-height:1.2em}
+.muse-series-card .muse-series-signals{gap:5px;margin-top:4px}
+.muse-series-card .muse-series-own,.muse-series-card .muse-series-status{padding:3px 9px;font-size:.7rem;line-height:1.35}
+@media(max-width:620px){
+ .muse-series-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px 12px}
+ .muse-series-card-copy strong{font-size:.8rem}
+ .muse-series-card .muse-series-own,.muse-series-card .muse-series-status{padding:2px 7px;font-size:.64rem}
+}
