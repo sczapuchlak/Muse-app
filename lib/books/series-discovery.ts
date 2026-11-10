@@ -5,6 +5,7 @@ export type CatalogSource='hardcover'|'wikidata'|'open-library';
 export type CatalogMember={source:CatalogSource;id:string;title:string;author:string;position:number|null;positionLabel:string;workKey?:string;role?:'mainline'|'optional';releaseDate?:string;releaseState?:'released'|'announced'|'unknown'};
 export type SeriesCatalog={source:CatalogSource;id:string;title:string;members:CatalogMember[];complete:false;author?:string;description?:string;primaryCount?:number;totalCount?:number};
 export type SeriesHit={source:'hardcover';id:string;title:string;author:string;primaryCount:number|null;totalCount:number|null};
+export type BookSeriesHit={bookId:string;title:string;author:string;position:number|null;featured:boolean;series:SeriesHit};
 export type SeriesSeed={title:string;author?:string;isbn?:string;workKey?:string;source?:CatalogSource;sourceId?:string};
 type Fetcher=typeof fetch;
 const OL='https://openlibrary.org',WD='https://query.wikidata.org/sparql',HC='https://api.hardcover.app/v1/graphql';
@@ -81,11 +82,26 @@ export function createSeriesResolver({fetcher=fetch,hardcoverKey=()=>process.env
  }
  async function gql(query:string,variables:Record<string,unknown>){const key=hardcoverKey()?.trim();if(!key)throw Error('Hardcover is not configured');const data=await json(HC,{method:'POST',headers:{Authorization:`Bearer ${key}`,'Content-Type':'application/json','User-Agent':'Muse Series Discovery'},body:JSON.stringify({query,variables})});if(Array.isArray(data.errors)&&data.errors.length)throw Error('Hardcover query unavailable');return data.data as Record<string,unknown>|undefined;}
  async function searchSeries(query:string):Promise<SeriesHit[]>{if(!hardcoverKey()?.trim())return [];const found=await gql('query($query:String!){search(query:$query,query_type:"series",per_page:10){ids}}',{query:query.slice(0,120)});const ids=((found?.search as {ids?:number[]}|undefined)?.ids??[]).filter(id=>Number.isInteger(id));if(!ids.length)return [];const data=await gql('query($ids:[Int!]!){series(where:{id:{_in:$ids}},limit:10){id name books_count primary_books_count author{name}}}',{ids});return ((data?.series as {id?:number;name?:string;books_count?:number;primary_books_count?:number;author?:{name?:string}}[]|undefined)??[]).filter(s=>typeof s.id==='number'&&!!s.name).map(s=>({source:'hardcover' as const,id:String(s.id),title:text(s.name),author:text(s.author?.name),primaryCount:typeof s.primary_books_count==='number'?s.primary_books_count:null,totalCount:typeof s.books_count==='number'?s.books_count:null}));}
+ /** Two bounded Hardcover queries enrich a typed search, never one request per book result. */
+ async function searchCatalog(query:string):Promise<{results:SeriesHit[];bookSeries:BookSeriesHit[]}>{
+  if(!hardcoverKey()?.trim())return {results:[],bookSeries:[]};
+  const found=await gql('query($query:String!){bookHits:search(query:$query,query_type:"book",per_page:12){ids} seriesHits:search(query:$query,query_type:"series",per_page:6){ids}}',{query:query.slice(0,120)});
+  const ids=(value:unknown)=>Array.isArray(value)?value.filter((id):id is number=>Number.isInteger(id)).slice(0,12):[];
+  const bookIds=ids((found?.bookHits as {ids?:unknown}|undefined)?.ids),seriesIds=ids((found?.seriesHits as {ids?:unknown}|undefined)?.ids).slice(0,6);
+  if(!bookIds.length&&!seriesIds.length)return {results:[],bookSeries:[]};
+  const data=await gql('query($bookIds:[Int!]!,$seriesIds:[Int!]!){books(where:{id:{_in:$bookIds}},limit:12){id title contributions{author{name}} book_series{position featured compilation series{id name books_count primary_books_count author{name}}}} series(where:{id:{_in:$seriesIds}},limit:6){id name books_count primary_books_count author{name}}}',{bookIds,seriesIds});
+  type RawSeries={id?:number;name?:string;books_count?:number;primary_books_count?:number;author?:{name?:string}};
+  const hit=(series:RawSeries):SeriesHit=>({source:'hardcover',id:String(series.id),title:text(series.name),author:text(series.author?.name),primaryCount:typeof series.primary_books_count==='number'?series.primary_books_count:null,totalCount:typeof series.books_count==='number'?series.books_count:null});
+  const results=((data?.series as RawSeries[]|undefined)??[]).filter(s=>typeof s.id==='number'&&!!s.name).map(hit);
+  const books=(data?.books as {id?:number;title?:string;contributions?:{author?:{name?:string}}[];book_series?:{position?:unknown;featured?:boolean;compilation?:boolean;series?:RawSeries|null}[]}[]|undefined)??[];
+  const bookSeries=books.flatMap(book=>{if(typeof book.id!=='number'||!book.title)return [];return (book.book_series??[]).filter(row=>row.series?.id&&row.series.name&&!row.compilation).sort((a,b)=>Number(!!b.featured)-Number(!!a.featured)).slice(0,3).map(row=>({bookId:String(book.id),title:text(book.title),author:text(book.contributions?.[0]?.author?.name),position:position(row.position),featured:!!row.featured,series:hit(row.series!)}));});
+  return {results,bookSeries};
+ }
  async function resolve(seed:SeriesSeed,{refresh=false}:{refresh?:boolean}={}):Promise<SeriesCatalog|null>{
   const cacheKey=JSON.stringify(seed),hit=cache.get(cacheKey);if(!refresh&&hit&&now()-hit.at<12*60*60_000)return hit.value;
   const sources=['hardcover','wikidata','open-library'] as const;let work:string|undefined;
   for(const source of sources){try{if(source!=='hardcover'&&!work)work=await openLibraryWork(seed);const result=source==='hardcover'?await hardcover(seed):source==='wikidata'?await wikidata(seed,work):await openLibrary(seed,work);if(result){cache.set(cacheKey,{at:now(),value:result});if(cache.size>100)cache.delete(cache.keys().next().value as string);return result;}}catch{/* next source */}}
   cache.set(cacheKey,{at:now(),value:null});return null;
  }
- return {resolve,searchSeries};
+ return {resolve,searchSeries,searchCatalog};
 }

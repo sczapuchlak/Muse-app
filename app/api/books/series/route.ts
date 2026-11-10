@@ -12,7 +12,7 @@ export async function POST(request:NextRequest){
   const body=ready.body,source=sources.has(body.source as CatalogSource)?body.source as CatalogSource:undefined;
   if(body.action==='search'){
    const query=field(body.query,120);if(query.length<2)return privateResponse(NextResponse.json({error:'Enter a series name.'},{status:400}));
-   return ready.respond({results:await seriesResolver.searchSeries(query),configured:!!process.env.HARDCOVER_API_KEY});
+   return ready.respond({...await seriesResolver.searchCatalog(query),configured:!!process.env.HARDCOVER_API_KEY});
   }
   const seed:SeriesSeed={title:field(body.title,200),author:field(body.author,150),isbn:field(body.isbn,20),workKey:field(body.workKey,40),...(source?{source,sourceId:field(body.sourceId,120)}:{})};
   if(!seed.title||seed.title.length<2)return privateResponse(NextResponse.json({error:'A book title is needed to discover its series.'},{status:400}));

@@ -1,6 +1,9 @@
 'use client';
 import {useEffect,useId,useRef,useState,type KeyboardEvent} from 'react';
 import {sameEdition,withEdition,type BookCandidate} from '@/lib/books/metadata';
+import type {SeriesHit} from '@/lib/books/series-discovery';
+import {SeriesBadge,SeriesSearchResults,useSeriesSearch} from '@/components/collections/SeriesSearchResults';
+import {savedSeriesBadgesForResult,seriesBadgesForResult,type SavedSeriesBadge} from '@/lib/books/series-search';
 import {MuseIcon} from '../MuseIcon';
 import './BookSearch.css';
 
@@ -32,9 +35,10 @@ const editionLine=(e:BookCandidate)=>[e.formatLabel??'Format not listed',e.year,
  * Finds a book by title, author or ISBN and hands the chosen book (and edition) to the editor.
  * It never saves: the editor stays fully editable and manual entry is always available.
  */
-export function BookSearch({onImport,onEditions,onManual}:{onImport:(book:BookCandidate)=>void;onEditions:(editions:BookCandidate[])=>void;onManual:()=>void}){
+export function BookSearch({onImport,onEditions,onManual,onOpenSeries,savedSeries,onOpenSavedSeries}:{onImport:(book:BookCandidate)=>void;onEditions:(editions:BookCandidate[])=>void;onManual:()=>void;onOpenSeries:(hit:SeriesHit)=>void;savedSeries:SavedSeriesBadge[];onOpenSavedSeries:(id:string)=>void}){
  const id=useId(),listId=`${id}-results`,[query,setQuery]=useState(''),[search,setSearch]=useState<SearchState>({status:'idle',results:[],attribution:[]});
  const [open,setOpen]=useState(false),[active,setActive]=useState(-1),[chosen,setChosen]=useState<BookCandidate|null>(null),[edition,setEdition]=useState<string|null>(null),[editions,setEditions]=useState<EditionState>({status:'idle',editions:[]});
+ const catalog=useSeriesSearch(query);
  const searchAbort=useRef<AbortController|null>(null),editionAbort=useRef<AbortController|null>(null),debounce=useRef<ReturnType<typeof setTimeout>|null>(null);
  useEffect(()=>()=>{if(debounce.current)clearTimeout(debounce.current);searchAbort.current?.abort();editionAbort.current?.abort();},[]);
  /** Debounced from typing; a newer query cancels the older request so stale results never replace fresh ones. */
@@ -72,13 +76,15 @@ export function BookSearch({onImport,onEditions,onManual}:{onImport:(book:BookCa
  }
  const status=search.status==='loading'?'Searching…':search.status==='error'?search.message??'Book search is unavailable right now.':search.status==='done'?(search.results.length?`${search.results.length} ${search.results.length===1?'match':'matches'}`:'No matches yet. Try another title, the author, or an ISBN.'):query.trim()&&query.trim().length<MIN_QUERY?'Keep typing…':'';
  const showList=open&&search.status!=='idle';
+ const savedSeriesResults=[...new Map(savedSeries.filter(row=>query.trim().length>=MIN_QUERY&&row.title.toLowerCase().includes(query.trim().toLowerCase())).map(row=>[row.seriesId,{id:row.seriesId,title:row.title,author:row.bookAuthor,primaryCount:row.primaryCount,totalCount:row.totalCount}])).values()];
  return <section className="muse-book-search" aria-label="Find your book">
   <label className="muse-book-search-field" htmlFor={`${id}-input`}><span>Find your book <small>title, author, or ISBN</small></span>
    <span className="muse-book-search-input"><MuseIcon name="search" size={16}/><input id={`${id}-input`} type="search" role="combobox" aria-autocomplete="list" aria-expanded={showList} aria-controls={listId} aria-activedescendant={showList&&active>=0?`${listId}-${active}`:undefined} autoComplete="off" placeholder="Half City, Kate Golden, or 978…" value={query} onChange={e=>changeQuery(e.target.value)} onKeyDown={onKey} onFocus={()=>search.results.length&&setOpen(true)}/></span>
   </label>
   <p className="small-label muse-book-search-status" role="status" aria-live="polite">{status}</p>
-  {showList&&search.results.length>0&&<ul className="muse-book-search-results" id={listId} role="listbox" aria-label="Matching books">{search.results.map((book,index)=><li key={book.key} id={`${listId}-${index}`} role="option" aria-selected={index===active} className="muse-book-search-result" onMouseDown={e=>e.preventDefault()} onClick={()=>choose(book)} onMouseEnter={()=>setActive(index)}>
-   <Thumb src={book.thumbnailUrl??book.coverUrl} title={book.title} size="result"/><span className="muse-book-search-copy"><strong>{book.title}</strong><span>{metaLine(book)}</span>{book.editionCount&&book.editionCount>1?<small>{book.editionCount} editions</small>:null}</span></li>)}</ul>}
+  {showList&&search.results.length>0&&<ul className="muse-book-search-results" id={listId} role="listbox" aria-label="Matching books">{search.results.map((book,index)=><li key={book.key} id={`${listId}-${index}`} role="option" aria-selected={index===active} className="muse-book-search-result" onMouseDown={e=>{if(!(e.target as HTMLElement).closest('button'))e.preventDefault();}} onClick={()=>choose(book)} onMouseEnter={()=>setActive(index)}>
+   <Thumb src={book.thumbnailUrl??book.coverUrl} title={book.title} size="result"/><span className="muse-book-search-copy"><strong>{book.title}</strong><span>{metaLine(book)}</span>{(()=>{const saved=savedSeriesBadgesForResult(book.title,book.authors,savedSeries);return saved.length?saved.map(badge=><SeriesBadge key={badge.seriesId} position={badge.position} series={badge} onOpen={()=>onOpenSavedSeries(badge.seriesId)}/>):seriesBadgesForResult(book.title,book.authors,catalog.bookSeries).map(match=><SeriesBadge key={`${match.bookId}:${match.series.id}`} position={match.position} series={match.series} onOpen={()=>onOpenSeries(match.series)}/>);})()}{book.editionCount&&book.editionCount>1?<small>{book.editionCount} editions</small>:null}</span></li>)}</ul>}
+  {open&&<SeriesSearchResults hits={catalog.results} saved={savedSeriesResults} loading={catalog.loading} onOpen={onOpenSeries} onOpenSaved={onOpenSavedSeries}/>}
   {search.attribution.length>0&&showList&&<p className="small-label muse-book-search-credit">Book data from {search.attribution.join(' and ')}</p>}
   {chosen&&editions.status==='loading'&&<p className="small-label" role="status">Looking for other editions…</p>}
   {chosen&&editions.editions.length>1&&<div className="muse-book-editions" role="group" aria-label="Choose an edition"><p className="small-label">Choose an edition <span>· covers, pages and ISBN follow your choice</span></p>

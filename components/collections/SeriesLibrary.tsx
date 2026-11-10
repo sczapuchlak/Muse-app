@@ -43,7 +43,7 @@ const label=(list:{id:string;label:string}[],id:string)=>list.find(o=>o.id===id)
  * rows. Books can be created right here through the normal Add Book flow and join the series on save, or an existing
  * saved item can be connected. Relationship-removing actions ask first.
  */
-export function SeriesLibrary({initialAdd=false,initialSeriesId=null,embedded=false,onBack}:{initialAdd?:boolean;initialSeriesId?:string|null;embedded?:boolean;onBack?:()=>void}={}){
+export function SeriesLibrary({initialAdd=false,initialSeriesId=null,embedded=false,onBack,backLabel}:{initialAdd?:boolean;initialSeriesId?:string|null;embedded?:boolean;onBack?:()=>void;backLabel?:string}={}){
  const {records,userId,loaded,error:loadError,retry}=useCollectionsData(),{records:whimsy,status:whimsyStatus,retry:retryWhimsy}=useWhimsyData(),books=whimsy?.books??[],items=canonicalItems(books,records.media),client=useMemo(()=>createMuseBrowserClient(),[]);
  const [selected,setSelected]=useState<string|null>(initialSeriesId),[form,setForm]=useState<Form|null>(null),[member,setMember]=useState<MemberForm|null>(null),[busy,setBusy]=useState(false),[error,setError]=useState(''),[message,setMessage]=useState('');
  const [addOpen,setAddOpen]=useState(false),[creating,setCreating]=useState(false),[detaching,setDetaching]=useState<string|null>(null),[adding,setAdding]=useState<SeriesMember|null>(null),addAnchor=useRef<HTMLButtonElement>(null),pendingLinks=useRef<Map<string,string>>(new Map());
@@ -83,7 +83,7 @@ export function SeriesLibrary({initialAdd=false,initialSeriesId=null,embedded=fa
  return <section className="muse-collections-series" aria-label="Series and franchises">
   {!series&&<div className="muse-collections-toolbar"><div><h2>Series & franchises</h2><p>Order the installments that matter to you. Progress follows the saved items.</p></div><button type="button" className="muse-button button-primary" onClick={()=>setForm(blank())}>+ Create series</button></div>}
   {!loaded?<p role="status">{loadError||'Loading your series…'}</p>:series&&progress?<div className="muse-series-detail">
-   <button type="button" className="text-button muse-series-back" onClick={()=>onBack?onBack():selectSeries(null)}>← {embedded?'Back to book':'All series'}</button>
+   <button type="button" className="text-button muse-series-back" onClick={()=>onBack?onBack():selectSeries(null)}>← {backLabel??(embedded?'Back to book':'All series')}</button>
    <header className="muse-series-hero">
     <div className="muse-series-hero-cover" aria-hidden="true">{heroCover?<img src={heroCover} alt=""/>:<span>✧</span>}</div>
     <div className="muse-series-hero-text">

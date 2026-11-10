@@ -1,5 +1,5 @@
 'use client';
-import {useMemo,useState} from 'react';
+import {useEffect,useMemo,useRef,useState} from 'react';
 import {MuseModal} from '@/components/MuseModal';
 import {createMuseBrowserClient} from '@/lib/supabase/client';
 import type {SeriesHit,SeriesCatalog} from '@/lib/books/series-discovery';
@@ -8,11 +8,28 @@ import {collectionsChanged,useCollectionsData} from './CollectionsData';
 import {useWhimsyData} from '@/components/whimsy/WhimsyData';
 import {SeriesLibrary} from './SeriesLibrary';
 
-export function SeriesFinder({onClose}:{onClose:()=>void}){
- const {records,userId,retry}=useCollectionsData(),{records:whimsy,status:whimsyStatus}=useWhimsyData(),client=useMemo(()=>createMuseBrowserClient(),[]);
- const [query,setQuery]=useState(''),[hits,setHits]=useState<SeriesHit[]>([]),[selected,setSelected]=useState<string|null>(null),[busy,setBusy]=useState(false),[configured,setConfigured]=useState<boolean|null>(null),[error,setError]=useState('');
- async function search(){if(query.trim().length<2)return;setBusy(true);setError('');try{const response=await fetch('/api/books/series',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'search',query:query.trim()})});if(!response.ok)throw Error('Series search is unavailable. Saved series are still below.');const data=await response.json() as {results:SeriesHit[];configured:boolean};setHits(data.results??[]);setConfigured(data.configured);}catch(cause){setError(cause instanceof Error?cause.message:'Series search failed.');}finally{setBusy(false);}}
- async function open(hit:SeriesHit){setBusy(true);setError('');try{if(!whimsyStatus.loaded)throw Error('Wait for your Library to finish loading.');const existing=records.series.find(s=>s.catalog_source==='hardcover'&&s.catalog_id===hit.id);if(existing){setSelected(existing.id);return;}const response=await fetch('/api/books/series',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({title:hit.title,author:hit.author,source:hit.source,sourceId:hit.id})});if(!response.ok)throw Error('This series could not be opened.');const data=await response.json() as {catalog:SeriesCatalog|null};if(!data.catalog)throw Error('No installments are available for this series yet.');const saved=await saveDiscoveredSeries(client,userId,data.catalog,records,whimsy?.books??[]);collectionsChanged();await retry();setSelected(saved.id);}catch(cause){setError(cause instanceof Error?cause.message:'Could not open series.');}finally{setBusy(false);}}
- const local=records.series.filter(s=>s.kind==='book'&&(!query||s.title.toLowerCase().includes(query.toLowerCase())));
- return <MuseModal id="books-series-finder" label="Find a series" title={selected?'Series':'Find a series'} returnFocus={null} onClose={onClose} size="tall">{selected?<SeriesLibrary key={selected} initialSeriesId={selected} embedded onBack={()=>setSelected(null)}/>:<div className="muse-series-finder"><p className="small-label">Search series names separately from individual books.</p><form onSubmit={event=>{event.preventDefault();void search();}}><label>Series name<input type="search" value={query} onChange={event=>setQuery(event.target.value)} placeholder="Dungeon Crawler Carl" autoFocus/></label><button type="submit" className="muse-button button-primary" disabled={busy||query.trim().length<2}>Search series</button></form>{error&&<p role="alert">{error}</p>}{busy&&<p role="status">Looking for series…</p>}{configured===false&&<p role="status">Catalog search needs a server-side Hardcover key. Your saved series are available below.</p>}{configured===true&&!hits.length&&!busy&&<p>No catalog series found for this search.</p>}{hits.length>0&&<section><h3>Catalog series</h3><ul>{hits.map(hit=><li key={hit.id}><button type="button" className="muse-series-find-result" onClick={()=>void open(hit)} disabled={busy}><strong>{hit.title}</strong><span>{[hit.author,hit.primaryCount!==null?`${hit.primaryCount} primary books`:hit.totalCount!==null?`${hit.totalCount} entries`:'Count unknown'].filter(Boolean).join(' · ')}</span></button></li>)}</ul></section>}{local.length>0&&<section><h3>Your saved series</h3><ul>{local.map(series=><li key={series.id}><button type="button" className="muse-series-find-result" onClick={()=>setSelected(series.id)}><strong>{series.title}</strong><span>{series.catalog_author||'Your series'}</span></button></li>)}</ul></section>}</div>}</MuseModal>;
+/** A contextual Series Detail opened from a book badge or series search result. */
+export function SeriesFinder({onClose,initialHit,initialSeriesId}:{onClose:()=>void;initialHit?:SeriesHit|null;initialSeriesId?:string|null}){
+ const {records,userId,retry,loaded}=useCollectionsData(),{records:whimsy,status:whimsyStatus}=useWhimsyData(),client=useMemo(()=>createMuseBrowserClient(),[]),opened=useRef(false);
+ const [selected,setSelected]=useState<string|null>(initialSeriesId??null),[error,setError]=useState('');
+ useEffect(()=>{
+  if(initialSeriesId||!initialHit||!loaded||!whimsyStatus.loaded||opened.current)return;
+  opened.current=true;let cancelled=false;
+  (async()=>{try{
+   const existing=records.series.find(series=>series.catalog_source==='hardcover'&&series.catalog_id===initialHit.id);
+   if(existing){if(!cancelled)setSelected(existing.id);return;}
+   const response=await fetch('/api/books/series',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({title:initialHit.title,author:initialHit.author,source:initialHit.source,sourceId:initialHit.id})});
+   if(!response.ok)throw Error('This series could not be opened.');
+   const data=await response.json() as {catalog:SeriesCatalog|null};
+   if(!data.catalog)throw Error('No installments are available for this series yet.');
+   const saved=await saveDiscoveredSeries(client,userId,data.catalog,records,whimsy?.books??[]);
+   collectionsChanged();await retry();if(!cancelled)setSelected(saved.id);
+  }catch(cause){if(!cancelled)setError(cause instanceof Error?cause.message:'Could not open series.');}})();
+  return()=>{cancelled=true;};
+ // Initial selection belongs to this modal mount.
+ // eslint-disable-next-line react-hooks/exhaustive-deps
+ },[initialHit,initialSeriesId,loaded,whimsyStatus.loaded]);
+ return <MuseModal id="books-series-detail" label="Series detail" title={selected?'Series':initialHit?.title??'Series'} returnFocus={null} onClose={onClose} size="tall">
+  {selected?<SeriesLibrary key={selected} initialSeriesId={selected} embedded onBack={onClose} backLabel="Back to Books"/>:error?<div role="alert"><p>{error}</p><button type="button" className="muse-button button-ghost" onClick={onClose}>Back to Books</button></div>:<p role="status">Opening series…</p>}
+ </MuseModal>;
 }
