@@ -34,3 +34,7 @@
 @media(max-width:390px){.muse-book-detail-hero{grid-template-columns:90px minmax(0,1fr)}.muse-book-detail-intro>h2{font-size:1.35rem}.muse-book-detail-nav>button{flex:1 1 30%}}
 @media(max-width:680px){.muse-book-sitting-head,.muse-book-sitting-bottom{align-items:flex-start}.muse-book-sitting-modes{width:100%}.muse-book-sitting-modes button{flex:1}.muse-book-sitting-presets{grid-template-columns:repeat(4,minmax(0,1fr))}.muse-book-sitting-action{justify-items:start}.muse-book-sitting-feedback{gap:10px 16px}}
 @media(prefers-reduced-motion:reduce){.muse-book-detail-art,.muse-book-detail-series>a{transition:none}}
+.muse-book-series-badges{display:flex;flex-wrap:wrap;gap:6px;margin:3px 0 8px}
+.muse-book-series-badge{border:1px solid color-mix(in srgb,var(--accent-primary) 38%,var(--glass-border));border-radius:999px;background:color-mix(in srgb,var(--accent-primary) 12%,var(--glass-background));color:var(--foreground);padding:5px 11px;font:inherit;font-size:.76rem;cursor:pointer;text-align:left;transition:background .18s ease,transform .18s ease}
+.muse-book-series-badge:hover{background:color-mix(in srgb,var(--accent-primary) 23%,var(--glass-background));transform:translateY(-1px)}
+@media(prefers-reduced-motion:reduce){.muse-book-series-badge{transition:none}.muse-book-series-badge:hover{transform:none}}

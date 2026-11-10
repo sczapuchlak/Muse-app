@@ -30,7 +30,7 @@ export function tvProgress(showId:string,episodes:Episode[],activity:MediaActivi
  return {watched,available,next,seasons:rows,completedSeasons,releasedSeasons:released.length,status};
 }
 export function seriesProgress(series:Series,members:SeriesMember[],books:Book[],media:MediaItem[]){
- const own=members.filter(member=>member.series_id===series.id&&member.role==='mainline').sort((a,b)=>a.sequence-b.sequence),items=canonicalItems(books,media),resolved=own.map(member=>({member,item:items.find(item=>item.id===(member.book_id??member.media_id))??null}));
+ const own=members.filter(member=>member.series_id===series.id&&member.role==='mainline'&&!member.hidden).sort((a,b)=>(a.position_known===false?1:0)-(b.position_known===false?1:0)||a.sequence-b.sequence),items=canonicalItems(books,media),resolved=own.map(member=>({member,item:items.find(item=>item.id===(member.book_id??member.media_id))??null}));
  const released=resolved.filter(row=>row.member.release_state==='released');
  const scope=series.scope==='released'?released:series.scope==='announced'?resolved.filter(row=>row.member.release_state!=='unknown'):resolved;
  const availableScope=scope.filter(row=>row.member.release_state==='released'),done=availableScope.filter(row=>row.item&&completed(row.item)).length,hasProgress=resolved.some(row=>row.item&&completed(row.item)),paused=scope.some(row=>row.item?.status==='paused');
@@ -39,8 +39,8 @@ export function seriesProgress(series:Series,members:SeriesMember[],books:Book[]
  const status=!resolved.length?'not-started':paused?'on-hold':releasedDone?(series.conclusion_state==='concluded'&&!future?'completed':'caught-up'):hasProgress?'in-progress':'not-started';
  // #104 §2: "Next up" is the first *released* installment not yet finished, never an announced one; whole-number
  // gaps in the order (e.g. #1 and #3 entered, #2 not) are reported so a partly entered series is never treated as complete.
- const whole=own.map(m=>m.sequence).filter(n=>Number.isInteger(n)&&n>=1),max=whole.length?Math.max(...whole):0;
+ const whole=own.filter(m=>m.position_known!==false).map(m=>m.sequence).filter(n=>Number.isInteger(n)&&n>=1),max=whole.length?Math.min(100,Math.max(...whole)):0;
  const missing=Array.from({length:max},(_,i)=>i+1).filter(n=>!whole.includes(n));
- return {completed:done,total:scope.length,availableTotal:availableScope.length,percentage:availableScope.length?done/availableScope.length*100:null,next:availableScope.find(row=>row.item&&!completed(row.item))?.item??null,missing,status,ordered:resolved};
+ return {completed:done,total:scope.length,availableTotal:availableScope.length,percentage:availableScope.length?done/availableScope.length*100:null,next:availableScope.find(row=>row.item&&!completed(row.item))?.item??null,missing,status,ordered:resolved,knownTotal:resolved.length,inLibrary:resolved.filter(row=>!!row.item).length,readKnown:resolved.filter(row=>row.item&&completed(row.item)).length,reading:resolved.filter(row=>row.item?.status==='reading').length,remaining:resolved.filter(row=>!row.item||!completed(row.item)).length};
 }
 export function collectionMembers(collectionId:string,members:CuratedMember[],items:CanonicalItem[]){return members.filter(member=>member.collection_id===collectionId).sort((a,b)=>a.position-b.position).map(member=>items.find(item=>item.id===(member.book_id??member.media_id))).filter((item):item is CanonicalItem=>!!item);}

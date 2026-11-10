@@ -490,28 +490,28 @@ isOneToOne: false
                   Relationships: []
                 },"collection_series": {
                   Row: {
-                    "conclusion_state": string,"cover_url": string | null,"created_at": string,"description": string,"id": string,"kind": string,"revision": number,"scope": string,"title": string,"updated_at": string,"user_id": string
+                    "catalog_author": string,"catalog_id": string | null,"catalog_primary_count": number | null,"catalog_refreshed_at": string | null,"catalog_source": string | null,"catalog_total_count": number | null,"conclusion_state": string,"cover_url": string | null,"created_at": string,"description": string,"id": string,"kind": string,"revision": number,"scope": string,"title": string,"updated_at": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "conclusion_state"?: string,"cover_url"?: string | null,"created_at"?: string,"description"?: string,"id": string,"kind": string,"revision"?: number,"scope"?: string,"title": string,"updated_at"?: string,"user_id": string
+                    "catalog_author"?: string,"catalog_id"?: string | null,"catalog_primary_count"?: number | null,"catalog_refreshed_at"?: string | null,"catalog_source"?: string | null,"catalog_total_count"?: number | null,"conclusion_state"?: string,"cover_url"?: string | null,"created_at"?: string,"description"?: string,"id": string,"kind": string,"revision"?: number,"scope"?: string,"title": string,"updated_at"?: string,"user_id": string
                   }
                   Update: {
-                    "conclusion_state"?: string,"cover_url"?: string | null,"created_at"?: string,"description"?: string,"id"?: string,"kind"?: string,"revision"?: number,"scope"?: string,"title"?: string,"updated_at"?: string,"user_id"?: string
+                    "catalog_author"?: string,"catalog_id"?: string | null,"catalog_primary_count"?: number | null,"catalog_refreshed_at"?: string | null,"catalog_source"?: string | null,"catalog_total_count"?: number | null,"conclusion_state"?: string,"cover_url"?: string | null,"created_at"?: string,"description"?: string,"id"?: string,"kind"?: string,"revision"?: number,"scope"?: string,"title"?: string,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
                     
                   ]
                 },"collection_series_members": {
                   Row: {
-                    "book_id": string | null,"created_at": string,"id": string,"media_id": string | null,"release_state": string,"revision": number,"role": string,"sequence": number,"series_id": string,"updated_at": string,"user_id": string
+                    "book_id": string | null,"catalog_author": string,"catalog_id": string | null,"catalog_release_date": string | null,"catalog_source": string | null,"catalog_title": string | null,"created_at": string,"hidden": boolean,"id": string,"manual_override": boolean,"media_id": string | null,"position_known": boolean,"release_state": string,"revision": number,"role": string,"sequence": number,"series_id": string,"starred": boolean,"updated_at": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "book_id"?: string | null,"created_at"?: string,"id": string,"media_id"?: string | null,"release_state"?: string,"revision"?: number,"role"?: string,"sequence": number,"series_id": string,"updated_at"?: string,"user_id": string
+                    "book_id"?: string | null,"catalog_author"?: string,"catalog_id"?: string | null,"catalog_release_date"?: string | null,"catalog_source"?: string | null,"catalog_title"?: string | null,"created_at"?: string,"hidden"?: boolean,"id": string,"manual_override"?: boolean,"media_id"?: string | null,"position_known"?: boolean,"release_state"?: string,"revision"?: number,"role"?: string,"sequence": number,"series_id": string,"starred"?: boolean,"updated_at"?: string,"user_id": string
                   }
                   Update: {
-                    "book_id"?: string | null,"created_at"?: string,"id"?: string,"media_id"?: string | null,"release_state"?: string,"revision"?: number,"role"?: string,"sequence"?: number,"series_id"?: string,"updated_at"?: string,"user_id"?: string
+                    "book_id"?: string | null,"catalog_author"?: string,"catalog_id"?: string | null,"catalog_release_date"?: string | null,"catalog_source"?: string | null,"catalog_title"?: string | null,"created_at"?: string,"hidden"?: boolean,"id"?: string,"manual_override"?: boolean,"media_id"?: string | null,"position_known"?: boolean,"release_state"?: string,"revision"?: number,"role"?: string,"sequence"?: number,"series_id"?: string,"starred"?: boolean,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
                     {
