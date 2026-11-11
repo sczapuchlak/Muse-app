@@ -39,6 +39,8 @@ export function bookReads(book:Book):ReadEntry[]{
 /** The read a session belongs to, or null when it is not linked (removed read, or ambiguous older session). */
 export function sessionReadId(book:Book,session:Pick<ReadingSession,'cycleId'|'date'>,reads=bookReads(book)):string|null{
  if(session.cycleId)return reads.some(r=>r.id===session.cycleId)?session.cycleId:null;
+ reads=reads.filter(r=>!r.completion?.importSource);
+ if(!reads.length)return null;
  if(reads.length===1)return reads[0].id;
  const done=reads.filter(r=>!r.open),open=reads.find(r=>r.open);
  for(let i=0;i<done.length;i++){

@@ -1,3 +1,4 @@
+import {orderBooksByReadingActivity} from '@/lib/books/reading-order';
 import type {SupabaseClient} from '@supabase/supabase-js';
 import type {Database,Json} from '@/lib/database.types';
 import {validDate,validTimeZone,weekDates} from '@/lib/dates';
@@ -39,8 +40,8 @@ async function readKind(call:Rpc,kind:WhimsyKind):Promise<unknown[]|null>{
  */
 export async function readWhimsy(client:SupabaseClient<Database>):Promise<WhimsyRecords>{
  const call=rpc(client),kinds=await Promise.all(whimsyKinds.map(kind=>readKind(call,kind)));
- if(kinds.some(rows=>rows===null))return readWhimsySnapshot(call);
- return Object.fromEntries(whimsyKinds.map((kind,index)=>[kind,kinds[index]])) as unknown as WhimsyRecords;
+ if(kinds.some(rows=>rows===null)){const snapshot=await readWhimsySnapshot(call);return {...snapshot,books:orderBooksByReadingActivity(snapshot.books,snapshot.sessions)};}
+ const snapshot=Object.fromEntries(whimsyKinds.map((kind,index)=>[kind,kinds[index]])) as unknown as WhimsyRecords;return {...snapshot,books:orderBooksByReadingActivity(snapshot.books,snapshot.sessions)};
 }
 /** One record, or null. Falls back to a full read before the paged-read migration is applied. */
 export async function readWhimsyRecord<K extends WhimsyKind>(client:SupabaseClient<Database>,kind:K,id:string):Promise<WhimsyRecord<K>|null>{
