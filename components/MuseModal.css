@@ -1,4 +1,4 @@
-.muse-modal { position: fixed; inset: 0; display: flex; flex-direction:column; width: min(660px, calc(100vw - 32px)); height: auto; max-width: calc(100vw - 32px); max-height: min(760px, 85dvh); margin: auto; padding: var(--space-5); overflow: auto; overscroll-behavior: contain; border: 1px solid var(--glass-border); border-top-color: var(--glass-edge); border-radius: var(--card-radius); color: var(--foreground); background: var(--floating-background); box-shadow: var(--floating-shadow); }
+.muse-modal { position: fixed; inset: 0; display: flex; flex-direction:column; width: min(660px, calc(100vw - 32px)); height: fit-content; max-width: calc(100vw - 32px); max-height: min(760px, 85dvh); margin: auto; padding: var(--space-5); overflow: auto; overscroll-behavior: contain; border: 1px solid var(--glass-border); border-top-color: var(--glass-edge); border-radius: var(--card-radius); color: var(--foreground); background: var(--floating-background); box-shadow: var(--floating-shadow); }
 .muse-modal::backdrop { background: color-mix(in srgb, var(--background) 40%, transparent); backdrop-filter: blur(4px); }
 @media (max-width: 680px) { .muse-modal { width: calc(100vw - 16px); max-width: calc(100vw - 16px); max-height: calc(100dvh - 24px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)); margin: auto; padding: var(--space-4); } }
 /* Tall dialogs (editors and pickers that scroll inside) keep a fixed height; everything else fits its content. */
@@ -15,3 +15,8 @@
 .muse-modal:is(#bookshelf-book-editor,#collection-media-editor)>.muse-modal-universal-close{margin:0;padding:var(--space-5) var(--space-5) var(--space-4);border-bottom:1px solid var(--glass-border);}
 @media(max-width:680px){.muse-modal:is(#bookshelf-book-editor,#collection-media-editor)>.muse-modal-universal-close{padding:var(--space-4);}}
 @media(max-height:500px){.muse-modal:is(#bookshelf-book-editor,#collection-media-editor)>.muse-modal-universal-close{padding:var(--space-3);}}
+
+/* Short confirmations stay compact (Safari stretches an inset-0 dialog with height:auto to the full screen). */
+.muse-modal#bookshelf-discard-session{width:min(440px,calc(100vw - 32px))}
+.muse-books-discard-confirm{display:grid;gap:14px}.muse-books-discard-confirm p{margin:0}
+.muse-books-discard-confirm .muse-books-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}.muse-books-discard-confirm .muse-button{min-height:46px}

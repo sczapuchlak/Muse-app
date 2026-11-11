@@ -74,3 +74,14 @@ button.muse-session-title{cursor:pointer}button.muse-session-title:hover{text-de
 @media(prefers-reduced-motion:reduce){.muse-session-dot,.muse-session-glow,.muse-session-liquid::after,.muse-session-edge,.muse-session[data-target="open"] .muse-session-liquid{animation:none}.muse-session-liquid{transition:none}.muse-session-edge{display:none}}
 .muse-session-actions .button-ghost{border:1px solid var(--glass-border);background:color-mix(in srgb,var(--surface-control) 80%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
 .muse-session-actions .button-ghost:hover{border-color:var(--selected-border)}
+
+/* Session check-in: where you left off, and what this sitting added. */
+.muse-books-checkin .muse-checkin-lede{margin:0;font-family:var(--font-editorial);font-size:1.15rem}
+.muse-books-checkin .muse-checkin-left{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin:0;color:var(--text-muted)}
+.muse-books-checkin .muse-checkin-left .small-label{margin:0}
+.muse-books-checkin .muse-checkin-left strong{font-family:var(--font-editorial);font-size:1.5rem;color:var(--foreground);letter-spacing:-.02em}
+.muse-books-checkin .muse-checkin-delta{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin:0;padding:10px 14px;border-radius:14px;background:linear-gradient(100deg,color-mix(in srgb,var(--ink-aqua,var(--accent-secondary)) 18%,transparent),color-mix(in srgb,var(--accent-primary) 12%,transparent));border:1px solid color-mix(in srgb,var(--ink-aqua,var(--accent-secondary)) 35%,transparent)}
+.muse-books-checkin .muse-checkin-delta strong{font-family:var(--font-editorial);font-size:1.6rem;line-height:1;letter-spacing:-.02em;background:var(--water-progress-gradient,linear-gradient(90deg,var(--accent-primary),var(--accent-secondary)));-webkit-background-clip:text;background-clip:text;color:transparent}
+.muse-books-checkin .muse-checkin-delta span{color:var(--text-muted);font-size:.86rem}
+.muse-books-checkin .muse-checkin-delta[data-tone="warn"]{background:color-mix(in srgb,var(--accent-warm,var(--accent-secondary)) 14%,transparent);border-color:color-mix(in srgb,var(--accent-warm,var(--accent-secondary)) 40%,transparent)}
+.muse-books-checkin .muse-checkin-delta[data-tone="warn"] strong{background:none;color:var(--foreground);font-size:1.05rem}

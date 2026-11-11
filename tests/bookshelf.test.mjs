@@ -34,7 +34,7 @@ test('Daily Edit features one saved current read and falls back without limiting
  assert.match(source,/<CardHeading id="daily-bookshelf" title="Bookshelf">/);
  assert.doesNotMatch(source,/muse-card-header|Bookshelf <MuseStar/);
  const layout=readFileSync(root+'/components/DailyEdit.tsx','utf8');assert.ok(layout.indexOf('<BooksDayviewWidget')<layout.indexOf('<LittleRituals'));
- const toggle=readFileSync(root+'/components/whimsy/Bookshelf.tsx','utf8');assert.match(toggle,/enabled,\.\.\.bookshelfWidgetExtras\(existing\)\}/);{const {bookshelfWidgetExtras}=load('lib/whimsy/persistence');assert.deepEqual(bookshelfWidgetExtras({featuredBookId:'b',readingMilestones:{seen:['books-1'],since:'x'}}),{featuredBookId:'b',readingMilestones:{seen:['books-1'],since:'x'}},'the toggle keeps the featured book and milestone state');}
+ const toggle=readFileSync(root+'/components/collections/Collections.tsx','utf8');assert.match(toggle,/enabled,\.\.\.bookshelfWidgetExtras\(booksWidget\)\}/);{const {bookshelfWidgetExtras}=load('lib/whimsy/persistence');assert.deepEqual(bookshelfWidgetExtras({featuredBookId:'b',readingMilestones:{seen:['books-1'],since:'x'}}),{featuredBookId:'b',readingMilestones:{seen:['books-1'],since:'x'}},'the toggle keeps the featured book and milestone state');}
  const records={books:all,widgets:[{id:'pref',experience:'bookshelf',enabled:true,featuredBookId:'second'}],questWeeks:[],questCompletions:[],tarot:[],meanings:[],dreams:[],fortunes:[],saved:[],sessions:[],goals:[]};
  assert.deepEqual(connected.projectWhimsyWidgets(records,'2026-11-03','2026-11-03').find(item=>item.experience==='bookshelf')?.sourceIds,['second']);
 });

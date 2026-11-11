@@ -72,6 +72,16 @@ function GlassPopoverLayer({ id, label, title, open, anchorRef, onClose, childre
       if(activePanels.at(-1)!==panel)return;
       if (event.relatedTarget instanceof Node && !panel?.contains(event.relatedTarget) && !anchor?.contains(event.relatedTarget)) closeRef.current();
     }
+    // The trigger is the opener and the closer: pressing it while open closes the panel, and that press's click is
+    // swallowed so no consumer handler can reopen it. Keyboard activation still goes through the trigger's own handler.
+    function swallowClick(event: MouseEvent) { event.stopPropagation(); event.preventDefault(); }
+    function anchorPress(event: PointerEvent) {
+      if (activePanels.at(-1) !== panel || event.button !== 0) return;
+      anchor?.addEventListener("click", swallowClick, { capture: true, once: true });
+      window.setTimeout(() => anchor?.removeEventListener("click", swallowClick, { capture: true }), 600);
+      closeRef.current();
+    }
+    anchor.addEventListener("pointerdown", anchorPress);
     document.addEventListener("pointerdown", outside);
     document.addEventListener("keydown", keydown);
     panel.addEventListener("focusout", focusout);
@@ -83,6 +93,7 @@ function GlassPopoverLayer({ id, label, title, open, anchorRef, onClose, childre
       const index=activePanels.indexOf(panel);if(index>=0)activePanels.splice(index,1);
       cancelAnimationFrame(frame);
       resize.disconnect();
+      anchor.removeEventListener("pointerdown", anchorPress);
       document.removeEventListener("pointerdown", outside);
       document.removeEventListener("keydown", keydown);
       panel.removeEventListener("focusout", focusout);

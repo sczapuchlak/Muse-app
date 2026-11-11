@@ -56,6 +56,7 @@
     "test:astrology:db": "node scripts/test-local-astrology.mjs",
     "test:astrology:ui": "node scripts/test-observatory-ui.mjs",
     "db:133": "node scripts/issue133-db.mjs",
+    "test:desk:ui": "node scripts/test-reading-desk-ui.mjs",
     "test:detail:ui": "node scripts/test-book-detail-ui.mjs",
     "test:timer:ui": "node scripts/test-reading-timer-ui.mjs",
     "test:library:ui": "node scripts/test-library-pagination-ui.mjs",

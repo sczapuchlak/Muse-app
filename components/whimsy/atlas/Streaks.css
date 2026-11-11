@@ -1,0 +1,49 @@
+.muse-atlas-streaks{display:grid;gap:clamp(16px,2.4vw,24px);min-width:0}
+.muse-streaks-hero{position:relative;isolation:isolate;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px clamp(18px,3vw,36px);padding:clamp(18px,3vw,30px);border:1px solid var(--selected-border);border-radius:clamp(20px,3vw,28px);overflow:hidden;background:radial-gradient(ellipse 70% 90% at 0% 0%,color-mix(in srgb,var(--accent-primary) 22%,transparent),transparent 70%),radial-gradient(ellipse 60% 80% at 100% 100%,color-mix(in srgb,var(--accent-secondary) 18%,transparent),transparent 75%),var(--surface-subtle)}
+.muse-streaks-now{display:grid;gap:2px}
+.muse-streaks-now strong{font-family:var(--font-editorial);font-size:clamp(3.6rem,10vw,5.4rem);line-height:.9;letter-spacing:-.05em;background:linear-gradient(120deg,var(--accent-pop,var(--accent-primary)),var(--accent-primary),var(--accent-secondary));-webkit-background-clip:text;background-clip:text;color:transparent}
+.muse-streaks-now>span:last-child{color:var(--text-muted);font-size:.86rem}
+.muse-streaks-week{display:flex;justify-content:center;gap:clamp(6px,1.6vw,14px);margin:0;padding:0;list-style:none}
+.muse-streaks-week li{display:grid;justify-items:center;gap:4px;font-size:.68rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em}
+.muse-streaks-facts{display:grid;gap:10px;margin:0;min-width:170px}
+.muse-streaks-facts div{display:grid;gap:2px}.muse-streaks-facts dt{font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted)}
+.muse-streaks-facts dd{margin:0;font-family:var(--font-editorial);font-size:1.5rem;line-height:1.1}.muse-streaks-facts small{font-family:var(--font-body,inherit);font-size:.74rem;color:var(--text-muted)}
+.muse-streaks-pool{position:relative;display:block;height:12px;margin-top:6px;border-radius:999px;overflow:hidden;background:var(--wash-aqua,color-mix(in srgb,var(--foreground) 9%,transparent));box-shadow:inset 0 0 0 1px var(--glass-aqua-edge,var(--glass-border))}
+.muse-streaks-pool>span{position:absolute;inset:0 auto 0 0;width:var(--fill);border-radius:inherit;background:linear-gradient(90deg,var(--accent-pop,var(--accent-primary)),var(--accent-primary),var(--accent-secondary));box-shadow:0 0 12px color-mix(in srgb,var(--accent-primary) 45%,transparent)}
+.muse-streaks-calendar{display:grid;gap:12px;padding:clamp(16px,2.4vw,24px);border:1px solid var(--glass-border);border-radius:22px;background:var(--surface-subtle)}
+.muse-streaks-calendar header{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;text-align:center}
+.muse-streaks-calendar header h4{margin:0;font-family:var(--font-editorial);font-size:clamp(1.4rem,3vw,1.9rem)}
+.muse-streaks-calendar header span{font-size:.8rem;color:var(--text-muted)}
+.muse-streaks-calendar header .muse-button{width:40px;min-width:40px;height:40px;padding:0;display:grid;place-items:center;font-size:1.3rem;background:var(--surface-control)}
+.muse-streaks-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px 0;margin:0;padding:0;list-style:none}
+.muse-streaks-grid>li{position:relative;display:grid;justify-items:center;align-content:start;gap:2px;min-height:58px;padding:6px 2px}
+.muse-streaks-weekday{min-height:0!important;font-size:.68rem;color:var(--text-muted);font-weight:650;letter-spacing:.06em}
+.muse-streaks-date{font-size:.76rem;color:var(--text-muted)}
+.muse-streaks-grid>li[data-future]{opacity:.35}
+.muse-streaks-grid>li[data-today] .muse-streaks-date{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--accent-primary);color:var(--background,#fff);font-weight:700}
+/* A run reads as one ribbon across consecutive days. */
+.muse-streaks-grid>li[data-read]::before{content:"";position:absolute;z-index:-1;inset:4px 0;background:color-mix(in srgb,var(--accent-primary) 13%,transparent)}
+.muse-streaks-grid>li[data-run-start]::before{left:4px;border-top-left-radius:14px;border-bottom-left-radius:14px}
+.muse-streaks-grid>li[data-run-end]::before{right:4px;border-top-right-radius:14px;border-bottom-right-radius:14px}
+.muse-streaks-grid>li[data-read]:nth-child(7n+7)::before{right:4px;border-top-right-radius:14px;border-bottom-right-radius:14px}
+.muse-streaks-grid>li[data-read]:nth-child(7n+8)::before{left:4px;border-top-left-radius:14px;border-bottom-left-radius:14px}
+.muse-streaks-lower{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:clamp(14px,2vw,22px)}
+.muse-streaks-milestones,.muse-streaks-runs{display:grid;align-content:start;gap:12px;padding:clamp(16px,2.4vw,22px);border:1px solid var(--glass-border);border-radius:20px;background:var(--surface-subtle)}
+.muse-streaks-lower h4{margin:0;font-family:var(--font-editorial);font-size:1.25rem}
+.muse-streaks-milestones ol{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin:0;padding:0;list-style:none}
+.muse-streaks-milestones li{display:flex;align-items:center;gap:10px;opacity:.5}
+.muse-streaks-milestones li[data-reached]{opacity:1}
+.muse-streaks-milestones li>span:last-child{display:grid;gap:1px}.muse-streaks-milestones small{font-size:.74rem;color:var(--text-muted)}
+.muse-streaks-badge{display:grid;place-items:center;flex:none;width:42px;height:42px;border-radius:50%;font-family:var(--font-editorial);font-weight:700;border:1.5px dashed var(--glass-border);color:var(--text-muted)}
+.muse-streaks-milestones li[data-reached] .muse-streaks-badge{border:0;color:#fff;background:linear-gradient(135deg,var(--accent-pop,var(--accent-primary)),var(--accent-primary),var(--accent-secondary));box-shadow:0 6px 16px color-mix(in srgb,var(--accent-primary) 35%,transparent)}
+.muse-streaks-runs ol{display:grid;gap:10px;margin:0;padding:0;list-style:none}
+.muse-streaks-runs li{display:grid;grid-template-columns:28px auto 1fr;align-items:baseline;gap:10px}
+.muse-streaks-runs strong{font-family:var(--font-editorial);font-size:1.2rem}.muse-streaks-runs small{color:var(--text-muted);font-size:.78rem;text-align:right}
+.muse-streaks-rank{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:color-mix(in srgb,var(--accent-primary) 16%,transparent);font-size:.78rem;font-weight:700}
+.muse-streaks-note{margin:0;font-size:.78rem;color:var(--text-muted)}
+@container muse-content (max-width:720px){
+ .muse-streaks-hero{grid-template-columns:auto 1fr}
+ .muse-streaks-week{grid-column:1/-1;grid-row:2;justify-content:space-between}
+ .muse-streaks-lower{grid-template-columns:minmax(0,1fr)}
+ .muse-streaks-grid>li{min-height:48px}
+}
