@@ -177,6 +177,7 @@ export function SeriesRoute({seriesKey}:{seriesKey:string}){
     <span className="muse-series-shelf-backdrop" aria-hidden="true"/>
     <ShelfStrand/>
     <BookSpines entries={spineEntries} nextKey={shelf.next?.key} onSelect={selectSpine}/>
+    <span className="muse-series-shelf-plant" aria-hidden="true"/>
     <span className="muse-series-shelf-ledge" aria-hidden="true"/>
    </div>
   </header>

@@ -150,7 +150,7 @@ test('the spine row is a reusable, series-agnostic component; the shelf is a pla
  assert.match(css,/\.muse-series-shelf-ledge\{[^}]*right:-100vw[^}]*shelf-walnut\.webp/,'the walnut ledge runs off the right edge using the local asset');
  assert.match(css,/\.muse-app-content:has\(\.muse-series-route\)\{overflow-x:clip\}/,'the page clips the shelf so nothing overflows horizontally');
  assert.match(css,/\.muse-series-shelf-strand\{[^}]*fairy-lights-stars\.webp/,'the fairy lights are a local transparent image');
- assert.ok(existsSync(new URL('../public/art/shelf-walnut.webp',import.meta.url))&&existsSync(new URL('../public/art/fairy-lights-stars.webp',import.meta.url)),'decor assets are stored locally');
+ assert.ok(existsSync(new URL('../public/art/shelf-walnut.webp',import.meta.url))&&existsSync(new URL('../public/art/fairy-lights-stars.webp',import.meta.url))&&existsSync(new URL('../public/art/fern-crystal.webp',import.meta.url)),'decor assets are stored locally');
 });
 
 test('Series page structure: hero, then independent 70/30 columns with fixed-size cards and carousels (#136)',()=>{
