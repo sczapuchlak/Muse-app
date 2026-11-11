@@ -1,4 +1,5 @@
 "use client";
+import {parseFeelings,readBackIds} from '@/lib/feelings';
 import {useEffect,useMemo,useState} from 'react';
 import {useWhimsyData} from '../whimsy/WhimsyData';
 import {useAstrologyData} from '../astrology/AstrologyData';
@@ -22,7 +23,7 @@ export function useStreamSources(){
  const [moods,setMoods]=useState<StreamMood[]|null>(null);
  useEffect(()=>{let cancelled=false;const end=todayInTimeZone(profile.timeZone),start=shiftDate(end,-60);
   readDays(createMuseBrowserClient(),start,end).then(days=>{if(cancelled)return;
-   setMoods(Object.entries(days).flatMap(([date,day])=>day.checkins.map(c=>({id:c.id,date,period:c.period as 'morning'|'evening',emotionIds:c.checkin_emotions.map(e=>e.emotion_id)}))).sort((a,b)=>b.date.localeCompare(a.date)));
+   setMoods(Object.entries(days).flatMap(([date,day])=>day.checkins.map(c=>({id:c.id,date,period:c.period as 'morning'|'evening',emotionIds:readBackIds(c.checkin_emotions.map(e=>e.emotion_id),parseFeelings(c.feelings)),feelings:parseFeelings(c.feelings)}))).sort((a,b)=>b.date.localeCompare(a.date)));
   },()=>{if(!cancelled)setMoods([]);});
   return()=>{cancelled=true;};},[profile.timeZone]);
  const bundle=useMemo<StreamBundle>(()=>({...base,moods:moods??[],dreams:whimsy.records?.dreams??[],tarot:whimsy.records?.tarot??[],fortunes:whimsy.records?.fortunes??[],saved:whimsy.records?.saved??[],

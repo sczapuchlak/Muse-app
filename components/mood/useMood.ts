@@ -11,6 +11,6 @@ export function useMood(date:string){
  const state:MoodState={records:emotionalRecords(snapshot.days),influences:snapshot.influences,favoriteEmotionIds:[]};
  const record=state.records.find(item=>item.date===date&&item.period===period)??{...emptyCheckIn(date,period),timeZone:profile.timeZone};
  function setPeriod(period:MoodPeriod,forDate=date){setSessions(current=>({...current,[forDate]:period}));}
- function update(patch:Pick<MoodPatch,'emotionIds'|'causeTagIds'|'reflection'>){setPeriod(period);store?.edit(date,{kind:period,patch});}
+ function update(patch:Pick<MoodPatch,'emotionIds'|'feelings'|'causeTagIds'|'reflection'>){setPeriod(period);store?.edit(date,{kind:period,patch});}
  return {state,record,period,setPeriod,update,store};
 }

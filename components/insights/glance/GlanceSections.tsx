@@ -1,4 +1,5 @@
 "use client";
+import { recordedFeelings, type FeelingSnapshot } from "@/lib/feelings";
 import Link from "next/link";
 import { useState } from "react";
 import { EntryCarousel } from "../../design/EntryCarousel";
@@ -23,7 +24,7 @@ const monthShort = (m: string) => new Intl.DateTimeFormat("en-US", { month: "sho
 const monthLong = (m: string) => new Intl.DateTimeFormat("en-US", { month: "long", timeZone: "UTC" }).format(new Date(`${m}-15T12:00:00Z`));
 export const plural = (n: number, one: string, many = `${one}s`) => `${n} ${n === 1 ? one : many}`;
 const ratingStyle = (v: number | null) => ({ "--rating": v === null ? 0 : v / 10 }) as CSSProperties;
-const familyOf = (ids: string[]) => [...new Set(ids.map((id) => emotionCatalog.find((e) => e.id === id)?.quadrant).filter((q): q is EmotionQuadrant => !!q))];
+const familyOf = (records: { emotionIds: string[]; feelings?: FeelingSnapshot[] }[]) => [...new Set(records.flatMap((r) => recordedFeelings(r, emotionCatalog).map((e) => e.quadrant)))] as EmotionQuadrant[];
 const categoryIcon: Record<MovementCategory, MuseIconName> = { strength: "dumbbell" as MuseIconName, cardio: "run" as MuseIconName, mobility: "yoga" as MuseIconName, other: "movement" };
 const categoryLabel: Record<MovementCategory, string> = { strength: "Strength", cardio: "Cardio", mobility: "Mobility", other: "Other" };
 
@@ -118,7 +119,7 @@ export function WaterSummary({ water, loaded, area }: { water: ReturnType<typeof
 export function DayStrip({ range, days, checkIns, today, onOpen }: { range: GlanceRange; days: Record<string, DayData | undefined>; checkIns: EmotionalCheckIn[]; today: string; onOpen: (d: string) => void }) {
   return <section className="muse-glance-weekwrap" aria-label="Your week, day by day">
     <div className="muse-glance-week">{range.days.map((d) => {
-      const r = days[d]?.record, rating = r?.overall_day ?? null, three = r?.day_in_three ?? [], fams = familyOf(checkIns.filter((c) => c.date === d).flatMap((c) => c.emotionIds));
+      const r = days[d]?.record, rating = r?.overall_day ?? null, three = r?.day_in_three ?? [], fams = familyOf(checkIns.filter((c) => c.date === d));
       const future = !!today && d > today, empty = !r && !checkIns.some((c) => c.date === d);
       const label = `${longDay(d)}: ${rating === null ? "not rated" : `Overall Day ${rating} of 10`}${three.length ? `, Day in Three ${three.join(" ")}` : ""}${fams.length ? `, feelings ${fams.map((f) => familyWords(f)).join("; ")}` : ""}. Open the day`;
       return <button key={d} type="button" className={`muse-glance-mini${d === today ? " muse-today-ring" : ""}`} data-today={d === today || undefined} data-future={future || undefined} data-empty={empty || undefined} aria-label={future ? `${longDay(d)}, not yet` : label} onClick={() => onOpen(d)}>
@@ -221,7 +222,7 @@ export function EmotionSnapshot({ daily, area }: { daily: DailyGlance; area?: st
   const total = families.reduce((n, f) => n + daily.families[f], 0);
   return <GlanceCard id="glance-feelings" title="How it felt" icon="mood" area={area} note={daily.checkIns ? `From ${plural(daily.checkIns, "check-in")}; a feeling counts once per check-in.` : undefined}>
     {!daily.emotions.length ? <Empty emoji="💭">No feelings recorded.</Empty> : <>
-      <ul className="muse-glance-feelings">{daily.emotions.slice(0, 6).map(({ id, count }) => { const e = emotionCatalog.find((x) => x.id === id); return e && <li key={id}><span className="muse-mood-history-feeling" data-quadrant={e.quadrant}>{e.emoji} {e.name}<b className="muse-glance-count">×{count}</b></span></li>; })}</ul>
+      <ul className="muse-glance-feelings">{daily.emotions.slice(0, 6).map(({ id, count, name, emoji, quadrant }) => { const e = name && quadrant ? { name, emoji, quadrant } : emotionCatalog.find((x) => x.id === id); return e && <li key={id}><span className="muse-mood-history-feeling" data-quadrant={e.quadrant}>{e.emoji} {e.name}<b className="muse-glance-count">×{count}</b></span></li>; })}</ul>
       {total > 0 && <><div className="muse-glance-families" role="img" aria-label={`Feeling families: ${families.filter((f) => daily.families[f]).map((f) => `${familyWords(f)} ${daily.families[f]}`).join(", ")}`}>
         {families.filter((f) => daily.families[f]).map((f) => <i key={f} data-quadrant={f} style={{ flexGrow: daily.families[f] }} title={`${familyWords(f)} · ${daily.families[f]}`} />)}</div>
         <Key items={families.filter((f) => daily.families[f]).map((f) => ({ swatch: <i className="muse-glance-key-dot" data-quadrant={f} />, label: `${familyWords(f)} · ${daily.families[f]}` }))} /></>}
@@ -259,7 +260,7 @@ export function GoodDays({ daily, days, checkIns, onOpen, area }: { daily: Daily
 export function LittleMoments({ memories, checkIns, onOpen, area, period }: { memories: DailyMemory[]; checkIns: EmotionalCheckIn[]; onOpen: (d: string) => void; area?: string; period: string }) {
   return <GlanceCard id="glance-moments" title="Little moments" icon="sparkle" area={area} tone="pop" note={memories.length ? `${plural(memories.length, "memory", "memories")} this ${period}. One a day, from Day Pulse.` : undefined}>
     {!memories.length ? <Empty emoji="✨">No little moments this {period} yet. Add one in Day Pulse on Daily Edit.</Empty>
-      : <EntryCarousel items={memories} label="Little moments" minWidth={220} startAtEnd itemKey={(m) => m.id} describe={(m) => shortDay(m.date)} render={(m) => <MomentCard memory={m} quadrant={familyOf(checkIns.filter((c) => c.date === m.date).flatMap((c) => c.emotionIds))[0]} onOpen={onOpen} />} />}
+      : <EntryCarousel items={memories} label="Little moments" minWidth={220} startAtEnd itemKey={(m) => m.id} describe={(m) => shortDay(m.date)} render={(m) => <MomentCard memory={m} quadrant={familyOf(checkIns.filter((c) => c.date === m.date))[0]} onOpen={onOpen} />} />}
   </GlanceCard>;
 }
 function MomentCard({ memory: m, quadrant, onOpen }: { memory: DailyMemory; quadrant?: EmotionQuadrant; onOpen: (d: string) => void }) {

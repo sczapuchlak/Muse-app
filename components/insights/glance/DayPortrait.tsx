@@ -1,4 +1,5 @@
 "use client";
+import { recordedFeeling } from "@/lib/feelings";
 import Link from "next/link";
 import type { CSSProperties } from "react";
 import { MuseStar } from "../../MuseStar";
@@ -82,7 +83,7 @@ export function DayPortrait({ date, day, checkIns, influences, water, activities
           return <div key={period} className="muse-glance-moodcard" data-period={period} data-empty={!rec || undefined}>
             <h3><span aria-hidden="true">{period === "morning" ? "☀️" : "🌙"}</span>{period === "morning" ? "Morning" : "Evening"}</h3>
             {!rec ? <p className="muse-glance-sub">No check-in recorded.</p> : <>
-              {rec.emotionIds.length > 0 && <div className="feeling-chips">{rec.emotionIds.map((id) => { const e = emotionCatalog.find((x) => x.id === id); return e && <span key={id} className="muse-mood-history-feeling" data-quadrant={e.quadrant}>{e.emoji} {e.name}</span>; })}</div>}
+              {rec.emotionIds.length > 0 && <div className="feeling-chips">{rec.emotionIds.map((id) => { const e = recordedFeeling(id, rec.feelings, emotionCatalog); return e && <span key={id} className="muse-mood-history-feeling" data-quadrant={e.quadrant}>{e.emoji} {e.name}</span>; })}</div>}
               {rec.causeTagIds.length > 0 && <ul className="muse-glance-chips" aria-label="Alongside">{rec.causeTagIds.map((id) => influences.find((t) => t.id === id)?.name).filter(Boolean).map((n) => <li key={n}>✦ {n}</li>)}</ul>}
               {rec.reflection && <blockquote className="muse-glance-reflection">{rec.reflection.length > 260 ? <>{rec.reflection.slice(0, 260)}… <details><summary>Read more</summary>{rec.reflection.slice(260)}</details></> : rec.reflection}</blockquote>}
             </>}

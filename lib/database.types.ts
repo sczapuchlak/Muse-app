@@ -645,6 +645,20 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
+                },"custom_feelings": {
+                  Row: {
+                    "created_at": string,"emoji": string | null,"favorite": boolean,"id": string,"name": string,"quadrant": string,"revision": number,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"emoji"?: string | null,"favorite"?: boolean,"id"?: string,"name": string,"quadrant": string,"revision"?: number,"updated_at"?: string,"user_id"?: string
+                  }
+                  Update: {
+                    "created_at"?: string,"emoji"?: string | null,"favorite"?: boolean,"id"?: string,"name"?: string,"quadrant"?: string,"revision"?: number,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
                 },"daily_memories": {
                   Row: {
                     "body": string,"created_at": string,"emoji": string | null,"id": string,"local_date": string,"revision": number,"updated_at": string,"user_id": string
@@ -1217,14 +1231,14 @@ isOneToOne: false
                   ]
                 },"mood_checkins": {
                   Row: {
-                    "captured_time_zone": string,"created_at": string,"daily_record_id": string,"id": string,"period": string,"reflection": string | null,"revision": number,"updated_at": string,"user_id": string
+                    "captured_time_zone": string,"created_at": string,"daily_record_id": string,"feelings": NonNullable<Json>,"id": string,"period": string,"reflection": string | null,"revision": number,"updated_at": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "captured_time_zone": string,"created_at"?: string,"daily_record_id": string,"id"?: string,"period": string,"reflection"?: string | null,"revision"?: number,"updated_at"?: string,"user_id"?: string
+                    "captured_time_zone": string,"created_at"?: string,"daily_record_id": string,"feelings"?: NonNullable<Json>,"id"?: string,"period": string,"reflection"?: string | null,"revision"?: number,"updated_at"?: string,"user_id"?: string
                   }
                   Update: {
-                    "captured_time_zone"?: string,"created_at"?: string,"daily_record_id"?: string,"id"?: string,"period"?: string,"reflection"?: string | null,"revision"?: number,"updated_at"?: string,"user_id"?: string
+                    "captured_time_zone"?: string,"created_at"?: string,"daily_record_id"?: string,"feelings"?: NonNullable<Json>,"id"?: string,"period"?: string,"reflection"?: string | null,"revision"?: number,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
                     {
@@ -3105,10 +3119,11 @@ isOneToOne: false
 { Args: { "p_command_id": string,"p_expected_revision": number,"p_state": Json }; Returns: number
                            },
 "save_mood_checkin":
-{ Args: { "p_date": string,"p_emotion_ids": (string)[],"p_expected_revision"?: number,"p_influence_ids": (string)[],"p_period": string,"p_reflection": string }; Returns: {
+{ Args: { "p_date": string,"p_emotion_ids": (string)[],"p_expected_revision"?: number,"p_feelings"?: Json,"p_influence_ids": (string)[],"p_period": string,"p_reflection": string }; Returns: {
               "captured_time_zone": string,
 "created_at": string,
 "daily_record_id": string,
+"feelings": NonNullable<Json>,
 "id": string,
 "period": string,
 "reflection": string | null,
