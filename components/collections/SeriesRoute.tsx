@@ -175,7 +175,7 @@ export function SeriesRoute({seriesKey}:{seriesKey:string}){
    </div>
    <div className="muse-series-shelf" role="img" style={{'--count':spines.length,'--spine-w-d':`${spineWidth}px`} as CSSProperties} aria-label={`${series.title}: ${spines.filter(e=>e.book).length} of ${spines.length} primary books on your shelf`}>
     <span className="muse-series-shelf-backdrop" aria-hidden="true"/>
-    <span className="muse-series-shelf-strand" aria-hidden="true"/>
+    <ShelfStrand/>
     <BookSpines entries={spineEntries} nextKey={shelf.next?.key} onSelect={selectSpine}/>
     <span className="muse-series-shelf-ledge" aria-hidden="true"/>
    </div>
@@ -246,4 +246,16 @@ function ShelfCarousel({label,children}:{label:string;children:ReactNode}){
   <ol ref={ref} tabIndex={0} aria-label={`${label}, scroll sideways`} onScroll={update} onKeyDown={event=>{if((event.key==='ArrowRight'||event.key==='ArrowLeft')&&!(event.target as HTMLElement).closest('button,a,input')){event.preventDefault();page(event.key==='ArrowRight'?1:-1);}}}>{children}</ol>
   {overflowing&&<button type="button" className="muse-series-carousel-arrow" data-dir="next" disabled={edge.end} aria-label={`Next ${label.toLowerCase()}`} onClick={()=>page(1)}><MuseIcon name="chevron" size={16}/></button>}
  </div>;
+}
+
+/** The decorative fairy-light strand. It runs to the viewport's right edge (measured, so it is never cut short inside the page margin) and is clipped there by the page, never causing overflow. */
+function ShelfStrand(){
+ const ref=useRef<HTMLSpanElement>(null);
+ useEffect(()=>{
+  const el=ref.current,shelf=el?.parentElement;if(!el||!shelf)return;
+  const place=()=>{el.style.right=`${-Math.max(0,Math.round(document.documentElement.clientWidth-shelf.getBoundingClientRect().right))}px`;};
+  place();window.addEventListener('resize',place);const observer=typeof ResizeObserver==='undefined'?null:new ResizeObserver(place);observer?.observe(shelf);
+  return()=>{window.removeEventListener('resize',place);observer?.disconnect();};
+ },[]);
+ return <span ref={ref} className="muse-series-shelf-strand" aria-hidden="true"/>;
 }
