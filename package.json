@@ -54,7 +54,11 @@
     "test:email-code": "node scripts/test-local-email-code.mjs",
     "test:astrology": "node --test tests/astrology-*.test.mjs",
     "test:astrology:db": "node scripts/test-local-astrology.mjs",
-    "test:astrology:ui": "node scripts/test-observatory-ui.mjs"
+    "test:astrology:ui": "node scripts/test-observatory-ui.mjs",
+    "db:133": "node scripts/issue133-db.mjs",
+    "test:book-import": "node --test tests/book-import-*.test.mjs",
+    "test:book-import:db": "node scripts/test-book-import-db.mjs",
+    "test:book-import:ui": "node scripts/test-book-import-ui.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",

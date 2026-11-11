@@ -1,0 +1,62 @@
+// Real import/export journeys against ONLY the disposable #133 stack. Disposable users are deleted afterwards.
+import assert from 'node:assert/strict';
+import {spawnSync} from 'node:child_process';
+import {homedir} from 'node:os';
+import {createClient} from '@supabase/supabase-js';
+import {load} from '../tests/helpers.mjs';
+const env={...process.env,PATH:`${homedir()}/.docker/bin:${process.env.PATH}`};
+const state=spawnSync('./node_modules/.bin/supabase',['status','--workdir','/private/tmp/muse-133-supabase','--output','json'],{env,encoding:'utf8'});if(state.status!==0)throw Error('Start the isolated #133 database first.');
+const config=JSON.parse(state.stdout),url=config.API_URL;assert.equal(url,'http://127.0.0.1:55321');
+const options={auth:{persistSession:false,autoRefreshToken:false}},admin=createClient(url,config.SECRET_KEY??config.SERVICE_ROLE_KEY,options),must=r=>{if(r.error)throw Error(r.error.message);return r.data;};
+const {activeReadingBooks}=load('lib/whimsy/books');
+const {parseLibraryCsv}=load('lib/books/import-csv'),{readGoodreadsRow}=load('lib/books/import-goodreads'),{planGoodreads}=load('lib/books/import-plan'),{prepareGoodreadsCommands,executeImportCommands}=load('lib/books/import-execute'),{readWhimsy,saveWhimsyRecord}=load('lib/whimsy/persistence'),{readImportSources,readImportObservations}=load('lib/books/import-persistence'),{importSeriesMatch}=load('lib/books/import-series'),{exportBookLibrary}=load('lib/books/import-export'),{bookCompletions}=load('lib/whimsy/reading-stats'),{sessionReadId}=load('lib/whimsy/reading-cycles');
+const users=[],uuid=()=>crypto.randomUUID();let checks=0;const check=(value,label)=>{assert.ok(value,label);checks++;console.log('PASS',label);};
+async function account(){const email=`import-${uuid()}@example.test`,link=must(await admin.auth.admin.generateLink({type:'invite',email}));users.push(link.user.id);const client=createClient(url,config.PUBLISHABLE_KEY??config.ANON_KEY,options);must(await client.auth.verifyOtp({type:'invite',token_hash:link.properties.hashed_token}));return {client,userId:link.user.id,email};}
+function commands(plan){return prepareGoodreadsCommands(plan,uuid(),new Date().toISOString(),uuid);}
+const identities=rows=>rows.map(s=>({source:s.source,sourceId:s.source_id,bookId:s.book_id}));
+const makeRow=(id,title,extra={})=>({source:'goodreads',sourceId:id,title,author:'Import Writer',status:'planned',shelves:[],warnings:[],...extra});
+try{
+ const {client,userId}=await account(),other=await account();
+ const original=await saveWhimsyRecord(client,'books',{record:{id:uuid(),title:'My Existing Book',author:'Import Writer',status:'reading',cycleId:'active-stable',rating:5,finalThoughts:'My Muse review',reviewEmojis:['🖤'],startedOn:'2026-01-01',completions:[{id:'muse-read',startedOn:'2026-01-01',finishedOn:'2026-02-01',recordedAt:'2026-02-01T00:00:00Z',rating:5,review:'My Muse review'}]},expectedRevision:0,commandId:uuid()});
+ const session=await saveWhimsyRecord(client,'sessions',{record:{id:uuid(),bookId:original.id,date:'2025-12-01',timeZone:'UTC',pages:15,activeSegments:[],notes:'Kept'},expectedRevision:0,commandId:uuid()});
+ const seriesId=uuid(),ghostId=uuid();must(await client.from('collection_series').insert({id:seriesId,user_id:userId,title:'Import Series',kind:'book',catalog_source:'hardcover',catalog_id:'900'}));
+ const ghost=must(await client.from('collection_series_members').insert({id:ghostId,user_id:userId,series_id:seriesId,sequence:.5,role:'optional',catalog_source:'hardcover',catalog_id:'901',catalog_title:'New Series Book',catalog_author:'Import Writer',starred:true}).select().single());
+ const savedSeries=must(await client.from('collection_series').select('*'));
+ const csv='Book Id,Title,Author,Exclusive Shelf,Date Read,My Rating,My Review,Bookshelves\r\n1,My Existing Book,Import Writer,read,2022/01/02,4,Historical review,favorites\r\n2,New Series Book,Import Writer,to-read,,0,,favorites\r\n3,Unidentified book,Import Writer,to-read,,0,,\r\n';
+ const parsed=parseLibraryCsv(csv),rows=parsed.slice(1).map(r=>readGoodreadsRow(parsed[0],r));let records=await readWhimsy(client),plan=planGoodreads(rows,records.books,[]);
+ plan[1].series=importSeriesMatch({id:'',title:rows[1].title,author:rows[1].author},savedSeries,[ghost]).link;
+ const work=commands(plan),steps=[],confirmed=new Set();let result=await executeImportCommands(client,work,(a,b)=>steps.push([a,b]),undefined,confirmed);
+ check(result.saved===3&&!result.errors.length,'CSV parse, match, preview commands and real transactions save all three books');
+ records=await readWhimsy(client);let book=records.books.find(b=>b.id===original.id);
+ check(book.rating===5&&book.finalThoughts==='My Muse review'&&book.status==='reading','Muse active opinions and status win');
+ check(bookCompletions(book).length===2&&bookCompletions(book)[0].finishedOn==='2022-01-02','Clearly distinct historical read is retained');
+ check(sessionReadId(book,session)==='muse-read','Imported history does not reassign legacy Muse sessions');
+ check(records.sessions.length===1&&records.sessions[0].notes==='Kept','No fictional sessions or overwritten notes');
+ const afterGhost=must(await client.from('collection_series_members').select('*').eq('id',ghostId).single());
+ check(afterGhost.book_id&&afterGhost.sequence===.5&&afterGhost.role==='optional'&&afterGhost.starred,'Existing series ghost connects with order, role and star preserved');
+ const opinions=await readImportObservations(client,userId);check(opinions.some(o=>o.review==='Historical review'&&o.cycle_id===bookCompletions(book)[0].id),'Historical opinions retain source and read association');
+ result=await executeImportCommands(client,work,()=>{});check(result.saved===3&&!result.errors.length,'Same commands return receipts safely on another retry');
+ let sources=await readImportSources(client,userId);plan=planGoodreads(rows,records.books,identities(sources));result=await executeImportCommands(client,commands(plan),()=>{});check(result.saved===3&&!result.errors.length,'Repeat CSV refresh matches canonical records');
+ records=await readWhimsy(client);check(records.books.length===3&&bookCompletions(records.books.find(b=>b.id===original.id)).length===2,'Repeat CSV creates no extra books or rereads');
+ check((await readImportObservations(other.client,other.userId)).length===0,'Another user cannot export imported opinions');
+ const concurrent=makeRow('race','Concurrency Book',{isbn:'9781619634480'}),a=commands(planGoodreads([concurrent],records.books,[])),b=commands(planGoodreads([{...concurrent,sourceId:'race-other'}],records.books,[]));
+ const raced=await Promise.all([executeImportCommands(client,a,()=>{}),executeImportCommands(client,b,()=>{})]);check(raced.reduce((n,r)=>n+r.saved,0)===1&&raced.reduce((n,r)=>n+r.errors.length,0)===1,'Concurrent stale previews cannot duplicate the same book');
+ const stale=commands(planGoodreads([rows[0]],records.books,identities(await readImportSources(client,userId))));
+ book=(await readWhimsy(client)).books.find(b=>b.id===original.id);await saveWhimsyRecord(client,'books',{record:{...book,title:'Edited elsewhere'},expectedRevision:book.revision,commandId:uuid()});
+ result=await executeImportCommands(client,stale,()=>{});check(result.saved===0&&result.errors.length===1,'Concurrent Muse edit rejects a stale import rather than overwriting it');
+ const hiddenId=uuid(),hidden=must(await client.from('collection_series_members').insert({id:hiddenId,user_id:userId,series_id:seriesId,sequence:9,hidden:true,catalog_source:'hardcover',catalog_id:'902',catalog_title:'Hidden Book',catalog_author:'Import Writer'}).select().single());
+ check(!importSeriesMatch({id:'',title:'Hidden Book',author:'Import Writer'},savedSeries,[hidden]).link,'Hidden series choice is not resurrected');
+ const renamed=must(await client.from('collection_curated').select('*')).find(c=>c.title==='favorites');must(await client.from('collection_curated').update({title:'Renamed favorites'}).eq('id',renamed.id));
+ const another=commands(planGoodreads([makeRow('another','Another Favorite',{shelves:['favorites']})],records.books,identities(await readImportSources(client,userId))));result=await executeImportCommands(client,another,()=>{});check(result.saved===1&&must(await client.from('collection_curated').select('*')).length===1,'A renamed source collection is reused during later imports');
+ const catalogRow=makeRow('catalog-new','New Catalog Member');const catalogPlan=planGoodreads([catalogRow],records.books,[]);catalogPlan[0].series=importSeriesMatch({id:'',title:catalogRow.title,author:catalogRow.author},savedSeries,[],{book:{id:'903'},catalog:{source:'hardcover',id:'900',members:[{source:'hardcover',id:'903',title:catalogRow.title,author:catalogRow.author,position:2,role:'mainline',releaseState:'released'}]}}).link;result=await executeImportCommands(client,commands(catalogPlan),()=>{});check(result.saved===1&&must(await client.from('collection_series_members').select('*').eq('catalog_id','903')).some(m=>m.book_id&&m.sequence===2&&m.release_state==='released'),'Verified provider metadata adds a member to an existing series without creating another series');
+ const large=Array.from({length:1005},(_,i)=>makeRow(`large-${i}`,`Large Import ${i}`));result=await executeImportCommands(client,commands(planGoodreads(large,[],[])),()=>{});check(result.saved===1005&&!result.errors.length,'A 1,005-book import persists without truncation');
+ const recent=await saveWhimsyRecord(client,'books',{record:{id:uuid(),title:'Recent Muse Reading',author:'Writer',status:'reading',cycleId:'recent-active',startedOn:'2026-10-01',reviewEmojis:[]},expectedRevision:0,commandId:uuid()});
+ const beforeReading=activeReadingBooks((await readWhimsy(client)).books).map(b=>b.id);const importedReading=commands(planGoodreads([makeRow('active-new','Imported Currently Reading',{status:'reading'})],[],[]));result=await executeImportCommands(client,importedReading,()=>{});
+ const afterReading=activeReadingBooks((await readWhimsy(client)).books);check(result.saved===1&&beforeReading[0]===recent.id&&afterReading.slice(0,2).map(b=>b.id).join()===beforeReading.slice(0,2).join()&&afterReading.at(-1).title==='Imported Currently Reading','Currently Reading keeps genuine Muse activity ahead of undated new imports');
+ check(afterReading.find(b=>b.id===original.id).cycleId==='active-stable','Matching an active book preserves its existing reading cycle');
+ sources=await readImportSources(client,userId);check(sources.length>1000,'Source identities page beyond the PostgREST row limit');
+ const archive=await exportBookLibrary(client,userId,true);check(archive[0]===0x50&&archive[1]===0x4b&&archive.length>10000,'Portable reading ZIP includes the full paged library');
+ const primary=await exportBookLibrary(client,userId,false);check(parseLibraryCsv(primary).length===1014,'Library export contains every book plus its heading');
+ const forbidden=await other.client.rpc('save_imported_book',stale[0].command);check(!!forbidden.error,'A different account cannot write a known book ID');
+ console.log(`PASS ${checks} real import integrity checks`);
+}finally{for(const userId of users)must(await admin.auth.admin.deleteUser(userId));console.log('Disposable import test accounts removed.');}
