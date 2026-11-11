@@ -58,7 +58,7 @@ export function ReadingAtlas({books,sessions,goals,today,range,setRange,calendar
   {section!=='year'&&section!=='streak'&&<div className="muse-books-atlas-period" role="group" aria-label="Statistics period">{(Object.keys(overviewPeriods) as ReadingPeriod[]).map(id=><button key={id} type="button" className="muse-button button-ghost" aria-pressed={period===id} onClick={()=>setPeriod(id)}>{overviewPeriods[id]}</button>)}</div>}
   {section==='dna'&&<ReadingDNA books={books} sessions={sessions} range={range_} label={label} today={today}/>}
   {section==='patterns'&&<Patterns books={books} sessions={sessions} range={range_} label={label} series={collections?.series??[]} seriesMembers={collections?.seriesMembers??[]} media={collections?.media??[]} onOpenBook={onOpenBook}/>}
-  {section==='books'&&<BooksMilestones books={books} sessions={sessions} range={range_} label={label}/>}
+  {section==='books'&&<BooksMilestones books={books} sessions={sessions} range={range_} label={label} onOpenBook={onOpenBook}/>}
   {section==='year'&&<YearInReview books={books} sessions={sessions} today={today} goals={goals}/>}
   {section==='overview'&&<><AlmanacWhisper surface={surfaces.atlas} signals={almanacSignals} today={today} className="muse-atlas-observations"/>
   <dl className="muse-atlas-ribbon" aria-live="polite">
