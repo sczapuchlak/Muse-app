@@ -179,7 +179,7 @@ test('offline timer changes are kept on the device and reconciled exactly once',
  try{pending.storePendingTimer('u1',command);assert.deepEqual(pending.loadPendingTimer('u1'),command);pending.clearPendingTimer('u1');assert.equal(pending.loadPendingTimer('u1'),null);}
  finally{delete globalThis.localStorage;}
  const shelf=read('components/whimsy/Bookshelf.tsx');
- assert.match(shelf,/NOT SYNCED YET/);assert.match(shelf,/saved on this device only/);
+ assert.match(read('components/whimsy/ReadingSessionCard.tsx'),/Not synced yet/i,'the shared timer card labels an unsynced change');assert.match(shelf,/saved on this device only/);
  assert.match(shelf,/const stored=\{\.\.\.command,recordedAt:/,'the exact command is stored before it is sent');
 });
 
