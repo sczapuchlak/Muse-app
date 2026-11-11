@@ -8,12 +8,12 @@ import {readFileSync} from 'node:fs';
 const prefs=load('lib/collections/preferences'),genres=load('components/collections/GenrePicker'),books=load('lib/whimsy/books');
 
 test('Collections preferences default safely and persist for the current account',async()=>{
- assert.deepEqual(prefs.parseCollectionsPreferences(null),{mode:'board',kind:'all',showInProgress:true,sort:'recent'});
- assert.deepEqual(prefs.parseCollectionsPreferences({mode:'wrong',kind:'unknown',showInProgress:'false',sort:'nope'}),{mode:'board',kind:'all',showInProgress:true,sort:'recent'});
+ assert.deepEqual(prefs.parseCollectionsPreferences(null),{mode:'board',kind:'all',showInProgress:true,sort:'recent',density:'compact'});
+ assert.deepEqual(prefs.parseCollectionsPreferences({mode:'wrong',kind:'unknown',showInProgress:'false',sort:'nope'}),{mode:'board',kind:'all',showInProgress:true,sort:'recent',density:'compact'});
  assert.equal(prefs.parseCollectionsPreferences({sort:'title'}).sort,'title','a remembered sort order is restored');
  let metadata={existing:'kept'},writes=0;
  const client={auth:{getUser:async()=>({data:{user:{id:'owner',user_metadata:metadata}},error:null}),updateUser:async({data})=>{writes++;metadata={...metadata,...data};return {error:null};}}};
- const desired={mode:'library',kind:'book',showInProgress:false,sort:'rating'};
+ const desired={mode:'library',kind:'book',showInProgress:false,sort:'rating',density:'list'};assert.equal(prefs.parseCollectionsPreferences({density:'huge'}).density,'compact','an unknown density falls back to compact');
  assert.deepEqual(await prefs.saveCollectionsPreferences(client,'owner',desired),desired);
  assert.deepEqual(await prefs.readCollectionsPreferences(client,'owner'),desired);
  assert.equal(metadata.existing,'kept');assert.equal(writes,1);

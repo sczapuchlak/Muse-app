@@ -213,3 +213,38 @@
 
 .muse-collections-toolbar-end [data-books-settings-trigger]{display:inline-flex;align-items:center;gap:7px}
 @container muse-content (max-width:640px){.muse-collections-toolbar-end [data-books-settings-trigger]>span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}}
+
+/* Cover density: compact by default so large (imported) libraries stay browsable; saved on the account. */
+.muse-density{display:inline-flex;justify-self:end;gap:2px;padding:3px;border:1px solid var(--glass-border);border-radius:999px;background:var(--surface-subtle)}
+.muse-density button{display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:0 10px;border:0;border-radius:999px;background:none;color:var(--text-muted);font:inherit;font-size:.78rem;cursor:pointer}
+.muse-density button[aria-pressed="true"]{background:var(--selected-background,color-mix(in srgb,var(--accent-primary) 16%,transparent));color:var(--foreground);box-shadow:inset 0 0 0 1px var(--selected-border)}
+.muse-density button:focus-visible{outline:2px solid var(--focus-ring,var(--foreground));outline-offset:2px}
+.muse-collections-library-page{grid-template-columns:minmax(0,1fr)}
+.muse-collections[data-density] .muse-collections-grid{gap:clamp(12px,1.6vw,20px) clamp(10px,1.4vw,16px)}
+.muse-collections[data-density="compact"] .muse-collections-grid{grid-template-columns:repeat(auto-fill,minmax(min(100%,124px),1fr))}
+.muse-collections[data-density="comfortable"] .muse-collections-grid{grid-template-columns:repeat(auto-fill,minmax(min(100%,172px),1fr))}
+.muse-collections[data-density="showcase"] .muse-collections-grid{grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr))}
+.muse-collections[data-density="compact"] .muse-collections-card[data-kind] .muse-card-title{font-size:.94rem;line-height:1.25}
+.muse-collections[data-density="compact"] .muse-collections-card[data-kind] .muse-card-creator{font-size:.76rem}
+.muse-collections[data-density="compact"] .muse-collections-card[data-kind] .muse-card-status{font-size:.62rem}
+.muse-collections[data-density="compact"] .muse-collections-card[data-kind] .muse-book-cover strong{font-size:.72rem}
+/* List: a cover-thumbnail row per item for sorting and managing large collections. */
+.muse-collections[data-density="list"] .muse-collections-grid{grid-template-columns:repeat(auto-fill,minmax(min(100%,380px),1fr));gap:6px 18px}
+.muse-collections[data-density="list"] .muse-collections-card[data-kind]{grid-template-columns:48px minmax(0,1fr) auto;grid-template-rows:auto auto auto;align-items:center;column-gap:12px;row-gap:1px;height:auto;padding:8px 10px!important;border:1px solid var(--glass-border)!important;border-radius:14px!important;background:var(--surface-subtle)!important}
+.muse-collections[data-density="list"] .muse-collections-card[data-kind]>:is(.muse-book-cover,.muse-collections-cover){grid-column:1;grid-row:1/-1;width:48px;box-shadow:none!important;transform:none!important}
+.muse-collections[data-density="list"] .muse-collections-card[data-kind] .muse-book-cover>div strong{display:none}
+.muse-collections[data-density="list"] .muse-collections-card[data-kind] .muse-card-status{grid-column:3;grid-row:1;justify-self:end;font-size:.62rem}
+.muse-collections[data-density="list"] .muse-collections-card[data-kind] .muse-card-title{grid-column:2;grid-row:1;margin:0!important;min-height:0;-webkit-line-clamp:1;line-clamp:1;font-size:1rem}
+.muse-collections[data-density="list"] .muse-collections-card[data-kind] .muse-card-creator{grid-column:2/-1;grid-row:2;min-height:0}
+.muse-collections[data-density="list"] .muse-collections-card[data-kind] .muse-card-meta{grid-column:2/-1;grid-row:3;min-height:0}
+.muse-collections[data-density="list"] .muse-collections-card[data-kind] .muse-card-meta:empty{display:none}
+@container muse-content (max-width:640px){
+ .muse-density span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+ .muse-density button{padding:0 9px}
+ .muse-collections[data-density="compact"] .muse-collections-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px 10px}
+ .muse-collections[data-density="comfortable"] .muse-collections-grid,.muse-collections[data-density="showcase"] .muse-collections-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .muse-collections[data-density="showcase"] .muse-collections-grid{gap:18px 14px}
+ .muse-collections[data-density="compact"] .muse-collections-card[data-kind] .muse-card-status{display:none}
+ .muse-collections[data-density="compact"] .muse-collections-card[data-kind] .muse-card-title{font-size:.84rem;min-height:2.5em}
+ .muse-collections[data-density="compact"] .muse-collections-card[data-kind] .muse-card-meta{display:none}
+}
