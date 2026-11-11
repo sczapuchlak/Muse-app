@@ -378,3 +378,10 @@ button.muse-books-month-row:hover{background:var(--surface-hover)}
 .muse-vibes{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;margin:0;padding:6px 0;list-style:none}
 .muse-vibes li{display:inline-flex;align-items:baseline;gap:3px;font-size:var(--size);line-height:1.1}
 .muse-vibes small{font-size:.7rem;color:var(--text-muted)}
+/* Patterns: paired half-width panels; authors and series stay short and page instead of growing. */
+.muse-atlas-books-pair.muse-atlas-pair-top,.muse-atlas-books-pair.muse-atlas-pair-short{align-items:stretch}
+.muse-atlas-pair-short .muse-paged-rows.muse-atlas-series{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
+.muse-atlas-pair-short .muse-atlas-series>li{padding:8px 12px}
+.muse-atlas-pair-short .muse-paged-rows.muse-atlas-rows{gap:4px}
+.muse-atlas-pair-top .muse-atlas-heat-cell{min-height:0}
+.muse-atlas-books-pair[data-solo]{grid-template-columns:minmax(0,1fr)}
