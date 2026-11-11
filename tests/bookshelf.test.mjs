@@ -19,9 +19,9 @@ test('Reading Desk derives every active card from canonical books, including spa
  const source=readFileSync(root+'/components/whimsy/Bookshelf.tsx','utf8');
  assert.match(source,/aria-label="Reading Desk"/);assert.doesNotMatch(source,/aria-label="My Library"/,'browsing the Library belongs to Collections (#136)');
  const desk=source.split('aria-label="Reading Desk"')[1]?.split('<ReadingChallenge')[0]??'';
- for(const piece of ['<ReadingDesk','BookStatusControl','openSession(book)','openBookPage(book.id)'])assert.ok(desk.includes(piece),piece);
+ for(const piece of ['<ReadingDesk','timerAction(\'start\',book)','openSession(book)','openBookPage(book.id)'])assert.ok(desk.includes(piece),piece);
  const tiles=readFileSync(root+'/components/whimsy/ReadingDesk.tsx','utf8');
- for(const action of ['Continue reading','Log reading manually','muse-desk-tile-author','muse-desk-pool','renderStatus(book)'])assert.ok(tiles.includes(action),action);
+ for(const action of ['Start reading','Log reading manually','Open book','Move to shelf','muse-desk-tile-author','muse-desk-pool'])assert.ok(tiles.includes(action),action);
 });
 test('Daily Edit features one saved current read and falls back without limiting Collections',()=>{
  const active=[book,{...book,id:'second',title:'Second current read'},{...book,id:'third',title:'Third current read'}],all=[...active,{...book,id:'finished',status:'finished'}];

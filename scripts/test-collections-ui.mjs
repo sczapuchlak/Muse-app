@@ -11,8 +11,8 @@ try{
  browser=await openBrowser(account,{shots});const b=browser;
  const board='document.querySelectorAll(".muse-desk-tile").length>0';
  await b.go('/collections?kind=book&mode=board',board,'board');await wait(800);
- const desk=await b.evaluate(()=>({tiles:document.querySelectorAll('.muse-desk-tile').length,topRow:(()=>{const r=document.querySelector('.muse-desk-top .muse-streak-panel')?.getBoundingClientRect(),g=document.querySelector('.muse-desk-top .muse-challenge')?.getBoundingClientRect();return !!r&&!!g&&Math.abs(r.top-g.top)<=6&&g.left>r.left&&Math.abs(r.width-g.width)<8;})(),continue:document.querySelectorAll('.muse-desk-continue').length,oldCards:document.querySelectorAll('.muse-books-card').length,tallest:Math.max(...[...document.querySelectorAll('.muse-desk-tile')].map(t=>Math.round(t.getBoundingClientRect().height)))}));
- console.log(JSON.stringify(desk));check(desk.tiles>=4&&desk.continue===desk.tiles&&desk.oldCards===0,'Reading Desk shows compact tiles with one Continue reading each');
+ const desk=await b.evaluate(()=>({tiles:document.querySelectorAll('.muse-desk-tile').length,topRow:(()=>{const r=document.querySelector('.muse-desk-top .muse-streak-panel')?.getBoundingClientRect(),g=document.querySelector('.muse-desk-top .muse-challenge')?.getBoundingClientRect();return !!r&&!!g&&Math.abs(r.top-g.top)<=6&&g.left>r.left&&Math.abs(r.width-g.width)<8;})(),start:document.querySelectorAll('.muse-desk-start').length,oldCards:document.querySelectorAll('.muse-books-card').length,tallest:Math.max(...[...document.querySelectorAll('.muse-desk-tile')].map(t=>Math.round(t.getBoundingClientRect().height)))}));
+ console.log(JSON.stringify(desk));check(desk.tiles>=4&&desk.start===desk.tiles&&desk.oldCards===0,'Reading Desk shows compact tiles with one Start reading each');
  check(desk.topRow,'streak and yearly goal share the top row, 50/50, on desktop');check(desk.tallest<=260,`desk tiles stay compact (${desk.tallest}px)`);
  await b.evaluate(()=>window.scrollTo(0,0));await b.shoot('board-desktop');
  check(await b.evaluate(()=>!document.querySelector('.muse-collections-toolbar-end [data-books-settings-trigger]')),'no separate Reading button in the toolbar');
@@ -21,13 +21,13 @@ try{
  await b.evaluate(()=>document.querySelector('#collections-preferences').close());await wait(200);
  // More menu opens and closes from its trigger.
  await b.click('.muse-desk-more');await b.until(()=>!!document.querySelector('.muse-desk-menu'),'more menu');await b.shoot('desk-more-menu');
- check(await b.evaluate(()=>!!document.querySelector('.muse-desk-menu .muse-books-status-control')&&/Log reading manually/.test(document.querySelector('.muse-desk-menu').textContent)),'secondary actions live in the ⋯ menu');
+ check(await b.evaluate(()=>/Open book/.test(document.querySelector('.muse-desk-menu').textContent)&&/Log reading manually/.test(document.querySelector('.muse-desk-menu').textContent)&&/Finished/.test(document.querySelector('.muse-desk-menu').textContent)),'Open book, Log reading and shelf moves live in the ⋯ menu');
  await b.evaluate(()=>{const t=document.querySelector('.muse-desk-more'),r=t.getBoundingClientRect(),o={bubbles:true,clientX:r.left+5,clientY:r.top+5,button:0};t.dispatchEvent(new PointerEvent('pointerdown',o));t.click();});await wait(300);
  check(await b.evaluate(()=>!document.querySelector('.muse-desk-menu')),'the ⋯ trigger closes its menu');
  // Densities in Library mode.
  await b.go('/collections?kind=book&mode=library','document.querySelectorAll(".muse-collections-library-page .muse-collections-card").length>0','library');await wait(500);
  const columns=()=>b.evaluate(()=>getComputedStyle(document.querySelector('.muse-collections-library-page .muse-collections-grid')).gridTemplateColumns.split(' ').length);
- const density=async id=>{await b.click('.muse-density button',id);await wait(500);await b.evaluate(()=>document.querySelector('.muse-collections-library-page').scrollIntoView({block:'start'}));await wait(200);};
+ const density=async id=>{await b.click('button.muse-choice-trigger[aria-label^="Cover size"]');await b.until(()=>!!document.querySelector('.popover-choice'),'density menu');await b.click('.popover-choice',id);await wait(500);await b.evaluate(()=>document.querySelector('.muse-collections-library-page').scrollIntoView({block:'start'}));await wait(200);};
  check(await b.evaluate(()=>document.querySelector('main.muse-collections').dataset.density==='compact'),'compact is the default density');
  const compact=await columns();await b.shoot('library-compact');
  await density('Showcase');const showcase=await columns();await b.shoot('library-showcase');

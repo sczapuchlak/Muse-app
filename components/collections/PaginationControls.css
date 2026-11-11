@@ -28,3 +28,5 @@
  .muse-pagination-numbers .muse-pagination-gap{display:none}
  .muse-pagination[data-position="top"]{padding-bottom:10px}
 }
+.muse-pagination-leading{display:flex;align-items:center}
+.muse-pagination-leading .muse-choice-trigger{min-height:36px}
