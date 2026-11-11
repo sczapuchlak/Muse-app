@@ -703,6 +703,7 @@ Bucket List (Rituals, #84) follows the handwritten bullet-journal reference: an 
 - **Stat tiles:** `.muse-money-tiles` (label · value · note) with `data-tile-accent`.
 - **Task density:** `data-task-density="compact|spacious"` on the Planner page.
 - **Pagination:** `PaginationControls` (`components/collections/`) is the one pager for long Collections lists: a range/total/page summary, the page-size `MuseChoiceMenu`, ghost chevron steps and numbered page buttons with the Fortune-style selected marker (`aria-current="page"`). It appears above and below the list (only the top copy is a live region); on phones only the current page number and the steps remain. Use `usePagination` for page/size state, URL persistence and reset-on-filter instead of a second implementation.
+- **Reading timer (#135):** `ReadingSessionCard` (`components/whimsy/`) is the one timer presentation, used by the Reading Desk and Book Detail. It reuses the Daily Edit water bar's language (`--wash-aqua` pool, `--water-progress-gradient` liquid with glow and sheen, a ripple at the fill edge, and the achievement star when the sitting's target is met); an open sitting flows instead of filling. It sizes from its own container so it fits the narrow Book Detail panel and the wide Desk. It only presents the shared timer; all actions use the existing write paths. Motion stops when paused and under reduced motion.
 
 ## Envision and Planner Intentions (#117) — implemented on feature branch, awaiting review
 
