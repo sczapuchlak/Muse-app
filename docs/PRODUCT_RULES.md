@@ -905,3 +905,7 @@ Muse owns the canonical book and its active reading cycle. CSV imports reference
 Books Settings retains the Daily Edit reading preference and contains Import Library and Export Library. All other existing Books visuals stay locked. Series association and decorative shelf placement are separate; imports never decorate shelves. Source custom shelves may optionally reference existing My Collections, with stable source links preserving reader renames.
 
 Currently Reading uses real saved reading sessions, recorded progress dates and meaningful start dates. Capture/import time, metadata refresh time and a source’s Date Added are not evidence of reading. Undated books follow books with known activity; ties preserve existing order. A matching import keeps Muse status and active cycle identity.
+
+## Books Import 2.0 (#143; approved)
+
+Did Not Finish (`dnf`) is distinct from Paused. It preserves progress, sessions, notes and attributed history without creating a completed read; a reader may restart it through existing reading controls. Import refresh never changes an existing Muse reading status automatically, including earlier source statuses that Muse did not yet support. Missing catalog data is informational. Unresolved identity, status or historical-read decisions must be reviewed or skipped; optional enrichment never prevents valid source books importing. Review edits retain original source evidence.

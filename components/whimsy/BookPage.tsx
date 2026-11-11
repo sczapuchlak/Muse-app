@@ -25,7 +25,7 @@ import './BookDetail.css';
 import './BookPage.css';
 
 type Tab='sessions'|'journal'|'reads'|'details';
-const statusLabel:Record<Book['status'],string>={planned:'Want to Read',reading:'Currently Reading',paused:'Paused',finished:'Finished'};
+const statusLabel:Record<Book['status'],string>={planned:'Want to Read',reading:'Currently Reading',paused:'Paused',dnf:'Did Not Finish',finished:'Finished'};
 /** Edit and delete for one sitting, tucked into a ⋯ menu. */
 function SittingMenu({label,onEdit,onDelete}:{label:string;onEdit:()=>void;onDelete:()=>void}){
  const anchor=useRef<HTMLButtonElement>(null),[open,setOpen]=useState(false);

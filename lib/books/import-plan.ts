@@ -5,7 +5,7 @@ import type {GoodreadsRow} from './import-goodreads';
 import type {ImportSeriesLink} from './import-series';
 import {queryIsbn} from './metadata';
 
-export type ImportPlanRow={row:GoodreadsRow;kind:'new'|'matched'|'review';book?:Book;reason?:string;cycleId?:string;conflicts:string[];skip?:boolean;historyAction?:'preserve'|'add';useFields?:string[];metadata?:Partial<Book>;metadataAddition?:boolean;series?:ImportSeriesLink;seriesNote?:string;unchanged?:boolean;sourceChanged?:boolean};
+export type ImportPlanRow={row:GoodreadsRow;sourceRow?:GoodreadsRow;resolvedIssues?:string[];kind:'new'|'matched'|'review';book?:Book;reason?:string;cycleId?:string;conflicts:string[];skip?:boolean;historyAction?:'preserve'|'add';useFields?:string[];metadata?:Partial<Book>;metadataAddition?:boolean;series?:ImportSeriesLink;seriesNote?:string;unchanged?:boolean;sourceChanged?:boolean};
 export function sameImportedValues(a:unknown,b:unknown):boolean{
  const canonical=(value:unknown):unknown=>Array.isArray(value)?value.map(canonical):value&&typeof value==='object'?Object.fromEntries(Object.entries(value).filter(([,v])=>v!==undefined).sort(([a],[b])=>a.localeCompare(b)).map(([k,v])=>[k,canonical(v)])):value;
  return JSON.stringify(canonical(a))===JSON.stringify(canonical(b));
@@ -30,7 +30,7 @@ export function planGoodreads(rows:readonly GoodreadsRow[],books:readonly Book[]
   if(row.review&&book.finalThoughts&&row.review!==book.finalThoughts)conflicts.push('Review differs; Muse keeps its current review.');
   const completions=bookCompletions(book),same=row.finishedOn?completions.filter(value=>value.finishedOn===row.finishedOn):[];
   const earliestStart=[...completions.map(c=>c.startedOn),book.startedOn].filter((d):d is string=>!!d).sort()[0];
-  const separate=!!row.finishedOn&&!same.length&&!completions.some(c=>!!c.importSource)&&!!earliestStart&&row.finishedOn<earliestStart;
+  const separate=row.status!=='dnf'&&!!row.finishedOn&&!same.length&&!completions.some(c=>!!c.importSource)&&!!earliestStart&&row.finishedOn<earliestStart;
   if(row.finishedOn&&same.length!==1&&!separate)conflicts.push('The reading date needs review before it can count as another read.');
   // Legacy completions are synthesized and must not be linked until stored on the book.
   const cycleId=same.length===1?same[0].id:undefined;

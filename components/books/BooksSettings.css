@@ -17,3 +17,14 @@
 @media(max-width:600px){.muse-modal:is(#books-import-settings,#books-export-settings,#books-settings-settings){width:calc(100vw - 16px)}.muse-book-transfer-mapping,.muse-book-transfer-tools{grid-template-columns:minmax(0,1fr)}.muse-book-transfer-footer .muse-button{flex:1}.muse-book-transfer-review dl{grid-template-columns:minmax(0,1fr)}.muse-book-transfer-review dd{margin-bottom:6px}}
 @media(max-width:600px){.muse-book-transfer select,.muse-book-transfer input:not([type=checkbox]){font-size:16px}}
 .muse-book-transfer-book-links{list-style:none;margin:8px 0;padding:0}.muse-book-transfer-book-links a{display:block;box-sizing:border-box;min-height:44px;padding:10px 0;overflow-wrap:anywhere}
+/* Import 2.0: compact setup; only the review dataset uses the wider dialog. */
+.muse-modal:is(#books-import-settings,#books-export-settings,#books-settings-settings){box-sizing:border-box;height:fit-content;min-height:0}
+#books-import-settings:has(.muse-book-transfer[data-step="upload"]),#books-import-settings:has(.muse-book-transfer[data-step="results"]),#books-import-settings:has(.muse-book-transfer-progress),#books-export-settings{width:min(560px,calc(100vw - 24px))}
+.muse-book-transfer>p,.muse-book-transfer-progress p{margin:0;line-height:1.5}
+.muse-import-edition{border:1px solid var(--glass-border);border-radius:10px;min-width:0}
+.muse-import-edition-results{list-style:none;padding:0;margin:0;display:grid;gap:8px;max-height:260px;overflow:auto;overscroll-behavior:contain}
+.muse-import-edition-results li{display:grid;gap:4px}.muse-import-edition-results .muse-button{white-space:normal;text-align:left}
+.muse-book-transfer input[type=file]{max-width:100%;box-sizing:border-box}
+.muse-book-transfer input::file-selector-button{font:inherit;color:var(--foreground);background:var(--surface-subtle);border:1px solid var(--glass-border);border-radius:8px;padding:8px;margin-right:10px;cursor:pointer}
+.muse-book-transfer-footer{z-index:1;box-shadow:0 -8px 12px var(--floating-background)}
+@media(prefers-reduced-motion:reduce){.muse-book-transfer progress{animation:none}}

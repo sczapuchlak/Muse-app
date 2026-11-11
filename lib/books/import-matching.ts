@@ -1,3 +1,4 @@
+import {importTitleKey} from './import-metadata';
 import {queryIsbn} from './metadata';
 
 export type IdentityBook={id:string;title:string;author?:string;isbn?:string};
@@ -15,13 +16,13 @@ export function createBookMatcher(books:readonly IdentityBook[],identities:reado
  const existing=new Set(books.map(book=>book.id));
  const isbnIndex=new Map<string,string[]>(),nameIndex=new Map<string,string[]>(),titleIndex=new Map<string,string[]>(),sourceIndex=new Map<string,string[]>(),byId=new Map(books.map(book=>[book.id,book]));
  const add=(map:Map<string,string[]>,key:string,id:string)=>{const list=map.get(key)??[];list.push(id);map.set(key,list);};
- for(const book of books){const isbn=book.isbn&&queryIsbn(book.isbn),title=norm(book.title),author=norm(book.author??'');if(isbn)add(isbnIndex,isbn,book.id);if(title)add(titleIndex,title,book.id);if(title&&author)add(nameIndex,JSON.stringify([title,author]),book.id);}
+ for(const book of books){const isbn=book.isbn&&queryIsbn(book.isbn),title=importTitleKey(book.title),author=norm(book.author??'');if(isbn)add(isbnIndex,isbn,book.id);if(title)add(titleIndex,title,book.id);if(title&&author)add(nameIndex,JSON.stringify([title,author]),book.id);}
  for(const i of identities)if(existing.has(i.bookId))add(sourceIndex,JSON.stringify([i.source,i.sourceId]),i.bookId);
  return (incoming:IncomingIdentity):IdentityMatch=>{
  const source=incoming.sourceId?sourceIndex.get(JSON.stringify([incoming.source,incoming.sourceId]))??[]:[];
  const isbn=incoming.isbn?queryIsbn(incoming.isbn):undefined;
  const byIsbn=isbn?isbnIndex.get(isbn)??[]:[];
- const title=norm(incoming.title),author=norm(incoming.author??'');
+ const title=importTitleKey(incoming.title),author=norm(incoming.author??'');
  const byName=title&&author?nameIndex.get(JSON.stringify([title,author]))??[]:[];
  for(const [basis,ids] of [['source',source],['isbn',byIsbn],['title-author',byName]] as const){
   const unique=[...new Set(ids)];if(unique.length>1)return {kind:'review',bookIds:unique,reason:`Multiple books match ${basis}.`};

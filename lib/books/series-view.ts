@@ -13,7 +13,7 @@ export function catalogSeriesView(catalog:SeriesCatalog,books:Book[],userId:stri
  return {series,members};
 }
 
-export type ShelfState='read'|'reading'|'paused'|'planned'|'missing'|'upcoming';
+export type ShelfState='read'|'reading'|'paused'|'dnf'|'planned'|'missing'|'upcoming';
 export type ShelfEntry={key:string;member:SeriesMember;position:number|null;positionLabel:string;title:string;author:string;year:number|null;releaseDate:string|null;pages:number|null;coverUrl:string|null;coverColor:string|null;role:string;book:Book|null;state:ShelfState;starred:boolean};
 /**
  * How the primary books were identified. `catalog`: whole-number installments match the catalog's own primary
@@ -25,10 +25,10 @@ export type SeriesShelf={primary:ShelfEntry[];additional:ShelfEntry[];collection
 
 const label=(n:number)=>`#${Number.isInteger(n)?n:Math.round(n*100)/100}`;
 export function shelfState(book:Book|null,releaseState:string):ShelfState{
- if(book){if(book.status==='finished'||bookCompletions(book).length>0&&book.status!=='reading')return 'read';return book.status==='reading'?'reading':book.status==='paused'?'paused':'planned';}
+ if(book){if(book.status==='finished'||bookCompletions(book).length>0&&book.status!=='reading')return 'read';if(book.status==='dnf')return 'dnf';return book.status==='reading'?'reading':book.status==='paused'?'paused':'planned';}
  return releaseState==='announced'?'upcoming':'missing';
 }
-export const shelfStateLabel:Record<ShelfState,string>={read:'Read',reading:'Reading now',paused:'Paused',planned:'Want to read',missing:'Not on your shelf',upcoming:'Upcoming'};
+export const shelfStateLabel:Record<ShelfState,string>={read:'Read',reading:'Reading now',paused:'Paused',dnf:'Did Not Finish',planned:'Want to read',missing:'Not on your shelf',upcoming:'Upcoming'};
 
 /**
  * One ordered, grouped reading of a series for display (#136). Primary books (whole-number positions; see

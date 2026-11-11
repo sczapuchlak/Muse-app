@@ -4,6 +4,7 @@ import {allowLookup} from '@/lib/books/rate-limit';
 import {seriesResolver} from '@/lib/books/series-service';
 import {bookLookup} from '@/lib/books/service';
 import {candidateFields,metadataSource,queryIsbn} from '@/lib/books/metadata';
+import {verifiedImportCandidates} from '@/lib/books/import-metadata';
 import type {Book} from '@/lib/whimsy/models';
 
 export const maxDuration=120;
@@ -27,13 +28,16 @@ export async function POST(request:NextRequest){
   if(!key||!title){results.push({key,warning:'A title is needed for enrichment.'});continue;}
   try{
    const [found,lookup]=await Promise.all([bookLookup.search(isbn??`${title} ${author}`).catch(()=>null),author||isbn||field(r.hardcoverId,12)?seriesResolver.lookupBook({title,author,isbn,hardcoverBookId:/^\d{1,12}$/.test(field(r.hardcoverId,12))?field(r.hardcoverId,12):undefined}).catch(()=>null):Promise.resolve(null)]);
-   const candidates=(found?.results??[]).filter(c=>isbn?queryIsbn(c.isbn13??c.isbn10??'')===isbn:!!author&&norm(c.title)===norm(title)&&c.authors.some(a=>norm(a)===norm(author)));
+   let candidates=verifiedImportCandidates(found?.results??[],title,author,isbn);
+   // A missing edition is not a missing work. Safe title/author fallback adds no edition-specific facts.
+   let exactEdition=!!isbn&&candidates.length===1;
+   if(!candidates.length&&isbn&&author){const fallback=await bookLookup.search(`${title} ${author}`).catch(()=>null);candidates=verifiedImportCandidates(fallback?.results??[],title,author);exactEdition=false;}
    const metadata:Partial<Book>={};
-   if(candidates.length===1){const c=candidates[0],fields=candidateFields(c);Object.assign(metadata,{coverUrl:fields.coverUrl,description:fields.description,genre:fields.genre,metadataSource:metadataSource(c)});if(isbn)Object.assign(metadata,{totalPages:fields.totalPages?Number(fields.totalPages):undefined,publisher:fields.publisher,publishedDate:fields.publishedDate,format:fields.format});}
+   if(candidates.length===1){const c=candidates[0],fields=candidateFields(c);Object.assign(metadata,{coverUrl:fields.coverUrl,description:fields.description,genre:fields.genre,...(!isbn||exactEdition?{metadataSource:metadataSource(c)}:{})});if(exactEdition)Object.assign(metadata,{totalPages:fields.totalPages?Number(fields.totalPages):undefined,publisher:fields.publisher,publishedDate:fields.publishedDate,format:fields.format});}
    if(lookup?.book){metadata.description??=lookup.book.description;metadata.coverUrl??=lookup.book.coverUrl;metadata.genre??=lookup.book.genres.join(', ');metadata.metadataSource={...(metadata.metadataSource??{provider:'hardcover',importedAt:new Date().toISOString()}),hardcoverId:lookup.book.id};}
    // Return just the verified candidate installment, rather than repeatedly transporting whole catalogs.
    if(lookup?.catalog)lookup.catalog={...lookup.catalog,members:lookup.catalog.members.filter(m=>lookup.book&&m.source==='hardcover'&&m.id===lookup.book.id||!!author&&!!m.author&&norm(m.title)===norm(title)&&norm(m.author)===norm(author))};
-   results.push({key,metadata,lookup,warning:!candidates.length&&!lookup?.book?'No verified metadata found; supplied book details will be kept.':undefined});
+   results.push({key,metadata,lookup,warning:!candidates.length&&!lookup?.book?'No verified metadata found; supplied book details will be kept.':candidates.length>1?'Several editions found; choose an edition or keep supplied details.':isbn&&!exactEdition?'Exact ISBN edition not found; only verified work details can fill gaps.':undefined});
   }catch{results.push({key,warning:'Metadata providers are unavailable; supplied book details will be kept.'});}
  }
  return respond({results});

@@ -14,7 +14,8 @@ export function mapCsvRow(cells:readonly string[],mapping:ColumnMapping,source:s
  const get=(f:ImportField)=>mapping[f]===undefined?'':(cells[mapping[f]!]??'').trim(),warnings:string[]=[],sourceDetails:Record<string,string>={};
  const date=(f:ImportField)=>{const value=get(f).replaceAll('/','-');if(!value)return undefined;if(!validDate(value)){warnings.push(`${f}: use YYYY-MM-DD.`);sourceDetails[f]=get(f);return undefined;}return value;};
  const number=(f:ImportField)=>{const s=get(f);if(!s)return undefined;const n=Number(s);if(!Number.isFinite(n)||n<0){warnings.push(`${f} is invalid.`);sourceDetails[f]=s;return undefined;}return n;};
- const raw=key(get('status')),status:GoodreadsRow['status']=({planned:'planned','want to read':'planned','to read':'planned',reading:'reading','currently reading':'reading',rereading:'reading',finished:'finished',read:'finished',paused:'paused','on hold':'paused'} as Record<string,GoodreadsRow['status']>)[raw];
+ if(get('status'))sourceDetails.status=get('status');
+ const raw=key(get('status')),status:GoodreadsRow['status']=({planned:'planned','want to read':'planned','to read':'planned',reading:'reading','currently reading':'reading',rereading:'reading',finished:'finished',read:'finished',paused:'paused','on hold':'paused',dnf:'dnf','did not finish':'dnf'} as Record<string,GoodreadsRow['status']>)[raw];
  if(raw&&!status){warnings.push(`Status “${get('status')}” needs review; kept as source information.`);sourceDetails.status=get('status');}
  let rating=number('rating');if(rating!==undefined){if(rating>scale){warnings.push('Rating exceeds the selected scale.');sourceDetails.rating=get('rating');rating=undefined;}else rating=rating===0?undefined:rating*5/scale;}
  if(get('rating')){sourceDetails.ratingValue=get('rating');sourceDetails.ratingScale=String(scale);}

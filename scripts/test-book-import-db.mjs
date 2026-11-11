@@ -9,6 +9,7 @@ const state=spawnSync('./node_modules/.bin/supabase',['status','--workdir','/pri
 const config=JSON.parse(state.stdout),url=config.API_URL;assert.equal(url,'http://127.0.0.1:55321');
 const options={auth:{persistSession:false,autoRefreshToken:false}},admin=createClient(url,config.SECRET_KEY??config.SERVICE_ROLE_KEY,options),must=r=>{if(r.error)throw Error(r.error.message);return r.data;};
 const {activeReadingBooks}=load('lib/whimsy/books');
+const {shelfMove}=load('lib/whimsy/reading-cycles'),{startBookReadingTimer,discardReadingTimer}=load('lib/whimsy/reading-timer');
 const {parseLibraryCsv}=load('lib/books/import-csv'),{readGoodreadsRow}=load('lib/books/import-goodreads'),{planGoodreads}=load('lib/books/import-plan'),{prepareGoodreadsCommands,executeImportCommands}=load('lib/books/import-execute'),{readWhimsy,saveWhimsyRecord}=load('lib/whimsy/persistence'),{readImportSources,readImportObservations}=load('lib/books/import-persistence'),{importSeriesMatch}=load('lib/books/import-series'),{exportBookLibrary}=load('lib/books/import-export'),{bookCompletions}=load('lib/whimsy/reading-stats'),{sessionReadId}=load('lib/whimsy/reading-cycles');
 const users=[],uuid=()=>crypto.randomUUID();let checks=0;const check=(value,label)=>{assert.ok(value,label);checks++;console.log('PASS',label);};
 async function account(){const email=`import-${uuid()}@example.test`,link=must(await admin.auth.admin.generateLink({type:'invite',email}));users.push(link.user.id);const client=createClient(url,config.PUBLISHABLE_KEY??config.ANON_KEY,options);must(await client.auth.verifyOtp({type:'invite',token_hash:link.properties.hashed_token}));return {client,userId:link.user.id,email};}
@@ -58,5 +59,14 @@ try{
  const archive=await exportBookLibrary(client,userId,true);check(archive[0]===0x50&&archive[1]===0x4b&&archive.length>10000,'Portable reading ZIP includes the full paged library');
  const primary=await exportBookLibrary(client,userId,false);check(parseLibraryCsv(primary).length===1014,'Library export contains every book plus its heading');
  const forbidden=await other.client.rpc('save_imported_book',stale[0].command);check(!!forbidden.error,'A different account cannot write a known book ID');
+ const dnfRow=makeRow('dnf-source','DNF Test',{status:'dnf',finishedOn:'2024-01-01',review:'Stopped intentionally'});
+ result=await executeImportCommands(client,commands(planGoodreads([dnfRow],[],[])),()=>{});
+ let dnfBook=(await readWhimsy(client)).books.find(b=>b.title==='DNF Test');check(result.saved===1&&dnfBook.status==='dnf'&&bookCompletions(dnfBook).length===0,'DNF persists through the canonical writer without a false completed read');
+ const dnfSources=identities(await readImportSources(client,userId));result=await executeImportCommands(client,commands(planGoodreads([dnfRow],[dnfBook],dnfSources)),()=>{});
+ check(result.saved===1&&(await readWhimsy(client)).books.filter(b=>b.title==='DNF Test').length===1&&bookCompletions((await readWhimsy(client)).books.find(b=>b.id===dnfBook.id)).length===0,'Repeated DNF import has one canonical book and no fabricated history');
+ dnfBook=(await readWhimsy(client)).books.find(b=>b.id===dnfBook.id);
+ const startFields=shelfMove(dnfBook,'reading','2026-11-11'),stamp=new Date().toISOString(),timer={bookId:dnfBook.id,cycleId:startFields.cycleId,autoStatus:{previous:'dnf',bookRevision:dnfBook.revision+1},phase:'running',date:'2026-11-11',timeZone:'UTC',startedAt:stamp,runningSince:stamp,startingPage:dnfBook.currentPage??0,sessionId:uuid(),sessionCommandId:uuid(),segments:[]};
+ const resumed=await startBookReadingTimer(client,{...dnfBook,...startFields},dnfBook.revision,timer,uuid());check(resumed.book.status==='reading'&&resumed.timer.cycleId===startFields.cycleId,'Start reading from DNF atomically reopens reading without a completion');
+ const discarded=await discardReadingTimer(client,resumed.timer.revision,uuid());check(discarded.restored&&(await readWhimsy(client)).books.find(b=>b.id===dnfBook.id).status==='dnf','Discarding an unsaved DNF restart safely restores DNF');
  console.log(`PASS ${checks} real import integrity checks`);
 }finally{for(const userId of users)must(await admin.auth.admin.deleteUser(userId));console.log('Disposable import test accounts removed.');}

@@ -23,7 +23,7 @@ export function prepareGoodreadsCommands(plan:readonly ImportPlanRow[],batchId:s
   for(const field of item.useFields??[])if(replacements[field]!==undefined)book[field]=replacements[field];
   let cycleId=item.cycleId,historyAdded=0;
   if(kept&&cycleId)book.completions=bookCompletions(kept);
-  if(row.finishedOn&&(!kept||item.historyAction==='add')&&!cycleId){
+  if(row.finishedOn&&((!kept&&row.status!=='dnf')||item.historyAction==='add')&&!cycleId){
    const previous=kept?bookCompletions(kept):[];
    if(kept&&!previous.length){if(kept.rating!==undefined)book.unassignedRating=kept.rating;if(kept.finalThoughts)book.unassignedReview=kept.finalThoughts;if(kept.reviewEmojis.length)book.unassignedEmojis=kept.reviewEmojis;}
    const existing=previous.find(c=>c.importSource===source&&c.finishedOn===row.finishedOn);
@@ -38,8 +38,8 @@ export function prepareGoodreadsCommands(plan:readonly ImportPlanRow[],batchId:s
    if(target){book.completions=reads.map(c=>c.id===target.id?{...c,[opinion]:replacements[field]}:c);museBefore[`${field}ReadId`]=target.id;if(target[opinion]!==undefined)museBefore[`${field}ReadValue`]=target[opinion];}
    else if(field==='rating')book.unassignedRating=replacements[field];else book.unassignedReview=replacements[field];
   }}
-  const observed=JSON.parse(JSON.stringify(row)) as Record<string,unknown>;
-  return [{title:row.title,rowIndex,historyAdded,command:{p_batch:batchId,p_source:source,p_source_id:row.sourceId,p_book:book,p_revision:item.book?.revision??0,p_observed:observed,p_observation:{...observed,...(cycleId?{cycleId}:{}),...(Object.keys(museBefore).length?{museBefore}:{})},p_command_id:makeId(),p_series:item.series??null,p_shelves:includeShelves?row.shelves.filter(s=>!['read','currently-reading','to-read'].includes(s.toLowerCase())).slice(0,100):[]}}];
+  const observed=JSON.parse(JSON.stringify(item.sourceRow??row)) as Record<string,unknown>;
+  return [{title:row.title,rowIndex,historyAdded,command:{p_batch:batchId,p_source:source,p_source_id:row.sourceId,p_book:book,p_revision:item.book?.revision??0,p_observed:observed,p_observation:{...observed,...(cycleId?{cycleId}:{}),...(Object.keys(museBefore).length?{museBefore}:{})},p_command_id:makeId(),p_series:item.series??null,p_shelves:includeShelves?row.shelves.filter(s=>!['read','currently-reading','to-read','dnf','did-not-finish'].includes(s.toLowerCase())).slice(0,100):[]}}];
  });
 }
 /** Sequential bounded transactions; individual failures can be retried without undoing confirmed books. */

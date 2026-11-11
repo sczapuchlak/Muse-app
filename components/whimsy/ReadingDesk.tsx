@@ -6,7 +6,7 @@ import type {Book,ReadingSession} from '@/lib/whimsy/models';
 import {bookPosition} from '@/lib/whimsy/books';
 import './ReadingDesk.css';
 
-const shelves:[Book['status'],string][]=[['planned','Want to Read'],['paused','On Hold'],['finished','Finished'],['reading','Currently Reading']];
+const shelves:[Book['status'],string][]=[['planned','Want to Read'],['paused','On Hold'],['dnf','Did Not Finish'],['finished','Finished'],['reading','Currently Reading']];
 
 /**
  * One compact reading tile: cover, title, author and progress, nothing else to read. Pressing the tile opens the book;
