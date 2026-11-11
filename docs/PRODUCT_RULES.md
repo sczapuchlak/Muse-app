@@ -911,3 +911,7 @@ Currently Reading uses real saved reading sessions, recorded progress dates and 
 - A favourite is a heart on the book (`favorite` on the book's own record). It is the single home: the Atlas Favourites shelf and the month shelf badge read it; nothing copies it.
 - It needs no migration: books already store their fields in the record payload. Every rewrite of a book record must carry it (`bookCarryFields`), so editing, moving shelves or archiving never clears a heart.
 - Atlas Favourites lists hearted books finished in the chosen period. A heart is optional and independent of rating.
+
+### Update: favourites belong to a read, not a book
+
+Supersedes the book-level heart above. A favourite is "marked as a favourite in my reading log": it is set on a finished read, in the finish check-in or later from the book's Reads tab, and stored on that completion (`favorite`). Unread books can't be favourites, and a reread can be marked separately. A heart saved on the book earlier still counts for that book's latest read (`isFavoriteRead`). No migration: completions already live in the book record.

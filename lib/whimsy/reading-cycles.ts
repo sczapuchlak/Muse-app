@@ -95,7 +95,7 @@ export function readLabel(read:ReadEntry,label:(date:string)=>string){return rea
 
 /** Book fields written by a read-related change; the rest of the record is carried unchanged by the caller. */
 export type ReadFields=Pick<Book,'status'|'rating'|'finalThoughts'>&Partial<Pick<Book,'startedOn'|'finishedOn'|'completions'|'cycleId'|'unassignedRating'|'unassignedReview'|'reviewEmojis'|'unassignedEmojis'>>;
-export type FinishOpinion={finishedOn:string;rating?:number;review?:string;reviewEmojis:string[]};
+export type FinishOpinion={finishedOn:string;rating?:number;review?:string;reviewEmojis:string[];favorite?:boolean};
 /** Deterministic completion ids for one write, so a retried write never creates a second completion. */
 export const completionIdFactory=(book:Pick<Book,'id'|'revision'>)=>{let n=0;return ()=>`${book.id}-read-${book.revision}-${n++}`;};
 
@@ -108,7 +108,7 @@ export function shelfMove(original:Book,next:Book['status'],today:string,details
  const finishedOn=details?details.finishedOn:book.finishedOn,startedOn=next==='reading'?(book.status==='finished'?today:book.startedOn??today):book.startedOn;
  const closing=next==='finished'?openReadId(book)??newCycleId(book):undefined;
  const completions=nextCompletions(book,{status:next,finishedOn,startedOn:book.startedOn,cycleId:closing},`${today}T00:00:00.000Z`,completionIdFactory(book))
-  .map(c=>c.id===closing&&details?{...c,...(details.rating?{rating:details.rating}:{}),...(details.review?{review:details.review}:{}),...(details.reviewEmojis.length?{emojis:details.reviewEmojis.slice(0,3)}:{})}:c);
+  .map(c=>c.id===closing&&details?{...c,...(details.rating?{rating:details.rating}:{}),...(details.review?{review:details.review}:{}),...(details.reviewEmojis.length?{emojis:details.reviewEmojis.slice(0,3)}:{}),...(details.favorite?{favorite:true}:{})}:c);
  const cycleId=closing??(next!=='planned'&&(book.status==='finished'||!openReadId(book))?newCycleId(book):book.cycleId);
  // Book-level dates describe the current read (the server requires finish >= start). Earlier finishes stay in completions.
  const latest=completions.at(-1),dates=next==='finished'&&latest?{startedOn:latest.startedOn,finishedOn:latest.finishedOn}:{startedOn,finishedOn:completions.length?undefined:finishedOn};
@@ -153,4 +153,15 @@ export function withReadEmojis(original:Book,readId:string,emojis:string[]):Pick
  const book=preserveOpinions(original),clean=emojis.slice(0,3);
  const completions=bookCompletions(book).map(c=>c.id===readId?{...c,emojis:clean}:c);
  return {completions,reviewEmojis:completions.findLast(c=>!!c.emojis?.length)?.emojis??book.unassignedEmojis??[],...(book.unassignedEmojis?.length?{unassignedEmojis:book.unassignedEmojis}:{})};
+}
+
+/** One read marked (or unmarked) as a favourite in the reading log; every other read and the book stay as they are. */
+export function withReadFavorite(original:Book,readId:string,favorite:boolean):Pick<Book,'completions'>{
+ const book=preserveOpinions(original);
+ return {completions:bookCompletions(book).map(c=>{if(c.id!==readId)return c;const {favorite:_old,...rest}=c;return favorite?{...rest,favorite:true}:rest;})};
+}
+/** A read is a reading-log favourite when it was marked so; a heart set directly on the book earlier counts for its latest read. */
+export function isFavoriteRead(book:Pick<Book,'favorite'|'completions'|'id'|'finishedOn'|'startedOn'|'createdAt'>,completion:BookCompletion){
+ if(completion.favorite)return true;
+ const reads=bookCompletions(book as Book);return !!book.favorite&&reads.at(-1)?.id===completion.id;
 }

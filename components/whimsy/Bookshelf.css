@@ -398,3 +398,24 @@ button.muse-books-month-row:hover{background:var(--surface-hover)}
 .muse-atlas-modal-books small{color:var(--text-muted);white-space:nowrap}
 .muse-atlas-pair-top>*{min-width:0;overflow:hidden}
 .muse-atlas-pair-top .muse-atlas-heatmap{max-width:100%}
+/* Favourite in the reading log: set when finishing a book, or later on that read. */
+.muse-finish-favorite{display:flex;align-items:center;gap:12px;width:100%;padding:10px 14px;border:1px solid var(--glass-border);border-radius:14px;background:var(--surface-subtle);color:inherit;font:inherit;text-align:left;cursor:pointer}
+.muse-finish-favorite span{display:grid;gap:1px}.muse-finish-favorite small{color:var(--text-muted);font-size:.76rem}
+.muse-finish-favorite[aria-pressed="true"]{border-color:var(--accent-primary);box-shadow:0 0 14px color-mix(in srgb,var(--accent-primary) 30%,transparent)}
+.muse-read-favorite{display:inline-flex;align-items:center;gap:8px;justify-self:start;padding:4px 0;border:0;background:none;color:var(--text-muted);font:inherit;font-size:.82rem;cursor:pointer}
+.muse-read-favorite[aria-pressed="true"]{color:var(--foreground)}
+.muse-read-favorite:hover{color:var(--foreground)}
+/* Reading DNA: genres take 70%, emojis 30%; both contained and paged. */
+.muse-dna-pair{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,3fr);gap:clamp(12px,1.8vw,20px);align-items:stretch}
+.muse-dna-pair>*{min-width:0;margin:0}
+@container muse-content (max-width:760px){.muse-dna-pair{grid-template-columns:minmax(0,1fr)}}
+.muse-dna-pair .muse-paged-rows.muse-atlas-emojis{display:grid;grid-template-columns:minmax(0,1fr);gap:6px;margin:0;padding:0;list-style:none}
+.muse-dna-pair .muse-atlas-table th,.muse-dna-pair .muse-atlas-table td{padding-block:8px}
+/* The books-behind modal: a colourful title and a mini cover for every read. */
+#atlas-books-behind .muse-modal-universal-close>h2{font-family:var(--font-editorial);font-size:1.4rem;background:linear-gradient(120deg,var(--accent-pop,var(--accent-primary)),var(--accent-primary),var(--accent-secondary));-webkit-background-clip:text;background-clip:text;color:transparent}
+.muse-atlas-modal-count{margin:0;font-size:.78rem;color:var(--text-muted);letter-spacing:.06em;text-transform:uppercase}
+.muse-atlas-modal-books li{display:grid!important;grid-template-columns:40px minmax(0,1fr);align-items:center;justify-content:initial!important;gap:12px;padding:8px 12px 8px 10px;border-left:3px solid var(--accent-primary);border-radius:12px}
+.muse-atlas-modal-books .muse-finished-cover{width:40px}
+.muse-atlas-modal-copy{display:grid;gap:2px;min-width:0}
+.muse-atlas-modal-title{padding:0;border:0;background:none;font:inherit;font-family:var(--font-editorial);font-size:1.02rem;line-height:1.2;text-align:left;color:var(--accent-primary);cursor:pointer;justify-self:start}
+button.muse-atlas-modal-title:hover{text-decoration:underline;text-underline-offset:3px}
