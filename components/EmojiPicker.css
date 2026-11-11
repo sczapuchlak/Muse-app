@@ -24,3 +24,14 @@
 .muse-emoji-search + .muse-choice-menu{margin-top:var(--space-2)}
 .muse-emoji-glyph{font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;font-variant-emoji:emoji}
 .muse-emoji-fallback{display:inline-grid;place-items:center;min-width:1.25em;min-height:1.25em;border:1px solid var(--glass-border);border-radius:50%;background:var(--surface-subtle);color:var(--accent-primary);font-size:.75em}
+
+/* #130: search and category share one row; the results area is taller and every emoji is a comfortable tap target. */
+.muse-emoji-controls{display:grid;grid-template-columns:minmax(0,1fr) minmax(144px,42%);align-items:end;gap:var(--space-2)}
+.muse-emoji-find{display:grid;gap:4px;min-width:0}
+.muse-emoji-controls .muse-choice-menu{margin:0;align-self:end}
+.muse-emoji-controls .muse-choice-trigger{min-height:var(--control-height,40px);font-size:.82rem}
+.muse-emoji-controls .muse-emoji-search+.muse-choice-menu{margin-top:0}
+.muse-emoji-results{max-height:min(380px,50dvh)}
+.muse-emoji-grid{grid-template-columns:repeat(auto-fill,minmax(44px,1fr));gap:4px}
+.muse-emoji-option{min-width:44px;min-height:44px;font-size:1.6rem}
+@media(max-width:420px){.muse-emoji-controls{grid-template-columns:minmax(0,1fr) minmax(128px,42%)}}

@@ -85,3 +85,9 @@
   .muse-intentions-grid{grid-template-columns:1fr}
 }
 @media (prefers-reduced-motion:reduce){.muse-intentions-collapse svg{transition:none}}
+
+/* #130: a section that answers a library or personal prompt shows the question in italics and sits in the two-column
+   grid like the other modules, so prompts never turn the page into one long column. */
+.muse-intentions-question{margin:0;font-family:var(--font-editorial);font-style:italic;font-size:.95rem;line-height:1.45;color:var(--text-muted)}
+.muse-intentions-section[data-prompt]:is([data-type=writing]){grid-column:auto}
+@media(max-width:760px){.muse-intentions-section[data-prompt]{grid-column:1/-1}}

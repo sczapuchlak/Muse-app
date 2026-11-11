@@ -53,8 +53,9 @@ export type ForwardItem = { id: string; text: string; event?: Ref };
 export type LinkItem = { id: string; ref: Ref; note: string };
 export type SectionContent = {
   theme: { word: string; text: string };
-  writing: { prompt: WritingPrompt; text: string };
-  list: { prompt: ListPrompt; items: TextItem[] };
+  /** `question` (#130): the prompt this section answers, kept on the page so later edits to the library never rewrite it. */
+  writing: { prompt: WritingPrompt; text: string; question?: string };
+  list: { prompt: ListPrompt; items: TextItem[]; question?: string };
   priorities: { items: PriorityItem[] };
   forward: { items: ForwardItem[] };
   aspirations: { items: LinkItem[] };
@@ -113,6 +114,14 @@ export function newSection(key: SectionKindKey, id: string, title?: string): Int
   return { id, type: k.type, title: (title ?? k.title).slice(0, 60), content: emptyContent(key) };
 }
 
+/** A prompt from the library or the person's own prompts, added to a page as its own section. */
+export function promptSection(p: { kind: "writing" | "list"; title: string; question: string }, id: string): IntentionSection {
+  const title = p.title.trim().slice(0, 60) || "A question for me", question = p.question.trim().slice(0, MAX_QUESTION);
+  return p.kind === "list"
+    ? { id, type: "list", title, content: { prompt: "custom", items: [], question } }
+    : { id, type: "writing", title, content: { prompt: "custom", text: "", question } };
+}
+
 // ---------- One default template per period (#117 §8) ----------
 type Seed = { key: SectionKindKey; title?: string };
 export const templates: Record<IntentionPeriod, { name: string; tagline: string; seeds: Seed[] }> = {
@@ -138,13 +147,15 @@ export function seedSections(period: IntentionPeriod, makeId: () => string = () 
 }
 
 // ---------- Parsing (the database holds JSON; the app is the validator) ----------
+export const MAX_QUESTION = 280;
+const question = (v: unknown) => { const q = str(v, MAX_QUESTION).trim(); return q ? { question: q } : {}; };
 const items = (v: unknown, max: number) => (Array.isArray(v) ? v : []).filter((x): x is Record<string, unknown> => !!x && typeof x === "object" && idOk((x as Record<string, unknown>).id)).slice(0, max);
 function parseContent(type: SectionType, v: unknown): SectionContent[SectionType] {
   const o = v && typeof v === "object" ? v as Record<string, unknown> : {};
   switch (type) {
     case "theme": return { word: str(o.word, 60), text: str(o.text, 2000) };
-    case "writing": return { prompt: (Object.keys(writingPrompts) as WritingPrompt[]).find((p) => p === o.prompt) ?? "custom", text: str(o.text, 8000) };
-    case "list": return { prompt: (Object.keys(listPrompts) as ListPrompt[]).find((p) => p === o.prompt) ?? "custom", items: items(o.items, MAX_ITEMS.list).map((x) => ({ id: x.id as string, text: str(x.text, 300) })) };
+    case "writing": return { prompt: (Object.keys(writingPrompts) as WritingPrompt[]).find((p) => p === o.prompt) ?? "custom", text: str(o.text, 8000), ...question(o.question) };
+    case "list": return { prompt: (Object.keys(listPrompts) as ListPrompt[]).find((p) => p === o.prompt) ?? "custom", items: items(o.items, MAX_ITEMS.list).map((x) => ({ id: x.id as string, text: str(x.text, 300) })), ...question(o.question) };
     case "priorities": return { items: items(o.items, MAX_ITEMS.priorities).map((x) => { const r = ref(x.ref, ["aspiration", "task"]); return { id: x.id as string, text: str(x.text, 200), ...(r ? { ref: r } : {}), ...(recordIdOk(x.taskId) ? { taskId: x.taskId } : {}) }; }) };
     case "forward": return { items: items(o.items, MAX_ITEMS.forward).map((x) => { const e = ref(x.event, ["event"]); return { id: x.id as string, text: str(x.text, 200), ...(e ? { event: e } : {}) }; }) };
     case "aspirations": case "rituals": case "bucket": case "boards": {

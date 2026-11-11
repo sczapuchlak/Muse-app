@@ -6,7 +6,7 @@ import { createTask } from "@/lib/planner";
 import { projectEvents } from "@/lib/planner-occurrences";
 import { rhythmLabel } from "@/lib/rituals";
 import { intentionName, intentionPeriods, intentionRange, intentionTense, intentionTitle, isIntentionPeriod, shiftIntention, type IntentionPeriod, type IntentionRange } from "@/lib/intentions/periods";
-import { canAddItem, chosenIds, kindOf, listPrompts, MAX_SECTIONS, moveSection, newSection, pageHasContent, refStatus, removeSection, sectionKinds, seedSections, templates, writingPrompts,
+import { canAddItem, chosenIds, kindOf, listPrompts, MAX_SECTIONS, moveSection, newSection, pageHasContent, promptSection, refStatus, removeSection, sectionKinds, seedSections, templates, writingPrompts,
   type IntentionSection, type LinkItem, type Ref, type SectionContent, type SectionKindKey, type SectionType } from "@/lib/intentions/model";
 import { deleteIntentions, missingTable, readIntentions, saveIntentions, type IntentionPage } from "@/lib/intentions/persistence";
 import { readReview } from "@/lib/reflections/persistence";
@@ -18,6 +18,7 @@ import { useVisionBoards } from "../../envision/vision/useVisionBoards";
 import { LazyPreview } from "../../envision/vision/BoardThumb";
 import { periodLabel } from "@/lib/vision-boards/model";
 import { MuseChoiceMenu } from "../../MuseChoiceMenu";
+import { PromptLibrary } from "./PromptLibrary";
 import { MuseIcon } from "../../MuseIcon";
 import { MuseStar } from "../../MuseStar";
 import { PeriodTitle } from "../PeriodTitle";
@@ -99,7 +100,7 @@ function ChapterLoader({ range, today, client }: { range: IntentionRange; today:
     {error && <p className="muse-reflections-alert" role="alert">{error} <button type="button" className="muse-reflections-pill" onClick={() => setError("")}>Dismiss</button></p>}
     {page === undefined ? <p className="muse-reflections-quiet" role="status">Opening this chapter…</p>
       : page === null ? <StartChapter range={range} tense={tense} onBegin={(blank) => void begin(blank)} />
-      : <Chapter page={page} range={range} today={today} tense={tense} status={status} change={change} onClear={() => void clear()} />}
+      : <Chapter page={page} range={range} today={today} tense={tense} status={status} change={change} client={client} onClear={() => void clear()} />}
     <ReflectionsLink range={range} client={client} />
   </>;
 }
@@ -168,9 +169,11 @@ const refHref = (r: Ref, range: IntentionRange) => r.kind === "aspiration" ? `/e
   : r.kind === "event" ? `/planner?view=agenda&date=${r.date ?? range.start}` : "/planner";
 const shortDate = (d: string) => new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", timeZone: "UTC" }).format(new Date(`${d}T12:00:00Z`));
 
-function Chapter({ page, range, today, tense, status, change, onClear }: { page: IntentionPage; range: IntentionRange; today: string; tense: string; status: string; change: Change; onClear: () => void }) {
+function Chapter({ page, range, today, tense, status, change, client, onClear }: { page: IntentionPage; range: IntentionRange; today: string; tense: string; status: string; change: Change; client: () => Client; onClear: () => void }) {
   const L = useLookups(range, today);
   const [arranging, setArranging] = useState(false), [confirm, setConfirm] = useState<string | "page" | null>(null), [adding, setAdding] = useState(false);
+  const [promptAnchor, setPromptAnchor] = useState<HTMLElement | null>(null), [promptOpen, setPromptOpen] = useState(false);
+  const usedQuestions = useMemo(() => new Set(page.sections.flatMap((x) => { const q = (x.content as { question?: string }).question; return q ? [q] : []; })), [page.sections]);
   const setSections = (fn: (s: IntentionSection[]) => IntentionSection[], delay?: number) => change((p) => ({ ...p, sections: fn(p.sections) }), delay);
   const update = (id: string, fn: (s: IntentionSection) => IntentionSection, delay?: number) => setSections((list) => list.map((s) => s.id === id ? fn(s) : s), delay);
   const visible = page.sections.filter((s) => arranging || !s.hidden), hiddenCount = page.sections.filter((s) => s.hidden).length;
@@ -181,6 +184,7 @@ function Chapter({ page, range, today, tense, status, change, onClear }: { page:
       </div>
       <div className="muse-reflections-actions">
         <span className="muse-reflections-quiet" role="status">{status}</span>
+        <button type="button" className="muse-button" disabled={page.sections.length >= MAX_SECTIONS} onClick={(e) => { setPromptAnchor(e.currentTarget); setPromptOpen(true); }}><MuseIcon name="sparkle" size={15} />Prompts</button>
         <button type="button" className="muse-button" aria-pressed={arranging} onClick={() => { setArranging(!arranging); setAdding(false); setConfirm(null); }}>{arranging ? "Done arranging" : "Arrange sections"}</button>
       </div>
     </header>
@@ -208,6 +212,8 @@ function Chapter({ page, range, today, tense, status, change, onClear }: { page:
         <div className="muse-reflections-actions"><button type="button" className="muse-button" data-destructive onClick={() => { setConfirm(null); setArranging(false); onClear(); }}>Clear page</button><button type="button" className="muse-reflections-pill" onClick={() => setConfirm(null)}>Keep it</button></div>
       </div> : <button type="button" className="text-button muse-intentions-clear" onClick={() => setConfirm("page")}>Clear this page…</button>}
     </div>}
+    {promptOpen && <PromptLibrary period={range.period} client={client} usedQuestions={usedQuestions} returnFocus={promptAnchor} onClose={() => setPromptOpen(false)}
+      onAdd={(p) => setSections((list) => list.length >= MAX_SECTIONS ? list : [...list, promptSection(p, uid())], 0)} />}
   </article>;
 }
 
@@ -215,7 +221,7 @@ function SectionFrame({ section: s, arranging, first, last, onTitle, onCollapse,
   section: IntentionSection; arranging: boolean; first: boolean; last: boolean; onTitle: (t: string) => void; onCollapse: () => void; onMove: (by: -1 | 1) => void; onHide: () => void; onRemove: () => void;
   confirming: boolean; onConfirm: (yes: boolean) => void; children: ReactNode }) {
   const k = kindOf(s), bodyId = `intention-${s.id}`;
-  return <section className="muse-intentions-section" data-type={s.type} data-kind={k.key} data-hidden={s.hidden || undefined} data-collapsed={s.collapsed || undefined} aria-label={s.title}>
+  return <section className="muse-intentions-section" data-type={s.type} data-kind={k.key} data-prompt={(s.content as { question?: string }).question ? true : undefined} data-hidden={s.hidden || undefined} data-collapsed={s.collapsed || undefined} aria-label={s.title}>
     <header className="muse-intentions-section-head">
       <span className="muse-intentions-section-icon" aria-hidden="true">{k.emoji}</span>
       {arranging ? <input className="muse-reflections-module-title" aria-label="Section title" maxLength={60} value={s.title} onChange={(e) => onTitle(e.target.value)} /> : <h3>{s.title}</h3>}
@@ -230,7 +236,7 @@ function SectionFrame({ section: s, arranging, first, last, onTitle, onCollapse,
       <p><strong>Delete “{s.title}” and what’s written in it?</strong> Hiding keeps the words instead. Linked records stay where they are.</p>
       <div className="muse-reflections-actions"><button type="button" className="muse-button" data-destructive onClick={() => onConfirm(true)}>Delete section and its content</button><button type="button" className="muse-reflections-pill" onClick={() => { onConfirm(false); onHide(); }}>Hide instead</button><button type="button" className="muse-reflections-pill" onClick={() => onConfirm(false)}>Cancel</button></div>
     </div>}
-    <div id={bodyId} className="muse-intentions-section-body" hidden={!arranging && s.collapsed}>{children}</div>
+    <div id={bodyId} className="muse-intentions-section-body" hidden={!arranging && s.collapsed}>{(s.content as { question?: string }).question && <p className="muse-intentions-question">{(s.content as { question?: string }).question}</p>}{children}</div>
   </section>;
 }
 

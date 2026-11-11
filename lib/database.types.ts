@@ -971,6 +971,20 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
+                },"intention_prompts": {
+                  Row: {
+                    "category": string | null,"created_at": string,"favorite": boolean,"id": string,"kind": string,"periods": (string)[],"prompt_key": string | null,"question": string | null,"response": string | null,"revision": number,"title": string | null,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "category"?: string | null,"created_at"?: string,"favorite"?: boolean,"id"?: string,"kind": string,"periods"?: (string)[],"prompt_key"?: string | null,"question"?: string | null,"response"?: string | null,"revision"?: number,"title"?: string | null,"updated_at"?: string,"user_id"?: string
+                  }
+                  Update: {
+                    "category"?: string | null,"created_at"?: string,"favorite"?: boolean,"id"?: string,"kind"?: string,"periods"?: (string)[],"prompt_key"?: string | null,"question"?: string | null,"response"?: string | null,"revision"?: number,"title"?: string | null,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
                 },"life_areas": {
                   Row: {
                     "archived_at": string | null,"color": string,"created_at": string,"id": string,"label": string,"position": number,"revision": number,"updated_at": string,"user_id": string
