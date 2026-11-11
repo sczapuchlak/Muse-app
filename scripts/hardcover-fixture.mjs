@@ -60,7 +60,7 @@ const series=[
  {id:400,name:'The Long Shelf',description:'A twenty-two book epic, for testing a very long shelf.',is_completed:true,author:sjm},
  {id:300,name:'Crescent City',description:'A half-Fae, half-human woman seeks revenge in a city of angels, shifters and Fae.',is_completed:false,author:sjm},
  {id:201,name:'A Court of Thorns and Roses (Dramatized Adaptation)',description:null,is_completed:false,author:null},
- {id:200,name:'A Court of Thorns and Roses',description:'A sweeping romantic fantasy of faerie courts, curses and the bonds that hold a world together.',is_completed:false,author:sjm},
+ {id:200,name:'A Court of Thorns and Roses',description:'A sweeping romantic fantasy of faerie courts, curses and the bonds that hold a world together. It begins with a huntress and a beast and grows into a war that reshapes every court in Prythian, with found family, fierce loyalties and love that costs everything. A fixture sentence long enough to push the blurb past two lines on any screen.',is_completed:false,author:sjm},
 ];
 const rows=s=>books.flatMap(b=>b.series.filter(([id])=>id===s.id).map(([,position,featured,compilation])=>({position,featured,compilation:!!compilation,book:b})));
 const norm=x=>String(x??'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();

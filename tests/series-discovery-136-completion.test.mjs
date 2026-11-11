@@ -151,11 +151,16 @@ test('the spine row is a reusable, series-agnostic component; decoration stays o
  assert.equal(trinketFor(['Romantasy']),'crystal');assert.equal(trinketFor(['Contemporary Romance']),'rose');assert.equal(trinketFor(['Mystery']),'magnifier');assert.equal(trinketFor([]),'candle');
 });
 
-test('the bookshelf lives in the Series header; sections below keep their stacked order (#136)',()=>{
+test('Series page structure: hero, then independent 70/30 columns with fixed-size cards and carousels (#136)',()=>{
  const route=read('components/collections/SeriesRoute.tsx'),css=read('components/collections/SeriesPage.css'),spines=read('components/collections/BookSpines.tsx');
  const at=s=>route.indexOf(s);
- assert.ok(at('muse-series-hero2')>0&&at('muse-series-hero2')<at('muse-series-page-progress')&&at('muse-series-page-progress')<at('series-order-heading')&&at('series-order-heading')<at('series-additional-heading'),'header (title + shelf) → progress → Primary → Additional');
- assert.match(route,/muse-series-shelf-scene/);assert.match(css,/\.muse-series-shelf-scene\{[^}]*mask-image/,'the scene dissolves toward the title; the spines are not masked');
- assert.doesNotMatch(route,/muse-series-top|muse-series-content|ShelfCarousel/,'no boxed shelf row, no 70/30 split');
- assert.match(spines,/ArrowRight/);assert.match(spines,/onSelect/);assert.match(css,/margin-left:auto|first-child\{margin-left:auto\}/.source?/x/:/x/);
+ assert.ok(at('muse-series-hero2')>0&&at('muse-series-hero2')<at('muse-series-columns'),'hero first, then the columns');
+ const main=route.slice(at('muse-series-col-main'),at('muse-series-col-side')),side=route.slice(at('muse-series-col-side'),at('muse-series-page-footnote'));
+ assert.match(main,/series-order-heading/);assert.doesNotMatch(main,/muse-series-page-progress|series-additional-heading|muse-series-page-bundles/,'the left column is Primary series only');
+ assert.ok(side.indexOf('muse-series-page-progress')<side.indexOf('series-additional-heading')&&side.indexOf('series-additional-heading')<side.indexOf('muse-series-page-bundles'),'right column: progress → additional → collections');
+ assert.doesNotMatch(route.slice(at('muse-series-hero2'),at('muse-series-columns')),/muse-series-page-progress/,'no progress card in the hero');
+ assert.match(css,/\.muse-series-columns\{[^}]*7fr[^}]*3fr[^}]*align-items:start/);assert.match(css,/\.muse-series-carousel>ol>li\{flex:0 0 128px/,'one card size everywhere');
+ assert.match(route,/<ShelfCarousel/);assert.doesNotMatch(route,/<details className="muse-series-page-collections" open/,'collections start collapsed');
+ assert.match(route,/Read more →/);assert.match(css,/\.muse-series-page-description p\{[^}]*-webkit-line-clamp:2/,'the blurb clamps to two lines');
+ assert.match(css,/\.muse-series-shelf-scene\{[^}]*mask-image/);assert.match(spines,/ArrowRight/);assert.match(spines,/onSelect/);
 });

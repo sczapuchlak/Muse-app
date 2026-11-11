@@ -1,5 +1,5 @@
 'use client';
-import {useEffect,useMemo,useRef,useState,type CSSProperties} from 'react';
+import {useCallback,useEffect,useMemo,useRef,useState,type CSSProperties,type ReactNode} from 'react';
 import Link from 'next/link';
 import {useRouter} from 'next/navigation';
 import {MuseIcon} from '@/components/MuseIcon';
@@ -162,7 +162,7 @@ export function SeriesRoute({seriesKey}:{seriesKey:string}){
   <div className="muse-series-card-copy"><strong className="type-title">{entry.title}</strong>{facts&&<span className="muse-series-card-facts">{facts}</span>}{signals(entry)}</div>
   {!owned&&entry.state!=='upcoming'&&<div className="muse-series-card-actions"><QuickAddButton size="sm" label={entry.title} busy={quick.pending===entry.key} disabled={!!quick.pending&&quick.pending!==entry.key} onAdd={status=>void add(entry,status)}/></div>}
  </li>;};
- const list=(entries:ShelfEntry[])=>layout==='grid'?<ol className="muse-series-grid">{entries.map(card)}</ol>:<ol className="muse-series-page-rows">{entries.map(row)}</ol>;
+ const list=(entries:ShelfEntry[],label:string)=>layout==='grid'?<ShelfCarousel label={label}>{entries.map(card)}</ShelfCarousel>:<ol className="muse-series-page-rows">{entries.map(row)}</ol>;
  const spines=shelf.primary,basisNote=primaryBasisNote(shelf);
  // Spines shrink only moderately as a series grows (never below a comfortably tappable 34px); the shelf scrolls beyond that.
  const spineWidth=Math.round(Math.max(34,Math.min(56,56-(spines.length-6)*2.4)));
@@ -192,6 +192,21 @@ export function SeriesRoute({seriesKey}:{seriesKey:string}){
    </div>
   </header>
   {(notice||problem||quick.error)&&<p className="muse-series-page-message" role={problem||quick.error?'alert':'status'} data-tone={problem||quick.error?'error':undefined}>{problem||quick.error||notice}</p>}
+  <div className="muse-series-columns">
+   <div className="muse-series-col-main">
+  <section className="muse-card muse-series-page-order" data-layout={layout} aria-labelledby="series-order-heading">
+   <header className="muse-series-page-order-head"><div><h2 id="series-order-heading" className="muse-book-page-section-title">Primary series <span className="muse-series-page-section-count type-numeric">{shelf.primaryCount}</span></h2><p>The main books in reading order. Series progress follows these.</p></div>
+    <div className="muse-series-page-tools">{layoutToggle}{saved&&<><button ref={menuAnchor} type="button" className="muse-button button-ghost" aria-haspopup="menu" aria-expanded={menuOpen} onClick={()=>setMenuOpen(v=>!v)}>Manage <MuseIcon name="chevron" size={14}/></button>
+    <GlassPopover id="series-manage" label="Manage series" open={menuOpen} anchorRef={menuAnchor} onClose={()=>setMenuOpen(false)} width={250} bare><div className="popover-choice-list">
+     {saved.catalog_source&&<button type="button" className="popover-choice" disabled={busy} onClick={()=>{setMenuOpen(false);void refresh();}}><span><MuseIcon name="undo" size={14}/> Refresh from catalog</span></button>}
+     <button type="button" className="popover-choice" onClick={()=>{setMenuOpen(false);setCorrecting(true);}}><span><MuseIcon name="edit" size={14}/> Correct installments</span></button>
+     <button type="button" className="popover-choice" disabled={busy} onClick={()=>{setMenuOpen(false);void remove();}}><span><MuseIcon name="trash" size={14}/> Remove series</span></button>
+    </div></GlassPopover></>}</div>
+   </header>
+   {shelf.primary.length?list(shelf.primary,'Primary series'):<p className="muse-series-page-empty-note">No primary books are listed for this series yet.</p>}
+  </section>
+   </div>
+   <div className="muse-series-col-side">
    <aside className="muse-card muse-series-page-progress" aria-label="Your progress" data-complete={core.complete||undefined}>
     <div className="muse-series-progress-head"><span className="small-label">Primary series</span>{core.badge&&<span className="muse-series-core-badge" data-tone={core.all?'all':core.complete?'core':'caught-up'}><MuseIcon name="check" size={13}/>{core.badge}</span>}</div>
     <div className="muse-series-page-count"><strong className="type-numeric">{shelf.readCount}</strong><span>of {shelf.primaryCount} read</span><em className="type-numeric">{shelf.percent}%</em></div>
@@ -202,22 +217,13 @@ export function SeriesRoute({seriesKey}:{seriesKey:string}){
     {shelf.collections.length>0&&<div className="muse-series-progress-extra"><div><strong>Collections &amp; box sets</strong><small>Bundles and collected editions</small></div><span className="muse-book-chip">Not counted</span></div>}
     {!core.complete&&!core.caughtUp&&shelf.next?<div className="muse-series-page-next"><span className="small-label">Next in order</span><div><SeriesCover title={shelf.next.title} coverUrl={shelf.next.coverUrl} color={shelf.next.coverColor} ghost={!shelf.next.book} size="sm"/><span><strong className="type-title">{shelf.next.title}</strong><small>{shelf.next.book?shelfStateLabel[shelf.next.state]:'Not on your shelf yet'}</small></span></div>{shelf.next.book?<button type="button" className="muse-button button-primary" onClick={()=>openBook(shelf.next!.book!.id)}>Open book</button>:<button type="button" className="muse-button button-primary" disabled={!!quick.pending} onClick={()=>void add(shelf.next!,'planned')}>{quick.pending===shelf.next.key?'Adding…':'Add to Want to Read'}</button>}</div>:null}
    </aside>
-  <section className="muse-card muse-series-page-order" data-layout={layout} aria-labelledby="series-order-heading">
-   <header className="muse-series-page-order-head"><div><h2 id="series-order-heading" className="muse-book-page-section-title">Primary series <span className="muse-series-page-section-count type-numeric">{shelf.primaryCount}</span></h2><p>The main books in reading order. Series progress follows these.</p></div>
-    <div className="muse-series-page-tools">{layoutToggle}{saved&&<><button ref={menuAnchor} type="button" className="muse-button button-ghost" aria-haspopup="menu" aria-expanded={menuOpen} onClick={()=>setMenuOpen(v=>!v)}>Manage <MuseIcon name="chevron" size={14}/></button>
-    <GlassPopover id="series-manage" label="Manage series" open={menuOpen} anchorRef={menuAnchor} onClose={()=>setMenuOpen(false)} width={250} bare><div className="popover-choice-list">
-     {saved.catalog_source&&<button type="button" className="popover-choice" disabled={busy} onClick={()=>{setMenuOpen(false);void refresh();}}><span><MuseIcon name="undo" size={14}/> Refresh from catalog</span></button>}
-     <button type="button" className="popover-choice" onClick={()=>{setMenuOpen(false);setCorrecting(true);}}><span><MuseIcon name="edit" size={14}/> Correct installments</span></button>
-     <button type="button" className="popover-choice" disabled={busy} onClick={()=>{setMenuOpen(false);void remove();}}><span><MuseIcon name="trash" size={14}/> Remove series</span></button>
-    </div></GlassPopover></>}</div>
-   </header>
-   {shelf.primary.length?list(shelf.primary):<p className="muse-series-page-empty-note">No primary books are listed for this series yet.</p>}
-  </section>
   {shelf.additional.length>0&&<section className="muse-card muse-series-page-order muse-series-page-additional" data-layout={layout} aria-labelledby="series-additional-heading">
    <header className="muse-series-page-order-head"><div><h2 id="series-additional-heading" className="muse-book-page-section-title">Additional works <span className="muse-series-page-section-count type-numeric">{shelf.additional.length}</span></h2><p>Prequels, novellas and companion stories, at their place in the order. Tracked on their own; they don’t change series progress.</p></div><span className="muse-book-chip">{shelf.additionalReadCount} of {shelf.additional.length} read</span></header>
-   {list(shelf.additional)}
+   {list(shelf.additional,'Additional works')}
   </section>}
-  {shelf.collections.length>0&&<section className="muse-card muse-series-page-order muse-series-page-bundles" data-layout={layout} aria-label="Collections and box sets"><details className="muse-series-page-collections"><summary><span className="muse-book-page-section-title">Collections &amp; box sets</span> <span className="muse-series-page-section-count type-numeric">{shelf.collections.length}</span><small>Bundles and collected editions. Never counted toward progress.</small></summary>{list(shelf.collections)}</details></section>}
+  {shelf.collections.length>0&&<section className="muse-card muse-series-page-order muse-series-page-bundles" data-layout={layout} aria-label="Collections and box sets"><details className="muse-series-page-collections"><summary><span className="muse-book-page-section-title">Collections &amp; box sets</span> <span className="muse-series-page-section-count type-numeric">{shelf.collections.length}</span><small>Bundles and collected editions. Never counted toward progress.</small></summary>{list(shelf.collections,'Collections and box sets')}</details></section>}
+   </div>
+  </div>
   <section className="muse-series-page-footnote">
    <p className="small-label muse-series-page-source">{series.catalog_source?`Series details from ${series.catalog_source==='hardcover'?'Hardcover':series.catalog_source==='wikidata'?'Wikidata':'Open Library'}${series.catalog_refreshed_at?` · refreshed ${longDate(series.catalog_refreshed_at.slice(0,10))}`:''}. Counts follow the catalog and may change as books are announced.`:'A series you put together. Everything here follows your own order.'}</p>
   </section>
@@ -225,16 +231,30 @@ export function SeriesRoute({seriesKey}:{seriesKey:string}){
   {quick.sheet}<QuickAddToast toast={quick.toast} spark={quick.spark} onDismiss={quick.dismissToast} onOpen={book=>{quick.dismissToast();openBook(book.id);}}/>
  </main>;
 }
-/** The first two sentences, with the rest a tap away. */
-function leadSentences(text:string,count=2){
- const clean=text.replace(/\s+/g,' ').trim(),parts=clean.match(/[^.!?]+[.!?]+(?:["”’)]*)(?:\s|$)/g);
- if(!parts||parts.length<=count)return {lead:clean,more:false};
- return {lead:parts.slice(0,count).join('').trim(),more:true};
-}
+/** The blurb is clamped to two lines; "Read more →" appears only when something is actually hidden. */
 function SeriesDescription({text}:{text:string}){
- const [open,setOpen]=useState(false),{lead,more}=leadSentences(text);
- return <div className="muse-series-page-description"><p className="type-reading">{open||!more?text:lead}</p>{more&&<button type="button" className="text-button" aria-expanded={open} onClick={()=>setOpen(v=>!v)}>{open?'Show less':'Read more'}</button>}</div>;
+ const [open,setOpen]=useState(false),[clipped,setClipped]=useState(false),ref=useRef<HTMLParagraphElement>(null);
+ useEffect(()=>{
+  const el=ref.current;if(!el||open)return;
+  const measure=()=>setClipped(el.scrollHeight>el.clientHeight+1);
+  const frame=requestAnimationFrame(measure),observer=typeof ResizeObserver==='undefined'?null:new ResizeObserver(measure);observer?.observe(el);
+  return()=>{cancelAnimationFrame(frame);observer?.disconnect();};
+ },[text,open]);
+ return <div className="muse-series-page-description"><p ref={ref} className="type-reading" data-open={open||undefined}>{text}</p>{(clipped||open)&&<button type="button" className="text-button" aria-expanded={open} onClick={()=>setOpen(v=>!v)}>{open?'Show less':'Read more →'}</button>}</div>;
 }
 function SeriesSkeleton(){
  return <div className="muse-series-page-skeleton" aria-label="Opening series"><div className="muse-series-hero2"><div className="muse-skeleton-lines"><span/><span/><span/></div><div className="muse-series-shelf"><div className="muse-series-shelf-scene"><span className="muse-series-shelf-glow"/><span className="muse-series-shelf-plank"/></div><BookSpinesSkeleton/></div></div></div>;
+}
+/** The same fixed-size book cards in one horizontal row; more than fit scrolls (swipe, arrows, arrow keys). */
+function ShelfCarousel({label,children}:{label:string;children:ReactNode}){
+ const ref=useRef<HTMLOListElement>(null),[edge,setEdge]=useState({start:true,end:true});
+ const update=useCallback(()=>{const el=ref.current;if(!el)return;setEdge({start:el.scrollLeft<=2,end:el.scrollLeft+el.clientWidth>=el.scrollWidth-2});},[]);
+ useEffect(()=>{const el=ref.current;if(!el)return;const frame=requestAnimationFrame(update),observer=typeof ResizeObserver==='undefined'?null:new ResizeObserver(update);observer?.observe(el);return()=>{cancelAnimationFrame(frame);observer?.disconnect();};},[update]);
+ const page=(dir:1|-1)=>{const el=ref.current;if(!el)return;el.scrollBy({left:dir*Math.max(140,el.clientWidth*.85),behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});};
+ const overflowing=!(edge.start&&edge.end);
+ return <div className="muse-series-carousel" role="group" aria-roledescription="carousel" aria-label={label} data-overflow={overflowing||undefined}>
+  {overflowing&&<button type="button" className="muse-series-carousel-arrow" data-dir="prev" disabled={edge.start} aria-label={`Previous ${label.toLowerCase()}`} onClick={()=>page(-1)}><MuseIcon name="chevron" size={16}/></button>}
+  <ol ref={ref} tabIndex={0} aria-label={`${label}, scroll sideways`} onScroll={update} onKeyDown={event=>{if((event.key==='ArrowRight'||event.key==='ArrowLeft')&&!(event.target as HTMLElement).closest('button,a,input')){event.preventDefault();page(event.key==='ArrowRight'?1:-1);}}}>{children}</ol>
+  {overflowing&&<button type="button" className="muse-series-carousel-arrow" data-dir="next" disabled={edge.end} aria-label={`Next ${label.toLowerCase()}`} onClick={()=>page(1)}><MuseIcon name="chevron" size={16}/></button>}
+ </div>;
 }
