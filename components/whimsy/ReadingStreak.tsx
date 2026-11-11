@@ -1,5 +1,5 @@
 'use client';
-import {useId} from 'react';
+import {useId,type ReactNode} from 'react';
 import Link from 'next/link';
 import type {StreakDetail} from '@/lib/whimsy/reading-streak';
 import './ReadingStreak.css';
@@ -18,11 +18,11 @@ export function StreakHeart({filled,today=false,size=26}:{filled:boolean;today?:
 }
 
 /** Seven days of reading as hearts, with the current streak and personal best. Opens the Atlas streak view. */
-export function ReadingStreak({detail,celebrate,href='/collections/reading-atlas?section=streak'}:{detail:StreakDetail;celebrate:number|null;href?:string}){
+export function ReadingStreak({detail,celebrate,href='/collections/reading-atlas?section=streak',children}:{detail:StreakDetail;celebrate:number|null;href?:string;children?:ReactNode}){
  const label=`Reading streak: ${detail.current} ${detail.current===1?'day':'days'}${detail.readToday?'':', read today to keep it going'}. Personal best ${detail.longest} days. Open streak details.`;
- return <Link href={href} className="muse-streak" aria-label={label} data-celebrating={celebrate?true:undefined}>
+ return <section className="muse-streak-panel" aria-label="Reading streak" data-celebrating={celebrate?true:undefined}><Link href={href} className="muse-streak" aria-label={label} data-celebrating={celebrate?true:undefined}>
   <span className="muse-streak-count"><strong className="type-numeric">{detail.current}</strong><span>{detail.current===1?'day':'day streak'}</span></span>
   <ol className="muse-streak-week" aria-hidden="true">{detail.week.map(day=><li key={day.date} title={`${longDay(day.date)}${day.read?' · read':''}`}><StreakHeart filled={day.read} today={day.today}/><span data-today={day.today||undefined}>{weekday(day.date)}</span></li>)}</ol>
   <span className="muse-streak-meta">{celebrate?<em className="muse-streak-milestone">✦ {celebrate}-day streak!</em>:detail.current>0&&!detail.readToday?<em>Read today to keep it</em>:<span>Best <strong className="type-numeric">{detail.longest}</strong></span>}<span className="muse-streak-chevron" aria-hidden="true">›</span></span>
- </Link>;
+ </Link>{children&&<div className="muse-streak-note">{children}</div>}</section>;
 }
