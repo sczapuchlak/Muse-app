@@ -385,3 +385,7 @@ button.muse-books-month-row:hover{background:var(--surface-hover)}
 .muse-atlas-pair-short .muse-paged-rows.muse-atlas-rows{gap:4px}
 .muse-atlas-pair-top .muse-atlas-heat-cell{min-height:0}
 .muse-atlas-books-pair[data-solo]{grid-template-columns:minmax(0,1fr)}
+/* Hearts: a small badge on favourite covers in the month shelf; the Book Detail heart. */
+.muse-shelf-book{position:relative}
+.muse-shelf-book[data-fav]::after{content:"♥";position:absolute;right:2px;top:2px;font-size:.6rem;line-height:1;color:#fff;background:var(--accent-primary);border-radius:50%;width:13px;height:13px;display:grid;place-items:center;box-shadow:0 1px 3px rgba(0,0,0,.4)}
+.muse-book-heart[aria-pressed="true"]{border-color:var(--accent-primary);box-shadow:0 0 12px color-mix(in srgb,var(--accent-primary) 40%,transparent)}
