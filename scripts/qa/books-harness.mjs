@@ -51,9 +51,9 @@ export async function openBrowser(account,{shots=join(tmpdir(),'muse-books-ui')}
  const portFile=join(directory,'profile/DevToolsActivePort');for(let i=0;!existsSync(portFile)&&i<100;i++)await wait(100);
  const port=readFileSync(portFile,'utf8').split('\n')[0],targets=await fetch(`http://127.0.0.1:${port}/json/list`).then(r=>r.json());
  const socket=new WebSocket(targets.find(t=>t.type==='page').webSocketDebuggerUrl);await new Promise(r=>socket.onopen=r);
- let id=0;const pending=new Map(),errors=[],consoleErrors=[];
+ let id=0;const pending=new Map(),errors=[],consoleErrors=[],listeners=new Set();
  const send=(method,params={})=>new Promise((resolve,reject)=>{const key=++id;pending.set(key,{resolve,reject});socket.send(JSON.stringify({id:key,method,params}));});
- socket.onmessage=e=>{const m=JSON.parse(e.data);
+ socket.onmessage=e=>{const m=JSON.parse(e.data);for(const fn of listeners)fn(m);
   if(m.method==='Runtime.exceptionThrown'){const t=m.params.exceptionDetails.exception?.description??m.params.exceptionDetails.text;if(!/negative time stamp/.test(t))errors.push(t);}
   if(m.method==='Runtime.consoleAPICalled'&&m.params.type==='error')consoleErrors.push(m.params.args.map(a=>a.value??a.description).join(' ').slice(0,400));
   if(m.method==='Page.javascriptDialogOpening')void send('Page.handleJavaScriptDialog',{accept:true});
@@ -71,6 +71,8 @@ export async function openBrowser(account,{shots=join(tmpdir(),'muse-books-ui')}
  const magic=must(await admin.auth.admin.generateLink({type:'magiclink',email:account.email}));
  await send('Page.navigate',{url:`${origin}/auth/confirm?token_hash=${magic.properties.hashed_token}&type=email&next=/`});await until(()=>location.pathname==='/'&&!!document.querySelector('main'),'signed in');
  const close=()=>{try{socket.close();}catch{}chrome.kill();try{rmSync(directory,{recursive:true,force:true});}catch{}};
- return {send,evaluate,until,viewport,shoot,overflow,go,click,type,text,errors,consoleErrors,close,shots};
+ /** Subscribes to raw DevTools events (tracing, network) for performance QA. */
+ const onEvent=fn=>{listeners.add(fn);return()=>listeners.delete(fn);};
+ return {send,evaluate,until,viewport,shoot,overflow,go,click,type,text,errors,consoleErrors,close,shots,onEvent};
 }
 export async function removeAccount(userId){if(userId)await admin.auth.admin.deleteUser(userId).catch(()=>{});}

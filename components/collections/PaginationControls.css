@@ -1,0 +1,27 @@
+.muse-pagination{display:flex;align-items:center;justify-content:space-between;gap:10px 16px;flex-wrap:wrap;min-width:0;padding:8px 0}
+.muse-pagination[data-position="top"]{border-bottom:1px solid var(--glass-border);padding-bottom:12px}
+.muse-pagination[data-position="bottom"]{border-top:1px solid var(--glass-border);padding-top:14px;margin-top:6px}
+.muse-pagination-summary{margin:0;color:var(--text-muted);font-size:.92rem;font-variant-numeric:tabular-nums}
+.muse-pagination-summary strong{color:var(--foreground);font-weight:650}
+.muse-pagination-controls{display:flex;align-items:center;gap:8px 14px;flex-wrap:wrap;min-width:0}
+.muse-pagination-size{display:flex;align-items:center;gap:8px}
+.muse-pagination-size .small-label{margin:0;white-space:nowrap}
+.muse-pagination-pages{display:flex;align-items:center;gap:6px;min-width:0}
+.muse-pagination-numbers{display:flex;align-items:center;gap:4px;margin:0;padding:0;list-style:none}
+.muse-pagination-gap{min-width:18px;text-align:center;color:var(--text-muted);user-select:none}
+.muse-pagination .muse-pagination-step,.muse-pagination .muse-pagination-number{min-width:36px;height:36px;min-height:36px;padding:0 9px;display:grid;place-items:center;background:var(--surface-control);font-variant-numeric:tabular-nums}
+.muse-pagination .muse-pagination-number[aria-current="page"]{border-color:var(--selected-border);background:color-mix(in srgb,var(--accent-primary) 16%,var(--surface-control));box-shadow:0 0 14px color-mix(in srgb,var(--accent-primary) 18%,transparent);font-weight:650;cursor:default}
+.muse-pagination .muse-pagination-step[data-direction="previous"] svg{transform:rotate(90deg)}
+.muse-pagination .muse-pagination-step[data-direction="next"] svg{transform:rotate(-90deg)}
+.muse-pagination .muse-button:disabled{opacity:.4;cursor:default}
+.muse-pagination .muse-button:focus-visible{outline:2px solid var(--focus-ring,var(--foreground));outline-offset:2px}
+@container muse-content (max-width:640px){
+ .muse-pagination{flex-direction:column;align-items:stretch}
+ .muse-pagination-controls{justify-content:space-between}
+ .muse-pagination-pages{width:100%;justify-content:space-between}
+ .muse-pagination-numbers{flex:1;justify-content:center;overflow:hidden}
+ .muse-pagination-numbers li:not(:has([aria-current="page"])):not(.muse-pagination-gap){display:none}
+ .muse-pagination-numbers .muse-pagination-gap{display:none}
+ .muse-pagination-page{display:block}
+ .muse-pagination-dot{display:none}
+}

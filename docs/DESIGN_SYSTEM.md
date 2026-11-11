@@ -702,6 +702,7 @@ Bucket List (Rituals, #84) follows the handwritten bullet-journal reference: an 
 - **Color vocabulary:** card titles use a rounded-square tinted tile in the card's chart ink; dates are typographic cells; rings stay round. Category colors come from `--chart-1…6`.
 - **Stat tiles:** `.muse-money-tiles` (label · value · note) with `data-tile-accent`.
 - **Task density:** `data-task-density="compact|spacious"` on the Planner page.
+- **Pagination:** `PaginationControls` (`components/collections/`) is the one pager for long Collections lists: a range/total/page summary, the page-size `MuseChoiceMenu`, ghost chevron steps and numbered page buttons with the Fortune-style selected marker (`aria-current="page"`). It appears above and below the list (only the top copy is a live region); on phones only the current page number and the steps remain. Use `usePagination` for page/size state, URL persistence and reset-on-filter instead of a second implementation.
 
 ## Envision and Planner Intentions (#117) — implemented on feature branch, awaiting review
 
