@@ -1,6 +1,7 @@
 'use client';
 import {useEffect,useRef,useState,type CSSProperties} from 'react';
 import {MuseChoiceMenu} from '@/components/MuseChoiceMenu';
+import {useSearchParams} from 'next/navigation';
 import {dateLabel,shiftDate,todayInTimeZone} from '@/lib/dates';
 import type {Book,ReadingGoal,ReadingSession} from '@/lib/whimsy/models';
 import {activeSeconds,bookPosition,bookReadingStats,endOfPeriod,goalProgress,goalWindow,readingSeries} from '@/lib/whimsy/books';
@@ -28,7 +29,8 @@ const periods={day:'Daily',week:'Weekly',month:'Monthly',year:'Yearly'};
 const overviewPeriods:Record<ReadingPeriod,string>={today:'Today',week:'This week',month:'This month',year:'This year',all:'All time'};
 
 export function ReadingAtlas({timeZone,books,sessions,goals,today,range,setRange,calendarMonth,setCalendarMonth,selectedDay,setSelectedDay,onAddGoal,onRemoveGoal,onSaveChallenge,onOpenBook,challengeBusy=false,onEditSession,onDeleteSession,initialSection='overview',milestoneState,milestonesReady=false,onMilestonesSeen,collections,almanacSignals=[]}:{almanacSignals?:Signal[];collections?:Pick<CollectionsSnapshot,'series'|'seriesMembers'|'media'>;initialSection?:AtlasSection;milestoneState?:MilestoneState;milestonesReady?:boolean;onMilestonesSeen?:(seen:string[])=>void;timeZone:string;books:Book[];sessions:ReadingSession[];goals:ReadingGoal[];today:string;range:ReadingGoal['period'];setRange:(range:ReadingGoal['period'])=>void;calendarMonth:string;setCalendarMonth:(month:string)=>void;selectedDay:string;setSelectedDay:(day:string)=>void;onAddGoal:()=>void;onRemoveGoal:(goal:ReadingGoal)=>void;onSaveChallenge?:(year:string,target:number,existing:ReadingGoal|null)=>void;onOpenBook?:(bookId:string)=>void;challengeBusy?:boolean;onEditSession:(session:ReadingSession)=>void;onDeleteSession:(session:ReadingSession)=>void}){
- const [period,setPeriod]=useState<ReadingPeriod>('all'),[section,setSection]=useState<AtlasSection>(()=>{if(typeof window==='undefined')return initialSection;const id=new URLSearchParams(window.location.search).get('section');return id&&id in sections?id as AtlasSection:initialSection;});
+ const searchParams=useSearchParams();
+ const [period,setPeriod]=useState<ReadingPeriod>('all'),[section,setSection]=useState<AtlasSection>(()=>{const id=searchParams?.get('section');return id&&id in sections?id as AtlasSection:initialSection;});
  // Milestones: celebrate only ones reached and never shown before (synced on the account); the first visit is a silent baseline.
  const milestones=readingMilestones(books,sessions),achieved=milestones.filter(m=>m.achievedOn).map(m=>m.id),{celebrate,nextSeen}=milestoneCelebration(achieved,milestoneState);
  const [celebrating,setCelebrating]=useState<string[]>([]),sent=useRef('');
