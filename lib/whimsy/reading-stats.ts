@@ -74,7 +74,7 @@ export function nextCompletions(book:Book|undefined,next:{status:Book['status'];
 export function completionEvents(books:Book[]){return books.flatMap(book=>bookCompletions(book).map((completion,index)=>({book,completion,reread:index>0})));}
 export function completionsIn(books:Book[],range:DateRange|null){
  const events=completionEvents(books).filter(e=>within(e.completion.finishedOn,range));
- return {count:events.length,uniqueTitles:new Set(events.map(e=>e.book.id)).size,rereads:events.filter(e=>e.reread).length,events};
+ return {count:events.length,uniqueTitles:new Set(events.map(e=>e.book.id)).size,rereads:events.filter(e=>e.reread).length,importedCompletions:events.filter(e=>!!e.completion.importSource).length,events};
 }
 /** Sessions belonging to one read: linked by cycle id, or older unlinked sessions only where the date makes it unambiguous. */
 export function cycleSessions(book:Book,sessions:ReadingSession[],completion:Pick<BookCompletion,'id'>){return sessions.filter(s=>s.bookId===book.id&&sessionReadId(book,s)===completion.id);}

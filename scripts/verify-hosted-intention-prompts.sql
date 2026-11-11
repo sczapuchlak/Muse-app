@@ -1,9 +1,9 @@
--- READ-ONLY check for 20261211000100_intention_prompts.sql (#130). Run on staging first, before and after the push:
+-- READ-ONLY check for 20261211000200_intention_prompts.sql (#130). Run on staging first, before and after the push:
 --   supabase db query --linked --project-ref <ref> -f scripts/verify-hosted-intention-prompts.sql
 -- It changes nothing and returns only schema facts: no personal content.
 --   Before: "applied" rows are false.  After: every row is ok = true.
 with checks(item, ok, detail) as (
-  select 'applied: migration recorded', exists(select 1 from supabase_migrations.schema_migrations where version='20261211000100'), '20261211000100'
+  select 'applied: migration recorded', exists(select 1 from supabase_migrations.schema_migrations where version='20261211000200'), '20261211000200'
   union all select 'applied: table intention_prompts', to_regclass('public.intention_prompts') is not null, 'public.intention_prompts'
   union all select 'row level security enabled', coalesce((select relrowsecurity from pg_class where oid=to_regclass('public.intention_prompts')), false), 'relrowsecurity'
   union all select 'four owner policies', (select count(*) from pg_policies where schemaname='public' and tablename='intention_prompts' and policyname in ('owner_read','owner_insert','owner_update','owner_delete')) = 4, 'owner_read / insert / update / delete'

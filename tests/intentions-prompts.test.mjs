@@ -66,7 +66,7 @@ test('#130 editing writing in a prompt section keeps its question, and hiding or
 });
 
 test('#130 prompt storage is owner-only, additive and bounded; the app is wired without touching other tables',()=>{
- const sql=read('supabase/migrations/20261211000100_intention_prompts.sql');
+ const sql=read('supabase/migrations/20261211000200_intention_prompts.sql');
  assert.match(sql,/create table public\.intention_prompts/);assert.match(sql,/enable row level security/);
  assert.match(sql,/revoke all on public\.intention_prompts from public, anon, authenticated/);
  for(const p of ['owner_read','owner_insert','owner_update','owner_delete'])assert.match(sql,new RegExp(`create policy ${p} on public\\.intention_prompts`));

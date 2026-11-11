@@ -1,0 +1,19 @@
+/* Scope every rule to the new #133 interfaces; existing Books pages and dialogs remain untouched. */
+.muse-modal:is(#books-import-settings,#books-export-settings){width:min(900px,calc(100vw - 32px))}
+#books-settings-settings{width:min(430px,calc(100vw - 32px))}
+.muse-book-transfer{display:grid;gap:16px;min-width:0;color:var(--foreground);font-family:var(--font-ui)}
+.muse-book-transfer p{margin:0;line-height:1.55}.muse-book-transfer h3{margin:0;font-size:1.1rem}
+.muse-book-transfer label{display:grid;gap:7px;font-size:.88rem;min-width:0}.muse-book-transfer select,.muse-book-transfer input:not([type=checkbox]){box-sizing:border-box;min-width:0;width:100%;min-height:44px;padding:9px 11px;border:1px solid var(--glass-border);border-radius:10px;background:var(--surface-control);color:var(--foreground);font:inherit}
+.muse-book-transfer .muse-book-transfer-check{display:flex;align-items:center;gap:10px;min-height:44px}.muse-book-transfer-check input{width:20px;height:20px;flex:0 0 20px;accent-color:var(--accent-primary)}
+.muse-book-transfer .muse-button{min-height:44px;white-space:normal;text-align:start}.muse-book-transfer-muted{color:var(--text-muted);font-size:.84rem}
+.muse-book-transfer-note,.muse-book-transfer-summary{display:grid;gap:10px;padding:16px;border:1px solid var(--glass-border);border-radius:var(--card-radius);background:var(--surface-subtle)}
+.muse-book-transfer-mapping{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.muse-book-transfer-tools{display:grid;grid-template-columns:minmax(0,1fr) minmax(120px,.45fr);gap:12px}
+.muse-book-transfer-rows{display:grid;gap:8px;list-style:none;margin:0;padding:0}.muse-book-transfer-rows>li{border:1px solid var(--glass-border);border-radius:12px;background:var(--surface-subtle);min-width:0;overflow-wrap:anywhere}
+.muse-book-transfer summary{cursor:pointer;min-height:44px;padding:12px}.muse-book-transfer-rows summary>span{display:block;color:var(--text-muted);font-size:.8rem;margin-top:4px}.muse-book-transfer-review{display:grid;gap:12px;padding:0 14px 14px}.muse-book-transfer-review dl{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:0}.muse-book-transfer-review dd{margin:0}.muse-book-transfer-review fieldset{border:1px solid var(--glass-border);border-radius:10px;min-width:0}.muse-book-transfer-review legend{font-size:.8rem;padding:6px}
+.muse-book-transfer-progress{display:grid;gap:9px;padding:18px;border:1px solid var(--selected-border);border-radius:12px;background:var(--selected-background)}.muse-book-transfer-progress progress{width:100%;height:10px;accent-color:var(--accent-primary)}
+.muse-book-transfer-footer{position:sticky;bottom:0;display:flex;flex-wrap:wrap;gap:10px;padding:12px 0;background:var(--floating-background);border-top:1px solid var(--glass-border)}
+.muse-book-transfer-prose{white-space:pre-wrap;overflow-wrap:anywhere}.muse-book-transfer-error{padding:12px;border:1px solid var(--glass-border);border-radius:10px;color:var(--foreground)}
+.muse-book-transfer :is(button,input,select,summary,a):focus-visible{outline:2px solid var(--focus-ring,var(--accent-primary));outline-offset:3px}
+@media(max-width:600px){.muse-modal:is(#books-import-settings,#books-export-settings,#books-settings-settings){width:calc(100vw - 16px)}.muse-book-transfer-mapping,.muse-book-transfer-tools{grid-template-columns:minmax(0,1fr)}.muse-book-transfer-footer .muse-button{flex:1}.muse-book-transfer-review dl{grid-template-columns:minmax(0,1fr)}.muse-book-transfer-review dd{margin-bottom:6px}}
+@media(max-width:600px){.muse-book-transfer select,.muse-book-transfer input:not([type=checkbox]){font-size:16px}}
+.muse-book-transfer-book-links{list-style:none;margin:8px 0;padding:0}.muse-book-transfer-book-links a{display:block;box-sizing:border-box;min-height:44px;padding:10px 0;overflow-wrap:anywhere}

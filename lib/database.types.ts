@@ -259,7 +259,99 @@ isOneToOne: false
       referencedColumns: ["user_id","id"]
     }
                   ]
-                },"book_journal_entries": {
+                },"book_import_batches": {
+                  Row: {
+                    "created_at": string,"id": string,"source": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"id": string,"source": string,"user_id": string
+                  }
+                  Update: {
+                    "created_at"?: string,"id"?: string,"source"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+
+                  ]
+                },"book_import_collection_links": {
+                  Row: {
+                    "collection_id": string,"shelf_key": string,"source": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "collection_id": string,"shelf_key": string,"source": string,"user_id": string
+                  }
+                  Update: {
+                    "collection_id"?: string,"shelf_key"?: string,"source"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "book_import_collection_links_user_id_collection_id_fkey"
+      columns: ["user_id","collection_id"]
+isOneToOne: false
+      referencedRelation: "collection_curated"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+                },"book_import_observations": {
+                  Row: {
+                    "batch_id": string,"book_id": string,"cycle_id": string | null,"details": NonNullable<Json>,"finished_on": string | null,"id": string,"imported_at": string,"observation_hash": string,"rating": number | null,"review": string | null,"source": string,"source_id": string,"started_on": string | null,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "batch_id": string,"book_id": string,"cycle_id"?: string | null,"details"?: NonNullable<Json>,"finished_on"?: string | null,"id"?: string,"imported_at"?: string,"observation_hash": string,"rating"?: number | null,"review"?: string | null,"source": string,"source_id": string,"started_on"?: string | null,"user_id": string
+                  }
+                  Update: {
+                    "batch_id"?: string,"book_id"?: string,"cycle_id"?: string | null,"details"?: NonNullable<Json>,"finished_on"?: string | null,"id"?: string,"imported_at"?: string,"observation_hash"?: string,"rating"?: number | null,"review"?: string | null,"source"?: string,"source_id"?: string,"started_on"?: string | null,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "book_import_observations_user_id_batch_id_fkey"
+      columns: ["user_id","batch_id"]
+isOneToOne: false
+      referencedRelation: "book_import_batches"
+      referencedColumns: ["user_id","id"]
+    },{
+      foreignKeyName: "book_import_observations_user_id_book_id_fkey"
+      columns: ["user_id","book_id"]
+isOneToOne: false
+      referencedRelation: "whimsy_books"
+      referencedColumns: ["user_id","id"]
+    },{
+      foreignKeyName: "book_import_observations_user_id_source_source_id_fkey"
+      columns: ["user_id","source","source_id"]
+isOneToOne: false
+      referencedRelation: "book_import_sources"
+      referencedColumns: ["user_id","source","source_id"]
+    }
+                  ]
+                },"book_import_sources": {
+                  Row: {
+                    "batch_id": string,"book_id": string,"imported_at": string,"observed": NonNullable<Json>,"source": string,"source_id": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "batch_id": string,"book_id": string,"imported_at"?: string,"observed"?: NonNullable<Json>,"source": string,"source_id": string,"user_id": string
+                  }
+                  Update: {
+                    "batch_id"?: string,"book_id"?: string,"imported_at"?: string,"observed"?: NonNullable<Json>,"source"?: string,"source_id"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "book_import_sources_user_id_batch_id_fkey"
+      columns: ["user_id","batch_id"]
+isOneToOne: false
+      referencedRelation: "book_import_batches"
+      referencedColumns: ["user_id","id"]
+    },{
+      foreignKeyName: "book_import_sources_user_id_book_id_fkey"
+      columns: ["user_id","book_id"]
+isOneToOne: false
+      referencedRelation: "whimsy_books"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+},"book_journal_entries": {
                   Row: {
                     "body": string,"book_id": string,"book_title_snapshot": string,"chapter": string,"created_at": string,"cycle_id": string | null,"id": string,"kind": string,"page_label": string,"personal_note": string,"revision": number,"saved_on": string,"session_id": string | null,"updated_at": string,"user_id": string
                   }
@@ -3143,6 +3235,9 @@ isOneToOne: false
         isOneToOne: true
         isSetofReturn: false
       } },
+"save_imported_book":
+{ Args: { "p_batch": string,"p_book": Json,"p_command_id": string,"p_observation": Json,"p_observed": Json,"p_revision": number,"p_series"?: Json,"p_shelves"?: (string)[],"p_source": string,"p_source_id": string }; Returns: Json
+                           },
 "save_money":
 { Args: { "p_command_id": string,"p_expected_revision": number,"p_state": Json }; Returns: number
                            },
