@@ -24,7 +24,7 @@ test('book details add a book to a series in place, without duplicates',()=>{
  assert.match(add,/s\.kind==='book'\|\|s\.kind==='mixed'/);
  assert.match(detail,/<AddToSeries book=\{book\}/);
  assert.doesNotMatch(shelf,/<Link href="\/collections\?view=series">Add to a series<\/Link>/,'no longer just a link to the Series page');
- assert.match(detail,/No sittings logged yet/,'no zero-filled stat tiles for an unread book');
+ assert.doesNotMatch(detail,/muse-book-panel-stats/,'sitting statistics belong to the Sittings tab, not the timer panel');
 });
 
 test('Wellness opens on Mood, Dayprint summary stays inside its card, Atlas overview has no gaps',()=>{

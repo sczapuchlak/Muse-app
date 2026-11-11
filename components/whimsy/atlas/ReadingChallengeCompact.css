@@ -1,0 +1,23 @@
+/* Books page challenge: count, a liquid bar and six books at a time. Hugs its content. */
+.muse-desk-goal{display:grid;align-content:start;gap:10px;padding:14px 16px!important}
+.muse-desk-goal-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.muse-desk-goal-head h4{margin:2px 0 0;font-family:var(--font-editorial);font-size:1.2rem;line-height:1.1}
+.muse-desk-goal-head h4 strong{font-size:1.7rem;letter-spacing:-.03em;background:linear-gradient(120deg,var(--accent-primary),var(--accent-secondary));-webkit-background-clip:text;background-clip:text;color:transparent}
+.muse-desk-goal-head h4 span{font-size:.95rem;color:var(--text-muted);font-weight:400}
+.muse-desk-goal-actions{display:flex;align-items:center;gap:6px}
+.muse-desk-goal-actions .small-label{margin:0 2px 0 0}
+.muse-desk-goal-actions .muse-button{width:32px;min-width:32px;height:32px;min-height:32px;padding:0;display:grid;place-items:center;background:var(--surface-control)}
+.muse-desk-goal-actions .muse-button:nth-of-type(1) svg{transform:rotate(90deg)}.muse-desk-goal-actions .muse-button:nth-of-type(2) svg{transform:rotate(-90deg)}
+.muse-desk-goal-actions .muse-desk-goal-edit svg{transform:none!important}
+.muse-desk-goal-actions .muse-button:disabled{opacity:.4}
+.muse-desk-goal-bar{position:relative;display:block;height:9px;border-radius:999px;overflow:hidden;background:var(--wash-aqua,color-mix(in srgb,var(--foreground) 9%,transparent));box-shadow:inset 0 0 0 1px var(--glass-aqua-edge,var(--glass-border))}
+.muse-desk-goal-bar>span{position:absolute;inset:0 auto 0 0;width:var(--fill);border-radius:inherit;background:var(--water-progress-gradient,linear-gradient(90deg,var(--accent-primary),var(--accent-secondary)));box-shadow:0 0 10px var(--water-glow,color-mix(in srgb,var(--accent-primary) 40%,transparent))}
+.muse-desk-goal-shelf{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin:0;padding:0;list-style:none}
+.muse-desk-goal-shelf li{aspect-ratio:2/3;min-width:0}
+.muse-desk-goal-shelf li>button,.muse-desk-goal-shelf li>span{display:grid;place-items:center;width:100%;height:100%;padding:0;border-radius:6px;overflow:hidden}
+.muse-desk-goal-shelf li>button{border:0;cursor:pointer;box-shadow:2px 3px 8px rgba(0,0,0,.25);background:none}
+.muse-desk-goal-shelf li>button img{width:100%;height:100%;object-fit:cover;display:block}
+.muse-desk-goal-shelf li>span{border:1.5px dashed var(--glass-border);color:var(--text-muted);font-family:var(--font-editorial);font-size:1.1rem}
+.muse-desk-goal-more{justify-self:start;font-size:.8rem}
+.muse-desk-goal-empty{margin:0;font-size:.88rem;color:var(--text-muted)}
+@container muse-content (max-width:640px){.muse-desk-goal{padding:12px!important}.muse-desk-goal-shelf{gap:6px}}

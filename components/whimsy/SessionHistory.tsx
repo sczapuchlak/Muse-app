@@ -1,5 +1,8 @@
 'use client';
-import {useState} from 'react';
+import {useRef,useState} from 'react';
+import {GlassPopover} from '@/components/GlassPopover';
+import {MuseIcon} from '@/components/MuseIcon';
+import {MuseSearch} from '@/components/design/MuseSearch';
 import {MuseChoiceMenu} from '@/components/MuseChoiceMenu';
 import {dateLabel} from '@/lib/dates';
 import type {Book,ReadingSession} from '@/lib/whimsy/models';
@@ -9,6 +12,12 @@ const minutes=(seconds:number)=>seconds?seconds<60?'under a minute':`${Math.roun
 const kinds={all:'All sessions',timed:'Timed',manual:'Logged manually',reread:'Rereads'} as const;
 type Kind=keyof typeof kinds;
 const PAGE=40;
+
+function RowMenu({id,label,onEdit,onDelete}:{id:string;label:string;onEdit:()=>void;onDelete:()=>void}){
+ const anchor=useRef<HTMLButtonElement>(null),[open,setOpen]=useState(false);
+ return <span className="muse-history-menu"><button ref={anchor} type="button" className="muse-button button-ghost" aria-label={`Session ${label}: edit or delete`} aria-haspopup="dialog" aria-expanded={open} onClick={()=>setOpen(v=>!v)}>⋯</button>
+  <GlassPopover id={`history-${id}`} label={`Session ${label}`} open={open} anchorRef={anchor} onClose={()=>setOpen(false)} width={200} align="end" bare><div className="muse-history-actions"><button type="button" className="popover-choice" onClick={()=>{setOpen(false);onEdit();}}><MuseIcon name="edit" size={15}/>Edit session</button><button type="button" className="popover-choice" onClick={()=>{setOpen(false);onDelete();}}><MuseIcon name="trash" size={15}/>Delete</button></div></GlassPopover></span>;
+}
 
 /** Every saved session, newest first, filterable by book, date range, type and text. Edits reuse the session editor. */
 export function SessionHistory({sessions,books,onEdit,onDelete}:{sessions:ReadingSession[];books:Book[];onEdit:(session:ReadingSession)=>void;onDelete:(session:ReadingSession)=>void}){
@@ -26,18 +35,17 @@ export function SessionHistory({sessions,books,onEdit,onDelete}:{sessions:Readin
   <div className="muse-books-history-filters">
    <MuseChoiceMenu label="Book" valueLabel={bookOptions.find(o=>o.id===bookId)?.label??'All books'} options={bookOptions} selectedIds={[bookId]} onSelect={id=>{setBookId(id);setLimit(PAGE);}}/>
    <MuseChoiceMenu label="Session type" valueLabel={kinds[kind]} options={Object.entries(kinds).map(([id,label])=>({id,label}))} selectedIds={[kind]} onSelect={id=>{setKind(id as Kind);setLimit(PAGE);}}/>
-   <label>From<input type="date" value={from} max={to||undefined} onChange={e=>{setFrom(e.target.value);setLimit(PAGE);}}/></label>
-   <label>To<input type="date" value={to} min={from||undefined} onChange={e=>{setTo(e.target.value);setLimit(PAGE);}}/></label>
-   <label className="muse-books-history-search"><span className="sr-only">Search sessions</span><input type="search" placeholder="Search titles and notes" value={query} onChange={e=>{setQuery(e.target.value);setLimit(PAGE);}}/></label>
+   <MuseSearch className="muse-books-history-search" label="Search sessions" value={query} onChange={v=>{setQuery(v);setLimit(PAGE);}} placeholder="Search titles and notes"/>
+   <details className="muse-history-dates" open={!!(from||to)}><summary>{from||to?`${from?dateLabel(from):'Start'} – ${to?dateLabel(to):'today'}`:'Dates'}</summary><div><label>From<input type="date" value={from} max={to||undefined} onChange={e=>{setFrom(e.target.value);setLimit(PAGE);}}/></label><label>To<input type="date" value={to} min={from||undefined} onChange={e=>{setTo(e.target.value);setLimit(PAGE);}}/></label>{(from||to)&&<button type="button" className="text-button" onClick={()=>{setFrom('');setTo('');}}>Clear</button>}</div></details>
   </div>
   {!sessions.length?<p>Saved sessions will be listed here.</p>:!rows.length?<p>No sessions match these filters.</p>:<ol className="muse-books-history-list">
-   {rows.slice(0,limit).map(s=><li key={s.id} className="muse-books-session-row">
-    <div><strong>{dateLabel(s.date)} · {title(s.bookId)}</strong>
-     <span>{minutes(sessionSeconds(s))} · {s.pages} {s.pages===1?'page':'pages'}{s.startingPage!==undefined&&s.endingPage!==undefined?` (p. ${s.startingPage}–${s.endingPage})`:''}{s.reread?' · reread':''}{s.manual?' · logged manually':''}</span>
-     {s.notes&&<p>{s.notes}</p>}</div>
-    <button type="button" className="text-button" onClick={()=>onEdit(s)}>Edit</button>
-    <button type="button" className="text-button" onClick={()=>onDelete(s)}>Delete</button>
-   </li>)}
+   {rows.slice(0,limit).map(s=>{const d=new Date(`${s.date}T12:00:00Z`);return <li key={s.id} className="muse-history-row" data-manual={s.manual||undefined}>
+    <span className="muse-history-date" aria-hidden="true"><span>{new Intl.DateTimeFormat(undefined,{month:'short',timeZone:'UTC'}).format(d)}</span><strong className="type-numeric">{d.getUTCDate()}</strong></span>
+    <div className="muse-history-body"><strong className="muse-history-title"><span className="sr-only">{dateLabel(s.date)} · </span>{title(s.bookId)}</strong>
+     <p className="muse-history-line"><span className="type-numeric">{minutes(sessionSeconds(s))}</span><span className="type-numeric">{s.pages} {s.pages===1?'page':'pages'}</span>{s.startingPage!==undefined&&s.endingPage!==undefined&&<span className="type-numeric">p. {s.startingPage}–{s.endingPage}</span>}{s.reread&&<em>reread</em>}{s.manual&&<em>logged</em>}</p>
+     {s.notes&&<blockquote>{s.notes}</blockquote>}</div>
+    <RowMenu id={s.id} label={`${dateLabel(s.date)} ${title(s.bookId)}`} onEdit={()=>onEdit(s)} onDelete={()=>onDelete(s)}/>
+   </li>;})}
   </ol>}
   {rows.length>limit&&<button type="button" className="muse-button button-ghost" onClick={()=>setLimit(limit+PAGE)}>Show {Math.min(PAGE,rows.length-limit)} more</button>}
  </article>;

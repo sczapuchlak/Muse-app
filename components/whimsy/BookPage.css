@@ -258,3 +258,13 @@
  .muse-sitting{grid-template-columns:44px minmax(0,1fr) auto;gap:10px}.muse-sitting-date{width:44px;height:50px}
  .muse-sittings-empty{grid-template-columns:minmax(0,1fr)}.muse-sittings-empty-actions{grid-column:1}
 }
+
+/* One surface, no rules cutting through it: sections are separated by space, not lines. */
+.muse-book-page-main>*+*{border-top:0!important}
+.muse-book-page-main{gap:6px}
+.muse-book-page-main>.muse-book-about{margin:clamp(12px,1.6vw,18px) clamp(14px,2vw,22px) 0}
+.muse-book-page-main>.muse-book-series-section{border-top:0}
+.muse-book-page-tabs-wrap{border:0!important;padding-bottom:0}
+.muse-book-page-tabs-wrap .muse-page-tabs,.muse-book-page-tabs{border-bottom:0!important}
+.muse-book-detail-edition dl>div{border-bottom:1px solid var(--glass-border)}
+.muse-book-panel .muse-book-panel-actions{padding-top:0}
