@@ -67,3 +67,10 @@
 .muse-desk-top .muse-desk-goal{align-content:center}
 .muse-desk-top .muse-streak-note{padding:0 16px 12px}
 @container muse-content (max-width:640px){.muse-desk-reading{padding:12px 14px}.muse-desk-top .muse-streak{padding:12px 14px}.muse-desk-top .muse-desk-goal{padding:12px 14px!important}}
+/* Half-width tiles: a fixed, compact column instead of a third of the row (#135 polish). */
+.muse-desk-track,.muse-desk-layout[data-count="1"] .muse-desk-track,.muse-desk-layout[data-count="2"] .muse-desk-track{grid-auto-columns:220px;gap:12px}
+.muse-desk-tile{grid-template-columns:44px minmax(0,1fr);gap:10px}
+.muse-desk-start{padding:0 10px}
+@container muse-content (max-width:640px){
+ .muse-desk-track,.muse-desk-layout[data-count="1"] .muse-desk-track{grid-auto-columns:calc((100% - 10px)/2);gap:10px}
+}
