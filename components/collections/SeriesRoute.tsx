@@ -1,6 +1,5 @@
 'use client';
 import {useCallback,useEffect,useMemo,useRef,useState,type CSSProperties,type ReactNode} from 'react';
-import Link from 'next/link';
 import {useRouter} from 'next/navigation';
 import {MuseIcon} from '@/components/MuseIcon';
 import {MuseModal} from '@/components/MuseModal';
@@ -12,7 +11,8 @@ import type {SeriesCatalog} from '@/lib/books/series-discovery';
 import {fetchSeriesCatalog} from '@/lib/books/add-book';
 import {catalogNeedsRefresh,saveDiscoveredSeries} from '@/lib/books/series-save';
 import {catalogSeriesView,primaryBasisNote,seriesCompletion,seriesShelf,shelfStateLabel,type ShelfEntry} from '@/lib/books/series-view';
-import {bookHref,currentReturn,goBack,parseSeriesKey,rememberReturn} from '@/lib/books/return-nav';
+import {PageCrumbs} from '@/components/books/PageCrumbs';
+import {bookHref,goBack,parseSeriesKey,rememberReturn} from '@/lib/books/return-nav';
 import {todayForReading} from '@/lib/whimsy/books';
 import {validTimeZone} from '@/lib/dates';
 import {useWhimsyData} from '@/components/whimsy/WhimsyData';
@@ -38,14 +38,13 @@ export function SeriesRoute({seriesKey}:{seriesKey:string}){
  const client=useMemo(()=>createMuseBrowserClient(),[]);
  const today=validTimeZone(timeZone)?todayForReading(timeZone):new Date().toISOString().slice(0,10);
  const [catalog,setCatalog]=useState<SeriesCatalog|null>(null),[state,setState]=useState<'loading'|'ready'|'missing'|'error'>('loading'),[busy,setBusy]=useState(false),[notice,setNotice]=useState(''),[problem,setProblem]=useState('');
- const [back,setBack]=useState<{href:string;label:string}|null>(null),[menuOpen,setMenuOpen]=useState(false),[correcting,setCorrecting]=useState(false),[nonce,setNonce]=useState(0);
+ const [menuOpen,setMenuOpen]=useState(false),[correcting,setCorrecting]=useState(false),[nonce,setNonce]=useState(0);
  const menuAnchor=useRef<HTMLButtonElement>(null);
  const quick=useQuickAdd();
  const [mountedAt]=useState(()=>Date.now());
  const [layout,setLayoutState]=useState<'list'|'grid'>('list');
  useEffect(()=>{const frame=requestAnimationFrame(()=>{try{const v=localStorage.getItem('muse.series.layout');if(v==='grid'||v==='list')setLayoutState(v);}catch{/* list by default */}});return()=>cancelAnimationFrame(frame);},[]);
  const setLayout=(v:'list'|'grid')=>{setLayoutState(v);try{localStorage.setItem('muse.series.layout',v);}catch{/* this visit only */}};
- useEffect(()=>{const frame=requestAnimationFrame(()=>setBack(currentReturn()));return()=>cancelAnimationFrame(frame);},[seriesKey]);
 
  // The saved series for this route: by id, or the saved copy of the catalog series it names.
  const saved:Series|null='savedId' in parsed?records.series.find(s=>s.id===parsed.savedId)??null:records.series.find(s=>s.catalog_source===parsed.source&&s.catalog_id===parsed.id)??null;
@@ -110,12 +109,9 @@ export function SeriesRoute({seriesKey}:{seriesKey:string}){
   try{await deleteSeries(client,userId,saved.id,saved.revision);collectionsChanged();await retry();leave();}catch(cause){setProblem(cause instanceof Error?cause.message:'Series could not be removed.');}finally{setBusy(false);}
  }
 
- const crumbs=<nav className="muse-book-page-crumbs muse-series-page-crumbs" aria-label="Series navigation">
-  <button type="button" className="muse-book-page-back" onClick={leave}><MuseIcon name="arrow" size={16}/><span>{back?`Back to ${back.label}`:'Books'}</span></button>
-  <ol className="muse-book-page-trail"><li><Link href="/collections">Collections</Link></li><li><Link href="/collections?kind=book">Books</Link></li></ol>
- </nav>;
+ const crumbs=<PageCrumbs current={view?.series.title??'Series'} label="Series navigation" className="muse-series-page-crumbs"/>;
  if(!loaded||!whimsyStatus.loaded||state==='loading')return <main className="muse-page muse-series-route" aria-busy="true">{crumbs}<SeriesSkeleton/>{loadError&&<p role="alert">{loadError}</p>}</main>;
- if(state==='missing'||state==='error'||!view||!shelf)return <main className="muse-page muse-series-route">{crumbs}<div className="muse-empty-state muse-series-page-empty" data-variant="editorial"><h1 className="type-display">{state==='error'?'This series is resting for a moment.':'We couldn’t find this series.'}</h1><p>{state==='error'?'The series catalog didn’t answer. Your Library and saved series are unchanged.':'It may have been removed, or the catalog no longer lists it.'}</p><div className="muse-books-actions">{state==='error'&&<button type="button" className="muse-button button-primary" onClick={()=>setNonce(n=>n+1)}>Try again</button>}<button type="button" className="muse-button button-ghost" onClick={leave}>{back?`Back to ${back.label}`:'Back to Books'}</button></div></div></main>;
+ if(state==='missing'||state==='error'||!view||!shelf)return <main className="muse-page muse-series-route">{crumbs}<div className="muse-empty-state muse-series-page-empty" data-variant="editorial"><h1 className="type-display">{state==='error'?'This series is resting for a moment.':'We couldn’t find this series.'}</h1><p>{state==='error'?'The series catalog didn’t answer. Your Library and saved series are unchanged.':'It may have been removed, or the catalog no longer lists it.'}</p><div className="muse-books-actions">{state==='error'&&<button type="button" className="muse-button button-primary" onClick={()=>setNonce(n=>n+1)}>Try again</button>}<button type="button" className="muse-button button-ghost" onClick={leave}>Back to Books</button></div></div></main>;
 
  const {series}=view,description=series.description?.trim()??'';
  const statusChip=series.catalog_completed===true||series.conclusion_state==='concluded'?{label:'All books published',tone:'done'}:shelf.upcomingCount?{label:shelf.nextRelease?.releaseDate?`Next: ${longDate(shelf.nextRelease.releaseDate)}`:'More to come',tone:'upcoming'}:series.conclusion_state==='ongoing'||series.catalog_completed===false?{label:'Ongoing',tone:'upcoming'}:null;

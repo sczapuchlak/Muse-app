@@ -19,16 +19,16 @@ export function Cover({book}:{book:Pick<Book,'title'|'coverUrl'>|undefined}){
 
 /**
  * The reading calendar (#135): each day you read shows the book itself. Two books split the day diagonally; more show
- * a count. A star marks the day a book was finished. Tapping a day shows its sittings. Built from saved sessions only.
+ * a count. A star marks the day a book was finished. Tapping a day opens the book you read. Built from saved sessions only.
  */
-export function CoverCalendar({books,sessions,month,setMonth,selected,setSelected,today,onOpenBook}:{books:Book[];sessions:ReadingSession[];month:string;setMonth:(m:string)=>void;selected:string;setSelected:(d:string)=>void;today:string;onOpenBook?:(id:string)=>void}){
- const [view,setView]=useState<'month'|'year'>('month');
+export function CoverCalendar({books,sessions,month,setMonth,today,onOpenBook,lockView}:{books:Book[];sessions:ReadingSession[];month:string;setMonth:(m:string)=>void;today:string;onOpenBook?:(id:string)=>void;lockView?:'month'|'year'}){
+ const [chosenView,setView]=useState<'month'|'year'>('month'),view=lockView??chosenView;
  const byId=useMemo(()=>new Map(books.map(b=>[b.id,b])),[books]);
  const first=`${month}-01`,last=endOfPeriod(first,'month'),length=Number(last.slice(-2)),offset=(new Date(`${first}T12:00:00Z`).getUTCDay()+6)%7;
  const days=useMemo(()=>{const map=new Map<string,{books:string[];seconds:number;pages:number;sessions:ReadingSession[]}>();for(const s of sessions){if(s.date<first||s.date>last)continue;const d=map.get(s.date)??{books:[],seconds:0,pages:0,sessions:[]};if(!d.books.includes(s.bookId))d.books.push(s.bookId);d.seconds+=activeSeconds(s.activeSegments);d.pages+=s.pages;d.sessions.push(s);map.set(s.date,d);}return map;},[sessions,first,last]);
  const finished=useMemo(()=>{const map=new Map<string,string[]>();for(const e of completionEvents(books)){const d=e.completion.finishedOn;if(!d||d<first||d>last)continue;map.set(d,[...(map.get(d)??[]),e.book.id]);}return map;},[books,first,last]);
  const pages=[...days.values()].reduce((n,d)=>n+d.pages,0),finishedCount=[...finished.values()].reduce((n,l)=>n+l.length,0),elapsed=month===today.slice(0,7)?Number(today.slice(-2)):length;
- const chosen=days.get(selected),chosenFinished=finished.get(selected)??[],season=SEASON[Number(month.slice(5,7))-1];
+ const season=SEASON[Number(month.slice(5,7))-1];
  return <section className="muse-cal" aria-labelledby="atlas-cal-title" data-season={season}>
   <header className="muse-cal-head">
    <div className="muse-cal-art" aria-hidden="true"><i/><i/><i/><i/><i/><i/></div>
@@ -38,7 +38,7 @@ export function CoverCalendar({books,sessions,month,setMonth,selected,setSelecte
    :<><button type="button" className="muse-cal-nav" aria-label="Previous year" onClick={()=>setMonth(`${Number(month.slice(0,4))-1}-${month.slice(5)}`)}>‹</button>
    <h3 id="atlas-cal-title"><span>{month.slice(0,4)}</span><small>in books</small></h3>
    <button type="button" className="muse-cal-nav" aria-label="Next year" disabled={month.slice(0,4)>=today.slice(0,4)} onClick={()=>{const next=`${Number(month.slice(0,4))+1}-${month.slice(5)}`;setMonth(next>today.slice(0,7)?today.slice(0,7):next);}}>›</button></>}
-   <div className="muse-cal-toggle" role="group" aria-label="Calendar view"><button type="button" aria-pressed={view==='month'} onClick={()=>setView('month')}>Month</button><button type="button" aria-pressed={view==='year'} onClick={()=>setView('year')}>Year</button></div>
+   {!lockView&&<div className="muse-cal-toggle" role="group" aria-label="Calendar view"><button type="button" aria-pressed={view==='month'} onClick={()=>setView('month')}>Month</button><button type="button" aria-pressed={view==='year'} onClick={()=>setView('year')}>Year</button></div>}
   </header>
   {view==="year"?<ReadingYear books={books} year={month.slice(0,4)} onOpenMonth={m=>{setMonth(m);setView("month");}}/>:<div className="muse-cal-body">
    <div className="muse-cal-left">
@@ -51,7 +51,7 @@ export function CoverCalendar({books,sessions,month,setMonth,selected,setSelecte
    {['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(d=><li key={d} className="muse-cal-weekday" aria-hidden="true">{d}</li>)}
    {Array.from({length:offset},(_,i)=><li key={`e${i}`} aria-hidden="true"/>)}
    {Array.from({length},(_,i)=>shiftDate(first,i)).map(date=>{const day=days.get(date),ids=day?.books??[],done=finished.get(date)??[],shown=ids.length?ids:done;
-    return <li key={date}><button type="button" className="muse-cal-day" data-read={ids.length?true:undefined} data-books={Math.min(shown.length,2)||undefined} data-today={date===today||undefined} data-future={date>today||undefined} aria-pressed={selected===date} aria-label={`${longDay(date)}${ids.length?`, read ${ids.map(id=>byId.get(id)?.title??'a book').join(' and ')}`:''}${done.length?', finished a book':''}`} onClick={()=>setSelected(date)}>
+    return <li key={date}><button type="button" className="muse-cal-day" data-read={ids.length?true:undefined} data-books={Math.min(shown.length,2)||undefined} data-today={date===today||undefined} data-future={date>today||undefined} aria-label={`${longDay(date)}${ids.length?`, read ${ids.map(id=>byId.get(id)?.title??'a book').join(' and ')}`:''}${done.length?', finished a book':''}`} disabled={!shown.length} onClick={()=>{if(shown[0])onOpenBook?.(shown[0]);}}>
      {shown.slice(0,2).map((id,k)=><span key={id} className="muse-cal-cover" data-slot={k}><Cover book={byId.get(id)}/></span>)}
      <span className="muse-cal-date type-numeric">{Number(date.slice(-2))}</span>
      {done.length>0&&<span className="muse-cal-finished" aria-hidden="true">✦</span>}
@@ -59,12 +59,6 @@ export function CoverCalendar({books,sessions,month,setMonth,selected,setSelecte
     </button></li>;})}
   </ol>
    </div>
-  <div className="muse-cal-detail" aria-live="polite">
-   <strong>{longDay(selected)}</strong>
-   {chosen?<><p className="muse-cal-detail-line">{chosen.seconds?minutes(chosen.seconds)+' · ':''}{chosen.pages} pages · {chosen.sessions.length} {chosen.sessions.length===1?'sitting':'sittings'}</p>
-    <ul>{chosen.books.map(id=>{const b=byId.get(id),own=chosen.sessions.filter(s=>s.bookId===id);return <li key={id}><span className="muse-cal-detail-cover"><Cover book={b}/></span><span><button type="button" className="text-button" onClick={()=>onOpenBook?.(id)}>{b?.title??'Book'}</button><small>{own.reduce((n,s)=>n+s.pages,0)} pages{own.some(s=>s.notes)?` · “${own.find(s=>s.notes)!.notes!.slice(0,90)}”`:''}</small></span>{chosenFinished.includes(id)&&<em>Finished ✦</em>}</li>;})}</ul></>
-   :chosenFinished.length?<p className="muse-cal-detail-line">Finished {chosenFinished.map(id=>byId.get(id)?.title).join(', ')} ✦</p>:<p className="muse-cal-detail-line">No reading recorded.</p>}
-  </div>
   </div>}
  </section>;
 }

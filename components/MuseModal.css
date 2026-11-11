@@ -20,3 +20,5 @@
 .muse-modal#bookshelf-discard-session{width:min(440px,calc(100vw - 32px))}
 .muse-books-discard-confirm{display:grid;gap:14px}.muse-books-discard-confirm p{margin:0}
 .muse-books-discard-confirm .muse-books-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}.muse-books-discard-confirm .muse-button{min-height:46px}
+/* A short form in a fit-content dialog must size to its fields, not collapse into a sliver of scroll area. */
+.muse-modal:not([data-size="tall"]) .muse-books-form{flex:0 1 auto}

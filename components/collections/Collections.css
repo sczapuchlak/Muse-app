@@ -264,3 +264,13 @@
 .muse-settings-row [data-books-settings-trigger]{min-height:40px;padding-inline:16px;border:1px solid var(--glass-border);border-radius:999px;background:var(--surface-control)}
 
 @container muse-content (max-width:640px){.muse-density{justify-self:stretch;justify-content:space-between}.muse-density button{flex:1;justify-content:center}}
+/* Library tiles are real cards: padded, framed and frosted, instead of bare covers with a stray border (#135). */
+.muse-collections:not([data-density="list"]) .muse-collections-library-page[data-layout="library"]>.muse-collections-grid .muse-collections-card[data-kind]{padding:10px 10px 12px!important;border:1px solid var(--glass-border)!important;border-radius:16px!important;background:var(--surface-subtle)!important;gap:6px}
+.muse-collections:not([data-density="list"]) .muse-collections-library-page[data-layout="library"]>.muse-collections-grid .muse-collections-card[data-kind]:hover{border-color:var(--selected-border)!important}
+.muse-collections:not([data-density="list"]) .muse-collections-library-page[data-layout="library"]>.muse-collections-grid .muse-collections-card[data-kind] .muse-card-title{margin-top:4px}
+.muse-collections[data-density="compact"] .muse-collections-grid{grid-template-columns:repeat(auto-fill,minmax(min(100%,150px),1fr))}
+.muse-collections[data-density="comfortable"] .muse-collections-grid{grid-template-columns:repeat(auto-fill,minmax(min(100%,196px),1fr))}
+.muse-collections[data-density="showcase"] .muse-collections-grid{grid-template-columns:repeat(auto-fill,minmax(min(100%,264px),1fr))}
+@container muse-content (max-width:640px){
+ .muse-collections[data-density="compact"] .muse-collections-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}

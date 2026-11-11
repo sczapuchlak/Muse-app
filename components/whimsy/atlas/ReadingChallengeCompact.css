@@ -21,3 +21,7 @@
 .muse-desk-goal-more{justify-self:start;font-size:.8rem}
 .muse-desk-goal-empty{margin:0;font-size:.88rem;color:var(--text-muted)}
 @container muse-content (max-width:640px){.muse-desk-goal{padding:12px!important}.muse-desk-goal-shelf{gap:6px}}
+/* The year wears the same rainbow as the streak number beside it. */
+.muse-rainbow-year{font-family:var(--font-editorial);font-weight:inherit;background:linear-gradient(120deg,var(--accent-pop,var(--accent-primary)),var(--accent-primary),var(--accent-secondary));-webkit-background-clip:text;background-clip:text;color:transparent}
+.muse-rainbow-year[data-big]{font-size:1.9rem;line-height:1;letter-spacing:-.03em}
+.muse-challenge-title{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}

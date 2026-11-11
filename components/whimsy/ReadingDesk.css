@@ -53,3 +53,18 @@
 .muse-desk-top{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(12px,1.6vw,18px);align-items:stretch;min-width:0}
 .muse-desk-top>*{min-width:0;margin:0!important}
 @container muse-content (max-width:760px){.muse-desk-top{grid-template-columns:minmax(0,1fr)}}
+/* Tile layout: cover and text on top, the Start button gets the full tile width beneath so its label always fits. */
+.muse-desk-layout .muse-desk-tile{grid-template-columns:44px minmax(0,1fr)!important;gap:6px 10px!important;align-items:start}
+.muse-desk-tile-body{display:contents}
+.muse-desk-tile-cover{grid-column:1;grid-row:1/3;width:44px!important}
+.muse-desk-tile-body>h4,.muse-desk-tile-body>.muse-desk-tile-author{grid-column:2}
+.muse-desk-tile-progress{grid-column:1/-1}
+.muse-desk-tile-actions{grid-column:1/-1}
+.muse-desk-start{white-space:nowrap}
+.muse-desk-track,.muse-desk-layout[data-count="1"] .muse-desk-track,.muse-desk-layout[data-count="2"] .muse-desk-track{grid-auto-columns:230px}
+.muse-desk-layout .muse-desk-start span{display:inline!important}
+.muse-desk-layout .muse-desk-start{padding:0 12px!important}
+@container muse-content (max-width:640px){
+ .muse-desk-track,.muse-desk-layout[data-count="1"] .muse-desk-track,.muse-desk-layout[data-count="2"] .muse-desk-track{grid-auto-columns:calc((100% - 10px)/2)}
+ .muse-desk-layout .muse-desk-tile{padding:10px}
+}
