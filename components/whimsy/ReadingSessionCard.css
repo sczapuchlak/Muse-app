@@ -1,0 +1,76 @@
+/* The reading timer, in the Daily Edit water bar's liquid language: big serif clock, glassy fill, ripple at the edge. */
+.muse-session{container:muse-session/inline-size;position:relative;isolation:isolate;display:grid;grid-template-columns:minmax(0,1fr);justify-items:center;gap:14px;padding:clamp(20px,3.4vw,32px) clamp(16px,3vw,30px);border:1px solid var(--selected-border);border-radius:clamp(22px,3vw,30px);text-align:center;min-width:0;overflow:hidden;
+ background:radial-gradient(ellipse 90% 65% at 50% 0%,color-mix(in srgb,var(--accent-primary) 22%,transparent),transparent 78%),radial-gradient(ellipse 70% 55% at 95% 100%,color-mix(in srgb,var(--accent-secondary) 18%,transparent),transparent 80%),radial-gradient(ellipse 50% 45% at 0% 70%,color-mix(in srgb,var(--ink-aqua,var(--accent-secondary)) 14%,transparent),transparent 80%),var(--surface-subtle);
+ box-shadow:inset 0 1px 0 var(--glass-edge,rgba(255,255,255,.25)),0 18px 44px color-mix(in srgb,var(--accent-primary) 14%,transparent)}
+.muse-session-glow{position:absolute;z-index:-1;inset:auto -20% -55% -20%;height:70%;background:radial-gradient(ellipse at 50% 0%,color-mix(in srgb,var(--water-glow,var(--accent-primary)) 55%,transparent),transparent 70%);opacity:.5;filter:blur(18px);animation:muse-session-drift 9s ease-in-out infinite alternate;pointer-events:none}
+.muse-session[data-phase="paused"] .muse-session-glow{animation-play-state:paused;opacity:.22}
+.muse-session-book{display:flex;align-items:center;gap:12px;width:100%;text-align:left;min-width:0}
+.muse-session-book>div{display:grid;gap:2px;min-width:0}
+.muse-session-cover{flex:0 0 48px;width:48px;display:block}.muse-session-cover .muse-book-cover{max-width:none;border-radius:5px 8px 8px 5px;box-shadow:3px 4px 0 -1px var(--glass-border),6px 10px 16px rgba(0,0,0,.2)}
+.muse-session-title{padding:0;border:0;background:none;color:inherit;font-family:var(--font-editorial);font-weight:var(--type-title-weight);font-size:1.08rem;line-height:1.25;text-align:left;overflow-wrap:break-word;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden}
+button.muse-session-title{cursor:pointer}button.muse-session-title:hover{text-decoration:underline;text-decoration-color:color-mix(in srgb,var(--accent-primary) 60%,transparent);text-underline-offset:4px}
+
+.muse-session-stage{display:grid;grid-template-columns:minmax(0,1fr);justify-items:center;gap:10px;width:100%;min-width:0}
+.muse-session-state{display:inline-flex;align-items:center;gap:8px;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--text-muted);font-weight:650}
+.muse-session-dot{width:9px;height:9px;border-radius:50%;background:var(--success-primary);box-shadow:0 0 0 4px color-mix(in srgb,var(--success-primary) 22%,transparent);animation:muse-session-breathe 2.4s ease-in-out infinite}
+.muse-session[data-phase="paused"] .muse-session-dot{background:var(--accent-warm,var(--accent-secondary));box-shadow:0 0 0 4px color-mix(in srgb,var(--accent-secondary) 22%,transparent);animation:none}
+.muse-session-clock{font-family:var(--font-editorial);font-weight:var(--type-display-weight,500);font-size:clamp(2.2rem,19cqi,5.4rem);max-width:100%;white-space:nowrap;line-height:.95;letter-spacing:-.045em;font-variant-numeric:tabular-nums;text-shadow:0 2px 28px color-mix(in srgb,var(--accent-primary) 30%,transparent)}
+.muse-session[data-phase="paused"] .muse-session-clock{opacity:.55}
+.muse-session[data-overtime] .muse-session-clock{color:var(--accent-primary)}
+
+/* The pool: the water bar, larger, with a finish star and a ripple where the liquid meets the edge. */
+.muse-session-pool{--finish:26px;box-sizing:border-box;position:relative;width:100%;max-width:520px;padding-inline-end:calc(var(--finish) - 6px);display:flex;align-items:center;min-height:30px}
+.muse-session-bar{position:relative;flex:1;height:22px;overflow:hidden;border-radius:var(--pill-radius,999px);background:var(--wash-aqua,color-mix(in srgb,var(--accent-secondary) 14%,transparent));box-shadow:inset 0 0 0 1px var(--glass-aqua-edge,var(--glass-border)),inset 0 2px 5px rgba(0,0,0,.1)}
+.muse-session-liquid{position:absolute;inset:0 auto 0 0;display:block;width:var(--session-fill,0%);border-radius:inherit;background:var(--water-progress-gradient,linear-gradient(90deg,var(--accent-primary),var(--accent-secondary)));box-shadow:0 0 22px var(--water-glow,color-mix(in srgb,var(--accent-primary) 60%,transparent)),inset 0 2px 0 rgba(255,255,255,.45),inset 0 -5px 8px rgba(0,0,0,.12);transition:width .9s cubic-bezier(.3,.7,.2,1);overflow:hidden}
+.muse-session-liquid::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.55) 50%,transparent 70%);transform:translateX(-120%);animation:muse-session-sheen 3.4s ease-in-out infinite}
+.muse-session[data-phase="paused"] .muse-session-liquid::after{animation:none;opacity:0}
+.muse-session[data-phase="paused"] .muse-session-liquid{filter:saturate(.6);opacity:.75}
+/* Open sitting: no target, so the liquid flows across the whole pool instead of filling. */
+.muse-session[data-target="open"] .muse-session-liquid{width:100%;opacity:.8;background-size:220% 100%;background-image:linear-gradient(90deg,var(--accent-primary),var(--accent-secondary),var(--accent-pop,var(--accent-primary)),var(--accent-secondary),var(--accent-primary));animation:muse-session-flow 9s linear infinite}
+.muse-session[data-target="open"][data-phase="paused"] .muse-session-liquid{animation-play-state:paused}
+.muse-session-edge{position:absolute;top:50%;left:min(var(--session-fill,0%),calc(100% - var(--finish)));width:0;height:0;pointer-events:none}
+.muse-session-edge::before{content:"";position:absolute;left:-12px;top:-12px;width:24px;height:24px;border-radius:50%;border:2px solid color-mix(in srgb,var(--ink-aqua,var(--accent-secondary)) 70%,transparent);opacity:0;animation:muse-session-ring 2.8s ease-out infinite}
+.muse-session-edge i{position:absolute;left:-3px;top:-3px;width:6px;height:7px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;background:color-mix(in srgb,var(--ink-aqua,var(--accent-secondary)) 80%,#fff);opacity:0;animation:muse-session-drop 2.8s ease-out infinite}
+.muse-session-edge i:nth-child(2){animation-delay:.5s;--x:-9px}.muse-session-edge i:nth-child(3){animation-delay:1s;--x:10px}
+.muse-session[data-phase="paused"] .muse-session-edge{display:none}
+.muse-session-finish{position:absolute;inset-inline-end:0;top:50%;width:var(--finish);display:flex;justify-content:center;transform:translateY(-50%);pointer-events:none}
+.muse-session-finish .muse-achievement{filter:drop-shadow(0 0 5px var(--achievement-halo,transparent))}
+.muse-session-scale{box-sizing:border-box;display:grid;grid-template-columns:auto auto;justify-content:space-between;align-items:baseline;width:100%;max-width:520px;padding-inline-end:20px;font-size:.74rem;color:var(--text-muted);font-variant-numeric:tabular-nums}
+.muse-session-scale>:first-child{justify-self:start}.muse-session-scale>:last-child{justify-self:end}
+.muse-session-note{font-size:.86rem;color:var(--text-muted);font-style:italic;font-family:var(--font-editorial)}
+.muse-session-fine{margin:0;font-size:.76rem;color:var(--text-muted)}
+
+.muse-session-actions{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:10px;width:100%;max-width:440px}
+.muse-session-actions .muse-button{min-height:54px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;gap:9px;font-weight:600}
+.muse-session-toggle{font-size:1.04rem;box-shadow:0 12px 28px color-mix(in srgb,var(--accent-primary) 32%,transparent)}
+.muse-session-discard{font-size:.78rem;color:var(--text-muted);min-height:36px}
+.muse-session-checkin{width:100%;text-align:left;padding-top:14px;border-top:1px solid var(--glass-border)}
+.muse-session button:focus-visible{outline:2px solid var(--focus-ring,var(--foreground));outline-offset:3px}
+
+/* Desk: the book on the left, the clock and pool on the right. */
+.muse-session[data-variant="desk"]{grid-template-columns:minmax(150px,.7fr) minmax(0,1.6fr);justify-items:stretch;text-align:left;column-gap:clamp(20px,3.5vw,44px);align-items:center}
+.muse-session[data-variant="desk"]>.muse-session-book{grid-column:1;grid-row:1/span 5;flex-direction:column;align-items:flex-start;gap:14px}
+.muse-session[data-variant="desk"] .muse-session-cover{flex:none;width:clamp(86px,9vw,116px)}
+.muse-session[data-variant="desk"]>:not(.muse-session-book):not(.muse-session-glow){grid-column:2}
+.muse-session[data-variant="desk"] .muse-session-stage{justify-items:start}
+.muse-session[data-variant="desk"] :is(.muse-session-pool,.muse-session-scale,.muse-session-actions){justify-self:start}
+.muse-session[data-variant="desk"]>.muse-session-checkin{justify-self:stretch}
+@container muse-content (max-width:720px){
+ .muse-session[data-variant="desk"]{grid-template-columns:minmax(0,1fr);justify-items:center;text-align:center}
+ .muse-session[data-variant="desk"]>*{grid-column:1!important;grid-row:auto!important}
+ .muse-session[data-variant="desk"]>.muse-session-book{flex-direction:row;align-items:center;gap:12px}
+ .muse-session[data-variant="desk"] .muse-session-cover{width:48px;flex:0 0 48px}
+ .muse-session[data-variant="desk"] .muse-session-stage{justify-items:center}
+ .muse-session[data-variant="desk"] :is(.muse-session-pool,.muse-session-scale,.muse-session-actions){justify-self:center}
+}
+@container muse-session (max-width:380px){.muse-session-actions{grid-template-columns:1fr}.muse-session-toggle{order:-1}}
+@media(max-width:560px){.muse-session-actions{grid-template-columns:1fr}.muse-session-toggle{order:-1}}
+@keyframes muse-session-breathe{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.25);opacity:.75}}
+@keyframes muse-session-sheen{0%{transform:translateX(-120%)}55%,100%{transform:translateX(120%)}}
+@keyframes muse-session-flow{to{background-position:220% 0}}
+@keyframes muse-session-drift{from{transform:translateX(-4%)}to{transform:translateX(4%)}}
+@keyframes muse-session-ring{0%{opacity:.8;transform:scale(.3)}60%,100%{opacity:0;transform:scale(1.7)}}
+@keyframes muse-session-drop{0%{opacity:0;transform:translate(0,0) scale(.6)}15%{opacity:1}45%,100%{opacity:0;transform:translate(var(--x,0),-24px) scale(1)}}
+@media(prefers-reduced-motion:reduce){.muse-session-dot,.muse-session-glow,.muse-session-liquid::after,.muse-session-edge,.muse-session[data-target="open"] .muse-session-liquid{animation:none}.muse-session-liquid{transition:none}.muse-session-edge{display:none}}
+.muse-session-actions .button-ghost{border:1px solid var(--glass-border);background:color-mix(in srgb,var(--surface-control) 80%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.muse-session-actions .button-ghost:hover{border-color:var(--selected-border)}

@@ -9,6 +9,7 @@ import {ShareToStream} from '@/components/stream/ShareToStream';
 import {SeriesCover} from '@/components/collections/SeriesCover';
 import type {Book,ReadingGoal,ReadingSession} from '@/lib/whimsy/models';
 import type {ReadingTimer} from '@/lib/whimsy/books';
+import {ReadingSessionCard,type SessionPhase} from './ReadingSessionCard';
 import {activeSeconds,bookPosition,bookReadingStats,sittingClock} from '@/lib/whimsy/books';
 import {bookCompletions} from '@/lib/whimsy/reading-stats';
 import {seriesCompletion,seriesShelf,shelfStateLabel,type ShelfEntry} from '@/lib/books/series-view';
@@ -88,17 +89,7 @@ export function BookPage(props:BookPageProps){
    <div className="muse-book-panel-meter" role="meter" aria-label="Reading progress" aria-valuemin={0} aria-valuemax={100} aria-valuenow={percent??0}><span style={{width:`${percent??0}%`}}/></div>
    <p className="muse-book-panel-dates">{book.status==='finished'&&book.finishedOn?`Finished ${longDate(book.finishedOn)}`:book.startedOn?`Started ${longDate(book.startedOn)}`:book.status==='planned'?'Not started yet':'Start date not recorded'}{!book.totalPages&&<> · <button type="button" className="text-button" onClick={props.onEdit}>Add page count</button></>}</p>
   </div>
-  {active&&clock&&<section className="muse-book-session" data-phase={timer!.phase} aria-label="Reading session">
-   <div className="muse-book-session-head"><span className="muse-book-session-dot" aria-hidden="true"/><span className="small-label">{sessionLabel}</span></div>
-   <strong className="muse-book-session-clock type-numeric" role="timer" data-overtime={clock.overtime||undefined}>{clock.label}</strong>
-   <p className="muse-book-session-note">{timer!.targetMinutes?`${clock.overtime?'Past':'Toward'} your ${timer!.targetMinutes}-minute sitting`:'Open sitting'} · pauses don’t count</p>
-   {['running','paused'].includes(timer!.phase)&&<div className="muse-book-session-actions">
-    <button type="button" className="muse-button button-primary" disabled={busy} onClick={()=>props.onTimer(timer!.phase==='paused'?'resume':'pause')}><MuseIcon name={timer!.phase==='paused'?'play':'pause'} size={16}/>{timer!.phase==='paused'?'Resume':'Pause'}</button>
-    <button type="button" className="muse-button button-ghost" disabled={busy} onClick={()=>props.onTimer('finish')}>Finish session</button>
-   </div>}
-   {timer!.phase!=='saving'&&<button type="button" className="text-button muse-book-session-discard" disabled={busy} onClick={()=>props.onTimer('cancel')}>Discard session</button>}
-   {props.checkIn&&<div className="muse-book-session-checkin">{props.checkIn}</div>}
-  </section>}
+  {active&&clock&&<ReadingSessionCard phase={timer!.phase as SessionPhase} label={clock.label} overtime={clock.overtime} elapsed={clock.elapsed} targetMinutes={timer!.targetMinutes} busy={busy} onToggle={()=>props.onTimer(timer!.phase==='paused'?'resume':'pause')} onFinish={()=>props.onTimer('finish')} onDiscard={()=>props.onTimer('cancel')}>{props.checkIn}</ReadingSessionCard>}
   {elsewhere&&<section className="muse-book-session-elsewhere" aria-label="Session in progress"><span className="small-label">A sitting is open</span><p>You’re reading <strong>{props.timerBook?.title??'another book'}</strong> right now. Finish or pause it there to start this one.</p>{props.timerBook&&<button type="button" className="muse-button button-ghost" onClick={()=>open(bookHref(props.timerBook!.id),book.title)}>Go to that book</button>}</section>}
   {!timer&&props.timerLoaded&&<BookSittingChoice books={books} sessions={sessions} goals={props.goals} today={today} tick={tick} busy={busy} onStart={props.onStart} variant="panel" heading={finished?'Read it again?':undefined}/>}
   {!props.timerLoaded&&<p className="muse-book-panel-loading" role="status">Checking for an open sitting…</p>}
