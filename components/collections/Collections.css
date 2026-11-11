@@ -286,3 +286,7 @@
 .muse-collections-in-progress .muse-active-carousel,.muse-collections-in-progress .muse-active-carousel[data-count]{--carousel-visible:4;--carousel-gap:12px}
 @container muse-content (max-width:1000px){.muse-collections-in-progress .muse-active-carousel,.muse-collections-in-progress .muse-active-carousel[data-count]{--carousel-visible:3}}
 @container muse-content (max-width:640px){.muse-collections-in-progress .muse-active-carousel,.muse-collections-in-progress .muse-active-carousel[data-count]{--carousel-visible:1.15}}
+/* Equal padding: an empty meta line must not leave extra space under the author. */
+.muse-collections:not([data-density="list"]) .muse-collections-card[data-kind] .muse-card-meta:empty{display:none}
+.muse-collections:not([data-density="list"]) .muse-collections-card[data-kind]{align-content:start}
+.muse-collections:not([data-density="list"]) .muse-collections-library-page[data-layout="library"]>.muse-collections-grid .muse-collections-card[data-kind]{padding:10px 10px 5px!important}
