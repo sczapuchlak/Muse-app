@@ -64,7 +64,7 @@ try{
  await b.type('.muse-search input, input[type="search"]','');await b.until(()=>/of 1,0\d\d books/.test(document.querySelector('.muse-pagination-summary')?.textContent??''),'search cleared');
  await library('&page=3');await chooseMenu('Collection status','Finished');
  check(/Page 1 of/.test(await summary())&&new RegExp(`of ${books.filter(x=>x.status==='finished').length+2} books`).test(await summary()),`status filter resets to page 1 and counts the whole library: ${await summary()}`);
- check(await b.evaluate(()=>[...document.querySelectorAll('.muse-collections-library-page .muse-card-status')].every(n=>/Finished/.test(n.textContent))),'every card matches the status filter');
+ check(await b.evaluate(()=>[...document.querySelectorAll('.muse-collections-library-page .muse-card-status-badge')].every(n=>/Finished/.test(n.getAttribute('aria-label')))),'every card matches the status filter');
  await library('&page=3');await chooseMenu('Collection sort','Title');
  const expected=[...books.map(x=>x.title),'Heir of Fire','A Court of Wings and Ruin','A Court of Thorns and Roses','Circe','My grandmother’s recipe notebook'].sort((x,y)=>x.localeCompare(y))[0];
  check(/Page 1 of/.test(await summary())&&(await firstTitle())===expected,`sort by title reorders the entire library (first: ${await firstTitle()})`);
