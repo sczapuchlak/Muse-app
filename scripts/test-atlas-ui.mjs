@@ -22,6 +22,14 @@ try{
  await b.evaluate(()=>{const d=[...document.querySelectorAll('.muse-cal-day[data-books="2"]')][0];d.click();});await wait(400);
  check(await b.evaluate(()=>document.querySelectorAll('.muse-cal-detail li').length===2),'tapping a day lists its books and sittings');await b.evaluate(()=>document.querySelector('.muse-cal-detail').scrollIntoView({block:'center'}));await b.shoot('atlas-day-detail');
  await b.evaluate(()=>document.querySelector('.muse-year').scrollIntoView({block:'start'}));await wait(300);await b.shoot('atlas-year');
+ const lower=await b.evaluate(()=>({cards:document.querySelectorAll('.muse-atlas-progress-card').length,covers:document.querySelectorAll('.muse-atlas-progress-cover').length,rows:document.querySelectorAll('.muse-history-row').length,menus:document.querySelectorAll('.muse-history-menu').length,dateInputsVisible:(()=>{const d=document.querySelector('.muse-history-dates');return d.open?2:Math.round(d.getBoundingClientRect().height)>48?1:0;})(),goalsAfterCal:(()=>{const c=document.querySelector('.muse-cal'),g=document.querySelector('.muse-atlas-goals-row');return !!c&&!!g&&!!(c.compareDocumentPosition(g)&Node.DOCUMENT_POSITION_FOLLOWING);})()}));
+ console.log(JSON.stringify(lower));
+ check(lower.cards>=4&&lower.covers===lower.cards,'Books and progress shows cover cards');check(lower.rows>=6&&lower.menus===lower.rows,'session history uses compact rows with a ⋯ menu');
+ check(lower.dateInputsVisible===0,'date filters stay tucked away until asked for');check(lower.goalsAfterCal,'the calendar leads; goals follow it');
+ await b.evaluate(()=>document.querySelector('.muse-atlas-progress').scrollIntoView({block:'start'}));await wait(300);await b.shoot('atlas-progress');
+ await b.evaluate(()=>document.querySelector('.muse-books-history').scrollIntoView({block:'start'}));await wait(300);await b.shoot('atlas-history');
+ await b.go('/collections/reading-atlas?section=dna','!!document.querySelector(".muse-atlas-insight")','dna');await wait(800);await b.shoot('atlas-dna');
+ await b.go('/collections/reading-atlas','!!document.querySelector(".muse-cal")','back to overview');await wait(600);
  for(const t of themes){await b.evaluate(x=>document.documentElement.setAttribute('data-theme',x),t);await b.evaluate(()=>document.querySelector('.muse-cal').scrollIntoView({block:'start'}));await wait(400);await b.shoot(`atlas-calendar-${t}`);}
  await b.evaluate(()=>document.documentElement.removeAttribute('data-theme'));
  await b.viewport(390,844,true);await b.go('/collections/reading-atlas','!!document.querySelector(".muse-cal")','atlas phone');await wait(900);

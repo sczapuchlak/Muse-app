@@ -13,7 +13,7 @@ const longDay=(d:string)=>new Intl.DateTimeFormat(undefined,{weekday:'long',mont
 const minutes=(s:number)=>s>=3600?`${Math.floor(s/3600)} hr ${Math.round(s%3600/60)} min`:`${Math.max(1,Math.round(s/60))} min`;
 const shiftMonth=(month:string,by:number)=>{const [y,m]=month.split('-').map(Number),d=new Date(Date.UTC(y,m-1+by,1));return `${d.getUTCFullYear()}-${String(d.getUTCMonth()+1).padStart(2,'0')}`;};
 
-function Cover({book}:{book:Book|undefined}){
+export function Cover({book}:{book:Pick<Book,'title'|'coverUrl'>|undefined}){
  return book?.coverUrl&&validCoverUrl(book.coverUrl)?<img src={book.coverUrl} alt="" loading="lazy" decoding="async" referrerPolicy="no-referrer"/>:<span className="muse-cal-cover-blank">{book?.title?.slice(0,22)??'Book'}</span>;
 }
 
