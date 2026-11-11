@@ -191,3 +191,23 @@
 .muse-book-session-checkin .muse-books-actions .muse-button[aria-pressed="true"]{border-color:var(--selected-border);background:var(--selected-background);color:var(--selected-text)}
 .muse-book-session-checkin .muse-books-actions:has(>.muse-button:only-child){grid-template-columns:1fr}
 .muse-book-session-checkin .muse-books-actions>.muse-button:not(.button-ghost){min-height:46px;border-color:transparent;background:var(--action-fill,var(--accent-primary));color:var(--action-ink,#fff);font-size:.92rem;font-weight:600}
+
+/* Book Detail polish: the same liquid language as the reading timer and the Daily Edit water bar. */
+.muse-book-panel-meter,.muse-book-series-meter{height:14px;background:var(--wash-aqua,color-mix(in srgb,var(--foreground) 9%,transparent));box-shadow:inset 0 0 0 1px var(--glass-aqua-edge,var(--glass-border)),inset 0 2px 4px rgba(0,0,0,.08)}
+.muse-book-panel-meter>span,.muse-book-series-meter>span{background:var(--water-progress-gradient,linear-gradient(90deg,var(--progress-start,var(--accent-primary)),var(--progress-middle,var(--accent-secondary)),var(--progress-end,var(--accent-pop))));box-shadow:0 0 14px var(--water-glow,color-mix(in srgb,var(--accent-primary) 50%,transparent)),inset 0 2px 0 rgba(255,255,255,.4),inset 0 -4px 6px rgba(0,0,0,.1);overflow:hidden}
+.muse-book-panel-meter>span::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.5) 50%,transparent 70%);transform:translateX(-120%);animation:muse-book-sheen 4.2s ease-in-out infinite}
+.muse-book-panel-pages strong{font-size:2.6rem;letter-spacing:-.035em;text-shadow:0 2px 22px color-mix(in srgb,var(--accent-primary) 28%,transparent)}
+.muse-book-panel-pages em{padding:3px 10px;border-radius:999px;background:color-mix(in srgb,var(--accent-primary) 14%,transparent);font-variant-numeric:tabular-nums}
+.muse-book-panel-stats{gap:10px;border-top:0;padding-top:4px}
+.muse-book-panel-stats>div:not(:only-child){padding:10px 12px;border:1px solid var(--glass-border);border-radius:14px;background:linear-gradient(160deg,color-mix(in srgb,var(--accent-primary) 8%,transparent),transparent 70%),var(--surface-subtle)}
+.muse-book-panel-stats strong{font-family:var(--font-editorial);font-weight:var(--type-title-weight);font-size:1.25rem;font-variant-numeric:tabular-nums}
+.muse-book-page-cover::after{content:"";position:absolute;z-index:-1;inset:8% -14% -6% -14%;background:radial-gradient(ellipse at 50% 60%,color-mix(in srgb,var(--accent-primary) 30%,transparent),transparent 68%);filter:blur(26px);opacity:.75;pointer-events:none}
+.muse-book-about{padding:clamp(18px,2.4vw,26px);border:1px solid var(--glass-border);border-radius:20px;background:linear-gradient(140deg,color-mix(in srgb,var(--accent-secondary) 9%,transparent),transparent 60%),var(--surface-subtle)}
+.muse-book-about-text{font-size:1.06rem;line-height:1.72}
+.muse-book-about-text>p:first-child::first-letter{float:left;font-family:var(--font-editorial);font-size:3.1em;line-height:.9;padding:.06em .1em 0 0;color:var(--accent-primary)}
+.muse-book-about-empty{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:14px 16px;border:1px dashed var(--glass-border);border-radius:14px;font-size:.92rem}
+.muse-book-about-empty::before{content:"✦";color:var(--accent-primary);font-size:1.1rem}
+@keyframes muse-book-sheen{0%{transform:translateX(-120%)}55%,100%{transform:translateX(120%)}}
+@media(prefers-reduced-motion:reduce){.muse-book-panel-meter>span::after{animation:none;opacity:0}}
+.muse-book-panel-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+.muse-book-panel-stats strong{white-space:nowrap}
