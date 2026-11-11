@@ -75,15 +75,6 @@ export function SeriesRoute({seriesKey}:{seriesKey:string}){
  // eslint-disable-next-line react-hooks/exhaustive-deps
  },[loaded,seriesKey,saved?.id,stale,nonce]);
 
- // Saved, current series: the catalog is still read quietly for each installment's short synopsis.
- useEffect(()=>{
-  if(!loaded||!saved||stale||catalog||!source||!catalogId)return;
-  const controller=new AbortController();
-  fetchSeriesCatalog(source,catalogId,saved.title,false,controller.signal).then(found=>{if(!controller.signal.aborted&&found)setCatalog(found);}).catch(()=>{});
-  return()=>controller.abort();
- // eslint-disable-next-line react-hooks/exhaustive-deps
- },[loaded,saved?.id,stale,source,catalogId]);
- const synopses=useMemo(()=>new Map((catalog?.members??[]).filter(m=>m.description).map(m=>[`${m.source}:${m.id}`,m.description!])),[catalog]);
  const view=useMemo(()=>saved?{series:saved,members:records.seriesMembers.filter(m=>m.series_id===saved.id)}:catalog?catalogSeriesView(catalog,books,userId):null,[saved,records.seriesMembers,catalog,books,userId]);
  const shelf=view?seriesShelf(view.series,view.members,books,today):null;
 
@@ -129,7 +120,6 @@ export function SeriesRoute({seriesKey}:{seriesKey:string}){
 
  const {series}=view,description=series.description?.trim()??'';
  const statusChip=series.catalog_completed===true||series.conclusion_state==='concluded'?{label:'All books published',tone:'done'}:shelf.upcomingCount?{label:shelf.nextRelease?.releaseDate?`Next: ${longDate(shelf.nextRelease.releaseDate)}`:'More to come',tone:'upcoming'}:series.conclusion_state==='ongoing'||series.catalog_completed===false?{label:'Ongoing',tone:'upcoming'}:null;
- const synopsisFor=(entry:ShelfEntry)=>entry.book?.description?.trim()||synopses.get(`${entry.member.catalog_source}:${entry.member.catalog_id}`)||'';
  /** Ownership and reading are separate facts: on your shelf or not; read, reading, paused, not started, or wished for. */
  const signals=(entry:ShelfEntry)=>{
   const owned=!!entry.book;
@@ -141,13 +131,12 @@ export function SeriesRoute({seriesKey}:{seriesKey:string}){
   {entry.state!=='upcoming'&&<QuickAddButton label={entry.title} busy={quick.pending===entry.key} disabled={!!quick.pending&&quick.pending!==entry.key} onAdd={status=>void add(entry,status)}/>}
  </>;
  const meta=(entry:ShelfEntry)=>[entry.year,entry.pages?`${entry.pages} pages`:null,entry.author&&entry.author!==shelf.authors?entry.author:null].filter(Boolean).join(' · ');
- const row=(entry:ShelfEntry)=>{const owned=!!entry.book,synopsis=synopsisFor(entry);return <li key={entry.key} id={`installment-${entry.member.id}`} className="muse-series-page-row" data-state={entry.state} data-owned={owned||undefined}>
+ const row=(entry:ShelfEntry)=>{const owned=!!entry.book;return <li key={entry.key} id={`installment-${entry.member.id}`} className="muse-series-page-row" data-state={entry.state} data-owned={owned||undefined}>
   <span className="muse-series-page-pos type-numeric">{entry.positionLabel||'·'}</span>
   <button type="button" className="muse-series-page-row-main" disabled={!owned} onClick={()=>entry.book&&openBook(entry.book.id)} aria-label={owned?`Open ${entry.title}`:undefined}>
    <SeriesCover title={entry.title} coverUrl={entry.coverUrl} color={entry.coverColor} ghost={!owned} size="sm"/>
    <span className="muse-series-page-row-copy"><strong className="type-title">{entry.title}</strong>{meta(entry)&&<span className="muse-series-page-row-meta">{meta(entry)}</span>}{signals(entry)}</span>
   </button>
-  {synopsis?<p className="muse-series-page-synopsis">{synopsis}</p>:<span className="muse-series-page-synopsis" aria-hidden="true"/>}
   <span className="muse-series-page-row-actions">{actions(entry)}</span>
  </li>;};
  const card=(entry:ShelfEntry)=>{const owned=!!entry.book,facts=[entry.year,entry.pages?`${entry.pages} pp`:null].filter(Boolean).join(' · ');return <li key={entry.key} id={`installment-${entry.member.id}`} className="muse-series-card" data-state={entry.state} data-owned={owned||undefined}>
@@ -205,6 +194,7 @@ export function SeriesRoute({seriesKey}:{seriesKey:string}){
    </header>
    {shelf.primary.length?list(shelf.primary,'Primary series'):<p className="muse-series-page-empty-note">No primary books are listed for this series yet.</p>}
   </section>
+  {shelf.collections.length>0&&<section className="muse-card muse-series-page-order muse-series-page-bundles" data-layout={layout} aria-label="Collections and box sets"><details className="muse-series-page-collections"><summary><span className="muse-book-page-section-title">Collections &amp; box sets</span> <span className="muse-series-page-section-count type-numeric">{shelf.collections.length}</span><small>Bundles and collected editions. Never counted toward progress.</small></summary>{list(shelf.collections,'Collections and box sets')}</details></section>}
    </div>
    <div className="muse-series-col-side">
    <aside className="muse-card muse-series-page-progress" aria-label="Your progress" data-complete={core.complete||undefined}>
@@ -221,7 +211,6 @@ export function SeriesRoute({seriesKey}:{seriesKey:string}){
    <header className="muse-series-page-order-head"><div><h2 id="series-additional-heading" className="muse-book-page-section-title">Additional works <span className="muse-series-page-section-count type-numeric">{shelf.additional.length}</span></h2><p>Prequels, novellas and companion stories, at their place in the order. Tracked on their own; they don’t change series progress.</p></div><span className="muse-book-chip">{shelf.additionalReadCount} of {shelf.additional.length} read</span></header>
    {list(shelf.additional,'Additional works')}
   </section>}
-  {shelf.collections.length>0&&<section className="muse-card muse-series-page-order muse-series-page-bundles" data-layout={layout} aria-label="Collections and box sets"><details className="muse-series-page-collections"><summary><span className="muse-book-page-section-title">Collections &amp; box sets</span> <span className="muse-series-page-section-count type-numeric">{shelf.collections.length}</span><small>Bundles and collected editions. Never counted toward progress.</small></summary>{list(shelf.collections,'Collections and box sets')}</details></section>}
    </div>
   </div>
   <section className="muse-series-page-footnote">

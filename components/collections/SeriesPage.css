@@ -128,11 +128,10 @@
 .muse-series-status[data-tone="upcoming"]{background:color-mix(in srgb,var(--accent-warm,var(--accent-pop)) 20%,transparent)}
 .muse-series-status[data-tone="quiet"]{color:var(--text-muted)}
 
-/* List view: [#] [cover + details] [synopsis] [actions], same compact height */
-.muse-series-page-row{grid-template-columns:44px minmax(220px,1fr) minmax(0,1.35fr) auto;gap:16px;padding:8px 0}
-.muse-series-page-row-main{grid-template-columns:48px minmax(0,1fr)}
+/* List view: [#] [cover + details] [actions] */
+.muse-series-page-row{grid-template-columns:48px minmax(0,1fr) auto;gap:16px;padding:10px 0;min-height:88px}
+.muse-series-page-row-main{grid-template-columns:56px minmax(0,1fr);gap:16px}
 .muse-series-page-row-copy{gap:2px}
-.muse-series-page-synopsis{margin:0;font-size:.8rem;line-height:1.45;color:var(--text-muted);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;max-width:62ch}
 
 /* Grid view: cover-forward cards */
 .muse-series-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:22px 18px;list-style:none;margin:6px 0 0;padding:0}
@@ -146,7 +145,7 @@
 .muse-series-card-copy strong{font-size:.96rem;line-height:1.2;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .muse-series-card-actions{display:flex;align-items:center;gap:6px;margin-top:2px}
 
-@media(max-width:900px){.muse-series-page-row{grid-template-columns:40px minmax(0,1fr) auto}.muse-series-page-synopsis{display:none}}
+@media(max-width:900px){.muse-series-page-row{grid-template-columns:40px minmax(0,1fr) auto;min-height:0}}
 @media(max-width:620px){
  .muse-series-page-order-head{align-items:flex-start}.muse-series-page-tools{width:100%;justify-content:space-between}
  .muse-series-page-row{grid-template-columns:30px minmax(0,1fr);grid-template-areas:"pos main" ". actions";row-gap:6px;column-gap:8px}
@@ -157,7 +156,7 @@
  .muse-series-card .muse-quick-add>button{min-width:40px;min-height:40px}
 }
 @media(prefers-reduced-motion:reduce){.muse-series-card{animation:none}.muse-series-card-cover{transition:none}}
-@media(min-width:901px){.muse-series-page-row{grid-template-columns:44px minmax(220px,1fr) minmax(0,1.35fr) 148px}.muse-series-page-row-actions{justify-content:flex-end}}
+@media(min-width:901px){.muse-series-page-row-actions{justify-content:flex-end;min-width:148px}}
 
 /* Two columns beside everything: the bookcase and the identity on the left, the progress card on the right.
    Plain grid columns (no row spanning) so every browser lays it out the same way. */
@@ -325,8 +324,7 @@
 .muse-series-carousel-arrow:disabled{opacity:0;pointer-events:none}
 .muse-series-carousel-arrow:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
 
-/* List mode in the narrow column: details on top, actions beneath, no synopsis */
-.muse-series-page-additional .muse-series-page-synopsis,.muse-series-page-bundles .muse-series-page-synopsis{display:none}
+/* List mode in the narrow column: details on top, actions beneath */
 .muse-series-col-side .muse-series-page-row{grid-template-columns:30px minmax(0,1fr);grid-template-areas:"pos main" ". actions";row-gap:6px;column-gap:8px}
 .muse-series-col-side .muse-series-page-row[data-owned]{grid-template-areas:"pos main"}
 .muse-series-col-side .muse-series-page-pos{grid-area:pos}.muse-series-col-side .muse-series-page-row-main{grid-area:main;grid-template-columns:46px minmax(0,1fr);gap:10px}.muse-series-col-side .muse-series-page-row-actions{grid-area:actions;justify-content:flex-start}
@@ -337,3 +335,12 @@
 .muse-series-page-description .text-button{font-weight:600}
 .muse-series-card:target .muse-series-card-cover,.muse-series-page-row:target{outline:2px solid var(--accent-primary);outline-offset:3px}
 @media(prefers-reduced-motion:reduce){.muse-series-carousel-arrow{transition:none}}
+
+/* Primary list rows (#136): no synopsis, so the title gets the width. Full titles wrap rather than truncate. */
+.muse-series-page-row-copy{gap:4px}
+.muse-series-page-row-copy strong{font-size:1.1rem;line-height:1.25;overflow-wrap:break-word;word-break:normal}
+.muse-series-page-row-meta{font-size:.84rem}
+.muse-series-col-main .muse-series-signals{margin-top:3px}
+/* Phones: the wrappers dissolve into one stack: progress, primary, additional, then Collections & box sets. */
+@media(max-width:900px){.muse-series-col-main{display:contents}.muse-series-col-main>.muse-series-page-order:not(.muse-series-page-bundles){order:2}}
+.muse-series-page-bundles summary .muse-book-page-section-title{color:var(--foreground)}

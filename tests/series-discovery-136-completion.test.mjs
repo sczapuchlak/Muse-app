@@ -156,8 +156,8 @@ test('Series page structure: hero, then independent 70/30 columns with fixed-siz
  const at=s=>route.indexOf(s);
  assert.ok(at('muse-series-hero2')>0&&at('muse-series-hero2')<at('muse-series-columns'),'hero first, then the columns');
  const main=route.slice(at('muse-series-col-main'),at('muse-series-col-side')),side=route.slice(at('muse-series-col-side'),at('muse-series-page-footnote'));
- assert.match(main,/series-order-heading/);assert.doesNotMatch(main,/muse-series-page-progress|series-additional-heading|muse-series-page-bundles/,'the left column is Primary series only');
- assert.ok(side.indexOf('muse-series-page-progress')<side.indexOf('series-additional-heading')&&side.indexOf('series-additional-heading')<side.indexOf('muse-series-page-bundles'),'right column: progress → additional → collections');
+ assert.match(main,/series-order-heading/);assert.doesNotMatch(main,/muse-series-page-progress|series-additional-heading/,'the left column holds Primary series and Collections only');assert.ok(main.indexOf('series-order-heading')<main.indexOf('muse-series-page-bundles'),'Collections & box sets sit directly under Primary series');assert.doesNotMatch(route,/muse-series-page-synopsis/,'list rows carry no synopsis');
+ assert.ok(side.indexOf('muse-series-page-progress')<side.indexOf('series-additional-heading'),'right column: progress → additional');assert.doesNotMatch(side,/muse-series-page-bundles/,'the right column no longer holds Collections');
  assert.doesNotMatch(route.slice(at('muse-series-hero2'),at('muse-series-columns')),/muse-series-page-progress/,'no progress card in the hero');
  assert.match(css,/\.muse-series-columns\{[^}]*7fr[^}]*3fr[^}]*align-items:start/);assert.match(css,/\.muse-series-carousel>ol>li\{flex:0 0 128px/,'one card size everywhere');
  assert.match(route,/<ShelfCarousel/);assert.doesNotMatch(route,/<details className="muse-series-page-collections" open/,'collections start collapsed');
