@@ -70,3 +70,13 @@
 .muse-desk-top>.muse-challenge .muse-challenge-headline{font-family:var(--font-editorial);font-size:1.05rem!important}
 .muse-desk-top>.muse-challenge .muse-challenge-empty{margin:0;font-size:.84rem}
 @container muse-content (max-width:760px){.muse-desk-top{grid-template-columns:minmax(0,1fr)}}
+/* The desk draws its own surface; the older Reading Desk section box must not wrap it a second time. */
+.muse-bookshelf[data-surface="desk"] .muse-books-section[aria-label="Reading Desk"]{padding:0;border:0;border-radius:0;background:none;box-shadow:none;gap:clamp(12px,1.6vw,18px)}
+.muse-bookshelf[data-surface="desk"] .muse-books-section[aria-label="Reading Desk"]::before,.muse-bookshelf[data-surface="desk"] .muse-books-section[aria-label="Reading Desk"]::after{display:none}
+.muse-desk-layout[data-count="1"] .muse-desk-track{grid-auto-columns:min(100%,620px)}
+.muse-desk-continue{flex:0 1 230px}
+@container muse-content (max-width:640px){.muse-desk-continue{flex:1 1 auto}}
+.muse-desk-top>*{margin:0!important}
+.muse-desk-top .muse-streak{padding:14px 18px;row-gap:10px}
+.muse-desk-top .muse-streak-count strong{font-size:2.3rem}
+.muse-desk-top .muse-streak-heart{width:28px;height:28px}
