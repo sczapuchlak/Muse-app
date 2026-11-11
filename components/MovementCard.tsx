@@ -12,6 +12,7 @@ import { GlassPopover } from "./GlassPopover";
 import { MuseChoiceMenu } from "./MuseChoiceMenu";
 import { movementRows, movementStatuses, type MovementStatus } from "@/lib/movement-status";
 import {useWellness} from "./WellnessStore";
+import {StepsArea} from "./steps/StepsArea";
 
 import {useMuseSpark} from "./MuseSpark";
 
@@ -98,6 +99,7 @@ export function MovementCard({ initialTypes, initialDay }: Props) {
           onClick={(event) => { anchorRef.current = event.currentTarget; setPanel((current) => current?.mode === "manage" ? null : { mode: "manage" }); }}>Manage</button>
       </CardHeading>
       <span className="muse-movement-feedback">{spark}</span>
+      <div className="movement-areas"><div className="movement-activity"><p className="movement-area-title">Activity</p>
       <div className="movement-plan-row" role="group" aria-label="Planned movement">
         <span className="movement-row-label">Planned</span>
         <ul className="movement-plan-chips" aria-label="Planned movement types">
@@ -115,6 +117,7 @@ export function MovementCard({ initialTypes, initialDay }: Props) {
           <MuseChoiceMenu label={`Status for ${nameOf(row.typeId)}`} valueLabel={movementStatuses.find(option=>option.id===row.status)!.label} options={statusOptions} selectedIds={[row.status]} onSelect={id=>{if(!locked)setStatus(row.typeId,id as MovementStatus);}}/>
         </li>;})}
       </ul>:<p className="small-label movement-outcome-empty">Plan something, then mark how it went. Only Completed counts as movement done.</p>}
+      </div><StepsArea key={initialDay.date} date={initialDay.date} /></div>
       <GlassPopover id="movement-menu" label={panel?.mode==='more'?'Plan movement':'Saved movement types'} open={panel !== null} anchorRef={anchorRef} onClose={() => setPanel(null)} width={panel?.mode === "manage" ? 420 : 340}>
         {panel?.mode === "more" && <>
           <p className="editor-label">Plan movement</p>

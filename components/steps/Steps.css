@@ -1,0 +1,26 @@
+/* Steps (#130): the second area of the Movement card. Same labels, inputs and progress look as Water and Movement. */
+.movement-area-title{display:flex;align-items:center;gap:8px;margin:0 0 2px;font:600 .72rem/1.2 var(--font-ui);letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted)}
+.movement-areas{display:grid;gap:var(--space-4)}
+.movement-areas>.muse-steps{padding-top:var(--space-4);border-top:1px solid var(--glass-border)}
+@media(min-width:1100px){.movement-card .movement-areas{grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);column-gap:var(--space-5)}.movement-areas>.muse-steps{padding:0 0 0 var(--space-5);border-top:0;border-left:1px solid var(--glass-border)}}
+.muse-steps{display:grid;gap:10px;min-width:0;align-content:start}
+.muse-steps-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.muse-steps-goal-button{display:inline-flex;align-items:center;gap:6px;color:var(--text-muted);font-size:.8rem}
+.muse-steps-goal-form{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.muse-steps-goal-form input{width:7.5em}
+.muse-steps-count{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 10px;min-width:0}
+.muse-steps-count strong{font-family:var(--font-editorial);font-weight:var(--type-title-weight);font-size:2rem;line-height:1;font-variant-numeric:tabular-nums}
+.muse-steps-count span{color:var(--text-muted);font-size:.9rem}
+.muse-steps-note{margin-left:auto;font-size:.78rem;font-weight:600;color:var(--text-muted)}
+.muse-steps[data-met] .muse-steps-note{color:var(--success-primary)}
+.muse-steps-bar{height:10px;border-radius:999px;background:color-mix(in srgb,var(--foreground) 10%,transparent);overflow:hidden}
+.muse-steps-bar>span{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--accent-secondary),var(--accent-primary));transition:width .22s ease-out}
+.muse-steps[data-met] .muse-steps-bar>span{background:linear-gradient(90deg,var(--accent-primary),var(--success-primary))}
+.muse-steps-form{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.muse-steps :is(.muse-steps-form,.muse-steps-goal-form) input{min-height:40px;padding:6px 12px;border-radius:12px;border:1px solid var(--glass-border);background:var(--surface-subtle);color:var(--foreground);font:inherit}
+.muse-steps-form input{flex:1 1 9em;min-width:0}
+.muse-steps input[aria-invalid=true]{border-color:var(--danger,#d14d6b)}
+.muse-steps :is(input,button):focus-visible{outline:2px solid var(--focus-ring,var(--accent-primary));outline-offset:2px}
+.muse-steps-error{margin:0;font-size:.82rem;color:var(--danger,#d14d6b)}
+@media(pointer:coarse){.muse-steps :is(.muse-steps-form,.muse-steps-goal-form) input,.muse-steps .muse-button{min-height:44px}}
+@media(prefers-reduced-motion:reduce){.muse-steps-bar>span{transition:none}}

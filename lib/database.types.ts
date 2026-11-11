@@ -2023,6 +2023,34 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
+                },"step_days": {
+                  Row: {
+                    "captured_time_zone": string,"created_at": string,"goal": number,"local_date": string,"revision": number,"source": string,"steps": number,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "captured_time_zone"?: string,"created_at"?: string,"goal": number,"local_date": string,"revision"?: number,"source"?: string,"steps": number,"updated_at"?: string,"user_id"?: string
+                  }
+                  Update: {
+                    "captured_time_zone"?: string,"created_at"?: string,"goal"?: number,"local_date"?: string,"revision"?: number,"source"?: string,"steps"?: number,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
+                },"step_settings": {
+                  Row: {
+                    "goal": number,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "goal": number,"updated_at"?: string,"user_id"?: string
+                  }
+                  Update: {
+                    "goal"?: number,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
                 },"stream_comments": {
                   Row: {
                     "author": string,"body": string,"created_at": string,"edited_at": string | null,"id": string,"post_id": string

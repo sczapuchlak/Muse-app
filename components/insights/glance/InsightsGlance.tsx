@@ -1,4 +1,5 @@
 "use client";
+import { StepsSummary } from "./StepsSummary";
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { MusePageHeader } from "../../MusePageHeader";
@@ -95,6 +96,7 @@ export function InsightsGlance() {
         <RatingSummary daily={daily} />
         <PrioritiesSummary summary={daily.priorities} />
         <WaterSummary water={water} loaded={wellness.status.loaded} />
+        <StepsSummary start={range.start} end={range.end} />
         <EmotionSnapshot daily={daily} />
         <ThreeFavorites daily={daily} />
         <GoodDays daily={daily} days={snapshot.days} checkIns={checkIns} onOpen={(d) => open(d)} limit={3} />
@@ -116,6 +118,7 @@ export function InsightsGlance() {
           <div style={{ gridArea: "three" }}><ThreeFavorites daily={daily} /></div>
           <div style={{ gridArea: "read" }}>{readingCard()}</div>
         </div>
+        <div data-area="hero"><StepsSummary start={range.start} end={range.end} /></div>
         <div data-area="hero"><LittleMoments memories={moments.memories} checkIns={checkIns} onOpen={(d) => open(d)} period="month" /></div>
         <div data-area="hero"><MonthIntentions days={range.days} intentions={daily.intentions} today={today} onOpen={(d) => open(d)} /></div>
       </>}
