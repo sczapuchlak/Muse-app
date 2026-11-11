@@ -39,3 +39,12 @@
 .muse-bookshelf progress::-webkit-progress-bar{background:color-mix(in srgb,var(--foreground) 9%,transparent);border-radius:999px}
 .muse-bookshelf progress::-webkit-progress-value{border-radius:999px;background:linear-gradient(90deg,var(--progress-start,var(--accent-primary)),var(--progress-middle,var(--accent-secondary)),var(--progress-end,var(--accent-pop)))}
 .muse-bookshelf progress::-moz-progress-bar{border-radius:999px;background:linear-gradient(90deg,var(--progress-start,var(--accent-primary)),var(--progress-middle,var(--accent-secondary)),var(--progress-end,var(--accent-pop)))}
+
+/* Reading Desk cards sit three-up in the carousel: a slim cover and a text column that wraps at word
+   boundaries and clamps, so a long title or narrow column never stretches a card into a tall, letter-broken strip. */
+.muse-bookshelf .muse-books-section[aria-label="Reading Desk"] .muse-active-carousel .muse-books-card{grid-template-columns:clamp(72px,7.2vw,104px) minmax(0,1fr);gap:clamp(12px,1.3vw,18px);padding:clamp(14px,1.5vw,18px);min-height:0}
+.muse-bookshelf .muse-books-section[aria-label="Reading Desk"] .muse-active-carousel .muse-books-card h4{font-size:clamp(1.1rem,1.5vw,1.4rem);line-height:1.2;overflow-wrap:break-word;word-break:normal;hyphens:auto;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;line-clamp:3;overflow:hidden}
+.muse-bookshelf .muse-books-section[aria-label="Reading Desk"] .muse-active-carousel .muse-books-card .muse-books-card-title{overflow-wrap:break-word;word-break:normal}
+.muse-bookshelf .muse-books-section[aria-label="Reading Desk"] .muse-active-carousel .muse-books-card-author{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;overflow-wrap:break-word}
+.muse-bookshelf .muse-books-section[aria-label="Reading Desk"] .muse-active-carousel .muse-books-card .small-label{overflow-wrap:break-word;line-height:1.35}
+.muse-bookshelf .muse-books-section[aria-label="Reading Desk"] .muse-active-carousel .muse-books-card-meta p{font-size:.84rem;overflow-wrap:break-word}
