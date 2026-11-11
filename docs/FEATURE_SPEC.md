@@ -1208,3 +1208,7 @@ Rules: PRODUCT_RULES "Envision → Vision Boards (#118)". Full detail, data mode
 - **Intentions:** new optional section "Vision board" (up to 3 boards) with previews. Existing templates unchanged.
 - **Cutouts (iPhone/iPad only):** Paste button, a "Make a cutout" guide to Apple's Photos cutout, and a one-time dismissible tip. Muse doesn't remove backgrounds itself.
 - **Migration** `20261203000100_vision_boards.sql`: table, derived `asset_paths`, PNG in the private bucket, shared-file delete guard. Verify with `scripts/verify-hosted-vision-boards.sql`.
+
+## Books Import 2.0 (#143) — implemented on feature branch; Staging acceptance pending
+
+See [BOOK_IMPORT_143](BOOK_IMPORT_143.md). Goodreads empty ISBN formulas are missing values, not verification conflicts. Import review separates required decisions from informational notices and reuses catalog/edition search, saved book references, read associations and existing Series installments. Source evidence remains unchanged by review edits. DNF is a fifth native book status, distinct from Paused, and never fabricates a completion. The ordered `20261214000100_book_dnf_status.sql` migration extends existing writer/start/discard validation; no hosted migration or deployment is implied. Existing Muse status wins on refresh, including the accepted Staging import. Atlas visuals and shared styles are unchanged.

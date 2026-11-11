@@ -28,7 +28,7 @@ const https=(value:string|null|undefined)=>value&&/^https:\/\/[^\s"'<>]{3,}$/.te
 const clip=(value:string|null|undefined,length=200)=>value?value.replace(/\s+/g,' ').trim().slice(0,length)||undefined:undefined;
 const on=(approved:string[],field:string)=>approved.includes(field);
 const clean=(display:ShowcaseDisplay):ShowcaseDisplay=>Object.fromEntries(Object.entries(display).filter(([,value])=>value!==undefined&&value!==null&&!(Array.isArray(value)&&!value.length))) as ShowcaseDisplay;
-const bookStatus:Record<Book['status'],string>={planned:'Want to read',reading:'Reading',finished:'Finished',paused:'Paused'};
+const bookStatus:Record<Book['status'],string>={planned:'Want to read',reading:'Reading',finished:'Finished',paused:'Paused',dnf:'Did Not Finish'};
 /** Rituals take their icon from their group. */
 const ritualIcon=(s:SourceBundle,groupId:string)=>{const icon=s.rituals?.groups.find(g=>g.id===groupId)?.icon;return icon&&/^[a-z][a-z-]{1,30}$/.test(icon)?icon:'rituals';};
 const kindLabel:Record<string,string>={movie:'Movies',tv:'TV',game:'Games',album:'Albums'};

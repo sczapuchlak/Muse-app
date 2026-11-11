@@ -95,3 +95,7 @@ Write down the answers before you build. Put them in the PR description or the f
 ## Cosmic Observatory chart tools (#28)
 
 The existing private birth profile remains the authoritative record for the user's birth details. `astrology_comparison_profiles` owns optional, named details for other people used in synastry and composite tools. Each record is private, reusable in either chart position, included in personal export, and independently deletable; it does not copy the user's profile or store chart results. Temporary natal, synastry, composite and transit results remain in memory for the current browser session. An explicit reflection action creates a normal Cosmic Journal entry referencing an existing library concept, not a copy of a chart or someone else's birth details. Chart-result references remain future work requiring a snapshot and deletion design.
+
+### Books Import 2.0 (#143) — feature branch
+
+Cohesion check: Books owns DNF and its reading cycle, while import provenance holds the original source snapshot. Review editions/ISBN corrections affect proposed metadata, never source evidence or existing Muse values. Existing Series installments are optional references; their order/role/decoration remain in Series. Catalog search/editions reuse the existing authenticated providers. No second Library, Atlas record or completion tracker is introduced. Migration/acceptance gates and local verification: [BOOK_IMPORT_143](BOOK_IMPORT_143.md).

@@ -31,7 +31,13 @@ export function plainText(value:string,max=MAX_TEXT){
 }
 function safeChar(code:number){return Number.isFinite(code)&&code>31&&code<0x10ffff?String.fromCodePoint(code):'';}
 
-export function isbnDigits(value:string){return value.replace(/[\s-]/g,'').toUpperCase();}
+export function isbnDigits(value:string){
+ // Unwrap literal spreadsheet text, never evaluate a formula or guess rounded scientific notation.
+ let text=value.normalize('NFKC').trim().replace(/^'/,'').trim();
+ const formula=text.match(/^=\s*"([^"]*)"$/);if(formula)text=formula[1];
+ else if(/^"[^"]*"$/.test(text))text=text.slice(1,-1);
+ return text.replace(/^ISBN(?:-1[03])?\s*:?\s*/i,'').replace(/[\s\u200B\uFEFF\u2010-\u2015-]/g,'').toUpperCase();
+}
 export function validIsbn10(value:string){const v=isbnDigits(value);if(!/^\d{9}[\dX]$/.test(v))return false;let sum=0;for(let i=0;i<10;i++)sum+=(v[i]==='X'?10:Number(v[i]))*(10-i);return sum%11===0;}
 export function validIsbn13(value:string){const v=isbnDigits(value);if(!/^97[89]\d{10}$/.test(v))return false;let sum=0;for(let i=0;i<13;i++)sum+=Number(v[i])*(i%2?3:1);return sum%10===0;}
 export function isbn10To13(value:string){const v=isbnDigits(value);if(!validIsbn10(v))return undefined;const core=`978${v.slice(0,9)}`;let sum=0;for(let i=0;i<12;i++)sum+=Number(core[i])*(i%2?3:1);return `${core}${(10-sum%10)%10}`;}

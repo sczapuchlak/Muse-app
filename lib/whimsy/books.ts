@@ -8,7 +8,7 @@ import {canonicalGenre} from '@/lib/collections/genres';
 export const activeReadingBooks=(books:readonly Book[])=>books.filter(book=>book.status==='reading'&&!book.archivedAt);
 export const featuredReadingBook=(books:readonly Book[],preferredId?:string|null)=>{const active=activeReadingBooks(books);return active.find(book=>book.id===preferredId)??active[0]??null;};
 
-export type AutoReadingStatus={previous:'planned'|'finished';bookRevision:number;startedOn?:string;finishedOn?:string;cycleId?:string};
+export type AutoReadingStatus={previous:'planned'|'finished'|'dnf';bookRevision:number;startedOn?:string;finishedOn?:string;cycleId?:string};
 export type ReadingTimer={bookId:string;phase:'running'|'paused'|'finishing'|'saving';date:string;timeZone:string;startedAt:string;startingPage?:number;sessionId:string;sessionCommandId:string;segments:{start:string;end:string}[];runningSince?:string;finishDraft?:{pages:number;startingPage:number;endingPage:number;notes:string;reread?:boolean;activeSegments?:{start:string;end:string}[]};confirmedSince?:string[];correctedSegments?:{start:string;end:string}[];cycleId?:string;autoStatus?:AutoReadingStatus;targetMinutes?:number;revision:number;updatedAt:string};
 /** Segments a finished session will save: a reader's correction of an overlong stretch, or the recorded ones. */
 export const effectiveTimerSegments=(timer:Pick<ReadingTimer,'segments'|'correctedSegments'>)=>timer.correctedSegments??timer.segments;

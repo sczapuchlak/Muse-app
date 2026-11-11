@@ -9,6 +9,6 @@ test('Goodreads mapping preserves source values without inventing reads',()=>{
  assert.equal(row.isbn,'9781619634480');assert.equal(row.finishedOn,'2022-01-15');assert.equal(row.status,'finished');assert.equal(row.rating,4);assert.deepEqual(row.shelves,['favorites','fantasy']);
 });
 test('unknown statuses and invalid dates or ratings remain reviewable',()=>{
- const row=readGoodreadsRow(['Title','Exclusive Shelf','Date Read','My Rating'],['Book','dnf','2022/02/31','5.5']);
+ const row=readGoodreadsRow(['Title','Exclusive Shelf','Date Read','My Rating'],['Book','unrecognized-shelf','2022/02/31','5.5']);
  assert.equal(row.status,undefined);assert.equal(row.finishedOn,undefined);assert.equal(row.rating,undefined);assert.equal(row.warnings.length,3);
 });

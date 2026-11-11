@@ -53,7 +53,7 @@ type SessionForm={id?:string;revision:number;cycleId:string;positionRecordedAt:s
 type GoalForm={id:string;period:ReadingGoal['period'];unit:ReadingGoal['unit'];target:string};
 const blankBook=(today:string):BookForm=>({id:crypto.randomUUID(),revision:0,positionUpdatedAt:new Date().toISOString(),title:'',author:'',genre:'',coverUrl:'',format:'physical',totalPages:'',startingPage:'0',currentPage:'0',status:'reading',startedOn:today,finishedOn:'',rating:'',reviewEmojis:'',finalThoughts:'',isbn:'',publisher:'',publishedDate:'',description:'',reads:[],unassigned:{}});
 const blankSession=(bookId:string,today:string):SessionForm=>({id:crypto.randomUUID(),revision:0,cycleId:'',positionRecordedAt:new Date().toISOString(),startingPage:'',bookId,date:today,time:'12:00',minutes:'0',mode:'pages',value:'0',notes:''});
-const bookStatus:Record<Book['status'],string>={reading:'Currently Reading',paused:'Paused',finished:'Finished',planned:'Want to Read'};
+const bookStatus:Record<Book['status'],string>={reading:'Currently Reading',paused:'Paused',dnf:'Did Not Finish',finished:'Finished',planned:'Want to Read'};
 const periodLabel:Record<ReadingGoal['period'],string>={day:'Daily',week:'Weekly',month:'Monthly',year:'Yearly'};
 function safeNumber(value:string,name:string,allowZero=true){const n=Number(value);if(!Number.isInteger(n)||n<0||!allowZero&&n===0)throw Error(`${name} must be a whole number${allowZero?' of zero or more':' above zero'}.`);return n;}
 /** Wall-clock time for event handlers; rendering uses the ticking `tick` state instead. */
@@ -100,10 +100,10 @@ export function Bookshelf({surface,embedded=false,editorOnly=false,onExit,initia
  async function timerAction(action:'start'|'pause'|'resume'|'finish'|'cancel',book?:Book,targetMinutes?:number){if(busy||!timerLoaded)return;if(action==='cancel'){setDiscardOpen(true);return;}setBusy(true);setError('');try{const now=new Date().toISOString();if(action==='start'){
   if(!book||timer)throw Error('Finish or cancel the current session before starting another.');
   if(targetMinutes!==undefined&&(!Number.isInteger(targetMinutes)||targetMinutes<1||targetMinutes>720))throw Error('Choose a target between 1 and 720 minutes.');
-  const automatic=book.status==='planned'||book.status==='finished';
+  const automatic=book.status==='planned'||book.status==='finished'||book.status==='dnf';
   const fields=automatic?shelfMove(book,'reading',today):null;
   const cycleId=fields?.cycleId??book.cycleId??await ensureOpenRead(book);
-  const autoStatus:ReadingTimer['autoStatus']=book.status==='planned'||book.status==='finished'?{previous:book.status,bookRevision:book.revision+1,startedOn:book.startedOn,finishedOn:book.finishedOn,cycleId:book.cycleId}:undefined;
+  const autoStatus:ReadingTimer['autoStatus']=book.status==='planned'||book.status==='finished'||book.status==='dnf'?{previous:book.status,bookRevision:book.revision+1,startedOn:book.startedOn,finishedOn:book.finishedOn,cycleId:book.cycleId}:undefined;
   const start={bookId:book.id,cycleId,autoStatus,phase:'running' as const,date:today,timeZone,startedAt:now,startingPage:book.status==='finished'?0:bookPosition(book,sessions),sessionId:crypto.randomUUID(),sessionCommandId:crypto.randomUUID(),segments:[],runningSince:now,...(targetMinutes?{targetMinutes}:{})};
   if(fields){
    const command=pendingStart.current?.bookId===book.id&&pendingStart.current.revision===book.revision?pendingStart.current:{bookId:book.id,revision:book.revision,record:bookRecord(book,fields),timer:start,id:crypto.randomUUID()};
