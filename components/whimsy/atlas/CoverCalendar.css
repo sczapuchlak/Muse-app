@@ -195,3 +195,7 @@
 .muse-atlas-chips li{background:var(--glass-background)}
 @container muse-content (max-width:640px){.muse-atlas-ribbon{padding:12px 2px}}
 .muse-books-history-search{flex:1 1 220px;min-width:0}
+.muse-cal-body{grid-template-columns:minmax(0,400px) minmax(0,1fr)}
+.muse-cal-day{aspect-ratio:1/1.12}
+.muse-cal-detail li>span:nth-child(2) .text-button{justify-self:start;text-align:left;padding:0}
+.muse-cal-detail li>span:nth-child(2){justify-items:start}

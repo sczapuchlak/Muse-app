@@ -39,7 +39,6 @@ export function ReadingAtlas({books,sessions,goals,today,range,setRange,calendar
  const unsaved=milestonesReady&&(!milestoneState||celebrate.length>0),key=JSON.stringify(nextSeen);
  useEffect(()=>{if(!unsaved||!onMilestonesSeen||sent.current===key)return;sent.current=key;onMilestonesSeen(JSON.parse(key));},[unsaved,key,onMilestonesSeen]);
  const daily=readingByDay(sessions),summary=periodSummary(books,sessions,period,today),streak=readingStreaks(sessions,today);
- const readingDaysIn=(p:ReadingPeriod)=>{const r=periodRange(p,today)!;return daily.filter(d=>d.date>=r.start&&d.date<=r.end&&(d.seconds>0||d.pages>0)).length;};
  const series=readingSeries(sessions,range),weekly=activitySeries(sessions,'week',12,today),monthly=activitySeries(sessions,'month',12,today);
  const range_=periodRange(period,today);
  const maxTime=Math.max(1,...series.map(s=>s.seconds)),maxPages=Math.max(1,...series.map(s=>s.pages));
@@ -70,8 +69,7 @@ export function ReadingAtlas({books,sessions,goals,today,range,setRange,calendar
    {summary.pace.pagesPerHour!==null&&summary.pace.sessions>=2&&<li><span>Pace</span><strong>{Math.round(summary.pace.pagesPerHour)} pages/hr</strong></li>}
    <li><a href="?section=streak" onClick={e=>{e.preventDefault();setSection('streak');}}><span>Streak</span><strong>{days(streak.current)}</strong><span aria-hidden="true">›</span></a></li>
   </ul>
-  <p className="small-label muse-books-atlas-days">Reading days · this week {readingDaysIn('week')} · this month {readingDaysIn('month')} · this year {readingDaysIn('year')}</p>
-  {/* Goals span the width; the two charts stack beside the calendar and stretch to its height (no gaps); rhythm, a list, spans the width below. */}
+    {/* Goals span the width; the two charts stack beside the calendar and stretch to its height (no gaps); rhythm, a list, spans the width below. */}
   <CoverCalendar books={books} sessions={sessions} month={calendarMonth} setMonth={setCalendarMonth} selected={selectedDay} setSelected={setSelectedDay} today={today} onOpenBook={onOpenBook}/>
   <div className="muse-atlas-goals-row">
   {onSaveChallenge&&<ReadingChallenge variant="full" books={books} goals={goals} today={today} busy={challengeBusy} onSave={onSaveChallenge} onRemove={onRemoveGoal} onOpenBook={onOpenBook}/>}

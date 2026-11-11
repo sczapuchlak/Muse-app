@@ -25,7 +25,7 @@ try{
  console.log(JSON.stringify(lower));
  check(lower.progressCards===0,'no wall of every book in the Atlas');check(lower.rows>=6&&lower.menus===lower.rows,'session history uses compact rows with a ⋯ menu');
  check(lower.dateInputsVisible===0,'date filters stay tucked away until asked for');check(lower.goalsAfterCal,'the calendar leads; goals follow it');
- check(lower.calendarH<=560,`the calendar is compact (${lower.calendarH}px)`);check(lower.searchPattern,'history search uses the shared Muse search');
+ check(lower.calendarH<=520,`the calendar is compact (${lower.calendarH}px)`);check(lower.searchPattern,'history search uses the shared Muse search');
  await b.evaluate(()=>document.querySelector('.muse-books-history').scrollIntoView({block:'start'}));await wait(300);await b.shoot('atlas-history');
  await b.go('/collections/reading-atlas?section=dna','!!document.querySelector(".muse-atlas-insight")','dna');await wait(800);await b.shoot('atlas-dna');
  await b.go('/collections/reading-atlas','!!document.querySelector(".muse-cal")','back to overview');await wait(600);
