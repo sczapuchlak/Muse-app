@@ -176,6 +176,7 @@ export function SeriesRoute({seriesKey}:{seriesKey:string}){
    <div className="muse-series-shelf" role="img" style={{'--count':spines.length,'--spine-w-d':`${spineWidth}px`} as CSSProperties} aria-label={`${series.title}: ${spines.filter(e=>e.book).length} of ${spines.length} primary books on your shelf`}>
     <span className="muse-series-shelf-backdrop" aria-hidden="true"/>
     <BookSpines entries={spineEntries} nextKey={shelf.next?.key} onSelect={selectSpine}/>
+    <span className="muse-series-shelf-globe" aria-hidden="true"/>
     <span className="muse-series-shelf-ledge" aria-hidden="true"/>
    </div>
   </header>

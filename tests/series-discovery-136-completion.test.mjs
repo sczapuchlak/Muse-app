@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {readFileSync} from 'node:fs';
+import {readFileSync,existsSync} from 'node:fs';
 import {load,root} from './helpers.mjs';
 
 const {createSeriesResolver,orderCatalogMembers}=load('lib/books/series-discovery');
@@ -147,7 +147,10 @@ test('the spine row is a reusable, series-agnostic component; the shelf is a pla
  assert.match(spines,/export function BookSpines/);assert.doesNotMatch(spines,/ShelfEntry|seriesShelf|SeriesMember/,'spines know nothing about series records');
  assert.match(route,/<BookSpines entries=\{spineEntries\}/);assert.match(route,/muse-series-shelf-ledge/);assert.match(route,/muse-series-shelf-backdrop/);
  assert.doesNotMatch(route,/ShelfDecor|ShelfTrinkets/);assert.doesNotMatch(css,/trinket|shelf-lights|shelf-scene|case-twinkle|scalloped|shelf-glow/,'no clip-art decoration or CSS fairy lights');
- assert.match(css,/\.muse-series-shelf-ledge\{[^}]*right:calc\(-1\*var\(--bleed\)\)/,'the ledge extends into the page margin only');
+ assert.match(css,/\.muse-series-shelf-ledge\{[^}]*right:-100vw[^}]*shelf-walnut\.webp/,'the walnut ledge runs off the right edge using the local asset');
+ assert.match(css,/\.muse-app-content:has\(\.muse-series-route\)\{overflow-x:clip\}/,'the page clips the shelf so nothing overflows horizontally');
+ assert.match(css,/\.muse-series-shelf-globe\{[^}]*snow-globe-castle\.webp/,'the snow globe is a local image');
+ assert.ok(existsSync(new URL('../public/art/shelf-walnut.webp',import.meta.url))&&existsSync(new URL('../public/art/snow-globe-castle.webp',import.meta.url)),'decor assets are stored locally');
 });
 
 test('Series page structure: hero, then independent 70/30 columns with fixed-size cards and carousels (#136)',()=>{

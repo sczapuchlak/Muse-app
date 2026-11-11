@@ -224,30 +224,25 @@
 .muse-series-hero2>.muse-series-page-head{align-self:center;min-width:0}
 
 .muse-series-shelf{
- --spine-w:var(--spine-w-d,52px);--fade:clamp(70px,9vw,130px);--zone:clamp(14px,1.8vw,24px);--ledge:20px;
+ --spine-w:var(--spine-w-d,52px);--fade:clamp(56px,6vw,96px);--zone:clamp(14px,1.8vw,24px);--ledge:20px;
  --bleed:calc(var(--page-padding,24px) - 2px);/* the page margin: the ledge reaches into it, never past the viewport */
  position:relative;isolation:isolate;justify-self:end;min-width:0;
- width:max-content;max-width:min(48vw,780px);
- padding:18px var(--zone) var(--ledge) var(--fade)}
-.muse-series-shelf>.muse-spines{position:relative;z-index:1}
+ width:max-content;max-width:calc(min(48vw,780px) + 100px);
+ padding:18px var(--zone) var(--ledge) var(--fade);display:flex;align-items:flex-end}
+.muse-series-shelf>.muse-spines{position:relative;z-index:1;flex:1 1 auto;min-width:0}
 .muse-series-shelf .muse-series-shelf-books{filter:drop-shadow(0 8px 8px color-mix(in srgb,black 30%,transparent))}
 
 /* The ledge: dark walnut, near black. A lit top edge, a darker front face with faint grain, a natural shadow below. */
-.muse-series-shelf-ledge{position:absolute;z-index:0;left:0;right:calc(-1*var(--bleed));bottom:0;height:var(--ledge);pointer-events:none;
- border-radius:0 3px 3px 0;
- background:
-  linear-gradient(180deg,rgba(255,226,190,.22) 0,rgba(255,226,190,.22) 1px,transparent 1px),
-  repeating-linear-gradient(92deg,rgba(255,255,255,.035) 0 1px,transparent 1px 7px,rgba(0,0,0,.16) 7px 8px,transparent 8px 19px),
-  linear-gradient(180deg,#3a2619 0,#2a1a11 38%,#150d08 100%);
- box-shadow:0 1px 0 rgba(0,0,0,.55),0 14px 18px -8px rgba(0,0,0,.5),0 26px 34px -18px rgba(0,0,0,.4);
- -webkit-mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.6) calc(var(--fade)*.55),#000 var(--fade));
- mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.6) calc(var(--fade)*.55),#000 var(--fade))}
-
-/* Smoked / frosted wash behind the spines: theme-relative (smoke on light themes, frost on dark), feathered on every side. */
+.muse-series-shelf-ledge{position:absolute;z-index:0;left:0;right:-100vw;bottom:-22px;height:48px;pointer-events:none;
+ background:url("/art/shelf-walnut.webp") repeat-x 0 0/auto 100%;
+ -webkit-mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.6) calc(var(--fade)*.55),#000 var(--fade));mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.6) calc(var(--fade)*.55),#000 var(--fade))}
+.muse-series-shelf-globe{position:relative;z-index:1;flex:none;align-self:flex-end;pointer-events:none;height:108px;width:93px;margin:0 0 -4px 10px;
+ background:url("/art/snow-globe-castle.webp") no-repeat center bottom/contain}
+.muse-series-shelf-globe::before{content:"";position:absolute;z-index:-1;left:-6%;right:-6%;bottom:-4px;height:9px;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.5),transparent);filter:blur(2px)}
 .muse-series-shelf-backdrop{position:absolute;z-index:0;pointer-events:none;
  left:calc(var(--fade)*.3);right:calc(var(--zone)*.5);top:6px;bottom:calc(var(--ledge) - 4px);border-radius:30px;
- background:linear-gradient(180deg,color-mix(in srgb,var(--foreground) 5%,transparent),color-mix(in srgb,var(--foreground) 9%,transparent));
- -webkit-backdrop-filter:blur(5px) saturate(1.08);backdrop-filter:blur(5px) saturate(1.08);
+ background:linear-gradient(180deg,color-mix(in srgb,var(--foreground) 9%,transparent),color-mix(in srgb,var(--foreground) 15%,transparent));
+ -webkit-backdrop-filter:blur(8px) saturate(1.08);backdrop-filter:blur(8px) saturate(1.08);
  -webkit-mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.55) 26%,#000 52%,#000 88%,transparent 100%),linear-gradient(180deg,transparent 0,#000 24%,#000 80%,transparent 100%);
  mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.55) 26%,#000 52%,#000 88%,transparent 100%),linear-gradient(180deg,transparent 0,#000 24%,#000 80%,transparent 100%);
  -webkit-mask-composite:source-in;mask-composite:intersect}
@@ -257,6 +252,8 @@
 @media(max-width:620px){
  .muse-series-shelf{--spine-w:min(var(--spine-w-d,40px),42px);--fade:clamp(24px,8vw,40px);--zone:clamp(10px,3vw,16px);--ledge:18px;--bleed:calc(var(--page-padding,16px) - 2px);width:100%;justify-self:stretch;padding-top:16px}
  .muse-series-shelf-backdrop{left:calc(var(--fade)*.15);top:4px}
+ .muse-series-shelf-globe{display:none}
+ .muse-series-shelf-ledge{bottom:-18px;height:40px}
 }
 
 .muse-series-card:target .muse-series-card-cover,.muse-series-page-row:target{outline:2px solid var(--accent-primary);outline-offset:3px}
@@ -312,3 +309,7 @@
 @media(max-width:900px){.muse-series-col-main{display:contents}.muse-series-col-main>.muse-series-page-order:not(.muse-series-page-bundles){order:2}}
 .muse-series-page-bundles summary .muse-book-page-section-title{color:var(--foreground)}
 
+
+/* The page's own horizontal clip would stop the shelf at the content edge; the body still clips at the viewport, so it runs off-screen without overflow. */
+.muse-series-route{overflow-x:visible}
+.muse-app-content:has(.muse-series-route){overflow-x:clip}
