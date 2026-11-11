@@ -53,3 +53,24 @@
 .muse-desk-top{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(12px,1.6vw,18px);align-items:stretch;min-width:0}
 .muse-desk-top>*{min-width:0;margin:0!important}
 @container muse-content (max-width:760px){.muse-desk-top{grid-template-columns:minmax(0,1fr)}}
+
+/* Every tile is the same height whatever its title, so a long title elsewhere in the row never stretches the rest. */
+.muse-desk-tile-open{display:block;-webkit-line-clamp:unset;line-clamp:unset;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%}
+.muse-desk-tile h4{min-width:0}
+/* One padding for the three top containers: 14px top and bottom, 16px at the sides. */
+.muse-desk-reading{padding:14px 16px}
+.muse-desk-top .muse-streak-panel,.muse-desk-top .muse-desk-goal{padding:0!important}
+.muse-desk-top .muse-streak{padding:14px 16px}
+.muse-desk-top .muse-desk-goal{padding:14px 16px!important}
+.muse-desk-top{align-items:stretch}
+.muse-desk-top .muse-streak-panel{align-self:stretch;align-content:center}
+.muse-desk-top .muse-desk-goal{align-content:center}
+.muse-desk-top .muse-streak-note{padding:0 16px 12px}
+@container muse-content (max-width:640px){.muse-desk-reading{padding:12px 14px}.muse-desk-top .muse-streak{padding:12px 14px}.muse-desk-top .muse-desk-goal{padding:12px 14px!important}}
+/* Half-width tiles: a fixed, compact column instead of a third of the row (#135 polish). */
+.muse-desk-track,.muse-desk-layout[data-count="1"] .muse-desk-track,.muse-desk-layout[data-count="2"] .muse-desk-track{grid-auto-columns:220px;gap:12px}
+.muse-desk-tile{grid-template-columns:44px minmax(0,1fr);gap:10px}
+.muse-desk-start{padding:0 10px}
+@container muse-content (max-width:640px){
+ .muse-desk-track,.muse-desk-layout[data-count="1"] .muse-desk-track{grid-auto-columns:calc((100% - 10px)/2);gap:10px}
+}
