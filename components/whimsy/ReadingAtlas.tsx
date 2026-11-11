@@ -16,6 +16,7 @@ import {BooksMilestones} from './atlas/BooksMilestones';
 import {YearInReview} from './atlas/YearInReview';
 import {ReadingChallenge} from './atlas/ReadingChallenge';
 import {Patterns} from './atlas/Patterns';
+import {MonthShelf,RatingsByMonth,VibeCloud} from './atlas/Highlights';
 import {TopRated} from './atlas/TopRated';
 import {completedBookSeries} from '@/lib/whimsy/books';
 import {Streaks} from './atlas/Streaks';
@@ -90,6 +91,8 @@ export function ReadingAtlas({books,sessions,goals,today,range,setRange,calendar
    </div>
   </div>}
   <TopRated books={books} range={range_} label={label} onOpenBook={onOpenBook}/>
+  {(period==='year'||period==='all')&&<MonthShelf books={books} today={today} onOpenBook={onOpenBook}/>}
+  <div className="muse-atlas-books-pair"><VibeCloud books={books} range={range_} label={label}/>{(period==='year'||period==='all')&&<RatingsByMonth books={books} today={today}/>}</div>
   {(period==='year'||period==='all')&&<ActivityBars line title="Books finished by year" note="Every year of your history · the line follows the ups and downs" items={yearlyBooks.map(y=>({key:y.start,label:y.start.slice(0,4),short:y.start.slice(0,4),value:y.count,text:`${y.count} ${y.count===1?'book':'books'}`}))}/>}
   {period==='month'&&<ActivityBars title="Pages by day" note="This month · each bar is a day" items={periodDays.map(d=>({key:d.date,label:dateLabel(d.date),short:String(Number(d.date.slice(-2))),value:d.pages,text:`${d.pages} pages`}))}/>}
   {period==='year'&&<ActivityBars title="Pages by month" note="This year · pages stay on the session date" items={Array.from({length:12},(_,i)=>`${today.slice(0,4)}-${String(i+1).padStart(2,'0')}`).map(m=>({key:m,label:monthLabel(m),short:shortMonth(m),value:monthly.find(x=>x.start.startsWith(m))?.pages??0,text:`${monthly.find(x=>x.start.startsWith(m))?.pages??0} pages`}))}/>}
