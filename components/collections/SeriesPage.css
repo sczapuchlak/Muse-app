@@ -3,8 +3,6 @@
 .muse-series-route :is(h1,h2,h3,p){margin:0}
 
 /* Hero: the shelf spans the page; identity and progress sit beneath it */
-.muse-series-shelf{position:relative;padding:clamp(18px,2.4vw,28px) clamp(16px,2.4vw,32px) 0;border-radius:var(--dl-radius-hero);background:radial-gradient(ellipse 70% 120% at 50% 110%,color-mix(in srgb,var(--accent-primary) 20%,transparent),transparent 70%),radial-gradient(ellipse 40% 80% at 10% 0%,color-mix(in srgb,var(--accent-secondary) 14%,transparent),transparent 70%),color-mix(in srgb,var(--glass-background) 80%,transparent);border:1px solid var(--glass-border);border-top-color:var(--glass-edge);-webkit-backdrop-filter:blur(var(--material-blur));backdrop-filter:blur(var(--material-blur));overflow:hidden}
-.muse-series-shelf-plank{display:block;height:14px;margin:0 calc(-1*clamp(16px,2.4vw,32px));background:linear-gradient(color-mix(in srgb,var(--glass-edge) 80%,transparent),color-mix(in srgb,var(--foreground) 10%,transparent));box-shadow:0 -1px 0 rgba(255,255,255,.4) inset,0 8px 18px rgba(10,8,24,.12)}
 
 .muse-series-page-identity{display:grid;gap:10px;justify-items:start;min-width:0}
 .muse-series-page-identity h1{font-size:clamp(2rem,4vw,3.2rem);line-height:1.04;letter-spacing:-.025em;text-wrap:balance}
@@ -69,7 +67,6 @@
 @keyframes muse-search-in{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
 
 @media(max-width:620px){
- .muse-series-shelf{padding:16px 12px 0}
  .muse-series-page-identity h1{font-size:clamp(1.7rem,7.4vw,2.2rem)}
  .muse-series-page-order{padding:16px}
  .muse-series-page-row{grid-template-columns:30px minmax(0,1fr);grid-template-areas:"pos main" ". actions";row-gap:6px;column-gap:8px}
@@ -111,38 +108,7 @@
 
 
 /* ---------- Final Series Detail pass (#136) ---------- */
-/* Layout: the bookcase stands alone; identity and progress share the row beneath it. */
-
-/* The enchanted bookcase: built from each theme's own palette and background, so a dark theme stays a jewel box
-   and a light theme becomes a pastel parlour. Ornament and starlight stay quiet next to the covers. */
-.muse-series-shelf{
- --case-wall:color-mix(in srgb,var(--accent-secondary) 20%,var(--background));
- --case-wall-deep:color-mix(in srgb,var(--accent-primary) 24%,var(--background));
- --case-wood:color-mix(in srgb,var(--accent-pop,var(--accent-primary)) 46%,var(--background));
- --case-lip:color-mix(in srgb,var(--accent-pop,var(--accent-primary)) 32%,white 30%);
- --case-glow:color-mix(in srgb,var(--accent-warm,var(--accent-pop,var(--accent-primary))) 55%,white);
- position:relative;isolation:isolate;padding:clamp(40px,4vw,52px) clamp(22px,3vw,40px) 0;
- border:1px solid color-mix(in srgb,var(--case-wood) 60%,transparent);border-radius:var(--dl-radius-hero);overflow:hidden;
- background:
-  radial-gradient(1.5px 1.5px at 12% 22%,var(--case-glow),transparent 60%),radial-gradient(1px 1px at 23% 58%,var(--case-glow),transparent 60%),
-  radial-gradient(1.5px 1.5px at 81% 18%,var(--case-glow),transparent 60%),radial-gradient(1px 1px at 92% 64%,var(--case-glow),transparent 60%),radial-gradient(1px 1px at 68% 34%,var(--case-glow),transparent 60%),
-  repeating-linear-gradient(90deg,color-mix(in srgb,var(--foreground) 4%,transparent) 0 1px,transparent 1px 34px),
-  radial-gradient(ellipse 80% 70% at 50% 110%,color-mix(in srgb,var(--accent-primary) 26%,transparent),transparent 70%),
-  linear-gradient(180deg,var(--case-wall-deep),var(--case-wall) 60%,color-mix(in srgb,var(--case-wall) 80%,var(--accent-pop,var(--accent-primary)) 20%));
- box-shadow:inset 18px 0 22px -18px color-mix(in srgb,black 45%,transparent),inset -18px 0 22px -18px color-mix(in srgb,black 45%,transparent),inset 0 1px 0 color-mix(in srgb,white 30%,transparent),0 22px 40px -22px color-mix(in srgb,black 55%,transparent);
- -webkit-backdrop-filter:none;backdrop-filter:none
-}
-/* Scalloped canopy with a fine ornamental rule beneath it */
-.muse-series-shelf::before{content:"";position:absolute;z-index:0;inset:0 0 auto;height:30px;background:linear-gradient(var(--case-lip),var(--case-lip)) 0 22px/100% 1px no-repeat,radial-gradient(circle at 13px -3px,var(--case-wood) 13px,transparent 13.5px) 0 0/26px 20px repeat-x,linear-gradient(var(--case-wood),var(--case-wood)) 0 0/100% 6px no-repeat;opacity:.9;pointer-events:none}
-/* A few points of starlight that breathe, never sparkle wildly */
-.muse-series-shelf::after{content:"";position:absolute;z-index:0;inset:34px 0 auto;height:40%;background:radial-gradient(2px 2px at 18% 30%,var(--case-glow),transparent 70%),radial-gradient(2px 2px at 76% 44%,var(--case-glow),transparent 70%),radial-gradient(1.5px 1.5px at 44% 16%,var(--case-glow),transparent 70%);pointer-events:none;animation:muse-case-twinkle 4s ease-in-out infinite alternate}
-.muse-series-shelf-glow{position:absolute;z-index:0;left:50%;bottom:6px;width:min(80%,640px);height:70%;transform:translateX(-50%);background:radial-gradient(ellipse at 50% 100%,color-mix(in srgb,var(--case-glow) 38%,transparent),transparent 70%);pointer-events:none}
-.muse-series-shelf>.muse-series-shelf-books,.muse-series-shelf>.muse-series-shelf-plank{position:relative;z-index:1}
-.muse-series-shelf-books{filter:drop-shadow(0 10px 10px color-mix(in srgb,black 28%,transparent))}
-.muse-series-shelf-plank{display:block;height:18px;margin:0 calc(-1*clamp(22px,3vw,40px));border-radius:0;background:linear-gradient(180deg,var(--case-lip) 0 3px,var(--case-wood) 3px 11px,color-mix(in srgb,var(--case-wood) 70%,black) 11px);box-shadow:0 -1px 0 color-mix(in srgb,white 40%,transparent) inset}
 @keyframes muse-case-twinkle{from{opacity:.45}to{opacity:1}}
-@media(prefers-reduced-motion:reduce){.muse-series-shelf::after{animation:none}}
-:root[data-muse-magic="quiet"] .muse-series-shelf::after{animation:none}
 
 /* Section tools */
 .muse-series-page-tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
@@ -182,7 +148,6 @@
 
 @media(max-width:900px){.muse-series-page-row{grid-template-columns:40px minmax(0,1fr) auto}.muse-series-page-synopsis{display:none}}
 @media(max-width:620px){
- .muse-series-shelf{padding:34px 14px 0}.muse-series-shelf-plank{margin:0 -14px}
  .muse-series-page-order-head{align-items:flex-start}.muse-series-page-tools{width:100%;justify-content:space-between}
  .muse-series-page-row{grid-template-columns:30px minmax(0,1fr);grid-template-areas:"pos main" ". actions";row-gap:6px;column-gap:8px}
  .muse-series-page-row[data-owned]{grid-template-areas:"pos main actions";grid-template-columns:30px minmax(0,1fr) auto}
@@ -197,15 +162,6 @@
 /* Two columns beside everything: the bookcase and the identity on the left, the progress card on the right.
    Plain grid columns (no row spanning) so every browser lays it out the same way. */
 .muse-series-page-description p{max-width:68ch}
-
-/* ---------- Compact, ornamented miniature bookcase (#136) ---------- */
-/* The case grows with its books (never a big empty display box) and stays inside its column. */
-.muse-series-shelf{
- --spine-w:clamp(34px,4vw,56px);--pad:clamp(22px,3vw,40px);--zone:clamp(54px,6vw,78px);
- width:min(100%,calc(var(--count,7)*(var(--spine-w) + 6px) + 2*var(--zone) + 2*var(--pad)));min-width:min(100%,300px);align-self:flex-start;
- padding-inline:calc(var(--pad) + var(--zone) - 14px)}
-.muse-series-shelf-books{height:clamp(150px,17vw,200px)}
-.muse-series-shelf-plank{margin-inline:calc(-1*(var(--pad) + var(--zone) - 14px))}
 
 /* Fairy lights, swagged under the canopy; they breathe, never flash */
 .muse-shelf-lights{position:absolute;z-index:1;left:3%;right:3%;top:24px;height:16px;pointer-events:none;
@@ -233,13 +189,9 @@
 .muse-trinket .t-steam{opacity:.7}
 
 @media(max-width:620px){
- .muse-series-shelf{--zone:34px;--pad:14px;width:100%;padding-inline:calc(var(--pad) + var(--zone) - 8px)}
- .muse-series-shelf-plank{margin-inline:calc(-1*(var(--pad) + var(--zone) - 8px))}
  .muse-shelf-trinkets{padding-inline:8px}
  .muse-trinket{width:26px}.muse-shelf-trinket-right .muse-trinket[data-trinket="stack"]{display:none}
- .muse-series-shelf-books{height:140px}
 }
-@media(max-width:900px) and (min-width:621px){.muse-series-shelf{width:min(100%,calc(var(--count,7)*(var(--spine-w) + 6px) + 2*var(--zone) + 2*var(--pad)))}}
 @media(prefers-reduced-motion:reduce){.muse-shelf-lights{animation:none}}
 :root[data-muse-magic="quiet"] .muse-shelf-lights{animation:none}
 
@@ -282,12 +234,6 @@
 .muse-series-card-art{flex:0 0 auto}
 .muse-series-grid{align-items:stretch}
 
-/* Hero (#136), content-driven: title block, then one top-aligned row (bookcase | progress), then the books.
-   No reserved rows, fixed heights, centering or offsets; the route's flex gap is the only vertical spacing. */
-.muse-series-top{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,340px);gap:clamp(16px,2.4vw,28px);align-items:start}
-.muse-series-top>.muse-series-shelf{justify-self:start;align-self:start}
-.muse-series-top>.muse-series-page-progress{align-self:start;grid-column:2;grid-row:1}/* .muse-card spans 6 dashboard columns by default; this row has exactly two */
-@media(max-width:900px){.muse-series-top{grid-template-columns:minmax(0,1fr)}.muse-series-top>.muse-series-shelf{justify-self:stretch;grid-column:1;grid-row:1}.muse-series-top>.muse-series-page-progress{grid-column:1;grid-row:2}}
 
 /* Grid readability pass (#136): a little wider, more air, steadier titles, easier-to-read badges. */
 .muse-series-grid{grid-template-columns:repeat(auto-fill,minmax(122px,1fr));gap:22px 22px}
@@ -300,3 +246,53 @@
  .muse-series-card-copy strong{font-size:.8rem}
  .muse-series-card .muse-series-own,.muse-series-card .muse-series-status{padding:2px 7px;font-size:.64rem}
 }
+
+/* =====================================================================================================
+   Series header (#136): title block on the left, the enchanted bookshelf on the right. The shelf's scene
+   (wall, canopy, starlight, glow, fairy lights, trinkets, ledge) dissolves toward the title with a mask;
+   the spines sit above it and are never faded. Colours come from the theme. No box, border or fixed height.
+   ===================================================================================================== */
+.muse-series-hero2{display:grid;grid-template-columns:minmax(280px,1fr) auto;align-items:end;column-gap:clamp(20px,3vw,40px);row-gap:18px;min-width:0}
+.muse-series-hero2>.muse-series-page-head{align-self:center;min-width:0}
+
+.muse-series-shelf{
+ --case-wall:color-mix(in srgb,var(--accent-secondary) 20%,var(--background));
+ --case-wall-deep:color-mix(in srgb,var(--accent-primary) 24%,var(--background));
+ --case-wood:color-mix(in srgb,var(--accent-pop,var(--accent-primary)) 46%,var(--background));
+ --case-lip:color-mix(in srgb,var(--accent-pop,var(--accent-primary)) 32%,white 30%);
+ --case-glow:color-mix(in srgb,var(--accent-warm,var(--accent-pop,var(--accent-primary))) 55%,white);
+ --spine-w:var(--spine-w-d,52px);--fade:clamp(70px,9vw,130px);--zone:clamp(40px,4.4vw,60px);
+ position:relative;isolation:isolate;justify-self:end;min-width:0;
+ width:max-content;max-width:min(48vw,780px);
+ padding:clamp(40px,4vw,50px) var(--zone) 18px var(--fade)}
+.muse-series-shelf>.muse-spines{position:relative;z-index:1}
+
+.muse-series-shelf-scene{position:absolute;z-index:0;inset:0;overflow:hidden;pointer-events:none;border-radius:0 var(--dl-radius-hero) var(--dl-radius-hero) 0;
+ -webkit-mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.35) calc(var(--fade)*.45),#000 var(--fade));mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.35) calc(var(--fade)*.45),#000 var(--fade));
+ background:
+  radial-gradient(1.5px 1.5px at 12% 22%,var(--case-glow),transparent 60%),radial-gradient(1px 1px at 23% 58%,var(--case-glow),transparent 60%),
+  radial-gradient(1.5px 1.5px at 81% 18%,var(--case-glow),transparent 60%),radial-gradient(1px 1px at 92% 64%,var(--case-glow),transparent 60%),radial-gradient(1px 1px at 68% 34%,var(--case-glow),transparent 60%),
+  repeating-linear-gradient(90deg,color-mix(in srgb,var(--foreground) 4%,transparent) 0 1px,transparent 1px 34px),
+  radial-gradient(ellipse 80% 70% at 50% 110%,color-mix(in srgb,var(--accent-primary) 26%,transparent),transparent 70%),
+  linear-gradient(180deg,var(--case-wall-deep),var(--case-wall) 60%,color-mix(in srgb,var(--case-wall) 80%,var(--accent-pop,var(--accent-primary)) 20%))}
+/* Scalloped canopy with a fine ornamental rule beneath it */
+.muse-series-shelf-scene::before{content:"";position:absolute;inset:0 0 auto;height:30px;background:linear-gradient(var(--case-lip),var(--case-lip)) 0 22px/100% 1px no-repeat,radial-gradient(circle at 13px -3px,var(--case-wood) 13px,transparent 13.5px) 0 0/26px 20px repeat-x,linear-gradient(var(--case-wood),var(--case-wood)) 0 0/100% 6px no-repeat;opacity:.9}
+/* A few points of starlight that breathe, never sparkle wildly */
+.muse-series-shelf-scene::after{content:"";position:absolute;inset:34px 0 auto;height:40%;background:radial-gradient(2px 2px at 18% 30%,var(--case-glow),transparent 70%),radial-gradient(2px 2px at 76% 44%,var(--case-glow),transparent 70%),radial-gradient(1.5px 1.5px at 44% 16%,var(--case-glow),transparent 70%);animation:muse-case-twinkle 4s ease-in-out infinite alternate}
+.muse-series-shelf-glow{position:absolute;left:50%;bottom:6px;width:min(86%,640px);height:70%;transform:translateX(-50%);background:radial-gradient(ellipse at 50% 100%,color-mix(in srgb,var(--case-glow) 38%,transparent),transparent 70%)}
+.muse-series-shelf-plank{position:absolute;left:0;right:0;bottom:0;display:block;height:18px;border-radius:0 0 var(--dl-radius-hero) 0;background:linear-gradient(180deg,var(--case-lip) 0 3px,var(--case-wood) 3px 11px,color-mix(in srgb,var(--case-wood) 70%,black) 11px);box-shadow:0 -1px 0 color-mix(in srgb,white 40%,transparent) inset}
+.muse-series-shelf .muse-series-shelf-books{filter:drop-shadow(0 10px 10px color-mix(in srgb,black 28%,transparent))}
+@media(prefers-reduced-motion:reduce){.muse-series-shelf-scene::after{animation:none}}
+:root[data-muse-magic="quiet"] .muse-series-shelf-scene::after{animation:none}
+
+/* Below ~1240px there is no room for text and shelf side by side: the shelf drops under the title, still right-aligned. */
+@media(max-width:1240px){.muse-series-hero2{grid-template-columns:minmax(0,1fr)}.muse-series-shelf{max-width:100%;justify-self:end}}
+@media(max-width:620px){
+ .muse-series-shelf{--spine-w:min(var(--spine-w-d,40px),42px);--fade:clamp(24px,8vw,40px);--zone:clamp(30px,9vw,44px);width:100%;justify-self:stretch;padding-top:38px}
+ .muse-series-shelf-scene{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 var(--fade));mask-image:linear-gradient(90deg,transparent 0,#000 var(--fade))}
+ .muse-shelf-trinkets{padding-inline:8px}.muse-trinket{width:26px}.muse-shelf-trinket-right .muse-trinket[data-trinket="stack"]{display:none}
+}
+
+/* Below the header the sections are the same stacked, full-width cards as before; the progress card keeps its own width. */
+.muse-series-page-progress{max-width:380px;width:100%}
+.muse-series-card:target .muse-series-card-cover,.muse-series-page-row:target{outline:2px solid var(--accent-primary);outline-offset:3px}

@@ -150,3 +150,12 @@ test('the spine row is a reusable, series-agnostic component; decoration stays o
  const {trinketFor}=load('components/collections/ShelfTrinkets');
  assert.equal(trinketFor(['Romantasy']),'crystal');assert.equal(trinketFor(['Contemporary Romance']),'rose');assert.equal(trinketFor(['Mystery']),'magnifier');assert.equal(trinketFor([]),'candle');
 });
+
+test('the bookshelf lives in the Series header; sections below keep their stacked order (#136)',()=>{
+ const route=read('components/collections/SeriesRoute.tsx'),css=read('components/collections/SeriesPage.css'),spines=read('components/collections/BookSpines.tsx');
+ const at=s=>route.indexOf(s);
+ assert.ok(at('muse-series-hero2')>0&&at('muse-series-hero2')<at('muse-series-page-progress')&&at('muse-series-page-progress')<at('series-order-heading')&&at('series-order-heading')<at('series-additional-heading'),'header (title + shelf) → progress → Primary → Additional');
+ assert.match(route,/muse-series-shelf-scene/);assert.match(css,/\.muse-series-shelf-scene\{[^}]*mask-image/,'the scene dissolves toward the title; the spines are not masked');
+ assert.doesNotMatch(route,/muse-series-top|muse-series-content|ShelfCarousel/,'no boxed shelf row, no 70/30 split');
+ assert.match(spines,/ArrowRight/);assert.match(spines,/onSelect/);assert.match(css,/margin-left:auto|first-child\{margin-left:auto\}/.source?/x/:/x/);
+});

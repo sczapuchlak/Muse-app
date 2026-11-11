@@ -35,6 +35,8 @@ const books=[
  {id:1037,title:'The Complete Throne of Glass Collection Full Series',release_date:'2021-01-01',pages:1800,users:40,series:[[100,null,true]]},
  {id:1038,title:'The Captain and the Prince',release_date:'2013-01-01',pages:10,users:900,series:[[100,1.1,true]]},
  {id:1039,title:'The Assassin and the Princess',users:700,series:[[100,1.5,true]]},
+ // The Long Shelf (series 400): a 22-book epic to exercise the scrolling shelf.
+ ...Array.from({length:22},(_,i)=>({id:4001+i,title:`The Long Shelf Book ${i+1}`,release_date:`${2000+i}-06-01`,pages:300+i*7,users:5000,series:[[400,i+1,true]]})),
  // Crescent City (series 300): primary books only, no novellas.
  {id:3001,title:'House of Earth and Blood',isbn:'9781635574043',release_date:'2020-03-03',pages:803,series:[[300,1,true]]},
  {id:3002,title:'House of Sky and Breath',isbn:'9781635574074',release_date:'2022-02-15',pages:805,series:[[300,2,true]]},
@@ -55,6 +57,7 @@ const books=[
 ].map(b=>({...b,image:b.image?.url!==undefined?b.image:cover(b.isbn),contributions:[{author:sjm}],canonical_id:null,users_count:b.users??50000,release_year:b.release_date?Number(b.release_date.slice(0,4)):null,cached_tags:tags(b.genres??['Fantasy'])}));
 const series=[
  {id:100,name:'Throne of Glass',description:'Celaena Sardothien, a teenage assassin, is offered a chance at freedom—if she will become the King’s Champion in a deadly tournament.',is_completed:true,author:sjm},
+ {id:400,name:'The Long Shelf',description:'A twenty-two book epic, for testing a very long shelf.',is_completed:true,author:sjm},
  {id:300,name:'Crescent City',description:'A half-Fae, half-human woman seeks revenge in a city of angels, shifters and Fae.',is_completed:false,author:sjm},
  {id:201,name:'A Court of Thorns and Roses (Dramatized Adaptation)',description:null,is_completed:false,author:null},
  {id:200,name:'A Court of Thorns and Roses',description:'A sweeping romantic fantasy of faerie courts, curses and the bonds that hold a world together.',is_completed:false,author:sjm},

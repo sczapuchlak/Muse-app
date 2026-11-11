@@ -1,8 +1,8 @@
 /* Book spines (#136): one row of spines in reading order. Presentational and shelf-agnostic so the future dedicated
    Bookshelf can reuse it; the case, canopy and trinkets live with the page that hosts it. */
-.muse-series-shelf-books{display:flex;align-items:flex-end;justify-content:center;gap:clamp(3px,.5vw,6px);height:clamp(170px,21vw,236px);overflow-x:auto;scrollbar-width:none;padding:0 4px}
+.muse-series-shelf-books{display:flex;align-items:flex-end;gap:var(--spine-gap,clamp(3px,.5vw,6px));height:var(--shelf-h,clamp(150px,15vw,190px));overflow-x:auto;overflow-y:visible;scrollbar-width:none;scroll-snap-type:x proximity;padding:14px 2px 0;margin-top:-14px;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
 .muse-series-shelf-books::-webkit-scrollbar{display:none}
-.muse-series-spine{position:relative;flex:0 0 clamp(34px,4vw,56px);height:var(--spine-h,88%);display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:10px 0 8px;border-radius:4px 4px 2px 2px;background:linear-gradient(90deg,rgba(0,0,0,.34),rgba(0,0,0,.08) 18%,rgba(255,255,255,.16) 32%,rgba(0,0,0,.08) 48%,rgba(0,0,0,.28)),var(--spine-art,none) center/auto 140% no-repeat,linear-gradient(170deg,color-mix(in srgb,var(--spine-tint,var(--accent-primary)) 85%,white 8%),color-mix(in srgb,var(--spine-tint,var(--accent-secondary)) 80%,#100c1c));color:#fff8f0;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08),0 -1px 0 rgba(255,255,255,.2) inset,2px 0 6px rgba(0,0,0,.18);transform-origin:bottom center;animation:muse-spine-rise var(--motion-settle,260ms) var(--ease-out,ease-out) var(--spine-delay,0ms) both;transition:transform var(--motion-hover,180ms) var(--ease-out,ease-out),opacity var(--motion-hover,180ms) ease}
+.muse-series-spine{position:relative;flex:0 0 var(--spine-w,clamp(34px,4vw,56px));height:var(--spine-h,88%);display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:10px 0 8px;border-radius:4px 4px 2px 2px;background:linear-gradient(90deg,rgba(0,0,0,.34),rgba(0,0,0,.08) 18%,rgba(255,255,255,.16) 32%,rgba(0,0,0,.08) 48%,rgba(0,0,0,.28)),var(--spine-art,none) center/auto 140% no-repeat,linear-gradient(170deg,color-mix(in srgb,var(--spine-tint,var(--accent-primary)) 85%,white 8%),color-mix(in srgb,var(--spine-tint,var(--accent-secondary)) 80%,#100c1c));color:#fff8f0;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08),0 -1px 0 rgba(255,255,255,.2) inset,2px 0 6px rgba(0,0,0,.18);transform-origin:bottom center;animation:muse-spine-rise var(--motion-settle,260ms) var(--ease-out,ease-out) var(--spine-delay,0ms) both;transition:transform var(--motion-hover,180ms) var(--ease-out,ease-out),opacity var(--motion-hover,180ms) ease}
 .muse-series-spine::before{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(rgba(0,0,0,.18),rgba(0,0,0,.42));pointer-events:none}
 .muse-series-spine>*{position:relative}
 .muse-series-spine em{flex:1;min-height:0;writing-mode:vertical-rl;transform:rotate(180deg);font:600 clamp(.58rem,.78vw,.76rem)/1.1 var(--font-ui);font-style:normal;letter-spacing:.02em;text-transform:uppercase;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-shadow:0 1px 2px rgba(0,0,0,.5)}
@@ -12,8 +12,25 @@
 .muse-series-spine[data-next]{transform:translateY(-10px);opacity:1;filter:none;box-shadow:0 0 0 2px var(--accent-primary),0 14px 22px color-mix(in srgb,var(--accent-primary) 30%,transparent)}
 .muse-series-spine[data-state="reading"]{transform:translateY(-6px)}
 .muse-series-spine[data-skeleton]{background:color-mix(in srgb,var(--foreground) 9%,transparent);box-shadow:none;animation:muse-book-breathe 1.6s ease-in-out infinite}
-.muse-series-shelf:hover .muse-series-spine:not([data-skeleton]):hover{transform:translateY(-8px)}
 @keyframes muse-spine-rise{from{opacity:0;transform:translateY(14px) scaleY(.94)}}
-@media(max-width:620px){.muse-series-shelf-books{justify-content:safe center;height:150px}.muse-series-spine{flex-basis:28px}}
+@media(max-width:620px){.muse-series-shelf-books{--shelf-h:150px}}
 @media(prefers-reduced-motion:reduce){.muse-series-spine{animation:none;transition:none}.muse-series-spine[data-skeleton]{animation:none}}
 :root[data-muse-magic="quiet"] .muse-series-spine{animation:none}
+
+/* Right-aligned, naturally grouped: the first spine's auto margin pushes the group to the end, and collapses to
+   nothing (so the row simply scrolls from its start) when there are more books than fit. */
+.muse-series-shelf-books>.muse-series-spine:first-child{margin-left:auto}
+.muse-series-spine{scroll-snap-align:start}
+button.muse-series-spine{border:0;font:inherit;color:#fff8f0;cursor:pointer;-webkit-appearance:none;appearance:none;touch-action:manipulation}
+.muse-series-spine:not([data-skeleton]):is(:hover,:focus-visible,:active){transform:translateY(-9px)}
+.muse-series-spine:focus-visible{outline:2px solid var(--focus-ring,#fff);outline-offset:2px;z-index:2}
+.muse-series-shelf-books:focus-visible{outline:2px solid var(--focus-ring,#fff);outline-offset:3px;border-radius:6px}
+/* Overflow arrows: small, quiet, only when there is more to see */
+.muse-spines{position:relative;min-width:0}
+.muse-spines-arrow{position:absolute;z-index:3;top:46%;display:grid;place-items:center;width:30px;height:30px;padding:0;border:1px solid color-mix(in srgb,var(--foreground,#fff) 22%,transparent);border-radius:50%;background:color-mix(in srgb,var(--floating-background,#1b1630) 88%,transparent);color:var(--foreground,#fff);cursor:pointer;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);transform:translateY(-50%);transition:opacity var(--motion-hover,180ms) ease,transform var(--motion-hover,180ms) ease}
+.muse-spines-arrow[data-dir="prev"]{left:-6px}.muse-spines-arrow[data-dir="next"]{right:-6px}
+.muse-spines-arrow[data-dir="prev"] svg{transform:rotate(90deg)}.muse-spines-arrow[data-dir="next"] svg{transform:rotate(-90deg)}
+.muse-spines-arrow:hover:not(:disabled){transform:translateY(-50%) scale(1.08)}
+.muse-spines-arrow:disabled{opacity:0;pointer-events:none}
+.muse-spines-arrow:focus-visible{outline:2px solid var(--focus-ring,#fff);outline-offset:2px}
+@media(max-width:620px){.muse-spines-arrow{width:34px;height:34px}}
