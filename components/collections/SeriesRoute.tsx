@@ -11,6 +11,7 @@ import type {SeriesCatalog} from '@/lib/books/series-discovery';
 import {fetchSeriesCatalog} from '@/lib/books/add-book';
 import {catalogNeedsRefresh,saveDiscoveredSeries} from '@/lib/books/series-save';
 import {catalogSeriesView,primaryBasisNote,seriesCompletion,seriesShelf,shelfStateLabel,type ShelfEntry} from '@/lib/books/series-view';
+import {useAdditionalFit} from './useAdditionalFit';
 import {PageCrumbs} from '@/components/books/PageCrumbs';
 import {bookHref,goBack,parseSeriesKey,rememberReturn} from '@/lib/books/return-nav';
 import {todayForReading} from '@/lib/whimsy/books';
@@ -45,21 +46,7 @@ export function SeriesRoute({seriesKey}:{seriesKey:string}){
  const [layout,setLayoutState]=useState<'list'|'grid'>('list');
  useEffect(()=>{const frame=requestAnimationFrame(()=>{try{const v=localStorage.getItem('muse.series.layout');if(v==='grid'||v==='list')setLayoutState(v);}catch{/* list by default */}});return()=>cancelAnimationFrame(frame);},[]);
  const setLayout=(v:'list'|'grid')=>{setLayoutState(v);try{localStorage.setItem('muse.series.layout',v);}catch{/* this visit only */}};
- // Additional works end where the main column ends: measure the room, show that many rows, page through the rest.
- const [addSize,setAddSize]=useState(5),[addPage,setAddPage]=useState(0),[viewTick,setViewTick]=useState(0);
- useEffect(()=>{const on=()=>setViewTick(t=>t+1);window.addEventListener('resize',on);return()=>window.removeEventListener('resize',on);},[]);
- useEffect(()=>{
-  const section=document.querySelector<HTMLElement>('.muse-series-page-additional'),main=document.querySelector<HTMLElement>('.muse-series-col-main'),rows=section?.querySelector<HTMLElement>('.muse-series-page-rows');
-  if(!section||!main||!rows||!rows.children.length)return;
-  const sideIsColumn=getComputedStyle(document.querySelector('.muse-series-col-side')!).display!=='contents';
-  const total=Number(section.dataset.total||0);let next=5;
-  if(sideIsColumn&&main.lastElementChild){
-   const avail=main.lastElementChild.getBoundingClientRect().bottom-section.getBoundingClientRect().top,nav=section.querySelector<HTMLElement>('.muse-series-additional-nav'),chrome=section.offsetHeight-rows.offsetHeight-(nav?.offsetHeight??0)+52,each=rows.offsetHeight/rows.children.length;
-   next=Math.max(2,Math.floor((avail-chrome)/each));
-  }
-  next=Math.min(Math.max(next,2),Math.max(total,2));
-  if(next!==addSize)setAddSize(next);
- });
+ const addSize=useAdditionalFit(),[addPage,setAddPage]=useState(0);
 
  // The saved series for this route: by id, or the saved copy of the catalog series it names.
  const saved:Series|null='savedId' in parsed?records.series.find(s=>s.id===parsed.savedId)??null:records.series.find(s=>s.catalog_source===parsed.source&&s.catalog_id===parsed.id)??null;
