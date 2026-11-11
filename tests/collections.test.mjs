@@ -12,7 +12,9 @@ test('Book editor offers the same Currently Reading status as shelf filters',()=
  const source=readFileSync(resolve(root,'components/whimsy/Bookshelf.tsx'),'utf8');
  assert.match(source,/reading:'Currently Reading'/);
  assert.match(source,/MuseChoiceMenu label="Book status"[^\n]*options=\{Object\.entries\(bookStatus\)/);
- assert.match(source,/MuseChoiceMenu label="Status"[^\n]*options=\{\[\{id:'',label:'All books'\},\.\.\.Object\.entries\(bookStatus\)/);
+ const collections=readFileSync(resolve(root,'components/collections/Collections.tsx'),'utf8');
+ assert.match(collections,/reading:'Currently Reading'/,'Collections › Books filters use the same Currently Reading label');
+ assert.match(collections,/label:`Archived books \(\$\{archivedItems\.length\}\)`/,'archived books stay reachable from Collections');
 });
 test('active media shelves reuse existing items and statuses without excluding full-library records',()=>{
  const items=[media('watching-film','movie','watching'),media('watched-film','movie','watched'),media('watching-show','tv','watching'),media('playing-game','game','playing'),media('planned-game','game','planned')];

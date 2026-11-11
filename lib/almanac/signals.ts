@@ -29,11 +29,11 @@ const recent=(today:string,days:number)=>({start:shiftDate(today,-(days-1)),end:
 
 // ---------- Reading ----------
 export function readingSignals({books,sessions,goals,today}:{books:Book[];sessions:ReadingSession[];goals:ReadingGoal[];today:string}):Signal[]{
- const out:Signal[]=[],year=recent(today,365),season=recent(today,90),fortnight=recent(today,14),href='/whimsy/bookshelf';
+ const out:Signal[]=[],year=recent(today,365),season=recent(today,90),fortnight=recent(today,14),href='/collections?kind=book';
  const traitKeys:Record<string,string>={'night-owl':'reading.trait.night-owl','early-bird':'reading.trait.early-bird',weekend:'reading.trait.weekend',steady:'reading.trait.steady','long-haul':'reading.trait.long-haul','little-often':'reading.trait.little-often',rereader:'reading.trait.rereader'};
  for(const t of readingTraits(books,sessions,year,today))if(t.id&&traitKeys[t.id]&&t.facts)out.push(makeSignal(traitKeys[t.id],t.facts,{observedOn:today,strength:.4,href}));
  const persona=genrePersona(books,year);
- if('title' in persona&&persona.facts)out.push(makeSignal('reading.persona',{persona:persona.title,...persona.facts},{observedOn:today,strength:.35,href:'/whimsy/bookshelf?view=atlas'}));
+ if('title' in persona&&persona.facts)out.push(makeSignal('reading.persona',{persona:persona.title,...persona.facts},{observedOn:today,strength:.35,href:'/collections/reading-atlas'}));
  for(const m of readingMilestones(books,sessions))if(m.achievedOn&&m.achievedOn>=shiftDate(today,-6))out.push(makeSignal('reading.milestone',{title:m.title,metric:m.metric,threshold:m.threshold,achievedOn:m.achievedOn},{observedOn:m.achievedOn,strength:.9,href}));
  const streak=readingStreaks(sessions,today);
  if(streak.current>=3)out.push(makeSignal('reading.streak',{current:streak.current,longest:streak.longest,readToday:streak.readToday},{observedOn:today,strength:Math.min(.85,.4+streak.current/60),href}));

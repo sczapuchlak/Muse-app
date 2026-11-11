@@ -12,6 +12,14 @@ Muse has intentional product semantics and a documented design system. Before ch
 - Do not commit or push unless explicitly instructed.
 - Database migrations follow [DATABASE_RELEASES](docs/DATABASE_RELEASES.md): staging first; never target production without explicit approval.
 
+## Deployment and acceptance workflow
+
+Muse has two user-facing environments: the existing **Staging/Preview app** for Stephanie's hands-on acceptance testing, and **Production**. Keep feature branches and PRs for source control, but deploy requested feature work to the existing Staging app and report its usual URL plus the deployed commit. A branch-specific Vercel URL is not a substitute for Staging acceptance testing.
+
+Before replacing a Staging deployment, identify its deployed commit and check for unmerged or unfinished work there. Incorporate or preserve that work through the appropriate integration path; never silently overwrite it. Deploy to the `muse-staging` Vercel project using its Staging environment and database. Do not assume merging a PR into `main` is a Staging-only action: both Vercel projects have been connected to `main`, so a merge can also deploy Production. Keep PR review and merge separate from Staging deployment when necessary.
+
+Automated checks and a successful build establish technical readiness, not UX approval. Wait for Stephanie's acceptance of the actual Staging experience before merging or deploying to Production. Never apply Production migrations or deploy Production without her explicit approval. Preserve unrelated local edits and existing Staging data.
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 ## This is NOT the Next.js you know

@@ -17,9 +17,9 @@ test('Reading Desk derives every active card from canonical books, including spa
  const active=[book,{...book,id:'two',title:'A very long title that may wrap',author:undefined,totalPages:undefined,startedOn:undefined},{...book,id:'three'},{...book,id:'four'}];
  for(const count of [0,1,2,3,4]){const source=[...active.slice(0,count),{...book,id:'planned',status:'planned'}];const featured=books.activeReadingBooks(source);assert.equal(featured.length,count);featured.forEach((item,index)=>assert.strictEqual(item,source[index]));}
  const source=readFileSync(root+'/components/whimsy/Bookshelf.tsx','utf8');
- assert.match(source,/aria-label="Reading Desk"/);assert.match(source,/aria-label="My Library"/);
- const desk=source.split('aria-label="Reading Desk"')[1]?.split('aria-label="My Library"')[0]??'';
- for(const action of ['Start reading','Log manually','Details','BookStatusControl'])assert.ok(desk.includes(action));
+ assert.match(source,/aria-label="Reading Desk"/);assert.doesNotMatch(source,/aria-label="My Library"/,'browsing the Library belongs to Collections (#136)');
+ const desk=source.split('aria-label="Reading Desk"')[1]?.split('<ReadingChallenge')[0]??'';
+ for(const action of ['Start reading','Log manually','Open book','BookStatusControl'])assert.ok(desk.includes(action),action);
  assert.match(source,/muse-books-card-author/);assert.match(source,/muse-books-progress-space/);assert.match(source,/muse-books-card-meta/);
 });
 test('Daily Edit features one saved current read and falls back without limiting Collections',()=>{

@@ -18,13 +18,13 @@ test('a choice menu squeezed beside its trigger on a phone uses the whole visibl
 });
 
 test('book details add a book to a series in place, without duplicates',()=>{
- const add=read('components/whimsy/AddToSeries.tsx'),shelf=read('components/whimsy/Bookshelf.tsx'),detail=read('components/whimsy/BookDetail.tsx');
+ const add=read('components/whimsy/AddToSeries.tsx'),shelf=read('components/whimsy/Bookshelf.tsx'),detail=read('components/whimsy/BookPage.tsx');
  assert.match(add,/useState<'pick'\|'new'>\(eligible\.length\?'pick':'new'\)/,'no series yet: start one');
  assert.match(add,/id:existing\?\.id\?\?crypto\.randomUUID\(\)/,'an existing entry is updated, never duplicated');
  assert.match(add,/s\.kind==='book'\|\|s\.kind==='mixed'/);
  assert.match(detail,/<AddToSeries book=\{book\}/);
  assert.doesNotMatch(shelf,/<Link href="\/collections\?view=series">Add to a series<\/Link>/,'no longer just a link to the Series page');
- assert.match(detail,/No reading logged yet/,'no zero-filled stat tiles for an unread book');
+ assert.match(detail,/No sittings logged yet/,'no zero-filled stat tiles for an unread book');
 });
 
 test('Wellness opens on Mood, Dayprint summary stays inside its card, Atlas overview has no gaps',()=>{

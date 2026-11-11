@@ -1,0 +1,319 @@
+/* Series page (#136). Shares crumbs, chips, meters and skeletons with the Book page (BookPage.css). */
+.muse-series-route{display:flex;flex-direction:column;gap:clamp(18px,2.6vw,28px);padding-top:clamp(6px,1.4vw,18px);padding-bottom:56px;min-width:0}
+.muse-series-route :is(h1,h2,h3,p){margin:0}
+
+/* Hero: the shelf spans the page; identity and progress sit beneath it */
+
+.muse-series-page-identity{display:grid;gap:10px;justify-items:start;min-width:0}
+.muse-series-page-identity h1{font-size:clamp(2rem,4vw,3.2rem);line-height:1.04;letter-spacing:-.025em;text-wrap:balance}
+.muse-series-page-chips{display:flex;flex-wrap:wrap;gap:6px}
+.muse-series-page-chips .muse-book-chip svg{color:var(--accent-primary)}
+.muse-book-chip[data-tone="done"]{border-color:color-mix(in srgb,var(--success-primary) 50%,var(--glass-border));background:color-mix(in srgb,var(--success-primary) 14%,var(--surface-control))}
+.muse-book-chip[data-tone="upcoming"]{border-color:color-mix(in srgb,var(--accent-warm,var(--accent-pop)) 50%,var(--glass-border));background:color-mix(in srgb,var(--accent-warm,var(--accent-pop)) 14%,var(--surface-control))}
+.muse-book-chip[data-tone="quiet"]{border-style:dashed;color:var(--text-muted);background:transparent}
+.muse-series-page-summary{font-size:.95rem;color:var(--foreground);max-width:68ch}
+.muse-series-page-description{display:grid;gap:6px;max-width:68ch}
+.muse-series-page-description p{font-size:.95rem;color:var(--text-muted)}
+.muse-series-page-description p[data-clamped]{max-height:6.6em;overflow:hidden;mask-image:linear-gradient(#000 55%,transparent)}
+.muse-series-page-description .text-button{justify-self:start;font-weight:600}
+
+.muse-series-page-progress{display:grid;gap:12px;padding:20px;border-radius:var(--dl-radius-hero)}
+.muse-series-page-count{display:flex;align-items:baseline;gap:8px;color:var(--text-muted)}
+.muse-series-page-count strong{font-family:var(--font-editorial);font-weight:var(--type-title-weight);font-size:2.3rem;line-height:1;color:var(--foreground)}
+.muse-series-page-owned{font-size:.8rem;color:var(--text-muted)}
+.muse-series-page-next{display:grid;gap:10px;padding-top:14px;border-top:1px solid var(--glass-border)}
+.muse-series-page-next>div{display:grid;grid-template-columns:52px minmax(0,1fr);gap:12px;align-items:center}
+.muse-series-page-next>div>span:last-child{display:grid;gap:2px;min-width:0}.muse-series-page-next strong{font-size:1rem;line-height:1.2}.muse-series-page-next small{font-size:.76rem;color:var(--text-muted)}
+.muse-series-page-next .muse-button{min-height:44px;width:100%}
+.muse-series-page-done{font-family:var(--font-editorial);font-style:italic;color:var(--text-muted)}
+.muse-series-page-message{padding:10px 14px;border-radius:12px;border:1px solid var(--glass-border);background:var(--surface-subtle);font-size:.86rem}
+.muse-series-page-message[data-tone="error"]{border-color:color-mix(in srgb,var(--danger,#d14d6b) 55%,var(--glass-border))}
+
+/* Reading order */
+.muse-series-page-order{display:grid;gap:4px;padding:clamp(18px,2.4vw,28px);border-radius:var(--dl-radius-hero)}
+.muse-series-page-order-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:8px}
+.muse-series-page-order-head p{font-size:.82rem;color:var(--text-muted);margin-top:3px}
+.muse-series-page-order-head .muse-button{display:inline-flex;align-items:center;gap:6px;min-height:40px}
+.muse-series-page-rows{display:grid;list-style:none;margin:0;padding:0}
+.muse-series-page-row{display:grid;grid-template-columns:44px minmax(0,1fr) auto;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--glass-border);animation:muse-search-in var(--motion-settle,260ms) var(--ease-out,ease-out) both;scroll-margin-top:24px}
+.muse-series-page-row:target{background:linear-gradient(90deg,color-mix(in srgb,var(--accent-primary) 10%,transparent),transparent 70%);border-radius:10px}
+.muse-series-page-pos{font-family:var(--font-editorial);font-size:1.15rem;color:var(--text-muted);text-align:center}
+.muse-series-page-row[data-state="read"] .muse-series-page-pos,.muse-series-page-row[data-state="reading"] .muse-series-page-pos{color:var(--foreground)}
+.muse-series-page-row-main{display:grid;grid-template-columns:54px minmax(0,1fr);align-items:center;gap:14px;min-width:0;padding:4px;margin:-4px;border:0;border-radius:12px;background:none;color:var(--foreground);text-align:left;font:inherit}
+.muse-series-page-row-main:not(:disabled){cursor:pointer;transition:background var(--motion-hover,180ms) ease}.muse-series-page-row-main:not(:disabled):hover{background:color-mix(in srgb,var(--surface-hover) 70%,transparent)}
+.muse-series-page-row-main:disabled{cursor:default;opacity:1}
+.muse-series-page-row-main:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
+.muse-series-page-row-copy{display:grid;gap:3px;min-width:0}
+.muse-series-page-row-copy strong{font-size:1.05rem;line-height:1.22;overflow-wrap:anywhere}
+.muse-series-page-row-meta{font-size:.78rem;color:var(--text-muted)}
+.muse-series-page-state{display:inline-flex;align-items:center;gap:5px;justify-self:start;padding:2px 9px;border-radius:999px;font-size:.7rem;font-weight:600;color:var(--text-muted);background:color-mix(in srgb,var(--foreground) 6%,transparent)}
+.muse-series-page-state[data-state="read"]{color:var(--foreground);background:color-mix(in srgb,var(--success-primary) 18%,transparent)}
+.muse-series-page-state[data-state="reading"]{color:var(--foreground);background:color-mix(in srgb,var(--accent-primary) 18%,transparent)}
+.muse-series-page-state[data-state="planned"],.muse-series-page-state[data-state="paused"]{color:var(--foreground);background:color-mix(in srgb,var(--accent-secondary) 16%,transparent)}
+.muse-series-page-state[data-state="upcoming"]{color:var(--foreground);background:color-mix(in srgb,var(--accent-warm,var(--accent-pop)) 18%,transparent)}
+.muse-series-page-row-actions{display:flex;align-items:center;gap:6px}
+.muse-series-page-star[aria-pressed="true"]{color:var(--accent-warm,var(--accent-primary))}
+.muse-series-page-star[aria-pressed="true"] svg{fill:currentColor}
+.muse-series-page-group{font:600 .74rem/1.2 var(--font-ui);letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);margin:18px 0 4px}
+.muse-series-page-collections{margin-top:14px;border-top:1px solid var(--glass-border);padding-top:6px}
+.muse-series-page-collections>summary{display:flex;align-items:center;gap:8px;min-height:44px;cursor:pointer;font:600 .86rem var(--font-ui);list-style:none}
+.muse-series-page-collections>summary::-webkit-details-marker{display:none}
+.muse-series-page-collections>summary::after{content:"";width:8px;height:8px;margin-left:4px;border-right:1.6px solid currentColor;border-bottom:1.6px solid currentColor;transform:rotate(45deg) translateY(-2px);transition:transform var(--motion-hover,180ms) ease}
+.muse-series-page-collections[open]>summary::after{transform:rotate(225deg) translateY(-2px)}
+.muse-series-page-collections>summary span{font-size:.72rem;color:var(--text-muted)}
+.muse-series-page-source{margin-top:14px;color:var(--text-muted)}
+.muse-series-page-empty{display:grid;justify-items:center;gap:12px;padding:clamp(32px,6vw,72px) 20px;text-align:center}
+.muse-series-page-skeleton{display:grid;gap:22px}
+@keyframes muse-search-in{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+
+@media(max-width:620px){
+ .muse-series-page-identity h1{font-size:clamp(1.7rem,7.4vw,2.2rem)}
+ .muse-series-page-order{padding:16px}
+ .muse-series-page-row{grid-template-columns:30px minmax(0,1fr);grid-template-areas:"pos main" ". actions";row-gap:6px;column-gap:8px}
+ .muse-series-page-pos{grid-area:pos;font-size:1rem}.muse-series-page-row-main{grid-area:main;grid-template-columns:46px minmax(0,1fr);gap:12px}
+ .muse-series-page-row-actions{grid-area:actions;justify-content:flex-end}
+ .muse-series-page-row[data-owned] {grid-template-areas:"pos main actions";grid-template-columns:30px minmax(0,1fr) auto}
+}
+@media(prefers-reduced-motion:reduce){.muse-series-page-row{animation:none;transition:none}}
+
+/* Primary / additional / collections (#136) */
+.muse-series-page-section-count{margin-left:6px;padding:1px 9px;border-radius:999px;background:color-mix(in srgb,var(--accent-primary) 14%,transparent);font:600 .78rem/1.5 var(--font-ui);vertical-align:middle}
+.muse-series-page-basis{font-size:.76rem;line-height:1.4;color:var(--text-muted);padding:8px 10px;border-radius:10px;border:1px dashed var(--glass-border)}
+.muse-series-page-additional .muse-series-page-pos{font-size:1rem}
+.muse-series-page-bundles{padding-block:6px}
+.muse-series-page-bundles .muse-series-page-collections{margin:0;border:0;padding:0}
+.muse-series-page-bundles summary{flex-wrap:wrap;gap:6px 8px;min-height:56px}
+.muse-series-page-bundles summary small{flex-basis:100%;order:3;font:400 .8rem var(--font-ui);color:var(--text-muted);margin-top:-4px}
+.muse-series-page-empty-note{font-size:.86rem;color:var(--text-muted);padding:12px 0}
+.muse-series-page-footnote{padding:0 4px}
+.muse-series-page-bundles summary .muse-book-page-section-title{font-family:var(--font-editorial);font-weight:var(--type-editorial-weight);font-size:clamp(1.3rem,2vw,1.55rem);letter-spacing:-.01em}
+
+/* Completion card (#136): core completion leads; additional works are an optional extra */
+.muse-series-progress-head{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.muse-series-core-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 11px;border-radius:999px;border:1px solid color-mix(in srgb,var(--success-primary) 50%,var(--glass-border));background:color-mix(in srgb,var(--success-primary) 16%,transparent);color:var(--foreground);font:600 .76rem/1.2 var(--font-ui);animation:muse-core-in var(--motion-settle,260ms) var(--ease-out,ease-out) both}
+.muse-series-core-badge svg{color:var(--success-primary)}
+.muse-series-core-badge[data-tone="caught-up"]{border-color:color-mix(in srgb,var(--accent-secondary) 50%,var(--glass-border));background:color-mix(in srgb,var(--accent-secondary) 14%,transparent)}
+.muse-series-core-badge[data-tone="caught-up"] svg{color:var(--accent-secondary)}
+.muse-series-page-count em{margin-left:auto;font-style:normal;font-weight:700;font-size:1.05rem;color:var(--foreground)}
+.muse-series-page-progress[data-complete] .muse-series-page-count em{color:var(--success-primary)}
+.muse-book-series-meter[data-complete]>span{background:var(--success-primary)}
+.muse-book-series-meter[data-tone="optional"]{height:5px}
+.muse-book-series-meter[data-tone="optional"]>span{background:var(--accent-secondary)}
+.muse-series-progress-extra{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:12px;border-top:1px solid var(--glass-border)}
+.muse-series-progress-extra>div:first-child{display:grid;gap:2px;min-width:0}.muse-series-progress-extra strong{font-size:.88rem}.muse-series-progress-extra small{font-size:.74rem;color:var(--text-muted)}
+.muse-series-progress-mini{display:grid;gap:4px;justify-items:end;flex:0 0 96px}.muse-series-progress-mini>.muse-book-series-meter{width:100%}.muse-series-progress-mini small{font-size:.68rem;color:var(--text-muted)}
+@keyframes muse-core-in{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.muse-series-core-badge{animation:none}}
+
+
+
+/* ---------- Final Series Detail pass (#136) ---------- */
+
+/* Section tools */
+.muse-series-page-tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.muse-series-layout button{min-height:36px;padding-inline:14px;font-size:.8rem}
+
+/* Ownership and reading: two quiet, distinct signals */
+.muse-series-signals{display:flex;flex-wrap:wrap;gap:5px;margin-top:2px}
+.muse-series-own,.muse-series-status{display:inline-flex;align-items:center;gap:4px;padding:2px 9px;border-radius:999px;font:600 .68rem/1.5 var(--font-ui);white-space:nowrap}
+.muse-series-own{border:1px dashed color-mix(in srgb,var(--foreground) 32%,transparent);color:var(--text-muted)}
+.muse-series-own[data-owned]{border:1px solid color-mix(in srgb,var(--success-primary) 45%,transparent);background:color-mix(in srgb,var(--success-primary) 12%,transparent);color:var(--foreground)}
+.muse-series-own[data-owned] svg{color:var(--success-primary)}
+.muse-series-status{color:var(--foreground);background:color-mix(in srgb,var(--foreground) 7%,transparent)}
+.muse-series-status[data-tone="read"]{background:color-mix(in srgb,var(--success-primary) 20%,transparent)}
+.muse-series-status[data-tone="reading"]{background:color-mix(in srgb,var(--accent-primary) 20%,transparent)}
+.muse-series-status[data-tone="wish"]{background:color-mix(in srgb,var(--accent-secondary) 18%,transparent)}
+.muse-series-status[data-tone="wish"] svg{color:var(--accent-warm,var(--accent-secondary));fill:currentColor}
+.muse-series-status[data-tone="upcoming"]{background:color-mix(in srgb,var(--accent-warm,var(--accent-pop)) 20%,transparent)}
+.muse-series-status[data-tone="quiet"]{color:var(--text-muted)}
+
+/* List view: [#] [cover + details] [actions] */
+.muse-series-page-row{grid-template-columns:48px minmax(0,1fr) auto;gap:16px;padding:10px 0;min-height:88px}
+.muse-series-page-row-main{grid-template-columns:56px minmax(0,1fr);gap:16px}
+.muse-series-page-row-copy{gap:2px}
+
+/* Grid view: cover-forward cards */
+.muse-series-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:22px 18px;list-style:none;margin:6px 0 0;padding:0}
+.muse-series-card{display:grid;align-content:start;gap:9px;min-width:0;animation:muse-search-in var(--motion-settle,260ms) var(--ease-out,ease-out) both}
+.muse-series-card-cover{position:relative;display:block;padding:0;border:0;background:none;border-radius:8px;transition:transform var(--motion-hover,180ms) var(--ease-out,ease-out)}
+.muse-series-card-cover:not(:disabled){cursor:pointer}.muse-series-card-cover:not(:disabled):hover{transform:translateY(-4px)}
+.muse-series-card-cover:disabled{cursor:default}
+.muse-series-card-cover:focus-visible{outline:2px solid var(--focus-ring);outline-offset:3px}
+.muse-series-card-cover .muse-series-cover{box-shadow:0 12px 22px -10px color-mix(in srgb,black 45%,transparent)}
+.muse-series-card-copy{display:grid;gap:3px;min-width:0}
+.muse-series-card-copy strong{font-size:.96rem;line-height:1.2;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.muse-series-card-actions{display:flex;align-items:center;gap:6px;margin-top:2px}
+
+@media(max-width:900px){.muse-series-page-row{grid-template-columns:40px minmax(0,1fr) auto;min-height:0}}
+@media(max-width:620px){
+ .muse-series-page-order-head{align-items:flex-start}.muse-series-page-tools{width:100%;justify-content:space-between}
+ .muse-series-page-row{grid-template-columns:30px minmax(0,1fr);grid-template-areas:"pos main" ". actions";row-gap:6px;column-gap:8px}
+ .muse-series-page-row[data-owned]{grid-template-areas:"pos main actions";grid-template-columns:30px minmax(0,1fr) auto}
+ .muse-series-page-row-main{grid-template-columns:46px minmax(0,1fr)}
+ .muse-series-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 14px}
+ .muse-series-card-actions{justify-content:space-between}
+ .muse-series-card .muse-quick-add>button{min-width:40px;min-height:40px}
+}
+@media(prefers-reduced-motion:reduce){.muse-series-card{animation:none}.muse-series-card-cover{transition:none}}
+@media(min-width:901px){.muse-series-page-row-actions{justify-content:flex-end;min-width:148px}}
+
+/* Two columns beside everything: the bookcase and the identity on the left, the progress card on the right.
+   Plain grid columns (no row spanning) so every browser lays it out the same way. */
+.muse-series-page-description p{max-width:68ch}
+
+
+/* ---------- Grid polish (#136): denser, smaller covers, editorial type. Not-owned books keep their muted look. ---------- */
+.muse-series-grid{grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:18px 14px;margin-top:4px}
+.muse-series-card{gap:7px;position:relative}
+.muse-series-card-art{position:relative}
+.muse-series-card-cover .muse-series-cover{box-shadow:0 8px 14px -8px color-mix(in srgb,black 45%,transparent)}
+.muse-series-card .muse-book-series-badge-pos{right:-3px;bottom:-3px;min-width:20px;padding:1px 5px;font-size:.62rem;border-radius:6px}
+.muse-series-card .muse-book-series-mark{left:4px;top:4px;width:17px;height:17px}
+.muse-series-card-wish{position:absolute;top:5px;right:5px;display:grid;place-items:center;width:28px;height:28px;padding:0;border:1px solid color-mix(in srgb,var(--foreground) 18%,transparent);border-radius:50%;background:color-mix(in srgb,var(--floating-background) 88%,transparent);color:var(--text-muted);cursor:pointer;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);transition:color var(--motion-hover,180ms) ease,transform var(--motion-hover,180ms) ease}
+.muse-series-card-wish:hover{color:var(--accent-warm,var(--accent-primary));transform:scale(1.08)}
+.muse-series-card-wish[aria-pressed="true"]{color:var(--accent-warm,var(--accent-primary))}.muse-series-card-wish[aria-pressed="true"] svg{fill:currentColor}
+.muse-series-card-wish:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
+.muse-series-card-copy{gap:2px}
+.muse-series-card-copy strong{font-size:.84rem;line-height:1.22;font-weight:var(--type-title-weight);-webkit-line-clamp:2}
+.muse-series-card-facts{font-size:.7rem;color:var(--text-muted);font-variant-numeric:tabular-nums}
+.muse-series-card .muse-series-signals{gap:4px;margin-top:3px}
+.muse-series-card .muse-series-own,.muse-series-card .muse-series-status{padding:1px 7px;font-size:.62rem;line-height:1.5}
+.muse-series-card-actions{margin-top:1px}
+@media(max-width:620px){.muse-series-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px 10px}.muse-series-card-copy strong{font-size:.78rem}.muse-series-card .muse-series-own,.muse-series-card .muse-series-status{font-size:.58rem;padding:1px 6px}.muse-series-card-wish{width:26px;height:26px;top:4px;right:4px}}
+
+/* Hierarchy (#136): identity first, then the bookcase beside the progress panel, then the books */
+.muse-series-page-head{display:grid;gap:8px;justify-items:start;padding-inline:2px}
+.muse-series-page-head h1{font-size:clamp(2rem,4vw,3.2rem)}
+.muse-series-page-since{color:var(--text-muted)}
+.muse-series-page-head .muse-series-page-chips{margin-top:4px}
+.muse-series-page-head .muse-series-page-description{max-width:72ch;margin-top:2px}
+.muse-series-card-cover{width:100%}
+.muse-series-card{grid-template-rows:auto 1fr auto;align-content:stretch}
+.muse-series-card-actions{align-self:end}
+
+/* Safari-safe layout (#136): plain stacking instead of grid rows for the section cards and book cards. */
+.muse-series-page-order{display:flex;flex-direction:column;gap:4px;align-content:normal}
+.muse-series-page-order>*{min-width:0;flex:0 0 auto}
+.muse-series-grid{align-items:start;grid-auto-rows:auto;align-content:start}
+.muse-series-card{display:flex;flex-direction:column;gap:7px;grid-template-rows:none;align-content:normal}
+.muse-series-card-actions{align-self:flex-start;margin-top:auto}
+.muse-series-card-copy{flex:1 1 auto}
+.muse-series-card-art{flex:0 0 auto}
+.muse-series-grid{align-items:stretch}
+
+
+/* Grid readability pass (#136): a little wider, more air, steadier titles, easier-to-read badges. */
+.muse-series-grid{grid-template-columns:repeat(auto-fill,minmax(122px,1fr));gap:22px 22px}
+.muse-series-card-copy strong{font-size:.88rem;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.5em;overflow-wrap:break-word}
+.muse-series-card-facts{font-size:.74rem;min-height:1.2em}
+.muse-series-card .muse-series-signals{gap:5px;margin-top:4px}
+.muse-series-card .muse-series-own,.muse-series-card .muse-series-status{padding:3px 9px;font-size:.7rem;line-height:1.35}
+@media(max-width:620px){
+ .muse-series-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px 12px}
+ .muse-series-card-copy strong{font-size:.8rem}
+ .muse-series-card .muse-series-own,.muse-series-card .muse-series-status{padding:2px 7px;font-size:.64rem}
+}
+
+/* =====================================================================================================
+   Series header (#136): title block on the left, the bookshelf on the right. The shelf is deliberately simple:
+   the spines (never faded) stand on a plain dark walnut ledge that runs past the hero's right edge, with a faint
+   smoked-glass wash behind the books. No enclosure, panel, border or decoration; the ledge and wash feather out
+   toward the title. Decorative objects will be supplied separately.
+   ===================================================================================================== */
+.muse-series-hero2{display:grid;grid-template-columns:minmax(280px,1fr) auto;align-items:end;column-gap:clamp(20px,3vw,40px);row-gap:18px;min-width:0}
+.muse-series-hero2>.muse-series-page-head{align-self:center;min-width:0}
+
+.muse-series-shelf{
+ --spine-w:var(--spine-w-d,52px);--fade:clamp(56px,6vw,96px);--zone:clamp(14px,1.8vw,24px);--ledge:20px;
+ --bleed:calc(var(--page-padding,24px) - 2px);/* the page margin: the ledge reaches into it, never past the viewport */
+ position:relative;isolation:isolate;justify-self:end;min-width:0;
+ width:calc(var(--count,7)*(var(--spine-w) + 6px) + var(--fade) + var(--zone) + 6px);max-width:min(48vw,780px);
+ padding:18px var(--zone) var(--ledge) var(--fade)}
+.muse-series-shelf>.muse-spines{position:relative;z-index:1}
+.muse-series-shelf .muse-series-shelf-books{filter:drop-shadow(0 8px 8px color-mix(in srgb,black 30%,transparent))}
+
+/* The ledge: dark walnut, near black. A lit top edge, a darker front face with faint grain, a natural shadow below. */
+.muse-series-shelf-ledge{position:absolute;z-index:0;left:0;right:-100vw;bottom:-2px;height:24px;pointer-events:none;
+ background:url("/art/shelf-walnut.webp") repeat-x 0 0/auto 100%;
+ -webkit-mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.6) calc(var(--fade)*.55),#000 var(--fade));mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.6) calc(var(--fade)*.55),#000 var(--fade))}
+.muse-series-shelf-plant{position:absolute;z-index:1;pointer-events:none;left:calc(var(--fade) - 81px);bottom:calc(var(--ledge) - 3px);width:73px;height:65px;
+ background:url("/art/fern-crystal.webp") no-repeat center bottom/contain}
+.muse-series-shelf-plant::before{content:"";position:absolute;z-index:-1;left:8%;right:8%;bottom:-3px;height:7px;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.45),transparent);filter:blur(2px)}
+.muse-series-shelf-strand{position:absolute;z-index:0;pointer-events:none;left:0;right:calc(-1*var(--page-padding,24px));top:-76px;height:84px;
+ background:url("/art/fairy-lights-stars.webp") no-repeat right bottom/auto 100%;
+ -webkit-mask-image:linear-gradient(90deg,transparent 0,transparent calc(100% - 340px),#000 calc(100% - 190px));mask-image:linear-gradient(90deg,transparent 0,transparent calc(100% - 340px),#000 calc(100% - 190px))}
+.muse-series-shelf-backdrop{position:absolute;z-index:0;pointer-events:none;
+ left:calc(var(--fade)*.3);right:calc(var(--zone)*.5);top:6px;bottom:calc(var(--ledge) - 4px);border-radius:30px;
+ background:linear-gradient(180deg,rgba(12,12,18,.20),rgba(12,12,18,.36));
+ -webkit-backdrop-filter:blur(8px) saturate(1.08);backdrop-filter:blur(8px) saturate(1.08);
+ -webkit-mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.55) 26%,#000 52%,#000 88%,transparent 100%),linear-gradient(180deg,transparent 0,#000 24%,#000 80%,transparent 100%);
+ mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.55) 26%,#000 52%,#000 88%,transparent 100%),linear-gradient(180deg,transparent 0,#000 24%,#000 80%,transparent 100%);
+ -webkit-mask-composite:source-in;mask-composite:intersect}
+
+/* Below ~1240px there is no room for text and shelf side by side: the shelf drops under the title, still right-aligned. */
+@media(max-width:1240px){.muse-series-shelf-strand{top:-64px;height:72px}.muse-series-hero2{grid-template-columns:minmax(0,1fr)}.muse-series-shelf{max-width:100%;justify-self:end}}
+@media(max-width:620px){
+ .muse-series-shelf{--spine-w:min(var(--spine-w-d,40px),42px);--fade:clamp(24px,8vw,40px);--zone:clamp(10px,3vw,16px);--ledge:18px;--bleed:calc(var(--page-padding,16px) - 2px);width:100%;justify-self:stretch;padding-top:16px}
+ .muse-series-shelf-backdrop{left:calc(var(--fade)*.15);top:4px}
+ .muse-series-shelf-strand{top:-44px;height:52px}
+ .muse-series-shelf-plant{display:none}
+ .muse-series-shelf-ledge{bottom:-2px;height:20px}
+}
+
+.muse-series-card:target .muse-series-card-cover,.muse-series-page-row:target{outline:2px solid var(--accent-primary);outline-offset:3px}
+
+/* =====================================================================================================
+   ONE page structure (#136): hero, then two independent columns (70/30) that start together and each
+   flow to their own height. Cards are one fixed size everywhere; a section with more than fit scrolls.
+   ===================================================================================================== */
+.muse-series-columns{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,3fr);column-gap:clamp(16px,2.2vw,26px);align-items:start;min-width:0}
+.muse-series-col-main,.muse-series-col-side{display:flex;flex-direction:column;gap:clamp(14px,1.8vw,20px);min-width:0}
+.muse-series-col-side>*{min-width:0}
+.muse-series-col-side .muse-series-page-order,.muse-series-col-side .muse-series-page-progress{padding:clamp(16px,1.8vw,20px)}
+.muse-series-col-side .muse-series-page-order-head p{font-size:.76rem}
+.muse-series-col-side .muse-series-page-bundles{padding-block:6px}
+@media(max-width:900px){
+ .muse-series-columns{grid-template-columns:minmax(0,1fr);row-gap:clamp(14px,3vw,20px)}
+ .muse-series-columns>*{grid-column:1}/* a .muse-card spans six dashboard columns by default */
+ .muse-series-col-side{display:contents}
+ .muse-series-page-progress{order:1}.muse-series-col-main{order:2}.muse-series-page-additional{order:3}.muse-series-page-bundles{order:4}
+}
+
+/* Cards: one size (128px cover) in every section; the carousel is a single row that scrolls. */
+.muse-series-carousel{position:relative;min-width:0}
+.muse-series-carousel>ol{display:flex;gap:14px;list-style:none;margin:0;padding:2px 2px 6px;overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:none;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;border-radius:8px}
+.muse-series-carousel>ol::-webkit-scrollbar{display:none}
+.muse-series-carousel>ol:focus-visible{outline:2px solid var(--focus-ring);outline-offset:3px}
+.muse-series-carousel>ol>li{flex:0 0 128px;width:128px;scroll-snap-align:start}
+.muse-series-carousel-arrow{position:absolute;z-index:3;top:98px;display:grid;place-items:center;width:34px;height:34px;padding:0;border:1px solid color-mix(in srgb,var(--foreground) 22%,transparent);border-radius:50%;background:color-mix(in srgb,var(--floating-background) 90%,transparent);color:var(--foreground);cursor:pointer;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);transform:translateY(-50%);transition:opacity var(--motion-hover,180ms) ease,transform var(--motion-hover,180ms) ease}
+.muse-series-carousel-arrow[data-dir="prev"]{left:-8px}.muse-series-carousel-arrow[data-dir="next"]{right:-8px}
+.muse-series-carousel-arrow[data-dir="prev"] svg{transform:rotate(90deg)}.muse-series-carousel-arrow[data-dir="next"] svg{transform:rotate(-90deg)}
+.muse-series-carousel-arrow:hover:not(:disabled){transform:translateY(-50%) scale(1.08)}
+.muse-series-carousel-arrow:disabled{opacity:0;pointer-events:none}
+.muse-series-carousel-arrow:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
+
+/* List mode in the narrow column: details on top, actions beneath */
+.muse-series-col-side .muse-series-page-row{grid-template-columns:30px minmax(0,1fr);grid-template-areas:"pos main" ". actions";row-gap:6px;column-gap:8px}
+.muse-series-col-side .muse-series-page-row[data-owned]{grid-template-areas:"pos main"}
+.muse-series-col-side .muse-series-page-pos{grid-area:pos}.muse-series-col-side .muse-series-page-row-main{grid-area:main;grid-template-columns:46px minmax(0,1fr);gap:10px}.muse-series-col-side .muse-series-page-row-actions{grid-area:actions;justify-content:flex-start}
+
+/* The blurb: two lines, then Read more → */
+.muse-series-page-description p{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.muse-series-page-description p[data-open]{display:block;-webkit-line-clamp:unset;overflow:visible}
+.muse-series-page-description .text-button{font-weight:600}
+.muse-series-card:target .muse-series-card-cover,.muse-series-page-row:target{outline:2px solid var(--accent-primary);outline-offset:3px}
+@media(prefers-reduced-motion:reduce){.muse-series-carousel-arrow{transition:none}}
+
+/* Primary list rows (#136): no synopsis, so the title gets the width. Full titles wrap rather than truncate. */
+.muse-series-page-row-copy{gap:4px}
+.muse-series-page-row-copy strong{font-size:1.1rem;line-height:1.25;overflow-wrap:break-word;word-break:normal}
+.muse-series-page-row-meta{font-size:.84rem}
+.muse-series-col-main .muse-series-signals{margin-top:3px}
+/* Phones: the wrappers dissolve into one stack: progress, primary, additional, then Collections & box sets. */
+@media(max-width:900px){.muse-series-col-main{display:contents}.muse-series-col-main>.muse-series-page-order:not(.muse-series-page-bundles){order:2}}
+.muse-series-page-bundles summary .muse-book-page-section-title{color:var(--foreground)}
+
+
+/* The page's own horizontal clip would stop the shelf at the content edge; the body still clips at the viewport, so it runs off-screen without overflow. */
+.muse-series-route{overflow-x:visible}
+.muse-app-content:has(.muse-series-route){overflow-x:clip}

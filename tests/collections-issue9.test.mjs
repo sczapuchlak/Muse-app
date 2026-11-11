@@ -36,8 +36,7 @@ test('multi-genre books remain visible in each Reading Atlas genre',()=>{
 test('Collections keeps old deep links, contextual Reading Atlas, and one filter owner',()=>{
  const source=readFileSync(root+'/components/collections/Collections.tsx','utf8');
  assert.doesNotMatch(source,/muse-collections-nav/);
- assert.match(source,/initialTab=\{query\?\.get\('section'\)==='atlas'/);
- assert.match(source,/initialBookId=\{query\?\.get\('book'\)\}/);
+ assert.match(source,/router\.replace\(book\?bookHref\(book\):section==='atlas'\?'\/collections\/reading-atlas'/,'old Books deep links resolve to the book page or Reading Atlas (#136)');
  assert.match(source,/initialItemId=\{query\?\.get\('item'\)\}/);
  assert.match(source,/aria-expanded=\{advancedOpen\}/);
  assert.match(source,/setAdvancedOpen\(value=>!value\)/);
@@ -55,7 +54,7 @@ test('Collections restoration keeps one compact active shelf and direct add acti
  assert.match(source,/aria-label="Full library"/);
  assert.match(source,/muse-collections-search-add/);
  assert.match(source,/role="menu" open=\{addOpen\}/);
- assert.match(source,/onClick=\{\(\)=>go\(id,\{add:true\}\)\}/);
+ assert.match(source,/onClick=\{\(\)=>id==='books'\?openAddBook\(\):go\(id,\{add:true\}\)\}/);
  assert.doesNotMatch(source,/What are you adding\?/);
  assert.match(source,/emptyCopy\[kindFilter\]/);
  assert.match(css,/\.muse-collections-active-card\{display:grid;grid-template-columns:64px minmax\(0,1fr\)/);
@@ -76,5 +75,5 @@ test('Collections restoration coexists with series deep links and scrolling edit
  assert.match(media,/sticky-footer"><button type="button" className="muse-button button-ghost" onClick=\{\(\)=>setForm\(null\)\}>Cancel<\/button><button type="submit" className="muse-button button-primary"/);
  const books=readFileSync(root+'/components/whimsy/Bookshelf.tsx','utf8');
  assert.match(books,/void saveBook\(\);\}\}><div className="muse-books-form-body">/);
- assert.match(books,/<\/div><div className="muse-books-actions muse-books-form-footer"><button className="muse-button button-ghost" type="button" onClick=\{\(\)=>setBookForm\(null\)\}>Cancel<\/button><button className="muse-button button-primary" type="submit"/);
+ assert.match(books,/<\/div>\{\(books\.some\(b=>b\.id===bookForm\.id\)\|\|addStage==='form'\)&&<div className="muse-books-actions muse-books-form-footer"><button className="muse-button button-ghost" type="button" onClick=\{\(\)=>setBookForm\(null\)\}>Cancel<\/button><button className="muse-button button-primary" type="submit"/);
 });

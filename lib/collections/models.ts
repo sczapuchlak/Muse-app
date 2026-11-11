@@ -29,8 +29,20 @@ export function tvProgress(showId:string,episodes:Episode[],activity:MediaActivi
  const status=!released.length?'not-started':completedSeasons===released.length?conclusionState==='concluded'&&!future?'completed':'caught-up':watched>0||completedSeasons>0?'in-progress':'not-started';
  return {watched,available,next,seasons:rows,completedSeasons,releasedSeasons:released.length,status};
 }
+/**
+ * The installments that define a catalog book series' completion (#136): positioned works at whole-number
+ * positions. Prequels and novellas (0.1, 1.5), unpositioned companions and bundles are additional and never
+ * change the denominator. When a catalog gives no whole-number positions at all, every work counts.
+ */
+export function bookSeriesPrimary(members:SeriesMember[]){
+ const works=members.filter(m=>!m.hidden&&m.role!=='collection');
+ const whole=works.filter(m=>m.position_known!==false&&Number.isInteger(Number(m.sequence)));
+ return whole.length?{primary:whole,basis:'numbering' as const}:{primary:works,basis:'unordered' as const};
+}
 export function seriesProgress(series:Series,members:SeriesMember[],books:Book[],media:MediaItem[]){
- const own=members.filter(member=>member.series_id===series.id&&member.role==='mainline'&&!member.hidden).sort((a,b)=>(a.position_known===false?1:0)-(b.position_known===false?1:0)||a.sequence-b.sequence),items=canonicalItems(books,media),resolved=own.map(member=>({member,item:items.find(item=>item.id===(member.book_id??member.media_id))??null}));
+ // Catalog book series use the shared primary definition; series a reader assembled keep their own mainline roles.
+ const counted=series.kind==='book'&&series.catalog_source?bookSeriesPrimary(members.filter(member=>member.series_id===series.id)).primary:null;
+ const own=(counted??members.filter(member=>member.series_id===series.id&&member.role==='mainline'&&!member.hidden)).sort((a,b)=>(a.position_known===false?1:0)-(b.position_known===false?1:0)||a.sequence-b.sequence),items=canonicalItems(books,media),resolved=own.map(member=>({member,item:items.find(item=>item.id===(member.book_id??member.media_id))??null}));
  const released=resolved.filter(row=>row.member.release_state==='released');
  const scope=series.scope==='released'?released:series.scope==='announced'?resolved.filter(row=>row.member.release_state!=='unknown'):resolved;
  const availableScope=scope.filter(row=>row.member.release_state==='released'),done=availableScope.filter(row=>row.item&&completed(row.item)).length,hasProgress=resolved.some(row=>row.item&&completed(row.item)),paused=scope.some(row=>row.item?.status==='paused');

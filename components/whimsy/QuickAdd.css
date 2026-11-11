@@ -1,0 +1,41 @@
+/* Quick Add (#136): bookmark + shelf split button, "Which edition?" and the success toast. */
+.muse-quick-add{position:relative;display:inline-flex;flex:none;border:1px solid var(--glass-border);border-top-color:var(--glass-edge);border-radius:14px;background:var(--surface-control);box-shadow:0 2px 0 color-mix(in srgb,var(--foreground) 6%,transparent),0 6px 14px rgba(10,8,24,.08)}
+.muse-quick-add>button{display:grid;place-items:center;min-width:44px;min-height:44px;padding:0 10px;border:0;background:none;color:var(--foreground);cursor:pointer;transition:background var(--motion-hover,180ms) ease,color var(--motion-hover,180ms) ease}
+.muse-quick-add-main{border-radius:13px 0 0 13px;color:var(--accent-primary)!important}
+.muse-quick-add-more{border-left:1px solid var(--glass-border)!important;border-radius:0 13px 13px 0;min-width:38px!important}
+.muse-quick-add>button:hover:not(:disabled){background:color-mix(in srgb,var(--accent-primary) 12%,transparent)}
+.muse-quick-add>button:focus-visible{outline:2px solid var(--focus-ring);outline-offset:-2px}
+.muse-quick-add>button:disabled{opacity:.55;cursor:default}
+.muse-quick-add[data-open] .muse-quick-add-more svg{transform:rotate(180deg)}
+.muse-quick-add-spinner{width:16px;height:16px;border-radius:50%;border:2px solid color-mix(in srgb,var(--accent-primary) 25%,transparent);border-top-color:var(--accent-primary);animation:muse-quick-spin .8s linear infinite}
+
+.muse-edition-sheet{display:grid;gap:14px;padding:4px 2px 8px;min-width:0}
+.muse-edition-sheet-title{margin:0;font-size:1.15rem}.muse-edition-sheet-title span{font-family:var(--font-ui);font-size:.85rem;color:var(--text-muted)}
+.muse-edition-sheet-status{width:100%}.muse-edition-sheet-status button{flex:1;min-height:40px}
+.muse-edition-sheet-hint{margin:0;color:var(--text-muted)}
+.muse-edition-sheet-list{display:grid;list-style:none;margin:0;padding:0}
+.muse-edition-sheet-list li{display:grid;grid-template-columns:52px minmax(0,1fr) auto;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid var(--glass-border);animation:muse-quick-pop var(--motion-settle,260ms) var(--ease-out,ease-out) both}
+.muse-edition-sheet-list li:nth-child(2){animation-delay:40ms}.muse-edition-sheet-list li:nth-child(3){animation-delay:80ms}.muse-edition-sheet-list li:nth-child(n+4){animation-delay:120ms}
+.muse-edition-sheet-cover{display:grid;place-items:center;width:52px;aspect-ratio:2/3;border-radius:4px 6px 6px 4px;overflow:hidden;background:color-mix(in srgb,var(--accent-secondary) 22%,var(--surface-control));box-shadow:0 4px 10px rgba(10,8,24,.14);font-family:var(--font-editorial);color:var(--text-muted)}
+.muse-edition-sheet-cover img{width:100%;height:100%;object-fit:cover}
+.muse-edition-sheet-copy{display:grid;gap:3px;min-width:0}.muse-edition-sheet-copy strong{font-size:.92rem}.muse-edition-sheet-copy em{font-style:normal;font-weight:500;color:var(--accent-primary)}
+.muse-edition-sheet-copy span{font-size:.8rem;color:var(--text-muted);overflow-wrap:anywhere}.muse-edition-sheet-copy small{font-size:.7rem;color:var(--text-muted)}
+.muse-edition-sheet-list .muse-button{min-height:40px;padding-inline:18px}
+
+.muse-quick-toast{position:fixed;z-index:1200;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translateX(-50%);display:flex;align-items:center;gap:12px;width:min(460px,calc(100vw - 24px));box-sizing:border-box;padding:10px 10px 10px 12px;border:1px solid color-mix(in srgb,var(--success-primary) 45%,var(--glass-border));border-radius:18px;background:var(--floating-background);box-shadow:var(--floating-shadow,0 16px 34px rgba(0,0,0,.2));-webkit-backdrop-filter:blur(var(--material-blur));backdrop-filter:blur(var(--material-blur));animation:muse-quick-rise var(--motion-settle,260ms) var(--ease-out,ease-out) both}
+.muse-quick-toast-cover{position:relative;display:grid;place-items:center;flex:none;width:38px;aspect-ratio:2/3;border-radius:3px 5px 5px 3px;overflow:visible;background:var(--surface-control)}
+.muse-quick-toast-cover img{width:100%;height:100%;object-fit:cover;border-radius:inherit}
+.muse-quick-toast-copy{display:grid;gap:1px;min-width:0;flex:1;font-size:.84rem}.muse-quick-toast-copy strong{font-family:var(--font-editorial);font-weight:var(--type-title-weight);font-size:.98rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.muse-quick-toast-copy span{color:var(--text-muted)}
+.muse-quick-toast .muse-button{min-height:40px;padding-inline:18px}
+@keyframes muse-quick-pop{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+@keyframes muse-quick-rise{from{opacity:0;transform:translate(-50%,14px)}to{opacity:1;transform:translate(-50%,0)}}
+@keyframes muse-quick-spin{to{transform:rotate(360deg)}}
+@media(max-width:720px){.muse-quick-toast{bottom:calc(96px + env(safe-area-inset-bottom))}.muse-edition-sheet-list li{grid-template-columns:44px minmax(0,1fr) auto;gap:10px}.muse-edition-sheet-cover{width:44px}}
+@media(prefers-reduced-motion:reduce){.muse-edition-sheet-list li,.muse-quick-toast{animation:none}.muse-quick-add-spinner{animation-duration:2.4s}}
+
+/* Compact variant for dense grids */
+.muse-quick-add[data-size="sm"]{border-radius:11px}
+.muse-quick-add[data-size="sm"]>button{min-width:34px;min-height:34px;padding:0 6px}
+.muse-quick-add[data-size="sm"] .muse-quick-add-more{min-width:28px}
+.muse-quick-add[data-size="sm"] svg{width:15px;height:15px}
+@media(max-width:620px){.muse-quick-add[data-size="sm"]>button{min-height:36px}}

@@ -25,8 +25,8 @@ test('filters and view selectors stay outside page-tab styling',()=>{
 test('page tabs keep navigation semantics and current-page state',()=>{
  const section=readFileSync(resolve(root,'components/MuseSectionNav.tsx'),'utf8');
  assert.match(section,/<nav className="muse-section-nav" aria-label=\{label\}>/);assert.match(section,/aria-current=\{current===item\.id\?"page":undefined\}/);
- const books=readFileSync(resolve(root,'components/whimsy/Bookshelf.tsx'),'utf8');
- assert.match(books,/<nav className="muse-books-tabs" aria-label="Bookshelf views">/);assert.match(books,/aria-current=\{tab===id\?'page':undefined\}/);
+ const books=readFileSync(resolve(root,'components/whimsy/BookPage.tsx'),'utf8');
+ assert.match(books,/<nav className="muse-page-tabs muse-book-page-tabs" aria-label="Your time with this book">/);assert.match(books,/aria-current=\{tab===id\?'page':undefined\}/);
  const whimsy=readFileSync(resolve(root,'components/whimsy/WhimsyFoundation.tsx'),'utf8');
  assert.match(whimsy,/<nav className="muse-whimsy-navigation" aria-label="Whimsy experiences">/);
 });

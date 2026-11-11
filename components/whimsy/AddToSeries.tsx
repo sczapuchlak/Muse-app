@@ -1,6 +1,5 @@
 'use client';
 import {useMemo,useState} from 'react';
-import Link from 'next/link';
 import {MuseChoiceMenu} from '@/components/MuseChoiceMenu';
 import {createMuseBrowserClient} from '@/lib/supabase/client';
 import {saveSeries,saveSeriesMember} from '@/lib/collections/persistence';
@@ -44,6 +43,6 @@ export function AddToSeries({book,onDone,onCancel}:{book:Book;onDone:(message:st
    <div className="muse-books-select-field"><span>Role</span><MuseChoiceMenu label="Role in series" valueLabel={roles[role]} options={Object.entries(roles).map(([id,label])=>({id,label}))} selectedIds={[role]} onSelect={id=>setRole(id as Role)}/></div>
   </div>
   {existing&&<p className="small-label">Already #{existing.sequence} in this series; saving updates its number and role.</p>}
-  <div className="muse-books-actions"><button type="submit" className="muse-button button-primary" disabled={busy}>{existing?'Update series entry':mode==='new'?'Create series and add':'Add to series'}</button><button type="button" className="muse-button button-ghost" disabled={busy} onClick={onCancel}>Cancel</button><Link className="text-button" href="/collections?view=series">Manage series</Link></div>
+  <div className="muse-books-actions"><button type="submit" className="muse-button button-primary" disabled={busy}>{existing?'Update series entry':mode==='new'?'Create series and add':'Add to series'}</button><button type="button" className="muse-button button-ghost" disabled={busy} onClick={onCancel}>Cancel</button></div>
  </form>;
 }
