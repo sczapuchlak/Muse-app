@@ -10,7 +10,7 @@ test('Modals size to their content unless an editor or picker asks to stay tall'
  const modal=source('components/MuseModal.tsx');
  assert.match(modal,/size\?:\s*['"]auto['"]\s*\|\s*['"]tall['"]/);assert.match(modal,/size\s*=\s*['"]auto['"]/);assert.match(modal,/data-size=\{size\}/);
  const css=source('components/MuseModal.css');
- assert.match(css,/\.muse-modal \{[^}]*height: auto/);assert.match(css,/\.muse-modal\[data-size="tall"\]/);
+ assert.match(css,/\.muse-modal \{[^}]*height: fit-content/);assert.match(css,/\.muse-modal\[data-size="tall"\]/);
  for(const [file,id] of [['components/whimsy/Bookshelf.tsx','bookshelf-book-editor'],['components/collections/MediaLibrary.tsx','collection-media-editor'],['components/MoodCard.tsx','feeling-picker'],['components/whimsy/Dreamscapes.tsx','dream-picker']])
   assert.match(source(file),new RegExp(`id="${id}"[^>]*size="tall"|size="tall"[^>]*id="${id}"`),`${id} stays tall`);
 });

@@ -1,0 +1,31 @@
+/* Reading streak: theme-gradient hearts with a little glitter; compact enough to sit under the Reading Desk title. */
+.muse-streak{position:relative;isolation:isolate;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:6px 16px;padding:10px 16px;border:1px solid var(--glass-border);border-radius:999px;color:var(--foreground);text-decoration:none;overflow:hidden;
+ background:radial-gradient(ellipse 60% 120% at 0% 50%,color-mix(in srgb,var(--accent-primary) 16%,transparent),transparent 70%),radial-gradient(ellipse 50% 120% at 100% 50%,color-mix(in srgb,var(--accent-secondary) 12%,transparent),transparent 70%),var(--surface-subtle);
+ transition:border-color var(--motion-hover,180ms) ease,box-shadow var(--motion-hover,180ms) ease}
+.muse-streak::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:.55;background-image:radial-gradient(1px 1px at 18% 30%,rgba(255,255,255,.8),transparent 60%),radial-gradient(1px 1px at 42% 70%,rgba(255,255,255,.6),transparent 60%),radial-gradient(1.5px 1.5px at 67% 25%,rgba(255,255,255,.7),transparent 60%),radial-gradient(1px 1px at 88% 65%,rgba(255,255,255,.6),transparent 60%);mix-blend-mode:screen}
+.muse-streak:hover{border-color:var(--selected-border);box-shadow:0 8px 22px color-mix(in srgb,var(--accent-primary) 14%,transparent)}
+.muse-streak:focus-visible{outline:2px solid var(--focus-ring,var(--foreground));outline-offset:3px}
+.muse-streak-count{display:flex;align-items:baseline;gap:6px;white-space:nowrap}
+.muse-streak-count strong{font-family:var(--font-editorial);font-size:1.9rem;line-height:1;letter-spacing:-.03em;background:linear-gradient(120deg,var(--accent-pop,var(--accent-primary)),var(--accent-primary),var(--accent-secondary));-webkit-background-clip:text;background-clip:text;color:transparent}
+.muse-streak-count span{font-size:.78rem;color:var(--text-muted)}
+.muse-streak-week{display:flex;justify-content:center;gap:clamp(4px,1.4vw,10px);margin:0;padding:0;list-style:none;min-width:0}
+.muse-streak-week li{display:grid;justify-items:center;gap:2px}
+.muse-streak-week li>span{font-size:.62rem;letter-spacing:.06em;color:var(--text-muted);font-weight:600}
+.muse-streak-week li>span[data-today]{color:var(--foreground)}
+.muse-streak-heart{display:block;color:color-mix(in srgb,var(--foreground) 32%,transparent);overflow:visible}
+.muse-streak-heart[data-filled]{filter:drop-shadow(0 2px 6px color-mix(in srgb,var(--accent-primary) 45%,transparent))}
+.muse-streak-heart[data-today]:not([data-filled]){color:color-mix(in srgb,var(--accent-primary) 70%,transparent);stroke-dasharray:3 2}
+.muse-streak-heart[data-today][data-filled]{animation:muse-streak-pop .7s cubic-bezier(.3,1.6,.5,1) both}
+.muse-streak-meta{display:flex;align-items:center;gap:10px;font-size:.78rem;color:var(--text-muted);white-space:nowrap}
+.muse-streak-meta strong{color:var(--foreground);font-variant-numeric:tabular-nums}
+.muse-streak-meta em{font-style:italic;font-family:var(--font-editorial);font-size:.86rem}
+.muse-streak-milestone{color:var(--accent-primary)}
+.muse-streak-chevron{font-size:1.2rem;line-height:1;color:var(--text-muted)}
+.muse-streak[data-celebrating]{border-color:color-mix(in srgb,var(--accent-primary) 50%,transparent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent-primary) 12%,transparent)}
+@keyframes muse-streak-pop{0%{transform:scale(.6)}60%{transform:scale(1.18)}100%{transform:scale(1)}}
+@container muse-content (max-width:640px){
+ .muse-streak{grid-template-columns:auto auto;border-radius:20px;padding:10px 14px}
+ .muse-streak-week{grid-column:1/-1;grid-row:2;justify-content:space-between}
+ .muse-streak-meta{justify-self:end}
+}
+@media(prefers-reduced-motion:reduce){.muse-streak-heart[data-today][data-filled]{animation:none}}

@@ -43,7 +43,7 @@ test('archive opens with a standard ZIP reader and CSV remains Unicode safe',()=
  const dir=mkdtempSync(join(tmpdir(),'muse-zip-'));try{const csv=primaryLibraryCsv([{...book,title:'Étoile, "Book"',finalThoughts:'=unsafe()\nA review'}]);const zip=join(dir,'books.zip');writeFileSync(zip,csvArchive({'library.csv':csv,'README.txt':'Data portable.'}));const result=spawnSync('unzip',['-t',zip],{encoding:'utf8'});assert.equal(result.status,0,result.stdout+result.stderr);const decoded=parseLibraryCsv(csv);assert.equal(decoded[1][1],'Étoile, "Book"');assert.ok(decoded[1][6].startsWith("'=unsafe()"));}finally{rmSync(dir,{recursive:true,force:true});}
 });
 test('existing Books visual files stay untouched by the entry integration',()=>{
- const entry=readFileSync(new URL('../components/whimsy/Bookshelf.tsx',import.meta.url),'utf8');assert.ok(entry.includes('<BooksSettings name="Bookshelf"'));const css=readFileSync(new URL('../components/books/BooksSettings.css',import.meta.url),'utf8');assert.ok(!css.includes('.muse-series-'));assert.ok(!css.includes('.muse-bookshelf'));
+ const entry=readFileSync(new URL('../components/collections/Collections.tsx',import.meta.url),'utf8');assert.ok(entry.includes('<BooksSettings name="Books"'),'Books settings open from the Books toolbar');const css=readFileSync(new URL('../components/books/BooksSettings.css',import.meta.url),'utf8');assert.ok(!css.includes('.muse-series-'));assert.ok(!css.includes('.muse-bookshelf'));
 });
 
 test('explicit active-opinion replacement follows existing read ownership and retains the old value',()=>{

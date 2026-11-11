@@ -11,3 +11,23 @@
 .muse-daily-bookshelf-picker .muse-button{justify-content:flex-start;text-align:left;white-space:normal}
 .muse-daily-bookshelf-picker [aria-pressed=true]{border-color:var(--selected-border);background:var(--selected-background);color:var(--selected-text)}
 @media(max-width:450px){.muse-daily-bookshelf-feature{grid-template-columns:68px minmax(0,1fr)}.muse-daily-bookshelf-feature .muse-book-cover{width:68px}}
+
+/* Live reading controller: the shared timer, compact, in the water-bar language. */
+.muse-daily-bookshelf .muse-books-actions{display:flex;gap:8px;flex-wrap:wrap}.muse-daily-bookshelf .muse-books-actions .muse-button{display:inline-flex;align-items:center;gap:7px;min-height:42px}
+.muse-daily-session{position:relative;isolation:isolate;display:grid;grid-template-columns:64px minmax(0,1fr);gap:8px 14px;padding:14px;border:1px solid var(--selected-border);border-radius:18px;overflow:hidden;background:radial-gradient(ellipse 90% 80% at 100% 0%,color-mix(in srgb,var(--accent-primary) 18%,transparent),transparent 75%),radial-gradient(ellipse 70% 60% at 0% 100%,color-mix(in srgb,var(--ink-aqua,var(--accent-secondary)) 16%,transparent),transparent 80%),var(--surface-subtle)}
+.muse-daily-session-cover{grid-row:1/span 2}.muse-daily-session-cover .muse-book-cover{width:64px;max-width:none;border-radius:5px 8px 8px 5px;box-shadow:3px 4px 0 -1px var(--glass-border),6px 10px 16px rgba(0,0,0,.2)}
+.muse-daily-session-body{display:grid;gap:4px;min-width:0}
+.muse-daily-session-state{display:inline-flex;align-items:center;gap:7px;font-size:.66rem;letter-spacing:.13em;text-transform:uppercase;font-weight:650;color:var(--text-muted)}
+.muse-daily-session-dot{width:8px;height:8px;border-radius:50%;background:var(--success-primary);box-shadow:0 0 0 4px color-mix(in srgb,var(--success-primary) 22%,transparent);animation:muse-daily-breathe 2.4s ease-in-out infinite}
+.muse-daily-session[data-phase="paused"] .muse-daily-session-dot{background:var(--accent-warm,var(--accent-secondary));animation:none}
+.muse-daily-session-title{font-family:var(--font-editorial);font-weight:var(--type-title-weight);font-size:1rem;line-height:1.25;overflow-wrap:break-word;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden}
+.muse-daily-session-clock{font-family:var(--font-editorial);font-weight:var(--type-display-weight,500);font-size:clamp(2rem,9vw,2.6rem);line-height:1;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.muse-daily-session[data-phase="paused"] .muse-daily-session-clock{opacity:.6}
+.muse-daily-session-pool{position:relative;display:block;height:12px;margin-top:4px;border-radius:999px;overflow:hidden;background:var(--wash-aqua,color-mix(in srgb,var(--foreground) 9%,transparent));box-shadow:inset 0 0 0 1px var(--glass-aqua-edge,var(--glass-border))}
+.muse-daily-session-pool>span{position:absolute;inset:0 auto 0 0;width:var(--session-fill,0%);border-radius:inherit;background:var(--water-progress-gradient,linear-gradient(90deg,var(--accent-primary),var(--accent-secondary)));box-shadow:0 0 12px var(--water-glow,color-mix(in srgb,var(--accent-primary) 50%,transparent)),inset 0 2px 0 rgba(255,255,255,.4);transition:width .9s ease}
+.muse-daily-session-note{font-size:.76rem;color:var(--text-muted)}
+.muse-daily-session-actions{grid-column:2;display:flex;flex-wrap:wrap;gap:8px}
+.muse-daily-session-actions .muse-button{display:inline-flex;align-items:center;gap:7px;min-height:42px;border-radius:999px}
+@media(max-width:450px){.muse-daily-session{grid-template-columns:52px minmax(0,1fr)}.muse-daily-session-cover .muse-book-cover{width:52px}.muse-daily-session-actions{grid-column:1/-1}.muse-daily-session-actions .muse-button{flex:1 1 0;justify-content:center}}
+@keyframes muse-daily-breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.25)}}
+@media(prefers-reduced-motion:reduce){.muse-daily-session-dot{animation:none}.muse-daily-session-pool>span{transition:none}}
