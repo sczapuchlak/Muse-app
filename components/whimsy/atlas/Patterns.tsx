@@ -1,5 +1,6 @@
 'use client';
-import type {CSSProperties} from 'react';
+import {useState,type CSSProperties} from 'react';
+import {MuseModal} from '@/components/MuseModal';
 import type {Book,ReadingSession} from '@/lib/whimsy/models';
 import type {DateRange} from '@/lib/whimsy/reading-stats';
 import type {MediaItem,Series,SeriesMember} from '@/lib/collections/models';
@@ -9,18 +10,20 @@ import {authorStats,bookSeries,finishSpeed,formatBreakdown,ratingsDistribution,r
 import {emojisByGenre,emojisByYear,hourLabel} from '@/lib/whimsy/reading-dna';
 import {Insight,days,duration,hours,plural,yearDate} from './parts';
 
-/** The books behind a figure: a disclosure, so every number can be checked against real reads. */
-function BookList({books,label,onOpenBook}:{books:BookRef[];label:string;onOpenBook?:(id:string)=>void}){
+/** The books behind a figure: a button that opens them in a modal, so every number can be checked without reflowing the page. */
+function BookList({books,label,title,onOpenBook}:{books:BookRef[];label:string;title:string;onOpenBook?:(id:string)=>void}){
+ const [open,setOpen]=useState(false);
  if(!books.length)return null;
- return <details className="muse-atlas-booklist"><summary>{label}</summary><ul>{books.map((b,i)=><li key={`${b.bookId}:${b.finishedOn??i}`}>
-  {onOpenBook?<button type="button" className="text-button" onClick={()=>onOpenBook(b.bookId)}>{b.title}</button>:<span>{b.title}</span>}{b.finishedOn&&<small>{yearDate(b.finishedOn)}</small>}</li>)}</ul></details>;
+ return <><button type="button" className="muse-atlas-booklist-open" onClick={()=>setOpen(true)}>{label} <span aria-hidden="true">›</span></button>
+  {open&&<MuseModal id="atlas-books-behind" label={`${title}: ${label}`} title={title} returnFocus={null} onClose={()=>setOpen(false)}><ul className="muse-atlas-modal-books">{books.map((b,i)=><li key={`${b.bookId}:${b.finishedOn??i}`}>
+   {onOpenBook?<button type="button" className="text-button" onClick={()=>{setOpen(false);onOpenBook(b.bookId);}}>{b.title}</button>:<span>{b.title}</span>}{b.finishedOn&&<small>{yearDate(b.finishedOn)}</small>}</li>)}</ul></MuseModal>}</>;
 }
 
 /** A horizontal bar row with its own count and books list. */
 function Row({label,value,max,text,books,onOpenBook}:{label:string;value:number;max:number;text:string;books:BookRef[];onOpenBook?:(id:string)=>void}){
  return <li className="muse-atlas-row"><div><span>{label}</span><strong>{text}</strong></div>
   <span className="muse-atlas-row-bar" style={{'--bar':`${max?Math.round(value/max*100):0}%`} as CSSProperties} aria-hidden="true"/>
-  <BookList books={books} label={`Show ${plural(books.length,'book')}`} onOpenBook={onOpenBook}/></li>;
+  <BookList books={books} title={label} label={`Show ${plural(books.length,'book')}`} onOpenBook={onOpenBook}/></li>;
 }
 
 const stars=(v:number)=>`${'★'.repeat(Math.floor(v))}${v%1?'½':''}`;
@@ -31,6 +34,7 @@ const bandNames={morning:'Morning (5–12)',afternoon:'Afternoon (12–5)',eveni
  * names what it counts and opens the books behind it. Nothing here is estimated; missing data stays visible as such.
  */
 export function Patterns({books,sessions,range,label,series,seriesMembers,media,onOpenBook}:{books:Book[];sessions:ReadingSession[];range:DateRange|null;label:string;series:Series[];seriesMembers:SeriesMember[];media:MediaItem[];onOpenBook?:(id:string)=>void}){
+ const [table,setTable]=useState(false);
  const ratings=ratingsDistribution(books,range),rhythm=readingRhythm(sessions,range),formats=formatBreakdown(books,range),speed=finishSpeed(books,range),authors=authorStats(books,range);
  const shelves=bookSeries(books,series,seriesMembers,media),seriesCover=(id:string)=>{const own=seriesMembers.filter(m=>m.series_id===id&&m.book_id).map(m=>books.find(b=>b.id===m.book_id)).filter((b):b is Book=>!!b);return own.find(b=>b.coverUrl)??own[0];},byGenre=emojisByGenre(books,range,3),byYear=emojisByYear(books,3);
  const maxRating=Math.max(0,...ratings.buckets.map(b=>b.reads)),maxCell=Math.max(1,...rhythm.grid.flat()),maxFormat=Math.max(0,...formats.rows.map(r=>r.reads)),maxSpeed=Math.max(0,...speed.bands.map(b=>b.reads));
@@ -52,9 +56,10 @@ export function Patterns({books,sessions,range,label,series,seriesMembers,media,
      {rhythm.grid.map((row,d)=>[<span key={`d${d}`} className="muse-atlas-heat-day" aria-hidden="true">{weekdayLabels[d].slice(0,3)}</span>,
       ...row.map((v,h)=><span key={`${d}:${h}`} className="muse-atlas-heat-cell" title={`${weekdayLabels[d]} ${hourLabel(h)}: ${duration(v)}`} style={{'--heat':v?.15+.85*v/maxCell:0} as CSSProperties} aria-hidden="true"/>)])}
     </div>
-    <details className="muse-atlas-booklist"><summary>Show as a table</summary><div className="muse-atlas-table-wrap"><table className="muse-atlas-table"><thead><tr><th scope="col">Day</th>{bands.map(([k])=><th key={k} scope="col">{bandNames[k]}</th>)}</tr></thead>
+    <button type="button" className="muse-atlas-booklist-open" onClick={()=>setTable(true)}>Show as a table <span aria-hidden="true">›</span></button>
+    {table&&<MuseModal id="atlas-rhythm-table" label="Reading rhythm as a table" title="Reading rhythm" returnFocus={null} onClose={()=>setTable(false)}><div className="muse-atlas-table-wrap"><table className="muse-atlas-table"><thead><tr><th scope="col">Day</th>{bands.map(([k])=><th key={k} scope="col">{bandNames[k]}</th>)}</tr></thead>
      <tbody>{rhythm.grid.map((row,d)=>{const sum=(a:number,b:number)=>row.slice(a,b).reduce((x,y)=>x+y,0);const cells=[sum(5,12),sum(12,17),sum(17,22),sum(22,24)+sum(0,5)];
-      return <tr key={d}><th scope="row">{weekdayLabels[d]}</th>{cells.map((v,i)=><td key={i}>{v?duration(v):'—'}</td>)}</tr>;})}</tbody></table></div></details>
+      return <tr key={d}><th scope="row">{weekdayLabels[d]}</th>{cells.map((v,i)=><td key={i}>{v?duration(v):'—'}</td>)}</tr>;})}</tbody></table></div></MuseModal>}
     <p className="muse-atlas-bands">{bands.map(([k,v])=><span key={k}><strong>{bandNames[k].split(' (')[0]}</strong> {rhythm.total?Math.round(v/rhythm.total*100):0}%</span>)}</p></>}
    <p className="small-label">Active time from {plural(rhythm.timedSessions,'timed session')}, in each session’s own time zone and split across hours, so late nights land on both days.{rhythm.excludedSessions?` ${plural(rhythm.excludedSessions,'manual entry','manual entries')} without times excluded.`:''}</p>
   </article>
