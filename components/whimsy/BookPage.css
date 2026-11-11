@@ -289,3 +289,7 @@
 @media(min-width:1081px){.muse-book-page{grid-template-rows:auto auto minmax(0,1fr)}}
 .muse-book-yours{gap:14px}
 .muse-book-yours .muse-book-page-tabs-wrap{padding:0}
+/* The cover-tinted glow fades out on every side instead of ending in a visible rounded box. */
+.muse-book-route .muse-book-atmosphere{background:none!important;border-radius:0}
+.muse-book-route .muse-book-atmosphere::before{content:"";position:absolute;inset:-48px -28px auto -28px;height:600px;z-index:0;pointer-events:none;background:radial-gradient(ellipse 62% 380px at 14% 8%,color-mix(in srgb,var(--book-atmosphere) 24%,transparent),transparent 76%),radial-gradient(ellipse 48% 300px at 72% 10%,color-mix(in srgb,var(--book-atmosphere) 10%,var(--accent-secondary) 6%),transparent 80%);-webkit-mask-image:linear-gradient(to bottom,#000 35%,transparent),linear-gradient(to right,transparent,#000 12%,#000 88%,transparent);-webkit-mask-composite:source-in;mask-image:linear-gradient(to bottom,#000 35%,transparent),linear-gradient(to right,transparent,#000 12%,#000 88%,transparent);mask-composite:intersect}
+.muse-book-route .muse-book-atmosphere-art{-webkit-mask-image:linear-gradient(#000 15%,transparent 100%),linear-gradient(to right,transparent,#000 14%,#000 86%,transparent);-webkit-mask-composite:source-in;mask-image:linear-gradient(#000 15%,transparent 100%),linear-gradient(to right,transparent,#000 14%,#000 86%,transparent);mask-composite:intersect}
