@@ -227,7 +227,7 @@
  --spine-w:var(--spine-w-d,52px);--fade:clamp(56px,6vw,96px);--zone:clamp(14px,1.8vw,24px);--ledge:20px;
  --bleed:calc(var(--page-padding,24px) - 2px);/* the page margin: the ledge reaches into it, never past the viewport */
  position:relative;isolation:isolate;justify-self:end;min-width:0;
- width:max-content;max-width:calc(min(48vw,780px) + 100px);
+ width:max-content;max-width:min(48vw,780px);
  padding:18px var(--zone) var(--ledge) var(--fade);display:flex;align-items:flex-end}
 .muse-series-shelf>.muse-spines{position:relative;z-index:1;flex:1 1 auto;min-width:0}
 .muse-series-shelf .muse-series-shelf-books{filter:drop-shadow(0 8px 8px color-mix(in srgb,black 30%,transparent))}
@@ -236,9 +236,9 @@
 .muse-series-shelf-ledge{position:absolute;z-index:0;left:0;right:-100vw;bottom:-2px;height:24px;pointer-events:none;
  background:url("/art/shelf-walnut.webp") repeat-x 0 0/auto 100%;
  -webkit-mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.6) calc(var(--fade)*.55),#000 var(--fade));mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.6) calc(var(--fade)*.55),#000 var(--fade))}
-.muse-series-shelf-globe{position:relative;z-index:1;flex:none;align-self:flex-end;pointer-events:none;height:108px;width:93px;margin:0 0 -4px 10px;
- background:url("/art/snow-globe-castle.webp") no-repeat center bottom/contain}
-.muse-series-shelf-globe::before{content:"";position:absolute;z-index:-1;left:-6%;right:-6%;bottom:-4px;height:9px;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.5),transparent);filter:blur(2px)}
+.muse-series-shelf-lights{position:absolute;z-index:0;pointer-events:none;left:0;right:calc(-1*var(--page-padding,24px));top:-30px;height:64px;
+ background:url("/art/fairy-lights-stars.webp") no-repeat right top/auto 100%;
+ -webkit-mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.7) calc(var(--fade)*.8),#000 calc(var(--fade)*1.6));mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.7) calc(var(--fade)*.8),#000 calc(var(--fade)*1.6))}
 .muse-series-shelf-backdrop{position:absolute;z-index:0;pointer-events:none;
  left:calc(var(--fade)*.3);right:calc(var(--zone)*.5);top:6px;bottom:calc(var(--ledge) - 4px);border-radius:30px;
  background:linear-gradient(180deg,color-mix(in srgb,var(--foreground) 9%,transparent),color-mix(in srgb,var(--foreground) 15%,transparent));
@@ -248,11 +248,11 @@
  -webkit-mask-composite:source-in;mask-composite:intersect}
 
 /* Below ~1240px there is no room for text and shelf side by side: the shelf drops under the title, still right-aligned. */
-@media(max-width:1240px){.muse-series-hero2{grid-template-columns:minmax(0,1fr)}.muse-series-shelf{max-width:100%;justify-self:end}}
+@media(max-width:1240px){.muse-series-shelf-lights{top:-40px;height:72px}.muse-series-hero2{grid-template-columns:minmax(0,1fr)}.muse-series-shelf{max-width:100%;justify-self:end}}
 @media(max-width:620px){
  .muse-series-shelf{--spine-w:min(var(--spine-w-d,40px),42px);--fade:clamp(24px,8vw,40px);--zone:clamp(10px,3vw,16px);--ledge:18px;--bleed:calc(var(--page-padding,16px) - 2px);width:100%;justify-self:stretch;padding-top:16px}
  .muse-series-shelf-backdrop{left:calc(var(--fade)*.15);top:4px}
- .muse-series-shelf-globe{display:none}
+ .muse-series-shelf-lights{top:-34px;height:60px;right:calc(-1*var(--page-padding,16px))}
  .muse-series-shelf-ledge{bottom:-2px;height:20px}
 }
 
