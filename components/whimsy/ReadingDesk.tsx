@@ -18,7 +18,7 @@ function DeskTile({book,sessions,cover,busy,canStart,onOpen,onStart,onLog,onMove
  return <article className="muse-desk-tile" onClick={event=>{if((event.target as HTMLElement).closest('.muse-desk-tile-actions'))return;onOpen();}}>
   <span className="muse-desk-tile-cover" aria-hidden="true">{cover}</span>
   <div className="muse-desk-tile-body">
-   <h4><button type="button" className="muse-desk-tile-open" onClick={event=>{event.stopPropagation();onOpen();}}>{book.title}</button></h4>
+   <h4><button type="button" className="muse-desk-tile-open" title={book.title} onClick={event=>{event.stopPropagation();onOpen();}}>{book.title}</button></h4>
    <p className="muse-desk-tile-author">{book.author||'Author not recorded'}</p>
    <div className="muse-desk-tile-progress">
     <span className="muse-desk-pool" style={{'--fill':`${percent===null?0:Math.max(percent,3)}%`} as CSSProperties} role="meter" aria-label={`${book.title} progress`} aria-valuemin={0} aria-valuemax={100} aria-valuenow={percent??0}><span/></span>

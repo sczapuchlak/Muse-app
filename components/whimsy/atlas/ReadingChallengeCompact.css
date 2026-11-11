@@ -21,3 +21,6 @@
 .muse-desk-goal-more{justify-self:start;font-size:.8rem}
 .muse-desk-goal-empty{margin:0;font-size:.88rem;color:var(--text-muted)}
 @container muse-content (max-width:640px){.muse-desk-goal{padding:12px!important}.muse-desk-goal-shelf{gap:6px}}
+.muse-desk-goal-head[data-empty]{align-items:center}
+.muse-desk-goal-head[data-empty] .small-label{margin:0}
+.muse-desk-goal-empty{margin:0}
