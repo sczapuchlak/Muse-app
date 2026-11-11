@@ -389,3 +389,12 @@ button.muse-books-month-row:hover{background:var(--surface-hover)}
 .muse-shelf-book{position:relative}
 .muse-shelf-book[data-fav]::after{content:"♥";position:absolute;right:2px;top:2px;font-size:.6rem;line-height:1;color:#fff;background:var(--accent-primary);border-radius:50%;width:13px;height:13px;display:grid;place-items:center;box-shadow:0 1px 3px rgba(0,0,0,.4)}
 .muse-book-heart[aria-pressed="true"]{border-color:var(--accent-primary);box-shadow:0 0 12px color-mix(in srgb,var(--accent-primary) 40%,transparent)}
+/* Patterns: "Show N books" and "Show as a table" open modals, so nothing reflows the page. */
+.muse-atlas-booklist-open{justify-self:start;padding:2px 0;border:0;background:none;color:var(--text-muted);font:inherit;font-size:.8rem;cursor:pointer}
+.muse-atlas-booklist-open:hover{color:var(--foreground);text-decoration:underline;text-underline-offset:3px}
+.muse-atlas-modal-books{display:grid;gap:8px;margin:12px 0 0;padding:0;list-style:none}
+.muse-atlas-modal-books li{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:8px 12px;border:1px solid var(--glass-border);border-radius:12px;background:var(--surface-subtle)}
+.muse-atlas-modal-books .text-button{text-align:left;padding:0}
+.muse-atlas-modal-books small{color:var(--text-muted);white-space:nowrap}
+.muse-atlas-pair-top>*{min-width:0;overflow:hidden}
+.muse-atlas-pair-top .muse-atlas-heatmap{max-width:100%}
