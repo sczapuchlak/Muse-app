@@ -4,13 +4,14 @@ import {completedBookSeries} from '@/lib/whimsy/books';
 import {completedReadAverages,inclusiveCalendarDays,type DateRange} from '@/lib/whimsy/reading-stats';
 import {readOpinion} from '@/lib/whimsy/reading-cycles';
 import {bookSuperlatives,emojiRanking,favoriteGenres,genreBreakdown,milestoneUnit,readsIn,readingMilestones} from '@/lib/whimsy/reading-dna';
+import {PagedList} from './PagedList';
 import {Insight,days,hours,monthLabel,plural,yearDate} from './parts';
 
 /** Superlatives and completion history for one period, plus every milestone (all time). */
 export function BooksMilestones({books,sessions,range,label}:{books:Book[];sessions:ReadingSession[];range:DateRange|null;label:string}){
  const sup=bookSuperlatives(books,sessions,range),reads=readsIn(books,range),averages=completedReadAverages(books,sessions),genre=favoriteGenres(genreBreakdown(books,sessions,range).rows).mostRead,emoji=emojiRanking(books,range).ranking[0];
  const milestones=readingMilestones(books,sessions),reached=milestones.filter(m=>m.achievedOn).sort((a,b)=>b.achievedOn!.localeCompare(a.achievedOn!)),next=milestones.filter(m=>!m.achievedOn).slice(0,3);
- const monthly=completedBookSeries(books,'month'),maxMonth=Math.max(1,...monthly.map(s=>s.count));
+ const monthly=completedBookSeries(books,'month'),maxMonth=Math.max(1,...monthly.map(s=>s.count)),byMost=[...monthly].sort((x,y)=>y.count-x.count||y.start.localeCompare(x.start));
  return <div className="muse-atlas-section">
   <article className="muse-books-panel"><div className="muse-books-panel-head"><h4>Book superlatives</h4><span className="small-label">{plural(sup.finishedBooks,'book')} finished {label}</span></div>
    <div className="muse-atlas-insights">
@@ -29,11 +30,15 @@ export function BooksMilestones({books,sessions,range,label}:{books:Book[];sessi
    {next.length>0&&<div className="muse-atlas-next"><span className="small-label">Next up</span>{next.map(m=><div key={m.id}><span>{m.title}</span><progress value={m.progress} max={m.threshold} aria-label={`${m.title}: ${Math.floor(m.progress)} of ${m.threshold} ${milestoneUnit[m.metric]}`}/><small>{m.metric==='hours'?m.progress.toFixed(1):Math.floor(m.progress)} / {m.threshold} {milestoneUnit[m.metric]}</small></div>)}</div>}
    <p className="small-label">Reached on the first day your saved history crossed each line. Editing past sessions recalculates them; a milestone is only ever celebrated once.</p>
   </article>
+  <div className="muse-atlas-books-pair">
   <article className="muse-books-panel"><div className="muse-books-panel-head"><h4>Completed books</h4><span className="small-label">{label}</span></div>{!reads.length?<p>{label==='all time'?'A finished book belongs here whenever you reach its last page.':`Nothing finished ${label} yet.`}</p>:<>
-   <p>{averages.averageCalendarDays!==null?`${averages.averageCalendarDays.toFixed(1)} calendar days on average (inclusive), from ${plural(averages.datedCompletions,'read')} with a start date`:'Start dates not recorded'}{averages.averageActiveSeconds!==null?` · ${hours(averages.averageActiveSeconds)} average active time, from ${averages.timedCompletions} timed ${averages.timedCompletions===1?'read':'reads'}`:''} · all time</p>
-   <div className="muse-books-finished-list">{reads.map(({book,completion,reread})=>{const opinion=readOpinion(book,completion);return <div key={`${book.id}:${completion.id}`}><strong>{book.title}{reread?' · reread':''}</strong><span>{yearDate(completion.finishedOn)}{completion.startedOn?` · ${days(inclusiveCalendarDays(completion.startedOn,completion.finishedOn)??0)} (inclusive)`:''}{opinion.rating?` · ${opinion.rating}/5`:''} {book.reviewEmojis.join(' ')}</span></div>;})}</div></>}
-   {monthly.length>0&&<div className="muse-books-rhythm">{monthly.map(item=><div key={item.start}><div><span>{monthLabel(item.start.slice(0,7))}</span><strong>{item.count} finished</strong></div><progress value={item.count} max={maxMonth} aria-label={`${monthLabel(item.start.slice(0,7))}: ${item.count} books finished`}/></div>)}</div>}
+   <p className="muse-atlas-books-note">{averages.averageCalendarDays!==null?`${averages.averageCalendarDays.toFixed(1)} calendar days on average (inclusive), from ${plural(averages.datedCompletions,'read')} with a start date`:'Start dates not recorded'}{averages.averageActiveSeconds!==null?` · ${hours(averages.averageActiveSeconds)} average active time, from ${averages.timedCompletions} timed ${averages.timedCompletions===1?'read':'reads'}`:''} · all time</p>
+   <PagedList items={reads} size={4} label="completed books" render={({book,completion,reread})=>{const opinion=readOpinion(book,completion);return <div role="listitem" className="muse-books-finished-row" key={`${book.id}:${completion.id}`}><strong>{book.title}{reread?' · reread':''}</strong><span>{yearDate(completion.finishedOn)}{completion.startedOn?` · ${days(inclusiveCalendarDays(completion.startedOn,completion.finishedOn)??0)} (inclusive)`:''}{opinion.rating?` · ${opinion.rating}/5`:''} {book.reviewEmojis.join(' ')}</span></div>;}}/></>}
+  </article>
+  <article className="muse-books-panel"><div className="muse-books-panel-head"><h4>Finished by month</h4><span className="small-label">busiest first</span></div>
+   {monthly.length>0?<PagedList items={byMost} size={5} label="months" render={item=><div role="listitem" className="muse-books-month-row" key={item.start}><div><span>{monthLabel(item.start.slice(0,7))}</span><strong>{item.count} finished</strong></div><progress value={item.count} max={maxMonth} aria-label={`${monthLabel(item.start.slice(0,7))}: ${item.count} books finished`}/></div>}/>:<p>Months appear as books are finished.</p>}
    <p className="small-label">Yearly: {completedBookSeries(books,'year').map(item=>`${item.start.slice(0,4)} · ${item.count}`).join(' · ')||'none yet'} · ratings belong to each read.</p>
   </article>
+  </div>
  </div>;
 }

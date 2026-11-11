@@ -3,6 +3,7 @@ import type {CSSProperties} from 'react';
 import type {Book,ReadingSession} from '@/lib/whimsy/models';
 import type {DateRange} from '@/lib/whimsy/reading-stats';
 import type {MediaItem,Series,SeriesMember} from '@/lib/collections/models';
+import {Cover} from './CoverCalendar';
 import {authorStats,bookSeries,finishSpeed,formatBreakdown,ratingsDistribution,readingRhythm,weekdayLabels,type BookRef} from '@/lib/whimsy/atlas-insights';
 import {emojisByGenre,emojisByYear,hourLabel} from '@/lib/whimsy/reading-dna';
 import {Insight,days,duration,hours,plural,yearDate} from './parts';
@@ -30,7 +31,7 @@ const bandNames={morning:'Morning (5–12)',afternoon:'Afternoon (12–5)',eveni
  */
 export function Patterns({books,sessions,range,label,series,seriesMembers,media,onOpenBook}:{books:Book[];sessions:ReadingSession[];range:DateRange|null;label:string;series:Series[];seriesMembers:SeriesMember[];media:MediaItem[];onOpenBook?:(id:string)=>void}){
  const ratings=ratingsDistribution(books,range),rhythm=readingRhythm(sessions,range),formats=formatBreakdown(books,range),speed=finishSpeed(books,range),authors=authorStats(books,range);
- const shelves=bookSeries(books,series,seriesMembers,media),byGenre=emojisByGenre(books,range,3),byYear=emojisByYear(books,3);
+ const shelves=bookSeries(books,series,seriesMembers,media),seriesCover=(id:string)=>{const own=seriesMembers.filter(m=>m.series_id===id&&m.book_id).map(m=>books.find(b=>b.id===m.book_id)).filter((b):b is Book=>!!b);return own.find(b=>b.coverUrl)??own[0];},byGenre=emojisByGenre(books,range,3),byYear=emojisByYear(books,3);
  const maxRating=Math.max(0,...ratings.buckets.map(b=>b.reads)),maxCell=Math.max(1,...rhythm.grid.flat()),maxFormat=Math.max(0,...formats.rows.map(r=>r.reads)),maxSpeed=Math.max(0,...speed.bands.map(b=>b.reads));
  const bands=Object.entries(rhythm.bands) as [keyof typeof bandNames,number][],topBand=rhythm.total?bands.reduce((a,b)=>b[1]>a[1]?b:a):null;
  return <div className="muse-atlas-section muse-atlas-patterns">
@@ -79,9 +80,9 @@ export function Patterns({books,sessions,range,label,series,seriesMembers,media,
   </article>
 
   {shelves.length>0&&<article className="muse-books-panel"><div className="muse-books-panel-head"><h4>Series</h4><span className="small-label">From Collections</span></div>
-   <ul className="muse-atlas-series">{shelves.map(({series:s,progress:p})=><li key={s.id}><div><strong>{s.title}</strong><small>{p.availableTotal?`${p.completed} of ${p.availableTotal} ${s.kind==='book'&&s.catalog_source?'primary books read':'released'}`:'Release order not set'}{s.kind==='book'&&s.catalog_source?(p.availableTotal&&p.completed>=p.availableTotal?(p.total>p.availableTotal?' · caught up':' · core complete'):''):p.status==='completed'?' · complete':p.status==='caught-up'?' · caught up':''}</small></div>
+   <ul className="muse-atlas-series">{shelves.map(({series:s,progress:p})=><li key={s.id}><span className="muse-atlas-series-cover" aria-hidden="true"><Cover book={seriesCover(s.id)}/></span><div className="muse-atlas-series-body"><div><strong>{s.title}</strong><small>{p.availableTotal?`${p.completed} of ${p.availableTotal} ${s.kind==='book'&&s.catalog_source?'primary books read':'released'}`:'Release order not set'}{s.kind==='book'&&s.catalog_source?(p.availableTotal&&p.completed>=p.availableTotal?(p.total>p.availableTotal?' · caught up':' · core complete'):''):p.status==='completed'?' · complete':p.status==='caught-up'?' · caught up':''}</small></div>
     {p.percentage!==null&&<progress value={p.completed} max={p.availableTotal} aria-label={`${s.title}: ${p.completed} of ${p.availableTotal}`}/>}
-    {p.next&&<span className="small-label">Next: {p.next.kind==='book'&&onOpenBook?<button type="button" className="text-button" onClick={()=>onOpenBook(p.next!.id)}>{p.next.title}</button>:p.next.title}</span>}</li>)}</ul>
+    {p.next&&<span className="small-label">Next: {p.next.kind==='book'&&onOpenBook?<button type="button" className="text-button" onClick={()=>onOpenBook(p.next!.id)}>{p.next.title}</button>:p.next.title}</span>}</div></li>)}</ul>
    <p className="small-label">Progress follows the series order and scope set in Collections.</p></article>}
 
   <div className="muse-books-atlas-grid">
