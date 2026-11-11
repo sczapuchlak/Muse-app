@@ -30,13 +30,6 @@ export function DailyGoal({goals,books,sessions,today,onSet}:{goals:ReadingGoal[
   <small className="muse-dash-daily-note">{percent>=100?'Goal reached today ✦':`${percent}% of today's goal`}</small></div>;
 }
 
-/** Reserved for Reading Plans (a later phase): shows what it will hold without pretending to work. */
-export function PlansPreview(){
- return <section className="muse-dash-card muse-dash-plans" aria-labelledby="dash-plans"><header><h3 id="dash-plans">Reading plans</h3><span className="muse-dash-soon">Coming soon</span></header>
-  <p>Plan a month or a year of books and watch the plan fill in as you finish them.</p>
-  <ol className="muse-dash-plan-months" aria-hidden="true">{['Jan','Feb','Mar','Apr','May','Jun'].map(m=><li key={m}><span>{m}</span><i/></li>)}</ol></section>;
-}
-
 /** Reserved for Up Next (a later phase): previews the first Want to Read books today. */
 export function UpNextPreview({books,onOpen}:{books:Book[];onOpen:(id:string)=>void}){
  const planned=books.filter(b=>b.status==='planned'&&!b.archivedAt).sort((a,b)=>b.createdAt.localeCompare(a.createdAt)).slice(0,4);

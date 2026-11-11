@@ -927,3 +927,12 @@ Supersedes the book-level heart above. A favourite is "marked as a favourite in 
 - Dashboard: Currently Reading (most recently read first), the seven-heart streak, a goals carousel (today's goal, annual challenge; more slides can be added), Reading Plans and Up Next previews (reserved for later phases; Up Next already previews Want to Read covers), and recently read.
 - Library keeps search, status filters, sort, grid/list densities, 24-per-page pagination and Book Detail return state. The Board is retired for Books.
 - No schema change: this is navigation and composition only.
+
+## Reading Plans — approved, implemented (Books Phase 2)
+
+- Plans answer "what do I intend to read this month or year?" and are separate from the Reading Challenge (a count to reach). A plan is the ordered set of `reading_plan_entries` sharing a period: a month (`YYYY-MM`) or a year (`YYYY`).
+- A book can be in several monthly plans and a yearly plan at once, once per period. Moving changes membership, copying keeps both; neither touches the book's status, rating, dates or sessions. Adding to a plan never changes status. Nothing rolls over automatically ("Bring over unfinished" is an explicit button).
+- Plans show the book's real status (To Be Read, Currently Reading, Finished, Paused, DNF) with the shared status colours. Finished and DNF books stay in their historical plan. There is no plan-specific status.
+- Order is manual and saved (drag the handle, or the arrow keys / "Move up/down" for touch and keyboard).
+- Everyday planning happens on the Dashboard (four books a page); `/collections/plans` is the same planner with every period. Books can be added from the planner, from Library select mode and from Book Detail.
+- Data is additive (one table plus three owner-only functions, migration `20261215000100`). Phase 3 (Up Next, Reading Roulette) reads these entries for the current month, the year or the whole Library.

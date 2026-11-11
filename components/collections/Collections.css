@@ -310,3 +310,8 @@
 .muse-collections:not([data-density="list"]) .muse-collections-board-section .muse-collections-grid .muse-collections-card[data-kind]:hover{border-color:color-mix(in srgb,var(--foreground) 24%,transparent)!important;background:color-mix(in srgb,var(--foreground) 8%,transparent)!important}
 .muse-collections-board-section .muse-collections-card .muse-book-cover,.muse-collections-board-section .muse-collections-card .muse-collections-cover{border-color:color-mix(in srgb,var(--foreground) 16%,transparent)!important}
 .muse-collections-board-section .muse-collections-card[data-kind] .muse-card-meta:empty{display:none}
+/* Select mode: pick books in the Library and add them to a reading plan. */
+.muse-collections-card[data-selected]{outline:2px solid var(--accent-primary);outline-offset:-2px}
+.muse-collections-card[data-selected]::after{content:"✓";position:absolute;left:14px;top:14px;z-index:3;display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--accent-primary);color:#fff;font-size:.8rem}
+.muse-collections-select-bar{position:sticky;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:30;display:flex;align-items:center;gap:10px;justify-content:space-between;flex-wrap:wrap;padding:10px 14px;border:1px solid var(--glass-border);border-radius:999px;background:var(--floating-background,var(--glass-background));box-shadow:var(--floating-shadow,0 8px 24px rgba(0,0,0,.25))}
+@media(max-width:680px){.muse-collections-select-bar{bottom:calc(84px + env(safe-area-inset-bottom,0px))}}

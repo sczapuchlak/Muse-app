@@ -13,6 +13,7 @@ import {ReadingSessionCard,type SessionPhase} from './ReadingSessionCard';
 import {activeSeconds,bookPosition,bookReadingStats,sittingClock} from '@/lib/whimsy/books';
 import {bookCompletions} from '@/lib/whimsy/reading-stats';
 import {seriesCompletion,seriesShelf,shelfStateLabel,type ShelfEntry} from '@/lib/books/series-view';
+import {AddToPlanModal} from './plans/AddToPlanModal';
 import {PageCrumbs} from '@/components/books/PageCrumbs';
 import {bookHref,rememberReturn,seriesHref} from '@/lib/books/return-nav';
 import {BookAtmosphere} from './BookAtmosphere';
@@ -57,7 +58,7 @@ export function BookPage(props:BookPageProps){
  const router=useRouter();
  const [tab,setTab]=useState<Tab>('sessions'),[aboutOpen,setAboutOpen]=useState(false),[menuOpen,setMenuOpen]=useState(false),[addingSeries,setAddingSeries]=useState(false);
  const menuAnchor=useRef<HTMLButtonElement>(null),panelRef=useRef<HTMLElement>(null),tabsRef=useRef<HTMLDivElement>(null),stripRef=useRef<HTMLOListElement>(null);
- const [panelVisible,setPanelVisible]=useState(true);
+ const [panelVisible,setPanelVisible]=useState(true),[planOpen,setPlanOpen]=useState(false);
  const catalog=useBookCatalog(book,books,props.onEnrich);
  useEffect(()=>{const node=panelRef.current;if(!node||typeof IntersectionObserver==='undefined')return;const observer=new IntersectionObserver(([entry])=>setPanelVisible(entry.isIntersecting),{threshold:0.05});observer.observe(node);return()=>observer.disconnect();},[]);
 
@@ -135,6 +136,7 @@ export function BookPage(props:BookPageProps){
      <button ref={menuAnchor} type="button" className="muse-icon-button muse-icon-button-glass" aria-label="More for this book" aria-haspopup="menu" aria-expanded={menuOpen} onClick={()=>setMenuOpen(v=>!v)}><MuseIcon name="more" size={18}/></button>
      <GlassPopover id="book-page-more" label="More for this book" open={menuOpen} anchorRef={menuAnchor} onClose={()=>setMenuOpen(false)} width={240} bare>
       <div className="popover-choice-list">
+       <button type="button" className="popover-choice" onClick={()=>{setMenuOpen(false);setPlanOpen(true);}}><span><MuseIcon name="calendar" size={14}/> Add to a reading plan…</span></button>
        <button type="button" className="popover-choice" onClick={()=>{setMenuOpen(false);setAddingSeries(true);}}><span><MuseIcon name="series" size={14}/> {primary?'Add to another series':'Add to a series'}</span></button>
        <ShareToStream kind="book" id={book.id} className="popover-choice"/>
        {book.archivedAt?<button type="button" className="popover-choice" onClick={()=>{setMenuOpen(false);props.onRestore();}}><span><MuseIcon name="undo" size={14}/> Restore to library</span></button>:<button type="button" className="popover-choice" onClick={()=>{setMenuOpen(false);props.onArchive();}}><span><MuseIcon name="trash" size={14}/> {own.length||reads.length?'Archive or delete':'Delete book'}</span></button>}
@@ -145,6 +147,7 @@ export function BookPage(props:BookPageProps){
    </div>
   </header>
   <div className="muse-book-page-side">
+  {planOpen&&<AddToPlanModal books={[book]} today={today} onClose={()=>setPlanOpen(false)}/>}
   {panel}
   <section className="muse-card muse-book-yours" aria-label="Your time with this book">
      <div ref={tabsRef} className="muse-book-page-tabs-wrap">
