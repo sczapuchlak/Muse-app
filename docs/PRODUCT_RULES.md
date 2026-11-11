@@ -905,3 +905,9 @@ Muse owns the canonical book and its active reading cycle. CSV imports reference
 Books Settings retains the Daily Edit reading preference and contains Import Library and Export Library. All other existing Books visuals stay locked. Series association and decorative shelf placement are separate; imports never decorate shelves. Source custom shelves may optionally reference existing My Collections, with stable source links preserving reader renames.
 
 Currently Reading uses real saved reading sessions, recorded progress dates and meaningful start dates. Capture/import time, metadata refresh time and a source’s Date Added are not evidence of reading. Undated books follow books with known activity; ties preserve existing order. A matching import keeps Muse status and active cycle identity.
+
+## Book favourites — approved, implemented
+
+- A favourite is a heart on the book (`favorite` on the book's own record). It is the single home: the Atlas Favourites shelf and the month shelf badge read it; nothing copies it.
+- It needs no migration: books already store their fields in the record payload. Every rewrite of a book record must carry it (`bookCarryFields`), so editing, moving shelves or archiving never clears a heart.
+- Atlas Favourites lists hearted books finished in the chosen period. A heart is optional and independent of rating.
