@@ -16,7 +16,7 @@
 .muse-daily-bookshelf .muse-books-actions{display:flex;gap:8px;flex-wrap:wrap}.muse-daily-bookshelf .muse-books-actions .muse-button{display:inline-flex;align-items:center;gap:7px;min-height:42px}
 .muse-daily-session{position:relative;isolation:isolate;display:grid;grid-template-columns:64px minmax(0,1fr);gap:8px 14px;padding:14px;border:1px solid var(--selected-border);border-radius:18px;overflow:hidden;background:radial-gradient(ellipse 90% 80% at 100% 0%,color-mix(in srgb,var(--accent-primary) 18%,transparent),transparent 75%),radial-gradient(ellipse 70% 60% at 0% 100%,color-mix(in srgb,var(--ink-aqua,var(--accent-secondary)) 16%,transparent),transparent 80%),var(--surface-subtle)}
 .muse-daily-session-cover{grid-row:1/span 2}.muse-daily-session-cover .muse-book-cover{width:64px;max-width:none;border-radius:5px 8px 8px 5px;box-shadow:3px 4px 0 -1px var(--glass-border),6px 10px 16px rgba(0,0,0,.2)}
-.muse-daily-session-body{display:grid;gap:4px;min-width:0}
+.muse-daily-session-body{display:grid;grid-template-columns:minmax(0,1fr);gap:4px;min-width:0}
 .muse-daily-session-state{display:inline-flex;align-items:center;gap:7px;font-size:.66rem;letter-spacing:.13em;text-transform:uppercase;font-weight:650;color:var(--text-muted)}
 .muse-daily-session-dot{width:8px;height:8px;border-radius:50%;background:var(--success-primary);box-shadow:0 0 0 4px color-mix(in srgb,var(--success-primary) 22%,transparent);animation:muse-daily-breathe 2.4s ease-in-out infinite}
 .muse-daily-session[data-phase="paused"] .muse-daily-session-dot{background:var(--accent-warm,var(--accent-secondary));animation:none}

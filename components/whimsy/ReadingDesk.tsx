@@ -31,7 +31,7 @@ function DeskTile({book,sessions,today,cover,status,onOpen,onLog}:{book:Book;ses
    </div>
    <p className="muse-desk-tile-last">{lastRead(book,sessions,today)}</p>
    <div className="muse-desk-tile-actions">
-    <button type="button" className="muse-button button-primary muse-desk-continue" onClick={onOpen}><MuseIcon name="play" size={14}/>Continue reading</button>
+    <button type="button" className="muse-button button-primary muse-desk-continue" onClick={onOpen}><MuseIcon name="play" size={14}/>Continue<span className="muse-desk-continue-tail">&nbsp;reading</span></button>
     <button ref={anchor} type="button" className="muse-button button-ghost muse-desk-more" aria-label={`More for ${book.title}`} aria-haspopup="dialog" aria-expanded={menu} onClick={()=>setMenu(v=>!v)}>⋯</button>
     <GlassPopover id={`desk-more-${book.id}`} label={`More for ${book.title}`} open={menu} anchorRef={anchor} onClose={()=>setMenu(false)} width={260} align="end" bare>
      <div className="muse-desk-menu"><button type="button" className="popover-choice" onClick={()=>{setMenu(false);onLog();}}><MuseIcon name="plus" size={15}/>Log reading manually</button><div className="muse-desk-menu-status">{status}</div></div>

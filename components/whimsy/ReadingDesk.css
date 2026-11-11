@@ -80,3 +80,14 @@
 .muse-desk-top .muse-streak{padding:14px 18px;row-gap:10px}
 .muse-desk-top .muse-streak-count strong{font-size:2.3rem}
 .muse-desk-top .muse-streak-heart{width:28px;height:28px}
+.muse-desk-tile{overflow:hidden}
+.muse-desk-tile-body,.muse-desk-tile-progress,.muse-desk-tile-actions{min-width:0;max-width:100%}
+@container muse-content (max-width:640px){
+ .muse-desk-layout:not([data-count="1"]) .muse-desk-continue{flex:1 1 0;min-width:0;padding-inline:6px}
+ .muse-desk-layout:not([data-count="1"]) .muse-desk-continue-tail{display:none}
+ .muse-desk-layout:not([data-count="1"]) .muse-desk-more{width:34px;min-width:34px;height:34px;min-height:34px}
+ .muse-desk-head{gap:6px}.muse-desk-nav .small-label{display:none}
+}
+/* An unbroken word must never widen the tile's columns. */
+.muse-desk-tile-body,.muse-desk-tile-progress{grid-template-columns:minmax(0,1fr)}
+.muse-desk-tile-open{overflow-wrap:anywhere}

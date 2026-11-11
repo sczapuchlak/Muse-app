@@ -15,6 +15,10 @@ try{
  console.log(JSON.stringify(desk));check(desk.tiles>=4&&desk.continue===desk.tiles&&desk.oldCards===0,'Reading Desk shows compact tiles with one Continue reading each');
  check(desk.topRow,'streak and yearly goal share the top row, 50/50, on desktop');check(desk.tallest<=260,`desk tiles stay compact (${desk.tallest}px)`);
  await b.evaluate(()=>window.scrollTo(0,0));await b.shoot('board-desktop');
+ check(await b.evaluate(()=>!document.querySelector('.muse-collections-toolbar-end [data-books-settings-trigger]')),'no separate Reading button in the toolbar');
+ await b.click('button[aria-label="Settings"]');await b.until(()=>!!document.querySelector('#collections-preferences[open] #settings-books'),'settings dialog');await wait(300);
+ check(await b.evaluate(()=>!!document.querySelector('#collections-preferences [data-books-settings-trigger]')&&/Daily Edit/.test(document.querySelector('#collections-preferences').textContent)),'Books settings live in the Settings dialog');await b.shoot('settings-dialog');
+ await b.evaluate(()=>document.querySelector('#collections-preferences').close());await wait(200);
  // More menu opens and closes from its trigger.
  await b.click('.muse-desk-more');await b.until(()=>!!document.querySelector('.muse-desk-menu'),'more menu');await b.shoot('desk-more-menu');
  check(await b.evaluate(()=>!!document.querySelector('.muse-desk-menu .muse-books-status-control')&&/Log reading manually/.test(document.querySelector('.muse-desk-menu').textContent)),'secondary actions live in the ⋯ menu');
@@ -38,7 +42,8 @@ try{
  await b.viewport(390,844,true);
  await b.go('/collections?kind=book&mode=board',board,'phone board');await wait(800);
  const phone=await b.evaluate(()=>{const tiles=[...document.querySelectorAll('.muse-desk-tile')].map(t=>t.getBoundingClientRect());const track=document.querySelector('.muse-desk-track').getBoundingClientRect();return {twoAcross:tiles.length>1&&Math.abs(tiles[0].top-tiles[1].top)<2&&tiles[1].right<=track.right+2,tileW:Math.round(tiles[0].width),overflow:document.documentElement.scrollWidth>document.documentElement.clientWidth};});
- console.log(JSON.stringify(phone));check(phone.twoAcross,'two desk tiles across on a phone');check(!phone.overflow,'no horizontal overflow on phone');
+ console.log(JSON.stringify(phone));check(phone.twoAcross,'two desk tiles across on a phone');
+ check(await b.evaluate(()=>[...document.querySelectorAll('.muse-desk-tile')].every(t=>{const r=t.getBoundingClientRect();return [...t.querySelectorAll('.muse-desk-pool,.muse-desk-more,.muse-desk-continue')].every(x=>x.getBoundingClientRect().right<=r.right+1);})),'desk tile contents stay inside each tile on a phone');check(!phone.overflow,'no horizontal overflow on phone');
  await b.evaluate(()=>window.scrollTo(0,0));await b.shoot('phone-board-top');await b.evaluate(()=>document.querySelector('.muse-desk-layout').scrollIntoView({block:'start'}));await wait(300);await b.shoot('phone-desk');
  await b.go('/collections?kind=book&mode=library','document.querySelectorAll(".muse-collections-library-page .muse-collections-card").length>0','phone library');await wait(600);
  check(await columns()===3,'three covers across on a phone in compact');await b.evaluate(()=>document.querySelector('.muse-collections-library-page').scrollIntoView({block:'start'}));await wait(300);await b.shoot('phone-library-compact');
