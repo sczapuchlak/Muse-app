@@ -279,3 +279,9 @@
 /* Breadcrumbs: Collections › Book › Series, every step a link; the current page is plain text. */
 .muse-book-page-trail li[aria-current="page"]{min-width:0;max-width:min(52vw,420px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--foreground);font-weight:650}
 .muse-book-page-trail a{color:var(--text-muted);text-decoration:none}.muse-book-page-trail a:hover{color:var(--foreground);text-decoration:underline}
+.muse-book-page-side{grid-template-columns:minmax(0,1fr);justify-items:stretch}
+.muse-book-page-side>*{width:100%;min-width:0;box-sizing:border-box}
+@media(min-width:1081px){.muse-book-page{grid-template-columns:minmax(0,1fr) 384px}}
+.muse-book-yours .muse-page-tabs{max-width:100%;box-sizing:border-box;overflow-x:auto;scrollbar-width:none}
+.muse-book-yours .muse-page-tabs::-webkit-scrollbar{display:none}
+.muse-book-page-side>.muse-book-panel,.muse-book-page-side>.muse-book-yours{grid-area:auto!important;grid-column:1!important}

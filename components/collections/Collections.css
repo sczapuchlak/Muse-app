@@ -274,3 +274,15 @@
 @container muse-content (max-width:640px){
  .muse-collections[data-density="compact"] .muse-collections-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
+/* In progress: the same compact, frosted tile as the Reading Desk: cover, one-line title, creator, liquid meter. */
+.muse-collections-in-progress.muse-desk-reading{margin:0}
+.muse-collections-active-card{grid-template-columns:48px minmax(0,1fr)!important;gap:10px!important;padding:10px!important;align-items:center!important;border-radius:16px!important;min-height:0}
+.muse-collections-active-card :is(.muse-book-cover,.muse-collections-cover){width:48px!important;max-width:48px!important;align-self:center!important}
+.muse-collections-active-copy{gap:4px}
+.muse-collections-active-copy strong{font-size:.98rem;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;overflow-wrap:normal}
+.muse-active-creator{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;overflow-wrap:normal!important}
+.muse-active-meta{display:flex!important;align-items:center;justify-content:space-between;gap:8px}
+.muse-active-kind{padding:1px 8px;border-radius:999px;font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;background:color-mix(in srgb,var(--accent-primary) 16%,transparent);color:var(--foreground)}
+.muse-collections-in-progress .muse-active-carousel,.muse-collections-in-progress .muse-active-carousel[data-count]{--carousel-visible:4;--carousel-gap:12px}
+@container muse-content (max-width:1000px){.muse-collections-in-progress .muse-active-carousel,.muse-collections-in-progress .muse-active-carousel[data-count]{--carousel-visible:3}}
+@container muse-content (max-width:640px){.muse-collections-in-progress .muse-active-carousel,.muse-collections-in-progress .muse-active-carousel[data-count]{--carousel-visible:1.15}}

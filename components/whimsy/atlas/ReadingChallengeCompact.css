@@ -28,3 +28,4 @@
 .muse-rainbow-year{font-family:var(--font-editorial);font-weight:inherit;background:linear-gradient(120deg,var(--accent-pop,var(--accent-primary)),var(--accent-primary),var(--accent-secondary));-webkit-background-clip:text;background-clip:text;color:transparent}
 .muse-rainbow-year[data-big]{font-size:1.9rem;line-height:1;letter-spacing:-.03em}
 .muse-challenge-title{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.muse-challenge-count{margin:4px 0 0}
