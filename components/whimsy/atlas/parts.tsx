@@ -15,10 +15,14 @@ export const yearDate=(date:string)=>`${dateLabel(date)}, ${date.slice(0,4)}`;
 export function AtlasMetric({label,value,detail}:{label:string;value:string;detail:string}){return <div><span className="small-label">{label}</span><strong>{value}</strong><small>{detail}</small></div>;}
 
 /** A compact bar chart with a text equivalent; empty periods are real zeros, never estimates. */
-export function ActivityBars({title,note,items}:{title:string;note:string;items:{key:string;label:string;short:string;value:number;text:string}[]}){
- const max=Math.max(1,...items.map(i=>i.value)),empty=items.every(i=>!i.value);
+export function ActivityBars({title,note,items,line=true}:{title:string;note:string;items:{key:string;label:string;short:string;value:number;text:string}[];line?:boolean}){
+ const max=Math.max(1,...items.map(i=>i.value)),empty=items.every(i=>!i.value),n=items.length;
+ const points=items.map((i,k)=>({x:(k+.5)/n*100,y:i.value/max*100}));
  return <article className="muse-books-panel"><div className="muse-books-panel-head"><h4>{title}</h4></div>
-  {empty?<p>Nothing recorded in this window yet.</p>:<ol className="muse-books-bars" aria-label={title}>{items.map(i=><li key={i.key} title={`${i.label}: ${i.text}`}><span className="muse-books-bar" style={{'--bar':`${Math.round(i.value/max*100)}%`} as CSSProperties} aria-hidden="true"/><span className="sr-only">{i.label}: {i.text}</span><small aria-hidden="true">{i.short}</small></li>)}</ol>}
+  {empty?<p>Nothing recorded in this window yet.</p>:<div className="muse-bars-wrap">
+   <ol className="muse-books-bars" aria-label={title}>{items.map(i=><li key={i.key} title={`${i.label}: ${i.text}`}><span className="muse-books-bar" style={{'--bar':`${Math.round(i.value/max*100)}%`} as CSSProperties} aria-hidden="true"/><span className="sr-only">{i.label}: {i.text}</span><small aria-hidden="true">{i.short}</small></li>)}</ol>
+   {line&&n>1&&<div className="muse-bars-line" aria-hidden="true"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><polyline points={points.map(p=>`${p.x},${100-p.y}`).join(' ')} fill="none" vectorEffect="non-scaling-stroke"/></svg>{points.map((p,k)=><i key={k} style={{left:`${p.x}%`,bottom:`${p.y}%`}}/>)}</div>}
+  </div>}
   <p className="small-label">{note}</p></article>;
 }
 

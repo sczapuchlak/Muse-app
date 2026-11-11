@@ -317,3 +317,7 @@
 /* The page's own horizontal clip would stop the shelf at the content edge; the body still clips at the viewport, so it runs off-screen without overflow. */
 .muse-series-route{overflow-x:visible}
 .muse-app-content:has(.muse-series-route){overflow-x:clip}
+.muse-series-additional-nav{display:flex;align-items:center;justify-content:flex-end;gap:7px;margin-top:10px}
+.muse-series-additional-nav .small-label{margin-right:4px}
+.muse-series-additional-nav .muse-button{width:32px;min-width:32px;height:32px;min-height:32px;padding:0;display:grid;place-items:center;background:var(--surface-control)}
+.muse-series-additional-nav .muse-button:nth-of-type(1) svg{transform:rotate(90deg)}.muse-series-additional-nav .muse-button:nth-of-type(2) svg{transform:rotate(-90deg)}

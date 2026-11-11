@@ -285,3 +285,7 @@
 .muse-book-yours .muse-page-tabs{max-width:100%;box-sizing:border-box;overflow-x:auto;scrollbar-width:none}
 .muse-book-yours .muse-page-tabs::-webkit-scrollbar{display:none}
 .muse-book-page-side>.muse-book-panel,.muse-book-page-side>.muse-book-yours{grid-area:auto!important;grid-column:1!important}
+/* The right column can grow or shrink with its tab without shifting the book information on the left. */
+@media(min-width:1081px){.muse-book-page{grid-template-rows:auto auto minmax(0,1fr)}}
+.muse-book-yours{gap:14px}
+.muse-book-yours .muse-book-page-tabs-wrap{padding:0}
