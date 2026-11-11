@@ -40,7 +40,7 @@ export function ReadingChallenge({books,goals,today,variant,onSave,onRemove,onOp
  const [year,setYear]=useState(today.slice(0,4));const [editing,setEditing]=useState(false);
  const goal=challengeFor(goals,year);const p=goal?challengeProgress(goal,books,year,today):null;
  const years=challengeYears(goals,books,today);
- const head=<div className="muse-books-panel-head"><div><span className="small-label">READING CHALLENGE</span><h4>{year}</h4></div>
+ const head=<div className="muse-books-panel-head"><div className="muse-challenge-title"><strong className="muse-rainbow-year" data-big>{year}</strong><span className="small-label">READING CHALLENGE</span></div>
   {variant==='full'&&<div className="muse-books-actions">{years.length>1&&<label className="sr-only" htmlFor="challenge-year">Year</label>}
    <select id="challenge-year" className="muse-challenge-year" value={year} onChange={e=>{setYear(e.target.value);setEditing(false);}}>{years.map(y=><option key={y} value={y}>{y}</option>)}</select>
    {!editing&&<button type="button" className="muse-button button-ghost" onClick={()=>setEditing(true)}>{goal?'Edit':'+ Set a challenge'}</button>}</div>}</div>;
@@ -73,11 +73,11 @@ const PER_VIEW=6;
 function ChallengeCompact({year,progress:p,editing,setEditing,editor,onOpenAtlas,onOpenBook}:{year:string;progress:ChallengeProgress|null;editing:boolean;setEditing:(v:boolean)=>void;editor:React.ReactNode;onOpenAtlas?:()=>void;onOpenBook?:(id:string)=>void}){
  const [view,setView]=useState(0);
  if(!p)return <article className="muse-books-panel muse-challenge muse-challenge-compact muse-desk-goal">
-  <div className="muse-desk-goal-head" data-empty><span className="small-label">READING CHALLENGE · {year}</span>{!editing&&<button type="button" className="muse-button button-primary" onClick={()=>setEditing(true)}>Set a goal</button>}</div>
+  <div className="muse-desk-goal-head" data-empty><div className="muse-challenge-title"><strong className="muse-rainbow-year" data-big>{year}</strong><span className="small-label">READING CHALLENGE</span></div>{!editing&&<button type="button" className="muse-button button-primary" onClick={()=>setEditing(true)}>Set a goal</button>}</div>
   {editor||<p className="muse-desk-goal-empty">How many books would you like to finish this year? Your finished books will line up here.</p>}</article>;
  const slots=Math.max(p.target,p.done),pages=Math.ceil(slots/PER_VIEW),current=Math.min(view,pages-1),first=current*PER_VIEW;
  return <article className="muse-books-panel muse-challenge muse-challenge-compact muse-desk-goal" data-reached={p.reached||undefined}>
-  <div className="muse-desk-goal-head"><div><span className="small-label">READING CHALLENGE · {year}</span><h4><strong className="type-numeric">{p.done}</strong> <span>of {p.target} books</span></h4></div>
+  <div className="muse-desk-goal-head"><div><div className="muse-challenge-title"><strong className="muse-rainbow-year" data-big>{year}</strong><span className="small-label">READING CHALLENGE</span></div><h4 className="muse-challenge-count"><strong className="type-numeric">{p.done}</strong> <span>of {p.target} books</span></h4></div>
    <div className="muse-desk-goal-actions">{pages>1&&<><span className="small-label type-numeric">{first+1}–{Math.min(slots,first+PER_VIEW)}</span><button type="button" className="muse-button button-ghost" aria-label="Earlier books" disabled={current===0} onClick={()=>setView(current-1)}><MuseIcon name="chevron" size={15}/></button><button type="button" className="muse-button button-ghost" aria-label="Later books" disabled={current>=pages-1} onClick={()=>setView(current+1)}><MuseIcon name="chevron" size={15}/></button></>}
     <button type="button" className="muse-button button-ghost muse-desk-goal-edit" aria-label="Edit challenge" onClick={()=>setEditing(true)}><MuseIcon name="edit" size={15}/></button></div></div>
   <span className="muse-desk-goal-bar" style={{'--fill':`${Math.max(p.percent,p.percent?3:0)}%`} as CSSProperties} role="meter" aria-label={`${p.done} of ${p.target} books`} aria-valuemin={0} aria-valuemax={p.target} aria-valuenow={p.done}><span/></span>

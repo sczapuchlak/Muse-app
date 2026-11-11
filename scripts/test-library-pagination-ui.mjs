@@ -38,8 +38,8 @@ try{
  check(imgs.total>0&&imgs.total<=24&&imgs.lazy===imgs.total&&imgs.sized,`covers are lazy and sized: ${JSON.stringify(imgs)}`);
 
  await b.evaluate(()=>window.scrollTo(0,0));await b.shoot('desktop-reading-desk');
- const desk=await b.evaluate(()=>{const cs=[...document.querySelectorAll('.muse-books-section[aria-label="Reading Desk"] .muse-books-card')];return {n:cs.length,tallest:Math.max(...cs.map(c=>Math.round(c.getBoundingClientRect().height))),brokenTitles:cs.filter(c=>{const t=c.querySelector('.muse-books-card-title');const r=document.createRange();r.selectNodeContents(t);return r.getClientRects().length>6;}).length};});
- console.log('reading desk cards',JSON.stringify(desk));check(desk.n>0&&desk.tallest<=470&&desk.brokenTitles===0,`Reading Desk cards stay compact with word-wrapped titles (${desk.tallest}px tall)`);
+ const desk=await b.evaluate(()=>{const cs=[...document.querySelectorAll('.muse-desk-tile')];return {n:cs.length,tallest:Math.max(...cs.map(c=>Math.round(c.getBoundingClientRect().height))),brokenTitles:cs.filter(c=>{const t=c.querySelector('.muse-desk-tile-open');return !t||t.scrollWidth>t.clientWidth+1&&getComputedStyle(t).textOverflow!=='ellipsis';}).length};});
+ console.log('reading desk cards',JSON.stringify(desk));check(desk.n>0&&desk.tallest<=230&&desk.brokenTitles===0,`Reading Desk cards stay compact with word-wrapped titles (${desk.tallest}px tall)`);
  // Page sizes
  for(const size of [12,48,96,24]){await chooseMenu('Library per page, top',`${size} per page`);check(await cards()===size,`page size ${size} renders ${size} cards`);}
  // Next / previous / numbered

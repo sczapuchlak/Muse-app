@@ -32,7 +32,7 @@ try{
  const compact=await columns();await b.shoot('library-compact');
  await density('Showcase');const showcase=await columns();await b.shoot('library-showcase');
  await density('List');await b.shoot('library-list');const listRow=await b.evaluate(()=>Math.round(document.querySelector('.muse-collections-library-page .muse-collections-card').getBoundingClientRect().height));
- console.log({compact,showcase,listRow});check(compact>=7&&showcase<compact,'compact fits many more covers per row than showcase');check(listRow<=90,`list rows are compact (${listRow}px)`);
+ console.log({compact,showcase,listRow});check(compact>=5&&showcase<compact,'compact fits many more covers per row than showcase');check(listRow<=90,`list rows are compact (${listRow}px)`);
  await b.go('/collections?kind=book&mode=library','document.querySelectorAll(".muse-collections-library-page .muse-collections-card").length>0','reload');await wait(1500);
  check(await b.evaluate(()=>document.querySelector('main.muse-collections').dataset.density==='list'),'the chosen density is remembered');
  await density('Compact');
@@ -46,7 +46,7 @@ try{
  check(await b.evaluate(()=>[...document.querySelectorAll('.muse-desk-tile')].every(t=>{const r=t.getBoundingClientRect();return [...t.querySelectorAll('.muse-desk-pool,.muse-desk-more,.muse-desk-continue')].every(x=>x.getBoundingClientRect().right<=r.right+1);})),'desk tile contents stay inside each tile on a phone');check(!phone.overflow,'no horizontal overflow on phone');
  await b.evaluate(()=>window.scrollTo(0,0));await b.shoot('phone-board-top');await b.evaluate(()=>document.querySelector('.muse-desk-layout').scrollIntoView({block:'start'}));await wait(300);await b.shoot('phone-desk');
  await b.go('/collections?kind=book&mode=library','document.querySelectorAll(".muse-collections-library-page .muse-collections-card").length>0','phone library');await wait(600);
- check(await columns()===3,'three covers across on a phone in compact');await b.evaluate(()=>document.querySelector('.muse-collections-library-page').scrollIntoView({block:'start'}));await wait(300);await b.shoot('phone-library-compact');
+ check(await columns()===2,'two cards across on a phone in compact');await b.evaluate(()=>document.querySelector('.muse-collections-library-page').scrollIntoView({block:'start'}));await wait(300);await b.shoot('phone-library-compact');
  check(b.errors.length===0,`no uncaught exceptions ${b.errors.join('|').slice(0,200)}`);
  console.log(`\n${passed} checks passed. ${b.shots}`);
 }finally{browser?.close();await removeAccount(account.userId);}

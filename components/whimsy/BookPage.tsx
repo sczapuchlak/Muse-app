@@ -13,7 +13,8 @@ import {ReadingSessionCard,type SessionPhase} from './ReadingSessionCard';
 import {activeSeconds,bookPosition,bookReadingStats,sittingClock} from '@/lib/whimsy/books';
 import {bookCompletions} from '@/lib/whimsy/reading-stats';
 import {seriesCompletion,seriesShelf,shelfStateLabel,type ShelfEntry} from '@/lib/books/series-view';
-import {bookHref,currentReturn,goBack,rememberReturn,seriesHref} from '@/lib/books/return-nav';
+import {PageCrumbs} from '@/components/books/PageCrumbs';
+import {bookHref,rememberReturn,seriesHref} from '@/lib/books/return-nav';
 import {BookAtmosphere} from './BookAtmosphere';
 import {BookJournal} from './BookJournal';
 import {BookSittingChoice} from './BookSittingChoice';
@@ -55,11 +56,9 @@ export function BookPage(props:BookPageProps){
  const {book,books,sessions,today,timer,tick,busy}=props;
  const router=useRouter();
  const [tab,setTab]=useState<Tab>('sessions'),[aboutOpen,setAboutOpen]=useState(false),[menuOpen,setMenuOpen]=useState(false),[addingSeries,setAddingSeries]=useState(false);
- const [back,setBack]=useState<{href:string;label:string}|null>(null);
  const menuAnchor=useRef<HTMLButtonElement>(null),panelRef=useRef<HTMLElement>(null),tabsRef=useRef<HTMLDivElement>(null),stripRef=useRef<HTMLOListElement>(null);
  const [panelVisible,setPanelVisible]=useState(true);
  const catalog=useBookCatalog(book,books,props.onEnrich);
- useEffect(()=>{const frame=requestAnimationFrame(()=>setBack(currentReturn()));return()=>cancelAnimationFrame(frame);},[]);
  useEffect(()=>{const node=panelRef.current;if(!node||typeof IntersectionObserver==='undefined')return;const observer=new IntersectionObserver(([entry])=>setPanelVisible(entry.isIntersecting),{threshold:0.05});observer.observe(node);return()=>observer.disconnect();},[]);
 
  const own=sessions.filter(s=>s.bookId===book.id).sort((a,b)=>b.date.localeCompare(a.date)||b.createdAt.localeCompare(a.createdAt));
@@ -81,7 +80,6 @@ export function BookPage(props:BookPageProps){
  const synopsis=book.description?.trim()??'',longSynopsis=synopsis.length>520||synopsis.split('\n').length>4;
 
  function open(href:string,label:string){rememberReturn(href.split('#')[0],label);router.push(href);}
- function leave(){goBack(router,'/collections?kind=book');}
  const openSeries=()=>{if(seriesKey)open(seriesHref(seriesKey,`book:${book.id}`),book.title);};
  const openEntry=(entry:ShelfEntry)=>{if(entry.book&&entry.book.id!==book.id)open(bookHref(entry.book.id,`book:${book.id}`),book.title);else if(!entry.book&&seriesKey)open(`${seriesHref(seriesKey,`book:${book.id}`)}#installment-${entry.member.id}`,book.title);};
 
@@ -121,10 +119,7 @@ export function BookPage(props:BookPageProps){
  </section>:catalog.state==='checking'?<section className="muse-book-series-section" aria-busy="true" aria-label="Looking for this book’s series"><span className="small-label">Looking for this book’s series…</span><div className="muse-book-series-strip muse-skeleton-strip" aria-hidden="true">{[0,1,2,3,4].map(i=><span key={i}/>)}</div></section>:null;
 
  return <BookAtmosphere book={book}><article className="muse-book-page" aria-labelledby="book-page-title">
-  <nav className="muse-book-page-crumbs" aria-label="Book navigation">
-   <button type="button" className="muse-book-page-back" onClick={leave}><MuseIcon name="arrow" size={16}/><span>{back?`Back to ${back.label}`:'Books'}</span></button>
-   <ol className="muse-book-page-trail"><li><Link href="/collections">Collections</Link></li><li><Link href="/collections?kind=book">Books</Link></li></ol>
-  </nav>
+  <PageCrumbs current={book.title} label="Book navigation"/>
   <header className="muse-book-page-hero">
    <div className="muse-book-page-cover">{props.cover}</div>
    <div className="muse-book-page-identity">
@@ -149,7 +144,34 @@ export function BookPage(props:BookPageProps){
     {book.archivedAt&&<p className="muse-book-page-archived" role="note">Archived · kept in your statistics. <button type="button" className="text-button" onClick={props.onRestore}>Restore to library</button></p>}
    </div>
   </header>
+  <div className="muse-book-page-side">
   {panel}
+  <section className="muse-card muse-book-yours" aria-label="Your time with this book">
+     <div ref={tabsRef} className="muse-book-page-tabs-wrap">
+      <nav className="muse-page-tabs muse-book-page-tabs" aria-label="Your time with this book">{([['sessions',`Sittings${own.length?` · ${own.length}`:''}`],['journal','Journal'],['reads',`Reads${reads.length?` · ${reads.length}`:''}`],['details','Details']] as const).map(([id,label])=><button key={id} type="button" aria-current={tab===id?'page':undefined} onClick={()=>setTab(id)}>{label}</button>)}</nav>
+     </div>
+     {tab==='sessions'&&<section className="muse-book-page-panel" aria-label="Reading sittings">
+      {own.length===0?<div className="muse-book-page-empty muse-sittings-empty"><span className="muse-sittings-empty-art" aria-hidden="true"><MuseIcon name="book" size={26}/></span><div><strong>Your sittings will gather here.</strong><p>Every session keeps its pages, minutes and a note, so you can see how this book unfolded.</p></div><div className="muse-sittings-empty-actions"><button type="button" className="muse-button button-ghost" onClick={props.onLog}><MuseIcon name="plus" size={14}/>Log a past sitting</button></div></div>
+       :<><p className="muse-sittings-summary"><strong className="type-numeric">{own.length}</strong> {own.length===1?'sitting':'sittings'}{stats.seconds?<> · <strong>{duration(stats.seconds)}</strong></>:null} · <strong className="type-numeric">{stats.pages}</strong> pages</p>
+       <ol className="muse-sittings">{own.map(session=>{const secs=activeSeconds(session.activeSegments),d=new Date(`${session.date}T12:00:00Z`);return <li key={session.id} className="muse-sitting" data-manual={session.manual||undefined}>
+        <span className="muse-sitting-date" aria-hidden="true"><span>{new Intl.DateTimeFormat(undefined,{month:'short',timeZone:'UTC'}).format(d)}</span><strong className="type-numeric">{d.getUTCDate()}</strong></span>
+        <div className="muse-sitting-body"><p className="muse-sitting-line"><span className="sr-only">{longDate(session.date)}: </span><strong className="type-numeric">{session.pages} {session.pages===1?'page':'pages'}</strong>{secs?<span>{duration(secs)}</span>:<span className="muse-sitting-muted">time not recorded</span>}{session.startingPage!==undefined&&session.endingPage!==undefined&&<span className="type-numeric">p. {session.startingPage}–{session.endingPage}</span>}{session.manual&&<em className="muse-sitting-tag">logged</em>}{session.reread&&<em className="muse-sitting-tag">reread</em>}</p>
+         {session.notes&&<blockquote className="muse-sitting-note">{session.notes}</blockquote>}</div>
+        <SittingMenu label={longDate(session.date)} onEdit={()=>props.onEditSession(session)} onDelete={()=>props.onDeleteSession(session)}/>
+       </li>;})}</ol></>}
+     </section>}
+     <div hidden={tab!=='journal'}><BookJournal book={book} sessions={sessions} today={today} userId={props.userId}/></div>
+     {tab==='reads'&&<section className="muse-book-page-panel" aria-label="Your reads"><ReadHistory book={book} sessions={sessions} today={today} onSaveEmojis={props.onSaveEmojis} onEditSession={props.onEditSession}/></section>}
+     {tab==='details'&&<section className="muse-book-page-panel muse-book-detail-edition" aria-label="Edition and details"><dl>
+      <div><dt>Published</dt><dd>{book.publishedDate?longDate(book.publishedDate):'Not listed'}</dd></div>
+      <div><dt>Publisher</dt><dd>{book.publisher||'Not listed'}</dd></div>
+      <div><dt>Format</dt><dd>{book.format?formatLabel[book.format]:'Not recorded'}</dd></div>
+      <div><dt>Pages</dt><dd>{book.totalPages??'Not recorded'}</dd></div>
+      <div><dt>ISBN</dt><dd className="type-numeric">{book.isbn||'Not listed'}</dd></div>
+      <div><dt>Added</dt><dd>{longDate(book.createdAt.slice(0,10))}</dd></div>
+     </dl><p className="small-label muse-book-page-source">{book.metadataSource?`Catalog details from ${book.metadataSource.provider==='google-books'?'Google Books':book.metadataSource.provider==='open-library'?'Open Library':'Hardcover'}${book.metadataSource.hardcoverId&&book.metadataSource.provider!=='hardcover'?' and Hardcover':''}. Everything stays editable.`:'Entered by you. Everything stays editable.'}</p><button type="button" className="muse-button button-ghost" onClick={props.onEdit}>Edit details</button></section>}
+  </section>
+  </div>
   <div className="muse-card muse-book-page-main">
    {addingSeries&&<div className="muse-book-page-add-series"><AddToSeries book={book} onCancel={()=>setAddingSeries(false)} onDone={text=>{setAddingSeries(false);props.onMessage(text);}}/></div>}
    <section className="muse-book-about" aria-labelledby="book-about-heading">
@@ -159,29 +181,6 @@ export function BookPage(props:BookPageProps){
      :<p className="muse-book-about-empty">No synopsis is available from the catalog for this edition. <button type="button" className="text-button" onClick={props.onEdit}>Add your own</button></p>}
    </section>
    {seriesSection}
-   <div ref={tabsRef} className="muse-book-page-tabs-wrap">
-    <nav className="muse-page-tabs muse-book-page-tabs" aria-label="Your time with this book">{([['sessions',`Sittings${own.length?` · ${own.length}`:''}`],['journal','Journal'],['reads',`Reads${reads.length?` · ${reads.length}`:''}`],['details','Details']] as const).map(([id,label])=><button key={id} type="button" aria-current={tab===id?'page':undefined} onClick={()=>setTab(id)}>{label}</button>)}</nav>
-   </div>
-   {tab==='sessions'&&<section className="muse-book-page-panel" aria-label="Reading sittings">
-    {own.length===0?<div className="muse-book-page-empty muse-sittings-empty"><span className="muse-sittings-empty-art" aria-hidden="true"><MuseIcon name="book" size={26}/></span><div><strong>Your sittings will gather here.</strong><p>Every session keeps its pages, minutes and a note, so you can see how this book unfolded.</p></div><div className="muse-sittings-empty-actions"><button type="button" className="muse-button button-ghost" onClick={props.onLog}><MuseIcon name="plus" size={14}/>Log a past sitting</button></div></div>
-     :<><p className="muse-sittings-summary"><strong className="type-numeric">{own.length}</strong> {own.length===1?'sitting':'sittings'}{stats.seconds?<> · <strong>{duration(stats.seconds)}</strong></>:null} · <strong className="type-numeric">{stats.pages}</strong> pages</p>
-     <ol className="muse-sittings">{own.map(session=>{const secs=activeSeconds(session.activeSegments),d=new Date(`${session.date}T12:00:00Z`);return <li key={session.id} className="muse-sitting" data-manual={session.manual||undefined}>
-      <span className="muse-sitting-date" aria-hidden="true"><span>{new Intl.DateTimeFormat(undefined,{month:'short',timeZone:'UTC'}).format(d)}</span><strong className="type-numeric">{d.getUTCDate()}</strong></span>
-      <div className="muse-sitting-body"><p className="muse-sitting-line"><span className="sr-only">{longDate(session.date)}: </span><strong className="type-numeric">{session.pages} {session.pages===1?'page':'pages'}</strong>{secs?<span>{duration(secs)}</span>:<span className="muse-sitting-muted">time not recorded</span>}{session.startingPage!==undefined&&session.endingPage!==undefined&&<span className="type-numeric">p. {session.startingPage}–{session.endingPage}</span>}{session.manual&&<em className="muse-sitting-tag">logged</em>}{session.reread&&<em className="muse-sitting-tag">reread</em>}</p>
-       {session.notes&&<blockquote className="muse-sitting-note">{session.notes}</blockquote>}</div>
-      <SittingMenu label={longDate(session.date)} onEdit={()=>props.onEditSession(session)} onDelete={()=>props.onDeleteSession(session)}/>
-     </li>;})}</ol></>}
-   </section>}
-   <div hidden={tab!=='journal'}><BookJournal book={book} sessions={sessions} today={today} userId={props.userId}/></div>
-   {tab==='reads'&&<section className="muse-book-page-panel" aria-label="Your reads"><ReadHistory book={book} sessions={sessions} today={today} onSaveEmojis={props.onSaveEmojis} onEditSession={props.onEditSession}/></section>}
-   {tab==='details'&&<section className="muse-book-page-panel muse-book-detail-edition" aria-label="Edition and details"><dl>
-    <div><dt>Published</dt><dd>{book.publishedDate?longDate(book.publishedDate):'Not listed'}</dd></div>
-    <div><dt>Publisher</dt><dd>{book.publisher||'Not listed'}</dd></div>
-    <div><dt>Format</dt><dd>{book.format?formatLabel[book.format]:'Not recorded'}</dd></div>
-    <div><dt>Pages</dt><dd>{book.totalPages??'Not recorded'}</dd></div>
-    <div><dt>ISBN</dt><dd className="type-numeric">{book.isbn||'Not listed'}</dd></div>
-    <div><dt>Added</dt><dd>{longDate(book.createdAt.slice(0,10))}</dd></div>
-   </dl><p className="small-label muse-book-page-source">{book.metadataSource?`Catalog details from ${book.metadataSource.provider==='google-books'?'Google Books':book.metadataSource.provider==='open-library'?'Open Library':'Hardcover'}${book.metadataSource.hardcoverId&&book.metadataSource.provider!=='hardcover'?' and Hardcover':''}. Everything stays editable.`:'Entered by you. Everything stays editable.'}</p><button type="button" className="muse-button button-ghost" onClick={props.onEdit}>Edit details</button></section>}
   </div>
   {active&&!panelVisible&&<div className="muse-book-miniplayer" role="region" aria-label="Reading session"><span className="muse-book-session-dot" aria-hidden="true"/><strong className="type-numeric">{clock?.label}</strong><span>{sessionLabel}</span>{['running','paused'].includes(timer!.phase)?<button type="button" className="muse-button button-primary" disabled={busy} onClick={()=>props.onTimer(timer!.phase==='paused'?'resume':'pause')} aria-label={timer!.phase==='paused'?'Resume reading':'Pause reading'}><MuseIcon name={timer!.phase==='paused'?'play':'pause'} size={16}/></button>:<button type="button" className="text-button" onClick={()=>panelRef.current?.scrollIntoView({behavior:'smooth',block:'center'})}>Check in</button>}</div>}
  </article></BookAtmosphere>;

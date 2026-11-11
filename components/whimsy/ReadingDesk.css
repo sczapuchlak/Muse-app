@@ -67,10 +67,17 @@
 .muse-desk-top .muse-desk-goal{align-content:center}
 .muse-desk-top .muse-streak-note{padding:0 16px 12px}
 @container muse-content (max-width:640px){.muse-desk-reading{padding:12px 14px}.muse-desk-top .muse-streak{padding:12px 14px}.muse-desk-top .muse-desk-goal{padding:12px 14px!important}}
-/* Half-width tiles: a fixed, compact column instead of a third of the row (#135 polish). */
-.muse-desk-track,.muse-desk-layout[data-count="1"] .muse-desk-track,.muse-desk-layout[data-count="2"] .muse-desk-track{grid-auto-columns:220px;gap:12px}
-.muse-desk-tile{grid-template-columns:44px minmax(0,1fr);gap:10px}
-.muse-desk-start{padding:0 10px}
+/* Compact tiles: cover and text on top; the Start button gets the full tile width beneath so its label always fits. */
+.muse-desk-track,.muse-desk-layout[data-count="1"] .muse-desk-track,.muse-desk-layout[data-count="2"] .muse-desk-track{grid-auto-columns:230px;gap:12px}
+.muse-desk-layout .muse-desk-tile{grid-template-columns:44px minmax(0,1fr)!important;gap:6px 10px!important;align-items:start}
+.muse-desk-tile-body{display:contents}
+.muse-desk-tile-cover{grid-column:1;grid-row:1/3;width:44px!important}
+.muse-desk-tile-body>h4,.muse-desk-tile-body>.muse-desk-tile-author{grid-column:2}
+.muse-desk-tile-progress{grid-column:1/-1}
+.muse-desk-tile-actions{grid-column:1/-1}
+.muse-desk-layout .muse-desk-start{white-space:nowrap;padding:0 12px!important}
+.muse-desk-layout .muse-desk-start span{display:inline!important}
 @container muse-content (max-width:640px){
- .muse-desk-track,.muse-desk-layout[data-count="1"] .muse-desk-track{grid-auto-columns:calc((100% - 10px)/2);gap:10px}
+ .muse-desk-track,.muse-desk-layout[data-count="1"] .muse-desk-track,.muse-desk-layout[data-count="2"] .muse-desk-track{grid-auto-columns:calc((100% - 10px)/2);gap:10px}
+ .muse-desk-layout .muse-desk-tile{padding:10px}
 }

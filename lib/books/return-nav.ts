@@ -31,3 +31,19 @@ export function parseSeriesKey(key:string):{savedId:string}|{source:'hardcover'|
  const match=key.match(/^(hardcover|wikidata|open-library)-(.+)$/);
  return match?{source:match[1] as 'hardcover'|'wikidata'|'open-library',id:match[2]}:{savedId:key};
 }
+
+/**
+ * The pages you walked through to reach this one, oldest first, rebuilt from the recorded in-app opens, so breadcrumbs
+ * can read Collections › Book › Series and every step is a real link. `root` is where the library was left (state intact).
+ */
+export function trailAncestors():{root:string;steps:ReturnContext[]}{
+ if(typeof window==='undefined')return {root:'/collections?kind=book',steps:[]};
+ const entries=read(),seen=new Set<string>(),steps:ReturnContext[]=[];let cursor=here(),root='/collections?kind=book';
+ for(let i=0;i<6;i++){
+  const entry=[...entries].reverse().find(e=>e.to===cursor);
+  if(!entry||seen.has(entry.from))break;seen.add(entry.from);
+  if(entry.from.split('?')[0]==='/collections'){root=entry.from;break;}
+  steps.unshift({href:entry.from,label:entry.label});cursor=entry.from;
+ }
+ return {root,steps};
+}

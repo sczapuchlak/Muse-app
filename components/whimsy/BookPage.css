@@ -157,7 +157,7 @@
 @media(max-width:720px){
  .muse-book-series-strip{scroll-padding-inline:16px}
  .muse-book-page{row-gap:16px;padding-bottom:calc(40px + env(safe-area-inset-bottom))}
- .muse-book-page-trail{display:none}
+ 
  .muse-book-page-hero{grid-template-columns:minmax(104px,34%) minmax(0,1fr);gap:16px;align-items:end}
  .muse-book-page-cover{padding:2px 8px 10px 0}
  .muse-book-page-identity{gap:7px}
@@ -268,3 +268,20 @@
 .muse-book-page-tabs-wrap .muse-page-tabs,.muse-book-page-tabs{border-bottom:0!important}
 .muse-book-detail-edition dl>div{border-bottom:1px solid var(--glass-border)}
 .muse-book-panel .muse-book-panel-actions{padding-top:0}
+/* Your reading (timer, sittings, journal) sits together in the right column; the left column is about the book. */
+.muse-book-page-side{grid-area:panel;display:grid;gap:clamp(14px,1.8vw,18px);align-content:start;min-width:0}
+.muse-book-page-side>.muse-book-panel{position:relative;top:auto;grid-area:auto}
+.muse-book-yours{display:grid;gap:0;padding:clamp(14px,1.6vw,18px);border-radius:var(--dl-radius-hero);min-width:0}
+.muse-book-yours>*{padding:0}
+.muse-book-yours .muse-book-page-tabs-wrap{padding:0 0 12px}
+.muse-book-yours .muse-book-page-panel{padding:0}
+@media(min-width:1081px){.muse-book-page{grid-template-columns:minmax(0,1fr) minmax(320px,400px)}}
+/* Breadcrumbs: Collections › Book › Series, every step a link; the current page is plain text. */
+.muse-book-page-trail li[aria-current="page"]{min-width:0;max-width:min(52vw,420px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--foreground);font-weight:650}
+.muse-book-page-trail a{color:var(--text-muted);text-decoration:none}.muse-book-page-trail a:hover{color:var(--foreground);text-decoration:underline}
+.muse-book-page-side{grid-template-columns:minmax(0,1fr);justify-items:stretch}
+.muse-book-page-side>*{width:100%;min-width:0;box-sizing:border-box}
+@media(min-width:1081px){.muse-book-page{grid-template-columns:minmax(0,1fr) 384px}}
+.muse-book-yours .muse-page-tabs{max-width:100%;box-sizing:border-box;overflow-x:auto;scrollbar-width:none}
+.muse-book-yours .muse-page-tabs::-webkit-scrollbar{display:none}
+.muse-book-page-side>.muse-book-panel,.muse-book-page-side>.muse-book-yours{grid-area:auto!important;grid-column:1!important}
