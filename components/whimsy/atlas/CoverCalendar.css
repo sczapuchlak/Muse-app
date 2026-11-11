@@ -1,0 +1,98 @@
+/* Reading calendar: the books themselves fill the days; each season has its own header atmosphere. */
+.muse-cal{--season-a:var(--accent-primary);--season-b:var(--accent-secondary);display:grid;gap:14px;padding:0 0 clamp(14px,2vw,22px);border:1px solid var(--glass-border);border-radius:26px;overflow:hidden;background:var(--surface-subtle)}
+.muse-cal[data-season="winter"]{--season-a:color-mix(in srgb,var(--ink-aqua,#5fb8d6) 80%,white);--season-b:color-mix(in srgb,var(--accent-secondary) 70%,#7a8cff)}
+.muse-cal[data-season="spring"]{--season-a:color-mix(in srgb,var(--accent-pop,#f48fb1) 80%,white);--season-b:color-mix(in srgb,#8fd3a8 70%,var(--accent-secondary))}
+.muse-cal[data-season="summer"]{--season-a:color-mix(in srgb,#ffc65c 75%,var(--accent-primary));--season-b:color-mix(in srgb,#ff8f6b 60%,var(--accent-pop,var(--accent-primary)))}
+.muse-cal[data-season="autumn"]{--season-a:color-mix(in srgb,#e08a3c 75%,var(--accent-primary));--season-b:color-mix(in srgb,#9c3b5a 70%,var(--accent-secondary))}
+.muse-cal-head{position:relative;isolation:isolate;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;min-height:clamp(120px,16vw,170px);padding:18px 20px;overflow:hidden;background:radial-gradient(ellipse 80% 140% at 20% 0%,color-mix(in srgb,var(--season-a) 70%,transparent),transparent 65%),radial-gradient(ellipse 70% 120% at 100% 100%,color-mix(in srgb,var(--season-b) 75%,transparent),transparent 70%),linear-gradient(120deg,color-mix(in srgb,var(--season-a) 35%,var(--surface-strong)),color-mix(in srgb,var(--season-b) 35%,var(--surface-strong)))}
+.muse-cal-art{position:absolute;inset:0;z-index:-1;pointer-events:none}
+.muse-cal-art i{position:absolute;width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.8);box-shadow:0 0 10px rgba(255,255,255,.8)}
+.muse-cal-art i:nth-child(1){left:8%;top:22%}.muse-cal-art i:nth-child(2){left:23%;top:70%;width:4px;height:4px}.muse-cal-art i:nth-child(3){left:38%;top:30%;width:3px;height:3px}.muse-cal-art i:nth-child(4){left:62%;top:18%}.muse-cal-art i:nth-child(5){left:74%;top:66%;width:4px;height:4px}.muse-cal-art i:nth-child(6){left:88%;top:34%;width:3px;height:3px}.muse-cal-art i:nth-child(7){left:52%;top:80%;width:3px;height:3px}.muse-cal-art i:nth-child(8){left:94%;top:78%;width:5px;height:5px}
+.muse-cal[data-season="autumn"] .muse-cal-art i,.muse-cal[data-season="spring"] .muse-cal-art i{border-radius:60% 0 60% 0;width:10px;height:10px;transform:rotate(25deg);background:color-mix(in srgb,var(--season-b) 60%,white);box-shadow:none}
+.muse-cal-head h3{display:grid;justify-items:center;gap:0;margin:0;text-align:center;color:#fff;text-shadow:0 2px 18px rgba(0,0,0,.25)}
+.muse-cal-head h3 span{font-family:var(--font-editorial);font-size:clamp(2.2rem,5.5vw,3.6rem);line-height:1;letter-spacing:-.03em;font-weight:var(--type-display-weight,500)}
+.muse-cal-head h3 small{font-size:.86rem;letter-spacing:.3em;opacity:.9}
+.muse-cal-nav{display:grid;place-items:center;width:40px;height:40px;border:1px solid rgba(255,255,255,.45);border-radius:50%;background:rgba(255,255,255,.18);color:#fff;font-size:1.4rem;cursor:pointer;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.muse-cal-nav:disabled{opacity:.35;cursor:default}
+.muse-cal-stats{display:grid;grid-template-columns:repeat(3,1fr);margin:0 clamp(14px,2vw,22px)}
+.muse-cal-stats>div{display:grid;justify-items:center;gap:2px;padding:4px 0}
+.muse-cal-stats>div+div{border-left:1px solid var(--glass-border)}
+.muse-cal-stats dd{margin:0;font-family:var(--font-editorial);font-size:clamp(1.6rem,3.5vw,2.2rem);line-height:1}
+.muse-cal-stats dt{font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)}
+.muse-cal-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;margin:0 clamp(10px,2vw,22px);padding:0;list-style:none}
+.muse-cal-weekday{padding:2px 0;text-align:center;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);font-weight:650}
+.muse-cal-day{position:relative;display:block;width:100%;aspect-ratio:2/3;padding:0;border:1px solid var(--glass-border);border-radius:10px;overflow:hidden;background:color-mix(in srgb,var(--surface-control) 70%,transparent);color:var(--text-muted);font:inherit;cursor:pointer}
+.muse-cal-day[data-future]{opacity:.45}
+.muse-cal-day[aria-pressed="true"]{outline:2px solid var(--accent-primary);outline-offset:2px}
+.muse-cal-day[data-today]{border-color:var(--accent-primary);box-shadow:0 0 0 1px var(--accent-primary)}
+.muse-cal-date{position:absolute;left:5px;top:4px;z-index:2;font-size:.76rem;font-weight:650}
+.muse-cal-day:not([data-books]) .muse-cal-date{left:0;right:0;top:50%;transform:translateY(-50%);text-align:center;font-family:var(--font-editorial);font-size:clamp(.9rem,1.8vw,1.15rem)}
+.muse-cal-day[data-books] .muse-cal-date{padding:1px 5px;border-radius:999px;background:rgba(0,0,0,.45);color:#fff}
+.muse-cal-cover{position:absolute;inset:0}
+.muse-cal-cover img{width:100%;height:100%;object-fit:cover;display:block}
+.muse-cal-day[data-books="2"] .muse-cal-cover[data-slot="0"]{clip-path:polygon(0 0,100% 0,0 100%)}
+.muse-cal-day[data-books="2"] .muse-cal-cover[data-slot="1"]{clip-path:polygon(100% 0,100% 100%,0 100%)}
+.muse-cal-cover-blank{display:grid;place-items:center;height:100%;padding:4px;box-sizing:border-box;font-family:var(--font-editorial);font-size:.62rem;line-height:1.1;text-align:center;color:var(--foreground);background:linear-gradient(150deg,color-mix(in srgb,var(--accent-primary) 30%,var(--surface-strong)),color-mix(in srgb,var(--accent-secondary) 26%,var(--surface-strong)));overflow:hidden}
+.muse-cal-finished{position:absolute;right:4px;bottom:4px;z-index:2;display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,var(--accent-pop,var(--accent-primary)),var(--accent-secondary));color:#fff;font-size:.7rem;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.muse-cal-more{position:absolute;right:4px;top:4px;z-index:2;padding:0 5px;border-radius:999px;background:rgba(0,0,0,.55);color:#fff;font-size:.66rem}
+.muse-cal-detail{display:grid;gap:8px;margin:0 clamp(14px,2vw,22px);padding:14px 16px;border-radius:16px;background:color-mix(in srgb,var(--surface-control) 70%,transparent)}
+.muse-cal-detail>strong{font-family:var(--font-editorial);font-size:1.1rem}
+.muse-cal-detail-line{margin:0;font-size:.86rem;color:var(--text-muted)}
+.muse-cal-detail ul{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.muse-cal-detail li{display:grid;grid-template-columns:34px minmax(0,1fr) auto;align-items:center;gap:10px}
+.muse-cal-detail-cover{width:34px;aspect-ratio:2/3;border-radius:4px;overflow:hidden;display:block}.muse-cal-detail-cover img{width:100%;height:100%;object-fit:cover}
+.muse-cal-detail li>span:nth-child(2){display:grid;gap:1px;min-width:0}.muse-cal-detail small{color:var(--text-muted);font-size:.78rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.muse-cal-detail em{font-style:normal;font-size:.74rem;color:var(--accent-primary);font-weight:650}
+/* Reading year: a bookshelf strip per month. */
+.muse-year{display:grid;gap:12px;padding:clamp(16px,2.4vw,24px);border:1px solid var(--glass-border);border-radius:24px;background:radial-gradient(ellipse 60% 80% at 0% 0%,color-mix(in srgb,var(--accent-primary) 10%,transparent),transparent 70%),var(--surface-subtle)}
+.muse-year header{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.muse-year h3{margin:0;font-family:var(--font-editorial);font-size:clamp(1.4rem,3vw,1.9rem)}
+.muse-year header span{font-size:.84rem;color:var(--text-muted)}
+.muse-year ol{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 18px;margin:0;padding:0;list-style:none}
+.muse-year li button{display:grid;grid-template-columns:42px minmax(0,1fr);align-items:center;gap:10px;width:100%;padding:6px 8px;border:0;border-radius:12px;background:none;color:inherit;font:inherit;text-align:left;cursor:pointer}
+.muse-year li button:hover{background:color-mix(in srgb,var(--surface-control) 70%,transparent)}
+.muse-year-month{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);font-weight:650}
+.muse-year-shelf{display:flex;align-items:flex-end;gap:4px;min-height:52px;padding:4px 8px 0;border-bottom:3px solid color-mix(in srgb,var(--accent-primary) 30%,var(--glass-border));border-radius:4px}
+.muse-year-cover{width:32px;aspect-ratio:2/3;border-radius:3px;overflow:hidden;box-shadow:2px 3px 6px rgba(0,0,0,.25);display:block}.muse-year-cover img{width:100%;height:100%;object-fit:cover}
+.muse-year-cover .muse-cal-cover-blank{font-size:.44rem}
+.muse-year-empty{display:block;height:2px}
+.muse-year-more{font-size:.72rem;color:var(--text-muted);align-self:center}
+@container muse-content (max-width:640px){
+ .muse-cal-grid{gap:4px}.muse-cal-day{border-radius:7px}.muse-cal-date{font-size:.62rem;left:3px;top:3px}
+ .muse-cal-finished{width:15px;height:15px;font-size:.55rem}
+ .muse-year ol{grid-template-columns:minmax(0,1fr)}
+ .muse-cal-head{min-height:110px;padding:14px}
+}
+
+/* Atlas overview: an editorial ribbon of four numbers instead of eight look-alike boxes. */
+.muse-atlas-ribbon{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin:0;padding:clamp(16px,2.4vw,24px) 0;border-top:1px solid var(--glass-border);border-bottom:1px solid var(--glass-border)}
+.muse-atlas-ribbon>div{display:grid;gap:4px;padding:0 clamp(12px,2vw,24px)}
+.muse-atlas-ribbon>div+div{border-left:1px solid var(--glass-border)}
+.muse-atlas-ribbon dt{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--text-muted);font-weight:650}
+.muse-atlas-ribbon dd{margin:0;font-family:var(--font-editorial);font-size:clamp(1.9rem,4.4vw,3rem);line-height:1;letter-spacing:-.03em}
+.muse-atlas-ribbon>div:nth-child(1) dd{background:linear-gradient(120deg,var(--accent-primary),var(--accent-secondary));-webkit-background-clip:text;background-clip:text;color:transparent}
+.muse-atlas-ribbon>div:nth-child(3) dd{background:linear-gradient(120deg,var(--accent-pop,var(--accent-primary)),var(--accent-primary));-webkit-background-clip:text;background-clip:text;color:transparent}
+.muse-atlas-ribbon>div>span{font-size:.76rem;color:var(--text-muted)}
+.muse-atlas-chips{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
+.muse-atlas-chips li>*,.muse-atlas-chips li{display:inline-flex;align-items:baseline;gap:8px}
+.muse-atlas-chips li{padding:7px 14px;border:1px solid var(--glass-border);border-radius:999px;background:var(--surface-subtle);font-size:.82rem;color:var(--text-muted)}
+.muse-atlas-chips strong{color:var(--foreground);font-family:var(--font-editorial);font-size:1rem}
+.muse-atlas-chips a{color:inherit;text-decoration:none}
+.muse-atlas-chips li:last-child{border-color:color-mix(in srgb,var(--accent-primary) 40%,var(--glass-border));background:color-mix(in srgb,var(--accent-primary) 10%,var(--surface-subtle))}
+@container muse-content (max-width:640px){
+ .muse-atlas-ribbon{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:16px}
+ .muse-atlas-ribbon>div:nth-child(3){border-left:0}
+}
+/* Polish: the seasonal header is always rich enough for white type, in light and dark themes alike. */
+.muse-cal-head{background:radial-gradient(ellipse 70% 120% at 15% 0%,color-mix(in srgb,var(--season-a) 85%,white 15%),transparent 70%),linear-gradient(120deg,var(--season-a),var(--season-b));box-shadow:inset 0 -60px 80px -40px rgba(0,0,0,.28)}
+.muse-cal-head h3{text-shadow:0 2px 14px rgba(0,0,0,.35),0 0 2px rgba(0,0,0,.25)}
+.muse-cal-grid,.muse-cal-stats,.muse-cal-detail{width:min(100% - clamp(20px,4vw,44px),760px);margin-inline:auto;box-sizing:border-box}
+.muse-cal-grid{gap:8px}
+.muse-year-shelf{min-height:46px}
+.muse-year li button{padding:4px 8px}
+@container muse-content (max-width:640px){.muse-cal-grid,.muse-cal-stats,.muse-cal-detail{width:calc(100% - 20px)}.muse-cal-grid{gap:4px}}
+/* With the calendar promoted, the two rhythm charts share the row. */
+.muse-atlas-overview-grid{grid-template-columns:minmax(0,1fr)!important}
+.muse-atlas-overview-grid>.muse-atlas-stack{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(12px,1.8vw,20px)}
+@container muse-content (max-width:760px){.muse-atlas-overview-grid>.muse-atlas-stack{grid-template-columns:minmax(0,1fr)}}
+.muse-books-atlas-days{margin:-6px 0 0}

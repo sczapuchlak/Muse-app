@@ -13,10 +13,18 @@ try{
   check(!(await b.overflow()),`${key}: no horizontal overflow on desktop`);
   for(const t of themes){await b.evaluate(x=>document.documentElement.setAttribute('data-theme',x),t);await wait(350);await b.shoot(`${key}-${t}`);}
  }
+ await open(ids.heir,'heir sittings');
+ const rows=await b.evaluate(()=>({rows:document.querySelectorAll('.muse-sitting').length,menu:document.querySelectorAll('.muse-sitting-menu').length,summary:document.querySelector('.muse-sittings-summary')?.textContent,tabs:getComputedStyle(document.querySelector('.muse-book-page-tabs')).borderRadius}));
+ console.log(JSON.stringify(rows));check(rows.rows>=1&&rows.menu===rows.rows&&/sitting/.test(rows.summary??''),'sittings show as designed rows with a ⋯ menu and a summary');
+ await b.evaluate(()=>document.querySelector('.muse-book-page-tabs-wrap').scrollIntoView({block:'start'}));await wait(300);await b.shoot('heir-lower-half');
+ await b.click('.muse-sitting-menu .muse-button');await b.until(()=>!!document.querySelector('.muse-sitting-actions'),'sitting menu');await b.shoot('heir-sitting-menu');
+ await b.evaluate(()=>document.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true})));await wait(200);
+ await open(ids.manual,'manual sittings');await b.evaluate(()=>document.querySelector('.muse-book-page-tabs-wrap').scrollIntoView({block:'start'}));await wait(300);
+ check(await b.evaluate(()=>!!document.querySelector('.muse-sittings-empty')),'a book without sittings shows a designed empty state');await b.shoot('manual-lower-half');
  const meter=await b.evaluate(()=>{const m=document.querySelector('.muse-book-panel-meter');return m?getComputedStyle(m).height:null;});
  check(meter==='14px','progress meter uses the thicker liquid style');
  await b.viewport(390,844,true);
- for(const [key,id] of Object.entries({heir:ids.heir,acotar:ids.acotar})){await open(id,key+' phone');check(!(await b.overflow()),`${key}: no horizontal overflow on phone`);await b.shoot(`${key}-phone`);await b.evaluate(()=>window.scrollTo(0,1200));await wait(300);await b.shoot(`${key}-phone-lower`);}
+ for(const [key,id] of Object.entries({heir:ids.heir,acotar:ids.acotar})){await open(id,key+' phone');check(!(await b.overflow()),`${key}: no horizontal overflow on phone`);await b.shoot(`${key}-phone`);await b.evaluate(()=>window.scrollTo(0,1200));await wait(300);await b.shoot(`${key}-phone-lower`);await b.evaluate(()=>document.querySelector('.muse-book-page-tabs-wrap')?.scrollIntoView({block:'start'}));await wait(300);await b.shoot(`${key}-phone-tabs`);}
  check(b.errors.length===0,`no uncaught exceptions ${b.errors.join('|').slice(0,200)}`);
  console.log(`\n${passed} checks passed. ${b.shots}`);
 }finally{browser?.close();await removeAccount(account.userId);}

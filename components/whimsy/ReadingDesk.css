@@ -1,0 +1,93 @@
+/* Reading Desk: compact tiles beside the Reading Challenge; two tiles across on phones, more swipe in. */
+.muse-desk-layout{display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(14px,2vw,22px);align-items:stretch;min-width:0}
+.muse-desk-reading{display:grid;align-content:start;gap:12px;min-width:0;padding:clamp(14px,2vw,20px);border:1px solid var(--glass-border);border-radius:24px;background:radial-gradient(ellipse 70% 90% at 100% 0%,color-mix(in srgb,var(--accent-primary) 12%,transparent),transparent 70%),var(--surface-subtle)}
+.muse-desk-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.muse-desk-head h3{margin:0;display:inline-flex;align-items:center;gap:10px;font-family:var(--font-editorial);font-size:clamp(1.25rem,2vw,1.55rem);font-style:normal}
+.muse-desk-count{display:grid;place-items:center;min-width:26px;height:26px;padding:0 7px;border-radius:999px;font-family:var(--font-body,inherit);font-size:.78rem;font-weight:700;background:color-mix(in srgb,var(--accent-primary) 16%,transparent);color:var(--foreground)}
+.muse-desk-nav{display:flex;align-items:center;gap:6px}
+.muse-desk-nav .small-label{margin:0 4px 0 0}
+.muse-desk-nav .muse-button{width:34px;min-width:34px;height:34px;min-height:34px;padding:0;display:grid;place-items:center;background:var(--surface-control)}
+.muse-desk-nav .muse-button:first-of-type svg{transform:rotate(90deg)}.muse-desk-nav .muse-button:last-of-type svg{transform:rotate(-90deg)}
+.muse-desk-nav .muse-button:disabled{opacity:.4}
+.muse-desk-track{display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - 14px)/2);gap:14px;margin:0;padding:2px;list-style:none;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-inline:contain}
+.muse-desk-track::-webkit-scrollbar{display:none}
+.muse-desk-layout[data-count="1"] .muse-desk-track{grid-auto-columns:100%}
+.muse-desk-track>li{min-width:0;scroll-snap-align:start}
+.muse-desk-tile{position:relative;display:grid;grid-template-columns:clamp(64px,7vw,88px) minmax(0,1fr);gap:14px;height:100%;box-sizing:border-box;padding:12px;border:1px solid var(--glass-border);border-radius:18px;background:linear-gradient(150deg,color-mix(in srgb,var(--surface-strong) 55%,transparent),transparent 70%),var(--surface-subtle);transition:border-color var(--motion-hover,180ms) ease,transform var(--motion-hover,180ms) ease}
+.muse-desk-tile:hover{border-color:var(--selected-border)}
+.muse-desk-tile-cover .muse-book-cover{max-width:none;border-radius:5px 9px 9px 5px;box-shadow:3px 4px 0 -1px var(--glass-border),7px 11px 18px rgba(0,0,0,.2)}
+.muse-desk-tile-body{display:grid;align-content:start;gap:6px;min-width:0}
+.muse-desk-tile h4{margin:0;font-size:1.08rem;line-height:1.22}
+.muse-desk-tile-open{padding:0;border:0;background:none;color:inherit;font:inherit;font-family:var(--font-editorial);font-weight:var(--type-title-weight);text-align:left;cursor:pointer;overflow-wrap:break-word;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden}
+.muse-desk-tile-open::after{content:"";position:absolute;inset:0;border-radius:18px}
+.muse-desk-tile-open:focus-visible{outline:none}.muse-desk-tile-open:focus-visible::after{outline:2px solid var(--focus-ring,var(--foreground));outline-offset:2px}
+.muse-desk-tile-author{margin:0;font-size:.82rem;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.muse-desk-tile-progress{display:grid;gap:5px;margin-top:2px}
+.muse-desk-pool{position:relative;display:block;height:10px;border-radius:999px;overflow:hidden;background:var(--wash-aqua,color-mix(in srgb,var(--foreground) 9%,transparent));box-shadow:inset 0 0 0 1px var(--glass-aqua-edge,var(--glass-border))}
+.muse-desk-pool>span{position:absolute;inset:0 auto 0 0;width:var(--fill);border-radius:inherit;background:var(--water-progress-gradient,linear-gradient(90deg,var(--accent-primary),var(--accent-secondary)));box-shadow:0 0 10px var(--water-glow,color-mix(in srgb,var(--accent-primary) 45%,transparent)),inset 0 1px 0 rgba(255,255,255,.4)}
+.muse-desk-tile-pages{font-size:.78rem;color:var(--text-muted)}.muse-desk-tile-pages strong{color:var(--foreground)}
+.muse-desk-tile-last{margin:0;font-size:.76rem;font-style:italic;font-family:var(--font-editorial);color:var(--text-muted)}
+.muse-desk-tile-actions{position:relative;z-index:1;display:flex;gap:6px;margin-top:4px}
+.muse-desk-continue{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:38px;border-radius:999px;font-size:.86rem;white-space:nowrap}
+.muse-desk-more{width:38px;min-width:38px;height:38px;min-height:38px;padding:0;border-radius:50%;font-size:1.1rem;line-height:1;background:var(--surface-control)}
+.muse-desk-menu{display:grid;gap:6px;padding:6px}
+.muse-desk-menu .popover-choice{display:flex;align-items:center;gap:8px}
+.muse-desk-menu-status .muse-books-status-control{margin:0;padding:0;border:0}.muse-desk-menu-status .muse-choice-trigger{width:100%;justify-content:space-between}
+.muse-desk-goals{display:grid;min-width:0}
+.muse-desk-goals>.muse-challenge{height:100%;box-sizing:border-box;margin:0}
+@container muse-content (max-width:880px){.muse-desk-layout{grid-template-columns:minmax(0,1fr)}}
+@container muse-content (max-width:640px){
+ .muse-desk-reading{padding:12px;border-radius:20px}
+ .muse-desk-track{grid-auto-columns:calc((100% - 10px)/2);gap:10px}
+ .muse-desk-layout[data-count="1"] .muse-desk-track{grid-auto-columns:100%}
+ .muse-desk-layout:not([data-count="1"]) .muse-desk-tile{grid-template-columns:minmax(0,1fr);gap:8px;padding:10px}
+ .muse-desk-layout:not([data-count="1"]) .muse-desk-tile-cover{width:64px}
+ .muse-desk-layout:not([data-count="1"]) .muse-desk-continue{font-size:.8rem;padding-inline:8px}
+ .muse-desk-layout:not([data-count="1"]) .muse-desk-continue svg{display:none}
+ .muse-desk-tile h4{font-size:1rem}
+}
+@media(prefers-reduced-motion:reduce){.muse-desk-tile{transition:none}}
+
+.muse-desk-layout[data-goals]{grid-template-columns:minmax(0,1.75fr) minmax(250px,1fr)}
+/* Desktop: three tiles across in the full-width desk. */
+.muse-desk-layout:not([data-count="1"]):not([data-goals]) .muse-desk-track{grid-auto-columns:calc((100% - 28px)/3)}
+.muse-desk-layout[data-count="2"]:not([data-goals]) .muse-desk-track{grid-auto-columns:calc((100% - 14px)/2)}
+@container muse-content (max-width:980px){.muse-desk-layout:not([data-count="1"]):not([data-goals]) .muse-desk-track{grid-auto-columns:calc((100% - 14px)/2)}}
+/* Streak and yearly goal share one row, 50/50; they stack on phones. */
+.muse-desk-top{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(12px,1.6vw,18px);align-items:stretch;min-width:0}
+.muse-desk-top>*{min-width:0;margin:0}
+.muse-desk-top .muse-streak-panel{align-content:center}
+.muse-desk-top .muse-streak{grid-template-columns:auto auto;grid-template-rows:auto auto}
+.muse-desk-top .muse-streak-week{grid-column:1/-1;grid-row:2;justify-content:space-between}
+.muse-desk-top .muse-streak-meta{justify-self:end}
+.muse-desk-top>.muse-challenge{display:grid;align-content:center;gap:8px;padding:14px 18px;border-radius:24px;background:radial-gradient(ellipse 60% 120% at 100% 50%,color-mix(in srgb,var(--accent-secondary) 14%,transparent),transparent 70%),var(--surface-subtle)}
+.muse-desk-top>.muse-challenge .muse-books-panel-head{margin:0}
+.muse-desk-top>.muse-challenge .muse-books-panel-head h4{font-size:1.15rem}
+.muse-desk-top>.muse-challenge .muse-challenge-summary{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:14px}
+.muse-desk-top>.muse-challenge .muse-challenge-dial{width:76px;height:76px}
+.muse-desk-top>.muse-challenge .muse-challenge-words{display:grid;gap:2px}
+.muse-desk-top>.muse-challenge .muse-challenge-words p{margin:0;font-size:.84rem}
+.muse-desk-top>.muse-challenge .muse-challenge-headline{font-family:var(--font-editorial);font-size:1.05rem!important}
+.muse-desk-top>.muse-challenge .muse-challenge-empty{margin:0;font-size:.84rem}
+@container muse-content (max-width:760px){.muse-desk-top{grid-template-columns:minmax(0,1fr)}}
+/* The desk draws its own surface; the older Reading Desk section box must not wrap it a second time. */
+.muse-bookshelf[data-surface="desk"] .muse-books-section[aria-label="Reading Desk"]{padding:0;border:0;border-radius:0;background:none;box-shadow:none;gap:clamp(12px,1.6vw,18px)}
+.muse-bookshelf[data-surface="desk"] .muse-books-section[aria-label="Reading Desk"]::before,.muse-bookshelf[data-surface="desk"] .muse-books-section[aria-label="Reading Desk"]::after{display:none}
+.muse-desk-layout[data-count="1"] .muse-desk-track{grid-auto-columns:min(100%,620px)}
+.muse-desk-continue{flex:0 1 230px}
+@container muse-content (max-width:640px){.muse-desk-continue{flex:1 1 auto}}
+.muse-desk-top>*{margin:0!important}
+.muse-desk-top .muse-streak{padding:14px 18px;row-gap:10px}
+.muse-desk-top .muse-streak-count strong{font-size:2.3rem}
+.muse-desk-top .muse-streak-heart{width:28px;height:28px}
+.muse-desk-tile{overflow:hidden}
+.muse-desk-tile-body,.muse-desk-tile-progress,.muse-desk-tile-actions{min-width:0;max-width:100%}
+@container muse-content (max-width:640px){
+ .muse-desk-layout:not([data-count="1"]) .muse-desk-continue{flex:1 1 0;min-width:0;padding-inline:6px}
+ .muse-desk-layout:not([data-count="1"]) .muse-desk-continue-tail{display:none}
+ .muse-desk-layout:not([data-count="1"]) .muse-desk-more{width:34px;min-width:34px;height:34px;min-height:34px}
+ .muse-desk-head{gap:6px}.muse-desk-nav .small-label{display:none}
+}
+/* An unbroken word must never widen the tile's columns. */
+.muse-desk-tile-body,.muse-desk-tile-progress{grid-template-columns:minmax(0,1fr)}
+.muse-desk-tile-open{overflow-wrap:anywhere}
