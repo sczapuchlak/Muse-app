@@ -12,11 +12,11 @@ try{
  for(const offset of [1,2,3,4,6]){const date=day(offset);await save('sessions',{id:crypto.randomUUID(),bookId:account.ids.heir,date,timeZone:'UTC',pages:5,activeSegments:[{start:`${date}T07:00:00.000Z`,end:`${date}T07:20:00.000Z`}],manual:true});}
  await save('widgets',{id:crypto.randomUUID(),experience:'bookshelf',enabled:true,featuredBookId:account.ids.heir});
  browser=await openBrowser(account,{shots});const b=browser;
- await b.go('/collections?kind=book&mode=board','!!document.querySelector(".muse-streak")','desk');await wait(600);
- const desk=await b.evaluate(()=>({hearts:document.querySelectorAll('.muse-streak-week .muse-streak-heart').length,filled:document.querySelectorAll('.muse-streak-week .muse-streak-heart[data-filled]').length,count:document.querySelector('.muse-streak-count strong')?.textContent,atlasLinks:[...document.querySelectorAll('main a, main button')].filter(x=>/^\s*Reading Atlas\s*$/.test(x.textContent)).length,settings:!!document.querySelector('[data-books-settings-trigger]'),deskActions:!!document.querySelector('.muse-books-desk-actions')}));
+ await b.go('/collections','!!document.querySelector(".muse-streak")','desk');await wait(600);
+ const desk=await b.evaluate(()=>({hearts:document.querySelectorAll('.muse-streak-week .muse-streak-heart').length,filled:document.querySelectorAll('.muse-streak-week .muse-streak-heart[data-filled]').length,count:document.querySelector('.muse-streak-count strong')?.textContent,atlasLinks:[...document.querySelectorAll('main a, main button')].filter(x=>/^\s*Reading Atlas\s*$/.test(x.textContent)).length,settings:!!document.querySelector('button[aria-label="Books settings"]'),deskActions:!!document.querySelector('.muse-books-desk-actions')}));
  console.log(JSON.stringify(desk));
  check(desk.hearts===7&&desk.filled>=5,'seven hearts, the reading days filled');check(desk.count==='5','current streak counts five consecutive days');
- check(desk.atlasLinks===1,'Reading Atlas appears once');check(desk.settings&&!desk.deskActions,'Reading settings moved to the Books toolbar');
+ check(desk.atlasLinks===1,'Reading Atlas appears once (in the Books navigation)');check(desk.settings&&!desk.deskActions,'Books settings sit in the page header');
  await b.evaluate(()=>window.scrollTo(0,0));await b.shoot('desk-streak');
  await b.click('.muse-streak');await b.until(()=>!!document.querySelector('.muse-atlas-streaks'),'atlas streak view');await wait(500);
  check(await b.evaluate(()=>document.querySelector('.muse-streaks-now strong')?.textContent==='5'),'Atlas streak view opens from the hearts');await b.shoot('atlas-streaks');

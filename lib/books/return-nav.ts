@@ -37,8 +37,8 @@ export function parseSeriesKey(key:string):{savedId:string}|{source:'hardcover'|
  * can read Collections › Book › Series and every step is a real link. `root` is where the library was left (state intact).
  */
 export function trailAncestors():{root:string;steps:ReturnContext[]}{
- if(typeof window==='undefined')return {root:'/collections?kind=book',steps:[]};
- const entries=read(),seen=new Set<string>(),steps:ReturnContext[]=[];let cursor=here(),root='/collections?kind=book';
+ if(typeof window==='undefined')return {root:'/collections',steps:[]};
+ const entries=read(),seen=new Set<string>(),steps:ReturnContext[]=[];let cursor=here(),root='/collections';
  for(let i=0;i<6;i++){
   const entry=[...entries].reverse().find(e=>e.to===cursor);
   if(!entry||seen.has(entry.from))break;seen.add(entry.from);

@@ -103,7 +103,7 @@ test('series and book routes are addressable, contextual, and never revive the s
  assert.match(page,/className="muse-book-page-series-chip"/,'the series sits in the book header');assert.match(page,/muse-book-series-strip/,'an ordered series preview on the book itself');
  assert.doesNotMatch(page,/\['series','Series'\]/,'no Series tab hides the relationship');assert.doesNotMatch(page,/<details className="muse-books-about">/,'the synopsis is visible, not collapsed');
  const shelf=read('components/whimsy/Bookshelf.tsx');assert.doesNotMatch(shelf,/WhimsyExperienceHeader|aria-label="Bookshelf views"/,'no standalone Books header or tabs');
- assert.match(read('components/collections/Collections.tsx'),/<Bookshelf surface="desk" embedded\/>/,'Reading Desk lives in Collections › Books');
+ assert.match(read('components/collections/Collections.tsx'),/<Bookshelf surface="dashboard" embedded\/>/,'Currently Reading lives on the Books Dashboard');
  assert.match(read('app/(app)/collections/reading-atlas/page.tsx'),/ReadingAtlasRoute/);
 });
 

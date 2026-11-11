@@ -81,3 +81,5 @@
  .muse-desk-track,.muse-desk-layout[data-count="1"] .muse-desk-track,.muse-desk-layout[data-count="2"] .muse-desk-track{grid-auto-columns:calc((100% - 10px)/2);gap:10px}
  .muse-desk-layout .muse-desk-tile{padding:10px}
 }
+.muse-dash-side .muse-streak-panel{padding:0!important}
+.muse-dash-side .muse-streak{padding:14px 16px}

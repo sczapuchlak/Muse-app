@@ -9,7 +9,7 @@ try{
  seedLargeLibrary(account.userId,COUNT);browser=await openBrowser(account,{shots});const b=browser;
  const cards=()=>b.evaluate(()=>document.querySelectorAll('.muse-collections-library-page .muse-collections-card').length);
  const ready='document.querySelectorAll(".muse-collections-library-page .muse-collections-card").length>0';
- const library=(query='')=>b.go(`/collections?mode=library&kind=book${query}`,ready,'library '+query);
+ const library=(query='')=>b.go(`/collections?tab=library&kind=book${query}`,ready,'library '+query);
  const libraryTop=()=>b.evaluate(()=>{document.querySelector('.muse-collections-library-page')?.scrollIntoView({block:'start'});window.scrollBy(0,-8);});
  const shootLibrary=async name=>{await libraryTop();return b.shoot(name);};
  const summary=()=>b.text('.muse-pagination[data-position="top"] .muse-pagination-summary');

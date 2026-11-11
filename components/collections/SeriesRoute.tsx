@@ -78,7 +78,7 @@ export function SeriesRoute({seriesKey}:{seriesKey:string}){
  const view=useMemo(()=>saved?{series:saved,members:records.seriesMembers.filter(m=>m.series_id===saved.id)}:catalog?catalogSeriesView(catalog,books,userId):null,[saved,records.seriesMembers,catalog,books,userId]);
  const shelf=view?seriesShelf(view.series,view.members,books,today):null;
 
- function leave(){goBack(router,'/collections?kind=book');}
+ function leave(){goBack(router,'/collections?tab=library');}
  function openBook(id:string){const href=bookHref(id);rememberReturn(href,view?.series.title??'series');router.push(href);}
  /** Saves the catalog series (the first add or star) and returns the saved row for one installment. */
  async function savedMember(entry:ShelfEntry):Promise<SeriesMember|null>{

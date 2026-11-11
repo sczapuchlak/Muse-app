@@ -17,7 +17,7 @@ try{
  const summary=()=>b.text('.muse-pagination[data-position="top"] .muse-pagination-summary');
  const firstTitle=()=>b.text('.muse-collections-library-page .muse-collections-card .muse-card-title');
  const ready='document.querySelectorAll(".muse-collections-library-page .muse-collections-card").length>0';
- const library=(query='')=>b.go(`/collections?mode=library&kind=book${query}`,ready,'library '+query);
+ const library=(query='')=>b.go(`/collections?tab=library&kind=book${query}`,ready,'library '+query);
  const libraryTop=()=>b.evaluate(()=>{document.querySelector('.muse-collections-library-page')?.scrollIntoView({block:'start'});window.scrollBy(0,-8);});
  const shootLibrary=async name=>{await libraryTop();return b.shoot(name);};
  const chooseMenu=async(label,option)=>{await b.click(`button.muse-choice-trigger[aria-label^="${label}"]`);await b.until(()=>!!document.querySelector('.popover-choice'),'menu open');await b.click('.popover-choice',option);await wait(300);};
@@ -38,8 +38,8 @@ try{
  check(imgs.total>0&&imgs.total<=24&&imgs.lazy===imgs.total&&imgs.sized,`covers are lazy and sized: ${JSON.stringify(imgs)}`);
 
  await b.evaluate(()=>window.scrollTo(0,0));await b.shoot('desktop-reading-desk');
- const desk=await b.evaluate(()=>{const cs=[...document.querySelectorAll('.muse-desk-tile')];return {n:cs.length,tallest:Math.max(...cs.map(c=>Math.round(c.getBoundingClientRect().height))),brokenTitles:cs.filter(c=>{const t=c.querySelector('.muse-desk-tile-open');return !t||t.scrollWidth>t.clientWidth+1&&getComputedStyle(t).textOverflow!=='ellipsis';}).length};});
- console.log('reading desk cards',JSON.stringify(desk));check(desk.n>0&&desk.tallest<=230&&desk.brokenTitles===0,`Reading Desk cards stay compact with word-wrapped titles (${desk.tallest}px tall)`);
+ // Currently Reading lives on the Dashboard now; the Library has no desk.
+ check(await b.evaluate(()=>!document.querySelector('.muse-desk-tile')),'the Library holds no Currently Reading widgets');
  // Page sizes
  for(const size of [12,48,96,24]){await chooseMenu('Library per page, top',`${size} per page`);check(await cards()===size,`page size ${size} renders ${size} cards`);}
  // Next / previous / numbered
@@ -89,7 +89,7 @@ try{
  const openedTitle=await b.evaluate(()=>{const c=[...document.querySelectorAll('.muse-collections-library-page .muse-collections-card')].find(x=>x.getBoundingClientRect().top>200&&x.getBoundingClientRect().top<800);const t=c.querySelector('.muse-card-title').textContent;c.click();return t;});
  await b.until(()=>location.pathname.startsWith('/collections/books/'),'book detail opened');await b.until(()=>!!document.querySelector('main h1, main h2'),'detail rendered');
  await b.shoot('desktop-book-detail');
- await b.send('Page.navigate',{url:'about:blank'}).catch(()=>{});await b.go('/collections?kind=book&mode=library',ready,'reset');
+ await b.send('Page.navigate',{url:'about:blank'}).catch(()=>{});await b.go('/collections?tab=library&kind=book',ready,'reset');
  // Fresh history entry above, then do the real round trip with browser Back
  await library('&sort=title&size=48&page=3&status=planned');await b.evaluate(()=>window.scrollTo(0,1400));await wait(300);
  await b.evaluate(()=>{const c=[...document.querySelectorAll('.muse-collections-library-page .muse-collections-card')].find(x=>x.getBoundingClientRect().top>200&&x.getBoundingClientRect().top<800);c.click();});
@@ -102,12 +102,7 @@ try{
  check(Math.abs(after.scroll-scrollBefore)<=120,`scroll position restored (${scrollBefore} → ${after.scroll})`);
  void openedTitle;
 
- // Board mode and Series
- await b.go('/collections?mode=board&kind=book','document.querySelectorAll(".muse-collections-board .muse-collections-card").length>0','board');
- const board=await b.evaluate(()=>({cards:document.querySelectorAll('.muse-collections-card').length,controls:document.querySelectorAll('.muse-pagination').length}));
- console.log('board',JSON.stringify(board));check(board.cards<=24+7*6+12,`Board mode never mounts the whole library (${board.cards} cards)`);
- await b.shoot('desktop-board');
-
+ // The Board is retired; Books has Dashboard, Library and Atlas.
  // Themes -----------------------------------------------------------------------------------------------------------
  await library('&sort=recent&page=2');
  for(const theme of themes){await b.evaluate(t=>{document.documentElement.setAttribute('data-theme',t);},theme);await wait(400);await shootLibrary(`theme-${theme}-top`);await b.evaluate(()=>document.querySelector('.muse-pagination[data-position="bottom"]').scrollIntoView({block:'center'}));await wait(200);await b.shoot(`theme-${theme}-bottom`);}
