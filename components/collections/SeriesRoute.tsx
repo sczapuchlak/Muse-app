@@ -45,6 +45,21 @@ export function SeriesRoute({seriesKey}:{seriesKey:string}){
  const [layout,setLayoutState]=useState<'list'|'grid'>('list');
  useEffect(()=>{const frame=requestAnimationFrame(()=>{try{const v=localStorage.getItem('muse.series.layout');if(v==='grid'||v==='list')setLayoutState(v);}catch{/* list by default */}});return()=>cancelAnimationFrame(frame);},[]);
  const setLayout=(v:'list'|'grid')=>{setLayoutState(v);try{localStorage.setItem('muse.series.layout',v);}catch{/* this visit only */}};
+ // Additional works end where the main column ends: measure the room, show that many rows, page through the rest.
+ const [addSize,setAddSize]=useState(5),[addPage,setAddPage]=useState(0),[viewTick,setViewTick]=useState(0);
+ useEffect(()=>{const on=()=>setViewTick(t=>t+1);window.addEventListener('resize',on);return()=>window.removeEventListener('resize',on);},[]);
+ useEffect(()=>{
+  const section=document.querySelector<HTMLElement>('.muse-series-page-additional'),main=document.querySelector<HTMLElement>('.muse-series-col-main'),rows=section?.querySelector<HTMLElement>('.muse-series-page-rows');
+  if(!section||!main||!rows||!rows.children.length)return;
+  const sideIsColumn=getComputedStyle(document.querySelector('.muse-series-col-side')!).display!=='contents';
+  const total=Number(section.dataset.total||0);let next=5;
+  if(sideIsColumn&&main.lastElementChild){
+   const avail=main.lastElementChild.getBoundingClientRect().bottom-section.getBoundingClientRect().top,nav=section.querySelector<HTMLElement>('.muse-series-additional-nav'),chrome=section.offsetHeight-rows.offsetHeight-(nav?.offsetHeight??0)+52,each=rows.offsetHeight/rows.children.length;
+   next=Math.max(2,Math.floor((avail-chrome)/each));
+  }
+  next=Math.min(Math.max(next,2),Math.max(total,2));
+  if(next!==addSize)setAddSize(next);
+ });
 
  // The saved series for this route: by id, or the saved copy of the catalog series it names.
  const saved:Series|null='savedId' in parsed?records.series.find(s=>s.id===parsed.savedId)??null:records.series.find(s=>s.catalog_source===parsed.source&&s.catalog_id===parsed.id)??null;
@@ -204,9 +219,9 @@ export function SeriesRoute({seriesKey}:{seriesKey:string}){
     {shelf.collections.length>0&&<div className="muse-series-progress-extra"><div><strong>Collections &amp; box sets</strong><small>Bundles and collected editions</small></div><span className="muse-book-chip">Not counted</span></div>}
     {!core.complete&&!core.caughtUp&&shelf.next?<div className="muse-series-page-next"><span className="small-label">Next in order</span><div><SeriesCover title={shelf.next.title} coverUrl={shelf.next.coverUrl} color={shelf.next.coverColor} ghost={!shelf.next.book} size="sm"/><span><strong className="type-title">{shelf.next.title}</strong><small>{shelf.next.book?shelfStateLabel[shelf.next.state]:'Not on your shelf yet'}</small></span></div>{shelf.next.book?<button type="button" className="muse-button button-primary" onClick={()=>openBook(shelf.next!.book!.id)}>Open book</button>:<button type="button" className="muse-button button-primary" disabled={!!quick.pending} onClick={()=>void add(shelf.next!,'planned')}>{quick.pending===shelf.next.key?'Adding…':'Add to Want to Read'}</button>}</div>:null}
    </aside>
-  {shelf.additional.length>0&&<section className="muse-card muse-series-page-order muse-series-page-additional" data-layout={layout} aria-labelledby="series-additional-heading">
+  {shelf.additional.length>0&&<section className="muse-card muse-series-page-order muse-series-page-additional" data-layout={layout} data-total={shelf.additional.length} aria-labelledby="series-additional-heading">
    <header className="muse-series-page-order-head"><div><h2 id="series-additional-heading" className="muse-book-page-section-title">Additional works <span className="muse-series-page-section-count type-numeric">{shelf.additional.length}</span></h2><p>Prequels, novellas and companion stories, at their place in the order. Tracked on their own; they don’t change series progress.</p></div><span className="muse-book-chip">{shelf.additionalReadCount} of {shelf.additional.length} read</span></header>
-   {list(shelf.additional,'Additional works')}
+   {layout==='grid'?list(shelf.additional,'Additional works'):(()=>{const pages=Math.max(1,Math.ceil(shelf.additional.length/addSize)),at=Math.min(addPage,pages-1),from=at*addSize;return <>{list(shelf.additional.slice(from,from+addSize),'Additional works')}{pages>1&&<nav className="muse-series-additional-nav" aria-label="Additional works pages"><span className="small-label type-numeric">{from+1}–{Math.min(shelf.additional.length,from+addSize)} of {shelf.additional.length}</span><button type="button" className="muse-button button-ghost" aria-label="Previous additional works" disabled={at===0} onClick={()=>setAddPage(at-1)}><MuseIcon name="chevron" size={15}/></button><button type="button" className="muse-button button-ghost" aria-label="Next additional works" disabled={at>=pages-1} onClick={()=>setAddPage(at+1)}><MuseIcon name="chevron" size={15}/></button></nav>}</>;})()}
   </section>}
    </div>
   </div>
