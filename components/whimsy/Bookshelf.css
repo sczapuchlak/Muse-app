@@ -325,3 +325,17 @@
 .muse-desk-top .muse-streak-panel{background-image:none!important;background-color:var(--glass-background)!important}
 .muse-paged-rows.muse-toprated{grid-template-columns:repeat(6,minmax(0,112px));justify-content:start}
 @container muse-content (max-width:700px){.muse-paged-rows.muse-toprated{grid-template-columns:repeat(3,minmax(0,112px))}}
+/* Completed books: a small cover leads each row; month rows open that month's books. */
+button.muse-books-finished-row{grid-template-columns:34px minmax(0,1fr);align-items:center;gap:0 12px;width:100%;text-align:left;color:inherit;font:inherit;cursor:pointer}
+button.muse-books-finished-row:hover,.muse-month-books button:hover{border-color:var(--selected-border)}
+.muse-finished-cover{display:block;width:34px;aspect-ratio:2/3;border-radius:3px 5px 5px 3px;overflow:hidden;box-shadow:1px 2px 6px rgba(0,0,0,.28);grid-row:1}
+.muse-finished-cover img{width:100%;height:100%;object-fit:cover;display:block}
+.muse-finished-cover .muse-cal-cover-blank{font-size:.42rem}
+.muse-finished-copy{display:grid;gap:2px;min-width:0}
+.muse-finished-copy strong{font-size:.92rem;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.muse-finished-copy>span{font-size:.76rem;color:var(--text-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+button.muse-books-month-row{width:100%;border:0;background:none;color:inherit;font:inherit;text-align:left;cursor:pointer;border-radius:10px;padding:6px 8px;margin:0 -8px;width:calc(100% + 16px)}
+button.muse-books-month-row:hover{background:var(--surface-hover)}
+.muse-month-books{display:grid;gap:8px;margin:12px 0 0;padding:0;list-style:none}
+.muse-month-books button{display:grid;grid-template-columns:40px minmax(0,1fr);align-items:center;gap:12px;width:100%;padding:8px 10px;border:1px solid var(--glass-border);border-radius:12px;background:var(--surface-subtle);color:inherit;font:inherit;text-align:left;cursor:pointer}
+.muse-month-books .muse-finished-cover{width:40px}
