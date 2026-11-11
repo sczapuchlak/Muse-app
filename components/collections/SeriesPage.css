@@ -227,9 +227,9 @@
  --spine-w:var(--spine-w-d,52px);--fade:clamp(56px,6vw,96px);--zone:clamp(14px,1.8vw,24px);--ledge:20px;
  --bleed:calc(var(--page-padding,24px) - 2px);/* the page margin: the ledge reaches into it, never past the viewport */
  position:relative;isolation:isolate;justify-self:end;min-width:0;
- width:max-content;max-width:min(48vw,780px);
- padding:18px calc(var(--zone) - 10px) var(--ledge) var(--fade);display:flex;align-items:flex-end}
-.muse-series-shelf>.muse-spines{position:relative;z-index:1;flex:1 1 auto;min-width:0}
+ width:calc(var(--count,7)*(var(--spine-w) + 6px) + var(--fade) + var(--zone) + 6px);max-width:min(48vw,780px);
+ padding:18px var(--zone) var(--ledge) var(--fade)}
+.muse-series-shelf>.muse-spines{position:relative;z-index:1}
 .muse-series-shelf .muse-series-shelf-books{filter:drop-shadow(0 8px 8px color-mix(in srgb,black 30%,transparent))}
 
 /* The ledge: dark walnut, near black. A lit top edge, a darker front face with faint grain, a natural shadow below. */
@@ -250,7 +250,7 @@
 /* Below ~1240px there is no room for text and shelf side by side: the shelf drops under the title, still right-aligned. */
 @media(max-width:1240px){.muse-series-shelf-strand{top:-64px;height:72px}.muse-series-hero2{grid-template-columns:minmax(0,1fr)}.muse-series-shelf{max-width:100%;justify-self:end}}
 @media(max-width:620px){
- .muse-series-shelf{--spine-w:min(var(--spine-w-d,40px),42px);--fade:clamp(24px,8vw,40px);--zone:clamp(10px,3vw,16px);--ledge:18px;--bleed:calc(var(--page-padding,16px) - 2px);width:100%;justify-self:stretch;padding-top:16px;padding-right:var(--zone)}
+ .muse-series-shelf{--spine-w:min(var(--spine-w-d,40px),42px);--fade:clamp(24px,8vw,40px);--zone:clamp(10px,3vw,16px);--ledge:18px;--bleed:calc(var(--page-padding,16px) - 2px);width:100%;justify-self:stretch;padding-top:16px}
  .muse-series-shelf-backdrop{left:calc(var(--fade)*.15);top:4px}
  .muse-series-shelf-strand{top:-44px;height:52px}
  .muse-series-shelf-ledge{bottom:-2px;height:20px}
