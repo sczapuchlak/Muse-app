@@ -8,9 +8,10 @@ import {dateLabel} from '@/lib/dates';
 import type {Book} from '@/lib/whimsy/models';
 import {bookCompletions} from '@/lib/whimsy/reading-stats';
 import {CoverThumb} from './BookSearch';
+import {StreakHeart} from './ReadingStreak';
 import {BookEmojiPicker} from './BookEmojiPicker';
 
-export type FinishDetails={finishedOn:string;rating?:number;review?:string;reviewEmojis:string[]};
+export type FinishDetails={finishedOn:string;rating?:number;review?:string;reviewEmojis:string[];favorite?:boolean};
 
 /**
  * The finish check-in for one read: confirm the date, then optionally rate, review and choose the book's emojis.
@@ -20,11 +21,11 @@ export type FinishDetails={finishedOn:string;rating?:number;review?:string;revie
 export function FinishBook({book,today,busy,error,reason,onFinish,onClose}:{book:Book;today:string;busy:boolean;error?:string;reason:'shelf'|'last-page';onFinish:(details:FinishDetails)=>void;onClose:()=>void}){
  const history=bookCompletions(book),reread=history.length>0,previous=history.at(-1)?.finishedOn;
  const draft={rating:reread?undefined:book.rating,review:reread?undefined:book.finalThoughts?.trim()||undefined};
- const [finishedOn,setFinishedOn]=useState(today),[rating,setRating]=useState<number|null>(draft.rating??null),[emojis,setEmojis]=useState(reread?[]:book.reviewEmojis),[review,setReview]=useState(draft.review??''),[problem,setProblem]=useState('');
+ const [finishedOn,setFinishedOn]=useState(today),[rating,setRating]=useState<number|null>(draft.rating??null),[emojis,setEmojis]=useState(reread?[]:book.reviewEmojis),[review,setReview]=useState(draft.review??''),[problem,setProblem]=useState(''),[favorite,setFavorite]=useState(false);
  function save(skip:boolean){
   setProblem('');
   if(previous&&finishedOn<previous){setProblem(`This read has to finish on or after your previous finish (${dateLabel(previous)}, ${previous.slice(0,4)}).`);return;}
-  onFinish(skip?{finishedOn,...draft,reviewEmojis:reread?[]:book.reviewEmojis}:{finishedOn,...(rating?{rating}:{}),...(review.trim()?{review:review.trim()}:{}),reviewEmojis:emojis});
+  onFinish(skip?{finishedOn,...draft,reviewEmojis:reread?[]:book.reviewEmojis}:{finishedOn,...(rating?{rating}:{}),...(review.trim()?{review:review.trim()}:{}),reviewEmojis:emojis,...(favorite?{favorite:true}:{})});
  }
  return <MuseModal id="bookshelf-finish-book" label="Finish book" title={reason==='last-page'?'You reached the last page':reread?'Another read, finished':'You finished it'} returnFocus={null} onClose={onClose}>
   <form className="muse-books-dialog muse-finish-book" onSubmit={e=>{e.preventDefault();save(false);}}>
@@ -37,6 +38,7 @@ export function FinishBook({book,today,busy,error,reason,onFinish,onClose}:{book
    <div className="muse-books-select-field"><span>Finished on</span><MuseDatePicker label="Finished on" date={finishedOn} today={today} onChange={setFinishedOn}/></div>
    <StarRating label="Your rating for this read" value={rating} onChange={setRating}/>
    <BookEmojiPicker values={emojis} onChange={setEmojis}/>
+   <button type="button" className="muse-finish-favorite" aria-pressed={favorite} onClick={()=>setFavorite(v=>!v)}><StreakHeart filled={favorite} size={22}/><span><strong>{favorite?'A favourite in your reading log':'Mark as a favourite in my reading log'}</strong><small>It joins your favourites for {finishedOn.slice(0,4)} in the Atlas.</small></span></button>
    <label><span className="muse-whimsy-inline-label">Final thoughts on this read <small>optional</small></span><textarea value={review} onChange={e=>setReview(e.target.value)}/></label>
    <div className="muse-books-actions">
     <button type="submit" className="muse-button button-primary" disabled={busy}>Save finished book</button>

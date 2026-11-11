@@ -3,7 +3,7 @@ import {useState} from 'react';
 import type {Book} from '@/lib/whimsy/models';
 import type {DateRange} from '@/lib/whimsy/reading-stats';
 import {completionEvents} from '@/lib/whimsy/reading-stats';
-import {readOpinion} from '@/lib/whimsy/reading-cycles';
+import {isFavoriteRead,readOpinion} from '@/lib/whimsy/reading-cycles';
 import {emojiRanking} from '@/lib/whimsy/reading-dna';
 import {Cover} from './CoverCalendar';
 import {ActivityBars,monthName,shortMonth} from './parts';
@@ -22,7 +22,7 @@ export function MonthShelf({books,today,onOpenBook}:{books:Book[];today:string;o
   {!events.length?<p>Nothing finished in {year} yet.</p>:<>
    <p className="muse-atlas-books-note">{events.length} {events.length===1?'book':'books'} finished{top>0?` · best month: ${monthName(months[best.indexOf(top)])}, ${top}`:''}</p>
    <ol className="muse-shelf" aria-label={`Books finished each month of ${year}`}>{months.map((m,k)=>{const list=events.filter(e=>e.completion.finishedOn?.startsWith(m)),shown=list.slice(-4);return <li key={m}>
-    <div className="muse-shelf-stack">{list.length>shown.length&&<span className="muse-shelf-more">+{list.length-shown.length}</span>}{shown.map((e,i)=><button type="button" key={`${e.book.id}-${i}`} className="muse-shelf-book" data-fav={e.book.favorite||undefined} title={e.book.title} aria-label={e.book.title} onClick={()=>onOpenBook?.(e.book.id)}><Cover book={e.book}/></button>)}</div>
+    <div className="muse-shelf-stack">{list.length>shown.length&&<span className="muse-shelf-more">+{list.length-shown.length}</span>}{shown.map((e,i)=><button type="button" key={`${e.book.id}-${i}`} className="muse-shelf-book" data-fav={isFavoriteRead(e.book,e.completion)||undefined} title={e.book.title} aria-label={e.book.title} onClick={()=>onOpenBook?.(e.book.id)}><Cover book={e.book}/></button>)}</div>
     <span className="muse-shelf-month">{shortMonth(m)}</span><strong className="type-numeric">{best[k]||''}</strong></li>;})}</ol></>}
  </article>;
 }
