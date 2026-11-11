@@ -398,3 +398,10 @@ button.muse-books-month-row:hover{background:var(--surface-hover)}
 .muse-atlas-modal-books small{color:var(--text-muted);white-space:nowrap}
 .muse-atlas-pair-top>*{min-width:0;overflow:hidden}
 .muse-atlas-pair-top .muse-atlas-heatmap{max-width:100%}
+/* Favourite in the reading log: set when finishing a book, or later on that read. */
+.muse-finish-favorite{display:flex;align-items:center;gap:12px;width:100%;padding:10px 14px;border:1px solid var(--glass-border);border-radius:14px;background:var(--surface-subtle);color:inherit;font:inherit;text-align:left;cursor:pointer}
+.muse-finish-favorite span{display:grid;gap:1px}.muse-finish-favorite small{color:var(--text-muted);font-size:.76rem}
+.muse-finish-favorite[aria-pressed="true"]{border-color:var(--accent-primary);box-shadow:0 0 14px color-mix(in srgb,var(--accent-primary) 30%,transparent)}
+.muse-read-favorite{display:inline-flex;align-items:center;gap:8px;justify-self:start;padding:4px 0;border:0;background:none;color:var(--text-muted);font:inherit;font-size:.82rem;cursor:pointer}
+.muse-read-favorite[aria-pressed="true"]{color:var(--foreground)}
+.muse-read-favorite:hover{color:var(--foreground)}
