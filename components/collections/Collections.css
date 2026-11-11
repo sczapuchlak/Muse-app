@@ -262,3 +262,5 @@
 .muse-collections-preferences .muse-collections-checkbox small{display:block;margin-top:2px}
 .muse-collections-preferences .muse-collections-sticky-footer{display:flex;justify-content:flex-end;gap:10px}
 .muse-settings-row [data-books-settings-trigger]{min-height:40px;padding-inline:16px;border:1px solid var(--glass-border);border-radius:999px;background:var(--surface-control)}
+
+@container muse-content (max-width:640px){.muse-density{justify-self:stretch;justify-content:space-between}.muse-density button{flex:1;justify-content:center}}

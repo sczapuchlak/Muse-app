@@ -16,12 +16,15 @@
 .muse-pagination .muse-button:disabled{opacity:.4;cursor:default}
 .muse-pagination .muse-button:focus-visible{outline:2px solid var(--focus-ring,var(--foreground));outline-offset:2px}
 @container muse-content (max-width:640px){
- .muse-pagination{flex-direction:column;align-items:stretch}
- .muse-pagination-controls{justify-content:space-between}
- .muse-pagination-pages{width:100%;justify-content:space-between}
+ .muse-pagination{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px 10px}
+ .muse-pagination-summary{font-size:.84rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ .muse-pagination-controls{display:contents}
+ .muse-pagination-size{grid-column:2;grid-row:1}
+ .muse-pagination-size .small-label{display:none}
+ .muse-pagination-size .muse-choice-trigger{min-height:36px;padding-inline:12px}
+ .muse-pagination-pages{grid-column:1/-1;width:100%;justify-content:space-between}
  .muse-pagination-numbers{flex:1;justify-content:center;overflow:hidden}
  .muse-pagination-numbers li:not(:has([aria-current="page"])):not(.muse-pagination-gap){display:none}
  .muse-pagination-numbers .muse-pagination-gap{display:none}
- .muse-pagination-page{display:block}
- .muse-pagination-dot{display:none}
+ .muse-pagination[data-position="top"]{padding-bottom:10px}
 }
