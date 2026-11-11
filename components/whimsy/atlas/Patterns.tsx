@@ -1,5 +1,5 @@
 'use client';
-import {useState,type CSSProperties} from 'react';
+import {createContext,useContext,useState,type CSSProperties} from 'react';
 import {MuseModal} from '@/components/MuseModal';
 import type {Book,ReadingSession} from '@/lib/whimsy/models';
 import type {DateRange} from '@/lib/whimsy/reading-stats';
@@ -10,13 +10,16 @@ import {authorStats,bookSeries,finishSpeed,formatBreakdown,ratingsDistribution,r
 import {emojisByGenre,emojisByYear,hourLabel} from '@/lib/whimsy/reading-dna';
 import {Insight,days,duration,hours,plural,yearDate} from './parts';
 
+const BookLookup=createContext<Map<string,Book>>(new Map());
+
 /** The books behind a figure: a button that opens them in a modal, so every number can be checked without reflowing the page. */
 function BookList({books,label,title,onOpenBook}:{books:BookRef[];label:string;title:string;onOpenBook?:(id:string)=>void}){
- const [open,setOpen]=useState(false);
+ const [open,setOpen]=useState(false),lookup=useContext(BookLookup);
  if(!books.length)return null;
  return <><button type="button" className="muse-atlas-booklist-open" onClick={()=>setOpen(true)}>{label} <span aria-hidden="true">›</span></button>
-  {open&&<MuseModal id="atlas-books-behind" label={`${title}: ${label}`} title={title} returnFocus={null} onClose={()=>setOpen(false)}><ul className="muse-atlas-modal-books">{books.map((b,i)=><li key={`${b.bookId}:${b.finishedOn??i}`}>
-   {onOpenBook?<button type="button" className="text-button" onClick={()=>{setOpen(false);onOpenBook(b.bookId);}}>{b.title}</button>:<span>{b.title}</span>}{b.finishedOn&&<small>{yearDate(b.finishedOn)}</small>}</li>)}</ul></MuseModal>}</>;
+  {open&&<MuseModal id="atlas-books-behind" label={`${title}: ${label}`} title={title} returnFocus={null} onClose={()=>setOpen(false)}><p className="muse-atlas-modal-count">{plural(books.length,'read')}</p><ul className="muse-atlas-modal-books">{books.map((b,i)=><li key={`${b.bookId}:${b.finishedOn??i}`}>
+   <span className="muse-finished-cover" aria-hidden="true"><Cover book={lookup.get(b.bookId)}/></span>
+   <span className="muse-atlas-modal-copy">{onOpenBook?<button type="button" className="muse-atlas-modal-title" onClick={()=>{setOpen(false);onOpenBook(b.bookId);}}>{b.title}</button>:<span className="muse-atlas-modal-title">{b.title}</span>}{b.finishedOn&&<small>Finished {yearDate(b.finishedOn)}</small>}</span></li>)}</ul></MuseModal>}</>;
 }
 
 /** A horizontal bar row with its own count and books list. */
@@ -39,7 +42,7 @@ export function Patterns({books,sessions,range,label,series,seriesMembers,media,
  const shelves=bookSeries(books,series,seriesMembers,media),seriesCover=(id:string)=>{const own=seriesMembers.filter(m=>m.series_id===id&&m.book_id).map(m=>books.find(b=>b.id===m.book_id)).filter((b):b is Book=>!!b);return own.find(b=>b.coverUrl)??own[0];},byGenre=emojisByGenre(books,range,3),byYear=emojisByYear(books,3);
  const maxRating=Math.max(0,...ratings.buckets.map(b=>b.reads)),maxCell=Math.max(1,...rhythm.grid.flat()),maxFormat=Math.max(0,...formats.rows.map(r=>r.reads)),maxSpeed=Math.max(0,...speed.bands.map(b=>b.reads));
  const bands=Object.entries(rhythm.bands) as [keyof typeof bandNames,number][],topBand=rhythm.total?bands.reduce((a,b)=>b[1]>a[1]?b:a):null;
- return <div className="muse-atlas-section muse-atlas-patterns">
+ return <BookLookup.Provider value={new Map(books.map(b=>[b.id,b]))}><div className="muse-atlas-section muse-atlas-patterns">
   <div className="muse-atlas-insights">
    <Insight label="Average rating" value={ratings.average!==null?`${ratings.average}/5`:undefined} detail={ratings.rated?`${plural(ratings.rated,'rated read')} ${label}`:undefined} empty="No rated reads in this period"/>
    <Insight label="Typical time to finish" value={speed.typicalDays!==null?days(speed.typicalDays):undefined} detail={speed.reads?`Median of ${plural(speed.reads,'read')} with a start date`:undefined} empty="Needs finished reads with a start date"/>
@@ -101,5 +104,5 @@ export function Patterns({books,sessions,range,label,series,seriesMembers,media,
     {!byYear.length?<p>Each year’s three emojis will appear once finished books have them.</p>:<ul className="muse-atlas-emoji-rows">{byYear.map(y=><li key={y.year}><span>{y.year}</span><span className="muse-atlas-emoji-set" aria-label={y.top.map(e=>`${e.emoji} on ${plural(e.books,'book')}`).join(', ')}>{y.top.map(e=><span key={e.emoji} aria-hidden="true">{e.emoji}</span>)}</span></li>)}</ul>}</article>
   </div>
   <p className="small-label">Emoji counts use each read’s own emojis; a book counts each emoji once per period.</p>
- </div>;
+ </div></BookLookup.Provider>;
 }
