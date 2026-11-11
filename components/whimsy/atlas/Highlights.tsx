@@ -13,12 +13,12 @@ const bestYear=(books:Book[],today:string,rated=false)=>{const years=completionE
 const monthsOf=(year:string)=>Array.from({length:12},(_,i)=>`${year}-${String(i+1).padStart(2,'0')}`);
 
 /** Cherry-style bookshelf for one year: each month is a stack of the covers finished in it. */
-export function MonthShelf({books,today,onOpenBook}:{books:Book[];today:string;onOpenBook?:(id:string)=>void}){
- const [year,setYear]=useState(()=>bestYear(books,today));
+export function MonthShelf({books,today,onOpenBook,fixedYear}:{books:Book[];today:string;onOpenBook?:(id:string)=>void;fixedYear?:string}){
+ const [picked,setYear]=useState(()=>bestYear(books,today)),year=fixedYear??picked;
  const events=completionEvents(books).filter(e=>e.completion.finishedOn?.startsWith(year)).sort((a,b)=>(a.completion.finishedOn??'').localeCompare(b.completion.finishedOn??''));
  const months=monthsOf(year),best=months.map(m=>events.filter(e=>e.completion.finishedOn?.startsWith(m)).length),top=Math.max(...best);
  return <article className="muse-books-panel muse-shelf-panel"><div className="muse-books-panel-head"><h4>Books a month</h4>
-  <div className="muse-shelf-years"><button type="button" className="muse-button button-ghost" aria-label="Previous year" onClick={()=>setYear(String(Number(year)-1))}>‹</button><strong className="type-numeric">{year}</strong><button type="button" className="muse-button button-ghost" aria-label="Next year" disabled={year>=today.slice(0,4)} onClick={()=>setYear(String(Number(year)+1))}>›</button></div></div>
+  {!fixedYear&&<div className="muse-shelf-years"><button type="button" className="muse-button button-ghost" aria-label="Previous year" onClick={()=>setYear(String(Number(year)-1))}>‹</button><strong className="type-numeric">{year}</strong><button type="button" className="muse-button button-ghost" aria-label="Next year" disabled={year>=today.slice(0,4)} onClick={()=>setYear(String(Number(year)+1))}>›</button></div>}</div>
   {!events.length?<p>Nothing finished in {year} yet.</p>:<>
    <p className="muse-atlas-books-note">{events.length} {events.length===1?'book':'books'} finished{top>0?` · best month: ${monthName(months[best.indexOf(top)])}, ${top}`:''}</p>
    <ol className="muse-shelf" aria-label={`Books finished each month of ${year}`}>{months.map((m,k)=>{const list=events.filter(e=>e.completion.finishedOn?.startsWith(m)),shown=list.slice(-4);return <li key={m}>

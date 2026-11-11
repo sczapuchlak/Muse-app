@@ -432,3 +432,36 @@ button.muse-atlas-modal-title:hover{text-decoration:underline;text-underline-off
 .muse-rhythm-table td[data-empty]{color:var(--text-muted);background:color-mix(in srgb,var(--foreground) 5%,transparent)}
 .muse-rhythm-table td.muse-rhythm-total{font-weight:700;background:none;text-align:right}
 .muse-rhythm-table tr[data-top] th{color:var(--accent-primary)}.muse-rhythm-table tr[data-top] th::after{content:" ✦"}
+/* Year in Review: a bold hero, a compact stats strip, paired contained panels. */
+.muse-yir-hero{grid-template-columns:minmax(0,auto) minmax(0,1fr);align-items:end;gap:clamp(14px,3vw,36px);padding:clamp(16px,2.4vw,24px) clamp(18px,3vw,30px);background:radial-gradient(90% 140% at 0% 0%,color-mix(in srgb,var(--accent-primary) 24%,transparent),transparent 62%),radial-gradient(80% 120% at 100% 100%,color-mix(in srgb,var(--accent-secondary) 20%,transparent),transparent 66%),var(--glass-background);box-shadow:0 10px 30px color-mix(in srgb,var(--accent-primary) 14%,transparent)}
+.muse-yir-hero h4{font-size:clamp(3.2rem,8vw,5.4rem);font-style:normal;letter-spacing:-.04em;margin:0}
+.muse-yir-title{display:grid;gap:6px}
+.muse-yir-years{display:flex;flex-wrap:wrap;gap:6px}
+.muse-yir-years button{padding:3px 12px;border-radius:999px;border:1px solid var(--glass-border);background:var(--surface-control);color:inherit;font:inherit;font-size:.8rem;cursor:pointer}
+.muse-yir-years button[aria-pressed="true"]{font-weight:700;background:var(--selected-background)}
+.muse-yir-lede{display:grid;gap:10px;justify-items:start;align-self:end}
+.muse-yir-lede p{margin:0;max-width:56ch;font-size:1rem}
+@container muse-content (max-width:700px){.muse-yir-hero{grid-template-columns:minmax(0,1fr)}}
+.muse-yir-stats{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;margin:0}
+.muse-yir-stats>div{display:grid;gap:1px;padding:12px 14px;border:1px solid var(--glass-border);border-radius:16px;background:var(--glass-background);border-top:3px solid var(--tile-ink,var(--accent-primary));min-width:0}
+.muse-yir-stats>div:nth-child(6n+1){--tile-ink:var(--chart-1,var(--accent-primary))}.muse-yir-stats>div:nth-child(6n+2){--tile-ink:var(--chart-2,var(--accent-secondary))}.muse-yir-stats>div:nth-child(6n+3){--tile-ink:var(--chart-3,var(--accent-primary))}.muse-yir-stats>div:nth-child(6n+4){--tile-ink:var(--chart-4,var(--accent-secondary))}.muse-yir-stats>div:nth-child(6n+5){--tile-ink:var(--chart-5,var(--accent-primary))}.muse-yir-stats>div:nth-child(6n+6){--tile-ink:var(--chart-6,var(--accent-secondary))}
+.muse-yir-stats dt{font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--tile-ink)}
+.muse-yir-stats dd{margin:0;font-family:var(--font-editorial);font-size:clamp(1.3rem,2.4vw,1.8rem);line-height:1.1;color:var(--foreground)}
+.muse-yir-stats small{font-size:.68rem;color:var(--text-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@container muse-content (max-width:900px){.muse-yir-stats{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@container muse-content (max-width:520px){.muse-yir-stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.muse-yir-pair{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,3fr);gap:clamp(12px,1.8vw,20px);align-items:stretch}
+.muse-yir-pair-even{grid-template-columns:repeat(2,minmax(0,1fr))}
+.muse-yir-pair>*{min-width:0;margin:0}
+@container muse-content (max-width:760px){.muse-yir-pair,.muse-yir-pair-even{grid-template-columns:minmax(0,1fr)}}
+.muse-yir-pair .muse-atlas-three{align-content:center}
+.muse-paged-rows.muse-yir-tiles{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.muse-yir-pair .muse-atlas-traits{margin:6px 0 0}
+/* The keepsake dialog: wider, preview and options side by side, compact. */
+#reading-keepsake{width:min(900px,calc(100vw - 32px))}
+#reading-keepsake .muse-modal-universal-close>h2{font-family:var(--font-editorial);font-size:1.4rem;background:linear-gradient(120deg,var(--accent-pop,var(--accent-primary)),var(--accent-primary),var(--accent-secondary));-webkit-background-clip:text;background-clip:text;color:transparent}
+.muse-keepsake{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+.muse-keepsake-preview canvas{max-height:56dvh}
+.muse-keepsake-options{gap:10px}
+.muse-keepsake-sections{grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 12px}
+.muse-keepsake-options label{font-size:.84rem}
