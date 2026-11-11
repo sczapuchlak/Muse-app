@@ -236,7 +236,7 @@
 .muse-series-shelf-ledge{position:absolute;z-index:0;left:0;right:-100vw;bottom:-2px;height:24px;pointer-events:none;
  background:url("/art/shelf-walnut.webp") repeat-x 0 0/auto 100%;
  -webkit-mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.6) calc(var(--fade)*.55),#000 var(--fade));mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.6) calc(var(--fade)*.55),#000 var(--fade))}
-.muse-series-shelf-plant{position:absolute;z-index:1;pointer-events:none;left:calc(var(--fade) - 74px);bottom:calc(var(--ledge) - 3px);width:66px;height:59px;
+.muse-series-shelf-plant{position:absolute;z-index:1;pointer-events:none;left:calc(var(--fade) - 81px);bottom:calc(var(--ledge) - 3px);width:73px;height:65px;
  background:url("/art/fern-crystal.webp") no-repeat center bottom/contain}
 .muse-series-shelf-plant::before{content:"";position:absolute;z-index:-1;left:8%;right:8%;bottom:-3px;height:7px;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.45),transparent);filter:blur(2px)}
 .muse-series-shelf-strand{position:absolute;z-index:0;pointer-events:none;left:0;right:calc(-1*var(--page-padding,24px));top:-76px;height:84px;
