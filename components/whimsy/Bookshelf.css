@@ -419,3 +419,16 @@ button.muse-books-month-row:hover{background:var(--surface-hover)}
 .muse-atlas-modal-copy{display:grid;gap:2px;min-width:0}
 .muse-atlas-modal-title{padding:0;border:0;background:none;font:inherit;font-family:var(--font-editorial);font-size:1.02rem;line-height:1.2;text-align:left;color:var(--accent-primary);cursor:pointer;justify-self:start}
 button.muse-atlas-modal-title:hover{text-decoration:underline;text-underline-offset:3px}
+/* Reading rhythm table modal: coloured title, band chips, heat-tinted cells, busiest day highlighted. */
+#atlas-rhythm-table{width:min(720px,calc(100vw - 32px))}
+#atlas-rhythm-table .muse-modal-universal-close>h2{font-family:var(--font-editorial);font-size:1.5rem;background:linear-gradient(120deg,var(--accent-pop,var(--accent-primary)),var(--accent-primary),var(--accent-secondary));-webkit-background-clip:text;background-clip:text;color:transparent}
+.muse-rhythm-bands{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 12px;padding:0;list-style:none}
+.muse-rhythm-bands li{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:999px;border:1px solid color-mix(in srgb,var(--tone) 55%,transparent);background:color-mix(in srgb,var(--tone) 14%,transparent);font-size:.82rem}
+.muse-rhythm-bands small{color:var(--text-muted)}
+.muse-rhythm-table{border-collapse:separate;border-spacing:0 5px}
+.muse-rhythm-table thead th{font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);font-weight:650;border:0;padding:4px 10px}
+.muse-rhythm-table tbody th{font-family:var(--font-editorial);font-size:1rem;font-weight:var(--type-title-weight,600);border:0;padding:8px 10px;white-space:nowrap}
+.muse-rhythm-table td{border:0;padding:8px 10px;text-align:center;font-size:.84rem;border-radius:10px;background:color-mix(in srgb,var(--accent-primary) calc(var(--heat,0)*60%),color-mix(in srgb,var(--foreground) 5%,transparent))}
+.muse-rhythm-table td[data-empty]{color:var(--text-muted);background:color-mix(in srgb,var(--foreground) 5%,transparent)}
+.muse-rhythm-table td.muse-rhythm-total{font-weight:700;background:none;text-align:right}
+.muse-rhythm-table tr[data-top] th{color:var(--accent-primary)}.muse-rhythm-table tr[data-top] th::after{content:" ✦"}

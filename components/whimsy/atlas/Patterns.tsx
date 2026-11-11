@@ -60,9 +60,13 @@ export function Patterns({books,sessions,range,label,series,seriesMembers,media,
       ...row.map((v,h)=><span key={`${d}:${h}`} className="muse-atlas-heat-cell" title={`${weekdayLabels[d]} ${hourLabel(h)}: ${duration(v)}`} style={{'--heat':v?.15+.85*v/maxCell:0} as CSSProperties} aria-hidden="true"/>)])}
     </div>
     <button type="button" className="muse-atlas-booklist-open" onClick={()=>setTable(true)}>Show as a table <span aria-hidden="true">›</span></button>
-    {table&&<MuseModal id="atlas-rhythm-table" label="Reading rhythm as a table" title="Reading rhythm" returnFocus={null} onClose={()=>setTable(false)}><div className="muse-atlas-table-wrap"><table className="muse-atlas-table"><thead><tr><th scope="col">Day</th>{bands.map(([k])=><th key={k} scope="col">{bandNames[k]}</th>)}</tr></thead>
-     <tbody>{rhythm.grid.map((row,d)=>{const sum=(a:number,b:number)=>row.slice(a,b).reduce((x,y)=>x+y,0);const cells=[sum(5,12),sum(12,17),sum(17,22),sum(22,24)+sum(0,5)];
-      return <tr key={d}><th scope="row">{weekdayLabels[d]}</th>{cells.map((v,i)=><td key={i}>{v?duration(v):'—'}</td>)}</tr>;})}</tbody></table></div></MuseModal>}
+    {table&&<MuseModal id="atlas-rhythm-table" label="Reading rhythm as a table" title="Reading rhythm" returnFocus={null} onClose={()=>setTable(false)}>
+      {(()=>{const rows=rhythm.grid.map((row,d)=>{const sum=(a:number,b:number)=>row.slice(a,b).reduce((x,y)=>x+y,0);const cells=[sum(5,12),sum(12,17),sum(17,22),sum(22,24)+sum(0,5)];return {d,cells,total:cells.reduce((x,y)=>x+y,0)};}),peak=Math.max(1,...rows.flatMap(r=>r.cells)),icons=['☀','☕','🌆','🌙'];
+       return <><p className="muse-atlas-modal-count">Active time by day and time of day</p>
+       <ul className="muse-rhythm-bands">{bands.map(([k,v],i)=><li key={k} style={{'--tone':`var(--chart-${i+1},var(--accent-primary))`} as CSSProperties}><span aria-hidden="true">{icons[i]}</span><strong>{bandNames[k].split(' (')[0]}</strong><small className="type-numeric">{rhythm.total?Math.round(v/rhythm.total*100):0}%</small></li>)}</ul>
+       <div className="muse-atlas-table-wrap"><table className="muse-atlas-table muse-rhythm-table"><thead><tr><th scope="col">Day</th>{bands.map(([k])=><th key={k} scope="col">{bandNames[k].split(' (')[0]}</th>)}<th scope="col">Total</th></tr></thead>
+        <tbody>{rows.map(r=><tr key={r.d} data-top={r.total>0&&r.total===Math.max(...rows.map(x=>x.total))||undefined}><th scope="row">{weekdayLabels[r.d]}</th>{r.cells.map((v,i)=><td key={i} data-empty={!v||undefined} style={{'--heat':v?.18+.82*v/peak:0} as CSSProperties}>{v?duration(v):'·'}</td>)}<td className="muse-rhythm-total">{r.total?duration(r.total):'—'}</td></tr>)}</tbody></table></div></>;})()}
+     </MuseModal>}
     <p className="muse-atlas-bands">{bands.map(([k,v])=><span key={k}><strong>{bandNames[k].split(' (')[0]}</strong> {rhythm.total?Math.round(v/rhythm.total*100):0}%</span>)}</p></>}
    <p className="small-label">Active time from {plural(rhythm.timedSessions,'timed session')}, in each session’s own time zone and split across hours, so late nights land on both days.{rhythm.excludedSessions?` ${plural(rhythm.excludedSessions,'manual entry','manual entries')} without times excluded.`:''}</p>
   </article>
