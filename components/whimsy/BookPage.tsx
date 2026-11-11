@@ -13,6 +13,7 @@ import {ReadingSessionCard,type SessionPhase} from './ReadingSessionCard';
 import {activeSeconds,bookPosition,bookReadingStats,sittingClock} from '@/lib/whimsy/books';
 import {bookCompletions} from '@/lib/whimsy/reading-stats';
 import {seriesCompletion,seriesShelf,shelfStateLabel,type ShelfEntry} from '@/lib/books/series-view';
+import {StreakHeart} from './ReadingStreak';
 import {PageCrumbs} from '@/components/books/PageCrumbs';
 import {bookHref,rememberReturn,seriesHref} from '@/lib/books/return-nav';
 import {BookAtmosphere} from './BookAtmosphere';
@@ -41,7 +42,7 @@ export type BookPageProps={
  book:Book;books:Book[];sessions:ReadingSession[];goals:ReadingGoal[];today:string;userId:string;tick:number;busy:boolean;
  timer:ReadingTimer|null;timerLoaded:boolean;timerBook:Book|null;checkIn:ReactNode;cover:ReactNode;
  onStart:(targetMinutes?:number)=>void;onTimer:(action:'pause'|'resume'|'finish'|'cancel')=>void;
- onEdit:()=>void;onLog:()=>void;onArchive:()=>void;onRestore:()=>void;onMove:(status:Book['status'])=>void;
+ onEdit:()=>void;onLog:()=>void;onArchive:()=>void;onFavorite:()=>void;onRestore:()=>void;onMove:(status:Book['status'])=>void;
  onEditSession:(session:ReadingSession)=>void;onDeleteSession:(session:ReadingSession)=>void;
  onSaveEmojis:(readId:string,emojis:string[])=>Promise<boolean>;onMessage:(text:string)=>void;
  onEnrich:(changes:Partial<Book>)=>Promise<Book|null>;
@@ -131,6 +132,7 @@ export function BookPage(props:BookPageProps){
     {genres.length>0&&<ul className="muse-book-page-genres" aria-label="Genres">{genres.map(g=><li key={g} className="muse-book-chip">{g}</li>)}</ul>}
     <div className="muse-book-page-controls">
      <span className="muse-book-page-status" data-status={book.status}><MuseChoiceMenu label={`Reading status: ${statusLabel[book.status]}`} valueLabel={statusLabel[book.status]} options={Object.entries(statusLabel).map(([id,label])=>({id,label}))} selectedIds={[book.status]} onSelect={id=>props.onMove(id as Book['status'])}/></span>
+     <button type="button" className="muse-icon-button muse-icon-button-glass muse-book-heart" aria-pressed={!!book.favorite} aria-label={book.favorite?'Remove from favourites':'Add to favourites'} title={book.favorite?'A favourite':'Mark as a favourite'} disabled={busy} onClick={props.onFavorite}><StreakHeart filled={!!book.favorite} size={20}/></button>
      <button type="button" className="muse-button button-ghost" onClick={props.onEdit}><MuseIcon name="edit" size={15}/>Edit</button>
      <button ref={menuAnchor} type="button" className="muse-icon-button muse-icon-button-glass" aria-label="More for this book" aria-haspopup="menu" aria-expanded={menuOpen} onClick={()=>setMenuOpen(v=>!v)}><MuseIcon name="more" size={18}/></button>
      <GlassPopover id="book-page-more" label="More for this book" open={menuOpen} anchorRef={menuAnchor} onClose={()=>setMenuOpen(false)} width={240} bare>

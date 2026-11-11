@@ -909,3 +909,9 @@ Currently Reading uses real saved reading sessions, recorded progress dates and 
 ## Books Import 2.0 (#143; approved)
 
 Did Not Finish (`dnf`) is distinct from Paused. It preserves progress, sessions, notes and attributed history without creating a completed read; a reader may restart it through existing reading controls. Import refresh never changes an existing Muse reading status automatically, including earlier source statuses that Muse did not yet support. Missing catalog data is informational. Unresolved identity, status or historical-read decisions must be reviewed or skipped; optional enrichment never prevents valid source books importing. Review edits retain original source evidence.
+
+## Book favourites — approved, implemented
+
+- A favourite is a heart on the book (`favorite` on the book's own record). It is the single home: the Atlas Favourites shelf and the month shelf badge read it; nothing copies it.
+- It needs no migration: books already store their fields in the record payload. Every rewrite of a book record must carry it (`bookCarryFields`), so editing, moving shelves or archiving never clears a heart.
+- Atlas Favourites lists hearted books finished in the chosen period. A heart is optional and independent of rating.

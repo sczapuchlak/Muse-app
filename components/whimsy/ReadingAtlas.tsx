@@ -17,6 +17,7 @@ import {YearInReview} from './atlas/YearInReview';
 import {ReadingChallenge} from './atlas/ReadingChallenge';
 import {Patterns} from './atlas/Patterns';
 import {MonthShelf,RatingsByMonth,VibeCloud} from './atlas/Highlights';
+import {Favourites} from './atlas/Favourites';
 import {TopRated} from './atlas/TopRated';
 import {completedBookSeries} from '@/lib/whimsy/books';
 import {Streaks} from './atlas/Streaks';
@@ -90,7 +91,7 @@ export function ReadingAtlas({books,sessions,goals,today,range,setRange,calendar
   <article className="muse-books-panel muse-books-goals-panel"><div className="muse-books-panel-head"><div><span className="small-label">A LITTLE INTENTION</span><h4>Your goals</h4></div><button type="button" className="muse-button button-ghost" onClick={onAddGoal}>+ Goal</button></div>{!shownGoals.length?<p>{goals.length?`No ${label} goals. Reading counts without one.`:'No goals yet. Reading counts without one, too.'}</p>:<div className="muse-books-goals-grid">{shownGoals.map(goal=>{const progress=goalProgress(goal,books,sessions,today),window=goalWindow(goal,today),percent=Math.round(progress/goal.target*100);return <div className="muse-books-goal" key={goal.id}><div><strong>{periods[goal.period]} · {goal.target} {goal.unit}</strong><span>{Math.round(progress)} / {goal.target} {goal.unit}</span></div><progress value={Math.min(progress,goal.target)} max={goal.target} aria-label={`${periods[goal.period]} goal: ${Math.round(progress)} of ${goal.target} ${goal.unit}`}/><small>{dateLabel(window.start)} – {dateLabel(window.end)}{goal.unit==='books'?' · each finished read counts':''}</small><div><span className="small-label">{percent>=100?'Goal reached ✦':`${percent}% of your goal`}</span><button type="button" className="text-button" onClick={()=>onRemoveGoal(goal)}>Remove goal</button></div></div>;})}</div>}</article>
    </div>
   </div>}
-  <TopRated books={books} range={range_} label={label} onOpenBook={onOpenBook}/>
+  <div className="muse-atlas-books-pair"><TopRated books={books} range={range_} label={label} onOpenBook={onOpenBook}/><Favourites books={books} range={range_} label={label} onOpenBook={onOpenBook}/></div>
   {(period==='year'||period==='all')&&<MonthShelf books={books} today={today} onOpenBook={onOpenBook}/>}
   <div className="muse-atlas-books-pair"><VibeCloud books={books} range={range_} label={label}/>{(period==='year'||period==='all')&&<RatingsByMonth books={books} today={today}/>}</div>
   {(period==='year'||period==='all')&&<ActivityBars line title="Books finished by year" note="Every year of your history · the line follows the ups and downs" items={yearlyBooks.map(y=>({key:y.start,label:y.start.slice(0,4),short:y.start.slice(0,4),value:y.count,text:`${y.count} ${y.count===1?'book':'books'}`}))}/>}
