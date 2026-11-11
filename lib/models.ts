@@ -60,6 +60,8 @@ export type Emotion = {
   emoji: string;
   quadrant: EmotionQuadrant;
   definition?: string;
+  /** Words people feel differently ("Lazy"): selecting one offers a quick choice of how it feels to them. */
+  ambiguous?: boolean;
 };
 
 // Favorites belong to a person's preferences, not the shared vocabulary.

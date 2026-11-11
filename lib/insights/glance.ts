@@ -7,6 +7,7 @@
  * open and unknown apart; reading time is never presented as completion; current-state reading (what's on the
  * nightstand now) is kept separate from activity inside the selected period.
  */
+import {recordedFeeling} from '../feelings';
 import {shiftDate,validDate,weekDates} from '../dates';
 import type {DayData,DailyPriority} from '../data/daily';
 import {priorityCompletion} from '../data/daily-projections';
@@ -59,14 +60,14 @@ export type DailyGlance={
  ratings:DayRating[];
  rating:{average:number|null;days:number;best:{date:string;value:number}[]};
  energy:{average:number|null;days:number};stress:{average:number|null;days:number};
- emotions:{id:string;count:number}[];families:Record<EmotionQuadrant,number>;checkIns:number;
+ emotions:{id:string;count:number;name?:string;emoji?:string;quadrant?:EmotionQuadrant}[];families:Record<EmotionQuadrant,number>;checkIns:number;
  dayInThree:{emoji:string;count:number}[];dayInThreeDays:number;
  intentions:{date:string;emoji:string|null;text:string}[];
  priorities:{planned:number;completed:number;open:number;unknown:number;linked:number;standalone:number;days:number};
  recordedDays:number;
 };
 const familyKeys:EmotionQuadrant[]=['red','yellow','blue','green'];
-export function dailyGlance(days:Record<string,DayData|undefined>,checkIns:EmotionalCheckIn[],catalog:Pick<Emotion,'id'|'quadrant'>[],range:GlanceRange):DailyGlance{
+export function dailyGlance(days:Record<string,DayData|undefined>,checkIns:EmotionalCheckIn[],catalog:Emotion[],range:GlanceRange):DailyGlance{
  const ratings:DayRating[]=range.days.map(date=>{const r=days[date]?.record;return {date,overallDay:r?.overall_day??null,energy:r?.energy??null,stress:r?.stress??null};});
  const rated=ratings.filter((r):r is DayRating&{overallDay:number}=>r.overallDay!==null);
  const top=Math.max(...rated.map(r=>r.overallDay),-Infinity);
@@ -74,8 +75,8 @@ export function dailyGlance(days:Record<string,DayData|undefined>,checkIns:Emoti
  const best=rated.filter(r=>r.overallDay>=8||r.overallDay===top&&rated.length>0&&top>=7).sort((a,b)=>b.overallDay-a.overallDay||a.date.localeCompare(b.date)).slice(0,60).map(r=>({date:r.date,value:r.overallDay}));
  const energy=ratings.flatMap(r=>r.energy===null?[]:[r.energy]),stress=ratings.flatMap(r=>r.stress===null?[]:[r.stress]);
  const inRange=checkIns.filter(c=>c.date>=range.start&&c.date<=range.end);
- const counts=new Map<string,number>(),families={red:0,yellow:0,blue:0,green:0} as Record<EmotionQuadrant,number>;
- for(const c of inRange)for(const id of new Set(c.emotionIds)){counts.set(id,(counts.get(id)??0)+1);const q=catalog.find(e=>e.id===id)?.quadrant;if(q&&familyKeys.includes(q))families[q]++;}
+ const counts=new Map<string,number>(),meta=new Map<string,Emotion>(),families={red:0,yellow:0,blue:0,green:0} as Record<EmotionQuadrant,number>;
+ for(const c of inRange)for(const id of new Set(c.emotionIds)){counts.set(id,(counts.get(id)??0)+1);const f=recordedFeeling(id,c.feelings,catalog);const q=f?.quadrant;if(f&&!meta.has(id))meta.set(id,f);if(q&&familyKeys.includes(q))families[q]++;}
  const three=new Map<string,number>();let threeDays=0;const intentions:DailyGlance['intentions']=[];
  const pr={planned:0,completed:0,open:0,unknown:0,linked:0,standalone:0,days:0};
  let recorded=0;
@@ -88,7 +89,7 @@ export function dailyGlance(days:Record<string,DayData|undefined>,checkIns:Emoti
  }
  return {ratings,rating:{average:round1(avg(rated.map(r=>r.overallDay))),days:rated.length,best},
   energy:{average:round1(avg(energy)),days:energy.length},stress:{average:round1(avg(stress)),days:stress.length},
-  emotions:[...counts].map(([id,count])=>({id,count})).sort((a,b)=>b.count-a.count||a.id.localeCompare(b.id)),families,checkIns:inRange.length,
+  emotions:[...counts].map(([id,count])=>{const f=meta.get(id);return {id,count,...(f?{name:f.name,emoji:f.emoji,quadrant:f.quadrant}:{})};}).sort((a,b)=>b.count-a.count||a.id.localeCompare(b.id)),families,checkIns:inRange.length,
   dayInThree:[...three].map(([emoji,count])=>({emoji,count})).sort((a,b)=>b.count-a.count),dayInThreeDays:threeDays,
   intentions,priorities:pr,recordedDays:recorded};
 }
@@ -164,7 +165,7 @@ export function dayNote(checkIns:EmotionalCheckIn[],date:string){
 export type MonthSummary={month:string;rating:number|null;ratedDays:number;families:Record<EmotionQuadrant,number>;checkIns:number;
  water:number|null;waterDays:number;movement:number;prioritiesDone:number;prioritiesPlanned:number;topEmoji?:string;recordedDays:number};
 /** Year view: one honest summary per month; water uses one unit (the most logged one) and never mixes units. */
-export function yearByMonth(range:GlanceRange,days:Record<string,DayData|undefined>,checkIns:EmotionalCheckIn[],catalog:Pick<Emotion,'id'|'quadrant'>[],water:DailyWater[],waterUnit:WaterUnit|undefined,activities:MovementRecord[]):MonthSummary[]{
+export function yearByMonth(range:GlanceRange,days:Record<string,DayData|undefined>,checkIns:EmotionalCheckIn[],catalog:Emotion[],water:DailyWater[],waterUnit:WaterUnit|undefined,activities:MovementRecord[]):MonthSummary[]{
  const months=[...new Set(range.days.map(d=>d.slice(0,7)))];
  return months.map(month=>{
   const mr=glanceRange('month',`${month}-01`),d=dailyGlance(days,checkIns,catalog,mr);

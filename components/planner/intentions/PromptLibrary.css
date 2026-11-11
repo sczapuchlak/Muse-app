@@ -1,0 +1,40 @@
+/* Intentions prompt library (#130). Lives in a drawer, so it never lengthens the page. Cards echo the section modules on the
+   page (same border, surface and radius); chips and tabs reuse Muse's pill and segmented patterns. */
+.muse-prompts{--r-grad:linear-gradient(135deg,var(--accent-primary),var(--accent-pop,var(--accent-secondary)));display:grid;gap:12px;min-width:0}
+.muse-prompts-intro{display:flex;align-items:center;gap:8px;margin:0;color:var(--text-muted);font-size:.9rem}
+.muse-prompts-tabs{justify-self:start;max-width:100%}
+.muse-prompts-notice{min-height:1.2em;margin:0;color:var(--accent-primary);font-size:.82rem;font-weight:600}
+.muse-prompts-error{margin:0;padding:8px 12px;border-radius:12px;border:1px solid color-mix(in srgb,var(--danger,#d14d6b) 55%,var(--glass-border));font-size:.84rem}
+.muse-prompts-quiet{margin:0;color:var(--text-muted);font-size:.86rem}
+.muse-prompts-heading{margin:2px 0 8px;font:600 .74rem/1.2 var(--font-ui);letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted)}
+.muse-prompts-search{display:flex;align-items:center;gap:8px;min-height:44px;padding:0 12px;border-radius:14px;border:1px solid var(--glass-border);background:var(--surface-subtle)}
+.muse-prompts-search:focus-within{border-color:var(--selected-border)}
+.muse-prompts-search input{flex:1;min-width:0;border:0;background:transparent;color:var(--foreground);font:inherit;outline:0}
+.muse-prompts-chips{display:flex;gap:6px;overflow-x:auto;padding:2px 1px 6px;scrollbar-width:none}
+.muse-prompts-chips::-webkit-scrollbar{display:none}
+.muse-prompts-chips button,.muse-prompts-periods button{flex:none;display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:4px 12px;border-radius:999px;border:1px solid var(--glass-border);background:var(--surface-subtle);color:var(--foreground);font:inherit;font-size:.82rem;cursor:pointer}
+.muse-prompts-chips button small{color:var(--text-muted);font-size:.72rem}
+.muse-prompts-chips button[aria-pressed=true],.muse-prompts-periods button[aria-pressed=true]{border-color:var(--selected-border);background:var(--selected-background);font-weight:700}
+.muse-prompts-chips button:focus-visible,.muse-prompts-periods button:focus-visible,.muse-prompt-card button:focus-visible,.muse-prompts input:focus-visible,.muse-prompts textarea:focus-visible{outline:2px solid var(--focus-ring,var(--accent-primary));outline-offset:2px}
+.muse-prompts-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,250px),1fr));gap:10px}
+.muse-prompt-card{display:grid;grid-template-rows:auto 1fr auto;gap:8px;min-width:0;padding:14px;border-radius:20px;border:1px solid var(--glass-border);background:var(--surface-subtle)}
+.muse-prompt-card[data-used]{opacity:.7}
+.muse-prompt-card header{display:flex;align-items:center;gap:8px}
+.muse-prompt-card h4{flex:1;margin:0;font-size:.98rem;font-weight:750;line-height:1.25}
+.muse-prompt-emoji{font-size:1.1rem}
+.muse-prompt-card p{margin:0;font-family:var(--font-editorial);font-style:italic;font-size:.95rem;line-height:1.45;color:var(--foreground)}
+.muse-prompt-card footer{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 10px}
+.muse-prompt-meta{color:var(--text-muted);font-size:.74rem}
+.muse-prompt-actions{display:inline-flex;align-items:center;gap:6px;margin-left:auto}
+.muse-prompt-card .muse-reflections-icon[aria-pressed=true]{color:var(--accent-pop,var(--accent-primary));border-color:var(--selected-border)}
+.muse-prompt-card .muse-reflections-icon[aria-pressed=true] svg{fill:currentColor}
+.muse-prompts-form{display:grid;gap:12px}
+.muse-prompts-form label{display:grid;gap:5px;font-size:.82rem;font-weight:600;color:var(--text-muted)}
+.muse-prompts-form :is(input,textarea){width:100%;padding:10px 12px;border-radius:12px;border:1px solid var(--glass-border);background:var(--surface-subtle);color:var(--foreground);font:inherit;font-weight:400}
+.muse-prompts-form textarea{resize:vertical;min-height:84px}
+.muse-prompts-form-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.muse-prompts-periods{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:0;padding:0;border:0}
+.muse-prompts-periods legend{padding:0;margin-bottom:6px;font-size:.82rem;font-weight:600;color:var(--text-muted)}
+.muse-prompts-periods small{color:var(--text-muted)}
+@media(pointer:coarse){.muse-prompts-chips button,.muse-prompts-periods button{min-height:44px}}
+@media(max-width:560px){.muse-prompts-grid{grid-template-columns:1fr}.muse-prompts-tabs{width:100%}.muse-prompts-tabs>button{flex:1}}

@@ -31,3 +31,11 @@ Reviewed shared headers, choice menus, modal/drawer containment and documented b
 ## Remaining limitations
 
 Full authenticated interaction testing (opening editors/dropdowns, note creation/focus transitions, timing and saves) was not repeated for this layout-only pass. Existing behavior is preserved by unchanged handlers/data access and relevant regression tests. Supplied screenshots were not present in the attachment; validation uses the current implementation and explicit written requirements rather than an unverified pixel comparison.
+
+## UI Fixes 4.0 (#130), stage 1 and Intentions
+
+Implemented on `feat/130-ui-fixes-4`: Cosmic Forecast actions centered side by side and responsive, Preferences bottom-left with the CosmyDay credit right; Today's plan workspace chooser content-width; Day in Three emoji search and category side by side with a taller grid and 44px targets; Intentions prompt library (see FEATURE_SPEC); Intentions page text now uses the light-card ink on Midnight Ballerina and Pretty Toxic. Not started (separate stages): Mood vocabulary expansion and manual Steps.
+
+**#130 Mood:** one cohesive feelings library with custom feelings, personal interpretations and per-entry snapshots (see FEATURE_SPEC). Manual Steps is not started.
+
+**#130 Steps:** manual daily steps in the Movement card (Activity | Steps), Insights tiles. No device integration. #130 scope is complete pending review.

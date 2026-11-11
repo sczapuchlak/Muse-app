@@ -5,8 +5,10 @@ import type { Emotion, EmotionQuadrant } from "./models";
 // This is a curated vocabulary, not a reproduction of the official chart.
 // IDs are explicit and stay fixed when labels, emoji, or definitions change.
 type EmotionEntry = readonly [id: string, name: string, emoji: string, definition?: string];
+/** Words people feel differently. Selecting one offers a quick choice of how it feels to them; the default below is only a starting point. */
+const ambiguousIds = new Set(["emotion-lazy", "emotion-numb", "emotion-nostalgic", "emotion-bittersweet", "emotion-competitive", "emotion-intense", "emotion-restless", "emotion-jittery", "emotion-spent"]);
 function inQuadrant(quadrant: EmotionQuadrant, entries: EmotionEntry[]): Emotion[] {
-  return entries.map(([id, name, emoji, definition]) => ({ id, name, emoji, quadrant, definition }));
+  return entries.map(([id, name, emoji, definition]) => ({ id, name, emoji, quadrant, definition, ...(ambiguousIds.has(id) ? { ambiguous: true } : {}) }));
 }
 
 export const emotionCatalog: Emotion[] = [
@@ -31,6 +33,7 @@ export const emotionCatalog: Emotion[] = [
     ["emotion-uneasy", "Uneasy", "😕"],
     ["emotion-worried", "Worried", "😟"],
     ["emotion-repulsed", "Repulsed", "😖"],
+    ["emotion-intense", "Intense", "🔥", "Feeling everything at full strength."],
   ]),
   ...inQuadrant("blue", [
     ["emotion-alienated", "Alienated", "🫥"],
@@ -53,6 +56,9 @@ export const emotionCatalog: Emotion[] = [
     ["emotion-sad", "Sad", "😔", "Feeling down or sorrowful."],
     ["emotion-spent", "Spent", "😮‍💨"],
     ["emotion-tired", "Tired", "🥱"],
+    ["emotion-lazy", "Lazy", "🛋️", "Feeling unmotivated or slow. For some people this is restful, for others it is heavy."],
+    ["emotion-numb", "Numb", "😶", "Feeling little, or cut off from feeling."],
+    ["emotion-bittersweet", "Bittersweet", "🥲", "Happy and sad together."],
   ]),
   ...inQuadrant("green", [
     ["emotion-at-ease", "At ease", "😌"],
@@ -75,6 +81,7 @@ export const emotionCatalog: Emotion[] = [
     ["emotion-secure", "Secure", "🫶"],
     ["emotion-serene", "Serene", "🌿"],
     ["emotion-tranquil", "Tranquil", "🕊️"],
+    ["emotion-nostalgic", "Nostalgic", "🕰️", "A soft longing for the way things were."],
   ]),
   ...inQuadrant("yellow", [
     ["emotion-cheerful", "Cheerful", "😄"],
@@ -97,6 +104,7 @@ export const emotionCatalog: Emotion[] = [
     ["emotion-proud", "Proud", "😊"],
     ["emotion-thrilled", "Thrilled", "😁"],
     ["emotion-upbeat", "Upbeat", "😄"],
+    ["emotion-competitive", "Competitive", "😤", "Fired up to win or to measure yourself."],
   ]),
 ].sort((a, b) => a.name.localeCompare(b.name, "en"));
 

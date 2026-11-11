@@ -44,4 +44,12 @@
 .muse-cosmic-pref-link{color:var(--text-muted);font-size:.78rem;font-weight:500;text-decoration:underline;text-decoration-color:color-mix(in srgb,var(--text-muted) 50%,transparent);text-underline-offset:3px}
 .muse-cosmic-pref-link:hover{color:var(--foreground)}
 .muse-cosmic-forecast .muse-cosmic-forecast-actions{flex-wrap:wrap}
-.muse-cosmic-forecast .muse-cosmic-pref-link{margin-left:auto;align-self:center;font-size:.78rem}.muse-cosmic-forecast-actions,.muse-cosmic-forecast :is(.muse-forecast-actions,[class*="forecast-actions"]){display:flex;align-items:center;gap:8px;width:100%}
+.muse-cosmic-forecast .muse-cosmic-pref-link{font-size:.78rem}.muse-cosmic-forecast-actions,.muse-cosmic-forecast :is(.muse-forecast-actions,[class*="forecast-actions"]){display:flex;align-items:center;gap:8px;width:100%}
+
+/* #130: Read full forecast + Cosmic Observatory sit centred side by side and share the width on phones; the footer carries Preferences (left) and the source credit (right). */
+.muse-cosmic-forecast .muse-cosmic-forecast-actions{justify-content:center;flex-wrap:wrap}
+.muse-cosmic-forecast .muse-cosmic-forecast-actions>:is(.muse-button,a,button){flex:0 1 auto;min-width:140px;max-width:240px;display:inline-flex;align-items:center;justify-content:center;text-align:center}
+.muse-cosmic-forecast .muse-forecast-footer{order:3;display:flex;align-items:baseline;justify-content:space-between;gap:6px 16px;flex-wrap:wrap;margin-top:2px;padding-top:var(--space-2);border-top:1px solid var(--glass-border)}
+.muse-cosmic-forecast .muse-forecast-footer .muse-forecast-attribution{margin:0;padding:0;border:0;text-align:right;margin-left:auto}
+@media(max-width:340px){.muse-cosmic-forecast .muse-cosmic-forecast-actions>:is(.muse-button,a,button){flex:1 1 100%;max-width:none}}
+@media(max-width:480px){.muse-cosmic-forecast .muse-cosmic-forecast-actions>:is(.muse-button,a,button){flex:1 1 0;min-width:0}}

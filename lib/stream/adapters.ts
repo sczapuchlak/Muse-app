@@ -4,6 +4,7 @@
  * adapters (#26). Moods, dreams and tarot readings are Stream-specific: private writing (reflections, dream
  * narratives, journal notes) is never copied automatically; only text the author types or trims here is shared.
  */
+import {recordedFeeling,type FeelingSnapshot} from '../feelings';
 import {adapters as showcaseAdapters,type FieldOption,type ShowcaseDisplay,type SourceBundle} from '@/lib/profile/adapters';
 import type {MuseIconName} from '@/components/MuseIcon';
 import type {DreamEntry,TarotReading,FortuneAssignment,SavedDiscovery} from '@/lib/whimsy/models';
@@ -20,7 +21,7 @@ import type {Episode,MediaActivity,Season} from '@/lib/collections/models';
 import type {Aspiration,AspirationUpdate} from '@/lib/aspirations/models';
 import {aspirationProgress,milestoneProgress} from '@/lib/aspirations/progress';
 
-export type StreamMood={id:string;date:string;period:'morning'|'evening';emotionIds:string[]};
+export type StreamMood={id:string;date:string;period:'morning'|'evening';emotionIds:string[];feelings?:FeelingSnapshot[]};
 export type StreamBundle=SourceBundle&{moods:StreamMood[];dreams:DreamEntry[];tarot:TarotReading[];fortunes:FortuneAssignment[];saved:SavedDiscovery[];
  chart:{id:string;payload:NatalChart}|null;cards:CreditCard[];bills:MoneyBill[];
  /** #69: moments behind books and TV, and aspirations. Optional so older callers keep working. */
@@ -35,7 +36,9 @@ export type StreamAdapter={kind:StreamSourceKind;label:string;icon:MuseIconName;
 const clip=(value:string|null|undefined,length=200)=>value?value.replace(/\s+/g,' ').trim().slice(0,length)||undefined:undefined;
 const clean=(d:StreamDisplay):StreamDisplay=>Object.fromEntries(Object.entries(d).filter(([,v])=>v!==undefined&&v!==null&&v!==''&&!(Array.isArray(v)&&!v.length))) as StreamDisplay;
 const on=(approved:string[],field:string)=>approved.includes(field);
-const emotionName=(id:string)=>emotionCatalog.find(e=>e.id===id)?.name;
+/** A feeling as that check-in recorded it (custom feelings and personal interpretations included). */
+const feelingOf=(m:{feelings?:FeelingSnapshot[]},id:string)=>recordedFeeling(id,m.feelings,emotionCatalog);
+const emotionName=(m:{feelings?:FeelingSnapshot[]},id:string)=>feelingOf(m,id)?.name;
 const day=(iso:string)=>new Date(`${iso.slice(0,10)}T12:00:00`).toLocaleDateString(undefined,{month:'short',day:'numeric'});
 const cap=(v:string)=>v.charAt(0).toUpperCase()+v.slice(1);
 function savedFortune(b:StreamBundle,sv:SavedDiscovery){const a=b.fortunes.find(x=>x.id===sv.assignmentId);const content=a&&fortuneById(a.content.contentId);
@@ -79,9 +82,9 @@ export const streamAdapters:Record<StreamSourceKind,StreamAdapter>={
   // Each emotion is its own approvable field, so mixed feelings stay mixed and nothing is shared by default beyond what you tick.
   fields:[{id:'date',label:'Date',default:true}],
   texts:[{id:'note',label:'A short line (optional)',hint:'In your own words. Your mood reflection is never shared.',max:200}],
-  candidates:b=>b.moods.filter(m=>m.emotionIds.length).map(m=>({sourceId:m.id,title:m.emotionIds.map(emotionName).filter(Boolean).slice(0,4).join(', '),subtitle:`${m.period==='morning'?'Morning':'Evening'} · ${day(m.date)}`,glyph:'mood',group:'Recent check-ins'})),
+  candidates:b=>b.moods.filter(m=>m.emotionIds.length).map(m=>({sourceId:m.id,title:m.emotionIds.map(id=>emotionName(m,id)).filter(Boolean).slice(0,4).join(', '),subtitle:`${m.period==='morning'?'Morning':'Evening'} · ${day(m.date)}`,glyph:'mood',group:'Recent check-ins'})),
   display:(b,id,approved,text)=>{const m=b.moods.find(x=>x.id===id);if(!m)return null;
-   const names=m.emotionIds.filter(e=>on(approved,`emotion:${e}`)).map(emotionName).filter((n):n is string=>!!n).slice(0,4);if(!names.length)return null;
+   const names=m.emotionIds.filter(e=>on(approved,`emotion:${e}`)).map(id=>emotionName(m,id)).filter((n):n is string=>!!n).slice(0,4);if(!names.length)return null;
    return clean({kind:'mood',title:names.join(' & '),meta:names.length>1?names:undefined,subtitle:clip(text.note),glyph:'mood',date:on(approved,'date')?m.date:undefined});}},
  dream:{kind:'dream',label:'Dream Diary',icon:'dreams',privacy:'Only what you choose: the title, symbols, a summary or an excerpt you trim. The full dream stays private.',
   fields:[{id:'title',label:'Dream title',default:true},{id:'symbols',label:'Symbols',default:true},{id:'date',label:'Date',default:false}],
@@ -134,7 +137,7 @@ export function fieldsFor(kind:StreamSourceKind,bundle:StreamBundle,sourceId:str
  if(kind==='book'){const hasSession=(bundle.sessions??[]).some(x=>x.bookId===sourceId),book=bundle.books.find(b=>b.id===sourceId);return base.filter(f=>(f.id!=='session'||hasSession)&&(f.id!=='started'||!!book?.startedOn));}
  if(kind!=='mood')return base;
  const mood=bundle.moods.find(m=>m.id===sourceId);
- return [...(mood?.emotionIds??[]).slice(0,4).map(e=>({id:`emotion:${e}`,label:emotionName(e)??'Feeling',default:true})),...base];
+ return [...(mood?.emotionIds??[]).slice(0,4).map(e=>({id:`emotion:${e}`,label:emotionName(mood!,e)??'Feeling',default:true})),...base];
 }
 /** Starting selection. Sensitive records start with only their locked fields: everything else is ticked deliberately. */
 export const defaultApprovedFor=(kind:StreamSourceKind,bundle:StreamBundle,sourceId:string)=>fieldsFor(kind,bundle,sourceId).filter(f=>f.locked||(f.default&&!sensitiveKinds.includes(kind))).map(f=>f.id);
@@ -142,7 +145,7 @@ export const defaultApprovedFor=(kind:StreamSourceKind,bundle:StreamBundle,sourc
 /** A mood's tone from its emotions: all pleasant → Share Joy, all unpleasant → Send Love, mixed → neutral React. */
 export function moodTone(bundle:StreamBundle,sourceId:string,approved:string[]):'love'|'joy'|'react'{
  const mood=bundle.moods.find(m=>m.id===sourceId);if(!mood)return 'react';
- const quadrants=mood.emotionIds.filter(e=>approved.includes(`emotion:${e}`)).map(e=>emotionCatalog.find(x=>x.id===e)?.quadrant).filter(Boolean);
+ const quadrants=mood.emotionIds.filter(e=>approved.includes(`emotion:${e}`)).map(e=>feelingOf(mood,e)?.quadrant).filter(Boolean);
  if(!quadrants.length)return 'react';
  const pleasant=quadrants.filter(q=>q==='green'||q==='yellow').length;
  return pleasant===quadrants.length?'joy':pleasant===0?'love':'react';

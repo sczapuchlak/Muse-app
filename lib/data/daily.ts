@@ -1,5 +1,6 @@
+import {catalogIdsOf,type FeelingSnapshot} from "../feelings";
 import type { SupabaseClient } from "@supabase/supabase-js";
-import type { Database } from "@/lib/database.types";
+import type { Database, Json } from "@/lib/database.types";
 import { validDate } from "@/lib/dates";
 
 type Client = SupabaseClient<Database>;
@@ -59,12 +60,12 @@ export async function readDay(client:Client,date:string):Promise<DayData> {
   const rows=data as unknown as DailyWire[];
   return rows.length?projectDay(rows[0]):emptyDay();
 }
-export async function saveMoodCheckin(client:Client,input:{date:string;period:"morning"|"evening";reflection:string|null;emotionIds:string[];influenceIds:string[];revision:number|null}) {
+export async function saveMoodCheckin(client:Client,input:{date:string;period:"morning"|"evening";reflection:string|null;emotionIds:string[];feelings?:FeelingSnapshot[];influenceIds:string[];revision:number|null}) {
   checkDate(input.date);
   if (!["morning","evening"].includes(input.period)) throw new RangeError("Choose Morning or Evening.");
   if (input.reflection!==null && (typeof input.reflection!=="string" || input.reflection.length>20000)) throw new RangeError("Reflection is too long.");
   if (input.influenceIds.length>3 || new Set(input.influenceIds).size!==input.influenceIds.length || new Set(input.emotionIds).size!==input.emotionIds.length) throw new RangeError("Choose distinct feelings and up to three influences.");
-  const {data,error}=await client.rpc("save_mood_checkin",{p_date:input.date,p_period:input.period,p_reflection:input.reflection??"",p_emotion_ids:input.emotionIds,p_influence_ids:input.influenceIds,p_expected_revision:input.revision??undefined});
+  const {data,error}=await client.rpc("save_mood_checkin",{p_date:input.date,p_period:input.period,p_reflection:input.reflection??"",p_emotion_ids:catalogIdsOf(input.emotionIds),p_influence_ids:input.influenceIds,p_expected_revision:input.revision??undefined,p_feelings:(input.feelings??[]) as unknown as Json});
   if (error) throw error;
   return data as MoodCheckin|null; // SQL returns null when the session was intentionally cleared.
 }

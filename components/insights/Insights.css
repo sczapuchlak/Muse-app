@@ -79,3 +79,9 @@
 .muse-insights-customize select{width:100%}
 .muse-insights-customize-check{display:flex;gap:10px;align-items:flex-start;font-size:.9rem}
 .muse-insights-customize-check input{margin-top:3px}
+
+/* #130: summary figures above a chart (Steps). */
+.muse-insight-stats{display:flex;flex-wrap:wrap;gap:10px 28px;margin:4px 0 8px;padding:0;list-style:none}
+.muse-insight-stats li{display:grid;gap:2px}
+.muse-insight-stats strong{font-family:var(--font-editorial);font-size:1.5rem;font-weight:var(--type-title-weight);line-height:1.1;font-variant-numeric:tabular-nums}
+.muse-insight-stats span{color:var(--text-muted);font-size:.78rem}

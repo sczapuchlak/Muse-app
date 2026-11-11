@@ -1,0 +1,41 @@
+/* One feelings library (#130): the info note, the "+ Add" row, the create/interpret/manage panels and the four-quadrant
+   picker. Quadrant colors come from the Mood Meter's own [data-quadrant] variables; nothing here marks where a feeling came from. */
+.muse-feelings-labelrow{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.muse-feelings-about-button{display:inline-grid;place-items:center;width:30px;height:30px;padding:0;border:0;border-radius:50%;background:transparent;color:var(--text-muted);cursor:pointer}
+.muse-feelings-about-button:hover,.muse-feelings-about-button[aria-expanded=true]{color:var(--foreground);background:var(--surface-subtle)}
+.muse-feelings-about-button:focus-visible{outline:2px solid var(--focus-ring,var(--accent-primary));outline-offset:2px}
+.muse-feelings-about{margin:6px 0 10px;padding:10px 12px;border-radius:14px;border:1px solid var(--glass-border);background:var(--surface-subtle);color:var(--text-muted);font-size:.82rem;line-height:1.5}
+.muse-feelings-add{grid-column:1/-1;display:flex;align-items:center;justify-content:center;gap:8px;min-height:var(--touch-target,44px);padding:6px 14px;border-radius:14px;border:1.5px dashed var(--glass-border);background:transparent;color:var(--foreground);font:inherit;font-weight:650;cursor:pointer}
+.muse-feelings-add:hover{border-color:var(--selected-border);background:var(--surface-subtle)}
+.muse-feelings-add:focus-visible,.muse-feelings-manage:focus-visible{outline:2px solid var(--focus-ring,var(--accent-primary));outline-offset:2px}
+.emotion-picker-footer .muse-feelings-manage{margin-right:auto;margin-left:12px}
+.muse-feeling-error{margin:6px 0 0;font-size:.84rem;color:var(--danger,#d14d6b)}
+
+.muse-feeling-panel{display:grid;gap:12px;align-content:start;min-width:0;overflow-y:auto;padding:2px}
+.muse-feeling-back{justify-self:start;display:inline-flex;align-items:center;gap:4px}
+.muse-feeling-back svg{transform:rotate(90deg)}
+.muse-feeling-title{display:flex;align-items:center;gap:8px;margin:0;font-size:1.2rem}
+.muse-feeling-note{margin:0;color:var(--text-muted);font-size:.86rem;line-height:1.45}
+.muse-feeling-name{width:100%;min-height:46px;padding:8px 14px;border-radius:14px;border:1px solid var(--glass-border);background:var(--surface-subtle);color:var(--foreground);font:inherit;font-size:1.05rem}
+.muse-feeling-name:focus-visible{outline:2px solid var(--focus-ring,var(--accent-primary));outline-offset:2px}
+.muse-feeling-actions{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+
+/* The Mood Meter as a control: pleasantness across, energy up and down. */
+.muse-feeling-quadrants{display:grid;gap:6px}
+.muse-feeling-quadrant-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.muse-feeling-quadrant-grid button{display:grid;gap:2px;justify-items:start;align-content:center;min-height:68px;padding:10px 12px;text-align:left;border-radius:16px;border:1.5px solid color-mix(in srgb,var(--quadrant-color) 45%,var(--glass-border));background:color-mix(in srgb,var(--quadrant-color) 12%,var(--surface-subtle));color:var(--foreground);font:inherit;cursor:pointer;transition:transform .15s ease,background .15s ease,border-color .15s ease}
+.muse-feeling-quadrant-grid button:hover{background:color-mix(in srgb,var(--quadrant-color) 22%,var(--surface-subtle))}
+.muse-feeling-quadrant-grid button[data-on]{border-color:var(--quadrant-color);background:color-mix(in srgb,var(--quadrant-color) 34%,var(--surface-subtle));box-shadow:0 0 0 2px color-mix(in srgb,var(--quadrant-color) 55%,transparent)}
+.muse-feeling-quadrant-grid button:focus-visible{outline:2px solid var(--focus-ring,var(--accent-primary));outline-offset:2px}
+.muse-feeling-quadrant-grid strong{font-size:.92rem;font-weight:700}
+.muse-feeling-quadrant-grid small{color:var(--text-muted);font-size:.76rem}
+.muse-feeling-quadrant-grid .quadrant-dot{margin-bottom:2px}
+
+.muse-feeling-list{display:grid;gap:10px;margin:0;padding:0;list-style:none}
+.muse-feeling-list>li{padding:10px 12px;border-radius:16px;border:1px solid var(--glass-border);background:var(--surface-subtle)}
+.muse-feeling-list form,.muse-feeling-list [role=alertdialog]{display:grid;gap:10px}
+.muse-feeling-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.muse-feeling-chip{display:inline-flex;align-items:center;gap:8px;font-weight:600}
+.muse-feeling-row-actions{display:inline-flex;gap:6px}
+@media(max-width:420px){.muse-feeling-quadrant-grid button{padding:8px 10px;min-height:62px}}
+@media(prefers-reduced-motion:reduce){.muse-feeling-quadrant-grid button{transition:none}}

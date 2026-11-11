@@ -737,6 +737,20 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
+                },"custom_feelings": {
+                  Row: {
+                    "created_at": string,"emoji": string | null,"favorite": boolean,"id": string,"name": string,"quadrant": string,"revision": number,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"emoji"?: string | null,"favorite"?: boolean,"id"?: string,"name": string,"quadrant": string,"revision"?: number,"updated_at"?: string,"user_id"?: string
+                  }
+                  Update: {
+                    "created_at"?: string,"emoji"?: string | null,"favorite"?: boolean,"id"?: string,"name"?: string,"quadrant"?: string,"revision"?: number,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
                 },"daily_memories": {
                   Row: {
                     "body": string,"created_at": string,"emoji": string | null,"id": string,"local_date": string,"revision": number,"updated_at": string,"user_id": string
@@ -1063,6 +1077,20 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
+                },"intention_prompts": {
+                  Row: {
+                    "category": string | null,"created_at": string,"favorite": boolean,"id": string,"kind": string,"periods": (string)[],"prompt_key": string | null,"question": string | null,"response": string | null,"revision": number,"title": string | null,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "category"?: string | null,"created_at"?: string,"favorite"?: boolean,"id"?: string,"kind": string,"periods"?: (string)[],"prompt_key"?: string | null,"question"?: string | null,"response"?: string | null,"revision"?: number,"title"?: string | null,"updated_at"?: string,"user_id"?: string
+                  }
+                  Update: {
+                    "category"?: string | null,"created_at"?: string,"favorite"?: boolean,"id"?: string,"kind"?: string,"periods"?: (string)[],"prompt_key"?: string | null,"question"?: string | null,"response"?: string | null,"revision"?: number,"title"?: string | null,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
                 },"life_areas": {
                   Row: {
                     "archived_at": string | null,"color": string,"created_at": string,"id": string,"label": string,"position": number,"revision": number,"updated_at": string,"user_id": string
@@ -1295,14 +1323,14 @@ isOneToOne: false
                   ]
                 },"mood_checkins": {
                   Row: {
-                    "captured_time_zone": string,"created_at": string,"daily_record_id": string,"id": string,"period": string,"reflection": string | null,"revision": number,"updated_at": string,"user_id": string
+                    "captured_time_zone": string,"created_at": string,"daily_record_id": string,"feelings": NonNullable<Json>,"id": string,"period": string,"reflection": string | null,"revision": number,"updated_at": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "captured_time_zone": string,"created_at"?: string,"daily_record_id": string,"id"?: string,"period": string,"reflection"?: string | null,"revision"?: number,"updated_at"?: string,"user_id"?: string
+                    "captured_time_zone": string,"created_at"?: string,"daily_record_id": string,"feelings"?: NonNullable<Json>,"id"?: string,"period": string,"reflection"?: string | null,"revision"?: number,"updated_at"?: string,"user_id"?: string
                   }
                   Update: {
-                    "captured_time_zone"?: string,"created_at"?: string,"daily_record_id"?: string,"id"?: string,"period"?: string,"reflection"?: string | null,"revision"?: number,"updated_at"?: string,"user_id"?: string
+                    "captured_time_zone"?: string,"created_at"?: string,"daily_record_id"?: string,"feelings"?: NonNullable<Json>,"id"?: string,"period"?: string,"reflection"?: string | null,"revision"?: number,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
                     {
@@ -2083,6 +2111,34 @@ isOneToOne: false
                   }
                   Update: {
                     "avatar_id"?: string,"created_at"?: string,"creator"?: boolean,"discoverable"?: boolean,"display_name"?: string,"participation"?: string,"public_id"?: string,"updated_at"?: string,"user_id"?: string,"username"?: string,"username_changed_at"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
+                },"step_days": {
+                  Row: {
+                    "captured_time_zone": string,"created_at": string,"goal": number,"local_date": string,"revision": number,"source": string,"steps": number,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "captured_time_zone"?: string,"created_at"?: string,"goal": number,"local_date": string,"revision"?: number,"source"?: string,"steps": number,"updated_at"?: string,"user_id"?: string
+                  }
+                  Update: {
+                    "captured_time_zone"?: string,"created_at"?: string,"goal"?: number,"local_date"?: string,"revision"?: number,"source"?: string,"steps"?: number,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
+                },"step_settings": {
+                  Row: {
+                    "goal": number,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "goal": number,"updated_at"?: string,"user_id"?: string
+                  }
+                  Update: {
+                    "goal"?: number,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
                     
@@ -3186,10 +3242,11 @@ isOneToOne: false
 { Args: { "p_command_id": string,"p_expected_revision": number,"p_state": Json }; Returns: number
                            },
 "save_mood_checkin":
-{ Args: { "p_date": string,"p_emotion_ids": (string)[],"p_expected_revision"?: number,"p_influence_ids": (string)[],"p_period": string,"p_reflection": string }; Returns: {
+{ Args: { "p_date": string,"p_emotion_ids": (string)[],"p_expected_revision"?: number,"p_feelings"?: Json,"p_influence_ids": (string)[],"p_period": string,"p_reflection": string }; Returns: {
               "captured_time_zone": string,
 "created_at": string,
 "daily_record_id": string,
+"feelings": NonNullable<Json>,
 "id": string,
 "period": string,
 "reflection": string | null,

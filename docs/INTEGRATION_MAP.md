@@ -37,7 +37,9 @@ Write down the answers before you build. Put them in the PR description or the f
 | Google event | Google Calendar (Muse keeps a cache) | `google_events` | Agenda, Daily Edit | shown, never copied into Muse; editable through Google when editing is allowed (#112) |
 | Muse event's Google copy | Planner → Agenda ("Also add to Google") | `google_event_links` | Agenda (hides the copy so it shows once) | reference: Muse event id → Google id `muse<uuid>`, etag and state; the Muse event stays authoritative |
 | Intention page | Planner → Intentions | `intention_pages` | Reflections (link only) | period + start |
-| Reflection | Planner → Reflections | `reflection_reviews`, `life_areas`, `life_ratings` | Intentions (link only) | period + start |
+| Intention prompts (favorites, own prompts) | Planner → Intentions | `intention_prompts` | Intention pages copy a prompt's title and question when added (no live link) | owner; library prompts by stable key || Reflection | Planner → Reflections | `reflection_reviews`, `life_areas`, `life_ratings` | Intentions (link only) | period + start |
+| Custom feelings | Mood | `custom_feelings` (+ `emotion_favorites`) | Check-ins keep their own snapshot (`mood_checkins.feelings`); no foreign key, so edits/deletes never rewrite history | owner; `custom:<uuid>` ids only in snapshots |
+| Manual steps | Wellness → Movement | `step_days`, `step_settings` | Insights read it; separate from planned movement and completed activities; per-day goal snapshot | owner + local date; `source=manual` |
 | Ritual (habit) | Rituals | `rituals`, `ritual_entries`, `ritual_groups` | Aspirations, Intentions, Daily Edit, Wellness, Insights | id; Intentions keeps a name snapshot |
 | Daily intention | Daily Edit | `daily_records` | Insights | separate from Intentions; never overwritten by them |
 | Lists | Mindspace → Lists | `lists`, `list_*` | Planner (linked tasks), Aspirations | id |
