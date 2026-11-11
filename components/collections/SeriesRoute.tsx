@@ -20,7 +20,6 @@ import {QuickAddButton,QuickAddToast,useQuickAdd} from '@/components/whimsy/Quic
 import {collectionsChanged,useCollectionsData} from './CollectionsData';
 import {SeriesCover} from './SeriesCover';
 import {BookSpines,BookSpinesSkeleton,type SpineEntry} from './BookSpines';
-import {ShelfDecor} from './ShelfTrinkets';
 import {SeriesLibrary} from './SeriesLibrary';
 import '@/components/whimsy/BookPage.css';
 import './SeriesPage.css';
@@ -162,7 +161,6 @@ export function SeriesRoute({seriesKey}:{seriesKey:string}){
   if(el){window.history.replaceState(null,'',`#${id}`);el.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'center'});}
  }
  const spineEntries:SpineEntry[]=spines.map(e=>({key:e.key,title:e.title,positionLabel:e.positionLabel,coverUrl:e.coverUrl,coverColor:e.coverColor,owned:!!e.book,state:e.state}));
- const shelfGenres=[...new Set(spines.flatMap(e=>(e.book?.genre??'').split(',').map(g=>g.trim()).filter(Boolean)))];
  const core=seriesCompletion(shelf);
  const layoutToggle=<div className="muse-segmented muse-series-layout" role="group" aria-label="Show books as"><button type="button" aria-pressed={layout==='list'} onClick={()=>setLayout('list')}>List</button><button type="button" aria-pressed={layout==='grid'} onClick={()=>setLayout('grid')}>Grid</button></div>;
 
@@ -176,8 +174,9 @@ export function SeriesRoute({seriesKey}:{seriesKey:string}){
    {description&&<SeriesDescription text={description}/>}
    </div>
    <div className="muse-series-shelf" role="img" style={{'--count':spines.length,'--spine-w-d':`${spineWidth}px`} as CSSProperties} aria-label={`${series.title}: ${spines.filter(e=>e.book).length} of ${spines.length} primary books on your shelf`}>
-    <div className="muse-series-shelf-scene" aria-hidden="true"><span className="muse-series-shelf-glow"/><ShelfDecor genres={shelfGenres} count={spines.length}/><span className="muse-series-shelf-plank"/></div>
+    <span className="muse-series-shelf-backdrop" aria-hidden="true"/>
     <BookSpines entries={spineEntries} nextKey={shelf.next?.key} onSelect={selectSpine}/>
+    <span className="muse-series-shelf-ledge" aria-hidden="true"/>
    </div>
   </header>
   {(notice||problem||quick.error)&&<p className="muse-series-page-message" role={problem||quick.error?'alert':'status'} data-tone={problem||quick.error?'error':undefined}>{problem||quick.error||notice}</p>}
@@ -232,7 +231,7 @@ function SeriesDescription({text}:{text:string}){
  return <div className="muse-series-page-description"><p ref={ref} className="type-reading" data-open={open||undefined}>{text}</p>{(clipped||open)&&<button type="button" className="text-button" aria-expanded={open} onClick={()=>setOpen(v=>!v)}>{open?'Show less':'Read more →'}</button>}</div>;
 }
 function SeriesSkeleton(){
- return <div className="muse-series-page-skeleton" aria-label="Opening series"><div className="muse-series-hero2"><div className="muse-skeleton-lines"><span/><span/><span/></div><div className="muse-series-shelf"><div className="muse-series-shelf-scene"><span className="muse-series-shelf-glow"/><span className="muse-series-shelf-plank"/></div><BookSpinesSkeleton/></div></div></div>;
+ return <div className="muse-series-page-skeleton" aria-label="Opening series"><div className="muse-series-hero2"><div className="muse-skeleton-lines"><span/><span/><span/></div><div className="muse-series-shelf"><BookSpinesSkeleton/><span className="muse-series-shelf-ledge" aria-hidden="true"/></div></div></div>;
 }
 /** The same fixed-size book cards in one horizontal row; more than fit scrolls (swipe, arrows, arrow keys). */
 function ShelfCarousel({label,children}:{label:string;children:ReactNode}){

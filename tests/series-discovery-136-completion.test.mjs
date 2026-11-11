@@ -142,13 +142,12 @@ test('finishing the core story finishes the series; every additional work is an 
  assert.equal(seriesCompletion(shelf(0,0,{primary:0,released:0,extra:0})).badge,null);
 });
 
-test('the spine row is a reusable, series-agnostic component; decoration stays ornamental (#136)',()=>{
- const spines=read('components/collections/BookSpines.tsx'),decor=read('components/collections/ShelfTrinkets.tsx'),route=read('components/collections/SeriesRoute.tsx');
- assert.match(spines,/export function BookSpines/);assert.doesNotMatch(spines,/series|Series/i.source?/ShelfEntry|seriesShelf|SeriesMember/:/x/,'spines know nothing about series records');
- assert.match(route,/<BookSpines entries=\{spineEntries\}/,'the Series page renders its shelf through the shared spines');
- assert.match(decor,/aria-hidden="true"/);assert.match(read('components/collections/SeriesPage.css'),/\.muse-shelf-trinkets\{[^}]*pointer-events:none/,'trinkets never intercept a tap');
- const {trinketFor}=load('components/collections/ShelfTrinkets');
- assert.equal(trinketFor(['Romantasy']),'crystal');assert.equal(trinketFor(['Contemporary Romance']),'rose');assert.equal(trinketFor(['Mystery']),'magnifier');assert.equal(trinketFor([]),'candle');
+test('the spine row is a reusable, series-agnostic component; the shelf is a plain ledge with no decoration (#136)',()=>{
+ const spines=read('components/collections/BookSpines.tsx'),route=read('components/collections/SeriesRoute.tsx'),css=read('components/collections/SeriesPage.css');
+ assert.match(spines,/export function BookSpines/);assert.doesNotMatch(spines,/ShelfEntry|seriesShelf|SeriesMember/,'spines know nothing about series records');
+ assert.match(route,/<BookSpines entries=\{spineEntries\}/);assert.match(route,/muse-series-shelf-ledge/);assert.match(route,/muse-series-shelf-backdrop/);
+ assert.doesNotMatch(route,/ShelfDecor|ShelfTrinkets/);assert.doesNotMatch(css,/trinket|shelf-lights|shelf-scene|case-twinkle|scalloped|shelf-glow/,'no clip-art decoration or CSS fairy lights');
+ assert.match(css,/\.muse-series-shelf-ledge\{[^}]*right:calc\(-1\*var\(--bleed\)\)/,'the ledge extends into the page margin only');
 });
 
 test('Series page structure: hero, then independent 70/30 columns with fixed-size cards and carousels (#136)',()=>{
@@ -162,5 +161,5 @@ test('Series page structure: hero, then independent 70/30 columns with fixed-siz
  assert.match(css,/\.muse-series-columns\{[^}]*7fr[^}]*3fr[^}]*align-items:start/);assert.match(css,/\.muse-series-carousel>ol>li\{flex:0 0 128px/,'one card size everywhere');
  assert.match(route,/<ShelfCarousel/);assert.doesNotMatch(route,/<details className="muse-series-page-collections" open/,'collections start collapsed');
  assert.match(route,/Read more →/);assert.match(css,/\.muse-series-page-description p\{[^}]*-webkit-line-clamp:2/,'the blurb clamps to two lines');
- assert.match(css,/\.muse-series-shelf-scene\{[^}]*mask-image/);assert.match(spines,/ArrowRight/);assert.match(spines,/onSelect/);
+assert.match(spines,/ArrowRight/);assert.match(spines,/onSelect/);
 });
