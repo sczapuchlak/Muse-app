@@ -73,7 +73,7 @@ const PER_VIEW=6;
 function ChallengeCompact({year,progress:p,editing,setEditing,editor,onOpenAtlas,onOpenBook}:{year:string;progress:ChallengeProgress|null;editing:boolean;setEditing:(v:boolean)=>void;editor:React.ReactNode;onOpenAtlas?:()=>void;onOpenBook?:(id:string)=>void}){
  const [view,setView]=useState(0);
  if(!p)return <article className="muse-books-panel muse-challenge muse-challenge-compact muse-desk-goal">
-  <div className="muse-desk-goal-head"><div className="muse-challenge-title"><strong className="muse-rainbow-year" data-big>{year}</strong><span className="small-label">READING CHALLENGE</span></div>{!editing&&<button type="button" className="muse-button button-primary" onClick={()=>setEditing(true)}>Set a goal</button>}</div>
+  <div className="muse-desk-goal-head" data-empty><div className="muse-challenge-title"><strong className="muse-rainbow-year" data-big>{year}</strong><span className="small-label">READING CHALLENGE</span></div>{!editing&&<button type="button" className="muse-button button-primary" onClick={()=>setEditing(true)}>Set a goal</button>}</div>
   {editor||<p className="muse-desk-goal-empty">How many books would you like to finish this year? Your finished books will line up here.</p>}</article>;
  const slots=Math.max(p.target,p.done),pages=Math.ceil(slots/PER_VIEW),current=Math.min(view,pages-1),first=current*PER_VIEW;
  return <article className="muse-books-panel muse-challenge muse-challenge-compact muse-desk-goal" data-reached={p.reached||undefined}>
