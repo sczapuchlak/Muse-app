@@ -24,7 +24,7 @@ try{
  check(await b.evaluate(()=>document.querySelector('.muse-session').dataset.phase)==='paused','pause works');await b.shoot('book-paused');
  await b.click('.muse-session-toggle');await wait(800);
  // Reading Desk
- await b.go('/collections?kind=book&mode=library','!!document.querySelector(".muse-session")','desk');await wait(800);
+ await b.go('/collections','!!document.querySelector(".muse-session")','desk');await wait(800);
  await b.evaluate(()=>window.scrollTo(0,0));await b.shoot('desk-timer');
  await b.viewport(390,844,true);await wait(800);await b.evaluate(()=>document.querySelector('.muse-session').scrollIntoView({block:'start'}));await wait(400);await b.shoot('desk-timer-phone');
  check(!(await b.overflow()),'no horizontal overflow on phone');

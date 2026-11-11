@@ -919,3 +919,11 @@ Did Not Finish (`dnf`) is distinct from Paused. It preserves progress, sessions,
 ### Update: favourites belong to a read, not a book
 
 Supersedes the book-level heart above. A favourite is "marked as a favourite in my reading log": it is set on a finished read, in the finish check-in or later from the book's Reads tab, and stored on that completion (`favorite`). Unread books can't be favourites, and a reread can be marked separately. A heart saved on the book earlier still counts for that book's latest read (`isFavoriteRead`). No migration: completions already live in the book record.
+
+## Books is its own destination — approved, implemented (Phase 1)
+
+- The sidebar destination is **Books** (route stays `/collections`, so every existing deep link keeps working). Books is the only visible media type for now; Movies, TV, Games, Music and My Collections keep their data, routes and code but have no door in the UI (no media-type pills, no default-media setting, Add offers Book only).
+- Three sibling views, one navigation (`BooksNav`): **Dashboard** (default, `/collections`), **Library** (`/collections?tab=library`), **Reading Atlas** (`/collections/reading-atlas`). Reading Atlas is linked only from this navigation.
+- Dashboard: Currently Reading (most recently read first), the seven-heart streak, a goals carousel (today's goal, annual challenge; more slides can be added), Reading Plans and Up Next previews (reserved for later phases; Up Next already previews Want to Read covers), and recently read.
+- Library keeps search, status filters, sort, grid/list densities, 24-per-page pagination and Book Detail return state. The Board is retired for Books.
+- No schema change: this is navigation and composition only.

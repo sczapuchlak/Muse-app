@@ -40,7 +40,7 @@ test('Collections keeps old deep links, contextual Reading Atlas, and one filter
  assert.match(source,/initialItemId=\{query\?\.get\('item'\)\}/);
  assert.match(source,/aria-expanded=\{advancedOpen\}/);
  assert.match(source,/setAdvancedOpen\(value=>!value\)/);
- assert.match(source,/preferences\.showInProgress&&inProgress\.length>0/);
+ assert.match(source,/<Bookshelf surface="dashboard" embedded\/>/,'Currently Reading lives on the Books Dashboard');assert.doesNotMatch(source,/muse-collections-board"/,'the Board is retired for Books');
 });
 
 test('Collections restoration keeps one compact active shelf and direct add actions',()=>{
@@ -48,10 +48,7 @@ test('Collections restoration keeps one compact active shelf and direct add acti
  const css=readFileSync(root+'/components/collections/Collections.css','utf8');
  assert.match(source,/kindFilter==='book'\?'Currently Reading'/);
  assert.match(source,/kindFilter==='game'\?'Currently Playing'/);
- assert.match(source,/aria-label=\{activeLabel\}/);
- assert.match(source,/muse-collections-active-card/);
- assert.match(source,/groups\.filter\(\(\[label\]\)=>!\(preferences\.showInProgress/);
- assert.match(source,/aria-label="Full library"/);
+ assert.match(source,/tab==='library'/,'Library is its own tab');
  assert.match(source,/muse-collections-search-add/);
  assert.match(source,/role="menu" open=\{addOpen\}/);
  assert.match(source,/onClick=\{\(\)=>id==='books'\?openAddBook\(\):go\(id,\{add:true\}\)\}/);
@@ -67,7 +64,6 @@ test('Collections restoration coexists with series deep links and scrolling edit
  assert.match(source,/params\.delete\('series'\)/);
  assert.match(source,/<SeriesLibrary key=\{query\?\.get\('series'\)\?\?''\} initialSeriesId=\{query\?\.get\('series'\)\}/);
  assert.match(source,/className="muse-collections-back"/);
- for(const heading of ['Series in Progress','My Curated Collections'])assert.ok(source.includes(`<section className="muse-collections-board-section"><div className="muse-collections-board-heading"><h3>${heading}</h3></div>`),heading);
  const media=readFileSync(root+'/components/collections/MediaLibrary.tsx','utf8');
  assert.equal(media.match(/muse-collections-sticky-footer/g)?.length,1);
  assert.equal(media.match(/\{error&&<p role="alert">\{error\}<\/p>\}/g)?.length,1);

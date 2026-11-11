@@ -1,0 +1,46 @@
+/* Books Dashboard: a calm reading home. Currently reading leads; streak and goals sit beside it; three quiet cards below. */
+.muse-bookshelf[data-surface="dashboard"]{grid-template-columns:minmax(0,1.9fr) minmax(0,1fr);grid-auto-flow:row;align-items:start;gap:clamp(12px,1.8vw,20px)}
+.muse-bookshelf[data-surface="dashboard"]>*{grid-column:1/-1;min-width:0}
+.muse-bookshelf[data-surface="dashboard"]>.muse-books-section[aria-label="Reading Desk"]{grid-column:1;grid-row:1;margin:0}
+.muse-bookshelf[data-surface="dashboard"]>.muse-dash-side{grid-column:2;grid-row:1}
+.muse-bookshelf[data-surface="dashboard"]>.muse-dash-trio{grid-column:1/-1}
+.muse-dash-side{display:grid;gap:clamp(12px,1.8vw,20px);align-content:start}
+.muse-dash-side>*{margin:0}
+.muse-dash-trio{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,1.8vw,20px);align-items:stretch}
+@container muse-content (max-width:900px){.muse-bookshelf[data-surface="dashboard"]{grid-template-columns:minmax(0,1fr)}.muse-bookshelf[data-surface="dashboard"]>.muse-books-section[aria-label="Reading Desk"],.muse-bookshelf[data-surface="dashboard"]>.muse-dash-side{grid-column:1;grid-row:auto}.muse-dash-trio{grid-template-columns:minmax(0,1fr)}}
+.muse-dash-goals,.muse-dash-card{display:grid;align-content:start;gap:10px;padding:14px 16px;border:1px solid var(--glass-border);border-radius:22px;background:var(--glass-background);min-width:0}
+.muse-dash-goals-head{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:30px}
+.muse-dash-goals-nav{display:flex;align-items:center;gap:6px}
+.muse-dash-goals-nav .muse-button{width:28px;min-width:28px;height:28px;min-height:28px;padding:0;display:grid;place-items:center;background:var(--surface-control)}
+.muse-dash-goals-nav .muse-button:nth-of-type(1) svg{transform:rotate(90deg)}.muse-dash-goals-nav .muse-button:nth-of-type(2) svg{transform:rotate(-90deg)}
+.muse-dash-dots{display:flex;gap:5px;margin-right:4px}.muse-dash-dots button{width:8px;height:8px;padding:0;border:0;border-radius:50%;background:color-mix(in srgb,var(--foreground) 22%,transparent);cursor:pointer}.muse-dash-dots button[aria-selected="true"]{background:var(--accent-primary);width:18px;border-radius:999px}
+.muse-dash-goal-slide .muse-desk-goal{border:0;background:none;padding:0!important;box-shadow:none}
+.muse-dash-daily{display:grid;gap:8px}
+.muse-dash-daily-count{margin:0;display:flex;align-items:baseline;gap:6px}.muse-dash-daily-count strong{font-family:var(--font-editorial);font-size:2.2rem;line-height:1;background:linear-gradient(120deg,var(--accent-pop,var(--accent-primary)),var(--accent-primary),var(--accent-secondary));-webkit-background-clip:text;background-clip:text;color:transparent}
+.muse-dash-daily-count span{color:var(--text-muted);font-size:.86rem}
+.muse-dash-daily-note{color:var(--text-muted);font-size:.78rem}
+.muse-dash-daily[data-empty]{justify-items:start}.muse-dash-daily[data-empty] p{margin:0;color:var(--text-muted);font-size:.86rem}
+.muse-dash-card header{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.muse-dash-card h3{margin:0;font-family:var(--font-editorial);font-style:italic;font-size:1.25rem;font-weight:var(--type-title-weight,600)}
+.muse-dash-card p{margin:0;font-size:.84rem;color:var(--text-muted)}
+.muse-dash-soon{padding:2px 9px;border-radius:999px;font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;background:color-mix(in srgb,var(--accent-primary) 16%,transparent);color:var(--foreground);white-space:nowrap}
+.muse-dash-plan-months{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px;margin:0;padding:0;list-style:none}
+.muse-dash-plan-months li{display:grid;gap:4px;justify-items:center;font-size:.62rem;color:var(--text-muted)}
+.muse-dash-plan-months i{display:block;width:100%;aspect-ratio:2/3;border-radius:4px;border:1.5px dashed color-mix(in srgb,var(--foreground) 22%,transparent)}
+.muse-dash-covers{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:0;padding:0;list-style:none}
+.muse-dash-covers button{display:block;width:100%;aspect-ratio:2/3;padding:0;border:0;border-radius:4px 6px 6px 4px;overflow:hidden;cursor:pointer;box-shadow:2px 3px 8px rgba(0,0,0,.28);transition:transform 160ms ease}.muse-dash-covers button:hover{transform:translateY(-3px)}
+.muse-dash-covers img{width:100%;height:100%;object-fit:cover;display:block}
+.muse-dash-recent ol{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.muse-dash-recent button{display:grid;grid-template-columns:34px minmax(0,1fr);align-items:center;gap:12px;width:100%;padding:6px 10px;border:1px solid var(--glass-border);border-radius:12px;background:var(--surface-subtle);color:inherit;font:inherit;text-align:left;cursor:pointer}
+.muse-dash-recent button:hover{border-color:var(--selected-border)}
+/* The Reading Desk section is the Dashboard's lead: no second frame around it, and tiles breathe more. */
+.muse-bookshelf[data-surface="dashboard"]>.muse-books-section[aria-label="Reading Desk"]{padding:0;border:0;border-radius:0;background:none;box-shadow:none;gap:12px}
+.muse-bookshelf[data-surface="dashboard"]>.muse-books-section[aria-label="Reading Desk"]::before,.muse-bookshelf[data-surface="dashboard"]>.muse-books-section[aria-label="Reading Desk"]::after{display:none}
+.muse-bookshelf[data-surface="dashboard"] .muse-desk-reading{height:100%;box-sizing:border-box;padding:16px 18px}
+.muse-bookshelf[data-surface="dashboard"] .muse-desk-track,.muse-bookshelf[data-surface="dashboard"] .muse-desk-layout[data-count] .muse-desk-track{grid-auto-columns:minmax(250px,calc((100% - 12px)/2))}
+.muse-bookshelf[data-surface="dashboard"] .muse-desk-layout .muse-desk-tile{grid-template-columns:64px minmax(0,1fr)!important;padding:14px!important}
+.muse-bookshelf[data-surface="dashboard"] .muse-desk-tile-cover{width:64px!important}
+.muse-bookshelf[data-surface="dashboard"] .muse-desk-layout[data-count="1"] .muse-desk-track{grid-auto-columns:100%}
+.muse-bookshelf[data-surface="dashboard"] .muse-desk-layout[data-count="1"] .muse-desk-tile{grid-template-columns:96px minmax(0,1fr)!important;gap:8px 18px!important}
+.muse-bookshelf[data-surface="dashboard"] .muse-desk-layout[data-count="1"] .muse-desk-tile-cover{width:96px!important;grid-row:1/4}
+@container muse-content (max-width:640px){.muse-bookshelf[data-surface="dashboard"] .muse-desk-track,.muse-bookshelf[data-surface="dashboard"] .muse-desk-layout[data-count] .muse-desk-track{grid-auto-columns:100%}}

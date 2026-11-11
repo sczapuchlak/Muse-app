@@ -37,7 +37,7 @@ test('modules adopt the shared search, switchers, chips and empty states',()=>{
  uses('components/whimsy/TarotExperience.tsx',/className="muse-segmented muse-tarot-journal-view"/);
  uses('components/whimsy/TarotExperience.tsx',/className="muse-chip-row muse-tarot-filters"/);
  uses('components/astrology/CosmicObservatory.tsx',/className="muse-segmented muse-cosmic-period-selector"/);
- uses('components/collections/Collections.tsx',/className="muse-segmented muse-collections-modes"/);
+ uses('components/books/BooksNav.tsx',/className="muse-page-tabs muse-books-nav"/);
  for(const file of ['components/collections/Collections.tsx','components/whimsy/Bookshelf.tsx','components/astrology/CosmicChart.tsx'])uses(file,/className="muse-empty-state [^"]*" data-variant="editorial"/);
  for(const file of ['components/notes/NotesList.tsx','components/nourish/WellnessGoals.tsx'])uses(file,/className="muse-empty-state [^"]*" data-variant="quiet"/);
 });
