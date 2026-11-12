@@ -296,20 +296,14 @@
 .muse-collections:not([data-density="list"]) .muse-collections-library-page[data-layout="library"]>.muse-collections-grid .muse-collections-card[data-kind]::before,.muse-collections:not([data-density="list"]) .muse-collections-library-page[data-layout="library"]>.muse-collections-grid .muse-collections-card[data-kind]::after{display:none!important}
 .muse-collections:not([data-density="list"]) .muse-collections-library-page[data-layout="library"]>.muse-collections-grid .muse-collections-card[data-kind]:hover{border-color:color-mix(in srgb,var(--foreground) 24%,transparent)!important;background:color-mix(in srgb,var(--foreground) 8%,transparent)!important}
 .muse-collections-library-page[data-layout="library"] .muse-collections-card .muse-book-cover,.muse-collections-library-page[data-layout="library"] .muse-collections-card .muse-collections-cover{border-color:color-mix(in srgb,var(--foreground) 16%,transparent)!important}
-/* Status as a coloured icon in the cover's corner. */
+/* Status as a vibrant icon badge in the cover's corner: solid colour, dark icon, strong border, readable on any cover. */
 .muse-collections-card[data-kind]{position:relative}
-.muse-card-status-badge{position:absolute;top:14px;right:14px;z-index:2;display:grid;place-items:center;width:26px;height:26px;border-radius:50%;color:#1b1630;background:var(--badge,#d8c4f5);border:1.5px solid rgba(0,0,0,.55);box-shadow:0 2px 6px rgba(0,0,0,.35)}
-.muse-card-status-badge[data-tone="active"]{--badge:#dcc3f7}.muse-card-status-badge[data-tone="planned"]{--badge:#7cc6dd}.muse-card-status-badge[data-tone="done"]{--badge:#ecb98a}.muse-card-status-badge[data-tone="paused"]{--badge:#d4d4d8}.muse-card-status-badge[data-tone="dnf"]{--badge:#e070b8}
+.muse-card-status-badge{--badge:#c9a6ff;--ink:#21103f;position:absolute;top:14px;right:14px;z-index:2;display:grid;place-items:center;width:30px;height:30px;border-radius:50%;color:var(--ink);background:var(--badge);border:2px solid #120c1f;box-shadow:0 0 0 1.5px rgba(255,255,255,.92),0 3px 8px rgba(0,0,0,.55)}
+.muse-card-status-badge svg{stroke-width:2.5;width:17px;height:17px}
+.muse-card-status-badge[data-tone="active"]{--badge:#c58cff;--ink:#27114d}.muse-card-status-badge[data-tone="planned"]{--badge:#35c1ee;--ink:#04303f}.muse-card-status-badge[data-tone="done"]{--badge:#ffa23d;--ink:#3f1d00}.muse-card-status-badge[data-tone="paused"]{--badge:#eef0f4;--ink:#16161d}.muse-card-status-badge[data-tone="dnf"]{--badge:#ff4fa6;--ink:#44001f}
 .muse-collections[data-density="list"] .muse-card-status-badge{position:static;grid-column:3;grid-row:1;justify-self:end}
-.muse-collections[data-density="compact"] .muse-card-status-badge{width:22px;height:22px;top:12px;right:12px}
-
-/* Board sections share the library's calm surface and quiet tiles. */
-.muse-collections-board-section{padding:clamp(12px,1.6vw,18px);border:1px solid var(--glass-border);border-radius:22px}
-.muse-collections:not([data-density="list"]) .muse-collections-board-section .muse-collections-grid .muse-collections-card[data-kind]{padding:10px 10px 5px!important;background:color-mix(in srgb,var(--foreground) 5%,transparent)!important;border:1px solid color-mix(in srgb,var(--foreground) 11%,transparent)!important;box-shadow:none!important;border-radius:14px!important;gap:6px}
-.muse-collections:not([data-density="list"]) .muse-collections-board-section .muse-collections-grid .muse-collections-card[data-kind]::before,.muse-collections:not([data-density="list"]) .muse-collections-board-section .muse-collections-grid .muse-collections-card[data-kind]::after{display:none!important}
-.muse-collections:not([data-density="list"]) .muse-collections-board-section .muse-collections-grid .muse-collections-card[data-kind]:hover{border-color:color-mix(in srgb,var(--foreground) 24%,transparent)!important;background:color-mix(in srgb,var(--foreground) 8%,transparent)!important}
-.muse-collections-board-section .muse-collections-card .muse-book-cover,.muse-collections-board-section .muse-collections-card .muse-collections-cover{border-color:color-mix(in srgb,var(--foreground) 16%,transparent)!important}
-.muse-collections-board-section .muse-collections-card[data-kind] .muse-card-meta:empty{display:none}
+.muse-collections[data-density="compact"] .muse-card-status-badge{width:26px;height:26px;top:12px;right:12px}
+.muse-collections[data-density="compact"] .muse-card-status-badge svg{width:15px;height:15px}
 /* Select mode: pick books in the Library and add them to a reading plan. */
 .muse-collections-card[data-selected]{outline:2px solid var(--accent-primary);outline-offset:-2px}
 .muse-collections-card[data-selected]::after{content:"✓";position:absolute;left:14px;top:14px;z-index:3;display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--accent-primary);color:#fff;font-size:.8rem}

@@ -1,5 +1,5 @@
 /* Reading Plans: a planner that belongs to Muse: frosted, rainbow-labelled, with status colours that match the rest of Books. */
-.muse-plans{--st-planned:#7cc6dd;--st-reading:#dcc3f7;--st-finished:#ecb98a;--st-paused:#d4d4d8;--st-dnf:#e070b8;display:grid;gap:12px;padding:clamp(14px,1.8vw,20px);border:1px solid var(--glass-border);border-radius:22px;background:var(--glass-background);min-width:0}
+.muse-plans{--st-planned:#35c1ee;--st-reading:#c58cff;--st-finished:#ffa23d;--st-paused:#eef0f4;--st-dnf:#ff4fa6;--ink-planned:#04303f;--ink-reading:#27114d;--ink-finished:#3f1d00;--ink-paused:#16161d;--ink-dnf:#44001f;display:grid;gap:12px;padding:clamp(14px,1.8vw,20px);border:1px solid var(--glass-border);border-radius:22px;background:var(--glass-background);min-width:0}
 .muse-plans-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .muse-plans-title{display:grid;gap:2px}
 .muse-plans-title h3{margin:0;font-family:var(--font-editorial);font-style:italic;font-size:1.45rem;font-weight:var(--type-title-weight,600);line-height:1.1}
@@ -17,9 +17,9 @@
 .muse-plans-loading{margin:0}
 /* Status distribution */
 .muse-plan-bar{display:flex;gap:3px;height:26px;border-radius:999px;overflow:hidden}
-.muse-plan-bar-seg{display:grid;place-items:center;flex-basis:0;min-width:26px;font-size:.74rem;font-weight:700;color:#1b1630;background:var(--seg);border-radius:6px}
+.muse-plan-bar-seg{display:grid;place-items:center;flex-basis:0;min-width:26px;font-size:.78rem;font-weight:800;color:var(--ink);background:var(--seg);border-radius:6px;box-shadow:inset 0 0 0 1.5px rgba(18,12,31,.55)}
 .muse-plan-bar-seg:first-child{border-radius:999px 6px 6px 999px}.muse-plan-bar-seg:last-child{border-radius:6px 999px 999px 6px}.muse-plan-bar-seg:only-child{border-radius:999px}
-[data-status="planned"]{--seg:var(--st-planned)}[data-status="reading"]{--seg:var(--st-reading)}[data-status="finished"]{--seg:var(--st-finished)}[data-status="paused"]{--seg:var(--st-paused)}[data-status="dnf"]{--seg:var(--st-dnf)}
+[data-status="planned"]{--seg:var(--st-planned);--ink:var(--ink-planned)}[data-status="reading"]{--seg:var(--st-reading);--ink:var(--ink-reading)}[data-status="finished"]{--seg:var(--st-finished);--ink:var(--ink-finished)}[data-status="paused"]{--seg:var(--st-paused);--ink:var(--ink-paused)}[data-status="dnf"]{--seg:var(--st-dnf);--ink:var(--ink-dnf)}
 /* Cards */
 .muse-plan-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:0;padding:0;list-style:none}
 .muse-plans[data-variant="full"] .muse-plan-list{grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr))}
@@ -38,8 +38,8 @@
 .muse-plan-title:hover{text-decoration:underline;text-underline-offset:3px}
 .muse-plan-author{font-size:.8rem;color:var(--text-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .muse-plan-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.muse-plan-status{display:inline-flex;align-items:center;gap:5px;padding:2px 9px 2px 6px;border-radius:999px;font-size:.7rem;font-weight:650;background:color-mix(in srgb,var(--seg) 24%,transparent);border:1px solid color-mix(in srgb,var(--seg) 70%,transparent);color:var(--foreground);white-space:nowrap}
-.muse-plan-status svg{color:var(--seg);filter:drop-shadow(0 0 3px color-mix(in srgb,var(--seg) 70%,transparent))}
+.muse-plan-status{display:inline-flex;align-items:center;gap:6px;padding:2px 10px 2px 3px;border-radius:999px;font-size:.72rem;font-weight:750;background:var(--seg);color:var(--ink);border:2px solid #120c1f;box-shadow:0 0 0 1px rgba(255,255,255,.55);white-space:nowrap}
+.muse-plan-status svg{flex:none;box-sizing:content-box;padding:3px;border-radius:50%;background:rgba(255,255,255,.55);stroke-width:2.5;color:var(--ink)}
 .muse-plan-stars{display:inline-flex;font-size:.82rem;letter-spacing:1px;color:color-mix(in srgb,var(--foreground) 25%,transparent)}
 .muse-plan-stars [data-fill="full"]{color:var(--accent-pop,var(--accent-primary))}
 .muse-plan-stars [data-fill="half"]{background:linear-gradient(90deg,var(--accent-pop,var(--accent-primary)) 50%,color-mix(in srgb,var(--foreground) 25%,transparent) 50%);-webkit-background-clip:text;background-clip:text;color:transparent}
