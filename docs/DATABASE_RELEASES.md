@@ -26,3 +26,7 @@ Hosted projects: **staging** `muse-staging` (`deazpeyomcwjplikbphl`) and **produ
   - If SQL is applied by hand, insert the history row in the same transaction.
 - **Verify from objects, not history.** Before reconciling history, confirm the migration's tables, columns, indexes, policies, grants and function bodies match the file.
 - **Additive by default.** Destructive changes need their own explicit approval and a backup.
+
+## Vercel deploy quota
+
+If Vercel reports "Deployment rate limited" for a merge, no Production deployment is created for that commit, so there is nothing to redeploy in the dashboard. Merge any small commit to `main` once the limit has cleared; Production then builds the whole of `main`.
