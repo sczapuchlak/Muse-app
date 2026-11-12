@@ -39,7 +39,7 @@ export function Streaks({sessions,goals,today,onSetDailyGoal}:{sessions:ReadingS
   </section>
 
   <div className="muse-streaks-main">
-  <section className="muse-streaks-calendar" aria-labelledby="streak-month">
+  <section className="muse-streaks-calendar" id="atlas-calendar" aria-labelledby="streak-month">
    <header><button type="button" className="muse-button button-ghost" aria-label="Previous month" onClick={()=>setMonth(shiftMonth(month,-1))}>‹</button><div><h4 id="streak-month">{monthName(month)}</h4><span>{readInMonth} reading {readInMonth===1?'day':'days'}</span></div><button type="button" className="muse-button button-ghost" aria-label="Next month" disabled={month>=today.slice(0,7)} onClick={()=>setMonth(shiftMonth(month,1))}>›</button></header>
    <ol className="muse-streaks-grid">
     {WEEKDAYS.map((d,i)=><li key={`w${i}`} className="muse-streaks-weekday" aria-hidden="true">{d}</li>)}

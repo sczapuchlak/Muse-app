@@ -97,18 +97,23 @@
 /* Currently reading has one frame, not a frame inside a frame. */
 .muse-dash-col .muse-books-section[aria-label="Reading Desk"]{background:none!important;border:0!important;box-shadow:none!important;padding:0!important}
 .muse-dash-trio{grid-template-columns:minmax(0,2fr) minmax(0,3fr)!important}
-/* Currently reading, compact: cover beside title / author / progress, the Start button beneath. No dead space between lines. */
-.muse-dash-col .muse-desk-layout .muse-desk-tile{grid-template-columns:78px minmax(0,1fr)!important;grid-template-rows:auto auto 1fr auto!important;column-gap:14px!important;row-gap:3px!important;padding:14px!important;align-items:start!important;align-content:center!important}
-.muse-dash-col .muse-desk-tile-cover{grid-column:1!important;grid-row:1/4!important;width:78px!important;align-self:start}
-.muse-dash-col .muse-desk-tile-body>h4{grid-column:2!important;grid-row:1!important;align-self:start}
-.muse-dash-col .muse-desk-tile-body>.muse-desk-tile-author{grid-column:2!important;grid-row:2!important;align-self:start}
-.muse-dash-col .muse-desk-tile-progress{grid-column:2!important;grid-row:3!important;align-self:end;margin:0}
-.muse-dash-col .muse-desk-tile-actions{grid-column:1/-1!important;grid-row:4!important;margin-top:10px}
-.muse-dash-col .muse-desk-tile-open{white-space:normal!important;display:-webkit-box!important;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden!important;text-overflow:clip;font-size:1.12rem;line-height:1.2}
-.muse-dash-col .muse-desk-tile-author{font-size:.86rem;white-space:normal;line-height:1.25}
-.muse-dash-col .muse-desk-layout[data-count="1"] .muse-desk-tile{grid-template-columns:96px minmax(0,1fr)!important}
-.muse-dash-col .muse-desk-layout[data-count="1"] .muse-desk-tile-cover{width:96px!important}
-.muse-dash-col .muse-desk-reading{padding:14px 16px}
+/* Currently reading: a big cover on the left, title and author left-aligned beside it, a full-width progress bar, then the Start button.
+   Everything shares the card's left edge and padding, and the tile stretches to use the column's height. */
+.muse-dash-col .muse-desk-layout .muse-desk-tile{grid-template-columns:clamp(110px,26%,150px) minmax(0,1fr)!important;grid-template-rows:auto 1fr auto auto!important;column-gap:18px!important;row-gap:0!important;padding:18px!important;align-items:start!important;align-content:stretch!important;height:100%}
+.muse-dash-col .muse-desk-tile-cover{grid-column:1!important;grid-row:1/3!important;width:100%!important;align-self:start}
+.muse-dash-col .muse-desk-tile-body>h4{grid-column:2!important;grid-row:1!important;align-self:start;margin:0}
+.muse-dash-col .muse-desk-tile-body>.muse-desk-tile-author{grid-column:2!important;grid-row:2!important;align-self:start;margin-top:4px}
+.muse-dash-col .muse-desk-tile-progress{grid-column:1/-1!important;grid-row:3!important;align-self:end;margin:16px 0 0}
+.muse-dash-col .muse-desk-tile-actions{grid-column:1/-1!important;grid-row:4!important;margin-top:12px}
+.muse-dash-col .muse-desk-tile-open{white-space:normal!important;display:-webkit-box!important;-webkit-line-clamp:3;line-clamp:3;-webkit-box-orient:vertical;overflow:hidden!important;text-overflow:clip;font-size:1.3rem;line-height:1.2;text-align:left}
+.muse-dash-col .muse-desk-tile-author{font-size:.95rem;white-space:normal;line-height:1.3;text-align:left}
+.muse-dash-col .muse-desk-pool{height:12px}
+.muse-dash-col .muse-desk-tile-pages{font-size:.82rem}
+.muse-dash-col .muse-desk-start{min-height:44px}
+.muse-dash-col .muse-desk-layout[data-count="1"] .muse-desk-tile{grid-template-columns:clamp(120px,30%,170px) minmax(0,1fr)!important}
+.muse-dash-col .muse-desk-track{grid-auto-columns:minmax(300px,calc((100% - 12px)/2))!important}
+.muse-dash-col .muse-desk-layout[data-count="1"] .muse-desk-track{grid-auto-columns:100%!important}
+.muse-dash-col .muse-desk-reading{padding:16px 18px}
 /* A little more presence for the streak. */
 .muse-dash-col .muse-streak{padding:20px 20px 16px!important;row-gap:12px!important}
 .muse-dash-col .muse-streak-count strong{font-size:2.4rem!important}
@@ -133,3 +138,19 @@
 .muse-dash-recent{grid-template-columns:minmax(0,1fr)!important}
 .muse-dash-recent-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px}
 @container muse-content (max-width:760px){.muse-dash-recent-list{grid-template-columns:minmax(0,1fr)!important}}
+/* One large Currently reading card at a time (arrows in the header page through the rest), filling the column. */
+.muse-dash-col .muse-desk-track,.muse-dash-col .muse-desk-layout[data-count] .muse-desk-track{grid-auto-columns:100%!important;height:100%;align-items:stretch}
+.muse-dash-col .muse-desk-track>li{height:100%}
+.muse-dash-col .muse-desk-layout .muse-desk-tile{grid-template-columns:clamp(130px,34%,180px) minmax(0,1fr)!important}
+.muse-dash-col .muse-desk-tile-cover,.muse-dash-col .muse-desk-tile-cover .muse-book-cover{width:100%!important;max-width:none!important}
+.muse-dash-col .muse-desk-tile-cover .muse-book-cover{box-shadow:4px 8px 18px rgba(0,0,0,.42)}
+.muse-dash-col .muse-desk-reading{grid-template-rows:auto minmax(0,1fr)!important}
+@container muse-content (max-width:520px){.muse-dash-col .muse-desk-layout .muse-desk-tile{grid-template-columns:110px minmax(0,1fr)!important;padding:14px!important;column-gap:14px!important}}
+/* Match the older, more specific dashboard rules so the cover really is large. */
+.muse-bookshelf[data-surface="dashboard"] .muse-dash-col .muse-desk-layout .muse-desk-tile,.muse-bookshelf[data-surface="dashboard"] .muse-dash-col .muse-desk-layout[data-count="1"] .muse-desk-tile{grid-template-columns:clamp(130px,34%,180px) minmax(0,1fr)!important}
+.muse-bookshelf[data-surface="dashboard"] .muse-dash-col .muse-desk-tile-cover,.muse-bookshelf[data-surface="dashboard"] .muse-dash-col .muse-desk-layout[data-count="1"] .muse-desk-tile-cover{width:100%!important;grid-row:1/3!important}
+@container muse-content (max-width:520px){.muse-bookshelf[data-surface="dashboard"] .muse-dash-col .muse-desk-layout .muse-desk-tile{grid-template-columns:110px minmax(0,1fr)!important}}
+.muse-bookshelf[data-surface="dashboard"] .muse-dash-col .muse-desk-layout .muse-desk-tile,.muse-bookshelf[data-surface="dashboard"] .muse-dash-col .muse-desk-layout[data-count="1"] .muse-desk-tile{grid-template-columns:clamp(104px,27%,128px) minmax(0,1fr)!important}
+.muse-bookshelf[data-surface="dashboard"] .muse-dash-col .muse-desk-tile-body>h4{align-self:center}
+/* Narrow screens stack the Recently finished / Up next row (this must come after the 2fr/3fr rule). */
+@container muse-content (max-width:900px){.muse-dash-trio{grid-template-columns:minmax(0,1fr)!important}}

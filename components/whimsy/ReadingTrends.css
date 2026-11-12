@@ -1,0 +1,46 @@
+/* Your last 30 days: four compact, theme-coloured cards. One surface (the section); the cards are quiet tiles on it. */
+.muse-trends{display:grid;gap:12px;padding:clamp(14px,1.8vw,20px);border:1px solid var(--glass-border);border-radius:22px;background:var(--glass-background);min-width:0}
+.muse-trends-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.muse-trends-head h3{margin:0;font-family:var(--font-editorial);font-style:italic;font-size:1.45rem;font-weight:var(--type-title-weight,600);line-height:1.1}
+.muse-trends-side{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.muse-trends-range{padding:3px 12px;border-radius:999px;font-size:.76rem;background:color-mix(in srgb,var(--accent-primary) 16%,transparent)}
+.muse-trends-explore{display:inline-flex;align-items:center;gap:6px;font-size:.82rem;color:var(--text-muted);text-decoration:none}.muse-trends-explore:hover{color:var(--foreground);text-decoration:underline;text-underline-offset:3px}
+.muse-trends-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:0;padding:0;list-style:none}
+@container muse-content (max-width:820px){.muse-trends-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.muse-trend-card{--c:var(--accent-primary);display:grid;gap:8px;align-content:start;height:100%;box-sizing:border-box;padding:14px;border:1px solid color-mix(in srgb,var(--c) 50%,transparent);border-radius:18px;background:linear-gradient(165deg,color-mix(in srgb,var(--c) 18%,transparent),color-mix(in srgb,var(--c) 4%,transparent) 70%),color-mix(in srgb,var(--foreground) 4%,transparent);color:inherit;text-decoration:none;min-width:0;transition:border-color 160ms ease,transform 160ms ease}
+.muse-trend-card[data-key="pages"]{--c:var(--chart-1,var(--accent-primary))}.muse-trend-card[data-key="time"]{--c:var(--chart-2,var(--accent-secondary))}.muse-trend-card[data-key="finished"]{--c:var(--chart-3,var(--accent-pop,var(--accent-primary)))}.muse-trend-card[data-key="days"]{--c:var(--chart-4,var(--accent-secondary))}
+.muse-trend-card:hover{border-color:var(--c)}@media(prefers-reduced-motion:no-preference){.muse-trend-card:hover{transform:translateY(-2px)}}
+.muse-trend-card:focus-visible{outline:2px solid var(--focus-ring,var(--accent-primary));outline-offset:2px}
+.muse-trend-top{display:flex;align-items:center;gap:8px;min-width:0}
+.muse-trend-top .small-label{font-size:.64rem!important;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--c);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.muse-trend-icon{flex:none;display:grid;place-items:center;width:28px;height:28px;border-radius:50%;color:var(--c);background:color-mix(in srgb,var(--c) 20%,transparent);border:1.5px solid color-mix(in srgb,var(--c) 65%,transparent)}.muse-trend-icon svg{stroke-width:2.2}
+.muse-trend-value{font-family:var(--font-editorial);font-size:clamp(1.7rem,2.6vw,2.2rem);line-height:1.05;letter-spacing:-.02em;color:var(--foreground);overflow-wrap:anywhere}
+.muse-trend-value small{font-family:var(--font-body,inherit);font-size:.78rem;font-weight:500;letter-spacing:0;color:var(--text-muted)}
+.muse-trend-spark{display:grid;grid-template-columns:repeat(30,minmax(0,1fr));gap:1.5px;align-items:end;height:30px}
+.muse-trend-spark i{display:block;height:var(--h);border-radius:2px 2px 1px 1px;background:color-mix(in srgb,var(--c) 22%,transparent)}
+.muse-trend-spark i[data-on]{background:color-mix(in srgb,var(--c) 70%,transparent)}.muse-trend-spark i[data-today]{background:var(--c)}
+/* Movement is information, not judgement: up is the card's own colour; down is a calm, muted tone. Never red. */
+.muse-trend-move{display:grid;gap:3px;font-size:.76rem;color:var(--text-muted);line-height:1.3}
+.muse-trend-badge{justify-self:start;font-style:normal;font-weight:700;font-size:.74rem;padding:1px 9px;border-radius:999px;color:var(--foreground);background:color-mix(in srgb,var(--c) 24%,transparent);border:1px solid color-mix(in srgb,var(--c) 55%,transparent)}
+.muse-trend-card[data-tone="down"] .muse-trend-badge{background:color-mix(in srgb,var(--foreground) 8%,transparent);border-color:color-mix(in srgb,var(--foreground) 22%,transparent)}
+.muse-trends-empty{display:flex;align-items:center;gap:clamp(14px,3vw,26px);padding:clamp(14px,2.4vw,22px);border:1.5px dashed color-mix(in srgb,var(--foreground) 22%,transparent);border-radius:18px}
+.muse-trends-empty strong{font-family:var(--font-editorial);font-size:1.2rem}.muse-trends-empty p{margin:4px 0 0;color:var(--text-muted);font-size:.88rem;max-width:56ch}
+.muse-trends-empty-art{flex:none;display:flex;align-items:flex-end;gap:5px;height:48px}.muse-trends-empty-art i{display:block;width:12px;border-radius:3px 3px 1px 1px;background:color-mix(in srgb,var(--accent-primary) 30%,transparent);border:1.5px dashed color-mix(in srgb,var(--accent-primary) 60%,transparent)}
+.muse-trends-empty-art i:nth-child(1){height:20px}.muse-trends-empty-art i:nth-child(2){height:30px}.muse-trends-empty-art i:nth-child(3){height:42px}.muse-trends-empty-art i:nth-child(4){height:28px}.muse-trends-empty-art i:nth-child(5){height:36px}
+@container muse-content (max-width:520px){.muse-trends-empty{flex-direction:column;align-items:flex-start}.muse-trend-card{padding:12px}}
+/* Carousel in the 30% column beside Reading plans (70%). */
+.muse-dash-plans-row{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,3fr);gap:clamp(12px,1.8vw,20px);align-items:stretch;min-width:0}
+.muse-dash-plans-row>*{margin:0;min-width:0;height:100%;box-sizing:border-box}
+@container muse-content (max-width:900px){.muse-dash-plans-row{grid-template-columns:minmax(0,1fr)}}
+.muse-bookshelf[data-surface="dashboard"]>.muse-dash-plans-row{grid-column:1/-1}
+.muse-trends{grid-template-rows:auto minmax(0,1fr) auto;align-content:stretch}
+.muse-trends-stage{display:grid;grid-template-rows:minmax(0,1fr) auto;gap:10px;min-height:0}
+.muse-trends .muse-trend-card{height:100%;align-content:space-between}
+.muse-trends .muse-trend-value{font-size:clamp(2.2rem,3.4vw,2.9rem)}
+.muse-trends .muse-trend-spark{height:56px}
+.muse-trends-nav{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.muse-trends-nav .muse-button{width:30px;min-width:30px;height:30px;min-height:30px;padding:0;display:grid;place-items:center;background:var(--surface-control)}
+.muse-trends-nav .muse-button:nth-of-type(1) svg{transform:rotate(90deg)}.muse-trends-nav .muse-button:nth-of-type(2) svg{transform:rotate(-90deg)}
+.muse-trends-nav{display:grid;grid-template-columns:1fr auto auto}
+.muse-trends-dots{display:flex;gap:6px;align-items:center}.muse-trends-dots button{width:8px;height:8px;padding:0;border:0;border-radius:50%;background:color-mix(in srgb,var(--foreground) 22%,transparent);cursor:pointer}.muse-trends-dots button[aria-selected="true"]{width:20px;border-radius:999px;background:var(--accent-primary)}
+.muse-trends-explore{justify-self:start}

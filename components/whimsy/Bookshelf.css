@@ -523,3 +523,48 @@ button.muse-atlas-modal-title:hover{text-decoration:underline;text-underline-off
 .muse-yir-spark small{font-size:.58rem;color:var(--text-muted)}
 @container muse-content (max-width:700px){.muse-yir-hero{grid-template-columns:minmax(0,1fr)!important}}
 .muse-books-section[aria-label="Reading Atlas"],.muse-atlas-section{gap:clamp(12px,1.8vw,20px)!important}
+/* Highlights: each card has its own colour, a round icon and a little picture. Four across, paged. */
+.muse-highlights{display:grid;gap:12px;padding:clamp(14px,1.8vw,20px);border:1px solid var(--glass-border);border-radius:22px;background:var(--glass-background);min-width:0}
+.muse-highlights>.muse-books-panel-head h4{margin:0;font-family:var(--font-editorial);font-size:1.45rem}
+.muse-paged-rows.muse-hl-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+@container muse-content (max-width:900px){.muse-paged-rows.muse-hl-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@container muse-content (max-width:520px){.muse-paged-rows.muse-hl-grid{grid-template-columns:minmax(0,1fr)}}
+.muse-hl-card{--c:var(--accent-primary);--ink:#fff;position:relative;display:grid;grid-template-rows:auto 1fr;gap:10px;min-height:196px;padding:14px;border:1px solid color-mix(in srgb,var(--c) 55%,transparent);border-radius:18px;overflow:hidden;background:linear-gradient(160deg,color-mix(in srgb,var(--c) 26%,transparent),color-mix(in srgb,var(--c) 6%,transparent) 62%),color-mix(in srgb,var(--foreground) 4%,transparent);min-width:0}
+.muse-hl-card::after{content:"";position:absolute;right:-26px;top:-26px;width:90px;height:90px;border-radius:50%;background:radial-gradient(closest-side,color-mix(in srgb,var(--c) 40%,transparent),transparent);pointer-events:none}
+.muse-hl-card[data-tone="violet"]{--c:#b57cff}.muse-hl-card[data-tone="aqua"]{--c:#2fc7e8}.muse-hl-card[data-tone="orange"]{--c:#ff9f3d}.muse-hl-card[data-tone="pink"]{--c:#ff5fae}.muse-hl-card[data-tone="green"]{--c:#7bd957}.muse-hl-card[data-tone="blue"]{--c:#5b8dff}
+.muse-hl-head{display:flex;align-items:center;gap:8px;min-width:0;position:relative;z-index:1}
+.muse-hl-head .small-label{font-size:.64rem!important;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:color-mix(in srgb,var(--c) 85%,var(--foreground));overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.muse-hl-icon{flex:none;display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--c);color:#1a1226;border:2px solid #120c1f;box-shadow:0 0 0 1px rgba(255,255,255,.55)}
+.muse-hl-icon svg{stroke:#1a1226;stroke-width:2.4}
+.muse-hl-body{display:grid;align-content:space-between;gap:10px;min-width:0;position:relative;z-index:1}
+.muse-hl-art{display:flex;align-items:flex-end;min-height:64px}
+.muse-hl-text{display:grid;gap:2px;min-width:0}
+.muse-hl-text strong{font-family:var(--font-editorial);font-size:1.25rem;line-height:1.15;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow-wrap:anywhere}
+.muse-hl-text small{font-size:.78rem;color:var(--text-muted)}
+.muse-hl-empty{font-style:italic;font-family:var(--font-editorial)}
+.muse-hl-cover{display:block;width:44px;aspect-ratio:2/3;border-radius:3px 5px 5px 3px;overflow:hidden;box-shadow:2px 4px 10px rgba(0,0,0,.4)}.muse-hl-cover img{width:100%;height:100%;object-fit:cover;display:block}.muse-hl-cover .muse-cal-cover-blank{font-size:.4rem}
+.muse-hl-orb{display:grid;place-items:center;width:56px;height:56px;border-radius:50%;color:var(--c);background:radial-gradient(circle,color-mix(in srgb,var(--c) 35%,transparent),transparent 70%);border:1.5px dashed color-mix(in srgb,var(--c) 60%,transparent)}
+.muse-hl-chips{display:flex;flex-wrap:wrap;gap:5px}.muse-hl-chips em{font-style:normal;font-size:.68rem;padding:2px 9px;border-radius:999px;border:1px solid color-mix(in srgb,var(--c) 60%,transparent);background:color-mix(in srgb,var(--c) 16%,transparent);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.muse-hl-dots{display:flex;flex-wrap:wrap;gap:5px;max-width:140px}.muse-hl-dots i{width:12px;height:12px;border-radius:50%;background:var(--c);box-shadow:0 0 0 1.5px #120c1f}
+.muse-hl-bars{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:4px;align-items:end;width:100%;height:64px}
+.muse-hl-bars i{display:grid;align-items:end;justify-items:center;height:var(--h);min-height:6px;border-radius:5px 5px 2px 2px;background:color-mix(in srgb,var(--c) 38%,transparent);position:relative}
+.muse-hl-bars i[data-hot]{background:var(--c);box-shadow:0 0 10px color-mix(in srgb,var(--c) 60%,transparent)}
+.muse-hl-bars i small{position:absolute;bottom:-14px;font-size:.55rem;color:var(--text-muted)}
+.muse-hl-bars{margin-bottom:14px}
+.muse-hl-bars-12{gap:3px}.muse-hl-bars-24{gap:1.5px}
+.muse-hl-bars-24 i{border-radius:3px 3px 1px 1px}
+/* Year in Review: three emojis beside Books a month, equal heights. */
+.muse-yir-emoji-shelf{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:clamp(12px,1.8vw,20px);align-items:stretch}
+.muse-yir-emoji-shelf>*{margin:0;min-width:0;align-content:center}
+@container muse-content (max-width:760px){.muse-yir-emoji-shelf{grid-template-columns:minmax(0,1fr)}}
+/* Reading by period: one bar (time); pages and sessions as plain text. */
+.muse-rhythm-list{display:grid;gap:12px}
+.muse-rhythm-row{display:grid;gap:5px}
+.muse-rhythm-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px}.muse-rhythm-head strong{font-size:.92rem}.muse-rhythm-head span{font-size:.84rem;color:var(--foreground)}
+.muse-rhythm-row .muse-desk-pool{height:10px}.muse-rhythm-row small{font-size:.74rem;color:var(--text-muted)}
+.muse-books-history-filters{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:8px;align-items:center}
+@container muse-content (max-width:640px){.muse-books-history-filters{grid-template-columns:minmax(0,1fr)}}
+/* A panel reached by a Dashboard deep link glows briefly so it is easy to spot. */
+[data-focused="true"]{scroll-margin-top:16px}
+@media(prefers-reduced-motion:no-preference){[data-focused="true"]{animation:muse-focus-glow 1.8s ease-out 1}}
+@keyframes muse-focus-glow{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--accent-primary) 70%,transparent)}100%{box-shadow:0 0 0 14px transparent}}

@@ -21,12 +21,12 @@ export function AtlasMetric({label,value,detail}:{label:string;value:string;deta
 const axisValue=(value:number,unit:'time'|'count'|'rating')=>unit==='rating'?`${Math.round(value*10)/10}★`:unit==='time'?(value>=3600?`${+(value/3600).toFixed(1)}h`:`${Math.round(value/60)}m`):num(value);
 
 /** A bar chart with a value axis; hover, focus or tap a bar to read its exact figure. An optional line follows the ups and downs. */
-export function ActivityBars({title,note,items,line=false,unit='count',max:fixedMax}:{title:string;note:string;items:{key:string;label:string;short:string;value:number;text:string}[];line?:boolean;unit?:'time'|'count'|'rating';max?:number}){
+export function ActivityBars({title,note,items,line=false,unit='count',max:fixedMax,anchor}:{anchor?:string;title:string;note:string;items:{key:string;label:string;short:string;value:number;text:string}[];line?:boolean;unit?:'time'|'count'|'rating';max?:number}){
  const [active,setActive]=useState<number|null>(null);
  const max=fixedMax??Math.max(1,...items.map(i=>i.value)),empty=items.every(i=>!i.value),n=items.length;
  const points=items.map((i,k)=>({x:(k+.5)/n*100,y:i.value/max*100}));
  const shown=active!==null?items[active]:null;
- return <article className="muse-books-panel"><div className="muse-books-panel-head"><h4>{title}</h4></div>
+ return <article className="muse-books-panel" id={anchor?`atlas-${anchor}`:undefined}><div className="muse-books-panel-head"><h4>{title}</h4></div>
   {empty?<p>Nothing recorded in this window yet.</p>:<div className="muse-bars-wrap">
    <div className="muse-bars-axis" aria-hidden="true"><span>{axisValue(max,unit)}</span>{(unit!=='count'||max>=4)&&<span>{axisValue(unit==='count'?Math.round(max/2):max/2,unit)}</span>}<span>0</span></div>
    <div className="muse-bars-plot" onPointerLeave={()=>setActive(null)}>
