@@ -309,3 +309,6 @@
 .muse-collections-card[data-selected]::after{content:"✓";position:absolute;left:14px;top:14px;z-index:3;display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--accent-primary);color:#fff;font-size:.8rem}
 .muse-collections-select-bar{position:sticky;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:30;display:flex;align-items:center;gap:10px;justify-content:space-between;flex-wrap:wrap;padding:10px 14px;border:1px solid var(--glass-border);border-radius:999px;background:var(--floating-background,var(--glass-background));box-shadow:var(--floating-shadow,0 8px 24px rgba(0,0,0,.25))}
 @media(max-width:680px){.muse-collections-select-bar{bottom:calc(84px + env(safe-area-inset-bottom,0px))}}
+/* Status badges: the icon colour is forced so no card or theme rule can wash it out on the vivid fill. */
+.muse-collections-card .muse-card-status-badge,.muse-card-status-badge{color:var(--ink)!important;border-width:2.5px}
+.muse-collections-card .muse-card-status-badge svg,.muse-card-status-badge svg{color:var(--ink)!important;stroke:var(--ink)!important;stroke-width:2.75!important;opacity:1!important;filter:none}

@@ -1,5 +1,6 @@
 /* Reading Plans: a planner that belongs to Muse: frosted, rainbow-labelled, with status colours that match the rest of Books. */
-.muse-plans{--st-planned:#35c1ee;--st-reading:#c58cff;--st-finished:#ffa23d;--st-paused:#eef0f4;--st-dnf:#ff4fa6;--ink-planned:#04303f;--ink-reading:#27114d;--ink-finished:#3f1d00;--ink-paused:#16161d;--ink-dnf:#44001f;display:grid;gap:12px;padding:clamp(14px,1.8vw,20px);border:1px solid var(--glass-border);border-radius:22px;background:var(--glass-background);min-width:0}
+:root{--st-planned:#35c1ee;--st-reading:#c58cff;--st-finished:#ffa23d;--st-paused:#eef0f4;--st-dnf:#ff4fa6;--ink-planned:#04303f;--ink-reading:#27114d;--ink-finished:#3f1d00;--ink-paused:#16161d;--ink-dnf:#44001f}
+.muse-plans{display:grid;gap:12px;padding:clamp(14px,1.8vw,20px);border:1px solid var(--glass-border);border-radius:22px;background:var(--glass-background);min-width:0}
 .muse-plans-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .muse-plans-title{display:grid;gap:2px}
 .muse-plans-title h3{margin:0;font-family:var(--font-editorial);font-style:italic;font-size:1.45rem;font-weight:var(--type-title-weight,600);line-height:1.1}
@@ -94,3 +95,8 @@
  .muse-plans-count{white-space:nowrap;font-size:.68rem;padding:2px 8px}
  .muse-plans-label svg{display:none}
 }
+/* Same guarantee for plan chips and the status bar numbers. */
+.muse-plan-status,.muse-plan-status span{color:var(--ink)!important}
+.muse-plan-status svg{color:var(--ink)!important;stroke:var(--ink)!important;stroke-width:2.75!important;opacity:1!important;filter:none!important;background:rgba(255,255,255,.7)!important}
+.muse-plan-bar-seg,.muse-plan-bar-seg span{color:var(--ink)!important}
+.muse-upnext .muse-plan-status,.muse-upnext-list .muse-plan-status,.muse-roulette .muse-plan-status{color:var(--ink)!important}
