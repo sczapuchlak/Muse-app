@@ -64,3 +64,7 @@
 .muse-dash-recent ol{grid-auto-flow:row;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:8px}
 .muse-dash-recent li:nth-child(n+4){display:none}
 @container muse-content (max-width:700px){.muse-dash-recent{grid-template-columns:minmax(0,1fr)}}
+/* Both top columns end on the same line: the side column's goals card absorbs any spare height; the desk stretches to match. */
+.muse-bookshelf[data-surface="dashboard"]>.muse-dash-side{grid-template-rows:auto minmax(0,1fr);align-content:stretch}
+.muse-dash-side>.muse-dash-goals{align-content:center}
+.muse-bookshelf[data-surface="dashboard"]>.muse-books-section[aria-label="Reading Desk"],.muse-bookshelf[data-surface="dashboard"] .muse-desk-layout,.muse-bookshelf[data-surface="dashboard"] .muse-desk-reading{min-height:0}
