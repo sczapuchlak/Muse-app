@@ -91,3 +91,73 @@
 .muse-intentions-question{margin:0;font-family:var(--font-editorial);font-style:italic;font-size:.95rem;line-height:1.45;color:var(--text-muted)}
 .muse-intentions-section[data-prompt]:is([data-type=writing]){grid-column:auto}
 @media(max-width:760px){.muse-intentions-section[data-prompt]{grid-column:1/-1}}
+
+/* ======================================================================================================
+   Period layouts (#119, Option A). Same sections and data; each period arranges them for what it is for.
+   Equal-height rows, one 16px rhythm, a solid grid. Sections keep their saved order inside each layout.
+   ====================================================================================================== */
+.muse-intentions-grid{align-items:stretch!important}
+.muse-intentions-section{--sec:var(--accent-primary);border-top:3px solid var(--sec)}
+.muse-intentions-grid>.muse-intentions-section:nth-child(6n+1){--sec:#b57cff}.muse-intentions-grid>.muse-intentions-section:nth-child(6n+2){--sec:#2fc7e8}.muse-intentions-grid>.muse-intentions-section:nth-child(6n+3){--sec:#ff9f3d}.muse-intentions-grid>.muse-intentions-section:nth-child(6n+4){--sec:#ff5fae}.muse-intentions-grid>.muse-intentions-section:nth-child(6n+5){--sec:#7bd957}.muse-intentions-grid>.muse-intentions-section:nth-child(6n+6){--sec:#5b8dff}
+.muse-intentions-section-head h3{color:color-mix(in srgb,var(--sec) 70%,var(--foreground))}
+.muse-intentions-page[data-period=quarter] .muse-intentions-section{border-left:1px solid var(--glass-border)}
+
+/* The guide: each period's own way of looking around. */
+.muse-intentions-guide{display:grid;gap:12px;min-width:0}
+.muse-intentions-guide ol{display:grid;gap:10px;margin:0;padding:0;list-style:none;min-width:0}
+.muse-intentions-guide li>:is(a,button){display:grid;gap:2px;justify-items:center;width:100%;height:100%;box-sizing:border-box;padding:10px 8px;border:1px solid var(--glass-border);border-radius:16px;background:var(--surface-subtle);color:var(--foreground);font:inherit;text-decoration:none;text-align:center;cursor:pointer}
+.muse-intentions-guide li>:is(a,button):hover{border-color:var(--selected-border)}
+.muse-intentions-guide li[data-today]>:is(a,button){border-color:var(--accent-primary);background:color-mix(in srgb,var(--accent-primary) 26%,var(--background));box-shadow:0 0 0 1px var(--accent-primary)}
+.muse-intentions-guide small{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted)}
+.muse-intentions-guide strong{font-family:var(--font-editorial);font-size:1.15rem;line-height:1.15}
+.muse-intentions-days{grid-template-columns:repeat(7,minmax(0,1fr))}
+.muse-intentions-days strong{font-size:1.5rem}
+.muse-intentions-ladder{grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
+.muse-intentions-lanes{grid-template-columns:repeat(3,minmax(0,1fr))}
+.muse-intentions-lanes strong{font-size:1.3rem}
+.muse-intentions-quarters{grid-template-columns:repeat(4,minmax(0,1fr))}
+.muse-intentions-quarters strong{font-size:1.9rem}
+.muse-intentions-quarters li:nth-child(1)>button{border-top:3px solid #7bd957}.muse-intentions-quarters li:nth-child(2)>button{border-top:3px solid #2fc7e8}.muse-intentions-quarters li:nth-child(3)>button{border-top:3px solid #ff9f3d}.muse-intentions-quarters li:nth-child(4)>button{border-top:3px solid #b57cff}
+.muse-intentions-progress{position:relative;height:22px;border-radius:999px;background:color-mix(in srgb,var(--foreground) 12%,var(--background));overflow:hidden}
+.muse-intentions-progress>span{position:absolute;inset:0 auto 0 0;min-width:6px;border-radius:inherit;background:linear-gradient(90deg,#7bd957,#2fc7e8,#b57cff,#ff5fae)}
+.muse-intentions-progress>small{position:relative;display:block;padding:3px 12px;font-size:.7rem;letter-spacing:.06em;color:var(--foreground);text-shadow:0 1px 2px rgba(0,0,0,.35)}
+
+/* Week: the working page. Actionable lists on the wide side, intention and rituals beside them. */
+.muse-intentions-page[data-period=week] .muse-intentions-grid{grid-template-columns:minmax(0,2fr) minmax(0,1fr);grid-auto-flow:dense}
+.muse-intentions-page[data-period=week] .muse-intentions-section{grid-column:2}
+.muse-intentions-page[data-period=week] .muse-intentions-section:is([data-type=priorities],[data-type=forward],[data-type=list],[data-type=aspirations],[data-type=bucket]){grid-column:1}
+
+/* Month: the dashboard. Theme banner, then a 3-up of focus cards; priorities and the intention get the wider slots. */
+.muse-intentions-page[data-period=month] .muse-intentions-grid{grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-flow:dense}
+.muse-intentions-page[data-period=month] .muse-intentions-section{grid-column:span 1}
+.muse-intentions-page[data-period=month] .muse-intentions-section:is([data-type=theme],[data-kind=promise]){grid-column:1/-1}
+.muse-intentions-page[data-period=month] .muse-intentions-section:is([data-type=priorities],[data-kind=intention]){grid-column:span 2}
+
+/* Quarter: the season plan. Theme banner and outcomes across, then equal triptychs for steer / finish / let go. */
+.muse-intentions-page[data-period=quarter] .muse-intentions-grid{grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-flow:dense}
+.muse-intentions-page[data-period=quarter] .muse-intentions-section{grid-column:span 1}
+.muse-intentions-page[data-period=quarter] .muse-intentions-section:is([data-type=theme],[data-type=aspirations],[data-type=writing]){grid-column:1/-1}
+.muse-intentions-page[data-period=quarter] .muse-intentions-section[data-type=priorities]{grid-column:span 2}
+
+/* Year: the vision spread. A hero word, long-form writing across, then pairs for the big bets. */
+.muse-intentions-page[data-period=year] .muse-intentions-grid{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-flow:dense}
+.muse-intentions-page[data-period=year] .muse-intentions-section:is([data-type=theme],[data-type=writing]){grid-column:1/-1}
+.muse-intentions-page[data-period=year] .muse-intentions-section[data-type=theme]{padding-block:clamp(22px,3.4vw,40px);text-align:center;border-top-width:4px}
+.muse-intentions-page[data-period=year] .muse-intentions-section[data-type=theme] :is(.muse-intentions-word-input,.muse-intentions-writing){text-align:center}
+.muse-intentions-page[data-period=year] .muse-intentions-section[data-type=theme] .muse-intentions-section-head{justify-content:center}
+.muse-intentions-page[data-period=year] .muse-intentions-section[data-type=writing] .muse-intentions-writing{font-size:1.15rem}
+
+@media(max-width:900px){
+  .muse-intentions-page[data-period] .muse-intentions-grid{grid-template-columns:minmax(0,1fr)}
+  .muse-intentions-page[data-period] .muse-intentions-section{grid-column:1/-1!important}
+}
+@media(max-width:560px){
+  .muse-intentions-days{gap:6px}.muse-intentions-days strong{font-size:1.2rem}
+  .muse-intentions-quarters{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+/* Fill each grid solid: the odd section out spans the leftover cells. */
+.muse-intentions-page[data-period=week] .muse-intentions-section[data-kind=matters]{grid-column:2}
+.muse-intentions-page[data-period=month] .muse-intentions-section[data-type=list]{grid-column:span 2}
+.muse-intentions-page[data-period=quarter] .muse-intentions-section[data-type=priorities]{grid-column:1/-1}
+.muse-intentions-page[data-period=year] .muse-intentions-section[data-type=list]{grid-column:1/-1}
+@media(max-width:900px){.muse-intentions-page[data-period] .muse-intentions-section{grid-column:1/-1!important}}

@@ -22,6 +22,7 @@ import { PromptLibrary } from "./PromptLibrary";
 import { MuseIcon } from "../../MuseIcon";
 import { MuseStar } from "../../MuseStar";
 import { PeriodTitle } from "../PeriodTitle";
+import { PeriodGuide } from "./PeriodGuide";
 import "../reflections/Reflections.css";
 import "./Intentions.css";
 
@@ -57,12 +58,12 @@ export function Intentions({ date, today, onDate, requestedPeriod }: { date: str
         </div>
       </div>
     </div>
-    {range ? <ChapterLoader key={`${period}/${range.start}`} range={range} today={today} client={client} /> : <p className="muse-reflections-quiet" role="status">Opening your planner…</p>}
+    {range ? <ChapterLoader key={`${period}/${range.start}`} range={range} today={today} client={client} go={(p, d) => { setPeriod(p); onDate(d); }} /> : <p className="muse-reflections-quiet" role="status">Opening your planner…</p>}
   </section>;
 }
 
 /** One period's page. Keyed by period and start, so moving to another period starts fresh. */
-function ChapterLoader({ range, today, client }: { range: IntentionRange; today: string; client: () => Client }) {
+function ChapterLoader({ range, today, client, go }: { range: IntentionRange; today: string; client: () => Client; go: (period: IntentionPeriod, date: string) => void }) {
   const [page, setPage] = useState<IntentionPage | null | undefined>(undefined), [error, setError] = useState(""), [status, setStatus] = useState("");
   const saved = useRef<IntentionPage | null>(null), pending = useRef<IntentionPage | null>(null), timer = useRef<number | null>(null), queue = useRef<Promise<void>>(Promise.resolve());
 
@@ -100,7 +101,7 @@ function ChapterLoader({ range, today, client }: { range: IntentionRange; today:
     {error && <p className="muse-reflections-alert" role="alert">{error} <button type="button" className="muse-reflections-pill" onClick={() => setError("")}>Dismiss</button></p>}
     {page === undefined ? <p className="muse-reflections-quiet" role="status">Opening this chapter…</p>
       : page === null ? <StartChapter range={range} tense={tense} onBegin={(blank) => void begin(blank)} />
-      : <Chapter page={page} range={range} today={today} tense={tense} status={status} change={change} client={client} onClear={() => void clear()} />}
+      : <Chapter page={page} range={range} today={today} tense={tense} status={status} change={change} client={client} go={go} onClear={() => void clear()} />}
     <ReflectionsLink range={range} client={client} />
   </>;
 }
@@ -169,7 +170,7 @@ const refHref = (r: Ref, range: IntentionRange) => r.kind === "aspiration" ? `/e
   : r.kind === "event" ? `/planner?view=agenda&date=${r.date ?? range.start}` : "/planner";
 const shortDate = (d: string) => new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", timeZone: "UTC" }).format(new Date(`${d}T12:00:00Z`));
 
-function Chapter({ page, range, today, tense, status, change, client, onClear }: { page: IntentionPage; range: IntentionRange; today: string; tense: string; status: string; change: Change; client: () => Client; onClear: () => void }) {
+function Chapter({ page, range, today, tense, status, change, client, go, onClear }: { page: IntentionPage; range: IntentionRange; today: string; tense: string; status: string; change: Change; client: () => Client; go: (period: IntentionPeriod, date: string) => void; onClear: () => void }) {
   const L = useLookups(range, today);
   const [arranging, setArranging] = useState(false), [confirm, setConfirm] = useState<string | "page" | null>(null), [adding, setAdding] = useState(false);
   const [promptAnchor, setPromptAnchor] = useState<HTMLElement | null>(null), [promptOpen, setPromptOpen] = useState(false);
@@ -189,6 +190,7 @@ function Chapter({ page, range, today, tense, status, change, client, onClear }:
       </div>
     </header>
 
+    <PeriodGuide range={range} today={today} go={go} />
     <div className="muse-intentions-grid">
       {visible.map((s, i) => <SectionFrame key={s.id} section={s} arranging={arranging} first={i === 0} last={i === visible.length - 1}
         onTitle={(title) => update(s.id, (x) => ({ ...x, title }))}
