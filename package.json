@@ -60,6 +60,8 @@
     "test:atlas:ui": "node scripts/test-atlas-ui.mjs",
     "test:plans:ui": "node scripts/test-reading-plans-ui.mjs",
     "test:plans:db": "node scripts/test-reading-plans-db.mjs",
+    "test:upnext:ui": "node scripts/test-up-next-ui.mjs",
+    "test:upnext:db": "node scripts/test-up-next-db.mjs",
     "test:desk:ui": "node scripts/test-reading-desk-ui.mjs",
     "test:detail:ui": "node scripts/test-book-detail-ui.mjs",
     "test:timer:ui": "node scripts/test-reading-timer-ui.mjs",

@@ -2,6 +2,7 @@
 import {MuseIcon,type MuseIconName} from '@/components/MuseIcon';
 import type {Book} from '@/lib/whimsy/models';
 import {PLAN_STATUS_LABEL} from '@/lib/books/reading-plans';
+import './ReadingPlans.css';
 
 /** The one visual language for a book's real reading status (icon + theme-aware colour); plans add no status of their own. */
 export const statusIconName:Record<Book['status'],MuseIconName>={planned:'bookmark',reading:'eye',finished:'check',paused:'pause',dnf:'minus'};

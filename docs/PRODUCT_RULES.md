@@ -936,3 +936,12 @@ Supersedes the book-level heart above. A favourite is "marked as a favourite in 
 - Order is manual and saved (drag the handle, or the arrow keys / "Move up/down" for touch and keyboard).
 - Everyday planning happens on the Dashboard (four books a page); `/collections/plans` is the same planner with every period. Books can be added from the planner, from Library select mode and from Book Detail.
 - Data is additive (one table plus three owner-only functions, migration `20261215000100`). Phase 3 (Up Next, Reading Roulette) reads these entries for the current month, the year or the whole Library.
+
+## Up Next and Reading Roulette — approved, implemented (Books Phase 3)
+
+- Up Next is up to three suggested reads on the Books Dashboard; any slot may stay empty. Slots can be chosen, replaced, removed and reordered (drag the handle, arrow keys, or Move left/right). It is a suggestion, not a commitment.
+- Books come from a source: this month's plan, the yearly plan, To Be Read, the entire Library, "Surprise me" (all four merged), or a brand-new book (existing search / Add Book flow; defaults to To Be Read; never added to a plan silently, the reader is offered the monthly or yearly plan). Only waiting books (To Be Read, Paused, DNF; not archived) are eligible, and a book already in another slot is not offered again.
+- Reading Roulette picks uniformly at random (secure random, no modulo bias) from the chosen source; the reel is cosmetic and always lands on the pre-picked book. Nothing is saved until "Keep this book"; "Spin again" avoids repeating the last result; reduced motion skips the animation. An empty source explains why and offers other sources.
+- Start reading uses the existing start flow. The book leaves Up Next only once its status really is Currently Reading; its Reading Plan membership is kept.
+- Data is additive: `up_next_slots` plus the owner-only `save_up_next` function (migration `20261216000100`).
+- Status badges everywhere (Library cards, plan chips, Up Next) use vivid fills, a dark outline and a forced contrasting icon colour so a theme can never wash the icon out.

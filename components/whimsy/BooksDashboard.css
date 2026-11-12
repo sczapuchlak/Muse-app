@@ -6,7 +6,7 @@
 .muse-bookshelf[data-surface="dashboard"]>.muse-dash-trio{grid-column:1/-1}
 .muse-dash-side{display:grid;gap:clamp(12px,1.8vw,20px);align-content:start}
 .muse-dash-side>*{margin:0}
-.muse-dash-trio{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(12px,1.8vw,20px);align-items:stretch}
+.muse-dash-trio{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:clamp(12px,1.8vw,20px);align-items:stretch}
 @container muse-content (max-width:900px){.muse-bookshelf[data-surface="dashboard"]{grid-template-columns:minmax(0,1fr)}.muse-bookshelf[data-surface="dashboard"]>.muse-books-section[aria-label="Reading Desk"],.muse-bookshelf[data-surface="dashboard"]>.muse-dash-side{grid-column:1;grid-row:auto}.muse-dash-trio{grid-template-columns:minmax(0,1fr)}}
 .muse-dash-goals,.muse-dash-card{display:grid;align-content:start;gap:10px;padding:14px 16px;border:1px solid var(--glass-border);border-radius:22px;background:var(--glass-background);min-width:0}
 .muse-dash-goals-head{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:30px}
@@ -46,3 +46,25 @@
 @container muse-content (max-width:640px){.muse-bookshelf[data-surface="dashboard"] .muse-desk-track,.muse-bookshelf[data-surface="dashboard"] .muse-desk-layout[data-count] .muse-desk-track{grid-auto-columns:100%}}
 
 .muse-bookshelf[data-surface="dashboard"]>.muse-plans{grid-column:1/-1}
+/* One grid, one gap: the three rows stretch to equal heights so no card leaves empty space beside a taller neighbour. */
+.muse-bookshelf[data-surface="dashboard"]{align-items:stretch;row-gap:clamp(12px,1.8vw,20px)}
+.muse-bookshelf[data-surface="dashboard"]>.muse-books-section[aria-label="Reading Desk"]{display:grid}
+.muse-bookshelf[data-surface="dashboard"] .muse-desk-layout{height:100%}
+.muse-bookshelf[data-surface="dashboard"] .muse-desk-reading{align-content:stretch;grid-template-rows:auto 1fr}
+.muse-bookshelf[data-surface="dashboard"] .muse-desk-track{align-items:stretch}
+.muse-bookshelf[data-surface="dashboard"] .muse-desk-tile{align-content:center}
+.muse-dash-trio>*{height:100%;box-sizing:border-box}
+.muse-dash-recent{align-content:start}
+.muse-dash-recent li:nth-child(n+4){display:none}
+@container muse-content (max-width:900px){.muse-dash-trio{grid-template-columns:minmax(0,1fr)}}
+/* Up Next takes the row; Recently read is a slim strip beneath that fits its content (no stretched empty card). */
+.muse-dash-trio{grid-template-columns:minmax(0,1fr)!important}
+.muse-dash-trio>*{height:auto}
+.muse-dash-recent{grid-template-columns:auto minmax(0,1fr);align-items:center;gap:8px 16px}
+.muse-dash-recent ol{grid-auto-flow:row;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:8px}
+.muse-dash-recent li:nth-child(n+4){display:none}
+@container muse-content (max-width:700px){.muse-dash-recent{grid-template-columns:minmax(0,1fr)}}
+/* Both top columns end on the same line: the side column's goals card absorbs any spare height; the desk stretches to match. */
+.muse-bookshelf[data-surface="dashboard"]>.muse-dash-side{grid-template-rows:auto minmax(0,1fr);align-content:stretch}
+.muse-dash-side>.muse-dash-goals{align-content:center}
+.muse-bookshelf[data-surface="dashboard"]>.muse-books-section[aria-label="Reading Desk"],.muse-bookshelf[data-surface="dashboard"] .muse-desk-layout,.muse-bookshelf[data-surface="dashboard"] .muse-desk-reading{min-height:0}

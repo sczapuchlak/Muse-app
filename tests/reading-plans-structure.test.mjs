@@ -16,3 +16,10 @@ test('Reading Plans UI shares one planner between the Dashboard and the full vie
  assert.match(css,/\.muse-plan-handle\{[^}]*touch-action:none/,'only the handle blocks scrolling');
  assert.doesNotMatch(plans,/status===|setStatus|updateStatus/,'plans never write a status');
 });
+test('Up Next migration is additive, three-slot, one-book-per-slot and owner-only; the UI never writes a status',()=>{
+ const sql=readFileSync(new URL('../supabase/migrations/20261216000100_up_next.sql',import.meta.url),'utf8').split('\n').filter(l=>!l.trim().startsWith('--')).join('\n');
+ assert.doesNotMatch(sql,/drop\s+(table|column)|alter\s+table\s+public\.whimsy_books|truncate/i);
+ assert.match(sql,/slot between 0 and 2/);assert.match(sql,/unique \(user_id, book_id\)/);assert.match(sql,/enable row level security/);assert.doesNotMatch(sql,/security definer/i);
+ const ui=read('components/whimsy/upnext/UpNext.tsx')+read('components/whimsy/upnext/UpNextFlow.tsx')+read('lib/books/use-up-next.ts');
+ assert.doesNotMatch(ui,/status:\s*'reading'|setStatus|moveBook/,'Up Next never changes a status; starting goes through the existing start flow');
+});

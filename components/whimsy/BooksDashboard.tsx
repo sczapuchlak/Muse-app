@@ -30,13 +30,6 @@ export function DailyGoal({goals,books,sessions,today,onSet}:{goals:ReadingGoal[
   <small className="muse-dash-daily-note">{percent>=100?'Goal reached today ✦':`${percent}% of today's goal`}</small></div>;
 }
 
-/** Reserved for Up Next (a later phase): previews the first Want to Read books today. */
-export function UpNextPreview({books,onOpen}:{books:Book[];onOpen:(id:string)=>void}){
- const planned=books.filter(b=>b.status==='planned'&&!b.archivedAt).sort((a,b)=>b.createdAt.localeCompare(a.createdAt)).slice(0,4);
- return <section className="muse-dash-card muse-dash-next" aria-labelledby="dash-next"><header><h3 id="dash-next">Up next</h3><span className="muse-dash-soon">Queue &amp; spin soon</span></header>
-  {planned.length?<ul className="muse-dash-covers">{planned.map(b=><li key={b.id}><button type="button" onClick={()=>onOpen(b.id)} title={b.title} aria-label={b.title}><Cover book={b}/></button></li>)}</ul>:<p>Books you want to read next will line up here.</p>}</section>;
-}
-
 /** The last few sittings: a quick way back into a book. */
 export function RecentActivity({books,sessions,onOpen}:{books:Book[];sessions:ReadingSession[];onOpen:(id:string)=>void}){
  const byId=new Map(books.map(b=>[b.id,b])),recent=[...sessions].sort((a,b)=>b.date.localeCompare(a.date)||b.createdAt.localeCompare(a.createdAt)).slice(0,3);
