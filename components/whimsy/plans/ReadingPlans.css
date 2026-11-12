@@ -80,7 +80,7 @@
 .muse-plan-suggest strong{font-size:.74rem;line-height:1.2;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .muse-plan-picked{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0;list-style:none}
 .muse-plan-picked li{display:inline-flex;align-items:center;gap:6px;padding:3px 6px 3px 12px;border-radius:999px;background:color-mix(in srgb,var(--accent-primary) 16%,transparent);font-size:.8rem}
-.muse-plan-add-actions{position:sticky;bottom:0;padding-top:8px}
+.muse-plan-add-actions{position:sticky;bottom:0;z-index:2;margin-top:4px;padding:12px 0 2px;background:var(--floating-background,var(--glass-background));box-shadow:0 -10px 14px -8px var(--background)}
 @container muse-content (max-width:640px){
  .muse-plans-period{flex-wrap:wrap}
  .muse-plans-label{flex:1 1 0;min-width:0;justify-content:center}

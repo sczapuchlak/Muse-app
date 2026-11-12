@@ -1,6 +1,6 @@
 /* Books search for Add Book (#136). Theme tokens only; it adapts to every theme and material. */
 .muse-book-search{display:grid;gap:12px;min-width:0}
-.muse-book-search-field{display:grid;min-width:0}
+.muse-book-search-field{display:flex;min-width:0}
 .muse-book-search-input{position:relative;display:flex;align-items:center;min-width:0}
 .muse-book-search-input>svg{position:absolute;left:15px;color:var(--text-muted);pointer-events:none}
 /* Specific enough to beat the shared Bookshelf input padding regardless of stylesheet order. */

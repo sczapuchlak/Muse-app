@@ -23,7 +23,7 @@ export function AddBooksModal({kind,period,label,books,planned,onAdd,onClose}:{k
  const suggestions=books.filter(b=>!b.archivedAt&&!planned.has(b.id)&&(b.status==='planned'||b.status==='reading')).sort((a,b)=>(a.status===b.status?0:a.status==='reading'?-1:1)||b.createdAt.localeCompare(a.createdAt)).slice(0,12);
  const toggle=(id:string)=>setPicked(list=>list.includes(id)?list.filter(x=>x!==id):[...list,id]);
  const fresh=picked.filter(id=>!planned.has(id));
- return <MuseModal id="reading-plan-add" label={`Add books to ${label}`} title={`Add to ${label}`} returnFocus={null} onClose={onClose} size="tall">
+ return <MuseModal id="reading-plan-add" label={`Add books to ${label}`} title={`Add to ${label}`} returnFocus={null} onClose={onClose}>
   <div className="muse-plan-add">
    {suggestions.length>0&&<section aria-label="From your shelf"><span className="small-label">From your shelf</span>
     <ul className="muse-plan-suggest">{suggestions.map(b=><li key={b.id}><button type="button" aria-pressed={picked.includes(b.id)} onClick={()=>toggle(b.id)} title={b.title}><span className="muse-plan-suggest-cover"><Cover book={b}/></span><strong>{b.title}</strong><StatusChip status={b.status} compact/></button></li>)}</ul></section>}
