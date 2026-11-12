@@ -945,3 +945,8 @@ Supersedes the book-level heart above. A favourite is "marked as a favourite in 
 - Start reading uses the existing start flow. The book leaves Up Next only once its status really is Currently Reading; its Reading Plan membership is kept.
 - Data is additive: `up_next_slots` plus the owner-only `save_up_next` function (migration `20261216000100`).
 - Status badges everywhere (Library cards, plan chips, Up Next) use vivid fills, a dark outline and a forced contrasting icon colour so a theme can never wash the icon out.
+
+## Books statuses and Dashboard layout — approved, implemented (cleanup)
+
+- The five book statuses are named once in `lib/books/status.ts`, in one order: Currently Reading, To Be Read (the stored value is still `planned`), Finished, Did Not Finish (`dnf`), Paused (`paused`; formerly "On Hold"). Every dropdown (Book Detail, editor, Library filter), badge and message reads from it; the Library filter lists all five with counts and the shared vivid status dot.
+- Dashboard grid: two fixed equal columns that end on the same line (streak over Currently reading | the annual challenge over the daily goal); then Reading plans; then Recently read (40%, paged) beside Up next (60%, three plan-sized rows). Paired panels in Atlas stretch to equal heights; tile grids never leave a ragged last row.

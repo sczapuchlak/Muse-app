@@ -14,6 +14,8 @@ import {activeSeconds,bookPosition,bookReadingStats,sittingClock} from '@/lib/wh
 import {bookCompletions} from '@/lib/whimsy/reading-stats';
 import {seriesCompletion,seriesShelf,shelfStateLabel,type ShelfEntry} from '@/lib/books/series-view';
 import {AddToPlanModal} from './plans/AddToPlanModal';
+import {BOOK_STATUS_LABEL,bookStatusOptions} from '@/lib/books/status';
+import {StatusDot} from '@/components/books/StatusDot';
 import {PageCrumbs} from '@/components/books/PageCrumbs';
 import {bookHref,rememberReturn,seriesHref} from '@/lib/books/return-nav';
 import {BookAtmosphere} from './BookAtmosphere';
@@ -26,7 +28,7 @@ import './BookDetail.css';
 import './BookPage.css';
 
 type Tab='sessions'|'journal'|'reads'|'details';
-const statusLabel:Record<Book['status'],string>={planned:'Want to Read',reading:'Currently Reading',paused:'Paused',dnf:'Did Not Finish',finished:'Finished'};
+const statusLabel=BOOK_STATUS_LABEL;
 /** Edit and delete for one sitting, tucked into a ⋯ menu. */
 function SittingMenu({label,onEdit,onDelete}:{label:string;onEdit:()=>void;onDelete:()=>void}){
  const anchor=useRef<HTMLButtonElement>(null),[open,setOpen]=useState(false);
@@ -131,7 +133,7 @@ export function BookPage(props:BookPageProps){
     {facts.length>0&&<p className="muse-book-page-facts">{facts.map((fact,index)=><span key={index}>{fact}</span>)}</p>}
     {genres.length>0&&<ul className="muse-book-page-genres" aria-label="Genres">{genres.map(g=><li key={g} className="muse-book-chip">{g}</li>)}</ul>}
     <div className="muse-book-page-controls">
-     <span className="muse-book-page-status" data-status={book.status}><MuseChoiceMenu label={`Reading status: ${statusLabel[book.status]}`} valueLabel={statusLabel[book.status]} options={Object.entries(statusLabel).map(([id,label])=>({id,label}))} selectedIds={[book.status]} onSelect={id=>props.onMove(id as Book['status'])}/></span>
+     <span className="muse-book-page-status" data-status={book.status}><MuseChoiceMenu label={`Reading status: ${statusLabel[book.status]}`} valueLabel={statusLabel[book.status]} options={bookStatusOptions().map(o=>({...o,leading:<StatusDot status={o.id}/>}))} selectedIds={[book.status]} onSelect={id=>props.onMove(id as Book['status'])}/></span>
      <button type="button" className="muse-button button-ghost" onClick={props.onEdit}><MuseIcon name="edit" size={15}/>Edit</button>
      <button ref={menuAnchor} type="button" className="muse-icon-button muse-icon-button-glass" aria-label="More for this book" aria-haspopup="menu" aria-expanded={menuOpen} onClick={()=>setMenuOpen(v=>!v)}><MuseIcon name="more" size={18}/></button>
      <GlassPopover id="book-page-more" label="More for this book" open={menuOpen} anchorRef={menuAnchor} onClose={()=>setMenuOpen(false)} width={240} bare>

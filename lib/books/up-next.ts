@@ -12,7 +12,7 @@ export type SourceId='month'|'year'|'tbr'|'library'|'surprise';
 export const SOURCES:{id:SourceId;label:string;hint:string}[]=[
  {id:'month',label:'This month’s plan',hint:'Books you planned for this month'},
  {id:'year',label:'Yearly plan',hint:'Books you planned for this year'},
- {id:'tbr',label:'To Be Read',hint:'Your Want to Read shelf'},
+ {id:'tbr',label:'To Be Read',hint:'Your To Be Read shelf'},
  {id:'library',label:'Entire Library',hint:'Anything you could pick up'},
  {id:'surprise',label:'Surprise me',hint:'Any of the four, shuffled together'},
 ];

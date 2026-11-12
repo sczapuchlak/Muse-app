@@ -8,12 +8,14 @@ const models=load('lib/collections/models'),insights=load('lib/collections/insig
 const media=(id,kind,status,completed_on=null)=>({id,user_id:'owner',kind,title:id,creator:'Creator',cover_url:null,status,genres:['Fantasy'],rating:null,favorite:false,created_at:'2026-10-01T00:00:00Z',updated_at:'2026-10-01T00:00:00Z',completed_on});
 const series=(scope='released',conclusion_state='unknown')=>({id:'series',kind:'movie',scope,conclusion_state});
 const member=(id,sequence,release_state='released')=>({id,series_id:'series',media_id:id,book_id:null,sequence,release_state,role:'mainline'});
-test('Book editor offers the same Currently Reading status as shelf filters',()=>{
+test('Book editor, Book Detail and Library filters all take the five status names from one place',()=>{
+ const status=readFileSync(resolve(root,'lib/books/status.ts'),'utf8');
+ assert.match(status,/reading:'Currently Reading',planned:'To Be Read',finished:'Finished',dnf:'Did Not Finish',paused:'Paused'/);
  const source=readFileSync(resolve(root,'components/whimsy/Bookshelf.tsx'),'utf8');
- assert.match(source,/reading:'Currently Reading'/);
- assert.match(source,/MuseChoiceMenu label="Book status"[^\n]*options=\{Object\.entries\(bookStatus\)/);
+ assert.match(source,/MuseChoiceMenu label="Book status"[^\n]*bookStatusOptions\(\)/);
+ assert.match(readFileSync(resolve(root,'components/whimsy/BookPage.tsx'),'utf8'),/bookStatusOptions\(\)/);
  const collections=readFileSync(resolve(root,'components/collections/Collections.tsx'),'utf8');
- assert.match(collections,/reading:'Currently Reading'/,'Collections › Books filters use the same Currently Reading label');
+ assert.match(collections,/BOOK_STATUS_ORDER\.map\(id=>\(\{id,label:`\$\{BOOK_STATUS_LABEL\[id\]\}/,'Library status filter lists all five in order, with counts');
  assert.match(collections,/label:`Archived books \(\$\{archivedItems\.length\}\)`/,'archived books stay reachable from Collections');
 });
 test('active media shelves reuse existing items and statuses without excluding full-library records',()=>{

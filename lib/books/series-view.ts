@@ -28,7 +28,7 @@ export function shelfState(book:Book|null,releaseState:string):ShelfState{
  if(book){if(book.status==='finished'||bookCompletions(book).length>0&&book.status!=='reading')return 'read';if(book.status==='dnf')return 'dnf';return book.status==='reading'?'reading':book.status==='paused'?'paused':'planned';}
  return releaseState==='announced'?'upcoming':'missing';
 }
-export const shelfStateLabel:Record<ShelfState,string>={read:'Read',reading:'Reading now',paused:'Paused',dnf:'Did Not Finish',planned:'Want to read',missing:'Not on your shelf',upcoming:'Upcoming'};
+export const shelfStateLabel:Record<ShelfState,string>={read:'Read',reading:'Currently Reading',paused:'Paused',dnf:'Did Not Finish',planned:'To Be Read',missing:'Not on your shelf',upcoming:'Upcoming'};
 
 /**
  * One ordered, grouped reading of a series for display (#136). Primary books (whole-number positions; see

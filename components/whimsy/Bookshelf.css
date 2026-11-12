@@ -465,3 +465,19 @@ button.muse-atlas-modal-title:hover{text-decoration:underline;text-underline-off
 .muse-keepsake-options{gap:10px}
 .muse-keepsake-sections{grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 12px}
 .muse-keepsake-options label{font-size:.84rem}
+/* One rule for every paired panel: equal height, one gap, content stays top-aligned inside. */
+.muse-atlas-books-pair,.muse-yir-pair,.muse-dna-pair,.muse-atlas-calwrap{align-items:stretch!important}
+.muse-atlas-books-pair>*,.muse-yir-pair>*,.muse-dna-pair>*{align-content:start}
+.muse-atlas-calwrap>.muse-atlas-stack>*{align-content:start}
+/* Tile grids never leave a ragged last row: 8 tiles -> 4x2, 6 -> 3x2, 4 -> 4x1, 3 -> 3x1 (2 columns on narrow screens). */
+.muse-atlas-insights:has(>:nth-child(8):last-child){grid-template-columns:repeat(4,minmax(0,1fr))}
+.muse-atlas-insights:has(>:nth-child(6):last-child){grid-template-columns:repeat(3,minmax(0,1fr))}
+.muse-atlas-insights:has(>:nth-child(5):last-child){grid-template-columns:repeat(5,minmax(0,1fr))}
+.muse-atlas-insights:has(>:nth-child(4):last-child){grid-template-columns:repeat(4,minmax(0,1fr))}
+.muse-atlas-insights:has(>:nth-child(3):last-child){grid-template-columns:repeat(3,minmax(0,1fr))}
+@container muse-content (max-width:760px){.muse-atlas-insights:is(:has(>:nth-child(8):last-child),:has(>:nth-child(6):last-child),:has(>:nth-child(5):last-child),:has(>:nth-child(4):last-child),:has(>:nth-child(3):last-child)){grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:760px){.muse-atlas-insights:is(:has(>:nth-child(8):last-child),:has(>:nth-child(6):last-child),:has(>:nth-child(5):last-child),:has(>:nth-child(4):last-child),:has(>:nth-child(3):last-child)){grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* Milestone "Next up" rows share one column grid so every bar starts and ends together. */
+.muse-atlas-next>div{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1.4fr) minmax(0,auto);gap:12px;align-items:center}
+.muse-atlas-next>div>progress{width:100%}
+.muse-atlas-next>div>small{text-align:right}

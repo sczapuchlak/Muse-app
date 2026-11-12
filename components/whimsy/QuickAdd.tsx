@@ -21,7 +21,7 @@ export type QuickAddRequest={candidate:BookCandidate|null;title:string;author:st
 type Sheet={request:QuickAddRequest;base:BookCandidate|null;editions:BookCandidate[];lookup:BookLookup|null;resolve:(pick:{edition:BookCandidate;status:QuickStatus}|undefined)=>void};
 const norm=(s:string)=>s.toLowerCase().normalize('NFKD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,' ').trim();
 const editionLine=(e:BookCandidate)=>[e.formatLabel||e.format?e.publisher:null,e.year,e.language,e.pageCount?`${e.pageCount} pages`:null].filter(Boolean).join(' · ');
-export const quickStatusLabel:Record<QuickStatus,string>={planned:'Want to Read',reading:'Currently Reading'};
+export const quickStatusLabel:Record<QuickStatus,string>={planned:'To Be Read',reading:'Currently Reading'};
 
 /**
  * Quick Add (#136): one tap from Books search or a series. When an edition choice matters (a different format,
@@ -105,7 +105,7 @@ export function QuickAddToast({toast,onOpen,onDismiss,spark}:{toast:{book:Book;e
 export function QuickAddButton({busy,disabled,onAdd,label,size}:{busy:boolean;disabled?:boolean;onAdd:(status:QuickStatus)=>void;label:string;size?:'sm'}){
  const [open,setOpen]=useState(false),anchor=useRef<HTMLButtonElement>(null),id=useId();
  return <span className="muse-quick-add" data-size={size} data-open={open||undefined}>
-  <button type="button" className="muse-quick-add-main" disabled={disabled||busy} aria-label={`Add ${label} to Want to Read`} onClick={event=>{event.stopPropagation();onAdd('planned');}}>{busy?<span className="muse-quick-add-spinner" aria-hidden="true"/>:<MuseIcon name="bookmark" size={18}/>}</button>
+  <button type="button" className="muse-quick-add-main" disabled={disabled||busy} aria-label={`Add ${label} to To Be Read`} onClick={event=>{event.stopPropagation();onAdd('planned');}}>{busy?<span className="muse-quick-add-spinner" aria-hidden="true"/>:<MuseIcon name="bookmark" size={18}/>}</button>
   <button ref={anchor} type="button" className="muse-quick-add-more" disabled={disabled||busy} aria-label={`Choose a shelf for ${label}`} aria-haspopup="menu" aria-expanded={open} onClick={event=>{event.stopPropagation();setOpen(v=>!v);}}><MuseIcon name="chevron" size={16}/></button>
   <GlassPopover id={`quick-add-${id}`} label={`Add ${label} to a shelf`} role="menu" open={open} anchorRef={anchor} onClose={()=>setOpen(false)} width={220} align="end" bare>
    <div className="popover-choice-list muse-quick-add-menu">{(Object.keys(quickStatusLabel) as QuickStatus[]).map(status=><button key={status} type="button" role="menuitem" className="popover-choice" onClick={()=>{setOpen(false);onAdd(status);}}><span>{quickStatusLabel[status]}</span></button>)}</div>

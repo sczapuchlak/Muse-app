@@ -68,3 +68,32 @@
 .muse-bookshelf[data-surface="dashboard"]>.muse-dash-side{grid-template-rows:auto minmax(0,1fr);align-content:stretch}
 .muse-dash-side>.muse-dash-goals{align-content:center}
 .muse-bookshelf[data-surface="dashboard"]>.muse-books-section[aria-label="Reading Desk"],.muse-bookshelf[data-surface="dashboard"] .muse-desk-layout,.muse-bookshelf[data-surface="dashboard"] .muse-desk-reading{min-height:0}
+/* Two fixed, equal columns: streak over Currently reading | 2026 challenge over the daily goal. Both end on the same line. */
+.muse-bookshelf[data-surface="dashboard"]>.muse-dash-top{grid-column:1/-1;grid-row:auto;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(12px,1.8vw,20px);align-items:stretch;min-width:0}
+.muse-dash-col{display:grid;grid-template-rows:auto minmax(0,1fr);gap:clamp(12px,1.8vw,20px);min-width:0}
+.muse-dash-col>*{margin:0;min-width:0}
+.muse-dash-col .muse-books-section[aria-label="Reading Desk"]{display:grid;padding:0;border:0;border-radius:0;background:none;box-shadow:none;gap:0;min-height:0}
+.muse-dash-col .muse-books-section[aria-label="Reading Desk"]::before,.muse-dash-col .muse-books-section[aria-label="Reading Desk"]::after{display:none}
+.muse-dash-col .muse-desk-layout{height:100%}
+.muse-dash-col .muse-desk-reading{height:100%;box-sizing:border-box;grid-template-rows:auto minmax(0,1fr);align-content:stretch}
+.muse-dash-col .muse-desk-track{grid-auto-columns:minmax(240px,calc((100% - 12px)/2))!important;align-items:stretch}
+.muse-dash-col .muse-desk-layout[data-count="1"] .muse-desk-track{grid-auto-columns:100%!important}
+.muse-dash-col .muse-desk-layout .muse-desk-tile{grid-template-columns:64px minmax(0,1fr)!important;padding:14px!important;align-content:center}
+.muse-dash-col .muse-desk-tile-cover{width:64px!important}
+.muse-dash-col>.muse-dash-goals{align-content:center}
+.muse-dash-col>.muse-desk-goal{align-content:center}
+@container muse-content (max-width:900px){.muse-bookshelf[data-surface="dashboard"]>.muse-dash-top{grid-template-columns:minmax(0,1fr)}.muse-dash-col .muse-desk-track{grid-auto-columns:100%!important}}
+/* The row beneath Plans: Up Next (60%) beside Recently read (40%). */
+.muse-dash-trio{grid-template-columns:minmax(0,3fr) minmax(0,2fr)!important;align-items:stretch}
+.muse-dash-trio>*{height:100%}
+.muse-dash-recent{display:grid;grid-template-columns:minmax(0,1fr)!important;align-content:start;gap:10px}
+.muse-dash-recent .muse-paged{align-content:start}
+.muse-dash-recent-list{display:grid;gap:8px}
+.muse-dash-recent-list>button{display:grid;grid-template-columns:42px minmax(0,1fr);align-items:center;gap:12px;width:100%;padding:8px 12px 8px 10px;border:1px solid color-mix(in srgb,var(--foreground) 11%,transparent);border-radius:16px;background:color-mix(in srgb,var(--foreground) 5%,transparent);color:inherit;font:inherit;text-align:left;cursor:pointer;min-height:76px}
+.muse-dash-recent-list>button:hover{border-color:var(--selected-border)}
+.muse-dash-recent .muse-finished-cover{width:42px}
+.muse-dash-recent li:nth-child(n+4){display:block}
+@container muse-content (max-width:900px){.muse-dash-trio{grid-template-columns:minmax(0,1fr)!important}}
+/* Currently reading has one frame, not a frame inside a frame. */
+.muse-dash-col .muse-books-section[aria-label="Reading Desk"]{background:none!important;border:0!important;box-shadow:none!important;padding:0!important}
+.muse-dash-trio{grid-template-columns:minmax(0,2fr) minmax(0,3fr)!important}
