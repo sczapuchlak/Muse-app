@@ -20,12 +20,12 @@ export function ReadingDNA({books,sessions,range,label,today}:{books:Book[];sess
    {traits.length>0&&<ul className="muse-atlas-traits">{traits.map(t=><li key={t.title}><strong>{t.title}</strong><span>{t.line}</span><small className="small-label">{t.evidence}</small></li>)}</ul>}
    <p className="small-label">Personalities follow fixed rules about your genres and reading times, never guesses.</p>
   </article>
-  <div className="muse-atlas-insights">
+  <div className="muse-atlas-insights" data-tone="genre">
    <Insight label="Most read genre" value={fav.mostRead?.genre} detail={fav.mostRead&&plural(fav.mostRead.reads,'finished read')} empty="Add genres to finished books"/>
    <Insight label="Most time spent" value={fav.mostTime?.genre} detail={fav.mostTime&&hours(fav.mostTime.seconds)} empty="Needs timed sessions on books with genres"/>
    <Insight label="Most pages read" value={fav.mostPages?.genre} detail={fav.mostPages&&`${num(fav.mostPages.pages)} pages`} empty="Needs sessions with pages on books with genres"/>
   </div>
-  <div className="muse-atlas-insights">
+  <div className="muse-atlas-insights" data-tone="habit">
    <Insight label="Favorite reading day" value={habits.favoriteDay?.name} detail={habits.favoriteDay&&(habits.anyTime?`${hours(habits.favoriteDay.seconds)} across ${plural(habits.favoriteDay.days,'reading day')}`:plural(habits.favoriteDay.days,'reading day'))} empty="No reading days yet"/>
    <Insight label="Most active month" value={habits.mostActiveMonth&&monthLabel(habits.mostActiveMonth.month)} detail={habits.mostActiveMonth&&(habits.anyTime?hours(habits.mostActiveMonth.seconds):`${habits.mostActiveMonth.pages} pages`)} empty="No reading months yet"/>
    <Insight label="Most consistent month" value={habits.mostConsistentMonth&&monthLabel(habits.mostConsistentMonth.month)} detail={habits.mostConsistentMonth&&`Read on ${habits.mostConsistentMonth.days} of ${habits.mostConsistentMonth.eligible} days`} empty="Needs a month with at least 14 days"/>

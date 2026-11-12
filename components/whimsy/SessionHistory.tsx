@@ -11,7 +11,7 @@ import {sessionSeconds} from '@/lib/whimsy/reading-stats';
 const minutes=(seconds:number)=>seconds?seconds<60?'under a minute':`${Math.round(seconds/60)} min`:'time not recorded';
 const kinds={all:'All sessions',timed:'Timed',manual:'Logged manually',reread:'Rereads'} as const;
 type Kind=keyof typeof kinds;
-const PAGE=40;
+const PAGE=4;
 
 function RowMenu({id,label,onEdit,onDelete}:{id:string;label:string;onEdit:()=>void;onDelete:()=>void}){
  const anchor=useRef<HTMLButtonElement>(null),[open,setOpen]=useState(false);
@@ -39,7 +39,7 @@ export function SessionHistory({sessions,books,onEdit,onDelete}:{sessions:Readin
    <details className="muse-history-dates" open={!!(from||to)}><summary>{from||to?`${from?dateLabel(from):'Start'} – ${to?dateLabel(to):'today'}`:'Dates'}</summary><div><label>From<input type="date" value={from} max={to||undefined} onChange={e=>{setFrom(e.target.value);setLimit(PAGE);}}/></label><label>To<input type="date" value={to} min={from||undefined} onChange={e=>{setTo(e.target.value);setLimit(PAGE);}}/></label>{(from||to)&&<button type="button" className="text-button" onClick={()=>{setFrom('');setTo('');}}>Clear</button>}</div></details>
   </div>
   {!sessions.length?<p>Saved sessions will be listed here.</p>:!rows.length?<p>No sessions match these filters.</p>:<ol className="muse-books-history-list">
-   {rows.slice(0,limit).map(s=>{const d=new Date(`${s.date}T12:00:00Z`);return <li key={s.id} className="muse-history-row" data-manual={s.manual||undefined}>
+   {rows.slice(limit-PAGE,limit).map(s=>{const d=new Date(`${s.date}T12:00:00Z`);return <li key={s.id} className="muse-history-row" data-manual={s.manual||undefined}>
     <span className="muse-history-date" aria-hidden="true"><span>{new Intl.DateTimeFormat(undefined,{month:'short',timeZone:'UTC'}).format(d)}</span><strong className="type-numeric">{d.getUTCDate()}</strong></span>
     <div className="muse-history-body"><strong className="muse-history-title"><span className="sr-only">{dateLabel(s.date)} · </span>{title(s.bookId)}</strong>
      <p className="muse-history-line"><span className="type-numeric">{minutes(sessionSeconds(s))}</span><span className="type-numeric">{s.pages} {s.pages===1?'page':'pages'}</span>{s.startingPage!==undefined&&s.endingPage!==undefined&&<span className="type-numeric">p. {s.startingPage}–{s.endingPage}</span>}{s.reread&&<em>reread</em>}{s.manual&&<em>logged</em>}</p>
@@ -47,6 +47,6 @@ export function SessionHistory({sessions,books,onEdit,onDelete}:{sessions:Readin
     <RowMenu id={s.id} label={`${dateLabel(s.date)} ${title(s.bookId)}`} onEdit={()=>onEdit(s)} onDelete={()=>onDelete(s)}/>
    </li>;})}
   </ol>}
-  {rows.length>limit&&<button type="button" className="muse-button button-ghost" onClick={()=>setLimit(limit+PAGE)}>Show {Math.min(PAGE,rows.length-limit)} more</button>}
+  {rows.length>PAGE&&<div className="muse-paged-nav"><span className="small-label type-numeric">{limit-PAGE+1}–{Math.min(rows.length,limit)} of {rows.length}</span><button type="button" className="muse-button button-ghost" aria-label="Newer sessions" disabled={limit<=PAGE} onClick={()=>setLimit(limit-PAGE)}><MuseIcon name="chevron" size={15}/></button><button type="button" className="muse-button button-ghost" aria-label="Older sessions" disabled={limit>=rows.length} onClick={()=>setLimit(limit+PAGE)}><MuseIcon name="chevron" size={15}/></button></div>}
  </article>;
 }

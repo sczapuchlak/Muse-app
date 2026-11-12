@@ -99,3 +99,8 @@
 .muse-heat-scroll{overflow:visible}
 .muse-streaks-milestones .muse-streaks-badge{color:color-mix(in srgb,var(--foreground) 35%,transparent)}
 @container muse-content (max-width:640px){.muse-heat{gap:2px}.muse-heat-months{gap:2px;font-size:.56rem}}
+/* The right column fills the calendar's height: Longest runs grows to meet its bottom edge. */
+.muse-streaks-side{grid-template-rows:auto minmax(0,1fr);align-content:stretch}
+.muse-streaks-side>.muse-streaks-runs{align-content:start}
+/* One gap everywhere in Books: 20px (shrinking on small screens). */
+.muse-atlas-streaks,.muse-streaks-main,.muse-streaks-year,.muse-streaks-side{gap:clamp(12px,1.8vw,20px)!important}

@@ -2,6 +2,7 @@
 import {useState} from 'react';
 import type {CSSProperties,ReactNode} from 'react';
 import {dateLabel} from '@/lib/dates';
+import {MuseIcon,type MuseIconName} from '@/components/MuseIcon';
 
 export const duration=(seconds:number)=>seconds?seconds<60?'Less than a minute':`${Math.round(seconds/60)} min`:'Time not recorded';
 export const hours=(seconds:number)=>seconds<3600?duration(seconds):`${(seconds/3600).toFixed(seconds<36000?1:0)} h`;
@@ -39,6 +40,12 @@ export function ActivityBars({title,note,items,line=false,unit='count',max:fixed
 }
 
 /** One answer with its evidence, or an honest empty state when the data does not exist yet. */
+const ICONS:Record<string,MuseIconName>={'Longest book finished':'book','Shortest book finished':'bookmark','Fastest finish':'flame','Most reading time':'timer','Most sessions':'play','Highest rated':'favorite','Most read genre':'tag','Most common book emoji':'sparkle','Average rating':'favorite','Typical time to finish':'timer','Favorite time of day':'moon','New authors':'edit','Authors read':'edit','Most time spent':'timer','Most pages read':'book','Favorite reading day':'calendar','Most active month':'flame','Most consistent month':'check','Favorite reading hour':'moon','Longest session':'timer','Average session':'chart','Personality':'sparkle','Favorite genre':'tag','Genres explored':'series','Longest book':'book','Shortest book':'bookmark','Most time with':'timer'};
+/** The icon that goes with an insight's label, so every tile reads at a glance. */
+export const insightIcon=(label:string):MuseIconName=>ICONS[label]??'sparkle';
+export function InsightIcon({label}:{label:string}){return <span className="muse-atlas-insight-icon" aria-hidden="true"><MuseIcon name={insightIcon(label)} size={15}/></span>;}
+
+/** One answer with its evidence, or an honest empty state when the data does not exist yet. */
 export function Insight({label,value,detail,empty}:{label:string;value?:ReactNode;detail?:ReactNode;empty:string}){
- return <div className="muse-atlas-insight"><span className="small-label">{label}</span>{value?<><strong>{value}</strong>{detail&&<small>{detail}</small>}</>:<small className="muse-atlas-insight-empty">{empty}</small>}</div>;
+ return <div className="muse-atlas-insight"><div className="muse-atlas-insight-head"><InsightIcon label={label}/><span className="small-label">{label}</span></div>{value?<><strong>{value}</strong>{detail&&<small>{detail}</small>}</>:<small className="muse-atlas-insight-empty">{empty}</small>}</div>;
 }

@@ -18,7 +18,7 @@ export function BooksMilestones({books,sessions,range,label,onOpenBook}:{books:B
  const monthly=completedBookSeries(books,'month'),maxMonth=Math.max(1,...monthly.map(s=>s.count)),byMost=[...monthly].sort((x,y)=>y.count-x.count||y.start.localeCompare(x.start));
  return <div className="muse-atlas-section">
   <article className="muse-books-panel"><div className="muse-books-panel-head"><h4>Book superlatives</h4><span className="small-label">{plural(sup.finishedBooks,'book')} finished {label}</span></div>
-   <div className="muse-atlas-insights">
+   <div className="muse-atlas-insights" data-tone="book">
     <Insight label="Longest book finished" value={sup.longest?.book.title} detail={sup.longest&&`${sup.longest.book.totalPages} pages`} empty="Needs a finished book with its page count"/>
     <Insight label="Shortest book finished" value={sup.shortest?.book.title} detail={sup.shortest&&`${sup.shortest.book.totalPages} pages`} empty="Needs two finished books with page counts"/>
     <Insight label="Fastest finish" value={sup.fastest?.book.title} detail={sup.fastest&&`${days(sup.fastest.days)}, start to finish (inclusive)${sup.fastest.reread?' · reread':''}`} empty="Needs a finished read with a start date"/>
@@ -30,7 +30,7 @@ export function BooksMilestones({books,sessions,range,label,onOpenBook}:{books:B
    </div>
   </article>
   <article className="muse-books-panel"><div className="muse-books-panel-head"><h4>Milestones</h4><span className="small-label">{reached.length} of {milestones.length} reached · all time</span></div>
-   {!reached.length?<p>Your first finished book or first 100 pages will light the first star.</p>:<ol className="muse-atlas-milestones">{reached.map(m=><li key={m.id}><span className="muse-atlas-milestone-star" aria-hidden="true">✦</span><strong>{m.title}</strong><small>{yearDate(m.achievedOn!)}</small></li>)}</ol>}
+   {!reached.length?<p>Your first finished book or first 100 pages will light the first star.</p>:<PagedList tag="ol" className="muse-atlas-milestones" items={reached} size={4} label="milestones reached" render={m=><li key={m.id}><span className="muse-atlas-milestone-star" aria-hidden="true">✦</span><strong>{m.title}</strong><small>{yearDate(m.achievedOn!)}</small></li>}/>}
    {next.length>0&&<div className="muse-atlas-next"><span className="small-label">Next up</span>{next.map(m=><div key={m.id}><span>{m.title}</span><progress value={m.progress} max={m.threshold} aria-label={`${m.title}: ${Math.floor(m.progress)} of ${m.threshold} ${milestoneUnit[m.metric]}`}/><small>{m.metric==='hours'?m.progress.toFixed(1):Math.floor(m.progress)} / {m.threshold} {milestoneUnit[m.metric]}</small></div>)}</div>}
    <p className="small-label">Reached on the first day your saved history crossed each line. Editing past sessions recalculates them; a milestone is only ever celebrated once.</p>
   </article>

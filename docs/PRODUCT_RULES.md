@@ -957,3 +957,10 @@ Supersedes the book-level heart above. A favourite is "marked as a favourite in 
 - The daily goal is the existing `goals` record (`period: day`, `unit: minutes`). Its `targetHistory` (dated entries) preserves past targets: raising or lowering the goal affects today onward, and days before the goal existed are never judged. No migration. Presets 10/15/20/30/45/60 plus a custom 1–720.
 - Dashboard: the daily-goal card shows today's minutes against today's target, the goal streak and its best, and the last seven days; the reading streak keeps its seven hearts (now glittering, with today marked) and links to the Atlas. Atlas › Streaks adds the daily-goal calendar, goal streaks, days read vs days met and twelve months of consistency.
 - Celebrations (daily goal met today; 7/14/30/60/100-day reading streaks; a new personal best; finishing the annual challenge) are derived from today's data, shown once per device, one per visit, dismissible, and still when reduced motion is on.
+
+## Books polish round 2 — approved, implemented
+
+- Dashboard: "Recently finished" shows finished books as two cover cards at a time (title, time to read, number of sessions, finished date), with an illustrated empty state; recent reading sessions are their own strip below. Currently reading is a compact tile (cover beside title / author / progress, Start beneath) and the streak container is taller.
+- Atlas overview: Top rated (tall) beside Favorites over Vibes; Reading by period beside a paged Session history; no "Today" period (that is the Dashboard). Year in Review: year dropdown, and a hero that previews the year (covers, month-by-month shape).
+- Insight tiles carry an icon and one related colour per group. Every list that could grow (milestones, session history, reading by period, emojis) is a fixed-size panel with arrows. Every gap between containers is the same 20px (12px on small screens).
+- Book search and the Up next picker use the shared Muse search field.

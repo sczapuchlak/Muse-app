@@ -481,3 +481,45 @@ button.muse-atlas-modal-title:hover{text-decoration:underline;text-underline-off
 .muse-atlas-next>div{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1.4fr) minmax(0,auto);gap:12px;align-items:center}
 .muse-atlas-next>div>progress{width:100%}
 .muse-atlas-next>div>small{text-align:right}
+/* Atlas overview: Top rated (tall) beside Favorites over Vibes; Reading by period beside Session history. Fixed-size panels that page. */
+.muse-atlas-tf{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(12px,1.8vw,20px);align-items:stretch}
+.muse-atlas-tf>*,.muse-atlas-tf-stack>*{margin:0;min-width:0;align-content:start}
+.muse-atlas-tf-stack{display:grid;grid-template-rows:repeat(2,minmax(0,1fr));gap:clamp(12px,1.8vw,20px)}
+@container muse-content (max-width:760px){.muse-atlas-tf{grid-template-columns:minmax(0,1fr)}}
+.muse-paged-rows.muse-toprated[data-cols="3"]{grid-template-columns:repeat(3,minmax(0,1fr))}
+.muse-paged-rows.muse-toprated[data-cols="4"]{grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.muse-paged-rows.muse-toprated[data-cols="4"] .muse-toprated-item strong{font-size:.7rem}
+.muse-paged-rows.muse-toprated[data-cols="4"] .muse-toprated-stars{font-size:.7rem}
+.muse-paged-rows.muse-vibes{display:flex;flex-wrap:wrap;gap:6px 16px;align-items:center;min-height:56px}
+.muse-rhythm-list{display:grid;gap:10px}
+.muse-rhythm-list>div{display:grid;gap:5px}
+.muse-rhythm-list>div>div{display:flex;justify-content:space-between;gap:10px;font-size:.84rem}
+/* Insight tiles: an icon on each, and one related colour per group (no repeating rainbow). */
+.muse-atlas-insights[data-tone="genre"]{--tone:var(--chart-1,var(--accent-primary))}
+.muse-atlas-insights[data-tone="habit"]{--tone:var(--chart-4,var(--accent-secondary))}
+.muse-atlas-insights[data-tone="pattern"]{--tone:var(--chart-3,var(--accent-pop,var(--accent-primary)))}
+.muse-atlas-insights[data-tone="book"]{--tone:var(--chart-2,var(--accent-secondary))}
+.muse-atlas-insights[data-tone]>.muse-atlas-insight,.muse-yir-tiles .muse-atlas-insight{--tile-ink:var(--tone,var(--accent-primary))!important}
+.muse-yir-tiles{--tone:var(--chart-5,var(--accent-primary))}
+.muse-atlas-insight-head{display:flex;align-items:center;gap:8px;min-width:0}
+.muse-atlas-insight-head .small-label{min-width:0;overflow:hidden;text-overflow:ellipsis}
+.muse-atlas-insight-icon{flex:none;display:grid;place-items:center;width:28px;height:28px;border-radius:50%;color:var(--tile-ink,var(--accent-primary));background:color-mix(in srgb,var(--tile-ink,var(--accent-primary)) 20%,transparent);border:1.5px solid color-mix(in srgb,var(--tile-ink,var(--accent-primary)) 65%,transparent)}
+.muse-atlas-insight-icon svg{stroke-width:2.2}
+.muse-atlas-insight-head>.small-label{font-family:var(--font-ui);font-size:.66rem!important;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--tile-ink,var(--accent-primary))}
+.muse-atlas-insight{gap:6px!important}
+/* Year in Review hero: the year and its controls on the left; a glimpse of the year (covers, month-by-month shape) on the right. */
+.muse-yir-hero{grid-template-columns:minmax(0,auto) minmax(0,1fr)!important;align-items:center!important}
+.muse-yir-controls{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:4px}
+.muse-yir-glimpse{display:grid;gap:12px;min-width:0}
+.muse-yir-glimpse .muse-yir-lede{margin:0;font-size:.98rem}
+.muse-yir-covers{display:flex;align-items:flex-end;gap:10px;flex-wrap:nowrap;min-width:0;overflow:hidden}
+.muse-yir-cover{flex:none;display:block;width:clamp(44px,7vw,64px);aspect-ratio:2/3;border-radius:3px 6px 6px 3px;overflow:hidden;box-shadow:2px 4px 10px rgba(0,0,0,.35)}
+.muse-yir-cover img{width:100%;height:100%;object-fit:cover;display:block}
+.muse-yir-cover[data-empty]{border:1.5px dashed color-mix(in srgb,var(--foreground) 30%,transparent);box-shadow:none;background:color-mix(in srgb,var(--accent-primary) 7%,transparent)}
+.muse-yir-more{align-self:center;padding:3px 10px;border-radius:999px;background:color-mix(in srgb,var(--accent-primary) 18%,transparent);font-size:.78rem}
+.muse-yir-spark{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:4px;align-items:end;height:54px;max-width:420px}
+.muse-yir-spark>span{display:grid;grid-template-rows:1fr auto;justify-items:center;gap:2px;height:100%}
+.muse-yir-spark i{align-self:end;display:block;width:100%;max-width:18px;height:var(--h);min-height:3px;border-radius:5px 5px 2px 2px;background:linear-gradient(180deg,var(--accent-pop,var(--accent-primary)),var(--accent-primary))}
+.muse-yir-spark small{font-size:.58rem;color:var(--text-muted)}
+@container muse-content (max-width:700px){.muse-yir-hero{grid-template-columns:minmax(0,1fr)!important}}
+.muse-books-section[aria-label="Reading Atlas"],.muse-atlas-section{gap:clamp(12px,1.8vw,20px)!important}

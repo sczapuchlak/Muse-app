@@ -32,7 +32,7 @@ try{
  // Library, search, duplicates not offered.
  await b.click('#up-next-picker .muse-upnext-sources button','Entire Library');await wait(300);
  check(await b.evaluate(()=>!document.querySelector('#up-next-picker .muse-upnext-list').textContent.includes('Alpha Tale')),'a book already in Up Next is not offered for another slot');
- await b.evaluate(()=>{const i=document.querySelector('.muse-upnext-search');i.focus();Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set.call(i,'gamma');i.dispatchEvent(new Event('input',{bubbles:true}));});await wait(300);
+ await b.evaluate(()=>{const i=document.querySelector('.muse-upnext-search input');i.focus();Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set.call(i,'gamma');i.dispatchEvent(new Event('input',{bubbles:true}));});await wait(300);
  check(await b.evaluate(()=>document.querySelectorAll('#up-next-picker .muse-upnext-list li').length===1),'the picker search filters the chosen source');
  await b.evaluate(()=>document.querySelector('#up-next-picker .muse-upnext-list button').click());await wait(900);
  check((await slotsDb())[1]===tbr[2],'a Library pick fills the next slot');
