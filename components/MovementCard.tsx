@@ -100,23 +100,22 @@ export function MovementCard({ initialTypes, initialDay }: Props) {
       </CardHeading>
       <span className="muse-movement-feedback">{spark}</span>
       <div className="movement-areas"><div className="movement-activity"><p className="movement-area-title">Activity</p>
-      <div className="movement-plan-row" role="group" aria-label="Planned movement">
-        <span className="movement-row-label">Planned</span>
-        <ul className="movement-plan-chips" aria-label="Planned movement types">
-          {day.typeIds.map(id=><li key={id}><span className="movement-plan-chip"><span className="chip-label">{nameOf(id)}</span><button type="button" className="movement-chip-remove" aria-label={`Remove ${nameOf(id)} from today’s plan`} disabled={locked} onClick={()=>toggleDay(id)}><MuseIcon name="close" size={12}/></button></span></li>)}
-        </ul>
+      <div className="movement-lane-head"><p className="movement-lane-title">Planned</p><span className="movement-lane-count type-numeric">{day.typeIds.length}</span>
         <button type="button" className="choice-button movement-plan-trigger" aria-haspopup="dialog" aria-expanded={panel?.mode === "more"} aria-controls="movement-menu" disabled={locked}
           onClick={(event) => { anchorRef.current = event.currentTarget; setPanel((current) => current?.mode === "more" ? null : { mode: "more" }); }}>
           {day.typeIds.length?'Edit plan':'Plan movement'}<MuseIcon name="chevron" size={12} />
-        </button>
-      </div>
+        </button></div>
+      {day.typeIds.length>0&&<ul className="movement-plan-chips" aria-label="Planned movement types">
+          {day.typeIds.map(id=><li key={id}><span className="movement-plan-chip"><span className="chip-label">{nameOf(id)}</span><button type="button" className="movement-chip-remove" aria-label={`Remove ${nameOf(id)} from today’s plan`} disabled={locked} onClick={()=>toggleDay(id)}><MuseIcon name="close" size={12}/></button></span></li>)}
+        </ul>}
+      <div className="movement-lane-head" data-lane="actual"><p className="movement-lane-title">How it went</p><span className="movement-lane-count type-numeric">{rows.filter(row=>row.status==='completed').length} of {rows.length} done</span></div>
       {rows.length>0?<ul className="movement-outcome-rows" aria-label="How it went">
         {rows.map(row=>{const record=state.activities.find(item=>item.date===initialDay.date&&item.typeId===row.typeId);return <li className="movement-outcome-row" key={row.typeId} data-status={row.status}>
           <span className="movement-outcome-name">{nameOf(row.typeId)}{!row.planned&&<span className="small-label"> · not planned</span>}</span>
           {record&&supportsDetails&&<DurationField key={`${record.id}/${record.durationMinutes??''}`} name={nameOf(row.typeId)} value={record.durationMinutes??null} disabled={locked} onSave={value=>dispatch({kind:'activity/duration',id:record.id,durationMinutes:value})}/>}
           <MuseChoiceMenu label={`Status for ${nameOf(row.typeId)}`} valueLabel={movementStatuses.find(option=>option.id===row.status)!.label} options={statusOptions} selectedIds={[row.status]} onSelect={id=>{if(!locked)setStatus(row.typeId,id as MovementStatus);}}/>
         </li>;})}
-      </ul>:<p className="small-label movement-outcome-empty">Plan something, then mark how it went. Only Completed counts as movement done.</p>}
+      </ul>:<p className="small-label movement-outcome-empty">Nothing yet. Plan something, then mark how it went; only Completed counts.</p>}
       </div><StepsArea key={initialDay.date} date={initialDay.date} /></div>
       <GlassPopover id="movement-menu" label={panel?.mode==='more'?'Plan movement':'Saved movement types'} open={panel !== null} anchorRef={anchorRef} onClose={() => setPanel(null)} width={panel?.mode === "manage" ? 420 : 340}>
         {panel?.mode === "more" && <>

@@ -135,3 +135,13 @@
 /* #105 Little Moment beside the day's check-ins */
 .muse-mood-memory{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px;margin:0;padding:8px 12px;border-radius:12px;border-left:3px solid var(--accent-pop,var(--accent-primary));background:color-mix(in srgb,var(--accent-pop,var(--accent-primary)) 8%,transparent);font-family:var(--font-editorial);font-style:italic}
 .muse-mood-memory-label{font:700 .68rem var(--font-ui);font-style:normal;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted)}
+
+/* Daily Edit mood (#119): selected feelings are big-emoji tiles that fill the card; the add control matches (feelings only, not Influences). */
+.mood-card .mood-content>div:first-child .feeling-chips{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:var(--space-3)}
+.mood-card .mood-content>div:first-child .feeling-chips>.choice-button{min-height:104px;height:100%;margin:0;border-radius:20px}
+.mood-card .mood-content>div:first-child .feeling-chip{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:14px 10px 12px;text-align:center;font-size:.92rem;font-weight:650;line-height:1.2;
+ background:color-mix(in srgb,var(--quadrant-color,var(--accent-primary)) 34%,var(--background));border:1.5px solid color-mix(in srgb,var(--quadrant-color,var(--accent-primary)) 80%,var(--background));box-shadow:0 8px 18px -10px var(--quadrant-color,var(--accent-primary))}
+.mood-card .mood-content>div:first-child .feeling-chip>span[aria-hidden]{font-size:2.4rem;line-height:1;filter:drop-shadow(0 3px 5px rgba(0,0,0,.25))}
+.mood-card .mood-content>div:first-child .feeling-chip>svg{position:absolute;top:8px;right:8px;opacity:.65}
+.mood-card .mood-content>div:first-child .feeling-chips>.add-control{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;border-style:dashed}
+.mood-card .mood-content>div:first-child .feeling-chips>.add-control:only-child{grid-column:1/-1;flex-direction:row;justify-content:center;min-height:52px;border-radius:var(--pill-radius,999px)}

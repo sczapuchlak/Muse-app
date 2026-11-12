@@ -47,7 +47,7 @@ test('Tarot follows the theme and keeps the artwork as the focal point',()=>{
  assert.doesNotMatch(css,/#181623|rgba\(255,\s*255,\s*255/,'no fixed dark dialog or white-on-dark literals');
  assert.match(css,/\.muse-tarot-ritual::before\{content:none\}/,'no nested frame around the reading');
  assert.doesNotMatch(css,/data-arcana=(major|minor)\]\s*\{\s*border-top:3px/,'no heavy coloured tile borders');
- assert.match(read('components/whimsy/TarotExperience.tsx'),/<WhimsyExperienceHeader title="Tarot"/,'the header names the module, not the first tab');
+ assert.match(read('components/whimsy/TarotExperience.tsx'),/<MusePageHeader title="Tarot" description=/,'the one page title names the module, not the first tab');
 });
 
 test('Fortune & Fun pages show the module header before their tabs',()=>{
