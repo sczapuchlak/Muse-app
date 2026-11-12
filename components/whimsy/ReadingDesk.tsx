@@ -2,11 +2,12 @@
 import {useEffect,useRef,useState,type CSSProperties,type ReactNode} from 'react';
 import {MuseIcon} from '@/components/MuseIcon';
 import {GlassPopover} from '@/components/GlassPopover';
+import {BOOK_STATUS_LABEL,BOOK_STATUS_ORDER} from '@/lib/books/status';
 import type {Book,ReadingSession} from '@/lib/whimsy/models';
 import {bookPosition} from '@/lib/whimsy/books';
 import './ReadingDesk.css';
 
-const shelves:[Book['status'],string][]=[['planned','Want to Read'],['paused','On Hold'],['dnf','Did Not Finish'],['finished','Finished'],['reading','Currently Reading']];
+const shelves:[Book['status'],string][]=BOOK_STATUS_ORDER.map(id=>[id,BOOK_STATUS_LABEL[id]]);
 
 /**
  * One compact reading tile: cover, title, author and progress, nothing else to read. Pressing the tile opens the book;

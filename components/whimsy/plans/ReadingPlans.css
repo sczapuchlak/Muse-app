@@ -100,3 +100,7 @@
 .muse-plan-status svg{color:var(--ink)!important;stroke:var(--ink)!important;stroke-width:2.75!important;opacity:1!important;filter:none!important;background:rgba(255,255,255,.7)!important}
 .muse-plan-bar-seg,.muse-plan-bar-seg span{color:var(--ink)!important}
 .muse-upnext .muse-plan-status,.muse-upnext-list .muse-plan-status,.muse-roulette .muse-plan-status{color:var(--ink)!important}
+/* The shared status dot for menus and filters. */
+.muse-status-dot{--ink:var(--ink-planned);flex:none;display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--seg,#c9a6ff);color:var(--ink)!important;border:2px solid #120c1f;box-shadow:0 0 0 1px rgba(255,255,255,.7);vertical-align:middle}
+.muse-status-dot svg{color:var(--ink)!important;stroke:var(--ink)!important;stroke-width:2.75!important;width:14px;height:14px}
+.muse-choice-lead{display:inline-flex;align-items:center;gap:8px;min-width:0}
