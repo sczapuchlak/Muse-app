@@ -321,3 +321,14 @@
 .muse-series-additional-nav .small-label{margin-right:4px}
 .muse-series-additional-nav .muse-button{width:32px;min-width:32px;height:32px;min-height:32px;padding:0;display:grid;place-items:center;background:var(--surface-control)}
 .muse-series-additional-nav .muse-button:nth-of-type(1) svg{transform:rotate(90deg)}.muse-series-additional-nav .muse-button:nth-of-type(2) svg{transform:rotate(-90deg)}
+
+/* Phone shelf (#136): upright cover-art spines on a walnut ledge that runs off the right edge, with the fern at the left. */
+@media(max-width:620px){
+ .muse-series-shelf{--spine-w:32px;--fade:78px;--ledge:16px;padding-top:30px}
+ .muse-series-shelf .muse-series-shelf-books{--shelf-h:92px;--spine-gap:3px}
+ .muse-series-shelf .muse-series-spine{padding:6px 0 4px;background-size:cover;background-position:center}
+ .muse-series-shelf .muse-series-spine em{display:none}
+ .muse-series-shelf .muse-series-spine small{font-size:.6rem;margin-top:0;align-self:center;margin-top:auto}
+ .muse-series-shelf-ledge{right:-100vw;height:20px}
+ .muse-series-shelf-plant{display:block;left:4px;width:76px;height:72px;bottom:calc(var(--ledge) - 4px)}
+}
