@@ -39,7 +39,7 @@ try{
  const seeded=await evaluate(async birth=>{const response=await fetch('/api/astrology/records',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({operation:'profile-save',commandId:crypto.randomUUID(),expectedRevision:0,record:{profile:birth}})});return response.ok;},birth);assert.equal(seeded,true,'Saved personal chart through authenticated route');
  await evaluate(()=>{window.__chartTestBeforeReload=true;});await send('Page.reload');await until(()=>!window.__chartTestBeforeReload&&document.querySelector('.muse-cosmic-save-status')?.textContent.includes('saved records loaded'),'Observatory reloads');
  await click('.muse-cosmic-navigation button','Birth Chart');
- assert.ok(await evaluate(()=>{const disclosure=document.querySelector('.muse-chart-tools-disclosure');disclosure.open=true;return disclosure.open;}));
+ await click('.muse-cosmic-viewtabs button','Charts');
  await until(()=>!!document.querySelector('.muse-chart-directory button'),'Chart directory opens');
  await chooseTool('Synastry Chart');
  await until(()=>document.querySelectorAll('.muse-chart-person').length===2,'Two people can be entered');

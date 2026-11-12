@@ -81,7 +81,7 @@ test('Share to Stream sits where people finish or save something meaningful',()=
   'components/rituals/RitualEditor.tsx':/\{initial&&<ShareToStream kind="ritual" id=\{initial\.id\}/,
   'components/whimsy/WeeklySideQuests.tsx':/\{done&&\(\(\)=>\{const c=completions\.find[^}]*\}*[^<]*<ShareToStream kind="side-quest"/,
   'components/whimsy/FortuneCollectionCard.tsx':/<ShareToStream kind="fortune" id=\{item\.id\}/,
-  'components/astrology/CosmicObservatory.tsx':/records\.chart&&<div className="muse-cosmic-share"><ShareToStream kind="astrology"/,
+  'components/astrology/CosmicObservatory.tsx':/records\.chart\?<div className="muse-cosmic-share"><ShareToStream kind="astrology"/,
   'components/mood/Mood.tsx':/(share=\{record=>record\.emotionIds\.length\?|record\.emotionIds\.length>0&&)<ShareToStream kind="mood"/,
   'components/envision/aspirations/AspirationDetail.tsx':/<ShareToStream kind="aspiration" id=\{a\.id\} category="celebrating"/,
   'components/whimsy/BookPage.tsx':/<ShareToStream kind="book"/,'components/whimsy/Dreamscapes.tsx':/ShareToStream/,'components/whimsy/TarotExperience.tsx':/ShareToStream/};

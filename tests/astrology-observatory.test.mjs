@@ -11,7 +11,7 @@ const {wheelLabels}=load('lib/astrology/wheel');
 const {AstrologyEntryDetail}=load('components/astrology/AstrologyEntryDetail');
 const {PlacementDetail,CosmicChart}=load('components/astrology/CosmicChart');
 const {CosmicCalendar}=load('components/astrology/CosmicCalendar');
-const {AstrologyLibrary}=load('components/astrology/AstrologyLibrary');
+const {AstrologyLibrary,libraryCategories}=load('components/astrology/AstrologyLibrary');
 const {calculateNatal}=load('lib/astrology/calculations');
 const escape=value=>renderToStaticMarkup(React.createElement('span',null,value)).slice(6,-7);
 const range={start:'2026-11-01',end:'2026-11-30'},status={loaded:true};
@@ -36,11 +36,11 @@ test('natal snapshot derives angles, lunar phase and distributions from calculat
  for(const label of ['My Cosmic Snapshot','Approximate natal lunar phase','Elements','Modalities','Ascendant','Descendant','Midheaven','IC'])assert.ok(html.includes(label));
  assert.ok(html.includes('Moon–Sun ecliptic separation'));
 });
-test('Library exploration starts with seven real collections and Calendar tolerates an unresolved local date during server render',()=>{
+test('Library starts on a one-lesson-at-a-time Astro 101 path, with seven real collections under Topics, and Calendar tolerates an unresolved local date during server render',()=>{
  const library=renderToStaticMarkup(React.createElement(AstrologyLibrary,{onOpen(){}}));
- assert.equal((library.match(/class="muse-cosmic-collection"/g)??[]).length,7);
+ assert.equal(Object.keys(libraryCategories).length,7);assert.ok(library.includes('>Topics<')&&library.includes('>Learn<'));
  assert.ok(library.includes('aria-labelledby="cosmic-astro101-heading"'));
- assert.equal((library.match(/class="muse-cosmic-astro101-lesson"/g)??[]).length,7);
+ assert.equal((library.match(/class="muse-cosmic-astro101-number"/g)??[]).length,7);
  for(const title of ['What is a birth chart?','Meet the Big Three','Read a placement','Understand an aspect','Natal sky and moving sky','Compare two charts','Understand a composite'])assert.ok(library.includes(title));
  const calendar=renderToStaticMarkup(React.createElement(CosmicCalendar,{today:'',timeZone:'UTC',active:false,onOpen(){},onLibrary(){},onReflect(){}}));
  assert.ok(calendar.includes('Calculating celestial events'));

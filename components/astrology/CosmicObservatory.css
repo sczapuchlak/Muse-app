@@ -145,3 +145,49 @@
 .muse-chart-saved li{display:flex;align-items:center;flex-wrap:wrap;gap:.4rem 1rem;padding:.65rem .75rem;border:1px solid var(--border);border-radius:var(--radius-md)}
 .muse-chart-saved li>span{color:var(--muted-foreground);font-size:.86rem}
 .muse-chart-saved li .muse-cosmic-actions{margin-inline-start:auto}
+
+/* Birth Chart local views (#119): Snapshot / Charts / Houses / Aspects. */
+.muse-chart-views{display:grid;gap:16px;min-width:0}
+.muse-cosmic-viewtabs{justify-self:start;max-width:100%;overflow-x:auto}
+.muse-chart-views>[id^="chart-view-"]{display:grid;gap:16px;min-width:0}
+.muse-chart-views .muse-chart-directory{gap:12px}
+.muse-chart-views .muse-chart-directory>.muse-cosmic-tile{min-height:132px;align-content:start}
+.muse-chart-views .muse-chart-tools>.muse-cosmic-section-head{display:none}
+
+/* Astrology Library (#119): Learn / Topics / All entries, one lesson at a time. */
+.muse-lib-learn{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:16px;align-items:stretch}
+.muse-lib-learn .muse-cosmic-astro101{display:grid;gap:14px;align-content:start;min-width:0}
+.muse-astro101-steps{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;margin:0;padding:0;list-style:none}
+.muse-astro101-steps button{display:grid;justify-items:center;gap:4px;width:100%;height:100%;padding:8px 4px;border:1px solid var(--glass-border);border-radius:12px;background:var(--surface-subtle);color:var(--text-muted);font:inherit;font-size:.7rem;line-height:1.2;text-align:center;cursor:pointer}
+.muse-astro101-steps button span:last-child{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.muse-astro101-steps button[aria-current=step]{color:var(--foreground);border-color:var(--selected-border);box-shadow:inset 0 0 0 1px var(--selected-border)}
+.muse-astro101-lesson{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:18px;align-items:center;padding:18px 20px;border:1px solid var(--glass-border);border-radius:16px;background:var(--surface-subtle);min-height:170px}
+.muse-astro101-lesson h5{margin:2px 0 8px;font-family:var(--font-editorial);font-style:italic;font-size:1.3rem}
+.muse-astro101-lesson p:not(.small-label){color:var(--text-muted);line-height:1.5}
+.muse-astro101-lesson .muse-cosmic-astro101-diagram{justify-content:center}
+.muse-astro101-nav{display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap}
+.muse-lib-side{display:grid;gap:16px;align-content:start;min-width:0;padding:16px;border:1px solid var(--glass-border);border-radius:16px;background:var(--surface-subtle)}
+.muse-lib-side h4{margin:0 0 8px;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted)}
+.muse-lib-side ul{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.muse-lib-side li button{display:flex;align-items:center;gap:10px;width:100%;padding:8px 10px;border:1px solid var(--glass-border);border-radius:12px;background:transparent;color:inherit;font:inherit;text-align:left;cursor:pointer}
+.muse-lib-side li button small{display:block;color:var(--text-muted)}
+.muse-cosmic-library-collections{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+@media(max-width:1000px){.muse-lib-learn{grid-template-columns:minmax(0,1fr)}.muse-cosmic-library-collections{grid-template-columns:repeat(2,minmax(0,1fr))!important}.muse-astro101-steps{grid-template-columns:repeat(7,minmax(44px,1fr))}}
+@media(max-width:650px){.muse-astro101-lesson{grid-template-columns:minmax(0,1fr)}.muse-astro101-steps button span:last-child{display:none}.muse-astro101-nav .button-ghost:nth-child(2){display:none}}
+
+/* Cosmic Calendar (#119): featured event leads; the interpretive note gets an editorial heading. */
+.muse-cosmic-featured-note{display:grid;gap:4px;margin:10px 0 12px;padding-left:14px;border-left:3px solid;border-image:linear-gradient(180deg,var(--accent-primary),var(--accent-secondary)) 1}
+.muse-cosmic-featured-note h5{margin:0;font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight);font-size:1.05rem;color:var(--foreground)}
+.muse-cosmic-featured-note p{color:var(--text-muted);line-height:1.5}
+.muse-cosmic-astro101 .muse-astro101-steps{grid-template-columns:repeat(7,minmax(0,1fr));gap:8px}
+.muse-cosmic-astro101 .muse-astro101-steps li{display:block;padding:0;border:0;background:none}
+.muse-cosmic-astro101>.muse-astro101-nav{display:flex;gap:10px}
+.muse-cosmic-astro101>header{display:grid;gap:5px}
+.muse-astro101-steps .muse-cosmic-astro101-number{font-size:1.05rem}
+.muse-lib-side{align-self:start}
+.muse-chart-views .muse-chart-directory{align-items:stretch}
+.muse-chart-views .muse-chart-directory>.muse-cosmic-tile{height:100%}
+@media(max-width:1000px){.muse-cosmic-astro101 .muse-astro101-steps{grid-template-columns:repeat(7,minmax(44px,1fr))}}
+@media(max-width:650px){.muse-cosmic-astro101 .muse-astro101-steps li button span:last-child{display:none}}
+.muse-cosmic-house-gallery,.muse-cosmic-aspect-gallery{align-items:stretch}
+.muse-cosmic-house-gallery>.muse-cosmic-tile,.muse-cosmic-aspect-gallery>.muse-cosmic-tile{height:100%}

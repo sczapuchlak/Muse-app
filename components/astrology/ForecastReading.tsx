@@ -21,8 +21,8 @@ function EditorialBlock({block,index}:{block:ForecastEditorialBlock;index:number
  if(block.kind==='dateline')return <p className="muse-forecast-dateline" key={index}>{block.raw}</p>;
  if(block.kind==='paragraph')return <section className="muse-forecast-editorial-intro" key={index}><p><SourceWords text={block.body}/></p></section>;
  const featured=index===1||/^Overview:$/iu.test(block.heading??'');
- return <section className="muse-forecast-editorial-section" data-featured={featured} key={index}>
-  <h4><span aria-hidden="true">{block.icon}</span>{block.heading}</h4>
+ return <section className="muse-forecast-editorial-section" data-featured={featured} data-tone={index%5} key={index}>
+  <h4><span aria-hidden="true">{block.icon}</span><b>{(block.heading??"").replace(/:$/,"")}</b></h4>
   <p><SourceWords text={block.body}/></p>
  </section>;
 }
