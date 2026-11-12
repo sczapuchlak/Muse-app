@@ -1,7 +1,7 @@
 .muse-notes-workspace[hidden],.muse-constellations[hidden] { display:none; }
 .muse-constellations { display:flex; flex-direction:column; gap:var(--space-3); min-width:0; }
 .muse-board-search { display:flex; align-items:center; gap:var(--space-2); min-width:0; }
-.muse-board-search .muse-notes-search { flex:1; min-width:0; margin:0; }
+.muse-board-search .muse-search { flex:1; min-width:0; margin:0; }
 .muse-board-search input { min-width:0; }
 .muse-board-search > .muse-button { min-width:42px; min-height:42px; padding:0; }
 .muse-board-filter-scroll { min-width:0; overflow-x:auto; scrollbar-width:thin; }

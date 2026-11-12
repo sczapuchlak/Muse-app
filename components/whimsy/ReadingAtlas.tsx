@@ -17,10 +17,11 @@ import {BooksMilestones} from './atlas/BooksMilestones';
 import {YearInReview} from './atlas/YearInReview';
 import {ReadingChallenge} from './atlas/ReadingChallenge';
 import {Patterns} from './atlas/Patterns';
-import {MonthShelf,RatingsByMonth,VibeCloud} from './atlas/Highlights';
+import {MonthShelf,RatingsByMonth} from './atlas/Highlights';
 import {Favorites} from './atlas/Favourites';
 import {PagedList} from './atlas/PagedList';
 import {Highlights} from './atlas/Highlights2';
+import {EmojiBoard} from './atlas/EmojiBoard';
 import {TopRated} from './atlas/TopRated';
 import {completedBookSeries} from '@/lib/whimsy/books';
 import {Streaks} from './atlas/Streaks';
@@ -57,7 +58,7 @@ export function ReadingAtlas({books,sessions,goals,today,range,setRange,calendar
  const label=period==='all'?'all time':overviewPeriods[period].toLowerCase(),c=summary.completions;
  return <section className="muse-books-section" aria-label="Reading Atlas">
   {!sessions.length&&<div className="muse-empty-state muse-books-empty" data-variant="editorial"><h4>A reading life, taking shape.</h4><p>Your first logged session will bring time, pages, and rhythm into focus. Your shelf and goals are ready whenever you are.</p></div>}
-  <div className="muse-atlas-sections" role="group" aria-label="Reading Atlas section">{(Object.keys(sections) as AtlasSection[]).map(id=><button key={id} type="button" aria-pressed={section===id} onClick={()=>setSection(id)}>{sections[id]}</button>)}</div>
+  <div className="muse-atlas-sections" role="group" aria-label="Reading Atlas section">{(Object.keys(sections) as AtlasSection[]).map(id=><button key={id} type="button" className="muse-edge" aria-pressed={section===id} onClick={()=>setSection(id)}>{sections[id]}</button>)}</div>
   {celebrating.length>0&&<div className="muse-atlas-celebration" role="status"><span className="muse-finish-shimmer" aria-hidden="true"><MuseStar size={16}/><MuseStar size={11} color="aqua"/><MuseStar size={9} color="pink"/></span>
    <div><span className="small-label">{celebrating.length===1?'New milestone':'New milestones'}</span>{celebrating.map(id=>{const m=milestones.find(x=>x.id===id);return m?<strong key={id}>{m.title}{m.achievedOn?<small> · {yearDate(m.achievedOn)}</small>:null}</strong>:null;})}</div>
    <button type="button" className="text-button" onClick={()=>setCelebrating([])}>Dismiss</button></div>}
@@ -97,7 +98,7 @@ export function ReadingAtlas({books,sessions,goals,today,range,setRange,calendar
   <article className="muse-books-panel muse-books-goals-panel"><div className="muse-books-panel-head"><div><span className="small-label">A LITTLE INTENTION</span><h4>Your goals</h4></div><button type="button" className="muse-button button-ghost" onClick={onAddGoal}>+ Goal</button></div>{!shownGoals.length?<p>{goals.length?`No ${label} goals. Reading counts without one.`:'No goals yet. Reading counts without one, too.'}</p>:<div className="muse-books-goals-grid">{shownGoals.map(goal=>{const progress=goalProgress(goal,books,sessions,today),window=goalWindow(goal,today),percent=Math.round(progress/goal.target*100);return <div className="muse-books-goal" key={goal.id}><div><strong>{periods[goal.period]} · {goal.target} {goal.unit}</strong><span>{Math.round(progress)} / {goal.target} {goal.unit}</span></div><progress value={Math.min(progress,goal.target)} max={goal.target} aria-label={`${periods[goal.period]} goal: ${Math.round(progress)} of ${goal.target} ${goal.unit}`}/><small>{dateLabel(window.start)} – {dateLabel(window.end)}{goal.unit==='books'?' · each finished read counts':''}</small><div><span className="small-label">{percent>=100?'Goal reached ✦':`${percent}% of your goal`}</span><button type="button" className="text-button" onClick={()=>onRemoveGoal(goal)}>Remove goal</button></div></div>;})}</div>}</article>
    </div>
   </div>}
-  <div className="muse-atlas-tf"><TopRated books={books} range={range_} label={label} onOpenBook={onOpenBook} size={6} cols={3}/><div className="muse-atlas-tf-stack"><Favorites books={books} range={range_} label={label} onOpenBook={onOpenBook} size={4} cols={4}/><VibeCloud books={books} range={range_} label={label}/></div></div>
+  <div className="muse-atlas-tf"><TopRated books={books} range={range_} label={label} onOpenBook={onOpenBook} size={6} cols={3}/><div className="muse-atlas-tf-stack"><Favorites books={books} range={range_} label={label} onOpenBook={onOpenBook} size={4} cols={4}/><EmojiBoard books={books} range={range_} label={label} title="Vibes" top={2}/></div></div>
   {(period==='year'||period==='all')&&<MonthShelf books={books} today={today} onOpenBook={onOpenBook}/>}
 
   {(period==='year'||period==='all')&&<div className="muse-atlas-books-pair"><ActivityBars line title="Books finished by year" note="Every year of your history · the line follows the ups and downs" items={yearlyBooks.map(y=>({key:y.start,label:y.start.slice(0,4),short:y.start.slice(0,4),value:y.count,text:`${y.count} ${y.count===1?'book':'books'}`}))}/><RatingsByMonth books={books} today={today}/></div>}

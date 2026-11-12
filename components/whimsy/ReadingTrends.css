@@ -44,3 +44,9 @@
 .muse-trends-nav{display:grid;grid-template-columns:1fr auto auto}
 .muse-trends-dots{display:flex;gap:6px;align-items:center}.muse-trends-dots button{width:8px;height:8px;padding:0;border:0;border-radius:50%;background:color-mix(in srgb,var(--foreground) 22%,transparent);cursor:pointer}.muse-trends-dots button[aria-selected="true"]{width:20px;border-radius:999px;background:var(--accent-primary)}
 .muse-trends-explore{justify-self:start}
+/* Direction at a glance: a graph arrow with the percentage, opposite the value. Up = green, level = yellow, down = a calm warm tone. */
+.muse-trend-row{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;min-width:0}
+.muse-trend-arrow{--a:#3ecf8e;flex:none;display:grid;justify-items:center;gap:0;line-height:1;color:var(--a)}
+.muse-trend-arrow[data-tone="same"]{--a:#f2c230}.muse-trend-arrow[data-tone="down"]{--a:#f08a5d}.muse-trend-arrow[data-tone="new"]{--a:#3ecf8e}
+.muse-trend-arrow svg{filter:none}.muse-trend-arrow b{font-size:.78rem;font-weight:800;color:var(--a)}
+.muse-trend-badge{display:none}

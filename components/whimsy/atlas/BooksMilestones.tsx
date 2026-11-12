@@ -8,6 +8,7 @@ import {completedReadAverages,completionEvents,inclusiveCalendarDays,type DateRa
 import {readOpinion} from '@/lib/whimsy/reading-cycles';
 import {bookSuperlatives,emojiRanking,favoriteGenres,genreBreakdown,milestoneUnit,readsIn,readingMilestones} from '@/lib/whimsy/reading-dna';
 import {PagedList} from './PagedList';
+import {EmojiBoard} from './EmojiBoard';
 import {Insight,days,hours,monthLabel,plural,yearDate} from './parts';
 
 /** Superlatives and completion history for one period, plus every milestone (all time). */
@@ -29,11 +30,14 @@ export function BooksMilestones({books,sessions,range,label,onOpenBook}:{books:B
     <Insight label="Most common book emoji" value={emoji&&<span className="muse-atlas-emoji">{emoji.emoji}</span>} detail={emoji&&plural(emoji.books,'book')} empty="Add emojis to finished books"/>
    </div>
   </article>
+  <div className="muse-atlas-books-pair">
   <article className="muse-books-panel"><div className="muse-books-panel-head"><h4>Milestones</h4><span className="small-label">{reached.length} of {milestones.length} reached · all time</span></div>
    {!reached.length?<p>Your first finished book or first 100 pages will light the first star.</p>:<PagedList tag="ol" className="muse-atlas-milestones" items={reached} size={4} label="milestones reached" render={m=><li key={m.id}><span className="muse-atlas-milestone-star" aria-hidden="true">✦</span><strong>{m.title}</strong><small>{yearDate(m.achievedOn!)}</small></li>}/>}
    {next.length>0&&<div className="muse-atlas-next"><span className="small-label">Next up</span>{next.map(m=><div key={m.id}><span>{m.title}</span><progress value={m.progress} max={m.threshold} aria-label={`${m.title}: ${Math.floor(m.progress)} of ${m.threshold} ${milestoneUnit[m.metric]}`}/><small>{m.metric==='hours'?m.progress.toFixed(1):Math.floor(m.progress)} / {m.threshold} {milestoneUnit[m.metric]}</small></div>)}</div>}
    <p className="small-label">Reached on the first day your saved history crossed each line. Editing past sessions recalculates them; a milestone is only ever celebrated once.</p>
   </article>
+  <EmojiBoard books={books} range={range} label={label}/>
+  </div>
   <div className="muse-atlas-books-pair">
   <article className="muse-books-panel" id="atlas-completed"><div className="muse-books-panel-head"><h4>Completed books</h4><span className="small-label">{label}</span></div>{!reads.length?<p>{label==='all time'?'A finished book belongs here whenever you reach its last page.':`Nothing finished ${label} yet.`}</p>:<>
    <p className="muse-atlas-books-note">{averages.averageCalendarDays!==null?`${averages.averageCalendarDays.toFixed(1)} calendar days on average (inclusive), from ${plural(averages.datedCompletions,'read')} with a start date`:'Start dates not recorded'}{averages.averageActiveSeconds!==null?` · ${hours(averages.averageActiveSeconds)} average active time, from ${averages.timedCompletions} timed ${averages.timedCompletions===1?'read':'reads'}`:''} · all time</p>

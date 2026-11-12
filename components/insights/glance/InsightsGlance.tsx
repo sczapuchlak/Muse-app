@@ -24,7 +24,9 @@ import "../Insights.css";
 import "./Glance.css";
 
 const periodKey = "muse.insights.period";
-const isPeriod = (v: unknown): v is GlancePeriod => glancePeriods.some((p) => p.id === v);
+/** The Day view belongs to the Daily Edit, so Insights offers Week / Month / Year for now. An old ?period=day or a remembered Day falls back to Week. (The Day layout below is kept for later.) */
+const offered = glancePeriods.filter((p) => p.id !== "day");
+const isPeriod = (v: unknown): v is GlancePeriod => offered.some((p) => p.id === v);
 
 /**
  * Insights 2.0 — Life at a Glance (#97). One page, one Day / Week / Month / Year selector, over existing records only:
@@ -68,7 +70,7 @@ export function InsightsGlance() {
     <div className="muse-glance-toolbar">
       <PeriodTitle title={title} date={anchor} onChange={setDate} />
       <div className="muse-glance-tools">
-        <div className="muse-segmented" role="group" aria-label="Period">{glancePeriods.map((p) => <button key={p.id} type="button" aria-pressed={period === p.id} onClick={() => setPeriod(p.id)}>{p.label}</button>)}</div>
+        <div className="muse-segmented" role="group" aria-label="Period">{offered.map((p) => <button key={p.id} type="button" aria-pressed={period === p.id} onClick={() => setPeriod(p.id)}>{p.label}</button>)}</div>
         <div className="muse-glance-nav" role="group" aria-label={`Move by ${period}`}>
           <button type="button" className="muse-button" aria-label={`Previous ${period}`} onClick={() => setDate(shiftGlance(period, anchor, -1))}>‹</button>
           <button type="button" className="muse-button" disabled={!today} onClick={() => today && setDate(today)}>Today</button>
@@ -133,11 +135,13 @@ export function InsightsGlance() {
           <div style={{ gridArea: "emoji" }}><ThreeFavorites daily={daily} title="The year in emoji" /></div>
           <div style={{ gridArea: "prio" }}><MonthBars id="glance-year-priorities" title="Priorities done" icon="favorite" months={months} emoji="⭐" emptyText="No priorities completed this year."
               value={(m) => m.prioritiesDone || null} format={(m, v) => `${v} of ${m.prioritiesPlanned} done`} unitNote={`${daily.priorities.completed} of ${daily.priorities.planned} priorities done this year.`} /></div>
-          <div style={{ gridArea: "move" }}><MonthBars id="glance-year-move" title="Movement" icon="movement" tone="pop" months={months} emoji="🏃" emptyText="No movement recorded this year."
-              value={(m) => m.movement || null} format={(m, v) => `${plural(v, "workout")}`} unitNote={`${plural(movement.sessions, "workout")} across ${plural(movement.days, "active day")}.`} /></div>
-          <div style={{ gridArea: "water" }}><MonthBars id="glance-year-water" title="Water" icon="water" tone="cool" months={months} emoji="💧" emptyText="No water logged this year."
-              value={(m) => m.water} format={(m, v) => `${formatWaterAmount(v)} ${water[0]?.unit ?? ""} a day · ${plural(m.waterDays, "logged day")}`} unitNote={water[0] ? `Average per logged day, in ${water[0].unit}.${water.length > 1 ? " Other units are kept apart." : ""}` : undefined} /></div>
           <div style={{ gridArea: "read" }}>{readingCard()}</div>
+          <div style={{ gridArea: "stack" }} className="muse-glance-year-stack">
+          <div><MonthBars id="glance-year-move" title="Movement" icon="movement" tone="pop" months={months} emoji="🏃" emptyText="No movement recorded this year."
+              value={(m) => m.movement || null} format={(m, v) => `${plural(v, "workout")}`} unitNote={`${plural(movement.sessions, "workout")} across ${plural(movement.days, "active day")}.`} /></div>
+          <div><MonthBars id="glance-year-water" title="Water" icon="water" tone="cool" months={months} emoji="💧" emptyText="No water logged this year."
+              value={(m) => m.water} format={(m, v) => `${formatWaterAmount(v)} ${water[0]?.unit ?? ""} a day · ${plural(m.waterDays, "logged day")}`} unitNote={water[0] ? `Average per logged day, in ${water[0].unit}.${water.length > 1 ? " Other units are kept apart." : ""}` : undefined} /></div>
+          </div>
         </div>
         <div data-area="hero"><GoodDays daily={daily} days={snapshot.days} checkIns={checkIns} onOpen={(d) => open(d)} limit={6} /></div>
       </>}
