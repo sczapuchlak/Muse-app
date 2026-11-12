@@ -2,11 +2,12 @@
 import { useEffect, useRef, useState } from "react";
 import { GlassPopover } from "../../GlassPopover";
 import { MuseStar } from "../../MuseStar";
+import { clipboardPasteError, readClipboardImages } from "@/lib/vision-boards/clipboard";
 
 /**
  * Cutouts (#118, Option A): guidance for Apple's own "lift subject" feature. Muse doesn't remove backgrounds; it keeps
- * the transparency of a cutout copied from Photos and can add a die-cut outline. Shown only on iPhone and iPad, where
- * the feature lives, so the desktop editor stays uncluttered.
+ * the transparency of a cutout copied from Photos and can add a die-cut outline. The Apple cutout guide is shown only on iPhone and iPad;
+ * clipboard image pasting is available on desktop too.
  */
 const hintKey = "muse.vision.cutoutHint";
 
@@ -22,30 +23,23 @@ export function useAppleTouch(): boolean {
 }
 
 /**
- * Safari only offers its Paste menu in text fields, so a long-press on the canvas can't paste. This button reads the
- * copied image from the clipboard instead (Safari asks once to allow it).
+ * The canvas is not a native text field. This action reads copied image bytes directly,
+ * with the browser's clipboard permission prompt when required.
  */
-async function readClipboardImages(): Promise<File[]> {
-  if (!navigator.clipboard?.read) throw Error("This browser can’t paste images here. Save the cutout to Photos or Files and add it with Photos instead.");
-  const items = await navigator.clipboard.read();
-  const files: File[] = [];
-  for (const item of items) {
-    const type = item.types.find((t) => t === "image/png") ?? item.types.find((t) => t.startsWith("image/"));
-    if (type) { const blob = await item.getType(type); files.push(new File([blob], `cutout.${type === "image/png" ? "png" : type.split("/")[1]}`, { type })); }
-  }
-  if (!files.length) throw Error("There’s no picture on the clipboard yet. In Photos, press and hold the subject, then tap Copy.");
-  return files;
-}
-
-export function CutoutTools({ disabled, onFiles, onError, onOpened }: { disabled: boolean; onFiles: (files: File[]) => void; onError: (message: string) => void; onOpened?: () => void }) {
+export function CutoutTools({ disabled, onFiles, onError, onOpened, showGuide = true }: { disabled: boolean; onFiles: (files: File[]) => void; onError: (message: string) => void; onOpened?: () => void; showGuide?: boolean }) {
   const [open, setOpen] = useState(false);
+  const [reading, setReading] = useState(false);
   const anchor = useRef<HTMLButtonElement>(null);
   const paste = async () => {
+    if (reading || disabled) return;
+    setReading(true);
     try { onFiles(await readClipboardImages()); setOpen(false); }
-    catch (e) { onError(e instanceof DOMException && e.name === "NotAllowedError" ? "Muse needs your OK to paste. Tap Paste again and choose Paste in the bubble." : e instanceof Error ? e.message : "That didn’t paste. Try again."); }
+    catch (e) { onError(clipboardPasteError(e)); }
+    finally { setReading(false); }
   };
   return <>
-    <button type="button" className="muse-button" disabled={disabled} onClick={() => void paste()}>Paste</button>
+    <button type="button" className="muse-button" disabled={disabled || reading} onClick={() => void paste()}>{reading ? "Reading clipboard…" : "Paste"}</button>
+    {showGuide && <>
     <button ref={anchor} type="button" className="text-button muse-vision-cutout-trigger" aria-expanded={open} aria-controls="vision-cutout-help" onClick={() => { setOpen((o) => !o); onOpened?.(); }}>Make a cutout</button>
     <GlassPopover id="vision-cutout-help" label="Make a cutout with iPhone Photos" title="Make a cutout" open={open} anchorRef={anchor} onClose={() => setOpen(false)} width={320}>
       <div className="muse-vision-cutout">
@@ -57,10 +51,11 @@ export function CutoutTools({ disabled, onFiles, onError, onOpened }: { disabled
           <li><span>Come back here and tap <strong>Paste</strong>.</span></li>
           <li><span><span className="muse-vision-cutout-optional">Optional</span> Select it, then <strong>Outline</strong> for a white sticker edge.</span></li>
         </ol>
-        <button type="button" className="muse-button button-primary" disabled={disabled} onClick={() => void paste()}>Paste from Photos</button>
+        <button type="button" className="muse-button button-primary" disabled={disabled || reading} onClick={() => void paste()}>Paste from Photos</button>
         <p className="small-label">Apple’s Photos makes the cutout; Muse doesn’t remove backgrounds itself.</p>
       </div>
     </GlassPopover>
+    </>}
   </>;
 }
 

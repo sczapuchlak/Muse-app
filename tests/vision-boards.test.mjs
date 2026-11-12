@@ -145,8 +145,9 @@ test('integrations: Envision tab, Intentions references a board, export includes
 test('cutouts: Apple-guided only, iPhone/iPad only, never claims Muse removes backgrounds',()=>{
  const help=read('components/envision/vision/CutoutHelp.tsx'),editor=read('components/envision/vision/BoardEditor.tsx');
  assert.match(help,/iPhone\|iPad\|iPod/);assert.match(help,/maxTouchPoints > 1/,'iPadOS is recognised');
- assert.match(editor,/\{apple && <CutoutTools/,'the guide is not rendered on desktop');
- assert.match(help,/navigator\.clipboard\.read/);assert.match(help,/muse\.vision\.cutoutHint/);
+ assert.match(editor,/showGuide=\{apple\}/,'the cutout guide stays Apple-touch only while Paste is available on desktop');
+ assert.match(help,/\{showGuide &&/);
+ assert.match(read('lib/vision-boards/clipboard.ts'),/clipboard\.read\(/);assert.match(help,/muse\.vision\.cutoutHint/);
  assert.doesNotMatch(help.replace(/doesn[’']t remove backgrounds/g,''),/remove(s)? backgrounds?/i,'only the disclaimer mentions removing backgrounds');
  assert.doesNotMatch(read('package.json'),/background-removal|onnxruntime|@huggingface\/transformers/,'no model or API dependency in v1');
 });
