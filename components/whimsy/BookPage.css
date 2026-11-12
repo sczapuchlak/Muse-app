@@ -292,10 +292,18 @@
 /* The cover-tinted glow fades out on every side instead of ending in a visible rounded box. */
 .muse-book-route .muse-book-atmosphere{background:none!important;border-radius:0}
 .muse-book-route .muse-book-atmosphere::before{content:"";position:absolute;inset:-48px -28px auto -28px;height:600px;z-index:0;pointer-events:none;background:radial-gradient(ellipse 62% 380px at 14% 8%,color-mix(in srgb,var(--book-atmosphere) 24%,transparent),transparent 76%),radial-gradient(ellipse 48% 300px at 72% 10%,color-mix(in srgb,var(--book-atmosphere) 10%,var(--accent-secondary) 6%),transparent 80%);-webkit-mask-image:linear-gradient(to bottom,#000 35%,transparent),linear-gradient(to right,transparent,#000 12%,#000 88%,transparent);-webkit-mask-composite:source-in;mask-image:linear-gradient(to bottom,#000 35%,transparent),linear-gradient(to right,transparent,#000 12%,#000 88%,transparent);mask-composite:intersect}
-.muse-book-route .muse-book-atmosphere-art{-webkit-mask-image:linear-gradient(#000 15%,transparent 100%),linear-gradient(to right,transparent,#000 14%,#000 86%,transparent);-webkit-mask-composite:source-in;mask-image:linear-gradient(#000 15%,transparent 100%),linear-gradient(to right,transparent,#000 14%,#000 86%,transparent);mask-composite:intersect}
+.muse-book-route .muse-book-atmosphere-art{-webkit-mask-image:linear-gradient(transparent 0,#000 22%,#000 38%,transparent 100%),linear-gradient(to right,transparent,#000 14%,#000 86%,transparent);-webkit-mask-composite:source-in;mask-image:linear-gradient(transparent 0,#000 22%,#000 38%,transparent 100%),linear-gradient(to right,transparent,#000 14%,#000 86%,transparent);mask-composite:intersect}
 /* Desktop hero: the first tag lines up with the top of the cover, the buttons with its bottom, and the rest spreads evenly between. */
 @media(min-width:681px){
  .muse-book-page-hero{align-items:stretch}
  .muse-book-page-identity{display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;gap:12px;padding:4px 0 14px}
 }
 @media(min-width:681px){.muse-book-page-cover{align-self:start}}
+
+/* Phone/tablet order: reading panel, then About + Series, and the Sittings/Journal panel last. */
+@media(max-width:1080px){
+ .muse-book-page{grid-template-areas:"crumbs" "hero" "panel" "main" "yours"}
+ .muse-book-page-side{display:contents}
+ .muse-book-page-side>.muse-book-panel{grid-area:panel!important;grid-column:auto!important}
+ .muse-book-page-side>.muse-book-yours{grid-area:yours!important;grid-column:auto!important}
+}
