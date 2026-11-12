@@ -964,3 +964,9 @@ Supersedes the book-level heart above. A favourite is "marked as a favourite in 
 - Atlas overview: Top rated (tall) beside Favorites over Vibes; Reading by period beside a paged Session history; no "Today" period (that is the Dashboard). Year in Review: year dropdown, and a hero that previews the year (covers, month-by-month shape).
 - Insight tiles carry an icon and one related colour per group. Every list that could grow (milestones, session history, reading by period, emojis) is a fixed-size panel with arrows. Every gap between containers is the same 20px (12px on small screens).
 - Book search and the Up next picker use the shared Muse search field.
+
+## Reading trends, Highlights and Books polish round 3 — approved, implemented
+
+- **Your last 30 days** (Dashboard, beside Reading plans at 30%; Plans take 70%): a carousel of four metrics (pages, time, books finished, reading days) for the rolling 30 days ending today in the reader's local dates, each compared with the 30 days before. Figures come from the same per-day logic as the Atlas and the streak (`readingByDay`, `completionEvents`); an imported book with no sessions is not a reading day; nothing is stored; no migration. A decrease is shown calmly, never red; "up from none" has no percentage; the first 30 days say there is nothing to compare yet. Each card opens its Atlas view (pages: This month › pages by day; time: reading time by week; finished: Completed books; days: Streaks › calendar) via `?period=` / `?section=` / `?focus=`.
+- **Highlights** (Year in Review and Atlas overview, any period): coloured cards with an icon and a small picture; paged, four across.
+- Books containers follow the theme's gradient outline like the rest of Muse, and the light-card themes (Astral, Nightbloom) re-ink the newer Books containers.
