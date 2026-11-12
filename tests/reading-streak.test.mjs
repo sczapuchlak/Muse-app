@@ -19,7 +19,7 @@ test('streaks come from saved sessions only, and deleting a session recalculates
  assert.equal(d.current,3);assert.equal(d.longest,4);assert.equal(streakDetail([s('2026-11-10',{pages:0})],'2026-11-10').current,0,'an empty session is not reading');
 });
 test('milestones record the day they were reached and celebrate only that day',()=>{
- assert.deepEqual([...STREAK_MILESTONES].slice(0,5),[7,14,30,50,100]);
+ assert.deepEqual([...STREAK_MILESTONES].slice(0,5),[7,14,30,60,100]);
  const d=streakDetail(range('2026-11-10',7).map(date=>s(date)),'2026-11-10');
  assert.equal(d.milestones[0].reachedOn,'2026-11-10');assert.equal(streakCelebration(d,'2026-11-10'),7);assert.equal(d.nextMilestone,14);
  assert.equal(streakCelebration(streakDetail(range('2026-11-10',8).map(date=>s(date)),'2026-11-10'),'2026-11-10'),null);

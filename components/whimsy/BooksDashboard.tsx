@@ -21,16 +21,6 @@ export function GoalsCarousel({slides}:{slides:{id:string;label:string;node:Reac
  </section>;
 }
 
-/** Today's reading goal: minutes or pages read against the daily target, or a gentle prompt to set one. */
-export function DailyGoal({goals,books,sessions,today,onSet}:{goals:ReadingGoal[];books:Book[];sessions:ReadingSession[];today:string;onSet:()=>void}){
- const goal=goals.find(g=>g.period==='day');
- if(!goal)return <div className="muse-dash-daily" data-empty><strong>A daily rhythm, if you want one</strong><p>Pick a few minutes or pages a day. Reading counts with or without a goal.</p><button type="button" className="muse-button button-primary" onClick={onSet}>Set a daily goal</button></div>;
- const progress=Math.round(goalProgress(goal,books,sessions,today)),percent=Math.min(100,Math.round(100*progress/goal.target)),unit=goal.unit==='minutes'?'min':goal.unit;
- return <div className="muse-dash-daily"><p className="muse-dash-daily-count"><strong className="type-numeric">{progress}</strong><span> / {goal.target} {unit} today</span></p>
-  <span className="muse-desk-pool" style={{'--fill':`${Math.max(percent,percent?3:0)}%`} as CSSProperties} role="meter" aria-label="Today's reading goal" aria-valuemin={0} aria-valuemax={100} aria-valuenow={percent}><span/></span>
-  <small className="muse-dash-daily-note">{percent>=100?'Goal reached today ✦':`${percent}% of today's goal`}</small></div>;
-}
-
 /** Recently read: the latest sittings, three at a time, with arrows for more. */
 export function RecentActivity({books,sessions,onOpen}:{books:Book[];sessions:ReadingSession[];onOpen:(id:string)=>void}){
  const byId=new Map(books.map(b=>[b.id,b])),recent=[...sessions].sort((a,b)=>b.date.localeCompare(a.date)||b.createdAt.localeCompare(a.createdAt)).slice(0,18);

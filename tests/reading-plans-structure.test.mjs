@@ -23,3 +23,7 @@ test('Up Next migration is additive, three-slot, one-book-per-slot and owner-onl
  const ui=read('components/whimsy/upnext/UpNext.tsx')+read('components/whimsy/upnext/UpNextFlow.tsx')+read('lib/books/use-up-next.ts');
  assert.doesNotMatch(ui,/status:\s*'reading'|setStatus|moveBook/,'Up Next never changes a status; starting goes through the existing start flow');
 });
+test('Daily Edit\'s Bookshelf card uses the liquid meter, and daily-goal data stays derived (no counters, no migration)',()=>{
+ assert.doesNotMatch(read('components/whimsy/BooksDayviewWidget.tsx'),/<progress/);assert.match(read('components/whimsy/BooksDayviewWidget.tsx'),/muse-desk-pool/);
+ const lib=read('lib/whimsy/daily-goal.ts')+read('lib/whimsy/celebrations.ts');assert.doesNotMatch(lib,/streakCount|incrementStreak|localStorage|saveWhimsyRecord/,'goal streaks are recalculated from sessions, never stored');
+});

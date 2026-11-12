@@ -52,3 +52,12 @@
 .muse-dash-col .muse-streak-week{grid-column:1/-1;grid-row:2;justify-content:space-between;gap:4px}
 .muse-dash-col .muse-streak-heart{width:26px;height:26px}
 .muse-dash-col .muse-streak-note{padding:0 16px 8px}
+/* Filled hearts glow and glitter; today is clearly marked. Still when reduced motion is on. */
+.muse-streak-heart[data-filled]{filter:drop-shadow(0 0 4px color-mix(in srgb,var(--accent-primary) 55%,transparent))}
+@media(prefers-reduced-motion:no-preference){
+ .muse-streak-heart[data-filled]{animation:muse-heart-glitter 3.4s ease-in-out infinite}
+ .muse-streak-week li:nth-child(2n) .muse-streak-heart[data-filled]{animation-delay:-1.1s}.muse-streak-week li:nth-child(3n) .muse-streak-heart[data-filled]{animation-delay:-2.2s}
+}
+@keyframes muse-heart-glitter{0%,100%{filter:drop-shadow(0 0 3px color-mix(in srgb,var(--accent-primary) 45%,transparent)) brightness(1)}50%{filter:drop-shadow(0 0 10px color-mix(in srgb,var(--accent-pop,var(--accent-primary)) 80%,transparent)) brightness(1.2)}}
+.muse-streak-week li:last-child{font-weight:800;color:var(--foreground)}
+.muse-streak-week li:last-child .muse-streak-heart{outline:2px solid var(--accent-pop,var(--accent-primary));outline-offset:3px;border-radius:50%}

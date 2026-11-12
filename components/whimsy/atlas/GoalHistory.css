@@ -1,0 +1,30 @@
+.muse-goalhist{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(12px,1.8vw,20px);align-items:stretch}
+.muse-goalhist>*{margin:0;min-width:0;padding:clamp(12px,1.6vw,18px);border:1px solid var(--glass-border);border-radius:22px;background:var(--glass-background);display:grid;align-content:start;gap:10px}
+@container muse-content (max-width:760px){.muse-goalhist{grid-template-columns:minmax(0,1fr)}}
+.muse-goalhist-empty{grid-template-columns:minmax(0,1fr) auto!important;align-items:center;padding:clamp(14px,1.8vw,20px);border:1px solid var(--glass-border);border-radius:22px;background:var(--glass-background);display:grid}.muse-goalhist-empty h4{margin:0;font-family:var(--font-editorial);font-size:1.25rem}.muse-goalhist-empty p{margin:4px 0 0;color:var(--text-muted);font-size:.86rem}
+.muse-goalhist-cal header{display:flex;align-items:center;justify-content:space-between;gap:10px}.muse-goalhist h4{margin:0;font-family:var(--font-editorial);font-size:1.25rem}
+.muse-goalhist-nav{display:flex;align-items:center;gap:8px}.muse-goalhist-nav strong{font-size:.86rem;min-width:9ch;text-align:center}.muse-goalhist-nav .muse-button{width:30px;min-width:30px;height:30px;min-height:30px;padding:0;display:grid;place-items:center;background:var(--surface-control)}
+.muse-goalhist-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;margin:0;padding:0;list-style:none}
+.muse-goalhist-wd{text-align:center;font-size:.66rem;color:var(--text-muted)}
+.muse-goalhist-grid>li:not(.muse-goalhist-wd){display:grid;place-items:center;aspect-ratio:1;border-radius:50%;font-size:.74rem;color:var(--text-muted);border:2px solid transparent;background:color-mix(in srgb,var(--foreground) 6%,transparent)}
+.muse-goalhist-grid>li[data-state="read"]{border-color:var(--accent-primary);color:var(--foreground);background:linear-gradient(90deg,color-mix(in srgb,var(--accent-primary) 38%,transparent) 50%,transparent 50%)}
+.muse-goalhist-grid>li[data-state="met"]{border-color:#120c1f;background:var(--accent-primary);color:#fff;font-weight:700;box-shadow:0 0 0 1px rgba(255,255,255,.6),0 0 8px color-mix(in srgb,var(--accent-primary) 50%,transparent)}
+.muse-goalhist-grid>li[data-state="future"]{opacity:.35}.muse-goalhist-grid>li[data-unjudged]{opacity:.55}
+.muse-goalhist-grid>li[data-today]{outline:2px solid var(--accent-pop,var(--accent-primary));outline-offset:2px}
+.muse-goalhist-key{display:flex;flex-wrap:wrap;gap:4px 14px;align-items:center;margin:0;font-size:.72rem;color:var(--text-muted)}
+.muse-goalhist-key span{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:4px;vertical-align:-1px;border:2px solid transparent}
+.muse-goalhist-key [data-k="met"]{background:var(--accent-primary);border-color:#120c1f}.muse-goalhist-key [data-k="read"]{border-color:var(--accent-primary);background:linear-gradient(90deg,color-mix(in srgb,var(--accent-primary) 38%,transparent) 50%,transparent 50%)}.muse-goalhist-key [data-k="none"]{background:color-mix(in srgb,var(--foreground) 10%,transparent)}
+.muse-goalhist-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:0}
+.muse-goalhist-stats>div{display:grid;gap:1px;padding:8px 10px;border:1px solid var(--glass-border);border-radius:14px;border-top:3px solid var(--accent-primary);background:color-mix(in srgb,var(--foreground) 4%,transparent);min-width:0}
+.muse-goalhist-stats dt{font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.muse-goalhist-stats dd{margin:0;font-family:var(--font-editorial);font-size:1.35rem;line-height:1.1}.muse-goalhist-stats small{font-family:var(--font-body,inherit);font-size:.68rem;color:var(--text-muted)}
+@container muse-content (max-width:520px){.muse-goalhist-stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.muse-goalhist-months{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:4px;align-items:end;height:96px}
+.muse-goalhist-months>div{display:grid;grid-template-rows:1fr auto;justify-items:center;gap:4px;height:100%;min-width:0}
+.muse-goalhist-bar{position:relative;display:block;width:100%;max-width:22px;height:100%;align-self:end}
+.muse-goalhist-bar i,.muse-goalhist-bar b{position:absolute;bottom:0;left:0;right:0;display:block;border-radius:6px 6px 2px 2px}
+.muse-goalhist-bar i{height:var(--read);min-height:2px;background:color-mix(in srgb,var(--accent-primary) 28%,transparent)}
+.muse-goalhist-bar b{height:var(--met);background:linear-gradient(180deg,var(--accent-pop,var(--accent-primary)),var(--accent-primary))}
+.muse-goalhist-months small{font-size:.6rem;color:var(--text-muted)}
+.muse-goalhist-note{margin:0;font-size:.72rem;color:var(--text-muted)}
+.muse-goalhist-side{grid-template-rows:auto minmax(0,1fr) auto;align-content:stretch}
+.muse-goalhist-months{height:100%;min-height:120px}
