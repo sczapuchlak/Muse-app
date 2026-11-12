@@ -1,4 +1,7 @@
 .muse-app-shell { position:relative; isolation:isolate; --muse-rail-width: 200px; min-height: 100dvh; }
+/* Skip navigation and dialog fallback focus land here. A page-sized outline reads
+   as a stray horizontal rule; keep the focus target without outlining its layout. */
+#muse-main-content:focus { outline: none; }
 .muse-app-shell[data-rail="collapsed"] { --muse-rail-width: 68px; }
 .muse-app-main { position: relative; min-width: 0; margin-inline-start: var(--muse-rail-width); transition: margin-inline-start var(--transition); }
 .muse-app-content { container: muse-content / inline-size; min-width: 0; }

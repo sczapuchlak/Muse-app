@@ -109,3 +109,24 @@
   .muse-vision-textinput{min-width:140px}
   .muse-vision-hint{display:none}
 }
+
+/* Board details follows the fixed-header / scrolling-form / fixed-actions modal pattern. */
+#vision-board-details {
+ --vision-top-gap:max(12px,env(safe-area-inset-top));
+ --vision-bottom-gap:max(12px,env(safe-area-inset-bottom));
+ box-sizing:border-box;padding:0;
+ top:calc(var(--vision-viewport-top,0px) + var(--vision-top-gap));
+ bottom:calc(100dvh - var(--vision-viewport-top,0px) - var(--vision-visible-height,100dvh) + var(--vision-bottom-gap));
+ height:min(680px,calc(var(--vision-visible-height,100dvh) - var(--vision-top-gap) - var(--vision-bottom-gap)));
+ max-height:calc(var(--vision-visible-height,100dvh) - var(--vision-top-gap) - var(--vision-bottom-gap));
+ margin:auto;
+}
+#vision-board-details>.muse-modal-universal-close{margin:0;padding:16px 20px;border-bottom:1px solid var(--glass-border)}
+#vision-board-details .muse-vision-details{display:flex;flex-direction:column;flex:1;min-height:0;padding:0;gap:0;overflow:hidden}
+.muse-vision-details-body{display:grid;gap:14px;flex:1;min-height:0;min-width:0;overflow-y:auto;overscroll-behavior:contain;scroll-padding-block:16px;padding:16px 20px;-webkit-overflow-scrolling:touch}
+#vision-board-details .muse-aspiration-actions{flex:none;margin:0;padding:12px 20px max(12px,env(safe-area-inset-bottom));border-top:1px solid var(--glass-border)}
+#vision-board-details .muse-vision-period>.muse-choice-menu{flex:1 1 110px;min-width:0}
+#vision-board-details .muse-vision-period>.small-label{flex-basis:100%}
+#vision-board-details .muse-segmented{flex-wrap:wrap}
+#vision-board-details .muse-segmented>button{white-space:nowrap;min-height:44px}
+@media(max-width:680px){#vision-board-details{height:min(760px,calc(var(--vision-visible-height,100dvh) - var(--vision-top-gap) - var(--vision-bottom-gap)))}.muse-vision-details-body{padding:14px 16px}#vision-board-details>.muse-modal-universal-close,#vision-board-details .muse-aspiration-actions{padding-inline:16px}#vision-board-details :is(input,textarea){font-size:16px}}

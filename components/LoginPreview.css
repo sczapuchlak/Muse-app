@@ -119,3 +119,27 @@
 .muse-passkey-list p {
   margin: 4px 0 0;
 }
+
+/* Midnight Ballerina uses a light card on a dark canvas: consume its existing card ink roles. */
+:root[data-theme="astral"] .muse-login-glass {
+ color:var(--tone-card-ink);
+ --foreground:var(--tone-card-ink);
+ --text-muted:var(--tone-card-muted);
+ --foreground-muted:var(--tone-card-muted);
+ --link-ink:var(--tone-card-accent);
+ --accent-secondary:var(--tone-card-accent);
+ --focus-ring:var(--tone-card-accent);
+ --selected-border:var(--tone-card-accent);
+ --glass-border:color-mix(in srgb,var(--tone-card-ink) 55%,transparent);
+ --divider:var(--glass-border);
+ --control-accent:var(--tone-card-accent);
+ --ink-pink:var(--tone-card-ink-pink);
+ --surface-subtle:color-mix(in srgb,var(--glass-background) 65%,white);
+ --surface-control:color-mix(in srgb,var(--glass-background) 65%,white);
+ --surface-hover:color-mix(in srgb,var(--tone-card-ink) 8%,white);
+}
+/* The canvas action pink remains the fill, but is too light as text on its hover wash. */
+:root[data-theme="astral"] .muse-login-glass .button-primary:is(:hover,:active):enabled {
+ color:var(--tone-card-ink);
+ border-color:var(--tone-card-accent);
+}
