@@ -307,3 +307,10 @@
  .muse-book-page-side>.muse-book-panel{grid-area:panel!important;grid-column:auto!important}
  .muse-book-page-side>.muse-book-yours{grid-area:yours!important;grid-column:auto!important}
 }
+
+/* Desktop hero: the cover's bottom edge lines up with the bottom of the status / Edit / more row beside it. */
+@media(min-width:681px){
+ .muse-book-page-cover{align-self:stretch;display:flex;flex-direction:column;box-sizing:border-box;padding-bottom:17px}
+ .muse-book-page-cover>.muse-book-cover{flex:1 1 auto;width:100%;height:auto;aspect-ratio:auto;min-height:0}
+ .muse-book-page-cover .muse-book-cover img{height:100%}
+}
