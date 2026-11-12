@@ -88,7 +88,8 @@ export function CardsView({list,entries,actions}:{list:BucketList;entries:Bucket
    <div className="muse-bucket-card-body">
     <span className="small-label">{[e.category,statusLabels[e.status]].filter(Boolean).join(' · ')}</span>
     <h3><button type="button" className="muse-bucket-title" onClick={ev=>actions.onOpen(e,ev.currentTarget)}><span className="muse-bucket-title-text">{e.title}</span></button></h3>
-    {y?<p className="muse-bucket-card-keepsake">Done {dateLabel(e.completedOn!)}{e.completion.location?` · ${e.completion.location}`:''}</p>:<p className="small-label">{e.targetYear?`Hoping for ${e.targetYear}`:'Someday'}</p>}
+    {y?<p className="muse-bucket-card-keepsake">Done {dateLabel(e.completedOn!)}</p>:<p className="small-label">{e.targetYear?`Hoping for ${e.targetYear}`:'Someday'}</p>}
+    {e.completion.location&&<p className="muse-bucket-card-where"><MuseIcon name="map-pin" size={14}/><span>{e.completion.location}</span></p>}
     {(e.completion.memory||e.notes)&&<p className="muse-bucket-card-note">{y&&e.completion.memory?`“${e.completion.memory}”`:e.notes}</p>}
     <div className="muse-bucket-card-foot"><Check e={e} onToggle={actions.onToggle}/><span>{y?'Completed':'Mark done'}</span><span className="muse-bucket-more"><MuseOverflowMenu label={e.title} actions={actions.menu(e)}/></span></div>
    </div>

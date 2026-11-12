@@ -9,6 +9,7 @@ const paths = {
   brain: <><path d="M12 18V5a3 3 0 0 0-5.8-1 4 4 0 0 0-3 6 4 4 0 0 0 1 7 4 4 0 0 0 7.8 1ZM12 5a3 3 0 0 1 5.8-1 4 4 0 0 1 3 6 4 4 0 0 1-1 7 4 4 0 0 1-7.8 1M7 4v3M17 4v3M4 10h3M20 10h-3M8 14l-3 3M16 14l3 3"/></>,
   // Lucide heart-pulse; ISC attribution is retained in THIRD_PARTY_NOTICES.md.
   "heart-pulse": <><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/><path d="M3.22 13H9.5l.5-1 2 4.5 2-7 1.5 3.5h5.27"/></>,
+  "map-pin": <><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11Z"/><circle cx="12" cy="10" r="2.4"/></>,
   logout: <><path d="M9 5H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h4M16 17l5-5-5-5M21 12H9"/></>,
   sparkle:<path d={MUSE_STAR_PATH} transform="translate(4.8 0) scale(.6)"/>,
   sort:<path d="M3 5h12M3 10h9M3 15h6M18 4v16m-3-3 3 3 3-3"/>,

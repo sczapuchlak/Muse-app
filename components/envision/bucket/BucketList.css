@@ -207,3 +207,6 @@
 .muse-bucket-count[data-over]{color:var(--urgency-ink,var(--ink-pink))}
 /* The current year keeps only its full gradient ring — no extra side accent — and it isn't a control. */
 .muse-bucket-year.muse-today-ring{border-left-width:1px;border-left-color:transparent;cursor:default}
+.muse-bucket-card-where{display:flex;align-items:center;gap:6px;margin:0;font-size:.84rem;font-weight:600;color:var(--foreground)}
+.muse-bucket-card-where svg{flex:none;color:var(--accent-primary)}
+.muse-bucket-card-where span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
