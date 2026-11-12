@@ -2,7 +2,8 @@
 import {useState,type CSSProperties} from 'react';
 import {shiftDate} from '@/lib/dates';
 import {endOfPeriod} from '@/lib/whimsy/books';
-import type {ReadingSession} from '@/lib/whimsy/models';
+import type {ReadingGoal,ReadingSession} from '@/lib/whimsy/models';
+import {GoalHistory} from './GoalHistory';
 import {streakDetail} from '@/lib/whimsy/reading-streak';
 import {StreakHeart} from '../ReadingStreak';
 import './Streaks.css';
@@ -14,7 +15,7 @@ const shiftMonth=(month:string,by:number)=>{const [y,m]=month.split('-').map(Num
 const WEEKDAYS=['M','T','W','T','F','S','S'];
 
 /** The Reading Atlas streak view: current and longest streaks, a month of hearts, milestones and the longest runs. */
-export function Streaks({sessions,today}:{sessions:ReadingSession[];today:string}){
+export function Streaks({sessions,goals,today,onSetDailyGoal}:{sessions:ReadingSession[];goals:ReadingGoal[];today:string;onSetDailyGoal?:()=>void}){
  const detail=streakDetail(sessions,today),[month,setMonth]=useState(today.slice(0,7));
  const first=`${month}-01`,last=endOfPeriod(first,'month'),length=Number(last.slice(-2)),offset=(new Date(`${first}T12:00:00Z`).getUTCDay()+6)%7;
  const cells=Array.from({length},(_,i)=>shiftDate(first,i)),readInMonth=cells.filter(d=>detail.days.has(d)).length;
@@ -67,6 +68,7 @@ export function Streaks({sessions,today}:{sessions:ReadingSession[];today:string
     <p className="small-label">{detail.totalDays?`You read most on ${dayNames[bestDay]}s`:'Your pattern appears after your first sitting'}</p>
    </section>
   </div>
+  <GoalHistory sessions={sessions} goals={goals} today={today} onSetDailyGoal={onSetDailyGoal}/>
   <p className="muse-streaks-note">A day counts when at least one reading session is saved for it, timed or logged by hand. Today never breaks a streak before midnight.</p>
  </div>;
 }

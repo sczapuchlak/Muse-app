@@ -1,0 +1,26 @@
+/* The daily goal card: minutes, meter, goal streak and the last seven days. */
+.muse-daily{display:grid;gap:10px;min-width:0}
+.muse-daily[data-empty]{gap:12px;justify-items:start}.muse-daily[data-empty] strong{font-family:var(--font-editorial);font-size:1.1rem}.muse-daily[data-empty] p{margin:4px 0 0;color:var(--text-muted);font-size:.86rem}
+.muse-daily-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.muse-daily-count{margin:0;display:flex;align-items:baseline;gap:6px;flex-wrap:wrap}.muse-daily-count strong{font-family:var(--font-editorial);font-size:2.2rem;line-height:1;background:linear-gradient(120deg,var(--accent-pop,var(--accent-primary)),var(--accent-primary),var(--accent-secondary));-webkit-background-clip:text;background-clip:text;color:transparent}
+.muse-daily-count span{color:var(--text-muted);font-size:.86rem}
+.muse-daily-change{min-height:32px;padding:0 12px;font-size:.78rem}
+.muse-daily-state{margin:0;font-size:.84rem;color:var(--text-muted)}.muse-daily[data-met] .muse-daily-state{color:var(--foreground);font-weight:650}.muse-daily[data-met] .muse-daily-state span{color:var(--accent-primary)}
+.muse-daily[data-met] .muse-desk-pool>span{box-shadow:0 0 14px var(--water-glow,color-mix(in srgb,var(--accent-primary) 60%,transparent))}
+.muse-daily-streak{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:6px 12px;padding-top:10px;border-top:1px dashed color-mix(in srgb,var(--foreground) 16%,transparent)}
+.muse-daily-streak-num{display:inline-flex;align-items:center;gap:6px}.muse-daily-streak-num strong{font-family:var(--font-editorial);font-size:1.3rem}
+.muse-daily-streak-copy{display:grid;gap:1px;min-width:0}.muse-daily-streak-copy strong{font-size:.9rem}.muse-daily-streak-copy small{color:var(--text-muted);font-size:.74rem}
+.muse-daily-week{grid-column:1/-1;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;margin:0;padding:0;list-style:none}
+.muse-daily-week li{display:grid;justify-items:center;gap:3px}
+.muse-daily-week li>span:first-child{display:block;width:18px;height:18px;border-radius:50%;border:2px solid color-mix(in srgb,var(--foreground) 22%,transparent)}
+.muse-daily-week li[data-state="read"]>span:first-child{border-color:var(--accent-primary);background:linear-gradient(90deg,color-mix(in srgb,var(--accent-primary) 40%,transparent) 50%,transparent 50%)}
+.muse-daily-week li[data-state="met"]>span:first-child{border-color:#120c1f;background:var(--accent-primary);box-shadow:0 0 0 1px rgba(255,255,255,.65),0 0 8px color-mix(in srgb,var(--accent-primary) 55%,transparent)}
+.muse-daily-week li[data-today]>span:first-child{outline:2px solid var(--accent-pop,var(--accent-primary));outline-offset:2px}
+.muse-daily-week small{font-size:.62rem;color:var(--text-muted)}
+/* Daily goal dialog */
+#daily-goal-editor .muse-modal-universal-close>h2{font-family:var(--font-editorial);font-size:1.4rem;background:linear-gradient(120deg,var(--accent-pop,var(--accent-primary)),var(--accent-primary),var(--accent-secondary));-webkit-background-clip:text;background-clip:text;color:transparent}
+.muse-daily-form{display:grid;gap:14px}
+.muse-daily-hint{margin:0;font-size:.86rem;color:var(--text-muted)}
+.muse-daily-presets{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.muse-daily-presets button{display:grid;place-items:center;gap:0;min-height:58px;border-radius:16px}.muse-daily-presets strong{font-family:var(--font-editorial);font-size:1.4rem;line-height:1}.muse-daily-presets small{font-size:.68rem;color:var(--text-muted)}
+.muse-daily-custom{display:grid;gap:6px;font-size:.84rem}.muse-daily-custom input{min-height:42px;padding:0 14px;border:1px solid var(--glass-border);border-radius:12px;background:var(--surface-control);color:inherit;font:inherit}

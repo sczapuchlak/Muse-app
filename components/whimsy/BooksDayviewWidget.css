@@ -31,3 +31,6 @@
 @media(max-width:450px){.muse-daily-session{grid-template-columns:52px minmax(0,1fr)}.muse-daily-session-cover .muse-book-cover{width:52px}.muse-daily-session-actions{grid-column:1/-1}.muse-daily-session-actions .muse-button{flex:1 1 0;justify-content:center}}
 @keyframes muse-daily-breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.25)}}
 @media(prefers-reduced-motion:reduce){.muse-daily-session-dot{animation:none}.muse-daily-session-pool>span{transition:none}}
+
+/* The same liquid rainbow meter as everywhere in Books. */
+.muse-daily-bookshelf-feature .muse-daily-bookshelf-meter{width:min(100%,280px);height:10px;display:block}

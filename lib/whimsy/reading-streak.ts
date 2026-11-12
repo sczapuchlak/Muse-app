@@ -7,7 +7,7 @@ import {readingDates} from './reading-stats';
  * or page visits. Several sessions on one day count once. Edits and deletions are reflected because nothing is
  * stored: every number is recalculated from the sessions. A streak stays alive through today until midnight.
  */
-export const STREAK_MILESTONES=[7,14,30,50,100,200,365] as const;
+export const STREAK_MILESTONES=[7,14,30,60,100,200,365] as const;
 
 export type StreakDay={date:string;read:boolean;today:boolean};
 export type StreakMilestone={days:number;reachedOn:string|null};
