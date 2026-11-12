@@ -37,3 +37,15 @@
 .muse-cosmic-forecast-compact .muse-forecast-editorial-grid{grid-template-columns:minmax(0,1fr)}
 @media(max-width:720px){.muse-forecast-editorial-grid,.muse-forecast-key-dates>div{grid-template-columns:minmax(0,1fr)}.muse-forecast-editorial{padding:18px}.muse-forecast-editorial-header{grid-template-columns:auto minmax(0,1fr)}.muse-forecast-editorial-header>svg{display:none}}
 @media(max-width:430px){.muse-cosmic-period-selector{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:100%;border-radius:18px}.muse-cosmic-period-selector>button{min-width:0;padding-inline:5px;font-size:.8rem}.muse-forecast-sign-glyph{width:52px;font-size:1.85rem}.muse-forecast-editorial-section,.muse-forecast-editorial-intro{padding:16px}.muse-forecast-key-dates{padding-inline:4px}.muse-forecast-key-dates>div>div{grid-template-columns:minmax(0,1fr);gap:5px}}
+
+/* Horoscope section headers (#119): an icon chip, a tracked label and a rule, tinted per section. */
+.muse-forecast-editorial-section{--tone:var(--accent-secondary)}
+.muse-forecast-editorial-section[data-tone="1"]{--tone:var(--accent-primary)}
+.muse-forecast-editorial-section[data-tone="2"]{--tone:var(--accent-warm,var(--accent-secondary))}
+.muse-forecast-editorial-section[data-tone="3"]{--tone:var(--accent-pop,var(--accent-primary))}
+.muse-forecast-editorial-section[data-tone="4"]{--tone:var(--accent-cyan,var(--accent-secondary))}
+.muse-forecast-editorial-section{border-top-color:var(--tone)}
+.muse-forecast-editorial-section h4{align-items:center;gap:10px;margin:0 0 14px;padding-bottom:12px;border-bottom:1px solid color-mix(in srgb,var(--tone) 35%,var(--glass-border))}
+.muse-forecast-editorial-section h4>span{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:color-mix(in srgb,var(--tone) 18%,var(--surface-control));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--tone) 45%,transparent);font-size:1rem}
+.muse-forecast-editorial-section h4>b{font:700 .8rem/1.3 var(--font-ui);letter-spacing:.14em;text-transform:uppercase;color:var(--foreground)}
+.muse-forecast-key-dates h4{font:700 .8rem/1.3 var(--font-ui);letter-spacing:.14em;text-transform:uppercase}
