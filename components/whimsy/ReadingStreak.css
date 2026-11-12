@@ -60,4 +60,8 @@
 }
 @keyframes muse-heart-glitter{0%,100%{filter:drop-shadow(0 0 3px color-mix(in srgb,var(--accent-primary) 45%,transparent)) brightness(1)}50%{filter:drop-shadow(0 0 10px color-mix(in srgb,var(--accent-pop,var(--accent-primary)) 80%,transparent)) brightness(1.2)}}
 .muse-streak-week li:last-child{font-weight:800;color:var(--foreground)}
-.muse-streak-week li:last-child .muse-streak-heart{outline:2px solid var(--accent-pop,var(--accent-primary));outline-offset:3px;border-radius:50%}
+/* Today's ring is a static pseudo-element on the list item, so hovering never re-renders an animated, filtered SVG (that caused the flicker). */
+.muse-streak-week li:last-child{position:relative}
+.muse-streak-week li:last-child::before{content:"";position:absolute;left:50%;top:-3px;width:34px;height:34px;margin-left:-17px;border-radius:50%;border:2px solid var(--accent-pop,var(--accent-primary));pointer-events:none;box-sizing:border-box}
+.muse-streak-heart{pointer-events:none}
+.muse-streak-heart[data-today][data-filled]{filter:drop-shadow(0 0 4px color-mix(in srgb,var(--accent-primary) 55%,transparent))!important}

@@ -12,6 +12,7 @@ import {bookSeriesPrimary} from '@/lib/collections/models';
 import {SeriesCover} from '@/components/collections/SeriesCover';
 import {useWhimsyData} from './WhimsyData';
 import {QuickAddButton} from './QuickAdd';
+import {MuseSearch} from '@/components/design/MuseSearch';
 import {MuseIcon} from '../MuseIcon';
 import './BookSearch.css';
 
@@ -118,9 +119,7 @@ export function BookSearch({stage,onImport,onEditions,onManual,onReview,onBackTo
  </section>;
 
  return <section className="muse-book-search" data-stage="search" aria-label="Find a book or series">
-  <label className="muse-book-search-field" htmlFor={`${id}-input`}><span className="sr-only">Search books and series</span>
-   <span className="muse-book-search-input"><MuseIcon name="search" size={18}/><input ref={inputRef} id={`${id}-input`} type="search" autoComplete="off" enterKeyHint="search" placeholder="Title, author, series, or ISBN" value={query} onChange={e=>changeQuery(e.target.value)}/>{query&&<button type="button" className="muse-book-search-clear" aria-label="Clear search" onClick={()=>{changeQuery('');inputRef.current?.focus();}}><MuseIcon name="close" size={15}/></button>}</span>
-  </label>
+  <MuseSearch className="muse-book-search-field" label="Search books and series" id={`${id}-input`} inputRef={inputRef} value={query} onChange={changeQuery} placeholder="Title, author, series, or ISBN"/>
   {ready&&<div className="muse-book-search-switch" role="tablist" aria-label="Show">
    {(['books','series'] as const).map(id=><button key={id} type="button" role="tab" aria-selected={tab===id} onClick={()=>setTab(id)}>{id==='books'?'Books':'Series'}<span className="type-numeric">{id==='books'?(search.status==='done'?search.results.length:search.status==='loading'?'…':''):(catalog.loading&&!seriesCount?'…':seriesCount||'')}</span></button>)}
   </div>}

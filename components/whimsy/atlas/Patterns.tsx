@@ -43,7 +43,7 @@ export function Patterns({books,sessions,range,label,series,seriesMembers,media,
  const maxRating=Math.max(0,...ratings.buckets.map(b=>b.reads)),maxCell=Math.max(1,...rhythm.grid.flat()),maxFormat=Math.max(0,...formats.rows.map(r=>r.reads)),maxSpeed=Math.max(0,...speed.bands.map(b=>b.reads));
  const bands=Object.entries(rhythm.bands) as [keyof typeof bandNames,number][],topBand=rhythm.total?bands.reduce((a,b)=>b[1]>a[1]?b:a):null;
  return <BookLookup.Provider value={new Map(books.map(b=>[b.id,b]))}><div className="muse-atlas-section muse-atlas-patterns">
-  <div className="muse-atlas-insights">
+  <div className="muse-atlas-insights" data-tone="pattern">
    <Insight label="Average rating" value={ratings.average!==null?`${ratings.average}/5`:undefined} detail={ratings.rated?`${plural(ratings.rated,'rated read')} ${label}`:undefined} empty="No rated reads in this period"/>
    <Insight label="Typical time to finish" value={speed.typicalDays!==null?days(speed.typicalDays):undefined} detail={speed.reads?`Median of ${plural(speed.reads,'read')} with a start date`:undefined} empty="Needs finished reads with a start date"/>
    <Insight label="Favorite time of day" value={topBand?bandNames[topBand[0]].split(' (')[0]:undefined} detail={topBand?`${hours(topBand[1])} of active time`:undefined} empty="Needs timed sessions"/>

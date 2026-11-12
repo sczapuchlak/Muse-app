@@ -47,7 +47,7 @@
 .muse-upnext-sources small{opacity:.75}
 .muse-upnext-hint{margin:0;font-size:.84rem;color:var(--text-muted)}
 .muse-upnext-pickhead{display:flex;gap:8px;align-items:center}
-.muse-upnext-search{flex:1;min-width:0;min-height:40px;padding:0 14px;border:1px solid var(--glass-border);border-radius:999px;background:var(--surface-control);color:inherit;font:inherit}
+
 .muse-upnext-list{display:grid;gap:8px;margin:10px 0 0;padding:0;list-style:none}
 .muse-upnext-list button{display:grid;grid-template-columns:38px minmax(0,1fr) auto;align-items:center;gap:12px;width:100%;padding:8px 12px 8px 10px;border:1px solid var(--glass-border);border-radius:12px;background:var(--surface-subtle);color:inherit;font:inherit;text-align:left;cursor:pointer}
 .muse-upnext-list button:hover{border-color:var(--selected-border)}
@@ -111,3 +111,5 @@
 .muse-upnext-slot[data-empty] .muse-upnext-copy>span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 @container muse-content (max-width:560px){.muse-upnext-slot{grid-template-columns:22px 52px minmax(0,1fr)!important}.muse-upnext-actions{grid-column:3;grid-row:2;justify-content:flex-start;padding-top:6px}.muse-upnext-slot{row-gap:0}}
 .muse-upnext-cover .muse-cal-cover-blank{font-size:.5rem;padding:2px}
+.muse-upnext-pickhead .muse-search{flex:1 1 auto}
+.muse-upnext-row{gap:10px!important}

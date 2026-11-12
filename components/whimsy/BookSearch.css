@@ -4,9 +4,9 @@
 .muse-book-search-input{position:relative;display:flex;align-items:center;min-width:0}
 .muse-book-search-input>svg{position:absolute;left:15px;color:var(--text-muted);pointer-events:none}
 /* Specific enough to beat the shared Bookshelf input padding regardless of stylesheet order. */
-.muse-book-search .muse-book-search-input>input[type=search]{width:100%;min-width:0;min-height:52px;box-sizing:border-box;padding:0 46px 0 46px;border:1px solid var(--glass-border);border-radius:16px;background:var(--surface-control);color:var(--foreground);font-size:1.02rem;box-shadow:inset 0 1px 0 var(--glass-edge)}
+
 .muse-book-search .muse-book-search-input>input[type=search]::-webkit-search-cancel-button{display:none}
-.muse-book-search .muse-book-search-input>input[type=search]:focus{outline:none;border-color:var(--selected-border);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent-primary) 18%,transparent)}
+
 .muse-book-search-clear{position:absolute;right:8px;display:grid;place-items:center;width:36px;height:36px;border:0;border-radius:50%;background:none;color:var(--text-muted);cursor:pointer}.muse-book-search-clear:hover{background:var(--surface-hover);color:var(--foreground)}
 .muse-book-search-switch{display:flex;gap:2px;border-bottom:1px solid var(--glass-border)}
 .muse-book-search-switch button{position:relative;display:inline-flex;align-items:center;gap:7px;min-height:42px;padding:6px 14px;border:0;background:none;color:var(--text-muted);font:600 .9rem var(--font-ui);cursor:pointer}
@@ -101,3 +101,4 @@
  .muse-book-edition{flex-basis:84px}
 }
 @media(prefers-reduced-motion:reduce){.muse-book-result,.muse-book-result-preview,.muse-series-results li{animation:none}.muse-book-result-skeleton>span:first-child,.muse-book-result-skeleton i{animation:none}}
+.muse-book-search>.muse-search{min-height:50px}

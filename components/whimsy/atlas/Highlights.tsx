@@ -6,6 +6,7 @@ import {completionEvents} from '@/lib/whimsy/reading-stats';
 import {isFavoriteRead,readOpinion} from '@/lib/whimsy/reading-cycles';
 import {emojiRanking} from '@/lib/whimsy/reading-dna';
 import {Cover} from './CoverCalendar';
+import {PagedList} from './PagedList';
 import {ActivityBars,monthName,shortMonth} from './parts';
 
 /** This year, or the latest year with a finished read when this one is still empty. */
@@ -36,8 +37,8 @@ export function RatingsByMonth({books,today}:{books:Book[];today:string}){
 
 /** The vibe of the period: the emojis you picked for finished reads, sized by how often. */
 export function VibeCloud({books,range,label}:{books:Book[];range:DateRange|null;label:string}){
- const {ranking}=emojiRanking(books,range),top=ranking.slice(0,14),most=Math.max(1,...top.map(t=>t.books));
+ const {ranking}=emojiRanking(books,range),most=Math.max(1,...ranking.map(t=>t.books));
  return <article className="muse-books-panel"><div className="muse-books-panel-head"><h4>Vibes</h4><span className="small-label">{label}</span></div>
-  {!top.length?<p>Add emojis to your finished reads and their vibe collects here.</p>:<ul className="muse-vibes" aria-label="Emojis by finished books">{top.map(t=><li key={t.emoji} title={`${t.books} ${t.books===1?'book':'books'}`} style={{'--size':`${1.5+1.6*t.books/most}rem`} as React.CSSProperties}><span aria-hidden="true">{t.emoji}</span><small className="type-numeric">{t.books}</small></li>)}</ul>}
+  {!ranking.length?<p>Add emojis to your finished reads and their vibe collects here.</p>:<PagedList items={ranking} size={8} label="emojis by finished books" className="muse-vibes" render={t=><div role="listitem" key={t.emoji} title={`${t.books} ${t.books===1?'book':'books'}`} style={{'--size':`${1.4+1.2*t.books/most}rem`} as React.CSSProperties}><span aria-hidden="true">{t.emoji}</span><small className="type-numeric">{t.books}</small></div>}/>}
  </article>;
 }

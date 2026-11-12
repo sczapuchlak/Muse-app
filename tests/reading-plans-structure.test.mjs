@@ -27,3 +27,9 @@ test('Daily Edit\'s Bookshelf card uses the liquid meter, and daily-goal data st
  assert.doesNotMatch(read('components/whimsy/BooksDayviewWidget.tsx'),/<progress/);assert.match(read('components/whimsy/BooksDayviewWidget.tsx'),/muse-desk-pool/);
  const lib=read('lib/whimsy/daily-goal.ts')+read('lib/whimsy/celebrations.ts');assert.doesNotMatch(lib,/streakCount|incrementStreak|localStorage|saveWhimsyRecord/,'goal streaks are recalculated from sessions, never stored');
 });
+test('Recently finished shows finished books (not sessions) and Recent reading sessions is its own container',()=>{
+ const d=read('components/whimsy/BooksDashboard.tsx');
+ assert.match(d,/export function RecentlyFinished/);assert.match(d,/completionEvents\(books\)/);assert.match(d,/export function RecentSessions/);
+ const shelf=read('components/whimsy/Bookshelf.tsx');assert.match(shelf,/<RecentlyFinished /);assert.match(shelf,/<RecentSessions /);
+ assert.match(read('components/whimsy/BookSearch.tsx'),/<MuseSearch /,'Book search uses the shared Muse search field');
+});

@@ -3,6 +3,7 @@ import {useEffect,useMemo,useRef,useState} from 'react';
 import {useRouter} from 'next/navigation';
 import {MuseModal} from '@/components/MuseModal';
 import {MuseIcon} from '@/components/MuseIcon';
+import {MuseSearch} from '@/components/design/MuseSearch';
 import {MuseStar} from '@/components/MuseStar';
 import type {Book} from '@/lib/whimsy/models';
 import {buildPools,emptyReason,pickRandom,poolFor,reelFor,SOURCES,type Pools,type SourceId} from '@/lib/books/up-next';
@@ -48,7 +49,7 @@ export function SlotPicker({books,plans,today,taken,slotNumber,initialSource='mo
       {quick.error&&<p role="alert" className="muse-books-error">{quick.error}</p>}{note&&<p role="status" className="muse-upnext-hint">{note}</p>}</section>
     :reason?<div className="muse-upnext-empty"><strong>Nothing to choose from here</strong><p>{reason.why}</p><div className="muse-books-actions">{reason.try.map(s=><button key={s} type="button" className="muse-button button-ghost" onClick={()=>setSource(s)}>Try {SOURCES.find(x=>x.id===s)!.label.toLowerCase()} ({poolFor(pools,s).length})</button>)}<button type="button" className="muse-button button-primary" onClick={()=>setSource('new')}><MuseIcon name="plus" size={14}/>Add a new book</button></div></div>
     :<section aria-label="Books to choose from">
-      <div className="muse-upnext-pickhead"><input className="muse-upnext-search" type="search" value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search these books" aria-label="Search these books"/><button type="button" className="muse-button button-ghost" onClick={()=>onSpin(source as SourceId)}><MuseIcon name="sparkle" size={14}/>Spin instead</button></div>
+      <div className="muse-upnext-pickhead"><MuseSearch className="muse-upnext-search" label="Search these books" value={query} onChange={setQuery} placeholder="Search these books"/><button type="button" className="muse-button button-ghost" onClick={()=>onSpin(source as SourceId)}><MuseIcon name="sparkle" size={14}/>Spin instead</button></div>
       {list.length===0?<p className="muse-upnext-hint">No books match “{query}”.</p>:<ul className="muse-upnext-list">{list.map(b=><li key={b.id}><button type="button" onClick={()=>onChoose(b.id)}><span className="muse-upnext-list-cover"><Cover book={b}/></span><span className="muse-upnext-list-copy"><strong>{b.title}</strong><small>{b.author||'Author not recorded'}</small></span><StatusChip status={b.status} compact/></button></li>)}</ul>}</section>}
    </>}
   </div>

@@ -31,6 +31,6 @@ test('Wellness opens on Mood, Dayprint summary stays inside its card, Atlas over
  assert.match(read('components/nourish/Nourish.tsx'),/query\.get\("view"\)==="plan"\?"plan":"mood"/);
  assert.match(read('components/mood/Mood.css'),/\.muse-dayprint-columns > \.muse-dayprint-summary \{ padding:var\(--space-4\)/);
  const atlas=read('components/whimsy/ReadingAtlas.tsx');
- assert.ok(atlas.indexOf('muse-atlas-overview-grid')<atlas.indexOf('<h4>Reading rhythm</h4>'),'rhythm spans the width after the charts and calendar');
+ assert.ok(atlas.indexOf('muse-atlas-overview-grid')<atlas.indexOf('<h4>Reading by period</h4>'),'Reading by period (beside Session history) comes after the charts and calendar');
  assert.match(atlas,/range==='month'\?monthLabel\(item\.start\.slice\(0,7\)\)/,'monthly rhythm rows name the month and year');
 });
