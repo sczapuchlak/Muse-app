@@ -9,6 +9,13 @@ import './ReadingTrends.css';
 const META:Record<TrendKey,{label:string;icon:MuseIconName;word:string}>={pages:{label:'Pages read',icon:'book',word:'pages'},time:{label:'Time reading',icon:'timer',word:'time'},finished:{label:'Books finished',icon:'check',word:'books'},days:{label:'Reading days',icon:'calendar',word:'days'}};
 const shortDate=(d:string)=>new Intl.DateTimeFormat(undefined,{month:'short',day:'numeric',timeZone:'UTC'}).format(new Date(`${d}T12:00:00Z`));
 
+/** A small graph arrow: up (green), down (a calm warm tone, never alarm-red), level (yellow). */
+function Arrow({tone,percent}:{tone:string;percent:number|null}){
+ if(tone==='none')return null;
+ const path=tone==='down'?'M3 7l6 6 4-4 8 8M21 11v6h-6':tone==='same'?'M3 12h18M16 7l5 5-5 5':'M3 17l6-6 4 4 8-8M15 7h6v6';
+ return <span className="muse-trend-arrow" data-tone={tone} aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d={path}/></svg><b className="type-numeric">{tone==='same'?'0%':tone==='new'?'new':`${tone==='down'?'−':'+'}${percent}%`}</b></span>;
+}
+
 /** Thirty tiny bars, one per day, today on the right. Decorative: the numbers carry the meaning. */
 function Spark({trend}:{trend:Trend}){
  const max=Math.max(1,...trend.daily);
@@ -29,7 +36,7 @@ export function ReadingTrends({books,sessions,today}:{books:Book[];sessions:Read
   :<div className="muse-trends-stage" aria-live="polite">
     <Link href={TREND_DESTINATIONS[key]} className="muse-trend-card" data-key={key} data-tone={m.tone} aria-label={`${meta.label}: ${formatTrend(key,t.current)} in the last 30 days. ${movementLine(key,m)}. Open in Reading Atlas.`}>
      <span className="muse-trend-top"><span className="muse-trend-icon" aria-hidden="true"><MuseIcon name={meta.icon} size={15}/></span><span className="small-label">{meta.label}</span></span>
-     <strong className="muse-trend-value type-numeric">{key==='time'?formatTrend('time',t.current):Math.round(t.current).toLocaleString('en-US')}{key!=='time'&&<small> {formatTrend(key,t.current).replace(/^[\d,]+\s/,'')}</small>}</strong>
+     <span className="muse-trend-row"><strong className="muse-trend-value type-numeric">{key==='time'?formatTrend('time',t.current):Math.round(t.current).toLocaleString('en-US')}{key!=='time'&&<small> {formatTrend(key,t.current).replace(/^[\d,]+\s/,'')}</small>}</strong><Arrow tone={m.tone} percent={m.percent}/></span>
      <Spark trend={t}/>
      <span className="muse-trend-move">{movementBadge(m)&&<em className="muse-trend-badge">{movementBadge(m)}</em>}<span>{movementLine(key,m)}</span></span>
     </Link>

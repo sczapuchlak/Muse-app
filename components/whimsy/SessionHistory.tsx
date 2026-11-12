@@ -6,6 +6,7 @@ import {MuseSearch} from '@/components/design/MuseSearch';
 import {MuseChoiceMenu} from '@/components/MuseChoiceMenu';
 import {dateLabel} from '@/lib/dates';
 import type {Book,ReadingSession} from '@/lib/whimsy/models';
+import {Cover} from './atlas/CoverCalendar';
 import {sessionSeconds} from '@/lib/whimsy/reading-stats';
 
 const minutes=(seconds:number)=>seconds?seconds<60?'under a minute':`${Math.round(seconds/60)} min`:'time not recorded';
@@ -40,6 +41,7 @@ export function SessionHistory({sessions,books,onEdit,onDelete}:{sessions:Readin
   {!sessions.length?<p>Saved sessions will be listed here.</p>:!rows.length?<p>No sessions match these filters.</p>:<ol className="muse-books-history-list">
    {rows.slice(limit-PAGE,limit).map(s=>{const d=new Date(`${s.date}T12:00:00Z`);return <li key={s.id} className="muse-history-row" data-manual={s.manual||undefined}>
     <span className="muse-history-date" aria-hidden="true"><span>{new Intl.DateTimeFormat(undefined,{month:'short',timeZone:'UTC'}).format(d)}</span><strong className="type-numeric">{d.getUTCDate()}</strong></span>
+    <span className="muse-history-cover" aria-hidden="true"><Cover book={books.find(b=>b.id===s.bookId)}/></span>
     <div className="muse-history-body"><strong className="muse-history-title"><span className="sr-only">{dateLabel(s.date)} · </span>{title(s.bookId)}</strong>
      <p className="muse-history-line"><span className="type-numeric">{minutes(sessionSeconds(s))}</span><span className="type-numeric">{s.pages} {s.pages===1?'page':'pages'}</span>{s.startingPage!==undefined&&s.endingPage!==undefined&&<span className="type-numeric">p. {s.startingPage}–{s.endingPage}</span>}{s.reread&&<em>reread</em>}{s.manual&&<em>logged</em>}</p>
      {s.notes&&<blockquote>{s.notes}</blockquote>}</div>

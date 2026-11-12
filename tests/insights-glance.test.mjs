@@ -140,3 +140,8 @@ test('#97 polish: no page-wide rainbow frame, tips + keys explain every visual, 
  const year=renderToStaticMarkup(React.createElement(S.YearStats,{daily,booksFinished:2,workouts:5}));
  assert.match(year,/books finished/);assert.match(year,/workouts/);
 });
+test('Insights no longer offers a Day view (that is the Daily Edit); old Day links fall back to Week',async()=>{
+ const {readFileSync}=await import('node:fs');
+ const src=readFileSync(new URL('../components/insights/glance/InsightsGlance.tsx',import.meta.url),'utf8');
+ assert.match(src,/glancePeriods\.filter\(\(p\) => p\.id !== "day"\)/);assert.match(src,/\{offered\.map\(\(p\) => <button/);assert.doesNotMatch(src,/\{glancePeriods\.map\(/);
+});

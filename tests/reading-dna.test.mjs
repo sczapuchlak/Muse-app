@@ -134,7 +134,7 @@ test('Reading Atlas has five sections, each rendering honestly from empty and re
  const dnaView=renderToStaticMarkup(createElement(ReadingAtlas,{...base,...data,initialSection:'dna'}));
  assert.match(dnaView,/Still taking shape/);assert.match(dnaView,/shares can add up to more than 100%/);assert.match(dnaView,/🐉/);
  const year=renderToStaticMarkup(createElement(ReadingAtlas,{...base,...data,initialSection:'year'}));
- assert.match(year,/Your 2026 in three emojis/);assert.match(year,/Your year so far/);
+ assert.match(year,/Your 2026 in emojis/);assert.match(year,/×1/,'every emoji shows how many books used it');assert.match(year,/\d+%/,'and its share of finished books');assert.match(year,/Your year so far/);
  const books=renderToStaticMarkup(createElement(ReadingAtlas,{...base,...data,initialSection:'books'}));
  assert.match(books,/First book finished/);assert.match(books,/5\/5 for that read/);
 });

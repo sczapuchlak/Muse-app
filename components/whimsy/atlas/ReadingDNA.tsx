@@ -2,16 +2,18 @@
 import {useState} from 'react';
 import type {Book,ReadingSession} from '@/lib/whimsy/models';
 import type {DateRange} from '@/lib/whimsy/reading-stats';
-import {emojiRanking,favoriteGenres,genreBreakdown,genrePersona,hourLabel,readingHabits,readingTraits,type Persona} from '@/lib/whimsy/reading-dna';
+import {favoriteGenres,genreBreakdown,genrePersona,hourLabel,readingHabits,readingTraits,type Persona} from '@/lib/whimsy/reading-dna';
 import {PagedList} from './PagedList';
+import {EmojiBoard} from './EmojiBoard';
+import {Donut,paletteAt} from './Graphics';
+import type {CSSProperties} from 'react';
 import {MuseIcon} from '@/components/MuseIcon';
 import {ActivityBars,Insight,duration,hours,monthLabel,num,plural} from './parts';
 
 /** Personality, genres, habits and book emojis for one period. Every line is computed from saved records. */
 export function ReadingDNA({books,sessions,range,label,today}:{books:Book[];sessions:ReadingSession[];range:DateRange|null;label:string;today:string}){
- const [genrePage,setGenrePage]=useState(0);
  const genres=genreBreakdown(books,sessions,range),fav=favoriteGenres(genres.rows),persona=genrePersona(books,range),traits=readingTraits(books,sessions,range,today);
- const habits=readingHabits(sessions,range,today),emojis=emojiRanking(books,range);
+ const habits=readingHabits(sessions,range,today);
  const isPersona=(p:Persona|{needed:number}):p is Persona=>'title' in p;
  return <div className="muse-atlas-section">
   <article className="muse-books-panel muse-atlas-persona"><span className="small-label">Your reading personality · {label}</span>
@@ -35,17 +37,12 @@ export function ReadingDNA({books,sessions,range,label,today}:{books:Book[];sess
   </div>
   <div className="muse-dna-pair">
   <article className="muse-books-panel"><div className="muse-books-panel-head"><h4>Genre breakdown</h4><span className="small-label">{plural(genres.finishedBooks,'book')} finished {label}</span></div>
-   {!genres.rows.length?<p>Add genres to your books to see their place in your reading life.</p>:<div className="muse-atlas-table-wrap"><table className="muse-atlas-table">
-    <thead><tr><th scope="col">Genre</th><th scope="col">Books finished</th><th scope="col">Share</th><th scope="col">Reading time</th><th scope="col">Pages</th></tr></thead>
-    <tbody>{genres.rows.slice(genrePage*6,genrePage*6+6).map(r=><tr key={r.key}><th scope="row">{r.genre}</th><td>{r.finished}{r.reads>r.finished?` (${plural(r.reads,'read')})`:''}</td><td>{genres.finishedBooks?`${r.share}%`:'—'}</td><td>{r.seconds?hours(r.seconds):'—'}</td><td>{r.pages?num(r.pages):'—'}</td></tr>)}</tbody>
-   </table></div>}
-   {genres.rows.length>6&&<div className="muse-paged-nav"><span className="small-label type-numeric">{genrePage*6+1}–{Math.min(genres.rows.length,genrePage*6+6)} of {genres.rows.length}</span><button type="button" className="muse-button button-ghost" aria-label="Previous genres" disabled={genrePage===0} onClick={()=>setGenrePage(genrePage-1)}><MuseIcon name="chevron" size={15}/></button><button type="button" className="muse-button button-ghost" aria-label="Next genres" disabled={(genrePage+1)*6>=genres.rows.length} onClick={()=>setGenrePage(genrePage+1)}><MuseIcon name="chevron" size={15}/></button></div>}
+   {!genres.rows.length?<p>Add genres to your books to see their place in your reading life.</p>:<div className="muse-genre-ring">
+    <Donut slices={genres.rows.slice(0,7).map(r=>({key:r.key,label:r.genre,value:r.finished||r.reads}))} main={genres.rows.length} sub={genres.rows.length===1?'genre':'genres'} label={`Genres by finished books: ${genres.rows.slice(0,7).map(r=>`${r.genre} ${r.share}%`).join(', ')}`}/>
+    <PagedList tag="ul" className="muse-genre-legend" items={genres.rows} size={4} label="genres" render={r=>{const i=genres.rows.indexOf(r);return <li key={r.key} style={{'--c':paletteAt(i<7?i:7)} as CSSProperties}><i aria-hidden="true"/><strong>{r.genre}</strong><span className="type-numeric">{genres.finishedBooks?`${r.share}%`:'—'} · {r.finished} {r.finished===1?'book':'books'}</span><small className="type-numeric">{r.seconds?hours(r.seconds):'no timed reading'}{r.pages?` · ${num(r.pages)} pages`:''}</small></li>;}}/></div>}
    <p className="small-label">A book with several genres counts fully in each, so shares can add up to more than 100%{genres.overlapping?' (they do here)':''}.{genres.untagged?` ${plural(genres.untagged,'finished book')} without a genre ${genres.untagged===1?'is':'are'} not shown.`:''}</p>
   </article>
-  <article className="muse-books-panel"><div className="muse-books-panel-head"><h4>Most popular book emojis</h4><span className="small-label">{label}</span></div>
-   {!emojis.ranking.length?<p>{emojis.finishedBooks?'Add Book in Three Emojis to your finished books to see them here.':`No finished books ${label} yet.`}</p>:<PagedList tag="ol" className="muse-atlas-emojis" items={emojis.ranking} size={5} label="emojis" render={e=><li key={e.emoji}><span className="muse-atlas-emoji" aria-hidden="true">{e.emoji}</span><span>{plural(e.books,'book')}</span><span className="sr-only">{e.emoji}</span></li>}/>}
-   <p className="small-label">Each finished book counts each of its emojis once{emojis.finishedBooks?` · ${emojis.booksWithEmojis} of ${plural(emojis.finishedBooks,'finished book')} have emojis`:''}.</p>
-  </article>
+  <EmojiBoard books={books} range={range} label={label} title="Most popular book emojis"/>
   </div>
   <div className="muse-books-atlas-grid">
    <ActivityBars title="When you read" note="Timed sessions only, by local hour in each session's time zone; a session crossing an hour is split." items={habits.hours.map((s,h)=>({key:String(h),label:hourLabel(h),short:h%6===0?hourLabel(h):'',value:s,text:duration(s)}))}/>

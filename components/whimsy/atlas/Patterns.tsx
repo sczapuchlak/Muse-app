@@ -6,6 +6,7 @@ import type {DateRange} from '@/lib/whimsy/reading-stats';
 import type {MediaItem,Series,SeriesMember} from '@/lib/collections/models';
 import {Cover} from './CoverCalendar';
 import {PagedList} from './PagedList';
+import {SegBar,ValueRing} from './Graphics';
 import {authorStats,bookSeries,finishSpeed,formatBreakdown,ratingsDistribution,readingRhythm,weekdayLabels,type BookRef} from '@/lib/whimsy/atlas-insights';
 import {emojisByGenre,emojisByYear,hourLabel} from '@/lib/whimsy/reading-dna';
 import {Insight,days,duration,hours,plural,yearDate} from './parts';
@@ -67,24 +68,24 @@ export function Patterns({books,sessions,range,label,series,seriesMembers,media,
        <div className="muse-atlas-table-wrap"><table className="muse-atlas-table muse-rhythm-table"><thead><tr><th scope="col">Day</th>{bands.map(([k])=><th key={k} scope="col">{bandNames[k].split(' (')[0]}</th>)}<th scope="col">Total</th></tr></thead>
         <tbody>{rows.map(r=><tr key={r.d} data-top={r.total>0&&r.total===Math.max(...rows.map(x=>x.total))||undefined}><th scope="row">{weekdayLabels[r.d]}</th>{r.cells.map((v,i)=><td key={i} data-empty={!v||undefined} style={{'--heat':v?.18+.82*v/peak:0} as CSSProperties}>{v?duration(v):'·'}</td>)}<td className="muse-rhythm-total">{r.total?duration(r.total):'—'}</td></tr>)}</tbody></table></div></>;})()}
      </MuseModal>}
-    <p className="muse-atlas-bands">{bands.map(([k,v])=><span key={k}><strong>{bandNames[k].split(' (')[0]}</strong> {rhythm.total?Math.round(v/rhythm.total*100):0}%</span>)}</p></>}
+    <SegBar label="Reading time by time of day" slices={bands.map(([k,v])=>({key:k,label:bandNames[k].split(' (')[0],value:v,detail:`${rhythm.total?Math.round(v/rhythm.total*100):0}%`}))}/></>}
    <p className="small-label">Active time from {plural(rhythm.timedSessions,'timed session')}, in each session’s own time zone and split across hours, so late nights land on both days.{rhythm.excludedSessions?` ${plural(rhythm.excludedSessions,'manual entry','manual entries')} without times excluded.`:''}</p>
   </article>
   <article className="muse-books-panel"><div className="muse-books-panel-head"><h4>Ratings</h4><span className="small-label">{label}</span></div>
    {!ratings.rated?<p>{ratings.unrated?'Rate a finished read to see your ratings take shape.':`No finished reads ${label} yet.`}</p>
-    :<ol className="muse-atlas-rows" aria-label="Ratings distribution">{ratings.buckets.map(b=><Row key={b.value} label={`${stars(b.value)} ${b.value}`} value={b.reads} max={maxRating} text={plural(b.reads,'read')} books={b.books} onOpenBook={onOpenBook}/>)}</ol>}
+    :<><div className="muse-ratings-ring"><ValueRing value={ratings.average} max={5} main={ratings.average!==null?ratings.average.toFixed(1):'—'} sub="/5" label={`Average rating ${ratings.average??'none'} out of 5`}/><p>{plural(ratings.rated,'rated read')} {label}. Tap a row to see the books behind it.</p></div><ol className="muse-atlas-rows" aria-label="Ratings distribution">{ratings.buckets.map(b=><Row key={b.value} label={`${stars(b.value)} ${b.value}`} value={b.reads} max={maxRating} text={plural(b.reads,'read')} books={b.books} onOpenBook={onOpenBook}/>)}</ol></>}
    <p className="small-label">Each finished read counts with its own rating, so a reread can rate differently.{ratings.unrated?` ${plural(ratings.unrated,'unrated read')} not shown.`:''}</p>
   </article>
   </div>
 
   <div className="muse-books-atlas-grid">
    <article className="muse-books-panel"><div className="muse-books-panel-head"><h4>Formats</h4><span className="small-label">{plural(formats.reads,'finished read')}</span></div>
-    {!formats.reads?<p>No finished reads {label} yet.</p>:<ol className="muse-atlas-rows">{formats.rows.filter(r=>r.reads).map(r=><Row key={r.format} label={r.label} value={r.reads} max={maxFormat} text={`${r.reads} · ${r.share}%`} books={r.books} onOpenBook={onOpenBook}/>)}</ol>}
+    {!formats.reads?<p>No finished reads {label} yet.</p>:<SegBar label="Formats of finished reads" slices={formats.rows.filter(r=>r.reads).map(r=>({key:r.format,label:r.label,value:r.reads,detail:`${r.reads} · ${r.share}%`,extra:<BookList books={r.books} title={r.label} label={`Show ${plural(r.books.length,'book')}`} onOpenBook={onOpenBook}/>}))}/>}
     <p className="small-label">From each book’s saved format; books without one stay “Not recorded”.</p></article>
    <article className="muse-books-panel"><div className="muse-books-panel-head"><h4>Finish speed</h4><span className="small-label">Start to finish</span></div>
     {!speed.reads?<p>Reads with a start and finish date will show how long stories stay with you.</p>:<>
      <div className="muse-atlas-speed"><span><small className="small-label">Fastest</small><strong>{days(speed.fastest!.days)}</strong><small>{speed.fastest!.book.title}</small></span><span><small className="small-label">Slowest</small><strong>{days(speed.slowest!.days)}</strong><small>{speed.slowest!.book.title}</small></span></div>
-     <ol className="muse-atlas-rows">{speed.bands.filter(b=>b.reads).map(b=><Row key={b.id} label={b.label} value={b.reads} max={maxSpeed} text={plural(b.reads,'read')} books={b.books} onOpenBook={onOpenBook}/>)}</ol></>}
+     <SegBar label="How long reads took" slices={speed.bands.filter(b=>b.reads).map(b=>({key:b.id,label:b.label,value:b.reads,detail:plural(b.reads,'read'),extra:<BookList books={b.books} title={b.label} label={`Show ${plural(b.books.length,'book')}`} onOpenBook={onOpenBook}/>}))}/></>}
     <p className="small-label">Calendar days, counting the start and finish days, for each read’s own dates.{speed.missingStart?` ${plural(speed.missingStart,'read')} without a start date not included.`:''}</p></article>
   </div>
 

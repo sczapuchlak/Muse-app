@@ -568,3 +568,47 @@ button.muse-atlas-modal-title:hover{text-decoration:underline;text-underline-off
 [data-focused="true"]{scroll-margin-top:16px}
 @media(prefers-reduced-motion:no-preference){[data-focused="true"]{animation:muse-focus-glow 1.8s ease-out 1}}
 @keyframes muse-focus-glow{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--accent-primary) 70%,transparent)}100%{box-shadow:0 0 0 14px transparent}}
+/* Emoji board: ranked circles like Insights' Day in Three, then every other emoji with its count and share. */
+.muse-emojiboard-badge{display:inline-grid;place-items:center;width:28px;height:28px;margin-right:10px;border-radius:50%;color:#1a1226;background:linear-gradient(135deg,var(--accent-pop,var(--accent-primary)),var(--accent-secondary));vertical-align:middle}
+.muse-emojiboard-badge svg{stroke:#1a1226;stroke-width:2.3}
+.muse-emojiboard-lead{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:center;gap:12px clamp(14px,3vw,26px);margin:6px 0 0;padding:0;list-style:none}
+.muse-emojiboard-lead li{display:grid;justify-items:center;gap:1px}
+.muse-emojiboard-lead li>span{display:grid;place-items:center;width:4.4rem;height:4.4rem;border-radius:50%;font-size:2.4rem;line-height:1;background:radial-gradient(circle at 30% 25%,color-mix(in srgb,#fff 28%,transparent),transparent 60%),color-mix(in srgb,var(--accent-pop,var(--accent-primary)) 18%,var(--surface-subtle));box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--accent-primary) 55%,transparent)}
+.muse-emojiboard-lead li[data-rank="1"]>span{width:5.8rem;height:5.8rem;font-size:3.4rem}
+.muse-emojiboard-lead li[data-rank="2"]>span{font-size:2.7rem}.muse-emojiboard-lead li[data-rank="3"]>span{font-size:2.4rem}
+.muse-emojiboard-lead strong{font-size:.9rem}.muse-emojiboard-lead small{font-size:.72rem;color:var(--text-muted)}
+.muse-emojiboard-note{margin:0;text-align:center;font-size:.84rem;color:var(--text-muted)}
+.muse-paged-rows.muse-emojiboard-rest{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px 6px;justify-items:center}
+.muse-emojiboard-item{display:grid;justify-items:center;gap:0}.muse-emojiboard-item>span{font-size:1.9rem;line-height:1.1}.muse-emojiboard-item strong{font-size:.76rem}.muse-emojiboard-item small{font-size:.66rem;color:var(--text-muted)}
+@container muse-content (max-width:520px){.muse-emojiboard-lead li>span{width:3.6rem;height:3.6rem;font-size:2rem}.muse-emojiboard-lead li[data-rank="1"]>span{width:4.8rem;height:4.8rem;font-size:2.8rem}}
+/* Session history: a small cover the same height as the date block. */
+.muse-history-row{grid-template-columns:48px 35px minmax(0,1fr) auto!important;align-items:start}
+.muse-history-cover{display:block;width:35px;height:52px;border-radius:3px 5px 5px 3px;overflow:hidden;box-shadow:1px 2px 6px rgba(0,0,0,.35)}
+.muse-history-cover img{width:100%;height:100%;object-fit:cover;display:block}.muse-history-cover .muse-cal-cover-blank{font-size:.4rem;padding:1px}
+@container muse-content (max-width:640px){.muse-history-row{grid-template-columns:42px 31px minmax(0,1fr) auto!important}.muse-history-cover{width:31px;height:48px}}
+/* Book superlatives: every tile its own colour; the icon and the top bar match their tile. */
+.muse-atlas-insights[data-tone="book"]>.muse-atlas-insight:nth-child(1){--tile-ink:#b57cff!important}
+.muse-atlas-insights[data-tone="book"]>.muse-atlas-insight:nth-child(2){--tile-ink:#2fc7e8!important}
+.muse-atlas-insights[data-tone="book"]>.muse-atlas-insight:nth-child(3){--tile-ink:#ff9f3d!important}
+.muse-atlas-insights[data-tone="book"]>.muse-atlas-insight:nth-child(4){--tile-ink:#ff5fae!important}
+.muse-atlas-insights[data-tone="book"]>.muse-atlas-insight:nth-child(5){--tile-ink:#7bd957!important}
+.muse-atlas-insights[data-tone="book"]>.muse-atlas-insight:nth-child(6){--tile-ink:#5b8dff!important}
+.muse-atlas-insights[data-tone="book"]>.muse-atlas-insight:nth-child(7){--tile-ink:#f2c230!important}
+.muse-atlas-insights[data-tone="book"]>.muse-atlas-insight:nth-child(8){--tile-ink:#f08a5d!important}
+/* Atlas graphics in the Insights style: rings, segmented bars, dotted legends. */
+.muse-donut{--size:148px;--ring:0;position:relative;display:inline-grid;place-items:center;flex:none;width:var(--size);height:var(--size);border-radius:50%;background:conic-gradient(from 0deg,var(--stops))}
+.muse-donut>span{display:grid;place-items:center;align-content:center;gap:1px;width:calc(100% - 22px);height:calc(100% - 22px);border-radius:50%;background:var(--floating-background,var(--surface-subtle));line-height:1}
+.muse-donut strong{font-family:var(--font-ui);font-size:calc(var(--size)*.26);font-weight:800;color:var(--foreground)}.muse-donut small{font-size:.68rem;color:var(--text-muted)}
+.muse-valuering{background:conic-gradient(from -90deg,var(--accent-primary),var(--accent-pop,var(--accent-secondary)) calc(var(--ring)*360deg),color-mix(in srgb,var(--glass-border) 70%,transparent) 0)}
+.muse-valuering[data-missing]{background:repeating-conic-gradient(var(--glass-border) 0 6deg,transparent 6deg 12deg)}
+.muse-segbar-wrap{display:grid;gap:10px;min-width:0}
+.muse-segbar{display:flex;gap:3px;height:14px;border-radius:999px;overflow:hidden}.muse-segbar i{display:block;flex-basis:0;min-width:10px;background:var(--c);border-radius:4px}.muse-segbar i:first-child{border-radius:999px 4px 4px 999px}.muse-segbar i:last-child{border-radius:4px 999px 999px 4px}.muse-segbar i:only-child{border-radius:999px}
+.muse-segkey{display:flex;flex-wrap:wrap;gap:6px 16px;margin:0;padding:0;list-style:none;font-size:.82rem}
+.muse-segkey li{display:inline-flex;align-items:center;gap:7px;min-width:0}.muse-segkey li>i{flex:none;width:10px;height:10px;border-radius:50%;background:var(--c)}.muse-segkey li>span{color:var(--text-muted)}.muse-segkey strong{font-size:.82rem}
+/* Reading DNA genre panel: ring + legend. */
+.muse-genre-ring{display:grid;grid-template-columns:auto minmax(0,1fr);gap:clamp(14px,2.4vw,26px);align-items:center}
+@container muse-content (max-width:560px){.muse-genre-ring{grid-template-columns:minmax(0,1fr);justify-items:center}}
+.muse-genre-legend{display:grid;gap:7px;margin:0;padding:0;list-style:none;width:100%}
+.muse-genre-legend li{display:grid;grid-template-columns:12px minmax(0,1fr) auto;gap:4px 10px;align-items:center;padding:7px 10px;border:1px solid color-mix(in srgb,var(--foreground) 10%,transparent);border-radius:12px;background:color-mix(in srgb,var(--foreground) 4%,transparent)}
+.muse-genre-legend li>i{width:12px;height:12px;border-radius:50%;background:var(--c)}.muse-genre-legend strong{font-size:.9rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.muse-genre-legend li>span{font-size:.8rem;color:var(--text-muted);white-space:nowrap}.muse-genre-legend small{grid-column:2/-1;font-size:.7rem;color:var(--text-muted)}
+.muse-ratings-ring{display:flex;align-items:center;gap:16px;flex-wrap:wrap}.muse-ratings-ring p{margin:0;font-size:.86rem;color:var(--text-muted);max-width:34ch}
