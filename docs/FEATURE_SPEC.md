@@ -1206,7 +1206,8 @@ Rules: PRODUCT_RULES "Envision → Vision Boards (#118)". Full detail, data mode
 - **Library** (`/envision?view=vision-boards`): search, Period filter, Sort (Recently edited, Newest, A–Z), cards with lazy live previews; create, open, rename/details, duplicate (shares files), delete (confirmed). Empty state: the earlier collage with "Create your first board".
 - **Editor** (`?board=<id>`): photos (upload, paste, drop), text, stickers and Muse Marks, background color/gradient; drag, resize, rotate, layers, lock, duplicate, delete, undo/redo; crop to 7 shapes; border, shadow, sticker outline for transparent images; optional link to an Aspiration or dream; autosave with recovery copy and conflict handling.
 - **Intentions:** new optional section "Vision board" (up to 3 boards) with previews. Existing templates unchanged.
-- **Cutouts (iPhone/iPad only):** Paste button, a "Make a cutout" guide to Apple's Photos cutout, and a one-time dismissible tip. Muse doesn't remove backgrounds itself.
+- **Image paste (desktop and mobile; clipboard follow-up branch):** Paste button on every platform, native image paste into the focused canvas, and a canvas context action "Paste image". Clipboard image files/items are accepted; the async clipboard API provides a fallback with permission/error guidance. Copied HTML and links are never fetched as images. Text-field paste remains native. Mac Safari/Chrome physical shortcut acceptance remains manual; local production Chrome clipboard-command tests pass.
+- **Cutouts (iPhone/iPad only):** A "Make a cutout" guide to Apple's Photos cutout and a one-time dismissible tip. Muse doesn't remove backgrounds itself.
 - **Migration** `20261203000100_vision_boards.sql`: table, derived `asset_paths`, PNG in the private bucket, shared-file delete guard. Verify with `scripts/verify-hosted-vision-boards.sql`.
 
 ## Books Import 2.0 (#143) — implemented on feature branch; Staging acceptance pending

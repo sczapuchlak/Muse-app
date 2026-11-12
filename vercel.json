@@ -4,7 +4,8 @@
     "deploymentEnabled": {
       "feature/book-library-import-133": false,
       "feature/books-import-143": false,
-      "fix/mvp1-priority1": false
+      "fix/mvp1-priority1": false,
+      "fix/vision-board-desktop-paste": false
     }
   }
 }

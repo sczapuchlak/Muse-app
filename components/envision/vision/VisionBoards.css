@@ -60,6 +60,7 @@
 .muse-vision-canvas[data-dropping]{outline:2px dashed var(--accent-secondary);outline-offset:-6px}
 .muse-vision-canvas-empty{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;text-align:center}
 .muse-vision-canvas-empty p{margin:0;padding:10px 16px;border-radius:14px;background:color-mix(in srgb,#fff 72%,transparent);color:#4a3d5c;font:500 .9rem/1.5 var(--font-ui)}
+.muse-vision-paste-anchor{position:absolute;width:1px;height:1px;pointer-events:none}
 
 /* Popovers */
 .muse-vision-stickers{display:grid;gap:6px}

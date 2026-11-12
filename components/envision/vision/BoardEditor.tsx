@@ -8,6 +8,7 @@ import {
   type Asset, type Background, type BoardElement, type ElementLink, type History, type ImageElement, type LayerMove, type Snapshot, type StickerElement, type TextElement, type VisionBoard,
 } from "@/lib/vision-boards/model";
 import { loadBoard, saveBoard } from "@/lib/vision-boards/persistence";
+import { clipboardPasteError, imageFilesFromPaste, readClipboardImages } from "@/lib/vision-boards/clipboard";
 import { sticker as stickerDef, stickers } from "@/lib/vision-boards/shapes";
 import { pinAccent, type CustomGradient } from "@/lib/appearance-values";
 import type { Aspiration } from "@/lib/aspirations/models";
@@ -53,6 +54,9 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
   const [sheet, setSheet] = useState<"" | "crop" | "details">("");
   const [recovery, setRecovery] = useState<Draft | null>(null);
   const [announce, setAnnounce] = useState("");
+  const [pasteMenu, setPasteMenu] = useState<{ x: number; y: number } | null>(null);
+  const [clipboardBusy, setClipboardBusy] = useState(false);
+  const clipboardReading = useRef(false), pasteAnchor = useRef<HTMLSpanElement>(null);
   const boardRef = useRef(board); boardRef.current = board;
   const historyRef = useRef(history); historyRef.current = history;
   const rev = useRef(initial.revision), seq = useRef(0), saving = useRef(false), again = useRef(false);
@@ -237,10 +241,21 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
     else if (ev.key === "]") layer(ev.shiftKey ? "front" : "forward");
     else if (ev.key === "[") layer(ev.shiftKey ? "back" : "backward");
   }
+  async function pasteClipboard() {
+    if (clipboardReading.current || uploading) return;
+    clipboardReading.current = true; setClipboardBusy(true);
+    try { await addFiles(await readClipboardImages()); }
+    catch (error) { setUploads({ total: 0, done: 0, errors: [clipboardPasteError(error)] }); }
+    finally { clipboardReading.current = false; setClipboardBusy(false); }
+  }
   function onPaste(ev: ReactClipboardEvent) {
     if (typing(ev.target)) return;
-    const files = Array.from(ev.clipboardData.files);
-    if (files.length) { ev.preventDefault(); void addFiles(files); }
+    ev.preventDefault();
+    const files = imageFilesFromPaste(ev.clipboardData);
+    // Some browser/website clipboard combinations expose image bytes only via
+    // the async API. Never silently ignore these, or fetch the copied HTML/URL.
+    if (files.length) void addFiles(files);
+    else void pasteClipboard();
   }
   const [dropping, setDropping] = useState(false);
   const dropProps = {
@@ -279,7 +294,7 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
     <div className="muse-vision-toolbar muse-scroll-fade" role="toolbar" aria-label="Add to the board">
       <button type="button" className="muse-button button-primary" disabled={uploading} onClick={() => fileRef.current?.click()}><MuseIcon name="plus" size={14} /> Photos</button>
       <input ref={fileRef} type="file" accept="image/png,image/jpeg,image/webp,image/gif" multiple hidden onChange={(e) => { const f = Array.from(e.target.files ?? []); e.target.value = ""; void addFiles(f); }} />
-      {apple && <CutoutTools disabled={uploading} onFiles={(f) => { cutoutHint.dismiss(); void addFiles(f); }} onError={(m) => setUploads({ total: 0, done: 0, errors: [m] })} onOpened={cutoutHint.dismiss} />}
+      <CutoutTools disabled={uploading || clipboardBusy} showGuide={apple} onFiles={(f) => { cutoutHint.dismiss(); void addFiles(f); }} onError={(m) => setUploads({ total: 0, done: 0, errors: [m] })} onOpened={cutoutHint.dismiss} />
       <button type="button" className="muse-button" onClick={addText}><span className="muse-vision-glyph" aria-hidden="true">Aa</span> Text</button>
       <button ref={anchors.stickers} type="button" className="muse-button" aria-expanded={panel === "stickers"} onClick={() => togglePanel("stickers")}><MuseIcon name="sparkle" size={14} /> Stickers</button>
       <button ref={anchors.background} type="button" className="muse-button" aria-expanded={panel === "background"} onClick={() => togglePanel("background")}><span className="muse-vision-dot" style={{ background: backgroundCss(board.background) }} aria-hidden="true" /> Background</button>
@@ -325,11 +340,21 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
     </p>}
 
     <div ref={wrapRef} className="muse-vision-canvas" data-dropping={dropping || undefined} {...dropProps}
+      onPointerDownCapture={(event) => { if (event.pointerType !== "touch") event.currentTarget.focus({ preventScroll: true }); }}
+      onContextMenu={(event) => {
+        event.preventDefault(); event.currentTarget.focus({ preventScroll: true });
+        const rect = event.currentTarget.getBoundingClientRect(), keyboard = event.clientX === 0 && event.clientY === 0;
+        setPasteMenu({ x: keyboard ? rect.width / 2 : event.clientX - rect.left, y: keyboard ? rect.height / 2 : event.clientY - rect.top });
+      }}
       role="application" aria-roledescription="collage canvas" aria-label={`${board.title}: ${board.elements.length} pieces. ${selected ? `Selected: ${elementLabel(selected)}.` : "Nothing selected."}`} aria-describedby="vision-canvas-help" tabIndex={0}>
       {size.width > 0 && view && <BoardEditorStage board={board} width={size.width} height={size.height} editing={{ selectedId, onSelect: setSelectedId, onChange: (id, patch) => change(id, patch), view, onView: moveView }} />}
       {!board.elements.length && <div className="muse-vision-canvas-empty" aria-hidden="true"><p>Add photos, words and stickers.<br />Drag, resize and turn them anywhere.</p></div>}
+      {pasteMenu && <span ref={pasteAnchor} className="muse-vision-paste-anchor" aria-hidden="true" style={{ left: pasteMenu.x, top: pasteMenu.y }} />}
     </div>
-    <p id="vision-canvas-help" className="sr-only">Use Layers to choose a piece. Arrow keys move it, Shift moves further. Delete removes it, Command Z undoes, square brackets change its layer.</p>
+    <GlassPopover id="vision-canvas-paste" label="Canvas actions" open={!!pasteMenu} anchorRef={pasteAnchor} onClose={() => { setPasteMenu(null); wrapRef.current?.focus({ preventScroll: true }); }} width={220} bare>
+      <button type="button" className="popover-choice" disabled={uploading || clipboardBusy} onClick={() => { setPasteMenu(null); wrapRef.current?.focus({ preventScroll: true }); void pasteClipboard(); }}>Paste image</button>
+    </GlassPopover>
+    <p id="vision-canvas-help" className="sr-only">Use Layers to choose a piece. Arrow keys move it, Shift moves further. Delete removes it, Command Z undoes, square brackets change its layer. Paste copied images with Command V, the Paste button, or the canvas context menu.</p>
     <p className="sr-only" role="status" aria-live="polite">{announce}</p>
     <p className="small-label muse-vision-hint">Drag empty space to move around · pinch or ⌘-scroll to zoom · paste or drop images to add them.</p>
 
