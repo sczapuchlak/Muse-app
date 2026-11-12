@@ -1,6 +1,6 @@
 # Intentions: period-appropriate layouts (proposal for #119)
 
-**Status: proposal only. Nothing here is implemented or approved.** Per #119 this is the research step; the next step is Stephanie choosing a direction.
+**Status: Option A approved by Stephanie (November 2026) and implemented.** Each period has a `PeriodGuide` (week as seven days linking to the planner, month as its weeks, quarter as its three months, year as its four quarters, each with a progress bar) and its own section arrangement in `Intentions.css`. Purely presentational: no data model or migration change; sections keep their saved order. The text below is the original proposal.
 
 ## What exists today
 
