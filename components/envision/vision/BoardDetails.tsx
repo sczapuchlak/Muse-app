@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { MuseModal } from "../../MuseModal";
 import { MuseChoiceMenu } from "../../MuseChoiceMenu";
 import { MuseSegmented } from "../../design/MuseSegmented";
@@ -12,6 +12,19 @@ export const backgroundCss = (b: Background) => b.kind === "solid" ? b.color : c
 /** Create a board, or change its name, description, theme and period. Size and starting background are chosen once. */
 export function BoardDetails({ initial, today, busy, error, onSave, onClose }: { initial: VisionBoard; today: string; busy: boolean; error: string; onSave: (b: VisionBoard) => void; onClose: () => void }) {
   const [b, setB] = useState(initial);
+  const formRef = useRef<HTMLFormElement>(null);
+  // iOS keyboards resize/pan the visual viewport without necessarily changing dvh.
+  // Scope these measurements to this dialog; no page or other modal geometry is changed.
+  useLayoutEffect(() => {
+    const viewport = window.visualViewport, dialog = formRef.current?.closest('dialog');
+    if (!viewport || !dialog) return;
+    const sync = () => {
+      dialog.style.setProperty('--vision-visible-height', `${viewport.height}px`);
+      dialog.style.setProperty('--vision-viewport-top', `${viewport.offsetTop}px`);
+    };
+    sync(); viewport.addEventListener('resize', sync); viewport.addEventListener('scroll', sync);
+    return () => { viewport.removeEventListener('resize', sync); viewport.removeEventListener('scroll', sync); dialog.style.removeProperty('--vision-visible-height'); dialog.style.removeProperty('--vision-viewport-top'); };
+  }, []);
   const isNew = initial.revision === 0;
   const set = (patch: Partial<VisionBoard>) => setB((x) => ({ ...x, ...patch }));
   const anchor = b.periodStart ?? today ?? new Date().toISOString().slice(0, 10);
@@ -21,10 +34,11 @@ export function BoardDetails({ initial, today, busy, error, onSave, onClose }: {
   const setStart = (y: string, m: string) => b.period && set({ periodStart: periodStartFor(b.period, `${y}-${m}-01`) });
   const problem = boardFieldsValid(b);
   return <MuseModal id="vision-board-details" label={isNew ? "New vision board" : "Board details"} title={isNew ? "A new vision board" : "Board details"} returnFocus={null} onClose={onClose} size="tall">
-    <form className="muse-aspiration-form muse-vision-details" onSubmit={(e) => { e.preventDefault(); if (!problem) onSave({ ...b, title: b.title.trim() }); }}>
+    <form ref={formRef} className="muse-aspiration-form muse-vision-details" onSubmit={(e) => { e.preventDefault(); if (!problem) onSave({ ...b, title: b.title.trim() }); }}>
+      <div className="muse-vision-details-body">
       <label>Name<input required maxLength={LIMITS.title} value={b.title} placeholder="My 2027 Vision" autoFocus onChange={(e) => set({ title: e.target.value })} /></label>
-      <label>Theme or chapter <small className="small-label">· optional</small><input maxLength={LIMITS.theme} value={b.theme} placeholder="Becoming Her" onChange={(e) => set({ theme: e.target.value })} /></label>
-      <label>Description <small className="small-label">· optional</small><textarea rows={2} maxLength={LIMITS.description} value={b.description} placeholder="What this board is about…" onChange={(e) => set({ description: e.target.value })} /></label>
+      <label><span>Theme or chapter <small className="small-label">· optional</small></span><input maxLength={LIMITS.theme} value={b.theme} placeholder="Becoming Her" onChange={(e) => set({ theme: e.target.value })} /></label>
+      <label><span>Description <small className="small-label">· optional</small></span><textarea rows={2} maxLength={LIMITS.description} value={b.description} placeholder="What this board is about…" onChange={(e) => set({ description: e.target.value })} /></label>
       <fieldset><legend>For a period <small className="small-label">· optional</small></legend>
         <MuseSegmented label="Period" value={b.period ?? "none"} options={[{ id: "none", label: "No period" }, ...boardPeriods]} onChange={setPeriod} />
         {b.period && b.periodStart && <div className="muse-aspiration-row muse-vision-period">
@@ -45,6 +59,7 @@ export function BoardDetails({ initial, today, busy, error, onSave, onClose }: {
         </fieldset>
       </>}
       {(problem && b.title) || error ? <p role="alert" className="muse-aspiration-error">{error || problem}</p> : null}
+      </div>
       <div className="muse-aspiration-actions"><button type="submit" className="muse-button button-primary" disabled={busy || !!problem}>{isNew ? "Create board" : "Save"}</button><button type="button" className="text-button" onClick={onClose}>Cancel</button></div>
     </form>
   </MuseModal>;
