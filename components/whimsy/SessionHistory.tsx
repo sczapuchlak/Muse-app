@@ -33,9 +33,8 @@ export function SessionHistory({sessions,books,onEdit,onDelete}:{sessions:Readin
  return <article className="muse-books-panel muse-books-history">
   <div className="muse-books-panel-head"><h4>Session history</h4><span className="small-label">{rows.length} {rows.length===1?'session':'sessions'} · {minutes(seconds)} · {pages} pages</span></div>
   <div className="muse-books-history-filters">
-   <MuseChoiceMenu label="Book" valueLabel={bookOptions.find(o=>o.id===bookId)?.label??'All books'} options={bookOptions} selectedIds={[bookId]} onSelect={id=>{setBookId(id);setLimit(PAGE);}}/>
-   <MuseChoiceMenu label="Session type" valueLabel={kinds[kind]} options={Object.entries(kinds).map(([id,label])=>({id,label}))} selectedIds={[kind]} onSelect={id=>{setKind(id as Kind);setLimit(PAGE);}}/>
    <MuseSearch className="muse-books-history-search" label="Search sessions" value={query} onChange={v=>{setQuery(v);setLimit(PAGE);}} placeholder="Search titles and notes"/>
+   <MuseChoiceMenu label="Book" valueLabel={bookOptions.find(o=>o.id===bookId)?.label??'All books'} options={bookOptions} selectedIds={[bookId]} onSelect={id=>{setBookId(id);setLimit(PAGE);}}/>
    <details className="muse-history-dates" open={!!(from||to)}><summary>{from||to?`${from?dateLabel(from):'Start'} – ${to?dateLabel(to):'today'}`:'Dates'}</summary><div><label>From<input type="date" value={from} max={to||undefined} onChange={e=>{setFrom(e.target.value);setLimit(PAGE);}}/></label><label>To<input type="date" value={to} min={from||undefined} onChange={e=>{setTo(e.target.value);setLimit(PAGE);}}/></label>{(from||to)&&<button type="button" className="text-button" onClick={()=>{setFrom('');setTo('');}}>Clear</button>}</div></details>
   </div>
   {!sessions.length?<p>Saved sessions will be listed here.</p>:!rows.length?<p>No sessions match these filters.</p>:<ol className="muse-books-history-list">

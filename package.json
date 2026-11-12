@@ -62,6 +62,7 @@
     "test:plans:db": "node scripts/test-reading-plans-db.mjs",
     "test:upnext:ui": "node scripts/test-up-next-ui.mjs",
     "test:goals:ui": "node scripts/test-goals-ui.mjs",
+    "test:trends:ui": "node scripts/test-trends-ui.mjs",
     "test:upnext:db": "node scripts/test-up-next-db.mjs",
     "test:desk:ui": "node scripts/test-reading-desk-ui.mjs",
     "test:detail:ui": "node scripts/test-book-detail-ui.mjs",

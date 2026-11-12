@@ -31,6 +31,7 @@ import {TimerRecovery,type StretchResolution} from './TimerRecovery';
 import {RecentSessions,RecentlyFinished} from './BooksDashboard';
 import {DailyGoalCard,DailyGoalModal} from './DailyGoalCard';
 import {CelebrationToast} from './Celebration';
+import {ReadingTrends} from './ReadingTrends';
 import {activeDailyGoal,goalStreak,secondsByDay,withTarget} from '@/lib/whimsy/daily-goal';
 import {detectCelebrations} from '@/lib/whimsy/celebrations';
 import {UpNext} from './upnext/UpNext';
@@ -284,7 +285,7 @@ const deleteInfo=deleteTarget?(()=>{const history=historyFor(deleteTarget),secon
  {status.loaded&&dash&&streak&&<div className="muse-dash-top"><div className="muse-dash-col"><ReadingStreak detail={streak} celebrate={streakCelebration(streak,today)}><AlmanacWhisper surface={surfaces.bookshelf} signals={almanacSignals} today={today}/></ReadingStreak>{deskSection}</div>
   <div className="muse-dash-col"><ReadingChallenge variant="compact" books={books} goals={goals} today={today} busy={busy} onSave={(y,t,g)=>void saveChallenge(y,t,g)} onRemove={g=>void removeGoal(g)} onOpenAtlas={()=>router.push('/collections/reading-atlas')}/>
    <section className="muse-dash-goals" aria-label="Daily reading goal"><div className="muse-dash-goals-head"><span className="small-label">Daily reading goal</span></div>{reading&&<DailyGoalCard goal={dailyGoal} detail={reading.goal} today={today} onSet={()=>setDailyOpen(true)}/>}</section></div></div>}
- {status.loaded&&dash&&<ReadingPlans books={books} today={today} variant="dashboard" onOpenBook={id=>openBookPage(id,'Reading plans')}/>}
+ {status.loaded&&dash&&<div className="muse-dash-plans-row"><ReadingPlans books={books} today={today} variant="dashboard" onOpenBook={id=>openBookPage(id,'Reading plans')}/><ReadingTrends books={books} sessions={sessions} today={today}/></div>}
  {status.loaded&&dash&&<div className="muse-dash-trio"><RecentlyFinished books={books} sessions={sessions} onOpen={id=>openBookPage(id,'Recently finished')}/><UpNext books={books} today={today} canStart={!timer&&timerLoaded} onOpenBook={id=>openBookPage(id,'Up next')} onStart={book=>void timerAction('start',book)}/></div>}
  {status.loaded&&dash&&<RecentSessions books={books} sessions={sessions} onOpen={id=>openBookPage(id,'Recent sessions')}/>}
  {status.loaded&&mode==='plans'&&<ReadingPlans books={books} today={today} variant="full" onOpenBook={id=>openBookPage(id,'Reading plans')}/>}

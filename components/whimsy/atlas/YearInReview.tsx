@@ -4,6 +4,7 @@ import {MuseChoiceMenu} from '@/components/MuseChoiceMenu';
 import {MuseStar} from '@/components/MuseStar';
 import type {Book,ReadingGoal,ReadingSession} from '@/lib/whimsy/models';
 import {PagedList} from './PagedList';
+import {Highlights} from './Highlights2';
 import {Cover} from './CoverCalendar';
 import {MonthShelf} from './Highlights';
 import {TopRated} from './TopRated';
@@ -48,18 +49,13 @@ export function YearInReview({books,sessions,today,goals=[]}:{books:Book[];sessi
   </header>
   {keepsake&&<KeepsakeExport books={books} sessions={sessions} goals={goals} year={year} today={today} onClose={()=>setKeepsake(false)}/>}
   <dl className="muse-yir-stats" aria-label="The numbers">{stats.map(s=><div key={s.k}><dt>{s.k}</dt><dd className="type-numeric">{s.v}</dd><small>{s.d}</small></div>)}</dl>
-  <div className="muse-yir-pair">
-   <section aria-label="Your year in three emojis" className="muse-books-panel muse-atlas-three"><span className="small-label">Your {year} in three emojis</span>
+  <Highlights books={books} sessions={sessions} range={range} label={String(year)} today={today} wholeYear/>
+  <div className="muse-yir-emoji-shelf"><section aria-label="Your year in three emojis" className="muse-books-panel muse-atlas-three"><span className="small-label">Your {year} in three emojis</span>
     {r.emojis.top.length?<><p className="muse-atlas-three-emojis">{r.emojis.top.map(e=><span key={e.emoji} title={plural(e.books,'book')}>{e.emoji}</span>)}</p>
      <small className="small-label">{r.emojis.top.map(e=>`${e.emoji} ${plural(e.books,'book')}`).join(' · ')}</small></>
      :<p>{r.emojis.finishedBooks?`Add Book in Three Emojis to your ${year} finished books to see your year in three.`:`Finish a book in ${year} to start your year in three.`}</p>}
    </section>
-   <section aria-label="Your reading highlights" className="muse-books-panel"><div className="muse-books-panel-head"><h4>Highlights</h4><span className="small-label">{year}</span></div>
-    <PagedList items={tiles} size={4} label="highlights" className="muse-yir-tiles" render={t=><div role="listitem" key={t.k} className="muse-atlas-insight"><div className="muse-atlas-insight-head"><InsightIcon label={t.k}/><span className="small-label">{t.k}</span></div>{t.v?<><strong>{t.v}</strong>{t.d&&<small>{t.d}</small>}</>:<small className="muse-atlas-insight-empty">{t.e}</small>}</div>}/>
-    {r.traits.length>0&&<ul className="muse-atlas-traits">{r.traits.slice(0,2).map(t=><li key={t.title}><strong>{t.title}</strong><span>{t.line}</span></li>)}</ul>}
-   </section>
-  </div>
-  <MonthShelf books={books} today={today} fixedYear={year}/>
+   <MonthShelf books={books} today={today} fixedYear={year}/></div>
   <div className="muse-yir-pair muse-yir-pair-even">
    <ActivityBars unit="time" title="Reading timeline" note={`Reading time by month in ${year}${progress?' (so far)':''}.`} items={r.months.map(m=>({key:m.month,label:monthLabel(m.month),short:shortMonth(m.month),value:m.seconds||m.pages,text:`${duration(m.seconds)} · ${m.pages} pages · ${m.finished} finished`}))}/>
    <section aria-label="Milestones this year" className="muse-books-panel"><div className="muse-books-panel-head"><h4>Milestones</h4><span className="small-label">{year}</span></div>{r.milestones.length?<PagedList tag="ol" className="muse-atlas-milestones" items={r.milestones} size={4} label="milestones" render={m=><li key={m.id}><span className="muse-atlas-milestone-star" aria-hidden="true">✦</span><strong>{m.title}</strong><small>{yearDate(m.achievedOn!)}</small></li>}/>:<p>No new milestones{progress?' yet':''} this year.</p>}</section>
