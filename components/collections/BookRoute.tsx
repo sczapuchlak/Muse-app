@@ -19,3 +19,13 @@ export function ReadingAtlasRoute(){
   <Bookshelf surface="atlas" embedded/>
  </main>;
 }
+
+/** The full Reading Plans view: the same planner as the Dashboard, with every month and year to browse and manage. */
+export function ReadingPlansRoute(){
+ return <main className="muse-page muse-collections muse-plans-route">
+  <MusePageHeader title="Books" description="Plan the months and the year ahead."/>
+  <BooksNav current="dashboard"/>
+  <Link href="/collections" className="muse-collections-back"><span className="muse-collections-back-icon"><MuseIcon name="arrow" size={16}/></span>Back to Dashboard</Link>
+  <Bookshelf surface="plans" embedded/>
+ </main>;
+}

@@ -58,6 +58,8 @@
     "db:133": "node scripts/issue133-db.mjs",
     "test:collections:ui": "node scripts/test-collections-ui.mjs",
     "test:atlas:ui": "node scripts/test-atlas-ui.mjs",
+    "test:plans:ui": "node scripts/test-reading-plans-ui.mjs",
+    "test:plans:db": "node scripts/test-reading-plans-db.mjs",
     "test:desk:ui": "node scripts/test-reading-desk-ui.mjs",
     "test:detail:ui": "node scripts/test-book-detail-ui.mjs",
     "test:timer:ui": "node scripts/test-reading-timer-ui.mjs",
