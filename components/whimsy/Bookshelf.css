@@ -612,3 +612,19 @@ button.muse-atlas-modal-title:hover{text-decoration:underline;text-underline-off
 .muse-genre-legend li{display:grid;grid-template-columns:12px minmax(0,1fr) auto;gap:4px 10px;align-items:center;padding:7px 10px;border:1px solid color-mix(in srgb,var(--foreground) 10%,transparent);border-radius:12px;background:color-mix(in srgb,var(--foreground) 4%,transparent)}
 .muse-genre-legend li>i{width:12px;height:12px;border-radius:50%;background:var(--c)}.muse-genre-legend strong{font-size:.9rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.muse-genre-legend li>span{font-size:.8rem;color:var(--text-muted);white-space:nowrap}.muse-genre-legend small{grid-column:2/-1;font-size:.7rem;color:var(--text-muted)}
 .muse-ratings-ring{display:flex;align-items:center;gap:16px;flex-wrap:wrap}.muse-ratings-ring p{margin:0;font-size:.86rem;color:var(--text-muted);max-width:34ch}
+
+/* Atlas insight tiles (#135 polish): vivid, one colour per tile, round solid icon, big editorial value, soft glow. */
+.muse-atlas-insights>.muse-atlas-insight{--c:#b57cff;--tile-ink:var(--c)!important;position:relative;overflow:hidden;min-height:108px;padding:14px 16px!important;gap:6px!important;border:1px solid color-mix(in srgb,var(--c) 55%,transparent);border-top:3px solid var(--c);border-radius:18px;background:linear-gradient(160deg,color-mix(in srgb,var(--c) 22%,var(--background)),color-mix(in srgb,var(--c) 7%,var(--background)))}
+.muse-atlas-insights>.muse-atlas-insight::after{content:"";position:absolute;right:-28px;top:-28px;width:96px;height:96px;border-radius:50%;background:radial-gradient(closest-side,color-mix(in srgb,var(--c) 42%,transparent),transparent);pointer-events:none}
+.muse-atlas-insights>.muse-atlas-insight>*{position:relative;z-index:1}
+.muse-atlas-insights>.muse-atlas-insight:nth-child(8n+1){--c:#b57cff}.muse-atlas-insights>.muse-atlas-insight:nth-child(8n+2){--c:#2fc7e8}.muse-atlas-insights>.muse-atlas-insight:nth-child(8n+3){--c:#ff9f3d}.muse-atlas-insights>.muse-atlas-insight:nth-child(8n+4){--c:#ff5fae}.muse-atlas-insights>.muse-atlas-insight:nth-child(8n+5){--c:#7bd957}.muse-atlas-insights>.muse-atlas-insight:nth-child(8n+6){--c:#5b8dff}.muse-atlas-insights>.muse-atlas-insight:nth-child(8n+7){--c:#f2c230}.muse-atlas-insights>.muse-atlas-insight:nth-child(8n+8){--c:#f08a5d}
+.muse-atlas-insights>.muse-atlas-insight .muse-atlas-insight-icon{width:32px;height:32px;background:var(--c);color:#1a1226;border:2px solid #120c1f;box-shadow:0 0 0 1px rgba(255,255,255,.5)}
+.muse-atlas-insights>.muse-atlas-insight .muse-atlas-insight-icon svg{stroke:#1a1226;stroke-width:2.4}
+.muse-atlas-insights>.muse-atlas-insight>.muse-atlas-insight-head>.small-label{color:color-mix(in srgb,var(--c) 85%,var(--foreground))}
+.muse-atlas-insights>.muse-atlas-insight>strong{font-family:var(--font-editorial);font-size:1.4rem!important;line-height:1.15!important;margin-top:4px}
+.muse-atlas-insights>.muse-atlas-insight>small{font-size:.8rem!important}
+.muse-atlas-insights>.muse-atlas-insight>.muse-atlas-insight-empty{font-family:var(--font-editorial);font-size:.9rem!important;color:var(--text-muted)}
+.muse-atlas-insights{gap:12px!important}
+.muse-dna-highlights{display:grid;gap:14px}
+.muse-dna-highlights>.muse-books-panel-head{margin:0}
+.muse-dna-highlights>.muse-books-panel-head:not(:first-child){margin-top:10px;padding-top:16px;border-top:1px solid var(--glass-border)}
