@@ -92,3 +92,27 @@
 .muse-sky-week,.muse-sky-targets{grid-column:1/-1}
 .muse-sky-week>div{padding:6px 12px;display:flex;align-items:baseline;justify-content:space-between;gap:8px}
 .muse-sky-week dd{font-size:1.1rem}
+
+/* Round 3 (Nov 13): half again. One slim band: the count and headline, the constellation beside them, and the week's
+   numbers as three compact tiles. About 120px tall on desktop. */
+.muse-rituals-sky{grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);padding:12px 20px;gap:10px 22px;margin-block:var(--space-4,16px) var(--space-5,20px)}
+.muse-sky-main{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-rows:auto auto;align-items:center;column-gap:18px;row-gap:2px}
+.muse-sky-main>.muse-kicker{grid-column:1;grid-row:1;font-size:.64rem}
+.muse-sky-headline{grid-column:1;grid-row:2;display:grid!important;gap:0!important;font-size:clamp(.95rem,1.3vw,1.12rem)!important;line-height:1.15;margin:0}
+.muse-sky-count{font-size:clamp(1.9rem,2.8vw,2.4rem)!important;line-height:1}
+.muse-sky-map{grid-column:2;grid-row:1/3;width:100%;max-height:96px!important;min-width:0}
+.muse-sky-side{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px!important;align-items:stretch}
+.muse-sky-tile{padding:8px 10px!important;border-radius:14px}
+.muse-sky-tile small{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:.68rem!important}
+.muse-sky-label{font-size:.6rem!important}
+.muse-sky-perfect i{width:12px!important;height:12px!important}
+.muse-sky-streak strong{font-size:.82rem!important}.muse-sky-streak strong b{font-size:1.2rem!important}
+.muse-sky-flame{width:12px!important;height:17px!important;right:8px!important;top:8px!important}
+.muse-sky-week{grid-column:auto!important;display:grid;grid-template-rows:repeat(3,auto);gap:2px;margin:0;padding:6px 10px;border-radius:14px;border:1px solid var(--glass-border);background:color-mix(in srgb,var(--foreground) 4%,transparent)}
+.muse-sky-week>div{padding:0!important;border:0!important;background:none!important;display:flex;justify-content:space-between;gap:6px}
+.muse-sky-week dt{font-size:.58rem!important;letter-spacing:.08em}.muse-sky-week dd{font-size:.9rem!important;margin:0}
+.muse-sky-targets{grid-column:1/-1!important}
+@container muse-content (max-width:860px){.muse-rituals-sky{grid-template-columns:minmax(0,1fr)}.muse-sky-main{grid-template-columns:minmax(0,1fr)}.muse-sky-map{grid-column:1;grid-row:3}}
+.muse-rituals-sky .muse-sky-week{display:grid!important;grid-template-columns:minmax(0,1fr)!important;grid-auto-flow:row!important;align-content:center}
+.muse-rituals-sky .muse-sky-week>div{display:flex!important;flex-direction:row!important;align-items:baseline!important;justify-content:space-between!important;position:static!important}
+.muse-rituals-sky .muse-sky-week dt,.muse-rituals-sky .muse-sky-week dd{position:static!important}

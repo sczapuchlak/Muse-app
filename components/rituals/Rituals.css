@@ -367,3 +367,31 @@ button.muse-tracker-square:focus-visible{outline:2px solid var(--focus-ring);out
 /* One colour per habit row (Stephanie): each habit keeps its group colour across the month, so the pattern reads. */
 .muse-mgrid-row:not(.muse-mgrid-head):not(.muse-mgrid-foot) .muse-mgrid-slot{--day:var(--organization-accent,var(--accent-primary))!important;--ink:var(--organization-accent,var(--accent-primary))!important}
 .muse-mgrid-key i[data-k=row]{width:44px!important;height:12px!important;border-radius:999px!important;background:linear-gradient(90deg,var(--chart-2) 0 33%,var(--chart-4) 33% 66%,var(--chart-1) 66%)!important}
+
+/* Year view, round 3 (Nov 13): the year fills its row (no dead strip on the right), three glowing numbers open the side
+   panel, completed days shine like lit windows, and the month review bars glow in the habit's colour. */
+.muse-sheet-layout{grid-template-columns:minmax(0,1fr) minmax(16rem,20rem)!important;justify-content:stretch!important}
+.muse-sheet-side{grid-template-rows:auto auto minmax(0,1fr)!important}
+.muse-sheet-glance{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:0}
+.muse-sheet-glance>div{position:relative;overflow:hidden;display:grid;gap:2px;padding:10px 12px;border-radius:16px;border:1px solid var(--glass-border);background:radial-gradient(120% 90% at 100% 0%,color-mix(in srgb,var(--ritual-color,var(--accent-primary)) 22%,transparent),transparent 65%),color-mix(in srgb,var(--foreground) 4%,transparent)}
+.muse-sheet-glance dt{font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)}
+.muse-sheet-glance dd{margin:0;font-family:var(--font-editorial);font-size:1.6rem;line-height:1.05;background:linear-gradient(120deg,var(--accent-pop,var(--accent-primary)),var(--accent-primary),var(--accent-secondary));-webkit-background-clip:text;background-clip:text;color:transparent}
+.muse-sheet-glance dd small{font-size:.55em}
+.muse-sheet .muse-sheet-cell[data-level="4"]{box-shadow:0 0 6px -1px var(--fill),inset 0 1px 0 rgba(255,255,255,.35)}
+.muse-sheet .muse-sheet-cell[data-level="3"],.muse-sheet .muse-sheet-cell[data-level="2"]{box-shadow:inset 0 1px 0 rgba(255,255,255,.2)}
+.muse-sheet-bar i{box-shadow:0 0 12px -2px var(--ritual-color,var(--accent-primary))}
+.muse-sheet-months li[data-current] .muse-sheet-mname{color:var(--accent-pop,var(--accent-primary))}
+/* The year as a night sky of days: no spreadsheet lines; every day is a dot, a lit day is a glowing orb, a missed day a
+   dim ring, unscheduled days barely there. The current month keeps its soft column of light. */
+.muse-sheet{background:radial-gradient(80% 60% at 70% 0%,color-mix(in srgb,var(--tracker) 10%,transparent),transparent 70%),color-mix(in srgb,var(--surface-subtle) 60%,transparent)!important}
+.muse-sheet-slot{display:grid!important;place-items:center;border:0!important;padding:1px!important}
+.muse-sheet-slot[data-void]{background:none!important}
+.muse-sheet-month,.muse-sheet-day{border:0!important}
+.muse-sheet .muse-sheet-cell{width:auto!important;height:78%!important;aspect-ratio:1;max-height:15px;border-radius:50%!important;background:color-mix(in srgb,var(--foreground) 9%,transparent)}
+.muse-sheet .muse-sheet-cell:is([data-level="1"],[data-level="2"],[data-level="3"],[data-level="4"],[data-category]){background:radial-gradient(circle at 35% 30%,rgb(255 255 255 / .6),transparent 45%),var(--fill)!important}
+.muse-sheet .muse-sheet-cell:is([data-level="4"],[data-category]){box-shadow:0 0 8px 1px color-mix(in srgb,var(--category,var(--tracker)) 65%,transparent)!important}
+.muse-sheet .muse-sheet-cell[data-status=missed]{background:none!important;box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--foreground) 30%,transparent)!important}
+.muse-sheet .muse-sheet-cell[data-status=unscheduled]{background:color-mix(in srgb,var(--foreground) 4%,transparent)!important;height:40%!important}
+.muse-sheet .muse-sheet-cell[data-status=upcoming]{background:color-mix(in srgb,var(--foreground) 5%,transparent)!important;height:50%!important}
+.muse-sheet .muse-sheet-cell.muse-today-ring{box-shadow:0 0 0 2px var(--accent-pop,var(--accent-primary)),0 0 12px var(--accent-pop,var(--accent-primary))!important}
+.muse-sheet-side .muse-sheet-swatch{border-radius:50%}
