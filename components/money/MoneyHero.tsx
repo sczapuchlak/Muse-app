@@ -146,7 +146,7 @@ export function SpendingFacts({period,today}:{period:MoneyPeriod;today:string}){
 }
 
 /** A vertical list that pages in fixed sets, with the shared carousel bar (locked height, never grows). */
-function Paged<T>({items,size,label,render}:{items:T[];size:number;label:string;render:(item:T)=>React.ReactNode}){
+export function Paged<T>({items,size,label,render}:{items:T[];size:number;label:string;render:(item:T)=>React.ReactNode}){
  const [page,setPage]=useState(0),pages=Math.max(1,Math.ceil(items.length/size)),p=Math.min(page,pages-1),shown=items.slice(p*size,p*size+size);
  return <div className="muse-money-paged" role="region" aria-roledescription="carousel" aria-label={label}>
   <div className="muse-entry-carousel-bar"><span className="muse-entry-carousel-where">{items.length?<small>{p*size+1}–{p*size+shown.length} of {items.length}</small>:null}</span>{pages>1&&<span className="muse-entry-carousel-arrows"><button type="button" aria-label={`Previous ${label}`} disabled={p===0} onClick={()=>setPage(p-1)}><MuseIcon name="chevron" size={14}/></button><button type="button" aria-label={`Next ${label}`} disabled={p===pages-1} onClick={()=>setPage(p+1)}><MuseIcon name="chevron" size={14}/></button></span>}</div>
