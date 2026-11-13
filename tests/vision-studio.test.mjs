@@ -158,6 +158,7 @@ test('asset import: SVGs are sanitized; nothing executable or external survives'
  assert.match(clean,/href="#ok"/,'internal references are kept');
  assert.equal(sanitizeSvg('<html>not svg</html>'),null);
  assert.equal(slug('Pink Gingham (Large)!'),'pink-gingham-large');
+ assert.match(read('proxy.ts'),/vision-assets\//,'public library art skips the auth proxy (no per-tile session check)');
  const doc=read('docs/VISION_ASSETS.md');assert.match(doc,/npm run vision:assets/);assert.match(doc,/assets-src\/vision/);
 });
 
