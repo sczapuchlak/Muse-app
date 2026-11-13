@@ -22,6 +22,7 @@ import { useMemoryRange } from "../../memories/useMemories";
 import { ReadingSection } from "./ReadingSection";
 import "../Insights.css";
 import "./Glance.css";
+import './GlanceGlow.css';
 
 const periodKey = "muse.insights.period";
 /** The Day view belongs to the Daily Edit, so Insights offers Week / Month / Year for now. An old ?period=day or a remembered Day falls back to Week. (The Day layout below is kept for later.) */

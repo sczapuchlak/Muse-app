@@ -1,4 +1,5 @@
 "use client";
+import { MuseMark, type MuseMarkIcon, type MuseTone } from "@/components/design/MuseHeading";
 import { recordedFeelings, type FeelingSnapshot } from "@/lib/feelings";
 import Link from "next/link";
 import { useState } from "react";
@@ -29,11 +30,14 @@ const categoryIcon: Record<MovementCategory, MuseIconName> = { strength: "dumbbe
 const categoryLabel: Record<MovementCategory, string> = { strength: "Strength", cardio: "Cardio", mobility: "Mobility", other: "Other" };
 
 // ---------- Shared pieces ----------
+/** Each Insights subject keeps one meaningful glyph and colour wherever it appears (week, month or year). */
+const glanceMarks: [RegExp, MuseMarkIcon, MuseTone][] = [[/overall day/i, "sun", 4], [/how it felt|feeling/i, "heart", 2], [/priorit/i, "target", 1], [/water/i, "pulse", 6], [/step/i, "map", 3], [/movement/i, "bolt", 3], [/day in three/i, "smile", 8], [/bright days/i, "sparkle", 4], [/intention/i, "quill", 5], [/little moments/i, "keepsake", 7], [/meal/i, "utensils", 3], [/book/i, "openbook", 5], [/month in color|month by month|year/i, "calendar", 1]];
+function glanceMark(title: string, fallback: MuseIconName): { icon: MuseMarkIcon; tone: MuseTone } { const found = glanceMarks.find(([test]) => test.test(title)); return found ? { icon: found[1], tone: found[2] } : { icon: fallback, tone: 1 }; }
 /** One glance card: shared Muse card, a bold heading with a gradient icon bubble, and an optional footnote. */
 export function GlanceCard({ id, title, icon, children, area, note, action, tone }: { id: string; title: string; icon: MuseIconName; children: ReactNode; area?: string; note?: ReactNode; action?: ReactNode; tone?: "warm" | "cool" | "pop" }) {
   return <section className="muse-card muse-glance-card" data-area={area} data-tone={tone} aria-labelledby={`${id}-title`}>
     <header className="muse-glance-card-head">
-      <h2 id={`${id}-title`} className="muse-glance-card-title"><span className="muse-glance-badge" aria-hidden="true"><MuseIcon name={icon} size={16} /></span>{title}</h2>
+      <h2 id={`${id}-title`} className="muse-glance-card-title"><MuseMark {...glanceMark(title, icon)} /><span>{title}</span></h2>
       {action}
     </header>
     <div className="muse-glance-card-body">{children}</div>

@@ -1,0 +1,38 @@
+/*
+ * Insights glow-up 2: a personal data story in the same voice as Books. Editorial titles with jewel marks, big numbers
+ * in the editorial face with the theme gradient (as in the Reading Atlas ribbon), solid card surfaces, a framed plot
+ * area for charts, and quieter supporting text. Data, calculations and the "read the values" tables are unchanged.
+ */
+.muse-glance .muse-glance-card{gap:14px;background-image:radial-gradient(110% 80% at 100% 0%,color-mix(in srgb,var(--glance-ink,var(--chart-1)) 10%,transparent),transparent 60%)}
+.muse-glance .muse-glance-card-title{gap:11px;font-size:1.22rem;font-weight:var(--type-editorial-weight);letter-spacing:-.005em;color:var(--foreground)}
+.muse-glance .muse-glance-card-title .muse-mark{width:32px;height:32px;border-radius:11px}
+.muse-glance .muse-glance-card-head{padding-bottom:12px;border-bottom:1px solid color-mix(in srgb,var(--glass-border) 70%,transparent)}
+/* Big numbers: the editorial face, as in the Reading Atlas. */
+.muse-glance :is(.muse-glance-hero strong,.muse-glance-ring strong,.muse-glance-yearstats strong,.muse-glance-month-value,.muse-glance-bright-score){font-family:var(--font-editorial);font-weight:520;letter-spacing:-.03em;font-variant-numeric:lining-nums}
+.muse-glance .muse-glance-hero strong{font-size:clamp(2.6rem,4.2vw,3.4rem);line-height:.95}
+.muse-glance .muse-glance-ring strong{font-size:calc(var(--size) * .34)}
+.muse-glance :is(.muse-glance-pair dd,.muse-glance-statrow dd){font-family:var(--font-editorial);font-weight:540;font-size:1.3rem;letter-spacing:-.02em}
+.muse-glance :is(.muse-glance-pair div,.muse-glance-statrow div){background:var(--surface-subtle);border-color:color-mix(in srgb,var(--glass-border) 80%,transparent);border-radius:14px}
+.muse-glance :is(.muse-glance-pair dt,.muse-glance-statrow dt){font-weight:650;letter-spacing:.06em;text-transform:uppercase;font-size:.66rem}
+/* The period title reads like a chapter heading. */
+.muse-glance .muse-glance-toolbar .muse-agenda-title{font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight)}
+/* Charts sit in a framed plot area so their marks never float on the card edge. */
+.muse-glance :is(.muse-glance-months,.muse-glance-minibars,.muse-glance-feelcols,.muse-glance-calendar,.muse-glance-week){padding:12px;border-radius:16px;background:var(--surface-subtle);border:1px solid color-mix(in srgb,var(--glass-border) 70%,transparent)}
+.muse-glance .muse-glance-week{gap:8px}
+/* Year stats: jewel bubbles instead of grey circles. */
+.muse-glance .muse-glance-yearstats li{background-color:var(--glass-background);background-image:radial-gradient(120% 120% at 0% 0%,color-mix(in srgb,var(--chart-1) 12%,transparent),transparent 60%)}
+.muse-glance .muse-glance-yearstats li:nth-child(2){background-image:radial-gradient(120% 120% at 0% 0%,color-mix(in srgb,var(--chart-2) 12%,transparent),transparent 60%)}
+.muse-glance .muse-glance-yearstats li:nth-child(3){background-image:radial-gradient(120% 120% at 0% 0%,color-mix(in srgb,var(--chart-4) 12%,transparent),transparent 60%)}
+.muse-glance .muse-glance-yearstats li:nth-child(4){background-image:radial-gradient(120% 120% at 0% 0%,color-mix(in srgb,var(--chart-3) 12%,transparent),transparent 60%)}
+.muse-glance .muse-glance-yearstats li:nth-child(5){background-image:radial-gradient(120% 120% at 0% 0%,color-mix(in srgb,var(--chart-5) 12%,transparent),transparent 60%)}
+.muse-glance .muse-glance-yearstats span{background:color-mix(in srgb,var(--chart-1) 18%,var(--surface-subtle));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--chart-1) 35%,transparent)}
+.muse-glance .muse-glance-yearstats strong{font-size:2rem}
+/* Badges inside content (category bars) keep a white glyph on a deep tile, never a dark glyph on neon. */
+.muse-glance .muse-glance-badge{color:white;background:linear-gradient(140deg,color-mix(in srgb,var(--accent-primary) 80%,black),color-mix(in srgb,var(--accent-secondary) 75%,black))}
+/* Week tiles: today and rated days carry colour; unrated days recede. */
+.muse-glance .muse-glance-mini{background-image:linear-gradient(180deg,color-mix(in srgb,var(--chart-1) 8%,transparent),transparent 55%)}
+.muse-glance .muse-glance-mini[data-empty]:not([data-future]){background-image:none}
+.muse-glance .muse-glance-mini-day strong{font-family:var(--font-editorial);font-weight:520;font-size:1.45rem}
+.muse-glance .muse-glance-mini-rating{font-family:var(--font-editorial);font-weight:540;font-size:1.05rem}
+/* Empty states are quiet notes, not grey slabs. */
+.muse-glance .muse-glance-empty{border-style:dashed;background:transparent}

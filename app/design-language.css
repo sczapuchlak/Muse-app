@@ -197,3 +197,23 @@
 /* Control bars that sit directly on the atmosphere (search, segmented pickers, the date pill, week jump) are solid in
    every theme, not only the role themes: a see-through bar over a vivid background reads as a different app. */
 :is(.date-navigation,.muse-segmented,.muse-search,.muse-week-jump,.muse-atlas-sections):not(:is(.muse-card,.muse-sheet,.muse-panel,.muse-insight-panel,.muse-money-panel,.muse-modal,.muse-drawer,.muse-popover-panel) *){background-color:var(--glass-background)}
+
+/*
+ * Mark contrast (glow-up 2). A tile is always a deep jewel tone of its hue with a white glyph, so it reads in every
+ * theme: pastel chart inks (Glitter, Malibu) are deepened and neon inks are calmed to the same lightness band.
+ * Relative colour keeps the hue from the theme; nothing here names a palette.
+ */
+@supports (color: oklch(from red l c h)) {
+  .muse-mark{
+    --mark-deep:oklch(from var(--mark-a) min(l, .58) max(c, .13) h);
+    --mark-deep-2:oklch(from var(--mark-b) min(l, .52) max(c, .12) h);
+    color:white;
+    background:linear-gradient(140deg,oklch(from var(--mark-a) min(calc(l + .06), .66) max(c, .13) h),var(--mark-deep) 52%,var(--mark-deep-2));
+    box-shadow:0 6px 16px -6px color-mix(in srgb,var(--mark-deep) 75%,transparent),inset 0 1px 0 color-mix(in srgb,white 40%,transparent),inset 0 -1px 0 color-mix(in srgb,black 18%,transparent);
+  }
+  .muse-mark[data-variant=soft]{color:oklch(from var(--mark-a) min(l, .5) max(c, .12) h);background:color-mix(in srgb,var(--mark-a) 16%,var(--surface-control));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--mark-a) 45%,transparent)}
+  :root:is([data-theme="iridescent"],[data-theme="solstice"],[data-theme="issya-bday"],[data-theme="bubblegum-baby"]) .muse-mark[data-variant=soft],
+  :root:is([data-theme="astral"],[data-theme="nightbloom"]) :is(.muse-sheet,.muse-stat-tile,.muse-insight-panel,.muse-card) .muse-mark[data-variant=soft]{color:oklch(from var(--mark-a) min(l, .45) max(c, .12) h)}
+  :root:not(:is([data-theme="iridescent"],[data-theme="solstice"],[data-theme="issya-bday"],[data-theme="bubblegum-baby"])) .muse-mark[data-variant=soft]{color:oklch(from var(--mark-a) max(l, .78) c h)}
+}
+.muse-mark svg{stroke:currentColor}

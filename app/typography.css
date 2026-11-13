@@ -41,3 +41,16 @@ html{font-variation-settings:var(--editorial-axes);font-optical-sizing:auto}
 
 /* Shared numeric surfaces: statistics read in Plus Jakarta Sans with aligned figures. */
 :is(.muse-goals-tiles dd,.muse-across-tile strong,.muse-insight-small-metrics dd,.muse-dream-stat-grid strong,.muse-goals-table,.muse-insight-time dd){font-family:var(--font-ui);font-variant-numeric:tabular-nums lining-nums}
+
+/*
+ * Titles are editorial, content is functional (approved Nov 2026, glow-up 2): card, panel and section titles across
+ * every module use the Fraunces title role; everything inside them (task names, numbers, labels, notes, data) stays
+ * in Plus Jakarta Sans. One list, so a new module title joins it here instead of declaring its own font.
+ */
+:is(.card-heading h2,.muse-glance-card-title,.muse-money-panel-heading h2,.muse-ritual-group-title h2,.muse-mood-history h2,.muse-nourish-section-heading h2,.muse-notes-pane-heading h2,.muse-stream-settings h2,.muse-settings-group h3,.muse-insight-panel>header h2,.muse-insight-panel>header h3,.muse-quest-section-head h2,.muse-dream-atlas-card h4,.muse-books-panel h4,.muse-plans-title h3,.muse-upnext h3,.muse-section-intro>:is(h2,h3)){
+  font-family:var(--font-editorial);font-style:normal;font-weight:var(--type-editorial-weight);letter-spacing:-.005em;
+}
+.card-heading h2{gap:10px;font-size:1.18rem;line-height:1.25}
+.card-heading h2 .card-heading-mark{width:30px;height:30px;border-radius:10px}
+.card-heading h2 .card-heading-mark svg{width:16px;height:16px}
+.muse-daily-section-title{font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight);font-size:clamp(1.35rem,2.2vw,1.7rem);letter-spacing:-.01em}
