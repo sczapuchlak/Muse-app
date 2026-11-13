@@ -3,9 +3,14 @@ import {useId,type CSSProperties} from 'react';
 /** Ten hand-placed points of a celestial band (viewBox 100×56). Areas take them in order; more than ten wrap. */
 export const starPoints:[number,number][]=[[7,36],[17,17],[28,38],[38,12],[49,31],[58,9],[67,40],[77,20],[86,44],[94,15]];
 const threads:[number,number][]=[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,7],[7,8],[7,9],[2,4],[4,6]];
-/** The hero's wider web (viewBox 140×46): a zig-zag lattice where every area links to its neighbours and the next but one. */
-const webPoints:[number,number][]=[[8,30],[22,11],[36,33],[50,12],[63,30],[77,9],[90,31],[104,13],[118,33],[132,12]];
-const webThreads:[number,number][]=[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,7],[7,8],[8,9],[0,2],[1,3],[2,4],[3,5],[4,6],[5,7],[6,8],[7,9]];
+/**
+ * The hero's sky (viewBox 140×46): an irregular asterism, like a real constellation rather than a pattern. It rises from
+ * low on the left toward the upper right, with a main spine and a few branching arms, so nothing crowds the hero's words.
+ * Each point carries where its label sits (above or below), chosen so no two labels collide.
+ */
+const webPoints:[number,number][]=[[18,30],[33,19],[44,36],[52,10],[67,25],[80,6],[90,33],[101,18],[116,38],[129,8]];
+const webAbove=[false,true,false,true,false,true,false,true,false,true];
+const webThreads:[number,number][]=[[0,1],[1,3],[3,5],[5,7],[7,9],[1,2],[3,4],[4,6],[7,8],[4,7]];
 export type StarState={id:string;label:string;count:number;achieved:number;tone:number};
 
 /**
@@ -27,7 +32,7 @@ export function AtlasConstellation({stars,labelled=false,current,reveal=false,cl
     style={{'--i':i,'--star':`var(--chart-${s.tone})`} as CSSProperties} transform={`translate(${p[0]} ${p[1]})`}>
     {s.count>0&&<circle className="muse-lifeatlas-star-halo" r={r*3.4} fill={`url(#${glow})`}/>}
     <path className="muse-lifeatlas-star-shape" d={`M0 ${-r*1.6}C${r*.18} ${-r*.3} ${r*.3} ${-r*.18} ${r*1.6} 0C${r*.3} ${r*.18} ${r*.18} ${r*.3} 0 ${r*1.6}C${-r*.18} ${r*.3} ${-r*.3} ${r*.18} ${-r*1.6} 0C${-r*.3} ${-r*.18} ${-r*.18} ${-r*.3} 0 ${-r*1.6}Z`}/>
-    {labelled&&<text className="muse-lifeatlas-star-label" y={web?(p[1]>mid?r*2.1+4:-r*2.1-1.4):(p[1]>mid?-r*2.1-1.6:r*2.1+3.2)} textAnchor="middle">{s.label}</text>}
+    {labelled&&<text className="muse-lifeatlas-star-label" y={web?(webAbove[i%webAbove.length]?-r*2.1-1.2:r*2.1+3):(p[1]>mid?-r*2.1-1.6:r*2.1+3.2)} textAnchor="middle">{s.label}</text>}
    </g>;})}
  </svg>;
 }
