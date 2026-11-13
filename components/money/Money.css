@@ -343,3 +343,19 @@ details.muse-money-footnote[open]>summary{margin-bottom:4px}
 .muse-money-upcoming strong small { display:inline; font-weight:400; }
 .muse-money-unknown { color:var(--text-muted); font-size:.72rem; font-weight:500; }
 .muse-money-upcoming-more { justify-self:start; margin-top:var(--space-2); }
+
+/* ── Money glow-up 2: marked editorial panel titles, an aura in each panel's colour, editorial big numbers ── */
+.muse-money-panel:has(>.muse-money-panel-heading[data-tone]){--aura:var(--chart-1);background-image:radial-gradient(90% 70% at 100% 0%,color-mix(in srgb,var(--aura) 12%,transparent),transparent 62%)}
+.muse-money-panel:has(>.muse-money-panel-heading[data-tone="2"]){--aura:var(--chart-2)}.muse-money-panel:has(>.muse-money-panel-heading[data-tone="3"]){--aura:var(--chart-3)}
+.muse-money-panel:has(>.muse-money-panel-heading[data-tone="4"]){--aura:var(--chart-4)}.muse-money-panel:has(>.muse-money-panel-heading[data-tone="5"]){--aura:var(--chart-5)}
+.muse-money-panel:has(>.muse-money-panel-heading[data-tone="6"]){--aura:var(--chart-6)}.muse-money-panel:has(>.muse-money-panel-heading[data-tone="7"]){--aura:var(--chart-7)}
+.muse-money-panel:has(>.muse-money-panel-heading[data-tone="8"]){--aura:var(--chart-8)}
+.muse-money-panel-heading h2{gap:10px;font-size:1.28rem}
+.muse-money-panel-heading h2::after{display:none}
+.muse-money-panel-heading[data-tone]{position:relative;padding-bottom:12px;margin-bottom:6px}
+.muse-money-panel-heading[data-tone]::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:linear-gradient(90deg,color-mix(in srgb,var(--aura,var(--chart-1)) 70%,transparent),color-mix(in srgb,var(--glass-border) 80%,transparent) 40%,transparent)}
+.muse-money-mark.muse-mark{width:30px;height:30px;border-radius:10px}
+.muse-money-mark.muse-mark svg{width:15px;height:15px}
+.muse-money-income,.muse-money-tiles dd{font-family:var(--font-editorial);font-weight:540;letter-spacing:-.025em;font-variant-numeric:lining-nums tabular-nums}
+.muse-money-income{font-size:clamp(2.2rem,3.6vw,2.9rem)}
+.muse-money-panel-heading h2 .muse-money-mark{margin-right:10px}

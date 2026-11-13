@@ -229,3 +229,16 @@
 /* The stat tile's underline runs the full width of the tile, in the tile's own two tones. */
 .muse-stat-tile::after{left:0;right:0;height:3px;border-radius:0;background:linear-gradient(90deg,var(--mark-a),var(--mark-b,var(--mark-a)));opacity:.85}
 .muse-stat-tile{border-bottom-left-radius:var(--dl-radius-tile);border-bottom-right-radius:var(--dl-radius-tile)}
+
+/*
+ * Card aura (glow-up 2): every card that leads with a marked heading carries that subject's colour as a soft light
+ * in its top corner and a fine hairline under the title, so a page of cards reads as a curated set, not a grid of
+ * identical boxes. The fill stays the one card surface; only light is added.
+ */
+.muse-card:has(.card-heading[data-tone]){--aura:var(--chart-1);background-image:radial-gradient(90% 70% at 100% 0%,color-mix(in srgb,var(--aura) 13%,transparent),transparent 62%),radial-gradient(60% 50% at 0% 0%,color-mix(in srgb,var(--aura) 7%,transparent),transparent 70%)}
+.muse-card:has(.card-heading[data-tone="2"]){--aura:var(--chart-2)}.muse-card:has(.card-heading[data-tone="3"]){--aura:var(--chart-3)}
+.muse-card:has(.card-heading[data-tone="4"]){--aura:var(--chart-4)}.muse-card:has(.card-heading[data-tone="5"]){--aura:var(--chart-5)}
+.muse-card:has(.card-heading[data-tone="6"]){--aura:var(--chart-6)}.muse-card:has(.card-heading[data-tone="7"]){--aura:var(--chart-7)}
+.muse-card:has(.card-heading[data-tone="8"]){--aura:var(--chart-8)}
+.muse-card .card-heading[data-tone]{position:relative}
+.muse-card .card-heading[data-tone]::after{content:"";position:absolute;left:0;right:0;bottom:-8px;height:1px;background:linear-gradient(90deg,color-mix(in srgb,var(--aura,var(--chart-1)) 70%,transparent),color-mix(in srgb,var(--glass-border) 80%,transparent) 40%,transparent)}

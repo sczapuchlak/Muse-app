@@ -81,3 +81,5 @@
 .movement-card .movement-outcome-empty{margin:0}
 .movement-lane-title{margin:0;font-size:.74rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted)}
 .movement-lane-head .movement-area-title{margin:0}
+/* Glow-up 2: the short accent dash gives way to the shared full hairline in each card's own colour. */
+.daily-working-grid .muse-card .card-heading[data-tone]::after{left:0;right:0;bottom:-8px;width:auto;height:1px;border-radius:0;background:linear-gradient(90deg,color-mix(in srgb,var(--aura,var(--chart-1)) 70%,transparent),color-mix(in srgb,var(--glass-border) 80%,transparent) 40%,transparent)}
