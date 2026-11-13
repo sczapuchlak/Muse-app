@@ -152,3 +152,14 @@
 .muse-books-mark.muse-mark svg{width:15px;height:15px}
 .muse-plans-title>.small-label,.muse-trends-head .small-label,.muse-upnext-head .small-label{display:none}
 .muse-desk-reading .muse-desk-card{width:100%}
+.muse-finished-card strong{-webkit-line-clamp:3;line-clamp:3;font-size:.92rem}
+
+/* Round 4 (Nov 13): the old layout, with breathing room around the Currently reading title. It uses the card's spare
+   space (the card doesn't grow). */
+.muse-dash-col .muse-desk-reading>.muse-desk-head{padding-top:6px;margin-bottom:16px}
+/* Every book in the Currently reading carousel is the same height (the tallest title sets it), with progress and the
+   buttons on one line across cards, so a long title paged off-screen never leaves empty space under the visible ones. */
+.muse-dash-col .muse-desk-track,.muse-dash-col .muse-desk-layout[data-count] .muse-desk-track{align-items:stretch!important}
+.muse-dash-col .muse-desk-track>li{height:auto;display:grid}
+.muse-bookshelf[data-surface="dashboard"] .muse-dash-col .muse-desk-layout .muse-desk-tile{height:100%!important;grid-template-rows:auto 1fr auto!important}
+.muse-bookshelf[data-surface="dashboard"] .muse-dash-col .muse-desk-tile-progress{align-self:end}

@@ -54,17 +54,17 @@ export const moduleSizes=['full','wide','half','third'] as const;
 export type ModuleSize=typeof moduleSizes[number];
 export type ReflectionModule<T extends ModuleType=ModuleType>={id:string;type:T;title:string;size:ModuleSize;hidden?:boolean;content:ModuleContent[T]};
 
-export const moduleTypes:{id:ModuleType;label:string;emoji:string;hint:string;defaultTitle:string;size:ModuleSize;repeatable:boolean}[]=[
- {id:'memories',label:'Memories',emoji:'💌',hint:'Little stories with a date and photos.',defaultTitle:'Little memories',size:'wide',repeatable:true},
- {id:'photos',label:'Photo moments',emoji:'📸',hint:'A single photo, a pair or a small gallery.',defaultTitle:'Photo moments',size:'wide',repeatable:true},
- {id:'music',label:'On repeat',emoji:'🎧',hint:'Songs and artists you kept coming back to.',defaultTitle:'On repeat',size:'half',repeatable:true},
- {id:'books',label:'Books & stories',emoji:'📚',hint:'What you read, with a note or rating.',defaultTitle:'Books & stories',size:'half',repeatable:true},
- {id:'watching',label:'Watching',emoji:'🎬',hint:'Movies and shows worth remembering.',defaultTitle:'What I watched',size:'half',repeatable:true},
- {id:'favorites',label:'Favorites',emoji:'💖',hint:'Anything you loved: food, places, finds.',defaultTitle:'Favorite things',size:'half',repeatable:true},
- {id:'highlights',label:'Highlights',emoji:'🏆',hint:'Wins, milestones and meaningful moments.',defaultTitle:'Highlights',size:'half',repeatable:true},
- {id:'guided',label:'Guided reflection',emoji:'🌱',hint:'Gratitude, lessons, intentions or your own question.',defaultTitle:'Gratitude',size:'half',repeatable:true},
- {id:'writing',label:'Freeform writing',emoji:'✍️',hint:'Write anything, in your own words.',defaultTitle:'Notes to self',size:'full',repeatable:true},
- {id:'level10',label:'Level 10 Life',emoji:'🌈',hint:'Rate ten areas of life from 1 to 10.',defaultTitle:'Level 10 Life',size:'full',repeatable:false},
+export const moduleTypes:{id:ModuleType;glyph:string;tone:number;label:string;emoji:string;hint:string;defaultTitle:string;size:ModuleSize;repeatable:boolean}[]=[
+ {id:'memories',glyph:'keepsake',tone:4,label:'Memories',emoji:'💌',hint:'Little stories with a date and photos.',defaultTitle:'Little memories',size:'wide',repeatable:true},
+ {id:'photos',glyph:'palette',tone:6,label:'Photo moments',emoji:'📸',hint:'A single photo, a pair or a small gallery.',defaultTitle:'Photo moments',size:'wide',repeatable:true},
+ {id:'music',glyph:'music',tone:7,label:'On repeat',emoji:'🎧',hint:'Songs and artists you kept coming back to.',defaultTitle:'On repeat',size:'half',repeatable:true},
+ {id:'books',glyph:'openbook',tone:5,label:'Books & stories',emoji:'📚',hint:'What you read, with a note or rating.',defaultTitle:'Books & stories',size:'half',repeatable:true},
+ {id:'watching',glyph:'film',tone:3,label:'Watching',emoji:'🎬',hint:'Movies and shows worth remembering.',defaultTitle:'What I watched',size:'half',repeatable:true},
+ {id:'favorites',glyph:'heart',tone:2,label:'Favorites',emoji:'💖',hint:'Anything you loved: food, places, finds.',defaultTitle:'Favorite things',size:'half',repeatable:true},
+ {id:'highlights',glyph:'trophy',tone:8,label:'Highlights',emoji:'🏆',hint:'Wins, milestones and meaningful moments.',defaultTitle:'Highlights',size:'half',repeatable:true},
+ {id:'guided',glyph:'seedling',tone:1,label:'Guided reflection',emoji:'🌱',hint:'Gratitude, lessons, intentions or your own question.',defaultTitle:'Gratitude',size:'half',repeatable:true},
+ {id:'writing',glyph:'quill',tone:5,label:'Freeform writing',emoji:'✍️',hint:'Write anything, in your own words.',defaultTitle:'Notes to self',size:'full',repeatable:true},
+ {id:'level10',glyph:'compass',tone:3,label:'Level 10 Life',emoji:'🌈',hint:'Rate ten areas of life from 1 to 10.',defaultTitle:'Level 10 Life',size:'full',repeatable:false},
 ];
 export const moduleType=(t:ModuleType)=>moduleTypes.find(m=>m.id===t)!;
 

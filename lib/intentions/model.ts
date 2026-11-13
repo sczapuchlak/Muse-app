@@ -73,25 +73,25 @@ export const MAX_SECTIONS = 30;
 
 /** The sections a person can add. `key` names a section kind (a type plus its prompt). */
 export const sectionKinds = [
-  { key: "intention", type: "writing", prompt: "intention", title: "My intention", emoji: "🌙", hint: "What this chapter should feel like." },
-  { key: "theme", type: "theme", title: "Theme", emoji: "✨", hint: "A word or theme to carry with you." },
-  { key: "priorities", type: "priorities", title: "Top priorities", emoji: "🎯", hint: "Three to five areas of focus." },
-  { key: "forward", type: "forward", title: "Things I'm looking forward to", emoji: "🎟️", hint: "Plans, events and little excitements." },
-  { key: "aspirations", type: "aspirations", title: "Aspirations I'm nurturing", emoji: "🌱", hint: "Choose from your Aspirations in Envision." },
-  { key: "rituals", type: "rituals", title: "Habits & rituals to focus on", emoji: "🔁", hint: "Choose rituals to give extra care." },
-  { key: "bucket", type: "bucket", title: "Bucket List experiences", emoji: "🗺️", hint: "Dreams from your Bucket List to chase." },
-  { key: "boards", type: "boards", title: "Vision board", emoji: "🖼️", hint: "Show a board from Envision." },
-  { key: "try", type: "list", prompt: "try", title: "Things I want to try", emoji: "🧪", hint: "Experiments and new experiences." },
-  { key: "promise", type: "writing", prompt: "promise", title: "A promise to myself", emoji: "🤞", hint: "A mantra or a commitment." },
-  { key: "matters", type: "list", prompt: "matters", title: "What matters most", emoji: "💗", hint: "The few things that count." },
-  { key: "milestones", type: "list", prompt: "milestones", title: "Milestones", emoji: "🪜", hint: "Steps that show it's working." },
-  { key: "growth", type: "list", prompt: "growth", title: "Personal growth", emoji: "🌿", hint: "Who you're growing into." },
-  { key: "simplify", type: "list", prompt: "simplify", title: "What to simplify", emoji: "🍃", hint: "What to let go of or pause." },
-  { key: "areas", type: "list", prompt: "areas", title: "Life areas to nurture", emoji: "🌈", hint: "Health, love, home, work, play…" },
-  { key: "vision", type: "writing", prompt: "vision", title: "Personal vision", emoji: "🔭", hint: "The big picture, in your words." },
-  { key: "custom-list", type: "list", prompt: "custom", title: "My own list", emoji: "📝", hint: "A list with your own title." },
-  { key: "custom-writing", type: "writing", prompt: "custom", title: "Notes to self", emoji: "✍️", hint: "Write anything." },
-] as const satisfies readonly { key: string; type: SectionType; prompt?: string; title: string; emoji: string; hint: string }[];
+  { key: "intention", glyph: "crescent", tone: 7, type: "writing", prompt: "intention", title: "My intention", emoji: "🌙", hint: "What this chapter should feel like." },
+  { key: "theme", glyph: "sparkle", tone: 2, type: "theme", title: "Theme", emoji: "✨", hint: "A word or theme to carry with you." },
+  { key: "priorities", glyph: "target", tone: 1, type: "priorities", title: "Top priorities", emoji: "🎯", hint: "Three to five areas of focus." },
+  { key: "forward", glyph: "gift", tone: 4, type: "forward", title: "Things I'm looking forward to", emoji: "🎟️", hint: "Plans, events and little excitements." },
+  { key: "aspirations", glyph: "seedling", tone: 3, type: "aspirations", title: "Aspirations I'm nurturing", emoji: "🌱", hint: "Choose from your Aspirations in Envision." },
+  { key: "rituals", glyph: "repeat", tone: 6, type: "rituals", title: "Habits & rituals to focus on", emoji: "🔁", hint: "Choose rituals to give extra care." },
+  { key: "bucket", glyph: "map", tone: 5, type: "bucket", title: "Bucket List experiences", emoji: "🗺️", hint: "Dreams from your Bucket List to chase." },
+  { key: "boards", glyph: "palette", tone: 8, type: "boards", title: "Vision board", emoji: "🖼️", hint: "Show a board from Envision." },
+  { key: "try", glyph: "potion", tone: 2, type: "list", prompt: "try", title: "Things I want to try", emoji: "🧪", hint: "Experiments and new experiences." },
+  { key: "promise", glyph: "key", tone: 7, type: "writing", prompt: "promise", title: "A promise to myself", emoji: "🤞", hint: "A mantra or a commitment." },
+  { key: "matters", glyph: "heart", tone: 4, type: "list", prompt: "matters", title: "What matters most", emoji: "💗", hint: "The few things that count." },
+  { key: "milestones", glyph: "milestone", tone: 3, type: "list", prompt: "milestones", title: "Milestones", emoji: "🪜", hint: "Steps that show it's working." },
+  { key: "growth", glyph: "leaf", tone: 1, type: "list", prompt: "growth", title: "Personal growth", emoji: "🌿", hint: "Who you're growing into." },
+  { key: "simplify", glyph: "summit", tone: 6, type: "list", prompt: "simplify", title: "What to simplify", emoji: "🍃", hint: "What to let go of or pause." },
+  { key: "areas", glyph: "compass", tone: 5, type: "list", prompt: "areas", title: "Life areas to nurture", emoji: "🌈", hint: "Health, love, home, work, play…" },
+  { key: "vision", glyph: "telescope", tone: 8, type: "writing", prompt: "vision", title: "Personal vision", emoji: "🔭", hint: "The big picture, in your words." },
+  { key: "custom-list", glyph: "list", tone: 2, type: "list", prompt: "custom", title: "My own list", emoji: "📝", hint: "A list with your own title." },
+  { key: "custom-writing", glyph: "quill", tone: 7, type: "writing", prompt: "custom", title: "Notes to self", emoji: "✍️", hint: "Write anything." },
+] as const satisfies readonly { key: string; glyph: string; tone: number; type: SectionType; prompt?: string; title: string; emoji: string; hint: string }[];
 export type SectionKindKey = typeof sectionKinds[number]["key"];
 export const sectionKind = (key: SectionKindKey) => sectionKinds.find((k) => k.key === key)!;
 /** The kind a saved section belongs to (for its emoji and hint). */

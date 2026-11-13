@@ -3,8 +3,18 @@
 import {useEffect,useState,type CSSProperties,type ReactNode} from 'react';
 import type {Book} from '@/lib/whimsy/models';
 import {validCoverUrl} from '@/lib/whimsy/books';
+import './CoverGlow.css';
 
 const paletteCache=new Map<string,string|null>();
+
+/**
+ * Ambient light from a book's own cover: a real element holding the cover, blurred behind the card's content.
+ * (A pseudo-element reading a url() custom property didn't paint in Safari.) Renders nothing without a usable cover.
+ */
+export function CoverGlow({url}:{url?:string|null}){
+ if(!url||!validCoverUrl(url))return null;
+ return <span className="muse-cover-glow" aria-hidden="true" style={{backgroundImage:`url("${url.replace(/"/g,'%22')}")`}}/>;
+}
 
 /** A small, guarded sample. Cross-origin hosts without CORS simply use Muse's theme palette. */
 function coverColor(src:string):Promise<string|null>{

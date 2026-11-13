@@ -1,6 +1,8 @@
 "use client";
 import Link from "next/link";
+import { CoverGlow } from "../../whimsy/BookAtmosphere";
 import { BookCover } from "../../whimsy/Bookshelf";
+import { EntryCarousel } from "../../design/EntryCarousel";
 import { MuseIcon } from "../../MuseIcon";
 import { GlanceCard, Empty } from "./GlanceSections";
 import { readingDuration, readingProgressModes, type currentlyReading, type GlancePeriod, type readingGlance, type ReadingProgressMode } from "@/lib/insights/glance";
@@ -14,24 +16,22 @@ const periodWords: Record<GlancePeriod, string> = { day: "that day", week: "this
  * - Reading in the period: time, pages, reading days and finished books dated inside the period.
  * Progress shows as percent, pages or time (the account preference). Time is reading time, never completion.
  */
-export function ReadingSection({ period, reading, nightstand, status, onRetry, mode, saving, onMode, area }: {
+export function ReadingSection({ period, reading, nightstand, status, onRetry, mode, saving, onMode, area, wide }: {
   period: GlancePeriod; reading: ReturnType<typeof readingGlance>; nightstand: ReturnType<typeof currentlyReading>;
-  status: { loaded: boolean; error?: string }; onRetry: () => void; mode: ReadingProgressMode; saving: boolean; onMode: (mode: ReadingProgressMode) => void; area?: string;
+  status: { loaded: boolean; error?: string }; onRetry: () => void; mode: ReadingProgressMode; saving: boolean; onMode: (mode: ReadingProgressMode) => void; area?: string; wide?: boolean;
 }) {
   return <GlanceCard id="glance-reading" title="Bookshelf" icon="book" area={area} tone="cool"
     action={<div className="muse-segmented muse-glance-mode" role="group" aria-label="Show reading progress as" aria-busy={saving}>
       {readingProgressModes.map((m) => <button key={m.id} type="button" aria-pressed={mode === m.id} onClick={() => onMode(m.id)}>{m.label}</button>)}</div>}>
     {status.error ? <p role="alert">Bookshelf couldn’t load. <button type="button" className="muse-glance-pill" onClick={onRetry}>Retry</button></p>
-      : !status.loaded ? <Empty>Loading your books…</Empty> : <div className="muse-glance-reading">
+      : !status.loaded ? <Empty>Loading your books…</Empty> : wide ? <YearReading period={period} reading={reading} nightstand={nightstand} mode={mode} /> : <div className="muse-glance-reading" data-wide={wide || undefined}><div className="muse-glance-reading-now">
       <div className="muse-glance-subhead"><h3>Now reading</h3><span>as of today</span></div>
       {!nightstand.length ? <p className="muse-glance-empty"><span aria-hidden="true">📚</span>Nothing marked as reading. <Link className="muse-glance-pill" data-size="sm" href="/collections?kind=book">Open Bookshelf</Link></p>
-        : <ul className="muse-glance-books">{nightstand.map((x) => <li key={x.book.id} className="muse-glance-book">
-          <BookCover book={x.book} />
-          <div className="muse-glance-book-body">
-            <strong>{x.book.title}</strong>{x.book.author && <span className="muse-glance-sub">{x.book.author}</span>}
-            <Progress mode={mode} item={x} />
-          </div>
-        </li>)}</ul>}
+        : <EntryCarousel items={nightstand} label="Now reading" minWidth={wide ? 220 : 9999} itemKey={(x) => x.book.id} describe={(x) => x.book.title} render={(x) => <article className="muse-glance-bookcard" data-glow={x.book.coverUrl ? true : undefined}>
+          <CoverGlow url={x.book.coverUrl} /><BookCover book={x.book} />
+          <div className="muse-glance-bookcard-body"><strong>{x.book.title}</strong>{x.book.author && <span className="muse-glance-sub">{x.book.author}</span>}
+          <Progress mode={mode} item={x} /></div>
+        </article>} />}</div><div className="muse-glance-reading-period">
       <div className="muse-glance-subhead"><h3>Reading {periodWords[period]}</h3><span>from saved sessions</span></div>
       {!reading.sessions && !reading.completed.length ? <p className="muse-glance-empty"><span aria-hidden="true">🔖</span>No reading recorded {periodWords[period]}.</p> : <>
         <dl className="muse-glance-statrow" data-cols="2">
@@ -40,11 +40,11 @@ export function ReadingSection({ period, reading, nightstand, status, onRetry, m
           {period !== "day" && <div><dt>📅 Reading days</dt><dd>{reading.readingDays}</dd></div>}
           <div><dt>🏁 Finished</dt><dd>{reading.completed.length}</dd></div>
         </dl>
-        {reading.books.length > 0 && <ul className="muse-glance-chips" aria-label={`Books read ${periodWords[period]}`}>{reading.books.slice(0, 6).map((b) => <li key={b.book.id}>{b.book.title} <b>{[b.seconds ? readingDuration(b.seconds) : "", b.pages ? `${b.pages} pp` : ""].filter(Boolean).join(" · ")}</b></li>)}</ul>}
+        {reading.books.length > 0 && <ul className="muse-glance-chips" aria-label={`Books read ${periodWords[period]}`}>{reading.books.slice(0, 3).map((b) => <li key={b.book.id}>{b.book.title} <b>{[b.seconds ? readingDuration(b.seconds) : "", b.pages ? `${b.pages} pp` : ""].filter(Boolean).join(" · ")}</b></li>)}</ul>}
         {reading.completed.length > 0 && <ul className="muse-glance-finished" aria-label={`Finished ${periodWords[period]}`}>{reading.completed.map((c) => <li key={`${c.book.id}-${c.finishedOn}`}>
           <BookCover book={c.book} /><span><strong>{c.book.title}</strong><span className="muse-glance-sub">🏁 {shortDay(c.finishedOn)}{c.reread ? " · reread" : ""}</span></span></li>)}</ul>}
       </>}
-    </div>}
+    </div></div>}
   </GlanceCard>;
 }
 
@@ -61,4 +61,41 @@ function Progress({ mode, item }: { mode: ReadingProgressMode; item: ReturnType<
 }
 function Bar({ value, max, label }: { value: number; max: number; label: string }) {
   return <span className="muse-glance-meter" role="img" aria-label={label} title={label}><span style={{ width: `${Math.min(100, (value / max) * 100)}%` }} /></span>;
+}
+
+/**
+ * The year's reading in one wide band (Stephanie, Nov 13): three panes with fine dividers. Now reading and Finished are
+ * compact cover cards that page in their own carousels (never a long list); the year's numbers close the band.
+ */
+function YearReading({ period, reading, nightstand, mode }: { period: GlancePeriod; reading: ReturnType<typeof readingGlance>; nightstand: ReturnType<typeof currentlyReading>; mode: ReadingProgressMode }) {
+  const words = periodWords[period], title = period === "year" ? "The year in pages" : period === "month" ? "The month in pages" : "The week in pages";
+  const finished = [...reading.completed].sort((a, b) => b.finishedOn.localeCompare(a.finishedOn)), most = [...reading.books].sort((a, b) => b.seconds - a.seconds)[0];
+  return <div className="muse-glance-yearread">
+    <section className="muse-glance-yearread-pane" aria-label="Now reading">
+      <div className="muse-glance-subhead"><h3>Now reading</h3><span>as of today</span></div>
+      {!nightstand.length ? <p className="muse-glance-empty"><span aria-hidden="true">📚</span>Nothing on the nightstand. <Link className="muse-glance-pill" data-size="sm" href="/collections?kind=book">Open Books</Link></p>
+        : <EntryCarousel items={nightstand} label="Now reading" minWidth={150} itemKey={(x) => x.book.id} describe={(x) => x.book.title} render={(x) => <article className="muse-glance-yearbook" data-kind="reading" data-glow={x.book.coverUrl ? true : undefined}><CoverGlow url={x.book.coverUrl} />
+          <span className="muse-glance-yearbook-cover"><BookCover book={x.book} /></span>
+          <strong>{x.book.title}</strong>{x.book.author && <span className="muse-glance-sub">{x.book.author}</span>}
+          <Progress mode={mode} item={x} /></article>} />}
+    </section>
+    <section className="muse-glance-yearread-pane" aria-label={`Finished ${words}`}>
+      <div className="muse-glance-subhead"><h3>Finished</h3><span>{finished.length} {words}</span></div>
+      {!finished.length ? <p className="muse-glance-empty"><span aria-hidden="true">🏁</span>No finished books dated {words} yet.</p>
+        : <EntryCarousel items={finished} label={`Finished ${words}`} minWidth={150} itemKey={(c) => `${c.book.id}-${c.finishedOn}`} describe={(c) => c.book.title} render={(c) => <article className="muse-glance-yearbook" data-kind="finished" data-glow={c.book.coverUrl ? true : undefined}><CoverGlow url={c.book.coverUrl} />
+          <span className="muse-glance-yearbook-cover"><BookCover book={c.book} /><i aria-hidden="true">✓</i></span>
+          <strong>{c.book.title}</strong>
+          <span className="muse-glance-yearbook-date">🏁 {shortDay(c.finishedOn)}{c.reread ? " · reread" : ""}</span></article>} />}
+    </section>
+    <section className="muse-glance-yearread-pane muse-glance-yearread-stats" aria-label={`Reading ${words}`}>
+      <div className="muse-glance-subhead"><h3>{title}</h3><span>from saved sessions</span></div>
+      <dl>
+        <div><dt>Time</dt><dd>{reading.seconds ? readingDuration(reading.seconds) : "—"}</dd></div>
+        <div><dt>Pages</dt><dd>{reading.pages ? reading.pages.toLocaleString("en-US") : "—"}</dd></div>
+        <div><dt>Reading days</dt><dd>{reading.readingDays}</dd></div>
+        <div><dt>Finished</dt><dd>{reading.completed.length}</dd></div>
+      </dl>
+      {most?.seconds ? <p className="muse-glance-yearread-most"><span className="small-label">Most time with</span> <strong>{most.book.title}</strong> · {readingDuration(most.seconds)}</p> : null}
+    </section>
+  </div>;
 }

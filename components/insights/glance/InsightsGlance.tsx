@@ -63,7 +63,7 @@ export function InsightsGlance() {
   const rate = useMemo(() => movementRate(movement.sessions, range, today), [movement.sessions, range, today]);
   const byCategory = useMemo(() => movementByCategory(wellness.state.activities, wellness.state.types, range), [wellness.state.activities, wellness.state.types, range]);
   const months = useMemo(() => period === "year" ? yearByMonth(range, snapshot.days, checkIns, emotionCatalog, wellness.state.water, water[0]?.unit, wellness.state.activities) : [], [period, range, snapshot.days, checkIns, wellness.state.water, water, wellness.state.activities]);
-  const readingCard = (area?: string) => <ReadingSection area={area} period={period} reading={reading} nightstand={nightstand} status={whimsy.status} onRetry={whimsy.retry}
+  const readingCard = (area?: string, wide?: boolean) => <ReadingSection area={area} wide={wide} period={period} reading={reading} nightstand={nightstand} status={whimsy.status} onRetry={whimsy.retry}
     mode={prefs.preferences.readingProgress} saving={prefs.saving} onMode={(readingProgress) => void prefs.save({ ...prefs.preferences, readingProgress })} />;
 
   return <main className="muse-page muse-insights-page muse-glance" data-period={period}>
@@ -103,9 +103,9 @@ export function InsightsGlance() {
         <EmotionSnapshot daily={daily} />
         <ThreeFavorites daily={daily} />
         <GoodDays daily={daily} days={snapshot.days} checkIns={checkIns} onOpen={(d) => open(d)} limit={3} />
-        <IntentionsList intentions={daily.intentions} onOpen={(d) => open(d)} />
+        <IntentionsList intentions={daily.intentions} onOpen={(d) => open(d)} carousel />
         <MovementCard movement={movement} loaded={wellness.status.loaded} />
-        {readingCard()}
+        <div data-area="hero">{readingCard(undefined, true)}</div>
       </>}
 
       {period === "month" && <>
@@ -119,10 +119,9 @@ export function InsightsGlance() {
           <div style={{ gridArea: "bright" }}><GoodDays daily={daily} days={snapshot.days} checkIns={checkIns} onOpen={(d) => open(d)} limit={4} /></div>
           <div style={{ gridArea: "water" }}><WaterSummary water={water} loaded={wellness.status.loaded} /></div>
           <div style={{ gridArea: "three" }}><ThreeFavorites daily={daily} /></div>
-          <div style={{ gridArea: "read" }}>{readingCard()}</div>
         </div>
-        <div data-area="hero"><StepsSummary start={range.start} end={range.end} /></div>
-        <div data-area="hero"><LittleMoments memories={moments.memories} checkIns={checkIns} onOpen={(d) => open(d)} period="month" /></div>
+        <div data-area="hero">{readingCard(undefined, true)}</div>
+        <div data-area="hero" className="muse-glance-pair"><StepsSummary start={range.start} end={range.end} /><LittleMoments memories={moments.memories} checkIns={checkIns} onOpen={(d) => open(d)} period="month" /></div>
         <div data-area="hero"><MonthIntentions days={range.days} intentions={daily.intentions} today={today} onOpen={(d) => open(d)} /></div>
       </>}
 
@@ -136,7 +135,6 @@ export function InsightsGlance() {
           <div style={{ gridArea: "emoji" }}><ThreeFavorites daily={daily} title="The year in emoji" /></div>
           <div style={{ gridArea: "prio" }}><MonthBars id="glance-year-priorities" title="Priorities done" icon="favorite" months={months} emoji="⭐" emptyText="No priorities completed this year."
               value={(m) => m.prioritiesDone || null} format={(m, v) => `${v} of ${m.prioritiesPlanned} done`} unitNote={`${daily.priorities.completed} of ${daily.priorities.planned} priorities done this year.`} /></div>
-          <div style={{ gridArea: "read" }}>{readingCard()}</div>
           <div style={{ gridArea: "stack" }} className="muse-glance-year-stack">
           <div><MonthBars id="glance-year-move" title="Movement" icon="movement" tone="pop" months={months} emoji="🏃" emptyText="No movement recorded this year."
               value={(m) => m.movement || null} format={(m, v) => `${plural(v, "workout")}`} unitNote={`${plural(movement.sessions, "workout")} across ${plural(movement.days, "active day")}.`} /></div>
@@ -144,6 +142,7 @@ export function InsightsGlance() {
               value={(m) => m.water} format={(m, v) => `${formatWaterAmount(v)} ${water[0]?.unit ?? ""} a day · ${plural(m.waterDays, "logged day")}`} unitNote={water[0] ? `Average per logged day, in ${water[0].unit}.${water.length > 1 ? " Other units are kept apart." : ""}` : undefined} /></div>
           </div>
         </div>
+        <div data-area="hero">{readingCard(undefined, true)}</div>
         <div data-area="hero"><GoodDays daily={daily} days={snapshot.days} checkIns={checkIns} onOpen={(d) => open(d)} limit={6} /></div>
       </>}
     </div>

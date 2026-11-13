@@ -151,13 +151,14 @@ function AgendaBody({ date, today, onDate, onOpen, workspaceId, prefs, update, s
           const items = dayItems(tasksShown, eventsWithGoogle, d, visibility), own = prefs.showMarks ? dayMarks(marks, d) : [];
           const open = items.tasks.filter((t) => !t.complete).length, overdue = items.tasks.some((t) => taskState(t, today) === "overdue"), star = items.tasks.some((t) => priorityIds(d).has(t.id));
           const summary = [items.events.length && `${items.events.length} event${items.events.length > 1 ? "s" : ""}`, items.tasks.length && `${open} of ${items.tasks.length} tasks open`, own.length && `${own.length} Mark${own.length > 1 ? "s" : ""}`].filter(Boolean).join(", ") || "Nothing planned";
-          return <div role="gridcell" key={d} className="muse-agenda-cell" data-today={d === today || undefined} data-selected={sel === d || undefined}>
+          const done = items.tasks.length - open, wk = new Date(`${d}T12:00:00Z`).getUTCDay();
+          return <div role="gridcell" key={d} className="muse-agenda-cell" data-today={d === today || undefined} data-selected={sel === d || undefined} data-past={d < today || undefined} data-weekend={wk === 0 || wk === 6 || undefined} data-busy={items.events.length + items.tasks.length > 0 || undefined}>
             <button type="button" className="muse-agenda-cell-select" aria-pressed={sel === d} aria-label={`${longDate(d)}: ${summary}. Show details`} onClick={() => setSelected(sel === d ? null : d)}>
               <span className="muse-agenda-cell-date">{dayNumber(d)}</span>
               {own.length > 0 && <span className="muse-agenda-cell-marks">{own.slice(0, 3).map((m) => <MarkGlyph key={m.id} mark={m} size={12} />)}</span>}
             </button>
-            <ul aria-hidden="true">{items.events.slice(0, 2).map((e) => <li key={e.id} data-status={e.status === "confirmed" ? undefined : e.status}>{e.allDay ? "" : `${e.time.replace(":00", "").replace(" ", "").toLowerCase()} `}{e.title}</li>)}</ul>
-            <span className="muse-agenda-cell-meta" aria-hidden="true">{items.events.length > 2 && <span>+{items.events.length - 2}</span>}{items.tasks.length > 0 && <span data-overdue={overdue || undefined}>{open ? `${overdue ? "›" : "•"} ${open} open` : "✓ done"}</span>}{star && <span>★</span>}</span>
+            <ul aria-hidden="true">{items.events.slice(0, 2).map((e, k) => <li key={e.id} data-status={e.status === "confirmed" ? undefined : e.status} style={{ "--ev": `var(--chart-${(k * 3 + Number(d.slice(8))) % 8 + 1})` } as React.CSSProperties}>{!e.allDay && <b>{e.time.replace(":00", "").replace(" ", "").toLowerCase()}</b>}{e.title}</li>)}</ul>
+            <span className="muse-agenda-cell-meta" aria-hidden="true">{items.events.length > 2 && <span className="muse-agenda-cell-more">+{items.events.length - 2} more</span>}{items.tasks.length > 0 && <span className="muse-agenda-cell-stars" data-overdue={overdue || undefined} title={`${done} of ${items.tasks.length} tasks done`}>{Array.from({ length: Math.min(items.tasks.length, 6) }, (_, k) => <i key={k} data-done={k < done || undefined} />)}{items.tasks.length > 6 && <small>+{items.tasks.length - 6}</small>}</span>}{star && <span className="muse-agenda-cell-priority">★</span>}</span>
           </div>;
         })}</div>)}
       </div>
@@ -189,7 +190,7 @@ function AgendaBody({ date, today, onDate, onOpen, workspaceId, prefs, update, s
         ...own.map((x) => ({ key: `m${x.id}`, sort: x.start < first ? first : x.start, node: <><button type="button" className="muse-agenda-log-day" onClick={() => open(x.start < first ? first : x.start, "day")}>{eventDays({ date: x.start, endDate: x.end }, m)}</button><MarkGlyph mark={x} onSelect={(a) => openEditor(a, { kind: "mark", date: x.start, mark: x })} /><span>{x.title || "Marked"}</span></> })),
       ].sort((a, b) => a.sort.localeCompare(b.sort));
       const open_ = expanded === m, shown = open_ ? entries : entries.slice(0, 4);
-      return <section key={m} className="muse-agenda-log-month" data-current={m === today.slice(0, 7) || undefined} data-past={m < today.slice(0, 7) || undefined} aria-labelledby={`log-${m}`}>
+      return <section key={m} className="muse-agenda-log-month" style={{ "--month": `var(--chart-${(Number(m.slice(5)) - 1) % 8 + 1})` } as React.CSSProperties} data-current={m === today.slice(0, 7) || undefined} data-past={m < today.slice(0, 7) || undefined} aria-labelledby={`log-${m}`}>
         <header><h3 id={`log-${m}`}><button type="button" className="text-button" onClick={() => open(first, "month")} aria-label={`Open ${monthName(m)} in Month view`}>{monthName(m)}</button></h3>
           <span className="muse-agenda-log-add">
             <button type="button" className="muse-agenda-add" aria-label={`Add to the Future Log in ${monthName(m)}`} title="Add a plan, trip or date" onClick={(e) => openEditor(e.currentTarget, { kind: "future", month: m })}><MuseIcon name="plus" size={13} /></button>

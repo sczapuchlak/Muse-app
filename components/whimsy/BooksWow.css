@@ -1,0 +1,35 @@
+/*
+ * Books glow-up (Nov 2026). Stephanie: "don't change containers or sizes, but make it so good I faint". So nothing
+ * here moves a box. It adds depth, light and motion to the books themselves:
+ *  - every cover becomes an object: a lit spine, page edges, a soft drop shadow, and a 3D tilt when you reach for it;
+ *  - each Currently Reading card glows in its own cover's colours (the cover, blurred into ambient light);
+ *  - the progress pool gets a shimmering bookmark at the reading position;
+ * Motion is finite and respects reduced motion and Muse Magic.
+ */
+
+/* ── Covers stay covers (round 4: "don't give it the book look, just keep the cover") ─────────────────────────
+   A soft shadow and a gentle lift when you reach for one; no spine, page edges or 3D turn. */
+:is(.muse-desk-tile-cover,.muse-finished-card-cover,.muse-upnext-cover,.muse-collections-card) .muse-book-cover{transition:transform .4s cubic-bezier(.2,.8,.2,1),box-shadow .4s}
+@media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) :is(.muse-desk-tile:hover .muse-desk-tile-cover,.muse-finished-card:hover .muse-finished-card-cover,.muse-collections-card:hover,.muse-upnext-slot:hover .muse-upnext-cover) .muse-book-cover{transform:translateY(-4px);box-shadow:0 14px 24px -12px rgba(0,0,0,.55)}}
+
+/* The book's own page: the cover stands in its own light (no tilt). */
+.muse-book-page-cover::after{content:"";position:absolute;left:4%;right:2%;bottom:-6px;height:34px;z-index:-1;border-radius:50%;pointer-events:none;background:radial-gradient(closest-side,color-mix(in srgb,var(--book-atmosphere,var(--accent-primary)) 75%,transparent),transparent);-webkit-filter:blur(10px);filter:blur(10px);opacity:.85}
+.muse-book-page-cover .muse-book-cover{box-shadow:16px 22px 34px -12px rgba(0,0,0,.55),0 0 70px -14px color-mix(in srgb,var(--book-atmosphere,var(--accent-primary)) 70%,transparent)!important}
+.muse-book-route .muse-book-atmosphere-art{opacity:.3!important}
+
+/* ── The progress pool: a glowing bookmark sits at the reading position ──────────────────────────────────── */
+.muse-bookshelf .muse-desk-pool{position:relative;overflow:visible}
+.muse-bookshelf .muse-desk-pool::after{content:"";position:absolute;top:50%;left:var(--fill,0%);width:12px;height:12px;translate:-50% -50%;border-radius:50%;background:radial-gradient(circle,white 0 22%,var(--accent-pop,var(--accent-primary)) 45%,transparent 72%);box-shadow:0 0 10px 2px color-mix(in srgb,var(--accent-pop,var(--accent-primary)) 70%,transparent);pointer-events:none}
+@media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) .muse-bookshelf .muse-desk-pool::after{animation:muse-bookmark-glow 2.6s ease-in-out 3}}
+@keyframes muse-bookmark-glow{50%{box-shadow:0 0 18px 5px color-mix(in srgb,var(--accent-pop,var(--accent-primary)) 80%,transparent)}}
+.muse-bookshelf .muse-desk-pool>span{background:linear-gradient(90deg,var(--accent-secondary),var(--accent-primary),var(--accent-pop,var(--accent-primary)))!important}
+@media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) .muse-bookshelf .muse-desk-pool>span{background-size:200% 100%!important;animation:muse-pool-shimmer 3s linear 2}}
+@keyframes muse-pool-shimmer{to{background-position:-200% 0}}
+
+/* ── Streak: lit hearts get a sparkle (kept on the original layout) ───────────────────────────────────────── */
+.muse-streak-week li:has(>.muse-streak-heart[data-filled]){position:relative}
+.muse-streak-week li:has(>.muse-streak-heart[data-filled])::after{content:"";position:absolute;top:-4px;left:calc(50% + 8px);width:9px;height:9px;pointer-events:none;background:#fff6cf;clip-path:polygon(50% 0,61% 39%,100% 50%,61% 61%,50% 100%,39% 61%,0 50%,39% 39%);filter:drop-shadow(0 0 3px #ffd36b)}
+@media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) .muse-streak-week li:has(>.muse-streak-heart[data-filled])::after{animation:muse-heart-spark 2.8s ease-in-out 3}}
+@keyframes muse-heart-spark{0%,100%{opacity:.4;transform:scale(.7)}50%{opacity:1;transform:scale(1.15) rotate(25deg)}}
+
+@media (prefers-reduced-motion:reduce){.muse-bookshelf :is(.muse-desk-tile-cover,.muse-finished-card-cover){transition:none}}

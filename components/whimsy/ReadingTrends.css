@@ -50,3 +50,8 @@
 .muse-trend-arrow[data-tone="same"]{--a:#f2c230}.muse-trend-arrow[data-tone="down"]{--a:#f08a5d}.muse-trend-arrow[data-tone="new"]{--a:#3ecf8e}
 .muse-trend-arrow svg{filter:none}.muse-trend-arrow b{font-size:.78rem;font-weight:800;color:var(--a)}
 .muse-trend-badge{display:none}
+/* Nov 13: the number sits up top, the 30-day chart takes all the spare height, the note closes the card. */
+.muse-trends .muse-trend-card{align-content:stretch;grid-template-rows:auto auto minmax(80px,1fr) auto}
+.muse-trends .muse-trend-spark{height:auto;min-height:80px;align-self:stretch;padding-top:8px;border-bottom:1px dashed color-mix(in srgb,var(--c) 35%,transparent)}
+.muse-trends .muse-trend-spark i{min-height:3px}
+.muse-trends .muse-trend-spark i[data-on]{background:linear-gradient(180deg,color-mix(in srgb,var(--c) 60%,white),var(--c));box-shadow:0 0 10px -2px var(--c)}

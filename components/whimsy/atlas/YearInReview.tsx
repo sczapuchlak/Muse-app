@@ -16,6 +16,7 @@ import {completionEvents} from '@/lib/whimsy/reading-stats';
 import {readEmojis,readOpinion} from '@/lib/whimsy/reading-cycles';
 import {hourLabel,yearReview,yearsWithReading,type Persona} from '@/lib/whimsy/reading-dna';
 import {ActivityBars,InsightIcon,days,duration,hours,monthLabel,monthName,num,plural,shortMonth,yearDate} from './parts';
+import {CoverGlow} from '../BookAtmosphere';
 
 /** A literary scrapbook of one year, computed live from saved records (nothing is stored as a snapshot). */
 export function YearInReview({books,sessions,today,goals=[]}:{books:Book[];sessions:ReadingSession[];today:string;goals?:ReadingGoal[]}){
@@ -60,6 +61,6 @@ export function YearInReview({books,sessions,today,goals=[]}:{books:Book[];sessi
   </div>
   <div className="muse-yir-pair muse-yir-pair-even"><TopRated books={books} range={range} label={String(year)}/><Favorites books={books} range={range} label={String(year)}/></div>
   {r.recent.length>0&&<section aria-label="Recently finished" className="muse-books-panel"><div className="muse-books-panel-head"><h4><AtlasMark title="Recently finished"/>Recently finished</h4><span className="small-label">{year}</span></div>
-   <PagedList items={r.recent} size={4} label="recently finished" render={({book,completion,reread})=>{const o=readOpinion(book,completion);return <div role="listitem" className="muse-books-finished-row" key={`${book.id}:${completion.id}`}><span className="muse-finished-cover" aria-hidden="true"><Cover book={book}/></span><span className="muse-finished-copy"><strong>{book.title}{reread?' · reread':''}</strong><span>{yearDate(completion.finishedOn)}{o.rating?` · ${o.rating}/5`:''} {readEmojis(book,completion).join(' ')}</span></span></div>;}}/></section>}
+   <PagedList items={r.recent} size={4} cols={2} className="muse-finished-grid" label="recently finished" render={({book,completion,reread})=>{const o=readOpinion(book,completion);return <div role="listitem" className="muse-books-finished-row" data-glow={book.coverUrl?true:undefined} key={`${book.id}:${completion.id}`}><CoverGlow url={book.coverUrl}/><span className="muse-finished-cover" aria-hidden="true"><Cover book={book}/></span><span className="muse-finished-copy"><strong>{book.title}{reread?' · reread':''}</strong><span>{yearDate(completion.finishedOn)}</span>{(o.rating||readEmojis(book,completion).length>0)&&<span className="muse-finished-meta">{o.rating?<b className="muse-finished-stars" aria-label={`${o.rating} of 5`}>{'★'.repeat(Math.round(o.rating))}<i>{'★'.repeat(5-Math.round(o.rating))}</i></b>:null}{readEmojis(book,completion).join(' ')}</span>}</span></div>;}}/></section>}
  </div>;
 }

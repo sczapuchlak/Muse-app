@@ -81,12 +81,15 @@ export function BucketPhoto({image,full=false,className}:{image:BoardImage;full?
 /** Collectible Cards: a card per dream; completed ones keep a keepsake (photo, place, date) in their year's color. */
 export function CardsView({list,entries,actions}:{list:BucketList;entries:BucketEntry[];actions:RowActions}){
  return <div className="muse-bucket-cards">{entries.map(e=>{const y=yearOf(e.completedOn),photo=e.cover??e.completion.photos?.[0];
-  return <article key={e.id} className="muse-bucket-card" data-done={y?true:undefined} data-pattern={y?yearPattern(y):undefined} style={y?yearStyle(list,y):undefined}>
+  const ink=`var(--chart-${[...(e.category??e.title)].reduce((n,c)=>n+c.charCodeAt(0),0)%8+1})`;
+  return <article key={e.id} className="muse-bucket-card" data-done={y?true:undefined} data-status={e.status} data-pattern={y?yearPattern(y):undefined} style={{"--card-ink":ink,...(y?yearStyle(list,y):{})} as CSSProperties}>
    <div className="muse-bucket-card-art">{photo?<BucketPhoto image={photo} className="muse-bucket-card-photo"/>:<span className="muse-bucket-card-emoji" aria-hidden="true">{e.icon||'✦'}</span>}
     {list.showNumbers&&e.number&&<span className="muse-bucket-card-num">No. {e.number}</span>}
-    {y&&<span className="muse-bucket-card-ribbon"><YearChip list={list} year={y}/></span>}</div>
+    {y&&<span className="muse-bucket-card-ribbon"><YearChip list={list} year={y}/></span>}
+    {e.category&&<span className="muse-bucket-card-kind">{e.category}</span>}
+    {y&&<span className="muse-bucket-card-seal" aria-hidden="true"><b>Collected</b><small>{y}</small></span>}</div>
    <div className="muse-bucket-card-body">
-    <span className="small-label">{[e.category,statusLabels[e.status]].filter(Boolean).join(' · ')}</span>
+    <span className="small-label">{statusLabels[e.status]}</span>
     <h3><button type="button" className="muse-bucket-title" onClick={ev=>actions.onOpen(e,ev.currentTarget)}><span className="muse-bucket-title-text">{e.title}</span></button></h3>
     {y?<p className="muse-bucket-card-keepsake">Done {dateLabel(e.completedOn!)}</p>:<p className="small-label">{e.targetYear?`Hoping for ${e.targetYear}`:'Someday'}</p>}
     {e.completion.location&&<p className="muse-bucket-card-where"><MuseIcon name="map-pin" size={14}/><span>{e.completion.location}</span></p>}

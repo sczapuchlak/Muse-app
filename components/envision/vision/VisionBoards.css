@@ -131,3 +131,19 @@
 #vision-board-details .muse-segmented{flex-wrap:wrap}
 #vision-board-details .muse-segmented>button{white-space:nowrap;min-height:44px}
 @media(max-width:680px){#vision-board-details{height:min(760px,calc(var(--vision-visible-height,100dvh) - var(--vision-top-gap) - var(--vision-bottom-gap)))}.muse-vision-details-body{padding:14px 16px}#vision-board-details>.muse-modal-universal-close,#vision-board-details .muse-aspiration-actions{padding-inline:16px}#vision-board-details :is(input,textarea){font-size:16px}}
+
+/* Round 3 (Nov 13): boards hang on the wall: a strip of washi tape holds each one, the board lifts and turns toward
+   you on hover, its collage zooms a touch, and a glint of light slides across the glass. */
+.muse-vision-grid .muse-vision-card{position:relative;overflow:visible;transition:transform .5s cubic-bezier(.2,.8,.2,1),box-shadow .5s}
+.muse-vision-grid .muse-vision-card::before{content:"";position:absolute;z-index:3;top:-9px;left:50%;width:70px;height:18px;translate:-50% 0;rotate:-3deg;border-radius:2px;pointer-events:none;
+ background:repeating-linear-gradient(90deg,color-mix(in srgb,var(--accent-pop,var(--accent-primary)) 55%,transparent) 0 5px,color-mix(in srgb,var(--accent-pop,var(--accent-primary)) 36%,transparent) 5px 10px);box-shadow:0 2px 4px rgba(0,0,0,.25)}
+.muse-vision-grid li:nth-child(3n+2) .muse-vision-card::before{rotate:4deg;background:repeating-linear-gradient(90deg,color-mix(in srgb,var(--accent-secondary) 55%,transparent) 0 5px,color-mix(in srgb,var(--accent-secondary) 36%,transparent) 5px 10px)}
+.muse-vision-grid li:nth-child(3n) .muse-vision-card::before{rotate:-6deg;background:repeating-linear-gradient(90deg,color-mix(in srgb,var(--accent-warm,var(--accent-primary)) 55%,transparent) 0 5px,color-mix(in srgb,var(--accent-warm,var(--accent-primary)) 36%,transparent) 5px 10px)}
+.muse-vision-grid .muse-vision-preview{transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+.muse-vision-grid .muse-vision-preview>*{transition:transform .8s cubic-bezier(.2,.8,.2,1)}
+.muse-vision-grid .muse-vision-preview::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.22) 48%,transparent 60%);background-size:250% 100%;background-position:130% 0;transition:background-position 1s ease}
+@media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]){
+ .muse-vision-grid .muse-vision-card:hover{transform:perspective(900px) translateY(-6px) rotateX(3deg);box-shadow:0 30px 50px -28px var(--accent-primary)}
+ .muse-vision-grid .muse-vision-card:hover .muse-vision-preview>*{transform:scale(1.04)}
+}}
+.muse-vision-grid .muse-vision-card:hover .muse-vision-preview::after{background-position:-30% 0}

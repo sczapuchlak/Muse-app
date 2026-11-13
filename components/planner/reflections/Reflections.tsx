@@ -1,5 +1,6 @@
 "use client";
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { MuseMark, type MuseMarkIcon, type MuseTone } from "@/components/design/MuseHeading";
 import { createMuseBrowserClient } from "@/lib/supabase/client";
 import { boardImageUrl, removeBoardImages, uploadBoardImage } from "@/lib/data/constellation-images";
 import { glanceRange, glanceTitle, shiftGlance } from "@/lib/insights/glance";
@@ -161,12 +162,14 @@ const invitations: Partial<Record<ModuleType, string>> = {
 };
 const isEmptyContent = (m: ReflectionModule) => m.type !== "level10" && m.type !== "guided" && m.type !== "writing" && !hasContent(m);
 
+/** Guided reflections each get their own tile, so a page of them never reads as one repeated icon. */
+const guidedMarks: Record<string, [MuseMarkIcon, MuseTone]> = { gratitude: ["heart", 2], growth: ["seedling", 1], lessons: ["lightbulb", 4], intentions: ["compass", 6], challenges: ["summit", 8], happy: ["smile", 3], custom: ["quill", 7] };
 function ModuleFrame({ module: m, editing, onChange, children }: { module: ReflectionModule; editing: boolean; onChange: (m: ReflectionModule, delay?: number) => void; children: ReactNode }) {
-  const meta = moduleType(m.type), prompt = m.type === "guided" ? (m.content as ModuleContent["guided"]).prompt : undefined;
+  const meta = moduleType(m.type), prompt = m.type === "guided" ? (m.content as ModuleContent["guided"]).prompt : undefined, [glyph, tone] = (prompt && guidedMarks[prompt]) || [meta.glyph as MuseMarkIcon, meta.tone as MuseTone];
   const invite = editing && isEmptyContent(m) ? invitations[m.type] : undefined;
-  return <section className="muse-reflections-module" data-type={m.type} data-prompt={prompt} data-size={m.size} data-hidden={m.hidden || undefined} data-empty={invite ? true : undefined} aria-label={m.title}>
+  return <section className="muse-reflections-module" style={{"--aura":`var(--chart-${tone})`} as CSSProperties} data-type={m.type} data-prompt={prompt} data-size={m.size} data-hidden={m.hidden || undefined} data-empty={invite ? true : undefined} aria-label={m.title}>
     <header className="muse-reflections-module-head">
-      <span className="muse-reflections-module-icon" aria-hidden="true">{meta.emoji}</span>
+      <MuseMark icon={glyph} tone={tone} size="sm" className="muse-section-mark"/>
       {editing ? <input className="muse-reflections-module-title" aria-label="Section title" maxLength={60} value={m.title} onChange={(e) => onChange({ ...m, title: e.target.value })} />
         : <h3>{m.title}</h3>}
     </header>
@@ -328,6 +331,23 @@ const areaIcons: [RegExp, string][] = [[/health|fitness|body|wellness/i, "💪"]
   [/home|environment|space/i, "🏡"], [/career|work|business/i, "💼"], [/family|kid/i, "👨‍👩‍👧"], [/romance|love|partner|relationship/i, "💞"], [/fun|recreation|play|hobb/i, "🎉"],
   [/spirit|faith|soul/i, "🔮"], [/creat|art/i, "🎨"], [/travel|advent/i, "✈️"]];
 const areaIcon = (label: string) => areaIcons.find(([re]) => re.test(label))?.[1] ?? "✦";
+/** The wheel of life: one wedge per area, reaching out to its rating; rings mark 2, 4, 6, 8 and 10. */
+const r2 = (n: number) => Math.round(n * 100) / 100;
+function LifeWheel({ areas, ratings, avg }: { areas: LifeArea[]; ratings: LifeRating[]; avg: number | null }) {
+  const n = Math.max(areas.length, 1), C = 150, R = 118, pt = (deg: number, r: number) => `${r2(C + r * Math.cos(deg * Math.PI / 180))} ${r2(C + r * Math.sin(deg * Math.PI / 180))}`;
+  const wedge = (k: number, r: number) => { const a0 = -90 + k * 360 / n + 1.2, a1 = -90 + (k + 1) * 360 / n - 1.2; return `M${C} ${C}L${pt(a0, r)}A${r} ${r} 0 0 1 ${pt(a1, r)}Z`; };
+  return <figure className="muse-l10-wheel" aria-label={`Life wheel: ${areas.map((a) => `${a.label} ${ratings.find((r) => r.areaId === a.id)?.rating ?? "not rated"}`).join(", ")}`}>
+    <svg viewBox="0 0 300 300" aria-hidden="true">
+      <defs>{areas.map((a) => <radialGradient key={a.id} id={`l10-${a.id}`} cx={C} cy={C} r={R} gradientUnits="userSpaceOnUse"><stop offset=".15" stopColor={a.color} stopOpacity=".35" /><stop offset="1" stopColor={a.color} /></radialGradient>)}</defs>
+      {[2, 4, 6, 8, 10].map((v) => <circle key={v} className="muse-l10-ring" data-outer={v === 10 || undefined} cx={C} cy={C} r={r2(R * v / 10)} />)}
+      {areas.map((a, k) => <path key={`b-${a.id}`} className="muse-l10-wedge-bg" d={wedge(k, R)} />)}
+      {areas.map((a, k) => { const rating = ratings.find((r) => r.areaId === a.id)?.rating; return rating ? <path key={a.id} className="muse-l10-wedge" d={wedge(k, R * rating / 10)} fill={`url(#l10-${a.id})`} style={{ "--i": k } as CSSProperties} /> : null; })}
+      {areas.map((a, k) => { const mid = -90 + (k + .5) * 360 / n, [x, y] = pt(mid, R + 18).split(" "); return <text key={`t-${a.id}`} x={x} y={y} textAnchor="middle" dominantBaseline="central" className="muse-l10-wheel-icon">{areaIcon(a.label)}</text>; })}
+      <circle className="muse-l10-hub" cx={C} cy={C} r="34" />
+    </svg>
+    <figcaption><b>{avg ?? "—"}</b><small>{avg === null ? "not rated" : "average"}</small></figcaption>
+  </figure>;
+}
 function Level10({ review, client, editing }: { review: Review; client: () => Client; editing: boolean }) {
   const [areas, setAreas] = useState<LifeArea[] | null>(null), [ratings, setRatings] = useState<LifeRating[]>([]), [error, setError] = useState(""), [manage, setManage] = useState(false);
   useEffect(() => { let live = true; Promise.all([readLifeAreas(client()), readRatings(client(), review.period, review.start)]).then(([a, r]) => { if (live) { setAreas(a); setRatings(r); } }).catch((e) => { if (live) setError(e instanceof Error ? e.message : "Level 10 Life couldn’t load."); }); return () => { live = false; }; }, [client, review.period, review.start]);
@@ -346,19 +366,20 @@ function Level10({ review, client, editing }: { review: Review; client: () => Cl
   const active = areas.filter((a) => !a.archived), rated = ratings.filter((r) => active.some((a) => a.id === r.areaId)), avg = rated.length ? Math.round(rated.reduce((n, r) => n + r.rating, 0) / rated.length * 10) / 10 : null;
   return <div className="muse-reflections-l10">
     <p className="muse-reflections-quiet">{rated.length ? `${rated.length} of ${active.length} areas rated · average ${avg}.` : editing ? "Tap a bar to rate each area from 1 to 10." : "No ratings for this period yet."} This {review.period}’s ratings stand on their own; they aren’t averaged from other periods.</p>
+    <div className="muse-l10-layout"><LifeWheel areas={active} ratings={rated} avg={avg} />
     <ul className="muse-reflections-l10-grid">{active.map((a) => { const r = ratings.find((x) => x.areaId === a.id);
       return <li key={a.id} style={{ "--area": a.color } as CSSProperties} data-rated={r ? true : undefined}>
         <span className="muse-reflections-l10-icon" aria-hidden="true">{areaIcon(a.label)}</span>
         <span className="muse-reflections-l10-label">{a.label}</span>
         <span className="muse-reflections-l10-bar" role={editing ? "radiogroup" : "img"} aria-label={editing ? `Rate ${a.label}` : `${a.label}: ${r ? `${r.rating} of 10` : "not rated"}`}>
           {Array.from({ length: 10 }, (_, i) => editing
-            ? <button key={i} type="button" role="radio" aria-checked={r?.rating === i + 1} aria-label={`${a.label} ${i + 1} of 10`} data-on={!!r && i < r.rating || undefined} onClick={() => void rate(a, r?.rating === i + 1 ? null : i + 1)} />
-            : <i key={i} data-on={!!r && i < r.rating || undefined} />)}
+            ? <button key={i} type="button" role="radio" style={{ "--i": i } as CSSProperties} aria-checked={r?.rating === i + 1} aria-label={`${a.label} ${i + 1} of 10`} data-on={!!r && i < r.rating || undefined} onClick={() => void rate(a, r?.rating === i + 1 ? null : i + 1)} />
+            : <i key={i} style={{ "--i": i } as CSSProperties} data-on={!!r && i < r.rating || undefined} />)}
         </span>
         <b className="muse-reflections-l10-value">{r ? r.rating : "—"}</b>
         {editing ? r && <input className="muse-reflections-input muse-reflections-l10-note" aria-label={`Note for ${a.label}`} maxLength={500} placeholder="A note (optional)" defaultValue={r.note} onBlur={(e) => { if (e.target.value !== r.note) void rate(a, r.rating, e.target.value); }} />
           : r?.note && <small className="muse-reflections-l10-note">{r.note}</small>}
-      </li>; })}</ul>
+      </li>; })}</ul></div>
     {error && <p className="muse-reflections-alert" role="alert">{error}</p>}
     {editing && <details className="muse-reflections-l10-manage" open={manage} onToggle={(e) => setManage((e.target as HTMLDetailsElement).open)}><summary>Rename or recolor areas</summary>
       <p className="muse-reflections-quiet">Renaming keeps each area’s history. Archiving hides an area from new ratings; past ratings stay.</p>

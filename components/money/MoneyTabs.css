@@ -1,0 +1,216 @@
+/*
+ * Money glow-up (Nov 2026), the section tabs. Strict grids with equal gutters and equal-height rows; nothing grows
+ * a column on its own. Cards are card objects; Paychecks, Spending, Recurring and Categories share the hero language.
+ */
+.muse-money-page .muse-money-section-tools{align-items:end;margin-bottom:var(--space-5,24px)}
+.muse-money-page .muse-money-section-tools .muse-heading{margin-right:auto}
+
+/* ── Cards: a wallet of real cards ──────────────────────────────────────────────────────────────────────────── */
+.muse-money-wallet{grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));align-items:stretch;gap:var(--space-6,28px)}
+.muse-money-wallet>.muse-money-panel{display:flex;flex-direction:column;gap:14px;margin:0;padding:16px 16px 18px}
+.muse-money-wallet .muse-money-card-panel::before{display:none}
+.muse-money-cardface{--c:var(--money-accent,var(--accent-primary));position:relative;isolation:isolate;display:grid;grid-template-rows:auto 1fr auto auto;gap:6px;aspect-ratio:1.586;padding:18px 20px 16px;border-radius:18px;overflow:hidden;color:white;
+ background:linear-gradient(135deg,color-mix(in oklab,var(--c) 92%,black) 0%,color-mix(in oklab,var(--c) 55%,var(--accent-secondary)) 55%,color-mix(in oklab,var(--c) 70%,black) 100%);
+ box-shadow:0 22px 40px -24px color-mix(in srgb,var(--c) 85%,transparent),inset 0 1px 0 rgba(255,255,255,.25)}
+/* Holographic sheen and fine wave engraving, so every card feels like an object, not a box. */
+.muse-money-cardface::before{content:"";position:absolute;inset:0;z-index:-1;opacity:.55;background:repeating-radial-gradient(circle at 115% 120%,rgba(255,255,255,.14) 0 1px,transparent 1px 9px)}
+.muse-money-cardface::after{content:"";position:absolute;inset:-40% -60%;z-index:-1;background:linear-gradient(115deg,transparent 40%,rgba(255,255,255,.22) 48%,rgba(255,255,255,.05) 54%,transparent 60%);transform:translateX(-30%);transition:transform .9s cubic-bezier(.2,.8,.2,1)}
+.muse-money-card-panel:hover .muse-money-cardface::after{transform:translateX(30%)}
+.muse-money-cardface-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.muse-money-cardface-name{font-family:var(--font-editorial);font-weight:600;font-size:1.25rem;letter-spacing:-.01em;text-shadow:0 1px 2px rgba(0,0,0,.25)}
+.muse-money-cardface-edit{display:grid;place-items:center;width:30px;height:30px;padding:0;border-radius:50%;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.12);color:white;cursor:pointer}
+.muse-money-cardface-edit:hover{background:rgba(255,255,255,.24)}
+.muse-money-cardface-edit:focus-visible{outline:2px solid white;outline-offset:2px}
+.muse-money-cardface-chip{align-self:center;width:42px;height:31px;border-radius:7px;background:linear-gradient(135deg,#f3dc9b,#c9a24f 55%,#f0d58c);box-shadow:inset 0 0 0 1px rgba(0,0,0,.18);
+ -webkit-mask:linear-gradient(black 0 0),linear-gradient(black 0 0);background-image:linear-gradient(135deg,rgba(255,255,255,.35),transparent 60%),linear-gradient(90deg,transparent 30%,rgba(0,0,0,.22) 30% 32%,transparent 32% 68%,rgba(0,0,0,.22) 68% 70%,transparent 70%),linear-gradient(180deg,transparent 45%,rgba(0,0,0,.22) 45% 52%,transparent 52%),linear-gradient(135deg,#f3dc9b,#c9a24f 55%,#f0d58c)}
+.muse-money-cardface-balance{display:grid;gap:0}
+.muse-money-cardface-balance small{font-size:.66rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;opacity:.82}
+.muse-money-cardface-balance .muse-money-numeral{font-family:var(--font-editorial);font-weight:560;font-size:clamp(1.9rem,2.6vw,2.4rem);line-height:1.05;letter-spacing:-.03em;background:none;color:white;-webkit-background-clip:border-box;background-clip:border-box;text-shadow:0 2px 6px rgba(0,0,0,.2)}
+.muse-money-cardface-foot{display:flex;justify-content:space-between;gap:8px;font-size:.76rem;font-weight:600;opacity:.9}
+.muse-money-cardface .muse-money-utilization{margin:4px 0 0;height:6px;background:rgba(255,255,255,.22)}
+.muse-money-cardface .muse-money-utilization span{background:white}
+.muse-money-wallet .muse-money-card-facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;margin:0;border:1px solid color-mix(in srgb,var(--glass-border) 85%,transparent);border-radius:14px;overflow:hidden}
+.muse-money-wallet .muse-money-card-facts>div{display:grid;justify-content:start;gap:1px;padding:10px 12px}
+.muse-money-wallet .muse-money-card-facts>div:nth-child(odd){border-right:1px solid color-mix(in srgb,var(--glass-border) 85%,transparent)}
+.muse-money-wallet .muse-money-card-facts>div:nth-child(-n+2){border-bottom:1px solid color-mix(in srgb,var(--glass-border) 85%,transparent)}
+.muse-money-wallet .muse-money-card-facts dt{font-size:.64rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+.muse-money-wallet .muse-money-card-facts dd{text-align:left;font-family:var(--font-editorial);font-weight:560;font-size:1.05rem}
+.muse-money-card-paid{margin:0;color:var(--text-muted);font-size:.82rem}
+.muse-money-card-paid strong{color:var(--foreground)}
+.muse-money-card-actions{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:auto}
+.muse-money-card-more{flex:1 1 100%}
+.muse-money-card-more summary{cursor:pointer;color:var(--text-muted);font-size:.82rem;font-weight:600}
+.muse-money-card-add{display:grid;align-content:center;justify-items:center;gap:8px;min-height:100%;padding:24px;border-radius:24px;border:1.5px dashed color-mix(in srgb,var(--accent-primary) 45%,var(--glass-border));background:color-mix(in srgb,var(--glass-background) 92%,var(--accent-primary));color:inherit;font:inherit;text-align:center;cursor:pointer;transition:transform .2s cubic-bezier(.2,.8,.2,1),box-shadow .2s}
+.muse-money-card-add:hover{transform:translateY(-3px);box-shadow:0 18px 30px -22px var(--accent-primary)}
+.muse-money-card-add:focus-visible{outline:2px solid var(--focus-ring);outline-offset:3px}
+.muse-money-card-add-face{display:grid;place-items:center;width:min(70%,190px);aspect-ratio:1.586;border-radius:14px;border:1.5px dashed color-mix(in srgb,var(--accent-primary) 55%,transparent);color:var(--accent-primary)}
+.muse-money-card-add strong{font-family:var(--font-editorial);font-weight:600;font-size:1.2rem}
+.muse-money-card-add small{max-width:30ch;color:var(--text-muted);font-size:.8rem}
+@media (prefers-reduced-motion:reduce){.muse-money-cardface::after,.muse-money-card-add{transition:none}.muse-money-card-add:hover{transform:none}}
+@media (forced-colors:active){.muse-money-cardface{color:CanvasText;background:Canvas;border:1px solid CanvasText}}
+/* Wallet as a carousel: one row of cards (plus the add slot), paging as the wallet grows. */
+.muse-money-wallet .muse-entry-carousel-track{gap:var(--space-6,28px)}
+.muse-money-wallet .muse-money-card-panel{display:flex;flex-direction:column;gap:14px;height:100%;margin:0;padding:16px 16px 18px}
+.muse-money-card-more{flex:0 1 auto}
+.muse-money-card-more[open]{flex-basis:100%;order:2}
+.muse-money-cardface{grid-template-rows:auto 1fr auto auto 10px}
+
+/* ── Paychecks ──────────────────────────────────────────────────────────────────────────────────────────────── */
+.muse-paycheck-navigation{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:stretch;gap:var(--space-6,28px);margin-bottom:var(--space-6,28px)}
+.muse-paycheck-navigation>.muse-choice-menu,.muse-paycheck-navigation>div:last-child{align-self:start}
+.muse-money-paycheck-choices{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-4,18px)}
+/* Pay stubs: perforated top edge, the amount as a numeral, and how much of it already has a job. */
+.muse-money-paycheck-choices>.choice-button{position:relative;display:grid!important;justify-items:start;align-content:start;gap:3px;min-height:0;height:100%;padding:18px 18px 16px!important;border-radius:20px!important;border:1px solid var(--glass-border)!important;background-color:var(--glass-background)!important;background-image:radial-gradient(80% 70% at 0% 0%,color-mix(in srgb,var(--accent-secondary) 10%,transparent),transparent 70%)!important;text-align:left;box-shadow:0 14px 30px -26px rgba(0,0,0,.5);transition:transform .2s cubic-bezier(.2,.8,.2,1),box-shadow .2s}
+.muse-money-paycheck-choices>.choice-button::before{content:"";position:absolute;left:14px;right:14px;top:7px;height:2px;background:radial-gradient(circle,color-mix(in srgb,var(--foreground) 22%,transparent) 1px,transparent 1.5px) 0 0/8px 2px repeat-x}
+.muse-money-paycheck-choices>.choice-button:hover:not(:disabled){transform:translateY(-2px)}
+.muse-money-paycheck-choices>.choice-button[aria-pressed=true]{border-color:transparent!important;box-shadow:0 0 0 2px var(--accent-primary),0 20px 36px -24px var(--accent-primary)!important;background-image:radial-gradient(90% 80% at 0% 0%,color-mix(in srgb,var(--accent-primary) 18%,transparent),transparent 70%)!important}
+.muse-money-paycheck-choices>.choice-button>span{font-size:.64rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--text-muted)}
+.muse-money-paycheck-choices>.choice-button[aria-pressed=true]>span{color:var(--accent-primary)}
+.muse-money-paycheck-choices>.choice-button>strong{font-family:var(--font-editorial);font-weight:600;font-size:1.1rem;line-height:1.2;color:var(--foreground)}
+.muse-money-paycheck-choices>.choice-button>small{color:var(--text-muted);font-size:.78rem}
+.muse-paystub-amount{display:flex;align-items:baseline;gap:6px;margin-top:8px;font-style:normal;font-family:var(--font-editorial);font-weight:560;font-size:1.6rem;line-height:1;letter-spacing:-.025em}
+.muse-paystub-amount i{font-family:var(--font-ui);font-style:normal;font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted)}
+.muse-paystub-plan{display:block;width:100%;height:6px;margin-top:10px;border-radius:999px;background:color-mix(in srgb,var(--foreground) 9%,transparent);overflow:hidden}
+.muse-paystub-plan span{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--accent-secondary),var(--accent-primary))}
+.muse-money-paycheck-choices>.choice-button>.muse-paystub-plan-label{font-size:.72rem}
+.muse-paycheck-summary{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,.9fr);gap:clamp(18px,3vw,40px);align-items:center;padding-bottom:18px;margin-bottom:6px;border-bottom:1px dashed color-mix(in srgb,var(--glass-border) 90%,transparent)}
+.muse-paycheck-summary-copy{display:grid;gap:6px;min-width:0}
+.muse-paycheck-summary .muse-paycheck-period{margin:0;font-size:.72rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--text-muted)}
+.muse-paycheck-amount{margin:0;font-family:var(--font-editorial);font-weight:520;font-size:clamp(2.6rem,5vw,4.2rem);line-height:.95;letter-spacing:-.04em}
+.muse-paycheck-summary .muse-paycheck-income-context{margin:0}
+.muse-paycheck-summary .muse-money-ring{grid-area:auto}
+.muse-money-allocations>.muse-money-allocation-row{position:relative;padding-left:14px}
+.muse-money-allocations>.muse-money-allocation-row::before{content:"";position:absolute;left:0;top:12px;bottom:12px;width:4px;border-radius:4px;background:var(--money-accent,var(--glass-border))}
+.muse-money-allocations>.muse-money-allocation-row[data-state=over] .muse-money-ledger-number small{color:var(--foreground);font-weight:700}
+.muse-money-bills .muse-money-bill-row{position:relative;padding-left:14px}
+.muse-money-bills .muse-money-bill-row::before{content:"";position:absolute;left:0;top:12px;bottom:12px;width:4px;border-radius:4px;background:var(--chart-4)}
+.muse-money-bills .muse-money-bill-row:has([data-status=paid])::before{background:var(--success-primary)}
+.muse-money-bills .muse-money-bill-row:has([data-status=overdue])::before{background:var(--danger-primary,var(--chart-2))}
+@container muse-content (max-width:820px){
+ .muse-paycheck-navigation{grid-template-columns:minmax(0,1fr)}
+ .muse-money-paycheck-choices{grid-template-columns:repeat(3,minmax(150px,1fr));overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:4px}
+ .muse-money-paycheck-choices>.choice-button{scroll-snap-align:start}
+ .muse-paycheck-summary{grid-template-columns:minmax(0,1fr)}
+}
+@media (prefers-reduced-motion:reduce){.muse-money-paycheck-choices>.choice-button{transition:none}}
+
+/* Four equal tiles across: Previous · Current · Next · the archive. No half-empty row. */
+.muse-paychecks-view .muse-paycheck-navigation{grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--space-4,18px)}
+.muse-paychecks-view .muse-money-paycheck-choices{display:contents!important}
+.muse-paychecks-view .muse-money-paycheck-choices>.choice-button{padding:20px 20px 18px!important;width:auto;max-width:none;white-space:normal}
+.muse-paystub-archive{display:grid;align-content:start;gap:3px;padding:20px;border-radius:20px;border:1.5px dashed color-mix(in srgb,var(--glass-border) 100%,transparent);background-color:var(--glass-background)}
+.muse-paystub-archive>span{font-size:.64rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--text-muted)}
+.muse-paystub-archive>strong{font-family:var(--font-editorial);font-weight:600;font-size:1.1rem}
+.muse-paystub-archive>small{margin-bottom:10px;color:var(--text-muted);font-size:.78rem}
+.muse-paystub-archive .muse-choice-menu,.muse-paystub-archive .muse-choice-menu>button{width:100%}
+/* The plan reads as two balanced columns of rows instead of one wide ledger with an empty middle. */
+.muse-paychecks-view .muse-money-allocation-header{display:none}
+.muse-paychecks-view .muse-money-allocations{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:var(--space-6,28px)}
+.muse-paychecks-view .muse-money-allocation-row{grid-template-columns:minmax(0,1fr) auto auto 36px;column-gap:14px}
+.muse-paychecks-view .muse-money-allocation-row .muse-money-ledger-number{text-align:right}
+.muse-paychecks-view .muse-money-allocation-row .muse-money-mobile-label{display:block;font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted)}
+@container muse-content (max-width:980px){.muse-paychecks-view .muse-paycheck-navigation{grid-template-columns:repeat(2,minmax(0,1fr))}.muse-paychecks-view .muse-money-allocations{grid-template-columns:minmax(0,1fr)}}
+/* Bills as compact tiles: name and cadence, the due date as a stamp-like line, amount as a numeral, status + action. */
+.muse-paychecks-view .muse-money-bill-ledger{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:var(--space-4,18px)}
+.muse-paychecks-view .muse-money-bill-row{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"name menu" "due amount" "status action";align-items:center;gap:8px 12px;padding:16px 16px 16px 20px;border:1px solid var(--glass-border);border-radius:18px;background:var(--surface-subtle)}
+.muse-paychecks-view .muse-money-bill-row::before{top:16px;bottom:16px}
+.muse-paychecks-view .muse-money-bill-row>:nth-child(1){grid-area:name}
+.muse-paychecks-view .muse-money-bill-row>time{grid-area:due;color:var(--text-muted);font-size:.82rem}
+.muse-paychecks-view .muse-money-bill-row>strong{grid-area:amount;font-family:var(--font-editorial);font-weight:560;font-size:1.35rem;letter-spacing:-.02em;text-align:right}
+.muse-paychecks-view .muse-money-bill-row>.muse-bill-status{grid-area:status;justify-self:start}
+.muse-paychecks-view .muse-money-bill-row>.muse-bill-paid-action{grid-area:action;justify-self:end}
+.muse-paychecks-view .muse-money-bill-row>:last-child:not(.muse-bill-paid-action){grid-area:menu;justify-self:end}
+.muse-paychecks-view .muse-money-bill-row .muse-bill-name{font-family:var(--font-editorial);font-size:1.08rem;font-weight:600}
+.muse-paychecks-view .muse-money-bill-row .muse-money-mobile-label{display:inline;margin-right:4px}
+.muse-paychecks-view .muse-entry-carousel-item>.muse-money-bill-ledger{display:block;height:100%}
+.muse-paychecks-view .muse-entry-carousel-item .muse-money-bill-row{height:100%}
+
+/* ── Categories: colour-coded cards, chips for subcategories, equal-height taxonomy row ──────────────────────── */
+.muse-money-category-grid{grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr))!important;align-items:stretch!important;gap:var(--space-4,18px)!important}
+.muse-money-category{position:relative;display:flex;flex-direction:column;gap:10px;margin:0;overflow:hidden;background-image:radial-gradient(90% 80% at 0% 0%,color-mix(in srgb,var(--money-accent,var(--accent-primary)) 16%,transparent),transparent 70%)}
+.muse-money-category::after{content:"";position:absolute;inset:0 0 auto;height:4px;background:var(--money-accent,var(--accent-primary))}
+.muse-money-category .muse-money-panel-heading{margin:0}
+.muse-money-category h3{display:flex;align-items:center;gap:10px;font-family:var(--font-editorial);font-weight:600;font-size:1.2rem}
+.muse-money-category h3 .muse-money-color-dot{display:none}
+.muse-money-category-glyph{display:grid;place-items:center;width:34px;height:34px;border-radius:11px;color:white;font-family:var(--font-editorial);font-weight:700;background:linear-gradient(135deg,color-mix(in oklab,var(--money-accent,var(--accent-primary)) 85%,black),var(--money-accent,var(--accent-primary)));box-shadow:0 8px 16px -10px var(--money-accent,var(--accent-primary))}
+.muse-money-category-glyph svg{width:17px;height:17px}
+.muse-money-subcats{display:flex;flex-wrap:wrap;gap:6px;margin:0}
+.muse-money-subcats span{padding:3px 10px;border-radius:999px;font-size:.76rem;color:var(--foreground);background:color-mix(in srgb,var(--money-accent,var(--accent-primary)) 14%,transparent);border:1px solid color-mix(in srgb,var(--money-accent,var(--accent-primary)) 30%,transparent)}
+.muse-money-category>.muse-button{margin-top:auto;align-self:flex-start}
+.muse-money-category[data-archived=true]{opacity:.62;filter:saturate(.6)}
+.muse-money-taxonomy-grid{grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch!important;gap:var(--space-6,28px)!important}
+.muse-money-taxonomy-grid>.muse-money-panel{margin:0}
+.muse-money-taxonomy-grid .muse-money-taxonomy{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
+.muse-money-taxonomy-grid .muse-money-taxonomy>li{display:inline-flex;align-items:center;gap:2px;padding:2px;border:1px solid var(--glass-border);border-radius:999px;background:var(--surface-subtle)}
+.muse-money-taxonomy-grid .muse-money-taxonomy>li>.muse-button{min-height:32px;padding:4px 12px;border:0;border-radius:999px;font-size:.84rem}
+.muse-money-taxonomy-grid .muse-money-taxonomy>li>.muse-button+.muse-button{color:var(--text-muted);font-size:.74rem}
+@container muse-content (max-width:820px){.muse-money-taxonomy-grid{grid-template-columns:minmax(0,1fr)}}
+
+/* ── Spending: insights row (equal height) and a ledger grouped by day ─────────────────────────────────────── */
+.muse-money-spending-insights{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch;gap:var(--space-6,28px);margin-block:var(--space-6,28px)}
+.muse-money-spending-insights>.muse-money-panel{display:flex;flex-direction:column;gap:14px;margin:0;min-width:0}
+.muse-money-spending-insights .muse-money-mix{margin-top:auto}
+.muse-money-spending-insights .muse-money-track{border-top:0;padding-top:0}
+.muse-money-spending-insights .muse-money-facts{margin:auto 0 0}
+.muse-money-ledger[data-grouped]>.muse-money-day-head{display:flex!important;justify-content:space-between;align-items:baseline;gap:12px;padding:18px 4px 6px!important;border-bottom:1px solid color-mix(in srgb,var(--accent-primary) 30%,var(--glass-border))!important;background:none!important}
+.muse-money-ledger[data-grouped]>.muse-money-day-head:first-child{padding-top:4px!important}
+.muse-money-day-head span{font-family:var(--font-editorial);font-weight:600;font-size:1.05rem}
+.muse-money-day-head strong{font-variant-numeric:tabular-nums;color:var(--text-muted);font-size:.86rem}
+
+@container muse-content (max-width:820px){.muse-money-spending-insights{grid-template-columns:minmax(0,1fr)}}
+.muse-money-category-grid{display:block!important;margin-bottom:var(--space-6,28px)}
+.muse-money-category-grid .muse-entry-carousel-track{gap:var(--space-4,18px)}
+.muse-money-category-grid .muse-money-category{height:100%}
+.muse-money-insight-total{margin:0;font-family:var(--font-editorial);font-weight:520;font-size:clamp(2.4rem,4vw,3.2rem);line-height:1;letter-spacing:-.04em}
+
+/* ── Recurring: totals beside the by-category split, one equal-height row ──────────────────────────────────── */
+.muse-recurring-top{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);align-items:stretch;gap:var(--space-6,28px);margin-bottom:var(--space-6,28px)}
+.muse-recurring-top>.muse-money-panel{display:flex;flex-direction:column;gap:14px;margin:0;min-width:0}
+.muse-recurring-top .muse-recurring-category-summary ul{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.muse-recurring-top .muse-recurring-category-summary li{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;background:color-mix(in srgb,var(--money-accent,var(--accent-primary)) 10%,var(--surface-subtle));border:1px solid color-mix(in srgb,var(--money-accent,var(--accent-primary)) 25%,transparent)}
+.muse-recurring-top .muse-recurring-category-summary li strong{font-family:var(--font-editorial);font-weight:560;font-size:1.1rem}
+.muse-recurring-top .muse-recurring-category-summary>.small-label{margin-top:auto}
+@container muse-content (max-width:980px){.muse-recurring-top{grid-template-columns:minmax(0,1fr)}}
+.muse-recurring-top>:only-child{grid-column:1/-1}
+.muse-recurring-category-empty{display:grid;justify-items:start;gap:10px;margin:auto 0}
+.muse-recurring-category-empty p{margin:0;color:var(--text-muted);font-size:.88rem}
+.muse-recurring-category-empty strong{display:block;margin-bottom:2px;font-family:var(--font-editorial);font-weight:600;font-size:1.1rem;color:var(--foreground)}
+.muse-recurring-category-empty>span{display:flex;gap:6px}
+.muse-recurring-category-empty>span i{width:34px;height:34px;border-radius:50%;border:2px dashed color-mix(in srgb,var(--chart-6) 60%,transparent)}
+.muse-recurring-category-empty>span i:nth-child(2){border-color:color-mix(in srgb,var(--chart-5) 60%,transparent)}.muse-recurring-category-empty>span i:nth-child(3){border-color:color-mix(in srgb,var(--chart-2) 60%,transparent)}
+.muse-recurring-top .muse-recurring-category-summary ul:empty{display:none}
+
+/* ── Paychecks, tightened ~20% (Stephanie, Nov 13) ─────────────────────────────────────────────────────────── */
+.muse-paycheck-summary{gap:clamp(14px,2.4vw,30px);padding-bottom:12px}
+.muse-paycheck-amount{font-size:clamp(2.2rem,4vw,3.3rem)}
+.muse-paycheck-summary .muse-money-hero-facts{margin-top:4px}
+.muse-paycheck-summary .muse-money-hero-facts>div{padding:8px 12px}
+.muse-paycheck-summary .muse-money-hero-facts dd{font-size:1.15rem}
+.muse-paycheck-summary .muse-money-ring-dial{width:clamp(110px,10vw,140px)}
+.muse-paycheck-summary .muse-money-ring circle{stroke-width:13}
+.muse-paycheck-summary .muse-money-ring-value{font-size:1.7rem}
+.muse-paycheck-summary .muse-money-ring-legend{gap:5px}.muse-paycheck-summary .muse-money-ring-legend li{font-size:.8rem}
+.muse-paychecks-view .muse-money-allocation-row{min-height:50px;padding-block:4px}
+.muse-paychecks-view .muse-money-allocation-row .muse-money-mobile-label{font-size:.56rem}
+.muse-paychecks-view .muse-paycheck-plan>.muse-button,.muse-paychecks-view .muse-paycheck-plan>.small-label{margin-block:6px 0}
+
+/* ── Bills as a statement: date stamp · name · amount · status · action, five per page ──────────────────── */
+.muse-money-bill-statement .muse-money-paged-list{grid-template-rows:none;gap:8px}
+.muse-paychecks-view .muse-money-bill-statement .muse-money-bill-row{grid-template-columns:56px minmax(0,1fr) auto auto auto 36px;grid-template-areas:"due name amount status action menu";align-items:center;gap:14px;height:auto;padding:12px 14px 12px 18px;border:1px solid var(--glass-border);border-radius:16px;background:var(--surface-subtle)}
+.muse-paychecks-view .muse-money-bill-statement .muse-money-bill-row::before{top:12px;bottom:12px}
+.muse-paychecks-view .muse-money-bill-statement .muse-money-bill-row>time{grid-area:due;display:grid;place-content:center;width:52px;height:52px;padding:4px;border-radius:12px;text-align:center;line-height:1.05;font-family:var(--font-editorial);font-weight:600;font-size:.95rem;color:var(--foreground);background:var(--glass-background);border:1px solid var(--glass-border);box-shadow:inset 0 10px 0 -1px color-mix(in srgb,var(--chart-4) 85%,black)}
+.muse-paychecks-view .muse-money-bill-statement .muse-money-bill-row:has([data-status=paid])>time{box-shadow:inset 0 10px 0 -1px var(--success-primary)}
+.muse-paychecks-view .muse-money-bill-statement .muse-money-bill-row>time .muse-money-mobile-label{display:none}
+.muse-paychecks-view .muse-money-bill-statement .muse-money-bill-row>:first-child{grid-area:name;min-width:0}
+.muse-paychecks-view .muse-money-bill-statement .muse-money-bill-row .muse-bill-name{font-family:var(--font-editorial);font-size:1.1rem;font-weight:600}
+.muse-paychecks-view .muse-money-bill-statement .muse-money-bill-row>strong{grid-area:amount;font-family:var(--font-editorial);font-weight:560;font-size:1.3rem;letter-spacing:-.02em;text-align:right;min-width:110px}
+.muse-paychecks-view .muse-money-bill-statement .muse-money-bill-row>.muse-bill-status{grid-area:status;min-width:96px;text-align:center}
+.muse-paychecks-view .muse-money-bill-statement .muse-money-bill-row>.muse-bill-paid-action{grid-area:action}
+.muse-paychecks-view .muse-money-bill-statement .muse-money-bill-row>:last-child:not(.muse-bill-paid-action){grid-area:menu}
+@container muse-content (max-width:760px){.muse-paychecks-view .muse-money-bill-statement .muse-money-bill-row{grid-template-columns:52px minmax(0,1fr) auto;grid-template-areas:"due name amount" "due status action";row-gap:6px}.muse-paychecks-view .muse-money-bill-statement .muse-money-bill-row>:last-child:not(.muse-bill-paid-action){display:none}}
+.muse-paychecks-view .muse-money-bill-statement .muse-money-bill-row>time{height:58px;padding:13px 4px 4px;box-shadow:inset 0 8px 0 -1px color-mix(in srgb,var(--chart-4) 85%,black)}.muse-paychecks-view .muse-money-bill-statement .muse-money-bill-row:has([data-status=paid])>time{box-shadow:inset 0 8px 0 -1px var(--success-primary)}
+/* Day by day fills its panel: the track grows to the row height and the bars scale into it (no dead band). */
+.muse-money-spending-insights .muse-money-track{flex:1;align-items:stretch;min-height:150px}
+.muse-money-spending-insights .muse-money-track>li{grid-template-rows:12px minmax(64px,1fr) auto}
+.muse-money-spending-insights .muse-money-track-payday{align-self:stretch}
+.muse-money-spending-insights .muse-money-facts{margin-top:14px}

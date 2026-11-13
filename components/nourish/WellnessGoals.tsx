@@ -37,7 +37,7 @@ export function WellnessGoals({today,timeZone}:{today:string;timeZone:string}){
  const setStatus=(goal:WellnessGoal,next:"active"|"paused"|"inactive")=>save(withVersion(goal,today,{status:next},new Date().toISOString()));
  return <section className="muse-wellness-goals" aria-label="Wellness goals">
   <div className="muse-goals-head">
-   <MuseHeading level={2} size="lg" icon="target" tone={2} title="Goals" description="Optional targets, measured from what you already log in Wellness and Daily Edit. Paused time never counts against you."/>
+   <h2 className="sr-only">Goals</h2><p className="small-label muse-goals-intro">Optional targets, measured from what you already log in Wellness and Daily Edit. Paused time never counts against you.</p>
    {goals&&<button type="button" className="muse-button button-primary" onClick={event=>setEditor({anchor:event.currentTarget})}><MuseIcon name="plus" size={16}/>Add a goal</button>}
   </div>
   {!goals&&<p className="muse-goals-notice" role="status">Goals, workout categories and durations need the latest database update. Your existing Wellness records are unaffected.</p>}

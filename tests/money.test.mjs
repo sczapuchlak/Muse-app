@@ -98,7 +98,7 @@ test('Money sections render one shared model, compact ledger, vivid charts and M
  const {MoneyContext}=load('components/money/MoneyStore'),views=load('components/money/MoneyViews'),onOpen=()=>{};
  const render=(component,props)=>renderToStaticMarkup(React.createElement(MoneyContext.Provider,{value:moneyFixture(moneySample)},React.createElement(component,{onOpen,...props})));
  const overview=render(views.MoneyOverview,{paycheck:moneySample.paychecks[0],period,today:'2026-10-30',onSpending(){}});
- assert.ok(overview.includes('Current paycheck'));assert.ok(overview.includes('muse-money-ribbon'));assert.ok(overview.includes('$130.00'));assert.ok(overview.includes('Coming up'));
+ assert.ok(overview.includes('Current paycheck'));assert.ok(overview.includes('muse-money-ring'),'the pay-period hero shows planning as a ring');assert.ok(overview.includes('$130.00'));assert.ok(overview.includes('Coming up'));
  const paycheck=render(views.MoneyPaychecks,{paycheck:moneySample.paychecks[0],onSelect(){}});assert.ok(paycheck.includes('Use template'));assert.ok(paycheck.includes('Save changes to template'));assert.ok(paycheck.includes('$218.00'));
  const cards=render(views.MoneyCards,{});assert.ok(cards.includes('utilization unknown'));assert.ok(cards.includes('Unknown'));assert.ok(cards.includes('Record payment'));
  const categories=render(views.MoneyCategories,{});assert.ok(categories.includes('Subcategories')||categories.includes('Skincare'));assert.ok(categories.includes('Archive category'));

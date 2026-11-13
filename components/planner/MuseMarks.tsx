@@ -22,8 +22,8 @@ export function MarkGlyph({ mark, size = 14, onSelect }: { mark: Pick<ResolvedMa
   const style = { ...accentStyle(mark.color), ...(mark.gradient ? { "--mark-gradient": customGradientCss(mark.gradient) } : {}) } as CSSProperties;
   const paint = mark.gradient ? "gradient" : undefined;
   return onSelect
-    ? <button type="button" className="muse-mark" data-paint={paint} data-missing={mark.missing || undefined} style={style} title={name} aria-label={`Edit ${name}`} onClick={(e) => onSelect(e.currentTarget)}>{glyph}</button>
-    : <span className="muse-mark" data-paint={paint} data-missing={mark.missing || undefined} style={style} title={name} role="img" aria-label={name}>{glyph}</span>;
+    ? <button type="button" className="muse-agenda-mark" data-paint={paint} data-missing={mark.missing || undefined} style={style} title={name} aria-label={`Edit ${name}`} onClick={(e) => onSelect(e.currentTarget)}>{glyph}</button>
+    : <span className="muse-agenda-mark" data-paint={paint} data-missing={mark.missing || undefined} style={style} title={name} role="img" aria-label={name}>{glyph}</span>;
 }
 
 /** A row of date Marks with their labels, e.g. ✈ London. */

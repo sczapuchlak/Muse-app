@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
-import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { MuseMark, type MuseMarkIcon, type MuseTone } from "@/components/design/MuseHeading";
 import { createMuseBrowserClient } from "@/lib/supabase/client";
 import { createTask } from "@/lib/planner";
 import { projectEvents } from "@/lib/planner-occurrences";
@@ -110,6 +111,7 @@ function ChapterLoader({ range, today, client, go }: { range: IntentionRange; to
 function StartChapter({ range, tense, onBegin }: { range: IntentionRange; tense: "past" | "current" | "future"; onBegin: (blank: boolean) => void }) {
   const t = templates[range.period];
   return <div className="muse-intentions-start">
+    <div className="muse-intentions-start-art" aria-hidden="true"><span className="muse-intentions-tape"/><small>{range.period === "week" ? "This week" : range.period === "month" ? "This month" : range.period === "quarter" ? "This quarter" : "This year"}</small><b>{intentionName(range)}</b><i/><i/><i/><i/><span className="muse-intentions-sprig"/></div>
     <p className="muse-reflections-kicker">{tense === "future" ? "Planning ahead" : tense === "past" ? "Looking back" : "A new chapter"} <MuseStar size={14} prismatic /></p>
     <h2>{range.period === "week" ? "What would make this week feel right?" : range.period === "month" ? `What do you want ${intentionName(range)} to feel like?` : range.period === "quarter" ? `Where is ${intentionName(range)} taking you?` : `Imagine ${intentionName(range)}.`}</h2>
     <p className="muse-reflections-quiet">{tense === "past" ? "This period has passed. You can still write down what you meant it to be." : "Nothing here is required. Start with the page below, or with a blank page and add only what helps."}</p>
@@ -223,9 +225,9 @@ function SectionFrame({ section: s, arranging, first, last, onTitle, onCollapse,
   section: IntentionSection; arranging: boolean; first: boolean; last: boolean; onTitle: (t: string) => void; onCollapse: () => void; onMove: (by: -1 | 1) => void; onHide: () => void; onRemove: () => void;
   confirming: boolean; onConfirm: (yes: boolean) => void; children: ReactNode }) {
   const k = kindOf(s), bodyId = `intention-${s.id}`;
-  return <section className="muse-intentions-section" data-type={s.type} data-kind={k.key} data-prompt={(s.content as { question?: string }).question ? true : undefined} data-hidden={s.hidden || undefined} data-collapsed={s.collapsed || undefined} aria-label={s.title}>
+  return <section className="muse-intentions-section" style={{"--aura":`var(--chart-${k.tone})`} as CSSProperties} data-type={s.type} data-kind={k.key} data-prompt={(s.content as { question?: string }).question ? true : undefined} data-hidden={s.hidden || undefined} data-collapsed={s.collapsed || undefined} aria-label={s.title}>
     <header className="muse-intentions-section-head">
-      <span className="muse-intentions-section-icon" aria-hidden="true">{k.emoji}</span>
+      <MuseMark icon={k.glyph as MuseMarkIcon} tone={k.tone as MuseTone} size="sm" className="muse-section-mark"/>
       {arranging ? <input className="muse-reflections-module-title" aria-label="Section title" maxLength={60} value={s.title} onChange={(e) => onTitle(e.target.value)} /> : <h3>{s.title}</h3>}
       {arranging ? <div className="muse-reflections-module-tools">
         <button type="button" className="muse-reflections-icon" aria-label={`Move ${s.title} earlier`} disabled={first} onClick={() => onMove(-1)}>↑</button>

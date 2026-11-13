@@ -81,3 +81,21 @@
 .muse-goals-empty-art i{inset:calc(var(--n,0)*15px);border:0;rotate:none;opacity:1;background:conic-gradient(var(--c) var(--p),color-mix(in srgb,var(--c) 16%,transparent) 0);-webkit-mask-image:radial-gradient(farthest-side,transparent calc(100% - 9px),black calc(100% - 8px));mask-image:radial-gradient(farthest-side,transparent calc(100% - 9px),black calc(100% - 8px))}
 .muse-goals-empty-art i:nth-child(1){--p:78%}.muse-goals-empty-art i:nth-child(2){--p:56%}.muse-goals-empty-art i:nth-child(3){--p:34%}
 @keyframes muse-goal-ring{from{rotate:-120deg;opacity:0}}
+
+/* Goals side by side (Stephanie, Nov 13): the water goal and the "No goals yet" invitation share one equal row. */
+.muse-wellness-goals .muse-goals-grid{grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch;gap:var(--space-6,28px)}
+.muse-wellness-goals .muse-goals-grid>*{min-width:0;margin:0}
+.muse-wellness-goals .muse-goals-empty{grid-column:auto;align-content:center;padding-right:130px}
+.muse-wellness-goals .muse-goals-empty>div{gap:8px}
+.muse-wellness-goals .muse-goals-seed{min-height:36px;font-size:.86rem}
+@container muse-content (max-width:820px){.muse-wellness-goals .muse-goals-grid{grid-template-columns:minmax(0,1fr)}.muse-wellness-goals .muse-goals-empty{padding-right:20px}}
+.muse-wellness-goals .muse-goals-grid>:only-child{grid-column:1/-1}
+.muse-wellness-goals .muse-goals-head{align-items:center}.muse-goals-intro{margin:0;max-width:62ch}
+
+/* Round 3 (Nov 13): every goal is an opaque glass sheet like its neighbours (never see-through), with an aura in its
+   own colour; hydration glows in the theme's water gradient. */
+.muse-wellness-goals .muse-goal-card{--aura:var(--accent-primary);border:1px solid var(--glass-border)!important;border-top-color:var(--glass-edge)!important;border-radius:var(--card-radius,24px)!important;
+ background:radial-gradient(90% 70% at 100% 0%,color-mix(in srgb,var(--aura) 14%,transparent),transparent 62%),linear-gradient(var(--glass-background),var(--glass-background)),var(--background)!important;box-shadow:var(--card-shadow);-webkit-backdrop-filter:blur(var(--material-blur,14px));backdrop-filter:blur(var(--material-blur,14px))}
+.muse-wellness-goals .muse-goal-card-hydration{--aura:var(--water-gradient-start,var(--accent-aqua,var(--accent-primary)))}
+.muse-wellness-goals .muse-goal-card-hydration .muse-goal-meter>span{background:linear-gradient(90deg,var(--water-gradient-start,var(--accent-primary)),var(--water-gradient-middle,var(--accent-secondary)),var(--water-gradient-end,var(--accent-pop)))}
+.muse-wellness-goals .muse-goal-card-hydration .muse-goal-strip li[data-status="achieved"]{background:linear-gradient(180deg,var(--water-gradient-start,var(--accent-primary)),var(--water-gradient-end,var(--accent-secondary)));box-shadow:0 0 8px -2px var(--water-gradient-start,var(--accent-primary))}

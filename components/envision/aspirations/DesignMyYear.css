@@ -1,0 +1,206 @@
+/* Design My Year (#190): the ritual gets its own room: full screen, a night sky in the theme's own colours, and an
+   editorial rhythm (prologue, ten chapters, a final page, a reveal). Tokens only; motion is gated and finite. */
+.muse-ritual{position:fixed;inset:0;width:100%;max-width:none;height:100%;max-height:none;margin:0;padding:0;border:0;color:var(--foreground);
+ display:grid;grid-template-rows:auto minmax(0,1fr) auto;overflow:hidden;
+ background:radial-gradient(70% 60% at 15% 10%,color-mix(in oklab,var(--chart-2) 26%,transparent),transparent 70%),radial-gradient(60% 60% at 90% 85%,color-mix(in oklab,var(--chart-5) 22%,transparent),transparent 70%),radial-gradient(40% 40% at 70% 20%,color-mix(in oklab,var(--chart-7) 14%,transparent),transparent 70%),var(--background)}
+.muse-ritual:not([open]){display:none}
+.muse-ritual::backdrop{background:var(--background)}
+.muse-ritual::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.55;
+ background-image:radial-gradient(1px 1px at 8% 18%,var(--foreground) 50%,transparent 51%),radial-gradient(1.3px 1.3px at 22% 64%,var(--foreground) 50%,transparent 51%),radial-gradient(1px 1px at 37% 32%,var(--foreground) 50%,transparent 51%),radial-gradient(1px 1px at 48% 86%,var(--foreground) 50%,transparent 51%),radial-gradient(1.5px 1.5px at 63% 12%,var(--foreground) 50%,transparent 51%),radial-gradient(1px 1px at 76% 52%,var(--foreground) 50%,transparent 51%),radial-gradient(1.2px 1.2px at 91% 28%,var(--foreground) 50%,transparent 51%),radial-gradient(1px 1px at 84% 92%,var(--foreground) 50%,transparent 51%),radial-gradient(1px 1px at 4% 88%,var(--foreground) 50%,transparent 51%)}
+.muse-ritual[data-movement=declare]{background:radial-gradient(70% 60% at 85% 10%,color-mix(in oklab,var(--accent-warm) 24%,transparent),transparent 70%),radial-gradient(60% 60% at 10% 90%,color-mix(in oklab,var(--chart-4) 20%,transparent),transparent 70%),var(--background)}
+.muse-ritual>*:not(.muse-popover-panel){position:relative}
+/* Menus opened inside the ritual float above it; they never become a row of its grid. */
+.muse-ritual>.muse-popover-panel{grid-row:auto}
+
+.muse-ritual-top{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:12px;align-items:center;padding:calc(10px + env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) 10px max(16px,env(safe-area-inset-left));border-bottom:1px solid color-mix(in oklab,var(--glass-border) 70%,transparent)}
+.muse-ritual-brand{display:flex;gap:8px;align-items:center;margin:0;font-family:var(--font-editorial);font-style:italic;font-size:1.05rem;min-width:0}
+.muse-ritual-brand small{font-family:var(--font-ui);font-style:normal;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--text-muted);padding-left:8px;border-left:1px solid var(--glass-border)}
+.muse-ritual-leave{justify-self:end}
+.muse-ritual-progress ol{display:flex;align-items:center;gap:0;margin:0;padding:0;list-style:none}
+.muse-ritual-progress li{position:relative;display:grid;grid-auto-flow:column;place-items:center;--star:#f4c85e}
+/* The thread between stars: lit up to where you are. */
+.muse-ritual-progress li+li::before{content:"";width:clamp(8px,1.9vw,20px);height:1.5px;border-radius:2px;background:color-mix(in oklab,var(--foreground) 18%,transparent)}
+.muse-ritual-progress li:is([data-state=done],[data-state=current])+li:is([data-state=done],[data-state=current])::before{background:linear-gradient(90deg,#f4c85e,color-mix(in oklab,#f4c85e 60%,var(--accent-primary)));box-shadow:0 0 6px color-mix(in oklab,#f4c85e 60%,transparent)}
+.muse-ritual-progress button{display:grid;place-items:center;width:28px;height:28px;padding:0;border:0;border-radius:50%;background:transparent;cursor:pointer}
+.muse-ritual-progress button span{width:12px;height:12px;background:color-mix(in oklab,var(--foreground) 26%,transparent);clip-path:polygon(50% 0,61% 39%,100% 50%,61% 61%,50% 100%,39% 61%,0 50%,39% 39%);transition:transform var(--transition),background var(--transition),filter var(--transition)}
+.muse-ritual-progress li:is([data-kind=imagine],[data-kind=declare]) button span{width:15px;height:15px}
+.muse-ritual-progress li[data-state=done] button span{background:linear-gradient(135deg,#fff3c4,var(--star));filter:drop-shadow(0 0 3px color-mix(in oklab,var(--star) 70%,transparent))}
+.muse-ritual-progress li[data-state=ahead][data-filled] button span{background:color-mix(in oklab,var(--star) 70%,transparent)}
+.muse-ritual-progress li[data-state=current] button span{transform:scale(1.9);background:radial-gradient(circle at 50% 45%,#fffbe8 0 18%,#ffe08a 34%,#f4b63c 70%,#d98e1f);filter:drop-shadow(0 0 6px #ffd56b) drop-shadow(0 0 12px color-mix(in oklab,#ffcf5a 60%,transparent))}
+.muse-ritual-progress li[data-state=current] button::after{content:"";position:absolute;width:6px;height:6px;margin:-16px 0 0 18px;background:#fff6d2;clip-path:polygon(50% 0,61% 39%,100% 50%,61% 61%,50% 100%,39% 61%,0 50%,39% 39%);pointer-events:none}
+.muse-ritual-progress button:hover span{transform:scale(1.35)}
+.muse-ritual-progress li[data-state=current] button:hover span{transform:scale(1.9)}
+.muse-ritual-progress button:focus-visible{outline:2px solid var(--accent-primary);outline-offset:1px}
+@media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]){
+ .muse-ritual-progress li[data-state=current] button span{animation:muse-ritual-twinkle 2.4s ease-in-out 50}
+ .muse-ritual-progress li[data-state=current] button::after{animation:muse-ritual-glint 2.4s ease-in-out 50}
+}}
+@keyframes muse-ritual-twinkle{0%,100%{opacity:1;filter:drop-shadow(0 0 6px #ffd56b) drop-shadow(0 0 14px color-mix(in oklab,#ffcf5a 70%,transparent))}50%{opacity:.55;filter:drop-shadow(0 0 2px #ffd56b)}}
+@keyframes muse-ritual-glint{0%,40%,100%{opacity:0;transform:scale(.4) rotate(0)}60%{opacity:1;transform:scale(1.2) rotate(45deg)}}
+@media (max-width:700px){.muse-ritual-top{grid-template-columns:minmax(0,1fr) auto}.muse-ritual-progress{grid-column:1/-1;grid-row:2;justify-self:center}.muse-ritual-brand small{display:none}.muse-ritual-progress li+li::before{width:clamp(4px,1.6vw,12px)}}
+
+.muse-ritual-stage{overflow-y:auto;overscroll-behavior:contain;padding:clamp(20px,4vw,56px) max(16px,env(safe-area-inset-right)) clamp(24px,4vw,48px) max(16px,env(safe-area-inset-left))}
+.muse-ritual-stage>section{max-width:1080px;margin:0 auto}
+.muse-ritual h2{font-family:var(--font-editorial);font-weight:var(--type-display-weight);letter-spacing:-.015em}
+.muse-ritual-lede{margin:0;font-family:var(--font-editorial);font-style:italic;font-size:clamp(1.25rem,2.4vw,1.75rem);line-height:1.3}
+@media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) .muse-ritual-stage>section{animation:muse-ritual-turn .5s cubic-bezier(.2,.8,.2,1) both}}
+@keyframes muse-ritual-turn{from{opacity:0;translate:0 10px}}
+
+/* Prologue */
+.muse-ritual-imagine{position:relative;display:grid;justify-items:center;gap:14px;text-align:center;padding-top:clamp(0px,3vh,40px)}
+.muse-ritual .muse-ritual-imagine-sky{position:absolute;inset:-6% 0 auto;width:min(100%,960px);margin:auto;opacity:.6;z-index:-1;-webkit-mask-image:radial-gradient(ellipse 34% 46% at 50% 62%,transparent 55%,#000 92%);mask-image:radial-gradient(ellipse 34% 46% at 50% 62%,transparent 55%,#000 92%)}
+.muse-ritual-year{margin:0;padding:0 .14em 0 .06em;font-size:clamp(5rem,18vw,11rem);line-height:.9;font-style:italic;font-variant-numeric:lining-nums}
+:root:not([data-theme="astral"]):not([data-theme="nightbloom"]) .muse-ritual-year{background-image:linear-gradient(110deg,var(--accent-primary),color-mix(in oklab,var(--accent-secondary) 85%,var(--foreground)) 50%,var(--accent-pop));-webkit-background-clip:text;background-clip:text;color:transparent}
+.muse-ritual-verses{display:grid;gap:10px;max-width:56ch;color:var(--text-muted);font-size:1.05rem;line-height:1.6}
+.muse-ritual-verses p,.muse-ritual-imagine>p{margin:0}
+.muse-ritual-imagine>p:not(.muse-kicker):not(.muse-ritual-lede){max-width:56ch;color:var(--text-muted)}
+.muse-ritual-yearpick{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;align-items:center;margin-top:10px}
+.muse-ritual-yearpick button{min-height:40px;min-width:72px;padding:6px 16px;border:1px solid var(--glass-border);border-radius:999px;background:color-mix(in oklab,var(--surface-control) 80%,transparent);color:var(--foreground);font:inherit;font-size:1rem;cursor:pointer;transition:border-color var(--transition),background var(--transition),box-shadow var(--transition)}
+.muse-ritual-yearpick button:hover{border-color:var(--selected-border)}
+.muse-ritual-yearpick button[aria-checked=true]{border-color:#f4c85e;background:color-mix(in oklab,#f4c85e 16%,transparent);box-shadow:0 0 0 1px #f4c85e,0 0 18px -4px #f4c85e}
+
+/* Carry forward */
+.muse-ritual-carry{display:grid;gap:14px;max-width:720px!important}
+.muse-ritual-carry h2{margin:0;font-size:clamp(2rem,4vw,3rem);font-style:italic}
+.muse-ritual-carry-list{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.muse-ritual-carry-list li{border:1px solid var(--glass-border);border-radius:14px;background:var(--glass-background)}
+.muse-ritual-carry-list label,.muse-ritual-carry-list li[data-done]>span{display:flex;gap:12px;align-items:center;padding:12px 14px;cursor:pointer}
+.muse-ritual-carry-list input{width:20px;height:20px;accent-color:var(--accent-primary)}
+.muse-ritual-carry-list span{display:grid;gap:2px}.muse-ritual-carry-list strong{font-family:var(--font-editorial);font-size:1.1rem}.muse-ritual-carry-list small{color:var(--text-muted)}
+.muse-ritual-carry-list li[data-done]{border-color:color-mix(in oklab,var(--accent-warm) 50%,var(--glass-border))}
+
+/* A chapter: the area's voice on the left, a journal page on the right. */
+.muse-ritual-chapter{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(20px,4vw,56px);align-items:start}
+.muse-ritual-chapter-intro{display:grid;gap:12px;align-content:start;position:sticky;top:0}
+.muse-ritual-chapter-title{display:flex;align-items:center;flex-wrap:wrap;gap:6px 16px;margin:0;font-size:clamp(2rem,3.8vw,3.1rem);line-height:1.05;font-style:italic}
+.muse-ritual-chapter-title .muse-mark{flex:none;width:clamp(48px,4.6vw,60px);height:clamp(48px,4.6vw,60px);border-radius:16px}
+.muse-ritual-chapter-title .muse-mark svg{width:46%;height:46%}
+.muse-ritual-numeral{flex:none;padding:0 .12em 0 .04em;font-family:var(--font-editorial);font-style:italic;font-size:.82em;line-height:1.1;color:color-mix(in oklab,var(--mark-a) 70%,var(--foreground))}
+.muse-ritual-chapter-title>span:last-child{min-width:0;padding-right:.1em}
+.muse-ritual-prompt{margin:0;font-family:var(--font-editorial);font-size:clamp(1.2rem,2.2vw,1.6rem);line-height:1.35;max-width:30ch}
+.muse-ritual-vision{display:grid;gap:6px;margin-top:6px;font-size:.9rem;color:var(--text-muted)}
+.muse-ritual-vision small{font-size:.74rem;opacity:.8}
+.muse-ritual-vision textarea,.muse-ritual-field :is(input,textarea),.muse-ritual-track-extra :is(input,textarea){width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid var(--glass-border);border-radius:12px;background:color-mix(in oklab,var(--surface-control) 85%,transparent);color:var(--foreground);font:inherit;resize:vertical}
+.muse-ritual :is(input,textarea):focus-visible{outline:2px solid var(--accent-primary);outline-offset:1px}
+.muse-ritual-chapter-page{display:grid;gap:14px;padding:clamp(18px,3vw,30px);border-radius:22px;border:1px solid var(--glass-border);border-top-color:var(--glass-edge);
+ background:linear-gradient(160deg,color-mix(in oklab,var(--mark-a) 12%,transparent),transparent 45%),linear-gradient(var(--glass-background),var(--glass-background)),var(--background);box-shadow:var(--card-shadow)}
+.muse-ritual-add{display:grid;gap:8px}
+.muse-ritual-add>label{font-size:.7rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:color-mix(in oklab,var(--mark-a) 70%,var(--foreground))}
+.muse-ritual-add>div{display:flex;gap:10px;align-items:center;border-bottom:2px solid color-mix(in oklab,var(--mark-a) 55%,var(--glass-border));padding-bottom:6px}
+.muse-ritual-add input{flex:1;min-width:0;min-height:48px;border:0;background:transparent;color:var(--foreground);font-family:var(--font-editorial);font-size:clamp(1.1rem,1.8vw,1.35rem);outline:none!important;text-overflow:ellipsis}
+.muse-ritual-add input::placeholder{color:color-mix(in oklab,var(--foreground) 45%,transparent);font-style:italic}
+.muse-ritual-add:focus-within>div{border-bottom-color:var(--mark-a)}
+.muse-ritual-add p{margin:0}
+.muse-ritual-list{display:grid;gap:8px;margin:0;padding:0;list-style:none;counter-reset:asp}
+.muse-ritual-item{display:grid;gap:8px;padding:10px 12px;border-radius:14px;background:color-mix(in oklab,var(--surface-strong) 75%,transparent);border:1px solid var(--glass-border)}
+@media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) .muse-ritual-item{animation:muse-ritual-turn .35s ease-out both}}
+.muse-ritual-item-row{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;gap:10px;align-items:center}
+.muse-ritual-item-star{width:12px;height:12px;background:linear-gradient(135deg,var(--mark-a),var(--mark-b));clip-path:polygon(50% 0,61% 39%,100% 50%,61% 61%,50% 100%,39% 61%,0 50%,39% 39%)}
+.muse-ritual-item-row strong{font-family:var(--font-editorial);font-weight:var(--type-editorial-weight);font-size:1.12rem;overflow-wrap:anywhere}
+.muse-ritual-track{min-height:32px;padding:4px 10px;border:1px solid var(--glass-border);border-radius:999px;background:transparent;color:var(--text-muted);font:inherit;font-size:.76rem;cursor:pointer;max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.muse-ritual-track[aria-expanded=true]{border-color:var(--mark-a);color:var(--foreground)}
+.muse-ritual-remove{display:grid;place-items:center;width:36px;height:36px;border:0;border-radius:50%;background:transparent;color:var(--text-muted);cursor:pointer}
+.muse-ritual-remove:hover{background:var(--surface-subtle);color:var(--foreground)}
+@media (max-width:520px){.muse-ritual-item-row{grid-template-columns:auto minmax(0,1fr) auto}.muse-ritual-track{grid-column:2/3;grid-row:2;justify-self:start}}
+.muse-ritual-track-panel{display:grid;gap:10px;padding:10px 4px 4px}
+.muse-ritual-track-panel>p{margin:0}
+.muse-ritual-track-options{display:grid;grid-template-columns:minmax(0,1fr);gap:4px}
+.muse-ritual-track-options button{display:flex;flex-wrap:wrap;gap:2px 10px;align-items:baseline;min-height:44px;padding:9px 12px;border:1px solid var(--glass-border);border-radius:12px;background:transparent;color:inherit;font:inherit;text-align:left;cursor:pointer}
+.muse-ritual-track-options strong{font-size:.9rem}.muse-ritual-track-options small{font-size:.78rem;color:var(--text-muted)}
+.muse-ritual-track-options button[aria-checked=true]{border-color:var(--mark-a);background:color-mix(in oklab,var(--mark-a) 14%,transparent);box-shadow:0 0 0 1px var(--mark-a)}
+.muse-ritual-track-extra{display:grid;gap:8px}
+.muse-ritual-track-extra label{display:grid;gap:4px;font-size:.86rem}
+.muse-ritual-track-target{display:flex;flex-wrap:wrap;gap:8px;align-items:end}
+.muse-ritual-track-target>label{flex:1 1 120px}
+.muse-ritual-empty{margin:0;padding:18px;border:1.5px dashed var(--glass-border);border-radius:14px;color:var(--text-muted);font-family:var(--font-editorial);font-style:italic;text-align:center}
+.muse-ritual-note,.muse-ritual-nudge{margin:0;padding:10px 12px;border-radius:12px;background:var(--surface-subtle);font-size:.9rem}
+.muse-ritual-nudge{display:flex;gap:8px;align-items:flex-start;font-family:var(--font-editorial);font-style:italic}
+.muse-ritual-existing summary{cursor:pointer;color:var(--text-muted);font-size:.9rem}
+.muse-ritual-existing ul{display:grid;gap:4px;margin:8px 0 0;padding:0;list-style:none}
+.muse-ritual-existing li{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:6px 0;border-bottom:1px solid var(--glass-border)}
+.muse-ritual-existing small{color:var(--text-muted)}
+@media (max-width:820px){.muse-ritual-chapter{grid-template-columns:minmax(0,1fr)}.muse-ritual-chapter-intro{position:static}}
+
+/* The final page (round 4): Muse's own whimsy, not a form. Sparks drift around the title; the mantra is written large
+   in a glowing wish card; three feelings are stars on a thread that light gold as you name them; four letters to
+   yourself sit in an equal 2×2 grid, each with its own gradient tile. No background text tricks (Safari drew a box). */
+.muse-ritual-declare{position:relative;display:grid;gap:clamp(22px,3vw,34px);justify-items:center;max-width:1000px!important;text-align:center;padding-bottom:12px}
+.muse-ritual-eyebrow{display:block;font-size:.72rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#f4c85e}
+.muse-ritual-declare-head{position:relative;display:grid;gap:10px;justify-items:center;padding:clamp(12px,3vh,32px) clamp(10px,4vw,60px) 0}
+.muse-ritual-declare h2{margin:0;padding:0 .12em;font-size:clamp(2.4rem,5.4vw,4.2rem);font-style:italic;line-height:1.02;
+ background:linear-gradient(110deg,var(--foreground) 20%,color-mix(in oklab,#f4c85e 70%,var(--foreground)) 50%,var(--foreground) 80%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+.muse-ritual-declare-head .muse-ritual-lede{color:var(--text-muted);font-size:clamp(1.1rem,1.8vw,1.35rem)}
+.muse-ritual-declare-sparks{position:absolute;inset:-10px -30px auto;height:100%;pointer-events:none}
+.muse-ritual-declare-sparks i{position:absolute;width:14px;height:14px;background:#ffe39a;clip-path:polygon(50% 0,61% 39%,100% 50%,61% 61%,50% 100%,39% 61%,0 50%,39% 39%);filter:drop-shadow(0 0 6px #ffcf5a)}
+.muse-ritual-declare-sparks i:nth-child(1){left:6%;top:30%}.muse-ritual-declare-sparks i:nth-child(2){left:16%;top:78%;width:9px;height:9px;background:var(--accent-pop,#ff7ae6);filter:drop-shadow(0 0 6px var(--accent-pop,#ff7ae6))}
+.muse-ritual-declare-sparks i:nth-child(3){right:8%;top:22%;width:18px;height:18px}.muse-ritual-declare-sparks i:nth-child(4){right:18%;top:84%;width:10px;height:10px;background:var(--accent-primary);filter:drop-shadow(0 0 6px var(--accent-primary))}
+.muse-ritual-declare-sparks i:nth-child(5){left:50%;top:-4%;width:8px;height:8px}
+/* the mantra: a wish card */
+.muse-ritual-mantra{position:relative;display:grid;gap:8px;justify-items:center;width:min(100%,820px);box-sizing:border-box;padding:18px clamp(16px,3vw,32px) 14px;border-radius:26px;border:1px solid color-mix(in oklab,#f4c85e 40%,var(--glass-border));
+ background:radial-gradient(90% 120% at 50% 0%,color-mix(in oklab,#f4c85e 14%,transparent),transparent 70%),linear-gradient(var(--glass-background),var(--glass-background)),var(--background);box-shadow:0 18px 40px -26px #f4c85e,inset 0 1px 0 var(--glass-edge)}
+.muse-ritual-mantra input{width:100%;min-height:58px;padding:4px 8px 8px;border:0;border-bottom:2px dashed color-mix(in oklab,#f4c85e 45%,transparent);border-radius:0;background:transparent;color:var(--foreground);font-family:var(--font-editorial);font-style:italic;font-size:clamp(1.5rem,3.2vw,2.3rem);text-align:center;outline:none!important}
+.muse-ritual-mantra input:focus{border-bottom-style:solid;border-bottom-color:#f4c85e}
+.muse-ritual-declare :is(input,textarea)::placeholder{color:color-mix(in oklab,var(--foreground) 34%,transparent)}
+/* three feelings: stars on a thread */
+.muse-ritual-feelings{display:grid;gap:12px;justify-items:center;width:100%}
+.muse-ritual-feelings>p{margin:0}
+.muse-ritual-feelings ol{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,3vw,36px);width:min(100%,760px);margin:0;padding:0;list-style:none}
+.muse-ritual-feelings ol::before{content:"";position:absolute;left:16.6%;right:16.6%;top:28px;height:1.5px;background:linear-gradient(90deg,transparent,color-mix(in oklab,#f4c85e 55%,transparent) 15%,color-mix(in oklab,#f4c85e 55%,transparent) 85%,transparent)}
+.muse-ritual-feelings li{position:relative;display:grid;justify-items:center;gap:10px}
+.muse-ritual-feeling-star{width:56px;height:56px;background:color-mix(in oklab,var(--foreground) 20%,transparent);clip-path:polygon(50% 0,61% 39%,100% 50%,61% 61%,50% 100%,39% 61%,0 50%,39% 39%);transition:background .5s,filter .5s,transform .5s cubic-bezier(.3,1.5,.5,1)}
+.muse-ritual-feelings li[data-lit] .muse-ritual-feeling-star{background:radial-gradient(circle at 50% 45%,#fffbe8 0 14%,#ffe08a 32%,#f4b63c 68%,#d98e1f);filter:drop-shadow(0 0 10px #ffd56b) drop-shadow(0 0 22px color-mix(in oklab,#ffcf5a 55%,transparent));transform:scale(1.08) rotate(8deg)}
+.muse-ritual-feelings input{width:100%;min-height:44px;padding:6px 10px;border:1px solid var(--glass-border);border-radius:999px;background:color-mix(in oklab,var(--surface-control) 80%,transparent);color:var(--foreground);font-family:var(--font-editorial);font-style:italic;font-size:clamp(1.05rem,1.8vw,1.3rem);text-align:center;outline:none!important;transition:border-color .3s,box-shadow .3s}
+.muse-ritual-feelings input:focus,.muse-ritual-feelings li[data-lit] input{border-color:color-mix(in oklab,#f4c85e 60%,transparent);box-shadow:0 0 18px -8px #f4c85e}
+/* four letters to yourself: an equal 2×2 grid */
+.muse-ritual-letters{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:1fr;gap:clamp(12px,2vw,20px);width:100%;align-items:stretch}
+.muse-ritual-letter{--mark-a:var(--accent-primary);position:relative;display:grid;grid-template-rows:auto minmax(0,1fr);gap:12px;padding:18px 20px 16px;border:1px solid var(--glass-border);border-top-color:var(--glass-edge);border-radius:22px;text-align:left;
+ background:radial-gradient(90% 70% at 100% 0%,color-mix(in oklab,var(--mark-a) 16%,transparent),transparent 62%),linear-gradient(var(--glass-background),var(--glass-background)),var(--background);box-shadow:var(--card-shadow);transition:transform .35s cubic-bezier(.2,.8,.2,1),border-color .3s,box-shadow .35s}
+.muse-ritual-letter:hover{transform:translateY(-3px)}
+.muse-ritual-letter:focus-within{border-color:color-mix(in oklab,var(--mark-a) 60%,var(--glass-border));box-shadow:0 18px 34px -22px var(--mark-a)}
+.muse-ritual-letter-head{display:flex;align-items:center;gap:12px}
+.muse-ritual-letter-head .muse-mark{flex:none;width:34px;height:34px;border-radius:11px}
+.muse-ritual-letter-head>span:last-child{font-family:var(--font-editorial);font-size:1.12rem;line-height:1.25}
+.muse-ritual-letter textarea{width:100%;min-height:104px;box-sizing:border-box;padding:0 2px;border:0;resize:none;color:var(--foreground);font-family:var(--font-editorial);font-size:1.08rem;line-height:30px;outline:none!important;
+ background:repeating-linear-gradient(transparent 0 29px,color-mix(in oklab,var(--foreground) 13%,transparent) 29px 30px) local}
+.muse-ritual-boardpick{display:grid;gap:12px;justify-items:center;width:100%}
+.muse-ritual-boardpick>p{display:flex;gap:8px;align-items:baseline;margin:0}.muse-ritual-boardpick>p small{color:var(--text-muted);font-size:.78rem}
+.muse-ritual-boards{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
+.muse-ritual-boards button{display:inline-flex;gap:10px;align-items:center;min-height:52px;padding:6px 18px 6px 8px;border:1px solid var(--glass-border);border-radius:16px;background:color-mix(in oklab,var(--surface-control) 80%,transparent);color:inherit;font:inherit;cursor:pointer;transition:border-color .2s,box-shadow .2s,transform .2s}
+.muse-ritual-boards button:hover{transform:translateY(-2px);border-color:var(--selected-border)}
+.muse-ritual-boards button[aria-checked=true]{border-color:#f4c85e;background:color-mix(in oklab,#f4c85e 14%,transparent);box-shadow:0 0 0 1px #f4c85e,0 10px 24px -14px #f4c85e}
+.muse-ritual-finale{background:linear-gradient(115deg,#ffe9a8,#f4c85e 45%,#e9a23b)!important;color:#2a1a02!important;border:0!important;box-shadow:0 0 0 1px color-mix(in oklab,#f4c85e 60%,transparent),0 10px 30px -10px #f4c85e!important}
+@media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]){
+ .muse-ritual-feelings li[data-lit] .muse-ritual-feeling-star{animation:muse-ritual-twinkle 3s ease-in-out 40}
+ .muse-ritual-finale{background-size:200% 100%!important;animation:muse-ritual-sheen 3.2s ease-in-out 12}
+ .muse-ritual-declare-sparks i{animation:muse-ritual-twinkle 2.6s ease-in-out 30;animation-delay:calc(var(--d,0) * 1s)}
+ .muse-ritual-declare-sparks i:nth-child(2){--d:.4}.muse-ritual-declare-sparks i:nth-child(3){--d:.9}.muse-ritual-declare-sparks i:nth-child(4){--d:1.3}.muse-ritual-declare-sparks i:nth-child(5){--d:1.8}
+ .muse-ritual-declare h2{background-size:220% 100%;animation:muse-ritual-sheen 6s ease-in-out 4}
+}}
+@keyframes muse-ritual-sheen{50%{background-position:100% 0}}
+@media (max-width:700px){.muse-ritual-letters{grid-template-columns:minmax(0,1fr);grid-auto-rows:auto}.muse-ritual-feelings ol{grid-template-columns:minmax(0,1fr)}.muse-ritual-feelings ol::before{display:none}.muse-ritual-feeling-star{width:40px;height:40px}}
+
+.muse-ritual-error{margin:0 auto;max-width:1080px;padding:8px 12px;border-radius:10px;border:1px solid var(--selected-border);background:var(--surface-strong)}
+.muse-ritual-bottom{display:flex;align-items:center;gap:12px;padding:12px max(16px,env(safe-area-inset-right)) calc(12px + env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));border-top:1px solid color-mix(in oklab,var(--glass-border) 70%,transparent);background:color-mix(in oklab,var(--background) 70%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+.muse-ritual-where{margin-right:auto}
+.muse-ritual-back{display:inline-grid;transform:rotate(90deg)}
+.muse-ritual-next{display:inline-grid;transform:rotate(-90deg)}
+.muse-ritual-bottom .button-primary{min-height:46px;padding-inline:20px}
+.muse-ritual-skip{min-height:44px}
+@media (max-width:520px){.muse-ritual-where{display:none}.muse-ritual-bottom{justify-content:space-between}.muse-ritual-skip{margin-left:auto}}
+
+/* The reveal */
+.muse-ritual-reveal{grid-row:1/-1;display:grid;place-items:center;align-content:center;gap:8px;padding:calc(24px + env(safe-area-inset-top)) 16px calc(24px + env(safe-area-inset-bottom));text-align:center;overflow:auto}
+.muse-ritual .muse-ritual-reveal-sky{width:min(100%,900px);max-height:52vh}
+.muse-ritual-reveal-words{display:grid;justify-items:center;gap:10px;margin-top:-2vh}
+.muse-ritual-reveal-words h2{margin:0;font-size:clamp(4rem,12vw,7.5rem);line-height:.9;font-style:italic}
+:root:not([data-theme="astral"]):not([data-theme="nightbloom"]) .muse-ritual-reveal-words h2{background-image:linear-gradient(110deg,var(--accent-primary),var(--accent-secondary),var(--accent-pop));-webkit-background-clip:text;background-clip:text;color:transparent}
+.muse-ritual-reveal-mantra{margin:0;font-family:var(--font-editorial);font-style:italic;font-size:clamp(1.3rem,3vw,2rem);max-width:30ch}
+.muse-ritual-reveal-line{margin:0;color:var(--text-muted)}
+.muse-ritual-reveal-skip{position:absolute;top:calc(14px + env(safe-area-inset-top));right:max(16px,env(safe-area-inset-right))}
+.muse-ritual-reveal .muse-lifeatlas-star-label{font-size:1.9px}
+@media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]){
+ .muse-ritual-reveal-words>*{animation:muse-ritual-turn .8s cubic-bezier(.2,.8,.2,1) both}
+ .muse-ritual-reveal-words>:nth-child(1){animation-delay:2.4s}.muse-ritual-reveal-words>:nth-child(2){animation-delay:2.7s}.muse-ritual-reveal-words>:nth-child(3){animation-delay:3.1s}.muse-ritual-reveal-words>:nth-child(4){animation-delay:3.4s}.muse-ritual-reveal-words>:nth-child(5){animation-delay:3.7s}.muse-ritual-reveal-words>:nth-child(6){animation-delay:4s}
+ .muse-ritual-reveal .muse-lifeatlas-star-label{animation:muse-ritual-turn .6s ease-out calc(1.4s + var(--i)*.12s) both}
+}}
+.muse-ritual-letter-head{align-items:flex-start;min-height:2.6em}.muse-ritual-letter-head .muse-mark{margin-top:-2px}

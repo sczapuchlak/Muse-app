@@ -1,4 +1,5 @@
 import type { Allocation } from "@/lib/money";
+import {accentStyle} from "@/lib/appearance-values";
 import { allocationActual,formatMoney } from "@/lib/money";
 import { shortDate } from "@/lib/display-date";
 import { useMoney } from "./MoneyStore";
@@ -7,7 +8,8 @@ import { MuseChoiceMenu } from "../MuseChoiceMenu";
 import { MuseOverflowMenu } from "../MuseOverflowMenu";
 export function MoneyAllocationRow({allocation,onOpen}:{allocation:Allocation;onOpen:MoneyOpen}) {
  const {state,dispatch}=useMoney(),actual=allocationActual(state,allocation),category=state.categories.find((item)=>item.id===allocation.categoryId);
- return <li className="muse-money-allocation-row">
+ const group=state.groups.find((item)=>item.id===allocation.groupId);
+ return <li className="muse-money-allocation-row" data-money-accent={group?.accent} style={accentStyle(group?.accent)} data-state={actual===null?"unrecorded":actual>allocation.plannedCents?"over":"within"}>
  <div className="muse-money-allocation-title"><div className="muse-money-allocation-identity">
  <button className="muse-ledger-name" type="button" onClick={(e)=>onOpen({kind:'allocation',initial:allocation,anchor:e.currentTarget})}>{allocation.name}</button>
  <MuseChoiceMenu variant="chip" label={`Category for ${allocation.name}`} valueLabel={category?.name??'Unassigned'} searchable options={[{id:'',label:'Unassigned'},...state.categories.filter((item)=>!item.archived||item.id===allocation.categoryId).map((item)=>({id:item.id,label:item.name,accent:item.accent}))]} selectedIds={[allocation.categoryId??'']} onSelect={(id)=>dispatch({type:'save',collection:'allocations',record:{...allocation,categoryId:id||undefined,subcategoryId:id===allocation.categoryId?allocation.subcategoryId:undefined}})}/>

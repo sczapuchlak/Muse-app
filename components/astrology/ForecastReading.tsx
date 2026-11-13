@@ -1,7 +1,8 @@
 'use client';
-import {useEffect,useState,type ReactNode} from 'react';
+import {useEffect,useState,type CSSProperties,type ReactNode} from 'react';
+import {MuseMark,type MuseMarkIcon,type MuseTone} from '@/components/design/MuseHeading';
 import {MuseStar} from '@/components/MuseStar';
-import {zodiacLabel,type ZodiacSign} from '@/lib/cosmic-forecast';
+import {zodiacLabel,zodiacSigns,type ZodiacSign} from '@/lib/cosmic-forecast';
 import {signInfo} from '@/lib/astrology/library';
 import {observatoryForecasts,type ForecastCategory,type ForecastPeriod,type Horoscope,type HoroscopeResult} from '@/lib/astrology/forecast';
 import {parseForecastContent,type ForecastEditorialBlock} from '@/lib/astrology/forecast-content';
@@ -9,6 +10,7 @@ import {shortDate} from '@/lib/display-date';
 import {ForecastReflection} from './ForecastReflection';
 import {ZodiacGlyph,signStyle} from './ZodiacGlyph';
 import './ForecastReading.css';
+import './ForecastSky.css';
 
 const titles:Record<ForecastPeriod,string>={daily:'Today’s cosmic forecast',weekly:'Your week in the stars',monthly:'Your month in the stars'};
 function longDate(value:string,options:Intl.DateTimeFormatOptions={month:'long',day:'numeric',year:'numeric'}){return new Intl.DateTimeFormat('en-US',{...options,timeZone:'UTC'}).format(new Date(`${value}T12:00:00Z`));}
@@ -19,23 +21,50 @@ function periodDate(forecast:Horoscope){
  return `${longDate(start,{month:'short',day:'numeric'})} – ${longDate(end,{month:'short',day:'numeric',year:'numeric'})}`;
 }
 function SourceWords({text}:{text:string}){return <>{text.split(/(\*\*[^*]+\*\*|\*[^*]+\*)/gu).map((part,index)=>part.startsWith('**')&&part.endsWith('**')?<strong key={index}>{part.slice(2,-2)}</strong>:part.startsWith('*')&&part.endsWith('*')?<em key={index}>{part.slice(1,-1)}</em>:part)}</>;}
+/** Each forecast section gets a gradient tile, chosen by what the section is about. */
+function sectionMark(heading:string):{icon:MuseMarkIcon;tone:MuseTone}{
+ const h=heading.toLowerCase();
+ if(/work|career|goal|money|financ/.test(h))return {icon:'briefcase',tone:4};
+ if(/love|relation|romance|friend|partner|heart/.test(h))return {icon:'heart',tone:2};
+ if(/energy|mood|health|body|well/.test(h))return {icon:'bolt',tone:3};
+ if(/home|family/.test(h))return {icon:'home',tone:5};
+ if(/creat|play|fun/.test(h))return {icon:'palette',tone:6};
+ if(/spirit|soul|intuition/.test(h))return {icon:'crescent',tone:7};
+ return {icon:'sparkle',tone:1};
+}
 function EditorialBlock({block,index}:{block:ForecastEditorialBlock;index:number}){
  if(block.kind==='dateline')return <p className="muse-forecast-dateline" key={index}>{block.raw}</p>;
  if(block.kind==='paragraph')return <section className="muse-forecast-editorial-intro" key={index}><p><SourceWords text={block.body}/></p></section>;
+ const heading=(block.heading??"").replace(/:$/,"");
  const featured=index===1||/^Overview:$/iu.test(block.heading??'');
- return <section className="muse-forecast-editorial-section" data-featured={featured} data-tone={index%5} key={index}>
-  <h4><span aria-hidden="true">{block.icon}</span><b>{(block.heading??"").replace(/:$/,"")}</b></h4>
+ if(featured)return <section className="muse-forecast-editorial-section muse-forecast-overview" data-featured="true" key={index}>
+  <p className="muse-kicker">{heading||'Overview'}</p><blockquote><SourceWords text={block.body}/></blockquote></section>;
+ const mark=sectionMark(heading);
+ return <section className="muse-forecast-editorial-section muse-forecast-facet" data-featured="false" style={{'--mark-a':`var(--chart-${mark.tone})`} as CSSProperties} key={index}>
+  <h4><MuseMark icon={mark.icon} tone={mark.tone} size="sm"/><b>{heading}</b></h4>
   <p><SourceWords text={block.body}/></p>
  </section>;
+}
+/** The sign's medallion: the whole zodiac on a ring, the reader's own sign glowing at the centre. */
+function SignWheel({sign}:{sign:ZodiacSign}){
+ const here=zodiacSigns.indexOf(sign);
+ return <span className="muse-forecast-wheel" style={signStyle(sign)} aria-hidden="true">
+  <svg viewBox="0 0 120 120" className="muse-forecast-wheel-ring">
+   <circle cx="60" cy="60" r="56" className="muse-forecast-wheel-outer"/><circle cx="60" cy="60" r="41" className="muse-forecast-wheel-inner"/>
+   {zodiacSigns.map((z,i)=>{const a=(i-here)*30-90,rad=a*Math.PI/180,x=60+48.5*Math.cos(rad),y=60+48.5*Math.sin(rad),tx=60+56*Math.cos(rad+Math.PI/12),ty=60+56*Math.sin(rad+Math.PI/12),ix=60+41*Math.cos(rad+Math.PI/12),iy=60+41*Math.sin(rad+Math.PI/12);
+    return <g key={z} data-here={z===sign||undefined}><line x1={ix.toFixed(1)} y1={iy.toFixed(1)} x2={tx.toFixed(1)} y2={ty.toFixed(1)} className="muse-forecast-wheel-tick"/><text x={x.toFixed(1)} y={(y+2.6).toFixed(1)} textAnchor="middle" className="muse-forecast-wheel-glyph">{signInfo[z].glyph}</text></g>;})}
+  </svg>
+  <span className="muse-forecast-wheel-core"><ZodiacGlyph sign={sign} size={40}/></span>
+ </span>;
 }
 function Attribution({forecast,dailyWidget=false}:{forecast:Horoscope;dailyWidget?:boolean}){return <p className="muse-forecast-attribution">Forecast by <a href={forecast.sourceUrl} target="_blank" rel="noopener noreferrer">CosmyDay ↗</a>{!dailyWidget&&<> · {periodDate(forecast)}</>}</p>;}
 function FullReading({forecast,dailyWidget=false,showAttribution=true}:{forecast:Horoscope;dailyWidget?:boolean;showAttribution?:boolean}){
  const blocks=forecast.sections??parseForecastContent(forecast.text);
  const dateline=blocks.filter(block=>block.kind==='dateline'),body=blocks.filter(block=>block.kind!=='dateline');
- return <article className="muse-forecast-editorial" aria-label={`${zodiacLabel(forecast.sign)} ${forecast.period} horoscope`}>
-  <header className="muse-forecast-editorial-header"><span className="muse-forecast-sign-glyph" style={signStyle(forecast.sign)} aria-hidden="true"><ZodiacGlyph sign={forecast.sign} size={38}/></span><div><p className="muse-forecast-sign-name">{zodiacLabel(forecast.sign)}</p><h3>{titles[forecast.period]}</h3><p className="muse-forecast-period-date"><time dateTime={forecast.range.start}>{periodDate(forecast)}</time></p></div><MuseStar size={19} prismatic/></header>
+ return <article className="muse-forecast-editorial" style={signStyle(forecast.sign)} aria-label={`${zodiacLabel(forecast.sign)} ${forecast.period} horoscope`}>
+  <header className="muse-forecast-editorial-header muse-forecast-sky" style={signStyle(forecast.sign)}><SignWheel sign={forecast.sign}/><div className="muse-forecast-sky-copy"><p className="muse-forecast-sign-name">{zodiacLabel(forecast.sign)} · {signInfo[forecast.sign].symbol}</p><h3>{titles[forecast.period]}</h3><p className="muse-forecast-period-date"><time dateTime={forecast.range.start}>{periodDate(forecast)}</time></p><ul className="muse-forecast-sign-facts"><li>{signInfo[forecast.sign].element}</li><li>{signInfo[forecast.sign].modality}</li><li>Ruled by {signInfo[forecast.sign].traditional}</li></ul></div><span className="muse-forecast-sky-stars" aria-hidden="true"><i/><i/><i/><i/><i/><i/></span></header>
   {dateline.map((block,index)=><EditorialBlock block={block} index={index} key={index}/>)}
-  <div className="muse-forecast-editorial-grid">{body.map((block,index)=><EditorialBlock block={block} index={index+dateline.length} key={index}/>)}</div>
+  <div className="muse-forecast-editorial-grid" style={{'--facets':Math.max(1,Math.min(4,body.filter((b,i)=>b.kind!=='paragraph'&&!(i+dateline.length===1||/^Overview:$/iu.test(b.heading??''))).length))} as CSSProperties}>{body.map((block,index)=><EditorialBlock block={block} index={index+dateline.length} key={index}/>)}</div>
   {!!forecast.keyDates?.length&&<section className="muse-forecast-key-dates"><h4><span aria-hidden="true">✧</span> Key dates</h4><div>{forecast.keyDates.map((item,index)=><div key={`${item.date}/${index}`}><time dateTime={item.date}>{longDate(item.date,{month:'short',day:'numeric'})}</time><div><strong>{item.title}</strong><p><SourceWords text={item.description}/></p></div></div>)}</div></section>}
   {forecast.closing&&<div className="muse-forecast-closing"><MuseStar size={16} prismatic/><p><SourceWords text={forecast.closing}/></p></div>}
   {showAttribution&&<Attribution forecast={forecast} dailyWidget={dailyWidget}/>}

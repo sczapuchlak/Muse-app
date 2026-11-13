@@ -1,0 +1,282 @@
+/* Life Atlas 2.0 (#190): a personal journal crossed with an observatory. Theme tokens only; every Life Area takes
+   its ink from the theme's chart palette (--mark-a/--mark-b, the same pair its gradient icon tile uses). */
+.muse-life-atlas{display:grid;gap:18px;min-width:0}
+.muse-life-atlas q{quotes:"“" "”"}
+
+/* ---------- Year hero ---------- */
+.muse-lifeatlas-hero{position:relative;isolation:isolate;display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,1fr);gap:clamp(16px,3vw,36px);align-items:center;min-height:300px;
+ padding:clamp(20px,3.4vw,40px);border:1px solid var(--glass-border);border-top-color:var(--glass-edge);border-radius:calc(var(--card-radius) + 6px);overflow:hidden;
+ background:radial-gradient(120% 90% at 92% 8%,color-mix(in oklab,var(--chart-2) 22%,transparent),transparent 60%),radial-gradient(90% 80% at 0% 100%,color-mix(in oklab,var(--chart-6) 16%,transparent),transparent 62%),linear-gradient(var(--glass-background),var(--glass-background)),var(--background);
+ box-shadow:var(--card-shadow)}
+.muse-lifeatlas-hero::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:.5;
+ background-image:radial-gradient(1px 1px at 12% 22%,var(--foreground) 50%,transparent 51%),radial-gradient(1px 1px at 32% 78%,var(--foreground) 50%,transparent 51%),radial-gradient(1.4px 1.4px at 54% 14%,var(--foreground) 50%,transparent 51%),radial-gradient(1px 1px at 71% 64%,var(--foreground) 50%,transparent 51%),radial-gradient(1.2px 1.2px at 88% 86%,var(--foreground) 50%,transparent 51%),radial-gradient(1px 1px at 44% 48%,var(--foreground) 50%,transparent 51%),radial-gradient(1px 1px at 6% 62%,var(--foreground) 50%,transparent 51%);mask-image:linear-gradient(90deg,transparent,#000 40%)}
+.muse-lifeatlas-hero-copy{display:grid;gap:10px;justify-items:start;min-width:0}
+.muse-lifeatlas-hero-title{margin:0;font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight);font-size:clamp(2.6rem,5.4vw,4.4rem);line-height:.98;letter-spacing:-.02em}
+.muse-lifeatlas-hero-title .type-numeric{font-variant-numeric:lining-nums;padding-right:.06em}
+:root:not([data-theme="astral"]):not([data-theme="nightbloom"]) .muse-lifeatlas-hero-title .type-numeric{background-image:linear-gradient(110deg,var(--accent-primary),color-mix(in oklab,var(--accent-secondary) 85%,var(--foreground)) 55%,var(--accent-pop));-webkit-background-clip:text;background-clip:text;color:transparent}
+.muse-lifeatlas-mantra{margin:2px 0 0;font-family:var(--font-editorial);font-style:italic;font-size:clamp(1.15rem,1.9vw,1.5rem);line-height:1.3;max-width:34ch;color:var(--foreground)}
+.muse-lifeatlas-mantra q::before,.muse-lifeatlas-mantra q::after{color:var(--accent-primary);font-size:1.2em}
+.muse-lifeatlas-hero-lede{margin:0;color:var(--text-muted);max-width:46ch}
+.muse-lifeatlas-words{display:grid;gap:6px}
+.muse-lifeatlas-words p{margin:0;color:var(--text-muted)}
+.muse-lifeatlas-words .small-label{letter-spacing:.12em;text-transform:uppercase;font-size:.68rem}
+.muse-lifeatlas-feelings{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0;list-style:none}
+.muse-lifeatlas-feelings li{padding:4px 12px;border-radius:999px;font-family:var(--font-editorial);font-style:italic;font-size:.95rem;
+ border:1px solid transparent;background:linear-gradient(var(--surface-strong),var(--surface-strong)) padding-box,linear-gradient(110deg,var(--accent-primary),var(--accent-secondary),var(--accent-pop)) border-box}
+.muse-lifeatlas-hero-actions{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center;margin-top:6px}
+.muse-lifeatlas-board-link{display:inline-flex;gap:6px;align-items:center;padding:6px 12px;border-radius:999px;border:1px solid var(--glass-border);color:inherit;text-decoration:none;font-size:.86rem;background:var(--surface-subtle)}
+.muse-lifeatlas-board-link:hover{border-color:var(--selected-border)}
+.muse-lifeatlas-hero-sky{display:grid;gap:10px;min-width:0}
+.muse-lifeatlas-counts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:0}
+.muse-lifeatlas-counts>div{padding:8px 12px;border-radius:14px;border:1px solid var(--glass-border);background:color-mix(in oklab,var(--surface-subtle) 80%,transparent)}
+.muse-lifeatlas-counts dt{font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)}
+.muse-lifeatlas-counts dd{margin:0;font-family:var(--font-editorial);font-size:1.6rem;font-weight:560;letter-spacing:-.02em}
+.muse-lifeatlas-counts dd small{font-family:var(--font-ui);font-size:.8rem;color:var(--text-muted)}
+:root:not([data-theme="astral"]):not([data-theme="nightbloom"]) .muse-lifeatlas-counts dd{background-image:linear-gradient(115deg,var(--foreground) 18%,color-mix(in oklab,var(--accent-primary) 78%,var(--foreground)));-webkit-background-clip:text;background-clip:text;color:transparent}
+@media (max-width:760px){.muse-lifeatlas-hero{grid-template-columns:minmax(0,1fr);min-height:0}.muse-lifeatlas-counts>div{padding:6px 10px}.muse-lifeatlas-counts dd{font-size:1.3rem}.muse-lifeatlas-hero-title{font-size:clamp(2.4rem,11vw,3.2rem)}}
+
+/* ---------- The constellation ---------- */
+.muse-lifeatlas-constellation{display:block;width:100%;height:auto;overflow:visible;color:var(--accent-primary)}
+.muse-lifeatlas-thread{stroke:color-mix(in oklab,var(--foreground) 16%,transparent);stroke-width:.22;stroke-dasharray:.6 .9;fill:none}
+.muse-lifeatlas-thread[data-lit]{stroke:color-mix(in oklab,var(--accent-primary) 70%,var(--foreground));stroke-width:.32;stroke-dasharray:none;opacity:.75}
+.muse-lifeatlas-star{color:var(--star)}
+.muse-lifeatlas-star-shape{fill:color-mix(in oklab,var(--star) 38%,color-mix(in oklab,var(--foreground) 14%,transparent))}
+.muse-lifeatlas-star[data-lit] .muse-lifeatlas-star-shape{fill:var(--star);filter:drop-shadow(0 0 .8px var(--star))}
+.muse-lifeatlas-star[data-achieved] .muse-lifeatlas-star-shape{fill:var(--accent-warm);filter:drop-shadow(0 0 1.4px var(--accent-warm))}
+.muse-lifeatlas-star[data-achieved]{color:var(--accent-warm)}
+.muse-lifeatlas-star[data-current] .muse-lifeatlas-star-shape{stroke:var(--foreground);stroke-width:.3}
+.muse-lifeatlas-star-label{font-family:var(--font-ui);font-size:2.3px;letter-spacing:.04em;fill:var(--text-muted)}
+.muse-lifeatlas-star[data-lit] .muse-lifeatlas-star-label{fill:var(--foreground)}
+@media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]){
+ .muse-lifeatlas-star[data-lit] .muse-lifeatlas-star-halo{animation:muse-lifeatlas-breathe 4.8s ease-in-out calc(var(--i)*-.47s) 6 alternate;transform-box:fill-box;transform-origin:center}
+ .muse-lifeatlas-constellation[data-reveal] .muse-lifeatlas-star{animation:muse-lifeatlas-star-in .7s cubic-bezier(.2,.8,.2,1.2) calc(.25s + var(--i)*.16s) both}
+ .muse-lifeatlas-constellation[data-reveal] .muse-lifeatlas-thread{stroke-dasharray:1;stroke-dashoffset:1;animation:muse-lifeatlas-draw 1s ease-out calc(1.6s + var(--k)*.09s) forwards}
+ .muse-lifeatlas-constellation[data-reveal] .muse-lifeatlas-thread:not([data-lit]){stroke-dasharray:1;animation-name:muse-lifeatlas-draw-faint}
+}}
+@keyframes muse-lifeatlas-breathe{from{opacity:.55}to{opacity:1}}
+@keyframes muse-lifeatlas-star-in{from{opacity:0;scale:.2}to{opacity:1;scale:1}}
+@keyframes muse-lifeatlas-draw{to{stroke-dashoffset:0}}
+@keyframes muse-lifeatlas-draw-faint{to{stroke-dashoffset:0;opacity:.5}}
+.muse-lifeatlas-star{transform-box:fill-box;transform-origin:center}
+
+/* ---------- Toolbar: one quiet row ---------- */
+.muse-lifeatlas-toolbar{display:flex;flex-wrap:wrap;gap:10px 12px;align-items:center}
+.muse-lifeatlas-lens{display:inline-flex;flex-wrap:wrap;gap:4px;padding:4px;border:1px solid var(--glass-border);border-radius:999px;background:var(--surface-subtle)}
+.muse-lifeatlas-lens>button{min-height:34px;padding:5px 14px;border:0;border-radius:999px;background:transparent;color:inherit;font:inherit;font-size:.88rem;cursor:pointer}
+.muse-lifeatlas-lens>button[aria-pressed=true]{background:var(--surface-strong);box-shadow:inset 0 0 0 1px var(--selected-border);font-weight:600}
+.muse-lifeatlas-lens>button:focus-visible{outline:2px solid var(--accent-primary);outline-offset:2px}
+.muse-lifeatlas-search{flex:1 1 200px;display:flex;align-items:center;gap:8px;min-height:40px;padding:0 12px;max-width:340px;border:1px solid var(--glass-border);border-radius:999px;background:var(--surface-control);color:var(--text-muted)}
+.muse-lifeatlas-search input{flex:1;min-width:0;border:0;background:transparent;color:var(--foreground);font:inherit;outline:none}
+.muse-lifeatlas-search:focus-within{outline:2px solid var(--accent-primary);outline-offset:2px}
+
+/* ---------- Life Area sections ---------- */
+.muse-lifeatlas-area{display:grid;gap:14px;padding:clamp(16px,2.2vw,22px);container-type:inline-size;
+ border:1px solid var(--glass-border);border-top-color:var(--glass-edge);border-radius:var(--card-radius);
+ background:radial-gradient(60% 140% at 0% 0%,color-mix(in oklab,var(--mark-a) 13%,transparent),transparent 70%),linear-gradient(var(--glass-background),var(--glass-background)),var(--background);box-shadow:var(--card-shadow)}
+/* The area's masthead: mark, numeral and name, its voice (or this year's vision), and a quiet count. */
+.muse-lifeatlas-area-head{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:14px;align-items:center;padding-bottom:12px;border-bottom:1px solid color-mix(in oklab,var(--mark-a) 28%,var(--glass-border))}
+.muse-lifeatlas-area-title{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 14px;min-width:0}
+.muse-lifeatlas-area-head h3{display:flex;align-items:baseline;gap:10px;margin:0;font-family:var(--font-editorial);font-weight:var(--type-display-weight);font-size:clamp(1.3rem,2vw,1.6rem);line-height:1.1;letter-spacing:-.01em}
+.muse-lifeatlas-numeral{font-style:italic;font-size:.82em;letter-spacing:.06em;color:color-mix(in oklab,var(--mark-a) 75%,var(--foreground))}
+.muse-lifeatlas-area-whisper{margin:0;font-family:var(--font-editorial);font-style:italic;color:var(--text-muted);font-size:.95rem;line-height:1.35;min-width:0}
+.muse-lifeatlas-area-count{margin:0;white-space:nowrap}
+.muse-lifeatlas-area[data-kind=awaiting]{border-style:dashed;background:linear-gradient(var(--glass-background),var(--glass-background)),var(--background)}
+.muse-lifeatlas-area[data-kind=awaiting] .muse-lifeatlas-rows{grid-template-columns:minmax(0,1fr)}
+@media (max-width:620px){.muse-lifeatlas-area-head{grid-template-columns:auto minmax(0,1fr)}.muse-lifeatlas-area-count{grid-column:2}}
+.muse-lifeatlas-area-body{display:grid;align-content:start;gap:10px;min-width:0}
+.muse-lifeatlas-rows{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:0;padding:0;list-style:none}
+.muse-lifeatlas-rows>li{order:var(--o)}
+.muse-lifeatlas-rows>.muse-lifeatlas-row-body{order:var(--ob2);grid-column:1/-1}
+@container (max-width:620px){.muse-lifeatlas-rows{grid-template-columns:minmax(0,1fr)}.muse-lifeatlas-rows>.muse-lifeatlas-row-body{order:var(--ob1)}}
+
+/* A compact aspiration: star, title, when/next, a small honest preview, and the expansion chevron. */
+.muse-lifeatlas-row{position:relative;display:flex;align-items:stretch;gap:6px;min-width:0;min-height:68px;border:1px solid var(--glass-border);border-radius:16px;background:color-mix(in oklab,var(--surface-strong) 70%,transparent);transition:border-color var(--transition),box-shadow var(--transition),transform var(--transition)}
+.muse-lifeatlas-row:hover{border-color:color-mix(in oklab,var(--mark-a) 55%,var(--glass-border))}
+.muse-lifeatlas-row[data-expanded]{border-color:color-mix(in oklab,var(--mark-a) 70%,var(--glass-border));box-shadow:0 0 0 1px color-mix(in oklab,var(--mark-a) 40%,transparent),0 10px 28px -18px var(--mark-a)}
+.muse-lifeatlas-row[data-dragging]{opacity:.5}
+.muse-lifeatlas-row>.muse-choice-menu{align-self:center;margin-right:10px}
+.muse-lifeatlas-row-toggle{flex:1;display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;gap:12px;align-items:center;min-width:0;padding:12px 14px;border:0;border-radius:inherit;background:transparent;color:inherit;font:inherit;text-align:left;cursor:pointer}
+.muse-lifeatlas-row-toggle:focus-visible{outline:2px solid var(--accent-primary);outline-offset:-2px}
+.muse-lifeatlas-row-copy{display:grid;gap:3px;min-width:0}
+.muse-lifeatlas-row-copy strong{font-family:var(--font-editorial);font-weight:var(--type-editorial-weight);font-size:1.06rem;line-height:1.25;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.muse-lifeatlas-row-meta{font-size:.78rem;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.muse-lifeatlas-row-chevron{display:inline-grid;color:var(--text-muted);transition:transform var(--transition)}
+.muse-lifeatlas-row[data-expanded] .muse-lifeatlas-row-chevron{transform:rotate(180deg)}
+.muse-lifeatlas-status-star{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:color-mix(in oklab,var(--mark-a) 14%,transparent)}
+.muse-lifeatlas-status-star svg{width:15px;height:15px;fill:none;stroke:var(--mark-a);stroke-width:1.8}
+.muse-lifeatlas-status-star[data-status=active] svg{fill:color-mix(in oklab,var(--mark-a) 35%,transparent)}
+.muse-lifeatlas-status-star:is([data-status=paused],[data-status=discontinued],[data-status=archived]) svg{stroke:var(--text-muted);stroke-dasharray:3 2}
+.muse-lifeatlas-status-star[data-status=completed]{background:radial-gradient(circle,color-mix(in oklab,var(--accent-warm) 38%,transparent),transparent 72%)}
+.muse-lifeatlas-status-star[data-status=completed] svg{fill:var(--accent-warm);stroke:var(--accent-warm);filter:drop-shadow(0 0 4px color-mix(in oklab,var(--accent-warm) 70%,transparent))}
+.muse-lifeatlas-row[data-status=completed]{border-color:color-mix(in oklab,var(--accent-warm) 45%,var(--glass-border));background:linear-gradient(135deg,color-mix(in oklab,var(--accent-warm) 10%,transparent),transparent 55%),color-mix(in oklab,var(--surface-strong) 70%,transparent)}
+.muse-lifeatlas-row:is([data-status=paused],[data-status=discontinued]) .muse-lifeatlas-row-copy strong{color:var(--text-muted)}
+.muse-lifeatlas-preview{display:grid;justify-items:end;gap:4px;min-width:54px}
+.muse-lifeatlas-preview small{font-size:.74rem;color:var(--text-muted)}
+.muse-lifeatlas-dots{display:flex;gap:3px}
+.muse-lifeatlas-dots i{width:7px;height:7px;border-radius:50%;border:1.4px solid color-mix(in oklab,var(--mark-a) 70%,var(--foreground))}
+.muse-lifeatlas-dots i[data-done]{background:var(--mark-a);border-color:var(--mark-a);box-shadow:0 0 6px color-mix(in oklab,var(--mark-a) 60%,transparent)}
+.muse-lifeatlas-bar{display:block;width:62px;height:5px;border-radius:999px;background:color-mix(in oklab,var(--foreground) 12%,transparent);overflow:hidden}
+.muse-lifeatlas-bar i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--mark-a),var(--mark-b))}
+
+/* Expanded in place: spans the section, opening beneath its own row. */
+.muse-lifeatlas-row-body{min-width:0;border:1px solid color-mix(in oklab,var(--mark-a) 45%,var(--glass-border));border-radius:18px;background:linear-gradient(160deg,color-mix(in oklab,var(--mark-a) 9%,transparent),transparent 50%),var(--surface-strong)}
+@media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) .muse-lifeatlas-row-body{animation:muse-lifeatlas-open .26s cubic-bezier(.2,.8,.2,1) both}}
+@keyframes muse-lifeatlas-open{from{opacity:0;translate:0 -6px}}
+.muse-lifeatlas-body{display:grid;gap:14px;padding:16px 18px}
+.muse-lifeatlas-body-why{display:grid;gap:6px}
+.muse-lifeatlas-body-why blockquote{margin:0;padding:2px 0 2px 14px;border-left:3px solid var(--mark-a);font-family:var(--font-editorial);font-style:italic;font-size:1.06rem;line-height:1.4}
+.muse-lifeatlas-body-why p{margin:0;color:var(--text-muted);white-space:pre-wrap}
+.muse-lifeatlas-body-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:18px}
+@container (max-width:620px){.muse-lifeatlas-body-grid{grid-template-columns:minmax(0,1fr)}}
+.muse-lifeatlas-body-progress,.muse-lifeatlas-body-side{display:grid;align-content:start;gap:8px;min-width:0}
+.muse-lifeatlas-body-label{display:block;margin:0;font-size:.68rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:color-mix(in oklab,var(--mark-a) 70%,var(--foreground))}
+.muse-lifeatlas-body-value{margin:0;font-family:var(--font-editorial);font-size:1.15rem}
+.muse-lifeatlas-body-progress p.small-label{margin:0}
+.muse-lifeatlas-milestones{display:grid;gap:2px;margin:0;padding:0;list-style:none}
+.muse-lifeatlas-milestones label{display:flex;gap:10px;align-items:flex-start;min-height:36px;padding:6px 4px;border-radius:10px;cursor:pointer}
+.muse-lifeatlas-milestones label:hover{background:var(--surface-subtle)}
+.muse-lifeatlas-milestones input{width:18px;height:18px;margin:1px 0 0;accent-color:var(--mark-a);flex:none}
+.muse-lifeatlas-milestones li[data-done] span{color:var(--text-muted);text-decoration:line-through;text-decoration-color:color-mix(in oklab,var(--mark-a) 60%,transparent)}
+.muse-lifeatlas-milestones small{font-size:.76rem;color:var(--text-muted)}
+.muse-lifeatlas-inline{display:flex;gap:8px;align-items:center;min-width:0}
+.muse-lifeatlas-inline :is(input,textarea){flex:1;min-width:0;box-sizing:border-box;min-height:38px;padding:7px 11px;border:1px solid var(--glass-border);border-radius:10px;background:var(--surface-control);color:var(--foreground);font:inherit}
+.muse-lifeatlas-inline :is(input,textarea):focus-visible{outline:2px solid var(--accent-primary);outline-offset:1px}
+.muse-lifeatlas-connections{display:grid;gap:6px;margin:0;padding:0;list-style:none;font-size:.86rem}
+.muse-lifeatlas-connections li{display:flex;gap:8px;align-items:center;color:var(--text-muted)}
+.muse-lifeatlas-connections .text-button{padding:0;min-height:0}
+.muse-lifeatlas-note{display:grid;gap:4px;margin:0;padding:10px 12px;border-radius:12px;background:var(--surface-subtle);font-size:.9rem}
+.muse-lifeatlas-body-actions{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;padding-top:12px;border-top:1px solid var(--glass-border)}
+.muse-lifeatlas-arrange{display:inline-flex;gap:12px;margin-left:auto}
+.muse-lifeatlas-arrange .text-button{padding:0;min-height:32px}
+
+/* The ghost slot that closes every section; it fills an odd row's empty cell, or spans when the rows are even. */
+.muse-lifeatlas-add{min-width:0;min-height:68px;border:1.5px dashed color-mix(in oklab,var(--mark-a) 40%,var(--glass-border));border-radius:16px;display:flex}
+.muse-lifeatlas-add[data-span]{grid-column:1/-1;min-height:52px}
+.muse-lifeatlas-add form{flex:1;display:flex;gap:8px;align-items:center;padding:6px 10px 6px 14px;min-width:0}
+.muse-lifeatlas-add input{flex:1;min-width:0;min-height:38px;border:0;background:transparent;color:var(--foreground);font:inherit;outline:none}
+.muse-lifeatlas-add:focus-within{border-style:solid;border-color:var(--mark-a);background:var(--surface-subtle)}
+.muse-lifeatlas-add-plus{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;color:#fff;font-weight:600;background:linear-gradient(135deg,var(--mark-a),var(--mark-b))}
+.muse-lifeatlas-pager{justify-self:end}
+
+/* Completed rows keep their memories close. */
+.muse-lifeatlas-keepsake{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:start;padding:12px 14px;border-radius:14px;border:1px solid color-mix(in oklab,var(--accent-warm) 45%,var(--glass-border));background:linear-gradient(135deg,color-mix(in oklab,var(--accent-warm) 12%,transparent),transparent 60%)}
+.muse-lifeatlas-keepsake p{margin:0 0 4px;font-family:var(--font-editorial);font-style:italic}
+.muse-lifeatlas-keepsake .muse-kicker{font-style:normal;font-family:var(--font-ui)}
+.muse-lifeatlas-keepsake-photo{display:block;width:92px;height:92px;object-fit:cover;border-radius:12px;box-shadow:0 8px 20px -12px rgba(0,0,0,.5)}
+.muse-lifeatlas-keepsake[data-detail] p{font-family:inherit;font-style:normal}
+
+/* ---------- Suggestions, shelves, empty ---------- */
+.muse-lifeatlas-suggest{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:14px;align-items:center;padding:14px 18px;border:1px dashed var(--glass-border);border-radius:var(--card-radius);background:var(--glass-background)}
+.muse-lifeatlas-suggest h3{margin:0;font-family:var(--font-editorial);font-size:1.15rem}.muse-lifeatlas-suggest p{margin:0}.muse-lifeatlas-suggest p:not(.muse-kicker){color:var(--text-muted);font-size:.88rem}
+@media (max-width:620px){.muse-lifeatlas-suggest{grid-template-columns:auto minmax(0,1fr)}.muse-lifeatlas-suggest>button{grid-column:1/-1}}
+.muse-lifeatlas-shelf{display:grid;gap:10px;padding:clamp(16px,2.2vw,22px);border:1px solid var(--glass-border);border-radius:var(--card-radius);background:linear-gradient(var(--glass-background),var(--glass-background)),var(--background)}
+.muse-lifeatlas-shelf-head{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline}
+.muse-lifeatlas-shelf-head h3{margin:0;font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight);font-size:1.3rem}
+.muse-lifeatlas-shelf-head p{margin:0}
+.muse-lifeatlas-open-tile{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center;width:100%;height:100%;min-height:76px;padding:12px;border:1px dashed var(--glass-border);border-radius:16px;background:transparent;color:inherit;font:inherit;text-align:left;cursor:pointer}
+.muse-lifeatlas-open-tile:hover,.muse-lifeatlas-open-tile:focus-visible{border-style:solid;border-color:var(--selected-border);background:var(--surface-subtle)}
+.muse-lifeatlas-open-tile strong{display:block;font-family:var(--font-editorial);font-size:1rem}
+.muse-lifeatlas-open-tile small{display:block;font-size:.76rem;color:var(--text-muted);line-height:1.3}
+.muse-lifeatlas-open-plus{font-size:1.3rem;color:var(--text-muted)}
+.muse-lifeatlas-trophy{display:grid;align-content:start;gap:6px;justify-items:start;width:100%;height:100%;min-height:128px;padding:14px;border:1px solid color-mix(in oklab,var(--accent-warm) 50%,var(--glass-border));border-radius:16px;color:inherit;font:inherit;text-align:left;cursor:pointer;
+ background:radial-gradient(120% 90% at 100% 0%,color-mix(in oklab,var(--accent-warm) 22%,transparent),transparent 60%),var(--surface-strong)}
+.muse-lifeatlas-trophy strong{font-family:var(--font-editorial);font-size:1.08rem;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.muse-lifeatlas-trophy small{font-size:.76rem;color:var(--text-muted)}
+.muse-lifeatlas-trophy q{font-family:var(--font-editorial);font-style:italic;font-size:.88rem;color:var(--text-muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.muse-lifeatlas-trophy .muse-lifeatlas-status-star{--mark-a:var(--accent-warm)}
+.muse-lifeatlas-empty{display:grid;gap:4px;padding:22px;border:1px dashed var(--glass-border);border-radius:var(--card-radius);text-align:center;color:var(--text-muted)}
+.muse-lifeatlas-empty p{margin:0}
+.muse-lifeatlas-empty-title{font-family:var(--font-editorial);font-style:italic;font-size:1.4rem;color:var(--foreground)}
+.muse-lifeatlas-notice{margin:0;padding:8px 12px;border-radius:12px;border:1px solid var(--glass-border);background:var(--surface-subtle)}
+.muse-lifeatlas-footnote{display:block;margin:0}.muse-lifeatlas-footnote>span:first-child{vertical-align:-2px;margin-right:4px}
+.muse-lifeatlas-loading{display:flex;gap:10px;align-items:center;justify-content:center;min-height:240px;color:var(--text-muted);font-family:var(--font-editorial);font-style:italic}
+.muse-lifeatlas-loading-star{width:14px;height:14px;background:var(--accent-primary);clip-path:polygon(50% 0,61% 39%,100% 50%,61% 61%,50% 100%,39% 61%,0 50%,39% 39%)}
+@media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) .muse-lifeatlas-loading-star{animation:muse-lifeatlas-breathe .9s ease-in-out 12 alternate}}
+
+/* ---------- First visit ---------- */
+.muse-lifeatlas-welcome{position:relative;isolation:isolate;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:clamp(18px,4vw,48px);align-items:center;min-height:440px;padding:clamp(22px,4.4vw,56px);overflow:hidden;
+ border:1px solid var(--glass-border);border-radius:calc(var(--card-radius) + 8px);box-shadow:var(--card-shadow);
+ background:radial-gradient(80% 90% at 20% 30%,color-mix(in oklab,var(--chart-2) 26%,transparent),transparent 65%),radial-gradient(70% 80% at 85% 90%,color-mix(in oklab,var(--chart-5) 20%,transparent),transparent 65%),linear-gradient(var(--glass-background),var(--glass-background)),var(--background)}
+.muse-lifeatlas-welcome-sky{min-width:0}
+.muse-lifeatlas-welcome-copy{display:grid;gap:12px;justify-items:start}
+.muse-lifeatlas-welcome-copy h2{margin:0;font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight);font-size:clamp(2rem,4vw,3.2rem);line-height:1.04;letter-spacing:-.015em;max-width:16ch}
+.muse-lifeatlas-welcome-lede{margin:0;font-size:1.04rem;color:var(--text-muted);max-width:46ch}
+.muse-lifeatlas-welcome-notes{display:grid;gap:6px;margin:4px 0;padding:0;list-style:none}
+.muse-lifeatlas-welcome-notes li{position:relative;padding-left:22px;color:var(--text-muted)}
+.muse-lifeatlas-welcome-notes li::before{content:"";position:absolute;left:2px;top:.42em;width:11px;height:11px;background:linear-gradient(135deg,var(--accent-primary),var(--accent-pop));clip-path:polygon(50% 0,61% 39%,100% 50%,61% 61%,50% 100%,39% 61%,0 50%,39% 39%)}
+.muse-lifeatlas-welcome-notes b{color:var(--foreground);font-weight:600}
+.muse-lifeatlas-welcome-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+.muse-lifeatlas-welcome-actions .button-primary{min-height:48px;padding-inline:22px;font-size:1rem}
+@media (max-width:760px){.muse-lifeatlas-welcome{grid-template-columns:minmax(0,1fr);min-height:0}.muse-lifeatlas-welcome-actions>*{flex:1 1 100%}}
+
+/* ---------- Full details: the Atlas panel ---------- */
+.muse-lifeatlas-detail{display:grid;gap:12px;padding:14px;border:1px solid var(--glass-border);border-radius:14px;background:var(--surface-subtle)}
+.muse-lifeatlas-detail-block{display:grid;gap:6px}
+.muse-lifeatlas-detail-block h3{margin:0;font-size:.7rem!important;letter-spacing:.14em;text-transform:uppercase;color:var(--text-muted)}
+.muse-lifeatlas-detail-block>p{margin:0}
+.muse-lifeatlas-detail-row{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center}
+.muse-lifeatlas-detail-row .text-button{padding:0;min-height:30px}
+.muse-lifeatlas-detail-chip{display:inline-flex;gap:4px;align-items:center;padding:3px 4px 3px 10px;border-radius:999px;border:1px solid var(--glass-border);font-size:.82rem}
+.muse-lifeatlas-detail-chip button{display:inline-grid;place-items:center;width:24px;height:24px;border:0;border-radius:50%;background:transparent;color:inherit;cursor:pointer}
+.muse-lifeatlas-detail-years,.muse-lifeatlas-detail-related{display:grid;gap:6px;margin:0;padding:0;list-style:none}
+.muse-lifeatlas-detail-related li{display:flex;gap:6px;align-items:center}
+.muse-lifeatlas-detail-note{margin:2px 0 0;font-size:.88rem;color:var(--text-muted);white-space:pre-wrap}
+.muse-lifeatlas-detail-earlier summary{cursor:pointer;font-size:.84rem;color:var(--text-muted)}
+.muse-lifeatlas-detail-earlier ul{margin:6px 0 0;padding-left:18px;font-size:.84rem;color:var(--text-muted)}
+.muse-lifeatlas-detail-toggle{display:flex;gap:10px;align-items:flex-start;cursor:pointer}
+.muse-lifeatlas-detail-toggle input{width:18px;height:18px;margin:2px 0 0;accent-color:var(--accent-primary)}
+.muse-lifeatlas-detail-toggle span{display:grid;gap:2px}.muse-lifeatlas-detail-toggle small{color:var(--text-muted);font-size:.8rem}
+
+/* ---------- Achieved ---------- */
+.muse-lifeatlas-achieved{display:grid;gap:12px;padding:8px 24px 24px;text-align:left}
+.muse-lifeatlas-achieved h2{margin:0;font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight);font-size:clamp(1.6rem,4vw,2.2rem);line-height:1.1}
+.muse-lifeatlas-achieved-lede{margin:0;color:var(--text-muted)}
+.muse-lifeatlas-achieved label{display:grid;gap:5px;font-size:.92rem}
+.muse-lifeatlas-achieved :is(textarea,input[type=date]){width:100%;box-sizing:border-box;padding:8px 11px;border:1px solid var(--glass-border);border-radius:10px;background:var(--surface-control);color:var(--foreground);font:inherit}
+.muse-lifeatlas-achieved-row{display:grid;grid-template-columns:minmax(0,180px) minmax(0,1fr);gap:14px;align-items:start}
+@media (max-width:520px){.muse-lifeatlas-achieved-row{grid-template-columns:minmax(0,1fr)}}
+.muse-lifeatlas-achieved-photo{display:grid;gap:6px;font-size:.92rem}
+.muse-lifeatlas-achieved-photo-actions{display:flex;gap:12px}
+.muse-lifeatlas-achieved-photo-actions .text-button{padding:0;min-height:30px;cursor:pointer}
+.muse-lifeatlas-achieved-burst{position:relative;display:grid;place-items:center;width:84px;height:84px;margin:4px 0 0;border-radius:50%;background:radial-gradient(circle,color-mix(in oklab,var(--accent-warm) 34%,transparent),transparent 70%)}
+.muse-lifeatlas-achieved-burst>span{position:absolute;inset:6px;border-radius:50%;border:1px solid color-mix(in oklab,var(--accent-warm) 60%,transparent)}
+.muse-lifeatlas-achieved-burst>span+span{inset:-4px;opacity:.6}.muse-lifeatlas-achieved-burst>span+span+span{inset:-14px;opacity:.3}
+@media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) .muse-lifeatlas-achieved-burst>span{animation:muse-lifeatlas-ripple 1.6s ease-out 3 both}:root:not([data-magic=quiet]) .muse-lifeatlas-achieved-burst>span+span{animation-delay:.2s}:root:not([data-magic=quiet]) .muse-lifeatlas-achieved-burst>span+span+span{animation-delay:.4s}}
+@keyframes muse-lifeatlas-ripple{from{scale:.6;opacity:0}40%{opacity:.8}to{scale:1.15;opacity:0}}
+@media (forced-colors:active){.muse-lifeatlas-hero-title .type-numeric,.muse-lifeatlas-counts dd{color:CanvasText;background:none}}
+/* A few achievements share the row evenly; more than four page in the shared carousel. */
+.muse-lifeatlas-trophies{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:12px}
+.muse-lifeatlas-trophies>div{display:flex}
+/* Narrow sections: an aside (the area chooser) drops beneath its row so the title keeps the width. */
+@container (max-width:560px){.muse-lifeatlas-row{flex-wrap:wrap}.muse-lifeatlas-row-toggle{flex:1 1 100%}.muse-lifeatlas-row>.muse-choice-menu{margin:-6px 14px 12px 54px}}
+@media (max-width:620px){.muse-lifeatlas-footnote{display:block}.muse-lifeatlas-footnote svg{vertical-align:-2px}}
+
+/* Round 3 (Nov 13): the hero, about 25% smaller, so more of the Atlas shows beneath it. */
+.muse-lifeatlas-hero{min-height:225px;padding:clamp(16px,2.6vw,30px);gap:clamp(12px,2.2vw,26px)}
+.muse-lifeatlas-hero-copy{gap:8px}
+.muse-lifeatlas-hero-title{font-size:clamp(2.1rem,4vw,3.3rem)}
+.muse-lifeatlas-mantra{font-size:clamp(1.02rem,1.5vw,1.2rem)}
+.muse-lifeatlas-hero-sky{gap:8px}
+.muse-lifeatlas-hero-sky .muse-lifeatlas-constellation{max-height:200px;width:100%}
+.muse-lifeatlas-counts>div{padding:6px 10px;border-radius:12px}
+.muse-lifeatlas-counts dd{font-size:1.25rem}
+.muse-lifeatlas-hero-actions .muse-button{min-height:40px}
+
+/* Round 4 (Nov 13): the hero constellation spreads into the open middle of the hero as a web: bigger stars, every
+   area linked to its neighbours, and labels large enough to read, each on a soft halo of night sky. */
+.muse-lifeatlas-hero{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr)}
+.muse-lifeatlas-hero-sky{align-self:stretch;grid-template-rows:minmax(0,1fr) auto;align-items:center}
+.muse-lifeatlas-hero-sky .muse-lifeatlas-constellation[data-web]{max-height:none!important;width:calc(100% + clamp(20px,4vw,70px));margin-left:calc(-1 * clamp(20px,4vw,70px));overflow:visible}
+.muse-lifeatlas-constellation[data-web] .muse-lifeatlas-star-label{font-size:2.9px;font-weight:500;letter-spacing:.03em;fill:color-mix(in oklab,var(--foreground) 82%,transparent);paint-order:stroke;stroke:color-mix(in oklab,var(--background) 70%,transparent);stroke-width:.7px;stroke-linejoin:round}
+.muse-lifeatlas-constellation[data-web] .muse-lifeatlas-star[data-lit] .muse-lifeatlas-star-label{fill:var(--foreground);font-weight:650}
+.muse-lifeatlas-constellation[data-web] .muse-lifeatlas-thread{stroke:color-mix(in oklab,var(--accent-primary) 30%,color-mix(in oklab,var(--foreground) 22%,transparent));stroke-width:.2;stroke-dasharray:none;opacity:.65}
+.muse-lifeatlas-constellation[data-web] .muse-lifeatlas-thread[data-lit]{stroke:color-mix(in oklab,var(--accent-primary) 80%,var(--foreground));stroke-width:.42;opacity:1;filter:drop-shadow(0 0 .6px var(--accent-primary))}
+.muse-lifeatlas-constellation[data-web] .muse-lifeatlas-star-shape{fill:color-mix(in oklab,var(--star) 70%,var(--foreground));filter:drop-shadow(0 0 .7px var(--star))}
+.muse-lifeatlas-constellation[data-web] .muse-lifeatlas-star[data-lit] .muse-lifeatlas-star-shape{filter:drop-shadow(0 0 1.4px var(--star)) drop-shadow(0 0 .5px white)}
+@media (max-width:760px){.muse-lifeatlas-hero-sky .muse-lifeatlas-constellation[data-web]{width:100%;margin-left:0}}
+/* Round 5: the sky reaches left across the open middle of the hero (her mockup), as a ridge of small unnamed stars. */
+.muse-lifeatlas-hero-sky .muse-lifeatlas-constellation[data-web]{width:calc(100% + clamp(60px,18vw,330px))!important;margin-left:calc(-1 * clamp(60px,18vw,330px))!important}
+.muse-lifeatlas-dust{fill:color-mix(in oklab,var(--foreground) 70%,var(--accent-primary));filter:drop-shadow(0 0 .6px var(--accent-primary));opacity:.75}
+.muse-lifeatlas-constellation[data-web] .muse-lifeatlas-thread[data-dust]{stroke:color-mix(in oklab,var(--foreground) 30%,transparent);stroke-width:.18;opacity:.6}
+@media (max-width:760px){.muse-lifeatlas-hero-sky .muse-lifeatlas-constellation[data-web]{width:100%!important;margin-left:0!important}}
+@media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) .muse-lifeatlas-dust{animation:muse-lifeatlas-star-in .7s cubic-bezier(.2,.8,.2,1.2) calc(.2s + var(--i)*.12s) both}}
