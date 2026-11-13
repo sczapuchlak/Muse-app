@@ -4,10 +4,11 @@ import { MuseModal } from "../../MuseModal";
 import { MuseChoiceMenu } from "../../MuseChoiceMenu";
 import { MuseSegmented } from "../../design/MuseSegmented";
 import { customGradientCss } from "@/lib/appearance-values";
+import { paintCss } from "./paintCss";
 import { backgroundPresets, boardFieldsValid, boardPeriods, boardSizes, LIMITS, periodLabel, periodStartFor, type Background, type BoardPeriod, type BoardSize, type VisionBoard } from "@/lib/vision-boards/model";
 
 const months = Array.from({ length: 12 }, (_, i) => ({ id: String(i + 1).padStart(2, "0"), label: new Intl.DateTimeFormat("en-US", { month: "long", timeZone: "UTC" }).format(new Date(Date.UTC(2026, i, 15))) }));
-export const backgroundCss = (b: Background) => b.kind === "solid" ? b.color : customGradientCss(b.gradient);
+export const backgroundCss = (b: Background) => b.kind === "solid" ? b.color : b.kind === "gradient" ? customGradientCss(b.gradient) : paintCss(b.paint);
 
 /** Create a board, or change its name, description, theme and period. Size and starting background are chosen once. */
 export function BoardDetails({ initial, today, busy, error, onSave, onClose }: { initial: VisionBoard; today: string; busy: boolean; error: string; onSave: (b: VisionBoard) => void; onClose: () => void }) {
@@ -50,8 +51,8 @@ export function BoardDetails({ initial, today, busy, error, onSave, onClose }: {
       </fieldset>
       {isNew && <>
         <fieldset><legend>Shape</legend>
-          <MuseSegmented label="Board shape" value={b.size} options={(Object.keys(boardSizes) as BoardSize[]).map((s) => ({ id: s, label: boardSizes[s].label }))} onChange={(size) => set({ size })} />
-          <p className="small-label">Portrait suits a phone wallpaper. The shape stays the same on every screen.</p>
+          <MuseSegmented label="Board shape" value={b.size === "custom" ? "landscape" : b.size} options={(Object.keys(boardSizes) as Exclude<BoardSize, "custom">[]).map((s) => ({ id: s, label: boardSizes[s].label }))} onChange={(size) => set({ size, canvas: undefined })} />
+          <p className="small-label">Portrait suits a phone wallpaper. The shape stays the same on every screen, and you can add space on any side later.</p>
         </fieldset>
         <fieldset><legend>Background</legend>
           <div className="muse-vision-swatches" role="group" aria-label="Starting background">{backgroundPresets.map((p) => <button key={p.id} type="button" className="muse-vision-swatch" style={{ background: backgroundCss(p.background) }} aria-pressed={JSON.stringify(b.background) === JSON.stringify(p.background)} aria-label={p.label} title={p.label} onClick={() => set({ background: p.background })} />)}</div>

@@ -28,3 +28,15 @@
 .muse-icon-option[aria-pressed="true"] { border-color:var(--selected-border); background:var(--selected-background); }
 
 :is(.muse-icon-grid,.quadrant-filters,.muse-choice-options) :focus-visible { outline-offset:-3px; }
+
+/* MusePaintPicker (moved from Agenda.css so it is styled everywhere it is used, not only in Planner). */
+.muse-paint-picker{border:0;margin:0;padding:0;display:grid;gap:10px;min-width:0}
+.muse-paint-picker>legend{font-size:.8rem;margin-bottom:6px;color:var(--text-muted)}
+.muse-paint-picker .muse-chip-row>button{min-height:28px;padding:2px 10px;font-size:.76rem}
+.muse-paint-swatches,.muse-paint-gradients{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.muse-paint-swatches .muse-color-swatch{width:22px;height:22px}
+.muse-paint-gradient{width:34px;height:22px;border-radius:8px;border:1px solid var(--glass-border);cursor:pointer;padding:0}
+.muse-paint-gradient[aria-pressed=true],.muse-paint-swatches .muse-color-swatch[aria-pressed=true]{box-shadow:0 0 0 2px var(--surface-strong),0 0 0 4px var(--selected-border)}
+.muse-paint-gradient:focus-visible{outline:2px solid var(--focus-ring,var(--accent-primary));outline-offset:2px}
+.muse-paint-custom summary{cursor:pointer;font-size:.8rem;color:var(--text-muted)}
+.muse-paint-custom[open] summary{margin-bottom:8px}

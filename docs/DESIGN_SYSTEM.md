@@ -738,6 +738,18 @@ Shared, in `app/design-language.css`; use them instead of page-specific phone pa
 - Selection handles use Muse purple; touch devices get larger handles.
 - The cutout guide is iPhone/iPad only: a quiet `text-button` trigger, a `GlassPopover` (a bottom sheet on phones) with italic accent numerals, and a pill-shaped one-time tip with a prismatic star and a 32px dismiss button.
 
+## Vision Boards studio (#187) — implemented on feature branch, Staging acceptance pending
+
+- **Contextual inspector.** The canvas sits beside a 280–340px inspector panel on desktop, which stacks under the canvas below 900px of content width. The panel is `--surface-subtle`, and each section is a collapsible card on `--surface-control` with an uppercase kicker summary. It shows only the controls for what's selected.
+- **One paint editor.** `PaintEditor` is a `MuseSegmented` choice of None, Color, Gradient or Pattern:
+  - Color and Gradient reuse `MusePaintPicker` (curated presets, the saved palette, Save to my colors). Its own Solid/Gradient switch is hidden there with `showKind={false}`.
+  - Gradients add always-visible stop swatches, +/− Color, Reverse and a 0–359° Direction slider with a dial.
+  - Patterns show a thumbnail grid with ★ favorites, category chips, `MuseSearch`, sliders (Scale, Rotation, Shift across, Shift down) and an optional base color.
+- **Sliders** use one pattern: label left, value right (tabular numbers), accent-coloured range.
+- **Library and font browsers.** Tabbed chip rows with `MuseSearch` and category chips. Tiles are 84px cards (art plus a small caption) with a ★ that appears on hover (always shown on touch). Font rows preview each family in its own face.
+- **Board size.** "Add" step plus Left, Right, Top, Bottom and All sides buttons; exact W×H with a 3×3 anchor; preset chips. A size chip sits in the canvas corner.
+- **Shared fix.** `MusePaintPicker`'s styles moved from Agenda.css to MuseControls.css, so the picker is styled everywhere it's used. Its gradient swatches had no size outside Planner before.
+
 ## Book and Series pages (#136) — implemented on feature branch, Staging acceptance pending
 
 Book and Series are pages inside Collections. Both open with a pill Back control that names where it returns (search, a book, a series, Books) and a quiet Collections / Books trail. The book header floats on the book's own atmosphere: a page-edged cover, an accent-washed series chip above an editorial title, author, a dotted facts line, genre chips and a status pill. The reading companion is one Crystal/Frosted card (sticky on desktop, directly under the header on phones) that holds progress, the live sitting (breathing dot, editorial clock, Pause/Resume primary) or the sitting chooser, stats and two quiet actions; a floating mini-player appears only while a sitting runs and the companion is out of view. The reading column is one card with dividers, not a stack of boxes. Series artwork uses `SeriesCover`: real art when available, otherwise a designed cover on the catalog's colour; books not on the shelf recede (faded, dashed edge) rather than disappear. The Series hero is a glass shelf of spines in reading order, with the next book pulled forward. Search results use cover-left rows, a series chip, highlighted words and the bookmark + shelf split button; "Which edition?" lists real differences only. Motion is short arrival/settle and hover lift; reduced motion and Quiet Muse Magic remove it.

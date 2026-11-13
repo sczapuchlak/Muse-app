@@ -13,11 +13,13 @@ const sameGradient = (a: CustomGradient, b: CustomGradient) => JSON.stringify(a)
  * Theme accents come first (they follow the theme), then curated swatches and gradients, then the person's saved
  * palette. Used by Muse Marks and section backgrounds so both feel the same.
  */
-export function MusePaintPicker({ label, value, onChange, palette, onSaveColor, onSaveGradient, onForget, allowDefault, defaultLabel = "Theme default" }: {
+export function MusePaintPicker({ label, value, onChange, palette, onSaveColor, onSaveGradient, onForget, allowDefault, defaultLabel = "Theme default", showKind = true }: {
   label: string; value?: Paint; onChange: (paint: Paint | undefined) => void; palette?: Palette;
   onSaveColor?: (color: `#${string}`) => void; onSaveGradient?: (gradient: CustomGradient) => void;
   onForget?: (item: { color: `#${string}` } | { gradient: CustomGradient }) => void;
   allowDefault?: boolean; defaultLabel?: string;
+  /** Hide the Solid/Gradient switch when the host already offers one (Vision Boards paints add Pattern beside them). */
+  showKind?: boolean;
 }) {
   const [lastMode, setMode] = useState<"solid" | "gradient">(value?.kind ?? "solid");
   const mode = value?.kind ?? lastMode; // follows the value when it changes from outside (e.g. a collection pick)
@@ -28,11 +30,11 @@ export function MusePaintPicker({ label, value, onChange, palette, onSaveColor, 
   const pickGradient = (g: CustomGradient) => { setDraftGradient(g); onChange({ kind: "gradient", gradient: g }); };
   return <fieldset className="muse-paint-picker">
     <legend>{label}</legend>
-    <div className="muse-chip-row" role="group" aria-label={`${label}: kind`}>
+    {showKind && <div className="muse-chip-row" role="group" aria-label={`${label}: kind`}>
       {allowDefault && <button type="button" aria-pressed={!value} onClick={() => onChange(undefined)}>{defaultLabel}</button>}
       <button type="button" aria-pressed={!!value && mode === "solid"} onClick={() => { setMode("solid"); onChange({ kind: "solid", color: solid }); }}>Solid</button>
       <button type="button" aria-pressed={!!value && mode === "gradient"} onClick={() => { setMode("gradient"); onChange({ kind: "gradient", gradient: draftGradient }); }}>Gradient</button>
-    </div>
+    </div>}
     {value && mode === "solid" && <>
       <MuseColorPicker label="Theme colors and your own" value={solid} onChange={(color) => onChange({ kind: "solid", color })} />
       <div className="muse-paint-swatches" role="group" aria-label="Curated colors">

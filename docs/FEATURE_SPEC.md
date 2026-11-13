@@ -1231,6 +1231,17 @@ Rules: PRODUCT_RULES "Envision → Vision Boards (#118)". Full detail, data mode
 - **Cutouts (iPhone/iPad only):** A "Make a cutout" guide to Apple's Photos cutout and a one-time dismissible tip. Muse doesn't remove backgrounds itself.
 - **Migration** `20261203000100_vision_boards.sql`: table, derived `asset_paths`, PNG in the private bucket, shared-file delete guard. Verify with `scripts/verify-hosted-vision-boards.sql`.
 
+## Vision Boards 2.0: creative studio (#187) — implemented on feature branch, Staging acceptance pending
+
+Detail: [VISION_BOARDS](VISION_BOARDS.md) § "Vision Boards 2.0" and [VISION_ASSETS](VISION_ASSETS.md).
+- **Paint everywhere.** Solid, gradient (any direction) or pattern (library or upload; scale, rotation, offset, base color, repeat or cover) on shapes, photo borders, die-cut edges, doodles and the background. Text takes solid or gradient.
+- **Shapes and scrapbooking.** 18 decorative shapes, with editable corner radius and border thickness and paint that follow the real geometry. Patterned backings behind photos. Die-cut outlines on transparent art. Matte, glossy and holographic finishes (shimmer is optional and respects reduced motion).
+- **Library.** Patterns, textures, paper, washi, stickers, labels, ribbons, frames and illustrations from a generated registry (`npm run vision:assets`), with search, categories, favorites and recents.
+- **Typography studio.** 151 lazily loaded Google Fonts, weight, italic, letter spacing, line height, gradient letters, outline, shadow and glow, plus the label tape.
+- **Canvas.** Custom size (400–8000), board space added on any side without moving or scaling anything, a pasteboard, and zoom that is independent of size.
+- **Editing.** Multi-select, group, align and distribute, snapping guides, layers, duplicate, copy and paste pieces and styles, undo and redo, keyboard shortcuts and touch. A contextual inspector. Export to PNG or JPEG.
+- **Migration** `20261220000100_vision_boards_studio.sql`: `custom` size with `canvas_w`/`canvas_h`; `asset_paths` now covers every image path in elements and background.
+
 ## Books Import 2.0 (#143) — implemented on feature branch; Staging acceptance pending
 
 See [BOOK_IMPORT_143](BOOK_IMPORT_143.md). Goodreads empty ISBN formulas are missing values, not verification conflicts. Import review separates required decisions from informational notices and reuses catalog/edition search, saved book references, read associations and existing Series installments. Source evidence remains unchanged by review edits. DNF is a fifth native book status, distinct from Paused, and never fabricates a completion. The ordered `20261214000100_book_dnf_status.sql` migration extends existing writer/start/discard validation; no hosted migration or deployment is implied. Existing Muse status wins on refresh, including the accepted Staging import. Atlas visuals and shared styles are unchanged.

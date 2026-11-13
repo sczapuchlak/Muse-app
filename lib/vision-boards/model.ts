@@ -9,17 +9,24 @@
  * the element's centre, so rotation pivots naturally. Array order is layer order: the last element is on top.
  * Parsing drops what it doesn't understand but never content it does.
  */
-import { isHexColor, validGradient, type CustomGradient } from "../appearance-values";
+import { isHexColor, type CustomGradient } from "../appearance-values";
 import { isCropShape, sticker, type CropShape } from "./shapes";
+import { isDecorShape, type DecorShape } from "./decor";
+import { builtinIdOk, collectPaths, hex, num, optHex, parseAsset, parseGradient, parseFinish, parsePaint, parseShadow, parseStroke, str, type Asset, type Finish, type Hex, type Paint, type PatternPaint, type Shadow, type Stroke } from "./paint";
+export type { Asset, Hex } from "./paint";
 
-export type Hex = `#${string}`;
 export const boardSizes = {
   landscape: { w: 1600, h: 1200, label: "Landscape" },
   portrait: { w: 1200, h: 1600, label: "Portrait" },
   square: { w: 1400, h: 1400, label: "Square" },
 } as const;
-export type BoardSize = keyof typeof boardSizes;
-export const isBoardSize = (v: unknown): v is BoardSize => typeof v === "string" && v in boardSizes;
+/** A preset, or `custom` with its own `canvas` dimensions (#187: flexible canvas, independent of zoom). */
+export type BoardSize = keyof typeof boardSizes | "custom";
+export const isBoardSize = (v: unknown): v is BoardSize => typeof v === "string" && (v in boardSizes || v === "custom");
+export const CANVAS_LIMITS = { min: 400, max: 8000 } as const;
+export type Canvas = { w: number; h: number };
+export const parseCanvas = (w: unknown, h: unknown): Canvas | undefined =>
+  typeof w === "number" && typeof h === "number" && Number.isFinite(w) && Number.isFinite(h) ? { w: Math.round(num(w, CANVAS_LIMITS.min, CANVAS_LIMITS.max, 1600)), h: Math.round(num(h, CANVAS_LIMITS.min, CANVAS_LIMITS.max, 1200)) } : undefined;
 
 export const boardPeriods = [
   { id: "month", label: "Month" },
@@ -29,12 +36,12 @@ export const boardPeriods = [
 export type BoardPeriod = typeof boardPeriods[number]["id"];
 export const isBoardPeriod = (v: unknown): v is BoardPeriod => boardPeriods.some((p) => p.id === v);
 
-export type Background = { kind: "solid"; color: Hex } | { kind: "gradient"; gradient: CustomGradient };
-/** A private image in storage. `alpha` marks images with transparency (cutouts, stickers, PNG art). */
-export type Asset = { path: string; thumbnailPath: string; width: number; height: number; mime: string; alpha?: boolean; name?: string };
+export type Background = { kind: "solid"; color: Hex } | { kind: "gradient"; gradient: CustomGradient } | { kind: "pattern"; paint: PatternPaint };
 /** Non-destructive crop: the shape, how far the photo is zoomed inside it, and where it sits (-1…1 on each axis). */
 export type Crop = { shape: CropShape; zoom: number; x: number; y: number };
 export type ElementLink = { kind: "aspiration" | "bucket"; id: string; label: string };
+/** A die-cut edge: paint (solid, gradient or pattern) at a thickness in board units, following the visible silhouette. */
+export type Outline = { color: Hex; width: number; paint?: Paint };
 export const fonts = [
   { id: "editorial", label: "Editorial" },
   { id: "clean", label: "Clean" },
@@ -42,22 +49,39 @@ export const fonts = [
 ] as const;
 export type FontId = typeof fonts[number]["id"];
 
-type Base = { id: string; x: number; y: number; w: number; h: number; rotation: number; locked?: boolean; link?: ElementLink };
+/** `groupId` ties pieces together (they select, move and transform as one); `opacity` is 0.05–1. */
+type Base = { id: string; x: number; y: number; w: number; h: number; rotation: number; locked?: boolean; link?: ElementLink; opacity?: number; groupId?: string };
 export type ImageElement = Base & {
   kind: "image"; image: Asset; crop: Crop;
-  border?: { color: Hex; width: number }; shadow?: boolean;
-  /** A sticker-style outline that follows the transparent edge of a cutout. */
-  outline?: { color: Hex; width: number };
+  border?: { color: Hex; width: number; paint?: Paint }; shadow?: boolean;
+  /** A die-cut sticker outline that follows the transparent edge of a cutout (or the crop shape). */
+  outline?: Outline;
+  /** Corner radius for rectangle crops, in board units. */
+  radius?: number;
+  /** Sticker finish over the image and its outline. */
+  finish?: Finish;
+  /** A custom shadow (when absent, `shadow: true` uses the classic soft drop shadow). */
+  shadowStyle?: Shadow;
   /** Reserved for background removal (pending approval): the cutout beside the untouched original, and which one shows. */
   cutout?: Asset; useCutout?: boolean;
 };
-export type TextElement = Base & { kind: "text"; text: string; font: FontId; size: number; color: Hex; bold?: boolean; italic?: boolean; align: "left" | "center" | "right"; highlight?: Hex };
-export type StickerElement = Base & { kind: "sticker"; sticker: string; color: Hex };
-export type BoardElement = ImageElement | TextElement | StickerElement;
+export type TextElement = Base & {
+  kind: "text"; text: string; font: FontId; size: number; color: Hex; bold?: boolean; italic?: boolean; align: "left" | "center" | "right"; highlight?: Hex;
+  /** #187 typography: a font family from the catalog (overrides `font`), weight, spacing (em) and line height. */
+  family?: string; weight?: number; letterSpacing?: number; lineHeight?: number;
+  /** Solid or gradient letters (overrides `color`), an outline, a drop shadow and a glow. */
+  paint?: Paint; stroke?: { color: Hex; width: number }; shadowStyle?: Shadow; glow?: { color: Hex; blur: number };
+};
+export type StickerElement = Base & { kind: "sticker"; sticker: string; color: Hex; paint?: Paint; shadowStyle?: Shadow; finish?: Finish };
+/** A decorative shape: scrapbook paper, a photo backing, a frame, a label. Fill and border can each be any paint. */
+export type ShapeElement = Base & { kind: "shape"; shape: DecorShape; fill?: Paint; stroke?: Stroke; radius?: number; shadowStyle?: Shadow; finish?: Finish; role?: "backing" | "paper" | "frame" };
+/** A piece from Muse's built-in creative library (paper scraps, washi tape, stickers, labels, frames, illustrations). */
+export type PieceElement = Base & { kind: "piece"; piece: string; outline?: Outline; finish?: Finish; shadowStyle?: Shadow };
+export type BoardElement = ImageElement | TextElement | StickerElement | ShapeElement | PieceElement;
 
 export type VisionBoard = {
   id: string; title: string; description: string; theme: string;
-  period: BoardPeriod | null; periodStart: string | null; size: BoardSize;
+  period: BoardPeriod | null; periodStart: string | null; size: BoardSize; canvas?: Canvas;
   background: Background; elements: BoardElement[];
   revision: number; createdAt: string; updatedAt: string;
 };
@@ -75,30 +99,16 @@ export const backgroundPresets: { id: string; label: string; background: Backgro
 ];
 
 // ---------- Small validators ----------
-const str = (v: unknown, max: number) => typeof v === "string" ? v.slice(0, max) : "";
-const num = (v: unknown, min: number, max: number, fallback: number) => typeof v === "number" && Number.isFinite(v) ? Math.min(max, Math.max(min, v)) : fallback;
 const idOk = (v: unknown): v is string => typeof v === "string" && /^[A-Za-z0-9-]{1,64}$/.test(v);
 const recordIdOk = (v: unknown): v is string => typeof v === "string" && /^[A-Za-z0-9_.:/-]{1,100}$/.test(v);
-const hex = (v: unknown, fallback: Hex): Hex => typeof v === "string" && isHexColor(v) ? v.toLowerCase() as Hex : fallback;
 const dateOk = (v: unknown): v is string => typeof v === "string" && /^\d{4}-\d{2}-\d{2}$/.test(v);
-const pathOk = (v: unknown): v is string => typeof v === "string" && /^[0-9a-f-]{36}\/[0-9a-f-]{36}\/[0-9a-f-]{36}(\.thumb)?\.(webp|jpg|png)$/.test(v);
 
 export function parseBackground(v: unknown): Background {
   const o = v && typeof v === "object" ? v as Record<string, unknown> : {};
   if (o.kind === "solid" && typeof o.color === "string" && isHexColor(o.color)) return { kind: "solid", color: o.color.toLowerCase() as Hex };
-  if (o.kind === "gradient" && o.gradient && typeof o.gradient === "object") {
-    const g = o.gradient as Record<string, unknown>, colors = (Array.isArray(g.colors) ? g.colors : []).filter((c): c is Hex => typeof c === "string" && isHexColor(c)).slice(0, 3);
-    const gradient = { colors: colors as CustomGradient["colors"], angle: typeof g.angle === "number" ? g.angle : 135 };
-    if (colors.length >= 2 && validGradient(gradient)) return { kind: "gradient", gradient };
-  }
+  if (o.kind === "gradient") { const gradient = parseGradient(o.gradient); if (gradient) return { kind: "gradient", gradient }; }
+  if (o.kind === "pattern") { const paint = parsePaint(o.paint); if (paint?.kind === "pattern") return { kind: "pattern", paint }; }
   return defaultBackground;
-}
-function parseAsset(v: unknown): Asset | undefined {
-  if (!v || typeof v !== "object") return undefined;
-  const o = v as Record<string, unknown>;
-  if (!pathOk(o.path) || !pathOk(o.thumbnailPath)) return undefined;
-  const mime = ["image/webp", "image/jpeg", "image/png"].find((m) => m === o.mime) ?? "image/webp";
-  return { path: o.path, thumbnailPath: o.thumbnailPath, width: num(o.width, 1, 10000, 1), height: num(o.height, 1, 10000, 1), mime, ...(o.alpha === true ? { alpha: true } : {}), ...(str(o.name, 200) ? { name: str(o.name, 200) } : {}) };
 }
 function parseLink(v: unknown): ElementLink | undefined {
   if (!v || typeof v !== "object") return undefined;
@@ -117,30 +127,59 @@ function parseElement(v: unknown): BoardElement | undefined {
   const o = v as Record<string, unknown>;
   if (!idOk(o.id)) return undefined;
   const link = parseLink(o.link);
-  const base: Base = { id: o.id, x: num(o.x, -SPAN, SPAN, 0), y: num(o.y, -SPAN, SPAN, 0), w: num(o.w, 4, SPAN, 200), h: num(o.h, 4, SPAN, 200), rotation: num(o.rotation, -360, 360, 0), ...(o.locked === true ? { locked: true } : {}), ...(link ? { link } : {}) };
+  const opacity = typeof o.opacity === "number" && o.opacity < 1 ? num(o.opacity, 0.05, 1, 1) : undefined;
+  const base: Base = { id: o.id, x: num(o.x, -SPAN, SPAN, 0), y: num(o.y, -SPAN, SPAN, 0), w: num(o.w, 4, SPAN, 200), h: num(o.h, 4, SPAN, 200), rotation: num(o.rotation, -360, 360, 0), ...(o.locked === true ? { locked: true } : {}), ...(link ? { link } : {}), ...(opacity !== undefined ? { opacity } : {}), ...(idOk(o.groupId) ? { groupId: o.groupId } : {}) };
+  const shadowStyle = parseShadow(o.shadowStyle), finish = parseFinish(o.finish);
+  const extras = { ...(shadowStyle ? { shadowStyle } : {}), ...(finish ? { finish } : {}) };
   if (o.kind === "image") {
     const image = parseAsset(o.image);
     if (!image) return undefined;
     const cutout = parseAsset(o.cutout), b = o.border as Record<string, unknown> | undefined, ol = o.outline as Record<string, unknown> | undefined;
     return {
       ...base, kind: "image", image, crop: parseCrop(o.crop),
-      ...(b && typeof b === "object" ? { border: { color: hex(b.color, "#ffffff"), width: num(b.width, 1, 60, 12) } } : {}),
+      ...(b && typeof b === "object" ? { border: { color: hex(b.color, "#ffffff"), width: num(b.width, 1, 60, 12), ...paintOf(b.paint) } } : {}),
       ...(o.shadow === true ? { shadow: true } : {}),
-      ...(ol && typeof ol === "object" ? { outline: { color: hex(ol.color, "#ffffff"), width: num(ol.width, 2, 40, 10) } } : {}),
+      ...(parseOutline(ol) ? { outline: parseOutline(ol)! } : {}),
+      ...(typeof o.radius === "number" && o.radius > 0 ? { radius: num(o.radius, 0, 2000, 0) } : {}),
+      ...extras,
       ...(cutout ? { cutout, ...(o.useCutout === true ? { useCutout: true } : {}) } : {}),
     };
   }
   if (o.kind === "text") {
     const font = fonts.find((f) => f.id === o.font)?.id ?? "editorial", align = (["left", "center", "right"] as const).find((a) => a === o.align) ?? "center";
     const highlight = typeof o.highlight === "string" && isHexColor(o.highlight) ? o.highlight.toLowerCase() as Hex : undefined;
-    return { ...base, kind: "text", text: str(o.text, LIMITS.text), font, size: num(o.size, 8, 400, 64), color: hex(o.color, "#2a2135"), align, ...(o.bold === true ? { bold: true } : {}), ...(o.italic === true ? { italic: true } : {}), ...(highlight ? { highlight } : {}) };
+    const family = typeof o.family === "string" && /^[A-Za-z0-9 ]{2,48}$/.test(o.family) ? o.family : undefined;
+    const paint = parsePaint(o.paint, false), st = o.stroke as Record<string, unknown> | undefined, glow = o.glow as Record<string, unknown> | undefined;
+    return {
+      ...base, kind: "text", text: str(o.text, LIMITS.text), font, size: num(o.size, 8, 400, 64), color: hex(o.color, "#2a2135"), align, ...(o.bold === true ? { bold: true } : {}), ...(o.italic === true ? { italic: true } : {}), ...(highlight ? { highlight } : {}),
+      ...(family ? { family } : {}), ...(typeof o.weight === "number" ? { weight: Math.round(num(o.weight, 100, 900, 400) / 100) * 100 } : {}),
+      ...(typeof o.letterSpacing === "number" ? { letterSpacing: num(o.letterSpacing, -0.2, 1, 0) } : {}), ...(typeof o.lineHeight === "number" ? { lineHeight: num(o.lineHeight, 0.7, 3, 1.2) } : {}),
+      ...(paint ? { paint } : {}), ...(st && typeof st === "object" && optHex(st.color) ? { stroke: { color: optHex(st.color)!, width: num(st.width, 0.5, 40, 2) } } : {}),
+      ...(shadowStyle ? { shadowStyle } : {}), ...(glow && typeof glow === "object" && optHex(glow.color) ? { glow: { color: optHex(glow.color)!, blur: num(glow.blur, 1, 120, 24) } } : {}),
+    };
   }
   if (o.kind === "sticker") {
     const id = typeof o.sticker === "string" ? o.sticker : "";
     if (!sticker(id) && !/^mark:[a-z-]{2,30}$/.test(id)) return undefined;
-    return { ...base, kind: "sticker", sticker: id, color: hex(o.color, "#f4a259") };
+    return { ...base, kind: "sticker", sticker: id, color: hex(o.color, "#f4a259"), ...paintOf(o.paint), ...extras };
+  }
+  if (o.kind === "shape") {
+    if (!isDecorShape(o.shape)) return undefined;
+    const fill = parsePaint(o.fill), stroke = parseStroke(o.stroke), role = (["backing", "paper", "frame"] as const).find((r) => r === o.role);
+    return { ...base, kind: "shape", shape: o.shape, ...(fill ? { fill } : {}), ...(stroke ? { stroke } : {}), ...(typeof o.radius === "number" && o.radius > 0 ? { radius: num(o.radius, 0, 2000, 0) } : {}), ...(role ? { role } : {}), ...extras };
+  }
+  if (o.kind === "piece") {
+    if (!builtinIdOk(o.piece)) return undefined;
+    const outline = parseOutline(o.outline);
+    return { ...base, kind: "piece", piece: o.piece, ...(outline ? { outline } : {}), ...extras };
   }
   return undefined;
+}
+const paintOf = (v: unknown): { paint?: Paint } => { const paint = parsePaint(v); return paint ? { paint } : {}; };
+function parseOutline(v: unknown): Outline | undefined {
+  if (!v || typeof v !== "object") return undefined;
+  const o = v as Record<string, unknown>, paint = parsePaint(o.paint);
+  return { color: hex(o.color, "#ffffff"), width: num(o.width, 2, 60, 10), ...(paint ? { paint } : {}) };
 }
 export function parseElements(v: unknown): BoardElement[] {
   const seen = new Set<string>(), out: BoardElement[] = [];
@@ -168,6 +207,12 @@ export function periodLabel(period: BoardPeriod | null, start: string | null): s
   return new Intl.DateTimeFormat("en-US", { month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(`${start}T12:00:00Z`));
 }
 
+/** The board's canvas in board units: a preset size or its own custom dimensions. */
+export function canvasOf(b: Pick<VisionBoard, "size" | "canvas">): Canvas {
+  if (b.size === "custom" && b.canvas) return b.canvas;
+  const preset = boardSizes[b.size === "custom" ? "landscape" : b.size];
+  return { w: preset.w, h: preset.h };
+}
 export function blankBoard(id: string, now: string, init: Partial<Pick<VisionBoard, "title" | "description" | "theme" | "period" | "periodStart" | "size" | "background">> = {}): VisionBoard {
   return { id, title: "", description: "", theme: "", period: null, periodStart: null, size: "landscape", background: defaultBackground, elements: [], revision: 0, createdAt: now, updatedAt: now, ...init };
 }
@@ -179,7 +224,7 @@ export function boardFieldsValid(b: Pick<VisionBoard, "title" | "period" | "peri
 }
 
 // ---------- Element operations (pure; every one returns a new array) ----------
-export const boardBox = (b: Pick<VisionBoard, "size">) => boardSizes[b.size];
+export const boardBox = (b: Pick<VisionBoard, "size" | "canvas">) => canvasOf(b);
 export const indexOf = (els: BoardElement[], id: string) => els.findIndex((e) => e.id === id);
 export function updateElement(els: BoardElement[], id: string, patch: Partial<BoardElement>): BoardElement[] {
   return els.map((e) => e.id === id ? { ...e, ...patch } as BoardElement : e);
@@ -206,12 +251,12 @@ export function moveLayer(els: BoardElement[], id: string, move: LayerMove): Boa
 function structuredCloneSafe<T>(v: T): T { return JSON.parse(JSON.stringify(v)) as T; }
 
 /** A new element's size: fits within a third of the board, keeps the photo's proportions. */
-export function fitImage(board: Pick<VisionBoard, "size">, asset: Pick<Asset, "width" | "height">, maxShare = 0.38): { w: number; h: number } {
+export function fitImage(board: Pick<VisionBoard, "size" | "canvas">, asset: Pick<Asset, "width" | "height">, maxShare = 0.38): { w: number; h: number } {
   const box = boardBox(board), max = Math.min(box.w, box.h) * maxShare * 1.4, ratio = asset.width / asset.height;
   return ratio >= 1 ? { w: Math.round(max), h: Math.round(max / ratio) } : { w: Math.round(max * ratio), h: Math.round(max) };
 }
 /** Where the next element lands: around the middle, nudged so a stack of new things doesn't hide itself. */
-export function nextPlacement(board: Pick<VisionBoard, "size">, count: number): { x: number; y: number; rotation: number } {
+export function nextPlacement(board: Pick<VisionBoard, "size" | "canvas">, count: number): { x: number; y: number; rotation: number } {
   const box = boardBox(board), step = (count % 7) - 3;
   return { x: Math.round(box.w / 2 + step * 36), y: Math.round(box.h / 2 + step * 24), rotation: [-4, 3, -2, 5, -3, 2, 0][count % 7] };
 }
@@ -232,17 +277,15 @@ export function cropRect(frame: { w: number; h: number }, image: { width: number
 }
 
 /** Image paths a set of boards still use (for deciding which files are safe to remove). */
-export function usedPaths(boards: Pick<VisionBoard, "elements">[]): Set<string> {
+export function usedPaths(boards: (Pick<VisionBoard, "elements"> & { background?: Background })[]): Set<string> {
   const out = new Set<string>();
-  for (const b of boards) for (const e of b.elements) if (e.kind === "image") {
-    out.add(e.image.path); out.add(e.image.thumbnailPath);
-    if (e.cutout) { out.add(e.cutout.path); out.add(e.cutout.thumbnailPath); }
-  }
+  for (const b of boards) { collectPaths(b.elements, out); if (b.background) collectPaths(b.background, out); }
   return out;
 }
 
 // ---------- Undo / redo ----------
-export type Snapshot = { elements: BoardElement[]; background: Background };
+/** One undo step. `size`/`canvas` are recorded too, so adding board space undoes like any other edit. */
+export type Snapshot = { elements: BoardElement[]; background: Background; size?: BoardSize; canvas?: Canvas };
 export type History = { past: Snapshot[]; future: Snapshot[] };
 export const HISTORY_LIMIT = 80;
 export const emptyHistory = (): History => ({ past: [], future: [] });
