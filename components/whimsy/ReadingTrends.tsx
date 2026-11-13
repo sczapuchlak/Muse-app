@@ -1,4 +1,5 @@
 'use client';
+import {MuseMark} from '@/components/design/MuseHeading';
 import Link from 'next/link';
 import {useMemo,useState,type CSSProperties} from 'react';
 import {MuseIcon,type MuseIconName} from '@/components/MuseIcon';
@@ -30,7 +31,7 @@ export function ReadingTrends({books,sessions,today}:{books:Book[];sessions:Read
  const trends=useMemo(()=>readingTrends(books,sessions,today),[books,sessions,today]);
  const keys:TrendKey[]=['pages','time','finished','days'],[at,setAt]=useState(0),key=keys[at],t=trends[key],m=movement(t),meta=META[key];
  return <section className="muse-trends" aria-labelledby="trends-heading" aria-roledescription="carousel">
-  <header className="muse-trends-head"><div><span className="small-label">A glimpse of your reading</span><h3 id="trends-heading">Your last 30 days</h3></div>
+  <header className="muse-trends-head"><div><span className="small-label">A glimpse of your reading</span><h3 id="trends-heading"><MuseMark icon="trend" tone={6} size="sm" className="muse-books-mark"/>Your last 30 days</h3></div>
    <span className="muse-trends-range type-numeric" title="A rolling 30 days ending today, not the calendar month">{shortDate(trends.current.start)} – {shortDate(trends.current.end)}</span></header>
   {trends.empty?<div className="muse-trends-empty"><span className="muse-trends-empty-art" aria-hidden="true"><i/><i/><i/><i/><i/></span><div><strong>Your next chapter starts the story</strong><p>Your reading patterns will appear here as you log your chapters, compared with the 30 days before.</p></div></div>
   :<div className="muse-trends-stage" aria-live="polite">

@@ -313,3 +313,14 @@
 .muse-collections-card .muse-card-status-badge,.muse-card-status-badge{color:var(--ink)!important;border-width:2.5px}
 .muse-collections-card .muse-card-status-badge svg,.muse-card-status-badge svg{color:var(--ink)!important;stroke:var(--ink)!important;stroke-width:2.75!important;opacity:1!important;filter:none}
 .muse-collections-quick-filters .muse-choice-lead{gap:8px}
+
+/* Glow-up 2 (Nov 2026): phone densities mean what they say. Compact = four covers a row, Comfortable = two,
+   Showcase = one large cover. Compact hides everything but the cover and a one-line title. */
+@container muse-content (max-width:640px){
+ .muse-collections[data-density="compact"] .muse-collections-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:12px 8px}
+ .muse-collections[data-density="comfortable"] .muse-collections-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 12px}
+ .muse-collections[data-density="showcase"] .muse-collections-grid{grid-template-columns:minmax(0,1fr);gap:22px}
+ .muse-collections[data-density="compact"] .muse-collections-card[data-kind] :is(.muse-card-creator,.muse-card-status,.muse-card-meta){display:none}
+ .muse-collections[data-density="compact"] .muse-collections-card[data-kind] .muse-card-title{min-height:0;font-size:.72rem;line-height:1.2;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+ .muse-collections[data-density="showcase"] .muse-collections-card[data-kind] .muse-book-cover{max-width:min(78%,300px);margin-inline:auto}
+}

@@ -1,4 +1,5 @@
 'use client';
+import {MuseMark} from '@/components/design/MuseHeading';
 import {useEffect,useRef,useState,type CSSProperties,type ReactNode} from 'react';
 import {MuseIcon} from '@/components/MuseIcon';
 import {GlassPopover} from '@/components/GlassPopover';
@@ -58,7 +59,7 @@ export function ReadingDesk({books,sessions,renderCover,busy,canStart,onOpen,onS
  const count=books.length,more=count>visible;
  return <div className="muse-desk-layout" data-count={Math.min(count,3)} data-goals={goals?true:undefined}>
   <section className="muse-desk-reading" aria-labelledby="desk-reading-heading">
-   <header className="muse-desk-head"><h3 id="desk-reading-heading">Currently reading <span className="muse-desk-count type-numeric">{count}</span></h3>
+   <header className="muse-desk-head"><h3 id="desk-reading-heading"><MuseMark icon="openbook" tone={5} size="sm" className="muse-books-mark"/>Currently reading <span className="muse-desk-count type-numeric">{count}</span></h3>
     {more&&<div className="muse-desk-nav"><span className="small-label type-numeric">{first+1}–{Math.min(count,first+visible)} of {count}</span><button type="button" className="muse-button button-ghost" aria-label="Previous books" disabled={first===0} onClick={()=>move(-1)}><MuseIcon name="chevron" size={16}/></button><button type="button" className="muse-button button-ghost" aria-label="Next books" disabled={first+visible>=count} onClick={()=>move(1)}><MuseIcon name="chevron" size={16}/></button></div>}
    </header>
    {count?<ol ref={track} className="muse-desk-track" onScroll={measure} onPointerEnter={measure} onFocus={measure}>{books.map(book=><li key={book.id}><DeskTile book={book} sessions={sessions} cover={renderCover(book)} busy={busy} canStart={canStart} onOpen={()=>onOpen(book)} onStart={()=>onStart(book)} onLog={()=>onLog(book)} onMove={status=>onMove(book,status)}/></li>)}</ol>:empty}
