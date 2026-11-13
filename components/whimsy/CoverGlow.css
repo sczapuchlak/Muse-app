@@ -1,0 +1,15 @@
+/*
+ * Ambient light from each book's own cover (Stephanie, Nov 13: "anywhere we use the book cards, we should have that
+ * same color glow… it's beautiful"). <CoverGlow> is a real element holding the cover, blurred and saturated behind the
+ * card's content (Safari paints it; a pseudo-element reading a url() variable didn't). Any card that renders it sets
+ * data-glow. The card keeps its size; only light is added.
+ */
+[data-glow]:has(>.muse-cover-glow){position:relative;isolation:isolate;overflow:hidden}
+.muse-cover-glow{position:absolute;inset:-30%;z-index:-1;pointer-events:none;background-position:center;background-size:cover;background-repeat:no-repeat;
+ -webkit-filter:blur(36px) saturate(1.8);filter:blur(36px) saturate(1.8);opacity:.5;transform:translateZ(0);transition:opacity .5s,transform .8s cubic-bezier(.2,.8,.2,1)}
+[data-glow]:hover>.muse-cover-glow{opacity:.75;transform:translateZ(0) scale(1.08)}
+.muse-collections-card[data-glow]>.muse-cover-glow{opacity:.34}
+:is(.muse-books-finished-row,.muse-toprated-item,.muse-glance-yearbook,.muse-glance-bookcard)[data-glow]>.muse-cover-glow{opacity:.4}
+[data-density="list"] .muse-collections-card>.muse-cover-glow{opacity:.18}
+:root:is([data-theme="iridescent"],[data-theme="solstice"],[data-theme="issya-bday"],[data-theme="bubblegum-baby"],[data-theme="astral"],[data-theme="nightbloom"],:not([data-theme])) .muse-cover-glow{opacity:.3;-webkit-filter:blur(36px) saturate(1.5) brightness(1.15);filter:blur(36px) saturate(1.5) brightness(1.15)}
+@media (prefers-reduced-motion:reduce){.muse-cover-glow{transition:none}}
