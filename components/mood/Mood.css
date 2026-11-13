@@ -202,3 +202,13 @@
 .muse-mood-lower .muse-mood-family-bar{grid-template-columns:minmax(0,1fr) minmax(70px,1.2fr) auto!important}
 @container muse-content (max-width:980px){.muse-mood-lower{grid-template-columns:minmax(0,1fr)}}
 .muse-mood-lower>*{grid-column:auto!important;grid-row:1!important}@container muse-content (max-width:980px){.muse-mood-lower>*{grid-row:auto!important}}
+
+/* Round 3 (Nov 13): the lower row sits on the same grid as the row above it (same 3:2 split, same gutter), with a real
+   gap between the rows; Your emotional history uses the shared card heading scale. */
+.muse-mood-lower{grid-template-columns:minmax(0,3fr) minmax(0,2fr)!important;gap:var(--space-5)!important;margin-top:var(--space-5)}
+@container muse-content (max-width:980px){.muse-mood-lower{grid-template-columns:minmax(0,1fr)!important}}
+.muse-mood-lower .muse-mood-history-header{display:grid!important;grid-template-columns:minmax(0,1fr);gap:12px}
+.muse-mood-lower .muse-mood-history-header :is(h2,h3){font-family:var(--font-editorial);font-size:clamp(1.15rem,1.5vw,1.32rem);font-weight:var(--type-editorial-weight,600);line-height:1.2}
+.muse-mood-lower .muse-mood-history>*:first-child{padding-bottom:12px;border-bottom:1px solid color-mix(in srgb,var(--glass-border) 80%,transparent)}
+.muse-mood-lower .muse-mood-insights{grid-template-columns:minmax(0,1fr)!important}
+.muse-mood-lower .muse-mood-insights>:nth-child(2){grid-column:auto;order:0}
