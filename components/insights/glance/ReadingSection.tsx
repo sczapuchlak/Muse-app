@@ -23,7 +23,7 @@ export function ReadingSection({ period, reading, nightstand, status, onRetry, m
     action={<div className="muse-segmented muse-glance-mode" role="group" aria-label="Show reading progress as" aria-busy={saving}>
       {readingProgressModes.map((m) => <button key={m.id} type="button" aria-pressed={mode === m.id} onClick={() => onMode(m.id)}>{m.label}</button>)}</div>}>
     {status.error ? <p role="alert">Bookshelf couldn’t load. <button type="button" className="muse-glance-pill" onClick={onRetry}>Retry</button></p>
-      : !status.loaded ? <Empty>Loading your books…</Empty> : period === "year" && wide ? <YearReading reading={reading} nightstand={nightstand} mode={mode} /> : <div className="muse-glance-reading" data-wide={wide || undefined}><div className="muse-glance-reading-now">
+      : !status.loaded ? <Empty>Loading your books…</Empty> : wide ? <YearReading period={period} reading={reading} nightstand={nightstand} mode={mode} /> : <div className="muse-glance-reading" data-wide={wide || undefined}><div className="muse-glance-reading-now">
       <div className="muse-glance-subhead"><h3>Now reading</h3><span>as of today</span></div>
       {!nightstand.length ? <p className="muse-glance-empty"><span aria-hidden="true">📚</span>Nothing marked as reading. <Link className="muse-glance-pill" data-size="sm" href="/collections?kind=book">Open Bookshelf</Link></p>
         : <EntryCarousel items={nightstand} label="Now reading" minWidth={wide ? 220 : 9999} itemKey={(x) => x.book.id} describe={(x) => x.book.title} render={(x) => <article className="muse-glance-bookcard">
@@ -66,7 +66,8 @@ function Bar({ value, max, label }: { value: number; max: number; label: string 
  * The year's reading in one wide band (Stephanie, Nov 13): three panes with fine dividers. Now reading and Finished are
  * compact cover cards that page in their own carousels (never a long list); the year's numbers close the band.
  */
-function YearReading({ reading, nightstand, mode }: { reading: ReturnType<typeof readingGlance>; nightstand: ReturnType<typeof currentlyReading>; mode: ReadingProgressMode }) {
+function YearReading({ period, reading, nightstand, mode }: { period: GlancePeriod; reading: ReturnType<typeof readingGlance>; nightstand: ReturnType<typeof currentlyReading>; mode: ReadingProgressMode }) {
+  const words = periodWords[period], title = period === "year" ? "The year in pages" : period === "month" ? "The month in pages" : "The week in pages";
   const finished = [...reading.completed].sort((a, b) => b.finishedOn.localeCompare(a.finishedOn)), most = [...reading.books].sort((a, b) => b.seconds - a.seconds)[0];
   return <div className="muse-glance-yearread">
     <section className="muse-glance-yearread-pane" aria-label="Now reading">
@@ -77,16 +78,16 @@ function YearReading({ reading, nightstand, mode }: { reading: ReturnType<typeof
           <strong>{x.book.title}</strong>{x.book.author && <span className="muse-glance-sub">{x.book.author}</span>}
           <Progress mode={mode} item={x} /></article>} />}
     </section>
-    <section className="muse-glance-yearread-pane" aria-label="Finished this year">
-      <div className="muse-glance-subhead"><h3>Finished</h3><span>{finished.length} this year</span></div>
-      {!finished.length ? <p className="muse-glance-empty"><span aria-hidden="true">🏁</span>No finished books dated this year yet.</p>
-        : <EntryCarousel items={finished} label="Finished this year" minWidth={150} itemKey={(c) => `${c.book.id}-${c.finishedOn}`} describe={(c) => c.book.title} render={(c) => <article className="muse-glance-yearbook" data-kind="finished">
+    <section className="muse-glance-yearread-pane" aria-label={`Finished ${words}`}>
+      <div className="muse-glance-subhead"><h3>Finished</h3><span>{finished.length} {words}</span></div>
+      {!finished.length ? <p className="muse-glance-empty"><span aria-hidden="true">🏁</span>No finished books dated {words} yet.</p>
+        : <EntryCarousel items={finished} label={`Finished ${words}`} minWidth={150} itemKey={(c) => `${c.book.id}-${c.finishedOn}`} describe={(c) => c.book.title} render={(c) => <article className="muse-glance-yearbook" data-kind="finished">
           <span className="muse-glance-yearbook-cover"><BookCover book={c.book} /><i aria-hidden="true">✓</i></span>
           <strong>{c.book.title}</strong>
           <span className="muse-glance-yearbook-date">🏁 {shortDay(c.finishedOn)}{c.reread ? " · reread" : ""}</span></article>} />}
     </section>
-    <section className="muse-glance-yearread-pane muse-glance-yearread-stats" aria-label="Reading this year">
-      <div className="muse-glance-subhead"><h3>The year in pages</h3><span>from saved sessions</span></div>
+    <section className="muse-glance-yearread-pane muse-glance-yearread-stats" aria-label={`Reading ${words}`}>
+      <div className="muse-glance-subhead"><h3>{title}</h3><span>from saved sessions</span></div>
       <dl>
         <div><dt>Time</dt><dd>{reading.seconds ? readingDuration(reading.seconds) : "—"}</dd></div>
         <div><dt>Pages</dt><dd>{reading.pages ? reading.pages.toLocaleString("en-US") : "—"}</dd></div>
