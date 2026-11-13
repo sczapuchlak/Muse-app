@@ -256,3 +256,24 @@
 .muse-stat-tile-value{font-family:var(--font-editorial);font-weight:560;font-size:1.75rem;letter-spacing:-.025em;font-variant-numeric:lining-nums tabular-nums}
 .muse-stat-tile-value small{font-family:var(--font-ui)}
 @media (forced-colors:active){:is(.muse-stat-tile-value,.muse-money-income,.muse-money-tiles dd){color:CanvasText;background:none}}
+
+/* Page tab bars, round 4 (Stephanie, Nov 13: "update all screens that used that nav to this… LOVE"): one glass rail
+   holding compact pills, each a small gradient tile with a white glyph beside the tab's name. The open tab glows in its
+   own colour and wears a short light underneath. Replaces the divider + plain chips for every secondary nav. */
+.muse-page :is(.muse-page-tabs,.muse-section-nav,.muse-whimsy-navigation,.muse-cosmic-navigation,.muse-books-tabs,.muse-tarot-tabs,.muse-dream-tabs,.muse-fortune-tabs,.muse-fun-cabinet):has(.muse-nav-mark){
+ display:flex;flex-wrap:wrap;align-items:center;gap:6px;width:fit-content;max-width:100%;box-sizing:border-box;padding:6px;border:1px solid var(--glass-border);border-radius:20px;
+ background:linear-gradient(180deg,color-mix(in srgb,var(--foreground) 5%,transparent),transparent),var(--glass-background);box-shadow:var(--card-shadow),inset 0 1px 0 var(--glass-edge)}
+.muse-page :is(.muse-page-tabs,.muse-section-nav,.muse-whimsy-navigation,.muse-cosmic-navigation,.muse-books-tabs,.muse-tarot-tabs,.muse-dream-tabs,.muse-fortune-tabs,.muse-fun-cabinet):has(.muse-nav-mark)>:is(a,button){
+ --nav-ink:var(--accent-primary);--nav-ink-b:var(--accent-secondary);position:relative;isolation:isolate;overflow:hidden;display:inline-flex;align-items:center;gap:9px;min-height:42px;padding:5px 14px 5px 5px;border:1px solid transparent;border-radius:14px;
+ background:transparent;color:var(--foreground);font:inherit;font-size:.86rem;font-weight:500;text-decoration:none;cursor:pointer;box-shadow:none;transition:background .25s,border-color .25s,box-shadow .3s,transform .3s cubic-bezier(.2,.8,.2,1)}
+.muse-page :is(.muse-page-tabs,.muse-section-nav,.muse-whimsy-navigation,.muse-cosmic-navigation,.muse-books-tabs,.muse-tarot-tabs,.muse-dream-tabs,.muse-fortune-tabs,.muse-fun-cabinet):has(.muse-nav-mark)>:is(a,button):hover{background:color-mix(in srgb,var(--nav-ink) 10%,transparent);border-color:color-mix(in srgb,var(--nav-ink) 35%,transparent)}
+.muse-page :is(.muse-page-tabs,.muse-section-nav,.muse-whimsy-navigation,.muse-cosmic-navigation,.muse-books-tabs,.muse-tarot-tabs,.muse-dream-tabs,.muse-fortune-tabs,.muse-fun-cabinet):has(.muse-nav-mark)>:is(a,button):is([aria-current=page],[aria-pressed=true]){
+ border-color:color-mix(in srgb,var(--nav-ink) 70%,transparent);background:radial-gradient(120% 140% at 0% 0%,color-mix(in srgb,var(--nav-ink) 28%,transparent),transparent 65%),radial-gradient(100% 120% at 100% 100%,color-mix(in srgb,var(--nav-ink-b) 18%,transparent),transparent 65%),color-mix(in srgb,var(--surface-control) 90%,transparent);
+ box-shadow:0 10px 22px -14px var(--nav-ink),0 0 0 1px color-mix(in srgb,var(--nav-ink) 35%,transparent)}
+.muse-page :is(.muse-page-tabs,.muse-section-nav,.muse-whimsy-navigation,.muse-cosmic-navigation,.muse-books-tabs,.muse-tarot-tabs,.muse-dream-tabs,.muse-fortune-tabs,.muse-fun-cabinet):has(.muse-nav-mark)>:is(a,button):is([aria-current=page],[aria-pressed=true])::after{content:"";position:absolute;left:50%;bottom:3px;width:28px;height:3px;translate:-50% 0;border-radius:3px;background:linear-gradient(90deg,var(--nav-ink),var(--nav-ink-b));box-shadow:0 0 8px var(--nav-ink)}
+.muse-page :is(.muse-page-tabs,.muse-section-nav,.muse-whimsy-navigation,.muse-cosmic-navigation,.muse-books-tabs,.muse-tarot-tabs,.muse-dream-tabs,.muse-fortune-tabs,.muse-fun-cabinet):has(.muse-nav-mark)>:is(a,button)::before{display:none}
+.muse-nav-mark.muse-mark{flex:none;width:30px;height:30px;border-radius:10px;transition:transform .45s cubic-bezier(.3,1.5,.5,1)}
+.muse-nav-mark.muse-mark svg{width:15px;height:15px}
+:is(a,button):hover>.muse-nav-mark.muse-mark{transform:rotate(-8deg) scale(1.08)}
+.muse-page :is(.muse-section-nav,.muse-books-tabs,.muse-page-tabs,.muse-fun-cabinet):has(.muse-nav-mark) small{font-size:.74rem;color:var(--nav-ink)}
+@media(max-width:600px){.muse-page :is(.muse-page-tabs,.muse-section-nav,.muse-whimsy-navigation,.muse-cosmic-navigation,.muse-books-tabs,.muse-tarot-tabs,.muse-dream-tabs,.muse-fortune-tabs,.muse-fun-cabinet):has(.muse-nav-mark){flex-wrap:nowrap;overflow-x:auto;width:auto;scrollbar-width:none}.muse-page :is(.muse-page-tabs,.muse-section-nav,.muse-whimsy-navigation,.muse-cosmic-navigation,.muse-books-tabs,.muse-tarot-tabs,.muse-dream-tabs,.muse-fortune-tabs,.muse-fun-cabinet):has(.muse-nav-mark)>:is(a,button){flex:none}}
