@@ -54,3 +54,8 @@ html{font-variation-settings:var(--editorial-axes);font-optical-sizing:auto}
 .card-heading h2 .card-heading-mark{width:30px;height:30px;border-radius:10px}
 .card-heading h2 .card-heading-mark svg{width:16px;height:16px}
 .muse-daily-section-title{font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight);font-size:clamp(1.35rem,2.2vw,1.7rem);letter-spacing:-.01em}
+
+/* Page titles share the Daily Edit greeting's voice (Stephanie, Nov 13): the italic display editorial cut, so
+   "Planner", "Money" and every module title read like the greeting. Mantras stay in the UI face. */
+.muse-header-layout h1{font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight);font-size:clamp(2.4rem,3.6cqi,3.1rem);line-height:1.05;letter-spacing:-.035em}
+@container muse-content (max-width:460px){.muse-header-layout h1{font-size:2.2rem}}
