@@ -18,8 +18,11 @@ export type PatternPaint = { kind: "pattern"; pattern: PatternRef; scale: number
 export type Paint = { kind: "solid"; color: Hex } | { kind: "gradient"; gradient: CustomGradient } | PatternPaint;
 export type Stroke = { paint: Paint; width: number };
 export type Shadow = { color: Hex; blur: number; x: number; y: number; opacity: number };
-/** Sticker finishes. `shimmer` animates the holographic sheen in the editor only (never in exports; off with reduced motion). */
-export type Finish = { kind: "matte" | "glossy" | "holo"; intensity: number; shimmer?: boolean };
+/**
+ * Sticker finishes: matte paper, glossy vinyl, holographic foil. `shimmer` animates the foil in the editor only (never
+ * in exports; off with reduced motion). A finished piece casts a soft lift shadow of its own unless `lift` is false.
+ */
+export type Finish = { kind: "matte" | "glossy" | "holo"; intensity: number; shimmer?: boolean; lift?: false };
 
 // ---------- Validators shared by the model ----------
 export const num = (v: unknown, min: number, max: number, fallback: number) => typeof v === "number" && Number.isFinite(v) ? Math.min(max, Math.max(min, v)) : fallback;
@@ -81,7 +84,7 @@ export function parseShadow(v: unknown): Shadow | undefined {
 export function parseFinish(v: unknown): Finish | undefined {
   if (!v || typeof v !== "object") return undefined;
   const o = v as Record<string, unknown>, kind = (["matte", "glossy", "holo"] as const).find((k) => k === o.kind);
-  return kind ? { kind, intensity: num(o.intensity, 0, 1, 0.6), ...(o.shimmer === true ? { shimmer: true } : {}) } : undefined;
+  return kind ? { kind, intensity: num(o.intensity, 0, 1, 0.6), ...(o.shimmer === true ? { shimmer: true } : {}), ...(o.lift === false ? { lift: false as const } : {}) } : undefined;
 }
 
 // ---------- Helpers ----------

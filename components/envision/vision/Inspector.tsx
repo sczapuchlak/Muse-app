@@ -53,11 +53,13 @@ export function Inspector(props: Props) {
         <p className="editor-label">{selected.length > 1 ? `${selected.length} pieces${props.grouped ? " · grouped" : ""}` : props.label(first)}</p>
       </header>
       {mixed ? <p className="small-label muse-vision-mixed">Different kinds of pieces are selected: opacity, shadow and finish change them all. Select one kind to style it further.</p> : <KindSection {...props} e={first} />}
+      {(mixed || first.kind !== "text") && <Section title="Sticker finish">
+        <FinishEditor value={(first as ShapeElement).finish} onChange={(f) => props.patch((e) => e.kind === "text" ? null : ({ finish: f }) as Partial<ShapeElement>, "finish", "all")} />
+      </Section>}
       <Section title="Look" open={mixed}>
         <Slider label="Opacity" min={0.05} max={1} step={0.01} value={first.opacity ?? 1} format={(v) => `${Math.round(v * 100)}%`} onChange={(v) => props.patch(() => ({ opacity: v >= 0.999 ? undefined : v }), "opacity", "all")} />
         <ShadowEditor value={first.kind === "image" ? first.shadowStyle ?? (first.shadow ? { ...defaultShadow, blur: 26, y: 12, opacity: 0.32 } : undefined) : (first as ShapeElement).shadowStyle}
           onChange={(s) => props.patch((e) => e.kind === "text" ? ({ shadowStyle: s, h: measureText({ ...e, shadowStyle: s }) } as Partial<TextElement>) : e.kind === "image" ? { shadowStyle: s, shadow: s ? true : undefined } as Partial<ImageElement> : { shadowStyle: s } as Partial<ShapeElement>, "shadow", "all")} hidden={!mixed && first.kind === "text"} />
-        {(mixed || first.kind !== "text") && <FinishEditor value={(first as ShapeElement).finish} onChange={(f) => props.patch((e) => e.kind === "text" ? null : ({ finish: f }) as Partial<ShapeElement>, "finish", "all")} />}
       </Section>
       <ArrangeSection {...props} />
       {selected.length === 1 && <LinkSection {...props} e={first} />}
@@ -226,12 +228,18 @@ function ShadowEditor({ value, onChange, hidden }: { value: Shadow | undefined; 
     </>}
   </div>;
 }
+/**
+ * Three compact finishes that apply instantly (the canvas is the preview). Switching keeps the intensity, and the
+ * choice is ordinary element data, so it undoes, saves, reopens and exports like everything else.
+ */
 function FinishEditor({ value, onChange }: { value: Finish | undefined; onChange: (f: Finish | undefined) => void }) {
+  const amount = value?.kind === "matte" ? "Texture" : value?.kind === "glossy" ? "Gloss" : "Foil";
   return <div className="muse-vision-subgroup">
-    <MuseSegmented label="Finish" value={value?.kind ?? "none"} options={[{ id: "none", label: "None" }, { id: "matte", label: "Matte" }, { id: "glossy", label: "Glossy" }, { id: "holo", label: "Holo" }] as const}
-      onChange={(k) => onChange(k === "none" ? undefined : { kind: k, intensity: value?.intensity ?? 0.6, ...(k === "holo" && value?.shimmer ? { shimmer: true } : {}) })} />
-    {value && <Slider label="Intensity" min={0.1} max={1} step={0.05} value={value.intensity} format={(v) => `${Math.round(v * 100)}%`} onChange={(intensity) => onChange({ ...value, intensity })} />}
-    {value?.kind === "holo" && <Toggle label="Shimmer while editing (off with reduced motion; exports stay still)" on={!!value.shimmer} onChange={(on) => onChange({ ...value, shimmer: on || undefined })} />}
+    <MuseSegmented label="Finish" className="muse-vision-finishes" value={value?.kind ?? "none"} options={[{ id: "none", label: "None" }, { id: "matte", label: "Matte" }, { id: "glossy", label: "Glossy" }, { id: "holo", label: "Holographic" }] as const}
+      onChange={(k) => onChange(k === "none" ? undefined : { kind: k, intensity: value?.intensity ?? (k === "holo" ? 0.7 : 0.65), ...(k === "holo" && value?.shimmer ? { shimmer: true } : {}), ...(value?.lift === false ? { lift: false as const } : {}) })} />
+    {value && <Slider label={amount} min={0.1} max={1} step={0.05} value={value.intensity} format={(v) => `${Math.round(v * 100)}%`} onChange={(intensity) => onChange({ ...value, intensity })} />}
+    {value?.kind === "holo" && <Toggle label="Shimmer while editing (exports stay still; off with reduced motion)" on={!!value.shimmer} onChange={(on) => onChange({ ...value, shimmer: on || undefined })} />}
+    {value && <Toggle label="Lift off the page (soft shadow, when the piece has none of its own)" on={value.lift !== false} onChange={(on) => { const { lift: _l, ...rest } = value; void _l; onChange(on ? rest : { ...rest, lift: false }); }} />}
   </div>;
 }
 

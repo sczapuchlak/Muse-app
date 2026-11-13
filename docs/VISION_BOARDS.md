@@ -80,7 +80,14 @@ Implemented on `feat/vision-boards-2`. Staging acceptance is pending. The approv
 **Rendering.** One paint engine (`paintCanvas.ts`) draws the editor, previews and exports identically. Fills, borders and outlines are paths generated at the element's real size (`lib/vision-boards/decor.ts`), so they follow the true geometry: rounded corners, scallops, notches and curves.
 - **Patterns** keep their own scale whatever the zoom.
 - **Die-cut edges** grow the art's alpha silhouette with a round brush, so the edge follows the shape without removing any background.
-- **Finishes:** matte (grain), glossy (sheen) and holographic (hue shift and shine). The holographic shimmer runs only in the editor, only when asked, and never with reduced motion or Quiet magic; exports are always still.
+- **Sticker finishes** (Matte, Glossy and Holographic) apply at once from a "Sticker finish" section; the canvas is the preview. Each is a stack of layers confined to the silhouette (path or alpha), so it follows irregular cutouts:
+  - **Matte paper:** grain and fibres, diffuse light, soft inner edge shading.
+  - **Glossy vinyl:** depth, a crisp sheen band, a specular hotspot, a bright rim.
+  - **Holographic foil:** pink, lavender, cyan, mint and peach bands that keep the art's own shading, diffraction lines, a sheen and a foil rim.
+  - Each has an intensity slider (Texture, Gloss or Foil).
+  - Optional shimmer for holographic runs in the editor only: never in exports, never with reduced motion.
+  - Optional "lift": a soft shadow the finish casts when the piece has none of its own.
+  - Finish layers are cached per silhouette, so redraws while dragging are cheap on phones.
 
 **Editor.**
 - **Inspector.** A contextual panel replaces the selection bar: beside the canvas on desktop, under it on narrow screens.
@@ -100,7 +107,11 @@ Implemented on `feat/vision-boards-2`. Staging acceptance is pending. The approv
 - **Photos:** "Add a backing" puts a patterned scrapbook mat behind a photo, grouped with it. "Make it a sticker" adds a white die-cut edge, a glossy finish and a shadow.
 - **Saved colors and gradients** are the person's Muse-wide palette, shared with Planner. A saved board gradient takes the nearest of Planner's four directions; the board keeps its exact angle.
 - **Export.** PNG or JPEG at twice the board's size, capped at 16 million pixels for iPhone. It is rendered offscreen after every image and font has loaded. Phones offer the share sheet.
-- **Assets.** See [VISION_ASSETS](VISION_ASSETS.md). The library ships 2–5 original test assets per category, generated from `assets-src/vision`.
+- **Pattern collection.** 70 original patterns plus the earlier 8 fills (78 in all), in 10 categories. One collection serves backgrounds, shape fills, backings and paper, borders, die-cut edges and doodles.
+- **Pattern browser.** A category dropdown with ★ Favorites and Recently used, search over names, tags and categories, a thumbnail grid with the current choice ringed, and your own uploads.
+- **Other assets.** See [VISION_ASSETS](VISION_ASSETS.md). The other kinds still ship 2–5 original test assets each.
+- **Editing text with the panel hidden.** The toolbar shows a **Style** dropdown (the same controls) whenever a piece is selected. Adding text opens it at the words, and double-clicking any piece opens its controls.
+- **Canvas area.** The editing area takes the board's own proportions at the available width, so a larger board gets a larger canvas. Phones keep it within the screen.
 
 ## Tests
 

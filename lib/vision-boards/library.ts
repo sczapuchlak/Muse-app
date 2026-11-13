@@ -26,7 +26,20 @@ const byId = new Map(libraryItems.map((i) => [i.id, i]));
 export const libraryItem = (id: string): LibraryItem | undefined => byId.get(id);
 export const allLibraryItems = (): LibraryItem[] => libraryItems;
 export const categoriesOf = (kind: LibraryKind) => [...new Set(libraryItems.filter((i) => i.kind === kind).map((i) => i.category))];
-export const categoryLabel = (c: string) => c.replace(/-/g, " ").replace(/\b\w/g, (x) => x.toUpperCase());
+/** The pattern collection's curated categories, in browsing order (#187). Others fall back to a title-cased slug. */
+export const fillCategories: { id: string; label: string }[] = [
+  { id: "girly-romantic", label: "Girly & Romantic" }, { id: "celestial-cosmic", label: "Celestial & Cosmic" },
+  { id: "parisian-vintage", label: "Parisian & Vintage" }, { id: "scrapbook-paper", label: "Scrapbook & Paper" },
+  { id: "retro-groovy", label: "Retro & Groovy" }, { id: "botanical-cottagecore", label: "Botanical & Cottagecore" },
+  { id: "glam-iridescent", label: "Glam & Iridescent" }, { id: "dark-moody", label: "Dark & Moody" },
+  { id: "playful-whimsical", label: "Playful & Whimsical" }, { id: "minimal-editorial", label: "Minimal & Editorial" },
+];
+export const categoryLabel = (c: string) => fillCategories.find((x) => x.id === c)?.label ?? c.replace(/-/g, " ").replace(/\b\w/g, (x) => x.toUpperCase());
+/** Categories that hold fills (patterns and textures), curated order first. */
+export function fillCategoryList(): string[] {
+  const present = new Set(libraryItems.filter((i) => isFillKind(i.kind)).map((i) => i.category));
+  return [...fillCategories.map((c) => c.id).filter((c) => present.has(c)), ...[...present].filter((c) => !fillCategories.some((x) => x.id === c)).sort()];
+}
 
 /** Library items for a kind, narrowed by category and a search over name, category and tags. */
 export function searchLibrary(kind: LibraryKind | "fills", q = "", category = ""): LibraryItem[] {

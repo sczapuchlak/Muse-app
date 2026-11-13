@@ -27,6 +27,17 @@ test('old boards parse exactly as before (backward compatible)',()=>{
  assert.deepEqual(M.parseBackground({kind:'solid',color:'#FFEEDD'}),{kind:'solid',color:'#ffeedd'});
 });
 
+test('finishes: three kinds, intensity, optional shimmer and lift, all round-trip',()=>{
+ for(const kind of ['matte','glossy','holo'])assert.equal(P.parseFinish({kind,intensity:0.7}).kind,kind);
+ assert.equal(P.parseFinish({kind:'holo',intensity:2}).intensity,1);
+ assert.deepEqual(P.parseFinish({kind:'holo',intensity:.5,shimmer:true,lift:false}),{kind:'holo',intensity:.5,shimmer:true,lift:false});
+ assert.equal(P.parseFinish({kind:'chrome',intensity:.5}),undefined);
+ const pc=read('components/envision/vision/paintCanvas.ts');
+ assert.match(pc,/finishCache/,'finish layers are cached per silhouette (cheap redraws while dragging)');
+ assert.match(pc,/destination-in/,'every finish is confined to the silhouette');
+ assert.match(read('components/envision/vision/Inspector.tsx'),/label: "Holographic"/);
+});
+
 test('paints: solid, gradient and pattern parse, clamp and stay hex',()=>{
  assert.deepEqual(P.parsePaint({kind:'solid',color:'#ABCDEF'}),{kind:'solid',color:'#abcdef'});
  assert.equal(P.parsePaint({kind:'solid',color:'primary'}),undefined,'theme tokens are never stored');
@@ -136,11 +147,18 @@ test('copy and paste: pieces get fresh ids; styles paste only what a kind unders
  assert.equal(onShape.shape,'star','the shape itself never changes');assert.equal(onShape.fill.kind,'pattern');
 });
 
-test('library: generated registry, stable ids, 2–5 original test assets per category',()=>{
+test('library: generated registry, stable ids, a curated pattern collection and test assets for other kinds',()=>{
  const items=L.allLibraryItems();
- for(const k of L.libraryKinds.map(k=>k.id)){const n=items.filter(i=>i.kind===k).length;assert.ok(n>=2&&n<=6,`${k}: ${n}`);}
+ for(const k of L.libraryKinds.map(k=>k.id).filter(k=>k!=='pattern')){const n=items.filter(i=>i.kind===k).length;assert.ok(n>=2&&n<=6,`${k}: ${n}`);}
+ const fills=items.filter(i=>i.kind==='pattern'||i.kind==='texture');
+ assert.ok(fills.length>=60&&fills.length<=90,`about 60–80 patterns (${fills.length})`);
+ for(const c of L.fillCategories)assert.ok(fills.filter(i=>i.category===c.id).length>=6,`${c.label} has a full set`);
+ assert.deepEqual(L.fillCategoryList().slice(0,10),L.fillCategories.map(c=>c.id),'curated categories browse in order');
+ assert.equal(L.categoryLabel('girly-romantic'),'Girly & Romantic');
+ assert.equal(L.libraryItem('pattern/classic/gingham').category,'girly-romantic','a sidecar files an item under a category without changing its id');
+ for(const i of fills.filter(i=>i.src.endsWith('.svg'))){const svg=readFileSync(resolve(root,'public'+i.src),'utf8');assert.match(svg,/<svg[^>]*width="\d+"[^>]*height="\d+"/,`${i.id} has intrinsic size (canvas patterns need it)`);assert.doesNotMatch(svg,/https?:\/\/(?!www\.w3\.org)/,`${i.id} references nothing external`);assert.ok(svg.length<40000,`${i.id} stays small`);}
  for(const i of items){
-  assert.ok(P.builtinIdOk(i.id),i.id);assert.ok(i.id.startsWith(`${i.kind}/${i.category}/`));
+  assert.ok(P.builtinIdOk(i.id),i.id);assert.ok(i.id.startsWith(`${i.kind}/`));
   assert.ok(existsSync(resolve(root,'public'+i.src)),i.src);assert.ok(existsSync(resolve(root,'public'+i.thumb)),i.thumb);
  }
  assert.equal(L.libraryItem('texture/paper/watercolor-wash').tileable,false,'sidecar overrides tiling');

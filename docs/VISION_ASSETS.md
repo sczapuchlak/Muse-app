@@ -17,6 +17,18 @@ npm run vision:assets
 # 3. Commit assets-src/vision, public/vision-assets and lib/vision-boards/library.generated.ts together
 ```
 
+## The built-in pattern collection
+
+The 70 curated patterns are drawn in code by `scripts/vision-assets/generate-patterns.mjs`: original SVG tiles, seeded and seamless, in 10 categories (Girly & Romantic, Celestial & Cosmic, Parisian & Vintage, Scrapbook & Paper, Retro & Groovy, Botanical & Cottagecore, Glam & Iridescent, Dark & Moody, Playful & Whimsical, Minimal & Editorial).
+
+```bash
+node scripts/vision-assets/generate-patterns.mjs && npm run vision:assets
+```
+
+- **Changing a generated pattern:** edit its entry in the generator and re-run it. Keep the name, so boards that use it update in place.
+- **Adding one by hand:** drop an SVG or image into `assets-src/vision/pattern/<category>/` instead, as below.
+- **Filing an older item:** a sidecar's `category` files it under a browser category without changing its id. This is how the original eight test patterns joined the new categories.
+
 ## Folder layout
 
 ```
@@ -43,6 +55,7 @@ Each item's **stable id** is `kind/category/name`, for example `pattern/gingham/
 | `label` | The name shown in the library (defaults to the file name in title case). |
 | `tileable` | Fills only. `true` repeats the image edge to edge; `false` covers the shape once. SVGs default to `true`. Raster patterns are checked automatically by comparing opposite edges. Set this field when the guess is wrong. |
 | `tags` | Extra search words (up to 12). |
+| `category` | Files the item under a browser category (for example `girly-romantic`) without changing its stable id. |
 
 ## What the importer does
 
@@ -83,7 +96,8 @@ To retire an asset safely, keep it in place and leave it out of new collections.
 `npm test` (tests/vision-studio.test.mjs) checks the following:
 
 - every registry item has files on disk and a valid stable id;
-- each kind has between 2 and 6 items;
+- non-pattern kinds have 2–6 test items, and the pattern collection has 60–90 fills with at least six in every category;
+- every SVG fill has an intrinsic size, references nothing external and stays under 40 KB;
 - the SVG sanitizer strips executable and external content.
 
-Update the count check when a real collection replaces the test set.
+Update the count checks when a real collection replaces a test set.

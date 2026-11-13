@@ -51,7 +51,7 @@
 .muse-vision-textinput{min-width:160px;max-width:260px;min-height:38px;padding:8px 10px;resize:vertical;border:1px solid var(--glass-border);border-radius:10px;background:var(--surface-control);color:var(--foreground);font:inherit}
 .muse-vision-size input{width:64px;min-height:38px;padding:0 8px;border:1px solid var(--glass-border);border-radius:10px;background:var(--surface-control);color:var(--foreground);font:inherit;font-variant-numeric:tabular-nums}
 .muse-vision-uploaderror{display:block}
-.muse-vision-hint{margin:0}
+.muse-vision-hint{margin:10px 4px 0}
 
 /* The canvas: the page never scrolls while a finger or trackpad is working the board. */
 .muse-vision-canvas{position:relative;height:clamp(420px,68vh,900px);border-radius:16px;overflow:hidden;touch-action:none;overscroll-behavior:contain;user-select:none;-webkit-user-select:none;
@@ -150,10 +150,10 @@
 
 /* ---------- Studio (#187): canvas beside a contextual inspector ---------- */
 .muse-vision-workspace{display:grid;grid-template-columns:minmax(0,1fr) clamp(280px,26vw,340px);gap:12px;align-items:stretch}
-.muse-vision-workspace .muse-vision-canvas{height:clamp(480px,74vh,960px)}
+.muse-vision-workspace .muse-vision-canvas{height:clamp(480px,74vh,960px);transition:height .25s ease}
 .muse-vision-canvas[data-select]{cursor:crosshair}
 .muse-vision-size-chip{position:absolute;right:10px;bottom:10px;padding:2px 9px;border-radius:999px;background:var(--glass-background,var(--surface-control));border:1px solid var(--glass-border);font:600 .7rem/1.6 var(--font-ui);font-variant-numeric:tabular-nums;color:var(--foreground);pointer-events:none}
-.muse-vision-inspector{display:flex;flex-direction:column;gap:8px;min-width:0;max-height:clamp(480px,74vh,960px);overflow-y:auto;overscroll-behavior:contain;padding:10px;border-radius:16px;background:var(--surface-subtle);border:1px solid var(--glass-border);scrollbar-gutter:stable}
+.muse-vision-inspector{display:flex;flex-direction:column;gap:8px;min-width:0;align-self:start;position:sticky;top:12px;max-height:min(max(480px,var(--vision-canvas-h,900px)),calc(100dvh - 24px));overflow-y:auto;overscroll-behavior:contain;padding:10px;border-radius:16px;background:var(--surface-subtle);border:1px solid var(--glass-border);scrollbar-gutter:stable}
 .muse-vision-inspector-head{display:grid;gap:2px;padding:2px 4px 4px}
 .muse-vision-inspector-head p{margin:0}
 .muse-vision-inspector-head .editor-label{font-size:.82rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -248,8 +248,7 @@
 
 @container muse-content (max-width:900px){
   .muse-vision-workspace{grid-template-columns:minmax(0,1fr)}
-  .muse-vision-workspace .muse-vision-canvas{height:clamp(360px,62vh,640px)}
-  .muse-vision-inspector{max-height:none;overflow:visible}
+  .muse-vision-inspector{max-height:none;overflow:visible;position:relative;top:auto}
 }
 .muse-gradient-controls{display:grid;gap:8px}
 .muse-gradient-stops-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
@@ -260,7 +259,16 @@
 .muse-gradient-dial{position:relative;width:30px;height:30px;border-radius:50%;border:1px solid var(--glass-border);background:var(--surface-subtle)}
 .muse-gradient-dial::after{content:"";position:absolute;left:50%;top:3px;width:2px;height:12px;translate:-50% 0;border-radius:2px;background:var(--accent-primary)}
 .muse-vision-workspace[data-panel=closed]{grid-template-columns:minmax(0,1fr)}
-.muse-vision-inspector{position:relative}
 .muse-vision-inspector-close{position:sticky;top:0;z-index:2;height:0;display:flex;justify-content:flex-end;overflow:visible}
 .muse-vision-inspector-close>*{translate:4px -4px}
 .muse-vision-inspector-head{padding-right:44px}
+.muse-vision-finishes{width:100%}
+.muse-vision-finishes>button{flex:1 1 auto;min-height:34px;padding-inline:6px}
+.muse-pattern-filters{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:6px;align-items:center}
+.muse-pattern-filters .muse-choice-menu,.muse-pattern-filters .muse-choice-trigger{min-width:0;width:100%}
+.muse-pattern-grid .muse-pattern-empty{grid-column:1/-1}
+.muse-pattern-grid{max-height:260px;overflow-y:auto;overscroll-behavior:contain;padding:3px}
+/* Style dropdown (panel hidden): the same inspector, without its own card chrome. */
+.muse-vision-style-pop .muse-vision-inspector{position:static;max-height:none;overflow:visible;padding:0;border:0;background:none}
+.muse-vision-style-pop .muse-vision-inspector-head{display:none}
+.muse-vision-style-pop .muse-vision-inspector-close{display:none}

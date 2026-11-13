@@ -4,13 +4,14 @@ import { createMuseBrowserClient } from "@/lib/supabase/client";
 import { readLibrary, saveLibrary } from "@/lib/planner-week";
 import { changeLibrary, type LibraryChange, type Palette } from "@/lib/planner-customization";
 import { pinAccent, type CustomGradient } from "@/lib/appearance-values";
-import { categoryLabel, categoriesOf, searchLibrary, type LibraryItem } from "@/lib/vision-boards/library";
+import { categoryLabel, fillCategoryList, libraryItem, searchLibrary, type LibraryItem } from "@/lib/vision-boards/library";
 import type { Asset, Hex, Paint, PatternPaint } from "@/lib/vision-boards/paint";
 import { MusePaintPicker } from "../../MusePaintPicker";
 import { MuseSegmented } from "../../design/MuseSegmented";
 import { MuseIcon } from "../../MuseIcon";
 import { MuseSearch } from "../../design/MuseSearch";
-import { favorites, toggleFavorite } from "./libraryPrefs";
+import { favorites, noteRecent, recents, toggleFavorite } from "./libraryPrefs";
+import { MuseChoiceMenu } from "../../MuseChoiceMenu";
 
 /**
  * Saved colors and gradients are the person's Muse-wide palette (the same one Planner marks and sections use), so a
@@ -103,31 +104,37 @@ function PatternControls({ value, onChange, uploads, onUpload, palette }: { valu
   </div>;
 }
 
-/** The pattern browser: library patterns and textures (search, categories, favorites) and the person's own uploads. */
+/**
+ * The pattern browser: the built-in collection (patterns and textures) by category, ★ favorites and recently used (on
+ * this device), search, and the person's own uploads. Tapping a tile applies it at once: the canvas is the preview.
+ */
 export function PatternPicker({ selected, onPick, uploads, onUpload }: { selected?: PatternPaint; onPick: (p: PatternPaint["pattern"]) => void; uploads: Asset[]; onUpload?: () => void }) {
-  const [q, setQ] = useState(""), [cat, setCat] = useState(""), [favs, setFavs] = useState<string[]>(() => favorites());
-  const cats = useMemo(() => [...new Set([...categoriesOf("pattern"), ...categoriesOf("texture")])], []);
-  const items = searchLibrary("fills", q, cat).sort((a, b) => Number(favs.includes(b.id)) - Number(favs.includes(a.id)));
+  const [q, setQ] = useState(""), [cat, setCat] = useState(""), [favs, setFavs] = useState<string[]>(() => favorites()), [recent, setRecent] = useState<string[]>(() => recents());
+  const cats = useMemo(() => fillCategoryList(), []);
+  const pool = cat === "favorites" ? favs.map(libraryItem) : cat === "recent" ? recent.map(libraryItem) : searchLibrary("fills", "", cat);
+  const needle = q.trim().toLowerCase();
+  const items = pool.filter((i): i is LibraryItem => !!i && (i.kind === "pattern" || i.kind === "texture") && (!needle || [i.name, i.category, categoryLabel(i.category), ...i.tags].some((t) => t.toLowerCase().includes(needle))));
   const isSel = (i: LibraryItem) => selected?.pattern.source === "builtin" && selected.pattern.id === i.id;
+  const pick = (i: LibraryItem) => { noteRecent(i.id); setRecent(recents()); onPick({ source: "builtin", id: i.id }); };
+  const options = [{ id: "", label: "All patterns" }, { id: "favorites", label: `★ Favorites (${favs.length})` }, { id: "recent", label: "Recently used" }, ...cats.map((c) => ({ id: c, label: categoryLabel(c) }))];
   return <div className="muse-pattern-picker">
-    <MuseSearch label="Search patterns" value={q} onChange={setQ} placeholder="Search patterns" className="muse-vision-search" />
-    <div className="muse-chip-row muse-vision-cats" role="group" aria-label="Pattern categories">
-      <button type="button" className="muse-chip" aria-pressed={!cat} onClick={() => setCat("")}>All</button>
-      {cats.map((c) => <button key={c} type="button" className="muse-chip" aria-pressed={cat === c} onClick={() => setCat(cat === c ? "" : c)}>{categoryLabel(c)}</button>)}
+    <div className="muse-pattern-filters">
+      <MuseChoiceMenu label="Pattern category" valueLabel={options.find((o) => o.id === cat)?.label ?? "All patterns"} options={options} selectedIds={[cat]} onSelect={setCat} />
+      <MuseSearch label="Search patterns" value={q} onChange={setQ} placeholder="Search" className="muse-vision-search" />
     </div>
     <ul className="muse-pattern-grid" aria-label="Patterns">
       {items.map((i) => <li key={i.id}>
-        <button type="button" className="muse-pattern-tile" aria-pressed={isSel(i)} aria-label={i.name} title={`${i.name} · ${i.tileable ? "repeats" : "fills once"}`} onClick={() => onPick({ source: "builtin", id: i.id })}
-          style={{ background: `url("${i.thumb}") center/${i.tileable ? "34px" : "cover"} ${i.tileable ? "repeat" : "no-repeat"}` }} />
+        <button type="button" className="muse-pattern-tile" aria-pressed={isSel(i)} aria-label={i.name} title={`${i.name} · ${categoryLabel(i.category)}`} onClick={() => pick(i)}
+          style={{ background: `url("${i.thumb}") center/${i.tileable ? "44px" : "cover"} ${i.tileable ? "repeat" : "no-repeat"}` }} />
         <button type="button" className="muse-pattern-fav" aria-pressed={favs.includes(i.id)} aria-label={`${favs.includes(i.id) ? "Unfavorite" : "Favorite"} ${i.name}`} onClick={() => setFavs(toggleFavorite(i.id))}>★</button>
       </li>)}
-      {!items.length && <li className="small-label">No patterns match.</li>}
+      {!items.length && <li className="small-label muse-pattern-empty">{cat === "favorites" ? "Tap ★ on a pattern to keep it here." : cat === "recent" ? "Patterns you use show up here." : "No patterns match."}</li>}
     </ul>
     {(uploads.length > 0 || onUpload) && <>
       <p className="editor-label">Your uploads</p>
       <ul className="muse-pattern-grid" aria-label="Your images">
         {uploads.map((a) => <li key={a.path}><button type="button" className="muse-pattern-tile" aria-pressed={selected?.pattern.source === "asset" && selected.pattern.asset.path === a.path} aria-label={a.name ?? "Your image"} onClick={() => onPick({ source: "asset", asset: a })}><UploadThumb asset={a} /></button></li>)}
-        {onUpload && <li><button type="button" className="muse-pattern-tile muse-pattern-upload" aria-label="Upload an image to use as a pattern" onClick={onUpload}><MuseIcon name="plus" size={18} /></button></li>}
+        {onUpload && <li><button type="button" className="muse-pattern-tile muse-pattern-upload" aria-label="Upload an image to use as a pattern" title="Upload your own" onClick={onUpload}><MuseIcon name="plus" size={18} /></button></li>}
       </ul>
     </>}
   </div>;

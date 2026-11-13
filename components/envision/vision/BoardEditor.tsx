@@ -69,7 +69,7 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [save, setSave] = useState({ dirty: false, saving: false, error: "", conflict: false });
   const [uploads, setUploads] = useState<{ total: number; done: number; errors: string[] }>({ total: 0, done: 0, errors: [] });
-  const [panel, setPanel] = useState<"" | "library" | "layers">("");
+  const [panel, setPanel] = useState<"" | "library" | "layers" | "style">("");
   const [sheet, setSheet] = useState<"" | "crop" | "details">("");
   const [recovery, setRecovery] = useState<Draft | null>(null);
   const [announce, setAnnounce] = useState("");
@@ -92,7 +92,7 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
   const rev = useRef(initial.revision), seq = useRef(0), saving = useRef(false), again = useRef(false);
   const lastKey = useRef<{ key: string; at: number } | null>(null);
   const fileRef = useRef<HTMLInputElement>(null), patternFileRef = useRef<HTMLInputElement>(null), patternThen = useRef<((a: Asset) => void) | null>(null), wrapRef = useRef<HTMLDivElement>(null);
-  const anchors = { library: useRef<HTMLButtonElement>(null), layers: useRef<HTMLButtonElement>(null) };
+  const anchors = { library: useRef<HTMLButtonElement>(null), layers: useRef<HTMLButtonElement>(null), style: useRef<HTMLButtonElement>(null) };
   const selected = useMemo(() => board.elements.filter((e) => selectedIds.includes(e.id)), [board.elements, selectedIds]);
   const palette = useSavedPalette(userId);
 
@@ -109,7 +109,14 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
   // pans or zooms themselves; "Fit" returns to that.
   const autoFit = useRef(true);
   const box = canvasOf(board);
-  const fit = useCallback(() => { if (!size.width) return; autoFit.current = true; setView(fitView({ size: "custom", canvas: box }, size.width, size.height)); }, [box.w, box.h, size]); // eslint-disable-line react-hooks/exhaustive-deps -- box is derived from w/h
+  const fit = useCallback(() => { if (!size.width) return; autoFit.current = true; setView(fitView({ size: "custom", canvas: box }, size.width, size.height, 14)); }, [box.w, box.h, size]); // eslint-disable-line react-hooks/exhaustive-deps -- box is derived from w/h
+  /**
+   * The editing area takes the board's own proportions at the available width, so a wider or taller board really is
+   * a wider or taller canvas (not a fixed box with empty table around it). Phones keep it within the screen so the
+   * page can still scroll past it.
+   */
+  const [coarse] = useState(() => typeof window !== "undefined" && !!window.matchMedia?.("(pointer: coarse)").matches);
+  const canvasHeight = size.width ? Math.round(Math.max(320, Math.min(size.width * (box.h / box.w) + 28, coarse ? window.innerHeight * 0.78 : size.width * 2.2))) : undefined;
   useEffect(() => { if (!size.width || !autoFit.current) return; const t = window.setTimeout(fit, 0); return () => window.clearTimeout(t); }, [size, fit]);
   const moveView = (v: View) => { autoFit.current = false; setView(v); };
   const zoomBy = (factor: number) => view && moveView((() => {
@@ -279,7 +286,16 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
   function addText() {
     const base: TextElement = { id: uid(), kind: "text", ...place(640, 100), rotation: 0, text: "Dream big", font: "editorial", size: 84, color: "#2a2135", align: "center", italic: true };
     add({ ...base, h: measureText(base) }, "Text");
-    window.setTimeout(() => document.getElementById("vision-text-input")?.focus(), 80);
+    openEditor(base.id, true);
+  }
+  /**
+   * Opens a piece's controls: in the side panel when it's showing, otherwise in the Style dropdown under the toolbar
+   * (so a hidden panel never leaves new text with nowhere to type). Text goes straight to its words, selected.
+   */
+  function openEditor(id: string, isText = boardRef.current.elements.find((e) => e.id === id)?.kind === "text") {
+    setSelectedIds((ids) => (ids.length === 1 && ids[0] === id ? ids : [id]));
+    if (!panelOpen) setPanel("style");
+    if (isText) window.setTimeout(() => { const t = document.getElementById("vision-text-input") as HTMLTextAreaElement | null; t?.focus(); t?.select(); }, 120);
   }
   function addSticker(id: string) {
     const def = stickerDef(id), [bw, bh] = def?.box ?? [24, 24], s = 180, w = bw >= bh ? s : Math.round((s * bw) / bh), h = bw >= bh ? Math.round((s * bh) / bw) : s;
@@ -468,7 +484,7 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
   };
   const c = box;
 
-  return <section className="muse-vision-editor muse-planner-surface" aria-label={`Vision board: ${board.title}`} onKeyDown={onKey} onPaste={onPaste}>
+  return <><section className="muse-vision-editor muse-planner-surface" aria-label={`Vision board: ${board.title}`} onKeyDown={onKey} onPaste={onPaste}>
     <header className="muse-vision-editor-head">
       <button type="button" className="muse-button" onClick={() => void leave()}><span aria-hidden="true">‹</span> Boards</button>
       <div className="muse-vision-editor-title">
@@ -493,6 +509,7 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
       <CutoutTools disabled={uploading || clipboardBusy} showGuide={apple} onFiles={(f) => { cutoutHint.dismiss(); void addFiles(f); }} onError={(m) => setUploads({ total: 0, done: 0, errors: [m] })} onOpened={cutoutHint.dismiss} />
       <button type="button" className="muse-button" onClick={addText}><span className="muse-vision-glyph" aria-hidden="true">Aa</span> Text</button>
       <button ref={anchors.library} type="button" className="muse-button" aria-expanded={panel === "library"} onClick={() => togglePanel("library")}><MuseIcon name="sparkle" size={14} /> Library</button>
+      {!panelOpen && selected.length > 0 && <button ref={anchors.style} type="button" className="muse-button" aria-expanded={panel === "style"} onClick={() => togglePanel("style")} title="Style the selected piece (or double-click it)"><MuseIcon name="edit" size={14} /> Style</button>}
       <button type="button" className="muse-button" aria-pressed={panelOpen} aria-controls="vision-inspector" title={!panelOpen ? "Show the settings panel" : selected.length ? "Board size, background and export" : "Hide the panel (full-width canvas)"}
         onClick={() => { if (!panelOpen) togglePanelOpen(true); else if (selected.length) setSelectedIds([]); else togglePanelOpen(false); }}><span className="muse-vision-dot" style={{ background: board.background.kind === "pattern" ? paintCss(board.background.paint) : paintCss(board.background.kind === "solid" ? { kind: "solid", color: board.background.color } : { kind: "gradient", gradient: board.background.gradient }) }} aria-hidden="true" /> Board</button>
       <span className="muse-vision-toolbar-gap" />
@@ -515,8 +532,8 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
       {!uploading && <button type="button" className="text-button" onClick={() => setUploads({ total: 0, done: 0, errors: [] })}>Dismiss</button>}
     </p>}
 
-    <div className="muse-vision-workspace" data-panel={panelOpen ? undefined : "closed"}>
-      <div ref={wrapRef} className="muse-vision-canvas" data-dropping={dropping || undefined} data-select={selectMode || undefined} {...dropProps}
+    <div className="muse-vision-workspace" data-panel={panelOpen ? undefined : "closed"} style={canvasHeight ? { ["--vision-canvas-h" as string]: `${canvasHeight}px` } : undefined}>
+      <div ref={wrapRef} className="muse-vision-canvas" style={canvasHeight ? { height: canvasHeight } : undefined} data-dropping={dropping || undefined} data-select={selectMode || undefined} {...dropProps}
         onPointerDownCapture={(event) => { if (event.pointerType !== "touch") event.currentTarget.focus({ preventScroll: true }); }}
         onContextMenu={(event) => {
           event.preventDefault(); event.currentTarget.focus({ preventScroll: true });
@@ -524,7 +541,7 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
           setPasteMenu({ x: keyboard ? rect.width / 2 : event.clientX - rect.left, y: keyboard ? rect.height / 2 : event.clientY - rect.top });
         }}
         role="application" aria-roledescription="collage canvas" aria-label={`${board.title}: ${board.elements.length} pieces on a ${c.w} by ${c.h} board. ${selected.length ? `Selected: ${selected.length > 1 ? `${selected.length} pieces` : elementLabel(selected[0])}.` : "Nothing selected."}`} aria-describedby="vision-canvas-help" tabIndex={0}>
-        {size.width > 0 && view && <BoardEditorStage board={board} width={size.width} height={size.height} editing={{ selectedIds, onSelect, onChangeMany, view, onView: moveView, snapping, selectMode, reducedMotion }} />}
+        {size.width > 0 && view && <BoardEditorStage board={board} width={size.width} height={size.height} editing={{ selectedIds, onSelect, onChangeMany, view, onView: moveView, snapping, selectMode, reducedMotion, onEdit: (id) => openEditor(id) }} />}
         {!board.elements.length && <div className="muse-vision-canvas-empty" aria-hidden="true"><p>Add photos, words, shapes and library pieces.<br />Drag, resize and turn them anywhere.</p></div>}
         {pasteMenu && <span ref={pasteAnchor} className="muse-vision-paste-anchor" aria-hidden="true" style={{ left: pasteMenu.x, top: pasteMenu.y }} />}
         <span className="muse-vision-size-chip" aria-hidden="true">{c.w} × {c.h}</span>
@@ -539,8 +556,13 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
     </GlassPopover>
     <p id="vision-canvas-help" className="sr-only">Use Layers to choose a piece. Arrow keys move the selection, Shift moves further. Command A selects everything, Command C and V copy and paste pieces, Option Command C and V copy and paste a style, Command G groups and Shift Command G ungroups, Command D duplicates, Delete removes, Command Z undoes, square brackets change layers. Paste copied images with Command V or the canvas context menu.</p>
     <p className="sr-only" role="status" aria-live="polite">{announce}</p>
-    <p className="small-label muse-vision-hint">Drag empty space to move around · pinch or ⌘-scroll to zoom · Shift-click or Select to pick several · double-click to pick one piece in a group · Alt-drag to skip snapping · paste or drop images to add them.</p>
 
+    {!panelOpen && selected.length > 0 && <GlassPopover id="vision-style" label="Style" title={selected.length > 1 ? `${selected.length} pieces` : elementLabel(selected[0])} open={panel === "style"} anchorRef={anchors.style} onClose={() => setPanel("")} width={360}>
+      <div className="muse-vision-style-pop">
+        <Inspector onDeselect={() => { setPanel(""); setSelectedIds([]); wrapRef.current?.focus({ preventScroll: true }); }} board={board} selected={selected} grouped={grouped} units={unitCount} patch={patch} actions={actions} palette={palette} uploads={boardUploads} requestUpload={requestUpload}
+          lookups={{ linkOptions, live }} label={elementLabel} />
+      </div>
+    </GlassPopover>}
     <GlassPopover id="vision-library" label="Library" title="Library" open={panel === "library"} anchorRef={anchors.library} onClose={() => setPanel("")} width={400}>
       <AssetLibrary onPick={onLibrary} />
     </GlassPopover>
@@ -554,6 +576,8 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
     {sheet === "crop" && selected[0]?.kind === "image" && <CropSheet element={selected[0]} onClose={() => setSheet("")} onApply={(e) => { onChangeMany([{ id: e.id, patch: { w: e.w, h: e.h, crop: e.crop } }]); setSheet(""); }} />}
     {sheet === "details" && <BoardDetails initial={{ ...board, revision: Math.max(1, rev.current) }} today={today} busy={save.saving} error="" onClose={() => setSheet("")}
       onSave={(b) => { const next = { ...boardRef.current, title: b.title, description: b.description, theme: b.theme, period: b.period, periodStart: b.periodStart }; boardRef.current = next; setBoard(next); seq.current++; setSave((s) => ({ ...s, dirty: true })); setSheet(""); }} />}
-  </section>;
+  </section>
+  <p className="small-label muse-vision-hint">Drag empty space to move around · pinch or ⌘-scroll to zoom · Shift-click or Select to pick several · double-click to pick one piece in a group · Alt-drag to skip snapping · paste or drop images to add them.</p>
+  </>;
 }
 export type { Expand };

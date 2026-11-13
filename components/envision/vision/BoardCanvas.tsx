@@ -11,7 +11,7 @@ import { catalogFont, ensureFont, familyCss, nearestWeight } from "@/lib/vision-
 import { snapBox, type Box, type Guide } from "@/lib/vision-boards/editing";
 import { useBoardImage, usePublicImage } from "./images";
 import { iconPathData, markIconFor } from "./icons";
-import { dieCut, drawFinish, fillPath, gradientPoints, silhouette, strokePath, type PatternSource } from "./paintCanvas";
+import { dieCut, drawFinish, fillPath, gradientPoints, liftOf, silhouette, strokePath, type PatternSource } from "./paintCanvas";
 
 export { gradientPoints } from "./paintCanvas";
 
@@ -166,7 +166,7 @@ function ImageNode({ e, pixelScale, quality, phase }: NodeProps<ImageElement>) {
   const free = shape === "rect" && !!asset.alpha && !radius; // transparent art isn't framed: it keeps its own edge
   const d = useMemo(() => decorPath(shape, e.w, e.h, radius), [shape, e.w, e.h, radius]), path = usePath(d);
   const ringD = useMemo(() => e.outline && !free ? decorPath(shape, e.w, e.h, radius) : "", [e.outline, free, shape, e.w, e.h, radius]), ring = usePath(ringD || "M0 0");
-  const shadow = e.shadowStyle ?? (e.shadow ? photoShadow(e.w) : undefined);
+  const shadow = e.shadowStyle ?? (e.shadow ? photoShadow(e.w) : liftOf(e.finish, e.w, e.h));
   const r = img ? cropRect({ w: e.w, h: e.h }, { width: img.naturalWidth, height: img.naturalHeight }, e.crop) : null;
   if (img === null) return <Placeholder w={e.w} h={e.h} label="Image unavailable" />;
   if (!img || !r) return <Rect width={e.w} height={e.h} fill="#ffffff" opacity={0.35} />;
@@ -213,13 +213,13 @@ function StickerNode({ e, quality, phase }: NodeProps<StickerElement>) {
   const paint = e.paint ?? solid(e.color), lw = (mark ? 1.8 : 2.2) * Math.min(e.w / bw, e.h / bh);
   return <Group opacity={def?.opacity ?? 1}>
     <Rect width={e.w} height={e.h} fill="transparent" />{/* an easy target for thin line stickers */}
-    {mode === "fill" ? <PaintedPath path={path} w={e.w} h={e.h} fill={paint} shadow={e.shadowStyle} finish={e.finish} phase={phase} quality={quality} />
+    {mode === "fill" ? <PaintedPath path={path} w={e.w} h={e.h} fill={paint} shadow={e.shadowStyle ?? liftOf(e.finish, e.w, e.h)} finish={e.finish} phase={phase} quality={quality} />
       : <PaintedPath path={path} w={e.w} h={e.h} stroke={{ paint, width: lw }} shadow={e.shadowStyle} quality={quality} />}
   </Group>;
 }
 function ShapeNode({ e, quality, phase }: NodeProps<ShapeElement>) {
   const d = useMemo(() => decorPath(e.shape, e.w, e.h, e.radius ?? 0, seedOf(e.id)), [e.shape, e.w, e.h, e.radius, e.id]), path = usePath(d);
-  return <PaintedPath path={path} w={e.w} h={e.h} fill={e.fill} stroke={e.stroke} shadow={e.shadowStyle} finish={e.finish} evenOdd={evenOddShapes.includes(e.shape)} phase={phase} quality={quality} />;
+  return <PaintedPath path={path} w={e.w} h={e.h} fill={e.fill} stroke={e.stroke} shadow={e.shadowStyle ?? liftOf(e.finish, e.w, e.h)} finish={e.finish} evenOdd={evenOddShapes.includes(e.shape)} phase={phase} quality={quality} />;
 }
 function PieceNode({ e, quality, phase }: NodeProps<PieceElement>) {
   const item = libraryItem(e.piece), img = usePublicImage(item?.src);
@@ -228,7 +228,7 @@ function PieceNode({ e, quality, phase }: NodeProps<PieceElement>) {
   if (e.outline || e.finish) {
     const src = raster(img, item.id), sw = (src as HTMLImageElement).naturalWidth || src.width, k = e.w / sw, px = e.outline ? e.outline.width / k : 0;
     return <StickerBitmap img={src} keyId={item.id} x={-px * k} y={-px * k} w={e.w + px * 2 * k} h={e.h + px * 2 * k}
-      outlinePx={px} outlinePaint={e.outline ? e.outline.paint ?? solid(e.outline.color) : null} finish={e.finish} shadow={e.shadowStyle} phase={phase} quality={quality} />;
+      outlinePx={px} outlinePaint={e.outline ? e.outline.paint ?? solid(e.outline.color) : null} finish={e.finish} shadow={e.shadowStyle ?? liftOf(e.finish, e.w, e.h)} phase={phase} quality={quality} />;
   }
   return <KImage image={img} width={e.w} height={e.h} {...konvaShadow(e.shadowStyle)} perfectDrawEnabled={false} />;
 }
@@ -262,6 +262,8 @@ type Editing = {
   onChangeMany: (patches: Patch[], key?: string) => void;
   view: View; onView: (v: View) => void;
   snapping: boolean; selectMode: boolean; reducedMotion: boolean;
+  /** Double-click or double-tap a piece: open its controls (text goes straight to its words). */
+  onEdit?: (id: string) => void;
 };
 const reduced = () => typeof window !== "undefined" && (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches || document.documentElement.dataset.magic === "quiet");
 
@@ -419,7 +421,7 @@ export function BoardEditorStage({ board, width, height, editing, stageRef }: { 
         x={e.x} y={e.y} offsetX={e.w / 2} offsetY={e.h / 2} rotation={e.rotation} opacity={e.opacity ?? 1} draggable={!e.locked && !selectMode} dragBoundFunc={bound(e.id)}
         onMouseDown={(ev) => { if (!selectedIds.includes(e.id) || ev.evt.shiftKey || ev.evt.metaKey) pick(e.id, ev.evt.shiftKey || ev.evt.metaKey); }}
         onTap={() => { if (selectMode) pick(e.id, true); else if (!selectedIds.includes(e.id)) pick(e.id, false); }}
-        onDblClick={() => { if (e.groupId) onSelect([e.id], "only"); }} onDblTap={() => { if (e.groupId) onSelect([e.id], "only"); }}
+        onDblClick={() => { if (e.groupId && selectedIds.length > 1) onSelect([e.id], "only"); else editing.onEdit?.(e.id); }} onDblTap={() => { if (e.groupId && selectedIds.length > 1) onSelect([e.id], "only"); else editing.onEdit?.(e.id); }}
         onDragStart={() => { if (!selectedIds.includes(e.id)) pick(e.id, false); beginDrag(e.id); }}
         onDragEnd={endDrag}>
         <ElementBody e={e} pixelScale={view.scale * dpr} quality="auto" phase={phase} />

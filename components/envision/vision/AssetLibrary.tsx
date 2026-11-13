@@ -1,7 +1,8 @@
 "use client";
 import { useMemo, useState } from "react";
 import { decorShapes, decorPath, type DecorShape } from "@/lib/vision-boards/decor";
-import { categoriesOf, categoryLabel, libraryItem, libraryKinds, searchLibrary, type LibraryItem, type LibraryKind } from "@/lib/vision-boards/library";
+import { categoriesOf, categoryLabel, fillCategoryList, isFillKind, libraryItem, libraryKinds, searchLibrary, type LibraryItem, type LibraryKind } from "@/lib/vision-boards/library";
+import { MuseChoiceMenu } from "../../MuseChoiceMenu";
 import { stickers } from "@/lib/vision-boards/shapes";
 import { MuseSearch } from "../../design/MuseSearch";
 import { MuseIcon } from "../../MuseIcon";
@@ -36,10 +37,8 @@ export function AssetLibrary({ onPick }: { onPick: (p: LibraryPick) => void }) {
       {tabs.map(([id, label]) => <button key={id} type="button" role="tab" className="muse-chip" aria-selected={tab === id} onClick={() => { setTab(id); setCat(""); }}>{label}</button>)}
     </div>
     <MuseSearch label="Search the library" value={q} onChange={setQ} placeholder={tab === "shapes" ? "Search shapes" : "Search"} className="muse-vision-search" />
-    {isKind && categoriesOf(tab).length > 1 && <div className="muse-chip-row muse-vision-cats" role="group" aria-label="Categories">
-      <button type="button" className="muse-chip" aria-pressed={!cat} onClick={() => setCat("")}>All</button>
-      {categoriesOf(tab).map((c) => <button key={c} type="button" className="muse-chip" aria-pressed={cat === c} onClick={() => setCat(cat === c ? "" : c)}>{categoryLabel(c)}</button>)}
-    </div>}
+    {isKind && categoriesOf(tab).length > 1 && <MuseChoiceMenu label="Category" valueLabel={cat ? categoryLabel(cat) : "All categories"}
+      options={[{ id: "", label: "All categories" }, ...(isFillKind(tab) ? fillCategoryList().filter((c) => searchLibrary(tab, "", c).length) : categoriesOf(tab)).map((c) => ({ id: c, label: categoryLabel(c) }))]} selectedIds={[cat]} onSelect={setCat} />}
     </div>
     <div className="muse-asset-body">
     {tab === "shapes" && <>
