@@ -17,3 +17,17 @@
 .muse-envision-collage [data-tile=sun]{background:radial-gradient(circle,color-mix(in srgb,var(--accent-warm,var(--accent-secondary)) 65%,transparent) 0 30%,transparent 32%),var(--surface-control);transform:rotate(-1.5deg)}
 .muse-envision-collage-star{position:absolute;top:-8px;right:-8px}
 @media (max-width:760px){.muse-envision-empty{grid-template-columns:1fr}.muse-envision-collage{max-width:420px}}
+
+/* Round 3 (Nov 13): the empty collage is a pinned mood board: no hole in the last row, washi tape on each piece, a
+   glossy photo, and every piece lifts off the board when you reach for it. */
+.muse-envision-collage{background:radial-gradient(80% 70% at 30% 20%,color-mix(in srgb,var(--accent-secondary) 10%,transparent),transparent 70%),repeating-linear-gradient(45deg,color-mix(in srgb,var(--foreground) 3%,transparent) 0 2px,transparent 2px 9px),var(--surface-subtle)}
+.muse-envision-collage [data-tile=sun]{grid-column:span 2}
+.muse-envision-collage span{position:relative;box-shadow:0 10px 18px -12px rgba(0,0,0,.6);transition:transform .45s cubic-bezier(.2,.8,.2,1),box-shadow .45s}
+.muse-envision-collage span::before{content:"";position:absolute;top:-7px;left:50%;width:38%;max-width:54px;height:14px;translate:-50% 0;rotate:-4deg;border-radius:2px;background:repeating-linear-gradient(90deg,color-mix(in srgb,var(--accent-pop,var(--accent-primary)) 55%,transparent) 0 4px,color-mix(in srgb,var(--accent-pop,var(--accent-primary)) 38%,transparent) 4px 8px);opacity:.85}
+.muse-envision-collage span:nth-child(even)::before{rotate:5deg;background:repeating-linear-gradient(90deg,color-mix(in srgb,var(--accent-secondary) 55%,transparent) 0 4px,color-mix(in srgb,var(--accent-secondary) 38%,transparent) 4px 8px)}
+.muse-envision-collage [data-tile=photo]::after{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(125deg,rgba(255,255,255,.28),transparent 35%)}
+.muse-envision-collage span:hover{transform:translateY(-6px) rotate(0deg) scale(1.03)!important;box-shadow:0 22px 30px -16px rgba(0,0,0,.7)}
+@media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) .muse-envision-collage span{animation:muse-collage-pin .7s cubic-bezier(.3,1.4,.5,1) both;animation-delay:calc(var(--n,0) * 90ms)}}
+.muse-envision-collage span:nth-child(1){--n:0}.muse-envision-collage span:nth-child(2){--n:1}.muse-envision-collage span:nth-child(3){--n:2}.muse-envision-collage span:nth-child(4){--n:3}.muse-envision-collage span:nth-child(5){--n:4}.muse-envision-collage span:nth-child(6){--n:5}
+@keyframes muse-collage-pin{from{opacity:0;translate:0 -14px;scale:1.08}}
+.muse-envision-collage [data-tile=sun]{background:radial-gradient(circle closest-side at 22% 50%,color-mix(in srgb,var(--accent-warm,var(--accent-secondary)) 70%,transparent) 0 62%,transparent 66%),radial-gradient(60% 80% at 80% 50%,color-mix(in srgb,var(--accent-secondary) 22%,transparent),transparent 70%),var(--surface-control)!important}
