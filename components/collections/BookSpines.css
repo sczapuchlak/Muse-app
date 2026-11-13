@@ -36,3 +36,10 @@ button.muse-series-spine{border:0;font:inherit;color:#fff8f0;cursor:pointer;-web
 .muse-spines-arrow:disabled{opacity:0;pointer-events:none}
 .muse-spines-arrow:focus-visible{outline:2px solid var(--focus-ring,#fff);outline-offset:2px}
 @media(max-width:620px){.muse-spines-arrow{width:34px;height:34px}}
+
+/* One raised book at a time (Stephanie, Nov 13). At rest only the selected book stands proud; while the pointer or
+   keyboard focus is on another spine, that one rises and the selection settles back (keeping its outline). The book
+   being read no longer lifts: it wears a small bookmark ribbon instead. */
+.muse-series-spine[data-state="reading"]:not([data-next]){transform:none}
+.muse-spines:has(.muse-series-spine:is(:hover,:focus-visible)) .muse-series-spine[data-next]:not(:hover,:focus-visible){transform:none}
+.muse-series-spine[data-state="reading"]::after{content:"";position:absolute;z-index:2;top:-3px;right:22%;width:7px;height:16px;background:var(--accent-pop,var(--accent-primary));clip-path:polygon(0 0,100% 0,100% 100%,50% 76%,0 100%);box-shadow:0 1px 2px rgba(0,0,0,.3);pointer-events:none}
