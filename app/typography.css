@@ -59,3 +59,7 @@ html{font-variation-settings:var(--editorial-axes);font-optical-sizing:auto}
    "Planner", "Money" and every module title read like the greeting. Mantras stay in the UI face. */
 .muse-header-layout h1{font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight);font-size:clamp(2.4rem,3.6cqi,3.1rem);line-height:1.05;letter-spacing:-.035em}
 @container muse-content (max-width:460px){.muse-header-layout h1{font-size:2.2rem}}
+/* Round 3: the italic display title wins on every route, whatever order a page's own stylesheets load in (Books had
+   fallen back to the sans face). */
+:root .muse-header-layout h1{font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight);font-size:clamp(2.4rem,3.6cqi,3.1rem);line-height:1.05;letter-spacing:-.035em}
+@container muse-content (max-width:460px){:root .muse-header-layout h1{font-size:2.2rem}}
