@@ -21,6 +21,7 @@ import { MoneyOverview,MoneyPaychecks,MoneyTransactions,MoneyCards,MoneyCategori
 import {MoneyCapture,MoneySaveStatus} from "./MoneyStore";
 import { useMoney } from "./MoneyStore";
 import "./Money.css";
+import "./MoneyTabs.css";
 import {MuseSearch} from '@/components/design/MuseSearch';
 import {MuseIcon} from '@/components/MuseIcon';
 
