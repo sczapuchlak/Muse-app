@@ -7,11 +7,11 @@ import {timeframeDates} from '@/lib/aspirations/progress';
 import {metricInfo,type ProgressMetric} from '@/lib/progress/engine';
 import type {LifeArea} from '@/lib/reflections/model';
 
-const connectable:{id:string;label:string;connection:(year:string)=>AspirationConnection}[]=[
+export const connectable:{id:string;label:string;connection:(year:string)=>AspirationConnection}[]=[
  {id:'reading-challenge',label:'My Reading Challenge (Bookshelf)',connection:year=>({kind:'reading-challenge',year})},
  ...(['books-finished','reading-minutes','reading-pages','tasks-completed','workouts','workout-minutes','water'] as ProgressMetric[]).map(metric=>({id:metric,label:`${metricInfo[metric].label} (${metricInfo[metric].owner})`,connection:():AspirationConnection=>({kind:'metric',metric})})),
 ];
-const connectionId=(c:AspirationConnection|null)=>c?.kind==='reading-challenge'?'reading-challenge':c?.kind==='metric'?c.metric:'';
+export const connectionId=(c:AspirationConnection|null)=>c?.kind==='reading-challenge'?'reading-challenge':c?.kind==='metric'?c.metric:'';
 
 export function blankAspiration(today:string):Aspiration{
  return {id:crypto.randomUUID(),title:'',description:null,motivation:null,category:'Personal',icon:null,accent:null,startDate:today,targetDate:null,timeframe:'none',status:'active',

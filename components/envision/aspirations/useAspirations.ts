@@ -23,7 +23,7 @@ export function useAspirations(){
   catch(e){setStatus(s=>({...s,saving:false,error:e instanceof Error?e.message:'That didn’t save. Try again.'}));return null;}
  }
  const save=(a:Aspiration)=>run(async()=>{const saved=await saveAspiration(client,userId,a,a.revision);setAspirations(list=>[...list.filter(x=>x.id!==saved.id),saved]);return saved;});
- const remove=(a:Aspiration)=>run(async()=>{await deleteAspiration(client,userId,a);setAspirations(list=>list.filter(x=>x.id!==a.id));setUpdates(list=>list.filter(u=>u.aspirationId!==a.id));if(a.cover){try{await removeBoardImages([a.cover]);}catch{setStatus(s=>({...s,error:'Aspiration deleted, but its cover could not be removed from storage.'}));}}return true;});
+ const remove=(a:Aspiration)=>run(async()=>{await deleteAspiration(client,userId,a);setAspirations(list=>list.filter(x=>x.id!==a.id));setUpdates(list=>list.filter(u=>u.aspirationId!==a.id));const images=[a.cover,a.keepsake].filter((x):x is NonNullable<typeof x>=>!!x);if(images.length){try{await removeBoardImages(images);}catch{setStatus(s=>({...s,error:'Aspiration deleted, but its photos could not be removed from storage.'}));}}return true;});
  const addUpdate=(u:Omit<AspirationUpdate,'createdAt'>)=>run(async()=>{const saved=await addAspirationUpdate(client,userId,u);setUpdates(list=>[...list,saved]);return saved;});
  const removeUpdate=(id:string)=>run(async()=>{await deleteAspirationUpdate(client,userId,id);setUpdates(list=>list.filter(u=>u.id!==id));return true;});
  return {aspirations,updates,status,reload,save,remove,addUpdate,removeUpdate};

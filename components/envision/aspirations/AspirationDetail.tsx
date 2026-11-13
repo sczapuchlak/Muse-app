@@ -2,7 +2,7 @@
 import {FutureLogToggle} from '@/components/planner/FutureLogLink';
 import {AspirationLists} from '../../lists/ListsSurfaces';
 import Link from 'next/link';
-import {useEffect,useMemo,useState} from 'react';
+import {useEffect,useMemo,useState,type ReactNode} from 'react';
 import {MuseModal} from '@/components/MuseModal';
 import {dateLabel} from '@/lib/dates';
 import type {PlannedTask} from '@/lib/models';
@@ -22,7 +22,7 @@ import {MuseChoiceMenu} from '@/components/MuseChoiceMenu';
 type Actions={save:(a:Aspiration)=>Promise<Aspiration|null>;addUpdate:(u:Omit<AspirationUpdate,'createdAt'>)=>Promise<AspirationUpdate|null>;removeUpdate:(id:string)=>Promise<boolean|null>;remove:(a:Aspiration)=>Promise<boolean|null>};
 
 /** One aspiration, opened: progress, milestones, journal, supporting habits, linked tasks and finishing. */
-export function AspirationDetail({a,areaLabel,books=[],progress,updates,ritualState,tasks,today,busy,error,actions,onEdit,onClose,onMilestoneDone,onCompleted,periods=[a],renewLabel,onRenew,onOpenPeriod}:{books?:Book[];areaLabel?:string;periods?:Aspiration[];renewLabel?:string|null;onRenew?:()=>void;onOpenPeriod?:(id:string)=>void;a:Aspiration;progress:Progress;updates:AspirationUpdate[];ritualState:RitualState;tasks:PlannedTask[];today:string;busy:boolean;error:string;
+export function AspirationDetail({atlasPanel,onAchieve,onKeepsake,a,areaLabel,books=[],progress,updates,ritualState,tasks,today,busy,error,actions,onEdit,onClose,onMilestoneDone,onCompleted,periods=[a],renewLabel,onRenew,onOpenPeriod}:{atlasPanel?:ReactNode;onAchieve?:()=>void;onKeepsake?:()=>void;books?:Book[];areaLabel?:string;periods?:Aspiration[];renewLabel?:string|null;onRenew?:()=>void;onOpenPeriod?:(id:string)=>void;a:Aspiration;progress:Progress;updates:AspirationUpdate[];ritualState:RitualState;tasks:PlannedTask[];today:string;busy:boolean;error:string;
  actions:Actions;onEdit:()=>void;onClose:()=>void;onMilestoneDone:(m:Milestone)=>void;onCompleted:(a:Aspiration)=>void}){
  const [value,setValue]=useState(''),[note,setNote]=useState(''),[on,setOn]=useState(today),[newMilestone,setNewMilestone]=useState(''),[finishing,setFinishing]=useState(false),[reflection,setReflection]=useState(a.reflection??'');
  const [editingMilestone,setEditingMilestone]=useState<string|null>(null);
@@ -48,6 +48,7 @@ export function AspirationDetail({a,areaLabel,books=[],progress,updates,ritualSt
    <div className="muse-aspiration-cover">{a.cover&&<BucketPhoto image={a.cover} full className="muse-aspiration-cover-image"/>}<div className="muse-aspiration-cover-actions"><label className="text-button">{a.cover?'Change cover':'Add a cover'}<input type="file" className="sr-only" accept="image/png,image/jpeg,image/webp,image/gif" disabled={busy||coverBusy} onChange={e=>{const file=e.target.files?.[0];e.target.value='';if(file)void changeCover(file);}}/></label>{a.cover&&<button type="button" className="text-button" disabled={busy||coverBusy} onClick={()=>void changeCover(null)}>Remove cover</button>}</div>{coverError&&<p role="alert">{coverError}</p>}</div>
    <p className="muse-aspiration-meta"><span className="muse-aspiration-chip" data-status={a.status}>{statusLabels[a.status]}</span>{areaLabel??`Uncategorized · ${a.category}`}{a.targetDate?` · by ${dateLabel(a.targetDate)}`:a.targetPeriod?` · target ${a.targetPeriod}`:a.timeframe==='someday'?' · someday':a.timeframe==='ongoing'?' · ongoing':' · no deadline'}{a.completedOn?` · finished ${dateLabel(a.completedOn)}`:''}</p>
    {periods.length>1&&<nav className="muse-aspiration-periods" aria-label="Periods of this aspiration"><span className="small-label">Periods</span>{periods.map(p=><button key={p.id} type="button" className="muse-aspiration-period" aria-current={p.id===a.id||undefined} disabled={p.id===a.id} onClick={()=>onOpenPeriod?.(p.id)}>{periodLabel(p)}{p.completedOn?' ✓':''}</button>)}</nav>}
+   {atlasPanel}
    {a.motivation&&<section aria-label="Why this matters"><h3>Why this matters</h3><blockquote className="muse-aspiration-why">{a.motivation}</blockquote></section>}
    {a.mantra&&<p className="muse-aspiration-mantra">“{a.mantra}”</p>}
    {a.description&&<p className="muse-aspiration-notes">{a.description}</p>}
@@ -102,13 +103,19 @@ export function AspirationDetail({a,areaLabel,books=[],progress,updates,ritualSt
      <button type="button" className="text-button" aria-label="Remove this entry" disabled={busy} onClick={()=>void actions.removeUpdate(u.id)}>×</button></li>;})}</ol></section>}
    {events.length>0&&<details><summary>The journey</summary><ol className="muse-aspiration-journal">{events.map(e=><li key={e.id}><time>{dateLabel(e.occurred_at.slice(0,10))}</time><span>{e.kind==='created'?'Aspiration created':e.kind==='status'?`Status changed from ${e.before_value} to ${e.after_value}`:e.kind==='target_period'?`Target period ${e.after_value?`changed to ${e.after_value}`:'cleared'}`:`Target date ${e.after_value?`changed to ${dateLabel(e.after_value)}`:'cleared'}`}</span></li>)}</ol></details>}
 
-   {a.status==='completed'&&a.reflection&&<section aria-label="Reflection"><h3>Looking back</h3><p>{a.reflection}</p></section>}
+   {a.status==='completed'&&(a.completion||a.keepsake||a.reflection||onKeepsake)&&<section aria-label="Looking back" className="muse-lifeatlas-keepsake" data-detail><div>
+    {a.keepsake&&<BucketPhoto image={a.keepsake} className="muse-lifeatlas-keepsake-photo"/>}</div><div><h3>Looking back</h3>
+    {a.completion?.meaningful&&<p><small className="small-label">What made it meaningful</small><br/>{a.completion.meaningful}</p>}
+    {a.completion?.learned&&<p><small className="small-label">What I learned about myself</small><br/>{a.completion.learned}</p>}
+    {a.completion?.feels&&<p><small className="small-label">How it feels</small><br/>{a.completion.feels}</p>}
+    {a.reflection&&<p>{a.reflection}</p>}
+    {onKeepsake&&<button type="button" className="text-button" onClick={onKeepsake}>{a.completion||a.keepsake?'Edit your keepsake':'Add words or a photo to remember it by'}</button>}</div></section>}
    {finishing&&<form className="muse-aspiration-record" onSubmit={e=>{e.preventDefault();void save({status:'completed',completedOn:today,reflection:reflection.trim()||null}).then(s=>{if(s){setFinishing(false);onCompleted(s);}});}}>
     <h3>You did it</h3><label>A few words to remember it by <small className="small-label">· optional</small><textarea id="aspiration-reflection" rows={3} maxLength={4000} value={reflection} onChange={e=>setReflection(e.target.value)}/></label>
     <div className="muse-aspiration-actions"><button type="submit" className="muse-button button-primary" disabled={busy}>Mark complete</button><button type="button" className="text-button" onClick={()=>setFinishing(false)}>Not yet</button></div></form>}
    {error&&<p role="alert" className="muse-aspiration-error">{error}</p>}
    <div className="muse-aspiration-actions">
-    {open&&!finishing&&<button type="button" className="muse-button button-primary" disabled={busy} onClick={()=>setFinishing(true)}>Mark complete…</button>}
+    {open&&!finishing&&(onAchieve?<button type="button" className="muse-button button-primary" disabled={busy} onClick={onAchieve}>Mark achieved</button>:<button type="button" className="muse-button button-primary" disabled={busy} onClick={()=>setFinishing(true)}>Mark complete…</button>)}
     {renewLabel&&onRenew&&<button type="button" className="muse-button" disabled={busy} onClick={onRenew}>Renew for {renewLabel}</button>}
     <button type="button" className="muse-button" onClick={onEdit}>Edit</button>
     <FutureLogToggle source={{kind:"aspiration",id:a.id}} title={a.title} date={a.targetDate}/>
