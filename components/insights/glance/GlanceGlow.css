@@ -68,3 +68,7 @@
 .muse-glance-year-grid .muse-glance-year-stack>div>*{flex:1 1 auto;margin:0}
 @media (max-width:700px){.muse-glance-year-grid .muse-glance-year-stack{grid-template-columns:minmax(0,1fr)}}
 .muse-glance-reading[data-wide] .muse-entry-carousel-track>*:only-child{grid-column:1/-1;max-width:none}.muse-glance-reading[data-wide] .muse-glance-bookcard{min-height:112px}
+/* Steps beside Little moments: one equal-height row (Stephanie, Nov 13). */
+.muse-glance-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--glance-gap);align-items:stretch}
+.muse-glance-pair>*{min-width:0;margin:0;height:100%}
+@media (max-width:820px){.muse-glance-pair{grid-template-columns:minmax(0,1fr)}}
