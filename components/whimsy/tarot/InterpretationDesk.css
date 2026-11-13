@@ -117,3 +117,22 @@
 }
 @media (prefers-reduced-motion:reduce){.muse-idesk-deeper-body{animation:none}.muse-idesk-chip{transition:none}}
 :root[data-magic=quiet] .muse-idesk-deeper-body{animation:none}
+
+/* Glow-up 2: chips never overflow. Desktop wraps them on a grid; "The whole spread" is its own full-width row. */
+.muse-idesk-switcher{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,150px),1fr));gap:8px;overflow:visible;padding:0;margin:0}
+.muse-idesk-chip{min-width:0;flex:none}
+.muse-idesk-chip-copy{flex:1 1 auto}
+.muse-idesk-chip-copy strong{overflow-wrap:anywhere;hyphens:auto}
+.muse-idesk-chip-whole{grid-column:1/-1;justify-content:flex-start;background:linear-gradient(100deg,color-mix(in srgb,var(--chart-4) 14%,var(--surface-control)),var(--surface-control))}
+.muse-idesk-chip-whole .muse-idesk-chip-copy{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+@container muse-content (max-width:900px){
+ .muse-idesk-switcher{display:flex;overflow-x:auto;scroll-snap-type:x proximity;padding:3px 24px 3px 3px;margin:-3px;-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent)}
+ .muse-idesk-chip{flex:0 0 auto;width:min(46vw,190px);scroll-snap-align:start}
+ .muse-idesk-chip-whole{width:auto}
+}
+@container muse-content (max-width:900px){
+ .muse-idesk>.muse-idesk-reading{background:color-mix(in srgb,var(--glass-background) 100%,var(--background));background-color:var(--background);background-image:linear-gradient(var(--glass-background),var(--glass-background))}
+ .muse-idesk-panel{max-height:min(34dvh,300px)}
+ .muse-idesk-reading .muse-heading{flex-wrap:nowrap}
+ .muse-idesk-reading .muse-heading-title{font-size:1.1rem}
+}
