@@ -152,3 +152,4 @@
 .muse-books-mark.muse-mark svg{width:15px;height:15px}
 .muse-plans-title>.small-label,.muse-trends-head .small-label,.muse-upnext-head .small-label{display:none}
 .muse-desk-reading .muse-desk-card{width:100%}
+.muse-finished-card strong{-webkit-line-clamp:3;line-clamp:3;font-size:.92rem}
