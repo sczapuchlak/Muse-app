@@ -243,3 +243,9 @@
 .muse-card .card-heading[data-tone]{position:relative}
 .muse-card .card-heading[data-tone]::after{content:"";position:absolute;left:0;right:0;bottom:-8px;height:1px;background:linear-gradient(90deg,color-mix(in srgb,var(--aura,var(--chart-1)) 70%,transparent),color-mix(in srgb,var(--glass-border) 80%,transparent) 40%,transparent)}
 .muse-card .card-heading[data-tone]{margin-bottom:16px}
+
+/* Glow-up 2: accent-coloured small text keeps its hue but reaches reading contrast on light themes. */
+@supports (color: oklch(from red l c h)){
+ :root:is([data-theme="iridescent"],[data-theme="solstice"],[data-theme="issya-bday"],[data-theme="bubblegum-baby"]) :is(.muse-kicker,.muse-section-eyebrow,.muse-trends .type-numeric,.muse-trends .small-label,.muse-idesk-seat,.muse-quest-kind){color:oklch(from var(--dl-kicker,var(--accent-secondary)) min(l,.46) max(c,.12) h)}
+ :root:is([data-theme="iridescent"],[data-theme="solstice"],[data-theme="issya-bday"],[data-theme="bubblegum-baby"]) .muse-trends .type-numeric{color:oklch(from var(--success-primary) min(l,.45) max(c,.12) h)}
+}
