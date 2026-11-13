@@ -760,3 +760,12 @@ Book and Series are pages inside Collections. Both open with a pill Back control
 - **Contrast.** Light-card themes extend the card-ink list to every control and kicker that sits on a light card. Light themes deepen accent-coloured small text (`oklch` lightness capped) so kickers and labels pass on white.
 - **Stable layouts.** Growing sections become carousels or fixed grids (Mood history is a seven-day ribbon with one detail panel; Reading Plans are numbered rows of five). Phone chip rows scroll with a fade and snap rather than clipping.
 - **Delight with purpose.** Side Quests are sealed invitations (constellation sigil, wax seal, hold-to-seal ring); Fortunes are lit stages per experience; Planner days show a star per task that lights when done; empty states (Notes, Stream, Goals, Birth Chart) are small illustrations with a real next step. All motion is finite and gated by reduced motion and Muse Magic.
+
+## Life Atlas (#190) — implemented on feat/life-atlas-2, Staging acceptance pending
+
+- **Classes:** `muse-lifeatlas-*` (the Books Reading Atlas owns `muse-atlas-*`; plain global CSS must never share a prefix) and `muse-ritual-*`.
+- **Area ink:** each Life Area takes `--mark-a`/`--mark-b` from `areaTone(position)` (three steps around the eight chart inks, so neighbours differ). Its mark is the one gradient icon tile; the same ink tints the masthead wash, row hover, milestone dots and bars.
+- **Grid:** sections are full width and rows share two equal columns. Expanding a row opens a full-width panel beneath that row's line, using CSS `order` so the DOM stays row-then-panel. A ghost add slot fills an odd row. Growth pages (six rows) or goes into carousels (open pages, more than four achievements).
+- **Light-card themes** (Astral, Nightbloom): Atlas sections, shelves, hero, welcome and ritual pages are in the card-ink list in `app/surfaces.css`.
+- **Motion:** star breathing, the reveal and the keepsake ripple are all gated by `prefers-reduced-motion:no-preference` and `data-magic`, with finite iterations.
+

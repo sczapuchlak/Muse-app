@@ -1,6 +1,6 @@
-/** Envision (#117): Aspirations | Vision Boards | Bucket List. Aspirations is the default tab. */
+/** Envision (#117): Life Atlas (aspirations, #190) | Vision Boards | Bucket List. The Life Atlas is the default tab; its id stays "aspirations" so links keep working. */
 export const envisionTabs = [
-  { id: "aspirations", label: "Aspirations" },
+  { id: "aspirations", label: "Life Atlas" },
   { id: "vision-boards", label: "Vision Boards" },
   { id: "bucket", label: "Bucket List" },
 ] as const;

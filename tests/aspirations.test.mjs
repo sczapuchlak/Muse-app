@@ -173,7 +173,7 @@ test('the renewal migration keeps history and ownership safe; surfaces are wired
  assert.match(sql,/create unique index aspirations_one_renewal/);assert.match(sql,/aspiration_renewal_owner/);assert.doesNotMatch(sql,/\bdrop |delete from|update public\./i,'additive only');
  assert.match(read('components/insights/Insights.tsx'),/<PlansInsights [^>]*\/><AspirationInsights range=\{range\}\/>/);
  const detail=read('components/envision/aspirations/AspirationDetail.tsx');assert.match(detail,/function MilestoneForm/);assert.match(detail,/Renew for \{renewLabel\}/);
- const home=read('components/envision/aspirations/Aspirations.tsx');assert.match(home,/draggable=\{!!arrange&&!arrange\.busy\}/);assert.match(home,/Move \$\{a\.title\} earlier/,'a keyboard and touch alternative to dragging');
+ const rows=read('components/envision/aspirations/AtlasArea.tsx');assert.match(rows,/draggable=\{!!arrange&&!arrange\.busy\}/,'#190: manual order lives in each Life Area');assert.match(rows,/Move \$\{a\.title\} earlier/,'a keyboard and touch alternative to dragging');
  const {periodLabel}=load('components/envision/aspirations/parts');
  assert.deepEqual([periodLabel({timeframe:'year',startDate:'2026-01-01',targetDate:'2026-12-31'}),periodLabel({timeframe:'quarter',startDate:'2026-10-01',targetDate:'2026-12-31'}),periodLabel({timeframe:'month',startDate:'2026-11-01',targetDate:'2026-11-30'})],['2026','Q4 2026','November 2026']);
 });

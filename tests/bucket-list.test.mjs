@@ -118,7 +118,7 @@ test('migration is owner-only and keeps aspiration links independent',()=>{
 
 test('#117: Envision has Aspirations | Vision Boards | Bucket List; Insights and export include the list',()=>{
  const E=load('lib/envision');
- assert.deepEqual(E.envisionTabs.map(t=>t.label),['Aspirations','Vision Boards','Bucket List']);
+ assert.deepEqual(E.envisionTabs.map(t=>t.label),['Life Atlas','Vision Boards','Bucket List'],'#190 renames the tab; its id and route stay');assert.equal(E.envisionTabs[0].id,'aspirations');
  assert.equal(E.parseEnvisionTab('bucket'),'bucket');assert.equal(E.parseEnvisionTab('habits'),'aspirations','unknown views open Aspirations');
  assert.match(read('next.config.ts'),/key: "view", value: "bucket" \}\], destination: "\/envision"/,'old /rituals?view=bucket links still work');
  assert.match(read('components/insights/Insights.tsx'),/<BucketInsights range=\{range\} today=\{today\}\/>/);
