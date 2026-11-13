@@ -52,6 +52,7 @@ import {surfaces} from '@/lib/almanac/select';
 import {readingSignals} from '@/lib/almanac/signals';
 import {ReadingAtlas} from './ReadingAtlas';
 import './Bookshelf.css';
+import './BooksWow.css';
 import './LivingLibrary.css';
 import {celebrate} from '@/lib/celebrate';
 import {challengeFor,challengeProgress} from '@/lib/whimsy/reading-challenge';
