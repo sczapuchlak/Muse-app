@@ -117,16 +117,46 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"aspiration_books": {
+                  Row: { id: string; user_id: string; aspiration_id: string; book_id: string | null; book_name: string; created_at: string }
+                  Insert: { id?: string; user_id?: string; aspiration_id: string; book_id?: string | null; book_name: string; created_at?: string }
+                  Update: { id?: string; user_id?: string; aspiration_id?: string; book_id?: string | null; book_name?: string; created_at?: string }
+                  Relationships: []
+                },"aspiration_events": {
+                  Row: { id: string; user_id: string; aspiration_id: string; kind: string; before_value: string | null; after_value: string | null; occurred_at: string }
+                  Insert: { id?: string; user_id?: string; aspiration_id: string; kind: string; before_value?: string | null; after_value?: string | null; occurred_at?: string }
+                  Update: { id?: string; user_id?: string; aspiration_id?: string; kind?: string; before_value?: string | null; after_value?: string | null; occurred_at?: string }
+                  Relationships: []
+                },"aspiration_life_areas": {
+                  Row: { user_id: string; aspiration_id: string; area_id: string; is_primary: boolean; created_at: string }
+                  Insert: { user_id?: string; aspiration_id: string; area_id: string; is_primary?: boolean; created_at?: string }
+                  Update: { user_id?: string; aspiration_id?: string; area_id?: string; is_primary?: boolean; created_at?: string }
+                  Relationships: []
+                },"aspiration_year_plans": {
+                  Row: { user_id: string; year: number; theme: string; vision_board_id: string | null; vision_board_name: string | null; revision: number; created_at: string; updated_at: string }
+                  Insert: { user_id?: string; year: number; theme?: string; vision_board_id?: string | null; vision_board_name?: string | null; revision?: number; created_at?: string; updated_at?: string }
+                  Update: { user_id?: string; year?: number; theme?: string; vision_board_id?: string | null; vision_board_name?: string | null; revision?: number; created_at?: string; updated_at?: string }
+                  Relationships: []
+                },"aspiration_year_visions": {
+                  Row: { user_id: string; year: number; area_id: string; vision: string; revision: number; created_at: string; updated_at: string }
+                  Insert: { user_id?: string; year: number; area_id: string; vision?: string; revision?: number; created_at?: string; updated_at?: string }
+                  Update: { user_id?: string; year?: number; area_id?: string; vision?: string; revision?: number; created_at?: string; updated_at?: string }
+                  Relationships: []
+                },"aspiration_year_priorities": {
+                  Row: { id: string; user_id: string; year: number; aspiration_id: string | null; aspiration_name: string; area_id: string | null; area_name: string; note: string; revision: number; created_at: string; updated_at: string; removed_at: string | null }
+                  Insert: { id?: string; user_id?: string; year: number; aspiration_id?: string | null; aspiration_name: string; area_id?: string | null; area_name: string; note?: string; revision?: number; created_at?: string; updated_at?: string; removed_at?: string | null }
+                  Update: { id?: string; user_id?: string; year?: number; aspiration_id?: string | null; aspiration_name?: string; area_id?: string | null; area_name?: string; note?: string; revision?: number; created_at?: string; updated_at?: string; removed_at?: string | null }
+                  Relationships: []
                 },"aspirations": {
                   Row: {
-                    "accent": string | null,"category": string,"celebrated": (string)[],"completed_on": string | null,"connection": Json | null,"created_at": string,"description": string | null,"icon": string | null,"id": string,"milestones": NonNullable<Json>,"motivation": string | null,"position": number,"progress_kind": string,"reflection": string | null,"renewed_from": string | null,"revision": number,"ritual_ids": (string)[],"start_date": string,"status": string,"target": number | null,"target_date": string | null,"task_ids": (string)[],"timeframe": string,"title": string,"unit": string | null,"updated_at": string,"user_id": string
+                    "accent": string | null,"planning_style": string | null,"mantra": string | null,"cover": Json | null,"target_period": string | null,"category": string,"celebrated": (string)[],"completed_on": string | null,"connection": Json | null,"created_at": string,"description": string | null,"icon": string | null,"id": string,"milestones": NonNullable<Json>,"motivation": string | null,"position": number,"progress_kind": string,"reflection": string | null,"renewed_from": string | null,"revision": number,"ritual_ids": (string)[],"start_date": string,"status": string,"target": number | null,"target_date": string | null,"task_ids": (string)[],"timeframe": string,"title": string,"unit": string | null,"updated_at": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "accent"?: string | null,"category"?: string,"celebrated"?: (string)[],"completed_on"?: string | null,"connection"?: Json | null,"created_at"?: string,"description"?: string | null,"icon"?: string | null,"id": string,"milestones"?: NonNullable<Json>,"motivation"?: string | null,"position"?: number,"progress_kind": string,"reflection"?: string | null,"renewed_from"?: string | null,"revision"?: number,"ritual_ids"?: (string)[],"start_date": string,"status"?: string,"target"?: number | null,"target_date"?: string | null,"task_ids"?: (string)[],"timeframe"?: string,"title": string,"unit"?: string | null,"updated_at"?: string,"user_id"?: string
+                    "accent"?: string | null,"planning_style"?: string | null,"mantra"?: string | null,"cover"?: Json | null,"target_period"?: string | null,"category"?: string,"celebrated"?: (string)[],"completed_on"?: string | null,"connection"?: Json | null,"created_at"?: string,"description"?: string | null,"icon"?: string | null,"id": string,"milestones"?: NonNullable<Json>,"motivation"?: string | null,"position"?: number,"progress_kind": string,"reflection"?: string | null,"renewed_from"?: string | null,"revision"?: number,"ritual_ids"?: (string)[],"start_date": string,"status"?: string,"target"?: number | null,"target_date"?: string | null,"task_ids"?: (string)[],"timeframe"?: string,"title": string,"unit"?: string | null,"updated_at"?: string,"user_id"?: string
                   }
                   Update: {
-                    "accent"?: string | null,"category"?: string,"celebrated"?: (string)[],"completed_on"?: string | null,"connection"?: Json | null,"created_at"?: string,"description"?: string | null,"icon"?: string | null,"id"?: string,"milestones"?: NonNullable<Json>,"motivation"?: string | null,"position"?: number,"progress_kind"?: string,"reflection"?: string | null,"renewed_from"?: string | null,"revision"?: number,"ritual_ids"?: (string)[],"start_date"?: string,"status"?: string,"target"?: number | null,"target_date"?: string | null,"task_ids"?: (string)[],"timeframe"?: string,"title"?: string,"unit"?: string | null,"updated_at"?: string,"user_id"?: string
+                    "accent"?: string | null,"planning_style"?: string | null,"mantra"?: string | null,"cover"?: Json | null,"target_period"?: string | null,"category"?: string,"celebrated"?: (string)[],"completed_on"?: string | null,"connection"?: Json | null,"created_at"?: string,"description"?: string | null,"icon"?: string | null,"id"?: string,"milestones"?: NonNullable<Json>,"motivation"?: string | null,"position"?: number,"progress_kind"?: string,"reflection"?: string | null,"renewed_from"?: string | null,"revision"?: number,"ritual_ids"?: (string)[],"start_date"?: string,"status"?: string,"target"?: number | null,"target_date"?: string | null,"task_ids"?: (string)[],"timeframe"?: string,"title"?: string,"unit"?: string | null,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
                     {
@@ -3063,6 +3093,7 @@ isOneToOne: false
                 }
           }
           Functions: {
+            set_aspiration_primary_area: { Args: { p_aspiration_id: string; p_area_id: string | null }; Returns: undefined }
             "backfill_priority_tasks":
 { Args: { "p_command_id": string,"p_expected_planner_revision": number }; Returns: number
                            },

@@ -2,7 +2,7 @@
 import {FutureLogToggle} from '@/components/planner/FutureLogLink';
 import {AspirationLists} from '../../lists/ListsSurfaces';
 import Link from 'next/link';
-import {useState} from 'react';
+import {useEffect,useMemo,useState} from 'react';
 import {MuseModal} from '@/components/MuseModal';
 import {dateLabel} from '@/lib/dates';
 import type {PlannedTask} from '@/lib/models';
@@ -11,18 +11,29 @@ import {statusLabels,type Aspiration,type AspirationUpdate,type Milestone} from 
 import {habitConsistency,milestoneProgress,progressHistory,type Progress} from '@/lib/aspirations/progress';
 import {ProgressRing,periodLabel,progressText} from './parts';
 import {ShareToStream} from '../../stream/ShareToStream';
+import {createMuseBrowserClient} from '@/lib/supabase/client';
+import type {Tables} from '@/lib/database.types';
+import {loadBoards} from '@/lib/vision-boards/persistence';
+import {uploadBoardImage,removeBoardImages} from '@/lib/data/constellation-images';
+import {BucketPhoto} from '../bucket/BucketViews';
+import type {Book} from '@/lib/whimsy/models';
+import {MuseChoiceMenu} from '@/components/MuseChoiceMenu';
 
 type Actions={save:(a:Aspiration)=>Promise<Aspiration|null>;addUpdate:(u:Omit<AspirationUpdate,'createdAt'>)=>Promise<AspirationUpdate|null>;removeUpdate:(id:string)=>Promise<boolean|null>;remove:(a:Aspiration)=>Promise<boolean|null>};
 
 /** One aspiration, opened: progress, milestones, journal, supporting habits, linked tasks and finishing. */
-export function AspirationDetail({a,progress,updates,ritualState,tasks,today,busy,error,actions,onEdit,onClose,onMilestoneDone,onCompleted,periods=[a],renewLabel,onRenew,onOpenPeriod}:{periods?:Aspiration[];renewLabel?:string|null;onRenew?:()=>void;onOpenPeriod?:(id:string)=>void;a:Aspiration;progress:Progress;updates:AspirationUpdate[];ritualState:RitualState;tasks:PlannedTask[];today:string;busy:boolean;error:string;
+export function AspirationDetail({a,areaLabel,books=[],progress,updates,ritualState,tasks,today,busy,error,actions,onEdit,onClose,onMilestoneDone,onCompleted,periods=[a],renewLabel,onRenew,onOpenPeriod}:{books?:Book[];areaLabel?:string;periods?:Aspiration[];renewLabel?:string|null;onRenew?:()=>void;onOpenPeriod?:(id:string)=>void;a:Aspiration;progress:Progress;updates:AspirationUpdate[];ritualState:RitualState;tasks:PlannedTask[];today:string;busy:boolean;error:string;
  actions:Actions;onEdit:()=>void;onClose:()=>void;onMilestoneDone:(m:Milestone)=>void;onCompleted:(a:Aspiration)=>void}){
  const [value,setValue]=useState(''),[note,setNote]=useState(''),[on,setOn]=useState(today),[newMilestone,setNewMilestone]=useState(''),[finishing,setFinishing]=useState(false),[reflection,setReflection]=useState(a.reflection??'');
  const [editingMilestone,setEditingMilestone]=useState<string|null>(null);
  const [confirmDelete,setConfirmDelete]=useState(false),[habitPick,setHabitPick]=useState(''),[taskSearch,setTaskSearch]=useState('');
+ const [coverBusy,setCoverBusy]=useState(false),[coverError,setCoverError]=useState('');
+ const client=useMemo(()=>createMuseBrowserClient(),[]),[events,setEvents]=useState<Tables<'aspiration_events'>[]>([]);
+ useEffect(()=>{let live=true;void client.from('aspiration_events').select('*').eq('aspiration_id',a.id).order('occurred_at',{ascending:false}).then(({data})=>{if(live&&data)setEvents(data);});return()=>{live=false;};},[client,a.id,a.revision]);
  const journal=updates.filter(u=>u.aspirationId===a.id).sort((x,y)=>y.recordedOn.localeCompare(x.recordedOn)||y.createdAt.localeCompare(x.createdAt));
- const history=progressHistory(a,updates),m=milestoneProgress(a),valued=a.progressKind==='numeric'||a.progressKind==='manual';
+ const history=progressHistory(a,updates),m=milestoneProgress(a),openEnded=a.planningStyle==='practice'||a.planningStyle==='exploration',valued=!openEnded&&(a.progressKind==='numeric'||a.progressKind==='manual');
  const save=(patch:Partial<Aspiration>)=>actions.save({...a,...patch});
+ async function changeCover(file:File|null){setCoverBusy(true);setCoverError('');try{let cover=null;if(file){const auth=await client.auth.getUser();if(auth.error||!auth.data.user)throw Error('Sign in to add a cover.');cover=await uploadBoardImage(auth.data.user.id,a.id,file,{allowJpeg:true});}const saved=await save({cover});if(!saved)throw Error('The cover was not saved. Please retry.');if(a.cover&&a.cover.path!==cover?.path){try{await removeBoardImages([a.cover]);}catch{setCoverError('Cover saved, but the previous image could not be removed from storage.');}}}catch(e){setCoverError(e instanceof Error?e.message:'The cover could not be saved.');}setCoverBusy(false);}
  async function record(){const v=value===''?null:Number(value);if(v===null&&!note.trim())return;if(v!==null&&(!Number.isFinite(v)||v<0||(a.progressKind==='manual'&&v>100)))return;
   if(await actions.addUpdate({id:crypto.randomUUID(),aspirationId:a.id,recordedOn:on,value:v,note:note.trim()||null,milestoneId:null})){setValue('');setNote('');}}
  async function toggleMilestone(ms:Milestone){const done=!ms.completedOn,next=a.milestones.map(x=>x.id===ms.id?{...x,completedOn:done?today:undefined}:x);
@@ -31,19 +42,21 @@ export function AspirationDetail({a,progress,updates,ritualState,tasks,today,bus
  const linkedTasks=a.taskIds.map(id=>tasks.find(t=>t.id===id)).filter((t):t is PlannedTask=>!!t);
  const candidates=taskSearch.trim().length>=2?tasks.filter(t=>!a.taskIds.includes(t.id)&&t.title.toLowerCase().includes(taskSearch.trim().toLowerCase())).slice(0,8):[];
  const habits=a.ritualIds.map(id=>habitConsistency(ritualState,id,today)).filter((h):h is NonNullable<typeof h>=>!!h);
- const open=a.status!=='completed'&&a.status!=='archived';
+ const open=a.status!=='completed'&&a.status!=='archived'&&a.status!=='discontinued';
  return <MuseModal id="aspiration-detail" label={a.title} title={`${a.icon?`${a.icon} `:''}${a.title}`} returnFocus={null} onClose={onClose} size="tall">
   <div className="muse-aspiration-detail" data-accent={a.accent??'primary'}>
-   <p className="muse-aspiration-meta"><span className="muse-aspiration-chip" data-status={a.status}>{statusLabels[a.status]}</span>{a.category}{a.targetDate?` · by ${dateLabel(a.targetDate)}`:' · someday'}{a.completedOn?` · finished ${dateLabel(a.completedOn)}`:''}</p>
+   <div className="muse-aspiration-cover">{a.cover&&<BucketPhoto image={a.cover} full className="muse-aspiration-cover-image"/>}<div className="muse-aspiration-cover-actions"><label className="text-button">{a.cover?'Change cover':'Add a cover'}<input type="file" className="sr-only" accept="image/png,image/jpeg,image/webp,image/gif" disabled={busy||coverBusy} onChange={e=>{const file=e.target.files?.[0];e.target.value='';if(file)void changeCover(file);}}/></label>{a.cover&&<button type="button" className="text-button" disabled={busy||coverBusy} onClick={()=>void changeCover(null)}>Remove cover</button>}</div>{coverError&&<p role="alert">{coverError}</p>}</div>
+   <p className="muse-aspiration-meta"><span className="muse-aspiration-chip" data-status={a.status}>{statusLabels[a.status]}</span>{areaLabel??`Uncategorized · ${a.category}`}{a.targetDate?` · by ${dateLabel(a.targetDate)}`:a.targetPeriod?` · target ${a.targetPeriod}`:a.timeframe==='someday'?' · someday':a.timeframe==='ongoing'?' · ongoing':' · no deadline'}{a.completedOn?` · finished ${dateLabel(a.completedOn)}`:''}</p>
    {periods.length>1&&<nav className="muse-aspiration-periods" aria-label="Periods of this aspiration"><span className="small-label">Periods</span>{periods.map(p=><button key={p.id} type="button" className="muse-aspiration-period" aria-current={p.id===a.id||undefined} disabled={p.id===a.id} onClick={()=>onOpenPeriod?.(p.id)}>{periodLabel(p)}{p.completedOn?' ✓':''}</button>)}</nav>}
-   {a.motivation&&<blockquote className="muse-aspiration-why">{a.motivation}</blockquote>}
+   {a.motivation&&<section aria-label="Why this matters"><h3>Why this matters</h3><blockquote className="muse-aspiration-why">{a.motivation}</blockquote></section>}
+   {a.mantra&&<p className="muse-aspiration-mantra">“{a.mantra}”</p>}
    {a.description&&<p className="muse-aspiration-notes">{a.description}</p>}
-   <section className="muse-aspiration-progress" aria-label="Progress"><ProgressRing percent={progress.percent} accent={a.accent}/><div>
+   {!openEnded&&<section className="muse-aspiration-progress" aria-label="Progress"><ProgressRing percent={progress.percent} accent={a.accent}/><div>
     <strong>{progressText(a,progress)}</strong>
     <small className="small-label">{progress.automatic?`Counted automatically from ${progress.source}`:'Updated by you'}{progress.note?` · ${progress.note}`:''}</small>
     {a.connection?.kind==='reading-challenge'&&<Link className="text-button" href="/collections/reading-atlas">Edit the challenge in Reading Atlas</Link>}
-   </div></section>
-   {history.length>1&&<ol className="muse-aspiration-spark" aria-label="Progress over time">{history.slice(-12).map((p,i)=>{const max=a.progressKind==='manual'?100:Math.max(a.target??0,...history.map(h=>h.value));return <li key={i} title={`${dateLabel(p.date)}: ${p.value}`} style={{'--h':`${max?Math.max(4,p.value/max*100):4}%`} as React.CSSProperties}><span className="sr-only">{dateLabel(p.date)}: {p.value}</span></li>;})}</ol>}
+   </div></section>}
+   {!openEnded&&history.length>1&&<ol className="muse-aspiration-spark" aria-label="Progress over time">{history.slice(-12).map((p,i)=>{const max=a.progressKind==='manual'?100:Math.max(a.target??0,...history.map(h=>h.value));return <li key={i} title={`${dateLabel(p.date)}: ${p.value}`} style={{'--h':`${max?Math.max(4,p.value/max*100):4}%`} as React.CSSProperties}><span className="sr-only">{dateLabel(p.date)}: {p.value}</span></li>;})}</ol>}
 
    {valued&&open&&<form className="muse-aspiration-record" onSubmit={e=>{e.preventDefault();void record();}}><h3>Record progress</h3>
     <div className="muse-aspiration-row"><label>{a.progressKind==='manual'?'Percent done':`Where you are${a.unit?` (${a.unit})`:''}`}<input id="aspiration-value" type="number" min={0} max={a.progressKind==='manual'?100:undefined} step="any" value={value} onChange={e=>setValue(e.target.value)}/></label>
@@ -53,6 +66,8 @@ export function AspirationDetail({a,progress,updates,ritualState,tasks,today,bus
    {!valued&&open&&<form className="muse-aspiration-record" onSubmit={e=>{e.preventDefault();void record();}}><h3>Add a note</h3><div className="muse-aspiration-row"><label>Note<input id="aspiration-update-note" maxLength={1000} value={note} placeholder="A small win, a snag, a thought" onChange={e=>setNote(e.target.value)}/></label><button type="submit" className="muse-button" disabled={busy||!note.trim()}>Add</button></div></form>}
 
    <AspirationLists aspirationId={a.id}/>
+   <RelatedBooks aspirationId={a.id} books={books}/>
+   <RelatedInspiration aspirationId={a.id}/>
    <section aria-label="Milestones"><h3>Milestones {m.total?<small className="small-label">· {m.done} of {m.total}</small>:null}</h3>
     {a.milestones.length?<ol className="muse-aspiration-milestones">{a.milestones.map((ms,i)=><li key={ms.id} data-done={!!ms.completedOn||undefined} data-editing={editingMilestone===ms.id||undefined}>
      <div className="muse-aspiration-milestone-row"><label><input type="checkbox" checked={!!ms.completedOn} disabled={busy} onChange={()=>void toggleMilestone(ms)}/><span>{ms.title}{ms.completedOn?<small> · {dateLabel(ms.completedOn)}</small>:ms.targetDate?<small> · by {dateLabel(ms.targetDate)}</small>:null}{ms.weight&&ms.weight!==1?<small> · counts ×{ms.weight}</small>:null}</span></label>
@@ -64,27 +79,28 @@ export function AspirationDetail({a,progress,updates,ritualState,tasks,today,bus
      <label className="sr-only" htmlFor="aspiration-new-milestone">New milestone</label><input id="aspiration-new-milestone" maxLength={120} value={newMilestone} placeholder="Add a milestone" onChange={e=>setNewMilestone(e.target.value)}/><button type="submit" className="muse-button" disabled={busy||!newMilestone.trim()}>Add</button></form>}
    </section>
 
-   <section aria-label="Supporting habits"><h3>Supporting habits</h3>
+   <details open={habits.length>0||undefined}><summary>Related rituals{habits.length?` (${habits.length})`:''}</summary><section aria-label="Supporting habits"><h3>Supporting habits</h3>
     <p className="small-label">Habits show their own consistency here. They don’t move this aspiration’s progress.</p>
     {habits.length>0&&<ul className="muse-aspiration-links">{habits.map(h=><li key={h.ritual.id}><span><strong>{h.ritual.name}</strong><small>{h.opportunities?`Met ${h.complete} of ${h.opportunities} ${h.unit} in the last 30 days`:'No scheduled days in the last 30'}{h.streak.count?` · ${h.streak.count} in a row`:''}</small></span>
      <button type="button" className="text-button" disabled={busy} onClick={()=>void save({ritualIds:a.ritualIds.filter(id=>id!==h.ritual.id)})}>Unlink</button></li>)}</ul>}
     {ritualState.rituals.some(r=>!a.ritualIds.includes(r.id)&&r.status!=='archived')&&<div className="muse-aspiration-row"><label className="sr-only" htmlFor="aspiration-habit">Link a habit</label>
      <select id="aspiration-habit" value={habitPick} onChange={e=>setHabitPick(e.target.value)}><option value="">Link a habit…</option>{ritualState.rituals.filter(r=>!a.ritualIds.includes(r.id)&&r.status!=='archived').map(r=><option key={r.id} value={r.id}>{r.name}</option>)}</select>
      <button type="button" className="muse-button" disabled={busy||!habitPick} onClick={()=>void save({ritualIds:[...a.ritualIds,habitPick]}).then(s=>{if(s)setHabitPick('');})}>Link</button></div>}
-   </section>
+   </section></details>
 
-   <section aria-label="Linked tasks"><h3>Planner tasks {linkedTasks.length?<small className="small-label">· {linkedTasks.filter(t=>t.complete).length} of {linkedTasks.length} done</small>:null}</h3>
+   <details open={a.taskIds.length>0||undefined}><summary>Related Planner tasks{a.taskIds.length?` (${a.taskIds.length})`:''}</summary><section aria-label="Linked tasks"><h3>Planner tasks {linkedTasks.length?<small className="small-label">· {linkedTasks.filter(t=>t.complete).length} of {linkedTasks.length} done</small>:null}</h3>
     {linkedTasks.length>0&&<ul className="muse-aspiration-links">{linkedTasks.map(t=><li key={t.id} data-done={t.complete||undefined}><span><strong>{t.complete?'✓ ':''}{t.title}</strong><small>{t.complete?'Done':t.plannedDate?`Planned ${dateLabel(t.plannedDate)}`:'Not scheduled'}</small></span>
      <button type="button" className="text-button" disabled={busy} onClick={()=>void save({taskIds:a.taskIds.filter(id=>id!==t.id)})}>Unlink</button></li>)}</ul>}
     {a.taskIds.length>linkedTasks.length&&<p className="small-label">{a.taskIds.length-linkedTasks.length} linked task{a.taskIds.length-linkedTasks.length===1?' is':'s are'} no longer in the Planner.</p>}
     <label className="sr-only" htmlFor="aspiration-task-search">Find a Planner task</label><input id="aspiration-task-search" value={taskSearch} placeholder="Link a Planner task…" onChange={e=>setTaskSearch(e.target.value)}/>
     {candidates.length>0&&<ul className="muse-aspiration-candidates">{candidates.map(t=><li key={t.id}><button type="button" className="text-button" disabled={busy} onClick={()=>void save({taskIds:[...a.taskIds,t.id]}).then(s=>{if(s)setTaskSearch('');})}>{t.title}</button></li>)}</ul>}
     <p className="small-label">Linking never changes or moves the task; unlinking never deletes it.</p>
-   </section>
+   </section></details>
 
    {journal.length>0&&<section aria-label="Journal"><h3>Journal</h3><ol className="muse-aspiration-journal">{journal.map(u=>{const ms=u.milestoneId?a.milestones.find(x=>x.id===u.milestoneId):null;return <li key={u.id}><time>{dateLabel(u.recordedOn)}</time>
      <span>{ms?`Milestone: ${ms.title}`:u.milestoneId?'Milestone completed':''}{u.value!==null?`${a.progressKind==='manual'?`${u.value}%`:`${u.value}${a.unit?` ${a.unit}`:''}`}`:''}{u.note?`${u.value!==null||ms?' · ':''}${u.note}`:''}</span>
      <button type="button" className="text-button" aria-label="Remove this entry" disabled={busy} onClick={()=>void actions.removeUpdate(u.id)}>×</button></li>;})}</ol></section>}
+   {events.length>0&&<details><summary>The journey</summary><ol className="muse-aspiration-journal">{events.map(e=><li key={e.id}><time>{dateLabel(e.occurred_at.slice(0,10))}</time><span>{e.kind==='created'?'Aspiration created':e.kind==='status'?`Status changed from ${e.before_value} to ${e.after_value}`:e.kind==='target_period'?`Target period ${e.after_value?`changed to ${e.after_value}`:'cleared'}`:`Target date ${e.after_value?`changed to ${dateLabel(e.after_value)}`:'cleared'}`}</span></li>)}</ol></details>}
 
    {a.status==='completed'&&a.reflection&&<section aria-label="Reflection"><h3>Looking back</h3><p>{a.reflection}</p></section>}
    {finishing&&<form className="muse-aspiration-record" onSubmit={e=>{e.preventDefault();void save({status:'completed',completedOn:today,reflection:reflection.trim()||null}).then(s=>{if(s){setFinishing(false);onCompleted(s);}});}}>
@@ -100,12 +116,30 @@ export function AspirationDetail({a,progress,updates,ritualState,tasks,today,bus
     {a.status==='active'&&<button type="button" className="text-button" disabled={busy} onClick={()=>void save({status:'paused'})}>Pause</button>}
     {(a.status==='paused'||a.status==='planned')&&<button type="button" className="text-button" disabled={busy} onClick={()=>void save({status:'active'})}>{a.status==='paused'?'Resume':'Start'}</button>}
     {a.status==='completed'&&<button type="button" className="text-button" disabled={busy} onClick={()=>void save({status:'active',completedOn:null})}>Reopen</button>}
+    {open&&<button type="button" className="text-button" disabled={busy} onClick={()=>void save({status:'discontinued'})}>No longer pursuing</button>}
+    {a.status==='discontinued'&&<button type="button" className="text-button" disabled={busy} onClick={()=>void save({status:'active'})}>Pursue again</button>}
     {a.status!=='archived'?<button type="button" className="text-button" disabled={busy} onClick={()=>void save({status:'archived'})}>Archive</button>:<button type="button" className="text-button" disabled={busy} onClick={()=>void save({status:a.completedOn?'completed':'active'})}>Restore</button>}
     {confirmDelete?<span className="muse-aspiration-confirm">Delete this aspiration and its journal? Linked habits, tasks and books are kept.<button type="button" className="muse-button" disabled={busy} onClick={()=>void actions.remove(a).then(ok=>{if(ok)onClose();})}>Delete</button><button type="button" className="text-button" onClick={()=>setConfirmDelete(false)}>Cancel</button></span>
      :<button type="button" className="text-button muse-aspiration-delete" onClick={()=>setConfirmDelete(true)}>Delete…</button>}
    </div>
   </div>
  </MuseModal>;
+}
+
+function RelatedBooks({aspirationId,books}:{aspirationId:string;books:Book[]}){
+ const client=useMemo(()=>createMuseBrowserClient(),[]),[links,setLinks]=useState<Tables<'aspiration_books'>[]>([]),[loaded,setLoaded]=useState(false),[busy,setBusy]=useState(false),[error,setError]=useState('');
+ async function load(){if(loaded)return;const r=await client.from('aspiration_books').select('*').eq('aspiration_id',aspirationId).order('created_at');if(r.error)setError(r.error.message);else{setLinks(r.data);setLoaded(true);setError('');}}
+ async function add(id:string){const book=books.find(b=>b.id===id);if(!book)return;setBusy(true);const r=await client.from('aspiration_books').insert({aspiration_id:aspirationId,book_id:id,book_name:book.title}).select('*').single();if(r.error)setError(r.error.message);else{setLinks(list=>[...list,r.data]);setError('');}setBusy(false);}
+ async function remove(id:string){setBusy(true);const r=await client.from('aspiration_books').delete().eq('id',id);if(r.error)setError(r.error.message);else{setLinks(list=>list.filter(l=>l.id!==id));setError('');}setBusy(false);}
+ return <details onToggle={e=>{if(e.currentTarget.open)void load();}}><summary>Related books{links.length?` (${links.length})`:''}</summary>{error&&<p role="alert">{error}</p>}{loaded&&<><ul className="muse-aspiration-links">{links.map(l=>{const book=books.find(b=>b.id===l.book_id);return <li key={l.id}><span>{book?<Link href={`/collections/books/${book.id}`}>{l.book_name}</Link>:<>{l.book_name} · no longer available</>}{book&&book.title!==l.book_name&&<small>Now: {book.title}</small>}</span><button type="button" className="text-button" disabled={busy} onClick={()=>void remove(l.id)}>Unlink</button></li>;})}</ul><MuseChoiceMenu label="Link a book" valueLabel="Link a book" selectedIds={[]} searchable options={books.filter(b=>!links.some(l=>l.book_id===b.id)).map(b=>({id:b.id,label:b.title}))} onSelect={id=>void add(id)}/><p className="small-label">Books stay in your library; linking never changes reading progress.</p></>}</details>;
+}
+
+/** Load other modules only when requested; these records remain with their owners. */
+function RelatedInspiration({aspirationId}:{aspirationId:string}){
+ const client=useMemo(()=>createMuseBrowserClient(),[]),[loaded,setLoaded]=useState(false),[error,setError]=useState('');
+ const [dreams,setDreams]=useState<{id:string;title:string}[]>([]),[boards,setBoards]=useState<{id:string;title:string}[]>([]);
+ async function load(){if(loaded)return;try{const [d,b]=await Promise.all([client.from('bucket_entries').select('id,title').eq('aspiration_id',aspirationId),loadBoards(client)]);if(d.error)throw d.error;setDreams(d.data);setBoards(b.filter(board=>board.elements.some(element=>element.link?.kind==='aspiration'&&element.link.id===aspirationId)).map(({id,title})=>({id,title})));setLoaded(true);setError('');}catch(e){setError(e instanceof Error?e.message:'Related inspiration could not be loaded.');}}
+ return <details onToggle={e=>{if(e.currentTarget.open)void load();}}><summary>Related inspiration</summary>{error&&<p role="alert">{error}</p>}{loaded&&<>{dreams.length===0&&boards.length===0&&<p className="small-label">No Bucket List dreams or Vision Board pieces are linked yet.</p>}{dreams.map(d=><p key={d.id}><Link href="/envision?view=bucket">Bucket List · {d.title}</Link></p>)}{boards.map(b=><p key={b.id}><Link href={`/envision?view=vision-boards&board=${b.id}`}>Vision Board · {b.title}</Link></p>)}</>}<p className="small-label">Link a dream or a board piece from its own editor.</p></details>;
 }
 
 /** Details for one milestone: target date (feeds "Coming up"), description, notes, weight and a linked task. */
