@@ -478,3 +478,23 @@ button.muse-running-cell[data-completed]:hover::after { content: "Reopen"; posit
 [data-task-density="compact"] .muse-planner-task .muse-task-classification>*{flex:none}
 [data-task-density="compact"] .muse-planner-task .muse-task-tags{overflow:hidden;flex:0 1 auto}
 [data-task-density="spacious"] .muse-agenda .muse-task-list-rows>li{padding-block:10px}
+
+/* Glow-up 2: day columns lead with a big editorial date, like a page in a planner. */
+.muse-planner-day-heading strong{font-family:var(--font-editorial);font-weight:520;font-size:2.1rem;line-height:1;letter-spacing:-.03em}
+.muse-planner-day-heading time{gap:8px;font-weight:700;letter-spacing:.14em}
+.muse-planner-day-heading time[aria-current=date] strong{background:linear-gradient(120deg,var(--accent-secondary),var(--accent-primary));-webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* Glow-up 2: a day's tasks as a row of little four-point stars that light up as they are done (the Books streak hearts,
+   in Planner's language). Day numbers take the editorial gradient on every column, not only today; empty "Add tag"
+   chips stay quiet until the task is hovered or focused, so the cards read as tasks, not a wall of aqua pills. */
+.muse-planner-day-stars{display:flex;flex-wrap:wrap;align-items:center;gap:5px;margin:8px 0 0}
+.muse-planner-day-stars i{--s:13px;width:var(--s);height:var(--s);clip-path:polygon(50% 0,61% 39%,100% 50%,61% 61%,50% 100%,39% 61%,0 50%,39% 39%);background:color-mix(in srgb,var(--text-muted) 34%,transparent);transition:background .3s,transform .3s}
+.muse-planner-day-stars i[data-done]{background:linear-gradient(135deg,var(--accent-secondary),var(--accent-primary));transform:scale(1.18)}
+.muse-planner-day-stars small{color:var(--text-muted);font-size:.7rem;font-weight:650}
+@media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) .muse-planner-day-stars i[data-done]{animation:muse-day-star-twinkle 4.8s ease-in-out calc(var(--i)*.35s) 2}}
+@keyframes muse-day-star-twinkle{0%,100%{filter:none}50%{filter:brightness(1.35) drop-shadow(0 0 3px var(--accent-primary))}}
+.muse-planner-day-heading time strong{background:linear-gradient(120deg,var(--foreground),color-mix(in srgb,var(--accent-primary) 70%,var(--foreground)));-webkit-background-clip:text;background-clip:text;color:transparent}
+.muse-planner-day-heading time[aria-current=date] strong{background-image:linear-gradient(120deg,var(--accent-secondary),var(--accent-primary))}
+.muse-planner-task .muse-task-tag-empty{background:transparent;color:var(--text-muted);opacity:.55;transition:opacity .2s}
+.muse-planner-task:is(:hover,:focus-within) .muse-task-tag-empty{opacity:1}
+@media (hover:none){.muse-planner-task .muse-task-tag-empty{opacity:.8}}

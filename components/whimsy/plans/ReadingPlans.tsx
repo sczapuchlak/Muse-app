@@ -1,4 +1,5 @@
 'use client';
+import {MuseMark} from '@/components/design/MuseHeading';
 import Link from 'next/link';
 import {useEffect,useMemo,useRef,useState,type CSSProperties,type KeyboardEvent as ReactKeyboardEvent,type PointerEvent as ReactPointerEvent} from 'react';
 import {MuseIcon} from '@/components/MuseIcon';
@@ -13,13 +14,14 @@ import {PlacePicker} from './PlacePicker';
 import {StatusChip,Stars} from './PlanStatus';
 import './ReadingPlans.css';
 
-const PAGE=4;
+const PAGE=5;
 
 /** One book in a plan: cover, real status, rating and dates, a drag handle, and a compact menu. */
 function PlanCard({book,index,total,dragging,offset,over,register,onHandleDown,onHandleMove,onHandleUp,onKeyMove,onOpen,onMove,onCopy,onRemove,onToTop}:{book:Book;index:number;total:number;dragging:boolean;offset?:{x:number;y:number};over:boolean;register:(el:HTMLElement|null)=>void;onHandleDown:(e:ReactPointerEvent)=>void;onHandleMove:(e:ReactPointerEvent)=>void;onHandleUp:(e:ReactPointerEvent)=>void;onKeyMove:(delta:number)=>void;onOpen:()=>void;onMove:()=>void;onCopy:()=>void;onRemove:()=>void;onToTop:()=>void}){
  const anchor=useRef<HTMLButtonElement>(null),[menu,setMenu]=useState(false),dates=planDates(book);
  function keys(e:ReactKeyboardEvent){if(e.key==='ArrowUp'||e.key==='ArrowLeft'){e.preventDefault();onKeyMove(-1);}else if(e.key==='ArrowDown'||e.key==='ArrowRight'){e.preventDefault();onKeyMove(1);}}
  return <li ref={register} className="muse-plan-card" data-status={book.status} data-dragging={dragging||undefined} data-over={over||undefined} style={offset?{transform:`translate(${offset.x}px,${offset.y}px)`}:undefined}>
+  <span className="muse-plan-rank type-numeric" aria-hidden="true">{index+1}</span>
   <button type="button" className="muse-plan-handle" aria-label={`Reorder ${book.title}. Position ${index+1} of ${total}. Use the arrow keys to move it.`} onPointerDown={onHandleDown} onPointerMove={onHandleMove} onPointerUp={onHandleUp} onPointerCancel={onHandleUp} onKeyDown={keys}><MuseIcon name="grip" size={16}/></button>
   <button type="button" className="muse-plan-cover" onClick={onOpen} aria-label={`Open ${book.title}`} tabIndex={-1}><Cover book={book}/></button>
   <div className="muse-plan-body">
@@ -82,7 +84,7 @@ export function ReadingPlans({books,today,variant,onOpenBook}:{books:Book[];toda
  const label=periodLabel(kind,period);
  return <section className="muse-plans" data-variant={variant} aria-labelledby={`plans-${variant}`}>
   <header className="muse-plans-head">
-   <div className="muse-plans-title"><span className="small-label">{kind==='month'?'This month, on purpose':'The year ahead'}</span><h3 id={`plans-${variant}`}>Reading plans</h3></div>
+   <div className="muse-plans-title"><span className="small-label">{kind==='month'?'This month, on purpose':'The year ahead'}</span><h3 id={`plans-${variant}`}><MuseMark icon="list" tone={1} size="sm" className="muse-books-mark"/>Reading plans</h3></div>
    <div className="muse-segmented" role="group" aria-label="Plan type"><button type="button" className="muse-edge" aria-pressed={kind==='month'} onClick={()=>switchKind('month')}>Monthly</button><button type="button" className="muse-edge" aria-pressed={kind==='year'} onClick={()=>switchKind('year')}>Yearly</button></div>
   </header>
   <div className="muse-plans-period">

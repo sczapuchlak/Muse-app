@@ -1,0 +1,93 @@
+/*
+ * Weekly Side Quests, glow-up 2: six sealed invitations, not six widgets. A face-down card is an envelope with a foil
+ * edge, a unique constellation sigil and a wax seal you break. Revealed cards carry their category's colour; chosen
+ * cards lift and glow. Sealing is the payoff: your three adventures, then a big hold ring that charges with light.
+ * Motion only under prefers-reduced-motion:no-preference and outside Muse Magic Quiet.
+ */
+.muse-quest-grid{gap:clamp(14px,2vw,22px)}
+.muse-quest-card{--mark-a:var(--chart-1);position:relative;isolation:isolate;display:flex;flex-direction:column;min-height:250px;padding:0;border-radius:22px;overflow:hidden;background-color:var(--glass-background);transition:transform .32s cubic-bezier(.2,.8,.2,1),box-shadow .32s,border-color .2s}
+.muse-quest-card>.muse-quest-face,.muse-quest-card>.muse-quest-reveal{flex:1 1 auto;padding:18px}
+
+/* Face-down: the invitation. */
+.muse-quest-card[data-revealed=false]{background-image:radial-gradient(90% 70% at 50% 0%,color-mix(in srgb,var(--accent-secondary) 22%,transparent),transparent 70%),radial-gradient(70% 60% at 50% 110%,color-mix(in srgb,var(--accent-primary) 18%,transparent),transparent 70%),repeating-linear-gradient(135deg,color-mix(in srgb,var(--foreground) 3.5%,transparent) 0 1px,transparent 1px 11px)}
+.muse-quest-card[data-revealed=false]::before{content:"";position:absolute;inset:9px;z-index:-1;border:1px solid color-mix(in srgb,var(--accent-secondary) 40%,transparent);border-radius:15px;pointer-events:none}
+.muse-quest-card .muse-quest-face{justify-content:center;align-items:center;gap:10px;min-height:0;text-align:center}
+.muse-quest-envelope{position:relative;display:grid;place-items:center;width:92px;height:70px;margin-bottom:2px}
+.muse-quest-envelope::before{content:"";position:absolute;inset:0;border-radius:10px;background:linear-gradient(160deg,color-mix(in srgb,var(--accent-secondary) 26%,var(--surface-control)),color-mix(in srgb,var(--accent-primary) 18%,var(--surface-control)));box-shadow:0 10px 24px -12px color-mix(in srgb,var(--accent-primary) 70%,transparent),inset 0 1px 0 color-mix(in srgb,white 25%,transparent)}
+.muse-quest-envelope::after{content:"";position:absolute;left:0;right:0;top:0;height:46%;clip-path:polygon(0 0,100% 0,50% 100%);background:color-mix(in srgb,var(--accent-secondary) 30%,var(--surface-control));border-radius:10px 10px 0 0}
+.muse-quest-sigil{position:relative;z-index:1;width:70px;height:52px;margin-top:14px}
+.muse-quest-sigil line{stroke:color-mix(in srgb,var(--foreground) 55%,transparent);stroke-width:1;stroke-dasharray:2 2.5}
+.muse-quest-sigil circle{fill:var(--foreground)}
+.muse-quest-sigil circle:first-of-type{fill:var(--accent-secondary);filter:drop-shadow(0 0 3px var(--accent-secondary))}
+.muse-quest-card .muse-quest-face>.muse-quest-face-title{font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight);font-size:clamp(1.3rem,2vw,1.55rem);line-height:1.15;color:var(--foreground)}
+.muse-quest-face-hint{max-width:24ch;color:var(--text-muted);font-size:.8rem;line-height:1.4}
+.muse-quest-seal-button{display:inline-flex;align-items:center;gap:9px;min-height:42px;margin-top:6px;padding:4px 16px 4px 5px;border:1px solid color-mix(in srgb,var(--accent-primary) 55%,var(--glass-border));border-radius:999px;background:var(--surface-control);color:var(--foreground);font:650 .84rem var(--font-ui);cursor:pointer;transition:transform .2s,box-shadow .2s,border-color .2s}
+.muse-quest-wax{display:grid;place-items:center;width:32px;height:32px;border-radius:50%;color:white;background:radial-gradient(circle at 35% 30%,color-mix(in srgb,var(--accent-primary) 55%,white),var(--accent-primary) 50%,color-mix(in srgb,var(--accent-primary) 55%,black));box-shadow:0 3px 8px color-mix(in srgb,black 35%,transparent),inset 0 -2px 4px color-mix(in srgb,black 25%,transparent)}
+.muse-quest-wax svg{fill:white}
+.muse-quest-seal-button:is(:hover,:focus-visible):not(:disabled){border-color:var(--selected-border);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent-primary) 16%,transparent)}
+.muse-quest-seal-button:focus-visible{outline:2px solid var(--focus-ring);outline-offset:3px}
+.muse-quest-seal-button:disabled{opacity:.55;cursor:default}
+.muse-quest-card[data-revealed=false]:hover{border-color:color-mix(in srgb,var(--accent-secondary) 60%,var(--glass-border));box-shadow:0 18px 38px -20px color-mix(in srgb,var(--accent-secondary) 85%,transparent)}
+
+/* Revealed: the quest, in its category's colour. */
+.muse-quest-card[data-revealed=true]{background-image:radial-gradient(110% 80% at 100% 0%,color-mix(in srgb,var(--mark-a) 18%,transparent),transparent 62%);border-color:color-mix(in srgb,var(--mark-a) 35%,var(--glass-border))}
+.muse-quest-card[data-revealed=true]::after{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,var(--mark-a),color-mix(in srgb,var(--mark-a) 30%,transparent))}
+.muse-quest-card .muse-quest-reveal{gap:10px}
+.muse-quest-kind{display:flex;align-items:center;gap:8px;width:100%;font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)}
+.muse-quest-kind .muse-mark{width:26px;height:26px;border-radius:9px}
+.muse-quest-kind i{margin-left:auto;padding:2px 9px;border-radius:999px;background:var(--surface-control);font-style:normal;letter-spacing:.04em;text-transform:none;font-weight:600}
+.muse-quest-card .muse-quest-reveal h3{font-size:clamp(1.25rem,2vw,1.5rem)}
+.muse-quest-card .muse-quest-card-actions{width:100%;margin-top:auto;padding-top:10px;border-top:1px dashed var(--glass-border)}
+
+/* Chosen: it lifts and glows. */
+.muse-quest-card[data-selected=true]{border-color:transparent;transform:translateY(-6px);box-shadow:0 0 0 2px var(--mark-a),0 0 28px -4px color-mix(in srgb,var(--mark-a) 70%,transparent),0 22px 40px -20px color-mix(in srgb,var(--mark-a) 90%,transparent)}
+.muse-quest-card .muse-quest-selected-mark{position:absolute;top:12px;right:12px;z-index:2;border-color:transparent;background:var(--mark-a);color:white;box-shadow:0 4px 12px -4px color-mix(in srgb,var(--mark-a) 80%,transparent)}
+@supports (color: oklch(from red l c h)){.muse-quest-card .muse-quest-selected-mark{background:oklch(from var(--mark-a) min(l,.55) max(c,.13) h)}}
+
+/* The seal: three adventures and a ring that charges with light. */
+.muse-quest-seal{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"copy hold" "help help";align-items:center;gap:14px 24px;margin-top:clamp(18px,2.4vw,28px);padding:clamp(16px,2.4vw,26px);border:1px solid color-mix(in srgb,var(--accent-primary) 40%,var(--glass-border));border-radius:24px;background-color:var(--glass-background);background-image:radial-gradient(70% 120% at 100% 50%,color-mix(in srgb,var(--accent-primary) calc(14% + var(--glow,0%)),transparent),transparent 70%)}
+.muse-quest-seal-copy{grid-area:copy;min-width:0}
+.muse-quest-seal-copy ol{display:grid;gap:6px;margin:8px 0 0;padding:0;list-style:none;counter-reset:q}
+.muse-quest-seal-copy li{counter-increment:q;display:flex;gap:10px;align-items:baseline;font-family:var(--font-editorial);font-weight:var(--type-title-weight);font-size:1.08rem;line-height:1.3;overflow-wrap:anywhere}
+.muse-quest-seal-copy li::before{content:counter(q);flex:none;display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:color-mix(in srgb,var(--accent-primary) 22%,var(--surface-control));font:700 .72rem var(--font-ui)}
+.muse-quest-seal .muse-quest-charge-stars{display:none}
+.muse-quest-seal .muse-quest-hold{grid-area:hold;position:relative;display:grid;justify-items:center;align-content:center;gap:2px;width:148px;height:148px;min-height:0;padding:0;border:0;border-radius:50%;overflow:visible;background:conic-gradient(from -90deg,var(--accent-secondary),var(--accent-primary) var(--charge),color-mix(in srgb,var(--foreground) 14%,transparent) 0);box-shadow:0 0 calc(10px + var(--charge-num,0) * 30px) color-mix(in srgb,var(--accent-primary) 45%,transparent);cursor:pointer}
+.muse-quest-seal .muse-quest-hold::before{content:"";position:absolute;inset:8px;width:auto;height:auto;border-radius:50%;background:radial-gradient(circle at 50% 30%,color-mix(in srgb,var(--accent-primary) 18%,var(--glass-background)),var(--glass-background));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--accent-primary) 35%,transparent);transition:none}
+.muse-quest-seal .muse-quest-hold>*{position:relative;z-index:1}
+.muse-quest-seal .muse-quest-ring{width:auto;height:auto;margin:0;background:none}
+.muse-quest-seal .muse-quest-ring::before{display:none}
+.muse-quest-hold-label{font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight);font-size:1.12rem;line-height:1.1;color:var(--foreground)}
+.muse-quest-seal .muse-quest-hold>span.muse-quest-hold-pct{margin:0;font:700 .76rem var(--font-ui);font-variant-numeric:tabular-nums;color:var(--text-muted)}
+.muse-quest-seal .muse-quest-hold:focus-visible{outline:2px solid var(--focus-ring);outline-offset:6px}
+.muse-quest-seal-help{grid-area:help;color:var(--text-muted);font-size:.8rem;line-height:1.45;overflow-wrap:anywhere}
+.muse-quest-seal[data-phase="2"],.muse-quest-seal[data-phase="3"]{--glow:10%}
+@container muse-content (max-width:640px){
+ .muse-quest-seal{grid-template-columns:minmax(0,1fr);grid-template-areas:"copy" "hold" "help";justify-items:center;text-align:center}
+ .muse-quest-seal-copy{justify-self:stretch;text-align:left}
+ .muse-quest-card{min-height:220px}
+}
+@media (prefers-reduced-motion:no-preference){
+ :root:not([data-magic=quiet]) .muse-quest-card[data-revealed=false]{animation:muse-quest-deal .5s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i,0) * 60ms)}
+ :root:not([data-magic=quiet]) .muse-quest-card[data-revealed=false]:hover{transform:translateY(-4px) rotate(-.4deg)}
+ :root:not([data-magic=quiet]) .muse-quest-card[data-revealed=true] .muse-quest-reveal{animation:muse-quest-unseal .55s cubic-bezier(.2,.8,.2,1) both}
+ :root:not([data-magic=quiet]) .muse-quest-seal[data-phase="3"] .muse-quest-hold{animation:muse-quest-thrum .9s ease-in-out infinite}
+ @keyframes muse-quest-deal{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:none}}
+ @keyframes muse-quest-unseal{0%{opacity:0;transform:perspective(700px) rotateX(-18deg) translateY(8px);filter:blur(3px)}100%{opacity:1;transform:none;filter:none}}
+ @keyframes muse-quest-thrum{50%{transform:scale(1.04)}}
+}
+@media (prefers-reduced-motion:reduce){.muse-quest-card,.muse-quest-seal-button{transition:none}.muse-quest-card[data-selected=true]{transform:none}}
+:root[data-magic=quiet] .muse-quest-card[data-selected=true]{transform:none}
+.muse-quest-card .muse-quest-face>.muse-quest-face-hint{max-width:26ch;font-family:var(--font-ui);font-style:normal;font-weight:400;font-size:.8rem;line-height:1.4;color:var(--text-muted)}
+.muse-quest-card .muse-quest-face>.muse-quest-envelope{font-size:0}
+
+/* Before the draw: a fanned stack of six sealed invitations and one clear call to adventure. */
+.muse-quest-first{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:clamp(24px,5vw,60px);padding:clamp(20px,3vw,36px);border:1px solid var(--glass-border);border-radius:26px;background-color:var(--glass-background);background-image:radial-gradient(80% 100% at 0% 50%,color-mix(in srgb,var(--accent-secondary) 18%,transparent),transparent 70%)}
+.muse-quest-first-deck{position:relative;width:clamp(170px,22vw,240px);height:clamp(150px,18vw,190px)}
+.muse-quest-first-deck>span{--o:calc(var(--i) - 2.5);position:absolute;left:50%;bottom:0;display:grid;place-items:center;width:46%;aspect-ratio:3/4;margin-left:-23%;border-radius:12px;border:1px solid color-mix(in srgb,var(--accent-secondary) 45%,var(--glass-border));background:linear-gradient(160deg,color-mix(in srgb,var(--accent-secondary) 26%,var(--surface-control)),color-mix(in srgb,var(--accent-primary) 20%,var(--surface-control)));box-shadow:0 10px 24px -12px rgba(0,0,0,.6);transform-origin:50% 120%;transform:rotate(calc(var(--o) * 9deg))}
+.muse-quest-first-deck .muse-quest-sigil{width:72%;height:auto;margin:0}
+.muse-quest-first-copy{display:grid;gap:10px;justify-items:start}
+.muse-quest-first-copy h2{margin:0;font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight);font-size:clamp(1.6rem,3vw,2.3rem);line-height:1.1}
+.muse-quest-first-copy p{margin:0;max-width:46ch;color:var(--text-muted)}
+.muse-quest-first-draw{display:inline-flex;align-items:center;gap:8px;min-height:46px;margin-top:6px;padding-inline:20px;border-radius:999px}
+@container muse-content (max-width:640px){.muse-quest-first{grid-template-columns:minmax(0,1fr);justify-items:center;text-align:center}.muse-quest-first-copy{justify-items:center}}
+@media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) .muse-quest-first:hover .muse-quest-first-deck>span{transform:rotate(calc(var(--o) * 13deg)) translateY(-4px);transition:transform .4s cubic-bezier(.2,.8,.2,1)}}

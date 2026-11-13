@@ -197,3 +197,62 @@
 /* Control bars that sit directly on the atmosphere (search, segmented pickers, the date pill, week jump) are solid in
    every theme, not only the role themes: a see-through bar over a vivid background reads as a different app. */
 :is(.date-navigation,.muse-segmented,.muse-search,.muse-week-jump,.muse-atlas-sections):not(:is(.muse-card,.muse-sheet,.muse-panel,.muse-insight-panel,.muse-money-panel,.muse-modal,.muse-drawer,.muse-popover-panel) *){background-color:var(--glass-background)}
+
+/*
+ * Mark contrast (glow-up 2). A tile is always a deep jewel tone of its hue with a white glyph, so it reads in every
+ * theme: pastel chart inks (Glitter, Malibu) are deepened and neon inks are calmed to the same lightness band.
+ * Relative colour keeps the hue from the theme; nothing here names a palette.
+ */
+@supports (color: oklch(from red l c h)) {
+  .muse-mark{
+    --mark-deep:oklch(from var(--mark-a) min(l, .58) max(c, .13) h);
+    --mark-deep-2:oklch(from var(--mark-b) min(l, .52) max(c, .12) h);
+    color:white;
+    background:linear-gradient(140deg,oklch(from var(--mark-a) min(calc(l + .06), .66) max(c, .13) h),var(--mark-deep) 52%,var(--mark-deep-2));
+    box-shadow:0 6px 16px -6px color-mix(in srgb,var(--mark-deep) 75%,transparent),inset 0 1px 0 color-mix(in srgb,white 40%,transparent),inset 0 -1px 0 color-mix(in srgb,black 18%,transparent);
+  }
+  .muse-mark[data-variant=soft]{color:oklch(from var(--mark-a) min(l, .5) max(c, .12) h);background:color-mix(in srgb,var(--mark-a) 16%,var(--surface-control));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--mark-a) 45%,transparent)}
+  :root:is([data-theme="iridescent"],[data-theme="solstice"],[data-theme="issya-bday"],[data-theme="bubblegum-baby"]) .muse-mark[data-variant=soft],
+  :root:is([data-theme="astral"],[data-theme="nightbloom"]) :is(.muse-sheet,.muse-stat-tile,.muse-insight-panel,.muse-card) .muse-mark[data-variant=soft]{color:oklch(from var(--mark-a) min(l, .45) max(c, .12) h)}
+  :root:not(:is([data-theme="iridescent"],[data-theme="solstice"],[data-theme="issya-bday"],[data-theme="bubblegum-baby"])) .muse-mark[data-variant=soft]{color:oklch(from var(--mark-a) max(l, .78) c h)}
+}
+.muse-mark svg{stroke:currentColor}
+
+/* Glow-up 2: every one-line scrolling row on a phone (page tabs, chip rows) shows that it scrolls: room before the first
+   item, an edge fade after the last, snap points, and no clipped first chip. */
+@media(max-width:600px){
+ .muse-page :is(.muse-page-tabs,.muse-section-nav,.muse-whimsy-navigation,.muse-cosmic-navigation,.muse-books-tabs,.muse-tarot-tabs,.muse-dream-tabs,.muse-fortune-tabs),
+ .muse-page :is(.muse-chip-row,.muse-segmented)[data-scroll]{scroll-snap-type:x proximity;scroll-padding-inline:4px;padding-inline:4px 36px;scrollbar-width:none;-webkit-mask-image:linear-gradient(90deg,black calc(100% - 40px),transparent);mask-image:linear-gradient(90deg,black calc(100% - 40px),transparent)}
+ .muse-page :is(.muse-page-tabs,.muse-section-nav,.muse-whimsy-navigation,.muse-cosmic-navigation,.muse-books-tabs,.muse-tarot-tabs,.muse-dream-tabs,.muse-fortune-tabs)>*,
+ .muse-page :is(.muse-chip-row,.muse-segmented)[data-scroll]>*{scroll-snap-align:start}
+}
+/* The stat tile's underline runs the full width of the tile, in the tile's own two tones. */
+.muse-stat-tile::after{left:0;right:0;height:3px;border-radius:0;background:linear-gradient(90deg,var(--mark-a),var(--mark-b,var(--mark-a)));opacity:.85}
+.muse-stat-tile{border-bottom-left-radius:var(--dl-radius-tile);border-bottom-right-radius:var(--dl-radius-tile)}
+
+/*
+ * Card aura (glow-up 2): every card that leads with a marked heading carries that subject's colour as a soft light
+ * in its top corner and a fine hairline under the title, so a page of cards reads as a curated set, not a grid of
+ * identical boxes. The fill stays the one card surface; only light is added.
+ */
+.muse-card:has(.card-heading[data-tone]){--aura:var(--chart-1);background-image:radial-gradient(90% 70% at 100% 0%,color-mix(in srgb,var(--aura) 13%,transparent),transparent 62%),radial-gradient(60% 50% at 0% 0%,color-mix(in srgb,var(--aura) 7%,transparent),transparent 70%)}
+.muse-card:has(.card-heading[data-tone="2"]){--aura:var(--chart-2)}.muse-card:has(.card-heading[data-tone="3"]){--aura:var(--chart-3)}
+.muse-card:has(.card-heading[data-tone="4"]){--aura:var(--chart-4)}.muse-card:has(.card-heading[data-tone="5"]){--aura:var(--chart-5)}
+.muse-card:has(.card-heading[data-tone="6"]){--aura:var(--chart-6)}.muse-card:has(.card-heading[data-tone="7"]){--aura:var(--chart-7)}
+.muse-card:has(.card-heading[data-tone="8"]){--aura:var(--chart-8)}
+.muse-card .card-heading[data-tone]{position:relative}
+.muse-card .card-heading[data-tone]::after{content:"";position:absolute;left:0;right:0;bottom:-8px;height:1px;background:linear-gradient(90deg,color-mix(in srgb,var(--aura,var(--chart-1)) 70%,transparent),color-mix(in srgb,var(--glass-border) 80%,transparent) 40%,transparent)}
+.muse-card .card-heading[data-tone]{margin-bottom:16px}
+
+/* Glow-up 2: accent-coloured small text keeps its hue but reaches reading contrast on light themes. */
+@supports (color: oklch(from red l c h)){
+ :root:is([data-theme="iridescent"],[data-theme="solstice"],[data-theme="issya-bday"],[data-theme="bubblegum-baby"]) :is(.muse-kicker,.muse-section-eyebrow,.muse-trends .type-numeric,.muse-trends .small-label,.muse-idesk-seat,.muse-quest-kind){color:oklch(from var(--dl-kicker,var(--accent-secondary)) min(l,.46) max(c,.12) h)}
+ :root:is([data-theme="iridescent"],[data-theme="solstice"],[data-theme="issya-bday"],[data-theme="bubblegum-baby"]) .muse-trends .type-numeric{color:oklch(from var(--success-primary) min(l,.45) max(c,.12) h)}
+}
+
+/* Glow-up 2 gradient numerals: the Books dashboard's "2026" and "1 day" voice, shared. A big number runs from the
+   page's ink into its own colour (the tile's mark, the panel's aura). Light-card themes keep their solid card ink. */
+:root:not([data-theme="astral"]):not([data-theme="nightbloom"]) :is(.muse-stat-tile-value,.muse-money-income,.muse-money-tiles dd){--num-ink:var(--mark-a,var(--aura,var(--accent-primary)));background-image:linear-gradient(115deg,var(--foreground) 18%,color-mix(in oklab,var(--num-ink) 78%,var(--foreground)));-webkit-background-clip:text;background-clip:text;color:transparent}
+.muse-stat-tile-value{font-family:var(--font-editorial);font-weight:560;font-size:1.75rem;letter-spacing:-.025em;font-variant-numeric:lining-nums tabular-nums}
+.muse-stat-tile-value small{font-family:var(--font-ui)}
+@media (forced-colors:active){:is(.muse-stat-tile-value,.muse-money-income,.muse-money-tiles dd){color:CanvasText;background:none}}

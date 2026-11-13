@@ -3,9 +3,9 @@ import type {ReactNode} from 'react';
 import Link from 'next/link';
 import {MuseMark} from '@/components/design/MuseHeading';
 import {zodiacLabel} from '@/lib/cosmic-forecast';
-import {signInfo} from '@/lib/astrology/library';
 import {forecastPeriodLabel,forecastReflectionsCovering} from '@/lib/astrology/forecast-reference';
 import {useAstrologyData} from './AstrologyData';
+import {ZodiacTile} from './ZodiacGlyph';
 import {SavedReflection} from './ForecastReflection';
 import './ForecastReading.css';
 
@@ -22,7 +22,7 @@ export function ForecastHistory({date,state,footer}:{date:string;state:'past'|'f
   {state==='future'?<div className="muse-forecast-history-empty"><MuseMark icon="hourglass" tone={5} variant="soft"/><div><p className="muse-forecast-history-title">The sky hasn’t written this day yet.</p><p>Forecasts arrive on their own day. Come back on {day}.</p></div></div>
   :!loaded?<p className="muse-forecast-history-loading" role="status">Looking through your Cosmic Journal…</p>
   :kept.length?<><p className="muse-forecast-history-lead">What you kept from the sky on <time dateTime={date}>{day}</time></p>
-   <div className="muse-forecast-history-list">{kept.map(({entry,parts})=><SavedReflection key={entry.id} entry={entry} context={<span className="muse-forecast-reflect-context"><span aria-hidden="true">{signInfo[parts.sign].glyph}</span>{zodiacLabel(parts.sign)} · {forecastPeriodLabel(parts)}</span>}/>)}</div>
+   <div className="muse-forecast-history-list">{kept.map(({entry,parts})=><SavedReflection key={entry.id} entry={entry} context={<span className="muse-forecast-reflect-context"><ZodiacTile sign={parts.sign} size="sm"/>{zodiacLabel(parts.sign)} · {forecastPeriodLabel(parts)}</span>}/>)}</div>
    <p className="muse-forecast-history-note">The forecast itself isn’t kept after its day. Your words are.</p></>
   :<div className="muse-forecast-history-empty"><MuseMark icon="crescent" tone={5} variant="soft"/><div><p className="muse-forecast-history-title">Your cosmic forecast for this day wasn’t saved.</p><p>Forecasts belong to their own day and aren’t kept afterward. When one says something worth keeping, add a reflection and it will be waiting here.</p></div></div>}
   <div className="muse-forecast-footer">{footer}<Link className="muse-cosmic-pref-link" href="/whimsy/observatory?view=journal">Cosmic Journal</Link></div>

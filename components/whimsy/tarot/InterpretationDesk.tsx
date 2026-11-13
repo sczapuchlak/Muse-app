@@ -24,7 +24,7 @@ type Props={
  */
 export function InterpretationDesk({spread,drawn,question,active,onActive,onReveal,reflection,onReflection,mood,onMood,tags,onTags,busy,onSave,onDiscard}:Props){
  const id=useId(),field=useRef<HTMLTextAreaElement>(null);
- const [open,setOpen]=useState(true),[deeper,setDeeper]=useState(false),[whole,setWhole]=useState(false);
+ const [open,setOpen]=useState(()=>typeof window==='undefined'||!window.matchMedia('(max-width: 900px)').matches),[deeper,setDeeper]=useState(false),[whole,setWhole]=useState(false);
  const revealedCount=drawn.filter(item=>item.revealed).length,allRevealed=revealedCount===drawn.length;
  const current=drawn[active]?.revealed?active:drawn.findIndex(item=>item.revealed);
  const reading=useMemo(()=>current>=0?interpretCard(drawn[current].cardId,drawn[current].orientation,spread.positions[current]):null,[current,drawn,spread.positions]);

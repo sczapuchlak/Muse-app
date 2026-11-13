@@ -11,6 +11,8 @@ import { useRituals } from "./RitualStore";
 import { useRitualView } from "./ConnectedRituals";
 import { connectionLabel, connectionUnit } from "@/lib/ritual-connections";
 
+/** Values inside a 44px orb stay short: 8,000 reads as 8K. The full value is in the cell's label. */
+const orbValue=(value:number)=>new Intl.NumberFormat("en-US",{notation:value>=1000?"compact":"standard",maximumFractionDigits:value>=1000?1:2}).format(value);
 export function RitualWeekCell({ ritual, date, today, selected, onEditEntry }: { ritual: RitualDefinition; date: string; today: string; selected: boolean; onEditEntry: (ritual: RitualDefinition, date: string, anchor: HTMLElement, onComplete: (value: number | null) => void) => void }) {
   const { state, dispatch,store,status } = useRituals();
   const view = useRitualView();
@@ -33,8 +35,8 @@ export function RitualWeekCell({ ritual, date, today, selected, onEditEntry }: {
   const why = derived ? `${source}: ${new Intl.NumberFormat("en-US",{maximumFractionDigits:2}).format(derived.measured)} ${connectionUnit(ritual.connection!)} from ${derived.recordIds.length} ${derived.recordIds.length===1?"record":"records"}${derived.incomplete?" (some without a duration)":""}` : `${source}: nothing recorded yet`;
   return <div className="muse-ritual-week-cell" data-selected={selected} data-status={cell.status} data-recorded={cell.recorded} data-today={date === today}>
     {cell.status==="unscheduled"?<span className="muse-ritual-unavailable" aria-label={`${ritual.name}, ${dateLabel(date)}: not scheduled`}>—</span>:connected&&cell.status!=="upcoming"?<span className="muse-ritual-cell-control muse-edge" data-connected="true" role="img" aria-label={`${ritual.name}, ${dateLabel(date)}: ${statusLabel}. Connected — ${why}. Edit the source record to change it.`} title={`${dateLabel(date)} · ${statusLabel}\n${why}`}>
-      {cell.status === "complete" ? ritual.type==="category"?<span className="muse-ritual-category-dot" style={{"--category":category?.color} as React.CSSProperties}>{category?.label.slice(0,1)}</span>:ritual.type==="checkbox"?<MuseIcon name="check" size={19}/>:<><span className="muse-ritual-completed-value">{new Intl.NumberFormat("en-US",{maximumFractionDigits:2}).format(cell.value!)}</span><span className="muse-ritual-completion-badge"><MuseIcon name="check" size={11}/></span></>
-        : cell.status === "partial" ? <MuseProgressRing value={cell.value!} goal={ritual.goal}><span>{cell.value}</span><small>{ritual.type === "duration" ? "m" : ritual.unit.length<=3?ritual.unit:""}</small></MuseProgressRing>
+      {cell.status === "complete" ? ritual.type==="category"?<span className="muse-ritual-category-dot" style={{"--category":category?.color} as React.CSSProperties}>{category?.label.slice(0,1)}</span>:ritual.type==="checkbox"?<MuseIcon name="check" size={19}/>:<><span className="muse-ritual-completed-value">{orbValue(cell.value!)}</span><span className="muse-ritual-completion-badge"><MuseIcon name="check" size={11}/></span></>
+        : cell.status === "partial" ? <MuseProgressRing value={cell.value!} goal={ritual.goal}><span>{orbValue(cell.value!)}</span><small>{ritual.type === "duration" ? "m" : ritual.unit.length<=3?ritual.unit:""}</small></MuseProgressRing>
         : cell.value !== null ? <span>{cell.value}</span>
         : <span className="muse-ritual-unlogged" aria-hidden="true"/>}
     </span>:<button className="muse-ritual-cell-control muse-edge" type="button" disabled={disabled} aria-label={`${ritual.name}, ${dateLabel(date)}: ${statusLabel}`} aria-haspopup={ritual.type==='checkbox'?undefined:'dialog'} title={`${dateLabel(date)} · ${statusLabel}`} onClick={(event) => {
@@ -42,8 +44,8 @@ export function RitualWeekCell({ ritual, date, today, selected, onEditEntry }: {
     }}>
       {cell.status === "upcoming" ? <MuseStar size={15}/>
         : cell.status === "missed" ? <MuseIcon name="close" size={16}/>
-        : cell.status === "complete" ? ritual.type==="category"?<span className="muse-ritual-category-dot" style={{"--category":category?.color} as React.CSSProperties}>{category?.label.slice(0,1)}</span>:ritual.type==="checkbox"?<MuseIcon name="check" size={19}/>:<><span className="muse-ritual-completed-value">{new Intl.NumberFormat("en-US",{maximumFractionDigits:2}).format(cell.value!)}</span><span className="muse-ritual-completion-badge"><MuseIcon name="check" size={11}/></span></>
-        : cell.status === "partial" ? <MuseProgressRing value={cell.value!} goal={ritual.goal}><span>{cell.value}</span><small>{ritual.type === "duration" ? "m" : ritual.unit.length<=3?ritual.unit:""}</small></MuseProgressRing>
+        : cell.status === "complete" ? ritual.type==="category"?<span className="muse-ritual-category-dot" style={{"--category":category?.color} as React.CSSProperties}>{category?.label.slice(0,1)}</span>:ritual.type==="checkbox"?<MuseIcon name="check" size={19}/>:<><span className="muse-ritual-completed-value">{orbValue(cell.value!)}</span><span className="muse-ritual-completion-badge"><MuseIcon name="check" size={11}/></span></>
+        : cell.status === "partial" ? <MuseProgressRing value={cell.value!} goal={ritual.goal}><span>{orbValue(cell.value!)}</span><small>{ritual.type === "duration" ? "m" : ritual.unit.length<=3?ritual.unit:""}</small></MuseProgressRing>
         : cell.value !== null ? <span>{cell.value}</span>
         : <span className="muse-ritual-unlogged" aria-hidden="true"/>}
 

@@ -145,3 +145,34 @@
 .mood-card .mood-content>div:first-child .feeling-chip>svg{position:absolute;top:8px;right:8px;opacity:.65}
 .mood-card .mood-content>div:first-child .feeling-chips>.add-control{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;border-style:dashed}
 .mood-card .mood-content>div:first-child .feeling-chips>.add-control:only-child{grid-column:1/-1;flex-direction:row;justify-content:center;min-height:52px;border-radius:var(--pill-radius,999px)}
+
+/* ── Emotional history (glow-up 2): a seven-day ribbon and one detail panel. Fixed size; no growing pile. ── */
+.muse-mood-history .muse-mood-history-header>.muse-heading{flex:1 1 320px}
+.muse-mood-week{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+.muse-mood-week-ribbon{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;margin:0;padding:0;list-style:none}
+.muse-mood-week-ribbon button{display:grid;justify-items:center;gap:4px;width:100%;min-height:118px;padding:10px 4px;border:1px solid var(--glass-border);border-radius:16px;background-color:var(--glass-background);color:var(--text-muted);cursor:pointer;transition:transform .2s,border-color .2s,box-shadow .2s}
+.muse-mood-week-ribbon button[data-recorded]{color:var(--foreground);background-image:linear-gradient(180deg,color-mix(in srgb,var(--accent-secondary) 12%,transparent),transparent 70%)}
+.muse-mood-week-ribbon button:hover{border-color:color-mix(in srgb,var(--accent-secondary) 55%,var(--glass-border));transform:translateY(-2px)}
+.muse-mood-week-ribbon button[aria-pressed=true]{border-color:transparent;box-shadow:0 0 0 2px var(--selected-border),0 10px 22px -12px color-mix(in srgb,var(--accent-primary) 80%,transparent)}
+.muse-mood-week-ribbon button:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
+.muse-mood-week-dow{font-size:.66rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+.muse-mood-week-ribbon strong{font-family:var(--font-editorial);font-weight:520;font-size:1.5rem;line-height:1}
+.muse-mood-week-emoji{font-size:1.35rem;line-height:1.2;min-height:1.6rem}
+.muse-mood-week-dots{display:flex;gap:3px;min-height:7px}
+.muse-mood-week-dots i{width:7px;height:7px;border-radius:50%;background:var(--quadrant-color)}
+.muse-mood-week-detail{display:grid;gap:12px;padding:clamp(14px,2vw,20px);border:1px solid var(--glass-border);border-radius:20px;background-color:var(--glass-background)}
+.muse-mood-week-detail>header{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding-bottom:10px;border-bottom:1px solid var(--glass-border)}
+.muse-mood-week-detail h3{margin:2px 0 0;font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight);font-size:1.45rem}
+.muse-mood-week-detail ul{display:grid;gap:10px;margin:0;padding:0;list-style:none}
+.muse-mood-week-detail .muse-mood-checkin-row{grid-template-columns:auto minmax(0,1fr) auto;padding:12px;border-radius:14px;background:var(--surface-subtle)}
+.muse-mood-period{display:inline-flex;align-items:center;gap:8px;min-width:96px;font-size:.78rem;font-weight:650}
+.muse-mood-period .muse-mark{width:26px;height:26px;border-radius:9px}
+.muse-mood-week-detail .muse-mood-checkin-reflection{margin:6px 0 0;font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-quote-weight);font-size:1rem;line-height:1.5}
+.muse-mood-week-empty{margin:0;color:var(--text-muted);font-style:italic}
+@container muse-content (min-width:980px){.muse-mood-week{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);align-items:start}}
+@container muse-content (max-width:640px){
+ .muse-mood-week-ribbon{gap:4px}.muse-mood-week-ribbon button{min-height:92px;padding:8px 2px;border-radius:12px}
+ .muse-mood-week-ribbon strong{font-size:1.15rem}.muse-mood-week-emoji{font-size:1.1rem}
+ .muse-mood-week-detail .muse-mood-checkin-row{grid-template-columns:minmax(0,1fr) auto}.muse-mood-period{grid-column:1/-1}
+}
+@media (prefers-reduced-motion:reduce){.muse-mood-week-ribbon button{transition:none}.muse-mood-week-ribbon button:hover{transform:none}}

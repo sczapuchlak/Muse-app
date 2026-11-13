@@ -1,4 +1,5 @@
 "use client";
+import {MuseMark} from "../design/MuseHeading";
 import { useRef,useState } from "react";
 import { groceryItemsFor,type GroceryItem,type GrocerySection } from "@/lib/nourish";
 import { visibleGrocerySections } from "@/lib/grocery-sections";
@@ -27,8 +28,8 @@ export function GroceryList() {
  const {state,dispatch}=useNourish(),[editor,setEditor]=useState<{item:GroceryItem;anchor:HTMLElement}|null>(null),[showAll,setShowAll]=useState(false),[removed,setRemoved]=useState<GroceryItem[]>([]);
  const titleRef=useRef<HTMLHeadingElement>(null),complete=state.groceryItems.filter((item)=>item.complete).length,categories=visibleGrocerySections(state.grocerySections,state.groceryItems,showAll);
  return <section aria-label="Grocery list" className="muse-grocery-view">
- <div className="muse-nourish-section-heading"><div><h2 tabIndex={-1} ref={titleRef}>Grocery list</h2><p className="card-description">{state.groceryItems.length?"A little list. Something lovely to bring home.":"Start with a few essentials. There’s room for the extras."}</p></div><button className="text-button" type="button" disabled={!complete} onClick={()=>{setRemoved(state.groceryItems.filter((item)=>item.complete));dispatch({type:"grocery/clear-completed"});}}>Clear completed{complete>0&&` (${complete})`}</button></div>
- <GroceryQuickAdd global/>
+ <div className="muse-grocery-desk"><span className="muse-grocery-desk-art" aria-hidden="true"/><div className="muse-nourish-section-heading"><div><h2 tabIndex={-1} ref={titleRef}><MuseMark icon="basket" tone={2} className="muse-grocery-mark"/>Grocery list</h2><p className="card-description">{state.groceryItems.length?"A little list. Something lovely to bring home.":"Start with a few essentials. There’s room for the extras."}</p></div><button className="text-button" type="button" disabled={!complete} onClick={()=>{setRemoved(state.groceryItems.filter((item)=>item.complete));dispatch({type:"grocery/clear-completed"});}}>Clear completed{complete>0&&` (${complete})`}</button></div>
+ <GroceryQuickAdd global/></div>
  {removed.length>0&&<div className="muse-grocery-undo" role="status"><span>{removed.length===1?`${removed[0].name} removed`:`${removed.length} items cleared`}</span><button className="text-button" type="button" onClick={()=>{dispatch({type:"grocery/restore",items:removed});setRemoved([]);titleRef.current?.focus();}}>Undo</button><button className="muse-grocery-icon" type="button" aria-label="Dismiss undo" onClick={()=>setRemoved([])}><MuseIcon name="close" size={14}/></button></div>}
  <div className="muse-grocery-category-tools"><span className="small-label">Shopping categories</span><button className="text-button" type="button" aria-pressed={showAll} onClick={()=>setShowAll((value)=>!value)}>{showAll?"Show relevant categories":"Show all categories"}</button></div>
  <div className="muse-grocery-sections">{categories.map((category)=><GroceryCategory key={category.id} category={category} onEdit={(item,anchor)=>setEditor({item,anchor})} onRemove={(item)=>{setRemoved([item]);dispatch({type:"grocery/remove",id:item.id});titleRef.current?.focus();}}/>)}</div>

@@ -145,3 +145,10 @@
 .muse-dash-col .muse-desk-pool{height:10px}
 .muse-dash-col .muse-desk-reading{padding:16px 18px;grid-template-rows:auto auto!important;align-content:start}
 @container muse-content (max-width:900px){.muse-dash-col .muse-desk-track,.muse-dash-col .muse-desk-layout[data-count] .muse-desk-track{grid-auto-columns:minmax(260px,calc((100% - 12px)/2))!important}}
+
+/* Glow-up 2: every Books Dashboard panel title is the same mark + editorial title as the Reading Atlas. */
+:is(.muse-desk-head h3,.muse-dash-card>header h3,.muse-plans-title h3,.muse-upnext h3,.muse-trends h3){display:flex;align-items:center;gap:10px;margin:0;font-family:var(--font-editorial);font-style:normal;font-weight:var(--type-editorial-weight);font-size:1.32rem;line-height:1.2;letter-spacing:-.005em}
+.muse-books-mark.muse-mark{width:30px;height:30px;border-radius:10px;flex:none}
+.muse-books-mark.muse-mark svg{width:15px;height:15px}
+.muse-plans-title>.small-label,.muse-trends-head .small-label,.muse-upnext-head .small-label{display:none}
+.muse-desk-reading .muse-desk-card{width:100%}

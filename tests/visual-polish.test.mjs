@@ -11,13 +11,13 @@ function MoneyProvider({initialState=moneySample,children}){const view={state:in
 
 test('Money Overview aligns the spending/comparison row and keeps recurring full-width before recent spending',()=>{
  const {MoneyOverview}=load('components/money/MoneyViews'),html=renderToStaticMarkup(React.createElement(MoneyProvider,null,React.createElement(MoneyOverview,{paycheck:moneySample.paychecks[0],period:money.paycheckPeriod(moneySample.paychecks[0]),today:'2026-10-30',onOpen(){},onSpending(){}})));
- const spent=html.indexOf('muse-money-recorded'),comparison=html.indexOf('muse-money-comparison'),recurring=html.indexOf('<h2>Recurring</h2>'),recent=html.indexOf('<h2>Recent spending</h2>');assert.ok(spent<comparison&&comparison<recurring&&recurring<recent);assert.ok(!html.includes('muse-money-dashboard-column"'));const css=readFileSync(resolve(root,'components/money/Money.css'),'utf8');assert.ok(css.includes('grid-template-columns:repeat(2,minmax(0,1fr))'));assert.ok(!css.includes('grid-auto-rows'));
+ const spent=html.indexOf('muse-money-recorded'),comparison=html.indexOf('muse-money-comparison'),recurring=html.indexOf('Recurring</h2>'),recent=html.indexOf('Recent spending</h2>');assert.ok(spent<comparison&&comparison<recurring&&recurring<recent);assert.ok(!html.includes('muse-money-dashboard-column"'));const css=readFileSync(resolve(root,'components/money/Money.css'),'utf8');assert.ok(css.includes('grid-template-columns:repeat(2,minmax(0,1fr))'));assert.ok(!css.includes('grid-auto-rows'));
 });
 
 test('paycheck quick shelf stays three records while historical selection shares canonical IDs',()=>{
  const nav=money.paycheckNavigation(moneySample,'2026-10-30');assert.deepEqual(nav.quick.map((entry)=>entry.paycheck?.id),['pay-oct09','pay-oct23','pay-nov06']);assert.equal(nav.history.length,2);assert.equal(new Set([...nav.history,...nav.quick.map((entry)=>entry.paycheck)].map((entry)=>entry.id)).size,moneySample.paychecks.length);
  const {MoneyPaychecks}=load('components/money/MoneyPaychecks'),old=nav.history[0],html=renderToStaticMarkup(React.createElement(MoneyProvider,null,React.createElement(MoneyPaychecks,{paycheck:old,today:'2026-10-30',onOpen(){},onSelect(){}})));
- assert.ok(html.includes('<h2>'+old.name+'</h2>'));assert.ok(html.includes('Past paychecks: '+old.name));assert.equal((html.match(/class="choice-button"/g)??[]).length,3);
+ assert.ok(html.includes(old.name+'</h2>'));assert.ok(html.includes('Past paychecks: '+old.name));assert.equal((html.match(/class="choice-button"/g)??[]).length,3);
  assert.equal(money.paycheckNavigation({...moneySample,paychecks:[]},'2026-10-30').history.length,0);
 });
 

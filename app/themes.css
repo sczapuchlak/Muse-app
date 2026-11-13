@@ -30,7 +30,7 @@
   --atmosphere-lavender: rgba(139, 57, 231, .63);
   --atmosphere-blush: rgba(242, 40, 153, .58);
   --atmosphere-blue-violet: rgba(91, 103, 226, 0.34);
-  --glass-background: rgba(255, 255, 255, .52);
+  --glass-background: rgba(255, 255, 255, .9);
   --glass-border: rgba(138, 77, 224, 0.34);
   --glass-edge: rgba(255, 255, 255, 0.9);
   --glass-aqua-edge: rgba(67, 182, 208, 0.24);
@@ -89,7 +89,7 @@
   --planning-task-border: rgba(128, 134, 175, .27);
   --planning-control-background: rgba(255, 255, 255, .55);
 
-  --frosted-glass-background: rgba(250, 249, 255, .90);
+  --frosted-glass-background: rgba(250, 249, 255, .98);
   --frosted-floating-background: rgba(252, 250, 255, .98);
   --frosted-surface-subtle: rgba(255, 255, 255, .66);
   --frosted-surface-hover: rgba(255, 255, 255, .86);
@@ -539,7 +539,7 @@
   --atmosphere-lavender: rgba(245, 151, 119, .46);
   --atmosphere-blush: rgba(242, 32, 130, .53);
   --atmosphere-blue-violet: rgba(24, 155, 147, .20);
-  --glass-background: rgba(255, 255, 255, .54);
+  --glass-background: rgba(255, 252, 248, .9);
   --glass-border: rgba(190, 68, 124, .30);
   --glass-edge: rgba(255, 255, 255, .94);
   --glass-aqua-edge: rgba(30, 150, 157, .27);
@@ -598,7 +598,7 @@
   --planning-task-border: rgba(173, 110, 128, .26);
   --planning-control-background: rgba(255, 255, 255, .58);
 
-  --frosted-glass-background: rgba(255, 247, 236, .92);
+  --frosted-glass-background: rgba(255, 247, 236, .98);
   --frosted-floating-background: rgba(255, 248, 237, .99);
   --frosted-surface-subtle: rgba(255, 255, 255, .70);
   --frosted-surface-hover: rgba(255, 255, 255, .90);
@@ -860,7 +860,7 @@
   --atmosphere-lavender: rgba(139, 100, 255, .23);
   --atmosphere-blush: rgba(255, 62, 143, .27);
   --atmosphere-blue-violet: rgba(117, 155, 255, .12);
-  --glass-background: rgba(24, 25, 31, .72);
+  --glass-background: rgba(24, 25, 31, .9);
   --glass-border: rgba(219, 177, 250, .46);
   --glass-edge: rgba(242, 226, 255, .38);
   --glass-aqua-edge: rgba(121, 255, 212, .38);
@@ -919,7 +919,7 @@
   --planning-task-border: rgba(212, 210, 238, .38);
   --planning-control-background: rgba(210, 214, 233, .16);
 
-  --frosted-glass-background: rgba(27, 28, 34, .96);
+  --frosted-glass-background: rgba(27, 28, 34, .98);
   --frosted-floating-background: rgba(30, 30, 37, .99);
   --frosted-surface-subtle: rgba(219, 205, 242, .16);
   --frosted-surface-hover: rgba(228, 204, 251, .25);
@@ -1156,7 +1156,7 @@
   --atmosphere-lavender: rgba(255,21,153,.34);
   --atmosphere-blush: rgba(255,118,33,.20);
   --atmosphere-blue-violet: rgba(162,230,0,.16);
-  --glass-background: rgba(7,6,10,.66);
+  --glass-background: rgba(12,10,16,.9);
   --glass-border: rgba(203,140,255,.33);
   --glass-edge: rgba(255,239,255,.30);
   --glass-aqua-edge: rgba(0,207,232,.30);
@@ -1212,7 +1212,7 @@
   --planning-task-background: rgba(56,55,61,.86);
   --planning-task-border: rgba(112,204,218,.34);
   --planning-control-background: rgba(52,50,58,.88);
-  --frosted-glass-background: rgba(17,16,20,.94);
+  --frosted-glass-background: rgba(17,16,20,.98);
   --frosted-floating-background: rgba(23,19,30,.98);
   --frosted-surface-subtle: rgba(40,33,50,.87);
   --frosted-surface-hover: rgba(69,51,82,.96);

@@ -4,12 +4,12 @@ import Link from 'next/link';
 import {MuseMark} from '@/components/design/MuseHeading';
 import {MuseIcon} from '@/components/MuseIcon';
 import {zodiacLabel,type ZodiacSign} from '@/lib/cosmic-forecast';
-import {signInfo} from '@/lib/astrology/library';
 import type {ForecastPeriod} from '@/lib/astrology/forecast';
 import {forecastRange} from '@/lib/astrology/forecast';
 import {forecastPeriodLabel,forecastReference,forecastReflection} from '@/lib/astrology/forecast-reference';
 import type {CosmicJournalEntry} from '@/lib/astrology/models';
 import {useAstrologyData} from './AstrologyData';
+import {ZodiacTile} from './ZodiacGlyph';
 
 const prompts:Record<ForecastPeriod,string[]>={
  daily:['What line landed, and why today?','Where did this already show up?','What would you like to remember about this day?'],
@@ -48,7 +48,7 @@ export function ForecastReflection({sign,period,date,timeZone,today,compact=fals
    setOpen(false);setText('');setJustSaved(true);
   }catch(reason){setError(reason instanceof Error?reason.message:'That didn’t save. Your words are still here; try again.');}
  }
- const context=<span className="muse-forecast-reflect-context"><span aria-hidden="true">{signInfo[sign].glyph}</span>{zodiacLabel(sign)} · {forecastPeriodLabel(parts)}</span>;
+ const context=<span className="muse-forecast-reflect-context"><ZodiacTile sign={sign} size="sm"/>{zodiacLabel(sign)} · {forecastPeriodLabel(parts)}</span>;
  if(!loaded)return null;
  return <div className="muse-forecast-reflect" data-open={open||undefined} data-compact={compact||undefined} data-saved={!!saved&&!open||undefined} ref={wrap}>
   {open?<form className="muse-forecast-reflect-composer" onSubmit={event=>{event.preventDefault();void save();}}>

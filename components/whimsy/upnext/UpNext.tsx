@@ -1,4 +1,5 @@
 'use client';
+import {MuseMark} from '@/components/design/MuseHeading';
 import {useRef,useState,type CSSProperties,type PointerEvent as ReactPointerEvent} from 'react';
 import {MuseIcon} from '@/components/MuseIcon';
 import {GlassPopover} from '@/components/GlassPopover';
@@ -55,7 +56,7 @@ export function UpNext({books,today,canStart,onOpenBook,onStart}:{books:Book[];t
  const filled=upNext.slots.filter(Boolean).length;
  const choose=(index:number,id:string,keepOpen=false)=>{const b=byId.get(id);void upNext.place(index,id);if(!keepOpen)setFlow(null);if(b)setNote(`“${b.title}” is in slot ${index+1}.`);};
  return <section className="muse-upnext" aria-labelledby="up-next-heading">
-  <header className="muse-upnext-head"><div><span className="small-label">A little ritual</span><h3 id="up-next-heading">Up next</h3></div><p>Up to three books you might reach for next. No pressure.</p></header>
+  <header className="muse-upnext-head"><div><span className="small-label">A little ritual</span><h3 id="up-next-heading"><MuseMark icon="dice" tone={2} size="sm" className="muse-books-mark"/>Up next</h3></div><p>Up to three books you might reach for next. No pressure.</p></header>
   {upNext.error&&<p role="alert" className="muse-books-error">{upNext.error} <button type="button" className="text-button" onClick={upNext.clearError}>Dismiss</button></p>}
   {note&&<p role="status" className="muse-plans-note">{note}</p>}
   <ol className="muse-upnext-row" aria-label="Up Next slots">{upNext.slots.map((id,i)=>{const book=id?byId.get(id)??null:null;return <Slot key={i} index={i} book={book} count={filled} canStart={canStart} dragging={drag?.index===i} offset={{x:drag?.x??0,y:drag?.y??0}} over={drag?.over===i} register={el=>{if(el)cards.current.set(i,el);else cards.current.delete(i);}} onOpen={()=>book&&onOpenBook(book.id)} onStart={()=>book&&onStart(book)} onChoose={()=>setFlow({kind:'pick',index:i})} onSpin={()=>setFlow({kind:'spin',index:i})} onReplace={()=>setFlow({kind:'pick',index:i})} onRemove={()=>{void upNext.remove(i);setNote('Removed from Up Next. It is still in your Library.');}} onNudge={d=>void upNext.nudge(i,d)} onHandleDown={down(i)} onHandleMove={move(i)} onHandleUp={up(i)}/>;})}</ol>

@@ -23,11 +23,11 @@ test('the three-star identity keeps official geometry and three coordinated tone
  const earned=render(AchievementStar,{});assert.ok(earned.includes(MUSE_STAR_PATH));assert.ok(earned.includes('var(--achievement-gold)'));assert.ok(!earned.includes('--icon-gradient'));
 });
 
-test('standalone heading icons keep unique gradient paint without decorative tiles or button semantics',()=>{
+test('card heading marks are decorative, toned and never buttons; standalone glass icons keep gradient paint',()=>{
  const {GlassIcon}=load('components/GlassIcon'),{CardHeading}=load('components/CardHeading');
  const legacy=render(GlassIcon,{name:'water'});assert.ok(legacy.startsWith('<svg'));assert.ok(legacy.includes('linearGradient'));assert.ok(!legacy.includes('<span'));assert.ok(!legacy.includes('<button'));assert.ok(!legacy.includes('tabindex='));
  for(const icon of ['water','movement','meals','mood','money','notes','insights']){
-  const html=render(CardHeading,{id:icon,title:icon,icon});assert.ok(html.includes('linearGradient'));assert.ok(!html.includes('muse-glass-icon'));assert.ok(!html.includes('<button'));assert.ok(html.includes('width="22" height="22"'));
+  const html=render(CardHeading,{id:icon,title:icon,icon});assert.ok(html.includes('class="muse-mark card-heading-mark"'),'glow-up 2: card titles carry a coloured jewel mark (like the Reading Atlas Vibes heading)');assert.ok(html.includes('aria-hidden="true"'));assert.ok(/data-tone="[1-8]"/.test(html));assert.ok(!html.includes('muse-glass-icon'));assert.ok(!html.includes('<button'));
  }
  assert.ok(!render(MuseIcon,{name:'search',size:16}).includes('linearGradient'));
 });

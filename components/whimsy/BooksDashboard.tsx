@@ -1,4 +1,5 @@
 'use client';
+import {MuseMark} from '@/components/design/MuseHeading';
 import {useState,type CSSProperties,type ReactNode} from 'react';
 import {MuseIcon} from '@/components/MuseIcon';
 import type {Book,ReadingGoal,ReadingSession} from '@/lib/whimsy/models';
@@ -27,7 +28,7 @@ const span=(seconds:number)=>{if(seconds<60)return seconds?'under a minute':'tim
 /** Recently finished: the books you finished lately, two cards at a time, with how long each took. */
 export function RecentlyFinished({books,sessions,onOpen}:{books:Book[];sessions:ReadingSession[];onOpen:(id:string)=>void}){
  const finished=completionEvents(books).filter(e=>e.completion.finishedOn).sort((a,b)=>b.completion.finishedOn.localeCompare(a.completion.finishedOn)).slice(0,10).map(e=>{const own=cycleSessions(e.book,sessions,e.completion);return {...e,seconds:own.reduce((n,x)=>n+sessionSeconds(x),0),count:own.length};});
- return <section className="muse-dash-card muse-dash-finished" aria-labelledby="dash-finished"><header><h3 id="dash-finished">Recently finished</h3></header>
+ return <section className="muse-dash-card muse-dash-finished" aria-labelledby="dash-finished"><header><h3 id="dash-finished"><MuseMark icon="trophy" tone={4} size="sm" className="muse-books-mark"/>Recently finished</h3></header>
   {finished.length?<PagedList items={finished} size={2} cols={2} label="recently finished books" className="muse-finished-cards" render={f=><button type="button" role="listitem" key={`${f.book.id}:${f.completion.id}`} className="muse-finished-card" onClick={()=>onOpen(f.book.id)} title={f.book.title}>
     <span className="muse-finished-card-cover"><Cover book={f.book}/></span><strong>{f.book.title}</strong>
     <span className="muse-finished-card-meta type-numeric">{f.count?`${span(f.seconds)} · ${f.count} ${f.count===1?'session':'sessions'}`:'No sessions logged'}</span><small>{yearDate(f.completion.finishedOn)}</small></button>}/>
@@ -37,6 +38,6 @@ export function RecentlyFinished({books,sessions,onOpen}:{books:Book[];sessions:
 /** Recent reading sessions: the latest sittings, three at a time. */
 export function RecentSessions({books,sessions,onOpen}:{books:Book[];sessions:ReadingSession[];onOpen:(id:string)=>void}){
  const byId=new Map(books.map(b=>[b.id,b])),recent=[...sessions].sort((a,b)=>b.date.localeCompare(a.date)||b.createdAt.localeCompare(a.createdAt)).slice(0,18);
- return <section className="muse-dash-card muse-dash-recent" aria-labelledby="dash-recent"><header><h3 id="dash-recent">Recent reading sessions</h3></header>
+ return <section className="muse-dash-card muse-dash-recent" aria-labelledby="dash-recent"><header><h3 id="dash-recent"><MuseMark icon="clock" tone={3} size="sm" className="muse-books-mark"/>Recent reading sessions</h3></header>
   {recent.length?<PagedList items={recent} size={3} cols={3} label="recent sittings" className="muse-dash-recent-list" render={s=>{const b=byId.get(s.bookId);return <button type="button" role="listitem" key={s.id} onClick={()=>b&&onOpen(b.id)}><span className="muse-finished-cover" aria-hidden="true"><Cover book={b}/></span><span className="muse-finished-copy"><strong>{b?.title??'A book'}</strong><span>{yearDate(s.date)} · {sessionSeconds(s)?span(sessionSeconds(s))+' · ':''}{s.pages} {s.pages===1?'page':'pages'}</span></span></button>;}}/>:<p>Your sittings show up here after the first one.</p>}</section>;
 }
