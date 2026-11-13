@@ -193,3 +193,7 @@
 .muse-stat-tile-value small{margin-left:4px;font-size:.78rem;font-weight:500;letter-spacing:0;color:var(--text-muted)}
 .muse-stat-tile-note{color:var(--text-muted);font-size:.76rem;line-height:1.35}
 @container muse-content (max-width:640px){.muse-stat-row{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.muse-stat-tile{padding:10px 12px;gap:10px}.muse-stat-tile-value{font-size:1.3rem}.muse-stat-row>.muse-stat-tile:last-child:nth-child(odd){grid-column:1/-1}}
+
+/* Control bars that sit directly on the atmosphere (search, segmented pickers, the date pill, week jump) are solid in
+   every theme, not only the role themes: a see-through bar over a vivid background reads as a different app. */
+:is(.date-navigation,.muse-segmented,.muse-search,.muse-week-jump,.muse-atlas-sections):not(:is(.muse-card,.muse-sheet,.muse-panel,.muse-insight-panel,.muse-money-panel,.muse-modal,.muse-drawer,.muse-popover-panel) *){background-color:var(--glass-background)}

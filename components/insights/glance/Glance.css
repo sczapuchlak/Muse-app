@@ -394,3 +394,5 @@
 .muse-glance-year-stack .muse-glance-minibars li{--minibar-height:44px;grid-template-rows:44px auto}
 .muse-glance-year-grid>[style*="read"] .muse-glance-reading{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px 24px;align-items:start}
 @media (max-width:700px){.muse-glance-year-grid>[style*="read"] .muse-glance-reading{grid-template-columns:minmax(0,1fr)}}
+/* Glow-up: day tiles sit directly on the atmosphere, so they take the opaque card surface (like every Insights card). */
+.muse-glance-mini{background-color:var(--glass-background)}
