@@ -74,7 +74,7 @@ test('Recurring view is compact, distinguishes source/method and annual billing,
  for(const text of ['Know what’s coming','Next charge','Billed through','Paid with','Apple App Store','Yearly','Paused','Cancelled','annualized'])assert.ok(html.includes(text),text);
  assert.ok(!html.includes('<select'));assert.match(html,/<label[^>]*class="sr-only"[^>]*>Search recurring payments<\/label>[\s\S]*type="search"/,'search keeps an accessible label');
  const preview=renderToStaticMarkup(React.createElement(MoneyContext.Provider,{value:{getSnapshot:()=>({state:moneySample,loaded:true}),subscribe:()=>()=>{},dispatch:()=>{}}},React.createElement(RecurringPreview,{today,onOpen(){},onView(){}})));
- assert.equal((preview.match(/<time /g)??[]).length,3,'dashboard stays bounded');
+ assert.equal((preview.match(/class="muse-recurring-tile"/g)??[]).length,3,'dashboard stays bounded: one carousel page');assert.ok(preview.includes('aria-roledescription="carousel"'));
 });
 
 test('editing an amount in a short month preserves the billing day; deliberately editing next date reanchors it',()=>{
