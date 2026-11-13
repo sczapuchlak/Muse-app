@@ -277,3 +277,6 @@
 :is(a,button):hover>.muse-nav-mark.muse-mark{transform:rotate(-8deg) scale(1.08)}
 .muse-page :is(.muse-section-nav,.muse-books-tabs,.muse-page-tabs,.muse-fun-cabinet):has(.muse-nav-mark) small{font-size:.74rem;color:var(--nav-ink)}
 @media(max-width:600px){.muse-page :is(.muse-page-tabs,.muse-section-nav,.muse-whimsy-navigation,.muse-cosmic-navigation,.muse-books-tabs,.muse-tarot-tabs,.muse-dream-tabs,.muse-fortune-tabs,.muse-fun-cabinet):has(.muse-nav-mark){flex-wrap:nowrap;overflow-x:auto;width:auto;scrollbar-width:none}.muse-page :is(.muse-page-tabs,.muse-section-nav,.muse-whimsy-navigation,.muse-cosmic-navigation,.muse-books-tabs,.muse-tarot-tabs,.muse-dream-tabs,.muse-fortune-tabs,.muse-fun-cabinet):has(.muse-nav-mark)>:is(a,button){flex:none}}
+/* The icon tile tilts on hover; the pill never clips it. */
+.muse-page :is(.muse-page-tabs,.muse-section-nav,.muse-whimsy-navigation,.muse-cosmic-navigation,.muse-books-tabs,.muse-tarot-tabs,.muse-dream-tabs,.muse-fortune-tabs,.muse-fun-cabinet):has(.muse-nav-mark)>:is(a,button){overflow:visible}
+:is(a,button):hover>.muse-nav-mark.muse-mark{transform:rotate(-6deg) scale(1.04)}

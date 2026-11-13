@@ -1,0 +1,39 @@
+/*
+ * Dream Diary, round 5 (Nov 13: "is there a way to shnazz dream diary too?"). Each dream is a small night sky tinted by
+ * its kind (vivid, lucid, nightmare, recurring, fragment, daydream), with stardust and a glowing crescent; the month is
+ * an italic title under a moon. Three across with no lone card on a last row (same rule as the Reading Journal).
+ */
+.muse-dreamscapes .muse-dream-month>header{align-items:center;gap:12px;padding-bottom:10px;border-bottom:0;background:linear-gradient(90deg,color-mix(in srgb,var(--chart-6) 55%,transparent),transparent 70%) bottom/100% 1px no-repeat}
+.muse-dreamscapes .muse-dream-month>header h3{font-style:italic;font-size:clamp(1.35rem,2vw,1.6rem)}
+.muse-dreamscapes .muse-dream-month>header h3::before{content:"☾";display:inline-grid;place-items:center;width:30px;height:30px;margin-right:10px;border-radius:50%;font-style:normal;font-size:1rem;color:#fff6d8;vertical-align:middle;
+ background:radial-gradient(circle at 35% 30%,color-mix(in srgb,#ffe7a6 60%,var(--chart-6)),var(--chart-6));box-shadow:0 0 16px -2px var(--chart-6)}
+
+.muse-dreamscapes .muse-dream-list{grid-template-columns:repeat(3,minmax(0,1fr))!important;align-items:stretch!important;gap:16px}
+.muse-dreamscapes .muse-dream-list:has(>:last-child:nth-child(3n+1))>:first-child,
+.muse-dreamscapes .muse-dream-list:has(>:last-child:nth-child(3n+2))>:first-child{grid-column:span 2}
+.muse-dreamscapes .muse-dream-list:has(>:last-child:nth-child(3n+1)):has(>:nth-child(4))>:last-child{grid-column:span 2}
+.muse-dreamscapes .muse-dream-list>:only-child{grid-column:1/-1!important}
+@container muse-content (max-width:1000px){.muse-dreamscapes .muse-dream-list{grid-template-columns:repeat(2,minmax(0,1fr))!important}.muse-dreamscapes .muse-dream-list>*{grid-column:auto!important}.muse-dreamscapes .muse-dream-list:has(>:last-child:nth-child(odd))>:first-child{grid-column:1/-1!important}}
+@media (max-width:650px){.muse-dreamscapes .muse-dream-list{grid-template-columns:minmax(0,1fr)!important}.muse-dreamscapes .muse-dream-list>*{grid-column:auto!important}}
+
+.muse-dreamscapes .muse-dream-entry{--dream:var(--chart-6);height:100%;isolation:isolate;overflow:hidden;border:1px solid color-mix(in srgb,var(--dream) 32%,var(--glass-border))!important;border-left-width:1px!important;border-radius:20px!important;padding:16px 18px 14px!important;
+ background:radial-gradient(90% 70% at 100% 0%,color-mix(in srgb,var(--dream) 24%,transparent),transparent 62%),radial-gradient(70% 60% at 0% 100%,color-mix(in srgb,var(--dream) 10%,transparent),transparent 70%),linear-gradient(180deg,color-mix(in srgb,var(--dream) 6%,var(--glass-background)),var(--glass-background))!important;
+ transition:transform .4s cubic-bezier(.2,.8,.2,1),box-shadow .4s,border-color .3s!important}
+.muse-dreamscapes .muse-dream-entry[data-type=vivid]{--dream:var(--chart-3)}
+.muse-dreamscapes .muse-dream-entry[data-type=lucid]{--dream:var(--chart-6)}
+.muse-dreamscapes .muse-dream-entry[data-type=nightmare]{--dream:var(--chart-2)}
+.muse-dreamscapes .muse-dream-entry[data-type=recurring]{--dream:var(--chart-4)}
+.muse-dreamscapes .muse-dream-entry[data-type="dream fragment"],.muse-dreamscapes .muse-dream-entry[data-type=fragment]{--dream:var(--chart-5)}
+.muse-dreamscapes .muse-dream-entry[data-type=daydream]{--dream:var(--chart-7)}
+/* stardust */
+.muse-dreamscapes .muse-dream-entry::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:.55;
+ background-image:radial-gradient(1px 1px at 14% 24%,white 50%,transparent 51%),radial-gradient(1.3px 1.3px at 72% 14%,white 50%,transparent 51%),radial-gradient(1px 1px at 38% 70%,white 50%,transparent 51%),radial-gradient(1px 1px at 86% 58%,white 50%,transparent 51%),radial-gradient(1.2px 1.2px at 58% 40%,color-mix(in srgb,var(--dream) 60%,white) 50%,transparent 51%),radial-gradient(1px 1px at 8% 86%,white 50%,transparent 51%)}
+/* the crescent */
+.muse-dreamscapes .muse-dream-entry::after{content:"";position:absolute;right:14px;bottom:12px;width:26px;height:26px;border-radius:50%;pointer-events:none;
+ background:radial-gradient(circle at 70% 35%,transparent 0 42%,color-mix(in srgb,var(--dream) 55%,#fff3c4) 44%,color-mix(in srgb,var(--dream) 35%,transparent) 70%,transparent 71%);filter:drop-shadow(0 0 6px var(--dream));opacity:.75}
+.muse-dreamscapes .muse-dream-entry:hover,.muse-dreamscapes .muse-dream-entry:focus-within{transform:translateY(-4px)!important;border-color:color-mix(in srgb,var(--dream) 60%,var(--glass-border))!important;box-shadow:0 22px 38px -24px var(--dream)!important}
+.muse-dreamscapes .muse-dream-entry h4,.muse-dreamscapes .muse-dream-entry .muse-dream-open{font-family:var(--font-editorial)}
+@media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]){
+ .muse-dreamscapes .muse-dream-entry:hover::after{animation:muse-dream-moonrise .9s cubic-bezier(.3,1.4,.5,1) 1}
+}}
+@keyframes muse-dream-moonrise{from{transform:translateY(8px) scale(.8);opacity:.3}}

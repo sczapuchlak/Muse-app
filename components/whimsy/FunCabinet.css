@@ -98,3 +98,8 @@
 .muse-quest-waypoint:not(:last-child)::after{left:auto;right:-26px;width:24px;top:50%}
 .muse-quest-committed .muse-quest-collectible[data-complete=true] .muse-quest-collectible-top>.small-label{visibility:hidden}
 .muse-quest-committed .muse-quest-card-actions .muse-button:not([aria-pressed=true]){color:#10131a!important;text-shadow:0 1px 0 rgba(255,255,255,.25)}
+
+/* Your Collection sits in one full-width glass container, the same pattern as every other Fortune & Fun page. */
+.muse-fortunes .muse-fortune-collection{position:relative;isolation:isolate;padding:clamp(18px,2.6vw,30px);border:1px solid var(--glass-border);border-top-color:var(--glass-edge);border-radius:26px;
+ background:radial-gradient(70% 60% at 0% 0%,color-mix(in srgb,var(--chart-5) 16%,transparent),transparent 65%),radial-gradient(60% 60% at 100% 100%,color-mix(in srgb,var(--chart-4) 12%,transparent),transparent 65%),linear-gradient(var(--glass-background),var(--glass-background)),var(--background);box-shadow:var(--card-shadow)}
+.muse-fortunes .muse-fortune-collection-grid{align-items:stretch!important}.muse-fortunes .muse-fortune-collection-grid>*{height:100%;box-sizing:border-box}

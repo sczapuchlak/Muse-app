@@ -1,0 +1,41 @@
+/*
+ * The whole Observatory in the Horoscopes voice (round 5, Nov 13: "charts, astrology library and cosmic journal feel
+ * off"): every section sits on the same starry glass, with gradient tiles, gold accents and no gaps or orphans.
+ */
+/* Birth Chart, before a chart exists: a wide sky, the wheel turning slowly beside the invitation (not a narrow box). */
+.muse-observatory .muse-chart-empty{position:relative;isolation:isolate;overflow:hidden;display:grid!important;grid-template-columns:auto minmax(0,1fr);align-items:center;justify-items:start;gap:clamp(18px,3vw,40px);width:100%;max-width:none!important;box-sizing:border-box;margin:0!important;padding:clamp(22px,3vw,40px)!important;text-align:left!important;
+ border:1px solid var(--glass-border)!important;border-top-color:var(--glass-edge)!important;border-radius:28px!important;
+ background:radial-gradient(60% 90% at 12% 50%,color-mix(in srgb,var(--chart-7) 26%,transparent),transparent 70%),radial-gradient(40% 60% at 100% 0%,color-mix(in srgb,#f2c46a 12%,transparent),transparent 70%),linear-gradient(var(--glass-background),var(--glass-background)),var(--background)!important;box-shadow:var(--card-shadow)}
+.muse-observatory .muse-chart-empty::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:.6;background-image:radial-gradient(1px 1px at 30% 20%,white 50%,transparent 51%),radial-gradient(1.4px 1.4px at 62% 76%,#ffe39a 50%,transparent 51%),radial-gradient(1px 1px at 82% 30%,white 50%,transparent 51%),radial-gradient(1px 1px at 48% 46%,white 50%,transparent 51%),radial-gradient(1.2px 1.2px at 92% 84%,white 50%,transparent 51%)}
+.muse-observatory .muse-chart-empty>.muse-chart-empty-wheel{grid-row:1/span 4;width:clamp(140px,16vw,200px);height:auto;filter:drop-shadow(0 0 24px color-mix(in srgb,var(--chart-7) 55%,transparent))}
+.muse-observatory .muse-chart-empty>:not(svg){grid-column:2}
+.muse-observatory .muse-chart-empty h3{font-size:clamp(1.6rem,2.6vw,2.2rem)!important}
+.muse-observatory .muse-chart-empty p{max-width:58ch;margin:0!important}
+/* the four chart kinds: each its own aura, lifting toward you */
+.muse-observatory .muse-chart-directory .muse-cosmic-tile{transition:transform .4s cubic-bezier(.2,.8,.2,1),box-shadow .4s,border-color .3s}
+.muse-observatory .muse-chart-directory .muse-cosmic-tile:hover{transform:translateY(-5px);box-shadow:0 24px 40px -26px var(--mark-a,var(--accent-primary));border-color:color-mix(in srgb,var(--mark-a,var(--accent-primary)) 50%,var(--glass-border))}
+
+/* Astrology Library: the side column stretches to the lesson's height (no hole under it), on the same glass. */
+.muse-observatory .muse-lib-learn{align-items:stretch!important}
+.muse-observatory .muse-lib-side{align-self:stretch!important;align-content:start;border:1px solid var(--glass-border);border-top-color:var(--glass-edge);
+ background:radial-gradient(80% 50% at 100% 0%,color-mix(in srgb,var(--chart-2) 14%,transparent),transparent 65%),linear-gradient(var(--glass-background),var(--glass-background)),var(--background)!important;box-shadow:var(--card-shadow)}
+.muse-observatory .muse-lib-side :is(a,button){transition:transform .35s cubic-bezier(.2,.8,.2,1),border-color .3s,box-shadow .35s}
+.muse-observatory .muse-lib-side :is(a,button):hover{transform:translateX(4px)}
+
+/* Cosmic Journal: three across, no lone card (the newest widens when the count would leave a gap); each reflection is
+   a little night sky in its kind's colour, with a glowing date stamp. */
+.muse-observatory .muse-cosmic-journal-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:16px!important}
+.muse-observatory .muse-cosmic-journal-grid:has(>:last-child:nth-child(3n+1))>:first-child,
+.muse-observatory .muse-cosmic-journal-grid:has(>:last-child:nth-child(3n+2))>:first-child{grid-column:span 2}
+.muse-observatory .muse-cosmic-journal-grid:has(>:last-child:nth-child(3n+1)):has(>:nth-child(4))>:last-child{grid-column:span 2}
+.muse-observatory .muse-cosmic-journal-grid>:only-child{grid-column:1/-1!important}
+@container muse-content (max-width:1000px){.muse-observatory .muse-cosmic-journal-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.muse-observatory .muse-cosmic-journal-grid>*{grid-column:auto!important}.muse-observatory .muse-cosmic-journal-grid:has(>:last-child:nth-child(odd))>:first-child{grid-column:1/-1!important}}
+@media (max-width:650px){.muse-observatory .muse-cosmic-journal-grid{grid-template-columns:minmax(0,1fr)!important}.muse-observatory .muse-cosmic-journal-grid>*{grid-column:auto!important}}
+.muse-observatory .muse-cosmic-journal-card{isolation:isolate;overflow:hidden;border-radius:22px!important;border-color:color-mix(in srgb,var(--mark-a) 34%,var(--glass-border))!important;
+ background:radial-gradient(90% 70% at 100% 0%,color-mix(in srgb,var(--mark-a) 22%,transparent),transparent 62%),linear-gradient(var(--glass-background),var(--glass-background)),var(--background)!important;transition:transform .4s cubic-bezier(.2,.8,.2,1),box-shadow .4s,border-color .3s}
+.muse-observatory .muse-cosmic-journal-card::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:.5;background-image:radial-gradient(1px 1px at 20% 30%,white 50%,transparent 51%),radial-gradient(1.2px 1.2px at 80% 18%,#ffe39a 50%,transparent 51%),radial-gradient(1px 1px at 64% 72%,white 50%,transparent 51%),radial-gradient(1px 1px at 92% 60%,white 50%,transparent 51%)}
+.muse-observatory .muse-cosmic-journal-card:hover{transform:translateY(-4px);border-color:color-mix(in srgb,var(--mark-a) 60%,var(--glass-border))!important;box-shadow:0 22px 36px -24px var(--mark-a)}
+.muse-observatory .muse-cosmic-journal-card>:first-child{box-shadow:0 0 18px -6px var(--mark-a);border-color:color-mix(in srgb,var(--mark-a) 50%,var(--glass-border))!important}
+.muse-observatory .muse-chart-empty{grid-template-rows:1fr repeat(3,auto) 1fr;row-gap:12px!important}
+.muse-observatory .muse-chart-empty>.muse-chart-empty-wheel{grid-row:1/-1!important}
+.muse-observatory .muse-chart-empty>:nth-child(2){grid-row:2}.muse-observatory .muse-chart-empty>:nth-child(3){grid-row:3}.muse-observatory .muse-chart-empty>:nth-child(4){grid-row:4}
