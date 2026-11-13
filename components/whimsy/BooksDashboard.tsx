@@ -5,7 +5,7 @@ import {MuseIcon} from '@/components/MuseIcon';
 import type {Book,ReadingGoal,ReadingSession} from '@/lib/whimsy/models';
 
 import {Cover} from './atlas/CoverCalendar';
-import {coverGlow} from './BookAtmosphere';
+import {CoverGlow} from './BookAtmosphere';
 import {completionEvents,cycleSessions,sessionSeconds} from '@/lib/whimsy/reading-stats';
 import {PagedList} from './atlas/PagedList';
 import {yearDate} from './atlas/parts';
@@ -30,7 +30,7 @@ const span=(seconds:number)=>{if(seconds<60)return seconds?'under a minute':'tim
 export function RecentlyFinished({books,sessions,onOpen}:{books:Book[];sessions:ReadingSession[];onOpen:(id:string)=>void}){
  const finished=completionEvents(books).filter(e=>e.completion.finishedOn).sort((a,b)=>b.completion.finishedOn.localeCompare(a.completion.finishedOn)).slice(0,10).map(e=>{const own=cycleSessions(e.book,sessions,e.completion);return {...e,seconds:own.reduce((n,x)=>n+sessionSeconds(x),0),count:own.length};});
  return <section className="muse-dash-card muse-dash-finished" aria-labelledby="dash-finished"><header><h3 id="dash-finished"><MuseMark icon="trophy" tone={4} size="sm" className="muse-books-mark"/>Recently finished</h3></header>
-  {finished.length?<PagedList items={finished} size={2} cols={2} label="recently finished books" className="muse-finished-cards" render={f=><button type="button" role="listitem" key={`${f.book.id}:${f.completion.id}`} className="muse-finished-card" {...coverGlow(f.book.coverUrl)} onClick={()=>onOpen(f.book.id)} title={f.book.title}>
+  {finished.length?<PagedList items={finished} size={2} cols={2} label="recently finished books" className="muse-finished-cards" render={f=><button type="button" role="listitem" key={`${f.book.id}:${f.completion.id}`} className="muse-finished-card" data-glow={f.book.coverUrl?true:undefined} onClick={()=>onOpen(f.book.id)} title={f.book.title}><CoverGlow url={f.book.coverUrl}/>
     <span className="muse-finished-card-cover"><Cover book={f.book}/></span><strong>{f.book.title}</strong>
     <span className="muse-finished-card-meta type-numeric">{f.count?`${span(f.seconds)} · ${f.count} ${f.count===1?'session':'sessions'}`:'No sessions logged'}</span><small>{yearDate(f.completion.finishedOn)}</small></button>}/>
    :<div className="muse-finished-empty"><span className="muse-finished-empty-art" aria-hidden="true"><i/><i/><i/><b>✦</b></span><div><strong>No recently finished books</strong><p>When you finish one, it lands here with how long it took.</p></div></div>}</section>;
