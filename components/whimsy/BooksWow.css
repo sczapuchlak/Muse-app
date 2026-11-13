@@ -4,7 +4,6 @@
  *  - every cover becomes an object: a lit spine, page edges, a soft drop shadow, and a 3D tilt when you reach for it;
  *  - each Currently Reading card glows in its own cover's colours (the cover, blurred into ambient light);
  *  - the progress pool gets a shimmering bookmark at the reading position;
- *  - finished books wear a gold foil corner; the streak hearts sparkle when lit.
  * Motion is finite and respects reduced motion and Muse Magic.
  */
 
@@ -12,16 +11,6 @@
    A soft shadow and a gentle lift when you reach for one; no spine, page edges or 3D turn. */
 :is(.muse-desk-tile-cover,.muse-finished-card-cover,.muse-upnext-cover,.muse-collections-card) .muse-book-cover{transition:transform .4s cubic-bezier(.2,.8,.2,1),box-shadow .4s}
 @media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) :is(.muse-desk-tile:hover .muse-desk-tile-cover,.muse-finished-card:hover .muse-finished-card-cover,.muse-collections-card:hover,.muse-upnext-slot:hover .muse-upnext-cover) .muse-book-cover{transform:translateY(-4px);box-shadow:0 14px 24px -12px rgba(0,0,0,.55)}}
-
-/* ── Ambient light from each book's own cover ─────────────────────────────────────────────────────────────────
-   A real element (CoverGlow) holds the cover, blurred and saturated behind the card's content; Safari paints it. */
-:is(.muse-desk-tile,.muse-finished-card,.muse-collections-card)[data-glow]{position:relative;isolation:isolate;overflow:hidden}
-.muse-cover-glow{position:absolute;inset:-30%;z-index:-1;pointer-events:none;background-position:center;background-size:cover;background-repeat:no-repeat;
- -webkit-filter:blur(36px) saturate(1.8);filter:blur(36px) saturate(1.8);opacity:.5;transform:translateZ(0);transition:opacity .5s,transform .8s cubic-bezier(.2,.8,.2,1)}
-:is(.muse-desk-tile,.muse-finished-card,.muse-collections-card)[data-glow]:hover>.muse-cover-glow{opacity:.75;transform:translateZ(0) scale(1.08)}
-.muse-collections-card[data-glow]>.muse-cover-glow{opacity:.34}
-[data-density="list"] .muse-collections-card>.muse-cover-glow{opacity:.18}
-:root:is([data-theme="iridescent"],[data-theme="solstice"],[data-theme="issya-bday"],[data-theme="bubblegum-baby"],[data-theme="astral"],[data-theme="nightbloom"],:not([data-theme])) .muse-cover-glow{opacity:.3;-webkit-filter:blur(36px) saturate(1.5) brightness(1.15);filter:blur(36px) saturate(1.5) brightness(1.15)}
 
 /* The book's own page: the cover stands in its own light (no tilt). */
 .muse-book-page-cover::after{content:"";position:absolute;left:4%;right:2%;bottom:-6px;height:34px;z-index:-1;border-radius:50%;pointer-events:none;background:radial-gradient(closest-side,color-mix(in srgb,var(--book-atmosphere,var(--accent-primary)) 75%,transparent),transparent);-webkit-filter:blur(10px);filter:blur(10px);opacity:.85}
@@ -37,22 +26,10 @@
 @media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) .muse-bookshelf .muse-desk-pool>span{background-size:200% 100%!important;animation:muse-pool-shimmer 3s linear 2}}
 @keyframes muse-pool-shimmer{to{background-position:-200% 0}}
 
-/* ── Finished: a gold foil corner on the cover ───────────────────────────────────────────────────────────── */
-.muse-bookshelf .muse-finished-card-cover::before{content:"";position:absolute;z-index:3;top:0;right:0;width:30px;height:30px;pointer-events:none;
- background:linear-gradient(135deg,transparent 50%,#f7e3a1 50%,#d9a83f 72%,#fff3c6 86%,#c9932c);clip-path:polygon(100% 0,100% 100%,0 0);filter:drop-shadow(-1px 1px 1px rgba(0,0,0,.3))}
-.muse-bookshelf .muse-finished-card{transition:border-color .2s,box-shadow .3s}
-.muse-bookshelf .muse-finished-card:hover{box-shadow:0 18px 30px -22px #e8b33c}
-
-/* ── Streak: lit hearts get a sparkle ────────────────────────────────────────────────────────────────────── */
-.muse-streak-heart-wrap:has(.muse-streak-heart[data-filled])::after{content:"";position:absolute;top:-4px;right:-5px;width:9px;height:9px;pointer-events:none;background:#fff6cf;clip-path:polygon(50% 0,61% 39%,100% 50%,61% 61%,50% 100%,39% 61%,0 50%,39% 39%);filter:drop-shadow(0 0 3px #ffd36b)}
-@media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) .muse-streak-heart-wrap:has(.muse-streak-heart[data-filled])::after{animation:muse-heart-spark 2.8s ease-in-out 3}}
+/* ── Streak: lit hearts get a sparkle (kept on the original layout) ───────────────────────────────────────── */
+.muse-streak-week li:has(>.muse-streak-heart[data-filled]){position:relative}
+.muse-streak-week li:has(>.muse-streak-heart[data-filled])::after{content:"";position:absolute;top:-4px;left:calc(50% + 8px);width:9px;height:9px;pointer-events:none;background:#fff6cf;clip-path:polygon(50% 0,61% 39%,100% 50%,61% 61%,50% 100%,39% 61%,0 50%,39% 39%);filter:drop-shadow(0 0 3px #ffd36b)}
+@media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) .muse-streak-week li:has(>.muse-streak-heart[data-filled])::after{animation:muse-heart-spark 2.8s ease-in-out 3}}
 @keyframes muse-heart-spark{0%,100%{opacity:.4;transform:scale(.7)}50%{opacity:1;transform:scale(1.15) rotate(25deg)}}
 
 @media (prefers-reduced-motion:reduce){.muse-bookshelf :is(.muse-desk-tile-cover,.muse-finished-card-cover){transition:none}}
-
-/* ── Reading challenge: empty slots are ghost books waiting on the shelf, numbered in gradient ───────────── */
-:is(.muse-challenge-shelf,.muse-desk-goal-shelf)>li[data-empty]{position:relative;border:0!important;border-radius:4px 8px 8px 4px!important;background:linear-gradient(90deg,color-mix(in srgb,var(--foreground) 10%,transparent) 0 7%,transparent 7%),linear-gradient(160deg,color-mix(in srgb,var(--accent-secondary) 10%,transparent),color-mix(in srgb,var(--accent-primary) 6%,transparent))!important;box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--foreground) 14%,transparent);font-family:var(--font-editorial)!important;font-size:1.25rem!important;font-weight:600!important;color:transparent!important;-webkit-text-stroke:0}
-:is(.muse-challenge-shelf,.muse-desk-goal-shelf)>li[data-empty]>*{background:linear-gradient(135deg,var(--accent-secondary),var(--accent-primary));-webkit-background-clip:text;background-clip:text;color:transparent;opacity:.75}
-:is(.muse-challenge-shelf,.muse-desk-goal-shelf)>li[data-empty]::after{content:"";position:absolute;left:18%;right:18%;bottom:14%;height:2px;border-radius:2px;background:color-mix(in srgb,var(--foreground) 14%,transparent);box-shadow:0 -6px 0 color-mix(in srgb,var(--foreground) 9%,transparent)}
-:is(.muse-challenge-shelf,.muse-desk-goal-shelf)>li:not([data-empty])>button{transition:transform .4s cubic-bezier(.2,.8,.2,1)}
-@media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) :is(.muse-challenge-shelf,.muse-desk-goal-shelf)>li:not([data-empty])>button:hover{transform:translateY(-4px)}}

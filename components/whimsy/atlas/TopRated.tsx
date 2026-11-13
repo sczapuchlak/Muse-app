@@ -1,4 +1,5 @@
 'use client';
+import {CoverGlow} from '../BookAtmosphere';
 import {AtlasMark} from './parts';
 import type {Book} from '@/lib/whimsy/models';
 import type {DateRange} from '@/lib/whimsy/reading-stats';
@@ -12,7 +13,7 @@ import {yearDate} from './parts';
 export function TopRated({books,range,label,onOpenBook,size=6,cols=6}:{books:Book[];range:DateRange|null;label:string;onOpenBook?:(id:string)=>void;size?:number;cols?:number}){
  const rated=readsIn(books,range).map(r=>({...r,rating:readOpinion(r.book,r.completion).rating??0})).filter(r=>r.rating>0).sort((a,b)=>b.rating-a.rating||b.completion.finishedOn.localeCompare(a.completion.finishedOn));
  return <article className="muse-books-panel"><div className="muse-books-panel-head"><h4><AtlasMark title="Top rated"/>Top rated</h4><span className="small-label">{label}</span></div>
-  {!rated.length?<p>Rate a finished read and your favorites will line up here.</p>:<PagedList items={rated} size={size} label="top rated reads" className="muse-toprated" cols={cols} render={r=><button type="button" role="listitem" key={`${r.book.id}:${r.completion.id}`} className="muse-toprated-item" onClick={()=>onOpenBook?.(r.book.id)} title={`${r.book.title} · ${yearDate(r.completion.finishedOn)}`}>
+  {!rated.length?<p>Rate a finished read and your favorites will line up here.</p>:<PagedList items={rated} size={size} label="top rated reads" className="muse-toprated" cols={cols} render={r=><button type="button" role="listitem" key={`${r.book.id}:${r.completion.id}`} className="muse-toprated-item" data-glow={r.book.coverUrl?true:undefined} onClick={()=>onOpenBook?.(r.book.id)} title={`${r.book.title} · ${yearDate(r.completion.finishedOn)}`}><CoverGlow url={r.book.coverUrl}/>
    <span className="muse-toprated-cover"><Cover book={r.book}/></span><span className="muse-toprated-stars" aria-label={`${r.rating} of 5`}>{'★'.repeat(Math.round(r.rating))}</span><strong>{r.book.title}</strong></button>}/>}
  </article>;
 }

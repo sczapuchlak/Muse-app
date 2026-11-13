@@ -1,4 +1,5 @@
 'use client';
+import {CoverGlow} from '../BookAtmosphere';
 import {MuseMark} from '@/components/design/MuseHeading';
 import {useRef,useState,type CSSProperties,type PointerEvent as ReactPointerEvent} from 'react';
 import {MuseIcon} from '@/components/MuseIcon';
@@ -22,7 +23,7 @@ function Slot({index,book,count,canStart,dragging,offset,over,register,onOpen,on
  return <li ref={register} className="muse-upnext-slot" data-dragging={dragging||undefined} data-over={over||undefined} style={{'--tilt':`${(index-1)*1.2}deg`,...(dragging?{'--dx':`${offset.x}px`,'--dy':`${offset.y}px`}:{})} as CSSProperties}>
   <button type="button" className="muse-upnext-handle" aria-label={`Reorder ${book.title}. Position ${index+1} of ${count}. Use the arrow keys to move it.`} onPointerDown={onHandleDown} onPointerMove={onHandleMove} onPointerUp={onHandleUp} onPointerCancel={onHandleUp} onKeyDown={e=>{if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();onNudge(-1);}else if(e.key==='ArrowRight'||e.key==='ArrowDown'){e.preventDefault();onNudge(1);}}}><MuseIcon name="grip" size={14}/></button>
   <span className="muse-upnext-number" aria-hidden="true">{index+1}</span>
-  <button type="button" className="muse-upnext-frame" data-filled onClick={onOpen} aria-label={`Open ${book.title}`}><span className="muse-upnext-cover"><Cover book={book}/></span></button>
+  <button type="button" className="muse-upnext-frame" data-filled data-glow={book.coverUrl?true:undefined} onClick={onOpen} aria-label={`Open ${book.title}`}><CoverGlow url={book.coverUrl}/><span className="muse-upnext-cover"><Cover book={book}/></span></button>
   <div className="muse-upnext-copy"><button type="button" className="muse-upnext-title" onClick={onOpen} title={book.title}>{book.title}</button><span>{book.author||'Author not recorded'}</span><StatusChip status={book.status}/></div>
   <div className="muse-upnext-actions"><button type="button" className="muse-button button-primary" disabled={!canStart} title={canStart?undefined:'Finish or pause your current sitting first'} onClick={onStart}><MuseIcon name="play" size={14}/>Start reading</button>
    <button ref={anchor} type="button" className="muse-button button-ghost muse-upnext-more" aria-label={`Actions for ${book.title}`} aria-haspopup="dialog" aria-expanded={menu} onClick={()=>setMenu(v=>!v)}><MuseIcon name="more" size={16}/></button></div>
