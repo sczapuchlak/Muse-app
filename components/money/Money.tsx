@@ -22,6 +22,8 @@ import {MoneyCapture,MoneySaveStatus} from "./MoneyStore";
 import { useMoney } from "./MoneyStore";
 import "./Money.css";
 import "./MoneyTabs.css";
+import {MoneyNumeral,PeriodTrack,SpendingFacts,SpendingMix} from "./MoneyHero";
+import {MuseHeading} from "@/components/design/MuseHeading";
 import {MuseSearch} from '@/components/design/MuseSearch';
 import {MuseIcon} from '@/components/MuseIcon';
 
@@ -56,6 +58,7 @@ export function Money() {const {profile}=useDailyData();
     {view==="overview"&&<MoneyOverview paycheck={paycheck} period={period} today={date} onOpen={setEditor} onSpending={()=>changeView("spending")} onRecurring={()=>changeView("recurring")} onPaychecks={()=>changeView("paychecks")}/>}
     {view==="paychecks"&&<MoneyPaychecks today={date} paycheck={paycheck} onSelect={setPaycheckId} onOpen={setEditor}/>}
     {view==="spending"&&<SpendingSummary paycheck={periodMode==="paycheck"?paycheck:undefined} period={period}/>}
+    {view==="spending"&&<div className="muse-money-spending-insights"><section className="muse-money-panel"><MuseHeading icon="pie" tone={3} title="Where it went" kicker={period.label}/><p className="muse-money-income muse-money-insight-total"><MoneyNumeral cents={periodSpent}/></p><SpendingMix period={period}/></section><section className="muse-money-panel"><MuseHeading icon="calendar" tone={1} title="Day by day" kicker="Spending through the period"/><PeriodTrack period={period} today={date}/><SpendingFacts period={period} today={date}/></section></div>}
     {view==="spending"&&<section className="muse-money-panel"><div className="muse-money-spending-tools"><div className="muse-search-row muse-money-search-row"><MuseSearch label="Search transactions" className="muse-money-search" value={search} onChange={setSearch} placeholder="Find a transaction…"/><button className="muse-button button-primary muse-search-add muse-phone-only" type="button" onClick={(e)=>setEditor({kind:"transaction",anchor:e.currentTarget})}><MuseIcon name="plus" size={14}/><span className="muse-search-add-label">Add transaction</span></button></div><button className="muse-button" ref={filterRef} type="button" aria-expanded={filtersOpen} aria-controls="money-spending-filters" aria-haspopup="dialog" onClick={()=>setFiltersOpen((open)=>!open)}>Filters{filterCount?` · ${filterCount}`:""}</button><MuseChoiceMenu label="Sort transactions" valueLabel={spendingSorts.find((s)=>s.id===sort)!.label} options={spendingSorts.map((s)=>({id:s.id,label:s.label}))} selectedIds={[sort]} onSelect={(id)=>chooseSort(id as SpendingSort)}/><button className="muse-button button-primary muse-wide-only" type="button" onClick={(e)=>setEditor({kind:"transaction",anchor:e.currentTarget})}>+ Add transaction</button><span className="small-label muse-money-spending-total" role="status">{filtering?<><strong>{formatMoney(filteredTotal(shownItems,category))}</strong> in {shownItems.length} shown · {formatMoney(periodSpent)} recorded this period</>:<>{formatMoney(periodSpent)} recorded this period</>}</span></div><MoneyTransactions period={period} filters={spendingFilters} sort={sort} onOpen={setEditor}/></section>}
     {view==="recurring"&&<MoneyRecurring today={date} onOpen={setEditor}/>}
     {view==="cards"&&<MoneyCards onOpen={setEditor}/>}

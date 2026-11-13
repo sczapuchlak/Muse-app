@@ -40,7 +40,7 @@ export function AllocationRing({paycheck,onPlan}:{paycheck:Paycheck;onPlan?:()=>
 }
 
 /** The period as a strip of days: what was spent each day rises as a bar, today glows, and what is due sits as a pin. */
-function PeriodTrack({period,today}:{period:MoneyPeriod;today:string}){
+export function PeriodTrack({period,today}:{period:MoneyPeriod;today:string}){
  const {state}=useMoney(),start=utc(period.start),count=Math.round((utc(period.end)-start)/DAY)+1;
  if(count<2||count>42)return null;
  const days=Array.from({length:count},(_,i)=>iso(start+i*DAY)),spent=new Map<string,number>();

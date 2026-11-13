@@ -124,3 +124,50 @@
 .muse-paychecks-view .muse-money-bill-row .muse-money-mobile-label{display:inline;margin-right:4px}
 .muse-paychecks-view .muse-entry-carousel-item>.muse-money-bill-ledger{display:block;height:100%}
 .muse-paychecks-view .muse-entry-carousel-item .muse-money-bill-row{height:100%}
+
+/* ── Categories: colour-coded cards, chips for subcategories, equal-height taxonomy row ──────────────────────── */
+.muse-money-category-grid{grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr))!important;align-items:stretch!important;gap:var(--space-4,18px)!important}
+.muse-money-category{position:relative;display:flex;flex-direction:column;gap:10px;margin:0;overflow:hidden;background-image:radial-gradient(90% 80% at 0% 0%,color-mix(in srgb,var(--money-accent,var(--accent-primary)) 16%,transparent),transparent 70%)}
+.muse-money-category::after{content:"";position:absolute;inset:0 0 auto;height:4px;background:var(--money-accent,var(--accent-primary))}
+.muse-money-category .muse-money-panel-heading{margin:0}
+.muse-money-category h3{display:flex;align-items:center;gap:10px;font-family:var(--font-editorial);font-weight:600;font-size:1.2rem}
+.muse-money-category h3 .muse-money-color-dot{display:none}
+.muse-money-category-glyph{display:grid;place-items:center;width:34px;height:34px;border-radius:11px;color:white;font-family:var(--font-editorial);font-weight:700;background:linear-gradient(135deg,color-mix(in oklab,var(--money-accent,var(--accent-primary)) 85%,black),var(--money-accent,var(--accent-primary)));box-shadow:0 8px 16px -10px var(--money-accent,var(--accent-primary))}
+.muse-money-category-glyph svg{width:17px;height:17px}
+.muse-money-subcats{display:flex;flex-wrap:wrap;gap:6px;margin:0}
+.muse-money-subcats span{padding:3px 10px;border-radius:999px;font-size:.76rem;color:var(--foreground);background:color-mix(in srgb,var(--money-accent,var(--accent-primary)) 14%,transparent);border:1px solid color-mix(in srgb,var(--money-accent,var(--accent-primary)) 30%,transparent)}
+.muse-money-category>.muse-button{margin-top:auto;align-self:flex-start}
+.muse-money-category[data-archived=true]{opacity:.62;filter:saturate(.6)}
+.muse-money-taxonomy-grid{grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch!important;gap:var(--space-6,28px)!important}
+.muse-money-taxonomy-grid>.muse-money-panel{margin:0}
+.muse-money-taxonomy-grid .muse-money-taxonomy{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
+.muse-money-taxonomy-grid .muse-money-taxonomy>li{display:inline-flex;align-items:center;gap:2px;padding:2px;border:1px solid var(--glass-border);border-radius:999px;background:var(--surface-subtle)}
+.muse-money-taxonomy-grid .muse-money-taxonomy>li>.muse-button{min-height:32px;padding:4px 12px;border:0;border-radius:999px;font-size:.84rem}
+.muse-money-taxonomy-grid .muse-money-taxonomy>li>.muse-button+.muse-button{color:var(--text-muted);font-size:.74rem}
+@container muse-content (max-width:820px){.muse-money-taxonomy-grid{grid-template-columns:minmax(0,1fr)}}
+
+/* ── Spending: insights row (equal height) and a ledger grouped by day ─────────────────────────────────────── */
+.muse-money-spending-insights{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch;gap:var(--space-6,28px);margin-block:var(--space-6,28px)}
+.muse-money-spending-insights>.muse-money-panel{display:flex;flex-direction:column;gap:14px;margin:0;min-width:0}
+.muse-money-spending-insights .muse-money-mix{margin-top:auto}
+.muse-money-spending-insights .muse-money-track{border-top:0;padding-top:0}
+.muse-money-spending-insights .muse-money-facts{margin:auto 0 0}
+.muse-money-ledger[data-grouped]>.muse-money-day-head{display:flex!important;justify-content:space-between;align-items:baseline;gap:12px;padding:18px 4px 6px!important;border-bottom:1px solid color-mix(in srgb,var(--accent-primary) 30%,var(--glass-border))!important;background:none!important}
+.muse-money-ledger[data-grouped]>.muse-money-day-head:first-child{padding-top:4px!important}
+.muse-money-day-head span{font-family:var(--font-editorial);font-weight:600;font-size:1.05rem}
+.muse-money-day-head strong{font-variant-numeric:tabular-nums;color:var(--text-muted);font-size:.86rem}
+.muse-money-ledger[data-grouped]>li:not(.muse-money-day-head)>time{visibility:hidden;width:0}
+@container muse-content (max-width:820px){.muse-money-spending-insights{grid-template-columns:minmax(0,1fr)}}
+.muse-money-category-grid{display:block!important;margin-bottom:var(--space-6,28px)}
+.muse-money-category-grid .muse-entry-carousel-track{gap:var(--space-4,18px)}
+.muse-money-category-grid .muse-money-category{height:100%}
+.muse-money-insight-total{margin:0;font-family:var(--font-editorial);font-weight:520;font-size:clamp(2.4rem,4vw,3.2rem);line-height:1;letter-spacing:-.04em}
+
+/* ── Recurring: totals beside the by-category split, one equal-height row ──────────────────────────────────── */
+.muse-recurring-top{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);align-items:stretch;gap:var(--space-6,28px);margin-bottom:var(--space-6,28px)}
+.muse-recurring-top>.muse-money-panel{display:flex;flex-direction:column;gap:14px;margin:0;min-width:0}
+.muse-recurring-top .muse-recurring-category-summary ul{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.muse-recurring-top .muse-recurring-category-summary li{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;background:color-mix(in srgb,var(--money-accent,var(--accent-primary)) 10%,var(--surface-subtle));border:1px solid color-mix(in srgb,var(--money-accent,var(--accent-primary)) 25%,transparent)}
+.muse-recurring-top .muse-recurring-category-summary li strong{font-family:var(--font-editorial);font-weight:560;font-size:1.1rem}
+.muse-recurring-top .muse-recurring-category-summary>.small-label{margin-top:auto}
+@container muse-content (max-width:980px){.muse-recurring-top{grid-template-columns:minmax(0,1fr)}}
