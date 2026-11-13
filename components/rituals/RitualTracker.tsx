@@ -63,7 +63,7 @@ export function RitualTracker({ period, layout, habitId, date, today, rituals, o
           <span className="muse-mgrid-total" />
         </div>
       </div>
-      <ul className="muse-tracker-legend muse-mgrid-key" aria-label="Key"><li><i data-k="done" />Done</li><li><i data-k="partial" />Partial</li><li><i data-k="missed" />Missed</li><li><i data-k="off" />Not scheduled</li><li><span className="muse-mgrid-inks" aria-hidden="true">{dayInk.map((c) => <i key={c} style={{ background: c }} />)}</span>A new ink each day</li></ul>
+      <ul className="muse-tracker-legend muse-mgrid-key" aria-label="Key"><li><i data-k="done" />Done</li><li><i data-k="partial" />Partial</li><li><i data-k="missed" />Missed</li><li><i data-k="off" />Not scheduled</li><li><i data-k="row" />One colour per habit, so its rhythm shows</li></ul>
     </div>;
   }
 
