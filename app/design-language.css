@@ -249,3 +249,10 @@
  :root:is([data-theme="iridescent"],[data-theme="solstice"],[data-theme="issya-bday"],[data-theme="bubblegum-baby"]) :is(.muse-kicker,.muse-section-eyebrow,.muse-trends .type-numeric,.muse-trends .small-label,.muse-idesk-seat,.muse-quest-kind){color:oklch(from var(--dl-kicker,var(--accent-secondary)) min(l,.46) max(c,.12) h)}
  :root:is([data-theme="iridescent"],[data-theme="solstice"],[data-theme="issya-bday"],[data-theme="bubblegum-baby"]) .muse-trends .type-numeric{color:oklch(from var(--success-primary) min(l,.45) max(c,.12) h)}
 }
+
+/* Glow-up 2 gradient numerals: the Books dashboard's "2026" and "1 day" voice, shared. A big number runs from the
+   page's ink into its own colour (the tile's mark, the panel's aura). Light-card themes keep their solid card ink. */
+:root:not([data-theme="astral"]):not([data-theme="nightbloom"]) :is(.muse-stat-tile-value,.muse-money-income,.muse-money-tiles dd){--num-ink:var(--mark-a,var(--aura,var(--accent-primary)));background-image:linear-gradient(115deg,var(--foreground) 18%,color-mix(in oklab,var(--num-ink) 78%,var(--foreground)));-webkit-background-clip:text;background-clip:text;color:transparent}
+.muse-stat-tile-value{font-family:var(--font-editorial);font-weight:560;font-size:1.75rem;letter-spacing:-.025em;font-variant-numeric:lining-nums tabular-nums}
+.muse-stat-tile-value small{font-family:var(--font-ui)}
+@media (forced-colors:active){:is(.muse-stat-tile-value,.muse-money-income,.muse-money-tiles dd){color:CanvasText;background:none}}
