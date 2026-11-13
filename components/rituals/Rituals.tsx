@@ -2,9 +2,6 @@
 import {useDailyData} from "../daily/DailyData";
 import { Suspense, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import {AlmanacWhisper} from "../almanac/AlmanacWhisper";
-import {surfaces} from "@/lib/almanac/select";
-import {ritualSignals} from "@/lib/almanac/signals";
 import { dailyEditSample } from "@/lib/daily-edit-data";
 import { weekDates } from "@/lib/dates";
 import { entryFor, weekSummary, type RitualDefinition } from "@/lib/rituals";
@@ -47,7 +44,6 @@ function RitualsView() {
   const trackable = state.rituals.filter((r) => archived ? r.status === "archived" : r.status !== "archived");
   const focusId = layout === "focus" ? (trackable.some((r) => r.id === tracker.habitId) ? tracker.habitId : trackable[0]?.id ?? "all") : "all";
   const noun = period === "week" ? "week" : period === "month" ? "month" : "year";
-  const almanacSignals = useMemo(() => today ? ritualSignals(state, today) : [], [state, today]);
   return <main className="muse-page muse-rituals-page">
     <MusePageHeader title="Rituals"><DateNavigator date={date} onChange={setDate} /></MusePageHeader>
     <RitualCapture>
@@ -62,7 +58,6 @@ function RitualsView() {
     {!classic && <RitualTracker period={period} layout={layout} habitId={focusId} date={date} today={today} rituals={trackable} onDate={(d, p, l) => { setDate(d); changeTracker({ ...(p ? { period: p } : {}), ...(l ? { layout: l } : {}) }); }} onEditEntry={(ritual, entryDate, anchor, apply) => setEditor({ kind: "entry", ritual, date: entryDate, anchor, apply })} />}
     {classic && <><div className="muse-rituals-week-context"><RitualWeekNavigator selectedDate={date} today={today} onChange={setDate}/></div>
     <p className="muse-rituals-summary-line" aria-label="This week">{today ? <><strong>{summary.completed}</strong> complete{summary.partial ? <> · {summary.partial} partial</> : null}{summary.unknown ? <> · {summary.unknown} not logged</> : null}</> : "…"}</p>
-    <AlmanacWhisper surface={surfaces.rituals} signals={almanacSignals} today={today} className="muse-rituals-whisper"/>
     <div className="muse-ritual-groups">{state.groups.map((group) => <RitualGroup key={group.id} group={group} archived={archived} week={week} selectedDate={date} today={today} onEdit={(ritual, anchor) => setEditor({ kind: "ritual", ritual, anchor })} onAdd={(groupId, anchor) => setEditor({ kind: "ritual", groupId, anchor })} onEditEntry={(ritual, entryDate, anchor, apply) => setEditor({ kind: "entry", ritual, date: entryDate, anchor, apply })} />)}</div>
     <div className="muse-ritual-legend" aria-label="Week status legend"><span><i data-status="complete" />Complete</span><span><i data-status="partial" />Partial progress</span><span>× Explicitly missed</span><span>○ Not logged / unknown</span><span><i data-status="upcoming" />Upcoming</span><span>— Not scheduled</span></div>
     <p className="small-label muse-ritual-semantics" data-classic>Partial progress is its own state. Past blanks stay unknown until you log them. Weekly targets accumulate across available days; unscheduled days never count against a streak.</p></>}
