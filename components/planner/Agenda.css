@@ -136,17 +136,17 @@
 /* Task card states */
 .muse-agenda-task-main{display:grid;gap:4px;min-width:0}
 .muse-agenda-task-title{display:inline}
-.muse-agenda-task-title .muse-mark{margin-right:4px;vertical-align:-2px}
+.muse-agenda-task-title .muse-agenda-mark{margin-right:4px;vertical-align:-2px}
 .muse-agenda-task-state{display:flex;flex-wrap:wrap;gap:8px;font-size:.72rem;color:var(--text-muted)}
 .muse-agenda-task[data-state=overdue]{border-style:dashed}
 .muse-agenda-task-move{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:.8rem}
 .muse-agenda-task-move label{display:flex;gap:6px;align-items:center}
 .muse-agenda-task-move input{font:inherit;border:1px solid var(--glass-border);border-radius:8px;background:var(--surface-control);color:inherit;padding:2px 6px}
 /* Muse Marks */
-.muse-mark{--mark:var(--organization-accent,var(--accent-primary));display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;color:var(--mark);background:color-mix(in srgb,var(--mark) 16%,transparent);border:1px solid color-mix(in srgb,var(--mark) 35%,transparent);flex:0 0 auto;padding:0;font:inherit;line-height:0}
-button.muse-mark{cursor:pointer}button.muse-mark:focus-visible{outline:2px solid var(--accent-primary);outline-offset:2px}
-.muse-mark[data-missing]{border-style:dashed;opacity:.65}
-.muse-agenda-task-title .muse-mark,.muse-agenda-event .muse-mark,.muse-agenda-log-month .muse-mark{width:18px;height:18px}
+.muse-agenda-mark{--mark:var(--organization-accent,var(--accent-primary));display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;color:var(--mark);background:color-mix(in srgb,var(--mark) 16%,transparent);border:1px solid color-mix(in srgb,var(--mark) 35%,transparent);flex:0 0 auto;padding:0;font:inherit;line-height:0}
+button.muse-agenda-mark{cursor:pointer}button.muse-agenda-mark:focus-visible{outline:2px solid var(--accent-primary);outline-offset:2px}
+.muse-agenda-mark[data-missing]{border-style:dashed;opacity:.65}
+.muse-agenda-task-title .muse-agenda-mark,.muse-agenda-event .muse-agenda-mark,.muse-agenda-log-month .muse-agenda-mark{width:18px;height:18px}
 .muse-mark-strip{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0;list-style:none;min-width:0}
 .muse-mark-strip li{display:inline-flex;align-items:center;gap:4px;font-size:.8rem}
 .muse-mark-editor,.muse-event-editor{display:grid;gap:10px}
@@ -214,7 +214,7 @@ button.muse-mark{cursor:pointer}button.muse-mark:focus-visible{outline:2px solid
 .muse-agenda-cell-select{all:unset;cursor:pointer;display:flex;align-items:center;gap:6px;border-radius:8px;min-height:24px}
 .muse-agenda-cell-select:focus-visible{outline:2px solid var(--accent-primary);outline-offset:2px}
 .muse-agenda-cell[data-selected]{border-color:var(--selected-border);box-shadow:0 0 0 1px var(--selected-border) inset}
-.muse-agenda-cell-marks{display:inline-flex;gap:2px}.muse-agenda-cell-marks .muse-mark{width:18px;height:18px}
+.muse-agenda-cell-marks{display:inline-flex;gap:2px}.muse-agenda-cell-marks .muse-agenda-mark{width:18px;height:18px}
 .muse-agenda-cell li[data-status=canceled]{text-decoration:line-through;color:var(--text-muted)}
 .muse-agenda-cell-meta{display:flex;gap:8px;font-size:.72rem;color:var(--text-muted)}
 .muse-agenda-cell-meta [data-overdue]{color:inherit;font-weight:600}
@@ -291,7 +291,7 @@ button.muse-mark{cursor:pointer}button.muse-mark:focus-visible{outline:2px solid
 @media (hover:none){.muse-agenda-resize::after{opacity:.6}}
 /* Task rows inside Agenda: the same compact rows as the Task List, a little tighter for narrow columns. */
 .muse-agenda-rows{margin:0 -2px}
-.muse-agenda-rows .muse-list-title .muse-mark{width:16px;height:16px;margin-right:4px;vertical-align:-3px}
+.muse-agenda-rows .muse-list-title .muse-agenda-mark{width:16px;height:16px;margin-right:4px;vertical-align:-3px}
 .muse-agenda-rows .muse-schedule-trigger{width:26px;height:24px}
 .muse-list-more .muse-overflow-trigger{width:26px;height:24px;min-height:0;flex-basis:26px}
 @media (hover:hover) and (pointer:fine){.muse-list-row:not(:hover):not(:focus-within) .muse-list-more{opacity:0}}
@@ -351,8 +351,8 @@ button.muse-mark{cursor:pointer}button.muse-mark:focus-visible{outline:2px solid
 .muse-agenda-items-head{display:inline-flex;align-items:center;gap:4px}
 .muse-agenda-items-head .muse-overflow-trigger{width:22px;height:22px;min-height:0;flex-basis:22px}
 /* Gradient Marks: filled chip with a light symbol, so they read the same in light and dark themes. */
-.muse-mark[data-paint=gradient]{background:var(--mark-gradient);color:#fff;border-color:transparent}
-.muse-mark[data-paint=gradient] svg{filter:drop-shadow(0 1px 1px rgb(0 0 0 / .35))}
+.muse-agenda-mark[data-paint=gradient]{background:var(--mark-gradient);color:#fff;border-color:transparent}
+.muse-agenda-mark[data-paint=gradient] svg{filter:drop-shadow(0 1px 1px rgb(0 0 0 / .35))}
 .muse-mark-icons label[data-paint=gradient] input:checked+span{color:#fff}
 .muse-mark-quick{display:grid;gap:6px}
 .muse-mark-quick .muse-chip-row>button{min-height:28px;padding:2px 10px;font-size:.76rem}

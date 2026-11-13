@@ -94,7 +94,7 @@ test('#87 custom sections stay Planner-only, deletion is confirmed, decoration s
  assert.doesNotMatch(lib.slice(lib.indexOf('export const stickers'),lib.indexOf('export type StickerId')),/markIcons|MuseIcon/,'stickers are ornaments, not Mark icons');
  const css=read('components/planner/Agenda.css');
  assert.match(css,/\.muse-agenda-section\[data-painted\]::before\{[^}]*opacity:var\(--section-paint-opacity/,'paint has its own layer so text keeps full contrast');
- assert.match(css,/\.muse-mark\[data-paint=gradient\]/);
+ assert.match(css,/\.muse-agenda-mark\[data-paint=gradient\]/);
 });
 
 test('#87 migration: additive, owner-only library, bounded content',()=>{

@@ -14,7 +14,7 @@ const toneStyle=(tone:MuseTone)=>({'--mark-a':`var(--chart-${tone})`,'--mark-b':
 /** The small colored icon tile that leads a section heading or a stat. Decorative: the heading carries the name. */
 export function MuseMark({icon,tone=1,size='md',variant='solid',className=''}:{icon:MuseMarkIcon;tone?:MuseTone;size?:'sm'|'md'|'lg';variant?:'solid'|'soft';className?:string}){
  const px=size==='sm'?14:size==='lg'?22:17;
- return <span className={`muse-mark ${className}`.trim()} data-size={size} data-variant={variant} style={toneStyle(tone)} aria-hidden="true">
+ return <span className={`muse-mark ${className}`.trim()} data-size={size} data-variant="solid" data-asked={variant} style={toneStyle(tone)} aria-hidden="true">
   {isMuseGlyph(icon)?<MuseGlyph name={icon} size={px}/>:<MuseIcon name={icon} size={px}/>}
  </span>;
 }
