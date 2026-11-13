@@ -62,20 +62,20 @@ export const relatedOf=(id:string,links:RelatedLink[])=>links.flatMap(l=>l.aspir
 export const relatedPair=(a:string,b:string)=>a<b?{aspiration_id:a,related_id:b}:{aspiration_id:b,related_id:a};
 
 // ---------- The ten Life Areas: a glyph, an ink and a prompt each ----------
-type AreaVoice={glyph:MuseMarkIcon;prompt:string;whisper:string};
+type AreaVoice={glyph:MuseMarkIcon;example:string;prompt:string;whisper:string};
 const voices:{match:RegExp;voice:AreaVoice}[]=[
- {match:/health|fitness|body/i,voice:{glyph:'pulse',prompt:'What would feeling stronger, healthier, or more at home in your body make possible?',whisper:'Strength, rest, the body you live in'}},
- {match:/career|work/i,voice:{glyph:'briefcase',prompt:'What work would you be proud to look back on, and what would you love to be known for?',whisper:'Craft, ambition, meaningful work'}},
- {match:/financ|money|wealth/i,voice:{glyph:'coins',prompt:'What would a little more ease, freedom, or security with money let you do?',whisper:'Ease, security, generosity'}},
- {match:/family/i,voice:{glyph:'keepsake',prompt:'Which moments with the people who raised you, or the family you’ve made, do you want to keep?',whisper:'Roots, traditions, the people who are home'}},
- {match:/friend/i,voice:{glyph:'smile',prompt:'Which connections would you love to nurture, deepen, or create?',whisper:'Laughter, loyalty, your people'}},
- {match:/romance|love|partner/i,voice:{glyph:'heart',prompt:'What would make love feel more tender, playful, or adventurous this year?',whisper:'Tenderness, play, devotion'}},
- {match:/growth|learn|personal/i,voice:{glyph:'seedling',prompt:'What are you curious enough to learn, practice, or become?',whisper:'Curiosity, practice, becoming'}},
- {match:/fun|recreation|play|adventure/i,voice:{glyph:'compass',prompt:'What would make this year more playful, adventurous, or unforgettable?',whisper:'Play, adventure, delight'}},
- {match:/home|environment|space/i,voice:{glyph:'house',prompt:'What would make the places you live and move through feel more like yours?',whisper:'Sanctuary, beauty, belonging'}},
- {match:/spirit|soul|faith/i,voice:{glyph:'crescent',prompt:'What helps you feel grounded, connected, or full of wonder, and how could you make room for it?',whisper:'Wonder, stillness, meaning'}},
+ {match:/health|fitness|body/i,voice:{glyph:'pulse',example:'Run my first 10k',prompt:'What would feeling stronger, healthier, or more at home in your body make possible?',whisper:'Strength, rest, the body you live in'}},
+ {match:/career|work/i,voice:{glyph:'briefcase',example:'Lead a project I love',prompt:'What work would you be proud to look back on, and what would you love to be known for?',whisper:'Craft, ambition, meaningful work'}},
+ {match:/financ|money|wealth/i,voice:{glyph:'coins',example:'Save a three-month cushion',prompt:'What would a little more ease, freedom, or security with money let you do?',whisper:'Ease, security, generosity'}},
+ {match:/family/i,voice:{glyph:'keepsake',example:'Sunday dinners together',prompt:'Which moments with the people who raised you, or the family you’ve made, do you want to keep?',whisper:'Roots, traditions, the people who are home'}},
+ {match:/friend/i,voice:{glyph:'smile',example:'Host a monthly game night',prompt:'Which connections would you love to nurture, deepen, or create?',whisper:'Laughter, loyalty, your people'}},
+ {match:/romance|love|partner/i,voice:{glyph:'heart',example:'A weekend away, just us',prompt:'What would make love feel more tender, playful, or adventurous this year?',whisper:'Tenderness, play, devotion'}},
+ {match:/growth|learn|personal/i,voice:{glyph:'seedling',example:'Learn to sew',prompt:'What are you curious enough to learn, practice, or become?',whisper:'Curiosity, practice, becoming'}},
+ {match:/fun|recreation|play|adventure/i,voice:{glyph:'compass',example:'See the northern lights',prompt:'What would make this year more playful, adventurous, or unforgettable?',whisper:'Play, adventure, delight'}},
+ {match:/home|environment|space/i,voice:{glyph:'house',example:'A bedroom that feels like a sanctuary',prompt:'What would make the places you live and move through feel more like yours?',whisper:'Sanctuary, beauty, belonging'}},
+ {match:/spirit|soul|faith/i,voice:{glyph:'crescent',example:'A morning stillness practice',prompt:'What helps you feel grounded, connected, or full of wonder, and how could you make room for it?',whisper:'Wonder, stillness, meaning'}},
 ];
-const fallbackVoice:AreaVoice={glyph:'sparkle',prompt:'What would you love to explore, nurture, or bring to life here?',whisper:'A chapter all your own'};
+const fallbackVoice:AreaVoice={glyph:'sparkle',example:'Something you’d love to grow',prompt:'What would you love to explore, nurture, or bring to life here?',whisper:'A chapter all your own'};
 export const areaVoice=(label:string)=>voices.find(v=>v.match.test(label))?.voice??fallbackVoice;
 /** Spread around the eight theme inks so neighbouring areas never share a tint. */
 export const areaTone=(position:number):MuseTone=>(((position*3)%8)+1) as MuseTone;

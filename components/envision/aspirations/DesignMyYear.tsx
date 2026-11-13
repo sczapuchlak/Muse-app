@@ -51,10 +51,10 @@ export function DesignMyYear({year,years,onYear,areas,atlas,store,today,onClose,
   {revealing?<RitualReveal year={year} stars={stars} mantra={atlas.plans.find(p=>p.year===year)?.theme??''} feelings={atlas.plans.find(p=>p.year===year)?.feelings??[]} onDone={onRevealed}/>:<>
   <header className="muse-ritual-top">
    <p className="muse-ritual-brand"><MuseIcon name="sparkle" size={15}/> <span>Design My <span className="type-numeric">{year}</span></span><small>{movement}</small></p>
-   <nav className="muse-ritual-progress" aria-label="Chapters">
-    <ol>{activeAreas.map((a,i)=>{const at=steps.findIndex(s=>typeof s==='object'&&s.area===a.id);
-     return <li key={a.id} data-current={position===i||undefined} data-filled={areaCount(a.id)>0||undefined} style={{'--star':`var(--chart-${areaTone(a.position)})`} as CSSProperties}>
-      <button type="button" aria-current={position===i?'step':undefined} aria-label={`${roman(i)}. ${a.label}${areaCount(a.id)?`, ${areaCount(a.id)} aspiration${areaCount(a.id)===1?'':'s'}`:''}`} onClick={()=>void go(at)}><span aria-hidden="true"/></button></li>;})}
+   <nav className="muse-ritual-progress" aria-label="Your path through the ritual">
+    <ol>{steps.map((st,i)=>{const area=typeof st==='object'?activeAreas.find(a=>a.id===st.area):undefined,label=area?area.label:st==='imagine'?'Prologue':st==='carry'?'Carry forward':'The Year in Your Own Words',count=area?areaCount(area.id):0;
+     return <li key={stepKey(st)} data-state={i<index?'done':i===index?'current':'ahead'} data-kind={area?'area':st} data-filled={count>0||undefined} style={area?{'--star':`var(--chart-${areaTone(area.position)})`} as CSSProperties:undefined}>
+      <button type="button" aria-current={i===index?'step':undefined} aria-label={`${area?`${roman(activeAreas.indexOf(area))}. `:''}${label}${count?`, ${count} aspiration${count===1?'':'s'}`:''}${i<index?', visited':''}`} title={label} onClick={()=>void go(i)}><span aria-hidden="true"/></button></li>;})}
     </ol>
    </nav>
    <button type="button" className="muse-button button-ghost muse-ritual-leave" onClick={onClose}>Save &amp; close</button>
@@ -70,8 +70,8 @@ export function DesignMyYear({year,years,onYear,areas,atlas,store,today,onClose,
    <button type="button" className="muse-button button-ghost" disabled={index===0} onClick={()=>void go(index-1)}><span className="muse-ritual-back" aria-hidden="true"><MuseIcon name="chevron" size={15}/></span> Back</button>
    <span className="muse-ritual-where small-label type-numeric">{typeof step==='object'?`Chapter ${position+1} of ${activeAreas.length}`:step==='declare'?'The final chapter':step==='carry'?'Before we begin':'Prologue'}</span>
    {typeof step==='object'&&<button type="button" className="text-button muse-ritual-skip" onClick={()=>void go(index+1)}>Skip this area</button>}
-   {step==='declare'?<button type="button" className="muse-button button-primary" disabled={atlas.busy} onClick={()=>void atlas.updatePlan(year,{ritual_completed_at:new Date().toISOString(),established_at:plan?.established_at??new Date().toISOString(),ritual_step:'declare'}).then(p=>{if(p)setRevealing(true);})}><MuseIcon name="sparkle" size={16}/> Bring My Year to Life</button>
-    :<button type="button" className="muse-button button-primary" onClick={()=>void go(index+1)}>{step==='imagine'?(plan?.ritual_completed_at?'Revisit my chapters':'Begin'):'Next'} <span className="muse-ritual-next" aria-hidden="true"><MuseIcon name="chevron" size={15}/></span></button>}
+   {step==='declare'?<button type="button" className="muse-button button-primary muse-ritual-finale" disabled={atlas.busy} onClick={()=>void atlas.updatePlan(year,{ritual_completed_at:new Date().toISOString(),established_at:plan?.established_at??new Date().toISOString(),ritual_step:'declare'}).then(p=>{if(p)setRevealing(true);})}><MuseIcon name="sparkle" size={16}/> Bring My Year to Life</button>
+    :<button type="button" className="muse-button button-primary" data-dialog-autofocus={step==='imagine'||undefined} onClick={()=>void go(index+1)}>{step==='imagine'?(plan?.ritual_completed_at?'Revisit my chapters':'Begin'):'Next'} <span className="muse-ritual-next" aria-hidden="true"><MuseIcon name="chevron" size={15}/></span></button>}
   </footer></>}
  </dialog>;
 }
@@ -85,7 +85,7 @@ function Imagine({year,years,onYear,revisit,count,stars}:{year:number;years:numb
    :<><p className="muse-ritual-lede">Who would you love to become this year?</p>
     <div className="muse-ritual-verses"><p>Picture the end of {year}. What did you try for the first time? What grew? Who did you become a little more of?</p>
      <p>This isn’t a contract. Life changes, and your Atlas changes with it. Write one aspiration or fifty, skip any chapter, and leave whenever you like: everything saves as you go.</p></div></>}
-  <div className="muse-ritual-yearpick"><span className="small-label">Designing</span><MuseChoiceMenu label="Year to design" variant="chip" icon="calendar" valueLabel={String(year)} selectedIds={[String(year)]} options={years.map(y=>({id:String(y),label:String(y)}))} onSelect={id=>onYear(Number(id))}/></div>
+  <div className="muse-ritual-yearpick" role="radiogroup" aria-label="Year to design"><span className="small-label">Designing</span>{years.map(y=><button key={y} type="button" role="radio" aria-checked={y===year} className="type-numeric" onClick={()=>onYear(y)}>{y}</button>)}</div>
  </section>;
 }
 
@@ -127,8 +127,7 @@ function Chapter({area,index,year,today,atlas,store,created}:{area:LifeArea;inde
  return <section className="muse-ritual-chapter" style={{'--mark-a':`var(--chart-${tone})`,'--mark-b':`var(--chart-${tone%8+1})`} as CSSProperties}>
   <div className="muse-ritual-chapter-intro">
    <p className="muse-kicker">Movement II · Become</p>
-   <div className="muse-ritual-chapter-mark"><MuseMark icon={voice.glyph} tone={tone} size="lg"/><span className="muse-ritual-numeral" aria-hidden="true">{roman(index)}</span></div>
-   <h2>{area.label}</h2>
+   <h2 className="muse-ritual-chapter-title"><MuseMark icon={voice.glyph} tone={tone} size="lg"/><span className="muse-ritual-numeral" aria-hidden="true">{roman(index)}</span><span>{area.label}</span></h2>
    <p className="muse-ritual-prompt">{voice.prompt}</p>
    <label className="muse-ritual-vision"><span>In a sentence, what would you love this part of life to feel like? <small>Optional</small></span>
     <textarea rows={2} maxLength={2000} value={visionText} onChange={e=>setVisionText(e.target.value)} onBlur={()=>{if(visionText!==(vision?.vision??''))void atlas.writeVision(year,area.id,visionText);}}/></label>
@@ -136,7 +135,7 @@ function Chapter({area,index,year,today,atlas,store,created}:{area:LifeArea;inde
   <div className="muse-ritual-chapter-page">
    <form className="muse-ritual-add" onSubmit={e=>{e.preventDefault();void add();}}>
     <label htmlFor={inputId}>An aspiration for {area.label}</label>
-    <div><input id={inputId} maxLength={120} value={title} placeholder={here.length?'And another…':'Learn to sew, run a 10k, host a supper club…'} onChange={e=>setTitle(e.target.value)} data-dialog-autofocus/>
+    <div><input id={inputId} maxLength={120} value={title} placeholder={here.length?'And another…':`${voice.example}…`} onChange={e=>setTitle(e.target.value)} data-dialog-autofocus/>
      <button type="submit" className="muse-button button-primary" disabled={!title.trim()}>Add</button></div>
     <p className="small-label">Press Enter to add, then keep going. Milestones, notes and dates can come later.</p>
    </form>
@@ -178,19 +177,26 @@ function Declare({year,atlas}:{year:number;atlas:LifeAtlasStore}){
  const persist=(patch:Parameters<LifeAtlasStore['updatePlan']>[1])=>void atlas.updatePlan(year,patch);
  const cleanFeelings=(list:string[])=>list.map(f=>f.trim().slice(0,60)).filter(Boolean);
  return <section className="muse-ritual-declare">
-  <p className="muse-kicker">Movement III · Declare</p>
-  <h2>The Year in Your Own Words</h2>
-  <p className="muse-ritual-lede">The character of {year}, in a few words that are entirely yours. Every answer is optional, and you can revise them all year.</p>
-  <div className="muse-ritual-declare-grid">
-   <label className="muse-ritual-field" data-wide><span>My word or mantra for the year</span><input maxLength={500} value={theme} placeholder="Courage. Say yes. Softly, steadily." onChange={e=>setTheme(e.target.value)} onBlur={()=>{if(theme!==(plan?.theme??''))persist({theme});}}/></label>
-   <fieldset className="muse-ritual-field muse-ritual-feelings"><legend>Three feelings I want more of</legend><div>{feelings.map((f,i)=><input key={i} aria-label={`Feeling ${i+1}`} maxLength={60} value={f} placeholder={['wonder','courage','peace'][i]} onChange={e=>setFeelings(list=>list.map((x,j)=>j===i?e.target.value:x))} onBlur={()=>{const next=cleanFeelings(feelings);if(next.join('|')!==(plan?.feelings??[]).join('|'))persist({feelings:next});}}/>)}</div></fieldset>
-   <label className="muse-ritual-field"><span>The one thing I most want to nurture</span><input maxLength={500} value={focus} placeholder="My health, my marriage, my art…" onChange={e=>setFocus(e.target.value)} onBlur={()=>{if(focus!==(plan?.focus??''))persist({focus});}}/></label>
-   <label className="muse-ritual-field" data-wide><span>What would make this year feel extraordinary?</span><textarea rows={3} maxLength={2000} value={extra} onChange={e=>setExtra(e.target.value)} onBlur={()=>{if(extra!==(plan?.extraordinary??''))persist({extraordinary:extra});}}/></label>
-   <div className="muse-ritual-field" data-wide><span>A vision board for {year} <small className="small-label">· optional</small></span>
-    {boards===null?<p className="small-label">Looking for your boards…</p>:boards.length===0&&!plan?.vision_board_name?<p className="small-label">No vision boards yet. You can make one in Envision → Vision Boards and link it here any time.</p>:
-    <div className="muse-ritual-boards" role="radiogroup" aria-label="Vision board">{boards.map(b=><button key={b.id} type="button" role="radio" aria-checked={plan?.vision_board_id===b.id} onClick={()=>persist(plan?.vision_board_id===b.id?{vision_board_id:null,vision_board_name:null}:{vision_board_id:b.id,vision_board_name:b.title.slice(0,120)})}><MuseIcon name="envision" size={16}/>{b.title}</button>)}
-     {plan?.vision_board_name&&!plan.vision_board_id&&<p className="small-label">{plan.vision_board_name} is no longer available.</p>}</div>}</div>
+  <span className="muse-ritual-declare-year type-numeric" aria-hidden="true">{year}</span>
+  <header className="muse-ritual-declare-head">
+   <p className="muse-kicker">Movement III · Declare</p>
+   <h2>The Year in Your Own Words</h2>
+   <p className="muse-ritual-lede">The character of {year}, in a few words that are entirely yours.</p>
+  </header>
+  <label className="muse-ritual-mantra"><span>My word or mantra for {year}</span>
+   <input maxLength={500} value={theme} placeholder="Courage. Say yes. Softly, steadily." onChange={e=>setTheme(e.target.value)} onBlur={()=>{if(theme!==(plan?.theme??''))persist({theme});}}/></label>
+  <fieldset className="muse-ritual-feelings"><legend>Three feelings I want more of</legend>
+   <ol>{feelings.map((f,i)=><li key={i} data-lit={f.trim()?true:undefined}><span className="muse-ritual-feeling-star" aria-hidden="true"/>
+    <input aria-label={`Feeling ${i+1}`} maxLength={60} value={f} placeholder={['wonder','courage','peace'][i]} onChange={e=>setFeelings(list=>list.map((x,j)=>j===i?e.target.value:x))} onBlur={()=>{const next=cleanFeelings(feelings);if(next.join('|')!==(plan?.feelings??[]).join('|'))persist({feelings:next});}}/></li>)}</ol>
+  </fieldset>
+  <div className="muse-ritual-letters">
+   <label className="muse-ritual-letter"><span>The one thing I most want to nurture</span><textarea rows={3} maxLength={500} value={focus} placeholder="My health, my marriage, my art…" onChange={e=>setFocus(e.target.value)} onBlur={()=>{if(focus!==(plan?.focus??''))persist({focus});}}/></label>
+   <label className="muse-ritual-letter"><span>What would make {year} feel extraordinary?</span><textarea rows={3} maxLength={2000} value={extra} placeholder="If I look back in December and…" onChange={e=>setExtra(e.target.value)} onBlur={()=>{if(extra!==(plan?.extraordinary??''))persist({extraordinary:extra});}}/></label>
   </div>
+  <div className="muse-ritual-boardpick"><p><span>A vision board for {year}</span><small>optional</small></p>
+   {boards===null?<p className="small-label">Looking for your boards…</p>:boards.length===0&&!plan?.vision_board_name?<p className="small-label">No vision boards yet. You can make one in Envision → Vision Boards and link it here any time.</p>:
+   <div className="muse-ritual-boards" role="radiogroup" aria-label="Vision board">{boards.map(b=><button key={b.id} type="button" role="radio" aria-checked={plan?.vision_board_id===b.id} onClick={()=>persist(plan?.vision_board_id===b.id?{vision_board_id:null,vision_board_name:null}:{vision_board_id:b.id,vision_board_name:b.title.slice(0,120)})}><MuseMark icon="envision" tone={6} size="sm"/><span>{b.title}</span></button>)}
+    {plan?.vision_board_name&&!plan.vision_board_id&&<p className="small-label">{plan.vision_board_name} is no longer available.</p>}</div>}</div>
  </section>;
 }
 
