@@ -119,3 +119,37 @@
  @keyframes tarot-lay{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
 }
 @media (prefers-reduced-motion:reduce){.muse-tarot-flip,.muse-tarot .muse-tarot-fan-arc>button{transition:none}.muse-tarot .muse-tarot-drawn-card:is(:hover,:focus-visible) .muse-tarot-flip{transform:none!important}}
+
+/* ── The Reading Journal: a record of a ritual ───────────────────────────────────────────────────────────── */
+.muse-tarot .muse-tarot-insights{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:12px}
+.muse-tarot .muse-tarot-insights>.muse-stat-tile{display:flex;padding:12px 14px;border-radius:var(--dl-radius-tile)}
+.muse-tarot .muse-tarot-insights .muse-stat-tile-value{font-size:1.5rem}
+.muse-tarot .muse-tarot-insights .muse-stat-tile-value i{font-style:normal;color:var(--text-muted);font-weight:400}
+.muse-tarot-stat-card .muse-stat-tile-value{font-family:var(--font-editorial);font-weight:var(--type-title-weight);font-size:1.12rem!important;letter-spacing:0;line-height:1.2}
+.muse-tarot-stat-art{flex:none;width:34px;margin-left:auto;rotate:6deg}
+.muse-tarot-stat-art .muse-tarot-art{display:block;width:34px;height:58px;max-width:none;margin:0;aspect-ratio:auto;border-radius:4px;overflow:hidden;box-shadow:0 4px 10px rgba(0,0,0,.35)}
+.muse-tarot-stat-art .muse-tarot-art img{width:100%;height:100%;object-fit:cover;border-radius:0}
+.muse-tarot-balance{position:absolute;left:14px;right:14px;bottom:0;display:flex;gap:2px;height:3px}
+.muse-tarot-balance i{display:block;min-width:3px;border-radius:2px;background:var(--success-primary)}
+.muse-tarot-balance i:last-child{background:var(--chart-6)}
+.muse-tarot-insights .muse-stat-tile:has(.muse-tarot-balance)::after{display:none}
+.muse-tarot .muse-tarot-timeline{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:16px}
+.muse-tarot .muse-tarot-entry{position:relative;display:flex;flex-direction:column;align-items:stretch;gap:7px;min-height:0;height:100%;padding:0 16px 14px;border-radius:20px;overflow:hidden;text-align:left;transition:transform .22s cubic-bezier(.2,.8,.2,1),box-shadow .22s}
+.muse-tarot .muse-tarot-entry:hover{border-color:transparent;box-shadow:0 14px 30px -14px color-mix(in srgb,var(--accent-secondary) 70%,transparent)}
+/* The reading's own cards, fanned on a small lit stage. */
+.muse-tarot-entry-stage{display:flex;justify-content:center;align-items:flex-end;height:132px;margin:0 -16px 6px;padding-top:16px;background:radial-gradient(70% 90% at 50% 100%,color-mix(in srgb,var(--accent-secondary) 22%,transparent),transparent 70%),linear-gradient(180deg,color-mix(in srgb,var(--accent-primary) 7%,transparent),transparent);border-bottom:1px solid var(--glass-border);overflow:hidden}
+.muse-tarot-entry-stage>span{--o:calc(var(--i) - (var(--n) - 1) / 2);display:block;flex:none;width:62px;margin-inline:-7px;transform-origin:50% 130%;transform:rotate(calc(var(--o) * 7deg)) translateY(calc(var(--o) * var(--o) * 2px + 12px));transition:transform .28s cubic-bezier(.2,.8,.2,1)}
+.muse-tarot-entry:is(:hover,:focus-visible) .muse-tarot-entry-stage>span{transform:rotate(calc(var(--o) * 10deg)) translateY(calc(var(--o) * var(--o) * 2px + 4px))}
+.muse-tarot-entry-stage .muse-tarot-art{display:block;width:62px;height:106px;max-width:none;margin:0;aspect-ratio:auto;border-radius:5px;overflow:hidden;border:1px solid color-mix(in srgb,var(--accent-secondary) 40%,var(--glass-edge));box-shadow:0 8px 18px rgba(0,0,0,.35)}
+.muse-tarot-entry-stage .muse-tarot-art img{width:100%;height:100%;object-fit:cover;border-radius:0}
+.muse-tarot-entry-stage .muse-tarot-reversed-label{font-size:.5rem;padding:1px 4px;right:2px;bottom:2px}
+.muse-tarot-entry-meta{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:.7rem;font-weight:650;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted)}
+.muse-tarot-entry-meta>span{padding:2px 8px;border:1px solid var(--glass-border);border-radius:999px;letter-spacing:.03em;text-transform:none;font-weight:600}
+.muse-tarot .muse-tarot-entry>strong{font-family:var(--font-editorial);font-weight:var(--type-title-weight);font-size:1.12rem;line-height:1.3;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+.muse-tarot-entry-cards{color:var(--text-muted);font-size:.78rem}
+.muse-tarot .muse-tarot-entry-preview{padding-left:11px;border-left:2px solid color-mix(in srgb,var(--chart-3) 60%,transparent);font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-quote-weight);font-size:.95rem;line-height:1.5;-webkit-line-clamp:3}
+.muse-tarot-entry-preview[data-empty]{border-left-style:dashed;color:var(--text-muted);font-family:var(--font-ui);font-style:normal;font-size:.82rem}
+.muse-tarot-entry-foot{display:flex;flex-wrap:wrap;gap:5px;margin-top:auto;padding-top:4px}
+.muse-tarot-entry-foot>span{padding:2px 8px;border-radius:999px;background:var(--surface-control);font-size:.7rem;color:var(--text-muted)}
+.muse-tarot-entry-foot:empty{display:none}
+@media (prefers-reduced-motion:reduce){.muse-tarot-entry-stage>span,.muse-tarot .muse-tarot-entry{transition:none}}
