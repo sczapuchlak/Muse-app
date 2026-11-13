@@ -236,3 +236,8 @@
 /* Dreams not yet collected feel a little "unopened": a soft dashed inner frame. */
 .muse-bucket-card:not([data-done]) .muse-bucket-card-art{outline:1.5px dashed color-mix(in srgb,var(--ink) 35%,transparent);outline-offset:-7px}
 @media (prefers-reduced-motion:reduce){.muse-bucket-card,.muse-bucket-card-emoji{transition:none}}
+/* Five collectible cards to a row on wide screens (Stephanie, Nov 13); fewer only as the space narrows. */
+.muse-bucket-cards{grid-template-columns:repeat(5,minmax(0,1fr));gap:var(--space-3)}
+@container (max-width:1050px){.muse-bucket-cards{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@container (max-width:820px){.muse-bucket-cards{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@container (max-width:600px){.muse-bucket-cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
