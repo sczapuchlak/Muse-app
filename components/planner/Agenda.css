@@ -526,3 +526,37 @@ button.muse-future-mini-day:is([data-col="5"],[data-col="6"]) .muse-future-mini-
 .muse-agenda-log-entry[data-missing]{color:var(--text-muted);font-style:italic}
 .muse-future-reference{display:grid;gap:6px;justify-items:start;padding:10px 12px;border:1px solid var(--glass-border);border-radius:var(--control-radius,12px);background:var(--surface-subtle)}
 .muse-future-reference strong{font-size:1rem}
+
+/* ── Agenda glow-up (Nov 2026): Month and Future Log in the Muse card language ───────────────────────────────
+   Solid container colour (the card fill over the page background, never see-through), the Muse today ring, the
+   Planner's task stars instead of "5 open", a colour per event and per month instead of all blue. */
+.muse-agenda-month{--solid:linear-gradient(var(--glass-background),var(--glass-background)),linear-gradient(var(--background),var(--background))}
+.muse-agenda-cell:not([data-outside]){position:relative;min-height:112px;gap:6px;padding:8px 8px 10px;border-radius:16px;border:1px solid var(--glass-border);background:var(--solid);box-shadow:0 10px 22px -20px rgba(0,0,0,.6);transition:transform .18s cubic-bezier(.2,.8,.2,1),box-shadow .18s,border-color .18s}
+.muse-agenda-cell:not([data-outside]):hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--accent-primary) 45%,var(--glass-border));box-shadow:0 16px 28px -22px var(--accent-primary)}
+.muse-agenda-cell[data-weekend]:not([data-outside]){background:linear-gradient(180deg,color-mix(in srgb,var(--accent-secondary) 7%,transparent),transparent 60%),var(--solid)}
+.muse-agenda-cell[data-past]:not([data-today]) .muse-agenda-cell-date{color:var(--text-muted)}
+.muse-agenda-cell[data-outside]{background:transparent;border:1px dashed color-mix(in srgb,var(--glass-border) 70%,transparent);opacity:.35}
+.muse-agenda-cell-date{font-family:var(--font-editorial);font-weight:600;font-size:1.15rem;line-height:1;padding:2px 4px}
+.muse-agenda-cell[data-today]{border-color:transparent;background:radial-gradient(120% 80% at 0% 0%,color-mix(in srgb,var(--accent-primary) 16%,transparent),transparent 70%),var(--solid);box-shadow:0 0 0 2px transparent}
+.muse-agenda-cell[data-today]::after{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:2px;background:linear-gradient(135deg,var(--accent-secondary),var(--accent-primary),var(--accent-pop,var(--accent-primary)));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);pointer-events:none}
+.muse-agenda-cell[data-today] .muse-agenda-cell-date{display:inline-grid;place-items:center;min-width:28px;height:28px;padding:0 6px;border-radius:999px;color:white;background:linear-gradient(135deg,var(--accent-secondary),var(--accent-primary))}
+.muse-agenda-cell li{display:flex;align-items:center;gap:5px;padding:3px 6px;border-radius:7px;font-size:.72rem;background:color-mix(in srgb,var(--ev,var(--accent-primary)) 16%,transparent);border-left:3px solid var(--ev,var(--accent-primary))}
+.muse-agenda-cell li b{font-weight:700;color:color-mix(in oklab,var(--ev,var(--accent-primary)) 65%,var(--foreground))}
+.muse-agenda-cell-meta{align-items:center;margin-top:auto;gap:6px}
+.muse-agenda-cell-more{font-weight:650}
+.muse-agenda-cell-stars{display:inline-flex;align-items:center;gap:2px}
+.muse-agenda-cell-stars i{width:10px;height:10px;clip-path:polygon(50% 0,61% 39%,100% 50%,61% 61%,50% 100%,39% 61%,0 50%,39% 39%);background:color-mix(in srgb,var(--text-muted) 45%,transparent)}
+.muse-agenda-cell-stars i[data-done]{background:linear-gradient(135deg,var(--accent-secondary),var(--accent-primary));transform:scale(1.15)}
+.muse-agenda-cell-stars[data-overdue] i:not([data-done]){background:color-mix(in srgb,var(--warning-primary,#e8a33d) 75%,transparent)}
+.muse-agenda-cell-stars small{font-size:.66rem;font-weight:700}
+.muse-agenda-cell-priority{color:#f5c451}
+.muse-agenda-weekdays span{font-weight:750;letter-spacing:.14em}
+/* Future Log: one colour per month (title, top edge, buttons), solid card, today ringed in the mini month. */
+.muse-agenda-log-month{--log-ink:var(--month,var(--chart-1))!important;background:radial-gradient(90% 60% at 0% 0%,color-mix(in srgb,var(--log-ink) 14%,transparent),transparent 70%),linear-gradient(var(--glass-background),var(--glass-background)),linear-gradient(var(--background),var(--background))!important}
+.muse-agenda-log-month h3{font-size:1.3rem;background:linear-gradient(110deg,color-mix(in oklab,var(--log-ink) 70%,white),var(--log-ink));-webkit-background-clip:text;background-clip:text;color:transparent}
+.muse-agenda-log-month .muse-agenda-add{border-color:color-mix(in srgb,var(--log-ink) 45%,transparent);background:color-mix(in srgb,var(--log-ink) 14%,var(--glass-background));color:color-mix(in oklab,var(--log-ink) 60%,var(--foreground))}
+.muse-agenda-log-month .muse-agenda-add:hover{background:linear-gradient(135deg,color-mix(in oklab,var(--log-ink) 80%,black),var(--log-ink));color:white}
+.muse-agenda-log-empty{border:1.5px dashed color-mix(in srgb,var(--log-ink) 50%,transparent)!important;color:color-mix(in oklab,var(--log-ink) 60%,var(--foreground))!important;background:color-mix(in srgb,var(--log-ink) 8%,transparent)!important;border-radius:999px}
+.muse-agenda-log-month[data-past]{opacity:.72}
+.muse-agenda-log-month[data-current]{box-shadow:0 0 0 2px var(--log-ink),0 20px 40px -26px var(--log-ink)}
+@media (prefers-reduced-motion:reduce){.muse-agenda-cell{transition:none}.muse-agenda-cell:hover{transform:none}}
