@@ -1,5 +1,5 @@
 import {validAccent,type AccentColor} from "./appearance-values";
-import { nextRecurringDate,recurringError,type RecurringPayment,type ManualPaymentMethod } from "./recurring";
+import { nextRecurringDate,recurrenceLabel,recurringError,type RecurringPayment,type ManualPaymentMethod } from "./recurring";
 import { validDate } from "./dates";
 import type { MuseIconName } from "@/components/MuseIcon";
 export const moneyAccents=["primary","secondary","pop","warm","info"] as const;
@@ -89,6 +89,28 @@ function reduceMoney(state:MoneyState,action:MoneyAction):MoneyState {
   return {...next,[action.collection]:records.some((item)=>item.id===action.record.id)?records.map((item)=>item.id===action.record.id?structuredClone(action.record):item):[...records,structuredClone(action.record)]};
 }
 export function upcomingMoney(state:MoneyState,today:string){return [...state.bills.filter((item)=>!item.paid&&(!item.recurringId||!state.recurring.some((recurring)=>recurring.id===item.recurringId&&nextRecurringDate(recurring,today)===item.dueDate))&&item.dueDate>=today).map((item)=>({id:`bill-${item.id}`,kind:"bill" as const,recordId:item.id,name:item.name,date:item.dueDate,amount:item.amountCents})),...state.cards.filter((item)=>item.dueDate&&item.dueDate>=today).map((item)=>({id:`card-${item.id}`,kind:"card" as const,recordId:item.id,name:item.name,date:item.dueDate!,amount:item.plannedPaymentCents??item.minimumCents}))].sort((a,b)=>a.date.localeCompare(b.date));}
+
+export type ComingUpItem={id:string;kind:"bill"|"card"|"recurring";recordId:string;name:string;date:string;amount?:number;estimated:boolean;cadence?:string;categoryId?:string};
+const sameObligation=(a:string,b:string)=>a.trim().toLocaleLowerCase()===b.trim().toLocaleLowerCase();
+/**
+ * Everything that is due next: unpaid bills, card payments and the next charge of each active recurring payment
+ * (rent, utilities, subscriptions, memberships). One obligation appears once:
+ *  - a bill linked to a recurring payment stands in for that payment's charge on the same date (the bill carries the
+ *    paid/unpaid status; once it is marked paid, that charge is settled and is not listed again);
+ *  - an unlinked bill with the same name, date and amount as a recurring charge is treated as the same obligation.
+ * Only each payment's next scheduled date is used, and an unknown amount stays unknown: nothing is invented.
+ */
+export function comingUp(state:MoneyState,today:string):ComingUpItem[]{
+ if(!validDate(today))return [];
+ const bills:ComingUpItem[]=state.bills.filter(item=>!item.paid&&item.dueDate>=today).map(item=>({id:`bill-${item.id}`,kind:"bill",recordId:item.id,name:item.name,date:item.dueDate,amount:item.amountCents,estimated:false,cadence:item.recurrence==="once"?undefined:item.recurrence,categoryId:item.categoryId}));
+ const cards:ComingUpItem[]=state.cards.filter(item=>item.dueDate&&item.dueDate>=today).map(item=>({id:`card-${item.id}`,kind:"card",recordId:item.id,name:item.name,date:item.dueDate!,amount:item.plannedPaymentCents??item.minimumCents,estimated:false}));
+ const recurring:ComingUpItem[]=[...new Map(state.recurring.map(item=>[item.id,item])).values()].flatMap(item=>{
+  const date=nextRecurringDate(item,today);if(!date)return [];
+  const covered=state.bills.some(bill=>bill.dueDate===date&&(bill.recurringId===item.id||!bill.recurringId&&sameObligation(bill.name,item.name)&&(item.amountCents===undefined||bill.amountCents===item.amountCents)));
+  return covered?[]:[{id:`recurring-${item.id}`,kind:"recurring" as const,recordId:item.id,name:item.name,date,amount:item.amountCents,estimated:item.amountBehavior==="estimated",cadence:recurrenceLabel(item.recurrence),categoryId:item.categoryId}];
+ });
+ return [...bills,...cards,...recurring].sort((a,b)=>a.date.localeCompare(b.date)||a.name.localeCompare(b.name));
+}
 
 /** Fixed three-record quick shelf, independent of the currently browsed historical paycheck. */
 export function paycheckNavigation(state:MoneyState,today:string){

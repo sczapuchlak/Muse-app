@@ -115,3 +115,23 @@ test('Money refuses unsafe card-balance arithmetic and preserves existing alloca
 });
 
 function moneyFixture(state){const view={state,loaded:true,pending:false,error:''};return {subscribe:()=>()=>{},getSnapshot:()=>view,dispatch:()=>{},whenSaved:()=>{}};}
+
+// Glow-up: Coming up lists bills, card payments and each recurring payment's next charge, once per obligation.
+test('Coming up merges bills and recurring payments without duplicates or invented charges',()=>{
+ const {comingUp}=load('lib/money');
+ const rec=(id,name,date,extra={})=>({id,name,amountCents:1500,amountBehavior:'fixed',recurrence:{interval:1,unit:'month'},nextChargeDate:date,billingSource:'direct',status:'active',...extra});
+ const bill=(id,name,date,extra={})=>({id,name,amountCents:1500,dueDate:date,recurrence:'monthly',paid:false,...extra});
+ const state={paychecks:[],allocations:[],templates:[],transactions:[],payments:[],categories:[],tags:[],groups:[],paymentMethods:[],
+  cards:[{id:'c1',name:'Visa',balanceCents:0,dueDate:'2026-11-20',minimumCents:2500}],
+  bills:[bill('b1','Rent','2026-11-15',{amountCents:120000,recurringId:'r-rent'}),bill('b2','Gym','2026-11-18'),bill('b3','Water','2026-11-16',{paid:true,recurringId:'r-water'}),bill('b4','Old','2026-11-01')],
+  recurring:[rec('r-rent','Rent','2026-11-15',{amountCents:120000}),rec('r-gym','gym ','2026-11-18'),rec('r-water','Water','2026-11-16'),rec('r-stream','Streaming','2026-11-14'),rec('r-power','Electricity','2026-11-19',{amountCents:undefined,amountBehavior:'estimated'}),rec('r-paused','Paused club','2026-11-17',{status:'paused'}),rec('r-gone','Cancelled','2026-11-17',{status:'cancelled',cancelledDate:'2026-10-01'})]};
+ const list=comingUp(state,'2026-11-13');
+ assert.deepEqual(list.map(i=>`${i.kind}:${i.name}:${i.date}`),['recurring:Streaming:2026-11-14','bill:Rent:2026-11-15','bill:Gym:2026-11-18','recurring:Electricity:2026-11-19','card:Visa:2026-11-20']);
+ assert.equal(list.filter(i=>/rent/i.test(i.name)).length,1,'a linked bill and its recurring payment are one obligation');
+ assert.equal(list.filter(i=>/gym/i.test(i.name)).length,1,'an unlinked bill with the same name, date and amount is the same obligation');
+ assert.ok(!list.some(i=>i.name==='Water'),'a paid linked bill settles that charge');
+ assert.ok(!list.some(i=>/Paused|Cancelled|Old/.test(i.name)),'paused, cancelled and past items are not listed');
+ const power=list.find(i=>i.name==='Electricity');assert.equal(power.amount,undefined,'an unknown amount stays unknown');assert.equal(power.estimated,true);
+ assert.equal(list.find(i=>i.name==='Streaming').cadence,'Monthly');
+ assert.deepEqual(comingUp(state,'not-a-date'),[]);
+});

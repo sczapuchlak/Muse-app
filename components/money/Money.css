@@ -336,3 +336,10 @@ details.muse-money-footnote[open]>summary{margin-bottom:4px}
   .muse-recurring-toolbar>.muse-filter-options>.choice-button{flex:1 1 0;min-height:38px}
   .muse-recurring-toolbar>.muse-button{min-height:44px}
 }
+
+/* Coming up (glow-up): bills, card payments and recurring charges in one list, each marked by kind. */
+.muse-money-upcoming li { grid-template-columns:auto minmax(0,1fr) auto minmax(84px,auto); }
+.muse-money-upcoming-mark .muse-mark { width:26px; height:26px; border-radius:9px; }
+.muse-money-upcoming strong small { display:inline; font-weight:400; }
+.muse-money-unknown { color:var(--text-muted); font-size:.72rem; font-weight:500; }
+.muse-money-upcoming-more { justify-self:start; margin-top:var(--space-2); }
