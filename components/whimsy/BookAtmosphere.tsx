@@ -3,6 +3,7 @@
 import {useEffect,useState,type CSSProperties,type ReactNode} from 'react';
 import type {Book} from '@/lib/whimsy/models';
 import {validCoverUrl} from '@/lib/whimsy/books';
+import './CoverGlow.css';
 
 const paletteCache=new Map<string,string|null>();
 
