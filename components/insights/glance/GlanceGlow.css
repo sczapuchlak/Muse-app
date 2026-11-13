@@ -83,7 +83,7 @@
 .muse-glance-yearbook{display:grid;justify-items:center;align-content:start;gap:4px;height:100%;box-sizing:border-box;padding:12px 10px;border-radius:16px;border:1px solid var(--glass-border);background:color-mix(in srgb,var(--foreground) 4%,transparent);text-align:center}
 .muse-glance-yearbook[data-kind=finished]{background:linear-gradient(170deg,color-mix(in srgb,#f2c14e 12%,transparent),transparent 60%),color-mix(in srgb,var(--foreground) 4%,transparent);border-color:color-mix(in srgb,#f2c14e 32%,var(--glass-border))}
 .muse-glance-yearbook-cover{position:relative;display:block;width:min(100%,92px);margin-bottom:6px}
-.muse-glance-yearbook-cover .muse-book-cover{width:100%;aspect-ratio:2/3;border-radius:3px 7px 7px 3px;box-shadow:1px 1px 0 #f4efe4,2px 2px 0 #d3cab7,3px 3px 0 #f4efe4,4px 4px 0 #d3cab7,8px 12px 18px -6px rgba(0,0,0,.5)}
+.muse-glance-yearbook-cover .muse-book-cover{width:100%;aspect-ratio:2/3;border-radius:3px 7px 7px 3px;box-shadow:0 12px 20px -10px rgba(0,0,0,.55)}
 .muse-glance-yearbook-cover>i{position:absolute;right:-8px;top:-8px;display:grid;place-items:center;width:24px;height:24px;border-radius:50%;font-style:normal;font-size:.75rem;font-weight:800;color:#3a2600;background:linear-gradient(135deg,#fff1c2,#f2c14e 55%,#d99a2b);box-shadow:0 2px 8px rgba(0,0,0,.35)}
 .muse-glance-yearbook>strong{display:-webkit-box;overflow:hidden;max-width:100%;font-family:var(--font-editorial);font-weight:600;font-size:.92rem;line-height:1.2;-webkit-line-clamp:2;-webkit-box-orient:vertical}
 .muse-glance-yearbook .muse-glance-sub{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.78rem}
