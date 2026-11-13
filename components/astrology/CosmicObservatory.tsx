@@ -28,6 +28,7 @@ import {AstrologyEntryDetail} from './AstrologyEntryDetail';
 import {CosmicCalendar,CosmicEventDetail} from './CosmicCalendar';
 import {CosmicJournal,JournalDetail,JournalEditor,type JournalDraft} from './CosmicJournal';
 import './CosmicObservatory.css';
+import './ObservatorySky.css';
 import './ObservatoryGlow.css';
 import {ShareToStream} from '../stream/ShareToStream';
 const sections=[['forecast','Horoscopes'],['chart','Birth Chart'],['library','Astrology Library'],['calendar','Cosmic Calendar'],['journal','Cosmic Journal']] as const;

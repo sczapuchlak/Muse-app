@@ -39,3 +39,14 @@
 @keyframes muse-decoder-glow{to{box-shadow:0 0 54px 10px color-mix(in srgb,#ffd98a 55%,transparent),0 0 110px 26px color-mix(in srgb,var(--chart-6) 34%,transparent)}}
 @media (max-width:700px){.muse-decoder-recent{--cols:1!important;max-width:none!important}}
 .muse-decoder-float:nth-child(4){top:96px}.muse-decoder-float:nth-child(5){top:30px}.muse-decoder-float:nth-child(6){top:110px}.muse-decoder-float:nth-child(7){top:52px}.muse-decoder-float:nth-child(8){top:8px}.muse-decoder-float:nth-child(9){top:118px}.muse-decoder-float:nth-child(10){top:70px}
+/* Compact enough to sit within one screen with the page header above it. */
+.muse-decoder-invite{gap:10px;padding:18px clamp(18px,2.6vw,28px) 20px}
+.muse-decoder-scene{height:96px}
+.muse-decoder-moon{top:8px;width:62px;height:62px}
+.muse-decoder-cloud[data-n="1"]{top:58px;width:120px}.muse-decoder-cloud[data-n="2"]{top:40px;width:90px}
+.muse-decoder-float{font-size:1.05rem}
+.muse-decoder-float:nth-child(4){top:62px}.muse-decoder-float:nth-child(5){top:14px}.muse-decoder-float:nth-child(6){top:70px}.muse-decoder-float:nth-child(7){top:30px}.muse-decoder-float:nth-child(8){top:2px}.muse-decoder-float:nth-child(9){top:74px}.muse-decoder-float:nth-child(10){top:44px}
+.muse-decoder-invite-copy{gap:4px}
+.muse-decoder-invite-copy h3{font-size:clamp(1.3rem,2.1vw,1.7rem)}
+.muse-decoder-recent-label{margin:2px 0 0}
+.muse-decoder-dream{padding:12px 16px;gap:4px}

@@ -24,6 +24,7 @@ import {DreamTypeBadge,emotionName} from './dreams/parts';
 import {useWhimsyData} from './WhimsyData';
 import Link from 'next/link'; import {useSearchParams} from 'next/navigation';
 import './Dreamscapes.css';
+import './dreams/DreamDiaryNight.css';
 import {ShareToStream} from '../stream/ShareToStream';
 import {playSound} from '@/lib/muse-sound';
 
