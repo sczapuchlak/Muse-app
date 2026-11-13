@@ -149,3 +149,57 @@
 .muse-observatory :is(.muse-cosmic-astro101,.muse-lib-side,.muse-cosmic-lunar-strip) .muse-heading-title{margin:0;letter-spacing:-.005em;text-transform:none;color:var(--foreground);font-family:var(--font-editorial);font-weight:var(--type-editorial-weight)}
 .muse-observatory .muse-cosmic-astro101 .muse-heading-title{font-size:1.5rem}
 .muse-observatory :is(.muse-lib-side,.muse-cosmic-lunar-strip) .muse-heading-title{font-size:1.08rem}
+
+/* ── Horoscopes glow-up 2: a sign masthead, element-coloured medallions and a real zodiac picker ─────────────── */
+.muse-observatory [data-element]{--element:var(--chart-5)}
+.muse-observatory [data-element=Fire]{--element:var(--chart-4)}
+.muse-observatory [data-element=Earth]{--element:var(--chart-3)}
+.muse-observatory [data-element=Air]{--element:var(--chart-1)}
+.muse-observatory [data-element=Water]{--element:var(--chart-5)}
+.muse-sign-medallion{display:grid;place-items:center;flex:none;width:58px;height:58px;border-radius:50%;font-size:1.9rem;line-height:1;color:white;background:radial-gradient(circle at 34% 28%,color-mix(in srgb,var(--element,var(--chart-5)) 55%,white),color-mix(in srgb,var(--element,var(--chart-5)) 80%,black) 62%,color-mix(in srgb,var(--element,var(--chart-5)) 55%,black));box-shadow:0 0 0 3px color-mix(in srgb,var(--element,var(--chart-5)) 28%,transparent),0 10px 24px -10px color-mix(in srgb,var(--element,var(--chart-5)) 80%,transparent);text-shadow:0 1px 2px rgba(0,0,0,.35)}
+@supports (color: oklch(from red l c h)){.muse-sign-medallion{background:radial-gradient(circle at 34% 28%,oklch(from var(--element,var(--chart-5)) .78 c h),oklch(from var(--element,var(--chart-5)) .5 max(c,.14) h) 62%,oklch(from var(--element,var(--chart-5)) .36 max(c,.12) h))}}
+.muse-observatory .muse-cosmic-forecast-head{align-items:stretch;gap:16px}
+.muse-observatory .muse-cosmic-forecast-head>.muse-heading{display:flex;align-self:center}
+.muse-observatory .muse-cosmic-forecast-summary{display:flex;align-items:stretch;gap:10px;flex-wrap:wrap}
+.muse-observatory .muse-cosmic-forecast-sign{gap:14px;padding:12px 18px 12px 12px;border-color:color-mix(in srgb,var(--element,var(--accent-primary)) 50%,var(--glass-border));border-radius:22px;background-color:var(--glass-background);background-image:radial-gradient(120% 140% at 0% 50%,color-mix(in srgb,var(--element,var(--accent-primary)) 18%,transparent),transparent 65%)}
+.muse-observatory .muse-cosmic-forecast-sign>span.muse-sign-medallion{font-size:1.9rem}
+.muse-observatory .muse-cosmic-forecast-sign strong{font-size:1.5rem}
+.muse-sign-facts{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin-top:3px;color:var(--text-muted);font-size:.74rem}
+.muse-sign-facts i{padding:1px 8px;border-radius:999px;font-style:normal;font-weight:650;background:color-mix(in srgb,var(--element,var(--accent-primary)) 18%,var(--surface-control));color:var(--foreground)}
+.muse-observatory .muse-cosmic-forecast-actions{display:grid;gap:8px;align-content:center}
+.muse-observatory .muse-cosmic-zodiac{grid-template-columns:repeat(auto-fill,minmax(min(100%,128px),1fr));gap:10px;padding:14px;border:1px solid var(--glass-border);border-radius:22px;background-color:var(--glass-background)}
+.muse-observatory .muse-cosmic-zodiac-button{gap:4px;min-height:132px;padding:12px 6px;border-radius:18px;background:var(--surface-subtle);background-image:radial-gradient(90% 70% at 50% 0%,color-mix(in srgb,var(--element) 14%,transparent),transparent 70%)}
+.muse-observatory .muse-cosmic-zodiac-button .muse-sign-medallion{width:46px;height:46px;font-size:1.45rem}
+.muse-observatory .muse-cosmic-zodiac-button strong{font-family:var(--font-editorial);font-weight:var(--type-title-weight);font-size:1rem}
+.muse-observatory .muse-cosmic-zodiac-button small{color:var(--text-muted);font-size:.64rem;text-align:center;line-height:1.3}
+.muse-observatory .muse-cosmic-zodiac-button:hover{border-color:color-mix(in srgb,var(--element) 60%,var(--glass-border))}
+.muse-observatory .muse-cosmic-zodiac-button[aria-pressed=true]{border-color:transparent;box-shadow:0 0 0 2px var(--element),0 12px 26px -14px color-mix(in srgb,var(--element) 85%,transparent)}
+/* Header: the profile button shows your sign. */
+.muse-observatory .muse-cosmic-profile-button{display:inline-flex;align-items:center;gap:10px;min-height:52px;padding:5px 16px 5px 5px;border-radius:999px;text-align:left;background-color:var(--glass-background)}
+.muse-observatory .muse-cosmic-profile-button .muse-sign-medallion{width:40px;height:40px;font-size:1.2rem;box-shadow:none}
+.muse-observatory .muse-cosmic-profile-button>span:last-child{display:grid;line-height:1.2;font-size:.86rem;font-weight:600}
+.muse-observatory .muse-cosmic-profile-button small{color:var(--text-muted);font-size:.66rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.muse-observatory .muse-cosmic-period-selector{background-color:var(--glass-background)}
+@container muse-content (max-width:640px){.muse-observatory .muse-cosmic-forecast-summary{width:100%}.muse-observatory .muse-cosmic-forecast-sign{flex:1 1 100%}.muse-observatory .muse-cosmic-forecast-actions{grid-template-columns:1fr 1fr;flex:1 1 100%}}
+
+/* Birth Chart: a drawn wheel waits in the empty state; tool cards wear real marks. */
+.muse-chart-empty{display:grid;justify-items:center;gap:10px;max-width:640px;margin-inline:auto;padding:clamp(22px,3vw,34px)!important;border-radius:26px;background-image:radial-gradient(70% 60% at 50% 30%,color-mix(in srgb,var(--chart-5) 16%,transparent),transparent 70%)}
+.muse-chart-empty-wheel{width:150px;height:150px;margin-bottom:4px}
+.muse-chart-empty-wheel :is(circle,line){fill:none;stroke:color-mix(in srgb,var(--foreground) 35%,transparent);stroke-width:1}
+.muse-chart-empty-wheel circle:nth-of-type(2){stroke-dasharray:2 4}
+.muse-chart-empty-wheel .muse-chart-empty-planet{stroke:none;filter:drop-shadow(0 0 4px currentColor)}
+@media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) .muse-chart-empty-wheel{animation:muse-wheel-turn 90s linear infinite}@keyframes muse-wheel-turn{to{rotate:360deg}}}
+.muse-observatory .muse-chart-directory .muse-cosmic-tile{gap:10px;padding:18px;border-radius:20px;border-top-width:1px;background-image:radial-gradient(110% 80% at 100% 0%,color-mix(in srgb,var(--mark-a,var(--chart-5)) 14%,transparent),transparent 60%)}
+.muse-observatory .muse-chart-directory .muse-cosmic-tile[aria-pressed=true]{border-color:var(--selected-border);box-shadow:0 0 0 1px var(--selected-border)}
+
+/* Calendar: moon phases glow in the sky's colour; today and the selected day are clearly different. */
+.muse-observatory .muse-cosmic-moon-base{fill:color-mix(in srgb,var(--foreground) 10%,#0b0a18)}
+.muse-observatory .muse-cosmic-moon-lit{fill:color-mix(in srgb,#fff7e0 85%,var(--chart-7))}
+.muse-observatory .muse-cosmic-moon-rim{stroke:color-mix(in srgb,var(--chart-7) 70%,transparent);stroke-width:1.5}
+.muse-observatory .muse-cosmic-phase-mark{filter:drop-shadow(0 0 4px color-mix(in srgb,#fff7e0 45%,transparent))}
+.muse-observatory .muse-cosmic-day[data-today=true] time{background:linear-gradient(140deg,var(--accent-secondary),var(--accent-primary));color:white;width:26px;height:26px;display:grid;place-items:center;border-radius:50%;font-weight:700}
+.muse-observatory .muse-cosmic-day[aria-pressed=true]{border-color:transparent;background:color-mix(in srgb,var(--chart-7) 16%,var(--surface-subtle));box-shadow:0 0 0 2px var(--chart-7),0 8px 18px -10px color-mix(in srgb,var(--chart-7) 85%,transparent)}
+.muse-observatory .muse-cosmic-day:has(.muse-cosmic-phase-mark) .muse-cosmic-day-events .muse-cosmic-phase-mark{width:24px;height:24px}
+
+/* Astro 101: each diagram sits on a small night-sky plate. */
+.muse-observatory .muse-astro101-figure .muse-lesson-diagram{width:min(100%,200px);padding:10px;border-radius:50%;background:radial-gradient(circle at 50% 40%,color-mix(in srgb,var(--chart-5) 26%,#0d0b1f),#07060f 72%);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--chart-5) 40%,transparent),0 14px 30px -16px color-mix(in srgb,var(--chart-5) 80%,transparent);color:#f4efff;background-image:radial-gradient(circle,rgba(255,255,255,.7) 0 .6px,transparent 1px),radial-gradient(circle at 50% 40%,color-mix(in srgb,var(--chart-5) 26%,#0d0b1f),#07060f 72%);background-size:23px 29px,100% 100%}
