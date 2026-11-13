@@ -26,7 +26,7 @@ export async function loadAtlas(client:Client):Promise<AtlasData>{
  return {areas,links:links.data??[],plans:plans.data??[],priorities:priorities.data??[],visions:visions.data??[],related:related.data??[]};
 }
 
-export type PlanPatch=Partial<Pick<YearPlan,'theme'|'feelings'|'focus'|'extraordinary'|'vision_board_id'|'vision_board_name'|'ritual_step'|'ritual_started_at'|'ritual_completed_at'|'established_at'>>;
+export type PlanPatch=Partial<Pick<YearPlan,'theme'|'feelings'|'focus'|'extraordinary'|'proud'|'letting_go'|'vision_board_id'|'vision_board_name'|'ritual_step'|'ritual_started_at'|'ritual_completed_at'|'established_at'>>;
 /** Creates the year's plan on first write, otherwise updates it only if nobody else changed it. */
 export async function savePlan(client:Client,year:number,patch:PlanPatch,current:YearPlan|undefined):Promise<YearPlan>{
  const r=current?await client.from('aspiration_year_plans').update(patch).eq('year',year).eq('revision',current.revision).select('*').maybeSingle()
