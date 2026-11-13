@@ -121,8 +121,7 @@ export function InsightsGlance() {
           <div style={{ gridArea: "three" }}><ThreeFavorites daily={daily} /></div>
         </div>
         <div data-area="hero">{readingCard(undefined, true)}</div>
-        <div data-area="hero"><StepsSummary start={range.start} end={range.end} /></div>
-        <div data-area="hero"><LittleMoments memories={moments.memories} checkIns={checkIns} onOpen={(d) => open(d)} period="month" /></div>
+        <div data-area="hero" className="muse-glance-pair"><StepsSummary start={range.start} end={range.end} /><LittleMoments memories={moments.memories} checkIns={checkIns} onOpen={(d) => open(d)} period="month" /></div>
         <div data-area="hero"><MonthIntentions days={range.days} intentions={daily.intentions} today={today} onOpen={(d) => open(d)} /></div>
       </>}
 
