@@ -140,3 +140,11 @@ test('Life Atlas classes never collide with the Books Reading Atlas (plain globa
  assert.doesNotMatch(css,/\.muse-atlas-/,'the Reading Atlas owns muse-atlas-*; the Life Atlas uses muse-lifeatlas-*');
  assert.match(read('app/surfaces.css'),/\.muse-lifeatlas-area, /,'light-card themes give Atlas sections their card ink');
 });
+
+test('round 4: two more prompts on the final page, saved on the year plan (additive migration)',()=>{
+ const sql=read('supabase/migrations/20261219000100_life_atlas_more_words.sql');
+ assert.match(sql,/add column proud text not null default ''/);assert.match(sql,/add column letting_go text not null default ''/);
+ assert.doesNotMatch(sql,/drop |delete from|update public\./i);
+ const ritual=read('components/envision/aspirations/DesignMyYear.tsx');
+ assert.match(ritual,/most proud to say I did/);assert.match(ritual,/ready to let go of/);
+});

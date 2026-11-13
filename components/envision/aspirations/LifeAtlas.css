@@ -261,3 +261,16 @@
 .muse-lifeatlas-counts>div{padding:6px 10px;border-radius:12px}
 .muse-lifeatlas-counts dd{font-size:1.25rem}
 .muse-lifeatlas-hero-actions .muse-button{min-height:40px}
+
+/* Round 4 (Nov 13): the hero constellation spreads into the open middle of the hero as a web: bigger stars, every
+   area linked to its neighbours, and labels large enough to read, each on a soft halo of night sky. */
+.muse-lifeatlas-hero{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr)}
+.muse-lifeatlas-hero-sky{align-self:stretch;grid-template-rows:minmax(0,1fr) auto;align-items:center}
+.muse-lifeatlas-hero-sky .muse-lifeatlas-constellation[data-web]{max-height:none!important;width:calc(100% + clamp(40px,10vw,180px));margin-left:calc(-1 * clamp(40px,10vw,180px));overflow:visible}
+.muse-lifeatlas-constellation[data-web] .muse-lifeatlas-star-label{font-size:3.1px;font-weight:500;letter-spacing:.03em;fill:color-mix(in oklab,var(--foreground) 82%,transparent);paint-order:stroke;stroke:color-mix(in oklab,var(--background) 70%,transparent);stroke-width:.7px;stroke-linejoin:round}
+.muse-lifeatlas-constellation[data-web] .muse-lifeatlas-star[data-lit] .muse-lifeatlas-star-label{fill:var(--foreground);font-weight:650}
+.muse-lifeatlas-constellation[data-web] .muse-lifeatlas-thread{stroke:color-mix(in oklab,var(--accent-primary) 30%,color-mix(in oklab,var(--foreground) 22%,transparent));stroke-width:.26;stroke-dasharray:none;opacity:.7}
+.muse-lifeatlas-constellation[data-web] .muse-lifeatlas-thread[data-lit]{stroke:color-mix(in oklab,var(--accent-primary) 80%,var(--foreground));stroke-width:.42;opacity:1;filter:drop-shadow(0 0 .6px var(--accent-primary))}
+.muse-lifeatlas-constellation[data-web] .muse-lifeatlas-star-shape{fill:color-mix(in oklab,var(--star) 70%,var(--foreground));filter:drop-shadow(0 0 .7px var(--star))}
+.muse-lifeatlas-constellation[data-web] .muse-lifeatlas-star[data-lit] .muse-lifeatlas-star-shape{filter:drop-shadow(0 0 1.4px var(--star)) drop-shadow(0 0 .5px white)}
+@media (max-width:760px){.muse-lifeatlas-hero-sky .muse-lifeatlas-constellation[data-web]{width:100%;margin-left:0}}

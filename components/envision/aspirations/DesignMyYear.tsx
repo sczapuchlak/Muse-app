@@ -1,7 +1,7 @@
 'use client';
 import {useEffect,useId,useMemo,useRef,useState,type CSSProperties} from 'react';
 import {useMuseDialog} from '@/components/useMuseDialog';
-import {MuseMark} from '@/components/design/MuseHeading';
+import {MuseMark,type MuseTone} from '@/components/design/MuseHeading';
 import {MuseIcon} from '@/components/MuseIcon';
 import {MuseChoiceMenu} from '@/components/MuseChoiceMenu';
 import type {Aspiration} from '@/lib/aspirations/models';
@@ -169,31 +169,39 @@ function RitualItem({a,year,store,onTakeOut,fresh}:{a:Aspiration;year:number;sto
  </li>;
 }
 
+/** The four letters to yourself on the final page: one tile, one tone, one question each. */
+const letters:{key:'focus'|'extraordinary'|'proud'|'letting_go';glyph:'seedling'|'sparkle'|'trophy'|'leaf';tone:MuseTone;max:number;question:(y:number)=>string;hint:string}[]=[
+ {key:'focus',glyph:'seedling',tone:3,max:500,question:()=>'The one thing I most want to nurture',hint:'My health, my marriage, my art…'},
+ {key:'extraordinary',glyph:'sparkle',tone:6,max:2000,question:y=>`What would make ${y} feel extraordinary?`,hint:'If I look back in December and…'},
+ {key:'proud',glyph:'trophy',tone:4,max:2000,question:y=>`At the end of ${y}, what would I be most proud to say I did?`,hint:'I finally…'},
+ {key:'letting_go',glyph:'leaf',tone:1,max:2000,question:()=>'What am I ready to let go of, to make room?',hint:'Saying yes to everything, the old story that…'},
+];
+
 function Declare({year,atlas}:{year:number;atlas:LifeAtlasStore}){
  const plan=atlas.plans.find(p=>p.year===year);
- const [theme,setTheme]=useState(plan?.theme??''),[feelings,setFeelings]=useState<string[]>(()=>[0,1,2].map(i=>plan?.feelings?.[i]??'')),[focus,setFocus]=useState(plan?.focus??''),[extra,setExtra]=useState(plan?.extraordinary??'');
+ const [theme,setTheme]=useState(plan?.theme??''),[feelings,setFeelings]=useState<string[]>(()=>[0,1,2].map(i=>plan?.feelings?.[i]??''));
+ const [words,setWords]=useState(()=>({focus:plan?.focus??'',extraordinary:plan?.extraordinary??'',proud:plan?.proud??'',letting_go:plan?.letting_go??''}));
  const [boards,setBoards]=useState<{id:string;title:string}[]|null>(null),client=useMemo(()=>createMuseBrowserClient(),[]);
  useEffect(()=>{let live=true;loadBoards(client).then(list=>{if(live)setBoards(list.map(({id,title})=>({id,title})));}).catch(()=>{if(live)setBoards([]);});return()=>{live=false;};},[client]);
  const persist=(patch:Parameters<LifeAtlasStore['updatePlan']>[1])=>void atlas.updatePlan(year,patch);
  const cleanFeelings=(list:string[])=>list.map(f=>f.trim().slice(0,60)).filter(Boolean);
  return <section className="muse-ritual-declare">
-  <span className="muse-ritual-declare-year type-numeric" aria-hidden="true">{year}</span>
   <header className="muse-ritual-declare-head">
+   <span className="muse-ritual-declare-sparks" aria-hidden="true"><i/><i/><i/><i/><i/></span>
    <p className="muse-kicker">Movement III · Declare</p>
    <h2>The Year in Your Own Words</h2>
-   <p className="muse-ritual-lede">The character of {year}, in a few words that are entirely yours.</p>
+   <p className="muse-ritual-lede">The character of <span className="type-numeric">{year}</span>, in a few words that are entirely yours.</p>
   </header>
-  <label className="muse-ritual-mantra"><span>My word or mantra for {year}</span>
+  <label className="muse-ritual-mantra"><span className="muse-ritual-eyebrow">My word or mantra for {year}</span>
    <input maxLength={500} value={theme} placeholder="Courage. Say yes. Softly, steadily." onChange={e=>setTheme(e.target.value)} onBlur={()=>{if(theme!==(plan?.theme??''))persist({theme});}}/></label>
-  <fieldset className="muse-ritual-feelings"><legend>Three feelings I want more of</legend>
+  <div className="muse-ritual-feelings" role="group" aria-labelledby="ritual-feelings-title"><p id="ritual-feelings-title" className="muse-ritual-eyebrow">Three feelings I want more of</p>
    <ol>{feelings.map((f,i)=><li key={i} data-lit={f.trim()?true:undefined}><span className="muse-ritual-feeling-star" aria-hidden="true"/>
     <input aria-label={`Feeling ${i+1}`} maxLength={60} value={f} placeholder={['wonder','courage','peace'][i]} onChange={e=>setFeelings(list=>list.map((x,j)=>j===i?e.target.value:x))} onBlur={()=>{const next=cleanFeelings(feelings);if(next.join('|')!==(plan?.feelings??[]).join('|'))persist({feelings:next});}}/></li>)}</ol>
-  </fieldset>
-  <div className="muse-ritual-letters">
-   <label className="muse-ritual-letter"><span>The one thing I most want to nurture</span><textarea rows={3} maxLength={500} value={focus} placeholder="My health, my marriage, my art…" onChange={e=>setFocus(e.target.value)} onBlur={()=>{if(focus!==(plan?.focus??''))persist({focus});}}/></label>
-   <label className="muse-ritual-letter"><span>What would make {year} feel extraordinary?</span><textarea rows={3} maxLength={2000} value={extra} placeholder="If I look back in December and…" onChange={e=>setExtra(e.target.value)} onBlur={()=>{if(extra!==(plan?.extraordinary??''))persist({extraordinary:extra});}}/></label>
   </div>
-  <div className="muse-ritual-boardpick"><p><span>A vision board for {year}</span><small>optional</small></p>
+  <div className="muse-ritual-letters">{letters.map(l=><label key={l.key} className="muse-ritual-letter" style={{'--mark-a':`var(--chart-${l.tone})`} as CSSProperties}>
+   <span className="muse-ritual-letter-head"><MuseMark icon={l.glyph} tone={l.tone} size="sm"/><span>{l.question(year)}</span></span>
+   <textarea rows={3} maxLength={l.max} value={words[l.key]} placeholder={l.hint} onChange={e=>setWords(w=>({...w,[l.key]:e.target.value}))} onBlur={()=>{if(words[l.key]!==(plan?.[l.key]??''))persist({[l.key]:words[l.key]});}}/></label>)}</div>
+  <div className="muse-ritual-boardpick"><p><span className="muse-ritual-eyebrow">A vision board for {year}</span><small>optional</small></p>
    {boards===null?<p className="small-label">Looking for your boards…</p>:boards.length===0&&!plan?.vision_board_name?<p className="small-label">No vision boards yet. You can make one in Envision → Vision Boards and link it here any time.</p>:
    <div className="muse-ritual-boards" role="radiogroup" aria-label="Vision board">{boards.map(b=><button key={b.id} type="button" role="radio" aria-checked={plan?.vision_board_id===b.id} onClick={()=>persist(plan?.vision_board_id===b.id?{vision_board_id:null,vision_board_name:null}:{vision_board_id:b.id,vision_board_name:b.title.slice(0,120)})}><MuseMark icon="envision" tone={6} size="sm"/><span>{b.title}</span></button>)}
     {plan?.vision_board_name&&!plan.vision_board_id&&<p className="small-label">{plan.vision_board_name} is no longer available.</p>}</div>}</div>

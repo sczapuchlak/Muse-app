@@ -31,7 +31,7 @@ export function AtlasHero({lens,plan,counts,stars,ritual,onAdd,boardHref,childre
    </div>
   </div>
   <div className="muse-lifeatlas-hero-sky">
-   <AtlasConstellation stars={stars} labelled/>
+   <AtlasConstellation stars={stars} labelled web/>
    <dl className="muse-lifeatlas-counts">
     <div><dt>Aspirations</dt><dd className="type-numeric">{counts.total}</dd></div>
     <div><dt>Achieved</dt><dd className="type-numeric">{counts.achieved}</dd></div>
