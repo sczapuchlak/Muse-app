@@ -58,7 +58,26 @@ export function PeriodTrack({period,today}:{period:MoneyPeriod;today:string}){
  </ol>;
 }
 
-export function PaycheckHero({paycheck,period,today,onOpen,onPlan}:{paycheck?:Paycheck;period:MoneyPeriod;today:string;onOpen:MoneyOpen;onPlan?:()=>void}){
+/** The locked half-row paycheck card: the numbers on the left, and the ring, its legend and the day track paging on the right. */
+function CompactPaycheck({paycheck,period,today,onOpen,onPlan}:{paycheck:Paycheck;period:MoneyPeriod;today:string;onOpen:MoneyOpen;onPlan?:()=>void}){
+ const {state}=useMoney(),summary=paycheckSummary(state,paycheck),spent=spendingTotal(state,period),inside=today>=paycheck.periodStart&&today<=paycheck.periodEnd,received=paycheck.actualCents!==undefined;
+ const daysLeft=inside?Math.round((utc(paycheck.periodEnd)-utc(today))/DAY)+1:null;
+ const groups=state.groups.map(group=>({...group,amount:summary.rows.filter(row=>row.groupId===group.id).reduce((sum,row)=>sum+row.plannedCents,0)})).filter(group=>group.amount>0);
+ const slides=[{id:"plan",label:"Plan"},...(groups.length?[{id:"legend",label:"Where it goes"}]:[]),{id:"days",label:"Day by day"}];
+ return <section className="muse-money-hero muse-money-current" data-compact aria-label={inside?"Current paycheck":"Selected paycheck"}>
+  <div className="muse-money-hero-copy">
+   <p className="muse-kicker">{inside?"Current paycheck":"Selected paycheck"} · {paycheck.name}</p>
+   <h2 className="muse-money-hero-amount">{summary.basis===undefined?<span className="muse-money-hero-unknown">Income not recorded</span>:<MoneyNumeral cents={summary.basis}/>}</h2>
+   <p className="muse-money-hero-basis"><span className="muse-money-basis-chip" data-kind={received?"received":"expected"}>{received?"Received":"Expected"}</span>{fmt(paycheck.periodStart,{month:"short",day:"numeric"})} – {fmt(paycheck.periodEnd,{month:"short",day:"numeric"})}{daysLeft!==null&&<> · <b>{daysLeft}</b> {daysLeft===1?"day":"days"} left</>}</p>
+   <dl className="muse-money-compact-facts"><div><dt>Planned</dt><dd>{formatMoney(summary.planned)}</dd></div><div><dt>Spent so far</dt><dd>{formatMoney(spent)}</dd></div><div data-tone={summary.remaining!==null&&summary.remaining<0?"over":undefined}><dt>{summary.remaining!==null&&summary.remaining<0?"Over plan":"Yours to assign"}</dt><dd>{summary.remaining===null?"—":formatMoney(Math.abs(summary.remaining))}</dd></div></dl>
+   <div className="muse-money-hero-actions"><button className="muse-button button-ghost" type="button" onClick={e=>onOpen({kind:"paycheck",initial:paycheck,anchor:e.currentTarget})}>Edit</button><button className="muse-button button-primary" type="button" onClick={e=>onOpen({kind:"transaction",anchor:e.currentTarget})}>+ Transaction</button></div>
+  </div>
+  <div className="muse-money-hero-pager"><EntryCarousel items={slides} label="Paycheck views" minWidth={9999} itemKey={slide=>slide.id} describe={slide=>slide.label} render={slide=>slide.id==="plan"?<AllocationRing paycheck={paycheck} onPlan={onPlan}/>:slide.id==="legend"?<ul className="muse-money-ring-legend">{groups.map(group=><li key={group.id} data-money-accent={group.accent} style={accentStyle(group.accent)}><i aria-hidden="true"/><span>{group.name}</span><strong>{formatMoney(group.amount)}</strong></li>)}{summary.remaining!==null&&summary.remaining!==0&&<li data-unplanned><i aria-hidden="true"/><span>{summary.remaining>0?"Unplanned":"Over plan"}</span><strong>{formatMoney(Math.abs(summary.remaining))}</strong></li>}</ul>:<PeriodTrack period={period} today={today}/>}/></div>
+ </section>;
+}
+
+export function PaycheckHero({paycheck,period,today,onOpen,onPlan,compact}:{paycheck?:Paycheck;period:MoneyPeriod;today:string;onOpen:MoneyOpen;onPlan?:()=>void;compact?:boolean}){
+ if(compact&&paycheck)return <CompactPaycheck paycheck={paycheck} period={period} today={today} onOpen={onOpen} onPlan={onPlan}/>;
  const {state}=useMoney(),spent=spendingTotal(state,period);
  if(!paycheck)return <section className="muse-money-hero muse-money-current" data-empty>
   <span className="muse-money-hero-envelope" aria-hidden="true"><i/></span>

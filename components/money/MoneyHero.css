@@ -213,3 +213,46 @@
 .muse-money-row .muse-recurring-totals dt{font-size:.6rem}
 .muse-money-row .muse-recurring-totals dd{font-size:1.25rem}
 .muse-money-row .muse-recurring-totals small{font-size:.7rem}
+
+/* ── Locked rows (Stephanie, Nov 13): every Overview container keeps its size; more data pages, never grows. ── */
+.muse-money-dashboard .muse-money-row[data-row=pay]>*{height:360px}
+.muse-money-dashboard .muse-money-row[data-row=spend]>*{height:460px}
+.muse-money-dashboard .muse-money-row[data-row=later]>*{height:470px}
+.muse-money-dashboard .muse-money-row>.muse-money-panel:not(.muse-money-receipt){overflow:hidden}
+.muse-money-row .muse-money-coming .muse-money-upcoming{grid-template-rows:repeat(4,minmax(52px,1fr))!important;min-height:0!important}
+.muse-money-dashboard .muse-money-row .muse-money-recorded .muse-money-income{font-size:clamp(2rem,3.2vw,2.6rem)}
+.muse-money-dashboard .muse-money-row .muse-money-recorded .muse-money-facts{margin:4px 0 10px}
+.muse-money-dashboard .muse-money-row .muse-money-recorded .muse-money-facts>div{padding:8px 10px}
+/* Compact paycheck card: numbers left, a one-at-a-time pager (ring · legend · days) right. */
+.muse-money-dashboard .muse-money-row .muse-money-hero[data-compact]{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);grid-template-areas:"copy pager";align-items:stretch;gap:18px;padding:20px 22px}
+.muse-money-hero[data-compact] .muse-money-hero-copy{gap:6px;align-content:space-between}
+.muse-money-hero[data-compact] .muse-money-hero-amount{font-size:clamp(2.2rem,3.4vw,3rem)}
+.muse-money-hero[data-compact] .muse-money-hero-basis{font-size:.78rem}
+.muse-money-compact-facts{display:grid;gap:0;margin:2px 0 0;border-block:1px solid color-mix(in srgb,var(--glass-border) 80%,transparent)}
+.muse-money-compact-facts>div{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:6px 2px}
+.muse-money-compact-facts>div+div{border-top:1px dashed color-mix(in srgb,var(--glass-border) 70%,transparent)}
+.muse-money-compact-facts dt{color:var(--text-muted);font-size:.64rem;font-weight:750;letter-spacing:.12em;text-transform:uppercase}
+.muse-money-compact-facts dd{margin:0;font-family:var(--font-editorial);font-weight:560;font-size:1.05rem;font-variant-numeric:tabular-nums}
+.muse-money-compact-facts>div[data-tone=over] dd{color:var(--danger-ink,var(--foreground))}
+.muse-money-hero[data-compact] .muse-money-hero-actions{margin:0}
+.muse-money-hero-pager{grid-area:pager;min-width:0;display:grid}
+.muse-money-hero-pager .muse-entry-carousel{height:100%;grid-template-rows:auto 1fr auto}
+.muse-money-hero-pager .muse-entry-carousel-track{align-items:center}
+.muse-money-hero[data-compact] .muse-money-ring{grid-template-columns:minmax(0,1fr);justify-items:center;gap:10px}
+.muse-money-hero[data-compact] .muse-money-ring>.muse-money-ring-legend{display:none}
+.muse-money-hero[data-compact] .muse-money-ring-dial{width:clamp(120px,11vw,150px)}
+.muse-money-hero[data-compact] .muse-money-ring-empty{padding:8px 10px}.muse-money-hero[data-compact] .muse-money-ring-empty p{font-size:.78rem}
+.muse-money-hero[data-compact] .muse-money-track{border:0;padding:0;grid-template-columns:repeat(var(--days),minmax(0,1fr)) auto;gap:2px}
+.muse-money-hero[data-compact] .muse-money-track>li{grid-template-rows:9px 92px auto;padding:2px 0 4px}
+.muse-money-hero[data-compact] .muse-money-track-day{font-size:.62rem}
+.muse-money-hero[data-compact] .muse-money-track-payday{writing-mode:vertical-rl;padding:4px 2px!important;font-size:.6rem}
+/* Recent spending: a clean card again (no torn edge); pages of five. */
+.muse-money-dashboard .muse-money-receipt{-webkit-mask:none!important;mask:none!important;border-radius:var(--radius-card,24px)!important;padding-bottom:var(--space-5,20px)!important;background-image:none}
+@container muse-content (max-width:980px){.muse-money-dashboard .muse-money-row>*{height:auto!important}.muse-money-dashboard .muse-money-row .muse-money-hero[data-compact]{grid-template-columns:minmax(0,1fr);grid-template-areas:"copy" "pager"}.muse-money-hero-pager{min-height:240px}}
+/* Real-world names and amounts ("Loan (BOOOO!)", $1,277.00) stay on one line inside locked tiles. */
+.muse-money-mix-name,.muse-money-gauge-name{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.muse-money-gauge-name{display:block}
+.muse-money-gauge-name::before{display:inline-block;margin-right:8px;vertical-align:1px}
+.muse-money-mix-tile strong,.muse-money-gauge-note{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.muse-money-gauge-figures{flex-wrap:nowrap;min-width:0}
+.muse-money-gauge-figures>small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
