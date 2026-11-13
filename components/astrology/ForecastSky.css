@@ -1,0 +1,74 @@
+/*
+ * Horoscopes, round 4 (Nov 13: "revisit horoscopes now that you've found your visual voice and make it BEAUTIFUL").
+ *  - The header is a sky: the whole zodiac on a glowing medallion with your sign at its heart, in your sign's colour,
+ *    beside the title, the date and three small facts about the sign.
+ *  - The overview is a pull-quote in the editorial face, opened by a large gold quotation mark.
+ *  - Every other section is an equal card with its own gradient tile and aura: one row, never an orphan.
+ *  - The closing line is a gold sky-note.
+ * Motion is finite and gated by reduced motion and Muse Magic.
+ */
+.muse-forecast-editorial{position:relative;isolation:isolate;overflow:hidden;
+ background:radial-gradient(70% 50% at 18% 0%,color-mix(in srgb,var(--sign,var(--accent-primary)) 20%,transparent),transparent 70%),radial-gradient(50% 40% at 100% 10%,color-mix(in srgb,var(--chart-6) 14%,transparent),transparent 70%),linear-gradient(var(--glass-background),var(--glass-background)),var(--background)!important}
+
+/* the sky header */
+.muse-forecast-sky{position:relative;grid-template-columns:auto minmax(0,1fr)!important;gap:clamp(18px,3vw,36px)!important;align-items:center;padding-bottom:clamp(18px,2.4vw,28px)}
+.muse-forecast-wheel{position:relative;display:grid;place-items:center;width:clamp(120px,13vw,164px);aspect-ratio:1;color:var(--sign,var(--accent-primary))}
+.muse-forecast-wheel::before{content:"";position:absolute;inset:-18%;border-radius:50%;background:radial-gradient(closest-side,color-mix(in srgb,var(--sign,var(--accent-primary)) 40%,transparent),transparent);filter:blur(8px);z-index:-1}
+.muse-forecast-wheel-ring{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.muse-forecast-wheel-outer{fill:none;stroke:color-mix(in srgb,var(--sign,var(--accent-primary)) 55%,transparent);stroke-width:1}
+.muse-forecast-wheel-inner{fill:color-mix(in srgb,var(--background) 70%,transparent);stroke:color-mix(in srgb,var(--sign,var(--accent-primary)) 40%,transparent);stroke-width:.8}
+.muse-forecast-wheel-tick{stroke:color-mix(in srgb,var(--foreground) 22%,transparent);stroke-width:.6}
+.muse-forecast-wheel-glyph{font-size:7.5px;fill:color-mix(in srgb,var(--foreground) 55%,transparent);font-family:var(--font-ui)}
+.muse-forecast-wheel g[data-here] .muse-forecast-wheel-glyph{fill:var(--sign,var(--accent-primary));font-size:9.5px;filter:drop-shadow(0 0 2px var(--sign,var(--accent-primary)))}
+.muse-forecast-wheel-core{position:relative;display:grid;place-items:center;width:58%;aspect-ratio:1;border-radius:50%;color:#fff;
+ background:radial-gradient(circle at 35% 30%,color-mix(in srgb,white 35%,var(--sign,var(--accent-primary))),var(--sign,var(--accent-primary)) 55%,color-mix(in srgb,var(--sign,var(--accent-primary)) 60%,black));box-shadow:0 0 30px -2px var(--sign,var(--accent-primary)),inset 0 2px 0 rgba(255,255,255,.35)}
+.muse-forecast-wheel-core .muse-zodiac-glyph{filter:drop-shadow(0 1px 2px rgba(0,0,0,.35))}
+.muse-forecast-sky-copy{display:grid;gap:4px;min-width:0}
+.muse-forecast-sky-copy h3{font-size:clamp(2rem,3.6vw,2.9rem)!important;line-height:1.02!important;padding-right:.1em}
+.muse-forecast-sky .muse-forecast-sign-name{color:color-mix(in srgb,var(--sign,var(--accent-primary)) 75%,var(--foreground))}
+.muse-forecast-sign-facts{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 0;padding:0;list-style:none}
+.muse-forecast-sign-facts li{padding:3px 11px;border-radius:999px;border:1px solid color-mix(in srgb,var(--sign,var(--accent-primary)) 40%,var(--glass-border));background:color-mix(in srgb,var(--sign,var(--accent-primary)) 10%,transparent);font-size:.76rem}
+.muse-forecast-sky-stars{position:absolute;inset:0;pointer-events:none;z-index:-1}
+.muse-forecast-sky-stars i{position:absolute;width:10px;height:10px;background:#ffe39a;clip-path:polygon(50% 0,61% 39%,100% 50%,61% 61%,50% 100%,39% 61%,0 50%,39% 39%);filter:drop-shadow(0 0 5px #ffcf5a);opacity:.85}
+.muse-forecast-sky-stars i:nth-child(1){right:6%;top:12%}.muse-forecast-sky-stars i:nth-child(2){right:20%;top:46%;width:6px;height:6px;background:var(--sign,#fff)}
+.muse-forecast-sky-stars i:nth-child(3){right:11%;bottom:14%;width:14px;height:14px}.muse-forecast-sky-stars i:nth-child(4){right:34%;top:10%;width:5px;height:5px;background:#fff}
+.muse-forecast-sky-stars i:nth-child(5){right:42%;bottom:18%;width:7px;height:7px;background:var(--sign,#fff)}.muse-forecast-sky-stars i:nth-child(6){right:27%;bottom:6%;width:5px;height:5px}
+
+/* the overview: a pull-quote */
+.muse-forecast-overview{position:relative;grid-column:1/-1;padding:clamp(20px,2.6vw,30px) clamp(22px,3vw,40px)!important;border:0!important;border-radius:24px!important;
+ background:radial-gradient(90% 120% at 0% 0%,color-mix(in srgb,#f2c46a 12%,transparent),transparent 60%),color-mix(in srgb,var(--foreground) 4%,transparent)!important;box-shadow:inset 0 0 0 1px color-mix(in srgb,#f2c46a 28%,transparent)}
+.muse-forecast-overview .muse-kicker{margin:0 0 8px;color:#f2c46a}
+.muse-forecast-overview blockquote{position:relative;margin:0;padding-left:clamp(34px,4vw,52px);font-family:var(--font-editorial);font-style:italic;font-size:clamp(1.25rem,2vw,1.6rem);line-height:1.45;max-width:62ch}
+.muse-forecast-overview blockquote::before{content:"“";position:absolute;left:0;top:-.35em;font-size:3.4em;line-height:1;color:#f2c46a;text-shadow:0 0 18px color-mix(in srgb,#f2c46a 60%,transparent)}
+
+/* the facets: one equal row */
+.muse-forecast-editorial-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr))!important;align-items:stretch}
+.muse-forecast-facet{--mark-a:var(--accent-primary);position:relative;isolation:isolate;display:grid;align-content:start;gap:4px;border:1px solid var(--glass-border)!important;border-top:1px solid var(--glass-edge)!important;border-radius:22px!important;
+ background:radial-gradient(100% 70% at 100% 0%,color-mix(in srgb,var(--mark-a) 18%,transparent),transparent 62%),color-mix(in srgb,var(--foreground) 3%,transparent)!important;transition:transform .4s cubic-bezier(.2,.8,.2,1),box-shadow .4s,border-color .3s}
+.muse-forecast-facet:hover{transform:translateY(-4px);border-color:color-mix(in srgb,var(--mark-a) 50%,var(--glass-border))!important;box-shadow:0 22px 36px -24px var(--mark-a)}
+.muse-forecast-facet h4{display:flex!important;align-items:center!important;gap:12px!important;font-size:1.12rem!important;letter-spacing:0!important;text-transform:none!important}
+.muse-forecast-facet h4 .muse-mark{flex:none;width:36px;height:36px;border-radius:12px}
+.muse-forecast-facet h4 b{font-family:var(--font-editorial);font-weight:var(--type-editorial-weight,600)}
+
+/* the closing line: a gold sky-note */
+.muse-forecast-closing{justify-content:center;padding:16px 20px!important;border:0!important;border-radius:999px;background:linear-gradient(90deg,transparent,color-mix(in srgb,#f2c46a 12%,transparent),transparent);text-align:center}
+.muse-forecast-closing p{font-family:var(--font-editorial);font-style:italic;font-size:1.05rem!important;color:var(--foreground)!important}
+
+@media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]){
+ .muse-forecast-wheel-ring{animation:muse-forecast-turn 2.4s cubic-bezier(.2,.8,.2,1) 1 both}
+ .muse-forecast-wheel-core{animation:muse-forecast-breathe 4s ease-in-out 6 alternate}
+ .muse-forecast-sky-stars i{animation:muse-forecast-twinkle 2.8s ease-in-out 12 alternate}
+ .muse-forecast-sky-stars i:nth-child(even){animation-delay:1.2s}
+}}
+@keyframes muse-forecast-turn{from{rotate:-60deg;opacity:0}}
+@keyframes muse-forecast-breathe{to{box-shadow:0 0 46px 4px var(--sign,var(--accent-primary)),inset 0 2px 0 rgba(255,255,255,.35)}}
+@keyframes muse-forecast-twinkle{to{opacity:.3;transform:scale(.7) rotate(20deg)}}
+@media (max-width:640px){.muse-forecast-sky{grid-template-columns:minmax(0,1fr)!important;justify-items:center;text-align:center}.muse-forecast-sign-facts{justify-content:center}}
+/* The facet heading: the shared gradient tile (not the old soft circle) and the editorial title. */
+.muse-forecast-facet h4>.muse-mark{display:grid;place-items:center;width:36px!important;height:36px!important;border-radius:12px!important;background:linear-gradient(140deg,var(--mark-a),var(--mark-b))!important;box-shadow:0 6px 16px -8px var(--mark-a)!important;font:inherit!important;color:#fff}
+.muse-forecast-facet h4>b{font:var(--type-editorial-weight,600) 1.15rem/1.25 var(--font-editorial)!important;letter-spacing:0!important;text-transform:none!important}
+.muse-forecast-facet h4{border-bottom-color:color-mix(in srgb,var(--mark-a) 40%,var(--glass-border))!important}
+.muse-forecast-editorial-grid{grid-template-columns:repeat(var(--facets,3),minmax(0,1fr))!important}
+@container muse-content (max-width:820px){.muse-forecast-editorial-grid{grid-template-columns:minmax(0,1fr)!important}}
+.muse-forecast-overview .muse-kicker{margin-bottom:16px!important}
+.muse-forecast-overview blockquote::before{top:-.18em!important;font-size:3em!important}
