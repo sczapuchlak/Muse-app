@@ -8,25 +8,50 @@
  * Motion is finite and respects reduced motion and Muse Magic.
  */
 
-/* ── Covers as objects (overlays only; the cover keeps its size) ─────────────────────────────────────────── */
-.muse-bookshelf :is(.muse-desk-tile-cover,.muse-finished-card-cover,.muse-upnext-cover) .muse-book-cover,
-.muse-bookshelf :is(.muse-desk-tile-cover,.muse-finished-card-cover) {position:relative}
-.muse-bookshelf :is(.muse-desk-tile-cover,.muse-finished-card-cover)::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;border-radius:inherit;
- background:linear-gradient(90deg,rgba(255,255,255,.28) 0,rgba(255,255,255,.06) 4%,rgba(0,0,0,.28) 6%,transparent 10%,transparent 88%,rgba(255,255,255,.12) 96%,transparent),
-  linear-gradient(160deg,rgba(255,255,255,.18),transparent 35%)}
-.muse-bookshelf .muse-desk-tile-cover{transform-style:preserve-3d;transition:transform .45s cubic-bezier(.2,.8,.2,1),filter .45s;
- filter:drop-shadow(6px 10px 14px rgba(0,0,0,.45));box-shadow:3px 0 0 -1px #f2ede3,5px 1px 0 -2px #d9d2c4,7px 2px 0 -3px #c7bfae}
+/* ── Covers as objects (round 3: unmistakable, everywhere) ─────────────────────────────────────────────────
+   Every cover gets a hinge at the spine and a gloss; covers that stand alone (desk, finished, library, the book's
+   own page, challenge shelf) also get a block of cream page edges and a cast shadow, and turn toward you in 3D. */
+.muse-book-cover{position:relative}
+.muse-book-cover::after{content:"";position:absolute;inset:0;z-index:3;pointer-events:none;border-radius:inherit;
+ background:linear-gradient(90deg,rgba(0,0,0,.42) 0,rgba(0,0,0,.1) 1.4%,rgba(255,255,255,.42) 2.6%,rgba(255,255,255,.1) 4.4%,rgba(0,0,0,.3) 6%,rgba(0,0,0,.06) 8.5%,transparent 12%,transparent 95%,rgba(0,0,0,.2)),
+  linear-gradient(118deg,rgba(255,255,255,.24) 0,rgba(255,255,255,.05) 26%,transparent 44%,transparent 72%,rgba(255,255,255,.08) 88%,transparent)}
+:is(.muse-desk-tile-cover,.muse-finished-card-cover,.muse-book-page-cover,.muse-collections-card:not(:is([data-density="list"] *)),.muse-upnext-cover) .muse-book-cover,.muse-finished-card-cover>:is(img,span,div):only-child{
+ --pages:#f4efe4;--pages-shade:#d3cab7;
+ box-shadow:1px 1px 0 var(--pages),2px 2px 0 var(--pages-shade),3px 3px 0 var(--pages),4px 4px 0 var(--pages-shade),5px 5px 0 var(--pages),6px 6px 0 var(--pages-shade),8px 12px 18px -4px rgba(0,0,0,.5)!important;
+ transform-origin:0 50%;transition:transform .55s cubic-bezier(.2,.8,.2,1),box-shadow .55s}
+.muse-finished-card-cover,.muse-desk-tile-cover{overflow:visible!important;box-shadow:none!important;filter:none!important}
+.muse-finished-card-cover .muse-book-cover,.muse-finished-card-cover img{border-radius:3px 7px 7px 3px}
+.muse-desk-tile-cover,.muse-finished-card-cover,.muse-collections-card{perspective:900px}
 @media (prefers-reduced-motion:no-preference){
- :root:not([data-magic=quiet]) .muse-bookshelf .muse-desk-tile:hover .muse-desk-tile-cover{transform:perspective(700px) rotateY(-14deg) rotateX(3deg) translateY(-4px) scale(1.03);filter:drop-shadow(14px 16px 18px rgba(0,0,0,.5))}
- :root:not([data-magic=quiet]) .muse-bookshelf .muse-finished-card:hover .muse-finished-card-cover{transform:perspective(600px) rotateY(-12deg) translateY(-3px)}
+ :root:not([data-magic=quiet]) :is(.muse-desk-tile:hover .muse-desk-tile-cover,.muse-finished-card:hover .muse-finished-card-cover,.muse-collections-card:not(:is([data-density="list"] *)):hover,.muse-upnext-slot:hover .muse-upnext-cover) .muse-book-cover{
+  transform:rotateY(-22deg) rotateX(4deg) translateY(-6px) translateX(4px);
+  box-shadow:1px 1px 0 var(--pages),2px 1px 0 var(--pages-shade),3px 2px 0 var(--pages),4px 2px 0 var(--pages-shade),5px 3px 0 var(--pages),6px 3px 0 var(--pages-shade),7px 4px 0 var(--pages),8px 4px 0 var(--pages-shade),18px 22px 26px -6px rgba(0,0,0,.55)!important}
 }
-.muse-bookshelf .muse-finished-card-cover{transition:transform .45s cubic-bezier(.2,.8,.2,1)}
 
-/* ── Currently reading: ambient light from the book's own cover ──────────────────────────────────────────── */
-.muse-bookshelf .muse-desk-tile[data-glow]{position:relative;isolation:isolate;overflow:hidden}
-.muse-bookshelf .muse-desk-tile[data-glow]::before{content:"";position:absolute;inset:-30%;z-index:-1;pointer-events:none;background:var(--cover-art) center/cover no-repeat;filter:blur(42px) saturate(1.6);opacity:.32;transition:opacity .5s}
-.muse-bookshelf .muse-desk-tile[data-glow]:hover::before{opacity:.48}
-:root:is([data-theme="iridescent"],[data-theme="solstice"],[data-theme="issya-bday"],[data-theme="bubblegum-baby"],[data-theme="astral"],[data-theme="nightbloom"]) .muse-bookshelf .muse-desk-tile[data-glow]::before{opacity:.18}
+/* ── Ambient light from the book's own cover (data-glow + --cover-art) ──────────────────────────────────────
+   The cover, blurred and saturated, washes the card it sits in. A scrim keeps the words readable. */
+:is(.muse-desk-tile,.muse-finished-card,.muse-collections-card)[data-glow]{position:relative;isolation:isolate;overflow:hidden}
+:is(.muse-desk-tile,.muse-finished-card,.muse-collections-card)[data-glow]::before{content:"";position:absolute;inset:-25%;z-index:-2;pointer-events:none;background:var(--cover-art) center/cover no-repeat;filter:blur(34px) saturate(1.9) brightness(.95);opacity:.62;transition:opacity .5s,transform .8s cubic-bezier(.2,.8,.2,1)}
+:is(.muse-desk-tile,.muse-finished-card,.muse-collections-card)[data-glow]::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;border-radius:inherit;background:linear-gradient(180deg,color-mix(in srgb,var(--background) 8%,transparent),color-mix(in srgb,var(--background) 42%,transparent) 70%,color-mix(in srgb,var(--background) 58%,transparent))}
+.muse-desk-tile[data-glow]::after{background:linear-gradient(100deg,color-mix(in srgb,var(--background) 10%,transparent) 0 30%,color-mix(in srgb,var(--background) 46%,transparent))}
+:is(.muse-desk-tile,.muse-finished-card,.muse-collections-card)[data-glow]:hover::before{opacity:.85;transform:scale(1.08)}
+.muse-collections-card[data-glow]::before{opacity:.42}
+/* Light themes: a softer wash and a light scrim. */
+:root:is([data-theme="iridescent"],[data-theme="solstice"],[data-theme="issya-bday"],[data-theme="bubblegum-baby"],[data-theme="astral"],[data-theme="nightbloom"],:not([data-theme])) :is(.muse-desk-tile,.muse-finished-card,.muse-collections-card)[data-glow]::before{opacity:.38;filter:blur(34px) saturate(1.6) brightness(1.15)}
+:root:is([data-theme="iridescent"],[data-theme="solstice"],[data-theme="issya-bday"],[data-theme="bubblegum-baby"],[data-theme="astral"],[data-theme="nightbloom"],:not([data-theme])) :is(.muse-desk-tile,.muse-finished-card,.muse-collections-card)[data-glow]::after{background:linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,.55) 72%,rgba(255,255,255,.7))}
+[data-density="list"] .muse-collections-card[data-glow]::before{opacity:.22}
+
+/* ── The book's own page: a hero object that follows your pointer, standing in its own light ────────────── */
+.muse-book-page-cover::before{display:none!important}
+.muse-book-page-cover{perspective:1100px;filter:none!important}
+.muse-book-page-cover::after{content:"";position:absolute;left:4%;right:2%;bottom:-6px;height:34px;z-index:-1;border-radius:50%;pointer-events:none;background:radial-gradient(closest-side,color-mix(in srgb,var(--book-atmosphere,var(--accent-primary)) 75%,transparent),transparent);filter:blur(10px);opacity:.85}
+.muse-book-page-cover .muse-book-cover{--pages:#f4efe4;--pages-shade:#d3cab7;transform:rotateY(calc(-14deg + var(--tilt-y,0deg))) rotateX(var(--tilt-x,0deg));transform-origin:30% 50%;
+ box-shadow:1px 1px 0 var(--pages),2px 1px 0 var(--pages-shade),3px 2px 0 var(--pages),4px 2px 0 var(--pages-shade),5px 3px 0 var(--pages),6px 3px 0 var(--pages-shade),7px 4px 0 var(--pages),8px 4px 0 var(--pages-shade),9px 5px 0 var(--pages),10px 5px 0 var(--pages-shade),26px 30px 40px -10px rgba(0,0,0,.6),0 0 70px -10px color-mix(in srgb,var(--book-atmosphere,var(--accent-primary)) 70%,transparent)!important;
+ transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+.muse-book-page-cover .muse-book-cover::before{content:"";position:absolute;inset:0;z-index:4;pointer-events:none;border-radius:inherit;background:radial-gradient(circle at var(--glare-x,30%) var(--glare-y,20%),rgba(255,255,255,.3),transparent 45%);mix-blend-mode:soft-light;opacity:.9}
+.muse-book-route .muse-book-atmosphere-art{opacity:.32!important}
+.muse-book-route .muse-book-atmosphere-art img{filter:blur(48px) saturate(1.8)}
+@media (prefers-reduced-motion:reduce){.muse-book-page-cover .muse-book-cover{transform:rotateY(-10deg)}}
 
 /* ── The progress pool: a glowing bookmark sits at the reading position ──────────────────────────────────── */
 .muse-bookshelf .muse-desk-pool{position:relative;overflow:visible}
@@ -56,3 +81,7 @@
 :is(.muse-challenge-shelf,.muse-desk-goal-shelf)>li[data-empty]::after{content:"";position:absolute;left:18%;right:18%;bottom:14%;height:2px;border-radius:2px;background:color-mix(in srgb,var(--foreground) 14%,transparent);box-shadow:0 -6px 0 color-mix(in srgb,var(--foreground) 9%,transparent)}
 :is(.muse-challenge-shelf,.muse-desk-goal-shelf)>li:not([data-empty])>button{transition:transform .4s cubic-bezier(.2,.8,.2,1)}
 @media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) :is(.muse-challenge-shelf,.muse-desk-goal-shelf)>li:not([data-empty])>button:hover{transform:perspective(500px) rotateY(-14deg) translateY(-4px)}}
+
+/* The Library hides its cards' decorative pseudo-elements; covers with art get their light back. */
+.muse-collections:not([data-density="list"]) .muse-collections-library-page[data-layout="library"]>.muse-collections-grid .muse-collections-card[data-kind][data-glow]::before,
+.muse-collections:not([data-density="list"]) .muse-collections-library-page[data-layout="library"]>.muse-collections-grid .muse-collections-card[data-kind][data-glow]::after{display:block!important}

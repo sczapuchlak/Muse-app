@@ -75,3 +75,10 @@
 .muse-streak-week li:last-child::before{display:none}
 .muse-streak-heart-wrap{position:relative;display:grid;place-items:center}
 .muse-streak-heart-wrap[data-today]::before{content:"";position:absolute;left:50%;top:50%;width:calc(100% + 6px);aspect-ratio:1;translate:-50% -50%;border-radius:50%;border:2px solid var(--accent-pop,var(--accent-primary));box-sizing:border-box;pointer-events:none}
+/* Round 3 (Nov 13): no ring around today. Today glows softly behind its heart, and its day letter wears a small pill. */
+.muse-streak-heart-wrap[data-today]::before{border:0!important;width:calc(100% + 18px)!important;background:radial-gradient(closest-side,color-mix(in srgb,var(--accent-pop,var(--accent-primary)) 38%,transparent),transparent)!important;filter:blur(2px);z-index:-1}
+.muse-streak-heart-wrap{isolation:isolate}
+.muse-streak-heart[data-today]:not([data-filled]){stroke-dasharray:none!important;color:var(--accent-pop,var(--accent-primary))!important;opacity:.9}
+.muse-streak-week li>span[data-today]{padding:1px 8px;border-radius:999px;background:linear-gradient(120deg,var(--accent-pop,var(--accent-primary)),var(--accent-primary));color:var(--on-accent,#fff)!important;font-weight:700}
+@media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) .muse-streak-heart-wrap[data-today]::before{animation:muse-today-breathe 2.8s ease-in-out 12}}
+@keyframes muse-today-breathe{50%{opacity:.45;scale:.85}}
