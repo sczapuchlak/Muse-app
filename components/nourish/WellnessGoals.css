@@ -90,3 +90,4 @@
 .muse-wellness-goals .muse-goals-seed{min-height:36px;font-size:.86rem}
 @container muse-content (max-width:820px){.muse-wellness-goals .muse-goals-grid{grid-template-columns:minmax(0,1fr)}.muse-wellness-goals .muse-goals-empty{padding-right:20px}}
 .muse-wellness-goals .muse-goals-grid>:only-child{grid-column:1/-1}
+.muse-wellness-goals .muse-goals-head{align-items:center}.muse-goals-intro{margin:0;max-width:62ch}
