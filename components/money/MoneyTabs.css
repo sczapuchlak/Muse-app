@@ -179,3 +179,33 @@
 .muse-recurring-category-empty>span i{width:34px;height:34px;border-radius:50%;border:2px dashed color-mix(in srgb,var(--chart-6) 60%,transparent)}
 .muse-recurring-category-empty>span i:nth-child(2){border-color:color-mix(in srgb,var(--chart-5) 60%,transparent)}.muse-recurring-category-empty>span i:nth-child(3){border-color:color-mix(in srgb,var(--chart-2) 60%,transparent)}
 .muse-recurring-top .muse-recurring-category-summary ul:empty{display:none}
+
+/* ── Paychecks, tightened ~20% (Stephanie, Nov 13) ─────────────────────────────────────────────────────────── */
+.muse-paycheck-summary{gap:clamp(14px,2.4vw,30px);padding-bottom:12px}
+.muse-paycheck-amount{font-size:clamp(2.2rem,4vw,3.3rem)}
+.muse-paycheck-summary .muse-money-hero-facts{margin-top:4px}
+.muse-paycheck-summary .muse-money-hero-facts>div{padding:8px 12px}
+.muse-paycheck-summary .muse-money-hero-facts dd{font-size:1.15rem}
+.muse-paycheck-summary .muse-money-ring-dial{width:clamp(110px,10vw,140px)}
+.muse-paycheck-summary .muse-money-ring circle{stroke-width:13}
+.muse-paycheck-summary .muse-money-ring-value{font-size:1.7rem}
+.muse-paycheck-summary .muse-money-ring-legend{gap:5px}.muse-paycheck-summary .muse-money-ring-legend li{font-size:.8rem}
+.muse-paychecks-view .muse-money-allocation-row{min-height:50px;padding-block:4px}
+.muse-paychecks-view .muse-money-allocation-row .muse-money-mobile-label{font-size:.56rem}
+.muse-paychecks-view .muse-paycheck-plan>.muse-button,.muse-paychecks-view .muse-paycheck-plan>.small-label{margin-block:6px 0}
+
+/* ── Bills as a statement: date stamp · name · amount · status · action, five per page ──────────────────── */
+.muse-money-bill-statement .muse-money-paged-list{grid-template-rows:none;gap:8px}
+.muse-paychecks-view .muse-money-bill-statement .muse-money-bill-row{grid-template-columns:56px minmax(0,1fr) auto auto auto 36px;grid-template-areas:"due name amount status action menu";align-items:center;gap:14px;height:auto;padding:12px 14px 12px 18px;border:1px solid var(--glass-border);border-radius:16px;background:var(--surface-subtle)}
+.muse-paychecks-view .muse-money-bill-statement .muse-money-bill-row::before{top:12px;bottom:12px}
+.muse-paychecks-view .muse-money-bill-statement .muse-money-bill-row>time{grid-area:due;display:grid;place-content:center;width:52px;height:52px;padding:4px;border-radius:12px;text-align:center;line-height:1.05;font-family:var(--font-editorial);font-weight:600;font-size:.95rem;color:var(--foreground);background:var(--glass-background);border:1px solid var(--glass-border);box-shadow:inset 0 10px 0 -1px color-mix(in srgb,var(--chart-4) 85%,black)}
+.muse-paychecks-view .muse-money-bill-statement .muse-money-bill-row:has([data-status=paid])>time{box-shadow:inset 0 10px 0 -1px var(--success-primary)}
+.muse-paychecks-view .muse-money-bill-statement .muse-money-bill-row>time .muse-money-mobile-label{display:none}
+.muse-paychecks-view .muse-money-bill-statement .muse-money-bill-row>:first-child{grid-area:name;min-width:0}
+.muse-paychecks-view .muse-money-bill-statement .muse-money-bill-row .muse-bill-name{font-family:var(--font-editorial);font-size:1.1rem;font-weight:600}
+.muse-paychecks-view .muse-money-bill-statement .muse-money-bill-row>strong{grid-area:amount;font-family:var(--font-editorial);font-weight:560;font-size:1.3rem;letter-spacing:-.02em;text-align:right;min-width:110px}
+.muse-paychecks-view .muse-money-bill-statement .muse-money-bill-row>.muse-bill-status{grid-area:status;min-width:96px;text-align:center}
+.muse-paychecks-view .muse-money-bill-statement .muse-money-bill-row>.muse-bill-paid-action{grid-area:action}
+.muse-paychecks-view .muse-money-bill-statement .muse-money-bill-row>:last-child:not(.muse-bill-paid-action){grid-area:menu}
+@container muse-content (max-width:760px){.muse-paychecks-view .muse-money-bill-statement .muse-money-bill-row{grid-template-columns:52px minmax(0,1fr) auto;grid-template-areas:"due name amount" "due status action";row-gap:6px}.muse-paychecks-view .muse-money-bill-statement .muse-money-bill-row>:last-child:not(.muse-bill-paid-action){display:none}}
+.muse-paychecks-view .muse-money-bill-statement .muse-money-bill-row>time{height:58px;padding:13px 4px 4px;box-shadow:inset 0 8px 0 -1px color-mix(in srgb,var(--chart-4) 85%,black)}.muse-paychecks-view .muse-money-bill-statement .muse-money-bill-row:has([data-status=paid])>time{box-shadow:inset 0 8px 0 -1px var(--success-primary)}
