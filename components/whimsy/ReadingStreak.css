@@ -70,8 +70,3 @@
 @media(prefers-reduced-motion:reduce){.muse-streak-heart[data-today][data-filled]{animation:none!important}}
 /* The streak card clips its overflow, so its gradient ring sits just inside the edge. */
 :root .muse-streak-panel::before{inset:0!important}
-
-/* Today's ring is centred on the heart itself (Nov 13), whatever the heart's size or the label's width. */
-.muse-streak-week li:last-child::before{display:none}
-.muse-streak-heart-wrap{position:relative;display:grid;place-items:center}
-.muse-streak-heart-wrap[data-today]::before{content:"";position:absolute;left:50%;top:50%;width:calc(100% + 6px);aspect-ratio:1;translate:-50% -50%;border-radius:50%;border:2px solid var(--accent-pop,var(--accent-primary));box-sizing:border-box;pointer-events:none}
