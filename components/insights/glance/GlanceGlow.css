@@ -62,3 +62,9 @@
 .muse-glance-bookcard-body strong{display:-webkit-box;overflow:hidden;font-family:var(--font-editorial);font-weight:600;font-size:.95rem;line-height:1.2;-webkit-line-clamp:2;-webkit-box-orient:vertical}
 .muse-glance-bookcard-body .muse-glance-sub{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .muse-glance-year-grid>[style*="read"] .muse-glance-reading,.muse-glance-reading[data-wide]{grid-template-columns:minmax(0,1.6fr) minmax(260px,1fr)}
+/* Movement and Water sit side by side in one row, equal height, no empty second row. */
+.muse-glance-year-grid .muse-glance-year-stack{grid-template-rows:auto!important;align-items:stretch}
+.muse-glance-year-grid .muse-glance-year-stack>div{display:flex;min-width:0}
+.muse-glance-year-grid .muse-glance-year-stack>div>*{flex:1 1 auto;margin:0}
+@media (max-width:700px){.muse-glance-year-grid .muse-glance-year-stack{grid-template-columns:minmax(0,1fr)}}
+.muse-glance-reading[data-wide] .muse-entry-carousel-track>*:only-child{grid-column:1/-1;max-width:none}.muse-glance-reading[data-wide] .muse-glance-bookcard{min-height:112px}

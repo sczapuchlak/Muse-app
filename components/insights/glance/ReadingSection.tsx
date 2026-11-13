@@ -26,7 +26,7 @@ export function ReadingSection({ period, reading, nightstand, status, onRetry, m
       : !status.loaded ? <Empty>Loading your books…</Empty> : <div className="muse-glance-reading" data-wide={wide || undefined}><div className="muse-glance-reading-now">
       <div className="muse-glance-subhead"><h3>Now reading</h3><span>as of today</span></div>
       {!nightstand.length ? <p className="muse-glance-empty"><span aria-hidden="true">📚</span>Nothing marked as reading. <Link className="muse-glance-pill" data-size="sm" href="/collections?kind=book">Open Bookshelf</Link></p>
-        : <EntryCarousel items={nightstand} label="Now reading" minWidth={wide ? 260 : 9999} itemKey={(x) => x.book.id} describe={(x) => x.book.title} render={(x) => <article className="muse-glance-bookcard">
+        : <EntryCarousel items={nightstand} label="Now reading" minWidth={wide ? 220 : 9999} itemKey={(x) => x.book.id} describe={(x) => x.book.title} render={(x) => <article className="muse-glance-bookcard">
           <BookCover book={x.book} />
           <div className="muse-glance-bookcard-body"><strong>{x.book.title}</strong>{x.book.author && <span className="muse-glance-sub">{x.book.author}</span>}
           <Progress mode={mode} item={x} /></div>
