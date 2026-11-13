@@ -25,7 +25,7 @@ export function MoneyNumeral({cents,className=""}:{cents:number;className?:strin
  return <span className={`muse-money-numeral ${className}`.trim()}>{whole}<small>.{fraction}</small></span>;
 }
 
-function AllocationRing({paycheck,onPlan}:{paycheck:Paycheck;onPlan?:()=>void}){
+export function AllocationRing({paycheck,onPlan}:{paycheck:Paycheck;onPlan?:()=>void}){
  const {state}=useMoney(),summary=paycheckSummary(state,paycheck);
  const groups=state.groups.map(group=>({...group,amount:summary.rows.filter(row=>row.groupId===group.id).reduce((sum,row)=>sum+row.plannedCents,0)})).filter(group=>group.amount>0);
  const total=Math.max(summary.planned,summary.basis??0,1),R=56,C=2*Math.PI*R;
