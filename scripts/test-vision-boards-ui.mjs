@@ -84,8 +84,10 @@ try{
  await click('.muse-vision-toolbar button','Aa Text');
  await until(()=>!!document.getElementById('vision-text-input'),'text controls');
  await setValue('#vision-text-input','Becoming her');
- await click('.muse-vision-toolbar button','Stickers');
- await until(()=>!!document.querySelector('[aria-label="Add Heart"]'),'sticker panel');
+ await click('.muse-vision-toolbar button','Library');
+ await until(()=>!!document.querySelector('.muse-asset-tabs'),'library panel');
+ await click('.muse-asset-tabs button','Doodles');
+ await until(()=>!!document.querySelector('[aria-label="Add Heart"]'),'doodles');
  await click('[aria-label="Add Heart"]');
  await saved();
  row=await board();
@@ -108,22 +110,21 @@ try{
  check(row.elements.find(e=>e.id===before.id).x===dragged.x,'Undo restores the position');
  await click('.muse-vision-toolbar button','Redo');await saved();row=await board();
  check(row.elements.find(e=>e.id===before.id).x===dragged.x+10,'Redo reapplies it');
- await click('.muse-vision-selection button','Backward');await saved();row=await board();
+ await click('.muse-vision-inspector button','Back');await saved();row=await board();
  check(row.elements[2].id===before.id,'Backward moves the sticker one layer down');
 
  // ---- Crop the photo into a heart, add a link ----
  await click('.muse-vision-toolbar button','Layers');
  await until(()=>[...document.querySelectorAll('.muse-vision-layers button')].some(b=>b.textContent.includes('beach.jpg')),'layers list');
  await evaluate(()=>[...document.querySelectorAll('.muse-vision-layers button')].find(b=>b.textContent.includes('beach.jpg')).click());
- await click('.muse-vision-selection button','Crop & shape');
+ await click('.muse-vision-inspector button','Crop & shape');
  await until(()=>!!document.querySelector('#vision-crop svg image'),'crop sheet with the photo');
  await click('#vision-crop .muse-vision-shapes button','Heart');
  await setValue('#vision-crop input[type=range]','1.6');
  await shoot('03-crop');
  await click('#vision-crop .muse-button','Apply');
- await click('.muse-vision-selection button','Link');
- await until(()=>!!document.querySelector('#vision-link'),'link panel');
- await evaluate(()=>document.querySelector('#vision-link .muse-choice-trigger, #vision-link button[aria-haspopup]')?.click());
+ await until(()=>[...document.querySelectorAll('.muse-vision-section>summary')].some(s=>s.textContent==='Link to Muse'),'link section');
+ await evaluate(()=>{const d=[...document.querySelectorAll('.muse-vision-section')].find(x=>x.querySelector('summary').textContent==='Link to Muse');d.open=true;(d.querySelector('.muse-choice-trigger, button[aria-haspopup]')??d.querySelector('.muse-vision-section-body button')).click();});
  await until(()=>[...document.querySelectorAll('[role=option],[role=menuitemradio],.popover-choice')].some(o=>o.textContent.includes('Learn to sew')),'aspiration offered');
  await evaluate(()=>[...document.querySelectorAll('[role=option],[role=menuitemradio],.popover-choice')].find(o=>o.textContent.includes('Learn to sew')).click());
  await saved();row=await board();
@@ -205,6 +206,29 @@ try{
  await go('/planner?view=intentions&period=year&date=2027-01-01','!!document.querySelector(".muse-intentions-board canvas")','Intentions preview');
  check(await evaluate(id=>document.querySelector('.muse-intentions-board').getAttribute('href').includes(id),row.id),'Intentions links to the board in Envision');
  await shoot('06-intentions');
+
+ // ---- Studio (#187): a patterned shape with a gradient border, then more board space on the left ----
+ await go(`/envision?view=vision-boards&board=${row.id}`,'!!document.querySelector(".muse-vision-canvas canvas")','studio editor');
+ const beforeStudio=(await board()).elements;
+ await click('.muse-vision-toolbar button','Library');
+ await until(()=>!!document.querySelector('[aria-label="Add Scalloped card"]'),'shapes');
+ await click('[aria-label="Add Scalloped card"]');
+ await until(()=>[...document.querySelectorAll('.muse-vision-section>summary')].some(s=>s.textContent==='Fill'),'shape inspector');
+ await evaluate(()=>{const sec=t=>[...document.querySelectorAll('.muse-vision-section')].find(d=>d.querySelector('summary').textContent===t);
+  [...sec('Fill').querySelectorAll('.muse-segmented button')].find(b=>b.textContent==='Pattern').click();
+  sec('Border').querySelector('input[type=checkbox]').click();});
+ await saved();row=await board();
+ const sh=row.elements.at(-1);
+ check(sh.kind==='shape'&&sh.shape==='scallop-rect'&&sh.fill.kind==='pattern'&&sh.stroke.paint.kind==='gradient','a scalloped card with a pattern fill and a gradient border');
+ await evaluate(()=>{document.querySelector('.muse-vision-canvas').focus();document.querySelector('.muse-vision-canvas').dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true}));});
+ await until(()=>[...document.querySelectorAll('.muse-vision-inspector button')].some(b=>b.textContent.includes('Left')),'board inspector');
+ await click('.muse-vision-inspector button','← Left');
+ await saved();
+ const grown=await board();
+ check(grown.size==='custom'&&grown.canvas_w===2000&&grown.canvas_h===1200,'adding space on the left makes a 2000×1200 custom board');
+ check(grown.elements.every(e=>{const o=row.elements.find(x=>x.id===e.id);return e.x===o.x+400&&e.y===o.y&&e.w===o.w&&e.h===o.h&&e.rotation===o.rotation;}),'every piece keeps its place in the art: shifted with the new space, never scaled or distorted');
+ check(beforeStudio.length+1===grown.elements.length,'nothing else was added or removed');
+ await shoot('07-studio');
 
  check(errors.length===0,`no runtime errors${errors.length?': '+errors.join(' | '):''}`);
  console.log(`PASS ${passed} Vision Boards browser checks. Screenshots: ${shots}`);

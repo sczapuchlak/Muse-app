@@ -75,3 +75,39 @@ export function useBoardImage(path: string | undefined): HTMLImageElement | null
   return e?.img ?? (e?.error ? null : undefined);
 }
 export function retryBoardImage(path: string) { const e = cache.get(path); if (e) e.error = false; loadBoardImage(path).catch(() => undefined); }
+
+// ---------- Built-in library images (#187) ----------
+// Same-origin files under /vision-assets, cached by URL like the private images above.
+const pub = new Map<string, Entry>();
+export function loadPublicImage(src: string): Promise<HTMLImageElement> {
+  let entry = pub.get(src);
+  if (entry?.img) return Promise.resolve(entry.img);
+  if (entry?.promise) return entry.promise;
+  if (!entry) { entry = { listeners: new Set() }; pub.set(src, entry); }
+  const e = entry;
+  e.error = false;
+  e.promise = new Promise<HTMLImageElement>((resolve, reject) => {
+    const img = new Image();
+    img.decoding = "async";
+    img.onload = () => resolve(img);
+    img.onerror = () => reject(Error("Library image could not load."));
+    img.src = src;
+  }).then((img) => { e.img = img; return img; }, (err) => { e.error = true; throw err; })
+    .finally(() => { e.promise = undefined; for (const l of e.listeners) l(); });
+  return e.promise;
+}
+export function usePublicImage(src: string | undefined): HTMLImageElement | null | undefined {
+  const [, bump] = useState(0);
+  useEffect(() => {
+    if (!src) return;
+    const entry = pub.get(src) ?? { listeners: new Set<() => void>() };
+    pub.set(src, entry);
+    const listener = () => bump((n) => n + 1);
+    entry.listeners.add(listener);
+    if (!entry.img && !entry.promise && !entry.error) loadPublicImage(src).catch(() => undefined);
+    return () => { entry.listeners.delete(listener); };
+  }, [src]);
+  if (!src) return undefined;
+  const e = pub.get(src);
+  return e?.img ?? (e?.error ? null : undefined);
+}

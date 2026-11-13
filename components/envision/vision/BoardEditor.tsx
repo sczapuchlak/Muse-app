@@ -1,43 +1,62 @@
 "use client";
 import Link from "next/link";
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type ClipboardEvent as ReactClipboardEvent, type DragEvent, type KeyboardEvent, type ReactNode, type RefObject } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type ClipboardEvent as ReactClipboardEvent, type DragEvent, type KeyboardEvent } from "react";
 import { createMuseBrowserClient } from "@/lib/supabase/client";
 import { uploadBoardImage } from "@/lib/data/constellation-images";
 import {
-  duplicateElement, emptyHistory, fitImage, fonts, linkStatus, MAX_ELEMENTS, moveLayer, nextPlacement, periodLabel, record, redo, removeElement, undo, updateElement, usedPaths,
-  type Asset, type Background, type BoardElement, type ElementLink, type History, type ImageElement, type LayerMove, type Snapshot, type StickerElement, type TextElement, type VisionBoard,
+  boardSizes, canvasOf, emptyHistory, fitImage, linkStatus, MAX_ELEMENTS, nextPlacement, periodLabel, record, redo, undo, usedPaths,
+  type Asset, type Background, type BoardElement, type ElementLink, type History, type ImageElement, type PieceElement, type ShapeElement, type Snapshot, type StickerElement, type TextElement, type VisionBoard,
 } from "@/lib/vision-boards/model";
+import {
+  alignElements, copyStyle, distributeElements, duplicateElements, expandCanvas, expandSelection, groupElements, isGrouped, moveElements, moveLayers, pasteElements, pasteStyle,
+  removeElements, resizeCanvas, ungroupElements, type Align, type Expand, type StyleClip,
+} from "@/lib/vision-boards/editing";
+import { decorShapes, type DecorShape } from "@/lib/vision-boards/decor";
+import { collectPaths, defaultShadow } from "@/lib/vision-boards/paint";
+import { pieceSize, searchLibrary } from "@/lib/vision-boards/library";
 import { loadBoard, saveBoard } from "@/lib/vision-boards/persistence";
 import { clipboardPasteError, imageFilesFromPaste, readClipboardImages } from "@/lib/vision-boards/clipboard";
-import { sticker as stickerDef, stickers } from "@/lib/vision-boards/shapes";
-import { pinAccent, type CustomGradient } from "@/lib/appearance-values";
+import { sticker as stickerDef } from "@/lib/vision-boards/shapes";
+import { pinAccent } from "@/lib/appearance-values";
 import type { Aspiration } from "@/lib/aspirations/models";
 import type { BucketEntry } from "@/lib/bucket-list/models";
 import { GlassPopover } from "../../GlassPopover";
-import { MuseChoiceMenu } from "../../MuseChoiceMenu";
-import { MuseColorPicker } from "../../MuseColorPicker";
 import { MuseIcon } from "../../MuseIcon";
-import { MusePaintPicker } from "../../MusePaintPicker";
 import { SaveIndicator } from "../../SaveIndicator";
-import { BoardEditorStage, fitView, measureText, type View } from "./BoardCanvas";
-import { BoardDetails, backgroundCss } from "./BoardDetails";
+import { BoardEditorStage, fitView, measureText, prefersReducedMotion, type Patch, type View } from "./BoardCanvas";
+import { BoardDetails } from "./BoardDetails";
 import { CropSheet } from "./CropSheet";
 import { CutoutHint, CutoutTools, useAppleTouch, useCutoutHint } from "./CutoutHelp";
+import { AssetLibrary, type LibraryPick } from "./AssetLibrary";
+import { Inspector, type InspectorActions } from "./Inspector";
+import { useSavedPalette } from "./PaintEditor";
+import { paintCss } from "./paintCss";
+import { exportBoard } from "./exportBoard";
 import { markStickers } from "./icons";
 import { draftKey } from "./useVisionBoards";
+import { libraryItem } from "@/lib/vision-boards/library";
 
 type Lookups = { aspirations: Aspiration[]; dreams: BucketEntry[] };
-type Draft = { revision: number; at: string; elements: BoardElement[]; background: Background };
+type Draft = { revision: number; at: string; elements: BoardElement[]; background: Background; size?: VisionBoard["size"]; canvas?: VisionBoard["canvas"] };
 const uid = () => crypto.randomUUID();
 const typing = (el: EventTarget | null) => el instanceof HTMLElement && (el.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(el.tagName));
 export function elementLabel(e: BoardElement): string {
   if (e.kind === "image") return `Photo${e.image.name ? ` · ${e.image.name}` : ""}`;
   if (e.kind === "text") return `Text “${e.text.trim().slice(0, 32) || "…"}”`;
+  if (e.kind === "shape") return `${e.role === "backing" ? "Backing · " : ""}${decorShapes.find((s) => s.id === e.shape)?.label ?? "Shape"}`;
+  if (e.kind === "piece") return libraryItem(e.piece)?.name ?? "Library piece";
   return stickerDef(e.sticker)?.label ?? markStickers.find((m) => m.id === e.sticker)?.label ?? "Sticker";
 }
+/**
+ * Pieces copied with ⌘C, kept for this tab (so they paste into another board too). Pieces that use this board's own
+ * private images only paste back into the same board: files belong to one board and are tidied up with it.
+ */
+let elementClip: { boardId: string; elements: BoardElement[]; marker: string } | null = null;
+let styleClip: StyleClip | null = null;
+const MARKER = "muse-vision-pieces:";
 
 /**
- * The collage editor (#118 §4–5). Edits apply to a local copy with undo/redo; it autosaves shortly after each change,
+ * The collage studio (#118, #187). Edits apply to a local copy with undo/redo; it autosaves shortly after each change,
  * saves right away when the app is backgrounded, and keeps a recovery copy on this device until the save is confirmed.
  */
 export default function BoardEditor({ initial, userId, today, lookups, onSaved, onBack, sweep }: {
@@ -47,26 +66,32 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
   const client = useMemo(() => createMuseBrowserClient(), []);
   const [board, setBoard] = useState(initial);
   const [history, setHistory] = useState<History>(emptyHistory);
-  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [save, setSave] = useState({ dirty: false, saving: false, error: "", conflict: false });
   const [uploads, setUploads] = useState<{ total: number; done: number; errors: string[] }>({ total: 0, done: 0, errors: [] });
-  const [panel, setPanel] = useState<"" | "stickers" | "background" | "layers" | "color" | "border" | "link">("");
+  const [panel, setPanel] = useState<"" | "library" | "layers">("");
   const [sheet, setSheet] = useState<"" | "crop" | "details">("");
   const [recovery, setRecovery] = useState<Draft | null>(null);
   const [announce, setAnnounce] = useState("");
   const [pasteMenu, setPasteMenu] = useState<{ x: number; y: number } | null>(null);
   const [clipboardBusy, setClipboardBusy] = useState(false);
+  const [selectMode, setSelectMode] = useState(false), [snapping, setSnapping] = useState(true), [exporting, setExporting] = useState(false);
+  const [sessionUploads, setSessionUploads] = useState<Asset[]>([]);
+  const [reducedMotion] = useState(() => prefersReducedMotion());
   const clipboardReading = useRef(false), pasteAnchor = useRef<HTMLSpanElement>(null);
   const boardRef = useRef(board); boardRef.current = board;
   const historyRef = useRef(history); historyRef.current = history;
+  const selRef = useRef(selectedIds); selRef.current = selectedIds;
   const rev = useRef(initial.revision), seq = useRef(0), saving = useRef(false), again = useRef(false);
   const lastKey = useRef<{ key: string; at: number } | null>(null);
-  const fileRef = useRef<HTMLInputElement>(null), wrapRef = useRef<HTMLDivElement>(null);
-  const anchors = { stickers: useRef<HTMLButtonElement>(null), background: useRef<HTMLButtonElement>(null), layers: useRef<HTMLButtonElement>(null), color: useRef<HTMLButtonElement>(null), border: useRef<HTMLButtonElement>(null), link: useRef<HTMLButtonElement>(null) };
-  const selected = board.elements.find((e) => e.id === selectedId) ?? null;
+  const fileRef = useRef<HTMLInputElement>(null), patternFileRef = useRef<HTMLInputElement>(null), patternThen = useRef<((a: Asset) => void) | null>(null), wrapRef = useRef<HTMLDivElement>(null);
+  const anchors = { library: useRef<HTMLButtonElement>(null), layers: useRef<HTMLButtonElement>(null) };
+  const selected = useMemo(() => board.elements.filter((e) => selectedIds.includes(e.id)), [board.elements, selectedIds]);
+  const palette = useSavedPalette(userId);
 
-  // ---------- Viewport ----------
+  // ---------- Viewport (zoom and pan never change the board's own size) ----------
   const [size, setSize] = useState({ width: 0, height: 0 }), [view, setView] = useState<View | null>(null);
+  const viewRef = useRef(view); viewRef.current = view;
   useLayoutEffect(() => {
     const el = wrapRef.current; if (!el) return;
     const ro = new ResizeObserver(([entry]) => { const { width, height } = entry.contentRect; setSize({ width: Math.round(width), height: Math.round(height) }); });
@@ -76,17 +101,17 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
   // The board stays fitted to the canvas (as the layout settles, or the window or phone rotates) until the person
   // pans or zooms themselves; "Fit" returns to that.
   const autoFit = useRef(true);
-  const boardSize = board.size;
-  const fit = useCallback(() => { if (!size.width) return; autoFit.current = true; setView(fitView({ size: boardSize }, size.width, size.height)); }, [boardSize, size]);
+  const box = canvasOf(board);
+  const fit = useCallback(() => { if (!size.width) return; autoFit.current = true; setView(fitView({ size: "custom", canvas: box }, size.width, size.height)); }, [box.w, box.h, size]); // eslint-disable-line react-hooks/exhaustive-deps -- box is derived from w/h
   useEffect(() => { if (!size.width || !autoFit.current) return; const t = window.setTimeout(fit, 0); return () => window.clearTimeout(t); }, [size, fit]);
   const moveView = (v: View) => { autoFit.current = false; setView(v); };
   const zoomBy = (factor: number) => view && moveView((() => {
-    const c = { x: size.width / 2, y: size.height / 2 }, scale = Math.min(4, Math.max(0.08, view.scale * factor)), bx = (c.x - view.x) / view.scale, by = (c.y - view.y) / view.scale;
+    const c = { x: size.width / 2, y: size.height / 2 }, scale = Math.min(4, Math.max(0.03, view.scale * factor)), bx = (c.x - view.x) / view.scale, by = (c.y - view.y) / view.scale;
     return { scale, x: c.x - bx * scale, y: c.y - by * scale };
   })());
 
   // ---------- Editing with history ----------
-  const snapshot = (b: VisionBoard = boardRef.current): Snapshot => ({ elements: b.elements, background: b.background });
+  const snapshot = (b: VisionBoard = boardRef.current): Snapshot => ({ elements: b.elements, background: b.background, size: b.size, canvas: b.canvas });
   /** Applies a change. Rapid edits with the same `key` (typing, a slider) become one undo step. */
   const apply = useCallback((change: (s: Snapshot) => Snapshot, key?: string) => {
     const before = snapshot(), next = change(before);
@@ -98,14 +123,31 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
     boardRef.current = b; setBoard(b);
     seq.current++; setSave((s) => ({ ...s, dirty: true }));
   }, []);
-  const change = (id: string, patch: Partial<BoardElement>, key?: string) => apply((s) => ({ ...s, elements: updateElement(s.elements, id, patch) }), key);
-  const restore = (s: Snapshot) => { const b = { ...boardRef.current, ...s }; boardRef.current = b; setBoard(b); seq.current++; setSave((x) => ({ ...x, dirty: true })); lastKey.current = null; if (selectedId && !s.elements.some((e) => e.id === selectedId)) setSelectedId(null); };
+  const changeElements = (fn: (els: BoardElement[]) => BoardElement[], key?: string) => apply((s) => { const elements = fn(s.elements); return elements === s.elements ? s : { ...s, elements }; }, key);
+  const onChangeMany = (patches: Patch[], key?: string) => {
+    const by = new Map(patches.map((p) => [p.id, p.patch]));
+    changeElements((els) => els.map((e) => (by.has(e.id) ? { ...e, ...by.get(e.id) } as BoardElement : e)), key);
+  };
+  const select = (ids: string[]) => setSelectedIds(expandSelection(boardRef.current.elements, ids));
+  /** "only" picks exactly these pieces, even inside a group (double-click, or the Layers list), to style one member. */
+  const onSelect = (ids: string[], mode: "replace" | "toggle" | "only" = "replace") => {
+    if (mode === "only") return setSelectedIds(ids);
+    const els = boardRef.current.elements, picked = expandSelection(els, ids);
+    if (mode === "replace") return setSelectedIds(picked);
+    const cur = selRef.current, allIn = picked.every((id) => cur.includes(id));
+    setSelectedIds(allIn ? cur.filter((id) => !picked.includes(id)) : [...new Set([...cur, ...picked])]);
+  };
+  const restore = (s: Snapshot) => {
+    const b = { ...boardRef.current, ...s, size: s.size ?? boardRef.current.size, canvas: s.size ? s.canvas : boardRef.current.canvas };
+    boardRef.current = b; setBoard(b); seq.current++; setSave((x) => ({ ...x, dirty: true })); lastKey.current = null;
+    setSelectedIds((ids) => ids.filter((id) => s.elements.some((e) => e.id === id)));
+  };
   const doUndo = () => { const r = undo(historyRef.current, snapshot()); if (r) { setHistory(r.history); restore(r.snapshot); setAnnounce("Undone"); } };
   const doRedo = () => { const r = redo(historyRef.current, snapshot()); if (r) { setHistory(r.history); restore(r.snapshot); setAnnounce("Redone"); } };
 
   // ---------- Saving ----------
   const writeDraft = useCallback(() => {
-    try { const b = boardRef.current; localStorage.setItem(draftKey(b.id), JSON.stringify({ revision: rev.current, at: new Date().toISOString(), elements: b.elements, background: b.background } satisfies Draft)); } catch { /* storage full or blocked: the autosave still runs */ }
+    try { const b = boardRef.current; localStorage.setItem(draftKey(b.id), JSON.stringify({ revision: rev.current, at: new Date().toISOString(), elements: b.elements, background: b.background, size: b.size, canvas: b.canvas } satisfies Draft)); } catch { /* storage full or blocked: the autosave still runs */ }
   }, []);
   const clearDraft = useCallback(() => { try { localStorage.removeItem(draftKey(boardRef.current.id)); } catch { /* this device only */ } }, []);
   const flush = useCallback(async (): Promise<boolean> => {
@@ -149,7 +191,8 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
       const raw = localStorage.getItem(draftKey(initial.id));
       if (!raw) return;
       const d = JSON.parse(raw) as Draft;
-      if (JSON.stringify({ e: d.elements, b: d.background }) === JSON.stringify({ e: initial.elements, b: initial.background })) { localStorage.removeItem(draftKey(initial.id)); return; }
+      const same = (x: Pick<Draft, "elements" | "background" | "size" | "canvas">) => JSON.stringify({ e: x.elements, b: x.background, s: x.size ?? initial.size, c: x.size === "custom" ? x.canvas : undefined });
+      if (same(d) === same(initial)) { localStorage.removeItem(draftKey(initial.id)); return; }
       const t = window.setTimeout(() => setRecovery(d), 0);
       return () => window.clearTimeout(t);
     } catch { /* unreadable: ignore */ }
@@ -172,7 +215,7 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
   async function reloadLatest() {
     const latest = await loadBoard(client, board.id).catch(() => null);
     if (!latest) { setSave((s) => ({ ...s, error: "This board couldn’t be found. It may have been deleted on another device." })); return; }
-    rev.current = latest.revision; boardRef.current = latest; setBoard(latest); setHistory(emptyHistory()); setSelectedId(null); clearDraft(); onSaved(latest);
+    rev.current = latest.revision; boardRef.current = latest; setBoard(latest); setHistory(emptyHistory()); setSelectedIds([]); clearDraft(); onSaved(latest);
     setSave({ dirty: false, saving: false, error: "", conflict: false });
   }
   async function keepMine() {
@@ -183,21 +226,32 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
   }
 
   // ---------- Adding ----------
-  const place = (w: number, h: number) => ({ ...nextPlacement(board, board.elements.length), w, h });
-  const add = (e: BoardElement, label: string) => {
-    if (boardRef.current.elements.length >= MAX_ELEMENTS) { setAnnounce(`A board holds up to ${MAX_ELEMENTS} pieces.`); return; }
-    apply((s) => ({ ...s, elements: [...s.elements, e] }));
-    setSelectedId(e.id); setAnnounce(`${label} added`);
+  /** New pieces land in the middle of what's on screen (not off in a corner of a big board). */
+  const place = (w: number, h: number) => {
+    const b = boardRef.current, v = viewRef.current, base = nextPlacement(b, b.elements.length), c = canvasOf(b);
+    if (!v || !size.width) return { ...base, w, h };
+    const cx = (size.width / 2 - v.x) / v.scale, cy = (size.height / 2 - v.y) / v.scale;
+    const inside = cx > 0 && cy > 0 && cx < c.w && cy < c.h;
+    return inside ? { x: Math.round(cx + (base.x - c.w / 2) * 0.55), y: Math.round(cy + (base.y - c.h / 2) * 0.55), rotation: base.rotation, w, h } : { ...base, w, h };
   };
+  const add = (e: BoardElement | BoardElement[], label: string, at?: number) => {
+    const list = Array.isArray(e) ? e : [e];
+    if (boardRef.current.elements.length + list.length > MAX_ELEMENTS) { setAnnounce(`A board holds up to ${MAX_ELEMENTS} pieces.`); return; }
+    changeElements((els) => at === undefined ? [...els, ...list] : [...els.slice(0, at), ...list, ...els.slice(at)]);
+    setSelectedIds(list.map((x) => x.id)); setAnnounce(`${label} added`);
+  };
+  async function uploadOne(file: File): Promise<Asset> {
+    const up = await uploadBoardImage(userId, board.id, file, { allowJpeg: true, keepTransparency: true });
+    return { path: up.path, thumbnailPath: up.thumbnailPath, width: up.width, height: up.height, mime: up.mime, name: up.name, ...(up.alpha ? { alpha: true } : {}) };
+  }
   async function addFiles(files: File[]) {
     const images = files.filter((f) => f.type.startsWith("image/"));
     if (!images.length) return;
     setUploads({ total: images.length, done: 0, errors: [] });
     for (const file of images) {
       try {
-        const up = await uploadBoardImage(userId, board.id, file, { allowJpeg: true, keepTransparency: true });
-        const asset: Asset = { path: up.path, thumbnailPath: up.thumbnailPath, width: up.width, height: up.height, mime: up.mime, name: up.name, ...(up.alpha ? { alpha: true } : {}) };
-        const { w, h } = fitImage(board, asset);
+        const asset = await uploadOne(file);
+        const { w, h } = fitImage(boardRef.current, asset);
         const e: ImageElement = { id: uid(), kind: "image", ...place(w, h), image: asset, crop: { shape: "rect", zoom: 1, x: 0, y: 0 }, ...(asset.alpha ? {} : { border: { color: "#ffffff", width: 10 }, shadow: true }) };
         add(e, "Photo");
         setUploads((u) => ({ ...u, done: u.done + 1 }));
@@ -206,40 +260,153 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
       }
     }
   }
+  /** An image uploaded to use as a pattern (kept with the board's files; it appears under "Your uploads"). */
+  const requestUpload = (then: (a: Asset) => void) => { patternThen.current = then; patternFileRef.current?.click(); };
+  async function uploadPattern(file: File | undefined) {
+    const then = patternThen.current; patternThen.current = null;
+    if (!file || !then) return;
+    setUploads({ total: 1, done: 0, errors: [] });
+    try { const a = await uploadOne(file); setSessionUploads((l) => [a, ...l]); then(a); setUploads({ total: 1, done: 1, errors: [] }); }
+    catch (err) { setUploads({ total: 1, done: 1, errors: [`${file.name}: ${err instanceof Error ? err.message : "couldn’t upload"}`] }); }
+  }
   function addText() {
     const base: TextElement = { id: uid(), kind: "text", ...place(640, 100), rotation: 0, text: "Dream big", font: "editorial", size: 84, color: "#2a2135", align: "center", italic: true };
     add({ ...base, h: measureText(base) }, "Text");
-    window.setTimeout(() => document.getElementById("vision-text-input")?.focus(), 50);
+    window.setTimeout(() => document.getElementById("vision-text-input")?.focus(), 80);
   }
   function addSticker(id: string) {
     const def = stickerDef(id), [bw, bh] = def?.box ?? [24, 24], s = 180, w = bw >= bh ? s : Math.round((s * bw) / bh), h = bw >= bh ? Math.round((s * bh) / bw) : s;
     let color: `#${string}` = "#f4a259";
     try { color = pinAccent(id === "tape" ? "secondary" : "primary"); } catch { /* default */ }
     const e: StickerElement = { id: uid(), kind: "sticker", ...place(w, h), sticker: id, color };
-    add(e, elementLabel(e)); setPanel("");
+    add(e, elementLabel(e));
+  }
+  function addShape(shape: DecorShape) {
+    const c = canvasOf(boardRef.current), unit = Math.round(Math.min(c.w, c.h) * 0.24), def = decorShapes.find((s) => s.id === shape)!;
+    const wide = ["banner", "ticket", "label", "tag", "torn", "wavy"].includes(shape), w = def.ratio === 1 ? unit : Math.round(unit * (wide ? 1.7 : 1.3)), h = def.ratio === 1 ? unit : Math.round(unit * (wide ? 0.62 : 1));
+    const fill = shape === "torn" ? "#fffaf0" : shape === "bubble" ? "#ffffff" : "#ffd6e0";
+    const e: ShapeElement = { id: uid(), kind: "shape", ...place(w, h), rotation: 0, shape, fill: { kind: "solid", color: fill }, shadowStyle: { ...defaultShadow, blur: 18, y: 6, opacity: 0.22 }, ...(shape === "rounded" ? { radius: Math.round(Math.min(w, h) * 0.12) } : {}) };
+    add(e, def.label);
+  }
+  function onLibrary(p: LibraryPick) {
+    if (p.kind === "shape") addShape(p.shape);
+    else if (p.kind === "sticker") addSticker(p.id);
+    else if (p.kind === "fill") {
+      const paint = { kind: "pattern" as const, pattern: { source: "builtin" as const, id: p.item.id }, scale: 1, rotation: 0, x: 0, y: 0 };
+      const shapes = selected.filter((e) => e.kind === "shape");
+      if (shapes.length) { onChangeMany(shapes.map((e) => ({ id: e.id, patch: { fill: paint } })), undefined); setAnnounce(`${p.item.name} fill applied`); }
+      else { const c = canvasOf(boardRef.current), w = Math.round(c.w * 0.34), h = Math.round(w * 0.75); add({ id: uid(), kind: "shape", ...place(w, h), rotation: 0, shape: "rect", fill: paint, role: "paper", shadowStyle: { ...defaultShadow, blur: 14, y: 5, opacity: 0.2 } } satisfies ShapeElement, `${p.item.name} paper`); }
+    } else {
+      const { w, h } = pieceSize(p.item, canvasOf(boardRef.current)), pl = place(w, h);
+      const e: PieceElement = { id: uid(), kind: "piece", ...pl, rotation: p.item.kind === "washi" ? (pl.rotation > 0 ? -8 : 8) : pl.rotation, piece: p.item.id, ...(p.item.kind === "sticker" ? { shadowStyle: { ...defaultShadow, blur: 10, y: 4, opacity: 0.25 } } : {}) };
+      add(e, p.item.name);
+    }
+    setPanel("");
   }
 
   // ---------- Selection actions ----------
-  const layer = (move: LayerMove) => selected && apply((s) => ({ ...s, elements: moveLayer(s.elements, selected.id, move) }));
-  const duplicate = () => { if (!selected) return; const id = uid(); apply((s) => ({ ...s, elements: duplicateElement(s.elements, selected.id, id) })); setSelectedId(id); setAnnounce("Duplicated"); };
-  const remove = () => { if (!selected) return; apply((s) => ({ ...s, elements: removeElement(s.elements, selected.id) })); setSelectedId(null); setAnnounce(`${elementLabel(selected)} removed. Undo brings it back.`); };
-  const nudge = (dx: number, dy: number) => selected && !selected.locked && change(selected.id, { x: selected.x + dx, y: selected.y + dy }, `nudge:${selected.id}`);
+  const ids = selectedIds;
+  const unitCount = useMemo(() => { const g = new Set<string>(); let n = 0; for (const e of selected) { if (e.groupId) { if (!g.has(e.groupId)) { g.add(e.groupId); n++; } } else n++; } return n; }, [selected]);
+  const grouped = isGrouped(board.elements, ids);
+  const layer = (move: "forward" | "backward" | "front" | "back") => ids.length && changeElements((els) => moveLayers(els, ids, move));
+  const duplicate = () => { if (!ids.length) return; const r = duplicateElements(boardRef.current.elements, ids, uid); if (!r.ids.length) { setAnnounce(`A board holds up to ${MAX_ELEMENTS} pieces.`); return; } changeElements(() => r.elements); setSelectedIds(r.ids); setAnnounce("Duplicated"); };
+  const remove = () => { if (!ids.length) return; const label = ids.length > 1 ? `${ids.length} pieces` : elementLabel(selected[0]); changeElements((els) => removeElements(els, ids)); setSelectedIds([]); setAnnounce(`${label} removed. Undo brings it back.`); };
+  const nudge = (dx: number, dy: number) => ids.length && changeElements((els) => moveElements(els, ids, dx, dy), `nudge:${ids.join()}`);
+  const copy = () => {
+    if (!ids.length) return;
+    const marker = `${MARKER}${uid()}`;
+    elementClip = { boardId: board.id, elements: JSON.parse(JSON.stringify(selected)), marker };
+    void navigator.clipboard?.writeText(marker).catch(() => undefined);
+    setAnnounce(ids.length > 1 ? `${ids.length} pieces copied` : "Copied");
+  };
+  const pasteCopied = () => {
+    if (!elementClip) return false;
+    const sameBoard = elementClip.boardId === board.id;
+    const usable = sameBoard ? elementClip.elements : elementClip.elements.filter((e) => collectPaths(e).size === 0);
+    if (!usable.length) { setAnnounce("Pieces with your photos paste only into the board they came from."); return true; }
+    const v = viewRef.current, at = !sameBoard && v ? { x: (size.width / 2 - v.x) / v.scale, y: (size.height / 2 - v.y) / v.scale } : undefined;
+    const r = pasteElements(boardRef.current.elements, usable, uid, at);
+    if (!r.ids.length) { setAnnounce(`A board holds up to ${MAX_ELEMENTS} pieces.`); return true; }
+    changeElements(() => r.elements); setSelectedIds(r.ids);
+    setAnnounce(usable.length < elementClip.elements.length ? "Pasted (pieces with photos from another board were left out)" : "Pasted");
+    return true;
+  };
+  const doCopyStyle = () => { if (selected[0]) { styleClip = copyStyle(selected[0]); setAnnounce("Style copied"); } };
+  const doPasteStyle = () => { const clip = styleClip; if (!clip || !ids.length) return; changeElements((els) => els.map((e) => { if (!ids.includes(e.id)) return e; const n = pasteStyle(e, clip); return n.kind === "text" ? { ...n, h: measureText(n) } : n; })); setAnnounce("Style pasted"); };
+  const group = () => { if (unitCount < 2) return; changeElements((els) => groupElements(els, ids, uid())); setAnnounce("Grouped"); };
+  const ungroup = () => { changeElements((els) => ungroupElements(els, ids)); setAnnounce("Ungrouped"); };
+  const lock = () => { const on = !selected.every((e) => e.locked); changeElements((els) => els.map((e) => (ids.includes(e.id) ? { ...e, locked: on || undefined } : e))); };
+  const align = (how: Align) => changeElements((els) => alignElements(els, ids, how, canvasOf(boardRef.current)));
+  const distribute = (axis: "h" | "v") => changeElements((els) => distributeElements(els, ids, axis));
+  /** Board space added on the left/top shifts every piece's coordinates; the view shifts back so nothing appears to move. */
+  const applyCanvas = (r: ReturnType<typeof expandCanvas>, label: string) => {
+    apply((s) => ({ ...s, size: r.size, canvas: r.canvas, elements: r.elements }));
+    const v = viewRef.current;
+    if (v && (r.shift.x || r.shift.y)) moveView({ ...v, x: v.x - r.shift.x * v.scale, y: v.y - r.shift.y * v.scale });
+    else if (v) autoFit.current = false;
+    setAnnounce(`${label}: the board is now ${r.canvas.w} by ${r.canvas.h}`);
+  };
+  const expand = (by: Expand) => applyCanvas(expandCanvas(boardRef.current, by), "Space added");
+  const resize = (w: number, h: number, anchor: { x: 0 | 0.5 | 1; y: 0 | 0.5 | 1 }) => applyCanvas(resizeCanvas(boardRef.current, w, h, anchor), "Resized");
+  const preset = (s: keyof typeof boardSizes) => {
+    const c = canvasOf(boardRef.current), p = boardSizes[s];
+    const r = resizeCanvas(boardRef.current, p.w, p.h, { x: 0.5, y: 0.5 });
+    apply((x) => ({ ...x, size: s, canvas: undefined, elements: r.elements }));
+    const v = viewRef.current; if (v && (r.shift.x || r.shift.y)) moveView({ ...v, x: v.x - r.shift.x * v.scale, y: v.y - r.shift.y * v.scale });
+    setAnnounce(c.w === p.w && c.h === p.h ? `${p.label}` : `The board is now ${p.label} (${p.w} by ${p.h})`);
+  };
+  const background = (bg: Background) => apply((s) => ({ ...s, background: bg }), "background");
+  function makeSticker() {
+    const e = selected[0]; if (e?.kind !== "image") return;
+    changeElements((els) => els.map((x) => x.id === e.id ? { ...e, border: undefined, outline: e.outline ?? { color: "#ffffff", width: Math.max(6, Math.round(Math.min(e.w, e.h) * 0.045)) }, finish: e.finish ?? { kind: "glossy", intensity: 0.55 }, shadow: true, shadowStyle: e.shadowStyle ?? { ...defaultShadow, blur: 14, y: 6, opacity: 0.28 } } as ImageElement : x));
+    setAnnounce("Made into a sticker");
+  }
+  /** A patterned scrapbook backing behind a photo: a little larger, a little turned, grouped with the photo. */
+  function addBacking() {
+    const e = selected[0]; if (e?.kind !== "image") return;
+    const first = searchLibrary("pattern", "gingham")[0] ?? searchLibrary("pattern")[0], pad = Math.round(Math.min(e.w, e.h) * 0.07), gid = e.groupId ?? uid();
+    const shape: DecorShape = e.crop.shape === "circle" ? "scallop-circle" : e.crop.shape === "heart" ? "heart" : e.crop.shape === "arch" ? "arch" : "rect";
+    const backing: ShapeElement = { id: uid(), kind: "shape", x: e.x, y: e.y, w: e.w + pad * 2, h: e.h + pad * 2, rotation: e.rotation + (e.rotation >= 0 ? -3 : 3), shape, role: "backing", groupId: gid,
+      fill: first ? { kind: "pattern", pattern: { source: "builtin", id: first.id }, scale: 0.6, rotation: 0, x: 0, y: 0, base: "#ffffff" } : { kind: "solid", color: "#ffd6e0" }, shadowStyle: { ...defaultShadow, blur: 16, y: 6, opacity: 0.25 } };
+    const at = boardRef.current.elements.findIndex((x) => x.id === e.id);
+    if (boardRef.current.elements.length >= MAX_ELEMENTS) { setAnnounce(`A board holds up to ${MAX_ELEMENTS} pieces.`); return; }
+    changeElements((els) => { const withGroup = els.map((x) => x.id === e.id ? { ...x, groupId: gid } : x); return [...withGroup.slice(0, at), backing, ...withGroup.slice(at)]; });
+    setSelectedIds([backing.id]); setAnnounce("Backing added behind the photo (grouped with it). Pick a pattern for it here.");
+  }
+  async function exportImage(type: "image/png" | "image/jpeg") {
+    setExporting(true);
+    try {
+      const blob = await exportBoard(boardRef.current, { scale: 2, type });
+      const name = `${(board.title || "Vision board").replace(/[\\/:*?"<>|]+/g, " ").trim()}.${type === "image/png" ? "png" : "jpg"}`, file = new File([blob], name, { type });
+      const coarse = window.matchMedia?.("(pointer: coarse)").matches;
+      if (coarse && navigator.canShare?.({ files: [file] })) { await navigator.share({ files: [file], title: board.title }).catch(() => undefined); }
+      else { const url = URL.createObjectURL(blob), a = document.createElement("a"); a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove(); window.setTimeout(() => URL.revokeObjectURL(url), 4000); }
+      setAnnounce("Board exported");
+    } catch (err) { setUploads({ total: 0, done: 0, errors: [err instanceof Error ? err.message : "The board couldn’t be exported."] }); }
+    finally { setExporting(false); }
+  }
+
   function onKey(ev: KeyboardEvent) {
     if (typing(ev.target)) return;
-    const mod = ev.metaKey || ev.ctrlKey;
-    if (mod && ev.key.toLowerCase() === "z") { ev.preventDefault(); if (ev.shiftKey) doRedo(); else doUndo(); return; }
-    if (mod && ev.key.toLowerCase() === "y") { ev.preventDefault(); doRedo(); return; }
-    if (!selected) return;
+    const mod = ev.metaKey || ev.ctrlKey, k = ev.key.toLowerCase();
+    if (mod && k === "z") { ev.preventDefault(); if (ev.shiftKey) doRedo(); else doUndo(); return; }
+    if (mod && k === "y") { ev.preventDefault(); doRedo(); return; }
+    if (mod && k === "a") { ev.preventDefault(); select(boardRef.current.elements.filter((e) => !e.locked).map((e) => e.id)); return; }
+    if (mod && ev.altKey && k === "v" || mod && ev.altKey && ev.code === "KeyV") { ev.preventDefault(); doPasteStyle(); return; }
+    if (ev.key === "Escape") { setSelectedIds([]); return; }
+    if (!ids.length) return;
     const step = ev.shiftKey ? 10 : 2;
-    if (mod && ev.key.toLowerCase() === "d") { ev.preventDefault(); duplicate(); }
+    if (mod && (k === "c" || ev.code === "KeyC")) { if (ev.altKey) { ev.preventDefault(); doCopyStyle(); } else copy(); /* the native copy also runs: it puts the marker on the clipboard */ }
+    else if (mod && k === "x") { ev.preventDefault(); copy(); remove(); }
+    else if (mod && k === "d") { ev.preventDefault(); duplicate(); }
+    else if (mod && k === "g") { ev.preventDefault(); if (ev.shiftKey) ungroup(); else group(); }
     else if (ev.key === "Delete" || ev.key === "Backspace") { ev.preventDefault(); remove(); }
-    else if (ev.key === "Escape") setSelectedId(null);
     else if (ev.key === "ArrowLeft") { ev.preventDefault(); nudge(-step, 0); }
     else if (ev.key === "ArrowRight") { ev.preventDefault(); nudge(step, 0); }
     else if (ev.key === "ArrowUp") { ev.preventDefault(); nudge(0, -step); }
     else if (ev.key === "ArrowDown") { ev.preventDefault(); nudge(0, step); }
-    else if (ev.key === "]") layer(ev.shiftKey ? "front" : "forward");
-    else if (ev.key === "[") layer(ev.shiftKey ? "back" : "backward");
+    else if (ev.key === "]" || ev.code === "BracketRight") layer(ev.shiftKey ? "front" : "forward");
+    else if (ev.key === "[" || ev.code === "BracketLeft") layer(ev.shiftKey ? "back" : "backward");
   }
   async function pasteClipboard() {
     if (clipboardReading.current || uploading) return;
@@ -251,11 +418,14 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
   function onPaste(ev: ReactClipboardEvent) {
     if (typing(ev.target)) return;
     ev.preventDefault();
-    const files = imageFilesFromPaste(ev.clipboardData);
-    // Some browser/website clipboard combinations expose image bytes only via
-    // the async API. Never silently ignore these, or fetch the copied HTML/URL.
-    if (files.length) void addFiles(files);
-    else void pasteClipboard();
+    const files = imageFilesFromPaste(ev.clipboardData), text = ev.clipboardData.getData("text/plain");
+    // Pieces copied from a board come back as pieces (the clipboard holds a marker for them); images become photos.
+    if (!files.length && text.startsWith(MARKER) && elementClip?.marker === text) { pasteCopied(); return; }
+    if (files.length) { void addFiles(files); return; }
+    if (!text && elementClip && pasteCopied()) return;
+    // Some browser/website clipboard combinations expose image bytes only via the async API. Never silently ignore
+    // these, or fetch the copied HTML/URL.
+    void pasteClipboard();
   }
   const [dropping, setDropping] = useState(false);
   const dropProps = {
@@ -264,7 +434,6 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
     onDrop: (ev: DragEvent) => { setDropping(false); if (!ev.dataTransfer.files.length) return; ev.preventDefault(); void addFiles(Array.from(ev.dataTransfer.files)); },
   };
 
-  const background = (bg: Background) => apply((s) => ({ ...s, background: bg }), "background");
   const live = (l: ElementLink) => l.kind === "aspiration" ? (() => { const a = lookups.aspirations.find((x) => x.id === l.id); return a && { label: a.title }; })() : (() => { const d = lookups.dreams.find((x) => x.id === l.id); return d && { label: d.title }; })();
   const linkOptions = [...lookups.aspirations.filter((a) => a.status !== "archived").map((a) => ({ id: `aspiration:${a.id}`, label: `🌱 ${a.title}` })), ...lookups.dreams.filter((d) => !d.archivedAt).map((d) => ({ id: `bucket:${d.id}`, label: `🗺️ ${d.title}` }))];
   const togglePanel = (p: typeof panel) => setPanel((x) => x === p ? "" : p);
@@ -272,6 +441,25 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
   const apple = useAppleTouch(), cutoutHint = useCutoutHint(apple);
   const uploading = uploads.done < uploads.total;
   const intentionsHref = board.period && board.periodStart ? `/planner?view=intentions&period=${board.period}&date=${board.periodStart}` : null;
+  /** The person's images for pattern fills: every photo on this board and anything uploaded as a pattern. */
+  const boardUploads = useMemo(() => {
+    const seen = new Map<string, Asset>();
+    for (const a of sessionUploads) seen.set(a.path, a);
+    const visit = (v: unknown) => { if (Array.isArray(v)) return v.forEach(visit); if (!v || typeof v !== "object") return; const o = v as Record<string, unknown>; if (typeof o.path === "string" && typeof o.thumbnailPath === "string" && typeof o.width === "number") { if (!seen.has(o.path)) seen.set(o.path, o as unknown as Asset); return; } Object.values(o).forEach(visit); };
+    visit(board.elements); visit(board.background);
+    return [...seen.values()].slice(0, 40);
+  }, [board.elements, board.background, sessionUploads]);
+  // Selection patches: every selected piece of the representative's kind changes together.
+  const patch = (fn: (e: BoardElement) => Partial<BoardElement> | null, key?: string, scope: "kind" | "all" = "kind") => {
+    const kind = selected[0]?.kind; if (!kind) return;
+    const patches = selected.filter((e) => scope === "all" || e.kind === kind).map((e) => ({ id: e.id, patch: fn(e) })).filter((p): p is Patch => !!p.patch);
+    onChangeMany(patches, key ? `${key}:${ids.join()}` : undefined);
+  };
+  const actions: InspectorActions = {
+    align, distribute, layer, group, ungroup, lock, duplicate, remove, copyStyle: doCopyStyle, pasteStyle: doPasteStyle, canPasteStyle: !!styleClip,
+    crop: () => setSheet("crop"), makeSticker, addBacking, expand, resize, preset, background, exportImage: (t) => void exportImage(t), exporting,
+  };
+  const c = box;
 
   return <section className="muse-vision-editor muse-planner-surface" aria-label={`Vision board: ${board.title}`} onKeyDown={onKey} onPaste={onPaste}>
     <header className="muse-vision-editor-head">
@@ -285,7 +473,7 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
     </header>
 
     {recovery && <p className="muse-bucket-notice" role="status">Unsaved changes from {new Date(recovery.at).toLocaleString()} are on this device.{" "}
-      <button type="button" className="text-button" onClick={() => { apply((s) => ({ ...s, elements: recovery.elements, background: recovery.background })); setRecovery(null); }}>Restore them</button>{" "}
+      <button type="button" className="text-button" onClick={() => { apply((s) => ({ ...s, elements: recovery.elements, background: recovery.background, ...(recovery.size ? { size: recovery.size, canvas: recovery.size === "custom" ? recovery.canvas : undefined } : {}) })); setRecovery(null); }}>Restore them</button>{" "}
       <button type="button" className="text-button" onClick={() => { clearDraft(); setRecovery(null); }}>Discard</button></p>}
     {save.error && <p className="muse-aspiration-error" role="alert">{save.error}{" "}
       {save.conflict ? <><button type="button" className="text-button" onClick={() => void reloadLatest()}>Load the latest</button> <button type="button" className="text-button" onClick={() => void keepMine()}>Keep my version</button></>
@@ -294,15 +482,18 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
     <div className="muse-vision-toolbar muse-scroll-fade" role="toolbar" aria-label="Add to the board">
       <button type="button" className="muse-button button-primary" disabled={uploading} onClick={() => fileRef.current?.click()}><MuseIcon name="plus" size={14} /> Photos</button>
       <input ref={fileRef} type="file" accept="image/png,image/jpeg,image/webp,image/gif" multiple hidden onChange={(e) => { const f = Array.from(e.target.files ?? []); e.target.value = ""; void addFiles(f); }} />
+      <input ref={patternFileRef} type="file" accept="image/png,image/jpeg,image/webp" hidden onChange={(e) => { const f = e.target.files?.[0]; e.target.value = ""; void uploadPattern(f); }} />
       <CutoutTools disabled={uploading || clipboardBusy} showGuide={apple} onFiles={(f) => { cutoutHint.dismiss(); void addFiles(f); }} onError={(m) => setUploads({ total: 0, done: 0, errors: [m] })} onOpened={cutoutHint.dismiss} />
       <button type="button" className="muse-button" onClick={addText}><span className="muse-vision-glyph" aria-hidden="true">Aa</span> Text</button>
-      <button ref={anchors.stickers} type="button" className="muse-button" aria-expanded={panel === "stickers"} onClick={() => togglePanel("stickers")}><MuseIcon name="sparkle" size={14} /> Stickers</button>
-      <button ref={anchors.background} type="button" className="muse-button" aria-expanded={panel === "background"} onClick={() => togglePanel("background")}><span className="muse-vision-dot" style={{ background: backgroundCss(board.background) }} aria-hidden="true" /> Background</button>
+      <button ref={anchors.library} type="button" className="muse-button" aria-expanded={panel === "library"} onClick={() => togglePanel("library")}><MuseIcon name="sparkle" size={14} /> Library</button>
+      <button type="button" className="muse-button" onClick={() => setSelectedIds([])} title="Board size, background and export"><span className="muse-vision-dot" style={{ background: board.background.kind === "pattern" ? paintCss(board.background.paint) : paintCss(board.background.kind === "solid" ? { kind: "solid", color: board.background.color } : { kind: "gradient", gradient: board.background.gradient }) }} aria-hidden="true" /> Board</button>
       <span className="muse-vision-toolbar-gap" />
       <button type="button" className="muse-button" aria-label="Undo" title="Undo (⌘Z)" disabled={!history.past.length} onClick={doUndo}><MuseIcon name="undo" size={15} /></button>
       <button type="button" className="muse-button muse-vision-redo" aria-label="Redo" title="Redo (⇧⌘Z)" disabled={!history.future.length} onClick={doRedo}><MuseIcon name="undo" size={15} /></button>
+      <button type="button" className="muse-button" aria-pressed={selectMode} title="Drag a box to select several pieces (Shift-drag works any time)" onClick={() => setSelectMode((x) => !x)}>Select</button>
+      <button type="button" className="muse-button" aria-pressed={snapping} title="Snap to edges, centers and the board (hold Alt/Option to drag freely)" onClick={() => setSnapping((x) => !x)}>Snap</button>
       <button ref={anchors.layers} type="button" className="muse-button" aria-expanded={panel === "layers"} onClick={() => togglePanel("layers")}>Layers</button>
-      <div className="muse-vision-zoom" role="group" aria-label="Zoom">
+      <div className="muse-vision-zoom" role="group" aria-label="Zoom (changes only your view, never the board)">
         <button type="button" className="muse-button" aria-label="Zoom out" onClick={() => zoomBy(1 / 1.25)}><MuseIcon name="minus" size={14} /></button>
         <button type="button" className="muse-button" onClick={fit} title="Fit the board to the screen">{view ? `${Math.round(view.scale * 100)}%` : "Fit"}</button>
         <button type="button" className="muse-button" aria-label="Zoom in" onClick={() => zoomBy(1.25)}><MuseIcon name="plus" size={14} /></button>
@@ -310,130 +501,51 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
     </div>
 
     <CutoutHint show={cutoutHint.show} onDismiss={cutoutHint.dismiss} />
-    {selected && <SelectionBar>
-      <span className="muse-vision-selname">{elementLabel(selected)}</span>
-      {selected.kind === "image" && <>
-        <button type="button" className="muse-button" onClick={() => setSheet("crop")}>Crop & shape</button>
-        {selected.crop.shape === "rect" && selected.image.alpha
-          ? <button ref={anchors.border} type="button" className="muse-button" aria-expanded={panel === "border"} onClick={() => togglePanel("border")}>Outline</button>
-          : <button ref={anchors.border} type="button" className="muse-button" aria-expanded={panel === "border"} onClick={() => togglePanel("border")}>Border</button>}
-        <button type="button" className="muse-button" aria-pressed={!!selected.shadow} onClick={() => change(selected.id, { shadow: !selected.shadow })}>Shadow</button>
-      </>}
-      {selected.kind === "text" && <TextControls e={selected} onChange={(p, key) => change(selected.id, { ...p, h: measureText({ ...selected, ...p }) } as Partial<TextElement>, key)} colorAnchor={anchors.color} onColor={() => togglePanel("color")} colorOpen={panel === "color"} />}
-      {selected.kind === "sticker" && <button ref={anchors.color} type="button" className="muse-button" aria-expanded={panel === "color"} onClick={() => togglePanel("color")}><span className="muse-vision-dot" style={{ background: selected.color }} aria-hidden="true" /> Color</button>}
-      <span className="muse-vision-toolbar-gap" />
-      <div className="muse-vision-group" role="group" aria-label="Layer order">
-        <button type="button" className="muse-button" title="Bring forward (])" onClick={() => layer("forward")}>Forward</button>
-        <button type="button" className="muse-button" title="Send backward ([)" onClick={() => layer("backward")}>Backward</button>
-        <MuseChoiceMenu label="More layer moves" valueLabel="⋯" variant="chip" options={[{ id: "front", label: "Bring to front" }, { id: "back", label: "Send to back" }]} selectedIds={[]} onSelect={(id) => layer(id as LayerMove)} />
-      </div>
-      <button ref={anchors.link} type="button" className="muse-button" aria-expanded={panel === "link"} onClick={() => togglePanel("link")}><MuseIcon name="link" size={14} /> {selected.link ? "Linked" : "Link"}</button>
-      <button type="button" className="muse-button" aria-pressed={!!selected.locked} onClick={() => change(selected.id, { locked: !selected.locked || undefined })}>{selected.locked ? "Unlock" : "Lock"}</button>
-      <button type="button" className="muse-button" title="Duplicate (⌘D)" onClick={duplicate}>Duplicate</button>
-      <button type="button" className="muse-button" aria-label="Delete" title="Delete" onClick={remove}><MuseIcon name="trash" size={15} /></button>
-    </SelectionBar>}
-
     {(uploading || uploads.errors.length > 0) && <p className={uploads.errors.length ? "muse-aspiration-error" : "muse-bucket-notice"} role={uploads.errors.length ? "alert" : "status"}>
-      {uploading ? `Adding photo ${Math.min(uploads.done + 1, uploads.total)} of ${uploads.total}…` : ""}
+      {uploading ? `Adding image ${Math.min(uploads.done + 1, uploads.total)} of ${uploads.total}…` : ""}
       {uploads.errors.map((m) => <span key={m} className="muse-vision-uploaderror">{m}</span>)}
       {!uploading && <button type="button" className="text-button" onClick={() => setUploads({ total: 0, done: 0, errors: [] })}>Dismiss</button>}
     </p>}
 
-    <div ref={wrapRef} className="muse-vision-canvas" data-dropping={dropping || undefined} {...dropProps}
-      onPointerDownCapture={(event) => { if (event.pointerType !== "touch") event.currentTarget.focus({ preventScroll: true }); }}
-      onContextMenu={(event) => {
-        event.preventDefault(); event.currentTarget.focus({ preventScroll: true });
-        const rect = event.currentTarget.getBoundingClientRect(), keyboard = event.clientX === 0 && event.clientY === 0;
-        setPasteMenu({ x: keyboard ? rect.width / 2 : event.clientX - rect.left, y: keyboard ? rect.height / 2 : event.clientY - rect.top });
-      }}
-      role="application" aria-roledescription="collage canvas" aria-label={`${board.title}: ${board.elements.length} pieces. ${selected ? `Selected: ${elementLabel(selected)}.` : "Nothing selected."}`} aria-describedby="vision-canvas-help" tabIndex={0}>
-      {size.width > 0 && view && <BoardEditorStage board={board} width={size.width} height={size.height} editing={{ selectedId, onSelect: setSelectedId, onChange: (id, patch) => change(id, patch), view, onView: moveView }} />}
-      {!board.elements.length && <div className="muse-vision-canvas-empty" aria-hidden="true"><p>Add photos, words and stickers.<br />Drag, resize and turn them anywhere.</p></div>}
-      {pasteMenu && <span ref={pasteAnchor} className="muse-vision-paste-anchor" aria-hidden="true" style={{ left: pasteMenu.x, top: pasteMenu.y }} />}
+    <div className="muse-vision-workspace">
+      <div ref={wrapRef} className="muse-vision-canvas" data-dropping={dropping || undefined} data-select={selectMode || undefined} {...dropProps}
+        onPointerDownCapture={(event) => { if (event.pointerType !== "touch") event.currentTarget.focus({ preventScroll: true }); }}
+        onContextMenu={(event) => {
+          event.preventDefault(); event.currentTarget.focus({ preventScroll: true });
+          const rect = event.currentTarget.getBoundingClientRect(), keyboard = event.clientX === 0 && event.clientY === 0;
+          setPasteMenu({ x: keyboard ? rect.width / 2 : event.clientX - rect.left, y: keyboard ? rect.height / 2 : event.clientY - rect.top });
+        }}
+        role="application" aria-roledescription="collage canvas" aria-label={`${board.title}: ${board.elements.length} pieces on a ${c.w} by ${c.h} board. ${selected.length ? `Selected: ${selected.length > 1 ? `${selected.length} pieces` : elementLabel(selected[0])}.` : "Nothing selected."}`} aria-describedby="vision-canvas-help" tabIndex={0}>
+        {size.width > 0 && view && <BoardEditorStage board={board} width={size.width} height={size.height} editing={{ selectedIds, onSelect, onChangeMany, view, onView: moveView, snapping, selectMode, reducedMotion }} />}
+        {!board.elements.length && <div className="muse-vision-canvas-empty" aria-hidden="true"><p>Add photos, words, shapes and library pieces.<br />Drag, resize and turn them anywhere.</p></div>}
+        {pasteMenu && <span ref={pasteAnchor} className="muse-vision-paste-anchor" aria-hidden="true" style={{ left: pasteMenu.x, top: pasteMenu.y }} />}
+        <span className="muse-vision-size-chip" aria-hidden="true">{c.w} × {c.h}</span>
+      </div>
+      <Inspector board={board} selected={selected} grouped={grouped} units={unitCount} patch={patch} actions={actions} palette={palette} uploads={boardUploads} requestUpload={requestUpload}
+        lookups={{ linkOptions, live }} label={elementLabel} />
     </div>
     <GlassPopover id="vision-canvas-paste" label="Canvas actions" open={!!pasteMenu} anchorRef={pasteAnchor} onClose={() => { setPasteMenu(null); wrapRef.current?.focus({ preventScroll: true }); }} width={220} bare>
+      {elementClip && <button type="button" className="popover-choice" onClick={() => { setPasteMenu(null); wrapRef.current?.focus({ preventScroll: true }); pasteCopied(); }}>Paste pieces</button>}
       <button type="button" className="popover-choice" disabled={uploading || clipboardBusy} onClick={() => { setPasteMenu(null); wrapRef.current?.focus({ preventScroll: true }); void pasteClipboard(); }}>Paste image</button>
+      {styleClip && selected.length > 0 && <button type="button" className="popover-choice" onClick={() => { setPasteMenu(null); doPasteStyle(); }}>Paste style</button>}
     </GlassPopover>
-    <p id="vision-canvas-help" className="sr-only">Use Layers to choose a piece. Arrow keys move it, Shift moves further. Delete removes it, Command Z undoes, square brackets change its layer. Paste copied images with Command V, the Paste button, or the canvas context menu.</p>
+    <p id="vision-canvas-help" className="sr-only">Use Layers to choose a piece. Arrow keys move the selection, Shift moves further. Command A selects everything, Command C and V copy and paste pieces, Option Command C and V copy and paste a style, Command G groups and Shift Command G ungroups, Command D duplicates, Delete removes, Command Z undoes, square brackets change layers. Paste copied images with Command V or the canvas context menu.</p>
     <p className="sr-only" role="status" aria-live="polite">{announce}</p>
-    <p className="small-label muse-vision-hint">Drag empty space to move around · pinch or ⌘-scroll to zoom · paste or drop images to add them.</p>
+    <p className="small-label muse-vision-hint">Drag empty space to move around · pinch or ⌘-scroll to zoom · Shift-click or Select to pick several · double-click to pick one piece in a group · Alt-drag to skip snapping · paste or drop images to add them.</p>
 
-    <GlassPopover id="vision-stickers" label="Stickers" title="Stickers" open={panel === "stickers"} anchorRef={anchors.stickers} onClose={() => setPanel("")} width={340}>
-      <div className="muse-vision-stickers">
-        <p className="editor-label">Decorations</p>
-        <div className="muse-vision-sticker-grid">{stickers.map((s) => <button key={s.id} type="button" className="muse-vision-sticker" aria-label={`Add ${s.label}`} title={s.label} onClick={() => addSticker(s.id)}>
-          <svg viewBox={`0 0 ${s.box[0]} ${s.box[1]}`} aria-hidden="true"><path d={s.d} {...(s.mode === "fill" ? { fill: "currentColor" } : { fill: "none", stroke: "currentColor", strokeWidth: 2.2, strokeLinecap: "round" as const, strokeLinejoin: "round" as const })} /></svg></button>)}</div>
-        <p className="editor-label">Muse Marks</p>
-        <div className="muse-vision-sticker-grid">{markStickers.map((m) => <button key={m.id} type="button" className="muse-vision-sticker" aria-label={`Add ${m.label} mark`} title={m.label} onClick={() => addSticker(m.id)}><MuseIcon name={m.icon as never} size={22} /></button>)}</div>
-      </div>
-    </GlassPopover>
-    <GlassPopover id="vision-background" label="Background" title="Background" open={panel === "background"} anchorRef={anchors.background} onClose={() => setPanel("")} width={340}>
-      <BackgroundPicker value={board.background} onChange={background} />
+    <GlassPopover id="vision-library" label="Library" title="Library" open={panel === "library"} anchorRef={anchors.library} onClose={() => setPanel("")} width={400}>
+      <AssetLibrary onPick={onLibrary} />
     </GlassPopover>
     <GlassPopover id="vision-layers" label="Layers" title="Layers" open={panel === "layers"} anchorRef={anchors.layers} onClose={() => setPanel("")} width={300} align="end">
       {board.elements.length ? <ol className="muse-vision-layers" aria-label="Layers, top first">{[...board.elements].reverse().map((e) => <li key={e.id}>
-        <button type="button" className="popover-choice" aria-pressed={e.id === selectedId} onClick={() => { setSelectedId(e.id); setPanel(""); }}>{elementLabel(e)}{e.locked ? " · locked" : ""}{e.link ? " · linked" : ""}</button></li>)}</ol>
+        <button type="button" className="popover-choice" aria-pressed={selectedIds.includes(e.id)} onClick={(ev) => { if (ev.shiftKey || ev.metaKey) onSelect([e.id], "toggle"); else { onSelect([e.id], "only"); setPanel(""); } }}>
+          {elementLabel(e)}{e.groupId ? " · grouped" : ""}{e.locked ? " · locked" : ""}{e.link ? ` · ${linkStatus(e.link, live(e.link)).missing ? "link missing" : "linked"}` : ""}</button></li>)}</ol>
         : <p className="small-label">Nothing on this board yet.</p>}
     </GlassPopover>
-    {selected && (selected.kind === "sticker" || selected.kind === "text") && <GlassPopover id="vision-color" label="Color" title="Color" open={panel === "color"} anchorRef={anchors.color} onClose={() => setPanel("")} width={300}>
-      <MuseColorPicker label="Color" value={selected.color} onChange={(c) => change(selected.id, { color: pinAccent(c) }, `color:${selected.id}`)} />
-      {selected.kind === "text" && <><p className="editor-label">Label tape behind the words</p>
-        <div className="muse-chip-row"><button type="button" className="muse-chip" aria-pressed={!selected.highlight} onClick={() => change(selected.id, { highlight: undefined, h: measureText({ ...selected, highlight: undefined }) } as Partial<TextElement>)}>None</button>
-          {["#ffffff", "#fff3b0", "#ffd6e0", "#d7f9f1", "#16141c"].map((c) => <button key={c} type="button" className="muse-color-swatch" style={{ background: c }} aria-label={`Tape ${c}`} aria-pressed={selected.highlight === c} onClick={() => change(selected.id, { highlight: c as `#${string}`, h: measureText({ ...selected, highlight: c as `#${string}` }) } as Partial<TextElement>)} />)}</div></>}
-    </GlassPopover>}
-    {selected?.kind === "image" && <GlassPopover id="vision-border" label="Border" title={selected.crop.shape === "rect" && selected.image.alpha ? "Sticker outline" : "Border"} open={panel === "border"} anchorRef={anchors.border} onClose={() => setPanel("")} width={300}>
-      <BorderControls e={selected} onChange={(p) => change(selected.id, p, `border:${selected.id}`)} />
-    </GlassPopover>}
-    {selected && <GlassPopover id="vision-link" label="Link" title="Link to Muse" open={panel === "link"} anchorRef={anchors.link} onClose={() => setPanel("")} width={320}>
-      <div className="muse-vision-link">
-        {selected.link ? (() => { const st = linkStatus(selected.link, live(selected.link)); return <>
-          <p><span className="muse-intentions-ref" data-missing={st.missing || undefined}>{st.missing ? st.label : <Link href={selected.link.kind === "aspiration" ? `/envision?open=${selected.link.id}` : "/envision?view=bucket"}>{st.label}</Link>}{st.note && <small> {st.note}</small>}</span></p>
-          <button type="button" className="text-button" onClick={() => change(selected.id, { link: undefined })}>Remove link</button></>; })()
-          : <p className="small-label">Point this piece at an Aspiration or a Bucket List dream. It’s only a reference: nothing is created or changed there.</p>}
-        {linkOptions.length ? <MuseChoiceMenu label="Link to" valueLabel={selected.link ? "Link something else…" : "Choose…"} searchable options={linkOptions} selectedIds={selected.link ? [`${selected.link.kind}:${selected.link.id}`] : []}
-          onSelect={(id) => { const [kind, rid] = id.split(/:(.+)/); const o = linkOptions.find((x) => x.id === id); if (o) change(selected.id, { link: { kind: kind as ElementLink["kind"], id: rid, label: o.label.replace(/^\S+ /, "") } }); }} />
-          : <p className="small-label">No aspirations or dreams yet. <Link href="/envision">Add one in Envision</Link>.</p>}
-      </div>
-    </GlassPopover>}
 
-    {sheet === "crop" && selected?.kind === "image" && <CropSheet element={selected} onClose={() => setSheet("")} onApply={(e) => { change(e.id, { w: e.w, h: e.h, crop: e.crop }); setSheet(""); }} />}
+    {sheet === "crop" && selected[0]?.kind === "image" && <CropSheet element={selected[0]} onClose={() => setSheet("")} onApply={(e) => { onChangeMany([{ id: e.id, patch: { w: e.w, h: e.h, crop: e.crop } }]); setSheet(""); }} />}
     {sheet === "details" && <BoardDetails initial={{ ...board, revision: Math.max(1, rev.current) }} today={today} busy={save.saving} error="" onClose={() => setSheet("")}
       onSave={(b) => { const next = { ...boardRef.current, title: b.title, description: b.description, theme: b.theme, period: b.period, periodStart: b.periodStart }; boardRef.current = next; setBoard(next); seq.current++; setSave((s) => ({ ...s, dirty: true })); setSheet(""); }} />}
   </section>;
 }
-
-function SelectionBar({ children }: { children: ReactNode }) {
-  return <div className="muse-vision-toolbar muse-vision-selection muse-scroll-fade" role="toolbar" aria-label="Selected piece">{children}</div>;
-}
-function TextControls({ e, onChange, colorAnchor, onColor, colorOpen }: { e: TextElement; onChange: (p: Partial<TextElement>, key?: string) => void; colorAnchor: RefObject<HTMLButtonElement | null>; onColor: () => void; colorOpen: boolean }) {
-  return <>
-    <textarea id="vision-text-input" className="muse-vision-textinput" aria-label="Words" rows={1} maxLength={1000} value={e.text} onChange={(ev) => onChange({ text: ev.target.value }, `text:${e.id}`)} />
-    <MuseChoiceMenu label="Font" valueLabel={fonts.find((f) => f.id === e.font)!.label} options={fonts.map((f) => ({ id: f.id, label: f.label }))} selectedIds={[e.font]} onSelect={(id) => onChange({ font: id as TextElement["font"] })} />
-    <label className="muse-vision-size"><span className="sr-only">Size</span><input type="number" min={8} max={400} value={Math.round(e.size)} onChange={(ev) => { const v = Number(ev.target.value); if (v >= 8 && v <= 400) onChange({ size: v }, `size:${e.id}`); }} /></label>
-    <button type="button" className="muse-button" aria-pressed={!!e.bold} aria-label="Bold" onClick={() => onChange({ bold: !e.bold || undefined })}><strong>B</strong></button>
-    <button type="button" className="muse-button" aria-pressed={!!e.italic} aria-label="Italic" onClick={() => onChange({ italic: !e.italic || undefined })}><em>I</em></button>
-    <MuseChoiceMenu label="Align" valueLabel={e.align === "left" ? "Left" : e.align === "right" ? "Right" : "Center"} options={[{ id: "left", label: "Left" }, { id: "center", label: "Center" }, { id: "right", label: "Right" }]} selectedIds={[e.align]} onSelect={(id) => onChange({ align: id as TextElement["align"] })} />
-    <button ref={colorAnchor} type="button" className="muse-button" aria-expanded={colorOpen} onClick={onColor}><span className="muse-vision-dot" style={{ background: e.color }} aria-hidden="true" /> Color</button>
-  </>;
-}
-function BorderControls({ e, onChange }: { e: ImageElement; onChange: (p: Partial<ImageElement>) => void }) {
-  const outline = e.crop.shape === "rect" && !!e.image.alpha, value = outline ? e.outline : e.border, field = outline ? "outline" : "border";
-  const set = (v: { color: `#${string}`; width: number } | undefined) => onChange({ [field]: v } as Partial<ImageElement>);
-  return <div className="muse-vision-border">
-    <div className="muse-chip-row"><button type="button" className="muse-chip" aria-pressed={!value} onClick={() => set(undefined)}>None</button>
-      {["#ffffff", "#fff8e7", "#16141c", "#f7b2e6", "#ffd166"].map((c) => <button key={c} type="button" className="muse-color-swatch" style={{ background: c }} aria-label={`${outline ? "Outline" : "Border"} ${c}`} aria-pressed={value?.color === c} onClick={() => set({ color: c as `#${string}`, width: value?.width ?? (outline ? 10 : 12) })} />)}</div>
-    {value && <>
-      <MuseColorPicker label="Any color" value={value.color} onChange={(c) => set({ ...value, color: pinAccent(c) })} />
-      <label className="muse-vision-range">Thickness<input type="range" min={outline ? 2 : 1} max={outline ? 40 : 60} value={value.width} onChange={(ev) => set({ ...value, width: Number(ev.target.value) })} /></label>
-    </>}
-    {outline && <p className="small-label">Follows the edge of the cutout, like a die-cut sticker.</p>}
-  </div>;
-}
-/** Any color or gradient. Theme colors are pinned to their current values so the board never changes with the app theme. */
-function BackgroundPicker({ value, onChange }: { value: Background; onChange: (b: Background) => void }) {
-  return <div className="muse-vision-bg">
-    <MusePaintPicker label="Board background" value={value.kind === "solid" ? { kind: "solid", color: value.color } : { kind: "gradient", gradient: value.gradient }}
-      onChange={(p) => { if (!p) return; if (p.kind === "solid") onChange({ kind: "solid", color: pinAccent(p.color) }); else onChange({ kind: "gradient", gradient: { ...p.gradient, colors: p.gradient.colors.map((c) => c && pinAccent(c)) as CustomGradient["colors"] } }); }} />
-    <p className="small-label">The board keeps its own colors in every Muse theme.</p>
-  </div>;
-}
+export type { Expand };

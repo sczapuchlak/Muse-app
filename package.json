@@ -71,7 +71,8 @@
     "test:library:phone-ui": "node scripts/test-library-pagination-phone-ui.mjs",
     "test:book-import": "node --test tests/book-import-*.test.mjs",
     "test:book-import:db": "node scripts/test-book-import-db.mjs",
-    "test:book-import:ui": "node scripts/test-book-import-ui.mjs"
+    "test:book-import:ui": "node scripts/test-book-import-ui.mjs",
+    "vision:assets": "node scripts/vision-assets/import.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
