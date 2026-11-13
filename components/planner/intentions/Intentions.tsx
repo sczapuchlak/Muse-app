@@ -110,6 +110,7 @@ function ChapterLoader({ range, today, client, go }: { range: IntentionRange; to
 function StartChapter({ range, tense, onBegin }: { range: IntentionRange; tense: "past" | "current" | "future"; onBegin: (blank: boolean) => void }) {
   const t = templates[range.period];
   return <div className="muse-intentions-start">
+    <div className="muse-intentions-start-art" aria-hidden="true"><span className="muse-intentions-tape"/><small>{range.period === "week" ? "This week" : range.period === "month" ? "This month" : range.period === "quarter" ? "This quarter" : "This year"}</small><b>{intentionName(range)}</b><i/><i/><i/><i/><span className="muse-intentions-sprig"/></div>
     <p className="muse-reflections-kicker">{tense === "future" ? "Planning ahead" : tense === "past" ? "Looking back" : "A new chapter"} <MuseStar size={14} prismatic /></p>
     <h2>{range.period === "week" ? "What would make this week feel right?" : range.period === "month" ? `What do you want ${intentionName(range)} to feel like?` : range.period === "quarter" ? `Where is ${intentionName(range)} taking you?` : `Imagine ${intentionName(range)}.`}</h2>
     <p className="muse-reflections-quiet">{tense === "past" ? "This period has passed. You can still write down what you meant it to be." : "Nothing here is required. Start with the page below, or with a blank page and add only what helps."}</p>
