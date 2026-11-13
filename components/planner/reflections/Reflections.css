@@ -246,3 +246,66 @@ input.muse-reflections-l10-note{min-height:32px;padding:4px 10px}
 .muse-reflections-l10-grid li[data-rated] .muse-reflections-l10-value{color:color-mix(in srgb,var(--area) 30%,#140b1f);background:linear-gradient(135deg,color-mix(in srgb,var(--area) 35%,#fff),color-mix(in srgb,var(--area) 75%,#fff));box-shadow:0 2px 8px color-mix(in srgb,var(--area) 40%,transparent)}
 @media (max-width:820px){.muse-reflections-l10-grid{grid-template-columns:minmax(0,1fr)}}
 @media (max-width:640px){.muse-reflections-l10-grid li{grid-template-columns:30px minmax(0,1fr) 3em;grid-template-areas:"icon label value" "bar bar bar" "note note note"}.muse-reflections-l10-icon{width:30px;height:30px}.muse-reflections-l10-bar{justify-content:space-between}.muse-reflections-l10-bar>*{flex:1;width:auto;max-width:24px}}
+
+/* ── Level 10 Life, glow-up (Nov 2026): a life wheel beside rising gradient meters ───────────────────────── */
+.muse-l10-layout{display:grid;grid-template-columns:minmax(240px,300px) minmax(0,1fr);align-items:center;gap:clamp(18px,3vw,40px)}
+.muse-l10-wheel{position:relative;margin:0;width:100%;max-width:300px;justify-self:center}
+.muse-l10-wheel svg{display:block;width:100%;height:auto;overflow:visible}
+.muse-l10-ring{fill:none;stroke:color-mix(in srgb,var(--foreground) 10%,transparent);stroke-dasharray:2 4}
+.muse-l10-ring[data-outer]{stroke-dasharray:none;stroke:color-mix(in srgb,var(--foreground) 16%,transparent)}
+.muse-l10-wedge-bg{fill:color-mix(in srgb,var(--foreground) 4%,transparent)}
+.muse-l10-wedge{stroke:var(--glass-background);stroke-width:1.5;filter:drop-shadow(0 4px 10px rgba(0,0,0,.18));transform-origin:150px 150px}
+@media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) .muse-l10-wedge{animation:muse-l10-bloom .9s cubic-bezier(.2,.8,.2,1) calc(var(--i)*.06s) both}}
+@keyframes muse-l10-bloom{from{transform:scale(.2);opacity:0}}
+.muse-l10-wheel-icon{font-size:15px}
+.muse-l10-hub{fill:var(--glass-background);stroke:color-mix(in srgb,var(--accent-primary) 40%,var(--glass-border));stroke-width:1.5}
+.muse-l10-wheel figcaption{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;pointer-events:none}
+.muse-l10-wheel figcaption b{font-family:var(--font-editorial);font-weight:600;font-size:1.7rem;line-height:1;letter-spacing:-.03em;background:linear-gradient(120deg,var(--accent-secondary),var(--accent-primary));-webkit-background-clip:text;background-clip:text;color:transparent}
+.muse-l10-wheel figcaption small{font-size:.56rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)}
+/* Rows: icon tile · name · rising meter · value as a gradient numeral. */
+.muse-l10-layout .muse-reflections-l10-grid{grid-template-columns:repeat(auto-fill,minmax(min(100%,330px),1fr));gap:8px 22px}
+.muse-l10-layout .muse-reflections-l10-grid li{grid-template-columns:30px minmax(90px,1fr) auto 2.6ch;grid-template-areas:"icon label bar value" "note note note note";padding:8px 10px;border-radius:14px;transition:background .2s}
+.muse-l10-layout .muse-reflections-l10-grid li:hover{background:color-mix(in srgb,var(--area) 8%,transparent)}
+.muse-l10-layout .muse-reflections-l10-icon{grid-area:icon;display:grid;place-items:center;width:30px;height:30px;border-radius:10px;font-size:15px;background:color-mix(in srgb,var(--area) 18%,var(--glass-background));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--area) 35%,transparent)}
+.muse-l10-layout .muse-reflections-l10-bar{align-items:flex-end;gap:3px;height:28px}
+.muse-l10-layout .muse-reflections-l10-bar>*{--seg:color-mix(in oklab,var(--area) calc(45% + var(--i) * 6%),var(--accent-secondary));width:13px;height:calc(9px + var(--i) * 2px);border-radius:4px;border:0;background:color-mix(in srgb,var(--foreground) 9%,transparent);transition:background .18s,transform .18s,box-shadow .18s}
+.muse-l10-layout .muse-reflections-l10-bar>[data-on]{background:linear-gradient(180deg,color-mix(in srgb,var(--seg) 70%,white),var(--seg))}
+.muse-l10-layout .muse-reflections-l10-bar>[aria-checked=true],.muse-l10-layout .muse-reflections-l10-bar>[data-on]:not(:has(~[data-on])){box-shadow:0 0 0 2px var(--glass-background),0 0 12px 1px var(--seg)}
+/* Hover preview: everything up to the pointer lights in gradient, everything after it dims. */
+.muse-l10-layout .muse-reflections-l10-bar:hover>button{background:linear-gradient(180deg,color-mix(in srgb,var(--seg) 60%,white),var(--seg));opacity:.85}
+.muse-l10-layout .muse-reflections-l10-bar>button:hover{transform:translateY(-2px);opacity:1}
+.muse-l10-layout .muse-reflections-l10-bar>button:hover~button{background:color-mix(in srgb,var(--foreground) 9%,transparent);opacity:1}
+.muse-l10-layout .muse-reflections-l10-value{font-family:var(--font-editorial);font-weight:600;font-size:1.25rem;background:linear-gradient(120deg,color-mix(in oklab,var(--area) 60%,var(--accent-secondary)),var(--area));-webkit-background-clip:text;background-clip:text;color:transparent}
+@container (max-width:760px){.muse-l10-layout{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:760px){.muse-l10-layout{grid-template-columns:minmax(0,1fr)}}
+@media (prefers-reduced-motion:reduce){.muse-l10-layout .muse-reflections-l10-bar>*{transition:none}.muse-l10-layout .muse-reflections-l10-bar>button:hover{transform:none}}
+@media (forced-colors:active){.muse-l10-layout .muse-reflections-l10-value,.muse-l10-wheel figcaption b{color:CanvasText;background:none}}
+
+/* ── Reflections glow-up (Nov 2026): every section is its own little world ────────────────────────────────── */
+.muse-reflections-module[data-type=photos]{--module-ink:var(--chart-2)}
+.muse-reflections-module[data-type=music]{--module-ink:var(--chart-6)}
+.muse-reflections-module[data-type=books]{--module-ink:var(--chart-4)}
+.muse-reflections-module[data-type=watching]{--module-ink:var(--chart-7)}
+.muse-reflections-module[data-type=memories]{--module-ink:var(--chart-3)}
+.muse-reflections-module[data-type=favorites]{--module-ink:var(--chart-5)}
+.muse-reflections-module[data-type=highlights]{--module-ink:var(--chart-8,var(--chart-4))}
+.muse-reflections-module{position:relative;isolation:isolate;overflow:hidden;background-image:radial-gradient(70% 90% at 0% 0%,color-mix(in srgb,var(--module-ink,var(--accent-primary)) 16%,transparent),transparent 65%),radial-gradient(50% 70% at 100% 100%,color-mix(in srgb,var(--module-ink,var(--accent-primary)) 12%,transparent),transparent 70%);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--module-ink,var(--accent-primary)) 22%,transparent),0 22px 44px -32px color-mix(in srgb,var(--module-ink,var(--accent-primary)) 70%,transparent)}
+.muse-reflections-module::before{content:"";position:absolute;inset:0 0 auto;height:3px;background:linear-gradient(90deg,var(--module-ink,var(--accent-primary)),color-mix(in srgb,var(--accent-secondary) 70%,transparent),transparent)}
+.muse-reflections-module>*{position:relative;z-index:1}
+.muse-reflections-module-title{font-family:var(--font-editorial);font-weight:600;font-size:1.3rem;letter-spacing:-.005em}
+.muse-reflections-module-icon{display:grid;place-items:center;width:38px;height:38px;border-radius:12px;background:linear-gradient(140deg,color-mix(in oklab,var(--module-ink,var(--accent-primary)) 75%,black),var(--module-ink,var(--accent-primary)));box-shadow:0 8px 18px -10px var(--module-ink,var(--accent-primary)),inset 0 1px 0 rgba(255,255,255,.3);font-size:1.1rem}
+.muse-reflections-module-head::after{background:linear-gradient(90deg,var(--module-ink,var(--accent-primary)),transparent)!important;width:120px!important;height:2px!important}
+.muse-reflections-additem{border:1.5px solid transparent!important;border-radius:999px!important;background:linear-gradient(var(--glass-background),var(--glass-background)) padding-box,linear-gradient(110deg,var(--module-ink,var(--accent-primary)),var(--accent-secondary)) border-box!important;color:color-mix(in oklab,var(--module-ink,var(--accent-primary)) 65%,var(--foreground))!important;font-weight:650;transition:transform .2s cubic-bezier(.2,.8,.2,1),box-shadow .2s}
+.muse-reflections-additem:hover{transform:translateY(-2px);box-shadow:0 10px 22px -14px var(--module-ink,var(--accent-primary))}
+/* Drawn objects, bottom-right, decoration only. */
+.muse-reflections-module::after{content:"";position:absolute;z-index:0;right:22px;bottom:18px;width:86px;height:86px;pointer-events:none;opacity:.9}
+.muse-reflections-module[data-type=photos]::after{width:78px;height:90px;border-radius:4px;rotate:8deg;background:linear-gradient(160deg,color-mix(in srgb,var(--module-ink) 60%,#7ad0ff),color-mix(in srgb,var(--module-ink) 40%,#ffb36b)) 8px 8px/62px 58px no-repeat,#fbf8f2;box-shadow:-14px 6px 0 -2px #f3efe6,-14px 6px 0 -1px rgba(0,0,0,.08),0 12px 24px -12px rgba(0,0,0,.5)}
+.muse-reflections-module[data-type=music]::after{border-radius:50%;background:radial-gradient(circle,var(--glass-background) 0 7%,var(--module-ink) 7.5% 26%,#14121a 26.5% 100%);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);-webkit-mask:repeating-radial-gradient(circle,black 0 2px,rgba(0,0,0,.82) 2px 3px);mask:repeating-radial-gradient(circle,black 0 2px,rgba(0,0,0,.82) 2px 3px)}
+@media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) .muse-reflections-module[data-type=music]::after{animation:muse-vinyl 14s linear 2}}
+@keyframes muse-vinyl{to{rotate:360deg}}
+.muse-reflections-module[data-type=books]::after{width:84px;height:80px;background:linear-gradient(var(--module-ink),var(--module-ink)) 0 10px/16px 70px no-repeat,linear-gradient(var(--chart-1),var(--chart-1)) 19px 0/18px 80px no-repeat,linear-gradient(var(--chart-6),var(--chart-6)) 40px 16px/14px 64px no-repeat,linear-gradient(var(--chart-2),var(--chart-2)) 57px 6px/17px 74px no-repeat;border-radius:3px;filter:drop-shadow(0 10px 14px rgba(0,0,0,.35));opacity:.85}
+.muse-reflections-module[data-type=watching]::after{width:110px;height:60px;rotate:-10deg;border-radius:6px;background:repeating-linear-gradient(90deg,transparent 0 6px,var(--glass-background) 6px 12px) 0 4px/100% 8px no-repeat,repeating-linear-gradient(90deg,transparent 0 6px,var(--glass-background) 6px 12px) 0 48px/100% 8px no-repeat,linear-gradient(90deg,color-mix(in srgb,var(--module-ink) 70%,#1b1720) 0 33%,color-mix(in srgb,var(--accent-secondary) 60%,#1b1720) 33% 66%,color-mix(in srgb,var(--module-ink) 50%,#1b1720) 66%) 0 16px/100% 28px no-repeat,#1b1720}
+.muse-reflections-module[data-type=memories]::after{width:96px;height:64px;rotate:-6deg;border-radius:6px;background:linear-gradient(var(--module-ink),var(--module-ink)) 70px 8px/18px 22px no-repeat,repeating-linear-gradient(180deg,transparent 0 9px,color-mix(in srgb,var(--module-ink) 35%,transparent) 9px 10px) 8px 30px/50px 28px no-repeat,#fbf6ee;box-shadow:0 12px 22px -12px rgba(0,0,0,.45)}
+.muse-reflections-module[data-type=favorites]::after,.muse-reflections-module[data-type=highlights]::after{width:64px;height:64px;background:linear-gradient(135deg,color-mix(in srgb,var(--module-ink) 60%,white),var(--module-ink));clip-path:polygon(50% 0,61% 39%,100% 50%,61% 61%,50% 100%,39% 61%,0 50%,39% 39%);filter:drop-shadow(0 0 10px var(--module-ink))}
+.muse-reflections-module[data-type=level10]::after,.muse-reflections-module[data-type=guided]::after,.muse-reflections-module[data-type=writing]::after{display:none}
+@media (prefers-reduced-motion:reduce){.muse-reflections-additem{transition:none}.muse-reflections-additem:hover{transform:none}}
