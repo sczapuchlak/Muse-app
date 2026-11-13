@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
-import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { MuseMark, type MuseMarkIcon, type MuseTone } from "@/components/design/MuseHeading";
 import { createMuseBrowserClient } from "@/lib/supabase/client";
 import { createTask } from "@/lib/planner";
 import { projectEvents } from "@/lib/planner-occurrences";
@@ -224,9 +225,9 @@ function SectionFrame({ section: s, arranging, first, last, onTitle, onCollapse,
   section: IntentionSection; arranging: boolean; first: boolean; last: boolean; onTitle: (t: string) => void; onCollapse: () => void; onMove: (by: -1 | 1) => void; onHide: () => void; onRemove: () => void;
   confirming: boolean; onConfirm: (yes: boolean) => void; children: ReactNode }) {
   const k = kindOf(s), bodyId = `intention-${s.id}`;
-  return <section className="muse-intentions-section" data-type={s.type} data-kind={k.key} data-prompt={(s.content as { question?: string }).question ? true : undefined} data-hidden={s.hidden || undefined} data-collapsed={s.collapsed || undefined} aria-label={s.title}>
+  return <section className="muse-intentions-section" style={{"--aura":`var(--chart-${k.tone})`} as CSSProperties} data-type={s.type} data-kind={k.key} data-prompt={(s.content as { question?: string }).question ? true : undefined} data-hidden={s.hidden || undefined} data-collapsed={s.collapsed || undefined} aria-label={s.title}>
     <header className="muse-intentions-section-head">
-      <span className="muse-intentions-section-icon" aria-hidden="true">{k.emoji}</span>
+      <MuseMark icon={k.glyph as MuseMarkIcon} tone={k.tone as MuseTone} size="sm" className="muse-section-mark"/>
       {arranging ? <input className="muse-reflections-module-title" aria-label="Section title" maxLength={60} value={s.title} onChange={(e) => onTitle(e.target.value)} /> : <h3>{s.title}</h3>}
       {arranging ? <div className="muse-reflections-module-tools">
         <button type="button" className="muse-reflections-icon" aria-label={`Move ${s.title} earlier`} disabled={first} onClick={() => onMove(-1)}>↑</button>

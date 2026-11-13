@@ -1,5 +1,6 @@
 "use client";
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { MuseMark, type MuseMarkIcon, type MuseTone } from "@/components/design/MuseHeading";
 import { createMuseBrowserClient } from "@/lib/supabase/client";
 import { boardImageUrl, removeBoardImages, uploadBoardImage } from "@/lib/data/constellation-images";
 import { glanceRange, glanceTitle, shiftGlance } from "@/lib/insights/glance";
@@ -161,12 +162,14 @@ const invitations: Partial<Record<ModuleType, string>> = {
 };
 const isEmptyContent = (m: ReflectionModule) => m.type !== "level10" && m.type !== "guided" && m.type !== "writing" && !hasContent(m);
 
+/** Guided reflections each get their own tile, so a page of them never reads as one repeated icon. */
+const guidedMarks: Record<string, [MuseMarkIcon, MuseTone]> = { gratitude: ["heart", 2], growth: ["seedling", 1], lessons: ["lightbulb", 4], intentions: ["compass", 6], challenges: ["summit", 8], happy: ["smile", 3], custom: ["quill", 7] };
 function ModuleFrame({ module: m, editing, onChange, children }: { module: ReflectionModule; editing: boolean; onChange: (m: ReflectionModule, delay?: number) => void; children: ReactNode }) {
-  const meta = moduleType(m.type), prompt = m.type === "guided" ? (m.content as ModuleContent["guided"]).prompt : undefined;
+  const meta = moduleType(m.type), prompt = m.type === "guided" ? (m.content as ModuleContent["guided"]).prompt : undefined, [glyph, tone] = (prompt && guidedMarks[prompt]) || [meta.glyph as MuseMarkIcon, meta.tone as MuseTone];
   const invite = editing && isEmptyContent(m) ? invitations[m.type] : undefined;
-  return <section className="muse-reflections-module" data-type={m.type} data-prompt={prompt} data-size={m.size} data-hidden={m.hidden || undefined} data-empty={invite ? true : undefined} aria-label={m.title}>
+  return <section className="muse-reflections-module" style={{"--aura":`var(--chart-${tone})`} as CSSProperties} data-type={m.type} data-prompt={prompt} data-size={m.size} data-hidden={m.hidden || undefined} data-empty={invite ? true : undefined} aria-label={m.title}>
     <header className="muse-reflections-module-head">
-      <span className="muse-reflections-module-icon" aria-hidden="true">{meta.emoji}</span>
+      <MuseMark icon={glyph} tone={tone} size="sm" className="muse-section-mark"/>
       {editing ? <input className="muse-reflections-module-title" aria-label="Section title" maxLength={60} value={m.title} onChange={(e) => onChange({ ...m, title: e.target.value })} />
         : <h3>{m.title}</h3>}
     </header>
