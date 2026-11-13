@@ -176,3 +176,13 @@
  .muse-mood-week-detail .muse-mood-checkin-row{grid-template-columns:minmax(0,1fr) auto}.muse-mood-period{grid-column:1/-1}
 }
 @media (prefers-reduced-motion:reduce){.muse-mood-week-ribbon button{transition:none}.muse-mood-week-ribbon button:hover{transform:none}}
+
+/* Wellness glow-up (Nov 2026): history reads top to bottom (the week, then the chosen day across the full width),
+   so the ribbon never sits beside a taller panel with empty space under it. */
+@container muse-content (min-width:980px){.muse-mood-week{grid-template-columns:minmax(0,1fr)!important}}
+.muse-mood-week-ribbon button{min-height:104px}
+.muse-mood-week-detail :is(ul,ol){display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:12px;margin:0;padding:0;list-style:none}
+.muse-mood-week-detail .muse-mood-checkin-row{height:100%}
+/* "A few things you've noticed": families get room for their name, so labels never wrap word by word. */
+.muse-mood-family-bar{grid-template-columns:minmax(150px,1.3fr) minmax(0,1.6fr) auto!important;align-items:center}
+.muse-mood-family-bar>:first-child{line-height:1.3}
