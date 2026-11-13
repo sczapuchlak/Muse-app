@@ -1,4 +1,5 @@
 "use client";
+import {MuseMark} from "@/components/design/MuseHeading";
 import { useRef,useState } from "react";
 import {shortDate} from "@/lib/display-date";
 import {accentStyle} from "@/lib/appearance-values";
@@ -21,7 +22,7 @@ function RecurringRow({item,date,onOpen}:{item:RecurringPayment;date:string|null
 }
 export function RecurringPreview({today,onOpen,onView}:{today:string;onOpen:MoneyOpen;onView:()=>void}) {
  const {state}=useMoney(),upcoming=upcomingRecurring(state.recurring,today);
- return <section className="muse-money-panel muse-money-wide"><div className="muse-money-panel-heading"><h2>Recurring</h2><button className="muse-button button-ghost" type="button" onClick={onView}>View all recurring →</button></div><RecurringTotals today={today}/><ul className="muse-recurring-preview">{upcoming.slice(0,3).map(({item,date})=><li key={item.id}><button className="muse-ledger-name" type="button" onClick={(e)=>onOpen({kind:'recurring',initial:item,anchor:e.currentTarget})}>{item.name}</button><time dateTime={date}>{shortDate(date)}</time><strong>{item.amountBehavior==='estimated'?'~':''}{formatMoney(item.amountCents)}</strong></li>)}</ul>{!upcoming.length&&<p className="card-description">No active recurring charges recorded.</p>}</section>;
+ return <section className="muse-money-panel muse-money-wide"><div className="muse-money-panel-heading" data-tone="6"><h2><MuseMark icon="repeat" tone={6} size="sm" className="muse-money-mark"/>Recurring</h2><button className="muse-button button-ghost" type="button" onClick={onView}>View all recurring →</button></div><RecurringTotals today={today}/><ul className="muse-recurring-preview">{upcoming.slice(0,3).map(({item,date})=><li key={item.id}><button className="muse-ledger-name" type="button" onClick={(e)=>onOpen({kind:'recurring',initial:item,anchor:e.currentTarget})}>{item.name}</button><time dateTime={date}>{shortDate(date)}</time><strong>{item.amountBehavior==='estimated'?'~':''}{formatMoney(item.amountCents)}</strong></li>)}</ul>{!upcoming.length&&<p className="card-description">No active recurring charges recorded.</p>}</section>;
 }
 export function MoneyRecurring({today,onOpen}:{today:string;onOpen:MoneyOpen}) {
  const {state}=useMoney(),[frequency,setFrequency]=useState('all'),[search,setSearch]=useState(''),[category,setCategory]=useState(''),[method,setMethod]=useState(''),[source,setSource]=useState(''),[status,setStatus]=useState(''),[open,setOpen]=useState(false),anchor=useRef<HTMLButtonElement>(null);

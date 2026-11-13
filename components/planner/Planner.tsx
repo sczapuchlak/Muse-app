@@ -1,6 +1,6 @@
 "use client";
 import { useTaskDensity } from "@/lib/task-density-preference";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { dateLabel, shiftDate } from "@/lib/dates";
 import { dailyEditSample } from "@/lib/daily-edit-data";
@@ -108,7 +108,7 @@ export function Planner() {
           const label = dateLabel(day);
           return <section className="muse-planner-day" key={day} data-mobile-visible={index === 0} data-day-offset={index} aria-label={`${label}${index===0?", focused day":""}${day===today?", today":""}`} data-today={day === today}>
             <PlanningDropZone date={day} selected={index === 0} className={`muse-day-drop${day === today ? " muse-today-ring" : ""}`}><p className="muse-drop-hint" aria-hidden="true">Drop to plan for {new Intl.DateTimeFormat("en-US", { weekday: "short", month: "short", day: "numeric", timeZone: "UTC" }).format(new Date(`${day}T12:00:00Z`))}</p>
-              <MuseMilestone achieved={canonicalTasks.length>0&&canonicalTasks.every(task=>task.complete)}/><header className="muse-planner-day-heading"><h2><time dateTime={day} aria-current={day===today?"date":undefined}>{new Intl.DateTimeFormat("en-US", { weekday: "short", timeZone: "UTC" }).format(new Date(`${day}T12:00:00Z`))}<strong>{Number(day.slice(8))}</strong></time>{(index === 0 || day === today) && <MuseStar size={30} color={day === today ? "aqua" : "purple"} />}</h2><p className="small-label">{tasks.length} {tasks.length === 1 ? "task" : "tasks"}{estimated > 0 ? ` · ${formatPlannedMinutes(estimated)} planned` : ""}{day===today?" · Today":index===0?" · Focused":""}</p></header>
+              <MuseMilestone achieved={canonicalTasks.length>0&&canonicalTasks.every(task=>task.complete)}/><header className="muse-planner-day-heading"><h2><time dateTime={day} aria-current={day===today?"date":undefined}>{new Intl.DateTimeFormat("en-US", { weekday: "short", timeZone: "UTC" }).format(new Date(`${day}T12:00:00Z`))}<strong>{Number(day.slice(8))}</strong></time>{(index === 0 || day === today) && <MuseStar size={30} color={day === today ? "aqua" : "purple"} />}</h2><p className="small-label">{tasks.length} {tasks.length === 1 ? "task" : "tasks"}{estimated > 0 ? ` · ${formatPlannedMinutes(estimated)} planned` : ""}{day===today?" · Today":index===0?" · Focused":""}</p>{canonicalTasks.length>0&&<p className="muse-planner-day-stars" aria-label={`${canonicalTasks.filter(task=>task.complete).length} of ${canonicalTasks.length} done`}>{canonicalTasks.slice(0,14).map((task,i)=><i key={task.id} data-done={task.complete||undefined} style={{"--i":i} as CSSProperties}/>)}{canonicalTasks.length>14&&<small>+{canonicalTasks.length-14}</small>}</p>}</header>
               <div className="muse-day-content">{events.length > 0 && <section className="muse-planner-events" aria-label={`Schedule for ${label}`}><h3>Schedule</h3>{events.map((event) => <p key={event.id}><time dateTime={event.dateTime}>{event.time}</time><span>{event.title}</span></p>)}</section>}
               <h3 className="muse-planner-task-label">Tasks</h3>{taskList(tasks)}
               {!tasks.length && <p className="muse-planner-empty">A little breathing room.</p>}

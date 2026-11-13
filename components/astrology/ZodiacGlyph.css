@@ -1,0 +1,11 @@
+/* Zodiac tiles: Muse line glyphs on a flat tile, one colour per sign. Used wherever a sign appears. */
+.muse-zodiac-tile{--sign:var(--chart-5);display:grid;place-items:center;flex:none;width:44px;height:44px;border-radius:14px;color:var(--sign);background:linear-gradient(150deg,color-mix(in srgb,var(--sign) 26%,transparent),color-mix(in srgb,var(--sign) 8%,transparent));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--sign) 50%,transparent)}
+.muse-zodiac-tile[data-size=sm]{width:28px;height:28px;border-radius:9px}
+.muse-zodiac-tile[data-size=lg]{width:56px;height:56px;border-radius:18px}
+@supports (color: oklch(from red l c h)){
+ .muse-zodiac-tile{color:oklch(from var(--sign) max(l,.8) c h)}
+ :root:is([data-theme="iridescent"],[data-theme="solstice"],[data-theme="issya-bday"],[data-theme="bubblegum-baby"]) .muse-zodiac-tile,
+ :root:is([data-theme="astral"],[data-theme="nightbloom"]) :is(.muse-cosmic-zodiac,.muse-forecast-editorial,.muse-cosmic-forecast-sign,.muse-forecast-reflect,.muse-card) .muse-zodiac-tile{color:oklch(from var(--sign) min(l,.45) max(c,.13) h)}
+}
+.muse-forecast-sign-glyph{color:var(--sign);border-color:color-mix(in srgb,var(--sign,var(--selected-border)) 60%,transparent)!important;background:linear-gradient(150deg,color-mix(in srgb,var(--sign) 24%,transparent),color-mix(in srgb,var(--sign) 6%,transparent))!important}
+@supports (color: oklch(from red l c h)){.muse-forecast-sign-glyph{color:oklch(from var(--sign) max(l,.8) c h)}}

@@ -7,6 +7,7 @@ import {observatoryForecasts,type ForecastCategory,type ForecastPeriod,type Horo
 import {parseForecastContent,type ForecastEditorialBlock} from '@/lib/astrology/forecast-content';
 import {shortDate} from '@/lib/display-date';
 import {ForecastReflection} from './ForecastReflection';
+import {ZodiacGlyph,signStyle} from './ZodiacGlyph';
 import './ForecastReading.css';
 
 const titles:Record<ForecastPeriod,string>={daily:'Today’s cosmic forecast',weekly:'Your week in the stars',monthly:'Your month in the stars'};
@@ -32,7 +33,7 @@ function FullReading({forecast,dailyWidget=false,showAttribution=true}:{forecast
  const blocks=forecast.sections??parseForecastContent(forecast.text);
  const dateline=blocks.filter(block=>block.kind==='dateline'),body=blocks.filter(block=>block.kind!=='dateline');
  return <article className="muse-forecast-editorial" aria-label={`${zodiacLabel(forecast.sign)} ${forecast.period} horoscope`}>
-  <header className="muse-forecast-editorial-header"><span className="muse-forecast-sign-glyph" aria-hidden="true">{signInfo[forecast.sign].glyph}</span><div><p className="muse-forecast-sign-name">{zodiacLabel(forecast.sign)}</p><h3>{titles[forecast.period]}</h3><p className="muse-forecast-period-date"><time dateTime={forecast.range.start}>{periodDate(forecast)}</time></p></div><MuseStar size={19} prismatic/></header>
+  <header className="muse-forecast-editorial-header"><span className="muse-forecast-sign-glyph" style={signStyle(forecast.sign)} aria-hidden="true"><ZodiacGlyph sign={forecast.sign} size={38}/></span><div><p className="muse-forecast-sign-name">{zodiacLabel(forecast.sign)}</p><h3>{titles[forecast.period]}</h3><p className="muse-forecast-period-date"><time dateTime={forecast.range.start}>{periodDate(forecast)}</time></p></div><MuseStar size={19} prismatic/></header>
   {dateline.map((block,index)=><EditorialBlock block={block} index={index} key={index}/>)}
   <div className="muse-forecast-editorial-grid">{body.map((block,index)=><EditorialBlock block={block} index={index+dateline.length} key={index}/>)}</div>
   {!!forecast.keyDates?.length&&<section className="muse-forecast-key-dates"><h4><span aria-hidden="true">✧</span> Key dates</h4><div>{forecast.keyDates.map((item,index)=><div key={`${item.date}/${index}`}><time dateTime={item.date}>{longDate(item.date,{month:'short',day:'numeric'})}</time><div><strong>{item.title}</strong><p><SourceWords text={item.description}/></p></div></div>)}</div></section>}

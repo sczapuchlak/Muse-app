@@ -228,3 +228,12 @@ span.muse-stream-tag{cursor:default}
   .muse-stream-composer-head>.muse-creator-ring{justify-self:center}
 }
 @media (max-width:600px){.muse-stream-composer-head>.muse-creator-ring{justify-self:center;width:auto}}
+
+/* Glow-up 2: the empty Stream shows what it is for: a little orbit of friends around you. */
+.muse-stream-orbit{position:relative;display:grid;place-items:center;width:120px;height:120px;margin-bottom:6px;border-radius:50%;border:1px dashed color-mix(in srgb,var(--accent-secondary) 50%,transparent)}
+.muse-stream-orbit::before{content:"";position:absolute;inset:22px;border-radius:50%;border:1px solid color-mix(in srgb,var(--accent-primary) 40%,transparent)}
+.muse-stream-orbit>i{position:absolute;width:26px;height:26px;border-radius:50%;box-shadow:0 0 0 3px var(--glass-background),0 6px 14px -6px rgba(0,0,0,.5)}
+.muse-stream-orbit>i:nth-child(1){top:-6px;left:50%;margin-left:-13px;background:linear-gradient(140deg,var(--chart-2),var(--chart-5))}
+.muse-stream-orbit>i:nth-child(2){bottom:10px;left:-4px;background:linear-gradient(140deg,var(--chart-1),var(--chart-3))}
+.muse-stream-orbit>i:nth-child(3){bottom:10px;right:-4px;background:linear-gradient(140deg,var(--chart-4),var(--chart-7))}
+@media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) .muse-stream-orbit{animation:muse-wheel-turn 40s linear 3}:root:not([data-magic=quiet]) .muse-stream-orbit>*{animation:muse-wheel-turn 40s linear 3 reverse}@keyframes muse-wheel-turn{to{rotate:360deg}}}

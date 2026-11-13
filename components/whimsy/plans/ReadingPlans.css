@@ -106,3 +106,25 @@
 .muse-status-dot{--ink:var(--ink-planned);flex:none;display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--seg,#c9a6ff);color:var(--ink)!important;border:2px solid #120c1f;box-shadow:0 0 0 1px rgba(255,255,255,.7);vertical-align:middle}
 .muse-status-dot svg{color:var(--ink)!important;stroke:var(--ink)!important;stroke-width:2.75!important;width:14px;height:14px}
 .muse-choice-lead{display:inline-flex;align-items:center;gap:8px;min-width:0}
+
+/* Glow-up 2: a plan is an order, so it reads as a numbered list of rows (rank, cover, book, status), not big cards. */
+.muse-plans .muse-plan-list,.muse-plans[data-variant="full"] .muse-plan-list{grid-template-columns:minmax(0,1fr);gap:6px;counter-reset:none}
+.muse-plans .muse-plan-card{display:grid;grid-template-columns:34px 22px 40px minmax(0,1fr) auto;align-items:center;gap:10px;min-height:72px;padding:8px 10px 8px 8px;border-radius:14px;background:var(--surface-subtle)}
+.muse-plans .muse-plan-rank{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;font-family:var(--font-editorial);font-weight:560;font-size:1.05rem;color:var(--foreground);background:color-mix(in srgb,var(--accent-primary) 18%,var(--surface-control));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--accent-primary) 40%,transparent)}
+.muse-plans .muse-plan-card:first-child .muse-plan-rank{color:white;background:linear-gradient(140deg,color-mix(in srgb,var(--accent-primary) 80%,black),color-mix(in srgb,var(--accent-secondary) 70%,black));box-shadow:0 4px 12px -4px color-mix(in srgb,var(--accent-primary) 70%,transparent)}
+.muse-plans .muse-plan-handle{width:22px;min-width:22px;height:40px;opacity:.55}
+.muse-plans .muse-plan-card:hover .muse-plan-handle{opacity:1}
+.muse-plans .muse-plan-cover{width:40px;height:60px;padding:0}
+.muse-plans .muse-plan-cover :is(img,.muse-cal-cover,span){width:40px;height:60px;border-radius:4px;object-fit:cover}
+.muse-plans .muse-plan-body{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-rows:auto auto;column-gap:12px;row-gap:2px;align-items:center;min-width:0}
+.muse-plans .muse-plan-body>.muse-plan-title{grid-column:1;grid-row:1}
+.muse-plans .muse-plan-body>.muse-plan-author{grid-column:1;grid-row:2;font-size:.8rem}
+.muse-plans .muse-plan-body>.muse-plan-meta{grid-column:2;grid-row:1/3;justify-content:flex-end;flex-wrap:nowrap}
+.muse-plans .muse-plan-body>.muse-plan-dates{display:none}
+.muse-plans .muse-plan-card[data-status=finished]{opacity:.78}
+@container muse-content (max-width:640px){
+ .muse-plans .muse-plan-card{grid-template-columns:30px 36px minmax(0,1fr) auto;gap:8px}
+ .muse-plans .muse-plan-handle{display:none}
+ .muse-plans .muse-plan-body{grid-template-columns:minmax(0,1fr)}
+ .muse-plans .muse-plan-body>.muse-plan-meta{grid-column:1;grid-row:3;justify-content:flex-start}
+}

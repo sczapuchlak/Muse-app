@@ -35,3 +35,4 @@
 .muse-emoji-grid{grid-template-columns:repeat(auto-fill,minmax(44px,1fr));gap:4px}
 .muse-emoji-option{min-width:44px;min-height:44px;font-size:1.6rem}
 @media(max-width:420px){.muse-emoji-controls{grid-template-columns:minmax(0,1fr) minmax(128px,42%)}}
+.muse-card:has(>.card-heading) .muse-day-three{border-top:0;padding-top:0;margin-top:var(--space-3)}

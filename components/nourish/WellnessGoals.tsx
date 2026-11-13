@@ -4,6 +4,7 @@ import Link from "next/link";
 import {useWellness} from "../WellnessStore";
 import {MuseModal} from "../MuseModal";
 import {MuseIcon} from "../MuseIcon";
+import {MuseHeading,MuseMark,MuseStatRow,MuseStatTile,type MuseTone} from "../design/MuseHeading";
 import {weekDates} from "@/lib/dates";
 import {goalStatusLabel,creatableGoalMetrics,currentVersion,goalHistory,goalMetricInfo,adherence,newGoal,withVersion,unsupportedGoalMetrics,type GoalMetric,type GoalPeriod,type GoalPeriodResult,type GoalPeriodStatus,type WellnessGoal,type GoalDirection} from "@/lib/wellness-goals";
 import {hydrationHistory,wellnessPeriodSummary,wellnessSeries} from "@/lib/wellness-aggregates";
@@ -36,30 +37,30 @@ export function WellnessGoals({today,timeZone}:{today:string;timeZone:string}){
  const setStatus=(goal:WellnessGoal,next:"active"|"paused"|"inactive")=>save(withVersion(goal,today,{status:next},new Date().toISOString()));
  return <section className="muse-wellness-goals" aria-label="Wellness goals">
   <div className="muse-goals-head">
-   <div><h2>Goals</h2><p className="small-label">Optional targets, measured from what you already log in Wellness and Daily Edit. Paused time never counts against you.</p></div>
+   <MuseHeading level={2} size="lg" icon="target" tone={2} title="Goals" description="Optional targets, measured from what you already log in Wellness and Daily Edit. Paused time never counts against you."/>
    {goals&&<button type="button" className="muse-button button-primary" onClick={event=>setEditor({anchor:event.currentTarget})}><MuseIcon name="plus" size={16}/>Add a goal</button>}
   </div>
   {!goals&&<p className="muse-goals-notice" role="status">Goals, workout categories and durations need the latest database update. Your existing Wellness records are unaffected.</p>}
 
   <section className="muse-goals-week" aria-label="This week so far">
-   <h3>This week so far</h3>
-   <dl className="muse-goals-tiles">
-    <div><dt>Workouts</dt><dd>{week.workouts}</dd><small>{week.workoutDays} {week.workoutDays===1?"day":"days"}</small></div>
-    <div><dt>Strength · Cardio</dt><dd>{week.byCategory.strength} · {week.byCategory.cardio}</dd><small>{week.byCategory.mobility} mobility · {week.byCategory.other} other</small></div>
-    <div><dt>Minutes</dt><dd>{number(week.minutes)}</dd><small>{week.sessionsWithoutDuration?`${week.sessionsWithoutDuration} without a time`:"All sessions timed"}</small></div>
-    <div><dt>Hydration</dt><dd>{week.hydration.metDays} / {week.hydration.recordedDays}</dd><small>days at your water goal / logged</small></div>
-   </dl>
+   <MuseHeading icon="movement" tone={1} title="This week so far" kicker="Monday onward"/>
+   <MuseStatRow label="This week so far">
+    <MuseStatTile icon="movement" tone={1} label="Workouts" value={week.workouts} note={`${week.workoutDays} ${week.workoutDays===1?"day":"days"}`}/>
+    <MuseStatTile icon="summit" tone={5} label="Strength · Cardio" value={`${week.byCategory.strength} · ${week.byCategory.cardio}`} note={`${week.byCategory.mobility} mobility · ${week.byCategory.other} other`}/>
+    <MuseStatTile icon="clock" tone={4} label="Minutes" value={number(week.minutes)} note={week.sessionsWithoutDuration?`${week.sessionsWithoutDuration} without a time`:"All sessions timed"}/>
+    <MuseStatTile icon="water" tone={6} label="Hydration" value={`${week.hydration.metDays} / ${week.hydration.recordedDays}`} note="days at your water goal / logged"/>
+   </MuseStatRow>
   </section>
 
   {goals&&<div className="muse-goals-grid">
    <HydrationCard state={state} today={today}/>
    {live.map(goal=><GoalCard key={goal.id} goal={goal} sources={sources} today={today} onEdit={anchor=>setEditor({goal,anchor})} onStatus={next=>setStatus(goal,next)}/>)}
-   {!live.length&&<div className="muse-empty-state muse-goals-empty" data-variant="quiet"><p>No goals yet. Start with one that fits this season.</p><div>{(["workouts","strength-workouts","workout-minutes","nutrition-protein"] as GoalMetric[]).map(metric=><button key={metric} type="button" className="muse-button button-ghost" onClick={event=>setEditor({metric,anchor:event.currentTarget})}>{goalMetricInfo[metric].label}</button>)}</div></div>}
+   {!live.length&&<div className="muse-empty-state muse-goals-empty" data-variant="quiet"><span className="muse-goals-empty-art" aria-hidden="true"><i/><i/><i/></span><p><strong>No goals yet.</strong> Start with one that fits this season.</p><div>{(["workouts","strength-workouts","workout-minutes","nutrition-protein"] as GoalMetric[]).map((metric,i)=><button key={metric} type="button" className="muse-button button-ghost muse-goals-seed" onClick={event=>setEditor({metric,anchor:event.currentTarget})}><MuseMark icon={(["movement","summit","clock","meals"] as const)[i]} tone={([1,5,4,2] as MuseTone[])[i]} size="sm"/>{goalMetricInfo[metric].label}</button>)}</div></div>}
   </div>}
   {retired.length>0&&<details className="muse-goals-retired"><summary>Retired goals ({retired.length})</summary><div className="muse-goals-grid">{retired.map(goal=><GoalCard key={goal.id} goal={goal} sources={sources} today={today} onEdit={anchor=>setEditor({goal,anchor})} onStatus={next=>setStatus(goal,next)}/>)}</div></details>}
 
   <section className="muse-goals-year" aria-label={`Wellness by month, ${year}`}>
-   <div className="muse-goals-year-head"><h3>By month</h3><nav className="muse-week-jump" aria-label="Year"><button type="button" className="muse-button" aria-label="Previous year" onClick={()=>setYear(String(Number(year)-1))}>‹</button><span className="muse-goals-year-label">{year}</span><button type="button" className="muse-button" aria-label="Next year" disabled={year>=today.slice(0,4)} onClick={()=>setYear(String(Number(year)+1))}>›</button></nav></div>
+   <div className="muse-goals-year-head"><MuseHeading icon="calendar" tone={3} title="By month"/><nav className="muse-week-jump" aria-label="Year"><button type="button" className="muse-button" aria-label="Previous year" onClick={()=>setYear(String(Number(year)-1))}>‹</button><span className="muse-goals-year-label">{year}</span><button type="button" className="muse-button" aria-label="Next year" disabled={year>=today.slice(0,4)} onClick={()=>setYear(String(Number(year)+1))}>›</button></nav></div>
    {!hasHistory||!months.length?<p className="small-label">{hasHistory?`No movement or water records in ${year}.`:"Once you mark movement done or log water, monthly totals appear here."}</p>:<div className="muse-goals-table-wrap" tabIndex={0} role="region" aria-label="Monthly Wellness totals"><table className="muse-goals-table"><thead><tr><th scope="col">Month</th><th scope="col">Workouts</th><th scope="col">Strength</th><th scope="col">Cardio</th><th scope="col">Minutes</th><th scope="col">Water goal days</th></tr></thead>
     <tbody>{months.map(month=>{const max=Math.max(1,...months.map(m=>m.workouts));const quiet=!month.workouts&&!month.hydration.recordedDays;return <tr key={month.start} data-quiet={quiet||undefined}><th scope="row">{new Intl.DateTimeFormat("en-US",{month:"short",timeZone:"UTC"}).format(new Date(`${month.start}T12:00:00Z`))}</th><td><span className="muse-goals-bar" style={{inlineSize:`${month.workouts/max*100}%`}} aria-hidden="true"/><span className="muse-goals-num">{month.workouts}</span></td><td>{month.byCategory.strength}</td><td>{month.byCategory.cardio}</td><td>{number(month.minutes)}{month.sessionsWithoutDuration>0&&<small> +{month.sessionsWithoutDuration} untimed</small>}</td><td>{month.hydration.recordedDays?`${month.hydration.metDays} of ${month.hydration.recordedDays}`:<span className="small-label">—</span>}</td></tr>;})}</tbody></table></div>}
    <p className="small-label">Weeks start on Monday. Categories: {Object.values(movementCategoryLabels).join(", ")} — set them under Movement → Manage in Daily Edit.</p>

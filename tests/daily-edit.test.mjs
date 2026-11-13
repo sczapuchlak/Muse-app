@@ -138,7 +138,7 @@ test('every theme supplies the same complete visual token set and the correct li
     assert.ok(alpha > 0 && alpha < 1, `${theme.id}: glass must remain translucent`);
   }
   assert.equal(palettes.iridescent['--background'], '#f8f5fd');
-  assert.equal(palettes.iridescent['--glass-background'], 'rgba(255, 255, 255, .52)');
+  assert.equal(palettes.iridescent['--glass-background'], 'rgba(255, 255, 255, .9)'); // glow-up 2: containers are never see-through
   assert.equal(palettes.iridescent['--atmosphere-aqua'], 'rgba(0, 194, 224, .72)');
   assert.equal(palettes.iridescent['--water-gradient-start'], '#00b9ce');
 });
@@ -482,7 +482,7 @@ test('Crystal and Frosted keep all six theme surfaces readable while Frosted inc
       assert.equal(frosted[3],.98,'Disco approved Frosted opacity');
       assert.ok(frosted[3]>crystal[3],'Disco Frosted remains more opaque than Crystal');
       assert.ok(crystal[3]>0&&crystal[3]<1,'Disco Crystal remains translucent');
-    } else assert.ok(frosted[3]-crystal[3]>=(token['--tone-card-border']?.02:theme.id==='issya-bday'?.05:.2),`${theme.id}: material opacity hierarchy`); // #111 role themes keep one calm, nearly opaque card colour
+    } else assert.ok(frosted[3]-crystal[3]>=(token['--tone-card-border']?.02:.04),`${theme.id}: material opacity hierarchy`); // #111 role themes keep one calm, nearly opaque card colour
     assert.ok(frosted[3]<1,`${theme.id}: Frosted still has a translucent surface`);
     for(const material of ['crystal','frosted']) {
       const card=blend(material==='crystal'?crystal:frosted,base);

@@ -231,3 +231,11 @@
  .muse-nourish-week .muse-meal-slot[data-empty] .muse-meal-entries{display:none}
  .muse-nourish-week .muse-meal-slot[data-empty] .muse-meal-add{grid-column:2 / -1;min-height:36px}
 }
+
+/* Glow-up 2: the Grocery desk. Title, note and the add form sit together on one opaque panel with a basket mark and a
+   faint gingham corner (a market-tote nod), so nothing floats on the page background. */
+.muse-grocery-desk{position:relative;display:grid;gap:14px;padding:clamp(16px,2vw,24px);border:1px solid var(--glass-border);border-radius:var(--radius-card,24px);background-color:var(--glass-background);background-image:radial-gradient(60% 90% at 0% 0%,color-mix(in srgb,var(--chart-2) 12%,transparent),transparent 70%);box-shadow:var(--shadow-card,0 18px 40px -28px rgba(0,0,0,.35));overflow:hidden;isolation:isolate}
+.muse-grocery-desk-art{position:absolute;right:-10px;top:-10px;z-index:-1;width:180px;height:120px;opacity:.5;pointer-events:none;background:repeating-linear-gradient(0deg,color-mix(in srgb,var(--chart-2) 16%,transparent) 0 10px,transparent 10px 20px),repeating-linear-gradient(90deg,color-mix(in srgb,var(--chart-2) 16%,transparent) 0 10px,transparent 10px 20px);-webkit-mask-image:radial-gradient(closest-side at 100% 0%,black,transparent);mask-image:radial-gradient(farthest-side at 100% 0%,black 20%,transparent)}
+.muse-grocery-desk .muse-nourish-section-heading h2{display:flex;align-items:center;gap:10px}
+.muse-grocery-mark.muse-mark{width:30px;height:30px;border-radius:10px}
+.muse-grocery-mark.muse-mark svg{width:15px;height:15px}

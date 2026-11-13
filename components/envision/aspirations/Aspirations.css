@@ -184,3 +184,4 @@
 .muse-aspirations .muse-aspirations-empty{border-style:solid;border-radius:var(--dl-radius-hero)}
 .muse-aspirations .muse-aspirations-year{padding:16px 18px;border:1px solid var(--glass-border);border-radius:var(--dl-radius-panel)}
 @media (prefers-reduced-motion:reduce){.muse-aspirations .muse-aspiration-card{transition:none}.muse-aspirations .muse-aspiration-card:hover{transform:none}}
+.muse-aspirations .muse-aspirations-attention .muse-heading-title{margin:0;text-transform:none;letter-spacing:-.005em;font-family:var(--font-editorial);font-weight:var(--type-editorial-weight);font-size:1.12rem;color:var(--foreground)}

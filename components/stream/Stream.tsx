@@ -52,7 +52,7 @@ export function Stream(){
  if(me===undefined)return <main className="muse-page" aria-busy="true"><p className="small-label" role="status">Tuning into the stream…</p></main>;
  if(me===null||!env)return <main className="muse-page muse-stream">
   <MusePageHeader title="Stream of Consciousness" description="A little window into your friends’ universes. Optional, private first, never a performance."/>
-  <MuseEmptyState title="Stream starts with your profile" headingLevel={2} glyph={<MuseStar size={22}/>} action={<Link className="muse-button button-primary muse-edge" href="/profile">Create my profile</Link>}>Stream is entirely optional. Create a profile to share little moments with friends you choose. Everything else in Muse stays exactly as private as it is now.</MuseEmptyState>
+  <MuseEmptyState title="Stream starts with your profile" headingLevel={2} glyph={<span className="muse-stream-orbit"><i/><i/><i/><MuseStar size={20}/></span>} action={<Link className="muse-button button-primary muse-edge" href="/profile">Create my profile</Link>}>Stream is entirely optional. Create a profile to share little moments with friends you choose. Everything else in Muse stays exactly as private as it is now.</MuseEmptyState>
  </main>;
  if(me.participation==='paused')return <main className="muse-page muse-stream">
   <MusePageHeader title="Stream of Consciousness" description="A little window into your friends’ universes."/>

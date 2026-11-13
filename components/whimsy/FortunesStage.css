@@ -1,0 +1,25 @@
+/*
+ * Fortunes & Nonsense glow-up 2: every experience is a little lit stage in its own colour, with the same marked
+ * editorial heading as the Curiosity Collection. Cookie amber, Oracle aqua, Prophecy violet, Cabinet rose.
+ */
+.muse-fortunes .muse-fortune-stage{--stage:var(--chart-4);position:relative;isolation:isolate;justify-items:stretch;gap:18px;padding:clamp(18px,2.6vw,30px);text-align:left;border-radius:26px;background-color:var(--glass-background);background-image:radial-gradient(60% 70% at 50% 62%,color-mix(in srgb,var(--stage) 20%,transparent),transparent 70%),radial-gradient(80% 60% at 100% 0%,color-mix(in srgb,var(--stage) 12%,transparent),transparent 65%)}
+.muse-fortunes .muse-fortune-stage[data-kind=oracle]{--stage:var(--chart-1)}
+.muse-fortunes .muse-fortune-stage[data-kind=prophecy]{--stage:var(--chart-6)}
+.muse-fortunes .muse-fortune-stage[data-kind=curiosity]{--stage:var(--chart-2)}
+.muse-fortune-stage-head{padding-bottom:14px;border-bottom:1px solid color-mix(in srgb,var(--glass-border) 70%,transparent)}
+.muse-fortunes .muse-fortune-stage>:not(.muse-fortune-stage-head):not(.muse-fortune-stage-light):not(.muse-fortune-discovery-filters):not(.muse-fortune-cabinet):not(.muse-fortune-discover-more){justify-self:center}
+/* A pool of light under the object: the stage itself. */
+.muse-fortune-stage-light{position:absolute;left:50%;top:clamp(170px,20vw,230px);z-index:-1;width:min(70%,520px);aspect-ratio:3.4;translate:-50% 0;border-radius:50%;background:radial-gradient(closest-side,color-mix(in srgb,var(--stage) 34%,transparent),transparent);filter:blur(10px);pointer-events:none}
+.muse-fortunes .muse-fortune-stage .muse-fortune-object,.muse-fortunes .muse-fortune-stage>button:first-of-type{filter:drop-shadow(0 18px 26px color-mix(in srgb,var(--stage) 30%,transparent))}
+/* The main action is a real call to action, not a grey box. */
+.muse-fortunes .muse-fortune-stage :is(.muse-fortune-actions,.muse-fortune-object-actions) .muse-button:first-child,.muse-fortunes .muse-fortune-stage>.muse-button{min-height:46px;padding-inline:20px;border-radius:999px;border-color:transparent;color:white;background:linear-gradient(120deg,color-mix(in srgb,var(--stage) 80%,black),color-mix(in srgb,var(--accent-primary) 70%,black));box-shadow:0 10px 24px -12px color-mix(in srgb,var(--stage) 80%,transparent)}
+.muse-fortunes .muse-fortune-reveal{border-color:color-mix(in srgb,var(--stage) 55%,var(--glass-border));background-color:var(--glass-background);background-image:radial-gradient(90% 80% at 50% 0%,color-mix(in srgb,var(--stage) 14%,transparent),transparent 70%);box-shadow:0 20px 44px -24px color-mix(in srgb,var(--stage) 80%,transparent)}
+/* The Cabinet: drawers with a coloured label edge and a brass pull. */
+.muse-fortunes .muse-fortune-cabinet{grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:14px}
+.muse-fortunes .muse-fortune-drawer{--drawer:var(--item-accent,var(--stage));position:relative;gap:6px;min-height:118px;padding:16px 16px 34px;border-radius:16px;border-left:4px solid var(--drawer);background-color:var(--surface-subtle);background-image:linear-gradient(180deg,color-mix(in srgb,var(--drawer) 10%,transparent),transparent 70%);transition:transform .22s cubic-bezier(.2,.8,.2,1),box-shadow .22s,border-color .2s}
+.muse-fortunes .muse-fortune-drawer::after{content:"";position:absolute;left:50%;bottom:12px;width:34px;height:8px;translate:-50% 0;border-radius:999px;background:linear-gradient(180deg,color-mix(in srgb,var(--drawer) 60%,white),color-mix(in srgb,var(--drawer) 70%,black));box-shadow:0 2px 4px rgba(0,0,0,.3)}
+.muse-fortunes .muse-fortune-drawer strong{font-family:var(--font-editorial);font-weight:var(--type-title-weight);font-size:1.08rem;line-height:1.25}
+.muse-fortunes .muse-fortune-drawer>span:last-child{display:none}
+.muse-fortunes .muse-fortune-drawer:hover{transform:translateY(-3px);box-shadow:0 14px 26px -16px color-mix(in srgb,var(--drawer) 85%,transparent)}
+.muse-fortunes .muse-fortune-drawer[aria-pressed=true]{border-color:var(--drawer);box-shadow:0 0 0 2px var(--drawer)}
+@media (prefers-reduced-motion:reduce){.muse-fortunes .muse-fortune-drawer{transition:none}.muse-fortunes .muse-fortune-drawer:hover{transform:none}}
