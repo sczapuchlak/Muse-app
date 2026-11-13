@@ -309,3 +309,16 @@ input.muse-reflections-l10-note{min-height:32px;padding:4px 10px}
 :is(.muse-reflections-book,.muse-reflections-book[data-mood]) .muse-reflections-module[data-type=favorites]::after,:is(.muse-reflections-book,.muse-reflections-book[data-mood]) .muse-reflections-module[data-type=highlights]::after{width:64px;height:64px;background:linear-gradient(135deg,color-mix(in srgb,var(--module-ink) 60%,white),var(--module-ink));clip-path:polygon(50% 0,61% 39%,100% 50%,61% 61%,50% 100%,39% 61%,0 50%,39% 39%);filter:drop-shadow(0 0 10px var(--module-ink))}
 :is(.muse-reflections-book,.muse-reflections-book[data-mood]) .muse-reflections-module[data-type=level10]::after,:is(.muse-reflections-book,.muse-reflections-book[data-mood]) .muse-reflections-module[data-type=guided]::after,:is(.muse-reflections-book,.muse-reflections-book[data-mood]) .muse-reflections-module[data-type=writing]::after{display:none}
 @media (prefers-reduced-motion:reduce){.muse-reflections-additem{transition:none}.muse-reflections-additem:hover{transform:none}}
+
+/* Round 3 (Nov 13): Reflections, Intentions and the everyday cards share ONE section heading: the gradient tile with a
+   white glyph, the editorial title, a fine gradient rule beneath, and a soft aura in the section's own tone. */
+:is(.muse-reflections-module,.muse-intentions-section){--aura:var(--chart-1);border-top:1px solid var(--glass-border)!important;
+ background-image:radial-gradient(90% 70% at 100% 0%,color-mix(in srgb,var(--aura) 13%,transparent),transparent 62%),radial-gradient(60% 50% at 0% 0%,color-mix(in srgb,var(--aura) 7%,transparent),transparent 70%)!important}
+:is(.muse-reflections-module-head,.muse-intentions-section-head){position:relative;display:flex;align-items:center;gap:12px;min-height:var(--card-heading-row,40px);margin-bottom:14px}
+:is(.muse-reflections-module-head,.muse-intentions-section-head)::after{content:""!important;position:absolute;left:0!important;right:0;bottom:-8px!important;width:auto!important;height:1px!important;border-radius:0;background:linear-gradient(90deg,color-mix(in srgb,var(--aura) 70%,transparent),color-mix(in srgb,var(--glass-border) 80%,transparent) 40%,transparent)!important}
+:is(.muse-reflections-module-head,.muse-intentions-section-head) h3,.muse-reflections-book[data-mood] .muse-reflections-module-head h3{flex:1;margin:0;padding:0;background:none;font-family:var(--font-editorial)!important;font-style:normal!important;font-weight:var(--type-editorial-weight,600)!important;font-size:clamp(1.15rem,1.5vw,1.32rem)!important;line-height:1.2;letter-spacing:-.005em;text-transform:none!important;color:var(--foreground)!important}
+.muse-section-mark.muse-mark{flex:none;width:34px;height:34px;border-radius:11px}
+.muse-section-mark.muse-mark svg{width:17px;height:17px}
+.muse-reflections-module-icon,.muse-intentions-section-icon{display:none!important}
+:is(.muse-reflections-module,.muse-intentions-section){align-content:start!important}
+:root .muse-reflections-book .muse-reflections-module .muse-reflections-module-head h3,:root .muse-intentions-page .muse-intentions-section .muse-intentions-section-head h3{color:var(--foreground)!important;font-family:var(--font-editorial)!important}
