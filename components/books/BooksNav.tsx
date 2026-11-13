@@ -1,5 +1,6 @@
 'use client';
 import Link from 'next/link';
+import {NavMark,navInk} from '@/components/design/NavMark';
 
 export type BooksView='dashboard'|'library'|'atlas';
 const items:{id:BooksView;label:string;href:string}[]=[
@@ -10,5 +11,5 @@ const items:{id:BooksView;label:string;href:string}[]=[
 
 /** The three sibling views of Books. One place, so no view needs its own link to another. */
 export function BooksNav({current}:{current:BooksView}){
- return <nav className="muse-page-tabs muse-books-nav" aria-label="Books views">{items.map(i=><Link key={i.id} href={i.href} aria-current={i.id===current?'page':undefined}>{i.label}</Link>)}</nav>;
+ return <nav className="muse-page-tabs muse-books-nav" aria-label="Books views">{items.map(i=><Link key={i.id} href={i.href} style={navInk('books',i.id)} aria-current={i.id===current?'page':undefined}><NavMark ns='books' id={i.id}/><span>{i.label}</span></Link>)}</nav>;
 }
