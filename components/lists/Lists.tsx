@@ -9,6 +9,7 @@ import { useDailyData } from "../daily/DailyData";
 import { usePlanner } from "../PlannerStore";
 import { GlassPopover } from "../GlassPopover";
 import { MuseChoiceMenu } from "../MuseChoiceMenu";
+import { MuseMark } from "@/components/design/MuseHeading";
 import { MuseIcon } from "../MuseIcon";
 import { MuseModal } from "../MuseModal";
 import { SaveIndicator } from "../SaveIndicator";
@@ -47,7 +48,8 @@ function ListsLibrary({ today, onOpen }: { today: string; onOpen: (id: string) =
   const stats = useMemo(() => new Map(s.lists.map((l) => {
     const items = s.items.filter((i) => i.listId === l.id), events = items.flatMap((i) => effectiveEvents(i, s.events, planner));
     const due = items.filter((i) => i.schedule ? scheduleState(i.schedule, events.filter((e) => e.itemId === i.id), today).due : !i.completedAt && !!i.dueDate && i.dueDate <= today).length;
-    return [l.id, { ...progress(items, events, today), due, sections: s.sections.filter((x) => x.listId === l.id).length }];
+    const next = items.filter((i) => !i.completedAt).sort((x, y) => x.position - y.position).slice(0, 3).map((i) => i.title);
+    return [l.id, { ...progress(items, events, today), due, sections: s.sections.filter((x) => x.listId === l.id).length, next, repeats: items.some((i) => !!i.schedule) }];
   })), [s, planner, today]);
   const shown = s.lists
     .filter((l) => scope === "templates" ? l.isTemplate && !l.archivedAt : scope === "archived" ? !!l.archivedAt : !l.isTemplate && !l.archivedAt)
@@ -66,23 +68,37 @@ function ListsLibrary({ today, onOpen }: { today: string; onOpen: (id: string) =
     </div>
     {!s.loaded ? <p className="small-label">Loading your lists…</p> : s.error && !s.lists.length ? <p className="small-label" role="alert">{s.error}</p>
       : shown.length ? <ul className="muse-lists-grid">{shown.map((l) => <ListCard key={l.id} list={l} stat={stats.get(l.id)!} today={today} onOpen={() => onOpen(l.id)} />)}</ul>
-      : <div className="muse-empty-state muse-lists-empty"><MuseIcon name="notes" size={22} /><p>{query ? "No lists match that search." : scope === "templates" ? "No templates yet. Open a list and choose Save as template." : scope === "archived" ? "Nothing archived." : "No lists yet. Start one for packing, cleaning, a project — anything."}</p>{scope === "active" && !query && <button type="button" className="muse-button" onClick={() => setCreating(true)}>Create a list</button>}</div>}
+      : <div className="muse-empty-state muse-lists-empty" data-variant="editorial"><span className="muse-lists-empty-art" aria-hidden="true"><MuseMark icon="suitcase" tone={2} size="lg" /><MuseMark icon="checklist" tone={1} size="lg" /><MuseMark icon="basket" tone={4} size="lg" /></span><h3>{query ? "Nothing by that name" : scope === "active" ? "A list for everything, and everything on a list." : scope === "templates" ? "No templates yet" : "Nothing archived"}</h3><p>{query ? "No lists match that search." : scope === "templates" ? "No templates yet. Open a list and choose Save as template." : scope === "archived" ? "Nothing archived." : "No lists yet. Start one for packing, cleaning, a project — anything."}</p>{scope === "active" && !query && <button type="button" className="muse-button" onClick={() => setCreating(true)}>Create a list</button>}</div>}
     <GlassPopover id="lists-new" label="New list" open={creating} anchorRef={newAnchor} onClose={() => setCreating(false)} width={420}>
       {creating && <NewList today={today} onDone={(id) => { setCreating(false); if (id) onOpen(id); }} />}
     </GlassPopover>
   </section>;
 }
 
-function ListCard({ list, stat, today, onOpen }: { list: MuseList; stat: { done: number; total: number; pct: number; due: number; sections: number }; today: string; onOpen: () => void }) {
+/** Cover art tied to what the list IS: ticked rows for a checklist, a repeating week for a routine, stepping stones for a project. */
+function ListCover({ preset }: { preset: string }) {
+  return <svg viewBox="0 0 240 84" preserveAspectRatio="xMaxYMid meet" focusable="false">
+    {preset === "scheduled" ? <>{[0, 1, 2, 3, 4, 5, 6].map((i) => <g key={i}><rect x={96 + i * 20} y={22} width="15" height="40" rx="5" fill="currentColor" opacity={i % 3 === 0 ? .38 : .14} />{i % 3 === 0 && <path d={`M${100 + i * 20} 43l2.500 2.500 5-6`} fill="none" stroke="#fff" strokeWidth="1.800" strokeLinecap="round" strokeLinejoin="round" opacity=".9" />}</g>)}<path d="M112 12c40-12 78-8 112 6m0 0-9-7m9 7-11 3" fill="none" stroke="currentColor" strokeWidth="1.600" strokeLinecap="round" opacity=".45" /></>
+      : preset === "project" ? <><path d="M92 66c22 0 22-16 44-16s22-16 44-16 22-14 44-14" fill="none" stroke="currentColor" strokeWidth="1.600" strokeDasharray="2 6" strokeLinecap="round" opacity=".5" />{[[92, 66], [136, 50], [180, 34]].map(([x, y], i) => <circle key={i} cx={x} cy={y} r="7" fill="currentColor" opacity={.22 + i * .12} />)}<path d="M222 22V4m0 0h-13l4 5-4 5h13" fill="currentColor" fillOpacity=".4" stroke="currentColor" strokeWidth="1.600" strokeLinejoin="round" opacity=".8" /></>
+      : <>{[0, 1, 2].map((i) => <g key={i} opacity={1 - i * .28}><rect x={150 - i * 10} y={14 + i * 21} width="15" height="15" rx="5" fill="currentColor" opacity={i === 0 ? .42 : .18} />{i === 0 && <path d="M153.500 21.500l3 3 5.500-6.500" fill="none" stroke="#fff" strokeWidth="1.800" strokeLinecap="round" strokeLinejoin="round" />}<rect x={172 - i * 10} y={18 + i * 21} width={58 - i * 8} height="7" rx="3.500" fill="currentColor" opacity=".2" /></g>)}</>}
+  </svg>;
+}
+
+function ListCard({ list, stat, today, onOpen }: { list: MuseList; stat: { done: number; total: number; pct: number; due: number; sections: number; next: string[]; repeats: boolean }; today: string; onOpen: () => void }) {
   const [menu, setMenu] = useState(false), [confirm, setConfirm] = useState<HTMLElement | null>(null), anchor = useRef<HTMLButtonElement>(null);
   const style = { "--list-accent": accentCss(list.accent) } as CSSProperties;
   const act = async (fn: () => Promise<unknown>) => { setMenu(false); await fn(); };
   return <li className="muse-lists-card" style={style}>
     <button type="button" className="muse-lists-card-open" onClick={onOpen} aria-label={`Open ${list.title}`}>
-      <span className="muse-lists-card-icon" aria-hidden="true">{list.icon ?? "✦"}</span>
-      <span className="muse-lists-card-text"><strong>{list.title}</strong>
-        <small>{list.isTemplate ? "Template · " : ""}{stat.total} item{stat.total === 1 ? "" : "s"}{stat.sections ? ` · ${stat.sections} section${stat.sections === 1 ? "" : "s"}` : ""}{stat.due ? ` · ${stat.due} due` : ""}</small></span>
-      {!list.isTemplate && stat.total > 0 && <span className="muse-lists-ring" style={{ "--pct": `${stat.pct}%` } as CSSProperties} role="img" aria-label={`${stat.done} of ${stat.total} done`}><b>{stat.pct}%</b></span>}
+      <span className="muse-lists-cover" data-preset={list.preset} aria-hidden="true"><ListCover preset={list.preset} /><span className="muse-lists-card-icon">{list.icon ?? "✦"}</span>{list.pinned && <span className="muse-lists-pinned"><MuseIcon name="pin" size={11} />Pinned</span>}</span>
+      <span className="muse-lists-card-text"><span className="muse-lists-kind">{list.isTemplate ? "Template" : list.preset === "scheduled" ? "Routine" : list.preset === "project" ? "Project" : "Checklist"}</span><strong>{list.title}</strong>
+        {list.description && <span className="muse-lists-desc">{list.description}</span>}</span>
+      {stat.next.length > 0 ? <span className="muse-lists-next">{stat.next.map((title, i) => <span key={i}><i />{title}</span>)}{stat.total - stat.done > stat.next.length && <small>+{stat.total - stat.done - stat.next.length} more</small>}</span>
+        : <span className="muse-lists-next" data-empty>{stat.total ? "Everything here is done." : "Nothing on this list yet."}</span>}
+      <span className="muse-lists-meta">
+        {!list.isTemplate && stat.total > 0 && <span className="muse-lists-progress-row" role="img" aria-label={`${stat.done} of ${stat.total} done`}><span className="muse-list-progress"><span style={{ width: `${stat.pct}%` }} /></span><b>{stat.done}/{stat.total}</b></span>}
+        <span className="muse-lists-chips">{stat.due > 0 && <span data-tone="due">{stat.due} due</span>}{stat.sections > 0 && <span>{stat.sections} section{stat.sections === 1 ? "" : "s"}</span>}{stat.repeats && <span>↻ repeats</span>}{list.isTemplate && <span>{stat.total} item{stat.total === 1 ? "" : "s"}</span>}</span>
+      </span>
     </button>
     <div className="muse-lists-card-foot"><small>Updated {ago(list.updatedAt)}</small>
       <span>
