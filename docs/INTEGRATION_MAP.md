@@ -16,6 +16,10 @@ Write down the answers before you build. Put them in the PR description or the f
 6. **Place in the cycle.** What happens before and after this experience?
 7. **Now or later.** Which integrations work now, and which are only prepared for the future? Say which in the docs.
 
+### Aspirations 2.0 (#82) — foundation in progress
+
+Envision remains the owner of aspirations and their journey; Planner → Reflections owns the existing life-area identities and independent satisfaction ratings. Books owns reading-challenge progress. A life-area association references the same aspiration and area, and is optional for existing records. Annual planning is separate from target dates and stores names as snapshots alongside optional live references, including an optional Vision Board. Related tasks, rituals, intentions, dreams and boards remain with their existing owners and connections are optional. The existing Envision navigation, aspiration editor and theme surfaces remain the starting patterns. This supports Envision → Intend → Live → Reflect without making the cycle mandatory. A Life Atlas, annual planning UI and additive schema are in progress locally; the schema has passed rollback-only ownership and snapshot tests but is not applied or deployed. Initial isolated browser and theme checks passed; remaining cross-module linking and #82 acceptance work are incomplete.
+
 ## Principles
 
 - **One authoritative record.** Other modules hold its id, never a copy of it.
