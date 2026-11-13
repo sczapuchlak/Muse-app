@@ -42,9 +42,9 @@ test('Fortune & Fun is one tab bar: Side Quests and each fortune experience, wit
  const {FortuneFunNavigation,fortuneFunTabs,fortuneFunHref}=load('components/whimsy/WhimsyFoundation');
  assert.deepEqual(fortuneFunTabs.map(tab=>tab.id),['side-quests','cookie','oracle','prophecy','curiosity','collection']);
  const html=renderToStaticMarkup(React.createElement(FortuneFunNavigation,{current:'side-quests'}));
- assert.match(html,/<nav class="muse-whimsy-navigation" aria-label="Fortune &amp; Fun">/);
- assert.match(html,/aria-current="page" href="\/whimsy\/side-quests">/);
- for(const [id,label] of [['cookie','Fortune Cookie'],['oracle','The Oracle'],['prophecy','Tiny Prophecies'],['curiosity','Curiosities']])assert.match(html,new RegExp(`href="/whimsy/fortunes\\?view=${id}">.*?${label}</a>`));
+ assert.match(html,/<nav class="muse-fun-cabinet" aria-label="Fortune &amp; Fun">/,'one cabinet of drawers');
+ assert.match(html,/aria-current="page"[^>]*href="\/whimsy\/side-quests">/);
+ for(const [id,label] of [['cookie','Fortune Cookie'],['oracle','The Oracle'],['prophecy','Tiny Prophecies'],['curiosity','Curiosities']])assert.match(html,new RegExp(`href="/whimsy/fortunes\\?view=${id}">.*?${label}.*?</a>`));
  assert.equal(fortuneFunHref('side-quests'),'/whimsy/side-quests');
  assert.match(read('components/whimsy/WeeklySideQuests.tsx'),/<FortuneFunNavigation current="side-quests"\/>/);
  const fortunes=read('components/whimsy/FortunesExperience.tsx');

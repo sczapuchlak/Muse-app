@@ -1,0 +1,79 @@
+/*
+ * Fortune & Fun, round 3 (Nov 13): "make this FUN AND COOL AND NEAT AND VISUALLY STUNNING".
+ *  - The tab bar is a cabinet: six drawers, each with its own gradient glyph, colour and a line of mischief. The open
+ *    drawer slides out toward you and glows.
+ *  - Every fortune experience gets its own stage: lantern light for the cookie, a nebula for the Oracle, candle-warm
+ *    parchment for prophecies, a cabinet of brass for curiosities. The object stands on a reflective velvet table.
+ *  - Side Quests read as adventure tickets: perforated edges, a holographic sheen, an aura in the quest's colour.
+ * Motion is finite and gated by reduced motion and Muse Magic.
+ */
+
+/* ── The cabinet of drawers ───────────────────────────────────────────────────────────────────────────────────── */
+.muse-fun-cabinet{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;margin:4px 0 6px;padding:10px;border-radius:24px;border:1px solid var(--glass-border);
+ background:linear-gradient(180deg,color-mix(in srgb,var(--foreground) 5%,transparent),transparent),var(--glass-background);box-shadow:var(--card-shadow),inset 0 1px 0 var(--glass-edge)}
+.muse-fun-drawer{position:relative;isolation:isolate;overflow:hidden;display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:10px;min-height:66px;padding:10px 12px 14px;border:1px solid var(--glass-border);border-radius:16px;
+ background:linear-gradient(160deg,color-mix(in srgb,var(--mark-a) 10%,transparent),transparent 60%),color-mix(in srgb,var(--surface-control) 85%,transparent);color:var(--foreground);font:inherit;text-align:left;text-decoration:none;cursor:pointer;
+ transition:transform .35s cubic-bezier(.2,.8,.2,1),border-color .25s,box-shadow .35s,background .35s}
+.muse-fun-drawer .muse-mark{width:38px;height:38px;border-radius:12px;transition:transform .45s cubic-bezier(.3,1.5,.5,1)}
+.muse-fun-drawer-copy{display:grid;gap:1px;min-width:0}
+.muse-fun-drawer-copy strong{font-family:var(--font-editorial);font-weight:var(--type-editorial-weight,600);font-size:.98rem;line-height:1.15;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.muse-fun-drawer-copy strong small{font-family:var(--font-ui);font-size:.72rem;color:var(--mark-a)}
+.muse-fun-drawer-copy>span{font-size:.72rem;color:var(--text-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* the drawer pull */
+.muse-fun-drawer-knob{position:absolute;left:50%;bottom:5px;width:26px;height:4px;translate:-50% 0;border-radius:4px;background:linear-gradient(90deg,color-mix(in srgb,var(--mark-a) 70%,white),var(--mark-b));opacity:.55;transition:opacity .25s,width .35s}
+.muse-fun-drawer::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.14) 45%,transparent 60%);translate:-120% 0;transition:translate .8s ease}
+.muse-fun-drawer:hover{border-color:color-mix(in srgb,var(--mark-a) 55%,var(--glass-border));transform:translateY(-2px)}
+.muse-fun-drawer:hover::after{translate:120% 0}
+.muse-fun-drawer:hover .muse-mark{transform:rotate(-8deg) scale(1.08)}
+.muse-fun-drawer[aria-current=page]{border-color:color-mix(in srgb,var(--mark-a) 75%,transparent);transform:translateY(-3px);
+ background:radial-gradient(120% 120% at 0% 0%,color-mix(in srgb,var(--mark-a) 30%,transparent),transparent 60%),radial-gradient(100% 100% at 100% 100%,color-mix(in srgb,var(--mark-b) 22%,transparent),transparent 60%),color-mix(in srgb,var(--surface-control) 90%,transparent);
+ box-shadow:0 12px 26px -14px var(--mark-a),0 0 0 1px color-mix(in srgb,var(--mark-a) 40%,transparent),inset 0 1px 0 rgba(255,255,255,.12)}
+.muse-fun-drawer[aria-current=page] .muse-fun-drawer-knob{opacity:1;width:40px;box-shadow:0 0 10px var(--mark-a)}
+.muse-fun-drawer:focus-visible{outline:2px solid var(--focus-ring,var(--accent-primary));outline-offset:2px}
+@container muse-content (max-width:1100px){.muse-fun-cabinet{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@container muse-content (max-width:620px){.muse-fun-cabinet{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:8px}.muse-fun-drawer{flex:0 0 72%;scroll-snap-align:start}}
+
+/* ── Fortune stages: each experience has its own room ─────────────────────────────────────────────────────────── */
+.muse-fortunes .muse-fortune-stage{position:relative;isolation:isolate;overflow:hidden;min-height:440px}
+.muse-fortunes .muse-fortune-stage::before{content:"";position:absolute;inset:0;z-index:-2;pointer-events:none;background:var(--stage-sky)}
+/* the velvet table the object stands on, catching its light */
+.muse-fortunes .muse-fortune-stage::after{content:"";position:absolute;left:12%;right:12%;bottom:70px;height:120px;z-index:-1;pointer-events:none;border-radius:50%;
+ background:radial-gradient(closest-side,color-mix(in srgb,var(--stage-glow) 34%,transparent),color-mix(in srgb,var(--stage-glow) 8%,transparent) 60%,transparent);filter:blur(6px)}
+.muse-fortunes .muse-fortune-stage[data-kind=cookie]{--stage-glow:#ffb547;--stage-sky:radial-gradient(60% 70% at 50% 62%,color-mix(in srgb,#ff9f3a 24%,transparent),transparent 70%),radial-gradient(40% 40% at 15% 20%,color-mix(in srgb,#ff5e8a 14%,transparent),transparent 70%),radial-gradient(35% 35% at 88% 25%,color-mix(in srgb,#ffd36b 14%,transparent),transparent 70%)}
+.muse-fortunes .muse-fortune-stage[data-kind=oracle]{--stage-glow:#9d7bff;--stage-sky:radial-gradient(55% 65% at 50% 60%,color-mix(in srgb,#7d5cff 30%,transparent),transparent 70%),conic-gradient(from 200deg at 50% 60%,transparent,color-mix(in srgb,#00e5ff 10%,transparent),transparent 30%,color-mix(in srgb,#ff4fd8 12%,transparent),transparent 60%)}
+.muse-fortunes .muse-fortune-stage[data-kind=prophecy]{--stage-glow:#f2c14e;--stage-sky:radial-gradient(55% 60% at 50% 60%,color-mix(in srgb,#e9a23b 22%,transparent),transparent 70%),repeating-linear-gradient(0deg,transparent 0 28px,color-mix(in srgb,#f2c14e 5%,transparent) 28px 29px)}
+.muse-fortunes .muse-fortune-stage[data-kind=curiosity]{--stage-glow:#3ecfb2;--stage-sky:radial-gradient(60% 60% at 50% 55%,color-mix(in srgb,#2fbfa4 18%,transparent),transparent 70%),radial-gradient(30% 30% at 85% 20%,color-mix(in srgb,#c9a0ff 14%,transparent),transparent 70%)}
+/* drifting motes of the stage's own light */
+.muse-fortunes .muse-fortune-stage-light{position:absolute!important;inset:0;z-index:-1;pointer-events:none;
+ background-image:radial-gradient(2px 2px at 18% 30%,var(--stage-glow) 50%,transparent 51%),radial-gradient(1.5px 1.5px at 30% 70%,white 50%,transparent 51%),radial-gradient(2.5px 2.5px at 72% 26%,var(--stage-glow) 50%,transparent 51%),radial-gradient(1.5px 1.5px at 84% 64%,white 50%,transparent 51%),radial-gradient(2px 2px at 58% 82%,var(--stage-glow) 50%,transparent 51%),radial-gradient(1.5px 1.5px at 44% 18%,white 50%,transparent 51%),radial-gradient(2px 2px at 8% 86%,var(--stage-glow) 50%,transparent 51%),radial-gradient(1.5px 1.5px at 94% 40%,white 50%,transparent 51%);opacity:.75}
+.muse-fortunes .muse-fortune-stage .muse-fortune-object,.muse-fortunes .muse-fortune-stage>button:not(.muse-button){scale:1.18;filter:drop-shadow(0 18px 30px color-mix(in srgb,var(--stage-glow) 45%,transparent))}
+@media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]){
+ .muse-fortunes .muse-fortune-stage-light{animation:muse-fun-motes 9s ease-in-out 6 alternate}
+ .muse-fun-drawer[aria-current=page] .muse-mark{animation:muse-fun-wiggle 1.2s cubic-bezier(.3,1.5,.5,1) 1}
+}}
+@keyframes muse-fun-motes{to{transform:translateY(-14px);opacity:1}}
+@keyframes muse-fun-wiggle{30%{transform:rotate(-12deg) scale(1.12)}60%{transform:rotate(8deg) scale(1.05)}}
+
+/* ── Side Quests: adventure tickets ───────────────────────────────────────────────────────────────────────────── */
+.muse-quest-card{--notch:var(--background)}
+.muse-quest-card[data-revealed=true]{background-image:radial-gradient(120% 70% at 100% 0%,color-mix(in srgb,var(--mark-a) 20%,transparent),transparent 60%),radial-gradient(80% 60% at 0% 100%,color-mix(in srgb,var(--mark-a) 10%,transparent),transparent 70%)!important}
+/* perforated ticket edges */
+.muse-quest-card[data-revealed=true]::after{content:"";position:absolute;left:-1px;right:-1px;top:62%;height:18px;pointer-events:none;
+ background:radial-gradient(circle at 0 50%,var(--notch) 8px,transparent 8.5px),radial-gradient(circle at 100% 50%,var(--notch) 8px,transparent 8.5px)}
+.muse-quest-card[data-revealed=true] .muse-quest-card-actions{border-top:2px dashed color-mix(in srgb,var(--mark-a) 35%,transparent)!important}
+/* a holographic sheen when you reach for a ticket */
+.muse-quest-card{position:relative;isolation:isolate}
+.muse-quest-card>.muse-quest-face::before,.muse-quest-card>.muse-quest-reveal::before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;border-radius:inherit;background:linear-gradient(115deg,transparent 30%,color-mix(in srgb,#7ff8ff 16%,transparent) 42%,color-mix(in srgb,#ff7ae6 16%,transparent) 50%,color-mix(in srgb,#fff27a 14%,transparent) 58%,transparent 70%);background-size:250% 100%;background-position:120% 0;opacity:0;transition:opacity .3s,background-position .9s ease}
+.muse-quest-card:hover>:is(.muse-quest-face,.muse-quest-reveal)::before{opacity:1;background-position:-20% 0}
+.muse-quest-card[data-selected=true]{box-shadow:0 0 0 1px var(--mark-a),0 18px 40px -18px var(--mark-a),0 0 36px -12px var(--mark-a)!important}
+@media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]){
+ .muse-quest-card[data-revealed=false] .muse-quest-envelope{animation:muse-fun-float 3.4s ease-in-out 8 alternate;animation-delay:calc(var(--i,0) * .35s)}
+ .muse-quest-card:hover{transform:translateY(-4px) rotate(-.4deg)}
+}}
+@keyframes muse-fun-float{to{transform:translateY(-6px) rotate(2deg)}}
+.muse-quest-card{transition:transform .4s cubic-bezier(.2,.8,.2,1),box-shadow .4s}
+
+/* names never truncate: two lines if they need them; every portal's sky is the same height */
+.muse-fun-drawer{gap:9px;padding:10px 10px 14px}
+.muse-fun-drawer .muse-mark{width:34px;height:34px}
+.muse-fun-drawer-copy strong{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;font-size:.92rem}
