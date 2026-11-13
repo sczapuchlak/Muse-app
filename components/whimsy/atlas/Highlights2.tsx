@@ -1,4 +1,5 @@
 'use client';
+import {AtlasMark} from './parts';
 import type {CSSProperties,ReactNode} from 'react';
 import {MuseIcon,type MuseIconName} from '@/components/MuseIcon';
 import type {Book,ReadingSession} from '@/lib/whimsy/models';
@@ -40,7 +41,7 @@ export function Highlights({books,sessions,range,label,today,wholeYear=false}:{b
   {key:'hour',tone:'violet',icon:'moon',label:'Favorite reading hour',value:habits.topHour!==null?hourLabel(habits.topHour):undefined,detail:habits.topHour!==null?'Timed sessions only':undefined,empty:'Needs three timed sessions',art:habits.topHour!==null?<Bars values={habits.hours} hot={habits.topHour} className="muse-hl-bars-24"/>:undefined},
   {key:'session',tone:'pink',icon:'play',label:'Longest sitting',value:habits.longestSession?duration(habits.longestSession.seconds):undefined,detail:'Active time, pauses excluded',empty:'No timed sessions yet'},
  ];
- return <section className="muse-highlights" aria-label="Highlights"><div className="muse-books-panel-head"><h4>Highlights</h4><span className="small-label">{label}</span></div>
+ return <section className="muse-highlights" aria-label="Highlights"><div className="muse-books-panel-head"><h4><AtlasMark title="Highlights"/>Highlights</h4><span className="small-label">{label}</span></div>
   <PagedList items={cards} size={4} cols={4} label="highlights" className="muse-hl-grid" render={c=><div role="listitem" key={c.key} className="muse-hl-card" data-tone={c.tone}>
    <div className="muse-hl-head"><span className="muse-hl-icon" aria-hidden="true"><MuseIcon name={c.icon} size={16}/></span><span className="small-label">{c.label}</span></div>
    <div className="muse-hl-body">{c.art&&<div className="muse-hl-art">{c.art}</div>}<div className="muse-hl-text">{c.value?<><strong>{c.value}</strong>{c.detail&&<small>{c.detail}</small>}</>:<small className="muse-hl-empty">{c.empty}</small>}</div></div></div>}/>

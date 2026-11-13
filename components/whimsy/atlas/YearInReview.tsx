@@ -1,4 +1,5 @@
 'use client';
+import {AtlasMark} from './parts';
 import {useState,type CSSProperties} from 'react';
 import {MuseChoiceMenu} from '@/components/MuseChoiceMenu';
 import {MuseStar} from '@/components/MuseStar';
@@ -55,10 +56,10 @@ export function YearInReview({books,sessions,today,goals=[]}:{books:Book[];sessi
    <MonthShelf books={books} today={today} fixedYear={year}/></div>
   <div className="muse-yir-pair muse-yir-pair-even">
    <ActivityBars unit="time" title="Reading timeline" note={`Reading time by month in ${year}${progress?' (so far)':''}.`} items={r.months.map(m=>({key:m.month,label:monthLabel(m.month),short:shortMonth(m.month),value:m.seconds||m.pages,text:`${duration(m.seconds)} · ${m.pages} pages · ${m.finished} finished`}))}/>
-   <section aria-label="Milestones this year" className="muse-books-panel"><div className="muse-books-panel-head"><h4>Milestones</h4><span className="small-label">{year}</span></div>{r.milestones.length?<PagedList tag="ol" className="muse-atlas-milestones" items={r.milestones} size={4} label="milestones" render={m=><li key={m.id}><span className="muse-atlas-milestone-star" aria-hidden="true">✦</span><strong>{m.title}</strong><small>{yearDate(m.achievedOn!)}</small></li>}/>:<p>No new milestones{progress?' yet':''} this year.</p>}</section>
+   <section aria-label="Milestones this year" className="muse-books-panel"><div className="muse-books-panel-head"><h4><AtlasMark title="Milestones"/>Milestones</h4><span className="small-label">{year}</span></div>{r.milestones.length?<PagedList tag="ol" className="muse-atlas-milestones" items={r.milestones} size={4} label="milestones" render={m=><li key={m.id}><span className="muse-atlas-milestone-star" aria-hidden="true">✦</span><strong>{m.title}</strong><small>{yearDate(m.achievedOn!)}</small></li>}/>:<p>No new milestones{progress?' yet':''} this year.</p>}</section>
   </div>
   <div className="muse-yir-pair muse-yir-pair-even"><TopRated books={books} range={range} label={String(year)}/><Favorites books={books} range={range} label={String(year)}/></div>
-  {r.recent.length>0&&<section aria-label="Recently finished" className="muse-books-panel"><div className="muse-books-panel-head"><h4>Recently finished</h4><span className="small-label">{year}</span></div>
+  {r.recent.length>0&&<section aria-label="Recently finished" className="muse-books-panel"><div className="muse-books-panel-head"><h4><AtlasMark title="Recently finished"/>Recently finished</h4><span className="small-label">{year}</span></div>
    <PagedList items={r.recent} size={4} label="recently finished" render={({book,completion,reread})=>{const o=readOpinion(book,completion);return <div role="listitem" className="muse-books-finished-row" key={`${book.id}:${completion.id}`}><span className="muse-finished-cover" aria-hidden="true"><Cover book={book}/></span><span className="muse-finished-copy"><strong>{book.title}{reread?' · reread':''}</strong><span>{yearDate(completion.finishedOn)}{o.rating?` · ${o.rating}/5`:''} {readEmojis(book,completion).join(' ')}</span></span></div>;}}/></section>}
  </div>;
 }

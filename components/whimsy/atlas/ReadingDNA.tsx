@@ -1,4 +1,5 @@
 'use client';
+import {AtlasMark} from './parts';
 import {useState} from 'react';
 import type {Book,ReadingSession} from '@/lib/whimsy/models';
 import type {DateRange} from '@/lib/whimsy/reading-stats';
@@ -22,13 +23,13 @@ export function ReadingDNA({books,sessions,range,label,today}:{books:Book[];sess
    {traits.length>0&&<ul className="muse-atlas-traits">{traits.map(t=><li key={t.title}><strong>{t.title}</strong><span>{t.line}</span><small className="small-label">{t.evidence}</small></li>)}</ul>}
    <p className="small-label">Personalities follow fixed rules about your genres and reading times, never guesses.</p>
   </article>
-  <article className="muse-books-panel muse-dna-highlights"><div className="muse-books-panel-head"><h4>Genre highlights</h4><span className="small-label">{label}</span></div>
+  <article className="muse-books-panel muse-dna-highlights"><div className="muse-books-panel-head"><h4><AtlasMark title="Genre highlights"/>Genre highlights</h4><span className="small-label">{label}</span></div>
   <div className="muse-atlas-insights" data-tone="genre">
    <Insight label="Most read genre" value={fav.mostRead?.genre} detail={fav.mostRead&&plural(fav.mostRead.reads,'finished read')} empty="Add genres to finished books"/>
    <Insight label="Most time spent" value={fav.mostTime?.genre} detail={fav.mostTime&&hours(fav.mostTime.seconds)} empty="Needs timed sessions on books with genres"/>
    <Insight label="Most pages read" value={fav.mostPages?.genre} detail={fav.mostPages&&`${num(fav.mostPages.pages)} pages`} empty="Needs sessions with pages on books with genres"/>
   </div>
-  <div className="muse-books-panel-head"><h4>Reading habits</h4><span className="small-label">{label}</span></div>
+  <div className="muse-books-panel-head"><h4><AtlasMark title="Reading habits"/>Reading habits</h4><span className="small-label">{label}</span></div>
   <div className="muse-atlas-insights" data-tone="habit">
    <Insight label="Favorite reading day" value={habits.favoriteDay?.name} detail={habits.favoriteDay&&(habits.anyTime?`${hours(habits.favoriteDay.seconds)} across ${plural(habits.favoriteDay.days,'reading day')}`:plural(habits.favoriteDay.days,'reading day'))} empty="No reading days yet"/>
    <Insight label="Most active month" value={habits.mostActiveMonth&&monthLabel(habits.mostActiveMonth.month)} detail={habits.mostActiveMonth&&(habits.anyTime?hours(habits.mostActiveMonth.seconds):`${habits.mostActiveMonth.pages} pages`)} empty="No reading months yet"/>
@@ -39,7 +40,7 @@ export function ReadingDNA({books,sessions,range,label,today}:{books:Book[];sess
   </div>
   </article>
   <div className="muse-dna-pair">
-  <article className="muse-books-panel"><div className="muse-books-panel-head"><h4>Genre breakdown</h4><span className="small-label">{plural(genres.finishedBooks,'book')} finished {label}</span></div>
+  <article className="muse-books-panel"><div className="muse-books-panel-head"><h4><AtlasMark title="Genre breakdown"/>Genre breakdown</h4><span className="small-label">{plural(genres.finishedBooks,'book')} finished {label}</span></div>
    {!genres.rows.length?<p>Add genres to your books to see their place in your reading life.</p>:<div className="muse-genre-ring">
     <Donut slices={genres.rows.slice(0,7).map(r=>({key:r.key,label:r.genre,value:r.finished||r.reads}))} main={genres.rows.length} sub={genres.rows.length===1?'genre':'genres'} label={`Genres by finished books: ${genres.rows.slice(0,7).map(r=>`${r.genre} ${r.share}%`).join(', ')}`}/>
     <PagedList tag="ul" className="muse-genre-legend" items={genres.rows} size={4} label="genres" render={r=>{const i=genres.rows.indexOf(r);return <li key={r.key} style={{'--c':paletteAt(i<7?i:7)} as CSSProperties}><i aria-hidden="true"/><strong>{r.genre}</strong><span className="type-numeric">{genres.finishedBooks?`${r.share}%`:'—'} · {r.finished} {r.finished===1?'book':'books'}</span><small className="type-numeric">{r.seconds?hours(r.seconds):'no timed reading'}{r.pages?` · ${num(r.pages)} pages`:''}</small></li>;}}/></div>}

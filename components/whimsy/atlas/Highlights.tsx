@@ -1,4 +1,5 @@
 'use client';
+import {AtlasMark} from './parts';
 import {useState} from 'react';
 import type {Book} from '@/lib/whimsy/models';
 import type {DateRange} from '@/lib/whimsy/reading-stats';
@@ -18,7 +19,7 @@ export function MonthShelf({books,today,onOpenBook,fixedYear}:{books:Book[];toda
  const [picked,setYear]=useState(()=>bestYear(books,today)),year=fixedYear??picked;
  const events=completionEvents(books).filter(e=>e.completion.finishedOn?.startsWith(year)).sort((a,b)=>(a.completion.finishedOn??'').localeCompare(b.completion.finishedOn??''));
  const months=monthsOf(year),best=months.map(m=>events.filter(e=>e.completion.finishedOn?.startsWith(m)).length),top=Math.max(...best);
- return <article className="muse-books-panel muse-shelf-panel"><div className="muse-books-panel-head"><h4>Books a month</h4>
+ return <article className="muse-books-panel muse-shelf-panel"><div className="muse-books-panel-head"><h4><AtlasMark title="Books a month"/>Books a month</h4>
   {!fixedYear&&<div className="muse-shelf-years"><button type="button" className="muse-button button-ghost" aria-label="Previous year" onClick={()=>setYear(String(Number(year)-1))}>‹</button><strong className="type-numeric">{year}</strong><button type="button" className="muse-button button-ghost" aria-label="Next year" disabled={year>=today.slice(0,4)} onClick={()=>setYear(String(Number(year)+1))}>›</button></div>}</div>
   {!events.length?<p>Nothing finished in {year} yet.</p>:<>
    <p className="muse-atlas-books-note">{events.length} {events.length===1?'book':'books'} finished{top>0?` · best month: ${monthName(months[best.indexOf(top)])}, ${top}`:''}</p>
@@ -38,7 +39,7 @@ export function RatingsByMonth({books,today}:{books:Book[];today:string}){
 /** The vibe of the period: the emojis you picked for finished reads, sized by how often. */
 export function VibeCloud({books,range,label}:{books:Book[];range:DateRange|null;label:string}){
  const {ranking}=emojiRanking(books,range),most=Math.max(1,...ranking.map(t=>t.books));
- return <article className="muse-books-panel"><div className="muse-books-panel-head"><h4>Vibes</h4><span className="small-label">{label}</span></div>
+ return <article className="muse-books-panel"><div className="muse-books-panel-head"><h4><AtlasMark title="Vibes"/>Vibes</h4><span className="small-label">{label}</span></div>
   {!ranking.length?<p>Add emojis to your finished reads and their vibe collects here.</p>:<PagedList items={ranking} size={8} label="emojis by finished books" className="muse-vibes" render={t=><div role="listitem" key={t.emoji} title={`${t.books} ${t.books===1?'book':'books'}`} style={{'--size':`${1.4+1.2*t.books/most}rem`} as React.CSSProperties}><span aria-hidden="true">{t.emoji}</span><small className="type-numeric">{t.books}</small></div>}/>}
  </article>;
 }
