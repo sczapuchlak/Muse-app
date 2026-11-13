@@ -529,7 +529,7 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
         {pasteMenu && <span ref={pasteAnchor} className="muse-vision-paste-anchor" aria-hidden="true" style={{ left: pasteMenu.x, top: pasteMenu.y }} />}
         <span className="muse-vision-size-chip" aria-hidden="true">{c.w} × {c.h}</span>
       </div>
-      {panelOpen && <Inspector onClose={() => togglePanelOpen(false)} board={board} selected={selected} grouped={grouped} units={unitCount} patch={patch} actions={actions} palette={palette} uploads={boardUploads} requestUpload={requestUpload}
+      {panelOpen && <Inspector onClose={() => togglePanelOpen(false)} onDeselect={() => { setSelectedIds([]); wrapRef.current?.focus({ preventScroll: true }); }} board={board} selected={selected} grouped={grouped} units={unitCount} patch={patch} actions={actions} palette={palette} uploads={boardUploads} requestUpload={requestUpload}
         lookups={{ linkOptions, live }} label={elementLabel} />}
     </div>
     <GlassPopover id="vision-canvas-paste" label="Canvas actions" open={!!pasteMenu} anchorRef={pasteAnchor} onClose={() => { setPasteMenu(null); wrapRef.current?.focus({ preventScroll: true }); }} width={220} bare>

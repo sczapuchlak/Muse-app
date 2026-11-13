@@ -27,6 +27,8 @@ export type InspectorActions = {
 };
 type Props = {
   onClose?: () => void;
+  /** Closes a piece's settings (deselects it), back to the board's. */
+  onDeselect?: () => void;
   board: VisionBoard; selected: BoardElement[]; grouped: boolean; units: number;
   /** Patches every selected piece of the representative's kind (so a multi-selection of shapes edits together). */
   patch: (fn: (e: BoardElement) => Partial<BoardElement> | null, key?: string, scope?: "kind" | "all") => void;
@@ -43,7 +45,9 @@ export function Inspector(props: Props) {
   const { selected } = props;
   const first = selected[0], mixed = new Set(selected.map((e) => e.kind)).size > 1;
   return <aside id="vision-inspector" className="muse-vision-inspector" aria-label={first ? "Selected piece settings" : "Board settings"}>
-    {props.onClose && <div className="muse-vision-inspector-close"><MuseCloseButton label="Hide the panel" onClose={props.onClose} /></div>}
+    {/* X closes what the panel is showing: a piece's settings (deselects it), or the board's (hides the panel). */}
+    {first && props.onDeselect ? <div className="muse-vision-inspector-close"><MuseCloseButton label={selected.length > 1 ? "Close these pieces’ settings" : "Close this piece’s settings"} onClose={props.onDeselect} /></div>
+      : props.onClose && <div className="muse-vision-inspector-close"><MuseCloseButton label="Hide the panel" onClose={props.onClose} /></div>}
     {!first ? <BoardSection {...props} /> : <>
       <header className="muse-vision-inspector-head">
         <p className="editor-label">{selected.length > 1 ? `${selected.length} pieces${props.grouped ? " · grouped" : ""}` : props.label(first)}</p>
