@@ -36,3 +36,7 @@
 .muse-emoji-option{min-width:44px;min-height:44px;font-size:1.6rem}
 @media(max-width:420px){.muse-emoji-controls{grid-template-columns:minmax(0,1fr) minmax(128px,42%)}}
 .muse-card:has(>.card-heading) .muse-day-three{border-top:0;padding-top:0;margin-top:var(--space-3)}
+/* Bigger Day in Three (Stephanie, Nov 13): the three emojis are the point of the card, so they read at a glance. */
+.muse-day-three-item>.muse-emoji-trigger{min-width:60px;min-height:60px;padding:6px;border-radius:18px;font-size:2.4rem;line-height:1}
+.muse-day-three-item>.muse-emoji-trigger :is(img,svg,.muse-emoji-glyph){width:44px;height:44px;font-size:2.4rem}
+.muse-day-three-list{gap:10px;align-items:center}
