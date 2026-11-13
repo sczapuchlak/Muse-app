@@ -153,3 +153,23 @@
 .muse-tarot-entry-foot>span{padding:2px 8px;border-radius:999px;background:var(--surface-control);font-size:.7rem;color:var(--text-muted)}
 .muse-tarot-entry-foot:empty{display:none}
 @media (prefers-reduced-motion:reduce){.muse-tarot-entry-stage>span,.muse-tarot .muse-tarot-entry{transition:none}}
+
+/* Reading Journal, round 4 (Nov 13: "can be shnazzied up"). Three across with no lone card on a last row: the newest
+   reading becomes a wide feature when the count would leave a gap (and the last one widens when needed). Each reading's
+   cards sit on a candle-lit velvet stage that fans wider when you reach for it, with a gold glow. */
+.muse-tarot .muse-tarot-timeline{grid-template-columns:repeat(3,minmax(0,1fr))}
+.muse-tarot .muse-tarot-timeline:has(>:last-child:nth-child(3n+1))>:first-child,
+.muse-tarot .muse-tarot-timeline:has(>:last-child:nth-child(3n+2))>:first-child{grid-column:span 2}
+.muse-tarot .muse-tarot-timeline:has(>:last-child:nth-child(3n+1)):has(>:nth-child(4))>:last-child{grid-column:span 2}
+.muse-tarot .muse-tarot-timeline>:only-child{grid-column:1/-1}
+.muse-tarot .muse-tarot-timeline>[style*="span"],.muse-tarot .muse-tarot-timeline>*{min-width:0}
+.muse-tarot-entry-stage{position:relative;height:150px;background:radial-gradient(60% 80% at 50% 105%,color-mix(in srgb,#f2b44e 26%,transparent),transparent 70%),radial-gradient(90% 100% at 50% 100%,color-mix(in srgb,var(--chart-6) 30%,transparent),transparent 75%),linear-gradient(180deg,color-mix(in srgb,var(--chart-6) 10%,var(--background)),color-mix(in srgb,#2a1238 55%,var(--background)))!important}
+.muse-tarot-entry-stage::after{content:"";position:absolute;left:12%;right:12%;bottom:6px;height:18px;border-radius:50%;background:radial-gradient(closest-side,color-mix(in srgb,#ffcf73 45%,transparent),transparent);filter:blur(4px);pointer-events:none}
+.muse-tarot-entry-stage::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.6;background-image:radial-gradient(1px 1px at 12% 22%,white 50%,transparent 51%),radial-gradient(1.4px 1.4px at 84% 18%,#ffe39a 50%,transparent 51%),radial-gradient(1px 1px at 30% 60%,white 50%,transparent 51%),radial-gradient(1px 1px at 70% 48%,white 50%,transparent 51%),radial-gradient(1.2px 1.2px at 92% 70%,#ffe39a 50%,transparent 51%)}
+.muse-tarot-entry-stage .muse-tarot-art{box-shadow:0 10px 20px rgba(0,0,0,.5),0 0 0 1px color-mix(in srgb,#f2c46a 30%,transparent)!important}
+.muse-tarot .muse-tarot-timeline>:is(:first-child,:last-child)[style],.muse-tarot .muse-tarot-timeline>*{transition:transform .4s cubic-bezier(.2,.8,.2,1),box-shadow .4s,border-color .3s}
+.muse-tarot .muse-tarot-entry:hover{transform:translateY(-4px);border-color:color-mix(in srgb,#f2c46a 45%,transparent)!important;box-shadow:0 22px 40px -22px #f2b44e,0 0 0 1px color-mix(in srgb,#f2c46a 30%,transparent)!important}
+.muse-tarot-entry:is(:hover,:focus-visible) .muse-tarot-entry-stage>span{transform:rotate(calc(var(--o) * 13deg)) translateY(calc(var(--o) * var(--o) * 2.5px - 2px))!important}
+.muse-tarot .muse-tarot-entry-preview{border-left-color:color-mix(in srgb,#f2c46a 65%,transparent)!important}
+@container (max-width:900px){.muse-tarot .muse-tarot-timeline{grid-template-columns:repeat(2,minmax(0,1fr))}.muse-tarot .muse-tarot-timeline>*{grid-column:auto!important}.muse-tarot .muse-tarot-timeline:has(>:last-child:nth-child(odd))>:first-child{grid-column:1/-1!important}}
+@media (max-width:600px){.muse-tarot .muse-tarot-timeline{grid-template-columns:minmax(0,1fr)}.muse-tarot .muse-tarot-timeline>*{grid-column:auto!important}}

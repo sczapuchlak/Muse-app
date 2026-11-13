@@ -1,5 +1,5 @@
 'use client';
-import {useState} from 'react';
+import {useState,type CSSProperties} from 'react';
 import Link from 'next/link';
 import type {DreamEntry} from '@/lib/whimsy/models';
 import type {DreamMeaning} from '@/lib/whimsy/dream-persistence';
@@ -7,8 +7,9 @@ import {dreamDisplayTitle,type DreamSymbol} from '@/lib/whimsy/dreams';
 import {dateLabel} from '@/lib/dates';
 import {categoryGlyph,symbolGlyph} from './DreamDiary';
 import {DreamTypeBadge,emotionName} from './parts';
+import './DreamDecoderInvite.css';
 
-type Props={dream:DreamEntry|undefined;dreams:DreamEntry[];symbols:DreamSymbol[];meanings:DreamMeaning[];symbolCounts:Map<string,number>;symbolHref:(id:string,dreamId:string)=>string;onChoose:()=>void;onEdit:(dream:DreamEntry)=>void;onOpen:(dream:DreamEntry)=>void;reflection:string;setReflection:(value:string)=>void;onSaveReflection:()=>void;busy:boolean};
+type Props={dream:DreamEntry|undefined;dreams:DreamEntry[];symbols:DreamSymbol[];meanings:DreamMeaning[];symbolCounts:Map<string,number>;symbolHref:(id:string,dreamId:string)=>string;onChoose:()=>void;onEdit:(dream:DreamEntry)=>void;onOpen:(dream:DreamEntry)=>void;onDecode?:(dream:DreamEntry)=>void;reflection:string;setReflection:(value:string)=>void;onSaveReflection:()=>void;busy:boolean};
 
 /**
  * Dream Decoder, the Interpretation Studio: a guided reading from the dream, to its atmosphere, to the symbols found
@@ -16,7 +17,19 @@ type Props={dream:DreamEntry|undefined;dreams:DreamEntry[];symbols:DreamSymbol[]
  */
 export function DreamDecoder(p:Props){
  const [chosen,setChosen]=useState<{dream:string;symbol:string}|null>(null);
- if(!p.dream)return <section className="muse-dream-section" aria-label="Dream Decoder"><div className="muse-empty-state muse-dream-empty-state" data-variant="editorial"><span className="muse-dream-moon" aria-hidden="true">☾</span><h3>{p.dreams.length?'Choose a dream. Let’s see what followed you out of sleep.':'Capture a dream in the Diary first, then bring it here to explore.'}</h3><p>The Decoder sets your own details beside each symbol’s possible meanings. It offers reflection, never prediction.</p>{p.dreams.length>0&&<button type="button" className="muse-button button-primary" onClick={p.onChoose}>Choose a dream</button>}</div></section>;
+ if(!p.dream){const recent=[...p.dreams].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,3);
+  return <section className="muse-dream-section" aria-label="Dream Decoder"><div className="muse-decoder-invite">
+   <div className="muse-decoder-scene" aria-hidden="true"><span className="muse-decoder-moon"/><span className="muse-decoder-cloud" data-n="1"/><span className="muse-decoder-cloud" data-n="2"/>
+    {['♞','≈','⌂','✿','◇','♡','☾'].map((g,i)=><i key={i} className="muse-decoder-float" style={{'--n':i} as CSSProperties}>{g}</i>)}</div>
+   <div className="muse-decoder-invite-copy"><p className="muse-kicker">The Interpretation Studio</p>
+    <h3>{p.dreams.length?'Choose a dream. Let’s see what followed you out of sleep.':'Capture a dream in the Diary first, then bring it here to explore.'}</h3>
+    <p>The Decoder sets your own details beside each symbol’s possible meanings. It offers reflection, never prediction.</p></div>
+   {recent.length>0&&<><p className="muse-decoder-recent-label small-label">Your latest dreams</p><ul className="muse-decoder-recent" data-count={recent.length}>{recent.map(d=><li key={d.id}><button type="button" className="muse-decoder-dream" onClick={()=>p.onDecode?p.onDecode(d):p.onChoose()}>
+    <span className="muse-decoder-dream-date small-label">{dateLabel(d.date)}</span><strong>{dreamDisplayTitle(d)}</strong>
+    <span className="muse-decoder-dream-symbols" aria-label={`${d.symbolIds.length} symbols`}>{d.symbolIds.slice(0,5).map(id=><i key={id}>{symbolGlyph(p.symbols.find(s=>s.id===id))}</i>)}{!d.symbolIds.length&&<em>No symbols yet</em>}</span>
+    <span className="muse-decoder-dream-go">Decode this dream →</span></button></li>)}</ul></>}
+   {p.dreams.length>3&&<button type="button" className="muse-button button-ghost" onClick={p.onChoose}>Choose another dream</button>}
+  </div></section>;}
  const dream=p.dream,types=dream.classifications?.length?dream.classifications:dream.lucid?['Lucid']:[];
  const active=chosen?.dream===dream.id&&dream.symbolIds.includes(chosen.symbol)?chosen.symbol:dream.symbolIds[0]??'';
  const symbol=p.symbols.find(s=>s.id===active),meaning=p.meanings.find(m=>m.symbol_id===active)?.meaning;
