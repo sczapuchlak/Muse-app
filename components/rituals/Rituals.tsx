@@ -1,11 +1,10 @@
 "use client";
-import { MuseStatRow, MuseStatTile } from "@/components/design/MuseHeading";
 import {useDailyData} from "../daily/DailyData";
 import { Suspense, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { dailyEditSample } from "@/lib/daily-edit-data";
 import { weekDates } from "@/lib/dates";
-import { entryFor, weekSummary, type RitualDefinition } from "@/lib/rituals";
+import { entryFor, type RitualDefinition } from "@/lib/rituals";
 import { MusePageHeader } from "../MusePageHeader";
 import { DateNavigator } from "../DateNavigator";
 import { RitualWeekNavigator } from "./RitualWeekNavigator";
@@ -23,6 +22,7 @@ import { RitualTracker } from "./RitualTracker";
 import { MuseChoiceMenu } from "../MuseChoiceMenu";
 import { periodTitle, shiftPeriod, trackerLayouts, trackerPeriods, type TrackerLayout, type TrackerPeriod } from "@/lib/ritual-tracker";
 import "./Rituals.css";
+import { RitualsSky } from "./RitualsSky";
 
 type Editor = { kind: "ritual"; ritual?: RitualDefinition; groupId?: string; anchor: HTMLElement } | { kind: "groups"; anchor: HTMLElement } | { kind: "entry"; ritual: RitualDefinition; date: string; anchor: HTMLElement; apply: (value: number | null) => void };
 function RitualsView() {
@@ -39,7 +39,7 @@ function RitualsView() {
   useEffect(() => { const t = window.setTimeout(() => { try { const v = JSON.parse(window.localStorage.getItem("muse.rituals.tracker") ?? "{}"); setTracker({ period: ["week", "month", "year"].includes(v.period) ? v.period : "week", layout: v.layout === "grid" ? "grid" : v.layout ? "focus" : "grid", habitId: typeof v.habitId === "string" ? v.habitId : "all" }); } catch { /* per device only */ } }, 0); return () => window.clearTimeout(t); }, []);
   const changeTracker = (patch: Partial<typeof tracker>) => setTracker((v) => { const next = { ...v, ...patch }; try { window.localStorage.setItem("muse.rituals.tracker", JSON.stringify(next)); } catch { /* per device only */ } return next; });
   const today = useMuseToday(profile.timeZone);
-  const week = weekDates(date), summary = weekSummary(state, week, today);
+  const week = weekDates(date);
   // Year is always the year sheet (Focus); a year "grid" isn't a view.
   const period = tracker.period, layout: TrackerLayout = period === "year" ? "focus" : tracker.layout, classic = period === "week" && layout === "grid";
   const trackable = state.rituals.filter((r) => archived ? r.status === "archived" : r.status !== "archived");
@@ -58,7 +58,7 @@ function RitualsView() {
     <div className="muse-rituals-phone-actions muse-phone-only"><MuseOverflowMenu label="Rituals" actions={[{ id: "archived", label: archived ? "Back to tracking" : "View archived", onSelect: () => setArchived((value) => !value) }, { id: "groups", label: "Manage groups", onSelect: () => setEditor({ kind: "groups", anchor: document.activeElement as HTMLElement }) }]} /><button className="muse-button button-primary muse-search-add" type="button" aria-label="Add ritual" onClick={(event) => setEditor({ kind: state.groups.length ? "ritual" : "groups", anchor: event.currentTarget })}><MuseIcon name="plus" size={16} /></button></div></div>
     {!classic && <RitualTracker period={period} layout={layout} habitId={focusId} date={date} today={today} rituals={trackable} onDate={(d, p, l) => { setDate(d); changeTracker({ ...(p ? { period: p } : {}), ...(l ? { layout: l } : {}) }); }} onEditEntry={(ritual, entryDate, anchor, apply) => setEditor({ kind: "entry", ritual, date: entryDate, anchor, apply })} />}
     {classic && <><div className="muse-rituals-week-context"><RitualWeekNavigator selectedDate={date} today={today} onChange={setDate}/></div>
-    {today ? <MuseStatRow label="This week" className="muse-rituals-stats"><MuseStatTile icon="checkmark" tone={3} value={summary.completed} label="Complete" note="this week"/><MuseStatTile icon="pulse" tone={4} value={summary.partial} label="Partial" note="on the way"/><MuseStatTile icon="hourglass" tone={5} value={summary.unknown} label="Not logged" note="past days left open"/></MuseStatRow> : <p className="muse-rituals-summary-line">…</p>}
+    {today ? <RitualsSky state={state} date={date} today={today} week={week}/> : <p className="muse-rituals-summary-line">…</p>}
     <div className="muse-ritual-groups">{state.groups.map((group) => <RitualGroup key={group.id} group={group} archived={archived} week={week} selectedDate={date} today={today} onEdit={(ritual, anchor) => setEditor({ kind: "ritual", ritual, anchor })} onAdd={(groupId, anchor) => setEditor({ kind: "ritual", groupId, anchor })} onEditEntry={(ritual, entryDate, anchor, apply) => setEditor({ kind: "entry", ritual, date: entryDate, anchor, apply })} />)}</div>
     <div className="muse-ritual-legend" aria-label="Week status legend"><span><i data-status="complete" />Complete</span><span><i data-status="partial" />Partial progress</span><span>× Explicitly missed</span><span>○ Not logged / unknown</span><span><i data-status="upcoming" />Upcoming</span><span>— Not scheduled</span></div>
     <p className="small-label muse-ritual-semantics" data-classic>Partial progress is its own state. Past blanks stay unknown until you log them. Weekly targets accumulate across available days; unscheduled days never count against a streak.</p></>}
