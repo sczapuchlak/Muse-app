@@ -47,7 +47,7 @@ test('Planner keeps Task List beside Filters in one toolbar',()=>{
 test('Dream Diary and Tarot journal filters fold away on mobile and count what is active',()=>{
  const diary=source('components/whimsy/dreams/DreamDiary.tsx');
  assert.match(diary,/data-filters-open=\{filtersOpen\}/);assert.match(diary,/sort==='oldest'/);
- assert.match(source('components/whimsy/TarotExperience.tsx'),/muse-tarot-date-filter/);
+ assert.match(source('components/whimsy/TarotExperience.tsx'),/<MuseOptionalDatePicker label="Any date"/,'the Tarot journal date filter is the shared date picker');
 });
 
 test('Collections remember the chosen sort with the other view preferences',()=>{

@@ -163,7 +163,7 @@
 .muse-sheet-inset{min-width:0;padding:14px 16px;border:1px solid color-mix(in srgb,var(--glass-border) 70%,transparent);border-radius:var(--dl-radius-tile);background:var(--surface-subtle)}
 
 /* Mark: the colored icon tile. Tones are the theme's chart inks, set inline as --mark-a / --mark-b. */
-.muse-mark{--mark-a:var(--chart-1);--mark-b:var(--chart-2);display:inline-grid;place-items:center;flex:0 0 auto;width:34px;height:34px;border-radius:11px;color:#170f24;background:linear-gradient(140deg,color-mix(in srgb,var(--mark-a) 82%,#fff),var(--mark-a) 48%,color-mix(in srgb,var(--mark-b) 78%,var(--mark-a)));box-shadow:0 6px 16px -6px color-mix(in srgb,var(--mark-a) 70%,transparent),inset 0 1px 0 color-mix(in srgb,#fff 55%,transparent),inset 0 -1px 0 color-mix(in srgb,#000 14%,transparent)}
+.muse-mark{--mark-a:var(--chart-1);--mark-b:var(--chart-2);display:inline-grid;place-items:center;flex:0 0 auto;width:34px;height:34px;border-radius:11px;color:var(--mark-ink,var(--background));background:linear-gradient(140deg,color-mix(in srgb,var(--mark-a) 82%,white),var(--mark-a) 48%,color-mix(in srgb,var(--mark-b) 78%,var(--mark-a)));box-shadow:0 6px 16px -6px color-mix(in srgb,var(--mark-a) 70%,transparent),inset 0 1px 0 color-mix(in srgb,var(--mark-sheen,var(--glass-edge)) 55%,transparent),inset 0 -1px 0 color-mix(in srgb,black 14%,transparent)}
 .muse-mark svg{stroke:currentColor;stroke-width:2;display:block}
 .muse-mark[data-size=sm]{width:26px;height:26px;border-radius:9px}
 .muse-mark[data-size=lg]{width:44px;height:44px;border-radius:14px}

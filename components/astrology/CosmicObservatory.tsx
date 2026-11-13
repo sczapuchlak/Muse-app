@@ -72,7 +72,7 @@ export function CosmicObservatory(){
   setMessage('The original item is no longer available. Your saved reference and personal reflection are preserved.');
  }
  const requestedEntry=searchParams?.get('entry')??'',openedEntry=useRef('');
- useEffect(()=>{if(!loaded||!requestedEntry||openedEntry.current===requestedEntry)return;openedEntry.current=requestedEntry;if(records.journal.some(item=>item.id===requestedEntry))setDetail({kind:'journal',id:requestedEntry});},[loaded,requestedEntry,records.journal]);
+ useEffect(()=>{if(!loaded||!requestedEntry||openedEntry.current===requestedEntry)return;openedEntry.current=requestedEntry;if(records.journal.some(item=>item.id===requestedEntry))queueMicrotask(()=>setDetail({kind:'journal',id:requestedEntry}));},[loaded,requestedEntry,records.journal]);
  const journal=detail?.kind==='journal'?records.journal.find(item=>item.id===detail.id):null,placement=detail?.kind==='placement'?chart?.placements.find(item=>item.body===detail.body):null,entry=detail?.kind==='library'?libraryEntry(detail.id):null;
  const closeDetail=()=>{setDetail(null);setEditor(null);};
  const recordStatus=<>{error?<><p role="alert">{error}</p><button type="button" className="text-button" disabled={busy} onClick={()=>void retryChange()}>Retry {pending?'unconfirmed change':'loading'}</button><button type="button" className="text-button" disabled={busy} onClick={()=>{if(!pending||window.confirm('Load the latest saved records? The prior operation may already have saved; unfinished form text stays here.'))void store.reload();}}>Load latest saved records</button></>:busy?'Saving private Observatory…':loaded?'Private Observatory · saved records loaded':'Loading private Observatory…'}</>;
