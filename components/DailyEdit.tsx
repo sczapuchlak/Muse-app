@@ -42,7 +42,7 @@ export function DailyEdit() {
       <h1 className="muse-daily-section-title" id="daily-edit">The Daily Edit</h1>
       <div className="daily-working-grid" key={`working/${selectedDate}`}>
         <div className="daily-working-left">
-          <CosmicForecast compact />
+          <CosmicForecast compact date={selectedDate} />
           <PrioritiesCard />
           <WellnessCapture><MovementCard initialTypes={sampleMovementTypes.filter(type=>type.source==='starter')} initialDay={{date:selectedDate,typeIds:[]}} /></WellnessCapture>
           <WellnessCapture><WaterCard initialDay={{ date: selectedDate, total: 0 }} settings={day.water.settings} /></WellnessCapture>

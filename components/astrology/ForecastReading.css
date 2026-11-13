@@ -49,3 +49,52 @@
 .muse-forecast-editorial-section h4>span{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:color-mix(in srgb,var(--tone) 18%,var(--surface-control));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--tone) 45%,transparent);font-size:1rem}
 .muse-forecast-editorial-section h4>b{font:700 .8rem/1.3 var(--font-ui);letter-spacing:.14em;text-transform:uppercase;color:var(--foreground)}
 .muse-forecast-key-dates h4{font:700 .8rem/1.3 var(--font-ui);letter-spacing:.14em;text-transform:uppercase}
+
+/* ── Reflect on this forecast (glow-up): an inviting inline composer, not a database form ─────────────────── */
+.muse-forecast-reflect{min-width:0;margin-top:clamp(14px,2vw,22px)}
+.muse-forecast-reflect-invite{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:14px 16px;border:1px dashed color-mix(in srgb,var(--chart-3) 45%,var(--glass-border));border-radius:16px;background:radial-gradient(120% 160% at 0% 0%,color-mix(in srgb,var(--chart-3) 9%,transparent),transparent 60%),var(--glass-background)}
+.muse-forecast-reflect-invite>div{flex:1 1 220px;min-width:0}
+.muse-forecast-reflect-question{margin:0;font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight);font-size:clamp(1.05rem,1.6vw,1.3rem);line-height:1.25}
+.muse-forecast-reflect-sub{margin:3px 0 0;color:var(--text-muted);font-size:.82rem;line-height:1.45}
+.muse-forecast-reflect-invite>.muse-button{flex:0 0 auto}
+.muse-forecast-reflect-context{display:inline-flex;align-items:center;gap:6px;color:var(--text-muted);font-size:.74rem;font-weight:600;letter-spacing:.02em}
+.muse-forecast-reflect-context>span{color:var(--accent-primary);font-size:1rem;line-height:1}
+:is(.muse-forecast-reflect-composer,.muse-forecast-reflect-saved){display:grid;gap:12px;min-width:0;padding:16px 18px;border:1px solid color-mix(in srgb,var(--chart-3) 38%,var(--glass-border));border-radius:16px;background:radial-gradient(130% 120% at 100% 0%,color-mix(in srgb,var(--chart-3) 8%,transparent),transparent 58%),var(--glass-background)}
+:is(.muse-forecast-reflect-composer,.muse-forecast-reflect-saved)>header{display:flex;align-items:center;gap:10px;min-width:0}
+:is(.muse-forecast-reflect-composer,.muse-forecast-reflect-saved)>header>div{display:grid;gap:1px;min-width:0;flex:1 1 auto}
+:is(.muse-forecast-reflect-composer,.muse-forecast-reflect-saved)>header :is(label,strong){font-family:var(--font-editorial);font-weight:var(--type-editorial-weight);font-size:1.05rem;line-height:1.25}
+/* The page: ruled lines in the theme's ink, writing in the reading serif. */
+.muse-forecast-reflect-composer textarea{display:block;width:100%;min-height:calc(1.9em * 4 + 20px);padding:10px 2px;border:0;border-radius:0;outline:0;resize:vertical;color:var(--foreground);background-color:transparent;background-image:repeating-linear-gradient(transparent 0 calc(1.9em - 1px),color-mix(in srgb,var(--foreground) 14%,transparent) calc(1.9em - 1px) 1.9em);background-position:0 10px;background-attachment:local;font-family:var(--font-editorial);font-weight:var(--type-reading-weight);font-size:1.02rem;line-height:1.9;box-shadow:none}
+.muse-forecast-reflect-composer textarea::placeholder{color:var(--text-muted);font-style:italic;opacity:.8}
+.muse-forecast-reflect-composer textarea:focus-visible{outline:0;background-image:repeating-linear-gradient(transparent 0 calc(1.9em - 1px),color-mix(in srgb,var(--chart-3) 55%,transparent) calc(1.9em - 1px) 1.9em)}
+.muse-forecast-reflect-composer:focus-within{border-color:color-mix(in srgb,var(--chart-3) 70%,var(--glass-border));box-shadow:0 0 0 3px color-mix(in srgb,var(--chart-3) 16%,transparent)}
+@media (pointer:coarse){.muse-forecast-reflect-composer textarea{font-size:1.06rem}}
+.muse-forecast-reflect-prompts{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0;list-style:none}
+.muse-forecast-reflect-prompts button{padding:6px 11px;border:1px solid var(--glass-border);border-radius:999px;background:var(--surface-control);color:var(--text-muted);font:500 .76rem var(--font-ui);cursor:pointer;transition:color .18s,border-color .18s}
+.muse-forecast-reflect-prompts button:is(:hover,:focus-visible){color:var(--foreground);border-color:color-mix(in srgb,var(--chart-3) 60%,var(--glass-border))}
+.muse-forecast-reflect-prompts button:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
+.muse-forecast-reflect-error{margin:0;color:var(--danger,var(--accent-pop));font-size:.84rem}
+:is(.muse-forecast-reflect-composer,.muse-forecast-reflect-saved)>footer{display:flex;align-items:center;justify-content:space-between;gap:10px 14px;flex-wrap:wrap}
+.muse-forecast-reflect-composer>footer p{margin:0;flex:1 1 200px}
+.muse-forecast-reflect-composer>footer>div{display:flex;gap:8px;margin-left:auto}
+.muse-forecast-reflect-saved blockquote{margin:0;padding:2px 0 2px 14px;border-left:2px solid color-mix(in srgb,var(--chart-3) 65%,transparent);font-family:var(--font-editorial);font-weight:var(--type-reading-weight);font-size:1rem;line-height:1.7;white-space:pre-wrap;overflow-wrap:anywhere;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:6;overflow:hidden}
+.muse-forecast-reflect-kept{display:inline-flex;align-items:center;gap:5px;margin-left:auto;padding:3px 9px;border-radius:999px;background:color-mix(in srgb,var(--success-primary) 18%,transparent);color:var(--foreground);font-size:.72rem;font-weight:650;animation:muse-surface-arrive 260ms ease-out}
+.muse-forecast-reflect-link{color:var(--text-muted);font-size:.8rem;font-weight:550;text-decoration:underline;text-underline-offset:3px;text-decoration-color:color-mix(in srgb,var(--text-muted) 45%,transparent)}
+.muse-forecast-reflect-link:hover{color:var(--foreground)}
+.muse-forecast-reflect[data-compact] :is(.muse-forecast-reflect-invite,.muse-forecast-reflect-composer,.muse-forecast-reflect-saved){padding:12px 14px}
+.muse-forecast-reflect[data-compact]{margin-top:2px}
+.muse-forecast-reflect[data-compact] .muse-forecast-reflect-question{font-size:1.02rem}
+@media (prefers-reduced-motion:reduce){.muse-forecast-reflect-kept{animation:none}}
+:root[data-magic=quiet] .muse-forecast-reflect-kept{animation:none}
+@container muse-content (max-width:640px){.muse-forecast-reflect-invite>.muse-button{flex:1 1 100%}.muse-forecast-reflect-composer>footer>div{flex:1 1 100%}.muse-forecast-reflect-composer>footer>div>.muse-button{flex:1 1 0}}
+
+/* A day that is not today: what the reader kept, or an honest empty state. Never a forecast. */
+.muse-forecast-history{display:grid;gap:12px;min-width:0}
+.muse-forecast-history-lead{margin:0;font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-quote-weight);font-size:1.02rem;line-height:1.4}
+.muse-forecast-history-list{display:grid;gap:10px}
+.muse-forecast-history .muse-forecast-reflect-saved{background:var(--surface-subtle)}
+.muse-forecast-history-note,.muse-forecast-history-loading{margin:0;color:var(--text-muted);font-size:.78rem}
+.muse-forecast-history-empty{display:flex;align-items:flex-start;gap:14px;padding:16px;border:1px dashed var(--glass-border);border-radius:16px;background:var(--surface-subtle)}
+.muse-forecast-history-empty p{margin:0;color:var(--text-muted);font-size:.86rem;line-height:1.55}
+.muse-forecast-history-empty .muse-forecast-history-title{margin-bottom:4px;color:var(--foreground);font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight);font-size:1.12rem;line-height:1.3}
+.muse-forecast-history .muse-forecast-footer{display:flex;align-items:baseline;justify-content:space-between;gap:6px 16px;flex-wrap:wrap;padding-top:var(--space-2);border-top:1px solid var(--glass-border)}
