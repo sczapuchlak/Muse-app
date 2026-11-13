@@ -203,3 +203,12 @@
 
 /* Astro 101: each diagram sits on a small night-sky plate. */
 .muse-observatory .muse-astro101-figure .muse-lesson-diagram{width:min(100%,200px);padding:10px;border-radius:50%;background:radial-gradient(circle at 50% 40%,color-mix(in srgb,var(--chart-5) 26%,#0d0b1f),#07060f 72%);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--chart-5) 40%,transparent),0 14px 30px -16px color-mix(in srgb,var(--chart-5) 80%,transparent);color:#f4efff;background-image:radial-gradient(circle,rgba(255,255,255,.7) 0 .6px,transparent 1px),radial-gradient(circle at 50% 40%,color-mix(in srgb,var(--chart-5) 26%,#0d0b1f),#07060f 72%);background-size:23px 29px,100% 100%}
+
+/* ── Zodiac tiles (glow-up 2): Muse line glyphs on a flat tile, one colour per sign, never a glossy orb ────────── */
+.muse-observatory .muse-cosmic-forecast-sign{border-color:color-mix(in srgb,var(--sign,var(--accent-primary)) 50%,var(--glass-border));background-image:radial-gradient(120% 140% at 0% 50%,color-mix(in srgb,var(--sign,var(--accent-primary)) 16%,transparent),transparent 65%)}
+.muse-observatory .muse-sign-facts i{background:color-mix(in srgb,var(--sign,var(--accent-primary)) 18%,var(--surface-control))}
+.muse-observatory .muse-cosmic-zodiac-button{--element:var(--sign);background-image:none}
+.muse-observatory .muse-cosmic-zodiac-button:hover{border-color:color-mix(in srgb,var(--sign) 60%,var(--glass-border));transform:translateY(-2px)}
+.muse-observatory .muse-cosmic-zodiac-button[aria-pressed=true]{background:color-mix(in srgb,var(--sign) 14%,var(--surface-subtle));box-shadow:0 0 0 2px var(--sign),0 12px 26px -14px color-mix(in srgb,var(--sign) 85%,transparent)}
+.muse-observatory .muse-cosmic-profile-button .muse-zodiac-tile{width:40px;height:40px;border-radius:50%}
+@media (prefers-reduced-motion:reduce){.muse-observatory .muse-cosmic-zodiac-button:hover{transform:none}}
