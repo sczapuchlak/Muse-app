@@ -1,4 +1,4 @@
-import type {CSSProperties} from "react";
+import {useState,type CSSProperties} from "react";
 import {accentStyle} from "@/lib/appearance-values";
 import {categorySpending,comingUp,formatMoney,paycheckSummary,periodTransactions,spendingTotal,type MoneyPeriod,type Paycheck} from "@/lib/money";
 import {AchievementBadge} from "../AchievementStar";
@@ -68,7 +68,7 @@ function CompactPaycheck({paycheck,period,today,onOpen,onPlan}:{paycheck:Paychec
   <div className="muse-money-hero-copy">
    <p className="muse-kicker">{inside?"Current paycheck":"Selected paycheck"} · {paycheck.name}</p>
    <h2 className="muse-money-hero-amount">{summary.basis===undefined?<span className="muse-money-hero-unknown">Income not recorded</span>:<MoneyNumeral cents={summary.basis}/>}</h2>
-   <p className="muse-money-hero-basis"><span className="muse-money-basis-chip" data-kind={received?"received":"expected"}>{received?"Received":"Expected"}</span>{fmt(paycheck.periodStart,{month:"short",day:"numeric"})} – {fmt(paycheck.periodEnd,{month:"short",day:"numeric"})}{daysLeft!==null&&<> · <b>{daysLeft}</b> {daysLeft===1?"day":"days"} left</>}</p>
+   <p className="muse-money-hero-basis"><span className="muse-money-basis-chip" data-kind={received?"received":"expected"}>{received?"Received":"Expected"}</span>{fmt(paycheck.periodStart,{month:"short",day:"numeric"})} – {fmt(paycheck.periodEnd,{month:"short",day:"numeric"})}{daysLeft!==null&&<span className="muse-money-days-chip"><b>{daysLeft}</b> {daysLeft===1?"day":"days"} left</span>}</p>
    <dl className="muse-money-compact-facts"><div><dt>Planned</dt><dd>{formatMoney(summary.planned)}</dd></div><div><dt>Spent so far</dt><dd>{formatMoney(spent)}</dd></div><div data-tone={summary.remaining!==null&&summary.remaining<0?"over":undefined}><dt>{summary.remaining!==null&&summary.remaining<0?"Over plan":"Yours to assign"}</dt><dd>{summary.remaining===null?"—":formatMoney(Math.abs(summary.remaining))}</dd></div></dl>
    <div className="muse-money-hero-actions"><button className="muse-button button-ghost" type="button" onClick={e=>onOpen({kind:"paycheck",initial:paycheck,anchor:e.currentTarget})}>Edit</button><button className="muse-button button-primary" type="button" onClick={e=>onOpen({kind:"transaction",anchor:e.currentTarget})}>+ Transaction</button></div>
   </div>
@@ -77,8 +77,8 @@ function CompactPaycheck({paycheck,period,today,onOpen,onPlan}:{paycheck:Paychec
 }
 
 export function PaycheckHero({paycheck,period,today,onOpen,onPlan,compact}:{paycheck?:Paycheck;period:MoneyPeriod;today:string;onOpen:MoneyOpen;onPlan?:()=>void;compact?:boolean}){
- if(compact&&paycheck)return <CompactPaycheck paycheck={paycheck} period={period} today={today} onOpen={onOpen} onPlan={onPlan}/>;
  const {state}=useMoney(),spent=spendingTotal(state,period);
+ if(compact&&paycheck)return <CompactPaycheck paycheck={paycheck} period={period} today={today} onOpen={onOpen} onPlan={onPlan}/>;
  if(!paycheck)return <section className="muse-money-hero muse-money-current" data-empty>
   <span className="muse-money-hero-envelope" aria-hidden="true"><i/></span>
   <div className="muse-money-hero-copy"><p className="muse-kicker">Current paycheck</p><h2 className="muse-money-hero-title">Every dollar wants a job.</h2><p className="muse-money-hero-note">Add a paycheck to plan where it goes. Expected income stays expected until you record it.</p><button className="muse-button button-primary" type="button" onClick={e=>onOpen({kind:"paycheck",anchor:e.currentTarget})}>+ New paycheck</button></div>
@@ -110,7 +110,7 @@ export function SpendingMix({period}:{period:MoneyPeriod}){
  if(!rows.length)return <p className="card-description">No spending recorded for this period.</p>;
  return <div className="muse-money-mix">
   <div className="muse-money-mix-ribbon" role="img" aria-label={rows.map(row=>`${row.name} ${formatMoney(row.amount)}`).join(", ")}>{rows.map(row=><span key={row.id} data-money-accent={row.accent} style={{...accentStyle(row.accent),flexGrow:row.amount}}/>)}</div>
-  <EntryCarousel items={rows} label="Spending by category" minWidth={118} itemKey={row=>row.id||"unassigned"} describe={row=>row.name} render={row=><div className="muse-money-mix-tile" data-money-accent={row.accent} style={accentStyle(row.accent)}><span className="muse-money-mix-share">{Math.round(row.amount/total*100)}%</span><span className="muse-money-mix-name">{row.name}</span><strong>{formatMoney(row.amount)}</strong></div>}/>
+  <RankedBars rows={rows.map(row=>({id:row.id||"unassigned",name:row.name,accent:row.accent,value:row.amount,note:`${Math.round(row.amount/total*100)}%`}))} label="Spending by category"/>
  </div>;
 }
 
@@ -122,13 +122,13 @@ export function PlanActualGauges({paycheck,period}:{paycheck:Paycheck;period:Mon
  const {state}=useMoney(),actual=categorySpending(state,period);
  const rows=state.categories.map(category=>{const allocations=state.allocations.filter(row=>row.paycheckId===paycheck.id&&row.categoryId===category.id&&!row.cardId);return {...category,planned:allocations.length?allocations.reduce((sum,row)=>sum+row.plannedCents,0):null,actual:actual.find(row=>row.id===category.id)?.amount??0};}).filter(row=>row.planned!==null||row.actual>0);
  if(!rows.length)return <p className="card-description">Nothing planned or recorded in this period yet.</p>;
- return <><p className="small-label">Planned from {paycheck.name} · recorded in {period.label}</p><EntryCarousel items={rows} label="Plan and actual by category" minWidth={210} itemKey={row=>row.id} describe={row=>row.name} render={row=>{const over=row.planned!==null&&row.actual>row.planned,fill=row.planned?Math.min(1,row.actual/row.planned):row.actual?1:0;
-  return <div className="muse-money-gauge" data-money-accent={row.accent} data-state={row.planned===null?"unplanned":over?"over":"within"} style={accentStyle(row.accent)}>
-   <span className="muse-money-gauge-name">{row.name}</span>
-   <span className="muse-money-gauge-figures"><MoneyNumeral cents={row.actual}/><small>{row.planned===null?"no plan":`of ${formatMoney(row.planned)}`}</small></span>
-   <span className="muse-money-gauge-track" aria-hidden="true"><span style={{"--fill":fill} as CSSProperties}/>{over&&<i style={{"--over":Math.min(1,(row.actual-row.planned!)/row.planned!)} as CSSProperties}/>}</span>
-   <span className="muse-money-gauge-note">{row.planned===null?"Recorded without a plan":over?`${formatMoney(row.actual-row.planned!)} over plan`:`${formatMoney(row.planned!-row.actual)} left`}</span>
-  </div>;}}/>{(()=>{const planned=rows.reduce((sum,row)=>sum+(row.planned??0),0),recorded=rows.reduce((sum,row)=>sum+row.actual,0),over=rows.filter(row=>row.planned!==null&&row.actual>row.planned).length;return <dl className="muse-money-facts"><div><dt>Planned</dt><dd>{formatMoney(planned)}</dd><small>{rows.filter(row=>row.planned!==null).length} categories</small></div><div><dt>Recorded</dt><dd>{formatMoney(recorded)}</dd><small>this period</small></div><div><dt>{recorded>planned?"Over plan":"Still in plan"}</dt><dd>{formatMoney(Math.abs(planned-recorded))}</dd><small>{over?`${over} ${over===1?"category":"categories"} over`:"Nothing over plan"}</small></div></dl>;})()}</>;
+ const scale=Math.max(1,...rows.map(row=>Math.max(row.planned??0,row.actual)));
+ return <><p className="small-label">Planned from {paycheck.name} · recorded in {period.label} · one scale for every row</p><Paged items={[...rows].sort((a,b)=>Math.max(b.planned??0,b.actual)-Math.max(a.planned??0,a.actual))} size={5} label="Plan and actual by category" render={row=>{const over=row.planned!==null&&row.actual>row.planned;
+  return <li className="muse-money-bullet" key={row.id} data-money-accent={row.accent} data-state={row.planned===null?"unplanned":over?"over":"within"} style={accentStyle(row.accent)}>
+   <span className="muse-money-bullet-name">{row.name}</span>
+   <span className="muse-money-bullet-track" aria-hidden="true"><span className="muse-money-bullet-fill" style={{width:`${Math.min(row.actual,row.planned??row.actual)/scale*100}%`}}/>{over&&<span className="muse-money-bullet-over" style={{left:`${row.planned!/scale*100}%`,width:`${(row.actual-row.planned!)/scale*100}%`}}/>}{row.planned!==null&&<span className="muse-money-bullet-plan" style={{left:`${row.planned/scale*100}%`}}/>}</span>
+   <span className="muse-money-bullet-figures"><b>{formatMoney(row.actual)}</b><small>{row.planned===null?"no plan":over?`${formatMoney(row.actual-row.planned!)} over`:`of ${formatMoney(row.planned)}`}</small></span>
+  </li>;}}/>{(()=>{const planned=rows.reduce((sum,row)=>sum+(row.planned??0),0),recorded=rows.reduce((sum,row)=>sum+row.actual,0),over=rows.filter(row=>row.planned!==null&&row.actual>row.planned).length;return <dl className="muse-money-facts"><div><dt>Planned</dt><dd>{formatMoney(planned)}</dd><small>{rows.filter(row=>row.planned!==null).length} categories</small></div><div><dt>Recorded</dt><dd>{formatMoney(recorded)}</dd><small>this period</small></div><div><dt>{planned===0?"Unplanned":recorded>planned?"Over plan":"Still in plan"}</dt><dd>{formatMoney(Math.abs(planned-recorded))}</dd><small>{planned===0?"No plan for this period yet":over?`${over} ${over===1?"category":"categories"} over`:"Nothing over plan"}</small></div></dl>;})()}</>;
 }
 
 /** Three quick reads of the period's spending: pace, the biggest day and the largest single purchase. */
@@ -143,4 +143,18 @@ export function SpendingFacts({period,today}:{period:MoneyPeriod;today:string}){
   <div><dt>Biggest day</dt><dd>{formatMoney(bigDayAmount)}</dd><small>{fmt(bigDay,{weekday:"short",month:"short",day:"numeric"})}</small></div>
   <div><dt>Largest purchase</dt><dd>{formatMoney(largest.amountCents)}</dd><small>{largest.merchant}</small></div>
  </dl>;
+}
+
+/** A vertical list that pages in fixed sets, with the shared carousel bar (locked height, never grows). */
+function Paged<T>({items,size,label,render}:{items:T[];size:number;label:string;render:(item:T)=>React.ReactNode}){
+ const [page,setPage]=useState(0),pages=Math.max(1,Math.ceil(items.length/size)),p=Math.min(page,pages-1),shown=items.slice(p*size,p*size+size);
+ return <div className="muse-money-paged" role="region" aria-roledescription="carousel" aria-label={label}>
+  <div className="muse-entry-carousel-bar"><span className="muse-entry-carousel-where">{items.length?<small>{p*size+1}–{p*size+shown.length} of {items.length}</small>:null}</span>{pages>1&&<span className="muse-entry-carousel-arrows"><button type="button" aria-label={`Previous ${label}`} disabled={p===0} onClick={()=>setPage(p-1)}><MuseIcon name="chevron" size={14}/></button><button type="button" aria-label={`Next ${label}`} disabled={p===pages-1} onClick={()=>setPage(p+1)}><MuseIcon name="chevron" size={14}/></button></span>}</div>
+  <ul className="muse-money-paged-list" style={{"--rows":size} as CSSProperties}>{shown.map(render)}</ul>
+ </div>;
+}
+/** Ranked bars: biggest first, every bar on the same scale (across pages too), each with its share. */
+function RankedBars({rows,label}:{rows:{id:string;name:string;accent?:string;value:number;note?:string}[];label:string}){
+ const max=Math.max(1,...rows.map(row=>row.value)),sorted=[...rows].sort((a,b)=>b.value-a.value);
+ return <Paged items={sorted} size={4} label={label} render={row=><li key={row.id} className="muse-money-rank" data-money-accent={row.accent} style={accentStyle(row.accent as never)}><span className="muse-money-rank-name">{row.name}</span><span className="muse-money-rank-track" aria-hidden="true"><span style={{width:`${row.value/max*100}%`}}/></span><span className="muse-money-rank-figures"><b>{formatMoney(row.value)}</b>{row.note&&<small>{row.note}</small>}</span></li>}/>;
 }

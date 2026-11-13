@@ -256,3 +256,46 @@
 .muse-money-mix-tile strong,.muse-money-gauge-note{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .muse-money-gauge-figures{flex-wrap:nowrap;min-width:0}
 .muse-money-gauge-figures>small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* ── Comparison first (Stephanie, Nov 13): shared-scale bars instead of paged cards ───────────────────────── */
+.muse-money-paged{display:grid;gap:8px;min-width:0}
+.muse-money-paged .muse-entry-carousel-bar{min-height:28px;color:var(--text-muted);font-size:.78rem}
+.muse-money-paged-list{display:grid;grid-template-rows:repeat(var(--rows),minmax(40px,auto));gap:6px;margin:0;padding:0;list-style:none}
+/* Ranked bars: name · bar · amount + share, one scale for all. */
+.muse-money-rank{display:grid;grid-template-columns:minmax(80px,.9fr) minmax(0,2fr) auto;align-items:center;gap:12px}
+.muse-money-rank-name{overflow:hidden;font-size:.86rem;font-weight:650;text-overflow:ellipsis;white-space:nowrap}
+.muse-money-rank-track{position:relative;height:14px;border-radius:999px;background:color-mix(in srgb,var(--foreground) 7%,transparent)}
+.muse-money-rank-track>span{position:absolute;inset:0 auto 0 0;min-width:6px;border-radius:inherit;background:linear-gradient(90deg,color-mix(in srgb,var(--money-accent,var(--accent-primary)) 65%,white),var(--money-accent,var(--accent-primary)))}
+@media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) .muse-money-rank-track>span,:root:not([data-magic=quiet]) .muse-money-bullet-fill{animation:muse-money-fill 1s cubic-bezier(.2,.8,.2,1) both}}
+.muse-money-rank-figures{display:grid;justify-items:end;min-width:88px}
+.muse-money-rank-figures b{font-family:var(--font-editorial);font-weight:560;font-size:1rem;font-variant-numeric:tabular-nums}
+.muse-money-rank-figures small{color:var(--text-muted);font-size:.7rem;font-weight:650}
+/* Bullet bars: fill = recorded, tick = plan, stripes = over plan. Same scale on every row and page. */
+.muse-money-bullet{display:grid;grid-template-columns:minmax(80px,.8fr) minmax(0,2fr) auto;align-items:center;gap:12px}
+.muse-money-bullet-name{overflow:hidden;font-size:.86rem;font-weight:650;text-overflow:ellipsis;white-space:nowrap}
+.muse-money-bullet-track{position:relative;height:16px;border-radius:6px;background:color-mix(in srgb,var(--foreground) 7%,transparent)}
+.muse-money-bullet-fill{position:absolute;inset:3px auto 3px 0;border-radius:4px;background:var(--money-accent,var(--accent-primary))}
+.muse-money-bullet-over{position:absolute;top:1px;bottom:1px;border-radius:0 5px 5px 0;background:repeating-linear-gradient(135deg,var(--warning-primary,#e8a33d) 0 4px,color-mix(in srgb,var(--warning-primary,#e8a33d) 50%,transparent) 4px 8px)}
+.muse-money-bullet-plan{position:absolute;top:-4px;bottom:-4px;width:3px;margin-left:-1.5px;border-radius:2px;background:var(--foreground);box-shadow:0 0 0 2px var(--glass-background)}
+.muse-money-bullet[data-state=unplanned] .muse-money-bullet-fill{background:repeating-linear-gradient(90deg,var(--money-accent,var(--accent-primary)) 0 6px,color-mix(in srgb,var(--money-accent,var(--accent-primary)) 45%,transparent) 6px 9px)}
+.muse-money-bullet-figures{display:grid;justify-items:end;min-width:96px}
+.muse-money-bullet-figures b{font-family:var(--font-editorial);font-weight:560;font-size:1rem;font-variant-numeric:tabular-nums}
+.muse-money-bullet-figures small{color:var(--text-muted);font-size:.7rem;font-weight:650;white-space:nowrap}
+.muse-money-bullet[data-state=over] .muse-money-bullet-figures small{color:var(--foreground)}
+.muse-money-comparison .muse-money-paged{flex:1}
+.muse-money-recorded .muse-money-mix{gap:10px}
+
+/* Never clip (Stephanie, Nov 13): rows share one height and lists page, but a card is never shorter than its content. */
+.muse-money-dashboard .muse-money-row[data-row=pay]>*,.muse-money-dashboard .muse-money-row[data-row=spend]>*,.muse-money-dashboard .muse-money-row[data-row=later]>*{height:auto}
+.muse-money-dashboard .muse-money-row[data-row=pay]>*{min-height:340px}
+.muse-money-dashboard .muse-money-row[data-row=spend]>*{min-height:440px}
+.muse-money-dashboard .muse-money-row[data-row=later]>*{min-height:440px}
+.muse-money-dashboard .muse-money-row>.muse-money-panel:not(.muse-money-receipt){overflow:visible}
+.muse-money-dashboard .muse-money-row .muse-money-hero[data-compact]{overflow:hidden}
+.muse-money-hero[data-compact] .muse-money-hero-copy{align-content:start;gap:8px}
+.muse-money-hero[data-compact] .muse-money-hero-amount{margin:0;line-height:1}
+.muse-money-hero[data-compact] .muse-money-hero-actions{margin-top:4px}
+.muse-money-hero[data-compact] .muse-money-ring-empty{border:0;background:none;padding:0;justify-items:center}
+.muse-money-hero[data-compact] .muse-money-ring-empty p{display:none}
+.muse-money-hero[data-compact] .muse-money-hero-pager .muse-entry-carousel-track{align-content:center}
+.muse-money-days-chip{white-space:nowrap;margin-left:2px}.muse-money-days-chip::before{content:"· ";color:var(--text-muted)}
