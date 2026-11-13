@@ -92,6 +92,8 @@ test('every one of the ten Level 10 areas has its own glyph and a thoughtful pro
  assert.ok(voices.every(v=>v.prompt.endsWith('?')));
  assert.match(A.areaVoice('Fun & recreation').prompt,/playful, adventurous, or unforgettable/);
  assert.equal(A.areaVoice('My own area').glyph,'sparkle','a renamed area still gets a voice');
+ assert.equal(new Set(voices.map(v=>v.example)).size,10,'each chapter suggests something that belongs to it');
+ assert.doesNotMatch(A.areaVoice('Health & fitness').example,/sew/i,'Health never suggests sewing');
  assert.equal(A.roman(9),'X');
 });
 

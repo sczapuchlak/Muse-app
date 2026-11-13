@@ -250,3 +250,14 @@
 /* Narrow sections: an aside (the area chooser) drops beneath its row so the title keeps the width. */
 @container (max-width:560px){.muse-lifeatlas-row{flex-wrap:wrap}.muse-lifeatlas-row-toggle{flex:1 1 100%}.muse-lifeatlas-row>.muse-choice-menu{margin:-6px 14px 12px 54px}}
 @media (max-width:620px){.muse-lifeatlas-footnote{display:block}.muse-lifeatlas-footnote svg{vertical-align:-2px}}
+
+/* Round 3 (Nov 13): the hero, about 25% smaller, so more of the Atlas shows beneath it. */
+.muse-lifeatlas-hero{min-height:225px;padding:clamp(16px,2.6vw,30px);gap:clamp(12px,2.2vw,26px)}
+.muse-lifeatlas-hero-copy{gap:8px}
+.muse-lifeatlas-hero-title{font-size:clamp(2.1rem,4vw,3.3rem)}
+.muse-lifeatlas-mantra{font-size:clamp(1.02rem,1.5vw,1.2rem)}
+.muse-lifeatlas-hero-sky{gap:8px}
+.muse-lifeatlas-hero-sky .muse-lifeatlas-constellation{max-height:200px;width:100%}
+.muse-lifeatlas-counts>div{padding:6px 10px;border-radius:12px}
+.muse-lifeatlas-counts dd{font-size:1.25rem}
+.muse-lifeatlas-hero-actions .muse-button{min-height:40px}
