@@ -274,3 +274,9 @@
 .muse-lifeatlas-constellation[data-web] .muse-lifeatlas-star-shape{fill:color-mix(in oklab,var(--star) 70%,var(--foreground));filter:drop-shadow(0 0 .7px var(--star))}
 .muse-lifeatlas-constellation[data-web] .muse-lifeatlas-star[data-lit] .muse-lifeatlas-star-shape{filter:drop-shadow(0 0 1.4px var(--star)) drop-shadow(0 0 .5px white)}
 @media (max-width:760px){.muse-lifeatlas-hero-sky .muse-lifeatlas-constellation[data-web]{width:100%;margin-left:0}}
+/* Round 5: the sky reaches left across the open middle of the hero (her mockup), as a ridge of small unnamed stars. */
+.muse-lifeatlas-hero-sky .muse-lifeatlas-constellation[data-web]{width:calc(100% + clamp(60px,18vw,330px))!important;margin-left:calc(-1 * clamp(60px,18vw,330px))!important}
+.muse-lifeatlas-dust{fill:color-mix(in oklab,var(--foreground) 70%,var(--accent-primary));filter:drop-shadow(0 0 .6px var(--accent-primary));opacity:.75}
+.muse-lifeatlas-constellation[data-web] .muse-lifeatlas-thread[data-dust]{stroke:color-mix(in oklab,var(--foreground) 30%,transparent);stroke-width:.18;opacity:.6}
+@media (max-width:760px){.muse-lifeatlas-hero-sky .muse-lifeatlas-constellation[data-web]{width:100%!important;margin-left:0!important}}
+@media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) .muse-lifeatlas-dust{animation:muse-lifeatlas-star-in .7s cubic-bezier(.2,.8,.2,1.2) calc(.2s + var(--i)*.12s) both}}
