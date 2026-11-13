@@ -226,3 +226,6 @@
  .muse-page :is(.muse-page-tabs,.muse-section-nav,.muse-whimsy-navigation,.muse-cosmic-navigation,.muse-books-tabs,.muse-tarot-tabs,.muse-dream-tabs,.muse-fortune-tabs)>*,
  .muse-page :is(.muse-chip-row,.muse-segmented)[data-scroll]>*{scroll-snap-align:start}
 }
+/* The stat tile's underline runs the full width of the tile, in the tile's own two tones. */
+.muse-stat-tile::after{left:0;right:0;height:3px;border-radius:0;background:linear-gradient(90deg,var(--mark-a),var(--mark-b,var(--mark-a)));opacity:.85}
+.muse-stat-tile{border-bottom-left-radius:var(--dl-radius-tile);border-bottom-right-radius:var(--dl-radius-tile)}
