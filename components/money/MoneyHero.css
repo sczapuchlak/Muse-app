@@ -177,3 +177,39 @@
 .muse-recurring-tile-copy small{color:var(--text-muted);font-size:.74rem}
 .muse-recurring-tile strong{font-variant-numeric:tabular-nums}
 @media (prefers-reduced-motion:reduce){.muse-recurring-tile{transition:none}.muse-recurring-tile:hover{transform:none}}
+
+/* ── Paired rows (Stephanie, Nov 13): paycheck | coming up · spending | plan/actual · recurring | recent ──────── */
+.muse-money-dashboard .muse-money-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch;gap:var(--space-6,28px)}
+.muse-money-dashboard .muse-money-row>*{min-width:0;margin:0}
+.muse-money-dashboard .muse-money-row>.muse-money-panel{display:flex;flex-direction:column}
+.muse-money-dashboard .muse-money-row .muse-money-hero{grid-template-columns:minmax(0,1fr);grid-template-areas:"copy" "ring" "track";gap:16px;padding:22px 22px 18px;border-radius:24px}
+.muse-money-dashboard .muse-money-row .muse-money-hero-amount{font-size:clamp(2.6rem,4.2vw,3.8rem)}
+.muse-money-dashboard .muse-money-row .muse-money-hero-facts>div{padding:10px}
+.muse-money-dashboard .muse-money-row .muse-money-hero-facts dd{font-size:1.15rem}
+.muse-money-dashboard .muse-money-row .muse-money-hero::after{width:380px;height:380px;top:-150px;right:-150px}
+.muse-money-dashboard .muse-money-row .muse-money-track{grid-template-columns:repeat(var(--days),minmax(0,1fr)) auto;gap:2px}
+.muse-money-dashboard .muse-money-row .muse-money-track>li{grid-template-rows:10px 52px auto}
+.muse-money-dashboard .muse-money-row .muse-money-track-payday{padding:4px 6px!important;font-size:.64rem}
+.muse-money-dashboard .muse-money-row .muse-money-coming .muse-money-upcoming{--row:58px;min-height:calc(var(--row)*7)}
+.muse-money-dashboard .muse-money-row .muse-money-receipt{margin:0}
+/* The dial: the percentage sits in the true centre of the ring, whatever comes below it. */
+.muse-money-ring-dial{position:relative;display:grid;place-items:center;width:clamp(124px,12vw,170px)}
+.muse-money-ring-dial svg{width:100%}
+.muse-money-ring .muse-money-ring-dial figcaption{position:absolute;inset:0;left:0;top:0;width:100%;height:100%;translate:none;display:grid;place-content:center;justify-items:center}
+.muse-money-ring-invite{stroke-width:3!important;stroke-dasharray:2 7;stroke-linecap:round}
+.muse-money-ring-track{stroke-width:15}
+/* Spending: the hidden date leaves the grid entirely (still read by screen readers), so names start at the edge. */
+.muse-money-ledger[data-grouped]>li:not(.muse-money-day-head){grid-template-columns:minmax(0,1fr) auto 44px}
+.muse-money-ledger[data-grouped]>li:not(.muse-money-day-head)>time{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;visibility:visible}
+@container muse-content (max-width:980px){.muse-money-dashboard .muse-money-row{grid-template-columns:minmax(0,1fr)}}
+
+.muse-money-dashboard .muse-money-row>.muse-money-wide{grid-column:auto}
+.muse-money-row .muse-money-comparison .muse-money-facts{margin:auto 0 0}
+/* Coming up always shows seven equal row slots, so the list fills its half of the row with no dead band. */
+.muse-money-row .muse-money-coming .muse-money-upcoming{flex:1;grid-template-rows:repeat(7,minmax(var(--row),1fr));grid-auto-rows:0}
+/* Recurring's three totals stay on one line inside the half-width panel (no 2 + 1 orphan). */
+.muse-money-row .muse-recurring-totals{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:10px}
+.muse-money-row .muse-recurring-totals>div{padding:12px}
+.muse-money-row .muse-recurring-totals dt{font-size:.6rem}
+.muse-money-row .muse-recurring-totals dd{font-size:1.25rem}
+.muse-money-row .muse-recurring-totals small{font-size:.7rem}

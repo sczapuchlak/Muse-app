@@ -67,7 +67,7 @@ test('Coming up remains a bounded ledger preview with dated, right-aligned oblig
  for(const count of [0,1,12]){
   const state=structuredClone(moneySample);state.cards=[];state.recurring=[];state.bills=Array.from({length:count},(_,i)=>({id:`bill-${i}`,name:`A readable obligation ${i}`,amountCents:1200+i,dueDate:'2026-11-01',recurrence:'once',paid:false}));
   const before=JSON.stringify(state),html=renderToStaticMarkup(React.createElement(MoneyProvider,{initialState:state},React.createElement(MoneyOverview,{paycheck:state.paychecks[0],period:money.paycheckPeriod(state.paychecks[0]),today:'2026-10-30',onOpen(){},onSpending(){}}))),ledger=html.split('class="muse-money-upcoming"')[1].split('</ul>')[0];
-  assert.equal((ledger.match(/<li /g)??[]).length+(ledger.match(/<li>/g)??[]).length,Math.min(count,5),'five rows per page; more pages through the carousel arrows');
+  assert.equal((ledger.match(/<li /g)??[]).length+(ledger.match(/<li>/g)??[]).length,Math.min(count,7),'seven rows per page; more pages through the carousel arrows');
   if(count){assert.ok(ledger.includes('<time class="sr-only" dateTime="2026-11-01">Nov 1</time>'),'the date stamp keeps a readable date');assert.ok(ledger.includes('class="muse-money-ledger-number"'));assert.ok(ledger.includes('class="muse-ledger-name"'));}
   else assert.ok(html.includes('Nothing scheduled.'));
   assert.ok(!ledger.includes('Mark paid'));assert.ok(!ledger.includes('Remove'));assert.equal(JSON.stringify(state),before);
