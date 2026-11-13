@@ -332,3 +332,14 @@
  .muse-series-shelf-ledge{right:-100vw;height:20px}
  .muse-series-shelf-plant{display:block;left:4px;width:76px;height:72px;bottom:calc(var(--ledge) - 4px)}
 }
+
+/* Glow-up 2 (phone shelf, Nov 2026): a vignette, not a band. The plant leans on the first book, the books stand a
+   little taller, the walnut ledge starts under the plant and runs off the right edge (never the books), and the
+   light strand sits low so the whole picture stays compact. Desktop is unchanged. */
+@media(max-width:620px){
+ .muse-series-shelf{--fade:66px;--ledge:16px;padding-top:22px}
+ .muse-series-shelf .muse-series-shelf-books{--shelf-h:112px;--spine-gap:4px;padding-left:0}
+ .muse-series-shelf-plant{left:30px;width:68px;height:66px;bottom:calc(var(--ledge) - 3px)}
+ .muse-series-shelf-ledge{left:34px;height:18px}
+ .muse-series-shelf-strand{top:-30px;height:44px;left:30%}
+}
