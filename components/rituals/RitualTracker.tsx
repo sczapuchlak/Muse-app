@@ -163,6 +163,12 @@ function YearSheet({ ritual, sliceState, rituals, sliceOf, date, today, onMonth,
               style={{ "--m": mi, ...(p.color ? { "--category": p.color } : {}) } as CSSProperties} role="img" aria-label={`${dateLabel(d)}: ${p.label}`} title={`${dateLabel(d)} · ${p.label}`}></span></span>; })])}
       </div>
       <aside className="muse-sheet-side">
+        {(() => { const reviews = months.map((m) => ({ m, r: review(m) })).filter((x) => x.r), best = [...reviews].sort((a, b) => (b.r!.ratio - a.r!.ratio))[0];
+          return <dl className="muse-sheet-glance" aria-label={`${year} at a glance`}>
+            <div><dt>{ritual?.type === "category" ? "Days logged" : "Met"}</dt><dd>{ritual?.type === "category" ? [...counts.values()].reduce((a, b) => a + b, 0) : yearShare?.ratio != null ? <>{Math.round(yearShare.ratio * 100)}<small>%</small></> : "—"}</dd></div>
+            <div><dt>Best month</dt><dd>{best ? monthShort(best.m) : "—"}</dd></div>
+            <div><dt>Streak</dt><dd>{streak?.count ? <>{streak.count}<small>{streak.unit === "weeks" ? "w" : "d"}</small></> : "—"}</dd></div>
+          </dl>; })()}
         <section className="muse-sheet-panel" aria-label="Key">
           <h4>Key</h4>
           {ritual?.type === "category" ? <ul className="muse-sheet-key">{ritual.categories!.map((c) => <li key={c.id}><span className="muse-sheet-swatch" data-category style={{ "--category": c.color } as CSSProperties} aria-hidden="true" /><span>{c.label}</span><b>{counts.get(c.id) ?? 0}<small>days</small></b></li>)}</ul>
