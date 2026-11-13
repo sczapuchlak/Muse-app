@@ -12,3 +12,6 @@
 .muse-week-day { position: relative; }
 .muse-week-reward { position: absolute; right: 5px; top: 4px; pointer-events: none; }
 .muse-week-number[data-has-progress="true"] { height: 38px; }
+/* Glow-up 2: the selected-day star stays as a halo, but the date reads first. */
+.muse-week-selection{opacity:.2;filter:blur(.4px)}
+.muse-week-day[aria-pressed="true"] .muse-week-number>span{font-weight:750;text-shadow:0 0 10px var(--glass-background),0 0 2px var(--glass-background)}

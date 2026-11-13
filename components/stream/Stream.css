@@ -236,4 +236,4 @@ span.muse-stream-tag{cursor:default}
 .muse-stream-orbit>i:nth-child(1){top:-6px;left:50%;margin-left:-13px;background:linear-gradient(140deg,var(--chart-2),var(--chart-5))}
 .muse-stream-orbit>i:nth-child(2){bottom:10px;left:-4px;background:linear-gradient(140deg,var(--chart-1),var(--chart-3))}
 .muse-stream-orbit>i:nth-child(3){bottom:10px;right:-4px;background:linear-gradient(140deg,var(--chart-4),var(--chart-7))}
-@media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) .muse-stream-orbit{animation:muse-wheel-turn 40s linear infinite}:root:not([data-magic=quiet]) .muse-stream-orbit>*{animation:muse-wheel-turn 40s linear infinite reverse}@keyframes muse-wheel-turn{to{rotate:360deg}}}
+@media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) .muse-stream-orbit{animation:muse-wheel-turn 40s linear 3}:root:not([data-magic=quiet]) .muse-stream-orbit>*{animation:muse-wheel-turn 40s linear 3 reverse}@keyframes muse-wheel-turn{to{rotate:360deg}}}

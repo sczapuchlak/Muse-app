@@ -21,7 +21,7 @@ test('#105 Little Moment lives in Day Pulse (also on the Mood tab) but saves ind
  assert.match(pulse,/<\/DailyCapture>[\s\S]*<LittleMoment date=\{date\} \/>/,'outside the Day Pulse save wrapper, so Reset/ratings never touch it');
  assert.match(pulse,/update\(\{ energy: null, stress: null, overallDay: null \}\)/,'Reset still only clears the ratings');
  assert.doesNotMatch(read('components/DayInThree.tsx'),/LittleMoment|memor/i);
- const mood=read('components/mood/Mood.tsx');assert.doesNotMatch(mood,/<LittleMoment date=\{date\}\/>/,'#12: shown once, inside Day Pulse on the Mood tab');assert.match(read('components/mood/MoodCheckInLayout.tsx'),/<DayPulseCard date=\{date\}\/>/);assert.match(mood,/memories\.map\(m=>m\.date\)/,'memory-only days still appear in Mood history');
+ const mood=read('components/mood/Mood.tsx');assert.doesNotMatch(mood,/<LittleMoment date=\{date\}\/>/,'#12: shown once, inside Day Pulse on the Mood tab');assert.match(read('components/mood/MoodCheckInLayout.tsx'),/<DayPulseCard date=\{date\}\/>/);assert.match(mood,/memories\.some\(m=>m\.date===day\)/,'memory-only days still appear in Mood history');
  assert.match(read('components/memories/LittleMoment.tsx'),/What’s one thing you’ll remember about today\?/);
  assert.match(read('app/api/account/export/route.ts'),/dailyMemories:dailyMemories\.data/);
 });

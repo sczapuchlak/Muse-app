@@ -89,7 +89,7 @@
   --planning-task-border: rgba(128, 134, 175, .27);
   --planning-control-background: rgba(255, 255, 255, .55);
 
-  --frosted-glass-background: rgba(250, 249, 255, .90);
+  --frosted-glass-background: rgba(250, 249, 255, .98);
   --frosted-floating-background: rgba(252, 250, 255, .98);
   --frosted-surface-subtle: rgba(255, 255, 255, .66);
   --frosted-surface-hover: rgba(255, 255, 255, .86);
@@ -598,7 +598,7 @@
   --planning-task-border: rgba(173, 110, 128, .26);
   --planning-control-background: rgba(255, 255, 255, .58);
 
-  --frosted-glass-background: rgba(255, 247, 236, .92);
+  --frosted-glass-background: rgba(255, 247, 236, .98);
   --frosted-floating-background: rgba(255, 248, 237, .99);
   --frosted-surface-subtle: rgba(255, 255, 255, .70);
   --frosted-surface-hover: rgba(255, 255, 255, .90);
@@ -919,7 +919,7 @@
   --planning-task-border: rgba(212, 210, 238, .38);
   --planning-control-background: rgba(210, 214, 233, .16);
 
-  --frosted-glass-background: rgba(27, 28, 34, .96);
+  --frosted-glass-background: rgba(27, 28, 34, .98);
   --frosted-floating-background: rgba(30, 30, 37, .99);
   --frosted-surface-subtle: rgba(219, 205, 242, .16);
   --frosted-surface-hover: rgba(228, 204, 251, .25);
@@ -1212,7 +1212,7 @@
   --planning-task-background: rgba(56,55,61,.86);
   --planning-task-border: rgba(112,204,218,.34);
   --planning-control-background: rgba(52,50,58,.88);
-  --frosted-glass-background: rgba(17,16,20,.94);
+  --frosted-glass-background: rgba(17,16,20,.98);
   --frosted-floating-background: rgba(23,19,30,.98);
   --frosted-surface-subtle: rgba(40,33,50,.87);
   --frosted-surface-hover: rgba(69,51,82,.96);
