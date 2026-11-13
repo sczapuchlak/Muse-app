@@ -353,3 +353,7 @@ button.muse-tracker-square:focus-visible{outline:2px solid var(--focus-ring);out
   .muse-rituals-phone-actions .muse-overflow-trigger{width:var(--touch-target,44px);height:var(--touch-target,44px);border:1px solid var(--glass-border);border-radius:var(--control-radius,12px);background:var(--surface-control)}
   .muse-rituals-phone-actions .muse-search-add{width:var(--touch-target,44px);height:var(--touch-target,44px);min-height:var(--touch-target,44px);padding:0}
 }
+
+/* Safari (Nov 13): wrapped choice buttons in the ritual editor must never stretch to the scrolling list's height. */
+.muse-form-choice-list{align-items:flex-start;align-content:flex-start}
+.muse-form-choice-list>*{flex:0 0 auto;align-self:flex-start;height:auto}

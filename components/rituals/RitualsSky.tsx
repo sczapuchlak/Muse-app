@@ -10,7 +10,7 @@ import "./RitualsSky.css";
  * Weekly targets and flexible rhythms are not daily obligations, so they sit beside the sky as their own meters.
  */
 type Star={ritual:RitualDefinition;status:ReturnType<typeof ritualCell>["status"];value:number|null;x:number;y:number};
-const W=640,H=200,fmt=(d:string,o:Intl.DateTimeFormatOptions)=>new Intl.DateTimeFormat("en-US",{...o,timeZone:"UTC"}).format(new Date(`${d}T12:00:00Z`));
+const W=640,H=118,fmt=(d:string,o:Intl.DateTimeFormatOptions)=>new Intl.DateTimeFormat("en-US",{...o,timeZone:"UTC"}).format(new Date(`${d}T12:00:00Z`));
 const r1=(n:number)=>Math.round(n*10)/10;
 const starPath=(x:number,y:number,r:number)=>`M${r1(x)} ${r1(y-r)}C${r1(x+r*.16)} ${r1(y-r*.16)} ${r1(x+r*.16)} ${r1(y-r*.16)} ${r1(x+r)} ${r1(y)}C${r1(x+r*.16)} ${r1(y+r*.16)} ${r1(x+r*.16)} ${r1(y+r*.16)} ${r1(x)} ${r1(y+r)}C${r1(x-r*.16)} ${r1(y+r*.16)} ${r1(x-r*.16)} ${r1(y+r*.16)} ${r1(x-r)} ${r1(y)}C${r1(x-r*.16)} ${r1(y-r*.16)} ${r1(x-r*.16)} ${r1(y-r*.16)} ${r1(x)} ${r1(y-r)}Z`;
 const lit=(s:Star["status"])=>s==="complete";
@@ -18,7 +18,7 @@ const lit=(s:Star["status"])=>s==="complete";
 export function RitualsSky({state,date,today,week}:{state:RitualState;date:string;today:string;week:string[]}){
  const active=state.rituals.filter(r=>r.status!=="archived");
  const daily=active.filter(r=>r.type!=="weekly-target"&&!flexible(r)&&ritualOpportunity(state,r,date));
- const n=daily.length,stars:Star[]=daily.map((ritual,i)=>{const cell=ritualCell(state,ritual,date,today),t=n<2?.5:i/(n-1);return {ritual,status:cell.status,value:cell.value,x:60+t*(W-120),y:H*.56-Math.sin(t*Math.PI)*H*.22+(i%2?14:-6)};});
+ const n=daily.length,stars:Star[]=daily.map((ritual,i)=>{const cell=ritualCell(state,ritual,date,today),t=n<2?.5:i/(n-1);return {ritual,status:cell.status,value:cell.value,x:60+t*(W-120),y:H*.52-Math.sin(t*Math.PI)*H*.16+(i%2?8:-4)};});
 const done=stars.filter(s=>s.status==="complete").length,isToday=date===today,future=!!today&&date>today;
  const weekly=active.filter(r=>(r.type==="weekly-target"||flexible(r))&&week.some(d=>ritualOpportunity(state,r,d)));
  const summary=weekSummary(state,week,today),perfect=week.map(d=>({d,p:!!today&&d<=today&&ritualDayProgress(state,d,today).perfect}));
@@ -33,10 +33,10 @@ const done=stars.filter(s=>s.status==="complete").length,isToday=date===today,fu
     {Array.from({length:26},(_,i)=><circle key={`dust-${i}`} className="muse-sky-dust" cx={r1((i*97)%W)} cy={r1((i*53+17)%H)} r={i%3?.8:1.3} style={{"--d":`${(i%7)*.6}s`} as CSSProperties}/>)}
     {stars.slice(1).map((s,i)=>{const a=stars[i];return <line key={`l-${s.ritual.id}`} className="muse-sky-line" data-lit={lit(a.status)&&lit(s.status)||undefined} x1={r1(a.x)} y1={r1(a.y)} x2={r1(s.x)} y2={r1(s.y)}/>;})}
     {stars.map((s,i)=><g key={s.ritual.id} className="muse-sky-star" data-status={s.status} style={{"--i":i} as CSSProperties}>
-     {s.status==="complete"&&<circle cx={r1(s.x)} cy={r1(s.y)} r="30" fill="url(#muse-sky-glow)"/>}
+     {s.status==="complete"&&<circle cx={r1(s.x)} cy={r1(s.y)} r="24" fill="url(#muse-sky-glow)"/>}
      <path d={starPath(s.x,s.y,s.status==="complete"?18:s.status==="partial"?15:13)}/>
      {s.status==="missed"&&<path className="muse-sky-miss" d={`M${r1(s.x-5)} ${r1(s.y-5)}L${r1(s.x+5)} ${r1(s.y+5)}M${r1(s.x+5)} ${r1(s.y-5)}L${r1(s.x-5)} ${r1(s.y+5)}`}/>}
-     <text x={r1(s.x)} y={r1(i%2?s.y-26:s.y+36)} textAnchor="middle">{s.ritual.name.length>16?`${s.ritual.name.slice(0,15)}…`:s.ritual.name}</text>
+     <text x={r1(s.x)} y={r1(i%2?s.y-22:s.y+30)} textAnchor="middle">{s.ritual.name.length>16?`${s.ritual.name.slice(0,15)}…`:s.ritual.name}</text>
     </g>)}
     {!n&&<text className="muse-sky-empty" x={W/2} y={H/2} textAnchor="middle">No daily rituals on this day. The sky rests.</text>}
    </svg>

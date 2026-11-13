@@ -77,3 +77,18 @@
  .muse-ritual-group-meter{order:3;flex-basis:100%;grid-template-columns:auto minmax(0,1fr);margin:10px 0 0}
 }
 @container muse-content (max-width:520px){.muse-sky-flame{top:auto;bottom:12px}.muse-ritual-description .muse-ritual-streak{font-size:.64rem}}
+
+/* Half height (Stephanie, Nov 13): a slimmer sky, and the side tiles sit two across with the counts beneath. */
+.muse-rituals-sky{padding:18px 24px;gap:14px 28px;align-items:center}
+.muse-sky-headline{font-size:clamp(1.2rem,1.8vw,1.5rem);gap:10px}
+.muse-sky-count{font-size:clamp(2.2rem,3.6vw,3rem)}
+.muse-sky-map{margin-top:0;max-height:150px}
+.muse-sky-side{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;align-content:center}
+.muse-sky-tile{padding:10px 12px;gap:2px}
+.muse-sky-tile small{font-size:.72rem;line-height:1.3}
+.muse-sky-perfect{gap:3px;margin:2px 0}.muse-sky-perfect i{width:15px;height:15px}
+.muse-sky-flame{width:16px;height:22px;right:10px;top:10px}
+.muse-sky-streak strong{font-size:.92rem}.muse-sky-streak strong b{font-size:1.45rem}
+.muse-sky-week,.muse-sky-targets{grid-column:1/-1}
+.muse-sky-week>div{padding:6px 12px;display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.muse-sky-week dd{font-size:1.1rem}
