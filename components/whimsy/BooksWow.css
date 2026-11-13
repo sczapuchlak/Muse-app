@@ -1,0 +1,58 @@
+/*
+ * Books glow-up (Nov 2026). Stephanie: "don't change containers or sizes, but make it so good I faint". So nothing
+ * here moves a box. It adds depth, light and motion to the books themselves:
+ *  - every cover becomes an object: a lit spine, page edges, a soft drop shadow, and a 3D tilt when you reach for it;
+ *  - each Currently Reading card glows in its own cover's colours (the cover, blurred into ambient light);
+ *  - the progress pool gets a shimmering bookmark at the reading position;
+ *  - finished books wear a gold foil corner; the streak hearts sparkle when lit.
+ * Motion is finite and respects reduced motion and Muse Magic.
+ */
+
+/* ── Covers as objects (overlays only; the cover keeps its size) ─────────────────────────────────────────── */
+.muse-bookshelf :is(.muse-desk-tile-cover,.muse-finished-card-cover,.muse-upnext-cover) .muse-book-cover,
+.muse-bookshelf :is(.muse-desk-tile-cover,.muse-finished-card-cover) {position:relative}
+.muse-bookshelf :is(.muse-desk-tile-cover,.muse-finished-card-cover)::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;border-radius:inherit;
+ background:linear-gradient(90deg,rgba(255,255,255,.28) 0,rgba(255,255,255,.06) 4%,rgba(0,0,0,.28) 6%,transparent 10%,transparent 88%,rgba(255,255,255,.12) 96%,transparent),
+  linear-gradient(160deg,rgba(255,255,255,.18),transparent 35%)}
+.muse-bookshelf .muse-desk-tile-cover{transform-style:preserve-3d;transition:transform .45s cubic-bezier(.2,.8,.2,1),filter .45s;
+ filter:drop-shadow(6px 10px 14px rgba(0,0,0,.45));box-shadow:3px 0 0 -1px #f2ede3,5px 1px 0 -2px #d9d2c4,7px 2px 0 -3px #c7bfae}
+@media (prefers-reduced-motion:no-preference){
+ :root:not([data-magic=quiet]) .muse-bookshelf .muse-desk-tile:hover .muse-desk-tile-cover{transform:perspective(700px) rotateY(-14deg) rotateX(3deg) translateY(-4px) scale(1.03);filter:drop-shadow(14px 16px 18px rgba(0,0,0,.5))}
+ :root:not([data-magic=quiet]) .muse-bookshelf .muse-finished-card:hover .muse-finished-card-cover{transform:perspective(600px) rotateY(-12deg) translateY(-3px)}
+}
+.muse-bookshelf .muse-finished-card-cover{transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+
+/* ── Currently reading: ambient light from the book's own cover ──────────────────────────────────────────── */
+.muse-bookshelf .muse-desk-tile[data-glow]{position:relative;isolation:isolate;overflow:hidden}
+.muse-bookshelf .muse-desk-tile[data-glow]::before{content:"";position:absolute;inset:-30%;z-index:-1;pointer-events:none;background:var(--cover-art) center/cover no-repeat;filter:blur(42px) saturate(1.6);opacity:.32;transition:opacity .5s}
+.muse-bookshelf .muse-desk-tile[data-glow]:hover::before{opacity:.48}
+:root:is([data-theme="iridescent"],[data-theme="solstice"],[data-theme="issya-bday"],[data-theme="bubblegum-baby"],[data-theme="astral"],[data-theme="nightbloom"]) .muse-bookshelf .muse-desk-tile[data-glow]::before{opacity:.18}
+
+/* ── The progress pool: a glowing bookmark sits at the reading position ──────────────────────────────────── */
+.muse-bookshelf .muse-desk-pool{position:relative;overflow:visible}
+.muse-bookshelf .muse-desk-pool::after{content:"";position:absolute;top:50%;left:var(--fill,0%);width:12px;height:12px;translate:-50% -50%;border-radius:50%;background:radial-gradient(circle,white 0 22%,var(--accent-pop,var(--accent-primary)) 45%,transparent 72%);box-shadow:0 0 10px 2px color-mix(in srgb,var(--accent-pop,var(--accent-primary)) 70%,transparent);pointer-events:none}
+@media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) .muse-bookshelf .muse-desk-pool::after{animation:muse-bookmark-glow 2.6s ease-in-out 3}}
+@keyframes muse-bookmark-glow{50%{box-shadow:0 0 18px 5px color-mix(in srgb,var(--accent-pop,var(--accent-primary)) 80%,transparent)}}
+.muse-bookshelf .muse-desk-pool>span{background:linear-gradient(90deg,var(--accent-secondary),var(--accent-primary),var(--accent-pop,var(--accent-primary)))!important}
+@media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) .muse-bookshelf .muse-desk-pool>span{background-size:200% 100%!important;animation:muse-pool-shimmer 3s linear 2}}
+@keyframes muse-pool-shimmer{to{background-position:-200% 0}}
+
+/* ── Finished: a gold foil corner on the cover ───────────────────────────────────────────────────────────── */
+.muse-bookshelf .muse-finished-card-cover::before{content:"";position:absolute;z-index:3;top:0;right:0;width:30px;height:30px;pointer-events:none;
+ background:linear-gradient(135deg,transparent 50%,#f7e3a1 50%,#d9a83f 72%,#fff3c6 86%,#c9932c);clip-path:polygon(100% 0,100% 100%,0 0);filter:drop-shadow(-1px 1px 1px rgba(0,0,0,.3))}
+.muse-bookshelf .muse-finished-card{transition:border-color .2s,box-shadow .3s}
+.muse-bookshelf .muse-finished-card:hover{box-shadow:0 18px 30px -22px #e8b33c}
+
+/* ── Streak: lit hearts get a sparkle ────────────────────────────────────────────────────────────────────── */
+.muse-streak-heart-wrap:has(.muse-streak-heart[data-filled])::after{content:"";position:absolute;top:-4px;right:-5px;width:9px;height:9px;pointer-events:none;background:#fff6cf;clip-path:polygon(50% 0,61% 39%,100% 50%,61% 61%,50% 100%,39% 61%,0 50%,39% 39%);filter:drop-shadow(0 0 3px #ffd36b)}
+@media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) .muse-streak-heart-wrap:has(.muse-streak-heart[data-filled])::after{animation:muse-heart-spark 2.8s ease-in-out 3}}
+@keyframes muse-heart-spark{0%,100%{opacity:.4;transform:scale(.7)}50%{opacity:1;transform:scale(1.15) rotate(25deg)}}
+
+@media (prefers-reduced-motion:reduce){.muse-bookshelf :is(.muse-desk-tile-cover,.muse-finished-card-cover){transition:none}}
+
+/* ── Reading challenge: empty slots are ghost books waiting on the shelf, numbered in gradient ───────────── */
+:is(.muse-challenge-shelf,.muse-desk-goal-shelf)>li[data-empty]{position:relative;border:0!important;border-radius:4px 8px 8px 4px!important;background:linear-gradient(90deg,color-mix(in srgb,var(--foreground) 10%,transparent) 0 7%,transparent 7%),linear-gradient(160deg,color-mix(in srgb,var(--accent-secondary) 10%,transparent),color-mix(in srgb,var(--accent-primary) 6%,transparent))!important;box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--foreground) 14%,transparent);font-family:var(--font-editorial)!important;font-size:1.25rem!important;font-weight:600!important;color:transparent!important;-webkit-text-stroke:0}
+:is(.muse-challenge-shelf,.muse-desk-goal-shelf)>li[data-empty]>*{background:linear-gradient(135deg,var(--accent-secondary),var(--accent-primary));-webkit-background-clip:text;background-clip:text;color:transparent;opacity:.75}
+:is(.muse-challenge-shelf,.muse-desk-goal-shelf)>li[data-empty]::after{content:"";position:absolute;left:18%;right:18%;bottom:14%;height:2px;border-radius:2px;background:color-mix(in srgb,var(--foreground) 14%,transparent);box-shadow:0 -6px 0 color-mix(in srgb,var(--foreground) 9%,transparent)}
+:is(.muse-challenge-shelf,.muse-desk-goal-shelf)>li:not([data-empty])>button{transition:transform .4s cubic-bezier(.2,.8,.2,1)}
+@media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) :is(.muse-challenge-shelf,.muse-desk-goal-shelf)>li:not([data-empty])>button:hover{transform:perspective(500px) rotateY(-14deg) translateY(-4px)}}

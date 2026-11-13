@@ -6,7 +6,7 @@ import {GlassPopover} from '@/components/GlassPopover';
 import {BOOK_STATUS_LABEL,BOOK_STATUS_ORDER} from '@/lib/books/status';
 import type {Book,ReadingSession} from '@/lib/whimsy/models';
 import {sessionSeconds} from '@/lib/whimsy/reading-stats';
-import {bookPosition} from '@/lib/whimsy/books';
+import {bookPosition,validCoverUrl} from '@/lib/whimsy/books';
 import './ReadingDesk.css';
 
 const readTime=(seconds:number)=>{const m=Math.round(seconds/60),h=Math.floor(m/60);return h?`${h}h ${String(m%60).padStart(2,'0')}m`:`${Math.max(1,m)}m`;};
@@ -19,7 +19,8 @@ const shelves:[Book['status'],string][]=BOOK_STATUS_ORDER.map(id=>[id,BOOK_STATU
 function DeskTile({book,sessions,cover,busy,canStart,onOpen,onStart,onLog,onMove}:{book:Book;sessions:readonly ReadingSession[];cover:ReactNode;busy:boolean;canStart:boolean;onOpen:()=>void;onStart:()=>void;onLog:()=>void;onMove:(status:Book['status'])=>void}){
  const anchor=useRef<HTMLButtonElement>(null),[menu,setMenu]=useState(false);
  const position=bookPosition(book,[...sessions]),own=sessions.filter(x=>x.bookId===book.id&&(!book.cycleId||!x.cycleId||x.cycleId===book.cycleId)),seconds=own.reduce((n,x)=>n+sessionSeconds(x),0),started=book.startedOn,resumed=own.length>0||position>(book.startingPage??0),percent=book.totalPages?Math.min(100,Math.round(100*position/book.totalPages)):null;
- return <article className="muse-desk-tile" onClick={event=>{if((event.target as HTMLElement).closest('.muse-desk-tile-actions'))return;onOpen();}}>
+ const glow=book.coverUrl&&validCoverUrl(book.coverUrl)?`url("${book.coverUrl.replace(/"/g,"%22")}")`:undefined;
+ return <article className="muse-desk-tile" data-glow={glow?true:undefined} style={glow?{"--cover-art":glow} as CSSProperties:undefined} onClick={event=>{if((event.target as HTMLElement).closest('.muse-desk-tile-actions'))return;onOpen();}}>
   <span className="muse-desk-tile-cover" aria-hidden="true">{cover}</span>
   <div className="muse-desk-tile-body">
    <div className="muse-desk-tile-text">
