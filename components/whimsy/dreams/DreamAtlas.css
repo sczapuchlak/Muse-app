@@ -21,3 +21,29 @@
 .muse-dream-atlas .muse-dream-bars .muse-dream-bar>i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,color-mix(in srgb,var(--tone) 55%,transparent),var(--tone))}
 @container muse-content (max-width:980px){.muse-dream-atlas .muse-dream-atlas-board{grid-template-columns:repeat(2,minmax(0,1fr))}.muse-dream-atlas .muse-dream-atlas-card{grid-column:span 1}.muse-dream-atlas .muse-dream-constellation-card{grid-column:1/-1;grid-row:auto}}
 @container muse-content (max-width:640px){.muse-dream-atlas .muse-dream-atlas-board{grid-template-columns:minmax(0,1fr)}.muse-dream-atlas .muse-dream-atlas-card,.muse-dream-atlas .muse-dream-constellation-card,.muse-dream-atlas .muse-dream-series-card{grid-column:1/-1}}
+
+/* Glow-up 2: dream-type pills keep their hue but reach readable contrast on light cards and light themes. */
+@supports (color: oklch(from red l c h)){
+ :root:is([data-theme="astral"],[data-theme="nightbloom"]) :is(.muse-dream-entry,.muse-dream-atlas-card,.muse-dream-revealed) .muse-dream-type,
+ :root:is([data-theme="iridescent"],[data-theme="solstice"],[data-theme="issya-bday"],[data-theme="bubblegum-baby"]) .muse-dream-type{color:oklch(from var(--tone) min(l,.42) max(c,.12) h);background:oklch(from var(--tone) max(l,.92) min(c,.05) h);border-color:oklch(from var(--tone) min(l,.5) c h / .5)}
+ :root:is([data-theme="astral"],[data-theme="nightbloom"]) .muse-dream-type-chips>button{color:var(--foreground)}
+}
+/* The type filter row scrolls on phones: say so with an edge fade and room for the last chip. */
+@container muse-content (max-width:640px){
+ .muse-dream-type-chips,.muse-dream-chip-row{flex-wrap:nowrap;overflow-x:auto;scroll-snap-type:x proximity;padding:4px 32px 6px 2px;margin-inline:-2px;scrollbar-width:none;-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 36px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 36px),transparent)}
+ .muse-dream-type-chips::-webkit-scrollbar,.muse-dream-chip-row::-webkit-scrollbar{display:none}
+ .muse-dream-type-chips>button,.muse-dream-chip-row>button{flex:none;scroll-snap-align:start}
+}
+
+/* Glow-up 2: a stable board with no holes. Constellation beside a stack of Emotional traces and Kinds of dreams;
+   When-remembered and Recurring series share the row below. Cards stretch to their row, lists page inside. */
+@container muse-content (min-width:981px){
+ .muse-dream-atlas .muse-dream-atlas-board{grid-template-columns:repeat(6,minmax(0,1fr));grid-template-areas:"sky sky sky sky emo emo" "sky sky sky sky kind kind" "when when when series series series";align-items:stretch}
+ .muse-dream-atlas .muse-dream-atlas-board>.muse-dream-atlas-card{grid-column:auto;grid-row:auto}
+ .muse-dream-atlas .muse-dream-atlas-board>.muse-dream-atlas-card:nth-child(1){grid-area:sky}
+ .muse-dream-atlas .muse-dream-atlas-board>.muse-dream-atlas-card:nth-child(2){grid-area:emo}
+ .muse-dream-atlas .muse-dream-atlas-board>.muse-dream-atlas-card:nth-child(3){grid-area:when}
+ .muse-dream-atlas .muse-dream-atlas-board>.muse-dream-atlas-card:nth-child(4){grid-area:kind}
+ .muse-dream-atlas .muse-dream-atlas-board>.muse-dream-atlas-card:nth-child(5){grid-area:series}
+}
+.muse-dream-atlas .muse-dream-series-card .muse-dream-quiet{padding:14px}

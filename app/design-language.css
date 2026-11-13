@@ -217,3 +217,12 @@
   :root:not(:is([data-theme="iridescent"],[data-theme="solstice"],[data-theme="issya-bday"],[data-theme="bubblegum-baby"])) .muse-mark[data-variant=soft]{color:oklch(from var(--mark-a) max(l, .78) c h)}
 }
 .muse-mark svg{stroke:currentColor}
+
+/* Glow-up 2: every one-line scrolling row on a phone (page tabs, chip rows) shows that it scrolls: room before the first
+   item, an edge fade after the last, snap points, and no clipped first chip. */
+@media(max-width:600px){
+ .muse-page :is(.muse-page-tabs,.muse-section-nav,.muse-whimsy-navigation,.muse-cosmic-navigation,.muse-books-tabs,.muse-tarot-tabs,.muse-dream-tabs,.muse-fortune-tabs),
+ .muse-page :is(.muse-chip-row,.muse-segmented)[data-scroll]{scroll-snap-type:x proximity;scroll-padding-inline:4px;padding-inline:4px 36px;scrollbar-width:none;-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 40px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 40px),transparent)}
+ .muse-page :is(.muse-page-tabs,.muse-section-nav,.muse-whimsy-navigation,.muse-cosmic-navigation,.muse-books-tabs,.muse-tarot-tabs,.muse-dream-tabs,.muse-fortune-tabs)>*,
+ .muse-page :is(.muse-chip-row,.muse-segmented)[data-scroll]>*{scroll-snap-align:start}
+}
