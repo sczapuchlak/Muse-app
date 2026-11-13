@@ -8,7 +8,7 @@ import {root} from './helpers.mjs';
 test('Reading Plans styles stay inside .muse-plans and cannot restyle Today’s plan',()=>{
  const css=readFileSync(`${root}/components/whimsy/plans/ReadingPlans.css`,'utf8');
  for(const name of ['muse-plan-title','muse-plan-list','muse-plan-more']){
-  const selectors=[...css.matchAll(/(^|[},])\s*([^{}@]*\.${name}\b[^{}]*)\{/gm)].map(m=>m[2].trim());
+  const selectors=[...css.matchAll(new RegExp(`(^|[},])\\s*([^{}@]*\\.${name}\\b[^{}]*)\\{`,'gm'))].map(m=>m[2].trim());
   assert.ok(selectors.length,`${name} is still styled`);
   for(const selector of selectors)for(const part of selector.split(','))if(part.includes(`.${name}`))assert.match(part,/\.muse-plans\b/,`${part.trim()} must be scoped`);
  }
