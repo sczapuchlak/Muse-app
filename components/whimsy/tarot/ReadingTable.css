@@ -28,10 +28,10 @@
 /* Setting the table: the deck, the invitation and the seats this spread will fill. */
 .muse-tarot .muse-tarot-welcome{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;justify-content:center;gap:clamp(26px,5vw,64px);max-width:820px;margin:clamp(6px,2vw,22px) auto;text-align:left}
 .muse-tarot-deck{position:relative;display:block;width:clamp(120px,15vw,172px);aspect-ratio:220/375;flex:none}
-.muse-tarot-deck>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:12px;border:1px solid color-mix(in srgb,var(--table-a) 45%,var(--glass-edge));box-shadow:0 18px 38px rgba(0,0,0,.34)}
-.muse-tarot-deck>img:nth-child(1){transform:rotate(-9deg) translate(-12%,3%)}
-.muse-tarot-deck>img:nth-child(2){transform:rotate(6deg) translate(10%,2%)}
-.muse-tarot-deck>img:nth-child(3){box-shadow:0 22px 46px rgba(0,0,0,.4),0 0 34px color-mix(in srgb,var(--table-a) 32%,transparent)}
+.muse-tarot-deck>.muse-cardback{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:12px;border:1px solid color-mix(in srgb,var(--table-a) 45%,var(--glass-edge));box-shadow:0 18px 38px rgba(0,0,0,.34)}
+.muse-tarot-deck>.muse-cardback:nth-child(1){transform:rotate(-9deg) translate(-12%,3%)}
+.muse-tarot-deck>.muse-cardback:nth-child(2){transform:rotate(6deg) translate(10%,2%)}
+.muse-tarot-deck>.muse-cardback:nth-child(3){box-shadow:0 22px 46px rgba(0,0,0,.4),0 0 34px color-mix(in srgb,var(--table-a) 32%,transparent)}
 .muse-tarot .muse-tarot-welcome h4{margin:6px 0 8px;font-size:clamp(1.6rem,3vw,2.4rem);line-height:1.12}
 .muse-tarot .muse-tarot-welcome p{margin:0 0 14px;max-width:46ch}
 .muse-tarot-intention-echo{display:grid;gap:2px;padding:8px 0 8px 14px;border-left:2px solid color-mix(in srgb,var(--table-a) 70%,transparent);color:var(--foreground)!important;font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-quote-weight);font-size:1.02rem;line-height:1.4;overflow-wrap:anywhere}
@@ -48,14 +48,14 @@
 .muse-tarot-fan-lead>span{font:600 .74rem var(--font-ui);letter-spacing:.09em;text-transform:uppercase;color:var(--text-muted)}
 .muse-tarot .muse-tarot-fan .muse-tarot-fan-arc{display:flex;flex-wrap:nowrap;justify-content:center;align-items:flex-start;gap:0;width:100%;max-width:920px;padding:14px 4% 44px;min-width:0}
 .muse-tarot .muse-tarot-fan-arc>button{--o:calc(var(--i) - (var(--n) - 1) / 2);position:relative;flex:0 1 128px;width:auto;min-width:0;margin-inline:-1.4%;padding:0;border:0;border-radius:11px;background:none;cursor:pointer;transform-origin:50% 140%;transform:rotate(calc(var(--o) * 5.5deg)) translateY(calc(var(--o) * var(--o) * 2.2px));transition:transform .28s cubic-bezier(.2,.8,.2,1),filter .2s,opacity .25s}
-.muse-tarot .muse-tarot-fan-arc>button img{display:block;width:100%;height:auto;border-radius:11px;border:1px solid color-mix(in srgb,var(--table-a) 40%,var(--glass-edge));box-shadow:-6px 12px 24px rgba(0,0,0,.3)}
+.muse-tarot .muse-tarot-fan-arc>button .muse-cardback{display:block;width:100%;height:auto;border-radius:11px;border:1px solid color-mix(in srgb,var(--table-a) 40%,var(--glass-edge));box-shadow:-6px 12px 24px rgba(0,0,0,.3)}
 .muse-tarot .muse-tarot-fan-arc>button:is(:hover,:focus-visible):not(:disabled){z-index:2;border-color:transparent;box-shadow:none;transform:rotate(calc(var(--o) * 5.5deg)) translateY(calc(var(--o) * var(--o) * 2.2px - 22px));filter:drop-shadow(0 0 16px color-mix(in srgb,var(--table-a) 70%,transparent))}
 .muse-tarot .muse-tarot-fan-arc>button:focus-visible{outline:2px solid var(--focus-ring);outline-offset:4px}
 .muse-tarot .muse-tarot-fan-arc>button[data-picked]{opacity:.16;cursor:default;transform:rotate(calc(var(--o) * 5.5deg)) translateY(calc(var(--o) * var(--o) * 2.2px + 18px))}
 .muse-tarot-mats{display:flex;justify-content:center;flex-wrap:wrap;gap:clamp(10px,2vw,22px);margin:0;padding:0;list-style:none}
 .muse-tarot-mats li{display:grid;justify-items:center;gap:6px;font-size:.74rem;font-weight:600;color:var(--text-muted);max-width:92px;text-align:center;line-height:1.25}
 .muse-tarot-mat-slot{display:grid;place-items:center;width:50px;aspect-ratio:220/375;border:1px dashed color-mix(in srgb,var(--table-a) 45%,var(--glass-border));border-radius:7px;background:color-mix(in srgb,var(--table-a) 6%,transparent);color:var(--text-muted);font-size:.8rem}
-.muse-tarot-mat-slot img{display:block;width:100%;height:100%;object-fit:cover;border-radius:6px}
+.muse-tarot-mat-slot .muse-cardback{display:block;width:100%;height:100%;object-fit:cover;border-radius:6px}
 .muse-tarot-mats li[data-filled]{color:var(--foreground)}
 .muse-tarot-mats li[data-filled] .muse-tarot-mat-slot{border-style:solid;border-color:color-mix(in srgb,var(--table-a) 60%,transparent);box-shadow:0 6px 14px rgba(0,0,0,.28)}
 .muse-tarot-mats li[data-next] .muse-tarot-mat-slot{border-color:var(--table-a);box-shadow:0 0 0 3px color-mix(in srgb,var(--table-a) 18%,transparent)}
@@ -80,9 +80,9 @@
 .muse-tarot-seat::after{left:calc(100% + 5px);transform:scaleX(-1)}
 .muse-tarot-seat>b{display:grid;place-items:center;flex:none;width:20px;height:20px;border-radius:50%;background:linear-gradient(140deg,color-mix(in srgb,var(--table-a) 80%,#fff),var(--table-a) 50%,var(--table-b));color:#170f24;font:700 .66rem var(--font-ui);box-shadow:inset 0 1px 0 color-mix(in srgb,#fff 60%,transparent),0 0 10px color-mix(in srgb,var(--table-a) 60%,transparent)}
 .muse-tarot-flip{display:block;width:100%;border-radius:12px;transition:transform .28s cubic-bezier(.2,.8,.2,1),box-shadow .28s}
-.muse-tarot .muse-tarot-flip>img,.muse-tarot .muse-tarot-drawn-card .muse-tarot-flip .muse-tarot-art{display:block;width:100%;height:auto;max-width:none;margin:0;aspect-ratio:220/375;border-radius:12px;border:1px solid color-mix(in srgb,var(--table-a) 45%,var(--glass-edge));box-shadow:0 20px 40px rgba(0,0,0,.36);object-fit:cover;overflow:hidden}
+.muse-tarot .muse-tarot-flip>.muse-cardback,.muse-tarot .muse-tarot-drawn-card .muse-tarot-flip .muse-tarot-art{display:block;width:100%;height:auto;max-width:none;margin:0;aspect-ratio:220/375;border-radius:12px;border:1px solid color-mix(in srgb,var(--table-a) 45%,var(--glass-edge));box-shadow:0 20px 40px rgba(0,0,0,.36);object-fit:cover;overflow:hidden}
 .muse-tarot .muse-tarot-drawn-card .muse-tarot-art img{width:100%;height:100%;object-fit:cover;border-radius:0}
-.muse-tarot .muse-tarot-drawn-card[data-revealed=false] .muse-tarot-flip>img{box-shadow:0 20px 40px rgba(0,0,0,.36),0 0 30px color-mix(in srgb,var(--table-a) 26%,transparent)}
+.muse-tarot .muse-tarot-drawn-card[data-revealed=false] .muse-tarot-flip>.muse-cardback{box-shadow:0 20px 40px rgba(0,0,0,.36),0 0 30px color-mix(in srgb,var(--table-a) 26%,transparent)}
 .muse-tarot .muse-tarot-drawn-card[data-revealed=false]:is(:hover,:focus-visible) .muse-tarot-flip{transform:translateY(-8px) rotate(-1.2deg)}
 .muse-tarot .muse-tarot-drawn-card[data-revealed=true]:is(:hover,:focus-visible) .muse-tarot-flip{transform:translateY(-5px)}
 .muse-tarot .muse-tarot-drawn-card:focus-visible{outline:0}
@@ -104,10 +104,10 @@
  .muse-tarot .muse-tarot-ritual{padding:16px 12px;border-radius:22px}
 }
 @media (prefers-reduced-motion:no-preference){
- :root:not([data-magic=quiet]) .muse-tarot-deck>img:nth-child(3){animation:tarot-deck-breathe 5.5s ease-in-out infinite}
- :root:not([data-magic=quiet]) .muse-tarot-fan[data-motion=full] .muse-tarot-fan-arc>button img{animation:tarot-deal .5s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i) * 45ms)}
+ :root:not([data-magic=quiet]) .muse-tarot-deck>.muse-cardback:nth-child(3){animation:tarot-deck-breathe 5.5s ease-in-out infinite}
+ :root:not([data-magic=quiet]) .muse-tarot-fan[data-motion=full] .muse-tarot-fan-arc>button .muse-cardback{animation:tarot-deal .5s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i) * 45ms)}
  :root:not([data-magic=quiet]) .muse-tarot-mats li[data-next] .muse-tarot-mat-slot{animation:tarot-seat-pulse 1.8s ease-in-out infinite}
- :root:not([data-magic=quiet]) .muse-tarot-mats li[data-filled] .muse-tarot-mat-slot img{animation:tarot-appear .3s ease-out both}
+ :root:not([data-magic=quiet]) .muse-tarot-mats li[data-filled] .muse-tarot-mat-slot .muse-cardback{animation:tarot-appear .3s ease-out both}
  :root:not([data-magic=quiet]) .muse-tarot-spread-table[data-motion=full] .muse-tarot-drawn-card{animation:tarot-lay .5s cubic-bezier(.2,.8,.2,1) both}
  :root:not([data-magic=quiet]) .muse-tarot-spread-table[data-motion=full] .muse-tarot-drawn-card:nth-child(2){animation-delay:90ms}
  :root:not([data-magic=quiet]) .muse-tarot-spread-table[data-motion=full] .muse-tarot-drawn-card:nth-child(3){animation-delay:180ms}

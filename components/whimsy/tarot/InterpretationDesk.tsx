@@ -1,11 +1,11 @@
 'use client';
 import {useId,useMemo,useRef,useState} from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import {MuseHeading,MuseMark} from '@/components/design/MuseHeading';
 import {MuseIcon} from '@/components/MuseIcon';
 import {grimoireEntryHref} from '@/lib/whimsy/grimoire';
-import {tarotDeck,type Spread,type TarotOrientation} from '@/lib/whimsy/tarot';
+import type {Spread,TarotOrientation} from '@/lib/whimsy/tarot';
+import {TarotCardBack} from './TarotCardBack';
 import {interpretCard,readSpread} from '@/lib/whimsy/tarot-interpretation';
 import {TarotCardArt as CardArt} from '../TarotCardArt';
 import './InterpretationDesk.css';
@@ -41,7 +41,7 @@ export function InterpretationDesk({spread,drawn,question,active,onActive,onReve
        <span className="muse-idesk-chip-copy"><small>{spread.positions[index]}</small><strong>{info.card.name}</strong>{item.orientation==='reversed'&&<em>Reversed</em>}</span>
       </button>
       :<button key={`${item.cardId}-${index}`} type="button" className="muse-idesk-chip" data-facedown onClick={()=>onReveal(index)} aria-label={`${spread.positions[index]}: turn this card`}>
-       <span className="muse-idesk-chip-art"><Image src={tarotDeck.cardBack} alt="" width={44} height={75}/></span>
+       <span className="muse-idesk-chip-art"><TarotCardBack/></span>
        <span className="muse-idesk-chip-copy"><small>{spread.positions[index]}</small><strong>Turn card</strong></span>
       </button>;})}
     {drawn.length>1&&revealedCount>1&&<button type="button" role="tab" aria-selected={showWhole} aria-controls={`${id}-panel`} className="muse-idesk-chip muse-idesk-chip-whole" onClick={()=>{setWhole(true);setOpen(true);}}><span className="muse-idesk-chip-art"><MuseMark icon="constellation" tone={4} size="sm"/></span><span className="muse-idesk-chip-copy"><small>Together</small><strong>The whole spread</strong></span></button>}
