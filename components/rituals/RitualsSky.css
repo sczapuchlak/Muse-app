@@ -116,3 +116,7 @@
 .muse-rituals-sky .muse-sky-week{display:grid!important;grid-template-columns:minmax(0,1fr)!important;grid-auto-flow:row!important;align-content:center}
 .muse-rituals-sky .muse-sky-week>div{display:flex!important;flex-direction:row!important;align-items:baseline!important;justify-content:space-between!important;position:static!important}
 .muse-rituals-sky .muse-sky-week dt,.muse-rituals-sky .muse-sky-week dd{position:static!important}
+/* Round 4: tile titles are readable at a glance: brighter, a touch larger, each in the theme's accent. */
+.muse-rituals-sky .muse-sky-label{font-size:.66rem!important;font-weight:800;letter-spacing:.11em;color:color-mix(in srgb,var(--accent-primary) 70%,var(--foreground))}
+.muse-rituals-sky .muse-sky-streak .muse-sky-label{color:color-mix(in srgb,var(--accent-warm,var(--accent-pop)) 70%,var(--foreground))}
+.muse-rituals-sky .muse-sky-week dt{color:color-mix(in srgb,var(--accent-secondary) 65%,var(--foreground))!important;font-weight:800;font-size:.62rem!important}
