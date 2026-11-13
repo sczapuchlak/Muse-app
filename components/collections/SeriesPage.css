@@ -343,3 +343,27 @@
  .muse-series-shelf-ledge{left:34px;height:18px}
  .muse-series-shelf-strand{top:-30px;height:44px;left:30%}
 }
+
+/* Glow-up 2, Stephanie's shelf notes (Nov 13): the light strand climbs toward book one instead of hanging flat over the
+   last few, and the books and fern sit a little further right so the fern stands on solid walnut, not on the ledge's
+   fade-out (the "ghost shelf"). The ledge now turns solid within a few pixels, well before the fern's pot. */
+.muse-series-shelf{--nudge:18px;--strand-h:104px;padding-left:calc(var(--fade) + var(--nudge));width:calc(var(--count,7)*(var(--spine-w) + 6px) + var(--fade) + var(--nudge) + var(--zone) + 6px)}
+.muse-series-shelf-plant{left:calc(var(--fade) - 81px + var(--nudge))}
+.muse-series-shelf-ledge{-webkit-mask-image:linear-gradient(90deg,transparent 0,black 22px);mask-image:linear-gradient(90deg,transparent 0,black 22px)}
+.muse-series-shelf-strand{left:auto;right:calc(-.4*var(--page-padding,24px));top:calc(-.55*var(--strand-h));width:calc(var(--strand-h)*3.56);height:var(--strand-h);background-position:center;background-size:contain;-webkit-mask-image:none;mask-image:none;transform-origin:100% 100%;rotate:9deg}
+@media(max-width:1240px){.muse-series-shelf{--strand-h:92px}}
+@media(max-width:620px){
+ .muse-series-shelf{--nudge:14px;--strand-h:62px;padding-top:34px}
+ .muse-series-shelf-plant{left:calc(30px + var(--nudge))}
+ .muse-series-shelf-ledge{left:22px}
+ .muse-series-shelf-strand{left:auto;right:-6px;top:-24px}
+}
+/* The strand runs the full row: anchored just off the right edge above book seven, it climbs to book one. The shelf
+   gains a little headroom so the raised end never clips. Books shift right by the nudge (the ledge already runs on). */
+.muse-series-shelf{--pad-top:78px;--strand-h:124px;padding-top:var(--pad-top);padding-right:max(4px,calc(var(--zone) - var(--nudge)))}
+.muse-series-shelf-strand{top:calc(var(--pad-top) - 8px - var(--strand-h));rotate:6deg}
+@media(max-width:1240px){.muse-series-shelf{--strand-h:118px}}
+@media(max-width:620px){
+ .muse-series-shelf{--pad-top:72px;--strand-h:74px;padding-right:2px}
+ .muse-series-shelf-strand{top:calc(var(--pad-top) + 12px - var(--strand-h));right:-22px;rotate:4deg}
+}
