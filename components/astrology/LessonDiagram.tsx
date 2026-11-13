@@ -4,7 +4,7 @@
  */
 const r2=(n:number)=>Math.round(n*100)/100;
 const A='var(--chart-1)',B='var(--chart-3)',C='var(--chart-5)',ink='currentColor';
-const wheel=<><circle cx="60" cy="60" r="46" fill="none" stroke={ink} strokeOpacity=".35"/><circle cx="60" cy="60" r="32" fill="none" stroke={ink} strokeOpacity=".2"/>{Array.from({length:12},(_,i)=>{const a=Math.PI*2*i/12,x=Math.cos(a),y=Math.sin(a);return <path key={i} d={`M${60+32*x} ${60+32*y}L${60+46*x} ${60+46*y}`} stroke={ink} strokeOpacity=".3"/>;})}</>;
+const wheel=<><circle cx="60" cy="60" r="46" fill="none" stroke={ink} strokeOpacity=".35"/><circle cx="60" cy="60" r="32" fill="none" stroke={ink} strokeOpacity=".2"/>{Array.from({length:12},(_,i)=>{const a=Math.PI*2*i/12,x=Math.cos(a),y=Math.sin(a);return <path key={i} d={`M${r2(60+32*x)} ${r2(60+32*y)}L${r2(60+46*x)} ${r2(60+46*y)}`} stroke={ink} strokeOpacity=".3"/>;})}</>;
 const dot=(a:number,r:number,fill:string,size=4.5)=><circle cx={r2(60+r*Math.cos(a))} cy={r2(60+r*Math.sin(a))} r={size} fill={fill}/>;
 const diagrams=[
  // 1 A birth chart: the wheel with its horizon.
