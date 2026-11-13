@@ -74,7 +74,8 @@ function ChallengeCompact({year,progress:p,editing,setEditing,editor,onOpenAtlas
  const [view,setView]=useState(0);
  if(!p)return <article className="muse-books-panel muse-challenge muse-challenge-compact muse-desk-goal">
   <div className="muse-desk-goal-head" data-empty><div className="muse-challenge-title"><strong className="muse-rainbow-year" data-big>{year}</strong><span className="small-label">READING CHALLENGE</span></div>{!editing&&<button type="button" className="muse-button button-primary" onClick={()=>setEditing(true)}>Set a goal</button>}</div>
-  {editor||<p className="muse-desk-goal-empty">How many books would you like to finish this year? Your finished books will line up here.</p>}</article>;
+  {editor||<><p className="muse-desk-goal-empty">How many books would you like to finish this year? Your finished books will line up here.</p>
+   <ol className="muse-desk-goal-shelf" aria-hidden="true">{Array.from({length:PER_VIEW},(_,i)=><li key={i} data-empty><span>{i+1}</span></li>)}</ol></>}</article>;
  const slots=Math.max(p.target,p.done),pages=Math.ceil(slots/PER_VIEW),current=Math.min(view,pages-1),first=current*PER_VIEW;
  return <article className="muse-books-panel muse-challenge muse-challenge-compact muse-desk-goal" data-reached={p.reached||undefined}>
   <div className="muse-desk-goal-head"><div><div className="muse-challenge-title"><strong className="muse-rainbow-year" data-big>{year}</strong><span className="small-label">READING CHALLENGE</span></div><h4 className="muse-challenge-count"><strong className="type-numeric">{p.done}</strong> <span>of {p.target} books</span></h4></div>
