@@ -15,6 +15,7 @@ import {aspirationProgress,aspirationStats,attention,canRenew,inTimeFilter,isOpe
 import {aspirationSignals} from '@/lib/almanac/signals';
 import {surfaces} from '@/lib/almanac/select';
 import {AlmanacWhisper} from '../../almanac/AlmanacWhisper';
+import {MuseHeading,MuseMark,MuseStatRow,MuseStatTile} from '@/components/design/MuseHeading';
 import {useAspirations} from './useAspirations';
 import {AspirationEditor,blankAspiration} from './AspirationEditor';
 import {MuseChoiceMenu} from '@/components/MuseChoiceMenu';
@@ -69,24 +70,23 @@ export function Aspirations(){
  const stats=aspirationStats(aspirations,today),soon=attention(aspirations,today),open=aspirations.find(a=>a.id===openId)??null;
  const maxMonth=Math.max(1,...stats.completedByMonth.map(m=>m.completed+m.milestones));
  return <section className="muse-aspirations" aria-label="Aspirations">
-  <div className="muse-aspirations-head"><div><h2>Aspirations</h2><p>The bigger things you’re working toward. Habits are what you practice; these are where they lead.</p></div>
-   <button type="button" className="muse-button button-primary" onClick={()=>setEditing(blankAspiration(today))}>+ Add aspiration</button></div>
+  <div className="muse-aspirations-head"><MuseHeading icon="summit" tone={1} size="lg" level={2} title="Aspirations" description="The bigger things you’re working toward. Habits are what you practice; these are where they lead." aside={<button type="button" className="muse-button button-primary" onClick={()=>setEditing(blankAspiration(today))}>+ Add aspiration</button>}/></div>
   <AlmanacWhisper surface={surfaces.aspirations} signals={signals} today={today}/>
   {status.error&&!editing&&!open&&<p role="alert" className="muse-aspiration-error">{status.error}</p>}
   {!status.loaded?<p className="small-label" role="status">Loading your aspirations…</p>:<>
-   {(aspirations.length>0||challengeView)&&<dl className="muse-aspirations-stats"><div><dt>Active</dt><dd>{stats.active}</dd></div><div><dt>Completed in {year}</dt><dd>{stats.completedThisYear}</dd></div><div><dt>Milestones in {year}</dt><dd>{stats.milestonesThisYear}</dd></div></dl>}
+   {(aspirations.length>0||challengeView)&&<MuseStatRow label="Aspirations at a glance" className="muse-aspirations-statrow"><MuseStatTile icon="target" tone={1} value={stats.active} label="Active" note={stats.active===1?'in motion':'in motion'}/><MuseStatTile icon="trophy" tone={4} value={stats.completedThisYear} label={`Completed in ${year}`} note={stats.completedThisYear?'and counting':'the first is the sweetest'}/><MuseStatTile icon="milestone" tone={6} value={stats.milestonesThisYear} label={`Milestones in ${year}`} note="steps you checked off"/></MuseStatRow>}
    {(soon.approaching.length>0||soon.upcomingMilestones.length>0||soon.recentMilestones.length>0)&&<div className="muse-aspirations-attention">
-    {(soon.approaching.length>0||soon.upcomingMilestones.length>0)&&<div><h3>Coming up</h3><ul>{soon.approaching.map(a=><li key={a.id}><button type="button" className="text-button" onClick={()=>setOpenId(a.id)}>{a.title}</button><small>target {dateLabel(a.targetDate!)}</small></li>)}
+    {(soon.approaching.length>0||soon.upcomingMilestones.length>0)&&<div><MuseHeading icon="hourglass" tone={2} size="sm" level={3} face="practical" title="Coming up"/><ul>{soon.approaching.map(a=><li key={a.id}><button type="button" className="text-button" onClick={()=>setOpenId(a.id)}>{a.title}</button><small>target {dateLabel(a.targetDate!)}</small></li>)}
      {soon.upcomingMilestones.slice(0,5).map(({aspiration,milestone})=><li key={milestone.id}><button type="button" className="text-button" onClick={()=>setOpenId(aspiration.id)}>{milestone.title}</button><small>{aspiration.title} · by {dateLabel(milestone.targetDate!)}</small></li>)}</ul></div>}
-    {soon.recentMilestones.length>0&&<div><h3>Recently done</h3><ul>{soon.recentMilestones.slice(0,5).map(({aspiration,milestone})=><li key={milestone.id}><MuseStar size={10}/><span>{milestone.title}</span><small>{aspiration.title} · {dateLabel(milestone.completedOn!)}</small></li>)}</ul></div>}
+    {soon.recentMilestones.length>0&&<div><MuseHeading icon="checkmark" tone={7} size="sm" level={3} face="practical" title="Recently done"/><ul>{soon.recentMilestones.slice(0,5).map(({aspiration,milestone})=><li key={milestone.id}><MuseStar size={10}/><span>{milestone.title}</span><small>{aspiration.title} · {dateLabel(milestone.completedOn!)}</small></li>)}</ul></div>}
    </div>}
    <div className="muse-aspirations-controls">
-    <div role="group" aria-label="Timeframe" className="muse-aspiration-filter muse-scroll-fade">{filters.map(f=><button key={f.id} type="button" aria-pressed={view.filter===f.id} onClick={()=>changeView({filter:f.id})}>{f.label}</button>)}</div>
+    <div role="group" aria-label="Timeframe" className="muse-segmented muse-aspiration-filter" data-scroll>{filters.map(f=><button key={f.id} type="button" aria-pressed={view.filter===f.id} onClick={()=>changeView({filter:f.id})}>{f.label}</button>)}</div>
     <div className="muse-aspiration-choice" data-inline><span>Group</span><MuseChoiceMenu label="Group" valueLabel={{none:'None',category:'Category',status:'Status'}[view.group]} selectedIds={[view.group]} options={[{id:'none',label:'None'},{id:'category',label:'Category'},{id:'status',label:'Status'}]} onSelect={id=>changeView({group:id as Group})}/></div>
     <div className="muse-aspiration-choice" data-inline><span>Sort</span><MuseChoiceMenu label="Sort" valueLabel={sortLabels[view.sort]} selectedIds={[view.sort]} options={(Object.keys(sortLabels) as SortKey[]).map(id=>({id,label:sortLabels[id]}))} onSelect={id=>changeView({sort:id as SortKey})}/></div>
    </div>
    {challengeView&&(view.filter==='all'||view.filter==='year')&&<article className="muse-aspiration-card muse-aspiration-connected" data-accent="secondary">
-    <ProgressRing percent={challengeView.percent} accent="secondary" size={56}/><div><span className="small-label">From Bookshelf · automatic</span><h3>{year} Reading Challenge</h3><p>{challengeView.done} of {challengeView.target} books{challengeView.reached?' · complete':''}</p>
+    <ProgressRing percent={challengeView.percent} accent="secondary" size={56}/><div><span className="muse-aspiration-source"><MuseMark icon="openbook" tone={3} size="sm" variant="soft"/>From Books · updates automatically</span><h3>{year} Reading Challenge</h3><p>{challengeView.done} of {challengeView.target} books{challengeView.reached?' · complete':''}</p>
      <div className="muse-aspiration-card-actions"><Link className="text-button" href="/collections/reading-atlas">Open in Reading Atlas</Link><button type="button" className="text-button" onClick={()=>setEditing({...blankAspiration(today),title:`Read ${challengeView.target} books in ${year}`,category:'Learning',icon:'📚',progressKind:'connected',connection:{kind:'reading-challenge',year},targetDate:`${year}-12-31`})}>Add milestones and a why</button></div></div></article>}
    {!visible.length&&!challengeView?<div className="muse-aspirations-empty">{aspirations.some(isOpen)?<p>Nothing in this timeframe. Try “All”.</p>:<><MuseStar size={20}/><h3>Small rituals. Grand ambitions.</h3><p>What would you like to have done a few months from now? Start with a name; the rest can wait.</p><button type="button" className="muse-button button-primary" onClick={()=>setEditing(blankAspiration(today))}>Add your first aspiration</button></>}</div>
     :groups.map(g=><div key={g.name||'all'} className="muse-aspirations-group">{g.name&&<h3>{g.name}</h3>}
