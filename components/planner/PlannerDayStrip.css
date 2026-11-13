@@ -1,0 +1,48 @@
+/* Planner glow-up (Nov 2026): the focused day as one compact strip. Three equal-height cells, theme tokens only. */
+.muse-planner-daystrip{display:grid;grid-template-columns:minmax(230px,.9fr) minmax(0,2.2fr) minmax(200px,.8fr);align-items:stretch;gap:var(--space-4,18px);margin:0 0 var(--space-4,18px)}
+.muse-planner-daystrip>*{position:relative;display:grid;align-content:center;gap:4px;min-width:0;padding:14px 18px;border:1px solid var(--glass-border);border-radius:22px;background-color:var(--glass-background);box-shadow:0 18px 36px -30px rgba(0,0,0,.45)}
+.muse-planner-daystrip .muse-kicker{margin:0}
+.muse-daystrip-masthead{background-image:radial-gradient(90% 100% at 0% 0%,color-mix(in srgb,var(--accent-secondary) 16%,transparent),transparent 70%)}
+.muse-daystrip-masthead h2{margin:0;font-family:var(--font-editorial);font-weight:var(--type-editorial-weight);font-size:clamp(1.25rem,1.8vw,1.55rem);line-height:1.1}
+.muse-daystrip-masthead h2 span{font-style:italic}
+.muse-daystrip-progress{display:flex;align-items:baseline;gap:6px;margin:4px 0 0}
+.muse-daystrip-progress b{font-family:var(--font-editorial);font-weight:560;font-size:2rem;line-height:1;letter-spacing:-.03em;background:linear-gradient(110deg,var(--accent-secondary),var(--accent-primary));-webkit-background-clip:text;background-clip:text;color:transparent}
+.muse-daystrip-progress small{font-family:var(--font-editorial);font-size:1.05rem;color:var(--text-muted)}
+.muse-daystrip-progress span{margin-left:6px;color:var(--text-muted);font-size:.8rem;font-weight:600}
+.muse-daystrip-bar{display:block;height:6px;margin-top:4px;border-radius:999px;background:linear-gradient(90deg,var(--accent-secondary),var(--accent-primary)) 0 0/calc(var(--f)*100%) 100% no-repeat,color-mix(in srgb,var(--foreground) 10%,transparent)}
+/* Hour ribbon: hour ticks along the bottom, events as rounded spans in two lanes, a glowing now line. */
+.muse-daystrip-ribbon{align-content:stretch;padding-block:12px 10px}
+.muse-daystrip-track{position:relative;min-height:84px;border-bottom:1px solid color-mix(in srgb,var(--glass-border) 90%,transparent);background:repeating-linear-gradient(90deg,color-mix(in srgb,var(--foreground) 5%,transparent) 0 1px,transparent 1px calc(100%/8))}
+.muse-daystrip-hour{position:absolute;bottom:-20px;left:calc(var(--x)*100%);translate:-50% 0;color:var(--text-muted);font-size:.64rem;font-weight:650;white-space:nowrap}
+.muse-daystrip-hour:first-child{translate:0 0}
+.muse-daystrip-event{position:absolute;left:calc(var(--x)*100%);top:calc(10px + var(--row)*36px);display:flex;align-items:center;gap:6px;width:max(calc(var(--w)*100%),12px);min-height:28px;padding:0 8px 0 4px;border-radius:10px;overflow:visible;background:linear-gradient(90deg,color-mix(in srgb,var(--accent-primary) 26%,var(--glass-background)),color-mix(in srgb,var(--accent-secondary) 18%,var(--glass-background)));border:1px solid color-mix(in srgb,var(--accent-primary) 40%,transparent)}
+.muse-daystrip-event i{flex:none;width:8px;height:8px;border-radius:50%;background:var(--accent-primary);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent-primary) 25%,transparent)}
+.muse-daystrip-event span{overflow:visible;font-size:.74rem;font-weight:650;white-space:nowrap}
+.muse-daystrip-event[data-past]{opacity:.55;filter:saturate(.6)}
+.muse-daystrip-now{position:absolute;top:-4px;bottom:-4px;left:calc(var(--x)*100%);width:2px;border-radius:2px;background:var(--accent-pop,var(--accent-primary));box-shadow:0 0 10px var(--accent-pop,var(--accent-primary))}
+.muse-daystrip-now::before{content:"";position:absolute;top:-4px;left:-4px;width:10px;height:10px;border-radius:50%;background:inherit}
+@media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) .muse-daystrip-now::before{animation:muse-daystrip-pulse 2.4s ease-in-out 3}}
+@keyframes muse-daystrip-pulse{50%{box-shadow:0 0 0 6px color-mix(in srgb,var(--accent-pop,var(--accent-primary)) 25%,transparent)}}
+.muse-daystrip-empty,.muse-daystrip-allday{position:absolute;inset:auto 18px 34px;margin:0;color:var(--text-muted);font-family:var(--font-editorial);font-style:italic;font-size:.95rem}
+.muse-daystrip-allday{inset:12px 18px auto auto;font-family:var(--font-ui);font-style:normal;font-size:.72rem;font-weight:650}
+.muse-daystrip-next{background-image:radial-gradient(100% 100% at 100% 0%,color-mix(in srgb,var(--accent-primary) 14%,transparent),transparent 70%)}
+.muse-daystrip-next strong{font-family:var(--font-editorial);font-weight:600;font-size:1.2rem;line-height:1.15}
+.muse-daystrip-time{font-size:.86rem;font-weight:650;color:var(--foreground)}
+.muse-daystrip-next small{color:var(--text-muted);font-size:.78rem}
+@container muse-content (max-width:1100px){.muse-planner-daystrip{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.muse-daystrip-ribbon{grid-column:1/-1;grid-row:2}}
+@container muse-content (max-width:620px){.muse-planner-daystrip{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}.muse-planner-daystrip>*{padding:12px 14px;border-radius:18px}.muse-daystrip-progress b{font-size:1.6rem}}
+.muse-daystrip-ribbon{padding-bottom:30px}
+
+/* Empty states as small drawings: a crescent and two stars for a free day, a fanned stack of index cards for an
+   empty Task List. Decoration only; the sentence stays the content. */
+.muse-planner-empty{position:relative;display:grid;justify-items:center;gap:10px;padding-top:86px!important;text-align:center;color:var(--text-muted);font-family:var(--font-editorial);font-style:italic;font-size:.98rem}
+.muse-planner-empty::before{content:"";position:absolute;top:8px;left:50%;width:58px;height:58px;translate:-50% 0;border-radius:50%;background:radial-gradient(circle at 32% 38%,transparent 0 46%,color-mix(in srgb,var(--accent-secondary) 70%,var(--accent-primary)) 47%);-webkit-mask:radial-gradient(circle at 70% 34%,transparent 0 46%,black 47%);mask:radial-gradient(circle at 70% 34%,transparent 0 46%,black 47%);filter:drop-shadow(0 6px 14px color-mix(in srgb,var(--accent-primary) 45%,transparent))}
+.muse-planner-empty::after{content:"";position:absolute;top:6px;left:calc(50% + 26px);width:14px;height:14px;background:var(--accent-secondary);clip-path:polygon(50% 0,61% 39%,100% 50%,61% 61%,50% 100%,39% 61%,0 50%,39% 39%);box-shadow:-62px 34px 0 -3px var(--accent-primary)}
+@media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) .muse-planner-empty::after{animation:muse-empty-twinkle 2.6s ease-in-out 3}}
+@keyframes muse-empty-twinkle{50%{opacity:.35;transform:scale(.8)}}
+/* The Task List variant: three tilted index cards instead of the moon. */
+.muse-planner-rail .muse-planner-empty::before,.muse-task-rail .muse-planner-empty::before,aside .muse-planner-empty::before{width:64px;height:46px;border-radius:8px;-webkit-mask:none;mask:none;background:linear-gradient(var(--glass-background),var(--glass-background)) padding-box,linear-gradient(135deg,var(--accent-secondary),var(--accent-primary)) border-box;border:2px solid transparent;rotate:-6deg;box-shadow:10px 6px 0 -2px color-mix(in srgb,var(--accent-primary) 30%,var(--glass-background)),20px 12px 0 -4px color-mix(in srgb,var(--accent-secondary) 25%,var(--glass-background));filter:none}
+.muse-planner-rail .muse-planner-empty::after,.muse-task-rail .muse-planner-empty::after,aside .muse-planner-empty::after{top:22px;left:calc(50% - 18px);width:30px;height:3px;border-radius:3px;clip-path:none;background:color-mix(in srgb,var(--foreground) 25%,transparent);box-shadow:0 8px 0 color-mix(in srgb,var(--foreground) 18%,transparent);rotate:-6deg;animation:none}
+/* A true crescent (☾): a lit edge cut by an inset shadow, not a masked bowl. */
+.muse-planner-day .muse-planner-empty::before,.muse-planner-empty::before{-webkit-mask:none;mask:none;width:50px;height:50px;background:none;border-radius:50%;box-shadow:inset 13px -6px 0 0 color-mix(in srgb,var(--accent-secondary) 65%,var(--accent-primary));rotate:-18deg}
+aside.muse-task-list .muse-planner-empty::before{width:64px;height:46px;border-radius:8px;rotate:-6deg;background:linear-gradient(var(--glass-background),var(--glass-background)) padding-box,linear-gradient(135deg,var(--accent-secondary),var(--accent-primary)) border-box;border:2px solid transparent;box-shadow:10px 6px 0 -2px color-mix(in srgb,var(--accent-primary) 30%,var(--glass-background)),20px 12px 0 -4px color-mix(in srgb,var(--accent-secondary) 25%,var(--glass-background))}
