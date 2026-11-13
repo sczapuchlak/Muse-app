@@ -17,7 +17,7 @@ import {todayInTimeZone,validTimeZone} from '@/lib/dates';
 import {bookPosition} from '@/lib/whimsy/books';
 import type {Book} from '@/lib/whimsy/models';
 import {BookCover,Bookshelf} from '@/components/whimsy/Bookshelf';
-import {coverGlow} from '@/components/whimsy/BookAtmosphere';
+import {CoverGlow} from '@/components/whimsy/BookAtmosphere';
 import {useWhimsyData} from '@/components/whimsy/WhimsyData';
 import {canonicalItems,mediaStatusLabels,seriesProgress,tvProgress,type CanonicalItem,type MediaKind} from '@/lib/collections/models';
 import {browseLibrary,collectionSortIds} from '@/lib/collections/library-browse';
@@ -65,8 +65,8 @@ const statusTone=(s:string)=>(['reading','watching','listening','playing'].inclu
 const statusIcon=(s:string):'eye'|'bookmark'|'check'|'pause'|'minus'=>{const t=statusTone(s);return t==='active'?'eye':t==='done'?'check':t==='paused'?'pause':t==='dnf'?'minus':'bookmark';};
 const LibraryCard=memo(function LibraryCard({item,chip,tvNote,onOpen,selected}:{item:CanonicalItem;chip:SeriesChip|null;tvNote:string|null;onOpen:(item:CanonicalItem)=>void;selected?:boolean}){
  const status=item.kind==='book'?statusLabels[item.status]??item.status:mediaStatusLabels[item.kind][item.status]??item.status;
- return <button type="button" className="muse-collections-card" {...coverGlow(item.book?.coverUrl)} data-kind={item.kind} data-selected={selected||undefined} aria-pressed={selected===undefined?undefined:selected} title={item.creator?`${item.title} — ${item.creator}`:item.title} onClick={()=>onOpen(item)}>
-  {item.book?<BookCover book={item.book}/>:<MediaCover item={item.media!}/>}
+ return <button type="button" className="muse-collections-card" data-glow={item.book?.coverUrl?true:undefined} data-kind={item.kind} data-selected={selected||undefined} aria-pressed={selected===undefined?undefined:selected} title={item.creator?`${item.title} — ${item.creator}`:item.title} onClick={()=>onOpen(item)}>
+  <CoverGlow url={item.book?.coverUrl}/>{item.book?<BookCover book={item.book}/>:<MediaCover item={item.media!}/>}
   <span className="muse-card-status-badge" data-tone={statusTone(item.status)} role="img" aria-label={`${kindLabel[item.kind]} · ${status}`} title={status}><MuseIcon name={statusIcon(item.status)} size={14}/></span>
   <strong className="muse-card-title">{item.title}</strong>
   <span className="muse-card-creator">{item.creator}</span>

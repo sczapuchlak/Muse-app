@@ -55,14 +55,6 @@ export type BookPageProps={
  * about, where it sits in its series, and the reader's own time with it. The reading companion holds the one
  * shared timer and its existing write paths; nothing here changes how sessions or reads are recorded.
  */
-/** The cover turns toward the pointer like a book in your hand (skipped for reduced motion or quiet Muse Magic). */
-function tiltCover(event:React.PointerEvent<HTMLDivElement>){
- if(event.pointerType!=='mouse'||window.matchMedia('(prefers-reduced-motion: reduce)').matches||document.documentElement.dataset.magic==='quiet')return;
- const box=event.currentTarget.getBoundingClientRect(),x=(event.clientX-box.left)/box.width,y=(event.clientY-box.top)/box.height,style=event.currentTarget.style;
- style.setProperty('--tilt-y',`${(x-.5)*26}deg`);style.setProperty('--tilt-x',`${(.5-y)*14}deg`);style.setProperty('--glare-x',`${x*100}%`);style.setProperty('--glare-y',`${y*100}%`);
-}
-function resetCover(event:React.PointerEvent<HTMLDivElement>){for(const p of ['--tilt-y','--tilt-x','--glare-x','--glare-y'])event.currentTarget.style.removeProperty(p);}
-
 export function BookPage(props:BookPageProps){
  const {book,books,sessions,today,timer,tick,busy}=props;
  const router=useRouter();
@@ -132,7 +124,7 @@ export function BookPage(props:BookPageProps){
  return <BookAtmosphere book={book}><article className="muse-book-page" aria-labelledby="book-page-title">
   <PageCrumbs current={book.title} label="Book navigation"/>
   <header className="muse-book-page-hero">
-   <div className="muse-book-page-cover" onPointerMove={tiltCover} onPointerLeave={resetCover}>{props.cover}</div>
+   <div className="muse-book-page-cover">{props.cover}</div>
    <div className="muse-book-page-identity">
     {primary&&<button type="button" className="muse-book-page-series-chip" onClick={openSeries}><MuseIcon name="series" size={14}/>{positionText} {positionText==='Part of'?'':'·'} {primary.series.title}</button>}
     {!primary&&catalog.state==='checking'&&<span className="muse-book-page-series-chip" data-loading="true" aria-hidden="true">Finding series…</span>}

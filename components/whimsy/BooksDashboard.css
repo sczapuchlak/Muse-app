@@ -154,40 +154,6 @@
 .muse-desk-reading .muse-desk-card{width:100%}
 .muse-finished-card strong{-webkit-line-clamp:3;line-clamp:3;font-size:.92rem}
 
-/* Round 3 (Nov 13): the four top cards share row lines (streak | challenge, then Currently reading | daily goal). Each
-   pair is one row, so a short card (no challenge yet, no whimsy line) can never leave a stretched hole in its neighbour. */
-.muse-bookshelf[data-surface="dashboard"]>.muse-dash-top{grid-template-rows:auto auto;grid-auto-flow:column;row-gap:clamp(12px,1.8vw,20px)}
-.muse-dash-top>.muse-dash-col{display:contents}
-.muse-dash-top .muse-streak-panel{align-self:stretch!important;grid-template-rows:minmax(0,1fr) auto}
-.muse-dash-top .muse-streak{align-content:stretch;grid-template-rows:auto minmax(0,1fr)}
-.muse-dash-top .muse-streak-week{align-self:center}
-.muse-dash-top .muse-streak-heart{width:clamp(30px,3vw,40px)!important;height:clamp(30px,3vw,40px)!important}
-.muse-dash-top .muse-dash-goals{grid-template-rows:auto minmax(0,1fr);align-content:stretch!important;gap:12px}
-.muse-dash-top .muse-dash-goals>.muse-daily{align-content:space-between;row-gap:12px}
-.muse-dash-top .muse-dash-goals>.muse-daily[data-empty]{display:grid;grid-template-rows:auto auto minmax(0,1fr);align-content:stretch;justify-items:start;gap:14px}
-.muse-dash-top .muse-daily-preview{align-self:end}
-.muse-daily-preview{display:flex;justify-content:space-between;width:100%;margin:0;padding:12px 0 0;list-style:none;border-top:1px dashed color-mix(in srgb,var(--foreground) 16%,transparent)}
-.muse-daily-preview li{display:grid;justify-items:center;gap:6px;font-size:.7rem;color:var(--text-muted)}
-.muse-daily-preview i{display:block;width:22px;height:22px;border-radius:50%;border:1.5px dashed color-mix(in srgb,var(--accent-primary) 45%,transparent)}
-.muse-dash-top .muse-desk-reading{align-content:start}
-@container muse-content (max-width:900px){.muse-bookshelf[data-surface="dashboard"]>.muse-dash-top{grid-template-rows:none;grid-auto-flow:row}}
-
-/* One book on the desk: the empty half becomes an invitation to the next one, never a hole. */
-.muse-desk-next{display:grid}
-.muse-desk-next>a{display:grid;grid-template-columns:clamp(88px,40%,118px) minmax(0,1fr);gap:0 12px;align-items:center;padding:14px;border:1.5px dashed color-mix(in srgb,var(--foreground) 20%,transparent);border-radius:20px;color:inherit;text-decoration:none;transition:border-color .2s,background-color .2s}
-.muse-desk-next>a:hover{border-color:var(--selected-border);background:color-mix(in srgb,var(--accent-primary) 6%,transparent)}
-.muse-desk-next-book{position:relative;display:grid;place-items:center;aspect-ratio:2/3;border-radius:4px 9px 9px 4px;background:linear-gradient(90deg,color-mix(in srgb,var(--foreground) 12%,transparent) 0 8%,transparent 8%),linear-gradient(160deg,color-mix(in srgb,var(--accent-secondary) 16%,transparent),color-mix(in srgb,var(--accent-primary) 10%,transparent));box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--foreground) 16%,transparent),3px 0 0 -1px color-mix(in srgb,var(--foreground) 14%,transparent);color:var(--accent-primary)}
-.muse-desk-next-copy{display:grid;gap:4px;min-width:0}
-.muse-desk-next-copy strong{font-family:var(--font-editorial);font-size:1.08rem;line-height:1.2}
-.muse-desk-next-copy span{font-size:.84rem;color:var(--text-muted)}
-.muse-desk-next-copy em{margin-top:6px;font-style:normal;font-size:.84rem;font-weight:600;color:var(--accent-primary)}
-@media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) .muse-desk-next>a:hover .muse-desk-next-book{transform:perspective(500px) rotateY(-14deg) translateY(-3px);transition:transform .4s cubic-bezier(.2,.8,.2,1)}}
-/* The streak's week in numbers: three gradient figures with stylish dividers, closing the card. */
-.muse-streak-weekstats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:0!important;padding:14px 0 6px}
-.muse-streak-weekstats>div{display:grid;gap:2px;padding:0 14px;position:relative}
-.muse-streak-weekstats>div+div::before{content:"";position:absolute;left:0;top:10%;bottom:10%;width:1px;background:linear-gradient(transparent,color-mix(in srgb,var(--accent-primary) 55%,transparent),transparent)}
-.muse-streak-weekstats>div:first-child{padding-left:0}
-.muse-streak-weekstats dt{font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted)}
-.muse-streak-weekstats dd{margin:0;font-family:var(--font-editorial);font-size:1.6rem;line-height:1.1;background:linear-gradient(120deg,var(--accent-pop,var(--accent-primary)),var(--accent-primary),var(--accent-secondary));-webkit-background-clip:text;background-clip:text;color:transparent}
-.muse-streak-weekstats small{font-size:.62em}
-.muse-dash-top .muse-streak-note{padding:0 18px 12px}
+/* Round 4 (Nov 13): the old layout, with breathing room around the Currently reading title. It uses the card's spare
+   space (the card doesn't grow). */
+.muse-dash-col .muse-desk-reading>.muse-desk-head{padding-top:6px;margin-bottom:16px}

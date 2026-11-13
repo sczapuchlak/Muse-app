@@ -6,8 +6,8 @@ import {GlassPopover} from '@/components/GlassPopover';
 import {BOOK_STATUS_LABEL,BOOK_STATUS_ORDER} from '@/lib/books/status';
 import type {Book,ReadingSession} from '@/lib/whimsy/models';
 import {sessionSeconds} from '@/lib/whimsy/reading-stats';
-import {bookPosition} from '@/lib/whimsy/books';
-import {coverGlow} from './BookAtmosphere';
+import {bookPosition,validCoverUrl} from '@/lib/whimsy/books';
+import {CoverGlow} from './BookAtmosphere';
 import './ReadingDesk.css';
 
 const readTime=(seconds:number)=>{const m=Math.round(seconds/60),h=Math.floor(m/60);return h?`${h}h ${String(m%60).padStart(2,'0')}m`:`${Math.max(1,m)}m`;};
@@ -20,7 +20,8 @@ const shelves:[Book['status'],string][]=BOOK_STATUS_ORDER.map(id=>[id,BOOK_STATU
 function DeskTile({book,sessions,cover,busy,canStart,onOpen,onStart,onLog,onMove}:{book:Book;sessions:readonly ReadingSession[];cover:ReactNode;busy:boolean;canStart:boolean;onOpen:()=>void;onStart:()=>void;onLog:()=>void;onMove:(status:Book['status'])=>void}){
  const anchor=useRef<HTMLButtonElement>(null),[menu,setMenu]=useState(false);
  const position=bookPosition(book,[...sessions]),own=sessions.filter(x=>x.bookId===book.id&&(!book.cycleId||!x.cycleId||x.cycleId===book.cycleId)),seconds=own.reduce((n,x)=>n+sessionSeconds(x),0),started=book.startedOn,resumed=own.length>0||position>(book.startingPage??0),percent=book.totalPages?Math.min(100,Math.round(100*position/book.totalPages)):null;
- return <article className="muse-desk-tile" {...coverGlow(book.coverUrl)} onClick={event=>{if((event.target as HTMLElement).closest('.muse-desk-tile-actions'))return;onOpen();}}>
+ return <article className="muse-desk-tile" data-glow={book.coverUrl&&validCoverUrl(book.coverUrl)?true:undefined} onClick={event=>{if((event.target as HTMLElement).closest('.muse-desk-tile-actions'))return;onOpen();}}>
+  <CoverGlow url={book.coverUrl}/>
   <span className="muse-desk-tile-cover" aria-hidden="true">{cover}</span>
   <div className="muse-desk-tile-body">
    <div className="muse-desk-tile-text">
@@ -52,7 +53,7 @@ function DeskTile({book,sessions,cover,busy,canStart,onOpen,onStart,onLog,onMove
  * The Reading Desk (#135): what you're reading and what to do next. Compact tiles in a horizontal track (two across on
  * phones, more swipe in), the Reading Challenge beside it on wide screens. Advanced reading data lives in Book Detail.
  */
-export function ReadingDesk({books,sessions,renderCover,busy,canStart,onOpen,onStart,onLog,onMove,goals,empty,next}:{books:Book[];sessions:readonly ReadingSession[];renderCover:(book:Book)=>ReactNode;busy:boolean;canStart:boolean;onOpen:(book:Book)=>void;onStart:(book:Book)=>void;onLog:(book:Book)=>void;onMove:(book:Book,status:Book['status'])=>void;goals?:ReactNode;empty:ReactNode;next?:ReactNode}){
+export function ReadingDesk({books,sessions,renderCover,busy,canStart,onOpen,onStart,onLog,onMove,goals,empty}:{books:Book[];sessions:readonly ReadingSession[];renderCover:(book:Book)=>ReactNode;busy:boolean;canStart:boolean;onOpen:(book:Book)=>void;onStart:(book:Book)=>void;onLog:(book:Book)=>void;onMove:(book:Book,status:Book['status'])=>void;goals?:ReactNode;empty:ReactNode}){
  const track=useRef<HTMLOListElement>(null),[first,setFirst]=useState(0),[visible,setVisible]=useState(1);
  function measure(){const el=track.current,tile=el?.firstElementChild as HTMLElement|null;if(!el||!tile)return;const step=tile.offsetWidth+parseFloat(getComputedStyle(el).columnGap||'0');setVisible(Math.max(1,Math.round((el.clientWidth+1)/step)));setFirst(Math.round(el.scrollLeft/step));}
  function move(direction:-1|1){const el=track.current;if(!el)return;el.scrollBy({left:direction*el.clientWidth,behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});}
@@ -63,7 +64,7 @@ export function ReadingDesk({books,sessions,renderCover,busy,canStart,onOpen,onS
    <header className="muse-desk-head"><h3 id="desk-reading-heading"><MuseMark icon="openbook" tone={5} size="sm" className="muse-books-mark"/>Currently reading <span className="muse-desk-count type-numeric">{count}</span></h3>
     {more&&<div className="muse-desk-nav"><span className="small-label type-numeric">{first+1}–{Math.min(count,first+visible)} of {count}</span><button type="button" className="muse-button button-ghost" aria-label="Previous books" disabled={first===0} onClick={()=>move(-1)}><MuseIcon name="chevron" size={16}/></button><button type="button" className="muse-button button-ghost" aria-label="Next books" disabled={first+visible>=count} onClick={()=>move(1)}><MuseIcon name="chevron" size={16}/></button></div>}
    </header>
-   {count?<ol ref={track} className="muse-desk-track" onScroll={measure} onPointerEnter={measure} onFocus={measure}>{books.map(book=><li key={book.id}><DeskTile book={book} sessions={sessions} cover={renderCover(book)} busy={busy} canStart={canStart} onOpen={()=>onOpen(book)} onStart={()=>onStart(book)} onLog={()=>onLog(book)} onMove={status=>onMove(book,status)}/></li>)}{count===1&&next&&<li className="muse-desk-next">{next}</li>}</ol>:empty}
+   {count?<ol ref={track} className="muse-desk-track" onScroll={measure} onPointerEnter={measure} onFocus={measure}>{books.map(book=><li key={book.id}><DeskTile book={book} sessions={sessions} cover={renderCover(book)} busy={busy} canStart={canStart} onOpen={()=>onOpen(book)} onStart={()=>onStart(book)} onLog={()=>onLog(book)} onMove={status=>onMove(book,status)}/></li>)}</ol>:empty}
   </section>
   {goals&&<aside className="muse-desk-goals" aria-label="Reading goals">{goals}</aside>}
  </div>;

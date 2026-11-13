@@ -11,7 +11,7 @@ const longDay=(date:string)=>new Intl.DateTimeFormat(undefined,{weekday:'long',m
 
 /** Today's minutes against today's target, the goal streak, and the last seven days. All of it is read from saved sessions. */
 export function DailyGoalCard({goal,detail,today,onSet}:{goal:DailyGoal|null;detail:GoalStreakDetail;today:string;onSet:()=>void}){
- if(!goal)return <div className="muse-daily" data-empty><div><strong>A daily rhythm, if you want one</strong><p>Pick a few minutes a day. Reading still counts without a goal, and a short day never erases it.</p></div><button type="button" className="muse-button button-primary" onClick={onSet}>Set a daily goal</button><ol className="muse-daily-preview" aria-hidden="true">{['M','T','W','T','F','S','S'].map((d,i)=><li key={i}><i/>{d}</li>)}</ol></div>;
+ if(!goal)return <div className="muse-daily" data-empty><div><strong>A daily rhythm, if you want one</strong><p>Pick a few minutes a day. Reading still counts without a goal, and a short day never erases it.</p></div><button type="button" className="muse-button button-primary" onClick={onSet}>Set a daily goal</button></div>;
  const target=detail.targetToday??goal.target,minutes=Math.floor(detail.minutesToday),percent=Math.min(100,Math.round(100*detail.minutesToday/target));
  return <div className="muse-daily" data-met={detail.metToday||undefined}>
   <div className="muse-daily-top"><p className="muse-daily-count"><strong className="type-numeric">{minutes}</strong><span> / {target} min today</span></p>
