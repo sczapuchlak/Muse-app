@@ -478,3 +478,8 @@ button.muse-running-cell[data-completed]:hover::after { content: "Reopen"; posit
 [data-task-density="compact"] .muse-planner-task .muse-task-classification>*{flex:none}
 [data-task-density="compact"] .muse-planner-task .muse-task-tags{overflow:hidden;flex:0 1 auto}
 [data-task-density="spacious"] .muse-agenda .muse-task-list-rows>li{padding-block:10px}
+
+/* Glow-up 2: day columns lead with a big editorial date, like a page in a planner. */
+.muse-planner-day-heading strong{font-family:var(--font-editorial);font-weight:520;font-size:2.1rem;line-height:1;letter-spacing:-.03em}
+.muse-planner-day-heading time{gap:8px;font-weight:700;letter-spacing:.14em}
+.muse-planner-day-heading time[aria-current=date] strong{background:linear-gradient(120deg,var(--accent-secondary),var(--accent-primary));-webkit-background-clip:text;background-clip:text;color:transparent}

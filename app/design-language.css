@@ -242,3 +242,4 @@
 .muse-card:has(.card-heading[data-tone="8"]){--aura:var(--chart-8)}
 .muse-card .card-heading[data-tone]{position:relative}
 .muse-card .card-heading[data-tone]::after{content:"";position:absolute;left:0;right:0;bottom:-8px;height:1px;background:linear-gradient(90deg,color-mix(in srgb,var(--aura,var(--chart-1)) 70%,transparent),color-mix(in srgb,var(--glass-border) 80%,transparent) 40%,transparent)}
+.muse-card .card-heading[data-tone]{margin-bottom:16px}
