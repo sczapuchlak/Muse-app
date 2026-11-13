@@ -215,3 +215,16 @@
 .muse-atlas-today{display:grid;gap:8px;margin:0;padding:0;list-style:none}
 .muse-atlas-today li{display:flex;justify-content:space-between;gap:12px;align-items:baseline}
 .muse-atlas-today span{color:var(--text-muted);font-size:.84rem}
+
+/* Glow-up: the month view. The calendar is the primary column; Goals, Top rated and Vibes stack compactly beside it. */
+.muse-atlas-calwrap[data-period=month]{grid-template-columns:minmax(0,1.45fr) minmax(280px,1fr);align-items:start!important}
+.muse-atlas-calwrap[data-period=month]>.muse-atlas-stack>*{flex:0 0 auto}
+.muse-atlas-calwrap[data-period=month] .muse-books-panel{padding:14px 16px;gap:8px}
+.muse-atlas-calwrap[data-period=month] .muse-books-goals-panel .small-label:first-child{display:none}
+.muse-atlas-calwrap[data-period=month] .muse-books-goals-panel>p{margin:0;font-size:.86rem;color:var(--text-muted)}
+.muse-atlas-calwrap[data-period=month] .muse-books-goals-grid{grid-template-columns:minmax(0,1fr);gap:8px}
+.muse-atlas-calwrap[data-period=month] .muse-books-panel h4{font-size:1.12rem}
+.muse-atlas-month-pair{align-items:start}
+.muse-atlas-mark{margin-right:9px;vertical-align:-6px}
+.muse-atlas-mark.muse-mark{width:24px;height:24px;border-radius:8px}
+@container muse-content (max-width:900px){.muse-atlas-calwrap[data-period=month]{grid-template-columns:minmax(0,1fr)}}

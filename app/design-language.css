@@ -149,3 +149,51 @@
 @container muse-content (max-width:640px){
   :root[data-mobile-density=compact] .muse-page{--page-padding:12px;--card-padding:14px;--grid-gap:10px;--card-heading-gap:var(--space-3);--module-section-gap:16px;--module-nav-gap:10px;--module-toolbar-gap:10px;--module-week-gap:10px;--header-copy-gap:6px}
 }
+
+/*
+ * ── The final glow-up: shared section identity ────────────────────────────────────────────────────────────────
+ * One sheet, one heading, one stat. Every module composes these instead of re-inventing a card or a title.
+ */
+
+/* Sheet: a primary container sitting on the page atmosphere. The card surface, the material (app/materials.css)
+   and, in role themes, the gradient ring (app/surfaces.css). Use .muse-sheet-inset for anything nested inside. */
+.muse-sheet{position:relative;min-width:0;padding:var(--dl-pad-panel);border:1px solid var(--glass-border);border-radius:var(--dl-radius-panel);background-color:var(--glass-background)}
+.muse-sheet[data-pad=none]{padding:0}
+.muse-sheet[data-pad=roomy]{padding:clamp(18px,2.6vw,30px)}
+.muse-sheet-inset{min-width:0;padding:14px 16px;border:1px solid color-mix(in srgb,var(--glass-border) 70%,transparent);border-radius:var(--dl-radius-tile);background:var(--surface-subtle)}
+
+/* Mark: the colored icon tile. Tones are the theme's chart inks, set inline as --mark-a / --mark-b. */
+.muse-mark{--mark-a:var(--chart-1);--mark-b:var(--chart-2);display:inline-grid;place-items:center;flex:0 0 auto;width:34px;height:34px;border-radius:11px;color:var(--mark-ink,var(--background));background:linear-gradient(140deg,color-mix(in srgb,var(--mark-a) 82%,white),var(--mark-a) 48%,color-mix(in srgb,var(--mark-b) 78%,var(--mark-a)));box-shadow:0 6px 16px -6px color-mix(in srgb,var(--mark-a) 70%,transparent),inset 0 1px 0 color-mix(in srgb,var(--mark-sheen,var(--glass-edge)) 55%,transparent),inset 0 -1px 0 color-mix(in srgb,black 14%,transparent)}
+.muse-mark svg{stroke:currentColor;stroke-width:2;display:block}
+.muse-mark[data-size=sm]{width:26px;height:26px;border-radius:9px}
+.muse-mark[data-size=lg]{width:44px;height:44px;border-radius:14px}
+.muse-mark[data-variant=soft]{color:color-mix(in srgb,var(--mark-a) 62%,var(--foreground));background:color-mix(in srgb,var(--mark-a) 16%,var(--surface-subtle));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--mark-a) 42%,transparent)}
+
+/* Heading: mark + editorial title (+ kicker, description, aside). */
+.muse-heading{display:flex;align-items:center;gap:12px;min-width:0}
+.muse-heading-copy{display:grid;gap:2px;flex:1 1 auto;min-width:0}
+.muse-heading-title{margin:0;font-family:var(--font-editorial);font-style:normal;font-weight:var(--type-editorial-weight);font-size:1.3rem;line-height:1.2;letter-spacing:-.005em;overflow-wrap:anywhere}
+.muse-heading[data-size=sm] .muse-heading-title{font-size:1.08rem}
+.muse-heading[data-size=lg] .muse-heading-title{font-style:italic;font-weight:var(--type-display-weight);font-size:clamp(1.55rem,2.6vw,2.05rem);line-height:1.12}
+.muse-heading[data-face=practical] .muse-heading-title{font-family:var(--font-ui);font-weight:var(--type-heading-weight);font-size:1.05rem;letter-spacing:-.005em}
+.muse-heading[data-face=practical][data-size=lg] .muse-heading-title{font-style:normal;font-size:1.3rem}
+.muse-heading-description{margin:0;color:var(--text-muted);font-size:.84rem;line-height:1.45}
+.muse-heading-aside{display:flex;align-items:center;gap:8px;flex:0 0 auto;margin-left:auto;color:var(--text-muted);font-size:.78rem}
+.muse-heading:has(.muse-heading-description){align-items:flex-start}
+.muse-heading:has(.muse-heading-description) .muse-mark{margin-top:2px}
+@container muse-content (max-width:640px){.muse-heading{flex-wrap:wrap}.muse-heading-copy{flex-basis:0;min-width:min(100%,180px)}}
+
+/* Stat tiles: a mark, a strong number, a label. Compact by design; never a giant decorative card. */
+.muse-stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,168px),1fr));gap:12px;min-width:0}
+.muse-stat-tile{--mark-a:var(--chart-1);position:relative;display:flex;align-items:center;gap:12px;min-width:0;padding:12px 14px;border:1px solid var(--glass-border);border-radius:var(--dl-radius-tile);background-color:var(--glass-background);background-image:radial-gradient(120% 140% at 100% 0%,color-mix(in srgb,var(--mark-a) 13%,transparent),transparent 62%);overflow:hidden}
+.muse-stat-tile::after{content:"";position:absolute;left:14px;right:14px;bottom:0;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--mark-a),color-mix(in srgb,var(--mark-b,var(--mark-a)) 70%,transparent),transparent);opacity:.75}
+.muse-stat-tile-copy{display:grid;gap:1px;min-width:0}
+.muse-stat-tile-label{color:var(--text-muted);font-size:.68rem;font-weight:650;letter-spacing:.11em;text-transform:uppercase}
+.muse-stat-tile-value{font-size:1.55rem;line-height:1.1;letter-spacing:-.02em;color:var(--foreground)}
+.muse-stat-tile-value small{margin-left:4px;font-size:.78rem;font-weight:500;letter-spacing:0;color:var(--text-muted)}
+.muse-stat-tile-note{color:var(--text-muted);font-size:.76rem;line-height:1.35}
+@container muse-content (max-width:640px){.muse-stat-row{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.muse-stat-tile{padding:10px 12px;gap:10px}.muse-stat-tile-value{font-size:1.3rem}.muse-stat-row>.muse-stat-tile:last-child:nth-child(odd){grid-column:1/-1}}
+
+/* Control bars that sit directly on the atmosphere (search, segmented pickers, the date pill, week jump) are solid in
+   every theme, not only the role themes: a see-through bar over a vivid background reads as a different app. */
+:is(.date-navigation,.muse-segmented,.muse-search,.muse-week-jump,.muse-atlas-sections):not(:is(.muse-card,.muse-sheet,.muse-panel,.muse-insight-panel,.muse-money-panel,.muse-modal,.muse-drawer,.muse-popover-panel) *){background-color:var(--glass-background)}

@@ -110,14 +110,18 @@
 .muse-glance-mini-day strong{font-size:1.2rem;letter-spacing:0;color:var(--foreground);font-family:var(--font-ui)}
 .muse-glance-mini-three{display:flex;justify-content:center;font-size:1.05rem;white-space:nowrap;overflow:hidden;max-width:100%}
 .muse-glance-dash{color:var(--text-muted)}
-.muse-glance-mini-bar{position:relative;width:12px;height:100%;border-radius:999px;background:color-mix(in srgb,var(--glass-border) 60%,transparent)}
-.muse-glance-mini-bar>i{position:absolute;left:0;right:0;bottom:0;height:calc(var(--rating) * 100%);border-radius:999px;background:var(--glance-grad-cool)}
+.muse-glance-mini-bar{position:relative;width:12px;height:92px;align-self:end;flex:none;border-radius:999px;background:color-mix(in srgb,var(--glass-border) 60%,transparent)}
+.muse-glance-mini-bar>i{position:absolute;left:0;right:0;bottom:0;height:calc(var(--rating) * 100%);min-height:12px;border-radius:999px;background:var(--glance-grad-cool)}
 .muse-glance-mini-bar[data-missing]{background:transparent;border:1px dashed var(--glass-border);box-sizing:border-box}
+:is(.muse-glance-mini-bar,.muse-glance-minibar)[data-missing]>i,.muse-glance-months button[data-missing] .muse-glance-month-bar>i{display:none}
 .muse-glance-mini-rating{font-family:var(--font-ui);font-variant-numeric:tabular-nums;font-weight:750;font-size:.95rem}
 .muse-glance-mini-rating small{font-weight:500;font-size:.66rem;color:var(--text-muted)}
 .muse-glance-mini-feelings{display:flex;gap:3px;justify-content:center}
 .muse-glance-mini-feelings i{width:8px;height:8px;border-radius:50%;background:var(--quadrant-color)}
 
+/* Vertical bars carry their own explicit height (never a percentage of a grid row inside a <button>, which WebKit
+   resolves against the wrong box and then crops the rounded cap), and a fill is never shorter than its own width
+   so its cap is always a full round. */
 /* ---------- Month: compact calendar ---------- */
 .muse-glance-calendar{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}
 .muse-glance-weekday{font-size:.68rem;font-weight:700;text-align:center;color:var(--text-muted);letter-spacing:.08em}
@@ -139,8 +143,8 @@
 .muse-glance-months button:hover{background:var(--surface-subtle)}
 .muse-glance-months button:focus-visible{outline:2px solid var(--focus-ring,var(--accent-primary))}
 .muse-glance-month-emoji{font-size:1.1rem}
-.muse-glance-month-bar{position:relative;width:18px;height:100%;border-radius:999px;background:color-mix(in srgb,var(--glass-border) 60%,transparent)}
-.muse-glance-month-bar>i{position:absolute;left:0;right:0;bottom:0;border-radius:999px;background:var(--glance-grad-cool)}
+.muse-glance-month-bar{position:relative;width:18px;height:120px;align-self:end;border-radius:999px;background:color-mix(in srgb,var(--glass-border) 60%,transparent)}
+.muse-glance-month-bar>i{position:absolute;left:0;right:0;bottom:0;min-height:18px;max-height:100%;border-radius:999px;background:var(--glance-grad-cool)}
 .muse-glance-months button[data-missing] .muse-glance-month-bar{background:transparent;border:1px dashed var(--glass-border);box-sizing:border-box;opacity:.6}
 .muse-glance-month-value{font:750 .9rem var(--font-ui);font-variant-numeric:tabular-nums}
 .muse-glance-month-name{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted)}
@@ -149,10 +153,10 @@
 .muse-glance-minibars li,.muse-glance-feelcols li{position:relative;display:grid;grid-template-rows:84px auto;justify-items:center;gap:4px;border-radius:10px;outline:none}
 .muse-glance-minibars li:focus-visible,.muse-glance-feelcols li:focus-visible{outline:2px solid var(--focus-ring,var(--accent-primary))}
 .muse-glance-minibars small,.muse-glance-feelcols small{font-size:.66rem;font-weight:700;color:var(--text-muted)}
-.muse-glance-minibar{position:relative;width:12px;height:100%;border-radius:999px;background:color-mix(in srgb,var(--glass-border) 50%,transparent)}
-.muse-glance-minibar>i{position:absolute;left:0;right:0;bottom:0;border-radius:999px;background:linear-gradient(0deg,var(--tone,var(--accent-primary)),var(--accent-pop,var(--accent-secondary)))}
+.muse-glance-minibar{position:relative;width:12px;height:var(--minibar-height,84px);align-self:end;border-radius:999px;background:color-mix(in srgb,var(--glass-border) 50%,transparent)}
+.muse-glance-minibar>i{position:absolute;left:0;right:0;bottom:0;min-height:12px;max-height:100%;border-radius:999px;background:linear-gradient(0deg,var(--tone,var(--accent-primary)),var(--accent-pop,var(--accent-secondary)))}
 .muse-glance-minibar[data-missing]{background:transparent;height:6px;width:6px;align-self:end;margin-bottom:2px;border-radius:50%;background:var(--glass-border)}
-.muse-glance-feelcol{display:flex;flex-direction:column-reverse;gap:2px;width:16px;height:100%;border-radius:999px;overflow:hidden}
+.muse-glance-feelcol{display:flex;flex-direction:column-reverse;gap:2px;width:16px;height:var(--minibar-height,84px);align-self:end;border-radius:999px;overflow:hidden}
 .muse-glance-feelcol i{display:block;min-height:4px;background:var(--quadrant-color)}
 .muse-glance-feelcol[data-missing]{height:6px;width:6px;align-self:end;margin-bottom:2px;border-radius:50%;background:var(--glass-border)}
 
@@ -387,6 +391,8 @@
 
 /* Year: Water + Movement stack as compact cards beside the two-column Bookshelf card. */
 .muse-glance-year-stack{display:grid!important;grid-template-rows:1fr 1fr;gap:var(--glance-gap)}
-.muse-glance-year-stack .muse-glance-minibars li{grid-template-rows:44px auto}
+.muse-glance-year-stack .muse-glance-minibars li{--minibar-height:44px;grid-template-rows:44px auto}
 .muse-glance-year-grid>[style*="read"] .muse-glance-reading{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px 24px;align-items:start}
 @media (max-width:700px){.muse-glance-year-grid>[style*="read"] .muse-glance-reading{grid-template-columns:minmax(0,1fr)}}
+/* Glow-up: day tiles sit directly on the atmosphere, so they take the opaque card surface (like every Insights card). */
+.muse-glance-mini{background-color:var(--glass-background)}

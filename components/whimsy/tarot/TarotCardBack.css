@@ -1,0 +1,19 @@
+/* The face-down card. The SVG fills whatever box its context gives it (same contract as the old <img>). */
+.muse-cardback{display:block;width:100%;height:auto;aspect-ratio:220/375;overflow:hidden}
+/* A band of light crosses the card when it is hovered or focused; Hologram's foil also shifts hue. No idle motion. */
+.muse-cardback-sheen{opacity:0;pointer-events:none}
+.muse-cardback-foil{mix-blend-mode:normal}
+@media (prefers-reduced-motion:no-preference){
+ :root:not([data-magic=quiet]) :is(button,a):is(:hover,:focus-visible)>.muse-cardback .muse-cardback-sheen,:root:not([data-magic=quiet]) :is(button,a):is(:hover,:focus-visible) :is(.muse-tarot-flip,.muse-idesk-chip-art,.muse-tarot-deck)>.muse-cardback .muse-cardback-sheen{opacity:.55;animation:muse-cardback-sheen .9s ease-out both}
+ :root:not([data-magic=quiet]) :is(button,a):is(:hover,:focus-visible) .muse-cardback[data-finish=hologram] .muse-cardback-foil{animation:muse-cardback-hue 2.4s linear infinite}
+ @keyframes muse-cardback-sheen{from{translate:0 0}to{translate:250% 0}}
+ @keyframes muse-cardback-hue{to{filter:hue-rotate(360deg)}}
+}
+.muse-cardback-picker{display:grid;gap:8px;min-width:0;margin:12px 0 0;padding:12px 0 0;border:0;border-top:1px solid var(--glass-border)}
+.muse-cardback-picker legend{padding:0;font-weight:650;font-size:.9rem}
+.muse-cardback-picker>div{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.muse-cardback-picker button{display:grid;justify-items:center;gap:5px;min-width:0;padding:7px 4px;border:1px solid var(--glass-border);border-radius:12px;background:var(--surface-subtle);color:inherit;font:600 .7rem/1.2 var(--font-ui);text-align:center;cursor:pointer}
+.muse-cardback-picker button .muse-cardback{width:44px;border-radius:5px;box-shadow:0 4px 10px rgba(0,0,0,.3)}
+.muse-cardback-picker button:hover{border-color:var(--selected-border)}
+.muse-cardback-picker button[aria-checked=true]{border-color:var(--selected-border);background:color-mix(in srgb,var(--accent-primary) 12%,var(--surface-subtle));box-shadow:0 0 0 1px var(--selected-border)}
+.muse-cardback-picker button:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}

@@ -122,8 +122,10 @@ test('recaps, dreams and tarot adapters stay honest about missing data',()=>{
 });
 
 test('surfaces are wired, and what is stored is ids and dates only',()=>{
- for(const [file,surface] of [['components/whimsy/Bookshelf.tsx','surfaces.bookshelf'],['components/rituals/Rituals.tsx','surfaces.rituals'],['components/whimsy/Dreamscapes.tsx','surfaces.dreams'],['components/whimsy/TarotExperience.tsx','surfaces.tarot'],['components/whimsy/ReadingAtlas.tsx','surfaces.atlas']])
+ for(const [file,surface] of [['components/whimsy/Bookshelf.tsx','surfaces.bookshelf'],['components/whimsy/Dreamscapes.tsx','surfaces.dreams'],['components/whimsy/TarotExperience.tsx','surfaces.tarot'],['components/whimsy/ReadingAtlas.tsx','surfaces.atlas']])
   assert.match(read(file),new RegExp(`<AlmanacWhisper surface=\\{${surface.replace('.','\\.')}\\}`),file);
+ // The glow-up removed the streak commentary from the top of Rituals: the streak lives inside each ritual.
+ assert.doesNotMatch(read('components/rituals/Rituals.tsx'),/AlmanacWhisper/,'Rituals shows no Almanac commentary');
  const insights=read('components/insights/Insights.tsx');assert.match(insights,/useVoicedRevelations\(factRevelations,today\)/);assert.match(insights,/<FieldNotes /);assert.match(insights,/<Constellations /);
  assert.match(read('components/Settings.tsx'),/id="muse-observations"/);
  const sql=read('supabase/migrations/20261113000100_almanac_impressions.sql');

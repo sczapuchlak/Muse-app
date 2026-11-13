@@ -3,7 +3,8 @@ import {privateResponse,routeAuthClient,trustedOrigin} from '@/lib/auth/http';
 import {calculateNatal,cosmicEvents,validateBirthProfile} from '@/lib/astrology/calculations';
 import {libraryEntry} from '@/lib/astrology/library';
 import {planetIds,type AstrologySnapshot,type BirthProfile,type AstrologyReference} from '@/lib/astrology/models';
-import {validDate,validTimeZone} from '@/lib/dates';
+import {todayInTimeZone,validDate,validTimeZone} from '@/lib/dates';
+import {forecastReference,forecastReferenceAllowed,parseForecastReferenceId} from '@/lib/astrology/forecast-reference';
 const uuid=(value:unknown):value is string=>typeof value==='string'&&/^[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}$/i.test(value);
 function reply(base:NextResponse,payload:unknown,status=200){const response=privateResponse(NextResponse.json(payload,{status}));for(const cookie of base.cookies.getAll())response.cookies.set(cookie);return response;}
 export async function GET(request:NextRequest){const base=privateResponse(NextResponse.json({}));try{const client=routeAuthClient(request,base),{data,error}=await client.auth.getUser();if(error||!data.user)return reply(base,{error:'Sign in to open your private Observatory.'},401);const result=await client.rpc('read_astrology');if(result.error)throw result.error;return reply(base,{snapshot:result.data});}catch{return reply(base,{error:'Private Observatory records could not load. Retry without replacing your saved data.'},503);}}
@@ -33,6 +34,9 @@ export async function POST(request:NextRequest){
     else if(r.type==='library'&&libraryEntry(r.id)){const entry=libraryEntry(r.id)!;reference={type:'library',id:entry.id,title:entry.title};}
     else if(r.type==='placement'&&before.chart){const body=planetIds.find(id=>r.id===`${before.chart!.id}/${id}`),placement=before.chart.payload.placements.find(p=>p.body===body);if(placement)reference={type:'placement',id:r.id,title:`${placement.body} · ${placement.possibleSigns.join(' / ')}`};}
     else if(r.type==='event'&&validDate(r.date)){const events=cosmicEvents(r.date.slice(0,7),record.time_zone),event=events.find(e=>e.id===r.id);if(event)reference={type:'event',id:event.id,title:event.title,date:r.date,instant:event.instant};}
+    // A reflection written beside a horoscope: the reference is rebuilt from its id (sign, period, first day), so no
+    // provider text can be stored, and a forecast whose period has not begun cannot be reflected on.
+    else if(r.type==='forecast'){const parts=parseForecastReferenceId(r.id);if(parts&&forecastReferenceAllowed(parts,todayInTimeZone(record.time_zone)))reference=forecastReference(parts);}
     if(!reference)return reply(base,{error:'That linked item is unavailable. Keep your text and choose an available item or an unlinked reflection.'},400);
    }
    if(!record.text.trim()&&!reference)return reply(base,{error:'Write a reflection or select an item to keep.'},400);

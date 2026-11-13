@@ -165,3 +165,39 @@
 /* Cards and sections let the theme's gradient ring run the full perimeter: list and section accents are drawn
    inside the edge (an inset line) rather than as a thicker solid border that covered the ring. */
 .muse-list-section { border-left-width: 1px; box-shadow: inset 3px 0 0 var(--section-accent, var(--list-accent, var(--accent-primary))); }
+
+/* ── Glow-up: lists as a collection. Taller editorial cards: cover art for the kind of list, title, what's next, progress. ── */
+.muse-lists .muse-lists-grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); gap: 16px; align-items: stretch; }
+.muse-lists .muse-lists-card { display: flex; flex-direction: column; gap: 0; padding: 0; border-radius: 20px; overflow: hidden; transition: transform .22s cubic-bezier(.2,.8,.2,1), box-shadow .22s; }
+.muse-lists .muse-lists-card:hover { box-shadow: 0 16px 32px -18px color-mix(in srgb, var(--list-accent, var(--accent-primary)) 85%, transparent); transform: translateY(-3px); }
+.muse-lists .muse-lists-card-open { display: flex; flex-direction: column; align-items: stretch; gap: 10px; flex: 1 1 auto; border-radius: 20px 20px 0 0; }
+.muse-lists .muse-lists-card-open:focus-visible { outline-offset: -3px; }
+.muse-lists-cover { position: relative; display: block; height: 84px; color: var(--list-accent, var(--accent-primary)); background: linear-gradient(120deg, color-mix(in srgb, var(--list-accent, var(--accent-primary)) 26%, transparent), color-mix(in srgb, var(--accent-secondary) 12%, transparent) 70%, transparent); border-bottom: 1px solid var(--glass-border); overflow: hidden; }
+.muse-lists-cover > svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.muse-lists .muse-lists-card-icon { position: absolute; left: 16px; bottom: -1px; translate: 0 35%; width: 52px; height: 52px; border-radius: 16px; font-size: 1.65rem; background: var(--glass-background); box-shadow: 0 0 0 1px color-mix(in srgb, var(--list-accent, var(--accent-primary)) 55%, transparent), 0 8px 18px -8px rgba(0,0,0,.5); }
+.muse-lists-cover { overflow: visible; }
+.muse-lists-cover > svg { border-radius: 20px 20px 0 0; }
+.muse-lists-pinned { position: absolute; left: 12px; top: 10px; display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 999px; background: var(--glass-background); color: var(--foreground); font-size: .64rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.muse-lists .muse-lists-card-text { gap: 3px; padding: 24px 16px 0; }
+.muse-lists-kind { color: var(--text-muted); font-size: .66rem; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
+.muse-lists .muse-lists-card-text strong { font-family: var(--font-editorial); font-weight: var(--type-title-weight); font-size: 1.22rem; line-height: 1.25; white-space: normal; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+.muse-lists-desc { color: var(--text-muted); font-size: .82rem; line-height: 1.4; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+.muse-lists-next { display: grid; gap: 5px; padding: 0 16px; font-size: .86rem; line-height: 1.35; }
+.muse-lists-next > span { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px; align-items: center; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.muse-lists-next i { width: 13px; height: 13px; border: 1.500px solid color-mix(in srgb, var(--list-accent, var(--accent-primary)) 70%, var(--glass-border)); border-radius: 4px; }
+.muse-lists-next small, .muse-lists-next[data-empty] { color: var(--text-muted); font-size: .76rem; }
+.muse-lists-next[data-empty] { font-style: italic; }
+.muse-lists-meta { display: grid; gap: 8px; margin-top: auto; padding: 4px 16px 12px; }
+.muse-lists-progress-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 10px; }
+.muse-lists-progress-row .muse-list-progress { display: block; height: 6px; border-radius: 999px; background: color-mix(in srgb, var(--foreground) 12%, transparent); overflow: hidden; }
+.muse-lists-progress-row b { font: 700 .76rem var(--font-ui); font-variant-numeric: tabular-nums; color: var(--text-muted); }
+.muse-lists-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+.muse-lists-chips:empty { display: none; }
+.muse-lists-chips > span { padding: 2px 8px; border-radius: 999px; background: var(--surface-control); color: var(--text-muted); font-size: .7rem; font-weight: 600; }
+.muse-lists-chips > span[data-tone=due] { background: color-mix(in srgb, var(--accent-pop, var(--accent-primary)) 22%, var(--surface-control)); color: var(--foreground); }
+.muse-lists .muse-lists-card-foot { padding: 6px 10px 8px 16px; border-top: 1px solid var(--glass-border); }
+.muse-lists .muse-lists-empty { padding: clamp(28px, 5vw, 48px) 16px; }
+.muse-lists-empty-art { display: flex; justify-content: center; }
+.muse-lists-empty-art .muse-mark { margin-inline: -5px; }
+.muse-lists-empty-art .muse-mark:nth-child(1) { rotate: -10deg; } .muse-lists-empty-art .muse-mark:nth-child(2) { translate: 0 -6px; z-index: 1; } .muse-lists-empty-art .muse-mark:nth-child(3) { rotate: 10deg; }
+@media (prefers-reduced-motion: reduce) { .muse-lists .muse-lists-card { transition: none; } .muse-lists .muse-lists-card:hover { transform: none; } }

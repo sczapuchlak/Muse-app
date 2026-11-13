@@ -36,3 +36,20 @@
 .muse-encyclopedia-symbol-icon{display:grid;place-items:center;width:132px;height:132px;border-radius:50%;font-size:4.4rem;line-height:1;background:radial-gradient(circle,color-mix(in srgb,var(--accent-secondary) 22%,transparent),transparent 70%);filter:drop-shadow(0 0 18px color-mix(in srgb,var(--accent-secondary) 35%,transparent))}
 .muse-encyclopedia-symbol-star{position:absolute;top:6px;right:14px}
 @media(max-width:600px){.muse-encyclopedia-symbol-icon{width:96px;height:96px;font-size:3.2rem}}
+
+/* Structured chapters (#185): sub-headed passages are titled sections on a grid, not one wall of paragraphs. */
+.muse-encyclopedia-prose[data-sections]{display:grid;gap:clamp(14px,2vw,22px)}
+.muse-prose-lead{display:grid;gap:12px;max-width:74ch}
+.muse-prose-lead>p:first-child{font-family:var(--font-editorial);font-weight:var(--type-reading-weight);font-size:clamp(1.05rem,1.4vw,1.2rem);line-height:1.6}
+.muse-prose-sections{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(12px,1.6vw,18px);align-items:start}
+.muse-prose-section{--tone:var(--chart-1);display:grid;gap:10px;align-content:start;min-width:0;padding:clamp(14px,1.8vw,20px);border:1px solid var(--glass-border);border-top:2px solid var(--tone);border-radius:16px;background:radial-gradient(120% 90% at 100% 0%,color-mix(in srgb,var(--tone) 9%,transparent),transparent 60%),var(--surface-subtle)}
+.muse-prose-section[data-tone="1"]{--tone:var(--chart-3)}.muse-prose-section[data-tone="2"]{--tone:var(--chart-5)}.muse-prose-section[data-tone="3"]{--tone:var(--chart-7)}
+.muse-prose-section[data-wide],.muse-prose-section:last-child:nth-child(odd){grid-column:1/-1}
+.muse-prose-section>header{display:flex;align-items:center;gap:10px;padding-bottom:10px;border-bottom:1px solid color-mix(in srgb,var(--tone) 30%,var(--glass-border))}
+.muse-encyclopedia-prose .muse-prose-section h4{margin:0;font-family:var(--font-editorial);font-style:normal;font-weight:var(--type-editorial-weight);font-size:1.12rem;line-height:1.25}
+.muse-prose-keywords{margin:2px 0 0!important;padding:0!important;border:0!important;color:var(--text-muted);font-size:.76rem;letter-spacing:.04em}
+.muse-encyclopedia-prose .muse-prose-section>p{margin:0;padding:0;border:0;max-width:72ch;font-size:.96rem;line-height:1.7}
+.muse-encyclopedia-prose .muse-prose-note{display:grid;gap:4px;padding:10px 12px!important;border:1px dashed color-mix(in srgb,var(--tone,var(--chart-1)) 50%,var(--glass-border))!important;border-radius:12px;background:color-mix(in srgb,var(--tone,var(--chart-1)) 6%,transparent)}
+.muse-prose-note>b{font-size:.68rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--text-muted)}
+.muse-prose-note>span{font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-quote-weight);font-size:1.02rem;line-height:1.5}
+@container muse-content (max-width:760px){.muse-prose-sections{grid-template-columns:minmax(0,1fr)}}

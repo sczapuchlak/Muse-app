@@ -1,4 +1,5 @@
 'use client';
+import {MuseMark,type MuseMarkIcon,type MuseTone} from '@/components/design/MuseHeading';
 import {useState} from 'react';
 import type {CSSProperties,ReactNode} from 'react';
 import {dateLabel} from '@/lib/dates';
@@ -26,7 +27,7 @@ export function ActivityBars({title,note,items,line=false,unit='count',max:fixed
  const max=fixedMax??Math.max(1,...items.map(i=>i.value)),empty=items.every(i=>!i.value),n=items.length;
  const points=items.map((i,k)=>({x:(k+.5)/n*100,y:i.value/max*100}));
  const shown=active!==null?items[active]:null;
- return <article className="muse-books-panel" id={anchor?`atlas-${anchor}`:undefined}><div className="muse-books-panel-head"><h4>{title}</h4></div>
+ return <article className="muse-books-panel" id={anchor?`atlas-${anchor}`:undefined}><div className="muse-books-panel-head"><h4><AtlasMark title={title}/>{title}</h4></div>
   {empty?<p>Nothing recorded in this window yet.</p>:<div className="muse-bars-wrap">
    <div className="muse-bars-axis" aria-hidden="true"><span>{axisValue(max,unit)}</span>{(unit!=='count'||max>=4)&&<span>{axisValue(unit==='count'?Math.round(max/2):max/2,unit)}</span>}<span>0</span></div>
    <div className="muse-bars-plot" onPointerLeave={()=>setActive(null)}>
@@ -49,3 +50,7 @@ export function InsightIcon({label}:{label:string}){return <span className="muse
 export function Insight({label,value,detail,empty}:{label:string;value?:ReactNode;detail?:ReactNode;empty:string}){
  return <div className="muse-atlas-insight"><div className="muse-atlas-insight-head"><InsightIcon label={label}/><span className="small-label">{label}</span></div>{value?<><strong>{value}</strong>{detail&&<small>{detail}</small>}</>:<small className="muse-atlas-insight-empty">{empty}</small>}</div>;
 }
+
+/** The colored mark beside every Reading Atlas panel title: one meaningful symbol per subject, stable by title. */
+const atlasMarks:[RegExp,MuseMarkIcon,MuseTone][]=[[/goal|challenge/i,'target',1],[/top rated|rating/i,'ribbon',4],[/favorite/i,'heart',6],[/vibe|emoji/i,'smile',8],[/highlight|superlative/i,'sparkle',3],[/milestone/i,'milestone',7],[/pages/i,'openbook',2],[/time|rhythm|today|speed/i,'clock',5],[/month|year|period|finished|completed/i,'calendar',2],[/genre/i,'palette',3],[/habit|streak/i,'streak',4],[/format/i,'journal',5],[/author/i,'quill',6],[/series/i,'series',1]];
+export function AtlasMark({title}:{title:string}){const found=atlasMarks.find(([test])=>test.test(title));return <MuseMark icon={found?.[1]??'bookshelf'} tone={found?.[2]??1} size="sm" className="muse-atlas-mark"/>;}

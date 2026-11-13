@@ -166,3 +166,21 @@
   .muse-aspiration-choice[data-inline] .muse-choice-menu{flex:1 1 auto;min-width:0}
   .muse-aspiration-choice[data-inline] .muse-choice-trigger{width:100%;min-width:0;min-height:var(--touch-target,44px)}
 }
+
+/* ── Glow-up: every Aspirations container is the opaque card surface; controls use the shared segmented control. ── */
+.muse-aspirations :is(.muse-aspirations-attention>div,.muse-aspiration-card,.muse-aspirations-empty,.muse-aspirations-year,.muse-aspirations-done){background-color:var(--glass-background)}
+.muse-aspirations .muse-aspirations-head{display:block}
+.muse-aspirations .muse-aspirations-attention>div{display:grid;gap:10px;align-content:start;padding:14px 16px;border-radius:var(--dl-radius-panel)}
+.muse-aspirations .muse-aspiration-filter{flex-wrap:nowrap;gap:3px;padding:3px;background:var(--glass-background)}
+.muse-aspirations .muse-aspiration-filter button{min-height:36px;padding:6px 14px;border:1px solid transparent;color:var(--text-muted);font-weight:500;font-size:.82rem}
+.muse-aspirations .muse-aspiration-filter button[aria-pressed=true]{background:var(--selected-background);border-color:var(--selected-border);color:var(--selected-text);font-weight:600;box-shadow:none}
+.muse-aspirations .muse-aspirations-controls{gap:10px 12px}
+.muse-aspirations .muse-aspiration-choice[data-inline]>span{font-size:.72rem;font-weight:650;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted)}
+.muse-aspirations .muse-aspiration-card{border-radius:var(--dl-radius-panel);background-image:radial-gradient(110% 90% at 100% 0%,color-mix(in srgb,var(--asp,var(--accent-primary)) 13%,transparent),transparent 60%);transition:transform .22s cubic-bezier(.2,.8,.2,1),box-shadow .22s}
+.muse-aspirations .muse-aspiration-card:hover{box-shadow:0 14px 30px -16px color-mix(in srgb,var(--asp,var(--accent-primary)) 80%,transparent);transform:translateY(-2px)}
+.muse-aspirations .muse-aspiration-connected{border-style:solid;align-items:center;padding:16px 18px}
+.muse-aspiration-source{display:inline-flex;align-items:center;gap:7px;font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted)}
+.muse-aspiration-source .muse-mark{width:22px;height:22px;border-radius:7px}
+.muse-aspirations .muse-aspirations-empty{border-style:solid;border-radius:var(--dl-radius-hero)}
+.muse-aspirations .muse-aspirations-year{padding:16px 18px;border:1px solid var(--glass-border);border-radius:var(--dl-radius-panel)}
+@media (prefers-reduced-motion:reduce){.muse-aspirations .muse-aspiration-card{transition:none}.muse-aspirations .muse-aspiration-card:hover{transform:none}}

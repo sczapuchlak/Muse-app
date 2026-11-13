@@ -1,4 +1,5 @@
 'use client';
+import {AtlasMark} from './parts';
 import {createContext,useContext,useState,type CSSProperties} from 'react';
 import {MuseModal} from '@/components/MuseModal';
 import type {Book,ReadingSession} from '@/lib/whimsy/models';
@@ -53,7 +54,7 @@ export function Patterns({books,sessions,range,label,series,seriesMembers,media,
   </div>
 
   <div className="muse-atlas-books-pair muse-atlas-pair-top">
-  <article className="muse-books-panel"><div className="muse-books-panel-head"><h4>Reading rhythm</h4><span className="small-label">Weekday × hour</span></div>
+  <article className="muse-books-panel"><div className="muse-books-panel-head"><h4><AtlasMark title="Reading rhythm"/>Reading rhythm</h4><span className="small-label">Weekday × hour</span></div>
    {!rhythm.total?<p>Timed sessions will draw your week here.</p>:<>
     <div className="muse-atlas-heatmap" role="img" aria-label={`Reading time by weekday and hour. Most on ${weekdayLabels[rhythm.topDay!]}s, around ${hourLabel(rhythm.topHour!)}.`}>
      <span aria-hidden="true"/>{Array.from({length:24},(_,h)=><span key={h} className="muse-atlas-heat-hour" aria-hidden="true">{h%6===0?hourLabel(h):''}</span>)}
@@ -71,7 +72,7 @@ export function Patterns({books,sessions,range,label,series,seriesMembers,media,
     <SegBar label="Reading time by time of day" slices={bands.map(([k,v])=>({key:k,label:bandNames[k].split(' (')[0],value:v,detail:`${rhythm.total?Math.round(v/rhythm.total*100):0}%`}))}/></>}
    <p className="small-label">Active time from {plural(rhythm.timedSessions,'timed session')}, in each session’s own time zone and split across hours, so late nights land on both days.{rhythm.excludedSessions?` ${plural(rhythm.excludedSessions,'manual entry','manual entries')} without times excluded.`:''}</p>
   </article>
-  <article className="muse-books-panel"><div className="muse-books-panel-head"><h4>Ratings</h4><span className="small-label">{label}</span></div>
+  <article className="muse-books-panel"><div className="muse-books-panel-head"><h4><AtlasMark title="Ratings"/>Ratings</h4><span className="small-label">{label}</span></div>
    {!ratings.rated?<p>{ratings.unrated?'Rate a finished read to see your ratings take shape.':`No finished reads ${label} yet.`}</p>
     :<><div className="muse-ratings-ring"><ValueRing value={ratings.average} max={5} main={ratings.average!==null?ratings.average.toFixed(1):'—'} sub="/5" label={`Average rating ${ratings.average??'none'} out of 5`}/><p>{plural(ratings.rated,'rated read')} {label}. Tap a row to see the books behind it.</p></div><ol className="muse-atlas-rows" aria-label="Ratings distribution">{ratings.buckets.map(b=><Row key={b.value} label={`${stars(b.value)} ${b.value}`} value={b.reads} max={maxRating} text={plural(b.reads,'read')} books={b.books} onOpenBook={onOpenBook}/>)}</ol></>}
    <p className="small-label">Each finished read counts with its own rating, so a reread can rate differently.{ratings.unrated?` ${plural(ratings.unrated,'unrated read')} not shown.`:''}</p>
@@ -79,10 +80,10 @@ export function Patterns({books,sessions,range,label,series,seriesMembers,media,
   </div>
 
   <div className="muse-books-atlas-grid">
-   <article className="muse-books-panel"><div className="muse-books-panel-head"><h4>Formats</h4><span className="small-label">{plural(formats.reads,'finished read')}</span></div>
+   <article className="muse-books-panel"><div className="muse-books-panel-head"><h4><AtlasMark title="Formats"/>Formats</h4><span className="small-label">{plural(formats.reads,'finished read')}</span></div>
     {!formats.reads?<p>No finished reads {label} yet.</p>:<SegBar label="Formats of finished reads" slices={formats.rows.filter(r=>r.reads).map(r=>({key:r.format,label:r.label,value:r.reads,detail:`${r.reads} · ${r.share}%`,extra:<BookList books={r.books} title={r.label} label={`Show ${plural(r.books.length,'book')}`} onOpenBook={onOpenBook}/>}))}/>}
     <p className="small-label">From each book’s saved format; books without one stay “Not recorded”.</p></article>
-   <article className="muse-books-panel"><div className="muse-books-panel-head"><h4>Finish speed</h4><span className="small-label">Start to finish</span></div>
+   <article className="muse-books-panel"><div className="muse-books-panel-head"><h4><AtlasMark title="Finish speed"/>Finish speed</h4><span className="small-label">Start to finish</span></div>
     {!speed.reads?<p>Reads with a start and finish date will show how long stories stay with you.</p>:<>
      <div className="muse-atlas-speed"><span><small className="small-label">Fastest</small><strong>{days(speed.fastest!.days)}</strong><small>{speed.fastest!.book.title}</small></span><span><small className="small-label">Slowest</small><strong>{days(speed.slowest!.days)}</strong><small>{speed.slowest!.book.title}</small></span></div>
      <SegBar label="How long reads took" slices={speed.bands.filter(b=>b.reads).map(b=>({key:b.id,label:b.label,value:b.reads,detail:plural(b.reads,'read'),extra:<BookList books={b.books} title={b.label} label={`Show ${plural(b.books.length,'book')}`} onOpenBook={onOpenBook}/>}))}/></>}
@@ -90,12 +91,12 @@ export function Patterns({books,sessions,range,label,series,seriesMembers,media,
   </div>
 
   <div className="muse-atlas-books-pair muse-atlas-pair-short" data-solo={shelves.length===0||undefined}>
-  <article className="muse-books-panel"><div className="muse-books-panel-head"><h4>Authors</h4><span className="small-label">{authors.authors.length&&range?`${authors.newAuthors} new · ${authors.returningAuthors} returning`:label}</span></div>
+  <article className="muse-books-panel"><div className="muse-books-panel-head"><h4><AtlasMark title="Authors"/>Authors</h4><span className="small-label">{authors.authors.length&&range?`${authors.newAuthors} new · ${authors.returningAuthors} returning`:label}</span></div>
    {!authors.authors.length?<p>Finished books with an author will gather here.</p>:<PagedList tag="ol" className="muse-atlas-rows" items={authors.authors} size={5} label="authors" render={a=><Row key={a.author} label={`${a.author}${a.isNew&&range?' · new':''}`} value={a.reads} max={authors.authors[0].reads} text={`${plural(a.books,'book')}${a.reads>a.books?` · ${plural(a.reads,'read')}`:''}`} books={a.bookList} onOpenBook={onOpenBook}/>}/>}
    <p className="small-label">Co-authors each count. “New” means your first finished read by them falls in this period.{authors.unknownAuthorReads?` ${plural(authors.unknownAuthorReads,'read')} without an author not shown.`:''}</p>
   </article>
 
-  {shelves.length>0&&<article className="muse-books-panel"><div className="muse-books-panel-head"><h4>Series</h4><span className="small-label">From Collections</span></div>
+  {shelves.length>0&&<article className="muse-books-panel"><div className="muse-books-panel-head"><h4><AtlasMark title="Series"/>Series</h4><span className="small-label">From Collections</span></div>
    <PagedList tag="ul" className="muse-atlas-series" items={shelves} size={3} label="series" render={({series:s,progress:p})=><li key={s.id}><span className="muse-atlas-series-cover" aria-hidden="true"><Cover book={seriesCover(s.id)}/></span><div className="muse-atlas-series-body"><div><strong>{s.title}</strong><small>{p.availableTotal?`${p.completed} of ${p.availableTotal} ${s.kind==='book'&&s.catalog_source?'primary books read':'released'}`:'Release order not set'}{s.kind==='book'&&s.catalog_source?(p.availableTotal&&p.completed>=p.availableTotal?(p.total>p.availableTotal?' · caught up':' · core complete'):''):p.status==='completed'?' · complete':p.status==='caught-up'?' · caught up':''}</small></div>
     {p.percentage!==null&&<progress value={p.completed} max={p.availableTotal} aria-label={`${s.title}: ${p.completed} of ${p.availableTotal}`}/>}
     {p.next&&<span className="small-label">Next: {p.next.kind==='book'&&onOpenBook?<button type="button" className="text-button" onClick={()=>onOpenBook(p.next!.id)}>{p.next.title}</button>:p.next.title}</span>}</div></li>}/>
@@ -103,9 +104,9 @@ export function Patterns({books,sessions,range,label,series,seriesMembers,media,
   </div>
 
   <div className="muse-books-atlas-grid">
-   <article className="muse-books-panel"><div className="muse-books-panel-head"><h4>Emojis by genre</h4><span className="small-label">{label}</span></div>
+   <article className="muse-books-panel"><div className="muse-books-panel-head"><h4><AtlasMark title="Emojis by genre"/>Emojis by genre</h4><span className="small-label">{label}</span></div>
     {!byGenre.length?<p>Emojis on finished books with genres will show each genre’s mood.</p>:<ul className="muse-atlas-emoji-rows">{byGenre.slice(0,8).map(g=><li key={g.genre}><span>{g.genre}</span><span className="muse-atlas-emoji-set" aria-label={g.top.map(e=>`${e.emoji} on ${plural(e.books,'book')}`).join(', ')}>{g.top.map(e=><span key={e.emoji} aria-hidden="true">{e.emoji}</span>)}</span></li>)}</ul>}</article>
-   <article className="muse-books-panel"><div className="muse-books-panel-head"><h4>Emojis by year</h4><span className="small-label">All years</span></div>
+   <article className="muse-books-panel"><div className="muse-books-panel-head"><h4><AtlasMark title="Emojis by year"/>Emojis by year</h4><span className="small-label">All years</span></div>
     {!byYear.length?<p>Each year’s three emojis will appear once finished books have them.</p>:<ul className="muse-atlas-emoji-rows">{byYear.map(y=><li key={y.year}><span>{y.year}</span><span className="muse-atlas-emoji-set" aria-label={y.top.map(e=>`${e.emoji} on ${plural(e.books,'book')}`).join(', ')}>{y.top.map(e=><span key={e.emoji} aria-hidden="true">{e.emoji}</span>)}</span></li>)}</ul>}</article>
   </div>
   <p className="small-label">Emoji counts use each read’s own emojis; a book counts each emoji once per period.</p>

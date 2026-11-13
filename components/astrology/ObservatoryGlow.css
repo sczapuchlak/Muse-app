@@ -1,0 +1,151 @@
+/*
+ * Cosmic Observatory glow-up. Loaded after CosmicObservatory.css and scoped under .muse-observatory. Every panel
+ * that sits on the atmosphere is the opaque card surface (never a see-through tint); nested rows use the subtle
+ * surface; topics keep one accent each (--celestial-accent). No theme-specific colours.
+ */
+.muse-observatory{--celestial-accent:var(--accent-secondary)}
+.muse-observatory .muse-cosmic-section-head>.muse-heading{flex:1 1 320px}
+.muse-observatory .muse-cosmic-forecast-head>.muse-heading{flex:1 1 320px;min-width:0}
+
+/* ── Library ─────────────────────────────────────────────────────────────────────────────────────────── */
+.muse-observatory :is(.muse-cosmic-astro101,.muse-lib-side,.muse-cosmic-collection,.muse-cosmic-tile,.muse-cosmic-journal-card,.muse-cal2-main>.muse-cosmic-month-grid,.muse-cosmic-featured-event,.muse-cosmic-lunar-strip,.muse-cosmic-calendar-selected){background-color:var(--glass-background)}
+.muse-observatory .muse-lib-learn{grid-template-columns:minmax(0,1.9fr) minmax(0,1fr);gap:clamp(14px,2vw,20px);align-items:start}
+.muse-observatory .muse-cosmic-astro101{gap:16px;padding:clamp(16px,2vw,24px);border-radius:var(--dl-radius-panel);background-image:radial-gradient(110% 80% at 100% 0%,color-mix(in srgb,var(--chart-3) 10%,transparent),transparent 62%)}
+.muse-astro101-progress{display:block;width:clamp(70px,10vw,120px);height:6px;border-radius:999px;background:color-mix(in srgb,var(--foreground) 12%,transparent);overflow:hidden}
+.muse-astro101-progress>i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--chart-3),var(--chart-5));transition:width .3s ease}
+.muse-observatory .muse-astro101-steps{gap:6px}
+.muse-observatory .muse-astro101-steps button{position:relative;gap:5px;padding:9px 4px 8px;border-radius:13px;background:var(--surface-subtle);font-size:.7rem;line-height:1.25;transition:border-color .18s,color .18s,background .18s}
+.muse-observatory .muse-astro101-steps .muse-cosmic-astro101-number{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;border:1px solid var(--glass-border);font:700 .72rem var(--font-ui);font-variant-numeric:tabular-nums;color:var(--text-muted);background:none;-webkit-text-fill-color:currentColor}
+.muse-observatory .muse-astro101-steps button[data-done] .muse-cosmic-astro101-number{border-color:transparent;background:color-mix(in srgb,var(--chart-3) 28%,var(--surface-control));color:var(--foreground)}
+.muse-observatory .muse-astro101-steps button[aria-current=step]{background:color-mix(in srgb,var(--chart-3) 10%,var(--surface-subtle))}
+.muse-observatory .muse-astro101-steps button[aria-current=step] .muse-cosmic-astro101-number{border-color:transparent;color:#170f24;background:linear-gradient(140deg,var(--chart-3),var(--chart-5));box-shadow:0 0 0 4px color-mix(in srgb,var(--chart-3) 18%,transparent)}
+.muse-observatory .muse-astro101-steps button:hover{color:var(--foreground);border-color:color-mix(in srgb,var(--chart-3) 55%,var(--glass-border))}
+.muse-observatory .muse-astro101-lesson{grid-template-columns:minmax(0,1.25fr) minmax(170px,.75fr);gap:clamp(14px,2.4vw,30px);padding:clamp(16px,2vw,24px);min-height:0;border-radius:16px;background:var(--surface-subtle)}
+.muse-observatory .muse-astro101-lesson h5{font-weight:var(--type-display-weight);font-size:clamp(1.3rem,2vw,1.65rem);line-height:1.2}
+.muse-observatory .muse-astro101-lesson p:not(.small-label){font-size:.95rem;line-height:1.65}
+.muse-astro101-figure{display:grid;justify-items:center;gap:10px;margin:0;min-width:0}
+.muse-lesson-diagram{display:block;width:min(100%,190px);height:auto;color:var(--foreground);overflow:visible}
+.muse-astro101-figure figcaption{display:flex;flex-wrap:wrap;justify-content:center;gap:5px}
+.muse-astro101-figure figcaption span{padding:2px 8px;border:1px solid var(--glass-border);border-radius:999px;font-size:.68rem;color:var(--text-muted)}
+.muse-observatory .muse-lib-side{gap:18px;padding:clamp(14px,1.8vw,20px);border-radius:var(--dl-radius-panel)}
+.muse-observatory .muse-lib-side>section{display:grid;gap:10px}
+.muse-observatory .muse-lib-side li button{gap:11px;padding:8px 10px;background:var(--surface-subtle);transition:border-color .18s,transform .18s}
+.muse-observatory .muse-lib-side li button:is(:hover,:focus-visible){border-color:var(--celestial-accent);transform:translateX(2px)}
+.muse-observatory .muse-lib-side li button>span:nth-child(2){display:grid;flex:1 1 auto;min-width:0}
+.muse-observatory .muse-lib-side li button strong{font-family:var(--font-editorial);font-weight:var(--type-title-weight);font-size:1rem}
+.muse-observatory .muse-lib-side li button small{color:var(--text-muted);font-size:.72rem}
+.muse-observatory .muse-lib-side .muse-cosmic-glyph{font-size:1.25rem;color:var(--celestial-accent);opacity:.9}
+/* Topics */
+.muse-observatory .muse-cosmic-library-collections{grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:14px}
+.muse-observatory .muse-cosmic-collection{position:relative;min-height:0;gap:6px;padding:16px;border-top-width:1px;border-radius:var(--dl-radius-panel);background-image:radial-gradient(110% 90% at 100% 0%,color-mix(in srgb,var(--celestial-accent) 16%,transparent),transparent 60%);overflow:hidden}
+.muse-cosmic-collection-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.muse-observatory .muse-cosmic-collection-symbol{font-size:2.6rem;line-height:1;color:var(--celestial-accent);opacity:.5}
+.muse-observatory .muse-cosmic-collection small{margin-top:6px;color:var(--foreground);font-weight:600}
+/* All entries */
+.muse-observatory .muse-cosmic-library-entry{gap:7px;padding:14px;border-top-width:1px;border-radius:var(--dl-radius-tile);background-image:radial-gradient(110% 90% at 100% 0%,color-mix(in srgb,var(--celestial-accent) 12%,transparent),transparent 58%)}
+.muse-cosmic-entry-top{display:flex;align-items:center;gap:8px;min-width:0}
+.muse-cosmic-entry-top .small-label{flex:1 1 auto}
+.muse-observatory .muse-cosmic-entry-top .muse-cosmic-glyph{font-size:1.5rem;line-height:1;color:var(--celestial-accent)}
+.muse-observatory .muse-cosmic-library-browse-head .muse-choice-menu{width:auto}
+@container muse-content (max-width:900px){.muse-observatory .muse-lib-learn{grid-template-columns:minmax(0,1fr)}}
+@container muse-content (max-width:640px){
+ .muse-observatory .muse-astro101-steps{grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+ .muse-observatory .muse-astro101-steps button{padding:6px 0}.muse-observatory .muse-astro101-steps button>span:last-child{display:none}
+ .muse-observatory .muse-astro101-lesson{grid-template-columns:minmax(0,1fr)}
+ .muse-lesson-diagram{width:150px}
+ .muse-observatory .muse-astro101-nav>.muse-button{flex:1 1 auto}
+}
+
+/* ── Calendar: the month on the left, the sky's news on the right ─────────────────────────────────────── */
+.muse-observatory .muse-cosmic-calendar-head{align-items:flex-end;gap:12px 20px}
+.muse-observatory .muse-cosmic-calendar-controls{gap:8px;align-items:center;flex:0 1 auto}
+.muse-observatory .muse-cosmic-calendar-controls>.muse-button{min-height:38px;padding-inline:12px}
+.muse-observatory .muse-cosmic-month-selector{position:relative;display:inline-flex;align-items:center;min-width:0;min-height:38px;padding:0 14px;border:1px solid var(--glass-border);border-radius:var(--control-radius);background:var(--surface-control);font-weight:650;font-size:.9rem;cursor:pointer}
+.muse-observatory .muse-cosmic-month-selector input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}
+.muse-observatory .muse-cosmic-month-selector:focus-within{outline:2px solid var(--focus-ring);outline-offset:2px}
+.muse-cal2{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(280px,1fr);gap:clamp(14px,2vw,20px);align-items:start;min-width:0}
+.muse-cal2-main,.muse-cal2-side{display:grid;gap:14px;min-width:0}
+.muse-observatory .muse-cosmic-month-grid{gap:4px;padding:12px;border-radius:var(--dl-radius-panel)}
+.muse-observatory .muse-cosmic-month-grid>.small-label{padding:2px 2px 6px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-size:.66rem}
+.muse-observatory .muse-cosmic-day{grid-template-columns:auto minmax(0,1fr);align-items:center;align-content:center;justify-items:start;gap:4px;min-height:clamp(46px,4.6vw,60px);padding:5px 7px;border-radius:10px;background:var(--surface-subtle);font-size:.84rem;font-variant-numeric:tabular-nums}
+.muse-observatory .muse-cosmic-day-events{justify-self:end}
+.muse-observatory .muse-cosmic-day-events .muse-cosmic-phase-mark{width:20px;height:20px}
+.muse-observatory .muse-cosmic-day:has(.muse-cosmic-phase-mark){background:color-mix(in srgb,var(--chart-7) 13%,var(--surface-subtle));border-color:color-mix(in srgb,var(--chart-7) 35%,transparent)}
+.muse-observatory .muse-cosmic-day[data-outside=true]{opacity:.38;background:transparent}
+.muse-observatory .muse-cosmic-day[aria-pressed=true]{border-color:var(--selected-border);box-shadow:0 0 0 1px var(--selected-border)}
+.muse-observatory .muse-cosmic-featured-event{grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:center;padding:16px;border-color:var(--glass-border);border-radius:var(--dl-radius-panel);background-image:radial-gradient(90% 120% at 0% 50%,color-mix(in srgb,var(--chart-7) 18%,transparent),transparent 62%)}
+.muse-observatory .muse-cosmic-featured-event .muse-cosmic-phase-mark[data-size=large]{width:64px;height:64px;filter:drop-shadow(0 0 14px color-mix(in srgb,var(--chart-7) 60%,transparent))}
+.muse-observatory .muse-cosmic-featured-event>div{gap:4px;min-width:0}
+.muse-observatory .muse-cosmic-featured-event h4{font-size:1.4rem;line-height:1.15}
+.muse-observatory .muse-cosmic-featured-event time{font-size:.84rem;color:var(--text-muted)}
+.muse-cosmic-featured-note{margin:2px 0 0;font-size:.84rem;line-height:1.45;color:var(--text-muted)}
+.muse-observatory .muse-cosmic-featured-event .muse-cosmic-actions{gap:6px 8px;margin-top:8px;align-items:center}
+.muse-observatory .muse-cosmic-featured-event .muse-cosmic-actions .muse-button{min-height:34px;padding:6px 12px;font-size:.82rem}
+.muse-observatory .muse-cosmic-featured-event .muse-cosmic-tile{border-top-width:1px;background-image:none}
+.muse-observatory .muse-cosmic-lunar-strip{gap:10px;padding:14px;border-radius:var(--dl-radius-panel);background-image:none}
+.muse-observatory .muse-cosmic-phase-sequence{grid-template-columns:minmax(0,1fr);gap:4px}
+.muse-observatory .muse-cosmic-phase-step{grid-template-columns:auto minmax(0,1fr) auto;justify-items:start;align-items:center;gap:10px;padding:6px 10px;border-color:transparent;border-radius:11px;background:var(--surface-subtle);text-align:left}
+.muse-observatory .muse-cosmic-phase-step .muse-cosmic-phase-mark{width:26px;height:26px}
+.muse-observatory .muse-cosmic-phase-step strong{font-size:.9rem}
+.muse-observatory .muse-cosmic-phase-step small{color:var(--text-muted);font-size:.74rem;font-variant-numeric:tabular-nums;text-align:right}
+.muse-observatory .muse-cosmic-phase-step[aria-current=step]{border-color:var(--selected-border);background:color-mix(in srgb,var(--chart-7) 12%,var(--surface-subtle))}
+.muse-observatory .muse-cosmic-calendar-selected{gap:8px;padding:14px;border-radius:var(--dl-radius-panel)}
+.muse-observatory .muse-cosmic-calendar-selected h4{font-size:1.08rem}
+.muse-observatory .muse-cosmic-calendar-selected p{margin:0;color:var(--text-muted);font-size:.86rem;line-height:1.5}
+.muse-observatory .muse-cosmic-calendar-selected-event{background:var(--surface-subtle)}
+.muse-observatory .muse-cosmic-event-row{border-top-width:1px;background-image:none}
+.muse-cosmic-calendar-note{color:var(--text-muted);font-size:.78rem}
+.muse-cosmic-calendar-note summary{cursor:pointer;width:fit-content}
+.muse-cosmic-calendar-note p{margin:8px 0 0;max-width:90ch;line-height:1.5}
+@container muse-content (max-width:900px){.muse-cal2{grid-template-columns:minmax(0,1fr)}.muse-cal2-side{grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr))}}
+@container muse-content (max-width:640px){
+ .muse-observatory .muse-cosmic-calendar-controls{width:100%}.muse-observatory .muse-cosmic-month-selector{flex:1 1 auto;justify-content:center}
+ .muse-observatory .muse-cosmic-day{grid-template-columns:minmax(0,1fr);justify-items:center;min-height:50px;padding:4px 2px}.muse-observatory .muse-cosmic-day-events{justify-self:center}
+ .muse-observatory .muse-cosmic-month-grid{padding:8px;gap:3px}
+}
+
+/* ── Cosmic Journal ──────────────────────────────────────────────────────────────────────────────────── */
+.muse-cosmic-journal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,330px),1fr));gap:14px;align-items:stretch}
+.muse-cosmic-journal-card{--mark-a:var(--chart-3);position:relative;display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;min-width:0;padding:16px;border:1px solid var(--glass-border);border-radius:var(--dl-radius-panel);background-image:radial-gradient(100% 90% at 100% 0%,color-mix(in srgb,var(--mark-a) 12%,transparent),transparent 60%);color:var(--foreground);text-align:left;cursor:pointer;transition:transform .22s cubic-bezier(.2,.8,.2,1),box-shadow .22s}
+.muse-cosmic-journal-card:is(:hover,:focus-visible){box-shadow:0 14px 30px -16px color-mix(in srgb,var(--mark-a) 80%,transparent);transform:translateY(-2px)}
+.muse-cosmic-journal-card:focus-visible{outline:2px solid var(--focus-ring);outline-offset:3px}
+.muse-cosmic-journal-date{display:grid;justify-items:center;align-content:start;gap:0;width:54px;padding:8px 0 7px;border-radius:13px;background:color-mix(in srgb,var(--mark-a) 14%,var(--surface-subtle));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--mark-a) 35%,transparent);align-self:start}
+.muse-cosmic-journal-date b{font:750 1.45rem/1 var(--font-ui);font-variant-numeric:tabular-nums}
+.muse-cosmic-journal-date i{font:700 .66rem/1.5 var(--font-ui);letter-spacing:.14em;text-transform:uppercase;font-style:normal}
+.muse-cosmic-journal-date small{font-size:.62rem;color:var(--text-muted)}
+.muse-cosmic-journal-body{display:flex;flex-direction:column;gap:6px;min-width:0}
+.muse-cosmic-journal-kind{display:inline-flex;align-items:center;gap:7px;font-size:.68rem;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--text-muted)}
+.muse-cosmic-journal-kind .muse-mark{width:22px;height:22px;border-radius:7px}
+.muse-cosmic-journal-card strong{font-family:var(--font-editorial);font-weight:var(--type-title-weight);font-size:1.15rem;line-height:1.25;overflow-wrap:anywhere}
+.muse-cosmic-journal-context{color:var(--text-muted);font-size:.78rem;line-height:1.4}
+.muse-cosmic-journal-preview{padding-left:11px;border-left:2px solid color-mix(in srgb,var(--mark-a) 65%,transparent);font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-quote-weight);font-size:.96rem;line-height:1.55;white-space:pre-line;overflow-wrap:anywhere;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:4;overflow:hidden}
+.muse-cosmic-journal-preview[data-empty]{border-left-style:dashed;font:400 .84rem/1.5 var(--font-ui);color:var(--text-muted)}
+.muse-cosmic-journal-foot{display:flex;justify-content:space-between;gap:8px;margin-top:auto;padding-top:6px;color:var(--text-muted);font-size:.74rem}
+.muse-cosmic-journal-empty-art{display:flex;justify-content:center}
+.muse-cosmic-journal-empty-art .muse-mark{margin-inline:-5px}
+.muse-cosmic-journal-empty-art .muse-mark:nth-child(1){rotate:-10deg}.muse-cosmic-journal-empty-art .muse-mark:nth-child(2){translate:0 -6px;z-index:1}.muse-cosmic-journal-empty-art .muse-mark:nth-child(3){rotate:10deg}
+.muse-observatory .muse-cosmic-journal .muse-cosmic-toolbar{align-items:center}
+/* Writing and reading a reflection */
+.muse-observatory .muse-cosmic-editor{display:grid;gap:14px}
+.muse-observatory .muse-cosmic-editor fieldset{display:grid;gap:12px;min-width:0;margin:0;padding:0;border:0}
+.muse-cosmic-editor-context{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--glass-border);border-radius:13px;background:var(--surface-subtle)}
+.muse-cosmic-editor-context>div{display:grid;gap:1px;flex:1 1 auto;min-width:0}
+.muse-cosmic-editor-context strong{font-size:.9rem;overflow-wrap:anywhere}
+.muse-cosmic-editor-context small{color:var(--text-muted);font-size:.74rem}
+.muse-observatory .muse-cosmic-editor-title input{width:100%;padding:6px 2px;border:0;border-bottom:1px solid var(--glass-border);border-radius:0;background:none;color:inherit;font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight);font-size:1.4rem;box-shadow:none}
+.muse-observatory .muse-cosmic-editor-title input:focus-visible{outline:0;border-bottom-color:var(--chart-3)}
+.muse-observatory .muse-cosmic-editor-page textarea{display:block;width:100%;min-height:calc(1.9em * 8 + 20px);padding:10px 2px;border:0;border-radius:0;outline:0;resize:vertical;color:var(--foreground);background-color:transparent;background-image:repeating-linear-gradient(transparent 0 calc(1.9em - 1px),color-mix(in srgb,var(--foreground) 14%,transparent) calc(1.9em - 1px) 1.9em);background-position:0 10px;background-attachment:local;font-family:var(--font-editorial);font-weight:var(--type-reading-weight);font-size:1.04rem;line-height:1.9;box-shadow:none}
+.muse-observatory .muse-cosmic-editor-page textarea:focus-visible{outline:0;background-image:repeating-linear-gradient(transparent 0 calc(1.9em - 1px),color-mix(in srgb,var(--chart-3) 55%,transparent) calc(1.9em - 1px) 1.9em)}
+.muse-cosmic-editor-date{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:.84rem;font-weight:600}
+.muse-observatory .muse-cosmic-editor-date input{width:auto;min-height:38px}
+.muse-cosmic-editor-date small{color:var(--text-muted);font-weight:400}
+.muse-cosmic-journal-detail{display:grid;gap:14px}
+.muse-cosmic-journal-detail>header{display:flex;align-items:center;gap:14px}
+.muse-cosmic-journal-detail h3{margin:2px 0 0;font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight);font-size:clamp(1.4rem,2.6vw,1.9rem);line-height:1.15}
+.muse-observatory .muse-cosmic-journal-text,.muse-cosmic-journal-detail .muse-cosmic-journal-text{margin:0;padding-left:14px;border-left:2px solid color-mix(in srgb,var(--chart-3) 65%,transparent);font-family:var(--font-editorial);font-weight:var(--type-reading-weight);font-size:1.06rem;line-height:1.75;white-space:pre-wrap;overflow-wrap:anywhere}
+@media (prefers-reduced-motion:reduce){.muse-cosmic-journal-card,.muse-astro101-progress>i,.muse-observatory .muse-lib-side li button{transition:none}.muse-cosmic-journal-card:is(:hover,:focus-visible),.muse-observatory .muse-lib-side li button:is(:hover,:focus-visible){transform:none}}
+/* Shared headings inside older Observatory containers keep their own layout (older rules style every child div/h4). */
+.muse-observatory :is(.muse-cosmic-astro101,.muse-lib-side,.muse-cosmic-lunar-strip) .muse-heading{display:flex;gap:12px}
+.muse-observatory :is(.muse-cosmic-astro101,.muse-lib-side,.muse-cosmic-lunar-strip) .muse-heading-title{margin:0;letter-spacing:-.005em;text-transform:none;color:var(--foreground);font-family:var(--font-editorial);font-weight:var(--type-editorial-weight)}
+.muse-observatory .muse-cosmic-astro101 .muse-heading-title{font-size:1.5rem}
+.muse-observatory :is(.muse-lib-side,.muse-cosmic-lunar-strip) .muse-heading-title{font-size:1.08rem}
