@@ -30,7 +30,6 @@ import { TaskQuickAdd } from "./TaskQuickAdd";
 import { TaskDetails } from "./TaskDetails";
 import "./Planner.css";
 import {usePlannerHeight} from "./usePlannerHeight";
-import {PlannerDayStrip} from "./PlannerDayStrip";
 import { projectTasks } from "@/lib/planner-occurrences";
 import {MuseMilestone} from "../MuseMilestone";
 
@@ -93,7 +92,6 @@ export function Planner() {
     {tab === "tasks" && <>{utilities()}
     {tasksView === "running" && <RunningList tasks={filtered} weekOf={date} today={today} timeZone={profile.timeZone} workspaceId={workspaceFilter} onWorkspaceChange={(id)=>{setWorkspace(id);setFilters((current)=>({...current,groupId:""}));}}
       search={search} onSearch={setSearch} filters={activeFilters} onFilter={setFilters} priorityIds={priorityIds} onOpen={openTask} onAnnounce={setAnnouncement}/>}
-    {tasksView === "board" && today && <PlannerDayStrip date={date} today={today}/>}
     {tasksView === "board" && <><div className="muse-planner-mobile-week"><WeekNavigator selectedDate={date} timeZone={profile.timeZone} onChange={(next) => { changeDate(next); setMobileView("day"); }} /></div>
     {state.activeTimer && <p className="muse-planner-timer-status" role="status">Timer running: {state.tasks.find((task) => task.id === state.activeTimer?.taskId)?.title}. <button className="text-button" type="button" onClick={(event) => { if (state.activeTimer) setDetail({ id: state.activeTimer.taskId, anchor: event.currentTarget }); }}>Open timer</button></p>}
     <div ref={workspaceRef} className="muse-planner-layout" data-dragging={dragging || undefined}
