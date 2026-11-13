@@ -51,6 +51,14 @@ test('home: timeframe filters, default dates, attention lists and sorting',()=>{
  assert.equal(P.inTimeFilter({targetDate:'2026-12-31',timeframe:'year'},'month',today),false);
  assert.equal(P.inTimeFilter({targetDate:'2026-12-31',timeframe:'year'},'quarter',today),true);
  assert.equal(P.inTimeFilter({targetDate:null,timeframe:'someday'},'someday',today),true);
+ assert.equal(P.inTimeFilter({targetDate:null,timeframe:'ongoing'},'someday',today),false);
+ assert.equal(P.inTimeFilter({targetDate:null,timeframe:'none'},'someday',today),false);
+ assert.equal(P.inTimeFilter({targetDate:null,timeframe:'custom',targetPeriod:'2026-11'},'month',today),true);
+ assert.equal(P.inTimeFilter({targetDate:null,timeframe:'custom',targetPeriod:'2026'},'month',today),false);
+ assert.equal(P.inTimeFilter({targetDate:null,timeframe:'custom',targetPeriod:'2026'},'year',today),true);
+ assert.equal(P.inTimeFilter({targetDate:null,timeframe:'custom',targetPeriod:'2025/2028'},'year',today),true);
+ assert.equal(P.inTimeFilter({targetDate:null,timeframe:'custom',targetPeriod:'2025/2028'},'month',today),false);
+ assert.equal(P.isOpen(asp({status:'discontinued'})),false);
  assert.equal(P.inTimeFilter({targetDate:null,timeframe:'someday'},'year',today),false);
  assert.deepEqual(P.timeframeDates('quarter','2026-11-06'),{start:'2026-11-06',target:'2026-12-31'});
  assert.deepEqual(P.timeframeDates('month','2026-02-10'),{start:'2026-02-10',target:'2026-02-28'});

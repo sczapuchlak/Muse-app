@@ -49,10 +49,10 @@ export function aspirationProgress(a:Aspiration,ctx:ProgressContext):Progress{
 const quarterOf=(d:string)=>`${d.slice(0,4)}-Q${Math.floor((Number(d.slice(5,7))-1)/3)+1}`;
 export type TimeFilter='month'|'quarter'|'year'|'someday'|'all';
 /** Which aspirations belong to a timeframe filter, by their target date (open-ended ones are "Someday"). */
-export function inTimeFilter(a:Pick<Aspiration,'targetDate'|'timeframe'>,filter:TimeFilter,today:string){
+export function inTimeFilter(a:Pick<Aspiration,'targetDate'|'timeframe'> & Partial<Pick<Aspiration,'targetPeriod'>>,filter:TimeFilter,today:string){
  if(filter==='all')return true;
- if(filter==='someday')return !a.targetDate||a.timeframe==='someday';
- if(!a.targetDate)return false;
+ if(filter==='someday')return a.timeframe==='someday';
+ if(!a.targetDate){if(!a.targetPeriod)return false;if(a.targetPeriod.includes('/'))return filter==='year'&&today.slice(0,4)>=a.targetPeriod.slice(0,4)&&today.slice(0,4)<=a.targetPeriod.slice(5);if(filter==='year')return a.targetPeriod.slice(0,4)===today.slice(0,4);if(a.targetPeriod.length!==7)return false;if(filter==='month')return a.targetPeriod===today.slice(0,7);return quarterOf(`${a.targetPeriod}-01`)===quarterOf(today);}
  if(filter==='month')return a.targetDate.slice(0,7)===today.slice(0,7);
  if(filter==='quarter')return quarterOf(a.targetDate)===quarterOf(today);
  return a.targetDate.slice(0,4)===today.slice(0,4);
@@ -81,7 +81,7 @@ export const nextMilestone=(a:Pick<Aspiration,'milestones'>)=>a.milestones.find(
 export type SortKey='target'|'progress'|'updated'|'category'|'custom';
 export function sortAspirations(list:Aspiration[],key:SortKey,percentOf:(a:Aspiration)=>number|null){
  const byTitle=(a:Aspiration,b:Aspiration)=>a.title.localeCompare(b.title);
- return [...list].sort((a,b)=>key==='target'?((a.targetDate??'9999')+a.title).localeCompare((b.targetDate??'9999')+b.title)
+ return [...list].sort((a,b)=>key==='target'?((a.targetDate??a.targetPeriod??'9999')+a.title).localeCompare((b.targetDate??b.targetPeriod??'9999')+b.title)
   :key==='progress'?(percentOf(b)??-1)-(percentOf(a)??-1)||byTitle(a,b)
   :key==='updated'?b.updatedAt.localeCompare(a.updatedAt)
   :key==='category'?a.category.localeCompare(b.category)||byTitle(a,b)
@@ -102,7 +102,7 @@ export function aspirationStats(aspirations:Aspiration[],today:string){
  const year=today.slice(0,4),months=Array.from({length:12},(_,i)=>`${year}-${String(i+1).padStart(2,'0')}`);
  const completed=aspirations.filter(a=>a.completedOn?.startsWith(year));
  const milestonesDone=aspirations.flatMap(a=>a.milestones).filter(m=>m.completedOn?.startsWith(year));
- const byCategory=new Map<string,{active:number;completed:number}>();for(const a of aspirations.filter(x=>x.status!=='archived')){const r=byCategory.get(a.category)??{active:0,completed:0};if(a.status==='completed')r.completed++;else r.active++;byCategory.set(a.category,r);}
+ const byCategory=new Map<string,{active:number;completed:number}>();for(const a of aspirations.filter(x=>isOpen(x)||x.status==='completed')){const r=byCategory.get(a.category)??{active:0,completed:0};if(a.status==='completed')r.completed++;else r.active++;byCategory.set(a.category,r);}
  return {active:aspirations.filter(a=>a.status==='active').length,completedThisYear:completed.length,milestonesThisYear:milestonesDone.length,
   completedByMonth:months.map(m=>({month:m,completed:completed.filter(a=>a.completedOn!.startsWith(m)).length,milestones:milestonesDone.filter(x=>x.completedOn!.startsWith(m)).length})),
   byCategory:[...byCategory].map(([category,v])=>({category,...v})).sort((a,b)=>b.active+b.completed-a.active-a.completed)};
@@ -137,7 +137,7 @@ export const canRenew=(a:Aspiration,all:Aspiration[])=>!!nextPeriod(a)&&!all.som
 export function renewedAspiration(a:Aspiration,id:string,now:string):Aspiration{
  const p=nextPeriod(a)!;
  const connection=a.connection?.kind==='reading-challenge'?{kind:'reading-challenge' as const,year:p.start.slice(0,4)}:a.connection;
- return {...a,id,startDate:p.start,targetDate:p.target,status:'active',completedOn:null,reflection:null,celebrated:[],renewedFrom:a.id,connection,
+ return {...a,id,startDate:p.start,targetDate:p.target,targetPeriod:null,status:'active',completedOn:null,reflection:null,celebrated:[],renewedFrom:a.id,connection,
   milestones:a.milestones.map(m=>({id:`${m.id.slice(0,24)}-${id.slice(0,8)}`,title:m.title,...(m.description?{description:m.description}:{}),...(m.weight?{weight:m.weight}:{})})),
   revision:0,createdAt:now,updatedAt:now};
 }
