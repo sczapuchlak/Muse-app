@@ -259,3 +259,8 @@
 .muse-gradient-direction{display:grid;grid-template-columns:30px minmax(0,1fr);align-items:end;gap:10px}
 .muse-gradient-dial{position:relative;width:30px;height:30px;border-radius:50%;border:1px solid var(--glass-border);background:var(--surface-subtle)}
 .muse-gradient-dial::after{content:"";position:absolute;left:50%;top:3px;width:2px;height:12px;translate:-50% 0;border-radius:2px;background:var(--accent-primary)}
+.muse-vision-workspace[data-panel=closed]{grid-template-columns:minmax(0,1fr)}
+.muse-vision-inspector{position:relative}
+.muse-vision-inspector-close{position:sticky;top:0;z-index:2;height:0;display:flex;justify-content:flex-end;overflow:visible}
+.muse-vision-inspector-close>*{translate:4px -4px}
+.muse-vision-inspector-head{padding-right:44px}

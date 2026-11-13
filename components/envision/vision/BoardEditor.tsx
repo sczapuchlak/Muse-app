@@ -78,6 +78,13 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
   const [selectMode, setSelectMode] = useState(false), [snapping, setSnapping] = useState(true), [exporting, setExporting] = useState(false);
   const [sessionUploads, setSessionUploads] = useState<Asset[]>([]);
   const [reducedMotion] = useState(() => prefersReducedMotion());
+  // The settings panel can be hidden for a full-width canvas (remembered on this device). The Board button and the
+  // panel's close button toggle it; the view refits to the new space.
+  const [panelOpen, setPanelOpen] = useState(() => { try { return localStorage.getItem("muse.vision.panel") !== "closed"; } catch { return true; } });
+  const togglePanelOpen = (open: boolean) => {
+    setPanelOpen(open); autoFit.current = true;
+    try { localStorage.setItem("muse.vision.panel", open ? "open" : "closed"); } catch { /* this session only */ }
+  };
   const clipboardReading = useRef(false), pasteAnchor = useRef<HTMLSpanElement>(null);
   const boardRef = useRef(board); boardRef.current = board;
   const historyRef = useRef(history); historyRef.current = history;
@@ -486,7 +493,8 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
       <CutoutTools disabled={uploading || clipboardBusy} showGuide={apple} onFiles={(f) => { cutoutHint.dismiss(); void addFiles(f); }} onError={(m) => setUploads({ total: 0, done: 0, errors: [m] })} onOpened={cutoutHint.dismiss} />
       <button type="button" className="muse-button" onClick={addText}><span className="muse-vision-glyph" aria-hidden="true">Aa</span> Text</button>
       <button ref={anchors.library} type="button" className="muse-button" aria-expanded={panel === "library"} onClick={() => togglePanel("library")}><MuseIcon name="sparkle" size={14} /> Library</button>
-      <button type="button" className="muse-button" onClick={() => setSelectedIds([])} title="Board size, background and export"><span className="muse-vision-dot" style={{ background: board.background.kind === "pattern" ? paintCss(board.background.paint) : paintCss(board.background.kind === "solid" ? { kind: "solid", color: board.background.color } : { kind: "gradient", gradient: board.background.gradient }) }} aria-hidden="true" /> Board</button>
+      <button type="button" className="muse-button" aria-pressed={panelOpen} aria-controls="vision-inspector" title={!panelOpen ? "Show the settings panel" : selected.length ? "Board size, background and export" : "Hide the panel (full-width canvas)"}
+        onClick={() => { if (!panelOpen) togglePanelOpen(true); else if (selected.length) setSelectedIds([]); else togglePanelOpen(false); }}><span className="muse-vision-dot" style={{ background: board.background.kind === "pattern" ? paintCss(board.background.paint) : paintCss(board.background.kind === "solid" ? { kind: "solid", color: board.background.color } : { kind: "gradient", gradient: board.background.gradient }) }} aria-hidden="true" /> Board</button>
       <span className="muse-vision-toolbar-gap" />
       <button type="button" className="muse-button" aria-label="Undo" title="Undo (⌘Z)" disabled={!history.past.length} onClick={doUndo}><MuseIcon name="undo" size={15} /></button>
       <button type="button" className="muse-button muse-vision-redo" aria-label="Redo" title="Redo (⇧⌘Z)" disabled={!history.future.length} onClick={doRedo}><MuseIcon name="undo" size={15} /></button>
@@ -507,7 +515,7 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
       {!uploading && <button type="button" className="text-button" onClick={() => setUploads({ total: 0, done: 0, errors: [] })}>Dismiss</button>}
     </p>}
 
-    <div className="muse-vision-workspace">
+    <div className="muse-vision-workspace" data-panel={panelOpen ? undefined : "closed"}>
       <div ref={wrapRef} className="muse-vision-canvas" data-dropping={dropping || undefined} data-select={selectMode || undefined} {...dropProps}
         onPointerDownCapture={(event) => { if (event.pointerType !== "touch") event.currentTarget.focus({ preventScroll: true }); }}
         onContextMenu={(event) => {
@@ -521,8 +529,8 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
         {pasteMenu && <span ref={pasteAnchor} className="muse-vision-paste-anchor" aria-hidden="true" style={{ left: pasteMenu.x, top: pasteMenu.y }} />}
         <span className="muse-vision-size-chip" aria-hidden="true">{c.w} × {c.h}</span>
       </div>
-      <Inspector board={board} selected={selected} grouped={grouped} units={unitCount} patch={patch} actions={actions} palette={palette} uploads={boardUploads} requestUpload={requestUpload}
-        lookups={{ linkOptions, live }} label={elementLabel} />
+      {panelOpen && <Inspector onClose={() => togglePanelOpen(false)} board={board} selected={selected} grouped={grouped} units={unitCount} patch={patch} actions={actions} palette={palette} uploads={boardUploads} requestUpload={requestUpload}
+        lookups={{ linkOptions, live }} label={elementLabel} />}
     </div>
     <GlassPopover id="vision-canvas-paste" label="Canvas actions" open={!!pasteMenu} anchorRef={pasteAnchor} onClose={() => { setPasteMenu(null); wrapRef.current?.focus({ preventScroll: true }); }} width={220} bare>
       {elementClip && <button type="button" className="popover-choice" onClick={() => { setPasteMenu(null); wrapRef.current?.focus({ preventScroll: true }); pasteCopied(); }}>Paste pieces</button>}

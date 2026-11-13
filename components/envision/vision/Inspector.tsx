@@ -10,6 +10,7 @@ import type { Align, Expand } from "@/lib/vision-boards/editing";
 import { MuseChoiceMenu } from "../../MuseChoiceMenu";
 import { MuseColorPicker } from "../../MuseColorPicker";
 import { MuseIcon } from "../../MuseIcon";
+import { MuseCloseButton } from "../../MuseIconButton";
 import { MuseSegmented } from "../../design/MuseSegmented";
 import { FontPicker } from "./FontPicker";
 import { PaintEditor, Slider, type SavedPalette } from "./PaintEditor";
@@ -25,6 +26,7 @@ export type InspectorActions = {
   background: (b: Background) => void; exportImage: (type: "image/png" | "image/jpeg") => void; exporting: boolean;
 };
 type Props = {
+  onClose?: () => void;
   board: VisionBoard; selected: BoardElement[]; grouped: boolean; units: number;
   /** Patches every selected piece of the representative's kind (so a multi-selection of shapes edits together). */
   patch: (fn: (e: BoardElement) => Partial<BoardElement> | null, key?: string, scope?: "kind" | "all") => void;
@@ -40,7 +42,8 @@ type Props = {
 export function Inspector(props: Props) {
   const { selected } = props;
   const first = selected[0], mixed = new Set(selected.map((e) => e.kind)).size > 1;
-  return <aside className="muse-vision-inspector" aria-label={first ? "Selected piece settings" : "Board settings"}>
+  return <aside id="vision-inspector" className="muse-vision-inspector" aria-label={first ? "Selected piece settings" : "Board settings"}>
+    {props.onClose && <div className="muse-vision-inspector-close"><MuseCloseButton label="Hide the panel" onClose={props.onClose} /></div>}
     {!first ? <BoardSection {...props} /> : <>
       <header className="muse-vision-inspector-head">
         <p className="editor-label">{selected.length > 1 ? `${selected.length} pieces${props.grouped ? " · grouped" : ""}` : props.label(first)}</p>
