@@ -131,8 +131,8 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
   const fit = useCallback(() => {
     if (!size.width) return;
     autoFit.current = true;
-    if (partner === undefined) { setView(fitView({ size: "custom", canvas: box }, size.width, size.height, 14)); return; }
-    const v = fitView({ size: "custom", canvas: { w: box.w * 2, h: box.h } }, size.width, size.height, 14);
+    if (partner === undefined) { setView(fitView({ size: "custom", canvas: box }, size.width, size.height, 30)); return; }
+    const v = fitView({ size: "custom", canvas: { w: box.w * 2, h: box.h } }, size.width, size.height, 30);
     setView(partner < page ? { ...v, x: v.x + box.w * v.scale } : v);
   }, [box.w, box.h, size, partner, page]); // eslint-disable-line react-hooks/exhaustive-deps -- box is derived from w/h
   /**
@@ -141,7 +141,7 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
    * page can still scroll past it.
    */
   const [coarse] = useState(() => typeof window !== "undefined" && !!window.matchMedia?.("(pointer: coarse)").matches);
-  const canvasHeight = size.width ? Math.round(Math.max(320, Math.min(size.width * (box.h / (box.w * (partner !== undefined ? 2 : 1))) + 28, coarse ? window.innerHeight * 0.78 : Math.max(560, window.innerHeight - 110)))) : undefined;
+  const canvasHeight = size.width ? Math.round(Math.max(320, Math.min(size.width * (box.h / (box.w * (partner !== undefined ? 2 : 1))) + 28, coarse ? window.innerHeight * 0.78 : Math.max(560, window.innerHeight - 96)))) : undefined;
   useEffect(() => { if (!size.width || !autoFit.current) return; const t = window.setTimeout(fit, 0); return () => window.clearTimeout(t); }, [size, fit]);
   const moveView = (v: View) => { autoFit.current = false; setView(v); };
   const zoomBy = (factor: number) => view && moveView((() => {
@@ -496,6 +496,22 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
     changeElements((els) => els.map((x) => x.id === e.id ? { ...e, border: undefined, outline: e.outline ?? { color: "#ffffff", width: Math.max(6, Math.round(Math.min(e.w, e.h) * 0.045)) }, finish: e.finish ?? { kind: "glossy", intensity: 0.55 }, shadow: true, shadowStyle: e.shadowStyle ?? { ...defaultShadow, blur: 14, y: 6, opacity: 0.28 } } as ImageElement : x));
     setAnnounce("Made into a sticker");
   }
+  /**
+   * "Add a photo inside" a frame: the photo is fitted to the frame's window (cover-cropped, so it fills it), tucked
+   * just behind the frame, turned with it and grouped with it. Frames without window data use their centre.
+   */
+  function photoIntoFrame() {
+    const f = selected[0]; if (f?.kind !== "piece") return;
+    if (boardRef.current.elements.length >= MAX_ELEMENTS) { setAnnounce(`A board holds up to ${MAX_ELEMENTS} pieces.`); return; }
+    const win = libraryItem(f.piece)?.window ?? [0.1, 0.1, 0.8, 0.8], [wx, wy, ww, wh] = win;
+    const ox = (wx + ww / 2 - 0.5) * f.w, oy = (wy + wh / 2 - 0.5) * f.h, a = (f.rotation * Math.PI) / 180;
+    requestUpload((asset) => {
+      const gid = f.groupId ?? uid(), w = Math.round(ww * f.w * 1.01), h = Math.round(wh * f.h * 1.01);
+      const photo: ImageElement = { id: uid(), kind: "image", image: asset, crop: { shape: "rect", zoom: 1, x: 0, y: 0 }, x: Math.round(f.x + ox * Math.cos(a) - oy * Math.sin(a)), y: Math.round(f.y + ox * Math.sin(a) + oy * Math.cos(a)), w, h, rotation: f.rotation, groupId: gid };
+      changeElements((els) => { const at = els.findIndex((x) => x.id === f.id); const withGroup = els.map((x) => (x.id === f.id ? { ...x, groupId: gid } : x)); return at < 0 ? els : [...withGroup.slice(0, at), photo, ...withGroup.slice(at)]; });
+      setSelectedIds([photo.id]); setAnnounce("Photo added inside the frame (grouped with it)");
+    });
+  }
   /** A patterned scrapbook backing behind a photo: a little larger, a little turned, grouped with the photo. */
   function addBacking() {
     const e = selected[0]; if (e?.kind !== "image") return;
@@ -593,12 +609,12 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
   };
   const actions: InspectorActions = {
     align, distribute, layer, group, ungroup, lock, duplicate, remove, copyStyle: doCopyStyle, pasteStyle: doPasteStyle, canPasteStyle: !!styleClip,
-    crop: () => setSheet("crop"), makeSticker, addBacking, expand, resize, preset, background, exportImage: (t) => void exportImage(t), exporting,
+    crop: () => setSheet("crop"), makeSticker, addBacking, photoIntoFrame, expand, resize, preset, background, exportImage: (t) => void exportImage(t), exporting,
     vision: { isBook: book, pageCount: board.pages?.length ?? 0, pageLabel: page < 0 ? "The cover" : `This page (“${board.pages?.[page]?.title ?? ""}”)`, toBook: convertToBook, toBoard: convertToBoard, combine: () => void combineToBoard(), combining, exportPdf: () => void exportPdf(), pdfProgress, read: () => setReading(true) },
   };
   const c = box;
 
-  return <><section className="muse-vision-editor muse-planner-surface" aria-label={`Vision board: ${board.title}`} onKeyDown={onKey} onPaste={onPaste}>
+  return <><section className="muse-vision-editor muse-vision-studio" data-format={book ? "book" : "board"} aria-label={`${book ? "Book" : "Vision board"}: ${board.title}`} onKeyDown={onKey} onPaste={onPaste}>
     <header className="muse-vision-editor-head">
       <button type="button" className="muse-button" onClick={() => void leave()}><span aria-hidden="true">‹</span> Visions</button>
       <div className="muse-vision-editor-title">
@@ -617,7 +633,7 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
       {save.conflict ? <><button type="button" className="text-button" onClick={() => void reloadLatest()}>Load the latest</button> <button type="button" className="text-button" onClick={() => void keepMine()}>Keep my version</button></>
         : <button type="button" className="text-button" onClick={() => void flush()}>Try again</button>}</p>}
 
-    <div className="muse-vision-toolbar muse-scroll-fade" role="toolbar" aria-label="Add to the board">
+    <div className="muse-vision-toolbar muse-vision-dock muse-scroll-fade" role="toolbar" aria-label="Studio tools">
       <button type="button" className="muse-button button-primary" disabled={uploading} onClick={() => fileRef.current?.click()}><MuseIcon name="plus" size={14} /> Photos</button>
       <input ref={fileRef} type="file" accept="image/png,image/jpeg,image/webp,image/gif" multiple hidden onChange={(e) => { const f = Array.from(e.target.files ?? []); e.target.value = ""; void addFiles(f); }} />
       <input ref={patternFileRef} type="file" accept="image/png,image/jpeg,image/webp" hidden onChange={(e) => { const f = e.target.files?.[0]; e.target.value = ""; void uploadPattern(f); }} />

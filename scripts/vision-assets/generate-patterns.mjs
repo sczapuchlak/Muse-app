@@ -497,7 +497,100 @@ washi("whimsical", "rainbow-stripe-tape", "Rainbow stripes", ["rainbow", "stripe
 washi("whimsical", "daisy-tape", "Happy daisies", ["daisy", "flowers"], "#bfe3f5", T(72, 104, at(72, 104, 22, 34, 14, daisy("#ffffff", "#f6c453", 10, 13)) + at(72, 104, 56, 76, 12, daisy("#ffe0ec", "#f6c453", 9, 10))));
 washi("whimsical", "cherry-tape", "Cherries", ["cherry", "fruit"], "#fff0f3", T(64, 104, at(64, 104, 32, 52, 16, cherry("#e0313f", "#6b8e3d", "#7cb259"), 10, 1.1)));
 washi("whimsical", "confetti-tape", "Confetti", ["confetti", "party"], "#fff8e8", T(60, 104, scatter(60, 104, 12, 14, 5).map((q, i) => at(60, 104, q.x, q.y, 5, `<rect x="-3.5" y="-1.1" width="7" height="2.2" rx="1.1" fill="${["#ff6b9a", "#ffc94d", "#5ad1c7", "#8f7bff"][i % 4]}"/>`, q.a * 180)).join("")));
-for (const t of tapes) t.svg = t.svg.replace("<defs>", `<defs><linearGradient id="holo" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffc6ec"/><stop offset=".3" stop-color="#c9b8ff"/><stop offset=".55" stop-color="#a8f0ff"/><stop offset=".8" stop-color="#c8ffe4"/><stop offset="1" stop-color="#ffe2c4"/></linearGradient>`);
+washi("celestial", "aurora-tape", "Aurora", ["aurora", "dreamy"], "url(#aur)", T(60, 104, at(60, 104, 30, 52, 8, sparkle("#ffffff", 0.45))), { opacity: 0.9 });
+washi("girly", "lavender-gingham-tape", "Lavender gingham", ["gingham", "lavender"], "#efe6fb", T(28, 28, `<rect width="14" height="28" fill="#b9a0ea" opacity=".45"/><rect width="28" height="14" fill="#b9a0ea" opacity=".45"/>`));
+washi("whimsical", "glitter-tape", "Gold glitter", ["glitter", "gold", "sparkle"], "#fbe3e9", T(60, 104, scatter(60, 104, 22, 8, 9).map((q) => `<circle cx="${f(q.x)}" cy="${f(q.y)}" r="${f(0.8 + q.a * 1.6)}" fill="${q.b > 0.4 ? "#e2b04a" : "#fff6d6"}"/>`).join("") + at(60, 104, 30, 52, 7, sparkle("#e2b04a", 0.35))));
+for (const t of tapes) t.svg = t.svg.replace("<defs>", `<defs><linearGradient id="aur" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#8ef0d0"/><stop offset=".4" stop-color="#9fb8ff"/><stop offset=".75" stop-color="#e3a6ff"/><stop offset="1" stop-color="#ffb3d1"/></linearGradient><linearGradient id="holo" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffc6ec"/><stop offset=".3" stop-color="#c9b8ff"/><stop offset=".55" stop-color="#a8f0ff"/><stop offset=".8" stop-color="#c8ffe4"/><stop offset="1" stop-color="#ffe2c4"/></linearGradient>`);
+
+// ---------- Sparkle stickers (transparent, so die-cut edges follow them) ----------
+const sparkles = [];
+const stk = (cat, name, label, tags, W, H, body, defs = "") => sparkles.push({ cat, name, label, tags, svg: svg(W, H, "", body, defs) });
+const GOLD = `<linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff1b8"/><stop offset=".45" stop-color="#e8b84e"/><stop offset=".7" stop-color="#ffe7a0"/><stop offset="1" stop-color="#c8902c"/></linearGradient>`;
+const HOLO = `<linearGradient id="h" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffc6ec"/><stop offset=".3" stop-color="#c9b8ff"/><stop offset=".55" stop-color="#a8f0ff"/><stop offset=".8" stop-color="#c8ffe4"/><stop offset="1" stop-color="#ffe2c4"/></linearGradient>`;
+stk("sparkles", "gold-sparkle-cluster", "Gold sparkle cluster", ["sparkle", "gold", "magic"], 400, 400, `<g transform="translate(180 210) scale(14)">${sparkle("url(#g)")}</g><g transform="translate(310 110) scale(6)">${sparkle("url(#g)")}</g><g transform="translate(320 300) scale(4.2)">${sparkle("url(#g)")}</g><circle cx="90" cy="90" r="9" fill="url(#g)"/>`, GOLD);
+stk("sparkles", "twinkle-trio", "Twinkle trio", ["twinkle", "stars", "pastel"], 420, 300, `<g transform="translate(110 170) scale(9)">${sparkle("#ffd6ec")}</g><g transform="translate(250 110) scale(7)">${sparkle("#c9b8ff")}</g><g transform="translate(340 210) scale(5.5)">${sparkle("#a8f0ff")}</g>`);
+stk("sparkles", "holo-heart", "Holographic heart", ["heart", "holographic", "love"], 400, 380, `<g transform="translate(200 220) scale(17)">${heart("url(#h)")}</g><path d="M120 120Q150 90 190 100" stroke="#ffffff" stroke-width="16" stroke-linecap="round" fill="none" opacity=".8"/><g transform="translate(320 90) scale(4)">${sparkle("#ffffff")}</g>`, HOLO);
+stk("sparkles", "shooting-star", "Shooting star", ["shooting star", "wish", "gold"], 520, 300, `<path d="M40 250Q200 150 330 120" stroke="url(#h)" stroke-width="26" stroke-linecap="round" fill="none" opacity=".85"/><path d="M90 250Q220 170 330 135" stroke="#ffffff" stroke-width="6" stroke-linecap="round" fill="none" opacity=".7"/><g transform="translate(390 110)">${star5("url(#g)", 70, 0.48)}</g>`, GOLD + HOLO);
+stk("sparkles", "glitter-moon", "Glitter moon", ["moon", "crescent", "night"], 380, 400, `<g transform="translate(170 200)">${crescent("url(#g)", 150)}</g>${[[300, 90, 5], [320, 260, 3.5], [250, 340, 2.8]].map(([x, y, sc]) => `<g transform="translate(${x} ${y}) scale(${sc})">${sparkle("#fff3c4")}</g>`).join("")}`, GOLD);
+stk("sparkles", "starburst-badge", "Starburst badge", ["badge", "starburst", "retro"], 400, 400, `<g transform="translate(200 200)">${Array.from({ length: 24 }, (_, i) => `<path d="M0 -190 22 -150H-22Z" fill="#ff8fb1" transform="rotate(${i * 15})"/>`).join("")}<circle r="152" fill="#ff8fb1"/><circle r="132" fill="none" stroke="#ffffff" stroke-width="5" stroke-dasharray="2 12" stroke-linecap="round"/><g transform="scale(9)">${sparkle("#ffffff")}</g></g>`);
+stk("sparkles", "sparkle-bow", "Sparkle bow", ["bow", "coquette", "sparkle"], 420, 360, `<g transform="translate(210 170) scale(13)">${bow("url(#h)", "#f6a8c8")}</g><g transform="translate(70 70) scale(4)">${sparkle("#ffffff")}</g><g transform="translate(360 280) scale(3.4)">${sparkle("#ffffff")}</g>`, HOLO);
+stk("sparkles", "dreamy-cloud", "Dreamy cloud", ["cloud", "dreamy", "sky"], 480, 320, `<g transform="translate(240 190) scale(17)">${cloud("#ffffff")}</g><g transform="translate(240 190) scale(16)">${cloud("url(#h)")}</g><g transform="translate(120 70) scale(4.5)">${sparkle("#c9b8ff")}</g><g transform="translate(400 80) scale(3.5)">${sparkle("#ffc6ec")}</g>`, HOLO);
+for (const t of sparkles) {
+  const dir = join(root, "assets-src/vision/sticker", t.cat); mkdirSync(dir, { recursive: true });
+  writeFileSync(join(dir, `${t.name}.svg`), t.svg);
+  writeFileSync(join(dir, `${t.name}.json`), JSON.stringify({ label: t.label, tags: t.tags }) + "\n");
+}
+console.log(`Wrote ${sparkles.length} sparkle stickers.`);
+
+// ---------- Frames (each has a see-through window: put a photo behind it) ----------
+const frames = [];
+const rr = (x, y, w, h, r) => `M${x + r} ${y}H${x + w - r}A${r} ${r} 0 0 1 ${x + w} ${y + r}V${y + h - r}A${r} ${r} 0 0 1 ${x + w - r} ${y + h}H${x + r}A${r} ${r} 0 0 1 ${x} ${y + h - r}V${y + r}A${r} ${r} 0 0 1 ${x + r} ${y}Z`;
+const FONT = `font-family="Helvetica, Arial, sans-serif"`;
+/** `win` is the photo window [x, y, w, h] in the frame's pixels (stored normalised, so "Add a photo inside" can fit a photo exactly). */
+function frame(cat, name, label, tags, W, H, body, defs = "", win) { frames.push({ cat, name, label, tags, svg: svg(W, H, "", body, defs), window: win && win.map((v, i) => +(v / (i % 2 ? H : W)).toFixed(4)) }); }
+// Now playing: a dreamy music card (album-art window, your song goes on top as text).
+frame("music", "now-playing", "Now playing", ["music", "song", "player"], 600, 840,
+  `<path fill-rule="evenodd" d="${rr(0, 0, 600, 840, 44)}${rr(60, 60, 480, 480, 22)}" fill="url(#np)"/>` +
+  `<rect x="60" y="590" width="300" height="26" rx="13" fill="#ffffff" opacity=".9"/><rect x="60" y="632" width="200" height="18" rx="9" fill="#ffffff" opacity=".55"/>` +
+  `<path d="M512 590c-10-16-38-8-28 14l28 24 28-24c10-22-18-30-28-14z" fill="#ffffff" opacity=".9"/>` +
+  `<rect x="60" y="682" width="480" height="8" rx="4" fill="#ffffff" opacity=".35"/><rect x="60" y="682" width="190" height="8" rx="4" fill="#ffffff"/><circle cx="250" cy="686" r="11" fill="#ffffff"/>` +
+  `<text x="60" y="718" ${FONT} font-size="18" fill="#ffffff" opacity=".7">1:24</text><text x="540" y="718" ${FONT} font-size="18" fill="#ffffff" opacity=".7" text-anchor="end">3:47</text>` +
+  `<path d="M200 752v40l-26-20zM196 752h-8v40h8z" fill="#ffffff" transform="translate(-14 0)"/><circle cx="300" cy="772" r="38" fill="#ffffff"/><path d="M290 754v36l30-18z" fill="#c7a4ff"/><path d="M400 752v40l26-20zM404 752h8v40h-8z" fill="#ffffff" transform="translate(14 0)"/>`,
+  `<linearGradient id="np" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c7a4ff"/><stop offset=".55" stop-color="#f49ac2"/><stop offset="1" stop-color="#ffc6a5"/></linearGradient>`, [60, 60, 480, 480]);
+// Vinyl sleeve: your photo is the album cover; the record peeks out.
+frame("music", "vinyl-sleeve", "Vinyl sleeve", ["vinyl", "record", "album"], 860, 600,
+  `<g clip-path="url(#peek)"><circle cx="560" cy="300" r="280" fill="#141218"/>${[250, 220, 190, 160, 130].map((r) => `<circle cx="560" cy="300" r="${r}" fill="none" stroke="#2c2833" stroke-width="2"/>`).join("")}<circle cx="560" cy="300" r="78" fill="#f49ac2"/><circle cx="560" cy="300" r="8" fill="#141218"/><path d="M420 120A240 240 0 0 1 700 130" fill="none" stroke="#ffffff" stroke-width="6" opacity=".12"/></g>` +
+  `<path fill-rule="evenodd" d="M0 0H600V600H0Z M24 24V576H576V24Z" fill="#f5efe6"/><path d="M0 0H600V600H0Z" fill="none" stroke="#e2d6c4" stroke-width="2"/>`, `<clipPath id="peek"><rect x="600" y="0" width="260" height="600"/></clipPath>`, [24, 24, 552, 552]);
+// Cassette: your photo sits on the label.
+frame("music", "cassette", "Mixtape cassette", ["cassette", "mixtape", "retro"], 800, 520,
+  `<path fill-rule="evenodd" d="${rr(0, 0, 800, 520, 34)}M70 60H730V250H70Z" fill="#2d2a38"/>` +
+  `<rect x="200" y="290" width="400" height="120" rx="60" fill="#1b1922"/><circle cx="300" cy="350" r="44" fill="#f2efe9"/><circle cx="500" cy="350" r="44" fill="#f2efe9"/>${[300, 500].map((cx) => [0, 60, 120, 180, 240, 300].map((a) => `<path d="M${cx} 350v-34" stroke="#2d2a38" stroke-width="7" stroke-linecap="round" transform="rotate(${a} ${cx} 350)"/>`).join("")).join("")}<circle cx="300" cy="350" r="12" fill="#2d2a38"/><circle cx="500" cy="350" r="12" fill="#2d2a38"/>` +
+  `<path d="M160 520 200 450H600L640 520Z" fill="#3b3748"/>${[230, 330, 470, 570].map((x) => `<circle cx="${x}" cy="490" r="9" fill="#1b1922"/>`).join("")}<rect x="70" y="250" width="660" height="22" fill="#f49ac2"/><text x="90" y="267" ${FONT} font-size="16" font-weight="700" fill="#2d2a38">SIDE A</text>`, "", [70, 60, 660, 190]);
+// Film strip with three frames.
+frame("film", "film-strip", "Film strip", ["film", "35mm", "cinema"], 1000, 380,
+  `<path fill-rule="evenodd" d="M0 0H1000V380H0Z ${[0, 1, 2].map((i) => `M${40 + i * 320} 70H${280 + i * 320}V310H${40 + i * 320}Z`).join(" ")} ${Array.from({ length: 20 }, (_, i) => `${rr(14 + i * 50, 18, 26, 30, 5)}${rr(14 + i * 50, 332, 26, 30, 5)}`).join("")}" fill="#17151d"/><text x="40" y="60" ${FONT} font-size="15" fill="#f2b54a" letter-spacing="3">MUSE 400  ▸ 12A</text><text x="960" y="352" ${FONT} font-size="15" fill="#f2b54a" text-anchor="end" letter-spacing="3">13 ▸ 14A</text>`, "", [40, 70, 240, 240]);
+// Photo-booth strip.
+frame("film", "photo-booth", "Photo-booth strip", ["photo booth", "strip", "four"], 400, 1240,
+  `<path fill-rule="evenodd" d="M0 0H400V1240H0Z ${[0, 1, 2, 3].map((i) => `M34 ${34 + i * 280}H366V${284 + i * 280}H34Z`).join(" ")}" fill="#fffdf8"/><text x="200" y="1210" ${FONT} font-size="22" fill="#b58ba0" text-anchor="middle" letter-spacing="6">♥ FOREVER ♥</text>`, "", [34, 34, 332, 250]);
+// Phone lockscreen.
+frame("trendy", "phone-lockscreen", "Phone lockscreen", ["phone", "lockscreen", "wallpaper"], 620, 1240,
+  `<path fill-rule="evenodd" d="${rr(0, 0, 620, 1240, 96)}${rr(26, 26, 568, 1188, 74)}" fill="#1c1a22"/><rect x="230" y="50" width="160" height="40" rx="20" fill="#1c1a22"/>` +
+  `<text x="310" y="168" ${FONT} font-size="30" fill="#ffffff" text-anchor="middle" opacity=".9">Friday, June 12</text><text x="310" y="320" ${FONT} font-size="150" font-weight="300" fill="#ffffff" text-anchor="middle" opacity=".95">9:27</text>` +
+  `<rect x="220" y="1170" width="180" height="10" rx="5" fill="#ffffff" opacity=".85"/><circle cx="110" cy="1080" r="40" fill="#ffffff" opacity=".2"/><circle cx="510" cy="1080" r="40" fill="#ffffff" opacity=".2"/>`, "", [26, 26, 568, 1188]);
+// Concert ticket stub.
+frame("trendy", "ticket-stub", "Concert ticket", ["ticket", "concert", "admit one"], 1000, 420,
+  `<path fill-rule="evenodd" d="M0 0H1000V170A40 40 0 0 0 1000 250V420H0V250A40 40 0 0 0 0 170Z M40 40H600V380H40Z" fill="#fbe8ef"/><path d="M700 30V390" stroke="#d98aa8" stroke-width="3" stroke-dasharray="10 10"/>` +
+  `<text x="850" y="120" ${FONT} font-size="30" font-weight="800" fill="#c2537d" text-anchor="middle" letter-spacing="4">ADMIT</text><text x="850" y="170" ${FONT} font-size="30" font-weight="800" fill="#c2537d" text-anchor="middle" letter-spacing="4">ONE</text>` +
+  `<text x="850" y="250" ${FONT} font-size="20" fill="#c2537d" text-anchor="middle">ROW  B · SEAT 7</text>${Array.from({ length: 22 }, (_, i) => `<rect x="${742 + i * 9}" y="300" width="${i % 3 ? 3 : 6}" height="60" fill="#c2537d"/>`).join("")}`, "", [40, 40, 560, 340]);
+// Magazine cover.
+frame("trendy", "magazine-cover", "Magazine cover", ["magazine", "cover", "editorial"], 820, 1080,
+  `<path fill-rule="evenodd" d="M0 0H820V1080H0Z M18 18V1062H802V18Z" fill="#ffffff"/><text x="410" y="190" font-family="Georgia, 'Times New Roman', serif" font-size="200" font-weight="700" fill="#ffffff" text-anchor="middle" letter-spacing="12" stroke="#1d1d1f" stroke-width="2">MUSE</text>` +
+  `<text x="52" y="880" font-family="Georgia, serif" font-size="56" font-style="italic" fill="#ffffff">the dream issue</text><text x="52" y="930" ${FONT} font-size="22" fill="#ffffff" letter-spacing="5">BECOMING HER · 2027</text>` +
+  `<rect x="660" y="940" width="120" height="90" fill="#ffffff"/>${Array.from({ length: 24 }, (_, i) => `<rect x="${668 + i * 4.6}" y="948" width="${i % 3 ? 2 : 3.4}" height="62" fill="#1d1d1f"/>`).join("")}`, "", [18, 18, 784, 1044]);
+// CD jewel case.
+frame("music", "cd-case", "CD case", ["cd", "y2k", "album"], 720, 640,
+  `<path fill-rule="evenodd" d="${rr(0, 0, 720, 640, 14)}M84 34H686V606H84Z" fill="#dfe4ee" opacity=".92"/><rect x="0" y="0" width="70" height="640" rx="14" fill="#c4cad8"/>${[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => `<rect x="18" y="${40 + i * 58}" width="34" height="34" rx="4" fill="#aeb5c6"/>`).join("")}<path d="M84 34 686 34 400 240Z" fill="#ffffff" opacity=".2"/>`, "", [84, 34, 602, 572]);
+// Postage stamp.
+frame("trendy", "postage-stamp", "Postage stamp", ["stamp", "postal", "travel"], 600, 720,
+  `<path fill-rule="evenodd" d="M0 0H600V720H0Z ${Array.from({ length: 15 }, (_, i) => `M${20 + i * 40} 0a20 20 0 0 0 40 0M${20 + i * 40} 720a20 20 0 0 1 40 0`).join(" ")} ${Array.from({ length: 18 }, (_, i) => `M0 ${20 + i * 40}a20 20 0 0 1 0 40M600 ${20 + i * 40}a20 20 0 0 0 0 40`).join(" ")} M60 60H540V580H60Z" fill="#fffaf2"/><text x="300" y="650" font-family="Georgia, serif" font-size="40" font-style="italic" fill="#b0566f" text-anchor="middle">Paris · 2€</text>`, "", [60, 60, 480, 520]);
+// Gilded gallery frame.
+frame("gallery", "gilded-frame", "Gilded gallery frame", ["gold", "gallery", "ornate"], 700, 860,
+  `<path fill-rule="evenodd" d="M0 0H700V860H0Z M90 90V770H610V90Z" fill="url(#gold)"/><path d="M20 20H680V840H20Z M70 70H630V790H70Z" fill="none" stroke="#8a6a24" stroke-width="3"/>${[[45, 45], [655, 45], [45, 815], [655, 815]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="14" fill="#f7e3a3" stroke="#8a6a24" stroke-width="2"/>`).join("")}<path d="M90 90H610V770H90Z" fill="none" stroke="#5c4514" stroke-width="6"/>`,
+  `<linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f7e3a3"/><stop offset=".35" stop-color="#d4a94c"/><stop offset=".55" stop-color="#f3d98c"/><stop offset=".8" stop-color="#b08530"/><stop offset="1" stop-color="#e8c873"/></linearGradient>`, [90, 90, 520, 680]);
+// Heart frame.
+frame("gallery", "heart-frame", "Heart frame", ["heart", "love", "romantic"], 700, 640,
+  `<path fill-rule="evenodd" d="${rr(0, 0, 700, 640, 40)} M350 560C150 430 70 330 70 230 70 140 140 80 220 80 280 80 330 115 350 160 370 115 420 80 480 80 560 80 630 140 630 230 630 330 550 430 350 560Z" fill="#f7c6d6"/>${Array.from({ length: 16 }, (_, i) => `<circle cx="${40 + i * 41}" cy="22" r="6" fill="#ffffff" opacity=".8"/><circle cx="${40 + i * 41}" cy="618" r="6" fill="#ffffff" opacity=".8"/>`).join("")}`, "", [70, 80, 560, 480]);
+// Social-style photo post (generic, no app branding).
+frame("trendy", "photo-post", "Photo post", ["post", "social", "likes"], 640, 820,
+  `<path fill-rule="evenodd" d="${rr(0, 0, 640, 820, 30)}M0 90H640V730H0Z" fill="#ffffff"/><circle cx="50" cy="45" r="24" fill="url(#ring)"/><circle cx="50" cy="45" r="19" fill="#f3e6ff"/><rect x="90" y="32" width="150" height="14" rx="7" fill="#2a2135"/><rect x="90" y="54" width="90" height="10" rx="5" fill="#b9aec7"/>` +
+  `<path d="M60 760c-8-13-30-6-22 11l22 19 22-19c8-17-14-24-22-11z" fill="#ff4f8b"/><path d="M110 752h40a8 8 0 0 1 8 8v20a8 8 0 0 1-8 8h-22l-14 12v-12h-4a8 8 0 0 1-8-8v-20a8 8 0 0 1 8-8z" fill="none" stroke="#2a2135" stroke-width="4"/><path d="M590 752v40l-16-12-16 12v-40z" fill="none" stroke="#2a2135" stroke-width="4"/><text x="40" y="812" ${FONT} font-size="18" font-weight="700" fill="#2a2135">2,027 likes</text>`,
+  `<linearGradient id="ring" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#ffb36b"/><stop offset=".5" stop-color="#ff4f8b"/><stop offset="1" stop-color="#a15cff"/></linearGradient>`, [0, 90, 640, 640]);
+for (const fr of frames) {
+  const dir = join(root, "assets-src/vision/frame", fr.cat); mkdirSync(dir, { recursive: true });
+  writeFileSync(join(dir, `${fr.name}.svg`), fr.svg);
+  writeFileSync(join(dir, `${fr.name}.json`), JSON.stringify({ label: fr.label, tags: fr.tags, ...(fr.window ? { window: fr.window } : {}) }) + "\n");
+}
+console.log(`Wrote ${frames.length} frames.`);
 
 // ---------- Write ----------
 for (const p of out) {

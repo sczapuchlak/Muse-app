@@ -111,6 +111,8 @@ function UploadThumb({ asset }: { asset: Asset }) {
 }
 
 // ---------- The reader ----------
+/** A fixed little starfield for the reading room (deterministic, so it never jumps between renders). */
+const STARS: [number, number, number, number][] = Array.from({ length: 46 }, (_, i) => { const r = (n: number) => ((Math.sin(i * 127.1 + n * 311.7) * 43758.5453) % 1 + 1) % 1; return [r(1) * 100, r(2) * 100, 1 + r(3) * 2.4, r(4) * 6]; });
 /**
  * Reading a finished Book: the cover first, then two-page spreads on wide screens (single pages on narrow ones), with
  * a gentle page-turn (none with reduced motion), Contents to jump anywhere, and arrow keys. Nothing here edits.
@@ -133,6 +135,7 @@ export function BookReader({ board, startAt = -1, onClose }: { board: VisionBoar
   const draw = (p: number) => p < 0 ? { size: board.size, canvas: board.canvas, ...cover } : pageBoard(board, pages[p]);
   const label = (p: number) => (p < 0 ? "Cover" : pages[p]?.title ?? `Page ${p + 1}`);
   return createPortal(<div className="muse-reader" role="dialog" aria-modal="true" aria-label={`Reading ${board.title}`}>
+    <div className="muse-reader-sky" aria-hidden="true">{STARS.map(([x, y, r, d], i) => <i key={i} style={{ left: `${x}%`, top: `${y}%`, width: r, height: r, animationDelay: `${d}s` }} />)}</div>
     <header className="muse-reader-head">
       <button ref={close} type="button" className="muse-button" onClick={onClose}><span aria-hidden="true">‹</span> Back to editing</button>
       <h2>{board.title}</h2>
@@ -151,7 +154,8 @@ export function BookReader({ board, startAt = -1, onClose }: { board: VisionBoar
       <div key={at} className="muse-reader-spread" data-dir={dir > 0 ? "next" : "prev"} data-two={two || undefined} style={{ "--page-w": `${pw}px` } as CSSProperties}>
         {wide && sheet[0] === -1 && <div className="muse-reader-page muse-reader-blank" aria-hidden="true" style={{ width: pw, height: Math.floor(page.h * scale) }} />}
         {sheet.map((p, k) => <figure key={p} className="muse-reader-page" data-side={wide ? (sheet[0] === -1 ? "right" : k === 0 ? "left" : "right") : undefined} data-cover={p < 0 || undefined}>
-          <BoardPreview board={draw(p)} width={pw} quality="auto" /><figcaption className="sr-only">{label(p)}</figcaption></figure>)}
+          <BoardPreview board={draw(p)} width={pw} quality="auto" /><figcaption className="sr-only">{label(p)}</figcaption>
+          {p >= 0 && <span className="muse-reader-folio" aria-hidden="true">{(wide ? (k === 0 && sheet.length === 2) : false) ? <em>{board.title}</em> : <em>{pages[p]?.title}</em>}<b>{p + 1}</b></span>}</figure>)}
       </div>
       <button type="button" className="muse-reader-turn" aria-label="Next page" disabled={at >= sheets.length - 1} onClick={() => turn(1)}>›</button>
     </div>

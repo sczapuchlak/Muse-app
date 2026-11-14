@@ -245,7 +245,9 @@ function BoardBackground({ bg, w, h, quality, editing }: { bg: Background; w: nu
   const path = usePath(`M0 0H${w}V${h}H0Z`);
   const fill: Paint = bg.kind === "solid" ? solid(bg.color) : bg.kind === "gradient" ? { kind: "gradient", gradient: bg.gradient } : bg.paint;
   return <>
-    {editing && <Rect width={w} height={h} fill="#ffffff" shadowColor="#000" shadowBlur={30} shadowOpacity={0.18} shadowOffset={{ x: 0, y: 6 }} listening={false} />}
+    {/* On the studio desk the board lifts like a real sheet: a wide soft shadow plus a tight contact shadow. */}
+    {editing && <Rect width={w} height={h} fill="#ffffff" shadowColor="#2a1838" shadowBlur={Math.max(w, h) * 0.05} shadowOpacity={0.22} shadowOffset={{ x: 0, y: Math.max(w, h) * 0.018 }} listening={false} />}
+    {editing && <Rect width={w} height={h} fill="#ffffff" shadowColor="#1b1027" shadowBlur={Math.max(w, h) * 0.008} shadowOpacity={0.18} shadowOffset={{ x: 0, y: Math.max(w, h) * 0.002 }} listening={false} />}
     <PaintedPath name="board-bg" path={path} w={w} h={h} fill={fill} quality={quality} />
   </>;
 }
@@ -448,14 +450,21 @@ export function BoardEditorStage({ board, width, height, editing, stageRef }: { 
     </Layer>
   </Stage>;
 }
+/** The desk around the board: a veil that quietly fades pieces resting off the board, matched to light or dark themes. */
+function deskVeil(): string {
+  if (typeof document === "undefined") return "rgba(250,247,253,0.6)";
+  const fg = getComputedStyle(document.documentElement).getPropertyValue("--foreground").trim(), m = fg.match(/^#([0-9a-f]{6})$/i);
+  const lum = m ? [0, 2, 4].reduce((a, i) => a + parseInt(m[1].slice(i, i + 2), 16), 0) / 3 : 40;
+  return lum > 140 ? "rgba(16,12,26,0.5)" : "rgba(250,247,253,0.62)";
+}
 function Pasteboard({ w, h, scale }: { w: number; h: number; scale: number }): ReactNode {
-  const F = 40000, fill = "rgba(18,12,30,0.45)";
+  const F = 40000, fill = useMemo(() => deskVeil(), []);
   return <>
     <Rect x={-F} y={-F} width={F * 2 + w} height={F} fill={fill} />
     <Rect x={-F} y={h} width={F * 2 + w} height={F} fill={fill} />
     <Rect x={-F} y={0} width={F} height={h} fill={fill} />
     <Rect x={w} y={0} width={F} height={h} fill={fill} />
-    <Rect x={0} y={0} width={w} height={h} stroke="rgba(255,255,255,0.6)" strokeWidth={1 / scale} />
+    <Rect x={0} y={0} width={w} height={h} stroke="rgba(255,255,255,0.7)" strokeWidth={1 / scale} listening={false} />
   </>;
 }
 

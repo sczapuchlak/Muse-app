@@ -71,7 +71,7 @@ export function BoardDetails({ initial, today, busy, error, onSave, onClose }: {
       {isNew && <>
         {format === "book" && <fieldset><legend>Cover</legend>
           <ul className="muse-cover-presets muse-cover-presets-new" aria-label="Cover styles">{coverPresets.map((p) => <li key={p}><button type="button" aria-pressed={preset === p} onClick={() => setPreset(p)}>
-            <span className="muse-cover-mini"><LazyPreview board={{ size: b.size, canvas: b.canvas, ...coverBoard({ preset: p, title: b.title.trim() || "Your Title", palette: 0 }, canvasOf(b)) }} /></span>
+            <span className="muse-cover-mini" style={{ aspectRatio: String(canvasOf(b).w / canvasOf(b).h) }}><LazyPreview board={{ size: b.size, canvas: b.canvas, ...coverBoard({ preset: p, title: b.title.trim() || "Your Title", palette: 0 }, canvasOf(b)) }} /></span>
             <span className="muse-cover-name">{coverPresetInfo[p].label}</span></button></li>)}</ul>
           <p className="small-label">{coverPresetInfo[preset].blurb}. Change the cover, its colors, words and image any time.</p>
         </fieldset>}
