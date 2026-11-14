@@ -264,6 +264,10 @@ type Editing = {
   snapping: boolean; selectMode: boolean; reducedMotion: boolean;
   /** Double-click or double-tap a piece: open its controls (text goes straight to its words). */
   onEdit?: (id: string) => void;
+  /** A right-click landed on this piece (the editor's context menu reads it). */
+  onContextTarget?: (id: string) => void;
+  /** A piece being written in place (drawn by the editor's text box instead, so it isn't doubled). */
+  hiddenId?: string;
 };
 const reduced = () => typeof window !== "undefined" && (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches || document.documentElement.dataset.magic === "quiet");
 
@@ -356,7 +360,8 @@ export function BoardEditorStage({ board, width, height, editing, stageRef }: { 
       const sx = Math.abs(n.scaleX()), sy = Math.abs(n.scaleY());
       n.scaleX(1); n.scaleY(1);
       const base = { x: Math.round(n.x()), y: Math.round(n.y()), rotation: Math.round(n.rotation() * 10) / 10 };
-      if (e.kind === "text") { const size = Math.min(400, Math.max(8, Math.round(e.size * sy * 10) / 10)), w = Math.max(40, Math.round(e.w * sx)); patches.push({ id: e.id, patch: { ...base, size, w, h: measureText({ ...e, size, w }) } as Partial<TextElement> }); }
+      // Paragraphs reflow: resizing changes the column width, never the type size.
+      if (e.kind === "text") { const size = e.role === "p" ? e.size : Math.min(400, Math.max(8, Math.round(e.size * sy * 10) / 10)), w = Math.max(40, Math.round(e.w * sx)); patches.push({ id: e.id, patch: { ...base, size, w, h: measureText({ ...e, size, w }) } as Partial<TextElement> }); }
       else patches.push({ id: e.id, patch: { ...base, w: Math.max(12, Math.round(e.w * sx)), h: Math.max(12, Math.round(e.h * sy)) } });
     }
     onChangeMany(patches, `transform:${Date.now()}`);
@@ -423,8 +428,9 @@ export function BoardEditorStage({ board, width, height, editing, stageRef }: { 
         onTap={() => { if (selectMode) pick(e.id, true); else if (!selectedIds.includes(e.id)) pick(e.id, false); }}
         onDblClick={() => { if (e.groupId && selectedIds.length > 1) onSelect([e.id], "only"); else editing.onEdit?.(e.id); }} onDblTap={() => { if (e.groupId && selectedIds.length > 1) onSelect([e.id], "only"); else editing.onEdit?.(e.id); }}
         onDragStart={() => { if (!selectedIds.includes(e.id)) pick(e.id, false); beginDrag(e.id); }}
-        onDragEnd={endDrag}>
-        <ElementBody e={e} pixelScale={view.scale * dpr} quality="auto" phase={phase} />
+        onDragEnd={endDrag} onContextMenu={() => editing.onContextTarget?.(e.id)}>
+        {editing.hiddenId !== e.id && <ElementBody e={e} pixelScale={view.scale * dpr} quality="auto" phase={phase} />}
+        {editing.hiddenId === e.id && <Rect width={e.w} height={e.h} fill="transparent" />}
       </Group>)}
       <Transformer ref={tr} rotateEnabled keepRatio={keepRatio} flipEnabled={false} ignoreStroke shouldOverdrawWholeArea={selected.length > 1}
         enabledAnchors={keepRatio ? ["top-left", "top-right", "bottom-left", "bottom-right"] : ["top-left", "top-center", "top-right", "middle-right", "middle-left", "bottom-left", "bottom-center", "bottom-right"]}

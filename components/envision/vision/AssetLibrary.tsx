@@ -59,7 +59,7 @@ export function AssetLibrary({ onPick }: { onPick: (p: LibraryPick) => void }) {
     {tab === "doodles" && <>
       <section className="muse-asset-section"><p className="editor-label">Doodles</p>
         <ul className="muse-asset-grid muse-asset-grid-small" aria-label="Doodles">{stickers.filter((s) => shapeMatch(s.label)).map((s) => <li key={s.id}><button type="button" className="muse-asset-tile" aria-label={`Add ${s.label}`} title={s.label} onClick={() => onPick({ kind: "sticker", id: s.id })}>
-          <svg viewBox={`0 0 ${s.box[0]} ${s.box[1]}`} aria-hidden="true"><path d={s.d} {...(s.mode === "fill" ? { fill: "currentColor" } : { fill: "none", stroke: "currentColor", strokeWidth: 2.2, strokeLinecap: "round" as const, strokeLinejoin: "round" as const })} /></svg></button></li>)}</ul></section>
+          <svg className="muse-doodle" viewBox={`0 0 ${s.box[0]} ${s.box[1]}`} aria-hidden="true"><path d={s.d} {...(s.mode === "fill" ? { fill: "currentColor" } : { fill: "none", stroke: "currentColor", strokeWidth: 2.2, strokeLinecap: "round" as const, strokeLinejoin: "round" as const })} /></svg></button></li>)}</ul></section>
       <section className="muse-asset-section"><p className="editor-label">Muse Marks</p>
         <ul className="muse-asset-grid muse-asset-grid-small" aria-label="Muse Marks">{markStickers.filter((m) => shapeMatch(m.label)).map((m) => <li key={m.id}><button type="button" className="muse-asset-tile" aria-label={`Add ${m.label} mark`} title={m.label} onClick={() => onPick({ kind: "sticker", id: m.id })}><MuseIcon name={m.icon as never} size={22} /></button></li>)}</ul></section>
     </>}

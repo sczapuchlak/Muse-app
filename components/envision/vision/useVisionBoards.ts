@@ -20,12 +20,12 @@ export function useVisionBoards() {
   const reload = useCallback(async () => {
     try {
       const { data, error } = await client.auth.getUser();
-      if (error || !data.user) throw error ?? Error("Sign in to see your vision boards.");
+      if (error || !data.user) throw error ?? Error("Sign in to see your Visions.");
       setUserId(data.user.id);
       setBoards(await loadBoards(client));
       setStatus((s) => ({ ...s, loaded: true, error: "", unavailable: false }));
     } catch (e) {
-      setStatus((s) => ({ ...s, loaded: true, unavailable: missingTable(e), error: missingTable(e) ? "Vision Boards aren’t available on this server yet. Your aspirations and bucket list are unaffected." : e instanceof Error ? e.message : "Your vision boards couldn’t load." }));
+      setStatus((s) => ({ ...s, loaded: true, unavailable: missingTable(e), error: missingTable(e) ? "Visions aren’t available on this server yet. Your aspirations and bucket list are unaffected." : e instanceof Error ? e.message : "Your Visions couldn’t load." }));
     }
   }, [client]);
   useEffect(() => { const t = window.setTimeout(() => void reload(), 0); return () => window.clearTimeout(t); }, [reload]);

@@ -9,7 +9,7 @@ export const navigation: NavItem[] = [
   { id: "rituals", label: "Rituals", href: "/rituals", icon: "flame", group: "Everyday", description: "Small rhythms that make a day your own." },
   { id: "nourish", label: "Wellness", href: "/nourish", icon: "heart-pulse", group: "Everyday", description: "Take care of yourself. You've got places to be." },
   { id: "insights", label: "Insights", href: "/insights", icon: "chart", group: "Everyday", description: "A place to explore your patterns over time." },
-  { id: "envision", label: "Envision", href: "/envision", icon: "envision", group: "Life", description: "A home for the life you're imagining: aspirations, vision boards and your bucket list." },
+  { id: "envision", label: "Envision", href: "/envision", icon: "envision", group: "Life", description: "A home for the life you're imagining: aspirations, Visions (boards and books) and your bucket list." },
   { id: "money", label: "Money", href: "/money", icon: "money", group: "Life", description: "A calmer view of your everyday finances." },
   { id: "notes", label: "Mindspace", href: "/notes", icon: "brain", group: "Life", description: "Somewhere for the thoughts you want to keep." },
   { id: "collections", label: "Books", href: "/collections", icon: "bookshelf", group: "Life", description: "Your reading life: what you're reading, your library and your Atlas." },

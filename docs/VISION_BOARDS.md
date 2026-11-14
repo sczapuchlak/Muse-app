@@ -113,9 +113,63 @@ Implemented on `feat/vision-boards-2`. Staging acceptance is pending. The approv
 - **Editing text with the panel hidden.** The toolbar shows a **Style** dropdown (the same controls) whenever a piece is selected. Adding text opens it at the words, and double-clicking any piece opens its controls.
 - **Canvas area.** The editing area takes the board's own proportions at the available width, so a larger board gets a larger canvas. Phones keep it within the screen.
 
+## Visions: Vision Boards and Books
+
+Implemented on `feat/visions-books`. Staging acceptance is pending.
+
+The feature is called **Visions** in the product (the Envision tab). Routes, tables and ids keep their `vision-boards` / `vision_boards` names, and existing boards are unchanged.
+
+**Model.** One table, one editor. Migration `20261221000100_visions_books.sql`:
+- `format` is `board` (the default) or `book`.
+- A Book stores its **cover** (`cover` jsonb: preset, title, subtitle, caption, palette, title font, optional image and pattern) and **up to 8 content pages** (`pages` jsonb). Each page has an id, title, background and elements, in the same element model as boards.
+- Pages share the book's size (`size`/`canvas_*`). A Book's `elements` stays empty, so nothing is stored twice.
+- The `asset_paths` storage guard also covers `pages` and `cover`.
+- Constraints: a book always has pages, a board never does, and there are 1–8 pages.
+
+**Editing a Book** uses the same editor.
+- **The current page.** The page being edited is mirrored into the editor's board. Every change syncs back into `pages`, and undo snapshots include the page order and which page is open.
+- **Pages menu** (toolbar). The cover and the numbered pages, each with an editable title and a thumbnail. Pages can be opened, moved up or down, dragged to reorder, duplicated, or deleted with a confirmation. Add page is disabled at 8/8.
+- **Cover.** Choosing Cover shows the cover on the canvas and switches the side panel to cover controls: style, palette, title, subtitle, caption, title font, image and pattern.
+- **Spread.** On wide screens a Spread toggle shows the facing page (1–2, 3–4…) beside the editable one, with a soft spine. Clicking the facing page opens it.
+- **Page size.** Changing the size shifts every page's pieces together, so nothing moves on its page.
+
+**Covers.** There are five presets (Classic, Celestial, Romantic, Editorial, Whimsical), each with its own composition, type hierarchy, decoration and 3–4 palettes. They are generated in `lib/vision-boards/covers.ts` as locked board elements, so the library, editor, reader and PDF all draw the same cover.
+
+**Reader** (Read):
+- the cover first, then spreads on wide screens or single pages on narrow ones;
+- a gentle page-turn (none with reduced motion or Quiet magic);
+- Contents to jump to any named page;
+- arrow keys, and swipe on touch.
+
+**Library:**
+- a "Show" filter (All Visions / Vision Boards / Books);
+- Books appear as small physical books, with a spine, page edges and a shadow;
+- "New Vision" asks Board or Book, and for a Book, the cover and page shape.
+
+**Conversions:**
+- Board → Book: the board becomes page 1, in place and reversible.
+- One-page Book → Board: in place.
+- Multi-page Book → "Combine pages into one board": always a **new copy**. Pages are laid out side by side, wrapping into rows, with each background as an editable paper shape. Every piece keeps its position on its page. If the result would exceed the largest board (8000×8000) or 300 pieces, it explains instead and changes nothing.
+
+**Writing:**
+- The Text menu adds a Heading (H1), Subheading (H2), Section title (H3), Paragraph or plain Words. Each is ordinary text with every control (`role` on the element). Text can be up to 4000 characters.
+- Paragraphs wrap to their box; resizing changes the column width, never the type size.
+- Double-click any text, or add new text, to type right on the canvas: a text box laid exactly over the words. Pressing outside or Escape finishes.
+
+**Export:**
+- Images: the current page or the cover.
+- **Whole book (PDF):** the cover and every page in order, rendered at export resolution with images and fonts loaded first. It uses a tiny built-in PDF writer (`lib/vision-boards/pdf.ts`): one full-page JPEG per page, no dependency, no service.
+
+**Also in this round:**
+- **Right-click menu** on pieces: Style…, Edit words, copy, cut, paste, duplicate, copy and paste style, front and back, group, lock, delete. On empty space: paste, select all, and board size and background.
+- **One Paste on a Mac.** Safari confirms every script clipboard read with its own Paste bubble. Mac uses ⌘V (or right-click → Paste in browsers that allow it); the Paste button shows on touch devices only.
+- **Muse Marks** show in the Library again.
+- **Washi tape:** 12 new tapes (girly, celestial and whimsical).
+- **Journal & Stationery fills:** blank, wide-ruled, college-ruled, dot grid, square grid, graph, notebook, parchment, soft stationery and decorative writing paper.
+
 ## Tests
 
-- `tests/vision-boards.test.mjs` (model, crop math, layers, history, migration, integrations) and `tests/vision-studio.test.mjs` (#187: back-compat parsing, paints, new kinds, storage paths, shapes, canvas expansion, groups/align/distribute/snapping, copy and style paste, library registry, SVG sanitizing, fonts).
+- `tests/vision-boards.test.mjs` (model, crop math, layers, history, migration, integrations) and `tests/vision-studio.test.mjs` and `tests/visions-books.test.mjs` (Books: pages, limit, conversions, combine, covers, PDF, storage) (#187: back-compat parsing, paints, new kinds, storage paths, shapes, canvas expansion, groups/align/distribute/snapping, copy and style paste, library registry, SVG sanitizing, fonts).
 - `npm run test:vision-boards:db` (local Supabase: RLS, revisions, exact reopen, derived paths, own-folder rule, PNG, shared-file guard, period rules).
 - `npm run test:vision-boards:ui` (local browser journey, 36 checks: desktop, iPhone with the cutout guide, dark theme, and the #187 studio: a patterned scalloped card with a gradient border, then board space added on the left without moving anything). Headless Chrome can't write to the clipboard, so the Paste button needs a check on a real iPhone.
 - `scripts/verify-hosted-vision-boards.sql` (read-only, 12 checks) before and after the staging/production push.

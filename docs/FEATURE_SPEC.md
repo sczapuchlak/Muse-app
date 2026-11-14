@@ -1242,6 +1242,17 @@ Detail: [VISION_BOARDS](VISION_BOARDS.md) § "Vision Boards 2.0" and [VISION_ASS
 - **Editing.** Multi-select, group, align and distribute, snapping guides, layers, duplicate, copy and paste pieces and styles, undo and redo, keyboard shortcuts and touch. A contextual inspector. Export to PNG or JPEG.
 - **Migration** `20261220000100_vision_boards_studio.sql`: `custom` size with `canvas_w`/`canvas_h`; `asset_paths` now covers every image path in elements and background.
 
+## Visions: Vision Boards and Books — implemented on feature branch, Staging acceptance pending
+
+Envision's Vision Boards is now **Visions**: freeform Vision Boards and Books (a cover plus up to 8 named pages), in one editor. See [VISION_BOARDS](VISION_BOARDS.md) § "Visions".
+- **Books:** a Pages menu, two-page spreads, five cover presets with customization, and a reader with Contents.
+- **Library:** board/book filtering.
+- **Conversions:** in place when lossless; combining a multi-page book always makes a new copy.
+- **Writing:** Heading, Subheading, Section title and Paragraph elements, with writing in place.
+- **Export:** a whole-book PDF.
+- **Also:** a right-click menu, one-step paste on Mac, 12 new washi tapes and 10 stationery fills.
+- **Migration:** `20261221000100_visions_books.sql`.
+
 ## Books Import 2.0 (#143) — implemented on feature branch; Staging acceptance pending
 
 See [BOOK_IMPORT_143](BOOK_IMPORT_143.md). Goodreads empty ISBN formulas are missing values, not verification conflicts. Import review separates required decisions from informational notices and reuses catalog/edition search, saved book references, read associations and existing Series installments. Source evidence remains unchanged by review edits. DNF is a fifth native book status, distinct from Paused, and never fabricates a completion. The ordered `20261214000100_book_dnf_status.sql` migration extends existing writer/start/discard validation; no hosted migration or deployment is implied. Existing Muse status wins on refresh, including the accepted Staging import. Atlas visuals and shared styles are unchanged.

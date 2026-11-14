@@ -29,6 +29,8 @@ node scripts/vision-assets/generate-patterns.mjs && npm run vision:assets
 - **Adding one by hand:** drop an SVG or image into `assets-src/vision/pattern/<category>/` instead, as below.
 - **Filing an older item:** a sidecar's `category` files it under a browser category without changing its id. This is how the original eight test patterns joined the new categories.
 
+The generator also draws the **washi tapes** (girly, celestial and whimsical strips with torn ends, slight translucency and a satin sheen) and the **Journal & Stationery** fills (ruled, grid, dot, graph, notebook, parchment and writing papers). These are fills, so a lined rectangle can sit under a Paragraph, or a whole page can be dot grid.
+
 ## Folder layout
 
 ```

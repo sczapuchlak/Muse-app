@@ -33,6 +33,7 @@ export const fillCategories: { id: string; label: string }[] = [
   { id: "retro-groovy", label: "Retro & Groovy" }, { id: "botanical-cottagecore", label: "Botanical & Cottagecore" },
   { id: "glam-iridescent", label: "Glam & Iridescent" }, { id: "dark-moody", label: "Dark & Moody" },
   { id: "playful-whimsical", label: "Playful & Whimsical" }, { id: "minimal-editorial", label: "Minimal & Editorial" },
+  { id: "journal-stationery", label: "Journal & Stationery" },
 ];
 export const categoryLabel = (c: string) => fillCategories.find((x) => x.id === c)?.label ?? c.replace(/-/g, " ").replace(/\b\w/g, (x) => x.toUpperCase());
 /** Categories that hold fills (patterns and textures), curated order first. */

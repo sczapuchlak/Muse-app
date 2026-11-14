@@ -2,6 +2,7 @@
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 import { canvasOf, type VisionBoard } from "@/lib/vision-boards/model";
+import { displayBoard } from "@/lib/vision-boards/covers";
 import "./VisionBoards.css";
 
 // Konva only loads in the browser, and only where a board is actually shown.
@@ -12,7 +13,8 @@ const BoardPreview = dynamic(() => import("./BoardCanvas").then((m) => m.BoardPr
  * Presets keep their card shapes; a custom board's card follows its proportions within portrait 3:4 and wide 16:9 (so
  * library rows stay even), and anything more extreme is fitted whole inside that card.
  */
-export function LazyPreview({ board }: { board: Pick<VisionBoard, "size" | "canvas" | "background" | "elements"> }) {
+export function LazyPreview({ board: raw }: { board: Pick<VisionBoard, "size" | "canvas" | "background" | "elements"> & Partial<Pick<VisionBoard, "format" | "cover" | "title">> }) {
+  const board = displayBoard(raw); // a Book shows its cover
   const ref = useRef<HTMLDivElement>(null), [box, setBox] = useState({ w: 0, h: 0 }), [seen, setSeen] = useState(false);
   const c = canvasOf(board), ratio = c.w / c.h, card = Math.min(16 / 9, Math.max(3 / 4, ratio));
   const width = box.h && ratio < card ? Math.round(box.h * ratio) : box.w;
@@ -29,3 +31,14 @@ export function LazyPreview({ board }: { board: Pick<VisionBoard, "size" | "canv
   </div>;
 }
 
+
+/**
+ * A Book in the library: its cover as a small physical book (a spine, page edges and a soft shadow), kept at the
+ * book's own proportions rather than stretched into the card.
+ */
+export function BookObject({ board }: { board: Pick<VisionBoard, "size" | "canvas" | "background" | "elements" | "format" | "cover" | "title"> }) {
+  const c = canvasOf(board), ratio = c.w / c.h;
+  return <div className="muse-book-shelf"><div className="muse-book" style={{ aspectRatio: String(ratio) }}>
+    <div className="muse-book-cover"><LazyPreview board={board} /></div>
+  </div></div>;
+}

@@ -4,8 +4,8 @@ import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, typ
 import { createMuseBrowserClient } from "@/lib/supabase/client";
 import { uploadBoardImage } from "@/lib/data/constellation-images";
 import {
-  boardSizes, canvasOf, emptyHistory, fitImage, linkStatus, MAX_ELEMENTS, nextPlacement, periodLabel, record, redo, undo, usedPaths,
-  type Asset, type Background, type BoardElement, type ElementLink, type History, type ImageElement, type PieceElement, type ShapeElement, type Snapshot, type StickerElement, type TextElement, type VisionBoard,
+  blankBoard, boardSizes, canvasOf, emptyHistory, fitImage, isBook, linkStatus, MAX_ELEMENTS, MAX_PAGES, nextPlacement, periodLabel, record, redo, undo, usedPaths,
+  type Asset, type BookCover, type BookPage, type TextRole, type Background, type BoardElement, type ElementLink, type History, type ImageElement, type PieceElement, type ShapeElement, type Snapshot, type StickerElement, type TextElement, type VisionBoard,
 } from "@/lib/vision-boards/model";
 import {
   alignElements, copyStyle, distributeElements, duplicateElements, expandCanvas, expandSelection, groupElements, isGrouped, moveElements, moveLayers, pasteElements, pasteStyle,
@@ -23,7 +23,7 @@ import type { BucketEntry } from "@/lib/bucket-list/models";
 import { GlassPopover } from "../../GlassPopover";
 import { MuseIcon } from "../../MuseIcon";
 import { SaveIndicator } from "../../SaveIndicator";
-import { BoardEditorStage, fitView, measureText, prefersReducedMotion, type Patch, type View } from "./BoardCanvas";
+import { BoardEditorStage, fitView, fontFamily, measureText, prefersReducedMotion, textWeight, type Patch, type View } from "./BoardCanvas";
 import { BoardDetails } from "./BoardDetails";
 import { CropSheet } from "./CropSheet";
 import { CutoutHint, CutoutTools, useAppleTouch, useCutoutHint } from "./CutoutHelp";
@@ -35,14 +35,20 @@ import { exportBoard } from "./exportBoard";
 import { markStickers } from "./icons";
 import { draftKey } from "./useVisionBoards";
 import { libraryItem } from "@/lib/vision-boards/library";
+import { addPage, boardToBook, combinePages, duplicatePage, movePage, removePage, renamePage, singlePageToBoard, spreadPartner } from "@/lib/vision-boards/book";
+import { displayBoard } from "@/lib/vision-boards/covers";
+import { BoardPreview } from "./BoardCanvas";
+import { BookReader, CoverInspector, PagesMenu, textPresets } from "./Book";
+import { ensureFont, familyCss } from "@/lib/vision-boards/fonts";
+import { paintColor } from "@/lib/vision-boards/paint";
 
 type Lookups = { aspirations: Aspiration[]; dreams: BucketEntry[] };
-type Draft = { revision: number; at: string; elements: BoardElement[]; background: Background; size?: VisionBoard["size"]; canvas?: VisionBoard["canvas"] };
+type Draft = { revision: number; at: string; elements: BoardElement[]; background: Background; size?: VisionBoard["size"]; canvas?: VisionBoard["canvas"]; format?: VisionBoard["format"]; pages?: VisionBoard["pages"]; cover?: VisionBoard["cover"] };
 const uid = () => crypto.randomUUID();
 const typing = (el: EventTarget | null) => el instanceof HTMLElement && (el.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(el.tagName));
 export function elementLabel(e: BoardElement): string {
   if (e.kind === "image") return `Photo${e.image.name ? ` · ${e.image.name}` : ""}`;
-  if (e.kind === "text") return `Text “${e.text.trim().slice(0, 32) || "…"}”`;
+  if (e.kind === "text") return `${e.role === "p" ? "Paragraph" : e.role ? "Heading" : "Text"} “${e.text.trim().slice(0, 32) || "…"}”`;
   if (e.kind === "shape") return `${e.role === "backing" ? "Backing · " : ""}${decorShapes.find((s) => s.id === e.shape)?.label ?? "Shape"}`;
   if (e.kind === "piece") return libraryItem(e.piece)?.name ?? "Library piece";
   return stickerDef(e.sticker)?.label ?? markStickers.find((m) => m.id === e.sticker)?.label ?? "Sticker";
@@ -59,9 +65,11 @@ const MARKER = "muse-vision-pieces:";
  * The collage studio (#118, #187). Edits apply to a local copy with undo/redo; it autosaves shortly after each change,
  * saves right away when the app is backgrounded, and keeps a recovery copy on this device until the save is confirmed.
  */
-export default function BoardEditor({ initial, userId, today, lookups, onSaved, onBack, sweep }: {
+export default function BoardEditor({ initial, userId, today, lookups, onSaved, onBack, sweep, createVision }: {
   initial: VisionBoard; userId: string; today: string; lookups: Lookups;
   onSaved: (b: VisionBoard) => void; onBack: () => void; sweep: (boardId: string, keep: Set<string>) => void;
+  /** Saves a new Vision (used by "Combine pages into one board", which always makes a copy). */
+  createVision?: (b: VisionBoard) => Promise<VisionBoard | null>;
 }) {
   const client = useMemo(() => createMuseBrowserClient(), []);
   const [board, setBoard] = useState(initial);
@@ -69,11 +77,15 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [save, setSave] = useState({ dirty: false, saving: false, error: "", conflict: false });
   const [uploads, setUploads] = useState<{ total: number; done: number; errors: string[] }>({ total: 0, done: 0, errors: [] });
-  const [panel, setPanel] = useState<"" | "library" | "layers" | "style">("");
+  const [panel, setPanel] = useState<"" | "library" | "layers" | "style" | "text" | "pages">("");
   const [sheet, setSheet] = useState<"" | "crop" | "details">("");
   const [recovery, setRecovery] = useState<Draft | null>(null);
   const [announce, setAnnounce] = useState("");
-  const [pasteMenu, setPasteMenu] = useState<{ x: number; y: number } | null>(null);
+  // Right-click: a context menu at the pointer (piece actions on a piece, board actions on empty space), and Style
+  // can open right there, so styling never needs a trip to the toolbar.
+  const [cursorAt, setCursorAt] = useState<{ x: number; y: number } | null>(null), [menuOpen, setMenuOpen] = useState(false), [styleAtCursor, setStyleAtCursor] = useState(false);
+  const ctxTarget = useRef<string | null>(null);
+  const [safari] = useState(() => typeof navigator !== "undefined" && /Safari/.test(navigator.userAgent) && !/Chrome|Chromium|CriOS|Edg|Firefox|FxiOS/.test(navigator.userAgent));
   const [clipboardBusy, setClipboardBusy] = useState(false);
   const [selectMode, setSelectMode] = useState(false), [snapping, setSnapping] = useState(true), [exporting, setExporting] = useState(false);
   const [sessionUploads, setSessionUploads] = useState<Asset[]>([]);
@@ -92,8 +104,13 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
   const rev = useRef(initial.revision), seq = useRef(0), saving = useRef(false), again = useRef(false);
   const lastKey = useRef<{ key: string; at: number } | null>(null);
   const fileRef = useRef<HTMLInputElement>(null), patternFileRef = useRef<HTMLInputElement>(null), patternThen = useRef<((a: Asset) => void) | null>(null), wrapRef = useRef<HTMLDivElement>(null);
-  const anchors = { library: useRef<HTMLButtonElement>(null), layers: useRef<HTMLButtonElement>(null), style: useRef<HTMLButtonElement>(null) };
+  const anchors = { library: useRef<HTMLButtonElement>(null), layers: useRef<HTMLButtonElement>(null), style: useRef<HTMLButtonElement>(null), text: useRef<HTMLButtonElement>(null), pages: useRef<HTMLButtonElement>(null) };
   const selected = useMemo(() => board.elements.filter((e) => selectedIds.includes(e.id)), [board.elements, selectedIds]);
+  // ---------- Books: the page being edited (-1 = the cover). `board.elements`/`background` mirror that page. ----------
+  const book = isBook(board) && !!board.pages?.length;
+  const [page, setPageState] = useState(0);
+  const pageRef = useRef(page); pageRef.current = page;
+  const [spread, setSpread] = useState(true), [reading, setReading] = useState(false);
   const palette = useSavedPalette(userId);
 
   // ---------- Viewport (zoom and pan never change the board's own size) ----------
@@ -109,14 +126,22 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
   // pans or zooms themselves; "Fit" returns to that.
   const autoFit = useRef(true);
   const box = canvasOf(board);
-  const fit = useCallback(() => { if (!size.width) return; autoFit.current = true; setView(fitView({ size: "custom", canvas: box }, size.width, size.height, 14)); }, [box.w, box.h, size]); // eslint-disable-line react-hooks/exhaustive-deps -- box is derived from w/h
+  // A Book on a wide screen shows the facing page beside the one being edited (a spread); only one page is editable.
+  const partner = book && spread && page >= 0 && size.width >= 900 ? spreadPartner(page, board.pages!.length) : undefined;
+  const fit = useCallback(() => {
+    if (!size.width) return;
+    autoFit.current = true;
+    if (partner === undefined) { setView(fitView({ size: "custom", canvas: box }, size.width, size.height, 14)); return; }
+    const v = fitView({ size: "custom", canvas: { w: box.w * 2, h: box.h } }, size.width, size.height, 14);
+    setView(partner < page ? { ...v, x: v.x + box.w * v.scale } : v);
+  }, [box.w, box.h, size, partner, page]); // eslint-disable-line react-hooks/exhaustive-deps -- box is derived from w/h
   /**
    * The editing area takes the board's own proportions at the available width, so a wider or taller board really is
    * a wider or taller canvas (not a fixed box with empty table around it). Phones keep it within the screen so the
    * page can still scroll past it.
    */
   const [coarse] = useState(() => typeof window !== "undefined" && !!window.matchMedia?.("(pointer: coarse)").matches);
-  const canvasHeight = size.width ? Math.round(Math.max(320, Math.min(size.width * (box.h / box.w) + 28, coarse ? window.innerHeight * 0.78 : size.width * 2.2))) : undefined;
+  const canvasHeight = size.width ? Math.round(Math.max(320, Math.min(size.width * (box.h / (box.w * (partner !== undefined ? 2 : 1))) + 28, coarse ? window.innerHeight * 0.78 : Math.max(560, window.innerHeight - 110)))) : undefined;
   useEffect(() => { if (!size.width || !autoFit.current) return; const t = window.setTimeout(fit, 0); return () => window.clearTimeout(t); }, [size, fit]);
   const moveView = (v: View) => { autoFit.current = false; setView(v); };
   const zoomBy = (factor: number) => view && moveView((() => {
@@ -125,11 +150,21 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
   })());
 
   // ---------- Editing with history ----------
-  const snapshot = (b: VisionBoard = boardRef.current): Snapshot => ({ elements: b.elements, background: b.background, size: b.size, canvas: b.canvas });
+  const snapshot = (b: VisionBoard = boardRef.current): Snapshot => ({ elements: b.elements, background: b.background, size: b.size, canvas: b.canvas, ...(isBook(b) ? { pages: b.pages, page: pageRef.current, cover: b.cover } : {}) });
+  /** Writes the edited page back into the book (the page in `next.page`, or the current one). */
+  const syncPage = (s: Snapshot): Snapshot => {
+    const at = s.page ?? pageRef.current;
+    if (!s.pages || at < 0 || !s.pages[at]) return s;
+    const p = s.pages[at];
+    return p.elements === s.elements && p.background === s.background ? s : { ...s, pages: s.pages.map((x, k) => (k === at ? { ...x, elements: s.elements, background: s.background } : x)) };
+  };
+  const setPage = (i: number) => { pageRef.current = i; setPageState(i); };
   /** Applies a change. Rapid edits with the same `key` (typing, a slider) become one undo step. */
   const apply = useCallback((change: (s: Snapshot) => Snapshot, key?: string) => {
-    const before = snapshot(), next = change(before);
-    if (next === before) return;
+    const before = snapshot(), changed = change(before);
+    if (changed === before) return;
+    const next = syncPage(changed);
+    if (next.page !== undefined && next.page !== pageRef.current) setPage(next.page);
     const now = Date.now(), merge = key && lastKey.current?.key === key && now - lastKey.current.at < 1500;
     lastKey.current = key ? { key, at: now } : null;
     if (!merge) setHistory((h) => record(h, before));
@@ -153,15 +188,85 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
   };
   const restore = (s: Snapshot) => {
     const b = { ...boardRef.current, ...s, size: s.size ?? boardRef.current.size, canvas: s.size ? s.canvas : boardRef.current.canvas };
+    if (s.page !== undefined && s.page !== pageRef.current) setPage(s.page);
     boardRef.current = b; setBoard(b); seq.current++; setSave((x) => ({ ...x, dirty: true })); lastKey.current = null;
     setSelectedIds((ids) => ids.filter((id) => s.elements.some((e) => e.id === id)));
   };
   const doUndo = () => { const r = undo(historyRef.current, snapshot()); if (r) { setHistory(r.history); restore(r.snapshot); setAnnounce("Undone"); } };
   const doRedo = () => { const r = redo(historyRef.current, snapshot()); if (r) { setHistory(r.history); restore(r.snapshot); setAnnounce("Redone"); } };
 
+  // ---------- Book pages ----------
+  const lastPage = useRef(0);
+  /** Opens a page (or the cover, -1) for editing. Navigation, not an edit: it isn't an undo step. */
+  const goToPage = (i: number) => {
+    const b = boardRef.current;
+    if (!isBook(b) || !b.pages?.length) return;
+    const s = syncPage(snapshot(b)), pages = s.pages ?? b.pages, at = i < 0 ? -1 : Math.min(pages.length - 1, i);
+    const src = pages[at < 0 ? Math.min(lastPage.current, pages.length - 1) : at];
+    if (at >= 0) lastPage.current = at;
+    const nb = { ...b, pages, elements: src.elements, background: src.background };
+    boardRef.current = nb; setBoard(nb); setPage(at); setSelectedIds([]); lastKey.current = null; autoFit.current = true;
+    setAnnounce(at < 0 ? "Cover" : `Page ${at + 1} of ${pages.length}: ${pages[at].title}`);
+  };
+  /** A page operation: new page order and which page to open, as one undo step. */
+  const pageOp = (fn: (pages: BookPage[]) => { pages: BookPage[]; at: number }, label: string) => {
+    apply((s) => {
+      if (!s.pages) return s;
+      const r = fn(s.pages);
+      if (r.pages === s.pages) return s;
+      const p = r.pages[r.at];
+      return { ...s, pages: r.pages, page: r.at, elements: p.elements, background: p.background };
+    });
+    setSelectedIds([]); autoFit.current = true; setAnnounce(label);
+  };
+  const pageActions = {
+    go: (i: number) => goToPage(i),
+    add: (after: number) => (board.pages?.length ?? 0) >= MAX_PAGES ? setAnnounce(`A book holds up to ${MAX_PAGES} pages.`) : pageOp((ps) => ({ pages: addPage(ps, after, uid()), at: Math.min(after + 1, ps.length) }), "Page added"),
+    duplicate: (i: number) => pageOp((ps) => ({ pages: duplicatePage(ps, i, uid(), uid), at: i + 1 }), "Page duplicated"),
+    remove: (i: number) => pageOp((ps) => { const next = removePage(ps, i); return { pages: next, at: Math.min(Math.max(0, pageRef.current > i ? pageRef.current - 1 : pageRef.current === i ? i : pageRef.current), next.length - 1) }; }, "Page deleted. Undo brings it back."),
+    move: (from: number, to: number) => pageOp((ps) => { const id = ps[Math.max(0, pageRef.current)]?.id, next = movePage(ps, from, to); return { pages: next, at: Math.max(0, next.findIndex((p) => p.id === id)) }; }, `Page moved to position ${to + 1}`),
+    rename: (i: number, title: string) => apply((s) => (s.pages ? { ...s, pages: renamePage(s.pages, i, title) } : s), `rename:${i}`),
+  };
+  const setCover = (patch: Partial<BookCover>, key?: string) => apply((s) => (s.cover ? { ...s, cover: { ...s.cover, ...patch } } : s), key);
+  /** Format changes are saved at once and start a fresh undo history (the two formats keep different undo state). */
+  const replaceBoard = (patch: Partial<VisionBoard>, label: string, at = 0) => {
+    const nb = { ...boardRef.current, ...patch };
+    boardRef.current = nb; setBoard(nb); setHistory(emptyHistory()); setPage(at); lastPage.current = Math.max(0, at); setSelectedIds([]);
+    seq.current++; setSave((x) => ({ ...x, dirty: true })); autoFit.current = true; setAnnounce(label);
+  };
+  const convertToBook = () => { const b = boardRef.current; const conv = boardToBook(b, uid()); replaceBoard({ ...conv, elements: conv.pages![0].elements, background: conv.pages![0].background }, "Now a Book: your board is page 1. Pick a cover, then add pages."); };
+  const convertToBoard = () => { const s = syncPage(snapshot()), single = singlePageToBoard({ pages: s.pages }); if (single) replaceBoard(single, "Now a Vision Board."); };
+  const [combining, setCombining] = useState(false);
+  async function combineToBoard() {
+    const s = syncPage(snapshot()), src = { ...boardRef.current, pages: s.pages }, r = combinePages(src, uid);
+    if (!r.ok) { setUploads({ total: 0, done: 0, errors: [r.reason] }); return; }
+    setCombining(true);
+    try {
+      const now = new Date().toISOString(), copy = { ...blankBoard(uid(), now), title: `${src.title} (combined)`.slice(0, 120), theme: src.theme, description: src.description, period: src.period, periodStart: src.periodStart, size: "custom" as const, canvas: r.canvas, background: r.background, elements: r.elements };
+      const saved = await createVision?.(copy);
+      if (!saved) throw Error("The combined board didn’t save. Your book is unchanged.");
+      setNotice(`Saved “${saved.title}”, a new Vision Board with every page side by side. Your book is unchanged.`);
+    } catch (err) { setUploads({ total: 0, done: 0, errors: [err instanceof Error ? err.message : "The combined board didn’t save. Your book is unchanged."] }); }
+    finally { setCombining(false); }
+  }
+  const [notice, setNotice] = useState("");
+  const [pdfProgress, setPdfProgress] = useState<string>("");
+  async function exportPdf() {
+    setExporting(true); setPdfProgress("Preparing…");
+    try {
+      const { exportBookPdf } = await import("./exportBoard");
+      const s = syncPage(snapshot()), blob = await exportBookPdf({ ...boardRef.current, pages: s.pages }, (d, t) => setPdfProgress(d < t ? `Page ${d + 1} of ${t}…` : "Finishing…"));
+      const name = `${(board.title || "Book").replace(/[\\/:*?"<>|]+/g, " ").trim()}.pdf`, file = new File([blob], name, { type: "application/pdf" });
+      if (coarse && navigator.canShare?.({ files: [file] })) await navigator.share({ files: [file], title: board.title }).catch(() => undefined);
+      else { const url = URL.createObjectURL(blob), a = document.createElement("a"); a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove(); window.setTimeout(() => URL.revokeObjectURL(url), 4000); }
+      setAnnounce("Book exported as a PDF");
+    } catch (err) { setUploads({ total: 0, done: 0, errors: [err instanceof Error ? err.message : "The book couldn’t be exported."] }); }
+    finally { setExporting(false); setPdfProgress(""); }
+  }
+
   // ---------- Saving ----------
   const writeDraft = useCallback(() => {
-    try { const b = boardRef.current; localStorage.setItem(draftKey(b.id), JSON.stringify({ revision: rev.current, at: new Date().toISOString(), elements: b.elements, background: b.background, size: b.size, canvas: b.canvas } satisfies Draft)); } catch { /* storage full or blocked: the autosave still runs */ }
+    try { const b = boardRef.current; localStorage.setItem(draftKey(b.id), JSON.stringify({ revision: rev.current, at: new Date().toISOString(), elements: b.elements, background: b.background, size: b.size, canvas: b.canvas, ...(isBook(b) ? { format: b.format, pages: b.pages, cover: b.cover } : {}) } satisfies Draft)); } catch { /* storage full or blocked: the autosave still runs */ }
   }, []);
   const clearDraft = useCallback(() => { try { localStorage.removeItem(draftKey(boardRef.current.id)); } catch { /* this device only */ } }, []);
   const flush = useCallback(async (): Promise<boolean> => {
@@ -250,6 +355,7 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
   };
   const add = (e: BoardElement | BoardElement[], label: string, at?: number) => {
     const list = Array.isArray(e) ? e : [e];
+    if (book && pageRef.current < 0) goToPage(lastPage.current);
     if (boardRef.current.elements.length + list.length > MAX_ELEMENTS) { setAnnounce(`A board holds up to ${MAX_ELEMENTS} pieces.`); return; }
     changeElements((els) => at === undefined ? [...els, ...list] : [...els.slice(0, at), ...list, ...els.slice(at)]);
     setSelectedIds(list.map((x) => x.id)); setAnnounce(`${label} added`);
@@ -283,12 +389,16 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
     try { const a = await uploadOne(file); setSessionUploads((l) => [a, ...l]); then(a); setUploads({ total: 1, done: 1, errors: [] }); }
     catch (err) { setUploads({ total: 1, done: 1, errors: [`${file.name}: ${err instanceof Error ? err.message : "couldn’t upload"}`] }); }
   }
-  function addText() {
-    const base: TextElement = { id: uid(), kind: "text", ...place(640, 100), rotation: 0, text: "Dream big", font: "editorial", size: 84, color: "#2a2135", align: "center", italic: true };
-    add({ ...base, h: measureText(base) }, "Text");
-    openEditor(base.id, true);
+  /** Adds writing (a heading level, a paragraph, or simple words) and starts typing into it right on the canvas. */
+  function addText(role: TextRole | "plain" = "plain") {
+    const preset = textPresets.find((t) => t.role === role) ?? textPresets[textPresets.length - 1], made = preset.make(canvasOf(boardRef.current).w);
+    const base: TextElement = { id: uid(), kind: "text", ...place(made.w ?? 640, 100), rotation: 0, text: "", font: "editorial", size: 84, color: "#2a2135", align: "center", ...made } as TextElement;
+    add({ ...base, h: measureText(base) }, preset.label);
+    window.setTimeout(() => setEditingText(base.id), 60);
   }
-  /**
+  const [editingText, setEditingText] = useState<string | null>(null);
+  // Selecting anything else (or nothing) finishes writing in place.
+  if (editingText && !selectedIds.includes(editingText) && selectedIds.length) setEditingText(null);  /**
    * Opens a piece's controls: in the side panel when it's showing, otherwise in the Style dropdown under the toolbar
    * (so a hidden panel never leaves new text with nowhere to type). Text goes straight to its words, selected.
    */
@@ -362,8 +472,10 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
   const align = (how: Align) => changeElements((els) => alignElements(els, ids, how, canvasOf(boardRef.current)));
   const distribute = (axis: "h" | "v") => changeElements((els) => distributeElements(els, ids, axis));
   /** Board space added on the left/top shifts every piece's coordinates; the view shifts back so nothing appears to move. */
+  /** Book pages share one size: added space shifts every page's pieces the same way (nothing moves on its page). */
+  const shiftPages = (pages: BookPage[] | undefined, at: number, elements: BoardElement[], shift: { x: number; y: number }) => pages?.map((p, k) => k === at ? { ...p, elements } : shift.x || shift.y ? { ...p, elements: p.elements.map((e) => ({ ...e, x: e.x + shift.x, y: e.y + shift.y })) } : p);
   const applyCanvas = (r: ReturnType<typeof expandCanvas>, label: string) => {
-    apply((s) => ({ ...s, size: r.size, canvas: r.canvas, elements: r.elements }));
+    apply((s) => ({ ...s, size: r.size, canvas: r.canvas, elements: r.elements, ...(s.pages ? { pages: shiftPages(s.pages, pageRef.current, r.elements, r.shift) } : {}) }));
     const v = viewRef.current;
     if (v && (r.shift.x || r.shift.y)) moveView({ ...v, x: v.x - r.shift.x * v.scale, y: v.y - r.shift.y * v.scale });
     else if (v) autoFit.current = false;
@@ -374,7 +486,7 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
   const preset = (s: keyof typeof boardSizes) => {
     const c = canvasOf(boardRef.current), p = boardSizes[s];
     const r = resizeCanvas(boardRef.current, p.w, p.h, { x: 0.5, y: 0.5 });
-    apply((x) => ({ ...x, size: s, canvas: undefined, elements: r.elements }));
+    apply((x) => ({ ...x, size: s, canvas: undefined, elements: r.elements, ...(x.pages ? { pages: shiftPages(x.pages, pageRef.current, r.elements, r.shift) } : {}) }));
     const v = viewRef.current; if (v && (r.shift.x || r.shift.y)) moveView({ ...v, x: v.x - r.shift.x * v.scale, y: v.y - r.shift.y * v.scale });
     setAnnounce(c.w === p.w && c.h === p.h ? `${p.label}` : `The board is now ${p.label} (${p.w} by ${p.h})`);
   };
@@ -399,8 +511,9 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
   async function exportImage(type: "image/png" | "image/jpeg") {
     setExporting(true);
     try {
-      const blob = await exportBoard(boardRef.current, { scale: 2, type });
-      const name = `${(board.title || "Vision board").replace(/[\\/:*?"<>|]+/g, " ").trim()}.${type === "image/png" ? "png" : "jpg"}`, file = new File([blob], name, { type });
+      const blob = await exportBoard(book && pageRef.current < 0 ? displayBoard(boardRef.current) : boardRef.current, { scale: 2, type });
+      const part = book ? ` - ${pageRef.current < 0 ? "Cover" : board.pages![pageRef.current]?.title ?? `Page ${pageRef.current + 1}`}` : "";
+      const name = `${(board.title || "Vision").replace(/[\\/:*?"<>|]+/g, " ").trim()}${part.replace(/[\\/:*?"<>|]+/g, " ")}.${type === "image/png" ? "png" : "jpg"}`, file = new File([blob], name, { type });
       const coarse = window.matchMedia?.("(pointer: coarse)").matches;
       if (coarse && navigator.canShare?.({ files: [file] })) { await navigator.share({ files: [file], title: board.title }).catch(() => undefined); }
       else { const url = URL.createObjectURL(blob), a = document.createElement("a"); a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove(); window.setTimeout(() => URL.revokeObjectURL(url), 4000); }
@@ -481,17 +594,19 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
   const actions: InspectorActions = {
     align, distribute, layer, group, ungroup, lock, duplicate, remove, copyStyle: doCopyStyle, pasteStyle: doPasteStyle, canPasteStyle: !!styleClip,
     crop: () => setSheet("crop"), makeSticker, addBacking, expand, resize, preset, background, exportImage: (t) => void exportImage(t), exporting,
+    vision: { isBook: book, pageCount: board.pages?.length ?? 0, pageLabel: page < 0 ? "The cover" : `This page (“${board.pages?.[page]?.title ?? ""}”)`, toBook: convertToBook, toBoard: convertToBoard, combine: () => void combineToBoard(), combining, exportPdf: () => void exportPdf(), pdfProgress, read: () => setReading(true) },
   };
   const c = box;
 
   return <><section className="muse-vision-editor muse-planner-surface" aria-label={`Vision board: ${board.title}`} onKeyDown={onKey} onPaste={onPaste}>
     <header className="muse-vision-editor-head">
-      <button type="button" className="muse-button" onClick={() => void leave()}><span aria-hidden="true">‹</span> Boards</button>
+      <button type="button" className="muse-button" onClick={() => void leave()}><span aria-hidden="true">‹</span> Visions</button>
       <div className="muse-vision-editor-title">
         <h2>{board.title}</h2>
         <p className="small-label">{[board.theme, periodLabel(board.period, board.periodStart)].filter(Boolean).join(" · ") || "No period"}{intentionsHref && <> · <Link href={intentionsHref}>Intentions for {periodLabel(board.period, board.periodStart)}</Link></>}</p>
       </div>
-      <SaveIndicator label="Board" loaded pending={save.dirty} saving={save.saving} error={save.error ? "Not saved yet" : ""} />
+      <SaveIndicator label={book ? "Book" : "Board"} loaded pending={save.dirty} saving={save.saving} error={save.error ? "Not saved yet" : ""} />
+      {book && <button type="button" className="muse-button" onClick={() => setReading(true)}><MuseIcon name="bookmark" size={14} /> Read</button>}
       <button type="button" className="muse-button" onClick={() => setSheet("details")}><MuseIcon name="edit" size={14} /> Details</button>
     </header>
 
@@ -506,15 +621,18 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
       <button type="button" className="muse-button button-primary" disabled={uploading} onClick={() => fileRef.current?.click()}><MuseIcon name="plus" size={14} /> Photos</button>
       <input ref={fileRef} type="file" accept="image/png,image/jpeg,image/webp,image/gif" multiple hidden onChange={(e) => { const f = Array.from(e.target.files ?? []); e.target.value = ""; void addFiles(f); }} />
       <input ref={patternFileRef} type="file" accept="image/png,image/jpeg,image/webp" hidden onChange={(e) => { const f = e.target.files?.[0]; e.target.value = ""; void uploadPattern(f); }} />
-      <CutoutTools disabled={uploading || clipboardBusy} showGuide={apple} onFiles={(f) => { cutoutHint.dismiss(); void addFiles(f); }} onError={(m) => setUploads({ total: 0, done: 0, errors: [m] })} onOpened={cutoutHint.dismiss} />
-      <button type="button" className="muse-button" onClick={addText}><span className="muse-vision-glyph" aria-hidden="true">Aa</span> Text</button>
+      <CutoutTools disabled={uploading || clipboardBusy} showGuide={apple} showPaste={coarse} onFiles={(f) => { cutoutHint.dismiss(); void addFiles(f); }} onError={(m) => setUploads({ total: 0, done: 0, errors: [m] })} onOpened={cutoutHint.dismiss} />
+      <button ref={anchors.text} type="button" className="muse-button" aria-expanded={panel === "text"} onClick={() => togglePanel("text")}><span className="muse-vision-glyph" aria-hidden="true">Aa</span> Text</button>
       <button ref={anchors.library} type="button" className="muse-button" aria-expanded={panel === "library"} onClick={() => togglePanel("library")}><MuseIcon name="sparkle" size={14} /> Library</button>
+      {book && <button ref={anchors.pages} type="button" className="muse-button muse-vision-pages-btn" aria-expanded={panel === "pages"} onClick={() => togglePanel("pages")} title="Pages: open, rename, reorder, add">
+        <MuseIcon name="bookmark" size={14} /> {page < 0 ? "Cover" : `Page ${page + 1}`}<small>{board.pages!.length}/{MAX_PAGES}</small></button>}
       {!panelOpen && selected.length > 0 && <button ref={anchors.style} type="button" className="muse-button" aria-expanded={panel === "style"} onClick={() => togglePanel("style")} title="Style the selected piece (or double-click it)"><MuseIcon name="edit" size={14} /> Style</button>}
       <button type="button" className="muse-button" aria-pressed={panelOpen} aria-controls="vision-inspector" title={!panelOpen ? "Show the settings panel" : selected.length ? "Board size, background and export" : "Hide the panel (full-width canvas)"}
         onClick={() => { if (!panelOpen) togglePanelOpen(true); else if (selected.length) setSelectedIds([]); else togglePanelOpen(false); }}><span className="muse-vision-dot" style={{ background: board.background.kind === "pattern" ? paintCss(board.background.paint) : paintCss(board.background.kind === "solid" ? { kind: "solid", color: board.background.color } : { kind: "gradient", gradient: board.background.gradient }) }} aria-hidden="true" /> Board</button>
       <span className="muse-vision-toolbar-gap" />
       <button type="button" className="muse-button" aria-label="Undo" title="Undo (⌘Z)" disabled={!history.past.length} onClick={doUndo}><MuseIcon name="undo" size={15} /></button>
       <button type="button" className="muse-button muse-vision-redo" aria-label="Redo" title="Redo (⇧⌘Z)" disabled={!history.future.length} onClick={doRedo}><MuseIcon name="undo" size={15} /></button>
+      {book && size.width >= 900 && <button type="button" className="muse-button" aria-pressed={spread} title="Show the facing page beside this one" onClick={() => { setSpread((x) => !x); autoFit.current = true; }}>Spread</button>}
       <button type="button" className="muse-button" aria-pressed={selectMode} title="Drag a box to select several pieces (Shift-drag works any time)" onClick={() => setSelectMode((x) => !x)}>Select</button>
       <button type="button" className="muse-button" aria-pressed={snapping} title="Snap to edges, centers and the board (hold Alt/Option to drag freely)" onClick={() => setSnapping((x) => !x)}>Snap</button>
       <button ref={anchors.layers} type="button" className="muse-button" aria-expanded={panel === "layers"} onClick={() => togglePanel("layers")}>Layers</button>
@@ -526,6 +644,7 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
     </div>
 
     <CutoutHint show={cutoutHint.show} onDismiss={cutoutHint.dismiss} />
+    {notice && <p className="muse-bucket-notice" role="status">{notice} <button type="button" className="text-button" onClick={() => setNotice("")}>Dismiss</button></p>}
     {(uploading || uploads.errors.length > 0) && <p className={uploads.errors.length ? "muse-aspiration-error" : "muse-bucket-notice"} role={uploads.errors.length ? "alert" : "status"}>
       {uploading ? `Adding image ${Math.min(uploads.done + 1, uploads.total)} of ${uploads.total}…` : ""}
       {uploads.errors.map((m) => <span key={m} className="muse-vision-uploaderror">{m}</span>)}
@@ -538,31 +657,74 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
         onContextMenu={(event) => {
           event.preventDefault(); event.currentTarget.focus({ preventScroll: true });
           const rect = event.currentTarget.getBoundingClientRect(), keyboard = event.clientX === 0 && event.clientY === 0;
-          setPasteMenu({ x: keyboard ? rect.width / 2 : event.clientX - rect.left, y: keyboard ? rect.height / 2 : event.clientY - rect.top });
+          const target = ctxTarget.current; ctxTarget.current = null;
+          if (target && !selRef.current.includes(target)) onSelect([target]);
+          if (!target && !keyboard) setSelectedIds([]);
+          setStyleAtCursor(false); setPanel("");
+          setCursorAt({ x: keyboard ? rect.width / 2 : event.clientX - rect.left, y: keyboard ? rect.height / 2 : event.clientY - rect.top }); setMenuOpen(true);
         }}
         role="application" aria-roledescription="collage canvas" aria-label={`${board.title}: ${board.elements.length} pieces on a ${c.w} by ${c.h} board. ${selected.length ? `Selected: ${selected.length > 1 ? `${selected.length} pieces` : elementLabel(selected[0])}.` : "Nothing selected."}`} aria-describedby="vision-canvas-help" tabIndex={0}>
-        {size.width > 0 && view && <BoardEditorStage board={board} width={size.width} height={size.height} editing={{ selectedIds, onSelect, onChangeMany, view, onView: moveView, snapping, selectMode, reducedMotion, onEdit: (id) => openEditor(id) }} />}
+        {book && page < 0 && view && <div className="muse-vision-cover-view" style={{ left: view.x, top: view.y }} aria-label="The cover (choose and customize it in the panel)"><BoardPreview board={displayBoard(board)} width={Math.round(c.w * view.scale)} quality="auto" /></div>}
+        {partner !== undefined && view && c.w * view.scale <= 3200 && <>
+          <button type="button" className="muse-vision-partner" style={{ left: view.x + (partner > page ? c.w : -c.w) * view.scale, top: view.y, width: c.w * view.scale, height: c.h * view.scale }}
+            aria-label={`Open page ${partner + 1}, ${board.pages![partner].title}`} title={`Page ${partner + 1}: ${board.pages![partner].title} (click to edit)`} onClick={() => goToPage(partner)}>
+            <BoardPreview board={{ size: board.size, canvas: board.canvas, background: board.pages![partner].background, elements: board.pages![partner].elements }} width={Math.round(c.w * view.scale)} />
+          </button>
+          <span className="muse-vision-spine" aria-hidden="true" style={{ left: view.x + (partner > page ? c.w : 0) * view.scale, top: view.y, height: c.h * view.scale }} />
+        </>}
+        {size.width > 0 && view && !(book && page < 0) && <BoardEditorStage board={board} width={size.width} height={size.height} editing={{ selectedIds, onSelect, onChangeMany, view, onView: moveView, snapping, selectMode, reducedMotion, onEdit: (id) => { const e = boardRef.current.elements.find((x) => x.id === id); if (e?.kind === "text" && !e.locked) { setSelectedIds([id]); setEditingText(id); } else openEditor(id); }, onContextTarget: (id) => { ctxTarget.current = id; }, hiddenId: editingText ?? undefined }} />}
+        {editingText && view && <InlineText e={board.elements.find((x) => x.id === editingText) as TextElement | undefined} view={view} onChange={(text) => { const t = boardRef.current.elements.find((x) => x.id === editingText) as TextElement | undefined; if (t) onChangeMany([{ id: t.id, patch: { text, h: measureText({ ...t, text }) } as Partial<TextElement> }], `text:${t.id}`); }} onDone={() => { setEditingText(null); wrapRef.current?.focus({ preventScroll: true }); }} />}
         {!board.elements.length && <div className="muse-vision-canvas-empty" aria-hidden="true"><p>Add photos, words, shapes and library pieces.<br />Drag, resize and turn them anywhere.</p></div>}
-        {pasteMenu && <span ref={pasteAnchor} className="muse-vision-paste-anchor" aria-hidden="true" style={{ left: pasteMenu.x, top: pasteMenu.y }} />}
+        {cursorAt && <span ref={pasteAnchor} className="muse-vision-paste-anchor" aria-hidden="true" style={{ left: cursorAt.x, top: cursorAt.y }} />}
         <span className="muse-vision-size-chip" aria-hidden="true">{c.w} × {c.h}</span>
       </div>
-      {panelOpen && <Inspector onClose={() => togglePanelOpen(false)} onDeselect={() => { setSelectedIds([]); wrapRef.current?.focus({ preventScroll: true }); }} board={board} selected={selected} grouped={grouped} units={unitCount} patch={patch} actions={actions} palette={palette} uploads={boardUploads} requestUpload={requestUpload}
+      {panelOpen && book && page < 0 && <CoverInspector board={board} cover={board.cover!} setCover={setCover} uploads={boardUploads} requestUpload={requestUpload} onClose={() => togglePanelOpen(false)} />}
+      {panelOpen && !(book && page < 0) && <Inspector onClose={() => togglePanelOpen(false)} onDeselect={() => { setSelectedIds([]); wrapRef.current?.focus({ preventScroll: true }); }} board={board} selected={selected} grouped={grouped} units={unitCount} patch={patch} actions={actions} palette={palette} uploads={boardUploads} requestUpload={requestUpload}
         lookups={{ linkOptions, live }} label={elementLabel} />}
     </div>
-    <GlassPopover id="vision-canvas-paste" label="Canvas actions" open={!!pasteMenu} anchorRef={pasteAnchor} onClose={() => { setPasteMenu(null); wrapRef.current?.focus({ preventScroll: true }); }} width={220} bare>
-      {elementClip && <button type="button" className="popover-choice" onClick={() => { setPasteMenu(null); wrapRef.current?.focus({ preventScroll: true }); pasteCopied(); }}>Paste pieces</button>}
-      <button type="button" className="popover-choice" disabled={uploading || clipboardBusy} onClick={() => { setPasteMenu(null); wrapRef.current?.focus({ preventScroll: true }); void pasteClipboard(); }}>Paste image</button>
-      {styleClip && selected.length > 0 && <button type="button" className="popover-choice" onClick={() => { setPasteMenu(null); doPasteStyle(); }}>Paste style</button>}
+    <GlassPopover id="vision-canvas-menu" label={selected.length ? "Piece actions" : "Canvas actions"} open={menuOpen} anchorRef={pasteAnchor} onClose={() => { setMenuOpen(false); wrapRef.current?.focus({ preventScroll: true }); }} width={232} bare>
+      <CanvasMenu items={selected.length ? [
+        { label: "Style…", hint: "", run: () => setStyleAtCursor(true) },
+        ...(selected.length === 1 && selected[0].kind === "text" ? [{ label: "Edit words", hint: "double-click", run: () => openEditor(selected[0].id, true) }] : []),
+        "-",
+        { label: "Copy", hint: "⌘C", run: copy }, { label: "Cut", hint: "⌘X", run: () => { copy(); remove(); } },
+        ...(elementClip ? [{ label: "Paste", hint: "⌘V", run: () => { pasteCopied(); } }] : []),
+        { label: "Duplicate", hint: "⌘D", run: duplicate },
+        "-",
+        { label: "Copy style", hint: "⌥⌘C", run: doCopyStyle }, ...(styleClip ? [{ label: "Paste style", hint: "⌥⌘V", run: doPasteStyle }] : []),
+        "-",
+        { label: "Bring to front", hint: "⇧]", run: () => layer("front") }, { label: "Send to back", hint: "⇧[", run: () => layer("back") },
+        ...(grouped ? [{ label: "Ungroup", hint: "⇧⌘G", run: ungroup }] : unitCount > 1 ? [{ label: "Group", hint: "⌘G", run: group }] : []),
+        { label: selected.every((e) => e.locked) ? "Unlock" : "Lock", hint: "", run: lock },
+        "-",
+        { label: "Delete", hint: "⌫", run: remove, danger: true },
+      ] : [
+        ...(elementClip ? [{ label: "Paste pieces", hint: "⌘V", run: () => { pasteCopied(); } }] : []),
+        // Safari confirms every script clipboard read with its own Paste bubble; ⌘V pastes in one step there.
+        safari ? { label: "Paste an image with ⌘V", hint: "", run: () => undefined, disabled: true } : { label: "Paste image", hint: "⌘V", run: () => void pasteClipboard(), disabled: uploading || clipboardBusy },
+        { label: "Select all", hint: "⌘A", run: () => select(boardRef.current.elements.filter((e) => !e.locked).map((e) => e.id)), disabled: !board.elements.length },
+        "-",
+        { label: "Board size & background…", hint: "", run: () => togglePanelOpen(true) },
+      ]} onDone={() => { setMenuOpen(false); }} />
     </GlassPopover>
     <p id="vision-canvas-help" className="sr-only">Use Layers to choose a piece. Arrow keys move the selection, Shift moves further. Command A selects everything, Command C and V copy and paste pieces, Option Command C and V copy and paste a style, Command G groups and Shift Command G ungroups, Command D duplicates, Delete removes, Command Z undoes, square brackets change layers. Paste copied images with Command V or the canvas context menu.</p>
     <p className="sr-only" role="status" aria-live="polite">{announce}</p>
 
-    {!panelOpen && selected.length > 0 && <GlassPopover id="vision-style" label="Style" title={selected.length > 1 ? `${selected.length} pieces` : elementLabel(selected[0])} open={panel === "style"} anchorRef={anchors.style} onClose={() => setPanel("")} width={360}>
+    {(!panelOpen || styleAtCursor) && selected.length > 0 && <GlassPopover id="vision-style" label="Style" title={selected.length > 1 ? `${selected.length} pieces` : elementLabel(selected[0])} open={panel === "style" || styleAtCursor} anchorRef={styleAtCursor ? pasteAnchor : anchors.style} onClose={() => { setPanel(""); setStyleAtCursor(false); }} width={360}>
       <div className="muse-vision-style-pop">
-        <Inspector onDeselect={() => { setPanel(""); setSelectedIds([]); wrapRef.current?.focus({ preventScroll: true }); }} board={board} selected={selected} grouped={grouped} units={unitCount} patch={patch} actions={actions} palette={palette} uploads={boardUploads} requestUpload={requestUpload}
+        <Inspector onDeselect={() => { setPanel(""); setStyleAtCursor(false); setSelectedIds([]); wrapRef.current?.focus({ preventScroll: true }); }} board={board} selected={selected} grouped={grouped} units={unitCount} patch={patch} actions={actions} palette={palette} uploads={boardUploads} requestUpload={requestUpload}
           lookups={{ linkOptions, live }} label={elementLabel} />
       </div>
     </GlassPopover>}
+    <GlassPopover id="vision-text" label="Add writing" title="Add writing" open={panel === "text"} anchorRef={anchors.text} onClose={() => setPanel("")} width={300}>
+      <ul className="muse-writing-menu">{textPresets.map((t) => { const sample = t.make(c.w); return <li key={t.role}><button type="button" className="popover-choice" onClick={() => { setPanel(""); addText(t.role); }}>
+        <span className="muse-writing-hint">{t.hint}</span><span style={{ fontFamily: sample.family ? `"${sample.family}", serif` : "var(--font-editorial)", fontWeight: sample.weight, fontStyle: sample.italic ? "italic" : undefined, letterSpacing: sample.letterSpacing ? `${sample.letterSpacing}em` : undefined, fontSize: t.role === "h1" ? "1.35rem" : t.role === "h2" ? "1.15rem" : t.role === "h3" ? ".78rem" : "1rem" }}>{t.label}</span></button></li>; })}</ul>
+      <p className="small-label">Double-click any words on the canvas to write right there.</p>
+    </GlassPopover>
+    {book && <GlassPopover id="vision-pages" label="Pages" title="Pages" open={panel === "pages"} anchorRef={anchors.pages} onClose={() => setPanel("")} width={420}>
+      <PagesMenu board={board} page={page} actions={pageActions} onPicked={() => setPanel("")} />
+    </GlassPopover>}
+    {reading && book && <BookReader board={{ ...board, pages: syncPage(snapshot()).pages }} startAt={-1} onClose={() => setReading(false)} />}
     <GlassPopover id="vision-library" label="Library" title="Library" open={panel === "library"} anchorRef={anchors.library} onClose={() => setPanel("")} width={400}>
       <AssetLibrary onPick={onLibrary} />
     </GlassPopover>
@@ -581,3 +743,34 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
   </>;
 }
 export type { Expand };
+
+type MenuItem = { label: string; hint: string; run: () => void; disabled?: boolean; danger?: boolean } | "-";
+/** A compact context menu: actions with their shortcuts, separated into small groups. */
+function CanvasMenu({ items, onDone }: { items: MenuItem[]; onDone: () => void }) {
+  const list = items.filter((x, i, a) => x !== "-" || (i > 0 && i < a.length - 1 && a[i - 1] !== "-"));
+  return <div className="muse-vision-menu" role="menu">
+    {list.map((x, i) => x === "-" ? <hr key={i} /> : <button key={x.label} type="button" role="menuitem" className="popover-choice" data-danger={x.danger || undefined} disabled={x.disabled} onClick={() => { onDone(); x.run(); }}>
+      <span>{x.label}</span>{x.hint && <kbd>{x.hint}</kbd>}</button>)}
+  </div>;
+}
+
+/**
+ * Writing right on the canvas: a text box laid exactly over the words (same font, size, spacing, rotation and zoom),
+ * growing as you type. The canvas doesn't pan or drag while you write; Escape or clicking away finishes.
+ */
+function InlineText({ e, view, onChange, onDone }: { e: TextElement | undefined; view: View; onChange: (text: string) => void; onDone: () => void }) {
+  const ref = useRef<HTMLTextAreaElement>(null);
+  useEffect(() => { const t = ref.current; if (!t) return; t.focus({ preventScroll: true }); t.select(); }, []);
+  // Any press outside the box finishes writing (even if the box never had focus, e.g. the window was in the background).
+  const done = useRef(onDone);
+  useEffect(() => { done.current = onDone; });
+  useEffect(() => { const away = (ev: PointerEvent) => { if (ev.target !== ref.current) done.current(); }; document.addEventListener("pointerdown", away, true); return () => document.removeEventListener("pointerdown", away, true); }, []);
+  useEffect(() => { if (e?.family) void ensureFont(e.family, textWeight(e), !!e.italic); }, [e?.family, e?.weight, e?.italic]); // eslint-disable-line react-hooks/exhaustive-deps -- font identity only
+  useLayoutEffect(() => { const t = ref.current; if (t) { t.style.height = "auto"; t.style.height = `${t.scrollHeight}px`; } });
+  if (!e) return null;
+  const s = view.scale, size = e.size * s;
+  return <textarea ref={ref} className="muse-vision-inline-text" aria-label="Words" value={e.text} maxLength={4000} spellCheck
+    style={{ left: view.x + e.x * s, top: view.y + e.y * s, width: e.w * s, minHeight: e.h * s, transform: `translate(-50%, -50%) rotate(${e.rotation}deg)`, fontFamily: e.family ? familyCss(e.family) : fontFamily(e.font), fontSize: size, fontWeight: textWeight(e), fontStyle: e.italic ? "italic" : undefined, lineHeight: e.lineHeight ?? (e.font === "editorial" && !e.family ? 1.12 : 1.25), letterSpacing: e.letterSpacing ? `${e.letterSpacing * size}px` : undefined, textAlign: e.align, color: paintColor(e.paint, e.color), padding: e.highlight ? e.size * 0.22 * s : 0 }}
+    onChange={(ev) => onChange(ev.target.value)} onBlur={onDone} onPointerDown={(ev) => ev.stopPropagation()}
+    onKeyDown={(ev) => { ev.stopPropagation(); if (ev.key === "Escape") { ev.preventDefault(); onDone(); } }} />;
+}

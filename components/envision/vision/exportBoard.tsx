@@ -48,3 +48,22 @@ export async function exportBoard(board: Pick<VisionBoard, "size" | "canvas" | "
     return blob;
   } finally { root.unmount(); host.remove(); }
 }
+
+/**
+ * A whole Book as a PDF: the cover, then every page in order, each rendered at export resolution (independent of the
+ * editor's zoom), with every image and font loaded first.
+ */
+export async function exportBookPdf(book: Pick<VisionBoard, "size" | "canvas" | "pages" | "cover" | "title" | "format" | "background" | "elements">, onProgress?: (done: number, total: number) => void): Promise<Blob> {
+  const { buildPdf, jpegSize } = await import("@/lib/vision-boards/pdf");
+  const { displayBoard } = await import("@/lib/vision-boards/covers");
+  const sheets = [displayBoard({ ...book, format: "book" }), ...(book.pages ?? []).map((p) => ({ size: book.size, canvas: book.canvas, background: p.background, elements: p.elements }))];
+  const box = boardBox(book), scale = Math.min(1.6, 2400 / Math.max(box.w, box.h)), out = [];
+  for (const [i, s] of sheets.entries()) {
+    onProgress?.(i, sheets.length);
+    const jpeg = new Uint8Array(await (await exportBoard(s, { scale, type: "image/jpeg" })).arrayBuffer()), size = jpegSize(jpeg);
+    if (!size) throw Error("A page couldn’t be prepared for the PDF.");
+    out.push({ jpeg, ...size });
+  }
+  onProgress?.(sheets.length, sheets.length);
+  return new Blob([buildPdf(out) as BlobPart], { type: "application/pdf" });
+}
