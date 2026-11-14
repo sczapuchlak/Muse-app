@@ -1,0 +1,70 @@
+/* Card face styles (#186). Classic leaves the scan untouched: its wrapper is display:contents, so every existing
+   .muse-tarot-art img rule applies exactly as before. The other styles wrap the image in a clipped, isolated box the
+   size of the image, so their blend layers line up with the artwork in every context (table, Grimoire, journal). */
+.muse-tarot-face{display:contents}
+.muse-tarot-art:not([data-face=classic]) .muse-tarot-face{display:block;position:relative;overflow:hidden;isolation:isolate;border-radius:10px;line-height:0}
+.muse-tarot-art:not([data-face=classic]) .muse-tarot-face::before,.muse-tarot-art:not([data-face=classic]) .muse-tarot-face::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit}
+.muse-tarot-art:not([data-face=classic]) .muse-tarot-face::before{z-index:1}
+.muse-tarot-art:not([data-face=classic]) .muse-tarot-face::after{z-index:2}
+.muse-tarot-art .muse-tarot-reversed-label{z-index:3}
+
+/* Prism Foil — whimsical. Hue-shifted toward candy pink, lime and violet, washed with holographic foil. */
+.muse-tarot-art[data-face=prism] .muse-tarot-face{background:#f6d6ff}
+.muse-tarot-art[data-face=prism] .muse-tarot-face img{filter:hue-rotate(-75deg) saturate(1.75) contrast(1.12)}
+.muse-tarot-art[data-face=prism] .muse-tarot-face::before{background:linear-gradient(150deg,#ff6fcf 0%,#c08bff 28%,#7fe3ff 52%,#b8ff9a 72%,#ff8fd0 100%);mix-blend-mode:soft-light;opacity:.9}
+.muse-tarot-art[data-face=prism] .muse-tarot-face::after{background:linear-gradient(115deg,transparent 32%,rgba(255,255,255,.6) 46%,transparent 60%) 100% 0/250% 100% no-repeat,linear-gradient(150deg,#ff9fe0,#c9a8ff,#9ff0ff,#ffd6f2);mix-blend-mode:screen;opacity:.3;box-shadow:inset 0 0 0 3px rgba(255,170,230,.75),inset 0 0 0 4px rgba(255,255,255,.6)}
+
+/* Blush Parlour — the RWS printing pushed to hot pink and candy color, set in a gilt and blush frame. */
+.muse-tarot-art[data-face=parlour] .muse-tarot-face{padding:6%;box-sizing:border-box;background:linear-gradient(135deg,#f6dc8c,#e8a7c8 50%,#f3d27a)}
+.muse-tarot-art[data-face=parlour] .muse-tarot-face img{filter:hue-rotate(-85deg) saturate(2.1) contrast(1.18);border-radius:3px}
+.muse-tarot-art[data-face=parlour] .muse-tarot-face::after{background:radial-gradient(circle,rgba(255,255,255,.9) 0 .6px,transparent 1.1px) 0 0/6px 6px;mix-blend-mode:soft-light;box-shadow:inset 0 0 0 1px #b98a2f,inset 0 0 0 6px transparent,inset 0 0 0 7px rgba(185,138,47,.8)}
+
+/* Boho Bloom — a flat apricot-to-coral print with the linework in deep plum and a cream border. */
+.muse-tarot-art[data-face=boho] .muse-tarot-face{background:linear-gradient(165deg,#ffb347,#ff7a3d 45%,#ff6f91)}
+.muse-tarot-art[data-face=boho] .muse-tarot-face img{filter:grayscale(1) contrast(1.7) brightness(1.18);mix-blend-mode:multiply}
+.muse-tarot-art[data-face=boho] .muse-tarot-face::before{background:#2b1350;mix-blend-mode:lighten}
+.muse-tarot-art[data-face=boho] .muse-tarot-face::after{box-shadow:inset 0 0 0 4px #ffe9c7,inset 0 0 0 5px #2b1350;background:radial-gradient(circle at 20% 12%,#9ff0e0 0 2px,transparent 2.6px),radial-gradient(circle at 82% 10%,#fff3b0 0 1.6px,transparent 2.2px),radial-gradient(circle at 88% 70%,#9ff0e0 0 1.4px,transparent 2px)}
+
+/* Moonmilk — dreamy pastel watercolor: softened, recolored teal to lavender to pink, with a moon glow. */
+.muse-tarot-art[data-face=moonmilk] .muse-tarot-face{background:#e9fbf8}
+.muse-tarot-art[data-face=moonmilk] .muse-tarot-face img{filter:saturate(.5) contrast(.7) brightness(1.28)}
+.muse-tarot-art[data-face=moonmilk] .muse-tarot-face::before{background:linear-gradient(165deg,#7fe8d8,#b9a6ff 50%,#ffaed8);mix-blend-mode:color;opacity:.85}
+.muse-tarot-art[data-face=moonmilk] .muse-tarot-face::after{background:radial-gradient(circle at 68% 16%,rgba(255,255,240,.9),rgba(255,255,240,.25) 16%,transparent 30%),radial-gradient(ellipse at 50% 50%,transparent 50%,rgba(255,255,255,.6)),radial-gradient(circle at 20% 30%,#fff 0 .8px,transparent 1.3px),radial-gradient(circle at 80% 45%,#fff 0 1px,transparent 1.5px);mix-blend-mode:screen;box-shadow:inset 0 0 16px rgba(255,255,255,.9)}
+
+/* Gilded Night — a hue-preserving inversion turns the paper to night and the colors to deep jewel tones; the
+   bright linework is then gilded, with confetti stars and a black-and-gold border. */
+.muse-tarot-art[data-face=gilded] .muse-tarot-face{background:#07060c}
+.muse-tarot-art[data-face=gilded] .muse-tarot-face img{filter:invert(1) hue-rotate(180deg) saturate(2.2) contrast(2.3) brightness(.9)}
+.muse-tarot-art[data-face=gilded] .muse-tarot-face::before{background:linear-gradient(160deg,#fff1c1,#f0c86a 40%,#ffe09a 60%,#d9a24a);mix-blend-mode:multiply}
+.muse-tarot-art[data-face=gilded] .muse-tarot-face::after{background:
+ radial-gradient(circle at 30% 40%,rgba(255,215,120,.95) 0 1.1px,transparent 1.7px) 0 0/31px 37px,
+ radial-gradient(circle at 60% 20%,rgba(255,226,150,.8) 0 .7px,transparent 1.2px) 5px 9px/19px 23px,
+ radial-gradient(circle,rgba(255,110,190,.85) 0 1.2px,transparent 1.8px) 11px 3px/43px 53px,
+ radial-gradient(circle,rgba(110,220,255,.85) 0 1.1px,transparent 1.7px) 23px 17px/47px 41px,
+ radial-gradient(circle,rgba(190,140,255,.85) 0 1px,transparent 1.6px) 7px 29px/37px 59px;
+ mix-blend-mode:screen;box-shadow:inset 0 0 0 1px #e9c46a,inset 0 0 0 5px #07060c,inset 0 0 0 6px rgba(233,196,106,.9)}
+
+/* Moonlit Rose Gold — magical. The 1909 linework, inverted to light on a night ground and gilded rose gold, with
+   a scatter of stars. Thresholding keeps only the drawn lines, so it reads as engraving rather than a negative. */
+.muse-tarot-art[data-face=moonlit] .muse-tarot-face{background:#0d0a14}
+.muse-tarot-art[data-face=moonlit] .muse-tarot-face img{filter:grayscale(1) brightness(1.2) contrast(4) invert(1)}
+.muse-tarot-art[data-face=moonlit] .muse-tarot-face::before{background:linear-gradient(160deg,#ffe3d3 0%,#f2b49b 35%,#e59a8c 55%,#ffd9c2 75%,#c9877a 100%);mix-blend-mode:multiply}
+.muse-tarot-art[data-face=moonlit] .muse-tarot-face::after{box-shadow:inset 0 0 0 1.5px #e9b4a0,inset 0 0 18px rgba(233,180,160,.18);background:
+ radial-gradient(circle at 14% 9%,#ffe8dc 0 1px,transparent 1.6px),radial-gradient(circle at 86% 15%,#ffe8dc 0 1.2px,transparent 1.8px),
+ radial-gradient(circle at 72% 6%,#ffe8dc 0 .8px,transparent 1.4px),radial-gradient(circle at 9% 44%,#ffe8dc 0 .8px,transparent 1.4px),
+ radial-gradient(circle at 92% 52%,#ffe8dc 0 1px,transparent 1.6px),radial-gradient(circle at 24% 76%,#ffe8dc 0 .7px,transparent 1.3px),
+ radial-gradient(circle at 80% 80%,#ffe8dc 0 .9px,transparent 1.5px);mix-blend-mode:screen}
+
+/* A band of light crosses the foil on hover or focus, matching the card back. No idle motion. */
+@media (prefers-reduced-motion:no-preference){
+ :root:not([data-magic=quiet]) :is(button,a):is(:hover,:focus-visible) .muse-tarot-art[data-face=prism] .muse-tarot-face::after{animation:muse-face-sheen 1s ease-out both}
+ @keyframes muse-face-sheen{from{background-position:100% 0,0 0}to{background-position:-60% 0,0 0}}
+}
+:root[data-magic=quiet] .muse-tarot-art[data-face=prism] .muse-tarot-face::after{animation:none}
+
+/* The face picker reuses the card-back picker; its miniatures are real Fool cards in each style. It grows, so it is a
+   snap-scrolling strip rather than a grid with an orphan row. */
+.muse-cardface-picker>div{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:4px;scrollbar-width:thin}
+.muse-cardface-picker>div>button{flex:0 0 84px;scroll-snap-align:start}
+.muse-cardface-picker .muse-tarot-art{width:44px;max-width:44px;box-shadow:0 4px 10px rgba(0,0,0,.3);border-radius:5px}
+.muse-cardface-picker .muse-tarot-art .muse-tarot-face,.muse-cardface-picker .muse-tarot-art img{border-radius:5px}

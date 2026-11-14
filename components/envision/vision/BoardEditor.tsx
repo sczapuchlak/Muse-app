@@ -626,13 +626,6 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
       <button type="button" className="muse-button" onClick={() => setSheet("details")}><MuseIcon name="edit" size={14} /> Details</button>
     </header>
 
-    {recovery && <p className="muse-bucket-notice" role="status">Unsaved changes from {new Date(recovery.at).toLocaleString()} are on this device.{" "}
-      <button type="button" className="text-button" onClick={() => { apply((s) => ({ ...s, elements: recovery.elements, background: recovery.background, ...(recovery.size ? { size: recovery.size, canvas: recovery.size === "custom" ? recovery.canvas : undefined } : {}) })); setRecovery(null); }}>Restore them</button>{" "}
-      <button type="button" className="text-button" onClick={() => { clearDraft(); setRecovery(null); }}>Discard</button></p>}
-    {save.error && <p className="muse-aspiration-error" role="alert">{save.error}{" "}
-      {save.conflict ? <><button type="button" className="text-button" onClick={() => void reloadLatest()}>Load the latest</button> <button type="button" className="text-button" onClick={() => void keepMine()}>Keep my version</button></>
-        : <button type="button" className="text-button" onClick={() => void flush()}>Try again</button>}</p>}
-
     <div className="muse-vision-toolbar muse-vision-dock muse-scroll-fade" role="toolbar" aria-label="Studio tools">
       <button type="button" className="muse-button button-primary" disabled={uploading} onClick={() => fileRef.current?.click()}><MuseIcon name="plus" size={14} /> Photos</button>
       <input ref={fileRef} type="file" accept="image/png,image/jpeg,image/webp,image/gif" multiple hidden onChange={(e) => { const f = Array.from(e.target.files ?? []); e.target.value = ""; void addFiles(f); }} />
@@ -658,6 +651,12 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
         <button type="button" className="muse-button" aria-label="Zoom in" onClick={() => zoomBy(1.25)}><MuseIcon name="plus" size={14} /></button>
       </div>
     </div>
+    {recovery && <p className="muse-bucket-notice" role="status">Unsaved changes from {new Date(recovery.at).toLocaleString()} are on this device.{" "}
+      <button type="button" className="text-button" onClick={() => { apply((s) => ({ ...s, elements: recovery.elements, background: recovery.background, ...(recovery.size ? { size: recovery.size, canvas: recovery.size === "custom" ? recovery.canvas : undefined } : {}) })); setRecovery(null); }}>Restore them</button>{" "}
+      <button type="button" className="text-button" onClick={() => { clearDraft(); setRecovery(null); }}>Discard</button></p>}
+    {save.error && <p className="muse-aspiration-error" role="alert">{save.error}{" "}
+      {save.conflict ? <><button type="button" className="text-button" onClick={() => void reloadLatest()}>Load the latest</button> <button type="button" className="text-button" onClick={() => void keepMine()}>Keep my version</button></>
+        : <button type="button" className="text-button" onClick={() => void flush()}>Try again</button>}</p>}
 
     <CutoutHint show={cutoutHint.show} onDismiss={cutoutHint.dismiss} />
     {notice && <p className="muse-bucket-notice" role="status">{notice} <button type="button" className="text-button" onClick={() => setNotice("")}>Dismiss</button></p>}
