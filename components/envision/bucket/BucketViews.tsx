@@ -86,8 +86,7 @@ export function CardsView({list,entries,actions}:{list:BucketList;entries:Bucket
    <div className="muse-bucket-card-art">{photo?<BucketPhoto image={photo} className="muse-bucket-card-photo"/>:<span className="muse-bucket-card-emoji" aria-hidden="true">{e.icon||'✦'}</span>}
     {list.showNumbers&&e.number&&<span className="muse-bucket-card-num">No. {e.number}</span>}
     {y&&<span className="muse-bucket-card-ribbon"><YearChip list={list} year={y}/></span>}
-    {e.category&&<span className="muse-bucket-card-kind">{e.category}</span>}
-    {y&&<span className="muse-bucket-card-seal" aria-hidden="true"><b>Collected</b><small>{y}</small></span>}</div>
+    {e.category&&<span className="muse-bucket-card-kind">{e.category}</span>}</div>
    <div className="muse-bucket-card-body">
     <span className="small-label">{statusLabels[e.status]}</span>
     <h3><button type="button" className="muse-bucket-title" onClick={ev=>actions.onOpen(e,ev.currentTarget)}><span className="muse-bucket-title-text">{e.title}</span></button></h3>

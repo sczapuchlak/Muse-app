@@ -213,7 +213,8 @@
 
 /* ── Collectible cards, glow-up (Nov 2026): real trading cards ────────────────────────────────────────────────
    A framed card with an inner border, the dream's emoji floating in its own light, a category tag, a number plate,
-   and for collected dreams a holographic foil that slides as you reach for the card plus a "Collected" seal. */
+   and for collected dreams a holographic foil that slides as you reach for the card.
+   The year sticker in the corner marks it collected; no large seal sits over the art. */
 .muse-bucket-cards{gap:var(--space-4,18px)}
 .muse-bucket-card{--ink:var(--year,var(--card-ink,var(--accent-primary)));position:relative;isolation:isolate;border-radius:20px;border:1px solid color-mix(in srgb,var(--ink) 40%,var(--glass-border));background:linear-gradient(var(--glass-background),var(--glass-background)),linear-gradient(var(--background),var(--background));box-shadow:0 18px 34px -26px var(--ink),inset 0 0 0 5px var(--glass-background),inset 0 0 0 6px color-mix(in srgb,var(--ink) 30%,transparent);transition:transform .45s cubic-bezier(.2,.8,.2,1),box-shadow .45s}
 .muse-bucket-card[data-done]{box-shadow:0 22px 40px -24px var(--ink),inset 0 0 0 5px var(--glass-background),inset 0 0 0 6px color-mix(in srgb,var(--ink) 55%,transparent)}
@@ -225,9 +226,6 @@
 .muse-bucket-card-body h3{font-family:var(--font-editorial);font-weight:600;font-size:1.08rem;line-height:1.2}
 /* Holographic foil on collected cards: a rainbow sheen that slides when you reach for the card. */
 .muse-bucket-card[data-done]::after{content:"";position:absolute;inset:0;z-index:3;pointer-events:none;border-radius:inherit;mix-blend-mode:color-dodge;opacity:.28;background:linear-gradient(115deg,transparent 20%,#ff9ad5 30%,#9ae6ff 40%,#c2a1ff 50%,#ffe29a 60%,transparent 72%) 0 0/250% 250%;transition:background-position .9s cubic-bezier(.2,.8,.2,1),opacity .4s}
-.muse-bucket-card-seal{position:absolute;right:10px;bottom:8px;display:grid;place-items:center;width:58px;height:58px;border-radius:50%;rotate:-14deg;color:white;text-align:center;line-height:1;background:radial-gradient(circle at 35% 30%,color-mix(in srgb,var(--ink) 50%,white),var(--ink) 55%,color-mix(in oklab,var(--ink) 70%,black));box-shadow:0 6px 14px -6px rgba(0,0,0,.6),inset 0 0 0 2px rgba(255,255,255,.35),inset 0 0 0 4px color-mix(in srgb,var(--ink) 80%,black)}
-.muse-bucket-card-seal b{font-size:.5rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
-.muse-bucket-card-seal small{font-family:var(--font-editorial);font-size:.85rem;font-weight:700}
 @media (prefers-reduced-motion:no-preference){
  :root:not([data-magic=quiet]) .muse-bucket-card:hover{transform:perspective(900px) rotateX(4deg) rotateY(-6deg) translateY(-6px);box-shadow:0 30px 50px -26px var(--ink),inset 0 0 0 5px var(--glass-background),inset 0 0 0 6px color-mix(in srgb,var(--ink) 60%,transparent)}
  :root:not([data-magic=quiet]) .muse-bucket-card:hover .muse-bucket-card-emoji{transform:translateY(-6px) scale(1.12) rotate(-4deg)}

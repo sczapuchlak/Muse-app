@@ -387,6 +387,11 @@
 .muse-vision-studio[data-format=book] .muse-vision-editor-title h2::before{content:"Book";display:inline-block;margin-right:10px;padding:2px 9px;border-radius:999px;vertical-align:.3em;background:color-mix(in srgb,var(--accent-primary) 14%,transparent);font:700 .62rem/1.6 var(--font-ui);font-style:normal;letter-spacing:.14em;text-transform:uppercase;color:var(--foreground)}
 /* The dock floats and stays in reach while you scroll a tall canvas. */
 .muse-vision-dock{position:sticky;top:10px;z-index:30;padding:6px;border-radius:18px;background:color-mix(in srgb,var(--glass-background) 94%,transparent);-webkit-backdrop-filter:blur(18px) saturate(1.4);backdrop-filter:blur(18px) saturate(1.4);border:1px solid var(--glass-border);box-shadow:0 20px 44px -26px rgba(30,15,50,.55),0 1px 0 rgba(255,255,255,.35) inset}
+
+/* Title bar and tool dock are one panel (only the canvas stands apart): the head squares off its bottom, the dock
+   tucks up under it behind a hairline. The dock alone stays sticky, so tools remain in reach on a tall canvas. */
+.muse-vision-studio .muse-vision-editor-head:has(+.muse-vision-dock){border-bottom:0;border-radius:22px 22px 0 0;box-shadow:none;padding-bottom:10px}
+.muse-vision-studio .muse-vision-editor-head+.muse-vision-dock{margin-top:-12px;padding:6px 8px 10px;border-radius:0 0 22px 22px;border-top-color:color-mix(in srgb,var(--glass-border) 55%,transparent);background:var(--glass-background)}
 .muse-vision-dock>.muse-button,.muse-vision-dock .muse-vision-zoom .muse-button{min-height:36px;border-radius:12px}
 .muse-vision-dock>.muse-button[aria-expanded=true],.muse-vision-dock>.muse-button[aria-pressed=true]{background:color-mix(in srgb,var(--accent-primary) 16%,var(--surface-control));border-color:color-mix(in srgb,var(--accent-primary) 45%,transparent)}
 /* The desk: a soft dotted table the board sits on, as large as the screen allows. */
