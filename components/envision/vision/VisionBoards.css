@@ -227,9 +227,10 @@
 .muse-asset-grid-small .muse-asset-tile{grid-template-rows:1fr;padding:6px}
 .muse-asset-tile:hover{background:var(--surface-hover,var(--surface-strong))}
 .muse-asset-tile svg{width:100%;height:100%;max-height:52px;fill:color-mix(in srgb,var(--accent-primary) 30%,transparent);stroke:var(--accent-primary);stroke-width:2}
-.muse-asset-grid-small .muse-asset-tile svg{width:24px;height:24px;fill:none;stroke-width:0}
-.muse-asset-grid-small .muse-asset-tile svg path[fill=currentColor]{fill:currentColor}
-.muse-asset-grid-small .muse-asset-tile svg path[stroke=currentColor]{stroke:currentColor;stroke-width:2.2}
+.muse-asset-grid-small .muse-asset-tile svg{width:24px;height:24px}
+.muse-asset-grid-small .muse-asset-tile svg.muse-doodle{fill:none;stroke-width:0}
+.muse-asset-grid-small .muse-asset-tile svg.muse-doodle path[fill=currentColor]{fill:currentColor}
+.muse-asset-grid-small .muse-asset-tile svg.muse-doodle path[stroke=currentColor]{stroke:currentColor;stroke-width:2.2}
 .muse-asset-tile img{width:100%;height:100%;min-height:0;object-fit:contain;filter:drop-shadow(0 2px 3px rgba(0,0,0,.16))}
 .muse-asset-tile>span{width:100%;font:600 .66rem/1.2 var(--font-ui);color:var(--text-muted);text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .muse-asset-tile[data-fill]{grid-template-rows:1fr auto;padding:0 0 4px;align-content:end}
@@ -272,3 +273,108 @@
 .muse-vision-style-pop .muse-vision-inspector{position:static;max-height:none;overflow:visible;padding:0;border:0;background:none}
 .muse-vision-style-pop .muse-vision-inspector-head{display:none}
 .muse-vision-style-pop .muse-vision-inspector-close{display:none}
+/* Right-click menu */
+.muse-vision-menu{display:grid;gap:1px;padding:4px}
+.muse-vision-menu .popover-choice{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:34px}
+.muse-vision-menu kbd{font:500 .72rem/1 var(--font-ui);color:var(--text-muted);background:none;border:0}
+.muse-vision-menu hr{margin:3px 6px;border:0;border-top:1px solid var(--glass-border)}
+.muse-vision-menu [data-danger]{color:var(--urgency-ink,#b4234a)}
+
+/* ---------- Visions: Books ---------- */
+/* Writing menu */
+.muse-writing-menu{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+.muse-writing-menu .popover-choice{display:flex;align-items:center;gap:12px;min-height:44px}
+.muse-writing-hint{display:inline-grid;place-items:center;min-width:30px;height:24px;border-radius:7px;background:var(--surface-subtle);border:1px solid var(--glass-border);font:700 .7rem/1 var(--font-ui);color:var(--text-muted)}
+/* Writing in place on the canvas */
+.muse-vision-inline-text{position:absolute;z-index:4;box-sizing:border-box;margin:0;border:0;outline:1.5px dashed #8050cf;outline-offset:4px;border-radius:2px;background:color-mix(in srgb,#ffffff 55%,transparent);resize:none;overflow:hidden;transform-origin:center;white-space:pre-wrap;overflow-wrap:break-word}
+/* Pages button and popover */
+.muse-vision-pages-btn small{margin-left:4px;padding:1px 6px;border-radius:999px;background:var(--surface-subtle);font:600 .68rem/1.4 var(--font-ui);color:var(--text-muted);font-variant-numeric:tabular-nums}
+.muse-pages{display:grid;gap:8px}
+.muse-pages-count{margin:0;font:500 .8rem/1 var(--font-ui);color:var(--text-muted)}
+.muse-pages-count strong{color:var(--foreground)}
+.muse-pages-list{list-style:none;margin:0;padding:0;display:grid;gap:4px;max-height:min(56vh,440px);overflow-y:auto;overscroll-behavior:contain}
+.muse-pages-row{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:6px;padding:4px;border-radius:12px;border:1px solid transparent}
+.muse-pages-row[data-active]{background:color-mix(in srgb,var(--accent-primary) 12%,transparent);border-color:color-mix(in srgb,var(--accent-primary) 40%,transparent)}
+.muse-pages-row[data-over]{border-color:var(--accent-primary);border-style:dashed}
+.muse-pages-row:first-child{grid-template-columns:1fr}
+.muse-pages-go{display:flex;align-items:center;gap:8px;padding:2px;border:0;background:none;color:inherit;cursor:pointer;font:600 .84rem/1.2 var(--font-ui);text-align:left}
+.muse-pages-num{display:inline-grid;place-items:center;width:20px;font:700 .74rem/1 var(--font-ui);color:var(--text-muted);font-variant-numeric:tabular-nums}
+.muse-pages-thumb{display:grid;place-items:center;border-radius:4px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.18);background:var(--surface-subtle)}
+.muse-pages-name{min-width:0;min-height:32px;padding:0 8px;border:1px solid transparent;border-radius:8px;background:transparent;color:var(--foreground);font:500 .86rem/1.2 var(--font-ui)}
+.muse-pages-name:hover,.muse-pages-name:focus{border-color:var(--glass-border);background:var(--surface-control)}
+.muse-pages-tools{display:inline-flex;gap:2px}
+.muse-pages-tools button{display:grid;place-items:center;width:26px;height:28px;padding:0;border:0;border-radius:8px;background:transparent;color:var(--text-muted);cursor:pointer;font:600 .9rem/1 var(--font-ui)}
+.muse-pages-tools button:hover:not(:disabled){background:var(--surface-control);color:var(--foreground)}
+.muse-pages-tools button:disabled{opacity:.35;cursor:default}
+.muse-pages-confirm{grid-column:1/-1;padding:4px 8px;font-size:.8rem}
+.muse-pages-add{justify-self:start}
+.muse-pages .small-label{margin:0}
+/* The cover and the facing page in the editor */
+.muse-vision-cover-view{position:absolute;z-index:1;box-shadow:0 18px 40px -18px rgba(20,10,40,.55),0 2px 6px rgba(20,10,40,.2);border-radius:2px 6px 6px 2px;overflow:hidden;pointer-events:none}
+.muse-vision-partner{position:absolute;z-index:1;padding:0;border:0;background:none;cursor:pointer;overflow:hidden;opacity:.9;transition:opacity .2s}
+.muse-vision-partner:hover,.muse-vision-partner:focus-visible{opacity:1;outline:2px solid color-mix(in srgb,var(--accent-primary) 60%,transparent);outline-offset:-2px}
+.muse-vision-spine{position:absolute;z-index:2;width:28px;translate:-50% 0;pointer-events:none;background:linear-gradient(90deg,transparent,rgba(30,15,40,.16) 40%,rgba(30,15,40,.28) 50%,rgba(30,15,40,.16) 60%,transparent)}
+/* Cover controls */
+.muse-cover-presets{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:8px}
+.muse-cover-presets button{display:grid;gap:5px;justify-items:center;width:100%;padding:6px;border:1px solid var(--glass-border);border-radius:12px;background:var(--surface-control);cursor:pointer;color:inherit}
+.muse-cover-presets button[aria-pressed=true]{outline:2px solid var(--accent-primary);outline-offset:1px}
+.muse-cover-mini{display:block;width:100%;border-radius:2px 5px 5px 2px;overflow:hidden;box-shadow:0 6px 12px -6px rgba(20,10,40,.5)}
+.muse-cover-mini .muse-vision-preview{border-radius:0;aspect-ratio:auto}
+.muse-cover-name{font:600 .72rem/1.2 var(--font-ui);text-align:center}
+.muse-cover-presets-new{grid-template-columns:repeat(5,minmax(0,1fr))}
+.muse-vision-wide{width:100%}
+.muse-vision-wide input{width:100%}
+.muse-cover-note{margin:0 4px}
+/* New Vision: board or book */
+.muse-vision-formats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.muse-vision-format-card{display:grid;gap:6px;align-content:start;padding:14px;border:1px solid var(--glass-border);border-radius:16px;background:var(--surface-control);color:inherit;text-align:left;cursor:pointer;font:400 .84rem/1.4 var(--font-ui)}
+.muse-vision-format-card strong{font:italic 600 1.15rem/1.2 var(--font-editorial)}
+.muse-vision-format-card span:last-child{color:var(--text-muted)}
+.muse-vision-format-card[aria-checked=true]{border-color:var(--accent-primary);box-shadow:0 0 0 1px var(--accent-primary),0 12px 28px -18px var(--accent-primary)}
+.muse-vision-format-art{position:relative;display:block;height:64px;border-radius:10px;background:linear-gradient(135deg,var(--dl-wash-primary,#fde2e4),var(--dl-wash-secondary,#e2ece9))}
+.muse-vision-format-art[data-art=board] i{position:absolute;border-radius:3px;background:#fff;box-shadow:0 2px 5px rgba(0,0,0,.15)}
+.muse-vision-format-art[data-art=board] i:nth-child(1){left:12%;top:16%;width:26%;height:44%;rotate:-6deg}
+.muse-vision-format-art[data-art=board] i:nth-child(2){left:40%;top:30%;width:22%;height:50%;rotate:4deg;background:#ffd6e0}
+.muse-vision-format-art[data-art=board] i:nth-child(3){left:66%;top:12%;width:20%;height:34%;rotate:8deg;background:#d7f9f1}
+.muse-vision-format-art[data-art=board] i:nth-child(4){left:62%;top:56%;width:26%;height:12%;border-radius:999px;background:#fff3b0}
+.muse-vision-format-art[data-art=book] i{position:absolute;top:12%;width:24%;height:76%;background:#fffaf2;box-shadow:0 3px 8px rgba(0,0,0,.18)}
+.muse-vision-format-art[data-art=book] i:nth-child(1){left:26%;border-radius:4px 1px 1px 4px;background:linear-gradient(90deg,#f3eadb,#fffaf2)}
+.muse-vision-format-art[data-art=book] i:nth-child(2){left:50%;border-radius:1px 4px 4px 1px;background:linear-gradient(90deg,#fffaf2,#f3eadb)}
+/* Library: a Book as a small physical book */
+.muse-vision-format{display:inline-block;margin-right:6px;padding:0 7px;border-radius:999px;background:color-mix(in srgb,var(--accent-primary) 14%,transparent);color:var(--foreground);font:700 .64rem/1.7 var(--font-ui);letter-spacing:.1em;text-transform:uppercase}
+.muse-book-shelf{display:grid;place-items:center;aspect-ratio:4/3;padding:8% 0;border-radius:12px;background:radial-gradient(120% 80% at 50% 100%,color-mix(in srgb,var(--accent-primary) 10%,transparent),transparent 70%),var(--surface-subtle)}
+.muse-book{position:relative;height:100%;max-width:86%;border-radius:3px 8px 8px 3px;box-shadow:0 22px 30px -18px rgba(20,10,40,.7),0 4px 8px -2px rgba(20,10,40,.25),6px 0 0 -1px #f4efe6,7px 1px 0 -1px #e0d8ca,10px 1px 0 -2px #f4efe6,11px 2px 0 -2px #d6cdbd;transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.muse-book-cover{position:relative;height:100%;border-radius:inherit;overflow:hidden}
+.muse-book-cover .muse-vision-preview{height:100%;aspect-ratio:auto;border-radius:0;background:none;box-shadow:none}
+.muse-book::before{content:"";position:absolute;inset:0 auto 0 0;width:7%;z-index:2;border-radius:3px 0 0 3px;pointer-events:none;background:linear-gradient(90deg,rgba(0,0,0,.28),rgba(255,255,255,.18) 45%,rgba(0,0,0,.12) 70%,transparent)}
+.muse-book::after{content:"";position:absolute;inset:0;z-index:2;border-radius:inherit;pointer-events:none;background:linear-gradient(115deg,transparent 40%,rgba(255,255,255,.18) 50%,transparent 60%)}
+@media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) .muse-vision-card:hover .muse-book{transform:perspective(900px) rotateY(-14deg) translateX(4%)}}
+/* The reader */
+.muse-reader{position:fixed;inset:0;z-index:1000;display:grid;grid-template-rows:auto minmax(0,1fr) auto;background:radial-gradient(120% 90% at 50% 30%,#2a2238,#120e18);color:#f4eefb}
+.muse-reader-head{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;padding:max(12px,env(safe-area-inset-top)) 18px 10px}
+.muse-reader-head h2{flex:1 1 auto;margin:0;font:italic 500 clamp(1.1rem,2.4vw,1.5rem)/1.2 var(--font-editorial);color:#fff}
+.muse-reader-head .muse-button{background:rgba(255,255,255,.1);color:#fff;border-color:rgba(255,255,255,.22)}
+.muse-reader-where{font:500 .8rem/1.2 var(--font-ui);color:rgba(244,238,251,.75)}
+.muse-reader-contents{position:relative}
+.muse-reader-index{position:absolute;right:0;top:calc(100% + 6px);z-index:3;width:min(300px,86vw);max-height:60vh;overflow:auto;margin:0;padding:6px;list-style:none;border-radius:14px;background:#fbf8ff;color:#2a2135;box-shadow:0 20px 40px -12px rgba(0,0,0,.6)}
+.muse-reader-index button{display:flex;gap:10px;width:100%;padding:9px 10px;border:0;border-radius:9px;background:none;color:inherit;font:500 .9rem/1.3 var(--font-ui);text-align:left;cursor:pointer}
+.muse-reader-index button:hover,.muse-reader-index button[aria-current]{background:#efe6fb}
+.muse-reader-index span{min-width:18px;color:#8b7c9e;font-variant-numeric:tabular-nums}
+.muse-reader-stage{display:flex;align-items:center;justify-content:center;gap:10px;min-height:0;padding:0 10px}
+.muse-reader-turn{flex:none;width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff;font-size:1.6rem;line-height:1;cursor:pointer}
+.muse-reader-turn:disabled{opacity:.25;cursor:default}
+.muse-reader-spread{position:relative;display:flex;filter:drop-shadow(0 30px 40px rgba(0,0,0,.55))}
+.muse-reader-page{margin:0;line-height:0;background:#fff}
+.muse-reader-page[data-side=left]{border-radius:4px 0 0 4px;overflow:hidden}
+.muse-reader-page[data-side=right]{border-radius:0 4px 4px 0;overflow:hidden}
+.muse-reader-page[data-cover]{border-radius:3px 8px 8px 3px;overflow:hidden}
+.muse-reader-blank{background:transparent}
+.muse-reader-spread[data-two]::after{content:"";position:absolute;top:0;bottom:0;left:50%;width:40px;translate:-50% 0;pointer-events:none;background:linear-gradient(90deg,transparent,rgba(30,15,40,.18) 42%,rgba(30,15,40,.32) 50%,rgba(30,15,40,.18) 58%,transparent)}
+.muse-reader-foot{margin:0;padding:10px 0 max(12px,env(safe-area-inset-bottom));text-align:center;color:rgba(244,238,251,.6)}
+@media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]){
+ .muse-reader-spread[data-dir=next]{animation:muse-turn-next .5s cubic-bezier(.2,.8,.2,1)}
+ .muse-reader-spread[data-dir=prev]{animation:muse-turn-prev .5s cubic-bezier(.2,.8,.2,1)}
+}}
+@keyframes muse-turn-next{from{opacity:0;transform:translateX(24px) perspective(1600px) rotateY(-6deg)}to{opacity:1;transform:none}}
+@keyframes muse-turn-prev{from{opacity:0;transform:translateX(-24px) perspective(1600px) rotateY(6deg)}to{opacity:1;transform:none}}
+@container muse-content (max-width:640px){.muse-vision-formats{grid-template-columns:1fr}.muse-cover-presets-new{grid-template-columns:repeat(3,minmax(0,1fr))}}

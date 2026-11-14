@@ -24,6 +24,7 @@ export type InspectorActions = {
   crop: () => void; makeSticker: () => void; addBacking: () => void;
   expand: (by: Expand) => void; resize: (w: number, h: number, anchor: { x: 0 | 0.5 | 1; y: 0 | 0.5 | 1 }) => void; preset: (size: keyof typeof boardSizes) => void;
   background: (b: Background) => void; exportImage: (type: "image/png" | "image/jpeg") => void; exporting: boolean;
+  vision: { isBook: boolean; pageCount: number; pageLabel: string; toBook: () => void; toBoard: () => void; combine: () => void; combining: boolean; exportPdf: () => void; pdfProgress: string; read: () => void };
 };
 type Props = {
   onClose?: () => void;
@@ -294,9 +295,9 @@ function BoardSection({ board, actions: a, palette, uploads, requestUpload }: Pr
   const c = canvasOf(board), [step, setStep] = useState(400);
   const bgPaint: Paint = board.background.kind === "solid" ? { kind: "solid", color: board.background.color } : board.background.kind === "gradient" ? { kind: "gradient", gradient: board.background.gradient } : board.background.paint;
   return <>
-    <header className="muse-vision-inspector-head"><p className="editor-label">The board</p><p className="small-label">Select a piece to style it. Shift-click or drag a box (Select) to pick several.</p></header>
-    <Section title="Board size">
-      <p className="small-label">Board size is the artwork itself; zoom only changes your view. Adding space never moves, scales or stretches anything already on the board.</p>
+    <header className="muse-vision-inspector-head"><p className="editor-label">{a.vision.isBook ? a.vision.pageLabel.replace(/^This page/, "This page") : "The board"}</p><p className="small-label">Select a piece to style it, or right-click it. Shift-click or drag a box (Select) to pick several.</p></header>
+    <Section title={a.vision.isBook ? "Page size" : "Board size"} open={!a.vision.isBook}>
+      <p className="small-label">{a.vision.isBook ? "Every page in this book shares one size. Adding space shifts every page’s pieces together, so nothing moves on its page; zoom only changes your view." : "Board size is the artwork itself; zoom only changes your view. Adding space never moves, scales or stretches anything already on the board."}</p>
       <div className="muse-vision-actions" role="group" aria-label="Add space">
         <label className="muse-vision-field">Add<select value={step} onChange={(e) => setStep(Number(e.target.value))}>{[100, 200, 400, 800, 1200].map((n) => <option key={n} value={n}>{n}</option>)}</select></label>
         <button type="button" className="muse-button" onClick={() => a.expand({ left: step })}>← Left</button>
@@ -314,11 +315,24 @@ function BoardSection({ board, actions: a, palette, uploads, requestUpload }: Pr
         onChange={(p) => { if (!p) return; a.background(p.kind === "solid" ? { kind: "solid", color: p.color } : p.kind === "gradient" ? { kind: "gradient", gradient: p.gradient } : { kind: "pattern", paint: p }); }} />
       <p className="small-label">The board keeps its own colors in every Muse theme.</p>
     </Section>
+    <Section title={a.vision.isBook ? "Book" : "Format"} open={a.vision.isBook}>
+      {a.vision.isBook ? <>
+        <p className="small-label">{a.vision.pageCount} of 8 pages. Open, rename and reorder them from Pages in the toolbar.</p>
+        <div className="muse-vision-actions"><button type="button" className="muse-button button-primary" onClick={a.vision.read}>Read the book</button></div>
+        {a.vision.pageCount === 1
+          ? <><button type="button" className="muse-button" onClick={a.vision.toBoard}>Convert to a Vision Board</button><p className="small-label">The page becomes the board, exactly as it is. You can turn it back into a book any time.</p></>
+          : <><button type="button" className="muse-button" disabled={a.vision.combining} onClick={a.vision.combine}>{a.vision.combining ? "Combining…" : "Combine pages into one board"}</button><p className="small-label">Makes a new Vision Board with every page side by side, still fully editable. This book stays as it is.</p></>}
+      </> : <>
+        <button type="button" className="muse-button" onClick={a.vision.toBook}>Convert to a Book</button>
+        <p className="small-label">This board becomes page 1 of a book, exactly as it is; add a cover and more pages. You can turn a one-page book back into a board.</p>
+      </>}
+    </Section>
     <Section title="Export">
-      <p className="small-label">A full-quality image of the board (pieces resting off the board are left out).</p>
+      <p className="small-label">{a.vision.isBook ? `${a.vision.pageLabel} as a full-quality image, or the whole book (cover and pages, in order) as a PDF.` : "A full-quality image of the board (pieces resting off the board are left out)."}</p>
       <div className="muse-vision-actions">
-        <button type="button" className="muse-button button-primary" disabled={a.exporting} onClick={() => a.exportImage("image/png")}>{a.exporting ? "Preparing…" : "PNG"}</button>
+        <button type="button" className="muse-button button-primary" disabled={a.exporting} onClick={() => a.exportImage("image/png")}>{a.exporting && !a.vision.pdfProgress ? "Preparing…" : "PNG"}</button>
         <button type="button" className="muse-button" disabled={a.exporting} onClick={() => a.exportImage("image/jpeg")}>JPEG</button>
+        {a.vision.isBook && <button type="button" className="muse-button" disabled={a.exporting} onClick={a.vision.exportPdf}>{a.vision.pdfProgress || "Whole book (PDF)"}</button>}
       </div>
     </Section>
   </>;

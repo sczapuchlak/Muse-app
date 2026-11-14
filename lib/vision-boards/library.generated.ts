@@ -741,6 +741,176 @@ export const libraryItems: LibraryItem[] = [
   ]
  },
  {
+  "id": "pattern/journal-stationery/blank-paper",
+  "kind": "pattern",
+  "category": "journal-stationery",
+  "name": "Blank paper",
+  "src": "/vision-assets/pattern/journal-stationery/blank-paper.svg",
+  "thumb": "/vision-assets/pattern/journal-stationery/blank-paper.thumb.webp",
+  "w": 240,
+  "h": 240,
+  "alpha": false,
+  "tileable": true,
+  "tags": [
+   "blank",
+   "paper",
+   "plain"
+  ]
+ },
+ {
+  "id": "pattern/journal-stationery/college-ruled",
+  "kind": "pattern",
+  "category": "journal-stationery",
+  "name": "College-ruled",
+  "src": "/vision-assets/pattern/journal-stationery/college-ruled.svg",
+  "thumb": "/vision-assets/pattern/journal-stationery/college-ruled.thumb.webp",
+  "w": 120,
+  "h": 38,
+  "alpha": false,
+  "tileable": true,
+  "tags": [
+   "ruled",
+   "lined",
+   "notebook"
+  ]
+ },
+ {
+  "id": "pattern/journal-stationery/decorative-writing",
+  "kind": "pattern",
+  "category": "journal-stationery",
+  "name": "Decorative writing paper",
+  "src": "/vision-assets/pattern/journal-stationery/decorative-writing.svg",
+  "thumb": "/vision-assets/pattern/journal-stationery/decorative-writing.thumb.webp",
+  "w": 160,
+  "h": 44,
+  "alpha": false,
+  "tileable": true,
+  "tags": [
+   "writing paper",
+   "letter",
+   "floral"
+  ]
+ },
+ {
+  "id": "pattern/journal-stationery/graph-paper",
+  "kind": "pattern",
+  "category": "journal-stationery",
+  "name": "Graph paper",
+  "src": "/vision-assets/pattern/journal-stationery/graph-paper.svg",
+  "thumb": "/vision-assets/pattern/journal-stationery/graph-paper.thumb.webp",
+  "w": 100,
+  "h": 100,
+  "alpha": false,
+  "tileable": true,
+  "tags": [
+   "graph",
+   "engineering",
+   "green"
+  ]
+ },
+ {
+  "id": "pattern/journal-stationery/journal-dots",
+  "kind": "pattern",
+  "category": "journal-stationery",
+  "name": "Dot grid journal",
+  "src": "/vision-assets/pattern/journal-stationery/journal-dots.svg",
+  "thumb": "/vision-assets/pattern/journal-stationery/journal-dots.thumb.webp",
+  "w": 30,
+  "h": 30,
+  "alpha": false,
+  "tileable": true,
+  "tags": [
+   "dot grid",
+   "bullet journal",
+   "dots"
+  ]
+ },
+ {
+  "id": "pattern/journal-stationery/notebook-paper",
+  "kind": "pattern",
+  "category": "journal-stationery",
+  "name": "Notebook paper",
+  "src": "/vision-assets/pattern/journal-stationery/notebook-paper.svg",
+  "thumb": "/vision-assets/pattern/journal-stationery/notebook-paper.thumb.webp",
+  "w": 1600,
+  "h": 40,
+  "alpha": false,
+  "tileable": true,
+  "tags": [
+   "notebook",
+   "margin",
+   "school"
+  ]
+ },
+ {
+  "id": "pattern/journal-stationery/soft-stationery",
+  "kind": "pattern",
+  "category": "journal-stationery",
+  "name": "Soft stationery",
+  "src": "/vision-assets/pattern/journal-stationery/soft-stationery.svg",
+  "thumb": "/vision-assets/pattern/journal-stationery/soft-stationery.thumb.webp",
+  "w": 240,
+  "h": 240,
+  "alpha": false,
+  "tileable": true,
+  "tags": [
+   "stationery",
+   "pastel",
+   "texture"
+  ]
+ },
+ {
+  "id": "pattern/journal-stationery/square-grid",
+  "kind": "pattern",
+  "category": "journal-stationery",
+  "name": "Square grid",
+  "src": "/vision-assets/pattern/journal-stationery/square-grid.svg",
+  "thumb": "/vision-assets/pattern/journal-stationery/square-grid.thumb.webp",
+  "w": 32,
+  "h": 32,
+  "alpha": false,
+  "tileable": true,
+  "tags": [
+   "grid",
+   "squares",
+   "math"
+  ]
+ },
+ {
+  "id": "pattern/journal-stationery/vintage-parchment",
+  "kind": "pattern",
+  "category": "journal-stationery",
+  "name": "Vintage parchment",
+  "src": "/vision-assets/pattern/journal-stationery/vintage-parchment.svg",
+  "thumb": "/vision-assets/pattern/journal-stationery/vintage-parchment.thumb.webp",
+  "w": 260,
+  "h": 260,
+  "alpha": false,
+  "tileable": true,
+  "tags": [
+   "parchment",
+   "aged",
+   "antique"
+  ]
+ },
+ {
+  "id": "pattern/journal-stationery/wide-ruled",
+  "kind": "pattern",
+  "category": "journal-stationery",
+  "name": "Wide-ruled",
+  "src": "/vision-assets/pattern/journal-stationery/wide-ruled.svg",
+  "thumb": "/vision-assets/pattern/journal-stationery/wide-ruled.thumb.webp",
+  "w": 120,
+  "h": 54,
+  "alpha": false,
+  "tileable": true,
+  "tags": [
+   "ruled",
+   "lined",
+   "notebook"
+  ]
+ },
+ {
   "id": "pattern/minimal-editorial/arches",
   "kind": "pattern",
   "category": "minimal-editorial",
@@ -1461,9 +1631,137 @@ export const libraryItems: LibraryItem[] = [
   ]
  },
  {
+  "id": "washi/celestial/gold-constellation-tape",
+  "kind": "washi",
+  "category": "celestial",
+  "name": "Gold constellations",
+  "src": "/vision-assets/washi/celestial/gold-constellation-tape.svg",
+  "thumb": "/vision-assets/washi/celestial/gold-constellation-tape.thumb.webp",
+  "w": 640,
+  "h": 104,
+  "alpha": true,
+  "tileable": false,
+  "tags": [
+   "constellation",
+   "gold"
+  ]
+ },
+ {
+  "id": "washi/celestial/holographic-tape",
+  "kind": "washi",
+  "category": "celestial",
+  "name": "Holographic foil",
+  "src": "/vision-assets/washi/celestial/holographic-tape.svg",
+  "thumb": "/vision-assets/washi/celestial/holographic-tape.thumb.webp",
+  "w": 640,
+  "h": 104,
+  "alpha": true,
+  "tileable": false,
+  "tags": [
+   "holographic",
+   "iridescent"
+  ]
+ },
+ {
+  "id": "washi/celestial/moon-phase-tape",
+  "kind": "washi",
+  "category": "celestial",
+  "name": "Moon phases",
+  "src": "/vision-assets/washi/celestial/moon-phase-tape.svg",
+  "thumb": "/vision-assets/washi/celestial/moon-phase-tape.thumb.webp",
+  "w": 640,
+  "h": 104,
+  "alpha": true,
+  "tileable": false,
+  "tags": [
+   "moon",
+   "lavender"
+  ]
+ },
+ {
+  "id": "washi/celestial/starry-night-tape",
+  "kind": "washi",
+  "category": "celestial",
+  "name": "Starry night",
+  "src": "/vision-assets/washi/celestial/starry-night-tape.svg",
+  "thumb": "/vision-assets/washi/celestial/starry-night-tape.thumb.webp",
+  "w": 640,
+  "h": 104,
+  "alpha": true,
+  "tileable": false,
+  "tags": [
+   "stars",
+   "navy"
+  ]
+ },
+ {
+  "id": "washi/girly/bow-tape",
+  "kind": "washi",
+  "category": "girly",
+  "name": "Little bows",
+  "src": "/vision-assets/washi/girly/bow-tape.svg",
+  "thumb": "/vision-assets/washi/girly/bow-tape.thumb.webp",
+  "w": 640,
+  "h": 104,
+  "alpha": true,
+  "tileable": false,
+  "tags": [
+   "bow",
+   "coquette"
+  ]
+ },
+ {
+  "id": "washi/girly/heart-ribbon-tape",
+  "kind": "washi",
+  "category": "girly",
+  "name": "Heart ribbon",
+  "src": "/vision-assets/washi/girly/heart-ribbon-tape.svg",
+  "thumb": "/vision-assets/washi/girly/heart-ribbon-tape.thumb.webp",
+  "w": 640,
+  "h": 104,
+  "alpha": true,
+  "tileable": false,
+  "tags": [
+   "hearts",
+   "pink"
+  ]
+ },
+ {
+  "id": "washi/girly/lace-scallop-tape",
+  "kind": "washi",
+  "category": "girly",
+  "name": "Lace scallop",
+  "src": "/vision-assets/washi/girly/lace-scallop-tape.svg",
+  "thumb": "/vision-assets/washi/girly/lace-scallop-tape.thumb.webp",
+  "w": 640,
+  "h": 104,
+  "alpha": true,
+  "tileable": false,
+  "tags": [
+   "lace",
+   "white"
+  ]
+ },
+ {
+  "id": "washi/girly/rosebud-tape",
+  "kind": "washi",
+  "category": "girly",
+  "name": "Rosebuds",
+  "src": "/vision-assets/washi/girly/rosebud-tape.svg",
+  "thumb": "/vision-assets/washi/girly/rosebud-tape.thumb.webp",
+  "w": 640,
+  "h": 104,
+  "alpha": true,
+  "tileable": false,
+  "tags": [
+   "rose",
+   "floral"
+  ]
+ },
+ {
   "id": "washi/tape/gold-star-tape",
   "kind": "washi",
-  "category": "tape",
+  "category": "celestial",
   "name": "Gold Star Tape",
   "src": "/vision-assets/washi/tape/gold-star-tape.svg",
   "thumb": "/vision-assets/washi/tape/gold-star-tape.thumb.webp",
@@ -1476,7 +1774,7 @@ export const libraryItems: LibraryItem[] = [
  {
   "id": "washi/tape/pink-gingham-tape",
   "kind": "washi",
-  "category": "tape",
+  "category": "girly",
   "name": "Pink Gingham Tape",
   "src": "/vision-assets/washi/tape/pink-gingham-tape.svg",
   "thumb": "/vision-assets/washi/tape/pink-gingham-tape.thumb.webp",
@@ -1485,5 +1783,69 @@ export const libraryItems: LibraryItem[] = [
   "alpha": true,
   "tileable": false,
   "tags": []
+ },
+ {
+  "id": "washi/whimsical/cherry-tape",
+  "kind": "washi",
+  "category": "whimsical",
+  "name": "Cherries",
+  "src": "/vision-assets/washi/whimsical/cherry-tape.svg",
+  "thumb": "/vision-assets/washi/whimsical/cherry-tape.thumb.webp",
+  "w": 640,
+  "h": 104,
+  "alpha": true,
+  "tileable": false,
+  "tags": [
+   "cherry",
+   "fruit"
+  ]
+ },
+ {
+  "id": "washi/whimsical/confetti-tape",
+  "kind": "washi",
+  "category": "whimsical",
+  "name": "Confetti",
+  "src": "/vision-assets/washi/whimsical/confetti-tape.svg",
+  "thumb": "/vision-assets/washi/whimsical/confetti-tape.thumb.webp",
+  "w": 640,
+  "h": 104,
+  "alpha": true,
+  "tileable": false,
+  "tags": [
+   "confetti",
+   "party"
+  ]
+ },
+ {
+  "id": "washi/whimsical/daisy-tape",
+  "kind": "washi",
+  "category": "whimsical",
+  "name": "Happy daisies",
+  "src": "/vision-assets/washi/whimsical/daisy-tape.svg",
+  "thumb": "/vision-assets/washi/whimsical/daisy-tape.thumb.webp",
+  "w": 640,
+  "h": 104,
+  "alpha": true,
+  "tileable": false,
+  "tags": [
+   "daisy",
+   "flowers"
+  ]
+ },
+ {
+  "id": "washi/whimsical/rainbow-stripe-tape",
+  "kind": "washi",
+  "category": "whimsical",
+  "name": "Rainbow stripes",
+  "src": "/vision-assets/washi/whimsical/rainbow-stripe-tape.svg",
+  "thumb": "/vision-assets/washi/whimsical/rainbow-stripe-tape.thumb.webp",
+  "w": 640,
+  "h": 104,
+  "alpha": true,
+  "tileable": false,
+  "tags": [
+   "rainbow",
+   "stripe"
+  ]
  }
 ];

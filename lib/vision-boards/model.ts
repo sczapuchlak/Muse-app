@@ -71,7 +71,10 @@ export type TextElement = Base & {
   family?: string; weight?: number; letterSpacing?: number; lineHeight?: number;
   /** Solid or gradient letters (overrides `color`), an outline, a drop shadow and a glow. */
   paint?: Paint; stroke?: { color: Hex; width: number }; shadowStyle?: Shadow; glow?: { color: Hex; blur: number };
+  /** Writing elements: a heading level or a paragraph (wraps to its width; resizing changes the width, not the type size). */
+  role?: TextRole;
 };
+export type TextRole = "h1" | "h2" | "h3" | "p";
 export type StickerElement = Base & { kind: "sticker"; sticker: string; color: Hex; paint?: Paint; shadowStyle?: Shadow; finish?: Finish };
 /** A decorative shape: scrapbook paper, a photo backing, a frame, a label. Fill and border can each be any paint. */
 export type ShapeElement = Base & { kind: "shape"; shape: DecorShape; fill?: Paint; stroke?: Stroke; radius?: number; shadowStyle?: Shadow; finish?: Finish; role?: "backing" | "paper" | "frame" };
@@ -79,15 +82,30 @@ export type ShapeElement = Base & { kind: "shape"; shape: DecorShape; fill?: Pai
 export type PieceElement = Base & { kind: "piece"; piece: string; outline?: Outline; finish?: Finish; shadowStyle?: Shadow };
 export type BoardElement = ImageElement | TextElement | StickerElement | ShapeElement | PieceElement;
 
+/**
+ * Visions (#187 follow-up): a Vision is a freeform board or a Book. A Book is a cover (preset + customization) and up
+ * to eight content pages, each an ordinary board canvas (its own background and elements) at the book's page size.
+ * While a Book is open, `elements`/`background` mirror the page being edited; `pages` is the saved truth.
+ */
+export type BoardFormat = "board" | "book";
+export const MAX_PAGES = 8;
+export type BookPage = { id: string; title: string; background: Background; elements: BoardElement[] };
+export const coverPresets = ["classic", "celestial", "romantic", "editorial", "whimsical"] as const;
+export type CoverPreset = typeof coverPresets[number];
+export type BookCover = { preset: CoverPreset; title: string; subtitle?: string; caption?: string; palette: number; family?: string; image?: Asset; pattern?: PatternPaint };
+
 export type VisionBoard = {
   id: string; title: string; description: string; theme: string;
   period: BoardPeriod | null; periodStart: string | null; size: BoardSize; canvas?: Canvas;
   background: Background; elements: BoardElement[];
+  format?: BoardFormat; pages?: BookPage[]; cover?: BookCover;
   revision: number; createdAt: string; updatedAt: string;
 };
+export const isBook = (b: Pick<VisionBoard, "format">) => b.format === "book";
 
 export const MAX_ELEMENTS = 300;
-export const LIMITS = { title: 120, description: 2000, theme: 60, text: 1000 } as const;
+/** `text` allows a few paragraphs of writing (Paragraph elements). */
+export const LIMITS = { title: 120, description: 2000, theme: 60, text: 4000, pageTitle: 80 } as const;
 export const defaultBackground: Background = { kind: "gradient", gradient: { colors: ["#fde2e4", "#e2ece9", "#fff1e6"], angle: 135 } };
 export const backgroundPresets: { id: string; label: string; background: Background }[] = [
   { id: "petal", label: "Petal", background: defaultBackground },
@@ -156,6 +174,7 @@ function parseElement(v: unknown): BoardElement | undefined {
       ...(typeof o.letterSpacing === "number" ? { letterSpacing: num(o.letterSpacing, -0.2, 1, 0) } : {}), ...(typeof o.lineHeight === "number" ? { lineHeight: num(o.lineHeight, 0.7, 3, 1.2) } : {}),
       ...(paint ? { paint } : {}), ...(st && typeof st === "object" && optHex(st.color) ? { stroke: { color: optHex(st.color)!, width: num(st.width, 0.5, 40, 2) } } : {}),
       ...(shadowStyle ? { shadowStyle } : {}), ...(glow && typeof glow === "object" && optHex(glow.color) ? { glow: { color: optHex(glow.color)!, blur: num(glow.blur, 1, 120, 24) } } : {}),
+      ...((["h1", "h2", "h3", "p"] as const).find((r) => r === o.role) ? { role: o.role as TextRole } : {}),
     };
   }
   if (o.kind === "sticker") {
@@ -180,6 +199,29 @@ function parseOutline(v: unknown): Outline | undefined {
   if (!v || typeof v !== "object") return undefined;
   const o = v as Record<string, unknown>, paint = parsePaint(o.paint);
   return { color: hex(o.color, "#ffffff"), width: num(o.width, 2, 60, 10), ...(paint ? { paint } : {}) };
+}
+/** Book pages: up to eight, each with a title, background and elements (unknown entries are dropped). */
+export function parsePages(v: unknown): BookPage[] {
+  const out: BookPage[] = [], seen = new Set<string>();
+  for (const raw of Array.isArray(v) ? v : []) {
+    if (!raw || typeof raw !== "object") continue;
+    const o = raw as Record<string, unknown>;
+    if (!idOk(o.id) || seen.has(o.id)) continue;
+    seen.add(o.id);
+    out.push({ id: o.id, title: str(o.title, LIMITS.pageTitle).trim() || `Page ${out.length + 1}`, background: parseBackground(o.background), elements: parseElements(o.elements) });
+    if (out.length >= MAX_PAGES) break;
+  }
+  return out;
+}
+export function parseCover(v: unknown, fallbackTitle = ""): BookCover {
+  const o = v && typeof v === "object" ? v as Record<string, unknown> : {};
+  const preset = coverPresets.find((p) => p === o.preset) ?? "classic", family = typeof o.family === "string" && /^[A-Za-z0-9 ]{2,48}$/.test(o.family) ? o.family : undefined;
+  const image = parseAsset(o.image), pattern = parsePaint(o.pattern);
+  return {
+    preset, title: str(o.title, LIMITS.title) || fallbackTitle, palette: Math.round(num(o.palette, 0, 9, 0)),
+    ...(str(o.subtitle, 120) ? { subtitle: str(o.subtitle, 120) } : {}), ...(str(o.caption, 60) ? { caption: str(o.caption, 60) } : {}),
+    ...(family ? { family } : {}), ...(image ? { image } : {}), ...(pattern?.kind === "pattern" ? { pattern } : {}),
+  };
 }
 export function parseElements(v: unknown): BoardElement[] {
   const seen = new Set<string>(), out: BoardElement[] = [];
@@ -277,15 +319,15 @@ export function cropRect(frame: { w: number; h: number }, image: { width: number
 }
 
 /** Image paths a set of boards still use (for deciding which files are safe to remove). */
-export function usedPaths(boards: (Pick<VisionBoard, "elements"> & { background?: Background })[]): Set<string> {
+export function usedPaths(boards: (Pick<VisionBoard, "elements"> & { background?: Background; pages?: BookPage[]; cover?: BookCover })[]): Set<string> {
   const out = new Set<string>();
-  for (const b of boards) { collectPaths(b.elements, out); if (b.background) collectPaths(b.background, out); }
+  for (const b of boards) { collectPaths(b.elements, out); if (b.background) collectPaths(b.background, out); if (b.pages) collectPaths(b.pages, out); if (b.cover) collectPaths(b.cover, out); }
   return out;
 }
 
 // ---------- Undo / redo ----------
 /** One undo step. `size`/`canvas` are recorded too, so adding board space undoes like any other edit. */
-export type Snapshot = { elements: BoardElement[]; background: Background; size?: BoardSize; canvas?: Canvas };
+export type Snapshot = { elements: BoardElement[]; background: Background; size?: BoardSize; canvas?: Canvas; pages?: BookPage[]; page?: number; cover?: BookCover };
 export type History = { past: Snapshot[]; future: Snapshot[] };
 export const HISTORY_LIMIT = 80;
 export const emptyHistory = (): History => ({ past: [], future: [] });

@@ -26,7 +26,11 @@ export function useAppleTouch(): boolean {
  * The canvas is not a native text field. This action reads copied image bytes directly,
  * with the browser's clipboard permission prompt when required.
  */
-export function CutoutTools({ disabled, onFiles, onError, onOpened, showGuide = true }: { disabled: boolean; onFiles: (files: File[]) => void; onError: (message: string) => void; onOpened?: () => void; showGuide?: boolean }) {
+/**
+ * `showPaste`: only on touch devices. On a Mac, ⌘V (and right-click → Paste where the browser allows it) pastes in one
+ * step; a Paste button there makes Safari add its own Paste confirmation on top (a second paste).
+ */
+export function CutoutTools({ disabled, onFiles, onError, onOpened, showGuide = true, showPaste = true }: { disabled: boolean; onFiles: (files: File[]) => void; onError: (message: string) => void; onOpened?: () => void; showGuide?: boolean; showPaste?: boolean }) {
   const [open, setOpen] = useState(false);
   const [reading, setReading] = useState(false);
   const anchor = useRef<HTMLButtonElement>(null);
@@ -38,7 +42,7 @@ export function CutoutTools({ disabled, onFiles, onError, onOpened, showGuide = 
     finally { setReading(false); }
   };
   return <>
-    <button type="button" className="muse-button" disabled={disabled || reading} onClick={() => void paste()}>{reading ? "Reading clipboard…" : "Paste"}</button>
+    {showPaste && <button type="button" className="muse-button" disabled={disabled || reading} onClick={() => void paste()}>{reading ? "Reading clipboard…" : "Paste"}</button>}
     {showGuide && <>
     <button ref={anchor} type="button" className="text-button muse-vision-cutout-trigger" aria-expanded={open} aria-controls="vision-cutout-help" onClick={() => { setOpen((o) => !o); onOpened?.(); }}>Make a cutout</button>
     <GlassPopover id="vision-cutout-help" label="Make a cutout with iPhone Photos" title="Make a cutout" open={open} anchorRef={anchor} onClose={() => setOpen(false)} width={320}>

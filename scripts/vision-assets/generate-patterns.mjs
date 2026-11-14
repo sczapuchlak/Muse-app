@@ -427,11 +427,89 @@ const add = (cat, name, label, tags, body, cover = false) => out.push({ cat, nam
   add("minimal-editorial", "arches", "Editorial arches", ["arch", "geometric", "terracotta"], svg(w, h, "#f4ece2", `<path d="M8 60V30A22 22 0 0 1 52 30V60" fill="none" stroke="#c8795d" stroke-width="3"/><path d="M18 60V32A12 12 0 0 1 42 32V60" fill="none" stroke="#e3b9a4" stroke-width="2"/>`));
 }
 
+// ---------- Journal & Stationery (fills you can lay under writing, or across a whole page) ----------
+{
+  const w = 240, h = 240;
+  add("journal-stationery", "blank-paper", "Blank paper", ["blank", "paper", "plain"], svg(w, h, "#fdfbf6", `<rect width="${w}" height="${h}" filter="url(#n)" opacity=".35"/>`, turbulence("n", "0.8", 2, 12, "0 0 0 0 .78  0 0 0 0 .74  0 0 0 0 .68  0 0 0 1 -.62")));
+}
+{
+  const w = 120, h = 54;
+  add("journal-stationery", "wide-ruled", "Wide-ruled", ["ruled", "lined", "notebook"], svg(w, h, "#fefdf9", `<path d="M0 53.5H120" stroke="#9cb9d8" stroke-width="1.2"/>`));
+}
+{
+  const w = 120, h = 38;
+  add("journal-stationery", "college-ruled", "College-ruled", ["ruled", "lined", "notebook"], svg(w, h, "#fefdf9", `<path d="M0 37.5H120" stroke="#a9c3df" stroke-width="1"/>`));
+}
+{
+  const w = 30, h = 30;
+  add("journal-stationery", "journal-dots", "Dot grid journal", ["dot grid", "bullet journal", "dots"], svg(w, h, "#fbf9f4", `<circle cx="15" cy="15" r="1.3" fill="#a7a093"/>`));
+}
+{
+  const w = 32, h = 32;
+  add("journal-stationery", "square-grid", "Square grid", ["grid", "squares", "math"], svg(w, h, "#fbfcfe", `<path d="M0 .5H32M.5 0V32" stroke="#bfd0e6" stroke-width="1"/>`));
+}
+{
+  const w = 100, h = 100;
+  let b = "";
+  for (let i = 0; i < 10; i++) b += `<path d="M0 ${i * 10 + 0.5}H100M${i * 10 + 0.5} 0V100" stroke="#b9dcc4" stroke-width="${i === 0 ? 1.4 : 0.6}"/>`;
+  add("journal-stationery", "graph-paper", "Graph paper", ["graph", "engineering", "green"], svg(w, h, "#f7fbf6", b));
+}
+{
+  const w = 1600, h = 40;
+  add("journal-stationery", "notebook-paper", "Notebook paper", ["notebook", "margin", "school"], svg(w, h, "#fffefb", `<path d="M0 39.5H1600" stroke="#a9c3df" stroke-width="1"/><path d="M120 0V40" stroke="#e8a3a8" stroke-width="1.6"/><path d="M126 0V40" stroke="#e8a3a8" stroke-width=".6"/>`));
+}
+{
+  const w = 260, h = 260;
+  add("journal-stationery", "vintage-parchment", "Vintage parchment", ["parchment", "aged", "antique"], svg(w, h, "#f1e2c2", `<rect width="${w}" height="${h}" filter="url(#n)" opacity=".7"/><rect width="${w}" height="${h}" filter="url(#m)" opacity=".35"/>`, turbulence("n", "0.012", 4, 31, "0 0 0 0 .63  0 0 0 0 .48  0 0 0 0 .26  0 0 0 1.1 -.35") + turbulence("m", "0.6", 2, 4, "0 0 0 0 .55  0 0 0 0 .42  0 0 0 0 .25  0 0 0 1 -.6")));
+}
+{
+  const w = 240, h = 240;
+  add("journal-stationery", "soft-stationery", "Soft stationery", ["stationery", "pastel", "texture"], svg(w, h, "#f9f1f4", `<rect width="${w}" height="${h}" filter="url(#n)" opacity=".5"/><rect width="${w}" height="${h}" filter="url(#f)" opacity=".4"/>`, turbulence("n", "0.02", 3, 17, "0 0 0 0 .96  0 0 0 0 .86  0 0 0 0 .9  0 0 0 1 -.4") + turbulence("f", "0.03 0.7", 2, 7, "0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1 -.55")));
+}
+{
+  const w = 160, h = 44;
+  add("journal-stationery", "decorative-writing", "Decorative writing paper", ["writing paper", "letter", "floral"], svg(w, h, "#fffaf6", `<path d="M0 43.5H160" stroke="#e3b8c6" stroke-width="1" stroke-dasharray="1 3" stroke-linecap="round"/>` + at(w, h, 80, 22, 5, sparkle("#f0c9d6", 0.32))));
+}
+
+// ---------- Washi tape (strips with torn ends, a little translucent, a satin sheen) ----------
+const tapes = [];
+/** A washi strip: `fill` is the tape colour, `tile` (w, h, markup) repeats along it. */
+function washi(cat, name, label, tags, base, tile, opts = {}) {
+  const W = 640, H = 104, r = rng(name.length * 977 + W), edge = (x0, dir) => { let d = ""; for (let y = 0; y <= H; y += 8) d += `L${f(x0 + dir * (r() * 7))} ${y}`; return d; };
+  const outline = `M10 0${edge(W - 10, 1).replace(/^L[^L]*/, `L${W - 10} 0`)}L${W - 10} ${H}${edge(10, -1).split("L").reverse().filter(Boolean).map((p) => `L${p}`).join("")}Z`;
+  const defs = `<clipPath id="t"><path d="${outline}"/></clipPath><pattern id="m" width="${tile.w}" height="${tile.h}" patternUnits="userSpaceOnUse" y="${f((H - tile.h * Math.round(H / tile.h)) / 2)}">${tile.body}</pattern><linearGradient id="sh" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".28"/><stop offset=".35" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".06"/></linearGradient>`;
+  const body = `<g clip-path="url(#t)" opacity="${opts.opacity ?? 0.9}"><rect width="${W}" height="${H}" fill="${base}"/><rect width="${W}" height="${H}" fill="url(#m)"/><rect width="${W}" height="${H}" fill="url(#sh)"/></g>`;
+  tapes.push({ cat, name, label, tags, svg: svg(W, H, "", body, defs) });
+}
+const T = (w, h, body) => ({ w, h, body });
+// Girly
+washi("girly", "heart-ribbon-tape", "Heart ribbon", ["hearts", "pink"], "#ffd3e2", T(52, 52, at(52, 52, 13, 13, 8, heart("#ff7aa8", 0.5)) + at(52, 52, 39, 39, 8, heart("#ffffff", 0.45))));
+washi("girly", "bow-tape", "Little bows", ["bow", "coquette"], "#fbe3ec", T(64, 104, at(64, 104, 32, 52, 16, bow("#e98bb0", "#d86c98"), 0, 0.9)));
+washi("girly", "rosebud-tape", "Rosebuds", ["rose", "floral"], "#fff2ea", T(70, 70, at(70, 70, 20, 20, 12, rosebud("#f28fa8", "#c9536f", "#8fb996"), 20, 0.85) + at(70, 70, 55, 55, 12, rosebud("#f6b0bf", "#c9536f", "#8fb996"), -30, 0.75)));
+washi("girly", "lace-scallop-tape", "Lace scallop", ["lace", "white"], "#f7c9d8", T(26, 104, `<path d="M0 22A13 13 0 0 0 26 22V0H0Z" fill="#ffffff" opacity=".9"/><path d="M0 82A13 13 0 0 1 26 82V104H0Z" fill="#ffffff" opacity=".9"/><circle cx="13" cy="52" r="3" fill="#ffffff"/><circle cx="13" cy="36" r="1.4" fill="#ffffff"/><circle cx="13" cy="68" r="1.4" fill="#ffffff"/>`));
+// Celestial
+washi("celestial", "starry-night-tape", "Starry night", ["stars", "navy"], "#1d2350", T(80, 104, at(80, 104, 20, 26, 8, sparkle("#f6e7b4", 0.6)) + at(80, 104, 60, 74, 8, sparkle("#f6e7b4", 0.45)) + `<circle cx="48" cy="20" r="1.2" fill="#fff"/><circle cx="12" cy="80" r="1" fill="#fff"/><circle cx="70" cy="44" r=".9" fill="#fff"/>`), { opacity: 0.95 });
+washi("celestial", "moon-phase-tape", "Moon phases", ["moon", "lavender"], "#cbbdf2", T(60, 104, at(60, 104, 30, 52, 12, crescent("#fdf6e3", 13), -20) + `<circle cx="8" cy="20" r="1.6" fill="#fdf6e3"/><circle cx="52" cy="84" r="1.6" fill="#fdf6e3"/>`));
+washi("celestial", "gold-constellation-tape", "Gold constellations", ["constellation", "gold"], "#2a2547", T(150, 104, `<path d="M14 30 40 18 66 40 92 26M100 70 124 58 140 82" fill="none" stroke="#d9b45a" stroke-width="1" opacity=".8"/>${[[14, 30], [40, 18], [66, 40], [92, 26], [100, 70], [124, 58], [140, 82]].map(([x, y]) => at(150, 104, x, y, 5, sparkle("#f2d38b", 0.3))).join("")}`), { opacity: 0.95 });
+washi("celestial", "holographic-tape", "Holographic foil", ["holographic", "iridescent"], "url(#holo)", T(40, 104, `<path d="M0 0 40 104M-20 0 20 104M20 0 60 104" stroke="#ffffff" stroke-width="1" opacity=".35"/>`), { opacity: 0.88 });
+// Whimsical
+washi("whimsical", "rainbow-stripe-tape", "Rainbow stripes", ["rainbow", "stripe"], "#ffffff", T(84, 104, ["#ff8fb1", "#ffc56b", "#ffe680", "#9be3b4", "#8fc8ff", "#c3a6ff"].map((c, i) => `<rect x="${i * 14}" width="14" height="104" fill="${c}"/>`).join("")));
+washi("whimsical", "daisy-tape", "Happy daisies", ["daisy", "flowers"], "#bfe3f5", T(72, 104, at(72, 104, 22, 34, 14, daisy("#ffffff", "#f6c453", 10, 13)) + at(72, 104, 56, 76, 12, daisy("#ffe0ec", "#f6c453", 9, 10))));
+washi("whimsical", "cherry-tape", "Cherries", ["cherry", "fruit"], "#fff0f3", T(64, 104, at(64, 104, 32, 52, 16, cherry("#e0313f", "#6b8e3d", "#7cb259"), 10, 1.1)));
+washi("whimsical", "confetti-tape", "Confetti", ["confetti", "party"], "#fff8e8", T(60, 104, scatter(60, 104, 12, 14, 5).map((q, i) => at(60, 104, q.x, q.y, 5, `<rect x="-3.5" y="-1.1" width="7" height="2.2" rx="1.1" fill="${["#ff6b9a", "#ffc94d", "#5ad1c7", "#8f7bff"][i % 4]}"/>`, q.a * 180)).join("")));
+for (const t of tapes) t.svg = t.svg.replace("<defs>", `<defs><linearGradient id="holo" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffc6ec"/><stop offset=".3" stop-color="#c9b8ff"/><stop offset=".55" stop-color="#a8f0ff"/><stop offset=".8" stop-color="#c8ffe4"/><stop offset="1" stop-color="#ffe2c4"/></linearGradient>`);
+
 // ---------- Write ----------
 for (const p of out) {
   const dir = join(OUT, p.cat); mkdirSync(dir, { recursive: true });
   writeFileSync(join(dir, `${p.name}.svg`), p.svg);
   writeFileSync(join(dir, `${p.name}.json`), JSON.stringify({ label: p.label, tags: p.tags, ...(p.cover ? { tileable: false } : {}) }) + "\n");
 }
+for (const t of tapes) {
+  const dir = join(root, "assets-src/vision/washi", t.cat); mkdirSync(dir, { recursive: true });
+  writeFileSync(join(dir, `${t.name}.svg`), t.svg);
+  writeFileSync(join(dir, `${t.name}.json`), JSON.stringify({ label: t.label, tags: t.tags }) + "\n");
+}
+console.log(`Wrote ${tapes.length} washi tapes.`);
 const counts = {}; for (const p of out) counts[p.cat] = (counts[p.cat] ?? 0) + 1;
 console.log(`Wrote ${out.length} patterns:`, counts);

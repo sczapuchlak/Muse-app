@@ -149,11 +149,12 @@ test('copy and paste: pieces get fresh ids; styles paste only what a kind unders
 
 test('library: generated registry, stable ids, a curated pattern collection and test assets for other kinds',()=>{
  const items=L.allLibraryItems();
- for(const k of L.libraryKinds.map(k=>k.id).filter(k=>k!=='pattern')){const n=items.filter(i=>i.kind===k).length;assert.ok(n>=2&&n<=6,`${k}: ${n}`);}
+ for(const k of L.libraryKinds.map(k=>k.id).filter(k=>k!=='pattern'&&k!=='washi')){const n=items.filter(i=>i.kind===k).length;assert.ok(n>=2&&n<=6,`${k}: ${n}`);}
+ const washi=items.filter(i=>i.kind==='washi');assert.ok(washi.length>=12,'a real washi collection');for(const c of ['girly','celestial','whimsical'])assert.ok(washi.filter(i=>i.category===c).length>=4,c);
  const fills=items.filter(i=>i.kind==='pattern'||i.kind==='texture');
- assert.ok(fills.length>=60&&fills.length<=90,`about 60–80 patterns (${fills.length})`);
+ assert.ok(fills.length>=60&&fills.length<=100,`about 60–80 patterns plus stationery (${fills.length})`);
  for(const c of L.fillCategories)assert.ok(fills.filter(i=>i.category===c.id).length>=6,`${c.label} has a full set`);
- assert.deepEqual(L.fillCategoryList().slice(0,10),L.fillCategories.map(c=>c.id),'curated categories browse in order');
+ assert.deepEqual(L.fillCategoryList().slice(0,L.fillCategories.length),L.fillCategories.map(c=>c.id),'curated categories browse in order');
  assert.equal(L.categoryLabel('girly-romantic'),'Girly & Romantic');
  assert.equal(L.libraryItem('pattern/classic/gingham').category,'girly-romantic','a sidecar files an item under a category without changing its id');
  for(const i of fills.filter(i=>i.src.endsWith('.svg'))){const svg=readFileSync(resolve(root,'public'+i.src),'utf8');assert.match(svg,/<svg[^>]*width="\d+"[^>]*height="\d+"/,`${i.id} has intrinsic size (canvas patterns need it)`);assert.doesNotMatch(svg,/https?:\/\/(?!www\.w3\.org)/,`${i.id} references nothing external`);assert.ok(svg.length<40000,`${i.id} stays small`);}

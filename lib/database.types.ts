@@ -2602,14 +2602,14 @@ isOneToOne: false
                   ]
                 },"vision_boards": {
                   Row: {
-                    "asset_paths": (string)[],"background": NonNullable<Json>,"canvas_h": number | null,"canvas_w": number | null,"created_at": string,"description": string | null,"elements": NonNullable<Json>,"id": string,"period": string | null,"period_start": string | null,"revision": number,"size": string,"theme": string | null,"title": string,"updated_at": string,"user_id": string
+                    "asset_paths": (string)[],"background": NonNullable<Json>,"canvas_h": number | null,"canvas_w": number | null,"cover": Json | null,"created_at": string,"description": string | null,"elements": NonNullable<Json>,"format": string,"id": string,"pages": Json | null,"period": string | null,"period_start": string | null,"revision": number,"size": string,"theme": string | null,"title": string,"updated_at": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "asset_paths"?: (string)[],"background"?: NonNullable<Json>,"canvas_h"?: number | null,"canvas_w"?: number | null,"created_at"?: string,"description"?: string | null,"elements"?: NonNullable<Json>,"id"?: string,"period"?: string | null,"period_start"?: string | null,"revision"?: number,"size"?: string,"theme"?: string | null,"title": string,"updated_at"?: string,"user_id"?: string
+                    "asset_paths"?: (string)[],"background"?: NonNullable<Json>,"canvas_h"?: number | null,"canvas_w"?: number | null,"cover"?: Json | null,"created_at"?: string,"description"?: string | null,"elements"?: NonNullable<Json>,"format"?: string,"id"?: string,"pages"?: Json | null,"period"?: string | null,"period_start"?: string | null,"revision"?: number,"size"?: string,"theme"?: string | null,"title": string,"updated_at"?: string,"user_id"?: string
                   }
                   Update: {
-                    "asset_paths"?: (string)[],"background"?: NonNullable<Json>,"canvas_h"?: number | null,"canvas_w"?: number | null,"created_at"?: string,"description"?: string | null,"elements"?: NonNullable<Json>,"id"?: string,"period"?: string | null,"period_start"?: string | null,"revision"?: number,"size"?: string,"theme"?: string | null,"title"?: string,"updated_at"?: string,"user_id"?: string
+                    "asset_paths"?: (string)[],"background"?: NonNullable<Json>,"canvas_h"?: number | null,"canvas_w"?: number | null,"cover"?: Json | null,"created_at"?: string,"description"?: string | null,"elements"?: NonNullable<Json>,"format"?: string,"id"?: string,"pages"?: Json | null,"period"?: string | null,"period_start"?: string | null,"revision"?: number,"size"?: string,"theme"?: string | null,"title"?: string,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
                     

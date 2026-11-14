@@ -5,7 +5,10 @@ import { MuseChoiceMenu } from "../../MuseChoiceMenu";
 import { MuseSegmented } from "../../design/MuseSegmented";
 import { customGradientCss } from "@/lib/appearance-values";
 import { paintCss } from "./paintCss";
-import { backgroundPresets, boardFieldsValid, boardPeriods, boardSizes, LIMITS, periodLabel, periodStartFor, type Background, type BoardPeriod, type BoardSize, type VisionBoard } from "@/lib/vision-boards/model";
+import { backgroundPresets, boardFieldsValid, boardPeriods, boardSizes, canvasOf, coverPresets, LIMITS, periodLabel, periodStartFor, type Background, type BoardPeriod, type BoardSize, type CoverPreset, type VisionBoard } from "@/lib/vision-boards/model";
+import { coverBoard, coverPresetInfo } from "@/lib/vision-boards/covers";
+import { newPage } from "@/lib/vision-boards/book";
+import { LazyPreview } from "./BoardThumb";
 
 const months = Array.from({ length: 12 }, (_, i) => ({ id: String(i + 1).padStart(2, "0"), label: new Intl.DateTimeFormat("en-US", { month: "long", timeZone: "UTC" }).format(new Date(Date.UTC(2026, i, 15))) }));
 export const backgroundCss = (b: Background) => b.kind === "solid" ? b.color : b.kind === "gradient" ? customGradientCss(b.gradient) : paintCss(b.paint);
@@ -27,6 +30,13 @@ export function BoardDetails({ initial, today, busy, error, onSave, onClose }: {
     return () => { viewport.removeEventListener('resize', sync); viewport.removeEventListener('scroll', sync); dialog.style.removeProperty('--vision-visible-height'); dialog.style.removeProperty('--vision-viewport-top'); };
   }, []);
   const isNew = initial.revision === 0;
+  // New Visions: a Vision Board (one canvas) or a Book (a cover and pages). The choice can be changed later.
+  const [format, setFormat] = useState<"board" | "book">(initial.format === "book" ? "book" : "board"), [preset, setPreset] = useState<CoverPreset>("classic");
+  const submit = () => {
+    const base = { ...b, title: b.title.trim() };
+    if (!isNew || format === "board") return onSave(base);
+    onSave({ ...base, format: "book", pages: [newPage(crypto.randomUUID(), 1, base.background)], cover: { preset, title: base.title, palette: 0 } });
+  };
   const set = (patch: Partial<VisionBoard>) => setB((x) => ({ ...x, ...patch }));
   const anchor = b.periodStart ?? today ?? new Date().toISOString().slice(0, 10);
   const year = Number(anchor.slice(0, 4)), thisYear = Number((today || anchor).slice(0, 4));
@@ -34,12 +44,21 @@ export function BoardDetails({ initial, today, busy, error, onSave, onClose }: {
   const setPeriod = (p: BoardPeriod | "none") => p === "none" ? set({ period: null, periodStart: null }) : set({ period: p, periodStart: periodStartFor(p, anchor) });
   const setStart = (y: string, m: string) => b.period && set({ periodStart: periodStartFor(b.period, `${y}-${m}-01`) });
   const problem = boardFieldsValid(b);
-  return <MuseModal id="vision-board-details" label={isNew ? "New vision board" : "Board details"} title={isNew ? "A new vision board" : "Board details"} returnFocus={null} onClose={onClose} size="tall">
-    <form ref={formRef} className="muse-aspiration-form muse-vision-details" onSubmit={(e) => { e.preventDefault(); if (!problem) onSave({ ...b, title: b.title.trim() }); }}>
+  const thing = format === "book" ? "book" : "board";
+  return <MuseModal id="vision-board-details" label={isNew ? "New Vision" : `${thing === "book" ? "Book" : "Board"} details`} title={isNew ? "A new Vision" : `${thing === "book" ? "Book" : "Board"} details`} returnFocus={null} onClose={onClose} size="tall">
+    <form ref={formRef} className="muse-aspiration-form muse-vision-details" onSubmit={(e) => { e.preventDefault(); if (!problem) submit(); }}>
       <div className="muse-vision-details-body">
-      <label>Name<input required maxLength={LIMITS.title} value={b.title} placeholder="My 2027 Vision" autoFocus onChange={(e) => set({ title: e.target.value })} /></label>
+      {isNew && <div className="muse-vision-formats" role="radiogroup" aria-label="What would you like to make?">
+        <button type="button" role="radio" aria-checked={format === "board"} className="muse-vision-format-card" onClick={() => setFormat("board")}>
+          <span className="muse-vision-format-art" data-art="board" aria-hidden="true"><i /><i /><i /><i /></span>
+          <strong>Vision Board</strong><span>One expansive canvas for ideas, inspiration and everything you imagine.</span></button>
+        <button type="button" role="radio" aria-checked={format === "book"} className="muse-vision-format-card" onClick={() => setFormat("book")}>
+          <span className="muse-vision-format-art" data-art="book" aria-hidden="true"><i /><i /></span>
+          <strong>Book</strong><span>A collection of beautiful pages for stories, plans, memories and creative exploration.</span></button>
+      </div>}
+      <label>Name<input required maxLength={LIMITS.title} value={b.title} placeholder={format === "book" ? "Paris in the Spring" : "My 2027 Vision"} autoFocus onChange={(e) => set({ title: e.target.value })} /></label>
       <label><span>Theme or chapter <small className="small-label">· optional</small></span><input maxLength={LIMITS.theme} value={b.theme} placeholder="Becoming Her" onChange={(e) => set({ theme: e.target.value })} /></label>
-      <label><span>Description <small className="small-label">· optional</small></span><textarea rows={2} maxLength={LIMITS.description} value={b.description} placeholder="What this board is about…" onChange={(e) => set({ description: e.target.value })} /></label>
+      <label><span>Description <small className="small-label">· optional</small></span><textarea rows={2} maxLength={LIMITS.description} value={b.description} placeholder={`What this ${thing} is about…`} onChange={(e) => set({ description: e.target.value })} /></label>
       <fieldset><legend>For a period <small className="small-label">· optional</small></legend>
         <MuseSegmented label="Period" value={b.period ?? "none"} options={[{ id: "none", label: "No period" }, ...boardPeriods]} onChange={setPeriod} />
         {b.period && b.periodStart && <div className="muse-aspiration-row muse-vision-period">
@@ -50,18 +69,24 @@ export function BoardDetails({ initial, today, busy, error, onSave, onClose }: {
         </div>}
       </fieldset>
       {isNew && <>
-        <fieldset><legend>Shape</legend>
-          <MuseSegmented label="Board shape" value={b.size === "custom" ? "landscape" : b.size} options={(Object.keys(boardSizes) as Exclude<BoardSize, "custom">[]).map((s) => ({ id: s, label: boardSizes[s].label }))} onChange={(size) => set({ size, canvas: undefined })} />
-          <p className="small-label">Portrait suits a phone wallpaper. The shape stays the same on every screen, and you can add space on any side later.</p>
+        {format === "book" && <fieldset><legend>Cover</legend>
+          <ul className="muse-cover-presets muse-cover-presets-new" aria-label="Cover styles">{coverPresets.map((p) => <li key={p}><button type="button" aria-pressed={preset === p} onClick={() => setPreset(p)}>
+            <span className="muse-cover-mini"><LazyPreview board={{ size: b.size, canvas: b.canvas, ...coverBoard({ preset: p, title: b.title.trim() || "Your Title", palette: 0 }, canvasOf(b)) }} /></span>
+            <span className="muse-cover-name">{coverPresetInfo[p].label}</span></button></li>)}</ul>
+          <p className="small-label">{coverPresetInfo[preset].blurb}. Change the cover, its colors, words and image any time.</p>
+        </fieldset>}
+        <fieldset><legend>{format === "book" ? "Page shape" : "Shape"}</legend>
+          <MuseSegmented label={format === "book" ? "Page shape" : "Board shape"} value={b.size === "custom" ? "landscape" : b.size} options={(Object.keys(boardSizes) as Exclude<BoardSize, "custom">[]).map((s) => ({ id: s, label: boardSizes[s].label }))} onChange={(size) => set({ size, canvas: undefined })} />
+          <p className="small-label">{format === "book" ? "Every page in a book shares this shape, like a real book. Pages can be larger than your screen; zoom and pan around them." : "Portrait suits a phone wallpaper. The shape stays the same on every screen, and you can add space on any side later."}</p>
         </fieldset>
-        <fieldset><legend>Background</legend>
+        <fieldset><legend>{format === "book" ? "First page background" : "Background"}</legend>
           <div className="muse-vision-swatches" role="group" aria-label="Starting background">{backgroundPresets.map((p) => <button key={p.id} type="button" className="muse-vision-swatch" style={{ background: backgroundCss(p.background) }} aria-pressed={JSON.stringify(b.background) === JSON.stringify(p.background)} aria-label={p.label} title={p.label} onClick={() => set({ background: p.background })} />)}</div>
           <p className="small-label">You can change it any time, with any color or gradient.</p>
         </fieldset>
       </>}
       {(problem && b.title) || error ? <p role="alert" className="muse-aspiration-error">{error || problem}</p> : null}
       </div>
-      <div className="muse-aspiration-actions"><button type="submit" className="muse-button button-primary" disabled={busy || !!problem}>{isNew ? "Create board" : "Save"}</button><button type="button" className="text-button" onClick={onClose}>Cancel</button></div>
+      <div className="muse-aspiration-actions"><button type="submit" className="muse-button button-primary" disabled={busy || !!problem}>{isNew ? `Create ${thing}` : "Save"}</button><button type="button" className="text-button" onClick={onClose}>Cancel</button></div>
     </form>
   </MuseModal>;
 }

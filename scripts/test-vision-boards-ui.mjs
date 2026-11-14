@@ -59,9 +59,9 @@ try{
 
  // ---- Library: empty state → create ----
  await go('/envision?view=vision-boards','!!document.querySelector(".muse-envision-empty button")','empty library');
- check(await evaluate(()=>document.querySelector('[aria-label="Envision views"]')?.textContent.includes('Vision Boards')),'Vision Boards sits in Envision’s tabs');
+ check(await evaluate(()=>document.querySelector('[aria-label="Envision views"]')?.textContent.includes('Visions')),'Visions sits in Envision’s tabs');
  await shoot('01-empty');
- await click('.muse-envision-empty button','Create your first board');
+ await click('.muse-envision-empty button','Create your first Vision');
  await until(()=>!!document.querySelector('#vision-board-details input'),'details form');
  await setValue('#vision-board-details input','My 2027 Vision');
  await click('#vision-board-details .muse-segmented button','Year');
@@ -82,8 +82,11 @@ try{
 
  // ---- Text and a sticker ----
  await click('.muse-vision-toolbar button','Aa Text');
- await until(()=>!!document.getElementById('vision-text-input'),'text controls');
- await setValue('#vision-text-input','Becoming her');
+ await until(()=>!!document.querySelector('.muse-writing-menu'),'writing menu');
+ await evaluate(()=>[...document.querySelectorAll('.muse-writing-menu button')].find(b=>/Words/.test(b.textContent)).click());
+ await until(()=>!!document.querySelector('.muse-vision-inline-text'),'writing right on the canvas');
+ await setValue('.muse-vision-inline-text','Becoming her');
+ await evaluate(()=>document.querySelector('.muse-vision-inline-text').blur());
  await click('.muse-vision-toolbar button','Library');
  await until(()=>!!document.querySelector('.muse-asset-tabs'),'library panel');
  await click('.muse-asset-tabs button','Doodles');

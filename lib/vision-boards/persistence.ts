@@ -1,11 +1,11 @@
 /** Vision Boards persistence (#118): owner-only rows, revision-checked so two devices never overwrite each other. */
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database, Json } from "@/lib/database.types";
-import { blankBoard, isBoardPeriod, isBoardSize, parseBackground, parseCanvas, parseElements, type VisionBoard } from "./model";
+import { blankBoard, isBoardPeriod, isBoardSize, parseBackground, parseCanvas, parseCover, parseElements, parsePages, type VisionBoard } from "./model";
 
 type Client = SupabaseClient<Database>;
 type Row = Database["public"]["Tables"]["vision_boards"]["Row"];
-const columns = "id,title,description,theme,period,period_start,size,canvas_w,canvas_h,background,elements,revision,created_at,updated_at";
+const columns = "id,title,description,theme,period,period_start,size,canvas_w,canvas_h,background,elements,format,pages,cover,revision,created_at,updated_at";
 const stale = "This board changed on another device. Reload to see the latest before saving again.";
 
 export function boardFromRow(r: Omit<Row, "user_id" | "asset_paths">): VisionBoard {
@@ -15,7 +15,15 @@ export function boardFromRow(r: Omit<Row, "user_id" | "asset_paths">): VisionBoa
     period: isBoardPeriod(r.period) ? r.period : null, periodStart: isBoardPeriod(r.period) ? r.period_start : null,
     ...sizeFromRow(r), background: parseBackground(r.background), elements: parseElements(r.elements),
     revision: r.revision, createdAt: r.created_at, updatedAt: r.updated_at,
+    ...bookFromRow(r),
   };
+}
+/** A Book's cover and pages; while open, `elements`/`background` mirror page 1 (the editor switches pages from there). */
+function bookFromRow(r: Pick<Row, "format" | "pages" | "cover" | "title">): Partial<VisionBoard> {
+  if (r.format !== "book") return {};
+  const pages = parsePages(r.pages);
+  if (!pages.length) return {};
+  return { format: "book", pages, cover: parseCover(r.cover, r.title), elements: pages[0].elements, background: pages[0].background };
 }
 /** A custom size needs its dimensions; a custom row without them (never written by Muse) falls back to landscape. */
 function sizeFromRow(r: Pick<Row, "size" | "canvas_w" | "canvas_h">): Pick<VisionBoard, "size" | "canvas"> {
@@ -30,7 +38,9 @@ function toRow(b: VisionBoard) {
     title: b.title.trim().slice(0, 120), description: b.description.trim().slice(0, 2000) || null, theme: b.theme.trim().slice(0, 60) || null,
     period: b.period, period_start: b.period ? b.periodStart : null,
     size: custom ? "custom" : b.size === "custom" ? "landscape" : b.size, canvas_w: custom ? b.canvas!.w : null, canvas_h: custom ? b.canvas!.h : null,
-    background: b.background as unknown as NonNullable<Json>, elements: parseElements(b.elements) as unknown as NonNullable<Json>,
+    ...(b.format === "book" && b.pages?.length
+      ? { format: "book", elements: [] as unknown as NonNullable<Json>, background: b.pages[0].background as unknown as NonNullable<Json>, pages: parsePages(b.pages) as unknown as Json, cover: (b.cover ?? parseCover({}, b.title)) as unknown as Json }
+      : { format: "board", background: b.background as unknown as NonNullable<Json>, elements: parseElements(b.elements) as unknown as NonNullable<Json>, pages: null, cover: null }),
   };
 }
 /** Postgres "table missing" codes: this server hasn't had the Vision Boards migration yet. */

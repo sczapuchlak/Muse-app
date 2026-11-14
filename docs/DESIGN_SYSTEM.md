@@ -750,6 +750,19 @@ Shared, in `app/design-language.css`; use them instead of page-specific phone pa
 - **Board size.** "Add" step plus Left, Right, Top, Bottom and All sides buttons; exact W×H with a 3×3 anchor; preset chips. A size chip sits in the canvas corner.
 - **Shared fix.** `MusePaintPicker`'s styles moved from Agenda.css to MuseControls.css, so the picker is styled everywhere it's used. Its gradient swatches had no size outside Planner before.
 
+## Visions: Books — implemented on feature branch, Staging acceptance pending
+
+- **A Book looks like a book.** In the library it's the cover as a small object: a darker spine band on the left, stacked cream page edges on the right, a soft floor shadow, and a gentle turn on hover (none with reduced motion). In the reader, pages sit on a dark velvet stage with a gutter shadow between facing pages, and turn with a short fade-and-slide.
+- **Covers are designed objects, not templates.** Each of the five presets has its own composition and hierarchy:
+  - **Classic:** a linen ground, gilt double rules, a title plate and corner stars.
+  - **Celestial:** a midnight gradient with constellations, gold orbit rings and a glossy crescent moon.
+  - **Romantic:** a blush rosebud ground, a cream arch with a satin bow, a script title and a heart.
+  - **Editorial:** huge left-aligned serif type, a rule, a colour block or full-bleed photo, and a volume caption.
+  - **Whimsical:** a three-colour gradient with confetti, a holographic organic blob and glossy stars.
+- **Pages menu.** A compact toolbar popover, never a sidebar: numbered rows with a thumbnail, an inline title field, and small ↑ ↓ ⧉ and delete tools. The active page is tinted. Shows "n / 8".
+- **Right-click menu.** A compact `GlassPopover` at the pointer, with labelled actions and their shortcuts in muted `kbd` text, grouped by thin rules. Delete uses the urgency ink.
+- **Writing in place.** A dashed purple outline around a translucent text box that matches the words' own font, size, spacing and rotation.
+
 ## Book and Series pages (#136) — implemented on feature branch, Staging acceptance pending
 
 Book and Series are pages inside Collections. Both open with a pill Back control that names where it returns (search, a book, a series, Books) and a quiet Collections / Books trail. The book header floats on the book's own atmosphere: a page-edged cover, an accent-washed series chip above an editorial title, author, a dotted facts line, genre chips and a status pill. The reading companion is one Crystal/Frosted card (sticky on desktop, directly under the header on phones) that holds progress, the live sitting (breathing dot, editorial clock, Pause/Resume primary) or the sitting chooser, stats and two quiet actions; a floating mini-player appears only while a sitting runs and the companion is out of view. The reading column is one card with dividers, not a stack of boxes. Series artwork uses `SeriesCover`: real art when available, otherwise a designed cover on the catalog's colour; books not on the shelf recede (faded, dashed edge) rather than disappear. The Series hero is a glass shelf of spines in reading order, with the next book pulled forward. Search results use cover-left rows, a series chip, highlighted words and the bookmark + shelf split button; "Which edition?" lists real differences only. Motion is short arrival/settle and hover lift; reduced motion and Quiet Muse Magic remove it.
