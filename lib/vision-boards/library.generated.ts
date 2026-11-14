@@ -3,6 +3,190 @@ import type { LibraryItem } from "./library";
 
 export const libraryItems: LibraryItem[] = [
  {
+  "id": "frame/film/film-strip",
+  "kind": "frame",
+  "category": "film",
+  "name": "Film strip",
+  "src": "/vision-assets/frame/film/film-strip.svg",
+  "thumb": "/vision-assets/frame/film/film-strip.thumb.webp",
+  "w": 1000,
+  "h": 380,
+  "alpha": true,
+  "tileable": false,
+  "tags": [
+   "film",
+   "35mm",
+   "cinema"
+  ],
+  "window": [
+   0.04,
+   0.1842,
+   0.24,
+   0.6316
+  ]
+ },
+ {
+  "id": "frame/film/photo-booth",
+  "kind": "frame",
+  "category": "film",
+  "name": "Photo-booth strip",
+  "src": "/vision-assets/frame/film/photo-booth.svg",
+  "thumb": "/vision-assets/frame/film/photo-booth.thumb.webp",
+  "w": 400,
+  "h": 1240,
+  "alpha": true,
+  "tileable": false,
+  "tags": [
+   "photo booth",
+   "strip",
+   "four"
+  ],
+  "window": [
+   0.085,
+   0.0274,
+   0.83,
+   0.2016
+  ]
+ },
+ {
+  "id": "frame/gallery/gilded-frame",
+  "kind": "frame",
+  "category": "gallery",
+  "name": "Gilded gallery frame",
+  "src": "/vision-assets/frame/gallery/gilded-frame.svg",
+  "thumb": "/vision-assets/frame/gallery/gilded-frame.thumb.webp",
+  "w": 700,
+  "h": 860,
+  "alpha": true,
+  "tileable": false,
+  "tags": [
+   "gold",
+   "gallery",
+   "ornate"
+  ],
+  "window": [
+   0.1286,
+   0.1047,
+   0.7429,
+   0.7907
+  ]
+ },
+ {
+  "id": "frame/gallery/heart-frame",
+  "kind": "frame",
+  "category": "gallery",
+  "name": "Heart frame",
+  "src": "/vision-assets/frame/gallery/heart-frame.svg",
+  "thumb": "/vision-assets/frame/gallery/heart-frame.thumb.webp",
+  "w": 700,
+  "h": 640,
+  "alpha": true,
+  "tileable": false,
+  "tags": [
+   "heart",
+   "love",
+   "romantic"
+  ],
+  "window": [
+   0.1,
+   0.125,
+   0.8,
+   0.75
+  ]
+ },
+ {
+  "id": "frame/music/cassette",
+  "kind": "frame",
+  "category": "music",
+  "name": "Mixtape cassette",
+  "src": "/vision-assets/frame/music/cassette.svg",
+  "thumb": "/vision-assets/frame/music/cassette.thumb.webp",
+  "w": 800,
+  "h": 520,
+  "alpha": true,
+  "tileable": false,
+  "tags": [
+   "cassette",
+   "mixtape",
+   "retro"
+  ],
+  "window": [
+   0.0875,
+   0.1154,
+   0.825,
+   0.3654
+  ]
+ },
+ {
+  "id": "frame/music/cd-case",
+  "kind": "frame",
+  "category": "music",
+  "name": "CD case",
+  "src": "/vision-assets/frame/music/cd-case.svg",
+  "thumb": "/vision-assets/frame/music/cd-case.thumb.webp",
+  "w": 720,
+  "h": 640,
+  "alpha": true,
+  "tileable": false,
+  "tags": [
+   "cd",
+   "y2k",
+   "album"
+  ],
+  "window": [
+   0.1167,
+   0.0531,
+   0.8361,
+   0.8938
+  ]
+ },
+ {
+  "id": "frame/music/now-playing",
+  "kind": "frame",
+  "category": "music",
+  "name": "Now playing",
+  "src": "/vision-assets/frame/music/now-playing.svg",
+  "thumb": "/vision-assets/frame/music/now-playing.thumb.webp",
+  "w": 600,
+  "h": 840,
+  "alpha": true,
+  "tileable": false,
+  "tags": [
+   "music",
+   "song",
+   "player"
+  ],
+  "window": [
+   0.1,
+   0.0714,
+   0.8,
+   0.5714
+  ]
+ },
+ {
+  "id": "frame/music/vinyl-sleeve",
+  "kind": "frame",
+  "category": "music",
+  "name": "Vinyl sleeve",
+  "src": "/vision-assets/frame/music/vinyl-sleeve.svg",
+  "thumb": "/vision-assets/frame/music/vinyl-sleeve.thumb.webp",
+  "w": 860,
+  "h": 600,
+  "alpha": true,
+  "tileable": false,
+  "tags": [
+   "vinyl",
+   "record",
+   "album"
+  ],
+  "window": [
+   0.0279,
+   0.04,
+   0.6419,
+   0.92
+  ]
+ },
+ {
   "id": "frame/photo/ornate-oval",
   "kind": "frame",
   "category": "photo",
@@ -27,6 +211,121 @@ export const libraryItems: LibraryItem[] = [
   "alpha": true,
   "tileable": false,
   "tags": []
+ },
+ {
+  "id": "frame/trendy/magazine-cover",
+  "kind": "frame",
+  "category": "trendy",
+  "name": "Magazine cover",
+  "src": "/vision-assets/frame/trendy/magazine-cover.svg",
+  "thumb": "/vision-assets/frame/trendy/magazine-cover.thumb.webp",
+  "w": 820,
+  "h": 1080,
+  "alpha": true,
+  "tileable": false,
+  "tags": [
+   "magazine",
+   "cover",
+   "editorial"
+  ],
+  "window": [
+   0.022,
+   0.0167,
+   0.9561,
+   0.9667
+  ]
+ },
+ {
+  "id": "frame/trendy/phone-lockscreen",
+  "kind": "frame",
+  "category": "trendy",
+  "name": "Phone lockscreen",
+  "src": "/vision-assets/frame/trendy/phone-lockscreen.svg",
+  "thumb": "/vision-assets/frame/trendy/phone-lockscreen.thumb.webp",
+  "w": 620,
+  "h": 1240,
+  "alpha": true,
+  "tileable": false,
+  "tags": [
+   "phone",
+   "lockscreen",
+   "wallpaper"
+  ],
+  "window": [
+   0.0419,
+   0.021,
+   0.9161,
+   0.9581
+  ]
+ },
+ {
+  "id": "frame/trendy/photo-post",
+  "kind": "frame",
+  "category": "trendy",
+  "name": "Photo post",
+  "src": "/vision-assets/frame/trendy/photo-post.svg",
+  "thumb": "/vision-assets/frame/trendy/photo-post.thumb.webp",
+  "w": 640,
+  "h": 820,
+  "alpha": true,
+  "tileable": false,
+  "tags": [
+   "post",
+   "social",
+   "likes"
+  ],
+  "window": [
+   0,
+   0.1098,
+   1,
+   0.7805
+  ]
+ },
+ {
+  "id": "frame/trendy/postage-stamp",
+  "kind": "frame",
+  "category": "trendy",
+  "name": "Postage stamp",
+  "src": "/vision-assets/frame/trendy/postage-stamp.svg",
+  "thumb": "/vision-assets/frame/trendy/postage-stamp.thumb.webp",
+  "w": 600,
+  "h": 720,
+  "alpha": true,
+  "tileable": false,
+  "tags": [
+   "stamp",
+   "postal",
+   "travel"
+  ],
+  "window": [
+   0.1,
+   0.0833,
+   0.8,
+   0.7222
+  ]
+ },
+ {
+  "id": "frame/trendy/ticket-stub",
+  "kind": "frame",
+  "category": "trendy",
+  "name": "Concert ticket",
+  "src": "/vision-assets/frame/trendy/ticket-stub.svg",
+  "thumb": "/vision-assets/frame/trendy/ticket-stub.thumb.webp",
+  "w": 1000,
+  "h": 420,
+  "alpha": true,
+  "tileable": false,
+  "tags": [
+   "ticket",
+   "concert",
+   "admit one"
+  ],
+  "window": [
+   0.04,
+   0.0952,
+   0.56,
+   0.8095
+  ]
  },
  {
   "id": "illustration/whimsy/daisy",
@@ -1601,6 +1900,142 @@ export const libraryItems: LibraryItem[] = [
   "tags": []
  },
  {
+  "id": "sticker/sparkles/dreamy-cloud",
+  "kind": "sticker",
+  "category": "sparkles",
+  "name": "Dreamy cloud",
+  "src": "/vision-assets/sticker/sparkles/dreamy-cloud.svg",
+  "thumb": "/vision-assets/sticker/sparkles/dreamy-cloud.thumb.webp",
+  "w": 480,
+  "h": 320,
+  "alpha": true,
+  "tileable": false,
+  "tags": [
+   "cloud",
+   "dreamy",
+   "sky"
+  ]
+ },
+ {
+  "id": "sticker/sparkles/glitter-moon",
+  "kind": "sticker",
+  "category": "sparkles",
+  "name": "Glitter moon",
+  "src": "/vision-assets/sticker/sparkles/glitter-moon.svg",
+  "thumb": "/vision-assets/sticker/sparkles/glitter-moon.thumb.webp",
+  "w": 380,
+  "h": 400,
+  "alpha": true,
+  "tileable": false,
+  "tags": [
+   "moon",
+   "crescent",
+   "night"
+  ]
+ },
+ {
+  "id": "sticker/sparkles/gold-sparkle-cluster",
+  "kind": "sticker",
+  "category": "sparkles",
+  "name": "Gold sparkle cluster",
+  "src": "/vision-assets/sticker/sparkles/gold-sparkle-cluster.svg",
+  "thumb": "/vision-assets/sticker/sparkles/gold-sparkle-cluster.thumb.webp",
+  "w": 400,
+  "h": 400,
+  "alpha": true,
+  "tileable": false,
+  "tags": [
+   "sparkle",
+   "gold",
+   "magic"
+  ]
+ },
+ {
+  "id": "sticker/sparkles/holo-heart",
+  "kind": "sticker",
+  "category": "sparkles",
+  "name": "Holographic heart",
+  "src": "/vision-assets/sticker/sparkles/holo-heart.svg",
+  "thumb": "/vision-assets/sticker/sparkles/holo-heart.thumb.webp",
+  "w": 400,
+  "h": 380,
+  "alpha": true,
+  "tileable": false,
+  "tags": [
+   "heart",
+   "holographic",
+   "love"
+  ]
+ },
+ {
+  "id": "sticker/sparkles/shooting-star",
+  "kind": "sticker",
+  "category": "sparkles",
+  "name": "Shooting star",
+  "src": "/vision-assets/sticker/sparkles/shooting-star.svg",
+  "thumb": "/vision-assets/sticker/sparkles/shooting-star.thumb.webp",
+  "w": 520,
+  "h": 300,
+  "alpha": true,
+  "tileable": false,
+  "tags": [
+   "shooting star",
+   "wish",
+   "gold"
+  ]
+ },
+ {
+  "id": "sticker/sparkles/sparkle-bow",
+  "kind": "sticker",
+  "category": "sparkles",
+  "name": "Sparkle bow",
+  "src": "/vision-assets/sticker/sparkles/sparkle-bow.svg",
+  "thumb": "/vision-assets/sticker/sparkles/sparkle-bow.thumb.webp",
+  "w": 420,
+  "h": 360,
+  "alpha": true,
+  "tileable": false,
+  "tags": [
+   "bow",
+   "coquette",
+   "sparkle"
+  ]
+ },
+ {
+  "id": "sticker/sparkles/starburst-badge",
+  "kind": "sticker",
+  "category": "sparkles",
+  "name": "Starburst badge",
+  "src": "/vision-assets/sticker/sparkles/starburst-badge.svg",
+  "thumb": "/vision-assets/sticker/sparkles/starburst-badge.thumb.webp",
+  "w": 400,
+  "h": 400,
+  "alpha": true,
+  "tileable": false,
+  "tags": [
+   "badge",
+   "starburst",
+   "retro"
+  ]
+ },
+ {
+  "id": "sticker/sparkles/twinkle-trio",
+  "kind": "sticker",
+  "category": "sparkles",
+  "name": "Twinkle trio",
+  "src": "/vision-assets/sticker/sparkles/twinkle-trio.svg",
+  "thumb": "/vision-assets/sticker/sparkles/twinkle-trio.thumb.webp",
+  "w": 420,
+  "h": 300,
+  "alpha": true,
+  "tileable": false,
+  "tags": [
+   "twinkle",
+   "stars",
+   "pastel"
+  ]
+ },
+ {
   "id": "texture/paper/linen",
   "kind": "texture",
   "category": "scrapbook-paper",
@@ -1628,6 +2063,22 @@ export const libraryItems: LibraryItem[] = [
    "watercolor",
    "wash",
    "soft"
+  ]
+ },
+ {
+  "id": "washi/celestial/aurora-tape",
+  "kind": "washi",
+  "category": "celestial",
+  "name": "Aurora",
+  "src": "/vision-assets/washi/celestial/aurora-tape.svg",
+  "thumb": "/vision-assets/washi/celestial/aurora-tape.thumb.webp",
+  "w": 640,
+  "h": 104,
+  "alpha": true,
+  "tileable": false,
+  "tags": [
+   "aurora",
+   "dreamy"
   ]
  },
  {
@@ -1743,6 +2194,22 @@ export const libraryItems: LibraryItem[] = [
   ]
  },
  {
+  "id": "washi/girly/lavender-gingham-tape",
+  "kind": "washi",
+  "category": "girly",
+  "name": "Lavender gingham",
+  "src": "/vision-assets/washi/girly/lavender-gingham-tape.svg",
+  "thumb": "/vision-assets/washi/girly/lavender-gingham-tape.thumb.webp",
+  "w": 640,
+  "h": 104,
+  "alpha": true,
+  "tileable": false,
+  "tags": [
+   "gingham",
+   "lavender"
+  ]
+ },
+ {
   "id": "washi/girly/rosebud-tape",
   "kind": "washi",
   "category": "girly",
@@ -1830,6 +2297,23 @@ export const libraryItems: LibraryItem[] = [
   "tags": [
    "daisy",
    "flowers"
+  ]
+ },
+ {
+  "id": "washi/whimsical/glitter-tape",
+  "kind": "washi",
+  "category": "whimsical",
+  "name": "Gold glitter",
+  "src": "/vision-assets/washi/whimsical/glitter-tape.svg",
+  "thumb": "/vision-assets/washi/whimsical/glitter-tape.thumb.webp",
+  "w": 640,
+  "h": 104,
+  "alpha": true,
+  "tileable": false,
+  "tags": [
+   "glitter",
+   "gold",
+   "sparkle"
   ]
  },
  {

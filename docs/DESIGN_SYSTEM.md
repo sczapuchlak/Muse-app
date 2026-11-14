@@ -763,6 +763,18 @@ Shared, in `app/design-language.css`; use them instead of page-specific phone pa
 - **Right-click menu.** A compact `GlassPopover` at the pointer, with labelled actions and their shortcuts in muted `kbd` text, grouped by thin rules. Delete uses the urgency ink.
 - **Writing in place.** A dashed purple outline around a translucent text box that matches the words' own font, size, spacing and rotation.
 
+## Visions studio polish — implemented locally, Staging acceptance pending
+
+- **No nested card.** The editor isn't a card holding a canvas. It's three separate surfaces:
+  - a slim glass header (title with a sparkle, plus a "Book" chip for books);
+  - a **floating tool dock** pinned to the top of the screen while a tall canvas scrolls;
+  - the canvas as its own **desk**: a soft dotted surface, with the board lifted on a wide shadow and a contact shadow.
+- **The panel** floats beside the desk as its own glass card. The pasteboard veil follows the theme: pearly in light themes, dusky in dark ones.
+- **Library.** Every card frames its art at the same 4:3, so rows align: boards are fitted inside, and books stand on a little shelf.
+- **New Vision cover tiles** follow the chosen page shape and carry a spine.
+- **Reader.** A starlit reading room (stars twinkle only with motion allowed), folios (page number, the book's title at the bottom of left pages, the page title on right pages), and stacked page edges.
+- **Library tiles** for frames, paper, labels, washi and stickers sit on a soft tinted backdrop, so white art is visible.
+
 ## Book and Series pages (#136) — implemented on feature branch, Staging acceptance pending
 
 Book and Series are pages inside Collections. Both open with a pill Back control that names where it returns (search, a book, a series, Books) and a quiet Collections / Books trail. The book header floats on the book's own atmosphere: a page-edged cover, an accent-washed series chip above an editorial title, author, a dotted facts line, genre chips and a status pill. The reading companion is one Crystal/Frosted card (sticky on desktop, directly under the header on phones) that holds progress, the live sitting (breathing dot, editorial clock, Pause/Resume primary) or the sitting chooser, stats and two quiet actions; a floating mini-player appears only while a sitting runs and the companion is out of view. The reading column is one card with dividers, not a stack of boxes. Series artwork uses `SeriesCover`: real art when available, otherwise a designed cover on the catalog's colour; books not on the shelf recede (faded, dashed edge) rather than disappear. The Series hero is a glass shelf of spines in reading order, with the next book pulled forward. Search results use cover-left rows, a series chip, highlighted words and the bookmark + shelf split button; "Which edition?" lists real differences only. Motion is short arrival/settle and hover lift; reduced motion and Quiet Muse Magic remove it.

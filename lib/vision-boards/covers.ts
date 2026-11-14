@@ -58,7 +58,8 @@ function shape(shape: DecorShape, x: number, y: number, w: number, h: number, mo
 }
 /** Text, sized for its words (an estimate: covers are laid out before any canvas exists; the box centres its lines). */
 function text(t: string, x: number, y: number, w: number, size: number, family: string, more: Partial<TextElement> = {}): TextElement {
-  const lineH = more.lineHeight ?? 1.15, lines = t.split("\n").reduce((nl, line) => nl + Math.max(1, Math.ceil((line.length * size * 0.52 * (1 + (more.letterSpacing ?? 0))) / w)), 0);
+  // Generous on purpose (capitals, display and script faces run wide): spare height is invisible, since lines centre.
+  const lineH = more.lineHeight ?? 1.15, lines = t.split("\n").reduce((nl, line) => { const caps = !/[a-z]/.test(line), em = (caps ? 0.78 : 0.6) + (more.letterSpacing ?? 0); return nl + Math.max(1, Math.ceil((line.length * size * em) / w)); }, 0);
   return { id: sid("text"), kind: "text", text: t, font: "editorial", family, size, color: hex("#ffffff"), align: "center", x, y, w, h: Math.round(lines * size * lineH + size * 0.2), rotation: 0, locked: true, ...more };
 }
 function photo(c: BookCover, x: number, y: number, w: number, h: number, shape: ImageElement["crop"]["shape"], border?: string): ImageElement | null {

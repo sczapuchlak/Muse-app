@@ -8,6 +8,7 @@ import { defaultShadow, paintColor, type Asset, type Finish, type Hex, type Pain
 import { pinAccent } from "@/lib/appearance-values";
 import type { Align, Expand } from "@/lib/vision-boards/editing";
 import { MuseChoiceMenu } from "../../MuseChoiceMenu";
+import { libraryItem } from "@/lib/vision-boards/library";
 import { MuseColorPicker } from "../../MuseColorPicker";
 import { MuseIcon } from "../../MuseIcon";
 import { MuseCloseButton } from "../../MuseIconButton";
@@ -21,7 +22,7 @@ export type InspectorActions = {
   layer: (move: "forward" | "backward" | "front" | "back") => void;
   group: () => void; ungroup: () => void; lock: () => void; duplicate: () => void; remove: () => void;
   copyStyle: () => void; pasteStyle: () => void; canPasteStyle: boolean;
-  crop: () => void; makeSticker: () => void; addBacking: () => void;
+  crop: () => void; makeSticker: () => void; addBacking: () => void; photoIntoFrame: () => void;
   expand: (by: Expand) => void; resize: (w: number, h: number, anchor: { x: 0 | 0.5 | 1; y: 0 | 0.5 | 1 }) => void; preset: (size: keyof typeof boardSizes) => void;
   background: (b: Background) => void; exportImage: (type: "image/png" | "image/jpeg") => void; exporting: boolean;
   vision: { isBook: boolean; pageCount: number; pageLabel: string; toBook: () => void; toBoard: () => void; combine: () => void; combining: boolean; exportPdf: () => void; pdfProgress: string; read: () => void };
@@ -141,11 +142,15 @@ function ShapeSection(p: Props & { e: ShapeElement }) {
   </>;
 }
 function PieceSection(p: Props & { e: PieceElement }) {
-  const { e, patch } = p;
-  return <Section title="Die-cut edge" open={!!e.outline}>
+  const { e, patch } = p, isFrame = libraryItem(e.piece)?.kind === "frame";
+  return <>{isFrame && <Section title="Frame">
+    <button type="button" className="muse-button button-primary" onClick={p.actions.photoIntoFrame}><MuseIcon name="plus" size={13} /> Add a photo inside</button>
+    <p className="small-label">Your photo is fitted to the frame’s window, tucked behind it and grouped with it. Double-click the photo to adjust its crop.</p>
+  </Section>}
+  <Section title="Die-cut edge" open={!!e.outline}>
     <Toggle label="Outline that follows the art" on={!!e.outline} onChange={(on) => patch(() => ({ outline: on ? { color: "#ffffff" as Hex, width: Math.max(6, Math.round(Math.min(e.w, e.h) * 0.04)) } : undefined }))} />
     {e.outline && <OutlineEditor p={p} value={e.outline} onChange={(o) => patch(() => ({ outline: o }), "outline")} />}
-  </Section>;
+  </Section></>;
 }
 function StickerSection(p: Props & { e: StickerElement }) {
   const { e, patch } = p;

@@ -6,7 +6,8 @@
 import { libraryItems } from "./library.generated";
 
 export type LibraryKind = "pattern" | "texture" | "paper" | "sticker" | "washi" | "label" | "ribbon" | "frame" | "illustration";
-export type LibraryItem = { id: string; kind: LibraryKind; category: string; name: string; src: string; thumb: string; w: number; h: number; alpha: boolean; tileable: boolean; tags: string[] };
+/** `window` (frames): the photo window as [x, y, w, h], fractions of the frame. */
+export type LibraryItem = { id: string; kind: LibraryKind; category: string; name: string; src: string; thumb: string; w: number; h: number; alpha: boolean; tileable: boolean; tags: string[]; window?: number[] };
 
 /** The browser's sections, in order. Patterns and textures are fills; everything else is placed as a piece. */
 export const libraryKinds: { id: LibraryKind; label: string; fill: boolean }[] = [

@@ -149,8 +149,10 @@ test('copy and paste: pieces get fresh ids; styles paste only what a kind unders
 
 test('library: generated registry, stable ids, a curated pattern collection and test assets for other kinds',()=>{
  const items=L.allLibraryItems();
- for(const k of L.libraryKinds.map(k=>k.id).filter(k=>k!=='pattern'&&k!=='washi')){const n=items.filter(i=>i.kind===k).length;assert.ok(n>=2&&n<=6,`${k}: ${n}`);}
+ for(const k of L.libraryKinds.map(k=>k.id).filter(k=>!['pattern','washi','frame','sticker'].includes(k))){const n=items.filter(i=>i.kind===k).length;assert.ok(n>=2&&n<=6,`${k}: ${n}`);}
  const washi=items.filter(i=>i.kind==='washi');assert.ok(washi.length>=12,'a real washi collection');for(const c of ['girly','celestial','whimsical'])assert.ok(washi.filter(i=>i.category===c).length>=4,c);
+ const fr=items.filter(i=>i.kind==='frame');assert.ok(fr.length>=12,'trendy frames');assert.ok(fr.filter(i=>i.window).length>=12,'frames know their photo window');for(const i of fr.filter(x=>x.window))assert.ok(i.window.every(v=>v>=0&&v<=1)&&i.window[0]+i.window[2]<=1.0001&&i.window[1]+i.window[3]<=1.0001,i.id);
+ assert.ok(items.filter(i=>i.kind==='sticker'&&i.category==='sparkles').length>=8,'sparkle stickers');
  const fills=items.filter(i=>i.kind==='pattern'||i.kind==='texture');
  assert.ok(fills.length>=60&&fills.length<=100,`about 60–80 patterns plus stationery (${fills.length})`);
  for(const c of L.fillCategories)assert.ok(fills.filter(i=>i.category===c.id).length>=6,`${c.label} has a full set`);

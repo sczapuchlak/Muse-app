@@ -167,6 +167,13 @@ The feature is called **Visions** in the product (the Envision tab). Routes, tab
 - **Washi tape:** 12 new tapes (girly, celestial and whimsical).
 - **Journal & Stationery fills:** blank, wide-ruled, college-ruled, dot grid, square grid, graph, notebook, parchment, soft stationery and decorative writing paper.
 
+### Studio polish
+
+- **Layout.** The studio is a header, a floating tool dock and a canvas "desk", with no nested card, so the canvas gets more room.
+- **Frames.** 13 new frames: Now playing, vinyl sleeve, mixtape cassette, CD case, film strip, photo-booth strip, phone lockscreen, concert ticket, magazine cover, postage stamp, gilded frame, heart frame and photo post. Each records its photo window (a `window` sidecar on the library item).
+- **Add a photo inside.** A frame's panel can fit a photo exactly into the window, behind the frame, turned with it and grouped with it.
+- **More art.** 8 sparkle stickers and 3 more washi tapes.
+
 ## Tests
 
 - `tests/vision-boards.test.mjs` (model, crop math, layers, history, migration, integrations) and `tests/vision-studio.test.mjs` and `tests/visions-books.test.mjs` (Books: pages, limit, conversions, combine, covers, PDF, storage) (#187: back-compat parsing, paints, new kinds, storage paths, shapes, canvas expansion, groups/align/distribute/snapping, copy and style paste, library registry, SVG sanitizing, fonts).

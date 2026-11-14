@@ -57,6 +57,7 @@ Each item's **stable id** is `kind/category/name`, for example `pattern/gingham/
 | `label` | The name shown in the library (defaults to the file name in title case). |
 | `tileable` | Fills only. `true` repeats the image edge to edge; `false` covers the shape once. SVGs default to `true`. Raster patterns are checked automatically by comparing opposite edges. Set this field when the guess is wrong. |
 | `tags` | Extra search words (up to 12). |
+| `window` | Frames only: the photo window as `[x, y, w, h]`, fractions of the frame (used by "Add a photo inside"). |
 | `category` | Files the item under a browser category (for example `girly-romantic`) without changing its stable id. |
 
 ## What the importer does

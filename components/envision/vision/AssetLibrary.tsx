@@ -70,7 +70,7 @@ export function AssetLibrary({ onPick }: { onPick: (p: LibraryPick) => void }) {
 function ItemGrid({ items, favs, onPick, onFav }: { items: LibraryItem[]; favs: string[]; onPick: (i: LibraryItem) => void; onFav: (id: string) => void }) {
   return <ul className="muse-asset-grid" aria-label="Library items">
     {items.map((i) => <li key={i.id} className="muse-asset-item">
-      <button type="button" className="muse-asset-tile" data-fill={i.kind === "pattern" || i.kind === "texture" || undefined} aria-label={`Add ${i.name}`} title={i.name} onClick={() => onPick(i)}
+      <button type="button" className="muse-asset-tile" data-kind={i.kind} data-fill={i.kind === "pattern" || i.kind === "texture" || undefined} aria-label={`Add ${i.name}`} title={i.name} onClick={() => onPick(i)}
         style={i.kind === "pattern" || i.kind === "texture" ? { background: `url("${i.thumb}") center/${i.tileable ? "40px" : "cover"} ${i.tileable ? "repeat" : "no-repeat"}` } : undefined}>
         {/* eslint-disable-next-line @next/next/no-img-element -- static library thumbnails */}
         {!(i.kind === "pattern" || i.kind === "texture") && <img src={i.thumb} alt="" loading="lazy" decoding="async" />}

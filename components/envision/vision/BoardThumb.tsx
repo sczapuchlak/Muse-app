@@ -17,7 +17,8 @@ export function LazyPreview({ board: raw }: { board: Pick<VisionBoard, "size" | 
   const board = displayBoard(raw); // a Book shows its cover
   const ref = useRef<HTMLDivElement>(null), [box, setBox] = useState({ w: 0, h: 0 }), [seen, setSeen] = useState(false);
   const c = canvasOf(board), ratio = c.w / c.h, card = Math.min(16 / 9, Math.max(3 / 4, ratio));
-  const width = box.h && ratio < card ? Math.round(box.h * ratio) : box.w;
+  // Fits whole inside whatever frame it's given (library cards use one 4:3 frame, so rows line up).
+  const width = box.h ? Math.min(box.w, Math.round(box.h * ratio)) : box.w;
   useEffect(() => {
     const el = ref.current; if (!el) return;
     const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setSeen(true); io.disconnect(); } }, { rootMargin: "200px" });
