@@ -98,8 +98,16 @@ try{
  check(await has('.muse-tarot-journal-hero','What the cards have been saying')&&await has('.muse-tarot-journal-caption','Keeps appearing'),'the Reading Journal opens with a hero fanning the cards that keep appearing');
  check(await evaluate(()=>{const g=document.querySelector('.muse-tarot-timeline').getBoundingClientRect(),c=document.querySelector('.muse-tarot-entry').getBoundingClientRect(),i=document.querySelector('.muse-tarot-timeline>.muse-journal-invite')?.getBoundingClientRect();return c.width<g.width*0.45&&!!i&&Math.abs(i.right-g.right)<2;}),'one reading stays card-sized and the invite fills the row');
  await shoot('04b-tarot-journal');
- await go('/whimsy/tarot','!!document.querySelector(".muse-tarot-setup")','reading table');await wait(700);
- check(await evaluate(()=>getComputedStyle(document.querySelector('.muse-tarot-setup')).borderTopStyle==='solid'),'the reading table setup sits in a framed band');await shoot('04c-tarot-table');
+ await go('/whimsy/tarot','!!document.querySelector(".muse-tarot-welcome .muse-tarot-question textarea")','reading table');await wait(700);
+ check(!(await has('.muse-tarot-setup'))&&await has('.muse-tarot-ritual-controls .muse-tarot-selector'),'the question and spread picker live inside the table, not in a separate band');
+ await evaluate(()=>{const e=document.querySelector('.muse-tarot-question textarea');Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype,'value').set.call(e,'Should I take the studio lease?');e.dispatchEvent(new Event('input',{bubbles:true}));});await wait(300);
+ await shoot('04c-tarot-table');
+ await click('.muse-tarot-shuffle','');await until(()=>!!document.querySelector('.muse-tarot-fan-arc button:not([disabled])'),'the fan');
+ check(await has('.muse-tarot-question-banner','Should I take the studio lease?'),'the question heads the table while you choose');
+ await evaluate(()=>document.querySelector('.muse-tarot-fan-arc button:not([disabled])').click());
+ await until(()=>!!document.querySelector('.muse-tarot-drawn-card'),'the drawn card');await evaluate(()=>document.querySelector('.muse-tarot-drawn-card[data-revealed=false]')?.click());
+ await until(()=>!!document.querySelector('.muse-idesk-question'),'the desk question');
+ check(await has('.muse-idesk-question','Should I take the studio lease?'),'the question sits at the top of the Interpretation Desk');await shoot('04c2-tarot-desk');
  await go('/whimsy/observatory?view=calendar','!!document.querySelector(".muse-cal-hero-phases li")','calendar');await wait(700);
  check(await has('.muse-cal-hero','Cosmic Calendar'),'the Cosmic Calendar opens with a hero strung with this month\'s phases');await shoot('04d-calendar');
  await go('/whimsy/dreamscapes?view=decoder','!!document.querySelector(".muse-decoder-journal")','decoder');await wait(700);

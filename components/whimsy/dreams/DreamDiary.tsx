@@ -83,14 +83,16 @@ function DreamHero({dreams,today,onCapture}:{dreams:DreamEntry[];today:string;on
  </section>;
 }
 
-/** The invite card's drawing: a crescent resting in clouds under a few waking stars. Decorative. */
+/** The invite card's drawing: a dreamcatcher with three feathers, distinct from the hero's moon and clouds. Decorative. */
 function DreamInviteArt(){
- return <svg viewBox="0 0 220 112">
-  <g className="muse-journal-invite-float"><path className="muse-journal-art-moon" d="M118 14a28 28 0 1 0 24 44a24 24 0 1 1-24-44Z"/></g>
-  <path className="muse-journal-art-cloud" data-back="" d="M44 104c-14 0-20-15-8-22c-1-14 17-19 26-10c7-13 30-11 32 4c14-2 21 13 11 21c2 5-2 7-10 7Z"/>
-  <path className="muse-journal-art-cloud" d="M104 108c-16 0-22-17-9-25c-1-16 20-22 30-11c8-15 34-13 36 5c16-2 24 15 12 24c2 5-2 7-11 7Z"/>
-  <path className="muse-journal-art-twinkle" d={sparkle(62,30,6)}/><path className="muse-journal-art-twinkle" d={sparkle(174,26,5)}/><path className="muse-journal-art-twinkle" d={sparkle(30,60,3.5)}/><path className="muse-journal-art-twinkle" d={sparkle(196,70,3.5)}/>
- </svg>;
+ const cx=110,cy=44,r=32,web=Array.from({length:8},(_,k)=>{const a=Math.PI/4*k-Math.PI/2;return `${(cx+r*Math.cos(a)).toFixed(1)} ${(cy+r*Math.sin(a)).toFixed(1)}`;});
+ const inner=Array.from({length:8},(_,k)=>{const a=Math.PI/4*k-Math.PI/2+Math.PI/8;return `${(cx+r*.55*Math.cos(a)).toFixed(1)} ${(cy+r*.55*Math.sin(a)).toFixed(1)}`;});
+ return <svg viewBox="0 0 220 112"><g className="muse-journal-invite-float">
+  <circle className="muse-dream-catcher-hoop" cx={cx} cy={cy} r={r}/>
+  <path className="muse-journal-art-line" d={`M${web.join('L')}Z M${inner.join('L')}Z ${web.map((p,k)=>`M${p}L${inner[k]}`).join(' ')}`}/>
+  <circle className="muse-journal-art-moon" cx={cx} cy={cy} r="4.5"/>
+  {[[84,72,92],[110,76,104],[136,72,92]].map(([x,y0,y1],k)=><g key={k}><path className="muse-journal-art-line" d={`M${x} ${y0}V${y1-12}`}/><circle className="muse-journal-art-dot" cx={x} cy={y1-14} r="2"/><path className="muse-dream-catcher-feather" d={`M${x} ${y1-12}C${x+7} ${y1-4} ${x+6} ${y1+6} ${x} ${y1+12}C${x-6} ${y1+6} ${x-7} ${y1-4} ${x} ${y1-12}Z`}/></g>)}
+ </g><path className="muse-journal-art-twinkle" d={sparkle(52,30,6)}/><path className="muse-journal-art-twinkle" d={sparkle(172,26,5)}/><path className="muse-journal-art-twinkle" d={sparkle(40,74,3.5)}/><path className="muse-journal-art-twinkle" d={sparkle(186,80,3.5)}/></svg>;
 }
 
 function Intensity({value}:{value?:number}){if(value==null)return null;return <span className="muse-dream-intensity" title={`Intensity ${value} of 5`} aria-label={`Intensity ${value} of 5`}>{[1,2,3,4,5].map(n=><i key={n} data-on={n<=value}/>)}</span>;}

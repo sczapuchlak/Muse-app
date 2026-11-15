@@ -62,3 +62,6 @@
 .muse-dream-library-mine>.small-label{margin:0;color:var(--text-muted)}
 .muse-dream-library-mine .muse-dream-shelf{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin:0}
 .muse-dream-library-mine .muse-dream-shelf h4{margin:0;font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight);font-size:1.25rem;text-transform:none;letter-spacing:0;color:var(--foreground)}
+/* The "Capture a dream" invite draws a dreamcatcher so it never repeats the hero's moon and clouds. */
+.muse-dream-catcher-hoop{fill:color-mix(in srgb,var(--journal-a) 12%,transparent);stroke:color-mix(in oklab,#d6a84c 70%,var(--foreground));stroke-width:2.2}
+.muse-dream-catcher-feather{fill:color-mix(in srgb,var(--journal-a) 45%,var(--glass-background));stroke:color-mix(in srgb,var(--journal-a) 70%,var(--foreground));stroke-width:.9}

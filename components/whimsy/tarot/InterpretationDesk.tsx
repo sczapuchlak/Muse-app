@@ -34,6 +34,7 @@ export function InterpretationDesk({spread,drawn,question,active,onActive,onReve
  return <div className="muse-idesk" data-count={drawn.length}>
   <section className="muse-idesk-reading" aria-labelledby={`${id}-reading`} data-open={open}>
    <MuseHeading icon="spread" tone={1} title="Your reading" id={`${id}-reading`} level={3} description={allRevealed?(drawn.length>1?'Choose a card to read it while you write.':'Read it while you write.'):`${revealedCount} of ${drawn.length} turned. Turn the rest when you are ready.`} aside={<button type="button" className="muse-idesk-fold" aria-expanded={open} aria-controls={`${id}-panel`} onClick={()=>setOpen(value=>!value)}>{open?'Hide meaning':'Show meaning'}<MuseIcon name="chevron" size={14}/></button>}/>
+   {question.trim()&&<p className="muse-idesk-question"><span>You asked</span>“{question.trim()}”</p>}
    <div className="muse-idesk-switcher" role="tablist" aria-label="Cards in this reading">
     {drawn.map((item,index)=>{const info=item.revealed?interpretCard(item.cardId,item.orientation,spread.positions[index]):null,selected=!showWhole&&index===current;
      return item.revealed&&info?<button key={`${item.cardId}-${index}`} type="button" role="tab" id={`${id}-tab-${index}`} aria-selected={selected} aria-controls={`${id}-panel`} className="muse-idesk-chip" data-orientation={item.orientation} onClick={()=>{setWhole(false);setOpen(true);onActive(index);}}>
