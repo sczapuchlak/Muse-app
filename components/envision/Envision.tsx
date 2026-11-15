@@ -8,12 +8,14 @@ import { useMuseToday } from "../useMuseToday";
 import { Aspirations } from "./aspirations/Aspirations";
 import { BucketList } from "./bucket/BucketList";
 import { VisionBoards } from "./vision/VisionBoards";
+import { InnerCompass } from "./compass/InnerCompass";
 import { envisionTabs, parseEnvisionTab } from "@/lib/envision";
 import "./Envision.css";
 
 /**
  * Envision (#117): the home for Muse's future-facing experiences. Aspirations and the Bucket List moved here from
- * Rituals unchanged (same components, records and settings); Vision Boards (#118) lives in ./vision.
+ * Rituals unchanged (same components, records and settings); Vision Boards (#118) lives in ./vision and Inner Compass
+ * (#210) in ./compass.
  */
 function EnvisionView() {
   const { profile } = useDailyData();
@@ -25,6 +27,7 @@ function EnvisionView() {
     {view === "aspirations" && <Aspirations />}
     {view === "vision-boards" && (today ? <VisionBoards today={today} /> : <p className="small-label" role="status">Loading…</p>)}
     {view === "bucket" && (today ? <BucketList today={today} /> : <p className="small-label" role="status">Loading…</p>)}
+    {view === "inner-compass" && (today ? <InnerCompass today={today} /> : <p className="small-label" role="status">Loading…</p>)}
     <footer className="muse-footer">Everything in Envision is private and saves to your account.</footer>
   </main>;
 }

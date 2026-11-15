@@ -1,0 +1,467 @@
+/* Envision → Inner Compass → My Inner World (#210). Prefix: muse-compass-* (no other stylesheet uses it).
+   Celestial cartography, personal constellations and illuminated-manuscript details over the shared Muse surfaces:
+   cards are the opaque page sheet (--glass-background), nested rows --surface-subtle, inks are the chart tones.
+   Each collection carries --compass-ink / --compass-ink-b (set inline from its tone). Motion is finite and gated. */
+
+.muse-compass-overview{display:grid;gap:clamp(12px,1.6vw,18px);min-width:0}
+.muse-compass :is(input,textarea)::placeholder{color:var(--text-muted);opacity:.65;font-style:italic}
+.muse-compass{--compass-core:var(--accent-secondary);--compass-line:color-mix(in srgb,var(--foreground) 13%,transparent);display:grid;gap:clamp(14px,1.8vw,20px);min-width:0}
+.muse-compass :is(h2,h3){text-wrap:balance}
+.muse-compass-quiet{margin:0;color:var(--text-muted);font-size:.86rem;line-height:1.5}
+.muse-compass-quiet a{color:var(--foreground);text-decoration-color:var(--compass-ink,var(--accent-secondary));text-underline-offset:3px}
+.muse-compass-subhead{margin:0;font-family:var(--font-editorial);font-weight:var(--type-editorial-weight);font-size:1.15rem;letter-spacing:-.005em}
+.muse-compass-empty-quiet{margin:0;padding:22px;border:1px dashed var(--glass-border);border-radius:var(--dl-radius-panel);color:var(--text-muted);text-align:center;background:var(--surface-subtle)}
+.muse-compass-chip{display:inline-flex;align-items:center;min-height:20px;padding:1px 8px;border-radius:999px;background:color-mix(in srgb,var(--compass-ink,var(--accent-secondary)) 16%,transparent);color:var(--foreground);font:600 .68rem/1.3 var(--font-ui);letter-spacing:.02em;white-space:nowrap}
+.muse-compass-chip[data-quiet]{background:var(--surface-control);color:var(--text-muted)}
+.muse-compass-tag{display:inline-flex;align-items:center;gap:3px;color:var(--text-muted);font:500 .74rem/1.3 var(--font-ui)}
+.muse-compass-evolved{display:inline-flex;align-items:center;gap:4px;color:color-mix(in oklch,var(--compass-ink,var(--accent-secondary)) 70%,var(--foreground));font:600 .7rem/1.2 var(--font-ui)}
+.muse-compass-danger,.muse-compass-danger-text{color:var(--danger-text,var(--urgent-text,#c2185b))!important}
+.muse-compass-x{display:inline-grid;place-items:center;width:28px;height:28px;border:0;border-radius:50%;background:transparent;color:var(--text-muted);font-size:1.1rem;cursor:pointer}
+.muse-compass-x:hover{background:var(--surface-control);color:var(--foreground)}
+.muse-compass-hero-actions{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center}
+
+/* ---------- Space navigation: a crumb ("Inner Compass ›") and one solid pill track ---------- */
+.muse-compass-spaces{display:flex;align-items:center;gap:10px 12px;flex-wrap:wrap;min-width:0}
+.muse-compass-crumb{display:inline-flex;align-items:center;gap:6px;margin:0;color:var(--text-muted);font:700 .72rem/1 var(--font-ui);letter-spacing:.14em;text-transform:uppercase}
+.muse-compass-spaces-track{background:var(--glass-background);flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+.muse-compass-spaces-track::-webkit-scrollbar{display:none}
+.muse-compass-spaces-track>button{white-space:nowrap}
+.muse-compass-spaces .muse-save-indicator{margin-left:auto}
+
+/* ---------- Hero: the personal atlas ---------- */
+.muse-compass-hero{position:relative;isolation:isolate;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:clamp(16px,3vw,40px);align-items:center;
+ padding:clamp(18px,3vw,36px);border:1px solid var(--glass-border);border-top-color:var(--glass-edge,var(--glass-border));border-radius:calc(var(--card-radius,22px) + 6px);overflow:hidden;
+ background:radial-gradient(100% 80% at 96% 4%,color-mix(in oklab,var(--chart-8) 20%,transparent),transparent 62%),radial-gradient(90% 90% at 0% 100%,color-mix(in oklab,var(--chart-1) 14%,transparent),transparent 60%),linear-gradient(var(--glass-background),var(--glass-background)),var(--background);box-shadow:var(--card-shadow)}
+.muse-compass-hero::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:.45;
+ background-image:radial-gradient(1px 1px at 8% 18%,var(--foreground) 50%,transparent 51%),radial-gradient(1.2px 1.2px at 26% 86%,var(--foreground) 50%,transparent 51%),radial-gradient(1px 1px at 47% 9%,var(--foreground) 50%,transparent 51%),radial-gradient(1.4px 1.4px at 62% 92%,var(--foreground) 50%,transparent 51%),radial-gradient(1px 1px at 93% 40%,var(--foreground) 50%,transparent 51%),radial-gradient(1px 1px at 40% 56%,var(--foreground) 50%,transparent 51%);mask-image:linear-gradient(90deg,transparent,#000 35%)}
+.muse-compass-hero-copy{display:grid;gap:12px;align-content:start;min-width:0}
+.muse-compass-hero-copy>.muse-kicker{margin:0}
+.muse-compass-hero-title{margin:0;font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight);font-size:clamp(2.2rem,4.4vw,3.6rem);line-height:.98;letter-spacing:-.02em}
+.muse-compass-hero-lede{margin:0;max-width:52ch;color:var(--text-muted);line-height:1.55}
+.muse-compass-hero-line{position:relative;margin:2px 0 2px;padding:10px 14px 10px 18px;border-left:3px solid var(--compass-ink);border-radius:0 14px 14px 0;background:linear-gradient(90deg,color-mix(in srgb,var(--compass-ink) 12%,transparent),transparent 85%)}
+.muse-compass-hero-line blockquote{margin:0}
+.muse-compass-hero-line button{all:unset;cursor:pointer;font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-quote-weight);font-size:1.12rem;line-height:1.4}
+.muse-compass-hero-line button:focus-visible{outline:2px solid var(--dl-focus-ring,var(--accent-primary));outline-offset:3px;border-radius:4px}
+.muse-compass-hero-line figcaption{margin-top:3px;color:var(--text-muted);font-size:.8rem}
+.muse-compass-hero-sky{min-width:0;display:grid;place-items:center}
+
+/* ---------- The star chart ---------- */
+.muse-compass-sky{position:relative;margin:0;width:min(100%,440px);aspect-ratio:1}
+.muse-compass-sky svg{display:block;width:100%;height:100%;overflow:visible}
+.muse-compass-graticule :is(circle,line){fill:none;stroke:var(--compass-line);stroke-width:.6}
+.muse-compass-graticule circle:nth-child(2),.muse-compass-graticule circle:nth-child(4){stroke-dasharray:1.5 3}
+.muse-compass-rim{stroke:color-mix(in srgb,var(--foreground) 22%,transparent)!important;stroke-width:.9!important}
+.muse-compass-tick{stroke:color-mix(in srgb,var(--foreground) 24%,transparent)!important}
+.muse-compass-sector{cursor:pointer}
+.muse-compass-wedge{fill:transparent;transition:fill .35s}
+.muse-compass-sector:hover .muse-compass-wedge{fill:color-mix(in srgb,var(--sector-ink) 13%,transparent)}
+.muse-compass-arc{fill:none;stroke:var(--sector-ink);stroke-width:3;stroke-linecap:round;opacity:.85}
+.muse-compass-sector:hover .muse-compass-arc{opacity:1;stroke-width:4.5}
+.muse-compass-lines line{stroke:color-mix(in srgb,var(--foreground) 34%,transparent);stroke-width:.7;stroke-dasharray:2 2.5}
+.muse-compass-star{pointer-events:none}
+.muse-compass-star-core{fill:var(--star-ink)}
+.muse-compass-star-halo{fill:var(--star-ink);opacity:.5}
+.muse-compass-star[data-favorite] .muse-compass-star-core{fill:color-mix(in srgb,var(--star-ink) 60%,#fff)}
+.muse-compass-star[data-favorite] .muse-compass-star-halo{opacity:.85}
+.muse-compass-star-ring{fill:none;stroke:var(--star-ink);stroke-width:.7;stroke-dasharray:1.6 1.6;opacity:.9}
+.muse-compass-rose path{fill:color-mix(in srgb,var(--compass-core) 70%,var(--foreground))}
+.muse-compass-rose .muse-compass-rose-minor{fill:color-mix(in srgb,var(--foreground) 40%,transparent)}
+.muse-compass-rose circle{fill:var(--glass-background);stroke:var(--compass-core);stroke-width:1}
+@media (prefers-reduced-motion:no-preference){
+ :root:not([data-magic=quiet]) .muse-compass-star-halo{animation:muse-compass-twinkle 3.6s ease-in-out calc(var(--n,0) * .4s) 3 both}
+ :root:not([data-magic=quiet]) .muse-compass-rose{animation:muse-compass-settle 1.4s cubic-bezier(.2,.8,.2,1) both}
+ :root:not([data-magic=quiet]) .muse-compass-stars{animation:muse-compass-rise .9s ease-out both}
+}
+@keyframes muse-compass-twinkle{50%{opacity:.15}}
+@keyframes muse-compass-settle{from{rotate:-40deg;opacity:0}}
+@keyframes muse-compass-rise{from{opacity:0}}
+.muse-compass-label{fill:color-mix(in srgb,var(--foreground) 78%,transparent);font:700 7.4px/1 var(--font-ui);letter-spacing:.2em;transition:fill .3s}
+.muse-compass-label-n{fill:color-mix(in oklch,var(--sector-ink) 80%,var(--foreground));font-family:var(--font-editorial);font-size:9px;letter-spacing:0}
+.muse-compass-sector:hover .muse-compass-label{fill:var(--foreground)}
+
+/* ---------- Quick add ---------- */
+.muse-compass-quickadd{display:grid;gap:10px;padding:14px;border:1px solid var(--glass-border);border-radius:var(--dl-radius-panel);background:var(--surface-subtle);min-width:0}
+.muse-compass-quickadd-title{margin:0;font:700 .72rem/1 var(--font-ui);letter-spacing:.12em;text-transform:uppercase;color:var(--dl-kicker,var(--text-muted))}
+.muse-compass-quickadd-actions{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.muse-compass-quickadd-actions b{color:var(--foreground);font-weight:600}
+.muse-compass-fields{display:grid;gap:12px;min-width:0}
+.muse-compass-fields>label,.muse-compass-fields .muse-compass-row2>label,.muse-compass-editor label,.muse-compass-garden label,.muse-compass-session label{display:grid;gap:5px;font-size:.88rem;min-width:0}
+.muse-compass :is(input:not([type=checkbox]):not([type=radio]):not([type=search]),textarea,select),.muse-compass-detail :is(input:not([type=checkbox]):not([type=search]),textarea),
+.muse-compass-garden :is(input:not([type=search]),textarea),.muse-compass-session textarea,.muse-compass-reflect :is(input,textarea){width:100%;box-sizing:border-box;min-height:42px;padding:9px 12px;border:1px solid var(--glass-border);border-radius:12px;background:var(--surface-control);color:var(--foreground);font:inherit;font-size:max(16px,.95rem);line-height:1.45;resize:vertical}
+.muse-compass :is(input,textarea):focus-visible,.muse-compass-detail :is(input,textarea):focus-visible,.muse-compass-garden :is(input,textarea):focus-visible,.muse-compass-session textarea:focus-visible{outline:2px solid color-mix(in srgb,var(--compass-ink,var(--accent-primary)) 70%,transparent);outline-offset:1px;border-color:transparent}
+.muse-compass-statement textarea{font-family:var(--font-editorial);font-weight:var(--type-title-weight);font-size:max(16px,1.06rem);min-height:58px}
+.muse-compass-quickadd[data-compact] .muse-compass-statement textarea{min-height:48px}
+.muse-compass-statement>span{font:700 .7rem/1 var(--font-ui);letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted)}
+.muse-compass-more{justify-self:start;display:inline-flex;align-items:center;gap:5px;font-size:.82rem}
+.muse-compass-cats>button{gap:7px}
+.muse-compass-cats>button .muse-mark{width:20px;height:20px;border-radius:7px}
+.muse-compass-cats>button small{color:var(--text-muted)}
+.muse-compass-choices,.muse-compass-areas{border:0;margin:0;padding:0;display:grid;gap:6px;min-width:0}
+.muse-compass-choices legend,.muse-compass-areas legend{padding:0;margin-bottom:6px;font-size:.88rem}
+.muse-compass-area-dot{width:9px;height:9px;border-radius:50%;flex:0 0 auto}
+.muse-compass-row2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;align-items:end}
+.muse-compass-check{display:flex!important;align-items:center;gap:8px;min-height:42px;cursor:pointer}
+.muse-compass-check input{width:18px;height:18px;accent-color:var(--compass-ink,var(--accent-primary))}
+.muse-compass-tags-field{display:grid;gap:5px;font-size:.88rem}
+.muse-compass-tags-box{display:flex;flex-wrap:wrap;gap:6px;align-items:center;min-height:42px;padding:5px 8px;border:1px solid var(--glass-border);border-radius:12px;background:var(--surface-control)}
+.muse-compass-tags-box input{flex:1 1 120px;min-height:30px!important;padding:2px 4px!important;border:0!important;background:transparent!important}
+.muse-compass-tag[data-removable]{padding:2px 4px 2px 9px;border-radius:999px;background:var(--surface-subtle);color:var(--foreground)}
+.muse-compass-tag button{border:0;background:transparent;color:var(--text-muted);cursor:pointer;font-size:1rem;line-height:1;padding:0 4px}
+.muse-compass-hint{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:0;padding:10px 12px;border-radius:12px;background:color-mix(in srgb,var(--compass-ink) 10%,var(--surface-subtle));font-size:.86rem}
+.muse-compass-form-actions{display:flex;justify-content:flex-end;align-items:center;gap:8px 10px;flex-wrap:wrap}
+
+/* ---------- Six facets: a strong 3×2 grid, equal heights ---------- */
+.muse-compass-facets ul{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(10px,1.4vw,16px);margin:0;padding:0;list-style:none}
+.muse-compass-facets li{display:flex;min-width:0}
+.muse-compass-facet{position:relative;isolation:isolate;display:grid;grid-template-rows:auto auto 1fr auto;gap:6px;width:100%;min-height:178px;padding:16px 18px;border:1px solid var(--glass-border);border-radius:var(--card-radius,22px);overflow:hidden;
+ background:radial-gradient(120% 90% at 100% 0%,color-mix(in srgb,var(--compass-ink) 16%,transparent),transparent 58%),var(--glass-background);color:var(--foreground);text-decoration:none;box-shadow:var(--card-shadow);transition:transform .3s cubic-bezier(.2,.8,.2,1),border-color .3s}
+.muse-compass-facet::after{content:"";position:absolute;right:-26px;bottom:-26px;z-index:-1;width:110px;height:110px;border-radius:50%;border:1px dashed color-mix(in srgb,var(--compass-ink) 35%,transparent);box-shadow:0 0 0 14px color-mix(in srgb,var(--compass-ink) 5%,transparent),0 0 0 28px color-mix(in srgb,var(--compass-ink) 3%,transparent)}
+.muse-compass-facet:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--compass-ink) 55%,var(--glass-border))}
+.muse-compass-facet-top{display:flex;align-items:center;justify-content:space-between}
+.muse-compass-facet-count{font:500 1.9rem/1 var(--font-editorial);background:linear-gradient(120deg,var(--foreground),var(--compass-ink));-webkit-background-clip:text;background-clip:text;color:transparent}
+.muse-compass-facet-title{font-family:var(--font-editorial);font-weight:var(--type-editorial-weight);font-size:1.2rem;line-height:1.15}
+.muse-compass-facet-line{color:var(--text-muted);font-size:.82rem;line-height:1.45}
+.muse-compass-facet-latest{display:grid;gap:2px;padding-top:8px;border-top:1px solid var(--compass-line);min-width:0}
+.muse-compass-facet-latest span{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-family:var(--font-editorial);font-style:italic;font-size:.88rem}
+.muse-compass-facet-latest span[data-empty]{color:var(--text-muted);opacity:.75}
+
+/* ---------- Panels that sit on the page ---------- */
+:is(.muse-compass-lately,.muse-compass-door,.muse-compass-collections,.muse-compass-evolution,.muse-compass-explore>.muse-compass-past,.muse-compass-manifesto-view,.muse-compass-manifesto-edit){
+ padding:clamp(14px,2vw,22px);border:1px solid var(--glass-border);border-radius:var(--card-radius,22px);background:var(--glass-background);box-shadow:var(--card-shadow);min-width:0}
+.muse-compass-lately{display:grid;gap:12px}
+.muse-compass-lately>header{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.muse-compass-doors{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(10px,1.4vw,16px);align-items:stretch}
+.muse-compass-door{position:relative;display:grid;grid-template-rows:auto auto 1fr auto;gap:8px;overflow:hidden}
+.muse-compass-door::before{content:"";position:absolute;inset:0 0 auto;height:3px;background:linear-gradient(90deg,var(--compass-ink,var(--accent-secondary)),var(--compass-ink-b,var(--accent-primary)))}
+.muse-compass-door[data-door=manifesto]{--compass-ink:var(--chart-7);--compass-ink-b:var(--chart-2)}
+.muse-compass-door>*{margin:0}
+.muse-compass-door h3{font-family:var(--font-editorial);font-weight:var(--type-editorial-weight);font-size:1.35rem;line-height:1.15}
+.muse-compass-door-quote{font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-quote-weight);font-size:1.02rem;line-height:1.5;color:color-mix(in srgb,var(--foreground) 86%,transparent)}
+
+/* ---------- Discovery card: tinted side-accent panel ---------- */
+.muse-compass-card{position:relative;display:flex;height:100%;min-width:0;border:1px solid var(--glass-border);border-left:3px solid var(--compass-ink);border-radius:14px;background:linear-gradient(100deg,color-mix(in srgb,var(--compass-ink) 8%,transparent),transparent 60%),var(--surface-subtle);transition:border-color .25s,transform .25s}
+.muse-compass-card:hover{transform:translateY(-1px);border-color:color-mix(in srgb,var(--compass-ink) 50%,var(--glass-border));border-left-color:var(--compass-ink)}
+.muse-compass-card[data-archived]{opacity:.72;border-left-style:dashed}
+.muse-compass-card-open{all:unset;box-sizing:border-box;display:grid;align-content:start;gap:6px;width:100%;min-width:0;padding:12px 40px 12px 14px;cursor:pointer;border-radius:inherit}
+.muse-compass-card-open:focus-visible{outline:2px solid var(--dl-focus-ring,var(--accent-primary));outline-offset:2px}
+.muse-compass-card-top{display:flex;flex-wrap:wrap;align-items:center;gap:6px;min-height:20px}
+.muse-compass-card-top .muse-mark{width:20px;height:20px;border-radius:7px}
+.muse-compass-card-kind{color:var(--text-muted);font:700 .64rem/1 var(--font-ui);letter-spacing:.12em;text-transform:uppercase}
+.muse-compass-card-title{font-family:var(--font-editorial);font-weight:var(--type-title-weight);font-size:1.02rem;line-height:1.32;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.muse-compass-card[data-quote] .muse-compass-card-title{font-style:italic;font-weight:var(--type-quote-weight)}
+.muse-compass-card-credit{color:var(--text-muted);font-size:.78rem}
+.muse-compass-card-meaning{color:var(--text-muted);font-size:.84rem;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.muse-compass-card-foot{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center;margin-top:2px}
+.muse-compass-links{display:inline-flex;align-items:center;gap:3px;color:var(--text-muted);font-size:.74rem}
+.muse-compass-fav{position:absolute;top:8px;right:8px;display:grid;place-items:center;width:30px;height:30px;border:0;border-radius:50%;background:transparent;color:var(--text-muted);cursor:pointer;transition:color .2s,background .2s,transform .2s}
+.muse-compass-fav:hover{background:var(--surface-control);color:var(--foreground)}
+.muse-compass-fav[aria-pressed=true]{color:color-mix(in oklch,var(--chart-4) 85%,var(--foreground))}
+@media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) .muse-compass-fav[aria-pressed=true] svg{animation:muse-compass-beat .5s cubic-bezier(.3,1.6,.5,1)}}
+@keyframes muse-compass-beat{40%{transform:scale(1.3)}}
+.muse-compass-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,232px),1fr));gap:12px;margin:0;padding:0;list-style:none;align-items:stretch}
+.muse-compass-grid>li{display:flex;min-width:0}
+.muse-compass-grid>li>.muse-compass-card,.muse-entry-carousel .muse-compass-card{flex:1 1 auto;width:100%}
+.muse-compass .muse-entry-carousel .muse-compass-card{min-height:132px}
+
+/* ---------- Collections ---------- */
+.muse-compass-collections{display:grid;gap:14px}
+.muse-compass-collection-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px 18px;flex-wrap:wrap}
+.muse-compass-collection-head>div:first-child{display:grid;gap:4px;min-width:0;max-width:66ch}
+.muse-compass-collection-head .muse-kicker{display:flex;align-items:center;gap:6px;margin:0}
+.muse-compass-collection-title{margin:0;font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight);font-size:clamp(1.7rem,3vw,2.3rem);line-height:1.05}
+.muse-compass-collection-line{margin:0;color:var(--text-muted);line-height:1.5}
+.muse-compass-collection-actions{display:flex;flex-wrap:wrap;gap:8px}
+.muse-compass-toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;min-width:0}
+.muse-compass-toolbar>:first-child{flex:1 1 260px;min-width:0}
+.muse-compass-archive-toggle{min-height:38px}
+.muse-compass-more-row{display:flex;justify-content:center}
+.muse-compass-count{text-align:right}
+.muse-compass-empty{display:grid;justify-items:center;gap:8px;padding:clamp(22px,4vw,40px);border:1px dashed color-mix(in srgb,var(--compass-ink,var(--accent-secondary)) 40%,var(--glass-border));border-radius:var(--dl-radius-panel);background:var(--surface-subtle);text-align:center}
+.muse-compass-empty>*{margin:0}
+.muse-compass-empty h3{font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight);font-size:1.4rem}
+.muse-compass-empty p{color:var(--text-muted);max-width:52ch}
+.muse-compass-empty>div{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:6px}
+.muse-compass-empty-art{width:110px;height:72px}
+.muse-compass-empty-art circle{fill:none;stroke:color-mix(in srgb,var(--compass-ink,var(--accent-secondary)) 45%,transparent);stroke-dasharray:2 3}
+.muse-compass-empty-art path{fill:var(--compass-ink,var(--accent-secondary))}
+
+/* Philosophy: a commonplace book, one editorial column. */
+.muse-compass-commonplace{display:grid;gap:22px;max-width:780px;width:100%;margin:6px auto 0}
+.muse-compass-commonplace-theme{display:flex;align-items:center;gap:12px;margin:0 0 6px;color:var(--text-muted);font:700 .72rem/1 var(--font-ui);letter-spacing:.18em;text-transform:uppercase}
+.muse-compass-commonplace-theme::before,.muse-compass-commonplace-theme::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--compass-line))}
+.muse-compass-commonplace-theme::after{background:linear-gradient(90deg,var(--compass-line),transparent)}
+.muse-compass-commonplace ol{margin:0;padding:0;list-style:none;display:grid}
+.muse-compass-commonplace li{position:relative;display:grid;grid-template-columns:42px minmax(0,1fr) auto;gap:10px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--compass-line)}
+.muse-compass-commonplace li:last-child{border-bottom:0}
+.muse-compass-commonplace-n{font:500 .78rem/1 var(--font-editorial);color:color-mix(in oklch,var(--compass-ink) 75%,var(--foreground));letter-spacing:.05em}
+.muse-compass-commonplace li>button{all:unset;display:grid;gap:4px;cursor:pointer;min-width:0}
+.muse-compass-commonplace li>button:focus-visible{outline:2px solid var(--dl-focus-ring,var(--accent-primary));outline-offset:3px;border-radius:6px}
+.muse-compass-commonplace-words{font-family:var(--font-editorial);font-weight:var(--type-reading-weight);font-size:clamp(1.08rem,1.6vw,1.24rem);line-height:1.45;overflow-wrap:anywhere}
+.muse-compass-commonplace li[data-kind=quote] .muse-compass-commonplace-words{font-style:italic}
+.muse-compass-commonplace-gloss{color:var(--text-muted);font-size:.88rem;line-height:1.5}
+.muse-compass-commonplace-fav{color:color-mix(in oklch,var(--chart-4) 85%,var(--foreground))}
+
+/* ---------- Detail dialog ---------- */
+#muse-compass-detail,#muse-compass-garden,#muse-compass-session{width:min(760px,calc(100vw - 24px))}
+.muse-compass-detail,.muse-compass-garden,.muse-compass-session{display:grid;gap:16px;padding:4px clamp(14px,2.4vw,26px) 24px;overflow-y:auto;overscroll-behavior:contain;min-height:0;flex:1 1 auto}
+.muse-compass-detail-hero{display:grid;gap:10px;padding-bottom:14px;border-bottom:1px solid var(--compass-line)}
+.muse-compass-detail-hero>*{margin:0}
+.muse-compass-detail-hero .muse-kicker{display:flex;align-items:center;gap:7px}
+.muse-compass-detail-title{font-family:var(--font-editorial);font-weight:var(--type-title-weight);font-size:clamp(1.5rem,3.2vw,2.15rem);line-height:1.18;letter-spacing:-.01em;overflow-wrap:anywhere}
+.muse-compass-detail-title[data-quote]{font-style:italic;font-weight:var(--type-quote-weight)}
+.muse-compass-detail-credit{color:var(--text-muted)}
+.muse-compass-detail-meaning{font-size:1.02rem;line-height:1.6;white-space:pre-wrap;max-width:62ch}
+.muse-compass-detail-facts{display:flex;flex-wrap:wrap;gap:4px 14px;color:var(--text-muted);font-size:.8rem}
+.muse-compass-detail-actions{display:flex;flex-wrap:wrap;gap:8px}
+.muse-compass-detail-actions .muse-button{display:inline-flex;align-items:center;gap:6px}
+.muse-compass-fav-button[aria-pressed=true]{color:color-mix(in oklch,var(--chart-4) 85%,var(--foreground))}
+.muse-compass-detail-panels{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:10px}
+.muse-compass-panel{padding:12px 14px;border-left:3px solid var(--compass-ink);border-radius:0 12px 12px 0;background:var(--surface-subtle)}
+.muse-compass-panel:nth-child(even){border-left-color:var(--compass-ink-b)}
+.muse-compass-panel h3{margin:0 0 4px;color:var(--text-muted);font:700 .68rem/1.2 var(--font-ui);letter-spacing:.12em;text-transform:uppercase}
+.muse-compass-panel p{margin:0;line-height:1.55;white-space:pre-wrap}
+.muse-compass-longform p{font-family:var(--font-editorial);font-weight:var(--type-reading-weight);font-size:1.02rem;line-height:1.7}
+.muse-compass-detail-tags{display:flex;flex-wrap:wrap;gap:6px 10px;margin:0}
+.muse-compass-detail-section{display:grid;gap:8px}
+.muse-compass-detail-section>h3{margin:0;font-family:var(--font-editorial);font-weight:var(--type-editorial-weight);font-size:1.05rem}
+.muse-compass-refs{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0;list-style:none}
+.muse-compass-refs li{display:inline-flex;align-items:center;gap:2px;padding-right:2px;border:1px solid color-mix(in srgb,var(--compass-ink) 40%,var(--glass-border));border-radius:999px;background:var(--surface-subtle)}
+.muse-compass-ref{display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:3px 6px 3px 6px;border:0;border-radius:999px;background:transparent;color:var(--foreground);font:500 .84rem/1.25 var(--font-ui);cursor:pointer;text-align:left}
+.muse-compass-ref .muse-mark{width:20px;height:20px;border-radius:7px}
+.muse-compass-refs li:only-child .muse-compass-ref,.muse-compass-refs li .muse-compass-ref:only-child{padding:3px 12px}
+.muse-compass-detail-foot{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding-top:12px;border-top:1px solid var(--compass-line)}
+.muse-compass-detail-foot .text-button{display:inline-flex;align-items:center;gap:5px}
+.muse-compass-confirm{display:grid;gap:10px;width:100%;padding:12px 14px;border:1px solid color-mix(in srgb,var(--danger-text,#c2185b) 35%,var(--glass-border));border-radius:14px;background:var(--surface-subtle)}
+.muse-compass-confirm p{margin:0;line-height:1.5}
+.muse-compass-confirm>div{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap}
+.muse-compass-editor{display:grid;gap:14px}
+.muse-compass-editor>.muse-kicker{display:flex;align-items:center;gap:6px;margin:0}
+.muse-compass-before{padding:12px 14px;border:1px dashed var(--glass-border);border-radius:14px;background:var(--surface-subtle)}
+.muse-compass-before h3{margin:0 0 4px;color:var(--text-muted);font:700 .68rem/1 var(--font-ui);letter-spacing:.12em;text-transform:uppercase}
+.muse-compass-date{max-width:220px}
+
+/* Evolution history: a fine vertical rule with dated stops. */
+.muse-compass-history{position:relative;display:grid;gap:14px;margin:0;padding:0 0 0 22px;list-style:none}
+.muse-compass-history::before{content:"";position:absolute;left:5px;top:8px;bottom:8px;width:1.5px;background:linear-gradient(var(--compass-ink),color-mix(in srgb,var(--compass-ink) 25%,transparent))}
+.muse-compass-history li{position:relative;display:grid;gap:3px}
+.muse-compass-history li::before{content:"";position:absolute;left:-22px;top:4px;width:11px;height:11px;border-radius:50%;border:1.5px solid var(--compass-ink);background:var(--glass-background)}
+.muse-compass-history li[data-now]::before{background:var(--compass-ink);box-shadow:0 0 0 4px color-mix(in srgb,var(--compass-ink) 20%,transparent)}
+.muse-compass-history li[data-origin]::before{border-style:dashed}
+.muse-compass-history p{margin:0}
+.muse-compass-history-date{color:var(--text-muted);font:600 .74rem/1.3 var(--font-ui);letter-spacing:.04em}
+.muse-compass-history-label{color:var(--text-muted);font:700 .64rem/1 var(--font-ui);letter-spacing:.12em;text-transform:uppercase}
+.muse-compass-history-words{font-family:var(--font-editorial);font-weight:var(--type-title-weight);font-size:1.02rem;line-height:1.4}
+.muse-compass-history-words[data-earlier]{font-weight:var(--type-reading-weight);color:color-mix(in srgb,var(--foreground) 74%,transparent)}
+.muse-compass-history-meaning{color:var(--text-muted);font-size:.88rem;line-height:1.5}
+.muse-compass-history-reason{font-size:.86rem;line-height:1.5}
+.muse-compass-history-reason span{margin-right:6px;color:var(--text-muted);font:700 .64rem/1 var(--font-ui);letter-spacing:.1em;text-transform:uppercase}
+.muse-compass-history-remove{justify-self:start;font-size:.78rem!important;color:var(--text-muted)}
+
+/* Reflections */
+.muse-compass-reflect{display:grid;gap:10px;padding:12px;border:1px solid var(--glass-border);border-radius:14px;background:var(--surface-subtle)}
+.muse-compass-reflect textarea{font-family:var(--font-editorial);font-weight:var(--type-reading-weight);line-height:1.65;
+ background:repeating-linear-gradient(transparent 0 calc(1.65em - 1px),color-mix(in srgb,var(--foreground) 7%,transparent) calc(1.65em - 1px) 1.65em),var(--surface-control)!important;background-position:0 9px!important}
+.muse-compass-reflect-meta{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between}
+.muse-compass-feeling{width:120px!important;min-height:34px!important;padding:4px 10px!important;border-radius:999px!important}
+.muse-compass-reflections{display:grid;gap:10px;margin:0;padding:0;list-style:none}
+.muse-compass-reflections>li{display:grid;gap:4px;padding:10px 14px;border-left:3px solid var(--compass-ink-b,var(--accent-secondary));border-radius:0 12px 12px 0;background:var(--surface-subtle)}
+.muse-compass-reflections p{margin:0}
+.muse-compass-reflection-meta{display:flex;gap:8px;align-items:center;color:var(--text-muted);font-size:.78rem}
+.muse-compass-reflection-body{font-family:var(--font-editorial);font-weight:var(--type-reading-weight);line-height:1.65;white-space:pre-wrap}
+.muse-compass-reflection-tools{display:flex;gap:12px}
+.muse-compass-reflection-tools .text-button{display:inline-flex;align-items:center;gap:4px;font-size:.78rem}
+
+/* ---------- Word garden ---------- */
+.muse-compass-garden-head{display:grid;gap:8px}
+.muse-compass-garden-head>*{margin:0}
+.muse-compass-garden-head .muse-kicker{display:flex;align-items:center;gap:6px}
+.muse-compass-garden-head h2,.muse-compass-session h2{margin:0;font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight);font-size:clamp(1.5rem,3vw,2rem);line-height:1.1}
+.muse-compass-steps{display:flex;gap:6px;flex-wrap:wrap;margin:0;padding:0;list-style:none}
+.muse-compass-steps li{display:inline-flex;align-items:center;gap:6px;padding:3px 10px 3px 4px;border-radius:999px;background:var(--surface-subtle);color:var(--text-muted);font-size:.78rem}
+.muse-compass-steps li span{display:grid;place-items:center;width:20px;height:20px;border-radius:50%;border:1px solid var(--glass-border);font-size:.7rem}
+.muse-compass-steps li[aria-current]{color:var(--foreground);background:color-mix(in srgb,var(--compass-ink) 14%,var(--surface-subtle))}
+.muse-compass-steps li[aria-current] span{border-color:transparent;background:linear-gradient(135deg,var(--compass-ink),var(--compass-ink-b));color:#fff}
+.muse-compass-garden-tools{display:grid;gap:8px}
+.muse-compass-words{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,150px),1fr));gap:8px;margin:0;padding:0;list-style:none}
+.muse-compass-words li{display:flex}
+.muse-compass-words button{display:grid;align-content:start;gap:3px;width:100%;min-height:68px;padding:10px 12px;border:1px solid var(--glass-border);border-radius:14px;background:var(--surface-subtle);color:var(--foreground);text-align:left;cursor:pointer;transition:transform .2s,border-color .2s,background .2s}
+.muse-compass-words button:hover:not(:disabled){transform:translateY(-1px);border-color:color-mix(in srgb,var(--compass-ink) 50%,var(--glass-border))}
+.muse-compass-words b{font-family:var(--font-editorial);font-weight:var(--type-title-weight);font-size:1rem}
+.muse-compass-words small{color:var(--text-muted);font-size:.74rem;line-height:1.35}
+.muse-compass-words button[aria-pressed=true]{border-color:var(--compass-ink);background:linear-gradient(135deg,color-mix(in srgb,var(--compass-ink) 22%,transparent),color-mix(in srgb,var(--compass-ink-b) 12%,transparent)),var(--surface-subtle);box-shadow:0 0 0 1px var(--compass-ink) inset}
+.muse-compass-words button:disabled{cursor:default;opacity:.7}
+.muse-compass-own{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:8px;align-items:center;font-size:.86rem}
+.muse-compass-gathered,.muse-compass-define{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.muse-compass-gathered li{display:grid;grid-template-columns:minmax(110px,180px) minmax(0,1fr) auto;gap:10px;align-items:center;padding:8px 10px;border-radius:14px;background:var(--surface-subtle)}
+.muse-compass-gathered-word{font-family:var(--font-editorial);font-weight:var(--type-title-weight);font-size:1.05rem}
+.muse-compass-define label>span b{font-family:var(--font-editorial);font-weight:var(--type-title-weight);font-size:1.02rem}
+.muse-compass-garden-foot{position:sticky;bottom:-24px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin:0 calc(-1 * clamp(14px,2.4vw,26px)) -24px;padding:12px clamp(14px,2.4vw,26px);border-top:1px solid var(--compass-line);background:var(--glass-background)}
+.muse-compass-garden-foot>div{display:flex;gap:8px}
+.muse-compass-garden-done{display:grid;gap:14px;justify-items:start}
+.muse-compass-garden-done p{margin:0;line-height:1.6;max-width:56ch}
+
+/* ---------- Explorations ---------- */
+.muse-compass-explore{display:grid;gap:14px}
+.muse-compass-invite{position:relative;isolation:isolate;display:grid;grid-template-columns:minmax(0,1fr) 200px;gap:20px;align-items:center;padding:clamp(18px,3vw,32px);border:1px solid var(--glass-border);border-radius:calc(var(--card-radius,22px) + 6px);overflow:hidden;
+ background:radial-gradient(90% 120% at 100% 50%,color-mix(in srgb,var(--compass-ink) 22%,transparent),transparent 60%),var(--glass-background);box-shadow:var(--card-shadow)}
+.muse-compass-invite>div{display:grid;gap:10px;min-width:0}
+.muse-compass-invite>div>*{margin:0}
+.muse-compass-invite .muse-kicker{display:flex;align-items:center;gap:6px}
+.muse-compass-invite-title{font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight);font-size:clamp(1.8rem,3.6vw,2.7rem);line-height:1.04}
+.muse-compass-invite-intro{max-width:60ch;color:var(--text-muted);line-height:1.55}
+.muse-compass-invite-first{font-family:var(--font-editorial);font-style:italic;font-size:1.05rem;line-height:1.45}
+.muse-compass-invite-first span{display:block;margin-bottom:2px;font:700 .66rem/1 var(--font-ui);font-style:normal;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)}
+.muse-compass-invite-art{width:200px;height:200px}
+.muse-compass-invite-ring{fill:none;stroke:color-mix(in srgb,var(--compass-ink) 45%,transparent);stroke-width:.8}
+.muse-compass-invite-ring[data-dash]{stroke-dasharray:2 4}
+.muse-compass-invite-star{fill:var(--compass-ink);opacity:.92}
+.muse-compass-invite-art circle:not(.muse-compass-invite-ring){fill:var(--foreground);opacity:.55}
+.muse-compass-invite-line{fill:none;stroke:color-mix(in srgb,var(--foreground) 25%,transparent);stroke-width:.6;stroke-dasharray:2 3}
+@media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) .muse-compass-invite-star{transform-origin:100px 100px;animation:muse-compass-settle 1.6s cubic-bezier(.2,.8,.2,1) both}}
+.muse-compass-explore-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,250px),1fr));gap:12px;margin:0;padding:0;list-style:none}
+.muse-compass-explore-grid li{display:flex;min-width:0}
+.muse-compass-explore-card{display:grid;grid-template-rows:auto auto 1fr auto;gap:6px;width:100%;min-height:172px;padding:14px 16px;border:1px solid var(--glass-border);border-top:3px solid var(--compass-ink);border-radius:16px;background:var(--glass-background);color:var(--foreground);text-align:left;cursor:pointer;box-shadow:var(--card-shadow);transition:transform .25s,border-color .25s}
+.muse-compass-explore-card:hover{transform:translateY(-2px)}
+.muse-compass-explore-card .muse-compass-card-title{font-size:1.08rem}
+.muse-compass-explore-card .muse-compass-card-meaning{-webkit-line-clamp:3}
+.muse-compass-explore-card .muse-compass-card-foot{color:var(--text-muted);font-size:.76rem}
+.muse-compass-past{display:grid;gap:10px}
+.muse-compass-past-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:8px;margin:0;padding:0;list-style:none}
+.muse-compass-past-list button{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-rows:auto auto;column-gap:10px;align-items:center;width:100%;padding:10px 12px;border:1px solid var(--glass-border);border-left:3px solid var(--compass-ink);border-radius:12px;background:var(--surface-subtle);color:var(--foreground);text-align:left;cursor:pointer}
+.muse-compass-past-list .muse-mark{grid-row:span 2}
+.muse-compass-past-title{font-family:var(--font-editorial);font-weight:var(--type-title-weight)}
+
+.muse-compass-session-intro{display:grid;gap:14px;padding-top:8px}
+.muse-compass-session-intro>*{margin:0}
+.muse-compass-session-intro .muse-kicker{display:flex;align-items:center;gap:8px}
+.muse-compass-session-lede{font-family:var(--font-editorial);font-weight:var(--type-reading-weight);font-size:1.12rem;line-height:1.65;max-width:58ch}
+.muse-compass-session-preview{display:grid;gap:6px;margin:0;padding:12px 14px 12px 34px;border-radius:14px;background:var(--surface-subtle);color:var(--text-muted);line-height:1.5}
+.muse-compass-session-preview li::marker{color:var(--compass-ink);font-family:var(--font-editorial)}
+.muse-compass-session-write{display:grid;gap:18px}
+.muse-compass-session-write header{display:grid;gap:6px}
+.muse-compass-session-write header>*{margin:0}
+.muse-compass-session-write header .muse-kicker{display:flex;align-items:center;gap:6px}
+.muse-compass-prompts{display:grid;gap:18px;margin:0;padding:0;list-style:none}
+.muse-compass-prompts>li{display:grid;gap:8px}
+.muse-compass-prompts>li>label{display:grid!important;grid-template-columns:34px minmax(0,1fr);gap:10px!important;align-items:baseline}
+.muse-compass-prompt-n{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--compass-ink),var(--compass-ink-b));color:#fff;font:600 .8rem/1 var(--font-editorial)}
+.muse-compass-prompt-text{font-family:var(--font-editorial);font-weight:var(--type-title-weight);font-size:1.05rem;line-height:1.45}
+.muse-compass-prompts textarea,.muse-compass-session-reflect textarea{margin-left:44px;width:calc(100% - 44px)!important;font-family:var(--font-editorial);font-weight:var(--type-reading-weight);line-height:1.65;
+ background:repeating-linear-gradient(transparent 0 calc(1.65em - 1px),color-mix(in srgb,var(--foreground) 7%,transparent) calc(1.65em - 1px) 1.65em),var(--surface-control)!important;background-position:0 9px!important}
+.muse-compass-session-reflect textarea{margin-left:0;width:100%!important}
+.muse-compass-keep-toggle{justify-self:start;margin-left:44px;display:inline-flex;align-items:center;gap:5px;font-size:.82rem}
+.muse-compass-keep{display:grid;gap:8px;margin-left:44px;padding:10px 12px;border-left:3px solid var(--compass-ink);border-radius:0 12px 12px 0;background:color-mix(in srgb,var(--compass-ink) 8%,var(--surface-subtle))}
+.muse-compass-keep textarea{margin-left:0!important;width:100%!important;background:var(--surface-control)!important;font-family:var(--font-editorial);font-weight:var(--type-title-weight)}
+.muse-compass-keep-head{display:flex;justify-content:space-between;align-items:center;margin:0;font-size:.82rem;color:var(--text-muted)}
+.muse-compass-session-kept{display:grid;gap:14px}
+.muse-compass-session-kept>p{margin:0;line-height:1.6}
+
+/* ---------- Evolution timeline ---------- */
+.muse-compass-evolution{display:grid;gap:16px}
+.muse-compass-timeline{display:grid;gap:22px}
+.muse-compass-timeline-month{display:flex;align-items:baseline;gap:10px;margin:0 0 10px;font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight);font-size:1.35rem}
+.muse-compass-timeline-month small{font:600 .74rem/1 var(--font-ui);font-style:normal;color:var(--text-muted)}
+.muse-compass-timeline ol{position:relative;display:grid;gap:12px;margin:0;padding:0 0 0 28px;list-style:none}
+.muse-compass-timeline ol::before{content:"";position:absolute;left:9px;top:4px;bottom:4px;width:1px;background:var(--compass-line)}
+.muse-compass-timeline li{position:relative}
+.muse-compass-timeline-dot{position:absolute;left:-28px;top:6px;display:grid;place-items:center;width:19px;height:19px;border-radius:50%;background:var(--glass-background);border:1.5px solid var(--compass-ink,var(--accent-secondary));color:var(--compass-ink)}
+.muse-compass-timeline li[data-kind=added] .muse-compass-timeline-dot::after{content:"";width:7px;height:7px;border-radius:50%;background:var(--compass-ink)}
+.muse-compass-timeline-body{display:grid;gap:4px;padding:10px 14px;border-radius:14px;background:var(--surface-subtle)}
+.muse-compass-timeline li[data-kind=evolved] .muse-compass-timeline-body{background:linear-gradient(100deg,color-mix(in srgb,var(--compass-ink) 12%,transparent),transparent 70%),var(--surface-subtle)}
+.muse-compass-timeline-body>*{margin:0}
+.muse-compass-timeline-open{all:unset;cursor:pointer;justify-self:start;border-radius:6px}
+.muse-compass-timeline-open:hover .muse-compass-history-words{text-decoration:underline;text-decoration-color:var(--compass-ink);text-underline-offset:3px}
+.muse-compass-timeline-open:focus-visible{outline:2px solid var(--dl-focus-ring,var(--accent-primary));outline-offset:2px}
+.muse-compass-timeline li[data-kind=added] .muse-compass-timeline-body{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 12px;padding:6px 12px;background:transparent}
+.muse-compass-timeline li[data-kind=added] .muse-compass-timeline-dot{top:5px}
+.muse-compass-timeline li[data-kind=added]+li[data-kind=added]{margin-top:-6px}
+.muse-compass-timeline-meta{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;color:var(--text-muted);font-size:.76rem}
+.muse-compass-timeline-meta .muse-mark{width:18px;height:18px;border-radius:6px}
+.muse-compass-timeline-meta span:first-of-type{font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:.66rem;color:var(--foreground)}
+.muse-compass-timeline-arrow{color:var(--text-muted);font-family:var(--font-editorial);font-style:italic;font-size:.82rem}
+
+/* ---------- Manifesto: a luminous, framed declaration ---------- */
+.muse-compass-manifesto-view,.muse-compass-manifesto-edit{display:grid;gap:16px}
+.muse-compass-manifesto-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.muse-compass-manifesto-bar .muse-kicker{display:flex;align-items:center;gap:6px;margin:0}
+.muse-compass-sheet{--sheet-ink:var(--chart-7);--sheet-ink-b:var(--chart-2);position:relative;isolation:isolate;display:grid;gap:clamp(18px,3vw,30px);width:100%;max-width:760px;margin:0 auto;box-sizing:border-box;padding:clamp(30px,6vw,64px) clamp(22px,6vw,72px);
+ border-radius:6px;background:radial-gradient(70% 50% at 50% 0%,color-mix(in srgb,var(--sheet-ink) 10%,transparent),transparent 70%),var(--surface-subtle);text-align:center;box-shadow:0 30px 50px -36px rgba(0,0,0,.55)}
+.muse-compass-sheet::before{content:"";position:absolute;inset:12px;z-index:-1;border:1px solid color-mix(in srgb,var(--sheet-ink) 45%,transparent);border-radius:3px;box-shadow:inset 0 0 0 4px var(--surface-subtle),inset 0 0 0 5px color-mix(in srgb,var(--sheet-ink-b) 30%,transparent)}
+.muse-compass-sheet-corner{position:absolute;width:14px;height:14px;background:var(--sheet-ink);clip-path:path("M7 0C7.6 5.4 8.6 6.4 14 7C8.6 7.6 7.6 8.6 7 14C6.4 8.6 5.4 7.6 0 7C5.4 6.4 6.4 5.4 7 0Z")}
+.muse-compass-sheet-corner[data-c=tl]{top:5px;left:5px}.muse-compass-sheet-corner[data-c=tr]{top:5px;right:5px}.muse-compass-sheet-corner[data-c=bl]{bottom:5px;left:5px}.muse-compass-sheet-corner[data-c=br]{bottom:5px;right:5px}
+.muse-compass-sheet header{display:grid;justify-items:center;gap:10px}
+.muse-compass-sheet-star{fill:var(--sheet-ink)}
+.muse-compass-sheet h2{margin:0;font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight);font-size:clamp(2rem,5vw,3.1rem);line-height:1.02;letter-spacing:-.015em}
+.muse-compass-sheet section{display:grid;gap:12px}
+.muse-compass-sheet h3{display:flex;align-items:center;gap:14px;margin:0;color:color-mix(in oklch,var(--sheet-ink) 70%,var(--foreground));font:700 .72rem/1.2 var(--font-ui);letter-spacing:.24em;text-transform:uppercase}
+.muse-compass-sheet h3::before,.muse-compass-sheet h3::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--sheet-ink) 45%,transparent))}
+.muse-compass-sheet h3::after{background:linear-gradient(90deg,color-mix(in srgb,var(--sheet-ink) 45%,transparent),transparent)}
+.muse-compass-sheet-line{position:relative;margin:0 auto;max-width:44ch;font-family:var(--font-editorial);font-weight:var(--type-reading-weight);font-size:clamp(1.1rem,2vw,1.32rem);line-height:1.55;text-wrap:pretty}
+.muse-compass-sheet-src{display:inline-block;width:6px;height:6px;margin-left:8px;vertical-align:.25em;border-radius:50%;background:var(--compass-ink);opacity:.8}
+.muse-compass-sheet-src[data-missing]{background:transparent;border:1px dashed var(--text-muted)}
+.muse-compass-sheet[data-sample]{opacity:.82}
+.muse-compass-manifesto-empty{display:grid;gap:12px;justify-items:center;text-align:center}
+.muse-compass-version-note{margin:0;padding:8px 12px;border-radius:12px;background:var(--surface-subtle);font-size:.86rem}
+.muse-compass-versions{display:grid;gap:8px;max-width:760px;width:100%;margin:0 auto}
+.muse-compass-versions ol{display:grid;gap:6px;margin:0;padding:0;list-style:none}
+.muse-compass-versions li{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;padding:8px 12px;border-radius:12px;background:var(--surface-subtle);font-size:.86rem}
+.muse-compass-versions li[aria-current]{box-shadow:0 0 0 1px var(--selected-border,var(--accent-primary)) inset}
+.muse-compass-version-label{flex:1 1 160px;font-family:var(--font-editorial);font-style:italic}
+.muse-compass-version-tools{display:flex;gap:10px}
+.muse-compass-keep-version{display:flex;gap:8px;align-items:center}
+.muse-compass-keep-version input{width:min(280px,60vw)!important;min-height:38px!important}
+.muse-compass-manifesto-desk{display:grid;gap:12px;max-width:760px;width:100%;margin:0 auto}
+.muse-compass-manifesto-title input{text-align:center;font-family:var(--font-editorial)!important;font-style:italic;font-weight:var(--type-display-weight);font-size:clamp(1.6rem,4vw,2.4rem)!important;border-color:transparent!important;background:transparent!important}
+.muse-compass-manifesto-title input:hover{border-color:var(--glass-border)!important}
+.muse-compass-blocks{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.muse-compass-blocks li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:start;padding:8px;border-radius:14px;background:var(--surface-subtle)}
+.muse-compass-blocks li[data-kind=line]{border-left:3px solid var(--compass-ink,color-mix(in srgb,var(--foreground) 18%,transparent))}
+.muse-compass-block-heading{text-align:center;font:700 .78rem/1.2 var(--font-ui)!important;letter-spacing:.2em;text-transform:uppercase}
+.muse-compass-block-line{display:grid;gap:4px}
+.muse-compass-block-line textarea{font-family:var(--font-editorial);font-weight:var(--type-reading-weight);font-size:max(16px,1.05rem)!important}
+.muse-compass-block-ref{color:var(--text-muted);font-size:.74rem}
+.muse-compass-block-tools{display:flex;gap:2px}
+.muse-compass-block-tools button{display:grid;place-items:center;width:32px;height:32px;border:1px solid var(--glass-border);border-radius:9px;background:var(--surface-control);color:var(--foreground);cursor:pointer}
+.muse-compass-block-tools button:disabled{opacity:.35;cursor:default}
+.muse-compass-manifesto-add{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;padding-top:6px}
+
+/* ---------- Tablet and phone ---------- */
+@container muse-content (max-width:900px){
+ .muse-compass-hero{grid-template-columns:minmax(0,1fr)}
+ .muse-compass-sky{width:min(100%,380px)}
+ .muse-compass-facets ul{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@container muse-content (max-width:640px){
+ .muse-compass-spaces{gap:8px}
+ .muse-compass-spaces-track{width:100%;mask-image:linear-gradient(90deg,#000 88%,transparent);padding-right:24px}
+ .muse-compass-spaces .muse-save-indicator{display:none}
+ .muse-compass-hero{padding:16px;border-radius:var(--card-radius,22px)}
+ .muse-compass-facets ul{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+ .muse-compass-facet{min-height:150px;padding:12px 14px}
+ .muse-compass-facet-line{display:none}
+ .muse-compass-facet-title{font-size:1.04rem}
+ .muse-compass-doors{grid-template-columns:minmax(0,1fr)}
+ .muse-compass-invite{grid-template-columns:minmax(0,1fr)}
+ .muse-compass-invite-art{display:none}
+ .muse-compass-row2{grid-template-columns:minmax(0,1fr)}
+ .muse-compass-gathered li{grid-template-columns:minmax(0,1fr) auto}
+ .muse-compass-gathered li .muse-chip-row{grid-column:1/-1;grid-row:2}
+ .muse-compass-own{grid-template-columns:minmax(0,1fr) auto}
+ .muse-compass-own label{grid-column:1/-1}
+ .muse-compass-prompts>li>label{grid-template-columns:28px minmax(0,1fr)}
+ .muse-compass-prompts textarea,.muse-compass-keep-toggle,.muse-compass-keep{margin-left:0;width:100%!important}
+ .muse-compass-commonplace li{grid-template-columns:30px minmax(0,1fr) auto}
+ .muse-compass-keep-version{flex-wrap:wrap;width:100%}
+ .muse-compass-keep-version input{width:100%!important}
+ .muse-compass-manifesto-bar .muse-compass-hero-actions{width:100%}
+ .muse-compass-collection-actions{width:100%}
+ .muse-compass-collection-actions .muse-button{flex:1 1 auto;justify-content:center}
+}
+
+/* ---------- Print: only the manifesto page ---------- */
+@media print{
+ body *{visibility:hidden!important}
+ .muse-compass-sheet,.muse-compass-sheet *{visibility:visible!important}
+ .muse-compass-sheet{position:absolute;inset:0 auto auto 0;width:100%;max-width:none;margin:0;box-shadow:none;background:#fff;color:#1d1726;--surface-subtle:#fff;--foreground:#1d1726}
+ .muse-compass-sheet-src{display:none}
+}

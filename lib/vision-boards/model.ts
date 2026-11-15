@@ -39,7 +39,8 @@ export const isBoardPeriod = (v: unknown): v is BoardPeriod => boardPeriods.some
 export type Background = { kind: "solid"; color: Hex } | { kind: "gradient"; gradient: CustomGradient } | { kind: "pattern"; paint: PatternPaint };
 /** Non-destructive crop: the shape, how far the photo is zoomed inside it, and where it sits (-1…1 on each axis). */
 export type Crop = { shape: CropShape; zoom: number; x: number; y: number };
-export type ElementLink = { kind: "aspiration" | "bucket"; id: string; label: string };
+/** #210: an element may also point at an Inner Compass discovery (a value, a quality, a principle…). */
+export type ElementLink = { kind: "aspiration" | "bucket" | "discovery"; id: string; label: string };
 /** A die-cut edge: paint (solid, gradient or pattern) at a thickness in board units, following the visible silhouette. */
 export type Outline = { color: Hex; width: number; paint?: Paint };
 export const fonts = [
@@ -131,7 +132,7 @@ export function parseBackground(v: unknown): Background {
 function parseLink(v: unknown): ElementLink | undefined {
   if (!v || typeof v !== "object") return undefined;
   const o = v as Record<string, unknown>;
-  if ((o.kind !== "aspiration" && o.kind !== "bucket") || !recordIdOk(o.id)) return undefined;
+  if ((o.kind !== "aspiration" && o.kind !== "bucket" && o.kind !== "discovery") || !recordIdOk(o.id)) return undefined;
   return { kind: o.kind, id: o.id, label: str(o.label, 200) || "Untitled" };
 }
 export function parseCrop(v: unknown): Crop {

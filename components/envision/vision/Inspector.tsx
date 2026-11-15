@@ -286,7 +286,7 @@ function AlignGlyph({ how }: { how: Align }) {
 function LinkSection({ e, patch, lookups }: Props & { e: BoardElement }) {
   return <Section title={e.link ? "Linked" : "Link to Muse"} open={!!e.link}>
     {e.link ? (() => { const st = linkStatus(e.link, lookups.live(e.link)); return <>
-      <p><span className="muse-intentions-ref" data-missing={st.missing || undefined}>{st.missing ? st.label : <Link href={e.link.kind === "aspiration" ? `/envision?open=${e.link.id}` : "/envision?view=bucket"}>{st.label}</Link>}{st.note && <small> {st.note}</small>}</span></p>
+      <p><span className="muse-intentions-ref" data-missing={st.missing || undefined}>{st.missing ? st.label : <Link href={e.link.kind === "aspiration" ? `/envision?open=${e.link.id}` : e.link.kind === "discovery" ? `/envision?view=inner-compass&d=${e.link.id}` : "/envision?view=bucket"}>{st.label}</Link>}{st.note && <small> {st.note}</small>}</span></p>
       <button type="button" className="text-button" onClick={() => patch(() => ({ link: undefined }))}>Remove link</button></>; })()
       : <p className="small-label">Point this piece at an Aspiration or a Bucket List dream. It’s only a reference: nothing is created or changed there.</p>}
     {lookups.linkOptions.length ? <MuseChoiceMenu label="Link to" valueLabel={e.link ? "Link something else…" : "Choose…"} searchable options={lookups.linkOptions} selectedIds={e.link ? [`${e.link.kind}:${e.link.id}`] : []}

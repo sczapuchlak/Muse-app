@@ -1,4 +1,5 @@
 "use client";
+import { useCompassChoices } from "../compass/useCompassChoices";
 import Link from "next/link";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type ClipboardEvent as ReactClipboardEvent, type DragEvent, type KeyboardEvent } from "react";
 import { createMuseBrowserClient } from "@/lib/supabase/client";
@@ -72,6 +73,7 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
   createVision?: (b: VisionBoard) => Promise<VisionBoard | null>;
 }) {
   const client = useMemo(() => createMuseBrowserClient(), []);
+  const compass = useCompassChoices();
   const [board, setBoard] = useState(initial);
   const [history, setHistory] = useState<History>(emptyHistory);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
@@ -586,8 +588,11 @@ export default function BoardEditor({ initial, userId, today, lookups, onSaved, 
     onDrop: (ev: DragEvent) => { setDropping(false); if (!ev.dataTransfer.files.length) return; ev.preventDefault(); void addFiles(Array.from(ev.dataTransfer.files)); },
   };
 
-  const live = (l: ElementLink) => l.kind === "aspiration" ? (() => { const a = lookups.aspirations.find((x) => x.id === l.id); return a && { label: a.title }; })() : (() => { const d = lookups.dreams.find((x) => x.id === l.id); return d && { label: d.title }; })();
-  const linkOptions = [...lookups.aspirations.filter((a) => a.status !== "archived").map((a) => ({ id: `aspiration:${a.id}`, label: `🌱 ${a.title}` })), ...lookups.dreams.filter((d) => !d.archivedAt).map((d) => ({ id: `bucket:${d.id}`, label: `🗺️ ${d.title}` }))];
+  const live = (l: ElementLink) => l.kind === "aspiration" ? (() => { const a = lookups.aspirations.find((x) => x.id === l.id); return a && { label: a.title }; })()
+    : l.kind === "discovery" ? (() => { const d = compass.find(l.id); return d && { label: d.title }; })()
+    : (() => { const d = lookups.dreams.find((x) => x.id === l.id); return d && { label: d.title }; })();
+  const linkOptions = [...lookups.aspirations.filter((a) => a.status !== "archived").map((a) => ({ id: `aspiration:${a.id}`, label: `🌱 ${a.title}` })), ...lookups.dreams.filter((d) => !d.archivedAt).map((d) => ({ id: `bucket:${d.id}`, label: `🗺️ ${d.title}` })),
+    ...compass.choices.map((d) => ({ id: `discovery:${d.id}`, label: `🧭 ${d.title}` }))];
   const togglePanel = (p: typeof panel) => setPanel((x) => x === p ? "" : p);
   // Option A cutouts: guidance for Apple's own "lift subject", only where it exists (iPhone, iPad).
   const apple = useAppleTouch(), cutoutHint = useCutoutHint(apple);

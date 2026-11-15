@@ -16,6 +16,16 @@ Write down the answers before you build. Put them in the PR description or the f
 6. **Place in the cycle.** What happens before and after this experience?
 7. **Now or later.** Which integrations work now, and which are only prepared for the future? Say which in the docs.
 
+### Inner Compass, Phase 1: My Inner World (#210)
+
+1. **Authoritative source.** Envision → Inner Compass owns discoveries (`inner_discoveries`), their meaningful versions, connections, exploration responses, its own light reflections and the Personal Manifesto.
+2. **Related owners.** Reflections owns Life Areas (`life_areas`); Planner → Intentions owns intention pages; Envision → Visions owns boards. Planner → Reflections (period reviews) stays separate: Inner Compass reflections are short notes about one discovery or exploration, not a second journal.
+3. **Duplicates.** None. Life Areas are referenced by id (association only, never a rating). Exploration prompts live in the repo (`content/inner-compass/`); a response stores the key, a title snapshot and each prompt as asked. A manifesto line drawn from a discovery keeps its id plus the words the person chose.
+4. **Optional relationships.** Every connection is optional and explicit: discovery ↔ discovery, discovery → Life Areas, reflection → discovery or response, Intentions → discovery, board element → discovery. Nothing is inferred.
+5. **Patterns.** `MuseSectionNav` tab, `MuseSegmented`, `MuseChoiceMenu`, `MuseSearch`, `MuseModal`, `EntryCarousel`, `MuseMark`, `SaveIndicator`, the shared side-accent panel and the Intentions reference chip.
+6. **Place in the cycle.** Envision (who I am) → Intend (values and qualities to honor this period) → Live → Reflect → Understand → evolve a discovery.
+7. **Now or later.** Working now: Life Atlas areas, Intentions section, Vision Board element links. Prepared: My Chapters (Phase 2) references discoveries by `(user_id, id)`; `source_kind = 'chapter'` is reserved. Future: Planner → Reflections linking to discoveries; Life Atlas showing associated discoveries.
+
 ### Life Atlas 2.0 (#190)
 
 The Life Atlas is a lens, not a second store. Aspirations stay in `aspirations`, year choices in `aspiration_year_priorities` (with name and area snapshots), a year's own words and ritual position in `aspiration_year_plans`, and area visions in `aspiration_year_visions`. Life Areas remain Reflections' `life_areas`, and Level 10 ratings stay independent. Related aspirations are references in `aspiration_links`, never copies or nesting. Books stays the authority for Reading Challenge progress (read at display time, and a challenge's year is never reassigned). The ritual creates real aspirations and priorities as you write; it keeps no draft copies. Carrying an aspiration into a new year adds that year's priority and leaves earlier years untouched. Vision Boards are linked by id plus a name snapshot, never edited from the Atlas.
@@ -60,6 +70,8 @@ Envision remains the owner of aspirations and their journey; Planner → Reflect
 | Book series catalog | Collections › Series page (`/collections/series/…`) | `collection_series`, `collection_series_members` | Book page, Add Book search, Collections search, Reading Atlas | catalog-only members have source IDs and titles but no book ID; owned members reference the canonical book; manual corrections and hidden tombstones override refresh; reading history stays with the book |
 | Future Log entry | Planner → Agenda → Future Log | `future_log_entries` | none | standalone entries are their own record; a reference (#112) stores only `source_kind` + `source_id` + a name snapshot, has no done state of its own, and one record can be referenced once |
 | Planned movement and its outcome | Daily Edit / Wellness → Movement | `movement_day_types`, `movement_day_outcomes` (#112), `movement_records` | Insights, Wellness goals, Connected Rituals | Completed is only `movement_records`; Skipped, Rest and Sick are outcomes and never count as done |
+| Inner Compass discovery (#210) | Envision → Inner Compass → My Inner World | `inner_discoveries` (+ `inner_discovery_versions`, `inner_discovery_links`, `inner_discovery_areas`) | Intentions (“Values & qualities to honor”), Vision Board elements, Manifesto lines, Inner Compass reflections; My Chapters (Phase 2) | id + name snapshot. Ordinary edits change the record; only “Record evolution” keeps the earlier words. Deleting removes its versions and connections; reflections and manifesto lines keep their words |
+| Exploration response, reflection, manifesto (#210) | Envision → Inner Compass | `inner_exploration_responses`, `inner_reflections`, `inner_manifestos`, `inner_manifesto_versions` | none | owner; exploration definitions are repo content by stable key |
 | Comparison birth profile | Cosmic Observatory → Birth Chart | `astrology_comparison_profiles` (#28) | Synastry and Composite chart tools | private input by id; calculated chart results are temporary and never copied into this record |
 
 ## Lifecycles worth knowing
