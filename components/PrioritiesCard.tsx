@@ -8,6 +8,7 @@ import {MuseCard} from './MuseCard';import {CardHeading} from './CardHeading';im
 import {usePlanner} from './PlannerStore';import './PrioritiesCard.css';import {PriorityTaskLink} from './PriorityTaskLink';
 import {useMuseToday} from './useMuseToday';
 import {todayInTimeZone} from '@/lib/dates';
+import {DailyArt} from './daily/DailyArt';
 /** Three stars that light with each completed priority and connect when all three are done. */
 function PriorityStars({lit,aligned}:{lit:number;aligned:boolean}){return <span className="priority-stars" data-aligned={aligned||undefined} aria-hidden="true"><svg viewBox="0 0 60 20"><path d="M8 13 L30 6 L52 12"/></svg>{[0,1,2].map(i=><span key={i} data-lit={i<lit||undefined}><MuseStar size={i===1?15:12}/></span>)}</span>;}
 function PriorityItem({priority,complete,historical,disabled,onToggle,onEdit,children}:{priority:DailyPriority;complete:boolean|null;historical:boolean;disabled:boolean;onToggle:()=>void;onEdit:(title:string)=>void;children:React.ReactNode}){
@@ -51,7 +52,7 @@ export function PrioritiesCard(){
  <button type="button" className="text-button" aria-label={`Move priority ${index+1} later`} disabled={index===inputs.length-1} onClick={()=>{const next=[...inputs];[next[index+1],next[index]]=[next[index],next[index+1]];save(next);}}>↓</button>
  <button type="button" className="text-button" aria-label={`Remove priority: ${priority.text}`} onClick={()=>save(inputs.filter(item=>item.id!==priority.id))}><MuseIcon name="close" size={14}/></button></span>
  </PriorityItem>)}</ul>
- {!inputs.length&&<p className="card-description">No priorities for this day.</p>}
+ {!inputs.length&&<div className="muse-daily-empty"><DailyArt kind="priorities"/><p className="card-description">No priorities for this day.</p></div>}
  {inputs.length<3&&<form className="priority-add" onSubmit={event=>{event.preventDefault();if(!title.trim()||!planner.canEdit||planner.status?.pending||capture.current)return;const id=crypto.randomUUID();capture.current={id,date,text:title};planner.dispatch({type:'priority/create',id,date,title:title.trim()});}}><input aria-label="New priority" placeholder="Add a priority…" maxLength={160} value={title} onChange={event=>setTitle(event.target.value)}/><button className="muse-button" type="submit" disabled={!title.trim()||!planner.canEdit||!!planner.status?.pending}>Add priority</button></form>}
  </DailyCapture></MuseCard>;
 }

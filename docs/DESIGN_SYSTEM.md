@@ -845,3 +845,11 @@ Book and Series are pages inside Collections. Both open with a pill Back control
 - **The Tarot question has a job:** it is the first step of setting the table (inside the ritual, not a form above it), then heads the table while you choose and turn cards ("Your question"), sits at the top of the Interpretation Desk ("You asked"), adds one reflection prompt, and titles the reading in the Journal. It never changes which cards come up: the draw stays random. The spread picker and reading options live in the table's header at every step.
 - **Distinct art:** a page's invite card never repeats its hero drawing (the Dream Diary hero is moon and clouds; its "Capture a dream" card is a dreamcatcher).
 - **Framed bands instead of loose controls:** the Cosmic Calendar hero (month title, this month's phases strung on a dotted orbit with the next one glowing, controls); the Symbol Encyclopedia hero now holds search, categories and A–Z, with your own symbols and "Add your symbol" on one shelf.
+
+## Daily Edit sky — implemented on branch `feat/daily-edit-sky`, Staging acceptance pending
+
+Nov 15: "bring that imagery and shining stars to the daily dash". The approved layout (two 8:5 stacks, order, padding) and the compact header (no illustration track, no added height) are unchanged; the sky lives inside the cards:
+- each Daily card carries a faint starfield in its ink that slowly breathes (a `::before` on the card; the theme ring owns `::after`), and a small twinkling star after its title;
+- cards with nothing in them yet show a drawn scene from `components/daily/DailyArt.tsx` in the journal drawing vocabulary: Cosmic Forecast a zodiac ring, Priorities three unlit stars, Little Rituals a breathing candle, Today's plan the sun and moon over the day's arc ("A clear day so far…"), Day in Three three floating bubbles;
+- the water bar shimmers as it fills, and an occasional shooting star crosses the top of the grid.
+Star and art colours mix the card ink with the card's own text colour, so they read on light (Astral) cards too. All motion is gated by reduced motion and Muse Magic. These drawings sit inside cards; the retired *hero* constellation drawings stay retired.
