@@ -168,9 +168,9 @@ try{
  await shoot('11-evolution',true);
 
  // ---- Manifesto: authored by the person, autosaved, versioned ----
- await go('/envision?view=inner-compass&space=manifesto','!!document.querySelector(".muse-compass-manifesto-view")','manifesto');
+ await go('/envision?view=inner-compass&space=manifesto','!!document.querySelector(".muse-compass-mani-hero")','manifesto');
  await shoot('12-manifesto-empty');
- await click('.muse-compass-manifesto-bar button','Begin my manifesto');
+ await click('.muse-compass-mani-hero button','Begin my manifesto');
  await until(()=>!!document.querySelector('.muse-compass-manifesto-desk'),'editor');
  check(await count('inner_manifestos')===0,'opening the editor creates nothing');
  await click('.muse-compass-manifesto-add .muse-choice-trigger','Add a heading: ＋ Heading');await until(()=>!!document.querySelector('.popover-choice'),'heading menu');await click('.popover-choice','What I value');

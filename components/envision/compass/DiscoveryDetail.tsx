@@ -16,8 +16,8 @@ type Mode = "view" | "edit" | "evolve" | "delete";
  * reflections written about it and its evolution. Editing is ordinary and leaves no trace; "Record evolution" is the
  * separate, explicit way to keep the earlier words. Neither version is ever framed as the better one.
  */
-export function DiscoveryDetail({ d, compass, today, onClose, onOpen, returnFocus }: { d: Discovery; compass: Compass; today: string; onClose: () => void; onOpen: (id: string) => void; returnFocus: HTMLElement | null }) {
-  const [mode, setMode] = useState<Mode>("view"), [reflecting, setReflecting] = useState(false);
+export function DiscoveryDetail({ d, compass, today, onClose, onOpen, returnFocus, initialMode = "view" }: { d: Discovery; compass: Compass; today: string; onClose: () => void; onOpen: (id: string) => void; returnFocus: HTMLElement | null; initialMode?: "view" | "evolve" }) {
+  const [mode, setMode] = useState<Mode>(initialMode), [reflecting, setReflecting] = useState(false);
   const info = categoryInfo[d.category], stance = stanceLabel(d);
   const history = useMemo(() => compass.versions.filter((v) => v.discoveryId === d.id).sort((a, b) => b.evolvedOn.localeCompare(a.evolvedOn) || b.createdAt.localeCompare(a.createdAt)), [compass.versions, d.id]);
   const related = relatedIds(compass.links, d.id).map((id) => compass.discoveries.find((x) => x.id === id)).filter((x): x is Discovery => !!x);

@@ -3,6 +3,7 @@
 @import "./materials.css";
 @import "./surfaces.css";
 @import "./atmosphere.css";
+@import "./journals.css";
 
 :root {
   /* Change the interface or greeting family here, independently. */

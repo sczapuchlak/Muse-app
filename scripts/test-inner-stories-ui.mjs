@@ -64,13 +64,12 @@ try{
 
  // ---- Chapters: start with a word ----
  await click('.muse-compass-realms button','My Chapters');
- await until(()=>!!document.querySelector('.muse-stories-welcome'),'chapters welcome');
+ await until(()=>!!document.querySelector('.muse-stories-begin-form'),'chapters welcome');
  check(await count('inner_chapters')===0,'visiting creates nothing');
  await shoot('02-chapters-empty');
- await click('.muse-stories-begin button','Courage');
- await until(()=>!!document.querySelector('#muse-new-chapter'),'new chapter dialog');
- await setValue('#muse-new-chapter .muse-compass-statement input','Prosperity');
- await click('#muse-new-chapter button[type=submit]');
+ await click('.muse-stories-begin-form .muse-segmented button','A guiding word');
+ await setValue('#chapters-begin','Prosperity');
+ await click('.muse-stories-begin-form button[type=submit]');
  await until(()=>!!document.querySelector('#chapter-title'),'chapter page');
  const ch=must(await admin.from('inner_chapters').select('*').eq('user_id',userId).single());
  check(ch.title==='Prosperity'&&ch.word==='Prosperity','a guiding word stands as the name');
@@ -141,7 +140,7 @@ try{
  await setValue('#exp-capture','First pottery workshop');await click('.muse-stories-capture button[type=submit]');
  await until(()=>/Kept/.test(document.querySelector('.muse-stories-capture [role=status]')?.textContent??''),'captured');
  check(await count('inner_experiences')===2,'an experience in seconds: just a title');
- await click('.muse-stories-collections header button','New collection');await setValue('#muse-new-collection .muse-compass-statement input','Coven Chronicles');await click('#muse-new-collection button[type=submit]');
+ await click('.muse-stories-collection-new');await setValue('#muse-new-collection .muse-compass-statement input','Coven Chronicles');await click('#muse-new-collection button[type=submit]');
  await until(()=>!!document.querySelector('.muse-stories-collection-head'),'collection view');
  await click('.muse-stories-add-existing .muse-choice-trigger');await until(()=>!!document.querySelector('.popover-choice'),'picker');await click('.popover-choice','Prosperity Manifestation Evening');
  await until(()=>document.querySelectorAll('.muse-stories-exp-tiles .muse-stories-tile').length===1,'added to collection');
@@ -205,9 +204,9 @@ try{
  const spirit=must(await client.from('life_areas').select('id').eq('label','Spirituality').single());
  const aspId=crypto.randomUUID();must(await client.from('aspirations').insert({id:aspId,title:'Keep a monthly circle',start_date:'2026-11-01',target_date:'2026-12-31',timeframe:'year',progress_kind:'binary'}));
  must(await client.rpc('set_aspiration_primary_area',{p_aspiration_id:aspId,p_area_id:spirit.id}));
- await go('/envision','!!document.querySelector(".muse-lifeatlas-area-stories")','atlas link').catch(()=>{});
- await evaluate(()=>document.querySelector('.muse-lifeatlas-area-stories')?.closest('section')?.scrollIntoView()).catch(()=>{});await shoot('09b-atlas');
- check(await has('.muse-lifeatlas-area-stories','experience'),'the Life Atlas links to associated experiences');
+ await go('/envision','!!document.querySelector(".muse-lifeatlas-story")','atlas link').catch(()=>{});
+ await evaluate(()=>document.querySelector('.muse-lifeatlas-story')?.closest('section')?.scrollIntoView()).catch(()=>{});await shoot('09b-atlas');
+ check(await has('.muse-lifeatlas-story[data-kind=experience]','Prosperity Manifestation Evening'),'the Life Atlas shows associated experiences');
 
  // ---- Phone ----
  await viewport(390,844,true);

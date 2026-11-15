@@ -280,6 +280,20 @@
 .muse-lifeatlas-constellation[data-web] .muse-lifeatlas-thread[data-dust]{stroke:color-mix(in oklab,var(--foreground) 30%,transparent);stroke-width:.18;opacity:.6}
 @media (max-width:760px){.muse-lifeatlas-hero-sky .muse-lifeatlas-constellation[data-web]{width:100%!important;margin-left:0!important}}
 @media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) .muse-lifeatlas-dust{animation:muse-lifeatlas-star-in .7s cubic-bezier(.2,.8,.2,1.2) calc(.2s + var(--i)*.12s) both}}
-/* #211: a quiet link to the Inner Compass Experiences and Chapters associated with this area. */
-.muse-lifeatlas-area-stories{display:block;margin-top:3px;color:var(--text-muted);text-decoration:none;font-size:.74rem}
-.muse-lifeatlas-area-stories:hover{color:var(--foreground);text-decoration:underline;text-underline-offset:3px}
+/* #214: an area's linked Inner Compass Chapters and Experiences, below its aspirations: two compact rows of small
+   covers that open the original record. Rows appear only when they have something. */
+.muse-lifeatlas-stories{display:grid;gap:10px;margin-top:12px;padding-top:12px;border-top:1px solid color-mix(in srgb,var(--mark-a) 22%,var(--glass-border))}
+.muse-lifeatlas-stories-row{display:grid;gap:6px;min-width:0}
+.muse-lifeatlas-stories-row>.small-label{margin:0}
+.muse-lifeatlas-stories-row ul{display:flex;gap:8px;margin:0;padding:0 0 2px;list-style:none;overflow-x:auto;scrollbar-width:none}
+.muse-lifeatlas-stories-row ul::-webkit-scrollbar{display:none}
+.muse-lifeatlas-story{display:flex;align-items:center;gap:9px;width:220px;max-width:70vw;padding:6px 12px 6px 6px;border:1px solid var(--glass-border);border-radius:14px;background:var(--surface-subtle);color:var(--foreground);text-decoration:none;transition:border-color .25s,transform .25s}
+.muse-lifeatlas-story:hover{transform:translateY(-1px);border-color:color-mix(in srgb,var(--mark-a) 55%,var(--glass-border))}
+.muse-lifeatlas-story-art{position:relative;flex:0 0 auto;width:44px;height:44px;border-radius:10px;overflow:hidden}
+.muse-lifeatlas-story[data-kind=chapter] .muse-lifeatlas-story-art{width:34px;border-radius:3px 8px 8px 3px;box-shadow:inset 3px 0 0 rgba(0,0,0,.25)}
+.muse-lifeatlas-story-art .muse-cover{position:absolute;inset:0}
+.muse-lifeatlas-story-photo{width:100%;height:100%;object-fit:cover}
+.muse-lifeatlas-story-text{display:grid;gap:1px;min-width:0}
+.muse-lifeatlas-story-text b{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-family:var(--font-editorial);font-weight:var(--type-title-weight);font-size:.9rem}
+.muse-lifeatlas-story-text small{color:var(--text-muted);font-size:.72rem}
+.muse-lifeatlas-story-more{display:grid;place-items:center;height:100%;min-height:56px;padding:0 12px;color:var(--text-muted);font-size:.78rem;white-space:nowrap}

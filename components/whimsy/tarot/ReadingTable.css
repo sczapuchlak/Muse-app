@@ -34,13 +34,11 @@
 .muse-tarot-deck>.muse-cardback:nth-child(3){box-shadow:0 22px 46px rgba(0,0,0,.4),0 0 34px color-mix(in srgb,var(--table-a) 32%,transparent)}
 .muse-tarot .muse-tarot-welcome h4{margin:6px 0 8px;font-size:clamp(1.6rem,3vw,2.4rem);line-height:1.12}
 .muse-tarot .muse-tarot-welcome p{margin:0 0 14px;max-width:46ch}
-.muse-tarot-intention-echo{display:grid;gap:2px;padding:8px 0 8px 14px;border-left:2px solid color-mix(in srgb,var(--table-a) 70%,transparent);color:var(--foreground)!important;font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-quote-weight);font-size:1.02rem;line-height:1.4;overflow-wrap:anywhere}
-.muse-tarot-intention-echo>span{font:650 .66rem var(--font-ui);letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)}
 .muse-tarot .muse-tarot-shuffle{min-height:46px;padding-inline:20px;border-radius:999px;font-weight:650}
 .muse-tarot-seats{display:flex;flex-wrap:wrap;gap:6px;margin:16px 0 0;padding:0;list-style:none}
 .muse-tarot-seats li{display:inline-flex;align-items:center;gap:6px;padding:4px 10px 4px 5px;border:1px solid var(--glass-border);border-radius:999px;background:var(--surface-subtle);font-size:.74rem;color:var(--text-muted)}
 .muse-tarot-seats li>span{display:grid;place-items:center;width:18px;height:18px;border-radius:50%;background:color-mix(in srgb,var(--table-a) 22%,var(--surface-control));color:var(--foreground);font-size:.64rem;font-weight:700}
-@container muse-content (max-width:640px){.muse-tarot .muse-tarot-welcome{grid-template-columns:minmax(0,1fr);justify-items:center;text-align:center;gap:26px}.muse-tarot-deck{width:118px}.muse-tarot .muse-tarot-welcome p{margin-inline:auto}.muse-tarot-seats{justify-content:center}.muse-tarot-intention-echo{text-align:left}}
+@container muse-content (max-width:640px){.muse-tarot .muse-tarot-welcome{grid-template-columns:minmax(0,1fr);justify-items:center;text-align:center;gap:26px}.muse-tarot-deck{width:118px}.muse-tarot .muse-tarot-welcome p{margin-inline:auto}.muse-tarot-seats{justify-content:center}}
 
 /* Choosing: an arc of face-down cards over the seats they will fill. */
 .muse-tarot .muse-tarot-fan{display:grid;gap:clamp(14px,2vw,22px);justify-items:center;text-align:center}
@@ -154,14 +152,10 @@
 .muse-tarot-entry-foot:empty{display:none}
 @media (prefers-reduced-motion:reduce){.muse-tarot-entry-stage>span,.muse-tarot .muse-tarot-entry{transition:none}}
 
-/* Reading Journal, round 4 (Nov 13: "can be shnazzied up"). Three across with no lone card on a last row: the newest
-   reading becomes a wide feature when the count would leave a gap (and the last one widens when needed). Each reading's
+/* Reading Journal, round 4 (Nov 13: "can be shnazzied up"), revised #214 (Nov 15): readings are cards, three across,
+   and an illustrated "Draw a new reading" invite fills the last row instead of stretching a reading. Each reading's
    cards sit on a candle-lit velvet stage that fans wider when you reach for it, with a gold glow. */
 .muse-tarot .muse-tarot-timeline{grid-template-columns:repeat(3,minmax(0,1fr))}
-.muse-tarot .muse-tarot-timeline:has(>:last-child:nth-child(3n+1))>:first-child,
-.muse-tarot .muse-tarot-timeline:has(>:last-child:nth-child(3n+2))>:first-child{grid-column:span 2}
-.muse-tarot .muse-tarot-timeline:has(>:last-child:nth-child(3n+1)):has(>:nth-child(4))>:last-child{grid-column:span 2}
-.muse-tarot .muse-tarot-timeline>:only-child{grid-column:1/-1}
 .muse-tarot .muse-tarot-timeline>[style*="span"],.muse-tarot .muse-tarot-timeline>*{min-width:0}
 .muse-tarot-entry-stage{position:relative;height:150px;background:radial-gradient(60% 80% at 50% 105%,color-mix(in srgb,#f2b44e 26%,transparent),transparent 70%),radial-gradient(90% 100% at 50% 100%,color-mix(in srgb,var(--chart-6) 30%,transparent),transparent 75%),linear-gradient(180deg,color-mix(in srgb,var(--chart-6) 10%,var(--background)),color-mix(in srgb,#2a1238 55%,var(--background)))!important}
 .muse-tarot-entry-stage::after{content:"";position:absolute;left:12%;right:12%;bottom:6px;height:18px;border-radius:50%;background:radial-gradient(closest-side,color-mix(in srgb,#ffcf73 45%,transparent),transparent);filter:blur(4px);pointer-events:none}
@@ -171,5 +165,22 @@
 .muse-tarot .muse-tarot-entry:hover{transform:translateY(-4px);border-color:color-mix(in srgb,#f2c46a 45%,transparent)!important;box-shadow:0 22px 40px -22px #f2b44e,0 0 0 1px color-mix(in srgb,#f2c46a 30%,transparent)!important}
 .muse-tarot-entry:is(:hover,:focus-visible) .muse-tarot-entry-stage>span{transform:rotate(calc(var(--o) * 13deg)) translateY(calc(var(--o) * var(--o) * 2.5px - 2px))!important}
 .muse-tarot .muse-tarot-entry-preview{border-left-color:color-mix(in srgb,#f2c46a 65%,transparent)!important}
-@container (max-width:900px){.muse-tarot .muse-tarot-timeline{grid-template-columns:repeat(2,minmax(0,1fr))}.muse-tarot .muse-tarot-timeline>*{grid-column:auto!important}.muse-tarot .muse-tarot-timeline:has(>:last-child:nth-child(odd))>:first-child{grid-column:1/-1!important}}
-@media (max-width:600px){.muse-tarot .muse-tarot-timeline{grid-template-columns:minmax(0,1fr)}.muse-tarot .muse-tarot-timeline>*{grid-column:auto!important}}
+@container muse-content (max-width:1000px){.muse-tarot .muse-tarot-timeline{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@container muse-content (max-width:640px){.muse-tarot .muse-tarot-timeline{grid-template-columns:minmax(0,1fr)}}
+/* #214 (Nov 15: "does that intention go somewhere?"): the question is the first step of setting the table, not a form
+   above it. It then heads the table while you choose and turn cards, sits at the top of the Interpretation Desk, and
+   titles the reading in the Journal. It never changes which cards come up: the draw stays random, like a real deck.
+   The spread picker and reading options live in the table's header, available at every step. */
+.muse-tarot .muse-tarot-ritual-controls{display:flex;align-items:center;gap:8px;margin-left:auto}
+.muse-tarot .muse-tarot-ritual-controls .muse-button{min-height:40px}
+.muse-tarot-question{display:grid;gap:6px;width:100%;max-width:560px;margin:4px 0 2px;text-align:left}
+.muse-tarot-question>span{color:var(--foreground);font:650 .7rem/1.2 var(--font-ui);letter-spacing:.14em;text-transform:uppercase}
+.muse-tarot-question>span small{margin-left:6px;color:var(--text-muted);font-weight:500;letter-spacing:.04em;text-transform:none}
+.muse-tarot-question textarea{width:100%;box-sizing:border-box;min-height:64px;padding:12px 16px;border:1px solid color-mix(in srgb,var(--table-a,var(--chart-6)) 45%,var(--glass-border));border-radius:16px;background:color-mix(in srgb,var(--surface-subtle) 80%,transparent);color:var(--foreground);font-family:var(--font-editorial);font-style:italic;font-size:1.12rem;line-height:1.45;resize:vertical}
+.muse-tarot-question textarea:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
+.muse-tarot-question-note{color:var(--text-muted);font-size:.78rem;line-height:1.4}
+.muse-tarot-question-banner,.muse-idesk-question{display:grid;justify-items:center;gap:4px;margin:0;text-align:center;font-family:var(--font-editorial);font-style:italic;font-size:clamp(1.15rem,2vw,1.4rem);line-height:1.35;color:var(--foreground);overflow-wrap:anywhere}
+.muse-tarot-question-banner>span,.muse-idesk-question>span{display:flex;align-items:center;gap:10px;color:color-mix(in srgb,#f2c46a 75%,var(--foreground));font:650 .64rem/1.2 var(--font-ui);font-style:normal;letter-spacing:.2em;text-transform:uppercase}
+.muse-tarot-question-banner>span::before,.muse-tarot-question-banner>span::after,.muse-idesk-question>span::before,.muse-idesk-question>span::after{content:"";width:28px;height:1px;background:color-mix(in srgb,#f2c46a 55%,transparent)}
+.muse-idesk-question{justify-items:start;text-align:left;font-size:1.08rem;padding:2px 0 6px}
+@container muse-content (max-width:640px){.muse-tarot .muse-tarot-ritual-controls{margin-left:0;width:100%}.muse-tarot-question{text-align:left}}

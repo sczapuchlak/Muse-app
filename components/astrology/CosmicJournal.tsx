@@ -5,7 +5,7 @@ import {dateLabel} from '@/lib/dates';
 import {MuseChoiceMenu} from '@/components/MuseChoiceMenu';
 import {MuseSearch} from '@/components/design/MuseSearch';
 import {MuseHeading,MuseMark,type MuseMarkIcon,type MuseTone} from '@/components/design/MuseHeading';
-import {MuseEmptyState} from '@/components/design/MuseEmptyState';
+import {MuseInviteCard,MuseJournalStats,sparkle} from '@/components/design/MuseJournal';
 import {forecastPeriodLabel,parseForecastReferenceId} from '@/lib/astrology/forecast-reference';
 
 type Kind=AstrologyReference['type'];
@@ -36,16 +36,55 @@ export function JournalEditor({initial,busy,savedRevision,onSave,onCancel}:{init
 export function CosmicJournal({entries,onNew,onOpen}:{entries:CosmicJournalEntry[];onNew:()=>void;onOpen:(entry:CosmicJournalEntry)=>void}){
  const [query,setQuery]=useState(''),[type,setType]=useState(''),[sort,setSort]=useState('recent');
  const q=query.trim().toLocaleLowerCase(),filtered=entries.filter(entry=>(!type||(entry.reference?.type??'reflection')===type)&&(!q||[entry.title,entry.text,entry.reference?.title??''].join(' ').toLocaleLowerCase().includes(q))).sort((a,b)=>sort==='oldest'?a.date.localeCompare(b.date)||a.created_at.localeCompare(b.created_at):b.date.localeCompare(a.date)||b.created_at.localeCompare(a.created_at));
- return <section className="muse-cosmic-section muse-cosmic-journal"><div className="muse-cosmic-section-head"><MuseHeading icon="journal" tone={3} size="lg" level={3} title="Cosmic Journal" description="A little space for what the sky brings to mind." aside={<button type="button" className="muse-button button-primary" onClick={onNew}>New reflection</button>}/></div><div className="muse-cosmic-toolbar"><MuseSearch label="Search reflections" value={query} onChange={setQuery} placeholder="Search your reflections…"/><MuseChoiceMenu label="Linked item" valueLabel={{"":"All reflections",reflection:"Personal reflection",placement:"Chart placement",event:"Celestial event",library:"Library entry",forecast:"Horoscope"}[type]??"All reflections"} options={[{id:"",label:"All reflections"},{id:"reflection",label:"Personal reflection"},{id:"placement",label:"Chart placement"},{id:"event",label:"Celestial event"},{id:"library",label:"Library entry"},{id:"forecast",label:"Horoscope"}]} selectedIds={[type]} onSelect={setType}/><MuseChoiceMenu label="Sort" valueLabel={sort==='recent'?'Newest date first':'Oldest date first'} options={[{id:"recent",label:"Newest date first"},{id:"oldest",label:"Oldest date first"}]} selectedIds={[sort]} onSelect={setSort}/></div><p className="small-label" role="status">{filtered.length} {filtered.length===1?'reflection':'reflections'}</p>
-  <div className="muse-cosmic-journal-grid">{filtered.map(entry=>{const kind=kindOf(entry),d=dayParts(entry.date),context=referenceContext(entry.reference);return <button type="button" className="muse-cosmic-journal-card" data-kind={entry.reference?.type??'reflection'} key={entry.id} onClick={()=>onOpen(entry)} style={{'--mark-a':`var(--chart-${kind.tone})`} as React.CSSProperties}>
+ const thisMonth=entries.filter(entry=>entry.date.slice(0,7)===new Date().toISOString().slice(0,7)).length,horoscopes=entries.filter(entry=>entry.reference?.type==='forecast').length;
+ return <div className="muse-journal muse-cosmic-journal">
+  <section className="muse-journal-hero muse-cosmic-journal-hero" aria-labelledby="cosmic-journal-title">
+   <div className="muse-journal-hero-copy">
+    <p className="muse-kicker">Cosmic Journal</p>
+    <h3 id="cosmic-journal-title" className="muse-journal-title">What the sky brings to mind</h3>
+    <p>A horoscope line that landed, a placement you are still thinking about, a moon you want to remember. Private, and only ever in your own words.</p>
+    {entries.length>0&&<MuseJournalStats items={[{label:'Reflections',value:entries.length},{label:'On horoscopes',value:horoscopes},{label:'This month',value:thisMonth}]}/>}
+    <div className="muse-journal-actions"><button type="button" className="muse-button button-primary" onClick={onNew}>{entries.length?'New reflection':'Write the first reflection'}</button></div>
+   </div>
+   <JournalArt/>
+  </section>
+  <section className="muse-journal-archive muse-cosmic-journal-archive" aria-label="Your reflections">
+   <div className="muse-cosmic-toolbar"><MuseSearch label="Search reflections" value={query} onChange={setQuery} placeholder="Search your reflections…"/><MuseChoiceMenu label="Linked item" valueLabel={{"":"All reflections",reflection:"Personal reflection",placement:"Chart placement",event:"Celestial event",library:"Library entry",forecast:"Horoscope"}[type]??"All reflections"} options={[{id:"",label:"All reflections"},{id:"reflection",label:"Personal reflection"},{id:"placement",label:"Chart placement"},{id:"event",label:"Celestial event"},{id:"library",label:"Library entry"},{id:"forecast",label:"Horoscope"}]} selectedIds={[type]} onSelect={setType}/><MuseChoiceMenu label="Sort" valueLabel={sort==='recent'?'Newest date first':'Oldest date first'} options={[{id:"recent",label:"Newest date first"},{id:"oldest",label:"Oldest date first"}]} selectedIds={[sort]} onSelect={setSort}/></div><p className="small-label" role="status">{filtered.length} {filtered.length===1?'reflection':'reflections'}</p>
+  
+   <div className="muse-cosmic-journal-grid">{filtered.map(entry=>{const kind=kindOf(entry),d=dayParts(entry.date),context=referenceContext(entry.reference);return <button type="button" className="muse-cosmic-journal-card" data-kind={entry.reference?.type??'reflection'} key={entry.id} onClick={()=>onOpen(entry)} style={{'--mark-a':`var(--chart-${kind.tone})`} as React.CSSProperties}>
    <span className="muse-cosmic-journal-date" aria-hidden="true"><b>{d.day}</b><i>{d.month}</i><small>{d.year}</small></span>
    <span className="muse-cosmic-journal-body"><span className="muse-cosmic-journal-kind"><MuseMark icon={kind.icon} tone={kind.tone} size="sm"/>{kind.label}<span className="sr-only"> · {dateLabel(entry.date)}</span></span>
     <strong>{entry.title||(entry.reference?entry.reference.title:'A moment under the sky')}</strong>
     {context&&entry.title&&<span className="muse-cosmic-journal-context">{context}</span>}{context&&!entry.title&&entry.reference?.type==='forecast'&&<span className="muse-cosmic-journal-context">{context.split(' · ').slice(2).join(' · ')}</span>}
     {entry.text?<span className="muse-cosmic-journal-preview">{entry.text}</span>:<span className="muse-cosmic-journal-preview" data-empty>Saved to remember. Add a few words whenever you like.</span>}
-    <span className="muse-cosmic-journal-foot">{d.weekday}<span aria-hidden="true">Open →</span></span></span></button>;})}</div>
-  {!filtered.length&&(entries.length?<MuseEmptyState variant="quiet" title="No matching reflections">Try a different search or filter.</MuseEmptyState>:<MuseEmptyState className="muse-cosmic-journal-empty" glyph={<span className="muse-cosmic-journal-empty-art"><MuseMark icon="crescent" tone={5} size="lg"/><MuseMark icon="quill" tone={3} size="lg"/><MuseMark icon="comet" tone={7} size="lg"/></span>} title="The first page is still blank." action={<button type="button" className="muse-button button-primary" onClick={onNew}>Write a reflection</button>}>Keep a thought, a horoscope line that landed, a placement, or a moon you want to remember.</MuseEmptyState>)}
- </section>;
+    <span className="muse-cosmic-journal-foot">{d.weekday}<span aria-hidden="true">Open →</span></span></span></button>;})}{!q&&!type&&filtered.length>0&&<MuseInviteCard count={filtered.length} title="New reflection" note="A horoscope line that landed, a placement, a moon." cta="Write" art={<QuillArt/>} onClick={onNew}/>}</div>
+  
+   {!filtered.length&&<div className="muse-journal-empty-row"><span className="muse-journal-empty-art" aria-hidden="true"><MuseMark icon="crescent" tone={5} size="md"/><MuseMark icon="quill" tone={3} size="md"/><MuseMark icon="comet" tone={7} size="md"/></span>
+    <div><h4>{entries.length?'No matching reflections':'The first page is still blank.'}</h4><p>{entries.length?'Try a different search or filter.':'Keep a thought, a horoscope line that landed, a placement, or a moon you want to remember.'}</p></div></div>}
+  </section>
+ </div>;
+}
+/** An open journal under a crescent with a short trail of stars. Decorative. */
+function JournalArt(){
+ return <div className="muse-journal-art" aria-hidden="true"><svg viewBox="0 0 260 200">
+  <path className="muse-journal-art-trail" d="M24 150C70 90 120 70 196 42"/>
+  <circle className="muse-journal-art-dot" cx="24" cy="150" r="2"/><circle className="muse-journal-art-dot" cx="96" cy="86" r="1.6"/><circle className="muse-journal-art-dot" cx="150" cy="60" r="2.2"/>
+  <path className="muse-journal-art-moon" d="M212 22a26 26 0 1 0 22 40a22 22 0 1 1-22-40Z"/>
+  <path className="muse-journal-art-book" d="M60 176c26-12 50-12 70 0c20-12 44-12 70 0v-62c-26-12-50-12-70 0c-20-12-44-12-70 0Z"/>
+  <path className="muse-journal-art-line" d="M130 114v62M76 132c16-6 30-6 44 0M76 146c16-6 30-6 44 0M140 132c16-6 30-6 44 0M140 146c16-6 30-6 44 0"/>
+  <path className="muse-journal-art-star" d={sparkle(150,95,13)}/>
+  <path className="muse-journal-art-twinkle" d={sparkle(58,70,5)}/><path className="muse-journal-art-twinkle" d={sparkle(236,110,4)}/>
+ </svg></div>;
+}
+/** The invite card's drawing: a quill writing a trail of stars over a small open page. Decorative. */
+function QuillArt(){
+ return <svg viewBox="0 0 220 112">
+  <path className="muse-journal-art-book" d="M54 100c18-8 36-8 56 0c20-8 38-8 56 0V62c-18-8-36-8-56 0c-20-8-38-8-56 0Z"/>
+  <path className="muse-journal-art-line" d="M110 62v38M66 76c12-4 22-4 34 0M66 86c12-4 22-4 34 0M120 76c12-4 22-4 34 0"/>
+  <g className="muse-journal-invite-float"><path className="muse-journal-art-cloud" d="M150 66C160 40 182 16 206 8C198 30 180 54 156 70Z"/><path className="muse-journal-art-line" d="M152 68L196 16"/></g>
+  <path className="muse-journal-art-trail" d="M150 70C130 58 116 40 92 34"/>
+  <path className="muse-journal-art-twinkle" d={sparkle(84,30,7)}/><path className="muse-journal-art-twinkle" d={sparkle(40,40,4)}/><path className="muse-journal-art-twinkle" d={sparkle(186,52,4)}/>
+ </svg>;
 }
 export function JournalDetail({entry,onEdit,onDelete,onReference}:{entry:CosmicJournalEntry;onEdit:()=>void;onDelete:()=>void;onReference:(reference:AstrologyReference)=>void}){
  const kind=kindOf(entry),context=referenceContext(entry.reference);

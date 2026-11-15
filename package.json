@@ -39,6 +39,8 @@
     "test:inner-compass:ui": "node scripts/test-inner-compass-ui.mjs",
     "test:inner-stories:db": "node scripts/test-local-inner-stories.mjs",
     "test:inner-stories:ui": "node scripts/test-inner-stories-ui.mjs",
+    "test:inner-cohesion:ui": "node scripts/test-inner-cohesion-ui.mjs",
+    "test:cosmic-dreams:ui": "node scripts/test-cosmic-dreams-ui.mjs",
     "test:stream:ui": "node scripts/test-stream-ui.mjs",
     "test:theme:ui": "node scripts/test-theme-persistence-ui.mjs",
     "auth:invite": "node scripts/invite-local-user.mjs",
