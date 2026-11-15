@@ -18,6 +18,7 @@ import { GoogleEventDetails } from "./google/GoogleEventDetails";
 import { GoogleSourceDot } from "./google/GoogleSourceDot";
 import { ListsDailyLine } from "./lists/ListsSurfaces";
 import "./ScheduleCard.css";
+import { DailyArt } from "./daily/DailyArt";
 
 function EventRow({ event, onGoogle }: { event: DayEvent; onGoogle: (event: DayEvent, anchor: HTMLButtonElement) => void }) {
   // Google Calendar (#35): read-only; the row opens details instead of an editor.
@@ -66,6 +67,7 @@ export function ScheduleCard({ selectedDate, priorityTaskIds = [] }: { selectedD
   return (
     <MuseCard id="schedule" className="schedule-card">
       <PlannerCapture><CardHeading id="schedule" title="Today’s plan" icon="calendar"><Link className="muse-button button-ghost" href={`/planner?date=${selectedDate}`}>Open Planner</Link></CardHeading>
+      {!preview.events.length && !preview.tasks.length && <div className="muse-daily-empty"><DailyArt kind="plan"/><p className="card-description">A clear day so far. Add an event or a task when something comes up.</p></div>}
       <div className="muse-plan-section" role="group" aria-labelledby="plan-schedule-title">
         <div className="muse-plan-heading"><h3 id="plan-schedule-title">Schedule</h3><button type="button" className="muse-button button-ghost" aria-expanded={adding === "event"} aria-controls="plan-entry" onClick={(event) => { anchorRef.current = event.currentTarget; setAdding("event"); }}>+ Add event</button></div>
         <ul className="muse-plan-list">{preview.visibleEvents.map((event) => <EventRow key={event.id} event={event} onGoogle={(e, a) => { googleAnchor.current = a; setGoogleEvent(e); }} />)}</ul>
