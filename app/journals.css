@@ -93,3 +93,13 @@
 .muse-journal-hero[data-compact] .muse-journal-stats>div{flex:0 0 auto;padding:4px 10px}
 .muse-journal-hero[data-compact] .muse-journal-stats dd{white-space:nowrap}
 @container muse-content (max-width:640px){.muse-journal-hero[data-compact] .muse-journal-stats>div:nth-child(n+3){display:none}.muse-journal-hero[data-compact] .muse-journal-title{font-size:1.35rem}}
+/* A compact hero inside its archive panel (Nov 15: "they shouldn't be disconnected … just one piece"): it becomes the
+   panel's top band, with a soft hairline below and no frame, ring or starfield of its own. */
+.muse-journal-archive>.muse-journal-hero[data-compact]{margin:-4px -4px 2px;padding:6px 6px 16px;border:0;border-bottom:1px solid color-mix(in srgb,var(--journal-a,var(--accent-secondary)) 28%,var(--glass-border));border-radius:0;box-shadow:none;background:transparent;overflow:visible;isolation:auto}
+.muse-journal-archive>.muse-journal-hero[data-compact]::before,.muse-journal-archive>.muse-journal-hero[data-compact]::after{content:none!important;display:none!important}
+.muse-journal-archive:has(>.muse-journal-hero[data-compact]){background:radial-gradient(70% 120px at 85% 0%,color-mix(in srgb,var(--journal-a,var(--accent-secondary)) 14%,transparent),transparent 100%),var(--glass-background)}
+/* Any hero that opens its own archive panel (one record set, one container: Nov 15, "we only separate containers when
+   it's different data") is the panel's top band, never a second card. */
+.muse-journal-archive>.muse-journal-hero:not([data-compact]){margin:-4px -4px 4px;padding:clamp(8px,1.4vw,14px) clamp(8px,1.4vw,14px) clamp(18px,2.4vw,26px);border:0;border-bottom:1px solid color-mix(in srgb,var(--journal-a,var(--accent-secondary)) 28%,var(--glass-border));border-radius:0;box-shadow:none;background:transparent;overflow:visible;isolation:auto}
+.muse-journal-archive>.muse-journal-hero:not([data-compact])::before,.muse-journal-archive>.muse-journal-hero:not([data-compact])::after{content:none!important;display:none!important}
+.muse-journal-archive:has(>.muse-journal-hero:not([data-compact])){padding:clamp(18px,3vw,30px);background:radial-gradient(60% 260px at 85% 0%,color-mix(in srgb,var(--journal-a,var(--accent-secondary)) 16%,transparent),transparent 100%),var(--glass-background)}

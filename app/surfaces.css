@@ -122,7 +122,7 @@
    switchers, date navigation, search) read as solid white slabs. On the canvas they are translucent midnight glass with
    the page's own light text instead — the same role the tinted card colour plays in the other dark themes. Bars inside
    cards keep the light-card look. */
-:root[data-theme="astral"] :is(.date-navigation, .muse-segmented, .muse-search):not(:is(.muse-card, .muse-collections-controls, .muse-panel, .muse-insight-panel, .muse-glance-mini, .muse-glance-card, .muse-reflections-book, .muse-money-panel, .muse-ritual-group, .muse-collections-card, .muse-popover-panel, .muse-modal, .muse-drawer) *):not(#\#):not(#\#) {
+:root[data-theme="astral"] :is(.date-navigation, .muse-segmented, .muse-search):not(:is(.muse-card, .muse-journal-archive, .muse-journal-hero, .muse-collections-controls, .muse-panel, .muse-insight-panel, .muse-glance-mini, .muse-glance-card, .muse-reflections-book, .muse-money-panel, .muse-ritual-group, .muse-collections-card, .muse-popover-panel, .muse-modal, .muse-drawer) *):not(#\#):not(#\#) {
   --foreground: inherit; --text-muted: inherit; --selected-text: inherit; --selected-background: inherit; --selected-border: inherit;
   --glass-border: inherit; --surface-subtle: inherit; --surface-hover: inherit; --surface-control: inherit; --divider: inherit;
   --interactive-border: inherit; --focus-ring: inherit; --link-ink: inherit; --information-accent: inherit; --nav-icon: inherit;
