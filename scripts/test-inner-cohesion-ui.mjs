@@ -128,7 +128,7 @@ try{
  must(await client.from('inner_manifestos').insert({title:'My Manifesto',blocks:[{id:'h1',kind:'heading',text:'What I value'},{id:'l1',kind:'line',text:'I stay curious, especially when it is uncomfortable.',ref:{id:ds[0].id,category:'values',label:'Curiosity'}},{id:'l2',kind:'line',text:'I leave every room a little kinder.'},{id:'h2',kind:'heading',text:'How I want to live'},{id:'l3',kind:'line',text:'An interesting life over a tidy one.'}]}));
  must(await client.from('inner_manifesto_versions').insert({title:'My Manifesto',blocks:[{id:'l1',kind:'line',text:'A first draft.'}],note:'First draft'}));
  await go('/envision?view=inner-compass&space=manifesto','!!document.querySelector(".muse-compass-mani-body .muse-compass-sheet")','manifesto');await wait(600);
- check(await has('.muse-compass-mini-sheet','I stay curious'),'the hero pages carry the real first lines');
+ check(await has('.muse-mani-folio','I stay curious')&&await has('.muse-compass-sheet .muse-mani-seal'),'the hero folio carries the real first lines and the page is sealed');
  check(await evaluate(()=>!!document.querySelector('.muse-compass-mani-body[data-versions] .muse-compass-versions')),'kept versions sit beside the page');
  await shoot('07-manifesto',true);
 

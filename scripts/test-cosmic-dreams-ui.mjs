@@ -68,7 +68,7 @@ try{
  check(await evaluate(()=>!!document.querySelector('.muse-chart-moon-lit')),'the natal moon phase is drawn');
  await shoot('01-chart',true);
  await tab('Cosmic Journal');await until(()=>!!document.querySelector('.muse-cosmic-journal-hero'),'journal hero');
- check(await has('.muse-cosmic-journal-empty-row','blank'),'a compact empty state inside the archive');
+ check(await has('.muse-cosmic-journal-archive .muse-journal-empty-row','blank'),'a compact empty state inside the archive');
  await shoot('02-journal-empty');
  await click('.muse-cosmic-journal-hero button','Write the first reflection');await until(()=>!!document.querySelector('dialog textarea'),'editor');
  await setValue('dialog textarea','The Moon in Sagittarius explains a lot about my weekends.');await click('dialog button','Save reflection');
@@ -76,7 +76,7 @@ try{
  await until(()=>!!document.querySelector('.muse-cosmic-journal-archive .muse-cosmic-journal-card'),'a reflection in the archive');
  check(true,'a reflection appears in the archive');
  check(await evaluate(()=>{const g=document.querySelector('.muse-cosmic-journal-grid').getBoundingClientRect().width,c=document.querySelector('.muse-cosmic-journal-card').getBoundingClientRect().width;return c<g*0.45;}),'one reflection stays card-sized');
- check(await evaluate(()=>{const g=document.querySelector('.muse-cosmic-journal-grid').getBoundingClientRect(),c=document.querySelector('.muse-cosmic-journal-ghost')?.getBoundingClientRect();return !!c&&Math.abs(c.right-g.right)<2;}),'a ghost card fills the rest of the row');
+ check(await evaluate(()=>{const g=document.querySelector('.muse-cosmic-journal-grid').getBoundingClientRect(),c=document.querySelector('.muse-cosmic-journal-grid>.muse-journal-invite')?.getBoundingClientRect();return !!c&&Math.abs(c.right-g.right)<2;}),'a ghost card fills the rest of the row');
  await evaluate(()=>document.querySelector('.muse-cosmic-journal-archive').scrollIntoView({block:'start'}));await wait(300);await shoot('03-journal');
  // Dreams
  const today=new Date().toISOString().slice(0,10),dream=(title,text,cls,i)=>({user_id:userId,activity_date:today,time_zone:'UTC',payload:{loggedAt:new Date().toISOString(),date:today,timeZone:'UTC',title,text,symbolIds:[],emotions:['calm'],interpretation:'',classifications:[cls],intensity:3+i%2}});
@@ -87,14 +87,31 @@ try{
  const list=await evaluate(()=>Math.round(document.querySelector('.muse-dream-list').getBoundingClientRect().width));
  check(cards.length===2&&cards.every(w=>w<list*0.45),'dreams are cards, never stretched across the page');
  check(await evaluate(()=>{const e=document.querySelector('.muse-dream-entry');const c=e.querySelector('.muse-dream-crescent').getBoundingClientRect(),r=e.getBoundingClientRect();return c.right>r.right-60&&c.bottom>r.bottom-60;}),'the crescent sits in the bottom-right corner');
- check(await evaluate(()=>{const g=document.querySelector('.muse-dream-list').getBoundingClientRect(),c=document.querySelector('.muse-dream-ghost')?.getBoundingClientRect();return !!c&&Math.abs(c.right-g.right)<2;}),'a ghost card fills the rest of the newest row');
+ check(await evaluate(()=>{const g=document.querySelector('.muse-dream-list').getBoundingClientRect(),c=document.querySelector('.muse-dream-list>.muse-journal-invite')?.getBoundingClientRect();return !!c&&Math.abs(c.right-g.right)<2;}),'a ghost card fills the rest of the newest row');
+ check(await has('.muse-dream-diary .muse-journal-hero','What the night left behind')&&await has('.muse-dream-hero-note','The lighthouse'),'the Dream Diary opens with a hero carrying the newest dream');
+ check(await has('.muse-dream-diary .muse-journal-archive .muse-dream-controls'),'search and filters live in the dream archive');
  await shoot('04-dreams');
+ // Tarot Reading Journal
+ const reading={date:today,mood:'hopeful',tags:['studio'],cards:[{card:{version:1,contentId:'tarot-cups-05'},position:0,orientation:'upright'},{card:{version:1,contentId:'tarot-wands-08'},position:1,orientation:'upright'},{card:{version:1,contentId:'tarot-swords-08'},position:2,orientation:'reversed'}],deckId:'rws1909',readAt:new Date().toISOString(),question:'Should I take the studio lease?',spreadId:'situation-challenge-advice',timeZone:'UTC',reflection:'The Five keeps looking at what spilled.'};
+ sql(`insert into public.whimsy_tarot_readings(id,user_id,activity_date,time_zone,payload) values ('${crypto.randomUUID()}','${userId}','${today}','UTC','${JSON.stringify(reading).replace(/'/g,"''")}'::jsonb)`);
+ await go('/whimsy/tarot?view=journal','!!document.querySelector(".muse-tarot-entry")','tarot journal');await wait(900);
+ check(await has('.muse-tarot-journal-hero','What the cards have been saying')&&await has('.muse-tarot-journal-caption','Keeps appearing'),'the Reading Journal opens with a hero fanning the cards that keep appearing');
+ check(await evaluate(()=>{const g=document.querySelector('.muse-tarot-timeline').getBoundingClientRect(),c=document.querySelector('.muse-tarot-entry').getBoundingClientRect(),i=document.querySelector('.muse-tarot-timeline>.muse-journal-invite')?.getBoundingClientRect();return c.width<g.width*0.45&&!!i&&Math.abs(i.right-g.right)<2;}),'one reading stays card-sized and the invite fills the row');
+ await shoot('04b-tarot-journal');
+ await go('/whimsy/tarot','!!document.querySelector(".muse-tarot-setup")','reading table');await wait(700);
+ check(await evaluate(()=>getComputedStyle(document.querySelector('.muse-tarot-setup')).borderTopStyle==='solid'),'the reading table setup sits in a framed band');await shoot('04c-tarot-table');
+ await go('/whimsy/observatory?view=calendar','!!document.querySelector(".muse-cal-hero-phases li")','calendar');await wait(700);
+ check(await has('.muse-cal-hero','Cosmic Calendar'),'the Cosmic Calendar opens with a hero strung with this month\'s phases');await shoot('04d-calendar');
+ await go('/whimsy/dreamscapes?view=decoder','!!document.querySelector(".muse-decoder-journal")','decoder');await wait(700);
+ check(await has('.muse-decoder-archive','Your latest dreams')&&await has('.muse-decoder-recent .muse-journal-invite','Decode any dream'),'the Decoder shows latest dreams with an invite filling the row');await shoot('04e-decoder');
+ await go('/whimsy/dreamscapes?view=encyclopedia','!!document.querySelector(".muse-dream-library-hero .muse-dream-alphabet")','encyclopedia');await wait(700);
+ check(await has('.muse-dream-library-mine'),'the Encyclopedia keeps your symbols on one shelf');await shoot('04f-encyclopedia');
  await theme('astral','crystal');
- for(const [p,ready,label,name] of [['/whimsy/observatory','.muse-observatory','Birth Chart','05-astral-chart'],['/whimsy/observatory','.muse-observatory','Cosmic Journal','06-astral-journal'],['/whimsy/dreamscapes','.muse-dream-entry',null,'07-astral-dreams']]){
+ for(const [p,ready,label,name] of [['/whimsy/observatory','.muse-observatory','Birth Chart','05-astral-chart'],['/whimsy/observatory','.muse-observatory','Cosmic Journal','06-astral-journal'],['/whimsy/dreamscapes','.muse-dream-entry',null,'07-astral-dreams'],['/whimsy/tarot?view=journal','.muse-tarot-entry',null,'07b-astral-tarot']]){
   await go(p,`!!document.querySelector("${ready}")`,name);if(label)await tab(label);await wait(600);await shoot(name);
  }
  await theme('prism-noir');await viewport(390,844,true);
- for(const [p,ready,label,name] of [['/whimsy/observatory','.muse-observatory','Birth Chart','08-phone-chart'],['/whimsy/observatory','.muse-observatory','Cosmic Journal','09-phone-journal'],['/whimsy/dreamscapes','.muse-dream-entry',null,'10-phone-dreams']]){
+ for(const [p,ready,label,name] of [['/whimsy/observatory','.muse-observatory','Birth Chart','08-phone-chart'],['/whimsy/observatory','.muse-observatory','Cosmic Journal','09-phone-journal'],['/whimsy/dreamscapes','.muse-dream-entry',null,'10-phone-dreams'],['/whimsy/tarot?view=journal','.muse-tarot-entry',null,'11-phone-tarot']]){
   await go(p,`!!document.querySelector("${ready}")`,name);if(label)await tab(label);await wait(600);check(!(await overflow()),`${name}: no sideways scroll`);await shoot(name,true);
  }
  check(errors.length===0,`no runtime errors (${errors.join(' | ').slice(0,400)})`);

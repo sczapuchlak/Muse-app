@@ -30,7 +30,6 @@ export function DreamLibrary({symbols,categories,dreamCounts,search,setSearch,ca
    <h3>{bySource.length.toLocaleString('en-US')} symbols to wander through</h3>
    <p className="small-label">HeartYearning’s interpretations are possibilities for curiosity, not fixed meanings. Your personal meanings stay private.</p>
    <div ref={field}><DreamSearch label="Search symbols" value={search} onChange={v=>reset(()=>setSearch(v))} placeholder="Search a symbol, a feeling, an association…  (press / )" count={results.length} noun={['symbol','symbols']}/></div>
-  </div>
   <div className="muse-chip-row muse-dream-chip-row" data-scroll role="group" aria-label="Symbol category">
    <button type="button" aria-pressed={!category} onClick={()=>reset(()=>setCategory(''))}>All <small>{bySource.filter(matchesText).length}</small></button>
    {categories.map(c=>{const n=bySource.filter(s=>s.category===c&&matchesText(s)).length;return n||category===c?<button type="button" key={c} aria-pressed={category===c} onClick={()=>reset(()=>setCategory(category===c?'':c))}><span aria-hidden="true">{categoryGlyph[c]??'✧'}</span>{c} <small>{n}</small></button>:null;})}
@@ -38,8 +37,9 @@ export function DreamLibrary({symbols,categories,dreamCounts,search,setSearch,ca
   <div className="muse-dream-library-tools">
    <div className="muse-dream-alphabet" role="group" aria-label="Filter by first letter">{'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map(l=><button type="button" key={l} disabled={!letters.has(l)} aria-pressed={letter===l} onClick={()=>reset(()=>setLetter(letter===l?'':l))}>{l}</button>)}</div>
   </div>
-  {browsing&&yours.length>0&&<section className="muse-dream-shelf" aria-label="Symbols from your dreams"><h4>From your dreams</h4><div>{yours.map(({symbol,n})=><Link key={symbol.id} href={symbolHref(symbol.id)} className="muse-dream-artifact"><span aria-hidden="true">{symbolGlyph(symbol)}</span>{symbol.name}<small>{n}</small></Link>)}</div></section>}
-  {addSymbol}
+  </div>
+  <div className="muse-dream-library-mine">{browsing&&yours.length>0?<section className="muse-dream-shelf" aria-label="Symbols from your dreams"><h4>From your dreams</h4><div>{yours.map(({symbol,n})=><Link key={symbol.id} href={symbolHref(symbol.id)} className="muse-dream-artifact"><span aria-hidden="true">{symbolGlyph(symbol)}</span>{symbol.name}<small>{n}</small></Link>)}</div></section>:<p className="small-label">{browsing?'Symbols you tag in your dreams gather here.':'Can’t find it? Keep it as your own symbol.'}</p>}
+  {addSymbol}</div>
   {results.length?<ul className="muse-dream-results muse-dream-reveal" key={`${page.page}-${q}-${category}-${letter}`}>{page.items.map(s=>{const n=dreamCounts.get(s.id)??0;return <li key={s.id}><Link href={symbolHref(s.id)} className="muse-dream-result">
     <span className="muse-dream-result-glyph" aria-hidden="true">{symbolGlyph(s)}</span>
     <span className="muse-dream-result-body"><strong>{s.name}</strong><span className="muse-dream-result-desc">{s.description||'Your own dream symbol.'}</span><span className="muse-dream-result-meta"><span aria-hidden="true">{categoryGlyph[s.category]??'✧'}</span> {s.category} · {s.provider==='muse'?'Muse':s.provider==='personal'?'Yours':'HeartYearning'}{n>0&&<b> · ✦ in {n} {n===1?'dream':'dreams'}</b>}</span></span>

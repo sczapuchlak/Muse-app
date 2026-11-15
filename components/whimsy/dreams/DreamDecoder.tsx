@@ -1,5 +1,6 @@
 'use client';
 import {useState,type CSSProperties} from 'react';
+import {MuseInviteCard,MuseJournalStats,sparkle} from '@/components/design/MuseJournal';
 import Link from 'next/link';
 import type {DreamEntry} from '@/lib/whimsy/models';
 import type {DreamMeaning} from '@/lib/whimsy/dream-persistence';
@@ -15,20 +16,32 @@ type Props={dream:DreamEntry|undefined;dreams:DreamEntry[];symbols:DreamSymbol[]
  * Dream Decoder, the Interpretation Studio: a guided reading from the dream, to its atmosphere, to the symbols found
  * in it, to their meanings and your own reflection. Meanings are possibilities, never predictions.
  */
+/** The invite card's drawing: a key turning beneath a few drifting symbols. Decorative. */
+function DecoderInviteArt(){
+ return <svg viewBox="0 0 220 112"><g className="muse-journal-invite-float"><circle className="muse-journal-art-cloud" cx="86" cy="62" r="20"/><circle className="muse-journal-art-moon" cx="86" cy="62" r="8"/><path className="muse-journal-art-cloud" d="M104 60h60v8h-8v12h-8v-12h-8v8h-8v-8h-28Z"/></g>
+  <path className="muse-journal-art-twinkle" d={sparkle(40,30,6)}/><path className="muse-journal-art-twinkle" d={sparkle(176,28,5)}/><path className="muse-journal-art-twinkle" d={sparkle(190,84,3.5)}/><path className="muse-journal-art-twinkle" d={sparkle(30,86,3.5)}/></svg>;
+}
 export function DreamDecoder(p:Props){
  const [chosen,setChosen]=useState<{dream:string;symbol:string}|null>(null);
  if(!p.dream){const recent=[...p.dreams].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,3);
-  return <section className="muse-dream-section" aria-label="Dream Decoder"><div className="muse-decoder-invite">
-   <div className="muse-decoder-scene" aria-hidden="true"><span className="muse-decoder-moon"/><span className="muse-decoder-cloud" data-n="1"/><span className="muse-decoder-cloud" data-n="2"/>
-    {['♞','≈','⌂','✿','◇','♡','☾'].map((g,i)=><i key={i} className="muse-decoder-float" style={{'--n':i} as CSSProperties}>{g}</i>)}</div>
-   <div className="muse-decoder-invite-copy"><p className="muse-kicker">The Interpretation Studio</p>
-    <h3>{p.dreams.length?'Choose a dream. Let’s see what followed you out of sleep.':'Capture a dream in the Diary first, then bring it here to explore.'}</h3>
-    <p>The Decoder sets your own details beside each symbol’s possible meanings. It offers reflection, never prediction.</p></div>
-   {recent.length>0&&<><p className="muse-decoder-recent-label small-label">Your latest dreams</p><ul className="muse-decoder-recent" data-count={recent.length}>{recent.map(d=><li key={d.id}><button type="button" className="muse-decoder-dream" onClick={()=>p.onDecode?p.onDecode(d):p.onChoose()}>
-    <span className="muse-decoder-dream-date small-label">{dateLabel(d.date)}</span><strong>{dreamDisplayTitle(d)}</strong>
-    <span className="muse-decoder-dream-symbols" aria-label={`${d.symbolIds.length} symbols`}>{d.symbolIds.slice(0,5).map(id=><i key={id}>{symbolGlyph(p.symbols.find(s=>s.id===id))}</i>)}{!d.symbolIds.length&&<em>No symbols yet</em>}</span>
-    <span className="muse-decoder-dream-go">Decode this dream →</span></button></li>)}</ul></>}
-   {p.dreams.length>3&&<button type="button" className="muse-button button-ghost" onClick={p.onChoose}>Choose another dream</button>}
+  const withSymbols=p.dreams.filter(d=>d.symbolIds.length>0).length,symbolsMet=new Set(p.dreams.flatMap(d=>d.symbolIds)).size;
+  return <section className="muse-dream-section" aria-label="Dream Decoder"><div className="muse-journal muse-decoder-journal">
+   <div className="muse-journal-hero muse-decoder-invite">
+    <div className="muse-journal-hero-copy muse-decoder-invite-copy"><p className="muse-kicker">The Interpretation Studio</p>
+     <h3 className="muse-journal-title">{p.dreams.length?'Choose a dream. Let’s see what followed you out of sleep.':'Capture a dream in the Diary first, then bring it here to explore.'}</h3>
+     <p>The Decoder sets your own details beside each symbol’s possible meanings. It offers reflection, never prediction.</p>
+     {p.dreams.length>0&&<MuseJournalStats items={[{label:'Dreams',value:p.dreams.length},{label:'With symbols',value:withSymbols},{label:'Symbols met',value:symbolsMet}]}/>}
+     {p.dreams.length>0&&<div className="muse-journal-actions"><button type="button" className="muse-button button-primary" onClick={p.onChoose}>Choose a dream</button></div>}</div>
+    <div className="muse-journal-art muse-decoder-scene" aria-hidden="true"><span className="muse-decoder-moon"/><span className="muse-decoder-cloud" data-n="1"/><span className="muse-decoder-cloud" data-n="2"/>
+     {['♞','≈','⌂','✿','◇','♡','☾'].map((g,i)=><i key={i} className="muse-decoder-float" style={{'--n':i} as CSSProperties}>{g}</i>)}</div>
+   </div>
+   {recent.length>0&&<section className="muse-journal-archive muse-decoder-archive" aria-labelledby="decoder-recent-title"><header className="muse-decoder-archive-head"><h4 id="decoder-recent-title">Your latest dreams</h4>{p.dreams.length>3&&<button type="button" className="muse-button button-ghost" onClick={p.onChoose}>Choose another dream</button>}</header>
+    <ul className="muse-decoder-recent" data-count={recent.length}>{recent.map(d=><li key={d.id}><button type="button" className="muse-decoder-dream" onClick={()=>p.onDecode?p.onDecode(d):p.onChoose()}>
+     <span className="muse-decoder-dream-date small-label">{dateLabel(d.date)}</span><strong>{dreamDisplayTitle(d)}</strong>
+     <span className="muse-decoder-dream-symbols" aria-label={`${d.symbolIds.length} symbols`}>{d.symbolIds.slice(0,5).map(id=><i key={id}>{symbolGlyph(p.symbols.find(s=>s.id===id))}</i>)}{!d.symbolIds.length&&<em>No symbols yet</em>}</span>
+     <span className="muse-decoder-dream-go">Decode this dream →</span></button></li>)}
+     {recent.length<3&&<li className="muse-decoder-invite-slot" style={{gridColumn:`span ${3-recent.length}`}}><MuseInviteCard count={recent.length} title="Decode any dream" note="Every dream in your Diary can come into the studio." cta="Choose" art={<DecoderInviteArt/>} onClick={p.onChoose}/></li>}</ul>
+   </section>}
   </div></section>;}
  const dream=p.dream,types=dream.classifications?.length?dream.classifications:dream.lucid?['Lucid']:[];
  const active=chosen?.dream===dream.id&&dream.symbolIds.includes(chosen.symbol)?chosen.symbol:dream.symbolIds[0]??'';

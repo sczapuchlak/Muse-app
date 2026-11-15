@@ -9,20 +9,15 @@
  background:radial-gradient(circle at 35% 30%,color-mix(in srgb,#ffe7a6 60%,var(--chart-6)),var(--chart-6));box-shadow:0 0 16px -2px var(--chart-6)}
 
 /* #214 (Nov 15: "they can be cards"): dreams are cards, three across, never stretched to fill a row. The newest month
-   ends with a ghost "Capture a dream" card that fills the rest of its row. */
+   ends with an illustrated "Capture a dream" invite card that fills the rest of its row. */
 .muse-dreamscapes .muse-dream-list{grid-template-columns:repeat(3,minmax(0,1fr))!important;align-items:stretch!important;gap:16px}
 .muse-dreamscapes .muse-dream-list>*{grid-column:auto!important}
 .muse-dreamscapes .muse-dream-entry .muse-dream-preview{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
 .muse-dreamscapes .muse-dream-entry{min-height:220px}
-.muse-dream-ghost{display:grid;place-items:center;align-content:center;gap:4px;min-height:220px;padding:18px;border:1px dashed color-mix(in srgb,var(--chart-6) 40%,var(--glass-border));border-radius:20px;background:color-mix(in srgb,var(--glass-background) 70%,transparent);color:var(--foreground);text-align:center;cursor:pointer;transition:border-color .25s,transform .3s}
-.muse-dream-ghost:hover{transform:translateY(-3px);border-color:var(--chart-6)}
-.muse-dream-ghost span{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:radial-gradient(circle at 35% 30%,color-mix(in srgb,#ffe7a6 55%,var(--chart-6)),var(--chart-6));color:#fff;font-size:1.3rem;box-shadow:0 0 18px -4px var(--chart-6)}
-.muse-dream-ghost b{font-family:var(--font-editorial);font-style:italic;font-size:1.1rem}
-.muse-dream-ghost small{color:var(--text-muted)}
-/* The ghost takes whatever is left of the row, so the newest month never ends on an empty slot. */
-.muse-dreamscapes .muse-dream-list>.muse-dream-ghost{grid-column:span var(--ghost-3,1)!important}
-@container muse-content (max-width:1000px){.muse-dreamscapes .muse-dream-list{grid-template-columns:repeat(2,minmax(0,1fr))!important}.muse-dreamscapes .muse-dream-list>.muse-dream-ghost{grid-column:span var(--ghost-2,1)!important}}
-@media (max-width:650px){.muse-dreamscapes .muse-dream-list{grid-template-columns:minmax(0,1fr)!important}.muse-dream-ghost{display:none}}
+/* The invite card (MuseInviteCard, app/journals.css) takes whatever is left of the newest row. */
+.muse-dreamscapes .muse-dream-list>.muse-journal-invite{grid-column:span var(--ghost-3,1)!important}
+@container muse-content (max-width:1000px){.muse-dreamscapes .muse-dream-list{grid-template-columns:repeat(2,minmax(0,1fr))!important}.muse-dreamscapes .muse-dream-list>.muse-journal-invite{grid-column:span var(--ghost-2,1)!important}}
+@media (max-width:650px){.muse-dreamscapes .muse-dream-list{grid-template-columns:minmax(0,1fr)!important}}
 
 .muse-dreamscapes .muse-dream-entry{--dream:var(--chart-6);height:100%;isolation:isolate;overflow:hidden;border:1px solid color-mix(in srgb,var(--dream) 32%,var(--glass-border))!important;border-left-width:1px!important;border-radius:20px!important;padding:16px 18px 14px!important;
  background:radial-gradient(90% 70% at 100% 0%,color-mix(in srgb,var(--dream) 24%,transparent),transparent 62%),radial-gradient(70% 60% at 0% 100%,color-mix(in srgb,var(--dream) 10%,transparent),transparent 70%),linear-gradient(180deg,color-mix(in srgb,var(--dream) 6%,var(--glass-background)),var(--glass-background))!important;
@@ -46,3 +41,24 @@
  .muse-dreamscapes .muse-dream-entry:hover .muse-dream-crescent{animation:muse-dream-moonrise .9s cubic-bezier(.3,1.4,.5,1) 1}
 }}
 @keyframes muse-dream-moonrise{from{transform:translateY(8px) scale(.8);opacity:.3}}
+
+/* Dream Diary as a journal (#214, Nov 15): the shared hero + archive with the night's inks. The hero art carries the
+   newest dream's title on a small note drifting by the moon. */
+.muse-dream-diary{--journal-a:var(--chart-6);--journal-b:var(--chart-5)}
+.muse-dream-diary>.muse-dream-section{gap:14px}
+.muse-dream-hero-art{max-width:320px}
+.muse-dream-hero-note{position:absolute;left:0;top:34%;display:grid;gap:2px;width:max-content;max-width:72%;padding:8px 12px;border:1px solid color-mix(in srgb,var(--journal-a) 40%,var(--glass-border));border-radius:12px;background:color-mix(in srgb,var(--glass-background) 88%,var(--journal-a));box-shadow:0 12px 24px -16px var(--journal-a);transform:rotate(-3deg);text-align:left}
+.muse-dream-hero-note small{white-space:nowrap;color:var(--text-muted);font:700 .58rem/1.2 var(--font-ui);letter-spacing:.1em;text-transform:uppercase}
+.muse-dream-hero-note b{overflow:hidden;font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight);font-size:1rem;line-height:1.2;white-space:nowrap;text-overflow:ellipsis}
+.muse-dream-empty-moon{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:radial-gradient(circle at 35% 30%,color-mix(in srgb,#ffe7a6 55%,var(--chart-6)),var(--chart-6));color:#fff;font-size:1.3rem}
+/* Symbol Encyclopedia (#214, Nov 15: "these can be better too"): the hero is the whole finder (search, categories and
+   A–Z live inside it), and your own symbols sit on one framed shelf beside "Add your symbol". */
+.muse-dreamscapes .muse-dream-library-hero{gap:12px}
+.muse-dreamscapes .muse-dream-library-hero h3{font-size:clamp(2rem,4vw,3rem);line-height:1.02}
+.muse-dreamscapes .muse-dream-library-hero .muse-dream-chip-row{margin-top:4px}
+.muse-dreamscapes .muse-dream-library-hero .muse-dream-library-tools{padding-top:10px;border-top:1px solid color-mix(in srgb,var(--foreground) 10%,transparent)}
+.muse-dreamscapes .muse-dream-library-hero .muse-dream-alphabet{justify-content:space-between}
+.muse-dream-library-mine{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 20px;padding:16px clamp(16px,2.4vw,24px);border:1px solid var(--glass-border);border-radius:var(--card-radius,22px);background:radial-gradient(60% 140% at 0% 0%,color-mix(in srgb,var(--chart-6) 14%,transparent),transparent 60%),var(--glass-background);box-shadow:var(--card-shadow)}
+.muse-dream-library-mine>.small-label{margin:0;color:var(--text-muted)}
+.muse-dream-library-mine .muse-dream-shelf{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin:0}
+.muse-dream-library-mine .muse-dream-shelf h4{margin:0;font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight);font-size:1.25rem;text-transform:none;letter-spacing:0;color:var(--foreground)}

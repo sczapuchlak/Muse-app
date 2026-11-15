@@ -154,14 +154,10 @@
 .muse-tarot-entry-foot:empty{display:none}
 @media (prefers-reduced-motion:reduce){.muse-tarot-entry-stage>span,.muse-tarot .muse-tarot-entry{transition:none}}
 
-/* Reading Journal, round 4 (Nov 13: "can be shnazzied up"). Three across with no lone card on a last row: the newest
-   reading becomes a wide feature when the count would leave a gap (and the last one widens when needed). Each reading's
+/* Reading Journal, round 4 (Nov 13: "can be shnazzied up"), revised #214 (Nov 15): readings are cards, three across,
+   and an illustrated "Draw a new reading" invite fills the last row instead of stretching a reading. Each reading's
    cards sit on a candle-lit velvet stage that fans wider when you reach for it, with a gold glow. */
 .muse-tarot .muse-tarot-timeline{grid-template-columns:repeat(3,minmax(0,1fr))}
-.muse-tarot .muse-tarot-timeline:has(>:last-child:nth-child(3n+1))>:first-child,
-.muse-tarot .muse-tarot-timeline:has(>:last-child:nth-child(3n+2))>:first-child{grid-column:span 2}
-.muse-tarot .muse-tarot-timeline:has(>:last-child:nth-child(3n+1)):has(>:nth-child(4))>:last-child{grid-column:span 2}
-.muse-tarot .muse-tarot-timeline>:only-child{grid-column:1/-1}
 .muse-tarot .muse-tarot-timeline>[style*="span"],.muse-tarot .muse-tarot-timeline>*{min-width:0}
 .muse-tarot-entry-stage{position:relative;height:150px;background:radial-gradient(60% 80% at 50% 105%,color-mix(in srgb,#f2b44e 26%,transparent),transparent 70%),radial-gradient(90% 100% at 50% 100%,color-mix(in srgb,var(--chart-6) 30%,transparent),transparent 75%),linear-gradient(180deg,color-mix(in srgb,var(--chart-6) 10%,var(--background)),color-mix(in srgb,#2a1238 55%,var(--background)))!important}
 .muse-tarot-entry-stage::after{content:"";position:absolute;left:12%;right:12%;bottom:6px;height:18px;border-radius:50%;background:radial-gradient(closest-side,color-mix(in srgb,#ffcf73 45%,transparent),transparent);filter:blur(4px);pointer-events:none}
@@ -171,5 +167,13 @@
 .muse-tarot .muse-tarot-entry:hover{transform:translateY(-4px);border-color:color-mix(in srgb,#f2c46a 45%,transparent)!important;box-shadow:0 22px 40px -22px #f2b44e,0 0 0 1px color-mix(in srgb,#f2c46a 30%,transparent)!important}
 .muse-tarot-entry:is(:hover,:focus-visible) .muse-tarot-entry-stage>span{transform:rotate(calc(var(--o) * 13deg)) translateY(calc(var(--o) * var(--o) * 2.5px - 2px))!important}
 .muse-tarot .muse-tarot-entry-preview{border-left-color:color-mix(in srgb,#f2c46a 65%,transparent)!important}
-@container (max-width:900px){.muse-tarot .muse-tarot-timeline{grid-template-columns:repeat(2,minmax(0,1fr))}.muse-tarot .muse-tarot-timeline>*{grid-column:auto!important}.muse-tarot .muse-tarot-timeline:has(>:last-child:nth-child(odd))>:first-child{grid-column:1/-1!important}}
-@media (max-width:600px){.muse-tarot .muse-tarot-timeline{grid-template-columns:minmax(0,1fr)}.muse-tarot .muse-tarot-timeline>*{grid-column:auto!important}}
+@container muse-content (max-width:1000px){.muse-tarot .muse-tarot-timeline{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@container muse-content (max-width:640px){.muse-tarot .muse-tarot-timeline{grid-template-columns:minmax(0,1fr)}}
+/* #214 (Nov 15: "these can be better too"): the reading's name, question and spread picker sit in one framed band
+   instead of floating on the page background: the spread on the left, your question and controls on the right. */
+.muse-tarot .muse-tarot-setup{position:relative;grid-template-columns:minmax(0,.9fr) minmax(0,1.6fr);align-items:center;gap:clamp(14px,3vw,32px);padding:clamp(16px,2.4vw,24px) clamp(18px,3vw,30px);border:1px solid var(--glass-border);border-radius:var(--card-radius,22px);
+ background:radial-gradient(60% 120% at 0% 0%,color-mix(in srgb,var(--chart-6) 16%,transparent),transparent 60%),radial-gradient(50% 120% at 100% 100%,color-mix(in srgb,#f2c46a 10%,transparent),transparent 65%),var(--glass-background);box-shadow:var(--card-shadow)}
+.muse-tarot .muse-tarot-setup .muse-kicker{color:var(--dl-kicker)}
+.muse-tarot .muse-tarot-setup h3{font-size:clamp(1.6rem,2.6vw,2.2rem);line-height:1.05}
+.muse-tarot .muse-tarot-setup-controls{grid-template-columns:minmax(0,1fr) max-content 42px}
+@container muse-content (max-width:900px){.muse-tarot .muse-tarot-setup{grid-template-columns:minmax(0,1fr)}}
