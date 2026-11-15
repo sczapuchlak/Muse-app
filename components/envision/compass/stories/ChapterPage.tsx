@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import Link from "next/link";
 import { MuseModal } from "@/components/MuseModal";
 import { MuseChoiceMenu } from "@/components/MuseChoiceMenu";
 import { MuseIcon } from "@/components/MuseIcon";
@@ -61,7 +62,7 @@ export function ChapterPage({ c, stories, compass, boards, today, onBack, onOpen
     <div className="muse-stories-meta">
       {c.isPrimary && <span className="muse-compass-chip" data-on>Primary chapter</span>}
       {c.showOnDaily && <span className="muse-compass-chip">On the Daily Edit</span>}
-      {areas.map((a) => <span key={a.id} className="muse-compass-chip" data-quiet><span className="muse-compass-area-dot" style={{ background: a.color }} aria-hidden="true" /> {a.label}</span>)}
+      {areas.map((a) => <Link key={a.id} className="muse-stories-belong" data-kind="area" href={`/envision#atlas-area-${a.id}`}><small>Life Atlas</small><span className="muse-compass-area-dot" style={{ background: a.color }} aria-hidden="true" />{a.label}</Link>)}
       {c.carriedFrom ? <button type="button" className="text-button" onClick={() => onOpenChapter(c.carriedFrom!)}>Carried forward from {c.carriedFromTitle}</button> : c.carriedFromTitle && <span className="muse-compass-quiet">Carried forward from {c.carriedFromTitle}</span>}
     </div>
     {c.meaning && <p className="muse-stories-meaning">{c.meaning}</p>}

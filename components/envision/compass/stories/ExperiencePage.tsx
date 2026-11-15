@@ -64,7 +64,7 @@ export function ExperiencePage({ e, stories, compass, boards, today, onBack, onO
     <section className="muse-stories-belongs" aria-label="Where this experience appears">
       {chapters.map((c) => <button key={c.id} type="button" className="muse-stories-belong" data-kind="chapter" onClick={() => onOpenChapter(c.id)}><small>Chapter</small>{c.title}</button>)}
       {collections.map((c) => <button key={c.id} type="button" className="muse-stories-belong" data-kind="collection" onClick={() => onOpenCollection(c.id)}><small>Collection</small>{c.name}</button>)}
-      {areas.map((a) => <span key={a.id} className="muse-stories-belong" data-kind="area"><small>Life Atlas</small><span className="muse-compass-area-dot" style={{ background: a.color }} aria-hidden="true" />{a.label}</span>)}
+      {areas.map((a) => <Link key={a.id} className="muse-stories-belong" data-kind="area" href={`/envision#atlas-area-${a.id}`}><small>Life Atlas</small><span className="muse-compass-area-dot" style={{ background: a.color }} aria-hidden="true" />{a.label}</Link>)}
       {e.event && <Link className="muse-stories-belong" data-kind="event" href={`/planner?view=agenda&date=${e.event.date}`}><small>Agenda</small>{e.event.title} · {shortDate(e.event.date)}</Link>}
       {discoveries.map((d) => <Link key={d.id} className="muse-stories-belong" data-kind="discovery" href={`/envision?view=inner-compass&d=${d.id}`}><small>Discovery</small>{d.title}</Link>)}
       {!chapters.length && !collections.length && !areas.length && !e.event && <p className="muse-compass-quiet">Standing on its own. <button type="button" className="text-button" onClick={() => open("details")}>Add it to a chapter or collection</button></p>}

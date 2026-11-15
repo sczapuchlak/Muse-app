@@ -58,54 +58,76 @@ export function Experiences({ stories, compass, boards, today, collectionId, ini
     if (e) { setAdded(e); setTitle(""); }
   }
 
+  const capture = <form className="muse-stories-capture" onSubmit={(e) => { e.preventDefault(); void quickAdd(); }}>
+    <label className="sr-only" htmlFor="exp-capture">What happened?</label>
+    <input id="exp-capture" maxLength={200} value={title} onChange={(e) => setTitle(e.target.value)} placeholder={collection ? `Add to ${collection.name}…` : "What happened? A title is enough."} />
+    <label className="sr-only" htmlFor="exp-capture-date">When</label><input id="exp-capture-date" type="date" value={date} onChange={(e) => setDate(e.target.value)} />
+    <button type="submit" className="muse-button button-primary" disabled={!title.trim() || stories.status.saving}><MuseIcon name="sparkle" size={15} /> Keep it</button>
+    {added && <p className="muse-compass-quiet" role="status">Kept “{added.title}”. <button type="button" className="text-button" onClick={() => onOpen(added.id)}>Add photos, words and more</button></p>}
+  </form>;
+  const recent = sortExperiences(stories.experiences.filter((e) => !e.archivedAt), "recent").slice(0, 3);
+
   return <div className="muse-stories-experiences">
-    {collection ? <CollectionHeader c={collection} stories={stories} boards={boards} count={list.length} onBack={() => onCollection(null)} />
-      : <section className="muse-stories-exp-hero">
-        <div><p className="muse-kicker">My Experiences</p><h2>The moments that shape my story</h2>
-          <p>A conversation, a workshop, a gathering, a first time, an ordinary afternoon worth keeping. Each is one record, wherever it appears.</p></div>
+    {collection ? <CollectionHeader c={collection} stories={stories} boards={boards} count={list.length} onBack={() => onCollection(null)}>{capture}</CollectionHeader>
+      : <section className="muse-stories-exp-hero" aria-labelledby="exp-hero-title">
+        <div className="muse-stories-exp-hero-copy"><p className="muse-kicker">My Experiences</p><h2 id="exp-hero-title">The moments that shape my story</h2>
+          <p>A conversation, a workshop, a gathering, a first time, an ordinary afternoon worth keeping. Each is one record, wherever it appears.</p>
+          {capture}</div>
+        <Keepsakes recent={recent} boards={boards} />
       </section>}
 
-    <form className="muse-stories-capture" onSubmit={(e) => { e.preventDefault(); void quickAdd(); }}>
-      <label className="sr-only" htmlFor="exp-capture">What happened?</label>
-      <input id="exp-capture" maxLength={200} value={title} onChange={(e) => setTitle(e.target.value)} placeholder={collection ? `Add to ${collection.name}…` : "What happened? A title is enough."} />
-      <label className="sr-only" htmlFor="exp-capture-date">When</label><input id="exp-capture-date" type="date" value={date} onChange={(e) => setDate(e.target.value)} />
-      <button type="submit" className="muse-button button-primary" disabled={!title.trim() || stories.status.saving}><MuseIcon name="sparkle" size={15} /> Keep it</button>
-      {added && <p className="muse-compass-quiet" role="status">Kept “{added.title}”. <button type="button" className="text-button" onClick={() => onOpen(added.id)}>Add photos, words and more</button></p>}
-    </form>
-
-    {!collection && <section className="muse-stories-collections" aria-labelledby="exp-collections-title">
-      <header><h3 id="exp-collections-title" className="muse-compass-subhead">Collections</h3><button type="button" className="muse-button" onClick={() => { setOpener(document.activeElement as HTMLElement | null); setNewCollection(true); }}><MuseIcon name="plus" size={14} /> New collection</button></header>
-      {stories.collections.length ? <ul>{stories.collections.map((c) => { const n = stories.collectionExperiences.filter((j) => j.a === c.id).length; return <li key={c.id}>
-        <button type="button" className="muse-stories-collection" onClick={() => onCollection(c.id)}><CoverArt cover={c.cover} boards={boards} size="sm"><span className="muse-stories-collection-name">{c.name}</span></CoverArt><small className="type-numeric">{plural(n, "experience")}</small></button>
-      </li>; })}</ul> : <p className="muse-compass-quiet">Group experiences around an interest: Coven Chronicles, Creative Adventures, Meaningful Conversations, My Year of Firsts. A collection is not a chapter; it can run across many.</p>}
-    </section>}
-
-    <div className="muse-compass-toolbar">
-      <MuseSearch label="Search experiences" value={query} onChange={setQuery} placeholder="Search titles, places, people, tags" count={query ? list.length : undefined} noun={["experience", "experiences"]} />
-      <MuseChoiceMenu label="Filter experiences" variant="chip" icon="filter" multiple valueLabel={filterCount ? `Filter · ${filterCount}` : "Filter"} onClear={filterCount ? () => { setTag(null); setChapter(null); setArea(null); } : undefined}
-        selectedIds={[...(tag ? [`t:${tag}`] : []), ...(chapter ? [`c:${chapter}`] : []), ...(area ? [`a:${area}`] : [])]}
-        options={[...tags.map((t) => ({ id: `t:${t.tag}`, label: `#${t.tag} · ${t.count}` })), ...stories.chapters.filter((c) => !c.archivedAt).map((c) => ({ id: `c:${c.id}`, label: `Chapter · ${c.title}` })), ...compass.areas.map((a) => ({ id: `a:${a.id}`, label: `Life Atlas · ${a.label}` }))]}
-        onSelect={(id) => { const [k, v] = [id.slice(0, 1), id.slice(2)]; if (k === "t") setTag((x) => x === v ? null : v); else if (k === "c") setChapter((x) => x === v ? null : v); else setArea((x) => x === v ? null : v); }} />
-      {collection?.sort !== "manual" && <MuseChoiceMenu label="Sort" variant="chip" valueLabel={sorts.find((s) => s.id === sort)!.label} selectedIds={[sort]} options={sorts} onSelect={(id) => setSort(id as Sort)} />}
-      {(stories.experiences.some((e) => e.archivedAt) || archived) && <button type="button" className="muse-button" aria-pressed={archived} onClick={() => setArchived((a) => !a)}><MuseIcon name="archive" size={14} /> {archived ? "Back to current" : "Archived"}</button>}
-    </div>
-
-    {list.length ? <ul className="muse-stories-exp-tiles">{list.map((e, i) => <li key={e.id}><ExperienceTile e={e} boards={boards} onOpen={() => onOpen(e.id)} />
-      {collection?.sort === "manual" && <span className="muse-stories-order"><button type="button" aria-label={`Move ${e.title} earlier`} disabled={i === 0} onClick={() => { const ids = list.map((x) => x.id); [ids[i - 1], ids[i]] = [ids[i], ids[i - 1]]; void stories.orderCollection(collection.id, ids); }}>↑</button>
-        <button type="button" aria-label={`Move ${e.title} later`} disabled={i === list.length - 1} onClick={() => { const ids = list.map((x) => x.id); [ids[i + 1], ids[i]] = [ids[i], ids[i + 1]]; void stories.orderCollection(collection.id, ids); }}>↓</button></span>}
-    </li>)}</ul>
-      : <div className="muse-compass-empty">
-        <svg viewBox="0 0 120 80" aria-hidden="true" className="muse-compass-empty-art"><rect x="30" y="14" width="44" height="52" rx="4" /><rect x="46" y="20" width="44" height="52" rx="4" /><path d="M68 34C69 43 70 44 79 45C70 46 69 47 68 56C67 47 66 46 57 45C66 44 67 43 68 34Z" /></svg>
-        <h3>{query || filterCount ? "Nothing matches" : collection ? "An empty collection, ready" : "Your first experience can be a single line"}</h3>
-        <p>{query || filterCount ? "Try another word, or clear the filters." : "Type above and press Keep it. Add photos, words, materials or a reflection whenever you like."}</p>
+    <section className="muse-stories-archive" aria-label={collection ? `${collection.name}: experiences` : "The archive"}>
+      {!collection && <div className="muse-stories-archive-collections">
+        <div className="muse-stories-archive-head"><h3 className="muse-compass-subhead">Collections</h3>{stories.collections.length > 0 && <small className="muse-compass-quiet">Groups of experiences around an interest. Not chapters; they run across many.</small>}</div>
+        <ul>{stories.collections.map((c) => { const n = stories.collectionExperiences.filter((j) => j.a === c.id).length; return <li key={c.id}>
+          <button type="button" className="muse-stories-collection" onClick={() => onCollection(c.id)}><CoverArt cover={c.cover} boards={boards} size="sm"><span className="muse-stories-collection-name">{c.name}</span></CoverArt><small className="type-numeric">{plural(n, "experience")}</small></button>
+        </li>; })}
+          <li><button type="button" className="muse-stories-collection-new" onClick={() => { setOpener(document.activeElement as HTMLElement | null); setNewCollection(true); }}><MuseIcon name="plus" size={16} /><b>New collection</b>{!stories.collections.length && <small>Coven Chronicles, Creative Adventures, My Year of Firsts…</small>}</button></li>
+        </ul>
       </div>}
 
-    {collection && <AddExisting collection={collection} stories={stories} />}
+      <div className="muse-stories-archive-head">
+        <h3 className="muse-compass-subhead">{collection ? "In this collection" : "Every experience"} <small className="type-numeric">{list.length}</small></h3>
+      </div>
+      <div className="muse-compass-toolbar">
+        <MuseSearch label="Search experiences" value={query} onChange={setQuery} placeholder="Search titles, places, people, tags" count={query ? list.length : undefined} noun={["experience", "experiences"]} />
+        <MuseChoiceMenu label="Filter experiences" variant="chip" icon="filter" multiple valueLabel={filterCount ? `Filter · ${filterCount}` : "Filter"} onClear={filterCount ? () => { setTag(null); setChapter(null); setArea(null); } : undefined}
+          selectedIds={[...(tag ? [`t:${tag}`] : []), ...(chapter ? [`c:${chapter}`] : []), ...(area ? [`a:${area}`] : [])]}
+          options={[...tags.map((t) => ({ id: `t:${t.tag}`, label: `#${t.tag} · ${t.count}` })), ...stories.chapters.filter((c) => !c.archivedAt).map((c) => ({ id: `c:${c.id}`, label: `Chapter · ${c.title}` })), ...compass.areas.map((a) => ({ id: `a:${a.id}`, label: `Life Atlas · ${a.label}` }))]}
+          onSelect={(id) => { const [k, v] = [id.slice(0, 1), id.slice(2)]; if (k === "t") setTag((x) => x === v ? null : v); else if (k === "c") setChapter((x) => x === v ? null : v); else setArea((x) => x === v ? null : v); }} />
+        {collection?.sort !== "manual" && <MuseChoiceMenu label="Sort" variant="chip" valueLabel={sorts.find((s) => s.id === sort)!.label} selectedIds={[sort]} options={sorts} onSelect={(id) => setSort(id as Sort)} />}
+        {(stories.experiences.some((e) => e.archivedAt) || archived) && <button type="button" className="muse-button" aria-pressed={archived} onClick={() => setArchived((a) => !a)}><MuseIcon name="archive" size={14} /> {archived ? "Back to current" : "Archived"}</button>}
+      </div>
+
+      {list.length ? <ul className="muse-stories-exp-tiles">{list.map((e, i) => <li key={e.id}><ExperienceTile e={e} boards={boards} onOpen={() => onOpen(e.id)} />
+        {collection?.sort === "manual" && <span className="muse-stories-order"><button type="button" aria-label={`Move ${e.title} earlier`} disabled={i === 0} onClick={() => { const ids = list.map((x) => x.id); [ids[i - 1], ids[i]] = [ids[i], ids[i - 1]]; void stories.orderCollection(collection.id, ids); }}>↑</button>
+          <button type="button" aria-label={`Move ${e.title} later`} disabled={i === list.length - 1} onClick={() => { const ids = list.map((x) => x.id); [ids[i + 1], ids[i]] = [ids[i], ids[i + 1]]; void stories.orderCollection(collection.id, ids); }}>↓</button></span>}
+      </li>)}</ul>
+        : <div className="muse-stories-archive-empty">
+          <svg viewBox="0 0 64 48" aria-hidden="true"><rect x="8" y="8" width="26" height="32" rx="3" /><rect x="22" y="4" width="26" height="32" rx="3" /><path d="M41 16C41.6 21.4 42.6 22.4 48 23C42.6 23.6 41.6 24.6 41 30C40.4 24.6 39.4 23.6 34 23C39.4 22.4 40.4 21.4 41 16Z" /></svg>
+          <div><h3>{query || filterCount ? "Nothing matches" : collection ? "An empty collection, ready" : "Your first experience can be a single line"}</h3>
+            <p>{query || filterCount ? "Try another word, or clear the filters." : "Type it above and press Keep it. Photos, words, materials or a reflection can come whenever you like."}</p></div>
+        </div>}
+      {collection && <AddExisting collection={collection} stories={stories} />}
+    </section>
+
     {newCollection && <NewCollection stories={stories} returnFocus={opener} onClose={() => setNewCollection(false)} onCreated={(id) => { setNewCollection(false); onCollection(id); }} />}
   </div>;
 }
 
-function CollectionHeader({ c, stories, boards, count, onBack }: { c: Collection; stories: Stories; boards: VisionBoard[]; count: number; onBack: () => void }) {
+/** The latest keepsakes as a small stack of prints: real photos when there are some, their atmospheres otherwise. */
+function Keepsakes({ recent, boards }: { recent: Experience[]; boards: VisionBoard[] }) {
+  const prints = recent.length ? recent : null;
+  return <div className="muse-stories-keepsakes" aria-hidden="true">
+    {(prints ?? [null, null, null]).map((e, i) => <div key={e?.id ?? i} className="muse-stories-print" data-i={i}>
+      <span className="muse-stories-print-art">{e ? ((e.cover.image ?? e.photos[0]) ? <BucketPhoto image={(e.cover.image ?? e.photos[0])!} className="muse-stories-tile-photo" /> : <CoverArt cover={e.cover} boards={boards} size="sm" />)
+        : <CoverArt cover={{ preset: (["bloom", "atlas", "dawn"] as const)[i] }} size="sm" />}</span>
+      <span className="muse-stories-print-caption">{e ? e.title : ["A first time", "A long conversation", "An ordinary afternoon"][i]}</span>
+    </div>)}
+  </div>;
+}
+
+function CollectionHeader({ c, stories, boards, count, onBack, children }: { c: Collection; stories: Stories; boards: VisionBoard[]; count: number; onBack: () => void; children?: React.ReactNode }) {
   const [edit, setEdit] = useState<"details" | "cover" | "delete" | null>(null), [opener, setOpener] = useState<HTMLElement | null>(null), [d, setD] = useState(c);
   const open = (x: typeof edit) => { setOpener(document.activeElement as HTMLElement | null); setD(c); setEdit(x); };
   return <section className="muse-stories-collection-head">
@@ -116,6 +138,7 @@ function CollectionHeader({ c, stories, boards, count, onBack }: { c: Collection
       <button type="button" className="muse-button" onClick={() => open("cover")}><MuseIcon name="appearance" size={14} /> Cover</button>
       <button type="button" className="text-button muse-compass-danger-text" onClick={() => open("delete")}><MuseIcon name="trash" size={13} /> Delete collection…</button>
     </div>
+    {children}
     {edit === "cover" && <CoverPicker cover={c.cover} boards={boards} title={c.name} returnFocus={opener} onClose={() => setEdit(null)} upload={(f) => stories.upload(c.id, f)} onSave={(cover) => stories.saveCollection({ ...c, cover })} />}
     {edit === "details" && <MuseModal id="muse-collection-details" label="Collection details" title="Collection" returnFocus={opener} onClose={() => setEdit(null)}>
       <form className="muse-compass-editor" onSubmit={async (e) => { e.preventDefault(); if (d.name.trim() && await stories.saveCollection(d)) setEdit(null); }}>

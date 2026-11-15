@@ -823,3 +823,11 @@ Book and Series are pages inside Collections. Both open with a pill Back control
 - **Timeline:** dated Chapters as pill spans in lanes, a today line, year ticks; undated Chapters live on the shelf.
 - **Motion:** only the large Aurora cover drifts, twice, with motion allowed.
 
+## Inner Compass cohesion pass (#214) — implemented on feature branch, Staging acceptance pending
+
+- **Navigation hierarchy:** the three views are the primary pill track; My Inner World's sections are a quieter text row after a hairline divider, with the current section underlined in the secondary accent. On phones both rows scroll. When everything is saved the row keeps only the green save dot (the words stay for assistive technology).
+- **Surfaces:** Inner Compass primary containers (heroes, facets, Lately, doors, collections, the Chapters hero, timeline and shelf, the Experiences hero and archive, module boards, Experience pages) take the theme's masked gradient ring from `app/surfaces.css`, like Books, and are on the light-card ink list for Astral and Nightbloom. Nested surfaces stay `--surface-subtle` with plain hairlines.
+- **My Chapters:** the first page is a composer inside the hero (Begin with a name or a guiding word) beside three fanned, unwritten volumes (Chapter I–III in the First Light, Aurora and Nocturne covers).
+- **My Experiences:** the hero holds the one-line capture beside a small stack of taped prints (your latest experiences' photos or covers). Collections, search, filters, sort and the grid live in one archive container; the empty state is a compact dashed row inside it.
+- **Life Atlas:** an area's linked Chapters (thin book covers) and Experiences (photo or cover squares) are two compact horizontal rows below its aspirations, separated by a hairline in the area's ink.
+

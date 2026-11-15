@@ -26,13 +26,13 @@ export function Chapters({ stories, boards, today, onOpen }: { stories: Stories;
 
   return <div className="muse-stories-chapters">
     {featured ? <FeaturedChapter c={featured} stories={stories} boards={boards} today={today} onOpen={onOpen} onNew={() => begin("name")} />
-      : <section className="muse-stories-welcome">
-        <div><p className="muse-kicker">My Chapters</p><h2>The seasons you’re living</h2>
-          <p>A Chapter is a meaningful period of life with a name, an atmosphere and the moments that belong to it. Begin it at the start of a season, or name one you’ve already lived.</p></div>
-        <div className="muse-stories-begin">
-          <button type="button" onClick={() => begin("name")}><span className="muse-stories-begin-eg">“The Summer of Saying Yes”</span><b>Start with a name</b><small>Title the season.</small></button>
-          <button type="button" onClick={() => begin("word")}><span className="muse-stories-begin-eg">Courage</span><b>Start with a word</b><small>One word can be the whole beginning.</small></button>
+      : <section className="muse-stories-welcome" aria-labelledby="chapters-welcome-title">
+        <div className="muse-stories-welcome-copy">
+          <p className="muse-kicker">My Chapters</p><h2 id="chapters-welcome-title">The seasons you’re living</h2>
+          <p>A Chapter is a meaningful period of life with a name, an atmosphere and the moments that belong to it. Begin it at the start of a season, or name one you’ve already lived.</p>
+          <BeginChapter stories={stories} onOpen={onOpen} onMore={begin} />
         </div>
+        <VolumesArt />
       </section>}
 
     {stories.chapters.length > 0 && <Timeline chapters={stories.chapters.filter((c) => !c.archivedAt)} today={today} onOpen={onOpen} />}
@@ -88,6 +88,36 @@ function FeaturedChapter({ c, stories, boards, today, onOpen, onNew }: { c: Chap
       <div className="muse-compass-hero-actions"><button type="button" className="muse-button button-primary" onClick={() => onOpen(c.id)}>Open this chapter</button><button type="button" className="muse-button" onClick={onNew}><MuseIcon name="plus" size={15} /> New chapter</button></div>
     </div>
   </section>;
+}
+
+/** The first page of the memoir: a name or a single word, then Begin. Dates and a subtitle are one tap away. */
+function BeginChapter({ stories, onOpen, onMore }: { stories: Stories; onOpen: (id: string) => void; onMore: (how: "name" | "word") => void }) {
+  const [how, setHow] = useState<"name" | "word">("name"), [text, setText] = useState("");
+  async function begin() {
+    const t = text.trim(); if (!t) return;
+    const c = await stories.saveChapter({ ...blankChapter(), title: t, word: how === "word" ? t : "" });
+    if (c) onOpen(c.id);
+  }
+  return <form className="muse-stories-begin-form" onSubmit={(e) => { e.preventDefault(); void begin(); }}>
+    <MuseSegmented label="Begin with" value={how} onChange={setHow} options={[{ id: "name", label: "A name" }, { id: "word", label: "A guiding word" }]} />
+    <div className="muse-stories-begin-row">
+      <label className="sr-only" htmlFor="chapters-begin">{how === "name" ? "Chapter name" : "Guiding word"}</label>
+      <input id="chapters-begin" maxLength={how === "word" ? 60 : 160} value={text} onChange={(e) => setText(e.target.value)} placeholder={how === "name" ? "The Summer of Saying Yes" : "Courage"} data-how={how} />
+      <button type="submit" className="muse-button button-primary" disabled={!text.trim() || stories.status.saving}><MuseIcon name="sparkle" size={15} /> Begin</button>
+    </div>
+    <p className="muse-compass-quiet">{how === "word" ? "One word can be the whole beginning; it stands as the name until you choose another." : "Title the season. Everything else can come later."} <button type="button" className="text-button" onClick={() => onMore(how)}>Add dates and a subtitle</button></p>
+  </form>;
+}
+
+/** Three unwritten volumes, fanned like the start of a memoir. Decorative: the real covers are on the shelf. */
+function VolumesArt() {
+  const vols: { preset: "nocturne" | "aurora" | "dawn"; numeral: string }[] = [{ preset: "dawn", numeral: "I" }, { preset: "aurora", numeral: "II" }, { preset: "nocturne", numeral: "III" }];
+  return <div className="muse-stories-volumes-art" aria-hidden="true">
+    <svg className="muse-stories-volumes-orbit" viewBox="0 0 300 220"><path d="M20 170 C 90 40, 210 40, 280 150" /><circle cx="20" cy="170" r="2.2" /><circle cx="150" cy="72" r="1.6" /><circle cx="280" cy="150" r="2.4" /></svg>
+    {vols.map((v, i) => <div key={v.preset} className="muse-stories-volume-art" data-i={i}>
+      <CoverArt cover={{ preset: v.preset }} size="sm"><span className="muse-stories-volume-numeral">Chapter {v.numeral}</span>{i === 2 && <span className="muse-stories-volume-title">Yet to be written</span>}</CoverArt>
+    </div>)}
+  </div>;
 }
 
 /**

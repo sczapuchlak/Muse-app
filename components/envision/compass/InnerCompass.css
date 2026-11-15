@@ -26,6 +26,16 @@
 .muse-compass-spaces-track::-webkit-scrollbar{display:none}
 .muse-compass-spaces-track>button{white-space:nowrap}
 .muse-compass-spaces .muse-save-indicator{margin-left:auto}
+/* #214: when everything is saved the row keeps only the green dot (the words stay for assistive tech); saving and errors still read in full. */
+.muse-compass-spaces .muse-save-indicator[data-state=saved]{font-size:0;gap:0;padding:6px}
+/* #214: one hierarchy. The three views are the primary track; My Inner World's sections are a quieter text row. */
+.muse-compass-realms>button{font-weight:600;font-size:.88rem;min-height:40px;padding-inline:16px}
+.muse-compass-sections{gap:2px;padding:0;border:0!important;background:transparent!important;box-shadow:none}
+.muse-compass-sections>button{min-height:34px;padding:4px 12px;border:0!important;border-radius:999px;background:transparent!important;box-shadow:none!important;color:var(--text-muted);font-size:.84rem;font-weight:500}
+.muse-compass-sections>button:hover{color:var(--foreground);background:color-mix(in srgb,var(--foreground) 6%,transparent)!important}
+.muse-compass-sections>button[aria-pressed=true]{color:var(--foreground);font-weight:600;background:transparent!important;text-decoration:underline;text-decoration-color:var(--accent-secondary);text-decoration-thickness:2px;text-underline-offset:7px}
+.muse-compass-realms+.muse-compass-sections{position:relative;padding-left:14px}
+.muse-compass-realms+.muse-compass-sections::before{content:"";position:absolute;left:2px;top:50%;width:1px;height:18px;translate:0 -50%;background:var(--glass-border)}
 
 /* ---------- Hero: the personal atlas ---------- */
 .muse-compass-hero{position:relative;isolation:isolate;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:clamp(16px,3vw,40px);align-items:center;
@@ -433,6 +443,7 @@
 @container muse-content (max-width:640px){
  .muse-compass-spaces{gap:8px}
  .muse-compass-spaces-track{width:100%;mask-image:linear-gradient(90deg,#000 88%,transparent);padding-right:24px}
+ .muse-compass-realms+.muse-compass-sections{padding-left:0}.muse-compass-realms+.muse-compass-sections::before{display:none}
  .muse-compass-spaces .muse-save-indicator{display:none}
  .muse-compass-hero{padding:16px;border-radius:var(--card-radius,22px)}
  .muse-compass-facets ul{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}

@@ -1,5 +1,5 @@
 'use client';
-import {useAreaStoryCounts} from '../compass/stories/useAreaStoryCounts';
+import {useAreaStories,hasStories} from '../compass/stories/useAreaStoryCounts';
 import Link from 'next/link';
 import {useCallback,useEffect,useMemo,useRef,useState} from 'react';
 import {useSearchParams} from 'next/navigation';
@@ -42,7 +42,7 @@ const longDate=(d:string)=>new Intl.DateTimeFormat('en-US',{month:'long',day:'nu
  * Atlas. Connected progress is read from its owner (Books, the progress engine), never copied.
  */
 export function Aspirations(){
- const storyCounts=useAreaStoryCounts();
+ const areaStories=useAreaStories();
  const {state:ritualState,sources,today}=useRitualView(),{state:planner}=usePlanner(),whimsy=useWhimsyData();
  const {aspirations,updates,status,save,remove,addUpdate,removeUpdate}=useAspirations();
  const atlas=useLifeAtlas();
@@ -75,6 +75,9 @@ export function Aspirations(){
  },[aspirations,status.loaded,status.saving,today,progressOf,save]);
  const signals=useMemo(()=>today&&status.loaded?aspirationSignals(aspirations,updates,progressOf,today):[],[aspirations,updates,progressOf,today,status.loaded]);
 
+ // #214: Inner Compass links to an area with #atlas-area-<id>; scroll there once, after the areas have rendered.
+ const scrolledToArea=useRef(false);
+ useEffect(()=>{if(scrolledToArea.current||!status.loaded||!atlas.loaded)return;const h=window.location.hash;if(!h.startsWith('#atlas-area-'))return;const el=document.getElementById(h.slice(1));if(el){scrolledToArea.current=true;el.scrollIntoView({behavior:'smooth',block:'start'});}});
  if(!today)return <p className="small-label" role="status">Loading…</p>;
  const year=Number(today.slice(0,4)),planYear=planningYear(today);
  const areas=atlas.areas,activeAreas=areas.filter(a=>!a.archived);
@@ -147,7 +150,7 @@ export function Aspirations(){
     onDragStart:()=>setDragging(a.id),onDragEnd:()=>setDragging(null),onDrop:dragged=>{const id=dragged||dragging;if(id&&id!==a.id)void moveTo(list,id,i);setDragging(null);}}:undefined};
  };
  const known=(id:string|null)=>!!id&&areas.some(x=>x.id===id);
- const sections=areas.map(area=>({area,list:visible.filter(a=>primaryAreaOf(a.id,atlas.links)===area.id).sort(byOrder)})).filter(s=>s.list.length||(!s.area.archived&&!filtering&&openedEmpty.includes(s.area.id)));
+ const sections=areas.map(area=>({area,list:visible.filter(a=>primaryAreaOf(a.id,atlas.links)===area.id).sort(byOrder)})).filter(s=>s.list.length||(!s.area.archived&&!filtering&&(openedEmpty.includes(s.area.id)||hasStories(areaStories[s.area.id]))));
  const awaiting=visible.filter(a=>!known(primaryAreaOf(a.id,atlas.links))).sort(byOrder);
  const emptyAreas=activeAreas.filter(area=>!sections.some(s=>s.area.id===area.id));
  const inLensAll=aspirations.filter(a=>inLens(a,lens,atlas.priorities)&&a.status!=='archived');
@@ -182,7 +185,7 @@ export function Aspirations(){
    {sections.map(({area,list})=>{const voice=areaVoice(area.label);return <AtlasArea key={area.id} id={area.id} glyph={voice.glyph} tone={areaTone(area.position)} numeral={roman(area.position)} label={area.label+(area.archived?' (archived)':'')} whisper={voice.whisper}
     vision={lensYear?atlas.visions.find(v=>v.year===lensYear&&v.area_id===area.id)?.vision||undefined:undefined} items={list.map((a,i)=>rowItem(a,list,i))} expanded={expanded} onToggle={toggle}
     onAdd={area.archived?undefined:async title=>!!await createInArea(title,area.id,lensYear)} busy={busy} today={today} emptyNote="An open page"
-    stories={storyCounts[area.id]?{...storyCounts[area.id],href:`/envision?view=inner-compass&realm=experiences&area=${area.id}`}:undefined}/>;})}
+    stories={areaStories[area.id]}/>;})}
    {!visible.length&&<div className="muse-lifeatlas-empty">{filtering?<p>Nothing matches. <button type="button" className="text-button" onClick={()=>{setSearch('');setStatusFilter('all');setQuarter(null);}}>Clear the filters</button></p>
     :<><p className="muse-lifeatlas-empty-title">{lens.kind==='year'?`${lens.year} is an open book.`:lens.kind==='undated'?'Every aspiration has a year.':'Your Atlas is ready for its first aspiration.'}</p>
      <p>{lens.kind==='year'?'Design your year with the guided ritual, or write straight into any Life Area below.':'Choose any Life Area below to begin.'}{otherCount>0&&<> {otherCount} more live in other years: <button type="button" className="text-button" onClick={()=>setLens({kind:'all'})}>see them all</button>.</>}</p></>}</div>}

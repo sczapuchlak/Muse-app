@@ -24,7 +24,7 @@ Write down the answers before you build. Put them in the PR description or the f
 4. **Optional relationships.** Every link is optional and explicit. Unlinking never deletes; closing or deleting a Chapter never touches its Experiences; deleting an Experience removes only its links, modules and photos.
 5. **Patterns.** Inner Compass `MuseSegmented` views, `MuseModal`, `MuseChoiceMenu`, `GlassPopover`, `MuseOverflowMenu`, `SaveIndicator`, private image storage (`uploadBoardImage`), the Phase 1 reflection composer, `MuseMark`.
 6. **Place in the cycle.** Envision (a season and its words) → Intend (Chapter intentions may point at Planner Intentions) → Live (Experiences) → Reflect (dated reflections) → Understand (save a realization as a discovery) → carry forward.
-7. **Now or later.** Working now: discoveries, Visions, explorations, Tarot readings, dreams, Agenda events, Planner Intentions links, Life Atlas areas (with a link back from each Atlas area), the opt-in Daily Edit Chapter card. Future: a Life Archive built on Experiences; Insights over associations; Planner Reflections referencing a Chapter.
+7. **Now or later.** Working now: discoveries, Visions, explorations, Tarot readings, dreams, Agenda events, Planner Intentions links, Life Atlas areas, the opt-in Daily Edit Chapter card. Since #214, every Life Atlas area shows its linked Chapters and Experiences, with or without aspirations, as compact previews that open the original record; Chapter and Experience pages link back to `/envision#atlas-area-<id>`. Archived records stay out of view; closed Chapters keep their association. Future: a Life Archive built on Experiences; Insights over associations; Planner Reflections referencing a Chapter.
 
 ### Inner Compass, Phase 1: My Inner World (#210)
 

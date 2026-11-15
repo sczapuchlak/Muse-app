@@ -9,6 +9,8 @@ import {milestoneProgress,nextMilestone,isOpen,type Progress} from '@/lib/aspira
 import {whenLabel} from '@/lib/aspirations/atlas';
 import {progressText} from './parts';
 import {BucketPhoto} from '../bucket/BucketViews';
+import {CoverArt} from '../compass/stories/Cover';
+import type {AreaStories} from '../compass/stories/useAreaStoryCounts';
 
 export type RowContext={secondary:string[];years:number[];related:{id:string;title:string}[];rituals:string[];tasks:{done:number;total:number};latestNote?:string;sourceHref?:string};
 export type RowActions={toggleMilestone:(m:Milestone)=>void;addMilestone:(title:string)=>Promise<boolean>;addNote:(note:string)=>Promise<boolean>;record:(value:number)=>Promise<boolean>;achieve:()=>void;open:()=>void;openRelated:(id:string)=>void};
@@ -20,22 +22,21 @@ const pageSize=6;
 export const showsNumbers=(a:Aspiration)=>a.showProgress!==false&&a.planningStyle!=='practice'&&a.planningStyle!=='exploration'&&a.progressKind!=='binary';
 
 /** One Life Area: its mark, numeral and voice, then its actual aspirations as compact rows that expand in place. */
-export function AtlasArea({glyph,tone,numeral,label,whisper,vision,items,expanded,onToggle,onAdd,busy,today,emptyNote,kind='area',stories}:{
+export function AtlasArea({id,glyph,tone,numeral,label,whisper,vision,items,expanded,onToggle,onAdd,busy,today,emptyNote,kind='area',stories}:{
  id:string;glyph:MuseMarkIcon;tone:MuseTone;numeral:string;label:string;whisper:string;vision?:string;items:RowItem[];expanded:string|null;onToggle:(id:string)=>void;
  onAdd?:(title:string)=>Promise<boolean>;busy:boolean;today:string;emptyNote?:string;kind?:'area'|'awaiting';
- /** #211: Inner Compass Experiences and Chapters associated with this area (a link, never a measure). */
- stories?:{experiences:number;chapters:number;href:string};
+ /** #211/#214: Inner Compass Chapters and Experiences associated with this area. Shown with or without aspirations; never a measure. */
+ stories?:AreaStories;
 }){
  const [page,setPage]=useState(0),headingId=useId();
  const pages=Math.max(1,Math.ceil(items.length/pageSize)),current=Math.min(page,pages-1),shown=items.slice(current*pageSize,current*pageSize+pageSize);
  const achieved=items.filter(i=>i.a.status==='completed').length;
- return <section className="muse-lifeatlas-area" data-kind={kind} aria-labelledby={headingId} style={{'--mark-a':`var(--chart-${tone})`,'--mark-b':`var(--chart-${tone%8+1})`} as CSSProperties}>
+ return <section id={kind==='area'?`atlas-area-${id}`:undefined} className="muse-lifeatlas-area" data-kind={kind} aria-labelledby={headingId} style={{'--mark-a':`var(--chart-${tone})`,'--mark-b':`var(--chart-${tone%8+1})`} as CSSProperties}>
   <header className="muse-lifeatlas-area-head">
    <MuseMark icon={glyph} tone={tone} size="lg"/>
    <div className="muse-lifeatlas-area-title"><h3 id={headingId}><span className="muse-lifeatlas-numeral" aria-hidden="true">{numeral}</span>{label}</h3>
     <p className="muse-lifeatlas-area-whisper">{vision?<q>{vision}</q>:whisper}</p></div>
-   <p className="muse-lifeatlas-area-count small-label type-numeric">{items.length?`${items.length} aspiration${items.length===1?'':'s'}${achieved?` · ${achieved} achieved`:''}`:emptyNote}
-    {stories&&(stories.experiences>0||stories.chapters>0)&&<a className="muse-lifeatlas-area-stories" href={stories.href}>{[stories.experiences?`${stories.experiences} experience${stories.experiences===1?'':'s'}`:'',stories.chapters?`${stories.chapters} chapter${stories.chapters===1?'':'s'}`:''].filter(Boolean).join(' · ')} →</a>}</p>
+   <p className="muse-lifeatlas-area-count small-label type-numeric">{items.length?`${items.length} aspiration${items.length===1?'':'s'}${achieved?` · ${achieved} achieved`:''}`:emptyNote}</p>
   </header>
   <div className="muse-lifeatlas-area-body">
    <ul className="muse-lifeatlas-rows" aria-label={`${label} aspirations`}>
@@ -45,8 +46,27 @@ export function AtlasArea({glyph,tone,numeral,label,whisper,vision,items,expande
    {pages>1&&<div className="muse-paged-nav muse-lifeatlas-pager"><span className="small-label type-numeric">{current*pageSize+1}–{Math.min(items.length,current*pageSize+pageSize)} of {items.length}</span>
     <button type="button" className="muse-button button-ghost" aria-label={`Previous ${label} aspirations`} disabled={current===0} onClick={()=>setPage(current-1)}><MuseIcon name="chevron" size={15}/></button>
     <button type="button" className="muse-button button-ghost" aria-label={`Next ${label} aspirations`} disabled={current>=pages-1} onClick={()=>setPage(current+1)}><MuseIcon name="chevron" size={15}/></button></div>}
+   {stories&&<AreaStoriesStrip stories={stories} label={label}/>}
   </div>
  </section>;
+}
+
+/**
+ * #214: the Chapters and Experiences linked to this Life Area, as two compact rows of small covers that open the
+ * original record in Inner Compass. Each row appears only when it has something; Life Atlas stays an overview.
+ */
+function AreaStoriesStrip({stories,label}:{stories:AreaStories;label:string}){
+ if(!stories.chapters.length&&!stories.experiences.length)return null;
+ return <div className="muse-lifeatlas-stories">
+  {stories.chapters.length>0&&<div className="muse-lifeatlas-stories-row"><p className="small-label">My Chapters</p>
+   <ul aria-label={`${label}: chapters`}>{stories.chapters.slice(0,6).map(c=><li key={c.id}><Link href={`/envision?view=inner-compass&realm=chapters&chapter=${c.id}`} className="muse-lifeatlas-story" data-kind="chapter">
+    <span className="muse-lifeatlas-story-art"><CoverArt cover={c.cover} size="sm"/></span><span className="muse-lifeatlas-story-text"><b>{c.title}</b><small className="type-numeric">{c.closed?'Closed · ':''}{c.range}</small></span></Link></li>)}
+    {stories.chapters.length>6&&<li><Link className="muse-lifeatlas-story-more" href="/envision?view=inner-compass&realm=chapters">+{stories.chapters.length-6} more</Link></li>}</ul></div>}
+  {stories.experiences.length>0&&<div className="muse-lifeatlas-stories-row"><p className="small-label">My Experiences</p>
+   <ul aria-label={`${label}: experiences`}>{stories.experiences.slice(0,6).map(e=><li key={e.id}><Link href={`/envision?view=inner-compass&realm=experiences&experience=${e.id}`} className="muse-lifeatlas-story" data-kind="experience">
+    <span className="muse-lifeatlas-story-art">{e.photo?<BucketPhoto image={e.photo} className="muse-lifeatlas-story-photo"/>:<CoverArt cover={e.cover} size="sm"/>}</span><span className="muse-lifeatlas-story-text"><b>{e.title}</b>{e.date&&<small className="type-numeric">{dateLabel(e.date).replace(/^\w+, /,'')}</small>}</span></Link></li>)}
+    {stories.experiences.length>6&&<li><Link className="muse-lifeatlas-story-more" href={`/envision?view=inner-compass&realm=experiences`}>+{stories.experiences.length-6} more</Link></li>}</ul></div>}
+ </div>;
 }
 
 /** A small star that says where it stands: open, resting, or achieved (gold). */
