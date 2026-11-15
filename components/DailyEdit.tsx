@@ -43,7 +43,6 @@ export function DailyEdit() {
       <Suspense fallback={null}><WelcomeOrientation /></Suspense>
       <h1 className="muse-daily-section-title" id="daily-edit">The Daily Edit</h1>
       <div className="daily-working-grid" key={`working/${selectedDate}`}>
-        <span className="muse-daily-shooting-star" aria-hidden="true"/>
         <div className="daily-working-left">
           <CosmicForecast compact date={selectedDate} />
           <PrioritiesCard />

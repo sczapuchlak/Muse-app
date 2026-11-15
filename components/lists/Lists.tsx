@@ -10,6 +10,8 @@ import { usePlanner } from "../PlannerStore";
 import { GlassPopover } from "../GlassPopover";
 import { MuseChoiceMenu } from "../MuseChoiceMenu";
 import { MuseMark } from "@/components/design/MuseHeading";
+import { MuseInviteCard } from "@/components/design/MuseJournal";
+import { DailyArt } from "../daily/DailyArt";
 import { MuseIcon } from "../MuseIcon";
 import { MuseModal } from "../MuseModal";
 import { SaveIndicator } from "../SaveIndicator";
@@ -57,18 +59,35 @@ function ListsLibrary({ today, onOpen }: { today: string; onOpen: (id: string) =
     .sort((a, b) => Number(b.pinned) - Number(a.pinned) || (sort === "name" ? a.title.localeCompare(b.title) : sort === "due" ? (stats.get(b.id)?.due ?? 0) - (stats.get(a.id)?.due ?? 0) : b.updatedAt.localeCompare(a.updatedAt)));
   const counts = { active: s.lists.filter((l) => !l.isTemplate && !l.archivedAt).length, templates: s.lists.filter((l) => l.isTemplate && !l.archivedAt).length, archived: s.lists.filter((l) => l.archivedAt).length };
 
+  const activeLists = s.lists.filter((l) => !l.isTemplate && !l.archivedAt), totals = activeLists.reduce((t, l) => { const x = stats.get(l.id); return x ? { done: t.done + x.done, total: t.total + x.total, due: t.due + x.due } : t; }, { done: 0, total: 0, due: 0 }), featured = [...activeLists].sort((a, b) => Number(b.pinned) - Number(a.pinned) || b.updatedAt.localeCompare(a.updatedAt))[0];
   return <section className="muse-lists" aria-label="Lists">
+    <div className="muse-journal-archive muse-lists-archive">
+    <div className="muse-journal-hero muse-lists-hero" data-compact="">
+      <div className="muse-journal-hero-copy">
+        <p className="muse-kicker">Lists</p>
+        <h2 className="muse-journal-title">A list for everything</h2>
+        <p>Packing lists, home rhythms, projects and the books you mean to read. Tick things off here, and send what matters to your Daily Edit or Agenda.</p>
+        {activeLists.length > 0 && <dl className="muse-journal-stats"><div><dt>Lists</dt><dd className="type-numeric">{activeLists.length}</dd></div><div><dt>Checked off</dt><dd className="type-numeric">{totals.done}<small> of {totals.total}</small></dd></div><div><dt>Due now</dt><dd className="type-numeric">{totals.due}</dd></div></dl>}
+        <div className="muse-journal-actions"><button ref={newAnchor} type="button" className="muse-button button-primary muse-lists-new" aria-expanded={creating} onClick={() => setCreating(true)}><MuseIcon name="plus" size={14} /> New list</button></div>
+      </div>
+      <div className="muse-journal-art muse-lists-hero-art" aria-hidden="true">
+        <span className="muse-lists-clipboard"><i className="muse-lists-clip" /><small>{featured ? featured.title : "My first list"}</small>
+          {(featured ? [...(stats.get(featured.id)?.next ?? [])] : ["Something to remember", "Something to pack", "Something to try"]).slice(0, 3).map((t, i) => <span key={i} className="muse-lists-clip-row"><b />{t}</span>)}
+          <span className="muse-lists-clip-row" data-done=""><b />{featured ? `${stats.get(featured.id)?.done ?? 0} done so far` : "Ticked, with a little sparkle"}</span>
+        </span>
+      </div>
+    </div>
     <div className="muse-lists-toolbar">
       <label className="muse-search muse-edge muse-lists-search"><MuseIcon name="search" size={15} /><input type="search" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search lists…" aria-label="Search lists" /></label>
       <MuseChoiceMenu label="Sort lists" valueLabel={sorts.find((x) => x.id === sort)!.label} options={sorts} selectedIds={[sort]} onSelect={(id) => setSort(id as Sort)} />
-      <button ref={newAnchor} type="button" className="muse-button muse-lists-new" aria-expanded={creating} onClick={() => setCreating(true)}><MuseIcon name="plus" size={14} /> New list</button>
     </div>
     <div className="muse-chip-row muse-lists-scopes" role="group" aria-label="Show">
       {(["active", "templates", "archived"] as Scope[]).map((x) => <button key={x} type="button" aria-pressed={scope === x} onClick={() => setScope(x)}>{x === "active" ? "Lists" : x === "templates" ? "Templates" : "Archived"} <small>{counts[x]}</small></button>)}
     </div>
     {!s.loaded ? <p className="small-label">Loading your lists…</p> : s.error && !s.lists.length ? <p className="small-label" role="alert">{s.error}</p>
-      : shown.length ? <ul className="muse-lists-grid">{shown.map((l) => <ListCard key={l.id} list={l} stat={stats.get(l.id)!} today={today} onOpen={() => onOpen(l.id)} />)}</ul>
+      : shown.length ? <ul className="muse-lists-grid">{shown.map((l) => <ListCard key={l.id} list={l} stat={stats.get(l.id)!} today={today} onOpen={() => onOpen(l.id)} />)}{scope === "active" && !query.trim() && shown.length % 3 !== 0 && <li className="muse-lists-invite-slot" style={{ "--ghost-3": 3 - shown.length % 3, "--ghost-2": 2 - shown.length % 2 } as CSSProperties}><MuseInviteCard count={shown.length} title="Start another list" note="A trip, a routine, a project, or just the next ten things." cta="New list" art={<DailyArt kind="priorities" />} onClick={() => setCreating(true)} /></li>}</ul>
       : <div className="muse-empty-state muse-lists-empty" data-variant="editorial"><span className="muse-lists-empty-art" aria-hidden="true"><MuseMark icon="suitcase" tone={2} size="lg" /><MuseMark icon="checklist" tone={1} size="lg" /><MuseMark icon="basket" tone={4} size="lg" /></span><h3>{query ? "Nothing by that name" : scope === "active" ? "A list for everything, and everything on a list." : scope === "templates" ? "No templates yet" : "Nothing archived"}</h3><p>{query ? "No lists match that search." : scope === "templates" ? "No templates yet. Open a list and choose Save as template." : scope === "archived" ? "Nothing archived." : "No lists yet. Start one for packing, cleaning, a project — anything."}</p>{scope === "active" && !query && <button type="button" className="muse-button" onClick={() => setCreating(true)}>Create a list</button>}</div>}
+    </div>
     <GlassPopover id="lists-new" label="New list" open={creating} anchorRef={newAnchor} onClose={() => setCreating(false)} width={420}>
       {creating && <NewList today={today} onDone={(id) => { setCreating(false); if (id) onOpen(id); }} />}
     </GlassPopover>

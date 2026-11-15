@@ -91,3 +91,39 @@
 .muse-quest-first-draw{display:inline-flex;align-items:center;gap:8px;min-height:46px;margin-top:6px;padding-inline:20px;border-radius:999px}
 @container muse-content (max-width:640px){.muse-quest-first{grid-template-columns:minmax(0,1fr);justify-items:center;text-align:center}.muse-quest-first-copy{justify-items:center}}
 @media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) .muse-quest-first:hover .muse-quest-first-deck>span{transform:rotate(calc(var(--o) * 13deg)) translateY(-4px);transition:transform .4s cubic-bezier(.2,.8,.2,1)}}
+/* Weekly Side Quests, round 2 (Nov 15: "weekly side quests wasn't updated"): drawing and sealed weeks follow the
+   journal pattern: a hero (week tag, title, chosen/opened or complete/to-go chips, the fanned deck of six sealed
+   invitations as art) above one archive panel for the cards, the seal and the trail. */
+.muse-quest-hero{--journal-a:var(--chart-3);--journal-b:var(--chart-6)}
+.muse-quest-hero .muse-kicker{display:flex;align-items:center;gap:8px;flex-wrap:wrap;letter-spacing:.08em}
+.muse-quest-hero-art{display:grid;place-items:center;min-height:200px}
+.muse-quest-archive{display:grid;gap:16px;min-width:0}
+@media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) .muse-quest-hero:hover .muse-quest-first-deck>span{transform:rotate(calc(var(--o) * 16deg)) translateY(calc(var(--o) * var(--o) * 3px - 6px))}}
+@container muse-content (max-width:640px){.muse-quest-hero-art{display:grid;order:-1;min-height:150px;margin:0 auto}}
+/* The week's six sealed invitations (Nov 15: "something a little snazzier … center it vertically"): a fan of envelopes,
+   each in its own ink, with a glowing wax seal. Centred in its box; opened ones lift, chosen ones glow. */
+.muse-quest-hero-art{display:grid;place-items:center;align-self:center;min-height:210px}
+.muse-quest-deck2{position:relative;display:block;width:260px;height:190px}
+.muse-quest-deck2-halo{position:absolute;inset:8% 14%;border-radius:50%;background:radial-gradient(closest-side,color-mix(in srgb,var(--chart-3) 34%,transparent),color-mix(in srgb,var(--chart-6) 14%,transparent) 60%,transparent);filter:blur(10px)}
+.muse-quest-deck2-card{--o:calc(var(--i) - 2.5);position:absolute;left:50%;top:50%;width:76px;height:104px;margin:-58px 0 0 -38px;border-radius:9px;transform-origin:50% 135%;
+ transform:rotate(calc(var(--o) * 12deg)) translateY(calc(var(--o) * var(--o) * 2px));
+ background:linear-gradient(160deg,color-mix(in srgb,var(--ink) 75%,#fff4dc),color-mix(in srgb,var(--ink) 80%,#1b1030));
+ border:1px solid color-mix(in oklab,#f2c46a 60%,transparent);box-shadow:inset 0 0 0 3px color-mix(in srgb,#fff 10%,transparent),0 14px 22px -12px rgba(0,0,0,.7);overflow:hidden;transition:transform .5s cubic-bezier(.2,.8,.2,1),box-shadow .4s}
+.muse-quest-deck2-flap{position:absolute;left:0;right:0;top:0;height:48%;background:linear-gradient(180deg,color-mix(in srgb,var(--ink) 55%,#fff4dc),color-mix(in srgb,var(--ink) 85%,#1b1030));clip-path:polygon(0 0,100% 0,50% 100%);filter:drop-shadow(0 2px 2px rgba(0,0,0,.3))}
+.muse-quest-deck2-seal{position:absolute;left:50%;top:40%;display:grid;place-items:center;width:26px;height:26px;margin-left:-13px;border-radius:50%;color:#fff;background:radial-gradient(circle at 35% 30%,color-mix(in srgb,#fff 35%,#c2185b),#8e1446 70%);box-shadow:0 0 0 2px color-mix(in srgb,#8e1446 50%,transparent),0 0 12px -2px #ff6aa8}
+.muse-quest-deck2-card[data-open]{transform:rotate(calc(var(--o) * 12deg)) translateY(calc(var(--o) * var(--o) * 2px - 8px))}
+.muse-quest-deck2-card[data-chosen]{box-shadow:inset 0 0 0 3px color-mix(in srgb,#fff 18%,transparent),0 0 0 1.5px var(--ink),0 0 22px -4px var(--ink),0 14px 22px -12px rgba(0,0,0,.7)}
+.muse-quest-deck2-card[data-chosen] .muse-quest-deck2-seal{background:radial-gradient(circle at 35% 30%,#fff7d6,#e9b949 70%);color:#5a3a00;box-shadow:0 0 14px -1px #ffd36b}
+.muse-quest-deck2-twinkle{position:absolute;width:12px;height:12px;background:color-mix(in srgb,#ffe39a 70%,var(--chart-3));-webkit-mask:var(--sky-star) center/contain no-repeat;mask:var(--sky-star) center/contain no-repeat;filter:drop-shadow(0 0 6px #ffd36b)}
+.muse-quest-deck2-twinkle[data-n="1"]{top:4%;left:10%}.muse-quest-deck2-twinkle[data-n="2"]{top:0;right:14%;width:9px;height:9px}.muse-quest-deck2-twinkle[data-n="3"]{bottom:8%;left:2%;width:8px;height:8px}.muse-quest-deck2-twinkle[data-n="4"]{bottom:2%;right:6%}
+:is(.muse-quest-hero,.muse-quest-first):hover .muse-quest-deck2-card{transform:rotate(calc(var(--o) * 17deg)) translateY(calc(var(--o) * var(--o) * 3px - 6px))}
+@media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) .muse-quest-deck2-twinkle{animation:muse-journal-twinkle 3.2s ease-in-out infinite}:root:not([data-magic=quiet]) .muse-quest-deck2-twinkle:nth-of-type(2n){animation-delay:-1.4s}}
+@media (prefers-reduced-motion:reduce){.muse-quest-deck2-card{transition:none}}
+@container muse-content (max-width:640px){.muse-quest-hero-art{min-height:170px}.muse-quest-deck2{transform:scale(.82)}}
+.muse-quest-deck2{width:300px;height:200px}
+.muse-quest-deck2-card{width:70px;height:96px;margin:-40px 0 0 -35px;transform-origin:50% 230%;transform:rotate(calc(var(--o) * 13deg))}
+.muse-quest-deck2-card[data-open]{transform:rotate(calc(var(--o) * 13deg)) translateY(-10px)}
+:is(.muse-quest-hero,.muse-quest-first):hover .muse-quest-deck2-card{transform:rotate(calc(var(--o) * 16deg)) translateY(-4px)}
+.muse-quest-deck2-flap{height:52%;background:linear-gradient(180deg,color-mix(in srgb,var(--ink) 40%,#fff6e0),color-mix(in srgb,var(--ink) 70%,#2a1640))}
+.muse-quest-deck2-card::after{content:"";position:absolute;left:0;right:0;top:0;height:52%;background:linear-gradient(to bottom right,transparent calc(50% - .6px),color-mix(in oklab,#f2c46a 70%,transparent) 50%,transparent calc(50% + .6px)) left/50% 100% no-repeat,linear-gradient(to bottom left,transparent calc(50% - .6px),color-mix(in oklab,#f2c46a 70%,transparent) 50%,transparent calc(50% + .6px)) right/50% 100% no-repeat}
+.muse-quest-deck2-seal{top:46%;z-index:1;width:22px;height:22px;margin-left:-11px}

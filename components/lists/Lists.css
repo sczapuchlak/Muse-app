@@ -201,3 +201,60 @@
 .muse-lists-empty-art .muse-mark { margin-inline: -5px; }
 .muse-lists-empty-art .muse-mark:nth-child(1) { rotate: -10deg; } .muse-lists-empty-art .muse-mark:nth-child(2) { translate: 0 -6px; z-index: 1; } .muse-lists-empty-art .muse-mark:nth-child(3) { rotate: 10deg; }
 @media (prefers-reduced-motion: reduce) { .muse-lists .muse-lists-card { transition: none; } .muse-lists .muse-lists-card:hover { transform: none; } }
+
+/* Lists, round 2 (#214 round 5, Nov 15: "Sticky board and lists still have old UIs"). The shared journal pattern: a
+   hero (how much is ticked off, what's due, and a clipboard carrying your newest list's next items) above one archive
+   panel holding search, sort, scopes and the grid. */
+.muse-lists{--journal-a:var(--chart-1);--journal-b:var(--chart-3);display:grid;gap:clamp(12px,1.6vw,18px)}
+.muse-lists-archive{display:grid;gap:12px;min-width:0}
+.muse-lists-hero-art{position:relative;display:grid;place-items:center;min-height:250px;max-width:320px;width:100%}
+.muse-lists-clipboard{position:relative;display:grid;align-content:start;gap:9px;width:min(100%,230px);min-height:230px;padding:34px 18px 18px;border-radius:14px;transform:rotate(3deg);
+ background:linear-gradient(170deg,color-mix(in srgb,var(--journal-a) 14%,var(--glass-background)),var(--glass-background));border:1px solid color-mix(in srgb,var(--journal-a) 40%,var(--glass-border));
+ box-shadow:inset 0 0 0 6px var(--glass-background),inset 0 0 0 7px color-mix(in srgb,var(--journal-a) 25%,transparent),0 26px 40px -26px rgba(0,0,0,.7),0 0 34px -18px var(--journal-a);transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+.muse-lists-hero:hover .muse-lists-clipboard{transform:rotate(1deg) translateY(-4px)}
+.muse-lists-clip{position:absolute;top:-12px;left:50%;width:70px;height:24px;margin-left:-35px;border-radius:8px 8px 12px 12px;background:linear-gradient(180deg,color-mix(in oklab,#d6a84c 80%,var(--foreground)),color-mix(in oklab,#a97b2a 80%,var(--foreground)));box-shadow:0 4px 8px rgba(0,0,0,.35)}
+.muse-lists-clip::after{content:"";position:absolute;top:5px;left:50%;width:18px;height:8px;margin-left:-9px;border-radius:5px;background:var(--glass-background)}
+.muse-lists-clipboard>small{color:var(--dl-kicker,var(--journal-a));font:700 .62rem/1.2 var(--font-ui);letter-spacing:.14em;text-transform:uppercase;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.muse-lists-clip-row{display:flex;align-items:center;gap:9px;min-width:0;font-family:var(--font-editorial);font-size:.95rem;line-height:1.25;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.muse-lists-clip-row>b{flex:0 0 auto;width:15px;height:15px;border:1.5px solid color-mix(in srgb,var(--journal-a) 70%,var(--foreground));border-radius:4px}
+.muse-lists-clip-row[data-done]{color:var(--text-muted);font-style:italic}
+.muse-lists-clip-row[data-done]>b{background:var(--journal-a);border-color:var(--journal-a);-webkit-mask:none;position:relative}
+.muse-lists-clip-row[data-done]>b::after{content:"";position:absolute;inset:-7px;background:color-mix(in srgb,var(--journal-a) 50%,#fff);-webkit-mask:var(--sky-star) 100% 0/9px no-repeat;mask:var(--sky-star) 100% 0/9px no-repeat}
+@container muse-content (max-width:640px){.muse-lists-hero-art{display:grid;order:-1;min-height:190px;margin:0 auto}.muse-lists-clipboard{min-height:170px;width:200px}}
+@media (prefers-reduced-motion:reduce){.muse-lists-clipboard{transition:none}}
+/* Three across, then two, then one; an invite card ("New list") finishes a short row (no orphan cards). */
+.muse-lists .muse-lists-archive .muse-lists-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.muse-lists-grid>.muse-journal-invite{min-height:100%}
+@container muse-content (max-width:1000px){.muse-lists .muse-lists-archive .muse-lists-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@container muse-content (max-width:640px){.muse-lists .muse-lists-archive .muse-lists-grid{grid-template-columns:minmax(0,1fr)}}
+.muse-lists-clip-row[data-done]>b::after{content:"✓";position:absolute;inset:0;display:grid;place-items:center;color:#fff;font:700 11px/1 var(--font-ui);background:none;-webkit-mask:none;mask:none}
+.muse-lists-invite-slot{display:grid;grid-column:span var(--ghost-3,1)}
+.muse-lists-invite-slot>.muse-journal-invite{grid-column:auto}
+@container muse-content (max-width:1000px){.muse-lists-invite-slot{grid-column:span var(--ghost-2,1)}}
+@container muse-content (max-width:640px){.muse-lists-invite-slot{display:none}}
+/* One list, round 2: the header becomes a hero band in the list's accent (big icon tile, editorial title, a progress
+   ring with a twinkle), with the bar along its foot. */
+.muse-list-hero{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:14px 24px;padding:clamp(18px,3vw,30px);border:1px solid color-mix(in srgb,var(--list-accent,var(--chart-1)) 34%,var(--glass-border));border-radius:var(--card-radius,22px);
+ background:radial-gradient(60% 120% at 100% 0%,color-mix(in srgb,var(--list-accent,var(--chart-1)) 20%,transparent),transparent 62%),radial-gradient(40% 90% at 0% 100%,color-mix(in srgb,var(--accent-secondary) 10%,transparent),transparent 65%),var(--glass-background);box-shadow:var(--card-shadow)}
+.muse-list-hero>.muse-list-head{grid-column:1;align-items:center;gap:16px}
+.muse-list-hero>.muse-list-progress{grid-column:1/-1;grid-row:2}
+.muse-list-hero .muse-list-title{font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight);font-size:clamp(2rem,4vw,2.9rem)!important;line-height:1.05}
+.muse-list-hero .muse-list-head>:first-child{font-size:2rem;min-width:64px;min-height:64px;border-radius:18px;background:color-mix(in srgb,var(--list-accent,var(--chart-1)) 18%,var(--surface-subtle));box-shadow:0 0 0 1px color-mix(in srgb,var(--list-accent,var(--chart-1)) 40%,transparent),0 10px 24px -14px var(--list-accent,var(--chart-1))}
+.muse-list-ring{position:relative;grid-column:2;grid-row:1;display:grid;place-items:center;width:104px;height:104px;border-radius:50%;
+ background:radial-gradient(closest-side,var(--glass-background) 78%,transparent 80% 100%),conic-gradient(var(--list-accent,var(--chart-1)) calc(var(--pct,0) * 1%),color-mix(in srgb,var(--foreground) 10%,transparent) 0);filter:drop-shadow(0 0 14px color-mix(in srgb,var(--list-accent,var(--chart-1)) 40%,transparent))}
+.muse-list-ring b{font:500 1.7rem/1 var(--font-editorial)}
+.muse-list-ring small{font-size:.55em;color:var(--text-muted)}
+.muse-list-ring i{position:absolute;top:6px;right:8px;width:14px;height:14px;background:color-mix(in srgb,var(--list-accent,var(--chart-1)) 55%,#fff);-webkit-mask:var(--sky-star) center/contain no-repeat;mask:var(--sky-star) center/contain no-repeat;filter:drop-shadow(0 0 6px var(--list-accent,var(--chart-1)))}
+@media (prefers-reduced-motion:no-preference){:root:not([data-magic="quiet"]) .muse-list-ring i{animation:muse-journal-twinkle 3.2s ease-in-out infinite}}
+@container muse-content (max-width:640px){.muse-list-ring{width:76px;height:76px}.muse-list-ring b{font-size:1.25rem}.muse-list-hero .muse-list-head>:first-child{min-width:48px;min-height:48px;font-size:1.5rem}}
+/* Compact hero (Nov 15): the clipboard becomes a miniature with two rows. */
+.muse-lists-hero[data-compact] .muse-lists-hero-art{min-height:0;height:74px;margin:0;place-items:center end}
+.muse-lists-hero[data-compact] .muse-lists-clipboard{width:150px;min-height:0;height:66px;gap:3px;padding:13px 10px 6px;border-radius:9px;overflow:hidden;transform:rotate(2deg);box-shadow:inset 0 0 0 3px var(--glass-background),inset 0 0 0 4px color-mix(in srgb,var(--journal-a) 25%,transparent),0 14px 22px -16px rgba(0,0,0,.7),0 0 20px -12px var(--journal-a)}
+.muse-lists-hero[data-compact] .muse-lists-clip{top:-7px;width:40px;height:13px;margin-left:-20px;border-radius:5px 5px 7px 7px}
+.muse-lists-hero[data-compact] .muse-lists-clip::after{top:3px;width:10px;height:4px;margin-left:-5px}
+.muse-lists-hero[data-compact] .muse-lists-clipboard>small{font-size:.48rem}
+.muse-lists-hero[data-compact] .muse-lists-clip-row{gap:5px;font-size:.66rem}
+.muse-lists-hero[data-compact] .muse-lists-clip-row>b{width:9px;height:9px;border-radius:2px;border-width:1px}
+.muse-lists-hero[data-compact] .muse-lists-clip-row:nth-of-type(n+3):not([data-done]){display:none}
+.muse-lists-hero[data-compact] .muse-lists-clip-row[data-done]>b::after{font-size:7px}
+@container muse-content (max-width:640px){.muse-lists-hero[data-compact] .muse-lists-hero-art{min-height:0;height:64px;margin:0}.muse-lists-hero[data-compact] .muse-lists-clipboard{width:106px;height:58px}}

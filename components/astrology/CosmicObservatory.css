@@ -298,3 +298,31 @@
 /* Ten placements: five across (two rows), then two across, so no row ends short. */
 .muse-observatory .muse-chart-placements .muse-cosmic-placement-list{grid-template-columns:repeat(5,minmax(0,1fr))}
 @container muse-content (max-width:900px){.muse-observatory .muse-chart-placements .muse-cosmic-placement-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* Horoscopes hero (#214 round 5, Nov 15: "that whole section needs updated"): the shared journal pattern. The sign,
+   its facts, the period and the sign actions live in one hero; the medallion is the art, with a slowly turning ring
+   and a few stars in orbit. The reading below drops its own masthead. */
+.muse-horoscope{--journal-a:var(--sign,var(--chart-2));--journal-b:var(--accent-secondary)}
+.muse-horoscope-hero{background:radial-gradient(60% 100% at 90% 40%,color-mix(in srgb,var(--sign,var(--chart-2)) 22%,transparent),transparent 62%),radial-gradient(50% 80% at 0% 100%,color-mix(in srgb,var(--accent-secondary) 10%,transparent),transparent 65%),var(--glass-background)}
+.muse-observatory .muse-horoscope-hero .muse-kicker{color:var(--dl-kicker)}
+.muse-horoscope-facts{display:flex;flex-wrap:wrap;gap:6px;margin:2px 0 0;padding:0;list-style:none}
+.muse-horoscope-facts li{padding:5px 11px;border:1px solid color-mix(in srgb,var(--sign,var(--chart-2)) 40%,var(--glass-border));border-radius:999px;background:color-mix(in srgb,var(--sign,var(--chart-2)) 10%,var(--surface-subtle));font-size:.8rem}
+.muse-horoscope-hero .muse-cosmic-period-selector{justify-self:start;width:max-content;max-width:100%}
+.muse-horoscope-art{position:relative;display:grid;place-items:center;max-width:300px;min-height:240px}
+.muse-horoscope-art .muse-forecast-wheel{width:clamp(200px,20vw,260px);filter:drop-shadow(0 0 28px color-mix(in srgb,var(--sign,var(--chart-2)) 45%,transparent))}
+.muse-horoscope-orbit{position:absolute;inset:0;pointer-events:none}
+.muse-horoscope-orbit i{position:absolute;width:12px;height:12px;background:color-mix(in srgb,var(--sign,var(--chart-2)) 50%,#fff);-webkit-mask:var(--sky-star) center/contain no-repeat;mask:var(--sky-star) center/contain no-repeat;filter:drop-shadow(0 0 6px var(--sign,var(--chart-2)))}
+.muse-horoscope-orbit i:nth-child(1){top:6%;left:14%}.muse-horoscope-orbit i:nth-child(2){top:14%;right:6%;width:9px;height:9px}.muse-horoscope-orbit i:nth-child(3){bottom:10%;left:6%;width:8px;height:8px}.muse-horoscope-orbit i:nth-child(4){bottom:4%;right:18%}.muse-horoscope-orbit i:nth-child(5){top:48%;right:-2%;width:7px;height:7px}
+@media (prefers-reduced-motion:no-preference){
+ :root:not([data-magic="quiet"]) .muse-horoscope-art .muse-forecast-wheel-ring{animation:muse-horoscope-turn 120s linear infinite;transform-origin:50% 50%}
+ :root:not([data-magic="quiet"]) .muse-horoscope-orbit i{animation:muse-journal-twinkle 3.4s ease-in-out infinite}
+ :root:not([data-magic="quiet"]) .muse-horoscope-orbit i:nth-child(2n){animation-delay:-1.3s;animation-duration:2.8s}
+ :root:not([data-magic="quiet"]) .muse-horoscope-orbit i:nth-child(3n){animation-delay:-2.1s;animation-duration:4.2s}
+}
+@keyframes muse-horoscope-turn{to{transform:rotate(360deg)}}
+.muse-observatory .muse-cosmic-forecast-reading{padding-top:clamp(14px,2vw,22px)}
+.muse-forecast-facet h4>b::after{content:"";display:inline-block;width:11px;height:11px;margin-left:.5em;vertical-align:.4em;background:color-mix(in srgb,var(--mark-a,var(--accent-secondary)) 60%,var(--foreground));filter:drop-shadow(0 0 5px var(--mark-a,var(--accent-secondary)));-webkit-mask:var(--sky-star) center/contain no-repeat;mask:var(--sky-star) center/contain no-repeat}
+@media (prefers-reduced-motion:no-preference){:root:not([data-magic="quiet"]) .muse-forecast-facet h4>b::after{animation:muse-journal-twinkle 3.6s ease-in-out infinite}}
+@container muse-content (max-width:900px){.muse-horoscope-art{min-height:200px}.muse-horoscope-art .muse-forecast-wheel{width:190px}}
+@container muse-content (max-width:640px){.muse-horoscope-art{display:grid;order:-1;min-height:170px;margin:0 auto}.muse-horoscope-art .muse-forecast-wheel{width:150px}}
+.muse-observatory .muse-horoscope-hero .muse-cosmic-forecast-actions{display:flex;flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:flex-start}
+.muse-observatory .muse-horoscope-hero .muse-cosmic-forecast-actions .muse-button{font-size:.85rem;padding:8px 14px}

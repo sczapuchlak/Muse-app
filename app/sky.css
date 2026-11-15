@@ -1,0 +1,91 @@
+/*
+ * The Muse sky (Nov 15: "do this to all the other pages … add some of those details"). What began on the Daily Edit,
+ * shared by every module:
+ *  - primary containers carry a faint starfield in their ink that slowly breathes (top-weighted, behind content);
+ *  - card and section titles end in a small twinkling star;
+ *  - cards with nothing in them yet draw a little scene (components/daily/DailyArt.tsx, journal drawing vocabulary);
+ *  - progress bars shimmer as they fill;
+ *  - an occasional shooting star crosses the top of the page.
+ * Layout, order and padding never change. Motion is gated by reduced motion and Muse Magic.
+ *
+ * Pseudo-element ownership: the theme ring owns ::after on the main container list, so the starfield is ::before
+ * there; Books containers draw their ring on ::before, so theirs is ::after. Containers whose own ::before/::after is
+ * already spoken for (Stream posts, Little Moment, Fortune stage, Planning rail, highlight cards…) are left out.
+ * `position`/`isolation` are set at zero specificity (:where) so sticky or absolute containers keep theirs.
+ */
+:root{--sky-star:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M20 0C21.7 15.8 24.2 18.3 40 20C24.2 21.7 21.7 24.2 20 40C18.3 24.2 15.8 21.7 0 20C15.8 18.3 18.3 15.8 20 0Z'/%3E%3C/svg%3E")}
+
+/* ---- Starfields ---- */
+:where(.muse-card,.muse-panel,.muse-hero,.muse-insight-panel,.muse-money-panel,.muse-money-hero,.muse-lists-card,.muse-list-section,.muse-goal-card,.muse-goals-empty,.muse-glance-week,.muse-glance-mini,.muse-mood-history,.muse-mood-week-detail,.muse-nourish-week,.muse-grocery-section,.muse-saved-meal,.muse-profile-hero,.muse-lifeatlas-welcome,.muse-quest-first,.muse-board-welcome,.muse-day-drop,.muse-planner-surface,.muse-stories-exp-hero,.muse-stories-welcome,.muse-stories-archive,.muse-stories-current,.muse-stories-timeline,.muse-stories-shelf,.muse-compass-lately,.muse-compass-collections,.muse-compass-evolution,.muse-compass-evo-hero,.muse-compass-mani-hero,.muse-lifeatlas-area,.muse-journal-hero,.muse-journal-archive,.muse-dream-library-hero,.muse-dream-library-mine,.muse-dream-atlas-card,.muse-tarot-entry,.muse-tarot-ritual,.muse-cosmic-astro101,.muse-decoder-dream,.muse-chart-hero,.muse-chart-snapshot,.muse-cal-hero,.muse-list-hero,
+ .muse-plans,.muse-upnext,.muse-dash-card,.muse-dash-goals,.muse-highlights,.muse-books-panel,.muse-streak-panel,.muse-desk-reading){position:relative;isolation:isolate;--sky-ink:var(--card-ink,var(--aura,var(--accent-secondary)))}
+:is(.muse-card,.muse-panel,.muse-hero,.muse-insight-panel,.muse-money-panel,.muse-money-hero,.muse-lists-card,.muse-list-section,.muse-goal-card,.muse-goals-empty,.muse-glance-week,.muse-glance-mini,.muse-mood-history,.muse-mood-week-detail,.muse-nourish-week,.muse-grocery-section,.muse-saved-meal,.muse-profile-hero,.muse-lifeatlas-welcome,.muse-quest-first,.muse-board-welcome,.muse-day-drop,.muse-planner-surface,.muse-stories-exp-hero,.muse-stories-welcome,.muse-stories-archive,.muse-stories-current,.muse-stories-timeline,.muse-stories-shelf,.muse-compass-lately,.muse-compass-collections,.muse-compass-evolution,.muse-compass-evo-hero,.muse-compass-mani-hero,.muse-lifeatlas-area,.muse-journal-hero,.muse-journal-archive,.muse-dream-library-hero,.muse-dream-library-mine,.muse-dream-atlas-card,.muse-tarot-entry,.muse-tarot-ritual,.muse-cosmic-astro101,.muse-decoder-dream,.muse-chart-hero,.muse-chart-snapshot,.muse-cal-hero,.muse-list-hero)::before,
+:is(.muse-plans,.muse-upnext,.muse-dash-card,.muse-dash-goals,.muse-highlights,.muse-books-panel,.muse-streak-panel,.muse-desk-reading)::after{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;pointer-events:none;opacity:.85;
+ background-image:radial-gradient(2.2px 2.2px at 72% 16%,color-mix(in srgb,var(--sky-ink) 60%,#fff) 40%,transparent 60%),radial-gradient(1.8px 1.8px at 16% 26%,#ffe39a 40%,transparent 60%),radial-gradient(1.2px 1.2px at 7% 14%,color-mix(in srgb,var(--foreground) 75%,transparent) 50%,transparent 52%),radial-gradient(1px 1px at 22% 6%,color-mix(in srgb,var(--foreground) 55%,transparent) 50%,transparent 52%),radial-gradient(1.6px 1.6px at 46% 10%,color-mix(in srgb,var(--sky-ink) 80%,#fff) 50%,transparent 52%),radial-gradient(1px 1px at 63% 22%,color-mix(in srgb,var(--foreground) 55%,transparent) 50%,transparent 52%),radial-gradient(1.4px 1.4px at 81% 8%,#ffe39a 50%,transparent 52%),radial-gradient(1px 1px at 93% 30%,color-mix(in srgb,var(--foreground) 60%,transparent) 50%,transparent 52%),radial-gradient(1.2px 1.2px at 34% 34%,color-mix(in srgb,var(--sky-ink) 70%,#fff) 50%,transparent 52%),radial-gradient(1px 1px at 88% 62%,color-mix(in srgb,var(--foreground) 45%,transparent) 50%,transparent 52%),radial-gradient(1px 1px at 12% 78%,color-mix(in srgb,var(--foreground) 40%,transparent) 50%,transparent 52%);
+ background-size:340px 250px;background-repeat:repeat;
+ -webkit-mask-image:linear-gradient(180deg,#000 0%,rgba(0,0,0,.6) 40%,rgba(0,0,0,.22) 100%);mask-image:linear-gradient(180deg,#000 0%,rgba(0,0,0,.6) 40%,rgba(0,0,0,.22) 100%)}
+
+/* Containers whose ::before and ::after are both spoken for (Fortune stage, dream cards, quest cards) carry the same
+   starfield as a real element instead: <span className="muse-sky-field" aria-hidden="true"/> as their first child. */
+:where(.muse-fortune-stage,.muse-dream-entry,.muse-quest-card):has(>.muse-sky-field){isolation:isolate}
+.muse-sky-field{--sky-ink:var(--card-ink,var(--aura,var(--mark-a,var(--accent-secondary))));position:absolute;inset:0;z-index:-1;border-radius:inherit;pointer-events:none;opacity:.85;
+ background-image:radial-gradient(2.2px 2.2px at 72% 16%,color-mix(in srgb,var(--sky-ink) 60%,#fff) 40%,transparent 60%),radial-gradient(1.8px 1.8px at 16% 26%,#ffe39a 40%,transparent 60%),radial-gradient(1.2px 1.2px at 7% 14%,color-mix(in srgb,var(--foreground) 75%,transparent) 50%,transparent 52%),radial-gradient(1px 1px at 22% 6%,color-mix(in srgb,var(--foreground) 55%,transparent) 50%,transparent 52%),radial-gradient(1.6px 1.6px at 46% 10%,color-mix(in srgb,var(--sky-ink) 80%,#fff) 50%,transparent 52%),radial-gradient(1px 1px at 63% 22%,color-mix(in srgb,var(--foreground) 55%,transparent) 50%,transparent 52%),radial-gradient(1.4px 1.4px at 81% 8%,#ffe39a 50%,transparent 52%),radial-gradient(1px 1px at 93% 30%,color-mix(in srgb,var(--foreground) 60%,transparent) 50%,transparent 52%),radial-gradient(1.2px 1.2px at 34% 34%,color-mix(in srgb,var(--sky-ink) 70%,#fff) 50%,transparent 52%),radial-gradient(1px 1px at 88% 62%,color-mix(in srgb,var(--foreground) 45%,transparent) 50%,transparent 52%),radial-gradient(1px 1px at 12% 78%,color-mix(in srgb,var(--foreground) 40%,transparent) 50%,transparent 52%);
+ background-size:340px 250px;background-repeat:repeat;
+ -webkit-mask-image:linear-gradient(180deg,#000 0%,rgba(0,0,0,.6) 40%,rgba(0,0,0,.22) 100%);mask-image:linear-gradient(180deg,#000 0%,rgba(0,0,0,.6) 40%,rgba(0,0,0,.22) 100%)}
+
+/* Big editorial titles (journal heroes, Birth Chart, Calendar, Weekly Draw) end in a larger star. */
+:is(.muse-journal-title,.muse-chart-hero-title,.muse-cal-hero-title,#quest-first-title,.muse-dream-month>header>h3,.muse-decoder-archive-head h4)::after{content:"";display:inline-block;width:18px;height:18px;margin-left:.35em;vertical-align:.6em;background:color-mix(in srgb,var(--journal-a,var(--accent-secondary)) 60%,var(--foreground));filter:drop-shadow(0 0 8px var(--journal-a,var(--accent-secondary)));-webkit-mask:var(--sky-star) center/contain no-repeat;mask:var(--sky-star) center/contain no-repeat}
+:is(.muse-dream-month>header>h3,.muse-decoder-archive-head h4)::after{width:12px;height:12px}
+
+/* ---- Twinkling title stars (CardHeading and MuseHeading titles) ---- */
+:is(.card-heading h2>span:last-child,.muse-heading-title)::after{content:"";display:inline-block;width:12px;height:12px;margin-left:.5em;vertical-align:.45em;background:color-mix(in srgb,var(--card-ink,var(--heading-ink,var(--aura,var(--accent-secondary)))) 60%,var(--foreground));filter:drop-shadow(0 0 6px var(--card-ink,var(--heading-ink,var(--aura,var(--accent-secondary)))));-webkit-mask:var(--sky-star) center/contain no-repeat;mask:var(--sky-star) center/contain no-repeat}
+
+/* ---- Drawn empty states (DailyArt) ---- */
+.muse-daily-empty{display:flex;align-items:center;gap:16px;min-width:0}
+.muse-daily-empty>p{margin:0;min-width:0}
+.muse-daily-art{--journal-a:var(--card-ink,var(--aura,var(--chart-5)));--journal-b:var(--accent-secondary);flex:0 0 auto;display:block;width:136px;height:86px}
+.muse-daily-art svg{display:block;width:100%;height:100%;overflow:visible}
+.muse-daily-art .muse-journal-art-line[data-soft]{opacity:.55}
+.muse-daily-art .muse-journal-art-moon{stroke:color-mix(in oklab,#d6a84c 75%,var(--foreground));stroke-width:1}
+.muse-daily-art[data-kind=forecast] .muse-journal-art-line{stroke:color-mix(in srgb,var(--journal-a) 65%,var(--foreground));stroke-width:1.2}
+.muse-daily-art-glow{fill:color-mix(in srgb,#ffcf73 30%,transparent);filter:blur(8px)}
+.muse-daily-art-flame{fill:#ffd98a;filter:drop-shadow(0 0 6px #ffcf73);transform-box:fill-box;transform-origin:50% 100%}
+.muse-daily-art-sun{fill:color-mix(in srgb,#ffd98a 85%,var(--journal-a));filter:drop-shadow(0 0 8px color-mix(in srgb,#ffd98a 60%,transparent))}
+.muse-daily-art-rays{fill:none;stroke:color-mix(in srgb,#ffd98a 75%,transparent);stroke-width:1.6;stroke-linecap:round}
+.muse-daily-art-star{fill:color-mix(in srgb,var(--journal-a) 30%,transparent);stroke:var(--journal-a);stroke-width:.8;transform-box:fill-box;transform-origin:center}
+.muse-daily-art-star[data-main]{fill:color-mix(in srgb,var(--journal-a) 70%,#fff);filter:drop-shadow(0 0 6px var(--journal-a))}
+.muse-daily-art-bubble{fill:color-mix(in srgb,var(--journal-a) 16%,transparent);stroke:color-mix(in srgb,var(--journal-a) 60%,var(--foreground));stroke-width:1.2;transform-box:fill-box;transform-origin:center}
+.muse-daily-art-shine{fill:none;stroke:color-mix(in srgb,#fff 70%,transparent);stroke-width:1.6;stroke-linecap:round}
+.muse-daily-art-coin{fill:color-mix(in srgb,#f2c46a 55%,var(--glass-background));stroke:color-mix(in oklab,#c9973a 80%,var(--foreground));stroke-width:1}
+.muse-daily-art-coin[data-top]{fill:color-mix(in srgb,#ffe39a 75%,var(--glass-background));filter:drop-shadow(0 0 6px color-mix(in srgb,#ffd98a 50%,transparent))}
+.muse-daily-art-swing{transform-box:fill-box;transform-origin:50% 0}
+@container muse-content (max-width:640px){.muse-daily-art{width:96px;height:61px}.muse-daily-empty{gap:12px}}
+
+/* ---- Progress shimmer ---- */
+:is(.water-progress>span,.muse-list-progress span,.muse-collections-progress span,.muse-ritual-weekly-progress>div>span){position:relative;overflow:hidden}
+:is(.water-progress>span,.muse-list-progress span,.muse-collections-progress span,.muse-ritual-weekly-progress>div>span)::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 20%,rgba(255,255,255,.55) 45%,transparent 70%);background-size:220% 100%;background-position:120% 0;opacity:.8;pointer-events:none}
+
+/* ---- The shooting star (one per page, rendered by the app shell) ---- */
+.muse-shooting-star{position:fixed;top:12vh;left:0;z-index:0;width:150px;height:2px;border-radius:2px;pointer-events:none;opacity:0;background:linear-gradient(90deg,transparent,color-mix(in srgb,#fff 85%,var(--accent-secondary)));filter:drop-shadow(0 0 6px color-mix(in srgb,#fff 70%,var(--accent-secondary)));transform:rotate(14deg)}
+.muse-shooting-star::after{content:"";position:absolute;right:-3px;top:-2px;width:6px;height:6px;border-radius:50%;background:#fff;box-shadow:0 0 10px 3px color-mix(in srgb,#fff 70%,var(--accent-secondary))}
+
+@media (prefers-reduced-motion:no-preference){
+ :root:not([data-magic="quiet"]) :is(.muse-card,.muse-panel,.muse-hero,.muse-insight-panel,.muse-money-panel,.muse-money-hero,.muse-lists-card,.muse-list-section,.muse-goal-card,.muse-goals-empty,.muse-glance-week,.muse-glance-mini,.muse-mood-history,.muse-mood-week-detail,.muse-nourish-week,.muse-grocery-section,.muse-saved-meal,.muse-profile-hero,.muse-lifeatlas-welcome,.muse-quest-first,.muse-board-welcome,.muse-day-drop,.muse-planner-surface,.muse-stories-exp-hero,.muse-stories-welcome,.muse-stories-archive,.muse-stories-current,.muse-stories-timeline,.muse-stories-shelf,.muse-compass-lately,.muse-compass-collections,.muse-compass-evolution,.muse-compass-evo-hero,.muse-compass-mani-hero,.muse-lifeatlas-area,.muse-journal-hero,.muse-journal-archive,.muse-dream-library-hero,.muse-dream-library-mine,.muse-dream-atlas-card,.muse-tarot-entry,.muse-tarot-ritual,.muse-cosmic-astro101,.muse-decoder-dream,.muse-chart-hero,.muse-chart-snapshot,.muse-cal-hero,.muse-list-hero)::before,
+ :root:not([data-magic="quiet"]) :is(.muse-plans,.muse-upnext,.muse-dash-card,.muse-dash-goals,.muse-highlights,.muse-books-panel,.muse-streak-panel,.muse-desk-reading)::after{animation:muse-sky-breathe 7s ease-in-out infinite}
+ :root:not([data-magic="quiet"]) :is(.card-heading h2>span:last-child,.muse-heading-title,.muse-journal-title,.muse-chart-hero-title,.muse-cal-hero-title,#quest-first-title,.muse-dream-month>header>h3,.muse-decoder-archive-head h4)::after{animation:muse-journal-twinkle 3.6s ease-in-out infinite}
+ :root:not([data-magic="quiet"]) .muse-sky-field{animation:muse-sky-breathe 7s ease-in-out infinite}
+ :root:not([data-magic="quiet"]) .muse-daily-art-flame{animation:muse-sky-flicker 2.4s ease-in-out infinite}
+ :root:not([data-magic="quiet"]) .muse-daily-art-star[data-main]{animation:muse-journal-twinkle 3.2s ease-in-out infinite}
+ :root:not([data-magic="quiet"]) .muse-daily-art-bubble{animation:muse-journal-float 5s ease-in-out infinite}
+ :root:not([data-magic="quiet"]) .muse-daily-art-bubble[data-i="1"]{animation-delay:-1.6s}
+ :root:not([data-magic="quiet"]) .muse-daily-art-bubble[data-i="2"]{animation-delay:-3.2s}
+ :root:not([data-magic="quiet"]) .muse-daily-art-swing{animation:muse-sky-swing 3s ease-in-out infinite}
+ :root:not([data-magic="quiet"]) :is(.water-progress>span,.muse-list-progress span,.muse-collections-progress span,.muse-ritual-weekly-progress>div>span)::after{animation:muse-sky-shimmer 3.4s ease-in-out infinite}
+ :root:not([data-magic="quiet"]) .muse-shooting-star{animation:muse-sky-shoot 18s ease-in 5s infinite}
+}
+@keyframes muse-sky-breathe{0%,100%{opacity:.85}50%{opacity:.45}}
+@keyframes muse-sky-flicker{0%,100%{transform:scale(1,1)}30%{transform:scale(.94,1.08)}60%{transform:scale(1.04,.95)}}
+@keyframes muse-sky-swing{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
+@keyframes muse-sky-shimmer{0%{background-position:120% 0}60%,100%{background-position:-120% 0}}
+@keyframes muse-sky-shoot{0%{opacity:0;transform:translate(22vw,0) rotate(14deg)}2%{opacity:1}9%{opacity:0;transform:translate(70vw,120px) rotate(14deg)}100%{opacity:0;transform:translate(70vw,120px) rotate(14deg)}}
+@media print{.muse-shooting-star{display:none}}
+.muse-fortune-stage>.muse-sky-field{z-index:0}

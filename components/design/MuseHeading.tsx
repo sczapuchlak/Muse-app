@@ -28,7 +28,7 @@ export function MuseHeading({icon,tone=1,title,description,kicker,aside,level=3,
  icon:MuseMarkIcon;tone?:MuseTone;title:ReactNode;description?:ReactNode;kicker?:ReactNode;aside?:ReactNode;level?:2|3|4;id?:string;face?:'editorial'|'practical';size?:'sm'|'md'|'lg';className?:string;
 }){
  const Heading=`h${level}` as 'h2'|'h3'|'h4';
- return <div className={`muse-heading ${className}`.trim()} data-face={face} data-size={size}>
+ return <div className={`muse-heading ${className}`.trim()} data-face={face} data-size={size} style={{'--heading-ink':`var(--chart-${tone})`} as CSSProperties}>
   <MuseMark icon={icon} tone={tone} size={size}/>
   <div className="muse-heading-copy">
    {kicker&&<p className="muse-kicker">{kicker}</p>}

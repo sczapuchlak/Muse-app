@@ -54,6 +54,7 @@ export function ListView({ listId, today, onBack, onOpen }: { listId: string; to
 
   return <section className="muse-list" style={style} aria-label={list.title}>
     <button type="button" className="text-button muse-list-back" onClick={onBack}>← All lists</button>
+    <div className="muse-list-hero">
     <header className="muse-list-head">
       <EmojiButton value={list.icon} onChange={(icon) => void updateList(list.id, { icon })} label="List icon" />
       <div className="muse-list-titles">
@@ -64,6 +65,8 @@ export function ListView({ listId, today, onBack, onOpen }: { listId: string; to
       <button ref={settingsAnchor} type="button" className="muse-button muse-lists-icon" aria-label="List settings" aria-expanded={settings} onClick={() => setSettings(true)}><MuseIcon name="settings" size={16} /></button>
     </header>
     {prog.total > 0 && <div className="muse-list-progress" role="progressbar" aria-valuenow={prog.pct} aria-valuemin={0} aria-valuemax={100} aria-label="List progress"><span style={{ width: `${prog.pct}%` }} /></div>}
+    {prog.total > 0 && <span className="muse-list-ring" aria-hidden="true" style={{ "--pct": prog.pct } as CSSProperties}><b>{Math.round(prog.pct)}<small>%</small></b><i /></span>}
+    </div>
     <div className="muse-list-viewbar">
       {scheduled ? <div className="muse-chip-row muse-list-views" role="group" aria-label="List view">
         {(["all", "week", "due", "history"] as View[]).map((v) => <button key={v} type="button" aria-pressed={view === v} onClick={() => setView(v)}>{v === "all" ? "All items" : v === "week" ? "This week" : v === "due" ? "Due" : "History"}</button>)}
