@@ -103,7 +103,7 @@ function AppShellContent({ children, profile:initialProfile }: { children: React
           <div className={`muse-global-bar${path === "/" ? " muse-global-bar-daily" : ""}`}>
             <Link className="muse-mobile-brand muse-logo" href="/" aria-label="Muse home">muse<MuseStar size={24} /></Link>
           </div>
-          <div className="muse-app-content" id="muse-main-content" tabIndex={-1}>{children}</div><ThemeReviewBar />
+          <span className="muse-shooting-star" aria-hidden="true"/><div className="muse-app-content" id="muse-main-content" tabIndex={-1}>{children}</div><ThemeReviewBar />
         </div>
         <nav ref={bottomNavRef} className="muse-bottom-navigation" aria-label="Mobile navigation">
           {navItems(mobilePrimaryIds).map((item) => <Link key={item.id} href={item.href} className="muse-bottom-link muse-edge" aria-current={isActiveDestination(path, item.href) ? "page" : undefined}>

@@ -6,6 +6,7 @@ import "./typography.css";
 import "./design-language.css";
 import "./muse-magic-motion.css";
 import "./solid-tags.css";
+import "./sky.css";
 import { motionTokens } from "@/lib/motion";
 import { defaultTheme } from "@/lib/themes";
 import { appearancePrePaintScript } from "@/lib/appearance-prepaint";

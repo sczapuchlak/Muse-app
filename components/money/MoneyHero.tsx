@@ -7,6 +7,7 @@ import {useMoney} from "./MoneyStore";
 import {EntryCarousel} from "../design/EntryCarousel";
 import type {MoneyOpen} from "./MoneyEditors";
 import "./MoneyHero.css";
+import {DailyArt} from "../daily/DailyArt";
 
 /**
  * Money glow-up (Nov 2026): the Overview opens on the pay period itself, art-directed like the Books dashboard.
@@ -107,7 +108,7 @@ export function PaycheckHero({paycheck,period,today,onOpen,onPlan,compact}:{payc
 /** Where it went: one ribbon of category shares and a tile per category, each in its own colour. */
 export function SpendingMix({period}:{period:MoneyPeriod}){
  const {state}=useMoney(),rows=categorySpending(state,period),total=rows.reduce((sum,row)=>sum+row.amount,0);
- if(!rows.length)return <p className="card-description">No spending recorded for this period.</p>;
+ if(!rows.length)return <div className="muse-daily-empty"><DailyArt kind="coins"/><p className="card-description">No spending recorded for this period.</p></div>;
  return <div className="muse-money-mix">
   <div className="muse-money-mix-ribbon" role="img" aria-label={rows.map(row=>`${row.name} ${formatMoney(row.amount)}`).join(", ")}>{rows.map(row=><span key={row.id} data-money-accent={row.accent} style={{...accentStyle(row.accent),flexGrow:row.amount}}/>)}</div>
   <RankedBars rows={rows.map(row=>({id:row.id||"unassigned",name:row.name,accent:row.accent,value:row.amount,note:`${Math.round(row.amount/total*100)}%`}))} label="Spending by category"/>

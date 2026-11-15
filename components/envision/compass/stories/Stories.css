@@ -388,7 +388,15 @@
  .muse-stories-volumes-art{min-height:220px}
 }
 @container muse-content (max-width:640px){
- .muse-stories-keepsakes,.muse-stories-volumes-art{display:none}
+  /* Phones (Nov 15: "there's like nothing really there"): the drawings stay, as a compact strip that opens the hero. */
+ .muse-stories-keepsakes,.muse-stories-volumes-art{order:-1;width:100%;max-width:320px;justify-self:center}
+ .muse-stories-keepsakes{min-height:150px}
+ .muse-stories-print{width:92px;padding:6px 6px 8px}
+ .muse-stories-print[data-i="0"]{top:8%;left:4%}.muse-stories-print[data-i="1"]{top:2%;left:36%}.muse-stories-print[data-i="2"]{top:12%;left:66%}
+ .muse-stories-print-caption{font-size:.7rem}
+ .muse-stories-volumes-art{min-height:170px}
+ .muse-stories-volume-art{width:92px}
+ .muse-stories-volume-art .muse-stories-volume-title{font-size:.85rem}
  .muse-stories-begin-row{flex-wrap:wrap}.muse-stories-begin-row .muse-button{flex:1 1 auto;justify-content:center}
  .muse-stories-archive-empty{align-items:flex-start}
 }

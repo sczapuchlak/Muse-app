@@ -853,3 +853,13 @@ Nov 15: "bring that imagery and shining stars to the daily dash". The approved l
 - cards with nothing in them yet show a drawn scene from `components/daily/DailyArt.tsx` in the journal drawing vocabulary: Cosmic Forecast a zodiac ring, Priorities three unlit stars, Little Rituals a breathing candle, Today's plan the sun and moon over the day's arc ("A clear day so far…"), Day in Three three floating bubbles;
 - the water bar shimmers as it fills, and an occasional shooting star crosses the top of the grid.
 Star and art colours mix the card ink with the card's own text colour, so they read on light (Astral) cards too. All motion is gated by reduced motion and Muse Magic. These drawings sit inside cards; the retired *hero* constellation drawings stay retired.
+
+## The Muse sky, app-wide — implemented on branch `feat/sky-everywhere`, Staging acceptance pending
+
+Nov 15: "do this to all the other pages … add some of those details". The Daily Edit sky became a shared layer in `app/sky.css` (imported from `app/layout.tsx`):
+- **Starfields** on primary containers across modules (cards, panels, heroes, Money, Insights, Lists, Goals, Mood, Nourish, Planner day columns, Profile, Life Atlas areas, Inner Compass and Stories containers, Books dashboard panels). The main ring list owns `::after`, so the starfield is `::before`; Books draw their ring on `::before`, so theirs is `::after`. Containers whose own pseudo-elements are taken (Stream posts, Little Moment, Fortune stage, Planning rail, highlight cards, Inner Compass hero and doors) are left out. `position`/`isolation` are set with `:where()` so sticky or absolute containers keep theirs.
+- **Twinkling title stars** after every `CardHeading` and `MuseHeading` title, in the card's ink (MuseHeading passes `--heading-ink`).
+- **Drawn empty states** (`components/daily/DailyArt.tsx`), now including Money: an envelope with a swinging bell (Coming up), a coin stack (Recorded spending) and a balance scale (Plan / actual). The art styles are global, which also fixes Wellness's Day in Three bubbles rendering black (their styles used to load only with the Daily Edit).
+- **Progress shimmer** on water, list, collection and weekly ritual bars; **one shooting star** per page from the app shell (fixed, decorative, behind content).
+- **Inner Compass on phones:** My Chapters' volumes and My Experiences' prints stay as a compact strip that opens the hero instead of disappearing.
+- Fixed along the way: the Money hero had white text on Astral's pale card; it is now on the light-card ink list.
