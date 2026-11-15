@@ -91,3 +91,12 @@
 .muse-quest-first-draw{display:inline-flex;align-items:center;gap:8px;min-height:46px;margin-top:6px;padding-inline:20px;border-radius:999px}
 @container muse-content (max-width:640px){.muse-quest-first{grid-template-columns:minmax(0,1fr);justify-items:center;text-align:center}.muse-quest-first-copy{justify-items:center}}
 @media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) .muse-quest-first:hover .muse-quest-first-deck>span{transform:rotate(calc(var(--o) * 13deg)) translateY(-4px);transition:transform .4s cubic-bezier(.2,.8,.2,1)}}
+/* Weekly Side Quests, round 2 (Nov 15: "weekly side quests wasn't updated"): drawing and sealed weeks follow the
+   journal pattern: a hero (week tag, title, chosen/opened or complete/to-go chips, the fanned deck of six sealed
+   invitations as art) above one archive panel for the cards, the seal and the trail. */
+.muse-quest-hero{--journal-a:var(--chart-3);--journal-b:var(--chart-6)}
+.muse-quest-hero .muse-kicker{display:flex;align-items:center;gap:8px;flex-wrap:wrap;letter-spacing:.08em}
+.muse-quest-hero-art{display:grid;place-items:center;min-height:200px}
+.muse-quest-archive{display:grid;gap:16px;min-width:0}
+@media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) .muse-quest-hero:hover .muse-quest-first-deck>span{transform:rotate(calc(var(--o) * 16deg)) translateY(calc(var(--o) * var(--o) * 3px - 6px))}}
+@container muse-content (max-width:640px){.muse-quest-hero-art{display:grid;order:-1;min-height:150px;margin:0 auto}}

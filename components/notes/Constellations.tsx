@@ -39,7 +39,7 @@ function BoardHero({cards,tags,today,onCatch}:{cards:BoardCard[];tags:number;tod
  const items=cards.flatMap(c=>c.items),done=items.filter(i=>i.complete).length,soon=cards.filter(c=>c.reminder&&c.reminder.date>=today).length;
  const recent=[...cards].sort((a,b)=>Number(b.pinned)-Number(a.pinned)||b.updatedAt.localeCompare(a.updatedAt)).slice(0,3);
  const notes=recent.length?recent.map(c=>({id:c.id,kicker:c.pinned?'Pinned':c.items.length?'Checklist':c.reminder?'Reminder':'Thought',text:c.title||c.text||c.items[0]?.text||'A thought',accent:c.accent})):[{id:'a',kicker:'Idea',text:'a playlist for every season',accent:'pop' as NoteAccent},{id:'b',kicker:'Remember',text:'book club, chapters 1–8',accent:'warm' as NoteAccent},{id:'c',kicker:'#someday',text:'learn to bind a book',accent:'info' as NoteAccent}];
- return <section className="muse-journal-hero muse-board-hero" aria-labelledby="board-hero-title">
+ return <section className="muse-journal-hero muse-board-hero" aria-labelledby="board-hero-title" data-compact="">
   <div className="muse-journal-hero-copy">
    <p className="muse-kicker">Sticky Board</p>
    <h2 id="board-hero-title" className="muse-journal-title">Everything on your mind</h2>

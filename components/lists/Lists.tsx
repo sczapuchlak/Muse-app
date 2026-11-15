@@ -61,7 +61,7 @@ function ListsLibrary({ today, onOpen }: { today: string; onOpen: (id: string) =
 
   const activeLists = s.lists.filter((l) => !l.isTemplate && !l.archivedAt), totals = activeLists.reduce((t, l) => { const x = stats.get(l.id); return x ? { done: t.done + x.done, total: t.total + x.total, due: t.due + x.due } : t; }, { done: 0, total: 0, due: 0 }), featured = [...activeLists].sort((a, b) => Number(b.pinned) - Number(a.pinned) || b.updatedAt.localeCompare(a.updatedAt))[0];
   return <section className="muse-lists" aria-label="Lists">
-    <div className="muse-journal-hero muse-lists-hero">
+    <div className="muse-journal-hero muse-lists-hero" data-compact="">
       <div className="muse-journal-hero-copy">
         <p className="muse-kicker">Lists</p>
         <h2 className="muse-journal-title">A list for everything</h2>

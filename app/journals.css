@@ -72,3 +72,24 @@
 @media print{.muse-journal-hero,.muse-journal-invite{display:none}}
 .muse-journal-stats dd small{color:var(--text-muted);font:500 .78rem/1 var(--font-ui)}
 .muse-journal-stats dd i{color:var(--text-muted);font-style:normal}
+
+/* Compact journal hero (Nov 15: "it should just be 1/3 that height … still snazzy"), for high-utility boards such as
+   the Sticky Board and Lists: one slim row of kicker + title, stat chips, the primary action and a miniature of the
+   art; the lede is dropped. The starfield and title star still apply. */
+.muse-journal-hero[data-compact]{grid-template-columns:minmax(0,1fr) auto;gap:12px 24px;padding:14px clamp(16px,2.4vw,26px)}
+.muse-journal-hero[data-compact] .muse-journal-hero-copy{grid-template-columns:auto minmax(0,1fr) auto;grid-template-areas:"kicker stats actions" "title stats actions";align-items:center;gap:2px 22px}
+.muse-journal-hero[data-compact] .muse-journal-hero-copy>.muse-kicker{grid-area:kicker;align-self:end}
+.muse-journal-hero[data-compact] .muse-journal-title{grid-area:title;align-self:start;font-size:clamp(1.45rem,2.3vw,1.85rem);white-space:nowrap}
+.muse-journal-hero[data-compact] .muse-journal-title::after{width:13px;height:13px}
+.muse-journal-hero[data-compact] .muse-journal-hero-copy>p:not(.muse-kicker){display:none}
+.muse-journal-hero[data-compact] .muse-journal-stats{grid-area:stats;flex-wrap:nowrap;justify-content:center;gap:6px}
+.muse-journal-hero[data-compact] .muse-journal-stats>div{display:flex;align-items:baseline;gap:6px;min-width:0;padding:5px 11px;border-radius:999px}
+.muse-journal-hero[data-compact] .muse-journal-stats dt{font-size:.56rem;white-space:nowrap}
+.muse-journal-hero[data-compact] .muse-journal-stats dd{font-size:1.05rem}
+.muse-journal-hero[data-compact] .muse-journal-actions{grid-area:actions}
+.muse-journal-hero[data-compact] .muse-journal-art{width:180px;max-width:none;min-height:0;height:74px}
+@container muse-content (max-width:1100px){.muse-journal-hero[data-compact] .muse-journal-hero-copy{grid-template-columns:auto auto;grid-template-areas:"kicker actions" "title actions" "stats stats";justify-content:space-between}.muse-journal-hero[data-compact] .muse-journal-stats{justify-content:flex-start;flex-wrap:wrap}}
+@container muse-content (max-width:640px){.muse-journal-hero[data-compact]{grid-template-columns:minmax(0,1fr) 110px;padding:12px 14px}.muse-journal-hero[data-compact] .muse-journal-hero-copy{grid-column:1/-1;grid-row:1/3;grid-template-columns:minmax(0,1fr);grid-template-areas:"kicker" "title" "stats" "actions"}.muse-journal-hero[data-compact] .muse-journal-title{white-space:normal;padding-right:116px}.muse-journal-hero[data-compact] .muse-journal-art{display:block;grid-column:2;grid-row:1;width:110px;height:64px;order:0;margin:0}}
+.muse-journal-hero[data-compact] .muse-journal-stats>div{flex:0 0 auto;padding:4px 10px}
+.muse-journal-hero[data-compact] .muse-journal-stats dd{white-space:nowrap}
+@container muse-content (max-width:640px){.muse-journal-hero[data-compact] .muse-journal-stats>div:nth-child(n+3){display:none}.muse-journal-hero[data-compact] .muse-journal-title{font-size:1.35rem}}

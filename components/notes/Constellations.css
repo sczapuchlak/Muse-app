@@ -184,3 +184,13 @@
 @container muse-content (max-width:900px){.muse-board-hero-art{min-height:210px}}
 @container muse-content (max-width:640px){.muse-board-hero-art{display:block;order:-1;min-height:170px;max-width:320px;margin:0 auto}.muse-board-hero-note{width:118px;min-height:96px;padding:16px 10px 10px}.muse-board-hero-note b{font-size:.85rem}}
 @media (prefers-reduced-motion:reduce){.muse-board-hero-note,.muse-constellation-results .muse-thought-card{transition:none}}
+/* Compact hero (Nov 15): the pinned notes become a miniature trio beside the title. */
+.muse-board-hero[data-compact] .muse-board-hero-art{min-height:0;height:74px;margin:0}
+.muse-board-hero[data-compact] .muse-board-hero-note{width:62px;min-height:52px;padding:11px 6px 6px;border-radius:2px 2px 9px 2px;gap:0;box-shadow:0 10px 16px -10px rgba(0,0,0,.65)}
+.muse-board-hero[data-compact] .muse-board-hero-note small{display:none}
+.muse-board-hero[data-compact] .muse-board-hero-note b{-webkit-line-clamp:3;font-size:.6rem;line-height:1.2}
+.muse-board-hero[data-compact] .muse-board-hero-note>i{top:-5px;width:10px;height:10px;margin-left:-5px}
+.muse-board-hero[data-compact] .muse-board-hero-note[data-i="0"]{top:10px;left:4px}
+.muse-board-hero[data-compact] .muse-board-hero-note[data-i="1"]{top:2px;left:60px}
+.muse-board-hero[data-compact] .muse-board-hero-note[data-i="2"]{top:12px;left:114px}
+@container muse-content (max-width:640px){.muse-board-hero[data-compact] .muse-board-hero-art{min-height:0;height:64px;max-width:none}.muse-board-hero[data-compact] .muse-board-hero-note{width:46px;min-height:40px;padding:9px 4px 4px}.muse-board-hero[data-compact] .muse-board-hero-note b{font-size:.5rem}.muse-board-hero[data-compact] .muse-board-hero-note[data-i="1"]{left:34px}.muse-board-hero[data-compact] .muse-board-hero-note[data-i="2"]{left:64px}}
