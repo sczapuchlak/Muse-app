@@ -1273,3 +1273,11 @@ See [BOOK_IMPORT_143](BOOK_IMPORT_143.md). Goodreads empty ISBN formulas are mis
 - **Data:** migration `20261222000100_inner_compass.sql`; RPC `record_inner_evolution` copies the earlier words from the row itself, atomically, with a revision check. Content: `content/inner-compass/explorations.json`, `words.json`.
 - **Checks:** `tests/inner-compass.test.mjs`, `npm run test:inner-compass:db`, `npm run test:inner-compass:ui`, `scripts/verify-hosted-inner-compass.sql`.
 
+## Inner Compass, Phase 2: My Chapters & My Experiences (#211) — implemented on feature branch, Staging acceptance pending
+
+- **Chapters:** landing with the current (primary) Chapter as a cover hero (word, range, meaning, a mantra, linked Experience snapshots), "A life in chapters" timeline (dated Chapters as spans in lanes so overlaps stack), and a shelf of volumes with search, status filter and sort. New Chapter from a name or a word. Chapter page: cover, details, modules, close (optional prompts, optional end date), reopen, carry forward, primary, Daily Edit opt-in, archive, delete.
+- **Experiences:** one-line capture (title + date), Collections (cover, description, chronological or own order, add existing, delete keeps Experiences), filters (tag, Chapter, Life Atlas area, archive), sorts. Experience page: photo or cover, facts, tags with suggestions, Agenda event link, Chapter/Collection/Life Area membership, modules, dated reflections (oldest/newest), Save as discovery.
+- **Covers:** six CSS presets (Nocturne, Aurora, First Light, Atlas, Bloom, Eclipse), hex accent, own photo or a linked Vision.
+- **Data:** migration `20261223000100_inner_chapters_experiences.sql`; module registry `lib/inner-compass/modules.ts`; models `lib/inner-compass/stories.ts`; materials `content/inner-compass/materials.json`.
+- **Checks:** `tests/inner-stories.test.mjs`, `npm run test:inner-stories:db`, `npm run test:inner-stories:ui`, `scripts/verify-hosted-inner-stories.sql`.
+

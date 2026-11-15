@@ -1,4 +1,5 @@
 'use client';
+import {useAreaStoryCounts} from '../compass/stories/useAreaStoryCounts';
 import Link from 'next/link';
 import {useCallback,useEffect,useMemo,useRef,useState} from 'react';
 import {useSearchParams} from 'next/navigation';
@@ -41,6 +42,7 @@ const longDate=(d:string)=>new Intl.DateTimeFormat('en-US',{month:'long',day:'nu
  * Atlas. Connected progress is read from its owner (Books, the progress engine), never copied.
  */
 export function Aspirations(){
+ const storyCounts=useAreaStoryCounts();
  const {state:ritualState,sources,today}=useRitualView(),{state:planner}=usePlanner(),whimsy=useWhimsyData();
  const {aspirations,updates,status,save,remove,addUpdate,removeUpdate}=useAspirations();
  const atlas=useLifeAtlas();
@@ -179,7 +181,8 @@ export function Aspirations(){
     expanded={expanded} onToggle={toggle} busy={busy} today={today}/>}
    {sections.map(({area,list})=>{const voice=areaVoice(area.label);return <AtlasArea key={area.id} id={area.id} glyph={voice.glyph} tone={areaTone(area.position)} numeral={roman(area.position)} label={area.label+(area.archived?' (archived)':'')} whisper={voice.whisper}
     vision={lensYear?atlas.visions.find(v=>v.year===lensYear&&v.area_id===area.id)?.vision||undefined:undefined} items={list.map((a,i)=>rowItem(a,list,i))} expanded={expanded} onToggle={toggle}
-    onAdd={area.archived?undefined:async title=>!!await createInArea(title,area.id,lensYear)} busy={busy} today={today} emptyNote="An open page"/>;})}
+    onAdd={area.archived?undefined:async title=>!!await createInArea(title,area.id,lensYear)} busy={busy} today={today} emptyNote="An open page"
+    stories={storyCounts[area.id]?{...storyCounts[area.id],href:`/envision?view=inner-compass&realm=experiences&area=${area.id}`}:undefined}/>;})}
    {!visible.length&&<div className="muse-lifeatlas-empty">{filtering?<p>Nothing matches. <button type="button" className="text-button" onClick={()=>{setSearch('');setStatusFilter('all');setQuarter(null);}}>Clear the filters</button></p>
     :<><p className="muse-lifeatlas-empty-title">{lens.kind==='year'?`${lens.year} is an open book.`:lens.kind==='undated'?'Every aspiration has a year.':'Your Atlas is ready for its first aspiration.'}</p>
      <p>{lens.kind==='year'?'Design your year with the guided ritual, or write straight into any Life Area below.':'Choose any Life Area below to begin.'}{otherCount>0&&<> {otherCount} more live in other years: <button type="button" className="text-button" onClick={()=>setLens({kind:'all'})}>see them all</button>.</>}</p></>}</div>}

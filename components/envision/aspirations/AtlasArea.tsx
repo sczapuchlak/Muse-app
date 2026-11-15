@@ -20,9 +20,11 @@ const pageSize=6;
 export const showsNumbers=(a:Aspiration)=>a.showProgress!==false&&a.planningStyle!=='practice'&&a.planningStyle!=='exploration'&&a.progressKind!=='binary';
 
 /** One Life Area: its mark, numeral and voice, then its actual aspirations as compact rows that expand in place. */
-export function AtlasArea({glyph,tone,numeral,label,whisper,vision,items,expanded,onToggle,onAdd,busy,today,emptyNote,kind='area'}:{
+export function AtlasArea({glyph,tone,numeral,label,whisper,vision,items,expanded,onToggle,onAdd,busy,today,emptyNote,kind='area',stories}:{
  id:string;glyph:MuseMarkIcon;tone:MuseTone;numeral:string;label:string;whisper:string;vision?:string;items:RowItem[];expanded:string|null;onToggle:(id:string)=>void;
  onAdd?:(title:string)=>Promise<boolean>;busy:boolean;today:string;emptyNote?:string;kind?:'area'|'awaiting';
+ /** #211: Inner Compass Experiences and Chapters associated with this area (a link, never a measure). */
+ stories?:{experiences:number;chapters:number;href:string};
 }){
  const [page,setPage]=useState(0),headingId=useId();
  const pages=Math.max(1,Math.ceil(items.length/pageSize)),current=Math.min(page,pages-1),shown=items.slice(current*pageSize,current*pageSize+pageSize);
@@ -32,7 +34,8 @@ export function AtlasArea({glyph,tone,numeral,label,whisper,vision,items,expande
    <MuseMark icon={glyph} tone={tone} size="lg"/>
    <div className="muse-lifeatlas-area-title"><h3 id={headingId}><span className="muse-lifeatlas-numeral" aria-hidden="true">{numeral}</span>{label}</h3>
     <p className="muse-lifeatlas-area-whisper">{vision?<q>{vision}</q>:whisper}</p></div>
-   <p className="muse-lifeatlas-area-count small-label type-numeric">{items.length?`${items.length} aspiration${items.length===1?'':'s'}${achieved?` · ${achieved} achieved`:''}`:emptyNote}</p>
+   <p className="muse-lifeatlas-area-count small-label type-numeric">{items.length?`${items.length} aspiration${items.length===1?'':'s'}${achieved?` · ${achieved} achieved`:''}`:emptyNote}
+    {stories&&(stories.experiences>0||stories.chapters>0)&&<a className="muse-lifeatlas-area-stories" href={stories.href}>{[stories.experiences?`${stories.experiences} experience${stories.experiences===1?'':'s'}`:'',stories.chapters?`${stories.chapters} chapter${stories.chapters===1?'':'s'}`:''].filter(Boolean).join(' · ')} →</a>}</p>
   </header>
   <div className="muse-lifeatlas-area-body">
    <ul className="muse-lifeatlas-rows" aria-label={`${label} aspirations`}>

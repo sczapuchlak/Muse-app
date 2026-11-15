@@ -16,6 +16,16 @@ Write down the answers before you build. Put them in the PR description or the f
 6. **Place in the cycle.** What happens before and after this experience?
 7. **Now or later.** Which integrations work now, and which are only prepared for the future? Say which in the docs.
 
+### Inner Compass, Phase 2: My Chapters & My Experiences (#211)
+
+1. **Authoritative source.** Envision → Inner Compass. Chapters (`inner_chapters`) are seasons of life; Experiences (`inner_experiences`) are the one record of something lived; Collections (`inner_experience_collections`) group Experiences. Modules (`inner_modules`) belong to exactly one Chapter or Experience.
+2. **Related owners.** My Inner World owns discoveries; Envision → Visions owns boards and books; Reflections owns Life Areas; Planner owns Agenda events and Intentions pages; Whimsy owns Tarot readings and dreams.
+3. **Duplicates.** None. An Experience appears in Chapters and Collections only through join rows (`inner_chapter_experiences`, `inner_collection_experiences`); there is no separate ritual, memory or seasons record. Visions, discoveries, explorations, readings, dreams and Planner Intentions pages are id + name snapshot inside modules. An Agenda event is an id + date + title snapshot; recurring events never create Experiences. Materials may point at a repo reference entry (`content/inner-compass/materials.json`) by key; the person's meaning is stored on their own Experience.
+4. **Optional relationships.** Every link is optional and explicit. Unlinking never deletes; closing or deleting a Chapter never touches its Experiences; deleting an Experience removes only its links, modules and photos.
+5. **Patterns.** Inner Compass `MuseSegmented` views, `MuseModal`, `MuseChoiceMenu`, `GlassPopover`, `MuseOverflowMenu`, `SaveIndicator`, private image storage (`uploadBoardImage`), the Phase 1 reflection composer, `MuseMark`.
+6. **Place in the cycle.** Envision (a season and its words) → Intend (Chapter intentions may point at Planner Intentions) → Live (Experiences) → Reflect (dated reflections) → Understand (save a realization as a discovery) → carry forward.
+7. **Now or later.** Working now: discoveries, Visions, explorations, Tarot readings, dreams, Agenda events, Planner Intentions links, Life Atlas areas (with a link back from each Atlas area), the opt-in Daily Edit Chapter card. Future: a Life Archive built on Experiences; Insights over associations; Planner Reflections referencing a Chapter.
+
 ### Inner Compass, Phase 1: My Inner World (#210)
 
 1. **Authoritative source.** Envision → Inner Compass owns discoveries (`inner_discoveries`), their meaningful versions, connections, exploration responses, its own light reflections and the Personal Manifesto.
@@ -72,6 +82,9 @@ Envision remains the owner of aspirations and their journey; Planner → Reflect
 | Planned movement and its outcome | Daily Edit / Wellness → Movement | `movement_day_types`, `movement_day_outcomes` (#112), `movement_records` | Insights, Wellness goals, Connected Rituals | Completed is only `movement_records`; Skipped, Rest and Sick are outcomes and never count as done |
 | Inner Compass discovery (#210) | Envision → Inner Compass → My Inner World | `inner_discoveries` (+ `inner_discovery_versions`, `inner_discovery_links`, `inner_discovery_areas`) | Intentions (“Values & qualities to honor”), Vision Board elements, Manifesto lines, Inner Compass reflections; My Chapters (Phase 2) | id + name snapshot. Ordinary edits change the record; only “Record evolution” keeps the earlier words. Deleting removes its versions and connections; reflections and manifesto lines keep their words |
 | Exploration response, reflection, manifesto (#210) | Envision → Inner Compass | `inner_exploration_responses`, `inner_reflections`, `inner_manifestos`, `inner_manifesto_versions` | none | owner; exploration definitions are repo content by stable key |
+| Chapter (#211) | Envision → Inner Compass → My Chapters | `inner_chapters` (+ its `inner_modules`, `inner_area_links`) | Daily Edit (opt-in card), Experiences (join), carried-forward Chapters (`carried_from` + title snapshot), reflections (`chapter_id` + title snapshot) | id; at most one primary; status from the person's dates and choices only |
+| Experience (#211) | Envision → Inner Compass → My Experiences | `inner_experiences` (+ its `inner_modules`, `inner_area_links`) | Chapters and Collections (join rows), Life Atlas (link + count), discoveries (`source_kind = 'experience'`), reflections (title snapshot) | id; the single record everywhere it appears |
+| Experience collection (#211) | Envision → Inner Compass → My Experiences | `inner_experience_collections`, `inner_collection_experiences` | none | membership rows only; no dates or lifecycle |
 | Comparison birth profile | Cosmic Observatory → Birth Chart | `astrology_comparison_profiles` (#28) | Synastry and Composite chart tools | private input by id; calculated chart results are temporary and never copied into this record |
 
 ## Lifecycles worth knowing

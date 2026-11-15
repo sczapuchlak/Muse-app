@@ -280,3 +280,6 @@
 .muse-lifeatlas-constellation[data-web] .muse-lifeatlas-thread[data-dust]{stroke:color-mix(in oklab,var(--foreground) 30%,transparent);stroke-width:.18;opacity:.6}
 @media (max-width:760px){.muse-lifeatlas-hero-sky .muse-lifeatlas-constellation[data-web]{width:100%!important;margin-left:0!important}}
 @media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) .muse-lifeatlas-dust{animation:muse-lifeatlas-star-in .7s cubic-bezier(.2,.8,.2,1.2) calc(.2s + var(--i)*.12s) both}}
+/* #211: a quiet link to the Inner Compass Experiences and Chapters associated with this area. */
+.muse-lifeatlas-area-stories{display:block;margin-top:3px;color:var(--text-muted);text-decoration:none;font-size:.74rem}
+.muse-lifeatlas-area-stories:hover{color:var(--foreground);text-decoration:underline;text-underline-offset:3px}
