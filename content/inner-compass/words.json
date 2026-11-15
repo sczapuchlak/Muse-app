@@ -1,0 +1,172 @@
+{
+  "version": 1,
+  "about": "Curated words for the Values and Character word gardens in Inner Compass (#210). Each gloss is a starting point only: the person defines every word in their own language. Families exist for browsing, not for scoring. Add words freely; never rename a word someone may already have saved (saved discoveries keep their own title).",
+  "values": [
+    { "family": "Heart", "words": [
+      ["Love", "Caring deeply, and letting it show"],
+      ["Connection", "Being truly known by a few people"],
+      ["Belonging", "Having a place and a people"],
+      ["Friendship", "Chosen family, kept close"],
+      ["Family", "The people who are home"],
+      ["Intimacy", "Closeness without performance"],
+      ["Tenderness", "Gentleness with what is fragile"],
+      ["Warmth", "Making people feel welcome"],
+      ["Romance", "Keeping wonder in love"],
+      ["Loyalty", "Staying when it counts"],
+      ["Reciprocity", "Care that flows both ways"],
+      ["Compassion", "Meeting suffering with kindness"]
+    ] },
+    { "family": "Truth", "words": [
+      ["Honesty", "Saying what is true, kindly"],
+      ["Integrity", "Being one person in every room"],
+      ["Authenticity", "Living without a costume"],
+      ["Truth", "Seeing things as they are"],
+      ["Trust", "Being someone people can rely on"],
+      ["Fairness", "Giving everyone an even chance"],
+      ["Justice", "Standing up for what is right"],
+      ["Equality", "Every person counting the same"],
+      ["Dignity", "Respect that cannot be revoked"],
+      ["Respect", "Honoring people as they are"],
+      ["Responsibility", "Owning your part"]
+    ] },
+    { "family": "Freedom", "words": [
+      ["Freedom", "Room to choose your own life"],
+      ["Autonomy", "Steering by your own compass"],
+      ["Independence", "Standing on your own feet"],
+      ["Adventure", "Saying yes to the unknown"],
+      ["Spontaneity", "Leaving room for the unplanned"],
+      ["Variety", "A life with many flavors"],
+      ["Discovery", "Finding what you didn't know to look for"],
+      ["Privacy", "Keeping some things for yourself"],
+      ["Solitude", "Time alone that restores"],
+      ["Self-respect", "Treating yourself as someone who matters"]
+    ] },
+    { "family": "Mind", "words": [
+      ["Curiosity", "Wanting to know how and why"],
+      ["Learning", "Always becoming a beginner again"],
+      ["Knowledge", "Understanding things deeply"],
+      ["Wisdom", "Knowing what matters and when"],
+      ["Depth", "Going below the surface"],
+      ["Openness", "Holding ideas loosely"],
+      ["Imagination", "Picturing what isn't there yet"],
+      ["Wonder", "Being astonished on purpose"],
+      ["Clarity", "Seeing and saying things simply"]
+    ] },
+    { "family": "Craft", "words": [
+      ["Creativity", "Making something that wasn't there"],
+      ["Craft", "Doing a thing beautifully and well"],
+      ["Excellence", "High standards, lovingly kept"],
+      ["Quality", "Fewer, better things"],
+      ["Beauty", "Noticing and making loveliness"],
+      ["Style", "A way of being that is yours"],
+      ["Mastery", "Getting very good at something"],
+      ["Usefulness", "Being of real help"],
+      ["Contribution", "Adding something to the world"],
+      ["Legacy", "What remains after you"]
+    ] },
+    { "family": "Spirit", "words": [
+      ["Meaning", "A sense that it all adds up"],
+      ["Purpose", "Knowing what you're for"],
+      ["Faith", "Trusting what you cannot prove"],
+      ["Spirituality", "Connection to something larger"],
+      ["Gratitude", "Noticing what is already given"],
+      ["Hope", "Believing tomorrow can be kind"],
+      ["Presence", "Being where you are"],
+      ["Mindfulness", "Attention without hurry"],
+      ["Peace", "An inner quiet"],
+      ["Harmony", "Things fitting together"],
+      ["Service", "Giving yourself to others"],
+      ["Generosity", "Giving more than is asked"]
+    ] },
+    { "family": "Ground", "words": [
+      ["Security", "Safety you can build on"],
+      ["Stability", "Steady ground under your feet"],
+      ["Home", "A place that holds you"],
+      ["Health", "Caring for the body you live in"],
+      ["Rest", "Stopping without apology"],
+      ["Balance", "No part of life starving another"],
+      ["Simplicity", "Less, chosen well"],
+      ["Order", "A place for things"],
+      ["Calm", "An unhurried center"],
+      ["Tradition", "Carrying forward what is good"],
+      ["Nature", "Time among living things"]
+    ] },
+    { "family": "Delight", "words": [
+      ["Joy", "Gladness that needs no reason"],
+      ["Play", "Doing things just for fun"],
+      ["Fun", "Lightness in the everyday"],
+      ["Humor", "Finding the funny side"],
+      ["Pleasure", "Enjoying the senses fully"],
+      ["Leisure", "Unscheduled, unhurried time"],
+      ["Vitality", "Feeling fully alive"],
+      ["Ease", "Things that don't need to be hard"],
+      ["Celebration", "Marking the good moments"]
+    ] }
+  ],
+  "character": [
+    { "family": "Courage", "words": [
+      ["Courage", "Acting while afraid"],
+      ["Boldness", "Taking up your full space"],
+      ["Resilience", "Bending without breaking"],
+      ["Perseverance", "Continuing when it's slow"],
+      ["Steadfastness", "Staying true over time"],
+      ["Candor", "Saying the honest thing"],
+      ["Vulnerability", "Letting yourself be seen"]
+    ] },
+    { "family": "Kindness", "words": [
+      ["Kindness", "Small goodness, often"],
+      ["Compassion", "Feeling with, not just for"],
+      ["Generosity", "Open-handedness"],
+      ["Gentleness", "Strength that doesn't push"],
+      ["Empathy", "Imagining another's inside"],
+      ["Hospitality", "Making room for others"],
+      ["Forgiveness", "Setting down what you're owed"],
+      ["Self-compassion", "Speaking to yourself kindly"],
+      ["Warmth", "A presence people lean into"],
+      ["Graciousness", "Ease and kindness under pressure"]
+    ] },
+    { "family": "Integrity", "words": [
+      ["Integrity", "Doing what you said you'd do"],
+      ["Honesty", "Truthfulness in small things"],
+      ["Authenticity", "Being recognizably yourself"],
+      ["Sincerity", "Meaning what you say"],
+      ["Fairness", "Even-handedness"],
+      ["Reliability", "Being there, as promised"],
+      ["Trustworthiness", "Holding what's given to you"],
+      ["Responsibility", "Owning outcomes, good and bad"],
+      ["Loyalty", "Faithfulness to your people"]
+    ] },
+    { "family": "Mind", "words": [
+      ["Curiosity", "Questions before conclusions"],
+      ["Openness", "Willingness to be changed"],
+      ["Wisdom", "Good judgment, well earned"],
+      ["Discernment", "Telling what matters from what doesn't"],
+      ["Humility", "Knowing what you don't know"],
+      ["Thoughtfulness", "Considering before acting"],
+      ["Attentiveness", "Noticing the small things"],
+      ["Imagination", "Seeing other possibilities"],
+      ["Adaptability", "Changing course with grace"]
+    ] },
+    { "family": "Steadiness", "words": [
+      ["Patience", "Letting things take their time"],
+      ["Calm", "A settled center"],
+      ["Discipline", "Keeping faith with your intentions"],
+      ["Diligence", "Careful, consistent effort"],
+      ["Prudence", "Care with consequences"],
+      ["Independence", "Thinking for yourself"],
+      ["Tolerance", "Room for difference"]
+    ] },
+    { "family": "Light", "words": [
+      ["Playfulness", "Lightness that invites others in"],
+      ["Humor", "Wit that warms"],
+      ["Wit", "Quickness of mind and tongue"],
+      ["Enthusiasm", "Wholehearted delight"],
+      ["Zest", "Energy for living"],
+      ["Optimism", "Expecting good to be possible"],
+      ["Hope", "Holding a door open to the future"],
+      ["Gratitude", "Appreciation, out loud"],
+      ["Grace", "Moving through things beautifully"],
+      ["Sensitivity", "Feeling the texture of things"]
+    ] }
+  ]
+}

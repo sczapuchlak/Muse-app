@@ -35,6 +35,8 @@
     "test:stream:db": "node scripts/test-local-stream.mjs",
     "test:vision-boards:db": "node scripts/test-local-vision-boards.mjs",
     "test:vision-boards:ui": "node scripts/test-vision-boards-ui.mjs",
+    "test:inner-compass:db": "node scripts/test-local-inner-compass.mjs",
+    "test:inner-compass:ui": "node scripts/test-inner-compass-ui.mjs",
     "test:stream:ui": "node scripts/test-stream-ui.mjs",
     "test:theme:ui": "node scripts/test-theme-persistence-ui.mjs",
     "auth:invite": "node scripts/invite-local-user.mjs",

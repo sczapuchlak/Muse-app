@@ -7,7 +7,7 @@ type Art={icon:string;tone:1|2|3|4|5|6|7|8};
 const a=(icon:string,tone:Art['tone']):Art=>({icon,tone});
 export const navGlyphs:Record<string,Art>={
  'planner:tasks':a('checklist',1),'planner:intentions':a('seedling',3),'planner:agenda':a('calendar',5),'planner:reflections':a('quill',7),
- 'envision:aspirations':a('constellation',6),'envision:vision-boards':a('palette',4),'envision:bucket':a('map',2),
+ 'envision:aspirations':a('constellation',6),'envision:vision-boards':a('palette',4),'envision:bucket':a('map',2),'envision:inner-compass':a('compass',8),
  'money:overview':a('wallet',1),'money:paychecks':a('coins',3),'money:spending':a('receipt',2),'money:recurring':a('repeat',5),'money:cards':a('creditcard',6),'money:categories':a('pie',4),
  'insights:overview':a('bars',1),'insights:plans':a('checklist',3),'insights:mood':a('smile',2),'insights:money':a('coins',4),'insights:nourish':a('pulse',5),'insights:astrology':a('planet',7),'insights:collections':a('openbook',6),
  'mindspace:board':a('lightbulb',4),'mindspace:lists':a('list',1),

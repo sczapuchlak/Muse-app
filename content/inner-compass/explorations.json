@@ -1,0 +1,308 @@
+{
+  "version": 1,
+  "about": "Guided explorations for Inner Compass → My Inner World (#210). Editorial content only: answers live in inner_exploration_responses with each prompt as it was asked, so editing or retiring an entry here never rewrites anyone's words. Keys and prompt keys are stable; retire instead of reusing. Voice: docs/ALMANAC_VOICE.md (no grading, no advice, no slogans).",
+  "categories": {
+    "identity": { "label": "Identity", "line": "Who you are when nobody is arranging you." },
+    "values": { "label": "Values", "line": "What matters, even when it costs something." },
+    "character": { "label": "Character", "line": "The person you are, and the one you're growing into." },
+    "beliefs": { "label": "Beliefs", "line": "What you hold true, and how it has changed." },
+    "philosophy": { "label": "Philosophy", "line": "The ideas you choose to live by." },
+    "boundaries": { "label": "Boundaries", "line": "What you protect, and how kindly." },
+    "patterns": { "label": "Patterns", "line": "The tendencies you keep noticing." }
+  },
+  "explorations": [
+    { "key": "most-myself", "category": "identity", "saveAs": "patterns", "title": "When I feel most like myself",
+      "intro": "Not who you are on paper. Who you are on a particular afternoon when nothing needs performing. Start with one real moment and stay close to its details.",
+      "prompts": [
+        { "key": "moment", "text": "Describe a recent moment when you felt entirely like yourself. Where were you, and what were your hands doing?" },
+        { "key": "company", "text": "Were you with someone, or alone? What did that company, or that solitude, make room for?" },
+        { "key": "awake", "text": "Which part of you was most awake in that moment?" },
+        { "key": "pull", "text": "What tends to pull you away from that version of yourself?" }
+      ] },
+    { "key": "rediscovered", "category": "identity", "saveAs": "character", "title": "Parts of myself I've rediscovered",
+      "intro": "Something you loved at nine, set down at nineteen and picked up again later. Most of us carry a few of these. Some are still waiting by the door.",
+      "prompts": [
+        { "key": "before", "text": "What did you love doing before anyone told you what it was for?" },
+        { "key": "quiet", "text": "Which part of you went quiet for a while? What quieted it?" },
+        { "key": "return", "text": "What brought it back, or what might?" },
+        { "key": "now", "text": "What does that returning part of you want now?" }
+      ] },
+    { "key": "known-for", "category": "identity", "saveAs": "character", "title": "What I want to be known for",
+      "intro": "Not a eulogy and not a résumé. Just the thing you'd hope a friend leads with when they describe you to someone new.",
+      "prompts": [
+        { "key": "described", "text": "Imagine a friend describing you to someone who has never met you. What do you hope they say first?" },
+        { "key": "proud", "text": "What would you be quietly proud to hear said about you that has nothing to do with work?" },
+        { "key": "true", "text": "Which of those things already feels true? Which are you still growing into?" }
+      ] },
+    { "key": "rooms", "category": "identity", "saveAs": "patterns", "title": "The rooms I live in",
+      "intro": "Most people are a slightly different person at the dinner table, at work and in the group chat. That isn't fakery. It's range, and it says something.",
+      "prompts": [
+        { "key": "circles", "text": "Name three places or circles where you spend real time. Who are you in each?" },
+        { "key": "honest", "text": "Where does the most unguarded version of you show up?" },
+        { "key": "folded", "text": "Is there a self you keep folded away? What would it take to let it out a little?" },
+        { "key": "constant", "text": "What stays the same about you in every room?" }
+      ] },
+    { "key": "small-truths", "category": "identity", "saveAs": "patterns", "title": "Small truths about me",
+      "intro": "The tiny, specific facts that would let someone pick you out of a crowd of a thousand. The odder, the better.",
+      "prompts": [
+        { "key": "three", "text": "Three small things that are unmistakably you: a habit, a taste, a phrase, a ritual." },
+        { "key": "surprise", "text": "Something about you that surprises people who think they know you." },
+        { "key": "unhidden", "text": "A preference you used to hide and no longer do." },
+        { "key": "together", "text": "Taken together, what do these small truths say?" }
+      ] },
+
+    { "key": "unwatched", "category": "values", "saveAs": "values", "title": "What matters when no one is watching",
+      "intro": "Values show themselves most clearly where there's no applause. Look at what you do anyway, and at what quietly infuriates you.",
+      "prompts": [
+        { "key": "anyway", "text": "What do you keep doing even when there's no audience, reward or record of it?" },
+        { "key": "cost", "text": "Think of a choice that cost you something. What were you protecting?" },
+        { "key": "furious", "text": "What quietly infuriates you? Which value is being stepped on?" },
+        { "key": "name", "text": "Name the value underneath, then describe it in your own words." }
+      ] },
+    { "key": "freedom", "category": "values", "saveAs": "values", "title": "What freedom means to me",
+      "intro": "Freedom is one of those words everyone agrees with and nobody defines the same way. This is a chance to define yours.",
+      "prompts": [
+        { "key": "felt", "text": "Describe a moment you felt genuinely free. Be precise about the details." },
+        { "key": "from-to", "text": "Is freedom, for you, mostly freedom from something, or freedom to do something?" },
+        { "key": "trade", "text": "What do you trade a little freedom for right now? Is it a trade you'd make again?" },
+        { "key": "sentence", "text": "Finish the sentence: For me, freedom is…" }
+      ] },
+    { "key": "hard-decisions", "category": "values", "saveAs": "values", "title": "The values behind my difficult decisions",
+      "intro": "Easy choices tell you very little. The ones that kept you up at night are where your values had to argue with each other.",
+      "prompts": [
+        { "key": "decision", "text": "Recall a decision that kept you awake. What were the options really weighing?" },
+        { "key": "tipped", "text": "What did you choose, and which value tipped it?" },
+        { "key": "again", "text": "If you faced it again, would the same value win?" },
+        { "key": "untradeable", "text": "What does this tell you about what you won't trade away?" }
+      ] },
+    { "key": "hours-and-heart", "category": "values", "saveAs": "values", "title": "Where my hours and my heart agree",
+      "intro": "A gentle look at an ordinary week. Not an audit, and nothing to fix. Just noticing where what you do and what you care about overlap.",
+      "prompts": [
+        { "key": "unasked", "text": "Looking at the last week, what did you give time to without anyone asking?" },
+        { "key": "missing", "text": "What do you care about that didn't find any time this week? No judgment, just notice it." },
+        { "key": "overlap", "text": "Where do your hours and your heart line up best?" },
+        { "key": "room", "text": "Which value would you like to give a little more room to?" }
+      ] },
+    { "key": "inherited", "category": "values", "saveAs": "values", "title": "Values I inherited, values I chose",
+      "intro": "Some values arrive with the furniture. Some you go out and find. Both can be truly yours, and some can be set down with thanks.",
+      "prompts": [
+        { "key": "raised", "text": "Which values were you raised with? Include the ones you've outgrown." },
+        { "key": "kept", "text": "Which have you kept and made your own?" },
+        { "key": "set-down", "text": "Which have you quietly set down?" },
+        { "key": "found", "text": "Which value did you find entirely by yourself?" }
+      ] },
+
+    { "key": "admire-others", "category": "character", "saveAs": "character", "title": "Qualities I admire in others",
+      "intro": "Admiration is a clue. The qualities that move you in other people are often ones you already carry in small amounts, or would like to.",
+      "prompts": [
+        { "key": "someone", "text": "Think of someone you deeply admire. What exactly do they do that moves you?" },
+        { "key": "more", "text": "Which of their qualities would you most like to have more of?" },
+        { "key": "trace", "text": "Where do you already see a trace of that quality in yourself?" },
+        { "key": "tuesday", "text": "What would practicing it look like on an ordinary Tuesday?" }
+      ] },
+    { "key": "difficult-moments", "category": "character", "saveAs": "character", "title": "Who I want to be in difficult moments",
+      "intro": "Character is easiest to see under pressure. This isn't about judging how you did. It's about who you'd like to reach for next time.",
+      "prompts": [
+        { "key": "proud", "text": "Recall a hard moment where you were proud of how you behaved. What did you do?" },
+        { "key": "instead", "text": "And one where you weren't. What happened instead?" },
+        { "key": "count-on", "text": "When things go wrong, what do you want the people around you to be able to count on?" },
+        { "key": "first", "text": "Name the quality you want to reach for first." }
+      ] },
+    { "key": "cultivating", "category": "character", "saveAs": "character", "title": "Qualities I'm cultivating",
+      "intro": "Character grows like a garden, not a progress bar. Slowly, unevenly, and mostly while you're not looking.",
+      "prompts": [
+        { "key": "growing", "text": "Which quality are you growing right now, even slowly?" },
+        { "key": "showed-up", "text": "Where did you notice it show up recently?" },
+        { "key": "easier", "text": "What makes it easier to practice? What makes it harder?" },
+        { "key": "yours", "text": "How might you know, years from now, that it has become yours?" }
+      ] },
+    { "key": "my-kindness", "category": "character", "saveAs": "character", "title": "My particular kind of kindness",
+      "intro": "Everyone's kindness has its own accent. Some people remember birthdays, some fix bicycles, some sit with you in silence. What's yours?",
+      "prompts": [
+        { "key": "show", "text": "How do you tend to show care? Words, time, food, fixing things, remembering details…" },
+        { "key": "received", "text": "When has someone cared for you in exactly the way you needed?" },
+        { "key": "who", "text": "Is there someone, yourself included, who could use more of your particular kindness?" },
+        { "key": "field-guide", "text": "Describe your kindness in one sentence, like an entry in a field guide." }
+      ] },
+    { "key": "brave", "category": "character", "saveAs": "character", "title": "The brave things I've done",
+      "intro": "Courage rarely looks cinematic. It looks like a phone call, a resignation letter, a first class, a hard truth said kindly.",
+      "prompts": [
+        { "key": "list", "text": "List a few brave things you've done, large or invisible." },
+        { "key": "felt", "text": "What did courage feel like in your body at the time?" },
+        { "key": "anyway", "text": "Where did the willingness to act anyway come from?" },
+        { "key": "now", "text": "Where might a little of that courage be useful now?" }
+      ] },
+
+    { "key": "five-years", "category": "beliefs", "saveAs": "beliefs", "title": "What I believe now that I didn't five years ago",
+      "intro": "Changing your mind is evidence of a mind at work. Neither version of you was foolish; each believed what made sense at the time.",
+      "prompts": [
+        { "key": "now", "text": "Name something you believe now that the person you were five years ago would argue with." },
+        { "key": "changed", "text": "What changed your mind? A person, a book, a loss, a very good year?" },
+        { "key": "before", "text": "What did you believe instead, and what was true about it at the time?" },
+        { "key": "living", "text": "How has the newer belief changed the way you live?" }
+      ] },
+    { "key": "questioning", "category": "beliefs", "saveAs": "beliefs", "title": "Assumptions I'm questioning",
+      "intro": "Most of us carry a few 'shoulds' we never chose. Hold one up to the light. You don't have to decide anything yet.",
+      "prompts": [
+        { "key": "should", "text": "What's a 'should' you've carried for a long time? Write it exactly as you hear it." },
+        { "key": "voice", "text": "Whose voice does it sound like?" },
+        { "key": "served", "text": "Where has it served you? Where has it cost you?" },
+        { "key": "instead", "text": "What would you believe instead, if you were free to choose?" }
+      ] },
+    { "key": "changed-perspective", "category": "beliefs", "saveAs": "beliefs", "title": "Experiences that changed my perspective",
+      "intro": "Some experiences rearrange the furniture of your mind. Afterwards, the same room looks different.",
+      "prompts": [
+        { "key": "experience", "text": "Describe an experience after which you saw something differently." },
+        { "key": "understood", "text": "What did you understand afterwards that you couldn't before?" },
+        { "key": "before-after", "text": "Who were you before it? Who were you after?" },
+        { "key": "belief", "text": "What belief came out of it?" }
+      ] },
+    { "key": "about-people", "category": "beliefs", "saveAs": "beliefs", "title": "What I believe about people",
+      "intro": "Your quiet theory of human nature shapes how you trust, forgive and welcome. It's worth knowing what it is.",
+      "prompts": [
+        { "key": "mostly", "text": "Are people mostly good, mostly doing their best, mostly looking out for themselves, or something else? Answer honestly rather than ideally." },
+        { "key": "taught", "text": "Which experiences taught you that?" },
+        { "key": "shapes", "text": "How does it shape the way you trust, forgive or welcome people?" },
+        { "key": "truer", "text": "Is there a truer or gentler version of it you'd like to hold?" }
+      ] },
+    { "key": "love-and-success", "category": "beliefs", "saveAs": "beliefs", "title": "What I believe about love and success",
+      "intro": "Two words that come with a lot of borrowed definitions. Write your own first drafts. They're allowed to change.",
+      "prompts": [
+        { "key": "love", "text": "Finish the sentence: Love is…" },
+        { "key": "success", "text": "Finish the sentence: Success is…" },
+        { "key": "source", "text": "Where did those definitions come from?" },
+        { "key": "revised", "text": "Which have you already revised, and which might you revise again?" }
+      ] },
+
+    { "key": "meaningful-life", "category": "philosophy", "saveAs": "philosophy", "title": "What a meaningful life looks like to me",
+      "intro": "Not a bucket list. The texture of a life you'd be glad to have lived, including the ordinary days.",
+      "prompts": [
+        { "key": "glad-did", "text": "Picture yourself very old, looking back with satisfaction. What are you glad you did?" },
+        { "key": "glad-didnt", "text": "What are you glad you didn't bother with?" },
+        { "key": "ordinary", "text": "What makes an ordinary day feel meaningful, rather than merely productive?" },
+        { "key": "philosophy", "text": "Write your philosophy of a meaningful life in one or two sentences." }
+      ] },
+    { "key": "enough", "category": "philosophy", "saveAs": "philosophy", "title": "What enough means",
+      "intro": "Enough is one of the most freeing words there is, and one of the hardest to pin down. Try anyway.",
+      "prompts": [
+        { "key": "hardest", "text": "Enough money, work, rest, achievement, approval. Which is hardest for you to define?" },
+        { "key": "describe", "text": "Describe a life that would be enough. Be specific and unglamorous." },
+        { "key": "tempts", "text": "What tempts you past enough?" },
+        { "key": "line", "text": "Write a line that tells you where enough is." }
+      ] },
+    { "key": "younger-self", "category": "philosophy", "saveAs": "philosophy", "title": "A letter to my younger self",
+      "intro": "Pick an age. Pull up a chair. You know things now that would have saved them some trouble, and they knew things you may have forgotten.",
+      "prompts": [
+        { "key": "age", "text": "Which age would you write to, and why that one?" },
+        { "key": "tell", "text": "What would you tell them that they wouldn't believe yet?" },
+        { "key": "thank", "text": "What would you thank them for?" },
+        { "key": "lesson", "text": "Which lesson cost you the most to learn? Say it plainly." }
+      ] },
+    { "key": "lessons", "category": "philosophy", "saveAs": "philosophy", "title": "Lessons that stayed",
+      "intro": "Some lessons you learn once and keep forever. Others you have to relearn every spring. Both belong here.",
+      "prompts": [
+        { "key": "once", "text": "What's a lesson you learned the hard way and never had to learn twice?" },
+        { "key": "relearn", "text": "What's one you keep having to relearn?" },
+        { "key": "taught", "text": "Who taught you something you still use? What was it?" },
+        { "key": "card", "text": "Distill one lesson into a rule that would fit on an index card." }
+      ] },
+    { "key": "words-to-live-by", "category": "philosophy", "saveAs": "philosophy", "title": "Words I live by",
+      "intro": "A line from a book, a song, a grandmother, a stranger on a train. Or a sentence of your own that turned out to be true.",
+      "prompts": [
+        { "key": "line", "text": "Is there a line you return to again and again? Write it down, with who said it." },
+        { "key": "why", "text": "Why does it stay with you?" },
+        { "key": "own", "text": "Write a sentence of your own that feels like a rule to live by." },
+        { "key": "where", "text": "Where in your life do these words matter most?" }
+      ] },
+
+    { "key": "protect", "category": "boundaries", "saveAs": "boundaries", "title": "What deserves more protection",
+      "intro": "A boundary is a promise to yourself about something precious. It isn't a wall, and it isn't a rule for anyone else.",
+      "prompts": [
+        { "key": "precious", "text": "What in your life feels most precious and most easily worn down: time, energy, attention, a relationship, your body?" },
+        { "key": "wears", "text": "What tends to wear it down?" },
+        { "key": "protecting", "text": "What would protecting it look like, practically and kindly?" },
+        { "key": "promise", "text": "Write the boundary as a promise to yourself." }
+      ] },
+    { "key": "saying-no", "category": "boundaries", "saveAs": "boundaries", "title": "Where I'm learning to say no",
+      "intro": "Every no is a yes to something else. This is a place to practice the sentence before you need it.",
+      "prompts": [
+        { "key": "agree", "text": "What do you agree to that you'd rather not?" },
+        { "key": "fear", "text": "What do you fear will happen if you decline?" },
+        { "key": "possible", "text": "What becomes possible when you do say no?" },
+        { "key": "graceful", "text": "Write a no you'd like to be able to say gracefully." }
+      ] },
+    { "key": "energy", "category": "boundaries", "saveAs": "boundaries", "title": "Respecting my energy",
+      "intro": "Energy isn't a moral resource. It rises and falls in its own patterns, and those patterns are worth respecting.",
+      "prompts": [
+        { "key": "best", "text": "When is your energy at its best, in a day or in a week?" },
+        { "key": "drains", "text": "What reliably drains it? What reliably restores it?" },
+        { "key": "busy", "text": "What does respecting your energy look like on a busy day?" },
+        { "key": "first", "text": "If you could protect only one thing about your energy, what would it be?" }
+      ] },
+    { "key": "non-negotiables", "category": "boundaries", "saveAs": "boundaries", "title": "My non-negotiables",
+      "intro": "The few things you need in order to feel like yourself, however full life gets. Short lists are the honest ones.",
+      "prompts": [
+        { "key": "need", "text": "What has to be there for you to feel like yourself, however full life gets?" },
+        { "key": "slipped", "text": "Which of these have slipped before? What happened when they did?" },
+        { "key": "fragile", "text": "Which feel fragile right now?" },
+        { "key": "title", "text": "Name one non-negotiable and why it earns the title." }
+      ] },
+    { "key": "how-spoken-to", "category": "boundaries", "saveAs": "boundaries", "title": "How I want to be spoken to",
+      "intro": "Tone is half of every conversation. Knowing what helps you hear, and how you want to speak, is a kindness to everyone involved.",
+      "prompts": [
+        { "key": "receive", "text": "How do you like to receive hard news or criticism?" },
+        { "key": "tone", "text": "Which tones close you up? Which open you?" },
+        { "key": "upset", "text": "How do you want to speak to others when you're upset?" },
+        { "key": "boundary", "text": "Write a communication boundary you'd like to hold, kindly." }
+      ] },
+
+    { "key": "alive", "category": "patterns", "saveAs": "patterns", "title": "What consistently makes me feel alive",
+      "intro": "Collect the bright moments first. Then look for the thread that runs through them. It's usually not the theme you'd guess.",
+      "prompts": [
+        { "key": "moments", "text": "List moments from the last year when you felt vividly alive." },
+        { "key": "thread", "text": "What do they have in common? Look for the thread, not the topic." },
+        { "key": "often", "text": "How often does that thread appear in an ordinary month?" },
+        { "key": "name", "text": "Name the pattern in a sentence." }
+      ] },
+    { "key": "disconnected", "category": "patterns", "saveAs": "patterns", "title": "When I feel disconnected from myself",
+      "intro": "Drifting is human. Knowing your early signs, and what brings you back, is a map you can hand to your future self.",
+      "prompts": [
+        { "key": "signs", "text": "What are your early signs of drifting from yourself? Sleep, scrolling, irritability, going quiet…" },
+        { "key": "before", "text": "What tends to come right before?" },
+        { "key": "back", "text": "What brings you back, reliably?" },
+        { "key": "remember", "text": "What would you like to remember the next time you notice the signs?" }
+      ] },
+    { "key": "places", "category": "patterns", "saveAs": "patterns", "title": "The places where I thrive",
+      "intro": "Rooms, streets, seasons, tables. Some places bring out a particular version of you. Get specific about why.",
+      "prompts": [
+        { "key": "place", "text": "Describe a place where you think best or feel most at ease." },
+        { "key": "what", "text": "What exactly is it: the light, the sound, the people, the mess or the order?" },
+        { "key": "least", "text": "Where do you feel least like yourself?" },
+        { "key": "borrow", "text": "What could you borrow from your best places for everyday life?" }
+      ] },
+    { "key": "reactions", "category": "patterns", "saveAs": "patterns", "title": "Reactions I recognize",
+      "intro": "Every reaction is trying to protect something. Getting curious about it is different from blaming yourself for it.",
+      "prompts": [
+        { "key": "reaction", "text": "Which of your reactions do you recognize instantly, before you can stop it?" },
+        { "key": "sets-off", "text": "What usually sets it off?" },
+        { "key": "protect", "text": "What might that reaction be trying to protect?" },
+        { "key": "after", "text": "What are you learning to do in the moment after you notice it?" }
+      ] },
+    { "key": "strengths", "category": "patterns", "saveAs": "patterns", "title": "Strengths I keep rediscovering",
+      "intro": "The strengths that come easiest are often the hardest to see, because they don't feel like effort.",
+      "prompts": [
+        { "key": "asked", "text": "What do people ask your help with, again and again?" },
+        { "key": "easy", "text": "What comes easily to you that seems hard for others?" },
+        { "key": "surprised", "text": "When did a strength surprise you by showing up exactly when you needed it?" },
+        { "key": "trust", "text": "Which strength would you like to trust more?" }
+      ] },
+    { "key": "seasons", "category": "patterns", "saveAs": "patterns", "title": "My seasons",
+      "intro": "Growth isn't a straight line. Most lives move in seasons of planting, blooming, resting and clearing, and each one has its own work.",
+      "prompts": [
+        { "key": "now", "text": "What season of life are you in right now? Name it like a chapter title." },
+        { "key": "last", "text": "What did the last season teach you?" },
+        { "key": "between", "text": "What do you notice about how you move from one season to the next?" },
+        { "key": "good", "text": "What would make this season a good one, on its own terms?" }
+      ] }
+  ]
+}

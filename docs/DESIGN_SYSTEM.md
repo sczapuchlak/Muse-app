@@ -805,3 +805,12 @@ Book and Series are pages inside Collections. Both open with a pill Back control
 - **Light-card themes** (Astral, Nightbloom): Atlas sections, shelves, hero, welcome and ritual pages are in the card-ink list in `app/surfaces.css`.
 - **Motion:** star breathing, the reveal and the keepsake ripple are all gated by `prefers-reduced-motion:no-preference` and `data-magic`, with finite iterations.
 
+## Inner Compass (#210) — implemented on feature branch, Staging acceptance pending
+
+- **Classes:** `muse-compass-*` in `components/envision/compass/InnerCompass.css`. Each collection carries `--compass-ink` / `--compass-ink-b` from its chart tone (Values 1, Character 4, Beliefs 6, Philosophy 7, Boundaries 3, Patterns 5; Identity explorations 2), and its `MuseMark` glyph (gem, heart, sun, scroll, key, orbit).
+- **Celestial cartography:** the star chart is an SVG disc with a graticule, degree ticks, sector arcs in each collection’s ink and small-caps labels set along the rim (always upright). The compass rose is the Muse four-point star. Motion (twinkle, settle) is finite and gated by reduced motion and Muse Magic.
+- **Cards:** discoveries use the tinted side-accent panel (3px collection ink on `--surface-subtle`), editorial titles, two-line meanings and a heart toggle. Grids stretch rows to equal height; growing lists page in `EntryCarousel` or “Show more”.
+- **Writing:** prompts and reflections use the ruled-ink textarea in the editorial reading face; prompt numerals are gradient discs.
+- **Manifesto:** a framed sheet (double hairline in the theme’s chart inks, four star corners, centred Fraunces, small-caps section heads between rules); print shows only the sheet.
+- **Light-card themes** (Astral, Nightbloom): the compass surfaces are in the card-ink list in `app/surfaces.css`.
+

@@ -1260,3 +1260,16 @@ Envision's Vision Boards is now **Visions**: freeform Vision Boards and Books (a
 ## Books Import 2.0 (#143) — implemented on feature branch; Staging acceptance pending
 
 See [BOOK_IMPORT_143](BOOK_IMPORT_143.md). Goodreads empty ISBN formulas are missing values, not verification conflicts. Import review separates required decisions from informational notices and reuses catalog/edition search, saved book references, read associations and existing Series installments. Source evidence remains unchanged by review edits. DNF is a fifth native book status, distinct from Paused, and never fabricates a completion. The ordered `20261214000100_book_dnf_status.sql` migration extends existing writer/start/discard validation; no hosted migration or deployment is implied. Existing Muse status wins on refresh, including the accepted Staging import. Atlas visuals and shared styles are unchanged.
+
+## Inner Compass, Phase 1: My Inner World (#210) — implemented on feature branch, Staging acceptance pending
+
+- **Overview:** a star-chart hero (six sectors; each discovery a star placed by its id, significant ones brighter, evolved ones ringed, connections drawn as constellation lines), a significant principle or value for the day, quick add, six collection facets, a “Lately” carousel (recent / significant / evolved), today’s exploration and the manifesto.
+- **Collections:** All or one collection; search (statement, meaning, details, tags), filter (significant, stance/kind/area, tag), sort (recently added, recently evolved, significance date, A–Z, oldest), archive view, show more by 36. Philosophy reads as a commonplace book grouped by theme.
+- **Detail:** reading view, Edit, Record evolution, Reflect on this, significant, connections, Life Atlas areas, reflections, evolution history, archive/restore, confirmed delete.
+- **Explorations:** today’s invitation (stable per day, skips ones answered in the last two weeks), library by theme, sessions, past responses.
+- **Evolution:** every discovery as it arrived and every recorded evolution, by month.
+- **Manifesto:** typeset reading view, editor (headings, own lines, lines from discoveries, reorder), autosave, kept versions, print.
+- **Integrations:** Intentions section “Values & qualities to honor” (values and character, up to 8, id + name snapshot); Vision Board elements can link a discovery; discoveries can be associated with Life Areas.
+- **Data:** migration `20261222000100_inner_compass.sql`; RPC `record_inner_evolution` copies the earlier words from the row itself, atomically, with a revision check. Content: `content/inner-compass/explorations.json`, `words.json`.
+- **Checks:** `tests/inner-compass.test.mjs`, `npm run test:inner-compass:db`, `npm run test:inner-compass:ui`, `scripts/verify-hosted-inner-compass.sql`.
+

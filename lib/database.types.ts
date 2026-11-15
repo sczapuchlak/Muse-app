@@ -117,6 +117,46 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"inner_discoveries": {
+                  Row: { archived_at: string | null; category: string; created_at: string; details: Json; evolved_at: string | null; favorite: boolean; id: string; meaning: string; reflection: string; revision: number; significance_date: string | null; source_id: string | null; source_kind: string | null; source_label: string | null; tags: string[]; title: string; updated_at: string; user_id: string }
+                  Insert: { archived_at?: string | null; category: string; created_at?: string; details?: Json; evolved_at?: string | null; favorite?: boolean; id?: string; meaning?: string; reflection?: string; revision?: number; significance_date?: string | null; source_id?: string | null; source_kind?: string | null; source_label?: string | null; tags?: string[]; title: string; updated_at?: string; user_id?: string }
+                  Update: { archived_at?: string | null; category?: string; created_at?: string; details?: Json; evolved_at?: string | null; favorite?: boolean; id?: string; meaning?: string; reflection?: string; revision?: number; significance_date?: string | null; source_id?: string | null; source_kind?: string | null; source_label?: string | null; tags?: string[]; title?: string; updated_at?: string; user_id?: string }
+                  Relationships: []
+                },"inner_discovery_areas": {
+                  Row: { area_id: string; created_at: string; discovery_id: string; user_id: string }
+                  Insert: { area_id: string; created_at?: string; discovery_id: string; user_id?: string }
+                  Update: { area_id?: string; created_at?: string; discovery_id?: string; user_id?: string }
+                  Relationships: []
+                },"inner_discovery_links": {
+                  Row: { a_id: string; b_id: string; created_at: string; user_id: string }
+                  Insert: { a_id: string; b_id: string; created_at?: string; user_id?: string }
+                  Update: { a_id?: string; b_id?: string; created_at?: string; user_id?: string }
+                  Relationships: []
+                },"inner_discovery_versions": {
+                  Row: { created_at: string; details: Json; discovery_id: string; evolved_on: string; id: string; meaning: string; next_meaning: string; next_title: string; reason: string; reflection: string; title: string; user_id: string }
+                  Insert: { created_at?: string; details?: Json; discovery_id: string; evolved_on?: string; id?: string; meaning?: string; next_meaning?: string; next_title: string; reason?: string; reflection?: string; title: string; user_id?: string }
+                  Update: { created_at?: string; details?: Json; discovery_id?: string; evolved_on?: string; id?: string; meaning?: string; next_meaning?: string; next_title?: string; reason?: string; reflection?: string; title?: string; user_id?: string }
+                  Relationships: []
+                },"inner_exploration_responses": {
+                  Row: { answers: Json; completed_on: string; created_at: string; exploration_key: string; exploration_title: string; id: string; reflection: string; revision: number; updated_at: string; user_id: string }
+                  Insert: { answers?: Json; completed_on?: string; created_at?: string; exploration_key: string; exploration_title: string; id?: string; reflection?: string; revision?: number; updated_at?: string; user_id?: string }
+                  Update: { answers?: Json; completed_on?: string; created_at?: string; exploration_key?: string; exploration_title?: string; id?: string; reflection?: string; revision?: number; updated_at?: string; user_id?: string }
+                  Relationships: []
+                },"inner_manifesto_versions": {
+                  Row: { blocks: Json; id: string; note: string; saved_at: string; title: string; user_id: string }
+                  Insert: { blocks: Json; id?: string; note?: string; saved_at?: string; title: string; user_id?: string }
+                  Update: { blocks?: Json; id?: string; note?: string; saved_at?: string; title?: string; user_id?: string }
+                  Relationships: []
+                },"inner_manifestos": {
+                  Row: { blocks: Json; created_at: string; revision: number; title: string; updated_at: string; user_id: string }
+                  Insert: { blocks?: Json; created_at?: string; revision?: number; title?: string; updated_at?: string; user_id?: string }
+                  Update: { blocks?: Json; created_at?: string; revision?: number; title?: string; updated_at?: string; user_id?: string }
+                  Relationships: []
+                },"inner_reflections": {
+                  Row: { body: string; created_at: string; discovery_id: string | null; discovery_title: string | null; feeling: string | null; id: string; response_id: string | null; revision: number; updated_at: string; user_id: string; written_on: string }
+                  Insert: { body: string; created_at?: string; discovery_id?: string | null; discovery_title?: string | null; feeling?: string | null; id?: string; response_id?: string | null; revision?: number; updated_at?: string; user_id?: string; written_on?: string }
+                  Update: { body?: string; created_at?: string; discovery_id?: string | null; discovery_title?: string | null; feeling?: string | null; id?: string; response_id?: string | null; revision?: number; updated_at?: string; user_id?: string; written_on?: string }
+                  Relationships: []
                 },"aspiration_books": {
                   Row: { id: string; user_id: string; aspiration_id: string; book_id: string | null; book_name: string; created_at: string }
                   Insert: { id?: string; user_id?: string; aspiration_id: string; book_id?: string | null; book_name: string; created_at?: string }
@@ -3099,6 +3139,7 @@ isOneToOne: false
           }
           Functions: {
             set_aspiration_primary_area: { Args: { p_aspiration_id: string; p_area_id: string | null }; Returns: undefined }
+            record_inner_evolution: { Args: { p_id: string; p_revision: number; p_title: string; p_meaning: string; p_details: Json; p_reason: string; p_reflection: string; p_evolved_on: string }; Returns: Database["public"]["Tables"]["inner_discoveries"]["Row"][] }
             "backfill_priority_tasks":
 { Args: { "p_command_id": string,"p_expected_planner_revision": number }; Returns: number
                            },
