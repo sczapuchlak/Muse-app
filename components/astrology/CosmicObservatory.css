@@ -191,3 +191,86 @@
 @media(max-width:650px){.muse-cosmic-astro101 .muse-astro101-steps li button span:last-child{display:none}}
 .muse-cosmic-house-gallery,.muse-cosmic-aspect-gallery{align-items:stretch}
 .muse-cosmic-house-gallery>.muse-cosmic-tile,.muse-cosmic-aspect-gallery>.muse-cosmic-tile{height:100%}
+
+/* ---------- #214 (Nov 15): Birth Chart and Cosmic Journal match the newer Muse pages ---------- */
+/* Birth Chart: one hero — the Big Three as a title and three rows, beside the real, interactive natal wheel. */
+.muse-chart-hero{position:relative;isolation:isolate;overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:clamp(16px,3vw,36px);align-items:center;padding:clamp(18px,3vw,34px);
+ border:1px solid var(--glass-border);border-radius:var(--card-radius,22px);box-shadow:var(--card-shadow);
+ background:radial-gradient(70% 90% at 100% 0%,color-mix(in srgb,var(--chart-7) 18%,transparent),transparent 60%),radial-gradient(60% 80% at 0% 100%,color-mix(in srgb,var(--chart-4) 10%,transparent),transparent 60%),var(--glass-background)}
+.muse-chart-hero-copy{display:grid;gap:12px;align-content:center;min-width:0}
+.muse-chart-hero-copy>*{margin:0}
+.muse-chart-hero-copy .muse-kicker{color:var(--dl-kicker)}
+.muse-observatory .muse-chart-hero-title{font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight);font-size:clamp(1.8rem,3.4vw,2.7rem);line-height:1.06;text-wrap:balance}
+.muse-chart-hero-meta{color:var(--text-muted);font-size:.86rem}
+.muse-chart-hero .muse-cosmic-big-three{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
+.muse-chart-hero .muse-cosmic-big-three .muse-cosmic-tile{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-rows:auto auto;column-gap:12px;row-gap:2px;align-items:center;min-height:0;padding:10px 14px;border-radius:14px;text-align:left}
+.muse-chart-hero .muse-cosmic-big-three .muse-cosmic-tile>span:first-child{grid-row:1/3;color:var(--text-muted);font:700 .66rem/1.2 var(--font-ui);letter-spacing:.12em;text-transform:uppercase;min-width:92px}
+.muse-chart-hero .muse-cosmic-big-three .muse-cosmic-tile strong{font-family:var(--font-editorial);font-size:1.12rem;line-height:1.2}
+.muse-chart-hero .muse-cosmic-big-three .muse-cosmic-tile>span:nth-child(3){grid-column:2;color:var(--text-muted);font-size:.82rem}
+.muse-chart-hero .muse-cosmic-big-three .muse-cosmic-tile small{display:none}
+.muse-chart-delete{justify-self:start;font-size:.8rem;color:var(--text-muted)!important}
+.muse-chart-hero-wheel{display:grid;gap:10px;min-width:0}
+.muse-chart-hero-wheel .muse-natal-wheel{max-width:460px;width:100%;margin:auto}
+.muse-chart-hero-wheel>.small-label{text-align:center}
+.muse-observatory .muse-chart-placements{grid-template-columns:minmax(0,1fr)!important;padding:clamp(14px,2vw,22px);border:1px solid var(--glass-border);border-radius:var(--card-radius,22px);background:var(--glass-background);box-shadow:var(--card-shadow)}
+.muse-observatory .muse-chart-placements .muse-cosmic-placement-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,210px),1fr));gap:8px}
+.muse-chart-phase{display:flex;align-items:center;gap:14px}
+.muse-chart-moon{flex:0 0 auto;width:52px;height:52px;filter:drop-shadow(0 0 10px color-mix(in srgb,#ffe7a6 45%,transparent))}
+.muse-chart-moon-dark{fill:color-mix(in srgb,var(--foreground) 12%,transparent);stroke:color-mix(in srgb,var(--foreground) 22%,transparent);stroke-width:.6}
+.muse-chart-moon-lit{fill:#fbf1cf}
+/* Element and modality bars in the theme, never a grey browser meter. */
+.muse-cosmic-distribution meter{-webkit-appearance:none;appearance:none;height:10px;border:0;border-radius:999px;background:color-mix(in srgb,var(--foreground) 12%,transparent);--bar:var(--accent-secondary)}
+.muse-cosmic-distribution meter::-webkit-meter-bar{height:10px;border:0;border-radius:999px;background:color-mix(in srgb,var(--foreground) 12%,transparent)}
+.muse-cosmic-distribution meter::-webkit-meter-optimum-value,.muse-cosmic-distribution meter::-webkit-meter-suboptimum-value,.muse-cosmic-distribution meter::-webkit-meter-even-less-good-value{border-radius:999px;background:linear-gradient(90deg,var(--bar),color-mix(in srgb,var(--bar) 55%,#fff))}
+.muse-cosmic-distribution meter::-moz-meter-bar{border-radius:999px;background:linear-gradient(90deg,var(--bar),color-mix(in srgb,var(--bar) 55%,#fff))}
+.muse-cosmic-distribution [data-name=fire] meter{--bar:var(--chart-2)}.muse-cosmic-distribution [data-name=earth] meter{--bar:var(--chart-3)}
+.muse-cosmic-distribution [data-name=air] meter{--bar:var(--chart-5)}.muse-cosmic-distribution [data-name=water] meter{--bar:var(--chart-6)}
+.muse-cosmic-distribution [data-name=cardinal] meter{--bar:var(--chart-1)}.muse-cosmic-distribution [data-name=fixed] meter{--bar:var(--chart-4)}.muse-cosmic-distribution [data-name=mutable] meter{--bar:var(--chart-7)}
+.muse-observatory .muse-cosmic-snapshot>div:first-child h4{font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight);font-size:1.5rem}
+
+/* Cosmic Journal: a full-width hero, then one archive for search, filters and reflections. */
+.muse-cosmic-journal{display:grid;gap:clamp(12px,1.6vw,18px);min-width:0}
+.muse-cosmic-journal-hero,.muse-cosmic-journal-archive{position:relative;padding:clamp(18px,3vw,34px);border:1px solid var(--glass-border);border-radius:var(--card-radius,22px);background:var(--glass-background);box-shadow:var(--card-shadow);min-width:0}
+.muse-cosmic-journal-hero{isolation:isolate;overflow:hidden;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:clamp(16px,3vw,36px);align-items:center;
+ background:radial-gradient(70% 100% at 100% 0%,color-mix(in srgb,var(--chart-5) 16%,transparent),transparent 60%),radial-gradient(60% 80% at 0% 100%,color-mix(in srgb,var(--chart-3) 10%,transparent),transparent 60%),var(--glass-background)}
+.muse-cosmic-journal-hero-copy{display:grid;gap:10px;min-width:0}
+.muse-cosmic-journal-hero-copy>*{margin:0}
+.muse-cosmic-journal-hero-copy .muse-kicker{color:var(--dl-kicker)}
+.muse-observatory .muse-cosmic-journal-hero h3{font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight);font-size:clamp(2rem,4vw,3rem);line-height:1.02}
+.muse-cosmic-journal-hero-copy>p{color:var(--text-muted);line-height:1.6;max-width:56ch}
+.muse-cosmic-journal-stats{display:flex;flex-wrap:wrap;gap:8px;margin:0}
+.muse-cosmic-journal-stats>div{display:grid;gap:2px;min-width:110px;padding:8px 14px;border:1px solid var(--glass-border);border-radius:14px;background:var(--surface-subtle)}
+.muse-cosmic-journal-stats dt{color:var(--text-muted);font:700 .62rem/1.2 var(--font-ui);letter-spacing:.12em;text-transform:uppercase}
+.muse-cosmic-journal-stats dd{margin:0;font:500 1.35rem/1.1 var(--font-editorial)}
+.muse-cosmic-journal-art{width:100%;max-width:300px;justify-self:center}
+.muse-cosmic-journal-art circle{fill:var(--accent-secondary)}
+.muse-cosmic-journal-art-trail{fill:none;stroke:color-mix(in srgb,var(--foreground) 24%,transparent);stroke-width:.9;stroke-dasharray:2 4}
+.muse-cosmic-journal-art-moon{fill:#fbf1cf;filter:drop-shadow(0 0 12px color-mix(in srgb,#ffe7a6 55%,transparent))}
+.muse-cosmic-journal-art-book{fill:color-mix(in srgb,var(--chart-5) 22%,var(--glass-background));stroke:color-mix(in srgb,var(--chart-5) 70%,var(--foreground));stroke-width:1.4;stroke-linejoin:round}
+.muse-cosmic-journal-art-spine,.muse-cosmic-journal-art-lines{fill:none;stroke:color-mix(in srgb,var(--foreground) 35%,transparent);stroke-width:1}
+.muse-cosmic-journal-art-star{fill:var(--chart-3)}
+.muse-cosmic-journal-archive{display:grid;gap:14px;padding:clamp(14px,2vw,22px)}
+.muse-cosmic-journal-empty-row{display:flex;align-items:center;gap:18px;padding:16px 18px;border:1px dashed var(--glass-border);border-radius:var(--dl-radius-panel,18px);background:var(--surface-subtle)}
+.muse-cosmic-journal-empty-row h4{margin:0 0 2px;font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight);font-size:1.2rem}
+.muse-cosmic-journal-empty-row p{margin:0;color:var(--text-muted)}
+.muse-cosmic-journal-empty-row .muse-cosmic-journal-empty-art{display:flex;flex:0 0 auto}
+.muse-cosmic-journal-empty-row .muse-cosmic-journal-empty-art>*:not(:first-child){margin-left:-8px}
+@container muse-content (max-width:900px){.muse-chart-hero,.muse-cosmic-journal-hero{grid-template-columns:minmax(0,1fr)}.muse-cosmic-journal-art{max-width:220px}}
+@container muse-content (max-width:640px){.muse-cosmic-journal-art{display:none}.muse-cosmic-journal-empty-row{align-items:flex-start}.muse-chart-hero .muse-cosmic-big-three .muse-cosmic-tile>span:first-child{min-width:70px}}
+/* Reflections are cards, three across, never stretched across the page (the same rule as the Dream Diary, Nov 15). */
+.muse-observatory .muse-cosmic-journal-archive .muse-cosmic-journal-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;align-items:stretch}
+.muse-observatory .muse-cosmic-journal-archive .muse-cosmic-journal-card{height:100%;min-height:180px}
+.muse-observatory .muse-cosmic-journal-archive .muse-cosmic-journal-preview{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+@container muse-content (max-width:1000px){.muse-observatory .muse-cosmic-journal-archive .muse-cosmic-journal-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@container muse-content (max-width:640px){.muse-observatory .muse-cosmic-journal-archive .muse-cosmic-journal-grid{grid-template-columns:minmax(0,1fr)}}
+.muse-cosmic-journal-ghost{display:grid;place-items:center;align-content:center;gap:4px;min-height:180px;padding:18px;border:1px dashed color-mix(in srgb,var(--chart-3) 40%,var(--glass-border));border-radius:22px;background:color-mix(in srgb,var(--glass-background) 70%,transparent);color:var(--foreground);text-align:center;cursor:pointer;transition:border-color .2s,transform .22s cubic-bezier(.2,.8,.2,1)}
+.muse-cosmic-journal-ghost:is(:hover,:focus-visible){transform:translateY(-3px);border-color:var(--chart-3)}
+.muse-cosmic-journal-ghost:focus-visible{outline:2px solid var(--focus-ring);outline-offset:3px}
+.muse-cosmic-journal-ghost span{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:radial-gradient(circle at 35% 30%,color-mix(in srgb,#ffe7a6 55%,var(--chart-3)),var(--chart-3));color:#fff;font-size:1.3rem;box-shadow:0 0 18px -4px var(--chart-3)}
+.muse-cosmic-journal-ghost b{font-family:var(--font-editorial);font-style:italic;font-size:1.1rem}
+.muse-cosmic-journal-ghost small{color:var(--text-muted)}
+@container muse-content (max-width:640px){.muse-cosmic-journal-ghost{display:none}}
+@media (prefers-reduced-motion:reduce){.muse-cosmic-journal-ghost{transition:none}.muse-cosmic-journal-ghost:is(:hover,:focus-visible){transform:none}}
+/* The ghost takes whatever is left of the row, so reflections never end on an empty slot. */
+.muse-observatory .muse-cosmic-journal-archive .muse-cosmic-journal-ghost{grid-column:span var(--ghost-3,1)}
+@container muse-content (max-width:1000px){.muse-observatory .muse-cosmic-journal-archive .muse-cosmic-journal-ghost{grid-column:span var(--ghost-2,1)}}

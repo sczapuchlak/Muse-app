@@ -45,9 +45,9 @@ export function DreamDiary(p:Props){
   {p.view==='calendar'&&<DreamCalendar month={p.calendarMonth} setMonth={p.setCalendarMonth} dreams={p.dreams} selected={p.selectedDate} today={p.today} onDate={date=>reset(()=>p.setSelectedDate(p.selectedDate===date?'':date))}/>}
   {p.view==='calendar'&&!p.selectedDate?<p className="muse-dream-quiet">Choose a night to read what you remembered.</p>
    :!matches.length?<p className="muse-dream-quiet">{p.selectedDate?'No dreams recorded for this night. Some stories slip away before morning.':'No dreams match these filters. Try a softer search.'}</p>
-   :<div className="muse-dream-timeline muse-dream-reveal" key={`${page.page}-${p.selectedDate}-${type}`}>{dreamsByMonth(page.items).map(group=><section key={group.month} className="muse-dream-month" aria-label={monthTitle(group.month)}>
+   :<div className="muse-dream-timeline muse-dream-reveal" key={`${page.page}-${p.selectedDate}-${type}`}>{dreamsByMonth(page.items).map((group,gi)=><section key={group.month} className="muse-dream-month" aria-label={monthTitle(group.month)}>
      <header><h3>{monthTitle(group.month)}</h3><span className="small-label">{matches.filter(d=>d.date.startsWith(group.month)).length} {matches.filter(d=>d.date.startsWith(group.month)).length===1?'dream':'dreams'}</span></header>
-     <div className="muse-dream-list">{group.dreams.map(entry=><DreamCard key={entry.id} entry={entry} series={p.seriesName(entry.id)} symbolName={symbolName} symbols={p.symbols} symbolHref={p.symbolHref} onOpen={p.onOpen} onEdit={p.onEdit} onDelete={p.onDelete} onDecode={p.onDecode}/>)}</div>
+     <div className="muse-dream-list">{group.dreams.map(entry=><DreamCard key={entry.id} entry={entry} series={p.seriesName(entry.id)} symbolName={symbolName} symbols={p.symbols} symbolHref={p.symbolHref} onOpen={p.onOpen} onEdit={p.onEdit} onDelete={p.onDelete} onDecode={p.onDecode}/>)}{gi===0&&p.view==='timeline'&&group.dreams.length%3!==0&&<button type="button" className="muse-dream-ghost" style={{'--ghost-3':3-group.dreams.length%3,'--ghost-2':2-group.dreams.length%2} as React.CSSProperties} onClick={p.onCapture}><span aria-hidden="true">+</span><b>Capture a dream</b><small>Even a fragment is worth keeping.</small></button>}</div>
     </section>)}</div>}
   {(p.view==='timeline'||p.selectedDate)&&<DreamPager page={page} onPage={n=>{setPageNo(n);document.querySelector('[aria-label="Dream Diary"]')?.scrollIntoView({block:'start',behavior:'smooth'});}} label="Dream pages"/>}
  </section>;
@@ -65,6 +65,7 @@ function DreamCard({entry,series,symbolName,symbols,symbolHref,onOpen,onEdit,onD
   <p className="muse-dream-preview">{entry.text}</p>
   {(entry.emotions.length>0||entry.intensity!=null)&&<div className="muse-dream-feelings">{entry.emotions.slice(0,3).map(id=><span className="muse-dream-chip" key={id}>{emotionName(id)}</span>)}{entry.emotions.length>3&&<span className="small-label">+{entry.emotions.length-3}</span>}<Intensity value={entry.intensity}/></div>}
   {entry.symbolIds.length>0&&<div className="muse-dream-artifacts">{entry.symbolIds.slice(0,3).map(id=>{const s=symbols.find(x=>x.id===id);return <Link className="muse-dream-artifact" key={id} href={symbolHref(id,entry.id)}><span aria-hidden="true">{symbolGlyph(s)}</span>{symbolName(id)}</Link>;})}{entry.symbolIds.length>3&&<span className="small-label">+{entry.symbolIds.length-3} more</span>}</div>}
+  <span className="muse-dream-crescent" aria-hidden="true"/>
   {(series||entry.notes||entry.interpretation)&&<div className="muse-dream-entry-foot">{series&&<span className="muse-dream-series-tag">↻ {series}</span>}{entry.interpretation&&<span className="small-label">✎ Reflection</span>}{entry.notes&&<span className="small-label">Private note</span>}</div>}
  </article>;
 }

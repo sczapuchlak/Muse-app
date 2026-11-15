@@ -112,18 +112,38 @@ try{
  check(await has('.muse-lifeatlas-story[data-kind=chapter]','Closed'),'8. a closed chapter keeps its Life Atlas association');
  check((await admin.from('life_ratings').select('*',{count:'exact',head:true}).eq('user_id',userId)).count===ratingsBefore,'Life Atlas ratings are untouched');
 
+ // ---- Evolution and Manifesto ----
+ await go('/envision?view=inner-compass&space=manifesto','!!document.querySelector(".muse-compass-mani-hero")','manifesto empty');await wait(500);await shoot('05-manifesto-empty');
+ const D=(category,title,extra={})=>({id:crypto.randomUUID(),category,title,meaning:'',favorite:false,details:{},tags:[],...extra});
+ const ds=[D('values','Curiosity'),D('values','Freedom'),D('character','Courage'),D('beliefs','Rest is productive.'),D('philosophy','Leave every room a little kinder than you found it.'),D('patterns','I feel most like myself exploring.')];
+ must(await client.from('inner_discoveries').insert(ds));
+ must(await client.rpc('record_inner_evolution',{p_id:ds[3].id,p_revision:1,p_title:'Rest is part of the work.',p_meaning:'',p_details:{},p_reason:'A slower year',p_reflection:'',p_evolved_on:'2026-10-02'}));
+ await go('/envision?view=inner-compass&space=evolution','!!document.querySelector(".muse-compass-evo-hero")','evolution');await wait(600);
+ check(await evaluate(()=>document.querySelectorAll('.muse-compass-evo-star').length)>=7,'rings of time draw every discovery and evolution');
+ await shoot('06-evolution');
+ await click('.muse-compass-evo-action .muse-choice-trigger');await until(()=>!!document.querySelector('.popover-choice'),'evolve picker');await click('.popover-choice','Values · Curiosity');
+ await until(()=>!!document.querySelector('#muse-compass-detail .muse-compass-editor .muse-compass-before'),'opens in Record evolution');
+ check(true,'Record an evolution opens the chosen discovery ready to evolve');
+ await click('#muse-compass-detail .muse-modal-universal-close button');await until(()=>!document.querySelector('#muse-compass-detail'),'closed');
+ must(await client.from('inner_manifestos').insert({title:'My Manifesto',blocks:[{id:'h1',kind:'heading',text:'What I value'},{id:'l1',kind:'line',text:'I stay curious, especially when it is uncomfortable.',ref:{id:ds[0].id,category:'values',label:'Curiosity'}},{id:'l2',kind:'line',text:'I leave every room a little kinder.'},{id:'h2',kind:'heading',text:'How I want to live'},{id:'l3',kind:'line',text:'An interesting life over a tidy one.'}]}));
+ must(await client.from('inner_manifesto_versions').insert({title:'My Manifesto',blocks:[{id:'l1',kind:'line',text:'A first draft.'}],note:'First draft'}));
+ await go('/envision?view=inner-compass&space=manifesto','!!document.querySelector(".muse-compass-mani-body .muse-compass-sheet")','manifesto');await wait(600);
+ check(await has('.muse-compass-mini-sheet','I stay curious'),'the hero pages carry the real first lines');
+ check(await evaluate(()=>!!document.querySelector('.muse-compass-mani-body[data-versions] .muse-compass-versions')),'kept versions sit beside the page');
+ await shoot('07-manifesto',true);
+
  // ---- Populated screens across themes and materials ----
  must(await client.from('inner_experience_collections').insert({name:'Coven Chronicles',cover:{preset:'eclipse'}}).select('id'));
  for(const [t,m] of [['prism-noir','frosted'],['astral','crystal'],['iridescent','frosted'],['northern-lights-out','crystal']]){
   await theme(t,m);
-  for(const [path,name,ready] of [['/envision?view=inner-compass','world','.muse-compass-hero'],['/envision?view=inner-compass&realm=chapters','chapters','.muse-stories-volumes'],['/envision?view=inner-compass&realm=experiences','experiences','.muse-stories-archive .muse-stories-tile']]){
+  for(const [path,name,ready] of [['/envision?view=inner-compass','world','.muse-compass-hero'],['/envision?view=inner-compass&space=evolution','evolution','.muse-compass-evo-hero'],['/envision?view=inner-compass&space=manifesto','manifesto','.muse-compass-mani-hero'],['/envision?view=inner-compass&realm=chapters','chapters','.muse-stories-volumes'],['/envision?view=inner-compass&realm=experiences','experiences','.muse-stories-archive .muse-stories-tile']]){
    await go(path,`!!document.querySelector("${ready}")`,`${t} ${name}`);await wait(700);await shoot(`10-${t}-${m}-${name}`);
   }
  }
  await theme('prism-noir');
  await viewport(390,844,true);
- for(const [path,name,ready] of [['/envision?view=inner-compass','20-phone-world','.muse-compass-hero'],['/envision?view=inner-compass&realm=chapters','21-phone-chapters','.muse-stories-volumes'],['/envision?view=inner-compass&realm=experiences','22-phone-experiences','.muse-stories-archive'],['/envision','23-phone-atlas','.muse-lifeatlas-stories']]){
-  await go(path,`!!document.querySelector("${ready}")`,name);await wait(500);check(!(await overflow()),`10. ${name}: no sideways scroll`);await shoot(name,name==='22-phone-experiences'||name==='23-phone-atlas');
+ for(const [path,name,ready] of [['/envision?view=inner-compass','20-phone-world','.muse-compass-hero'],['/envision?view=inner-compass&realm=chapters','21-phone-chapters','.muse-stories-volumes'],['/envision?view=inner-compass&realm=experiences','22-phone-experiences','.muse-stories-archive'],['/envision','23-phone-atlas','.muse-lifeatlas-stories'],['/envision?view=inner-compass&space=evolution','24-phone-evolution','.muse-compass-evo-hero'],['/envision?view=inner-compass&space=manifesto','25-phone-manifesto','.muse-compass-mani-hero']]){
+  await go(path,`!!document.querySelector("${ready}")`,name);await wait(500);check(!(await overflow()),`10. ${name}: no sideways scroll`);await shoot(name,name==='22-phone-experiences'||name==='23-phone-atlas'||name.startsWith('24')||name.startsWith('25'));
  }
  check(errors.length===0,`no runtime errors (${errors.join(' | ').slice(0,400)})`);
  console.log(`PASS #214: ${passed} checks. Screenshots in ${shots}`);

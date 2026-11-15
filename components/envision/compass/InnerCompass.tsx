@@ -95,11 +95,11 @@ export function InnerCompass({ today }: { today: string }) {
         {space === "overview" && <Overview compass={compass} today={today} invite={featured} onOpen={openDiscovery} onCollection={toCollection} onSpace={(s) => go({ space: s, cat: null, d: null })} onBegin={(key) => { remember(); setSession({ key }); }} add={addDiscovery} collectionHref={(c) => href({ space: "collections", cat: c, d: null })} />}
         {space === "collections" && <Collections compass={compass} category={category} onCategory={toCollection} onOpen={openDiscovery} onGarden={(k) => { remember(); setGarden(k); }} addSaved={addDiscovery} />}
         {space === "explore" && <Explorations compass={compass} featured={featured} onBegin={(key) => { remember(); setSession({ key }); }} onRevisit={(id) => { remember(); setSession({ id }); }} />}
-        {space === "evolution" && <Evolution compass={compass} onOpen={openDiscovery} />}
+        {space === "evolution" && <Evolution compass={compass} onOpen={openDiscovery} onEvolve={(id) => { remember(); go({ d: id, evolve: "1" }); }} />}
         {space === "manifesto" && <Manifesto compass={compass} />}
       </>}
 
-    {open && <DiscoveryDetail key={open.id} d={open} compass={compass} today={today} onClose={() => go({ d: null })} onOpen={openDiscovery} returnFocus={opener} />}
+    {open && <DiscoveryDetail key={open.id} d={open} compass={compass} today={today} onClose={() => go({ d: null, evolve: null })} onOpen={openDiscovery} returnFocus={opener} initialMode={params?.get("evolve") ? "evolve" : "view"} />}
     {openId && compass.status.loaded && !open && <MissingNotice onClose={() => go({ d: null })} />}
     {garden && <WordGarden kind={garden} compass={compass} onClose={() => setGarden(null)} returnFocus={opener} />}
     {session && <ExplorationSession explorationKey={session.key} responseId={session.id} compass={compass} today={today} onClose={() => setSession(null)} onOpen={openDiscovery} returnFocus={opener} />}

@@ -18,23 +18,48 @@ export function Manifesto({ compass }: { compass: Compass }) {
   const m = compass.manifesto, [editing, setEditing] = useState(false), [viewing, setViewing] = useState<ManifestoVersion | null>(null);
   const started = m.revision > 0 && hasWords(m.blocks);
   if (editing) return <ManifestoEditor compass={compass} onDone={() => setEditing(false)} />;
-  return <section className="muse-compass-manifesto-view" aria-label="Personal Manifesto">
-    <div className="muse-compass-manifesto-bar">
-      <p className="muse-kicker"><MuseIcon name="sparkle" size={13} /> Personal Manifesto {m.updatedAt && started ? <span className="muse-compass-quiet">· revised {shortDate(m.updatedAt)}</span> : null}</p>
-      <div className="muse-compass-hero-actions">
-        {started && <button type="button" className="muse-button" onClick={() => window.print()}><MuseIcon name="bookmark" size={15} /> Print or save as PDF</button>}
-        <button type="button" className="muse-button button-primary" onClick={() => setEditing(true)}><MuseIcon name="edit" size={15} /> {started ? "Edit" : "Begin my manifesto"}</button>
+  const lines = m.blocks.filter((b) => b.kind === "line" && b.text.trim());
+  const fromDiscoveries = lines.filter((b) => b.kind === "line" && b.ref).length;
+  return <div className="muse-compass-mani">
+    <section className="muse-compass-mani-hero" aria-labelledby="compass-manifesto-title">
+      <div className="muse-compass-mani-hero-copy">
+        <p className="muse-kicker"><MuseIcon name="sparkle" size={13} /> Personal Manifesto</p>
+        <h2 id="compass-manifesto-title">{started ? m.title : "A living declaration"}</h2>
+        <p className="muse-compass-mani-lede">{started ? "Your principles and your character, in your own words, set like a page worth keeping. Revise it whenever you change." : "The values you choose, the person you’re becoming, what you believe and how you mean to live. Optional, and entirely yours: begin from your own discoveries or a blank page."}</p>
+        {started && <dl className="muse-compass-evo-stats">
+          <div><dt>Lines</dt><dd className="type-numeric">{lines.length}</dd></div>
+          <div><dt>From my discoveries</dt><dd className="type-numeric">{fromDiscoveries}</dd></div>
+          <div><dt>Kept versions</dt><dd className="type-numeric">{compass.manifestoVersions.length}</dd></div>
+        </dl>}
+        <div className="muse-compass-hero-actions">
+          <button type="button" className="muse-button button-primary" onClick={() => setEditing(true)}><MuseIcon name="edit" size={15} /> {started ? "Edit" : "Begin my manifesto"}</button>
+          {started && <button type="button" className="muse-button" onClick={() => window.print()}><MuseIcon name="bookmark" size={15} /> Print or save as PDF</button>}
+          {started && m.updatedAt && <span className="muse-compass-quiet">Revised {shortDate(m.updatedAt)}</span>}
+        </div>
       </div>
+      <PagesArt lines={started ? lines.slice(0, 4).map((l) => l.text) : []} title={started ? m.title : "My Manifesto"} />
+    </section>
+
+    {started || viewing ? <div className="muse-compass-mani-body" data-versions={compass.manifestoVersions.length > 0 || undefined}>
+      <section className="muse-compass-manifesto-view" aria-label={viewing ? "A kept version" : "Your manifesto"}>
+        {viewing && <p className="muse-compass-version-note" role="status">A kept version from {shortDate(viewing.savedAt)}{viewing.note ? `: “${viewing.note}”` : ""}. <button type="button" className="text-button" onClick={() => setViewing(null)}>Back to today’s</button></p>}
+        <Sheet title={viewing ? viewing.title : m.title} blocks={viewing ? viewing.blocks : m.blocks} compass={compass} />
+      </section>
+      {compass.manifestoVersions.length > 0 && <Versions compass={compass} viewing={viewing} onView={setViewing} />}
+    </div> : compass.manifestoVersions.length > 0 && <Versions compass={compass} viewing={viewing} onView={setViewing} />}
+  </div>;
+}
+
+/** Two framed pages, tilted like loose leaves: the front one carries the first real lines (or quiet rules before there are any). */
+function PagesArt({ lines, title }: { lines: string[]; title: string }) {
+  return <div className="muse-compass-mani-pages" aria-hidden="true">
+    <div className="muse-compass-mini-sheet" data-i="0"><span className="muse-compass-mini-rules" /></div>
+    <div className="muse-compass-mini-sheet" data-i="1">
+      <svg viewBox="0 0 40 40" width="16" height="16" className="muse-compass-sheet-star"><path d="M20 0C21.7 15.8 24.2 18.3 40 20C24.2 21.7 21.7 24.2 20 40C18.3 24.2 15.8 21.7 0 20C15.8 18.3 18.3 15.8 20 0Z" /></svg>
+      <b>{title}</b>
+      {lines.length ? lines.map((l, i) => <span key={i} className="muse-compass-mini-line">{l}</span>) : <span className="muse-compass-mini-rules" />}
     </div>
-    {viewing ? <>
-      <p className="muse-compass-version-note" role="status">A kept version from {shortDate(viewing.savedAt)}{viewing.note ? `: “${viewing.note}”` : ""}. <button type="button" className="text-button" onClick={() => setViewing(null)}>Back to today’s</button></p>
-      <Sheet title={viewing.title} blocks={viewing.blocks} compass={compass} />
-    </> : started ? <Sheet title={m.title} blocks={m.blocks} compass={compass} /> : <div className="muse-compass-manifesto-empty">
-      <Sheet title="My Manifesto" blocks={[{ id: "a", kind: "heading", text: "A living declaration" }, { id: "b", kind: "line", text: "The values you choose, the person you’re becoming, what you believe and how you mean to live, in your own words." }]} compass={compass} sample />
-      <p className="muse-compass-quiet">Optional, and entirely yours. Start from your own discoveries or a blank page; arrange it however you like and revise it whenever you change.</p>
-    </div>}
-    {compass.manifestoVersions.length > 0 && <Versions compass={compass} viewing={viewing} onView={setViewing} />}
-  </section>;
+  </div>;
 }
 
 /** The typeset page. Lines that came from a discovery quietly say so (and whether it has changed since). */
@@ -59,6 +84,7 @@ function Versions({ compass, viewing, onView }: { compass: Compass; viewing: Man
   const [restoring, setRestoring] = useState<string | null>(null);
   return <section className="muse-compass-versions" aria-labelledby="compass-versions-title">
     <h3 id="compass-versions-title" className="muse-compass-subhead">Kept versions</h3>
+    <p className="muse-compass-quiet">Dated copies you chose to keep. Read one, bring it back, or let it go.</p>
     <ol>{compass.manifestoVersions.map((v) => <li key={v.id} aria-current={viewing?.id === v.id || undefined}>
       <span className="type-numeric">{shortDate(v.savedAt)}</span><span className="muse-compass-version-label">{v.note || v.title}</span>
       {restoring === v.id
