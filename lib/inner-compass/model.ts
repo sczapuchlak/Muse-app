@@ -10,9 +10,11 @@
  */
 import type { Tables } from "@/lib/database.types";
 import { categoryInfo, isCategory, type Category, type DetailKey } from "./categories";
+import type { BoardImage } from "@/lib/constellation-board";
+import { isImage } from "./modules";
 
 export type Details = Partial<Record<DetailKey, string>>;
-export type Source = { kind: "exploration" | "garden" | "chapter"; id: string | null; label: string };
+export type Source = { kind: "exploration" | "garden" | "chapter" | "experience"; id: string | null; label: string };
 export type Discovery = {
   id: string; category: Category; title: string; meaning: string; reflection: string; details: Details; tags: string[];
   favorite: boolean; significanceDate: string | null; source: Source | null; evolvedAt: string | null; archivedAt: string | null;
@@ -27,6 +29,8 @@ export type AreaLink = { discoveryId: string; areaId: string };
 export type Reflection = {
   id: string; discoveryId: string | null; discoveryTitle: string | null; responseId: string | null; body: string; feeling: string | null;
   writtenOn: string; revision: number; createdAt: string; updatedAt: string;
+  /** #211: a reflection can also be about a Chapter or an Experience (name snapshots survive deletion), with photos. */
+  chapterId?: string | null; chapterTitle?: string | null; experienceId?: string | null; experienceTitle?: string | null; images?: BoardImage[];
 };
 export type Answer = { key: string; prompt: string; text: string };
 export type Response = {
@@ -53,7 +57,7 @@ export function detailsFor(category: Category, d: Details): Details {
 export function cleanTags(tags: string[]): string[] {
   const seen = new Set<string>(), out: string[] = [];
   for (const raw of tags) {
-    const t = raw.replace(/^#/, "").trim().replace(/\s+/g, " ").slice(0, LIMITS.tag);
+    const t = raw.trim().replace(/^#/, "").trim().replace(/\s+/g, " ").slice(0, LIMITS.tag);
     if (t && !seen.has(t.toLowerCase())) { seen.add(t.toLowerCase()); out.push(t); }
     if (out.length >= LIMITS.tags) break;
   }
@@ -65,7 +69,7 @@ export function discoveryFromRow(r: DiscoveryRow): Discovery {
   return {
     id: r.id, category: isCategory(r.category) ? r.category : "values", title: r.title, meaning: r.meaning, reflection: r.reflection,
     details: parseDetails(r.details), tags: r.tags ?? [], favorite: r.favorite, significanceDate: r.significance_date,
-    source: r.source_kind && (r.source_kind === "exploration" || r.source_kind === "garden" || r.source_kind === "chapter") ? { kind: r.source_kind, id: r.source_id, label: r.source_label ?? "" } : null,
+    source: r.source_kind && (r.source_kind === "exploration" || r.source_kind === "garden" || r.source_kind === "chapter" || r.source_kind === "experience") ? { kind: r.source_kind, id: r.source_id, label: r.source_label ?? "" } : null,
     evolvedAt: r.evolved_at, archivedAt: r.archived_at, revision: r.revision, createdAt: r.created_at, updatedAt: r.updated_at,
   };
 }
@@ -81,7 +85,8 @@ export function versionFromRow(r: Tables<"inner_discovery_versions">): Version {
   return { id: r.id, discoveryId: r.discovery_id, title: r.title, meaning: r.meaning, details: parseDetails(r.details), nextTitle: r.next_title, nextMeaning: r.next_meaning, reason: r.reason, reflection: r.reflection, evolvedOn: r.evolved_on, createdAt: r.created_at };
 }
 export function reflectionFromRow(r: Tables<"inner_reflections">): Reflection {
-  return { id: r.id, discoveryId: r.discovery_id, discoveryTitle: r.discovery_title, responseId: r.response_id, body: r.body, feeling: r.feeling, writtenOn: r.written_on, revision: r.revision, createdAt: r.created_at, updatedAt: r.updated_at };
+  return { id: r.id, discoveryId: r.discovery_id, discoveryTitle: r.discovery_title, responseId: r.response_id, body: r.body, feeling: r.feeling, writtenOn: r.written_on, revision: r.revision, createdAt: r.created_at, updatedAt: r.updated_at,
+    chapterId: r.chapter_id, chapterTitle: r.chapter_title, experienceId: r.experience_id, experienceTitle: r.experience_title, images: Array.isArray(r.images) ? (r.images as unknown[]).filter(isImage) as BoardImage[] : [] };
 }
 export function parseAnswers(v: unknown): Answer[] {
   return (Array.isArray(v) ? v : []).flatMap((x) => { const o = obj(x); return typeof o.key === "string" && /^[a-z0-9-]{1,40}$/.test(o.key) ? [{ key: o.key, prompt: text(o.prompt, 400), text: text(o.text, LIMITS.answer) }] : []; }).slice(0, 12);

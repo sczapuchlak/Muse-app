@@ -19,13 +19,23 @@ import { WordGarden } from "./WordGarden";
 import { ExplorationSession, Explorations, ThemeMark, themeInk } from "./Explorations";
 import { Evolution } from "./Evolution";
 import { Manifesto } from "./Manifesto";
+import { useStories } from "./stories/useStories";
+import { useVisionBoards } from "../vision/useVisionBoards";
+import { Chapters } from "./stories/Chapters";
+import { ChapterPage } from "./stories/ChapterPage";
+import { Experiences } from "./stories/Experiences";
+import { ExperiencePage } from "./stories/ExperiencePage";
 import "./InnerCompass.css";
+import "./stories/Stories.css";
 
 export const compassSpaces = [
-  { id: "overview", label: "My Inner World" }, { id: "collections", label: "Collections" }, { id: "explore", label: "Explorations" },
+  { id: "overview", label: "Overview" }, { id: "collections", label: "Collections" }, { id: "explore", label: "Explorations" },
   { id: "evolution", label: "Evolution" }, { id: "manifesto", label: "Manifesto" },
 ] as const;
 type Space = typeof compassSpaces[number]["id"];
+/** #211: three views. My Inner World is who I am, My Chapters the seasons I'm living, My Experiences the moments that shape my story. */
+const realms = [{ id: "world", label: "My Inner World" }, { id: "chapters", label: "My Chapters" }, { id: "experiences", label: "My Experiences" }] as const;
+type Realm = typeof realms[number]["id"];
 const parseSpace = (v: string | null): Space => compassSpaces.find((s) => s.id === v)?.id ?? "overview";
 
 /**
@@ -42,6 +52,14 @@ export function InnerCompass({ today }: { today: string }) {
   const openId = params?.get("d") ?? null, open = openId ? compass.discoveries.find((d) => d.id === openId) : undefined;
   const [garden, setGarden] = useState<"values" | "character" | null>(null), [session, setSession] = useState<{ key?: string; id?: string } | null>(null);
   const [opener, setOpener] = useState<HTMLElement | null>(null);
+  const stories = useStories(), vision = useVisionBoards();
+  const realmParam = params?.get("realm"), realm: Realm = realmParam === "chapters" || realmParam === "experiences" ? realmParam : "world";
+  const chapterId = params?.get("chapter") ?? null, experienceId = params?.get("experience") ?? null, collectionId = params?.get("collection") ?? null;
+  const chapter = chapterId ? stories.chapters.find((c) => c.id === chapterId) : undefined, experience = experienceId ? stories.experiences.find((e) => e.id === experienceId) : undefined;
+  const toRealm = (r: Realm) => go({ realm: r === "world" ? null : r, chapter: null, experience: null, collection: null, space: null, cat: null, d: null });
+  const openChapter = (id: string) => go({ realm: "chapters", chapter: id, experience: null, collection: null, d: null });
+  const openExperience = (id: string) => go({ realm: "experiences", experience: id, chapter: null, collection: null, d: null });
+  const openCollection = (id: string | null) => go({ realm: "experiences", collection: id, experience: null, chapter: null, d: null });
   const remember = () => setOpener(document.activeElement as HTMLElement | null);
   const href = (patch: Record<string, string | null>) => {
     const q = new URLSearchParams(params?.toString() ?? ""); q.set("view", "inner-compass");
@@ -58,12 +76,20 @@ export function InnerCompass({ today }: { today: string }) {
 
   return <div className="muse-compass" data-space={space}>
     <nav className="muse-compass-spaces" aria-label="Inner Compass">
-      <p className="muse-compass-crumb"><span>Inner Compass</span><svg viewBox="0 0 8 12" width="7" height="10" aria-hidden="true"><path d="m1.5 1 5 5-5 5" fill="none" stroke="currentColor" strokeWidth="1.5" /></svg></p>
-      <MuseSegmented label="My Inner World sections" value={space} onChange={(s) => go({ space: s, cat: null, d: null })} options={compassSpaces.map((s) => ({ id: s.id, label: s.label }))} className="muse-compass-spaces-track" />
-      <SaveIndicator label="Inner Compass" loaded={compass.status.loaded} saving={compass.status.saving} error={compass.status.error} />
+      <MuseSegmented label="Inner Compass" value={realm} onChange={toRealm} options={realms.map((r) => ({ id: r.id, label: r.label }))} className="muse-compass-spaces-track muse-compass-realms" />
+      {realm === "world" && <MuseSegmented label="My Inner World sections" value={space} onChange={(s) => go({ space: s, cat: null, d: null })} options={compassSpaces.map((s) => ({ id: s.id, label: s.label }))} className="muse-compass-spaces-track muse-compass-sections" />}
+      <SaveIndicator label="Inner Compass" loaded={compass.status.loaded && stories.status.loaded} saving={compass.status.saving || stories.status.saving} error={compass.status.error || stories.status.error} />
     </nav>
 
-    {!compass.status.loaded ? <p className="small-label" role="status">Opening your Inner World…</p>
+    {realm !== "world" ? (!stories.status.loaded || !compass.status.loaded ? <p className="small-label" role="status">Opening your story…</p>
+      : stories.status.error && !stories.chapters.length && !stories.experiences.length ? <p className="muse-compass-empty-quiet" role="alert">{stories.status.error}</p>
+      : realm === "chapters" ? (chapterId ? (chapter ? <ChapterPage key={chapter.id} c={chapter} stories={stories} compass={compass} boards={vision.boards} today={today} onBack={() => toRealm("chapters")} onOpenChapter={openChapter} onOpenExperience={openExperience} />
+          : <p className="muse-compass-version-note" role="status">That chapter is no longer here. <button type="button" className="text-button" onClick={() => toRealm("chapters")}>All chapters</button></p>)
+        : <Chapters stories={stories} boards={vision.boards} today={today} onOpen={openChapter} />)
+      : experienceId ? (experience ? <ExperiencePage key={experience.id} e={experience} stories={stories} compass={compass} boards={vision.boards} today={today} onBack={() => toRealm("experiences")} onOpenChapter={openChapter} onOpenCollection={openCollection} />
+          : <p className="muse-compass-version-note" role="status">That experience is no longer here. <button type="button" className="text-button" onClick={() => toRealm("experiences")}>All experiences</button></p>)
+        : <Experiences stories={stories} compass={compass} boards={vision.boards} today={today} collectionId={collectionId} initialArea={params?.get("area") ?? null} onOpen={openExperience} onCollection={openCollection} />)
+    : !compass.status.loaded ? <p className="small-label" role="status">Opening your Inner World…</p>
       : compass.status.error && !compass.discoveries.length && !compass.responses.length ? <p className="muse-compass-empty-quiet" role="alert">{compass.status.error}</p>
       : <>
         {space === "overview" && <Overview compass={compass} today={today} invite={featured} onOpen={openDiscovery} onCollection={toCollection} onSpace={(s) => go({ space: s, cat: null, d: null })} onBegin={(key) => { remember(); setSession({ key }); }} add={addDiscovery} collectionHref={(c) => href({ space: "collections", cat: c, d: null })} />}

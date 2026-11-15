@@ -30,3 +30,17 @@ export function featured(dayKey: string, recentlyDone: Set<string> = new Set()):
   for (let i = 0; i < explorations.length; i++) { const e = explorations[(h + i) % explorations.length]; if (!recentlyDone.has(e.key)) return e; }
   return explorations[h % explorations.length];
 }
+
+// ---------- Materials reference (#211) ----------
+import materialsJson from "@/content/inner-compass/materials.json";
+export type MaterialRef = { key: string; name: string; alt: string[]; category: string; description: string; traits?: string; associations: string[]; history?: string; sources: string[] };
+export const materialsDisclaimer = materialsJson.disclaimer;
+export const materials: MaterialRef[] = materialsJson.materials;
+export const material = (key: string | undefined) => key ? materials.find((m) => m.key === key) : undefined;
+/** Suggestions while typing a material; matching is optional and a custom name is always allowed. */
+export function searchMaterials(q: string, limit = 8): MaterialRef[] {
+  const s = q.trim().toLowerCase().replace(/[’']/g, "");
+  if (!s) return [];
+  const name = (m: MaterialRef) => [m.name, ...m.alt].map((x) => x.toLowerCase().replace(/[’']/g, ""));
+  return materials.filter((m) => name(m).some((n) => n.includes(s))).sort((a, b) => Number(!name(a).some((n) => n.startsWith(s))) - Number(!name(b).some((n) => n.startsWith(s)))).slice(0, limit);
+}

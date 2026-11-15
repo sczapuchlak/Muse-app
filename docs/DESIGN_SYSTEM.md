@@ -814,3 +814,12 @@ Book and Series are pages inside Collections. Both open with a pill Back control
 - **Manifesto:** a framed sheet (double hairline in the theme’s chart inks, four star corners, centred Fraunces, small-caps section heads between rules); print shows only the sheet.
 - **Light-card themes** (Astral, Nightbloom): the compass surfaces are in the card-ink list in `app/surfaces.css`.
 
+## Inner Compass Chapters & Experiences (#211) — implemented on feature branch, Staging acceptance pending
+
+- **Navigation:** the Inner Compass views are one solid `MuseSegmented` pill track (My Inner World · My Chapters · My Experiences), followed by My Inner World's own sections when it is open. No crumb.
+- **Covers** (`muse-cover-*`, `components/envision/compass/stories/Cover.tsx`) are artwork like Vision Boards: fixed palettes per preset in every theme, accent as hex, title set as real text over them. Volumes on the shelf have a spine shadow and lift on hover; Collections use 16:9 covers.
+- **Modules** (`muse-stories-*`): side-accent cards in the module's chart ink with a `MuseMark`, an editable editorial title, collapse chevron and a ⋯ menu (move, duplicate, remove). Type treatments: guiding words in spaced capitals (the primary in the module gradient), mantras as italic quotations, intentions led by a small four-point star, symbols as a square image grid, rituals as lit artifact cards, materials as compact rows with an inline reference panel, embracing/releasing as two tinted columns.
+- **Experiences** are keepsake tiles: a 4:3 photo or cover with a date pill, an editorial title, a theme/place line and tags.
+- **Timeline:** dated Chapters as pill spans in lanes, a today line, year ticks; undated Chapters live on the shelf.
+- **Motion:** only the large Aurora cover drifts, twice, with motion allowed.
+

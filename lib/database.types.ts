@@ -117,6 +117,41 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"inner_chapters": {
+                  Row: { archived_at: string | null; carried_from: string | null; carried_from_title: string | null; closed_at: string | null; closing: Json; cover: Json; created_at: string; ends_on: string | null; id: string; is_primary: boolean; meaning: string; revision: number; show_on_daily: boolean; starts_on: string | null; subtitle: string; title: string; updated_at: string; user_id: string; word: string }
+                  Insert: { archived_at?: string | null; carried_from?: string | null; carried_from_title?: string | null; closed_at?: string | null; closing?: Json; cover?: Json; created_at?: string; ends_on?: string | null; id?: string; is_primary?: boolean; meaning?: string; revision?: number; show_on_daily?: boolean; starts_on?: string | null; subtitle?: string; title: string; updated_at?: string; user_id?: string; word?: string }
+                  Update: { archived_at?: string | null; carried_from?: string | null; carried_from_title?: string | null; closed_at?: string | null; closing?: Json; cover?: Json; created_at?: string; ends_on?: string | null; id?: string; is_primary?: boolean; meaning?: string; revision?: number; show_on_daily?: boolean; starts_on?: string | null; subtitle?: string; title?: string; updated_at?: string; user_id?: string; word?: string }
+                  Relationships: []
+                },"inner_experiences": {
+                  Row: { archived_at: string | null; cover: Json; created_at: string; description: string; event: Json | null; happened_on: string | null; id: string; location: string; people: string; photos: Json; revision: number; tags: string[]; theme: string; title: string; updated_at: string; user_id: string }
+                  Insert: { archived_at?: string | null; cover?: Json; created_at?: string; description?: string; event?: Json | null; happened_on?: string | null; id?: string; location?: string; people?: string; photos?: Json; revision?: number; tags?: string[]; theme?: string; title: string; updated_at?: string; user_id?: string }
+                  Update: { archived_at?: string | null; cover?: Json; created_at?: string; description?: string; event?: Json | null; happened_on?: string | null; id?: string; location?: string; people?: string; photos?: Json; revision?: number; tags?: string[]; theme?: string; title?: string; updated_at?: string; user_id?: string }
+                  Relationships: []
+                },"inner_experience_collections": {
+                  Row: { cover: Json; created_at: string; description: string; id: string; name: string; revision: number; sort: string; updated_at: string; user_id: string }
+                  Insert: { cover?: Json; created_at?: string; description?: string; id?: string; name: string; revision?: number; sort?: string; updated_at?: string; user_id?: string }
+                  Update: { cover?: Json; created_at?: string; description?: string; id?: string; name?: string; revision?: number; sort?: string; updated_at?: string; user_id?: string }
+                  Relationships: []
+                },"inner_collection_experiences": {
+                  Row: { collection_id: string; created_at: string; experience_id: string; position: number; user_id: string }
+                  Insert: { collection_id: string; created_at?: string; experience_id: string; position?: number; user_id?: string }
+                  Update: { collection_id?: string; created_at?: string; experience_id?: string; position?: number; user_id?: string }
+                  Relationships: []
+                },"inner_chapter_experiences": {
+                  Row: { chapter_id: string; created_at: string; experience_id: string; position: number; user_id: string }
+                  Insert: { chapter_id: string; created_at?: string; experience_id: string; position?: number; user_id?: string }
+                  Update: { chapter_id?: string; created_at?: string; experience_id?: string; position?: number; user_id?: string }
+                  Relationships: []
+                },"inner_modules": {
+                  Row: { chapter_id: string | null; collapsed: boolean; content: Json; created_at: string; experience_id: string | null; id: string; position: number; revision: number; title: string; type: string; updated_at: string; user_id: string }
+                  Insert: { chapter_id?: string | null; collapsed?: boolean; content?: Json; created_at?: string; experience_id?: string | null; id?: string; position?: number; revision?: number; title?: string; type: string; updated_at?: string; user_id?: string }
+                  Update: { chapter_id?: string | null; collapsed?: boolean; content?: Json; created_at?: string; experience_id?: string | null; id?: string; position?: number; revision?: number; title?: string; type?: string; updated_at?: string; user_id?: string }
+                  Relationships: []
+                },"inner_area_links": {
+                  Row: { area_id: string; chapter_id: string | null; created_at: string; experience_id: string | null; id: string; user_id: string }
+                  Insert: { area_id: string; chapter_id?: string | null; created_at?: string; experience_id?: string | null; id?: string; user_id?: string }
+                  Update: { area_id?: string; chapter_id?: string | null; created_at?: string; experience_id?: string | null; id?: string; user_id?: string }
+                  Relationships: []
                 },"inner_discoveries": {
                   Row: { archived_at: string | null; category: string; created_at: string; details: Json; evolved_at: string | null; favorite: boolean; id: string; meaning: string; reflection: string; revision: number; significance_date: string | null; source_id: string | null; source_kind: string | null; source_label: string | null; tags: string[]; title: string; updated_at: string; user_id: string }
                   Insert: { archived_at?: string | null; category: string; created_at?: string; details?: Json; evolved_at?: string | null; favorite?: boolean; id?: string; meaning?: string; reflection?: string; revision?: number; significance_date?: string | null; source_id?: string | null; source_kind?: string | null; source_label?: string | null; tags?: string[]; title: string; updated_at?: string; user_id?: string }
@@ -153,9 +188,9 @@ isOneToOne: false
                   Update: { blocks?: Json; created_at?: string; revision?: number; title?: string; updated_at?: string; user_id?: string }
                   Relationships: []
                 },"inner_reflections": {
-                  Row: { body: string; created_at: string; discovery_id: string | null; discovery_title: string | null; feeling: string | null; id: string; response_id: string | null; revision: number; updated_at: string; user_id: string; written_on: string }
-                  Insert: { body: string; created_at?: string; discovery_id?: string | null; discovery_title?: string | null; feeling?: string | null; id?: string; response_id?: string | null; revision?: number; updated_at?: string; user_id?: string; written_on?: string }
-                  Update: { body?: string; created_at?: string; discovery_id?: string | null; discovery_title?: string | null; feeling?: string | null; id?: string; response_id?: string | null; revision?: number; updated_at?: string; user_id?: string; written_on?: string }
+                  Row: { body: string; chapter_id: string | null; chapter_title: string | null; created_at: string; discovery_id: string | null; discovery_title: string | null; experience_id: string | null; experience_title: string | null; feeling: string | null; id: string; images: Json; response_id: string | null; revision: number; updated_at: string; user_id: string; written_on: string }
+                  Insert: { body: string; chapter_id?: string | null; chapter_title?: string | null; created_at?: string; discovery_id?: string | null; discovery_title?: string | null; experience_id?: string | null; experience_title?: string | null; feeling?: string | null; id?: string; images?: Json; response_id?: string | null; revision?: number; updated_at?: string; user_id?: string; written_on?: string }
+                  Update: { body?: string; chapter_id?: string | null; chapter_title?: string | null; created_at?: string; discovery_id?: string | null; discovery_title?: string | null; experience_id?: string | null; experience_title?: string | null; feeling?: string | null; id?: string; images?: Json; response_id?: string | null; revision?: number; updated_at?: string; user_id?: string; written_on?: string }
                   Relationships: []
                 },"aspiration_books": {
                   Row: { id: string; user_id: string; aspiration_id: string; book_id: string | null; book_name: string; created_at: string }

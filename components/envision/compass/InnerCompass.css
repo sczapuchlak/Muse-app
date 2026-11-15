@@ -22,7 +22,6 @@
 
 /* ---------- Space navigation: a crumb ("Inner Compass ›") and one solid pill track ---------- */
 .muse-compass-spaces{display:flex;align-items:center;gap:10px 12px;flex-wrap:wrap;min-width:0}
-.muse-compass-crumb{display:inline-flex;align-items:center;gap:6px;margin:0;color:var(--text-muted);font:700 .72rem/1 var(--font-ui);letter-spacing:.14em;text-transform:uppercase}
 .muse-compass-spaces-track{background:var(--glass-background);flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
 .muse-compass-spaces-track::-webkit-scrollbar{display:none}
 .muse-compass-spaces-track>button{white-space:nowrap}

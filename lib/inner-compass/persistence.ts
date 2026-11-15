@@ -86,7 +86,8 @@ export async function setAreas(client: Client, userId: string, discoveryId: stri
 }
 
 export async function saveReflection(client: Client, userId: string, r: Reflection): Promise<Reflection> {
-  const row = { discovery_id: r.discoveryId, discovery_title: r.discoveryTitle?.slice(0, 300) ?? null, response_id: r.responseId, body: r.body.slice(0, 20000), feeling: r.feeling?.trim().slice(0, 40) || null, written_on: r.writtenOn };
+  const row = { discovery_id: r.discoveryId, discovery_title: r.discoveryTitle?.slice(0, 300) ?? null, response_id: r.responseId, body: r.body.slice(0, 20000), feeling: r.feeling?.trim().slice(0, 40) || null, written_on: r.writtenOn,
+    chapter_id: r.chapterId ?? null, chapter_title: r.chapterTitle?.slice(0, 160) ?? null, experience_id: r.experienceId ?? null, experience_title: r.experienceTitle?.slice(0, 200) ?? null, images: (r.images ?? []) as unknown as Json };
   const result = r.revision === 0
     ? await client.from("inner_reflections").insert({ ...row, id: r.id, user_id: userId }).select("*").single()
     : await client.from("inner_reflections").update(row).eq("id", r.id).eq("user_id", userId).eq("revision", r.revision).select("*").maybeSingle();

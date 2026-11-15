@@ -17,6 +17,8 @@ import "./nourish/WellnessGoals.css";
 import {DreamDayviewWidget} from "./whimsy/DreamDayviewWidget";
 import {FortuneDayviewWidget} from "./whimsy/FortuneDayviewWidget";
 import {BooksDayviewWidget} from "./whimsy/BooksDayviewWidget";
+import {ChapterDayviewWidget} from "./envision/compass/stories/ChapterDayviewWidget";
+import "./envision/compass/stories/ChapterDayviewWidget.css";
 import {PlannerPersistenceStatus} from "./PlannerStore";
 import { CosmicForecast } from "./CosmicForecast";
 import { useMuseDate } from "./MuseSession";
@@ -57,6 +59,7 @@ export function DailyEdit() {
           <DailyCapture date={selectedDate}><DayPulseCard date={selectedDate}/></DailyCapture>
           <DreamDayviewWidget date={selectedDate}/>
           <FortuneDayviewWidget date={selectedDate}/>
+          <ChapterDayviewWidget/>
         </div>
       </div>
       <footer className="muse-footer"><DailySaveStatus date={selectedDate}/><PlannerPersistenceStatus compact/><WellnessSaveStatus/>Your daily entries, plan, meals, hydration and movement save to your account.</footer>

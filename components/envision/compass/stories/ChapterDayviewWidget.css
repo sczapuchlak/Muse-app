@@ -1,0 +1,4 @@
+/* Daily Edit: the primary Chapter, only when the person opted in (#211). */
+.muse-chapter-widget-title{margin:0;font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight);font-size:1.45rem;line-height:1.1}
+.muse-chapter-widget-word{margin:4px 0 0;font:600 .85rem/1 var(--font-ui);letter-spacing:.38em;text-transform:uppercase;color:var(--accent-secondary)}
+.muse-chapter-widget-mantra{margin:10px 0 2px;padding-left:12px;border-left:2px solid var(--accent-secondary);font-family:var(--font-editorial);font-style:italic;line-height:1.5}
