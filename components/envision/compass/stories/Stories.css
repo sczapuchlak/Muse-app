@@ -140,7 +140,24 @@
 .muse-stories-board{display:grid;gap:12px}
 .muse-stories-board-empty{padding:18px;border:1px dashed var(--glass-border);border-radius:16px;text-align:center;color:var(--text-muted)}
 .muse-stories-board-empty p{margin:0;font-family:var(--font-editorial);font-style:italic}
-.muse-stories-modules{display:grid;gap:12px;margin:0;padding:0;list-style:none}
+/* Modules sit full width by default; two consecutive half-width modules share a row at equal height (no gaps). */
+.muse-stories-modules{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:0;padding:0;list-style:none}
+.muse-stories-modules>li{grid-column:1/-1;display:flex;flex-direction:column;min-width:0}
+.muse-stories-modules>li[data-width=half]{grid-column:auto}
+.muse-stories-modules>li>.muse-stories-module{flex:1 1 auto}
+.muse-stories-module{position:relative}
+.muse-stories-width{display:grid;place-items:center;width:32px;height:32px;border:0;border-radius:50%;background:transparent;color:var(--text-muted);cursor:pointer}
+.muse-stories-width:hover{background:var(--interactive-hover);color:var(--foreground)}
+.muse-stories-width[aria-pressed=true]{color:var(--mod-ink)}
+.muse-stories-resize{position:absolute;z-index:2;top:16px;bottom:16px;right:-6px;width:12px;cursor:ew-resize;touch-action:none;border-radius:6px}
+.muse-stories-resize::after{content:"";position:absolute;top:50%;left:4px;width:4px;height:36px;margin-top:-18px;border-radius:2px;background:var(--mod-ink);opacity:0;transition:opacity .15s}
+.muse-stories-module:hover>.muse-stories-resize::after,.muse-stories-modules>li[data-sizing] .muse-stories-resize::after{opacity:.55}
+.muse-stories-modules>li[data-sizing]>.muse-stories-module{outline:2px dashed color-mix(in srgb,var(--mod-ink) 60%,transparent);outline-offset:3px}
+@container muse-content (max-width:760px){
+ .muse-stories-modules>li[data-width=half]{grid-column:1/-1}
+ .muse-stories-width,.muse-stories-resize{display:none}
+}
+@media (pointer:coarse){.muse-stories-resize{display:none}}
 .muse-stories-modules>li[data-drop=before]{box-shadow:0 -3px 0 var(--accent-primary);border-radius:4px}
 .muse-stories-module{border:1px solid var(--glass-border);border-left:3px solid var(--mod-ink);border-radius:16px;background:linear-gradient(100deg,color-mix(in srgb,var(--mod-ink) 7%,transparent),transparent 45%),var(--surface-subtle);min-width:0}
 .muse-stories-module>header{display:flex;align-items:center;gap:8px;padding:8px 10px 8px 8px;cursor:grab}
@@ -185,7 +202,21 @@
 .muse-stories-items[data-type=mantras] .muse-stories-item{padding:10px 4px;border-bottom:1px solid var(--glass-border)}
 .muse-stories-items[data-type=mantras] li:last-child .muse-stories-item{border-bottom:0}
 .muse-stories-items[data-type=mantras] .muse-stories-item-head{font-style:italic;font-weight:var(--type-quote-weight);font-size:1.18rem;line-height:1.45}
-.muse-stories-items[data-type=intentions] .muse-stories-item-head::before{content:"";display:inline-block;width:10px;height:10px;margin-right:10px;background:var(--mod-ink);clip-path:path("M5 0C5.4 3.8 6.2 4.6 10 5C6.2 5.4 5.4 6.2 5 10C4.6 6.2 3.8 5.4 0 5C3.8 4.6 4.6 3.8 5 0Z")}
+/* Numbered lists (Intentions): each line is its own item, numbered in order; written one per line, Enter for the next. */
+.muse-stories-items>ol{display:grid;gap:4px;margin:0;padding:0;list-style:none;counter-reset:muse-line}
+.muse-stories-items>ol>li{counter-increment:muse-line;border-radius:12px}
+.muse-stories-items>ol>li[data-editing]{padding:12px;border:1px solid var(--glass-border);background:var(--glass-background)}
+.muse-stories-items>ol .muse-stories-item-head,.muse-stories-line{display:grid;grid-template-columns:2em minmax(0,1fr) auto;align-items:baseline}
+.muse-stories-items>ol .muse-stories-item-head::before,.muse-stories-line::before{content:counter(muse-line) ".";color:var(--mod-ink);font:600 .95rem/1.4 var(--font-ui);font-variant-numeric:tabular-nums}
+.muse-stories-line{gap:0 4px;padding:2px 2px 2px 2px}
+.muse-compass .muse-stories-module .muse-stories-line>textarea[rows]{min-height:0;resize:none;overflow:hidden;padding:6px 10px;border:1px solid transparent;border-radius:10px;background:transparent;font-family:var(--font-editorial);font-weight:var(--type-title-weight);font-size:1.05rem;line-height:1.4}
+.muse-compass .muse-stories-module .muse-stories-line>textarea[rows]:hover{border-color:var(--glass-border)}
+.muse-compass .muse-stories-module .muse-stories-line>textarea[rows]:focus{border-color:var(--mod-ink);background:var(--glass-background);outline:none;box-shadow:0 0 0 3px color-mix(in srgb,var(--mod-ink) 18%,transparent)}
+/* A numbered list reads as one row per line: its tools sit beside it on one line. */
+.muse-stories-items>ol .muse-stories-item{align-items:center;padding:4px 2px}
+.muse-stories-items>ol .muse-stories-item-tools{flex-direction:row;align-items:center;gap:4px 12px}
+.muse-stories-items>ol .muse-stories-item-rest:empty{display:none}
+.muse-stories-lines-actions{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;justify-content:space-between;padding-top:6px}
 .muse-stories-items[data-type=symbols] ul{grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr))}
 .muse-stories-items[data-type=symbols] .muse-stories-item{flex-direction:column}
 .muse-stories-items[data-type=symbols] .muse-stories-image{max-width:none;aspect-ratio:1;background:#fbf7ef}
@@ -239,7 +270,7 @@
 .muse-stories-reference-facts{font-family:var(--font-editorial)}
 .muse-stories-reference a{color:var(--foreground)}
 .muse-stories-add{display:flex;justify-content:center;padding-top:4px}
-.muse-stories-add-menu{display:grid;gap:12px;padding:4px}
+.muse-stories-add-menu{display:grid;gap:12px;padding:4px;flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain}
 .muse-stories-add-menu h3{margin:0 0 6px;color:var(--text-muted);font:700 .66rem/1 var(--font-ui);letter-spacing:.14em;text-transform:uppercase}
 .muse-stories-add-menu>section>div{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
 .muse-stories-add-menu button{display:flex;gap:10px;align-items:flex-start;padding:9px 10px;border:1px solid var(--glass-border);border-radius:12px;background:var(--surface-subtle);color:var(--foreground);text-align:left;cursor:pointer}

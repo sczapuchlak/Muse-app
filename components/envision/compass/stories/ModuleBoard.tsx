@@ -1,11 +1,11 @@
 "use client";
-import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent, type ReactNode } from "react";
 import { GlassPopover } from "@/components/GlassPopover";
 import { MuseMark } from "@/components/design/MuseHeading";
 import { MuseIcon } from "@/components/MuseIcon";
 import { MuseOverflowMenu } from "@/components/MuseOverflowMenu";
 import { blankItem, copyContent, emptyContent, groups, itemHeadline, moduleHasContent, modules, modulesFor, pairFields, type Content, type Item, type ModuleType, type Owner, type Value } from "@/lib/inner-compass/modules";
-import { reorder, type Module } from "@/lib/inner-compass/stories";
+import { halfWidthIds, reorder, type Module, type ModuleWidth } from "@/lib/inner-compass/stories";
 import type { Stories } from "./useStories";
 import { FieldInput, FieldView, MaterialReference, RefsInput, type Sources } from "./Fields";
 
@@ -24,6 +24,9 @@ export function ModuleBoard({ owner, ownerId, ownerLabel, stories, sources, link
 }) {
   const list = stories.modulesOf(owner, ownerId);
   const [dragging, setDragging] = useState<string | null>(null), [over, setOver] = useState<number | null>(null);
+  // While a module's edge is being dragged, the board lays out with its previewed width; it saves on release.
+  const [sizing, setSizing] = useState<{ id: string; width: ModuleWidth } | null>(null);
+  const halves = halfWidthIds(list.map((m) => sizing?.id === m.id ? { ...m, width: sizing.width } : m));
   const move = (m: Module, to: number) => void stories.orderModules(reorder(list, m.id, to));
   const add = async (type: ModuleType) => {
     const m: Module = { id: crypto.randomUUID(), owner: { kind: owner, id: ownerId }, type, position: list.length, title: "", collapsed: false, content: emptyContent(type), revision: 0, updatedAt: "" };
@@ -33,10 +36,10 @@ export function ModuleBoard({ owner, ownerId, ownerLabel, stories, sources, link
   };
   return <section className="muse-stories-board" aria-label={`${ownerLabel}: contents`}>
     {list.length === 0 && <div className="muse-stories-board-empty"><p>Nothing here yet, and nothing needs to be. Add only what belongs.</p></div>}
-    <ol className="muse-stories-modules">{list.map((m, i) => <li key={m.id} id={`module-${m.id}`} data-drop={over === i && dragging !== m.id ? "before" : undefined}
+    <ol className="muse-stories-modules">{list.map((m, i) => <li key={m.id} id={`module-${m.id}`} data-width={halves.has(m.id) ? "half" : undefined} data-sizing={sizing?.id === m.id || undefined} data-drop={over === i && dragging !== m.id ? "before" : undefined}
       onDragOver={(e) => { if (dragging) { e.preventDefault(); setOver(i); } }} onDrop={(e) => { e.preventDefault(); const from = list.find((x) => x.id === dragging); if (from) move(from, i); setDragging(null); setOver(null); }}>
       <ModuleCard m={m} index={i} count={list.length} stories={stories} sources={sources} linked={linked} onSaveDiscovery={onSaveDiscovery}
-        onMove={(to) => move(m, to)} onDragStart={() => setDragging(m.id)} onDragEnd={() => { setDragging(null); setOver(null); }}
+        onMove={(to) => move(m, to)} onSizing={(w) => setSizing(w ? { id: m.id, width: w } : null)} onDragStart={() => setDragging(m.id)} onDragEnd={() => { setDragging(null); setOver(null); }}
         onDuplicate={modules[m.type].single ? undefined : () => void stories.saveModule({ ...m, id: crypto.randomUUID(), position: list.length, revision: 0, content: copyContent(m.type, m.content) })} />
     </li>)}</ol>
     <AddMenu owner={owner} label={addLabel} present={new Set(list.map((m) => m.type))} onAdd={(t) => void add(t)} />
@@ -58,8 +61,9 @@ function AddMenu({ owner, label, present, onAdd }: { owner: Owner; label: string
   </div>;
 }
 
-function ModuleCard({ m, index, count, stories, sources, linked, onMove, onDuplicate, onDragStart, onDragEnd, onSaveDiscovery }: {
+function ModuleCard({ m, index, count, stories, sources, linked, onMove, onSizing, onDuplicate, onDragStart, onDragEnd, onSaveDiscovery }: {
   m: Module; index: number; count: number; stories: Stories; sources: Sources; linked: (t: ModuleType) => ReactNode; onMove: (to: number) => void; onDuplicate?: () => void;
+  onSizing: (preview: ModuleWidth | null) => void;
   onDragStart: () => void; onDragEnd: () => void; onSaveDiscovery?: (text: string) => void;
 }) {
   const def = modules[m.type];
@@ -72,6 +76,18 @@ function ModuleCard({ m, index, count, stories, sources, linked, onMove, onDupli
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [content, title, dirty]);
   const change = (c: Content) => { setContent(c); setDirty(true); };
+  const width: ModuleWidth = m.width === "half" ? "half" : "full", name = title || def.label;
+  const setWidth = (w: ModuleWidth) => { if (w !== width) void stories.saveModule({ ...m, content, title, width: w }); };
+  // Drag the right edge: about 40px left makes it half width, about 40px right makes it full; it snaps on release.
+  const resize = (e: ReactPointerEvent<HTMLSpanElement>) => {
+    if (e.button !== 0) return;
+    e.preventDefault();
+    const el = e.currentTarget, x0 = e.clientX; let next = width;
+    el.setPointerCapture(e.pointerId);
+    const moveTo = (ev: PointerEvent) => { const dx = ev.clientX - x0, w: ModuleWidth = dx < -40 ? "half" : dx > 40 ? "full" : width; if (w !== next) { next = w; onSizing(w); } };
+    const end = () => { el.removeEventListener("pointermove", moveTo); el.removeEventListener("pointerup", end); el.removeEventListener("pointercancel", end); onSizing(null); setWidth(next); };
+    el.addEventListener("pointermove", moveTo); el.addEventListener("pointerup", end); el.addEventListener("pointercancel", end);
+  };
   const actions = [
     ...(index > 0 ? [{ id: "up", label: "Move up", onSelect: () => onMove(index - 1) }] : []),
     ...(index < count - 1 ? [{ id: "down", label: "Move down", onSelect: () => onMove(index + 1) }] : []),
@@ -79,11 +95,14 @@ function ModuleCard({ m, index, count, stories, sources, linked, onMove, onDupli
     { id: "remove", label: def.shape === "linked" ? "Remove from this page" : "Remove…", destructive: true, onSelect: () => moduleHasContent(m.type, content) ? setConfirm(true) : void stories.removeModule(m) },
   ];
   return <article className="muse-stories-module" data-type={m.type} data-collapsed={m.collapsed || undefined} style={toneStyle(def.tone)}>
+    <span className="muse-stories-resize" aria-hidden="true" title="Drag to resize: left for half width, right for full" onPointerDown={resize} />
     <header draggable onDragStart={(e) => { e.dataTransfer.effectAllowed = "move"; onDragStart(); }} onDragEnd={onDragEnd}>
       <span className="muse-stories-grip" aria-hidden="true" title="Drag to reorder"><MuseIcon name="grip" size={14} /></span>
       <MuseMark icon={def.glyph} tone={def.tone} size="sm" />
       <input className="muse-stories-module-title" aria-label="Module title" maxLength={80} value={title} placeholder={def.label} onChange={(e) => { setTitle(e.target.value); setDirty(true); }} />
       {dirty && <small className="muse-stories-saving" aria-live="polite">Saving…</small>}
+      <button type="button" className="muse-stories-width" aria-pressed={width === "half"} aria-label={width === "half" ? `Make ${name} full width` : `Make ${name} half width`}
+        title={width === "half" ? "Full width" : "Half width (pairs with the next half-width section)"} onClick={() => setWidth(width === "half" ? "full" : "half")}><MuseIcon name="columns" size={15} /></button>
       <button type="button" className="muse-stories-collapse" aria-expanded={!m.collapsed} aria-label={m.collapsed ? `Expand ${title || def.label}` : `Collapse ${title || def.label}`} onClick={() => void stories.saveModule({ ...m, content, title, collapsed: !m.collapsed })}>
         <MuseIcon name="chevron" size={14} /></button>
       <MuseOverflowMenu label={`${title || def.label} options`} actions={actions} />
@@ -103,7 +122,11 @@ function ModuleCard({ m, index, count, stories, sources, linked, onMove, onDupli
 /** A list of entries; each shows compactly and opens into its fields when you edit it. */
 function Items({ type, items, sources, onChange, onSaveDiscovery }: { type: ModuleType; items: Item[]; sources: Sources; onChange: (i: Item[]) => void; onSaveDiscovery?: (text: string) => void }) {
   const def = modules[type];
-  const [editing, setEditing] = useState<string | null>(() => items.length === 1 && !itemHeadline(type, items[0]) ? items[0].id : null), [ref, setRef] = useState<string | null>(null);
+  const fresh = items.length === 1 && !itemHeadline(type, items[0]);
+  const [editing, setEditing] = useState<string | null>(() => fresh && !def.lineEntry ? items[0].id : null), [ref, setRef] = useState<string | null>(null);
+  // One-per-line entry: the ids of the items currently being written as lines.
+  const [lines, setLines] = useState<string[]>(() => fresh && def.lineEntry ? [items[0].id] : []);
+  const max = def.maxItems ?? 20, numbered = !!def.lineEntry, List = numbered ? "ol" : "ul";
   const set = (id: string, patch: Record<string, Value>) => onChange(items.map((i) => {
     if (i.id !== id) return i;
     const next: Item = { ...i, ...patch };
@@ -113,8 +136,9 @@ function Items({ type, items, sources, onChange, onSaveDiscovery }: { type: Modu
   // One primary guiding word at a time.
   const setPrimary = (id: string, on: boolean) => onChange(items.map((i) => { const n = { ...i }; if (i.id === id) { if (on) n.primary = true; else delete n.primary; } else if (on) delete n.primary; return n; }));
   return <div className="muse-stories-items" data-type={type}>
-    <ul>{items.map((it) => { const head = itemHeadline(type, it); return <li key={it.id} data-editing={editing === it.id || undefined} data-primary={it.primary === true || undefined}>
-      {editing === it.id ? <div className="muse-stories-item-form">
+    <List role={numbered ? "list" : undefined}>{items.map((it) => { const head = itemHeadline(type, it); return <li key={it.id} data-editing={editing === it.id || undefined} data-line={lines.includes(it.id) || undefined} data-primary={it.primary === true || undefined}>
+      {lines.includes(it.id) ? <LineInput type={type} it={it} items={items} lines={lines} max={max} onChange={onChange} onLines={setLines} />
+      : editing === it.id ? <div className="muse-stories-item-form">
         {def.fields!.map((f) => <FieldInput key={f.key} field={f} value={it[f.key]} item={it} sources={sources} onChange={(v, extra) => f.key === "primary" ? setPrimary(it.id, v === true) : set(it.id, { [f.key]: v, ...(extra ?? {}) })} />)}
         {type === "materials" && typeof it.refKey === "string" && <MaterialReference refKey={it.refKey} />}
         <div className="muse-compass-form-actions">
@@ -123,8 +147,59 @@ function Items({ type, items, sources, onChange, onSaveDiscovery }: { type: Modu
         </div>
       </div> : <ItemView type={type} it={it} sources={sources} onEdit={() => setEditing(it.id)} showRef={ref === it.id} onRef={() => setRef(ref === it.id ? null : it.id)}
         onSaveDiscovery={onSaveDiscovery && head ? () => onSaveDiscovery(head) : undefined} />}
-    </li>; })}</ul>
-    {items.length < (def.maxItems ?? 20) && <button type="button" className="text-button muse-stories-additem" onClick={() => { const b = blankItem(); onChange([...items, b]); setEditing(b.id); }}><MuseIcon name="plus" size={13} /> {def.addLabel ?? "Add"}</button>}
+    </li>; })}</List>
+    {lines.length > 0 ? <div className="muse-stories-lines-actions">
+      <small className="muse-compass-quiet">{items.length >= max ? `${max} is the most for one list.` : "Enter starts the next one. Edit any line later to add what it means."}</small>
+      <button type="button" className="muse-button" onClick={() => { onChange(items.filter((i) => !lines.includes(i.id) || itemHeadline(type, i))); setLines([]); }}>Done</button>
+    </div>
+    : items.length < max && <button type="button" className="text-button muse-stories-additem" onClick={() => { const b = blankItem(); onChange([...items, b]); if (numbered) { setEditing(null); setLines([b.id]); } else setEditing(b.id); }}><MuseIcon name="plus" size={13} /> {def.addLabel ?? "Add"}</button>}
+  </div>;
+}
+
+/** One line of a numbered list (Intentions): Enter starts the next line, Backspace on an empty line removes it, a pasted list becomes one line each. */
+function LineInput({ type, it, items, lines, max, onChange, onLines }: { type: ModuleType; it: Item; items: Item[]; lines: string[]; max: number; onChange: (i: Item[]) => void; onLines: (ids: string[]) => void }) {
+  const field = modules[type].fields!.find((f) => f.kind === "text" || f.kind === "textarea") as { key: string; label: string; max: number; placeholder?: string }, limit = field.max;
+  const box = useRef<HTMLTextAreaElement>(null), at = lines.indexOf(it.id), text = typeof it[field.key] === "string" ? it[field.key] as string : "";
+  const fit = () => { const el = box.current; if (el) { el.style.height = "auto"; el.style.height = `${el.scrollHeight}px`; } };
+  useEffect(() => { fit(); }, [text]);
+  // A line opened from "Add intentions" (always the last) takes the cursor; lines inserted mid-list are focused by their creator.
+  useEffect(() => { if (at === lines.length - 1) box.current?.focus({ preventScroll: true }); }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  const focusLine = (id: string | undefined, end = true) => window.requestAnimationFrame(() => { const el = id ? document.getElementById(`line-${id}`) as HTMLTextAreaElement | null : null; if (el) { el.focus(); const n = end ? el.value.length : 0; el.setSelectionRange(n, n); } });
+  // Insert new lines right after this one, in the list and in the order of items.
+  const insertAfter = (first: string, rest: string[]) => {
+    const room = Math.max(0, max - items.length), fresh = rest.slice(0, room).map((t) => ({ id: crypto.randomUUID(), [field.key]: t.slice(0, limit) }) as Item);
+    const pos = items.findIndex((i) => i.id === it.id) + 1;
+    onChange([...items.slice(0, pos).map((i) => i.id === it.id ? { ...i, [field.key]: first.slice(0, limit) || undefined } : i), ...fresh, ...items.slice(pos)].map((i) => { const n = { ...i }; if (n[field.key] === undefined) delete n[field.key]; return n; }));
+    onLines([...lines.slice(0, at + 1), ...fresh.map((f) => f.id), ...lines.slice(at + 1)]);
+    return fresh.at(-1)?.id;
+  };
+  return <div className="muse-stories-line">
+    <textarea ref={box} id={`line-${it.id}`} rows={1} maxLength={limit} value={text} aria-label={`Intention ${items.findIndex((i) => i.id === it.id) + 1}`}
+      placeholder={at === 0 && items.length === 1 ? field.placeholder ?? field.label : field.label}
+      onChange={(e) => { const v = e.target.value.replace(/\n/g, " "); onChange(items.map((i) => { if (i.id !== it.id) return i; const n = { ...i, [field.key]: v || undefined }; if (!v) delete n[field.key]; return n; })); }}
+      onPaste={(e) => {
+        const parts = e.clipboardData.getData("text").split(/\r?\n/).map((x) => x.replace(/^\s*(?:\d+[.)]|[-*•])\s+/, "").trim()).filter(Boolean);
+        if (parts.length < 2) return;
+        e.preventDefault();
+        const el = e.currentTarget, before = text.slice(0, el.selectionStart), after = text.slice(el.selectionEnd);
+        // Pasting at the end of a written line starts the list on the next line rather than joining the first item to it.
+        focusLine((before.trim() && !after.trim() ? insertAfter(text, parts) : insertAfter(before + parts[0], [...parts.slice(1, -1), parts.at(-1)! + after])) ?? it.id);
+      }}
+      onKeyDown={(e) => {
+        if (e.nativeEvent.isComposing) return;
+        if (e.key === "Enter") {
+          e.preventDefault();
+          if (items.length >= max) return;
+          const el = e.currentTarget;
+          focusLine(insertAfter(text.slice(0, el.selectionStart), [text.slice(el.selectionEnd)]), false);
+        } else if (e.key === "Backspace" && !text && lines.length > 1) {
+          e.preventDefault();
+          onChange(items.filter((i) => i.id !== it.id)); onLines(lines.filter((id) => id !== it.id));
+          focusLine(lines[at - 1] ?? lines[at + 1]);
+        } else if (e.key === "ArrowUp" && e.currentTarget.selectionStart === 0 && at > 0) { e.preventDefault(); focusLine(lines[at - 1]); }
+        else if (e.key === "ArrowDown" && e.currentTarget.selectionEnd === text.length && at < lines.length - 1) { e.preventDefault(); focusLine(lines[at + 1]); }
+      }} />
+    {lines.length > 1 && <button type="button" className="muse-compass-x" aria-label="Remove this line" onClick={() => { onChange(items.filter((i) => i.id !== it.id)); onLines(lines.filter((id) => id !== it.id)); }}>×</button>}
   </div>;
 }
 
