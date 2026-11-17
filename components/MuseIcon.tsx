@@ -17,6 +17,7 @@ const paths = {
   pin: <path d="m9 3 8 2-2 5 3 4-5 1-6 6 2-8-4-3 5-2-1-5Z"/>,
   archive: <><path d="M4 8v13h16V8M9 12h6"/><rect x="3" y="3" width="18" height="5" rx="1"/></>,
   panel: <><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16M6 8h.01M6 12h.01"/></>,
+  columns: <><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M12 4v16"/></>,
   focus: <path d="M8 3H3v5M16 3h5v5M21 16v5h-5M3 16v5h5M9 12h6"/>,
   link: <><path d="m10 8 3-3a4 4 0 0 1 6 6l-3 3M14 16l-3 3a4 4 0 0 1-6-6l3-3M8 16l8-8"/></>,
   undo: <><path d="M8 4 3 9l5 5M3 9h10a7 7 0 0 1 0 14"/></>,

@@ -128,13 +128,16 @@ export function blankCollection(now = new Date().toISOString(), id: string = cry
 }
 
 // ---------- Modules ----------
-export type Module = { id: string; owner: { kind: "chapter" | "experience"; id: string }; type: ModuleType; position: number; title: string; collapsed: boolean; content: Content; revision: number; updatedAt: string };
+export type Module = { id: string; owner: { kind: "chapter" | "experience"; id: string }; type: ModuleType; position: number; title: string; collapsed: boolean; content: Content; revision: number; updatedAt: string;
+  /** Layout only: two consecutive half-width modules share a row; a lone half shows full width. */
+  width?: ModuleWidth };
+export type ModuleWidth = "full" | "half";
 export function moduleFromRow(r: Tables<"inner_modules">): Module | null {
   if (!isModuleType(r.type)) return null;
   const owner = r.chapter_id ? { kind: "chapter" as const, id: r.chapter_id } : r.experience_id ? { kind: "experience" as const, id: r.experience_id } : null;
-  return owner ? { id: r.id, owner, type: r.type, position: r.position, title: r.title, collapsed: r.collapsed, content: parseContent(r.type, r.content), revision: r.revision, updatedAt: r.updated_at } : null;
+  return owner ? { id: r.id, owner, type: r.type, position: r.position, title: r.title, collapsed: r.collapsed, width: r.width === "half" ? "half" : "full", content: parseContent(r.type, r.content), revision: r.revision, updatedAt: r.updated_at } : null;
 }
-export const moduleToRow = (m: Module) => ({ type: m.type, position: m.position, title: m.title.slice(0, 80), collapsed: m.collapsed, content: m.content,
+export const moduleToRow = (m: Module) => ({ type: m.type, position: m.position, title: m.title.slice(0, 80), collapsed: m.collapsed, width: m.width === "half" ? "half" : "full", content: m.content,
   chapter_id: m.owner.kind === "chapter" ? m.owner.id : null, experience_id: m.owner.kind === "experience" ? m.owner.id : null });
 /** Positions after a move, renumbered 0..n so order is always unambiguous. */
 export function reorder<T extends { id: string }>(list: T[], id: string, to: number): T[] {
@@ -159,4 +162,15 @@ export function sortChapters(list: Chapter[], sort: "recent" | "oldest" | "alpha
   if (sort === "alpha") return by.sort((a, b) => a.title.localeCompare(b.title, undefined, { sensitivity: "base" }));
   if (sort === "oldest") return by.sort((a, b) => d(a).localeCompare(d(b)));
   return by.sort((a, b) => d(b).localeCompare(d(a)));
+}
+
+/** Which modules render at half width: consecutive half-width modules pair up two to a row; one left without a partner
+ *  spans the full row so the layout never shows an empty gap. */
+export function halfWidthIds(list: { id: string; width?: ModuleWidth }[]): Set<string> {
+  const out = new Set<string>();
+  let run: string[] = [];
+  const flush = () => { const even = run.length - (run.length % 2); run.slice(0, even).forEach((id) => out.add(id)); run = []; };
+  for (const m of list) { if (m.width === "half") run.push(m.id); else flush(); }
+  flush();
+  return out;
 }

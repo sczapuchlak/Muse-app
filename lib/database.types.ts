@@ -143,9 +143,9 @@ isOneToOne: false
                   Update: { chapter_id?: string; created_at?: string; experience_id?: string; position?: number; user_id?: string }
                   Relationships: []
                 },"inner_modules": {
-                  Row: { chapter_id: string | null; collapsed: boolean; content: Json; created_at: string; experience_id: string | null; id: string; position: number; revision: number; title: string; type: string; updated_at: string; user_id: string }
-                  Insert: { chapter_id?: string | null; collapsed?: boolean; content?: Json; created_at?: string; experience_id?: string | null; id?: string; position?: number; revision?: number; title?: string; type: string; updated_at?: string; user_id?: string }
-                  Update: { chapter_id?: string | null; collapsed?: boolean; content?: Json; created_at?: string; experience_id?: string | null; id?: string; position?: number; revision?: number; title?: string; type?: string; updated_at?: string; user_id?: string }
+                  Row: { chapter_id: string | null; collapsed: boolean; content: Json; created_at: string; experience_id: string | null; id: string; position: number; revision: number; title: string; type: string; updated_at: string; user_id: string; width: string }
+                  Insert: { chapter_id?: string | null; collapsed?: boolean; content?: Json; created_at?: string; experience_id?: string | null; id?: string; position?: number; revision?: number; title?: string; type: string; updated_at?: string; user_id?: string; width?: string }
+                  Update: { chapter_id?: string | null; collapsed?: boolean; content?: Json; created_at?: string; experience_id?: string | null; id?: string; position?: number; revision?: number; title?: string; type?: string; updated_at?: string; user_id?: string; width?: string }
                   Relationships: []
                 },"inner_area_links": {
                   Row: { area_id: string; chapter_id: string | null; created_at: string; experience_id: string | null; id: string; user_id: string }

@@ -34,6 +34,8 @@ type Shape = "items" | "pair" | "fields" | "refs" | "linked";
 export type ModuleDef = {
   type: ModuleType; label: string; hint: string; glyph: MuseGlyphName; tone: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8; group: Group; owners: Owner[];
   shape: Shape; single?: boolean; fields?: Field[]; ref?: RefKind; maxItems?: number; addLabel?: string;
+  /** Items are written one per line (Enter starts the next) and shown as a numbered list; each line is still its own item. */
+  lineEntry?: boolean;
 };
 export type Group = "meaning" | "words" | "artifacts" | "connections";
 export const groups: { id: Group; label: string }[] = [
@@ -54,7 +56,7 @@ export const modules: Record<ModuleType, ModuleDef> = {
     fields: [{ key: "word", kind: "text", label: "Word or phrase", max: 60, placeholder: "Prosperity" }, { key: "definition", kind: "textarea", label: "What it means to me", max: 2000 },
       { key: "why", kind: "textarea", label: "Why it matters", max: 2000 }, { key: "feel", kind: "textarea", label: "How I want it to feel", max: 1000 },
       { key: "symbolism", kind: "text", label: "Symbolism", max: 200 }, discoveries, reflection, { key: "primary", kind: "toggle", label: "My primary word" }] },
-  intentions: { type: "intentions", label: "Intentions", hint: "How you want to meet this season. Not tasks.", glyph: "seedling", tone: 3, group: "meaning", owners: ["chapter", "experience"], shape: "items", maxItems: 12, addLabel: "Add an intention",
+  intentions: { type: "intentions", label: "Intentions", hint: "How you want to meet this season. Not tasks.", glyph: "seedling", tone: 3, group: "meaning", owners: ["chapter", "experience"], shape: "items", maxItems: 12, addLabel: "Add intentions", lineEntry: true,
     fields: [{ key: "text", kind: "textarea", label: "I want to…", max: 500, rows: 2, placeholder: "I want to approach uncertainty with curiosity." }, { key: "meaning", kind: "textarea", label: "What it means to me", max: 2000 },
       discoveries, { key: "planner", kind: "planner", label: "Planner Intentions page" }, reflection] },
   mantras: { type: "mantras", label: "Mantras & affirmations", hint: "Words to carry with you.", glyph: "quote", tone: 7, group: "words", owners: ["chapter", "experience"], shape: "items", maxItems: 20, addLabel: "Add words",
