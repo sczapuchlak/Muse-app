@@ -1,5 +1,6 @@
 'use client';
 import {useEffect,useState,type CSSProperties,type ReactNode} from 'react';
+import Link from 'next/link';
 import {MuseMark,type MuseMarkIcon,type MuseTone} from '@/components/design/MuseHeading';
 import {MuseStar} from '@/components/MuseStar';
 import {zodiacLabel,zodiacSigns,type ZodiacSign} from '@/lib/cosmic-forecast';
@@ -72,13 +73,15 @@ function FullReading({forecast,dailyWidget=false,showAttribution=true,masthead=t
 }
 /** Observatory detail shows the complete reading; Daily Edit starts with a compact source excerpt. */
 /** `reflect` adds the private "worth keeping?" composer beneath a reading that is actually showing. */
-export function ForecastReading({sign,date,timeZone,category='overview',period='daily',full=false,dailyWidget=false,reflect=false,masthead=true,service=observatoryForecasts,actions,footerStart}:{sign:ZodiacSign;date:string;timeZone:string;category?:ForecastCategory;period?:ForecastPeriod;full?:boolean;dailyWidget?:boolean;reflect?:boolean;masthead?:boolean;service?:typeof observatoryForecasts;actions?:ReactNode;footerStart?:ReactNode}){
+export function ForecastReading({sign,date,timeZone,category='overview',period='daily',full=false,dailyWidget=false,reflect=false,masthead=true,service=observatoryForecasts,actions,footerStart,fullHref}:{sign:ZodiacSign;date:string;timeZone:string;category?:ForecastCategory;period?:ForecastPeriod;full?:boolean;dailyWidget?:boolean;reflect?:boolean;masthead?:boolean;service?:typeof observatoryForecasts;actions?:ReactNode;footerStart?:ReactNode;
+ /** When set, "Read full forecast" goes to this page (the Horoscopes reading) instead of expanding in place. */
+ fullHref?:string}){
  const [response,setResponse]=useState<{key:string;result:HoroscopeResult}|null>(null),[expanded,setExpanded]=useState(false),[attempt,setAttempt]=useState(0),key=JSON.stringify([sign,date,timeZone,category,period,attempt]);
  useEffect(()=>{let active=true;service.request({sign,date,timeZone,category,period,language:'en'}).then(value=>{if(active)setResponse({key,result:value});});return()=>{active=false;};},[sign,date,timeZone,category,period,attempt,key,service]);
  const result=response?.key===key?response.result:null,showFull=full||expanded;
  return <div className="muse-forecast-reading" data-full={showFull}>
   {!result?<div className="muse-forecast-state" role="status"><MuseStar size={17} prismatic/><p>Looking to the sky for your current reading…</p></div>:result.status==='ready'?showFull?<FullReading forecast={result.forecast} dailyWidget={dailyWidget} showAttribution={!footerStart} masthead={masthead}/>:<div className="muse-forecast-compact-reading">{!dailyWidget&&<p className="muse-forecast-compact-sign"><span aria-hidden="true">{signInfo[sign].glyph}</span>{zodiacLabel(sign)} · <time dateTime={date}>{shortDate(date)}</time></p>}<p className="muse-forecast-compact-excerpt"><SourceWords text={result.forecast.preview}/></p>{!footerStart&&<Attribution forecast={result.forecast} dailyWidget={dailyWidget}/>}</div>:<div className="muse-forecast-state" role={result.status==='error'?'alert':'status'}><MuseStar size={17} prismatic/><p>{result.message}</p></div>}
-  <div className="muse-cosmic-forecast-actions">{result?.status==='ready'&&!full&&<button className="muse-button button-ghost" type="button" aria-expanded={expanded} onClick={()=>setExpanded(!expanded)}>{expanded?'Show preview':'Read full forecast'}</button>}{result?.status==='error'&&<button className="muse-button button-ghost" type="button" onClick={()=>setAttempt(value=>value+1)}>Try again</button>}{actions}</div>
+  <div className="muse-cosmic-forecast-actions">{result?.status==='ready'&&!full&&fullHref&&<Link className="muse-button button-ghost" href={fullHref}>Read full forecast</Link>}{result?.status==='ready'&&!full&&!fullHref&&<button className="muse-button button-ghost" type="button" aria-expanded={expanded} onClick={()=>setExpanded(!expanded)}>{expanded?'Show preview':'Read full forecast'}</button>}{result?.status==='error'&&<button className="muse-button button-ghost" type="button" onClick={()=>setAttempt(value=>value+1)}>Try again</button>}{actions}</div>
   {reflect&&result?.status==='ready'&&<ForecastReflection sign={sign} period={period} date={date} timeZone={timeZone} today={date} compact={dailyWidget}/>}
   {footerStart&&<div className="muse-forecast-footer">{footerStart}{result?.status==='ready'&&<Attribution forecast={result.forecast} dailyWidget={dailyWidget}/>}</div>}
  </div>;
