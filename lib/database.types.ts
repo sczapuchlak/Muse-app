@@ -58,14 +58,14 @@ isOneToOne: true
                 },
 "journal_bookmarks": {
                   Row: {
-                    "conversation_id": string,"created_at": string,"excerpt": string,"id": string,"message_id": string | null,"note": string,"user_id": string
+                    "start_offset": number | null,"end_offset": number | null,"updated_at": string,"conversation_id": string,"created_at": string,"excerpt": string,"id": string,"message_id": string | null,"note": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "conversation_id": string,"created_at"?: string,"excerpt"?: string,"id"?: string,"message_id"?: string | null,"note"?: string,"user_id"?: string
+                    "start_offset"?: number | null,"end_offset"?: number | null,"updated_at"?: string,"conversation_id": string,"created_at"?: string,"excerpt"?: string,"id"?: string,"message_id"?: string | null,"note"?: string,"user_id"?: string
                   }
                   Update: {
-                    "conversation_id"?: string,"created_at"?: string,"excerpt"?: string,"id"?: string,"message_id"?: string | null,"note"?: string,"user_id"?: string
+                    "start_offset"?: number | null,"end_offset"?: number | null,"updated_at"?: string,"conversation_id"?: string,"created_at"?: string,"excerpt"?: string,"id"?: string,"message_id"?: string | null,"note"?: string,"user_id"?: string
                   }
                   Relationships: [
                     {
@@ -248,6 +248,18 @@ isOneToOne: false
     }
                   ]
                 },
+"journal_highlight_tags": {
+    Row: { user_id: string; highlight_id: string; tag_id: string; created_at: string }
+    Insert: { user_id?: string; highlight_id: string; tag_id: string; created_at?: string }
+    Update: { user_id?: string; highlight_id?: string; tag_id?: string; created_at?: string }
+    Relationships: []
+  },
+"journal_tag_corrections": {
+    Row: { id: string; user_id: string; kind: string; from_name: string; from_normalized: string | null; to_tag_id: string; times: number; created_at: string; updated_at: string }
+    Insert: { id?: string; user_id?: string; kind: string; from_name: string; to_tag_id: string; times?: number; created_at?: string; updated_at?: string }
+    Update: { id?: string; user_id?: string; kind?: string; from_name?: string; to_tag_id?: string; times?: number; created_at?: string; updated_at?: string }
+    Relationships: []
+  },
 "journal_message_images": {
     Row: { id: string; user_id: string; conversation_id: string; message_id: string; position: number; path: string; thumbnail_path: string; width: number; height: number; mime: string; created_at: string }
     Insert: { id?: string; user_id?: string; conversation_id: string; message_id: string; position: number; path: string; thumbnail_path: string; width: number; height: number; mime: string; created_at?: string }
@@ -334,14 +346,14 @@ isOneToOne: false
                 },
 "journal_tags": {
                   Row: {
-                    "aliases": (string)[],"created_at": string,"id": string,"kind": string,"name": string,"normalized": string | null,"note": string,"revision": number,"updated_at": string,"user_id": string
+                    "suppressed": boolean,"aliases": (string)[],"created_at": string,"id": string,"kind": string,"name": string,"normalized": string | null,"note": string,"revision": number,"updated_at": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "aliases"?: (string)[],"created_at"?: string,"id"?: string,"kind": string,"name": string,"normalized"?: never,"note"?: string,"revision"?: number,"updated_at"?: string,"user_id"?: string
+                    "suppressed"?: boolean,"aliases"?: (string)[],"created_at"?: string,"id"?: string,"kind": string,"name": string,"normalized"?: never,"note"?: string,"revision"?: number,"updated_at"?: string,"user_id"?: string
                   }
                   Update: {
-                    "aliases"?: (string)[],"created_at"?: string,"id"?: string,"kind"?: string,"name"?: string,"normalized"?: never,"note"?: string,"revision"?: number,"updated_at"?: string,"user_id"?: string
+                    "suppressed"?: boolean,"aliases"?: (string)[],"created_at"?: string,"id"?: string,"kind"?: string,"name"?: string,"normalized"?: never,"note"?: string,"revision"?: number,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
                     

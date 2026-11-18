@@ -154,3 +154,12 @@ test('analysis titles are about life, never about the app or the act of looking 
   assert.match(I.ANALYSIS_RULES, /Never a meta title/); assert.match(I.ANALYSIS_RULES, /title what is new or changed now/);
   assert.match(I.ANALYSIS_RULES, /Leave out the mechanics of the app/);
 });
+
+test('highlights are placed exactly or not at all, and overlaps paint as one', () => {
+  const body = 'I said it twice: be brave. Later: be brave.';
+  assert.deepEqual(M.anchorHighlight(body, { excerpt: 'be brave', start: 17, end: 25 }), { start: 17, end: 25 }, 'the saved position wins');
+  assert.equal(M.anchorHighlight(body, { excerpt: 'be brave', start: null, end: null }), null, 'two matches and no position: never guess');
+  assert.deepEqual(M.anchorHighlight(body, { excerpt: 'Later', start: 1, end: 6 }), { start: 27, end: 32 }, 'moved text found again when it appears exactly once');
+  assert.equal(M.anchorHighlight('Corrected wording.', { excerpt: 'old words', start: 0, end: 9 }), null, 'a correction that removed the words leaves it unplaced');
+  assert.deepEqual(M.mergeRanges([{ start: 5, end: 10, id: 'a' }, { start: 8, end: 14, id: 'b' }, { start: 20, end: 22, id: 'c' }]), [{ start: 5, end: 14, ids: ['a', 'b'] }, { start: 20, end: 22, ids: ['c'] }]);
+});

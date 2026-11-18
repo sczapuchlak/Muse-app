@@ -238,12 +238,14 @@ async function analyse(client: Client, admin: Client, config: ProviderConfig, us
   const msgs = await client.from("journal_messages").select("role,body").eq("conversation_id", conv.id).eq("user_id", userId).order("created_at").limit(2000);
   if (msgs.error) throw msgs.error;
   if (!msgs.data.some((m) => m.role === "user")) throw new Bad("invalid", "There’s nothing of yours to analyse yet.");
-  const people = await client.from("journal_tags").select("name").eq("user_id", userId).eq("kind", "person").limit(200);
+  // Known people with confirmed aliases, and corrections the person made before: guidance for names, never rules.
+  const people = await client.from("journal_tags").select("id,name,aliases").eq("user_id", userId).eq("kind", "person").eq("suppressed", false).limit(200);
+  const fixes = await client.from("journal_tag_corrections").select("from_name,to_tag_id,times").eq("user_id", userId).eq("kind", "person").order("times", { ascending: false }).limit(40);
   const attempt = existing.data ? (existing.data.revision ?? 1) + 1 : 1;
   const usage = await begin(admin, userId, { kind: "analysis", requestKey: `analysis:${conv.id}:${body.regenerate === true ? `r${attempt}` : "1"}`, conversationId: conv.id, model: config.model, estimateUsd: estimateUsd(config.model, approxTokens(ANALYSIS_RULES.length + Math.min(60000, msgs.data.reduce((n, m) => n + m.body.length + 12, 0))), 3500) });
   await client.from("journal_conversations").update({ analysis_status: "pending" }).eq("id", conv.id).eq("user_id", userId);
   try {
-    const input: InputMessage[] = [{ role: "user", content: `${conv.continues_title ? `This entry continues an earlier one, “${conv.continues_title}” (${conv.continues_date}).\n\n` : ""}${people.data?.length ? `Existing person names: ${people.data.map((p) => p.name).join(", ")}\n\n` : ""}Conversation:\n\n${transcript(msgs.data as { role: "user" | "assistant"; body: string }[])}` }];
+    const input: InputMessage[] = [{ role: "user", content: `${conv.continues_title ? `This entry continues an earlier one, “${conv.continues_title}” (${conv.continues_date}).\n\n` : ""}${people.data?.length ? `Existing person names (confirmed aliases in brackets): ${people.data.map((p) => p.aliases.length ? `${p.name} [${p.aliases.join(", ")}]` : p.name).join(", ")}\n\n` : ""}${fixes.data?.length ? `Corrections they made on earlier entries (use only when the context clearly means the same person; otherwise keep the name they used): ${fixes.data.map((f) => { const to = people.data?.find((p) => p.id === f.to_tag_id); return to ? `“${f.from_name}” was ${to.name}${f.times > 1 ? ` (${f.times}×)` : ""}` : ""; }).filter(Boolean).join("; ")}\n\n` : ""}Conversation:\n\n${transcript(msgs.data as { role: "user" | "assistant"; body: string }[])}` }];
     const out = await generate(config, { instructions: ANALYSIS_RULES, input, maxOutputTokens: 3500, effort: "low", schema: { name: "journal_analysis", schema: analysisSchema } });
     await finish(admin, usage.id, out.model, { usage: out.usage });
     let parsed: unknown; try { parsed = JSON.parse(out.text); } catch { parsed = null; }
@@ -275,7 +277,7 @@ async function report(client: Client, admin: Client, config: ProviderConfig, use
     client.from("journal_journals").select("id,name").eq("user_id", userId),
     client.from("journal_messages").select("conversation_id,body,created_at").eq("user_id", userId).eq("role", "user").in("conversation_id", list.map((c) => c.id)).order("created_at").limit(list.length * 4),
   ]);
-  const stats = weekStats(start, list, (links.data ?? []).map((l) => ({ conversationId: l.conversation_id, tagId: l.tag_id, source: l.source as "user" | "ai" })), (tags.data ?? []).map((t) => ({ id: t.id, kind: t.kind as "person", name: t.name, normalized: t.normalized ?? "", aliases: t.aliases, note: t.note, revision: t.revision })));
+  const stats = weekStats(start, list, (links.data ?? []).map((l) => ({ conversationId: l.conversation_id, tagId: l.tag_id, source: l.source as "user" | "ai" })), (tags.data ?? []).map((t) => ({ id: t.id, kind: t.kind as "person", name: t.name, normalized: t.normalized ?? "", aliases: t.aliases, suppressed: false, note: t.note, revision: t.revision })));
   const names = new Map((journals.data ?? []).map((j) => [j.id, j.name])), first = new Map<string, string>();
   for (const m of firsts.data ?? []) if (!first.has(m.conversation_id)) first.set(m.conversation_id, m.body.slice(0, 700));
   const entries = list.map((c) => `- ${new Date(`${c.localDate}T12:00:00Z`).toLocaleDateString("en-US", { weekday: "long", month: "short", day: "numeric", timeZone: "UTC" })} · ${names.get(c.journalId) ?? "Journal"} · “${c.title || "Untitled"}”\n  ${c.summary ? `Summary: ${c.summary}` : `Their words: ${first.get(c.id) ?? ""}`}`).join("\n");

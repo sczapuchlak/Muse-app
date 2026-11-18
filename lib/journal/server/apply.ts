@@ -36,6 +36,7 @@ export async function applyAnalysis(client: Client, userId: string, conv: Conv, 
     for (const [kind, name] of wanted) {
       if (dismissed.has(`tag:${kind}:${normalizeTag(name)}`)) continue;
       let tag = findTag(tags, kind, name);
+      if (tag?.suppressed) continue; // removed everywhere and asked never to suggest again
       if (!tag) {
         const made = await client.from("journal_tags").upsert({ user_id: userId, kind, name }, { onConflict: "user_id,kind,normalized", ignoreDuplicates: false }).select("*").single();
         if (made.error) throw made.error;

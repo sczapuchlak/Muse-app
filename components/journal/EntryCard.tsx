@@ -25,7 +25,7 @@ export function EntryCard({ c, onOpen, snippet, showYear, compact }: { c: Conver
       {c.status === "active" && <em className="mj-pill">In progress</em>}
       <span className="mj-card-flags">
         {c.favorite && <span className="mj-flag" title="Favorite"><MuseIcon name="favorite" size={14} /><span className="sr-only">Favorite</span></span>}
-        {bookmarked && <span className="mj-flag" title="Has bookmarked passages"><MuseIcon name="bookmark" size={14} /><span className="sr-only">Bookmarked</span></span>}
+        {bookmarked && <span className="mj-flag" title="Has highlights"><MuseIcon name="bookmark" size={14} /><span className="sr-only">Has highlights</span></span>}
       </span>
     </span>
     <span className="mj-card-title type-title">{entryTitle(c)}</span>
@@ -64,7 +64,7 @@ export function EntryRow({ c, onOpen, snippet, showDay = true }: { c: Conversati
     <span className="mj-row-meta type-meta">
       {journal && <MuseMark icon={journal.icon as MuseMarkIcon} tone={journal.tone} size="sm" />}
       <span className="type-numeric">{c.userWords} words</span>
-      {(c.favorite || bookmarked) && <span className="mj-card-flags">{c.favorite && <span className="mj-flag" title="Favorite"><MuseIcon name="favorite" size={13} /><span className="sr-only">Favorite</span></span>}{bookmarked && <span className="mj-flag" title="Has bookmarked passages"><MuseIcon name="bookmark" size={13} /><span className="sr-only">Bookmarked</span></span>}</span>}
+      {(c.favorite || bookmarked) && <span className="mj-card-flags">{c.favorite && <span className="mj-flag" title="Favorite"><MuseIcon name="favorite" size={13} /><span className="sr-only">Favorite</span></span>}{bookmarked && <span className="mj-flag" title="Has highlights"><MuseIcon name="bookmark" size={13} /><span className="sr-only">Has highlights</span></span>}</span>}
     </span>
     <span className="sr-only">{formatDay(c.localDate)}</span>
   </button>;
