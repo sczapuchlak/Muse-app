@@ -1,7 +1,9 @@
 import {isNoteAccent,noteAccents,type NoteAccent} from './mindspace';
 import {todayInTimeZone} from './dates';
 export type BoardItem={id:string;text:string;complete:boolean};
-export type BoardImage={id:string;path:string;thumbnailPath:string;name:string;alt:string;width:number;height:number;mime:string};
+export type BoardImage={id:string;path:string;thumbnailPath:string;name:string;alt:string;width:number;height:number;mime:string;
+ /** Optional words shown with the photo where a surface offers captions (Inner Compass Experiences). */
+ caption?:string};
 export type BoardReminder={date:string;time?:string;timeZone:string};
 export type BoardCard={id:string;title:string;text:string;items:BoardItem[];images:BoardImage[];tagIds:string[];accent?:NoteAccent;reminder?:BoardReminder;pinned:boolean;createdAt:string;updatedAt:string};
 export type BoardTag={id:string;name:string;color?:NoteAccent};

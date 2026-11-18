@@ -3,6 +3,7 @@ import {useId,useRef,useState} from 'react';
 import {useEditorState,type Editor} from '@tiptap/react';
 import {GlassPopover} from '../GlassPopover';
 import {MuseIcon} from '../MuseIcon';
+import './NoteToolbar.css';
 export function NoteToolbar({editor}:{editor:Editor|null}){
  const state=useEditorState({editor,selector:({editor:e})=>({bold:e?.isActive('bold'),italic:e?.isActive('italic'),underline:e?.isActive('underline'),strike:e?.isActive('strike'),bullet:e?.isActive('bulletList'),ordered:e?.isActive('orderedList'),task:e?.isActive('taskList'),quote:e?.isActive('blockquote'),link:e?.isActive('link'),heading:e?.isActive('heading'),undo:e?.can().undo(),redo:e?.can().redo()})});
  const [open,setOpen]=useState(false),[url,setUrl]=useState(''),[error,setError]=useState(''),ref=useRef<HTMLButtonElement>(null),id=useId();

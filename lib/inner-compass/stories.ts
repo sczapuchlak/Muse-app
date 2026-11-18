@@ -164,12 +164,12 @@ export function sortChapters(list: Chapter[], sort: "recent" | "oldest" | "alpha
   return by.sort((a, b) => d(b).localeCompare(d(a)));
 }
 
-/** Which modules render at half width: consecutive half-width modules pair up two to a row; one left without a partner
- *  spans the full row so the layout never shows an empty gap. */
+/** Which modules render at half width: two or more consecutive half-width modules flow as two columns (each card its own
+ *  height, in order). A single half-width module between full-width ones spans the row, so no column stands empty. */
 export function halfWidthIds(list: { id: string; width?: ModuleWidth }[]): Set<string> {
   const out = new Set<string>();
   let run: string[] = [];
-  const flush = () => { const even = run.length - (run.length % 2); run.slice(0, even).forEach((id) => out.add(id)); run = []; };
+  const flush = () => { if (run.length > 1) run.forEach((id) => out.add(id)); run = []; };
   for (const m of list) { if (m.width === "half") run.push(m.id); else flush(); }
   flush();
   return out;
