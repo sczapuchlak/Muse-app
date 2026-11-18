@@ -1,6 +1,7 @@
 "use client";
 import { useRef, useState, useSyncExternalStore, type ClipboardEvent, type KeyboardEvent } from "react";
-import { MuseHeading } from "../design/MuseHeading";
+import { MuseHeading, MuseMark } from "../design/MuseHeading";
+import { mealMarks } from "./mealMarks";
 import { MuseIcon } from "../MuseIcon";
 import { weekDates } from "@/lib/dates";
 import { mealLabels, mealSlots, type MealSlot } from "@/lib/models";
@@ -54,7 +55,7 @@ function IdeaCard({ slot, ideas, disabled, onAdd, onEdit, onRemove }: { slot: Me
   };
   const paste = (e: ClipboardEvent<HTMLInputElement>) => { const text = e.clipboardData.getData("text"); if (lines(text).length < 2) return; e.preventDefault(); addMany(text); };
   return <section className="muse-meal-idea-card" data-slot={slot} aria-label={`${mealLabels[slot]} ideas`}>
-    <header><h3>{mealLabels[slot]}</h3>{ideas.length > 0 && <span className="muse-meal-idea-count">{ideas.length}</span>}</header>
+    <header><MuseMark icon={mealMarks[slot].icon} tone={mealMarks[slot].tone} size="md" /><h3>{mealLabels[slot]}</h3>{ideas.length > 0 && <span className="muse-meal-idea-count">{ideas.length}</span>}</header>
     <ul ref={list}>{ideas.map((idea, i) => <li key={idea.id}>
       <input aria-label={`${mealLabels[slot]} idea ${i + 1}`} maxLength={MEAL_IDEA_MAX} value={idea.text} disabled={disabled}
         onChange={(e) => onEdit(idea.id, e.target.value)} onKeyDown={(e) => lineKeys(e, idea, i)} onPaste={paste} onBlur={() => { if (!idea.text.trim()) onRemove(idea.id); }} />

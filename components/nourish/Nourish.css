@@ -286,3 +286,11 @@
 .muse-meal-ideas-toggle:hover{border-color:var(--selected-border)}
 .muse-meal-ideas[data-closed]{gap:0}
 .muse-meal-ideas-grid[hidden]{display:none}
+/* Meal headings use the shared gradient tile (MuseMark) with each meal's glyph, not a plain colour square. */
+.muse-meal-week-heading>[data-slot]::before,.muse-meal-idea-card>header::before{content:none;display:none}
+.muse-meal-week-heading>[data-slot]>.muse-mark{flex:none}
+/* Narrow cards (four across): contents shrink to the card; long ideas wrap their box rather than spill past the edge. */
+.muse-meal-idea-card{grid-template-columns:minmax(0,1fr)}
+.muse-meal-idea-card>*{min-width:0}
+.muse-meal-idea-card>header>h3{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.muse-meal-idea-card :is(li,.muse-meal-idea-add) input{width:0;text-overflow:ellipsis}

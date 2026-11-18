@@ -8,7 +8,7 @@ import { blankItem, copyContent, emptyContent, groups, itemHeadline, materialCat
 import { halfWidthIds, reorder, type Module, type ModuleWidth } from "@/lib/inner-compass/stories";
 import type { Stories } from "./useStories";
 import { FieldInput, FieldView, MaterialReference, PhotoFigure, RefChip, RefsInput, type Sources } from "./Fields";
-import { material } from "@/lib/inner-compass/library";
+import { material, materialByName } from "@/lib/inner-compass/library";
 import { MaterialArt } from "./MaterialArt";
 import type { BoardImage } from "@/lib/constellation-board";
 
@@ -285,12 +285,13 @@ function ItemView({ type, it, sources, tools, onEdit, onSaveDiscovery, showRef, 
 /** A material, read as a small card: its name, what it means to the person, and the library's symbolic associations
  *  (labelled as associations, not effects). Quantity and notes live in the entry's edit form; About opens the full reference. */
 function MaterialCard({ it, showRef, onRef }: { it: Item; showRef: boolean; onRef: () => void }) {
-  const ref = typeof it.refKey === "string" ? material(it.refKey) : undefined, image = it.image as BoardImage | undefined;
+  // A material typed in before the library had it still finds its picture and associations by name.
+  const ref = (typeof it.refKey === "string" ? material(it.refKey) : undefined) ?? materialByName(typeof it.name === "string" ? it.name : undefined), image = it.image as BoardImage | undefined;
   const name = typeof it.name === "string" && it.name.trim() ? it.name : "Untitled";
   const category = materialCategories.find((c) => c.id === it.category);
   return <div className="muse-stories-material-card" data-photo={!!image || undefined} style={category ? { "--cat": `var(--chart-${materialCategoryTone[category.id]})` } as CSSProperties : undefined}>
     {image && <PhotoFigure image={image} className="muse-stories-material-thumb" showCaption={false} />}
-    <div className="muse-stories-material-title"><MaterialArt refKey={ref?.key} category={typeof it.category === "string" ? it.category : undefined} size={40} />
+    <div className="muse-stories-material-title"><MaterialArt refKey={ref?.key} category={typeof it.category === "string" ? it.category : undefined} size={26} />
       <p className="muse-stories-item-head">{name}</p></div>
     {category && <span className="muse-stories-material-cat">{category.label}</span>}
     {typeof it.meaning === "string" && it.meaning.trim() && <p className="muse-stories-material-meaning">{it.meaning}</p>}
