@@ -64,8 +64,8 @@ function Page({ initialId, onRouteClear, continueFrom, onCreated }: { initialId:
     : pendingRef && refSource ? { id: refSource.id, title: entryTitle(refSource), date: refSource.localDate } : null;
   const [refPreview, setRefPreview] = useState(false);
   // Guided entries: a guide chosen for the next entry (or the journal's default), or the copy an entry began with.
-  const [pendingGuide, setPendingGuide] = useState<string | null>(null), [skipDefault, setSkipDefault] = useState(false);
-  const guideSource: Guide | null = !conv ? state.guides.find((g) => !g.archivedAt && g.id === (pendingGuide ?? (!skipDefault && !pendingRef ? journal.defaultGuideId : null))) ?? null : null;
+  // A guided journal starts its own questions on every new entry; a freeform one opens the composer. No other choice.
+  const guideSource: Guide | null = !conv && !pendingRef && journal.guided ? state.guides.find((g) => g.id === journal.defaultGuideId) ?? null : null;
   const guide: GuideSnapshot | null = conv?.guideSnapshot ?? (guideSource ? snapshotOf(guideSource) : null);
   const [gState, setGState] = useState<GuideState>({});
   const gKey = conv ? conv.id : `new:${guideSource?.id ?? ""}`;
@@ -259,7 +259,7 @@ function Page({ initialId, onRouteClear, continueFrom, onCreated }: { initialId:
       if (aiOn) void ask(c.id, { kind: "reply", messageId: m.id });
     } catch (e) { setSending(false); setError({ text: e instanceof Error ? e.message : "Not saved." }); }
   }
-  function fresh() { setPendingGuide(null); setSkipDefault(false); setPendingRef(null); setConvId(null); setMessages([]); setError(null); setSaved(null); setGreetNote(""); setMode("open"); setDraftEntry(null); onRouteClear(); }
+  function fresh() { setPendingRef(null); setConvId(null); setMessages([]); setError(null); setSaved(null); setGreetNote(""); setMode("open"); setDraftEntry(null); onRouteClear(); }
   /** New entry, deliberately: a fresh page, and (if chosen in preferences) one greeting from the companion. */
   function newEntry() {
     fresh();
@@ -310,7 +310,6 @@ function Page({ initialId, onRouteClear, continueFrom, onCreated }: { initialId:
     <JournalToolbar journal={journal} companion={companion} defaultCompanionId={fallback?.id ?? null}
       onJournal={switchJournal} onCompanion={switchCompanion} onMakeDefault={(c) => void j.setDefaultCompanion(journal, c.id)}
       conversationNote={conv ? <>Replies from now on use {companion?.name ?? "this companion"}{pinned ? ` (version ${pinned.version})` : ""}. Earlier replies keep their words.{companion && pinned && companion.version > pinned.version ? ` ${companion.name} has newer saved words (version ${companion.version}): choose it again to use them.` : ""}</> : undefined}
-      onStartGuide={(g) => { fresh(); setPendingGuide(g.id); }}
       extra={<>
         <button type="button" className="muse-button button-ghost mj-tb-new" onClick={() => newEntry()} disabled={streaming} title={state.prefs.greetOnNew && aiOn ? `Start a new entry; ${companion!.name.replace(/^The /, "")} greets you` : "Start a new entry"} aria-label="New entry"><MuseIcon name="plus" size={16} /><span className="mj-tb-label">New entry</span></button>
         {entryActions.length > 0 && <MuseOverflowMenu label="This entry" actions={entryActions} />}
@@ -340,7 +339,7 @@ function Page({ initialId, onRouteClear, continueFrom, onCreated }: { initialId:
       {guide ? <>
         <GuidedEntry guide={guide} state={gState} onState={updateGuide} messages={shown} stream={stream ? { text: stream.text, messageId: stream.pending.kind === "reply" ? stream.pending.messageId : null } : null}
           companion={companion ? { name: companion.name, icon: companion.icon, tone: companion.tone } : null} canTalk={guide.companion && aiOn} busy={sending || streaming} dock={dock}
-          onTalk={(q, text) => void talkAbout(q, text)} onFinish={() => setConfirmFinish(true)} onLeave={!conv ? () => { setPendingGuide(null); setSkipDefault(true); } : undefined}
+          onTalk={(q, text) => void talkAbout(q, text)} onFinish={() => setConfirmFinish(true)}
           finishDisabled={streaming || sending || confirmFinish || !(userCount || Object.values(gState.answers ?? {}).some((v) => v.trim()))} />
         {error && <div className="mj-error" role="alert"><span>{error.text}</span>{error.retry && conv && <button type="button" className="muse-button" onClick={() => void ask(conv.id, error.retry!)}>Ask again</button>}</div>}
       </> : <>

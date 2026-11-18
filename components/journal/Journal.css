@@ -842,3 +842,9 @@
  .mj-composer-dock.mj-guide-dock .mj-composer-bar>.muse-button{min-width:0;flex:1 1 auto}
  .mj-composer-dock.mj-guide-dock .mj-guide-nav{flex:none}
 }
+/* Guided prompts: one compact group inside a journal's settings. */
+.mj-guided-prompts{display:grid;gap:12px;padding:14px 16px;border:1px solid color-mix(in srgb,var(--journal-a,var(--accent-primary)) 28%,var(--glass-border));border-radius:16px;background:var(--mj-tile)}
+.mj-guided-switch{align-items:flex-start}
+.mj-guided-switch>span{display:grid;gap:2px}
+.mj-guided-switch small{color:var(--text-muted);line-height:1.4}
+.mj-guided-prompts .mj-guide-form{display:grid;gap:12px}

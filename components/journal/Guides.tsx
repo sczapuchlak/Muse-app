@@ -1,11 +1,9 @@
 "use client";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import { createPortal } from "react-dom";
-import { MuseModal } from "../MuseModal";
 import { MuseSegmented } from "../design/MuseSegmented";
-import { MuseChoiceMenu } from "../MuseChoiceMenu";
 import { MuseIcon } from "../MuseIcon";
-import { newId, useJournal } from "./useJournal";
+import { newId } from "./useJournal";
 import { Thread, type ThreadMessage } from "./Thread";
 import type { Guide, GuideQuestion, GuideSnapshot, GuideState } from "@/lib/journal/model";
 import type { MuseTone } from "../design/MuseHeading";
@@ -21,67 +19,40 @@ export const GUIDE_EXAMPLES: { key: string; make: () => Partial<Guide> }[] = [
 export const blankGuide = (): Guide => ({ id: newId(), name: "", description: "", icon: "", intro: "", mode: "steps", companion: false, questions: [q("")], version: 1, archivedAt: null, revision: 1, createdAt: "" });
 
 /**
- * Create or edit a guide: name, emoji, intro, questions (add, edit, reorder, duplicate, optional, delete), how it's
- * presented, whether the companion joins in, and an optional journal it starts in. Plain data, no AI.
+ * The Guided prompts section of a journal's settings: one switch, then (when on) the questions in order, how they're
+ * shown, an opening note and whether the companion may talk about answers. Turning it off keeps the questions.
+ * Plain data, no AI. The questions live in the journal's one guide record (an implementation detail).
  */
-export function GuideEditor({ guide, onClose }: { guide: Guide; onClose: () => void }) {
-  const j = useJournal();
-  const isNew = !j.state.guides.some((g) => g.id === guide.id);
-  const [d, setD] = useState<Guide>(guide);
-  const [defaultFor, setDefaultFor] = useState<string>(() => j.state.journals.find((x) => x.defaultGuideId === guide.id)?.id ?? "");
-  const [confirmDelete, setConfirmDelete] = useState(false);
-  const set = (p: Partial<Guide>) => setD((x) => ({ ...x, ...p }));
-  const setQ = (i: number, p: Partial<GuideQuestion>) => set({ questions: d.questions.map((x, k) => (k === i ? { ...x, ...p } : x)) });
-  const move = (i: number, by: number) => { const list = [...d.questions]; const [x] = list.splice(i, 1); list.splice(Math.max(0, Math.min(list.length, i + by)), 0, x); set({ questions: list }); };
-  async function save() {
-    const saved = await j.saveGuide(d); if (!saved) return;
-    for (const jr of j.state.journals) {
-      const want = jr.id === defaultFor ? saved.id : jr.defaultGuideId === saved.id ? null : jr.defaultGuideId;
-      if (want !== jr.defaultGuideId) await j.saveJournal({ ...jr, defaultGuideId: want });
-    }
-    onClose();
-  }
-  const usable = d.name.trim() && d.questions.some((x) => x.text.trim());
-  return <MuseModal id="mj-guide" label="Guide" title={isNew ? "New guide" : `Edit “${guide.name}”`} returnFocus={null} onClose={onClose} size="tall">
-    <form className="mj-form mj-modal-scroll mj-guide-form" onSubmit={(e) => { e.preventDefault(); if (usable) void save(); }}>
-      {isNew && <div className="mj-guide-examples"><span className="type-meta">Start from an example</span>
-        <ul className="mj-chip-list">{GUIDE_EXAMPLES.map((x) => <li key={x.key}><button type="button" className="mj-filter-chip" onClick={() => setD({ ...blankGuide(), id: d.id, ...x.make() })}>{x.key}</button></li>)}</ul></div>}
-      <div className="mj-form-row">
-        <label className="editor-label mj-guide-icon">Emoji<input type="text" value={d.icon} maxLength={8} onChange={(e) => set({ icon: e.target.value })} placeholder="🔮" /></label>
-        <label className="editor-label">Name<input type="text" value={d.name} maxLength={80} onChange={(e) => set({ name: e.target.value })} placeholder="Tarot Reflection" /></label>
-      </div>
-      <label className="editor-label">Description (optional)<input type="text" value={d.description} maxLength={400} onChange={(e) => set({ description: e.target.value })} placeholder="When to use it" /></label>
+export function GuidedPrompts({ on, onToggle, g, set }: { on: boolean; onToggle: (v: boolean) => void; g: Guide; set: (p: Partial<Guide>) => void }) {
+  const setQ = (i: number, p: Partial<GuideQuestion>) => set({ questions: g.questions.map((x, k) => (k === i ? { ...x, ...p } : x)) });
+  const move = (i: number, by: number) => { const list = [...g.questions]; const [x] = list.splice(i, 1); list.splice(Math.max(0, Math.min(list.length, i + by)), 0, x); set({ questions: list }); };
+  const empty = !g.questions.some((x) => x.text.trim());
+  return <section className="mj-guided-prompts" aria-label="Guided prompts">
+    <label className="mj-toggle muse-check-row mj-guided-switch"><input type="checkbox" checked={on} onChange={(e) => onToggle(e.target.checked)} />
+      <span><b>Use guided prompts</b><small>New entries in this journal start with your questions, one at a time or all together. Your companion stays the same.</small></span></label>
+    {on && <div className="mj-guide-form">
+      {empty && <div className="mj-guide-examples"><span className="type-meta">Start from an example</span>
+        <ul className="mj-chip-list">{GUIDE_EXAMPLES.map((x) => <li key={x.key}><button type="button" className="mj-filter-chip" onClick={() => { const e = x.make(); set({ questions: e.questions ?? [], intro: e.intro ?? "", mode: e.mode ?? "steps", companion: e.companion ?? false }); }}>{x.key}</button></li>)}</ul></div>}
       <fieldset className="mj-guide-questions"><legend className="editor-label">Questions</legend>
-        <ol>{d.questions.map((x, i) => <li key={x.id} className="mj-guide-q-row">
+        <ol>{g.questions.map((x, i) => <li key={x.id} className="mj-guide-q-row">
           <span className="mj-guide-num type-numeric">{i + 1}</span>
           <textarea rows={2} aria-label={`Question ${i + 1}`} value={x.text} maxLength={500} onChange={(e) => setQ(i, { text: e.target.value })} placeholder="Ask yourself something" />
           <div className="mj-guide-q-tools">
             <label className="mj-toggle muse-check-row"><input type="checkbox" checked={x.optional} onChange={(e) => setQ(i, { optional: e.target.checked })} /> Optional</label>
             <button type="button" className="mj-x" aria-label={`Move question ${i + 1} up`} disabled={i === 0} onClick={() => move(i, -1)}>↑</button>
-            <button type="button" className="mj-x" aria-label={`Move question ${i + 1} down`} disabled={i === d.questions.length - 1} onClick={() => move(i, 1)}>↓</button>
-            <button type="button" className="mj-x" aria-label={`Duplicate question ${i + 1}`} onClick={() => set({ questions: [...d.questions.slice(0, i + 1), { ...x, id: newId() }, ...d.questions.slice(i + 1)] })}>⧉</button>
-            <button type="button" className="mj-x" aria-label={`Delete question ${i + 1}`} disabled={d.questions.length === 1} onClick={() => set({ questions: d.questions.filter((_, k) => k !== i) })}>×</button>
+            <button type="button" className="mj-x" aria-label={`Move question ${i + 1} down`} disabled={i === g.questions.length - 1} onClick={() => move(i, 1)}>↓</button>
+            <button type="button" className="mj-x" aria-label={`Duplicate question ${i + 1}`} onClick={() => set({ questions: [...g.questions.slice(0, i + 1), { ...x, id: newId() }, ...g.questions.slice(i + 1)] })}>⧉</button>
+            <button type="button" className="mj-x" aria-label={`Delete question ${i + 1}`} disabled={g.questions.length === 1} onClick={() => set({ questions: g.questions.filter((_, k) => k !== i) })}>×</button>
           </div>
         </li>)}</ol>
-        <button type="button" className="muse-button" disabled={d.questions.length >= 30} onClick={() => set({ questions: [...d.questions, q("")] })}><MuseIcon name="plus" size={15} />Add a question</button>
+        <button type="button" className="muse-button" disabled={g.questions.length >= 30} onClick={() => set({ questions: [...g.questions, q("")] })}><MuseIcon name="plus" size={15} />Add a question</button>
       </fieldset>
-      <label className="editor-label">How it opens (optional)<textarea rows={2} value={d.intro} maxLength={2000} onChange={(e) => set({ intro: e.target.value })} placeholder="A note to yourself, and to your companion if it joins in" /></label>
-      <div className="editor-label">Show the questions<MuseSegmented label="Presentation" value={d.mode} onChange={(m) => set({ mode: m })} options={[{ id: "steps", label: "One at a time" }, { id: "all", label: "All at once" }]} /></div>
-      <label className="mj-toggle muse-check-row"><input type="checkbox" checked={d.companion} onChange={(e) => set({ companion: e.target.checked })} /> Let my companion talk about answers when I ask (it never replies on its own)</label>
-      <label className="editor-label">Start new entries in a journal with this guide (optional)<MuseChoiceMenu label="Default for journal" valueLabel={j.state.journals.find((x) => x.id === defaultFor)?.name ?? "No journal"} selectedIds={[defaultFor]} options={[{ id: "", label: "No journal" }, ...j.state.journals.filter((x) => !x.archivedAt).map((x) => ({ id: x.id, label: x.name }))]} onSelect={setDefaultFor} /></label>
-      {!isNew && <p className="mj-note">Entries you’ve already written keep the questions they were written with.</p>}
-      {j.status.error && <p className="mj-error" role="alert">{j.status.error}</p>}
-      <div className="mj-form-actions">
-        {!isNew && <button type="button" className="muse-button button-ghost" onClick={() => setConfirmDelete(true)}>Delete…</button>}
-        {!isNew && <button type="button" className="muse-button button-ghost" onClick={() => void j.saveGuide({ ...d, archivedAt: d.archivedAt ? null : new Date().toISOString() }).then((g) => g && onClose())}>{d.archivedAt ? "Restore" : "Archive"}</button>}
-        {!isNew && <button type="button" className="muse-button button-ghost" onClick={() => void j.saveGuide({ ...d, id: newId(), name: `${d.name} (copy)`, archivedAt: null, version: 1 }).then((g) => g && onClose())}>Duplicate</button>}
-        <button type="button" className="muse-button" onClick={onClose}>Cancel</button>
-        <button type="submit" className="muse-button button-primary" disabled={!usable || j.status.saving}>Save guide</button>
-      </div>
-      {confirmDelete && <div className="mj-finish" role="group" aria-label="Confirm delete"><p><b>Delete “{guide.name}”?</b> Entries written with it stay exactly as they are, questions included.</p>
-        <div><button type="button" className="muse-button" onClick={() => setConfirmDelete(false)}>Keep it</button><button type="button" className="muse-button button-primary" onClick={() => void j.deleteGuide(guide.id).then((ok) => ok && onClose())}>Delete guide</button></div></div>}
-    </form>
-  </MuseModal>;
+      <div className="editor-label">Show the questions<MuseSegmented label="Presentation" value={g.mode} onChange={(m) => set({ mode: m })} options={[{ id: "steps", label: "One at a time" }, { id: "all", label: "All together" }]} /></div>
+      <label className="editor-label">Opening note (optional)<textarea rows={2} value={g.intro} maxLength={2000} onChange={(e) => set({ intro: e.target.value })} placeholder="Shown above the questions; your companion reads it too if it joins in" /></label>
+      <label className="mj-toggle muse-check-row"><input type="checkbox" checked={g.companion} onChange={(e) => set({ companion: e.target.checked })} /> Let my companion talk about an answer when I ask (it never replies on its own)</label>
+      <p className="mj-note">Changes apply to new entries. Entries you’ve already written keep the questions they were written with.</p>
+    </div>}
+  </section>;
 }
 
 function Grow({ value, onChange, label, placeholder, disabled }: { value: string; onChange: (v: string) => void; label: string; placeholder?: string; disabled?: boolean }) {
@@ -95,10 +66,10 @@ function Grow({ value, onChange, label, placeholder, disabled }: { value: string
  * write (like a draft), and, only when the guide allows it and you ask, a companion reply to one answer. Moving between
  * questions never calls AI. Finish entry turns every answer into a message under its question.
  */
-export function GuidedEntry({ guide, state, onState, messages, stream, companion, canTalk, busy, dock, onTalk, onFinish, onLeave, finishDisabled }: {
+export function GuidedEntry({ guide, state, onState, messages, stream, companion, canTalk, busy, dock, onTalk, onFinish, finishDisabled }: {
   guide: GuideSnapshot; state: GuideState; onState: (s: GuideState) => void; messages: ThreadMessage[]; stream: { text: string; messageId: string | null } | null;
   companion: { name: string; icon: string; tone: MuseTone } | null; canTalk: boolean; busy: boolean; dock: HTMLElement | null;
-  onTalk: (question: GuideQuestion, text: string) => void; onFinish: () => void; onLeave?: () => void; finishDisabled: boolean;
+  onTalk: (question: GuideQuestion, text: string) => void; onFinish: () => void; finishDisabled: boolean;
 }) {
   const qs = guide.questions, answers = state.answers ?? {}, sent = new Set(state.sent ?? []);
   const step = Math.min(Math.max(state.step ?? 0, 0), Math.max(qs.length - 1, 0));
@@ -129,7 +100,6 @@ export function GuidedEntry({ guide, state, onState, messages, stream, companion
       {guide.mode === "steps" && qs.length > 1 && <ol className="mj-guide-progress" aria-label={`Question ${step + 1} of ${qs.length}`}>
         {qs.map((x, i) => <li key={x.id}><button type="button" aria-label={`Question ${i + 1}`} aria-current={i === step ? "step" : undefined} data-done={(answers[x.id] ?? "").trim() || sent.has(x.id) ? true : undefined} onClick={() => go(i)} /></li>)}
       </ol>}
-      {onLeave && <button type="button" className="mj-link type-meta mj-guide-leave" onClick={onLeave}>Write freely instead</button>}
     </header>
     {guide.mode === "steps" ? current && <div key={current.id} className="mj-guide-step"><p className="type-meta mj-guide-count">Question {step + 1} of {qs.length}</p>{card(current, step)}</div>
       : <div className="mj-guide-all">{qs.map(card)}</div>}

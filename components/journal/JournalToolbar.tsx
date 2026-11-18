@@ -5,35 +5,25 @@ import { MuseIcon } from "../MuseIcon";
 import { MuseMark, type MuseMarkIcon } from "../design/MuseHeading";
 import { activeCompanions, activeJournals, useJournal } from "./useJournal";
 import { useJournalUi } from "./ui";
-import type { Companion, Guide, Journal } from "@/lib/journal/model";
+import type { Companion, Journal } from "@/lib/journal/model";
 
 /**
  * The compact Journal toolbar (daily-experience brief §6): the current journal, the current companion and
  * preferences, each behind one small control. Used on Today (choose for the next entry) and in a live conversation
  * (switch the companion from the next reply). Never a settings panel.
  */
-export function JournalToolbar({ journal, companion, defaultCompanionId, onJournal, onCompanion, onMakeDefault, conversationNote, extra, onStartGuide }: {
+export function JournalToolbar({ journal, companion, defaultCompanionId, onJournal, onCompanion, onMakeDefault, conversationNote, extra }: {
   journal: Journal | null; companion: Companion | null; defaultCompanionId: string | null;
   onJournal?: (id: string) => void; onCompanion?: (c: Companion) => void; onMakeDefault?: (c: Companion) => void;
   /** In a conversation: what an edit or switch means for the replies. */
   conversationNote?: ReactNode; extra?: ReactNode;
-  /** Start a guided entry (a fresh page with that guide). */
-  onStartGuide?: (g: Guide) => void;
 }) {
   const j = useJournal(), ui = useJournalUi();
   const journals = activeJournals(j.state), companions = activeCompanions(j.state);
   return <div className="mj-toolbar" role="toolbar" aria-label="Journal and companion">
     <Menu label="Journal" icon={journal?.icon ?? "journal"} tone={journal?.tone ?? 5} value={journal?.name ?? "Journal"} id="mj-tb-journal">
       {(close) => <>
-        {onJournal && journals.length > 1 && <div className="mj-menu-list" role="group" aria-label="Write in">{journals.map((x) => <button key={x.id} type="button" className="popover-choice" aria-pressed={x.id === journal?.id} onClick={() => { onJournal(x.id); close(); }}><span className="mj-menu-item"><MuseMark icon={x.icon as MuseMarkIcon} tone={x.tone} size="sm" />{x.name}</span>{x.id === journal?.id && <MuseIcon name="check" size={14} />}</button>)}</div>}
-        {onStartGuide && <div className="mj-menu-list mj-menu-guides" role="group" aria-label="Guided entries">
-          <p className="mj-menu-head type-meta">Guided entries</p>
-          {j.state.guides.filter((g) => !g.archivedAt).map((g) => <span key={g.id} className="mj-menu-guide">
-            <button type="button" className="popover-choice" onClick={() => { onStartGuide(g); close(); }}><span className="mj-menu-item"><span aria-hidden="true" className="mj-menu-emoji">{g.icon || "✦"}</span>{g.name}</span></button>
-            <button type="button" className="mj-x" aria-label={`Edit ${g.name}`} title="Edit guide" onClick={() => { close(); ui.editGuide(g); }}><MuseIcon name="edit" size={13} /></button>
-          </span>)}
-          <button type="button" className="popover-choice" onClick={() => { close(); ui.editGuide("new"); }}><span className="mj-menu-item"><MuseIcon name="plus" size={15} />New guide</span></button>
-        </div>}
+        {onJournal && journals.length > 1 && <div className="mj-menu-list" role="group" aria-label="Write in">{journals.map((x) => <button key={x.id} type="button" className="popover-choice" aria-pressed={x.id === journal?.id} onClick={() => { onJournal(x.id); close(); }}><span className="mj-menu-item"><MuseMark icon={x.icon as MuseMarkIcon} tone={x.tone} size="sm" /><span>{x.name}{x.guided && <small className="type-meta"> · guided</small>}</span></span>{x.id === journal?.id && <MuseIcon name="check" size={14} />}</button>)}</div>}
         <div className="mj-menu-actions">
           <button type="button" className="popover-choice" onClick={() => { close(); ui.editJournal("new"); }}><span className="mj-menu-item"><MuseIcon name="plus" size={15} />New journal</span></button>
           {journal && <button type="button" className="popover-choice" onClick={() => { close(); ui.editJournal(journal); }}><span className="mj-menu-item"><MuseIcon name="edit" size={15} />Rename or edit “{journal.name}”</span></button>}
