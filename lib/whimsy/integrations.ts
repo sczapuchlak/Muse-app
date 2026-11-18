@@ -1,3 +1,4 @@
+import {hiddenWhimsyExperiences} from "@/lib/module-visibility";
 import {completionEvents} from './reading-stats';
 import {validDate,todayInTimeZone} from '@/lib/dates';
 import {insightAvailability,type InsightSourceStatus} from '@/lib/insights/sources';
@@ -20,7 +21,7 @@ export function whimsyMetrics(source:WhimsySources,range:WhimsyRange,status:Insi
 export type WhimsyWidgetPreference={experience:WhimsyExperience;enabled:boolean};
 export const whimsyWidgets=[{experience:'side-quests',label:'Active weekly quests',href:'/whimsy/side-quests'},{experience:'tarot',label:'Daily tarot',href:'/whimsy/tarot'},{experience:'dreamscapes',label:'Dream capture',href:'/whimsy/dreamscapes'},{experience:'fortunes',label:'Daily fortune',href:'/whimsy/fortunes'},{experience:'bookshelf',label:'Currently reading',href:'/collections?kind=book'}] as const;
 /** Optional projection only; no widget records or Daily Edit layout changes. */
-export function configuredWhimsyWidgets(preferences:WhimsyWidgetPreference[]){return whimsyWidgets.filter(w=>preferences.some(p=>p.experience===w.experience&&p.enabled));}
+export function configuredWhimsyWidgets(preferences:WhimsyWidgetPreference[]){return whimsyWidgets.filter(w=>!hiddenWhimsyExperiences.has(w.experience)&&preferences.some(p=>p.experience===w.experience&&p.enabled));}
 export function readingHabitContribution(config:{enabled:boolean;habitId:string;date:string;goalSeconds:number},sessions:ReadingSession[]){if(!config.enabled)return null;if(!Number.isFinite(config.goalSeconds)||config.goalSeconds<=0)throw Error('Choose a positive reading goal');const day=readingByDay(sessions).find(d=>d.date===config.date);return {key:`bookshelf/${config.habitId}/${config.date}`,habitId:config.habitId,date:config.date,seconds:day?.seconds??0,complete:(day?.seconds??0)>=config.goalSeconds,sourceIds:day?.sessionIds??[],source:'bookshelf' as const};}
 
 /** Logical uniqueness keys for future server commands; never create an assignment on read. */

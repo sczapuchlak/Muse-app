@@ -1,3 +1,4 @@
+import {hiddenShowcaseKinds} from "@/lib/module-visibility";
 /** Personal Profiles & Showcase Studio (#26): profile shape, sections, badges, layouts and starter ideas. */
 import type {MuseIconName} from '@/components/MuseIcon';
 import type {ThemeId} from '@/lib/themes';
@@ -39,7 +40,7 @@ export type SourceKind='book'|'media'|'curated'|'tarot-card'|'dream-symbol'|'rit
 export const starterIdeas:StarterIdea[]=[
  {id:'favorites',title:'All-Time Favorites',line:'The ones you would save from a fire.',icon:'heart',gradient:'vampire-velvet',layout:'gallery',suggest:['book','media']},
  {id:'obsessions',title:'Current Obsessions',line:'Whatever has your whole heart this week.',icon:'flame',gradient:'solar-flare',layout:'shelf',suggest:['book','media','curated']},
- {id:'victories',title:'Little Victories',line:'Small wins worth a tiny parade.',icon:'sparkle',gradient:'golden-hour',layout:'cards',suggest:['victory','ritual','side-quest']},
+ {id:'victories',title:'Little Victories',line:'Small wins worth a tiny parade.',icon:'sparkle',gradient:'golden-hour',layout:'cards',suggest:(['victory','ritual','side-quest'] as SourceKind[]).filter(k=>!hiddenShowcaseKinds.has(k))},
  {id:'magical',title:'My Magical Side',line:'Cards, symbols and the moon’s opinions.',icon:'tarot',gradient:'nebula-kiss',layout:'mixed',suggest:['tarot-card','dream-symbol']},
  {id:'learning',title:'Things I’m Learning',line:'Skills, rituals and brave new habits.',icon:'graduation',gradient:'emerald-city',layout:'cards',suggest:['ritual','victory','book']},
  {id:'current',title:'Currently Reading & Watching',line:'What is on the nightstand and the screen.',icon:'bookshelf',gradient:'midnight-prism',layout:'shelf',suggest:['book','media']},
