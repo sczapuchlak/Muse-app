@@ -29,6 +29,19 @@ export type Conversation = {
   /** Guided entry: the guide as it was when the entry began (never rewritten), and answers in progress. */
   guideId: string | null; guideSnapshot: GuideSnapshot | null; guideState: GuideState;
 };
+export type MemoryKind = "fact" | "person" | "situation" | "preference" | "goal" | "other";
+/** Memory categories, for reading only (you choose them; AI suggestions start as "Life & background"). */
+export const memoryKindLabel: Record<MemoryKind, string> = { person: "People & relationships", preference: "Preferences", fact: "Life & background", goal: "Goals & aspirations", situation: "Ongoing situations", other: "Other" };
+export const memoryKinds: MemoryKind[] = ["person", "preference", "fact", "goal", "situation", "other"];
+/** How a memory compares for duplicates: lower case, no punctuation, single spaces. */
+export const normalizeMemory = (s: string) => s.toLowerCase().replace(/[^\p{L}\p{N}\s]/gu, " ").replace(/\s+/g, " ").trim();
+const memoryWords = (s: string) => new Set(normalizeMemory(s).split(" ").filter((w) => w.length > 2));
+/** Share of meaningful words two memories have in common (0–1): a cheap, on-device hint of a duplicate or conflict. */
+export function memoryOverlap(a: string, b: string): number {
+  const x = memoryWords(a), y = memoryWords(b); if (!x.size || !y.size) return 0;
+  let both = 0; for (const w of x) if (y.has(w)) both++;
+  return both / Math.min(x.size, y.size);
+}
 /** A guided experience: optional, reusable questions. Not a companion, not a journal. */
 export type GuideQuestion = { id: string; text: string; optional: boolean };
 export type Guide = { id: string; name: string; description: string; icon: string; intro: string; mode: "steps" | "all"; companion: boolean; questions: GuideQuestion[]; version: number; archivedAt: string | null; revision: number; createdAt: string };
@@ -68,7 +81,7 @@ export function mergeRanges(ranges: { start: number; end: number; id: string }[]
   }
   return out;
 }
-export type Memory = { id: string; body: string; kind: "fact" | "person" | "situation" | "preference" | "other"; status: "confirmed" | "suggested"; source: Source; journalId: string | null; sourceConversationId: string | null; revision: number; createdAt: string; updatedAt: string };
+export type Memory = { id: string; body: string; kind: MemoryKind; pinned?: boolean; status: "confirmed" | "suggested"; source: Source; journalId: string | null; sourceConversationId: string | null; revision: number; createdAt: string; updatedAt: string };
 export type LinkKind = "chapter" | "experience" | "area";
 export type EntryLink = { conversationId: string; kind: LinkKind; targetId: string; label: string };
 
@@ -145,7 +158,7 @@ export const messageFromRow = (r: Tables["journal_messages"]["Row"]): Message =>
 export const messageImageFromRow = (r: Tables["journal_message_images"]["Row"]): MessageImage => ({ id: r.id, messageId: r.message_id, position: r.position, path: r.path, thumbnailPath: r.thumbnail_path, width: r.width, height: r.height, mime: r.mime });
 export const tagFromRow = (r: Tables["journal_tags"]["Row"]): Tag => ({ id: r.id, kind: r.kind as TagKind, name: r.name, normalized: r.normalized ?? r.name.trim().toLowerCase(), aliases: r.aliases, note: r.note, revision: r.revision, suppressed: r.suppressed ?? false });
 export const memoryFromRow = (r: Tables["journal_memories"]["Row"]): Memory => ({
-  id: r.id, body: r.body, kind: r.kind as Memory["kind"], status: r.status as Memory["status"], source: r.source as Source, journalId: r.journal_id, sourceConversationId: r.source_conversation_id, revision: r.revision, createdAt: r.created_at, updatedAt: r.updated_at,
+  id: r.id, body: r.body, kind: r.kind as Memory["kind"], pinned: r.pinned ?? false, status: r.status as Memory["status"], source: r.source as Source, journalId: r.journal_id, sourceConversationId: r.source_conversation_id, revision: r.revision, createdAt: r.created_at, updatedAt: r.updated_at,
 });
 export const bookmarkFromRow = (r: Tables["journal_bookmarks"]["Row"]): Bookmark => ({ id: r.id, conversationId: r.conversation_id, messageId: r.message_id, excerpt: r.excerpt, note: r.note, createdAt: r.created_at, start: r.start_offset ?? null, end: r.end_offset ?? null, updatedAt: r.updated_at ?? r.created_at });
 

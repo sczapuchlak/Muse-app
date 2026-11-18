@@ -236,7 +236,7 @@ export async function saveBookmarkNote(client: Client, userId: string, id: strin
 export async function deleteBookmark(client: Client, userId: string, id: string) { must(await client.from("journal_bookmarks").delete().eq("id", id).eq("user_id", userId).select("id")); }
 
 export async function saveMemory(client: Client, userId: string, m: Memory): Promise<Memory> {
-  const row = { body: m.body.trim().slice(0, 1000), kind: m.kind, status: m.status, source: m.source, journal_id: m.journalId, source_conversation_id: m.sourceConversationId };
+  const row = { body: m.body.trim().slice(0, 1000), kind: m.kind, status: m.status, source: m.source, journal_id: m.journalId, source_conversation_id: m.sourceConversationId, pinned: m.pinned ?? false };
   return memoryFromRow(one(m.revision === 0
     ? await client.from("journal_memories").insert({ ...row, id: m.id, user_id: userId }).select("*").single()
     : await client.from("journal_memories").update(row).eq("id", m.id).eq("user_id", userId).eq("revision", m.revision).select("*").maybeSingle()));

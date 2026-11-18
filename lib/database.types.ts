@@ -223,14 +223,14 @@ isOneToOne: false
                 },
 "journal_memories": {
                   Row: {
-                    "body": string,"created_at": string,"id": string,"journal_id": string | null,"kind": string,"revision": number,"source": string,"source_conversation_id": string | null,"status": string,"updated_at": string,"user_id": string
+                    "pinned": boolean,"body": string,"created_at": string,"id": string,"journal_id": string | null,"kind": string,"revision": number,"source": string,"source_conversation_id": string | null,"status": string,"updated_at": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "body": string,"created_at"?: string,"id"?: string,"journal_id"?: string | null,"kind"?: string,"revision"?: number,"source"?: string,"source_conversation_id"?: string | null,"status"?: string,"updated_at"?: string,"user_id"?: string
+                    "pinned"?: boolean,"body": string,"created_at"?: string,"id"?: string,"journal_id"?: string | null,"kind"?: string,"revision"?: number,"source"?: string,"source_conversation_id"?: string | null,"status"?: string,"updated_at"?: string,"user_id"?: string
                   }
                   Update: {
-                    "body"?: string,"created_at"?: string,"id"?: string,"journal_id"?: string | null,"kind"?: string,"revision"?: number,"source"?: string,"source_conversation_id"?: string | null,"status"?: string,"updated_at"?: string,"user_id"?: string
+                    "pinned"?: boolean,"body"?: string,"created_at"?: string,"id"?: string,"journal_id"?: string | null,"kind"?: string,"revision"?: number,"source"?: string,"source_conversation_id"?: string | null,"status"?: string,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
                     {

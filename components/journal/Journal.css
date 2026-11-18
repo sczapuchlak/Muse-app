@@ -848,3 +848,39 @@
 .mj-guided-switch>span{display:grid;gap:2px}
 .mj-guided-switch small{color:var(--text-muted);line-height:1.4}
 .mj-guided-prompts .mj-guide-form{display:grid;gap:12px}
+
+/* ── Memory Studio: editorial cards; pending reads as a question, known as settled, pinned with a soft wash ─────── */
+.mj-studio-mem{gap:18px}
+.mj-mem-how{padding:10px 14px;border:1px solid var(--glass-border);border-radius:14px;background:var(--mj-tile)}
+.mj-mem-how summary{cursor:pointer;font-weight:600}
+.mj-mem-how ul{display:grid;gap:6px;margin:10px 0 2px;padding-left:18px;color:var(--text-muted);line-height:1.5}
+.mj-mem-how b{color:var(--foreground)}
+.mj-mem-tools{display:grid;gap:8px}
+.mj-mem-section{display:grid;gap:10px}
+.mj-mem-title{display:flex;align-items:center;gap:8px;margin:0;font-size:1.15rem}
+.mj-mem-count{color:var(--text-muted);font-size:.86rem}
+.mj-mem-group{display:grid;gap:8px}
+.mj-mem-group h4{margin:4px 0 0;color:var(--text-muted);letter-spacing:.1em;text-transform:uppercase}
+.mj-mem-group h4 span{margin-left:4px;opacity:.7}
+.mj-mem-list{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.mj-mem{display:grid;gap:8px;padding:12px 14px 10px 16px;border:1px solid var(--glass-border);border-left:3px solid color-mix(in srgb,var(--journal-a,var(--accent-primary)) 55%,transparent);border-radius:6px 16px 16px 6px;background:var(--mj-tile);animation:mj-rise var(--motion-settle,240ms) var(--mj-ease) both}
+.mj-mem[data-status="suggested"]{border-style:dashed;border-left-style:solid;border-left-color:var(--accent-warm,var(--journal-b,var(--accent-secondary)));background:linear-gradient(135deg,color-mix(in srgb,var(--accent-warm,var(--journal-b)) 7%,transparent),transparent 60%),var(--mj-tile)}
+.mj-mem[data-pinned]{background:linear-gradient(135deg,color-mix(in srgb,var(--journal-a,var(--accent-primary)) 10%,transparent),transparent 65%),var(--mj-tile)}
+.mj-mem-body{display:flex;gap:6px;margin:0;font-family:var(--font-editorial);font-size:1.04rem;line-height:1.5}
+.mj-mem-pin{flex:none;color:var(--journal-a,var(--accent-primary));padding-top:3px}
+.mj-mem-meta{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;margin:0;color:var(--text-muted)}
+.mj-mem-meta .muse-choice-trigger{min-height:30px;padding:2px 10px;font-size:.78rem}
+.mj-mem-meta a{color:var(--link-ink,var(--accent-primary));text-underline-offset:3px}
+.mj-mem-hint{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;margin:0;padding:6px 10px;border-radius:10px;background:color-mix(in srgb,var(--accent-warm,var(--journal-b)) 12%,transparent);font-size:.88rem}
+.mj-mem-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
+.mj-mem-actions .muse-button{min-height:38px}
+.mj-mem-confirm{display:inline-flex;gap:10px;align-items:center}
+.mj-mem-edit{display:grid;gap:8px}
+.mj-mem-edit textarea{width:100%}
+.mj-mem-add{display:flex;flex-wrap:wrap;gap:8px}
+.mj-mem-add input{flex:1 1 220px;min-width:0}
+.mj-icon-toggle{display:inline-grid;place-items:center;width:34px;height:34px;padding:0;border:1px solid var(--glass-border);border-radius:50%;background:transparent;color:var(--text-muted);cursor:pointer}
+.mj-icon-toggle[aria-pressed="true"]{color:#fff;border-color:transparent;background:linear-gradient(135deg,var(--journal-a,var(--accent-primary)),var(--journal-b,var(--accent-secondary)))}
+.mj-icon-toggle:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
+@container muse-content (max-width:640px){.mj-mem{padding:12px}.mj-mem-actions .muse-button{flex:1 1 auto;justify-content:center}}
+@media (prefers-reduced-motion:reduce){.mj-mem{animation:none}}
