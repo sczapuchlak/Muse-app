@@ -498,3 +498,13 @@
 .mj-composer-dock[data-paired]{grid-template-columns:minmax(0,1fr)}
 .mj-composer-dock .mj-composer-tools{min-height:40px;padding:0}
 .mj-composer-dock .mj-composer-bar{justify-content:flex-end}
+/* Header toolbar actions: New entry is a real button in the journal's gradient; ⋯ and Preferences are round icon
+   buttons in the same glass as the journal and companion chips. */
+.mj-header-toolbar .mj-toolbar{gap:8px;flex-wrap:nowrap}
+.mj-header-toolbar .mj-tb-new{min-height:44px;padding:0 16px 0 12px;border:0;border-radius:12px;color:#fff;font-weight:600;background:linear-gradient(135deg,var(--journal-a,var(--accent-primary)),var(--journal-b,var(--accent-secondary)));box-shadow:0 8px 22px -12px var(--journal-a,var(--accent-primary));transition:transform var(--motion-hover,180ms) var(--mj-ease),box-shadow var(--motion-hover,180ms),filter var(--motion-hover,180ms)}
+.mj-header-toolbar .mj-tb-new:hover:not(:disabled){transform:translateY(-1px);filter:brightness(1.06);box-shadow:0 12px 26px -12px var(--journal-a,var(--accent-primary))}
+.mj-header-toolbar .mj-tb-new:disabled{opacity:.5}
+.mj-header-tools :is(.mj-tb-settings,.muse-overflow-trigger){display:inline-grid;place-items:center;flex:none;width:44px;height:44px;min-height:44px;padding:0;border:1px solid var(--glass-border);border-radius:50%;background:var(--mj-tile);color:var(--foreground);transition:border-color var(--motion-hover,180ms),background var(--motion-hover,180ms),transform var(--motion-hover,180ms) var(--mj-ease)}
+.mj-header-tools :is(.mj-tb-settings,.muse-overflow-trigger):hover{border-color:color-mix(in srgb,var(--journal-a,var(--accent-primary)) 50%,var(--glass-border));background:var(--mj-tile-hover);transform:translateY(-1px)}
+.mj-header-tools .mj-tb-settings .mj-tb-label{display:none}
+@container muse-content (max-width:640px){.mj-header-toolbar .mj-tb-new{min-height:40px;padding:0 10px}.mj-header-toolbar .mj-tb-new .mj-tb-label{display:none}.mj-header-tools :is(.mj-tb-settings,.muse-overflow-trigger){width:40px;height:40px;min-height:40px}}
