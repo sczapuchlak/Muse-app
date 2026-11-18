@@ -309,6 +309,37 @@ try{
  await until(()=>/Kept/.test(document.querySelector('.mj-studio-test [role=status]')?.textContent??''),'kept');
  check(await count('journal_conversations',a.id,{origin:'playground'})===1,'Keep as Journal Entry copies the test once, on request');
 
+ // ---- Continue from here: a fresh page that references an old entry; nothing created or paid until you write ----
+ const beforeCount=await count('journal_conversations',a.id),opensBefore=await count('journal_ai_usage',a.id,{kind:'opening'});
+ const orig=must(await admin.from('journal_conversations').select('revision,updated_at,title').eq('id',convId).single());
+ await go(`/journal?entry=${convId}`,'!!document.querySelector(".mj-entry .mj-continue")','entry for continue');
+ await click('.mj-entry .mj-continue');
+ await until(()=>!!document.querySelector('.mj-ref')&&!!document.querySelector('.mj-workspace .mj-ws-page .mj-composer textarea'),'continue page');
+ check(await count('journal_conversations',a.id)===beforeCount&&await has('.mj-ref',orig.title.slice(0,12)),'Continue from here opens a fresh page with a small reference and creates nothing yet');
+ await shoot('15-continue');
+ await setValue('.mj-ws-page .mj-composer textarea','WELL, GUESS WHAT. It happened.');await click('.mj-live-compose button[type=submit]');
+ await until(()=>document.querySelectorAll('.mj-message[data-role=assistant]').length===1&&!document.querySelector('[data-streaming]'),'continued reply',undefined,400);
+ const firstRef=await text('.mj-message[data-role=assistant] .mj-message-body');
+ check(/Continuing “.+” \(full\)/.test(firstRef)&&!/I can see/.test(firstRef),'the first reply has the original entry (bounded) as context, and none of its photos');
+ check(await count('journal_ai_usage',a.id,{kind:'opening'})===opensBefore,'clicking Continue made no greeting or other AI request');
+ const follow=must(await admin.from('journal_conversations').select('id,continues_id,continues_title').eq('user_id',a.id).eq('continues_id',convId).single());
+ check(follow.continues_title===orig.title,'the new entry links to the original, with a title snapshot');
+ await setValue('.mj-ws-page .mj-composer textarea','And there is more.');await click('.mj-live-compose button[type=submit]');
+ await until(()=>document.querySelectorAll('.mj-message[data-role=assistant]').length===2&&!document.querySelector('[data-streaming]'),'second continued reply',undefined,400);
+ check(/Continuing “.+” \(summary\)/.test((await text('.mj-message[data-role=assistant] .mj-message-body')).split('\n').pop()),'later messages carry only the summary, not the whole original again');
+ const origAfter=must(await admin.from('journal_conversations').select('revision,updated_at,title').eq('id',convId).single());
+ check(origAfter.revision===orig.revision&&origAfter.updated_at===orig.updated_at,'the original entry is untouched');
+ await go(`/journal?entry=${follow.id}`,'!!document.querySelector(".mj-ref")','reload continued');
+ check(await has('.mj-ref','Referencing'),'the reference survives a reload');
+ await click('.mj-ref-link');await until(()=>!!document.querySelector('#mj-ref-preview'),'preview');await click('#mj-ref-preview button','Keep writing');
+ await click('.mj-live-compose .mj-composer-secondary','Finish entry');await click('.mj-finish button','Finish & save');
+ for(let i=0;i<60&&must(await admin.from('journal_conversations').select('status').eq('id',follow.id).single()).status!=='completed';i++)await wait(200);
+ check(must(await admin.from('journal_conversations').select('status').eq('id',follow.id).single()).status==='completed','the continued entry finishes and saves like any other');
+ await go(`/journal?entry=${convId}`,'!!document.querySelector(".mj-entry-links")','original links');
+ check(await has('.mj-entry-links','Continued in'),'the original shows where it was continued');
+ await go(`/journal?entry=${follow.id}`,'!!document.querySelector(".mj-entry-links")','follow links');
+ check(await has('.mj-entry-links','Continues'),'the new entry links back to its source');
+
  // ---- Scenario D: a draft survives a reload ----
  await go('/journal','!!document.querySelector(".mj-workspace .mj-composer textarea")','workspace');
  const long=Array.from({length:60},(_,i)=>`Sentence ${i} of a long dictated thought about the day.`).join(' ');

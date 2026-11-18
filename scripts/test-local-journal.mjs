@@ -99,6 +99,19 @@ try{
  assert.deepEqual(await P.searchJournal(b.client,'life mom'),[],'tag search never crosses accounts');
  assert.ok((await b.client.from('journal_tags').select('id').eq('id',mine.id)).data.length===0,'another account cannot read my tags');
 
+ // Continue from here: links only to my own entries; never itself; many follow-ups; a deleted original keeps the snapshot.
+ const src=await P.createConversation(a.client,a.id,{id:crypto.randomUUID(),journalId:everyday.id,companion:null,mode:'open',localDate:today,timeZone:'UTC',status:'active'});
+ const f1=await P.createConversation(a.client,a.id,{id:crypto.randomUUID(),journalId:everyday.id,companion:null,mode:'open',localDate:today,timeZone:'UTC',status:'draft',continues:{id:src.id,title:'The offer',date:today}});
+ const f2=await P.createConversation(a.client,a.id,{id:crypto.randomUUID(),journalId:everyday.id,companion:null,mode:'open',localDate:today,timeZone:'UTC',status:'draft',continues:{id:src.id,title:'The offer',date:today}});
+ assert.equal(f1.continuesId,src.id);assert.equal(f2.continuesId,src.id,'several entries can continue the same original');
+ assert.equal((await P.refreshConversation(a.client,a.id,src.id)).revision,src.revision,'continuing an entry never changes it');
+ const bConv=await b.client.from('journal_journals').select('id').limit(1);
+ assert.ok((await b.client.from('journal_conversations').insert({journal_id:bConv.data?.[0]?.id??everyday.id,mode:'open',status:'draft',local_date:today,time_zone:'UTC',continues_id:src.id,continues_title:'x'})).error,'another account cannot continue my entry');
+ assert.ok((await a.client.from('journal_conversations').update({continues_id:f1.id}).eq('id',f1.id).select('id')).error,'an entry cannot continue itself');
+ await P.deleteConversation(a.client,a.id,src.id);
+ const orphan=await P.refreshConversation(a.client,a.id,f1.id);assert.equal(orphan.continuesId,null);assert.equal(orphan.continuesTitle,'The offer','a deleted original leaves the snapshot');
+ await P.deleteConversation(a.client,a.id,f1.id);await P.deleteConversation(a.client,a.id,f2.id);
+
  // Search and journal days.
  const hits=await P.searchJournal(a.client,'lisbon');assert.equal(hits[0].conversationId,conv.id);assert.match(hits[0].snippet,/Lisbon/);
  assert.deepEqual(await P.searchJournal(b.client,'lisbon'),[],'search never crosses accounts');
