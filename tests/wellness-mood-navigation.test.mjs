@@ -13,7 +13,7 @@ test('Mood is a Wellness pill and no longer appears in the main or mobile naviga
  assert.match(wellness,/\{id:"mood",label:"Mood"\}/);
  assert.match(wellness,/view==="mood"\?<Mood embedded onDateChange=\{changeDate\}\/>/);
  assert.match(wellness,/query\.get\("view"\)==="plan"\?"plan":"mood"/,'Wellness opens on Mood');
- assert.ok(wellness.indexOf('{id:"mood",label:"Mood"}')<wellness.indexOf('{id:"plan",label:"Plan"}'),'Mood is the first Wellness section');
+ assert.ok(wellness.indexOf('{id:"mood",label:"Mood"}')<wellness.indexOf('{id:"plan",label:"Meals"}'),'Mood is the first Wellness section');
  for(const file of ['components/MealsCard.tsx','components/insights/NourishInsights.tsx'])assert.match(readFileSync(root+'/'+file,'utf8'),/\/nourish\?date=\$\{[^}]+\}&view=plan/,'meal links still open the meal plan');
 });
 

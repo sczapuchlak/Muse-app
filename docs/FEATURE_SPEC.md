@@ -1298,3 +1298,11 @@ See [BOOK_IMPORT_143](BOOK_IMPORT_143.md). Goodreads empty ISBN formulas are mis
 - **Open/closed:** the section closes to its title and idea count; the choice is remembered on that device.
 - **Data:** `meal_ideas` (migration `20261225000100_meal_ideas.sql`, owner-only RLS); `lib/meal-ideas.ts`, `components/nourish/useMealIdeas.ts`, `components/nourish/MealIdeas.tsx`. Included in the account export (`mealIdeas`).
 
+## Money: plan paychecks by category; categories and subcategories can be deleted — Staging acceptance pending
+
+Approved 2026-11-17 (planning groups duplicated categories: "I would just use the same planning groups as categories").
+- **Paycheck planning uses categories.** "Plan from this paycheck" asks for a Category (required for new and edited rows) and an optional Subcategory. A **New category** (name + colour) or **New subcategory in …** can be made right there without leaving the paycheck; with no categories yet, the new-category form starts open.
+- **Planning groups are retired from the app.** Existing groups, and each row's old group, stay stored and never deleted (`save_money` still preserves them). A row with no category shows its old group's name and asks for a category until it gets one. Migration `20261226000100_money_plan_by_category.sql` makes the group optional and carries existing plans over by name (group name = category name, or = / starts a unique subcategory name, e.g. "Bilt" → Credit Cards › Bilt Card); anything else is left to choose.
+- **Ring, ribbon and "Where it goes"** divide each paycheck by category (`planSegments`); rows show Category › Subcategory (`planLabel`). Insights' savings figure uses a chosen **Savings category**.
+- **Delete.** The category editor lists each subcategory as a rename field with Delete; the category has **Delete category** (Archive still keeps history instead). If something uses it, a confirmation names how many planned amounts, purchases, bills and recurring payments; they stay, without that category (or, for a subcategory, keep the category). Unused ones delete directly. Deleted categories are recorded so a stale tab can't bring them back.
+

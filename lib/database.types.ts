@@ -21,14 +21,14 @@ export type Database = {
                   ]
                 },"allocations": {
                   Row: {
-                    "actual_cents": number | null,"allocation_group_id": string,"bill_id": string | null,"captured_time_zone": string,"card_id": string | null,"category_id": string | null,"created_at": string,"currency": string,"due_date": string | null,"id": string,"name": string,"note": string | null,"paycheck_id": string,"planned_cents": number,"position": number,"subcategory_id": string | null,"updated_at": string,"user_id": string
+                    "actual_cents": number | null,"allocation_group_id": string | null,"bill_id": string | null,"captured_time_zone": string,"card_id": string | null,"category_id": string | null,"created_at": string,"currency": string,"due_date": string | null,"id": string,"name": string,"note": string | null,"paycheck_id": string,"planned_cents": number,"position": number,"subcategory_id": string | null,"updated_at": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "actual_cents"?: number | null,"allocation_group_id": string,"bill_id"?: string | null,"captured_time_zone": string,"card_id"?: string | null,"category_id"?: string | null,"created_at"?: string,"currency"?: string,"due_date"?: string | null,"id": string,"name": string,"note"?: string | null,"paycheck_id": string,"planned_cents": number,"position"?: number,"subcategory_id"?: string | null,"updated_at"?: string,"user_id": string
+                    "actual_cents"?: number | null,"allocation_group_id": string | null,"bill_id"?: string | null,"captured_time_zone": string,"card_id"?: string | null,"category_id"?: string | null,"created_at"?: string,"currency"?: string,"due_date"?: string | null,"id": string,"name": string,"note"?: string | null,"paycheck_id": string,"planned_cents": number,"position"?: number,"subcategory_id"?: string | null,"updated_at"?: string,"user_id": string
                   }
                   Update: {
-                    "actual_cents"?: number | null,"allocation_group_id"?: string,"bill_id"?: string | null,"captured_time_zone"?: string,"card_id"?: string | null,"category_id"?: string | null,"created_at"?: string,"currency"?: string,"due_date"?: string | null,"id"?: string,"name"?: string,"note"?: string | null,"paycheck_id"?: string,"planned_cents"?: number,"position"?: number,"subcategory_id"?: string | null,"updated_at"?: string,"user_id"?: string
+                    "actual_cents"?: number | null,"allocation_group_id"?: string | null,"bill_id"?: string | null,"captured_time_zone"?: string,"card_id"?: string | null,"category_id"?: string | null,"created_at"?: string,"currency"?: string,"due_date"?: string | null,"id"?: string,"name"?: string,"note"?: string | null,"paycheck_id"?: string,"planned_cents"?: number,"position"?: number,"subcategory_id"?: string | null,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
                     {
@@ -1688,14 +1688,14 @@ isOneToOne: false
                   ]
                 },"paycheck_template_allocations": {
                   Row: {
-                    "allocation_group_id": string,"bill_id": string | null,"card_id": string | null,"category_id": string | null,"name": string,"note": string | null,"planned_cents": number,"position": number,"subcategory_id": string | null,"template_id": string,"user_id": string
+                    "allocation_group_id": string | null,"bill_id": string | null,"card_id": string | null,"category_id": string | null,"name": string,"note": string | null,"planned_cents": number,"position": number,"subcategory_id": string | null,"template_id": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "allocation_group_id": string,"bill_id"?: string | null,"card_id"?: string | null,"category_id"?: string | null,"name": string,"note"?: string | null,"planned_cents": number,"position": number,"subcategory_id"?: string | null,"template_id": string,"user_id": string
+                    "allocation_group_id": string | null,"bill_id"?: string | null,"card_id"?: string | null,"category_id"?: string | null,"name": string,"note"?: string | null,"planned_cents": number,"position": number,"subcategory_id"?: string | null,"template_id": string,"user_id": string
                   }
                   Update: {
-                    "allocation_group_id"?: string,"bill_id"?: string | null,"card_id"?: string | null,"category_id"?: string | null,"name"?: string,"note"?: string | null,"planned_cents"?: number,"position"?: number,"subcategory_id"?: string | null,"template_id"?: string,"user_id"?: string
+                    "allocation_group_id"?: string | null,"bill_id"?: string | null,"card_id"?: string | null,"category_id"?: string | null,"name"?: string,"note"?: string | null,"planned_cents"?: number,"position"?: number,"subcategory_id"?: string | null,"template_id"?: string,"user_id"?: string
                   }
                   Relationships: [
                     {

@@ -359,3 +359,17 @@ details.muse-money-footnote[open]>summary{margin-bottom:4px}
 .muse-money-income,.muse-money-tiles dd{font-family:var(--font-editorial);font-weight:540;letter-spacing:-.025em;font-variant-numeric:lining-nums tabular-nums}
 .muse-money-income{font-size:clamp(2.2rem,3.6vw,2.9rem)}
 .muse-money-panel-heading h2 .muse-money-mark{margin-right:10px}
+
+/* Category editor: subcategory rows (rename or delete) and confirmations before deleting. */
+.muse-money-subcategories{display:grid;gap:8px}
+.muse-money-subcategory{display:grid;gap:6px}
+.muse-money-subcategory-row{display:flex;gap:8px;align-items:center}
+.muse-money-subcategory-row input{flex:1;min-width:0}
+.muse-money-confirm{display:grid;gap:8px;padding:12px;border:1px solid color-mix(in srgb,var(--accent-pop) 45%,var(--glass-border));border-radius:12px;background:color-mix(in srgb,var(--accent-pop) 8%,var(--surface-subtle))}
+.muse-money-confirm p{margin:0;font-size:.88rem;line-height:1.5}
+.muse-money-danger{border-color:color-mix(in srgb,var(--accent-pop) 45%,var(--glass-border))!important;color:color-mix(in srgb,var(--accent-pop) 70%,var(--foreground))!important}
+.muse-money-danger-text{color:color-mix(in srgb,var(--accent-pop) 70%,var(--foreground))!important;justify-self:start}
+.muse-money-taxonomy-grid>:only-child{grid-column:1/-1}
+.muse-money-new-inline{justify-self:start;display:inline-flex;align-items:center;gap:5px;margin:-4px 0 var(--space-2);font-size:.84rem}
+.muse-money-new-inline-form{display:grid;gap:8px;margin-bottom:var(--space-2);padding:12px!important;border:1px dashed var(--glass-border)!important;border-radius:12px}
+.muse-money-new-inline-form legend{padding:0 4px;font-size:.84rem}
