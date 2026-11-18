@@ -68,7 +68,7 @@ function JournalView() {
   else if (entry) body = <p className="mj-note" role="status">That entry isn’t here. It may have been deleted.</p>;
   else if (view === "history") body = <HistoryView open={open} initialTag={params?.get("tag")} initialJournal={params?.get("journal")} onThisDay={params?.get("onthisday") === "1"} />;
   else if (view === "insights") body = <InsightsView key={params?.get("week") ?? "now"} open={open} initialWeek={params?.get("week")} />;
-  else body = <Workspace initialId={null} onRouteClear={() => undefined} />;
+  else body = <Workspace initialId={null} continueFrom={params?.get("continue") ?? null} onRouteClear={() => { if (params?.get("continue")) go({ continue: null }, true); }} onCreated={(id) => go({ continue: null, entry: id }, true)} />;
 
   const tools = <div className="mj-header-tools" key="tools">
     <div className="mj-header-slot" ref={setToolbarSlot} />

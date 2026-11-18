@@ -23,6 +23,9 @@ export type Conversation = {
   localDate: string; timeZone: string; startedAt: string; completedAt: string | null; title: string; titleSource: Source | null; summary: string; summarySource: Source | null;
   favorite: boolean; excludeFromMemory: boolean; memoryOff: boolean; analysisStatus: "pending" | "ready" | "failed" | "skipped" | null; images: JournalImage[];
   draft: string; draftUpdatedAt: string | null; userWords: number; messageCount: number; lastMessageAt: string | null; revision: number; updatedAt: string;
+  /** "Continue from here": the earlier entry this one continues (null if none, or if that entry was deleted), with a
+   *  snapshot of its title and date so the link stays readable. */
+  continuesId: string | null; continuesTitle: string; continuesDate: string | null;
 };
 export type Message = { id: string; conversationId: string; role: "user" | "assistant"; body: string; localDate: string; replyTo: string | null; companionVersionId: string | null; model: string | null; correctedAt: string | null; createdAt: string; images?: MessageImage[] };
 /** A photo attached to one of your messages (up to 7). Sent to the AI only with the request answering that message. */
@@ -87,11 +90,13 @@ export const conversationFromRow = (r: Tables["journal_conversations"]["Row"]): 
   localDate: r.local_date, timeZone: r.time_zone, startedAt: r.started_at, completedAt: r.completed_at, title: r.title, titleSource: r.title_source as Source | null, summary: r.summary, summarySource: r.summary_source as Source | null,
   favorite: r.favorite, excludeFromMemory: r.exclude_from_memory, memoryOff: r.memory_off, analysisStatus: r.analysis_status as Conversation["analysisStatus"], images: images(r.images),
   draft: r.draft, draftUpdatedAt: r.draft_updated_at, userWords: r.user_words, messageCount: r.message_count, lastMessageAt: r.last_message_at, revision: r.revision, updatedAt: r.updated_at,
+  continuesId: r.continues_id ?? null, continuesTitle: r.continues_title ?? "", continuesDate: r.continues_date ?? null,
 });
 /** The columns a person edits on an entry (status, counters and drafts move separately). */
 export const conversationMetaToRow = (c: Conversation) => ({
   journal_id: c.journalId, title: c.title.slice(0, 200), title_source: c.title ? c.titleSource : null, summary: c.summary.slice(0, 4000), summary_source: c.summary ? c.summarySource : null,
   favorite: c.favorite, exclude_from_memory: c.excludeFromMemory, memory_off: c.memoryOff, images: c.images as unknown as NonNullable<Json>,
+  continues_id: c.continuesId, continues_title: c.continuesTitle.slice(0, 200), continues_date: c.continuesDate,
 });
 export const messageFromRow = (r: Tables["journal_messages"]["Row"]): Message => ({
   id: r.id, conversationId: r.conversation_id, role: r.role as Message["role"], body: r.body, localDate: r.local_date, replyTo: r.reply_to, companionVersionId: r.companion_version_id, model: r.model, correctedAt: r.corrected_at, createdAt: r.created_at,

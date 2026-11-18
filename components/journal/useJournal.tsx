@@ -61,8 +61,8 @@ function useJournalStore() {
     restorePreset: (c: Companion) => { const p = companionPreset(c.presetKey); return p ? { ...c, name: p.name, description: p.description, instructions: p.instructions, conversationPrefs: p.conversationPrefs, openingStyle: p.openingStyle } : c; },
     savePrefs: (p: Preferences) => run(async () => { const saved = await P.savePreferences(client, userId, p); patch((s) => ({ ...s, prefs: saved })); return saved; }),
 
-    startConversation: (o: { journalId: string; companion: Companion | null; mode: Mode; status?: "draft" | "active"; draft?: string }) => run(async () => {
-      const c = await P.createConversation(client, userId, { id: newId(), journalId: o.journalId, companion: o.companion, mode: o.mode, localDate: today, timeZone, status: o.status ?? "active", draft: o.draft });
+    startConversation: (o: { journalId: string; companion: Companion | null; mode: Mode; status?: "draft" | "active"; draft?: string; continues?: { id: string; title: string; date: string } | null }) => run(async () => {
+      const c = await P.createConversation(client, userId, { id: newId(), journalId: o.journalId, companion: o.companion, mode: o.mode, localDate: today, timeZone, status: o.status ?? "active", draft: o.draft, continues: o.continues });
       putConversation(c); return c;
     }),
     putConversation,

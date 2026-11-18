@@ -89,12 +89,13 @@ export async function savePreferences(client: Client, userId: string, p: Prefere
 }
 
 /** Starts a conversation, pinning the Companion's current saved version. */
-export async function createConversation(client: Client, userId: string, o: { id: string; journalId: string; companion: Companion | null; mode: Mode; localDate: string; timeZone: string; status: "draft" | "active"; draft?: string }): Promise<Conversation> {
+export async function createConversation(client: Client, userId: string, o: { id: string; journalId: string; companion: Companion | null; mode: Mode; localDate: string; timeZone: string; status: "draft" | "active"; draft?: string; continues?: { id: string; title: string; date: string } | null }): Promise<Conversation> {
   let versionId: string | null = null;
   if (o.companion) { const v = await client.from("journal_companion_versions").select("id").eq("user_id", userId).eq("companion_id", o.companion.id).eq("version", o.companion.version).maybeSingle(); if (v.error) fail(v.error); versionId = v.data?.id ?? null; }
   return conversationFromRow(must(await client.from("journal_conversations").insert({
     id: o.id, user_id: userId, journal_id: o.journalId, companion_id: o.companion?.id ?? null, companion_version_id: versionId, companion_name: o.companion?.name ?? "", mode: o.mode,
     local_date: o.localDate, time_zone: o.timeZone, status: o.status, draft: o.draft ?? "", draft_updated_at: o.draft ? new Date().toISOString() : null,
+    ...(o.continues ? { continues_id: o.continues.id, continues_title: o.continues.title.slice(0, 200), continues_date: o.continues.date } : {}),
   }).select("*").single()));
 }
 /** Drafts save often and never conflict with metadata edits (they don't bump the revision). */
