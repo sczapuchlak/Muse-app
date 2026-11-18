@@ -92,7 +92,7 @@ test('tags: case-insensitive identity, aliases, never fuzzy', () => {
   assert.equal(M.findTag(tags, 'person', 'Alexa'), null, 'similar names are different people');
   assert.equal(M.findTag(tags, 'topic', 'Alex'), null, 'kinds stay distinct');
   assert.equal(M.cleanTagName('  New   York '), 'New York');
-  assert.deepEqual(M.tagKinds, ['custom', 'person', 'place', 'topic', 'mood', 'theme'], 'My tags come first, as their own kind');
+  assert.deepEqual(M.tagKinds, ['custom', 'person', 'topic', 'mood'], 'My tags, people, topics and moods; places and themes are no longer shown');
   assert.equal(M.tagLabel({ kind: 'custom', name: 'Life Moments' }), '#Life Moments');
   assert.equal(M.tagLabel({ kind: 'person', name: 'Rory' }), 'Rory');
 });
@@ -119,4 +119,21 @@ test('Markdown export keeps original words in order, with whose they are', () =>
     tags: [{ id: 't', kind: 'person', name: 'Alex' }], entryTags: [{ conversation_id: 'c1', tag_id: 't' }], bookmarks: [{ conversation_id: 'c1', excerpt: 'First', note: 'why' }] });
   assert.match(md, /### A long day ★/); assert.match(md, /Evening reflection/); assert.match(md, /Alex \(person\)/); assert.match(md, /AI summary/);
   assert.ok(md.indexOf('First, mine') < md.indexOf('Reply')); assert.match(md, /\*\*The Confidant\*\*/); assert.match(md, /Bookmarked/);
+});
+
+test('photos: only the answered message carries photos; earlier ones are named as no longer visible', () => {
+  const input = C.conversationInput([{ role: 'user', body: 'Look', imageCount: 2 }, { role: 'assistant', body: 'Nice' }, { role: 'user', body: 'Again', imageCount: 1 }]);
+  assert.match(input[0].content, /2 photos were attached here\. You can't see them now\./);
+  assert.equal(input[2].content, 'Again', 'the message being answered is untouched; its photos ride with it separately');
+  assert.match(I.APPLICATION_RULES, /Never identify a real person/);
+  assert.equal(M.MAX_MESSAGE_IMAGES, 7);
+});
+
+test('analysis carries a closer look and an insight; older analyses read as empty, never invented', () => {
+  const d = M.parseAnalysisData({ title: 'T', recap: 'R', reflection: 'One.\n\nTwo.', insight: 'Keep this.' });
+  assert.equal(d.reflection, 'One.\n\nTwo.'); assert.equal(d.insight, 'Keep this.');
+  const old = M.parseAnalysisData({ title: 'T', recap: 'R' });
+  assert.equal(old.reflection, ''); assert.equal(old.insight, '');
+  assert.ok(I.analysisSchema.required.includes('reflection') && I.analysisSchema.required.includes('insight'));
+  assert.ok(!I.analysisSchema.required.includes('places') && !I.analysisSchema.required.includes('themes'), 'analysis no longer asks for places or themes');
 });

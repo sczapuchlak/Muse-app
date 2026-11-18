@@ -48,6 +48,15 @@ try{
  assert.deepEqual(await P.addMessage(a.client,a.id,{id:m1.id,conversationId:conv.id,body:'retry',localDate:today}).then(m=>m.body),m1.body,'a retried save returns the first copy');
  conv=await P.refreshConversation(a.client,a.id,conv.id);
  assert.equal(conv.status,'active','the first message makes a draft active');assert.equal(conv.userWords,12);assert.equal(conv.messageCount,1);assert.equal(conv.draft,'','sending clears the draft');
+ // Photos on a message: my own message, my own folder for this entry, at most 7, never visible to anyone else.
+ const img={conversation_id:conv.id,message_id:m1.id,position:0,path:`${a.id}/${conv.id}/p.webp`,thumbnail_path:`${a.id}/${conv.id}/p.thumb.webp`,width:10,height:10,mime:'image/webp'};
+ assert.ok(!(await a.client.from('journal_message_images').insert(img)).error,'a photo links to my own message');
+ assert.ok((await a.client.from('journal_message_images').insert({...img,position:1,path:`${b.id}/${conv.id}/p.webp`})).error,'a photo path must be in my own folder for this entry');
+ assert.ok((await a.client.from('journal_message_images').insert({...img,position:7})).error,'at most 7 photos per message');
+ assert.ok((await b.client.from('journal_message_images').insert({...img,position:2})).error,'another account cannot attach to my message');
+ assert.equal((await b.client.from('journal_message_images').select('id').eq('message_id',m1.id)).data.length,0,'another account cannot see my photos');
+ assert.ok((await a.client.from('journal_message_images').update({width:20}).eq('message_id',m1.id).select('id')).data?.length!==1,'photos are never edited in place');
+ assert.equal((await P.loadMessages(a.client,a.id,conv.id)).messages.find(m=>m.id===m1.id).images.length,1,'a message loads with its photos');
  // Only one reply per message, and messages can't be edited directly.
  must(await a.client.from('journal_messages').insert({conversation_id:conv.id,role:'assistant',body:'How was it?',local_date:today,reply_to:m1.id}));
  assert.ok((await a.client.from('journal_messages').insert({conversation_id:conv.id,role:'assistant',body:'Dup',local_date:today,reply_to:m1.id})).error,'a second reply to the same message is refused');

@@ -663,3 +663,51 @@
 .mj-ws-page .mj-blank-week .mj-constellation{max-width:400px;max-height:96px}
 .mj-shelf-head>div.mj-history-controls{display:flex;flex-wrap:nowrap;align-items:center;gap:10px}
 .mj-ws-page .mj-blank-week .mj-constellation{max-width:440px;max-height:112px}.mj-ws-page .mj-greeting{font-size:clamp(2.1rem,3.4vw,2.9rem)}
+
+/* ── Reading a conversation: the back-and-forth is unmistakable ──────────────────────────────────────────────────
+   Your words sit on a clearly tinted card with your journal's two-tone edge; the companion answers in its own ink,
+   with a fine line running from its mark down the reply. More air between turns. */
+.mj-thread{gap:30px}
+.mj-message[data-role="user"] .mj-message-body{position:relative;border:1px solid color-mix(in srgb,var(--journal-a,var(--accent-secondary)) 32%,var(--glass-border));border-left:0;background:linear-gradient(135deg,color-mix(in srgb,var(--journal-a,var(--accent-secondary)) 15%,transparent),color-mix(in srgb,var(--journal-b,var(--accent-primary)) 7%,transparent) 70%),var(--mj-tile);box-shadow:0 16px 32px -28px var(--journal-a,var(--accent-secondary))}
+.mj-message[data-role="user"] .mj-message-body::before{content:"";position:absolute;left:0;top:-1px;bottom:-1px;width:3px;border-radius:4px 0 0 4px;background:linear-gradient(var(--journal-a,var(--accent-secondary)),var(--journal-b,var(--accent-primary)))}
+.mj-message[data-role="user"] .mj-message-who>span:first-child{display:inline-flex;align-items:center;min-height:22px;padding:0 10px;border-radius:999px;background:color-mix(in srgb,var(--journal-a,var(--accent-secondary)) 18%,transparent);color:var(--foreground);font-weight:600;letter-spacing:.06em}
+.mj-message[data-role="assistant"]{position:relative}
+.mj-message[data-role="assistant"] .mj-message-who>span{color:var(--who-ink,var(--foreground));font-weight:600}
+.mj-message[data-role="assistant"] .mj-message-body{position:relative;color:color-mix(in srgb,var(--who-ink,var(--foreground)) 22%,var(--foreground))}
+.mj-message[data-role="assistant"] .mj-message-body::before{content:"";position:absolute;left:13px;top:2px;bottom:6px;width:2px;border-radius:2px;background:linear-gradient(color-mix(in srgb,var(--who-ink,var(--accent-primary)) 70%,transparent),transparent);opacity:.6}
+@container muse-content (max-width:640px){.mj-message[data-role="assistant"] .mj-message-body{padding-left:16px}.mj-message[data-role="assistant"] .mj-message-body::before{left:2px}.mj-thread{gap:24px}}
+
+/* ── Analysis: a closer look and the insight worth keeping ──────────────────────────────────────────────────── */
+.mj-closer{display:grid;gap:10px;padding:clamp(16px,2.4vw,24px) clamp(18px,3vw,30px);border:1px solid var(--glass-border);border-radius:var(--mj-radius,18px);background:var(--mj-tile)}
+.mj-closer h3{display:flex;align-items:center;gap:8px;margin:0}
+.mj-closer-text{max-width:72ch;font-size:1.06rem;line-height:1.75}
+.mj-closer-text p{margin:0}.mj-closer-text p+p{margin-top:.9em}
+.mj-insight{position:relative;display:grid;gap:8px;margin:0;padding:18px 22px 20px;border:1px solid transparent;border-radius:var(--mj-radius,18px);background:linear-gradient(var(--mj-tile),var(--mj-tile)) padding-box,linear-gradient(135deg,var(--journal-a,var(--accent-primary)),var(--journal-b,var(--accent-secondary))) border-box;box-shadow:0 18px 40px -30px var(--journal-a,var(--accent-primary))}
+.mj-insight figcaption{display:flex;align-items:center;gap:8px;color:var(--text-muted);letter-spacing:.12em;text-transform:uppercase}
+.mj-insight figcaption svg{width:11px;height:18px;fill:var(--journal-a,var(--accent-primary))}
+.mj-insight blockquote{margin:0;font-size:clamp(1.1rem,1.6vw,1.3rem);line-height:1.5}
+
+/* ── Photos with a message ───────────────────────────────────────────────────────────────────────────────────── */
+.mj-photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,120px),1fr));gap:8px;max-width:520px;margin:4px 0 0;padding:0;list-style:none}
+.mj-photos[data-count="1"]{grid-template-columns:minmax(0,260px)}
+.mj-photo{display:block;width:100%;aspect-ratio:1;padding:0;overflow:hidden;border:1px solid var(--glass-border);border-radius:14px;background:var(--mj-tile);cursor:zoom-in;transition:transform var(--motion-hover,180ms) var(--mj-ease),box-shadow var(--motion-hover,180ms)}
+.mj-photos[data-count="1"] .mj-photo{aspect-ratio:4/3}
+.mj-photo img{display:block;width:100%;height:100%;object-fit:cover}
+.mj-photo:hover{transform:translateY(-2px);box-shadow:0 14px 28px -20px var(--journal-a,var(--accent-primary))}
+.mj-photo:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
+.mj-photo[data-pending]{opacity:.65;cursor:default}
+.mj-attach-strip{display:flex;gap:8px;margin:0 0 8px;padding:2px 0 4px;overflow-x:auto;list-style:none}
+.mj-attach-strip li{position:relative;flex:none;width:72px;height:72px;border-radius:12px;overflow:hidden;border:1px solid var(--glass-border);background:var(--mj-tile);animation:mj-rise var(--motion-settle,260ms) var(--mj-ease) both}
+.mj-attach-strip img{display:block;width:100%;height:100%;object-fit:cover}
+.mj-attach-x{position:absolute;top:4px;right:4px;display:grid;place-items:center;width:24px;height:24px;padding:0;border:0;border-radius:50%;background:color-mix(in srgb,#000 62%,transparent);color:#fff;font-size:1rem;line-height:1;cursor:pointer}
+.mj-attach-x:focus-visible{outline:2px solid var(--focus-ring);outline-offset:1px}
+.mj-attach{position:relative}
+.mj-attach-count{position:absolute;top:-3px;right:-3px;display:grid;place-items:center;min-width:17px;height:17px;padding:0 4px;border-radius:999px;background:var(--journal-a,var(--accent-primary));color:#fff;font-size:.66rem}
+@container muse-content (max-width:640px){
+ .mj-composer-dock .mj-composer-tools{display:flex;gap:6px}
+ .mj-composer-dock{position:relative}
+ .mj-composer-dock .mj-composer-hint[data-live]{position:absolute;left:0;right:0;bottom:calc(100% + 4px);padding:6px 8px;border-radius:10px;background:var(--glass-background)}
+ .mj-composer-dock .mj-attach{width:44px;height:44px;border:1px solid var(--glass-border);background:var(--mj-tile)}
+ .mj-attach-strip li{width:64px;height:64px}
+}
+@media (prefers-reduced-motion:reduce){.mj-attach-strip li{animation:none}.mj-photo:hover{transform:none}}

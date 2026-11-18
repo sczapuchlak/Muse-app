@@ -5,7 +5,7 @@ import { useJournal } from "./useJournal";
 import { tagKindLabel, tagKindSingular, tagLabel, type Tag, type TagKind } from "@/lib/journal/model";
 
 /**
- * One row of an entry's people, places, topics, moods or themes. Each chip opens every entry with that tag. AI
+ * One row of an entry's My tags, people, topics or moods. Each chip opens every entry with that tag. AI
  * suggestions show dashed until you keep them (✓) or remove them (×, remembered so a new analysis doesn't add them
  * back). "+ Add" opens an inline field only when asked. No AI is needed for any of it.
  */
@@ -17,7 +17,7 @@ export function TagEditor({ conversationId, kind, tags }: { conversationId: stri
   const listId = `mj-tags-${kind}-${conversationId}`;
   const noun = tagKindSingular[kind].toLowerCase(), mine = kind === "custom";
   return <div className="mj-tag-editor" data-kind={kind}>
-    <h3 className="mj-tag-kind type-meta">{tagKindLabel[kind]}{mine && <small> · only you add these; AI never changes them</small>}</h3>
+    <h3 className="mj-tag-kind type-meta">{tagKindLabel[kind]}</h3>
     <ul className="mj-chip-list">
       {tags.map((t) => <li key={t.id} className="mj-tag" data-kind={kind} data-ai={t.source === "ai" || undefined}>
         <Link href={`/journal?view=history&tag=${t.id}`} title={t.source === "ai" ? "Suggested by AI. Open every entry with this tag" : "Open every entry with this tag"}>{tagLabel(t)}</Link>

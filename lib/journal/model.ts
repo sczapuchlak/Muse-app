@@ -24,7 +24,10 @@ export type Conversation = {
   favorite: boolean; excludeFromMemory: boolean; memoryOff: boolean; analysisStatus: "pending" | "ready" | "failed" | "skipped" | null; images: JournalImage[];
   draft: string; draftUpdatedAt: string | null; userWords: number; messageCount: number; lastMessageAt: string | null; revision: number; updatedAt: string;
 };
-export type Message = { id: string; conversationId: string; role: "user" | "assistant"; body: string; localDate: string; replyTo: string | null; companionVersionId: string | null; model: string | null; correctedAt: string | null; createdAt: string };
+export type Message = { id: string; conversationId: string; role: "user" | "assistant"; body: string; localDate: string; replyTo: string | null; companionVersionId: string | null; model: string | null; correctedAt: string | null; createdAt: string; images?: MessageImage[] };
+/** A photo attached to one of your messages (up to 7). Sent to the AI only with the request answering that message. */
+export type MessageImage = { id: string; messageId: string; position: number; path: string; thumbnailPath: string; width: number; height: number; mime: string };
+export const MAX_MESSAGE_IMAGES = 7;
 export type Correction = { id: string; messageId: string; previousBody: string; correctedAt: string };
 export type Tag = { id: string; kind: TagKind; name: string; normalized: string; aliases: string[]; note: string; revision: number };
 export type EntryTag = { conversationId: string; tagId: string; source: Source };
@@ -36,6 +39,8 @@ export type EntryLink = { conversationId: string; kind: LinkKind; targetId: stri
 /** The structured result of one post-conversation analysis (validated in ./analysis before it is stored). */
 export type AnalysisData = {
   title: string; recap: string; themes: string[]; observations: string[]; threads: string[]; emotions: string[];
+  /** A closer look: a few grounded paragraphs (older analyses have none). */ reflection: string;
+  /** A deeper perspective on the situation (the dynamic, a reframe, or usable advice), 1–3 sentences. */ insight: string;
   people: string[]; places: string[]; topics: string[]; memories: string[];
 };
 export type Analysis = { id: string; conversationId: string; status: "ready" | "failed"; data: AnalysisData | null; dismissed: string[]; model: string | null; error: string | null; revision: number; createdAt: string; updatedAt: string };
@@ -91,6 +96,7 @@ export const conversationMetaToRow = (c: Conversation) => ({
 export const messageFromRow = (r: Tables["journal_messages"]["Row"]): Message => ({
   id: r.id, conversationId: r.conversation_id, role: r.role as Message["role"], body: r.body, localDate: r.local_date, replyTo: r.reply_to, companionVersionId: r.companion_version_id, model: r.model, correctedAt: r.corrected_at, createdAt: r.created_at,
 });
+export const messageImageFromRow = (r: Tables["journal_message_images"]["Row"]): MessageImage => ({ id: r.id, messageId: r.message_id, position: r.position, path: r.path, thumbnailPath: r.thumbnail_path, width: r.width, height: r.height, mime: r.mime });
 export const tagFromRow = (r: Tables["journal_tags"]["Row"]): Tag => ({ id: r.id, kind: r.kind as TagKind, name: r.name, normalized: r.normalized ?? r.name.trim().toLowerCase(), aliases: r.aliases, note: r.note, revision: r.revision });
 export const memoryFromRow = (r: Tables["journal_memories"]["Row"]): Memory => ({
   id: r.id, body: r.body, kind: r.kind as Memory["kind"], status: r.status as Memory["status"], source: r.source as Source, journalId: r.journal_id, sourceConversationId: r.source_conversation_id, revision: r.revision, createdAt: r.created_at, updatedAt: r.updated_at,
@@ -104,7 +110,7 @@ export function parseAnalysisData(v: unknown): AnalysisData | null {
   if (!o || typeof o !== "object" || Array.isArray(o)) return null;
   const text = (x: unknown, max: number) => (typeof x === "string" ? x.trim().slice(0, max) : "");
   return {
-    title: text(o.title, 120), recap: text(o.recap, 1600), themes: strings(o.themes, 8, 80), observations: strings(o.observations, 6, 400), threads: strings(o.threads, 5, 240),
+    title: text(o.title, 120), recap: text(o.recap, 1600), reflection: text(o.reflection, 5000), insight: text(o.insight, 500), themes: strings(o.themes, 8, 80), observations: strings(o.observations, 6, 400), threads: strings(o.threads, 5, 240),
     emotions: strings(o.emotions, 8, 40), people: strings(o.people, 20, 80), places: strings(o.places, 12, 80), topics: strings(o.topics, 10, 80), memories: strings(o.memories, 6, 300),
   };
 }
@@ -131,7 +137,8 @@ export const entryTitle = (c: Pick<Conversation, "title" | "mode" | "localDate">
 /** History lists finished and active conversations that contain at least one of your own messages. */
 export const isListed = (c: Pick<Conversation, "status" | "userWords">) => c.status !== "draft" && c.userWords > 0;
 export const tagKindLabel: Record<TagKind, string> = { custom: "My tags", person: "People", place: "Places", topic: "Topics", theme: "Themes", mood: "Moods" };
-export const tagKinds: TagKind[] = ["custom", "person", "place", "topic", "mood", "theme"];
+/** The kinds shown and created: My tags, People, Topics, Moods. Places and themes from older analyses stay stored (and searchable) but aren't shown. */
+export const tagKinds: TagKind[] = ["custom", "person", "topic", "mood"];
 /** How a tag reads: My tags carry a leading #. */
 export const tagLabel = (t: { kind: TagKind; name: string }) => (t.kind === "custom" ? `#${t.name}` : t.name);
 export const tagKindSingular: Record<TagKind, string> = { custom: "Tag", person: "Person", place: "Place", topic: "Topic", theme: "Theme", mood: "Mood" };

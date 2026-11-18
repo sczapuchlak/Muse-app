@@ -248,6 +248,12 @@ isOneToOne: false
     }
                   ]
                 },
+"journal_message_images": {
+    Row: { id: string; user_id: string; conversation_id: string; message_id: string; position: number; path: string; thumbnail_path: string; width: number; height: number; mime: string; created_at: string }
+    Insert: { id?: string; user_id?: string; conversation_id: string; message_id: string; position: number; path: string; thumbnail_path: string; width: number; height: number; mime: string; created_at?: string }
+    Update: { id?: string; user_id?: string; conversation_id?: string; message_id?: string; position?: number; path?: string; thumbnail_path?: string; width?: number; height?: number; mime?: string; created_at?: string }
+    Relationships: []
+  },
 "journal_message_corrections": {
                   Row: {
                     "corrected_at": string,"id": string,"message_id": string,"previous_body": string,"user_id": string

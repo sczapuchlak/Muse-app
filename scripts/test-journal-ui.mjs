@@ -119,6 +119,24 @@ try{
  check(/Nina/.test(corrected)&&!/Nia\b/.test(corrected),'the corrected memory is what the AI receives');
  must(await a.client.from('journal_memories').delete().eq('id',mem.id).select('id'));
  check(!/Remembered/.test(await say('And one more thing.',5)),'a deleted memory is gone from AI context');
+ // ---- Photos with a message: sent with that message only; earlier ones are named, not resent; attach again on request ----
+ const png=join(directory,'photo.png');writeFileSync(png,Buffer.from((await send('Page.captureScreenshot',{format:'png',clip:{x:0,y:0,width:240,height:160,scale:1}})).data,'base64'));
+ const attach=async()=>{const doc=await send('DOM.getDocument',{depth:-1});const {nodeId}=await send('DOM.querySelector',{nodeId:doc.root.nodeId,selector:'.mj-composer-dock input[type=file]'});await send('DOM.setFileInputFiles',{nodeId,files:[png]});};
+ await setValue('.mj-ws-page .mj-composer textarea','Look at this view.');await attach();
+ await until(()=>document.querySelectorAll('.mj-attach-strip li').length===1,'photo preview');
+ check(true,'a photo shows as a preview before sending, with a remove button');
+ const said=async(n)=>{await until(n=>document.querySelectorAll('.mj-message[data-role=assistant]').length===n&&!document.querySelector('[data-streaming]'),'reply '+n,n,400).catch(async e=>{console.log('DBG',await text('.mj-error'),await count('journal_message_images',a.id),await count('journal_messages',a.id),JSON.stringify(must(await admin.from('journal_ai_usage').select('*').eq('user_id',a.id).order('created_at',{ascending:false}).limit(2))));throw e;});return (await text('.mj-message[data-role=assistant] .mj-message-body')).split('\n').pop();};
+ await click('.mj-live-compose button[type=submit]');
+ check(/I can see 1 photo/.test(await said(6)),'the companion sees the photo sent with that message');
+ check(await count('journal_message_images',a.id)===1&&await has('.mj-message[data-role=user] .mj-photos'),'the photo is saved with the message and shown in the conversation');
+ await setValue('.mj-ws-page .mj-composer textarea','And one more thought about it.');await click('.mj-live-compose button[type=submit]');
+ const next=await said(7);
+ check(!/I can see/.test(next)&&/Earlier photos aren't visible/.test(next),'the next message does not resend the photo; the AI is told it can no longer see it');
+ await click('.mj-photos .mj-photo');await until(()=>!!document.querySelector('.mj-lightbox'),'lightbox');await click('.mj-lightbox button','Ask about this again');
+ await until(()=>document.querySelectorAll('.mj-attach-strip li').length===1,'reattached');
+ await setValue('.mj-ws-page .mj-composer textarea','Look again?');await click('.mj-live-compose button[type=submit]');
+ check(/I can see 1 photo/.test(await said(8))&&await count('journal_message_images',a.id)===2,'Ask about this again sends that photo with the new message');
+ check(await count('journal_ai_usage',a.id,{kind:'reply',status:'ok'})===7,'photo replies are counted in the AI budget like any reply');
 
  // ---- Finish & Save → analysis into real tags ----
  // ---- Bottom actions: once you've written, Finish entry and Go deeper sit side by side, equal width ----
@@ -158,16 +176,17 @@ try{
  await click('.mj-entry .muse-segmented button','Analysis');
  await until(()=>!!document.querySelector('.mj-tag-editor'),'analysis tab');
  check(await has('.mj-tag[data-ai]','Alex'),'AI suggestions show as suggestions');
- // Correct metadata without AI: Lisbon is a place, not a person.
+ // Correct metadata without AI: Lisbon is a topic here, not a person.
  if(await has('.mj-tag-editor .mj-tag','Lisbon'))await click('.mj-tag-editor button','Remove Lisbon');
- await evaluate(()=>[...document.querySelectorAll('.mj-tag-editor')].find(e=>e.querySelector('h3')?.textContent==='Places').querySelector('.mj-tag-plus').click());await wait(150);
- await evaluate(()=>{const ed=[...document.querySelectorAll('.mj-tag-editor')].find(e=>e.querySelector('h3')?.textContent==='Places');const i=ed.querySelector('input');Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set.call(i,'Lisbon');i.dispatchEvent(new Event('input',{bubbles:true}));});
- await evaluate(()=>[...document.querySelectorAll('.mj-tag-editor')].find(e=>e.querySelector('h3')?.textContent==='Places').querySelector('button[type=submit]').click());
+ await evaluate(()=>[...document.querySelectorAll('.mj-tag-editor')].find(e=>e.querySelector('h3')?.textContent==='Topics').querySelector('.mj-tag-plus').click());await wait(150);
+ await evaluate(()=>{const ed=[...document.querySelectorAll('.mj-tag-editor')].find(e=>e.querySelector('h3')?.textContent==='Topics');const i=ed.querySelector('input');Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set.call(i,'Lisbon');i.dispatchEvent(new Event('input',{bubbles:true}));});
+ await evaluate(()=>[...document.querySelectorAll('.mj-tag-editor')].find(e=>e.querySelector('h3')?.textContent==='Topics').querySelector('button[type=submit]').click());
  await evaluate(()=>[...document.querySelectorAll('.mj-tag-editor')].find(e=>e.querySelector('h3')?.textContent==='Moods').querySelector('.mj-tag-plus').click());await wait(150);
  await evaluate(()=>{const ed=[...document.querySelectorAll('.mj-tag-editor')].find(e=>e.querySelector('h3')?.textContent==='Moods');const i=ed.querySelector('input');Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set.call(i,'Wistful');i.dispatchEvent(new Event('input',{bubbles:true}));});
  await evaluate(()=>[...document.querySelectorAll('.mj-tag-editor')].find(e=>e.querySelector('h3')?.textContent==='Moods').querySelector('button[type=submit]').click());
  await until(()=>[...document.querySelectorAll('.mj-tag[data-kind=mood]')].some(x=>x.textContent.includes('Wistful')),'mood added');
- check(await count('journal_tags',a.id,{kind:'place',name:'Lisbon'})===1&&await count('journal_tags',a.id,{kind:'mood',name:'Wistful'})===1,'places and moods are added by hand, no AI request');
+ check(await count('journal_tags',a.id,{kind:'topic',name:'Lisbon'})===1&&await count('journal_tags',a.id,{kind:'mood',name:'Wistful'})===1,'topics and moods are added by hand, no AI request');
+ check(await evaluate(()=>[...document.querySelectorAll('.mj-tag-editor h3')].map(h=>h.firstChild.textContent.trim()).join('|'))==='My tags|People|Topics|Moods','only My tags, People, Topics and Moods are shown');
  // My tags: added by hand on the saved entry, no AI; capitals and a leading # never make a duplicate.
  const addMine=async(name)=>{await evaluate(()=>document.querySelector('.mj-tag-editor[data-kind=custom] .mj-tag-plus')?.click());await wait(150);
   await evaluate(n=>{const i=document.querySelector('.mj-tag-editor[data-kind=custom] input');Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set.call(i,n);i.dispatchEvent(new Event('input',{bubbles:true}));},name);
