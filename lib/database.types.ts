@@ -1975,14 +1975,14 @@ isOneToOne: false
                 },"recurring_commitments": {
                   Row: {
                     "amount_behavior": string,"amount_cents": number | null,"anchor_date": string,"billing_source": string,"cancelled_date": string | null,"captured_time_zone": string,"card_id": string | null,"category_id": string | null,"created_at": string,"currency": string,"end_date": string | null,"id": string,"interval_count": number,"interval_unit": string,"manage_at": string | null,"name": string,"note": string | null,"payment_method_id": string | null,"position": number,"status": string,"updated_at": string,"user_id": string
-                  }
+                   "show_in_bills": boolean,}
                   ComputedFields: never
                   Insert: {
                     "amount_behavior": string,"amount_cents"?: number | null,"anchor_date": string,"billing_source": string,"cancelled_date"?: string | null,"captured_time_zone": string,"card_id"?: string | null,"category_id"?: string | null,"created_at"?: string,"currency"?: string,"end_date"?: string | null,"id": string,"interval_count": number,"interval_unit": string,"manage_at"?: string | null,"name": string,"note"?: string | null,"payment_method_id"?: string | null,"position"?: number,"status": string,"updated_at"?: string,"user_id": string
-                  }
+                   "show_in_bills"?: boolean,}
                   Update: {
                     "amount_behavior"?: string,"amount_cents"?: number | null,"anchor_date"?: string,"billing_source"?: string,"cancelled_date"?: string | null,"captured_time_zone"?: string,"card_id"?: string | null,"category_id"?: string | null,"created_at"?: string,"currency"?: string,"end_date"?: string | null,"id"?: string,"interval_count"?: number,"interval_unit"?: string,"manage_at"?: string | null,"name"?: string,"note"?: string | null,"payment_method_id"?: string | null,"position"?: number,"status"?: string,"updated_at"?: string,"user_id"?: string
-                  }
+                   "show_in_bills"?: boolean,}
                   Relationships: [
                     {
       foreignKeyName: "recurring_commitments_user_id_card_id_fkey"
@@ -2639,14 +2639,14 @@ isOneToOne: false
                 },"transactions": {
                   Row: {
                     "allocation_id": string | null,"amount_cents": number,"captured_time_zone": string,"card_id": string | null,"category_id": string | null,"created_at": string,"currency": string,"id": string,"local_date": string,"merchant": string,"note": string | null,"payment_label": string,"payment_method_id": string | null,"position": number,"subcategory_id": string | null,"updated_at": string,"user_id": string
-                  }
+                   "bill_id": string | null, "unplanned": boolean, "is_transfer": boolean,}
                   ComputedFields: never
                   Insert: {
                     "allocation_id"?: string | null,"amount_cents": number,"captured_time_zone": string,"card_id"?: string | null,"category_id"?: string | null,"created_at"?: string,"currency"?: string,"id": string,"local_date": string,"merchant": string,"note"?: string | null,"payment_label": string,"payment_method_id"?: string | null,"position"?: number,"subcategory_id"?: string | null,"updated_at"?: string,"user_id": string
-                  }
+                   "bill_id"?: string | null, "unplanned"?: boolean, "is_transfer"?: boolean,}
                   Update: {
                     "allocation_id"?: string | null,"amount_cents"?: number,"captured_time_zone"?: string,"card_id"?: string | null,"category_id"?: string | null,"created_at"?: string,"currency"?: string,"id"?: string,"local_date"?: string,"merchant"?: string,"note"?: string | null,"payment_label"?: string,"payment_method_id"?: string | null,"position"?: number,"subcategory_id"?: string | null,"updated_at"?: string,"user_id"?: string
-                  }
+                   "bill_id"?: string | null, "unplanned"?: boolean, "is_transfer"?: boolean,}
                   Relationships: [
                     {
       foreignKeyName: "transactions_user_id_allocation_id_fkey"

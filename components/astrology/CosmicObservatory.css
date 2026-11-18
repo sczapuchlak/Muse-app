@@ -326,3 +326,7 @@
 @container muse-content (max-width:640px){.muse-horoscope-art{display:grid;order:-1;min-height:170px;margin:0 auto}.muse-horoscope-art .muse-forecast-wheel{width:150px}}
 .muse-observatory .muse-horoscope-hero .muse-cosmic-forecast-actions{display:flex;flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:flex-start}
 .muse-observatory .muse-horoscope-hero .muse-cosmic-forecast-actions .muse-button{font-size:.85rem;padding:8px 14px}
+/* Big three rows: one fixed label column so Sun, Moon and Rising signs line up exactly. */
+.muse-chart-hero .muse-cosmic-big-three .muse-cosmic-tile{grid-template-columns:84px minmax(0,1fr)}
+.muse-chart-hero .muse-cosmic-big-three .muse-cosmic-tile>span:first-child{min-width:0;white-space:nowrap}
+@container muse-content (max-width:640px){.muse-chart-hero .muse-cosmic-big-three .muse-cosmic-tile{grid-template-columns:70px minmax(0,1fr)}}

@@ -1,6 +1,8 @@
 import { validDate,shiftDate } from "./dates";
 export type Recurrence={interval:number;unit:"day"|"week"|"month"|"year"};
-export type RecurringPayment={id:string;name:string;amountCents?:number;amountBehavior:"fixed"|"estimated";categoryId?:string;recurrence:Recurrence;nextChargeDate:string;billingSource:string;cardId?:string;paymentMethodId?:string;status:"active"|"paused"|"cancelled";note?:string;manageAt?:string;cancelledDate?:string;endDate?:string};
+export type RecurringPayment={id:string;name:string;amountCents?:number;amountBehavior:"fixed"|"estimated";categoryId?:string;recurrence:Recurrence;nextChargeDate:string;billingSource:string;cardId?:string;paymentMethodId?:string;status:"active"|"paused"|"cancelled";note?:string;manageAt?:string;cancelledDate?:string;endDate?:string;
+ /** This recurring definition is a bill: each occurrence appears in Bills with its own payment status. */
+ showInBills?:boolean};
 export type ManualPaymentMethod={id:string;name:string};
 export const recurrencePresets=[{id:"monthly",label:"Monthly",value:{interval:1,unit:"month"}},{id:"yearly",label:"Yearly",value:{interval:1,unit:"year"}},{id:"weekly",label:"Weekly",value:{interval:1,unit:"week"}},{id:"fortnightly",label:"Every 2 weeks",value:{interval:2,unit:"week"}},{id:"quarterly",label:"Quarterly",value:{interval:3,unit:"month"}},{id:"half-year",label:"Every 6 months",value:{interval:6,unit:"month"}}] satisfies {id:string;label:string;value:Recurrence}[];
 export const validRecurrence=(value:Recurrence)=>Number.isSafeInteger(value.interval)&&value.interval>0&&["day","week","month","year"].includes(value.unit);

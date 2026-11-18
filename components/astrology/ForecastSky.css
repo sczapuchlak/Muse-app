@@ -72,3 +72,13 @@
 @container muse-content (max-width:820px){.muse-forecast-editorial-grid{grid-template-columns:minmax(0,1fr)!important}}
 .muse-forecast-overview .muse-kicker{margin-bottom:16px!important}
 .muse-forecast-overview blockquote::before{top:-.18em!important;font-size:3em!important}
+/* Sections read as rows (2026-11-17: narrow side-by-side columns were hard to read). Each section spans the width: its
+   tile and heading on the left, the text across the rest. Narrow readings (phones, the Daily Edit card) stack. */
+.muse-forecast-editorial{container:muse-forecast/inline-size}
+.muse-forecast-editorial-grid{grid-template-columns:minmax(0,1fr)!important;gap:12px!important}
+.muse-forecast-facet:hover{transform:none}
+@container muse-forecast (min-width:640px){
+ .muse-forecast-facet{grid-template-columns:minmax(180px,230px) minmax(0,1fr);column-gap:28px;align-items:start;padding-block:18px!important}
+ .muse-forecast-facet h4{align-self:start;margin:0!important;padding:0!important;border-bottom:0!important}
+ .muse-forecast-facet>p{grid-column:2;margin:0!important;max-width:78ch;line-height:1.65}
+}
