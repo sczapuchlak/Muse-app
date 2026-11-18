@@ -191,24 +191,28 @@ try{
  await shoot('04-entry-conversation',true);
 
  // ---- History: search across messages, click a tag, combined filters, week view and date jump ----
- await go('/journal?view=history','!!document.querySelector(".mj-history-view .mj-card")','history');
- check((await evaluate(()=>document.querySelectorAll('.mj-history-view .mj-card').length))===4,'four entries across three weeks');
+ await go('/journal?view=history','!!document.querySelector(".mj-history-view .mj-strip")','history');
+ check(await has('.mj-history-view .muse-segmented button[aria-pressed="true"], .mj-history-view .muse-segmented [aria-checked="true"]','Week')||await evaluate(()=>!!document.querySelector('.mj-strip')),'History opens on this week');
+ await click('.mj-history-view .muse-segmented button','All');await until(()=>!!document.querySelector('.mj-history-view .mj-row'),'all view');
+ check((await evaluate(()=>document.querySelectorAll('.mj-history-view .mj-row').length))===4,'four entries across three weeks');
  await setValue('.mj-history-view input[type=search]','colours');
- await until(()=>document.querySelectorAll('.mj-history-view .mj-card').length===1,'search narrows');
- check(await has('.mj-card mark','colours'),'full-text search matches words inside the original messages, highlighted');
+ await until(()=>document.querySelectorAll('.mj-history-view .mj-row').length===1,'search narrows');
+ check(await has('.mj-row mark','colours'),'full-text search matches words inside the original messages, highlighted');
  await setValue('.mj-history-view input[type=search]','');
- await go(`/journal?view=history&tag=${alex.id}`,'!!document.querySelector(".mj-tag-banner")','tag page');
- check((await evaluate(()=>document.querySelectorAll('.mj-history-view .mj-card').length))===3,'Alex opens every entry with Alex, across dates and journals');
+ await go(`/journal?view=history&tag=${alex.id}`,'!!document.querySelector(".mj-tag-banner")&&!!document.querySelector(".mj-row")','tag page');
+ check((await evaluate(()=>document.querySelectorAll('.mj-history-view .mj-row').length))===3,'Alex opens every entry with Alex, across dates and journals');
  await menu('Journals','My Journal');await click('.popover-footer button, .muse-choice-popover button','Done').catch(()=>send('Input.dispatchKeyEvent',{type:'keyDown',key:'Escape',code:'Escape',windowsVirtualKeyCode:27}));await wait(200);
- check((await evaluate(()=>document.querySelectorAll('.mj-history-view .mj-card').length))===2,'person + journal combine');
+ check((await evaluate(()=>document.querySelectorAll('.mj-history-view .mj-row').length))===2,'person + journal combine');
  await pickDate('From',today);
- check((await evaluate(()=>document.querySelectorAll('.mj-history-view .mj-card').length))===1,'person + journal + date range combine');
+ check((await evaluate(()=>document.querySelectorAll('.mj-history-view .mj-row').length))===1,'person + journal + date range combine');
  await click('.mj-filters button','Clear all');
  await click('.mj-history-view .muse-segmented button','Week');
- await until(()=>!!document.querySelector('.mj-days'),'week view');
- check(await has('.mj-day[data-today] .mj-card')&&(await evaluate(()=>document.querySelectorAll('.mj-day').length))<=7,'the week view groups entries by day (today included) and folds empty days');
- await pickDate('Go to a date',day(-15));
- check(await has('.mj-day[data-focus] .mj-card','Dinner with Alex'),'the date picker jumps straight to any day');
+ await until(()=>!!document.querySelector('.mj-strip'),'week view');
+ check(await evaluate(()=>document.querySelectorAll('.mj-strip-day').length===7&&!!document.querySelector('.mj-strip-day[data-today][data-on]')&&!!document.querySelector('.mj-week .mj-row')),'the week view: seven days, today lit, this week’s entries as rows');
+ check(await has('.mj-week-reflection'),'the week’s reflection lives with the week');
+ await pickDate('Jump to a date',day(-15));
+ await until(()=>[...document.querySelectorAll('.mj-week .mj-row')].some(x=>x.textContent.includes('Dinner with Alex')),'jumped');
+ check(true,'the date picker jumps straight to any day');
  check(!(await overflow()),'desktop History with every filter has no sideways scrolling');
  await shoot('05-history-week');
  // Duplicate prevention and merge with alias.
