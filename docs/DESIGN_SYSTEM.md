@@ -881,9 +881,9 @@ Saved content is presented as something to read, not as a form. Default state: r
 ## Muse Journal — the writing workspace ("The Enchanted Editorial", November 18) — on branch `feat/journal-visual`, awaiting review
 
 - **A document, not a dashboard.** The Journal tab is one writing page:
-  - a sticky toolbar (journal and companion chips, New entry, ⋯, Preferences, Finish & save);
+  - a sticky toolbar (journal and companion chips, New entry, ⋯, Preferences);
   - the conversation as an editorial dialogue: your words on a softly inked page edge in the interface face, the companion's in the Reading role beside its small mark, both in one 760px reading column;
-  - a composer that belongs to the page.
+  - a composer that belongs to the page: one framed field (words, then a slim tool row with the mic and word count), and, once you've written, **Finish entry** and **Go deeper** as two equal buttons beneath it. The mic is a bare round button that fills with the journal gradient and pulses while listening (steady under reduced motion).
 - **No big illustrations.** The only drawings are small fine-line Muse stars:
   - this week as a constellation (lit star = a day written; consecutive days joined);
   - a star rule between sections;
@@ -908,4 +908,4 @@ Saved content is presented as something to read, not as a form. Default state: r
   - bars growing in Insights;
   - the shared `celebrate()` constellation ("Sealed in your journal.") after Finish & save succeeds;
   - `useMuseSpark` after a bookmark.
-- **Phones.** One toolbar row (journal as a mark, companion as a truncating chip, +, ⋯, Finish). The composer rests above the floating tab bar, with the page backdrop continuing beneath it. 16px input text. The Studio sheet is full screen.
+- **Phones.** One toolbar row (journal as a mark, companion as a truncating chip, +, ⋯); Finish entry lives at the bottom beside Go deeper. The composer rests above the floating tab bar, with the page backdrop continuing beneath it. 16px input text. The Studio sheet is full screen.

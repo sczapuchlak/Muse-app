@@ -27,7 +27,7 @@ const unfinished = (c: Conversation) => c.status === "draft" ? Boolean(c.draft.t
  * The Journal workspace ("Open Journal. Start talking. Everything else is in the toolbar."). Opening Journal lands
  * here, ready to type or dictate: an unfinished entry in this journal is resumed, otherwise the page is blank.
  * Nothing is stored until there are words (a draft entry after a pause; a real entry on Send). The companion replies
- * to what you write. Finish & save keeps the conversation (and its analysis) and turns to a fresh page.
+ * to what you write. Finish entry (beside Go deeper, once you've written) keeps the conversation (and its analysis) and turns to a fresh page.
  *
  * First visit only: Setup (one journal, one companion, optional words), then straight here.
  */
@@ -85,7 +85,7 @@ function Page({ initialId, onRouteClear }: { initialId: string | null; onRouteCl
   }, [client, userId, convId]);
   const shown = convId ? messages : [];
   const streaming = Boolean(stream);
-  useEffect(() => { if (shown.length) end.current?.scrollIntoView({ block: "end", behavior: "smooth" }); }, [shown.length, streaming]);
+  useEffect(() => { if (shown.length) end.current?.scrollIntoView({ block: "nearest", behavior: "smooth" }); }, [shown.length, streaming]);
 
   const ask = useCallback(async (id: string, pending: Pending) => {
     setError(null); setStream({ text: "", pending });
@@ -221,13 +221,7 @@ function Page({ initialId, onRouteClear }: { initialId: string | null; onRouteCl
           <button type="button" className="muse-button button-ghost mj-tb-new" onClick={() => newEntry()} disabled={streaming} title={state.prefs.greetOnNew && aiOn ? `Start a new entry; ${companion!.name.replace(/^The /, "")} greets you` : "Start a new entry"} aria-label="New entry"><MuseIcon name="plus" size={16} /><span className="mj-tb-label">New entry</span></button>
           {entryActions.length > 0 && <MuseOverflowMenu label="This entry" actions={entryActions} />}
         </>} />
-      <button type="button" className="muse-button button-primary mj-finish-button" disabled={!userCount || streaming || sending} onClick={() => setConfirmFinish(true)}>Finish &amp; save</button>
     </header>
-
-    {confirmFinish && <div className="mj-finish" role="dialog" aria-label="Finish this entry">
-      <p><b>Finish this entry?</b> It’s saved already. Finishing closes the conversation{ai.enabled && state.prefs.analysisAuto ? " and writes a short analysis you can edit" : ""}, then gives you a fresh page.</p>
-      <div><button type="button" className="muse-button" onClick={() => setConfirmFinish(false)}>Keep talking</button><button type="button" className="muse-button button-primary" onClick={() => void finish()}>Finish &amp; save</button></div>
-    </div>}
 
     <div className="mj-ws-page">
       {greetNote && !shown.length && <p className="mj-note mj-greet-note" role="status">{greetNote}</p>}
@@ -240,10 +234,16 @@ function Page({ initialId, onRouteClear }: { initialId: string | null; onRouteCl
       <div ref={end} />
     </div>
     <div className="mj-live-compose">
+      {confirmFinish && <div className="mj-finish" role="dialog" aria-label="Finish this entry">
+        <p><b>Finish this entry?</b> It’s saved already. Finishing closes the conversation{ai.enabled && state.prefs.analysisAuto ? " and writes a short analysis you can edit" : ""}, then gives you a fresh page.</p>
+        <div><button type="button" className="muse-button" onClick={() => setConfirmFinish(false)}>Keep talking</button><button type="button" className="muse-button button-primary" onClick={() => void finish()}>Finish &amp; save</button></div>
+      </div>}
       <Composer storageKey={conv && conv.status !== "draft" ? conv.id : `new:${journal.id}`} initial={conv?.draft ?? ""} busy={sending} disabled={!loaded}
         placeholder={shown.length ? "Keep going… (type or dictate)" : (conv?.mode ?? mode) === "morning" ? "How are you starting the day?" : (conv?.mode ?? mode) === "evening" ? "How was today?" : "What’s on your mind? Type or dictate…"}
-        hint={aiOn ? `Type, or tap the keyboard’s microphone. ${companion!.name.replace(/^The /, "")} replies when you send.` : "Type, or tap the keyboard’s microphone. Everything saves as you go."}
-        onSend={send} onDraft={(text) => void saveDraft(text)} label="Write or dictate" />
+        hint={aiOn ? `Type, or tap the mic to speak. ${companion!.name.replace(/^The /, "")} replies when you send.` : "Type, or tap the mic to speak. Everything saves as you go."}
+        onSend={send} onDraft={(text) => void saveDraft(text)} label="Write or dictate"
+        sendLabel={userCount ? (aiOn ? "Go deeper" : "Add to entry") : "Send"}
+        secondary={userCount ? { label: "Finish entry", disabled: streaming || sending || confirmFinish, onClick: () => setConfirmFinish(true) } : undefined} />
       {ai.enabled && ai.allowance?.warning && <p className="mj-note" data-soft>{ai.allowance.exhausted ? "This month’s AI budget is used up, so replies are paused. Writing still saves." : `You’ve used ${"$" + ai.allowance.spentMonth.toFixed(2)} of this month’s ${"$" + ai.allowance.monthlyLimit.toFixed(2)} AI budget.`}</p>}
     </div>
   </section>;

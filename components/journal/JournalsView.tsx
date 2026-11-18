@@ -31,7 +31,7 @@ export function JournalManager({ onClose }: { onClose: () => void }) {
   const missingPresets = journalPresets.filter((p) => !state.journals.some((x) => x.presetKey === p.key));
   const missingCompanions = companionPresets.filter((p) => !state.companions.some((x) => x.presetKey === p.key));
   return <MuseModal id="mj-manager" label="Journals and companions" title="Journals & companions" returnFocus={null} onClose={onClose} size="tall">
-    <div className="mj-manager">
+    <div className="mj-manager mj-modal-scroll">
       <section className="mj-manager-section" aria-labelledby="mj-man-journals">
         <div className="mj-row-between"><h3 id="mj-man-journals" className="mj-section-title">Journals</h3><button type="button" className="muse-button" onClick={() => setEditing(blankJournal(state.journals.length))}><MuseIcon name="plus" size={15} />New journal</button></div>
         <ul className="mj-manage-list">{journals.map((x) => { const n = count(x.id); return <li key={x.id} className="mj-manage-row" style={choiceInk(x.tone)}>
@@ -83,7 +83,7 @@ export function JournalEditor({ journal, onClose }: { journal: Journal; onClose:
   const others = j.state.journals.filter((x) => x.id !== journal.id);
   const entries = j.state.conversations.filter((c) => c.journalId === journal.id).length;
   return <MuseModal id="mj-journal-editor" label="Journal" title={journal.revision ? `Edit ${journal.name}` : "New journal"} returnFocus={null} onClose={onClose} size="tall">
-    <form className="mj-form" onSubmit={async (e) => { e.preventDefault(); if (await j.saveJournal(d)) onClose(); }}>
+    <form className="mj-form mj-modal-scroll" onSubmit={async (e) => { e.preventDefault(); if (await j.saveJournal(d)) onClose(); }}>
       <label className="editor-label">Name<input type="text" value={d.name} maxLength={80} onChange={(e) => set({ name: e.target.value })} required autoFocus placeholder="Spanish practice" /></label>
       <label className="editor-label">What it’s for<textarea rows={2} value={d.description} maxLength={600} onChange={(e) => set({ description: e.target.value })} placeholder="Practising conversational Spanish about my day" /></label>
       <div className="mj-form-row">

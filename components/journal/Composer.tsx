@@ -2,6 +2,7 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { MuseIcon } from "../MuseIcon";
 import { wordCount } from "@/lib/journal/model";
+import { useDictation } from "./useDictation";
 
 const draftKey = (key: string) => `muse.journal.draft.${key}`;
 export function readLocalDraft(key: string) { try { return localStorage.getItem(draftKey(key)) ?? ""; } catch { return ""; } }
@@ -9,13 +10,15 @@ export function clearLocalDraft(key: string) { try { localStorage.removeItem(dra
 
 /**
  * The journal composer (Journal V1 §11): a spacious, auto-growing field that works with the iPhone keyboard's
- * dictation, keeps every keystroke on the device at once (so switching apps never loses words), and — when given
+ * dictation (and has its own mic button using the browser's voice typing), keeps every keystroke on the device at once (so switching apps never loses words), and — when given
  * `onDraft` — saves a server draft after a pause and whenever the page is hidden. Enter sends on a desktop keyboard;
  * on a phone Enter is a new line and the Send button sends. Text clears only after the message is saved.
  */
-export function Composer({ storageKey, initial = "", placeholder, disabled, busy, onSend, onDraft, label = "Write or dictate", sendLabel = "Send", hint }: {
+export function Composer({ storageKey, initial = "", placeholder, disabled, busy, onSend, onDraft, label = "Write or dictate", sendLabel = "Send", hint, secondary }: {
   storageKey: string; initial?: string; placeholder: string; disabled?: boolean; busy?: boolean; label?: string; sendLabel?: string; hint?: string;
   onSend: (text: string) => Promise<boolean>; onDraft?: (text: string) => void;
+  /** A second action paired with Send as two equal buttons (the workspace's "Finish entry" beside "Go deeper"). */
+  secondary?: { label: string; onClick: () => void; disabled?: boolean };
 }) {
   const [text, setText] = useState(() => readLocalDraft(storageKey) || initial);
   const ref = useRef<HTMLTextAreaElement>(null), timer = useRef<number | undefined>(undefined), latest = useRef(text), sentDraft = useRef(initial);
@@ -47,22 +50,38 @@ export function Composer({ storageKey, initial = "", placeholder, disabled, busy
     try { if (value) localStorage.setItem(draftKey(storageKey), value); else localStorage.removeItem(draftKey(storageKey)); } catch { /* private mode: the server draft still helps */ }
     if (onDraft) { window.clearTimeout(timer.current); timer.current = window.setTimeout(flush, 1500); }
   }
+  const voice = useDictation(change);
+  function toggleVoice() {
+    if (voice.listening) { voice.stop(); return; }
+    const el = ref.current;
+    voice.start(latest.current, el ? el.selectionEnd ?? latest.current.length : latest.current.length);
+  }
   async function send() {
     const body = text.trim();
     if (!body || disabled || busy) return;
+    voice.cancel(); // nothing late from the recognizer may land in the cleared box
     window.clearTimeout(timer.current);
     sentDraft.current = latest.current; // a send is not a draft: nothing to save on leave for these words
     if (await onSend(body)) { setText(""); latest.current = ""; sentDraft.current = ""; clearLocalDraft(storageKey); ref.current?.focus(); }
   }
   const desktop = () => typeof window !== "undefined" && window.matchMedia("(hover: hover) and (pointer: fine)").matches;
   const words = wordCount(text);
-  return <form className="mj-composer" onSubmit={(e) => { e.preventDefault(); void send(); }}>
+  const status = voice.listening ? "Listening… tap the mic again to stop." : voice.error ? voice.error : words ? `${words} ${words === 1 ? "word" : "words"} · saved on this device` : hint ?? (voice.supported ? "Type, or tap the mic to speak." : "Type, or tap the keyboard’s microphone to dictate.");
+  return <form className="mj-composer" data-paired={secondary ? true : undefined} onSubmit={(e) => { e.preventDefault(); void send(); }}>
     <label className="sr-only" htmlFor={`mj-composer-${storageKey}`}>{label}</label>
-    <textarea ref={ref} id={`mj-composer-${storageKey}`} value={text} rows={3} placeholder={placeholder} disabled={disabled} enterKeyHint="enter" autoCapitalize="sentences" autoCorrect="on" spellCheck
-      onChange={(e) => change(e.target.value)}
-      onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing && desktop()) { e.preventDefault(); void send(); } }} />
+    <div className="mj-composer-field" data-listening={voice.listening || undefined}>
+      <textarea ref={ref} id={`mj-composer-${storageKey}`} value={text} rows={3} placeholder={placeholder} disabled={disabled} enterKeyHint="enter" autoCapitalize="sentences" autoCorrect="on" spellCheck
+        onChange={(e) => { voice.cancel(); change(e.target.value); }}
+        onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing && desktop()) { e.preventDefault(); void send(); } }} />
+      <div className="mj-composer-tools" data-voice={voice.supported || undefined}>
+        {voice.supported && <button type="button" className="mj-mic" data-listening={voice.listening || undefined} aria-pressed={voice.listening} disabled={disabled}
+          aria-label={voice.listening ? "Stop voice typing" : "Voice typing"} title={voice.listening ? "Stop voice typing" : "Tap to speak"}
+          onPointerDown={(e) => e.preventDefault() /* keep the caret where it is */} onClick={toggleVoice}><MuseIcon name="mic" size={18} /></button>}
+        <small className="mj-composer-hint" aria-live="polite" data-alert={voice.error ? true : undefined} data-live={voice.listening || voice.error ? true : undefined}>{status}</small>
+      </div>
+    </div>
     <div className="mj-composer-bar">
-      <small className="mj-composer-hint" aria-live="polite">{words ? `${words} ${words === 1 ? "word" : "words"} · saved on this device` : hint ?? "Type, or tap the keyboard’s microphone to dictate."}</small>
+      {secondary && <button type="button" className="muse-button mj-composer-secondary" disabled={secondary.disabled} onClick={() => { voice.cancel(); secondary.onClick(); }}>{secondary.label}</button>}
       <button type="submit" className="muse-button button-primary mj-send" disabled={disabled || busy || !text.trim()}>{busy ? "Sending…" : sendLabel}<MuseIcon name="arrow" size={16} /></button>
     </div>
   </form>;

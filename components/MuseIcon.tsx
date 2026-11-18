@@ -71,6 +71,7 @@ const paths = {
   pause: <path d="M8.5 5v14M15.5 5v14"/>,
   series: <><path d="M4 20V6.5M8 20V4.5M12.5 20l-1.8-14.6M16 20V7h4v13"/><path d="M3 20.5h18"/></>,
   minus: <path d="M5 12h14" />,
+  mic: <><rect x="9" y="2.5" width="6" height="12" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M8.5 21h7"/></>,
   arrow: <path d="M5 12h14m-5-5 5 5-5 5" />,
 };
 
