@@ -12,11 +12,14 @@ import type { Companion, Journal } from "@/lib/journal/model";
  * preferences, each behind one small control. Used on Today (choose for the next entry) and in a live conversation
  * (switch the companion from the next reply). Never a settings panel.
  */
-export function JournalToolbar({ journal, companion, defaultCompanionId, onJournal, onCompanion, onMakeDefault, conversationNote, extra }: {
+export function JournalToolbar({ journal, companion, defaultCompanionId, onJournal, onCompanion, onMakeDefault, conversationNote, extra, entryMenu }: {
   journal: Journal | null; companion: Companion | null; defaultCompanionId: string | null;
   onJournal?: (id: string) => void; onCompanion?: (c: Companion) => void; onMakeDefault?: (c: Companion) => void;
   /** In a conversation: what an edit or switch means for the replies. */
   conversationNote?: ReactNode; extra?: ReactNode;
+  /** Actions on the entry on the page (move, history on/off, discard) and unfinished entries to pick up, shown in
+   *  the Journal menu. `close` closes the menu. */
+  entryMenu?: (close: () => void) => ReactNode;
 }) {
   const j = useJournal(), ui = useJournalUi();
   const journals = activeJournals(j.state), companions = activeCompanions(j.state);
@@ -24,6 +27,7 @@ export function JournalToolbar({ journal, companion, defaultCompanionId, onJourn
     <Menu label="Journal" icon={journal?.icon ?? "journal"} tone={journal?.tone ?? 5} value={journal?.name ?? "Journal"} id="mj-tb-journal">
       {(close) => <>
         {onJournal && journals.length > 1 && <div className="mj-menu-list" role="group" aria-label="Write in">{journals.map((x) => <button key={x.id} type="button" className="popover-choice" aria-pressed={x.id === journal?.id} onClick={() => { onJournal(x.id); close(); }}><span className="mj-menu-item"><MuseMark icon={x.icon as MuseMarkIcon} tone={x.tone} size="sm" /><span>{x.name}{x.guided && <small className="type-meta"> · guided</small>}</span></span>{x.id === journal?.id && <MuseIcon name="check" size={14} />}</button>)}</div>}
+        {entryMenu?.(close)}
         <div className="mj-menu-actions">
           <button type="button" className="popover-choice" onClick={() => { close(); ui.editJournal("new"); }}><span className="mj-menu-item"><MuseIcon name="plus" size={15} />New journal</span></button>
           {journal && <button type="button" className="popover-choice" onClick={() => { close(); ui.editJournal(journal); }}><span className="mj-menu-item"><MuseIcon name="edit" size={15} />Rename or edit “{journal.name}”</span></button>}
@@ -47,7 +51,6 @@ export function JournalToolbar({ journal, companion, defaultCompanionId, onJourn
       </>}
     </Menu>}
     {extra}
-    <button type="button" className="muse-button button-ghost mj-tb-settings" onClick={ui.openSettings} aria-label="Journal preferences" title="Preferences"><MuseIcon name="gear" size={17} /><span className="mj-tb-label">Preferences</span></button>
   </div>;
 }
 

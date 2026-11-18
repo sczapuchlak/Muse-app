@@ -86,7 +86,11 @@ try{
  check(await has('.mj-blank','Finishing the quilt'),'the blank page invites you back to yesterday’s entry by name (no AI)');
 
  // ---- Scenario A: the companion opens with yesterday's context; then follows a topic change ----
- await click('.mj-header-toolbar button','New entry');
+ check(await evaluate(()=>!!document.querySelector('.mj-navrow .mj-header-toolbar')&&!document.querySelector('.muse-header-layout .mj-header-toolbar')&&!!document.querySelector('.muse-header-layout .mj-tb-settings')),'journal, companion and New entry sit beside Journal | History | Insights; settings stay alone up top');
+ check(!(await has('.mj-header-toolbar .muse-overflow-trigger')),'no ⋯ menu in the toolbar');
+ await until(()=>{const b=document.querySelector('.mj-tb-new');return !!b&&!b.disabled;},'new entry ready');await wait(300);await click('.mj-header-toolbar button','New entry');await until(()=>!!document.querySelector('#mj-new-entry'),'new entry menu');
+ check(await has('#mj-new-entry','Start writing')&&await has('#mj-new-entry','to begin')&&await has('#mj-new-entry','Morning intention')&&await has('#mj-new-entry','Evening reflection'),'New entry offers: start writing, ask the companion to begin, morning intention, evening reflection');
+ await click('#mj-new-entry .popover-choice','Start writing');
  await until(()=>!!document.querySelector('.mj-workspace')&&[...document.querySelectorAll('.mj-message[data-role=assistant]')].length===1&&!document.querySelector('[data-streaming]'),'opening arrives',undefined,400);
  const opening=await text('.mj-message[data-role=assistant] .mj-message-body');
  check(/Finishing the quilt/.test(opening),'the opening draws on yesterday’s entry (recent context)');
@@ -530,7 +534,7 @@ try{
  await evaluate(()=>localStorage.clear());must(await admin.from('journal_conversations').delete().eq('user_id',a.id).eq('status','draft').select('id'));
  await go('/journal','!!document.querySelector(".mj-workspace .mj-composer textarea")','workspace budget');
  const before2=await count('journal_conversations',a.id);
- await click('.mj-header-toolbar button','New entry');
+ await click('.mj-header-toolbar button','New entry');await until(()=>!!document.querySelector('#mj-new-entry'),'new entry menu 2');await click('#mj-new-entry .popover-choice','Start writing');
  await until(()=>/budget/.test(document.querySelector('.mj-greet-note')?.textContent??''),'greeting falls back',undefined,300);
  check(await count('journal_conversations',a.id)===before2,'with the budget used up, New entry falls back to a blank page and leaves no empty entry');
  await setValue('.mj-ws-page .mj-composer textarea','Writing still works without AI.');await click('.mj-live-compose button[type=submit]');

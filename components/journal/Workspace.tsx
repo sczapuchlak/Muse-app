@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { MuseMark, type MuseMarkIcon, type MuseTone } from "../design/MuseHeading";
 import { MuseIcon } from "../MuseIcon";
 import { MuseModal } from "../MuseModal";
-import { MuseOverflowMenu, type OverflowAction } from "../MuseOverflowMenu";
+import { GlassPopover } from "../GlassPopover";
 import { Composer, clearLocalDraft, type Attachment } from "./Composer";
 import { GuidedEntry } from "./Guides";
 import { boardImageUrl, uploadBoardImage } from "@/lib/data/constellation-images";
@@ -202,13 +202,6 @@ function Page({ initialId, onRouteClear, continueFrom, onCreated }: { initialId:
       else await P.saveDraft(client, userId, draftEntry, text).catch(() => undefined);
     }
   }
-  async function begin(m: Mode) {
-    setMode(m);
-    const c = conv ?? await j.startConversation({ journalId: journal.id, companion: ai.enabled ? companion : null, mode: m });
-    if (!c) return;
-    setConvId(c.id); setLoadedFor(c.id); setMessages([]); setSaved(null);
-    if (ai.enabled && companion) void ask(c.id, { kind: "opening" });
-  }
   async function finish() {
     let c = conv;
     if (!c && guide) c = await ensureEntry("active", undefined, gState);
@@ -296,24 +289,27 @@ function Page({ initialId, onRouteClear, continueFrom, onCreated }: { initialId:
     const c = state.companions.find((x) => x.id === (v?.companionId ?? conv?.companionId));
     return { name: v?.name ?? c?.name ?? conv?.companionName ?? "Companion", icon: c?.icon ?? "sparkle", tone: c?.tone ?? (5 as MuseTone) };
   };
-  const entryActions: OverflowAction[] = [
-    ...(aiOn && !userCount && !stream ? [{ id: "begin", label: `Ask ${companion!.name.replace(/^The /, "")} to begin`, onSelect: () => void begin(mode) }] : []),
-    ...(aiOn && !userCount && !stream ? [{ id: "morning", label: "Begin a Morning intention", onSelect: () => void (conv ? begin("morning") : beginFresh("morning")) }, { id: "evening", label: "Begin an Evening reflection", onSelect: () => void (conv ? begin("evening") : beginFresh("evening")) }] : []),
-    ...others.map((c) => ({ id: `resume-${c.id}`, label: `Resume “${entryTitle(c, c.status === "draft" ? "Unsent draft" : "Untitled")}” · ${formatDay(c.localDate)}`, onSelect: () => { setJournalId(c.journalId); setConvId(c.id); setSaved(null); } })),
-    ...(conv ? activeJournals(state).filter((x) => x.id !== conv.journalId).slice(0, 4).map((x) => ({ id: `move-${x.id}`, label: `Move this entry to “${x.name}”`, onSelect: () => void j.updateMeta({ ...conv, journalId: x.id }).then((s) => { if (s) setJournalId(x.id); }) })) : []),
-    ...(conv ? [{ id: "memory", label: conv.memoryOff ? "Use my journal history here" : "Don’t use my journal history here", onSelect: () => void j.updateMeta({ ...conv, memoryOff: !conv.memoryOff }) }] : []),
-    { id: "prefs", label: "Journal preferences", onSelect: () => ui.openSettings() },
-    ...(conv ? [{ id: "delete", label: userCount ? "Delete this entry" : "Discard this draft", destructive: true, onSelect: () => void j.deleteConversation(conv.id).then((ok) => ok && fresh()) }] : []),
-  ];
+  // The Journal menu's "This entry" and "Pick up where you left off" (what the old ⋯ menu held, minus new-entry starts).
+  const entryMenu = (close: () => void) => <>
+    {conv && <div className="mj-menu-list" role="group" aria-label="This entry">
+      <p className="mj-menu-head type-meta">This entry</p>
+      {activeJournals(state).filter((x) => x.id !== conv.journalId).slice(0, 6).map((x) => <button key={x.id} type="button" className="popover-choice" onClick={() => { close(); void j.updateMeta({ ...conv, journalId: x.id }).then((s) => { if (s) setJournalId(x.id); }); }}><span className="mj-menu-item"><MuseIcon name="arrow" size={14} />Move it to {x.name}</span></button>)}
+      <button type="button" className="popover-choice" onClick={() => { close(); void j.updateMeta({ ...conv, memoryOff: !conv.memoryOff }); }}><span className="mj-menu-item"><MuseIcon name={conv.memoryOff ? "eye" : "eye-off"} size={14} />{conv.memoryOff ? "Use my journal history here" : "Don’t use my journal history here"}</span></button>
+      <button type="button" className="popover-choice" data-destructive onClick={() => { close(); if (window.confirm(userCount ? "Delete this entry? This can’t be undone." : "Discard this draft?")) void j.deleteConversation(conv.id).then((ok) => ok && fresh()); }}><span className="mj-menu-item"><MuseIcon name="trash" size={14} />{userCount ? "Delete this entry" : "Discard this draft"}</span></button>
+    </div>}
+    {others.length > 0 && <div className="mj-menu-list" role="group" aria-label="Pick up where you left off">
+      <p className="mj-menu-head type-meta">Pick up where you left off</p>
+      {others.map((c) => <button key={c.id} type="button" className="popover-choice" onClick={() => { close(); setJournalId(c.journalId); setConvId(c.id); setSaved(null); }}><span className="mj-menu-item"><MuseIcon name="undo" size={14} /><span>{entryTitle(c, c.status === "draft" ? "Unsent draft" : "Untitled")}<small className="type-meta"> · {formatDay(c.localDate)}</small></span></span></button>)}
+    </div>}
+  </>;
 
   const toolbar = <div className="mj-header-toolbar" style={{ "--journal-a": `var(--chart-${tone})`, "--journal-b": `var(--chart-${(tone % 8) + 1})` } as React.CSSProperties}>
     <JournalToolbar journal={journal} companion={companion} defaultCompanionId={fallback?.id ?? null}
       onJournal={switchJournal} onCompanion={switchCompanion} onMakeDefault={(c) => void j.setDefaultCompanion(journal, c.id)}
       conversationNote={conv ? <>Replies from now on use {companion?.name ?? "this companion"}{pinned ? ` (version ${pinned.version})` : ""}. Earlier replies keep their words.{companion && pinned && companion.version > pinned.version ? ` ${companion.name} has newer saved words (version ${companion.version}): choose it again to use them.` : ""}</> : undefined}
-      extra={<>
-        <button type="button" className="muse-button button-ghost mj-tb-new" onClick={() => newEntry()} disabled={streaming} title={state.prefs.greetOnNew && aiOn ? `Start a new entry; ${companion!.name.replace(/^The /, "")} greets you` : "Start a new entry"} aria-label="New entry"><MuseIcon name="plus" size={16} /><span className="mj-tb-label">New entry</span></button>
-        {entryActions.length > 0 && <MuseOverflowMenu label="This entry" actions={entryActions} />}
-      </>} />
+      entryMenu={entryMenu}
+      extra={<NewEntryMenu disabled={streaming} guided={Boolean(journal.guided)} greet={state.prefs.greetOnNew && aiOn} companionName={aiOn ? companion!.name.replace(/^The /, "") : null}
+        onStart={(kind) => { if (kind === "write") newEntry(); else { fresh(); void beginFresh(kind === "ask" ? "open" : kind); } }} />} />
   </div>;
   return <section ref={fitToViewport} className="muse-journal-archive mj-workspace mj-reveal" aria-label="Journal" style={{ "--journal-a": `var(--chart-${tone})`, "--journal-b": `var(--chart-${(tone % 8) + 1})` } as React.CSSProperties}>
     {ui.toolbarSlot && createPortal(toolbar, ui.toolbarSlot)}
@@ -430,4 +426,26 @@ function Setup() {
       <button type="button" className="muse-button button-primary mj-new-entry" disabled={j.status.saving || !name.trim()} onClick={() => void finish(false)}>{j.status.saving ? "Setting up…" : "Start journaling"}</button>
     </div>
   </section>;
+}
+
+/**
+ * New entry, with the ways to start: just write (with a greeting if you've chosen one), ask the companion to begin, or
+ * a morning intention or evening reflection. A guided journal simply starts its questions.
+ */
+function NewEntryMenu({ disabled, guided, greet, companionName, onStart }: { disabled: boolean; guided: boolean; greet: boolean; companionName: string | null; onStart: (kind: "write" | "ask" | "morning" | "evening") => void }) {
+  const [open, setOpen] = useState(false), anchor = useRef<HTMLButtonElement>(null);
+  const simple = guided || !companionName;
+  if (simple) return <button type="button" className="muse-button button-ghost mj-tb-new" onClick={() => onStart("write")} disabled={disabled} aria-label="New entry"><MuseIcon name="plus" size={16} /><span className="mj-tb-label">New entry</span></button>;
+  const pick = (k: "write" | "ask" | "morning" | "evening") => { setOpen(false); onStart(k); };
+  return <>
+    <button ref={anchor} type="button" className="muse-button button-ghost mj-tb-new" aria-haspopup="dialog" aria-expanded={open} aria-controls="mj-new-entry" onClick={() => setOpen(!open)} disabled={disabled} aria-label="New entry"><MuseIcon name="plus" size={16} /><span className="mj-tb-label">New entry</span><MuseIcon name="chevron" size={13} /></button>
+    <GlassPopover id="mj-new-entry" label="New entry" title="New entry" open={open} anchorRef={anchor} onClose={() => setOpen(false)} width={300}>
+      <div className="mj-menu-list" role="group" aria-label="Start">
+        <button type="button" className="popover-choice" onClick={() => pick("write")}><span className="mj-menu-item"><MuseIcon name="edit" size={15} /><span>Start writing{greet && <small className="type-meta"> · {companionName} says hello</small>}</span></span></button>
+        <button type="button" className="popover-choice" onClick={() => pick("ask")}><span className="mj-menu-item"><MuseIcon name="sparkle" size={15} />Ask {companionName} to begin</span></button>
+        <button type="button" className="popover-choice" onClick={() => pick("morning")}><span className="mj-menu-item"><MuseIcon name="sun" size={15} />Morning intention</span></button>
+        <button type="button" className="popover-choice" onClick={() => pick("evening")}><span className="mj-menu-item"><MuseIcon name="moon" size={15} />Evening reflection</span></button>
+      </div>
+    </GlassPopover>
+  </>;
 }
