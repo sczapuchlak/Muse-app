@@ -32,9 +32,33 @@ export type Message = { id: string; conversationId: string; role: "user" | "assi
 export type MessageImage = { id: string; messageId: string; position: number; path: string; thumbnailPath: string; width: number; height: number; mime: string };
 export const MAX_MESSAGE_IMAGES = 7;
 export type Correction = { id: string; messageId: string; previousBody: string; correctedAt: string };
-export type Tag = { id: string; kind: TagKind; name: string; normalized: string; aliases: string[]; note: string; revision: number };
+export type Tag = { id: string; kind: TagKind; name: string; normalized: string; aliases: string[]; note: string; revision: number;
+  /** Removed everywhere and never suggested by AI again; hidden from every tag view, restorable in Manage Tags. */ suppressed: boolean };
+/** A correction you made on one entry ("Maya" was really Nia here), kept only as guidance for future analysis. */
+export type TagCorrection = { id: string; kind: TagKind; fromName: string; toTagId: string; times: number };
 export type EntryTag = { conversationId: string; tagId: string; source: Source };
-export type Bookmark = { id: string; conversationId: string; messageId: string | null; excerpt: string; note: string; createdAt: string };
+/** A highlight: a passage you kept from one message (stored in journal_bookmarks). `start`/`end` locate it in the
+ *  message while the message still reads exactly that way; the quote itself is always kept as captured. */
+export type Bookmark = { id: string; conversationId: string; messageId: string | null; excerpt: string; note: string; createdAt: string; start: number | null; end: number | null; updatedAt: string };
+export type HighlightTag = { highlightId: string; tagId: string };
+/** Where a highlight sits in a message's current text, or null when it can't be placed for certain (the message was
+ *  corrected and the words now appear zero or several times). Never guesses. */
+export function anchorHighlight(body: string, h: Pick<Bookmark, "excerpt" | "start" | "end">): { start: number; end: number } | null {
+  if (!h.excerpt) return null;
+  if (h.start != null && h.end != null && body.slice(h.start, h.end) === h.excerpt) return { start: h.start, end: h.end };
+  const i = body.indexOf(h.excerpt);
+  if (i < 0 || body.indexOf(h.excerpt, i + 1) >= 0) return null;
+  return { start: i, end: i + h.excerpt.length };
+}
+/** Overlapping or touching highlights paint as one continuous mark; each stays its own saved highlight. */
+export function mergeRanges(ranges: { start: number; end: number; id: string }[]): { start: number; end: number; ids: string[] }[] {
+  const out: { start: number; end: number; ids: string[] }[] = [];
+  for (const r of [...ranges].sort((a, b) => a.start - b.start || a.end - b.end)) {
+    const last = out[out.length - 1];
+    if (last && r.start <= last.end) { last.end = Math.max(last.end, r.end); last.ids.push(r.id); } else out.push({ start: r.start, end: r.end, ids: [r.id] });
+  }
+  return out;
+}
 export type Memory = { id: string; body: string; kind: "fact" | "person" | "situation" | "preference" | "other"; status: "confirmed" | "suggested"; source: Source; journalId: string | null; sourceConversationId: string | null; revision: number; createdAt: string; updatedAt: string };
 export type LinkKind = "chapter" | "experience" | "area";
 export type EntryLink = { conversationId: string; kind: LinkKind; targetId: string; label: string };
@@ -102,11 +126,11 @@ export const messageFromRow = (r: Tables["journal_messages"]["Row"]): Message =>
   id: r.id, conversationId: r.conversation_id, role: r.role as Message["role"], body: r.body, localDate: r.local_date, replyTo: r.reply_to, companionVersionId: r.companion_version_id, model: r.model, correctedAt: r.corrected_at, createdAt: r.created_at,
 });
 export const messageImageFromRow = (r: Tables["journal_message_images"]["Row"]): MessageImage => ({ id: r.id, messageId: r.message_id, position: r.position, path: r.path, thumbnailPath: r.thumbnail_path, width: r.width, height: r.height, mime: r.mime });
-export const tagFromRow = (r: Tables["journal_tags"]["Row"]): Tag => ({ id: r.id, kind: r.kind as TagKind, name: r.name, normalized: r.normalized ?? r.name.trim().toLowerCase(), aliases: r.aliases, note: r.note, revision: r.revision });
+export const tagFromRow = (r: Tables["journal_tags"]["Row"]): Tag => ({ id: r.id, kind: r.kind as TagKind, name: r.name, normalized: r.normalized ?? r.name.trim().toLowerCase(), aliases: r.aliases, note: r.note, revision: r.revision, suppressed: r.suppressed ?? false });
 export const memoryFromRow = (r: Tables["journal_memories"]["Row"]): Memory => ({
   id: r.id, body: r.body, kind: r.kind as Memory["kind"], status: r.status as Memory["status"], source: r.source as Source, journalId: r.journal_id, sourceConversationId: r.source_conversation_id, revision: r.revision, createdAt: r.created_at, updatedAt: r.updated_at,
 });
-export const bookmarkFromRow = (r: Tables["journal_bookmarks"]["Row"]): Bookmark => ({ id: r.id, conversationId: r.conversation_id, messageId: r.message_id, excerpt: r.excerpt, note: r.note, createdAt: r.created_at });
+export const bookmarkFromRow = (r: Tables["journal_bookmarks"]["Row"]): Bookmark => ({ id: r.id, conversationId: r.conversation_id, messageId: r.message_id, excerpt: r.excerpt, note: r.note, createdAt: r.created_at, start: r.start_offset ?? null, end: r.end_offset ?? null, updatedAt: r.updated_at ?? r.created_at });
 
 const strings = (v: unknown, max: number, each = 300) => Array.isArray(v) ? v.filter((x): x is string => typeof x === "string").map((x) => x.trim().slice(0, each)).filter(Boolean).slice(0, max) : [];
 /** Validates analysis JSON from a model or the database. Anything malformed becomes empty, never invented. */

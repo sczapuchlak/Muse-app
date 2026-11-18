@@ -3,13 +3,14 @@ import { useState } from "react";
 import { MuseModal } from "../MuseModal";
 import { MuseSegmented } from "../design/MuseSegmented";
 import { MuseChoiceMenu } from "../MuseChoiceMenu";
+import { ManageTags } from "./TagManager";
 import { newId, useJournal } from "./useJournal";
 import { suggestedGlobalPreferences } from "@/lib/journal/presets";
 import { formatUsd } from "@/lib/journal/pricing";
 import { aiAction } from "@/lib/journal/ai-client";
 import type { Memory } from "@/lib/journal/model";
 
-type Tab = "preferences" | "memory" | "privacy";
+type Tab = "preferences" | "tags" | "memory" | "privacy";
 
 /**
  * Journal settings: global preferences (every journal and companion), what the journal remembers, and privacy,
@@ -18,8 +19,8 @@ type Tab = "preferences" | "memory" | "privacy";
 export function JournalSettings({ onClose }: { onClose: () => void }) {
   const [tab, setTab] = useState<Tab>("preferences");
   return <MuseModal id="mj-settings" label="Journal settings" title="Journal settings" returnFocus={null} onClose={onClose} size="tall">
-    <MuseSegmented label="Settings" value={tab} onChange={setTab} options={[{ id: "preferences", label: "Preferences" }, { id: "memory", label: "Memory" }, { id: "privacy", label: "Privacy & usage" }]} />
-    <div className="mj-modal-scroll">{tab === "preferences" ? <Preferences /> : tab === "memory" ? <Memories /> : <Privacy />}</div>
+    <MuseSegmented label="Settings" value={tab} onChange={setTab} options={[{ id: "preferences", label: "Preferences" }, { id: "tags", label: "Tags" }, { id: "memory", label: "Memory" }, { id: "privacy", label: "Privacy & usage" }]} />
+    <div className="mj-modal-scroll">{tab === "preferences" ? <Preferences /> : tab === "tags" ? <ManageTags /> : tab === "memory" ? <Memories /> : <Privacy />}</div>
   </MuseModal>;
 }
 

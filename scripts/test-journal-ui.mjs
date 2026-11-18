@@ -211,11 +211,36 @@ try{
  await until(()=>!document.querySelector('#mj-correct')&&!!document.querySelector('.mj-history'),'corrected');
  check(must(await admin.from('journal_message_corrections').select('previous_body').eq('message_id',firstUser.id)).map(x=>x.previous_body)[0]===firstUser.body,'the original wording is kept with the correction');
  await evaluate(()=>document.querySelector('.mj-message[data-role=user] button.muse-overflow-trigger').click());
- await until(()=>[...document.querySelectorAll('[role=menuitem]')].some(x=>/Bookmark/.test(x.textContent)),'message menu 2');await click('[role=menuitem]','Bookmark this');
+ await until(()=>[...document.querySelectorAll('[role=menuitem]')].some(x=>/Highlight/.test(x.textContent)),'message menu 2');await click('[role=menuitem]','Highlight');
  await until(()=>!!document.querySelector('#mj-mark'),'bookmark dialog');await setValue('#mj-mark textarea:nth-of-type(1)','Lisboa is calling');
  await evaluate(()=>{const t=document.querySelectorAll('#mj-mark textarea')[1];Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype,'value').set.call(t,'The day I decided to look properly');t.dispatchEvent(new Event('input',{bubbles:true}));});
- await click('#mj-mark button[type=submit]','Bookmark');await until(()=>!!document.querySelector('.mj-message[data-marked]'),'bookmark saved');
- check(await count('journal_bookmarks',a.id)===1,'a passage bookmark with a note');
+ await click('#mj-mark button[type=submit]','Save highlight');await until(()=>!!document.querySelector('.mj-message[data-marked]'),'bookmark saved');
+ check(await count('journal_bookmarks',a.id)===1,'Highlight… saves a trimmed passage with a note (works on iPhone too)');
+ // ---- Highlights: select words, save, see them softly; note and My tags; never on the wrong words after a correction ----
+ const usageBeforeHl=await count('journal_ai_usage',a.id);
+ const hlReply=must(await admin.from('journal_messages').select('id,body').eq('conversation_id',convId).eq('role','assistant').order('created_at').limit(2)).at(-1);
+ const phrase='most alive';
+ await evaluate(({id,phrase})=>{const body=document.querySelector(`[data-message-id="${id}"] .mj-message-body`);const w=document.createTreeWalker(body,NodeFilter.SHOW_TEXT);let n;while((n=w.nextNode())){const i=n.textContent.indexOf(phrase);if(i>=0){const r=document.createRange();r.setStart(n,i);r.setEnd(n,i+phrase.length);const s=getSelection();s.removeAllRanges();s.addRange(r);return;}}throw Error('phrase not found');},{id:hlReply.id,phrase});
+ await until(()=>!!document.querySelector('.mj-hl-toolbar'),'selection toolbar');
+ await click('.mj-hl-toolbar button','Save highlight');
+ await until(()=>!!document.querySelector('mark.mj-hl'),'highlight painted');
+ const hl=must(await admin.from('journal_bookmarks').select('*').eq('message_id',hlReply.id).single());
+ check(hl.excerpt===phrase&&hlReply.body.slice(hl.start_offset,hl.end_offset)===phrase,'selecting words saves the exact passage and where it sits in the message');
+ check(await has('mark.mj-hl',phrase)&&must(await admin.from('journal_messages').select('body').eq('id',hlReply.id).single()).body===hlReply.body,'the highlight shows softly in the conversation; the text is unchanged');
+ await evaluate(()=>{const card=[...document.querySelectorAll('.mj-hl-card')].find(c=>c.querySelector('blockquote').textContent==='most alive');[...card.querySelectorAll('button')].find(b=>b.textContent==='Note & tags').click();});
+ await until(()=>!!document.querySelector('#mj-hl-edit'),'highlight editor');
+ await setValue('#mj-hl-edit textarea','Worth keeping');await setValue('#mj-hl-edit input[aria-label="New tag"]','#Keepers');await click('#mj-hl-edit button','Add tag');
+ await until(()=>[...document.querySelectorAll('#mj-hl-edit .mj-filter-chip[aria-pressed=true]')].some(b=>b.textContent.includes('Keepers')),'tag on highlight');
+ await click('#mj-hl-edit button[type=submit]','Save');await until(()=>!document.querySelector('#mj-hl-edit'),'editor closed');
+ check(must(await admin.from('journal_bookmarks').select('note').eq('id',hl.id).single()).note==='Worth keeping'&&await count('journal_highlight_tags',a.id)===1,'a note and a My tag on the highlight, no AI');
+ // A highlight whose words a correction removed is kept as a quote but never painted onto other words.
+ const stale=firstUser.body.indexOf('Lisbon');
+ must(await admin.from('journal_bookmarks').insert({user_id:a.id,conversation_id:convId,message_id:firstUser.id,excerpt:'Lisbon',start_offset:stale,end_offset:stale+6,created_at:'2020-01-01T00:00:00Z'}).select('id'));
+ await go(`/journal?entry=${convId}`,'!!document.querySelector(".mj-hl-toggle")','entry reload');await click('.mj-hl-toggle');
+ await until(()=>!!document.querySelector('.mj-hl-list'),'highlight list');
+ await until(()=>[...document.querySelectorAll('.mj-hl-card')].some(c=>c.textContent.includes('corrected after you saved it')),'stale note',undefined,100).catch(()=>{});
+ check(await has('.mj-hl-card','corrected after you saved it')&&!(await has('mark.mj-hl','Lisbon'))&&(await evaluate(()=>[...document.querySelectorAll('.mj-hl-card')].filter(c=>c.textContent.includes('corrected after')).length))===1,'after a correction the old quote is kept and never attached to the wrong text');
+ check(await count('journal_ai_usage',a.id)===usageBeforeHl,'saving, tagging and noting highlights made no AI request');
  await shoot('04-entry-conversation',true);
 
  // ---- History: search across messages, click a tag, combined filters, week view and date jump ----
@@ -265,12 +290,30 @@ try{
  check(true,'the date picker jumps straight to any day');
  check(!(await overflow()),'desktop History with every filter has no sideways scrolling');
  await shoot('05-history-week');
+ // Highlights in History: search the saved words, filter by My tags, open right at the passage, remove.
+ await click('.mj-history-view .muse-segmented button','Highlights');await until(()=>!!document.querySelector('.mj-highlights'),'highlights view');
+ await setValue('.mj-highlights input[type=search]','alive');
+ await until(()=>document.querySelectorAll('.mj-highlights .mj-hl-card').length===1,'highlight search');
+ check(true,'History searches highlighted words across entries');
+ await setValue('.mj-highlights input[type=search]','');await click('.mj-highlights .mj-filter-chip','#Keepers');
+ await until(()=>document.querySelectorAll('.mj-highlights .mj-hl-card').length===1,'highlight tag filter');
+ check(await has('.mj-highlights .mj-hl-card .type-meta','Wed')||await has('.mj-highlights .mj-hl-card .type-meta',','),'and filters them by My tags, showing the entry title and date');
+ await shoot('06c-highlights');
+ await click('.mj-highlights .mj-hl-card a','Open at this passage');
+ await until(()=>!!document.querySelector('.mj-hl[data-flash]'),'jumped to passage');
+ check(true,'a highlight opens its entry right at the passage');
+ const hlCount=await count('journal_bookmarks',a.id);
+ await click('.mj-hl-toggle');await until(()=>!!document.querySelector('.mj-hl-list'),'list');
+ await evaluate(()=>{const card=[...document.querySelectorAll('.mj-hl-card')].find(c=>c.querySelector('blockquote').textContent==='most alive');[...card.querySelectorAll('button')].find(b=>b.textContent==='Remove').click();});
+ for(let i=0;i<30&&await count('journal_bookmarks',a.id)!==hlCount-1;i++)await wait(150);
+ check(await count('journal_bookmarks',a.id)===hlCount-1&&await count('journal_highlight_tags',a.id)===0&&!(await has('mark.mj-hl','most alive')),'removing a highlight removes only the highlight (and its tags), never the text');
+ await go('/journal?view=history','!!document.querySelector(".mj-history-view")','history again');
  // Duplicate prevention and merge with alias.
  const al=await P.createTag(a.client,a.id,'person','Al');await P.tagEntry(a.client,a.id,quilt.id,al.id);
  check((await P.createTag(a.client,a.id,'person','alex')).id===alex.id,'typing “alex” finds Alex instead of making a duplicate');
  await go(`/journal?view=history&tag=${al.id}`,'!!document.querySelector(".mj-active-filters")','al page');
  await click('.mj-active-filters button','Rename, aliases or merge');await until(()=>!!document.querySelector('#mj-tag'),'manage tag');
- await click('#mj-tag button.muse-choice-trigger');await until(()=>[...document.querySelectorAll('.popover-choice')].some(x=>x.textContent.includes('Alex')),'merge choices');await click('.popover-choice','Alex');
+ await click('#mj-tag [aria-label="Merge"] button.muse-choice-trigger');await until(()=>[...document.querySelectorAll('.popover-choice')].some(x=>x.textContent.includes('Alex')),'merge choices');await click('.popover-choice','Alex');
  await click('#mj-tag .mj-finish button.button-primary','Merge');await until(()=>!document.querySelector('#mj-tag'),'merged').catch(async e=>{console.log('DIALOG:',await text('#mj-tag'),'| ERR:',await text('.mj-error'));await shoot('debug-merge');throw e;});
  const merged=must(await admin.from('journal_tags').select('aliases').eq('id',alex.id).single());
  check(merged.aliases.includes('Al')&&await count('journal_entry_tags',a.id,{tag_id:alex.id})===4,'merging Al into Alex moves the entry and keeps “Al” as an alias');
@@ -343,6 +386,32 @@ try{
  await go('/journal?view=history','!!document.querySelector(".mj-history-view")','history threads');await click('.mj-history-view .muse-segmented button','All');
  await until(()=>!!document.querySelector('.mj-row-thread'),'thread marks');
  check(await has('.mj-row-thread','Continues “')&&await has('.mj-row-thread','Continued once'),'History marks an entry that continues another, and the one it continued');
+
+ // ---- Manage Tags and person corrections: one entry only; never suggest again; all in Journal settings; no AI ----
+ const usageBeforeTags=await count('journal_ai_usage',a.id);
+ await go(`/journal?entry=${convId}`,'!!document.querySelector(".mj-entry")','entry for tags');await click('.mj-entry .muse-segmented button','Analysis');
+ await until(()=>!!document.querySelector('.mj-tag-editor[data-kind=person] .mj-tag'),'person tags');
+ const alexBefore=await count('journal_entry_tags',a.id,{tag_id:alex.id});
+ await click('.mj-tag-editor[data-kind=person] button','Replace Alex on this entry');
+ await until(()=>!!document.querySelector('.mj-tag-replace input'),'replace field');
+ await setValue('.mj-tag-replace input','Nia');await click('.mj-tag-replace button[type=submit]','Replace');
+ await until(()=>[...document.querySelectorAll('.mj-tag-editor[data-kind=person] .mj-tag')].some(x=>x.textContent.includes('Nia')),'replaced');
+ check(await count('journal_entry_tags',a.id,{tag_id:alex.id})===alexBefore-1&&alexBefore-1>0,'replacing Alex with Nia changes only this entry; Alex stays a separate person elsewhere');
+ check(await count('journal_tag_corrections',a.id)===1,'the correction is remembered (as a hint for future analysis, never a rule)');
+ await click('.mj-tb-settings');await until(()=>!!document.querySelector('#mj-settings'),'settings');
+ await click('#mj-settings .muse-segmented button','Tags');await until(()=>!!document.querySelector('.mj-manage-tags'),'manage tags');
+ check(await has('.mj-manage-tags .mj-section-title','People')&&await has('.mj-manage-tags','entries')&&await has('.mj-manage-tags','“Alex” was'),'Manage Tags lists every tag by category with counts, and the remembered correction');
+ await shoot('07b-manage-tags');
+ await click('.mj-manage-tags .mj-tag-line','Wistful');await until(()=>!!document.querySelector('#mj-tag'),'tag dialog');
+ await click('#mj-tag button','Delete this mood');await click('#mj-tag .mj-finish button.button-primary','Delete tag');
+ await until(()=>[...document.querySelectorAll('.mj-manage-tags .mj-tag-group')].some(g=>g.textContent.includes('Never suggested again')&&g.textContent.includes('Wistful')),'suppressed listed');
+ const wist=must(await admin.from('journal_tags').select('id,suppressed').eq('user_id',a.id).eq('kind','mood').eq('name','Wistful').single());
+ check(wist.suppressed&&await count('journal_entry_tags',a.id,{tag_id:wist.id})===0&&await count('journal_conversations',a.id,{id:convId})===1,'deleting with “never suggest again” takes the tag off its entries, keeps the entries, and remembers the name');
+ await click('.mj-manage-tags button','Allow again');
+ for(let i=0;i<30&&must(await admin.from('journal_tags').select('suppressed').eq('id',wist.id).single()).suppressed;i++)await wait(150);
+ check(!must(await admin.from('journal_tags').select('suppressed').eq('id',wist.id).single()).suppressed,'and it can be allowed again');
+ check(await count('journal_ai_usage',a.id)===usageBeforeTags,'managing tags made no AI request');
+ await evaluate(()=>document.querySelector('#mj-settings')?.dispatchEvent(new Event('cancel')));
 
  // ---- Scenario D: a draft survives a reload ----
  await go('/journal','!!document.querySelector(".mj-workspace .mj-composer textarea")','workspace');
