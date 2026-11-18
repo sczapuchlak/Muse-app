@@ -149,3 +149,8 @@ test('continue from here: bounded, honest, one level, no photos', () => {
   assert.match(C.referenceContext({ title: 'Gone', date: '2026-01-01', summary: '', missing: true }, true), /no longer in their journal/);
   assert.ok(!/weighed/.test(C.referenceContext({ ...src, excluded: true }, true)), 'an entry kept out of AI context is never sent');
 });
+
+test('analysis titles are about life, never about the app or the act of looking back', () => {
+  assert.match(I.ANALYSIS_RULES, /Never a meta title/); assert.match(I.ANALYSIS_RULES, /title what is new or changed now/);
+  assert.match(I.ANALYSIS_RULES, /Leave out the mechanics of the app/);
+});

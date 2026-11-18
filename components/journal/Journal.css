@@ -727,3 +727,8 @@
 .mj-ws-page:has(.mj-ref) .mj-blank{margin-top:4px}
 @container muse-content (max-width:640px){.mj-continue{min-height:38px;padding-inline:10px;font-size:.84rem}.mj-ref{max-width:100%}.mj-ref>.type-meta{display:none}}
 @media (prefers-reduced-motion:reduce){.mj-ref{animation:none}}
+/* History rows: a quiet thread line when an entry continues another, or was continued. */
+.mj-row-thread{display:flex;flex-wrap:wrap;gap:4px 14px;color:var(--text-muted)}
+.mj-row-thread>span{display:inline-flex;align-items:center;gap:5px;min-width:0}
+.mj-return{flex:none;width:13px;height:13px;fill:none;stroke:var(--journal-a,var(--card-ink,var(--accent-primary)));stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.mj-row:has(.mj-row-thread)::before{background:linear-gradient(var(--card-ink),color-mix(in srgb,var(--card-ink) 25%,transparent)),repeating-linear-gradient(transparent 0 4px,var(--card-ink) 4px 6px)}

@@ -332,6 +332,7 @@ try{
  await go(`/journal?entry=${follow.id}`,'!!document.querySelector(".mj-ref")','reload continued');
  check(await has('.mj-ref','Referencing'),'the reference survives a reload');
  await click('.mj-ref-link');await until(()=>!!document.querySelector('#mj-ref-preview'),'preview');await click('#mj-ref-preview button','Keep writing');
+ await until(()=>{const b=document.querySelector('.mj-live-compose .mj-composer-secondary');return !!b&&!b.disabled;},'finish ready');
  await click('.mj-live-compose .mj-composer-secondary','Finish entry');await click('.mj-finish button','Finish & save');
  for(let i=0;i<60&&must(await admin.from('journal_conversations').select('status').eq('id',follow.id).single()).status!=='completed';i++)await wait(200);
  check(must(await admin.from('journal_conversations').select('status').eq('id',follow.id).single()).status==='completed','the continued entry finishes and saves like any other');
@@ -339,6 +340,9 @@ try{
  check(await has('.mj-entry-links','Continued in'),'the original shows where it was continued');
  await go(`/journal?entry=${follow.id}`,'!!document.querySelector(".mj-entry-links")','follow links');
  check(await has('.mj-entry-links','Continues'),'the new entry links back to its source');
+ await go('/journal?view=history','!!document.querySelector(".mj-history-view")','history threads');await click('.mj-history-view .muse-segmented button','All');
+ await until(()=>!!document.querySelector('.mj-row-thread'),'thread marks');
+ check(await has('.mj-row-thread','Continues “')&&await has('.mj-row-thread','Continued once'),'History marks an entry that continues another, and the one it continued');
 
  // ---- Scenario D: a draft survives a reload ----
  await go('/journal','!!document.querySelector(".mj-workspace .mj-composer textarea")','workspace');

@@ -49,10 +49,15 @@ export function EntryRow({ c, onOpen, snippet, showDay = true }: { c: Conversati
   const tags = [...tagsFor(state, c.id)].sort(mineFirst).slice(0, 3);
   const bookmarked = state.bookmarks.some((b) => b.conversationId === c.id);
   const text = snippet || c.summary || c.draft;
+  const continuedIn = state.conversations.filter((x) => x.continuesId === c.id && x.status !== "draft").length;
   return <button type="button" className="mj-row" onClick={onOpen} data-status={c.status} style={{ "--card-ink": `var(--chart-${journal?.tone ?? 5})` } as React.CSSProperties}>
     <span className="mj-row-day" aria-hidden={!showDay || undefined}>{showDay && <><b className="type-meta">{weekdayShort(c.localDate)}</b><span className="type-numeric">{dayNumber(c.localDate)}</span></>}</span>
     <span className="mj-row-main">
       <span className="mj-row-title type-title">{entryTitle(c)}{c.status === "active" && <em className="mj-pill">In progress</em>}</span>
+      {(c.continuesId || c.continuesTitle || continuedIn > 0) && <span className="mj-row-thread type-meta">
+        {(c.continuesId || c.continuesTitle) && <span><ReturnGlyph />Continues “{c.continuesTitle || "an earlier entry"}”</span>}
+        {continuedIn > 0 && <span><ReturnGlyph flip />Continued {continuedIn === 1 ? "once" : `${continuedIn} times`}</span>}
+      </span>}
       {text && <span className="mj-row-excerpt">{snippet ? highlight(snippet) : text.slice(0, 200)}</span>}
       {tags.length > 0 && <span className="mj-card-tags">{tags.map((t) => <span key={t.id} className="mj-tag" data-kind={t.kind}>{tagLabel(t)}</span>)}</span>}
     </span>
@@ -68,4 +73,9 @@ export function EntryRow({ c, onOpen, snippet, showDay = true }: { c: Conversati
 /** Search snippets mark matches with « »; render them as <mark>. */
 function highlight(s: string) {
   return s.split(/(«[^»]*»)/).map((part, i) => (part.startsWith("«") ? <mark key={i}>{part.slice(1, -1)}</mark> : <span key={i}>{part}</span>));
+}
+
+/** The small "continues / continued" mark: a curved return arrow, mirrored for "continued". */
+function ReturnGlyph({ flip }: { flip?: boolean }) {
+  return <svg className="mj-return" viewBox="0 0 24 24" aria-hidden="true" style={flip ? { transform: "scaleX(-1)" } : undefined}><path d="M9 14 4 9l5-5M4 9h10a6 6 0 0 1 0 12h-3" /></svg>;
 }
