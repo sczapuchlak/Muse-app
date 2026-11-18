@@ -181,14 +181,14 @@ isOneToOne: false
                 },
 "journal_journals": {
                   Row: {
-                    "default_guide_id": string | null,"archived_at": string | null,"cover": string,"created_at": string,"default_companion_id": string | null,"description": string,"evening_instructions": string,"icon": string,"id": string,"instructions": string,"memory_scope": string,"morning_instructions": string,"name": string,"position": number,"preset_key": string | null,"revision": number,"tone": number,"updated_at": string,"user_id": string
+                    "guided": boolean,"default_guide_id": string | null,"archived_at": string | null,"cover": string,"created_at": string,"default_companion_id": string | null,"description": string,"evening_instructions": string,"icon": string,"id": string,"instructions": string,"memory_scope": string,"morning_instructions": string,"name": string,"position": number,"preset_key": string | null,"revision": number,"tone": number,"updated_at": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "default_guide_id"?: string | null,"archived_at"?: string | null,"cover"?: string,"created_at"?: string,"default_companion_id"?: string | null,"description"?: string,"evening_instructions"?: string,"icon"?: string,"id"?: string,"instructions"?: string,"memory_scope"?: string,"morning_instructions"?: string,"name": string,"position"?: number,"preset_key"?: string | null,"revision"?: number,"tone"?: number,"updated_at"?: string,"user_id"?: string
+                    "guided"?: boolean,"default_guide_id"?: string | null,"archived_at"?: string | null,"cover"?: string,"created_at"?: string,"default_companion_id"?: string | null,"description"?: string,"evening_instructions"?: string,"icon"?: string,"id"?: string,"instructions"?: string,"memory_scope"?: string,"morning_instructions"?: string,"name": string,"position"?: number,"preset_key"?: string | null,"revision"?: number,"tone"?: number,"updated_at"?: string,"user_id"?: string
                   }
                   Update: {
-                    "default_guide_id"?: string | null,"archived_at"?: string | null,"cover"?: string,"created_at"?: string,"default_companion_id"?: string | null,"description"?: string,"evening_instructions"?: string,"icon"?: string,"id"?: string,"instructions"?: string,"memory_scope"?: string,"morning_instructions"?: string,"name"?: string,"position"?: number,"preset_key"?: string | null,"revision"?: number,"tone"?: number,"updated_at"?: string,"user_id"?: string
+                    "guided"?: boolean,"default_guide_id"?: string | null,"archived_at"?: string | null,"cover"?: string,"created_at"?: string,"default_companion_id"?: string | null,"description"?: string,"evening_instructions"?: string,"icon"?: string,"id"?: string,"instructions"?: string,"memory_scope"?: string,"morning_instructions"?: string,"name"?: string,"position"?: number,"preset_key"?: string | null,"revision"?: number,"tone"?: number,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
                     {

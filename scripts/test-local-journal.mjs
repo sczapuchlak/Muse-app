@@ -156,7 +156,9 @@ try{
  assert.equal((await P.refreshConversation(a.client,a.id,ge.id)).guideSnapshot.questions[0].text,'What cards did you draw?','an entry keeps the questions it began with');
  const ans=await P.addMessage(a.client,a.id,{id:crypto.randomUUID(),conversationId:ge.id,body:'The Star',localDate:today,guideQuestionId:'q1',guideQuestion:'What cards did you draw?'});
  assert.equal(ans.guideQuestion,'What cards did you draw?','an answer remembers its question as written');
- await P.saveJournal(a.client,a.id,{...everyday,defaultGuideId:gid,revision:(await P.loadJournal(a.client,a.id)).journals.find(x=>x.id===everyday.id).revision});
+ const guidedJ=await P.saveJournal(a.client,a.id,{...everyday,defaultGuideId:gid,guided:true,revision:(await P.loadJournal(a.client,a.id)).journals.find(x=>x.id===everyday.id).revision});
+ assert.equal(guidedJ.guided,true,'a journal turns guided prompts on');
+ const offJ=await P.saveJournal(a.client,a.id,{...guidedJ,guided:false});assert.equal(offJ.guided,false);assert.equal(offJ.defaultGuideId,gid,'turning them off keeps the questions linked');
  assert.ok((await b.client.from('journal_conversations').insert({journal_id:everyday.id,mode:'open',status:'draft',local_date:today,time_zone:'UTC',guide_id:gid})).error,'another account cannot use my guide');
  await P.deleteGuide(a.client,a.id,gid);
  const st2=await P.loadJournal(a.client,a.id);assert.equal(st2.journals.find(x=>x.id===everyday.id).defaultGuideId,null,'deleting a guide clears a journal default');

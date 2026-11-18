@@ -15,7 +15,7 @@ export type Source = "user" | "ai";
 
 export type Companion = { id: string; name: string; description: string; icon: string; tone: MuseTone; instructions: string; conversationPrefs: string; openingStyle: string; presetKey: string | null; preferredJournalId: string | null; version: number; position: number; archivedAt: string | null; revision: number; createdAt: string; updatedAt: string };
 export type CompanionVersion = { id: string; companionId: string; version: number; name: string; description: string; instructions: string; conversationPrefs: string; openingStyle: string; savedAt: string };
-export type Journal = { id: string; name: string; description: string; icon: string; tone: MuseTone; cover: string; defaultCompanionId: string | null; defaultGuideId: string | null; instructions: string; morningInstructions: string; eveningInstructions: string; memoryScope: MemoryScope; presetKey: string | null; position: number; archivedAt: string | null; revision: number; createdAt: string };
+export type Journal = { id: string; name: string; description: string; icon: string; tone: MuseTone; cover: string; defaultCompanionId: string | null; defaultGuideId: string | null; /** Guided prompts on: new entries start with this journal's questions (defaultGuideId). */ guided: boolean; instructions: string; morningInstructions: string; eveningInstructions: string; memoryScope: MemoryScope; presetKey: string | null; position: number; archivedAt: string | null; revision: number; createdAt: string };
 export type Preferences = { globalInstructions: string; memoryEnabled: boolean; analysisAuto: boolean; onThisDay: boolean; showOnDaily: boolean; greetOnNew: boolean; defaultJournalId: string | null; revision: number };
 export type JournalImage = { id: string; path: string; thumbnailPath: string; width: number; height: number; caption: string; alt: string };
 export type Conversation = {
@@ -99,12 +99,12 @@ export const versionFromRow = (r: Tables["journal_companion_versions"]["Row"]): 
 export const journalFromRow = (r: Tables["journal_journals"]["Row"]): Journal => ({
   id: r.id, name: r.name, description: r.description, icon: r.icon, tone: tone(r.tone), cover: r.cover, defaultCompanionId: r.default_companion_id, instructions: r.instructions,
   morningInstructions: r.morning_instructions, eveningInstructions: r.evening_instructions, memoryScope: r.memory_scope as MemoryScope, presetKey: r.preset_key, position: r.position, archivedAt: r.archived_at, revision: r.revision, createdAt: r.created_at,
-  defaultGuideId: r.default_guide_id ?? null,
+  defaultGuideId: r.default_guide_id ?? null, guided: r.guided ?? false,
 });
 export const journalToRow = (j: Journal) => ({
   name: j.name.trim().slice(0, 80) || "Journal", description: j.description.slice(0, 600), icon: j.icon, tone: j.tone, cover: j.cover, default_companion_id: j.defaultCompanionId,
   instructions: j.instructions.slice(0, 20000), morning_instructions: j.morningInstructions.slice(0, 8000), evening_instructions: j.eveningInstructions.slice(0, 8000), memory_scope: j.memoryScope,
-  preset_key: j.presetKey, position: j.position, archived_at: j.archivedAt, default_guide_id: j.defaultGuideId,
+  preset_key: j.presetKey, position: j.position, archived_at: j.archivedAt, default_guide_id: j.defaultGuideId, guided: j.guided,
 });
 export const defaultPreferences: Preferences = { globalInstructions: "", memoryEnabled: true, analysisAuto: true, onThisDay: true, showOnDaily: false, greetOnNew: true, defaultJournalId: null, revision: 0 };
 export const preferencesFromRow = (r: Tables["journal_preferences"]["Row"] | null): Preferences => r ? ({

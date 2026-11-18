@@ -13,8 +13,7 @@ import { InsightsView } from "./InsightsView";
 import { JournalSettings } from "./JournalSettings";
 import { MuseIcon } from "../MuseIcon";
 import { Sheet } from "./Sheet";
-import type { Guide, Journal as JournalRecord } from "@/lib/journal/model";
-import { GuideEditor, blankGuide } from "./Guides";
+import type { Journal as JournalRecord } from "@/lib/journal/model";
 import { JournalUiContext, type JournalUi } from "./ui";
 import "./Journal.css";
 
@@ -40,7 +39,6 @@ function JournalView() {
   // Phones and tablets: the toolbar sits under Journal | History | Insights (navigation first, then this page's tools).
   const narrow = useSyncExternalStore(subscribeNarrow, () => window.matchMedia(narrowQuery).matches, () => false);
   const [manager, setManager] = useState(params?.get("view") === "journals");
-  const [editingGuide, setEditingGuide] = useState<Guide | null>(null);
   const [editing, setEditing] = useState<JournalRecord | null>(() => (params?.get("new") === "journal" ? blankJournal(0) : null));
   const go = useCallback((q: Record<string, string | null>, replace = false) => {
     const next = new URLSearchParams(params?.toString() ?? "");
@@ -56,7 +54,6 @@ function JournalView() {
     openSettings: () => setSettings(true), openManager: () => setManager(true),
     editJournal: (x) => setEditing(x === "new" ? blankJournal(j.state.journals.length) : x),
     openStudio: (id) => { setManager(false); go({ companion: id }); },
-    editGuide: (g) => setEditingGuide(g === "new" ? blankGuide() : g),
     toolbarSlot,
   }), [go, j.state.journals.length, toolbarSlot]);
 
@@ -90,7 +87,6 @@ function JournalView() {
     </Sheet>}
     {manager && <JournalManager onClose={() => setManager(false)} />}
     {editing && <JournalEditor journal={editing} onClose={() => setEditing(null)} />}
-    {editingGuide && <GuideEditor guide={editingGuide} onClose={() => setEditingGuide(null)} />}
     {settings && <JournalSettings onClose={() => setSettings(false)} />}
     <footer className="muse-footer">Your journal is private to your account. Conversations save as you go.</footer>
   </main></JournalUiContext.Provider>;
