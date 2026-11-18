@@ -3,7 +3,10 @@ import { MuseMark, type MuseMarkIcon } from "../design/MuseHeading";
 import { MuseIcon } from "../MuseIcon";
 import { tagsFor, useJournal } from "./useJournal";
 import { dayNumber, formatDay, formatShort, weekdayShort } from "./format";
-import { entryTitle, type Conversation } from "@/lib/journal/model";
+import { entryTitle, tagLabel, type Conversation, type Tag } from "@/lib/journal/model";
+
+/** My tags first: the ones you chose say most about why an entry matters. */
+const mineFirst = (a: Tag, b: Tag) => Number(a.kind !== "custom") - Number(b.kind !== "custom");
 
 /**
  * An archive card: the journal's mark and day, the title, a short summary or excerpt, a few tags. Favorites and
@@ -12,7 +15,7 @@ import { entryTitle, type Conversation } from "@/lib/journal/model";
 export function EntryCard({ c, onOpen, snippet, showYear, compact }: { c: Conversation; onOpen: () => void; snippet?: string; showYear?: boolean; compact?: boolean }) {
   const { state } = useJournal();
   const journal = state.journals.find((j) => j.id === c.journalId);
-  const tags = tagsFor(state, c.id).slice(0, compact ? 0 : 4);
+  const tags = [...tagsFor(state, c.id)].sort(mineFirst).slice(0, compact ? 0 : 4);
   const bookmarked = state.bookmarks.some((b) => b.conversationId === c.id);
   const text = snippet || c.summary || c.draft;
   return <button type="button" className="mj-card" onClick={onOpen} data-status={c.status} data-compact={compact || undefined} style={{ "--card-ink": `var(--chart-${journal?.tone ?? 5})` } as React.CSSProperties}>
@@ -31,7 +34,7 @@ export function EntryCard({ c, onOpen, snippet, showYear, compact }: { c: Conver
       <span>{journal?.name ?? "Journal"}{c.companionName ? ` · ${c.companionName}` : ""}</span>
       <span className="type-numeric">{c.userWords} words</span>
     </span>}
-    {tags.length > 0 && <span className="mj-card-tags">{tags.map((t) => <span key={t.id} className="mj-tag" data-kind={t.kind}>{t.name}</span>)}</span>}
+    {tags.length > 0 && <span className="mj-card-tags">{tags.map((t) => <span key={t.id} className="mj-tag" data-kind={t.kind}>{tagLabel(t)}</span>)}</span>}
   </button>;
 }
 
@@ -43,7 +46,7 @@ export function EntryCard({ c, onOpen, snippet, showYear, compact }: { c: Conver
 export function EntryRow({ c, onOpen, snippet, showDay = true }: { c: Conversation; onOpen: () => void; snippet?: string; showDay?: boolean }) {
   const { state } = useJournal();
   const journal = state.journals.find((j) => j.id === c.journalId);
-  const tags = tagsFor(state, c.id).slice(0, 3);
+  const tags = [...tagsFor(state, c.id)].sort(mineFirst).slice(0, 3);
   const bookmarked = state.bookmarks.some((b) => b.conversationId === c.id);
   const text = snippet || c.summary || c.draft;
   return <button type="button" className="mj-row" onClick={onOpen} data-status={c.status} style={{ "--card-ink": `var(--chart-${journal?.tone ?? 5})` } as React.CSSProperties}>
@@ -51,7 +54,7 @@ export function EntryRow({ c, onOpen, snippet, showDay = true }: { c: Conversati
     <span className="mj-row-main">
       <span className="mj-row-title type-title">{entryTitle(c)}{c.status === "active" && <em className="mj-pill">In progress</em>}</span>
       {text && <span className="mj-row-excerpt">{snippet ? highlight(snippet) : text.slice(0, 200)}</span>}
-      {tags.length > 0 && <span className="mj-card-tags">{tags.map((t) => <span key={t.id} className="mj-tag" data-kind={t.kind}>{t.name}</span>)}</span>}
+      {tags.length > 0 && <span className="mj-card-tags">{tags.map((t) => <span key={t.id} className="mj-tag" data-kind={t.kind}>{tagLabel(t)}</span>)}</span>}
     </span>
     <span className="mj-row-meta type-meta">
       {journal && <MuseMark icon={journal.icon as MuseMarkIcon} tone={journal.tone} size="sm" />}

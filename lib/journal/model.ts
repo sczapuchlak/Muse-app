@@ -9,7 +9,8 @@ type Tables = Database["public"]["Tables"];
 export type MemoryScope = "shared" | "journal" | "off";
 export type Mode = "open" | "morning" | "evening";
 export type Status = "draft" | "active" | "completed";
-export type TagKind = "person" | "place" | "topic" | "theme" | "mood";
+/** `custom` is "My tags": made by you, never by AI analysis. The others are found by analysis (and editable). */
+export type TagKind = "person" | "place" | "topic" | "theme" | "mood" | "custom";
 export type Source = "user" | "ai";
 
 export type Companion = { id: string; name: string; description: string; icon: string; tone: MuseTone; instructions: string; conversationPrefs: string; openingStyle: string; presetKey: string | null; preferredJournalId: string | null; version: number; position: number; archivedAt: string | null; revision: number; createdAt: string; updatedAt: string };
@@ -129,6 +130,8 @@ export const wordCount = (text: string) => (text.trim() ? text.trim().split(/\s+
 export const entryTitle = (c: Pick<Conversation, "title" | "mode" | "localDate">, fallback?: string) => c.title.trim() || fallback || (c.mode === "morning" ? "Morning intention" : c.mode === "evening" ? "Evening reflection" : "Untitled conversation");
 /** History lists finished and active conversations that contain at least one of your own messages. */
 export const isListed = (c: Pick<Conversation, "status" | "userWords">) => c.status !== "draft" && c.userWords > 0;
-export const tagKindLabel: Record<TagKind, string> = { person: "People", place: "Places", topic: "Topics", theme: "Themes", mood: "Moods" };
-export const tagKinds: TagKind[] = ["person", "place", "topic", "mood", "theme"];
-export const tagKindSingular: Record<TagKind, string> = { person: "Person", place: "Place", topic: "Topic", theme: "Theme", mood: "Mood" };
+export const tagKindLabel: Record<TagKind, string> = { custom: "My tags", person: "People", place: "Places", topic: "Topics", theme: "Themes", mood: "Moods" };
+export const tagKinds: TagKind[] = ["custom", "person", "place", "topic", "mood", "theme"];
+/** How a tag reads: My tags carry a leading #. */
+export const tagLabel = (t: { kind: TagKind; name: string }) => (t.kind === "custom" ? `#${t.name}` : t.name);
+export const tagKindSingular: Record<TagKind, string> = { custom: "Tag", person: "Person", place: "Place", topic: "Topic", theme: "Theme", mood: "Mood" };
