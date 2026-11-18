@@ -9,7 +9,7 @@ import { cleanTagName, findTag, normalizeTag, type Bookmark, type Companion, typ
 import { companionPreset } from "@/lib/journal/presets";
 
 type Status = { loaded: boolean; error: string; saving: boolean; missing: boolean };
-const empty: P.JournalState = { prefs: { globalInstructions: "", memoryEnabled: true, analysisAuto: true, onThisDay: true, showOnDaily: false, defaultJournalId: null, revision: 0 }, journals: [], companions: [], conversations: [], tags: [], entryTags: [], bookmarks: [], memories: [], links: [] };
+const empty: P.JournalState = { prefs: { globalInstructions: "", memoryEnabled: true, analysisAuto: true, onThisDay: true, showOnDaily: false, greetOnNew: true, defaultJournalId: null, revision: 0 }, journals: [], companions: [], conversations: [], tags: [], entryTags: [], bookmarks: [], memories: [], links: [] };
 const missingTable = (e: unknown) => ["PGRST205", "42P01"].includes((e as { code?: string })?.code ?? "");
 const message = (e: unknown) => (e instanceof Error ? e.message : "Something went wrong. Please try again.");
 export const newId = () => crypto.randomUUID();
@@ -107,6 +107,11 @@ function useJournalStore() {
     removeLink: (l: EntryLink) => run(async () => { await P.removeLink(client, userId, l); patch((s) => ({ ...s, links: s.links.filter((x) => !(x.conversationId === l.conversationId && x.kind === l.kind && x.targetId === l.targetId)) })); }),
     keepTest: (o: Omit<Parameters<typeof P.keepTest>[1], "localDate" | "timeZone">) => run(async () => { const c = await P.keepTest(client, { ...o, localDate: today, timeZone }); putConversation(c); if (ai.enabled && stateRef.current.prefs.analysisAuto) void aiAction({ action: "analysis", conversationId: c.id }).catch(() => undefined).finally(() => void refresh()); return c; }),
     clearError: () => setStatus((s) => ({ ...s, error: "" })),
+    /** First run: one journal, one default companion. */
+    setup: (o: { journalName: string; presetKey: string; instructions?: string }) => run(async () => { const out = await P.setupJournal(client, userId, { ...o, prefs: stateRef.current.prefs }); await refresh(); return out; }),
+    switchCompanion: (c: Conversation, companion: Companion) => run(async () => { const saved = await P.switchCompanion(client, userId, c, companion); putConversation(saved); return saved; }),
+    /** The default companion belongs to a journal (the primary journal's is everyone's default). */
+    setDefaultCompanion: (journal: Journal, companionId: string) => run(async () => { const saved = await P.saveJournal(client, userId, { ...journal, defaultCompanionId: companionId }); patch((s) => ({ ...s, journals: s.journals.map((x) => (x.id === saved.id ? saved : x)) })); return saved; }),
   }), [client, userId, run, patch, putConversation, refresh, refreshAi, today, timeZone, ai.enabled]);
 
   return { client, userId, today, timeZone, state, status, ai, refresh, refreshAi, ...actions };
@@ -121,3 +126,11 @@ export function useJournal(): JournalStore { const s = useContext(Ctx); if (!s) 
 export const activeJournals = (s: P.JournalState) => s.journals.filter((j) => !j.archivedAt);
 export const activeCompanions = (s: P.JournalState) => s.companions.filter((c) => !c.archivedAt);
 export const tagsFor = (s: P.JournalState, conversationId: string) => s.entryTags.filter((t) => t.conversationId === conversationId).flatMap((l) => { const t = s.tags.find((x) => x.id === l.tagId); return t ? [{ ...t, source: l.source }] : []; });
+
+/** The primary journal: the one chosen in preferences, else the first. */
+export const primaryJournal = (s: P.JournalState) => activeJournals(s).find((j) => j.id === s.prefs.defaultJournalId) ?? activeJournals(s)[0] ?? null;
+/** Which companion a journal uses by default: its own, else the primary journal's, else the first. */
+export const defaultCompanionFor = (s: P.JournalState, journal: { defaultCompanionId: string | null } | null) => {
+  const list = activeCompanions(s), primary = primaryJournal(s);
+  return list.find((c) => c.id === journal?.defaultCompanionId) ?? list.find((c) => c.id === primary?.defaultCompanionId) ?? list[0] ?? null;
+};

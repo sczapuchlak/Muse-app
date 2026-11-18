@@ -4,11 +4,39 @@ Everyday → Journal: a private place to think out loud. You talk with an AI com
 
 **Status:** implemented on branch `feat/journal-v1` and tested locally with a mock AI provider. It is not deployed. Staging needs the migration, an OpenAI API key and AI access turned on for the owner's account.
 
+## Everyday experience (daily-experience and visual passes, November 18)
+
+"Open Journal. Start talking. Everything else is in the toolbar." The secondary navigation is **Journal | History | Insights**.
+
+- **First visit:** a short setup with one journal (named "My Journal" by default) and one companion chosen from the starters. You can optionally rewrite its personality or open the Studio to test it. Then you go straight to the workspace. Nothing asks again.
+- **Workspace:** opening Journal lands on a ready-to-write page. An unfinished entry in the current journal is resumed. Otherwise the page is blank: the date, a greeting, this week drawn as a small constellation, and a composer ready for typing or dictation.
+- **What creates records:**
+  - Opening Journal creates nothing.
+  - A draft entry is saved after a pause in writing.
+  - Send creates the entry.
+  - Finish & save turns to a fresh page, with a quiet link to the saved entry.
+- **Toolbar:**
+  - *Journal:* switch, new, rename or edit, and manage.
+  - *Companion:* switch, make default, customize and test, new companion, and the greeting switch. In a conversation, it says which version is replying.
+  - *New entry.*
+  - *⋯ menu:* morning or evening opening, resume another unfinished entry, move this entry, memory on or off, delete or discard, and preferences.
+  - *Finish & save.*
+  - On phones, the toolbar is a single row.
+- **Greeting:** "Start new entries with a greeting" is on by default.
+  - Only a deliberate **New entry** asks the companion for one opening, through the normal opening request (personality, permitted memory and budget).
+  - Opening Journal never makes a request.
+  - A greeting is never repeated for the same entry.
+  - If AI is unavailable or the budget is used up, you get the blank page and a short note.
+- **Switching:**
+  - Switching journals changes the page's context and keeps each journal's draft. It never moves an entry; "Move this entry to…" does that explicitly.
+  - Switching companions mid-entry keeps every message. Each reply is labelled by the companion version that wrote it, and later replies use the new companion.
+- **Management:** journals and companions are managed in a modal (Manage journals & companions). The Companion Studio opens as a full-screen sheet with its version history, Test and Compare. There is no separate management page; old `?view=journals` links open the workspace with the manager.
+
 ## What's in V1
 
 | Area | Implemented |
 |---|---|
-| Views | Today, Journals, History and Insights (`/journal?view=`). An entry opens with `?entry=<id>`; the Companion Studio opens with `?companion=<id\|new>`. |
+| Views | Journal (the workspace), History and Insights (`/journal?view=`). A finished entry opens with `?entry=<id>`; the Companion Studio opens as a sheet with `?companion=<id\|new>`. |
 | Journals | Four optional starters (Everyday Reflections, Work & Career, Relationships & Connection, Inner Exploration). Each journal has a name, description, icon, colour, cover, default companion, its own instructions, morning and evening instructions, and a memory setting. Journals can be archived. Deleting one asks whether to move its entries elsewhere or delete them too. |
 | Companions | Four starters (The Thought Partner, The Strategist, The Confidant, The Explorer). Each has fully freeform personality instructions, conversation preferences and an opening approach. You can duplicate a companion, restore a starter's original words, or restore any earlier version. Every save keeps a version snapshot. |
 | Companion Studio | Edit on one side and test on the other. On phones, Instructions and Test conversation switch. The studio can compare two versions on the same message, keep either one, save, recover unsaved changes, and keep a test conversation as a journal entry. |
@@ -46,6 +74,8 @@ Everyday → Journal owns every table below. Rows are owner-only (row-level secu
 | `journal_reports` | One weekly reflection per week, with its source entry ids and a signature used to detect staleness. |
 | `journal_links` | Optional links to a chapter, experience or Life Atlas area: an id plus a name snapshot. |
 | `journal_ai_entitlements`, `journal_ai_usage` | Owner can read; only the service role (the server) writes. Usage rows carry token counts, cost, and a reserved estimate while a request runs. |
+
+Migration `20261229000100_journal_greeting.sql` (additive) adds `journal_preferences.greet_on_new` (default on). The default companion is the main journal's `default_companion_id`; the main journal is `journal_preferences.default_journal_id`.
 
 Functions: `correct_journal_message`, `merge_journal_tags`, `delete_journal`, `search_journal` (Postgres full-text search, English), `journal_days` (for Rituals and streaks), and `keep_journal_test` (idempotent: the key is the new entry's id).
 
@@ -125,4 +155,4 @@ Prices are per million tokens.
 
 - `node --test tests/journal.test.mjs`: memory permissions and budgets, retrieval queries, instruction order, conversation trimming, weekly statistics, tag identity, analysis validation, pricing, Markdown export.
 - `npm run test:journal:db`: owner-only access and isolation between two accounts, server-only entitlement and usage, companion version snapshots, drafts, append-only messages, finished entries, corrections, tags and merge, search, journal days, keep-test, journal deletion, moods, budget defaults.
-- `npm run test:journal:ui` (with `JOURNAL_AI_PROVIDER=mock npm run dev`): 66 browser checks covering scenarios A–H, the Playground, the archive and tagging criteria, phones and themes.
+- `npm run test:journal:ui` (with `JOURNAL_AI_PROVIDER=mock npm run dev`): 71 browser checks covering first-run setup, the workspace, the greeting and its budget fallback, scenarios A–H, the Playground, the archive and tagging criteria, no stray drafts, phones and themes.

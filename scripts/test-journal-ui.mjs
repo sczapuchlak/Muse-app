@@ -1,5 +1,5 @@
 // Authenticated LOCAL browser journey for Muse Journal V1 with disposable accounts and the local MOCK AI provider
-// (no paid requests): starters, Scenario A continuity, a reply streaming in, memory add/correct/remove reaching the
+// (no paid requests): first-run setup (one journal, one companion), the writing workspace, a New entry greeting, Scenario A continuity, a reply streaming in, memory add/correct/remove reaching the
 // AI context (C), Finish & Save with analysis into real tags (people, places, topics, moods), corrections that keep
 // history, bookmarks, full-text search over messages, clicking a tag, combined filters, the week view and date jump,
 // merge with alias and duplicate prevention across weeks (E), the cached weekly reflection (F), Companion Studio test,
@@ -53,21 +53,24 @@ try{
  const has=(selector,text)=>evaluate(({selector,text})=>[...document.querySelectorAll(selector)].some(x=>!text||x.textContent.includes(text)),{selector,text});
  const text=selector=>evaluate(s=>[...document.querySelectorAll(s)].map(x=>x.textContent).join('\n'),selector);
  const menu=async(trigger,choice)=>{await click('button.muse-choice-trigger',trigger);await until(c=>[...document.querySelectorAll('.popover-choice')].some(x=>x.textContent.trim()===c),`menu ${choice}`,choice);await click('.popover-choice',choice);await wait(150);};
+ const pickDate=async(label,date)=>{await click('button.muse-date-picker-trigger',label);await until(()=>!!document.querySelector('.muse-calendar'),'calendar opens');for(let i=0;i<14&&!(await has(`[data-date="${date}"]`));i++){await click('button','Previous month');await wait(80);}await click(`[data-date="${date}"]`);await wait(300);};
  const signIn=async(u)=>{const magic=must(await admin.auth.admin.generateLink({type:'magiclink',email:u.email}));await send('Page.navigate',{url:`${origin}/auth/confirm?token_hash=${magic.properties.hashed_token}&type=email&next=/`});await until(()=>location.pathname==='/'&&!!document.querySelector('main'),'signed in');};
  await send('Page.enable');await send('Runtime.enable');await send('DOM.enable');await viewport(1280);
  await signIn(a);
 
  // ---- First visit: nothing is created until chosen ----
- await go('/journal','!!document.querySelector(".mj-starters")','starters');
+ await go('/journal','!!document.querySelector(".mj-setup")','setup');
  check(await count('journal_journals',a.id)===0,'visiting the Journal creates nothing');
- check(await has('nav[aria-label="Journal views"]','History'),'Today | Journals | History | Insights tabs');
- await shoot('01-starters',true);
- await click('.mj-starter','Work & Career');await click('.mj-starters button','Begin');
- await until(()=>!!document.querySelector('.mj-hero'),'today hero');
- check(await count('journal_journals',a.id)===2&&await count('journal_companions',a.id)===2,'two starter journals with their two companions');
+ check(await evaluate(()=>[...document.querySelectorAll('nav[aria-label="Journal views"] a')].map(a=>a.textContent.trim()).join('|'))==='Journal|History|Insights','Journal | History | Insights (no management tab)');
+ await shoot('01-setup',true);
+ await click('.mj-setup .mj-choice','The Thought Partner');await click('.mj-setup button','Start journaling');
+ await until(()=>!!document.querySelector('.mj-workspace .mj-composer textarea'),'workspace');
+ check(await count('journal_journals',a.id)===1&&await count('journal_companions',a.id)===1,'first run makes exactly one journal and one companion');
+ check(await count('journal_conversations',a.id)===0&&await count('journal_ai_usage',a.id)===0,'opening the workspace creates no entry and makes no AI request');
 
  // ---- Seed yesterday's entry (Scenario A) and older history across weeks (E) through the owner's own client ----
  const P=await import('../tests/helpers.mjs').then(m=>m.load('lib/journal/persistence'));
+ await P.addStarters(a.client,a.id,['work'],[],await P.loadJournal(a.client,a.id));
  let st=await P.loadJournal(a.client,a.id);const everyday=st.journals.find(x=>x.presetKey==='everyday'),work=st.journals.find(x=>x.presetKey==='work');
  const thought=st.companions.find(c=>c.presetKey==='thought-partner'),strategist=st.companions.find(c=>c.presetKey==='strategist');
  const seed=async(journalId,companion,date,title,summary,words)=>{const c=await P.createConversation(a.client,a.id,{id:crypto.randomUUID(),journalId,companion,mode:'open',localDate:date,timeZone:'UTC',status:'active'});await P.addMessage(a.client,a.id,{id:crypto.randomUUID(),conversationId:c.id,body:words,localDate:date});const done=await P.completeConversation(a.client,a.id,c,false);return P.updateMeta(a.client,a.id,{...done,title,titleSource:'ai',summary,summarySource:'ai'});};
@@ -75,16 +78,18 @@ try{
  const older=await seed(everyday.id,thought,day(-15),'Dinner with Alex','You had dinner with Alex and talked about moving.','Dinner with Alex tonight, we talked about whether to move to Lisbon.');
  const workEntry=await seed(work.id,strategist,day(-9),'Quarterly planning','Planning the quarter at work.','Alex from finance pushed back on the budget in planning.');
  const alex=await P.createTag(a.client,a.id,'person','Alex');for(const c of [older,workEntry])await P.tagEntry(a.client,a.id,c.id,alex.id);
- await go('/journal','!!document.querySelector(".mj-hero")','today reload');
- check(await has('.mj-hero','Finishing the quilt'),'Today invites you back to yesterday’s entry by name (no AI)');
+ await go('/journal','!!document.querySelector(".mj-blank")','workspace reload');
+ check(await has('.mj-blank','Finishing the quilt'),'the blank page invites you back to yesterday’s entry by name (no AI)');
 
  // ---- Scenario A: the companion opens with yesterday's context; then follows a topic change ----
- await click('.mj-hero button','Talk with Thought Partner');
- await until(()=>!!document.querySelector('.mj-live')&&[...document.querySelectorAll('.mj-message[data-role=assistant]')].length===1&&!document.querySelector('[data-streaming]'),'opening arrives',undefined,400);
+ await click('.mj-ws-bar button','New entry');
+ await until(()=>!!document.querySelector('.mj-workspace')&&[...document.querySelectorAll('.mj-message[data-role=assistant]')].length===1&&!document.querySelector('[data-streaming]'),'opening arrives',undefined,400);
  const opening=await text('.mj-message[data-role=assistant] .mj-message-body');
  check(/Finishing the quilt/.test(opening),'the opening draws on yesterday’s entry (recent context)');
  check(!/Quarterly planning/.test(opening),'a journal-only Work entry never reaches Everyday');
- const convId=await evaluate(()=>new URLSearchParams(location.search).get('entry'));
+ const latest=async()=>must(await admin.from('journal_conversations').select('id').eq('user_id',a.id).order('created_at',{ascending:false}).limit(1).single()).id;
+ const convId=await latest();
+ check(await count('journal_ai_usage',a.id,{kind:'opening'})===1,'New entry made exactly one greeting request');
  await setValue('.mj-live-compose textarea','Totally different topic. I keep thinking about Lisbon and what Alex said about moving there.');
  await click('.mj-live-compose button[type=submit]');
  await until(()=>document.querySelectorAll('.mj-message[data-role=assistant]').length===2&&!document.querySelector('[data-streaming]'),'reply arrives',undefined,400);
@@ -112,8 +117,10 @@ try{
  check(!/Remembered/.test(await say('And one more thing.',5)),'a deleted memory is gone from AI context');
 
  // ---- Finish & Save → analysis into real tags ----
- await click('.mj-live-tools button','Finish & save');await click('.mj-finish button','Finish & save');
- await until(()=>!!document.querySelector('.mj-entry'),'entry view');
+ await click('.mj-ws-bar .mj-finish-button','Finish & save');await click('.mj-finish button','Finish & save');
+ await until(()=>!!document.querySelector('.mj-saved')&&!!document.querySelector('.mj-blank'),'fresh page after saving');
+ check(true,'Finish & save turns to a fresh page and links the saved entry');
+ await go(`/journal?entry=${convId}`,'!!document.querySelector(".mj-entry")','finished entry');
  check(!(await has('.mj-entry .mj-composer')),'a finished entry has no composer');
  check((await a.client.from('journal_messages').insert({user_id:a.id,conversation_id:convId,role:'user',body:'late',local_date:today})).error!=null,'the database refuses new messages on a finished entry');
  for(let i=0;i<80&&!(await admin.from('journal_conversations').select('analysis_status').eq('id',convId).single()).data?.analysis_status?.match(/ready|failed/);i++)await wait(150);
@@ -129,8 +136,10 @@ try{
  check(await has('.mj-tag[data-ai]','Alex'),'AI suggestions show as suggestions');
  // Correct metadata without AI: Lisbon is a place, not a person.
  if(await has('.mj-tag-editor .mj-tag','Lisbon'))await click('.mj-tag-editor button','Remove Lisbon');
+ await evaluate(()=>[...document.querySelectorAll('.mj-tag-editor')].find(e=>e.querySelector('h3')?.textContent==='Places').querySelector('.mj-tag-plus').click());await wait(150);
  await evaluate(()=>{const ed=[...document.querySelectorAll('.mj-tag-editor')].find(e=>e.querySelector('h3')?.textContent==='Places');const i=ed.querySelector('input');Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set.call(i,'Lisbon');i.dispatchEvent(new Event('input',{bubbles:true}));});
  await evaluate(()=>[...document.querySelectorAll('.mj-tag-editor')].find(e=>e.querySelector('h3')?.textContent==='Places').querySelector('button[type=submit]').click());
+ await evaluate(()=>[...document.querySelectorAll('.mj-tag-editor')].find(e=>e.querySelector('h3')?.textContent==='Moods').querySelector('.mj-tag-plus').click());await wait(150);
  await evaluate(()=>{const ed=[...document.querySelectorAll('.mj-tag-editor')].find(e=>e.querySelector('h3')?.textContent==='Moods');const i=ed.querySelector('input');Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set.call(i,'Wistful');i.dispatchEvent(new Event('input',{bubbles:true}));});
  await evaluate(()=>[...document.querySelectorAll('.mj-tag-editor')].find(e=>e.querySelector('h3')?.textContent==='Moods').querySelector('button[type=submit]').click());
  await until(()=>[...document.querySelectorAll('.mj-tag[data-kind=mood]')].some(x=>x.textContent.includes('Wistful')),'mood added');
@@ -153,7 +162,7 @@ try{
  await until(()=>[...document.querySelectorAll('[role=menuitem]')].some(x=>/Bookmark/.test(x.textContent)),'message menu 2');await click('[role=menuitem]','Bookmark this');
  await until(()=>!!document.querySelector('#mj-mark'),'bookmark dialog');await setValue('#mj-mark textarea:nth-of-type(1)','Lisboa is calling');
  await evaluate(()=>{const t=document.querySelectorAll('#mj-mark textarea')[1];Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype,'value').set.call(t,'The day I decided to look properly');t.dispatchEvent(new Event('input',{bubbles:true}));});
- await click('#mj-mark button[type=submit]','Bookmark');await until(()=>!!document.querySelector('.mj-marks'),'bookmark saved');
+ await click('#mj-mark button[type=submit]','Bookmark');await until(()=>!!document.querySelector('.mj-message[data-marked]'),'bookmark saved');
  check(await count('journal_bookmarks',a.id)===1,'a passage bookmark with a note');
  await shoot('04-entry-conversation',true);
 
@@ -166,15 +175,15 @@ try{
  await setValue('.mj-history-view input[type=search]','');
  await go(`/journal?view=history&tag=${alex.id}`,'!!document.querySelector(".mj-tag-banner")','tag page');
  check((await evaluate(()=>document.querySelectorAll('.mj-history-view .mj-card').length))===3,'Alex opens every entry with Alex, across dates and journals');
- await menu('Journals','Everyday Reflections');await click('.popover-footer button, .muse-choice-popover button','Done').catch(()=>send('Input.dispatchKeyEvent',{type:'keyDown',key:'Escape',code:'Escape',windowsVirtualKeyCode:27}));await wait(200);
+ await menu('Journals','My Journal');await click('.popover-footer button, .muse-choice-popover button','Done').catch(()=>send('Input.dispatchKeyEvent',{type:'keyDown',key:'Escape',code:'Escape',windowsVirtualKeyCode:27}));await wait(200);
  check((await evaluate(()=>document.querySelectorAll('.mj-history-view .mj-card').length))===2,'person + journal combine');
- await setValue('.mj-history-view input[type=date]',day(-3));await wait(300);
+ await pickDate('From',today);
  check((await evaluate(()=>document.querySelectorAll('.mj-history-view .mj-card').length))===1,'person + journal + date range combine');
  await click('.mj-filters button','Clear all');
  await click('.mj-history-view .muse-segmented button','Week');
  await until(()=>!!document.querySelector('.mj-days'),'week view');
- check((await evaluate(()=>document.querySelectorAll('.mj-day').length))===7&&await has('.mj-day[data-today] .mj-card'),'the week view groups entries by day, today included');
- await setValue('.mj-week-jump input[type=date]',day(-15));await wait(300);
+ check(await has('.mj-day[data-today] .mj-card')&&(await evaluate(()=>document.querySelectorAll('.mj-day').length))<=7,'the week view groups entries by day (today included) and folds empty days');
+ await pickDate('Go to a date',day(-15));
  check(await has('.mj-day[data-focus] .mj-card','Dinner with Alex'),'the date picker jumps straight to any day');
  check(!(await overflow()),'desktop History with every filter has no sideways scrolling');
  await shoot('05-history-week');
@@ -192,10 +201,11 @@ try{
  // ---- Scenario F: weekly reflection, cached ----
  await go('/journal?view=insights','!!document.querySelector(".mj-week-chart")','insights');
  check(await has('.mj-insights','Days journaled'),'deterministic weekly numbers');
+ await until(()=>[...document.querySelectorAll('.mj-reflection button')].some(b=>b.textContent.includes('Write this week')),'reflection button');
  await click('.mj-reflection button','Write this week’s reflection');
- await until(()=>!!document.querySelector('.mj-reflection .mj-summary'),'reflection written',undefined,300);
+ await until(()=>!!document.querySelector('.mj-reflection .mj-reflection-page'),'reflection written',undefined,300);
  check(await count('journal_reports',a.id)===1,'the reflection is saved');
- await go('/journal?view=history','!!document.querySelector(".mj-history-view")','away');await go('/journal?view=insights','!!document.querySelector(".mj-reflection .mj-summary")','back to insights');
+ await go('/journal?view=history','!!document.querySelector(".mj-history-view")','away');await go('/journal?view=insights','!!document.querySelector(".mj-reflection .mj-reflection-page")','back to insights');
  check(await count('journal_ai_usage',a.id,{kind:'report'})===1,'reopening shows the saved reflection without another request');
  await shoot('06-insights',true);
 
@@ -222,22 +232,27 @@ try{
  check(await count('journal_conversations',a.id,{origin:'playground'})===1,'Keep as Journal Entry copies the test once, on request');
 
  // ---- Scenario D: a draft survives a reload ----
- await go('/journal','!!document.querySelector(".mj-quick textarea")','today');
+ await go('/journal','!!document.querySelector(".mj-workspace .mj-composer textarea")','workspace');
  const long=Array.from({length:60},(_,i)=>`Sentence ${i} of a long dictated thought about the day.`).join(' ');
- await setValue('.mj-quick textarea',long);await wait(2200);
- await go('/journal','!!document.querySelector(".mj-quick textarea")','today again');
- check((await evaluate(()=>document.querySelector('.mj-quick textarea').value)).length===long.length,'an unsent long draft is still there after reloading');
+ await setValue('.mj-live-compose textarea',long);await wait(2200);
+ await go('/journal','!!document.querySelector(".mj-live-compose textarea")','workspace again');
+ check((await evaluate(()=>document.querySelector('.mj-live-compose textarea').value)).length===long.length,'an unsent long draft is still there after reloading');
  check(await count('journal_conversations',a.id,{status:'draft'})===1,'and it is saved as a resumable draft entry for other devices');
 
  // ---- Scenario H: the budget stops new AI requests; writing still works ----
  must(await admin.from('journal_ai_entitlements').update({monthly_limit_usd:0}).eq('user_id',a.id).select('user_id'));
- await go('/journal','!!document.querySelector(".mj-hero")','today budget');
- await click('.mj-hero button','Talk with Thought Partner');
- await until(()=>/budget/.test(document.querySelector('.mj-live .mj-error')?.textContent??''),'budget stop',undefined,300);
- check(true,'an exhausted budget stops the AI with a clear message');
- await setValue('.mj-live-compose textarea','Writing still works without AI.');await click('.mj-live-compose button[type=submit]');await wait(1200);
- const live2=await evaluate(()=>new URLSearchParams(location.search).get('entry'));
+ await evaluate(()=>localStorage.clear());must(await admin.from('journal_conversations').delete().eq('user_id',a.id).eq('status','draft').select('id'));
+ await go('/journal','!!document.querySelector(".mj-workspace .mj-composer textarea")','workspace budget');
+ const before2=await count('journal_conversations',a.id);
+ await click('.mj-ws-bar button','New entry');
+ await until(()=>/budget/.test(document.querySelector('.mj-greet-note')?.textContent??''),'greeting falls back',undefined,300);
+ check(await count('journal_conversations',a.id)===before2,'with the budget used up, New entry falls back to a blank page and leaves no empty entry');
+ await setValue('.mj-live-compose textarea','Writing still works without AI.');await click('.mj-live-compose button[type=submit]');
+ await until(()=>/budget/.test(document.querySelector('.mj-workspace .mj-error')?.textContent??''),'reply budget stop',undefined,300);
+ check(true,'an exhausted budget stops replies with a clear message');
+ const live2=await latest();
  check(await count('journal_messages',a.id,{conversation_id:live2,role:'user'})===1,'your words still save when the budget is used up');
+ check(await count('journal_conversations',a.id,{status:'draft'})===0,'sending never leaves a stray duplicate draft entry behind');
  must(await admin.from('journal_ai_entitlements').update({monthly_limit_usd:10}).eq('user_id',a.id).select('user_id'));
  must(await admin.from('journal_ai_entitlements').update({per_minute:1}).eq('user_id',a.id).select('user_id'));
  const fast=await evaluate(async()=>{const r=await fetch('/api/journal/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'test',requestKey:crypto.randomUUID(),companion:{name:'x',instructions:'x'},messages:[{role:'user',body:'hi'}]})});return {status:r.status,body:await r.json()};});
@@ -245,7 +260,7 @@ try{
 
  // ---- Phones and themes ----
  await viewport(390,844,true);
- for(const [path,ready,name] of [['/journal','!!document.querySelector(".mj-hero")','08-phone-today'],[`/journal?entry=${convId}`,'!!document.querySelector(".mj-entry")','09-phone-entry'],['/journal?view=history','!!document.querySelector(".mj-history-view")','10-phone-history'],[`/journal?companion=${thought.id}`,'!!document.querySelector(".mj-studio")','11-phone-studio'],[`/journal?entry=${live2}`,'!!document.querySelector(".mj-live")','12-phone-live']]){
+ for(const [path,ready,name] of [['/journal','!!document.querySelector(".mj-workspace")','08-phone-workspace'],[`/journal?entry=${convId}`,'!!document.querySelector(".mj-entry")','09-phone-entry'],['/journal?view=history','!!document.querySelector(".mj-history-view")','10-phone-history'],[`/journal?companion=${thought.id}`,'!!document.querySelector(".mj-studio")','11-phone-studio-sheet'],[`/journal?entry=${live2}`,'!!document.querySelector(".mj-workspace .mj-message")','12-phone-live']]){
   await go(path,ready,name);check(!(await overflow()),`${name}: no sideways scrolling`);await shoot(name);}
  await evaluate(()=>{const t=document.querySelector('.mj-live-compose textarea');t.focus();t.scrollIntoView({block:'end'});});await wait(300);
  check(await evaluate(()=>{const b=document.querySelector('.mj-live-compose button[type=submit]').getBoundingClientRect(),nav=document.querySelector('.muse-bottom-navigation')?.getBoundingClientRect();return b.width>0&&b.bottom<=innerHeight&&(!nav||b.bottom<=nav.top);}),'Send stays visible above the phone tab bar');
@@ -256,17 +271,17 @@ try{
 
  // ---- Scenario G: another account ----
  await signIn(b);
- await go('/journal','!!document.querySelector(".mj-starters")','b starters');
+ await go('/journal','!!document.querySelector(".mj-setup")','b setup');
  check(!(await has('main','Finishing the quilt')),'another account sees none of the owner’s journal');
  const denied=await evaluate(async(c)=>{const r=await fetch('/api/journal/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'opening',conversationId:c,localDate:new Date().toISOString().slice(0,10)})});return {status:r.status,body:await r.json()};},convId);
  check(denied.status===404||denied.status===403,`the server refuses AI on someone else’s conversation (${denied.status})`);
- await click('.mj-starters button','Begin');await until(()=>!!document.querySelector('.mj-hero'),'b today');
- check(!(await has('.mj-hero button','Talk with')),'AI is off for an account without an entitlement');
+ await click('.mj-setup button','Start journaling');await until(()=>!!document.querySelector('.mj-workspace .mj-composer textarea'),'b workspace');
+ check(!(await has('.mj-tb-button','Companion')),'AI is off for an account without an entitlement (no companion in the toolbar)');
  const statusB=await evaluate(async()=>(await fetch('/api/journal/ai')).json());check(statusB.enabled===false&&statusB.entitled===false,'the AI status says not entitled');
  const testB=await evaluate(async()=>{const r=await fetch('/api/journal/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'test',requestKey:crypto.randomUUID(),companion:{name:'x',instructions:'x'},messages:[{role:'user',body:'hi'}]})});return {status:r.status,body:await r.json()};});
  check(testB.status===403&&testB.body.code==='not-entitled','a direct API call without entitlement is blocked on the server');
- await setValue('.mj-quick textarea','My own private diary line.');await click('.mj-quick button[type=submit]');
- await until(()=>!!document.querySelector('.mj-live'),'b live');
+ await setValue('.mj-live-compose textarea','My own private diary line.');await click('.mj-live-compose button[type=submit]');
+ await until(()=>!!document.querySelector('.mj-workspace .mj-message[data-role=user]:not([data-pending])'),'b saved');
  check(await count('journal_messages',b.id,{role:'user'})===1&&await count('journal_messages',b.id,{role:'assistant'})===0,'a non-AI account journals privately with no AI replies');
  const crossRead=await b.client.from('journal_conversations').select('id').eq('id',convId);check((crossRead.data??[]).length===0,'RLS: the owner’s entry can’t be read by id');
  check(!errors.length,`no page errors${errors.length?': '+errors.slice(0,3).join(' | '):''}`);

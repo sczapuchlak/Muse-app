@@ -15,7 +15,7 @@ export type Source = "user" | "ai";
 export type Companion = { id: string; name: string; description: string; icon: string; tone: MuseTone; instructions: string; conversationPrefs: string; openingStyle: string; presetKey: string | null; preferredJournalId: string | null; version: number; position: number; archivedAt: string | null; revision: number; createdAt: string; updatedAt: string };
 export type CompanionVersion = { id: string; companionId: string; version: number; name: string; description: string; instructions: string; conversationPrefs: string; openingStyle: string; savedAt: string };
 export type Journal = { id: string; name: string; description: string; icon: string; tone: MuseTone; cover: string; defaultCompanionId: string | null; instructions: string; morningInstructions: string; eveningInstructions: string; memoryScope: MemoryScope; presetKey: string | null; position: number; archivedAt: string | null; revision: number; createdAt: string };
-export type Preferences = { globalInstructions: string; memoryEnabled: boolean; analysisAuto: boolean; onThisDay: boolean; showOnDaily: boolean; defaultJournalId: string | null; revision: number };
+export type Preferences = { globalInstructions: string; memoryEnabled: boolean; analysisAuto: boolean; onThisDay: boolean; showOnDaily: boolean; greetOnNew: boolean; defaultJournalId: string | null; revision: number };
 export type JournalImage = { id: string; path: string; thumbnailPath: string; width: number; height: number; caption: string; alt: string };
 export type Conversation = {
   id: string; journalId: string; companionId: string | null; companionVersionId: string | null; companionName: string; origin: "journal" | "playground"; mode: Mode; status: Status;
@@ -63,9 +63,9 @@ export const journalToRow = (j: Journal) => ({
   instructions: j.instructions.slice(0, 20000), morning_instructions: j.morningInstructions.slice(0, 8000), evening_instructions: j.eveningInstructions.slice(0, 8000), memory_scope: j.memoryScope,
   preset_key: j.presetKey, position: j.position, archived_at: j.archivedAt,
 });
-export const defaultPreferences: Preferences = { globalInstructions: "", memoryEnabled: true, analysisAuto: true, onThisDay: true, showOnDaily: false, defaultJournalId: null, revision: 0 };
+export const defaultPreferences: Preferences = { globalInstructions: "", memoryEnabled: true, analysisAuto: true, onThisDay: true, showOnDaily: false, greetOnNew: true, defaultJournalId: null, revision: 0 };
 export const preferencesFromRow = (r: Tables["journal_preferences"]["Row"] | null): Preferences => r ? ({
-  globalInstructions: r.global_instructions, memoryEnabled: r.memory_enabled, analysisAuto: r.analysis_auto, onThisDay: r.on_this_day, showOnDaily: r.show_on_daily, defaultJournalId: r.default_journal_id, revision: r.revision,
+  globalInstructions: r.global_instructions, memoryEnabled: r.memory_enabled, analysisAuto: r.analysis_auto, onThisDay: r.on_this_day, showOnDaily: r.show_on_daily, greetOnNew: r.greet_on_new, defaultJournalId: r.default_journal_id, revision: r.revision,
 }) : defaultPreferences;
 
 function images(v: Json): JournalImage[] {

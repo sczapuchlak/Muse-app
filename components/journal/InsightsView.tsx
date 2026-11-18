@@ -7,6 +7,7 @@ import * as P from "@/lib/journal/persistence";
 import { aiAction, AiError } from "@/lib/journal/ai-client";
 import { isListed, tagKindLabel, tagKinds, type Report } from "@/lib/journal/model";
 import { addDays, sourceSignature, streak, weekStart, weekStats } from "@/lib/journal/stats";
+import { WeekConstellation } from "./JournalArt";
 
 /**
  * Weekly report (Journal V1 §17): statistics are counted on the device from your entries, with no AI. The written
@@ -35,12 +36,12 @@ export function InsightsView({ open }: { open: (id: string) => void }) {
     catch (e) { setError(e instanceof AiError ? e.message : "The reflection couldn’t be written."); }
     finally { setBusy(false); }
   }
-  return <div className="mj-insights">
+  return <div className="mj-insights mj-reveal">
     <section className="muse-journal-archive" aria-labelledby="mj-week-title">
-      <div className="mj-row-between">
-        <button type="button" className="muse-button button-ghost" aria-label="Previous week" onClick={() => { setStart(addDays(start, -7)); setError(""); }}>←</button>
-        <div className="mj-week-head"><p className="muse-kicker">Week of</p><h2 id="mj-week-title" className="mj-view-title">{formatShort(stats.start)} – {formatShort(stats.end)}</h2></div>
-        <button type="button" className="muse-button button-ghost" aria-label="Next week" disabled={thisWeek} onClick={() => setStart(addDays(start, 7))}>→</button>
+      <div className="mj-shelf-head"><div><h2 className="type-display mj-view-title">Insights</h2><p className="mj-note">Your week in writing, counted from your entries.</p></div></div>
+      <div className="mj-period-bar">
+        <nav className="muse-week-jump" aria-label="Week"><button className="muse-button" type="button" aria-label="Previous week" onClick={() => { setStart(addDays(start, -7)); setError(""); }}>‹</button><button className="muse-button" type="button" disabled={thisWeek} onClick={() => { setStart(weekStart(today)); setError(""); }}>This week</button><button className="muse-button" type="button" aria-label="Next week" disabled={thisWeek} onClick={() => { setStart(addDays(start, 7)); setError(""); }}>›</button></nav>
+        <h3 id="mj-week-title" className="mj-period-title type-editorial" aria-live="polite">{formatShort(stats.start)} – {formatShort(stats.end)}</h3>
       </div>
       <MuseStatRow label="This week in numbers">
         <MuseStatTile icon="journal" tone={5} value={stats.entries} label="Entries" />
@@ -48,23 +49,26 @@ export function InsightsView({ open }: { open: (id: string) => void }) {
         <MuseStatTile icon="quill" tone={7} value={stats.words.toLocaleString()} label="Words" />
         <MuseStatTile icon="streak" tone={4} value={streak(days, today)} label="Day streak now" />
       </MuseStatRow>
-      <div className="mj-week-chart" role="img" aria-label={`Words by day: ${stats.byDay.map((d) => `${weekdayShort(d.date)} ${d.words}`).join(", ")}`}>
+      {stats.entries === 0 ? <div className="mj-week-quiet">
+        <WeekConstellation days={stats.byDay.map((d) => d.date)} written={new Set()} today={today} />
+        <p className="type-quote">{thisWeek ? "A fresh week. The first entry lights the first star." : "A quiet week: nothing was written."}</p>
+      </div> : <div className="mj-week-chart" role="img" aria-label={`Words by day: ${stats.byDay.map((d) => `${weekdayShort(d.date)} ${d.words}`).join(", ")}`} key={start}>
         {stats.byDay.map((d) => <div key={d.date} className="mj-bar" data-empty={!d.entries || undefined} data-today={d.date === today || undefined}>
-          <span className="mj-bar-fill" style={{ height: `${d.entries ? Math.max(8, (d.words / max) * 100) : 0}%` }} /><b>{d.entries ? d.words : ""}</b><small>{weekdayShort(d.date)}</small></div>)}
-      </div>
-      <div className="mj-week-facets">
-        {stats.journals.length > 0 && <div><h3 className="mj-section-title">Journals</h3><ul className="mj-chip-list">{stats.journals.map((x) => <li key={x.id} className="mj-tag">{state.journals.find((k) => k.id === x.id)?.name ?? "Journal"} · {x.entries}</li>)}</ul></div>}
-        {tagKinds.map((k) => stats.tags[k].length > 0 && <div key={k}><h3 className="mj-section-title">{tagKindLabel[k]}</h3><ul className="mj-chip-list">{stats.tags[k].slice(0, 8).map((t) => <li key={t.id} className="mj-tag" data-kind={k}><a href={`/journal?view=history&tag=${t.id}`}>{t.name}</a> · {t.entries}</li>)}</ul></div>)}
-      </div>
+          <b className="type-numeric">{d.entries ? d.words : ""}</b><span className="mj-bar-fill" style={{ height: `${d.entries ? Math.max(10, (d.words / max) * 100) : 0}%` }} /><small className="type-meta">{weekdayShort(d.date)}</small></div>)}
+      </div>}
+      {(stats.journals.length > 0 || tagKinds.some((k) => stats.tags[k].length)) && <div className="mj-week-facets">
+        {stats.journals.length > 0 && <div><h3 className="mj-section-title">Journals</h3><ul className="mj-chip-list">{stats.journals.map((x) => <li key={x.id} className="mj-tag"><a href={`/journal?view=history&journal=${x.id}`}>{state.journals.find((k) => k.id === x.id)?.name ?? "Journal"}</a> <span className="type-numeric">{x.entries}</span></li>)}</ul></div>}
+        {tagKinds.map((k) => stats.tags[k].length > 0 && <div key={k}><h3 className="mj-section-title">{tagKindLabel[k]}</h3><ul className="mj-chip-list">{stats.tags[k].slice(0, 8).map((t) => <li key={t.id} className="mj-tag" data-kind={k}><a href={`/journal?view=history&tag=${t.id}`}>{t.name}</a> <span className="type-numeric">{t.entries}</span></li>)}</ul></div>)}
+      </div>}
     </section>
 
     <section className="muse-journal-archive mj-reflection" aria-labelledby="mj-reflection-title">
-      <div className="mj-row-between"><h2 id="mj-reflection-title" className="mj-view-title">Weekly reflection</h2>
+      <div className="mj-row-between"><h2 id="mj-reflection-title" className="type-display mj-view-title">Weekly reflection</h2>
         {report && ai.enabled && <button type="button" className="muse-button button-ghost" disabled={busy} onClick={() => void write(true)}>{busy ? "Writing…" : "Write it again"}</button>}</div>
       {!stats.entries ? <p className="mj-note">No entries this week, so there’s nothing to reflect on.</p>
         : report ? <>
           {report.sourceSignature !== signature && <p className="mj-note" data-soft>Your entries for this week changed after this was written.</p>}
-          <div className="mj-summary"><p className="muse-kicker">Written {new Date(report.updatedAt).toLocaleDateString()} from {report.sourceIds.length} {report.sourceIds.length === 1 ? "entry" : "entries"} · AI, may be imperfect</p>{report.data.narrative.split(/\n{2,}/).map((p, i) => <p key={i}>{p}</p>)}</div>
+          <article className="mj-reflection-page"><p className="type-meta"><span className="mj-ai-badge">Written by AI</span> {new Date(report.updatedAt).toLocaleDateString()} · from {report.sourceIds.length} {report.sourceIds.length === 1 ? "entry" : "entries"} · may be imperfect</p>{report.data.narrative.split(/\n{2,}/).map((p, i) => <p key={i} className={i === 0 ? "type-quote mj-lead" : "type-reading"}>{p}</p>)}</article>
           <div className="mj-week-facets">
             {report.data.threads.length > 0 && <div><h3 className="mj-section-title">Recurring threads</h3><ul className="mj-note-list">{report.data.threads.map((x) => <li key={x}>{x}</li>)}</ul></div>}
             {report.data.moments.length > 0 && <div><h3 className="mj-section-title">Meaningful moments</h3><ul className="mj-note-list">{report.data.moments.map((x) => <li key={x}>{x}</li>)}</ul></div>}

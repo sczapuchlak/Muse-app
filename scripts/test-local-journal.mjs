@@ -122,8 +122,26 @@ try{
  const valid=must(await admin.rpc('journal_days',{p_from:today}).then(()=>({data:true,error:null})));assert.ok(valid);
  const sql=await admin.from('inner_discoveries').insert({user_id:a.id,category:'values',title:'Curiosity',source_kind:'journal',source_id:conv.id,source_label:'Coffee with Alex'}).select('id');
  assert.ok(!sql.error,'a discovery may name a journal entry as its source');
+ // First-run setup on a fresh account: exactly one journal and one default companion; the greeting starts on.
+ const c2=await invite();
+ const set=await P.setupJournal(c2.client,c2.id,{journalName:'My Journal',presetKey:'confidant',instructions:'Be extra gentle.',prefs:(await P.loadJournal(c2.client,c2.id)).prefs});
+ let s2=await P.loadJournal(c2.client,c2.id);
+ assert.equal(s2.journals.length,1);assert.equal(s2.companions.length,1);assert.equal(s2.journals[0].defaultCompanionId,set.companion.id,'the companion becomes the journal’s default');
+ assert.equal(s2.prefs.defaultJournalId,set.journal.id);assert.equal(s2.prefs.greetOnNew,true,'the greeting is on by default');assert.equal(set.companion.instructions,'Be extra gentle.','custom words are kept (as version 2)');
+ // Switching companion mid-entry: earlier replies keep the version that wrote them; the entry points at the new one.
+ const other=(await P.addStarters(c2.client,c2.id,[],['explorer'],s2)).companions[0];
+ const live=await P.createConversation(c2.client,c2.id,{id:crypto.randomUUID(),journalId:set.journal.id,companion:set.companion,mode:'open',localDate:today,timeZone:'UTC',status:'active'});
+ const u1=await P.addMessage(c2.client,c2.id,{id:crypto.randomUUID(),conversationId:live.id,body:'Hello',localDate:today});
+ must(await c2.client.from('journal_messages').insert({conversation_id:live.id,role:'assistant',body:'Hi',local_date:today,reply_to:u1.id,companion_version_id:live.companionVersionId}));
+ const switched=await P.switchCompanion(c2.client,c2.id,live,other);
+ assert.equal(switched.companionId,other.id);assert.notEqual(switched.companionVersionId,live.companionVersionId);
+ const names=await P.versionsByIds(c2.client,c2.id,[live.companionVersionId]);assert.equal(names.get(live.companionVersionId).name,'The Confidant','the earlier reply still names who wrote it');
+ assert.equal((await P.versionsByIds(a.client,a.id,[live.companionVersionId])).size,0,'another account can’t read those versions');
+ const done=await P.completeConversation(c2.client,c2.id,switched,false);
+ await assert.rejects(()=>P.switchCompanion(c2.client,c2.id,done,set.companion),/finished/,'a finished entry keeps its companion');
+
  // Account deletion (the auth service's own path) removes the whole journal.
  const gone=await admin.auth.admin.deleteUser(a.id);assert.ok(!gone.error,`account deletion succeeds: ${gone.error?.message}`);users.splice(users.indexOf(a.id),1);
  for(const t of tables)assert.equal((await admin.from(t).select('*',{count:'exact',head:true}).eq('user_id',a.id)).count,0,`${t} emptied by account deletion`);
- console.log('PASS Journal: owner-only + isolated, server-only AI allowance and usage, companion version snapshots, pinned versions, drafts without revision bumps, append-only messages + counters, one reply per message, finished entries closed, corrections keep history, tags + merge aliases, search, journal days, keep-test idempotent, explicit journal deletion, memories, anon closed, account deletion removes everything.');
+ console.log('PASS Journal: owner-only + isolated, server-only AI allowance and usage, companion version snapshots, pinned versions, drafts without revision bumps, append-only messages + counters, one reply per message, finished entries closed, corrections keep history, tags + merge aliases, search, journal days, keep-test idempotent, explicit journal deletion, memories, anon closed, first-run setup, mid-entry companion switch, account deletion removes everything.');
 }finally{for(const id of users)await admin.auth.admin.deleteUser(id);console.log('Disposable Journal accounts removed.');}

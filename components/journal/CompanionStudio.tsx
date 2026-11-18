@@ -59,10 +59,10 @@ export function CompanionStudio({ companionId, onClose }: { companionId: string 
   return <section className="mj-studio" aria-labelledby="mj-studio-title" style={{ "--journal-a": `var(--chart-${d.tone})`, "--journal-b": `var(--chart-${(d.tone % 8) + 1})` } as React.CSSProperties}>
     <header className="mj-studio-head muse-journal-hero">
       <div className="mj-studio-who"><MuseMark icon={d.icon as MuseMarkIcon} tone={d.tone} size="lg" />
-        <div><p className="muse-kicker">Companion studio{saved ? ` · version ${base.version}` : ""}{dirty ? " · unsaved changes" : ""}</p><h2 id="mj-studio-title" className="muse-journal-title">{d.name || "A new companion"}</h2>
+        <div><p className="muse-kicker type-meta">Companion studio{saved ? ` · version ${base.version}` : ""}{dirty ? " · unsaved changes" : ""}</p><h2 id="mj-studio-title" className="type-display mj-view-title">{d.name || "A new companion"}</h2>
           <p className="mj-note">A little studio for shaping how your companion talks with you. Try it, change it, compare, and keep the one you enjoy.</p></div></div>
       <div className="mj-studio-actions">
-        <button type="button" className="muse-button button-ghost" onClick={close}>← Journals</button>
+        <button type="button" className="muse-button button-ghost" onClick={close} aria-label="Close the Companion Studio"><span aria-hidden="true">×</span> Close</button>
         <button type="button" className="muse-button" disabled={!dirty} onClick={() => { if (window.confirm("Discard your unsaved changes?")) setD(words(base)); }}>Discard changes</button>
         <button type="button" className="muse-button button-primary" disabled={(!dirty && Boolean(saved)) || j.status.saving || !d.instructions.trim()} onClick={() => void save()}>{saved ? "Save companion" : "Create companion"}</button>
       </div>

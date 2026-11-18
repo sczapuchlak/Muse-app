@@ -1,68 +1,81 @@
 "use client";
 import { useState } from "react";
 import { MuseMark, type MuseMarkIcon, type MuseTone } from "../design/MuseHeading";
-import { MuseInviteCard } from "../design/MuseJournal";
 import { MuseModal } from "../MuseModal";
 import { MuseChoiceMenu } from "../MuseChoiceMenu";
 import { MuseOverflowMenu } from "../MuseOverflowMenu";
-import { EmptyPageArt } from "./JournalArt";
+import { MuseIcon } from "../MuseIcon";
+import { useJournalUi } from "./ui";
+import { choiceInk } from "./Workspace";
 import { newId, useJournal } from "./useJournal";
 import { covers, journalIcons, journalPresets, companionPresets } from "@/lib/journal/presets";
 import { isListed, type Companion, type Journal, type MemoryScope } from "@/lib/journal/model";
 
 const scopeLabel: Record<MemoryScope, string> = { shared: "Shares memory with your other journals", journal: "Remembers only this journal", off: "No memory" };
-const blankJournal = (position: number): Journal => ({ id: newId(), name: "", description: "", icon: "journal", tone: 5, cover: "dusk", defaultCompanionId: null, instructions: "", morningInstructions: "", eveningInstructions: "", memoryScope: "shared", presetKey: null, position, archivedAt: null, revision: 0, createdAt: "" });
+export const blankJournal = (position: number): Journal => ({ id: newId(), name: "", description: "", icon: "journal", tone: 5, cover: "dusk", defaultCompanionId: null, instructions: "", morningInstructions: "", eveningInstructions: "", memoryScope: "shared", presetKey: null, position, archivedAt: null, revision: 0, createdAt: "" });
 export const blankCompanion = (position: number): Companion => ({ id: newId(), name: "", description: "", icon: "sparkle", tone: 6, instructions: "", conversationPrefs: "", openingStyle: "", presetKey: null, preferredJournalId: null, version: 1, position, archivedAt: null, revision: 0, createdAt: "", updatedAt: "" });
 
-/** Journals and Companions (Journal V1 §5–7): spaces for conversations, and the personalities you talk with. */
-export function JournalsView({ openStudio }: { openStudio: (companionId: string | "new") => void }) {
-  const j = useJournal();
+/**
+ * Manage journals and companions (opened from the workspace toolbar; there is no management page). Your journals and
+ * companions as compact rows with their actions, and any starters you haven't added as small tiles. Editing a journal
+ * opens its editor; a companion opens in the Studio sheet.
+ */
+export function JournalManager({ onClose }: { onClose: () => void }) {
+  const j = useJournal(), ui = useJournalUi();
   const { state, ai } = j;
   const [editing, setEditing] = useState<Journal | null>(null);
   const journals = state.journals.filter((x) => !x.archivedAt), archived = state.journals.filter((x) => x.archivedAt);
   const companions = state.companions.filter((c) => !c.archivedAt);
+  const primary = journals.find((x) => x.id === state.prefs.defaultJournalId) ?? journals[0];
   const count = (id: string) => state.conversations.filter((c) => c.journalId === id && isListed(c)).length;
   const missingPresets = journalPresets.filter((p) => !state.journals.some((x) => x.presetKey === p.key));
   const missingCompanions = companionPresets.filter((p) => !state.companions.some((x) => x.presetKey === p.key));
-  return <div className="mj-journals">
-    <section className="muse-journal-archive" aria-labelledby="mj-journals-title">
-      <div className="mj-row-between"><h2 id="mj-journals-title" className="mj-view-title">Journals</h2>
-        <button type="button" className="muse-button button-primary" onClick={() => setEditing(blankJournal(state.journals.length))}>New journal</button></div>
-      <div className="mj-cards mj-journal-grid">
-        {journals.map((x) => { const c = state.companions.find((k) => k.id === x.defaultCompanionId); return <article key={x.id} className="mj-journal-card" data-cover={x.cover} style={{ "--card-ink": `var(--chart-${x.tone})`, "--card-ink-b": `var(--chart-${(x.tone % 8) + 1})` } as React.CSSProperties}>
-          <div className="mj-journal-cover" aria-hidden="true"><MuseMark icon={x.icon as MuseMarkIcon} tone={x.tone} size="lg" /></div>
-          <div className="mj-journal-copy"><h3>{x.name}</h3>{x.description && <p>{x.description}</p>}
-            <p className="mj-journal-facts"><span>{count(x.id)} {count(x.id) === 1 ? "entry" : "entries"}</span>{ai.enabled && c && <span>with {c.name}</span>}<span>{scopeLabel[x.memoryScope]}</span></p></div>
-          <div className="mj-journal-actions"><a className="muse-button" href={`/journal?view=history&journal=${x.id}`}>Entries</a><button type="button" className="muse-button button-ghost" onClick={() => setEditing(x)}>Edit</button></div>
-        </article>; })}
-        <MuseInviteCard count={journals.length} title="Another journal" note="Spanish practice, a tarot journey, a project: any kind of conversation can have its own space." cta="New journal" art={<EmptyPageArt />} onClick={() => setEditing(blankJournal(state.journals.length))} />
-      </div>
-      {missingPresets.length > 0 && <p className="mj-note">Starters you haven’t added: {missingPresets.map((p, i) => <span key={p.key}>{i > 0 && ", "}<button type="button" className="mj-link" onClick={() => void j.addStarters([p.key], [])}>{p.name}</button></span>)}.</p>}
-      {archived.length > 0 && <details className="mj-history"><summary>Archived journals ({archived.length})</summary><ul className="mj-chip-list">{archived.map((x) => <li key={x.id} className="mj-tag"><button type="button" className="mj-link" onClick={() => setEditing(x)}>{x.name}</button></li>)}</ul></details>}
-    </section>
+  return <MuseModal id="mj-manager" label="Journals and companions" title="Journals & companions" returnFocus={null} onClose={onClose} size="tall">
+    <div className="mj-manager">
+      <section className="mj-manager-section" aria-labelledby="mj-man-journals">
+        <div className="mj-row-between"><h3 id="mj-man-journals" className="mj-section-title">Journals</h3><button type="button" className="muse-button" onClick={() => setEditing(blankJournal(state.journals.length))}><MuseIcon name="plus" size={15} />New journal</button></div>
+        <ul className="mj-manage-list">{journals.map((x) => { const n = count(x.id); return <li key={x.id} className="mj-manage-row" style={choiceInk(x.tone)}>
+          <MuseMark icon={x.icon as MuseMarkIcon} tone={x.tone} size="md" />
+          <div className="mj-choice-copy"><span className="mj-choice-name type-heading">{x.name}{x.id === primary?.id && <span className="mj-pill">Main</span>}</span><span className="mj-choice-line type-meta">{n} {n === 1 ? "entry" : "entries"} · {scopeLabel[x.memoryScope]}{ai.enabled && state.companions.find((c) => c.id === x.defaultCompanionId) ? ` · with ${state.companions.find((c) => c.id === x.defaultCompanionId)!.name}` : ""}</span></div>
+          <span className="mj-manage-actions">
+            <button type="button" className="muse-button button-ghost" onClick={() => setEditing(x)}>Edit</button>
+            <MuseOverflowMenu label={`${x.name} options`} actions={[
+              ...(x.id !== primary?.id ? [{ id: "main", label: "Make this my main journal", onSelect: () => void j.savePrefs({ ...state.prefs, defaultJournalId: x.id }) }] : []),
+              { id: "entries", label: "See its entries", href: `/journal?view=history&journal=${x.id}` },
+            ]} />
+          </span>
+        </li>; })}</ul>
+        {missingPresets.length > 0 && <details className="mj-history"><summary>Ideas for another journal</summary><div className="mj-starter-tiles">{missingPresets.map((p) => <article key={p.key} className="mj-starter-tile" style={choiceInk(p.tone)}>
+          <MuseMark icon={p.icon as MuseMarkIcon} tone={p.tone} size="md" /><div className="mj-choice-copy"><h4 className="mj-choice-name type-heading">{p.name}</h4><p className="mj-choice-line">{p.description}</p></div>
+          <button type="button" className="muse-button" disabled={j.status.saving} onClick={() => void j.addStarters([p.key], [])}>Add</button></article>)}</div></details>}
+        {archived.length > 0 && <details className="mj-history"><summary>Archived journals ({archived.length})</summary><ul className="mj-chip-list">{archived.map((x) => <li key={x.id} className="mj-tag"><button type="button" className="mj-link" onClick={() => setEditing(x)}>{x.name}</button></li>)}</ul></details>}
+      </section>
 
-    <section className="muse-journal-archive" aria-labelledby="mj-companions-title">
-      <div className="mj-row-between"><div><h2 id="mj-companions-title" className="mj-view-title">Companions</h2><p className="mj-note">The personality you talk with. Rewrite any of them completely, and try changes in the studio before you keep them.</p></div>
-        <button type="button" className="muse-button button-primary" onClick={() => openStudio("new")}>New companion</button></div>
-      {!ai.enabled && <p className="mj-note" data-soft>AI isn’t on for your account, so companions won’t reply yet. You can still shape them.</p>}
-      <div className="mj-cards">
-        {companions.map((c) => <article key={c.id} className="mj-companion-card" style={{ "--card-ink": `var(--chart-${c.tone})` } as React.CSSProperties}>
-          <div className="mj-companion-head"><MuseMark icon={c.icon as MuseMarkIcon} tone={c.tone} size="md" /><div><h3>{c.name}</h3><small>Version {c.version}{c.presetKey ? " · starter" : ""}</small></div>
+      <section className="mj-manager-section" aria-labelledby="mj-man-companions">
+        <div className="mj-row-between"><h3 id="mj-man-companions" className="mj-section-title">Companions</h3><button type="button" className="muse-button" onClick={() => ui.openStudio("new")}><MuseIcon name="plus" size={15} />New companion</button></div>
+        {!ai.enabled && <p className="mj-note" data-soft>AI isn’t on for your account, so companions won’t reply yet. You can still shape them.</p>}
+        <ul className="mj-manage-list">{companions.map((c) => <li key={c.id} className="mj-manage-row" style={choiceInk(c.tone)}>
+          <MuseMark icon={c.icon as MuseMarkIcon} tone={c.tone} size="md" />
+          <div className="mj-choice-copy"><span className="mj-choice-name type-heading">{c.name}{c.id === primary?.defaultCompanionId && <span className="mj-pill">Default</span>}</span><span className="mj-choice-line">{c.description || c.instructions.slice(0, 120)}</span></div>
+          <span className="mj-manage-actions">
+            <button type="button" className="muse-button button-ghost" onClick={() => ui.openStudio(c.id)}>Customize</button>
             <MuseOverflowMenu label={`${c.name} options`} actions={[
+              ...(primary && c.id !== primary.defaultCompanionId ? [{ id: "default", label: "Make my default", onSelect: () => void j.setDefaultCompanion(primary, c.id) }] : []),
               { id: "dup", label: "Duplicate", onSelect: () => void j.duplicateCompanion(c) },
               { id: "del", label: "Delete", destructive: true, onSelect: () => void j.deleteCompanion(c.id) },
-            ]} /></div>
-          <p>{c.description || c.instructions.slice(0, 160)}</p>
-          <div className="mj-journal-actions"><button type="button" className="muse-button" onClick={() => openStudio(c.id)}>Open studio</button></div>
-        </article>)}
-      </div>
-      {missingCompanions.length > 0 && <p className="mj-note">Starter companions you haven’t added: {missingCompanions.map((p, i) => <span key={p.key}>{i > 0 && ", "}<button type="button" className="mj-link" onClick={() => void j.addStarters([], [p.key])}>{p.name}</button></span>)}.</p>}
-    </section>
+            ]} />
+          </span>
+        </li>)}</ul>
+        {missingCompanions.length > 0 && <details className="mj-history"><summary>More starter companions</summary><div className="mj-starter-tiles">{missingCompanions.map((p) => <article key={p.key} className="mj-starter-tile" style={choiceInk(p.tone)}>
+          <MuseMark icon={p.icon as MuseMarkIcon} tone={p.tone} size="md" /><div className="mj-choice-copy"><h4 className="mj-choice-name type-heading">{p.name}</h4><p className="mj-choice-line">{p.description}</p></div>
+          <button type="button" className="muse-button" disabled={j.status.saving} onClick={() => void j.addStarters([], [p.key])}>Add</button></article>)}</div></details>}
+      </section>
+    </div>
     {editing && <JournalEditor journal={editing} onClose={() => setEditing(null)} />}
-  </div>;
+  </MuseModal>;
 }
 
-function JournalEditor({ journal, onClose }: { journal: Journal; onClose: () => void }) {
+export function JournalEditor({ journal, onClose }: { journal: Journal; onClose: () => void }) {
   const j = useJournal();
   const [d, setD] = useState(journal);
   const [deleting, setDeleting] = useState(false), [moveTo, setMoveTo] = useState<string | null>(null);
