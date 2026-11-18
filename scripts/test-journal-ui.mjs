@@ -415,6 +415,66 @@ try{
  check(await count('journal_ai_usage',a.id)===usageBeforeTags,'managing tags made no AI request');
  await evaluate(()=>document.querySelector('#mj-settings')?.dispatchEvent(new Event('cancel')));
 
+ // ---- Guided Journals: create from an example, start deliberately, nothing made until you answer, restore, finish ----
+ const openJournalMenu=async()=>{await go('/journal','!!document.querySelector(".mj-header-toolbar")','workspace for guides');await click('.mj-header-toolbar button.mj-tb-button','Journal');await until(()=>!!document.querySelector('.mj-menu-guides'),'journal menu');};
+ await openJournalMenu();check(await has('.mj-ws-page .mj-composer textarea'),'the everyday page is still the freeform composer');
+ await click('.mj-menu-guides button','New guide');await until(()=>!!document.querySelector('#mj-guide'),'guide editor');
+ await click('#mj-guide .mj-filter-chip','Tarot Reflection');await until(()=>document.querySelectorAll('#mj-guide .mj-guide-q-row').length===5,'example loaded');
+ await click('#mj-guide button[aria-label="Move question 3 up"]');
+ await click('#mj-guide button[type=submit]','Save guide');await until(()=>!document.querySelector('#mj-guide'),'guide saved');
+ const tarot=must(await admin.from('journal_guides').select('*').eq('user_id',a.id).eq('name','Tarot Reflection').single());
+ check(tarot.questions.length===5&&tarot.questions[1].text==='What stood out in the reading?'&&tarot.questions[2].optional===true,'a guide saves its questions in order, with optional ones marked (no AI)');
+ const entriesBefore=await count('journal_conversations',a.id),aiBefore=await count('journal_ai_usage',a.id),privateReplies=await count('journal_ai_usage',a.id,{kind:'reply'});
+ await openJournalMenu();await evaluate(()=>[...document.querySelectorAll('.mj-menu-guides .popover-choice')].find(b=>b.textContent.includes('Tarot Reflection')).click());
+ await until(()=>!!document.querySelector('.mj-guided .mj-guide-step'),'guided page');
+ check(await has('.mj-guide-count','Question 1 of 5')&&await count('journal_conversations',a.id)===entriesBefore,'starting a guide shows question 1 of 5 and creates nothing yet');
+ await setValue('.mj-guide-card textarea','The Star and the Moon');await shoot('16-guided-step');
+ for(let i=0;i<40&&await count('journal_conversations',a.id)===entriesBefore;i++)await wait(150);
+ const gEntry=must(await admin.from('journal_conversations').select('id,guide_snapshot,guide_state,status').eq('user_id',a.id).not('guide_id','is',null).single());
+ check(gEntry.guide_snapshot.name==='Tarot Reflection'&&gEntry.status==='draft','the first answer creates one draft entry carrying a copy of the guide');
+ await click('.mj-guide-dock button','Next');await until(()=>(document.querySelector('.mj-guide-count')?.textContent??'').includes('2 of 5'),'step 2');
+ await setValue('.mj-guide-card textarea','The whole spread felt hopeful.');await click('.mj-guide-dock button','Next');
+ await until(()=>(document.querySelector('.mj-guide-count')?.textContent??'').includes('3 of 5'),'step 3');
+ check(await has('.mj-guide-dock button','Skip'),'an optional question offers Skip');await click('.mj-guide-dock button','Skip');
+ await wait(1200);
+ await go(`/journal?entry=${gEntry.id}`,'!!document.querySelector(".mj-guided")','guided reload');
+ check(await has('.mj-guide-count','4 of 5'),'a reload brings back the guided entry at the same question');
+ await click('.mj-guide-progress button[aria-label="Question 1"]');await until(()=>document.querySelector('.mj-guide-card textarea')?.value==='The Star and the Moon','answer restored');
+ check(true,'and every answer you wrote');
+ await click('.mj-guide-progress button[aria-label="Question 5"]');await setValue('.mj-guide-card textarea','Trust the slow part.');
+ await click('.mj-guide-dock button','Finish entry');await click('.mj-finish button','Finish & save');
+ for(let i=0;i<60&&must(await admin.from('journal_conversations').select('status').eq('id',gEntry.id).single()).status!=='completed';i++)await wait(200);
+ const gMsgs=must(await admin.from('journal_messages').select('body,guide_question,role').eq('conversation_id',gEntry.id).order('created_at'));
+ check(gMsgs.length===3&&gMsgs[0].guide_question==='What cards did you draw?'&&gMsgs.every(m=>m.role==='user'),'Finish saves each answer under its question, in order, skipping what you skipped');
+ check(await count('journal_ai_usage',a.id,{kind:'reply'})===privateReplies&&(await count('journal_ai_usage',a.id))-aiBefore<=1,'a private guide made no AI reply (only the usual analysis on finishing)');
+ must(await admin.from('journal_guides').update({questions:[{id:'x',text:'A brand new first question',optional:false}]}).eq('id',tarot.id).select('id'));
+ await go(`/journal?entry=${gEntry.id}`,'!!document.querySelector(".mj-entry")','guided entry view');await click('.mj-entry .muse-segmented button','Conversation');
+ await until(()=>!!document.querySelector('.mj-guide-asked'),'questions shown');
+ check(await has('.mj-guide-asked','What cards did you draw?')&&!(await has('.mj-guide-asked','A brand new first question'))&&await has('.mj-entry','Tarot Reflection'),'the saved entry reads with its questions, unchanged after the guide is edited');
+ await go('/journal?view=history','!!document.querySelector(".mj-history-view")','history guided');await setValue('.mj-history-view input[type=search]','slow part');
+ await until(()=>[...document.querySelectorAll('.mj-results .mj-row')].some(r=>r.textContent.includes('Tarot Reflection')),'guided search');
+ check(true,'History finds a guided entry by its answers, labelled with its guide');
+ // All at once, with the companion only when asked; a journal's default guide; writing freely instead.
+ const gratitude=must(await admin.from('journal_guides').insert({user_id:a.id,name:'Gratitude',icon:'🌱',mode:'all',companion:true,questions:[{id:'g1',text:'What are you grateful for?',optional:false},{id:'g2',text:'Who helped?',optional:true}]}).select('id').single());
+ const myJournal=must(await admin.from('journal_journals').select('id').eq('user_id',a.id).order('position').limit(1).single());
+ must(await admin.from('journal_journals').update({default_guide_id:gratitude.id}).eq('id',myJournal.id).select('id'));
+ await go('/journal','!!document.querySelector(".mj-guided .mj-guide-all")','default guide');
+ check(await evaluate(()=>document.querySelectorAll('.mj-guide-card').length===2),'a journal with a default guide opens it, all questions at once');
+ const repliesBefore=await count('journal_ai_usage',a.id,{kind:'reply'});
+ await setValue('.mj-guide-card textarea','My sister, for the long call.');await wait(300);
+ check(await count('journal_ai_usage',a.id,{kind:'reply'})===repliesBefore,'writing and moving around a guide never calls AI');
+ await click('.mj-guide-card .mj-guide-talk');
+ await until(()=>[...document.querySelectorAll('.mj-guide-card .mj-message[data-role=assistant]')].some(m=>/Guided by “Gratitude”/.test(m.textContent))&&!document.querySelector('[data-streaming]'),'guided reply',undefined,400);
+ check(await count('journal_ai_usage',a.id,{kind:'reply'})===repliesBefore+1,'Talk about this makes exactly one reply, as the same companion, aware of the guide');
+ await viewport(390,844,true);await wait(500);await shoot('16b-guided-phone');await viewport(1280);await wait(300);
+ await click('.mj-guide-dock button','Finish entry');await click('.mj-finish button','Finish & save');await wait(1500);
+ must(await admin.from('journal_journals').update({default_guide_id:null}).eq('id',myJournal.id).select('id'));
+ must(await admin.from('journal_journals').update({default_guide_id:gratitude.id}).eq('id',myJournal.id).select('id'));
+ await go('/journal','!!document.querySelector(".mj-guided")','default again');await click('.mj-guide-leave','Write freely instead');
+ await until(()=>!!document.querySelector('.mj-ws-page .mj-composer textarea'),'freeform');
+ check(true,'“Write freely instead” goes straight back to the everyday composer');
+ must(await admin.from('journal_journals').update({default_guide_id:null}).eq('id',myJournal.id).select('id'));
+
  // ---- Scenario D: a draft survives a reload ----
  await go('/journal','!!document.querySelector(".mj-workspace .mj-composer textarea")','workspace');
  const long=Array.from({length:60},(_,i)=>`Sentence ${i} of a long dictated thought about the day.`).join(' ');

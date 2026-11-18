@@ -31,7 +31,7 @@ function paint(p: string, at: number, marks: { start: number; end: number; ids: 
   return out;
 }
 
-export type ThreadMessage = Pick<Message, "id" | "role" | "body" | "createdAt" | "correctedAt"> & { companionVersionId?: string | null; pending?: boolean; streaming?: boolean; failed?: boolean; marked?: boolean; images?: MessageImage[]; previews?: string[] };
+export type ThreadMessage = Pick<Message, "id" | "role" | "body" | "createdAt" | "correctedAt"> & { companionVersionId?: string | null; pending?: boolean; streaming?: boolean; failed?: boolean; marked?: boolean; images?: MessageImage[]; previews?: string[]; replyTo?: string | null; guideQuestionId?: string | null; guideQuestion?: string | null };
 
 /**
  * The conversation as an editorial dialogue, not chat bubbles. Your words sit on a softly inked page edge in the
@@ -57,6 +57,7 @@ export function Thread({ messages, companion, companionFor, timeZone, actions, e
         {m.correctedAt && <span title="You corrected this message; the original is kept.">· corrected</span>}
         {actions && <span className="mj-message-actions">{actions(m)}</span>}
       </div>
+      {m.role === "user" && m.guideQuestion && <p className="mj-guide-asked type-meta"><span aria-hidden="true">✦ </span>{m.guideQuestion}</p>}
       <div className={`mj-message-body ${m.role === "assistant" ? "type-reading" : "type-body"}`}><Prose text={m.body} anchored={Boolean(highlights)} marks={highlights?.get(m.id)} />{m.streaming && <span className="mj-caret" aria-hidden="true" />}</div>
       {m.role === "user" && <MessagePhotos images={m.images} previews={m.previews} onReattach={onReattach} />}
     </li>; })}

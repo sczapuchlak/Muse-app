@@ -6,7 +6,7 @@ import { createMuseAdminClient } from "@/lib/supabase/admin";
 import { approxTokens, buildOpening, buildReply, defaultBudget, partOfDay, transcript, type InputMessage } from "@/lib/journal/context";
 import { APPLICATION_RULES } from "@/lib/journal/instructions";
 import { analysisSchema, ANALYSIS_RULES, REPORT_RULES, reportSchema, type Layers } from "@/lib/journal/instructions";
-import { conversationFromRow, journalFromRow, isListed, parseAnalysisData, parseReportData, type Journal } from "@/lib/journal/model";
+import { conversationFromRow, journalFromRow, isListed, parseAnalysisData, parseGuideSnapshot, parseReportData, type Journal } from "@/lib/journal/model";
 import { generate, providerConfig, ProviderError, type ProviderConfig } from "@/lib/journal/server/provider";
 import { allowance, begin, estimateUsd, finish, setBudget, UsageError } from "@/lib/journal/server/usage";
 import { IMAGE_BUCKET } from "@/lib/journal/persistence";
@@ -16,6 +16,16 @@ import { applyAnalysis } from "@/lib/journal/server/apply";
 import { addDays, sourceSignature, weekStats } from "@/lib/journal/stats";
 /** A conservative reservation per attached photo (a 1600px image at high detail); the invoice uses real tokens. */
 const IMAGE_TOKEN_RESERVE = 3000;
+/** A guided answer carries its question, so the companion and the analysis read it in context. */
+const withQuestion = (m: { body: string; guide_question?: string | null }) => (m.guide_question ? `(Answering the guide question “${m.guide_question}”)\n${m.body}` : m.body);
+/** For a guided entry: what the guide is, so replies fit it. It shapes this entry only; the companion stays itself. */
+function guideNote(raw: unknown): string {
+  const g = parseGuideSnapshot(raw); if (!g) return "";
+  return [`## This entry follows a guide they chose: “${g.name}”`,
+    g.intro ? `Their notes for this guide (follow them for this entry only):\n${g.intro.slice(0, 2000)}` : "",
+    g.questions.length ? `Its questions:\n${g.questions.map((q, i) => `${i + 1}. ${q.text}`).join("\n")}` : "",
+    "They answer the questions themselves. When they share an answer with you, respond to that answer as yourself, briefly and naturally. Don't ask the next guide question for them, don't add long commentary, and don't turn it into an exercise unless their notes ask for it."].filter(Boolean).join("\n\n");
+}
 
 /**
  * Muse Journal AI (Journal V1 §21–22, Companion Playground addendum §6). Same-origin and signed-in only. Every request
@@ -128,7 +138,7 @@ async function streamReply(request: NextRequest, base: NextResponse, client: Cli
   const { conv, journal } = await loadConversation(client, userId, body.conversationId);
   if (conv.status === "completed") throw new Bad("finished", "This entry is finished. Start a new conversation to keep talking.");
   if (!uuid(body.messageId)) throw new Bad("invalid", "Unreadable request.");
-  const msgs = await client.from("journal_messages").select("id,role,body,local_date,reply_to,created_at").eq("conversation_id", conv.id).eq("user_id", userId).order("created_at").limit(2000);
+  const msgs = await client.from("journal_messages").select("id,role,body,local_date,reply_to,created_at,guide_question").eq("conversation_id", conv.id).eq("user_id", userId).order("created_at").limit(2000);
   if (msgs.error) throw msgs.error;
   const at = msgs.data.findIndex((m) => m.id === body.messageId);
   if (at < 0 || msgs.data[at].role !== "user") throw new Bad("gone", "That message isn’t saved yet.");
@@ -148,8 +158,10 @@ async function streamReply(request: NextRequest, base: NextResponse, client: Cli
       const { versionId, layer } = await companionLayer(client, userId, conv);
       const memory = await loadMemory(client, userId, b, journal, { currentId: conv.id, memoryOff: conv.memory_off, today, latest: latest.body });
       const layers: Layers = { globalInstructions: b.prefs.globalInstructions, companion: layer, journal: journalLayer(journal), mode: conv.mode as Layers["mode"] };
-      const req = buildReply(layers, memory, history.map((m) => ({ role: m.role as "user" | "assistant", body: m.body, imageCount: imageCount.get(m.id) })));
+      const req = buildReply(layers, memory, history.map((m) => ({ role: m.role as "user" | "assistant", body: withQuestion(m), imageCount: imageCount.get(m.id) })));
       if (reference) req.input.splice(memory.stable ? 1 : 0, 0, { role: "developer", content: reference });
+      const guide = guideNote(conv.guide_snapshot);
+      if (guide) req.input.splice(memory.stable ? 1 : 0, 0, { role: "developer", content: guide });
       if (latestImages.length) {
         const urls = await Promise.all(latestImages.map(async (r) => {
           const d = await client.storage.from(IMAGE_BUCKET).download(r.path);
@@ -235,7 +247,7 @@ async function analyse(client: Client, admin: Client, config: ProviderConfig, us
   if (conv.status !== "completed") throw new Bad("invalid", "Finish the entry first.");
   const existing = await client.from("journal_analyses").select("*").eq("conversation_id", conv.id).eq("user_id", userId).maybeSingle();
   if (existing.data?.status === "ready" && body.regenerate !== true) return { analysis: existing.data, cached: true };
-  const msgs = await client.from("journal_messages").select("role,body").eq("conversation_id", conv.id).eq("user_id", userId).order("created_at").limit(2000);
+  const msgs = await client.from("journal_messages").select("role,body,guide_question").eq("conversation_id", conv.id).eq("user_id", userId).order("created_at").limit(2000);
   if (msgs.error) throw msgs.error;
   if (!msgs.data.some((m) => m.role === "user")) throw new Bad("invalid", "There’s nothing of yours to analyse yet.");
   // Known people with confirmed aliases, and corrections the person made before: guidance for names, never rules.
@@ -245,7 +257,7 @@ async function analyse(client: Client, admin: Client, config: ProviderConfig, us
   const usage = await begin(admin, userId, { kind: "analysis", requestKey: `analysis:${conv.id}:${body.regenerate === true ? `r${attempt}` : "1"}`, conversationId: conv.id, model: config.model, estimateUsd: estimateUsd(config.model, approxTokens(ANALYSIS_RULES.length + Math.min(60000, msgs.data.reduce((n, m) => n + m.body.length + 12, 0))), 3500) });
   await client.from("journal_conversations").update({ analysis_status: "pending" }).eq("id", conv.id).eq("user_id", userId);
   try {
-    const input: InputMessage[] = [{ role: "user", content: `${conv.continues_title ? `This entry continues an earlier one, “${conv.continues_title}” (${conv.continues_date}).\n\n` : ""}${people.data?.length ? `Existing person names (confirmed aliases in brackets): ${people.data.map((p) => p.aliases.length ? `${p.name} [${p.aliases.join(", ")}]` : p.name).join(", ")}\n\n` : ""}${fixes.data?.length ? `Corrections they made on earlier entries (use only when the context clearly means the same person; otherwise keep the name they used): ${fixes.data.map((f) => { const to = people.data?.find((p) => p.id === f.to_tag_id); return to ? `“${f.from_name}” was ${to.name}${f.times > 1 ? ` (${f.times}×)` : ""}` : ""; }).filter(Boolean).join("; ")}\n\n` : ""}Conversation:\n\n${transcript(msgs.data as { role: "user" | "assistant"; body: string }[])}` }];
+    const input: InputMessage[] = [{ role: "user", content: `${conv.continues_title ? `This entry continues an earlier one, “${conv.continues_title}” (${conv.continues_date}).\n\n` : ""}${people.data?.length ? `Existing person names (confirmed aliases in brackets): ${people.data.map((p) => p.aliases.length ? `${p.name} [${p.aliases.join(", ")}]` : p.name).join(", ")}\n\n` : ""}${fixes.data?.length ? `Corrections they made on earlier entries (use only when the context clearly means the same person; otherwise keep the name they used): ${fixes.data.map((f) => { const to = people.data?.find((p) => p.id === f.to_tag_id); return to ? `“${f.from_name}” was ${to.name}${f.times > 1 ? ` (${f.times}×)` : ""}` : ""; }).filter(Boolean).join("; ")}\n\n` : ""}Conversation:\n\n${transcript(msgs.data.map((m) => ({ role: m.role as "user" | "assistant", body: withQuestion(m) })))}` }];
     const out = await generate(config, { instructions: ANALYSIS_RULES, input, maxOutputTokens: 3500, effort: "low", schema: { name: "journal_analysis", schema: analysisSchema } });
     await finish(admin, usage.id, out.model, { usage: out.usage });
     let parsed: unknown; try { parsed = JSON.parse(out.text); } catch { parsed = null; }
