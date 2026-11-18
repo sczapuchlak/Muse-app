@@ -424,7 +424,8 @@
  .mj-composer-bar{justify-content:flex-end}
  .mj-blank{grid-template-columns:minmax(0,1fr);margin-top:8px}
  .mj-blank-week{justify-items:start}
- .mj-blank-week .mj-constellation{width:200px}
+ .mj-blank-week{justify-items:stretch;width:100%}
+ .mj-blank-week .mj-constellation{width:100%;height:auto}
  .mj-message[data-role="assistant"] .mj-message-body{padding-left:0}
  .mj-message[data-role="user"] .mj-message-body{padding:12px 14px 12px 16px}
  .mj-thinking{padding-left:0}
@@ -467,7 +468,7 @@
    inside it, and the toolbar and composer stay put without painting over the card's gradient ring. ──────────── */
 @media (min-width:1024px){
  .mj-workspace{height:var(--mj-ws-h,max(540px,calc(100dvh - 200px)));min-height:0}
- .mj-live-compose{border-top:0;padding-top:4px}
+ .mj-live-compose{position:static;z-index:auto;-webkit-backdrop-filter:none;backdrop-filter:none;background:transparent;border-top:0;padding-top:4px}
  .mj-ws-page{-webkit-mask-image:linear-gradient(#000 calc(100% - 28px),transparent);mask-image:linear-gradient(#000 calc(100% - 28px),transparent);padding-bottom:20px}
  .mj-ws-page{min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-gutter:stable;margin-right:calc(-1 * clamp(14px,2.4vw,26px) + 2px);padding-right:calc(clamp(14px,2.4vw,26px) - 2px)}
  .mj-live-compose::after{display:none}
@@ -508,3 +509,111 @@
 .mj-header-tools :is(.mj-tb-settings,.muse-overflow-trigger):hover{border-color:color-mix(in srgb,var(--journal-a,var(--accent-primary)) 50%,var(--glass-border));background:var(--mj-tile-hover);transform:translateY(-1px)}
 .mj-header-tools .mj-tb-settings .mj-tb-label{display:none}
 @container muse-content (max-width:640px){.mj-header-toolbar .mj-tb-new{min-height:40px;padding:0 10px}.mj-header-toolbar .mj-tb-new .mj-tb-label{display:none}.mj-header-tools :is(.mj-tb-settings,.muse-overflow-trigger){width:40px;height:40px;min-height:40px}}
+
+/* Finish this entry? A floating, glowing card that clearly asks, not a faint note. */
+.mj-live-compose .mj-finish{position:relative;padding:18px 20px;border:1px solid transparent;border-radius:18px;background:linear-gradient(var(--floating-background,var(--glass-background)),var(--floating-background,var(--glass-background))) padding-box,linear-gradient(135deg,var(--journal-a,var(--accent-primary)),var(--journal-b,var(--accent-secondary))) border-box;box-shadow:0 18px 44px -18px var(--journal-a,var(--accent-primary)),0 0 0 6px color-mix(in srgb,var(--journal-a,var(--accent-primary)) 12%,transparent);animation:mj-finish-in var(--motion-settle,260ms) var(--mj-ease) both}
+.mj-live-compose .mj-finish p{font-size:1rem}
+.mj-live-compose .mj-finish b{display:block;margin-bottom:4px;font-family:var(--font-editorial);font-style:italic;font-size:1.3rem;font-weight:500}
+.mj-live-compose .mj-finish .muse-button{min-height:44px;padding-inline:18px}
+@keyframes mj-finish-in{from{opacity:0;transform:translateY(8px) scale(.98)}}
+/* Narrow screens: the toolbar follows the section nav, and Journal | History | Insights fits without cutting off. */
+@media (max-width:1023px){
+ .mj-page>.mj-header-tools{margin:-4px 0 12px;justify-content:flex-start}
+}
+/* Phones: the mic sits beside Finish entry / Go deeper instead of taking a row; its status appears above only while
+   it has something to say (listening, or why it can't). */
+@container muse-content (max-width:640px){
+ .mj-composer-dock,.mj-composer-dock[data-paired]{grid-template-columns:auto minmax(0,1fr);gap:8px}
+ .mj-composer-dock .mj-composer-tools{display:contents}
+ .mj-composer-dock .mj-composer-hint[data-live]{grid-column:1/-1;order:-1}
+ .mj-composer-dock:not(:has(.mj-mic)) .mj-composer-bar{grid-column:1/-1}
+ .mj-composer-dock .mj-mic{width:44px;height:44px;border:1px solid var(--glass-border);background:var(--mj-tile)}
+}
+/* The Studio sheet sits outside the page, so it is its own content container: every narrow-screen rule (one pane at a
+   time, stacked header, full-width fields) applies inside it exactly as it does on the page. */
+.mj-sheet-inner{container:muse-content / inline-size}
+
+/* ── Blank page: the greeting starts at the left edge and the week's stars fill the space beside it ─────────────── */
+.mj-ws-page .mj-blank{max-width:none;grid-template-columns:minmax(0,1fr) minmax(300px,1.1fr);align-items:center;margin-top:clamp(8px,4vh,40px)}
+.mj-ws-page:has(.mj-blank) .mj-composer{max-width:none}
+.mj-ws-page .mj-blank-week{justify-items:stretch}
+.mj-ws-page .mj-blank-week .mj-constellation{width:100%;max-width:560px;justify-self:end}
+.mj-ws-page .mj-blank-week p{justify-self:end}
+@container muse-content (max-width:760px){.mj-ws-page .mj-blank{grid-template-columns:minmax(0,1fr)}.mj-ws-page .mj-blank-week .mj-constellation{justify-self:stretch;max-width:none}.mj-ws-page .mj-blank-week p{justify-self:start}}
+
+/* ── History ──────────────────────────────────────────────────────────────────────────────────────────────────── */
+.mj-shelf-head>.mj-history-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:10px}
+.mj-history-controls .muse-date-picker-trigger{min-height:44px;border-radius:999px;padding-inline:14px}
+.mj-period-count{color:var(--text-muted);margin-left:auto}
+.mj-month-title{display:flex;align-items:baseline;gap:12px}
+.mj-month-title .type-meta{color:var(--text-muted);font-family:var(--font-ui);font-style:normal}
+.mj-all{display:grid;gap:22px}
+
+/* Compact rows: an editorial list, one hairline apart, with the journal's ink down the left edge. */
+.mj-rows{display:grid;border:1px solid var(--glass-border);border-radius:var(--mj-radius,18px);background:var(--mj-tile);overflow:hidden}
+.mj-rows>*+*{border-top:1px solid var(--mj-hair)}
+.mj-rows>div>.mj-row{border-radius:0}
+.mj-row{--card-ink:var(--chart-5);position:relative;display:grid;grid-template-columns:56px minmax(0,1fr) auto;align-items:start;gap:16px;width:100%;padding:14px 18px 14px 14px;border:0;background:transparent;color:var(--foreground);font:inherit;text-align:left;cursor:pointer;transition:background var(--motion-hover,180ms)}
+.mj-rows>*+.mj-row{border-top:1px solid var(--mj-hair)}
+.mj-row::before{content:"";position:absolute;left:0;top:12px;bottom:12px;width:3px;border-radius:0 3px 3px 0;background:linear-gradient(var(--card-ink),color-mix(in srgb,var(--card-ink) 25%,transparent));opacity:.55;transition:opacity var(--motion-hover,180ms)}
+.mj-row:is(:hover,:focus-visible){background:color-mix(in srgb,var(--card-ink) 8%,transparent)}
+.mj-row:is(:hover,:focus-visible)::before{opacity:1}
+.mj-row:focus-visible{outline:2px solid var(--focus-ring);outline-offset:-2px}
+.mj-row-day{display:grid;justify-items:center;align-content:start;line-height:1.05;padding-top:2px}
+.mj-row-day b{color:var(--text-muted);letter-spacing:.12em;text-transform:uppercase}
+.mj-row-day span{font-size:1.45rem;color:var(--dl-kicker,var(--accent-primary))}
+.mj-row-main{display:grid;gap:5px;min-width:0}
+.mj-row-title{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:1.08rem;overflow-wrap:anywhere}
+.mj-row-excerpt{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;color:var(--text-muted);font-size:.9rem;line-height:1.5}
+.mj-row-excerpt mark{padding:0 2px;border-radius:4px;background:color-mix(in srgb,var(--card-ink) 26%,transparent);color:inherit}
+.mj-row-meta{display:grid;justify-items:end;align-content:start;gap:6px;color:var(--text-muted);white-space:nowrap}
+
+/* The week strip: seven small day pills; written days carry a lit star, today a ring. */
+.mj-strip{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;margin:0;padding:0;list-style:none}
+.mj-strip-day{display:grid;justify-items:center;gap:2px;width:100%;padding:10px 4px 8px;border:1px solid var(--glass-border);border-radius:14px;background:var(--mj-tile);color:var(--text-muted);font:inherit;cursor:default;line-height:1.05;animation:mj-rise var(--motion-settle,260ms) var(--mj-ease) both;animation-delay:calc(var(--i) * 30ms)}
+.mj-strip-day b{letter-spacing:.12em;text-transform:uppercase}
+.mj-strip-day span{font-size:1.15rem;color:var(--foreground)}
+.mj-strip-day svg{width:12px;height:20px;margin-top:2px;fill:color-mix(in srgb,var(--foreground) 18%,transparent)}
+.mj-strip-day[data-on]{cursor:pointer;border-color:color-mix(in srgb,var(--journal-a,var(--accent-primary)) 45%,var(--glass-border));background:radial-gradient(120% 90% at 50% 0%,color-mix(in srgb,var(--journal-a,var(--accent-primary)) 16%,transparent),transparent 70%),var(--mj-tile)}
+.mj-strip-day[data-on] svg{fill:var(--journal-a,var(--accent-primary));filter:drop-shadow(0 0 5px color-mix(in srgb,var(--journal-a,var(--accent-primary)) 70%,transparent))}
+.mj-strip-day[data-on]:hover{transform:translateY(-2px);transition:transform var(--motion-hover,180ms) var(--mj-ease)}
+.mj-strip-day[data-today]{box-shadow:0 0 0 2px color-mix(in srgb,var(--journal-b,var(--accent-secondary)) 60%,transparent)}
+.mj-strip-day:disabled{opacity:1}
+
+/* The week's reflection lives with the week. */
+.mj-week{display:grid;gap:14px}
+.mj-week-reflection{display:grid;gap:8px;padding:18px 20px;border:1px solid transparent;border-radius:var(--mj-radius,18px);background:linear-gradient(var(--mj-tile),var(--mj-tile)) padding-box,linear-gradient(135deg,color-mix(in srgb,var(--journal-a,var(--accent-primary)) 70%,transparent),color-mix(in srgb,var(--journal-b,var(--accent-secondary)) 50%,transparent)) border-box}
+.mj-week-reflection-head{display:flex;align-items:center;gap:8px}
+.mj-week-reflection-head h4{margin:0;font-size:1.05rem}
+.mj-week-reflection-head svg{width:12px;height:20px;fill:var(--journal-a,var(--accent-primary))}
+.mj-week-reflection-text{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:4;overflow:hidden;margin:0;line-height:1.6}
+
+@container muse-content (max-width:640px){
+ .mj-row{grid-template-columns:40px minmax(0,1fr);gap:10px;padding:12px 12px 12px 10px}
+ .mj-row-meta{grid-column:2;grid-auto-flow:column;justify-content:start;justify-items:start;align-items:center}
+ .mj-row-day span{font-size:1.2rem}
+ .mj-strip{gap:4px}
+ .mj-strip-day{padding:8px 2px 6px;border-radius:12px}
+ .mj-strip-day b{font-size:.58rem;letter-spacing:.06em}
+ .mj-period-count{margin-left:0;width:100%}
+ .mj-shelf-head>.mj-history-controls{justify-content:flex-start;width:100%}
+}
+@media (prefers-reduced-motion:reduce){.mj-strip-day{animation:none}.mj-strip-day[data-on]:hover{transform:none}}
+.mj-shelf-head>.mj-history-controls{flex-wrap:nowrap}
+.mj-finder-top{display:flex;align-items:center;gap:8px;min-width:0}
+.mj-finder-top>:first-child{flex:1 1 auto;min-width:0}
+.mj-filters-toggle{display:none;flex:none;align-items:center;gap:6px;min-height:44px;border-radius:999px}
+@container muse-content (max-width:640px){
+ .mj-filters-toggle{display:inline-flex}
+ .mj-finder:not([data-open]) .mj-filters{display:none}
+ .mj-history-controls .muse-date-picker-trigger{width:44px;padding:0;justify-content:center}
+ .mj-history-controls .muse-date-picker-trigger>:not(svg:first-child){display:none}
+ .mj-history-controls .muse-date-picker-trigger>svg:last-child{display:none}
+}
+/* Phones: no strip under the docked buttons (it read as the card being cut off); the studio's actions share one row. */
+@media (max-width:1023px){.mj-live-compose::after{display:none}}
+@container muse-content (max-width:640px){
+ .mj-studio-actions{display:grid;grid-template-columns:auto minmax(0,1fr) minmax(0,1fr);align-items:center;gap:8px}
+ .mj-studio-actions .muse-button{justify-content:center;min-width:0;padding-inline:10px}
+}
+@container muse-content (max-width:640px){.mj-studio-actions .muse-button{white-space:nowrap;font-size:.84rem}}

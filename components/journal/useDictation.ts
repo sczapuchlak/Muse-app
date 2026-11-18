@@ -40,12 +40,15 @@ export function useDictation(onText: (text: string) => void) {
   const onTextRef = useRef(onText);
   useEffect(() => { onTextRef.current = onText; }, [onText]);
 
-  const stop = useCallback(() => { rec.current?.stop(); }, []);
+  // Stop always ends listening at once, even when a browser's recognizer never reports that it ended (iPhone).
+  const stop = useCallback(() => { const r = rec.current; if (!r) return; rec.current = null; setListening(false); try { r.stop(); } catch { /* already stopped */ } }, []);
   /** Stop at once and ignore anything still in flight: the words already shown stay; nothing arrives later. */
   const cancel = useCallback(() => {
     const r = rec.current; if (!r) return;
     r.onresult = null; r.onerror = null; r.onend = null; rec.current = null; setListening(false); r.abort();
   }, []);
+  const cancelRef = useRef<() => void>(() => {});
+  useEffect(() => { cancelRef.current = cancel; }, [cancel]);
   const start = useCallback((base: string, caret: number) => {
     const Ctor = ctor();
     if (!Ctor || rec.current) return;
@@ -53,15 +56,18 @@ export function useDictation(onText: (text: string) => void) {
     const lead = before && !/\s$/.test(before) ? " " : "", trail = after && !/^\s/.test(after) ? " " : "";
     const r = new Ctor();
     r.lang = typeof navigator !== "undefined" ? navigator.language || "en-US" : "en-US";
-    r.continuous = true; r.interimResults = true;
+    const ios = typeof navigator !== "undefined" && /iP(hone|ad|od)/.test(navigator.userAgent);
+    r.continuous = !ios; r.interimResults = true;
+    let heard = false;
+    const watchdog = window.setTimeout(() => { if (!heard && rec.current === r) { cancelRef.current(); setError("Voice typing didn’t hear anything here. The keyboard’s microphone still works."); } }, 9000);
     r.onresult = (e) => {
       let spoken = "";
       for (let i = 0; i < e.results.length; i++) spoken += e.results[i][0]?.transcript ?? "";
       spoken = spoken.replace(/\s+/g, " ").trim();
-      if (spoken) onTextRef.current(before + lead + spoken + trail + after);
+      if (spoken) { heard = true; onTextRef.current(before + lead + spoken + trail + after); }
     };
     r.onerror = (e) => { if (e.error !== "aborted" && e.error !== "no-speech") setError(dictationError(e.error)); };
-    r.onend = () => { if (rec.current === r) { rec.current = null; setListening(false); } };
+    r.onend = () => { window.clearTimeout(watchdog); if (rec.current === r) { rec.current = null; setListening(false); } };
     rec.current = r; setError(""); setListening(true);
     try { r.start(); } catch { rec.current = null; setListening(false); setError(dictationError("")); }
   }, []);
