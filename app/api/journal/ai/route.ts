@@ -9,9 +9,12 @@ import { analysisSchema, ANALYSIS_RULES, REPORT_RULES, reportSchema, type Layers
 import { conversationFromRow, journalFromRow, isListed, parseAnalysisData, parseReportData, type Journal } from "@/lib/journal/model";
 import { generate, providerConfig, ProviderError, type ProviderConfig } from "@/lib/journal/server/provider";
 import { allowance, begin, estimateUsd, finish, setBudget, UsageError } from "@/lib/journal/server/usage";
+import { IMAGE_BUCKET } from "@/lib/journal/persistence";
 import { basics, loadMemory } from "@/lib/journal/server/retrieve";
 import { applyAnalysis } from "@/lib/journal/server/apply";
 import { addDays, sourceSignature, weekStats } from "@/lib/journal/stats";
+/** A conservative reservation per attached photo (a 1600px image at high detail); the invoice uses real tokens. */
+const IMAGE_TOKEN_RESERVE = 3000;
 
 /**
  * Muse Journal AI (Journal V1 §21–22, Companion Playground addendum §6). Same-origin and signed-in only. Every request
@@ -131,14 +134,27 @@ async function streamReply(request: NextRequest, base: NextResponse, client: Cli
   if (msgs.data.some((m) => m.reply_to === body.messageId)) throw new Bad("duplicate", "That message already has a reply.");
   const history = msgs.data.slice(0, at + 1), latest = history[at];
   const today = date(body.localDate) ? body.localDate : latest.local_date;
-  const usage = await begin(admin, userId, { kind: "reply", requestKey: `reply:${latest.id}`, conversationId: conv.id, model: config.model, estimateUsd: estimateUsd(config.model, overhead + approxTokens(Math.min(defaultBudget.conversation, history.reduce((n, m) => n + m.body.length, 0))), 900) });
+  // Photos: only the message being answered sends its photos; earlier ones are named in the text as no longer visible.
+  const imgs = await client.from("journal_message_images").select("message_id,path,mime,position").eq("conversation_id", conv.id).eq("user_id", userId).order("position");
+  const imageRows = imgs.error ? [] : imgs.data, latestImages = imageRows.filter((r) => r.message_id === latest.id);
+  const imageCount = new Map<string, number>(); for (const r of imageRows) imageCount.set(r.message_id, (imageCount.get(r.message_id) ?? 0) + 1);
+  const usage = await begin(admin, userId, { kind: "reply", requestKey: `reply:${latest.id}`, conversationId: conv.id, model: config.model, estimateUsd: estimateUsd(config.model, overhead + approxTokens(Math.min(defaultBudget.conversation, history.reduce((n, m) => n + m.body.length, 0))) + latestImages.length * IMAGE_TOKEN_RESERVE, 900) });
   return stream(base, async (onDelta) => {
     try {
       const b = await basics(client, userId);
       const { versionId, layer } = await companionLayer(client, userId, conv);
       const memory = await loadMemory(client, userId, b, journal, { currentId: conv.id, memoryOff: conv.memory_off, today, latest: latest.body });
       const layers: Layers = { globalInstructions: b.prefs.globalInstructions, companion: layer, journal: journalLayer(journal), mode: conv.mode as Layers["mode"] };
-      const req = buildReply(layers, memory, history.map((m) => ({ role: m.role as "user" | "assistant", body: m.body })));
+      const req = buildReply(layers, memory, history.map((m) => ({ role: m.role as "user" | "assistant", body: m.body, imageCount: imageCount.get(m.id) })));
+      if (latestImages.length) {
+        const urls = await Promise.all(latestImages.map(async (r) => {
+          const d = await client.storage.from(IMAGE_BUCKET).download(r.path);
+          if (d.error || !d.data) throw new ProviderError("failed", "A photo couldn’t be read. Try sending it again.");
+          return `data:${r.mime};base64,${Buffer.from(await d.data.arrayBuffer()).toString("base64")}`;
+        }));
+        const target = [...req.input].reverse().find((m) => m.role === "user");
+        if (target) target.images = urls;
+      }
       const out = await generate(config, { instructions: req.instructions, input: req.input, maxOutputTokens: 900, effort: "none", onDelta });
       await finish(admin, usage.id, out.model, { usage: out.usage });
       const saved = await client.from("journal_messages").insert({ user_id: userId, conversation_id: conv.id, role: "assistant", body: out.text, local_date: latest.local_date, reply_to: latest.id, companion_version_id: versionId, model: out.model }).select("*").single();
@@ -218,11 +234,11 @@ async function analyse(client: Client, admin: Client, config: ProviderConfig, us
   if (!msgs.data.some((m) => m.role === "user")) throw new Bad("invalid", "There’s nothing of yours to analyse yet.");
   const people = await client.from("journal_tags").select("name").eq("user_id", userId).eq("kind", "person").limit(200);
   const attempt = existing.data ? (existing.data.revision ?? 1) + 1 : 1;
-  const usage = await begin(admin, userId, { kind: "analysis", requestKey: `analysis:${conv.id}:${body.regenerate === true ? `r${attempt}` : "1"}`, conversationId: conv.id, model: config.model, estimateUsd: estimateUsd(config.model, approxTokens(ANALYSIS_RULES.length + Math.min(60000, msgs.data.reduce((n, m) => n + m.body.length + 12, 0))), 2000) });
+  const usage = await begin(admin, userId, { kind: "analysis", requestKey: `analysis:${conv.id}:${body.regenerate === true ? `r${attempt}` : "1"}`, conversationId: conv.id, model: config.model, estimateUsd: estimateUsd(config.model, approxTokens(ANALYSIS_RULES.length + Math.min(60000, msgs.data.reduce((n, m) => n + m.body.length + 12, 0))), 3500) });
   await client.from("journal_conversations").update({ analysis_status: "pending" }).eq("id", conv.id).eq("user_id", userId);
   try {
     const input: InputMessage[] = [{ role: "user", content: `${people.data?.length ? `Existing person names: ${people.data.map((p) => p.name).join(", ")}\n\n` : ""}Conversation:\n\n${transcript(msgs.data as { role: "user" | "assistant"; body: string }[])}` }];
-    const out = await generate(config, { instructions: ANALYSIS_RULES, input, maxOutputTokens: 2000, effort: "low", schema: { name: "journal_analysis", schema: analysisSchema } });
+    const out = await generate(config, { instructions: ANALYSIS_RULES, input, maxOutputTokens: 3500, effort: "low", schema: { name: "journal_analysis", schema: analysisSchema } });
     await finish(admin, usage.id, out.model, { usage: out.usage });
     let parsed: unknown; try { parsed = JSON.parse(out.text); } catch { parsed = null; }
     const data = parseAnalysisData(parsed);

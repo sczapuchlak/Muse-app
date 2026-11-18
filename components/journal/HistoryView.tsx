@@ -22,7 +22,7 @@ type Show = "entries" | "week" | "bookmarks";
 
 /**
  * History (Journal V1 §13–16): a searchable, filterable archive. Search is full-text over titles, summaries and every
- * message (in the database, no AI); filters by journal, companion, people, places, topics, themes, favorites,
+ * message (in the database, no AI); filters by journal, companion, My tags, people, topics, moods, favorites,
  * bookmarks and dates work on the device. Opening an entry loads only that entry.
  */
 export function HistoryView({ open, initialTag, initialJournal, onThisDay }: { open: (id: string) => void; initialTag?: string | null; initialJournal?: string | null; onThisDay?: boolean }) {

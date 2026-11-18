@@ -1,7 +1,7 @@
 import "server-only";
 /**
  * Stores a finished analysis (Journal V1 addendum §3–4). The analysis row is separate from the conversation. A title
- * or summary the person wrote is never replaced. People, places, topics and themes attach as `source: 'ai'` tags,
+ * or summary the person wrote is never replaced. People, topics and moods attach as `source: 'ai'` tags,
  * reusing an existing tag only on an exact name or configured alias. Proposed memories are saved as *suggested*,
  * never confirmed, and never duplicate an existing memory.
  */
@@ -23,8 +23,8 @@ export async function applyAnalysis(client: Client, userId: string, conv: Conv, 
   if (Object.keys(patch).length) { const up = await client.from("journal_conversations").update(patch).eq("id", conv.id).eq("user_id", userId); if (up.error) throw up.error; }
 
   const wanted: [TagKind, string][] = [
-    ...data.people.map((n) => ["person", n] as [TagKind, string]), ...data.places.map((n) => ["place", n] as [TagKind, string]),
-    ...data.topics.map((n) => ["topic", n] as [TagKind, string]), ...data.themes.map((n) => ["theme", n] as [TagKind, string]), ...data.emotions.map((n) => ["mood", n] as [TagKind, string]),
+    // People, topics and moods only. (Places and themes are no longer made; older ones stay as they are.)
+    ...data.people.map((n) => ["person", n] as [TagKind, string]), ...data.topics.map((n) => ["topic", n] as [TagKind, string]), ...data.emotions.map((n) => ["mood", n] as [TagKind, string]),
   ].map(([k, n]) => [k, cleanTagName(n)] as [TagKind, string]).filter(([, n]) => n.length > 0);
   if (wanted.length) {
     const existing = await client.from("journal_tags").select("*").eq("user_id", userId).limit(5000);

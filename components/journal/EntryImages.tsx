@@ -6,7 +6,7 @@ import type { Conversation, JournalImage } from "@/lib/journal/model";
 
 /**
  * Photos on an entry (Journal V1 §19), in Muse's private image storage (owner folder, signed links that expire).
- * Images are never sent to an AI model. Removing one deletes the file after the entry stops referring to it.
+ * Entry photos are never sent to an AI model (photos attached to a message are a separate thing: see MessagePhotos). Removing one deletes the file after the entry stops referring to it.
  */
 export function EntryImages({ conversation: c }: { conversation: Conversation }) {
   const j = useJournal();

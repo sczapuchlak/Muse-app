@@ -84,7 +84,7 @@ function Privacy() {
   }
   return <div className="mj-form">
     <h3 className="mj-section-title">Your journal is private</h3>
-    <p className="mj-note">Entries, memories and photos belong to your account alone; other Muse accounts can’t see them. Photos are never sent to an AI.</p>
+    <p className="mj-note">Entries, memories and photos belong to your account alone; other Muse accounts can’t see them. Entry photos are never sent to an AI. Photos you attach to a message go to your companion with that message only, never again on their own.</p>
     <h3 className="mj-section-title">AI</h3>
     {ai.enabled ? <>
       <p className="mj-note">Replies come from OpenAI ({ai.provider === "mock" ? "local test stand-in" : ai.model}), called from Muse’s server. Each request sends the companion and journal instructions, your preferences, the current conversation and only the memories and entries chosen for it. OpenAI doesn’t train on API data by default and keeps abuse-monitoring logs for up to 30 days.</p>

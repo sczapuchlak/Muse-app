@@ -2,7 +2,8 @@
 import type { ReactNode } from "react";
 import { MuseMark, type MuseMarkIcon, type MuseTone } from "../design/MuseHeading";
 import { MUSE_STAR_PATH } from "../MuseStar";
-import type { Message } from "@/lib/journal/model";
+import type { Message, MessageImage } from "@/lib/journal/model";
+import { MessagePhotos } from "./MessagePhotos";
 
 export const timeLabel = (iso: string, timeZone: string) => { try { return new Date(iso).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", timeZone }); } catch { return ""; } };
 
@@ -12,22 +13,24 @@ export function Prose({ text }: { text: string }) {
   return <>{paras.map((p, i) => <p key={i}>{p}</p>)}</>;
 }
 
-export type ThreadMessage = Pick<Message, "id" | "role" | "body" | "createdAt" | "correctedAt"> & { companionVersionId?: string | null; pending?: boolean; streaming?: boolean; failed?: boolean; marked?: boolean };
+export type ThreadMessage = Pick<Message, "id" | "role" | "body" | "createdAt" | "correctedAt"> & { companionVersionId?: string | null; pending?: boolean; streaming?: boolean; failed?: boolean; marked?: boolean; images?: MessageImage[]; previews?: string[] };
 
 /**
  * The conversation as an editorial dialogue, not chat bubbles. Your words sit on a softly inked page edge in the
  * interface face; the companion answers in the reading face beside its small mark. Both use the full reading column,
  * so long dictated passages read comfortably. Bookmarked messages carry a fine accent.
  */
-export function Thread({ messages, companion, companionFor, timeZone, actions, empty }: {
+export function Thread({ messages, companion, companionFor, timeZone, actions, empty, onReattach }: {
   messages: ThreadMessage[]; companion: { name: string; icon: string; tone: MuseTone } | null; timeZone: string;
   /** Who wrote this reply (a conversation may switch companions); defaults to `companion`. */
   companionFor?: (m: ThreadMessage) => { name: string; icon: string; tone: MuseTone };
   actions?: (m: ThreadMessage) => ReactNode; empty?: ReactNode;
+  /** In an open conversation: attach an earlier photo to the next message. */
+  onReattach?: (img: MessageImage) => void;
 }) {
   if (!messages.length) return <>{empty}</>;
   return <ol className="mj-thread" aria-label="Conversation">
-    {messages.map((m) => { const who = m.role === "assistant" ? companionFor?.(m) ?? companion : null; return <li key={m.id} className="mj-message" data-role={m.role} data-pending={m.pending || undefined} data-streaming={m.streaming || undefined} data-failed={m.failed || undefined} data-marked={m.marked || undefined}>
+    {messages.map((m) => { const who = m.role === "assistant" ? companionFor?.(m) ?? companion : null; return <li key={m.id} className="mj-message" style={who ? ({ "--who-ink": `var(--chart-${who.tone})` } as React.CSSProperties) : undefined} data-role={m.role} data-pending={m.pending || undefined} data-streaming={m.streaming || undefined} data-failed={m.failed || undefined} data-marked={m.marked || undefined}>
       <div className="mj-message-who type-meta">
         {m.role === "assistant" ? <><MuseMark icon={(who?.icon ?? "sparkle") as MuseMarkIcon} tone={who?.tone ?? 5} size="sm" /><span>{who?.name ?? "Companion"}</span></> : <span>You</span>}
         <time dateTime={m.createdAt}>{m.pending ? "Saving…" : m.failed ? "Not saved" : timeLabel(m.createdAt, timeZone)}</time>
@@ -35,6 +38,7 @@ export function Thread({ messages, companion, companionFor, timeZone, actions, e
         {actions && <span className="mj-message-actions">{actions(m)}</span>}
       </div>
       <div className={`mj-message-body ${m.role === "assistant" ? "type-reading" : "type-body"}`}><Prose text={m.body} />{m.streaming && <span className="mj-caret" aria-hidden="true" />}</div>
+      {m.role === "user" && <MessagePhotos images={m.images} previews={m.previews} onReattach={onReattach} />}
     </li>; })}
   </ol>;
 }
