@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { MuseModal } from "../MuseModal";
 import { MuseIcon } from "../MuseIcon";
@@ -16,7 +17,7 @@ export function jumpToHighlight(h: Pick<Bookmark, "id" | "messageId">) {
   return true;
 }
 
-type Selected = { messageId: string; start: number; end: number; text: string; x: number; y: number };
+type Selected = { messageId: string; start: number; end: number; text: string; top: number; left: number; side: boolean };
 /**
  * Select words in a saved conversation and a small "Save highlight" button appears just under the selection. It
  * reads exact positions from the paragraphs (`data-start`), never changes the text, and leaves native copy alone.
@@ -40,21 +41,28 @@ export function SelectionHighlighter({ root, messages, onSave }: { root: HTMLEle
       while (s < e && /\s/.test(msg.body[s])) s++;
       while (e > s && /\s/.test(msg.body[e - 1])) e--;
       if (e - s < 2) { setPick(null); return; }
-      const rect = range.getBoundingClientRect();
-      setPick({ messageId: msg.id, start: s, end: e, text: msg.body.slice(s, e), x: rect.left + rect.width / 2, y: rect.bottom });
+      // Page coordinates (it scrolls with the words): in the empty gutter beside the conversation, level with the
+      // top of the selection; on a narrow screen with no gutter, just under the selection.
+      const first = range.getClientRects()[0] ?? range.getBoundingClientRect(), all = range.getBoundingClientRect();
+      const column = (a.closest(".mj-thread") ?? a).getBoundingClientRect(), card = root.getBoundingClientRect();
+      const PILL = 168, SIDE = 88, gutter = card.right - column.right;
+      const side = gutter >= SIDE + 12;
+      const left = side ? column.right + 10 : Math.min(Math.max(all.left + all.width / 2 - PILL / 2, 8), window.innerWidth - PILL - 8);
+      const top = (side ? first.top - 4 : all.bottom + 10) + window.scrollY;
+      setPick({ messageId: msg.id, start: s, end: e, text: msg.body.slice(s, e), top, left: left + window.scrollX, side });
     };
     const onChange = () => { window.clearTimeout(t); t = window.setTimeout(read, 180); };
-    document.addEventListener("selectionchange", onChange);
-    return () => { document.removeEventListener("selectionchange", onChange); window.clearTimeout(t); };
+    document.addEventListener("selectionchange", onChange); window.addEventListener("resize", onChange);
+    return () => { document.removeEventListener("selectionchange", onChange); window.removeEventListener("resize", onChange); window.clearTimeout(t); };
   }, [root, messages]);
   if (!pick) return null;
-  const left = Math.min(Math.max(pick.x, 90), window.innerWidth - 90), top = Math.min(pick.y + 10, window.innerHeight - 60);
-  return <div className="mj-hl-toolbar" style={{ left, top }} role="toolbar" aria-label="Selection">
-    <button type="button" className="muse-button button-primary" onPointerDown={(e) => e.preventDefault() /* keep the selection */}
+  // Rendered on the page itself, so no animated container can pull it out of place.
+  return createPortal(<div className="mj-hl-pill-wrap" data-side={pick.side || undefined} style={{ top: pick.top, left: pick.left }} role="toolbar" aria-label="Selection">
+    <button type="button" className="mj-hl-pill" aria-label="Save highlight" onPointerDown={(e) => e.preventDefault() /* keep the selection */}
       onClick={() => { onSave(pick); window.getSelection()?.removeAllRanges(); setPick(null); }}>
-      <MuseIcon name="bookmark" size={15} />Save highlight
+      <MuseIcon name="bookmark" size={15} /><span>{pick.side ? "Save" : "Save highlight"}</span>
     </button>
-  </div>;
+  </div>, document.body);
 }
 
 /** One saved highlight: the quote as captured, your note and My tags, and where it came from. */
