@@ -151,7 +151,7 @@ function Playground({ draft, saved, companion, usage, onKeep }: { draft: Words; 
     {!j.ai.enabled ? <p className="mj-note" data-soft>{j.ai.entitled ? "Journal AI isn’t set up yet, so the studio can’t reply. Your instructions still save." : "AI isn’t turned on for your account, so the studio can’t reply. You can still write and save instructions."}</p> : <>
       <div className="mj-test-context">
         <MuseChoiceMenu label="Test in journal" icon="notes" valueLabel={j.state.journals.find((x) => x.id === journalId)?.name ?? "No journal"} selectedIds={journalId ? [journalId] : [""]} options={[{ id: "", label: "No journal" }, ...j.state.journals.map((x) => ({ id: x.id, label: x.name }))]} onSelect={(id) => { setJournalId(id || null); if (!id) setUseContext(false); }} />
-        <label className="mj-toggle"><input type="checkbox" className="check-input" checked={useContext} disabled={!journalId} onChange={(e) => setUseContext(e.target.checked)} /> Test with my journal context</label>
+        <label className="mj-toggle muse-check-row"><input type="checkbox" checked={useContext} disabled={!journalId} onChange={(e) => setUseContext(e.target.checked)} /> Test with my journal context</label>
       </div>
       <p className="mj-note">{useContext ? "This test can read the same memories and recent entries a real conversation in that journal would." : "This test doesn’t see any of your journal entries or memories."} Test chats aren’t saved, don’t count as journaling, and don’t create memories or tags.</p>
       <div className="mj-test-thread">

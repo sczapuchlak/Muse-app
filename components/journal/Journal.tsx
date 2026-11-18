@@ -11,6 +11,7 @@ import { CompanionStudio } from "./CompanionStudio";
 import { HistoryView } from "./HistoryView";
 import { InsightsView } from "./InsightsView";
 import { JournalSettings } from "./JournalSettings";
+import { MuseIcon } from "../MuseIcon";
 import { Sheet } from "./Sheet";
 import type { Journal as JournalRecord } from "@/lib/journal/model";
 import { JournalUiContext, type JournalUi } from "./ui";
@@ -32,6 +33,7 @@ function JournalView() {
   const view = parseTab(params?.get("view")), entry = params?.get("entry") ?? null, studio = params?.get("companion") ?? null;
   const j = useJournal();
   const [settings, setSettings] = useState(false);
+  const [toolbarSlot, setToolbarSlot] = useState<HTMLDivElement | null>(null);
   const [manager, setManager] = useState(params?.get("view") === "journals");
   const [editing, setEditing] = useState<JournalRecord | null>(() => (params?.get("new") === "journal" ? blankJournal(0) : null));
   const go = useCallback((q: Record<string, string | null>, replace = false) => {
@@ -48,8 +50,12 @@ function JournalView() {
     openSettings: () => setSettings(true), openManager: () => setManager(true),
     editJournal: (x) => setEditing(x === "new" ? blankJournal(j.state.journals.length) : x),
     openStudio: (id) => { setManager(false); go({ companion: id }); },
-  }), [go, j.state.journals.length]);
+    toolbarSlot,
+  }), [go, j.state.journals.length, toolbarSlot]);
 
+  // The workspace's toolbar lives in the header; elsewhere (History, Insights, a finished entry) the header keeps
+  // just Preferences.
+  const inWorkspace = j.status.loaded && !j.status.missing && (entry ? Boolean(conversation && conversation.status !== "completed") : view !== "history" && view !== "insights");
   let body: React.ReactNode;
   if (!j.status.loaded) body = <p className="small-label" role="status">Opening your journal…</p>;
   else if (j.status.missing) body = <p className="mj-error" role="alert">The journal isn’t set up in this database yet. (Its migration hasn’t been applied.)</p>;
@@ -62,7 +68,10 @@ function JournalView() {
 
   return <JournalUiContext.Provider value={ui}><main className="muse-page mj-page" data-focused={Boolean(entry && conversation?.status === "completed") || undefined}>
     <MusePageHeader title="Journal">
-      <button type="button" className="muse-button button-ghost" onClick={() => setSettings(true)}>Settings</button>
+      <div className="mj-header-tools">
+        <div className="mj-header-slot" ref={setToolbarSlot} />
+        {!inWorkspace && <button type="button" className="muse-button button-ghost mj-tb-settings" onClick={() => setSettings(true)} aria-label="Journal preferences" title="Preferences"><MuseIcon name="gear" size={17} /><span className="mj-tb-label">Preferences</span></button>}
+      </div>
     </MusePageHeader>
     <MuseSectionNav label="Journal views" current={entry && conversation?.status === "completed" ? "" : entry ? "today" : view} items={journalTabs.map((t) => ({ id: t.id, label: t.label, href: t.id === "today" ? "/journal" : `/journal?view=${t.id}` }))} />
     {j.status.error && <p className="mj-error" role="alert"><span>{j.status.error}</span><button type="button" className="muse-button button-ghost" onClick={j.clearError}>Dismiss</button></p>}
