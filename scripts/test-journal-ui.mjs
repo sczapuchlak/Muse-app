@@ -86,7 +86,7 @@ try{
  check(await has('.mj-blank','Finishing the quilt'),'the blank page invites you back to yesterday’s entry by name (no AI)');
 
  // ---- Scenario A: the companion opens with yesterday's context; then follows a topic change ----
- await click('.mj-ws-bar button','New entry');
+ await click('.mj-header-toolbar button','New entry');
  await until(()=>!!document.querySelector('.mj-workspace')&&[...document.querySelectorAll('.mj-message[data-role=assistant]')].length===1&&!document.querySelector('[data-streaming]'),'opening arrives',undefined,400);
  const opening=await text('.mj-message[data-role=assistant] .mj-message-body');
  check(/Finishing the quilt/.test(opening),'the opening draws on yesterday’s entry (recent context)');
@@ -94,7 +94,7 @@ try{
  const latest=async()=>must(await admin.from('journal_conversations').select('id').eq('user_id',a.id).order('created_at',{ascending:false}).limit(1).single()).id;
  const convId=await latest();
  check(await count('journal_ai_usage',a.id,{kind:'opening'})===1,'New entry made exactly one greeting request');
- await setValue('.mj-live-compose textarea','Totally different topic. I keep thinking about Lisbon and what Alex said about moving there.');
+ await setValue('.mj-ws-page .mj-composer textarea','Totally different topic. I keep thinking about Lisbon and what Alex said about moving there.');
  await click('.mj-live-compose button[type=submit]');
  await until(()=>document.querySelectorAll('.mj-message[data-role=assistant]').length===2&&!document.querySelector('[data-streaming]'),'reply arrives',undefined,400);
  const reply=(await text('.mj-message[data-role=assistant] .mj-message-body')).split('\n').pop();
@@ -105,13 +105,13 @@ try{
  await shoot('02-live-conversation');
 
  // ---- Scenario C: a memory you add is used; corrected words replace it; deleting removes it ----
- await click('.muse-page-header button, header button','Settings').catch(()=>click('button','Settings'));
+ await click('.mj-header-tools .mj-tb-settings');
  await until(()=>!!document.querySelector('#mj-settings'),'settings');
  await click('#mj-settings .muse-segmented button','Memory');
  await setValue('#mj-settings input[aria-label="Add a memory"]','My sister is called Nia');await click('#mj-settings .mj-tag-add button','Add');
  await until(()=>!!document.querySelector('#mj-settings .mj-memory'),'memory listed');
  await click('#mj-settings .muse-close-button, #mj-settings button[aria-label^="Close"]').catch(()=>evaluate(()=>document.querySelector('#mj-settings')?.close()));
- const say=async(words,n)=>{await setValue('.mj-live-compose textarea',words);await click('.mj-live-compose button[type=submit]');await until(n=>document.querySelectorAll('.mj-message[data-role=assistant]').length===n&&!document.querySelector('[data-streaming]'),'reply '+n,n,400);return (await text('.mj-message[data-role=assistant] .mj-message-body')).split('\n').pop();};
+ const say=async(words,n)=>{await setValue('.mj-ws-page .mj-composer textarea',words);await click('.mj-live-compose button[type=submit]');await until(n=>document.querySelectorAll('.mj-message[data-role=assistant]').length===n&&!document.querySelector('[data-streaming]'),'reply '+n,n,400);return (await text('.mj-message[data-role=assistant] .mj-message-body')).split('\n').pop();};
  check(/Remembered: My sister is called Nia/.test(await say('Thinking about family today.',3)),'a confirmed memory reaches the next reply');
  const mem=must(await a.client.from('journal_memories').select('*').single());
  must(await a.client.from('journal_memories').update({body:'My sister is called Nina'}).eq('id',mem.id).select('id'));
@@ -122,17 +122,17 @@ try{
 
  // ---- Finish & Save → analysis into real tags ----
  // ---- Bottom actions: once you've written, Finish entry and Go deeper sit side by side, equal width ----
- const pair=await evaluate(()=>{const b=[...document.querySelectorAll('.mj-live-compose .mj-composer-bar>button')];const r=b.map(x=>x.getBoundingClientRect());return {labels:b.map(x=>x.textContent.trim()),same:r.length===2&&Math.abs(r[0].width-r[1].width)<2&&Math.abs(r[0].top-r[1].top)<2,top:!!document.querySelector('.mj-ws-bar .mj-finish-button')};});
+ const pair=await evaluate(()=>{const b=[...document.querySelectorAll('.mj-live-compose .mj-composer-bar>button')];const r=b.map(x=>x.getBoundingClientRect());return {labels:b.map(x=>x.textContent.trim()),same:r.length===2&&Math.abs(r[0].width-r[1].width)<2&&Math.abs(r[0].top-r[1].top)<2,top:!!document.querySelector('.mj-header-toolbar .mj-finish-button')};});
  check(pair.labels[0]==='Finish entry'&&/^Go deeper/.test(pair.labels[1])&&pair.same&&!pair.top,'Finish entry and Go deeper share the bottom row, equal width; nothing in the top bar');
  // ---- Voice typing: a mic in the field (a stand-in recognizer; nothing listens, nothing is paid) ----
- await setValue('.mj-live-compose textarea','I walked to the water');
- await evaluate(()=>{const t=document.querySelector('.mj-live-compose textarea');t.focus();t.setSelectionRange(t.value.length,t.value.length);});
+ await setValue('.mj-ws-page .mj-composer textarea','I walked to the water');
+ await evaluate(()=>{const t=document.querySelector('.mj-ws-page .mj-composer textarea');t.focus();t.setSelectionRange(t.value.length,t.value.length);});
  await click('.mj-live-compose .mj-mic');
  await until(()=>!!document.querySelector('.mj-mic[data-listening]')&&!!window.__rec,'listening');
  await evaluate(()=>window.__rec.say([['and saw',false]]));
- check(await evaluate(()=>document.querySelector('.mj-live-compose textarea').value)==='I walked to the water and saw','spoken words appear live at the caret');
+ check(await evaluate(()=>document.querySelector('.mj-ws-page .mj-composer textarea').value)==='I walked to the water and saw','spoken words appear live at the caret');
  await evaluate(()=>window.__rec.say([['and saw the sea.',true]]));
- check(await evaluate(()=>document.querySelector('.mj-live-compose textarea').value)==='I walked to the water and saw the sea.','interim words are replaced, never doubled, as speech settles');
+ check(await evaluate(()=>document.querySelector('.mj-ws-page .mj-composer textarea').value)==='I walked to the water and saw the sea.','interim words are replaced, never doubled, as speech settles');
  check(await has('.mj-live-compose .mj-composer-hint','Listening'),'the field says it is listening');
  await click('.mj-live-compose .mj-mic');
  await until(()=>!document.querySelector('.mj-mic[data-listening]'),'stopped listening');
@@ -140,7 +140,7 @@ try{
  await until(()=>!document.querySelector('.mj-mic[data-listening]'),'stopped after error');
  check(await has('.mj-live-compose .mj-composer-hint','Microphone access is off'),'a blocked microphone explains itself, and the words stay');
  await shoot('journal-paired-actions');
- await setValue('.mj-live-compose textarea','');
+ await setValue('.mj-ws-page .mj-composer textarea','');
  await click('.mj-live-compose .mj-composer-secondary','Finish entry');await click('.mj-finish button','Finish & save');
  await until(()=>!!document.querySelector('.mj-saved')&&!!document.querySelector('.mj-blank'),'fresh page after saving');
  check(true,'Finish & save turns to a fresh page and links the saved entry');
@@ -191,24 +191,28 @@ try{
  await shoot('04-entry-conversation',true);
 
  // ---- History: search across messages, click a tag, combined filters, week view and date jump ----
- await go('/journal?view=history','!!document.querySelector(".mj-history-view .mj-card")','history');
- check((await evaluate(()=>document.querySelectorAll('.mj-history-view .mj-card').length))===4,'four entries across three weeks');
+ await go('/journal?view=history','!!document.querySelector(".mj-history-view .mj-strip")','history');
+ check(await has('.mj-history-view .muse-segmented button[aria-pressed="true"], .mj-history-view .muse-segmented [aria-checked="true"]','Week')||await evaluate(()=>!!document.querySelector('.mj-strip')),'History opens on this week');
+ await click('.mj-history-view .muse-segmented button','All');await until(()=>!!document.querySelector('.mj-history-view .mj-row'),'all view');
+ check((await evaluate(()=>document.querySelectorAll('.mj-history-view .mj-row').length))===4,'four entries across three weeks');
  await setValue('.mj-history-view input[type=search]','colours');
- await until(()=>document.querySelectorAll('.mj-history-view .mj-card').length===1,'search narrows');
- check(await has('.mj-card mark','colours'),'full-text search matches words inside the original messages, highlighted');
+ await until(()=>document.querySelectorAll('.mj-history-view .mj-row').length===1,'search narrows');
+ check(await has('.mj-row mark','colours'),'full-text search matches words inside the original messages, highlighted');
  await setValue('.mj-history-view input[type=search]','');
- await go(`/journal?view=history&tag=${alex.id}`,'!!document.querySelector(".mj-tag-banner")','tag page');
- check((await evaluate(()=>document.querySelectorAll('.mj-history-view .mj-card').length))===3,'Alex opens every entry with Alex, across dates and journals');
+ await go(`/journal?view=history&tag=${alex.id}`,'!!document.querySelector(".mj-tag-banner")&&!!document.querySelector(".mj-row")','tag page');
+ check((await evaluate(()=>document.querySelectorAll('.mj-history-view .mj-row').length))===3,'Alex opens every entry with Alex, across dates and journals');
  await menu('Journals','My Journal');await click('.popover-footer button, .muse-choice-popover button','Done').catch(()=>send('Input.dispatchKeyEvent',{type:'keyDown',key:'Escape',code:'Escape',windowsVirtualKeyCode:27}));await wait(200);
- check((await evaluate(()=>document.querySelectorAll('.mj-history-view .mj-card').length))===2,'person + journal combine');
+ check((await evaluate(()=>document.querySelectorAll('.mj-history-view .mj-row').length))===2,'person + journal combine');
  await pickDate('From',today);
- check((await evaluate(()=>document.querySelectorAll('.mj-history-view .mj-card').length))===1,'person + journal + date range combine');
+ check((await evaluate(()=>document.querySelectorAll('.mj-history-view .mj-row').length))===1,'person + journal + date range combine');
  await click('.mj-filters button','Clear all');
  await click('.mj-history-view .muse-segmented button','Week');
- await until(()=>!!document.querySelector('.mj-days'),'week view');
- check(await has('.mj-day[data-today] .mj-card')&&(await evaluate(()=>document.querySelectorAll('.mj-day').length))<=7,'the week view groups entries by day (today included) and folds empty days');
- await pickDate('Go to a date',day(-15));
- check(await has('.mj-day[data-focus] .mj-card','Dinner with Alex'),'the date picker jumps straight to any day');
+ await until(()=>!!document.querySelector('.mj-strip'),'week view');
+ check(await evaluate(()=>document.querySelectorAll('.mj-strip-day').length===7&&!!document.querySelector('.mj-strip-day[data-today][data-on]')&&!!document.querySelector('.mj-week .mj-row')),'the week view: seven days, today lit, this week’s entries as rows');
+ check(await has('.mj-week-reflection'),'the week’s reflection lives with the week');
+ await pickDate('Jump to a date',day(-15));
+ await until(()=>[...document.querySelectorAll('.mj-week .mj-row')].some(x=>x.textContent.includes('Dinner with Alex')),'jumped');
+ check(true,'the date picker jumps straight to any day');
  check(!(await overflow()),'desktop History with every filter has no sideways scrolling');
  await shoot('05-history-week');
  // Duplicate prevention and merge with alias.
@@ -258,9 +262,9 @@ try{
  // ---- Scenario D: a draft survives a reload ----
  await go('/journal','!!document.querySelector(".mj-workspace .mj-composer textarea")','workspace');
  const long=Array.from({length:60},(_,i)=>`Sentence ${i} of a long dictated thought about the day.`).join(' ');
- await setValue('.mj-live-compose textarea',long);await wait(2200);
- await go('/journal','!!document.querySelector(".mj-live-compose textarea")','workspace again');
- check((await evaluate(()=>document.querySelector('.mj-live-compose textarea').value)).length===long.length,'an unsent long draft is still there after reloading');
+ await setValue('.mj-ws-page .mj-composer textarea',long);await wait(2200);
+ await go('/journal','!!document.querySelector(".mj-ws-page .mj-composer textarea")','workspace again');
+ check((await evaluate(()=>document.querySelector('.mj-ws-page .mj-composer textarea').value)).length===long.length,'an unsent long draft is still there after reloading');
  check(await count('journal_conversations',a.id,{status:'draft'})===1,'and it is saved as a resumable draft entry for other devices');
 
  // ---- Scenario H: the budget stops new AI requests; writing still works ----
@@ -268,10 +272,10 @@ try{
  await evaluate(()=>localStorage.clear());must(await admin.from('journal_conversations').delete().eq('user_id',a.id).eq('status','draft').select('id'));
  await go('/journal','!!document.querySelector(".mj-workspace .mj-composer textarea")','workspace budget');
  const before2=await count('journal_conversations',a.id);
- await click('.mj-ws-bar button','New entry');
+ await click('.mj-header-toolbar button','New entry');
  await until(()=>/budget/.test(document.querySelector('.mj-greet-note')?.textContent??''),'greeting falls back',undefined,300);
  check(await count('journal_conversations',a.id)===before2,'with the budget used up, New entry falls back to a blank page and leaves no empty entry');
- await setValue('.mj-live-compose textarea','Writing still works without AI.');await click('.mj-live-compose button[type=submit]');
+ await setValue('.mj-ws-page .mj-composer textarea','Writing still works without AI.');await click('.mj-live-compose button[type=submit]');
  await until(()=>/budget/.test(document.querySelector('.mj-workspace .mj-error')?.textContent??''),'reply budget stop',undefined,300);
  check(true,'an exhausted budget stops replies with a clear message');
  const live2=await latest();
@@ -286,9 +290,9 @@ try{
  await viewport(390,844,true);
  for(const [path,ready,name] of [['/journal','!!document.querySelector(".mj-workspace")','08-phone-workspace'],[`/journal?entry=${convId}`,'!!document.querySelector(".mj-entry")','09-phone-entry'],['/journal?view=history','!!document.querySelector(".mj-history-view")','10-phone-history'],[`/journal?companion=${thought.id}`,'!!document.querySelector(".mj-studio")','11-phone-studio-sheet'],[`/journal?entry=${live2}`,'!!document.querySelector(".mj-workspace .mj-message")','12-phone-live']]){
   await go(path,ready,name);check(!(await overflow()),`${name}: no sideways scrolling`);await shoot(name);}
- await evaluate(()=>{const t=document.querySelector('.mj-live-compose textarea');t.focus();t.scrollIntoView({block:'end'});});await wait(300);
+ await evaluate(()=>{const t=document.querySelector('.mj-ws-page .mj-composer textarea');t.focus();t.scrollIntoView({block:'end'});});await wait(300);
  check(await evaluate(()=>{const b=document.querySelector('.mj-live-compose button[type=submit]').getBoundingClientRect(),nav=document.querySelector('.muse-bottom-navigation')?.getBoundingClientRect();return b.width>0&&b.bottom<=innerHeight&&(!nav||b.bottom<=nav.top);}),'Send stays visible above the phone tab bar');
- check(await evaluate(()=>getComputedStyle(document.querySelector('.mj-live-compose textarea')).fontSize==='16px'),'the phone composer is 16px, so iOS doesn’t zoom');
+ check(await evaluate(()=>getComputedStyle(document.querySelector('.mj-ws-page .mj-composer textarea')).fontSize==='16px'),'the phone composer is 16px, so iOS doesn’t zoom');
  await viewport(1280);
  for(const theme of ['iridescent','prism-noir']){await evaluate(t=>localStorage.setItem('muse.theme',t),theme);await go(`/journal?entry=${convId}`,'!!document.querySelector(".mj-entry")','theme '+theme);await shoot(`13-theme-${theme}`);}
  await evaluate(()=>localStorage.removeItem('muse.theme'));
@@ -304,7 +308,7 @@ try{
  const statusB=await evaluate(async()=>(await fetch('/api/journal/ai')).json());check(statusB.enabled===false&&statusB.entitled===false,'the AI status says not entitled');
  const testB=await evaluate(async()=>{const r=await fetch('/api/journal/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'test',requestKey:crypto.randomUUID(),companion:{name:'x',instructions:'x'},messages:[{role:'user',body:'hi'}]})});return {status:r.status,body:await r.json()};});
  check(testB.status===403&&testB.body.code==='not-entitled','a direct API call without entitlement is blocked on the server');
- await setValue('.mj-live-compose textarea','My own private diary line.');await click('.mj-live-compose button[type=submit]');
+ await setValue('.mj-ws-page .mj-composer textarea','My own private diary line.');await click('.mj-live-compose button[type=submit]');
  await until(()=>!!document.querySelector('.mj-workspace .mj-message[data-role=user]:not([data-pending])'),'b saved');
  check(await count('journal_messages',b.id,{role:'user'})===1&&await count('journal_messages',b.id,{role:'assistant'})===0,'a non-AI account journals privately with no AI replies');
  const crossRead=await b.client.from('journal_conversations').select('id').eq('id',convId);check((crossRead.data??[]).length===0,'RLS: the owner’s entry can’t be read by id');

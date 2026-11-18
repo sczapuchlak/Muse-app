@@ -7,14 +7,14 @@ import {renderToStaticMarkup} from 'react-dom/server';
 import {load,root} from './helpers.mjs';
 
 const read=file=>readFileSync(resolve(root,file),'utf8');
-const {navigation,desktopGroups,isActiveItem}=load('lib/navigation');
+const {navigation,allDestinations,desktopGroups,isActiveItem}=load('lib/navigation');
 const group=name=>navigation.filter(item=>item.group===name).map(item=>[item.label,item.href,item.icon]);
 
 test('sidebar groups match the approved Everyday / Life / Whimsy structure and icons',()=>{
  assert.deepEqual(desktopGroups,['Everyday','Life','Whimsy']);
  assert.deepEqual(group('Everyday'),[['Daily Edit','/','home'],['Planner','/planner','calendar'],['Rituals','/rituals','flame'],['Journal','/journal','journal'],['Wellness','/nourish','heart-pulse'],['Insights','/insights','chart']]);
  assert.deepEqual(group('Life'),[['Envision','/envision','envision'],['Money','/money','money'],['Mindspace','/notes','brain'],['Books','/collections','bookshelf']]);
- assert.deepEqual(group('Whimsy'),[['Astrology','/whimsy/observatory','orbit'],['Tarot','/whimsy/tarot','tarot'],['Dreams','/whimsy/dreamscapes','dreams'],['Fortune & Fun','/whimsy/side-quests','wand']]);
+ assert.deepEqual(group('Whimsy'),[['Astrology','/whimsy/observatory','orbit'],['Tarot','/whimsy/tarot','tarot'],['Dreams','/whimsy/dreamscapes','dreams']],'Fortune & Fun is hidden for now (lib/module-visibility.ts)');
  assert.equal(navigation.find(item=>item.id==='settings').icon,'gear');
  assert.ok(!navigation.some(item=>/Reflect|Weekly Side Quests|Fortunes & Nonsense|^Whimsy$|^Mood$/.test(item.group+' '+item.label)));
  const icons=read('components/MuseIcon.tsx');
@@ -22,9 +22,10 @@ test('sidebar groups match the approved Everyday / Life / Whimsy structure and i
 });
 
 test('active destinations cover nested and grouped routes',()=>{
- const active=path=>navigation.filter(item=>isActiveItem(path,item)).map(item=>item.id);
- assert.deepEqual(active('/whimsy/side-quests'),['fortune-fun']);
- assert.deepEqual(active('/whimsy/fortunes'),['fortune-fun']);
+ const active=path=>navigation.filter(item=>isActiveItem(path,item)).map(item=>item.id),owner=path=>allDestinations.filter(item=>isActiveItem(path,item)).map(item=>item.id);
+ // Hidden for now: the routes still belong to Fortune & Fun, but nothing in navigation lights up for them.
+ assert.deepEqual(owner('/whimsy/side-quests'),['fortune-fun']);assert.deepEqual(active('/whimsy/side-quests'),[]);
+ assert.deepEqual(owner('/whimsy/fortunes'),['fortune-fun']);assert.deepEqual(active('/whimsy/fortunes'),[]);
  assert.deepEqual(active('/whimsy/tarot/the-fool'),['tarot']);
  assert.deepEqual(active('/whimsy/dreamscapes/encyclopedia/water'),['dreams']);
  assert.deepEqual(active('/whimsy/observatory'),['astrology']);

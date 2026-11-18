@@ -214,3 +214,7 @@
 .muse-money-spending-insights .muse-money-track>li{grid-template-rows:12px minmax(64px,1fr) auto}
 .muse-money-spending-insights .muse-money-track-payday{align-self:stretch}
 .muse-money-spending-insights .muse-money-facts{margin-top:14px}
+/* The selected paycheck's gradient ring, glow and hover lift need room: the scrolling row clips everything past its
+   padding box, so it carries breathing room inside and gives it back with negative margins (no layout shift). */
+.muse-money-paycheck-choices{padding:8px 8px 26px!important;margin:-8px -8px calc(var(--space-4,16px) - 26px)!important;scroll-padding-inline:8px}
+.muse-paycheck-navigation .muse-money-paycheck-choices{padding:0!important;margin:0!important}

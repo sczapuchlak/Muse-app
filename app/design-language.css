@@ -280,3 +280,12 @@
 /* The icon tile tilts on hover; the pill never clips it. */
 .muse-page :is(.muse-page-tabs,.muse-section-nav,.muse-whimsy-navigation,.muse-cosmic-navigation,.muse-books-tabs,.muse-tarot-tabs,.muse-dream-tabs,.muse-fortune-tabs,.muse-fun-cabinet):has(.muse-nav-mark)>:is(a,button){overflow:visible}
 :is(a,button):hover>.muse-nav-mark.muse-mark{transform:rotate(-6deg) scale(1.04)}
+
+/* A page's tabs that fit on a phone never pretend to scroll: three or fewer share the row in equal columns, with no
+   edge fade and nothing cut off. Longer rows keep the scrolling treatment above. */
+@media(max-width:600px){
+ .muse-page .muse-section-nav:has(.muse-nav-mark):not(:has(>:nth-child(4))){display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);width:100%;overflow:visible;padding:5px;-webkit-mask-image:none;mask-image:none}
+ .muse-page .muse-section-nav:has(.muse-nav-mark):not(:has(>:nth-child(4)))>:is(a,button){min-width:0;justify-content:center;gap:7px;padding:5px 8px 5px 5px;font-size:.82rem}
+ .muse-page .muse-section-nav:has(.muse-nav-mark):not(:has(>:nth-child(4)))>:is(a,button)>span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+ .muse-page .muse-section-nav:has(.muse-nav-mark):not(:has(>:nth-child(4))) .muse-nav-mark.muse-mark{width:26px;height:26px;border-radius:9px}
+}

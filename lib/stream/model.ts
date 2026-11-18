@@ -1,3 +1,4 @@
+import {hiddenStreamKinds,hiddenStreamShortcuts} from "@/lib/module-visibility";
 /**
  * Stream of Consciousness (#27): shared vocabulary for posts, audiences, reactions and the composer.
  * The database is the authority on every rule here; these lists only drive the interface.
@@ -22,7 +23,7 @@ export type StreamSourceKind='book'|'media'|'mood'|'dream'|'tarot-reading'|'ritu
 export const retiredKinds:StreamSourceKind[]=['money-milestone'];
 /** Composer shortcuts: each accepts only the record types that belong to it (mirrors the database check). */
 /** `only` narrows a shared record type to this shortcut (albums are media but belong to Listening). */
-export const shortcuts:{id:StreamCategory;label:string;icon:MuseIconName;kinds:StreamSourceKind[];home:{href:string;label:string};only?:(group:string)=>boolean}[]=[
+const allShortcuts:{id:StreamCategory;label:string;icon:MuseIconName;kinds:StreamSourceKind[];home:{href:string;label:string};only?:(group:string)=>boolean}[]=[
  {id:'reading',label:'Reading',icon:'book',kinds:['book'],home:{href:'/collections?kind=book',label:'Books'}},
  {id:'watching',label:'Watching',icon:'film',kinds:['media'],home:{href:'/collections',label:'Collections'},only:group=>group!=='Albums'},
  {id:'feeling',label:'Feeling',icon:'mood',kinds:['mood'],home:{href:'/mood',label:'Mood'}},
@@ -35,11 +36,14 @@ export const shortcuts:{id:StreamCategory;label:string;icon:MuseIconName;kinds:S
  {id:'fortunes',label:'Fortunes',icon:'favorite',kinds:['fortune'],home:{href:'/whimsy/fortunes',label:'Fortunes'}},
  {id:'astrology',label:'Astrology',icon:'orbit',kinds:['astrology'],home:{href:'/whimsy/observatory',label:'Observatory'}},
 ];
+/** Offered shortcuts: hidden modules (lib/module-visibility.ts) aren't offered for new posts; earlier posts still show. */
+export const shortcuts=allShortcuts.filter(s=>!hiddenStreamShortcuts.has(s.id)).map(s=>({...s,kinds:s.kinds.filter(k=>!hiddenStreamKinds.has(k))}));
 /** The first five are the classic shortcuts; the rest sit behind "More". */
 export const primaryShortcutCount=5;
 /** Retired categories: earlier posts still find their label and icon; they are never offered for new posts. */
 const retiredShortcuts:typeof shortcuts=[{id:'money',label:'Money milestone',icon:'money',kinds:['money-milestone'],home:{href:'/money',label:'Money'}}];
-export const shortcutById=(id:string|null|undefined)=>shortcuts.find(s=>s.id===id)??retiredShortcuts.find(s=>s.id===id);
+/** Rendering earlier posts still knows hidden shortcuts. */
+export const shortcutById=(id:string|null|undefined)=>allShortcuts.find(s=>s.id===id)??retiredShortcuts.find(s=>s.id===id);
 /** The original feed filters. */
 export const feedFilters:{id:string|null;label:string}[]=[{id:null,label:'All'},{id:'reading-watching',label:'Reading & Watching'},{id:'life',label:'Life Updates'},{id:'whimsy',label:'Whimsy'},{id:'celebrations',label:'Celebrations'}];
 

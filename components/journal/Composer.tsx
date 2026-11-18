@@ -1,5 +1,6 @@
 "use client";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { MuseIcon } from "../MuseIcon";
 import { wordCount } from "@/lib/journal/model";
 import { useDictation } from "./useDictation";
@@ -14,11 +15,14 @@ export function clearLocalDraft(key: string) { try { localStorage.removeItem(dra
  * `onDraft` — saves a server draft after a pause and whenever the page is hidden. Enter sends on a desktop keyboard;
  * on a phone Enter is a new line and the Send button sends. Text clears only after the message is saved.
  */
-export function Composer({ storageKey, initial = "", placeholder, disabled, busy, onSend, onDraft, label = "Write or dictate", sendLabel = "Send", hint, secondary }: {
+export function Composer({ storageKey, initial = "", placeholder, disabled, busy, onSend, onDraft, label = "Write or dictate", sendLabel = "Send", hint, secondary, dock }: {
   storageKey: string; initial?: string; placeholder: string; disabled?: boolean; busy?: boolean; label?: string; sendLabel?: string; hint?: string;
   onSend: (text: string) => Promise<boolean>; onDraft?: (text: string) => void;
   /** A second action paired with Send as two equal buttons (the workspace's "Finish entry" beside "Go deeper"). */
   secondary?: { label: string; onClick: () => void; disabled?: boolean };
+  /** Where the mic, status and buttons sit (the bottom of the workspace). The words themselves stay in the page, right
+   *  after the conversation, so nothing walls off the bottom of the screen. */
+  dock: HTMLElement | null;
 }) {
   const [text, setText] = useState(() => readLocalDraft(storageKey) || initial);
   const ref = useRef<HTMLTextAreaElement>(null), timer = useRef<number | undefined>(undefined), latest = useRef(text), sentDraft = useRef(initial);
@@ -67,22 +71,25 @@ export function Composer({ storageKey, initial = "", placeholder, disabled, busy
   const desktop = () => typeof window !== "undefined" && window.matchMedia("(hover: hover) and (pointer: fine)").matches;
   const words = wordCount(text);
   const status = voice.listening ? "Listening… tap the mic again to stop." : voice.error ? voice.error : words ? `${words} ${words === 1 ? "word" : "words"} · saved on this device` : hint ?? (voice.supported ? "Type, or tap the mic to speak." : "Type, or tap the keyboard’s microphone to dictate.");
-  return <form className="mj-composer" data-paired={secondary ? true : undefined} onSubmit={(e) => { e.preventDefault(); void send(); }}>
-    <label className="sr-only" htmlFor={`mj-composer-${storageKey}`}>{label}</label>
-    <div className="mj-composer-field" data-listening={voice.listening || undefined}>
-      <textarea ref={ref} id={`mj-composer-${storageKey}`} value={text} rows={3} placeholder={placeholder} disabled={disabled} enterKeyHint="enter" autoCapitalize="sentences" autoCorrect="on" spellCheck
+  const formId = `mj-composer-${storageKey}-form`;
+  return <>
+    <form id={formId} className="mj-composer" data-listening={voice.listening || undefined} onSubmit={(e) => { e.preventDefault(); void send(); }}>
+      <label className="sr-only" htmlFor={`mj-composer-${storageKey}`}>{label}</label>
+      <textarea ref={ref} id={`mj-composer-${storageKey}`} value={text} rows={2} placeholder={placeholder} disabled={disabled} enterKeyHint="enter" autoCapitalize="sentences" autoCorrect="on" spellCheck
         onChange={(e) => { voice.cancel(); change(e.target.value); }}
         onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing && desktop()) { e.preventDefault(); void send(); } }} />
+    </form>
+    {dock && createPortal(<div className="mj-composer-dock" data-paired={secondary ? true : undefined}>
       <div className="mj-composer-tools" data-voice={voice.supported || undefined}>
         {voice.supported && <button type="button" className="mj-mic" data-listening={voice.listening || undefined} aria-pressed={voice.listening} disabled={disabled}
           aria-label={voice.listening ? "Stop voice typing" : "Voice typing"} title={voice.listening ? "Stop voice typing" : "Tap to speak"}
           onPointerDown={(e) => e.preventDefault() /* keep the caret where it is */} onClick={toggleVoice}><MuseIcon name="mic" size={18} /></button>}
         <small className="mj-composer-hint" aria-live="polite" data-alert={voice.error ? true : undefined} data-live={voice.listening || voice.error ? true : undefined}>{status}</small>
       </div>
-    </div>
-    <div className="mj-composer-bar">
-      {secondary && <button type="button" className="muse-button mj-composer-secondary" disabled={secondary.disabled} onClick={() => { voice.cancel(); secondary.onClick(); }}>{secondary.label}</button>}
-      <button type="submit" className="muse-button button-primary mj-send" disabled={disabled || busy || !text.trim()}>{busy ? "Sending…" : sendLabel}<MuseIcon name="arrow" size={16} /></button>
-    </div>
-  </form>;
+      <div className="mj-composer-bar">
+        {secondary && <button type="button" className="muse-button mj-composer-secondary" disabled={secondary.disabled} onClick={() => { voice.cancel(); secondary.onClick(); }}>{secondary.label}</button>}
+        <button type="submit" form={formId} className="muse-button button-primary mj-send" disabled={disabled || busy || !text.trim()}>{busy ? "Sending…" : sendLabel}<MuseIcon name="arrow" size={16} /></button>
+      </div>
+    </div>, dock)}
+  </>;
 }

@@ -14,10 +14,10 @@ import { WeekConstellation } from "./JournalArt";
  * reflection is optional, made only when you ask, saved, and shown again without another request. Days without
  * entries stay empty.
  */
-export function InsightsView({ open }: { open: (id: string) => void }) {
+export function InsightsView({ open, initialWeek }: { open: (id: string) => void; initialWeek?: string | null }) {
   const j = useJournal();
   const { state, today, ai } = j;
-  const [start, setStart] = useState(() => weekStart(today));
+  const [start, setStart] = useState(() => weekStart(initialWeek && /^\d{4}-\d{2}-\d{2}$/.test(initialWeek) && initialWeek <= today ? initialWeek : today));
   const [loadedReport, setLoadedReport] = useState<{ start: string; report: Report | null } | null>(null);
   const report = loadedReport?.start === start ? loadedReport.report : null;
   const setReport = (r: Report | null) => setLoadedReport({ start, report: r });

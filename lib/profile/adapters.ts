@@ -1,3 +1,4 @@
+import {hiddenShowcaseKinds} from "@/lib/module-visibility";
 /**
  * Safe sharing adapters (#26, reusable by Stream #27). Each module explicitly declares what may be shown and turns
  * one private record into a small display card containing only the fields the owner approved. Visitors only ever
@@ -71,7 +72,7 @@ export const adapters:Record<SourceKind,Adapter>={
  victory:{kind:'victory',label:'Little victories',icon:'sparkle',privacy:'Words you write yourself. Money milestones never include amounts or accounts.',
   fields:[{id:'title',label:'Victory',default:true,locked:true}],candidates:()=>[],display:()=>null},
 };
-export const adapterOrder:SourceKind[]=['book','media','curated','tarot-card','dream-symbol','ritual','side-quest','victory'];
+export const adapterOrder:SourceKind[]=(['book','media','curated','tarot-card','dream-symbol','ritual','side-quest','victory'] as SourceKind[]).filter(k=>!hiddenShowcaseKinds.has(k));
 export const defaultApproved=(kind:SourceKind)=>adapters[kind].fields.filter(f=>f.default||f.locked).map(f=>f.id);
 
 /** A written victory. Money milestones are flagged and checked for amounts; nothing is linked to Money records. */
