@@ -5,7 +5,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database, Json } from "@/lib/database.types";
 import {
-  analysisFromRow, bookmarkFromRow, companionFromRow, companionToRow, conversationFromRow, conversationMetaToRow, journalFromRow, journalToRow, memoryFromRow, messageFromRow, preferencesFromRow, tagFromRow, versionFromRow,
+  analysisFromRow, bookmarkFromRow, companionFromRow, companionToRow, conversationFromRow, conversationMetaToRow, journalFromRow, journalToRow, memoryFromRow, messageFromRow, messageImageFromRow, type MessageImage, preferencesFromRow, tagFromRow, versionFromRow,
   cleanTagName, type Analysis, type Bookmark, type Companion, type CompanionVersion, type Conversation, type EntryLink, type EntryTag, type Journal, type Memory, type Message, type Mode, type Preferences, type Report, type Tag, type TagKind, reportFromRow, type Correction,
 } from "./model";
 import { companionPresets, journalPresets } from "./presets";
@@ -101,7 +101,25 @@ export async function createConversation(client: Client, userId: string, o: { id
 export async function saveDraft(client: Client, userId: string, id: string, text: string) {
   must(await client.from("journal_conversations").update({ draft: text.slice(0, 100000), draft_updated_at: new Date().toISOString() }).eq("id", id).eq("user_id", userId).neq("status", "completed").select("id"));
 }
-export async function deleteConversation(client: Client, userId: string, id: string) { must(await client.from("journal_conversations").delete().eq("id", id).eq("user_id", userId).select("id")); }
+export async function deleteConversation(client: Client, userId: string, id: string) {
+  must(await client.from("journal_conversations").delete().eq("id", id).eq("user_id", userId).select("id"));
+  // Its photos (entry photos and message photos) live in the entry's own private folder; clear it too. Best effort:
+  // the entry is already gone, and a leftover file is unreachable without its row.
+  try {
+    const bucket = client.storage.from(IMAGE_BUCKET), folder = `${userId}/${id}`;
+    const listed = await bucket.list(folder, { limit: 1000 });
+    const names = (listed.data ?? []).map((f) => `${folder}/${f.name}`);
+    if (names.length) await bucket.remove(names);
+  } catch { /* storage unavailable: files stay private and unreferenced */ }
+}
+export const IMAGE_BUCKET = "constellation-images";
+/** Links uploaded photos to the message they were sent with (after the message is saved). */
+export async function addMessageImages(client: Client, userId: string, conversationId: string, messageId: string, images: Omit<MessageImage, "id" | "messageId">[]): Promise<MessageImage[]> {
+  if (!images.length) return [];
+  const rows = images.map((i) => ({ user_id: userId, conversation_id: conversationId, message_id: messageId, position: i.position, path: i.path, thumbnail_path: i.thumbnailPath, width: i.width, height: i.height, mime: i.mime }));
+  // Rows are never updated (no update permission at all), so this is a plain insert; a message's photos are linked once.
+  return must(await client.from("journal_message_images").insert(rows).select("*")).map(messageImageFromRow);
+}
 export async function updateMeta(client: Client, userId: string, c: Conversation): Promise<Conversation> {
   return conversationFromRow(one(await client.from("journal_conversations").update(conversationMetaToRow(c)).eq("id", c.id).eq("user_id", userId).eq("revision", c.revision).select("*").maybeSingle()));
 }
@@ -115,11 +133,14 @@ export async function refreshConversation(client: Client, userId: string, id: st
 }
 
 export async function loadMessages(client: Client, userId: string, conversationId: string): Promise<{ messages: Message[]; corrections: Correction[] }> {
-  const [m, c] = await Promise.all([
+  const [m, c, im] = await Promise.all([
     client.from("journal_messages").select("*").eq("user_id", userId).eq("conversation_id", conversationId).order("created_at").limit(5000),
     client.from("journal_message_corrections").select("id,message_id,previous_body,corrected_at,journal_messages!inner(conversation_id)").eq("user_id", userId).eq("journal_messages.conversation_id", conversationId).order("corrected_at"),
+    client.from("journal_message_images").select("*").eq("user_id", userId).eq("conversation_id", conversationId).order("position"),
   ]);
-  return { messages: must(m).map(messageFromRow), corrections: must(c).map((x) => ({ id: x.id, messageId: x.message_id, previousBody: x.previous_body, correctedAt: x.corrected_at })) };
+  // A database without the photos table yet (an older environment) still loads the conversation.
+  const images = (im.error ? [] : im.data ?? []).map(messageImageFromRow);
+  return { messages: must(m).map(messageFromRow).map((x) => { const mine = images.filter((i) => i.messageId === x.id); return mine.length ? { ...x, images: mine } : x; }), corrections: must(c).map((x) => ({ id: x.id, messageId: x.message_id, previousBody: x.previous_body, correctedAt: x.corrected_at })) };
 }
 /** Saves one of your messages. The id comes from the device, so a retried save never makes a second copy. */
 export async function addMessage(client: Client, userId: string, o: { id: string; conversationId: string; body: string; localDate: string }): Promise<Message> {

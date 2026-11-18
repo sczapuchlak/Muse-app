@@ -10,6 +10,7 @@ import { useMuseSpark } from "../MuseSpark";
 import { Thread, Prose, type ThreadMessage } from "./Thread";
 import { EntryImages } from "./EntryImages";
 import { TagEditor } from "./TagEditor";
+import { MUSE_STAR_PATH } from "../MuseStar";
 import { EntryLinks } from "./EntryLinks";
 import { StarRule } from "./JournalArt";
 import { tagsFor, useJournal } from "./useJournal";
@@ -26,7 +27,7 @@ type Tab = "conversation" | "analysis";
 /**
  * A finished entry (addendum §2–5). Conversation is the original dialogue, read-only, with explicit corrections that
  * keep the earlier words, passage bookmarks and "Save as discovery". Analysis reads as an edited reflection: the
- * overview, the people, places, topics, moods and themes as compact rows, tentative AI notes set apart, passages you
+ * overview, My tags, people, topics and moods as compact rows, tentative AI notes set apart, passages you
  * kept, memories to confirm and connections. Editing anything in Analysis never touches the dialogue.
  */
 export function EntryView({ conversation: c, onClose }: { conversation: Conversation; onClose: () => void }) {
@@ -200,13 +201,22 @@ function AnalysisPanel({ c, analysis, ai, analysing, onRun, onChanged }: { c: Co
         : <p className="mj-note">{ai ? "No summary yet." : "Add a summary in your own words if you like."} <button type="button" className="mj-link" onClick={() => setEditing(true)}>Write a summary</button></p>}
     </div>
 
+    {data?.reflection && <article className="mj-closer" aria-label="A closer look">
+      <h3 className="mj-section-title">A closer look at you <span className="mj-ai-badge">AI</span></h3>
+      <div className="type-reading mj-closer-text"><Prose text={data.reflection} /></div>
+    </article>}
+    {data?.insight && <figure className="mj-insight">
+      <figcaption className="type-meta"><svg viewBox="0 0 24 40" aria-hidden="true"><path d={MUSE_STAR_PATH} /></svg>Insight · on the situation</figcaption>
+      <blockquote className="type-quote">{data.insight}</blockquote>
+    </figure>}
+
     <div className="mj-tag-rows" role="group" aria-label="In this entry">
       {tagKinds.map((k) => <TagEditor key={k} conversationId={c.id} kind={k} tags={tags.filter((t) => t.kind === k)} />)}
       {anyAi && <p className="mj-note mj-tag-key"><span className="mj-tag" data-ai>Dashed</span> tags were suggested by AI. Keep one with ✓, or remove it with ×.</p>}
     </div>
 
     {(observations.length > 0 || threads.length > 0) && <div className="mj-asides">
-      {observations.length > 0 && <Notes title="Reflections" kind="observation" items={observations} onDismiss={dismiss} note="Tentative: an outside view, not a fact about you." />}
+      {observations.length > 0 && <Notes title="Reflections" kind="observation" items={observations} onDismiss={dismiss} />}
       {threads.length > 0 && <Notes title="Threads to revisit" kind="thread" items={threads} onDismiss={dismiss} />}
     </div>}
 

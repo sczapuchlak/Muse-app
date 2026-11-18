@@ -2,8 +2,12 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { MuseIcon } from "../MuseIcon";
-import { wordCount } from "@/lib/journal/model";
+import { MAX_MESSAGE_IMAGES, wordCount, type MessageImage } from "@/lib/journal/model";
 import { useDictation } from "./useDictation";
+
+/** A photo waiting to go with your next message: a new file, or one already in this conversation (attached again). */
+export type Attachment = { key: string; preview: string; file?: File; stored?: MessageImage };
+const PHOTO_TYPES = ["image/png", "image/jpeg", "image/webp", "image/gif"];
 
 const draftKey = (key: string) => `muse.journal.draft.${key}`;
 export function readLocalDraft(key: string) { try { return localStorage.getItem(draftKey(key)) ?? ""; } catch { return ""; } }
@@ -15,14 +19,16 @@ export function clearLocalDraft(key: string) { try { localStorage.removeItem(dra
  * `onDraft` — saves a server draft after a pause and whenever the page is hidden. Enter sends on a desktop keyboard;
  * on a phone Enter is a new line and the Send button sends. Text clears only after the message is saved.
  */
-export function Composer({ storageKey, initial = "", placeholder, disabled, busy, onSend, onDraft, label = "Write or dictate", sendLabel = "Send", hint, secondary, dock }: {
+export function Composer({ storageKey, initial = "", placeholder, disabled, busy, onSend, onDraft, label = "Write or dictate", sendLabel = "Send", hint, secondary, dock, attachments, onAttachments }: {
   storageKey: string; initial?: string; placeholder: string; disabled?: boolean; busy?: boolean; label?: string; sendLabel?: string; hint?: string;
-  onSend: (text: string) => Promise<boolean>; onDraft?: (text: string) => void;
+  onSend: (text: string, attachments: Attachment[]) => Promise<boolean>; onDraft?: (text: string) => void;
   /** A second action paired with Send as two equal buttons (the workspace's "Finish entry" beside "Go deeper"). */
   secondary?: { label: string; onClick: () => void; disabled?: boolean };
   /** Where the mic, status and buttons sit (the bottom of the workspace). The words themselves stay in the page, right
    *  after the conversation, so nothing walls off the bottom of the screen. */
   dock: HTMLElement | null;
+  /** Photos for the next message (held by the page, so an earlier photo can be attached again). Omit to hide photos. */
+  attachments?: Attachment[]; onAttachments?: (next: Attachment[]) => void;
 }) {
   const [text, setText] = useState(() => readLocalDraft(storageKey) || initial);
   const ref = useRef<HTMLTextAreaElement>(null), timer = useRef<number | undefined>(undefined), latest = useRef(text), sentDraft = useRef(initial);
@@ -60,22 +66,37 @@ export function Composer({ storageKey, initial = "", placeholder, disabled, busy
     const el = ref.current;
     voice.start(latest.current, el ? el.selectionEnd ?? latest.current.length : latest.current.length);
   }
+  const photos = attachments ?? [], fileInput = useRef<HTMLInputElement>(null);
+  const [photoError, setPhotoError] = useState("");
+  function addFiles(files: File[]) {
+    if (!onAttachments || !files.length) return;
+    const ok = files.filter((f) => PHOTO_TYPES.includes(f.type) && f.size > 0 && f.size <= 8_388_608);
+    const room = MAX_MESSAGE_IMAGES - photos.length, take = ok.slice(0, Math.max(0, room));
+    setPhotoError(ok.length < files.length ? "Some files weren’t added: photos must be PNG, JPEG, WebP or GIF, under 8 MB." : ok.length > take.length ? `Up to ${MAX_MESSAGE_IMAGES} photos per message.` : "");
+    if (take.length) onAttachments([...photos, ...take.map((file) => ({ key: `${Date.now()}-${Math.random().toString(36).slice(2)}`, file, preview: URL.createObjectURL(file) }))]);
+  }
+  function removePhoto(a: Attachment) { if (a.file) URL.revokeObjectURL(a.preview); onAttachments?.(photos.filter((x) => x.key !== a.key)); }
   async function send() {
     const body = text.trim();
-    if (!body || disabled || busy) return;
+    if ((!body && !photos.length) || disabled || busy) return;
     voice.cancel(); // nothing late from the recognizer may land in the cleared box
     window.clearTimeout(timer.current);
     sentDraft.current = latest.current; // a send is not a draft: nothing to save on leave for these words
-    if (await onSend(body)) { setText(""); latest.current = ""; sentDraft.current = ""; clearLocalDraft(storageKey); ref.current?.focus(); }
+    if (await onSend(body, photos)) { setText(""); latest.current = ""; sentDraft.current = ""; clearLocalDraft(storageKey); setPhotoError(""); ref.current?.focus(); }
   }
   const desktop = () => typeof window !== "undefined" && window.matchMedia("(hover: hover) and (pointer: fine)").matches;
   const words = wordCount(text);
-  const status = voice.listening ? "Listening… tap the mic again to stop." : voice.error ? voice.error : words ? `${words} ${words === 1 ? "word" : "words"} · saved on this device` : hint ?? (voice.supported ? "Type, or tap the mic to speak." : "Type, or tap the keyboard’s microphone to dictate.");
+  const status = photoError ? photoError : voice.listening ? "Listening… tap the mic again to stop." : voice.error ? voice.error : words ? `${words} ${words === 1 ? "word" : "words"} · saved on this device` : hint ?? (voice.supported ? "Type, or tap the mic to speak." : "Type, or tap the keyboard’s microphone to dictate.");
   const formId = `mj-composer-${storageKey}-form`;
   return <>
     <form id={formId} className="mj-composer" data-listening={voice.listening || undefined} onSubmit={(e) => { e.preventDefault(); void send(); }}>
       <label className="sr-only" htmlFor={`mj-composer-${storageKey}`}>{label}</label>
-      <textarea ref={ref} id={`mj-composer-${storageKey}`} value={text} rows={2} placeholder={placeholder} disabled={disabled} enterKeyHint="enter" autoCapitalize="sentences" autoCorrect="on" spellCheck
+      {photos.length > 0 && <ul className="mj-attach-strip" aria-label="Photos to send">{photos.map((a) => <li key={a.key}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={a.preview} alt="" />
+        <button type="button" className="mj-attach-x" aria-label="Remove this photo" onClick={() => removePhoto(a)}>×</button>
+      </li>)}</ul>}
+      <textarea ref={ref} onPaste={(e) => { const files = Array.from(e.clipboardData?.files ?? []).filter((f) => f.type.startsWith("image/")); if (files.length && onAttachments) { e.preventDefault(); addFiles(files); } }} id={`mj-composer-${storageKey}`} value={text} rows={2} placeholder={placeholder} disabled={disabled} enterKeyHint="enter" autoCapitalize="sentences" autoCorrect="on" spellCheck
         onChange={(e) => { voice.cancel(); change(e.target.value); }}
         onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing && desktop()) { e.preventDefault(); void send(); } }} />
     </form>
@@ -84,11 +105,13 @@ export function Composer({ storageKey, initial = "", placeholder, disabled, busy
         {voice.supported && <button type="button" className="mj-mic" data-listening={voice.listening || undefined} aria-pressed={voice.listening} disabled={disabled}
           aria-label={voice.listening ? "Stop voice typing" : "Voice typing"} title={voice.listening ? "Stop voice typing" : "Tap to speak"}
           onPointerDown={(e) => e.preventDefault() /* keep the caret where it is */} onClick={toggleVoice}><MuseIcon name="mic" size={18} /></button>}
-        <small className="mj-composer-hint" aria-live="polite" data-alert={voice.error ? true : undefined} data-live={voice.listening || voice.error ? true : undefined}>{status}</small>
+        {onAttachments && <><button type="button" className="mj-mic mj-attach" aria-label={`Add photos (${photos.length} of ${MAX_MESSAGE_IMAGES})`} title="Add photos" disabled={disabled || photos.length >= MAX_MESSAGE_IMAGES} onClick={() => fileInput.current?.click()}><MuseIcon name="photo" size={18} />{photos.length > 0 && <b className="mj-attach-count type-numeric">{photos.length}</b>}</button>
+          <input ref={fileInput} type="file" accept="image/png,image/jpeg,image/webp,image/gif" multiple hidden onChange={(e) => { addFiles(Array.from(e.target.files ?? [])); e.target.value = ""; }} /></>}
+        <small className="mj-composer-hint" aria-live="polite" data-alert={voice.error || photoError ? true : undefined} data-live={voice.listening || voice.error || photoError ? true : undefined}>{status}</small>
       </div>
       <div className="mj-composer-bar">
         {secondary && <button type="button" className="muse-button mj-composer-secondary" disabled={secondary.disabled} onClick={() => { voice.cancel(); secondary.onClick(); }}>{secondary.label}</button>}
-        <button type="submit" form={formId} className="muse-button button-primary mj-send" disabled={disabled || busy || !text.trim()}>{busy ? "Sending…" : sendLabel}<MuseIcon name="arrow" size={16} /></button>
+        <button type="submit" form={formId} className="muse-button button-primary mj-send" disabled={disabled || busy || (!text.trim() && !photos.length)}>{busy ? "Sending…" : sendLabel}<MuseIcon name="arrow" size={16} /></button>
       </div>
     </div>, dock)}
   </>;

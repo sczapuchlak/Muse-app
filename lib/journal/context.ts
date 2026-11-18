@@ -15,7 +15,8 @@ import type { Conversation, Journal, Memory, Message, Preferences } from "./mode
 import { composeInstructions, openingRequest, type Layers } from "./instructions";
 
 export type Candidate = Pick<Conversation, "id" | "journalId" | "localDate" | "title" | "summary" | "summarySource" | "status" | "excludeFromMemory" | "userWords" | "mode"> & { excerpt?: string; tags?: string[] };
-export type InputMessage = { role: "developer" | "user" | "assistant"; content: string };
+/** `images` (data URLs) ride only on the one user message the request answers. */
+export type InputMessage = { role: "developer" | "user" | "assistant"; content: string; images?: string[] };
 export type Budget = { memories: number; recent: number; recentEntries: number; retrieved: number; retrievedEntries: number; entryChars: number; conversation: number };
 export const defaultBudget: Budget = { memories: 3000, recent: 4200, recentEntries: 7, retrieved: 2400, retrievedEntries: 3, entryChars: 650, conversation: 48000 };
 
@@ -78,12 +79,15 @@ export function memoryContext({ memories, recent, retrieved, journals, today, cu
 }
 
 /** The conversation, newest kept first when it must be trimmed; the opening and early turns go before the latest ones. */
-export function conversationInput(messages: readonly Pick<Message, "role" | "body">[], budget = defaultBudget.conversation): InputMessage[] {
+type Turn = Pick<Message, "role" | "body"> & { imageCount?: number };
+/** Photos on earlier messages aren't sent again; the text says they were there and can't be seen now. */
+const withPhotoNote = (m: Turn, isLast: boolean) => (!isLast && m.imageCount ? `${m.body}\n\n[${m.imageCount === 1 ? "A photo was" : `${m.imageCount} photos were`} attached here. You can't see ${m.imageCount === 1 ? "it" : "them"} now.]` : m.body);
+export function conversationInput(messages: readonly Turn[], budget = defaultBudget.conversation): InputMessage[] {
   const out: InputMessage[] = []; let used = 0, trimmed = false;
   for (let i = messages.length - 1; i >= 0; i--) {
-    const m = messages[i], size = m.body.length;
+    const m = messages[i], body = withPhotoNote(m, i === messages.length - 1), size = body.length;
     if (used + size > budget && out.length) { trimmed = true; break; }
-    out.unshift({ role: m.role, content: used + size > budget ? clip(m.body, budget) : m.body }); used += size;
+    out.unshift({ role: m.role, content: used + size > budget ? clip(body, budget) : body }); used += size;
   }
   if (trimmed) out.unshift({ role: "developer", content: "(Earlier messages in this conversation were left out for length.)" });
   return out;
@@ -94,7 +98,7 @@ export const approxTokens = (chars: number) => Math.ceil(chars / 3.8);
 const size = (r: { instructions: string; input: InputMessage[] }) => approxTokens(r.instructions.length + r.input.reduce((n, m) => n + m.content.length + 8, 0));
 
 /** A reply: stable instructions, the stable memory block, the conversation, then any retrieved history last. */
-export function buildReply(layers: Layers, memory: Pick<MemoryContext, "stable" | "retrieved">, messages: readonly Pick<Message, "role" | "body">[]): ReplyRequest {
+export function buildReply(layers: Layers, memory: Pick<MemoryContext, "stable" | "retrieved">, messages: readonly Turn[]): ReplyRequest {
   const input: InputMessage[] = [...(memory.stable ? [{ role: "developer" as const, content: memory.stable }] : []), ...conversationInput(messages), ...(memory.retrieved ? [{ role: "developer" as const, content: memory.retrieved }] : [])];
   const r = { instructions: composeInstructions(layers), input };
   return { ...r, approxInputTokens: size(r) };

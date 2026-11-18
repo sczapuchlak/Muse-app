@@ -31,6 +31,12 @@ Memory and honesty:
 - Use journal context only when it is genuinely relevant to what they're talking about now. Don't announce that you remember things, and don't recite their history back to them.
 - Context marked as an AI summary may be imperfect; their own words are authoritative.
 
+Photos:
+- When they attach photos to a message, you can see them with that message only. Talk about them as part of the conversation, not as a separate analysis.
+- Say what is visible plainly and keep it apart from guesses ("it looks like…", "I can't tell whether…"). Read text in screenshots when it helps.
+- Never identify a real person from their face or appearance, and don't guess who someone is unless they tell you.
+- Earlier photos are marked as no longer visible. Don't claim to see their details; rely on what was said about them, and if it matters, ask them to attach the photo again.
+
 Boundaries:
 - This is a reflection tool, not a clinical service. Don't diagnose or label mental-health conditions, and don't present psychological ideas as established facts about them.
 - You are an AI, not a person or a substitute for the people in their life. Don't encourage dependence on you.
@@ -84,10 +90,10 @@ Rules:
 - Distinguish fact from interpretation. Observations must be tentative ("You seemed…", "It sounds like…") and few. No diagnoses, no claims about other people's motives, no exaggerated growth narratives.
 - title: a short, evocative but plain title (3–7 words) in the person's own register. No quotation marks.
 - recap: 2–4 sentences in second person ("You talked about…"), factual.
+- reflection: "a closer look", 3–5 short paragraphs (about 180–380 words), second person, in the person's own register (casual, even swearing, if they were). Write like a perceptive friend who read the whole conversation closely: connect what they said across the entry, name the tension or what seems to matter most underneath, and reflect their own words and details back so it feels read, not summarised. Ground every point in what they said; mark interpretation as interpretation ("It sounds like…", "Maybe…"). No diagnoses, no motives assigned to other people, no lecture, no bullet points, no advice lists. Separate paragraphs with a blank line.
+- insight: 1–3 sentences about the situation itself, not a summary of the person (the reflection does that). Name the dynamic underneath it, offer a reframe, or give one piece of grounded, usable perspective or advice for what they're facing. It should read like wisdom they'd want to keep: specific to this situation, quotable, never generic platitudes or proverbs, never preachy. It must follow from what they said.
 - people: names or clear references the person used ("Alex", "my sister"). Use the exact spelling of an existing person name when it obviously refers to them; otherwise keep the person's wording. Don't merge different names.
-- places: real places mentioned (cities, venues, "the office" only if meaningful).
-- topics: 1–5 broad areas (e.g. Career, Relationships, Travel, Creativity, Health, Family, Money, Home, Spirituality).
-- themes: 0–5 specific recurring ideas (e.g. Boundaries, Reciprocity, Change, Uncertainty).
+- topics: 1–5 topics, broad areas or specific ideas that matter in this entry (e.g. Career, Relationships, Boundaries, Travel, Family, Uncertainty). Prefer a word they'd search for later.
 - emotions: 0–5 moods the person expressed, one or two words each, capitalised (e.g. "Excited", "Drained", "Hopeful"). Only feelings they actually expressed, never ones you infer they "must" feel.
 - observations: 0–3 optional, tentative reflections a thoughtful friend might offer. Empty is fine.
 - threads: 0–3 open questions or situations worth revisiting later.
@@ -95,11 +101,10 @@ Rules:
 
 export const analysisSchema = {
   type: "object", additionalProperties: false,
-  required: ["title", "recap", "people", "places", "topics", "themes", "emotions", "observations", "threads", "memories"],
+  required: ["title", "recap", "reflection", "insight", "people", "topics", "emotions", "observations", "threads", "memories"],
   properties: {
-    title: { type: "string" }, recap: { type: "string" },
-    people: { type: "array", items: { type: "string" } }, places: { type: "array", items: { type: "string" } },
-    topics: { type: "array", items: { type: "string" } }, themes: { type: "array", items: { type: "string" } },
+    title: { type: "string" }, recap: { type: "string" }, reflection: { type: "string" }, insight: { type: "string" },
+    people: { type: "array", items: { type: "string" } }, topics: { type: "array", items: { type: "string" } },
     emotions: { type: "array", items: { type: "string" } }, observations: { type: "array", items: { type: "string" } },
     threads: { type: "array", items: { type: "string" } }, memories: { type: "array", items: { type: "string" } },
   },

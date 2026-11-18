@@ -6,7 +6,8 @@ import { useRouter } from "next/navigation";
 import { MuseMark, type MuseMarkIcon, type MuseTone } from "../design/MuseHeading";
 import { MuseIcon } from "../MuseIcon";
 import { MuseOverflowMenu, type OverflowAction } from "../MuseOverflowMenu";
-import { Composer, clearLocalDraft } from "./Composer";
+import { Composer, clearLocalDraft, type Attachment } from "./Composer";
+import { boardImageUrl, uploadBoardImage } from "@/lib/data/constellation-images";
 import { Thinking, Thread, type ThreadMessage } from "./Thread";
 import { WeekConstellation } from "./JournalArt";
 import { JournalToolbar } from "./JournalToolbar";
@@ -16,7 +17,7 @@ import { formatDay, greeting } from "./format";
 import * as P from "@/lib/journal/persistence";
 import { aiStream, AiError } from "@/lib/journal/ai-client";
 import { celebrate } from "@/lib/celebrate";
-import { entryTitle, isListed, type Companion, type Conversation, type Message, type Mode } from "@/lib/journal/model";
+import { entryTitle, isListed, type Companion, type Conversation, type Message, type MessageImage, type Mode } from "@/lib/journal/model";
 import { companionPresets } from "@/lib/journal/presets";
 import { addDays, onThisDay, streak, weekDays, weekStart } from "@/lib/journal/stats";
 
@@ -132,23 +133,46 @@ function Page({ initialId, onRouteClear }: { initialId: string | null; onRouteCl
     if (!creating.current) creating.current = j.startConversation({ journalId: journal.id, companion: ai.enabled ? companion : null, mode, status, draft }).then((c) => { if (c) setDraftEntry(c.id); return c ?? null; }).finally(() => { setTimeout(() => { creating.current = null; }, 0); });
     return creating.current;
   }
-  async function send(text: string) {
+  const [attachments, setAttachments] = useState<Attachment[]>([]);
+  /** An earlier photo, attached again to the next message (the companion only sees photos with their own message). */
+  function reattach(img: MessageImage) {
+    void boardImageUrl(img.thumbnailPath).catch(() => "").then((preview) => setAttachments((list) => list.length >= 7 || list.some((a) => a.stored?.id === img.id) ? list : [...list, { key: `again-${img.id}`, preview, stored: img }]));
+  }
+  async function send(text: string, photos: Attachment[] = []) {
     const c = await ensureEntry("active"); if (!c) return false;
-    const id = newId(), optimistic: ThreadMessage = { id, role: "user", body: text, createdAt: new Date().toISOString(), correctedAt: null, pending: true };
+    const body = text || (photos.length === 1 ? "[1 photo]" : `[${photos.length} photos]`);
+    const id = newId(), optimistic: ThreadMessage = { id, role: "user", body, createdAt: new Date().toISOString(), correctedAt: null, pending: true, previews: photos.map((p) => p.preview).filter(Boolean) };
     setSending(true); setError(null); setSaved(null);
     if (!convId) { setConvId(c.id); setLoadedFor(c.id); setMessages([optimistic]); } else setMessages((list) => [...list, optimistic]);
     try {
-      const m = await P.addMessage(client, userId, { id, conversationId: c.id, body: text, localDate: today });
-      setMessages((list) => list.map((x) => (x.id === id ? { ...m, pending: false } : x)));
+      // Photos upload first (resized, private, in this entry's folder), so a saved message never waits on them.
+      const folder = `${userId}/${c.id}/`;
+      const uploaded = await Promise.all(photos.map(async (a, position) => {
+        if (a.stored && a.stored.path.startsWith(folder)) return { position, path: a.stored.path, thumbnailPath: a.stored.thumbnailPath, width: a.stored.width, height: a.stored.height, mime: a.stored.mime };
+        if (a.stored) { // from another entry: copy into this entry's folder
+          const bucket = client.storage.from(P.IMAGE_BUCKET), name = (p: string) => folder + p.split("/").pop();
+          for (const p of [a.stored.path, a.stored.thumbnailPath]) { const r = await bucket.copy(p, name(p)); if (r.error && !/exists/i.test(r.error.message)) throw Error("A photo couldn’t be attached again."); }
+          return { position, path: name(a.stored.path), thumbnailPath: name(a.stored.thumbnailPath), width: a.stored.width, height: a.stored.height, mime: a.stored.mime };
+        }
+        const u = await uploadBoardImage(userId, c.id, a.file!, { allowJpeg: true });
+        return { position, path: u.path, thumbnailPath: u.thumbnailPath, width: u.width, height: u.height, mime: u.mime };
+      }));
+      const m = await P.addMessage(client, userId, { id, conversationId: c.id, body, localDate: today });
+      let images: MessageImage[] = [], linked = true;
+      if (uploaded.length) { try { images = await P.addMessageImages(client, userId, c.id, id, uploaded); } catch { linked = false; } }
+      setMessages((list) => list.map((x) => (x.id === id ? { ...m, images, pending: false } : x)));
+      for (const p of photos) if (p.file) URL.revokeObjectURL(p.preview);
+      setAttachments([]);
       if (!convId) { clearLocalDraft(`new:${journal.id}`); setDraftEntry(null); }
       if (c.status === "draft" || !convId) setConvId(c.id);
       void j.refreshConversation(c.id);
       setSending(false);
+      if (!linked) { setError({ text: "Your words are saved, but the photos couldn’t be attached. Add them again to ask about them." }); return true; }
       if (ai.enabled && companion) void ask(c.id, { kind: "reply", messageId: id });
       return true;
     } catch (e) {
       setMessages((list) => list.filter((x) => x.id !== id)); setSending(false);
-      setError({ text: `${e instanceof Error ? e.message : "Not saved."} Your words are still in the box.` });
+      setError({ text: `${e instanceof Error ? e.message : "Not saved."} Your words${photos.length ? " and photos are" : " are"} still in the box.` });
       return false;
     }
   }
@@ -239,14 +263,14 @@ function Page({ initialId, onRouteClear }: { initialId: string | null; onRouteCl
       {greetNote && !shown.length && <p className="mj-note mj-greet-note" role="status">{greetNote}</p>}
       {saved && <p className="mj-saved" role="status"><MuseIcon name="check" size={15} /> Saved “{entryTitle(saved)}”. <Link href={`/journal?entry=${saved.id}`}>Open it</Link>{saved.analysisStatus === "pending" && " · the analysis is on its way"}</p>}
       {!shown.length && !stream ? <BlankHead tone={tone} mode={conv?.mode ?? mode} /> : <p className="mj-ws-date muse-kicker type-meta">{formatDay(conv?.localDate ?? today)}{(conv?.mode ?? mode) !== "open" && ` · ${(conv?.mode ?? mode) === "morning" ? "Morning intention" : "Evening reflection"}`}{conv?.memoryOff && " · not using your journal history"}</p>}
-      {!loaded ? <p className="small-label" role="status">Opening your entry…</p> : <Thread messages={display} companion={companion ? { name: companion.name, icon: companion.icon, tone: companion.tone } : null} companionFor={whoFor} timeZone={timeZone} />}
+      {!loaded ? <p className="small-label" role="status">Opening your entry…</p> : <Thread messages={display} onReattach={conv && conv.status !== "completed" ? reattach : undefined} companion={companion ? { name: companion.name, icon: companion.icon, tone: companion.tone } : null} companionFor={whoFor} timeZone={timeZone} />}
       {stream && !stream.text && <Thinking name={whoFor({ companionVersionId: conv?.companionVersionId ?? null } as ThreadMessage).name} />}
       {error && <div className="mj-error" role="alert"><span>{error.text}</span>{error.retry && conv && <button type="button" className="muse-button" onClick={() => void ask(conv.id, error.retry!)}>Ask again</button>}</div>}
       {!error && unanswered && conv && loaded && <div className="mj-error" data-soft><span>No reply to your last message yet.</span><button type="button" className="muse-button" onClick={() => void ask(conv.id, { kind: "reply", messageId: lastUser!.id })}>Ask for a reply</button></div>}
       <Composer storageKey={conv && conv.status !== "draft" ? conv.id : `new:${journal.id}`} initial={conv?.draft ?? ""} busy={sending} disabled={!loaded}
         placeholder={shown.length ? "Keep going… (type or dictate)" : (conv?.mode ?? mode) === "morning" ? "How are you starting the day?" : (conv?.mode ?? mode) === "evening" ? "How was today?" : "What’s on your mind? Type or dictate…"}
         hint={aiOn ? `Type, or tap the mic to speak. ${companion!.name.replace(/^The /, "")} replies when you send.` : "Type, or tap the mic to speak. Everything saves as you go."}
-        onSend={send} onDraft={(text) => void saveDraft(text)} label="Write or dictate" dock={dock}
+        onSend={send} onDraft={(text) => void saveDraft(text)} label="Write or dictate" dock={dock} attachments={attachments} onAttachments={setAttachments}
         sendLabel={userCount ? (aiOn ? "Go deeper" : "Add to entry") : "Send"}
         secondary={userCount ? { label: "Finish entry", disabled: streaming || sending || confirmFinish, onClick: () => setConfirmFinish(true) } : undefined} />
       <div ref={end} />

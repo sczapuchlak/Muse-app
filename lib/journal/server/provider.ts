@@ -43,7 +43,9 @@ export async function generate(config: ProviderConfig, call: Call): Promise<Resu
 async function openai(config: ProviderConfig, call: Call): Promise<Result> {
   const stream = Boolean(call.onDelta);
   const body: Record<string, unknown> = {
-    model: config.model, instructions: call.instructions, input: call.input.map((m) => ({ role: m.role, content: m.content })),
+    model: config.model, instructions: call.instructions, input: call.input.map((m) => (m.images?.length
+      ? { role: m.role, content: [{ type: "input_text", text: m.content }, ...m.images.map((url) => ({ type: "input_image", image_url: url, detail: "high" }))] }
+      : { role: m.role, content: m.content })),
     max_output_tokens: call.maxOutputTokens, store: false, stream,
     ...(call.effort ? { reasoning: { effort: process.env.JOURNAL_AI_REASONING?.trim() || call.effort } } : {}),
     ...(call.schema ? { text: { format: { type: "json_schema", name: call.schema.name, strict: true, schema: call.schema.schema } } } : {}),
@@ -109,19 +111,20 @@ async function mock(call: Call): Promise<Result> {
   const all = call.input.map((m) => m.content).join("\n");
   const companion = /## Companion: (.+)/.exec(call.instructions)?.[1] ?? "no companion";
   const titles = [...all.matchAll(/“([^”]+)”/g)].map((m) => m[1]);
-  const last = [...call.input].reverse().find((m) => m.role === "user")?.content ?? "";
+  const lastUser = [...call.input].reverse().find((m) => m.role === "user"), last = lastUser?.content ?? "";
+  const seen = (lastUser?.images?.length ? ` I can see ${lastUser.images.length} photo${lastUser.images.length === 1 ? "" : "s"}.` : "") + (/(?:photo was|photos were) attached here\. You can't see/.test(all) ? " Earlier photos aren't visible to me now." : "");
   const remembered = /Things they've confirmed about themselves:\n((?:- .+\n?)+)/.exec(all)?.[1].trim().split("\n").map((l) => l.slice(2)) ?? [];
   let text: string;
   if (call.schema?.name === "journal_analysis") {
     const mine = all.split("\n").filter((l) => l.startsWith("Me:")).join(" ");
     const names = [...new Set([...mine.matchAll(/(?<=[a-z,] )(\p{Lu}[\p{Ll}]{2,})/gu)].map((m) => m[1]))].slice(0, 5);
-    text = JSON.stringify({ title: mine.replace(/^Me:\s*/, "").split(/\s+/).slice(0, 5).join(" ") || "A conversation", recap: `You talked about ${mine.split(/\s+/).length} words' worth of your day.`, people: names, places: [], topics: ["Everyday"], themes: [], emotions: ["excited", "tired", "anxious", "grateful", "happy"].filter((w) => mine.toLowerCase().includes(w)).map((w) => w[0].toUpperCase() + w.slice(1)), observations: [], threads: [], memories: [] });
+    text = JSON.stringify({ title: mine.replace(/^Me:\s*/, "").split(/\s+/).slice(0, 5).join(" ") || "A conversation", recap: `You talked about ${mine.split(/\s+/).length} words' worth of your day.`, reflection: "A closer look (mock): what you wrote, read back.\n\nA second paragraph.", insight: "Mock insight: one thing worth keeping.", people: names, places: [], topics: ["Everyday"], themes: [], emotions: ["excited", "tired", "anxious", "grateful", "happy"].filter((w) => mine.toLowerCase().includes(w)).map((w) => w[0].toUpperCase() + w.slice(1)), observations: [], threads: [], memories: [] });
   } else if (call.schema?.name === "journal_report") {
     text = JSON.stringify({ narrative: `Mock weekly reflection across ${titles.length} entries: ${titles.join("; ") || "none"}.`, threads: [], moments: [], observations: [] });
   } else {
     const testing = /## Test conversation/.test(call.instructions) ? " (test)" : "";
     text = last
-      ? `[mock ${companion}${testing}] I heard ${last.trim().split(/\s+/).length} words.${titles.length ? ` Context: ${titles.join(" | ")}.` : " No journal context."}${remembered.length ? ` Remembered: ${remembered.join(" / ")}.` : ""} What feels most alive in that for you?`
+      ? `[mock ${companion}${testing}] I heard ${last.trim().split(/\s+/).length} words.${seen}${titles.length ? ` Context: ${titles.join(" | ")}.` : " No journal context."}${remembered.length ? ` Remembered: ${remembered.join(" / ")}.` : ""} What feels most alive in that for you?`
       : `[mock ${companion}] Opening.${titles.length ? ` Context: ${titles.join(" | ")}.` : ""} What's on your mind?`;
   }
   if (call.onDelta) for (const piece of text.match(/[\s\S]{1,12}/g) ?? []) { call.onDelta(piece); await new Promise((r) => setTimeout(r, 4)); }
