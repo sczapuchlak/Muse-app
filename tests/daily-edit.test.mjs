@@ -192,8 +192,8 @@ test('global navigation covers every destination and keeps mobile primary/More c
   const { navigation, desktopGroups, mobilePrimaryIds, mobileMoreIds, navItems, isActiveDestination } = load('lib/navigation');
   assert.deepEqual(desktopGroups, ['Everyday','Life','Whimsy']);
   assert.equal(new Set(navigation.map((item) => item.href)).size, 18);
-  assert.deepEqual(navItems(mobilePrimaryIds).map((item) => item.id), ['daily','planner','rituals']);
-  assert.deepEqual(navItems(mobileMoreIds).map((item) => item.id), ['journal','nourish','insights','envision','money','notes','collections','astrology','tarot','dreams','fortune-fun','stream','profile','appearance','settings'],'mobile reaches Stream, My Profile and Appearance through More');
+  assert.deepEqual(navItems(mobilePrimaryIds).map((item) => item.id), ['daily','planner','journal']);
+  assert.deepEqual(navItems(mobileMoreIds).map((item) => item.id), ['rituals','nourish','insights','envision','money','notes','collections','astrology','tarot','dreams','fortune-fun','stream','profile','appearance','settings'],'mobile reaches Stream, My Profile and Appearance through More');
   assert.equal(navigation.some((item)=>item.id==='mood'),false);
   assert.equal(navigation.find((item)=>item.id==='nourish')?.label,'Wellness');
   assert.equal(new Set([...mobilePrimaryIds,...mobileMoreIds]).size, navigation.length,'every destination is reachable on mobile');
