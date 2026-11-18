@@ -1002,3 +1002,15 @@ Supersedes the book-level heart above. A favourite is "marked as a favourite in 
 - **Save as discovery** is always the person's explicit choice of words and collection; the Chapter or Experience is kept as its origin. Nothing is inferred.
 - **Integrations:** Life Atlas areas (descriptive, never a rating; each Atlas area links to its Experiences and Chapters), Daily Edit (opt-in card for the primary Chapter, its word and featured mantras), Visions, Tarot, Dreamscapes, Agenda, Planner Intentions.
 
+
+
+## Muse Journal V1 — implemented on feature branch, awaiting Stephanie's Staging acceptance
+
+- **The conversation is the record.** Messages are never rewritten. A correction keeps the earlier words. AI titles, summaries, tags and reflections are labelled as AI, can be edited or dismissed, and never replace the dialogue.
+- **Bounded entries.** A conversation is a session that ends with Finish & Save. A finished entry takes no more AI exchanges; you start a new conversation, which can draw on the old one through memory.
+- **Journal, Companion and Conversation stay distinct.** A conversation belongs to one journal and pins the companion version it used. Editing a companion only affects future conversations.
+- **Instruction order:** Muse's application rules, then global preferences, companion, journal, and morning/evening mode. The more specific layer wins; application rules always win. Memory is data, never instructions.
+- **Memory is consented.** Only confirmed memories are used. AI-proposed memories stay suggestions. Memory can be turned off for everything, per journal (shared, this journal only, or off) and per conversation, and an entry can be kept out of AI context. The whole archive is never sent.
+- **Similar names are never assumed to be the same person.** Identity is an exact name or a configured alias; merging is a deliberate action.
+- **AI is opt-in per account and budgeted.** It is enforced on the server. The budget is $10/month by default, with a $7.50 warning, and the owner can change it within a server ceiling. Muse's limits are not provider billing caps. When AI is unavailable or used up, everything else keeps working.
+- **No background writes to other modules.** Moods named in a journal never become Mood check-ins, and Life Atlas scores never move. Rituals read journal days; discoveries and links are created only by explicit actions. Playground tests never become entries, memories, tags or ritual days unless kept on purpose.

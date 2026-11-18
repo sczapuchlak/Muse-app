@@ -35,6 +35,8 @@
     "test:stream:db": "node scripts/test-local-stream.mjs",
     "test:vision-boards:db": "node scripts/test-local-vision-boards.mjs",
     "test:vision-boards:ui": "node scripts/test-vision-boards-ui.mjs",
+    "test:journal:db": "node scripts/test-local-journal.mjs",
+    "test:journal:ui": "node scripts/test-journal-ui.mjs",
     "test:inner-compass:db": "node scripts/test-local-inner-compass.mjs",
     "test:inner-compass:ui": "node scripts/test-inner-compass-ui.mjs",
     "test:inner-stories:db": "node scripts/test-local-inner-stories.mjs",

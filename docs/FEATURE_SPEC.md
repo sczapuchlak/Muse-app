@@ -1322,3 +1322,15 @@ Spec 2026-11-17 ("Paycheck Actuals & Financial Record Cohesion", plus: one recur
 - **Paycheck view**: Bills lists dates due in the paycheck's period plus any it funds; rows say "planned from N paychecks". Each planned amount's menu has **What counts toward this** (counted records and how each matched, the rule, manual state). Plans can **fund a bill** date (several plans can fund one bill).
 - **Data**: migration `20261227000100_money_reconciliation.sql` (`transactions.bill_id`, `unplanned`, `is_transfer`; `recurring_commitments.show_in_bills`; existing reminder-style repeating bills become a Recurring definition with the old bill as its first occurrence; `save_money`/`read_money` patched in place with guards). Tests: `tests/money-reconcile.test.mjs`.
 
+
+
+## Muse Journal V1 (Everyday → Journal) — implemented on feature branch, awaiting approval for Staging
+
+A conversational journal with companions you write yourself, memory you control, and a searchable archive. Full design, data flow, privacy, cost and setup: [JOURNAL](JOURNAL.md).
+
+- **Views:** Today (journal and companion choice, Open, Morning intention or Evening reflection, a draft-safe composer, Continue, On this day), Journals (journals and companions), History (search, combinable filters, All, Week, Calendar and Bookmarks), Insights (weekly numbers and an optional, saved AI reflection). An entry opens with `?entry=`; the Companion Studio with `?companion=`.
+- **Lifecycle:** draft (only once there are words) → active (each message saved as sent) → completed (Finish & Save; read-only; corrections keep the original). Analysis runs once after finishing and may fail without losing anything.
+- **Archive:** people, places, topics, themes and moods are editable records linked to entries. They can be clicked, combined with dates and journals, renamed, aliased and merged. Full-text search covers every message. None of this needs AI.
+- **AI:** OpenAI Responses API from the server only; off for every account until granted; a $10 monthly budget with a $7.50 warning and a $2 daily guard, enforced by Muse (not a provider billing cap); every request is logged with tokens and estimated cost.
+- **Integrations:** Rituals “Journal days”, Inner Compass “Save as discovery”, links to Chapters, Experiences and Life Atlas areas, an opt-in Daily Edit card, account export plus Journal JSON and Markdown export.
+- **Migration:** `20261228000100_journal.sql` (additive; also lets discoveries cite a journal entry and lets ritual connections use `journal-days`). Read-only check: `scripts/verify-hosted-journal.sql`.

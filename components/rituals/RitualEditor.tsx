@@ -13,7 +13,7 @@ import { metricInfo } from "@/lib/progress/engine";
 import { movementCategories, movementCategoryLabels, type MovementCategory } from "@/lib/progress/movement";
 import {ShareToStream} from '../stream/ShareToStream';
 
-const sourceLabels: Record<ConnectionMetric, string> = { water: "Water", workouts: "Workouts", "workout-minutes": "Workout minutes", "reading-minutes": "Reading time", "reading-pages": "Pages read", "books-finished": "Books finished", "tasks-completed": "Tasks completed" };
+const sourceLabels: Record<ConnectionMetric, string> = { water: "Water", workouts: "Workouts", "workout-minutes": "Workout minutes", "reading-minutes": "Reading time", "reading-pages": "Pages read", "books-finished": "Books finished", "tasks-completed": "Tasks completed", "journal-days": "Journal days" };
 const defaultThreshold: Partial<Record<ConnectionMetric, number>> = { water: defaultWaterSettings.goal, "workout-minutes": 20, "reading-minutes": 20, "reading-pages": 10 };
 const sameConnection = (a?: RitualConnection | null, b?: RitualConnection | null) => JSON.stringify(a ? { ...a, since: "" } : null) === JSON.stringify(b ? { ...b, since: "" } : null);
 

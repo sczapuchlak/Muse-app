@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useMemo, useState } from "react";
 import { MuseModal } from "@/components/MuseModal";
 import { MuseChoiceMenu } from "@/components/MuseChoiceMenu";
@@ -54,7 +55,7 @@ export function DiscoveryDetail({ d, compass, today, onClose, onOpen, returnFocu
         {filled.length > 0 && <div className="muse-compass-detail-panels">{filled.map((f) => <section key={f.key} className="muse-compass-panel"><h3>{f.label}</h3><p>{d.details[f.key]}</p></section>)}</div>}
         {d.reflection.trim() && <section className="muse-compass-panel muse-compass-longform"><h3>Reflection</h3><p>{d.reflection}</p></section>}
         {d.tags.length > 0 && <p className="muse-compass-detail-tags">{d.tags.map((t) => <span key={t} className="muse-compass-tag">#{t}</span>)}</p>}
-        {d.source && <p className="muse-compass-quiet">{d.source.kind === "exploration" ? <>From the exploration <b>{d.source.label}</b>.</> : d.source.kind === "garden" ? <>Chosen in the {d.source.label}.</> : <>From {d.source.label}.</>}</p>}
+        {d.source && <p className="muse-compass-quiet">{d.source.kind === "exploration" ? <>From the exploration <b>{d.source.label}</b>.</> : d.source.kind === "garden" ? <>Chosen in the {d.source.label}.</> : d.source.kind === "journal" && d.source.id ? <>From your journal: <Link href={`/journal?entry=${d.source.id}`}>{d.source.label || "a journal entry"}</Link>.</> : <>From {d.source.label}.</>}</p>}
 
         <section className="muse-compass-detail-section" aria-labelledby="compass-connections">
           <h3 id="compass-connections">Connected discoveries</h3>
