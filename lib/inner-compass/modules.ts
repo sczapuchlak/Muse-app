@@ -25,8 +25,11 @@ export type Field =
   | { key: string; kind: "lines"; label: string; max: number; placeholder?: string }
   | { key: string; kind: "refs"; label: string; ref: RefKind }
   | { key: string; kind: "planner"; label: string }
-  | { key: string; kind: "material"; label: string };
-export type Value = string | boolean | string[] | BoardImage | BoardImage[] | Ref[] | PlannerRef | undefined;
+  | { key: string; kind: "material"; label: string }
+  /** Formatted writing (headings, lists, emphasis) stored as a TipTap document; older plain text still reads. `max` counts characters of text. */
+  | { key: string; kind: "richtext"; label: string; max: number };
+export type RichDoc = { type: "doc"; content?: unknown[] };
+export type Value = string | boolean | string[] | BoardImage | BoardImage[] | Ref[] | PlannerRef | RichDoc | undefined;
 export type Item = { id: string; [key: string]: Value };
 export type Content = { items?: Item[]; embracing?: Item[]; releasing?: Item[]; refs?: Ref[]; [key: string]: Value | Item[] };
 
@@ -46,42 +49,44 @@ export type ModuleType = typeof moduleTypes[number];
 export const isModuleType = (v: unknown): v is ModuleType => typeof v === "string" && (moduleTypes as readonly string[]).includes(v);
 
 const discoveries: Field = { key: "discoveries", kind: "refs", label: "Related discoveries", ref: "discovery" };
-const reflection: Field = { key: "reflection", kind: "textarea", label: "Reflection", max: 6000, rows: 3 };
+const reflection: Field = { key: "reflection", kind: "textarea", label: "Reflection", max: 10000, rows: 3 };
 export const mantraKinds = [{ id: "mantra", label: "Mantra" }, { id: "affirmation", label: "Affirmation" }, { id: "declaration", label: "Declaration" }, { id: "quote", label: "Quotation" }, { id: "passage", label: "Passage" }];
 export const materialCategories = [{ id: "stone", label: "Stone or crystal" }, { id: "botanical", label: "Herb, flower or plant" }, { id: "candle", label: "Candle or flame" }, { id: "paper", label: "Paper or ink" }, { id: "keepsake", label: "Keepsake" }, { id: "found", label: "Found object" }, { id: "art", label: "Art supply" }, { id: "other", label: "Other" }];
-const pairItem: Field[] = [{ key: "text", kind: "text", label: "Words", max: 200 }, { key: "description", kind: "textarea", label: "A little more", max: 1000, rows: 2 }, discoveries];
+/** Each material category keeps its own colour (a chart tone, so every theme supplies eight distinct ones). */
+export const materialCategoryTone: Record<string, number> = { stone: 5, botanical: 3, candle: 4, paper: 2, keepsake: 1, found: 6, art: 7, other: 8 };
+const pairItem: Field[] = [{ key: "text", kind: "text", label: "Words", max: 300 }, { key: "description", kind: "textarea", label: "A little more", max: 4000, rows: 2 }, discoveries];
 
 export const modules: Record<ModuleType, ModuleDef> = {
   words: { type: "words", label: "Guiding words", hint: "A word or phrase at the heart of it.", glyph: "sparkle", tone: 2, group: "meaning", owners: ["chapter", "experience"], shape: "items", maxItems: 6, addLabel: "Add a word",
-    fields: [{ key: "word", kind: "text", label: "Word or phrase", max: 60, placeholder: "Prosperity" }, { key: "definition", kind: "textarea", label: "What it means to me", max: 2000 },
-      { key: "why", kind: "textarea", label: "Why it matters", max: 2000 }, { key: "feel", kind: "textarea", label: "How I want it to feel", max: 1000 },
-      { key: "symbolism", kind: "text", label: "Symbolism", max: 200 }, discoveries, reflection, { key: "primary", kind: "toggle", label: "My primary word" }] },
+    fields: [{ key: "word", kind: "text", label: "Word or phrase", max: 60, placeholder: "Prosperity" }, { key: "definition", kind: "textarea", label: "What it means to me", max: 6000 },
+      { key: "why", kind: "textarea", label: "Why it matters", max: 6000 }, { key: "feel", kind: "textarea", label: "How I want it to feel", max: 6000 },
+      { key: "symbolism", kind: "textarea", label: "Symbolism", max: 2000, rows: 1 }, discoveries, reflection, { key: "primary", kind: "toggle", label: "My primary word" }] },
   intentions: { type: "intentions", label: "Intentions", hint: "How you want to meet this season. Not tasks.", glyph: "seedling", tone: 3, group: "meaning", owners: ["chapter", "experience"], shape: "items", maxItems: 12, addLabel: "Add intentions", lineEntry: true,
-    fields: [{ key: "text", kind: "textarea", label: "I want to…", max: 500, rows: 2, placeholder: "I want to approach uncertainty with curiosity." }, { key: "meaning", kind: "textarea", label: "What it means to me", max: 2000 },
+    fields: [{ key: "text", kind: "textarea", label: "I want to…", max: 500, rows: 2, placeholder: "I want to approach uncertainty with curiosity." }, { key: "meaning", kind: "textarea", label: "What it means to me", max: 6000 },
       discoveries, { key: "planner", kind: "planner", label: "Planner Intentions page" }, reflection] },
   mantras: { type: "mantras", label: "Mantras & affirmations", hint: "Words to carry with you.", glyph: "quote", tone: 7, group: "words", owners: ["chapter", "experience"], shape: "items", maxItems: 20, addLabel: "Add words",
-    fields: [{ key: "text", kind: "textarea", label: "Words", max: 1200, rows: 2, placeholder: "I am allowed to take up room." }, { key: "kind", kind: "choice", label: "Kind", options: mantraKinds },
+    fields: [{ key: "text", kind: "textarea", label: "Words", max: 4000, rows: 2, placeholder: "I am allowed to take up room." }, { key: "kind", kind: "choice", label: "Kind", options: mantraKinds },
       { key: "attribution", kind: "text", label: "Who said it", max: 120 }, { key: "featured", kind: "toggle", label: "Feature on the Daily Edit" }] },
   embrace: { type: "embrace", label: "Embracing & releasing", hint: "What to welcome, and what to loosen.", glyph: "leaf", tone: 4, group: "meaning", owners: ["chapter", "experience"], shape: "pair", maxItems: 12,
     fields: [reflection] },
   symbols: { type: "symbols", label: "Symbols & sigils", hint: "Emblems, drawings and marks that mean something.", glyph: "constellation", tone: 6, group: "artifacts", owners: ["chapter", "experience"], shape: "items", maxItems: 12, addLabel: "Add a symbol",
-    fields: [{ key: "title", kind: "text", label: "Title", max: 120 }, { key: "image", kind: "image", label: "Image or photo" }, { key: "meaning", kind: "textarea", label: "Personal meaning", max: 2000 },
-      { key: "createdOn", kind: "date", label: "Created" }, { key: "method", kind: "text", label: "How it was made", max: 200 }, { key: "word", kind: "text", label: "Associated word", max: 60 }, reflection] },
+    fields: [{ key: "title", kind: "text", label: "Title", max: 120 }, { key: "image", kind: "image", label: "Image or photo" }, { key: "meaning", kind: "textarea", label: "Personal meaning", max: 6000 },
+      { key: "createdOn", kind: "date", label: "Created" }, { key: "method", kind: "textarea", label: "How it was made", max: 10000, rows: 4 }, { key: "word", kind: "text", label: "Associated word", max: 120 }, reflection] },
   rituals: { type: "rituals", label: "Rituals & ceremonies", hint: "A practice or ceremony, kept as it happened.", glyph: "crescent", tone: 8, group: "artifacts", owners: ["experience"], shape: "items", maxItems: 12, addLabel: "Add a ritual or ceremony",
-    fields: [{ key: "title", kind: "text", label: "Title", max: 160 }, { key: "date", kind: "date", label: "Date" }, { key: "purpose", kind: "textarea", label: "Purpose or intention", max: 2000 },
-      { key: "happened", kind: "textarea", label: "What happened", max: 6000, rows: 4 }, { key: "steps", kind: "lines", label: "Steps", max: 30, placeholder: "A step" },
-      { key: "objects", kind: "textarea", label: "Meaningful objects and what they stood for", max: 3000 }, { key: "photos", kind: "images", label: "Photos", max: 8 },
-      { key: "participants", kind: "text", label: "With", max: 300 }, { key: "feelings", kind: "textarea", label: "Feelings or impressions", max: 2000 },
+    fields: [{ key: "title", kind: "text", label: "Title", max: 160 }, { key: "date", kind: "date", label: "Date" }, { key: "purpose", kind: "textarea", label: "Purpose or intention", max: 6000 },
+      { key: "happened", kind: "textarea", label: "What happened", max: 10000, rows: 4 }, { key: "steps", kind: "lines", label: "Steps", max: 30, placeholder: "A step" },
+      { key: "objects", kind: "textarea", label: "Meaningful objects and what they stood for", max: 6000 }, { key: "photos", kind: "images", label: "Photos", max: 8 },
+      { key: "participants", kind: "text", label: "With", max: 300 }, { key: "feelings", kind: "textarea", label: "Feelings or impressions", max: 6000 },
       { key: "word", kind: "text", label: "Related guiding word", max: 60 }, { key: "symbol", kind: "text", label: "Related symbol", max: 120 }, reflection] },
   materials: { type: "materials", label: "Materials & meaningful objects", hint: "Stones, plants, paper, keepsakes, supplies.", glyph: "gem", tone: 1, group: "artifacts", owners: ["experience"], shape: "items", maxItems: 40, addLabel: "Add a material",
     fields: [{ key: "name", kind: "material", label: "Material" }, { key: "category", kind: "choice", label: "Category", options: materialCategories }, { key: "quantity", kind: "text", label: "Quantity", max: 60 },
-      { key: "notes", kind: "textarea", label: "Notes", max: 1000 }, { key: "meaning", kind: "textarea", label: "What it means to me", max: 2000 }, { key: "image", kind: "image", label: "Photo" }] },
+      { key: "notes", kind: "textarea", label: "Notes", max: 4000 }, { key: "meaning", kind: "textarea", label: "What it means to me", max: 6000 }, { key: "image", kind: "image", label: "Photo" }] },
   photos: { type: "photos", label: "Photos & memories", hint: "Pictures worth keeping, with a caption.", glyph: "palette", tone: 5, group: "artifacts", owners: ["chapter", "experience"], shape: "fields",
-    fields: [{ key: "images", kind: "images", label: "Photos", max: 12 }, { key: "caption", kind: "textarea", label: "Caption or memory", max: 2000 }] },
+    fields: [{ key: "images", kind: "images", label: "Photos", max: 12 }, { key: "caption", kind: "textarea", label: "Caption or memory", max: 6000 }] },
   notes: { type: "notes", label: "Notes", hint: "Anything, in your own words.", glyph: "quill", tone: 7, group: "words", owners: ["chapter", "experience"], shape: "fields",
-    fields: [{ key: "text", kind: "textarea", label: "Notes", max: 20000, rows: 6 }] },
+    fields: [{ key: "text", kind: "richtext", label: "Notes", max: 40000 }] },
   discussion: { type: "discussion", label: "Discussion notes", hint: "What was talked about, and by whom.", glyph: "letter", tone: 3, group: "words", owners: ["experience"], shape: "fields",
-    fields: [{ key: "topic", kind: "text", label: "Topic", max: 200 }, { key: "people", kind: "text", label: "Who was there", max: 300 }, { key: "text", kind: "textarea", label: "Notes", max: 12000, rows: 5 }] },
+    fields: [{ key: "topic", kind: "text", label: "Topic", max: 200 }, { key: "people", kind: "text", label: "Who was there", max: 300 }, { key: "text", kind: "richtext", label: "Notes", max: 40000 }] },
   discoveries: { type: "discoveries", label: "Inner World discoveries", hint: "Values, qualities and beliefs that belong here.", glyph: "compass", tone: 6, group: "connections", owners: ["chapter", "experience"], shape: "refs", ref: "discovery", single: true },
   visions: { type: "visions", label: "Linked Visions", hint: "Vision Boards and Books from Envision.", glyph: "palette", tone: 4, group: "connections", owners: ["chapter", "experience"], shape: "refs", ref: "vision", single: true },
   exploration: { type: "exploration", label: "Guided exploration", hint: "An exploration you answered, or a new one.", glyph: "telescope", tone: 2, group: "connections", owners: ["experience"], shape: "refs", ref: "exploration", single: true },
@@ -98,6 +103,14 @@ const recordIdOk = (v: unknown): v is string => typeof v === "string" && /^[A-Za
 const dateOk = (v: unknown): v is string => typeof v === "string" && /^\d{4}-\d{2}-\d{2}$/.test(v);
 const obj = (v: unknown): Record<string, unknown> => v && typeof v === "object" && !Array.isArray(v) ? v as Record<string, unknown> : {};
 export const isImage = (v: unknown): v is BoardImage => { const o = obj(v); return typeof o.id === "string" && typeof o.path === "string" && typeof o.thumbnailPath === "string"; };
+/** A TipTap document small enough to keep (the module row allows 200 KB in all). */
+export const isRichDoc = (v: unknown): v is RichDoc => { const o = obj(v); return o.type === "doc" && (o.content === undefined || Array.isArray(o.content)) && JSON.stringify(v).length <= 150000; };
+/** The words in a rich-text value (or plain text as-is), for emptiness checks, previews and search. */
+export function richText(v: unknown): string {
+  if (typeof v === "string") return v;
+  const walk = (n: unknown): string => { const o = obj(n); return typeof o.text === "string" ? o.text : Array.isArray(o.content) ? o.content.map(walk).join(o.type === "doc" || o.type === "bulletList" || o.type === "orderedList" ? "\n" : "") : ""; };
+  return walk(v);
+}
 function parseRef(v: unknown): Ref | undefined {
   const o = obj(v);
   if (!recordIdOk(o.id)) return undefined;
@@ -120,6 +133,7 @@ export function parseValue(f: Field, v: unknown): Value {
     case "lines": return Array.isArray(v) ? v.filter((x): x is string => typeof x === "string").map((x) => x.slice(0, 500)).slice(0, f.max) : undefined;
     case "refs": { const r = parseRefs(v); return r.length ? r : undefined; }
     case "planner": return parsePlanner(v);
+    case "richtext": return typeof v === "string" ? (v.length ? v.slice(0, f.max) : undefined) : isRichDoc(v) && richText(v).trim() ? v : undefined;
   }
 }
 function parseItem(fields: Field[], v: unknown, extra: Field[] = []): Item | undefined {
@@ -151,7 +165,7 @@ export const pairFields = pairItem;
 export function moduleHasContent(type: ModuleType, c: Content): boolean {
   const def = modules[type];
   if (def.shape === "linked") return false;
-  const filled = (v: unknown) => Array.isArray(v) ? v.length > 0 : typeof v === "string" ? !!v.trim() : !!v;
+  const filled = (v: unknown) => Array.isArray(v) ? v.length > 0 : typeof v === "string" ? !!v.trim() : isRichDoc(v) ? !!richText(v).trim() : !!v;
   if (def.shape === "items") return (c.items ?? []).some((i) => Object.entries(i).some(([k, v]) => k !== "id" && filled(v)));
   if (def.shape === "pair") return !!(c.embracing?.length || c.releasing?.length || filled(c.reflection));
   if (def.shape === "refs") return !!c.refs?.length;

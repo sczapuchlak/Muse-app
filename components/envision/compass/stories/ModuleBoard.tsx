@@ -1,13 +1,15 @@
 "use client";
-import { useEffect, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent, type ReactNode } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent, type ReactNode } from "react";
 import { GlassPopover } from "@/components/GlassPopover";
 import { MuseMark } from "@/components/design/MuseHeading";
 import { MuseIcon } from "@/components/MuseIcon";
 import { MuseOverflowMenu } from "@/components/MuseOverflowMenu";
-import { blankItem, copyContent, emptyContent, groups, itemHeadline, moduleHasContent, modules, modulesFor, pairFields, type Content, type Item, type ModuleType, type Owner, type Value } from "@/lib/inner-compass/modules";
+import { blankItem, copyContent, emptyContent, groups, itemHeadline, materialCategories, materialCategoryTone, moduleHasContent, modules, modulesFor, pairFields, type Content, type Item, type ModuleType, type Owner, type Value } from "@/lib/inner-compass/modules";
 import { halfWidthIds, reorder, type Module, type ModuleWidth } from "@/lib/inner-compass/stories";
 import type { Stories } from "./useStories";
-import { FieldInput, FieldView, MaterialReference, RefsInput, type Sources } from "./Fields";
+import { FieldInput, FieldView, MaterialReference, PhotoFigure, RefChip, RefsInput, type Sources } from "./Fields";
+import { material } from "@/lib/inner-compass/library";
+import type { BoardImage } from "@/lib/constellation-board";
 
 const toneStyle = (t: number) => ({ "--mod-ink": `var(--chart-${t})`, "--mod-ink-b": `var(--chart-${t % 8 + 1})` }) as CSSProperties;
 
@@ -15,6 +17,10 @@ const toneStyle = (t: number) => ({ "--mod-ink": `var(--chart-${t})`, "--mod-ink
  * The modular body of a Chapter or an Experience. Nothing appears by default: the person adds only what fits, in any
  * order. Each module saves on its own (a moment after typing stops). Reorder by dragging on desktop or with Move
  * up/down anywhere (touch and keyboard). Removing a module with content asks first.
+ *
+ * Read first, edit intentionally: a module with content shows it as something to read (no forms, no per-entry links);
+ * its menu's Edit / Manage entries opens the editing tools, and Done editing closes them. A new, empty module opens
+ * ready to edit. Half-width modules flow as a masonry of two columns: each keeps its own height, in the saved order.
  */
 export function ModuleBoard({ owner, ownerId, ownerLabel, stories, sources, linked, onSaveDiscovery, addLabel }: {
   owner: Owner; ownerId: string; ownerLabel: string; stories: Stories; sources: Sources; addLabel: string;
@@ -28,6 +34,21 @@ export function ModuleBoard({ owner, ownerId, ownerLabel, stories, sources, link
   const [sizing, setSizing] = useState<{ id: string; width: ModuleWidth } | null>(null);
   const halves = halfWidthIds(list.map((m) => sizing?.id === m.id ? { ...m, width: sizing.width } : m));
   const move = (m: Module, to: number) => void stories.orderModules(reorder(list, m.id, to));
+  // Masonry: each module spans as many 4px grid rows as its card is tall, so cards keep their own heights and the
+  // grid's in-order placement drops each half-width card into whichever column frees first. Full-width cards span both.
+  const board = useRef<HTMLOListElement>(null), layoutKey = list.map((m) => m.id + (halves.has(m.id) ? "h" : "f")).join();
+  useLayoutEffect(() => {
+    const ol = board.current; if (!ol) return;
+    const unit = 4, gap = 12;
+    const fit = () => {
+      for (const li of Array.from(ol.children) as HTMLElement[]) { const card = li.firstElementChild as HTMLElement | null; if (card) li.style.gridRowEnd = `span ${Math.max(1, Math.ceil((card.getBoundingClientRect().height + gap) / unit))}`; }
+      ol.dataset.masonry = "";
+    };
+    fit();
+    const watch = new ResizeObserver(fit);
+    for (const li of Array.from(ol.children)) if (li.firstElementChild) watch.observe(li.firstElementChild);
+    return () => watch.disconnect();
+  }, [layoutKey]);
   const add = async (type: ModuleType) => {
     const m: Module = { id: crypto.randomUUID(), owner: { kind: owner, id: ownerId }, type, position: list.length, title: "", collapsed: false, content: emptyContent(type), revision: 0, updatedAt: "" };
     if (modules[type].shape === "items") m.content = { items: [blankItem()] };
@@ -36,7 +57,7 @@ export function ModuleBoard({ owner, ownerId, ownerLabel, stories, sources, link
   };
   return <section className="muse-stories-board" aria-label={`${ownerLabel}: contents`}>
     {list.length === 0 && <div className="muse-stories-board-empty"><p>Nothing here yet, and nothing needs to be. Add only what belongs.</p></div>}
-    <ol className="muse-stories-modules">{list.map((m, i) => <li key={m.id} id={`module-${m.id}`} data-width={halves.has(m.id) ? "half" : undefined} data-sizing={sizing?.id === m.id || undefined} data-drop={over === i && dragging !== m.id ? "before" : undefined}
+    <ol ref={board} className="muse-stories-modules">{list.map((m, i) => <li key={m.id} id={`module-${m.id}`} data-width={halves.has(m.id) ? "half" : undefined} data-sizing={sizing?.id === m.id || undefined} data-drop={over === i && dragging !== m.id ? "before" : undefined}
       onDragOver={(e) => { if (dragging) { e.preventDefault(); setOver(i); } }} onDrop={(e) => { e.preventDefault(); const from = list.find((x) => x.id === dragging); if (from) move(from, i); setDragging(null); setOver(null); }}>
       <ModuleCard m={m} index={i} count={list.length} stories={stories} sources={sources} linked={linked} onSaveDiscovery={onSaveDiscovery}
         onMove={(to) => move(m, to)} onSizing={(w) => setSizing(w ? { id: m.id, width: w } : null)} onDragStart={() => setDragging(m.id)} onDragEnd={() => { setDragging(null); setOver(null); }}
@@ -76,6 +97,18 @@ function ModuleCard({ m, index, count, stories, sources, linked, onMove, onSizin
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [content, title, dirty]);
   const change = (c: Content) => { setContent(c); setDirty(true); };
+  // Reading by default; a module with nothing in it yet opens ready to edit.
+  const canEdit = def.shape !== "linked", hasContent = moduleHasContent(m.type, content);
+  const [editing, setEditing] = useState(() => canEdit && !moduleHasContent(m.type, m.content));
+  const editLabel = def.shape === "items" || def.shape === "pair" ? "Manage entries" : def.shape === "refs" ? "Manage links" : "Edit";
+  // Leaving edit mode drops entries that were started but left completely empty.
+  const blank = (i: Item) => Object.entries(i).every(([k, v]) => k === "id" || v === undefined || v === "");
+  const finish = () => {
+    const strip = (l?: Item[]) => l?.filter((i) => !blank(i));
+    if (def.shape === "items" && content.items?.some(blank)) change({ ...content, items: strip(content.items) });
+    if (def.shape === "pair" && (content.embracing?.some(blank) || content.releasing?.some(blank))) change({ ...content, embracing: strip(content.embracing), releasing: strip(content.releasing) });
+    setEditing(false);
+  };
   const width: ModuleWidth = m.width === "half" ? "half" : "full", name = title || def.label;
   const setWidth = (w: ModuleWidth) => { if (w !== width) void stories.saveModule({ ...m, content, title, width: w }); };
   // Drag the right edge: about 40px left makes it half width, about 40px right makes it full; it snaps on release.
@@ -89,17 +122,22 @@ function ModuleCard({ m, index, count, stories, sources, linked, onMove, onSizin
     el.addEventListener("pointermove", moveTo); el.addEventListener("pointerup", end); el.addEventListener("pointercancel", end);
   };
   const actions = [
+    ...(canEdit ? [{ id: "edit", label: editing ? "Done editing" : editLabel, onSelect: () => editing ? finish() : setEditing(true) }] : []),
     ...(index > 0 ? [{ id: "up", label: "Move up", onSelect: () => onMove(index - 1) }] : []),
     ...(index < count - 1 ? [{ id: "down", label: "Move down", onSelect: () => onMove(index + 1) }] : []),
     ...(onDuplicate ? [{ id: "dup", label: "Duplicate", onSelect: onDuplicate }] : []),
     { id: "remove", label: def.shape === "linked" ? "Remove from this page" : "Remove…", destructive: true, onSelect: () => moduleHasContent(m.type, content) ? setConfirm(true) : void stories.removeModule(m) },
   ];
-  return <article className="muse-stories-module" data-type={m.type} data-collapsed={m.collapsed || undefined} style={toneStyle(def.tone)}>
+  return <article className="muse-stories-module" data-type={m.type} data-collapsed={m.collapsed || undefined} data-editing={editing || undefined} style={toneStyle(def.tone)}>
     <span className="muse-stories-resize" aria-hidden="true" title="Drag to resize: left for half width, right for full" onPointerDown={resize} />
     <header draggable onDragStart={(e) => { e.dataTransfer.effectAllowed = "move"; onDragStart(); }} onDragEnd={onDragEnd}>
       <span className="muse-stories-grip" aria-hidden="true" title="Drag to reorder"><MuseIcon name="grip" size={14} /></span>
-      <MuseMark icon={def.glyph} tone={def.tone} size="sm" />
-      <input className="muse-stories-module-title" aria-label="Module title" maxLength={80} value={title} placeholder={def.label} onChange={(e) => { setTitle(e.target.value); setDirty(true); }} />
+      <MuseMark icon={def.glyph} tone={def.tone} size="md" />
+      <div className="muse-stories-module-titles">
+        <small className="muse-stories-module-kicker">{groups.find((g) => g.id === def.group)?.label}</small>
+        {editing ? <input className="muse-stories-module-title" aria-label="Section title" maxLength={80} value={title} placeholder={def.label} onChange={(e) => { setTitle(e.target.value); setDirty(true); }} />
+          : <h3 className="muse-stories-module-heading"><span className="muse-heading-title">{name}</span></h3>}
+      </div>
       {dirty && <small className="muse-stories-saving" aria-live="polite">Saving…</small>}
       <button type="button" className="muse-stories-width" aria-pressed={width === "half"} aria-label={width === "half" ? `Make ${name} full width` : `Make ${name} half width`}
         title={width === "half" ? "Full width" : "Half width (pairs with the next half-width section)"} onClick={() => setWidth(width === "half" ? "full" : "half")}><MuseIcon name="columns" size={15} /></button>
@@ -111,22 +149,30 @@ function ModuleCard({ m, index, count, stories, sources, linked, onMove, onSizin
       <div><button type="button" className="muse-button" onClick={() => setConfirm(false)}>Keep it</button><button type="button" className="muse-button muse-compass-danger" onClick={() => void stories.removeModule(m)}>Remove</button></div></div>}
     {!m.collapsed && <div className="muse-stories-module-body">
       {def.shape === "linked" ? linked(m.type)
-        : def.shape === "refs" ? <RefsInput value={content.refs ?? []} source={sources[def.ref!]} label={def.label} onChange={(refs) => change({ ...content, refs })} />
-        : def.shape === "fields" ? <div className="muse-stories-fields">{def.fields!.map((f) => <FieldInput key={f.key} field={f} value={content[f.key] as Value} sources={sources} onChange={(v) => change({ ...content, [f.key]: v })} />)}</div>
-        : def.shape === "pair" ? <Pair content={content} sources={sources} onChange={change} onSaveDiscovery={onSaveDiscovery} />
-        : <Items type={m.type} items={content.items ?? []} sources={sources} onChange={(items) => change({ ...content, items })} onSaveDiscovery={onSaveDiscovery} />}
+        : !editing && !hasContent ? <p className="muse-stories-module-empty"><span className="muse-compass-quiet">Nothing here yet.</span> <button type="button" className="text-button" onClick={() => setEditing(true)}>{def.addLabel ?? editLabel}</button></p>
+        : def.shape === "refs" ? (editing ? <RefsInput value={content.refs ?? []} source={sources[def.ref!]} label={def.label} onChange={(refs) => change({ ...content, refs })} />
+          : <div className="muse-stories-ref-list">{(content.refs ?? []).map((r) => <RefChip key={r.id} r={r} source={sources[def.ref!]} />)}</div>)
+        : def.shape === "fields" ? <div className="muse-stories-fields" data-reading={!editing || undefined}>{def.fields!.map((f) => editing
+          ? <FieldInput key={f.key} field={f} value={content[f.key] as Value} sources={sources} onChange={(v) => change({ ...content, [f.key]: v })} />
+          : <FieldView key={f.key} field={f} value={content[f.key] as Value} sources={sources} />)}</div>
+        : def.shape === "pair" ? <Pair content={content} sources={sources} editing={editing} onChange={change} onSaveDiscovery={onSaveDiscovery} />
+        : <Items type={m.type} items={content.items ?? []} sources={sources} editing={editing} onChange={(items) => change({ ...content, items })} onSaveDiscovery={onSaveDiscovery} />}
+      {editing && <div className="muse-stories-module-done"><button type="button" className="muse-button" onClick={finish}>Done editing</button></div>}
     </div>}
   </article>;
 }
 
 /** A list of entries; each shows compactly and opens into its fields when you edit it. */
-function Items({ type, items, sources, onChange, onSaveDiscovery }: { type: ModuleType; items: Item[]; sources: Sources; onChange: (i: Item[]) => void; onSaveDiscovery?: (text: string) => void }) {
+function Items({ type, items, sources, editing: managing, onChange, onSaveDiscovery }: { type: ModuleType; items: Item[]; sources: Sources; editing: boolean; onChange: (i: Item[]) => void; onSaveDiscovery?: (text: string) => void }) {
   const def = modules[type];
   const fresh = items.length === 1 && !itemHeadline(type, items[0]);
   const [editing, setEditing] = useState<string | null>(() => fresh && !def.lineEntry ? items[0].id : null), [ref, setRef] = useState<string | null>(null);
   // One-per-line entry: the ids of the items currently being written as lines.
   const [lines, setLines] = useState<string[]>(() => fresh && def.lineEntry ? [items[0].id] : []);
   const max = def.maxItems ?? 20, numbered = !!def.lineEntry, List = numbered ? "ol" : "ul";
+  // Done editing on the module closes any open entry (blank entries are dropped by the module itself).
+  const [wasManaging, setWasManaging] = useState(managing);
+  if (wasManaging !== managing) { setWasManaging(managing); if (!managing) { setEditing(null); setLines([]); } }
   const set = (id: string, patch: Record<string, Value>) => onChange(items.map((i) => {
     if (i.id !== id) return i;
     const next: Item = { ...i, ...patch };
@@ -145,14 +191,14 @@ function Items({ type, items, sources, onChange, onSaveDiscovery }: { type: Modu
           <button type="button" className="text-button muse-compass-danger-text" onClick={() => { onChange(items.filter((x) => x.id !== it.id)); setEditing(null); }}>Remove</button>
           <button type="button" className="muse-button" onClick={() => setEditing(null)}>Done</button>
         </div>
-      </div> : <ItemView type={type} it={it} sources={sources} onEdit={() => setEditing(it.id)} showRef={ref === it.id} onRef={() => setRef(ref === it.id ? null : it.id)}
+      </div> : type === "materials" && !managing ? <MaterialCard it={it} showRef={ref === it.id} onRef={() => setRef(ref === it.id ? null : it.id)} />
+      : <ItemView type={type} it={it} sources={sources} tools={managing} onEdit={() => setEditing(it.id)} showRef={ref === it.id} onRef={() => setRef(ref === it.id ? null : it.id)}
         onSaveDiscovery={onSaveDiscovery && head ? () => onSaveDiscovery(head) : undefined} />}
     </li>; })}</List>
     {lines.length > 0 ? <div className="muse-stories-lines-actions">
       <small className="muse-compass-quiet">{items.length >= max ? `${max} is the most for one list.` : "Enter starts the next one. Edit any line later to add what it means."}</small>
-      <button type="button" className="muse-button" onClick={() => { onChange(items.filter((i) => !lines.includes(i.id) || itemHeadline(type, i))); setLines([]); }}>Done</button>
     </div>
-    : items.length < max && <button type="button" className="text-button muse-stories-additem" onClick={() => { const b = blankItem(); onChange([...items, b]); if (numbered) { setEditing(null); setLines([b.id]); } else setEditing(b.id); }}><MuseIcon name="plus" size={13} /> {def.addLabel ?? "Add"}</button>}
+    : managing && items.length < max && <button type="button" className="text-button muse-stories-additem" onClick={() => { const b = blankItem(); onChange([...items, b]); if (numbered) { setEditing(null); setLines([b.id]); } else setEditing(b.id); }}><MuseIcon name="plus" size={13} /> {def.addLabel ?? "Add"}</button>}
   </div>;
 }
 
@@ -203,11 +249,12 @@ function LineInput({ type, it, items, lines, max, onChange, onLines }: { type: M
   </div>;
 }
 
-function ItemView({ type, it, sources, onEdit, onSaveDiscovery, showRef, onRef }: { type: ModuleType; it: Item; sources: Sources; onEdit: () => void; onSaveDiscovery?: () => void; showRef: boolean; onRef: () => void }) {
+function ItemView({ type, it, sources, tools, onEdit, onSaveDiscovery, showRef, onRef }: { type: ModuleType; it: Item; sources: Sources; tools: boolean; onEdit: () => void; onSaveDiscovery?: () => void; showRef: boolean; onRef: () => void }) {
   const def = modules[type], head = itemHeadline(type, it), headField = def.fields!.find((f) => f.kind === "text" || f.kind === "textarea" || f.kind === "material")!;
   const rest = def.fields!.filter((f) => f !== headField && f.key !== "primary" && f.key !== "featured" && f.key !== "kind" && f.key !== "category" && f.key !== "image");
   const image = it.image as Item["image"];
-  return <div className="muse-stories-item">
+  const about = type === "materials" && typeof it.refKey === "string";
+  return <div className="muse-stories-item" data-image={(type === "symbols" && !!image) || undefined}>
     {type === "symbols" && image ? <FieldView field={{ key: "image", kind: "image", label: "" }} value={image} sources={sources} /> : null}
     <div className="muse-stories-item-main">
       <p className="muse-stories-item-head">
@@ -216,7 +263,9 @@ function ItemView({ type, it, sources, onEdit, onSaveDiscovery, showRef, onRef }
       <p className="muse-stories-item-chips">
         {it.primary === true && <span className="muse-compass-chip" data-on>Primary</span>}
         {it.featured === true && <span className="muse-compass-chip" data-on>On the Daily Edit</span>}
-        {(["kind", "category"] as const).map((k) => { const f = def.fields!.find((x) => x.key === k); return f ? <FieldView key={k} field={f} value={it[k]} sources={sources} /> : null; })}
+        {(["kind", "category"] as const).map((k) => { const f = def.fields!.find((x) => x.key === k); if (!f) return null;
+          const tone = type === "materials" && k === "category" && typeof it.category === "string" ? materialCategoryTone[it.category] : undefined;
+          return tone ? <span key={k} className="muse-stories-material-cat" style={{ "--cat": `var(--chart-${tone})` } as CSSProperties}>{materialCategories.find((c) => c.id === it.category)?.label}</span> : <FieldView key={k} field={f} value={it[k]} sources={sources} />; })}
         {typeof it.attribution === "string" && <span className="muse-compass-card-credit">— {it.attribution}</span>}
         {Array.isArray(it.from) && (it.from as { label: string }[])[0] && <span className="muse-compass-chip" data-quiet>Carried from {(it.from as { label: string }[])[0].label}</span>}
       </p>
@@ -224,22 +273,48 @@ function ItemView({ type, it, sources, onEdit, onSaveDiscovery, showRef, onRef }
       {type !== "symbols" && image && <FieldView field={{ key: "image", kind: "image", label: "" }} value={image} sources={sources} />}
       {showRef && typeof it.refKey === "string" && <MaterialReference refKey={it.refKey} />}
     </div>
-    <div className="muse-stories-item-tools">
-      {type === "materials" && typeof it.refKey === "string" && <button type="button" className="text-button" aria-expanded={showRef} onClick={onRef}><MuseIcon name="info" size={13} /> About</button>}
-      {onSaveDiscovery && <button type="button" className="text-button" onClick={onSaveDiscovery} title="Save as an Inner World discovery"><MuseIcon name="sparkle" size={13} /> Save as discovery</button>}
-      <button type="button" className="text-button" onClick={onEdit}><MuseIcon name="edit" size={13} /> Edit</button>
-    </div>
+    {(tools || about) && <div className="muse-stories-item-tools">
+      {about && <button type="button" className="text-button" aria-expanded={showRef} onClick={onRef}><MuseIcon name="info" size={13} /> About</button>}
+      {tools && onSaveDiscovery && <button type="button" className="text-button" onClick={onSaveDiscovery} title="Save as an Inner World discovery"><MuseIcon name="sparkle" size={13} /> Save as discovery</button>}
+      {tools && <button type="button" className="text-button" onClick={onEdit}><MuseIcon name="edit" size={13} /> Edit</button>}
+    </div>}
+  </div>;
+}
+
+/** A material, read as a small card: its name, what it means to the person, and the library's symbolic associations
+ *  (labelled as associations, not effects). Quantity and notes live in the entry's edit form; About opens the full reference. */
+function MaterialCard({ it, showRef, onRef }: { it: Item; showRef: boolean; onRef: () => void }) {
+  const ref = typeof it.refKey === "string" ? material(it.refKey) : undefined, image = it.image as BoardImage | undefined;
+  const name = typeof it.name === "string" && it.name.trim() ? it.name : "Untitled";
+  const category = materialCategories.find((c) => c.id === it.category);
+  return <div className="muse-stories-material-card" data-photo={!!image || undefined} style={category ? { "--cat": `var(--chart-${materialCategoryTone[category.id]})` } as CSSProperties : undefined}>
+    {image && <PhotoFigure image={image} className="muse-stories-material-thumb" showCaption={false} />}
+    <p className="muse-stories-item-head">{name}</p>
+    {category && <span className="muse-stories-material-cat">{category.label}</span>}
+    {typeof it.meaning === "string" && it.meaning.trim() && <p className="muse-stories-material-meaning">{it.meaning}</p>}
+    {!!ref?.associations.length && <p className="muse-stories-material-assoc"><span className="muse-stories-label">Symbolic associations</span> {ref.associations.join(", ")}</p>}
+    {ref && <button type="button" className="text-button muse-stories-material-about" aria-expanded={showRef} onClick={onRef}><MuseIcon name="info" size={13} /> About</button>}
+    {showRef && ref && <MaterialReference refKey={ref.key} />}
   </div>;
 }
 
 /** Embracing & Releasing: two short lists side by side, and an optional reflection. Releasing is loosening, not erasing. */
-function Pair({ content, sources, onChange, onSaveDiscovery }: { content: Content; sources: Sources; onChange: (c: Content) => void; onSaveDiscovery?: (text: string) => void }) {
+function Pair({ content, sources, editing, onChange, onSaveDiscovery }: { content: Content; sources: Sources; editing: boolean; onChange: (c: Content) => void; onSaveDiscovery?: (text: string) => void }) {
+  if (!editing) return <div className="muse-stories-pair" data-reading>
+    {([["embracing", "What I’m embracing"], ["releasing", "What I’m releasing"]] as const).map(([key, label]) => {
+      const items = (content[key] ?? []).filter((it) => typeof it.text === "string" && it.text.trim());
+      return items.length ? <section key={key} className="muse-stories-pair-side" data-side={key}><h4>{label}</h4>
+        <ul>{items.map((it) => <li key={it.id}><b>{it.text as string}</b>{typeof it.description === "string" && <p>{it.description}</p>}
+          {Array.isArray(it.discoveries) && <FieldView field={pairFields[2]} value={it.discoveries as Value} sources={sources} />}</li>)}</ul></section> : null;
+    })}
+    {typeof content.reflection === "string" && content.reflection.trim() && <div className="muse-stories-fv muse-stories-pair-reflect" data-kind="textarea"><span className="muse-stories-label">Reflection</span><p>{content.reflection}</p></div>}
+  </div>;
   const side = (key: "embracing" | "releasing", label: string, hint: string) => {
     const items = content[key] ?? [];
     return <section className="muse-stories-pair-side" data-side={key}>
       <h4>{label}</h4><p className="muse-compass-quiet">{hint}</p>
       <ul>{items.map((it) => <li key={it.id}>
-        <input aria-label={`${label}: entry`} maxLength={200} value={typeof it.text === "string" ? it.text : ""} onChange={(e) => onChange({ ...content, [key]: items.map((x) => x.id === it.id ? { ...x, text: e.target.value } : x) })} />
+        <input aria-label={`${label}: entry`} maxLength={300} value={typeof it.text === "string" ? it.text : ""} onChange={(e) => onChange({ ...content, [key]: items.map((x) => x.id === it.id ? { ...x, text: e.target.value } : x) })} />
         <details><summary>More</summary>{pairFields.slice(1).map((f) => <FieldInput key={f.key} field={f} value={it[f.key]} sources={sources} onChange={(v) => onChange({ ...content, [key]: items.map((x) => x.id === it.id ? { ...x, [f.key]: v } : x) })} />)}
           {onSaveDiscovery && typeof it.text === "string" && it.text.trim() && <button type="button" className="text-button" onClick={() => onSaveDiscovery(it.text as string)}><MuseIcon name="sparkle" size={13} /> Save as discovery</button>}</details>
         <button type="button" className="muse-compass-x" aria-label="Remove entry" onClick={() => onChange({ ...content, [key]: items.filter((x) => x.id !== it.id) })}>×</button>
@@ -250,6 +325,6 @@ function Pair({ content, sources, onChange, onSaveDiscovery }: { content: Conten
   return <div className="muse-stories-pair">
     {side("embracing", "What I’m embracing", "Ideas, feelings and ways of being to welcome.")}
     {side("releasing", "What I’m releasing", "Expectations and pressures to loosen. Not feelings to suppress.")}
-    <label className="muse-stories-pair-reflect"><span>Reflection <small className="small-label">· optional</small></span><textarea rows={2} maxLength={6000} value={typeof content.reflection === "string" ? content.reflection : ""} onChange={(e) => onChange({ ...content, reflection: e.target.value || undefined })} /></label>
+    <label className="muse-stories-pair-reflect"><span>Reflection <small className="small-label">· optional</small></span><textarea rows={2} maxLength={10000} value={typeof content.reflection === "string" ? content.reflection : ""} onChange={(e) => onChange({ ...content, reflection: e.target.value || undefined })} /></label>
   </div>;
 }

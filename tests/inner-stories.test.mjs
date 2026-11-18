@@ -46,7 +46,7 @@ test('module registry: typed, optional, and owned by Chapters, Experiences or bo
 
 test('module content parsing keeps what it understands and drops the rest',()=>{
  const c=Mo.parseContent('words',{items:[{id:'w1',word:'Prosperity',primary:true,bogus:1},{id:'w1',word:'dupe'},{id:'bad id!',word:'x'},{id:'w2',definition:'x'.repeat(9000)}]});
- assert.deepEqual(c.items.map(i=>i.id),['w1','w2']);assert.equal(c.items[0].bogus,undefined);assert.equal(c.items[1].definition.length,2000);
+ assert.deepEqual(c.items.map(i=>i.id),['w1','w2']);assert.equal(c.items[0].bogus,undefined);assert.equal(c.items[1].definition.length,6000);
  const m=Mo.parseContent('materials',{items:[{id:'m1',name:'Tiger’s eye',refKey:'tigers-eye',category:'stone',quantity:'2'},{id:'m2',name:'A key',refKey:'NOT OK'}]});
  assert.equal(m.items[0].refKey,'tigers-eye');assert.equal(m.items[1].refKey,undefined);
  const r=Mo.parseContent('visions',{refs:[{id:'v1',label:'Board'},{id:'v1',label:'dupe'},{label:'no id'}]});
@@ -91,4 +91,17 @@ test('the migration keeps one authoritative Experience and owner-only access',()
  assert.match(sql,/on delete set null \(chapter_id\)/,'reflections keep their words');
  assert.doesNotMatch(sql,/to anon/);
  assert.doesNotMatch(sql,/create table public\.inner_(seasons|spells|rituals)/,'no separate Seasons or ritual record systems');
+});
+test('notes keep formatted writing, still read older plain text, and drop oversized documents',()=>{
+ const doc={type:'doc',content:[{type:'heading',attrs:{level:2},content:[{type:'text',text:'Release'}]},{type:'bulletList',content:[{type:'listItem',content:[{type:'paragraph',content:[{type:'text',text:'habits'}]}]}]}]};
+ assert.deepEqual(Mo.parseContent('notes',{text:doc}).text,doc);
+ assert.equal(Mo.parseContent('notes',{text:'First line\nSecond line'}).text,'First line\nSecond line');
+ assert.equal(Mo.parseContent('notes',{text:{type:'doc',content:[{type:'paragraph'}]}}).text,undefined);
+ assert.equal(Mo.parseContent('notes',{text:{type:'doc',content:[{type:'paragraph',content:[{type:'text',text:'x'.repeat(200000)}]}]}}).text,undefined);
+ assert.equal(Mo.moduleHasContent('notes',{text:{type:'doc',content:[{type:'paragraph'}]}}),false);
+ assert.match(Mo.richText(doc),/Release[\s\S]*habits/);
+});
+test('a symbol\'s "How it was made" holds a whole process',()=>{
+ const c=Mo.parseContent('symbols',{items:[{id:'s1',method:'y'.repeat(12000)}]});
+ assert.equal(c.items[0].method.length,10000);
 });

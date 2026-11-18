@@ -1,5 +1,6 @@
 "use client";
 import { useId, useMemo, useState, type ReactNode } from "react";
+import { MuseModal } from "@/components/MuseModal";
 import Link from "next/link";
 import { MuseChoiceMenu } from "@/components/MuseChoiceMenu";
 import { MuseIcon } from "@/components/MuseIcon";
@@ -8,6 +9,7 @@ import { intentionRange, intentionTitle } from "@/lib/intentions/periods";
 import { material, materialsDisclaimer, searchMaterials } from "@/lib/inner-compass/library";
 import type { Field, PlannerRef, Ref, RefKind, Value } from "@/lib/inner-compass/modules";
 import type { BoardImage } from "@/lib/constellation-board";
+import { RichText } from "./RichText";
 
 /** Where each kind of reference comes from, and how to open it. Supplied by the page so nothing is loaded twice. */
 export type RefSource = { options: Ref[]; live: (id: string) => Ref | undefined; href: (r: Ref) => string; noun: string; empty: ReactNode };
@@ -15,10 +17,25 @@ export type Sources = Record<RefKind, RefSource> & { today: string; upload: (fil
 
 const str = (v: Value) => typeof v === "string" ? v : "";
 
-export function ImagesInput({ images, max, onChange, upload, label }: { images: BoardImage[]; max: number; onChange: (i: BoardImage[]) => void; upload: Sources["upload"]; label: string }) {
+/** A photo you can open large, with its caption. Keeps the image's own proportions; nothing is cropped in the viewer. */
+export function PhotoFigure({ image, className = "muse-stories-image", showCaption = true }: { image: BoardImage; className?: string; showCaption?: boolean }) {
+  const [open, setOpen] = useState(false), [opener, setOpener] = useState<HTMLElement | null>(null);
+  const name = image.caption || image.alt || image.name || "photo";
+  return <figure className="muse-stories-figure">
+    <button type="button" className="muse-stories-photo-open" aria-label={`View ${name} larger`} onClick={(e) => { setOpener(e.currentTarget); setOpen(true); }}><BucketPhoto image={image} className={className} /></button>
+    {showCaption && image.caption && <figcaption>{image.caption}</figcaption>}
+    {open && <MuseModal id={`muse-photo-${image.id}`} label={`Photo: ${name}`} returnFocus={opener} onClose={() => setOpen(false)}>
+      <div className="muse-stories-viewer"><BucketPhoto image={image} full className="muse-stories-viewer-img" />{image.caption && <p>{image.caption}</p>}
+        <button type="button" className="muse-button" onClick={() => setOpen(false)}>Close</button></div>
+    </MuseModal>}
+  </figure>;
+}
+
+export function ImagesInput({ images, max, onChange, upload, label, captions = false }: { images: BoardImage[]; max: number; onChange: (i: BoardImage[]) => void; upload: Sources["upload"]; label: string; captions?: boolean }) {
   const [busy, setBusy] = useState(false);
-  return <div className="muse-stories-images">
-    {images.map((img) => <figure key={img.id}><BucketPhoto image={img} className="muse-stories-thumb" /><button type="button" className="muse-compass-x" aria-label={`Remove ${img.name || "photo"}`} onClick={() => onChange(images.filter((x) => x.id !== img.id))}>×</button></figure>)}
+  return <div className="muse-stories-images" data-captions={captions || undefined}>
+    {images.map((img) => <figure key={img.id}><BucketPhoto image={img} className="muse-stories-thumb" /><button type="button" className="muse-compass-x" aria-label={`Remove ${img.name || "photo"}`} onClick={() => onChange(images.filter((x) => x.id !== img.id))}>×</button>
+      {captions && <input aria-label={`Caption for ${img.name || "photo"}`} maxLength={300} placeholder="Caption" value={img.caption ?? ""} onChange={(e) => onChange(images.map((x) => { if (x.id !== img.id) return x; const n: BoardImage = { ...x, caption: e.target.value }; if (!e.target.value) delete n.caption; return n; }))} />}</figure>)}
     {images.length < max && <label className="muse-stories-addphoto" aria-busy={busy || undefined}><MuseIcon name="plus" size={16} /><span>{busy ? "Adding…" : label}</span>
       <input type="file" multiple={max > 1} className="sr-only" accept="image/png,image/jpeg,image/webp,image/gif" disabled={busy}
         onChange={async (ev) => { const files = Array.from(ev.target.files ?? []).slice(0, max - images.length); ev.target.value = ""; if (!files.length) return; setBusy(true); const added: BoardImage[] = []; for (const f of files) { const img = await upload(f); if (img) added.push(img); } setBusy(false); if (added.length) onChange([...images, ...added]); }} /></label>}
@@ -90,26 +107,29 @@ export function FieldInput({ field: f, value, onChange, sources, item }: { field
     case "toggle": return <label className="muse-compass-check"><input type="checkbox" checked={value === true} onChange={(e) => onChange(e.target.checked || undefined)} /><span>{f.label}</span></label>;
     case "choice": return <fieldset className="muse-compass-choices"><legend>{f.label}{opt}</legend><div className="muse-chip-row" data-scroll>{f.options.map((o) => <button key={o.id} type="button" aria-pressed={value === o.id} onClick={() => onChange(value === o.id ? undefined : o.id)}>{o.label}</button>)}</div></fieldset>;
     case "image": { const img = value as BoardImage | undefined; return <div className="muse-stories-field"><span>{f.label}{opt}</span><ImagesInput images={img ? [img] : []} max={1} upload={sources.upload} label="Add an image" onChange={(i) => onChange(i[0])} /></div>; }
-    case "images": return <div className="muse-stories-field"><span>{f.label}{opt}</span><ImagesInput images={(value as BoardImage[] | undefined) ?? []} max={f.max} upload={sources.upload} label="Add photos" onChange={(i) => onChange(i.length ? i : undefined)} /></div>;
+    case "images": return <div className="muse-stories-field"><span>{f.label}{opt}</span><ImagesInput images={(value as BoardImage[] | undefined) ?? []} max={f.max} upload={sources.upload} label="Add photos" captions onChange={(i) => onChange(i.length ? i : undefined)} /></div>;
     case "lines": { const lines = (value as string[] | undefined) ?? []; return <div className="muse-stories-field"><span>{f.label}{opt}</span>
       <ol className="muse-stories-lines">{lines.map((l, i) => <li key={i}><input aria-label={`${f.label} ${i + 1}`} maxLength={500} value={l} onChange={(e) => onChange(lines.map((x, j) => j === i ? e.target.value : x))} /><button type="button" className="muse-compass-x" aria-label={`Remove step ${i + 1}`} onClick={() => onChange(lines.filter((_, j) => j !== i))}>×</button></li>)}</ol>
       {lines.length < f.max && <button type="button" className="text-button" onClick={() => onChange([...lines, ""])}><MuseIcon name="plus" size={13} /> {f.placeholder ?? "Add"}</button>}</div>; }
     case "refs": return <div className="muse-stories-field"><span>{f.label}{opt}</span><RefsInput value={(value as Ref[] | undefined) ?? []} source={sources[f.ref]} label={f.label} onChange={(r) => onChange(r.length ? r : undefined)} /></div>;
     case "planner": return <div className="muse-stories-field"><span>{f.label}{opt}</span><PlannerInput value={value as PlannerRef | undefined} today={sources.today} onChange={(v) => onChange(v)} /></div>;
+    case "richtext": return <div className="muse-stories-field"><span className="sr-only">{f.label}</span><RichText value={value} editable label={f.label} max={f.max} onChange={(v) => onChange(v)} /></div>;
     case "material": return <label htmlFor={id}><span>{f.label}</span><MaterialInput value={str(value)} refKey={typeof item?.refKey === "string" ? item.refKey : undefined} onChange={(name, refKey, category) => onChange(name || undefined, { refKey, ...(category && !item?.category ? { category } : {}) })} /></label>;
   }
 }
 
-/** Read-only display of one field value, for compact module cards. */
+/** Read-only display of one field value: the reading state of a module. Long writing gets its label on its own line. */
 export function FieldView({ field: f, value, sources }: { field: Field; value: Value; sources: Sources }) {
   if (value === undefined || value === "" || (Array.isArray(value) && !value.length)) return null;
   switch (f.kind) {
-    case "text": case "textarea": case "material": return <p className="muse-stories-fv" data-kind={f.kind}><span className="muse-stories-label">{f.label}</span> {str(value)}</p>;
+    case "text": case "material": return <p className="muse-stories-fv" data-kind={f.kind}><span className="muse-stories-label">{f.label}</span> {str(value)}</p>;
+    case "textarea": return <div className="muse-stories-fv" data-kind="textarea"><span className="muse-stories-label">{f.label}</span><p>{str(value)}</p></div>;
+    case "richtext": return <RichText value={value} editable={false} label={f.label} />;
     case "date": return <p className="muse-stories-fv"><span className="muse-stories-label">{f.label}</span> <span className="type-numeric">{str(value)}</span></p>;
     case "choice": return <span className="muse-compass-chip">{f.options.find((o) => o.id === value)?.label}</span>;
     case "toggle": return <span className="muse-compass-chip" data-on>{f.label}</span>;
-    case "image": return <BucketPhoto image={value as BoardImage} className="muse-stories-image" />;
-    case "images": return <div className="muse-stories-gallery">{(value as BoardImage[]).map((i) => <BucketPhoto key={i.id} image={i} className="muse-stories-image" />)}</div>;
+    case "image": return <PhotoFigure image={value as BoardImage} />;
+    case "images": return <div className="muse-stories-gallery">{(value as BoardImage[]).map((i) => <PhotoFigure key={i.id} image={i} />)}</div>;
     case "lines": return <div className="muse-stories-fv"><span className="muse-stories-label">{f.label}</span><ol className="muse-stories-steps">{(value as string[]).filter((x) => x.trim()).map((x, i) => <li key={i}>{x}</li>)}</ol></div>;
     case "refs": return <div className="muse-stories-ref-list">{(value as Ref[]).map((r) => <RefChip key={r.id} r={r} source={sources[f.ref]} />)}</div>;
     case "planner": { const p = value as PlannerRef; return <p className="muse-stories-fv"><span className="muse-stories-label">{f.label}</span> <Link href={`/planner?view=intentions&period=${p.period}&date=${p.start}`}>{p.label}</Link></p>; }

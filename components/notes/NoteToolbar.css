@@ -1,0 +1,4 @@
+/* The rich-text formatting toolbar, shared by Notes and Inner Compass writing (Notes, Discussion notes). */
+.muse-note-toolbar { display:flex; flex:0 0 auto; flex-wrap:wrap; gap:2px; padding:var(--space-1) var(--space-4); border-block:1px solid var(--divider); }
+.muse-note-format { display:inline-flex; justify-content:center; align-items:center; min-width:32px; height:36px; padding:4px 7px; border:1px solid transparent; border-radius:6px; color:var(--text-muted); background:transparent; font-size:.75rem; }
+.muse-note-format[aria-pressed="true"],.muse-note-format:hover:enabled { color:var(--selected-text); background:var(--selected-background); border-color:var(--selected-border); }.note-format-bold { font-weight:750; }.note-format-italic { font-style:italic; }.note-format-underline { text-decoration:underline; }.note-format-strike { text-decoration:line-through; }.muse-note-redo { display:inline-flex; transform:scaleX(-1); }

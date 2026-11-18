@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { MuseModal } from "@/components/MuseModal";
 import { MuseChoiceMenu } from "@/components/MuseChoiceMenu";
@@ -13,7 +13,7 @@ import type { VisionBoard } from "@/lib/vision-boards/model";
 import type { Compass } from "../useInnerCompass";
 import type { Stories } from "./useStories";
 import { CoverArt, CoverPicker } from "./Cover";
-import { ImagesInput } from "./Fields";
+import { ImagesInput, PhotoFigure } from "./Fields";
 import { ModuleBoard } from "./ModuleBoard";
 import { withUpload, useRefSources, SaveAsDiscovery, AreasField, shortDate } from "./shared";
 import { ReflectionComposer, ReflectionList } from "../Reflections";
@@ -70,8 +70,7 @@ export function ExperiencePage({ e, stories, compass, boards, today, onBack, onO
       {!chapters.length && !collections.length && !areas.length && !e.event && <p className="muse-compass-quiet">Standing on its own. <button type="button" className="text-button" onClick={() => open("details")}>Add it to a chapter or collection</button></p>}
     </section>
 
-    {e.photos.length > 0 && <section className="muse-stories-photos" aria-labelledby="exp-photos-title"><h3 id="exp-photos-title" className="muse-compass-subhead">Photos</h3>
-      <ImagesInput images={e.photos} max={24} upload={upload} label="Add photos" onChange={(photos) => void stories.saveExperience({ ...e, photos })} /></section>}
+    {e.photos.length > 0 && <ExperiencePhotos e={e} stories={stories} upload={upload} />}
 
     <ModuleBoard owner="experience" ownerId={e.id} ownerLabel={e.title} stories={stories} sources={sources} addLabel="Add to experience" onSaveDiscovery={saveDiscovery} linked={() => null} />
 
@@ -92,6 +91,20 @@ export function ExperiencePage({ e, stories, compass, boards, today, onBack, onO
     </MuseModal>}
     {saving !== null && <SaveAsDiscovery text={saving} origin={{ kind: "experience", id: e.id, label: e.title }} compass={compass} returnFocus={opener} onClose={() => setSaving(null)} />}
   </article>;
+}
+
+/** The Experience's photos: a gallery to look at (open any photo large, captions beneath); Manage photos adds, removes and
+ *  captions them. Caption typing saves a moment after it stops, not on every key. */
+function ExperiencePhotos({ e, stories, upload }: { e: Experience; stories: Stories; upload: (f: File) => Promise<import("@/lib/constellation-board").BoardImage | null> }) {
+  const [managing, setManaging] = useState(false), [draft, setDraft] = useState(e.photos);
+  const changed = JSON.stringify(draft) !== JSON.stringify(e.photos);
+  useEffect(() => { if (!managing || !changed) return; const t = window.setTimeout(() => void stories.saveExperience({ ...e, photos: draft }), 700); return () => window.clearTimeout(t); }, [managing, changed, draft, e, stories]);
+  return <section className="muse-stories-photos" aria-labelledby="exp-photos-title">
+    <header className="muse-stories-photos-head"><h3 id="exp-photos-title" className="muse-compass-subhead">Photos</h3>
+      <button type="button" className="text-button" aria-expanded={managing} onClick={() => { if (managing && changed) void stories.saveExperience({ ...e, photos: draft }); else setDraft(e.photos); setManaging(!managing); }}>{managing ? "Done" : "Manage photos"}</button></header>
+    {managing ? <ImagesInput images={draft} max={24} upload={upload} label="Add photos" captions onChange={setDraft} />
+      : <div className="muse-stories-photo-strip">{e.photos.map((p) => <PhotoFigure key={p.id} image={p} className="muse-stories-photo-tile" />)}</div>}
+  </section>;
 }
 
 /** The first photos: a quiet button in the header until there are some, then a gallery of its own. */
