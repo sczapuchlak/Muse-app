@@ -1,9 +1,11 @@
 import type { MuseIconName } from "@/components/MuseIcon";
+import { hiddenNavIds } from "@/lib/module-visibility";
 
 export type NavGroup = "Everyday" | "Life" | "Whimsy" | "Tools";
 /** `matches` lists other routes owned by the same destination (for example, Fortune & Fun's fortunes view). */
 export type NavItem = { id: string; label: string; href: string; icon: MuseIconName; group: NavGroup; description: string; matches?: string[] };
-export const navigation: NavItem[] = [
+/** Every destination, including ones hidden for now (lib/module-visibility.ts). */
+export const allDestinations: NavItem[] = [
   { id: "daily", label: "Daily Edit", href: "/", icon: "home", group: "Everyday", description: "Your day, thoughtfully together." },
   { id: "planner", label: "Planner", href: "/planner", icon: "calendar", group: "Everyday", description: "A home for your plans, tasks, and events." },
   { id: "rituals", label: "Rituals", href: "/rituals", icon: "flame", group: "Everyday", description: "Small rhythms that make a day your own." },
@@ -24,9 +26,11 @@ export const navigation: NavItem[] = [
   { id: "settings", label: "Settings", href: "/settings", icon: "gear", group: "Tools", description: "Your preferences will live here." },
 ];
 
+/** The destinations shown in navigation: hidden modules keep their routes but aren't offered. */
+export const navigation: NavItem[] = allDestinations.filter((item) => !hiddenNavIds.has(item.id));
 export const desktopGroups = ["Everyday", "Life", "Whimsy"] as const;
 export const mobilePrimaryIds = ["daily", "planner", "journal"];
-export const mobileMoreIds = ["rituals", "nourish", "insights", "envision", "money", "notes", "collections", "astrology", "tarot", "dreams", "fortune-fun", "stream", "profile", "appearance", "settings"];
+export const mobileMoreIds = (["rituals", "nourish", "insights", "envision", "money", "notes", "collections", "astrology", "tarot", "dreams", "fortune-fun", "stream", "profile", "appearance", "settings"] as string[]).filter((id) => !hiddenNavIds.has(id));
 export function navItems(ids: string[]): NavItem[] { return ids.map((id) => navigation.find((item) => item.id === id)).filter((item): item is NavItem => Boolean(item)); }
 export function isActiveDestination(path: string, href: string): boolean { return href === "/" ? path === "/" : path === href || path.startsWith(`${href}/`); }
 export function isActiveItem(path: string, item: Pick<NavItem, "href" | "matches">): boolean { return [item.href, ...(item.matches ?? [])].some((href) => isActiveDestination(path, href)); }
