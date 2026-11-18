@@ -1,5 +1,6 @@
 "use client";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { MuseMark, type MuseMarkIcon, type MuseTone } from "../design/MuseHeading";
@@ -68,6 +69,16 @@ function Page({ initialId, onRouteClear }: { initialId: string | null; onRouteCl
   const [draftEntry, setDraftEntry] = useState<string | null>(null);
   const creating = useRef<Promise<Conversation | null> | null>(null);
   const end = useRef<HTMLDivElement>(null);
+  const [dock, setDock] = useState<HTMLDivElement | null>(null);
+  /** On a desktop the page runs to the bottom of the window (less our usual padding), so the conversation gets every
+   *  line of room; the toolbar sits up in the header. Measured, because the header's height varies by theme and width. */
+  const fitToViewport = useCallback((el: HTMLElement | null) => {
+    if (!el) return;
+    const fit = () => { const top = el.getBoundingClientRect().top + window.scrollY; el.style.setProperty("--mj-ws-h", `${Math.max(480, Math.round(window.innerHeight - top - 24))}px`); };
+    fit();
+    const ro = new ResizeObserver(fit); ro.observe(document.body); window.addEventListener("resize", fit);
+    return () => { ro.disconnect(); window.removeEventListener("resize", fit); };
+  }, []);
   const aiOn = ai.enabled && Boolean(companion);
   const loaded = !convId || loadedFor === convId;
 
@@ -212,16 +223,17 @@ function Page({ initialId, onRouteClear }: { initialId: string | null; onRouteCl
     ...(conv ? [{ id: "delete", label: userCount ? "Delete this entry" : "Discard this draft", destructive: true, onSelect: () => void j.deleteConversation(conv.id).then((ok) => ok && fresh()) }] : []),
   ];
 
-  return <section className="muse-journal-archive mj-workspace mj-reveal" aria-label="Journal" style={{ "--journal-a": `var(--chart-${tone})`, "--journal-b": `var(--chart-${(tone % 8) + 1})` } as React.CSSProperties}>
-    <header className="mj-ws-bar">
-      <JournalToolbar journal={journal} companion={companion} defaultCompanionId={fallback?.id ?? null}
-        onJournal={switchJournal} onCompanion={switchCompanion} onMakeDefault={(c) => void j.setDefaultCompanion(journal, c.id)}
-        conversationNote={conv ? <>Replies from now on use {companion?.name ?? "this companion"}{pinned ? ` (version ${pinned.version})` : ""}. Earlier replies keep their words.{companion && pinned && companion.version > pinned.version ? ` ${companion.name} has newer saved words (version ${companion.version}): choose it again to use them.` : ""}</> : undefined}
-        extra={<>
-          <button type="button" className="muse-button button-ghost mj-tb-new" onClick={() => newEntry()} disabled={streaming} title={state.prefs.greetOnNew && aiOn ? `Start a new entry; ${companion!.name.replace(/^The /, "")} greets you` : "Start a new entry"} aria-label="New entry"><MuseIcon name="plus" size={16} /><span className="mj-tb-label">New entry</span></button>
-          {entryActions.length > 0 && <MuseOverflowMenu label="This entry" actions={entryActions} />}
-        </>} />
-    </header>
+  const toolbar = <div className="mj-header-toolbar" style={{ "--journal-a": `var(--chart-${tone})`, "--journal-b": `var(--chart-${(tone % 8) + 1})` } as React.CSSProperties}>
+    <JournalToolbar journal={journal} companion={companion} defaultCompanionId={fallback?.id ?? null}
+      onJournal={switchJournal} onCompanion={switchCompanion} onMakeDefault={(c) => void j.setDefaultCompanion(journal, c.id)}
+      conversationNote={conv ? <>Replies from now on use {companion?.name ?? "this companion"}{pinned ? ` (version ${pinned.version})` : ""}. Earlier replies keep their words.{companion && pinned && companion.version > pinned.version ? ` ${companion.name} has newer saved words (version ${companion.version}): choose it again to use them.` : ""}</> : undefined}
+      extra={<>
+        <button type="button" className="muse-button button-ghost mj-tb-new" onClick={() => newEntry()} disabled={streaming} title={state.prefs.greetOnNew && aiOn ? `Start a new entry; ${companion!.name.replace(/^The /, "")} greets you` : "Start a new entry"} aria-label="New entry"><MuseIcon name="plus" size={16} /><span className="mj-tb-label">New entry</span></button>
+        {entryActions.length > 0 && <MuseOverflowMenu label="This entry" actions={entryActions} />}
+      </>} />
+  </div>;
+  return <section ref={fitToViewport} className="muse-journal-archive mj-workspace mj-reveal" aria-label="Journal" style={{ "--journal-a": `var(--chart-${tone})`, "--journal-b": `var(--chart-${(tone % 8) + 1})` } as React.CSSProperties}>
+    {ui.toolbarSlot && createPortal(toolbar, ui.toolbarSlot)}
 
     <div className="mj-ws-page">
       {greetNote && !shown.length && <p className="mj-note mj-greet-note" role="status">{greetNote}</p>}
@@ -231,6 +243,12 @@ function Page({ initialId, onRouteClear }: { initialId: string | null; onRouteCl
       {stream && !stream.text && <Thinking name={whoFor({ companionVersionId: conv?.companionVersionId ?? null } as ThreadMessage).name} />}
       {error && <div className="mj-error" role="alert"><span>{error.text}</span>{error.retry && conv && <button type="button" className="muse-button" onClick={() => void ask(conv.id, error.retry!)}>Ask again</button>}</div>}
       {!error && unanswered && conv && loaded && <div className="mj-error" data-soft><span>No reply to your last message yet.</span><button type="button" className="muse-button" onClick={() => void ask(conv.id, { kind: "reply", messageId: lastUser!.id })}>Ask for a reply</button></div>}
+      <Composer storageKey={conv && conv.status !== "draft" ? conv.id : `new:${journal.id}`} initial={conv?.draft ?? ""} busy={sending} disabled={!loaded}
+        placeholder={shown.length ? "Keep going… (type or dictate)" : (conv?.mode ?? mode) === "morning" ? "How are you starting the day?" : (conv?.mode ?? mode) === "evening" ? "How was today?" : "What’s on your mind? Type or dictate…"}
+        hint={aiOn ? `Type, or tap the mic to speak. ${companion!.name.replace(/^The /, "")} replies when you send.` : "Type, or tap the mic to speak. Everything saves as you go."}
+        onSend={send} onDraft={(text) => void saveDraft(text)} label="Write or dictate" dock={dock}
+        sendLabel={userCount ? (aiOn ? "Go deeper" : "Add to entry") : "Send"}
+        secondary={userCount ? { label: "Finish entry", disabled: streaming || sending || confirmFinish, onClick: () => setConfirmFinish(true) } : undefined} />
       <div ref={end} />
     </div>
     <div className="mj-live-compose">
@@ -238,13 +256,8 @@ function Page({ initialId, onRouteClear }: { initialId: string | null; onRouteCl
         <p><b>Finish this entry?</b> It’s saved already. Finishing closes the conversation{ai.enabled && state.prefs.analysisAuto ? " and writes a short analysis you can edit" : ""}, then gives you a fresh page.</p>
         <div><button type="button" className="muse-button" onClick={() => setConfirmFinish(false)}>Keep talking</button><button type="button" className="muse-button button-primary" onClick={() => void finish()}>Finish &amp; save</button></div>
       </div>}
-      <Composer storageKey={conv && conv.status !== "draft" ? conv.id : `new:${journal.id}`} initial={conv?.draft ?? ""} busy={sending} disabled={!loaded}
-        placeholder={shown.length ? "Keep going… (type or dictate)" : (conv?.mode ?? mode) === "morning" ? "How are you starting the day?" : (conv?.mode ?? mode) === "evening" ? "How was today?" : "What’s on your mind? Type or dictate…"}
-        hint={aiOn ? `Type, or tap the mic to speak. ${companion!.name.replace(/^The /, "")} replies when you send.` : "Type, or tap the mic to speak. Everything saves as you go."}
-        onSend={send} onDraft={(text) => void saveDraft(text)} label="Write or dictate"
-        sendLabel={userCount ? (aiOn ? "Go deeper" : "Add to entry") : "Send"}
-        secondary={userCount ? { label: "Finish entry", disabled: streaming || sending || confirmFinish, onClick: () => setConfirmFinish(true) } : undefined} />
       {ai.enabled && ai.allowance?.warning && <p className="mj-note" data-soft>{ai.allowance.exhausted ? "This month’s AI budget is used up, so replies are paused. Writing still saves." : `You’ve used ${"$" + ai.allowance.spentMonth.toFixed(2)} of this month’s ${"$" + ai.allowance.monthlyLimit.toFixed(2)} AI budget.`}</p>}
+      <div className="mj-dock-slot" ref={setDock} />
     </div>
   </section>;
 }

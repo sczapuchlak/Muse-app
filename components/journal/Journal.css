@@ -68,7 +68,6 @@
 
 /* ── Writing workspace: a beautiful page with a toolbar ───────────────────────────────────────────────────────── */
 .mj-workspace{display:flex;flex-direction:column;gap:14px;min-height:min(80vh,880px);padding:clamp(12px,2vw,20px) clamp(14px,2.4vw,26px)}
-.mj-ws-bar{position:sticky;top:0;z-index:6;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin:calc(-1 * clamp(12px,2vw,20px)) calc(-1 * clamp(14px,2.4vw,26px)) 0;padding:10px clamp(14px,2.4vw,26px);border-bottom:1px solid var(--mj-hair);border-radius:var(--card-radius,22px) var(--card-radius,22px) 0 0;background:color-mix(in srgb,var(--glass-background) 94%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
 .mj-ws-page{flex:1;display:grid;align-content:start;gap:18px;min-width:0}
 .mj-ws-date{margin:6px 0 0;text-align:center}
 .mj-saved{display:flex;flex-wrap:wrap;align-items:center;gap:6px;justify-self:center;margin:0;padding:6px 14px;border:1px solid color-mix(in srgb,var(--success-primary,var(--accent-secondary)) 45%,var(--glass-border));border-radius:999px;background:var(--mj-tile);font-size:.88rem;animation:mj-rise var(--motion-settle,260ms) var(--mj-ease) both}
@@ -106,9 +105,6 @@
 .mj-composer textarea:focus{outline:none;border-color:color-mix(in srgb,var(--journal-a,var(--focus-ring)) 70%,var(--glass-border));box-shadow:0 0 0 3px color-mix(in srgb,var(--journal-a,var(--focus-ring)) 18%,transparent),0 14px 30px -24px var(--journal-a,var(--focus-ring))}
 /* The workspace field is one framed box: the words, then a slim tool row (the mic, the word count). The frame takes
    the border and focus glow; the textarea inside is bare. The Studio's plain composer keeps the framed textarea. */
-.mj-composer-field{display:grid;min-width:0;border:1px solid var(--glass-border);border-radius:18px;background:var(--mj-tile);transition:border-color var(--motion-hover,180ms),box-shadow var(--motion-settle,260ms)}
-.mj-composer-field:focus-within,.mj-composer-field[data-listening]{border-color:color-mix(in srgb,var(--journal-a,var(--focus-ring)) 70%,var(--glass-border));box-shadow:0 0 0 3px color-mix(in srgb,var(--journal-a,var(--focus-ring)) 18%,transparent),0 14px 30px -24px var(--journal-a,var(--focus-ring))}
-.mj-composer .mj-composer-field textarea,.mj-composer .mj-composer-field textarea:focus{min-height:84px;padding-bottom:6px;border:0;border-radius:18px 18px 0 0;background:transparent;box-shadow:none}
 .mj-composer-tools{display:flex;align-items:center;gap:10px;min-height:44px;padding:0 10px 8px 12px}
 .mj-composer-tools:not([data-voice]){padding-left:18px}
 /* Voice typing: it pulses softly while listening (steady under reduced motion). */
@@ -123,9 +119,8 @@
 .mj-composer-tools .mj-composer-hint{flex:1 1 auto;min-width:0}
 .mj-composer-bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px}
 .mj-composer-hint{color:var(--text-muted);font-size:.8rem}
-.mj-composer-field~.mj-composer-bar{justify-content:flex-end}
-.mj-composer[data-paired] .mj-composer-bar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.mj-composer[data-paired] .mj-composer-bar>.muse-button{justify-content:center;min-height:46px;width:100%}
+.mj-composer-dock[data-paired] .mj-composer-bar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.mj-composer-dock[data-paired] .mj-composer-bar>.muse-button{justify-content:center;min-height:46px;width:100%}
 .mj-send{display:inline-flex;align-items:center;gap:6px;min-height:42px;padding-inline:18px}
 .mj-send svg{transition:transform var(--motion-hover,180ms) var(--mj-ease)}.mj-send:not(:disabled):hover svg{transform:translateX(2px)}
 .mj-live-compose{position:sticky;bottom:calc(env(safe-area-inset-bottom) + 8px);z-index:5;display:grid;gap:8px;margin:0 calc(-1 * clamp(14px,2.4vw,26px)) calc(-1 * clamp(12px,2vw,20px));padding:12px clamp(14px,2.4vw,26px);border-top:1px solid var(--mj-hair);border-radius:0 0 var(--card-radius,22px) var(--card-radius,22px);background:color-mix(in srgb,var(--glass-background) 94%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
@@ -411,12 +406,10 @@
 }
 @container muse-content (max-width:640px){
  .mj-workspace{min-height:calc(100dvh - 220px);padding:10px 12px;border-radius:20px}
- .mj-ws-bar{margin:-10px -12px 0;padding:8px 10px;gap:6px}
  .mj-live-compose{margin:0 -12px -10px;padding:10px 12px}
  /* One toolbar row on phones: journal and companion as compact chips, then +, ⋯ and Finish. Preferences live in ⋯. */
- .mj-ws-bar{flex-wrap:nowrap}
  .mj-toolbar{flex-wrap:nowrap;gap:4px;min-width:0}
- .mj-tb-label,.mj-tb-text small,.mj-tb-settings{display:none}
+ .mj-tb-label,.mj-tb-text small{display:none}
  .mj-tb-button{min-height:38px;padding:3px 6px 3px 3px;gap:5px}
  .mj-tb-button[aria-label^="Journal"] .mj-tb-text{display:none}
  .mj-tb-button[aria-label^="Companion"]{flex:1 1 auto;min-width:0;max-width:none}
@@ -427,8 +420,7 @@
  .mj-composer-hint[data-live]{display:block}
  .mj-composer-tools{min-height:40px;padding-bottom:6px}
  .mj-composer-tools:not([data-voice]):not(:has([data-live])){display:none}
- .mj-composer .mj-composer-field textarea{min-height:64px}
- .mj-composer[data-paired] .mj-composer-bar>.muse-button{min-height:44px}
+ .mj-composer-dock[data-paired] .mj-composer-bar>.muse-button{min-height:44px}
  .mj-composer-bar{justify-content:flex-end}
  .mj-blank{grid-template-columns:minmax(0,1fr);margin-top:8px}
  .mj-blank-week{justify-items:start}
@@ -474,21 +466,35 @@
 /* ── Desktop: a page that holds still. The card fills the window below the header; only the conversation scrolls
    inside it, and the toolbar and composer stay put without painting over the card's gradient ring. ──────────── */
 @media (min-width:1024px){
- .mj-workspace{height:max(540px,calc(100dvh - 250px));min-height:0}
+ .mj-workspace{height:var(--mj-ws-h,max(540px,calc(100dvh - 200px)));min-height:0}
+ .mj-live-compose{border-top:0;padding-top:4px}
+ .mj-ws-page{-webkit-mask-image:linear-gradient(#000 calc(100% - 28px),transparent);mask-image:linear-gradient(#000 calc(100% - 28px),transparent);padding-bottom:20px}
  .mj-ws-page{min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-gutter:stable;margin-right:calc(-1 * clamp(14px,2.4vw,26px) + 2px);padding-right:calc(clamp(14px,2.4vw,26px) - 2px)}
- .mj-ws-bar,.mj-live-compose{position:static;z-index:auto;-webkit-backdrop-filter:none;backdrop-filter:none;background:transparent}
  .mj-live-compose::after{display:none}
 }
 /* Phones and tablets keep the composer above the tab bar, but inset by the ring's width so the border stays visible. */
 @media (max-width:1023px){
- .mj-ws-bar{margin-inline:calc(-1 * clamp(14px,2.4vw,26px) + 1px);margin-top:calc(-1 * clamp(12px,2vw,20px) + 1px)}
  .mj-live-compose{margin-inline:calc(-1 * clamp(14px,2.4vw,26px) + 1px);margin-bottom:calc(-1 * clamp(12px,2vw,20px) + 1px)}
 }
 @container muse-content (max-width:640px){
- .mj-ws-bar{margin:-9px -11px 0}
  .mj-live-compose{margin:0 -11px -9px}
 }
 
 /* Tall Journal modals scroll inside themselves (Muse's tall modal clips its own overflow). */
 .mj-modal-scroll{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;margin-inline:calc(-1 * var(--space-4,16px));padding:2px var(--space-4,16px) var(--space-4,16px);-webkit-overflow-scrolling:touch}
 #mj-settings .muse-segmented{flex:none;margin-bottom:12px}
+
+/* Toolbar in the page header (no separate Settings link). */
+.mj-page{--header-context-width:auto}
+.mj-header-tools{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:6px;width:100%;min-width:0}
+.mj-header-slot{display:contents}
+.mj-header-toolbar{display:flex;min-width:0;max-width:100%}
+@container muse-content (max-width:850px){.mj-header-tools{justify-content:flex-start}.mj-header-toolbar{flex:1 1 auto}}
+/* Writing flows right after the conversation, in the reading column, with your messages' inked edge. */
+.mj-ws-page .mj-composer{max-width:760px;gap:0}
+.mj-ws-page .mj-composer textarea{min-height:3.4em;padding:6px 0 6px 16px;border:0;border-left:2px solid color-mix(in srgb,var(--journal-a,var(--accent-primary)) 30%,transparent);border-radius:0;background:transparent;box-shadow:none}
+.mj-ws-page .mj-composer textarea:focus,.mj-ws-page .mj-composer[data-listening] textarea{border-left-color:var(--journal-a,var(--accent-primary));box-shadow:none}
+.mj-composer-dock{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px;width:100%;max-width:820px;margin-inline:auto}
+.mj-composer-dock[data-paired]{grid-template-columns:minmax(0,1fr)}
+.mj-composer-dock .mj-composer-tools{min-height:40px;padding:0}
+.mj-composer-dock .mj-composer-bar{justify-content:flex-end}
