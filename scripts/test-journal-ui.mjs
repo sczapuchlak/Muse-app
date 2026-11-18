@@ -221,8 +221,10 @@ try{
  const hlReply=must(await admin.from('journal_messages').select('id,body').eq('conversation_id',convId).eq('role','assistant').order('created_at').limit(2)).at(-1);
  const phrase='most alive';
  await evaluate(({id,phrase})=>{const body=document.querySelector(`[data-message-id="${id}"] .mj-message-body`);const w=document.createTreeWalker(body,NodeFilter.SHOW_TEXT);let n;while((n=w.nextNode())){const i=n.textContent.indexOf(phrase);if(i>=0){const r=document.createRange();r.setStart(n,i);r.setEnd(n,i+phrase.length);const s=getSelection();s.removeAllRanges();s.addRange(r);return;}}throw Error('phrase not found');},{id:hlReply.id,phrase});
- await until(()=>!!document.querySelector('.mj-hl-toolbar'),'selection toolbar');
- await click('.mj-hl-toolbar button','Save highlight');
+ await until(()=>!!document.querySelector('.mj-hl-pill'),'selection pill');
+ await shoot('06d-pill');
+ check(await evaluate(()=>{const p=document.querySelector('.mj-hl-pill').getBoundingClientRect(),m=document.querySelector('mark.mj-hl, .mj-thread').getBoundingClientRect(),s=getSelection().getRangeAt(0).getClientRects()[0];return Math.abs(p.top+4-s.top)<30&&p.left>=document.querySelector('.mj-thread').getBoundingClientRect().right;}),'Save highlight sits in the gutter beside the selected words, level with them');
+ await click('.mj-hl-pill','Save highlight');
  await until(()=>!!document.querySelector('mark.mj-hl'),'highlight painted');
  const hl=must(await admin.from('journal_bookmarks').select('*').eq('message_id',hlReply.id).single());
  check(hl.excerpt===phrase&&hlReply.body.slice(hl.start_offset,hl.end_offset)===phrase,'selecting words saves the exact passage and where it sits in the message');
