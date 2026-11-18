@@ -80,7 +80,7 @@ export async function deleteJournal(client: Client, id: string, moveTo: string |
 }
 
 export async function savePreferences(client: Client, userId: string, p: Preferences): Promise<Preferences> {
-  const row = { global_instructions: p.globalInstructions.slice(0, 20000), memory_enabled: p.memoryEnabled, analysis_auto: p.analysisAuto, on_this_day: p.onThisDay, show_on_daily: p.showOnDaily, default_journal_id: p.defaultJournalId };
+  const row = { global_instructions: p.globalInstructions.slice(0, 20000), memory_enabled: p.memoryEnabled, analysis_auto: p.analysisAuto, on_this_day: p.onThisDay, show_on_daily: p.showOnDaily, greet_on_new: p.greetOnNew, default_journal_id: p.defaultJournalId };
   const r = p.revision === 0
     ? await client.from("journal_preferences").insert({ ...row, user_id: userId }).select("*").single()
     : await client.from("journal_preferences").update(row).eq("user_id", userId).eq("revision", p.revision).select("*").maybeSingle();
@@ -200,4 +200,38 @@ export async function journalDays(client: Client, from: string): Promise<{ date:
 export async function keepTest(client: Client, o: { key: string; journalId: string; companionId: string | null; companionName: string; messages: { role: "user" | "assistant"; body: string }[]; localDate: string; timeZone: string }): Promise<Conversation> {
   const r = must(await client.rpc("keep_journal_test", { p_key: o.key, p_journal_id: o.journalId, p_companion_id: o.companionId as string, p_companion_name: o.companionName, p_messages: o.messages as unknown as Json, p_local_date: o.localDate, p_time_zone: o.timeZone })) as Database["public"]["Tables"]["journal_conversations"]["Row"][];
   return conversationFromRow(r[0]);
+}
+
+/**
+ * First-run setup (daily-experience brief): one personal journal and one companion, which becomes that journal's
+ * default. The companion starts from a starter's words, optionally rewritten. Existing journals are never touched.
+ */
+export async function setupJournal(client: Client, userId: string, o: { journalName: string; presetKey: string; instructions?: string; prefs: Preferences }): Promise<{ journal: Journal; companion: Companion }> {
+  const p = companionPresets.find((x) => x.key === o.presetKey) ?? companionPresets[0];
+  const existing = must(await client.from("journal_companions").select("*").eq("user_id", userId).eq("preset_key", p.key).limit(1).maybeSingle());
+  let companion = existing ? companionFromRow(existing) : companionFromRow(must(await client.from("journal_companions").insert({ user_id: userId, name: p.name, description: p.description, icon: p.icon, tone: p.tone, instructions: p.instructions, conversation_prefs: p.conversationPrefs, opening_style: p.openingStyle, preset_key: p.key, position: 0 }).select("*").single()));
+  if (o.instructions !== undefined && o.instructions.trim() && o.instructions !== companion.instructions) companion = await saveCompanion(client, userId, { ...companion, instructions: o.instructions });
+  const everyday = journalPresets[0];
+  const journal = journalFromRow(must(await client.from("journal_journals").insert({ user_id: userId, name: o.journalName.trim().slice(0, 80) || "My Journal", description: everyday.description, icon: everyday.icon, tone: everyday.tone, cover: everyday.cover, memory_scope: "shared", preset_key: everyday.key, default_companion_id: companion.id, position: 0 }).select("*").single()));
+  await savePreferences(client, userId, { ...o.prefs, defaultJournalId: journal.id });
+  return { journal, companion };
+}
+
+/**
+ * Switch the companion of an unfinished conversation. Earlier replies keep the version that wrote them (each assistant
+ * message stores its own companion_version_id); the next reply uses this companion's current saved version.
+ */
+export async function switchCompanion(client: Client, userId: string, c: Conversation, companion: Companion): Promise<Conversation> {
+  const v = await client.from("journal_companion_versions").select("id").eq("user_id", userId).eq("companion_id", companion.id).eq("version", companion.version).maybeSingle();
+  if (v.error) fail(v.error);
+  return conversationFromRow(one(await client.from("journal_conversations").update({ companion_id: companion.id, companion_version_id: v.data?.id ?? null, companion_name: companion.name.slice(0, 80) })
+    .eq("id", c.id).eq("user_id", userId).neq("status", "completed").select("*").maybeSingle(), "This entry was finished on another device."));
+}
+
+/** Names of the companion versions that wrote a set of replies (so a switched conversation labels each reply truly). */
+export async function versionsByIds(client: Client, userId: string, ids: string[]): Promise<Map<string, { companionId: string; name: string; version: number }>> {
+  const unique = [...new Set(ids.filter(Boolean))];
+  if (!unique.length) return new Map();
+  const rows = must(await client.from("journal_companion_versions").select("id,companion_id,name,version").eq("user_id", userId).in("id", unique));
+  return new Map(rows.map((r) => [r.id, { companionId: r.companion_id, name: r.name, version: r.version }]));
 }

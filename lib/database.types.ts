@@ -292,14 +292,14 @@ isOneToOne: false
                 },
 "journal_preferences": {
                   Row: {
-                    "analysis_auto": boolean,"created_at": string,"default_journal_id": string | null,"global_instructions": string,"memory_enabled": boolean,"on_this_day": boolean,"revision": number,"show_on_daily": boolean,"updated_at": string,"user_id": string
+                    "analysis_auto": boolean,"created_at": string,"default_journal_id": string | null,"global_instructions": string,"greet_on_new": boolean,"memory_enabled": boolean,"on_this_day": boolean,"revision": number,"show_on_daily": boolean,"updated_at": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "analysis_auto"?: boolean,"created_at"?: string,"default_journal_id"?: string | null,"global_instructions"?: string,"memory_enabled"?: boolean,"on_this_day"?: boolean,"revision"?: number,"show_on_daily"?: boolean,"updated_at"?: string,"user_id"?: string
+                    "analysis_auto"?: boolean,"created_at"?: string,"default_journal_id"?: string | null,"global_instructions"?: string,"greet_on_new"?: boolean,"memory_enabled"?: boolean,"on_this_day"?: boolean,"revision"?: number,"show_on_daily"?: boolean,"updated_at"?: string,"user_id"?: string
                   }
                   Update: {
-                    "analysis_auto"?: boolean,"created_at"?: string,"default_journal_id"?: string | null,"global_instructions"?: string,"memory_enabled"?: boolean,"on_this_day"?: boolean,"revision"?: number,"show_on_daily"?: boolean,"updated_at"?: string,"user_id"?: string
+                    "analysis_auto"?: boolean,"created_at"?: string,"default_journal_id"?: string | null,"global_instructions"?: string,"greet_on_new"?: boolean,"memory_enabled"?: boolean,"on_this_day"?: boolean,"revision"?: number,"show_on_daily"?: boolean,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
                     {

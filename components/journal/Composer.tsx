@@ -28,10 +28,14 @@ export function Composer({ storageKey, initial = "", placeholder, disabled, busy
   const grow = useCallback(() => { const el = ref.current; if (!el) return; el.style.height = "auto"; el.style.height = `${Math.min(el.scrollHeight, Math.round(window.innerHeight * 0.5))}px`; }, []);
   useLayoutEffect(grow, [text, grow]);
 
+  // The latest draft callback, kept in a ref so saving on leave never re-runs just because a parent re-rendered.
+  const onDraftRef = useRef(onDraft);
+  useEffect(() => { onDraftRef.current = onDraft; }, [onDraft]);
   const flush = useCallback(() => {
     window.clearTimeout(timer.current);
-    if (onDraft && latest.current !== sentDraft.current) { sentDraft.current = latest.current; onDraft(latest.current); }
-  }, [onDraft]);
+    const save = onDraftRef.current;
+    if (save && latest.current !== sentDraft.current) { sentDraft.current = latest.current; save(latest.current); }
+  }, []);
   useEffect(() => {
     const hide = () => { if (document.visibilityState === "hidden") flush(); };
     document.addEventListener("visibilitychange", hide); window.addEventListener("pagehide", flush);
@@ -47,6 +51,7 @@ export function Composer({ storageKey, initial = "", placeholder, disabled, busy
     const body = text.trim();
     if (!body || disabled || busy) return;
     window.clearTimeout(timer.current);
+    sentDraft.current = latest.current; // a send is not a draft: nothing to save on leave for these words
     if (await onSend(body)) { setText(""); latest.current = ""; sentDraft.current = ""; clearLocalDraft(storageKey); ref.current?.focus(); }
   }
   const desktop = () => typeof window !== "undefined" && window.matchMedia("(hover: hover) and (pointer: fine)").matches;

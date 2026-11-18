@@ -71,8 +71,8 @@ export function openingRequest(l: Pick<Layers, "mode" | "companion">, when: { da
     `Write the first message of a new conversation. It's ${when.weekday}, ${when.date}, ${when.partOfDay}.`,
     l.mode === "morning" ? "They chose Morning Intention." : l.mode === "evening" ? "They chose Evening Reflection." : "",
     style ? `Opening approach: ${style}` : "Keep it to one or two sentences: a natural, personal invitation.",
-    hasContext ? "If something from the journal context is a natural thread to pick up (especially from the last day or two), you may mention it briefly and leave room for them to talk about something else instead." : "There's no recent journal context, so don't refer to past conversations.",
-    "Don't greet with their name unless it appears in the context. Don't list options. End with an open door, not a quiz.",
+    hasContext ? "Only if something from the last day or two was genuinely meaningful, you may follow up on it in a few words, and leave room for them to talk about anything else. Most of the time, a warm open invitation is better than a callback. Never bring up an older topic just because it appears in the context." : "There's no recent journal context, so don't refer to past conversations.",
+    "Never invent or imply memories that aren't in the context. Ask at most one question. Don't frame it as a morning or evening check-in unless that mode was chosen. Don't greet with their name unless it appears in the context. Don't list options.",
   ].filter(Boolean).join("\n");
 }
 
