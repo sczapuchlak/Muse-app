@@ -30,7 +30,7 @@
 .mj-note{margin:0;color:var(--text-muted);font-size:.9rem;line-height:1.55}
 .mj-note[data-soft]{padding:10px 14px;border:1px dashed var(--glass-border);border-radius:14px;background:var(--mj-tile)}
 .mj-row-between,.mj-shelf-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 16px}
-.mj-shelf-head>div{display:grid;gap:2px;min-width:0}
+.mj-shelf-head>div:not(.muse-segmented){display:grid;gap:2px;min-width:0}
 .mj-row-tools{display:inline-flex;flex-wrap:wrap;align-items:center;gap:8px}
 .mj-link{padding:0;border:0;background:none;color:var(--link-ink,var(--control-accent,var(--accent-primary)));font:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;cursor:pointer}
 .mj-x{display:inline-grid;place-items:center;width:22px;height:22px;padding:0;border:0;border-radius:999px;background:transparent;color:var(--text-muted);font-size:1rem;line-height:1;cursor:pointer;transition:background var(--motion-hover,180ms),color var(--motion-hover,180ms)}
@@ -51,7 +51,8 @@
 .mj-quiet-stars{width:64px;height:28px;flex:none;color:var(--journal-a,var(--accent-secondary))}
 .mj-quiet-stars line{stroke:currentColor;stroke-width:.8;opacity:.45;stroke-dasharray:2 3}
 .mj-quiet-stars path{fill:currentColor}
-.mj-quiet>div{flex:1 1 220px;display:grid;gap:2px}
+.mj-quiet>div:not(.mj-quiet-action){flex:1 1 220px;display:grid;gap:2px}
+.mj-quiet-action{flex:none}
 .mj-quiet p{margin:0}.mj-quiet-title{font-size:1.1rem}.mj-quiet-line{color:var(--text-muted);font-size:.9rem}
 
 /* ── The week as a constellation ──────────────────────────────────────────────────────────────────────────────── */
@@ -445,3 +446,25 @@
 /* A view switcher in a header never shrinks into a vertical stack. */
 .mj-shelf-head>.muse-segmented,.mj-row-between>.muse-segmented{flex:none}
 @container muse-content (max-width:640px){.mj-shelf-head>.muse-segmented{max-width:100%;overflow-x:auto}}
+
+/* ── Desktop: a page that holds still. The card fills the window below the header; only the conversation scrolls
+   inside it, and the toolbar and composer stay put without painting over the card's gradient ring. ──────────── */
+@media (min-width:1024px){
+ .mj-workspace{height:max(540px,calc(100dvh - 250px));min-height:0}
+ .mj-ws-page{min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-gutter:stable;margin-right:calc(-1 * clamp(14px,2.4vw,26px) + 2px);padding-right:calc(clamp(14px,2.4vw,26px) - 2px)}
+ .mj-ws-bar,.mj-live-compose{position:static;z-index:auto;-webkit-backdrop-filter:none;backdrop-filter:none;background:transparent}
+ .mj-live-compose::after{display:none}
+}
+/* Phones and tablets keep the composer above the tab bar, but inset by the ring's width so the border stays visible. */
+@media (max-width:1023px){
+ .mj-ws-bar{margin-inline:calc(-1 * clamp(14px,2.4vw,26px) + 1px);margin-top:calc(-1 * clamp(12px,2vw,20px) + 1px)}
+ .mj-live-compose{margin-inline:calc(-1 * clamp(14px,2.4vw,26px) + 1px);margin-bottom:calc(-1 * clamp(12px,2vw,20px) + 1px)}
+}
+@container muse-content (max-width:640px){
+ .mj-ws-bar{margin:-9px -11px 0}
+ .mj-live-compose{margin:0 -11px -9px}
+}
+
+/* Tall Journal modals scroll inside themselves (Muse's tall modal clips its own overflow). */
+.mj-modal-scroll{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;margin-inline:calc(-1 * var(--space-4,16px));padding:2px var(--space-4,16px) var(--space-4,16px);-webkit-overflow-scrolling:touch}
+#mj-settings .muse-segmented{flex:none;margin-bottom:12px}

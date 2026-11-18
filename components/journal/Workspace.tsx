@@ -85,7 +85,7 @@ function Page({ initialId, onRouteClear }: { initialId: string | null; onRouteCl
   }, [client, userId, convId]);
   const shown = convId ? messages : [];
   const streaming = Boolean(stream);
-  useEffect(() => { if (shown.length) end.current?.scrollIntoView({ block: "end", behavior: "smooth" }); }, [shown.length, streaming]);
+  useEffect(() => { if (shown.length) end.current?.scrollIntoView({ block: "nearest", behavior: "smooth" }); }, [shown.length, streaming]);
 
   const ask = useCallback(async (id: string, pending: Pending) => {
     setError(null); setStream({ text: "", pending });

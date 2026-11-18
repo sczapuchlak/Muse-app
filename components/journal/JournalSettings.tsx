@@ -19,7 +19,7 @@ export function JournalSettings({ onClose }: { onClose: () => void }) {
   const [tab, setTab] = useState<Tab>("preferences");
   return <MuseModal id="mj-settings" label="Journal settings" title="Journal settings" returnFocus={null} onClose={onClose} size="tall">
     <MuseSegmented label="Settings" value={tab} onChange={setTab} options={[{ id: "preferences", label: "Preferences" }, { id: "memory", label: "Memory" }, { id: "privacy", label: "Privacy & usage" }]} />
-    {tab === "preferences" ? <Preferences /> : tab === "memory" ? <Memories /> : <Privacy />}
+    <div className="mj-modal-scroll">{tab === "preferences" ? <Preferences /> : tab === "memory" ? <Memories /> : <Privacy />}</div>
   </MuseModal>;
 }
 
