@@ -1289,3 +1289,12 @@ See [BOOK_IMPORT_143](BOOK_IMPORT_143.md). Goodreads empty ISBN formulas are mis
 - **Data:** migration `20261223000100_inner_chapters_experiences.sql`; module registry `lib/inner-compass/modules.ts`; models `lib/inner-compass/stories.ts`; materials `content/inner-compass/materials.json`.
 - **Checks:** `tests/inner-stories.test.mjs`, `npm run test:inner-stories:db`, `npm run test:inner-stories:ui`, `scripts/verify-hosted-inner-stories.sql`.
 
+## Wellness → Meals: Meal ideas for the week — Staging acceptance pending
+
+- **Naming:** the Wellness tab formerly called Plan is **Meals** (links keep `view=plan`).
+- **Meal ideas** sit under the week's meal plan: four cards (Breakfast, Lunch, Dinner, Snacks) in the week grid's own meal colours, for loose ideas to shop from. They are not planned meals; nothing is placed on a day and the meal plan is untouched.
+- **Writing:** type an idea and press Enter for the next; edit any idea in place (saves a moment after typing stops); Backspace on an empty idea removes it; a pasted list becomes one idea per line (numbers and bullets dropped). 300 characters per idea.
+- **Weeks:** ideas belong to the week shown (Monday start) and follow the week arrows. An empty week offers **Start from last week (n)**, which copies last week's ideas and leaves last week as it was.
+- **Open/closed:** the section closes to its title and idea count; the choice is remembered on that device.
+- **Data:** `meal_ideas` (migration `20261225000100_meal_ideas.sql`, owner-only RLS); `lib/meal-ideas.ts`, `components/nourish/useMealIdeas.ts`, `components/nourish/MealIdeas.tsx`. Included in the account export (`mealIdeas`).
+

@@ -142,6 +142,11 @@ isOneToOne: false
                   Insert: { chapter_id: string; created_at?: string; experience_id: string; position?: number; user_id?: string }
                   Update: { chapter_id?: string; created_at?: string; experience_id?: string; position?: number; user_id?: string }
                   Relationships: []
+                },"meal_ideas": {
+                  Row: { created_at: string; id: string; position: number; slot: string; text: string; updated_at: string; user_id: string; week_start: string }
+                  Insert: { created_at?: string; id?: string; position?: number; slot: string; text: string; updated_at?: string; user_id?: string; week_start: string }
+                  Update: { created_at?: string; id?: string; position?: number; slot?: string; text?: string; updated_at?: string; user_id?: string; week_start?: string }
+                  Relationships: []
                 },"inner_modules": {
                   Row: { chapter_id: string | null; collapsed: boolean; content: Json; created_at: string; experience_id: string | null; id: string; position: number; revision: number; title: string; type: string; updated_at: string; user_id: string; width: string }
                   Insert: { chapter_id?: string | null; collapsed?: boolean; content?: Json; created_at?: string; experience_id?: string | null; id?: string; position?: number; revision?: number; title?: string; type: string; updated_at?: string; user_id?: string; width?: string }

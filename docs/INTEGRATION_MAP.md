@@ -16,6 +16,16 @@ Write down the answers before you build. Put them in the PR description or the f
 6. **Place in the cycle.** What happens before and after this experience?
 7. **Now or later.** Which integrations work now, and which are only prepared for the future? Say which in the docs.
 
+### Wellness → Meals: Meal ideas
+
+1. **Authoritative source.** Wellness → Meals owns `meal_ideas`: one row per idea, per week (Monday) and meal slot.
+2. **Related owners.** The weekly meal plan (`read_wellness`/`save_wellness`: assignments, saved meals) and the Grocery List stay with Wellness's existing state; Meal ideas never write them.
+3. **Duplicates.** None. An idea is not a planned meal; nothing is placed on a day. "Start from last week" makes new rows for the new week on request; last week's rows are unchanged.
+4. **Optional relationships.** None yet.
+5. **Patterns.** `MuseHeading`, the week grid's meal palette (`--b/--l/--d/--s`), line-by-line entry (as in Inner Compass Intentions), the Meals week arrows.
+6. **Place in the cycle.** Ideas for the week → shop (Grocery List) → plan specific meals on days if wanted.
+7. **Now or later.** Now: ideas per week, carry forward from last week, export. Later (not built): send an idea's ingredients to the Grocery List, or place an idea on a day.
+
 ### Inner Compass, Phase 2: My Chapters & My Experiences (#211)
 
 1. **Authoritative source.** Envision → Inner Compass. Chapters (`inner_chapters`) are seasons of life; Experiences (`inner_experiences`) are the one record of something lived; Collections (`inner_experience_collections`) group Experiences. Modules (`inner_modules`) belong to exactly one Chapter or Experience.
