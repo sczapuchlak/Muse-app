@@ -523,3 +523,13 @@
 .muse-stories-material-cat{justify-self:start;display:inline-flex;align-items:center;gap:6px;padding:3px 10px 3px 8px;border-radius:999px;border:1px solid color-mix(in srgb,var(--cat,var(--mod-ink)) 55%,transparent);background:color-mix(in srgb,var(--cat,var(--mod-ink)) 18%,transparent);color:color-mix(in oklch,var(--cat,var(--mod-ink)) 45%,var(--foreground));font:600 .74rem/1.2 var(--font-ui)}
 .muse-stories-material-cat::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--cat,var(--mod-ink));box-shadow:0 0 6px var(--cat,var(--mod-ink))}
 .muse-stories-material-card[style]{border-color:color-mix(in srgb,var(--cat) 40%,var(--glass-border));border-top:2px solid var(--cat);background:radial-gradient(120% 90% at 0% 0%,color-mix(in srgb,var(--cat) 16%,transparent),transparent 60%),var(--glass-background)}
+/* Material pictures: a small drawn tile beside the name, and in the suggestions list. */
+.muse-stories-material-title{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:center}
+.muse-stories-material-title .muse-stories-item-head{margin:0}
+.muse-stories-material-art{display:grid;place-items:center;flex:none;width:52px;height:52px;border-radius:14px;background:radial-gradient(80% 80% at 35% 30%,color-mix(in srgb,var(--art-light) 30%,transparent),transparent 70%),color-mix(in srgb,var(--art-dark) 14%,var(--surface-subtle));border:1px solid color-mix(in srgb,var(--art-dark) 30%,var(--glass-border));box-shadow:inset 0 1px 0 rgba(255,255,255,.25)}
+.muse-stories-material-art svg{display:block;filter:drop-shadow(0 2px 3px rgba(0,0,0,.25))}
+.muse-stories-suggest button{display:flex!important;align-items:center;gap:10px}
+.muse-stories-suggest button>span{display:grid;gap:1px;min-width:0;flex:1}
+.muse-stories-suggest em{font-style:normal;font:700 .62rem/1 var(--font-ui);letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)}
+.muse-stories-suggest-art{display:grid;place-items:center;flex:none;width:32px;height:32px;border-radius:9px;background:color-mix(in srgb,var(--art-dark) 14%,var(--surface-subtle))}
+.muse-stories-material-cat{white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}

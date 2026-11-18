@@ -8,7 +8,7 @@ import { MuseOverflowMenu } from "@/components/MuseOverflowMenu";
 import { MuseSegmented } from "@/components/design/MuseSegmented";
 import { usePlanner } from "@/components/PlannerStore";
 import { projectEvents } from "@/lib/planner-occurrences";
-import { canonicalTag, cleanTags, knownTags, type Experience, type EventRef } from "@/lib/inner-compass/stories";
+import { canonicalTag, cleanTags, knownTags, type Experience, type EventRef, myMaterials } from "@/lib/inner-compass/stories";
 import type { VisionBoard } from "@/lib/vision-boards/model";
 import type { Compass } from "../useInnerCompass";
 import type { Stories } from "./useStories";
@@ -28,7 +28,7 @@ export function ExperiencePage({ e, stories, compass, boards, today, onBack, onO
   const [dialog, setDialog] = useState<"details" | "cover" | "delete" | null>(null), [opener, setOpener] = useState<HTMLElement | null>(null);
   const [reflecting, setReflecting] = useState(false), [order, setOrder] = useState<"newest" | "oldest">("oldest"), [saving, setSaving] = useState<string | null>(null);
   const open = (d: typeof dialog) => { setOpener(document.activeElement as HTMLElement | null); setDialog(d); };
-  const refs = useRefSources(compass, boards), upload = (f: File) => stories.upload(e.id, f), sources = withUpload(refs, today, upload);
+  const refs = useRefSources(compass, boards), upload = (f: File) => stories.upload(e.id, f), sources = { ...withUpload(refs, today, upload), mine: myMaterials(stories.modules) };
   const chapters = stories.chapterExperiences.filter((j) => j.b === e.id).map((j) => stories.chapters.find((c) => c.id === j.a)).filter((c): c is NonNullable<typeof c> => !!c);
   const collections = stories.collectionExperiences.filter((j) => j.b === e.id).map((j) => stories.collections.find((c) => c.id === j.a)).filter((c): c is NonNullable<typeof c> => !!c);
   const areas = compass.areas.filter((a) => stories.areasOf({ experienceId: e.id }).includes(a.id));

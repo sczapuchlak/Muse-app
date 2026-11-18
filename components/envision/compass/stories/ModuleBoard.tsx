@@ -9,6 +9,7 @@ import { halfWidthIds, reorder, type Module, type ModuleWidth } from "@/lib/inne
 import type { Stories } from "./useStories";
 import { FieldInput, FieldView, MaterialReference, PhotoFigure, RefChip, RefsInput, type Sources } from "./Fields";
 import { material } from "@/lib/inner-compass/library";
+import { MaterialArt } from "./MaterialArt";
 import type { BoardImage } from "@/lib/constellation-board";
 
 const toneStyle = (t: number) => ({ "--mod-ink": `var(--chart-${t})`, "--mod-ink-b": `var(--chart-${t % 8 + 1})` }) as CSSProperties;
@@ -289,7 +290,8 @@ function MaterialCard({ it, showRef, onRef }: { it: Item; showRef: boolean; onRe
   const category = materialCategories.find((c) => c.id === it.category);
   return <div className="muse-stories-material-card" data-photo={!!image || undefined} style={category ? { "--cat": `var(--chart-${materialCategoryTone[category.id]})` } as CSSProperties : undefined}>
     {image && <PhotoFigure image={image} className="muse-stories-material-thumb" showCaption={false} />}
-    <p className="muse-stories-item-head">{name}</p>
+    <div className="muse-stories-material-title"><MaterialArt refKey={ref?.key} category={typeof it.category === "string" ? it.category : undefined} size={40} />
+      <p className="muse-stories-item-head">{name}</p></div>
     {category && <span className="muse-stories-material-cat">{category.label}</span>}
     {typeof it.meaning === "string" && it.meaning.trim() && <p className="muse-stories-material-meaning">{it.meaning}</p>}
     {!!ref?.associations.length && <p className="muse-stories-material-assoc"><span className="muse-stories-label">Symbolic associations</span> {ref.associations.join(", ")}</p>}

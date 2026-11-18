@@ -174,3 +174,19 @@ export function halfWidthIds(list: { id: string; width?: ModuleWidth }[]): Set<s
   flush();
   return out;
 }
+
+/** A material the person named themselves (not from the reference library), offered again when they add materials. */
+export type MyMaterial = { name: string; category?: string; image?: import("@/lib/constellation-board").BoardImage; meaning?: string };
+/** Every custom material across Chapters and Experiences, most recently edited first, one per name. */
+export function myMaterials(modules: Module[]): MyMaterial[] {
+  const seen = new Set<string>(), out: MyMaterial[] = [];
+  for (const m of [...modules].filter((x) => x.type === "materials").sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))) {
+    for (const it of m.content.items ?? []) {
+      const name = typeof it.name === "string" ? it.name.trim() : "", key = name.toLowerCase();
+      if (!name || typeof it.refKey === "string" || seen.has(key)) continue;
+      seen.add(key);
+      out.push({ name, ...(typeof it.category === "string" ? { category: it.category } : {}), ...(isImage(it.image) ? { image: it.image } : {}), ...(typeof it.meaning === "string" && it.meaning.trim() ? { meaning: it.meaning } : {}) });
+    }
+  }
+  return out;
+}
