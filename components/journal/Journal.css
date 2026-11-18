@@ -602,10 +602,9 @@
 .mj-shelf-head>.mj-history-controls{flex-wrap:nowrap}
 .mj-finder-top{display:flex;align-items:center;gap:8px;min-width:0}
 .mj-finder-top>:first-child{flex:1 1 auto;min-width:0}
-.mj-filters-toggle{display:none;flex:none;align-items:center;gap:6px;min-height:44px;border-radius:999px}
+.mj-filters-toggle{flex:none;align-items:center;gap:6px;min-height:44px;border-radius:999px}
 @container muse-content (max-width:640px){
  .mj-filters-toggle{display:inline-flex}
- .mj-finder:not([data-open]) .mj-filters{display:none}
  .mj-history-controls .muse-date-picker-trigger{width:44px;padding:0;justify-content:center}
  .mj-history-controls .muse-date-picker-trigger>:not(svg:first-child){display:none}
  .mj-history-controls .muse-date-picker-trigger>svg:last-child{display:none}
@@ -617,3 +616,50 @@
  .mj-studio-actions .muse-button{justify-content:center;min-width:0;padding-inline:10px}
 }
 @container muse-content (max-width:640px){.mj-studio-actions .muse-button{white-space:nowrap;font-size:.84rem}}
+
+/* ── My tags: yours, in a warm gold ink with a soft gradient, so they read as chosen, not found ────────────────── */
+:is(.mj-tag,.mj-filter-chip)[data-kind="custom"]{--tag:var(--chart-4)}
+.mj-tag[data-kind="custom"]{background:linear-gradient(135deg,color-mix(in srgb,var(--chart-4) 22%,transparent),color-mix(in srgb,var(--chart-3) 14%,transparent));font-weight:600}
+.mj-tag-editor[data-kind="custom"]{padding:12px 14px;border:1px dashed color-mix(in srgb,var(--chart-4) 45%,var(--glass-border));border-radius:14px;background:color-mix(in srgb,var(--chart-4) 5%,transparent)}
+.mj-tag-kind small{font-family:var(--font-ui);font-weight:400;letter-spacing:0;text-transform:none;color:var(--text-muted)}
+
+/* ── History finder: one search, one Filters button, removable chips ─────────────────────────────────────────── */
+.mj-filters-toggle{display:inline-flex}
+.mj-filter-count{display:inline-grid;place-items:center;min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:var(--journal-a,var(--accent-primary));color:#fff;font-size:.72rem}
+.mj-active-filters{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:0;padding:0;list-style:none}
+.mj-active-filters>li{display:inline-flex;align-items:center;gap:2px;padding:2px 2px 2px 0;border-radius:999px}
+.mj-chip{display:inline-flex;align-items:center;min-height:26px;padding:2px 10px;border:1px solid var(--glass-border);border-radius:999px;background:var(--mj-tile);font-size:.82rem}
+.mj-x-edit{opacity:.7}.mj-x-edit:hover{opacity:1}
+.mj-results-line{margin:0;color:var(--text-muted)}
+.mj-filter-panel{display:grid;gap:14px;padding:16px;border:1px solid color-mix(in srgb,var(--journal-a,var(--accent-primary)) 35%,var(--glass-border));border-radius:var(--mj-radius,18px);background:var(--mj-tile);box-shadow:0 18px 40px -30px var(--journal-a,var(--accent-primary));animation:mj-rise var(--motion-settle,260ms) var(--mj-ease) both}
+.mj-filter-find{display:flex;align-items:center;gap:8px;min-height:42px;padding:0 12px;border:1px solid var(--glass-border);border-radius:12px;background:var(--glass-background);color:var(--text-muted)}
+.mj-filter-find input{flex:1;min-width:0;min-height:40px;border:0;background:transparent;color:var(--foreground);font:inherit}
+.mj-filter-find input:focus{outline:none}
+.mj-filter-find:focus-within{border-color:var(--focus-ring)}
+.mj-filter-group{display:grid;gap:6px}
+.mj-filter-group h4{margin:0;color:var(--text-muted);letter-spacing:.1em;text-transform:uppercase}
+.mj-filter-group h4 span{margin-left:4px;opacity:.7}
+.mj-filter-chip{--tag:var(--chart-5);display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:3px 12px;border:1px solid color-mix(in srgb,var(--tag) 45%,var(--glass-border));border-radius:999px;background:transparent;color:var(--foreground);font:inherit;font-size:.86rem;cursor:pointer;transition:background var(--motion-hover,180ms),border-color var(--motion-hover,180ms),transform var(--motion-hover,180ms) var(--mj-ease)}
+.mj-filter-chip span{color:var(--text-muted);font-size:.74rem}
+.mj-filter-chip:hover{background:color-mix(in srgb,var(--tag) 12%,transparent)}
+.mj-filter-chip[aria-pressed="true"]{border-color:var(--tag);background:color-mix(in srgb,var(--tag) 24%,transparent);box-shadow:0 0 0 1px var(--tag) inset;font-weight:600}
+.mj-filter-chip:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
+.mj-filter-chip[data-kind="person"]{--tag:var(--chart-2)}.mj-filter-chip[data-kind="place"]{--tag:var(--chart-6)}.mj-filter-chip[data-kind="topic"]{--tag:var(--chart-1)}.mj-filter-chip[data-kind="theme"]{--tag:var(--chart-7)}.mj-filter-chip[data-kind="mood"]{--tag:var(--chart-8)}
+.mj-filter-more{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding-top:12px;border-top:1px solid var(--mj-hair)}
+.mj-filter-done{display:flex;justify-content:flex-end}
+@container muse-content (max-width:640px){
+ .mj-filter-panel{padding:12px}
+ .mj-filter-more{display:grid;grid-template-columns:minmax(0,1fr)}
+ .mj-filter-done .muse-button{width:100%;justify-content:center}
+}
+@media (prefers-reduced-motion:reduce){.mj-filter-panel{animation:none}}
+
+/* ── Blank page: about a third shorter; same content, tighter sizes ─────────────────────────────────────────── */
+.mj-ws-page .mj-blank{margin-top:clamp(2px,1.2vh,12px);padding-bottom:10px;gap:6px 24px}
+.mj-ws-page .mj-blank-copy{gap:4px}
+.mj-ws-page .mj-greeting{font-size:clamp(2rem,3.2vw,2.7rem);line-height:1.05}
+.mj-ws-page .mj-blank-line{font-size:1rem}
+.mj-ws-page .mj-blank-week{gap:0}
+.mj-ws-page .mj-blank-week .mj-constellation{max-width:400px;max-height:96px}
+.mj-shelf-head>div.mj-history-controls{display:flex;flex-wrap:nowrap;align-items:center;gap:10px}
+.mj-ws-page .mj-blank-week .mj-constellation{max-width:440px;max-height:112px}.mj-ws-page .mj-greeting{font-size:clamp(2.1rem,3.4vw,2.9rem)}

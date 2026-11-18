@@ -58,7 +58,7 @@ export function InsightsView({ open, initialWeek }: { open: (id: string) => void
       </div>}
       {(stats.journals.length > 0 || tagKinds.some((k) => stats.tags[k].length)) && <div className="mj-week-facets">
         {stats.journals.length > 0 && <div><h3 className="mj-section-title">Journals</h3><ul className="mj-chip-list">{stats.journals.map((x) => <li key={x.id} className="mj-tag"><a href={`/journal?view=history&journal=${x.id}`}>{state.journals.find((k) => k.id === x.id)?.name ?? "Journal"}</a> <span className="type-numeric">{x.entries}</span></li>)}</ul></div>}
-        {tagKinds.map((k) => stats.tags[k].length > 0 && <div key={k}><h3 className="mj-section-title">{tagKindLabel[k]}</h3><ul className="mj-chip-list">{stats.tags[k].slice(0, 8).map((t) => <li key={t.id} className="mj-tag" data-kind={k}><a href={`/journal?view=history&tag=${t.id}`}>{t.name}</a> <span className="type-numeric">{t.entries}</span></li>)}</ul></div>)}
+        {tagKinds.map((k) => stats.tags[k].length > 0 && <div key={k}><h3 className="mj-section-title">{tagKindLabel[k]}</h3><ul className="mj-chip-list">{stats.tags[k].slice(0, 8).map((t) => <li key={t.id} className="mj-tag" data-kind={k}><a href={`/journal?view=history&tag=${t.id}`}>{k === "custom" ? `#${t.name}` : t.name}</a> <span className="type-numeric">{t.entries}</span></li>)}</ul></div>)}
       </div>}
     </section>
 

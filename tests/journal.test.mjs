@@ -92,7 +92,9 @@ test('tags: case-insensitive identity, aliases, never fuzzy', () => {
   assert.equal(M.findTag(tags, 'person', 'Alexa'), null, 'similar names are different people');
   assert.equal(M.findTag(tags, 'topic', 'Alex'), null, 'kinds stay distinct');
   assert.equal(M.cleanTagName('  New   York '), 'New York');
-  assert.deepEqual(M.tagKinds, ['person', 'place', 'topic', 'mood', 'theme']);
+  assert.deepEqual(M.tagKinds, ['custom', 'person', 'place', 'topic', 'mood', 'theme'], 'My tags come first, as their own kind');
+  assert.equal(M.tagLabel({ kind: 'custom', name: 'Life Moments' }), '#Life Moments');
+  assert.equal(M.tagLabel({ kind: 'person', name: 'Rory' }), 'Rory');
 });
 
 test('analysis JSON is validated, trimmed and never invented', () => {

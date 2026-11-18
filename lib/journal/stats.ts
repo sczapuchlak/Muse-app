@@ -25,7 +25,7 @@ export function weekStats(start: string, conversations: readonly Conversation[],
   const journals = new Map<string, number>(); for (const c of list) journals.set(c.journalId, (journals.get(c.journalId) ?? 0) + 1);
   const ids = new Set(list.map((c) => c.id)), byTag = new Map<string, number>();
   for (const l of links) if (ids.has(l.conversationId)) byTag.set(l.tagId, (byTag.get(l.tagId) ?? 0) + 1);
-  const grouped: WeekStats["tags"] = { person: [], place: [], topic: [], theme: [], mood: [] };
+  const grouped: WeekStats["tags"] = { custom: [], person: [], place: [], topic: [], theme: [], mood: [] };
   for (const t of tags) { const n = byTag.get(t.id); if (n) grouped[t.kind].push({ id: t.id, name: t.name, entries: n }); }
   for (const k of Object.keys(grouped) as TagKind[]) grouped[k].sort((a, b) => b.entries - a.entries || a.name.localeCompare(b.name));
   return {

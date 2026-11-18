@@ -79,6 +79,17 @@ try{
  const merged=await P.mergeTags(a.client,al.id,alex.id);assert.deepEqual(merged.aliases,['Al']);
  state=await P.loadJournal(a.client,a.id);assert.ok(state.entryTags.some(t=>t.tagId===alex.id&&t.conversationId===conv.id),'entries move to the kept tag');
 
+ // My tags: user-made, deduplicated by capitals and spacing, a kind of their own, searchable like everything else.
+ const mine=await P.createTag(a.client,a.id,'custom','Life  Moments');assert.equal(mine.kind,'custom');assert.equal(mine.name,'Life Moments');
+ assert.equal((await P.createTag(a.client,a.id,'custom',' life moments ')).id,mine.id,'capitals and spacing never make a duplicate tag');
+ assert.notEqual((await P.createTag(a.client,a.id,'topic','Life Moments')).id,mine.id,'a topic with the same name stays a separate kind');
+ await P.tagEntry(a.client,a.id,conv.id,mine.id);
+ assert.ok((await P.searchJournal(a.client,'life mom')).some(h=>h.conversationId===conv.id),'search finds an entry by part of one of my tags');
+ assert.ok((await P.searchJournal(a.client,'lisb')).some(h=>h.conversationId===conv.id),'search matches part of a word (case-insensitive)');
+ assert.ok((await P.searchJournal(a.client,'AL')).some(h=>h.conversationId===conv.id),'search finds a person by an alias');
+ assert.deepEqual(await P.searchJournal(b.client,'life mom'),[],'tag search never crosses accounts');
+ assert.ok((await b.client.from('journal_tags').select('id').eq('id',mine.id)).data.length===0,'another account cannot read my tags');
+
  // Search and journal days.
  const hits=await P.searchJournal(a.client,'lisbon');assert.equal(hits[0].conversationId,conv.id);assert.match(hits[0].snippet,/Lisbon/);
  assert.deepEqual(await P.searchJournal(b.client,'lisbon'),[],'search never crosses accounts');
