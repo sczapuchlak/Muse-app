@@ -14,7 +14,7 @@ import type { BoardImage } from "@/lib/constellation-board";
 import { isImage } from "./modules";
 
 export type Details = Partial<Record<DetailKey, string>>;
-export type Source = { kind: "exploration" | "garden" | "chapter" | "experience"; id: string | null; label: string };
+export type Source = { kind: "exploration" | "garden" | "chapter" | "experience" | "journal"; id: string | null; label: string };
 export type Discovery = {
   id: string; category: Category; title: string; meaning: string; reflection: string; details: Details; tags: string[];
   favorite: boolean; significanceDate: string | null; source: Source | null; evolvedAt: string | null; archivedAt: string | null;
@@ -69,7 +69,7 @@ export function discoveryFromRow(r: DiscoveryRow): Discovery {
   return {
     id: r.id, category: isCategory(r.category) ? r.category : "values", title: r.title, meaning: r.meaning, reflection: r.reflection,
     details: parseDetails(r.details), tags: r.tags ?? [], favorite: r.favorite, significanceDate: r.significance_date,
-    source: r.source_kind && (r.source_kind === "exploration" || r.source_kind === "garden" || r.source_kind === "chapter" || r.source_kind === "experience") ? { kind: r.source_kind, id: r.source_id, label: r.source_label ?? "" } : null,
+    source: r.source_kind && (r.source_kind === "exploration" || r.source_kind === "garden" || r.source_kind === "chapter" || r.source_kind === "experience" || r.source_kind === "journal") ? { kind: r.source_kind, id: r.source_id, label: r.source_label ?? "" } : null,
     evolvedAt: r.evolved_at, archivedAt: r.archived_at, revision: r.revision, createdAt: r.created_at, updatedAt: r.updated_at,
   };
 }

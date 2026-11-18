@@ -16,6 +16,16 @@ Write down the answers before you build. Put them in the PR description or the f
 6. **Place in the cycle.** What happens before and after this experience?
 7. **Now or later.** Which integrations work now, and which are only prepared for the future? Say which in the docs.
 
+### Muse Journal V1 (Everyday → Journal)
+
+1. **Authoritative source.** Everyday → Journal owns journals, companions and their version snapshots, conversations and their messages, corrections, tags (people, places, topics, themes, moods), analyses, bookmarks, memories, weekly reflections and AI usage. See [JOURNAL](JOURNAL.md).
+2. **Related owners.** Inner Compass owns discoveries, Chapters and Experiences; Reflections owns Life Areas; Rituals owns habits; Mood owns check-ins; Planner → Reflections owns period reviews; Books owns its reading journal; Mindspace owns notes.
+3. **Duplicates.** None. A conversation pins a companion *version* (snapshot) instead of copying words. Links to Chapters, Experiences and Life Atlas areas are an id plus a name snapshot. A connected Journaling ritual reads `journal_days` and stores nothing while connected. "Save as discovery" creates one discovery that names the entry as its source (`source_kind = 'journal'`). Moods named in a journal are tags, never Mood check-ins. Companion Playground tests are not stored; "Keep as Journal Entry" copies a test once, on request.
+4. **Optional relationships.** All of them: Rituals connection, Inner Compass discovery, Chapter/Experience/Area links, the Daily Edit card (off by default). Nothing writes to another module in the background, and Life Atlas scores and moods are never changed.
+5. **Patterns.** `MuseSectionNav` (`journal:*` glyphs), the journal hero and archive (`app/journals.css`, `MuseJournalStats`, `MuseInviteCard`), `MuseChoiceMenu`, `MuseSegmented`, `MuseSearch`, `MuseModal`, `MuseOverflowMenu`, `MuseMark`, `MuseStatTile`, private image storage (`uploadBoardImage`), the Rituals connection engine, account export.
+6. **Place in the cycle.** Live → Reflect (talk it through, finish the entry) → Understand (analysis, tags, weekly reflection, a realization saved as a discovery) → carries forward through memory into the next conversation.
+7. **Now or later.** Now: all of the above. Later (not built): Mood suggestions from journal moods (always confirmed by the person), journaling metrics in Muse Insights, embeddings for meaning-based recall, voice.
+
 ### Money: paycheck actuals, bills and recurring (reconciliation)
 
 1. **Authoritative source.** Transactions own what happened (one ledger). Paycheck plans own intent. Recurring definitions own schedules. A stored bill row owns only what was saved about one due date (paid, amount, links).
@@ -87,6 +97,10 @@ Envision remains the owner of aspirations and their journey; Planner → Reflect
 | Intention page | Planner → Intentions | `intention_pages` | Reflections (link only) | period + start |
 | Intention prompts (favorites, own prompts) | Planner → Intentions | `intention_prompts` | Intention pages copy a prompt's title and question when added (no live link) | owner; library prompts by stable key || Reflection | Planner → Reflections | `reflection_reviews`, `life_areas`, `life_ratings` | Intentions (link only) | period + start |
 | Custom feelings | Mood | `custom_feelings` (+ `emotion_favorites`) | Check-ins keep their own snapshot (`mood_checkins.feelings`); no foreign key, so edits/deletes never rewrite history | owner; `custom:<uuid>` ids only in snapshots |
+| Journal entry (conversation) | Everyday → Journal | `journal_conversations`, `journal_messages` (+ `journal_message_corrections`) | Inner Compass discoveries (`source_kind='journal'`), Rituals (`journal_days`), Daily Edit card, Memories | id + title snapshot on discoveries; Rituals read dated counts only |
+| Companion | Everyday → Journal | `journal_companions`, `journal_companion_versions` | Journals (default), conversations | conversations pin a version id; versions outlive the companion |
+| Journal tag (person, place, topic, theme, mood) | Everyday → Journal | `journal_tags`, `journal_entry_tags` | History, Insights | id; aliases on the tag; never merged automatically |
+| Journal links | Everyday → Journal | `journal_links` | points at Chapters, Experiences, Life Areas | id + name snapshot; "no longer there" when deleted |
 | Manual steps | Wellness → Movement | `step_days`, `step_settings` | Insights read it; separate from planned movement and completed activities; per-day goal snapshot | owner + local date; `source=manual` |
 | Ritual (habit) | Rituals | `rituals`, `ritual_entries`, `ritual_groups` | Aspirations, Intentions, Daily Edit, Wellness, Insights | id; Intentions keeps a name snapshot |
 | Daily intention | Daily Edit | `daily_records` | Insights | separate from Intentions; never overwritten by them |

@@ -9,6 +9,7 @@ export const pageMantras = {
   Notes: 'GET IT OUT OF YOUR HEAD',
   Mindspace: 'GET IT OUT OF YOUR HEAD',
   Whimsy: 'A LITTLE MAGIC NEVER HURT',
+  Journal: 'THINK OUT LOUD',
 } as const;
 
 export function pageMantra(title: string): string | undefined {

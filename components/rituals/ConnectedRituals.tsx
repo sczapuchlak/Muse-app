@@ -1,5 +1,7 @@
 'use client';
-import {createContext,useContext,useEffect,useMemo,type ReactNode} from 'react';
+import {createContext,useContext,useEffect,useMemo,useState,type ReactNode} from 'react';
+import {createMuseBrowserClient} from '@/lib/supabase/client';
+import {journalDays} from '@/lib/journal/persistence';
 import {useRituals} from './RitualStore';
 import {useWellness} from '../WellnessStore';
 import {usePlanner} from '../PlannerStore';
@@ -23,15 +25,19 @@ export function ConnectedRitualsProvider({timeZone,children}:{timeZone:string;ch
  const needsReading=connected.some(r=>readingMetrics.has(r.connection!.metric));
  const {load}=whimsy;
  useEffect(()=>{if(needsReading)void load();},[needsReading,load]);
+ // Journal days load only when a ritual is connected to them; the journal stays the only record.
+ const needsJournal=connected.some(r=>r.connection!.metric==='journal-days');
+ const [journal,setJournal]=useState<ProgressSources['journal']>();
+ useEffect(()=>{if(!needsJournal)return;let live=true;const client=createMuseBrowserClient();void journalDays(client,'2000-01-01').then(days=>{if(live)setJournal({days});}).catch(()=>undefined);return()=>{live=false;};},[needsJournal]);
  const wellnessState=wellness.status.loaded&&!wellness.status.error?wellness.state:undefined;
  const plannerState=planner.status?.loaded&&!planner.status.error?planner.state:undefined;
  const records=whimsy.status.loaded&&!whimsy.status.error?whimsy.records:null;
  const value=useMemo<View>(()=>{
-  const sources:ProgressSources={timeZone,wellness:wellnessState,planner:plannerState,reading:records?{sessions:records.sessions,books:records.books}:undefined};
+  const sources:ProgressSources={timeZone,wellness:wellnessState,planner:plannerState,reading:records?{sessions:records.sessions,books:records.books}:undefined,journal};
   if(!state.rituals.some(r=>r.connection)||!today)return {state,derived:new Map(),sources,today,issues:[],waiting:false};
   const result=withConnections(state,sources,today);
   return {state:result.state,derived:result.derived,sources,today,issues:result.issues,waiting:result.unavailable};
- },[state,wellnessState,plannerState,records,today,timeZone]);
+ },[state,wellnessState,plannerState,records,today,timeZone,journal]);
  return <Context.Provider value={value}>{children}</Context.Provider>;
 }
 

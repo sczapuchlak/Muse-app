@@ -1,0 +1,136 @@
+"use client";
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { createMuseBrowserClient } from "@/lib/supabase/client";
+import { useDailyData } from "../daily/DailyData";
+import { useMuseToday } from "../useMuseToday";
+import * as P from "@/lib/journal/persistence";
+import { aiAction, aiStatus, type AiStatus } from "@/lib/journal/ai-client";
+import { cleanTagName, findTag, normalizeTag, type Bookmark, type Companion, type Conversation, type EntryLink, type Journal, type Memory, type Mode, type Preferences, type Tag, type TagKind } from "@/lib/journal/model";
+import { companionPreset } from "@/lib/journal/presets";
+
+type Status = { loaded: boolean; error: string; saving: boolean; missing: boolean };
+const empty: P.JournalState = { prefs: { globalInstructions: "", memoryEnabled: true, analysisAuto: true, onThisDay: true, showOnDaily: false, greetOnNew: true, defaultJournalId: null, revision: 0 }, journals: [], companions: [], conversations: [], tags: [], entryTags: [], bookmarks: [], memories: [], links: [] };
+const missingTable = (e: unknown) => ["PGRST205", "42P01"].includes((e as { code?: string })?.code ?? "");
+const message = (e: unknown) => (e instanceof Error ? e.message : "Something went wrong. Please try again.");
+export const newId = () => crypto.randomUUID();
+const noAi: AiStatus = { enabled: false, entitled: false, configured: false, provider: null, model: null, allowance: null };
+
+/**
+ * The signed-in person's Journal (Journal V1). Metadata loads once; an entry's messages load when it opens. Every write
+ * goes through lib/journal/persistence (owner-only, revision-checked). Nothing here writes to another module.
+ */
+function useJournalStore() {
+  const client = useMemo(() => createMuseBrowserClient(), []);
+  const { profile } = useDailyData();
+  const timeZone = profile.timeZone || Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
+  const today = useMuseToday(timeZone);
+  const [userId, setUserId] = useState("");
+  const [state, setState] = useState<P.JournalState>(empty);
+  const [status, setStatus] = useState<Status>({ loaded: false, error: "", saving: false, missing: false });
+  const [ai, setAi] = useState<AiStatus>(noAi);
+  const stateRef = useRef(state); stateRef.current = state;
+
+  const refresh = useCallback(async () => {
+    try {
+      const auth = await client.auth.getUser();
+      if (auth.error || !auth.data.user) throw Error("Sign in to open your journal.");
+      setUserId(auth.data.user.id);
+      const next = await P.loadJournal(client, auth.data.user.id);
+      setState(next); setStatus((s) => ({ ...s, loaded: true, error: "", missing: false }));
+    } catch (e) { setStatus((s) => ({ ...s, loaded: true, error: missingTable(e) ? "" : message(e), missing: missingTable(e) })); }
+  }, [client]);
+  const refreshAi = useCallback(async () => setAi(await aiStatus()), []);
+  useEffect(() => { void refresh(); void refreshAi(); }, [refresh, refreshAi]);
+
+  /** Runs a write, keeping the error visible; returns undefined when it failed. */
+  const run = useCallback(async <T,>(work: () => Promise<T>): Promise<T | undefined> => {
+    setStatus((s) => ({ ...s, saving: true, error: "" }));
+    try { const out = await work(); setStatus((s) => ({ ...s, saving: false })); return out; }
+    catch (e) { setStatus((s) => ({ ...s, saving: false, error: message(e) })); return undefined; }
+  }, []);
+  const patch = useCallback((fn: (s: P.JournalState) => P.JournalState) => setState(fn), []);
+  const putConversation = useCallback((c: Conversation) => patch((s) => ({ ...s, conversations: s.conversations.some((x) => x.id === c.id) ? s.conversations.map((x) => (x.id === c.id ? c : x)) : [c, ...s.conversations] })), [patch]);
+
+  const actions = useMemo(() => ({
+    addStarters: (journalKeys: string[], companionKeys: string[]) => run(async () => { await P.addStarters(client, userId, journalKeys, companionKeys, stateRef.current); await refresh(); }),
+    saveJournal: (j: Journal) => run(async () => { const saved = await P.saveJournal(client, userId, j); patch((s) => ({ ...s, journals: s.journals.some((x) => x.id === saved.id) ? s.journals.map((x) => (x.id === saved.id ? saved : x)) : [...s.journals, saved] })); return saved; }),
+    deleteJournal: (id: string, moveTo: string | null, deleteEntries: boolean) => run(async () => { await P.deleteJournal(client, id, moveTo, deleteEntries); await refresh(); return true; }),
+    saveCompanion: (c: Companion) => run(async () => { const saved = await P.saveCompanion(client, userId, c); patch((s) => ({ ...s, companions: s.companions.some((x) => x.id === saved.id) ? s.companions.map((x) => (x.id === saved.id ? saved : x)) : [...s.companions, saved] })); return saved; }),
+    duplicateCompanion: (c: Companion) => run(async () => { const copy = await P.saveCompanion(client, userId, { ...c, id: newId(), name: `${c.name} (copy)`.slice(0, 80), presetKey: null, revision: 0, version: 1, position: stateRef.current.companions.length, archivedAt: null }); patch((s) => ({ ...s, companions: [...s.companions, copy] })); return copy; }),
+    deleteCompanion: (id: string) => run(async () => { await P.deleteCompanion(client, userId, id); patch((s) => ({ ...s, companions: s.companions.filter((c) => c.id !== id), journals: s.journals.map((j) => (j.defaultCompanionId === id ? { ...j, defaultCompanionId: null } : j)) })); return true; }),
+    restorePreset: (c: Companion) => { const p = companionPreset(c.presetKey); return p ? { ...c, name: p.name, description: p.description, instructions: p.instructions, conversationPrefs: p.conversationPrefs, openingStyle: p.openingStyle } : c; },
+    savePrefs: (p: Preferences) => run(async () => { const saved = await P.savePreferences(client, userId, p); patch((s) => ({ ...s, prefs: saved })); return saved; }),
+
+    startConversation: (o: { journalId: string; companion: Companion | null; mode: Mode; status?: "draft" | "active"; draft?: string }) => run(async () => {
+      const c = await P.createConversation(client, userId, { id: newId(), journalId: o.journalId, companion: o.companion, mode: o.mode, localDate: today, timeZone, status: o.status ?? "active", draft: o.draft });
+      putConversation(c); return c;
+    }),
+    putConversation,
+    refreshConversation: async (id: string) => { const c = await P.refreshConversation(client, userId, id); if (c) putConversation(c); return c; },
+    updateMeta: (c: Conversation) => run(async () => { const saved = await P.updateMeta(client, userId, c); putConversation(saved); return saved; }),
+    deleteConversation: (id: string) => run(async () => { await P.deleteConversation(client, userId, id); patch((s) => ({ ...s, conversations: s.conversations.filter((c) => c.id !== id), entryTags: s.entryTags.filter((t) => t.conversationId !== id), bookmarks: s.bookmarks.filter((b) => b.conversationId !== id) })); return true; }),
+    /** Finish & Save: the entry closes; the analysis (if AI and allowed) runs after and may fail without losing anything. */
+    finish: (c: Conversation) => run(async () => {
+      const analyse = ai.enabled && stateRef.current.prefs.analysisAuto && !c.memoryOff;
+      const done = await P.completeConversation(client, userId, c, analyse); putConversation(done);
+      if (analyse) void aiAction({ action: "analysis", conversationId: c.id }).catch(() => undefined).finally(() => { void refresh(); void refreshAi(); });
+      return done;
+    }),
+    analyse: async (id: string, regenerate = false) => { const r = await aiAction({ action: "analysis", conversationId: id, regenerate }); await refresh(); void refreshAi(); return r; },
+
+    tagEntry: (conversationId: string, kind: TagKind, name: string) => run(async () => {
+      const clean = cleanTagName(name); if (!clean) return;
+      let tag = findTag(stateRef.current.tags, kind, clean);
+      if (!tag) { tag = await P.createTag(client, userId, kind, clean); const made = tag; patch((s) => ({ ...s, tags: [...s.tags.filter((t) => t.id !== made.id), made].sort((a, b) => a.name.localeCompare(b.name)) })); }
+      await P.tagEntry(client, userId, conversationId, tag.id); const id = tag.id;
+      patch((s) => ({ ...s, entryTags: [...s.entryTags.filter((t) => !(t.conversationId === conversationId && t.tagId === id)), { conversationId, tagId: id, source: "user" }] }));
+    }),
+    confirmTag: (conversationId: string, tagId: string) => run(async () => { await P.tagEntry(client, userId, conversationId, tagId); patch((s) => ({ ...s, entryTags: s.entryTags.map((t) => (t.conversationId === conversationId && t.tagId === tagId ? { ...t, source: "user" } : t)) })); }),
+    untagEntry: (conversationId: string, tag: Tag) => run(async () => {
+      await P.untagEntry(client, userId, conversationId, tag.id);
+      // Remember a rejected AI suggestion so a re-run of the analysis doesn't add it back.
+      const a = await P.loadAnalysis(client, userId, conversationId); if (a) await P.dismissInAnalysis(client, userId, a, `tag:${tag.kind}:${normalizeTag(tag.name)}`);
+      patch((s) => ({ ...s, entryTags: s.entryTags.filter((t) => !(t.conversationId === conversationId && t.tagId === tag.id)) }));
+    }),
+    saveTag: (t: Tag) => run(async () => { const saved = await P.saveTag(client, userId, t); patch((s) => ({ ...s, tags: s.tags.map((x) => (x.id === saved.id ? saved : x)) })); return saved; }),
+    mergeTags: (from: string, into: string) => run(async () => { await P.mergeTags(client, from, into); await refresh(); return true; }),
+    deleteTag: (id: string) => run(async () => { await P.deleteTag(client, userId, id); patch((s) => ({ ...s, tags: s.tags.filter((t) => t.id !== id), entryTags: s.entryTags.filter((t) => t.tagId !== id) })); return true; }),
+
+    addBookmark: (b: Omit<Bookmark, "id" | "createdAt">) => run(async () => { const saved = await P.addBookmark(client, userId, b); patch((s) => ({ ...s, bookmarks: [saved, ...s.bookmarks] })); return saved; }),
+    saveBookmarkNote: (id: string, note: string) => run(async () => { await P.saveBookmarkNote(client, userId, id, note); patch((s) => ({ ...s, bookmarks: s.bookmarks.map((b) => (b.id === id ? { ...b, note } : b)) })); }),
+    deleteBookmark: (id: string) => run(async () => { await P.deleteBookmark(client, userId, id); patch((s) => ({ ...s, bookmarks: s.bookmarks.filter((b) => b.id !== id) })); }),
+
+    saveMemory: (m: Memory) => run(async () => { const saved = await P.saveMemory(client, userId, m); patch((s) => ({ ...s, memories: [saved, ...s.memories.filter((x) => x.id !== saved.id)] })); return saved; }),
+    deleteMemory: (id: string) => run(async () => { await P.deleteMemory(client, userId, id); patch((s) => ({ ...s, memories: s.memories.filter((m) => m.id !== id) })); }),
+
+    addLink: (l: EntryLink) => run(async () => { await P.addLink(client, userId, l); patch((s) => ({ ...s, links: [...s.links.filter((x) => !(x.conversationId === l.conversationId && x.kind === l.kind && x.targetId === l.targetId)), l] })); }),
+    removeLink: (l: EntryLink) => run(async () => { await P.removeLink(client, userId, l); patch((s) => ({ ...s, links: s.links.filter((x) => !(x.conversationId === l.conversationId && x.kind === l.kind && x.targetId === l.targetId)) })); }),
+    keepTest: (o: Omit<Parameters<typeof P.keepTest>[1], "localDate" | "timeZone">) => run(async () => { const c = await P.keepTest(client, { ...o, localDate: today, timeZone }); putConversation(c); if (ai.enabled && stateRef.current.prefs.analysisAuto) void aiAction({ action: "analysis", conversationId: c.id }).catch(() => undefined).finally(() => void refresh()); return c; }),
+    clearError: () => setStatus((s) => ({ ...s, error: "" })),
+    /** First run: one journal, one default companion. */
+    setup: (o: { journalName: string; presetKey: string; instructions?: string }) => run(async () => { const out = await P.setupJournal(client, userId, { ...o, prefs: stateRef.current.prefs }); await refresh(); return out; }),
+    switchCompanion: (c: Conversation, companion: Companion) => run(async () => { const saved = await P.switchCompanion(client, userId, c, companion); putConversation(saved); return saved; }),
+    /** The default companion belongs to a journal (the primary journal's is everyone's default). */
+    setDefaultCompanion: (journal: Journal, companionId: string) => run(async () => { const saved = await P.saveJournal(client, userId, { ...journal, defaultCompanionId: companionId }); patch((s) => ({ ...s, journals: s.journals.map((x) => (x.id === saved.id ? saved : x)) })); return saved; }),
+  }), [client, userId, run, patch, putConversation, refresh, refreshAi, today, timeZone, ai.enabled]);
+
+  return { client, userId, today, timeZone, state, status, ai, refresh, refreshAi, ...actions };
+}
+
+export type JournalStore = ReturnType<typeof useJournalStore>;
+const Ctx = createContext<JournalStore | null>(null);
+export function JournalProvider({ children }: { children: ReactNode }) { const store = useJournalStore(); return <Ctx.Provider value={store}>{children}</Ctx.Provider>; }
+export function useJournal(): JournalStore { const s = useContext(Ctx); if (!s) throw Error("useJournal outside JournalProvider"); return s; }
+
+/** Helpers views share. */
+export const activeJournals = (s: P.JournalState) => s.journals.filter((j) => !j.archivedAt);
+export const activeCompanions = (s: P.JournalState) => s.companions.filter((c) => !c.archivedAt);
+export const tagsFor = (s: P.JournalState, conversationId: string) => s.entryTags.filter((t) => t.conversationId === conversationId).flatMap((l) => { const t = s.tags.find((x) => x.id === l.tagId); return t ? [{ ...t, source: l.source }] : []; });
+
+/** The primary journal: the one chosen in preferences, else the first. */
+export const primaryJournal = (s: P.JournalState) => activeJournals(s).find((j) => j.id === s.prefs.defaultJournalId) ?? activeJournals(s)[0] ?? null;
+/** Which companion a journal uses by default: its own, else the primary journal's, else the first. */
+export const defaultCompanionFor = (s: P.JournalState, journal: { defaultCompanionId: string | null } | null) => {
+  const list = activeCompanions(s), primary = primaryJournal(s);
+  return list.find((c) => c.id === journal?.defaultCompanionId) ?? list.find((c) => c.id === primary?.defaultCompanionId) ?? list[0] ?? null;
+};

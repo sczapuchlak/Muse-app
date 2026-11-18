@@ -876,3 +876,36 @@ Nov 15: "do this to all the other pages … add some of those details". The Dail
 
 ## Read first, edit intentionally (Inner Compass Experiences and Chapters)
 Saved content is presented as something to read, not as a form. Default state: readable content at natural card heights, with no field boxes, inner scrollbars or repeated per-entry action links. Edit state: editing tools appear only when asked for (the module's … menu: Manage entries / Edit / Manage links) and close with Done editing; all saved content stays intact. Module titles are headings in the module's tone with the shared sky star (`.muse-heading-title`, inked by `--heading-ink`) and a small group kicker. Long writing uses the shared Notes toolbar (`components/notes/NoteToolbar.tsx` + `NoteToolbar.css`); photos open larger through one `PhotoFigure`. Category colour comes from chart tones so every theme supplies distinct ones.
+
+
+## Muse Journal — the writing workspace ("The Enchanted Editorial", November 18) — on branch `feat/journal-visual`, awaiting review
+
+- **A document, not a dashboard.** The Journal tab is one writing page:
+  - a sticky toolbar (journal and companion chips, New entry, ⋯, Preferences);
+  - the conversation as an editorial dialogue: your words on a softly inked page edge in the interface face, the companion's in the Reading role beside its small mark, both in one 760px reading column;
+  - a composer that belongs to the page: one framed field (words, then a slim tool row with the mic and word count), and, once you've written, **Finish entry** and **Go deeper** as two equal buttons beneath it. The mic is a bare round button that fills with the journal gradient and pulses while listening (steady under reduced motion).
+- **No big illustrations.** The only drawings are small fine-line Muse stars:
+  - this week as a constellation (lit star = a day written; consecutive days joined);
+  - a star rule between sections;
+  - a three-star constellation in compact empty states (`QuietEmpty`);
+  - three stars lighting in turn while the companion thinks.
+- **Surfaces.**
+  - Every Journal container is a registered journal surface (`.muse-journal-hero` / `.muse-journal-archive`), so it gets the theme ring, light-card ink and starfield.
+  - On the Journal page those containers also take the material blur and painted light that `.muse-card` gets, so the atmosphere frosts behind them instead of showing through.
+  - Nested tiles are a 4% variation of the card surface (`--mj-tile`).
+  - Journal tokens are declared on each container so they resolve against that container's ink.
+- **Type.** Role classes only (`type-display` for page and greeting titles, `type-title` for entry and card titles, `type-reading` for companion replies and summaries, `type-quote` for lead lines, `type-meta` for small labels). `Journal.css` sets sizes, never families or weights.
+- **Shared controls.** Week and month navigation uses `.muse-week-jump` (‹ This week ›); dates use `MuseDatePicker` and `MuseOptionalDatePicker`; view switches use `MuseSegmented`; icons are `MuseIcon` (no Unicode stars).
+- **Analysis reads as an edited reflection:**
+  - the overview as a pull-quote with a quiet "Written by AI · yours to edit" badge;
+  - people, places, topics, moods and themes as rows separated by hairlines (label column, chips, "+ Add" opens a field only when asked);
+  - AI notes in 3px side-accent panels marked AI;
+  - then passages you kept, memories to confirm and connections.
+- **Motion** (tokens only; off under Quiet and reduced motion):
+  - a 260ms rise on arrival and a short stagger for analysis sections;
+  - a glimmer across a chosen card;
+  - lit stars settling in the week constellation;
+  - bars growing in Insights;
+  - the shared `celebrate()` constellation ("Sealed in your journal.") after Finish & save succeeds;
+  - `useMuseSpark` after a bookmark.
+- **Phones.** One toolbar row (journal as a mark, companion as a truncating chip, +, ⋯); Finish entry lives at the bottom beside Go deeper. The composer rests above the floating tab bar, with the page backdrop continuing beneath it. 16px input text. The Studio sheet is full screen.

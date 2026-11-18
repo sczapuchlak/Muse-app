@@ -5,6 +5,342 @@ export type Database = {
   
   "public": {
           Tables: {
+"journal_ai_entitlements": {
+                  Row: {
+                    "daily_limit_usd": number,"enabled": boolean,"monthly_limit_usd": number,"note": string,"per_minute": number,"warn_at_usd": number,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "daily_limit_usd"?: number,"enabled"?: boolean,"monthly_limit_usd"?: number,"note"?: string,"per_minute"?: number,"warn_at_usd"?: number,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "daily_limit_usd"?: number,"enabled"?: boolean,"monthly_limit_usd"?: number,"note"?: string,"per_minute"?: number,"warn_at_usd"?: number,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
+                },
+"journal_ai_usage": {
+                  Row: {
+                    "cached_tokens": number,"conversation_id": string | null,"cost_usd": number,"created_at": string,"error_code": string | null,"estimated_usd": number,"finished_at": string | null,"id": string,"input_tokens": number,"kind": string,"model": string,"output_tokens": number,"request_key": string,"status": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "cached_tokens"?: number,"conversation_id"?: string | null,"cost_usd"?: number,"created_at"?: string,"error_code"?: string | null,"estimated_usd"?: number,"finished_at"?: string | null,"id"?: string,"input_tokens"?: number,"kind": string,"model": string,"output_tokens"?: number,"request_key": string,"status"?: string,"user_id": string
+                  }
+                  Update: {
+                    "cached_tokens"?: number,"conversation_id"?: string | null,"cost_usd"?: number,"created_at"?: string,"error_code"?: string | null,"estimated_usd"?: number,"finished_at"?: string | null,"id"?: string,"input_tokens"?: number,"kind"?: string,"model"?: string,"output_tokens"?: number,"request_key"?: string,"status"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
+                },
+"journal_analyses": {
+                  Row: {
+                    "conversation_id": string,"created_at": string,"data": NonNullable<Json>,"dismissed": (string)[],"error": string | null,"id": string,"model": string | null,"revision": number,"status": string,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "conversation_id": string,"created_at"?: string,"data"?: NonNullable<Json>,"dismissed"?: (string)[],"error"?: string | null,"id"?: string,"model"?: string | null,"revision"?: number,"status": string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Update: {
+                    "conversation_id"?: string,"created_at"?: string,"data"?: NonNullable<Json>,"dismissed"?: (string)[],"error"?: string | null,"id"?: string,"model"?: string | null,"revision"?: number,"status"?: string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "journal_analyses_user_id_conversation_id_fkey"
+      columns: ["user_id","conversation_id"]
+isOneToOne: true
+      referencedRelation: "journal_conversations"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+                },
+"journal_bookmarks": {
+                  Row: {
+                    "conversation_id": string,"created_at": string,"excerpt": string,"id": string,"message_id": string | null,"note": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "conversation_id": string,"created_at"?: string,"excerpt"?: string,"id"?: string,"message_id"?: string | null,"note"?: string,"user_id"?: string
+                  }
+                  Update: {
+                    "conversation_id"?: string,"created_at"?: string,"excerpt"?: string,"id"?: string,"message_id"?: string | null,"note"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "journal_bookmarks_user_id_conversation_id_fkey"
+      columns: ["user_id","conversation_id"]
+isOneToOne: false
+      referencedRelation: "journal_conversations"
+      referencedColumns: ["user_id","id"]
+    },{
+      foreignKeyName: "journal_bookmarks_user_id_message_id_fkey"
+      columns: ["user_id","message_id"]
+isOneToOne: false
+      referencedRelation: "journal_messages"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+                },
+"journal_companion_versions": {
+                  Row: {
+                    "companion_id": string,"conversation_prefs": string,"description": string,"id": string,"instructions": string,"name": string,"opening_style": string,"saved_at": string,"user_id": string,"version": number
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "companion_id": string,"conversation_prefs"?: string,"description"?: string,"id"?: string,"instructions"?: string,"name": string,"opening_style"?: string,"saved_at"?: string,"user_id"?: string,"version": number
+                  }
+                  Update: {
+                    "companion_id"?: string,"conversation_prefs"?: string,"description"?: string,"id"?: string,"instructions"?: string,"name"?: string,"opening_style"?: string,"saved_at"?: string,"user_id"?: string,"version"?: number
+                  }
+                  Relationships: [
+                    
+                  ]
+                },
+"journal_companions": {
+                  Row: {
+                    "archived_at": string | null,"conversation_prefs": string,"created_at": string,"description": string,"icon": string,"id": string,"instructions": string,"name": string,"opening_style": string,"position": number,"preferred_journal_id": string | null,"preset_key": string | null,"revision": number,"tone": number,"updated_at": string,"user_id": string,"version": number
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "archived_at"?: string | null,"conversation_prefs"?: string,"created_at"?: string,"description"?: string,"icon"?: string,"id"?: string,"instructions"?: string,"name": string,"opening_style"?: string,"position"?: number,"preferred_journal_id"?: string | null,"preset_key"?: string | null,"revision"?: number,"tone"?: number,"updated_at"?: string,"user_id"?: string,"version"?: number
+                  }
+                  Update: {
+                    "archived_at"?: string | null,"conversation_prefs"?: string,"created_at"?: string,"description"?: string,"icon"?: string,"id"?: string,"instructions"?: string,"name"?: string,"opening_style"?: string,"position"?: number,"preferred_journal_id"?: string | null,"preset_key"?: string | null,"revision"?: number,"tone"?: number,"updated_at"?: string,"user_id"?: string,"version"?: number
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "journal_companions_user_id_preferred_journal_id_fkey"
+      columns: ["user_id","preferred_journal_id"]
+isOneToOne: false
+      referencedRelation: "journal_journals"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+                },
+"journal_conversations": {
+                  Row: {
+                    "analysis_status": string | null,"companion_id": string | null,"companion_name": string,"companion_version_id": string | null,"completed_at": string | null,"created_at": string,"draft": string,"draft_updated_at": string | null,"exclude_from_memory": boolean,"favorite": boolean,"id": string,"images": NonNullable<Json>,"journal_id": string,"last_message_at": string | null,"local_date": string,"memory_off": boolean,"message_count": number,"mode": string,"origin": string,"revision": number,"search": unknown,"started_at": string,"status": string,"summary": string,"summary_source": string | null,"time_zone": string,"title": string,"title_source": string | null,"updated_at": string,"user_id": string,"user_words": number
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "analysis_status"?: string | null,"companion_id"?: string | null,"companion_name"?: string,"companion_version_id"?: string | null,"completed_at"?: string | null,"created_at"?: string,"draft"?: string,"draft_updated_at"?: string | null,"exclude_from_memory"?: boolean,"favorite"?: boolean,"id"?: string,"images"?: NonNullable<Json>,"journal_id": string,"last_message_at"?: string | null,"local_date": string,"memory_off"?: boolean,"message_count"?: number,"mode"?: string,"origin"?: string,"revision"?: number,"search"?: never,"started_at"?: string,"status"?: string,"summary"?: string,"summary_source"?: string | null,"time_zone"?: string,"title"?: string,"title_source"?: string | null,"updated_at"?: string,"user_id"?: string,"user_words"?: number
+                  }
+                  Update: {
+                    "analysis_status"?: string | null,"companion_id"?: string | null,"companion_name"?: string,"companion_version_id"?: string | null,"completed_at"?: string | null,"created_at"?: string,"draft"?: string,"draft_updated_at"?: string | null,"exclude_from_memory"?: boolean,"favorite"?: boolean,"id"?: string,"images"?: NonNullable<Json>,"journal_id"?: string,"last_message_at"?: string | null,"local_date"?: string,"memory_off"?: boolean,"message_count"?: number,"mode"?: string,"origin"?: string,"revision"?: number,"search"?: never,"started_at"?: string,"status"?: string,"summary"?: string,"summary_source"?: string | null,"time_zone"?: string,"title"?: string,"title_source"?: string | null,"updated_at"?: string,"user_id"?: string,"user_words"?: number
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "journal_conversations_user_id_companion_id_fkey"
+      columns: ["user_id","companion_id"]
+isOneToOne: false
+      referencedRelation: "journal_companions"
+      referencedColumns: ["user_id","id"]
+    },{
+      foreignKeyName: "journal_conversations_user_id_companion_version_id_fkey"
+      columns: ["user_id","companion_version_id"]
+isOneToOne: false
+      referencedRelation: "journal_companion_versions"
+      referencedColumns: ["user_id","id"]
+    },{
+      foreignKeyName: "journal_conversations_user_id_journal_id_fkey"
+      columns: ["user_id","journal_id"]
+isOneToOne: false
+      referencedRelation: "journal_journals"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+                },
+"journal_entry_tags": {
+                  Row: {
+                    "conversation_id": string,"created_at": string,"source": string,"tag_id": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "conversation_id": string,"created_at"?: string,"source"?: string,"tag_id": string,"user_id"?: string
+                  }
+                  Update: {
+                    "conversation_id"?: string,"created_at"?: string,"source"?: string,"tag_id"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "journal_entry_tags_user_id_conversation_id_fkey"
+      columns: ["user_id","conversation_id"]
+isOneToOne: false
+      referencedRelation: "journal_conversations"
+      referencedColumns: ["user_id","id"]
+    },{
+      foreignKeyName: "journal_entry_tags_user_id_tag_id_fkey"
+      columns: ["user_id","tag_id"]
+isOneToOne: false
+      referencedRelation: "journal_tags"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+                },
+"journal_journals": {
+                  Row: {
+                    "archived_at": string | null,"cover": string,"created_at": string,"default_companion_id": string | null,"description": string,"evening_instructions": string,"icon": string,"id": string,"instructions": string,"memory_scope": string,"morning_instructions": string,"name": string,"position": number,"preset_key": string | null,"revision": number,"tone": number,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "archived_at"?: string | null,"cover"?: string,"created_at"?: string,"default_companion_id"?: string | null,"description"?: string,"evening_instructions"?: string,"icon"?: string,"id"?: string,"instructions"?: string,"memory_scope"?: string,"morning_instructions"?: string,"name": string,"position"?: number,"preset_key"?: string | null,"revision"?: number,"tone"?: number,"updated_at"?: string,"user_id"?: string
+                  }
+                  Update: {
+                    "archived_at"?: string | null,"cover"?: string,"created_at"?: string,"default_companion_id"?: string | null,"description"?: string,"evening_instructions"?: string,"icon"?: string,"id"?: string,"instructions"?: string,"memory_scope"?: string,"morning_instructions"?: string,"name"?: string,"position"?: number,"preset_key"?: string | null,"revision"?: number,"tone"?: number,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "journal_journals_user_id_default_companion_id_fkey"
+      columns: ["user_id","default_companion_id"]
+isOneToOne: false
+      referencedRelation: "journal_companions"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+                },
+"journal_links": {
+                  Row: {
+                    "conversation_id": string,"created_at": string,"kind": string,"label": string,"target_id": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "conversation_id": string,"created_at"?: string,"kind": string,"label"?: string,"target_id": string,"user_id"?: string
+                  }
+                  Update: {
+                    "conversation_id"?: string,"created_at"?: string,"kind"?: string,"label"?: string,"target_id"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "journal_links_user_id_conversation_id_fkey"
+      columns: ["user_id","conversation_id"]
+isOneToOne: false
+      referencedRelation: "journal_conversations"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+                },
+"journal_memories": {
+                  Row: {
+                    "body": string,"created_at": string,"id": string,"journal_id": string | null,"kind": string,"revision": number,"source": string,"source_conversation_id": string | null,"status": string,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "body": string,"created_at"?: string,"id"?: string,"journal_id"?: string | null,"kind"?: string,"revision"?: number,"source"?: string,"source_conversation_id"?: string | null,"status"?: string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Update: {
+                    "body"?: string,"created_at"?: string,"id"?: string,"journal_id"?: string | null,"kind"?: string,"revision"?: number,"source"?: string,"source_conversation_id"?: string | null,"status"?: string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "journal_memories_user_id_journal_id_fkey"
+      columns: ["user_id","journal_id"]
+isOneToOne: false
+      referencedRelation: "journal_journals"
+      referencedColumns: ["user_id","id"]
+    },{
+      foreignKeyName: "journal_memories_user_id_source_conversation_id_fkey"
+      columns: ["user_id","source_conversation_id"]
+isOneToOne: false
+      referencedRelation: "journal_conversations"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+                },
+"journal_message_corrections": {
+                  Row: {
+                    "corrected_at": string,"id": string,"message_id": string,"previous_body": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "corrected_at"?: string,"id"?: string,"message_id": string,"previous_body": string,"user_id"?: string
+                  }
+                  Update: {
+                    "corrected_at"?: string,"id"?: string,"message_id"?: string,"previous_body"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "journal_message_corrections_user_id_message_id_fkey"
+      columns: ["user_id","message_id"]
+isOneToOne: false
+      referencedRelation: "journal_messages"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+                },
+"journal_messages": {
+                  Row: {
+                    "body": string,"companion_version_id": string | null,"conversation_id": string,"corrected_at": string | null,"created_at": string,"id": string,"local_date": string,"model": string | null,"reply_to": string | null,"role": string,"search": unknown,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "body": string,"companion_version_id"?: string | null,"conversation_id": string,"corrected_at"?: string | null,"created_at"?: string,"id"?: string,"local_date": string,"model"?: string | null,"reply_to"?: string | null,"role": string,"search"?: never,"user_id"?: string
+                  }
+                  Update: {
+                    "body"?: string,"companion_version_id"?: string | null,"conversation_id"?: string,"corrected_at"?: string | null,"created_at"?: string,"id"?: string,"local_date"?: string,"model"?: string | null,"reply_to"?: string | null,"role"?: string,"search"?: never,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "journal_messages_user_id_conversation_id_fkey"
+      columns: ["user_id","conversation_id"]
+isOneToOne: false
+      referencedRelation: "journal_conversations"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+                },
+"journal_preferences": {
+                  Row: {
+                    "analysis_auto": boolean,"created_at": string,"default_journal_id": string | null,"global_instructions": string,"greet_on_new": boolean,"memory_enabled": boolean,"on_this_day": boolean,"revision": number,"show_on_daily": boolean,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "analysis_auto"?: boolean,"created_at"?: string,"default_journal_id"?: string | null,"global_instructions"?: string,"greet_on_new"?: boolean,"memory_enabled"?: boolean,"on_this_day"?: boolean,"revision"?: number,"show_on_daily"?: boolean,"updated_at"?: string,"user_id"?: string
+                  }
+                  Update: {
+                    "analysis_auto"?: boolean,"created_at"?: string,"default_journal_id"?: string | null,"global_instructions"?: string,"greet_on_new"?: boolean,"memory_enabled"?: boolean,"on_this_day"?: boolean,"revision"?: number,"show_on_daily"?: boolean,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "journal_preferences_user_id_default_journal_id_fkey"
+      columns: ["user_id","default_journal_id"]
+isOneToOne: false
+      referencedRelation: "journal_journals"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+                },
+"journal_reports": {
+                  Row: {
+                    "created_at": string,"data": NonNullable<Json>,"id": string,"model": string | null,"revision": number,"source_ids": (string)[],"source_signature": string,"updated_at": string,"user_id": string,"week_start": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"data"?: NonNullable<Json>,"id"?: string,"model"?: string | null,"revision"?: number,"source_ids"?: (string)[],"source_signature"?: string,"updated_at"?: string,"user_id"?: string,"week_start": string
+                  }
+                  Update: {
+                    "created_at"?: string,"data"?: NonNullable<Json>,"id"?: string,"model"?: string | null,"revision"?: number,"source_ids"?: (string)[],"source_signature"?: string,"updated_at"?: string,"user_id"?: string,"week_start"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
+                },
+"journal_tags": {
+                  Row: {
+                    "aliases": (string)[],"created_at": string,"id": string,"kind": string,"name": string,"normalized": string | null,"note": string,"revision": number,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "aliases"?: (string)[],"created_at"?: string,"id"?: string,"kind": string,"name": string,"normalized"?: never,"note"?: string,"revision"?: number,"updated_at"?: string,"user_id"?: string
+                  }
+                  Update: {
+                    "aliases"?: (string)[],"created_at"?: string,"id"?: string,"kind"?: string,"name"?: string,"normalized"?: never,"note"?: string,"revision"?: number,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
+                },
             "allocation_groups": {
                   Row: {
                     "accent": string,"captured_time_zone": string,"created_at": string,"currency": string,"id": string,"name": string,"position": number,"updated_at": string,"user_id": string
@@ -3178,6 +3514,93 @@ isOneToOne: false
                 }
           }
           Functions: {
+"correct_journal_message": { Args: { "p_body": string,"p_id": string }; Returns: {
+              "body": string,
+"companion_version_id": string | null,
+"conversation_id": string,
+"corrected_at": string | null,
+"created_at": string,
+"id": string,
+"local_date": string,
+"model": string | null,
+"reply_to": string | null,
+"role": string,
+"search": unknown,
+"user_id": string
+            }[]
+                          SetofOptions: {
+        from: "*"
+        to: "journal_messages"
+        isOneToOne: false
+        isSetofReturn: true
+      } },
+"delete_journal": { Args: { "p_delete_entries": boolean,"p_id": string,"p_move_to": string }; Returns: number
+                           },
+"journal_days": { Args: { "p_from": string }; Returns: {
+              "local_date": string,"messages": number
+            }[]
+                           },
+"keep_journal_test": { Args: { "p_companion_id": string,"p_companion_name": string,"p_journal_id": string,"p_key": string,"p_local_date": string,"p_messages": Json,"p_time_zone": string }; Returns: {
+              "analysis_status": string | null,
+"companion_id": string | null,
+"companion_name": string,
+"companion_version_id": string | null,
+"completed_at": string | null,
+"created_at": string,
+"draft": string,
+"draft_updated_at": string | null,
+"exclude_from_memory": boolean,
+"favorite": boolean,
+"id": string,
+"images": NonNullable<Json>,
+"journal_id": string,
+"last_message_at": string | null,
+"local_date": string,
+"memory_off": boolean,
+"message_count": number,
+"mode": string,
+"origin": string,
+"revision": number,
+"search": unknown,
+"started_at": string,
+"status": string,
+"summary": string,
+"summary_source": string | null,
+"time_zone": string,
+"title": string,
+"title_source": string | null,
+"updated_at": string,
+"user_id": string,
+"user_words": number
+            }[]
+                          SetofOptions: {
+        from: "*"
+        to: "journal_conversations"
+        isOneToOne: false
+        isSetofReturn: true
+      } },
+"merge_journal_tags": { Args: { "p_from": string,"p_into": string }; Returns: {
+              "aliases": (string)[],
+"created_at": string,
+"id": string,
+"kind": string,
+"name": string,
+"normalized": string | null,
+"note": string,
+"revision": number,
+"updated_at": string,
+"user_id": string
+            }[]
+                          SetofOptions: {
+        from: "*"
+        to: "journal_tags"
+        isOneToOne: false
+        isSetofReturn: true
+      } },
+"search_journal": { Args: { "p_limit"?: number,"p_query": string }; Returns: {
+              "conversation_id": string,"rank": number,"snippet": string
+            }[]
+                           },
             set_aspiration_primary_area: { Args: { p_aspiration_id: string; p_area_id: string | null }; Returns: undefined }
             record_inner_evolution: { Args: { p_id: string; p_revision: number; p_title: string; p_meaning: string; p_details: Json; p_reason: string; p_reflection: string; p_evolved_on: string }; Returns: Database["public"]["Tables"]["inner_discoveries"]["Row"][] }
             "backfill_priority_tasks":
