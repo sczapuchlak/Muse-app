@@ -79,7 +79,7 @@ function useJournalStore() {
     analyse: async (id: string, regenerate = false) => { const r = await aiAction({ action: "analysis", conversationId: id, regenerate }); await refresh(); void refreshAi(); return r; },
 
     tagEntry: (conversationId: string, kind: TagKind, name: string) => run(async () => {
-      const clean = cleanTagName(name); if (!clean) return;
+      const clean = cleanTagName(kind === "custom" ? name.replace(/^#+/, "") : name); if (!clean) return;
       let tag = findTag(stateRef.current.tags, kind, clean);
       if (!tag) { tag = await P.createTag(client, userId, kind, clean); const made = tag; patch((s) => ({ ...s, tags: [...s.tags.filter((t) => t.id !== made.id), made].sort((a, b) => a.name.localeCompare(b.name)) })); }
       await P.tagEntry(client, userId, conversationId, tag.id); const id = tag.id;

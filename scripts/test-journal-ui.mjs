@@ -168,6 +168,15 @@ try{
  await evaluate(()=>[...document.querySelectorAll('.mj-tag-editor')].find(e=>e.querySelector('h3')?.textContent==='Moods').querySelector('button[type=submit]').click());
  await until(()=>[...document.querySelectorAll('.mj-tag[data-kind=mood]')].some(x=>x.textContent.includes('Wistful')),'mood added');
  check(await count('journal_tags',a.id,{kind:'place',name:'Lisbon'})===1&&await count('journal_tags',a.id,{kind:'mood',name:'Wistful'})===1,'places and moods are added by hand, no AI request');
+ // My tags: added by hand on the saved entry, no AI; capitals and a leading # never make a duplicate.
+ const addMine=async(name)=>{await evaluate(()=>document.querySelector('.mj-tag-editor[data-kind=custom] .mj-tag-plus')?.click());await wait(150);
+  await evaluate(n=>{const i=document.querySelector('.mj-tag-editor[data-kind=custom] input');Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set.call(i,n);i.dispatchEvent(new Event('input',{bubbles:true}));},name);
+  await evaluate(()=>document.querySelector('.mj-tag-editor[data-kind=custom] button[type=submit]').click());};
+ await addMine('#First Dates');
+ await until(()=>[...document.querySelectorAll('.mj-tag[data-kind=custom]')].some(x=>x.textContent.includes('#First Dates')),'my tag added');
+ await click('.mj-tag-editor[data-kind=custom] button','Remove First Dates');await wait(300);await addMine('first dates');
+ await until(()=>document.querySelectorAll('.mj-tag[data-kind=custom]').length===1,'my tag re-added');
+ check(await count('journal_tags',a.id,{kind:'custom'})===1,'My tags: add, remove and re-add; “first dates” and “#First Dates” are one tag');
  await click('.mj-tag[data-ai] button','Keep Alex');await wait(400);
  check(must(await admin.from('journal_entry_tags').select('source').eq('conversation_id',convId).eq('tag_id',alex.id).single()).source==='user','keeping a suggestion makes it yours');
  check(await count('journal_ai_usage',a.id,{kind:'analysis'})===1,'editing tags made no AI request');
@@ -198,14 +207,36 @@ try{
  await setValue('.mj-history-view input[type=search]','colours');
  await until(()=>document.querySelectorAll('.mj-history-view .mj-row').length===1,'search narrows');
  check(await has('.mj-row mark','colours'),'full-text search matches words inside the original messages, highlighted');
+ await setValue('.mj-history-view input[type=search]','colo');
+ await until(()=>[...document.querySelectorAll('.mj-history-view .mj-row')].length===1,'partial search');
+ check(true,'search matches part of a word');
  await setValue('.mj-history-view input[type=search]','');
- await go(`/journal?view=history&tag=${alex.id}`,'!!document.querySelector(".mj-tag-banner")&&!!document.querySelector(".mj-row")','tag page');
+ await click('.mj-history-view .muse-segmented button','Week');await until(()=>!!document.querySelector('.mj-strip'),'week again');
+ await setValue('.mj-history-view input[type=search]','alex');
+ await until(()=>[...document.querySelectorAll('.mj-results .mj-row')].some(x=>x.textContent.includes('Dinner with Alex')),'global search');
+ check(true,'a search from the week view finds entries from weeks ago');
+ await setValue('.mj-history-view input[type=search]','');
+ // Filters: one panel, a tag finder inside it, tags AND the search text.
+ await click('.mj-filters-toggle');await until(()=>!!document.querySelector('.mj-filter-panel'),'filter panel');
+ await setValue('.mj-filter-find input','first');
+ await until(()=>document.querySelectorAll('.mj-filter-chip').length===1,'tag finder narrows');
+ await click('.mj-filter-chip');await until(()=>!!document.querySelector('.mj-active-filters .mj-tag[data-kind=custom]'),'active chip');
+ check((await evaluate(()=>document.querySelectorAll('.mj-results .mj-row').length))===1,'choosing #First Dates shows only the entries I tagged');
+ await setValue('.mj-filter-find input','');await shoot('06b-filters');
+ await setValue('.mj-history-view input[type=search]','Lisbon');await wait(900);
+ check((await evaluate(()=>document.querySelectorAll('.mj-results .mj-row').length))===1,'#First Dates AND “Lisbon” keeps the matching entry');
+ await setValue('.mj-history-view input[type=search]','colours');
+ await until(()=>!!document.querySelector('.mj-history-view .mj-quiet'),'no match');
+ check(await has('.mj-history-view .mj-quiet','No entry matches'),'#First Dates AND “colours” finds nothing, and says so');
+ await click('.mj-active-filters button','Clear all');await click('.mj-filter-done button','Done');
+ await go(`/journal?view=history&tag=${alex.id}`,'!!document.querySelector(".mj-active-filters")&&!!document.querySelector(".mj-row")','tag page');
  check((await evaluate(()=>document.querySelectorAll('.mj-history-view .mj-row').length))===3,'Alex opens every entry with Alex, across dates and journals');
+ await click('.mj-filters-toggle');await until(()=>!!document.querySelector('.mj-filter-panel'),'panel');
  await menu('Journals','My Journal');await click('.popover-footer button, .muse-choice-popover button','Done').catch(()=>send('Input.dispatchKeyEvent',{type:'keyDown',key:'Escape',code:'Escape',windowsVirtualKeyCode:27}));await wait(200);
  check((await evaluate(()=>document.querySelectorAll('.mj-history-view .mj-row').length))===2,'person + journal combine');
  await pickDate('From',today);
  check((await evaluate(()=>document.querySelectorAll('.mj-history-view .mj-row').length))===1,'person + journal + date range combine');
- await click('.mj-filters button','Clear all');
+ await click('.mj-active-filters button','Clear all');await click('.mj-filter-done button','Done');
  await click('.mj-history-view .muse-segmented button','Week');
  await until(()=>!!document.querySelector('.mj-strip'),'week view');
  check(await evaluate(()=>document.querySelectorAll('.mj-strip-day').length===7&&!!document.querySelector('.mj-strip-day[data-today][data-on]')&&!!document.querySelector('.mj-week .mj-row')),'the week view: seven days, today lit, this week’s entries as rows');
@@ -218,8 +249,8 @@ try{
  // Duplicate prevention and merge with alias.
  const al=await P.createTag(a.client,a.id,'person','Al');await P.tagEntry(a.client,a.id,quilt.id,al.id);
  check((await P.createTag(a.client,a.id,'person','alex')).id===alex.id,'typing “alex” finds Alex instead of making a duplicate');
- await go(`/journal?view=history&tag=${al.id}`,'!!document.querySelector(".mj-tag-banner")','al page');
- await click('.mj-tag-banner button','Rename, aliases or merge');await until(()=>!!document.querySelector('#mj-tag'),'manage tag');
+ await go(`/journal?view=history&tag=${al.id}`,'!!document.querySelector(".mj-active-filters")','al page');
+ await click('.mj-active-filters button','Rename, aliases or merge');await until(()=>!!document.querySelector('#mj-tag'),'manage tag');
  await click('#mj-tag button.muse-choice-trigger');await until(()=>[...document.querySelectorAll('.popover-choice')].some(x=>x.textContent.includes('Alex')),'merge choices');await click('.popover-choice','Alex');
  await click('#mj-tag .mj-finish button.button-primary','Merge');await until(()=>!document.querySelector('#mj-tag'),'merged').catch(async e=>{console.log('DIALOG:',await text('#mj-tag'),'| ERR:',await text('.mj-error'));await shoot('debug-merge');throw e;});
  const merged=must(await admin.from('journal_tags').select('aliases').eq('id',alex.id).single());
