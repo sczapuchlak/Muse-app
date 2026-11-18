@@ -78,7 +78,7 @@ export const modules: Record<ModuleType, ModuleDef> = {
       { key: "objects", kind: "textarea", label: "Meaningful objects and what they stood for", max: 6000 }, { key: "photos", kind: "images", label: "Photos", max: 8 },
       { key: "participants", kind: "text", label: "With", max: 300 }, { key: "feelings", kind: "textarea", label: "Feelings or impressions", max: 6000 },
       { key: "word", kind: "text", label: "Related guiding word", max: 60 }, { key: "symbol", kind: "text", label: "Related symbol", max: 120 }, reflection] },
-  materials: { type: "materials", label: "Materials & meaningful objects", hint: "Stones, plants, paper, keepsakes, supplies.", glyph: "gem", tone: 1, group: "artifacts", owners: ["experience"], shape: "items", maxItems: 40, addLabel: "Add a material",
+  materials: { type: "materials", label: "Materials & meaningful objects", hint: "Stones, plants, paper, keepsakes, supplies.", glyph: "gem", tone: 1, group: "artifacts", owners: ["experience"], shape: "items", maxItems: 80, addLabel: "Add a material",
     fields: [{ key: "name", kind: "material", label: "Material" }, { key: "category", kind: "choice", label: "Category", options: materialCategories }, { key: "quantity", kind: "text", label: "Quantity", max: 60 },
       { key: "notes", kind: "textarea", label: "Notes", max: 4000 }, { key: "meaning", kind: "textarea", label: "What it means to me", max: 6000 }, { key: "image", kind: "image", label: "Photo" }] },
   photos: { type: "photos", label: "Photos & memories", hint: "Pictures worth keeping, with a caption.", glyph: "palette", tone: 5, group: "artifacts", owners: ["chapter", "experience"], shape: "fields",

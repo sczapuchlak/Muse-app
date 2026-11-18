@@ -8,7 +8,9 @@ export type MoneyCategory={id:string;name:string;accent:MoneyAccent;icon?:MuseIc
 export type MoneyTag={id:string;name:string;archived:boolean};
 export type AllocationGroup={id:string;name:string;accent:MoneyAccent};
 export type Paycheck={id:string;name:string;receivedDate:string;periodStart:string;periodEnd:string;expectedCents?:number;actualCents?:number;note?:string;templateId?:string};
-export type Allocation={id:string;paycheckId:string;name:string;plannedCents:number;groupId:string;categoryId?:string;subcategoryId?:string;actualCents?:number;dueDate?:string;billId?:string;cardId?:string;note?:string};
+export type Allocation={id:string;paycheckId:string;name:string;plannedCents:number;
+ /** Retired planning group (kept on older rows; shown only until the row has a category). */
+ groupId?:string;categoryId?:string;subcategoryId?:string;actualCents?:number;dueDate?:string;billId?:string;cardId?:string;note?:string};
 export type TemplateAllocation=Omit<Allocation,"id"|"paycheckId"|"actualCents"|"dueDate">;
 export type PaycheckTemplate={id:string;name:string;expectedCents?:number;allocations:TemplateAllocation[]};
 export type MoneySplit={id:string;categoryId?:string;subcategoryId?:string;amountCents:number};
@@ -19,7 +21,7 @@ export type MoneyBill={id:string;name:string;amountCents:number;dueDate:string;r
 export type MoneyRecords={paychecks:Paycheck;allocations:Allocation;templates:PaycheckTemplate;transactions:MoneyTransaction;cards:CreditCard;payments:CardPayment;bills:MoneyBill;categories:MoneyCategory;tags:MoneyTag;groups:AllocationGroup;recurring:RecurringPayment;paymentMethods:ManualPaymentMethod};
 export type MoneyState={[K in keyof MoneyRecords]:MoneyRecords[K][]};
 export type MoneySaveAction={[K in keyof MoneyRecords]:{type:"save";collection:K;record:MoneyRecords[K]}}[keyof MoneyRecords];
-export type MoneyAction=MoneySaveAction|{type:"remove";collection:"transactions"|"allocations"|"payments";id:string}|{type:"archive";collection:"categories"|"tags";id:string;archived:boolean}|{type:"apply-template";templateId:string;paycheck:Paycheck;allocationIds?:string[]};
+export type MoneyAction=MoneySaveAction|{type:"remove";collection:"transactions"|"allocations"|"payments";id:string}|{type:"archive";collection:"categories"|"tags";id:string;archived:boolean}|{type:"apply-template";templateId:string;paycheck:Paycheck;allocationIds?:string[]}|{type:"delete-category";id:string}|{type:"delete-subcategory";categoryId:string;id:string};
 export type MoneyPeriod={start:string;end:string;label:string};
 const cents=(value:unknown)=>typeof value==="number"&&Number.isSafeInteger(value)&&value>=0;
 const optionalCents=(value:unknown)=>value===undefined||cents(value);
@@ -64,7 +66,7 @@ export function moneyError(state:MoneyState,action:MoneyAction):string|null {
     case "paychecks": {const item=action.record;return !item.name.trim()||![item.receivedDate,item.periodStart,item.periodEnd].every(validDate)||item.periodStart>item.periodEnd?"Enter a name and valid received/period dates.":!optionalCents(item.expectedCents)||!optionalCents(item.actualCents)?"Income must be nonnegative, with at most two decimal places.":null;}
     case "allocations": {const item=action.record;
       if(state.transactions.some((tx)=>tx.allocationId===item.id&&item.cardId)||state.payments.some((payment)=>payment.allocationId===item.id&&(payment.cardId!==item.cardId||(payment.paycheckId&&payment.paycheckId!==item.paycheckId))))return "Unlink the recorded activity before changing this planned amount’s card or paycheck.";
-      return !item.name.trim()||!state.paychecks.some((p)=>p.id===item.paycheckId)||!state.groups.some((g)=>g.id===item.groupId)||!cents(item.plannedCents)||!optionalCents(item.actualCents)?"Enter a name, a valid paycheck and group, and nonnegative amounts for this planned amount.":!classificationValid(state,item.categoryId,item.subcategoryId)||(item.billId&&!state.bills.some((b)=>b.id===item.billId))||(item.cardId&&!state.cards.some((c)=>c.id===item.cardId))||(item.dueDate&&!validDate(item.dueDate))?"Check the linked category, bill, card or due date.":null;}
+      return !item.name.trim()||!state.paychecks.some((p)=>p.id===item.paycheckId)||(item.groupId&&!state.groups.some((g)=>g.id===item.groupId))||!cents(item.plannedCents)||!optionalCents(item.actualCents)?"Enter a name, a valid paycheck, and nonnegative amounts for this planned amount.":!classificationValid(state,item.categoryId,item.subcategoryId)||(item.billId&&!state.bills.some((b)=>b.id===item.billId))||(item.cardId&&!state.cards.some((c)=>c.id===item.cardId))||(item.dueDate&&!validDate(item.dueDate))?"Check the linked category, bill, card or due date.":null;}
     case "transactions": {const item=action.record;return !item.merchant.trim()||!cents(item.amountCents)||!validDate(item.date)?"Enter a description, valid date and nonnegative amount.":!classificationValid(state,item.categoryId,item.subcategoryId)||item.splits.some((split)=>!cents(split.amountCents)||!classificationValid(state,split.categoryId,split.subcategoryId))?"Check transaction and split categories/amounts.":splitRemainder(item)<0?`${formatMoney(-splitRemainder(item))} exceeds the transaction total.`:item.tagIds.some((id)=>!state.tags.some((tag)=>tag.id===id))||(item.paymentMethodId&&!state.paymentMethods.some((method)=>method.id===item.paymentMethodId))||(item.cardId&&item.paymentMethodId)||(item.cardId&&!state.cards.some((card)=>card.id===item.cardId))||(item.allocationId&&!state.allocations.some((row)=>row.id===item.allocationId&&!row.cardId))?"Choose valid tags, card and planned amount.":null;}
     case "cards": {const item=action.record;return !item.name.trim()||!Number.isSafeInteger(item.balanceCents)||(item.openingBalanceCents!==undefined&&(!Number.isSafeInteger(item.openingBalanceCents)||!validDate(item.openingAsOf)))||!optionalCents(item.limitCents)||!optionalCents(item.minimumCents)||!optionalCents(item.plannedPaymentCents)||(item.apr!==undefined&&(!Number.isFinite(item.apr)||item.apr<0))||(item.dueDate&&!validDate(item.dueDate))?"Check nickname, amounts, APR and due date.":null;}
     case "payments": {const item=action.record;return !cents(item.amountCents)||!item.amountCents||!validDate(item.date)||!state.cards.some((card)=>card.id===item.cardId)?"Choose a card, valid date and a positive payment amount.":item.paycheckId&&!state.paychecks.some((p)=>p.id===item.paycheckId)||item.allocationId&&!state.allocations.some((a)=>a.id===item.allocationId&&a.cardId===item.cardId&&(!item.paycheckId||a.paycheckId===item.paycheckId))?"The planned amount must belong to this card and paycheck.":null;}
@@ -72,13 +74,50 @@ export function moneyError(state:MoneyState,action:MoneyAction):string|null {
     case "categories": {const item=action.record;return !item.name.trim()||!validAccent(item.accent)||item.subcategories.some((sub)=>!sub.id||!sub.name.trim())||new Set(item.subcategories.map((sub)=>sub.id)).size!==item.subcategories.length?"Enter a category name, color and valid subcategory names.":null;}
     case "tags": return action.record.name.trim()?null:"Enter a tag name.";
     case "groups": return action.record.name.trim()&&validAccent(action.record.accent)?null:"Enter a group name and color.";
-    case "templates": return action.record.name.trim()&&optionalCents(action.record.expectedCents)&&action.record.allocations.every((row)=>row.name.trim()&&cents(row.plannedCents)&&state.groups.some((group)=>group.id===row.groupId))?null:"Check template name, expected amount and what’s planned from it.";
+    case "templates": return action.record.name.trim()&&optionalCents(action.record.expectedCents)&&action.record.allocations.every((row)=>row.name.trim()&&cents(row.plannedCents)&&(!row.groupId||state.groups.some((group)=>group.id===row.groupId))&&classificationValid(state,row.categoryId,row.subcategoryId))?null:"Check template name, expected amount and what’s planned from it.";
   }
 }
 function updateBalance(state:MoneyState,cardId:string|undefined,delta:number):MoneyState{return !cardId||!delta?state:{...state,cards:state.cards.map((card)=>card.id===cardId?{...card,balanceCents:card.balanceCents+delta}:card)};}
+/** How a paycheck's plan divides, by category (in the Categories order): what the ring, ribbon and legend show. A row
+ *  with no category shows under the retired planning group it had, or "Not categorized". */
+export function planSegments(state:MoneyState,rows:Allocation[]):{id:string;name:string;accent:MoneyAccent;amount:number}[]{
+ const out=new Map<string,{id:string;name:string;accent:MoneyAccent;amount:number;order:number}>();
+ for(const row of rows){
+  const ci=state.categories.findIndex((c)=>c.id===row.categoryId),cat=state.categories[ci],group=cat?undefined:state.groups.find((g)=>g.id===row.groupId);
+  const id=cat?cat.id:group?`group:${group.id}`:"none",seg=out.get(id)??{id,name:cat?.name??group?.name??"Not categorized",accent:cat?.accent??group?.accent??"info",amount:0,order:cat?ci:group?10000:20000};
+  seg.amount+=row.plannedCents;out.set(id,seg);
+ }
+ return [...out.values()].filter((s)=>s.amount>0).sort((a,b)=>a.order-b.order).map((s)=>({id:s.id,name:s.name,accent:s.accent,amount:s.amount}));
+}
+/** A planned amount's label: Category › Subcategory, or its old planning group's name until it has a category. */
+export function planLabel(state:MoneyState,row:Pick<Allocation,"categoryId"|"subcategoryId"|"groupId">){
+ const cat=state.categories.find((c)=>c.id===row.categoryId),sub=cat?.subcategories.find((s)=>s.id===row.subcategoryId);
+ if(cat)return {name:sub?`${cat.name} › ${sub.name}`:cat.name,accent:cat.accent,legacy:false};
+ const group=state.groups.find((g)=>g.id===row.groupId);
+ return group?{name:group.name,accent:group.accent,legacy:true}:{name:"Not categorized",accent:undefined,legacy:false};
+}
+/** How many records use a category (or one of its subcategories): shown before deleting it. */
+export function categoryUses(state:MoneyState,categoryId:string,subcategoryId?:string){
+ const hit=(item:{categoryId?:string;subcategoryId?:string})=>item.categoryId===categoryId&&(!subcategoryId||item.subcategoryId===subcategoryId);
+ const counts={planned:state.allocations.filter(hit).length+state.templates.reduce((n,t)=>n+t.allocations.filter(hit).length,0),spending:state.transactions.filter((t)=>hit(t)||t.splits.some(hit)).length,bills:subcategoryId?0:state.bills.filter(hit).length,recurring:subcategoryId?0:state.recurring.filter(hit).length};
+ const parts=[[counts.planned,"planned amount"],[counts.spending,"purchase"],[counts.bills,"bill"],[counts.recurring,"recurring payment"]].filter(([n])=>n).map(([n,w])=>`${n} ${w}${n===1?"":"s"}`);
+ return {total:counts.planned+counts.spending+counts.bills+counts.recurring,summary:parts.length>1?`${parts.slice(0,-1).join(", ")} and ${parts.at(-1)}`:parts[0]??""};
+}
 export function templateFromPaycheck(state:MoneyState,paycheck:Paycheck,id:string,name:string):PaycheckTemplate {return {id,name,expectedCents:paycheck.expectedCents,allocations:state.allocations.filter((item)=>item.paycheckId===paycheck.id).map(({name,plannedCents,groupId,categoryId,subcategoryId,billId,cardId,note})=>({name,plannedCents,groupId,categoryId,subcategoryId,billId,cardId,note}))};}
 function reduceMoney(state:MoneyState,action:MoneyAction):MoneyState {
   if(moneyError(state,action))return state;
+  if(action.type==="delete-category"){
+   // The category goes; everything that used it stays, without a category (and without its subcategory).
+   const off=<T extends {categoryId?:string;subcategoryId?:string}>(item:T):T=>{if(item.categoryId!==action.id)return item;const n={...item};delete n.categoryId;delete n.subcategoryId;return n;};
+   return {...state,categories:state.categories.filter((c)=>c.id!==action.id),allocations:state.allocations.map(off),bills:state.bills.map(off),recurring:state.recurring.map(off),
+    transactions:state.transactions.map((t)=>({...off(t),splits:t.splits.map(off)})),templates:state.templates.map((t)=>({...t,allocations:t.allocations.map(off)}))};
+  }
+  if(action.type==="delete-subcategory"){
+   // The subcategory goes; what used it keeps its category.
+   const off=<T extends {categoryId?:string;subcategoryId?:string}>(item:T):T=>{if(item.categoryId!==action.categoryId||item.subcategoryId!==action.id)return item;const n={...item};delete n.subcategoryId;return n;};
+   return {...state,categories:state.categories.map((c)=>c.id===action.categoryId?{...c,subcategories:c.subcategories.filter((s)=>s.id!==action.id)}:c),allocations:state.allocations.map(off),
+    transactions:state.transactions.map((t)=>({...off(t),splits:t.splits.map(off)})),templates:state.templates.map((t)=>({...t,allocations:t.allocations.map(off)}))};
+  }
   if(action.type==="archive")return {...state,[action.collection]:state[action.collection].map((item)=>item.id===action.id?{...item,archived:action.archived}:item)};
   if(action.type==="apply-template"){const template=state.templates.find((item)=>item.id===action.templateId);if(!template||state.paychecks.some((item)=>item.id===action.paycheck.id))return state;return {...state,paychecks:[...state.paychecks,{...action.paycheck,templateId:template.id}],allocations:[...state.allocations,...template.allocations.map((row,index)=>({...row,id:action.allocationIds?.[index]??`${action.paycheck.id}/allocation/${index}`,paycheckId:action.paycheck.id}))]};}
   if(action.type==="remove"){let next=state;if(action.collection==="transactions"){const old=state.transactions.find((item)=>item.id===action.id);if(old)next=updateBalance(next,old.cardId,-old.amountCents);}if(action.collection==="payments"){const old=state.payments.find((item)=>item.id===action.id);if(old)next=updateBalance(next,old.cardId,old.amountCents);}if(action.collection==="allocations")return {...state,allocations:state.allocations.filter((item)=>item.id!==action.id),transactions:state.transactions.map((item)=>item.allocationId===action.id?{...item,allocationId:undefined}:item),payments:state.payments.map((item)=>item.allocationId===action.id?{...item,allocationId:undefined}:item)};return {...next,[action.collection]:next[action.collection].filter((item)=>item.id!==action.id)};}

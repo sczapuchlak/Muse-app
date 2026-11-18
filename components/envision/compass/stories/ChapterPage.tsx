@@ -5,7 +5,7 @@ import { MuseModal } from "@/components/MuseModal";
 import { MuseChoiceMenu } from "@/components/MuseChoiceMenu";
 import { MuseIcon } from "@/components/MuseIcon";
 import { MuseOverflowMenu } from "@/components/MuseOverflowMenu";
-import { blankChapter, blankExperience, chapterStatus, closingPrompts, rangeLabel, statusLabels, type Chapter, type ClosingAnswers } from "@/lib/inner-compass/stories";
+import { blankChapter, blankExperience, chapterStatus, closingPrompts, rangeLabel, statusLabels, type Chapter, type ClosingAnswers, myMaterials } from "@/lib/inner-compass/stories";
 import { copyContent, itemHeadline, type Ref } from "@/lib/inner-compass/modules";
 import type { VisionBoard } from "@/lib/vision-boards/model";
 import type { Compass } from "../useInnerCompass";
@@ -26,7 +26,7 @@ export function ChapterPage({ c, stories, compass, boards, today, onBack, onOpen
   const open = (d: typeof dialog) => { setOpener(document.activeElement as HTMLElement | null); setDialog(d); };
   const status = chapterStatus(c, today);
   const refs = useRefSources(compass, boards);
-  const sources = withUpload(refs, today, (f) => stories.upload(c.id, f));
+  const sources = { ...withUpload(refs, today, (f) => stories.upload(c.id, f)), mine: myMaterials(stories.modules) };
   const areas = compass.areas.filter((a) => stories.areasOf({ chapterId: c.id }).includes(a.id));
   const linked = stories.chapterExperiences.filter((j) => j.a === c.id).sort((a, b) => a.position - b.position).map((j) => stories.experiences.find((e) => e.id === j.b)).filter((e): e is NonNullable<typeof e> => !!e);
   const reflections = compass.reflections.filter((r) => r.chapterId === c.id);

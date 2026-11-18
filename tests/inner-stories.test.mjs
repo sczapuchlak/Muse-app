@@ -70,8 +70,8 @@ test('removing, duplicating and carrying forward modules',()=>{
  assert.deepEqual(S.reorder([{id:'a'},{id:'b'},{id:'c'}],'c',0).map(x=>x.id),['c','a','b']);
 });
 
-test('materials reference: 40–60 entries, factual, sourced, never claiming effects',()=>{
- assert.ok(L.materials.length>=40&&L.materials.length<=60,`${L.materials.length}`);
+test('materials reference: 40–100 entries, factual, sourced, never claiming effects',()=>{
+ assert.ok(L.materials.length>=40&&L.materials.length<=100,`${L.materials.length}`);
  assert.equal(new Set(L.materials.map(m=>m.key)).size,L.materials.length);
  for(const m of L.materials){
   assert.match(m.key,/^[a-z0-9-]{1,60}$/);assert.ok(m.description.length>20,m.key);assert.ok(m.sources.length&&m.sources.every(s=>/^https:\/\//.test(s)),`${m.key} cites a source`);

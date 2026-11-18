@@ -1,10 +1,10 @@
 import {accentStyle} from "@/lib/appearance-values";
 import { AchievementBadge } from "../AchievementStar";
-import { formatMoney,paycheckSummary,categorySpending,type Paycheck,type MoneyPeriod } from "@/lib/money";
+import { formatMoney,paycheckSummary,categorySpending,planSegments,type Paycheck,type MoneyPeriod } from "@/lib/money";
 import { useMoney } from "./MoneyStore";
 
 export function AllocationRibbon({paycheck}:{paycheck:Paycheck}){
- const {state}=useMoney(),summary=paycheckSummary(state,paycheck),segments=state.groups.map((group)=>({...group,amount:summary.rows.filter((row)=>row.groupId===group.id).reduce((sum,row)=>sum+row.plannedCents,0)})).filter((row)=>row.amount>0),denominator=Math.max(summary.planned,summary.basis??0,1);
+ const {state}=useMoney(),summary=paycheckSummary(state,paycheck),segments=planSegments(state,summary.rows),denominator=Math.max(summary.planned,summary.basis??0,1);
  return <><div className="muse-money-ribbon" role="img" aria-label={`Planned from this paycheck: ${segments.map((row)=>`${row.name} ${formatMoney(row.amount)}`).join(', ')}${summary.remaining!==null&&summary.remaining>0?`, ${formatMoney(summary.remaining)} not yet planned`:''}`}>{segments.map((row)=><span data-money-accent={row.accent} key={row.id} title={`${row.name}: ${formatMoney(row.amount)}`} style={{...accentStyle(row.accent),width:`${row.amount/denominator*100}%`}}/>)}{summary.remaining!==null&&summary.remaining>0&&<span className="muse-money-unallocated" style={{width:`${summary.remaining/denominator*100}%`}}/>}</div><ul className="muse-money-ribbon-legend">{segments.map((row)=><li key={row.id} data-money-accent={row.accent} style={accentStyle(row.accent)}><i/>{row.name}<strong>{formatMoney(row.amount)}</strong></li>)}<li>Unallocated<strong>{formatMoney(summary.remaining)}</strong></li></ul><p className="muse-money-remaining muse-feedback-anchor">{summary.remaining===null?"Record expected or actual income to see what remains":summary.remaining<0?`${formatMoney(-summary.remaining)} more planned than this paycheck`:summary.fullyAllocated?<>Everything has a place</>:`${formatMoney(summary.remaining)} still yours to assign`}<AchievementBadge achieved={summary.fullyAllocated} label="Every dollar is planned" size={22}/></p></>;
 }
 export function SpendingChart({period}:{period:MoneyPeriod}){

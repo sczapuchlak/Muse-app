@@ -1,6 +1,6 @@
 import {useState,type CSSProperties} from "react";
 import {accentStyle} from "@/lib/appearance-values";
-import {categorySpending,comingUp,formatMoney,paycheckSummary,periodTransactions,spendingTotal,type MoneyPeriod,type Paycheck} from "@/lib/money";
+import {categorySpending,comingUp,formatMoney,paycheckSummary,periodTransactions,spendingTotal,type MoneyPeriod,type Paycheck,planSegments } from "@/lib/money";
 import {AchievementBadge} from "../AchievementStar";
 import {MuseIcon} from "../MuseIcon";
 import {useMoney} from "./MoneyStore";
@@ -28,7 +28,7 @@ export function MoneyNumeral({cents,className=""}:{cents:number;className?:strin
 
 export function AllocationRing({paycheck,onPlan}:{paycheck:Paycheck;onPlan?:()=>void}){
  const {state}=useMoney(),summary=paycheckSummary(state,paycheck);
- const groups=state.groups.map(group=>({...group,amount:summary.rows.filter(row=>row.groupId===group.id).reduce((sum,row)=>sum+row.plannedCents,0)})).filter(group=>group.amount>0);
+ const groups=planSegments(state,summary.rows);
  const total=Math.max(summary.planned,summary.basis??0,1),R=56,C=2*Math.PI*R;
  const arcs=groups.map((group,i)=>{const before=groups.slice(0,i).reduce((sum,g)=>sum+g.amount,0)/total*C,length=group.amount/total*C;return {...group,dash:`${r2(Math.max(0,length-3))} ${r2(C)}`,offset:r2(-before)};});
  const assigned=summary.basis?Math.min(100,Math.round(summary.planned/summary.basis*100)):null;
@@ -63,7 +63,7 @@ export function PeriodTrack({period,today}:{period:MoneyPeriod;today:string}){
 function CompactPaycheck({paycheck,period,today,onOpen,onPlan}:{paycheck:Paycheck;period:MoneyPeriod;today:string;onOpen:MoneyOpen;onPlan?:()=>void}){
  const {state}=useMoney(),summary=paycheckSummary(state,paycheck),spent=spendingTotal(state,period),inside=today>=paycheck.periodStart&&today<=paycheck.periodEnd,received=paycheck.actualCents!==undefined;
  const daysLeft=inside?Math.round((utc(paycheck.periodEnd)-utc(today))/DAY)+1:null;
- const groups=state.groups.map(group=>({...group,amount:summary.rows.filter(row=>row.groupId===group.id).reduce((sum,row)=>sum+row.plannedCents,0)})).filter(group=>group.amount>0);
+ const groups=planSegments(state,summary.rows);
  const slides=[{id:"plan",label:"Plan"},...(groups.length?[{id:"legend",label:"Where it goes"}]:[]),{id:"days",label:"Day by day"}];
  return <section className="muse-money-hero muse-money-current" data-compact aria-label={inside?"Current paycheck":"Selected paycheck"}>
   <div className="muse-money-hero-copy">

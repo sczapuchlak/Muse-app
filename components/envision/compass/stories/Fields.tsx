@@ -10,10 +10,14 @@ import { material, materialsDisclaimer, searchMaterials } from "@/lib/inner-comp
 import type { Field, PlannerRef, Ref, RefKind, Value } from "@/lib/inner-compass/modules";
 import type { BoardImage } from "@/lib/constellation-board";
 import { RichText } from "./RichText";
+import { MaterialArt } from "./MaterialArt";
+import type { MyMaterial } from "@/lib/inner-compass/stories";
 
 /** Where each kind of reference comes from, and how to open it. Supplied by the page so nothing is loaded twice. */
 export type RefSource = { options: Ref[]; live: (id: string) => Ref | undefined; href: (r: Ref) => string; noun: string; empty: ReactNode };
-export type Sources = Record<RefKind, RefSource> & { today: string; upload: (file: File) => Promise<BoardImage | null> };
+export type Sources = Record<RefKind, RefSource> & { today: string; upload: (file: File) => Promise<BoardImage | null>;
+  /** Materials the person named before (anywhere in Inner Compass), offered again by name. */
+  mine?: MyMaterial[] };
 
 const str = (v: Value) => typeof v === "string" ? v : "";
 
@@ -72,16 +76,24 @@ function PlannerInput({ value, onChange, today }: { value?: PlannerRef; onChange
   </div>;
 }
 
-/** Name a material freely; suggestions from the reference library are optional, and a custom name always works. */
-function MaterialInput({ value, refKey, onChange }: { value: string; refKey?: string; onChange: (name: string, refKey?: string, category?: string) => void }) {
+/** Name a material freely. Suggestions come from your own materials (reused with their category, photo and meaning) and
+ *  from the reference library; a new name always works and is offered again next time. */
+function MaterialInput({ value, refKey, mine = [], onChange, onReuse }: { value: string; refKey?: string; mine?: MyMaterial[]; onChange: (name: string, refKey?: string, category?: string) => void; onReuse: (m: MyMaterial) => void }) {
   const [open, setOpen] = useState(false), id = useId();
-  const hits = useMemo(() => open ? searchMaterials(value) : [], [open, value]);
+  const q = value.trim().toLowerCase();
+  const yours = useMemo(() => open ? mine.filter((m) => !q || m.name.toLowerCase().includes(q)).filter((m) => m.name.toLowerCase() !== q || !refKey).slice(0, q ? 5 : 8) : [], [open, mine, q, refKey]);
+  const library = useMemo(() => open ? searchMaterials(value).filter((m) => !yours.some((y) => y.name.toLowerCase() === m.name.toLowerCase())) : [], [open, value, yours]);
+  const hits = [...yours.map((m) => ({ kind: "mine" as const, m })), ...library.map((m) => ({ kind: "library" as const, m }))];
   return <div className="muse-stories-material-input">
     <input id={id} role="combobox" aria-expanded={hits.length > 0} aria-controls={`${id}-list`} aria-autocomplete="list" maxLength={120} value={value} placeholder="Tiger’s eye, rosemary, a ribbon…"
       onFocus={() => setOpen(true)} onBlur={() => window.setTimeout(() => setOpen(false), 150)} onChange={(e) => { setOpen(true); onChange(e.target.value, material(refKey)?.name === e.target.value ? refKey : undefined); }} />
-    {hits.length > 0 && <ul id={`${id}-list`} role="listbox" className="muse-stories-suggest">{hits.map((m) => <li key={m.key} role="option" aria-selected={m.key === refKey}>
-      <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => { onChange(m.name, m.key, m.category === "stone" ? "stone" : m.category === "botanical" ? "botanical" : m.category === "candle" ? "candle" : m.category === "found" ? "found" : "other"); setOpen(false); }}>
-        <b>{m.name}</b><small>{m.description.split(". ")[0]}.</small></button></li>)}</ul>}
+    {hits.length > 0 && <ul id={`${id}-list`} role="listbox" className="muse-stories-suggest">{hits.map((h, i) => h.kind === "mine"
+      ? <li key={`mine-${h.m.name}`} role="option" aria-selected={false} data-first={i === 0 || undefined}>
+        <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => { onReuse(h.m); setOpen(false); }}>
+          <MaterialArt category={h.m.category} size={26} className="muse-stories-suggest-art" /><span><b>{h.m.name}</b><small>{h.m.meaning ? h.m.meaning.split("\n")[0] : "One of yours"}</small></span><em>Yours</em></button></li>
+      : <li key={h.m.key} role="option" aria-selected={h.m.key === refKey}>
+        <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => { onChange(h.m.name, h.m.key, h.m.category === "stone" ? "stone" : h.m.category === "botanical" ? "botanical" : h.m.category === "candle" ? "candle" : h.m.category === "found" ? "found" : "other"); setOpen(false); }}>
+          <MaterialArt refKey={h.m.key} category={h.m.category} size={26} className="muse-stories-suggest-art" /><span><b>{h.m.name}</b><small>{h.m.description.split(". ")[0]}.</small></span></button></li>)}</ul>}
     {refKey && <small className="muse-stories-matched"><MuseIcon name="check" size={12} /> In the reference library</small>}
   </div>;
 }
@@ -114,7 +126,9 @@ export function FieldInput({ field: f, value, onChange, sources, item }: { field
     case "refs": return <div className="muse-stories-field"><span>{f.label}{opt}</span><RefsInput value={(value as Ref[] | undefined) ?? []} source={sources[f.ref]} label={f.label} onChange={(r) => onChange(r.length ? r : undefined)} /></div>;
     case "planner": return <div className="muse-stories-field"><span>{f.label}{opt}</span><PlannerInput value={value as PlannerRef | undefined} today={sources.today} onChange={(v) => onChange(v)} /></div>;
     case "richtext": return <div className="muse-stories-field"><span className="sr-only">{f.label}</span><RichText value={value} editable label={f.label} max={f.max} onChange={(v) => onChange(v)} /></div>;
-    case "material": return <label htmlFor={id}><span>{f.label}</span><MaterialInput value={str(value)} refKey={typeof item?.refKey === "string" ? item.refKey : undefined} onChange={(name, refKey, category) => onChange(name || undefined, { refKey, ...(category && !item?.category ? { category } : {}) })} /></label>;
+    case "material": return <label htmlFor={id}><span>{f.label}</span><MaterialInput value={str(value)} refKey={typeof item?.refKey === "string" ? item.refKey : undefined} mine={sources.mine}
+      onChange={(name, refKey, category) => onChange(name || undefined, { refKey, ...(category && !item?.category ? { category } : {}) })}
+      onReuse={(m) => onChange(m.name, { refKey: undefined, ...(m.category && !item?.category ? { category: m.category } : {}), ...(m.image && !item?.image ? { image: m.image } : {}), ...(m.meaning && !item?.meaning ? { meaning: m.meaning } : {}) })} /></label>;
   }
 }
 
