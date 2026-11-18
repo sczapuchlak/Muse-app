@@ -108,8 +108,8 @@ try{
  await click('.mj-header-tools .mj-tb-settings');
  await until(()=>!!document.querySelector('#mj-settings'),'settings');
  await click('#mj-settings .muse-segmented button','Memory');
- await setValue('#mj-settings input[aria-label="Add a memory"]','My sister is called Nia');await click('#mj-settings .mj-tag-add button','Add');
- await until(()=>!!document.querySelector('#mj-settings .mj-memory'),'memory listed');
+ await setValue('#mj-settings input[aria-label="Add a memory"]','My sister is called Nia');await click('#mj-settings .mj-mem-add button[type=submit]','Add');
+ await until(()=>!!document.querySelector('#mj-settings .mj-mem'),'memory listed');
  await click('#mj-settings .muse-close-button, #mj-settings button[aria-label^="Close"]').catch(()=>evaluate(()=>document.querySelector('#mj-settings')?.close()));
  const say=async(words,n)=>{await setValue('.mj-ws-page .mj-composer textarea',words);await click('.mj-live-compose button[type=submit]');await until(n=>document.querySelectorAll('.mj-message[data-role=assistant]').length===n&&!document.querySelector('[data-streaming]'),'reply '+n,n,400);return (await text('.mj-message[data-role=assistant] .mj-message-body')).split('\n').pop();};
  check(/Remembered: My sister is called Nia/.test(await say('Thinking about family today.',3)),'a confirmed memory reaches the next reply');
@@ -119,6 +119,10 @@ try{
  check(/Nina/.test(corrected)&&!/Nia\b/.test(corrected),'the corrected memory is what the AI receives');
  must(await a.client.from('journal_memories').delete().eq('id',mem.id).select('id'));
  check(!/Remembered/.test(await say('And one more thing.',5)),'a deleted memory is gone from AI context');
+ // Pinned memories come first inside the same budget (the mock lists what it was given, in order).
+ must(await admin.from('journal_memories').insert([{user_id:a.id,body:'Pinned fact about tea',status:'confirmed',source:'user',pinned:true,updated_at:'2020-01-01T00:00:00Z'},{user_id:a.id,body:'Newer unpinned fact',status:'confirmed',source:'user',pinned:false,updated_at:new Date().toISOString()}]).select('id'));
+  check(/Remembered: Pinned fact about tea \/ Newer unpinned fact/.test(await say('A quick note.',6)),'a pinned memory comes first, without sending more than fits');
+ must(await admin.from('journal_memories').delete().eq('user_id',a.id).in('body',['Pinned fact about tea','Newer unpinned fact']).select('id'));
  // ---- Photos with a message: sent with that message only; earlier ones are named, not resent; attach again on request ----
  const png=join(directory,'photo.png');writeFileSync(png,Buffer.from((await send('Page.captureScreenshot',{format:'png',clip:{x:0,y:0,width:240,height:160,scale:1}})).data,'base64'));
  const attach=async()=>{const doc=await send('DOM.getDocument',{depth:-1});const {nodeId}=await send('DOM.querySelector',{nodeId:doc.root.nodeId,selector:'.mj-composer-dock input[type=file]'});await send('DOM.setFileInputFiles',{nodeId,files:[png]});};
@@ -127,16 +131,16 @@ try{
  check(true,'a photo shows as a preview before sending, with a remove button');
  const said=async(n)=>{await until(n=>document.querySelectorAll('.mj-message[data-role=assistant]').length===n&&!document.querySelector('[data-streaming]'),'reply '+n,n,400).catch(async e=>{console.log('DBG',await text('.mj-error'),await count('journal_message_images',a.id),await count('journal_messages',a.id),JSON.stringify(must(await admin.from('journal_ai_usage').select('*').eq('user_id',a.id).order('created_at',{ascending:false}).limit(2))));throw e;});return (await text('.mj-message[data-role=assistant] .mj-message-body')).split('\n').pop();};
  await click('.mj-live-compose button[type=submit]');
- check(/I can see 1 photo/.test(await said(6)),'the companion sees the photo sent with that message');
+ check(/I can see 1 photo/.test(await said(7)),'the companion sees the photo sent with that message');
  check(await count('journal_message_images',a.id)===1&&await has('.mj-message[data-role=user] .mj-photos'),'the photo is saved with the message and shown in the conversation');
  await setValue('.mj-ws-page .mj-composer textarea','And one more thought about it.');await click('.mj-live-compose button[type=submit]');
- const next=await said(7);
+ const next=await said(8);
  check(!/I can see/.test(next)&&/Earlier photos aren't visible/.test(next),'the next message does not resend the photo; the AI is told it can no longer see it');
  await click('.mj-photos .mj-photo');await until(()=>!!document.querySelector('.mj-lightbox'),'lightbox');await click('.mj-lightbox button','Ask about this again');
  await until(()=>document.querySelectorAll('.mj-attach-strip li').length===1,'reattached');
  await setValue('.mj-ws-page .mj-composer textarea','Look again?');await click('.mj-live-compose button[type=submit]');
- check(/I can see 1 photo/.test(await said(8))&&await count('journal_message_images',a.id)===2,'Ask about this again sends that photo with the new message');
- check(await count('journal_ai_usage',a.id,{kind:'reply',status:'ok'})===7,'photo replies are counted in the AI budget like any reply');
+ check(/I can see 1 photo/.test(await said(9))&&await count('journal_message_images',a.id)===2,'Ask about this again sends that photo with the new message');
+ check(await count('journal_ai_usage',a.id,{kind:'reply',status:'ok'})===8,'photo replies are counted in the AI budget like any reply');
 
  // ---- Finish & Save → analysis into real tags ----
  // ---- Bottom actions: once you've written, Finish entry and Go deeper sit side by side, equal width ----
@@ -413,6 +417,41 @@ try{
  for(let i=0;i<30&&must(await admin.from('journal_tags').select('suppressed').eq('id',wist.id).single()).suppressed;i++)await wait(150);
  check(!must(await admin.from('journal_tags').select('suppressed').eq('id',wist.id).single()).suppressed,'and it can be allowed again');
  check(await count('journal_ai_usage',a.id)===usageBeforeTags,'managing tags made no AI request');
+ await evaluate(()=>document.querySelector('#mj-settings')?.dispatchEvent(new Event('cancel')));
+
+ // ---- Memory Studio: pending vs known, edit before approving, dismiss for good, conflicts, pin, remove; no AI ----
+ const memAi=await count('journal_ai_usage',a.id);
+ must(await admin.from('journal_memories').insert([
+  {user_id:a.id,body:'I started a new role at Linden in January',status:'suggested',source:'ai',source_conversation_id:convId,kind:'fact'},
+  {user_id:a.id,body:'Coffee every morning',status:'suggested',source:'ai',source_conversation_id:convId,kind:'fact'},
+  {user_id:a.id,body:'I live in Lisbon now',status:'confirmed',source:'user',kind:'fact',source_conversation_id:null},
+  {user_id:a.id,body:'I live in Lisbon',status:'suggested',source:'ai',source_conversation_id:convId,kind:'fact'}]).select('id'));
+ await go(`/journal?entry=${convId}`,'!!document.querySelector(".mj-entry")','entry for memory');
+ await click('.mj-tb-settings');await until(()=>!!document.querySelector('#mj-settings'),'settings');
+ await click('#mj-settings .muse-segmented button','Memory');await until(()=>!!document.querySelector('.mj-studio-mem'),'memory studio');
+ check(await has('.mj-studio-mem','What Muse wants to remember')&&await has('.mj-studio-mem','What your companion knows')&&(await evaluate(()=>document.querySelectorAll('.mj-mem[data-status=suggested]').length))===3,'one place shows what Muse wants to remember and what it knows');
+ check(await has('.mj-mem[data-status=suggested] .mj-mem-meta','Suggested from'),'each suggestion links to the entry it came from');
+ const card=(text)=>`[...document.querySelectorAll('#mj-settings .mj-mem')].find(c=>(c.querySelector('.mj-mem-body')?.textContent??c.querySelector('textarea')?.value??'').includes(${JSON.stringify(text)}))`;
+ const press=(text,label)=>evaluate(new Function(`const c=${card(text)};[...c.querySelectorAll('button')].find(b=>b.textContent.trim()===${JSON.stringify(label)}||b.getAttribute('aria-label')===${JSON.stringify(label)}).click();`));
+ await press('Linden','Edit');await until(()=>!!document.querySelector('#mj-settings .mj-mem-edit textarea'),'editing');
+ await setValue('#mj-settings .mj-mem-edit textarea','I started a new role at Birch in January');await press('Birch','Remember');
+ for(let i=0;i<30&&!(await count('journal_memories',a.id,{body:'I started a new role at Birch in January',status:'confirmed'}));i++)await wait(150);
+ check(await count('journal_memories',a.id,{body:'I started a new role at Birch in January',status:'confirmed'})===1,'a suggestion can be corrected before it is approved');
+ await press('Coffee every morning','Dismiss');
+ for(let i=0;i<30&&await count('journal_memories',a.id,{body:'Coffee every morning'});i++)await wait(150);
+ const dismissedList=must(await admin.from('journal_analyses').select('dismissed').eq('conversation_id',convId).single()).dismissed;
+ check(await count('journal_memories',a.id,{body:'Coffee every morning'})===0&&dismissedList.includes('memory:coffee every morning'),'dismissing removes it and stops that entry suggesting the same words again');
+ check(await has('#mj-settings .mj-mem-hint','Close to something Muse already knows'),'a suggestion close to a known memory says so');
+ await evaluate(()=>[...document.querySelectorAll('#mj-settings .mj-mem-hint button')].find(b=>b.textContent.includes('Replace it with this')).click());
+ for(let i=0;i<30&&await count('journal_memories',a.id,{body:'I live in Lisbon',status:'suggested'});i++)await wait(150);
+ check(await count('journal_memories',a.id,{body:'I live in Lisbon',status:'confirmed'})===1&&await count('journal_memories',a.id,{body:'I live in Lisbon now'})===0,'and can replace it instead of making a near-duplicate');
+ await press('Birch','Pin');for(let i=0;i<30&&!must(await admin.from('journal_memories').select('pinned').eq('user_id',a.id).eq('body','I started a new role at Birch in January').single()).pinned;i++)await wait(150);
+ check(must(await admin.from('journal_memories').select('pinned').eq('user_id',a.id).eq('body','I started a new role at Birch in January').single()).pinned,'a known memory can be pinned');
+ await shoot('17-memory-studio');
+ await press('I live in Lisbon','Remove');await press('I live in Lisbon','Forget');
+ for(let i=0;i<30&&await count('journal_memories',a.id,{body:'I live in Lisbon'});i++)await wait(150);
+ check(await count('journal_memories',a.id,{body:'I live in Lisbon'})===0,'removing a memory forgets it (it is no longer used anywhere)');
+ check(await count('journal_ai_usage',a.id)===memAi,'reviewing, correcting, pinning and removing memories made no AI request');
  await evaluate(()=>document.querySelector('#mj-settings')?.dispatchEvent(new Event('cancel')));
 
  // ---- Guided prompts belong to a journal: set them up in the journal's settings; the journal decides; no guide picker ----

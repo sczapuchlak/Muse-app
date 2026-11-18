@@ -5,7 +5,7 @@ import { useDailyData } from "../daily/DailyData";
 import { useMuseToday } from "../useMuseToday";
 import * as P from "@/lib/journal/persistence";
 import { aiAction, aiStatus, type AiStatus } from "@/lib/journal/ai-client";
-import { cleanTagName, findTag, normalizeTag, type Bookmark, type Companion, type Conversation, type EntryLink, type Journal, type Memory, type Mode, type Preferences, type Tag, type TagKind, type Guide, type GuideSnapshot, type GuideState } from "@/lib/journal/model";
+import { cleanTagName, findTag, normalizeTag, type Bookmark, type Companion, type Conversation, type EntryLink, type Journal, type Memory, type Mode, type Preferences, type Tag, type TagKind, type Guide, type GuideSnapshot, type GuideState, normalizeMemory } from "@/lib/journal/model";
 import { companionPreset } from "@/lib/journal/presets";
 
 type Status = { loaded: boolean; error: string; saving: boolean; missing: boolean };
@@ -29,6 +29,11 @@ function useJournalStore() {
   const [status, setStatus] = useState<Status>({ loaded: false, error: "", saving: false, missing: false });
   const [ai, setAi] = useState<AiStatus>(noAi);
   const stateRef = useRef(state); stateRef.current = state;
+  /** Records "don't propose these words again" on the entry an AI memory came from (the existing dismissed list). */
+  const rememberNotToSuggest = useCallback(async (conversationId: string, body: string) => {
+    const a = await P.loadAnalysis(client, userId, conversationId).catch(() => null);
+    if (a) await P.dismissInAnalysis(client, userId, a, `memory:${normalizeMemory(body)}`).catch(() => undefined);
+  }, [client, userId]);
 
   const refresh = useCallback(async () => {
     try {
@@ -136,8 +141,21 @@ function useJournalStore() {
     }),
     untagHighlight: (highlightId: string, tagId: string) => run(async () => { await P.untagHighlight(client, userId, highlightId, tagId); patch((s) => ({ ...s, highlightTags: s.highlightTags.filter((t) => !(t.highlightId === highlightId && t.tagId === tagId)) })); }),
 
-    saveMemory: (m: Memory) => run(async () => { const saved = await P.saveMemory(client, userId, m); patch((s) => ({ ...s, memories: [saved, ...s.memories.filter((x) => x.id !== saved.id)] })); return saved; }),
+    /** Saves a memory. Correcting an AI-suggested memory's words also tells that entry's analysis not to propose the
+     *  old wording again, so a routine re-analysis never quietly undoes your correction. */
+    saveMemory: (m: Memory) => run(async () => {
+      const before = stateRef.current.memories.find((x) => x.id === m.id);
+      const saved = await P.saveMemory(client, userId, m);
+      if (before && before.source === "ai" && before.sourceConversationId && normalizeMemory(before.body) !== normalizeMemory(saved.body)) await rememberNotToSuggest(before.sourceConversationId, before.body);
+      patch((s) => ({ ...s, memories: [saved, ...s.memories.filter((x) => x.id !== saved.id)] })); return saved;
+    }),
     deleteMemory: (id: string) => run(async () => { await P.deleteMemory(client, userId, id); patch((s) => ({ ...s, memories: s.memories.filter((m) => m.id !== id) })); }),
+    /** Dismiss a suggestion: it's removed, and its entry's analysis won't propose the same words again. */
+    dismissMemory: (m: Memory) => run(async () => {
+      await P.deleteMemory(client, userId, m.id);
+      if (m.sourceConversationId) await rememberNotToSuggest(m.sourceConversationId, m.body);
+      patch((s) => ({ ...s, memories: s.memories.filter((x) => x.id !== m.id) }));
+    }),
 
     addLink: (l: EntryLink) => run(async () => { await P.addLink(client, userId, l); patch((s) => ({ ...s, links: [...s.links.filter((x) => !(x.conversationId === l.conversationId && x.kind === l.kind && x.targetId === l.targetId)), l] })); }),
     removeLink: (l: EntryLink) => run(async () => { await P.removeLink(client, userId, l); patch((s) => ({ ...s, links: s.links.filter((x) => !(x.conversationId === l.conversationId && x.kind === l.kind && x.targetId === l.targetId)) })); }),
@@ -148,7 +166,7 @@ function useJournalStore() {
     switchCompanion: (c: Conversation, companion: Companion) => run(async () => { const saved = await P.switchCompanion(client, userId, c, companion); putConversation(saved); return saved; }),
     /** The default companion belongs to a journal (the primary journal's is everyone's default). */
     setDefaultCompanion: (journal: Journal, companionId: string) => run(async () => { const saved = await P.saveJournal(client, userId, { ...journal, defaultCompanionId: companionId }); patch((s) => ({ ...s, journals: s.journals.map((x) => (x.id === saved.id ? saved : x)) })); return saved; }),
-  }), [client, userId, run, patch, putConversation, refresh, refreshAi, today, timeZone, ai.enabled]);
+  }), [client, userId, run, patch, putConversation, refresh, refreshAi, today, timeZone, ai.enabled, rememberNotToSuggest]);
 
   return { client, userId, today, timeZone, state, status, ai, refresh, refreshAi, ...actions };
 }

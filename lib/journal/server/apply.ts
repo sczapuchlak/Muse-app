@@ -7,7 +7,7 @@ import "server-only";
  */
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database, Json } from "@/lib/database.types";
-import { cleanTagName, findTag, normalizeTag, tagFromRow, type AnalysisData, type TagKind } from "../model";
+import { cleanTagName, findTag, normalizeMemory, normalizeTag, tagFromRow, type AnalysisData, type TagKind } from "../model";
 
 type Client = SupabaseClient<Database>;
 type Conv = Database["public"]["Tables"]["journal_conversations"]["Row"];
@@ -51,10 +51,13 @@ export async function applyAnalysis(client: Client, userId: string, conv: Conv, 
   }
 
   if (data.memories.length) {
+    // Never re-propose: words you already have (any status, compared loosely), or words you dismissed or corrected
+    // away for this entry. Suggestions never change a confirmed memory; they only ever wait for your approval.
     const have = await client.from("journal_memories").select("body").eq("user_id", userId).limit(2000);
     if (have.error) throw have.error;
-    const known = new Set(have.data.map((m) => m.body.trim().toLowerCase()));
-    const fresh = data.memories.filter((m) => !known.has(m.trim().toLowerCase()));
+    const prior = await client.from("journal_analyses").select("dismissed").eq("conversation_id", conv.id).eq("user_id", userId).maybeSingle();
+    const known = new Set([...have.data.map((m) => normalizeMemory(m.body)), ...(prior.data?.dismissed ?? []).filter((d) => d.startsWith("memory:")).map((d) => d.slice(7))]);
+    const fresh = [...new Set(data.memories.map((m) => m.trim()).filter(Boolean))].filter((m) => !known.has(normalizeMemory(m)));
     if (fresh.length) {
       const ins = await client.from("journal_memories").insert(fresh.map((body) => ({ user_id: userId, body: body.slice(0, 1000), kind: "fact", status: "suggested", source: "ai", source_conversation_id: conv.id })));
       if (ins.error) throw ins.error;
