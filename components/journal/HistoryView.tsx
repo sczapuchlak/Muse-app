@@ -3,8 +3,9 @@ import { useEffect, useMemo, useState } from "react";
 import { MuseSearch } from "../design/MuseSearch";
 import { MuseSegmented } from "../design/MuseSegmented";
 import { MuseChoiceMenu } from "../MuseChoiceMenu";
-import { MuseModal } from "../MuseModal";
 import { EntryRow } from "./EntryCard";
+import { HighlightCard, HighlightEditor } from "./Highlights";
+import { TagDialog } from "./TagManager";
 import Link from "next/link";
 import { PaginationControls } from "../collections/PaginationControls";
 import { usePagination } from "../collections/usePagination";
@@ -15,10 +16,10 @@ import { MUSE_STAR_PATH } from "../MuseStar";
 import { useJournal } from "./useJournal";
 import { dayNumber, formatMonth, formatShort, weekdayShort } from "./format";
 import * as P from "@/lib/journal/persistence";
-import { isListed, tagKindLabel, tagKindSingular, tagKinds, tagLabel, type Conversation, type Report, type Tag, type TagKind } from "@/lib/journal/model";
+import { isListed, tagKindLabel, tagKinds, tagLabel, type Bookmark, type Conversation, type Report, type Tag, type TagKind } from "@/lib/journal/model";
 import { addDays, weekDays, weekStart } from "@/lib/journal/stats";
 
-type Show = "entries" | "week" | "bookmarks";
+type Show = "entries" | "week" | "highlights";
 
 /**
  * History (Journal V1 §13–16): a searchable, filterable archive. Search is full-text over titles, summaries and every
@@ -84,10 +85,10 @@ export function HistoryView({ open, initialTag, initialJournal, onThisDay }: { o
   return <section className="muse-journal-archive mj-history-view mj-reveal" aria-labelledby="mj-history-title">
     <div className="mj-shelf-head"><div><h2 id="mj-history-title" className="type-display mj-view-title">History</h2><p className="mj-note">Everything you’ve written, by day, person and theme.</p></div>
       <div className="mj-history-controls">
-        <MuseSegmented label="Show" value={show} onChange={setShow} options={[{ id: "week", label: "Week" }, { id: "entries", label: "All" }, { id: "bookmarks", label: "Bookmarks" }]} />
+        <MuseSegmented label="Show" value={show} onChange={setShow} options={[{ id: "week", label: "Week" }, { id: "entries", label: "All" }, { id: "highlights", label: "Highlights" }]} />
         <MuseDatePicker label="Jump to a date" triggerText="Jump to a date" date={focus} today={j.today} marked={written} onChange={(d) => { if (!d) return; setFocus(d > j.today ? j.today : d); setShow("week"); }} />
       </div></div>
-    {show !== "bookmarks" && <div className="mj-finder" data-open={filtersOpen || undefined}>
+    {show !== "highlights" && <div className="mj-finder" data-open={filtersOpen || undefined}>
       <div className="mj-finder-top">
         <MuseSearch label="Search your whole journal" value={query} onChange={setQuery} placeholder="Search names, #tags, words…" count={searching ? list.length : undefined} noun={["entry", "entries"]} />
         <button type="button" className="muse-button mj-filters-toggle" aria-expanded={filtersOpen} aria-controls="mj-filter-panel" onClick={() => setFiltersOpen(!filtersOpen)}><MuseIcon name="filter" size={15} />Filters{activeCount ? <b className="mj-filter-count type-numeric">{activeCount}</b> : null}</button>
@@ -113,7 +114,7 @@ export function HistoryView({ open, initialTag, initialJournal, onThisDay }: { o
       </ul>}
     </div>}
 
-    {show !== "bookmarks" && searching && (list.length ? <div className="mj-stagger mj-all mj-results">
+    {show !== "highlights" && searching && (list.length ? <div className="mj-stagger mj-all mj-results">
       <p className="mj-results-line type-meta" role="status">{list.length} {list.length === 1 ? "entry" : "entries"} across your whole journal{tagIds.length > 1 ? " · with all selected tags" : ""}</p>
       {months.map(([m, items]) => <section key={m} className="mj-month" aria-label={formatMonth(`${m}-01`)}>
         <h3 className="mj-month-title type-editorial">{formatMonth(`${m}-01`)}<span className="type-meta">{items.length} {items.length === 1 ? "entry" : "entries"}</span></h3>
@@ -131,8 +132,8 @@ export function HistoryView({ open, initialTag, initialJournal, onThisDay }: { o
     </div> : <QuietEmpty title="Your archive begins with one entry" line="Conversations gather here, findable by day, person, place and theme."><a className="muse-button" href="/journal">Write today</a></QuietEmpty>)}
 
     {show === "week" && !searching && <Week focus={focus} setFocus={setFocus} today={j.today} list={list} snippets={hits} open={open} />}
-    {show === "bookmarks" && <Bookmarks open={open} />}
-    {managing && <ManageTag tag={managing} onClose={() => setManaging(null)} onMerged={(into) => { setTagIds((ids) => ids.map((x) => (x === managing.id ? into : x))); setManaging(null); }} />}
+    {show === "highlights" && <HighlightsView />}
+    {managing && <TagDialog tag={managing} onClose={() => setManaging(null)} onMerged={(into) => { setTagIds((ids) => ids.map((x) => (x === managing.id ? into : x))); setManaging(null); }} />}
   </section>;
 }
 
@@ -169,23 +170,6 @@ function groupByMonth<T extends { localDate: string }>(list: T[]): [string, T[]]
   return [...out.entries()];
 }
 
-function ManageTag({ tag, onClose, onMerged }: { tag: Tag; onClose: () => void; onMerged: (into: string) => void }) {
-  const j = useJournal();
-  const [name, setName] = useState(tag.name), [aliases, setAliases] = useState(tag.aliases.join(", ")), [into, setInto] = useState<string | null>(null);
-  const same = j.state.tags.filter((t) => t.kind === tag.kind && t.id !== tag.id);
-  return <MuseModal id="mj-tag" label="Tag" title={`${tagKindSingular[tag.kind]}: ${tag.name}`} returnFocus={null} onClose={onClose}>
-    <form className="mj-form" onSubmit={async (e) => { e.preventDefault(); if (await j.saveTag({ ...tag, name, aliases: aliases.split(",").map((a) => a.trim()).filter(Boolean) })) onClose(); }}>
-      <label className="editor-label">Name<input type="text" value={name} maxLength={80} onChange={(e) => setName(e.target.value)} /></label>
-      {tag.kind === "person" || tag.kind === "place" ? <label className="editor-label">Also known as (comma-separated)<input type="text" value={aliases} onChange={(e) => setAliases(e.target.value)} placeholder="Al, Alexandra" /></label> : null}
-      <p className="mj-note">Muse never assumes two similar names are the same {tagKindSingular[tag.kind].toLowerCase()}. Add a nickname here, or merge two tags yourself.</p>
-      {j.status.error && <p className="mj-error" role="alert">{j.status.error}</p>}
-      <div className="mj-form-actions"><button type="button" className="muse-button button-ghost" onClick={async () => { if (window.confirm(`Delete “${tag.name}”? Entries stay; only the tag goes.`) && await j.deleteTag(tag.id)) onClose(); }}>Delete tag</button><button type="submit" className="muse-button button-primary">Save</button></div>
-      {same.length > 0 && <div className="mj-finish" role="group" aria-label="Merge"><p>Merge “{tag.name}” into another {tagKindSingular[tag.kind].toLowerCase()}: its entries move there and “{tag.name}” becomes an alias.</p>
-        <MuseChoiceMenu label="Merge into" searchable valueLabel={same.find((t) => t.id === into)?.name ?? "Choose…"} selectedIds={into ? [into] : []} options={same.map((t) => ({ id: t.id, label: t.name }))} onSelect={setInto} />
-        <div><button type="button" className="muse-button button-primary" disabled={!into} onClick={async () => { if (into && await j.mergeTags(tag.id, into)) onMerged(into); }}>Merge</button></div></div>}
-    </form>
-  </MuseModal>;
-}
 
 /**
  * One week at a time. A slim strip of the seven days (a lit star where you wrote) sits over that week's entries as
@@ -222,14 +206,23 @@ function Week({ focus, setFocus, today, list, snippets, open }: { focus: string;
   </div>;
 }
 
-function Bookmarks({ open }: { open: (id: string) => void }) {
+/**
+ * Highlights across every entry: search the saved words and notes, narrow by My tags, and open any one at its
+ * passage. Plain filtering on the device; no AI.
+ */
+function HighlightsView() {
   const j = useJournal();
-  const [editing, setEditing] = useState<string | null>(null), [note, setNote] = useState("");
-  if (!j.state.bookmarks.length) return <QuietEmpty title="No passages kept yet" line="In any entry, choose “Bookmark this” on a message to keep a passage, with a note on why it matters." />;
-  return <ul className="mj-bookmarks">{j.state.bookmarks.map((b) => { const c = j.state.conversations.find((x) => x.id === b.conversationId); return <li key={b.id} className="mj-mark">
-    <blockquote className="type-quote">{b.excerpt}</blockquote>
-    {editing === b.id ? <form className="mj-tag-add" onSubmit={(e) => { e.preventDefault(); void j.saveBookmarkNote(b.id, note).then(() => setEditing(null)); }}><input type="text" aria-label="Note" value={note} onChange={(e) => setNote(e.target.value)} autoFocus /><button type="submit" className="muse-button">Save</button></form>
-      : <p className="mj-note">{b.note || "No note."} <button type="button" className="mj-link" onClick={() => { setEditing(b.id); setNote(b.note); }}>Edit note</button></p>}
-    {c && <button type="button" className="mj-link" onClick={() => open(c.id)}>{c.title || "Untitled"} · {formatShort(c.localDate)} →</button>}
-  </li>; })}</ul>;
+  const [find, setFind] = useState(""), [tagIds, setTagIds] = useState<string[]>([]), [editing, setEditing] = useState<Bookmark | null>(null);
+  const used = useMemo(() => { const ids = new Set(j.state.highlightTags.map((t) => t.tagId)); return j.state.tags.filter((t) => ids.has(t.id)); }, [j.state.highlightTags, j.state.tags]);
+  const needle = find.trim().toLowerCase();
+  const list = j.state.bookmarks.filter((b) => (!needle || b.excerpt.toLowerCase().includes(needle) || b.note.toLowerCase().includes(needle))
+    && tagIds.every((id) => j.state.highlightTags.some((t) => t.highlightId === b.id && t.tagId === id)));
+  if (!j.state.bookmarks.length) return <QuietEmpty title="No highlights yet" line="Select any words in a saved conversation and choose Save highlight, or use Highlight… in a message’s menu." />;
+  return <div className="mj-highlights">
+    <div className="mj-finder-top"><MuseSearch label="Search your highlights" value={find} onChange={setFind} placeholder="Search highlighted words and notes…" count={list.length} noun={["highlight", "highlights"]} /></div>
+    {used.length > 0 && <ul className="mj-chip-list" aria-label="Filter by My tags">{used.map((t) => <li key={t.id}><button type="button" className="mj-filter-chip" data-kind={t.kind} aria-pressed={tagIds.includes(t.id)} onClick={() => setTagIds(tagIds.includes(t.id) ? tagIds.filter((x) => x !== t.id) : [...tagIds, t.id])}>{tagLabel(t)}</button></li>)}</ul>}
+    {list.length ? <ul className="mj-hl-list">{list.map((b) => <HighlightCard key={b.id} h={b} showSource onEdit={() => setEditing(b)} />)}</ul>
+      : <QuietEmpty title="No highlight matches" line="Try other words or fewer tags." />}
+    {editing && <HighlightEditor h={editing} onClose={() => setEditing(null)} />}
+  </div>;
 }

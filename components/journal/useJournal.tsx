@@ -9,7 +9,7 @@ import { cleanTagName, findTag, normalizeTag, type Bookmark, type Companion, typ
 import { companionPreset } from "@/lib/journal/presets";
 
 type Status = { loaded: boolean; error: string; saving: boolean; missing: boolean };
-const empty: P.JournalState = { prefs: { globalInstructions: "", memoryEnabled: true, analysisAuto: true, onThisDay: true, showOnDaily: false, greetOnNew: true, defaultJournalId: null, revision: 0 }, journals: [], companions: [], conversations: [], tags: [], entryTags: [], bookmarks: [], memories: [], links: [] };
+const empty: P.JournalState = { prefs: { globalInstructions: "", memoryEnabled: true, analysisAuto: true, onThisDay: true, showOnDaily: false, greetOnNew: true, defaultJournalId: null, revision: 0 }, journals: [], companions: [], conversations: [], tags: [], entryTags: [], bookmarks: [], memories: [], links: [], highlightTags: [], corrections: [] };
 const missingTable = (e: unknown) => ["PGRST205", "42P01"].includes((e as { code?: string })?.code ?? "");
 const message = (e: unknown) => (e instanceof Error ? e.message : "Something went wrong. Please try again.");
 export const newId = () => crypto.randomUUID();
@@ -68,7 +68,7 @@ function useJournalStore() {
     putConversation,
     refreshConversation: async (id: string) => { const c = await P.refreshConversation(client, userId, id); if (c) putConversation(c); return c; },
     updateMeta: (c: Conversation) => run(async () => { const saved = await P.updateMeta(client, userId, c); putConversation(saved); return saved; }),
-    deleteConversation: (id: string) => run(async () => { await P.deleteConversation(client, userId, id); patch((s) => ({ ...s, conversations: s.conversations.filter((c) => c.id !== id), entryTags: s.entryTags.filter((t) => t.conversationId !== id), bookmarks: s.bookmarks.filter((b) => b.conversationId !== id) })); return true; }),
+    deleteConversation: (id: string) => run(async () => { await P.deleteConversation(client, userId, id); patch((s) => ({ ...s, conversations: s.conversations.filter((c) => c.id !== id), entryTags: s.entryTags.filter((t) => t.conversationId !== id), bookmarks: s.bookmarks.filter((b) => b.conversationId !== id), highlightTags: s.highlightTags.filter((t) => s.bookmarks.some((b) => b.id === t.highlightId && b.conversationId !== id)) })); return true; }),
     /** Finish & Save: the entry closes; the analysis (if AI and allowed) runs after and may fail without losing anything. */
     finish: (c: Conversation) => run(async () => {
       const analyse = ai.enabled && stateRef.current.prefs.analysisAuto && !c.memoryOff;
@@ -82,6 +82,7 @@ function useJournalStore() {
       const clean = cleanTagName(kind === "custom" ? name.replace(/^#+/, "") : name); if (!clean) return;
       let tag = findTag(stateRef.current.tags, kind, clean);
       if (!tag) { tag = await P.createTag(client, userId, kind, clean); const made = tag; patch((s) => ({ ...s, tags: [...s.tags.filter((t) => t.id !== made.id), made].sort((a, b) => a.name.localeCompare(b.name)) })); }
+      if (tag.suppressed) { tag = await P.restoreTag(client, userId, tag.id); const back = tag; patch((s) => ({ ...s, tags: s.tags.map((x) => (x.id === back.id ? back : x)) })); }
       await P.tagEntry(client, userId, conversationId, tag.id); const id = tag.id;
       patch((s) => ({ ...s, entryTags: [...s.entryTags.filter((t) => !(t.conversationId === conversationId && t.tagId === id)), { conversationId, tagId: id, source: "user" }] }));
     }),
@@ -92,13 +93,39 @@ function useJournalStore() {
       const a = await P.loadAnalysis(client, userId, conversationId); if (a) await P.dismissInAnalysis(client, userId, a, `tag:${tag.kind}:${normalizeTag(tag.name)}`);
       patch((s) => ({ ...s, entryTags: s.entryTags.filter((t) => !(t.conversationId === conversationId && t.tagId === tag.id)) }));
     }),
+    setTagKind: (t: Tag, kind: TagKind) => run(async () => { const saved = await P.setTagKind(client, userId, t, kind); patch((s) => ({ ...s, tags: s.tags.map((x) => (x.id === saved.id ? saved : x)) })); return saved; }),
+    suppressTag: (id: string) => run(async () => { const saved = await P.suppressTag(client, userId, id); patch((s) => ({ ...s, tags: s.tags.map((x) => (x.id === id ? saved : x)), entryTags: s.entryTags.filter((t) => t.tagId !== id), highlightTags: s.highlightTags.filter((t) => t.tagId !== id) })); return true; }),
+    restoreTag: (id: string) => run(async () => { const saved = await P.restoreTag(client, userId, id); patch((s) => ({ ...s, tags: s.tags.map((x) => (x.id === id ? saved : x)) })); return true; }),
+    /** One entry only: swap a wrong tag for the right one (Maya → Nia here), without touching the tag anywhere else.
+     *  The wrong one is remembered as rejected for this entry, and the correction as guidance for future analysis. */
+    replaceEntryTag: (conversationId: string, wrong: Tag, rightName: string) => run(async () => {
+      const clean = cleanTagName(rightName.replace(/^#+/, "")); if (!clean || normalizeTag(clean) === wrong.normalized) return;
+      await P.untagEntry(client, userId, conversationId, wrong.id);
+      const a = await P.loadAnalysis(client, userId, conversationId); if (a) await P.dismissInAnalysis(client, userId, a, `tag:${wrong.kind}:${normalizeTag(wrong.name)}`);
+      let right = findTag(stateRef.current.tags, wrong.kind, clean);
+      if (!right) { right = await P.createTag(client, userId, wrong.kind, clean); const made = right; patch((s) => ({ ...s, tags: [...s.tags.filter((t) => t.id !== made.id), made].sort((x, y) => x.name.localeCompare(y.name)) })); }
+      if (right.suppressed) { right = await P.restoreTag(client, userId, right.id); }
+      await P.tagEntry(client, userId, conversationId, right.id); const rid = right.id;
+      const fix = await P.recordCorrection(client, userId, wrong.kind, wrong.name, rid);
+      patch((s) => ({ ...s, entryTags: [...s.entryTags.filter((t) => !(t.conversationId === conversationId && (t.tagId === wrong.id || t.tagId === rid))), { conversationId, tagId: rid, source: "user" }], corrections: [fix, ...s.corrections.filter((c) => c.id !== fix.id)] }));
+    }),
+    deleteCorrection: (id: string) => run(async () => { await P.deleteCorrection(client, userId, id); patch((s) => ({ ...s, corrections: s.corrections.filter((c) => c.id !== id) })); }),
     saveTag: (t: Tag) => run(async () => { const saved = await P.saveTag(client, userId, t); patch((s) => ({ ...s, tags: s.tags.map((x) => (x.id === saved.id ? saved : x)) })); return saved; }),
     mergeTags: (from: string, into: string) => run(async () => { await P.mergeTags(client, from, into); await refresh(); return true; }),
-    deleteTag: (id: string) => run(async () => { await P.deleteTag(client, userId, id); patch((s) => ({ ...s, tags: s.tags.filter((t) => t.id !== id), entryTags: s.entryTags.filter((t) => t.tagId !== id) })); return true; }),
+    deleteTag: (id: string) => run(async () => { await P.deleteTag(client, userId, id); patch((s) => ({ ...s, tags: s.tags.filter((t) => t.id !== id), entryTags: s.entryTags.filter((t) => t.tagId !== id), highlightTags: s.highlightTags.filter((t) => t.tagId !== id), corrections: s.corrections.filter((c) => c.toTagId !== id) })); return true; }),
 
-    addBookmark: (b: Omit<Bookmark, "id" | "createdAt">) => run(async () => { const saved = await P.addBookmark(client, userId, b); patch((s) => ({ ...s, bookmarks: [saved, ...s.bookmarks] })); return saved; }),
+    addBookmark: (b: Omit<Bookmark, "id" | "createdAt" | "updatedAt" | "start" | "end"> & { start?: number | null; end?: number | null }) => run(async () => { const saved = await P.addBookmark(client, userId, b); patch((s) => ({ ...s, bookmarks: [saved, ...s.bookmarks] })); return saved; }),
     saveBookmarkNote: (id: string, note: string) => run(async () => { await P.saveBookmarkNote(client, userId, id, note); patch((s) => ({ ...s, bookmarks: s.bookmarks.map((b) => (b.id === id ? { ...b, note } : b)) })); }),
-    deleteBookmark: (id: string) => run(async () => { await P.deleteBookmark(client, userId, id); patch((s) => ({ ...s, bookmarks: s.bookmarks.filter((b) => b.id !== id) })); }),
+    deleteBookmark: (id: string) => run(async () => { await P.deleteBookmark(client, userId, id); patch((s) => ({ ...s, bookmarks: s.bookmarks.filter((b) => b.id !== id), highlightTags: s.highlightTags.filter((t) => t.highlightId !== id) })); }),
+    /** My tags on a highlight: an existing one by id, or a new one by name (deduplicated like any tag). No AI. */
+    tagHighlight: (highlightId: string, tag: { id?: string; name?: string }) => run(async () => {
+      let id = tag.id;
+      if (!id && tag.name) { const clean = cleanTagName(tag.name.replace(/^#+/, "")); if (!clean) return; const made = findTag(stateRef.current.tags, "custom", clean) ?? await P.createTag(client, userId, "custom", clean); id = made.id; patch((s) => ({ ...s, tags: s.tags.some((t) => t.id === made.id) ? s.tags : [...s.tags, made].sort((a, b) => a.name.localeCompare(b.name)) })); }
+      if (!id || stateRef.current.highlightTags.some((t) => t.highlightId === highlightId && t.tagId === id)) return;
+      await P.tagHighlight(client, userId, highlightId, id); const tid = id;
+      patch((s) => ({ ...s, highlightTags: [...s.highlightTags, { highlightId, tagId: tid }] }));
+    }),
+    untagHighlight: (highlightId: string, tagId: string) => run(async () => { await P.untagHighlight(client, userId, highlightId, tagId); patch((s) => ({ ...s, highlightTags: s.highlightTags.filter((t) => !(t.highlightId === highlightId && t.tagId === tagId)) })); }),
 
     saveMemory: (m: Memory) => run(async () => { const saved = await P.saveMemory(client, userId, m); patch((s) => ({ ...s, memories: [saved, ...s.memories.filter((x) => x.id !== saved.id)] })); return saved; }),
     deleteMemory: (id: string) => run(async () => { await P.deleteMemory(client, userId, id); patch((s) => ({ ...s, memories: s.memories.filter((m) => m.id !== id) })); }),

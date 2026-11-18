@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { MuseOverflowMenu } from "../MuseOverflowMenu";
 import { MuseSegmented } from "../design/MuseSegmented";
 import { MuseMark, type MuseMarkIcon } from "../design/MuseHeading";
@@ -12,13 +12,14 @@ import { Thread, Prose, type ThreadMessage } from "./Thread";
 import { EntryImages } from "./EntryImages";
 import { TagEditor } from "./TagEditor";
 import { MUSE_STAR_PATH } from "../MuseStar";
+import { HighlightCard, HighlightEditor, SelectionHighlighter, jumpToHighlight } from "./Highlights";
 import { EntryLinks } from "./EntryLinks";
 import { StarRule } from "./JournalArt";
 import { tagsFor, useJournal } from "./useJournal";
 import { formatDay, formatShort } from "./format";
 import * as P from "@/lib/journal/persistence";
 import { AiError } from "@/lib/journal/ai-client";
-import { entryTitle, tagKinds, type Analysis, type Conversation, type Correction, type Message } from "@/lib/journal/model";
+import { anchorHighlight, entryTitle, mergeRanges, tagKinds, type Analysis, type Bookmark, type Conversation, type Correction, type Message } from "@/lib/journal/model";
 import { saveDiscovery } from "@/lib/inner-compass/persistence";
 import { blankDiscovery } from "@/lib/inner-compass/model";
 import { categories, categoryInfo, type Category } from "@/lib/inner-compass/categories";
@@ -31,13 +32,13 @@ type Tab = "conversation" | "analysis";
  * overview, My tags, people, topics and moods as compact rows, tentative AI notes set apart, passages you
  * kept, memories to confirm and connections. Editing anything in Analysis never touches the dialogue.
  */
-export function EntryView({ conversation: c, onClose }: { conversation: Conversation; onClose: () => void }) {
+export function EntryView({ conversation: c, onClose, focusHighlight = null }: { conversation: Conversation; onClose: () => void; focusHighlight?: string | null }) {
   const j = useJournal();
   const { client, userId, state, ai, timeZone } = j;
   const journal = state.journals.find((x) => x.id === c.journalId);
   const companion = state.companions.find((x) => x.id === c.companionId) ?? null;
   const who = companion ? { name: companion.name, icon: companion.icon, tone: companion.tone } : { name: c.companionName || "Companion", icon: "sparkle", tone: 5 as const };
-  const [tab, setTab] = useState<Tab>("conversation");
+  const [tab, setTab] = useState<Tab>("conversation"); // a highlight link always lands on the conversation
   const [messages, setMessages] = useState<Message[]>([]);
   const [corrections, setCorrections] = useState<Correction[]>([]);
   const [analysis, setAnalysis] = useState<Analysis | null>(null);
@@ -47,6 +48,8 @@ export function EntryView({ conversation: c, onClose }: { conversation: Conversa
   const [title, setTitle] = useState(c.title);
   const [correcting, setCorrecting] = useState<Message | null>(null);
   const [marking, setMarking] = useState<{ message: Message; excerpt: string } | null>(null);
+  const [editingHl, setEditingHl] = useState<Bookmark | null>(null), [showHl, setShowHl] = useState(false);
+  const [threadEl, setThreadEl] = useState<HTMLElement | null>(null);
   const [discovering, setDiscovering] = useState<Message | null>(null);
   const [analysing, setAnalysing] = useState(false);
   const { trigger: sparkle, spark } = useMuseSpark();
@@ -84,13 +87,31 @@ export function EntryView({ conversation: c, onClose }: { conversation: Conversa
   const actions = (m: ThreadMessage) => {
     const msg = messages.find((x) => x.id === m.id); if (!msg) return null;
     const list = [
-      { id: "mark", label: "Bookmark this", onSelect: () => setMarking({ message: msg, excerpt: (window.getSelection()?.toString().trim() || msg.body).slice(0, 4000) }) },
+      { id: "mark", label: "Highlight…", onSelect: () => setMarking({ message: msg, excerpt: (window.getSelection()?.toString().trim() || msg.body).slice(0, 4000) }) },
       ...(msg.role === "user" ? [{ id: "fix", label: "Correct a dictation slip", onSelect: () => setCorrecting(msg) }, { id: "discover", label: "Save as an Inner World discovery", onSelect: () => setDiscovering(msg) }] : []),
     ];
-    return <>{m.marked && <span className="mj-flag" title="Bookmarked"><MuseIcon name="bookmark" size={13} /><span className="sr-only">Bookmarked</span></span>}<MuseOverflowMenu label="Message options" actions={list} /></>;
+    return <>{m.marked && <span className="mj-flag" title="Has highlights"><MuseIcon name="bookmark" size={13} /><span className="sr-only">Has highlights</span></span>}<MuseOverflowMenu label="Message options" actions={list} /></>;
   };
   const marked = new Set(bookmarks.map((b) => b.messageId));
   const thread: ThreadMessage[] = messages.map((m) => ({ ...m, marked: marked.has(m.id) }));
+  // Saved highlights placed on the current text of their messages (never guessed after a correction).
+  const placement = useMemo(() => {
+    const byMsg = new Map<string, { start: number; end: number; id: string }[]>(), placed = new Set<string>();
+    for (const b of bookmarks) { const m = messages.find((x) => x.id === b.messageId); const at = m ? anchorHighlight(m.body, b) : null; if (m && at) { placed.add(b.id); byMsg.set(m.id, [...(byMsg.get(m.id) ?? []), { ...at, id: b.id }]); } }
+    return { marks: new Map([...byMsg].map(([k, v]) => [k, mergeRanges(v)])), placed };
+  }, [bookmarks, messages]);
+  async function saveSelection(p: { messageId: string; start: number; end: number; text: string }) {
+    const saved = await j.addBookmark({ conversationId: c.id, messageId: p.messageId, excerpt: p.text, note: "", start: p.start, end: p.end });
+    if (saved) { sparkle(); setShowHl(true); }
+  }
+  // Arriving from History at one highlight: show the conversation and go straight to it.
+  const [jumped, setJumped] = useState<string | null>(null);
+  useEffect(() => {
+    if (!focusHighlight || !loaded || jumped === focusHighlight) return;
+    const h = bookmarks.find((b) => b.id === focusHighlight); if (!h) return;
+    const t = window.setTimeout(() => { if (jumpToHighlight(h)) setJumped(focusHighlight); }, 250);
+    return () => window.clearTimeout(t);
+  }, [focusHighlight, loaded, bookmarks, jumped]);
 
   const continuedIn = state.conversations.filter((x) => x.continuesId === c.id).sort((a, b) => a.localDate.localeCompare(b.localDate));
   return <article className="mj-entry mj-reveal" aria-labelledby="mj-entry-title" style={{ "--journal-a": `var(--chart-${journal?.tone ?? 5})`, "--journal-b": `var(--chart-${((journal?.tone ?? 5) % 8) + 1})` } as React.CSSProperties}>
@@ -127,17 +148,21 @@ export function EntryView({ conversation: c, onClose }: { conversation: Conversa
     {error && <p className="mj-error" role="alert">{error}</p>}
 
     {tab === "conversation" ? <section className="mj-entry-body muse-journal-archive" aria-label="Conversation">
-      {!loaded ? <p className="small-label" role="status">Opening…</p> : <Thread messages={thread} companion={who} companionFor={whoFor} timeZone={timeZone} actions={actions} />}
+      {bookmarks.length > 0 && <div className="mj-hl-bar"><button type="button" className="mj-hl-toggle" aria-expanded={showHl} onClick={() => setShowHl(!showHl)}><MuseIcon name="bookmark" size={14} />{bookmarks.length} {bookmarks.length === 1 ? "highlight" : "highlights"}<MuseIcon name="chevron" size={13} /></button></div>}
+      {showHl && bookmarks.length > 0 && <ul className="mj-hl-list" aria-label="Highlights in this entry">{bookmarks.map((b) => <HighlightCard key={b.id} h={b} placed={!loaded || placement.placed.has(b.id) || !(() => { const m = messages.find((x) => x.id === b.messageId); return m?.correctedAt && m.correctedAt > b.createdAt; })()} onJump={() => jumpToHighlight(b)} onEdit={() => setEditingHl(b)} />)}</ul>}
+      <div ref={setThreadEl} className="mj-hl-root">{!loaded ? <p className="small-label" role="status">Opening…</p> : <Thread messages={thread} companion={who} companionFor={whoFor} timeZone={timeZone} actions={actions} highlights={placement.marks} />}</div>
+      {loaded && <SelectionHighlighter root={threadEl} messages={messages} onSave={(p) => void saveSelection(p)} />}
       {corrections.length > 0 && <details className="mj-history"><summary>Original wording of {corrections.length} corrected {corrections.length === 1 ? "message" : "messages"}</summary>
         {corrections.map((x) => <blockquote key={x.id}><small>Before {new Date(x.correctedAt).toLocaleString("en-US", { timeZone })}</small><Prose text={x.previousBody} /></blockquote>)}</details>}
-      {spark && <p className="mj-note mj-kept" role="status">Kept in this entry’s passages {spark}</p>}
+      {spark && <p className="mj-note mj-kept" role="status">Highlight saved {spark}</p>}
       <EntryImages conversation={c} />
     </section> : <AnalysisPanel c={c} analysis={analysis} ai={ai.enabled} analysing={analysing} onRun={runAnalysis} onChanged={load} />}
 
     {correcting && <CorrectDialog message={correcting} onClose={() => setCorrecting(null)} onSaved={(m) => { setMessages((list) => list.map((x) => (x.id === m.id ? m : x))); void load(); void j.refreshConversation(c.id); setCorrecting(null); }} />}
-    {marking && <MuseModal id="mj-mark" label="Bookmark" title="Bookmark this passage" returnFocus={null} onClose={() => setMarking(null)}>
-      <MarkForm excerpt={marking.excerpt} onSave={async (excerpt, note) => { const saved = await j.addBookmark({ conversationId: c.id, messageId: marking.message.id, excerpt, note }); setMarking(null); if (saved) sparkle(); }} onCancel={() => setMarking(null)} />
+    {marking && <MuseModal id="mj-mark" label="Highlight" title="Highlight a passage" returnFocus={null} onClose={() => setMarking(null)}>
+      <MarkForm excerpt={marking.excerpt} onSave={async (excerpt, note) => { const at = anchorHighlight(marking.message.body, { excerpt, start: null, end: null }); const saved = await j.addBookmark({ conversationId: c.id, messageId: marking.message.id, excerpt, note, start: at?.start ?? null, end: at?.end ?? null }); setMarking(null); if (saved) { sparkle(); setShowHl(true); } }} onCancel={() => setMarking(null)} />
     </MuseModal>}
+    {editingHl && <HighlightEditor h={editingHl} onClose={() => setEditingHl(null)} />}
     {discovering && <DiscoveryDialog message={discovering} conversation={c} onClose={() => setDiscovering(null)} />}
   </article>;
 }
@@ -145,9 +170,10 @@ export function EntryView({ conversation: c, onClose }: { conversation: Conversa
 function MarkForm({ excerpt, onSave, onCancel }: { excerpt: string; onSave: (excerpt: string, note: string) => Promise<void>; onCancel: () => void }) {
   const [text, setText] = useState(excerpt), [note, setNote] = useState("");
   return <form className="mj-form" onSubmit={(e) => { e.preventDefault(); void onSave(text.trim(), note.trim()); }}>
+    <p className="mj-note">Trim it to the words you want to keep. On a computer you can also just select text in the conversation.</p>
     <label className="editor-label">The passage<textarea rows={5} value={text} onChange={(e) => setText(e.target.value)} /></label>
     <label className="editor-label">Why it matters (optional)<textarea rows={2} value={note} onChange={(e) => setNote(e.target.value)} placeholder="A note for future you" /></label>
-    <div className="mj-form-actions"><button type="button" className="muse-button" onClick={onCancel}>Cancel</button><button type="submit" className="muse-button button-primary" disabled={!text.trim()}>Bookmark</button></div>
+    <div className="mj-form-actions"><button type="button" className="muse-button" onClick={onCancel}>Cancel</button><button type="submit" className="muse-button button-primary" disabled={!text.trim()}>Save highlight</button></div>
   </form>;
 }
 
@@ -181,6 +207,7 @@ function DiscoveryDialog({ message, conversation, onClose }: { message: Message;
   </MuseModal>;
 }
 
+const HINT_KEY = "muse.journal.hint.dashed";
 function AnalysisPanel({ c, analysis, ai, analysing, onRun, onChanged }: { c: Conversation; analysis: Analysis | null; ai: boolean; analysing: boolean; onRun: (regenerate: boolean) => void; onChanged: () => void }) {
   const j = useJournal();
   const [summary, setSummary] = useState(c.summary), [editing, setEditing] = useState(false);
@@ -191,9 +218,9 @@ function AnalysisPanel({ c, analysis, ai, analysing, onRun, onChanged }: { c: Co
   const pending = c.analysisStatus === "pending" || analysing;
   const suggested = j.state.memories.filter((m) => m.status === "suggested" && m.sourceConversationId === c.id);
   const tags = tagsFor(j.state, c.id);
-  const bookmarks = j.state.bookmarks.filter((b) => b.conversationId === c.id);
   const observations = data ? visible("observation", data.observations) : [], threads = data ? visible("thread", data.threads) : [];
   const anyAi = tags.some((t) => t.source === "ai");
+  const [hintGone, setHintGone] = useState(() => { try { return localStorage.getItem(HINT_KEY) === "1"; } catch { return false; } });
   return <section className="mj-analysis muse-journal-archive mj-stagger" aria-label="Analysis">
     <div className="mj-overview">
       <div className="mj-row-between"><h3 className="mj-section-title">Overview</h3>
@@ -219,16 +246,13 @@ function AnalysisPanel({ c, analysis, ai, analysing, onRun, onChanged }: { c: Co
 
     <div className="mj-tag-rows" role="group" aria-label="In this entry">
       {tagKinds.map((k) => <TagEditor key={k} conversationId={c.id} kind={k} tags={tags.filter((t) => t.kind === k)} />)}
-      {anyAi && <p className="mj-note mj-tag-key"><span className="mj-tag" data-ai>Dashed</span> tags were suggested by AI. Keep one with ✓, or remove it with ×.</p>}
+      {anyAi && !hintGone && <p className="mj-note mj-tag-key"><span className="mj-tag" data-ai>Dashed</span> tags were suggested by AI. Keep one with ✓, or remove it with ×.<button type="button" className="mj-x" aria-label="Got it, hide this hint" title="Got it" onClick={() => { setHintGone(true); try { localStorage.setItem(HINT_KEY, "1"); } catch { /* fine */ } }}>×</button></p>}
     </div>
 
     {(observations.length > 0 || threads.length > 0) && <div className="mj-asides">
       {observations.length > 0 && <Notes title="Reflections" kind="observation" items={observations} onDismiss={dismiss} />}
       {threads.length > 0 && <Notes title="Threads to revisit" kind="thread" items={threads} onDismiss={dismiss} />}
     </div>}
-
-    {bookmarks.length > 0 && <div className="mj-marks"><h3 className="mj-section-title">Passages you kept</h3>
-      {bookmarks.map((b) => <figure key={b.id} className="mj-mark"><blockquote className="type-quote">{b.excerpt}</blockquote>{b.note && <figcaption>{b.note}</figcaption>}<button type="button" className="muse-button button-ghost" onClick={() => void j.deleteBookmark(b.id)}>Remove</button></figure>)}</div>}
 
     {suggested.length > 0 && <div className="mj-remember"><h3 className="mj-section-title">Remember this?</h3>
       <p className="mj-note">Suggested from this conversation. Nothing is remembered until you confirm it, and you can edit the words first.</p>

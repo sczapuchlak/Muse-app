@@ -112,6 +112,38 @@ try{
  const orphan=await P.refreshConversation(a.client,a.id,f1.id);assert.equal(orphan.continuesId,null);assert.equal(orphan.continuesTitle,'The offer','a deleted original leaves the snapshot');
  await P.deleteConversation(a.client,a.id,f1.id);await P.deleteConversation(a.client,a.id,f2.id);
 
+ // Highlights: an exact range in one of my messages in that entry; My tags only; never on someone else's entry.
+ const hl=must(await a.client.from('journal_bookmarks').insert({conversation_id:conv.id,message_id:m1.id,excerpt:'x',start_offset:0,end_offset:1}).select('*').single());
+ assert.ok((await a.client.from('journal_bookmarks').insert({conversation_id:conv.id,message_id:m1.id,excerpt:'x',start_offset:5,end_offset:2})).error,'a highlight range must run forwards');
+ const otherEntry=await P.createConversation(a.client,a.id,{id:crypto.randomUUID(),journalId:everyday.id,companion:null,mode:'open',localDate:today,timeZone:'UTC',status:'active'});
+ assert.ok((await a.client.from('journal_bookmarks').insert({conversation_id:otherEntry.id,message_id:m1.id,excerpt:'x'})).error,'a highlight’s message must be in that entry');
+ assert.ok((await b.client.from('journal_bookmarks').insert({conversation_id:conv.id,message_id:m1.id,excerpt:'x'})).error,'another account cannot highlight my entry');
+ const myTag=await P.createTag(a.client,a.id,'custom','Keepers'),topicTag=await P.createTag(a.client,a.id,'topic','Work');
+ await P.tagHighlight(a.client,a.id,hl.id,myTag.id);
+ await assert.rejects(()=>P.tagHighlight(a.client,a.id,hl.id,topicTag.id),'only My tags go on highlights');
+ assert.ok((await b.client.from('journal_highlight_tags').insert({highlight_id:hl.id,tag_id:myTag.id})).error,'another account cannot tag my highlight');
+ assert.equal((await b.client.from('journal_highlight_tags').select('tag_id')).data.length,0,'highlight tags are private');
+ assert.equal((await P.loadJournal(a.client,a.id)).highlightTags.length,1);
+ await P.deleteConversation(a.client,a.id,otherEntry.id);
+
+ // Manage Tags: never suggest again keeps entries; merge moves highlight tags and corrections; no silent fusing.
+ const son=await P.createTag(a.client,a.id,'person','Son'),sun=await P.createTag(a.client,a.id,'person','Sun');
+ await P.tagEntry(a.client,a.id,conv.id,son.id);
+ const fix=await P.recordCorrection(a.client,a.id,'person','Maya',son.id);assert.equal((await P.recordCorrection(a.client,a.id,'person','maya',son.id)).times,2,'a repeated correction is counted, not duplicated');
+ assert.equal(fix.toTagId,son.id);
+ const merged2=await P.mergeTags(a.client,son.id,sun.id);assert.ok(merged2.aliases.includes('Son'));
+ const st=await P.loadJournal(a.client,a.id);
+ assert.ok(st.entryTags.some(t=>t.tagId===sun.id&&t.conversationId===conv.id),'merging moves the entry to the kept person');
+ assert.ok(st.corrections.some(c=>c.toTagId===sun.id),'and the remembered correction moves with it');
+ const sunTopic=await P.createTag(a.client,a.id,'topic','Sun');
+ await assert.rejects(()=>P.setTagKind(a.client,a.id,sunTopic,'person'),/Merge them instead/,'changing category never fuses two tags silently');
+ const hidden=await P.suppressTag(a.client,a.id,sun.id);
+ assert.equal(hidden.suppressed,true);assert.ok(!(await P.loadJournal(a.client,a.id)).entryTags.some(t=>t.tagId===sun.id),'never suggest again removes it from entries');
+ assert.ok((await P.refreshConversation(a.client,a.id,conv.id)),'and the entry itself stays');
+ assert.equal((await P.restoreTag(a.client,a.id,sun.id)).suppressed,false,'and can be allowed again');
+ assert.equal((await b.client.from('journal_tag_corrections').select('id')).data.length,0,'corrections are private');
+ assert.ok((await b.client.from('journal_tag_corrections').insert({kind:'person',from_name:'x',to_tag_id:sun.id})).error,'another account cannot point a correction at my tag');
+
  // Search and journal days.
  const hits=await P.searchJournal(a.client,'lisbon');assert.equal(hits[0].conversationId,conv.id);assert.match(hits[0].snippet,/Lisbon/);
  assert.deepEqual(await P.searchJournal(b.client,'lisbon'),[],'search never crosses accounts');

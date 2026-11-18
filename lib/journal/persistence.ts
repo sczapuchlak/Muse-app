@@ -6,7 +6,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database, Json } from "@/lib/database.types";
 import {
   analysisFromRow, bookmarkFromRow, companionFromRow, companionToRow, conversationFromRow, conversationMetaToRow, journalFromRow, journalToRow, memoryFromRow, messageFromRow, messageImageFromRow, type MessageImage, preferencesFromRow, tagFromRow, versionFromRow,
-  cleanTagName, type Analysis, type Bookmark, type Companion, type CompanionVersion, type Conversation, type EntryLink, type EntryTag, type Journal, type Memory, type Message, type Mode, type Preferences, type Report, type Tag, type TagKind, reportFromRow, type Correction,
+  cleanTagName, type Analysis, type Bookmark, type HighlightTag, type TagCorrection, type Companion, type CompanionVersion, type Conversation, type EntryLink, type EntryTag, type Journal, type Memory, type Message, type Mode, type Preferences, type Report, type Tag, type TagKind, reportFromRow, type Correction,
 } from "./model";
 import { companionPresets, journalPresets } from "./presets";
 
@@ -19,11 +19,11 @@ const one = <T,>(r: { data: T | null; error: unknown }, stale = STALE): T => { i
 
 export type JournalState = {
   prefs: Preferences; journals: Journal[]; companions: Companion[]; conversations: Conversation[]; tags: Tag[]; entryTags: EntryTag[];
-  bookmarks: Bookmark[]; memories: Memory[]; links: EntryLink[];
+  bookmarks: Bookmark[]; memories: Memory[]; links: EntryLink[]; highlightTags: HighlightTag[]; corrections: TagCorrection[];
 };
 /** Metadata only; messages load per entry. Personal archives stay small enough to filter on the device. */
 export async function loadJournal(client: Client, userId: string): Promise<JournalState> {
-  const [p, j, c, v, t, et, b, m, l] = await Promise.all([
+  const [p, j, c, v, t, et, b, m, l, ht, tc] = await Promise.all([
     client.from("journal_preferences").select("*").eq("user_id", userId).maybeSingle(),
     client.from("journal_journals").select("*").eq("user_id", userId).order("position").order("created_at").limit(500),
     client.from("journal_companions").select("*").eq("user_id", userId).order("position").order("created_at").limit(500),
@@ -33,11 +33,16 @@ export async function loadJournal(client: Client, userId: string): Promise<Journ
     client.from("journal_bookmarks").select("*").eq("user_id", userId).order("created_at", { ascending: false }).limit(5000),
     client.from("journal_memories").select("*").eq("user_id", userId).order("updated_at", { ascending: false }).limit(2000),
     client.from("journal_links").select("conversation_id,kind,target_id,label").eq("user_id", userId).limit(10000),
+    client.from("journal_highlight_tags").select("highlight_id,tag_id").eq("user_id", userId).limit(20000),
+    client.from("journal_tag_corrections").select("id,kind,from_name,to_tag_id,times").eq("user_id", userId).order("updated_at", { ascending: false }).limit(2000),
   ]);
   return {
     prefs: preferencesFromRow(must(p)), journals: must(j).map(journalFromRow), companions: must(c).map(companionFromRow), conversations: must(v).map(conversationFromRow),
     tags: must(t).map(tagFromRow), entryTags: must(et).map((x) => ({ conversationId: x.conversation_id, tagId: x.tag_id, source: x.source as EntryTag["source"] })),
     bookmarks: must(b).map(bookmarkFromRow), memories: must(m).map(memoryFromRow), links: must(l).map((x) => ({ conversationId: x.conversation_id, kind: x.kind as EntryLink["kind"], targetId: x.target_id, label: x.label })),
+    // An environment without the highlight tags table yet still loads.
+    highlightTags: (ht.error ? [] : ht.data ?? []).map((x) => ({ highlightId: x.highlight_id, tagId: x.tag_id })),
+    corrections: (tc.error ? [] : tc.data ?? []).map((x) => ({ id: x.id, kind: x.kind as TagKind, fromName: x.from_name, toTagId: x.to_tag_id, times: x.times })),
   };
 }
 
@@ -167,6 +172,33 @@ export async function saveTag(client: Client, userId: string, t: Tag): Promise<T
   if (r.error?.code === "23505") throw Error(`There’s already a ${t.kind} called “${t.name}”. Merge them instead.`);
   return tagFromRow(one(r));
 }
+/** Moves a tag to another category (a "person" that was really a topic). Refuses when that category already has the
+ *  name, so two tags are never silently fused: merge them instead. */
+export async function setTagKind(client: Client, userId: string, t: Tag, kind: TagKind): Promise<Tag> {
+  const r = await client.from("journal_tags").update({ kind }).eq("id", t.id).eq("user_id", userId).select("*").maybeSingle();
+  if (r.error?.code === "23505") throw Error(`There’s already a ${kind === "custom" ? "tag" : kind} called “${t.name}”. Merge them instead.`);
+  return tagFromRow(one(r));
+}
+/** Removes a tag from every entry and highlight, and keeps its name so AI never suggests it again. Entries untouched. */
+export async function suppressTag(client: Client, userId: string, id: string): Promise<Tag> {
+  must(await client.from("journal_entry_tags").delete().eq("user_id", userId).eq("tag_id", id).select("tag_id"));
+  must(await client.from("journal_highlight_tags").delete().eq("user_id", userId).eq("tag_id", id).select("tag_id"));
+  return tagFromRow(one(await client.from("journal_tags").update({ suppressed: true }).eq("id", id).eq("user_id", userId).select("*").maybeSingle()));
+}
+export async function restoreTag(client: Client, userId: string, id: string): Promise<Tag> {
+  return tagFromRow(one(await client.from("journal_tags").update({ suppressed: false }).eq("id", id).eq("user_id", userId).select("*").maybeSingle()));
+}
+/** Remembers a correction ("Maya" was Nia here) as guidance for future analysis; counts repeats. */
+export async function recordCorrection(client: Client, userId: string, kind: TagKind, fromName: string, toTagId: string): Promise<TagCorrection> {
+  const from = cleanTagName(fromName);
+  const found = await client.from("journal_tag_corrections").select("*").eq("user_id", userId).eq("kind", kind).eq("from_normalized", from.toLowerCase()).eq("to_tag_id", toTagId).maybeSingle();
+  const row = found.data
+    ? one(await client.from("journal_tag_corrections").update({ times: found.data.times + 1, updated_at: new Date().toISOString() }).eq("id", found.data.id).eq("user_id", userId).select("*").maybeSingle())
+    : must(await client.from("journal_tag_corrections").insert({ user_id: userId, kind, from_name: from, to_tag_id: toTagId }).select("*").single());
+  const r = row as unknown as Database["public"]["Tables"]["journal_tag_corrections"]["Row"];
+  return { id: r.id, kind: r.kind as TagKind, fromName: r.from_name, toTagId: r.to_tag_id, times: r.times };
+}
+export async function deleteCorrection(client: Client, userId: string, id: string) { must(await client.from("journal_tag_corrections").delete().eq("id", id).eq("user_id", userId).select("id")); }
 export async function deleteTag(client: Client, userId: string, id: string) { must(await client.from("journal_tags").delete().eq("id", id).eq("user_id", userId).select("id")); }
 export async function mergeTags(client: Client, from: string, into: string): Promise<Tag> {
   const r = must(await client.rpc("merge_journal_tags", { p_from: from, p_into: into })) as Database["public"]["Tables"]["journal_tags"]["Row"][];
@@ -179,9 +211,12 @@ export async function untagEntry(client: Client, userId: string, conversationId:
   must(await client.from("journal_entry_tags").delete().eq("user_id", userId).eq("conversation_id", conversationId).eq("tag_id", tagId).select("tag_id"));
 }
 
-export async function addBookmark(client: Client, userId: string, b: Omit<Bookmark, "id" | "createdAt">): Promise<Bookmark> {
-  return bookmarkFromRow(must(await client.from("journal_bookmarks").insert({ user_id: userId, conversation_id: b.conversationId, message_id: b.messageId, excerpt: b.excerpt.slice(0, 4000), note: b.note.slice(0, 2000) }).select("*").single()));
+export async function addBookmark(client: Client, userId: string, b: Omit<Bookmark, "id" | "createdAt" | "updatedAt" | "start" | "end"> & { start?: number | null; end?: number | null }): Promise<Bookmark> {
+  const excerpt = b.excerpt.slice(0, 4000), located = b.start != null && b.end != null && b.end - b.start === excerpt.length;
+  return bookmarkFromRow(must(await client.from("journal_bookmarks").insert({ user_id: userId, conversation_id: b.conversationId, message_id: b.messageId, excerpt, note: b.note.slice(0, 2000), start_offset: located ? b.start : null, end_offset: located ? b.end : null }).select("*").single()));
 }
+export async function tagHighlight(client: Client, userId: string, highlightId: string, tagId: string) { must(await client.from("journal_highlight_tags").insert({ user_id: userId, highlight_id: highlightId, tag_id: tagId }).select("highlight_id")); }
+export async function untagHighlight(client: Client, userId: string, highlightId: string, tagId: string) { must(await client.from("journal_highlight_tags").delete().eq("user_id", userId).eq("highlight_id", highlightId).eq("tag_id", tagId).select("highlight_id")); }
 export async function saveBookmarkNote(client: Client, userId: string, id: string, note: string) { must(await client.from("journal_bookmarks").update({ note: note.slice(0, 2000) }).eq("id", id).eq("user_id", userId).select("id")); }
 export async function deleteBookmark(client: Client, userId: string, id: string) { must(await client.from("journal_bookmarks").delete().eq("id", id).eq("user_id", userId).select("id")); }
 

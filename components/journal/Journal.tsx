@@ -63,7 +63,7 @@ function JournalView() {
   let body: React.ReactNode;
   if (!j.status.loaded) body = <p className="small-label" role="status">Opening your journal…</p>;
   else if (j.status.missing) body = <p className="mj-error" role="alert">The journal isn’t set up in this database yet. (Its migration hasn’t been applied.)</p>;
-  else if (entry && conversation?.status === "completed") body = <EntryView key={conversation.id} conversation={conversation} onClose={() => go({ entry: null })} />;
+  else if (entry && conversation?.status === "completed") body = <EntryView key={conversation.id} conversation={conversation} focusHighlight={params?.get("hl") ?? null} onClose={() => go({ entry: null, hl: null })} />;
   else if (entry && conversation) body = <Workspace initialId={conversation.id} onRouteClear={() => go({ entry: null, view: null })} />;
   else if (entry) body = <p className="mj-note" role="status">That entry isn’t here. It may have been deleted.</p>;
   else if (view === "history") body = <HistoryView open={open} initialTag={params?.get("tag")} initialJournal={params?.get("journal")} onThisDay={params?.get("onthisday") === "1"} />;
