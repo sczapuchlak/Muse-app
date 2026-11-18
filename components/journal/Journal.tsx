@@ -1,5 +1,5 @@
 "use client";
-import { Suspense, useCallback, useEffect, useMemo, useState, useSyncExternalStore } from "react";
+import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { MusePageHeader } from "../MusePageHeader";
 import { MuseSectionNav } from "../MuseSectionNav";
@@ -28,16 +28,12 @@ const parseTab = (v: string | null | undefined): Tab => (journalTabs.some((t) =>
  * Studio (`?companion=<id|new>`, a full-screen sheet) and preferences open over the page from the workspace toolbar;
  * there is no separate management page. The old `?view=journals` link opens the workspace with the manager.
  */
-const narrowQuery = "(max-width: 1023px)";
-const subscribeNarrow = (cb: () => void) => { const m = window.matchMedia(narrowQuery); m.addEventListener("change", cb); return () => m.removeEventListener("change", cb); };
 function JournalView() {
   const params = useSearchParams(), router = useRouter();
   const view = parseTab(params?.get("view")), entry = params?.get("entry") ?? null, studio = params?.get("companion") ?? null;
   const j = useJournal();
   const [settings, setSettings] = useState(false);
   const [toolbarSlot, setToolbarSlot] = useState<HTMLDivElement | null>(null);
-  // Phones and tablets: the toolbar sits under Journal | History | Insights (navigation first, then this page's tools).
-  const narrow = useSyncExternalStore(subscribeNarrow, () => window.matchMedia(narrowQuery).matches, () => false);
   const [manager, setManager] = useState(params?.get("view") === "journals");
   const [editing, setEditing] = useState<JournalRecord | null>(() => (params?.get("new") === "journal" ? blankJournal(0) : null));
   const go = useCallback((q: Record<string, string | null>, replace = false) => {
@@ -70,16 +66,15 @@ function JournalView() {
   else if (view === "insights") body = <InsightsView key={params?.get("week") ?? "now"} open={open} initialWeek={params?.get("week")} />;
   else body = <Workspace initialId={null} continueFrom={params?.get("continue") ?? null} onRouteClear={() => { if (params?.get("continue")) go({ continue: null }, true); }} onCreated={(id) => go({ continue: null, entry: id }, true)} />;
 
-  const tools = <div className="mj-header-tools" key="tools">
-    <div className="mj-header-slot" ref={setToolbarSlot} />
-    {!inWorkspace && <button type="button" className="muse-button button-ghost mj-tb-settings" onClick={() => setSettings(true)} aria-label="Journal preferences" title="Preferences"><MuseIcon name="gear" size={17} /><span className="mj-tb-label">Preferences</span></button>}
-  </div>;
   return <JournalUiContext.Provider value={ui}><main className="muse-page mj-page" data-focused={Boolean(entry && conversation?.status === "completed") || undefined}>
+    {/* The header keeps only settings; journaling controls live with the journal's own navigation, below. */}
     <MusePageHeader title="Journal">
-      {!narrow && tools}
+      <div className="mj-header-tools"><button type="button" className="muse-button button-ghost mj-tb-settings" onClick={() => setSettings(true)} aria-label="Journal preferences" title="Preferences"><MuseIcon name="gear" size={17} /><span className="mj-tb-label">Preferences</span></button></div>
     </MusePageHeader>
-    <MuseSectionNav label="Journal views" current={entry && conversation?.status === "completed" ? "" : entry ? "today" : view} items={journalTabs.map((t) => ({ id: t.id, label: t.label, href: t.id === "today" ? "/journal" : `/journal?view=${t.id}` }))} />
-    {narrow && inWorkspace && tools}
+    <div className="mj-navrow">
+      <MuseSectionNav label="Journal views" current={entry && conversation?.status === "completed" ? "" : entry ? "today" : view} items={journalTabs.map((t) => ({ id: t.id, label: t.label, href: t.id === "today" ? "/journal" : `/journal?view=${t.id}` }))} />
+      <div className="mj-header-slot" ref={setToolbarSlot} data-active={inWorkspace || undefined} />
+    </div>
     {j.status.error && <p className="mj-error" role="alert"><span>{j.status.error}</span><button type="button" className="muse-button button-ghost" onClick={j.clearError}>Dismiss</button></p>}
     {body}
     {studio && j.status.loaded && <Sheet label="Companion Studio" onClose={() => go({ companion: null })}>
