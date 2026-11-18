@@ -772,3 +772,14 @@
 .mj-tag-section{display:grid;gap:8px;padding-top:12px;border-top:1px solid var(--mj-hair)}
 .mj-tag-replace{display:grid;gap:4px;width:100%}
 .mj-tag-replace .mj-tag-add{flex-wrap:wrap;align-items:center}
+
+/* Save highlight: on the page (not inside the animated card), in the gutter beside the words; its own fixed look. */
+.mj-hl-pill-wrap{position:absolute;z-index:1400;width:max-content;animation:mj-hl-pill-in var(--motion-settle,200ms) var(--mj-ease) both}
+.mj-hl-pill-wrap[data-side]{animation-name:mj-hl-pill-side}
+.mj-hl-pill{display:inline-flex;align-items:center;gap:7px;min-height:38px;padding:0 15px 0 12px;border:0;border-radius:999px;background:linear-gradient(135deg,var(--journal-a,var(--accent-primary)),var(--journal-b,var(--accent-secondary)));color:#fff;font:inherit;font-size:.86rem;font-weight:650;white-space:nowrap;cursor:pointer;box-shadow:0 12px 28px -12px var(--journal-a,var(--accent-primary)),0 0 0 1px color-mix(in srgb,#fff 18%,transparent) inset;transition:transform var(--motion-hover,180ms) var(--mj-ease),filter var(--motion-hover,180ms)}
+.mj-hl-pill:hover{transform:translateY(-1px);filter:brightness(1.06)}
+.mj-hl-pill:focus-visible{outline:2px solid var(--focus-ring);outline-offset:3px}
+.mj-hl-pill svg{flex:none}
+@keyframes mj-hl-pill-in{from{opacity:0;transform:translateY(-4px)}}
+@keyframes mj-hl-pill-side{from{opacity:0;transform:translateX(-6px)}}
+@media (prefers-reduced-motion:reduce){.mj-hl-pill-wrap{animation:none}.mj-hl-pill:hover{transform:none}}
