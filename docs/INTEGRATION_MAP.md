@@ -16,6 +16,16 @@ Write down the answers before you build. Put them in the PR description or the f
 6. **Place in the cycle.** What happens before and after this experience?
 7. **Now or later.** Which integrations work now, and which are only prepared for the future? Say which in the docs.
 
+### Money: paycheck actuals, bills and recurring (reconciliation)
+
+1. **Authoritative source.** Transactions own what happened (one ledger). Paycheck plans own intent. Recurring definitions own schedules. A stored bill row owns only what was saved about one due date (paid, amount, links).
+2. **Related owners.** Card payments (separate from purchases), categories/subcategories, paychecks and templates (templates never supply actuals).
+3. **Duplicates.** None: Actual, bill status, Spending totals and Insights are computed from the same transactions. Bill dates are derived from the definition and stored only on demand; nothing creates a transaction except recording one.
+4. **Optional relationships.** transaction → plan (or "not from a paycheck"), transaction → bill date, plan → bill date, recurring → "show in Bills". All optional; automatic category matching is a convenience, never proof.
+5. **Patterns.** Existing Money drawers, `MoneyChoice`, compact allocation and bill rows, `Paged`, `MuseOverflowMenu`.
+6. **Place in the cycle.** Plan a paycheck → record purchases and payments in Spending → plans and bills reconcile → review ties.
+7. **Now or later.** Now: all of the above. Later (not built): suggesting a link for a payment that matches a bill's amount and date.
+
 ### Wellness → Meals: Meal ideas
 
 1. **Authoritative source.** Wellness → Meals owns `meal_ideas`: one row per idea, per week (Monday) and meal slot.

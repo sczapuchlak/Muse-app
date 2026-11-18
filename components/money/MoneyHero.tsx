@@ -1,6 +1,6 @@
 import {useState,type CSSProperties} from "react";
 import {accentStyle} from "@/lib/appearance-values";
-import {categorySpending,comingUp,formatMoney,paycheckSummary,periodTransactions,spendingTotal,type MoneyPeriod,type Paycheck,planSegments } from "@/lib/money";
+import {categorySpending,comingUp,formatMoney,paycheckSummary,periodTransactions,spendingTransactions,spendingTotal,type MoneyPeriod,type Paycheck,planSegments } from "@/lib/money";
 import {AchievementBadge} from "../AchievementStar";
 import {MuseIcon} from "../MuseIcon";
 import {useMoney} from "./MoneyStore";
@@ -45,7 +45,7 @@ export function PeriodTrack({period,today}:{period:MoneyPeriod;today:string}){
  const {state}=useMoney(),start=utc(period.start),count=Math.round((utc(period.end)-start)/DAY)+1;
  if(count<2||count>42)return null;
  const days=Array.from({length:count},(_,i)=>iso(start+i*DAY)),spent=new Map<string,number>();
- for(const item of periodTransactions(state,period))spent.set(item.date,(spent.get(item.date)??0)+item.amountCents);
+ for(const item of spendingTransactions(state,period))spent.set(item.date,(spent.get(item.date)??0)+item.amountCents);
  const due=comingUp(state,period.start).filter(item=>item.date<=period.end),max=Math.max(1,...spent.values());
  const nextPay=state.paychecks.filter(item=>item.receivedDate>period.end).sort((a,b)=>a.receivedDate.localeCompare(b.receivedDate))[0];
  return <ol className="muse-money-track" aria-label={`Each day of ${period.label}`} style={{"--days":count} as CSSProperties}>

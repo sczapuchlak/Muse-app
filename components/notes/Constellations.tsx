@@ -1,4 +1,5 @@
 'use client';
+import {MindspaceArt} from './MindspaceArt';
 import {useEffect,useRef,useState,useSyncExternalStore,type CSSProperties} from 'react';
 import {MusePaintPicker} from '../MusePaintPicker';
 import {createMuseBrowserClient} from '@/lib/supabase/client';
@@ -37,8 +38,6 @@ function ReminderFields({reminder,timeZone,onChange}:{reminder?:BoardReminder;ti
  *  pinned to the art (or faint suggestions before there are any). */
 function BoardHero({cards,tags,today,onCatch}:{cards:BoardCard[];tags:number;today:string;onCatch:()=>void}){
  const items=cards.flatMap(c=>c.items),done=items.filter(i=>i.complete).length,soon=cards.filter(c=>c.reminder&&c.reminder.date>=today).length;
- const recent=[...cards].sort((a,b)=>Number(b.pinned)-Number(a.pinned)||b.updatedAt.localeCompare(a.updatedAt)).slice(0,3);
- const notes=recent.length?recent.map(c=>({id:c.id,kicker:c.pinned?'Pinned':c.items.length?'Checklist':c.reminder?'Reminder':'Thought',text:c.title||c.text||c.items[0]?.text||'A thought',accent:c.accent})):[{id:'a',kicker:'Idea',text:'a playlist for every season',accent:'pop' as NoteAccent},{id:'b',kicker:'Remember',text:'book club, chapters 1–8',accent:'warm' as NoteAccent},{id:'c',kicker:'#someday',text:'learn to bind a book',accent:'info' as NoteAccent}];
  return <section className="muse-journal-hero muse-board-hero" aria-labelledby="board-hero-title" data-compact="">
   <div className="muse-journal-hero-copy">
    <p className="muse-kicker">Sticky Board</p>
@@ -47,7 +46,7 @@ function BoardHero({cards,tags,today,onCatch}:{cards:BoardCard[];tags:number;tod
    {cards.length>0&&<dl className="muse-journal-stats"><div><dt>Thoughts</dt><dd className="type-numeric">{cards.length}</dd></div>{items.length>0&&<div><dt>Checked off</dt><dd className="type-numeric">{done}<small> of {items.length}</small></dd></div>}<div><dt>Reminders ahead</dt><dd className="type-numeric">{soon}</dd></div><div><dt>Tags</dt><dd className="type-numeric">{tags}</dd></div></dl>}
    <div className="muse-journal-actions"><button type="button" className="muse-button button-primary" onClick={onCatch}>{cards.length?'+ Catch a thought':'Catch your first thought'}</button></div>
   </div>
-  <div className="muse-journal-art muse-board-hero-art" aria-hidden="true">{notes.map((n,i)=><span key={n.id} className="muse-board-hero-note" data-i={i} data-ghost={!recent.length||undefined} style={accentStyle(n.accent??'primary')}><i/><small>{n.kicker}</small><b>{n.text}</b></span>)}</div>
+  <div className="muse-journal-art muse-board-hero-art" aria-hidden="true"><MindspaceArt kind="thoughts"/></div>
  </section>;
 }
 

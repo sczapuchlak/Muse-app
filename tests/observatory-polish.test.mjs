@@ -85,7 +85,7 @@ test('grocery removal is reversible without changing identity, quantity, note or
 
 test('allocation identity contains an inline category chip and Bills show readable dates with no underlined name controls',()=>{
  const {MoneyAllocationRow}=load('components/money/MoneyAllocationRow'),{MoneyBillRow}=load('components/money/MoneyBillRow'),{MoneyContext}=load('components/money/MoneyStore'),{moneySample}=load('lib/money-sample');
- const allocation=moneySample.allocations.find((item)=>item.dueDate),html=renderToStaticMarkup(React.createElement(MoneyContext.Provider,{value:moneyFixture(moneySample)},React.createElement(MoneyAllocationRow,{allocation,onOpen(){}}),React.createElement(MoneyBillRow,{bill:moneySample.bills[0],today:'2026-10-30',onOpen(){}})));
+ const allocation=moneySample.allocations.find((item)=>item.dueDate),html=renderToStaticMarkup(React.createElement(MoneyContext.Provider,{value:moneyFixture(moneySample)},React.createElement(MoneyAllocationRow,{allocation,onOpen(){}}),React.createElement(MoneyBillRow,{occurrence:load('lib/money-reconcile').billOccurrences(moneySample,moneySample.bills[0].dueDate,moneySample.bills[0].dueDate).find((o)=>o.billId===moneySample.bills[0].id),today:'2026-10-30',onOpen(){}})));
  assert.ok(html.includes('muse-money-allocation-identity'));assert.ok(html.includes('data-variant="chip"'));assert.ok(!html.includes(`>${allocation.dueDate}<`));assert.ok(!html.includes(`>${moneySample.bills[0].dueDate}<`));assert.ok(html.includes('muse-bill-paid-action'));assert.ok(!html.includes('text-button muse-bill-name'));assert.ok(html.includes('muse-money-ledger-number'));
 });
 

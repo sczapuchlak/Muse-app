@@ -23,7 +23,7 @@ test('paycheck quick shelf stays three records while historical selection shares
 
 test('inline allocation category edits preserve allocation identity, amounts, actual links and template defaults',()=>{
  const original=structuredClone(moneySample),allocation=original.allocations.find((item)=>item.id==='a-food'),changed={...allocation,categoryId:'beauty',subcategoryId:undefined};
- const next=money.moneyReducer(original,{type:'save',collection:'allocations',record:changed});assert.equal(next.allocations.find((item)=>item.id===allocation.id).plannedCents,25000);assert.equal(money.allocationActual(next,changed),21800);assert.deepEqual(next.templates,original.templates);assert.deepEqual(next.transactions,original.transactions);
+ const next=money.moneyReducer(original,{type:'save',collection:'allocations',record:changed});assert.equal(next.allocations.find((item)=>item.id===allocation.id).plannedCents,25000);const recon=load('lib/money-reconcile'),detail=recon.planActual(next,changed);assert.equal(detail.counted.filter((c)=>c.how==='linked').reduce((n,c)=>n+c.amountCents,0),21800,'linked transactions stay counted');assert.ok(detail.counted.filter((c)=>c.how==='category').every((c)=>{const t=next.transactions.find((x)=>x.id===c.id);return t?.categoryId==='beauty'||t?.splits.some((p)=>p.categoryId==='beauty');}),'and the new category matches by category');assert.deepEqual(next.templates,original.templates);assert.deepEqual(next.transactions,original.transactions);
  const {MoneyAllocationRow}=load('components/money/MoneyAllocationRow'),html=renderToStaticMarkup(React.createElement(MoneyProvider,null,React.createElement(MoneyAllocationRow,{allocation,onOpen(){}})));
  assert.ok(html.includes('Category for Groceries'));assert.ok(html.includes('muse-choice-value'));assert.ok(!html.includes('<select'));
 });
@@ -31,7 +31,8 @@ test('inline allocation category edits preserve allocation identity, amounts, ac
 test('Bills expose readable independent payment states and marking paid creates no financial event',()=>{
  const base=moneySample.bills[0];assert.equal(money.billStatus({...base,paid:true},'2026-10-30'),'paid');assert.equal(money.billStatus({...base,dueDate:'2026-10-20'},'2026-10-30'),'overdue');assert.equal(money.billStatus({...base,dueDate:'2026-10-30'},'2026-10-30'),'unpaid');assert.equal(money.billStatus(base,'2026-10-30'),'upcoming');
  const next=money.moneyReducer(moneySample,{type:'save',collection:'bills',record:{...base,paid:true}});assert.deepEqual(next.transactions,moneySample.transactions);assert.deepEqual(next.cards,moneySample.cards);
- const {MoneyBillRow}=load('components/money/MoneyBillRow'),html=renderToStaticMarkup(React.createElement(MoneyProvider,null,React.createElement(MoneyBillRow,{bill:{...base,dueDate:'2026-10-20'},today:'2026-10-30',onOpen(){}})));
+ const recon=load('lib/money-reconcile'),occurrence=recon.billOccurrences({...moneySample,bills:[{...base,dueDate:'2026-10-20'}]},'2026-10-20','2026-10-20')[0];assert.equal(recon.occurrenceStatus(occurrence,'2026-10-30'),'overdue');assert.equal(recon.occurrenceStatus({...occurrence,confirmed:true},'2026-10-30'),'paid');assert.equal(recon.occurrenceStatus({...occurrence,paidCents:1},'2026-10-30'),'partial');
+ const {MoneyBillRow}=load('components/money/MoneyBillRow'),html=renderToStaticMarkup(React.createElement(MoneyProvider,null,React.createElement(MoneyBillRow,{occurrence,today:'2026-10-30',onOpen(){}})));
  assert.ok(html.includes('>Overdue<'));assert.ok(html.includes('Mark paid'));assert.ok(html.includes('More options for Rent'));
 });
 

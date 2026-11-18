@@ -1,5 +1,6 @@
 import {validAccent,type AccentColor} from "./appearance-values";
 import { nextRecurringDate,recurrenceLabel,recurringError,type RecurringPayment,type ManualPaymentMethod } from "./recurring";
+import { billOccurrences,occurrenceStatus,planActual } from "./money-reconcile";
 import { validDate } from "./dates";
 import type { MuseIconName } from "@/components/MuseIcon";
 export const moneyAccents=["primary","secondary","pop","warm","info"] as const;
@@ -14,7 +15,13 @@ export type Allocation={id:string;paycheckId:string;name:string;plannedCents:num
 export type TemplateAllocation=Omit<Allocation,"id"|"paycheckId"|"actualCents"|"dueDate">;
 export type PaycheckTemplate={id:string;name:string;expectedCents?:number;allocations:TemplateAllocation[]};
 export type MoneySplit={id:string;categoryId?:string;subcategoryId?:string;amountCents:number};
-export type MoneyTransaction={id:string;merchant:string;amountCents:number;date:string;categoryId?:string;subcategoryId?:string;tagIds:string[];paymentMethod:string;paymentMethodId?:string;cardId?:string;note?:string;splits:MoneySplit[];allocationId?:string};
+export type MoneyTransaction={id:string;merchant:string;amountCents:number;date:string;categoryId?:string;subcategoryId?:string;tagIds:string[];paymentMethod:string;paymentMethodId?:string;cardId?:string;note?:string;splits:MoneySplit[];allocationId?:string;
+ /** The bill occurrence (a bills row) this pays; several payments can add up to one bill. */
+ billId?:string;
+ /** Not from a paycheck: never matched to a paycheck plan by category. */
+ unplanned?:boolean;
+ /** Moving money between your own accounts: not counted as spending. */
+ transfer?:boolean};
 export type CreditCard={id:string;name:string;/** #12: chosen color; unset cards use cardAccent()'s stable default. */accent?:MoneyAccent;balanceCents:number;openingBalanceCents?:number;openingAsOf?:string;limitCents?:number;apr?:number;dueDate?:string;minimumCents?:number;plannedPaymentCents?:number;note?:string};
 export type CardPayment={id:string;cardId:string;amountCents:number;date:string;paycheckId?:string;allocationId?:string;note?:string};
 export type MoneyBill={id:string;name:string;amountCents:number;dueDate:string;recurrence:"once"|"weekly"|"monthly"|"yearly";categoryId?:string;cardId?:string;paid:boolean;note?:string;recurringId?:string};
@@ -39,14 +46,14 @@ export function paycheckPeriod(paycheck:Paycheck):MoneyPeriod{return {start:payc
 export function currentPaycheck(state:MoneyState,date:string){return [...state.paychecks].sort((a,b)=>b.receivedDate.localeCompare(a.receivedDate)).find((item)=>date>=item.periodStart&&date<=item.periodEnd)??[...state.paychecks].filter((item)=>item.receivedDate<=date).sort((a,b)=>b.receivedDate.localeCompare(a.receivedDate))[0]??state.paychecks[0];}
 export function paycheckSummary(state:MoneyState,paycheck:Paycheck){const rows=state.allocations.filter((row)=>row.paycheckId===paycheck.id),planned=rows.reduce((sum,row)=>sum+row.plannedCents,0),basis=paycheck.actualCents??paycheck.expectedCents;return {rows,planned,basis,basisKind:paycheck.actualCents!==undefined?"received":"expected",remaining:basis===undefined?null:basis-planned,fullyAllocated:basis!==undefined&&basis>0&&rows.length>0&&planned===basis};}
 export const periodTransactions=(state:MoneyState,period:MoneyPeriod)=>state.transactions.filter((item)=>inPeriod(item.date,period));
-export const spendingTotal=(state:MoneyState,period:MoneyPeriod)=>periodTransactions(state,period).reduce((sum,item)=>sum+item.amountCents,0);
+/** What counts as spending: every recorded transaction except moves between your own accounts (transfers). Card payments
+ *  are their own records, so paying a card never counts its purchases twice. */
+export const spendingTransactions=(state:MoneyState,period:MoneyPeriod)=>periodTransactions(state,period).filter((item)=>!item.transfer);
+export const spendingTotal=(state:MoneyState,period:MoneyPeriod)=>spendingTransactions(state,period).reduce((sum,item)=>sum+item.amountCents,0);
 export const utilization=(card:CreditCard)=>card.limitCents&&card.limitCents>0?Math.max(0,card.balanceCents)/card.limitCents:null;
-export function allocationActual(state:MoneyState,allocation:Allocation):number|null {
-  if(allocation.actualCents!==undefined)return allocation.actualCents;
-  const rows=allocation.cardId?state.payments.filter((item)=>item.allocationId===allocation.id):state.transactions.filter((item)=>item.allocationId===allocation.id);
-  return rows.length?rows.reduce((sum,item)=>sum+item.amountCents,0):null;
-}
-export function categorySpending(state:MoneyState,period:MoneyPeriod){const amounts=new Map<string,number>();for(const transaction of periodTransactions(state,period)){const parts=transaction.splits.length?transaction.splits:[{categoryId:transaction.categoryId,amountCents:transaction.amountCents}];for(const part of parts)amounts.set(part.categoryId??"",(amounts.get(part.categoryId??"")??0)+part.amountCents);if(transaction.splits.length&&splitRemainder(transaction)>0)amounts.set("",(amounts.get("")??0)+splitRemainder(transaction));}return [...amounts].map(([id,amount])=>({id,name:state.categories.find((item)=>item.id===id)?.name??"Unassigned",accent:state.categories.find((item)=>item.id===id)?.accent??"info" as MoneyAccent,amount})).sort((a,b)=>b.amount-a.amount);}
+/** A planned amount's Actual: manual, or from recorded transactions (see lib/money-reconcile.ts for the rules). */
+export function allocationActual(state:MoneyState,allocation:Allocation):number|null {return planActual(state,allocation).actual;}
+export function categorySpending(state:MoneyState,period:MoneyPeriod){const amounts=new Map<string,number>();for(const transaction of spendingTransactions(state,period)){const parts=transaction.splits.length?transaction.splits:[{categoryId:transaction.categoryId,amountCents:transaction.amountCents}];for(const part of parts)amounts.set(part.categoryId??"",(amounts.get(part.categoryId??"")??0)+part.amountCents);if(transaction.splits.length&&splitRemainder(transaction)>0)amounts.set("",(amounts.get("")??0)+splitRemainder(transaction));}return [...amounts].map(([id,amount])=>({id,name:state.categories.find((item)=>item.id===id)?.name??"Unassigned",accent:state.categories.find((item)=>item.id===id)?.accent??"info" as MoneyAccent,amount})).sort((a,b)=>b.amount-a.amount);}
 function classificationValid(state:MoneyState,categoryId?:string,subcategoryId?:string){return (!categoryId&&!subcategoryId)||!!state.categories.find((item)=>item.id===categoryId&&(!subcategoryId||item.subcategories.some((sub)=>sub.id===subcategoryId)));}
 export function moneyError(state:MoneyState,action:MoneyAction):string|null {
   if(action.type==="apply-template")return state.templates.some((item)=>item.id===action.templateId)?moneyError(state,{type:"save",collection:"paychecks",record:action.paycheck}):"Choose an existing template.";
@@ -83,16 +90,18 @@ function updateBalance(state:MoneyState,cardId:string|undefined,delta:number):Mo
 export function planSegments(state:MoneyState,rows:Allocation[]):{id:string;name:string;accent:MoneyAccent;amount:number}[]{
  const out=new Map<string,{id:string;name:string;accent:MoneyAccent;amount:number;order:number}>();
  for(const row of rows){
-  const ci=state.categories.findIndex((c)=>c.id===row.categoryId),cat=state.categories[ci],group=cat?undefined:state.groups.find((g)=>g.id===row.groupId);
-  const id=cat?cat.id:group?`group:${group.id}`:"none",seg=out.get(id)??{id,name:cat?.name??group?.name??"Not categorized",accent:cat?.accent??group?.accent??"info",amount:0,order:cat?ci:group?10000:20000};
+  const ci=state.categories.findIndex((c)=>c.id===row.categoryId),cat=state.categories[ci],card=cat?undefined:state.cards.find((c)=>c.id===row.cardId),group=cat||card?undefined:state.groups.find((g)=>g.id===row.groupId);
+  const id=cat?cat.id:card?`card:${card.id}`:group?`group:${group.id}`:"none",seg=out.get(id)??{id,name:cat?.name??(card?`${card.name} payment`:undefined)??group?.name??"Not categorized",accent:cat?.accent??card?.accent??group?.accent??"info",amount:0,order:cat?ci:card?5000:group?10000:20000};
   seg.amount+=row.plannedCents;out.set(id,seg);
  }
  return [...out.values()].filter((s)=>s.amount>0).sort((a,b)=>a.order-b.order).map((s)=>({id:s.id,name:s.name,accent:s.accent,amount:s.amount}));
 }
 /** A planned amount's label: Category › Subcategory, or its old planning group's name until it has a category. */
-export function planLabel(state:MoneyState,row:Pick<Allocation,"categoryId"|"subcategoryId"|"groupId">){
+export function planLabel(state:MoneyState,row:Pick<Allocation,"categoryId"|"subcategoryId"|"groupId">&{cardId?:string}){
  const cat=state.categories.find((c)=>c.id===row.categoryId),sub=cat?.subcategories.find((s)=>s.id===row.subcategoryId);
  if(cat)return {name:sub?`${cat.name} › ${sub.name}`:cat.name,accent:cat.accent,legacy:false};
+ const card=row.cardId?state.cards.find((c)=>c.id===row.cardId):undefined;
+ if(card)return {name:`${card.name} payment`,accent:card.accent,legacy:false};
  const group=state.groups.find((g)=>g.id===row.groupId);
  return group?{name:group.name,accent:group.accent,legacy:true}:{name:"Not categorized",accent:undefined,legacy:false};
 }
@@ -141,7 +150,10 @@ const sameObligation=(a:string,b:string)=>a.trim().toLocaleLowerCase()===b.trim(
  */
 export function comingUp(state:MoneyState,today:string):ComingUpItem[]{
  if(!validDate(today))return [];
- const bills:ComingUpItem[]=state.bills.filter(item=>!item.paid&&item.dueDate>=today).map(item=>({id:`bill-${item.id}`,kind:"bill",recordId:item.id,name:item.name,date:item.dueDate,amount:item.amountCents,estimated:false,cadence:item.recurrence==="once"?undefined:item.recurrence,categoryId:item.categoryId}));
+ // Stored bills still owed (not confirmed paid, not fully paid by recorded payments). A repeating bill's next due date
+ // with nothing stored yet comes from its recurring definition below, once.
+ const owed=new Set(billOccurrences(state,today,"9999-12-31").filter(o=>o.billId&&occurrenceStatus(o,today)!=="paid").map(o=>o.billId!));
+ const bills:ComingUpItem[]=state.bills.filter(item=>owed.has(item.id)&&item.dueDate>=today).map(item=>({id:`bill-${item.id}`,kind:"bill",recordId:item.id,name:item.name,date:item.dueDate,amount:item.amountCents,estimated:false,cadence:item.recurrence==="once"?undefined:item.recurrence,categoryId:item.categoryId}));
  const cards:ComingUpItem[]=state.cards.filter(item=>item.dueDate&&item.dueDate>=today).map(item=>({id:`card-${item.id}`,kind:"card",recordId:item.id,name:item.name,date:item.dueDate!,amount:item.plannedPaymentCents??item.minimumCents,estimated:false}));
  const recurring:ComingUpItem[]=[...new Map(state.recurring.map(item=>[item.id,item])).values()].flatMap(item=>{
   const date=nextRecurringDate(item,today);if(!date)return [];
