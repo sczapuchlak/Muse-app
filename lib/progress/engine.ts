@@ -14,20 +14,23 @@ import {movementCategory,type MovementCategory} from './movement';
  * Wellness goals, connected Rituals, Insights and future Goals/Recaps all evaluate these same series with their own
  * targets and periods; none of them copies or stores the source records.
  */
-export type ProgressMetric='water'|'workouts'|'workout-minutes'|'reading-minutes'|'reading-pages'|'books-finished'|'tasks-completed'|'nutrition-protein'|'nutrition-calories'|'nutrition-carbs'|'nutrition-fat';
+export type ProgressMetric='journal-days'|'water'|'workouts'|'workout-minutes'|'reading-minutes'|'reading-pages'|'books-finished'|'tasks-completed'|'nutrition-protein'|'nutrition-calories'|'nutrition-carbs'|'nutrition-fat';
 export type MetricSpec={metric:ProgressMetric;category?:MovementCategory;typeId?:string;unit?:WaterUnit};
 export type ProgressSources={
  timeZone:string;
  wellness?:Pick<WellnessState,'water'|'activities'|'types'|'assignments'>&Partial<Pick<WellnessState,'waterSettings'>>;
  reading?:{sessions:readonly ReadingSession[];books:readonly Book[]};
  planner?:Pick<PlannerState,'tasks'|'completionHistory'>;
+ /** Journal: local dates with at least one saved message of your own (read from journal_days; nothing copied). */
+ journal?:{days:readonly {date:string;messages:number}[]};
 };
 /** One local date. `recorded` means a source record exists; `complete` means every record carried the measured field. */
 export type DayMeasure={date:string;value:number;recordIds:string[];recorded:boolean;complete:boolean};
 export type MeasureResult={days:Map<string,DayMeasure>;available:boolean;issue?:string};
 
-export const metricInfo:Record<ProgressMetric,{label:string;unit:string;owner:'Wellness'|'Collections'|'Planner';kind:'count'|'quantity'|'duration'}>={
+export const metricInfo:Record<ProgressMetric,{label:string;unit:string;owner:'Wellness'|'Collections'|'Planner'|'Journal';kind:'count'|'quantity'|'duration'}>={
  water:{label:'Water',unit:'oz',owner:'Wellness',kind:'quantity'},
+ 'journal-days':{label:'Journaled',unit:'days',owner:'Journal',kind:'count'},
  workouts:{label:'Workouts',unit:'sessions',owner:'Wellness',kind:'count'},
  'workout-minutes':{label:'Workout minutes',unit:'min',owner:'Wellness',kind:'duration'},
  'reading-minutes':{label:'Reading time',unit:'min',owner:'Collections',kind:'duration'},
@@ -100,6 +103,12 @@ export function measureDays(spec:MetricSpec,sources:ProgressSources):MeasureResu
  case 'books-finished':{
   if(!sources.reading)return {days,available:false};
   for(const book of sources.reading.books){if(book.archivedAt)continue;for(const completion of bookCompletions(book))add(days,completion.finishedOn,1,`book/${book.id}/${completion.id}`);}
+  return {days,available:true};
+ }
+ case 'journal-days':{
+  // Completed journaling: at least one saved message of your own that local day. No word count, no AI reply needed.
+  if(!sources.journal)return {days,available:false};
+  for(const d of sources.journal.days)if(d.messages>0)add(days,d.date,1,`journal/${d.date}`);
   return {days,available:true};
  }
  case 'tasks-completed':{

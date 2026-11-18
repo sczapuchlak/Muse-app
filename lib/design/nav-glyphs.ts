@@ -10,6 +10,7 @@ export const navGlyphs:Record<string,Art>={
  'envision:aspirations':a('constellation',6),'envision:vision-boards':a('palette',4),'envision:bucket':a('map',2),'envision:inner-compass':a('compass',8),
  'money:overview':a('wallet',1),'money:paychecks':a('coins',3),'money:spending':a('receipt',2),'money:recurring':a('repeat',5),'money:cards':a('creditcard',6),'money:categories':a('pie',4),
  'insights:overview':a('bars',1),'insights:plans':a('checklist',3),'insights:mood':a('smile',2),'insights:money':a('coins',4),'insights:nourish':a('pulse',5),'insights:astrology':a('planet',7),'insights:collections':a('openbook',6),
+ 'journal:today':a('quill',5),'journal:journals':a('journal',2),'journal:history':a('openbook',7),'journal:insights':a('bars',4),
  'mindspace:board':a('lightbulb',4),'mindspace:lists':a('list',1),
  'wellness:mood':a('smile',2),'wellness:goals':a('target',1),'wellness:plan':a('utensils',4),'wellness:grocery':a('basket',3),
  'books:dashboard':a('pie',5),'books:library':a('openbook',2),'books:atlas':a('globe',6),

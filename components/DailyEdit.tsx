@@ -18,6 +18,7 @@ import {DreamDayviewWidget} from "./whimsy/DreamDayviewWidget";
 import {FortuneDayviewWidget} from "./whimsy/FortuneDayviewWidget";
 import {BooksDayviewWidget} from "./whimsy/BooksDayviewWidget";
 import {ChapterDayviewWidget} from "./envision/compass/stories/ChapterDayviewWidget";
+import {JournalDayviewWidget} from "./journal/JournalDayviewWidget";
 import "./envision/compass/stories/ChapterDayviewWidget.css";
 import {PlannerPersistenceStatus} from "./PlannerStore";
 import { CosmicForecast } from "./CosmicForecast";
@@ -60,6 +61,7 @@ export function DailyEdit() {
           <DreamDayviewWidget date={selectedDate}/>
           <FortuneDayviewWidget date={selectedDate}/>
           <ChapterDayviewWidget/>
+          <JournalDayviewWidget date={selectedDate}/>
         </div>
       </div>
       <footer className="muse-footer"><DailySaveStatus date={selectedDate}/><PlannerPersistenceStatus compact/><WellnessSaveStatus/>Your daily entries, plan, meals, hydration and movement save to your account.</footer>
