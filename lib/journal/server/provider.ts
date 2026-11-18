@@ -114,7 +114,8 @@ async function mock(call: Call): Promise<Result> {
   const lastUser = [...call.input].reverse().find((m) => m.role === "user"), last = lastUser?.content ?? "";
   const refTitle = /continue from their journal entry “([^”]+)”/.exec(all)?.[1];
   const continuing = refTitle ? ` Continuing “${refTitle}” (${/The conversation from that entry/.test(all) ? "full" : /no longer in their journal/.test(all) ? "missing" : "summary"}).` : "";
-  const seen = continuing + (lastUser?.images?.length ? ` I can see ${lastUser.images.length} photo${lastUser.images.length === 1 ? "" : "s"}.` : "") + (/(?:photo was|photos were) attached here\. You can't see/.test(all) ? " Earlier photos aren't visible to me now." : "");
+  const guided = /## This entry follows a guide they chose: “([^”]+)”/.exec(all)?.[1];
+  const seen = (guided ? ` Guided by “${guided}”.` : "") + continuing + (lastUser?.images?.length ? ` I can see ${lastUser.images.length} photo${lastUser.images.length === 1 ? "" : "s"}.` : "") + (/(?:photo was|photos were) attached here\. You can't see/.test(all) ? " Earlier photos aren't visible to me now." : "");
   const remembered = /Things they've confirmed about themselves:\n((?:- .+\n?)+)/.exec(all)?.[1].trim().split("\n").map((l) => l.slice(2)) ?? [];
   let text: string;
   if (call.schema?.name === "journal_analysis") {

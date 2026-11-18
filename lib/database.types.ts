@@ -121,14 +121,14 @@ isOneToOne: false
                 },
 "journal_conversations": {
                   Row: {
-                    "continues_id": string | null,"continues_title": string,"continues_date": string | null,"analysis_status": string | null,"companion_id": string | null,"companion_name": string,"companion_version_id": string | null,"completed_at": string | null,"created_at": string,"draft": string,"draft_updated_at": string | null,"exclude_from_memory": boolean,"favorite": boolean,"id": string,"images": NonNullable<Json>,"journal_id": string,"last_message_at": string | null,"local_date": string,"memory_off": boolean,"message_count": number,"mode": string,"origin": string,"revision": number,"search": unknown,"started_at": string,"status": string,"summary": string,"summary_source": string | null,"time_zone": string,"title": string,"title_source": string | null,"updated_at": string,"user_id": string,"user_words": number
+                    "guide_id": string | null,"guide_snapshot": Json | null,"guide_state": Json,"continues_id": string | null,"continues_title": string,"continues_date": string | null,"analysis_status": string | null,"companion_id": string | null,"companion_name": string,"companion_version_id": string | null,"completed_at": string | null,"created_at": string,"draft": string,"draft_updated_at": string | null,"exclude_from_memory": boolean,"favorite": boolean,"id": string,"images": NonNullable<Json>,"journal_id": string,"last_message_at": string | null,"local_date": string,"memory_off": boolean,"message_count": number,"mode": string,"origin": string,"revision": number,"search": unknown,"started_at": string,"status": string,"summary": string,"summary_source": string | null,"time_zone": string,"title": string,"title_source": string | null,"updated_at": string,"user_id": string,"user_words": number
                   }
                   ComputedFields: never
                   Insert: {
-                    "continues_id"?: string | null,"continues_title"?: string,"continues_date"?: string | null,"analysis_status"?: string | null,"companion_id"?: string | null,"companion_name"?: string,"companion_version_id"?: string | null,"completed_at"?: string | null,"created_at"?: string,"draft"?: string,"draft_updated_at"?: string | null,"exclude_from_memory"?: boolean,"favorite"?: boolean,"id"?: string,"images"?: NonNullable<Json>,"journal_id": string,"last_message_at"?: string | null,"local_date": string,"memory_off"?: boolean,"message_count"?: number,"mode"?: string,"origin"?: string,"revision"?: number,"search"?: never,"started_at"?: string,"status"?: string,"summary"?: string,"summary_source"?: string | null,"time_zone"?: string,"title"?: string,"title_source"?: string | null,"updated_at"?: string,"user_id"?: string,"user_words"?: number
+                    "guide_id"?: string | null,"guide_snapshot"?: Json | null,"guide_state"?: Json,"continues_id"?: string | null,"continues_title"?: string,"continues_date"?: string | null,"analysis_status"?: string | null,"companion_id"?: string | null,"companion_name"?: string,"companion_version_id"?: string | null,"completed_at"?: string | null,"created_at"?: string,"draft"?: string,"draft_updated_at"?: string | null,"exclude_from_memory"?: boolean,"favorite"?: boolean,"id"?: string,"images"?: NonNullable<Json>,"journal_id": string,"last_message_at"?: string | null,"local_date": string,"memory_off"?: boolean,"message_count"?: number,"mode"?: string,"origin"?: string,"revision"?: number,"search"?: never,"started_at"?: string,"status"?: string,"summary"?: string,"summary_source"?: string | null,"time_zone"?: string,"title"?: string,"title_source"?: string | null,"updated_at"?: string,"user_id"?: string,"user_words"?: number
                   }
                   Update: {
-                    "continues_id"?: string | null,"continues_title"?: string,"continues_date"?: string | null,"analysis_status"?: string | null,"companion_id"?: string | null,"companion_name"?: string,"companion_version_id"?: string | null,"completed_at"?: string | null,"created_at"?: string,"draft"?: string,"draft_updated_at"?: string | null,"exclude_from_memory"?: boolean,"favorite"?: boolean,"id"?: string,"images"?: NonNullable<Json>,"journal_id"?: string,"last_message_at"?: string | null,"local_date"?: string,"memory_off"?: boolean,"message_count"?: number,"mode"?: string,"origin"?: string,"revision"?: number,"search"?: never,"started_at"?: string,"status"?: string,"summary"?: string,"summary_source"?: string | null,"time_zone"?: string,"title"?: string,"title_source"?: string | null,"updated_at"?: string,"user_id"?: string,"user_words"?: number
+                    "guide_id"?: string | null,"guide_snapshot"?: Json | null,"guide_state"?: Json,"continues_id"?: string | null,"continues_title"?: string,"continues_date"?: string | null,"analysis_status"?: string | null,"companion_id"?: string | null,"companion_name"?: string,"companion_version_id"?: string | null,"completed_at"?: string | null,"created_at"?: string,"draft"?: string,"draft_updated_at"?: string | null,"exclude_from_memory"?: boolean,"favorite"?: boolean,"id"?: string,"images"?: NonNullable<Json>,"journal_id"?: string,"last_message_at"?: string | null,"local_date"?: string,"memory_off"?: boolean,"message_count"?: number,"mode"?: string,"origin"?: string,"revision"?: number,"search"?: never,"started_at"?: string,"status"?: string,"summary"?: string,"summary_source"?: string | null,"time_zone"?: string,"title"?: string,"title_source"?: string | null,"updated_at"?: string,"user_id"?: string,"user_words"?: number
                   }
                   Relationships: [
                     {
@@ -181,14 +181,14 @@ isOneToOne: false
                 },
 "journal_journals": {
                   Row: {
-                    "archived_at": string | null,"cover": string,"created_at": string,"default_companion_id": string | null,"description": string,"evening_instructions": string,"icon": string,"id": string,"instructions": string,"memory_scope": string,"morning_instructions": string,"name": string,"position": number,"preset_key": string | null,"revision": number,"tone": number,"updated_at": string,"user_id": string
+                    "default_guide_id": string | null,"archived_at": string | null,"cover": string,"created_at": string,"default_companion_id": string | null,"description": string,"evening_instructions": string,"icon": string,"id": string,"instructions": string,"memory_scope": string,"morning_instructions": string,"name": string,"position": number,"preset_key": string | null,"revision": number,"tone": number,"updated_at": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "archived_at"?: string | null,"cover"?: string,"created_at"?: string,"default_companion_id"?: string | null,"description"?: string,"evening_instructions"?: string,"icon"?: string,"id"?: string,"instructions"?: string,"memory_scope"?: string,"morning_instructions"?: string,"name": string,"position"?: number,"preset_key"?: string | null,"revision"?: number,"tone"?: number,"updated_at"?: string,"user_id"?: string
+                    "default_guide_id"?: string | null,"archived_at"?: string | null,"cover"?: string,"created_at"?: string,"default_companion_id"?: string | null,"description"?: string,"evening_instructions"?: string,"icon"?: string,"id"?: string,"instructions"?: string,"memory_scope"?: string,"morning_instructions"?: string,"name": string,"position"?: number,"preset_key"?: string | null,"revision"?: number,"tone"?: number,"updated_at"?: string,"user_id"?: string
                   }
                   Update: {
-                    "archived_at"?: string | null,"cover"?: string,"created_at"?: string,"default_companion_id"?: string | null,"description"?: string,"evening_instructions"?: string,"icon"?: string,"id"?: string,"instructions"?: string,"memory_scope"?: string,"morning_instructions"?: string,"name"?: string,"position"?: number,"preset_key"?: string | null,"revision"?: number,"tone"?: number,"updated_at"?: string,"user_id"?: string
+                    "default_guide_id"?: string | null,"archived_at"?: string | null,"cover"?: string,"created_at"?: string,"default_companion_id"?: string | null,"description"?: string,"evening_instructions"?: string,"icon"?: string,"id"?: string,"instructions"?: string,"memory_scope"?: string,"morning_instructions"?: string,"name"?: string,"position"?: number,"preset_key"?: string | null,"revision"?: number,"tone"?: number,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
                     {
@@ -260,6 +260,12 @@ isOneToOne: false
     Update: { id?: string; user_id?: string; kind?: string; from_name?: string; to_tag_id?: string; times?: number; created_at?: string; updated_at?: string }
     Relationships: []
   },
+"journal_guides": {
+    Row: { id: string; user_id: string; name: string; description: string; icon: string; intro: string; mode: string; companion: boolean; questions: Json; version: number; archived_at: string | null; revision: number; created_at: string; updated_at: string }
+    Insert: { id?: string; user_id?: string; name: string; description?: string; icon?: string; intro?: string; mode?: string; companion?: boolean; questions?: Json; version?: number; archived_at?: string | null; revision?: number; created_at?: string; updated_at?: string }
+    Update: { id?: string; user_id?: string; name?: string; description?: string; icon?: string; intro?: string; mode?: string; companion?: boolean; questions?: Json; version?: number; archived_at?: string | null; revision?: number; created_at?: string; updated_at?: string }
+    Relationships: []
+  },
 "journal_message_images": {
     Row: { id: string; user_id: string; conversation_id: string; message_id: string; position: number; path: string; thumbnail_path: string; width: number; height: number; mime: string; created_at: string }
     Insert: { id?: string; user_id?: string; conversation_id: string; message_id: string; position: number; path: string; thumbnail_path: string; width: number; height: number; mime: string; created_at?: string }
@@ -289,14 +295,14 @@ isOneToOne: false
                 },
 "journal_messages": {
                   Row: {
-                    "body": string,"companion_version_id": string | null,"conversation_id": string,"corrected_at": string | null,"created_at": string,"id": string,"local_date": string,"model": string | null,"reply_to": string | null,"role": string,"search": unknown,"user_id": string
+                    "guide_question_id": string | null,"guide_question": string | null,"body": string,"companion_version_id": string | null,"conversation_id": string,"corrected_at": string | null,"created_at": string,"id": string,"local_date": string,"model": string | null,"reply_to": string | null,"role": string,"search": unknown,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "body": string,"companion_version_id"?: string | null,"conversation_id": string,"corrected_at"?: string | null,"created_at"?: string,"id"?: string,"local_date": string,"model"?: string | null,"reply_to"?: string | null,"role": string,"search"?: never,"user_id"?: string
+                    "guide_question_id"?: string | null,"guide_question"?: string | null,"body": string,"companion_version_id"?: string | null,"conversation_id": string,"corrected_at"?: string | null,"created_at"?: string,"id"?: string,"local_date": string,"model"?: string | null,"reply_to"?: string | null,"role": string,"search"?: never,"user_id"?: string
                   }
                   Update: {
-                    "body"?: string,"companion_version_id"?: string | null,"conversation_id"?: string,"corrected_at"?: string | null,"created_at"?: string,"id"?: string,"local_date"?: string,"model"?: string | null,"reply_to"?: string | null,"role"?: string,"search"?: never,"user_id"?: string
+                    "guide_question_id"?: string | null,"guide_question"?: string | null,"body"?: string,"companion_version_id"?: string | null,"conversation_id"?: string,"corrected_at"?: string | null,"created_at"?: string,"id"?: string,"local_date"?: string,"model"?: string | null,"reply_to"?: string | null,"role"?: string,"search"?: never,"user_id"?: string
                   }
                   Relationships: [
                     {

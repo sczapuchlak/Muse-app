@@ -5,11 +5,11 @@ import { useDailyData } from "../daily/DailyData";
 import { useMuseToday } from "../useMuseToday";
 import * as P from "@/lib/journal/persistence";
 import { aiAction, aiStatus, type AiStatus } from "@/lib/journal/ai-client";
-import { cleanTagName, findTag, normalizeTag, type Bookmark, type Companion, type Conversation, type EntryLink, type Journal, type Memory, type Mode, type Preferences, type Tag, type TagKind } from "@/lib/journal/model";
+import { cleanTagName, findTag, normalizeTag, type Bookmark, type Companion, type Conversation, type EntryLink, type Journal, type Memory, type Mode, type Preferences, type Tag, type TagKind, type Guide, type GuideSnapshot, type GuideState } from "@/lib/journal/model";
 import { companionPreset } from "@/lib/journal/presets";
 
 type Status = { loaded: boolean; error: string; saving: boolean; missing: boolean };
-const empty: P.JournalState = { prefs: { globalInstructions: "", memoryEnabled: true, analysisAuto: true, onThisDay: true, showOnDaily: false, greetOnNew: true, defaultJournalId: null, revision: 0 }, journals: [], companions: [], conversations: [], tags: [], entryTags: [], bookmarks: [], memories: [], links: [], highlightTags: [], corrections: [] };
+const empty: P.JournalState = { prefs: { globalInstructions: "", memoryEnabled: true, analysisAuto: true, onThisDay: true, showOnDaily: false, greetOnNew: true, defaultJournalId: null, revision: 0 }, journals: [], companions: [], conversations: [], tags: [], entryTags: [], bookmarks: [], memories: [], links: [], highlightTags: [], corrections: [], guides: [] };
 const missingTable = (e: unknown) => ["PGRST205", "42P01"].includes((e as { code?: string })?.code ?? "");
 const message = (e: unknown) => (e instanceof Error ? e.message : "Something went wrong. Please try again.");
 export const newId = () => crypto.randomUUID();
@@ -61,8 +61,8 @@ function useJournalStore() {
     restorePreset: (c: Companion) => { const p = companionPreset(c.presetKey); return p ? { ...c, name: p.name, description: p.description, instructions: p.instructions, conversationPrefs: p.conversationPrefs, openingStyle: p.openingStyle } : c; },
     savePrefs: (p: Preferences) => run(async () => { const saved = await P.savePreferences(client, userId, p); patch((s) => ({ ...s, prefs: saved })); return saved; }),
 
-    startConversation: (o: { journalId: string; companion: Companion | null; mode: Mode; status?: "draft" | "active"; draft?: string; continues?: { id: string; title: string; date: string } | null }) => run(async () => {
-      const c = await P.createConversation(client, userId, { id: newId(), journalId: o.journalId, companion: o.companion, mode: o.mode, localDate: today, timeZone, status: o.status ?? "active", draft: o.draft, continues: o.continues });
+    startConversation: (o: { journalId: string; companion: Companion | null; mode: Mode; status?: "draft" | "active"; draft?: string; continues?: { id: string; title: string; date: string } | null; guide?: { id: string; snapshot: GuideSnapshot; state?: GuideState } | null }) => run(async () => {
+      const c = await P.createConversation(client, userId, { id: newId(), journalId: o.journalId, companion: o.companion, mode: o.mode, localDate: today, timeZone, status: o.status ?? "active", draft: o.draft, continues: o.continues, guide: o.guide });
       putConversation(c); return c;
     }),
     putConversation,
@@ -109,6 +109,15 @@ function useJournalStore() {
       const fix = await P.recordCorrection(client, userId, wrong.kind, wrong.name, rid);
       patch((s) => ({ ...s, entryTags: [...s.entryTags.filter((t) => !(t.conversationId === conversationId && (t.tagId === wrong.id || t.tagId === rid))), { conversationId, tagId: rid, source: "user" }], corrections: [fix, ...s.corrections.filter((c) => c.id !== fix.id)] }));
     }),
+    /** Guides: create or edit (a new version when the questions or behaviour change), archive, delete. No AI. */
+    saveGuide: (g: Guide) => run(async () => {
+      const before = stateRef.current.guides.find((x) => x.id === g.id);
+      const changed = Boolean(before) && JSON.stringify([before!.questions, before!.intro, before!.mode, before!.companion]) !== JSON.stringify([g.questions.filter((q) => q.text.trim()), g.intro, g.mode, g.companion]);
+      const saved = await P.saveGuide(client, userId, g, !before, changed);
+      patch((s) => ({ ...s, guides: before ? s.guides.map((x) => (x.id === saved.id ? saved : x)) : [...s.guides, saved] }));
+      return saved;
+    }),
+    deleteGuide: (id: string) => run(async () => { await P.deleteGuide(client, userId, id); patch((s) => ({ ...s, guides: s.guides.filter((g) => g.id !== id), journals: s.journals.map((x) => (x.defaultGuideId === id ? { ...x, defaultGuideId: null } : x)) })); return true; }),
     deleteCorrection: (id: string) => run(async () => { await P.deleteCorrection(client, userId, id); patch((s) => ({ ...s, corrections: s.corrections.filter((c) => c.id !== id) })); }),
     saveTag: (t: Tag) => run(async () => { const saved = await P.saveTag(client, userId, t); patch((s) => ({ ...s, tags: s.tags.map((x) => (x.id === saved.id ? saved : x)) })); return saved; }),
     mergeTags: (from: string, into: string) => run(async () => { await P.mergeTags(client, from, into); await refresh(); return true; }),

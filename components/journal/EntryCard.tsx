@@ -54,7 +54,8 @@ export function EntryRow({ c, onOpen, snippet, showDay = true }: { c: Conversati
     <span className="mj-row-day" aria-hidden={!showDay || undefined}>{showDay && <><b className="type-meta">{weekdayShort(c.localDate)}</b><span className="type-numeric">{dayNumber(c.localDate)}</span></>}</span>
     <span className="mj-row-main">
       <span className="mj-row-title type-title">{entryTitle(c)}{c.status === "active" && <em className="mj-pill">In progress</em>}</span>
-      {(c.continuesId || c.continuesTitle || continuedIn > 0) && <span className="mj-row-thread type-meta">
+      {(c.continuesId || c.continuesTitle || continuedIn > 0 || c.guideSnapshot) && <span className="mj-row-thread type-meta">
+        {c.guideSnapshot && <span className="mj-row-guide">{c.guideSnapshot.icon || "✦"} {c.guideSnapshot.name}</span>}
         {(c.continuesId || c.continuesTitle) && <span><ReturnGlyph />Continues “{c.continuesTitle || "an earlier entry"}”</span>}
         {continuedIn > 0 && <span><ReturnGlyph flip />Continued {continuedIn === 1 ? "once" : `${continuedIn} times`}</span>}
       </span>}

@@ -8,6 +8,7 @@ import { MuseIcon } from "../MuseIcon";
 import { MuseModal } from "../MuseModal";
 import { MuseOverflowMenu, type OverflowAction } from "../MuseOverflowMenu";
 import { Composer, clearLocalDraft, type Attachment } from "./Composer";
+import { GuidedEntry } from "./Guides";
 import { boardImageUrl, uploadBoardImage } from "@/lib/data/constellation-images";
 import { Prose, Thinking, Thread, type ThreadMessage } from "./Thread";
 import { WeekConstellation } from "./JournalArt";
@@ -18,13 +19,13 @@ import { formatDay, greeting } from "./format";
 import * as P from "@/lib/journal/persistence";
 import { aiStream, AiError } from "@/lib/journal/ai-client";
 import { celebrate } from "@/lib/celebrate";
-import { entryTitle, isListed, type Companion, type Conversation, type Message, type MessageImage, type Mode } from "@/lib/journal/model";
+import { entryTitle, isListed, snapshotOf, type Companion, type Conversation, type Guide, type GuideQuestion, type GuideSnapshot, type GuideState, type Message, type MessageImage, type Mode } from "@/lib/journal/model";
 import { companionPresets } from "@/lib/journal/presets";
 import { addDays, onThisDay, streak, weekDays, weekStart } from "@/lib/journal/stats";
 
 export const choiceInk = (tone: MuseTone) => ({ "--choice-ink": `var(--chart-${tone})`, "--choice-ink-b": `var(--chart-${(tone % 8) + 1})` }) as React.CSSProperties;
 type Pending = { kind: "opening" } | { kind: "reply"; messageId: string };
-const unfinished = (c: Conversation) => c.status === "draft" ? Boolean(c.draft.trim()) : c.status === "active" && (c.messageCount > 0 || Boolean(c.draft.trim()));
+const unfinished = (c: Conversation) => c.status === "draft" ? Boolean(c.draft.trim() || Object.values(c.guideState.answers ?? {}).some((v) => v.trim())) : c.status === "active" && (c.messageCount > 0 || Boolean(c.draft.trim()));
 
 /**
  * The Journal workspace ("Open Journal. Start talking. Everything else is in the toolbar."). Opening Journal lands
@@ -62,6 +63,15 @@ function Page({ initialId, onRouteClear, continueFrom, onCreated }: { initialId:
   const reference = conv ? (conv.continuesId || conv.continuesTitle ? { id: conv.continuesId, title: conv.continuesTitle || (refSource ? entryTitle(refSource) : "An earlier entry"), date: conv.continuesDate ?? refSource?.localDate ?? "" } : null)
     : pendingRef && refSource ? { id: refSource.id, title: entryTitle(refSource), date: refSource.localDate } : null;
   const [refPreview, setRefPreview] = useState(false);
+  // Guided entries: a guide chosen for the next entry (or the journal's default), or the copy an entry began with.
+  const [pendingGuide, setPendingGuide] = useState<string | null>(null), [skipDefault, setSkipDefault] = useState(false);
+  const guideSource: Guide | null = !conv ? state.guides.find((g) => !g.archivedAt && g.id === (pendingGuide ?? (!skipDefault && !pendingRef ? journal.defaultGuideId : null))) ?? null : null;
+  const guide: GuideSnapshot | null = conv?.guideSnapshot ?? (guideSource ? snapshotOf(guideSource) : null);
+  const [gState, setGState] = useState<GuideState>({});
+  const gKey = conv ? conv.id : `new:${guideSource?.id ?? ""}`;
+  const [gFor, setGFor] = useState<string | null>(null);
+  if (gFor !== gKey) { const keep = Boolean(gFor?.startsWith("new:") && conv); setGFor(gKey); if (!keep) setGState(conv?.guideState ?? {}); }
+  const gTimer = useRef<number | undefined>(undefined);
   const companion = conv ? state.companions.find((c) => c.id === conv.companionId) ?? null : state.companions.find((c) => c.id === nextCompanionId && !c.archivedAt) ?? fallback;
   const tone = (state.journals.find((x) => x.id === (conv?.journalId ?? journal.id)) ?? journal).tone;
 
@@ -113,7 +123,7 @@ function Page({ initialId, onRouteClear, continueFrom, onCreated }: { initialId:
       const done = await aiStream<{ message: Message }>(pending.kind === "opening" ? { action: "opening", conversationId: id, localDate: today, hour: new Date().getHours() } : { action: "reply", conversationId: id, messageId: pending.messageId, localDate: today },
         (d) => setStream((s) => (s ? { ...s, text: s.text + d } : s)));
       const m = done.message as unknown as Record<string, string>;
-      setMessages((list) => [...list, { id: m.id, role: "assistant", body: m.body, createdAt: m.created_at, correctedAt: null, companionVersionId: m.companion_version_id }]);
+      setMessages((list) => [...list, { id: m.id, role: "assistant", body: m.body, createdAt: m.created_at, correctedAt: null, companionVersionId: m.companion_version_id, replyTo: m.reply_to ?? null }]);
       const v = await P.versionsByIds(client, userId, [m.companion_version_id]).catch(() => new Map());
       setVersions((old) => new Map([...old, ...v]));
       void j.refreshAi(); void j.refreshConversation(id);
@@ -133,12 +143,12 @@ function Page({ initialId, onRouteClear, continueFrom, onCreated }: { initialId:
   }, [client, userId, today, j]);
 
   /** Creates the entry only when needed (first Send, or "ask to begin"). Reuses this page's saved draft entry. */
-  async function ensureEntry(status: "active" | "draft", draft?: string): Promise<Conversation | null> {
+  async function ensureEntry(status: "active" | "draft", draft?: string, guideState?: GuideState): Promise<Conversation | null> {
     if (conv) return conv;
     const existing = draftEntry ? state.conversations.find((c) => c.id === draftEntry) : null;
     if (existing) return existing;
     // One entry per page: a draft save and a first Send share the same creation, never making two entries.
-    if (!creating.current) creating.current = j.startConversation({ journalId: journal.id, companion: ai.enabled ? companion : null, mode, status, draft, continues: pendingRef && refSource ? { id: refSource.id, title: entryTitle(refSource), date: refSource.localDate } : null }).then((c) => { if (c) { setDraftEntry(c.id); if (pendingRef) onCreated?.(c.id); } return c ?? null; }).finally(() => { setTimeout(() => { creating.current = null; }, 0); });
+    if (!creating.current) creating.current = j.startConversation({ journalId: journal.id, companion: ai.enabled ? companion : null, mode, status, draft, continues: pendingRef && refSource ? { id: refSource.id, title: entryTitle(refSource), date: refSource.localDate } : null, guide: guideSource ? { id: guideSource.id, snapshot: snapshotOf(guideSource), state: guideState ?? {} } : null }).then((c) => { if (c) { setDraftEntry(c.id); if (pendingRef || guideSource) onCreated?.(c.id); } return c ?? null; }).finally(() => { setTimeout(() => { creating.current = null; }, 0); });
     return creating.current;
   }
   const [attachments, setAttachments] = useState<Attachment[]>([]);
@@ -200,8 +210,17 @@ function Page({ initialId, onRouteClear, continueFrom, onCreated }: { initialId:
     if (ai.enabled && companion) void ask(c.id, { kind: "opening" });
   }
   async function finish() {
-    if (!conv) return;
-    const fresh = await j.refreshConversation(conv.id) ?? conv;
+    let c = conv;
+    if (!c && guide) c = await ensureEntry("active", undefined, gState);
+    if (!c) return;
+    if (guide) { // every answer not yet sent becomes a message under its question, in order
+      window.clearTimeout(gTimer.current);
+      for (const q of guide.questions) {
+        const text = (gState.answers?.[q.id] ?? "").trim();
+        if (text && !(gState.sent ?? []).includes(q.id) && !messages.some((m) => m.guideQuestionId === q.id)) await postAnswer(c, q, text);
+      }
+    }
+    const fresh = await j.refreshConversation(c.id) ?? c;
     const done = await j.finish(fresh);
     if (!done) return;
     celebrate({ kind: "constellation", tier: "small", stars: 3, message: "Sealed in your journal.", sound: "seal", key: `journal-finish:${done.id}` });
@@ -213,7 +232,34 @@ function Page({ initialId, onRouteClear, continueFrom, onCreated }: { initialId:
     if (conv) void j.updateMeta({ ...conv, continuesId: null, continuesTitle: "", continuesDate: null });
     else { setPendingRef(null); onRouteClear(); }
   }
-  function fresh() { setPendingRef(null); setConvId(null); setMessages([]); setError(null); setSaved(null); setGreetNote(""); setMode("open"); setDraftEntry(null); onRouteClear(); }
+  /** Answers save like a draft; the first real answer creates the entry (never an empty one). */
+  function updateGuide(next: GuideState) {
+    setGState(next);
+    window.clearTimeout(gTimer.current);
+    gTimer.current = window.setTimeout(() => {
+      const has = Object.values(next.answers ?? {}).some((v) => v.trim());
+      void (async () => { const c = conv ?? (has ? await ensureEntry("draft", undefined, next) : null); if (c) await P.saveGuideState(client, userId, c.id, next).catch(() => undefined); })();
+    }, 700);
+  }
+  async function postAnswer(c: Conversation, q: GuideQuestion, text: string) {
+    const m = await P.addMessage(client, userId, { id: newId(), conversationId: c.id, body: text, localDate: today, guideQuestionId: q.id, guideQuestion: q.text });
+    setMessages((list) => [...list, m]); return m;
+  }
+  /** Only when the guide allows it and you ask: one answer becomes a message and the companion replies to it. */
+  async function talkAbout(q: GuideQuestion, text: string) {
+    window.clearTimeout(gTimer.current);
+    const c = conv ?? await ensureEntry("active", undefined, gState); if (!c) return;
+    setSending(true); setError(null);
+    try {
+      const m = await postAnswer(c, q, text);
+      const next = { ...gState, sent: [...new Set([...(gState.sent ?? []), q.id])] };
+      setGState(next); await P.saveGuideState(client, userId, c.id, next).catch(() => undefined);
+      if (!convId || c.status === "draft") { setConvId(c.id); setLoadedFor(c.id); }
+      void j.refreshConversation(c.id); setSending(false);
+      if (aiOn) void ask(c.id, { kind: "reply", messageId: m.id });
+    } catch (e) { setSending(false); setError({ text: e instanceof Error ? e.message : "Not saved." }); }
+  }
+  function fresh() { setPendingGuide(null); setSkipDefault(false); setPendingRef(null); setConvId(null); setMessages([]); setError(null); setSaved(null); setGreetNote(""); setMode("open"); setDraftEntry(null); onRouteClear(); }
   /** New entry, deliberately: a fresh page, and (if chosen in preferences) one greeting from the companion. */
   function newEntry() {
     fresh();
@@ -264,6 +310,7 @@ function Page({ initialId, onRouteClear, continueFrom, onCreated }: { initialId:
     <JournalToolbar journal={journal} companion={companion} defaultCompanionId={fallback?.id ?? null}
       onJournal={switchJournal} onCompanion={switchCompanion} onMakeDefault={(c) => void j.setDefaultCompanion(journal, c.id)}
       conversationNote={conv ? <>Replies from now on use {companion?.name ?? "this companion"}{pinned ? ` (version ${pinned.version})` : ""}. Earlier replies keep their words.{companion && pinned && companion.version > pinned.version ? ` ${companion.name} has newer saved words (version ${companion.version}): choose it again to use them.` : ""}</> : undefined}
+      onStartGuide={(g) => { fresh(); setPendingGuide(g.id); }}
       extra={<>
         <button type="button" className="muse-button button-ghost mj-tb-new" onClick={() => newEntry()} disabled={streaming} title={state.prefs.greetOnNew && aiOn ? `Start a new entry; ${companion!.name.replace(/^The /, "")} greets you` : "Start a new entry"} aria-label="New entry"><MuseIcon name="plus" size={16} /><span className="mj-tb-label">New entry</span></button>
         {entryActions.length > 0 && <MuseOverflowMenu label="This entry" actions={entryActions} />}
@@ -290,6 +337,13 @@ function Page({ initialId, onRouteClear, continueFrom, onCreated }: { initialId:
       </MuseModal>}
       {greetNote && !shown.length && <p className="mj-note mj-greet-note" role="status">{greetNote}</p>}
       {saved && <p className="mj-saved" role="status"><MuseIcon name="check" size={15} /> Saved “{entryTitle(saved)}”. <Link href={`/journal?entry=${saved.id}`}>Open it</Link>{saved.analysisStatus === "pending" && " · the analysis is on its way"}</p>}
+      {guide ? <>
+        <GuidedEntry guide={guide} state={gState} onState={updateGuide} messages={shown} stream={stream ? { text: stream.text, messageId: stream.pending.kind === "reply" ? stream.pending.messageId : null } : null}
+          companion={companion ? { name: companion.name, icon: companion.icon, tone: companion.tone } : null} canTalk={guide.companion && aiOn} busy={sending || streaming} dock={dock}
+          onTalk={(q, text) => void talkAbout(q, text)} onFinish={() => setConfirmFinish(true)} onLeave={!conv ? () => { setPendingGuide(null); setSkipDefault(true); } : undefined}
+          finishDisabled={streaming || sending || confirmFinish || !(userCount || Object.values(gState.answers ?? {}).some((v) => v.trim()))} />
+        {error && <div className="mj-error" role="alert"><span>{error.text}</span>{error.retry && conv && <button type="button" className="muse-button" onClick={() => void ask(conv.id, error.retry!)}>Ask again</button>}</div>}
+      </> : <>
       {!shown.length && !stream ? <BlankHead tone={tone} mode={conv?.mode ?? mode} /> : <p className="mj-ws-date muse-kicker type-meta">{formatDay(conv?.localDate ?? today)}{(conv?.mode ?? mode) !== "open" && ` · ${(conv?.mode ?? mode) === "morning" ? "Morning intention" : "Evening reflection"}`}{conv?.memoryOff && " · not using your journal history"}</p>}
       {!loaded ? <p className="small-label" role="status">Opening your entry…</p> : <Thread messages={display} onReattach={conv && conv.status !== "completed" ? reattach : undefined} companion={companion ? { name: companion.name, icon: companion.icon, tone: companion.tone } : null} companionFor={whoFor} timeZone={timeZone} />}
       {stream && !stream.text && <Thinking name={whoFor({ companionVersionId: conv?.companionVersionId ?? null } as ThreadMessage).name} />}
@@ -301,6 +355,7 @@ function Page({ initialId, onRouteClear, continueFrom, onCreated }: { initialId:
         onSend={send} onDraft={(text) => void saveDraft(text)} label="Write or dictate" dock={dock} attachments={attachments} onAttachments={setAttachments}
         sendLabel={userCount ? (aiOn ? "Go deeper" : "Add to entry") : "Send"}
         secondary={userCount ? { label: "Finish entry", disabled: streaming || sending || confirmFinish, onClick: () => setConfirmFinish(true) } : undefined} />
+      </>}
       <div ref={end} />
     </div>
     <div className="mj-live-compose">

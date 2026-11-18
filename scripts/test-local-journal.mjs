@@ -144,6 +144,25 @@ try{
  assert.equal((await b.client.from('journal_tag_corrections').select('id')).data.length,0,'corrections are private');
  assert.ok((await b.client.from('journal_tag_corrections').insert({kind:'person',from_name:'x',to_tag_id:sun.id})).error,'another account cannot point a correction at my tag');
 
+ // Guided Journals: my guides only; an entry keeps the guide as it began; answers save like a draft; questions travel with answers.
+ const gid=crypto.randomUUID(),guide={id:gid,name:'Tarot',description:'',icon:'🔮',intro:'',mode:'steps',companion:false,questions:[{id:'q1',text:'What cards did you draw?',optional:false},{id:'q2',text:'Anything reversed?',optional:true}],version:1,archivedAt:null,revision:1,createdAt:''};
+ const savedGuide=await P.saveGuide(a.client,a.id,guide,true,false);assert.equal(savedGuide.questions.length,2);
+ assert.equal((await b.client.from('journal_guides').select('id').eq('id',gid)).data.length,0,'guides are private');
+ const ge=await P.createConversation(a.client,a.id,{id:crypto.randomUUID(),journalId:everyday.id,companion:null,mode:'open',localDate:today,timeZone:'UTC',status:'draft',guide:{id:gid,snapshot:{name:'Tarot',icon:'🔮',intro:'',mode:'steps',companion:false,questions:savedGuide.questions,version:1},state:{answers:{q1:'The Star'}}}});
+ assert.equal(ge.guideSnapshot.questions[0].text,'What cards did you draw?');assert.equal(ge.guideState.answers.q1,'The Star');
+ await P.saveGuideState(a.client,a.id,ge.id,{answers:{q1:'The Star, the Moon'},step:1});
+ const ge2=await P.refreshConversation(a.client,a.id,ge.id);assert.equal(ge2.revision,ge.revision,'saving answers never bumps the revision');assert.equal(ge2.guideState.step,1);
+ const edited2=await P.saveGuide(a.client,a.id,{...savedGuide,questions:[{id:'q1',text:'Which cards came up?',optional:false}]},false,true);assert.equal(edited2.version,2,'changing the questions is a new version');
+ assert.equal((await P.refreshConversation(a.client,a.id,ge.id)).guideSnapshot.questions[0].text,'What cards did you draw?','an entry keeps the questions it began with');
+ const ans=await P.addMessage(a.client,a.id,{id:crypto.randomUUID(),conversationId:ge.id,body:'The Star',localDate:today,guideQuestionId:'q1',guideQuestion:'What cards did you draw?'});
+ assert.equal(ans.guideQuestion,'What cards did you draw?','an answer remembers its question as written');
+ await P.saveJournal(a.client,a.id,{...everyday,defaultGuideId:gid,revision:(await P.loadJournal(a.client,a.id)).journals.find(x=>x.id===everyday.id).revision});
+ assert.ok((await b.client.from('journal_conversations').insert({journal_id:everyday.id,mode:'open',status:'draft',local_date:today,time_zone:'UTC',guide_id:gid})).error,'another account cannot use my guide');
+ await P.deleteGuide(a.client,a.id,gid);
+ const st2=await P.loadJournal(a.client,a.id);assert.equal(st2.journals.find(x=>x.id===everyday.id).defaultGuideId,null,'deleting a guide clears a journal default');
+ const ge3=await P.refreshConversation(a.client,a.id,ge.id);assert.equal(ge3.guideId,null);assert.equal(ge3.guideSnapshot.name,'Tarot','and the entry keeps its copy of the guide');
+ await P.deleteConversation(a.client,a.id,ge.id);
+
  // Search and journal days.
  const hits=await P.searchJournal(a.client,'lisbon');assert.equal(hits[0].conversationId,conv.id);assert.match(hits[0].snippet,/Lisbon/);
  assert.deepEqual(await P.searchJournal(b.client,'lisbon'),[],'search never crosses accounts');

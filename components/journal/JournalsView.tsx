@@ -12,7 +12,7 @@ import { covers, journalIcons, journalPresets, companionPresets } from "@/lib/jo
 import { isListed, type Companion, type Journal, type MemoryScope } from "@/lib/journal/model";
 
 const scopeLabel: Record<MemoryScope, string> = { shared: "Shares memory with your other journals", journal: "Remembers only this journal", off: "No memory" };
-export const blankJournal = (position: number): Journal => ({ id: newId(), name: "", description: "", icon: "journal", tone: 5, cover: "dusk", defaultCompanionId: null, instructions: "", morningInstructions: "", eveningInstructions: "", memoryScope: "shared", presetKey: null, position, archivedAt: null, revision: 0, createdAt: "" });
+export const blankJournal = (position: number): Journal => ({ id: newId(), name: "", description: "", icon: "journal", tone: 5, cover: "dusk", defaultCompanionId: null, defaultGuideId: null, instructions: "", morningInstructions: "", eveningInstructions: "", memoryScope: "shared", presetKey: null, position, archivedAt: null, revision: 0, createdAt: "" });
 export const blankCompanion = (position: number): Companion => ({ id: newId(), name: "", description: "", icon: "sparkle", tone: 6, instructions: "", conversationPrefs: "", openingStyle: "", presetKey: null, preferredJournalId: null, version: 1, position, archivedAt: null, revision: 0, createdAt: "", updatedAt: "" });
 
 /**
