@@ -6,7 +6,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database, Json } from "@/lib/database.types";
 import {
   analysisFromRow, bookmarkFromRow, companionFromRow, companionToRow, conversationFromRow, conversationMetaToRow, journalFromRow, journalToRow, memoryFromRow, messageFromRow, messageImageFromRow, type MessageImage, preferencesFromRow, tagFromRow, versionFromRow,
-  cleanTagName, type Analysis, type Bookmark, type HighlightTag, type TagCorrection, type Companion, type CompanionVersion, type Conversation, type EntryLink, type EntryTag, type Journal, type Memory, type Message, type Mode, type Preferences, type Report, type Tag, type TagKind, reportFromRow, type Correction,
+  cleanTagName, type Analysis, type Bookmark, type HighlightTag, type TagCorrection, type Guide, type GuideSnapshot, type GuideState, guideFromRow, type Companion, type CompanionVersion, type Conversation, type EntryLink, type EntryTag, type Journal, type Memory, type Message, type Mode, type Preferences, type Report, type Tag, type TagKind, reportFromRow, type Correction,
 } from "./model";
 import { companionPresets, journalPresets } from "./presets";
 
@@ -19,11 +19,11 @@ const one = <T,>(r: { data: T | null; error: unknown }, stale = STALE): T => { i
 
 export type JournalState = {
   prefs: Preferences; journals: Journal[]; companions: Companion[]; conversations: Conversation[]; tags: Tag[]; entryTags: EntryTag[];
-  bookmarks: Bookmark[]; memories: Memory[]; links: EntryLink[]; highlightTags: HighlightTag[]; corrections: TagCorrection[];
+  bookmarks: Bookmark[]; memories: Memory[]; links: EntryLink[]; highlightTags: HighlightTag[]; corrections: TagCorrection[]; guides: Guide[];
 };
 /** Metadata only; messages load per entry. Personal archives stay small enough to filter on the device. */
 export async function loadJournal(client: Client, userId: string): Promise<JournalState> {
-  const [p, j, c, v, t, et, b, m, l, ht, tc] = await Promise.all([
+  const [p, j, c, v, t, et, b, m, l, ht, tc, gd] = await Promise.all([
     client.from("journal_preferences").select("*").eq("user_id", userId).maybeSingle(),
     client.from("journal_journals").select("*").eq("user_id", userId).order("position").order("created_at").limit(500),
     client.from("journal_companions").select("*").eq("user_id", userId).order("position").order("created_at").limit(500),
@@ -35,6 +35,7 @@ export async function loadJournal(client: Client, userId: string): Promise<Journ
     client.from("journal_links").select("conversation_id,kind,target_id,label").eq("user_id", userId).limit(10000),
     client.from("journal_highlight_tags").select("highlight_id,tag_id").eq("user_id", userId).limit(20000),
     client.from("journal_tag_corrections").select("id,kind,from_name,to_tag_id,times").eq("user_id", userId).order("updated_at", { ascending: false }).limit(2000),
+    client.from("journal_guides").select("*").eq("user_id", userId).order("created_at").limit(500),
   ]);
   return {
     prefs: preferencesFromRow(must(p)), journals: must(j).map(journalFromRow), companions: must(c).map(companionFromRow), conversations: must(v).map(conversationFromRow),
@@ -43,6 +44,7 @@ export async function loadJournal(client: Client, userId: string): Promise<Journ
     // An environment without the highlight tags table yet still loads.
     highlightTags: (ht.error ? [] : ht.data ?? []).map((x) => ({ highlightId: x.highlight_id, tagId: x.tag_id })),
     corrections: (tc.error ? [] : tc.data ?? []).map((x) => ({ id: x.id, kind: x.kind as TagKind, fromName: x.from_name, toTagId: x.to_tag_id, times: x.times })),
+    guides: (gd.error ? [] : gd.data ?? []).map(guideFromRow),
   };
 }
 
@@ -94,13 +96,14 @@ export async function savePreferences(client: Client, userId: string, p: Prefere
 }
 
 /** Starts a conversation, pinning the Companion's current saved version. */
-export async function createConversation(client: Client, userId: string, o: { id: string; journalId: string; companion: Companion | null; mode: Mode; localDate: string; timeZone: string; status: "draft" | "active"; draft?: string; continues?: { id: string; title: string; date: string } | null }): Promise<Conversation> {
+export async function createConversation(client: Client, userId: string, o: { id: string; journalId: string; companion: Companion | null; mode: Mode; localDate: string; timeZone: string; status: "draft" | "active"; draft?: string; continues?: { id: string; title: string; date: string } | null; guide?: { id: string; snapshot: GuideSnapshot; state?: GuideState } | null }): Promise<Conversation> {
   let versionId: string | null = null;
   if (o.companion) { const v = await client.from("journal_companion_versions").select("id").eq("user_id", userId).eq("companion_id", o.companion.id).eq("version", o.companion.version).maybeSingle(); if (v.error) fail(v.error); versionId = v.data?.id ?? null; }
   return conversationFromRow(must(await client.from("journal_conversations").insert({
     id: o.id, user_id: userId, journal_id: o.journalId, companion_id: o.companion?.id ?? null, companion_version_id: versionId, companion_name: o.companion?.name ?? "", mode: o.mode,
     local_date: o.localDate, time_zone: o.timeZone, status: o.status, draft: o.draft ?? "", draft_updated_at: o.draft ? new Date().toISOString() : null,
     ...(o.continues ? { continues_id: o.continues.id, continues_title: o.continues.title.slice(0, 200), continues_date: o.continues.date } : {}),
+    ...(o.guide ? { guide_id: o.guide.id, guide_snapshot: o.guide.snapshot as unknown as Json, guide_state: (o.guide.state ?? {}) as unknown as Json } : {}),
   }).select("*").single()));
 }
 /** Drafts save often and never conflict with metadata edits (they don't bump the revision). */
@@ -149,8 +152,8 @@ export async function loadMessages(client: Client, userId: string, conversationI
   return { messages: must(m).map(messageFromRow).map((x) => { const mine = images.filter((i) => i.messageId === x.id); return mine.length ? { ...x, images: mine } : x; }), corrections: must(c).map((x) => ({ id: x.id, messageId: x.message_id, previousBody: x.previous_body, correctedAt: x.corrected_at })) };
 }
 /** Saves one of your messages. The id comes from the device, so a retried save never makes a second copy. */
-export async function addMessage(client: Client, userId: string, o: { id: string; conversationId: string; body: string; localDate: string }): Promise<Message> {
-  const r = await client.from("journal_messages").insert({ id: o.id, user_id: userId, conversation_id: o.conversationId, role: "user", body: o.body, local_date: o.localDate }).select("*").single();
+export async function addMessage(client: Client, userId: string, o: { id: string; conversationId: string; body: string; localDate: string; guideQuestionId?: string | null; guideQuestion?: string | null }): Promise<Message> {
+  const r = await client.from("journal_messages").insert({ id: o.id, user_id: userId, conversation_id: o.conversationId, role: "user", body: o.body, local_date: o.localDate, ...(o.guideQuestionId ? { guide_question_id: o.guideQuestionId.slice(0, 64), guide_question: (o.guideQuestion ?? "").slice(0, 500) } : {}) }).select("*").single();
   if (r.error?.code === "23505") return messageFromRow(must(await client.from("journal_messages").select("*").eq("id", o.id).eq("user_id", userId).single()));
   return messageFromRow(must(r));
 }
@@ -199,6 +202,18 @@ export async function recordCorrection(client: Client, userId: string, kind: Tag
   return { id: r.id, kind: r.kind as TagKind, fromName: r.from_name, toTagId: r.to_tag_id, times: r.times };
 }
 export async function deleteCorrection(client: Client, userId: string, id: string) { must(await client.from("journal_tag_corrections").delete().eq("id", id).eq("user_id", userId).select("id")); }
+/** Guides: plain records, no AI. A change to the questions, intro, mode or companion setting is a new version; past
+ *  entries keep the copy they began with. */
+export async function saveGuide(client: Client, userId: string, g: Guide, isNew: boolean, newVersion: boolean): Promise<Guide> {
+  const row = { name: g.name.trim().slice(0, 80) || "Guide", description: g.description.slice(0, 400), icon: g.icon.slice(0, 16), intro: g.intro.slice(0, 2000), mode: g.mode, companion: g.companion, questions: g.questions.filter((q) => q.text.trim()).slice(0, 30).map((q) => ({ id: q.id, text: q.text.trim().slice(0, 500), optional: q.optional })) as unknown as Json, archived_at: g.archivedAt };
+  if (isNew) return guideFromRow(must(await client.from("journal_guides").insert({ id: g.id, user_id: userId, ...row }).select("*").single()));
+  return guideFromRow(one(await client.from("journal_guides").update({ ...row, ...(newVersion ? { version: g.version + 1 } : {}) }).eq("id", g.id).eq("user_id", userId).eq("revision", g.revision).select("*").maybeSingle()));
+}
+export async function deleteGuide(client: Client, userId: string, id: string) { must(await client.from("journal_guides").delete().eq("id", id).eq("user_id", userId).select("id")); }
+/** Answers in progress, saved like a draft (no revision bump). */
+export async function saveGuideState(client: Client, userId: string, conversationId: string, state: GuideState) {
+  must(await client.from("journal_conversations").update({ guide_state: state as unknown as Json }).eq("id", conversationId).eq("user_id", userId).neq("status", "completed").select("id"));
+}
 export async function deleteTag(client: Client, userId: string, id: string) { must(await client.from("journal_tags").delete().eq("id", id).eq("user_id", userId).select("id")); }
 export async function mergeTags(client: Client, from: string, into: string): Promise<Tag> {
   const r = must(await client.rpc("merge_journal_tags", { p_from: from, p_into: into })) as Database["public"]["Tables"]["journal_tags"]["Row"][];

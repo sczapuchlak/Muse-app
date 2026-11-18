@@ -783,3 +783,68 @@
 @keyframes mj-hl-pill-in{from{opacity:0;transform:translateY(-4px)}}
 @keyframes mj-hl-pill-side{from{opacity:0;transform:translateX(-6px)}}
 @media (prefers-reduced-motion:reduce){.mj-hl-pill-wrap{animation:none}.mj-hl-pill:hover{transform:none}}
+
+/* ── Guided entries: an editorial page of questions, calm writing surfaces, a subtle progress line ─────────────── */
+.mj-guided{display:grid;gap:18px;width:100%;max-width:760px;margin:0 auto}
+.mj-guide-head{display:grid;gap:6px}
+.mj-guide-head>*{margin:0}
+.mj-guide-title{font-size:clamp(1.8rem,3vw,2.4rem);line-height:1.1}
+.mj-guide-intro{color:var(--text-muted);font-size:1.02rem}
+.mj-guide-leave{justify-self:start}
+.mj-guide-progress{display:flex;gap:6px;margin:6px 0 0;padding:0;list-style:none}
+.mj-guide-progress button{display:block;width:26px;height:6px;padding:0;border:0;border-radius:999px;background:color-mix(in srgb,var(--foreground) 14%,transparent);cursor:pointer;transition:background var(--motion-hover,180ms),width var(--motion-settle,260ms) var(--mj-ease)}
+.mj-guide-progress button[data-done]{background:color-mix(in srgb,var(--journal-a,var(--accent-primary)) 55%,transparent)}
+.mj-guide-progress button[aria-current="step"]{width:44px;background:linear-gradient(90deg,var(--journal-a,var(--accent-primary)),var(--journal-b,var(--accent-secondary)))}
+.mj-guide-progress button:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
+.mj-guide-count{margin:0 0 6px;color:var(--text-muted);letter-spacing:.12em;text-transform:uppercase}
+.mj-guide-step{animation:mj-guide-in var(--motion-settle,280ms) var(--mj-ease) both}
+@keyframes mj-guide-in{from{opacity:0;transform:translateX(10px)}}
+.mj-guide-all{display:grid;gap:14px}
+.mj-guide-card{display:grid;gap:10px;padding:18px 20px;border:1px solid var(--glass-border);border-radius:var(--mj-radius,18px);background:var(--mj-tile);animation:mj-rise var(--motion-settle,260ms) var(--mj-ease) both;animation-delay:calc(var(--i,0) * 40ms)}
+.mj-guide-question{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 10px;margin:0;font-size:1.18rem;line-height:1.35}
+.mj-guide-num{display:inline-grid;place-items:center;flex:none;min-width:26px;height:26px;border-radius:999px;background:color-mix(in srgb,var(--journal-a,var(--accent-primary)) 16%,transparent);color:var(--journal-a,var(--accent-primary));font-size:.8rem;font-weight:700}
+.mj-guide-card textarea{width:100%;min-height:96px;padding:10px 0 10px 14px;border:0;border-left:2px solid color-mix(in srgb,var(--journal-a,var(--accent-primary)) 30%,transparent);border-radius:0;background:transparent;font-size:1.04rem;line-height:1.65;resize:none}
+.mj-guide-card textarea:focus{outline:none;border-left-color:var(--journal-a,var(--accent-primary))}
+.mj-guide-talk{justify-self:start}
+.mj-guide-card .mj-thread{gap:18px}
+.mj-guide-nav{display:flex;gap:8px}
+.mj-guide-dock[data-paired] .mj-composer-bar{display:flex;justify-content:space-between}
+.mj-guide-dock .mj-composer-bar>.muse-button{min-width:150px;justify-content:center}
+.mj-guide-asked{display:flex;align-items:baseline;gap:4px;margin:0 0 -2px;color:var(--journal-a,var(--accent-primary));font-family:var(--font-editorial);font-style:italic;font-size:.98rem;letter-spacing:0;text-transform:none}
+.mj-row-guide{color:var(--foreground)}
+.mj-menu-head{margin:4px 2px 2px;color:var(--text-muted);letter-spacing:.1em;text-transform:uppercase}
+.mj-menu-guide{display:flex;align-items:center;gap:2px}
+.mj-menu-guide>.popover-choice{flex:1;min-width:0}
+.mj-menu-emoji{display:inline-grid;place-items:center;width:20px}
+.mj-guide-form .mj-form-row{display:grid;grid-template-columns:90px minmax(0,1fr);gap:10px}
+.mj-guide-examples{display:grid;gap:6px}
+.mj-guide-questions{display:grid;gap:10px;margin:0;padding:0;border:0}
+.mj-guide-questions ol{display:grid;gap:10px;margin:0;padding:0;list-style:none}
+.mj-guide-q-row{display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 10px;align-items:start}
+.mj-guide-q-row textarea{width:100%}
+.mj-guide-q-tools{grid-column:2;display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.mj-guide-q-tools .mj-toggle{margin-right:auto}
+@container muse-content (max-width:640px){
+ .mj-guide-card{padding:14px}
+ .mj-guide-dock .mj-composer-bar>.muse-button{min-width:0;flex:1}
+ .mj-guide-dock[data-paired]{grid-template-columns:minmax(0,1fr)}
+ .mj-guide-form .mj-form-row{grid-template-columns:72px minmax(0,1fr)}
+}
+@media (prefers-reduced-motion:reduce){.mj-guide-step,.mj-guide-card{animation:none}.mj-guide-progress button{transition:none}}
+/* The guided bar is its own layout (not the composer's): a status line, then Back/Skip and Next/Finish in one row. */
+.mj-composer-dock.mj-guide-dock,.mj-composer-dock.mj-guide-dock[data-paired]{grid-template-columns:minmax(0,1fr);gap:6px}
+.mj-composer-dock.mj-guide-dock .mj-composer-tools{display:flex;min-height:0;padding:0}
+.mj-composer-dock.mj-guide-dock .mj-composer-hint,.mj-composer-dock.mj-guide-dock .mj-composer-hint[data-live]{position:static;display:block;padding:0;background:none;color:var(--text-muted)}
+.mj-composer-dock.mj-guide-dock .mj-composer-bar{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.mj-composer-dock.mj-guide-dock .mj-composer-bar>.muse-button{width:auto;min-width:160px;min-height:46px;justify-content:center}
+.mj-composer-dock.mj-guide-dock .mj-guide-nav .muse-button{min-height:46px}
+@container muse-content (max-width:640px){
+ .mj-composer-dock.mj-guide-dock .mj-composer-bar>.muse-button{min-width:0;flex:1 1 auto}
+ .mj-composer-dock.mj-guide-dock .mj-guide-nav{flex:none}
+}
+/* Guided prompts: one compact group inside a journal's settings. */
+.mj-guided-prompts{display:grid;gap:12px;padding:14px 16px;border:1px solid color-mix(in srgb,var(--journal-a,var(--accent-primary)) 28%,var(--glass-border));border-radius:16px;background:var(--mj-tile)}
+.mj-guided-switch{align-items:flex-start}
+.mj-guided-switch>span{display:grid;gap:2px}
+.mj-guided-switch small{color:var(--text-muted);line-height:1.4}
+.mj-guided-prompts .mj-guide-form{display:grid;gap:12px}

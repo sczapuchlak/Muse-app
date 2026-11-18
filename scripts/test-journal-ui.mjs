@@ -415,6 +415,69 @@ try{
  check(await count('journal_ai_usage',a.id)===usageBeforeTags,'managing tags made no AI request');
  await evaluate(()=>document.querySelector('#mj-settings')?.dispatchEvent(new Event('cancel')));
 
+ // ---- Guided prompts belong to a journal: set them up in the journal's settings; the journal decides; no guide picker ----
+ const journalMenu=async()=>{await click('.mj-header-toolbar button.mj-tb-button','Journal');await until(()=>!!document.querySelector('#mj-tb-journal'),'journal menu');};
+ await go('/journal','!!document.querySelector(".mj-header-toolbar")','workspace for guided journals');
+ check(await has('.mj-ws-page .mj-composer textarea'),'an everyday (freeform) journal opens the composer');
+ await journalMenu();check(!(await has('#mj-tb-journal','New guide'))&&!(await has('#mj-tb-journal','Guided entries')),'there is no separate guide to create or pick');
+ await click('#mj-tb-journal button','New journal');await until(()=>!!document.querySelector('#mj-journal-editor'),'journal editor');
+ await setValue('#mj-journal-editor input[type=text]','Spanish Journal');
+ await click('#mj-journal-editor .mj-guided-switch input');await until(()=>!!document.querySelector('#mj-journal-editor .mj-guide-examples'),'guided section');
+ await click('#mj-journal-editor .mj-filter-chip','Spanish Practice');await until(()=>document.querySelectorAll('#mj-journal-editor .mj-guide-q-row').length===3,'questions');
+ await click('#mj-journal-editor button[aria-label="Move question 2 up"]');await evaluate(()=>document.querySelector('#mj-journal-editor .mj-guided-prompts').scrollIntoView({block:'start'}));await shoot('16a-journal-guided-settings');
+ await click('#mj-journal-editor button[type=submit]','Save');await until(()=>!document.querySelector('#mj-journal-editor'),'journal saved');
+ const spanish=must(await admin.from('journal_journals').select('id,guided,default_guide_id').eq('user_id',a.id).eq('name','Spanish Journal').single());
+ const spanishGuide=must(await admin.from('journal_guides').select('questions,mode,companion').eq('id',spanish.default_guide_id).single());
+ check(spanish.guided&&spanishGuide.questions.length===3&&spanishGuide.questions[0].text==='¿Qué fue lo mejor de tu día?'&&spanishGuide.companion,'one journal settings screen sets up the questions, their order and the companion option (no AI)');
+ const entriesBefore=await count('journal_conversations',a.id),privateReplies=await count('journal_ai_usage',a.id,{kind:'reply'});
+ await journalMenu();await click('#mj-tb-journal .popover-choice','Spanish Journal');
+ await until(()=>!!document.querySelector('.mj-guided .mj-guide-step'),'guided page');
+ check(await has('.mj-guide-count','Question 1 of 3')&&await count('journal_conversations',a.id)===entriesBefore,'choosing the Spanish Journal starts its questions automatically, and creates nothing yet');
+ await shoot('16-guided-step');
+ await setValue('.mj-guide-card textarea','Hoy trabajé mucho.');
+ for(let i=0;i<40&&await count('journal_conversations',a.id)===entriesBefore;i++)await wait(150);
+ const gEntry=must(await admin.from('journal_conversations').select('id,guide_snapshot,status').eq('user_id',a.id).eq('journal_id',spanish.id).single());
+ check(gEntry.status==='draft'&&gEntry.guide_snapshot.questions.length===3,'the first answer creates one draft entry with a copy of the questions');
+ await click('.mj-guide-dock button','Next');await until(()=>(document.querySelector('.mj-guide-count')?.textContent??'').includes('2 of 3'),'step 2');
+ await setValue('.mj-guide-card textarea','Fui al parque.');await click('.mj-guide-dock button','Next');
+ await until(()=>(document.querySelector('.mj-guide-count')?.textContent??'').includes('3 of 3'),'step 3');
+ check(await has('.mj-guide-dock button','Finish entry'),'the last question offers Finish entry');
+ // Changing companion never changes the journal's questions.
+ const otherCompanion=must(await admin.from('journal_companions').select('id,name').eq('user_id',a.id).neq('id',must(await admin.from('journal_conversations').select('companion_id').eq('id',gEntry.id).single()).companion_id??'00000000-0000-0000-0000-000000000000').limit(1));
+ if(otherCompanion.length){await click('.mj-header-toolbar button.mj-tb-button','Companion');await until(()=>!!document.querySelector('#mj-tb-companion'),'companion menu');await click('#mj-tb-companion .popover-choice',otherCompanion[0].name);await wait(400);}
+ check(must(await admin.from('journal_conversations').select('guide_snapshot').eq('id',gEntry.id).single()).guide_snapshot.questions.length===3&&await has('.mj-guide-count','3 of 3'),'switching companions keeps the journal’s questions and your place');
+ await wait(1000);
+ await go(`/journal?entry=${gEntry.id}`,'!!document.querySelector(".mj-guided")','guided reload');
+ check(await has('.mj-guide-count','3 of 3'),'a reload resumes the draft at the same question, without restarting');
+ await click('.mj-guide-progress button[aria-label="Question 1"]');await until(()=>document.querySelector('.mj-guide-card textarea')?.value==='Hoy trabajé mucho.','answer restored');
+ check(true,'with every answer you wrote');
+ await click('.mj-guide-progress button[aria-label="Question 3"]');await setValue('.mj-guide-card textarea','Descansar.');
+ await click('.mj-guide-dock button','Finish entry');await click('.mj-finish button','Finish & save');
+ for(let i=0;i<60&&must(await admin.from('journal_conversations').select('status').eq('id',gEntry.id).single()).status!=='completed';i++)await wait(200);
+ const gMsgs=must(await admin.from('journal_messages').select('body,guide_question,role').eq('conversation_id',gEntry.id).order('created_at'));
+ check(gMsgs.length===3&&gMsgs[0].guide_question==='¿Qué fue lo mejor de tu día?'&&gMsgs.every(m=>m.role==='user'),'Finish saves each answer under its question, in order');
+ check(await count('journal_ai_usage',a.id,{kind:'reply'})===privateReplies,'answering and moving between questions made no AI reply');
+ // Editing the journal's questions changes new entries only.
+ await go('/journal','!!document.querySelector(".mj-header-toolbar")','workspace again');await journalMenu();await click('#mj-tb-journal .popover-choice','Spanish Journal');await until(()=>!!document.querySelector('.mj-guided'),'spanish again');
+ await journalMenu();await click('#mj-tb-journal button','Rename or edit');await until(()=>!!document.querySelector('#mj-journal-editor .mj-guide-q-row'),'edit spanish');
+ await setValue('#mj-journal-editor textarea[aria-label="Question 1"]','¿Cómo te sientes?');await click('#mj-journal-editor button[type=submit]','Save');await until(()=>!document.querySelector('#mj-journal-editor'),'edited');
+ await until(()=>(document.querySelector('.mj-guide-card .mj-guide-question')?.textContent??'').includes('¿Cómo te sientes?'),'new questions on the next entry');
+ check(true,'the next new entry uses the edited questions');
+ await go(`/journal?entry=${gEntry.id}`,'!!document.querySelector(".mj-entry")','old guided entry');await click('.mj-entry .muse-segmented button','Conversation');
+ await until(()=>!!document.querySelector('.mj-guide-asked'),'questions shown');
+ check(await has('.mj-guide-asked','¿Qué fue lo mejor de tu día?')&&!(await has('.mj-guide-asked','¿Cómo te sientes?')),'the finished entry keeps the questions it was written with');
+ await go('/journal?view=history','!!document.querySelector(".mj-history-view")','history guided');await setValue('.mj-history-view input[type=search]','parque');
+ await until(()=>[...document.querySelectorAll('.mj-results .mj-row')].some(r=>r.textContent.includes('Spanish Journal')),'guided search');
+ check(true,'History finds a guided entry by its answers');
+ // Turning guided prompts off: the journal goes freeform; the questions are kept for later.
+ await go('/journal','!!document.querySelector(".mj-header-toolbar")','workspace for off');await journalMenu();await click('#mj-tb-journal .popover-choice','Spanish Journal');await until(()=>!!document.querySelector('.mj-guided'),'spanish for off');
+ await journalMenu();await click('#mj-tb-journal button','Rename or edit');await until(()=>!!document.querySelector('#mj-journal-editor .mj-guided-switch'),'edit again');
+ await click('#mj-journal-editor .mj-guided-switch input');await click('#mj-journal-editor button[type=submit]','Save');await until(()=>!document.querySelector('#mj-journal-editor'),'saved off');
+ await until(()=>!!document.querySelector('.mj-ws-page .mj-composer textarea')&&!document.querySelector('.mj-guided'),'freeform now');
+ const offJ=must(await admin.from('journal_journals').select('guided,default_guide_id').eq('id',spanish.id).single());
+ check(!offJ.guided&&offJ.default_guide_id===spanish.default_guide_id&&(must(await admin.from('journal_guides').select('questions').eq('id',spanish.default_guide_id).single()).questions.length===3),'turning guided prompts off opens the composer and keeps the questions');
+ await journalMenu();await click('#mj-tb-journal .popover-choice','My Journal');await until(()=>!!document.querySelector('.mj-ws-page .mj-composer textarea'),'back to my journal');
+
  // ---- Scenario D: a draft survives a reload ----
  await go('/journal','!!document.querySelector(".mj-workspace .mj-composer textarea")','workspace');
  const long=Array.from({length:60},(_,i)=>`Sentence ${i} of a long dictated thought about the day.`).join(' ');

@@ -15,7 +15,7 @@ export type Source = "user" | "ai";
 
 export type Companion = { id: string; name: string; description: string; icon: string; tone: MuseTone; instructions: string; conversationPrefs: string; openingStyle: string; presetKey: string | null; preferredJournalId: string | null; version: number; position: number; archivedAt: string | null; revision: number; createdAt: string; updatedAt: string };
 export type CompanionVersion = { id: string; companionId: string; version: number; name: string; description: string; instructions: string; conversationPrefs: string; openingStyle: string; savedAt: string };
-export type Journal = { id: string; name: string; description: string; icon: string; tone: MuseTone; cover: string; defaultCompanionId: string | null; instructions: string; morningInstructions: string; eveningInstructions: string; memoryScope: MemoryScope; presetKey: string | null; position: number; archivedAt: string | null; revision: number; createdAt: string };
+export type Journal = { id: string; name: string; description: string; icon: string; tone: MuseTone; cover: string; defaultCompanionId: string | null; defaultGuideId: string | null; /** Guided prompts on: new entries start with this journal's questions (defaultGuideId). */ guided: boolean; instructions: string; morningInstructions: string; eveningInstructions: string; memoryScope: MemoryScope; presetKey: string | null; position: number; archivedAt: string | null; revision: number; createdAt: string };
 export type Preferences = { globalInstructions: string; memoryEnabled: boolean; analysisAuto: boolean; onThisDay: boolean; showOnDaily: boolean; greetOnNew: boolean; defaultJournalId: string | null; revision: number };
 export type JournalImage = { id: string; path: string; thumbnailPath: string; width: number; height: number; caption: string; alt: string };
 export type Conversation = {
@@ -26,8 +26,17 @@ export type Conversation = {
   /** "Continue from here": the earlier entry this one continues (null if none, or if that entry was deleted), with a
    *  snapshot of its title and date so the link stays readable. */
   continuesId: string | null; continuesTitle: string; continuesDate: string | null;
+  /** Guided entry: the guide as it was when the entry began (never rewritten), and answers in progress. */
+  guideId: string | null; guideSnapshot: GuideSnapshot | null; guideState: GuideState;
 };
-export type Message = { id: string; conversationId: string; role: "user" | "assistant"; body: string; localDate: string; replyTo: string | null; companionVersionId: string | null; model: string | null; correctedAt: string | null; createdAt: string; images?: MessageImage[] };
+/** A guided experience: optional, reusable questions. Not a companion, not a journal. */
+export type GuideQuestion = { id: string; text: string; optional: boolean };
+export type Guide = { id: string; name: string; description: string; icon: string; intro: string; mode: "steps" | "all"; companion: boolean; questions: GuideQuestion[]; version: number; archivedAt: string | null; revision: number; createdAt: string };
+export type GuideSnapshot = Pick<Guide, "name" | "icon" | "intro" | "mode" | "companion" | "questions" | "version">;
+/** Answers not yet sent as messages, keyed by question id, plus where you are. */
+export type GuideState = { answers?: Record<string, string>; step?: number; sent?: string[] };
+export const snapshotOf = (g: Guide): GuideSnapshot => ({ name: g.name, icon: g.icon, intro: g.intro, mode: g.mode, companion: g.companion, questions: g.questions.map((q) => ({ ...q })), version: g.version });
+export type Message = { id: string; conversationId: string; role: "user" | "assistant"; body: string; localDate: string; replyTo: string | null; companionVersionId: string | null; model: string | null; correctedAt: string | null; createdAt: string; images?: MessageImage[]; guideQuestionId?: string | null; guideQuestion?: string | null };
 /** A photo attached to one of your messages (up to 7). Sent to the AI only with the request answering that message. */
 export type MessageImage = { id: string; messageId: string; position: number; path: string; thumbnailPath: string; width: number; height: number; mime: string };
 export const MAX_MESSAGE_IMAGES = 7;
@@ -90,11 +99,12 @@ export const versionFromRow = (r: Tables["journal_companion_versions"]["Row"]): 
 export const journalFromRow = (r: Tables["journal_journals"]["Row"]): Journal => ({
   id: r.id, name: r.name, description: r.description, icon: r.icon, tone: tone(r.tone), cover: r.cover, defaultCompanionId: r.default_companion_id, instructions: r.instructions,
   morningInstructions: r.morning_instructions, eveningInstructions: r.evening_instructions, memoryScope: r.memory_scope as MemoryScope, presetKey: r.preset_key, position: r.position, archivedAt: r.archived_at, revision: r.revision, createdAt: r.created_at,
+  defaultGuideId: r.default_guide_id ?? null, guided: r.guided ?? false,
 });
 export const journalToRow = (j: Journal) => ({
   name: j.name.trim().slice(0, 80) || "Journal", description: j.description.slice(0, 600), icon: j.icon, tone: j.tone, cover: j.cover, default_companion_id: j.defaultCompanionId,
   instructions: j.instructions.slice(0, 20000), morning_instructions: j.morningInstructions.slice(0, 8000), evening_instructions: j.eveningInstructions.slice(0, 8000), memory_scope: j.memoryScope,
-  preset_key: j.presetKey, position: j.position, archived_at: j.archivedAt,
+  preset_key: j.presetKey, position: j.position, archived_at: j.archivedAt, default_guide_id: j.defaultGuideId, guided: j.guided,
 });
 export const defaultPreferences: Preferences = { globalInstructions: "", memoryEnabled: true, analysisAuto: true, onThisDay: true, showOnDaily: false, greetOnNew: true, defaultJournalId: null, revision: 0 };
 export const preferencesFromRow = (r: Tables["journal_preferences"]["Row"] | null): Preferences => r ? ({
@@ -115,7 +125,14 @@ export const conversationFromRow = (r: Tables["journal_conversations"]["Row"]): 
   favorite: r.favorite, excludeFromMemory: r.exclude_from_memory, memoryOff: r.memory_off, analysisStatus: r.analysis_status as Conversation["analysisStatus"], images: images(r.images),
   draft: r.draft, draftUpdatedAt: r.draft_updated_at, userWords: r.user_words, messageCount: r.message_count, lastMessageAt: r.last_message_at, revision: r.revision, updatedAt: r.updated_at,
   continuesId: r.continues_id ?? null, continuesTitle: r.continues_title ?? "", continuesDate: r.continues_date ?? null,
+  guideId: r.guide_id ?? null, guideSnapshot: parseGuideSnapshot(r.guide_snapshot), guideState: (r.guide_state && typeof r.guide_state === "object" && !Array.isArray(r.guide_state) ? r.guide_state : {}) as GuideState,
 });
+const parseQuestions = (v: unknown): GuideQuestion[] => (Array.isArray(v) ? v : []).flatMap((q) => { const o = q as Record<string, unknown>; return o && typeof o.text === "string" && typeof o.id === "string" ? [{ id: o.id.slice(0, 64), text: o.text.slice(0, 500), optional: o.optional === true }] : []; }).slice(0, 30);
+export function parseGuideSnapshot(v: unknown): GuideSnapshot | null {
+  const o = v as Record<string, unknown> | null; if (!o || typeof o !== "object" || Array.isArray(o) || typeof o.name !== "string") return null;
+  return { name: o.name, icon: typeof o.icon === "string" ? o.icon : "", intro: typeof o.intro === "string" ? o.intro : "", mode: o.mode === "all" ? "all" : "steps", companion: o.companion === true, questions: parseQuestions(o.questions), version: typeof o.version === "number" ? o.version : 1 };
+}
+export const guideFromRow = (r: Tables["journal_guides"]["Row"]): Guide => ({ id: r.id, name: r.name, description: r.description, icon: r.icon, intro: r.intro, mode: r.mode === "all" ? "all" : "steps", companion: r.companion, questions: parseQuestions(r.questions), version: r.version, archivedAt: r.archived_at, revision: r.revision, createdAt: r.created_at });
 /** The columns a person edits on an entry (status, counters and drafts move separately). */
 export const conversationMetaToRow = (c: Conversation) => ({
   journal_id: c.journalId, title: c.title.slice(0, 200), title_source: c.title ? c.titleSource : null, summary: c.summary.slice(0, 4000), summary_source: c.summary ? c.summarySource : null,
@@ -123,7 +140,7 @@ export const conversationMetaToRow = (c: Conversation) => ({
   continues_id: c.continuesId, continues_title: c.continuesTitle.slice(0, 200), continues_date: c.continuesDate,
 });
 export const messageFromRow = (r: Tables["journal_messages"]["Row"]): Message => ({
-  id: r.id, conversationId: r.conversation_id, role: r.role as Message["role"], body: r.body, localDate: r.local_date, replyTo: r.reply_to, companionVersionId: r.companion_version_id, model: r.model, correctedAt: r.corrected_at, createdAt: r.created_at,
+  id: r.id, conversationId: r.conversation_id, role: r.role as Message["role"], body: r.body, localDate: r.local_date, replyTo: r.reply_to, companionVersionId: r.companion_version_id, model: r.model, correctedAt: r.corrected_at, createdAt: r.created_at, guideQuestionId: r.guide_question_id ?? null, guideQuestion: r.guide_question ?? null,
 });
 export const messageImageFromRow = (r: Tables["journal_message_images"]["Row"]): MessageImage => ({ id: r.id, messageId: r.message_id, position: r.position, path: r.path, thumbnailPath: r.thumbnail_path, width: r.width, height: r.height, mime: r.mime });
 export const tagFromRow = (r: Tables["journal_tags"]["Row"]): Tag => ({ id: r.id, kind: r.kind as TagKind, name: r.name, normalized: r.normalized ?? r.name.trim().toLowerCase(), aliases: r.aliases, note: r.note, revision: r.revision, suppressed: r.suppressed ?? false });

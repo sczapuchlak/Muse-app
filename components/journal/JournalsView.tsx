@@ -5,14 +5,15 @@ import { MuseModal } from "../MuseModal";
 import { MuseChoiceMenu } from "../MuseChoiceMenu";
 import { MuseOverflowMenu } from "../MuseOverflowMenu";
 import { MuseIcon } from "../MuseIcon";
+import { GuidedPrompts, blankGuide } from "./Guides";
 import { useJournalUi } from "./ui";
 import { choiceInk } from "./Workspace";
 import { newId, useJournal } from "./useJournal";
 import { covers, journalIcons, journalPresets, companionPresets } from "@/lib/journal/presets";
-import { isListed, type Companion, type Journal, type MemoryScope } from "@/lib/journal/model";
+import { isListed, type Companion, type Guide, type Journal, type MemoryScope } from "@/lib/journal/model";
 
 const scopeLabel: Record<MemoryScope, string> = { shared: "Shares memory with your other journals", journal: "Remembers only this journal", off: "No memory" };
-export const blankJournal = (position: number): Journal => ({ id: newId(), name: "", description: "", icon: "journal", tone: 5, cover: "dusk", defaultCompanionId: null, instructions: "", morningInstructions: "", eveningInstructions: "", memoryScope: "shared", presetKey: null, position, archivedAt: null, revision: 0, createdAt: "" });
+export const blankJournal = (position: number): Journal => ({ id: newId(), name: "", description: "", icon: "journal", tone: 5, cover: "dusk", defaultCompanionId: null, defaultGuideId: null, guided: false, instructions: "", morningInstructions: "", eveningInstructions: "", memoryScope: "shared", presetKey: null, position, archivedAt: null, revision: 0, createdAt: "" });
 export const blankCompanion = (position: number): Companion => ({ id: newId(), name: "", description: "", icon: "sparkle", tone: 6, instructions: "", conversationPrefs: "", openingStyle: "", presetKey: null, preferredJournalId: null, version: 1, position, archivedAt: null, revision: 0, createdAt: "", updatedAt: "" });
 
 /**
@@ -82,8 +83,22 @@ export function JournalEditor({ journal, onClose }: { journal: Journal; onClose:
   const set = (p: Partial<Journal>) => setD((x) => ({ ...x, ...p }));
   const others = j.state.journals.filter((x) => x.id !== journal.id);
   const entries = j.state.conversations.filter((c) => c.journalId === journal.id).length;
+  // The journal's guided prompts (kept in its one guide record). Switching off keeps the questions.
+  const existing = j.state.guides.find((x) => x.id === journal.defaultGuideId) ?? null;
+  const [g, setG] = useState<Guide>(() => existing ?? blankGuide());
+  async function save() {
+    const hasQuestions = g.questions.some((x) => x.text.trim());
+    if (d.guided && !hasQuestions) return false;
+    let guideId = d.defaultGuideId;
+    if (hasQuestions && (d.guided || existing)) {
+      const saved = await j.saveGuide({ ...g, name: d.name.trim() || "Journal", icon: "" });
+      if (!saved) return false;
+      guideId = saved.id;
+    }
+    return Boolean(await j.saveJournal({ ...d, defaultGuideId: guideId, guided: d.guided && hasQuestions }));
+  }
   return <MuseModal id="mj-journal-editor" label="Journal" title={journal.revision ? `Edit ${journal.name}` : "New journal"} returnFocus={null} onClose={onClose} size="tall">
-    <form className="mj-form mj-modal-scroll" onSubmit={async (e) => { e.preventDefault(); if (await j.saveJournal(d)) onClose(); }}>
+    <form className="mj-form mj-modal-scroll" onSubmit={async (e) => { e.preventDefault(); if (await save()) onClose(); }}>
       <label className="editor-label">Name<input type="text" value={d.name} maxLength={80} onChange={(e) => set({ name: e.target.value })} required autoFocus placeholder="Spanish practice" /></label>
       <label className="editor-label">What it’s for<textarea rows={2} value={d.description} maxLength={600} onChange={(e) => set({ description: e.target.value })} placeholder="Practising conversational Spanish about my day" /></label>
       <div className="mj-form-row">
@@ -103,11 +118,13 @@ export function JournalEditor({ journal, onClose }: { journal: Journal; onClose:
         <label className="editor-label">Morning intention, in this journal<textarea rows={3} value={d.morningInstructions} onChange={(e) => set({ morningInstructions: e.target.value })} placeholder="Ask what one thing would make today feel good." /></label>
         <label className="editor-label">Evening reflection, in this journal<textarea rows={3} value={d.eveningInstructions} onChange={(e) => set({ eveningInstructions: e.target.value })} placeholder="Ask about one conversation from today worth unpacking." /></label>
       </details>
+      <GuidedPrompts on={d.guided} onToggle={(v) => set({ guided: v })} g={g} set={(p) => setG((x) => ({ ...x, ...p }))} />
+      {d.guided && !g.questions.some((x) => x.text.trim()) && <p className="mj-note">Add at least one question to use guided prompts.</p>}
       {j.status.error && <p className="mj-error" role="alert">{j.status.error}</p>}
       <div className="mj-form-actions">
         {journal.revision > 0 && <button type="button" className="muse-button button-ghost" onClick={async () => { if (await j.saveJournal({ ...d, archivedAt: d.archivedAt ? null : new Date().toISOString() })) onClose(); }}>{d.archivedAt ? "Unarchive" : "Archive"}</button>}
         {journal.revision > 0 && <button type="button" className="muse-button button-ghost" onClick={() => setDeleting(true)}>Delete…</button>}
-        <button type="button" className="muse-button" onClick={onClose}>Cancel</button><button type="submit" className="muse-button button-primary" disabled={!d.name.trim() || j.status.saving}>Save</button>
+        <button type="button" className="muse-button" onClick={onClose}>Cancel</button><button type="submit" className="muse-button button-primary" disabled={!d.name.trim() || j.status.saving || (d.guided && !g.questions.some((x) => x.text.trim()))}>Save</button>
       </div>
       {deleting && <div className="mj-finish" role="group" aria-label="Delete journal">
         {entries ? <><p><b>{journal.name} has {entries} {entries === 1 ? "entry" : "entries"}.</b> Move them to another journal, or delete them with it. Deleting can’t be undone.</p>

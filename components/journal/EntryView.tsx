@@ -129,7 +129,7 @@ export function EntryView({ conversation: c, onClose, focusHighlight = null }: {
         </div>
       </div>
       <div className="mj-entry-head-copy">
-        <p className="muse-kicker type-meta">{formatDay(c.localDate)} · {journal?.name ?? "Journal"}{c.companionName ? ` · with ${c.companionName}` : ""}{c.origin === "playground" ? " · kept from the Studio" : ""}</p>
+        <p className="muse-kicker type-meta">{formatDay(c.localDate)} · {journal?.name ?? "Journal"}{c.companionName ? ` · with ${c.companionName}` : ""}{c.origin === "playground" ? " · kept from the Studio" : ""}{c.guideSnapshot ? ` · ${c.guideSnapshot.icon ? `${c.guideSnapshot.icon} ` : ""}${c.guideSnapshot.name}` : ""}</p>
         {editingTitle ? <form className="mj-title-edit" onSubmit={(e) => { e.preventDefault(); void saveTitle(); }}>
           <input type="text" aria-label="Title" className="type-title" value={title} maxLength={200} onChange={(e) => setTitle(e.target.value)} autoFocus />
           <button type="submit" className="muse-button button-primary">Save</button><button type="button" className="muse-button" onClick={() => { setTitle(c.title); setEditingTitle(false); }}>Cancel</button>
