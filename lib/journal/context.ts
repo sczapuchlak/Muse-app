@@ -115,3 +115,33 @@ export function transcript(messages: readonly Pick<Message, "role" | "body">[], 
   const text = messages.map((m) => `${m.role === "user" ? "Me" : "Companion"}: ${m.body.trim()}`).join("\n\n");
   return text.length <= max ? text : `${text.slice(0, max / 2)}\n\n[… middle of a long conversation left out …]\n\n${text.slice(-max / 2)}`;
 }
+
+/**
+ * "Continue from here": the earlier entry a new one continues, as a bounded developer note. The first reply (or an
+ * opening the person asked for) gets the conversation itself, cut to `max` characters with an honest excerpt marker;
+ * later turns get only the summary, so the full original is never resent every turn. Only one level: an original's
+ * own reference is never followed. Photos are named, never sent.
+ */
+export type ReferenceSource = {
+  title: string; date: string; summary: string; insight?: string; threads?: string[];
+  turns?: { role: "user" | "assistant"; body: string; imageCount?: number }[]; excluded?: boolean; missing?: boolean;
+};
+export const REFERENCE_MAX = 12000;
+export function referenceContext(src: ReferenceSource, full: boolean, max = REFERENCE_MAX): string {
+  const when = (() => { try { return new Date(`${src.date}T12:00:00Z`).toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric", timeZone: "UTC" }); } catch { return src.date; } })();
+  const out = [`## The entry this conversation continues`, `They chose to continue from their journal entry “${src.title || "Untitled"}” (${when}). Treat it as shared background for what they say next. Don't summarise it back to them, don't steer the conversation toward it, and don't turn this into a guided reflection.`];
+  if (src.missing) { out.push("That entry is no longer in their journal, so you don't have its contents. If they refer to its details, say so and let them tell you."); return out.join("\n\n"); }
+  if (src.excluded) { out.push("They've kept that entry out of AI context, so you don't have its contents. If they refer to its details, say so and let them tell you."); return out.join("\n\n"); }
+  if (src.summary) out.push(`Summary of that entry (written by AI at the time; their own words are authoritative):\n${clip(src.summary, 1600)}`);
+  if (src.insight) out.push(`An insight noted then: ${clip(src.insight, 500)}`);
+  if (src.threads?.length) out.push(`Open threads from then:\n${src.threads.slice(0, 4).map((t) => `- ${clip(t, 240)}`).join("\n")}`);
+  if (full && src.turns?.length) {
+    const lines = src.turns.map((t) => `${t.role === "user" ? "Me" : "Companion"}: ${t.body}${t.imageCount ? ` [${t.imageCount === 1 ? "a photo was" : `${t.imageCount} photos were`} attached; you can't see ${t.imageCount === 1 ? "it" : "them"}]` : ""}`);
+    let text = lines.join("\n\n"), cut = false;
+    if (text.length > max) { const head = Math.floor(max * 0.35), tail = max - head; text = `${text.slice(0, head)}\n\n[…the middle of this long conversation was left out for length…]\n\n${text.slice(-tail)}`; cut = true; }
+    out.push(`The conversation from that entry${cut ? " (an excerpt, not the complete record: don't present it as complete)" : ""}:\n\n${text}`);
+  } else if (!full) {
+    out.push("The conversation itself was shared at the start of this entry and isn't repeated here. If they ask about details you no longer have, say so rather than guess.");
+  }
+  return out.join("\n\n");
+}

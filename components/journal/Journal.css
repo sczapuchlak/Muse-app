@@ -711,3 +711,24 @@
  .mj-attach-strip li{width:64px;height:64px}
 }
 @media (prefers-reduced-motion:reduce){.mj-attach-strip li{animation:none}.mj-photo:hover{transform:none}}
+
+/* ── Continue from here: a small linked memory, never a banner ──────────────────────────────────────────────── */
+.mj-continue{display:inline-flex;align-items:center;gap:7px;min-height:40px;padding-inline:14px;border-radius:999px;border:1px solid color-mix(in srgb,var(--journal-a,var(--accent-primary)) 45%,var(--glass-border));background:color-mix(in srgb,var(--journal-a,var(--accent-primary)) 10%,var(--mj-tile));text-decoration:none;color:var(--foreground);font-weight:600}
+.mj-continue svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.mj-continue:hover{border-color:var(--journal-a,var(--accent-primary));background:color-mix(in srgb,var(--journal-a,var(--accent-primary)) 18%,var(--mj-tile))}
+.mj-entry-tools{display:flex;align-items:center;gap:8px}
+.mj-entry-links{display:flex;flex-wrap:wrap;gap:4px 16px;margin:4px 0 0;color:var(--text-muted)}
+.mj-entry-links a{color:var(--link-ink,var(--accent-primary));text-underline-offset:3px}
+.mj-ref{display:flex;align-items:center;gap:8px;justify-self:start;max-width:min(100%,760px);margin:0 auto 0 0;padding:5px 6px 5px 12px;border:1px solid color-mix(in srgb,var(--journal-a,var(--accent-primary)) 40%,var(--glass-border));border-radius:999px;background:linear-gradient(135deg,color-mix(in srgb,var(--journal-a,var(--accent-primary)) 12%,transparent),color-mix(in srgb,var(--journal-b,var(--accent-secondary)) 6%,transparent)),var(--mj-tile);animation:mj-rise var(--motion-settle,260ms) var(--mj-ease) both}
+.mj-ref>.type-meta{color:var(--text-muted);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}
+.mj-ref-mark{flex:none;width:15px;height:15px;fill:none;stroke:var(--journal-a,var(--accent-primary));stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.mj-ref-link{min-width:0;overflow:hidden;padding:0;border:0;background:transparent;color:var(--foreground);font:inherit;font-family:var(--font-editorial);font-style:italic;text-overflow:ellipsis;white-space:nowrap;cursor:pointer;text-decoration:underline;text-decoration-color:color-mix(in srgb,var(--journal-a,var(--accent-primary)) 50%,transparent);text-underline-offset:4px}
+.mj-ref-link[data-gone]{cursor:default;text-decoration:none;color:var(--text-muted)}
+.mj-ws-page:has(.mj-ref) .mj-blank{margin-top:4px}
+@container muse-content (max-width:640px){.mj-continue{min-height:38px;padding-inline:10px;font-size:.84rem}.mj-ref{max-width:100%}.mj-ref>.type-meta{display:none}}
+@media (prefers-reduced-motion:reduce){.mj-ref{animation:none}}
+/* History rows: a quiet thread line when an entry continues another, or was continued. */
+.mj-row-thread{display:flex;flex-wrap:wrap;gap:4px 14px;color:var(--text-muted)}
+.mj-row-thread>span{display:inline-flex;align-items:center;gap:5px;min-width:0}
+.mj-return{flex:none;width:13px;height:13px;fill:none;stroke:var(--journal-a,var(--card-ink,var(--accent-primary)));stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.mj-row:has(.mj-row-thread)::before{background:linear-gradient(var(--card-ink),color-mix(in srgb,var(--card-ink) 25%,transparent)),repeating-linear-gradient(transparent 0 4px,var(--card-ink) 4px 6px)}

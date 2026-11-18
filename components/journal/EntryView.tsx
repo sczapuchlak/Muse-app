@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { MuseOverflowMenu } from "../MuseOverflowMenu";
 import { MuseSegmented } from "../design/MuseSegmented";
@@ -14,7 +15,7 @@ import { MUSE_STAR_PATH } from "../MuseStar";
 import { EntryLinks } from "./EntryLinks";
 import { StarRule } from "./JournalArt";
 import { tagsFor, useJournal } from "./useJournal";
-import { formatDay } from "./format";
+import { formatDay, formatShort } from "./format";
 import * as P from "@/lib/journal/persistence";
 import { AiError } from "@/lib/journal/ai-client";
 import { entryTitle, tagKinds, type Analysis, type Conversation, type Correction, type Message } from "@/lib/journal/model";
@@ -91,11 +92,13 @@ export function EntryView({ conversation: c, onClose }: { conversation: Conversa
   const marked = new Set(bookmarks.map((b) => b.messageId));
   const thread: ThreadMessage[] = messages.map((m) => ({ ...m, marked: marked.has(m.id) }));
 
+  const continuedIn = state.conversations.filter((x) => x.continuesId === c.id).sort((a, b) => a.localDate.localeCompare(b.localDate));
   return <article className="mj-entry mj-reveal" aria-labelledby="mj-entry-title" style={{ "--journal-a": `var(--chart-${journal?.tone ?? 5})`, "--journal-b": `var(--chart-${((journal?.tone ?? 5) % 8) + 1})` } as React.CSSProperties}>
     <header className="mj-entry-head muse-journal-hero">
       <div className="mj-entry-top">
         <button type="button" className="muse-button button-ghost mj-back" onClick={onClose}><span aria-hidden="true">←</span> Back</button>
         <div className="mj-entry-tools">
+          <Link className="muse-button mj-continue" href={`/journal?continue=${c.id}`} title="Start a new entry with this one as background"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 10l5 5-5 5M20 15H10a6 6 0 0 1 0-12h3" /></svg>Continue from here</Link>
           <button type="button" className="muse-icon-button mj-fav-toggle" aria-pressed={c.favorite} aria-label={c.favorite ? "Remove from favorites" : "Add to favorites"} onClick={() => void j.updateMeta({ ...c, favorite: !c.favorite })}><MuseIcon name="favorite" size={18} /></button>
           <MuseOverflowMenu label="Entry options" actions={[
             { id: "title", label: "Edit title", onSelect: () => setEditingTitle(true) },
@@ -111,6 +114,10 @@ export function EntryView({ conversation: c, onClose }: { conversation: Conversa
           <button type="submit" className="muse-button button-primary">Save</button><button type="button" className="muse-button" onClick={() => { setTitle(c.title); setEditingTitle(false); }}>Cancel</button>
         </form> : <h2 id="mj-entry-title" className="type-title mj-entry-title">{entryTitle(c)}</h2>}
         <p className="mj-entry-facts type-meta"><span className="type-numeric">{c.userWords}</span> words · <span className="type-numeric">{c.messageCount}</span> messages{c.titleSource === "ai" && <> · <span className="mj-ai-badge">title by AI</span></>}{c.excludeFromMemory && <> · kept out of AI context</>}</p>
+        {(c.continuesId || c.continuesTitle || continuedIn.length > 0) && <p className="mj-entry-links type-meta">
+          {(c.continuesId || c.continuesTitle) && <span>Continues {c.continuesId && state.conversations.some((x) => x.id === c.continuesId) ? <Link href={`/journal?entry=${c.continuesId}`}>“{c.continuesTitle || "an earlier entry"}”</Link> : <>“{c.continuesTitle || "an earlier entry"}” (no longer in your journal)</>}{c.continuesDate ? ` · ${formatShort(c.continuesDate)}` : ""}</span>}
+          {continuedIn.length > 0 && <span>Continued in {continuedIn.map((x, i) => <span key={x.id}>{i > 0 && ", "}<Link href={`/journal?entry=${x.id}`}>“{entryTitle(x, "an entry in progress")}”</Link> · {formatShort(x.localDate)}</span>)}</span>}
+        </p>}
       </div>
       <div className="mj-entry-switch">
         <MuseSegmented label="Entry view" value={tab} onChange={setTab} options={[{ id: "conversation", label: "Conversation" }, { id: "analysis", label: "Analysis" }]} />

@@ -11,6 +11,7 @@ import { generate, providerConfig, ProviderError, type ProviderConfig } from "@/
 import { allowance, begin, estimateUsd, finish, setBudget, UsageError } from "@/lib/journal/server/usage";
 import { IMAGE_BUCKET } from "@/lib/journal/persistence";
 import { basics, loadMemory } from "@/lib/journal/server/retrieve";
+import { referenceNote } from "@/lib/journal/server/reference";
 import { applyAnalysis } from "@/lib/journal/server/apply";
 import { addDays, sourceSignature, weekStats } from "@/lib/journal/stats";
 /** A conservative reservation per attached photo (a 1600px image at high detail); the invoice uses real tokens. */
@@ -138,7 +139,9 @@ async function streamReply(request: NextRequest, base: NextResponse, client: Cli
   const imgs = await client.from("journal_message_images").select("message_id,path,mime,position").eq("conversation_id", conv.id).eq("user_id", userId).order("position");
   const imageRows = imgs.error ? [] : imgs.data, latestImages = imageRows.filter((r) => r.message_id === latest.id);
   const imageCount = new Map<string, number>(); for (const r of imageRows) imageCount.set(r.message_id, (imageCount.get(r.message_id) ?? 0) + 1);
-  const usage = await begin(admin, userId, { kind: "reply", requestKey: `reply:${latest.id}`, conversationId: conv.id, model: config.model, estimateUsd: estimateUsd(config.model, overhead + approxTokens(Math.min(defaultBudget.conversation, history.reduce((n, m) => n + m.body.length, 0))) + latestImages.length * IMAGE_TOKEN_RESERVE, 900) });
+  // Continue from here: the original in full (bounded) with the first message only; afterwards just its summary.
+  const reference = await referenceNote(client, userId, conv, history.filter((m) => m.role === "user").length === 1);
+  const usage = await begin(admin, userId, { kind: "reply", requestKey: `reply:${latest.id}`, conversationId: conv.id, model: config.model, estimateUsd: estimateUsd(config.model, overhead + approxTokens(Math.min(defaultBudget.conversation, history.reduce((n, m) => n + m.body.length, 0)) + reference.length) + latestImages.length * IMAGE_TOKEN_RESERVE, 900) });
   return stream(base, async (onDelta) => {
     try {
       const b = await basics(client, userId);
@@ -146,6 +149,7 @@ async function streamReply(request: NextRequest, base: NextResponse, client: Cli
       const memory = await loadMemory(client, userId, b, journal, { currentId: conv.id, memoryOff: conv.memory_off, today, latest: latest.body });
       const layers: Layers = { globalInstructions: b.prefs.globalInstructions, companion: layer, journal: journalLayer(journal), mode: conv.mode as Layers["mode"] };
       const req = buildReply(layers, memory, history.map((m) => ({ role: m.role as "user" | "assistant", body: m.body, imageCount: imageCount.get(m.id) })));
+      if (reference) req.input.splice(memory.stable ? 1 : 0, 0, { role: "developer", content: reference });
       if (latestImages.length) {
         const urls = await Promise.all(latestImages.map(async (r) => {
           const d = await client.storage.from(IMAGE_BUCKET).download(r.path);
@@ -170,7 +174,8 @@ async function streamOpening(_request: NextRequest, base: NextResponse, client: 
   if (conv.message_count > 0) throw new Bad("duplicate", "This conversation has already started.");
   const hour = typeof body.hour === "number" && body.hour >= 0 && body.hour < 24 ? Math.floor(body.hour) : 12;
   const today = date(body.localDate) ? body.localDate : conv.local_date;
-  const usage = await begin(admin, userId, { kind: "opening", requestKey: `opening:${conv.id}`, conversationId: conv.id, model: config.model, estimateUsd: estimateUsd(config.model, overhead, 300) });
+  const reference = await referenceNote(client, userId, conv, true);
+  const usage = await begin(admin, userId, { kind: "opening", requestKey: `opening:${conv.id}`, conversationId: conv.id, model: config.model, estimateUsd: estimateUsd(config.model, overhead + approxTokens(reference.length), 300) });
   return stream(base, async (onDelta) => {
     try {
       const b = await basics(client, userId);
@@ -179,6 +184,7 @@ async function streamOpening(_request: NextRequest, base: NextResponse, client: 
       const layers: Layers = { globalInstructions: b.prefs.globalInstructions, companion: layer, journal: journalLayer(journal), mode: conv.mode as Layers["mode"] };
       const when = { date: new Date(`${today}T12:00:00Z`).toLocaleDateString("en-US", { month: "long", day: "numeric", timeZone: "UTC" }), weekday: new Date(`${today}T12:00:00Z`).toLocaleDateString("en-US", { weekday: "long", timeZone: "UTC" }), partOfDay: partOfDay(hour) };
       const req = buildOpening(layers, memory, when);
+      if (reference) req.input.splice(memory.stable ? 1 : 0, 0, { role: "developer", content: reference });
       const out = await generate(config, { instructions: req.instructions, input: req.input, maxOutputTokens: 300, effort: "none", onDelta });
       await finish(admin, usage.id, out.model, { usage: out.usage });
       const saved = await client.from("journal_messages").insert({ user_id: userId, conversation_id: conv.id, role: "assistant", body: out.text, local_date: conv.local_date, reply_to: null, companion_version_id: versionId, model: out.model }).select("*").single();
@@ -237,7 +243,7 @@ async function analyse(client: Client, admin: Client, config: ProviderConfig, us
   const usage = await begin(admin, userId, { kind: "analysis", requestKey: `analysis:${conv.id}:${body.regenerate === true ? `r${attempt}` : "1"}`, conversationId: conv.id, model: config.model, estimateUsd: estimateUsd(config.model, approxTokens(ANALYSIS_RULES.length + Math.min(60000, msgs.data.reduce((n, m) => n + m.body.length + 12, 0))), 3500) });
   await client.from("journal_conversations").update({ analysis_status: "pending" }).eq("id", conv.id).eq("user_id", userId);
   try {
-    const input: InputMessage[] = [{ role: "user", content: `${people.data?.length ? `Existing person names: ${people.data.map((p) => p.name).join(", ")}\n\n` : ""}Conversation:\n\n${transcript(msgs.data as { role: "user" | "assistant"; body: string }[])}` }];
+    const input: InputMessage[] = [{ role: "user", content: `${conv.continues_title ? `This entry continues an earlier one, “${conv.continues_title}” (${conv.continues_date}).\n\n` : ""}${people.data?.length ? `Existing person names: ${people.data.map((p) => p.name).join(", ")}\n\n` : ""}Conversation:\n\n${transcript(msgs.data as { role: "user" | "assistant"; body: string }[])}` }];
     const out = await generate(config, { instructions: ANALYSIS_RULES, input, maxOutputTokens: 3500, effort: "low", schema: { name: "journal_analysis", schema: analysisSchema } });
     await finish(admin, usage.id, out.model, { usage: out.usage });
     let parsed: unknown; try { parsed = JSON.parse(out.text); } catch { parsed = null; }

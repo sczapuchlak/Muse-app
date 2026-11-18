@@ -5,10 +5,11 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { MuseMark, type MuseMarkIcon, type MuseTone } from "../design/MuseHeading";
 import { MuseIcon } from "../MuseIcon";
+import { MuseModal } from "../MuseModal";
 import { MuseOverflowMenu, type OverflowAction } from "../MuseOverflowMenu";
 import { Composer, clearLocalDraft, type Attachment } from "./Composer";
 import { boardImageUrl, uploadBoardImage } from "@/lib/data/constellation-images";
-import { Thinking, Thread, type ThreadMessage } from "./Thread";
+import { Prose, Thinking, Thread, type ThreadMessage } from "./Thread";
 import { WeekConstellation } from "./JournalArt";
 import { JournalToolbar } from "./JournalToolbar";
 import { useJournalUi } from "./ui";
@@ -33,13 +34,13 @@ const unfinished = (c: Conversation) => c.status === "draft" ? Boolean(c.draft.t
  *
  * First visit only: Setup (one journal, one companion, optional words), then straight here.
  */
-export function Workspace({ initialId, onRouteClear }: { initialId: string | null; onRouteClear: () => void }) {
+export function Workspace({ initialId, onRouteClear, continueFrom = null, onCreated }: { initialId: string | null; onRouteClear: () => void; continueFrom?: string | null; onCreated?: (id: string) => void }) {
   const j = useJournal();
   if (!activeJournals(j.state).length) return <Setup />;
-  return <Page initialId={initialId} onRouteClear={onRouteClear} />;
+  return <Page initialId={initialId} onRouteClear={onRouteClear} continueFrom={continueFrom} onCreated={onCreated} />;
 }
 
-function Page({ initialId, onRouteClear }: { initialId: string | null; onRouteClear: () => void }) {
+function Page({ initialId, onRouteClear, continueFrom, onCreated }: { initialId: string | null; onRouteClear: () => void; continueFrom: string | null; onCreated?: (id: string) => void }) {
   const j = useJournal(), ui = useJournalUi();
   const { state, today, ai, client, userId, timeZone } = j;
   const [journalId, setJournalId] = useState<string | null>(null);
@@ -50,10 +51,17 @@ function Page({ initialId, onRouteClear }: { initialId: string | null; onRouteCl
 
   // Which entry is on the page: the one asked for, else the most recent unfinished entry in this journal, else none.
   const resume = useCallback((jid: string) => state.conversations.filter((c) => c.journalId === jid && unfinished(c) && c.localDate >= addDays(today, -14)).sort((a, b) => (b.lastMessageAt ?? b.draftUpdatedAt ?? b.startedAt).localeCompare(a.lastMessageAt ?? a.draftUpdatedAt ?? a.startedAt))[0]?.id ?? null, [state.conversations, today]);
-  const [convId, setConvId] = useState<string | null>(() => initialId ?? resume(journal.id));
+  const [convId, setConvId] = useState<string | null>(() => initialId ?? (continueFrom ? null : resume(journal.id)));
+  // Continue from here: a fresh page that carries a reference to an earlier entry. Nothing is created until you write.
+  const [pendingRef, setPendingRef] = useState<string | null>(continueFrom);
+  const [prevContinue, setPrevContinue] = useState(continueFrom);
   const [prevInitial, setPrevInitial] = useState(initialId);
   if (prevInitial !== initialId) { setPrevInitial(initialId); if (initialId) setConvId(initialId); }
   const conv = convId ? state.conversations.find((c) => c.id === convId && c.status !== "completed") ?? null : null;
+  const refSource = (conv ? conv.continuesId : pendingRef) ? state.conversations.find((c) => c.id === (conv ? conv.continuesId : pendingRef)) ?? null : null;
+  const reference = conv ? (conv.continuesId || conv.continuesTitle ? { id: conv.continuesId, title: conv.continuesTitle || (refSource ? entryTitle(refSource) : "An earlier entry"), date: conv.continuesDate ?? refSource?.localDate ?? "" } : null)
+    : pendingRef && refSource ? { id: refSource.id, title: entryTitle(refSource), date: refSource.localDate } : null;
+  const [refPreview, setRefPreview] = useState(false);
   const companion = conv ? state.companions.find((c) => c.id === conv.companionId) ?? null : state.companions.find((c) => c.id === nextCompanionId && !c.archivedAt) ?? fallback;
   const tone = (state.journals.find((x) => x.id === (conv?.journalId ?? journal.id)) ?? journal).tone;
 
@@ -130,7 +138,7 @@ function Page({ initialId, onRouteClear }: { initialId: string | null; onRouteCl
     const existing = draftEntry ? state.conversations.find((c) => c.id === draftEntry) : null;
     if (existing) return existing;
     // One entry per page: a draft save and a first Send share the same creation, never making two entries.
-    if (!creating.current) creating.current = j.startConversation({ journalId: journal.id, companion: ai.enabled ? companion : null, mode, status, draft }).then((c) => { if (c) setDraftEntry(c.id); return c ?? null; }).finally(() => { setTimeout(() => { creating.current = null; }, 0); });
+    if (!creating.current) creating.current = j.startConversation({ journalId: journal.id, companion: ai.enabled ? companion : null, mode, status, draft, continues: pendingRef && refSource ? { id: refSource.id, title: entryTitle(refSource), date: refSource.localDate } : null }).then((c) => { if (c) { setDraftEntry(c.id); if (pendingRef) onCreated?.(c.id); } return c ?? null; }).finally(() => { setTimeout(() => { creating.current = null; }, 0); });
     return creating.current;
   }
   const [attachments, setAttachments] = useState<Attachment[]>([]);
@@ -200,7 +208,12 @@ function Page({ initialId, onRouteClear }: { initialId: string | null; onRouteCl
     setConfirmFinish(false); setSaved(done); setConvId(null); setMessages([]); setMode("open"); setDraftEntry(null);
     onRouteClear();
   }
-  function fresh() { setConvId(null); setMessages([]); setError(null); setSaved(null); setGreetNote(""); setMode("open"); setDraftEntry(null); onRouteClear(); }
+  if (prevContinue !== continueFrom) { setPrevContinue(continueFrom); if (continueFrom) { setPendingRef(continueFrom); setConvId(null); setMessages([]); setDraftEntry(null); setSaved(null); setError(null); } }
+  function dropReference() {
+    if (conv) void j.updateMeta({ ...conv, continuesId: null, continuesTitle: "", continuesDate: null });
+    else { setPendingRef(null); onRouteClear(); }
+  }
+  function fresh() { setPendingRef(null); setConvId(null); setMessages([]); setError(null); setSaved(null); setGreetNote(""); setMode("open"); setDraftEntry(null); onRouteClear(); }
   /** New entry, deliberately: a fresh page, and (if chosen in preferences) one greeting from the companion. */
   function newEntry() {
     fresh();
@@ -260,6 +273,21 @@ function Page({ initialId, onRouteClear }: { initialId: string | null; onRouteCl
     {ui.toolbarSlot && createPortal(toolbar, ui.toolbarSlot)}
 
     <div className="mj-ws-page">
+      {reference && <div className="mj-ref" role="note">
+        <svg className="mj-ref-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 14 4 9l5-5M4 9h10a6 6 0 0 1 0 12h-3" /></svg>
+        <span className="type-meta">{conv && !conv.continuesId ? "Continued from" : "Referencing"}</span>
+        {reference.id && refSource ? <button type="button" className="mj-ref-link" onClick={() => setRefPreview(true)}>“{reference.title}” · {reference.date ? formatDay(reference.date) : ""}</button>
+          : <span className="mj-ref-link" data-gone>“{reference.title}”{reference.date ? ` · ${formatDay(reference.date)}` : ""} · no longer in your journal</span>}
+        {reference.id && <button type="button" className="mj-x" aria-label="Stop referencing this entry" title="Stop referencing" onClick={dropReference}>×</button>}
+      </div>}
+      {refPreview && refSource && <MuseModal id="mj-ref-preview" label="Referenced entry" title={entryTitle(refSource)} returnFocus={null} onClose={() => setRefPreview(false)}>
+        <div className="mj-form">
+          <p className="muse-kicker type-meta">{formatDay(refSource.localDate)}{refSource.companionName ? ` · with ${refSource.companionName}` : ""}</p>
+          {refSource.summary ? <blockquote className="mj-pullquote"><div className="type-reading"><Prose text={refSource.summary} /></div></blockquote> : <p className="mj-note">No summary for this entry.</p>}
+          <p className="mj-note">Your companion has this entry as background when you send your first message, then keeps its summary. The original stays exactly as it is.</p>
+          <div className="mj-form-actions"><Link className="muse-button" href={`/journal?entry=${refSource.id}`}>Open the entry</Link><button type="button" className="muse-button button-primary" onClick={() => setRefPreview(false)}>Keep writing</button></div>
+        </div>
+      </MuseModal>}
       {greetNote && !shown.length && <p className="mj-note mj-greet-note" role="status">{greetNote}</p>}
       {saved && <p className="mj-saved" role="status"><MuseIcon name="check" size={15} /> Saved “{entryTitle(saved)}”. <Link href={`/journal?entry=${saved.id}`}>Open it</Link>{saved.analysisStatus === "pending" && " · the analysis is on its way"}</p>}
       {!shown.length && !stream ? <BlankHead tone={tone} mode={conv?.mode ?? mode} /> : <p className="mj-ws-date muse-kicker type-meta">{formatDay(conv?.localDate ?? today)}{(conv?.mode ?? mode) !== "open" && ` · ${(conv?.mode ?? mode) === "morning" ? "Morning intention" : "Evening reflection"}`}{conv?.memoryOff && " · not using your journal history"}</p>}

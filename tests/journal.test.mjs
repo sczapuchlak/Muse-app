@@ -137,3 +137,20 @@ test('analysis carries a closer look and an insight; older analyses read as empt
   assert.ok(I.analysisSchema.required.includes('reflection') && I.analysisSchema.required.includes('insight'));
   assert.ok(!I.analysisSchema.required.includes('places') && !I.analysisSchema.required.includes('themes'), 'analysis no longer asks for places or themes');
 });
+
+test('continue from here: bounded, honest, one level, no photos', () => {
+  const src = { title: 'The offer', date: '2026-05-01', summary: 'You weighed the job offer.', insight: 'Fear and want can share a room.', threads: ['Will you take it?'], turns: [{ role: 'user', body: 'I might take it', imageCount: 2 }, { role: 'assistant', body: 'What pulls you?' }] };
+  const full = C.referenceContext(src, true);
+  assert.match(full, /continue from their journal entry “The offer”/); assert.match(full, /Me: I might take it \[2 photos were attached; you can't see them\]/); assert.match(full, /don't turn this into a guided reflection/);
+  const compact = C.referenceContext(src, false);
+  assert.ok(!/Me: I might take it/.test(compact) && /isn't repeated here/.test(compact), 'later turns carry the summary, not the conversation');
+  const long = C.referenceContext({ ...src, turns: Array.from({ length: 400 }, (_, i) => ({ role: 'user', body: `line ${i} `.repeat(20) })) }, true, 3000);
+  assert.ok(long.length < 6000 && /an excerpt, not the complete record/.test(long) && /left out for length/.test(long), 'a long original is cut, and says so');
+  assert.match(C.referenceContext({ title: 'Gone', date: '2026-01-01', summary: '', missing: true }, true), /no longer in their journal/);
+  assert.ok(!/weighed/.test(C.referenceContext({ ...src, excluded: true }, true)), 'an entry kept out of AI context is never sent');
+});
+
+test('analysis titles are about life, never about the app or the act of looking back', () => {
+  assert.match(I.ANALYSIS_RULES, /Never a meta title/); assert.match(I.ANALYSIS_RULES, /title what is new or changed now/);
+  assert.match(I.ANALYSIS_RULES, /Leave out the mechanics of the app/);
+});
