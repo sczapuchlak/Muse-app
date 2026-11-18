@@ -4,11 +4,11 @@ import { MuseModal } from "../MuseModal";
 import { MuseSegmented } from "../design/MuseSegmented";
 import { MuseChoiceMenu } from "../MuseChoiceMenu";
 import { ManageTags } from "./TagManager";
-import { newId, useJournal } from "./useJournal";
+import { MemoryStudio } from "./MemoryStudio";
+import { useJournal } from "./useJournal";
 import { suggestedGlobalPreferences } from "@/lib/journal/presets";
 import { formatUsd } from "@/lib/journal/pricing";
 import { aiAction } from "@/lib/journal/ai-client";
-import type { Memory } from "@/lib/journal/model";
 
 type Tab = "preferences" | "tags" | "memory" | "privacy";
 
@@ -20,7 +20,7 @@ export function JournalSettings({ onClose }: { onClose: () => void }) {
   const [tab, setTab] = useState<Tab>("preferences");
   return <MuseModal id="mj-settings" label="Journal settings" title="Journal settings" returnFocus={null} onClose={onClose} size="tall">
     <MuseSegmented label="Settings" value={tab} onChange={setTab} options={[{ id: "preferences", label: "Preferences" }, { id: "tags", label: "Tags" }, { id: "memory", label: "Memory" }, { id: "privacy", label: "Privacy & usage" }]} />
-    <div className="mj-modal-scroll">{tab === "preferences" ? <Preferences /> : tab === "tags" ? <ManageTags /> : tab === "memory" ? <Memories /> : <Privacy />}</div>
+    <div className="mj-modal-scroll">{tab === "preferences" ? <Preferences /> : tab === "tags" ? <ManageTags /> : tab === "memory" ? <MemoryStudio /> : <Privacy />}</div>
   </MuseModal>;
 }
 
@@ -39,38 +39,6 @@ function Preferences() {
     {j.status.error && <p className="mj-error" role="alert">{j.status.error}</p>}
     <div className="mj-form-actions">{saved && <span className="mj-note" role="status">Saved.</span>}<button type="submit" className="muse-button button-primary" disabled={j.status.saving}>Save preferences</button></div>
   </form>;
-}
-
-function Memories() {
-  const j = useJournal();
-  const [adding, setAdding] = useState("");
-  const confirmed = j.state.memories.filter((m) => m.status === "confirmed"), suggested = j.state.memories.filter((m) => m.status === "suggested");
-  const blank = (body: string): Memory => ({ id: newId(), body, kind: "fact", status: "confirmed", source: "user", journalId: null, sourceConversationId: null, revision: 0, createdAt: "", updatedAt: "" });
-  return <div className="mj-form">
-    <label className="mj-toggle muse-check-row"><input type="checkbox" checked={j.state.prefs.memoryEnabled} onChange={(e) => void j.savePrefs({ ...j.state.prefs, memoryEnabled: e.target.checked })} /> Let companions use my journal history and memories</label>
-    <p className="mj-note">When on, a conversation can draw on things you’ve confirmed below, your entries from the last week, and older entries that match what you’re talking about. Never your whole archive, never an entry you’ve kept out of AI context, and never another journal whose memory is set to “only this journal”.</p>
-    <form className="mj-tag-add" onSubmit={(e) => { e.preventDefault(); if (adding.trim()) void j.saveMemory(blank(adding.trim())).then(() => setAdding("")); }}>
-      <input type="text" aria-label="Add a memory" placeholder="Something worth remembering, e.g. “I started a new role at Linden in January”" value={adding} maxLength={1000} onChange={(e) => setAdding(e.target.value)} />
-      <button type="submit" className="muse-button" disabled={!adding.trim()}>Add</button>
-    </form>
-    {suggested.length > 0 && <><h3 className="mj-section-title">Suggested ({suggested.length})</h3><p className="mj-note">Proposed by the AI after an entry. Not used until you confirm.</p><ul className="mj-memory-list">{suggested.map((m) => <MemoryRow key={m.id} m={m} />)}</ul></>}
-    <h3 className="mj-section-title">Remembered ({confirmed.length})</h3>
-    {confirmed.length ? <ul className="mj-memory-list">{confirmed.map((m) => <MemoryRow key={m.id} m={m} />)}</ul> : <p className="mj-note">Nothing yet.</p>}
-  </div>;
-}
-
-function MemoryRow({ m }: { m: Memory }) {
-  const j = useJournal();
-  const [text, setText] = useState(m.body);
-  const journal = j.state.journals.find((x) => x.id === m.journalId);
-  return <li className="mj-memory" data-status={m.status}>
-    <input type="text" aria-label="Memory" value={text} maxLength={1000} onChange={(e) => setText(e.target.value)} />
-    <MuseChoiceMenu label="Where it applies" valueLabel={journal ? `Only ${journal.name}` : "Every shared journal"} selectedIds={[m.journalId ?? ""]} options={[{ id: "", label: "Every shared journal" }, ...j.state.journals.map((x) => ({ id: x.id, label: `Only ${x.name}` }))]} onSelect={(id) => void j.saveMemory({ ...m, body: text, journalId: id || null })} />
-    {m.status === "suggested" ? <button type="button" className="muse-button button-primary" onClick={() => void j.saveMemory({ ...m, body: text.trim(), status: "confirmed" })}>Confirm</button>
-      : text !== m.body && <button type="button" className="muse-button" onClick={() => void j.saveMemory({ ...m, body: text.trim() })}>Save</button>}
-    <button type="button" className="mj-x" aria-label="Delete memory" onClick={() => void j.deleteMemory(m.id)}>×</button>
-    <small className="mj-note">{m.source === "ai" ? "Suggested by AI" : "Added by you"}{m.sourceConversationId && <> · <a href={`/journal?entry=${m.sourceConversationId}`}>from an entry</a></>}</small>
-  </li>;
 }
 
 function Privacy() {

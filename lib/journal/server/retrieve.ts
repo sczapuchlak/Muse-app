@@ -17,7 +17,8 @@ export async function basics(client: Client, userId: string): Promise<Basics> {
   const [p, j, m, t] = await Promise.all([
     client.from("journal_preferences").select("*").eq("user_id", userId).maybeSingle(),
     client.from("journal_journals").select("*").eq("user_id", userId).limit(500),
-    client.from("journal_memories").select("*").eq("user_id", userId).eq("status", "confirmed").order("updated_at", { ascending: false }).limit(200),
+    // Pinned first, then newest: the same size budget decides how many fit, so pinning adds no tokens.
+    client.from("journal_memories").select("*").eq("user_id", userId).eq("status", "confirmed").order("pinned", { ascending: false }).order("updated_at", { ascending: false }).limit(200),
     client.from("journal_tags").select("*").eq("user_id", userId).in("kind", ["person", "place"]).limit(2000),
   ]);
   return { prefs: preferencesFromRow(must(p)), journals: must(j).map(journalFromRow), memories: must(m).map(memoryFromRow), tags: must(t).map(tagFromRow) };

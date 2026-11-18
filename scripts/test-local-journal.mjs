@@ -165,6 +165,13 @@ try{
  const ge3=await P.refreshConversation(a.client,a.id,ge.id);assert.equal(ge3.guideId,null);assert.equal(ge3.guideSnapshot.name,'Tarot','and the entry keeps its copy of the guide');
  await P.deleteConversation(a.client,a.id,ge.id);
 
+ // Memory Studio: pinned and goal-category memories; retrieval reads confirmed only, pinned first.
+ const pm=await P.saveMemory(a.client,a.id,{id:crypto.randomUUID(),body:'Run a half marathon',kind:'goal',pinned:true,status:'confirmed',source:'user',journalId:null,sourceConversationId:null,revision:0,createdAt:'',updatedAt:''});
+ assert.equal(pm.kind,'goal');assert.equal(pm.pinned,true);
+ const unpinned=await P.saveMemory(a.client,a.id,{...pm,pinned:false});assert.equal(unpinned.pinned,false,'pinning can be undone');
+ assert.equal((await b.client.from('journal_memories').select('id').eq('id',pm.id)).data.length,0,'memories stay private');
+ await P.deleteMemory(a.client,a.id,pm.id);
+
  // Search and journal days.
  const hits=await P.searchJournal(a.client,'lisbon');assert.equal(hits[0].conversationId,conv.id);assert.match(hits[0].snippet,/Lisbon/);
  assert.deepEqual(await P.searchJournal(b.client,'lisbon'),[],'search never crosses accounts');

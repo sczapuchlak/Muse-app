@@ -3,7 +3,6 @@ import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { MuseOverflowMenu } from "../MuseOverflowMenu";
 import { MuseSegmented } from "../design/MuseSegmented";
-import { MuseMark, type MuseMarkIcon } from "../design/MuseHeading";
 import { MuseModal } from "../MuseModal";
 import { MuseChoiceMenu } from "../MuseChoiceMenu";
 import { MuseIcon } from "../MuseIcon";
@@ -13,6 +12,7 @@ import { EntryImages } from "./EntryImages";
 import { TagEditor } from "./TagEditor";
 import { MUSE_STAR_PATH } from "../MuseStar";
 import { HighlightCard, HighlightEditor, SelectionHighlighter, jumpToHighlight } from "./Highlights";
+import { MemoryCard } from "./MemoryStudio";
 import { EntryLinks } from "./EntryLinks";
 import { StarRule } from "./JournalArt";
 import { tagsFor, useJournal } from "./useJournal";
@@ -256,7 +256,7 @@ function AnalysisPanel({ c, analysis, ai, analysing, onRun, onChanged }: { c: Co
 
     {suggested.length > 0 && <div className="mj-remember"><h3 className="mj-section-title">Remember this?</h3>
       <p className="mj-note">Suggested from this conversation. Nothing is remembered until you confirm it, and you can edit the words first.</p>
-      <ul className="mj-memory-list">{suggested.map((m) => <SuggestedMemory key={m.id} id={m.id} />)}</ul></div>}
+      <ul className="mj-mem-list">{suggested.map((m) => <MemoryCard key={m.id} m={m} compact />)}</ul></div>}
 
     <StarRule />
     <EntryLinks conversation={c} />
@@ -268,14 +268,3 @@ function Notes({ title, kind, items, onDismiss, note }: { title: string; kind: s
     <ul className="mj-note-list">{items.map((x) => <li key={x}><span>{x}</span><button type="button" className="mj-x" aria-label={`Dismiss “${x}”`} onClick={() => onDismiss(`${kind}:${x}`)}>×</button></li>)}</ul></div>;
 }
 
-function SuggestedMemory({ id }: { id: string }) {
-  const j = useJournal(); const m = j.state.memories.find((x) => x.id === id);
-  const [text, setText] = useState(m?.body ?? "");
-  if (!m) return null;
-  return <li className="mj-memory" data-status="suggested">
-    <MuseMark icon={"seedling" as MuseMarkIcon} tone={3} size="sm" />
-    <input type="text" aria-label="Memory" value={text} maxLength={1000} onChange={(e) => setText(e.target.value)} />
-    <button type="button" className="muse-button button-primary" disabled={!text.trim()} onClick={() => void j.saveMemory({ ...m, body: text.trim(), status: "confirmed" })}>Remember</button>
-    <button type="button" className="muse-button button-ghost" onClick={() => void j.deleteMemory(m.id)}>Not this</button>
-  </li>;
-}
