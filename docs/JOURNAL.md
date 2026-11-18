@@ -14,13 +14,13 @@ Everyday → Journal: a private place to think out loud. You talk with an AI com
   - Opening Journal creates nothing.
   - A draft entry is saved after a pause in writing.
   - Send creates the entry.
-  - Finish & save turns to a fresh page, with a quiet link to the saved entry.
+  - Once you've written, the bottom of the page offers two equal buttons: **Finish entry** (confirm, then Finish & save turns to a fresh page with a quiet link to the saved entry) and **Go deeper** (sends, and the companion replies; "Add to entry" when AI is off).
+  - **Voice typing:** a mic in the field's tool row uses the browser's own speech recognition (Safari/Chrome; free, no Muse AI request). Words appear live at the caret; tap again to stop; typing or sending stops it. Browsers without it show no mic, and the keyboard's own dictation still works.
 - **Toolbar:**
   - *Journal:* switch, new, rename or edit, and manage.
   - *Companion:* switch, make default, customize and test, new companion, and the greeting switch. In a conversation, it says which version is replying.
   - *New entry.*
   - *⋯ menu:* morning or evening opening, resume another unfinished entry, move this entry, memory on or off, delete or discard, and preferences.
-  - *Finish & save.*
   - On phones, the toolbar is a single row.
 - **Greeting:** "Start new entries with a greeting" is on by default.
   - Only a deliberate **New entry** asks the companion for one opening, through the normal opening request (personality, permitted memory and budget).

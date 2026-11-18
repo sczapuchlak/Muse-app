@@ -56,6 +56,10 @@ try{
  const pickDate=async(label,date)=>{await click('button.muse-date-picker-trigger',label);await until(()=>!!document.querySelector('.muse-calendar'),'calendar opens');for(let i=0;i<14&&!(await has(`[data-date="${date}"]`));i++){await click('button','Previous month');await wait(80);}await click(`[data-date="${date}"]`);await wait(300);};
  const signIn=async(u)=>{const magic=must(await admin.auth.admin.generateLink({type:'magiclink',email:u.email}));await send('Page.navigate',{url:`${origin}/auth/confirm?token_hash=${magic.properties.hashed_token}&type=email&next=/`});await until(()=>location.pathname==='/'&&!!document.querySelector('main'),'signed in');};
  await send('Page.enable');await send('Runtime.enable');await send('DOM.enable');await viewport(1280);
+ // A stand-in for the browser's speech recognizer, so the mic can be tested without a microphone.
+ await send('Page.addScriptToEvaluateOnNewDocument',{source:`window.webkitSpeechRecognition=class{constructor(){this.results=[];}start(){window.__rec=this;}stop(){this._end();}abort(){this._end();}_end(){if(window.__rec===this)window.__rec=null;this.onend&&this.onend();}
+  say(list){this.results=list.map(([t,f])=>Object.assign([{transcript:t}],{isFinal:f}));this.onresult&&this.onresult({resultIndex:0,results:this.results});}
+  fail(code){this.onerror&&this.onerror({error:code});this._end();}};window.SpeechRecognition=window.webkitSpeechRecognition;`});
  await signIn(a);
 
  // ---- First visit: nothing is created until chosen ----
@@ -117,7 +121,27 @@ try{
  check(!/Remembered/.test(await say('And one more thing.',5)),'a deleted memory is gone from AI context');
 
  // ---- Finish & Save → analysis into real tags ----
- await click('.mj-ws-bar .mj-finish-button','Finish & save');await click('.mj-finish button','Finish & save');
+ // ---- Bottom actions: once you've written, Finish entry and Go deeper sit side by side, equal width ----
+ const pair=await evaluate(()=>{const b=[...document.querySelectorAll('.mj-live-compose .mj-composer-bar>button')];const r=b.map(x=>x.getBoundingClientRect());return {labels:b.map(x=>x.textContent.trim()),same:r.length===2&&Math.abs(r[0].width-r[1].width)<2&&Math.abs(r[0].top-r[1].top)<2,top:!!document.querySelector('.mj-ws-bar .mj-finish-button')};});
+ check(pair.labels[0]==='Finish entry'&&/^Go deeper/.test(pair.labels[1])&&pair.same&&!pair.top,'Finish entry and Go deeper share the bottom row, equal width; nothing in the top bar');
+ // ---- Voice typing: a mic in the field (a stand-in recognizer; nothing listens, nothing is paid) ----
+ await setValue('.mj-live-compose textarea','I walked to the water');
+ await evaluate(()=>{const t=document.querySelector('.mj-live-compose textarea');t.focus();t.setSelectionRange(t.value.length,t.value.length);});
+ await click('.mj-live-compose .mj-mic');
+ await until(()=>!!document.querySelector('.mj-mic[data-listening]')&&!!window.__rec,'listening');
+ await evaluate(()=>window.__rec.say([['and saw',false]]));
+ check(await evaluate(()=>document.querySelector('.mj-live-compose textarea').value)==='I walked to the water and saw','spoken words appear live at the caret');
+ await evaluate(()=>window.__rec.say([['and saw the sea.',true]]));
+ check(await evaluate(()=>document.querySelector('.mj-live-compose textarea').value)==='I walked to the water and saw the sea.','interim words are replaced, never doubled, as speech settles');
+ check(await has('.mj-live-compose .mj-composer-hint','Listening'),'the field says it is listening');
+ await click('.mj-live-compose .mj-mic');
+ await until(()=>!document.querySelector('.mj-mic[data-listening]'),'stopped listening');
+ await click('.mj-live-compose .mj-mic');await until(()=>!!window.__rec,'listening again');await evaluate(()=>window.__rec.fail('not-allowed'));
+ await until(()=>!document.querySelector('.mj-mic[data-listening]'),'stopped after error');
+ check(await has('.mj-live-compose .mj-composer-hint','Microphone access is off'),'a blocked microphone explains itself, and the words stay');
+ await shoot('journal-paired-actions');
+ await setValue('.mj-live-compose textarea','');
+ await click('.mj-live-compose .mj-composer-secondary','Finish entry');await click('.mj-finish button','Finish & save');
  await until(()=>!!document.querySelector('.mj-saved')&&!!document.querySelector('.mj-blank'),'fresh page after saving');
  check(true,'Finish & save turns to a fresh page and links the saved entry');
  await go(`/journal?entry=${convId}`,'!!document.querySelector(".mj-entry")','finished entry');
