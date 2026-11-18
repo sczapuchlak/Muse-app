@@ -533,3 +533,6 @@
 .muse-stories-suggest em{font-style:normal;font:700 .62rem/1 var(--font-ui);letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)}
 .muse-stories-suggest-art{display:grid;place-items:center;flex:none;width:32px;height:32px;border-radius:9px;background:color-mix(in srgb,var(--art-dark) 14%,var(--surface-subtle))}
 .muse-stories-material-cat{white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+/* Material pictures sit in the same size tile as every other icon (MuseMark md: 34px, 11px corners). */
+.muse-stories-material-art{width:34px;height:34px;border-radius:11px}
+.muse-stories-material-title{gap:12px}

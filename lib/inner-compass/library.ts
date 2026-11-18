@@ -38,6 +38,11 @@ export const materialsDisclaimer = materialsJson.disclaimer;
 export const materials: MaterialRef[] = materialsJson.materials;
 export const material = (key: string | undefined) => key ? materials.find((m) => m.key === key) : undefined;
 /** Suggestions while typing a material; matching is optional and a custom name is always allowed. */
+/** The library material with exactly this name or alternate name (for materials typed in before the library had them). */
+export function materialByName(name: string | undefined): MaterialRef | undefined {
+  const n = (name ?? "").trim().toLowerCase().replace(/[’']/g, "");
+  return n ? materials.find((m) => [m.name, ...m.alt].some((x) => x.toLowerCase().replace(/[’']/g, "") === n)) : undefined;
+}
 export function searchMaterials(q: string, limit = 8): MaterialRef[] {
   const s = q.trim().toLowerCase().replace(/[’']/g, "");
   if (!s) return [];
