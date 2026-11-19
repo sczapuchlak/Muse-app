@@ -165,9 +165,9 @@ try{
   await P.addMessage(a.client,a.id,{id:crypto.randomUUID(),conversationId:now.id,body:'A small note for this week.',localDate:todayLocal});
   must(await a.client.from('journal_conversations').update({status:'completed',completed_at:new Date().toISOString()}).eq('id',now.id));
   await go('/journal?view=insights','!!document.querySelector(".mj-reflection")','this week');
-  await until(()=>!!document.querySelector('.mj-reflection-locked'),'locked');
-  check(await has('.mj-reflection-locked','opens on Sunday')&&!(await has('.mj-reflection button','Write this week')),'this week’s reflection is locked until Sunday, with no button');
-  await shoot('10-locked');
+  await until(()=>!!document.querySelector('.mj-review-card[data-state="locked"]'),'locked');
+  check(await has('.mj-review-card','Opens Sunday')&&(await has('.mj-review-chip','to go')||await has('.mj-review-chip','Opens tomorrow'))&&!(await has('.mj-reflection button','Write this week')),'this week’s reflection is locked until Sunday: a countdown, no button');
+  await evaluate(()=>document.querySelector('.mj-review-card')?.scrollIntoView({block:'center'}));await wait(1400);await shoot('10-locked');
  }
  // On This Day: a quiet line on the blank page that opens into a small card; History shows them all.
  const md=todayLocal.slice(5),y=Number(todayLocal.slice(0,4)),jid0=(await P.loadJournal(a.client,a.id)).journals[0].id;
@@ -196,7 +196,9 @@ try{
  await go('/journal?view=insights','!!document.querySelector(".mj-insights")','insights');
  check((await evaluate(()=>[...document.querySelectorAll('.mj-insights .mj-history-controls .muse-segmented button')].map(b=>b.textContent).join('|')))==='Week|Month|Year','Week | Month | Year where History has its switcher');
  await click('.mj-insights .mj-history-controls button','Month');await until(()=>document.querySelector('#mj-reflection-title')?.textContent==='Monthly review','month view');
- if(await has('.mj-reflection','No entries')===false)check(await has('.mj-reflection-locked','review opens on the last day of the month')&&!(await has('.mj-reflection button','Write the month')),'mid-month: this month’s review is locked until its last day, with no button');
+ if(await has('.mj-reflection','No entries')===false)check(await has('.mj-review-card[data-kind="month"][data-state="locked"]')&&!!(await evaluate(()=>!!document.querySelector('.mj-review-card .mj-sky')))&&!(await has('.mj-reflection button','Write the month')),'mid-month: the month card is locked until its last day, with its calendar of stars and no button');
+  await evaluate(()=>document.querySelector('.mj-review-card')?.scrollIntoView({block:'center'}));await wait(1400);await shoot('15-month-locked');
+  check(await evaluate(()=>{const p=document.querySelector('.mj-sky .mj-constellation-star[data-lit] path');return !!p&&getComputedStyle(p).fill!=='rgb(0, 0, 0)';}),'a written day in the month sky takes a theme colour, never black');
  must(await a.client.from('journal_reports').insert({user_id:a.id,period:'month',week_start:'2025-03-01',source_ids:[],source_signature:'x',model:'mock',data:{title:'🌱 A Month of Small Beginnings',review:para(2,6),chapters:[{heading:'The opening night',body:'On March 2 you went.'}],themes:[{heading:'Ease',body:'b'}],people:[{heading:'A new friend',body:'b'}],shifts:[{heading:'Lighter',body:'b'}],insights:[{heading:'Pattern',body:'b'}],wins:[{heading:'You went',body:'b'}],closing:'Closing.',covered:{start:'2025-03-01',end:'2025-03-31',entries:1,generatedAt:new Date().toISOString()}}}));
  const back=(Number(todayLocal.slice(0,4))-2025)*12+Number(todayLocal.slice(5,7))-3;
  for(let i=0;i<back;i++)await evaluate(()=>document.querySelector('[aria-label="Previous month"]').click());
@@ -205,7 +207,8 @@ try{
  check(/March 2025/.test(await evaluate(()=>document.querySelector('#mj-period-title').textContent))&&/The month in review/.test(mtext)&&/Moments that mattered/.test(mtext)&&/People & relationships/.test(mtext)&&/What changed/.test(mtext)&&/Wins & memorable moments/.test(mtext),'a saved monthly review renders all of its sections');
  await shoot('13-month-review');
  await click('.mj-insights .mj-history-controls button','Year');await until(()=>document.querySelector('#mj-reflection-title')?.textContent==='Year in review','year view');
- check(await has('.mj-reflection-locked','review opens on December 31')&&!(await has('.mj-reflection button','Write the year')),'this year’s review is locked until December 31, with no button');
+ check(await has('.mj-review-card[data-kind="year"]','Opens December 31')&&!(await has('.mj-reflection button','Write the year')),'this year’s review is locked until December 31, with no button');
+ await evaluate(()=>document.querySelector('.mj-review-card')?.scrollIntoView({block:'center'}));await wait(1400);await shoot('16-year-locked');
  await evaluate(()=>document.querySelector('[aria-label="Previous year"]').click());
  await until((t)=>document.querySelector('#mj-period-title')?.textContent===t,'last year',String(y-1));
  check(await has('.mj-reflection button',`Write the year in review`)||await has('.mj-reflection','isn’t on for your account'),'a finished year can be written on request (never automatically)');

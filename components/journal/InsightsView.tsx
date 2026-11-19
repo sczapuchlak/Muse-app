@@ -9,7 +9,7 @@ import { aiAction, AiError } from "@/lib/journal/ai-client";
 import { isListed, tagKindLabel, tagKinds, type Report, type ReportSection } from "@/lib/journal/model";
 import { periodEnd, periodStart, rangeStats, reviewLock, shiftPeriod, sourceSignature, streak, weekStats, type Period } from "@/lib/journal/stats";
 import { costUsd, formatUsd, prices } from "@/lib/journal/pricing";
-import { WeekConstellation } from "./JournalArt";
+import { MonthSky, WeekConstellation, YearSky } from "./JournalArt";
 import { MUSE_STAR_PATH } from "../MuseStar";
 
 const at = (d: string) => new Date(`${d}T12:00:00Z`);
@@ -64,8 +64,7 @@ export function InsightsView({ open, initialWeek }: { open: (id: string) => void
     }
     finally { const r = await P.loadReport(j.client, j.userId, start, kind).catch(() => null); setLoaded({ key, report: r }); void j.refreshAi(); setBusy(false); }
   }
-  const lockedText = lock === "until-sunday" ? <>Your reflection opens on Sunday.</> : <>Your {kind === "month" ? monthName(start).split(" ")[0] : start.slice(0, 4)} review opens on {kind === "month" ? "the last day of the month" : "December 31"}.</>;
-  const opensOn = end;
+  const monthCounts = useMemo(() => Array.from({ length: 12 }, (_, m) => { const p = `${start.slice(0, 4)}-${String(m + 1).padStart(2, "0")}`; return state.conversations.filter((c) => isListed(c) && c.localDate.startsWith(p)).length; }), [start, state.conversations]);
 
   return <div className="mj-insights mj-reveal">
     <section className="muse-journal-archive" aria-labelledby="mj-period-title">
@@ -97,21 +96,12 @@ export function InsightsView({ open, initialWeek }: { open: (id: string) => void
     <section className="muse-journal-archive mj-reflection" aria-labelledby="mj-reflection-title">
       <div className="mj-row-between"><h2 id="mj-reflection-title" className="type-display mj-view-title">{reviewName[kind]}</h2>
         {report && ai.enabled && !locked && <button type="button" className="muse-button button-ghost" disabled={busy} onClick={() => void write(true)}>{busy ? "Writing…" : newer || changed ? `Update ${kind === "week" ? "reflection" : "review"}` : "Write it again"}</button>}</div>
-      {!stats.entries ? <p className="mj-note">No entries this {noun[kind]}, so there’s nothing to look back on.</p>
-        : report ? <>
+      {report ? <>
           {(newer > 0 || changed) && <p className="mj-note" data-soft role="status">{newer > 0 ? `This was written before ${newer} newer ${newer === 1 ? "entry" : "entries"}.` : `Your entries for this ${noun[kind]} changed after this was written.`}{ai.enabled && <> <button type="button" className="mj-link" disabled={busy} onClick={() => void write(true)}>{busy ? "Writing…" : `Update ${kind === "week" ? "reflection" : "review"}`}</button></>}</p>}
           <ReportBody report={report} kind={kind} />
-        </> : locked ? <div className="mj-week-quiet mj-reflection-locked">
-          {kind === "week" && <WeekConstellation days={stats.byDay.map((d) => d.date)} written={new Set(stats.byDay.filter((d) => d.entries).map((d) => d.date))} today={today} />}
-          <p className="type-quote">{lockedText}</p>
-          <p className="mj-note">On {formatShort(opensOn)} you can ask for one detailed look back at the whole {noun[kind]}, read from everything you wrote. Until then, keep writing; the numbers above update as you go.</p>
-        </div> : ai.enabled ? <div className="mj-reflection-ready">
-          <p className="mj-note">{kind === "week" ? `A detailed look back at this week, read from your ${stats.entries} ${stats.entries === 1 ? "entry" : "entries"}: what happened, the themes running through it, what stood out and your wins.` : `A detailed review of ${kind === "month" ? monthName(start) : start.slice(0, 4)} from your ${stats.entries} ${stats.entries === 1 ? "entry" : "entries"}: what happened, ${kind === "year" ? "its chapters and turning points" : "the moments that mattered"}, the people in it, what changed and your wins.`} It’s one AI request{estimate != null ? `, likely about ${formatUsd(estimate)}` : ""}, written only when you ask and saved, so reopening it costs nothing.</p>
-          {kind === "week" && isCurrent && !writtenToday && <p className="mj-note" data-soft>You haven’t written today yet. If you journal tonight first, writing the reflection afterwards includes it.</p>}
-          <button type="button" className="muse-button button-primary" disabled={busy} onClick={() => void write(false)}>{busy ? `Reading your ${noun[kind]}…` : kind === "week" ? "Write this week’s reflection" : `Write the ${noun[kind]} in review`}</button>
-          {busy && kind !== "week" && <p className="mj-note" role="status">A whole {noun[kind]} takes a minute or two to read and write. You can stay here.</p>}
-        </div>
-          : <p className="mj-note">Written reviews need AI, which isn’t on for your account. The numbers above are always here.</p>}
+        </> : <ReviewCard kind={kind} start={start} end={end} today={today} written={days} counts={monthCounts} entries={stats.entries}
+          state={!stats.entries ? (locked && lock !== "future" ? "locked" : "empty") : locked ? "locked" : ai.enabled ? "ready" : "no-ai"}
+          estimate={estimate} busy={busy} writtenToday={writtenToday} onWrite={() => void write(false)} />}
       {error && <p className="mj-error" role="alert">{error}</p>}
       {entries.length > 0 && <details className="mj-history"><summary>This {noun[kind]}’s entries ({entries.length})</summary><ul className="mj-bookmarks">{entries.map((c) => <li key={c.id}><button type="button" className="mj-link" onClick={() => open(c.id)}>{kind === "week" ? weekdayShort(c.localDate) : formatShort(c.localDate)} · {c.title || "Untitled"}</button></li>)}</ul></details>}
     </section>
@@ -157,3 +147,42 @@ function ReportBody({ report, kind }: { report: Report; kind: Period }) {
     {d.closing && <p className="type-quote mj-report-closing">{d.closing}</p>}
   </article>;
 }
+
+type CardState = "locked" | "ready" | "empty" | "no-ai";
+const daysBetween = (a: string, b: string) => Math.round((at(b).getTime() - at(a).getTime()) / 86400000);
+/**
+ * The review card when there's no saved review yet: a small sky for the period (the week's arc, the month's calendar of
+ * stars, the year's twelve), a kicker, one editorial line, a countdown while it's locked, and the button when it's
+ * ready. One design for week, month and year, so none is ever just two columns of text.
+ */
+function ReviewCard({ kind, start, end, today, written, counts, entries, state, estimate, busy, writtenToday, onWrite }: {
+  kind: Period; start: string; end: string; today: string; written: ReadonlySet<string>; counts: number[]; entries: number; state: CardState;
+  estimate: number | null; busy: boolean; writtenToday: boolean; onWrite: () => void;
+}) {
+  const name = kind === "week" ? "this week" : kind === "month" ? monthName(start).split(" ")[0] : start.slice(0, 4);
+  const toGo = daysBetween(today, end), isCurrent = today >= start && today <= end;
+  const sky = kind === "week" ? <WeekConstellation days={Array.from({ length: 7 }, (_, i) => addDaysLocal(start, i))} written={written} today={today} />
+    : kind === "month" ? <MonthSky start={start} end={end} written={written} today={today} goal={state === "locked"} />
+      : <YearSky year={start.slice(0, 4)} counts={counts} today={today} goal={state === "locked"} />;
+  const kicker = state === "locked" ? (kind === "week" ? "Opens Sunday" : kind === "month" ? `Opens ${formatShort(end).replace(/, \d{4}$/, "")}` : "Opens December 31")
+    : state === "ready" ? "Ready when you are" : state === "empty" ? "A quiet stretch" : "Your numbers, always";
+  const line = state === "locked" ? (kind === "week" ? "Your week is still being written." : kind === "month" ? `${name} is still unfolding.` : `${name} isn’t finished with you yet.`)
+    : state === "ready" ? (kind === "week" ? (isCurrent ? "Your week is ready to be read." : "This week is ready to be read.") : `${name} is ready to be read.`)
+      : state === "empty" ? (kind === "week" ? "A quiet week: nothing was written." : `Nothing was written in ${kind === "month" ? monthName(start) : name}.`)
+        : "Written reviews need AI, which isn’t on for your account.";
+  return <div className="mj-review-card" data-state={state} data-kind={kind}>
+    <div className="mj-review-sky">{sky}</div>
+    <p className="mj-review-kicker type-meta">{kicker}</p>
+    <p className="type-quote mj-review-line">{line}</p>
+    {state === "locked" && <p className="mj-review-chip type-numeric">{toGo <= 1 ? "Opens tomorrow" : `${toGo} days to go`} · {entries} {entries === 1 ? "entry" : "entries"} so far</p>}
+    {state === "locked" && <p className="mj-note">{kind === "week" ? "On Sunday" : `On ${formatShort(end)}`} you can ask for one detailed look back at the whole {noun[kind]}, read from everything you wrote. Keep writing; the numbers above update as you go.</p>}
+    {state === "ready" && <>
+      <p className="mj-note">{kind === "week" ? `A detailed look back at ${entries} ${entries === 1 ? "entry" : "entries"}: what happened, the themes running through it, what stood out and your wins.` : `A detailed review from ${entries} ${entries === 1 ? "entry" : "entries"}: what happened, ${kind === "year" ? "its chapters and turning points" : "the moments that mattered"}, the people in it, what changed and your wins.`} One AI request{estimate != null ? `, likely about ${formatUsd(estimate)}` : ""}; saved, so reopening it is free.</p>
+      {kind === "week" && isCurrent && !writtenToday && <p className="mj-note" data-soft>You haven’t written today yet. If you journal tonight first, writing the reflection afterwards includes it.</p>}
+      <button type="button" className="muse-button button-primary" disabled={busy} onClick={onWrite}>{busy ? `Reading your ${noun[kind]}…` : kind === "week" ? "Write this week’s reflection" : `Write the ${noun[kind]} in review`}</button>
+      {busy && kind !== "week" && <p className="mj-note" role="status">A whole {noun[kind]} takes a minute or two to read and write. You can stay here.</p>}
+    </>}
+    {state === "no-ai" && <p className="mj-note">The numbers above are always here.</p>}
+  </div>;
+}
+const addDaysLocal = (d: string, n: number) => new Date(at(d).getTime() + n * 86400000).toISOString().slice(0, 10);
