@@ -404,7 +404,7 @@
  .mj-tb-label,.mj-tb-text small{display:none}
  .mj-tb-button{min-height:38px;padding:3px 6px 3px 3px;gap:5px}
  .mj-tb-button[aria-label^="Journal"] .mj-tb-text{display:none}
- .mj-tb-button[aria-label^="Companion"]{flex:1 1 auto;min-width:0;max-width:none}
+ .mj-tb-button[aria-label^="Companion"]{flex:0 1 auto;min-width:0;max-width:min(60vw,260px)}
  .mj-toolbar{flex:1 1 auto}
  .mj-tb-new{min-height:38px;padding-inline:8px}
  .mj-composer textarea{min-height:76px;padding:12px 14px}
@@ -918,3 +918,11 @@
 .mj-draft-discard{color:var(--urgency-ink,var(--text-muted))}
 .mj-drafts-empty{display:grid;gap:4px;padding:28px 4px;text-align:center}.mj-drafts-empty p{margin:0}
 @container muse-content (max-width:640px){.mj-draft{grid-template-columns:minmax(0,1fr)}.mj-draft-actions{justify-content:flex-start}}
+
+/* The writing page's date and streak share one line (Nov 18): the streak no longer hangs under the constellation. */
+.mj-blank-top{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:4px 14px}
+.mj-blank-top .muse-kicker{margin:0}
+.mj-blank-streak{display:inline-flex;align-items:center;gap:6px;font-size:.84rem;color:var(--text-muted);white-space:nowrap}
+.mj-blank-streak b{font-family:var(--font-editorial);font-size:1.2rem;color:var(--foreground)}
+.mj-blank-streak .mj-streak-flame{width:11px;height:15px;background:linear-gradient(180deg,var(--accent-pop,var(--accent-primary)),#ff9a3d 70%,#ffcf5a);clip-path:polygon(50% 0,72% 30%,92% 55%,85% 85%,50% 100%,15% 85%,8% 55%,30% 32%);filter:drop-shadow(0 0 3px rgba(255,140,60,.6))}
+.mj-blank-week>p:empty{display:none}
