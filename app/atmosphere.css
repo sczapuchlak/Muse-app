@@ -41,6 +41,7 @@
 :root[data-theme="astral"] { --atmosphere-photo:linear-gradient(180deg,rgba(18,10,34,.4) 0,rgba(18,10,34,0) 26svh),url("/themes/midnight-ballerina.webp") center/100% 100% no-repeat; }
 :root[data-theme="hot-summer-nights"] { --atmosphere-photo:url("/themes/hot-summer-nights.webp") center/100% 100% no-repeat; }
 :root[data-theme="nightbloom"] { --atmosphere-photo:url("/themes/pretty-toxic.webp") center/100% 100% no-repeat; }
+:root[data-theme="bubblegum-baby"] { --atmosphere-photo:url("/themes/malibu-mugshot.webp") center/100% 100% no-repeat; }
 :root[data-theme="all-american-girl"] { --atmosphere-photo:url("/themes/all-american-girl.webp") right center/cover no-repeat; }
 /* Wide screens crop a portrait photo's top and bottom, so the art keeps its red-gold-blue top-right sweep and the arch
    at the bottom is drawn back in from the photo's own colours (red, white and blue corners). */
