@@ -61,7 +61,9 @@ test('parsers: new analyses and reports read fully; older saved ones still read 
 });
 
 test('the prompts carry the editorial rules (and the schemas ask for every section)', () => {
-  assert.match(I.ANALYSIS_RULES, /No people's names/); assert.match(I.ANALYSIS_RULES, /never comma-separated topics/);
+  assert.match(I.ANALYSIS_RULES, /one emoji that genuinely fits/); assert.match(I.ANALYSIS_RULES, /Never any person's name/); assert.doesNotMatch(I.ANALYSIS_RULES, /unless the entry is genuinely unthinkable/, 'no exception for names');
+  assert.match(I.REPORT_RULES, /one emoji that genuinely fits/); assert.match(I.REPORT_RULES, /Never any person's name/);
+  assert.match(I.ANALYSIS_RULES, /never comma-separated topics/);
   assert.match(I.ANALYSIS_RULES, /Scale to the material/); assert.match(I.ANALYSIS_RULES, /primary evidence/);
   assert.match(I.ANALYSIS_RULES, /Keep observation and interpretation apart/); assert.doesNotMatch(I.ANALYSIS_RULES, /180–380 words/);
   assert.deepEqual([...I.analysisSchema.required], ['title', 'recap', 'overview', 'insights', 'people', 'topics', 'emotions', 'threads', 'memories']);
