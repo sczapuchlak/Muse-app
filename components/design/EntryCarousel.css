@@ -9,7 +9,7 @@
 .muse-entry-carousel-arrows button:hover:not(:disabled){border-color:var(--selected-border)}
 .muse-entry-carousel-arrows button:disabled{opacity:.35;cursor:default}
 .muse-entry-carousel-arrows button:focus-visible,.muse-entry-carousel-track:focus-visible{outline:2px solid var(--focus-ring,var(--accent-primary));outline-offset:2px}
-.muse-entry-carousel-track{display:grid;gap:12px;min-width:0;border-radius:16px;touch-action:pan-y}
+.muse-entry-carousel-track{display:grid;gap:12px;min-width:0;border-radius:16px;touch-action:pan-y;align-items:start;align-content:start}
 .muse-entry-carousel-item{min-width:0;display:grid}
 .muse-entry-carousel-dots{display:flex;justify-content:center;gap:5px}
 .muse-entry-carousel-dots i{width:6px;height:6px;border-radius:50%;background:var(--glass-border)}

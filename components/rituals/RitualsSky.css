@@ -9,7 +9,7 @@
 .muse-sky-headline{display:grid;gap:0;margin:0;font-family:var(--font-editorial);font-weight:var(--type-editorial-weight);font-style:italic;font-size:clamp(.95rem,1.3vw,1.12rem);line-height:1.15}
 .muse-sky-count{font-style:normal;font-weight:520;font-size:clamp(1.9rem,2.8vw,2.4rem);line-height:1;letter-spacing:-.04em;background:linear-gradient(105deg,var(--foreground) 15%,color-mix(in oklab,var(--accent-primary) 80%,var(--foreground)) 60%,color-mix(in oklab,var(--accent-secondary) 80%,var(--foreground)));-webkit-background-clip:text;background-clip:text;color:transparent}
 .muse-sky-count small{font-size:.45em;letter-spacing:-.01em}
-.muse-sky-map{display:block;width:100%;height:auto;max-height:104px;overflow:visible;min-width:0}
+.muse-sky-map{display:block;width:100%;height:auto;max-height:210px;overflow:visible;min-width:0}
 .muse-sky-map[data-shape=rise]{display:none}
 .muse-sky-dust{fill:color-mix(in srgb,var(--foreground) 30%,transparent)}
 @media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) .muse-sky-dust{animation:muse-sky-twinkle 3.2s ease-in-out var(--d) 3}}
