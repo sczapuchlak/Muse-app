@@ -1,9 +1,8 @@
 'use client';
 /* eslint-disable @next/next/no-img-element -- edition covers are external HTTPS images, as elsewhere in Books. */
-import {useId,useMemo,useRef,useState,type ReactNode} from 'react';
+import {useMemo,useRef,useState,type ReactNode} from 'react';
 import {MuseModal} from '@/components/MuseModal';
 import {MuseIcon} from '@/components/MuseIcon';
-import {GlassPopover} from '@/components/GlassPopover';
 import {useMuseSpark} from '@/components/MuseSpark';
 import {createMuseBrowserClient} from '@/lib/supabase/client';
 import {todayForReading} from '@/lib/whimsy/books';
@@ -100,15 +99,15 @@ export function QuickAddToast({toast,onOpen,onDismiss,spark}:{toast:{book:Book;e
  </div>;
 }
 
-/** Bookmark + status split button for a result or installment that is not on the shelf. The shelf menu is the
- * shared GlassPopover, so it escapes scrolling lists and stays above neighbouring rows at any width. */
+/** Adding a book that is not on the shelf (Nov 18): two plain, labelled choices, one tap each: To Be Read (want to read
+ * it) or Reading now (Currently Reading). This replaces the bookmark + dropdown split button, whose menu repeated the
+ * bookmark's own choice. The compact size keeps the same two choices with shorter words. */
 export function QuickAddButton({busy,disabled,onAdd,label,size}:{busy:boolean;disabled?:boolean;onAdd:(status:QuickStatus)=>void;label:string;size?:'sm'}){
- const [open,setOpen]=useState(false),anchor=useRef<HTMLButtonElement>(null),id=useId();
- return <span className="muse-quick-add" data-size={size} data-open={open||undefined}>
-  <button type="button" className="muse-quick-add-main" disabled={disabled||busy} aria-label={`Add ${label} to To Be Read`} onClick={event=>{event.stopPropagation();onAdd('planned');}}>{busy?<span className="muse-quick-add-spinner" aria-hidden="true"/>:<MuseIcon name="bookmark" size={18}/>}</button>
-  <button ref={anchor} type="button" className="muse-quick-add-more" disabled={disabled||busy} aria-label={`Choose a shelf for ${label}`} aria-haspopup="menu" aria-expanded={open} onClick={event=>{event.stopPropagation();setOpen(v=>!v);}}><MuseIcon name="chevron" size={16}/></button>
-  <GlassPopover id={`quick-add-${id}`} label={`Add ${label} to a shelf`} role="menu" open={open} anchorRef={anchor} onClose={()=>setOpen(false)} width={220} align="end" bare>
-   <div className="popover-choice-list muse-quick-add-menu">{(Object.keys(quickStatusLabel) as QuickStatus[]).map(status=><button key={status} type="button" role="menuitem" className="popover-choice" onClick={()=>{setOpen(false);onAdd(status);}}><span>{quickStatusLabel[status]}</span></button>)}</div>
-  </GlassPopover>
+ const [last,setLast]=useState<QuickStatus>('planned');
+ const choose=(status:QuickStatus)=>(event:React.MouseEvent)=>{event.stopPropagation();setLast(status);onAdd(status);};
+ const spinner=<span className="muse-quick-add-spinner" aria-hidden="true"/>;
+ return <span className="muse-quick-add" data-size={size} role="group" aria-label={`Add ${label}`}>
+  <button type="button" className="muse-quick-add-main" disabled={disabled||busy} aria-label={`Add ${label} to To Be Read`} title="Want to read it: add to your To Be Read shelf" onClick={choose('planned')}>{busy&&last==='planned'?spinner:<MuseIcon name="bookmark" size={16}/>}<span>{size==='sm'?'TBR':'To Be Read'}</span></button>
+  <button type="button" className="muse-quick-add-reading" disabled={disabled||busy} aria-label={`Add ${label} to Currently Reading`} title="Start it now: add to Currently Reading" onClick={choose('reading')}>{busy&&last==='reading'?spinner:<MuseIcon name="book" size={16}/>}<span>{size==='sm'?'Reading':'Reading now'}</span></button>
  </span>;
 }

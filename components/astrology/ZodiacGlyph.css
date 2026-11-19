@@ -4,8 +4,8 @@
 .muse-zodiac-tile[data-size=lg]{width:56px;height:56px;border-radius:18px}
 @supports (color: oklch(from red l c h)){
  .muse-zodiac-tile{color:oklch(from var(--sign) max(l,.8) c h)}
- :root:is([data-theme="iridescent"],[data-theme="solstice"],[data-theme="issya-bday"],[data-theme="bubblegum-baby"]) .muse-zodiac-tile,
- :root:is([data-theme="astral"],[data-theme="nightbloom"]) :is(.muse-cosmic-zodiac,.muse-forecast-editorial,.muse-cosmic-forecast-sign,.muse-forecast-reflect,.muse-card) .muse-zodiac-tile{color:oklch(from var(--sign) min(l,.45) max(c,.13) h)}
+ :root:is([data-theme="iridescent"],[data-theme="solstice"],[data-theme="issya-bday"],[data-theme="bubblegum-baby"],[data-theme="nightbloom"],[data-theme="all-american-girl"]) .muse-zodiac-tile,
+ :root[data-theme="astral"] :is(.muse-cosmic-zodiac,.muse-forecast-editorial,.muse-cosmic-forecast-sign,.muse-forecast-reflect,.muse-card) .muse-zodiac-tile{color:oklch(from var(--sign) min(l,.45) max(c,.13) h)}
 }
 .muse-forecast-sign-glyph{color:var(--sign);border-color:color-mix(in srgb,var(--sign,var(--selected-border)) 60%,transparent)!important;background:linear-gradient(150deg,color-mix(in srgb,var(--sign) 24%,transparent),color-mix(in srgb,var(--sign) 6%,transparent))!important}
 @supports (color: oklch(from red l c h)){.muse-forecast-sign-glyph{color:oklch(from var(--sign) max(l,.8) c h)}}

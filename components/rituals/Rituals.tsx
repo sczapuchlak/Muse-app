@@ -6,7 +6,6 @@ import { dailyEditSample } from "@/lib/daily-edit-data";
 import { weekDates } from "@/lib/dates";
 import { entryFor, type RitualDefinition } from "@/lib/rituals";
 import { MusePageHeader } from "../MusePageHeader";
-import { DateNavigator } from "../DateNavigator";
 import { RitualWeekNavigator } from "./RitualWeekNavigator";
 import { MuseOverflowMenu } from "../MuseOverflowMenu";
 import { MuseIcon } from "../MuseIcon";
@@ -46,7 +45,9 @@ function RitualsView() {
   const focusId = layout === "focus" ? (trackable.some((r) => r.id === tracker.habitId) ? tracker.habitId : trackable[0]?.id ?? "all") : "all";
   const noun = period === "week" ? "week" : period === "month" ? "month" : "year";
   return <main className="muse-page muse-rituals-page">
-    <MusePageHeader title="Rituals"><DateNavigator date={date} onChange={setDate} /></MusePageHeader>
+    {/* One way to move through time (Nov 18): the week strip picks the day and ‹ This week › moves the period, so the
+        header no longer repeats a day picker. */}
+    <MusePageHeader title="Rituals" />
     <RitualCapture>
     <div className="muse-rituals-toolbar"><nav className="muse-ritual-week-navigation muse-week-jump" aria-label={`Ritual ${noun} navigation`}><button className="muse-button" type="button" aria-label={`Previous ${noun}`} onClick={() => setDate(shiftPeriod(period, date, -1))}>‹</button><button className="muse-button" type="button" disabled={!today} onClick={() => setDate(today)}>This {noun}</button><button className="muse-button" type="button" aria-label={`Next ${noun}`} onClick={() => setDate(shiftPeriod(period, date, 1))}>›</button></nav>{!classic && <span className="muse-tracker-title">{periodTitle(period, date)}</span>}
     <div className="muse-tracker-controls">
