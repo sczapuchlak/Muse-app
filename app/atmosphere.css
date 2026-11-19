@@ -39,7 +39,7 @@
 .muse-atmosphere-photo { position:fixed; top:0; inset-inline:var(--muse-rail-width) 0; height:100lvh; z-index:0; background:var(--atmosphere-photo,none); }
 @media(max-width:1023px){.muse-atmosphere-photo { inset-inline-start:0; }}
 :root[data-theme="astral"] { --atmosphere-photo:linear-gradient(180deg,rgba(18,10,34,.4) 0,rgba(18,10,34,0) 26svh),url("/themes/midnight-ballerina.webp") center/100% 100% no-repeat; }
-:root[data-theme="hot-summer-nights"] { --atmosphere-photo:radial-gradient(ellipse 55% 42% at 100% 0%,rgba(30,20,92,.55) 0,rgba(30,20,92,.22) 55%,transparent 80%),linear-gradient(90deg,rgba(14,16,70,.34) 0,rgba(14,16,70,.06) 45%),linear-gradient(rgba(18,14,66,.2),rgba(18,14,66,.2)),url("/themes/hot-summer-nights.webp") center top/cover no-repeat; }
+:root[data-theme="hot-summer-nights"] { --atmosphere-photo:radial-gradient(ellipse 50% 40% at 100% 0%,rgba(30,20,92,.45) 0,rgba(30,20,92,.16) 55%,transparent 80%),linear-gradient(90deg,rgba(14,16,70,.26) 0,rgba(14,16,70,0) 42%),linear-gradient(rgba(18,14,66,.12),rgba(18,14,66,.12)),url("/themes/hot-summer-nights.webp") center/100% 100% no-repeat; }
 :root[data-theme="nightbloom"] { --atmosphere-photo:url("/themes/pretty-toxic.webp") center/100% 100% no-repeat; }
 :root[data-theme="all-american-girl"] { --atmosphere-photo:url("/themes/all-american-girl.webp") right center/cover no-repeat; }
 /* Wide screens crop a portrait photo's top and bottom, so the art keeps its red-gold-blue top-right sweep and the arch
