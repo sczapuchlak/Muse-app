@@ -23,6 +23,7 @@ import { celebrate } from "@/lib/celebrate";
 import { entryTitle, isListed, snapshotOf, type Companion, type Conversation, type Guide, type GuideQuestion, type GuideSnapshot, type GuideState, type Message, type MessageImage, type Mode } from "@/lib/journal/model";
 import { isUnfinished } from "@/lib/journal/model";
 import { companionPresets } from "@/lib/journal/presets";
+import { OnThisDay } from "./OnThisDay";
 import { addDays, onThisDay, streak, weekDays, weekStart } from "@/lib/journal/stats";
 
 export const choiceInk = (tone: MuseTone) => ({ "--choice-ink": `var(--chart-${tone})`, "--choice-ink-b": `var(--chart-${(tone % 8) + 1})` }) as React.CSSProperties;
@@ -375,7 +376,7 @@ function Page({ initialId, onRouteClear, continueFrom, onCreated }: { initialId:
   </section>;
 }
 
-/** The top of a blank page: the day, a greeting, this week as a constellation, and a quiet door to On This Day. */
+/** The top of a blank page: the day, a greeting, a small On This Day memory when there is one, and this week as a constellation. */
 function BlankHead({ tone, mode, forDay, onPickDay }: { tone: number; mode: Mode; forDay: string | null; onPickDay: () => void }) {
   const j = useJournal();
   const { state, today } = j;
@@ -390,10 +391,10 @@ function BlankHead({ tone, mode, forDay, onPickDay }: { tone: number; mode: Mode
         {run > 0 && <span className="mj-blank-streak"><span className="mj-streak-flame" aria-hidden="true" /><b className="type-numeric">{run}</b> {run === 1 ? "day" : "days"} in a row</span>}</div>
       <h2 className="type-display mj-greeting">{greeting(new Date().getHours())}.</h2>
       <p className="mj-blank-line type-quote">{yesterday ? <>Yesterday you wrote about <Link href={`/journal?entry=${yesterday.id}`}>“{yesterday.title}”</Link>.</> : "A place to think out loud."}</p>
+      {past.length > 0 && <OnThisDay memories={past} />}
     </div>
     <div className="mj-blank-week">
       <WeekConstellation days={weekDays(weekStart(today))} written={days} today={today} />
-      {past.length > 0 && <p className="type-meta"><Link href={`/journal?view=history&onthisday=1`}>On this day</Link></p>}
     </div>
   </div>;
 }

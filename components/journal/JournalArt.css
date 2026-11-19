@@ -22,3 +22,14 @@
 /* The sparkle is light only (glow and brightness), never a transform: each star carries its own SVG positioning. */
 @media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) .mj-constellation-star[data-lit] path{animation:mjw-sparkle 2.4s ease-in-out calc(var(--i)*.35s + .4s) 3}}
 @keyframes mjw-sparkle{50%{filter:drop-shadow(0 0 10px var(--star)) drop-shadow(0 0 3px #fff) brightness(1.3)}}
+/* Review skies (Nov 19): the month calendar of stars and the year arc share the constellation's colours. */
+.mj-sky-goal{fill:none;stroke:var(--journal-b,var(--accent-warm));stroke-width:1;stroke-dasharray:2 2;opacity:.8}
+.mj-sky .mj-constellation-star:not([data-lit]) path{fill:color-mix(in srgb,var(--foreground) 34%,transparent)}
+/* More than seven stars (a month, a year): the theme's seven star colours repeat in turn. */
+.mj-sky .mj-constellation-star:nth-of-type(7n+1){--star:var(--accent-primary)}
+.mj-sky .mj-constellation-star:nth-of-type(7n+2){--star:var(--accent-secondary)}
+.mj-sky .mj-constellation-star:nth-of-type(7n+3){--star:var(--accent-pop)}
+.mj-sky .mj-constellation-star:nth-of-type(7n+4){--star:var(--accent-warm,var(--accent-primary))}
+.mj-sky .mj-constellation-star:nth-of-type(7n+5){--star:var(--star-1,var(--accent-secondary))}
+.mj-sky .mj-constellation-star:nth-of-type(7n+6){--star:var(--star-2,var(--accent-pop))}
+.mj-sky .mj-constellation-star:nth-of-type(7n){--star:var(--star-3,var(--accent-primary))}

@@ -154,3 +154,42 @@ export const reportSchema = {
     closing: { type: "string", description: "Optional; empty string when there's no natural closing" },
   },
 } as const;
+
+/**
+ * Monthly and yearly Life Reviews (Nov 19): the weekly reflection's editorial standards over a longer span. The input
+ * is bounded: each entry's date, title, tags, saved summary (secondary) and a short excerpt of their own words, plus
+ * any saved weekly or monthly reflections for the period (secondary). Never a full year of transcripts.
+ */
+export function periodRules(kind: "month" | "year") {
+  const span = kind === "month" ? "one calendar month" : "one calendar year";
+  return `You write a Life Review of ${span} of one person's journal. They will reread it years from now as the record of that ${kind}, so it must stand on its own: specific, chronological, and full of the details that would help them remember.
+
+What you receive: the ${kind}'s statistics, then every eligible entry in date order (date, journal, title, tags, an earlier summary that is secondary and may be imperfect, and a short excerpt of their own words, often cut), then any reflections already written for parts of the ${kind} (secondary). Their own words are the evidence. Summaries and reflections were written by AI or another app: use them to find what happened, never as facts about the person, never as their words.
+
+Honesty:
+- Only what the entries support. Never invent events, people, feelings, motives, outcomes, milestones or wins. Don't treat a quiet stretch as if something happened, and don't treat missing detail as absence (excerpts are short).
+- Keep observation and interpretation apart, and mark interpretation as interpretation. Never diagnose them or anyone else, never state what another person thinks or feels or why they did something.
+- Respect chronology: say when things happened (dates, weeks${kind === "year" ? ", months, seasons" : ""}) and how situations developed over time. Don't present something as resolved if the entries leave it open, and don't force a growth narrative or a neat arc. Some things in a ${kind} are simply unrelated.
+- Scale to the material: a ${kind} with many substantial entries deserves a rich, developed review; a sparse one deserves a short, honest one with fewer or empty sections. Never pad or repeat.
+
+Voice: second person; intelligent, perceptive, warm, specific, occasionally witty when it fits; their own phrasing where it helps. No therapy clichés, motivational language, generic praise, lectures or homework.
+
+Fields (every section item has a short editorial heading and a body of one or more paragraphs separated by blank lines):
+- title: one emoji that genuinely fits, a space, then 3–8 evocative words for the ${kind}'s overarching story ("🌊 The Year Everything Got Rearranged"). Never any person's name, nickname or initial; never generic or a list of topics.
+- review: a substantial narrative overview of the ${kind} in order${kind === "year" ? ", moving through it season by season or chapter by chapter" : ", week by week where that helps"}: what happened, who mattered, what they were dealing with, how it moved.
+- chapters: ${kind === "year" ? "the year's major chapters and turning points, in order (about 3–6), each naming roughly when it began and what shifted" : "the month's most important events and experiences (about 2–5), each with when it happened and why it mattered"}.
+- themes: ${kind === "year" ? "themes that ran through the year (about 3–5), saying where they persisted and where they evolved" : "major themes of the month (about 2–4), with specific evidence"}.
+- people: significant people and relationships (0–${kind === "year" ? 6 : 4}) and how each figured in this ${kind}, as the entries describe them; headings may be their names. Leave empty if no one stands out.
+- shifts: ${kind === "year" ? "what changed and what stayed constant: shifts in perspective, priorities or circumstances, and the things that held steady (about 2–5)" : "changes in their thinking or circumstances across the month (0–3)"}.
+- insights: ${kind === "year" ? "2–4" : "1–3"} meaningful observations and patterns beyond the events, grounded and tentative where they interpret. Don't manufacture any.
+- wins: ${kind === "year" ? "noteworthy wins, milestones, accomplishments and memorable experiences (about 3–6)" : "personal wins, milestones and memorable moments (about 2–4)"}, concrete and real.
+- closing: ${kind === "year" ? "a thoughtful closing reflection on the year (a short paragraph)" : "an optional short closing observation, or an empty string"}. No lecture, no prescription.`;
+}
+const periodSection = { type: "array", items: { type: "object", additionalProperties: false, required: ["heading", "body"], properties: { heading: { type: "string" }, body: { type: "string" } } } } as const;
+export const periodSchema = {
+  type: "object", additionalProperties: false, required: ["title", "review", "chapters", "themes", "people", "shifts", "insights", "wins", "closing"],
+  properties: {
+    title: { type: "string", description: "One fitting emoji first, then 3–8 evocative words; never a person's name" }, review: { type: "string" },
+    chapters: periodSection, themes: periodSection, people: periodSection, shifts: periodSection, insights: periodSection, wins: periodSection, closing: { type: "string" },
+  },
+} as const;

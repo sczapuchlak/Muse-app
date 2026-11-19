@@ -3,9 +3,9 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/lib/database.types";
 import { privateResponse, routeAuthClient, trustedOrigin } from "@/lib/auth/http";
 import { createMuseAdminClient } from "@/lib/supabase/admin";
-import { approxTokens, buildOpening, buildReply, defaultBudget, partOfDay, transcript, weekInput, type InputMessage, type WeekEntry } from "@/lib/journal/context";
+import { approxTokens, buildOpening, buildReply, defaultBudget, partOfDay, periodInput, transcript, weekInput, type InputMessage, type PeriodEntry, type WeekEntry } from "@/lib/journal/context";
 import { APPLICATION_RULES } from "@/lib/journal/instructions";
-import { analysisSchema, ANALYSIS_RULES, REPORT_RULES, reportSchema, type Layers } from "@/lib/journal/instructions";
+import { analysisSchema, ANALYSIS_RULES, periodRules, periodSchema, REPORT_RULES, reportSchema, type Layers } from "@/lib/journal/instructions";
 import { conversationFromRow, journalFromRow, isListed, parseAnalysisData, parseGuideSnapshot, parseReportData, type Journal } from "@/lib/journal/model";
 import { generate, providerConfig, ProviderError, type ProviderConfig } from "@/lib/journal/server/provider";
 import { allowance, begin, estimateUsd, finish, setBudget, UsageError } from "@/lib/journal/server/usage";
@@ -13,13 +13,15 @@ import { IMAGE_BUCKET } from "@/lib/journal/persistence";
 import { basics, loadMemory } from "@/lib/journal/server/retrieve";
 import { referenceNote } from "@/lib/journal/server/reference";
 import { applyAnalysis } from "@/lib/journal/server/apply";
-import { addDays, reflectionLock, sourceSignature, weekStats } from "@/lib/journal/stats";
+import { addDays, periodEnd, reflectionLock, reviewLock, sourceSignature, validPeriodStart, weekStats } from "@/lib/journal/stats";
 /** A conservative reservation per attached photo (a 1600px image at high detail); the invoice uses real tokens. */
 const IMAGE_TOKEN_RESERVE = 3000;
 /** Editorial analyses (Nov 19): room for a full narrative Overview, and long conversations read nearly whole. */
 const ANALYSIS_MAX_OUTPUT = 7000, ANALYSIS_TRANSCRIPT_MAX = 100000;
 /** Weekly Reflection V2: the week's own words (bounded), and room for a full report. */
-const REPORT_INPUT_MAX = 140000, REPORT_MAX_OUTPUT = 9000;
+const REPORT_INPUT_MAX = 140000, REPORT_MAX_OUTPUT = 9000, REPORT_TIMEOUT = 240_000;
+/** Monthly and yearly reviews: bounded excerpts (never full transcripts), more room to write. */
+const PERIOD_INPUT_MAX = { month: 120000, year: 150000 }, PERIOD_MAX_OUTPUT = { month: 10000, year: 14000 }, EXCERPT_CHARS = { month: 1400, year: 500 };
 /** A guided answer carries its question, so the companion and the analysis read it in context. */
 const withQuestion = (m: { body: string; guide_question?: string | null }) => (m.guide_question ? `(Answering the guide question “${m.guide_question}”)\n${m.body}` : m.body);
 /** For a guided entry: what the guide is, so replies fit it. It shapes this entry only; the companion stays itself. */
@@ -37,7 +39,8 @@ function guideNote(raw: unknown): string {
  * cost, and keyed so a repeated press can't run twice. Journal content is read with the person's own client (RLS) and
  * never written to logs. Replies stream as newline-delimited JSON: {t:"delta",d} … then {t:"done",…} or {t:"error",…}.
  */
-export const maxDuration = 60;
+/** Long written reviews can take a few minutes; replies and analyses keep their own 50-second provider timeout. */
+export const maxDuration = 300;
 type Client = SupabaseClient<Database>;
 const uuid = (v: unknown): v is string => typeof v === "string" && /^[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}$/i.test(v);
 const date = (v: unknown): v is string => typeof v === "string" && /^\d{4}-\d{2}-\d{2}$/.test(v) && Math.abs(Date.parse(`${v}T12:00:00Z`) - Date.now()) < 3 * 86400000;
@@ -311,6 +314,7 @@ async function analyse(client: Client, admin: Client, config: ProviderConfig, us
 }
 
 async function report(client: Client, admin: Client, config: ProviderConfig, userId: string, body: Record<string, unknown>) {
+  if (body.period === "month" || body.period === "year") return periodReport(client, admin, config, userId, body, body.period);
   if (typeof body.weekStart !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(body.weekStart) || new Date(`${body.weekStart}T12:00:00Z`).getUTCDay() !== 1) throw new Bad("invalid", "Choose a week.");
   const start = body.weekStart, end = addDays(start, 6);
   // Sunday unlock: the current week opens at midnight on Sunday in their own day (localDate, checked against the
@@ -323,7 +327,7 @@ async function report(client: Client, admin: Client, config: ProviderConfig, use
   const list = rows.data.map(conversationFromRow).filter(isListed);
   if (!list.length) throw new Bad("invalid", "There are no entries in this week to reflect on.");
   const signature = sourceSignature(list);
-  const cached = await client.from("journal_reports").select("*").eq("user_id", userId).eq("week_start", start).maybeSingle();
+  const cached = await client.from("journal_reports").select("*").eq("user_id", userId).eq("period", "week").eq("week_start", start).maybeSingle();
   if (cached.data && body.regenerate !== true) return { report: cached.data, cached: true, stale: cached.data.source_signature !== signature };
   const [links, tags, journals] = await Promise.all([
     client.from("journal_entry_tags").select("conversation_id,tag_id,source").eq("user_id", userId).in("conversation_id", list.map((c) => c.id)),
@@ -348,13 +352,71 @@ async function report(client: Client, admin: Client, config: ProviderConfig, use
   // One request per week and version: a repeated tap or a second device waits for the first instead of paying twice.
   const usage = await begin(admin, userId, { kind: "report", requestKey: `report:${start}:${signature.slice(0, 40)}:${body.regenerate === true && cached.data ? `r${cached.data.revision}` : "1"}`, conversationId: null, model: config.model, estimateUsd: estimateUsd(config.model, approxTokens(REPORT_RULES.length + facts.length + text.length), REPORT_MAX_OUTPUT) });
   try {
-    const out = await generate(config, { instructions: REPORT_RULES, input: [{ role: "user", content: `${facts}\n\nThe week's entries, in order:\n\n${text}` }], maxOutputTokens: REPORT_MAX_OUTPUT, effort: "low", schema: { name: "journal_weekly_reflection", schema: reportSchema } });
+    const out = await generate(config, { instructions: REPORT_RULES, input: [{ role: "user", content: `${facts}\n\nThe week's entries, in order:\n\n${text}` }], maxOutputTokens: REPORT_MAX_OUTPUT, effort: "low", timeoutMs: REPORT_TIMEOUT, schema: { name: "journal_weekly_reflection", schema: reportSchema } });
     await finish(admin, usage.id, out.model, { usage: out.usage });
     let parsed: unknown; try { parsed = JSON.parse(out.text); } catch { parsed = null; }
     const data = parseReportData(parsed);
     if (!data.title || !data.review) throw new ProviderError("failed", "The reflection came back unreadable. Nothing was saved; try again.");
     const stored = { title: data.title, review: data.review, themes: data.themes, insights: data.insights, wins: data.wins, closing: data.closing, covered: { start, end, entries: eligible.length, generatedAt: new Date().toISOString() } };
-    const saved = await client.from("journal_reports").upsert({ user_id: userId, week_start: start, data: stored, source_ids: list.map((c) => c.id), source_signature: signature, model: out.model }, { onConflict: "user_id,week_start" }).select("*").single();
+    const saved = await client.from("journal_reports").upsert({ user_id: userId, period: "week", week_start: start, data: stored, source_ids: list.map((c) => c.id), source_signature: signature, model: out.model }, { onConflict: "user_id,period,week_start" }).select("*").single();
+    if (saved.error) throw saved.error;
+    return { report: saved.data, cached: false, stale: false };
+  } catch (e) { await finish(admin, usage.id, config.model, { error: e instanceof ProviderError ? e.code : "failed" }); throw e; }
+}
+
+/**
+ * Monthly and yearly Life Reviews: on demand for a finished month or year (their own day), cached, one request key
+ * per period and version. Reads bounded excerpts and saved summaries, plus saved reflections for parts of the period,
+ * in one request; never a year of full transcripts. Entries kept out of AI and memory-off journals are never sent.
+ */
+async function periodReport(client: Client, admin: Client, config: ProviderConfig, userId: string, body: Record<string, unknown>, kind: "month" | "year") {
+  const start = typeof body.start === "string" ? body.start : "";
+  if (!validPeriodStart(kind, start)) throw new Bad("invalid", `Choose a ${kind}.`);
+  const end = periodEnd(kind, start), today = date(body.localDate) ? body.localDate : new Date().toISOString().slice(0, 10);
+  const lock = reviewLock(kind, start, today);
+  if (lock !== "open") throw new Bad("locked", lock === "future" ? `That ${kind} hasn’t happened yet.` : `This ${kind}’s review opens on its last day.`);
+  const rows = await client.from("journal_conversations").select("*").eq("user_id", userId).gte("local_date", start).lte("local_date", end).neq("status", "draft").order("local_date").order("started_at").limit(3000);
+  if (rows.error) throw rows.error;
+  const list = rows.data.map(conversationFromRow).filter(isListed);
+  if (!list.length) throw new Bad("invalid", `There are no entries in this ${kind} to look back on.`);
+  const signature = sourceSignature(list);
+  const cached = await client.from("journal_reports").select("*").eq("user_id", userId).eq("period", kind).eq("week_start", start).maybeSingle();
+  if (cached.data && body.regenerate !== true) return { report: cached.data, cached: true, stale: cached.data.source_signature !== signature };
+  const [tags, journals, reports] = await Promise.all([
+    client.from("journal_tags").select("id,kind,name,suppressed").eq("user_id", userId).limit(5000),
+    client.from("journal_journals").select("id,name,memory_scope").eq("user_id", userId),
+    client.from("journal_reports").select("period,week_start,data").eq("user_id", userId).eq("period", kind === "year" ? "month" : "week").gte("week_start", kind === "month" ? addDays(start, -6) : start).lte("week_start", end).order("week_start"),
+  ]);
+  const off = new Set((journals.data ?? []).filter((x) => x.memory_scope === "off").map((x) => x.id));
+  const eligible = list.filter((c) => !c.excludeFromMemory && !off.has(c.journalId));
+  if (!eligible.length) throw new Bad("invalid", `Every entry this ${kind} is kept out of AI, so there’s nothing to look back on.`);
+  const ids = eligible.map((c) => c.id), tagName = new Map((tags.data ?? []).filter((t) => !t.suppressed && t.kind !== "theme").map((t) => [t.id, t.kind === "custom" ? `#${t.name}` : t.name]));
+  const linkRows: { conversation_id: string; tag_id: string }[] = [], excerpts = new Map<string, { excerpt: string; chars: number }>();
+  for (let i = 0; i < ids.length; i += 150) {
+    const chunk = ids.slice(i, i + 150);
+    const [l, x] = await Promise.all([
+      client.from("journal_entry_tags").select("conversation_id,tag_id").eq("user_id", userId).in("conversation_id", chunk),
+      client.rpc("journal_entry_excerpts", { p_ids: chunk, p_chars: EXCERPT_CHARS[kind] }),
+    ]);
+    if (l.error) throw l.error; if (x.error) throw x.error;
+    linkRows.push(...l.data); for (const r of x.data) excerpts.set(r.conversation_id, { excerpt: r.excerpt, chars: r.chars });
+  }
+  const names = new Map((journals.data ?? []).map((j) => [j.id, j.name]));
+  const entries: PeriodEntry[] = eligible.map((c) => ({ date: c.localDate, journal: names.get(c.journalId) ?? "Journal", title: c.title, summary: c.summary, summarySource: c.summarySource,
+    tags: linkRows.filter((l) => l.conversation_id === c.id).map((l) => tagName.get(l.tag_id)).filter((x): x is string => Boolean(x)), excerpt: excerpts.get(c.id)?.excerpt ?? "", ownChars: excerpts.get(c.id)?.chars ?? 0 }));
+  const notes = (reports.data ?? []).map((r) => { const d = parseReportData(r.data); return { label: `${r.period === "month" ? "Month of" : "Week of"} ${r.week_start}`, title: d.title, text: d.review || d.narrative }; }).filter((n) => n.text);
+  const { text, shortened } = periodInput(entries, notes, PERIOD_INPUT_MAX[kind]);
+  const words = eligible.reduce((n, c) => n + c.userWords, 0);
+  const facts = `${kind === "month" ? "Month" : "Year"}: ${start} to ${end}. ${eligible.length} ${eligible.length === 1 ? "entry" : "entries"} on ${new Set(eligible.map((c) => c.localDate)).size} days, about ${words.toLocaleString("en-US")} words of theirs.${list.length > eligible.length ? ` (${list.length - eligible.length} more kept out of AI and not included; don't refer to them.)` : ""}${shortened ? " Summaries and excerpts are shortened to fit (marked); don't treat what's missing as absent." : ""}`;
+  const usage = await begin(admin, userId, { kind: "report", requestKey: `report:${kind}:${start}:${signature.slice(0, 40)}:${body.regenerate === true && cached.data ? `r${cached.data.revision}` : "1"}`, conversationId: null, model: config.model, estimateUsd: estimateUsd(config.model, approxTokens(facts.length + text.length + 6000), PERIOD_MAX_OUTPUT[kind]) });
+  try {
+    const out = await generate(config, { instructions: periodRules(kind), input: [{ role: "user", content: `${facts}\n\n${text}` }], maxOutputTokens: PERIOD_MAX_OUTPUT[kind], effort: "low", timeoutMs: REPORT_TIMEOUT, schema: { name: `journal_${kind}_review`, schema: periodSchema } });
+    await finish(admin, usage.id, out.model, { usage: out.usage });
+    let parsed: unknown; try { parsed = JSON.parse(out.text); } catch { parsed = null; }
+    const d = parseReportData(parsed);
+    if (!d.title || !d.review) throw new ProviderError("failed", "The review came back unreadable. Nothing was saved; try again.");
+    const stored = { title: d.title, review: d.review, chapters: d.chapters, themes: d.themes, people: d.people, shifts: d.shifts, insights: d.insights, wins: d.wins, closing: d.closing, covered: { start, end, entries: eligible.length, generatedAt: new Date().toISOString() } };
+    const saved = await client.from("journal_reports").upsert({ user_id: userId, period: kind, week_start: start, data: stored, source_ids: list.map((c) => c.id), source_signature: signature, model: out.model }, { onConflict: "user_id,period,week_start" }).select("*").single();
     if (saved.error) throw saved.error;
     return { report: saved.data, cached: false, stale: false };
   } catch (e) { await finish(admin, usage.id, config.model, { error: e instanceof ProviderError ? e.code : "failed" }); throw e; }

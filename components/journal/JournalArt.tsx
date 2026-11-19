@@ -26,6 +26,43 @@ export function WeekConstellation({ days, written, today }: { days: string[]; wr
   </svg>;
 }
 
+/**
+ * MonthSky: a month as a small calendar of stars (Monday-first columns). Days you wrote are lit stars joined in order,
+ * today wears a ring, and the day the review opens (the last day) wears a dashed goal ring while it's still ahead.
+ */
+export function MonthSky({ start, end, written, today, goal }: { start: string; end: string; written: ReadonlySet<string>; today: string; goal: boolean }) {
+  const first = new Date(`${start}T12:00:00Z`), n = Number(end.slice(8, 10)), offset = (first.getUTCDay() + 6) % 7;
+  const days = Array.from({ length: n }, (_, i) => `${start.slice(0, 8)}${String(i + 1).padStart(2, "0")}`);
+  const at = (i: number) => { const k = offset + i; return { x: 14 + (k % 7) * 30, y: 12 + Math.floor(k / 7) * 20 }; };
+  const rows = Math.ceil((offset + n) / 7), lit = days.map((d, i) => ({ d, i, on: written.has(d) })).filter((x) => x.on);
+  return <svg className="mj-constellation mj-sky" viewBox={`0 0 212 ${rows * 20 + 14}`} role="img" aria-label={`${lit.length} of ${n} days written`}>
+    {["M", "T", "W", "T", "F", "S", "S"].map((w, k) => <text key={k} x={14 + k * 30} y={rows * 20 + 12} textAnchor="middle">{w}</text>)}
+    {lit.slice(1).map((x, k) => { const a = at(lit[k].i), b = at(x.i); return <line key={x.d} x1={a.x} y1={a.y} x2={b.x} y2={b.y} className="mj-constellation-line" data-lit /> })}
+    {days.map((d, i) => { const { x, y } = at(i), on = written.has(d), h = on ? 15 : 8;
+      return <g key={d} className="mj-constellation-star" data-lit={on || undefined} style={{ "--i": i % 12 } as React.CSSProperties}>
+        {d === today && <circle cx={x} cy={y} r={8} className="mj-constellation-today" />}
+        {goal && d === end && d !== today && <circle cx={x} cy={y} r={8} className="mj-sky-goal" />}
+        <path d={MUSE_STAR_PATH} transform={`translate(${x - h * 0.3} ${y - h / 2}) scale(${h / 40})`} />
+      </g>; })}
+  </svg>;
+}
+
+/** YearSky: twelve months rising across an arc, each star sized by how much you wrote; this month ringed. */
+export function YearSky({ year, counts, today, goal }: { year: string; counts: number[]; today: string; goal: boolean }) {
+  const max = Math.max(1, ...counts), pts = counts.map((_, i) => ({ x: 12 + i * 17.8, y: 40 - Math.sin((i / 11) * Math.PI) * 22 + (i % 2 ? 3 : -2) }));
+  const nowMonth = today.slice(0, 4) === year ? Number(today.slice(5, 7)) - 1 : -1;
+  return <svg className="mj-constellation mj-sky" viewBox="0 0 220 64" role="img" aria-label={`${counts.filter(Boolean).length} of 12 months written in ${year}`}>
+    {pts.slice(1).map((p, i) => <line key={i} x1={pts[i].x} y1={pts[i].y} x2={p.x} y2={p.y} className="mj-constellation-line" data-lit={(counts[i] && counts[i + 1]) || undefined} />)}
+    {counts.map((c, i) => { const { x, y } = pts[i], h = c ? 8 + Math.round((c / max) * 10) : 6;
+      return <g key={i} className="mj-constellation-star" data-lit={c > 0 || undefined} style={{ "--i": i } as React.CSSProperties}>
+        {i === nowMonth && <circle cx={x} cy={y} r={9} className="mj-constellation-today" />}
+        {goal && i === 11 && i !== nowMonth && <circle cx={x} cy={y} r={9} className="mj-sky-goal" />}
+        <path d={MUSE_STAR_PATH} transform={`translate(${x - h * 0.3} ${y - h / 2}) scale(${h / 40})`} />
+        <text x={x} y={62} textAnchor="middle">{"JFMAMJJASOND"[i]}</text>
+      </g>; })}
+  </svg>;
+}
+
 /** A fine-line flourish: two hairlines and a small star, for section breaks and quiet empty states. */
 export function StarRule({ className = "" }: { className?: string }) {
   return <span className={`mj-star-rule ${className}`.trim()} aria-hidden="true">
