@@ -123,7 +123,7 @@ export function HistoryView({ open, initialTag, initialJournal, onThisDay }: { o
         <div className="mj-rows">{items.map((c, i) => <EntryRow key={c.id} c={c} snippet={hits?.get(c.id)} showDay={i === 0 || items[i - 1].localDate !== c.localDate} onOpen={() => open(c.id)} />)}</div>
       </section>)}
       {list.length > 12 && <PaginationControls window={pages.window} noun="entries" position="bottom" label="Results" onPage={(n) => { pages.setPage(n); document.getElementById("mj-history-title")?.scrollIntoView({ block: "start", behavior: "smooth" }); }} onSize={pages.setSize} />}
-    </div> : <QuietEmpty title="No entry matches that" line={query.trim() ? `Nothing in your journal mentions “${query.trim()}”${activeCount ? " with these filters" : ""}. Try part of the name, another word, or fewer filters.` : "Try fewer filters."}><button type="button" className="muse-button" onClick={clearAll}>Clear search and filters</button></QuietEmpty>)}
+    </div> : <QuietEmpty kicker="Nothing found" title="No entry matches that" line={query.trim() ? `Nothing in your journal mentions “${query.trim()}”${activeCount ? " with these filters" : ""}. Try part of the name, another word, or fewer filters.` : "Try fewer filters."}><button type="button" className="muse-button" onClick={clearAll}>Clear search and filters</button></QuietEmpty>)}
 
     {show === "entries" && !searching && (list.length ? <div className="mj-stagger mj-all">
       {months.map(([m, items]) => <section key={m} className="mj-month" aria-label={formatMonth(`${m}-01`)}>
@@ -131,7 +131,7 @@ export function HistoryView({ open, initialTag, initialJournal, onThisDay }: { o
         <div className="mj-rows">{items.map((c, i) => <EntryRow key={c.id} c={c} snippet={hits?.get(c.id)} showDay={i === 0 || items[i - 1].localDate !== c.localDate} onOpen={() => open(c.id)} />)}</div>
       </section>)}
       {list.length > 12 && <PaginationControls window={pages.window} noun="entries" position="bottom" label="History" onPage={(n) => { pages.setPage(n); document.getElementById("mj-history-title")?.scrollIntoView({ block: "start", behavior: "smooth" }); }} onSize={pages.setSize} />}
-    </div> : <QuietEmpty title="Your archive begins with one entry" line="Conversations gather here, findable by day, person, place and theme."><a className="muse-button" href="/journal">Write today</a></QuietEmpty>)}
+    </div> : <QuietEmpty kicker="Your archive" title="Your archive begins with one entry" line="Conversations gather here, findable by day, person, place and theme."><a className="muse-button" href="/journal">Write today</a></QuietEmpty>)}
 
     {show === "week" && !searching && <Week focus={focus} setFocus={setFocus} today={j.today} list={list} snippets={hits} open={open} />}
     {show === "highlights" && <HighlightsView />}
@@ -195,7 +195,7 @@ function Week({ focus, setFocus, today, list, snippets, open }: { focus: string;
         <svg viewBox="0 0 24 40" aria-hidden="true"><path d={MUSE_STAR_PATH} /></svg>
       </button></li>)}</ol>
     {items.length ? <div className="mj-rows" key={`rows-${start}`}>{items.map((c, i) => <div key={c.id} id={i === 0 || items[i - 1].localDate !== c.localDate ? `mj-day-${c.localDate}` : undefined}><EntryRow c={c} snippet={snippets?.get(c.id)} showDay={i === 0 || items[i - 1].localDate !== c.localDate} onOpen={() => open(c.id)} /></div>)}</div>
-      : <QuietEmpty title={current ? "This week is still blank" : "Nothing written this week"} line={current ? "Whatever you write lands here, day by day." : "Use ‹ › or Jump to a date to find another week."} />}
+      : <QuietEmpty kicker={current ? "This week" : "A quiet week"} title={current ? "This week is still blank" : "Nothing written this week"} line={current ? "Whatever you write lands here, day by day." : "Use ‹ › or Jump to a date to find another week."} />}
     {items.length > 0 && <aside className="mj-week-reflection" aria-label="This week’s reflection">
       <div className="mj-week-reflection-head"><svg viewBox="0 0 24 40" aria-hidden="true"><path d={MUSE_STAR_PATH} /></svg><h4 className="type-title">The week’s reflection</h4></div>
       {report ? <><p className="mj-week-reflection-text type-reading">{report.data.narrative}</p>
@@ -216,12 +216,12 @@ function HighlightsView() {
   const needle = find.trim().toLowerCase();
   const list = j.state.bookmarks.filter((b) => (!needle || b.excerpt.toLowerCase().includes(needle) || b.note.toLowerCase().includes(needle))
     && tagIds.every((id) => j.state.highlightTags.some((t) => t.highlightId === b.id && t.tagId === id)));
-  if (!j.state.bookmarks.length) return <QuietEmpty title="No highlights yet" line="Select any words in a saved conversation and choose Save highlight, or use Highlight… in a message’s menu." />;
+  if (!j.state.bookmarks.length) return <QuietEmpty kicker="Highlights" title="No highlights yet" line="Select any words in a saved conversation and choose Save highlight, or use Highlight… in a message’s menu." />;
   return <div className="mj-highlights">
     <div className="mj-finder-top"><MuseSearch label="Search your highlights" value={find} onChange={setFind} placeholder="Search highlighted words and notes…" count={list.length} noun={["highlight", "highlights"]} /></div>
     {used.length > 0 && <ul className="mj-chip-list" aria-label="Filter by My tags">{used.map((t) => <li key={t.id}><button type="button" className="mj-filter-chip" data-kind={t.kind} aria-pressed={tagIds.includes(t.id)} onClick={() => setTagIds(tagIds.includes(t.id) ? tagIds.filter((x) => x !== t.id) : [...tagIds, t.id])}>{tagLabel(t)}</button></li>)}</ul>}
     {list.length ? <ul className="mj-hl-list">{list.map((b) => <HighlightCard key={b.id} h={b} showSource onEdit={() => setEditing(b)} />)}</ul>
-      : <QuietEmpty title="No highlight matches" line="Try other words or fewer tags." />}
+      : <QuietEmpty kicker="Nothing found" title="No highlight matches" line="Try other words or fewer tags." />}
     {editing && <HighlightEditor h={editing} onClose={() => setEditing(null)} />}
   </div>;
 }

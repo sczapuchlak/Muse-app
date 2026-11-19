@@ -33,3 +33,4 @@
 .mj-sky .mj-constellation-star:nth-of-type(7n+5){--star:var(--star-1,var(--accent-secondary))}
 .mj-sky .mj-constellation-star:nth-of-type(7n+6){--star:var(--star-2,var(--accent-pop))}
 .mj-sky .mj-constellation-star:nth-of-type(7n){--star:var(--star-3,var(--accent-primary))}
+.mj-sky-rule{stroke:color-mix(in srgb,var(--foreground) 14%,transparent);stroke-width:.6}

@@ -1,4 +1,5 @@
 "use client";
+import { QuietEmpty } from "./JournalArt";
 import { useState } from "react";
 import Link from "next/link";
 import { MuseIcon } from "../MuseIcon";
@@ -19,7 +20,7 @@ export function useDrafts() {
 export function Drafts() {
   const j = useJournal(), drafts = useDrafts();
   const [dating, setDating] = useState<Conversation | null>(null);
-  if (!drafts.length) return <div className="mj-drafts-empty"><p className="type-title">No drafts.</p><p className="mj-note">An entry you start and don’t finish waits here, whenever you close the page or switch away. Nothing is lost.</p></div>;
+  if (!drafts.length) return <QuietEmpty kicker="All caught up" title="No drafts waiting." line="Start something and walk away mid-thought, and it waits here for you, exactly where you left it. Nothing is ever lost."><Link className="muse-button button-primary" href="/journal">Start writing</Link></QuietEmpty>;
   return <>
     <p className="mj-note mj-drafts-intro">Unfinished entries wait here until you finish or discard them. Each keeps the day it belongs to; change it if it ran past midnight or you’re catching up.</p>
     <ul className="mj-drafts" aria-label="Drafts">{drafts.map((c) => {

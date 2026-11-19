@@ -1,5 +1,6 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
+import { GlassPopover } from "../GlassPopover";
 import Link from "next/link";
 import { MuseIcon } from "../MuseIcon";
 import { useJournal } from "./useJournal";
@@ -9,14 +10,15 @@ import { entryTitle, type Conversation } from "@/lib/journal/model";
 const yearsAgo = (date: string, today: string) => { const n = Number(today.slice(0, 4)) - Number(date.slice(0, 4)); return n === 1 ? "1 year ago" : `${n} years ago`; };
 
 /**
- * On This Day: a small memory on the blank page, separate from the composer. Collapsed it's one quiet line (the year
- * and the title); opened, it shows that entry's preview with a way to step through other years, open the entry, or see
- * them all in History. The preview is the entry's saved summary or, failing that, its first words; nothing is
- * generated, nothing is sent anywhere, and it never appears inside a conversation.
+ * On This Day: a small memory on the blank page, separate from the composer. It's one quiet line (the year and the
+ * title); tapping it opens a glass popover over the page (nothing below moves) with that entry's preview, a way to
+ * step through other years, open the entry, or see them all in History. The preview is the entry's saved summary or,
+ * failing that, its first words; nothing is generated, nothing is sent anywhere, and it never appears in a conversation.
  */
 export function OnThisDay({ memories }: { memories: readonly Conversation[] }) {
   const j = useJournal();
   const [open, setOpen] = useState(false), [at, setAt] = useState(0), [words, setWords] = useState<Record<string, string>>({});
+  const anchor = useRef<HTMLButtonElement>(null), id = useId();
   const c = memories[Math.min(at, memories.length - 1)];
   useEffect(() => {
     if (!open || !c || c.summary.trim() || words[c.id] !== undefined) return;
@@ -29,7 +31,7 @@ export function OnThisDay({ memories }: { memories: readonly Conversation[] }) {
   const text = c.summary.trim() || words[c.id] || "";
   const more = memories.length - 1;
   return <div className="mj-otd" data-open={open || undefined}>
-    <button type="button" className="mj-otd-line" aria-expanded={open} aria-controls="mj-otd-card" onClick={() => setOpen(!open)}>
+    <button ref={anchor} type="button" className="mj-otd-line" aria-haspopup="dialog" aria-expanded={open} aria-controls={id} onClick={() => setOpen(!open)}>
       <span className="mj-otd-spark" aria-hidden="true">✦</span>
       <span className="mj-otd-label type-meta">On this day</span>
       <span className="mj-otd-year type-numeric">{c.localDate.slice(0, 4)}</span>
@@ -37,7 +39,8 @@ export function OnThisDay({ memories }: { memories: readonly Conversation[] }) {
       {more > 0 && !open && <span className="mj-otd-more type-meta">+{more}</span>}
       <MuseIcon name="chevron" size={13} />
     </button>
-    {open && <div className="mj-otd-card" id="mj-otd-card" role="group" aria-label={`From ${formatShort(c.localDate)}`}>
+    <GlassPopover id={id} label="On this day" title="On this day" open={open} anchorRef={anchor} onClose={() => setOpen(false)} width={400}>
+    <div className="mj-otd-card" role="group" aria-label={`From ${formatShort(c.localDate)}`}>
       <p className="mj-otd-when type-meta"><span className="mj-otd-chip type-numeric">{c.localDate.slice(0, 4)}</span>{yearsAgo(c.localDate, j.today)} · {formatShort(c.localDate)}</p>
       <Link className="mj-otd-name type-title" href={`/journal?entry=${c.id}`}>{entryTitle(c)}</Link>
       {text ? <p className="mj-otd-preview type-reading">{preview(text, 220)}</p> : words[c.id] === undefined && !c.summary.trim() ? <p className="mj-otd-preview mj-note" role="status">…</p> : null}
@@ -50,6 +53,7 @@ export function OnThisDay({ memories }: { memories: readonly Conversation[] }) {
         <Link className="mj-link type-meta" href="/journal?view=history&onthisday=1">See all in History</Link>
         <Link className="muse-button" href={`/journal?entry=${c.id}`}>Open entry</Link>
       </div>
-    </div>}
+    </div>
+    </GlassPopover>
   </div>;
 }
