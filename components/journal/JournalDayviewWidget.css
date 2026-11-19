@@ -11,20 +11,7 @@
 .mjw-streak{display:inline-flex;align-items:center;gap:6px;font-size:.84rem;color:var(--text-muted)}
 .mjw-streak b{font-family:var(--font-editorial);font-size:1.3rem;color:var(--foreground)}
 .mjw-flame{width:12px;height:16px;background:linear-gradient(180deg,var(--accent-pop,var(--accent-primary)),#ff9a3d 70%,#ffcf5a);clip-path:polygon(50% 0,72% 30%,92% 55%,85% 85%,50% 100%,15% 85%,8% 55%,30% 32%);filter:drop-shadow(0 0 3px rgba(255,140,60,.6))}
-.mjw-week{display:flex;justify-content:center;margin:2px 0}
+.mjw-week{display:flex;justify-content:center;margin:var(--space-3,12px) 0 0}
 .mjw-week .mj-constellation{width:min(100%,300px)}
-/* Each day's star takes its own colour from the theme, and lit stars sparkle a few times when the card appears. */
-.mjw-week .mj-constellation-star:nth-of-type(1){--star:var(--accent-primary)}
-.mjw-week .mj-constellation-star:nth-of-type(2){--star:var(--accent-secondary)}
-.mjw-week .mj-constellation-star:nth-of-type(3){--star:var(--accent-pop)}
-.mjw-week .mj-constellation-star:nth-of-type(4){--star:var(--accent-warm,var(--accent-primary))}
-.mjw-week .mj-constellation-star:nth-of-type(5){--star:var(--star-1,var(--accent-secondary))}
-.mjw-week .mj-constellation-star:nth-of-type(6){--star:var(--star-2,var(--accent-pop))}
-.mjw-week .mj-constellation-star:nth-of-type(7){--star:var(--star-3,var(--accent-primary))}
-.mjw-week .mj-constellation-star[data-lit] path{fill:var(--star);filter:drop-shadow(0 0 5px color-mix(in srgb,var(--star) 75%,transparent))}
-.mjw-week .mj-constellation-line[data-lit]{stroke:color-mix(in srgb,var(--accent-secondary) 70%,var(--accent-primary));stroke-width:1.4}
-/* The sparkle is light only (glow and brightness), never a transform: each star carries its own SVG positioning. */
-@media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) .mjw-week .mj-constellation-star[data-lit] path{animation:mjw-sparkle 2.4s ease-in-out calc(var(--i)*.35s + .4s) 3}}
-@keyframes mjw-sparkle{50%{filter:drop-shadow(0 0 10px var(--star)) drop-shadow(0 0 3px #fff) brightness(1.3)}}
-.mjw-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.mjw-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:var(--space-4,16px)}
 .mjw-actions .muse-button{display:inline-flex;align-items:center;gap:7px;min-height:42px}

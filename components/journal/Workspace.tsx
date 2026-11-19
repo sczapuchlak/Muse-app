@@ -386,13 +386,14 @@ function BlankHead({ tone, mode, forDay, onPickDay }: { tone: number; mode: Mode
   const run = streak(days, today);
   return <div className="mj-blank" data-tone={tone}>
     <div className="mj-blank-copy">
-      <p className="muse-kicker type-meta"><button type="button" className="mj-date-edit" title="Write for another day" onClick={onPickDay}>{forDay && forDay !== today ? `For ${formatDay(forDay)}` : formatDay(today)}<MuseIcon name="edit" size={12} /></button>{mode !== "open" && ` · ${mode === "morning" ? "Morning intention" : "Evening reflection"}`}</p>
+      <div className="mj-blank-top"><p className="muse-kicker type-meta"><button type="button" className="mj-date-edit" title="Write for another day" onClick={onPickDay}>{forDay && forDay !== today ? `For ${formatDay(forDay)}` : formatDay(today)}<MuseIcon name="edit" size={12} /></button>{mode !== "open" && ` · ${mode === "morning" ? "Morning intention" : "Evening reflection"}`}</p>
+        {run > 0 && <span className="mj-blank-streak"><span className="mj-streak-flame" aria-hidden="true" /><b className="type-numeric">{run}</b> {run === 1 ? "day" : "days"} in a row</span>}</div>
       <h2 className="type-display mj-greeting">{greeting(new Date().getHours())}.</h2>
       <p className="mj-blank-line type-quote">{yesterday ? <>Yesterday you wrote about <Link href={`/journal?entry=${yesterday.id}`}>“{yesterday.title}”</Link>.</> : "A place to think out loud."}</p>
     </div>
     <div className="mj-blank-week">
       <WeekConstellation days={weekDays(weekStart(today))} written={days} today={today} />
-      <p className="type-meta"><b className="type-numeric">{run}</b> {run === 1 ? "day" : "days"} in a row{past.length > 0 && <> · <Link href={`/journal?view=history&onthisday=1`}>On this day</Link></>}</p>
+      {past.length > 0 && <p className="type-meta"><Link href={`/journal?view=history&onthisday=1`}>On this day</Link></p>}
     </div>
   </div>;
 }
