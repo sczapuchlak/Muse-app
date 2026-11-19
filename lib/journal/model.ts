@@ -92,10 +92,21 @@ export type AnalysisData = {
   title: string; recap: string; themes: string[]; observations: string[]; threads: string[]; emotions: string[];
   /** A closer look: a few grounded paragraphs (older analyses have none). */ reflection: string;
   /** A deeper perspective on the situation (the dynamic, a reframe, or usable advice), 1–3 sentences. */ insight: string;
+  /** Editorial upgrade (Nov 19): the narrative Overview of the day, and 1–3 distilled insights. Older analyses have neither. */
+  overview: string; insights: string[];
   people: string[]; places: string[]; topics: string[]; memories: string[];
 };
 export type Analysis = { id: string; conversationId: string; status: "ready" | "failed"; data: AnalysisData | null; dismissed: string[]; model: string | null; error: string | null; revision: number; createdAt: string; updatedAt: string };
-export type ReportData = { narrative: string; threads: string[]; moments: string[]; observations: string[] };
+export type ReportSection = { heading: string; body: string };
+/**
+ * A weekly reflection. V2 (Nov 19): title, review, themes, insights, wins, closing, plus what it covered. V1 reports
+ * (narrative, threads, moments, observations) still render as they were written.
+ */
+export type ReportData = {
+  narrative: string; threads: string[]; moments: string[]; observations: string[];
+  title: string; review: string; themes: ReportSection[]; insights: ReportSection[]; wins: ReportSection[]; closing: string;
+  covered: { start: string; end: string; entries: number; generatedAt: string } | null;
+};
 export type Report = { id: string; weekStart: string; data: ReportData; sourceIds: string[]; sourceSignature: string; model: string | null; updatedAt: string };
 
 const tone = (n: number): MuseTone => (n >= 1 && n <= 8 ? n : 1) as MuseTone;
@@ -171,7 +182,7 @@ export function parseAnalysisData(v: unknown): AnalysisData | null {
   if (!o || typeof o !== "object" || Array.isArray(o)) return null;
   const text = (x: unknown, max: number) => (typeof x === "string" ? x.trim().slice(0, max) : "");
   return {
-    title: text(o.title, 120), recap: text(o.recap, 1600), reflection: text(o.reflection, 5000), insight: text(o.insight, 500), themes: strings(o.themes, 8, 80), observations: strings(o.observations, 6, 400), threads: strings(o.threads, 5, 240),
+    title: text(o.title, 120), recap: text(o.recap, 1600), reflection: text(o.reflection, 8000), insight: text(o.insight, 1500), overview: text(o.overview, 24000), insights: strings(o.insights, 4, 1500), themes: strings(o.themes, 8, 80), observations: strings(o.observations, 6, 400), threads: strings(o.threads, 5, 240),
     emotions: strings(o.emotions, 8, 40), people: strings(o.people, 20, 80), places: strings(o.places, 12, 80), topics: strings(o.topics, 10, 80), memories: strings(o.memories, 6, 300),
   };
 }
@@ -180,7 +191,14 @@ export const analysisFromRow = (r: Tables["journal_analyses"]["Row"]): Analysis 
 });
 export function parseReportData(v: unknown): ReportData {
   const o = (v ?? {}) as Record<string, unknown>;
-  return { narrative: typeof o.narrative === "string" ? o.narrative.slice(0, 4000) : "", threads: strings(o.threads, 6, 300), moments: strings(o.moments, 6, 300), observations: strings(o.observations, 5, 400) };
+  const str = (x: unknown, max: number) => (typeof x === "string" ? x.trim().slice(0, max) : "");
+  const sections = (x: unknown, n: number) => (Array.isArray(x) ? x : []).flatMap((y) => { const r = y as Record<string, unknown>; const body = str(r?.body, 8000); return body ? [{ heading: str(r?.heading, 160), body }] : []; }).slice(0, n);
+  const c = o.covered as Record<string, unknown> | undefined;
+  return {
+    narrative: str(o.narrative, 4000), threads: strings(o.threads, 6, 300), moments: strings(o.moments, 6, 300), observations: strings(o.observations, 5, 400),
+    title: str(o.title, 160), review: str(o.review, 30000), themes: sections(o.themes, 6), insights: sections(o.insights, 5), wins: sections(o.wins, 6), closing: str(o.closing, 4000),
+    covered: c && typeof c.start === "string" && typeof c.end === "string" ? { start: c.start, end: c.end, entries: Number(c.entries) || 0, generatedAt: typeof c.generatedAt === "string" ? c.generatedAt : "" } : null,
+  };
 }
 export const reportFromRow = (r: Tables["journal_reports"]["Row"]): Report => ({ id: r.id, weekStart: r.week_start, data: parseReportData(r.data), sourceIds: r.source_ids, sourceSignature: r.source_signature, model: r.model, updatedAt: r.updated_at });
 

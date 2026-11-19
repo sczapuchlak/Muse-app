@@ -51,3 +51,14 @@ export function onThisDay(conversations: readonly Conversation[], today: string)
   const md = today.slice(5);
   return conversations.filter((c) => isListed(c) && c.localDate.slice(5) === md && c.localDate < today).sort((a, b) => b.localDate.localeCompare(a.localDate));
 }
+
+/**
+ * Sunday unlock for the weekly reflection (Monday–Sunday weeks, in the person's own day): a completed week is open,
+ * the current week opens on its Sunday (from midnight), a future week never.
+ */
+export function reflectionLock(start: string, today: string): "open" | "until-sunday" | "future" {
+  const current = weekStart(today);
+  if (start > current) return "future";
+  if (start === current && today < addDays(start, 6)) return "until-sunday";
+  return "open";
+}

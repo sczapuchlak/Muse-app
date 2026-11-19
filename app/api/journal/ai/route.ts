@@ -3,7 +3,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/lib/database.types";
 import { privateResponse, routeAuthClient, trustedOrigin } from "@/lib/auth/http";
 import { createMuseAdminClient } from "@/lib/supabase/admin";
-import { approxTokens, buildOpening, buildReply, defaultBudget, partOfDay, transcript, type InputMessage } from "@/lib/journal/context";
+import { approxTokens, buildOpening, buildReply, defaultBudget, partOfDay, transcript, weekInput, type InputMessage, type WeekEntry } from "@/lib/journal/context";
 import { APPLICATION_RULES } from "@/lib/journal/instructions";
 import { analysisSchema, ANALYSIS_RULES, REPORT_RULES, reportSchema, type Layers } from "@/lib/journal/instructions";
 import { conversationFromRow, journalFromRow, isListed, parseAnalysisData, parseGuideSnapshot, parseReportData, type Journal } from "@/lib/journal/model";
@@ -13,9 +13,13 @@ import { IMAGE_BUCKET } from "@/lib/journal/persistence";
 import { basics, loadMemory } from "@/lib/journal/server/retrieve";
 import { referenceNote } from "@/lib/journal/server/reference";
 import { applyAnalysis } from "@/lib/journal/server/apply";
-import { addDays, sourceSignature, weekStats } from "@/lib/journal/stats";
+import { addDays, reflectionLock, sourceSignature, weekStats } from "@/lib/journal/stats";
 /** A conservative reservation per attached photo (a 1600px image at high detail); the invoice uses real tokens. */
 const IMAGE_TOKEN_RESERVE = 3000;
+/** Editorial analyses (Nov 19): room for a full narrative Overview, and long conversations read nearly whole. */
+const ANALYSIS_MAX_OUTPUT = 7000, ANALYSIS_TRANSCRIPT_MAX = 100000;
+/** Weekly Reflection V2: the week's own words (bounded), and room for a full report. */
+const REPORT_INPUT_MAX = 140000, REPORT_MAX_OUTPUT = 9000;
 /** A guided answer carries its question, so the companion and the analysis read it in context. */
 const withQuestion = (m: { body: string; guide_question?: string | null }) => (m.guide_question ? `(Answering the guide question “${m.guide_question}”)\n${m.body}` : m.body);
 /** For a guided entry: what the guide is, so replies fit it. It shapes this entry only; the companion stays itself. */
@@ -38,7 +42,7 @@ type Client = SupabaseClient<Database>;
 const uuid = (v: unknown): v is string => typeof v === "string" && /^[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}$/i.test(v);
 const date = (v: unknown): v is string => typeof v === "string" && /^\d{4}-\d{2}-\d{2}$/.test(v) && Math.abs(Date.parse(`${v}T12:00:00Z`) - Date.now()) < 3 * 86400000;
 const str = (v: unknown, max: number) => (typeof v === "string" ? v.slice(0, max) : "");
-const httpStatus: Record<string, number> = { busy: 409, "not-entitled": 403, "not-configured": 503, "limit-daily": 429, "limit-monthly": 429, "too-fast": 429, duplicate: 409, "in-progress": 409, invalid: 400, gone: 404, finished: 409 };
+const httpStatus: Record<string, number> = { locked: 409, busy: 409, "not-entitled": 403, "not-configured": 503, "limit-daily": 429, "limit-monthly": 429, "too-fast": 429, duplicate: 409, "in-progress": 409, invalid: 400, gone: 404, finished: 409 };
 /** Conservative input size for a conversational request: rules, layers and the full memory budget, plus the dialogue. */
 const overhead = approxTokens(APPLICATION_RULES.length + 16000 + defaultBudget.memories + defaultBudget.recent + defaultBudget.retrieved);
 class Bad extends Error { constructor(public code: string, message: string) { super(message); } }
@@ -275,14 +279,23 @@ async function analyse(client: Client, admin: Client, config: ProviderConfig, us
   const people = await client.from("journal_tags").select("id,name,aliases").eq("user_id", userId).eq("kind", "person").eq("suppressed", false).limit(200);
   const fixes = await client.from("journal_tag_corrections").select("from_name,to_tag_id,times").eq("user_id", userId).eq("kind", "person").order("times", { ascending: false }).limit(40);
   const attempt = existing.data ? (existing.data.revision ?? 1) + 1 : 1;
-  const usage = await begin(admin, userId, { kind: "analysis", requestKey: `analysis:${conv.id}:${body.regenerate === true ? `r${attempt}` : "1"}`, conversationId: conv.id, model: config.model, estimateUsd: estimateUsd(config.model, approxTokens(ANALYSIS_RULES.length + Math.min(60000, msgs.data.reduce((n, m) => n + m.body.length + 12, 0))), 3500) });
+  // Earlier journal context (secondary, bounded, permission-checked like a reply): people and situations from this
+  // conversation that appear in older entries, plus the week around it. The conversation stays the primary evidence.
+  const own = msgs.data.filter((m) => m.role === "user").map((m) => m.body).join("\n").slice(0, 6000);
+  let history = "";
+  try {
+    const jr = await client.from("journal_journals").select("*").eq("id", conv.journal_id).eq("user_id", userId).single();
+    if (jr.data) { const mem = await loadMemory(client, userId, await basics(client, userId), journalFromRow(jr.data), { currentId: conv.id, memoryOff: conv.memory_off, today: conv.local_date, latest: own }); history = [mem.stable, mem.retrieved].filter(Boolean).join("\n\n"); }
+  } catch { history = ""; }
+  const conversationText = transcript(msgs.data.map((m) => ({ role: m.role as "user" | "assistant", body: withQuestion(m) })), ANALYSIS_TRANSCRIPT_MAX);
+  const usage = await begin(admin, userId, { kind: "analysis", requestKey: `analysis:${conv.id}:${body.regenerate === true ? `r${attempt}` : "1"}`, conversationId: conv.id, model: config.model, estimateUsd: estimateUsd(config.model, approxTokens(ANALYSIS_RULES.length + conversationText.length + history.length + 2000), ANALYSIS_MAX_OUTPUT) });
   await client.from("journal_conversations").update({ analysis_status: "pending" }).eq("id", conv.id).eq("user_id", userId);
   try {
     // A historical (imported) entry: its date matters, its replies came from another app, and anything worth
     // remembering must say when it was true, so an old situation is never stored as a current fact.
     const historical = conv.origin === "import" ? `This is a historical entry from ${conv.local_date}, imported from another journal app; the "Companion" replies came from that app's AI. Analyse it as a record of that time. Any memory you propose must say when it was true (for example "As of ${new Date(`${conv.local_date}T12:00:00Z`).toLocaleDateString("en-US", { month: "long", year: "numeric", timeZone: "UTC" })}, …") and must be something they clearly stated, never a guess, worry or impression about someone else.\n\n` : "";
-    const input: InputMessage[] = [{ role: "user", content: `${historical}${conv.continues_title ? `This entry continues an earlier one, “${conv.continues_title}” (${conv.continues_date}).\n\n` : ""}${people.data?.length ? `Existing person names (confirmed aliases in brackets): ${people.data.map((p) => p.aliases.length ? `${p.name} [${p.aliases.join(", ")}]` : p.name).join(", ")}\n\n` : ""}${fixes.data?.length ? `Corrections they made on earlier entries (use only when the context clearly means the same person; otherwise keep the name they used): ${fixes.data.map((f) => { const to = people.data?.find((p) => p.id === f.to_tag_id); return to ? `“${f.from_name}” was ${to.name}${f.times > 1 ? ` (${f.times}×)` : ""}` : ""; }).filter(Boolean).join("; ")}\n\n` : ""}Conversation:\n\n${transcript(msgs.data.map((m) => ({ role: m.role as "user" | "assistant", body: withQuestion(m) })))}` }];
-    const out = await generate(config, { instructions: ANALYSIS_RULES, input, maxOutputTokens: 3500, effort: "low", schema: { name: "journal_analysis", schema: analysisSchema } });
+    const input: InputMessage[] = [{ role: "user", content: `${historical}${conv.continues_title ? `This entry continues an earlier one, “${conv.continues_title}” (${conv.continues_date}).\n\n` : ""}${people.data?.length ? `Existing person names (confirmed aliases in brackets): ${people.data.map((p) => p.aliases.length ? `${p.name} [${p.aliases.join(", ")}]` : p.name).join(", ")}\n\n` : ""}${history ? `Earlier in their journal (secondary context: dated, not facts about now; use only if it clearly bears on this conversation):\n${history}\n\n` : ""}${fixes.data?.length ? `Corrections they made on earlier entries (use only when the context clearly means the same person; otherwise keep the name they used): ${fixes.data.map((f) => { const to = people.data?.find((p) => p.id === f.to_tag_id); return to ? `“${f.from_name}” was ${to.name}${f.times > 1 ? ` (${f.times}×)` : ""}` : ""; }).filter(Boolean).join("; ")}\n\n` : ""}This entry was written on ${conv.local_date}.\n\nConversation:\n\n${conversationText}` }];
+    const out = await generate(config, { instructions: ANALYSIS_RULES, input, maxOutputTokens: ANALYSIS_MAX_OUTPUT, effort: "low", schema: { name: "journal_analysis", schema: analysisSchema } });
     await finish(admin, usage.id, out.model, { usage: out.usage });
     let parsed: unknown; try { parsed = JSON.parse(out.text); } catch { parsed = null; }
     const data = parseAnalysisData(parsed);
@@ -300,32 +313,48 @@ async function analyse(client: Client, admin: Client, config: ProviderConfig, us
 async function report(client: Client, admin: Client, config: ProviderConfig, userId: string, body: Record<string, unknown>) {
   if (typeof body.weekStart !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(body.weekStart) || new Date(`${body.weekStart}T12:00:00Z`).getUTCDay() !== 1) throw new Bad("invalid", "Choose a week.");
   const start = body.weekStart, end = addDays(start, 6);
-  const rows = await client.from("journal_conversations").select("*").eq("user_id", userId).gte("local_date", start).lte("local_date", end).neq("status", "draft").order("local_date").limit(300);
+  // Sunday unlock: the current week opens at midnight on Sunday in their own day (localDate, checked against the
+  // server clock); a later week never. Completed weeks are always open.
+  const today = date(body.localDate) ? body.localDate : new Date().toISOString().slice(0, 10);
+  const lock = reflectionLock(start, today);
+  if (lock !== "open") throw new Bad("locked", lock === "future" ? "That week hasn’t happened yet." : "This week’s reflection opens on Sunday.");
+  const rows = await client.from("journal_conversations").select("*").eq("user_id", userId).gte("local_date", start).lte("local_date", end).neq("status", "draft").order("local_date").order("started_at").limit(300);
   if (rows.error) throw rows.error;
   const list = rows.data.map(conversationFromRow).filter(isListed);
   if (!list.length) throw new Bad("invalid", "There are no entries in this week to reflect on.");
   const signature = sourceSignature(list);
   const cached = await client.from("journal_reports").select("*").eq("user_id", userId).eq("week_start", start).maybeSingle();
   if (cached.data && body.regenerate !== true) return { report: cached.data, cached: true, stale: cached.data.source_signature !== signature };
-  const [links, tags, journals, firsts] = await Promise.all([
+  const [links, tags, journals] = await Promise.all([
     client.from("journal_entry_tags").select("conversation_id,tag_id,source").eq("user_id", userId).in("conversation_id", list.map((c) => c.id)),
     client.from("journal_tags").select("*").eq("user_id", userId).limit(5000),
-    client.from("journal_journals").select("id,name").eq("user_id", userId),
-    client.from("journal_messages").select("conversation_id,body,created_at").eq("user_id", userId).eq("role", "user").in("conversation_id", list.map((c) => c.id)).order("created_at").limit(list.length * 4),
+    client.from("journal_journals").select("id,name,memory_scope").eq("user_id", userId),
   ]);
+  // Privacy: entries kept out of AI context, and journals with memory off, are never sent.
+  const off = new Set((journals.data ?? []).filter((x) => x.memory_scope === "off").map((x) => x.id));
+  const eligible = list.filter((c) => !c.excludeFromMemory && !off.has(c.journalId));
+  if (!eligible.length) throw new Bad("invalid", "Every entry this week is kept out of AI, so there’s nothing to reflect on.");
+  const msgs = await client.from("journal_messages").select("conversation_id,role,body,guide_question,created_at").eq("user_id", userId).in("conversation_id", eligible.map((c) => c.id)).order("created_at").limit(20000);
+  if (msgs.error) throw msgs.error;
   const stats = weekStats(start, list, (links.data ?? []).map((l) => ({ conversationId: l.conversation_id, tagId: l.tag_id, source: l.source as "user" | "ai" })), (tags.data ?? []).map((t) => ({ id: t.id, kind: t.kind as "person", name: t.name, normalized: t.normalized ?? "", aliases: t.aliases, suppressed: false, note: t.note, revision: t.revision })));
-  const names = new Map((journals.data ?? []).map((j) => [j.id, j.name])), first = new Map<string, string>();
-  for (const m of firsts.data ?? []) if (!first.has(m.conversation_id)) first.set(m.conversation_id, m.body.slice(0, 700));
-  const entries = list.map((c) => `- ${new Date(`${c.localDate}T12:00:00Z`).toLocaleDateString("en-US", { weekday: "long", month: "short", day: "numeric", timeZone: "UTC" })} · ${names.get(c.journalId) ?? "Journal"} · “${c.title || "Untitled"}”\n  ${c.summary ? `Summary: ${c.summary}` : `Their words: ${first.get(c.id) ?? ""}`}`).join("\n");
-  const facts = `Week ${start} to ${end}. ${stats.entries} entries on ${stats.days} days, ${stats.words} words. People: ${stats.tags.person.slice(0, 8).map((p) => `${p.name} (${p.entries})`).join(", ") || "none tagged"}. Topics: ${stats.tags.topic.slice(0, 8).map((p) => p.name).join(", ") || "none tagged"}.`;
-  const usage = await begin(admin, userId, { kind: "report", requestKey: `report:${start}:${signature.slice(0, 60)}:${body.regenerate === true ? Date.now() : "1"}`, conversationId: null, model: config.model, estimateUsd: estimateUsd(config.model, approxTokens(REPORT_RULES.length + facts.length + entries.length), 1600) });
+  const names = new Map((journals.data ?? []).map((j) => [j.id, j.name])), tagName = new Map((tags.data ?? []).filter((t) => !t.suppressed && t.kind !== "theme").map((t) => [t.id, t.kind === "custom" ? `#${t.name}` : t.name]));
+  const week: WeekEntry[] = eligible.map((c) => ({
+    date: c.localDate, journal: names.get(c.journalId) ?? "Journal", title: c.title, summary: c.summary, summarySource: c.summarySource,
+    tags: (links.data ?? []).filter((l) => l.conversation_id === c.id).map((l) => tagName.get(l.tag_id)).filter((x): x is string => Boolean(x)).slice(0, 14),
+    messages: msgs.data.filter((m) => m.conversation_id === c.id).map((m) => ({ role: m.role as "user" | "assistant", body: m.body, question: m.guide_question })),
+  }));
+  const { text, shortened } = weekInput(week, REPORT_INPUT_MAX);
+  const facts = `Week: Monday ${start} to Sunday ${end}. ${eligible.length} ${eligible.length === 1 ? "entry" : "entries"} on ${new Set(eligible.map((c) => c.localDate)).size} of 7 days, about ${stats.words} words of theirs.${list.length > eligible.length ? ` (${list.length - eligible.length} more ${list.length - eligible.length === 1 ? "entry is" : "entries are"} kept out of AI and not included; don't refer to them.)` : ""}${shortened ? " Some long passages were shortened for length (marked); don't treat what's missing as absent." : ""}`;
+  // One request per week and version: a repeated tap or a second device waits for the first instead of paying twice.
+  const usage = await begin(admin, userId, { kind: "report", requestKey: `report:${start}:${signature.slice(0, 40)}:${body.regenerate === true && cached.data ? `r${cached.data.revision}` : "1"}`, conversationId: null, model: config.model, estimateUsd: estimateUsd(config.model, approxTokens(REPORT_RULES.length + facts.length + text.length), REPORT_MAX_OUTPUT) });
   try {
-    const out = await generate(config, { instructions: REPORT_RULES, input: [{ role: "user", content: `${facts}\n\nEntries:\n${entries}` }], maxOutputTokens: 1600, effort: "low", schema: { name: "journal_report", schema: reportSchema } });
+    const out = await generate(config, { instructions: REPORT_RULES, input: [{ role: "user", content: `${facts}\n\nThe week's entries, in order:\n\n${text}` }], maxOutputTokens: REPORT_MAX_OUTPUT, effort: "low", schema: { name: "journal_weekly_reflection", schema: reportSchema } });
     await finish(admin, usage.id, out.model, { usage: out.usage });
     let parsed: unknown; try { parsed = JSON.parse(out.text); } catch { parsed = null; }
     const data = parseReportData(parsed);
-    if (!data.narrative) throw new ProviderError("failed", "The reflection came back unreadable.");
-    const saved = await client.from("journal_reports").upsert({ user_id: userId, week_start: start, data, source_ids: list.map((c) => c.id), source_signature: signature, model: out.model }, { onConflict: "user_id,week_start" }).select("*").single();
+    if (!data.title || !data.review) throw new ProviderError("failed", "The reflection came back unreadable. Nothing was saved; try again.");
+    const stored = { title: data.title, review: data.review, themes: data.themes, insights: data.insights, wins: data.wins, closing: data.closing, covered: { start, end, entries: eligible.length, generatedAt: new Date().toISOString() } };
+    const saved = await client.from("journal_reports").upsert({ user_id: userId, week_start: start, data: stored, source_ids: list.map((c) => c.id), source_signature: signature, model: out.model }, { onConflict: "user_id,week_start" }).select("*").single();
     if (saved.error) throw saved.error;
     return { report: saved.data, cached: false, stale: false };
   } catch (e) { await finish(admin, usage.id, config.model, { error: e instanceof ProviderError ? e.code : "failed" }); throw e; }

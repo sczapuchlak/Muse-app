@@ -681,6 +681,10 @@
 .mj-closer h3{display:flex;align-items:center;gap:8px;margin:0}
 .mj-closer-text{max-width:72ch;font-size:1.06rem;line-height:1.75}
 .mj-closer-text p{margin:0}.mj-closer-text p+p{margin-top:.9em}
+/* Editorial Overview (Nov 19): the narrative under the summary, same reading measure as A closer look. */
+.mj-overview-text{max-width:72ch;margin-top:6px;font-size:1.06rem;line-height:1.75}
+.mj-overview-text p{margin:0}.mj-overview-text p+p{margin-top:.9em}
+.mj-insights-list{display:grid;gap:12px}
 .mj-insight{position:relative;display:grid;gap:8px;margin:0;padding:18px 22px 20px;border:1px solid transparent;border-radius:var(--mj-radius,18px);background:linear-gradient(var(--mj-tile),var(--mj-tile)) padding-box,linear-gradient(135deg,var(--journal-a,var(--accent-primary)),var(--journal-b,var(--accent-secondary))) border-box;box-shadow:0 18px 40px -30px var(--journal-a,var(--accent-primary))}
 .mj-insight figcaption{display:flex;align-items:center;gap:8px;color:var(--text-muted);letter-spacing:.12em;text-transform:uppercase}
 .mj-insight figcaption svg{width:11px;height:18px;fill:var(--journal-a,var(--accent-primary))}
@@ -947,3 +951,18 @@
 .mj-recall{display:grid;gap:10px}
 .mj-recall[open]>summary{margin-bottom:4px}
 .mj-recall-out{display:grid;gap:6px}
+
+/* Weekly Reflection V2 (Nov 19): editorial sections inside the existing reflection page, readable at phone width. */
+.mj-report-v2{display:grid;gap:22px}
+.mj-report-v2>section{display:grid;gap:10px}
+.mj-report-v2 p{margin:0;max-width:72ch}
+.mj-report-v2 .type-reading{line-height:1.75}
+.mj-report-title{margin:0;font-size:clamp(1.6rem,4.5vw,2.3rem);line-height:1.15;text-wrap:balance}
+.mj-report-theme{display:grid;gap:8px;padding-top:12px;border-top:1px solid var(--mj-hair)}
+.mj-report-theme:first-of-type{border-top:0;padding-top:0}
+.mj-report-theme h5{margin:0;font-size:1.15rem}
+.mj-report-wins{display:grid;gap:10px;margin:0;padding:0;list-style:none}
+.mj-report-wins li{display:grid;gap:2px;padding:12px 14px;border:1px solid var(--glass-border);border-radius:14px;background:var(--mj-tile)}
+.mj-report-closing{margin-top:4px}
+.mj-reflection-locked .mj-note{max-width:52ch;text-align:center}
+.mj-reflection-ready{display:grid;gap:10px;justify-items:start}

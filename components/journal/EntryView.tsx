@@ -248,16 +248,20 @@ function AnalysisPanel({ c, analysis, ai, analysing, onRun, onChanged }: { c: Co
         <div className="mj-form-actions"><button type="button" className="muse-button" onClick={() => { setSummary(c.summary); setEditing(false); }}>Cancel</button><button type="submit" className="muse-button button-primary">Save summary</button></div>
       </form> : c.summary ? <blockquote className="mj-pullquote"><div className="type-reading"><Prose text={c.summary} /></div><button type="button" className="mj-link type-meta" onClick={() => setEditing(true)}>{c.summarySource === "user" ? "Edit your summary" : "Edit"}</button></blockquote>
         : <p className="mj-note">{ai ? "No summary yet." : "Add a summary in your own words if you like."} <button type="button" className="mj-link" onClick={() => setEditing(true)}>Write a summary</button></p>}
+      {/* The day itself, as narrative: the part of the Analysis meant to be reread years later. */}
+      {data?.overview && <div className="type-reading mj-overview-text"><Prose text={data.overview} /></div>}
     </div>
 
-    {data?.reflection && <article className="mj-closer" aria-label="A closer look">
+    {!data?.overview && data?.reflection && <article className="mj-closer" aria-label="A closer look">
       <h3 className="mj-section-title">A closer look at you <span className="mj-ai-badge">AI</span></h3>
       <div className="type-reading mj-closer-text"><Prose text={data.reflection} /></div>
     </article>}
-    {data?.insight && <figure className="mj-insight">
-      <figcaption className="type-meta"><svg viewBox="0 0 24 40" aria-hidden="true"><path d={MUSE_STAR_PATH} /></svg>Insight · on the situation</figcaption>
-      <blockquote className="type-quote">{data.insight}</blockquote>
-    </figure>}
+    {(data?.insights.length ? data.insights : data?.insight ? [data.insight] : []).length > 0 && <div className="mj-insights-list" role="group" aria-label="Insights">
+      {(data!.insights.length ? data!.insights : [data!.insight]).map((x, i, all) => <figure key={i} className="mj-insight">
+        <figcaption className="type-meta"><svg viewBox="0 0 24 40" aria-hidden="true"><path d={MUSE_STAR_PATH} /></svg>{all.length > 1 ? `Insight ${i + 1} of ${all.length}` : "Insight"}</figcaption>
+        <blockquote className="type-quote">{x}</blockquote>
+      </figure>)}
+    </div>}
 
     <div className="mj-tag-rows" role="group" aria-label="In this entry">
       {tagKinds.map((k) => <TagEditor key={k} conversationId={c.id} kind={k} tags={tags.filter((t) => t.kind === k)} />)}

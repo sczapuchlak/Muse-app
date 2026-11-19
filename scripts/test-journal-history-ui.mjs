@@ -136,9 +136,40 @@ try{
  check(await count('journal_ai_usage',a.id)===0,'the recall check makes no AI request');
  await shoot('04-recall');
 
+ // Editorial upgrade: a saved V2 analysis and weekly reflection render fully (no AI here: rows are seeded), and this
+ // week's reflection stays locked until Sunday.
+ const ST=load('lib/journal/stats');
+ const para=(n,w)=>Array.from({length:n},(_,i)=>`Paragraph ${i+1}: ${'You talked it through again, and the details mattered. '.repeat(w)}`).join('\n\n');
+ must(await a.client.from('journal_analyses').upsert({user_id:a.id,conversation_id:c1,status:'ready',data:{title:'Everything Has to Have an Answer',recap:'They met Jamie at an opening.',overview:para(4,6),insights:['The not-knowing seemed harder than the thing itself.','Ease, not intensity, was what stayed with you.'],people:['Jamie'],topics:['Dating'],emotions:[],threads:[],memories:[]}},{onConflict:'user_id,conversation_id'}));
+ await go(`/journal?entry=${c1}`,'!!document.querySelector(".mj-overview-text")','v2 analysis');
+ check((await evaluate(()=>document.querySelectorAll('.mj-overview-text p').length))===4,'the Overview shows the whole narrative, paragraph by paragraph');
+ check((await evaluate(()=>document.querySelectorAll('.mj-insights-list .mj-insight').length))===2&&await has('.mj-insight figcaption','Insight 1 of 2'),'distilled insights each get their own card');
+ check(!(await has('.mj-closer')),'no duplicate “closer look” for a new analysis');
+ await shoot('07-analysis-v2');
+ const weekOf=ST.weekStart('2025-03-02');
+ const list=(await P.loadJournal(a.client,a.id)).conversations.filter(c=>c.localDate>=weekOf&&c.localDate<=ST.addDays(weekOf,6));
+ must(await a.client.from('journal_reports').upsert({user_id:a.id,week_start:weekOf,source_ids:list.map(c=>c.id),source_signature:ST.sourceSignature(list),model:'mock',data:{title:'The Art of Letting Things Be',review:para(3,8),themes:[{heading:'Wanting answers before they exist',body:para(2,6)},{heading:'Ease as a signal',body:para(1,6)},{heading:'Letting the week be small',body:para(1,4)}],insights:[{heading:'Reaction versus response',body:'Maybe the waiting was the choice.'},{heading:'Expectation and outcome',body:'It went better than the story you told yourself on Tuesday.'}],wins:[{heading:'You let it settle',body:'You waited a day before replying.'},{heading:'You went',body:'You showed up to the opening alone.'}],closing:'A week that asked for patience and mostly got it.',covered:{start:weekOf,end:ST.addDays(weekOf,6),entries:list.length,generatedAt:new Date().toISOString()}}},{onConflict:'user_id,week_start'}));
+ await go(`/journal?view=insights&week=${weekOf}`,'!!document.querySelector(".mj-report-v2")','v2 report');
+ const rv=await evaluate(()=>document.querySelector('.mj-report-v2').textContent.replace(/\s+/g,' '));
+ check(/The Art of Letting Things Be/.test(rv)&&/The week in review/.test(rv)&&/Major themes/.test(rv)&&/Insights & patterns/.test(rv)&&/Weekly wins/.test(rv)&&/mostly got it/.test(rv),'the weekly reflection renders title, review, themes, insights, wins and closing');
+ check((await evaluate(()=>document.querySelectorAll('.mj-report-theme').length))===3,'every theme renders, none truncated');
+ check(!(await has('.mj-reflection','Update reflection')),'an up-to-date reflection offers no update');
+ await shoot('08-report-v2');
+ await viewport(390,844,true);await go(`/journal?view=insights&week=${weekOf}`,'!!document.querySelector(".mj-report-v2")','v2 report phone');
+ check(!(await overflow()),'phone: the reflection fits without sideways scroll');await evaluate(()=>document.querySelector('.mj-report-v2 section[aria-label="Major themes"]').scrollIntoView());await shoot('09-report-v2-phone');
+ await viewport(1280);
+ const todayLocal=new Date().toISOString().slice(0,10);
+ if(ST.reflectionLock(ST.weekStart(todayLocal),todayLocal)==='until-sunday'){
+  const jid=(await P.loadJournal(a.client,a.id)).journals[0].id;
+  const now=await P.createConversation(a.client,a.id,{id:crypto.randomUUID(),journalId:jid,companion:null,mode:'open',localDate:todayLocal,timeZone:'UTC',status:'active'});
+  await P.addMessage(a.client,a.id,{id:crypto.randomUUID(),conversationId:now.id,body:'A small note for this week.',localDate:todayLocal});
+  await go('/journal?view=insights','!!document.querySelector(".mj-reflection")','this week');
+  await until(()=>!!document.querySelector('.mj-reflection-locked'),'locked');
+  check(await has('.mj-reflection-locked','opens on Sunday')&&!(await has('.mj-reflection button','Write this week')),'this week’s reflection is locked until Sunday, with no button');
+  await shoot('10-locked');
+ }
  // Importing the same file again skips everything; removing the import removes only its entries.
- await click('#mj-settings .muse-segmented button','Privacy & usage');await click('#mj-settings button','Import journal history…');
- await until(()=>!!document.querySelector('.mj-file-pick'),'import view');
+ await openImport();
  await until(()=>document.querySelector('.mj-import')?.textContent.includes('Earlier imports'),'earlier imports');
  check(await has('.mj-import','Earlier imports')&&await has('.mj-import','3 imported'),'earlier imports are listed');
  await upload('muse-journal.json',JSON.stringify(exported));
