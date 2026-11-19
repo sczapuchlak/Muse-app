@@ -1,4 +1,5 @@
 "use client";
+import { Drafts, useDrafts } from "./Drafts";
 import { useEffect, useMemo, useState } from "react";
 import { MuseSearch } from "../design/MuseSearch";
 import { MuseSegmented } from "../design/MuseSegmented";
@@ -19,7 +20,7 @@ import * as P from "@/lib/journal/persistence";
 import { isListed, tagKindLabel, tagKinds, tagLabel, type Bookmark, type Conversation, type Report, type Tag, type TagKind } from "@/lib/journal/model";
 import { addDays, weekDays, weekStart } from "@/lib/journal/stats";
 
-type Show = "entries" | "week" | "highlights";
+type Show = "entries" | "week" | "highlights" | "drafts";
 
 /**
  * History (Journal V1 §13–16): a searchable, filterable archive. Search is full-text over titles, summaries and every
@@ -29,6 +30,7 @@ type Show = "entries" | "week" | "highlights";
 export function HistoryView({ open, initialTag, initialJournal, onThisDay }: { open: (id: string) => void; initialTag?: string | null; initialJournal?: string | null; onThisDay?: boolean }) {
   const j = useJournal();
   const { state } = j;
+  const drafts = useDrafts();
   const [show, setShow] = useState<Show>(initialTag || onThisDay ? "entries" : "week");
   const [query, setQuery] = useState("");
   const [found, setFound] = useState<{ query: string; hits: Map<string, string> } | null>(null);
@@ -85,10 +87,10 @@ export function HistoryView({ open, initialTag, initialJournal, onThisDay }: { o
   return <section className="muse-journal-archive mj-history-view mj-reveal" aria-labelledby="mj-history-title">
     <div className="mj-shelf-head"><div><h2 id="mj-history-title" className="type-display mj-view-title">History</h2><p className="mj-note">Everything you’ve written, by day, person and theme.</p></div>
       <div className="mj-history-controls">
-        <MuseSegmented label="Show" value={show} onChange={setShow} options={[{ id: "week", label: "Week" }, { id: "entries", label: "All" }, { id: "highlights", label: "Highlights" }]} />
+        <MuseSegmented label="Show" value={show} onChange={setShow} options={[{ id: "week", label: "Week" }, { id: "entries", label: "All" }, { id: "highlights", label: "Highlights" }, { id: "drafts", label: drafts.length ? `Drafts ${drafts.length}` : "Drafts" }]} />
         <MuseDatePicker label="Jump to a date" triggerText="Jump to a date" date={focus} today={j.today} marked={written} onChange={(d) => { if (!d) return; setFocus(d > j.today ? j.today : d); setShow("week"); }} />
       </div></div>
-    {show !== "highlights" && <div className="mj-finder" data-open={filtersOpen || undefined}>
+    {show !== "highlights" && show !== "drafts" && <div className="mj-finder" data-open={filtersOpen || undefined}>
       <div className="mj-finder-top">
         <MuseSearch label="Search your whole journal" value={query} onChange={setQuery} placeholder="Search names, #tags, words…" count={searching ? list.length : undefined} noun={["entry", "entries"]} />
         <button type="button" className="muse-button mj-filters-toggle" aria-expanded={filtersOpen} aria-controls="mj-filter-panel" onClick={() => setFiltersOpen(!filtersOpen)}><MuseIcon name="filter" size={15} />Filters{activeCount ? <b className="mj-filter-count type-numeric">{activeCount}</b> : null}</button>
@@ -114,7 +116,7 @@ export function HistoryView({ open, initialTag, initialJournal, onThisDay }: { o
       </ul>}
     </div>}
 
-    {show !== "highlights" && searching && (list.length ? <div className="mj-stagger mj-all mj-results">
+    {show !== "highlights" && show !== "drafts" && searching && (list.length ? <div className="mj-stagger mj-all mj-results">
       <p className="mj-results-line type-meta" role="status">{list.length} {list.length === 1 ? "entry" : "entries"} across your whole journal{tagIds.length > 1 ? " · with all selected tags" : ""}</p>
       {months.map(([m, items]) => <section key={m} className="mj-month" aria-label={formatMonth(`${m}-01`)}>
         <h3 className="mj-month-title type-editorial">{formatMonth(`${m}-01`)}<span className="type-meta">{items.length} {items.length === 1 ? "entry" : "entries"}</span></h3>
@@ -133,6 +135,7 @@ export function HistoryView({ open, initialTag, initialJournal, onThisDay }: { o
 
     {show === "week" && !searching && <Week focus={focus} setFocus={setFocus} today={j.today} list={list} snippets={hits} open={open} />}
     {show === "highlights" && <HighlightsView />}
+    {show === "drafts" && <Drafts />}
     {managing && <TagDialog tag={managing} onClose={() => setManaging(null)} onMerged={(into) => { setTagIds((ids) => ids.map((x) => (x === managing.id ? into : x))); setManaging(null); }} />}
   </section>;
 }

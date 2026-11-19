@@ -162,3 +162,9 @@ Prices are per million tokens.
 - `node --test tests/journal.test.mjs`: memory permissions and budgets, retrieval queries, instruction order, conversation trimming, weekly statistics, tag identity, analysis validation, pricing, Markdown export.
 - `npm run test:journal:db`: owner-only access and isolation between two accounts, server-only entitlement and usage, companion version snapshots, drafts, append-only messages, finished entries, corrections, tags and merge, search, journal days, keep-test, journal deletion, moods, budget defaults.
 - `npm run test:journal:ui` (with `JOURNAL_AI_PROVIDER=mock npm run dev`): 71 browser checks covering first-run setup, the workspace, the greeting and its budget fallback, scenarios A–H, the Playground, the archive and tagging criteria, no stray drafts, phones and themes.
+
+## Entry date & time, and Drafts (Nov 18, 2026 — implemented)
+- **An entry owns its day.** Every message is saved on its entry's `local_date`, not the clock's, so a late-night entry that runs past midnight stays on the day it began (streak and calendar included).
+- **Change date & time** (writing page date line, the entry's menu, a finished entry's header, and Drafts) calls `redate_journal_entry` (security definer, owner only, today or earlier, revision-checked). The entry and its user messages move together; every message keeps its real `created_at`. `started_at` takes the chosen time when one is given.
+- **Write for an earlier day** (New entry menu, or the date on the blank page) creates the new entry on the chosen day/time.
+- **Drafts** is a History view listing every unfinished entry (`isUnfinished`: a draft with words, or an open conversation), newest first, with Continue, Change date and Discard.

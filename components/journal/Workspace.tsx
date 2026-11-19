@@ -8,6 +8,7 @@ import { MuseIcon } from "../MuseIcon";
 import { MuseModal } from "../MuseModal";
 import { GlassPopover } from "../GlassPopover";
 import { Composer, clearLocalDraft, type Attachment } from "./Composer";
+import { EntryDateDialog, displayClock, entryInstant, localClock } from "./EntryDate";
 import { GuidedEntry } from "./Guides";
 import { boardImageUrl, uploadBoardImage } from "@/lib/data/constellation-images";
 import { Prose, Thinking, Thread, type ThreadMessage } from "./Thread";
@@ -20,12 +21,13 @@ import * as P from "@/lib/journal/persistence";
 import { aiStream, AiError } from "@/lib/journal/ai-client";
 import { celebrate } from "@/lib/celebrate";
 import { entryTitle, isListed, snapshotOf, type Companion, type Conversation, type Guide, type GuideQuestion, type GuideSnapshot, type GuideState, type Message, type MessageImage, type Mode } from "@/lib/journal/model";
+import { isUnfinished } from "@/lib/journal/model";
 import { companionPresets } from "@/lib/journal/presets";
 import { addDays, onThisDay, streak, weekDays, weekStart } from "@/lib/journal/stats";
 
 export const choiceInk = (tone: MuseTone) => ({ "--choice-ink": `var(--chart-${tone})`, "--choice-ink-b": `var(--chart-${(tone % 8) + 1})` }) as React.CSSProperties;
 type Pending = { kind: "opening" } | { kind: "reply"; messageId: string };
-const unfinished = (c: Conversation) => c.status === "draft" ? Boolean(c.draft.trim() || Object.values(c.guideState.answers ?? {}).some((v) => v.trim())) : c.status === "active" && (c.messageCount > 0 || Boolean(c.draft.trim()));
+const unfinished = isUnfinished;
 
 /**
  * The Journal workspace ("Open Journal. Start talking. Everything else is in the toolbar."). Opening Journal lands
@@ -82,6 +84,9 @@ function Page({ initialId, onRouteClear, continueFrom, onCreated }: { initialId:
   const [error, setError] = useState<{ text: string; retry?: Pending } | null>(null);
   const [sending, setSending] = useState(false);
   const [confirmFinish, setConfirmFinish] = useState(false);
+  // Change date & time: for this entry, or the day a new entry is written for (a missed day).
+  const [dateDialog, setDateDialog] = useState<null | "entry" | "new">(null);
+  const [forDay, setForDay] = useState<{ date: string; time: string } | null>(null);
   const [saved, setSaved] = useState<Conversation | null>(null);
   const [mode, setMode] = useState<Mode>("open");
   const [greetNote, setGreetNote] = useState("");
@@ -148,7 +153,7 @@ function Page({ initialId, onRouteClear, continueFrom, onCreated }: { initialId:
     const existing = draftEntry ? state.conversations.find((c) => c.id === draftEntry) : null;
     if (existing) return existing;
     // One entry per page: a draft save and a first Send share the same creation, never making two entries.
-    if (!creating.current) creating.current = j.startConversation({ journalId: journal.id, companion: ai.enabled ? companion : null, mode, status, draft, continues: pendingRef && refSource ? { id: refSource.id, title: entryTitle(refSource), date: refSource.localDate } : null, guide: guideSource ? { id: guideSource.id, snapshot: snapshotOf(guideSource), state: guideState ?? {} } : null }).then((c) => { if (c) { setDraftEntry(c.id); if (pendingRef || guideSource) onCreated?.(c.id); } return c ?? null; }).finally(() => { setTimeout(() => { creating.current = null; }, 0); });
+    if (!creating.current) creating.current = j.startConversation({ journalId: journal.id, companion: ai.enabled ? companion : null, mode, status, draft, ...(forDay ? { localDate: forDay.date, startedAt: entryInstant(forDay.date, forDay.time, timeZone) } : {}), continues: pendingRef && refSource ? { id: refSource.id, title: entryTitle(refSource), date: refSource.localDate } : null, guide: guideSource ? { id: guideSource.id, snapshot: snapshotOf(guideSource), state: guideState ?? {} } : null }).then((c) => { if (c) { setDraftEntry(c.id); if (pendingRef || guideSource) onCreated?.(c.id); } return c ?? null; }).finally(() => { setTimeout(() => { creating.current = null; }, 0); });
     return creating.current;
   }
   const [attachments, setAttachments] = useState<Attachment[]>([]);
@@ -175,7 +180,7 @@ function Page({ initialId, onRouteClear, continueFrom, onCreated }: { initialId:
         const u = await uploadBoardImage(userId, c.id, a.file!, { allowJpeg: true });
         return { position, path: u.path, thumbnailPath: u.thumbnailPath, width: u.width, height: u.height, mime: u.mime };
       }));
-      const m = await P.addMessage(client, userId, { id, conversationId: c.id, body, localDate: today });
+      const m = await P.addMessage(client, userId, { id, conversationId: c.id, body, localDate: c.localDate });
       let images: MessageImage[] = [], linked = true;
       if (uploaded.length) { try { images = await P.addMessageImages(client, userId, c.id, id, uploaded); } catch { linked = false; } }
       setMessages((list) => list.map((x) => (x.id === id ? { ...m, images, pending: false } : x)));
@@ -235,7 +240,7 @@ function Page({ initialId, onRouteClear, continueFrom, onCreated }: { initialId:
     }, 700);
   }
   async function postAnswer(c: Conversation, q: GuideQuestion, text: string) {
-    const m = await P.addMessage(client, userId, { id: newId(), conversationId: c.id, body: text, localDate: today, guideQuestionId: q.id, guideQuestion: q.text });
+    const m = await P.addMessage(client, userId, { id: newId(), conversationId: c.id, body: text, localDate: c.localDate, guideQuestionId: q.id, guideQuestion: q.text });
     setMessages((list) => [...list, m]); return m;
   }
   /** Only when the guide allows it and you ask: one answer becomes a message and the companion replies to it. */
@@ -252,7 +257,7 @@ function Page({ initialId, onRouteClear, continueFrom, onCreated }: { initialId:
       if (aiOn) void ask(c.id, { kind: "reply", messageId: m.id });
     } catch (e) { setSending(false); setError({ text: e instanceof Error ? e.message : "Not saved." }); }
   }
-  function fresh() { setPendingRef(null); setConvId(null); setMessages([]); setError(null); setSaved(null); setGreetNote(""); setMode("open"); setDraftEntry(null); onRouteClear(); }
+  function fresh() { setForDay(null); setPendingRef(null); setConvId(null); setMessages([]); setError(null); setSaved(null); setGreetNote(""); setMode("open"); setDraftEntry(null); onRouteClear(); }
   /** New entry, deliberately: a fresh page, and (if chosen in preferences) one greeting from the companion. */
   function newEntry() {
     fresh();
@@ -294,6 +299,7 @@ function Page({ initialId, onRouteClear, continueFrom, onCreated }: { initialId:
     {conv && <div className="mj-menu-list" role="group" aria-label="This entry">
       <p className="mj-menu-head type-meta">This entry</p>
       {activeJournals(state).filter((x) => x.id !== conv.journalId).slice(0, 6).map((x) => <button key={x.id} type="button" className="popover-choice" onClick={() => { close(); void j.updateMeta({ ...conv, journalId: x.id }).then((s) => { if (s) setJournalId(x.id); }); }}><span className="mj-menu-item"><MuseIcon name="arrow" size={14} />Move it to {x.name}</span></button>)}
+      <button type="button" className="popover-choice" onClick={() => { close(); setDateDialog("entry"); }}><span className="mj-menu-item"><MuseIcon name="calendar" size={14} />Change date &amp; time</span></button>
       <button type="button" className="popover-choice" onClick={() => { close(); void j.updateMeta({ ...conv, memoryOff: !conv.memoryOff }); }}><span className="mj-menu-item"><MuseIcon name={conv.memoryOff ? "eye" : "eye-off"} size={14} />{conv.memoryOff ? "Use my journal history here" : "Don’t use my journal history here"}</span></button>
       <button type="button" className="popover-choice" data-destructive onClick={() => { close(); if (window.confirm(userCount ? "Delete this entry? This can’t be undone." : "Discard this draft?")) void j.deleteConversation(conv.id).then((ok) => ok && fresh()); }}><span className="mj-menu-item"><MuseIcon name="trash" size={14} />{userCount ? "Delete this entry" : "Discard this draft"}</span></button>
     </div>}
@@ -309,7 +315,7 @@ function Page({ initialId, onRouteClear, continueFrom, onCreated }: { initialId:
       conversationNote={conv ? <>Replies from now on use {companion?.name ?? "this companion"}{pinned ? ` (version ${pinned.version})` : ""}. Earlier replies keep their words.{companion && pinned && companion.version > pinned.version ? ` ${companion.name} has newer saved words (version ${companion.version}): choose it again to use them.` : ""}</> : undefined}
       entryMenu={entryMenu}
       extra={<NewEntryMenu disabled={streaming} guided={Boolean(journal.guided)} greet={state.prefs.greetOnNew && aiOn} companionName={aiOn ? companion!.name.replace(/^The /, "") : null}
-        onStart={(kind) => { if (kind === "write") newEntry(); else { fresh(); void beginFresh(kind === "ask" ? "open" : kind); } }} />} />
+        onStart={(kind) => { if (kind === "earlier") { newEntry(); setDateDialog("new"); } else if (kind === "write") newEntry(); else { fresh(); void beginFresh(kind === "ask" ? "open" : kind); } }} />} />
   </div>;
   return <section ref={fitToViewport} className="muse-journal-archive mj-workspace mj-reveal" aria-label="Journal" style={{ "--journal-a": `var(--chart-${tone})`, "--journal-b": `var(--chart-${(tone % 8) + 1})` } as React.CSSProperties}>
     {ui.toolbarSlot && createPortal(toolbar, ui.toolbarSlot)}
@@ -339,7 +345,7 @@ function Page({ initialId, onRouteClear, continueFrom, onCreated }: { initialId:
           finishDisabled={streaming || sending || confirmFinish || !(userCount || Object.values(gState.answers ?? {}).some((v) => v.trim()))} />
         {error && <div className="mj-error" role="alert"><span>{error.text}</span>{error.retry && conv && <button type="button" className="muse-button" onClick={() => void ask(conv.id, error.retry!)}>Ask again</button>}</div>}
       </> : <>
-      {!shown.length && !stream ? <BlankHead tone={tone} mode={conv?.mode ?? mode} /> : <p className="mj-ws-date muse-kicker type-meta">{formatDay(conv?.localDate ?? today)}{(conv?.mode ?? mode) !== "open" && ` · ${(conv?.mode ?? mode) === "morning" ? "Morning intention" : "Evening reflection"}`}{conv?.memoryOff && " · not using your journal history"}</p>}
+      {!shown.length && !stream ? <BlankHead tone={tone} mode={conv?.mode ?? mode} forDay={forDay?.date ?? null} onPickDay={() => setDateDialog("new")} /> : <p className="mj-ws-date muse-kicker type-meta"><button type="button" className="mj-date-edit" title="Change date & time" onClick={() => setDateDialog(conv ? "entry" : "new")}>{formatDay(conv?.localDate ?? forDay?.date ?? today)}{conv ? ` · ${displayClock(conv.startedAt, conv.timeZone)}` : ""}<MuseIcon name="edit" size={12} /></button>{(conv?.mode ?? mode) !== "open" && ` · ${(conv?.mode ?? mode) === "morning" ? "Morning intention" : "Evening reflection"}`}{conv?.memoryOff && " · not using your journal history"}</p>}
       {!loaded ? <p className="small-label" role="status">Opening your entry…</p> : <Thread messages={display} onReattach={conv && conv.status !== "completed" ? reattach : undefined} companion={companion ? { name: companion.name, icon: companion.icon, tone: companion.tone } : null} companionFor={whoFor} timeZone={timeZone} />}
       {stream && !stream.text && <Thinking name={whoFor({ companionVersionId: conv?.companionVersionId ?? null } as ThreadMessage).name} />}
       {error && <div className="mj-error" role="alert"><span>{error.text}</span>{error.retry && conv && <button type="button" className="muse-button" onClick={() => void ask(conv.id, error.retry!)}>Ask again</button>}</div>}
@@ -354,6 +360,11 @@ function Page({ initialId, onRouteClear, continueFrom, onCreated }: { initialId:
       <div ref={end} />
     </div>
     <div className="mj-live-compose">
+      {dateDialog === "entry" && conv && <EntryDateDialog title="Change date & time" date={conv.localDate} time={localClock(conv.startedAt, conv.timeZone)} today={today} onClose={() => setDateDialog(null)}
+        onSave={async (d, t) => Boolean(await j.redate(conv, d, entryInstant(d, t, conv.timeZone)))} />}
+      {dateDialog === "new" && <EntryDateDialog title="Write for another day" date={forDay?.date ?? today} time={forDay?.time ?? ""} today={today} onClose={() => setDateDialog(null)}
+        note="This entry will be saved on the day you choose: its place in History and its streak day. Leave the time blank if it doesn’t matter."
+        onSave={async (d, t) => { setForDay(d === today && !t ? null : { date: d, time: t }); return true; }} />}
       {confirmFinish && <div className="mj-finish" role="dialog" aria-label="Finish this entry">
         <p><b>Finish this entry?</b> It’s saved already. Finishing closes the conversation{ai.enabled && state.prefs.analysisAuto ? " and writes a short analysis you can edit" : ""}, then gives you a fresh page.</p>
         <div><button type="button" className="muse-button" onClick={() => setConfirmFinish(false)}>Keep talking</button><button type="button" className="muse-button button-primary" onClick={() => void finish()}>Finish &amp; save</button></div>
@@ -365,7 +376,7 @@ function Page({ initialId, onRouteClear, continueFrom, onCreated }: { initialId:
 }
 
 /** The top of a blank page: the day, a greeting, this week as a constellation, and a quiet door to On This Day. */
-function BlankHead({ tone, mode }: { tone: number; mode: Mode }) {
+function BlankHead({ tone, mode, forDay, onPickDay }: { tone: number; mode: Mode; forDay: string | null; onPickDay: () => void }) {
   const j = useJournal();
   const { state, today } = j;
   const listed = state.conversations.filter(isListed);
@@ -375,7 +386,7 @@ function BlankHead({ tone, mode }: { tone: number; mode: Mode }) {
   const run = streak(days, today);
   return <div className="mj-blank" data-tone={tone}>
     <div className="mj-blank-copy">
-      <p className="muse-kicker type-meta">{formatDay(today)}{mode !== "open" && ` · ${mode === "morning" ? "Morning intention" : "Evening reflection"}`}</p>
+      <p className="muse-kicker type-meta"><button type="button" className="mj-date-edit" title="Write for another day" onClick={onPickDay}>{forDay && forDay !== today ? `For ${formatDay(forDay)}` : formatDay(today)}<MuseIcon name="edit" size={12} /></button>{mode !== "open" && ` · ${mode === "morning" ? "Morning intention" : "Evening reflection"}`}</p>
       <h2 className="type-display mj-greeting">{greeting(new Date().getHours())}.</h2>
       <p className="mj-blank-line type-quote">{yesterday ? <>Yesterday you wrote about <Link href={`/journal?entry=${yesterday.id}`}>“{yesterday.title}”</Link>.</> : "A place to think out loud."}</p>
     </div>
@@ -432,11 +443,11 @@ function Setup() {
  * New entry, with the ways to start: just write (with a greeting if you've chosen one), ask the companion to begin, or
  * a morning intention or evening reflection. A guided journal simply starts its questions.
  */
-function NewEntryMenu({ disabled, guided, greet, companionName, onStart }: { disabled: boolean; guided: boolean; greet: boolean; companionName: string | null; onStart: (kind: "write" | "ask" | "morning" | "evening") => void }) {
+function NewEntryMenu({ disabled, guided, greet, companionName, onStart }: { disabled: boolean; guided: boolean; greet: boolean; companionName: string | null; onStart: (kind: "write" | "ask" | "morning" | "evening" | "earlier") => void }) {
   const [open, setOpen] = useState(false), anchor = useRef<HTMLButtonElement>(null);
   const simple = guided || !companionName;
   if (simple) return <button type="button" className="muse-button button-ghost mj-tb-new" onClick={() => onStart("write")} disabled={disabled} aria-label="New entry"><MuseIcon name="plus" size={16} /><span className="mj-tb-label">New entry</span></button>;
-  const pick = (k: "write" | "ask" | "morning" | "evening") => { setOpen(false); onStart(k); };
+  const pick = (k: "write" | "ask" | "morning" | "evening" | "earlier") => { setOpen(false); onStart(k); };
   return <>
     <button ref={anchor} type="button" className="muse-button button-ghost mj-tb-new" aria-haspopup="dialog" aria-expanded={open} aria-controls="mj-new-entry" onClick={() => setOpen(!open)} disabled={disabled} aria-label="New entry"><MuseIcon name="plus" size={16} /><span className="mj-tb-label">New entry</span><MuseIcon name="chevron" size={13} /></button>
     <GlassPopover id="mj-new-entry" label="New entry" title="New entry" open={open} anchorRef={anchor} onClose={() => setOpen(false)} width={300}>
@@ -445,6 +456,7 @@ function NewEntryMenu({ disabled, guided, greet, companionName, onStart }: { dis
         <button type="button" className="popover-choice" onClick={() => pick("ask")}><span className="mj-menu-item"><MuseIcon name="sparkle" size={15} />Ask {companionName} to begin</span></button>
         <button type="button" className="popover-choice" onClick={() => pick("morning")}><span className="mj-menu-item"><MuseIcon name="sun" size={15} />Morning intention</span></button>
         <button type="button" className="popover-choice" onClick={() => pick("evening")}><span className="mj-menu-item"><MuseIcon name="moon" size={15} />Evening reflection</span></button>
+        <button type="button" className="popover-choice" onClick={() => pick("earlier")}><span className="mj-menu-item"><MuseIcon name="calendar" size={15} />Write for an earlier day…</span></button>
       </div>
     </GlassPopover>
   </>;

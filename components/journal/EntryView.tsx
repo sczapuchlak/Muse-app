@@ -17,6 +17,7 @@ import { EntryLinks } from "./EntryLinks";
 import { StarRule } from "./JournalArt";
 import { tagsFor, useJournal } from "./useJournal";
 import { formatDay, formatShort } from "./format";
+import { EntryDateDialog, displayClock, entryInstant, localClock } from "./EntryDate";
 import * as P from "@/lib/journal/persistence";
 import { AiError } from "@/lib/journal/ai-client";
 import { anchorHighlight, entryTitle, mergeRanges, tagKinds, type Analysis, type Bookmark, type Conversation, type Correction, type Message } from "@/lib/journal/model";
@@ -44,7 +45,7 @@ export function EntryView({ conversation: c, onClose, focusHighlight = null }: {
   const [analysis, setAnalysis] = useState<Analysis | null>(null);
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState("");
-  const [editingTitle, setEditingTitle] = useState(false);
+  const [editingTitle, setEditingTitle] = useState(false), [dating, setDating] = useState(false);
   const [title, setTitle] = useState(c.title);
   const [correcting, setCorrecting] = useState<Message | null>(null);
   const [marking, setMarking] = useState<{ message: Message; excerpt: string } | null>(null);
@@ -115,6 +116,7 @@ export function EntryView({ conversation: c, onClose, focusHighlight = null }: {
 
   const continuedIn = state.conversations.filter((x) => x.continuesId === c.id).sort((a, b) => a.localDate.localeCompare(b.localDate));
   return <article className="mj-entry mj-reveal" aria-labelledby="mj-entry-title" style={{ "--journal-a": `var(--chart-${journal?.tone ?? 5})`, "--journal-b": `var(--chart-${((journal?.tone ?? 5) % 8) + 1})` } as React.CSSProperties}>
+    {dating && <EntryDateDialog title="Change date & time" date={c.localDate} time={localClock(c.startedAt, c.timeZone)} today={j.today} onClose={() => setDating(false)} onSave={async (d, t) => Boolean(await j.redate(c, d, entryInstant(d, t, c.timeZone)))} />}
     <header className="mj-entry-head muse-journal-hero">
       <div className="mj-entry-top">
         <button type="button" className="muse-button button-ghost mj-back" onClick={onClose}><span aria-hidden="true">←</span> Back</button>
@@ -123,13 +125,14 @@ export function EntryView({ conversation: c, onClose, focusHighlight = null }: {
           <button type="button" className="muse-icon-button mj-fav-toggle" aria-pressed={c.favorite} aria-label={c.favorite ? "Remove from favorites" : "Add to favorites"} onClick={() => void j.updateMeta({ ...c, favorite: !c.favorite })}><MuseIcon name="favorite" size={18} /></button>
           <MuseOverflowMenu label="Entry options" actions={[
             { id: "title", label: "Edit title", onSelect: () => setEditingTitle(true) },
+            { id: "date", label: "Change date & time", onSelect: () => setDating(true) },
             { id: "memory", label: c.excludeFromMemory ? "Let future conversations use this entry" : "Keep this entry out of future AI context", onSelect: () => void j.updateMeta({ ...c, excludeFromMemory: !c.excludeFromMemory }) },
             { id: "delete", label: "Delete entry", destructive: true, onSelect: () => void j.deleteConversation(c.id).then((ok) => ok && onClose()) },
           ]} />
         </div>
       </div>
       <div className="mj-entry-head-copy">
-        <p className="muse-kicker type-meta">{formatDay(c.localDate)} · {journal?.name ?? "Journal"}{c.companionName ? ` · with ${c.companionName}` : ""}{c.origin === "playground" ? " · kept from the Studio" : ""}{c.guideSnapshot ? ` · ${c.guideSnapshot.icon ? `${c.guideSnapshot.icon} ` : ""}${c.guideSnapshot.name}` : ""}</p>
+        <p className="muse-kicker type-meta"><button type="button" className="mj-date-edit" title="Change date & time" onClick={() => setDating(true)}>{formatDay(c.localDate)} · {displayClock(c.startedAt, c.timeZone)}<MuseIcon name="edit" size={12} /></button> · {journal?.name ?? "Journal"}{c.companionName ? ` · with ${c.companionName}` : ""}{c.origin === "playground" ? " · kept from the Studio" : ""}{c.guideSnapshot ? ` · ${c.guideSnapshot.icon ? `${c.guideSnapshot.icon} ` : ""}${c.guideSnapshot.name}` : ""}</p>
         {editingTitle ? <form className="mj-title-edit" onSubmit={(e) => { e.preventDefault(); void saveTitle(); }}>
           <input type="text" aria-label="Title" className="type-title" value={title} maxLength={200} onChange={(e) => setTitle(e.target.value)} autoFocus />
           <button type="submit" className="muse-button button-primary">Save</button><button type="button" className="muse-button" onClick={() => { setTitle(c.title); setEditingTitle(false); }}>Cancel</button>

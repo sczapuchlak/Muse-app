@@ -66,11 +66,13 @@ function useJournalStore() {
     restorePreset: (c: Companion) => { const p = companionPreset(c.presetKey); return p ? { ...c, name: p.name, description: p.description, instructions: p.instructions, conversationPrefs: p.conversationPrefs, openingStyle: p.openingStyle } : c; },
     savePrefs: (p: Preferences) => run(async () => { const saved = await P.savePreferences(client, userId, p); patch((s) => ({ ...s, prefs: saved })); return saved; }),
 
-    startConversation: (o: { journalId: string; companion: Companion | null; mode: Mode; status?: "draft" | "active"; draft?: string; continues?: { id: string; title: string; date: string } | null; guide?: { id: string; snapshot: GuideSnapshot; state?: GuideState } | null }) => run(async () => {
-      const c = await P.createConversation(client, userId, { id: newId(), journalId: o.journalId, companion: o.companion, mode: o.mode, localDate: today, timeZone, status: o.status ?? "active", draft: o.draft, continues: o.continues, guide: o.guide });
+    startConversation: (o: { journalId: string; companion: Companion | null; mode: Mode; localDate?: string; startedAt?: string | null; status?: "draft" | "active"; draft?: string; continues?: { id: string; title: string; date: string } | null; guide?: { id: string; snapshot: GuideSnapshot; state?: GuideState } | null }) => run(async () => {
+      const c = await P.createConversation(client, userId, { id: newId(), journalId: o.journalId, companion: o.companion, mode: o.mode, localDate: o.localDate ?? today, startedAt: o.startedAt ?? null, timeZone, status: o.status ?? "active", draft: o.draft, continues: o.continues, guide: o.guide });
       putConversation(c); return c;
     }),
     putConversation,
+    /** Moves an entry to the day (and time) it belongs to; its words keep the time they were written. */
+    redate: (c: Conversation, localDate: string, startedAt: string | null) => run(async () => { const saved = await P.redateConversation(client, c, localDate, startedAt); putConversation(saved); return saved; }),
     refreshConversation: async (id: string) => { const c = await P.refreshConversation(client, userId, id); if (c) putConversation(c); return c; },
     updateMeta: (c: Conversation) => run(async () => { const saved = await P.updateMeta(client, userId, c); putConversation(saved); return saved; }),
     deleteConversation: (id: string) => run(async () => { await P.deleteConversation(client, userId, id); patch((s) => ({ ...s, conversations: s.conversations.filter((c) => c.id !== id), entryTags: s.entryTags.filter((t) => t.conversationId !== id), bookmarks: s.bookmarks.filter((b) => b.conversationId !== id), highlightTags: s.highlightTags.filter((t) => s.bookmarks.some((b) => b.id === t.highlightId && b.conversationId !== id)) })); return true; }),
