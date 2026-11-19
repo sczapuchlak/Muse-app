@@ -38,9 +38,9 @@
    stars and the vignette still sit above it. Themes without a photo leave it as none. */
 .muse-atmosphere-photo { position:fixed; top:0; inset-inline:var(--muse-rail-width) 0; height:100lvh; z-index:0; background:var(--atmosphere-photo,none); }
 @media(max-width:1023px){.muse-atmosphere-photo { inset-inline-start:0; }}
-:root[data-theme="astral"] { --atmosphere-photo:linear-gradient(180deg,rgba(18,10,34,.55) 0,rgba(18,10,34,.18) 22svh,rgba(18,10,34,0) 40svh),radial-gradient(ellipse 120% 70% at 50% 55%,transparent 55%,rgba(14,8,28,.35) 100%),url("/themes/midnight-ballerina.webp") center 38%/cover no-repeat; }
+:root[data-theme="astral"] { --atmosphere-photo:linear-gradient(180deg,rgba(18,10,34,.4) 0,rgba(18,10,34,0) 26svh),url("/themes/midnight-ballerina.webp") center/100% 100% no-repeat; }
 :root[data-theme="hot-summer-nights"] { --atmosphere-photo:radial-gradient(ellipse 55% 42% at 100% 0%,rgba(30,20,92,.55) 0,rgba(30,20,92,.22) 55%,transparent 80%),linear-gradient(90deg,rgba(14,16,70,.34) 0,rgba(14,16,70,.06) 45%),linear-gradient(rgba(18,14,66,.2),rgba(18,14,66,.2)),url("/themes/hot-summer-nights.webp") center top/cover no-repeat; }
-:root[data-theme="nightbloom"] { --atmosphere-photo:url("/themes/pretty-toxic.webp") center/cover no-repeat; }
+:root[data-theme="nightbloom"] { --atmosphere-photo:url("/themes/pretty-toxic.webp") center/100% 100% no-repeat; }
 :root[data-theme="all-american-girl"] { --atmosphere-photo:url("/themes/all-american-girl.webp") right center/cover no-repeat; }
 /* Wide screens crop a portrait photo's top and bottom, so the art keeps its red-gold-blue top-right sweep and the arch
    at the bottom is drawn back in from the photo's own colours (red, white and blue corners). */
