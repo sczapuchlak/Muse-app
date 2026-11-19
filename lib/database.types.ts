@@ -1286,6 +1286,20 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
+                },"daily_edit_layouts": {
+                  Row: {
+                    "layout": Json,"revision": number,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "layout"?: Json,"revision"?: number,"updated_at"?: string,"user_id"?: string
+                  }
+                  Update: {
+                    "layout"?: Json,"revision"?: number,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
                 },"emotion_catalog": {
                   Row: {
                     "definition": string | null,"emoji": string,"energy": string | null,"id": string,"name": string,"pleasantness": string | null,"quadrant": string
@@ -3621,6 +3635,7 @@ isOneToOne: false
         isOneToOne: false
         isSetofReturn: true
       } },
+"redate_journal_entry": { Args: { "p_id": string,"p_local_date": string,"p_started_at": string,"p_expected_revision": number }; Returns: Database["public"]["Tables"]["journal_conversations"]["Row"][] },
 "search_journal": { Args: { "p_limit"?: number,"p_query": string }; Returns: {
               "conversation_id": string,"rank": number,"snippet": string
             }[]

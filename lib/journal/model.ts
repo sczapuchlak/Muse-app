@@ -194,6 +194,8 @@ export function findTag(tags: readonly Tag[], kind: TagKind, name: string): Tag 
 export const wordCount = (text: string) => (text.trim() ? text.trim().split(/\s+/).length : 0);
 export const entryTitle = (c: Pick<Conversation, "title" | "mode" | "localDate">, fallback?: string) => c.title.trim() || fallback || (c.mode === "morning" ? "Morning intention" : c.mode === "evening" ? "Evening reflection" : "Untitled conversation");
 /** History lists finished and active conversations that contain at least one of your own messages. */
+/** An entry you started and haven't finished: a draft with words in it, or an open conversation. These live in Drafts. */
+export const isUnfinished = (c: Conversation) => c.status === "draft" ? Boolean(c.draft.trim() || Object.values(c.guideState.answers ?? {}).some((v) => v.trim())) : c.status === "active" && (c.messageCount > 0 || Boolean(c.draft.trim()));
 export const isListed = (c: Pick<Conversation, "status" | "userWords">) => c.status !== "draft" && c.userWords > 0;
 export const tagKindLabel: Record<TagKind, string> = { custom: "My tags", person: "People", place: "Places", topic: "Topics", theme: "Themes", mood: "Moods" };
 /** The kinds shown and created: My tags, People, Topics, Moods. Places and themes from older analyses stay stored (and searchable) but aren't shown. */
