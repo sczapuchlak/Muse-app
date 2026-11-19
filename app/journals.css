@@ -103,3 +103,6 @@
 .muse-journal-archive>.muse-journal-hero:not([data-compact]){margin:-4px -4px 4px;padding:clamp(8px,1.4vw,14px) clamp(8px,1.4vw,14px) clamp(18px,2.4vw,26px);border:0;border-bottom:1px solid color-mix(in srgb,var(--journal-a,var(--accent-secondary)) 28%,var(--glass-border));border-radius:0;box-shadow:none;background:transparent;overflow:visible;isolation:auto}
 .muse-journal-archive>.muse-journal-hero:not([data-compact])::before,.muse-journal-archive>.muse-journal-hero:not([data-compact])::after{content:none!important;display:none!important}
 .muse-journal-archive:has(>.muse-journal-hero:not([data-compact])){padding:clamp(18px,3vw,30px);background:radial-gradient(60% 260px at 85% 0%,color-mix(in srgb,var(--journal-a,var(--accent-secondary)) 16%,transparent),transparent 100%),var(--glass-background)}
+
+/* Phone (Nov 18): the compact hero's stats and its action get room to breathe; the button never sits on the chips. */
+@container muse-content (max-width:640px){.muse-journal-hero[data-compact] .muse-journal-hero-copy{row-gap:6px}.muse-journal-hero[data-compact] .muse-journal-stats{margin-top:6px}.muse-journal-hero[data-compact] .muse-journal-actions{margin-top:12px}}

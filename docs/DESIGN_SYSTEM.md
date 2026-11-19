@@ -909,3 +909,6 @@ Saved content is presented as something to read, not as a form. Default state: r
   - the shared `celebrate()` constellation ("Sealed in your journal.") after Finish & save succeeds;
   - `useMuseSpark` after a bookmark.
 - **Phones.** One toolbar row (journal as a mark, companion as a truncating chip, +, ⋯); Finish entry lives at the bottom beside Go deeper. The composer rests above the floating tab bar, with the page backdrop continuing beneath it. 16px input text. The Studio sheet is full screen.
+
+### Photo atmospheres (Nov 18, 2026)
+A theme may paint its canvas from one of Stephanie's reference images by setting `--atmosphere-photo` (in `app/atmosphere.css`, beside the layer). The photo is one fixed, viewport-sized layer (`.muse-atmosphere-photo`), never stretched down the document and never `background-attachment:fixed` (iOS ignores it); stars and the vignette sit above it. Images live in `public/themes/` as WebP. In use: Midnight Ballerina, Hot Summer Nights, Pretty Toxic (now a light hologram theme) and All-American Girl (light). Each palette is sampled from its own image.

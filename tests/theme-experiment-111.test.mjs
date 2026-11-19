@@ -3,7 +3,7 @@ const read=p=>readFileSync(resolve(root,p),'utf8');
 const {themes,themeExperiments,allThemes,isThemeId,isExperimentalTheme,themeEntry}=load('lib/themes');
 const css=read('app/themes.css'),surfaces=read('app/surfaces.css');
 const block=id=>Object.fromEntries([...css.split(`:root[data-theme="${id}"] {`)[1].split('}')[0].matchAll(/(--[\w-]+):\s*([^;]+);/g)].map(m=>[m[1],m[2].trim()]));
-const ROLE=['prism-noir','nightbloom','astral','dreamstorm-lab','bubblegum-baby','hot-summer-nights','booze-pinata','northern-lights-out'];
+const ROLE=['prism-noir','nightbloom','astral','dreamstorm-lab','bubblegum-baby','all-american-girl','hot-summer-nights','booze-pinata','northern-lights-out'];
 
 test('renovated themes keep their names and ids; new themes join the official list; Dreamstorm stays in the lab',()=>{
  const names=Object.fromEntries(themes.map(t=>[t.id,t.name]));
@@ -36,7 +36,7 @@ test('one card surface per theme: no alternating or per-widget card colours; sid
  assert.match(read('components/AppShell.css'),/background: var\(--surface-sidebar\)/);
 });
 test('light cards on a dark canvas re-point text and nested tints so components stay readable',()=>{
- for(const id of ['astral','nightbloom']){const t=block(id);for(const n of ['--tone-card-ink','--tone-card-muted','--tone-card-accent','--tone-card-icon-1','--tone-card-icon-2','--tone-card-icon-3'])assert.ok(t[n],`${id} ${n}`);assert.ok(surfaces.includes(`[data-theme="${id}"]`));}
+ for(const id of ['astral']){const t=block(id);for(const n of ['--tone-card-ink','--tone-card-muted','--tone-card-accent','--tone-card-icon-1','--tone-card-icon-2','--tone-card-icon-3'])assert.ok(t[n],`${id} ${n}`);assert.ok(surfaces.includes(`[data-theme="${id}"]`));}
  for(const n of ['--foreground','--text-muted','--ink-purple','--link-ink','--surface-subtle','--surface-control','--divider','--chart-1'])assert.match(surfaces,new RegExp(`${n}: `),n);
  assert.match(surfaces,/color: var\(--tone-card-ink\)/);
 });

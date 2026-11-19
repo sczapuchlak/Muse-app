@@ -5,7 +5,7 @@ import { readThemePreference, selectTheme } from "./theme-preference";
  * Theme review (#111): a temporary, per-tab session for comparing the renovated and new themes on real Muse screens.
  * It only switches the normal theme preference; ending the review restores the theme you had before.
  */
-export const REVIEW_THEME_IDS = ["prism-noir", "nightbloom", "astral", "dreamstorm-lab", "bubblegum-baby", "hot-summer-nights", "booze-pinata", "northern-lights-out"] as const satisfies readonly ThemeId[];
+export const REVIEW_THEME_IDS = ["prism-noir", "nightbloom", "astral", "dreamstorm-lab", "bubblegum-baby", "all-american-girl", "hot-summer-nights", "booze-pinata", "northern-lights-out"] as const satisfies readonly ThemeId[];
 export const reviewScreens = [
   { id: "future-log", label: "Future Log", href: "/planner?view=agenda", agendaView: "year" },
   { id: "daily", label: "Daily Edit", href: "/" },

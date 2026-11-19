@@ -11,5 +11,5 @@
 .muse-collections-card[data-glow]>.muse-cover-glow{opacity:.34}
 :is(.muse-books-finished-row,.muse-toprated-item,.muse-glance-yearbook,.muse-glance-bookcard)[data-glow]>.muse-cover-glow{opacity:.4}
 [data-density="list"] .muse-collections-card>.muse-cover-glow{opacity:.18}
-:root:is([data-theme="iridescent"],[data-theme="solstice"],[data-theme="issya-bday"],[data-theme="bubblegum-baby"],[data-theme="astral"],[data-theme="nightbloom"],:not([data-theme])) .muse-cover-glow{opacity:.3;-webkit-filter:blur(36px) saturate(1.5) brightness(1.15);filter:blur(36px) saturate(1.5) brightness(1.15)}
+:root:is([data-theme="iridescent"],[data-theme="solstice"],[data-theme="issya-bday"],[data-theme="bubblegum-baby"],[data-theme="all-american-girl"],[data-theme="astral"],[data-theme="nightbloom"],:not([data-theme])) .muse-cover-glow{opacity:.3;-webkit-filter:blur(36px) saturate(1.5) brightness(1.15);filter:blur(36px) saturate(1.5) brightness(1.15)}
 @media (prefers-reduced-motion:reduce){.muse-cover-glow{transition:none}}
