@@ -7,7 +7,7 @@ import { formatShort, weekdayShort } from "./format";
 import * as P from "@/lib/journal/persistence";
 import { aiAction, AiError } from "@/lib/journal/ai-client";
 import { isListed, tagKindLabel, tagKinds, type Report, type ReportSection } from "@/lib/journal/model";
-import { addDays, periodEnd, periodStart, rangeStats, reviewLock, shiftPeriod, sourceSignature, streak, weekStats, type Period } from "@/lib/journal/stats";
+import { periodEnd, periodStart, rangeStats, reviewLock, shiftPeriod, sourceSignature, streak, weekStats, type Period } from "@/lib/journal/stats";
 import { costUsd, formatUsd, prices } from "@/lib/journal/pricing";
 import { WeekConstellation } from "./JournalArt";
 import { MUSE_STAR_PATH } from "../MuseStar";
@@ -64,8 +64,8 @@ export function InsightsView({ open, initialWeek }: { open: (id: string) => void
     }
     finally { const r = await P.loadReport(j.client, j.userId, start, kind).catch(() => null); setLoaded({ key, report: r }); void j.refreshAi(); setBusy(false); }
   }
-  const lockedText = lock === "until-sunday" ? <>Your reflection opens on Sunday.</> : <>Your {kind === "month" ? monthName(start).split(" ")[0] : start.slice(0, 4)} review opens when the {noun[kind]} is over.</>;
-  const opensOn = lock === "until-sunday" ? end : addDays(end, 1);
+  const lockedText = lock === "until-sunday" ? <>Your reflection opens on Sunday.</> : <>Your {kind === "month" ? monthName(start).split(" ")[0] : start.slice(0, 4)} review opens on {kind === "month" ? "the last day of the month" : "December 31"}.</>;
+  const opensOn = end;
 
   return <div className="mj-insights mj-reveal">
     <section className="muse-journal-archive" aria-labelledby="mj-period-title">

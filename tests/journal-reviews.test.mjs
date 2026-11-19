@@ -25,9 +25,12 @@ test('periods: boundaries, navigation and when a review may be written', () => {
   assert.equal(S.shiftPeriod('year', '2025-01-01', 1), '2026-01-01'); assert.equal(S.shiftPeriod('week', '2026-11-16', -1), '2026-11-09');
   assert.equal(S.periodStart('month', '2026-11-19'), '2026-11-01'); assert.equal(S.periodStart('year', '2026-11-19'), '2026-01-01');
   assert.ok(S.validPeriodStart('month', '2026-11-01') && !S.validPeriodStart('month', '2026-11-02') && !S.validPeriodStart('year', '2026-02-01') && !S.validPeriodStart('month', 'nope'));
-  assert.equal(S.reviewLock('month', '2026-11-01', '2026-11-30'), 'until-end', 'the last day of the month is still the month');
-  assert.equal(S.reviewLock('month', '2026-11-01', '2026-12-01'), 'open');
-  assert.equal(S.reviewLock('year', '2026-01-01', '2026-12-31'), 'until-end'); assert.equal(S.reviewLock('year', '2025-01-01', '2026-11-19'), 'open', 'a finished (imported) year');
+  assert.equal(S.reviewLock('month', '2026-11-01', '2026-11-19'), 'until-end', 'mid-month: locked, no button');
+  assert.equal(S.reviewLock('month', '2026-11-01', '2026-11-29'), 'until-end');
+  assert.equal(S.reviewLock('month', '2026-11-01', '2026-11-30'), 'open', 'opens on the last day of the month, like a week on Sunday');
+  assert.equal(S.reviewLock('month', '2028-02-01', '2028-02-29'), 'open', 'a leap February opens on the 29th');
+  assert.equal(S.reviewLock('month', '2028-02-01', '2028-02-28'), 'until-end');
+  assert.equal(S.reviewLock('year', '2026-01-01', '2026-12-30'), 'until-end'); assert.equal(S.reviewLock('year', '2026-01-01', '2026-12-31'), 'open', 'a year opens on December 31'); assert.equal(S.reviewLock('year', '2025-01-01', '2026-11-19'), 'open', 'a finished (imported) year');
   assert.equal(S.reviewLock('month', '2026-12-01', '2026-11-19'), 'future');
   assert.equal(S.reviewLock('week', '2026-11-16', '2026-11-22'), 'open', 'weeks keep the Sunday unlock'); assert.equal(S.reviewLock('week', '2026-11-16', '2026-11-21'), 'until-sunday');
   const r = S.rangeStats('2026-11-01', '2026-11-30', [conv('a', '2026-11-02'), conv('b', '2026-11-02'), conv('c', '2026-11-29'), conv('out', '2026-12-01')], [], []);

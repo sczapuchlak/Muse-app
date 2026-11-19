@@ -77,14 +77,16 @@ export function shiftPeriod(kind: Period, start: string, n: number) {
 export const validPeriodStart = (kind: Period, d: string) => /^\d{4}-\d{2}-\d{2}$/.test(d) && !Number.isNaN(parse(d)) && periodStart(kind, d) === d;
 
 /**
- * When a review may be written (in the person's own day). A week opens on its Sunday, from midnight; a month or a year
- * once it has finished. Earlier periods (imported history included) are always open; a later one never.
+ * When a review may be written (in the person's own day). Each opens on its last day, from midnight: a week on its
+ * Sunday, a month on its last day (Nov 30), a year on December 31. Earlier periods (imported history included) are
+ * always open; the rest of the current period, and any later one, never.
  */
 export function reviewLock(kind: Period, start: string, today: string): "open" | "until-sunday" | "until-end" | "future" {
   const current = periodStart(kind, today);
   if (start > current) return "future";
   if (start < current) return "open";
-  return kind === "week" ? (today < addDays(start, 6) ? "until-sunday" : "open") : "until-end";
+  if (today >= periodEnd(kind, start)) return "open";
+  return kind === "week" ? "until-sunday" : "until-end";
 }
 
 /** Counts for any range (months and years use the same tallies as a week, without the day-by-day chart). */

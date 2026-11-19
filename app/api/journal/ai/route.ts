@@ -374,7 +374,7 @@ async function periodReport(client: Client, admin: Client, config: ProviderConfi
   if (!validPeriodStart(kind, start)) throw new Bad("invalid", `Choose a ${kind}.`);
   const end = periodEnd(kind, start), today = date(body.localDate) ? body.localDate : new Date().toISOString().slice(0, 10);
   const lock = reviewLock(kind, start, today);
-  if (lock !== "open") throw new Bad("locked", lock === "future" ? `That ${kind} hasn’t happened yet.` : `This ${kind}’s review opens when the ${kind} is over.`);
+  if (lock !== "open") throw new Bad("locked", lock === "future" ? `That ${kind} hasn’t happened yet.` : `This ${kind}’s review opens on its last day.`);
   const rows = await client.from("journal_conversations").select("*").eq("user_id", userId).gte("local_date", start).lte("local_date", end).neq("status", "draft").order("local_date").order("started_at").limit(3000);
   if (rows.error) throw rows.error;
   const list = rows.data.map(conversationFromRow).filter(isListed);
