@@ -212,9 +212,9 @@
     box-shadow:0 6px 16px -6px color-mix(in srgb,var(--mark-deep) 75%,transparent),inset 0 1px 0 color-mix(in srgb,white 40%,transparent),inset 0 -1px 0 color-mix(in srgb,black 18%,transparent);
   }
   .muse-mark[data-variant=soft]{color:oklch(from var(--mark-a) min(l, .5) max(c, .12) h);background:color-mix(in srgb,var(--mark-a) 16%,var(--surface-control));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--mark-a) 45%,transparent)}
-  :root:is([data-theme="iridescent"],[data-theme="solstice"],[data-theme="issya-bday"],[data-theme="bubblegum-baby"]) .muse-mark[data-variant=soft],
-  :root:is([data-theme="astral"],[data-theme="nightbloom"]) :is(.muse-sheet,.muse-stat-tile,.muse-insight-panel,.muse-card) .muse-mark[data-variant=soft]{color:oklch(from var(--mark-a) min(l, .45) max(c, .12) h)}
-  :root:not(:is([data-theme="iridescent"],[data-theme="solstice"],[data-theme="issya-bday"],[data-theme="bubblegum-baby"])) .muse-mark[data-variant=soft]{color:oklch(from var(--mark-a) max(l, .78) c h)}
+  :root:is([data-theme="iridescent"],[data-theme="solstice"],[data-theme="issya-bday"],[data-theme="bubblegum-baby"],[data-theme="nightbloom"],[data-theme="all-american-girl"]) .muse-mark[data-variant=soft],
+  :root[data-theme="astral"] :is(.muse-sheet,.muse-stat-tile,.muse-insight-panel,.muse-card) .muse-mark[data-variant=soft]{color:oklch(from var(--mark-a) min(l, .45) max(c, .12) h)}
+  :root:not(:is([data-theme="iridescent"],[data-theme="solstice"],[data-theme="issya-bday"],[data-theme="bubblegum-baby"],[data-theme="nightbloom"],[data-theme="all-american-girl"])) .muse-mark[data-variant=soft]{color:oklch(from var(--mark-a) max(l, .78) c h)}
 }
 .muse-mark svg{stroke:currentColor}
 
@@ -246,13 +246,13 @@
 
 /* Glow-up 2: accent-coloured small text keeps its hue but reaches reading contrast on light themes. */
 @supports (color: oklch(from red l c h)){
- :root:is([data-theme="iridescent"],[data-theme="solstice"],[data-theme="issya-bday"],[data-theme="bubblegum-baby"]) :is(.muse-kicker,.muse-section-eyebrow,.muse-trends .type-numeric,.muse-trends .small-label,.muse-idesk-seat,.muse-quest-kind){color:oklch(from var(--dl-kicker,var(--accent-secondary)) min(l,.46) max(c,.12) h)}
- :root:is([data-theme="iridescent"],[data-theme="solstice"],[data-theme="issya-bday"],[data-theme="bubblegum-baby"]) .muse-trends .type-numeric{color:oklch(from var(--success-primary) min(l,.45) max(c,.12) h)}
+ :root:is([data-theme="iridescent"],[data-theme="solstice"],[data-theme="issya-bday"],[data-theme="bubblegum-baby"],[data-theme="nightbloom"],[data-theme="all-american-girl"]) :is(.muse-kicker,.muse-section-eyebrow,.muse-trends .type-numeric,.muse-trends .small-label,.muse-idesk-seat,.muse-quest-kind){color:oklch(from var(--dl-kicker,var(--accent-secondary)) min(l,.46) max(c,.12) h)}
+ :root:is([data-theme="iridescent"],[data-theme="solstice"],[data-theme="issya-bday"],[data-theme="bubblegum-baby"],[data-theme="nightbloom"],[data-theme="all-american-girl"]) .muse-trends .type-numeric{color:oklch(from var(--success-primary) min(l,.45) max(c,.12) h)}
 }
 
 /* Glow-up 2 gradient numerals: the Books dashboard's "2026" and "1 day" voice, shared. A big number runs from the
    page's ink into its own colour (the tile's mark, the panel's aura). Light-card themes keep their solid card ink. */
-:root:not([data-theme="astral"]):not([data-theme="nightbloom"]) :is(.muse-stat-tile-value,.muse-money-income,.muse-money-tiles dd){--num-ink:var(--mark-a,var(--aura,var(--accent-primary)));background-image:linear-gradient(115deg,var(--foreground) 18%,color-mix(in oklab,var(--num-ink) 78%,var(--foreground)));-webkit-background-clip:text;background-clip:text;color:transparent}
+:root:not([data-theme="astral"]) :is(.muse-stat-tile-value,.muse-money-income,.muse-money-tiles dd){--num-ink:var(--mark-a,var(--aura,var(--accent-primary)));background-image:linear-gradient(115deg,var(--foreground) 18%,color-mix(in oklab,var(--num-ink) 78%,var(--foreground)));-webkit-background-clip:text;background-clip:text;color:transparent}
 .muse-stat-tile-value{font-family:var(--font-editorial);font-weight:560;font-size:1.75rem;letter-spacing:-.025em;font-variant-numeric:lining-nums tabular-nums}
 .muse-stat-tile-value small{font-family:var(--font-ui)}
 @media (forced-colors:active){:is(.muse-stat-tile-value,.muse-money-income,.muse-money-tiles dd){color:CanvasText;background:none}}
@@ -284,8 +284,9 @@
 /* A page's tabs that fit on a phone never pretend to scroll: three or fewer share the row in equal columns, with no
    edge fade and nothing cut off. Longer rows keep the scrolling treatment above. */
 @media(max-width:600px){
- .muse-page .muse-section-nav:has(.muse-nav-mark):not(:has(>:nth-child(4))){display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);width:100%;overflow:visible;padding:5px;-webkit-mask-image:none;mask-image:none}
- .muse-page .muse-section-nav:has(.muse-nav-mark):not(:has(>:nth-child(4)))>:is(a,button){min-width:0;justify-content:center;gap:7px;padding:5px 8px 5px 5px;font-size:.82rem}
- .muse-page .muse-section-nav:has(.muse-nav-mark):not(:has(>:nth-child(4)))>:is(a,button)>span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
- .muse-page .muse-section-nav:has(.muse-nav-mark):not(:has(>:nth-child(4))) .muse-nav-mark.muse-mark{width:26px;height:26px;border-radius:9px}
+ .muse-page :is(.muse-section-nav,.muse-page-tabs):has(.muse-nav-mark):not(:has(>:nth-child(4))){display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);width:100%;overflow:visible;padding:5px;-webkit-mask-image:none;mask-image:none}
+ .muse-page :is(.muse-section-nav,.muse-page-tabs):has(.muse-nav-mark):not(:has(>:nth-child(4)))>:is(a,button){min-width:0;justify-content:center;gap:7px;padding:5px 8px 5px 5px;font-size:.82rem}
+ /* A longer name ("Reading Atlas") takes two short lines rather than being cut off. */
+ .muse-page :is(.muse-section-nav,.muse-page-tabs):has(.muse-nav-mark):not(:has(>:nth-child(4)))>:is(a,button)>span{min-width:0;line-height:1.12;text-align:left;overflow-wrap:normal}
+ .muse-page :is(.muse-section-nav,.muse-page-tabs):has(.muse-nav-mark):not(:has(>:nth-child(4))) .muse-nav-mark.muse-mark{width:26px;height:26px;border-radius:9px;flex:none}
 }

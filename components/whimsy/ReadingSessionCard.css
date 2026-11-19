@@ -85,3 +85,7 @@ button.muse-session-title{cursor:pointer}button.muse-session-title:hover{text-de
 .muse-books-checkin .muse-checkin-delta span{color:var(--text-muted);font-size:.86rem}
 .muse-books-checkin .muse-checkin-delta[data-tone="warn"]{background:color-mix(in srgb,var(--accent-warm,var(--accent-secondary)) 14%,transparent);border-color:color-mix(in srgb,var(--accent-warm,var(--accent-secondary)) 40%,transparent)}
 .muse-books-checkin .muse-checkin-delta[data-tone="warn"] strong{background:none;color:var(--foreground);font-size:1.05rem}
+/* Check-in actions (Nov 18): Save session beside "I finished this book", which saves the sitting on the last page and opens Finish. */
+.muse-books-checkin .muse-checkin-save{display:flex;flex-wrap:wrap;gap:10px}
+.muse-books-checkin .muse-checkin-save>.muse-button{flex:1 1 180px;min-height:46px;justify-content:center}
+.muse-books-checkin .muse-checkin-finished{display:inline-flex;align-items:center;gap:8px}

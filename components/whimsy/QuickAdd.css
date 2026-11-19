@@ -1,12 +1,11 @@
-/* Quick Add (#136): bookmark + shelf split button, "Which edition?" and the success toast. */
-.muse-quick-add{position:relative;display:inline-flex;flex:none;border:1px solid var(--glass-border);border-top-color:var(--glass-edge);border-radius:14px;background:var(--surface-control);box-shadow:0 2px 0 color-mix(in srgb,var(--foreground) 6%,transparent),0 6px 14px rgba(10,8,24,.08)}
-.muse-quick-add>button{display:grid;place-items:center;min-width:44px;min-height:44px;padding:0 10px;border:0;background:none;color:var(--foreground);cursor:pointer;transition:background var(--motion-hover,180ms) ease,color var(--motion-hover,180ms) ease}
-.muse-quick-add-main{border-radius:13px 0 0 13px;color:var(--accent-primary)!important}
-.muse-quick-add-more{border-left:1px solid var(--glass-border)!important;border-radius:0 13px 13px 0;min-width:38px!important}
+/* Quick Add (#136; Nov 18): two labelled choices — To Be Read and Reading now — one tap each. "Which edition?" and the success toast follow. */
+.muse-quick-add{position:relative;display:inline-flex;flex:none;border:1px solid var(--glass-border);border-top-color:var(--glass-edge);border-radius:14px;background:var(--surface-control);box-shadow:0 2px 0 color-mix(in srgb,var(--foreground) 6%,transparent),0 6px 14px rgba(10,8,24,.08);overflow:hidden}
+.muse-quick-add>button{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:42px;padding:0 13px;border:0;background:none;color:var(--foreground);font:600 .8rem/1.1 var(--font-ui);white-space:nowrap;cursor:pointer;transition:background var(--motion-hover,180ms) ease,color var(--motion-hover,180ms) ease}
+.muse-quick-add>button svg{flex:none;color:var(--accent-primary)}
+.muse-quick-add>button+button{border-left:1px solid var(--glass-border)}
 .muse-quick-add>button:hover:not(:disabled){background:color-mix(in srgb,var(--accent-primary) 12%,transparent)}
 .muse-quick-add>button:focus-visible{outline:2px solid var(--focus-ring);outline-offset:-2px}
 .muse-quick-add>button:disabled{opacity:.55;cursor:default}
-.muse-quick-add[data-open] .muse-quick-add-more svg{transform:rotate(180deg)}
 .muse-quick-add-spinner{width:16px;height:16px;border-radius:50%;border:2px solid color-mix(in srgb,var(--accent-primary) 25%,transparent);border-top-color:var(--accent-primary);animation:muse-quick-spin .8s linear infinite}
 
 .muse-edition-sheet{display:grid;gap:14px;padding:4px 2px 8px;min-width:0}
@@ -35,7 +34,5 @@
 
 /* Compact variant for dense grids */
 .muse-quick-add[data-size="sm"]{border-radius:11px}
-.muse-quick-add[data-size="sm"]>button{min-width:34px;min-height:34px;padding:0 6px}
-.muse-quick-add[data-size="sm"] .muse-quick-add-more{min-width:28px}
-.muse-quick-add[data-size="sm"] svg{width:15px;height:15px}
-@media(max-width:620px){.muse-quick-add[data-size="sm"]>button{min-height:36px}}
+.muse-quick-add[data-size="sm"]>button{min-height:34px;padding:0 8px;gap:4px;font-size:.72rem}
+.muse-quick-add[data-size="sm"] svg{width:14px;height:14px}

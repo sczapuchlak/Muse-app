@@ -33,6 +33,15 @@
    while upper viewport anchors keep each theme's established opening composition. */
 .muse-atmosphere::after { content:""; position:absolute; inset:0; background:
  var(--atmosphere-pool-layers); filter:var(--atmosphere-filter); }
+/* A theme painted from a photograph (Nov 18: Midnight Ballerina, Hot Summer Nights) sets --atmosphere-photo. It is one
+   fixed, viewport-sized layer (not stretched down a long page, and no background-attachment:fixed, which iOS ignores);
+   stars and the vignette still sit above it. Themes without a photo leave it as none. */
+.muse-atmosphere-photo { position:fixed; top:0; inset-inline:var(--muse-rail-width) 0; height:100lvh; z-index:0; background:var(--atmosphere-photo,none); }
+@media(max-width:1023px){.muse-atmosphere-photo { inset-inline-start:0; }}
+:root[data-theme="astral"] { --atmosphere-photo:linear-gradient(180deg,rgba(18,10,34,.55) 0,rgba(18,10,34,.18) 22svh,rgba(18,10,34,0) 40svh),radial-gradient(ellipse 120% 70% at 50% 55%,transparent 55%,rgba(14,8,28,.35) 100%),url("/themes/midnight-ballerina.webp") center 38%/cover no-repeat; }
+:root[data-theme="hot-summer-nights"] { --atmosphere-photo:linear-gradient(90deg,rgba(14,16,70,.32) 0,rgba(14,16,70,0) 38%),url("/themes/hot-summer-nights.webp") center top/cover no-repeat; }
+:root[data-theme="nightbloom"] { --atmosphere-photo:url("/themes/pretty-toxic.webp") center/cover no-repeat; }
+:root[data-theme="all-american-girl"] { --atmosphere-photo:url("/themes/all-american-girl.webp") center/cover no-repeat; }
 .muse-atmosphere-studio { position:absolute; inset:0; z-index:1; background:var(--atmosphere-custom-layers); background-blend-mode:var(--atmosphere-custom-blend,normal); filter:var(--atmosphere-filter); }
 .muse-atmosphere-vignette { position:fixed; inset:0; inset-inline-start:var(--muse-rail-width); z-index:2; background:var(--atmosphere-vignette); }
 @media(max-width:1023px){.muse-atmosphere-vignette { inset-inline-start:0; }}

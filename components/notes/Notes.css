@@ -63,7 +63,10 @@
 
 .muse-notes-editor-loading { padding:var(--space-6); font-size:.8rem; color:var(--text-muted); }
 
-.muse-notes-page { padding-bottom:16px; }.muse-app-shell[data-module="notes"] .muse-app-main { padding-bottom:0; }
+.muse-notes-page { padding-bottom:16px; }
+/* Only the full-height Notes editor measures itself to the bottom navigation; the Sticky Board and Lists scroll like any
+   page, so they keep the shell's room beneath the bottom navigation (otherwise their last row hides behind it). */
+.muse-app-shell[data-module="notes"] .muse-app-main:has(.muse-notes-workspace:not([hidden])) { padding-bottom:0; }
 .muse-note-new { display:inline-flex; align-items:center; justify-content:center; gap:6px; min-height:44px; padding:4px 8px; color:var(--foreground); background:transparent; border:1px solid transparent; border-radius:var(--control-radius); font-size:.72rem; white-space:nowrap; }
 .muse-note-new:hover { background:var(--surface-hover); border-color:var(--glass-border); }
 @container muse-content (max-width:1000px) { .muse-note-new > span { display:none; }.muse-note-save { max-width:15ch; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; } }

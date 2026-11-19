@@ -102,3 +102,6 @@
 }
 @media(prefers-reduced-motion:reduce){.muse-book-result,.muse-book-result-preview,.muse-series-results li{animation:none}.muse-book-result-skeleton>span:first-child,.muse-book-result-skeleton i{animation:none}}
 .muse-book-search>.muse-search{min-height:50px}
+
+/* Phone (Nov 18): a result's two add choices sit beneath its title, lined up with the text, so titles keep their width. */
+@media(max-width:560px){.muse-book-result-row{grid-template-columns:minmax(0,1fr)}.muse-book-result-action{padding-left:70px}.muse-book-result-action .muse-quick-add{width:100%}.muse-book-result-action .muse-quick-add>button{flex:1}}
