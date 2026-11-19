@@ -156,7 +156,7 @@
   --icon-gradient-highlight: #eefcff;
   --icon-edge: #7ae6ff;
   --action-fill: #ff6fb5;
-  --background: #160f24;
+  --background: #120c1c;
   --foreground: #f2f7ff;
   --text-muted: #bac8e8;
   --accent-purple: #b79cff;
@@ -177,7 +177,7 @@
   --atmosphere-lavender: rgba(183,156,255,0.5);
   --atmosphere-blush: rgba(255,111,181,0.42);
   --atmosphere-blue-violet: rgba(79,125,255,0.3);
-  --glass-background: rgba(249,233,228,0.95);
+  --glass-background: rgba(204,214,240,0.95);
   --glass-border: rgba(183,156,255,0.34);
   --glass-edge: rgba(255,255,255,.85);
   --glass-aqua-edge: rgba(63,214,240,0.26);
@@ -186,7 +186,7 @@
   --surface-control: rgba(242,247,255,0.1);
   --water-control-border: rgba(63,214,240,0.56);
   --water-glow: rgba(183,156,255,0.4);
-  --floating-background: rgba(249,233,228,0.97);
+  --floating-background: rgba(204,214,240,0.97);
   --floating-shadow: 0 16px 44px rgba(0,0,0,.65);
   --mood-red: #ff9dbb;
   --mood-blue: #9fcaff;
@@ -228,13 +228,13 @@
   --star-1: var(--star-color-1);
   --star-2: var(--star-color-2);
   --star-3: var(--star-color-3);
-  --planning-container-background: rgba(249,233,228,0.95);
-  --planning-rail-background: rgba(249,233,228,0.95);
-  --planning-task-background: rgba(240,216,210,0.92);
+  --planning-container-background: rgba(204,214,240,0.95);
+  --planning-rail-background: rgba(204,214,240,0.95);
+  --planning-task-background: rgba(186,200,232,0.92);
   --planning-task-border: rgba(183,156,255,0.38);
   --planning-control-background: rgba(255,255,255,.58);
-  --frosted-glass-background: rgba(249,233,228,0.99);
-  --frosted-floating-background: rgba(249,233,228,0.99);
+  --frosted-glass-background: rgba(204,214,240,0.99);
+  --frosted-floating-background: rgba(204,214,240,0.99);
   --frosted-surface-subtle: rgba(242,247,255,0.13);
   --frosted-surface-hover: rgba(242,247,255,0.21);
   --frosted-surface-control: rgba(242,247,255,0.17);
@@ -247,9 +247,9 @@
   --constellation-color-1: #8ccde8;
   --constellation-color-2: #c9b8ff;
   --constellation-color-3: #ff9fcf;
-  --frosted-planning-container-background: rgba(249,233,228,0.99);
-  --frosted-planning-rail-background: rgba(249,233,228,0.99);
-  --frosted-planning-task-background: rgba(240,216,210,0.98);
+  --frosted-planning-container-background: rgba(204,214,240,0.99);
+  --frosted-planning-rail-background: rgba(204,214,240,0.99);
+  --frosted-planning-task-background: rgba(186,200,232,0.98);
   --hero-glow: rgba(255,111,181,0.3);
   --hero-glow-position: 76% 5%;
   --hero-glow-size: 180px 130px;
@@ -290,9 +290,9 @@
   --page-bloom-position-2: 98% 74svh;
   --page-bloom-position-3: 98% 16svh;
   --page-bloom-position-4: 8% 96svh;
-  --tone-sidebar: linear-gradient(180deg,rgba(40,19,44,.97) 0,rgba(58,28,60,.96) 52%,rgba(34,16,38,.97) 100%);
-  --frosted-tone-sidebar: linear-gradient(180deg,rgba(40,19,44,.99) 0,rgba(58,28,60,.99) 52%,rgba(34,16,38,.99) 100%);
-  --tone-sidebar-edge: rgba(240,168,182,0.28);
+  --tone-sidebar: linear-gradient(180deg,rgba(18,10,26,.98) 0,rgba(26,15,38,.97) 55%,rgba(16,9,24,.98) 100%);
+  --frosted-tone-sidebar: linear-gradient(180deg,rgba(18,10,26,.99) 0,rgba(26,15,38,.99) 55%,rgba(16,9,24,.99) 100%);
+  --tone-sidebar-edge: rgba(186,200,232,0.22);
   --tone-card-border: linear-gradient(135deg,#ff8fc0,#f6d9b4 24%,#b79cff 50%,#9fb6e8 72%,#6a4fc8);
   --atmosphere-bloom-layers: radial-gradient(ellipse 30% 26svh at 0% 0svh,rgba(60,90,230,.5) 0,transparent 76%),
  radial-gradient(ellipse 28% 26svh at 100% 0svh,rgba(110,80,230,.48) 0,transparent 76%),
@@ -1910,7 +1910,7 @@
   --icon-gradient-highlight: #fff1dc;
   --icon-edge: #ffb52e;
   --action-fill: #ff6a1f;
-  --background: #1a2690;
+  --background: #16124a;
   --foreground: #fff4ec;
   --text-muted: #c8d6e6;
   --accent-purple: #a98bff;
@@ -2044,9 +2044,9 @@
   --page-bloom-position-2: 98% 74svh;
   --page-bloom-position-3: 98% 16svh;
   --page-bloom-position-4: 8% 96svh;
-  --tone-sidebar: linear-gradient(180deg,rgba(64,24,58,.96) 0,rgba(34,30,120,.96) 26%,rgba(24,40,170,.95) 62%,rgba(16,28,110,.96) 100%);
-  --frosted-tone-sidebar: linear-gradient(180deg,rgba(64,24,58,.99) 0,rgba(34,30,120,.99) 26%,rgba(24,40,170,.98) 62%,rgba(16,28,110,.99) 100%);
-  --tone-sidebar-edge: rgba(255,150,90,0.34);
+  --tone-sidebar: linear-gradient(180deg,rgba(28,14,44,.97) 0,rgba(18,18,66,.97) 45%,rgba(10,12,46,.98) 100%);
+  --frosted-tone-sidebar: linear-gradient(180deg,rgba(28,14,44,.99) 0,rgba(18,18,66,.99) 45%,rgba(10,12,46,.99) 100%);
+  --tone-sidebar-edge: rgba(255,140,80,0.26);
   --tone-card-border: linear-gradient(120deg,#ff7a2e,#f2897e 22%,#d9a8f0 44%,#8b87f7 64%,#3f8cff 82%,#55d3ff);
   --atmosphere-bloom-layers: radial-gradient(ellipse 70% 3svh at 70% 23svh,rgba(255,214,110,.85) 0,rgba(255,150,40,.5) 45%,transparent 80%),
  radial-gradient(ellipse 115% 5svh at 45% 20svh,rgba(255,110,40,.82) 0,rgba(255,80,40,.45) 45%,transparent 82%),
