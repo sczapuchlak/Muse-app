@@ -27,17 +27,20 @@ export function WeekConstellation({ days, written, today }: { days: string[]; wr
 }
 
 /**
- * MonthSky: a month as a small calendar of stars (Monday-first columns). Days you wrote are lit stars joined in order,
- * today wears a ring, and the day the review opens (the last day) wears a dashed goal ring while it's still ahead.
+ * MonthSky: a month as a small calendar of stars, weekday letters on top (Monday first) like any calendar. Days you
+ * wrote are lit stars; written days side by side in the same week are joined, so a streak draws a constellation. Today
+ * wears a ring, and the day the review opens (the last day) a dashed goal ring while it's still ahead.
  */
 export function MonthSky({ start, end, written, today, goal }: { start: string; end: string; written: ReadonlySet<string>; today: string; goal: boolean }) {
   const first = new Date(`${start}T12:00:00Z`), n = Number(end.slice(8, 10)), offset = (first.getUTCDay() + 6) % 7;
   const days = Array.from({ length: n }, (_, i) => `${start.slice(0, 8)}${String(i + 1).padStart(2, "0")}`);
-  const at = (i: number) => { const k = offset + i; return { x: 14 + (k % 7) * 30, y: 12 + Math.floor(k / 7) * 20 }; };
+  const at = (i: number) => { const k = offset + i; return { x: 14 + (k % 7) * 30, y: 30 + Math.floor(k / 7) * 20 }; };
   const rows = Math.ceil((offset + n) / 7), lit = days.map((d, i) => ({ d, i, on: written.has(d) })).filter((x) => x.on);
-  return <svg className="mj-constellation mj-sky" viewBox={`0 0 212 ${rows * 20 + 14}`} role="img" aria-label={`${lit.length} of ${n} days written`}>
-    {["M", "T", "W", "T", "F", "S", "S"].map((w, k) => <text key={k} x={14 + k * 30} y={rows * 20 + 12} textAnchor="middle">{w}</text>)}
-    {lit.slice(1).map((x, k) => { const a = at(lit[k].i), b = at(x.i); return <line key={x.d} x1={a.x} y1={a.y} x2={b.x} y2={b.y} className="mj-constellation-line" data-lit /> })}
+  return <svg className="mj-constellation mj-sky" viewBox={`0 0 212 ${rows * 20 + 26}`} role="img" aria-label={`${lit.length} of ${n} days written`}>
+    {["M", "T", "W", "T", "F", "S", "S"].map((w, k) => <text key={k} x={14 + k * 30} y={9} textAnchor="middle">{w}</text>)}
+    <line x1="2" y1="16" x2="210" y2="16" className="mj-sky-rule" />
+    {lit.slice(1).map((x, k) => { const prev = lit[k]; if (x.i !== prev.i + 1) return null; const a = at(prev.i), b = at(x.i); if (a.y !== b.y) return null;
+      return <line key={x.d} x1={a.x} y1={a.y} x2={b.x} y2={b.y} className="mj-constellation-line" data-lit />; })}
     {days.map((d, i) => { const { x, y } = at(i), on = written.has(d), h = on ? 15 : 8;
       return <g key={d} className="mj-constellation-star" data-lit={on || undefined} style={{ "--i": i % 12 } as React.CSSProperties}>
         {d === today && <circle cx={x} cy={y} r={8} className="mj-constellation-today" />}
@@ -71,13 +74,17 @@ export function StarRule({ className = "" }: { className?: string }) {
 }
 
 /** A compact empty state: a tiny constellation, a short line, and an optional action. Never a big illustration. */
-export function QuietEmpty({ title, line, children }: { title: string; line: string; children?: React.ReactNode }) {
+export function QuietEmpty({ title, line, kicker, children }: { title: string; line: string; kicker?: string; children?: React.ReactNode }) {
+  // A small constellation in the theme's star colours (the same sparkle as the week), centered with one line of words.
+  const pts = [{ x: 10, y: 30 }, { x: 34, y: 14 }, { x: 60, y: 22 }, { x: 86, y: 8 }, { x: 110, y: 26 }], size = [9, 15, 10, 18, 8];
   return <div className="mj-quiet">
-    <svg className="mj-quiet-stars" viewBox="0 0 64 28" aria-hidden="true">
-      <line x1="8" y1="20" x2="30" y2="8" /><line x1="30" y1="8" x2="56" y2="16" />
-      <path d={MUSE_STAR_PATH} transform="translate(5 14) scale(.3)" /><path d={MUSE_STAR_PATH} transform="translate(26 1) scale(.38)" /><path d={MUSE_STAR_PATH} transform="translate(53 11) scale(.24)" />
+    <svg className="mj-constellation mj-quiet-sky" viewBox="0 0 120 40" aria-hidden="true">
+      {pts.slice(1).map((p, i) => <line key={i} x1={pts[i].x} y1={pts[i].y} x2={p.x} y2={p.y} className="mj-constellation-line" data-lit={i % 2 === 0 || undefined} />)}
+      {pts.map((p, i) => <g key={i} className="mj-constellation-star" data-lit style={{ "--i": i } as React.CSSProperties}><path d={MUSE_STAR_PATH} transform={`translate(${p.x - size[i] * 0.3} ${p.y - size[i] / 2}) scale(${size[i] / 40})`} /></g>)}
     </svg>
-    <div><p className="mj-quiet-title type-title">{title}</p><p className="mj-quiet-line">{line}</p></div>
+    {kicker && <p className="mj-quiet-kicker type-meta">{kicker}</p>}
+    <p className="mj-quiet-title type-quote">{title}</p>
+    <p className="mj-quiet-line">{line}</p>
     {children && <div className="mj-quiet-action">{children}</div>}
   </div>;
 }

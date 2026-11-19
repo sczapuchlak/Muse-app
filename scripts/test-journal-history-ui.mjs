@@ -180,7 +180,11 @@ try{
  const line=await evaluate(()=>document.querySelector('.mj-otd-line')?.textContent??'');
  check(line.includes(String(y-1))&&line.includes('Rain on the Lake')&&line.includes('+1'),'On This Day shows one quiet line: newest year, its title, and how many more');
  check(!(await has('.mj-otd-card')),'collapsed until opened');
+ const before=await evaluate(()=>[document.querySelector('.mj-workspace textarea').getBoundingClientRect().top,document.querySelector('.mj-blank-week')?.getBoundingClientRect().top]);
  await click('.mj-otd-line');await until(()=>!!document.querySelector('.mj-otd-card'),'card opens');
+ await wait(300);const after=await evaluate(()=>[document.querySelector('.mj-workspace textarea').getBoundingClientRect().top,document.querySelector('.mj-blank-week')?.getBoundingClientRect().top]);
+ check(JSON.stringify(before)===JSON.stringify(after),'opening the memory overlays the page: the composer and constellation don’t move');
+ check(await evaluate(()=>!!document.querySelector('.mj-otd-card')?.closest('.glass-popover, [role=dialog]')&&!document.querySelector('.mj-blank .mj-otd-card')),'the memory opens in a popover over the page, not inside it');
  await until(()=>document.querySelector('.mj-otd-preview')?.textContent.includes('lake'),'preview words');
  check(await has('.mj-otd-card','1 year ago')&&await has('.mj-otd-preview','sat by the lake'),'opened: the year, how long ago, and their own words when there is no summary');
  await evaluate(()=>document.querySelector('[aria-label="Next memory"]').click());await until(()=>document.querySelector('.mj-otd-card')?.textContent.includes('Bookshop'),'second memory');
@@ -191,13 +195,19 @@ try{
  check(await has('.mj-active-filters','On this day'),'History shows exactly today’s memories, as a removable filter');
  await viewport(390,844,true);await go('/journal','!!document.querySelector(".mj-otd-line")','phone blank');await wait(600);
  await click('.mj-otd-line');await until(()=>!!document.querySelector('.mj-otd-card'),'phone card');
- check(!(await overflow()),'phone: the memory card fits');await shoot('12-on-this-day-phone');await viewport(1280);
+ check(!(await overflow()),'phone: the memory card fits');await shoot('12-on-this-day-phone');
+ await send('Input.dispatchKeyEvent',{type:'keyDown',key:'Escape',code:'Escape',windowsVirtualKeyCode:27});await until(()=>!document.querySelector('.mj-otd-card'),'escape closes');check(true,'Escape closes the memory');await viewport(1280);
+ await go('/journal?view=history','!!document.querySelector(".mj-history-view")','history drafts');await click('.mj-history-view .muse-segmented button','Drafts');
+ await until(()=>!!document.querySelector('.mj-quiet'),'drafts empty');
+ check(await has('.mj-quiet','No drafts waiting.')&&await has('.mj-quiet a','Start writing')&&await evaluate(()=>!!document.querySelector('.mj-quiet .mj-quiet-sky')),'an empty Drafts screen has its little sky, a line and a way to start writing');
+ await wait(1200);await shoot('17-drafts-empty');
  // Life Reviews: Week | Month | Year in the same header spot as History.
  await go('/journal?view=insights','!!document.querySelector(".mj-insights")','insights');
  check((await evaluate(()=>[...document.querySelectorAll('.mj-insights .mj-history-controls .muse-segmented button')].map(b=>b.textContent).join('|')))==='Week|Month|Year','Week | Month | Year where History has its switcher');
  await click('.mj-insights .mj-history-controls button','Month');await until(()=>document.querySelector('#mj-reflection-title')?.textContent==='Monthly review','month view');
  if(await has('.mj-reflection','No entries')===false)check(await has('.mj-review-card[data-kind="month"][data-state="locked"]')&&!!(await evaluate(()=>!!document.querySelector('.mj-review-card .mj-sky')))&&!(await has('.mj-reflection button','Write the month')),'mid-month: the month card is locked until its last day, with its calendar of stars and no button');
   await evaluate(()=>document.querySelector('.mj-review-card')?.scrollIntoView({block:'center'}));await wait(1400);await shoot('15-month-locked');
+  check(await evaluate(()=>{const t=document.querySelector('.mj-sky text');const st=document.querySelector('.mj-sky .mj-constellation-star');return t&&st&&t.getBoundingClientRect().top<st.getBoundingClientRect().top;}),'the month calendar has its weekday letters on top');
   check(await evaluate(()=>{const p=document.querySelector('.mj-sky .mj-constellation-star[data-lit] path');return !!p&&getComputedStyle(p).fill!=='rgb(0, 0, 0)';}),'a written day in the month sky takes a theme colour, never black');
  must(await a.client.from('journal_reports').insert({user_id:a.id,period:'month',week_start:'2025-03-01',source_ids:[],source_signature:'x',model:'mock',data:{title:'🌱 A Month of Small Beginnings',review:para(2,6),chapters:[{heading:'The opening night',body:'On March 2 you went.'}],themes:[{heading:'Ease',body:'b'}],people:[{heading:'A new friend',body:'b'}],shifts:[{heading:'Lighter',body:'b'}],insights:[{heading:'Pattern',body:'b'}],wins:[{heading:'You went',body:'b'}],closing:'Closing.',covered:{start:'2025-03-01',end:'2025-03-31',entries:1,generatedAt:new Date().toISOString()}}}));
  const back=(Number(todayLocal.slice(0,4))-2025)*12+Number(todayLocal.slice(5,7))-3;
