@@ -1,24 +1,35 @@
 # Journal history import and historical recall
 
-**Status (Nov 19, 2026):** the format-independent importer and entity-aware recall are implemented and tested locally on branch `feat/journal-history-import` (migration `20270109000100`). **The Rosebud parser is not built:** no Rosebud export has been provided, and its Markdown structure must not be guessed. Muse's own JSON export is fully supported, so the whole pipeline can be exercised now.
+**Status (Nov 19, 2026):** implemented on branch `feat/journal-history-import` (PR #246), migrations `20270109000100` + `20270110000100`. **The Rosebud reader is built from her real export** (`lib/journal/import/rosebud.ts`). Muse's own JSON export is also supported.
 
-## Phase 1: mapping report
+## Phase 1: mapping report (from the real export, Nov 18, 2026)
 
-Nothing below about Rosebud's format is assumed. Each row says what Muse will do *once the export shows the field exists*.
+One Markdown file (22 MB, ~193,000 lines): `# 🌹 Rosebud data export` (a Generated timestamp) then `# 🌹 Rosebud entries`, **613 entries from Dec 12, 2024 to Nov 16, 2026** (37 in 2024, 362 in 2025, 214 in 2026), each separated by `---`:
 
-| Rosebud field (to confirm in the real export) | Muse destination | Expected handling |
+```
+## <emoji> <title>            ("## Untitled" for 30 entries)
+### Monday, November 17th, 2025
+#### Tags                     **Emotions:** … / **People:** … / **Topics:** …   (602 entries)
+#### Reflection               Rosebud's summary (582 entries, at most 3,360 characters)
+#### Entry                    **Rosebud:** … / **<account name>:** … alternating (8,398 messages: 3,900 yours, 4,498 Rosebud's)
+```
+
+Every entry starts with Rosebud and strictly alternates. Replies contain their own Markdown (headings, rules, lists), so an entry starts only at a `## ` line followed by a full weekday date. After the entries: Drafts (1), Objectives, Goals, Preferences, Weekly reports and Ask Rosebud reports. These aren't entries, aren't imported, and are named in the preview.
+
+| Rosebud field | Muse destination | Handling |
 |---|---|---|
-| Entry date and time, time zone | `journal_conversations.local_date`, `started_at`, `time_zone`; message `created_at` | Direct if the export has ISO times; otherwise transform (parse its date format, take the zone from the export or ask once during preview). Never the import date. |
-| Your messages and AI messages, in order | `journal_messages` (role `user`/`assistant`, original order, words untouched) | Direct once speaker markers are identified. Several AI replies in a row are kept (each answers the message before it). |
-| Entry title | `title` with `title_source='import'` | Direct. Muse analysis never overwrites it. |
-| Rosebud summary or analysis | `summary` (`summary_source='import'`) + the full original in `journal_import_sources.original` | Kept as written and labelled as Rosebud's. Muse's own analysis (optional) is stored separately in `journal_analyses`. |
-| Tags, people, topics | Existing tag records (`journal_tags`), linked as `source='ai'` | Reuses an existing tag by exact name or confirmed alias (so Sun/Son merges apply); a tag removed "never suggest again" is skipped. |
-| Journal names | Mapped in the preview to an existing journal or a new one | Mapping is explicit; nothing moves existing entries. |
-| Companion/persona name | `companion_name` snapshot | Shown on the entry; no Muse companion is created. |
-| Images/attachments | Reference kept in `original` only | Not imported in V1 (no files to validate yet). Old images are never sent to AI. |
-| Rosebud entry id | Duplicate key `id:<id>` | If absent, a SHA-256 fingerprint of the day + every message (whitespace-insensitive) is the key. |
+| Date (`### Monday, November 17th, 2025`) | `local_date` | Direct. |
+| Time of day, time zone | none in the export | **Unavailable.** Entries are placed at midday in your Muse time zone (same-day entries keep their order), and they show **no time** rather than an invented one (`original.time_unknown`). |
+| Title | `title` (`title_source='import'`) | Direct; "Untitled" becomes no title. The emoji is kept. |
+| Conversation | `journal_messages` | Direct: speaker lines become user/assistant messages, word for word. Only the closing `---` and edge whitespace are removed. Checked on the full file: all 613 entries reconstruct exactly. |
+| Reflection | `summary` (`summary_source='import'`) + `original.analysis.reflection` | Direct, labelled as Rosebud's. |
+| Emotions / People / Topics | mood / person / topic tags (`source='ai'`) | Direct, through existing tags and confirmed aliases. 551 distinct tags. |
+| Companion | `companion_name = 'Rosebud'` | Direct. |
+| Journals | — | Not in the export. Entries go to a journal you choose in the preview (default: a new "Rosebud" journal that shares memory). |
+| Source id | — | Not in the export. The duplicate key is a fingerprint of the day plus every message. |
+| Images | — | None in this export. |
 
-**Still to inspect in the real export** (the brief's Phase 1 list): single file vs. many vs. ZIP; date/timestamp format; how speakers are marked; whether full conversations or only your words are exported; which analysis/summary/insight/title/tag fields exist; journal and persona names; attachment references; inconsistent or missing fields. The parser is written against that sample, with a fixture test built from a redacted copy, then mapped into `ImportEntry` (`lib/journal/import/model.ts`).
+**Measured locally with the full file** (throwaway account, then deleted): 613 imported in about 10 seconds, 0 failed; importing again found 613 already there in about 1 second. Recall for the most-discussed person took about 0.6 seconds: 4 entries (2 by tag), labelled, within bounds. That run exposed slow search on a large archive (3.5 seconds, because every matching message got a highlighted snippet), fixed by `20270110000100` (0.37 seconds).
 
 ## What an import does
 
@@ -65,7 +76,7 @@ Journal settings → Privacy & usage → Import journal history → **Optional: 
 ## Staging and Production
 
 1. Staging: apply `20270109000100` (`npm run db:push:staging`), run `scripts/verify-hosted-journal-import.sql`, then deploy to `muse-staging`.
-2. When the Rosebud export arrives: inspect it, finish the mapping report above, build the parser with a redacted fixture test, then preview it on Staging. Then a 5–10 entry test import (a normal conversation, several AI replies, analysis if exported, a person, tags, an earlier year). Then History, search, highlights, Continue from here and the recall check on a Jamie entry. Then the full archive. No bulk enrichment without your go.
+2. Preview the Rosebud file on Staging, then **Import 10 first** (spread across the dates), then check the test import (a normal conversation, several AI replies, analysis if exported, a person, tags, an earlier year). Then History, search, highlights, Continue from here and the recall check on a Jamie entry. Then the full archive. No bulk enrichment without your go.
 3. Production, only with your approval:
    - Confirm a backup (Supabase daily backups, and/or the Journal JSON export just before).
    - Apply the migration (dry run first) and run the verification script.

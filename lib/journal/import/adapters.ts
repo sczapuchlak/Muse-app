@@ -3,11 +3,11 @@
  * exports; anything it can't provide is listed in `unavailable` rather than guessed.
  *
  *  - Muse Journal export (JSON, from Journal settings → Export): fully mapped, because Muse defines that format.
- *  - Rosebud (Markdown or ZIP): recognised, but not parsed yet. Its export format must be mapped from a real export
- *    before Muse reads it (docs/JOURNAL_IMPORT.md), so no Rosebud structure is assumed here.
+ *  - Rosebud (Markdown): mapped from a real export (./rosebud). A ZIP isn't read; the Markdown file inside is.
  */
 import type { Mode, TagKind } from "../model";
 import { localDateIn, type ImportEntry, type ImportProblem, type ParsedImport } from "./model";
+import { fromRosebud, isRosebudExport } from "./rosebud";
 
 export type ReadFile = { name: string; size: number; text: () => Promise<string> };
 export type AdapterResult = { ok: true; parsed: ParsedImport } | { ok: false; reason: string };
@@ -15,11 +15,18 @@ export type AdapterResult = { ok: true; parsed: ParsedImport } | { ok: false; re
 export const ACCEPT = ".json,.md,.markdown,.txt,.zip";
 const MAX_BYTES = 80 * 1024 * 1024;
 
-export async function readImport(files: readonly ReadFile[]): Promise<AdapterResult> {
+export async function readImport(files: readonly ReadFile[], opts: { timeZone?: string } = {}): Promise<AdapterResult> {
   if (!files.length) return { ok: false, reason: "Choose a file to import." };
   if (files.reduce((n, f) => n + f.size, 0) > MAX_BYTES) return { ok: false, reason: "That’s more than 80 MB. Choose fewer files at a time." };
   const kinds = new Set(files.map((f) => f.name.toLowerCase().split(".").pop() ?? ""));
-  if (kinds.has("md") || kinds.has("markdown") || kinds.has("zip") || kinds.has("txt")) return rosebudPending(files);
+  if (kinds.has("zip")) return { ok: false, reason: "Unzip it first, then choose the Markdown (.md) file inside." };
+  if (kinds.has("md") || kinds.has("markdown") || kinds.has("txt")) {
+    if (files.length > 1) return { ok: false, reason: "Choose the one Rosebud Markdown file." };
+    const text = await files[0].text();
+    if (!isRosebudExport(text)) return rosebudPending(files);
+    const parsed = fromRosebud(text, files[0].name, opts.timeZone || "UTC");
+    return parsed.entries.length || parsed.problems.length ? { ok: true, parsed } : { ok: false, reason: "No Rosebud entries were found in that file. Nothing was imported." };
+  }
   if (files.length === 1 && kinds.has("json")) {
     let data: unknown;
     try { data = JSON.parse(await files[0].text()); } catch { return { ok: false, reason: "That JSON file couldn’t be read." }; }
@@ -29,9 +36,9 @@ export async function readImport(files: readonly ReadFile[]): Promise<AdapterRes
   return { ok: false, reason: "Choose a Rosebud export (Markdown or ZIP) or a Muse Journal export (JSON)." };
 }
 
-/** Rosebud's export isn't mapped yet: say so plainly instead of guessing at its structure. */
+/** A Markdown file that isn't a Rosebud export: say so plainly instead of guessing at its structure. */
 function rosebudPending(files: readonly ReadFile[]): AdapterResult {
-  return { ok: false, reason: `Muse can’t read Rosebud’s export yet. Its format is mapped from a real export before anything is imported, so nothing is guessed. ${files.length === 1 ? "This file" : `These ${files.length} files`} weren’t read or uploaded.` };
+  return { ok: false, reason: `That doesn’t look like a Rosebud export (it should start with “🌹 Rosebud data export”). ${files.length === 1 ? "This file wasn’t" : `These ${files.length} files weren’t`} imported or uploaded.` };
 }
 
 type MuseExport = {

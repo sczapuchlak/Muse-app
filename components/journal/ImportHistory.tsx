@@ -14,6 +14,8 @@ import { formatUsd } from "@/lib/journal/pricing";
 
 type Prepared = { parsed: ParsedImport; ready: ImportEntry[]; duplicates: number; known: number; problems: { index: number; date?: string; reason: string }[] };
 const NEW = "new:";
+/** `n` entries spread evenly across the list (oldest to newest), for a first look. */
+const spread = <T,>(list: readonly T[], n: number) => (list.length <= n ? [...list] : Array.from({ length: n }, (_, i) => list[Math.round((i * (list.length - 1)) / (n - 1))]));
 
 /**
  * Journal settings → Import journal history. Files are read in the browser (nothing is uploaded whole); the preview
@@ -27,7 +29,7 @@ export function ImportHistory({ onBack }: { onBack: () => void }) {
   const [prep, setPrep] = useState<Prepared | null>(null);
   const [mapping, setMapping] = useState<Record<string, string>>({});
   const [progress, setProgress] = useState<{ done: number; total: number } | null>(null);
-  const [report, setReport] = useState<ImportReport | null>(null);
+  const [report, setReport] = useState<ImportReport | null>(null), [sample, setSample] = useState(false);
   const [batches, setBatches] = useState<Batch[]>([]);
   const stop = useRef<AbortController | null>(null);
   const loadBatches = useCallback(async () => { if (j.userId) setBatches(await listBatches(j.client, j.userId)); }, [j.client, j.userId]);
@@ -36,11 +38,11 @@ export function ImportHistory({ onBack }: { onBack: () => void }) {
   const fallback = journals.find((x) => x.id === j.state.prefs.defaultJournalId) ?? journals[0];
 
   async function choose(files: FileList | null) {
-    setError(""); setPrep(null); setReport(null);
+    setError(""); setPrep(null); setReport(null); setSample(false);
     if (!files?.length) return;
     setBusy(true);
     try {
-      const r = await readImport([...files]);
+      const r = await readImport([...files], { timeZone: j.timeZone });
       if (!r.ok) { setError(r.reason); return; }
       const problems = [...r.parsed.problems], ready: ImportEntry[] = [];
       const known = await knownImports(j.client, j.userId, r.parsed.source);
@@ -62,9 +64,10 @@ export function ImportHistory({ onBack }: { onBack: () => void }) {
     finally { setBusy(false); }
   }
 
-  async function start() {
+  /** Imports everything ready, or a few spread across the dates first (the rest can follow; they're never doubled). */
+  async function start(first?: number) {
     if (!prep?.ready.length) return;
-    setBusy(true); setError("");
+    setBusy(true); setError(""); setReport(null);
     try {
       // New journals first, exactly as mapped; nothing else about existing journals changes.
       const ids: Record<string, string> = {};
@@ -72,13 +75,16 @@ export function ImportHistory({ onBack }: { onBack: () => void }) {
         if (target.startsWith(NEW)) { const made = await j.saveJournal({ ...blankJournal(j.state.journals.length), name: target.slice(NEW.length).slice(0, 80) || "Imported journal" }); if (!made) throw Error("The new journal couldn’t be made."); ids[name] = made.id; }
         else ids[name] = target || fallback?.id || "";
       }
+      // A journal made for the first run is the one the rest go into.
+      setMapping(ids);
+      const list = first ? spread(prep.ready, first) : prep.ready;
       if (Object.values(ids).some((v) => !v)) throw Error("Choose a journal for every group of entries.");
       const batch = await startBatch(j.client, j.userId, prep.parsed.source, prep.parsed.label, prep.parsed.entries.length);
       stop.current = new AbortController();
-      setProgress({ done: 0, total: prep.ready.length });
-      const r = await runImport(prep.ready, importer(j.client, batch.id, prep.parsed.source, (e) => ids[e.journalName]), { signal: stop.current.signal, onProgress: (done, total) => setProgress({ done, total }) });
+      setProgress({ done: 0, total: list.length });
+      const r = await runImport(list, importer(j.client, batch.id, prep.parsed.source, (e) => ids[e.journalName]), { signal: stop.current.signal, onProgress: (done, total) => setProgress({ done, total }) });
       await finishBatch(j.client, j.userId, batch.id, r, { skipped_before: prep.duplicates, already_in_muse: prep.known, problems: prep.problems.slice(0, 300), unavailable: prep.parsed.unavailable });
-      setReport(r); setPrep(null);
+      setReport(r); setSample(Boolean(first)); if (!first) setPrep(null);
       await Promise.all([j.refresh(), loadBatches()]);
     } catch (e) { setError(e instanceof Error ? e.message : "The import stopped. Anything already imported is kept; importing again skips it."); }
     finally { setBusy(false); setProgress(null); stop.current = null; }
@@ -91,11 +97,11 @@ export function ImportHistory({ onBack }: { onBack: () => void }) {
     {!prep && !progress && !report && <>
       <p className="mj-note">Bring earlier journal conversations into Muse with their original dates, words and order. They become ordinary entries: in History and search, with tags, highlights and Continue from here, and your companion can recall them when they’re relevant. Nothing is rewritten, and no AI runs during an import.</p>
       <label className="muse-button button-primary mj-file-pick">{busy ? "Reading…" : "Choose files…"}<input type="file" accept={ACCEPT} multiple disabled={busy} onChange={(e) => { void choose(e.target.files); e.target.value = ""; }} /></label>
-      <p className="mj-note">A Rosebud export (Markdown or ZIP) or a Muse Journal export (JSON). Files are read on this device first; you’ll see what was found before anything is saved.</p>
+      <p className="mj-note">A Rosebud export (the .md file) or a Muse Journal export (JSON). Files are read on this device first; you’ll see what was found before anything is saved.</p>
     </>}
     {error && <p className="mj-error" role="alert">{error}</p>}
 
-    {prep && preview && !progress && <section className="mj-import-preview" aria-label="What was found">
+    {prep && preview && !progress && !report && <section className="mj-import-preview" aria-label="What was found">
       <p className="mj-note">From <b>{sourceLabel[prep.parsed.source]}</b> · {prep.parsed.label}</p>
       <dl className="mj-usage">
         <div><dt>Ready to import</dt><dd className="type-numeric">{prep.ready.length}</dd></div>
@@ -114,9 +120,11 @@ export function ImportHistory({ onBack }: { onBack: () => void }) {
           return <li key={name}><span>{name || "Entries without a journal name"} <span className="type-meta">({count})</span></span>
             <MuseChoiceMenu label="Journal" valueLabel={target.startsWith(NEW) ? `New journal “${target.slice(NEW.length)}”` : journals.find((x) => x.id === target)?.name ?? "Choose"} selectedIds={[target]}
               options={[...journals.map((x) => ({ id: x.id, label: x.name })), ...(name ? [{ id: `${NEW}${name}`, label: `New journal “${name}”` }] : [])]} onSelect={(id) => setMapping({ ...mapping, [name]: id })} /></li>; })}</ul></>}
+      {prep.parsed.notImported?.length ? <p className="mj-note">Also in this file, but not journal entries, so not imported: {prep.parsed.notImported.join(", ")}.</p> : null}
       {prep.problems.length > 0 && <details className="mj-mem-how"><summary>{prep.problems.length} {prep.problems.length === 1 ? "entry" : "entries"} can’t be imported</summary>
         <ul>{prep.problems.slice(0, 60).map((p, i) => <li key={i}>Entry {p.index + 1}{p.date && /^\d{4}-\d{2}-\d{2}$/.test(p.date) ? ` · ${formatShort(p.date)}` : ""}: {p.reason}</li>)}</ul></details>}
       <div className="mj-form-actions"><button type="button" className="muse-button" onClick={() => setPrep(null)}>Cancel</button>
+        {prep.ready.length > 20 && <button type="button" className="muse-button" disabled={busy} onClick={() => void start(10)}>Import 10 first</button>}
         <button type="button" className="muse-button button-primary" disabled={busy || !prep.ready.length} onClick={() => void start()}>{prep.ready.length ? `Import ${prep.ready.length} ${prep.ready.length === 1 ? "entry" : "entries"}` : "Nothing new to import"}</button></div>
     </section>}
 
@@ -129,7 +137,8 @@ export function ImportHistory({ onBack }: { onBack: () => void }) {
     {report && <section aria-label="Import report" className="mj-import-preview">
       <p className="mj-note" role="status"><b>{report.stopped ? "Import stopped." : "Import finished."}</b> {report.imported} imported{report.duplicates ? ` · ${report.duplicates} already there` : ""}{report.deleted ? ` · ${report.deleted} you’d deleted (not brought back)` : ""}{report.failed ? ` · ${report.failed} couldn’t be saved` : ""}.</p>
       {report.failed > 0 && <details className="mj-mem-how" open><summary>What couldn’t be saved</summary><ul>{report.outcomes.filter((o) => o.status === "failed").slice(0, 60).map((o) => <li key={o.index}>Entry {o.index + 1} · {formatShort(o.date)}: {o.reason}</li>)}</ul></details>}
-      <div className="mj-form-actions"><button type="button" className="muse-button" onClick={() => setReport(null)}>Import more</button><Link className="muse-button button-primary" href="/journal?view=history">Open History</Link></div>
+      {sample && prep && <p className="mj-note">These {report.imported} are spread across your dates. Look them over in History; when they look right, import the rest. The ones already in won’t be added twice.</p>}
+      <div className="mj-form-actions">{sample && prep ? <button type="button" className="muse-button button-primary" disabled={busy} onClick={() => void start()}>Import the other {Math.max(0, prep.ready.length - report.imported)}</button> : <button type="button" className="muse-button" onClick={() => { setReport(null); setPrep(null); }}>Import more</button>}<Link className="muse-button" href="/journal?view=history">Open History</Link></div>
     </section>}
 
     {!prep && !progress && <EnrichHistory />}

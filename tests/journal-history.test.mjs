@@ -5,7 +5,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { load } from './helpers.mjs';
 
-const C = load('lib/journal/context'), IM = load('lib/journal/import/model'), A = load('lib/journal/import/adapters'), R = load('lib/journal/import/run');
+const R2 = load('lib/journal/import/rosebud'), C = load('lib/journal/context'), IM = load('lib/journal/import/model'), A = load('lib/journal/import/adapters'), R = load('lib/journal/import/run');
 const tag = (id, kind, name, aliases = [], suppressed = false) => ({ id, kind, name, aliases, suppressed });
 const entry = (o) => ({ id: o.id, journalId: o.journalId ?? 'j1', localDate: o.localDate, title: o.title ?? '', summary: o.summary ?? '', summarySource: o.summarySource ?? (o.summary ? 'ai' : null), status: 'completed', excludeFromMemory: o.excludeFromMemory ?? false, userWords: 20, mode: 'open', excerpt: o.excerpt, snippet: o.snippet, importedFrom: o.importedFrom ?? null, why: o.why });
 const permission = C.memoryPermission({ memoryEnabled: true }, { id: 'j1', memoryScope: 'shared' }, [{ id: 'j1', memoryScope: 'shared' }]);
@@ -107,7 +107,7 @@ test('preview: counts, date range, field coverage, journals; enrichment estimate
 });
 
 const file = (name, text) => ({ name, size: text.length, text: async () => text });
-test('adapters: a Muse export maps fully; Rosebud files are recognised but never guessed at', async () => {
+test('adapters: a Muse export maps fully; other Markdown and ZIPs are refused plainly', async () => {
   const exp = { format: 'Muse Journal', version: 1, journals: [{ id: 'j', name: 'Everyday' }],
     conversations: [
       { id: 'c1', journal_id: 'j', companion_name: 'Thought Partner', mode: 'evening', status: 'completed', origin: 'journal', local_date: '2025-02-01', time_zone: 'Europe/Paris', started_at: '2025-02-01T19:00:00Z', completed_at: '2025-02-01T20:00:00Z', title: 'Paris', summary: 'S' },
@@ -122,9 +122,9 @@ test('adapters: a Muse export maps fully; Rosebud files are recognised but never
   assert.equal(e[0].mode, 'evening'); assert.equal(e[0].sourceKey, 'c1'); assert.equal(e[0].timeZone, 'Europe/Paris');
   assert.deepEqual(e[0].tags, [{ kind: 'place', name: 'Paris', source: 'ai' }, { kind: 'custom', name: 'travel', source: 'user' }]);
   assert.deepEqual(e[0].original.analysis, { title: 'x' }, 'its analysis is kept as it was');
-  const md = await A.readImport([file('rosebud-export.md', '# whatever')]);
-  assert.equal(md.ok, false); assert.match(md.reason, /can’t read Rosebud’s export yet/); assert.match(md.reason, /weren’t read or uploaded/);
-  assert.equal((await A.readImport([file('x.zip', 'PK')])).ok, false);
+  const md = await A.readImport([file('notes.md', '# whatever')]);
+  assert.equal(md.ok, false); assert.match(md.reason, /doesn’t look like a Rosebud export/);
+  assert.match((await A.readImport([file('x.zip', 'PK')])).reason, /Unzip it first/);
   assert.match((await A.readImport([file('x.json', '{')])).reason, /couldn’t be read/);
   assert.match((await A.readImport([file('x.json', '{"a":1}')])).reason, /isn’t a Muse Journal export/);
 });
@@ -141,4 +141,36 @@ test('import runner: one entry per call, failures isolated, safe to re-run, and 
   const stop = new AbortController(); let calls = 0;
   const partial = await R.runImport(entries, async () => { calls++; stop.abort(); return { status: 'imported' }; }, { concurrency: 1, signal: stop.signal });
   assert.equal(calls, 1); assert.equal(partial.stopped, true);
+});
+
+// An invented export in Rosebud's real layout (no real journal text): same-day entries, an untitled one, Markdown
+// headings and rules inside a reply, an entry without tags or reflection, and the trailing non-entry sections.
+const ROSEBUD = ['# 🌹 Rosebud data export', '', 'Generated: 2026-11-19T07:44:32.539Z', '', '---', '', '# 🌹 Rosebud entries', '', '### March 1, 2025 - March 2, 2025', '', '---', '',
+  '## 🔥 Gallery night', '### Sunday, March 2nd, 2025', '', '#### Tags', '**Emotions:** Excited, Nervous', '**People:** Jamie', '**Topics:** Dating, Art', '', '#### Reflection', 'You met Jamie.', '', 'It felt easy.', '', '#### Entry', '',
+  '**Rosebud:** How was tonight?', '', '**Wren Example:** I met Jamie.', 'Second line.', '', '**Rosebud:** Lovely.', '', '## TL;DR', '### Monday', '---', 'Keep going.', '', '**Wren Example:** Thanks', '', '---', '',
+  '## Untitled', '### Sunday, March 2nd, 2025', '', '#### Entry', '', '**Rosebud:** Hi', '', '**Wren Example:** Morning pages.', '', '---', '',
+  '## 🌙 Older', '### Saturday, March 1st, 2025', '', '#### Entry', '', '**Rosebud:** Hey', '', '**Wren Example:** Quiet day.', '', '---', '',
+  '# Drafts', '', '## A draft', '', '# Weekly reports', '', '### Week of', 'text'].join('\n');
+test('Rosebud: entries, speakers, tags, reflection and dates read exactly; replies keep their own Markdown', async () => {
+  const r = await A.readImport([file('rosebud-2026.md', ROSEBUD)], { timeZone: 'America/Chicago' });
+  assert.ok(r.ok); const p = r.parsed;
+  assert.equal(p.source, 'rosebud'); assert.equal(p.entries.length, 3); assert.equal(p.problems.length, 0);
+  assert.deepEqual(p.notImported, ['Drafts', 'Weekly reports']);
+  const [a, b, c] = p.entries.map(IM.normalizeEntry);
+  assert.equal(a.title, '🔥 Gallery night'); assert.equal(b.title, '', '“Untitled” means no title');
+  assert.deepEqual([a.localDate, c.localDate], ['2025-03-02', '2025-03-01']);
+  assert.deepEqual(a.messages.map((m) => m.role), ['assistant', 'user', 'assistant', 'user']);
+  assert.equal(a.messages[1].body, 'I met Jamie.\nSecond line.');
+  assert.equal(a.messages[2].body, 'Lovely.\n\n## TL;DR\n### Monday\n---\nKeep going.', 'headings and rules inside a reply stay in the reply');
+  assert.equal(a.messages[3].body, 'Thanks', 'the closing separator is not part of the last message');
+  assert.equal(a.summary, 'You met Jamie.\n\nIt felt easy.'); assert.deepEqual(a.original.analysis, { reflection: 'You met Jamie.\n\nIt felt easy.' });
+  assert.deepEqual(a.tags.map((t) => `${t.kind}:${t.name}`), ['mood:Excited', 'mood:Nervous', 'person:Jamie', 'topic:Dating', 'topic:Art']);
+  assert.equal(b.summary, ''); assert.equal(b.tags.length, 0);
+  assert.equal(a.companionName, 'Rosebud'); assert.equal(a.original.time_unknown, true);
+  assert.equal(a.startedAt, '2025-03-02T18:01:00.000Z', 'midday in their zone; the first-listed same-day entry is the later one');
+  assert.equal(b.startedAt, '2025-03-02T18:00:00.000Z');
+  assert.equal(IM.entryProblem(a, '2026-11-19'), null);
+  const prev = IM.previewOf(p, p.entries.map(IM.normalizeEntry));
+  assert.match(prev.fields.find((f) => f.key === 'times').note, /dates only/);
+  assert.equal(R2.middayIn('2025-07-01', 'America/Chicago'), '2025-07-01T17:00:00.000Z', 'daylight time is respected');
 });

@@ -30,7 +30,9 @@ export type ImportProblem = { index: number; date?: string; reason: string };
 export type FieldKey = "conversation" | "assistant" | "times" | "timeZone" | "title" | "summary" | "analysis" | "tags" | "companion" | "journal" | "attachments";
 export type ParsedImport = { source: ImportSource; label: string; entries: ImportEntry[]; problems: ImportProblem[];
   /** Fields this source can't provide at all, with a plain reason (shown in the preview). */
-  unavailable: Partial<Record<FieldKey, string>> };
+  unavailable: Partial<Record<FieldKey, string>>;
+  /** Sections of the file that aren't journal entries and aren't imported (named in the preview). */
+  notImported?: string[] };
 
 export const LIMITS = { messages: 2000, body: 100000, title: 200, summary: 4000, tags: 60, original: 100000 } as const;
 const DAY = /^\d{4}-\d{2}-\d{2}$/;

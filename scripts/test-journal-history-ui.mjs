@@ -65,11 +65,18 @@ try{
  await P.setupJournal(a.client,a.id,{journalName:'My Journal',presetKey:'thought-partner',instructions:'',prefs:(await P.loadJournal(a.client,a.id)).prefs});
 
  await openImport();
- check(await has('.mj-import','Rosebud export (Markdown or ZIP)'),'the import names what it accepts');
- await upload('rosebud.md','# Some Rosebud export\n\nNot parsed.');
- await until(()=>!!document.querySelector('.mj-import .mj-error'),'rosebud message');
- check(await has('.mj-import .mj-error','can’t read Rosebud’s export yet'),'a Rosebud file is recognised, not guessed at');
+ check(await has('.mj-import','A Rosebud export (the .md file)'),'the import names what it accepts');
+ await upload('notes.md','# Some notes\n\nNot a journal.');
+ await until(()=>!!document.querySelector('.mj-import .mj-error'),'markdown message');
+ check(await has('.mj-import .mj-error','doesn’t look like a Rosebud export'),'other Markdown is refused plainly, never guessed at');
  check(await count('journal_import_batches',a.id)===0,'nothing is written for an unreadable source');
+ const rose=['# 🌹 Rosebud data export','','# 🌹 Rosebud entries','','---','','## 🔥 Gallery night','### Sunday, March 2nd, 2025','','#### Tags','**People:** Jamie','','#### Reflection','You met Jamie.','','#### Entry','','**Rosebud:** How was tonight?','','**Wren:** I met Jamie.','','---','','# Weekly reports','','### Week','x'].join('\n');
+ await upload('rosebud-2026.md',rose);
+ await until(()=>!!document.querySelector('.mj-import-preview'),'rosebud preview');
+ const rp=await evaluate(()=>document.querySelector('.mj-import-preview').textContent.replace(/\s+/g,' '));
+ check(/From Rosebud/.test(rp)&&/Ready to import\s*1/.test(rp),'a Rosebud export previews its entries');
+ check(/not imported: Weekly reports/.test(rp)&&/dates only/.test(rp)&&/New journal “Rosebud”/.test(rp),'the preview says what isn’t imported, that times aren’t exported, and where entries go');
+ await click('.mj-import-preview button','Cancel');
  await upload('muse-journal.json',JSON.stringify(exported));
  await until(()=>!!document.querySelector('.mj-import-preview'),'preview');
  const preview=await evaluate(()=>document.querySelector('.mj-import-preview').textContent.replace(/\s+/g,' '));

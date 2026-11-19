@@ -38,8 +38,9 @@ export type ThreadMessage = Pick<Message, "id" | "role" | "body" | "createdAt" |
  * interface face; the companion answers in the reading face beside its small mark. Both use the full reading column,
  * so long dictated passages read comfortably. Bookmarked messages carry a fine accent.
  */
-export function Thread({ messages, companion, companionFor, timeZone, actions, empty, onReattach, highlights }: {
+export function Thread({ messages, companion, companionFor, timeZone, actions, empty, onReattach, highlights, noTimes }: {
   messages: ThreadMessage[]; companion: { name: string; icon: string; tone: MuseTone } | null; timeZone: string;
+  /** Imported entries whose source exported no times of day: show none rather than an invented one. */ noTimes?: boolean;
   /** Who wrote this reply (a conversation may switch companions); defaults to `companion`. */
   companionFor?: (m: ThreadMessage) => { name: string; icon: string; tone: MuseTone };
   actions?: (m: ThreadMessage) => ReactNode; empty?: ReactNode;
@@ -53,7 +54,7 @@ export function Thread({ messages, companion, companionFor, timeZone, actions, e
     {messages.map((m) => { const who = m.role === "assistant" ? companionFor?.(m) ?? companion : null; return <li key={m.id} id={`m-${m.id}`} data-message-id={m.id} className="mj-message" style={who ? ({ "--who-ink": `var(--chart-${who.tone})` } as React.CSSProperties) : undefined} data-role={m.role} data-pending={m.pending || undefined} data-streaming={m.streaming || undefined} data-failed={m.failed || undefined} data-marked={m.marked || undefined}>
       <div className="mj-message-who type-meta">
         {m.role === "assistant" ? <><MuseMark icon={(who?.icon ?? "sparkle") as MuseMarkIcon} tone={who?.tone ?? 5} size="sm" /><span>{who?.name ?? "Companion"}</span></> : <span>You</span>}
-        <time dateTime={m.createdAt}>{m.pending ? "Saving…" : m.failed ? "Not saved" : timeLabel(m.createdAt, timeZone)}</time>
+        {!noTimes && <time dateTime={m.createdAt}>{m.pending ? "Saving…" : m.failed ? "Not saved" : timeLabel(m.createdAt, timeZone)}</time>}
         {m.correctedAt && <span title="You corrected this message; the original is kept.">· corrected</span>}
         {actions && <span className="mj-message-actions">{actions(m)}</span>}
       </div>

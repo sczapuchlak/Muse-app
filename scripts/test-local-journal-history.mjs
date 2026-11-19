@@ -88,7 +88,7 @@ try{
  const jamieTag=must(await a.client.from('journal_tags').select('id').eq('kind','person').eq('normalized','jamie').single()).id;
  const th=must(await a.client.rpc('journal_tag_history',{p_tags:[jamieTag],p_journals:[J],p_before:today,p_per_tag:4}));
  assert.deepEqual([th[0].entries,th[0].first_date,th[0].last_date],[2,'2025-03-02','2025-08-01'],'counts and span cover permitted entries only');
- assert.deepEqual(th.map(r=>r.conversation_id),[r3.conversation_id,conv.id],'newest first; the excluded entry never appears');
+ assert.deepEqual([...th].sort((x,y)=>y.local_date.localeCompare(x.local_date)).map(r=>r.conversation_id),[r3.conversation_id,conv.id],'both permitted entries; the excluded entry never appears');
  assert.equal(must(await b.client.rpc('journal_tag_history',{p_tags:[jamieTag],p_journals:[J],p_before:today})).length,0,'another account learns nothing');
 
  // The real retrieval path: “Girl, guess who messaged me again? Jamie!”

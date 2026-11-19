@@ -73,11 +73,11 @@ export function EntryView({ conversation: c, onClose, focusHighlight = null }: {
     return () => { live = false; };
   }, [client, userId, c.id]);
   // An imported entry says quietly where it came from (provenance lives beside the entry, not in it).
-  const [importedFrom, setImportedFrom] = useState<string | null>(null);
+  const [importedFrom, setImportedFrom] = useState<string | null>(null), [timeUnknown, setTimeUnknown] = useState(false);
   useEffect(() => {
     if (c.origin !== "import") return;
     let live = true;
-    void client.from("journal_import_sources").select("source").eq("user_id", userId).eq("conversation_id", c.id).maybeSingle().then((r) => { if (live) setImportedFrom(r.data?.source ?? "import"); });
+    void client.from("journal_import_sources").select("source,original").eq("user_id", userId).eq("conversation_id", c.id).maybeSingle().then((r) => { if (!live) return; setImportedFrom(r.data?.source ?? "import"); setTimeUnknown(Boolean((r.data?.original as { time_unknown?: boolean } | null)?.time_unknown)); });
     return () => { live = false; };
   }, [client, userId, c.id, c.origin]);
   // While the analysis is being written, look again every few seconds.
@@ -142,7 +142,7 @@ export function EntryView({ conversation: c, onClose, focusHighlight = null }: {
         </div>
       </div>
       <div className="mj-entry-head-copy">
-        <p className="muse-kicker type-meta"><button type="button" className="mj-date-edit" title="Change date & time" onClick={() => setDating(true)}>{formatDayIn(c.localDate, j.today)} · {displayClock(c.startedAt, c.timeZone)}<MuseIcon name="edit" size={12} /></button> · {journal?.name ?? "Journal"}{c.companionName ? ` · with ${c.companionName}` : ""}{c.origin === "playground" ? " · kept from the Studio" : ""}{c.origin === "import" ? ` · imported${importedFrom && importSourceName[importedFrom] ? ` from ${importSourceName[importedFrom]}` : ""}` : ""}{c.guideSnapshot ? ` · ${c.guideSnapshot.icon ? `${c.guideSnapshot.icon} ` : ""}${c.guideSnapshot.name}` : ""}</p>
+        <p className="muse-kicker type-meta"><button type="button" className="mj-date-edit" title="Change date & time" onClick={() => setDating(true)}>{formatDayIn(c.localDate, j.today)}{timeUnknown ? "" : ` · ${displayClock(c.startedAt, c.timeZone)}`}<MuseIcon name="edit" size={12} /></button> · {journal?.name ?? "Journal"}{c.companionName ? ` · with ${c.companionName}` : ""}{c.origin === "playground" ? " · kept from the Studio" : ""}{c.origin === "import" ? ` · imported${importedFrom && importSourceName[importedFrom] ? ` from ${importSourceName[importedFrom]}` : ""}` : ""}{c.guideSnapshot ? ` · ${c.guideSnapshot.icon ? `${c.guideSnapshot.icon} ` : ""}${c.guideSnapshot.name}` : ""}</p>
         {editingTitle ? <form className="mj-title-edit" onSubmit={(e) => { e.preventDefault(); void saveTitle(); }}>
           <input type="text" aria-label="Title" className="type-title" value={title} maxLength={200} onChange={(e) => setTitle(e.target.value)} autoFocus />
           <button type="submit" className="muse-button button-primary">Save</button><button type="button" className="muse-button" onClick={() => { setTitle(c.title); setEditingTitle(false); }}>Cancel</button>
@@ -163,7 +163,7 @@ export function EntryView({ conversation: c, onClose, focusHighlight = null }: {
     {tab === "conversation" ? <section className="mj-entry-body muse-journal-archive" aria-label="Conversation">
       {bookmarks.length > 0 && <div className="mj-hl-bar"><button type="button" className="mj-hl-toggle" aria-expanded={showHl} onClick={() => setShowHl(!showHl)}><MuseIcon name="bookmark" size={14} />{bookmarks.length} {bookmarks.length === 1 ? "highlight" : "highlights"}<MuseIcon name="chevron" size={13} /></button></div>}
       {showHl && bookmarks.length > 0 && <ul className="mj-hl-list" aria-label="Highlights in this entry">{bookmarks.map((b) => <HighlightCard key={b.id} h={b} placed={!loaded || placement.placed.has(b.id) || !(() => { const m = messages.find((x) => x.id === b.messageId); return m?.correctedAt && m.correctedAt > b.createdAt; })()} onJump={() => jumpToHighlight(b)} onEdit={() => setEditingHl(b)} />)}</ul>}
-      <div ref={setThreadEl} className="mj-hl-root">{!loaded ? <p className="small-label" role="status">Opening…</p> : <Thread messages={thread} companion={who} companionFor={whoFor} timeZone={timeZone} actions={actions} highlights={placement.marks} />}</div>
+      <div ref={setThreadEl} className="mj-hl-root">{!loaded ? <p className="small-label" role="status">Opening…</p> : <Thread messages={thread} companion={who} companionFor={whoFor} timeZone={timeZone} actions={actions} highlights={placement.marks} noTimes={timeUnknown} />}</div>
       {loaded && <SelectionHighlighter root={threadEl} messages={messages} onSave={(p) => void saveSelection(p)} />}
       {corrections.length > 0 && <details className="mj-history"><summary>Original wording of {corrections.length} corrected {corrections.length === 1 ? "message" : "messages"}</summary>
         {corrections.map((x) => <blockquote key={x.id}><small>Before {new Date(x.correctedAt).toLocaleString("en-US", { timeZone })}</small><Prose text={x.previousBody} /></blockquote>)}</details>}
