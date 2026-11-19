@@ -1,5 +1,6 @@
 import { MUSE_STAR_PATH } from "../MuseStar";
 import { weekdayShort } from "./format";
+import "./JournalArt.css";
 
 /**
  * Journal's only drawings, in the shared fine-line star vocabulary. No book, no clip art: the art is information.
