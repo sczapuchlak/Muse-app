@@ -105,7 +105,7 @@ try{
  const c1=must(await a.client.from('journal_conversations').select('id').eq('title','Jamie at the gallery').single()).id;
  await go(`/journal?entry=${c1}`,'!!document.querySelector(".mj-message")','entry');
  await until(()=>[...document.querySelectorAll('.muse-kicker')].some(x=>x.textContent.includes('2025')),'entry header');
- check(!(await has('.muse-kicker','imported')),'an imported entry looks like any other entry');
+ check(await has('.muse-kicker','imported from a Muse export')&&await has('.muse-kicker','My Journal'),'an imported entry sits in the main journal with a quiet “imported from” note');
  check(await has('.muse-kicker','Sun, Mar 2')||await has('.muse-kicker','Mar'),'the entry keeps its original date');
  const bodies=await evaluate(()=>[...document.querySelectorAll('.mj-message')].map(m=>m.textContent));
  check(bodies.length===4&&bodies[1].includes('printmaking')&&bodies[0].includes('How was tonight'),'original messages in their original order');
