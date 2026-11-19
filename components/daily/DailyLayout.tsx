@@ -10,7 +10,7 @@ import "./DailyLayout.css";
  * default column, so adding or retiring a card never breaks a saved layout. Only the Daily Edit is arrangeable.
  */
 export type DailyCardKey = "forecast" | "priorities" | "movement" | "water" | "goals" | "mood" | "reflection" | "dayInThree" | "books" | "rituals" | "schedule" | "meals" | "pulse" | "dreams" | "fortune" | "chapter" | "journal";
-export type DailyLayout = { left: DailyCardKey[]; right: DailyCardKey[] };
+export type DailyLayout = { left: DailyCardKey[]; right: DailyCardKey[]; hidden?: DailyCardKey[] };
 export const dailyCards: { key: DailyCardKey; label: string; icon: MuseIconName }[] = [
   { key: "forecast", label: "Cosmic Forecast", icon: "moon" }, { key: "priorities", label: "Today’s priorities", icon: "focus" },
   { key: "movement", label: "Movement", icon: "movement" }, { key: "water", label: "Water", icon: "water" },
@@ -34,14 +34,15 @@ const label = (k: DailyCardKey) => dailyCards.find((c) => c.key === k)!;
 
 /** A saved layout, made whole: unknown names dropped, duplicates removed, missing cards appended to their default column. */
 export function normalizeLayout(raw: unknown): DailyLayout {
-  const r = (raw && typeof raw === "object" ? raw : {}) as Partial<Record<"left" | "right", unknown>>, seen = new Set<string>();
+  const r = (raw && typeof raw === "object" ? raw : {}) as Partial<Record<"left" | "right" | "hidden", unknown>>, seen = new Set<string>();
   const pick = (v: unknown) => (Array.isArray(v) ? v : []).filter((k): k is DailyCardKey => typeof k === "string" && known.has(k) && !seen.has(k) && Boolean(seen.add(k)));
   const left = pick(r.left), right = pick(r.right);
   for (const k of defaultDailyLayout.left) if (!seen.has(k)) { left.push(k); seen.add(k); }
   for (const k of defaultDailyLayout.right) if (!seen.has(k)) { right.push(k); seen.add(k); }
-  return { left, right };
+  const hidden = (Array.isArray(r.hidden) ? r.hidden : []).filter((k, i, all): k is DailyCardKey => typeof k === "string" && known.has(k) && all.indexOf(k) === i);
+  return { left, right, hidden };
 }
-const sameLayout = (a: DailyLayout, b: DailyLayout) => a.left.join() === b.left.join() && a.right.join() === b.right.join();
+const sameLayout = (a: DailyLayout, b: DailyLayout) => a.left.join() === b.left.join() && a.right.join() === b.right.join() && (a.hidden ?? []).join() === (b.hidden ?? []).join();
 const CACHE = "muse.daily.layout";
 
 /** The account's Daily Edit layout: shown at once from this device's copy, then confirmed from the account. */
@@ -83,11 +84,12 @@ export function DailyArrange({ layout, onDone, onCancel }: { layout: DailyLayout
   const board = useRef<HTMLDivElement>(null);
   const move = (key: DailyCardKey, to: "left" | "right", index: number) => setDraft((d) => {
     const from: "left" | "right" = d.left.includes(key) ? "left" : "right";
-    const next = { left: d.left.filter((k) => k !== key), right: d.right.filter((k) => k !== key) };
+    const next = { left: d.left.filter((k) => k !== key), right: d.right.filter((k) => k !== key), hidden: d.hidden ?? [] };
     if (from === to && d[from].indexOf(key) < index) index -= 1;
     next[to].splice(Math.max(0, Math.min(index, next[to].length)), 0, key);
     return next;
   });
+  const toggleHidden = (key: DailyCardKey) => setDraft((d) => { const h = d.hidden ?? []; return { ...d, hidden: h.includes(key) ? h.filter((k) => k !== key) : [...h, key] }; });
   // The drag is followed on the window: a tile that crosses columns is re-created, which would drop pointer capture.
   const draftRef = useRef(draft);
   useEffect(() => { draftRef.current = draft; }, [draft]);
@@ -113,11 +115,12 @@ export function DailyArrange({ layout, onDone, onCancel }: { layout: DailyLayout
     return () => { window.removeEventListener("pointermove", onMove); window.removeEventListener("pointerup", stop); window.removeEventListener("pointercancel", stop); };
   }, [drag]);
   const col = (side: "left" | "right") => <ol className="muse-arrange-col" data-col={side} aria-label={side === "left" ? "First column" : "Second column"}>
-    {draft[side].map((k, i) => { const c = label(k), dragging = drag?.key === k; return <li key={k} className="muse-arrange-tile" data-key={k} data-dragging={dragging || undefined}>
+    {draft[side].map((k, i) => { const c = label(k), dragging = drag?.key === k, off = (draft.hidden ?? []).includes(k); return <li key={k} className="muse-arrange-tile" data-key={k} data-dragging={dragging || undefined} data-hidden={off || undefined}>
       <button type="button" className="muse-arrange-handle" aria-label={`Drag ${c.label}`} onPointerDown={(e) => start(e, k)}><MuseIcon name="grip" size={16} /></button>
       <span className="muse-arrange-mark"><MuseIcon name={c.icon} size={15} /></span>
-      <span className="muse-arrange-name">{c.label}</span>
+      <span className="muse-arrange-name">{c.label}{off && <small className="muse-arrange-off"> · hidden</small>}</span>
       <span className="muse-arrange-moves">
+        <button type="button" className="muse-icon-button muse-arrange-eye" aria-pressed={!off} aria-label={off ? `Show ${c.label} on the Daily Edit` : `Hide ${c.label} from the Daily Edit`} title={off ? "Show on the Daily Edit" : "Hide from the Daily Edit"} onClick={() => toggleHidden(k)}><MuseIcon name={off ? "eye-off" : "eye"} size={15} /></button>
         <button type="button" className="muse-icon-button" data-up aria-label={`Move ${c.label} up`} disabled={i === 0} onClick={() => move(k, side, i - 1)}><MuseIcon name="chevron" size={14} /></button>
         <button type="button" className="muse-icon-button" data-down aria-label={`Move ${c.label} down`} disabled={i === draft[side].length - 1} onClick={() => move(k, side, i + 2)}><MuseIcon name="chevron" size={14} /></button>
         <button type="button" className="muse-icon-button" data-across={side === "left" ? "right" : "left"} aria-label={`Move ${c.label} to the ${side === "left" ? "second" : "first"} column`} onClick={() => move(k, side === "left" ? "right" : "left", draft[side === "left" ? "right" : "left"].length)}><MuseIcon name="arrow" size={14} /></button>
@@ -126,9 +129,9 @@ export function DailyArrange({ layout, onDone, onCancel }: { layout: DailyLayout
   </ol>;
   return <section className="muse-arrange" aria-label="Arrange the Daily Edit">
     <div className="muse-arrange-head">
-      <p className="mj-note">Drag a card by its handle to move it, or use the arrows. Your order is saved to your account, so your phone and computer match. On a phone the first column comes first.</p>
+      <p className="mj-note">Drag a card by its handle to move it, or use the arrows. Tap the eye to hide a card you don’t need; tap it again to bring it back. Your order is saved to your account, so your phone and computer match. On a phone the first column comes first.</p>
       <div className="muse-arrange-actions">
-        <button type="button" className="muse-button button-ghost" onClick={() => setDraft(defaultDailyLayout)} disabled={sameLayout(draft, defaultDailyLayout)}>Reset</button>
+        <button type="button" className="muse-button button-ghost" onClick={() => setDraft({ ...defaultDailyLayout, hidden: [] })} disabled={sameLayout(draft, { ...defaultDailyLayout, hidden: [] })}>Reset</button>
         <button type="button" className="muse-button button-ghost" onClick={onCancel}>Cancel</button>
         <button type="button" className="muse-button button-primary" onClick={() => onDone(draft)}>Done</button>
       </div>

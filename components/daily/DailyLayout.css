@@ -25,3 +25,9 @@
 .muse-daily-slot:empty{display:none}
 @container muse-content (max-width:900px){.muse-arrange-board{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:600px){.muse-arrange{padding:12px}.muse-arrange-moves .muse-icon-button:last-child{display:none}}
+/* Hide from the Daily Edit (Nov 18): a hidden card stays on the board, dimmed, so it's always one tap from coming back. */
+.muse-arrange-tile[data-hidden]{opacity:.62;background:color-mix(in srgb,var(--surface-control) 55%,transparent);border-style:dashed}
+.muse-arrange-tile[data-hidden] .muse-arrange-mark{filter:grayscale(.7)}
+.muse-arrange-off{color:var(--text-muted);font-weight:500}
+.muse-arrange-eye[aria-pressed=true] svg{color:var(--accent-primary)}
+.muse-arrange-eye[aria-pressed=false] svg{color:var(--text-muted)}
