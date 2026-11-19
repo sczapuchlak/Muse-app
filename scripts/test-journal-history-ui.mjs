@@ -113,6 +113,14 @@ try{
  check(bodies.length===4&&bodies[1].includes('printmaking')&&bodies[0].includes('How was tonight'),'original messages in their original order');
  await shoot('03-entry');
 
+ await go('/journal?view=history','!!document.querySelector(".mj-history-view")','history for filters');
+ await click('.mj-filters-toggle');await until(()=>!!document.querySelector('.mj-filter-panel'),'filter panel');
+ const triggers=await evaluate(()=>[...document.querySelectorAll('.mj-filter-panel button.muse-choice-trigger')].map(b=>b.textContent.trim()));
+ check(triggers.includes('People')&&!(await has('.mj-filter-panel .mj-filter-chip')),'filters are dropdowns (People, …), not chip walls');
+ await click('.mj-filter-panel button.muse-choice-trigger','People');await until(()=>[...document.querySelectorAll('.popover-choice')].some(x=>x.textContent.startsWith('Jamie')),'people menu');
+ await click('.popover-choice','Jamie');await until(()=>document.querySelectorAll('.mj-results .mj-row').length===2,'filtered by Jamie');
+ check(true,'choosing Jamie in People shows his 2 entries');
+ await shoot('03b-filters');
  // Recall check (Memory): the same selection a reply uses, without AI.
  await go('/journal','!!document.querySelector(".mj-workspace")','workspace');
  await until(()=>!!document.querySelector('.mj-header-tools .mj-tb-settings'),'toolbar');await click('.mj-header-tools .mj-tb-settings');await until(()=>!!document.querySelector('#mj-settings'),'settings');
@@ -148,6 +156,10 @@ try{
  await viewport(390,844,true);
  await openImport();
  check(!(await overflow()),'phone: the import view has no sideways scroll');
+ await send('Input.dispatchKeyEvent',{type:'keyDown',key:'Escape'}).catch(()=>{});
+ await go('/journal?view=history','!!document.querySelector(".mj-history-view")','phone history');await click('.mj-filters-toggle');await until(()=>!!document.querySelector('.mj-filter-panel'),'phone filters');
+ check(!(await overflow()),'phone: the filter dropdowns fit without sideways scroll');await shoot('06-phone-filters');
+ check(await evaluate(()=>{const r=document.querySelector('.mj-history-view').getBoundingClientRect().right;return ![...document.querySelectorAll('.mj-history-view *')].some(e=>e.getBoundingClientRect().width>0&&e.getBoundingClientRect().right>r+0.5);}),'phone: nothing in History reaches past the card edge');
  await shoot('05-phone');
  check(!errors.length,`no page errors${errors.length?': '+errors.slice(0,3).join(' | '):''}`);
  console.log(`PASS Journal history UI: ${passed} checks. Screenshots: ${shots}`);

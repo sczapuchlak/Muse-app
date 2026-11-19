@@ -17,7 +17,7 @@ import { MUSE_STAR_PATH } from "../MuseStar";
 import { useJournal } from "./useJournal";
 import { dayNumber, formatMonth, formatShort, weekdayShort } from "./format";
 import * as P from "@/lib/journal/persistence";
-import { isListed, tagKindLabel, tagKinds, tagLabel, type Bookmark, type Conversation, type Report, type Tag, type TagKind } from "@/lib/journal/model";
+import { isListed, tagKindLabel, tagKinds, tagLabel, type Bookmark, type Conversation, type Report, type Tag } from "@/lib/journal/model";
 import { addDays, weekDays, weekStart } from "@/lib/journal/stats";
 
 type Show = "entries" | "week" | "highlights" | "drafts";
@@ -95,7 +95,7 @@ export function HistoryView({ open, initialTag, initialJournal, onThisDay }: { o
         <MuseSearch label="Search your whole journal" value={query} onChange={setQuery} placeholder="Search names, #tags, words…" count={searching ? list.length : undefined} noun={["entry", "entries"]} />
         <button type="button" className="muse-button mj-filters-toggle" aria-expanded={filtersOpen} aria-controls="mj-filter-panel" onClick={() => setFiltersOpen(!filtersOpen)}><MuseIcon name="filter" size={15} />Filters{activeCount ? <b className="mj-filter-count type-numeric">{activeCount}</b> : null}</button>
       </div>
-      {filtersOpen && <FilterPanel tagIds={tagIds} onTag={(id) => toggle(tagIds, setTagIds, id)} onClose={() => setFiltersOpen(false)}>
+      {filtersOpen && <FilterPanel tagIds={tagIds} onTag={(id) => toggle(tagIds, setTagIds, id)} onClear={(ids) => setTagIds(tagIds.filter((x) => !ids.includes(x)))} onClose={() => setFiltersOpen(false)}>
         <MuseChoiceMenu label="Journals" icon="notes" multiple valueLabel={journalIds.length ? `${journalIds.length} journal${journalIds.length > 1 ? "s" : ""}` : "All journals"} selectedIds={journalIds} options={state.journals.map((x) => ({ id: x.id, label: x.name }))} onSelect={(id) => toggle(journalIds, setJournalIds, id)} onClear={() => setJournalIds([])} />
         {companionNames.length > 0 && <MuseChoiceMenu label="Companions" icon="sparkle" multiple valueLabel={companions.length ? companions.join(", ") : "Any companion"} selectedIds={companions} options={companionNames.map((n) => ({ id: n, label: n }))} onSelect={(id) => toggle(companions, setCompanions, id)} onClear={() => setCompanions([])} />}
         <span className="mj-range" role="group" aria-label="Dates"><MuseOptionalDatePicker label="From" date={from} today={j.today} onChange={setFrom} /><span aria-hidden="true">–</span><MuseOptionalDatePicker label="To" date={to} today={j.today} onChange={setTo} /></span>
@@ -141,29 +141,25 @@ export function HistoryView({ open, initialTag, initialJournal, onThisDay }: { o
 }
 
 /**
- * The one Filters panel: every tag, grouped into My tags, People, Places, Topics, Moods and Themes, with a search
- * so a long list never needs scrolling, then the narrower controls (journal, companion, dates, kept, sort).
- * Selected tags combine with AND, and with the search text.
+ * The one Filters panel: a compact row of dropdowns. Each tag kind (My tags, People, Topics, Moods) is one searchable
+ * multi-select, most-used first with its count, so a long list never covers the page; then journal, companion,
+ * dates, kept and sort. Selected tags combine with AND, and with the search text.
  */
-function FilterPanel({ tagIds, onTag, onClose, children }: { tagIds: string[]; onTag: (id: string) => void; onClose: () => void; children: React.ReactNode }) {
+function FilterPanel({ tagIds, onTag, onClear, onClose, children }: { tagIds: string[]; onTag: (id: string) => void; onClear: (ids: string[]) => void; onClose: () => void; children: React.ReactNode }) {
   const { state } = useJournal();
-  const [find, setFind] = useState(""), [expanded, setExpanded] = useState<TagKind[]>([]);
   const uses = useMemo(() => { const m = new Map<string, number>(); for (const t of state.entryTags) m.set(t.tagId, (m.get(t.tagId) ?? 0) + 1); return m; }, [state.entryTags]);
-  const needle = find.trim().replace(/^#/, "").toLowerCase();
-  const groups = tagKinds.map((k) => {
-    const all = state.tags.filter((t) => t.kind === k && (uses.get(t.id) ?? 0) > 0)
-      .filter((t) => !needle || t.name.toLowerCase().includes(needle) || t.aliases.some((a) => a.toLowerCase().includes(needle)))
-      .sort((a, b) => (uses.get(b.id) ?? 0) - (uses.get(a.id) ?? 0) || a.name.localeCompare(b.name));
-    return { k, all, shown: needle || expanded.includes(k) ? all : all.slice(0, 12) };
-  }).filter((g) => g.all.length);
+  const groups = tagKinds.map((k) => ({ k, all: state.tags.filter((t) => t.kind === k && !t.suppressed && (uses.get(t.id) ?? 0) > 0)
+    .sort((a, b) => (uses.get(b.id) ?? 0) - (uses.get(a.id) ?? 0) || a.name.localeCompare(b.name)) })).filter((g) => g.all.length);
   return <div className="mj-filter-panel" id="mj-filter-panel" role="group" aria-label="Filters">
-    <div className="mj-filter-find"><MuseIcon name="search" size={15} /><input type="search" aria-label="Find a tag" placeholder="Find a tag, person, place…" value={find} onChange={(e) => setFind(e.target.value)} /></div>
-    {groups.length ? groups.map(({ k, all, shown }) => <section key={k} className="mj-filter-group" data-kind={k}>
-      <h4 className="type-meta">{tagKindLabel[k]} <span className="type-numeric">{all.length}</span></h4>
-      <ul className="mj-chip-list">{shown.map((t) => <li key={t.id}><button type="button" className="mj-filter-chip" data-kind={k} aria-pressed={tagIds.includes(t.id)} onClick={() => onTag(t.id)}>{tagLabel(t)} <span className="type-numeric">{uses.get(t.id)}</span></button></li>)}
-        {shown.length < all.length && <li><button type="button" className="mj-link type-meta" onClick={() => setExpanded([...expanded, k])}>Show all {all.length}</button></li>}</ul>
-    </section>) : <p className="mj-note">{needle ? `No tag matches “${find.trim()}”.` : "Tags appear here once entries have them. Add your own from any saved entry."}</p>}
-    <div className="mj-filter-more">{children}</div>
+    <div className="mj-filter-more">
+      {groups.map(({ k, all }) => { const picked = all.filter((t) => tagIds.includes(t.id));
+        return <MuseChoiceMenu key={k} label={tagKindLabel[k]} multiple searchable icon="filter" emptyLabel="No match."
+          valueLabel={picked.length ? (picked.length <= 2 ? picked.map(tagLabel).join(", ") : `${tagKindLabel[k]} · ${picked.length}`) : tagKindLabel[k]}
+          selectedIds={picked.map((t) => t.id)} options={all.map((t) => ({ id: t.id, label: `${tagLabel(t)} (${uses.get(t.id)})` }))}
+          onSelect={onTag} onClear={() => onClear(picked.map((t) => t.id))} />; })}
+      {children}
+    </div>
+    {!groups.length && <p className="mj-note">Tags appear here once entries have them. Add your own from any saved entry.</p>}
     <div className="mj-filter-done"><button type="button" className="muse-button button-primary" onClick={onClose}>Done</button></div>
   </div>;
 }

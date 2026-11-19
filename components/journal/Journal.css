@@ -319,7 +319,11 @@
 .mj-compare-card>button{justify-self:start}
 
 /* ── History ──────────────────────────────────────────────────────────────────────────────────────────────────── */
-.mj-history-view{gap:16px}
+.mj-history-view{gap:16px;grid-template-columns:minmax(0,1fr)}
+/* Phones: the view switcher scrolls inside the row instead of stretching the card past its edge. */
+.mj-shelf-head>.mj-history-controls{min-width:0;max-width:100%}
+.mj-shelf-head>.mj-history-controls>.muse-segmented{min-width:0;flex:0 1 auto;overflow-x:auto;scrollbar-width:none}
+.mj-shelf-head>.mj-history-controls>:not(.muse-segmented){flex:none}
 .mj-finder{display:grid;gap:10px}
 .mj-filters{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
 .mj-filters[data-more]{padding:10px;border:1px dashed var(--glass-border);border-radius:14px}
@@ -638,10 +642,13 @@
 .mj-filter-chip:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
 .mj-filter-chip[data-kind="person"]{--tag:var(--chart-2)}.mj-filter-chip[data-kind="place"]{--tag:var(--chart-6)}.mj-filter-chip[data-kind="topic"]{--tag:var(--chart-1)}.mj-filter-chip[data-kind="theme"]{--tag:var(--chart-7)}.mj-filter-chip[data-kind="mood"]{--tag:var(--chart-8)}
 .mj-filter-more{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding-top:12px;border-top:1px solid var(--mj-hair)}
+.mj-filter-more:first-child{padding-top:0;border-top:0}
 .mj-filter-done{display:flex;justify-content:flex-end}
 @container muse-content (max-width:640px){
  .mj-filter-panel{padding:12px}
- .mj-filter-more{display:grid;grid-template-columns:minmax(0,1fr)}
+ .mj-filter-more{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+ .mj-filter-more>.mj-range{grid-column:1/-1}
+ .mj-filter-more .muse-choice-trigger{width:100%;min-width:0}
  .mj-filter-done .muse-button{width:100%;justify-content:center}
 }
 @media (prefers-reduced-motion:reduce){.mj-filter-panel{animation:none}}
