@@ -21,6 +21,7 @@ export function providerConfig(): ProviderConfig | null {
 export type Call = {
   instructions: string; input: InputMessage[]; maxOutputTokens: number; effort?: "none" | "low" | "medium";
   schema?: { name: string; schema: object }; onDelta?: (text: string) => void; signal?: AbortSignal;
+  /** Long written reports need longer than a reply; a long call that times out is never retried (it would double the wait). */ timeoutMs?: number;
 };
 export type Result = { text: string; usage: Usage; model: string };
 
@@ -33,7 +34,7 @@ export async function generate(config: ProviderConfig, call: Call): Promise<Resu
     try { return await openai(config, call); }
     catch (e) {
       // One retry for transient trouble, only if nothing was streamed yet (so text is never duplicated).
-      const transient = e instanceof ProviderError && (e.code === "rate-limited" || e.code === "failed" || e.code === "timeout") && !(e as ProviderError & { streamed?: boolean }).streamed;
+      const transient = e instanceof ProviderError && (e.code === "rate-limited" || e.code === "failed" || (e.code === "timeout" && !call.timeoutMs)) && !(e as ProviderError & { streamed?: boolean }).streamed;
       if (!transient || attempt++ >= 1 || call.signal?.aborted) throw e;
       await new Promise((r) => setTimeout(r, 900));
     }
@@ -50,7 +51,7 @@ async function openai(config: ProviderConfig, call: Call): Promise<Result> {
     ...(call.effort ? { reasoning: { effort: process.env.JOURNAL_AI_REASONING?.trim() || call.effort } } : {}),
     ...(call.schema ? { text: { format: { type: "json_schema", name: call.schema.name, strict: true, schema: call.schema.schema } } } : {}),
   };
-  const timeout = AbortSignal.timeout(TIMEOUT), signal = call.signal ? AbortSignal.any([call.signal, timeout]) : timeout;
+  const timeout = AbortSignal.timeout(call.timeoutMs ?? TIMEOUT), signal = call.signal ? AbortSignal.any([call.signal, timeout]) : timeout;
   let response: Response;
   try {
     response = await fetch("https://api.openai.com/v1/responses", { method: "POST", headers: { Authorization: `Bearer ${config.key}`, "Content-Type": "application/json" }, body: JSON.stringify(body), signal });
@@ -122,6 +123,9 @@ async function mock(call: Call): Promise<Result> {
     const mine = all.split("\n").filter((l) => l.startsWith("Me:")).join(" ");
     const names = [...new Set([...mine.matchAll(/(?<=[a-z,] )(\p{Lu}[\p{Ll}]{2,})/gu)].map((m) => m[1]))].slice(0, 5);
     text = JSON.stringify({ title: mine.replace(/^Me:\s*/, "").split(/\s+/).slice(0, 5).join(" ") || "A conversation", recap: `You talked about ${mine.split(/\s+/).length} words' worth of your day.`, overview: `Overview (mock): the day, reconstructed from ${mine.split(/\s+/).length} of your words.\n\nA second paragraph${/Earlier in their journal/.test(all) ? ", with earlier context available" : ""}.`, insights: ["Mock insight: one thing worth keeping."], people: names, topics: ["Everyday"], emotions: ["excited", "tired", "anxious", "grateful", "happy"].filter((w) => mine.toLowerCase().includes(w)).map((w) => w[0].toUpperCase() + w.slice(1)), observations: [], threads: [], memories: [] });
+  } else if (call.schema?.name === "journal_month_review" || call.schema?.name === "journal_year_review") {
+    const n = (all.match(/^- \w{3}, /gm) ?? []).length, kind = call.schema.name.includes("year") ? "year" : "month";
+    text = JSON.stringify({ title: `🌙 A Mock ${kind === "year" ? "Year" : "Month"} in Pieces`, review: `Mock ${kind} review across ${n} entries.\n\nA second paragraph.`, chapters: n > 1 ? [{ heading: "Where it started", body: "Mock chapter." }] : [], themes: [], people: [], shifts: [], insights: [], wins: [{ heading: "You kept writing", body: `${n} entries.` }], closing: "" });
   } else if (call.schema?.name === "journal_weekly_reflection") {
     const days = [...all.matchAll(/^### (\w+day), /gm)].map((m) => m[1]);
     text = JSON.stringify({ title: "A Mock Week of Small Things", review: `Mock review across ${titles.length} entries: ${titles.join("; ") || "none"}.\n\nDays: ${days.join(", ")}.`, themes: titles.length > 1 ? [{ heading: "A thread that ran through it", body: `It showed up on ${days.join(" and ")}.` }] : [], insights: titles.length > 1 ? [{ heading: "A pattern", body: "Maybe something worth noticing." }] : [], wins: [{ heading: "You wrote", body: `${titles.length} entries.` }], closing: "" });

@@ -263,8 +263,8 @@ export async function loadAnalysis(client: Client, userId: string, conversationI
 export async function dismissInAnalysis(client: Client, userId: string, a: Analysis, key: string): Promise<Analysis> {
   return analysisFromRow(one(await client.from("journal_analyses").update({ dismissed: [...new Set([...a.dismissed, key])].slice(-200) }).eq("id", a.id).eq("user_id", userId).eq("revision", a.revision).select("*").maybeSingle()));
 }
-export async function loadReport(client: Client, userId: string, weekStart: string): Promise<Report | null> {
-  const r = must(await client.from("journal_reports").select("*").eq("user_id", userId).eq("week_start", weekStart).maybeSingle());
+export async function loadReport(client: Client, userId: string, weekStart: string, period: "week" | "month" | "year" = "week"): Promise<Report | null> {
+  const r = must(await client.from("journal_reports").select("*").eq("user_id", userId).eq("period", period).eq("week_start", weekStart).maybeSingle());
   return r ? reportFromRow(r) : null;
 }
 

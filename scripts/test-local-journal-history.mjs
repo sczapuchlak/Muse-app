@@ -143,6 +143,23 @@ try{
  assert.equal(must(await b.client.from('journal_report_versions').select('id')).length,0,'another account sees no versions');
  assert.ok((await a.client.from('journal_report_versions').insert({user_id:a.id,report_id:rep.id,week_start:'2026-11-09',data:{},revision:1,written_at:new Date().toISOString()})).error,'a browser can’t write a version');
  assert.ok(!(await a.client.from('journal_reports').update({data:{title:'Long',review:'z'.repeat(90000)}}).eq('id',rep.id)).error,'a long V2 report fits');
+ // Life Reviews: a week and a month starting on the same day are separate reviews; a month starts on the 1st.
+ must(await a.client.from('journal_reports').insert({user_id:a.id,period:'month',week_start:'2026-06-01',data:{title:'M',review:'m'}}));
+ must(await a.client.from('journal_reports').insert({user_id:a.id,period:'week',week_start:'2026-06-01',data:{title:'W',review:'w'}}));
+ assert.ok((await a.client.from('journal_reports').insert({user_id:a.id,period:'month',week_start:'2026-06-01',data:{}})).error,'one review per period and start');
+ assert.ok((await a.client.from('journal_reports').insert({user_id:a.id,period:'month',week_start:'2026-07-02',data:{}})).error,'a month starts on the 1st');
+ assert.ok((await a.client.from('journal_reports').insert({user_id:a.id,period:'year',week_start:'2026-02-01',data:{}})).error,'a year starts on January 1');
+ const mr=must(await a.client.from('journal_reports').select('id').eq('period','month').eq('week_start','2026-06-01').single());
+ must(await a.client.from('journal_reports').update({data:{title:'M2',review:'m2'}}).eq('id',mr.id));
+ assert.equal(must(await a.client.from('journal_report_versions').select('period').eq('report_id',mr.id).single()).period,'month','versions keep their period');
+ // Excerpts: only their own words, bounded, never another account's.
+ const ex=must(await a.client.rpc('journal_entry_excerpts',{p_ids:[native.id],p_chars:80}));
+ assert.equal(ex.length,1);assert.equal(ex[0].excerpt,'A Muse entry written the same day.','their own words');
+ must(await a.client.from('journal_messages').insert({conversation_id:native.id,role:'assistant',body:'A reply that must not appear.',local_date:'2025-03-02'}));
+ const ex2=must(await a.client.rpc('journal_entry_excerpts',{p_ids:[native.id],p_chars:80}));assert.ok(!ex2[0].excerpt.includes('reply'),'never the companion');
+ assert.equal(must(await a.client.rpc('journal_entry_excerpts',{p_ids:[native.id],p_chars:80})).length,1);
+ assert.ok(must(await a.client.rpc('journal_entry_excerpts',{p_ids:[native.id],p_chars:80}))[0].excerpt.length<=80,'bounded');
+ assert.equal(must(await b.client.rpc('journal_entry_excerpts',{p_ids:[native.id]})).length,0,'another account gets nothing');
  const gone=await admin.auth.admin.deleteUser(a.id);assert.ok(!gone.error,`account deletion succeeds with imports: ${gone.error?.message}`);users.splice(users.indexOf(a.id),1);
  for(const t of ['journal_import_batches','journal_import_sources','journal_conversations','journal_report_versions'])assert.equal((await admin.from(t).select('*',{count:'exact',head:true}).eq('user_id',a.id)).count,0,`${t} emptied by account deletion`);
  console.log('PASS Journal history: imported entries are ordinary finished entries (date, time, order, words, several replies), provenance separate + owner-only + append-only, duplicates by content and by id, native entries untouched, refusals, per-account isolation, search, tag history (counts, permitted only), loadMemory recalls Jamie by tag + follow-up + alias, never “the sun”, memory off sends nothing, enrichment candidates, manual deletion respected, undo removes only that import, account deletion removes everything.');

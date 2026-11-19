@@ -378,14 +378,14 @@ isOneToOne: false
                 },
 "journal_report_versions": {
                   Row: {
-                    "created_at": string,"data": NonNullable<Json>,"id": string,"model": string | null,"report_id": string,"revision": number,"source_ids": string[],"source_signature": string,"user_id": string,"week_start": string,"written_at": string
+                    "created_at": string,"data": NonNullable<Json>,"id": string,"model": string | null,"period": string,"report_id": string,"revision": number,"source_ids": string[],"source_signature": string,"user_id": string,"week_start": string,"written_at": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "created_at"?: string,"data": NonNullable<Json>,"id"?: string,"model"?: string | null,"report_id": string,"revision": number,"source_ids"?: string[],"source_signature"?: string,"user_id": string,"week_start": string,"written_at": string
+                    "created_at"?: string,"data": NonNullable<Json>,"id"?: string,"model"?: string | null,"period"?: string,"report_id": string,"revision": number,"source_ids"?: string[],"source_signature"?: string,"user_id": string,"week_start": string,"written_at": string
                   }
                   Update: {
-                    "created_at"?: string,"data"?: NonNullable<Json>,"id"?: string,"model"?: string | null,"report_id"?: string,"revision"?: number,"source_ids"?: string[],"source_signature"?: string,"user_id"?: string,"week_start"?: string,"written_at"?: string
+                    "created_at"?: string,"data"?: NonNullable<Json>,"id"?: string,"model"?: string | null,"period"?: string,"report_id"?: string,"revision"?: number,"source_ids"?: string[],"source_signature"?: string,"user_id"?: string,"week_start"?: string,"written_at"?: string
                   }
                   Relationships: [
                     
@@ -393,14 +393,14 @@ isOneToOne: false
                 },
 "journal_reports": {
                   Row: {
-                    "created_at": string,"data": NonNullable<Json>,"id": string,"model": string | null,"revision": number,"source_ids": (string)[],"source_signature": string,"updated_at": string,"user_id": string,"week_start": string
+                    "created_at": string,"data": NonNullable<Json>,"id": string,"model": string | null,"period": string,"revision": number,"source_ids": (string)[],"source_signature": string,"updated_at": string,"user_id": string,"week_start": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "created_at"?: string,"data"?: NonNullable<Json>,"id"?: string,"model"?: string | null,"revision"?: number,"source_ids"?: (string)[],"source_signature"?: string,"updated_at"?: string,"user_id"?: string,"week_start": string
+                    "created_at"?: string,"data"?: NonNullable<Json>,"id"?: string,"model"?: string | null,"period"?: string,"revision"?: number,"source_ids"?: (string)[],"source_signature"?: string,"updated_at"?: string,"user_id"?: string,"week_start": string
                   }
                   Update: {
-                    "created_at"?: string,"data"?: NonNullable<Json>,"id"?: string,"model"?: string | null,"revision"?: number,"source_ids"?: (string)[],"source_signature"?: string,"updated_at"?: string,"user_id"?: string,"week_start"?: string
+                    "created_at"?: string,"data"?: NonNullable<Json>,"id"?: string,"model"?: string | null,"period"?: string,"revision"?: number,"source_ids"?: (string)[],"source_signature"?: string,"updated_at"?: string,"user_id"?: string,"week_start"?: string
                   }
                   Relationships: [
                     
@@ -3699,6 +3699,9 @@ isOneToOne: false
             }[] },
 "journal_enrichment_candidates": { Args: Record<PropertyKey, never>; Returns: {
               "conversation_id": string,"local_date": string,"chars": number,"analysed": boolean
+            }[] },
+"journal_entry_excerpts": { Args: { "p_ids": string[],"p_chars"?: number }; Returns: {
+              "conversation_id": string,"excerpt": string,"chars": number
             }[] },
 "search_journal": { Args: { "p_limit"?: number,"p_query": string }; Returns: {
               "conversation_id": string,"rank": number,"snippet": string

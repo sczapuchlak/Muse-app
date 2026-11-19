@@ -270,3 +270,31 @@ export function weekInput(entries: readonly WeekEntry[], max = 140000): { text: 
   const own = Math.max(400, Math.floor((max * 0.9) / Math.max(1, entries.length)));
   return { text: build(0, own).slice(0, max), shortened: true };
 }
+
+/**
+ * Monthly and yearly Life Review input, bounded to `max` characters however long the period: every eligible entry in
+ * date order with an equal share of space (header, then its saved summary labelled secondary, then an excerpt of their
+ * own words, marked when cut), plus saved weekly or monthly reflections for parts of the period (secondary, at most a
+ * quarter of the space). Nothing is fetched or summarised again; old AI text is never presented as their words.
+ */
+export type PeriodEntry = { date: string; journal: string; title: string; tags: string[]; summary: string; summarySource: string | null; excerpt: string; ownChars: number };
+export type PeriodReportNote = { label: string; title: string; text: string };
+const shortDate = (d: string) => new Date(`${d}T12:00:00Z`).toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
+export function periodInput(entries: readonly PeriodEntry[], notes: readonly PeriodReportNote[], max: number): { text: string; shortened: boolean } {
+  let shortened = false;
+  const noteBudget = notes.length ? Math.floor(max * 0.25) : 0, perNote = notes.length ? Math.floor(noteBudget / notes.length) : 0;
+  const noteText = notes.map((n) => { const body = n.text.replace(/\s+/g, " ").trim(); if (body.length > perNote - 80) shortened = true; return `- ${n.label}${n.title ? ` · “${n.title}”` : ""}: ${clip(body, Math.max(120, perNote - 80))}`; }).join("\n");
+  const per = Math.max(160, Math.floor((max - noteText.length - 400) / Math.max(1, entries.length)));
+  const lines = entries.map((e) => {
+    const head = `- ${shortDate(e.date)} · ${e.journal}${e.title ? ` · “${e.title}”` : ""}${e.tags.length ? ` [${e.tags.slice(0, 8).join(", ")}]` : ""}`;
+    const room = Math.max(60, per - head.length - 40);
+    const src = e.summarySource === "user" ? "Their summary" : e.summarySource === "import" ? "Earlier summary (imported, secondary)" : "Earlier AI summary (secondary)";
+    const sum = e.summary.trim() ? clip(e.summary.replace(/\s+/g, " ").trim(), Math.floor(room * (e.excerpt ? 0.45 : 1))) : "";
+    const left = room - sum.length;
+    const own = e.excerpt.trim() && left > 60 ? clip(e.excerpt.replace(/\s+/g, " ").trim(), left) : "";
+    if ((e.summary && sum.length < e.summary.trim().length) || e.ownChars > own.length) shortened = true;
+    return [head, sum && `  ${src}: ${sum}`, own && `  In their words${e.ownChars > own.length ? " (excerpt)" : ""}: ${own}`].filter(Boolean).join("\n");
+  });
+  const text = [`Entries, in order:\n${lines.join("\n")}`, noteText && `Reflections already written for parts of this period (secondary):\n${noteText}`].filter(Boolean).join("\n\n");
+  return { text: text.slice(0, max), shortened: shortened || text.length > max };
+}

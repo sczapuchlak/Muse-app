@@ -105,9 +105,11 @@ export type ReportSection = { heading: string; body: string };
 export type ReportData = {
   narrative: string; threads: string[]; moments: string[]; observations: string[];
   title: string; review: string; themes: ReportSection[]; insights: ReportSection[]; wins: ReportSection[]; closing: string;
+  /** Monthly and yearly reviews only (empty for a week): chapters/turning points, people, what changed. */
+  chapters: ReportSection[]; people: ReportSection[]; shifts: ReportSection[];
   covered: { start: string; end: string; entries: number; generatedAt: string } | null;
 };
-export type Report = { id: string; weekStart: string; data: ReportData; sourceIds: string[]; sourceSignature: string; model: string | null; updatedAt: string };
+export type Report = { id: string; period: "week" | "month" | "year"; weekStart: string; data: ReportData; sourceIds: string[]; sourceSignature: string; model: string | null; updatedAt: string };
 
 const tone = (n: number): MuseTone => (n >= 1 && n <= 8 ? n : 1) as MuseTone;
 
@@ -196,11 +198,12 @@ export function parseReportData(v: unknown): ReportData {
   const c = o.covered as Record<string, unknown> | undefined;
   return {
     narrative: str(o.narrative, 4000), threads: strings(o.threads, 6, 300), moments: strings(o.moments, 6, 300), observations: strings(o.observations, 5, 400),
-    title: str(o.title, 160), review: str(o.review, 30000), themes: sections(o.themes, 6), insights: sections(o.insights, 5), wins: sections(o.wins, 6), closing: str(o.closing, 4000),
+    title: str(o.title, 160), review: str(o.review, 40000), themes: sections(o.themes, 6), insights: sections(o.insights, 5), wins: sections(o.wins, 8), closing: str(o.closing, 4000),
+    chapters: sections(o.chapters, 8), people: sections(o.people, 8), shifts: sections(o.shifts, 6),
     covered: c && typeof c.start === "string" && typeof c.end === "string" ? { start: c.start, end: c.end, entries: Number(c.entries) || 0, generatedAt: typeof c.generatedAt === "string" ? c.generatedAt : "" } : null,
   };
 }
-export const reportFromRow = (r: Tables["journal_reports"]["Row"]): Report => ({ id: r.id, weekStart: r.week_start, data: parseReportData(r.data), sourceIds: r.source_ids, sourceSignature: r.source_signature, model: r.model, updatedAt: r.updated_at });
+export const reportFromRow = (r: Tables["journal_reports"]["Row"]): Report => ({ id: r.id, period: (r.period ?? "week") as Report["period"], weekStart: r.week_start, data: parseReportData(r.data), sourceIds: r.source_ids, sourceSignature: r.source_signature, model: r.model, updatedAt: r.updated_at });
 
 /** Tag names compare case-insensitively with collapsed spaces; "alex" and "Alex " are one tag, "Alex" and "Alexa" are not. */
 export const normalizeTag = (name: string) => name.trim().replace(/\s+/g, " ").toLowerCase();

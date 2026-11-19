@@ -148,7 +148,7 @@ try{
  await shoot('07-analysis-v2');
  const weekOf=ST.weekStart('2025-03-02');
  const list=(await P.loadJournal(a.client,a.id)).conversations.filter(c=>c.localDate>=weekOf&&c.localDate<=ST.addDays(weekOf,6));
- must(await a.client.from('journal_reports').upsert({user_id:a.id,week_start:weekOf,source_ids:list.map(c=>c.id),source_signature:ST.sourceSignature(list),model:'mock',data:{title:'The Art of Letting Things Be',review:para(3,8),themes:[{heading:'Wanting answers before they exist',body:para(2,6)},{heading:'Ease as a signal',body:para(1,6)},{heading:'Letting the week be small',body:para(1,4)}],insights:[{heading:'Reaction versus response',body:'Maybe the waiting was the choice.'},{heading:'Expectation and outcome',body:'It went better than the story you told yourself on Tuesday.'}],wins:[{heading:'You let it settle',body:'You waited a day before replying.'},{heading:'You went',body:'You showed up to the opening alone.'}],closing:'A week that asked for patience and mostly got it.',covered:{start:weekOf,end:ST.addDays(weekOf,6),entries:list.length,generatedAt:new Date().toISOString()}}},{onConflict:'user_id,week_start'}));
+ must(await a.client.from('journal_reports').upsert({user_id:a.id,week_start:weekOf,source_ids:list.map(c=>c.id),source_signature:ST.sourceSignature(list),model:'mock',data:{title:'The Art of Letting Things Be',review:para(3,8),themes:[{heading:'Wanting answers before they exist',body:para(2,6)},{heading:'Ease as a signal',body:para(1,6)},{heading:'Letting the week be small',body:para(1,4)}],insights:[{heading:'Reaction versus response',body:'Maybe the waiting was the choice.'},{heading:'Expectation and outcome',body:'It went better than the story you told yourself on Tuesday.'}],wins:[{heading:'You let it settle',body:'You waited a day before replying.'},{heading:'You went',body:'You showed up to the opening alone.'}],closing:'A week that asked for patience and mostly got it.',covered:{start:weekOf,end:ST.addDays(weekOf,6),entries:list.length,generatedAt:new Date().toISOString()}}},{onConflict:'user_id,period,week_start'}));
  await go(`/journal?view=insights&week=${weekOf}`,'!!document.querySelector(".mj-report-v2")','v2 report');
  const rv=await evaluate(()=>document.querySelector('.mj-report-v2').textContent.replace(/\s+/g,' '));
  check(/The Art of Letting Things Be/.test(rv)&&/The week in review/.test(rv)&&/Major themes/.test(rv)&&/Insights & patterns/.test(rv)&&/Weekly wins/.test(rv)&&/mostly got it/.test(rv),'the weekly reflection renders title, review, themes, insights, wins and closing');
@@ -163,11 +163,54 @@ try{
   const jid=(await P.loadJournal(a.client,a.id)).journals[0].id;
   const now=await P.createConversation(a.client,a.id,{id:crypto.randomUUID(),journalId:jid,companion:null,mode:'open',localDate:todayLocal,timeZone:'UTC',status:'active'});
   await P.addMessage(a.client,a.id,{id:crypto.randomUUID(),conversationId:now.id,body:'A small note for this week.',localDate:todayLocal});
+  must(await a.client.from('journal_conversations').update({status:'completed',completed_at:new Date().toISOString()}).eq('id',now.id));
   await go('/journal?view=insights','!!document.querySelector(".mj-reflection")','this week');
   await until(()=>!!document.querySelector('.mj-reflection-locked'),'locked');
   check(await has('.mj-reflection-locked','opens on Sunday')&&!(await has('.mj-reflection button','Write this week')),'this week’s reflection is locked until Sunday, with no button');
   await shoot('10-locked');
  }
+ // On This Day: a quiet line on the blank page that opens into a small card; History shows them all.
+ const md=todayLocal.slice(5),y=Number(todayLocal.slice(0,4)),jid0=(await P.loadJournal(a.client,a.id)).journals[0].id;
+ for(const [yr,title,body] of [[y-1,'🌧️ Rain on the Lake','We sat by the lake and it rained the whole time.'],[y-2,'📚 The Bookshop Detour','Took the long way through the bookshop again.']]){
+  const d=`${yr}-${md}`;const cv=await P.createConversation(a.client,a.id,{id:crypto.randomUUID(),journalId:jid0,companion:null,mode:'open',localDate:d,startedAt:`${d}T15:00:00Z`,timeZone:'UTC',status:'active'});
+  await P.addMessage(a.client,a.id,{id:crypto.randomUUID(),conversationId:cv.id,body,localDate:d});must(await a.client.from('journal_conversations').update({status:'completed',completed_at:`${d}T16:00:00Z`,title}).eq('id',cv.id));
+ }
+ await go('/journal','!!document.querySelector(".mj-workspace")','blank page');
+ await until(()=>(document.querySelector('.mj-otd-line')?.textContent??'').includes('+1'),'on this day line');await wait(600);
+ const line=await evaluate(()=>document.querySelector('.mj-otd-line')?.textContent??'');
+ check(line.includes(String(y-1))&&line.includes('Rain on the Lake')&&line.includes('+1'),'On This Day shows one quiet line: newest year, its title, and how many more');
+ check(!(await has('.mj-otd-card')),'collapsed until opened');
+ await click('.mj-otd-line');await until(()=>!!document.querySelector('.mj-otd-card'),'card opens');
+ await until(()=>document.querySelector('.mj-otd-preview')?.textContent.includes('lake'),'preview words');
+ check(await has('.mj-otd-card','1 year ago')&&await has('.mj-otd-preview','sat by the lake'),'opened: the year, how long ago, and their own words when there is no summary');
+ await evaluate(()=>document.querySelector('[aria-label="Next memory"]').click());await until(()=>document.querySelector('.mj-otd-card')?.textContent.includes('Bookshop'),'second memory');
+ check(await has('.mj-otd-card','2 of 2')&&await has('.mj-otd-card','2 years ago'),'step through other years');
+ check(await evaluate(()=>!!document.querySelector('.mj-workspace textarea')),'the composer is still right there');
+ await shoot('11-on-this-day');
+ await click('.mj-otd-card a','See all in History');await until(()=>document.querySelectorAll('.mj-history-view .mj-row').length===2,'history on this day');
+ check(await has('.mj-active-filters','On this day'),'History shows exactly today’s memories, as a removable filter');
+ await viewport(390,844,true);await go('/journal','!!document.querySelector(".mj-otd-line")','phone blank');await wait(600);
+ await click('.mj-otd-line');await until(()=>!!document.querySelector('.mj-otd-card'),'phone card');
+ check(!(await overflow()),'phone: the memory card fits');await shoot('12-on-this-day-phone');await viewport(1280);
+ // Life Reviews: Week | Month | Year in the same header spot as History.
+ await go('/journal?view=insights','!!document.querySelector(".mj-insights")','insights');
+ check((await evaluate(()=>[...document.querySelectorAll('.mj-insights .mj-history-controls .muse-segmented button')].map(b=>b.textContent).join('|')))==='Week|Month|Year','Week | Month | Year where History has its switcher');
+ await click('.mj-insights .mj-history-controls button','Month');await until(()=>document.querySelector('#mj-reflection-title')?.textContent==='Monthly review','month view');
+ if(await has('.mj-reflection','No entries')===false)check(await has('.mj-reflection-locked','review opens when the month is over'),'this month’s review waits until the month is over');
+ must(await a.client.from('journal_reports').insert({user_id:a.id,period:'month',week_start:'2025-03-01',source_ids:[],source_signature:'x',model:'mock',data:{title:'🌱 A Month of Small Beginnings',review:para(2,6),chapters:[{heading:'The opening night',body:'On March 2 you went.'}],themes:[{heading:'Ease',body:'b'}],people:[{heading:'A new friend',body:'b'}],shifts:[{heading:'Lighter',body:'b'}],insights:[{heading:'Pattern',body:'b'}],wins:[{heading:'You went',body:'b'}],closing:'Closing.',covered:{start:'2025-03-01',end:'2025-03-31',entries:1,generatedAt:new Date().toISOString()}}}));
+ const back=(Number(todayLocal.slice(0,4))-2025)*12+Number(todayLocal.slice(5,7))-3;
+ for(let i=0;i<back;i++)await evaluate(()=>document.querySelector('[aria-label="Previous month"]').click());
+ await until(()=>!!document.querySelector('.mj-report-v2'),'month report');
+ const mtext=await evaluate(()=>document.querySelector('.mj-report-v2').textContent.replace(/\s+/g,' '));
+ check(/March 2025/.test(await evaluate(()=>document.querySelector('#mj-period-title').textContent))&&/The month in review/.test(mtext)&&/Moments that mattered/.test(mtext)&&/People & relationships/.test(mtext)&&/What changed/.test(mtext)&&/Wins & memorable moments/.test(mtext),'a saved monthly review renders all of its sections');
+ await shoot('13-month-review');
+ await click('.mj-insights .mj-history-controls button','Year');await until(()=>document.querySelector('#mj-reflection-title')?.textContent==='Year in review','year view');
+ check(await has('.mj-reflection-locked','review opens when the year is over'),'this year’s review waits until the year is over');
+ await evaluate(()=>document.querySelector('[aria-label="Previous year"]').click());
+ await until((t)=>document.querySelector('#mj-period-title')?.textContent===t,'last year',String(y-1));
+ check(await has('.mj-reflection button',`Write the year in review`)||await has('.mj-reflection','isn’t on for your account'),'a finished year can be written on request (never automatically)');
+ check((await count('journal_ai_usage',a.id))===0,'opening Insights, switching periods and reading saved reviews made no AI request');
+ await viewport(390,844,true);check(!(await overflow()),'phone: Insights by year fits');await shoot('14-year-phone');await viewport(1280);
  // Importing the same file again skips everything; removing the import removes only its entries.
  await openImport();
  await until(()=>document.querySelector('.mj-import')?.textContent.includes('Earlier imports'),'earlier imports');

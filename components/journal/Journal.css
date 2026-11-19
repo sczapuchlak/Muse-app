@@ -966,3 +966,24 @@
 .mj-report-closing{margin-top:4px}
 .mj-reflection-locked .mj-note{max-width:52ch;text-align:center}
 .mj-reflection-ready{display:grid;gap:10px;justify-items:start}
+
+/* On This Day (Nov 19): one quiet line under the greeting that opens into a small memory card; never inside a
+   conversation, never a feed. Theme-aware through the journal tile and hairline tokens. */
+.mj-otd{display:grid;gap:8px;max-width:min(100%,560px);margin-top:4px}
+.mj-otd-line{display:inline-flex;align-items:center;gap:8px;justify-self:start;max-width:100%;min-height:36px;padding:6px 12px 6px 10px;border:1px solid var(--glass-border);border-radius:999px;background:var(--mj-tile);color:var(--foreground);font:inherit;cursor:pointer;text-align:left}
+.mj-otd-line:hover{border-color:color-mix(in srgb,var(--journal-a,var(--accent-primary)) 45%,var(--glass-border))}
+.mj-otd-line:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
+.mj-otd-line>svg{flex:none;transition:transform .2s ease}.mj-otd[data-open] .mj-otd-line>svg{transform:rotate(180deg)}
+.mj-otd-spark{color:var(--journal-a,var(--accent-primary))}
+.mj-otd-label{flex:none;color:var(--text-muted);letter-spacing:.12em;text-transform:uppercase}
+.mj-otd-year{flex:none;font-weight:600}
+.mj-otd-title{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-style:italic}
+.mj-otd-more{flex:none;color:var(--text-muted)}
+.mj-otd-card{display:grid;gap:8px;padding:14px 16px;border:1px solid var(--glass-border);border-radius:var(--mj-radius,18px);background:var(--mj-tile)}
+.mj-otd-when{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0;color:var(--text-muted)}
+.mj-otd-chip{padding:2px 9px;border-radius:999px;background:color-mix(in srgb,var(--journal-a,var(--accent-primary)) 22%,transparent);color:var(--foreground);font-weight:600;letter-spacing:.04em}
+.mj-otd-name{font-size:1.1rem;color:inherit;text-decoration:none}.mj-otd-name:hover{text-decoration:underline}
+.mj-otd-preview{margin:0;line-height:1.6;color:var(--text-muted)}
+.mj-otd-actions{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:8px 14px}
+.mj-otd-nav{display:inline-flex;align-items:center;gap:6px;margin-right:auto}
+@media (prefers-reduced-motion:reduce){.mj-otd-line>svg{transition:none}}

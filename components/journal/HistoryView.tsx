@@ -18,7 +18,7 @@ import { useJournal } from "./useJournal";
 import { dayNumber, formatMonth, formatShort, weekdayShort } from "./format";
 import * as P from "@/lib/journal/persistence";
 import { isListed, tagKindLabel, tagKinds, tagLabel, type Bookmark, type Conversation, type Report, type Tag } from "@/lib/journal/model";
-import { addDays, weekDays, weekStart } from "@/lib/journal/stats";
+import { addDays, onThisDay as memoriesOn, weekDays, weekStart } from "@/lib/journal/stats";
 
 type Show = "entries" | "week" | "highlights" | "drafts";
 
@@ -57,7 +57,7 @@ export function HistoryView({ open, initialTag, initialJournal, onThisDay }: { o
   const bookmarked = useMemo(() => new Set(state.bookmarks.map((b) => b.conversationId)), [state.bookmarks]);
   const list = useMemo(() => {
     let out = state.conversations.filter(isListed);
-    if (sameDay) out = out.filter((c) => c.localDate.slice(5) === j.today.slice(5) && c.localDate < j.today);
+    if (sameDay) { const ids = new Set(memoriesOn(state.conversations, j.today).map((c) => c.id)); out = out.filter((c) => ids.has(c.id)); }
     if (hits) out = out.filter((c) => hits.has(c.id));
     if (journalIds.length) out = out.filter((c) => journalIds.includes(c.journalId));
     if (companions.length) out = out.filter((c) => companions.includes(c.companionName));
