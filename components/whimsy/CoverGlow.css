@@ -13,3 +13,8 @@
 [data-density="list"] .muse-collections-card>.muse-cover-glow{opacity:.18}
 :root:is([data-theme="iridescent"],[data-theme="solstice"],[data-theme="issya-bday"],[data-theme="bubblegum-baby"],[data-theme="all-american-girl"],[data-theme="astral"],[data-theme="nightbloom"],:not([data-theme])) .muse-cover-glow{opacity:.3;-webkit-filter:blur(36px) saturate(1.5) brightness(1.15);filter:blur(36px) saturate(1.5) brightness(1.15)}
 @media (prefers-reduced-motion:reduce){.muse-cover-glow{transition:none}}
+/* Daily Edit Bookshelf (Nov 18): this row isn't its own card, so a glow filling the whole row read as a grey box.
+   Here the cover's colour is a soft halo around the cover alone, fading to nothing well before any edge. */
+.muse-daily-bookshelf-feature[data-glow]:has(>.muse-cover-glow){overflow:visible}
+.muse-daily-bookshelf-feature>.muse-cover-glow:not(#\#){inset:-26px auto -26px -30px;width:170px;border-radius:50%;opacity:.62;-webkit-mask-image:radial-gradient(closest-side,#000 35%,transparent 100%);mask-image:radial-gradient(closest-side,#000 35%,transparent 100%)}
+.muse-daily-bookshelf-feature[data-glow]:hover>.muse-cover-glow{opacity:.7;transform:translateZ(0)}

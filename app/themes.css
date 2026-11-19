@@ -1722,23 +1722,8 @@
  radial-gradient(ellipse 14% 10svh at 70% 50svh,rgba(255,76,48,.5) 0,transparent 72%),
  radial-gradient(ellipse 14% 8svh at 78% 3svh,rgba(255,76,48,.6) 0,transparent 72%),
  linear-gradient(160deg,#ff9cce 0,#ff69b4 30%,#ff369b 60%,#ff69b4 100%);
-  --atmosphere-pool-layers: radial-gradient(ellipse 40% 13% at -4% 18%,rgba(41,254,140,0.46) 0,transparent 82%),
- radial-gradient(ellipse 40% 13% at 104% 28%,rgba(255,76,48,0.46) 0,transparent 82%),
- radial-gradient(ellipse 44% 13% at 40% 38%,rgba(0,229,255,0.46) 0,transparent 82%),
- radial-gradient(ellipse 40% 13% at -4% 50%,rgba(198,255,52,0.46) 0,transparent 82%),
- radial-gradient(ellipse 40% 13% at 104% 60%,rgba(254,0,111,0.46) 0,transparent 82%),
- radial-gradient(ellipse 44% 13% at 60% 70%,rgba(41,254,140,0.46) 0,transparent 82%),
- radial-gradient(ellipse 40% 13% at -4% 82%,rgba(255,76,48,0.46) 0,transparent 82%),
- radial-gradient(ellipse 40% 13% at 104% 90%,rgba(0,229,255,0.46) 0,transparent 82%),
- radial-gradient(ellipse 44% 13% at 30% 99%,rgba(198,255,52,0.46) 0,transparent 82%),
- radial-gradient(ellipse 30% 10% at 4% 58%,rgba(41,254,140,.52) 0,transparent 80%),
- radial-gradient(ellipse 28% 10% at 96% 68%,rgba(255,76,48,.5) 0,transparent 80%),
- radial-gradient(ellipse 30% 9% at 50% 80%,rgba(0,229,255,.48) 0,transparent 80%),
- radial-gradient(ellipse 30% 9% at 30% 100%,rgba(198,255,52,.62) 0,transparent 80%),
- radial-gradient(ellipse 26% 10% at 86% 98%,rgba(254,0,111,.5) 0,transparent 80%);
-  --atmosphere-haze-layers: radial-gradient(ellipse 15% 3% at 9% 24%,rgba(255,255,255,.72) 0,transparent 90%),
- radial-gradient(ellipse 18% 4% at 88% 50%,rgba(140,244,243,.5) 0,transparent 90%),
- radial-gradient(ellipse 20% 3% at 24% 84%,rgba(255,255,255,.5) 0,transparent 90%);
+  --atmosphere-pool-layers: linear-gradient(180deg,transparent,transparent);
+  --atmosphere-haze-layers: linear-gradient(180deg,transparent,transparent);
   --tone-card-ink: #3a0a2e;
   --tone-card-muted: #6a2f5c;
   --tone-card-accent: #a8005f;
