@@ -129,12 +129,12 @@ test('photos: only the answered message carries photos; earlier ones are named a
   assert.equal(M.MAX_MESSAGE_IMAGES, 7);
 });
 
-test('analysis carries a closer look and an insight; older analyses read as empty, never invented', () => {
+test('older analyses keep their closer look and insight; missing fields read as empty, never invented', () => {
   const d = M.parseAnalysisData({ title: 'T', recap: 'R', reflection: 'One.\n\nTwo.', insight: 'Keep this.' });
   assert.equal(d.reflection, 'One.\n\nTwo.'); assert.equal(d.insight, 'Keep this.');
   const old = M.parseAnalysisData({ title: 'T', recap: 'R' });
   assert.equal(old.reflection, ''); assert.equal(old.insight, '');
-  assert.ok(I.analysisSchema.required.includes('reflection') && I.analysisSchema.required.includes('insight'));
+  assert.ok(I.analysisSchema.required.includes('overview') && I.analysisSchema.required.includes('insights'), 'new analyses carry the narrative overview and distilled insights (older reflection/insight still read)');
   assert.ok(!I.analysisSchema.required.includes('places') && !I.analysisSchema.required.includes('themes'), 'analysis no longer asks for places or themes');
 });
 

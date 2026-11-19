@@ -134,7 +134,16 @@ try{
  assert.ok((await a.client.rpc('import_journal_entry',{p_batch:batch,p_source:'rosebud',p_key:'k',p_fingerprint:'0'.repeat(64),p_journal:J,p_entry:IM.entryPayload(jamie)})).error,'an undone import accepts nothing more');
  const anon=createClient(url,process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,options);
  for(const t of ['journal_import_batches','journal_import_sources']){const r=await anon.from(t).select('*').limit(1);assert.ok(r.error||r.data.length===0,`${t} closed to anon`);}
+ // Weekly reflections: writing one again keeps the earlier version (owner-only, never written by a browser).
+ const rep=must(await a.client.from('journal_reports').insert({user_id:a.id,week_start:'2026-11-09',data:{title:'First',review:'x'},source_ids:[],source_signature:'s1'}).select('*').single());
+ must(await a.client.from('journal_reports').update({data:{title:'Second',review:'y'},source_signature:'s2'}).eq('id',rep.id));
+ must(await a.client.from('journal_reports').update({model:'m'}).eq('id',rep.id));
+ const vers=must(await a.client.from('journal_report_versions').select('data,source_signature,revision').eq('report_id',rep.id));
+ assert.deepEqual(vers.map(v=>[v.data.title,v.source_signature]),[['First','s1']],'the earlier reflection is kept once; a change without new words keeps nothing');
+ assert.equal(must(await b.client.from('journal_report_versions').select('id')).length,0,'another account sees no versions');
+ assert.ok((await a.client.from('journal_report_versions').insert({user_id:a.id,report_id:rep.id,week_start:'2026-11-09',data:{},revision:1,written_at:new Date().toISOString()})).error,'a browser can’t write a version');
+ assert.ok(!(await a.client.from('journal_reports').update({data:{title:'Long',review:'z'.repeat(90000)}}).eq('id',rep.id)).error,'a long V2 report fits');
  const gone=await admin.auth.admin.deleteUser(a.id);assert.ok(!gone.error,`account deletion succeeds with imports: ${gone.error?.message}`);users.splice(users.indexOf(a.id),1);
- for(const t of ['journal_import_batches','journal_import_sources','journal_conversations'])assert.equal((await admin.from(t).select('*',{count:'exact',head:true}).eq('user_id',a.id)).count,0,`${t} emptied by account deletion`);
+ for(const t of ['journal_import_batches','journal_import_sources','journal_conversations','journal_report_versions'])assert.equal((await admin.from(t).select('*',{count:'exact',head:true}).eq('user_id',a.id)).count,0,`${t} emptied by account deletion`);
  console.log('PASS Journal history: imported entries are ordinary finished entries (date, time, order, words, several replies), provenance separate + owner-only + append-only, duplicates by content and by id, native entries untouched, refusals, per-account isolation, search, tag history (counts, permitted only), loadMemory recalls Jamie by tag + follow-up + alias, never “the sun”, memory off sends nothing, enrichment candidates, manual deletion respected, undo removes only that import, account deletion removes everything.');
 }finally{for(const id of users)await admin.auth.admin.deleteUser(id);console.log('Disposable accounts removed.');}

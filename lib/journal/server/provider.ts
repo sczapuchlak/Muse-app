@@ -121,9 +121,10 @@ async function mock(call: Call): Promise<Result> {
   if (call.schema?.name === "journal_analysis") {
     const mine = all.split("\n").filter((l) => l.startsWith("Me:")).join(" ");
     const names = [...new Set([...mine.matchAll(/(?<=[a-z,] )(\p{Lu}[\p{Ll}]{2,})/gu)].map((m) => m[1]))].slice(0, 5);
-    text = JSON.stringify({ title: mine.replace(/^Me:\s*/, "").split(/\s+/).slice(0, 5).join(" ") || "A conversation", recap: `You talked about ${mine.split(/\s+/).length} words' worth of your day.`, reflection: "A closer look (mock): what you wrote, read back.\n\nA second paragraph.", insight: "Mock insight: one thing worth keeping.", people: names, places: [], topics: ["Everyday"], themes: [], emotions: ["excited", "tired", "anxious", "grateful", "happy"].filter((w) => mine.toLowerCase().includes(w)).map((w) => w[0].toUpperCase() + w.slice(1)), observations: [], threads: [], memories: [] });
-  } else if (call.schema?.name === "journal_report") {
-    text = JSON.stringify({ narrative: `Mock weekly reflection across ${titles.length} entries: ${titles.join("; ") || "none"}.`, threads: [], moments: [], observations: [] });
+    text = JSON.stringify({ title: mine.replace(/^Me:\s*/, "").split(/\s+/).slice(0, 5).join(" ") || "A conversation", recap: `You talked about ${mine.split(/\s+/).length} words' worth of your day.`, overview: `Overview (mock): the day, reconstructed from ${mine.split(/\s+/).length} of your words.\n\nA second paragraph${/Earlier in their journal/.test(all) ? ", with earlier context available" : ""}.`, insights: ["Mock insight: one thing worth keeping."], people: names, topics: ["Everyday"], emotions: ["excited", "tired", "anxious", "grateful", "happy"].filter((w) => mine.toLowerCase().includes(w)).map((w) => w[0].toUpperCase() + w.slice(1)), observations: [], threads: [], memories: [] });
+  } else if (call.schema?.name === "journal_weekly_reflection") {
+    const days = [...all.matchAll(/^### (\w+day), /gm)].map((m) => m[1]);
+    text = JSON.stringify({ title: "A Mock Week of Small Things", review: `Mock review across ${titles.length} entries: ${titles.join("; ") || "none"}.\n\nDays: ${days.join(", ")}.`, themes: titles.length > 1 ? [{ heading: "A thread that ran through it", body: `It showed up on ${days.join(" and ")}.` }] : [], insights: titles.length > 1 ? [{ heading: "A pattern", body: "Maybe something worth noticing." }] : [], wins: [{ heading: "You wrote", body: `${titles.length} entries.` }], closing: "" });
   } else {
     const testing = /## Test conversation/.test(call.instructions) ? " (test)" : "";
     text = last

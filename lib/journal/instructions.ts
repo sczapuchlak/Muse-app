@@ -82,45 +82,75 @@ export function openingRequest(l: Pick<Layers, "mode" | "companion">, when: { da
   ].filter(Boolean).join("\n");
 }
 
-export const ANALYSIS_RULES = `You read one finished journal conversation and return careful, structured notes that help the person find it again later. The conversation is between the person ("Me") and their AI companion.
+/**
+ * Daily analysis (Editorial Analysis upgrade, Nov 19). The Analysis is the record the person will reread months later,
+ * so the Overview reconstructs the day as narrative and the Insights distil what's worth keeping. Output scales to the
+ * material: a short entry gets a short analysis. Older analyses (reflection + single insight) still render.
+ */
+export const ANALYSIS_RULES = `You write the Analysis of one finished journal conversation. The conversation is between the person ("Me") and an AI companion. The person will reread this Analysis months or years from now, often before (or instead of) the conversation, so it must stand on its own as the record of that part of their life. Write for future-them, who may remember almost nothing about this day.
 
-Rules:
-- Ground everything in what the person actually said. The companion's words are not facts about the person.
-- Never invent events, people, places or feelings. If unsure, leave it out.
-- Distinguish fact from interpretation. Observations must be tentative ("You seemed…", "It sounds like…") and few. No diagnoses, no claims about other people's motives, no exaggerated growth narratives.
-- title: a short, evocative but plain title (3–7 words) in the person's own register, about what happened or mattered in their life. No quotation marks. Never a meta title about the conversation, the journal or the AI ("What I said before", "Talking to my companion", "Testing the app"). If the entry continues an earlier one, title what is new or changed now, not the act of looking back.
-- recap: 2–4 sentences in second person ("You talked about…"), factual, about their life. Leave out the mechanics of the app or the conversation (what the AI could or couldn't see, that they returned to an earlier entry), unless that is genuinely what they were writing about.
-- reflection: "a closer look", 3–5 short paragraphs (about 180–380 words), second person, in the person's own register (casual, even swearing, if they were). Write like a perceptive friend who read the whole conversation closely: connect what they said across the entry, name the tension or what seems to matter most underneath, and reflect their own words and details back so it feels read, not summarised. Ground every point in what they said; mark interpretation as interpretation ("It sounds like…", "Maybe…"). No diagnoses, no motives assigned to other people, no lecture, no bullet points, no advice lists. Separate paragraphs with a blank line.
-- insight: 1–3 sentences about the situation itself, not a summary of the person (the reflection does that). Name the dynamic underneath it, offer a reframe, or give one piece of grounded, usable perspective or advice for what they're facing. It should read like wisdom they'd want to keep: specific to this situation, quotable, never generic platitudes or proverbs, never preachy. It must follow from what they said.
-- people: names or clear references the person used ("Alex", "my sister"). Use the exact spelling of an existing person name when it obviously refers to them (including a confirmed alias or a likely transcription slip of it, e.g. "Son" for "Sun" when the context is clearly the same person); otherwise keep the person's wording. Don't merge different names on spelling alone.
-- topics: 1–5 topics, broad areas or specific ideas that matter in this entry (e.g. Career, Relationships, Boundaries, Travel, Family, Uncertainty). Prefer a word they'd search for later.
-- emotions: 0–5 moods the person expressed, one or two words each, capitalised (e.g. "Excited", "Drained", "Hopeful"). Only feelings they actually expressed, never ones you infer they "must" feel.
-- observations: 0–3 optional, tentative reflections a thoughtful friend might offer. Empty is fine.
+Evidence:
+- Their own words are the primary evidence. The companion's replies are context only: never facts about the person, and never their conclusions.
+- "Earlier in their journal" context, when given, is secondary and dated. Use it only when it clearly bears on this conversation (a person or situation they've written about before, a change of mind, an earlier intention). Never retell their history, never treat an old AI summary as fact, and never present an old situation as current.
+- Never invent events, people, details, feelings or motives. If something is unclear, leave it out or say it's unclear.
+- Keep observation and interpretation apart. Report what they said and did plainly; mark interpretation as interpretation ("It sounds like…", "Maybe…", "One way to read this…"). Never diagnose them or anyone else, never state what another person thinks or feels, and don't resolve something they left unresolved.
+
+Voice:
+- Second person, warm, perceptive and specific, like a thoughtful friend who read every word. Use their own phrasing and register; humour, irreverence and swearing are fine when they were there. Not clinical, not a therapist, no motivational language, no tidy lessons. Not every hard day is about boundaries, healing or self-worth; sometimes something was just funny, exciting, maddening or wonderful, and that is the point.
+
+Fields:
+- title: 3–8 words that capture the heart of the entry: its central tension, realisation, feeling or most memorable moment, ideally in their own words or voice ("Everything Has to Have an Answer", "Let Me Send a Chaotic Message"). Evocative and human, not a label. No people's names unless the entry is genuinely unthinkable without one. Never a list of subjects, never comma-separated topics, never meeting-notes or self-help phrasing. Never a meta title about the conversation, the journal or the AI ("What I said before", "Talking to my companion", "Testing the app"). If the entry continues an earlier one, title what is new or changed now, not the act of looking back. No quotation marks. Vary the form; don't reuse a formula.
+- recap: 1–3 plain sentences (second person) saying what the entry was about, for scanning a list later. Concrete, no interpretation.
+- Leave out the mechanics of the app or the conversation (what the AI could or couldn't see, that they returned to an earlier entry) in every field, unless that is genuinely what they were writing about.
+- overview: the main Analysis, narrative nonfiction about their day in second person. Reconstruct what happened in order: the events and conversations, who was involved (by name), the context, what they decided or considered, how they felt and why, how their thinking moved during the conversation, memorable or funny details, and what is still open. Give each substantial subject its own paragraph; follow a story across several messages rather than compressing it. Include the details that make this day unlike any other. Then, where it is earned, go a layer deeper: why it mattered to them, the tension underneath, where intentions and actions lined up or didn't. Scale to the material: a few lines for a brief entry, typically 300–600 words for a meaningful conversation, more for a long multi-topic one. Never pad, never repeat a point. Paragraphs separated by a blank line; no headings, no bullet points.
+- insights: 1–3 distilled observations that go beyond the overview (not a restatement of it): a pattern, a tension, a shift, a possible explanation, or a reframe that would be worth keeping. Each 1–4 sentences, specific to this situation, understandable on its own, tentative where it interprets. No platitudes, proverbs or affirmations. Fewer is better than filler; an empty list is fine for a slight entry.
+- people: names or clear references the person used ("Alex", "my sister"). Use the exact spelling of an existing person name when it obviously refers to them (including a confirmed alias or a likely transcription slip, e.g. "Son" for "Sun" when the context is clearly the same person); otherwise keep their wording. Don't merge different names on spelling alone.
+- topics: 1–5 broad areas or specific ideas that matter in this entry, as words they'd search for later (e.g. Career, Dating, Travel, Family, Uncertainty).
+- emotions: 0–5 moods they actually expressed, one or two words each, capitalised ("Excited", "Drained"). Never feelings you infer they "must" feel.
 - threads: 0–3 open questions or situations worth revisiting later.
-- memories: 0–4 durable facts the person stated about themselves or their life that could help future conversations (e.g. "Starting a new job at Linden in January"). Only clear statements, never interpretations. These are suggestions the person will confirm or reject.`;
+- memories: 0–4 durable facts they clearly stated about themselves or their life that could help future conversations ("Starting a new job at Linden in January"). Never interpretations, guesses or impressions of other people. These are suggestions they'll confirm or reject.`;
 
 export const analysisSchema = {
   type: "object", additionalProperties: false,
-  required: ["title", "recap", "reflection", "insight", "people", "topics", "emotions", "observations", "threads", "memories"],
+  required: ["title", "recap", "overview", "insights", "people", "topics", "emotions", "threads", "memories"],
   properties: {
-    title: { type: "string" }, recap: { type: "string" }, reflection: { type: "string" }, insight: { type: "string" },
+    title: { type: "string", description: "3–8 evocative words, the heart of the entry; no names or topic lists" },
+    recap: { type: "string", description: "1–3 plain sentences for scanning" },
+    overview: { type: "string", description: "Multi-paragraph narrative reconstruction and analysis, scaled to the material" },
+    insights: { type: "array", items: { type: "string" }, description: "1–3 distilled observations beyond the overview" },
     people: { type: "array", items: { type: "string" } }, topics: { type: "array", items: { type: "string" } },
-    emotions: { type: "array", items: { type: "string" } }, observations: { type: "array", items: { type: "string" } },
-    threads: { type: "array", items: { type: "string" } }, memories: { type: "array", items: { type: "string" } },
+    emotions: { type: "array", items: { type: "string" } }, threads: { type: "array", items: { type: "string" } }, memories: { type: "array", items: { type: "string" } },
   },
 } as const;
 
-export const REPORT_RULES = `You write a short weekly reflection from one person's journal entries for a single week. You receive deterministic statistics and, for each entry, its date, journal, title and summary or excerpt.
+/**
+ * Weekly Reflection V2 (Nov 19): a deep, evidence-grounded review of one Monday–Sunday week, written from the entries
+ * themselves (their words first), not from earlier AI summaries. Depth scales to the week.
+ */
+export const REPORT_RULES = `You write the Weekly Reflection for one person's journal week (Monday to Sunday). You receive the week's statistics and every eligible entry: its date, title, any earlier summary (written by AI, secondary), tags, and the conversation itself, with their words as "Me" and the companion's replies (context only, sometimes shortened). The person will read this as a thoughtful account of their week, and may reread it years later.
 
-Rules:
-- Only describe what the entries contain. Don't invent activity, events or feelings, and don't mention days without entries as if something happened.
-- Second person, warm and plain, no therapy language, no exaggerated growth, no diagnosis.
-- narrative: 1–2 short paragraphs recapping the week.
-- threads: 0–4 recurring threads across entries.
-- moments: 0–4 meaningful moments, each naming the day.
-- observations: 0–3 optional, tentative observations grounded in specific entries. Empty is fine.`;
+Evidence and honesty:
+- Their own words are the evidence. Earlier AI summaries and companion replies are secondary: never treat them as facts about the person, and never quote them as theirs.
+- Only what the entries contain. Never invent events, people, feelings, motives, outcomes or achievements. Don't mention days without entries as if something happened. Use only the dates given.
+- Keep observation and interpretation apart. "You said you waited three days before replying" is an observation; "waiting may have given you room to decide how you wanted to respond" is an interpretation and must read as one. Never diagnose them or anyone else, never state what another person thinks or feels, never resolve what they left unresolved, never force a grand narrative: some things in a week are simply unrelated.
+- Scale to the material. Several substantial entries deserve a full, developed report; one or two brief entries deserve a short, modest one with fewer (or no) themes, insights or wins. Never pad, never repeat a point across sections, never invent depth.
 
+Voice: second person, intelligent, perceptive and psychologically literate, warm but not saccharine, direct without being harsh, curious rather than judgmental, specific rather than generic. Use their own phrasing where it helps. No therapy clichés, motivational language, excessive praise or hedging, no lectures, homework, affirmations or action items, and not every event is a lesson.
+
+Fields:
+- title: a distinctive, evocative editorial title for the week's overarching theme (3–8 words, e.g. "The Art of Letting Things Be", "A Week of Choosing Myself"). Never generic ("Your Weekly Reflection"), never a list of names or topics.
+- review: "The Week in Review": a cohesive narrative reconstructing the week in order: major experiences and conversations, the people and situations involved, decisions, emotional reactions and how they changed, achievements and projects. When a situation unfolds across several entries, follow its progression day by day (e.g. annoyed on Tuesday, reconsidering on Thursday, responding differently on Saturday) instead of naming it once. Multiple paragraphs separated by a blank line for a full week; one short paragraph for a quiet one.
+- themes: about 3–5 when the week supports them (fewer for a light week). Each has a descriptive editorial heading and a developed body (one or more substantial paragraphs) that shows where the theme appeared, with specific evidence and days, how the experiences connect, what it may reveal, and any complexity or contradiction. A theme must not restate the review.
+- insights: about 2–4 when genuinely supported: something meaningful about their thinking, reactions, values or behaviour beyond the literal events (reaction versus chosen action, a recurring decision pattern, expectation versus outcome, two values in tension, a perspective changing across days, a link between separate experiences, an established strength showing up, a useful alternative reading). Each has a short heading and a body. Exploratory, specific, grounded, tentative where it interprets. Don't manufacture one to fill the section.
+- wins: about 2–4 real positive moments, decisions, actions or achievements, concrete and specific (handling something hard thoughtfully, letting a reaction settle before deciding, finishing a project, setting a boundary, trying something new, real connection, following through). Each has a short heading and a sentence or two. Not traditionally impressive is fine; don't invent wins or turn every hard thing into a victory.
+- closing: an optional short closing paragraph that synthesises the week if there's a natural one; otherwise an empty string. No lecture, prescription or coaching line.`;
+
+const reportSection = { type: "object", additionalProperties: false, required: ["heading", "body"], properties: { heading: { type: "string" }, body: { type: "string" } } } as const;
 export const reportSchema = {
-  type: "object", additionalProperties: false, required: ["narrative", "threads", "moments", "observations"],
-  properties: { narrative: { type: "string" }, threads: { type: "array", items: { type: "string" } }, moments: { type: "array", items: { type: "string" } }, observations: { type: "array", items: { type: "string" } } },
+  type: "object", additionalProperties: false, required: ["title", "review", "themes", "insights", "wins", "closing"],
+  properties: {
+    title: { type: "string" }, review: { type: "string", description: "Multi-paragraph chronological narrative, scaled to the week" },
+    themes: { type: "array", items: reportSection }, insights: { type: "array", items: reportSection }, wins: { type: "array", items: reportSection },
+    closing: { type: "string", description: "Optional; empty string when there's no natural closing" },
+  },
 } as const;

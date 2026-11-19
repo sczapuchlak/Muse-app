@@ -237,3 +237,36 @@ export function referenceContext(src: ReferenceSource, full: boolean, max = REFE
   }
   return out.join("\n\n");
 }
+
+/**
+ * Weekly Reflection V2 input: every eligible entry in date order, their own words in full first, companion replies
+ * shortened as context, earlier summaries labelled as secondary. When the week is too long for `max` characters it
+ * is reduced faithfully and in steps: shorter companion replies, then none, then each entry's own words cut in the
+ * middle with an honest marker, never silently. Returns the text and whether anything was shortened.
+ */
+export type WeekEntry = {
+  date: string; journal: string; title: string; summary: string; summarySource: string | null; tags: string[];
+  messages: { role: "user" | "assistant"; body: string; question?: string | null }[];
+};
+const weekday = (d: string) => new Date(`${d}T12:00:00Z`).toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric", timeZone: "UTC" });
+function weekEntryText(e: WeekEntry, reply: number, own: number): string {
+  const src = e.summarySource === "user" ? "Their own summary" : e.summarySource === "import" ? "Earlier summary written by the app it was imported from (secondary)" : "Earlier AI summary (secondary, may be imperfect)";
+  const head = [`### ${weekday(e.date)} · ${e.journal}${e.title ? ` · “${e.title}”` : ""}`, e.tags.length ? `Tags: ${e.tags.join(", ")}` : "", e.summary ? `${src}: ${e.summary}` : ""].filter(Boolean);
+  const mine = e.messages.filter((m) => m.role === "user").reduce((n, m) => n + m.body.length, 0);
+  const keep = own > 0 && mine > own ? own / mine : 1;
+  const lines = e.messages.flatMap((m) => {
+    if (m.role === "assistant") return reply <= 0 ? [] : [`Companion (context): ${clip(m.body.replace(/\s+/g, " ").trim(), reply)}`];
+    const body = `${m.question ? `(Answering “${m.question}”) ` : ""}${m.body.trim()}`;
+    if (keep >= 1) return [`Me: ${body}`];
+    const n = Math.max(200, Math.floor(body.length * keep));
+    return [`Me: ${body.length <= n ? body : `${body.slice(0, Math.floor(n * 0.6))}\n[… part of this message left out for length …]\n${body.slice(-Math.floor(n * 0.4))}`}`];
+  });
+  if (reply <= 0 && e.messages.some((m) => m.role === "assistant")) lines.push("(The companion's replies were left out for length.)");
+  return [...head, "", ...lines].join("\n");
+}
+export function weekInput(entries: readonly WeekEntry[], max = 140000): { text: string; shortened: boolean } {
+  const build = (reply: number, own: number) => entries.map((e) => weekEntryText(e, reply, own)).join("\n\n---\n\n");
+  for (const reply of [600, 220, 0]) { const t = build(reply, 0); if (t.length <= max) return { text: t, shortened: reply < 600 && entries.some((e) => e.messages.some((m) => m.role === "assistant" && m.body.length > reply)) }; }
+  const own = Math.max(400, Math.floor((max * 0.9) / Math.max(1, entries.length)));
+  return { text: build(0, own).slice(0, max), shortened: true };
+}

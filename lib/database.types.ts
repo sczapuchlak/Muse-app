@@ -376,6 +376,21 @@ isOneToOne: false
     }
                   ]
                 },
+"journal_report_versions": {
+                  Row: {
+                    "created_at": string,"data": NonNullable<Json>,"id": string,"model": string | null,"report_id": string,"revision": number,"source_ids": string[],"source_signature": string,"user_id": string,"week_start": string,"written_at": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"data": NonNullable<Json>,"id"?: string,"model"?: string | null,"report_id": string,"revision": number,"source_ids"?: string[],"source_signature"?: string,"user_id": string,"week_start": string,"written_at": string
+                  }
+                  Update: {
+                    "created_at"?: string,"data"?: NonNullable<Json>,"id"?: string,"model"?: string | null,"report_id"?: string,"revision"?: number,"source_ids"?: string[],"source_signature"?: string,"user_id"?: string,"week_start"?: string,"written_at"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
+                },
 "journal_reports": {
                   Row: {
                     "created_at": string,"data": NonNullable<Json>,"id": string,"model": string | null,"revision": number,"source_ids": (string)[],"source_signature": string,"updated_at": string,"user_id": string,"week_start": string
