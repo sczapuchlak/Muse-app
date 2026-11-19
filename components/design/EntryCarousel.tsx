@@ -13,11 +13,15 @@ export function EntryCarousel<T>({ items, label, render, itemKey, describe, minW
   items: T[]; label: string; render: (item: T) => ReactNode; itemKey: (item: T) => string; describe: (item: T) => string; minWidth?: number; startAtEnd?: boolean;
 }) {
   const box = useRef<HTMLDivElement>(null), [perPage, setPerPage] = useState(3), [page, setPage] = useState<number | null>(null);
-  // #104: the region keeps the tallest height it has shown, so paging never shortens it and moves the page up.
+  // #104: the region keeps the tallest *entry* it has shown, so paging never shortens it and moves the page up.
+  // Nov 19: measure the entries' own height, never the track's. The track sits in cards that stretch to their row, so
+  // measuring it ratcheted the height up to whatever a neighbouring card was (cards became tall and mostly empty).
   const [minH, setMinH] = useState(0), lastWidth = useRef(0);
   useEffect(() => { const el = box.current; if (!el) return; const ro = new ResizeObserver(([e]) => {
     const w = e.contentRect.width; if (Math.abs(w - lastWidth.current) > 1) { lastWidth.current = w; setMinH(0); }
-    setPerPage(Math.max(1, Math.floor((w + 12) / (minWidth + 12)))); setMinH((h) => Math.max(h, e.borderBoxSize?.[0]?.blockSize ?? e.contentRect.height)); }); ro.observe(el); return () => ro.disconnect(); }, [minWidth]);
+    setPerPage(Math.max(1, Math.floor((w + 12) / (minWidth + 12)))); }); ro.observe(el); return () => ro.disconnect(); }, [minWidth]);
+  useEffect(() => { const el = box.current; if (!el) return; const measure = () => { let tallest = 0; for (const c of Array.from(el.children)) tallest = Math.max(tallest, (c as HTMLElement).getBoundingClientRect().height); if (tallest) setMinH((h) => Math.max(h, Math.ceil(tallest))); };
+    const ro = new ResizeObserver(measure); for (const c of Array.from(el.children)) ro.observe(c); measure(); return () => ro.disconnect(); });
   const pages = Math.max(1, Math.ceil(items.length / perPage)), current = Math.min(page ?? (startAtEnd ? pages - 1 : 0), pages - 1);
   const go = (p: number) => setPage(Math.max(0, Math.min(pages - 1, p)));
   const touch = useRef<{ x: number; y: number } | null>(null), wheel = useRef(0), wheelAt = useRef(0);

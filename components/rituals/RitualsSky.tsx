@@ -1,5 +1,5 @@
 import type {CSSProperties} from "react";
-import {flexible,ritualCell,ritualOpportunity,weeklyDays,weeklyValue,type RitualDefinition,type RitualState} from "@/lib/rituals";
+import {flexible,ritualCell,ritualOpportunity,type RitualDefinition,type RitualState} from "@/lib/rituals";
 import "./RitualsSky.css";
 
 /**
@@ -9,8 +9,11 @@ import "./RitualsSky.css";
  *
  * Nov 18 (Stephanie): just the constellation. The week tiles (perfect days, longest rhythm, the logged counts) are
  * gone, and on a phone the sky rises into the top-right corner beside the title instead of sitting beneath it, so the
- * card is about half as tall. Weekly targets and flexible rhythms are not daily obligations, so they stay beneath as
- * slim meters.
+ * card is about half as tall.
+ *
+ * Nov 19 (Stephanie): a real constellation, not a ribbon. On a wide screen the stars wander across the whole sky (a
+ * taller canvas, spaced evenly along a winding path, every name placed clear of the others) instead of one shallow
+ * arch. Only the day's daily rituals appear: weekly targets and flexible rhythms live in their groups, not here.
  */
 type Status=ReturnType<typeof ritualCell>["status"];
 type Shape="band"|"rise";
@@ -21,22 +24,23 @@ const starPath=(x:number,y:number,r:number)=>`M${r1(x)} ${r1(y-r)}C${r1(x+r*.16)
 const lit=(s:Status)=>s==="complete";
 const statusWord=(s:Status)=>s==="complete"?"complete":s==="partial"?"partly done":s==="missed"?"missed":s==="upcoming"?"upcoming":"not logged yet";
 
-/** The wide sky: one gentle arch across the space beside the title. */
-const BAND={w:640,h:118};
+type SkySpec={w:number;h:number;points:readonly (readonly [number,number])[];font:number;clear:Box[]};
+/** The wide sky: a winding constellation across the whole space beside the title, rising and dipping like the Dipper
+ *  and Cassiopeia rather than one arch, with room above and below each star for its name. */
+const BAND:SkySpec={w:960,h:196,points:[[30,138],[150,96],[262,150],[380,70],[502,124],[618,52],[736,112],[850,62],[934,128]],font:12,clear:[]};
 /** The phone sky: low along the bottom, up the right side, then curling back across the top toward the title (a hook,
  *  like the Dipper's handle), so the names have room. The title's corner is kept clear. */
-const RISE={w:400,h:188,points:[[18,148],[180,160],[320,150],[384,104],[384,50],[330,16]] as const,font:13,clear:[{x0:0,x1:222,y0:0,y1:20},{x0:0,x1:210,y0:20,y1:90}]};
+const RISE:SkySpec={w:400,h:188,points:[[18,148],[180,160],[320,150],[384,104],[384,50],[330,16]],font:13,clear:[{x0:0,x1:222,y0:0,y1:20},{x0:0,x1:210,y0:20,y1:90}]};
 
-function placeBand(n:number,i:number){const t=n<2?.5:i/(n-1),x=60+t*(BAND.w-120),y=BAND.h*.52-Math.sin(t*Math.PI)*BAND.h*.16+(i%2?8:-4);return {x,y,lx:x,ly:i%2?y-22:y+30,anchor:"middle" as const,label:null as string|null};}
 
 type Box={x0:number;x1:number;y0:number;y1:number};
 const clip=(name:string,max:number)=>name.length>max?`${name.slice(0,max-1).trimEnd()}…`:name;
 /**
- * Stars spaced evenly along the hook (by length, so they never bunch on a bend), then each name takes the first spot
+ * Stars spaced evenly along the path (by length, so they never bunch on a bend), then each name takes the first spot
  * (below, above, beside, or diagonal) that clears every other name, every star and the title. A long name is
- * shortened only when no spot fits it whole.
+ * shortened only when no spot fits it whole. One placement for both skies; only the path and canvas differ.
  */
-function placeRise(names:string[]){
+export function placeAlong(names:string[],RISE:SkySpec){
  const P=RISE.points,cr=(a:number,b:number,c:number,d:number,t:number)=>.5*(2*b+(c-a)*t+(2*a-5*b+4*c-d)*t*t+(3*b-a-3*c+d)*t*t*t);
  const curve:number[][]=[];
  for(let i=0;i<P.length-1;i++){const a=P[Math.max(0,i-1)],b=P[i],c=P[i+1],d=P[Math.min(P.length-1,i+2)];for(let k=0;k<40;k++)curve.push([cr(a[0],b[0],c[0],d[0],k/40),cr(a[1],b[1],c[1],d[1],k/40)]);}
@@ -60,10 +64,10 @@ function placeRise(names:string[]){
 }
 
 function SkyMap({shape,stars,n}:{shape:Shape;stars:Star[];n:number}){
- const {w,h}=shape==="band"?BAND:RISE,id=`muse-sky-${shape}`;
+ const {w,h}=shape==="band"?BAND:RISE,id=`muse-sky-${shape}`,dust=shape==="band"?60:26;
  return <svg className="muse-sky-map" data-shape={shape} viewBox={`0 0 ${w} ${h}`} role="img" aria-label={n?stars.map(s=>`${s.ritual.name}: ${statusWord(s.status)}`).join("; "):"No daily rituals scheduled on this day"}>
   <defs><linearGradient id={`${id}-star`} x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="var(--accent-secondary)"/><stop offset="1" stopColor="var(--accent-primary)"/></linearGradient><radialGradient id={`${id}-glow`}><stop offset="0" stopColor="var(--accent-primary)" stopOpacity=".55"/><stop offset="1" stopColor="var(--accent-primary)" stopOpacity="0"/></radialGradient></defs>
-  {Array.from({length:26},(_,i)=><circle key={`dust-${i}`} className="muse-sky-dust" cx={r1((i*97)%w)} cy={r1((i*53+17)%h)} r={i%3?.8:1.3} style={{"--d":`${(i%7)*.6}s`} as CSSProperties}/>)}
+  {Array.from({length:dust},(_,i)=><circle key={`dust-${i}`} className="muse-sky-dust" cx={r1((i*97+i*i*7)%w)} cy={r1((i*53+17+i*i*3)%h)} r={i%5?.8:1.4} style={{"--d":`${(i%7)*.6}s`} as CSSProperties}/>)}
   {stars.slice(1).map((s,i)=>{const a=stars[i];return <line key={`l-${s.ritual.id}`} className="muse-sky-line" data-lit={lit(a.status)&&lit(s.status)||undefined} x1={r1(a.x)} y1={r1(a.y)} x2={r1(s.x)} y2={r1(s.y)}/>;})}
   {stars.map((s,i)=><g key={s.ritual.id} className="muse-sky-star" data-status={s.status} style={{"--i":i} as CSSProperties}>
    {s.status==="complete"&&<circle cx={r1(s.x)} cy={r1(s.y)} r="24" fill={`url(#${id}-glow)`}/>}
@@ -75,13 +79,12 @@ function SkyMap({shape,stars,n}:{shape:Shape;stars:Star[];n:number}){
  </svg>;
 }
 
-export function RitualsSky({state,date,today,week}:{state:RitualState;date:string;today:string;week:string[]}){
+export function RitualsSky({state,date,today}:{state:RitualState;date:string;today:string}){
  const active=state.rituals.filter(r=>r.status!=="archived");
  const daily=active.filter(r=>r.type!=="weekly-target"&&!flexible(r)&&ritualOpportunity(state,r,date));
  const n=daily.length,cells=daily.map(ritual=>({ritual,status:ritualCell(state,ritual,date,today).status}));
- const rise=placeRise(cells.map(c=>c.ritual.name)),band=cells.map((c,i)=>({...c,...placeBand(n,i)})),risen=cells.map((c,i)=>({...c,...rise[i]}));
+ const names=cells.map(c=>c.ritual.name),wide=placeAlong(names,BAND),rise=placeAlong(names,RISE),band=cells.map((c,i)=>({...c,...wide[i]})),risen=cells.map((c,i)=>({...c,...rise[i]}));
  const done=cells.filter(s=>s.status==="complete").length,isToday=date===today,future=!!today&&date>today;
- const weekly=active.filter(r=>(r.type==="weekly-target"||flexible(r))&&week.some(d=>ritualOpportunity(state,r,d)));
  const headline=!n?"A quiet sky":future?"Still to come":done===n?"Every star is lit":done===0?"The sky is waiting":"Lighting up";
  return <section className="muse-rituals-sky" aria-label={`${isToday?"Today":fmt(date,{weekday:"long",month:"long",day:"numeric"})}: ${n?`${done} of ${n} daily rituals complete`:"no daily rituals scheduled"}`}>
   <div className="muse-sky-stage">
@@ -92,6 +95,5 @@ export function RitualsSky({state,date,today,week}:{state:RitualState;date:strin
    <SkyMap shape="band" stars={band} n={n}/>
    <SkyMap shape="rise" stars={risen} n={n}/>
   </div>
-  {weekly.length>0&&<ul className="muse-sky-targets" aria-label="Weekly rhythms">{weekly.slice(0,3).map(r=>{const flex=flexible(r),value=flex?weeklyDays(state,r,date):weeklyValue(state,r,date),target=flex?r.timesPerWeek!:r.goal;return <li key={r.id}><span>{r.name}</span><small>{value}/{target}{flex?" days":` ${r.unit}`}</small><i style={{"--f":Math.min(1,value/target)} as CSSProperties}/></li>;})}</ul>}
  </section>;
 }
