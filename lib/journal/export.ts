@@ -16,7 +16,7 @@ export type ExportRows = {
 export function exportJson(rows: ExportRows) {
   return {
     format: "Muse Journal", version: 1, exported_at: new Date().toISOString(),
-    notes: "Messages are your original words in order; `corrections` keeps wording you later corrected. Titles and summaries say whether you or the AI wrote them (title_source, summary_source). Photos are referenced by private storage path; download them from each entry.",
+    notes: "Messages are your original words in order; `corrections` keeps wording you later corrected. Titles and summaries say whether you or the AI wrote them (title_source, summary_source; `import` means the journal it was imported from wrote it). Photos are referenced by private storage path; download them from each entry.",
     ...rows,
   };
 }
@@ -36,7 +36,7 @@ export function exportMarkdown(rows: ExportRows): string {
     out.push(`### ${c.title || "Untitled"}${c.favorite ? " ★" : ""}`, "", `*${date} · ${journals.get(c.journal_id) ?? "Journal"}${c.companion_name ? ` · with ${c.companion_name}` : ""}${c.mode !== "open" ? ` · ${c.mode === "morning" ? "Morning intention" : "Evening reflection"}` : ""}*`, "");
     const t = rows.entryTags.filter((x) => x.conversation_id === c.id).map((x) => tags.get(x.tag_id)).filter(Boolean) as ExportRows["tags"];
     if (t.length) out.push(`Tags: ${t.map((x) => `${x.name} (${x.kind})`).join(", ")}`, "");
-    if (c.summary) out.push(`> ${c.summary.replace(/\n/g, "\n> ")}`, `> — ${c.summary_source === "ai" ? "AI summary" : "my summary"}`, "");
+    if (c.summary) out.push(`> ${c.summary.replace(/\n/g, "\n> ")}`, `> — ${c.summary_source === "ai" ? "AI summary" : c.summary_source === "import" ? "summary from the journal it was imported from" : "my summary"}`, "");
     for (const msg of byConv.get(c.id) ?? []) {
       const time = new Date(msg.created_at).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", timeZone: c.time_zone || "UTC" });
       out.push(`**${msg.role === "user" ? "Me" : c.companion_name || "Companion"}** · ${time}${msg.corrected_at ? " · corrected" : ""}`, "", msg.body, "");

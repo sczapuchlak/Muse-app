@@ -68,6 +68,9 @@ export async function POST(request: NextRequest) {
   let body: Record<string, unknown>;
   try { const raw = await request.text(); if (raw.length > 400_000) return reply({ error: "That’s too much at once.", code: "invalid" }, 413); body = JSON.parse(raw); } catch { return reply({ error: "Unreadable request.", code: "invalid" }, 400); }
   const config = providerConfig(), admin = createMuseAdminClient();
+  // Recall check: which memories and entries a message would bring into context. Reads only (with the person's own
+  // client), never calls AI and never costs anything; the result is ids, dates, names and reasons, not entry text.
+  if (body.action === "recall") { try { return reply(await recall(client, user.id, body)); } catch (e) { return failure(base, e); } }
   if (body.action === "budget") { try { await setBudget(admin, user.id, { monthly: Number(body.monthly), warnAt: Number(body.warnAt), daily: Number(body.daily) }); return reply({ ok: true, allowance: await allowance(admin, user.id) }); } catch (e) { return failure(base, e); } }
   if (!config) return reply({ error: "Journal AI isn’t set up yet. Everything you write still saves.", code: "not-configured" }, 503);
   try {
@@ -156,7 +159,9 @@ async function streamReply(request: NextRequest, base: NextResponse, client: Cli
     try {
       const b = await basics(client, userId);
       const { versionId, layer } = await companionLayer(client, userId, conv);
-      const memory = await loadMemory(client, userId, b, journal, { currentId: conv.id, memoryOff: conv.memory_off, today, latest: latest.body });
+      // Their previous few messages keep people they named in play for a follow-up ("what do you think he wants?").
+      const earlier = history.slice(0, -1).filter((m) => m.role === "user").slice(-3).map((m) => m.body.slice(0, 4000));
+      const memory = await loadMemory(client, userId, b, journal, { currentId: conv.id, memoryOff: conv.memory_off, today, latest: latest.body, earlier });
       const layers: Layers = { globalInstructions: b.prefs.globalInstructions, companion: layer, journal: journalLayer(journal), mode: conv.mode as Layers["mode"] };
       const req = buildReply(layers, memory, history.map((m) => ({ role: m.role as "user" | "assistant", body: withQuestion(m), imageCount: imageCount.get(m.id) })));
       if (reference) req.input.splice(memory.stable ? 1 : 0, 0, { role: "developer", content: reference });
@@ -242,6 +247,22 @@ async function streamTest(_request: NextRequest, base: NextResponse, client: Cli
   });
 }
 
+async function recall(client: Client, userId: string, body: Record<string, unknown>) {
+  const text = str(body.text, 4000).trim();
+  if (!text) throw new Bad("invalid", "Write something to check.");
+  const j = uuid(body.journalId) ? await client.from("journal_journals").select("*").eq("id", body.journalId).eq("user_id", userId).maybeSingle() : null;
+  const b = await basics(client, userId);
+  const journal = j?.data ? journalFromRow(j.data) : b.journals.find((x) => x.id === b.prefs.defaultJournalId) ?? b.journals[0];
+  if (!journal) throw new Bad("gone", "Make a journal first.");
+  const today = date(body.localDate) ? body.localDate : new Date().toISOString().slice(0, 10);
+  const memory = await loadMemory(client, userId, b, journal, { currentId: null, memoryOff: false, today, latest: text });
+  return {
+    journalId: journal.id, allowed: b.prefs.memoryEnabled && journal.memoryScope !== "off",
+    memories: memory.used.memories, recent: memory.used.recent, retrieved: memory.used.retrieved.map((id) => ({ id, why: memory.used.why?.[id] ?? [] })), entities: memory.used.entities ?? [],
+    chars: { stable: memory.stable.length, retrieved: memory.retrieved.length }, approxTokens: approxTokens(memory.stable.length + memory.retrieved.length),
+  };
+}
+
 async function analyse(client: Client, admin: Client, config: ProviderConfig, userId: string, body: Record<string, unknown>) {
   const { conv } = await loadConversation(client, userId, body.conversationId);
   if (conv.status !== "completed") throw new Bad("invalid", "Finish the entry first.");
@@ -257,7 +278,10 @@ async function analyse(client: Client, admin: Client, config: ProviderConfig, us
   const usage = await begin(admin, userId, { kind: "analysis", requestKey: `analysis:${conv.id}:${body.regenerate === true ? `r${attempt}` : "1"}`, conversationId: conv.id, model: config.model, estimateUsd: estimateUsd(config.model, approxTokens(ANALYSIS_RULES.length + Math.min(60000, msgs.data.reduce((n, m) => n + m.body.length + 12, 0))), 3500) });
   await client.from("journal_conversations").update({ analysis_status: "pending" }).eq("id", conv.id).eq("user_id", userId);
   try {
-    const input: InputMessage[] = [{ role: "user", content: `${conv.continues_title ? `This entry continues an earlier one, “${conv.continues_title}” (${conv.continues_date}).\n\n` : ""}${people.data?.length ? `Existing person names (confirmed aliases in brackets): ${people.data.map((p) => p.aliases.length ? `${p.name} [${p.aliases.join(", ")}]` : p.name).join(", ")}\n\n` : ""}${fixes.data?.length ? `Corrections they made on earlier entries (use only when the context clearly means the same person; otherwise keep the name they used): ${fixes.data.map((f) => { const to = people.data?.find((p) => p.id === f.to_tag_id); return to ? `“${f.from_name}” was ${to.name}${f.times > 1 ? ` (${f.times}×)` : ""}` : ""; }).filter(Boolean).join("; ")}\n\n` : ""}Conversation:\n\n${transcript(msgs.data.map((m) => ({ role: m.role as "user" | "assistant", body: withQuestion(m) })))}` }];
+    // A historical (imported) entry: its date matters, its replies came from another app, and anything worth
+    // remembering must say when it was true, so an old situation is never stored as a current fact.
+    const historical = conv.origin === "import" ? `This is a historical entry from ${conv.local_date}, imported from another journal app; the "Companion" replies came from that app's AI. Analyse it as a record of that time. Any memory you propose must say when it was true (for example "As of ${new Date(`${conv.local_date}T12:00:00Z`).toLocaleDateString("en-US", { month: "long", year: "numeric", timeZone: "UTC" })}, …") and must be something they clearly stated, never a guess, worry or impression about someone else.\n\n` : "";
+    const input: InputMessage[] = [{ role: "user", content: `${historical}${conv.continues_title ? `This entry continues an earlier one, “${conv.continues_title}” (${conv.continues_date}).\n\n` : ""}${people.data?.length ? `Existing person names (confirmed aliases in brackets): ${people.data.map((p) => p.aliases.length ? `${p.name} [${p.aliases.join(", ")}]` : p.name).join(", ")}\n\n` : ""}${fixes.data?.length ? `Corrections they made on earlier entries (use only when the context clearly means the same person; otherwise keep the name they used): ${fixes.data.map((f) => { const to = people.data?.find((p) => p.id === f.to_tag_id); return to ? `“${f.from_name}” was ${to.name}${f.times > 1 ? ` (${f.times}×)` : ""}` : ""; }).filter(Boolean).join("; ")}\n\n` : ""}Conversation:\n\n${transcript(msgs.data.map((m) => ({ role: m.role as "user" | "assistant", body: withQuestion(m) })))}` }];
     const out = await generate(config, { instructions: ANALYSIS_RULES, input, maxOutputTokens: 3500, effort: "low", schema: { name: "journal_analysis", schema: analysisSchema } });
     await finish(admin, usage.id, out.model, { usage: out.usage });
     let parsed: unknown; try { parsed = JSON.parse(out.text); } catch { parsed = null; }

@@ -248,6 +248,47 @@ isOneToOne: false
     }
                   ]
                 },
+"journal_import_batches": {
+                  Row: {
+                    "created_at": string,"detected": number,"duplicates": number,"failed": number,"finished_at": string | null,"id": string,"imported": number,"label": string,"report": NonNullable<Json>,"revision": number,"source": string,"status": string,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"detected"?: number,"duplicates"?: number,"failed"?: number,"finished_at"?: string | null,"id"?: string,"imported"?: number,"label"?: string,"report"?: NonNullable<Json>,"revision"?: number,"source": string,"status"?: string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Update: {
+                    "created_at"?: string,"detected"?: number,"duplicates"?: number,"failed"?: number,"finished_at"?: string | null,"id"?: string,"imported"?: number,"label"?: string,"report"?: NonNullable<Json>,"revision"?: number,"source"?: string,"status"?: string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
+                },"journal_import_sources": {
+                  Row: {
+                    "batch_id": string | null,"conversation_id": string | null,"created_at": string,"fingerprint": string,"original": NonNullable<Json>,"source": string,"source_key": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "batch_id"?: string | null,"conversation_id"?: string | null,"created_at"?: string,"fingerprint": string,"original"?: NonNullable<Json>,"source": string,"source_key": string,"user_id"?: string
+                  }
+                  Update: {
+                    "batch_id"?: string | null,"conversation_id"?: string | null,"created_at"?: string,"fingerprint"?: string,"original"?: NonNullable<Json>,"source"?: string,"source_key"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "journal_import_sources_user_id_batch_id_fkey"
+      columns: ["user_id","batch_id"]
+isOneToOne: false
+      referencedRelation: "journal_import_batches"
+      referencedColumns: ["user_id","id"]
+    },{
+      foreignKeyName: "journal_import_sources_user_id_conversation_id_fkey"
+      columns: ["user_id","conversation_id"]
+isOneToOne: false
+      referencedRelation: "journal_conversations"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
+                },
 "journal_highlight_tags": {
     Row: { user_id: string; highlight_id: string; tag_id: string; created_at: string }
     Insert: { user_id?: string; highlight_id: string; tag_id: string; created_at?: string }
@@ -3636,6 +3677,14 @@ isOneToOne: false
         isSetofReturn: true
       } },
 "redate_journal_entry": { Args: { "p_id": string,"p_local_date": string,"p_started_at": string,"p_expected_revision": number }; Returns: Database["public"]["Tables"]["journal_conversations"]["Row"][] },
+"import_journal_entry": { Args: { "p_batch": string,"p_source": string,"p_key": string,"p_fingerprint": string,"p_journal": string,"p_entry": Json,"p_original"?: Json }; Returns: Json },
+"undo_journal_import": { Args: { "p_batch": string }; Returns: number },
+"journal_tag_history": { Args: { "p_tags": string[],"p_journals": string[],"p_before": string,"p_per_tag"?: number }; Returns: {
+              "tag_id": string,"conversation_id": string | null,"local_date": string | null,"entries": number,"first_date": string,"last_date": string
+            }[] },
+"journal_enrichment_candidates": { Args: Record<PropertyKey, never>; Returns: {
+              "conversation_id": string,"local_date": string,"chars": number,"analysed": boolean
+            }[] },
 "search_journal": { Args: { "p_limit"?: number,"p_query": string }; Returns: {
               "conversation_id": string,"rank": number,"snippet": string
             }[]

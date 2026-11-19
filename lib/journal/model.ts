@@ -12,6 +12,8 @@ export type Status = "draft" | "active" | "completed";
 /** `custom` is "My tags": made by you, never by AI analysis. The others are found by analysis (and editable). */
 export type TagKind = "person" | "place" | "topic" | "theme" | "mood" | "custom";
 export type Source = "user" | "ai";
+/** Who wrote an entry's title or summary: you, Muse's AI, or the journal it was imported from (kept as it was). */
+export type EntrySource = Source | "import";
 
 export type Companion = { id: string; name: string; description: string; icon: string; tone: MuseTone; instructions: string; conversationPrefs: string; openingStyle: string; presetKey: string | null; preferredJournalId: string | null; version: number; position: number; archivedAt: string | null; revision: number; createdAt: string; updatedAt: string };
 export type CompanionVersion = { id: string; companionId: string; version: number; name: string; description: string; instructions: string; conversationPrefs: string; openingStyle: string; savedAt: string };
@@ -19,8 +21,8 @@ export type Journal = { id: string; name: string; description: string; icon: str
 export type Preferences = { globalInstructions: string; memoryEnabled: boolean; analysisAuto: boolean; onThisDay: boolean; showOnDaily: boolean; greetOnNew: boolean; defaultJournalId: string | null; revision: number };
 export type JournalImage = { id: string; path: string; thumbnailPath: string; width: number; height: number; caption: string; alt: string };
 export type Conversation = {
-  id: string; journalId: string; companionId: string | null; companionVersionId: string | null; companionName: string; origin: "journal" | "playground"; mode: Mode; status: Status;
-  localDate: string; timeZone: string; startedAt: string; completedAt: string | null; title: string; titleSource: Source | null; summary: string; summarySource: Source | null;
+  id: string; journalId: string; companionId: string | null; companionVersionId: string | null; companionName: string; origin: "journal" | "playground" | "import"; mode: Mode; status: Status;
+  localDate: string; timeZone: string; startedAt: string; completedAt: string | null; title: string; titleSource: EntrySource | null; summary: string; summarySource: EntrySource | null;
   favorite: boolean; excludeFromMemory: boolean; memoryOff: boolean; analysisStatus: "pending" | "ready" | "failed" | "skipped" | null; images: JournalImage[];
   draft: string; draftUpdatedAt: string | null; userWords: number; messageCount: number; lastMessageAt: string | null; revision: number; updatedAt: string;
   /** "Continue from here": the earlier entry this one continues (null if none, or if that entry was deleted), with a
@@ -134,7 +136,7 @@ function images(v: Json): JournalImage[] {
 }
 export const conversationFromRow = (r: Tables["journal_conversations"]["Row"]): Conversation => ({
   id: r.id, journalId: r.journal_id, companionId: r.companion_id, companionVersionId: r.companion_version_id, companionName: r.companion_name, origin: r.origin as Conversation["origin"], mode: r.mode as Mode, status: r.status as Status,
-  localDate: r.local_date, timeZone: r.time_zone, startedAt: r.started_at, completedAt: r.completed_at, title: r.title, titleSource: r.title_source as Source | null, summary: r.summary, summarySource: r.summary_source as Source | null,
+  localDate: r.local_date, timeZone: r.time_zone, startedAt: r.started_at, completedAt: r.completed_at, title: r.title, titleSource: r.title_source as EntrySource | null, summary: r.summary, summarySource: r.summary_source as EntrySource | null,
   favorite: r.favorite, excludeFromMemory: r.exclude_from_memory, memoryOff: r.memory_off, analysisStatus: r.analysis_status as Conversation["analysisStatus"], images: images(r.images),
   draft: r.draft, draftUpdatedAt: r.draft_updated_at, userWords: r.user_words, messageCount: r.message_count, lastMessageAt: r.last_message_at, revision: r.revision, updatedAt: r.updated_at,
   continuesId: r.continues_id ?? null, continuesTitle: r.continues_title ?? "", continuesDate: r.continues_date ?? null,

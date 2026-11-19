@@ -5,6 +5,7 @@ import { MuseSegmented } from "../design/MuseSegmented";
 import { MuseChoiceMenu } from "../MuseChoiceMenu";
 import { ManageTags } from "./TagManager";
 import { MemoryStudio } from "./MemoryStudio";
+import { ImportHistory } from "./ImportHistory";
 import { useJournal } from "./useJournal";
 import { suggestedGlobalPreferences } from "@/lib/journal/presets";
 import { formatUsd } from "@/lib/journal/pricing";
@@ -42,6 +43,12 @@ function Preferences() {
 }
 
 function Privacy() {
+  const [importing, setImporting] = useState(false);
+  if (importing) return <ImportHistory onBack={() => setImporting(false)} />;
+  return <PrivacyAndUsage onImport={() => setImporting(true)} />;
+}
+
+function PrivacyAndUsage({ onImport }: { onImport: () => void }) {
   const { ai, refreshAi } = useJournal();
   const a = ai.allowance;
   const [editing, setEditing] = useState(false), [error, setError] = useState("");
@@ -79,5 +86,8 @@ function Privacy() {
     <h3 className="mj-section-title">Export</h3>
     <p className="mj-note">Everything you’ve written, with dates, journals, companions, titles, tags, summaries, bookmarks and memories.</p>
     <div className="mj-form-actions"><a className="muse-button" href="/api/journal/export?format=md" download>Readable (Markdown)</a><a className="muse-button button-primary" href="/api/journal/export?format=json" download>Complete (JSON)</a></div>
+    <h3 className="mj-section-title">Import journal history</h3>
+    <p className="mj-note">Bring in conversations from another journal, such as Rosebud, with their original dates and words. They join your History like any other entry.</p>
+    <div className="mj-form-actions"><button type="button" className="muse-button" onClick={onImport}>Import journal history…</button></div>
   </div>;
 }
