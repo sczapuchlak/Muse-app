@@ -1,31 +1,30 @@
-/* Daily Edit Journal card (Nov 18): an invitation before you write, a keepsake once you have. Theme tokens only. */
+/* Daily Edit Journal card (Nov 18): small on purpose. Have I written today, the streak, the week as a colourful
+   constellation, and a way in. What you wrote never shows on the dashboard. Theme tokens only. */
 .muse-journal-widget{position:relative;isolation:isolate;overflow:hidden}
 .muse-journal-widget::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
- background:radial-gradient(70% 60% at 100% 0%,color-mix(in srgb,var(--accent-secondary) 16%,transparent),transparent 70%),radial-gradient(60% 55% at 0% 100%,color-mix(in srgb,var(--accent-primary) 12%,transparent),transparent 72%)}
-.mjw-invite,.mjw-keepsake{display:grid;gap:12px;min-width:0}
-.mjw-kicker{display:flex;flex-wrap:wrap;gap:4px 10px;margin:0;color:var(--dl-kicker,var(--text-muted))}
-.mjw-kicker span+span::before{content:"·";margin-right:10px;opacity:.55}
-.mjw-prompt{margin:0;font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight,500);font-size:clamp(1.3rem,2.4vw,1.6rem);line-height:1.25;letter-spacing:-.01em;
- background:linear-gradient(100deg,var(--foreground) 30%,color-mix(in oklab,var(--accent-primary) 70%,var(--foreground)));-webkit-background-clip:text;background-clip:text;color:transparent}
-.mjw-title{margin:0;font-family:var(--font-editorial);font-weight:var(--type-title-weight,560);font-size:clamp(1.35rem,2.4vw,1.7rem);line-height:1.15;letter-spacing:-.01em;overflow-wrap:anywhere}
-.mjw-summary{position:relative;margin:0;padding-left:16px;font-family:var(--font-editorial);font-style:italic;font-size:1rem;line-height:1.55;color:var(--foreground);display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
-.mjw-summary::before{content:"";position:absolute;left:0;top:4px;bottom:4px;width:3px;border-radius:3px;background:linear-gradient(180deg,var(--accent-secondary),var(--accent-primary))}
-.mjw-tags{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0;list-style:none}
-.mjw-tags li{padding:4px 11px;border-radius:999px;font-size:.78rem;font-weight:600;border:1px solid color-mix(in srgb,var(--tag-ink) 40%,transparent);background:color-mix(in srgb,var(--tag-ink) 14%,transparent);color:var(--foreground);--tag-ink:var(--accent-pop)}
-.mjw-tags li[data-kind=mood]{--tag-ink:var(--accent-primary)}
-.mjw-tags li[data-kind=person]{--tag-ink:var(--accent-secondary)}
-.mjw-tags li[data-kind=topic]{--tag-ink:var(--accent-warm,var(--accent-pop))}
-.mjw-week{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 16px;padding:10px 12px;border-radius:16px;background:color-mix(in srgb,var(--foreground) 4%,transparent);border:1px solid color-mix(in srgb,var(--glass-border) 70%,transparent)}
-.mjw-week .mj-constellation{width:min(100%,250px)}
+ background:radial-gradient(70% 60% at 100% 0%,color-mix(in srgb,var(--accent-secondary) 14%,transparent),transparent 70%),radial-gradient(60% 55% at 0% 100%,color-mix(in srgb,var(--accent-primary) 10%,transparent),transparent 72%)}
+.mjw-status{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 14px}
+.mjw-done{display:inline-flex;align-items:center;gap:7px;padding:5px 12px;border-radius:999px;font-size:.84rem;font-weight:650;border:1px solid var(--glass-border);background:color-mix(in srgb,var(--foreground) 4%,transparent);color:var(--text-muted)}
+.mjw-done[data-done]{color:var(--foreground);border-color:color-mix(in srgb,var(--success-primary,var(--accent-primary)) 50%,transparent);background:color-mix(in srgb,var(--success-primary,var(--accent-primary)) 14%,transparent)}
+.mjw-done[data-done] svg{color:var(--success-primary,var(--accent-primary))}
+.mjw-dot{width:8px;height:8px;border-radius:50%;border:1.5px solid currentColor}
 .mjw-streak{display:inline-flex;align-items:center;gap:6px;font-size:.84rem;color:var(--text-muted)}
-.mjw-streak b{font-family:var(--font-editorial);font-size:1.25rem;color:var(--foreground)}
+.mjw-streak b{font-family:var(--font-editorial);font-size:1.3rem;color:var(--foreground)}
 .mjw-flame{width:12px;height:16px;background:linear-gradient(180deg,var(--accent-pop,var(--accent-primary)),#ff9a3d 70%,#ffcf5a);clip-path:polygon(50% 0,72% 30%,92% 55%,85% 85%,50% 100%,15% 85%,8% 55%,30% 32%);filter:drop-shadow(0 0 3px rgba(255,140,60,.6))}
-.mjw-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
+.mjw-week{display:flex;justify-content:center;margin:2px 0}
+.mjw-week .mj-constellation{width:min(100%,300px)}
+/* Each day's star takes its own colour from the theme, and lit stars sparkle a few times when the card appears. */
+.mjw-week .mj-constellation-star:nth-of-type(1){--star:var(--accent-primary)}
+.mjw-week .mj-constellation-star:nth-of-type(2){--star:var(--accent-secondary)}
+.mjw-week .mj-constellation-star:nth-of-type(3){--star:var(--accent-pop)}
+.mjw-week .mj-constellation-star:nth-of-type(4){--star:var(--accent-warm,var(--accent-primary))}
+.mjw-week .mj-constellation-star:nth-of-type(5){--star:var(--star-1,var(--accent-secondary))}
+.mjw-week .mj-constellation-star:nth-of-type(6){--star:var(--star-2,var(--accent-pop))}
+.mjw-week .mj-constellation-star:nth-of-type(7){--star:var(--star-3,var(--accent-primary))}
+.mjw-week .mj-constellation-star[data-lit] path{fill:var(--star);filter:drop-shadow(0 0 5px color-mix(in srgb,var(--star) 75%,transparent))}
+.mjw-week .mj-constellation-line[data-lit]{stroke:color-mix(in srgb,var(--accent-secondary) 70%,var(--accent-primary));stroke-width:1.4}
+/* The sparkle is light only (glow and brightness), never a transform: each star carries its own SVG positioning. */
+@media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) .mjw-week .mj-constellation-star[data-lit] path{animation:mjw-sparkle 2.4s ease-in-out calc(var(--i)*.35s + .4s) 3}}
+@keyframes mjw-sparkle{50%{filter:drop-shadow(0 0 10px var(--star)) drop-shadow(0 0 3px #fff) brightness(1.3)}}
+.mjw-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
 .mjw-actions .muse-button{display:inline-flex;align-items:center;gap:7px;min-height:42px}
-.mjw-last{font-size:.86rem;color:var(--text-muted);text-decoration:none}
-.mjw-last span{color:var(--link-ink,var(--foreground));text-decoration:underline;text-underline-offset:3px}
-.mjw-last:hover{color:var(--foreground)}
-@media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) .mjw-keepsake>*,:root:not([data-magic=quiet]) .mjw-invite>*{animation:mjw-rise .5s cubic-bezier(.2,.8,.2,1) both}
- :root:not([data-magic=quiet]) :is(.mjw-keepsake,.mjw-invite)>:nth-child(2){animation-delay:.05s}:root:not([data-magic=quiet]) :is(.mjw-keepsake,.mjw-invite)>:nth-child(n+3){animation-delay:.1s}}
-@keyframes mjw-rise{from{opacity:0;transform:translateY(5px)}}
-@media(forced-colors:active){.mjw-prompt{color:CanvasText;background:none}}
