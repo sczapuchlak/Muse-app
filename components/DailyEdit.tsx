@@ -71,8 +71,8 @@ export function DailyEdit() {
       {error && <p className="small-label" role="status">{error}</p>}
       {arranging ? <DailyArrange layout={layout} onCancel={() => setArranging(false)} onDone={(next) => { setArranging(false); void save(next); }} />
       : <div className="daily-working-grid" key={`working/${selectedDate}`}>
-        <div className="daily-working-left">{layout.left.map((k) => <div key={k} className="muse-daily-slot" data-card={k} style={{ "--phone-order": phoneOrder(layout, custom, k) } as CSSProperties}>{cards[k]}</div>)}</div>
-        <div className="daily-working-right">{layout.right.map((k) => <div key={k} className="muse-daily-slot" data-card={k} style={{ "--phone-order": phoneOrder(layout, custom, k) } as CSSProperties}>{cards[k]}</div>)}</div>
+        <div className="daily-working-left">{layout.left.filter((k) => !(layout.hidden ?? []).includes(k)).map((k) => <div key={k} className="muse-daily-slot" data-card={k} style={{ "--phone-order": phoneOrder(layout, custom, k) } as CSSProperties}>{cards[k]}</div>)}</div>
+        <div className="daily-working-right">{layout.right.filter((k) => !(layout.hidden ?? []).includes(k)).map((k) => <div key={k} className="muse-daily-slot" data-card={k} style={{ "--phone-order": phoneOrder(layout, custom, k) } as CSSProperties}>{cards[k]}</div>)}</div>
       </div>}
       <footer className="muse-footer"><DailySaveStatus date={selectedDate}/><PlannerPersistenceStatus compact/><WellnessSaveStatus/>Your daily entries, plan, meals, hydration and movement save to your account.</footer>
     </main>
