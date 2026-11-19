@@ -75,7 +75,7 @@ try{
  await until(()=>!!document.querySelector('.mj-import-preview'),'rosebud preview');
  const rp=await evaluate(()=>document.querySelector('.mj-import-preview').textContent.replace(/\s+/g,' '));
  check(/From Rosebud/.test(rp)&&/Ready to import\s*1/.test(rp),'a Rosebud export previews its entries');
- check(/not imported: Weekly reports/.test(rp)&&/dates only/.test(rp)&&/New journal “Rosebud”/.test(rp),'the preview says what isn’t imported, that times aren’t exported, and where entries go');
+ check(/not imported: Weekly reports/.test(rp)&&/dates only/.test(rp)&&/Rosebud \(1\)My Journal/.test(rp),'the preview says what isn’t imported, that times aren’t exported, and that entries go into the main journal');
  await click('.mj-import-preview button','Cancel');
  await upload('muse-journal.json',JSON.stringify(exported));
  await until(()=>!!document.querySelector('.mj-import-preview'),'preview');
@@ -85,14 +85,14 @@ try{
  check(/Mar 2, 2025 – Nov 20, 2025/.test(preview),'preview: the historical date range');
  check(/Your messages · replies\s*4 · 3/.test(preview),'preview: your messages and AI replies counted separately');
  check(/AI replies\s*2 of 3/.test(preview)&&/Summaries\s*2 of 3/.test(preview),'preview: which fields each entry keeps');
- check(preview.includes('Old Journal')&&preview.includes('New journal “Old Journal”'),'preview: the exported journal maps to a new journal by default');
+ check(preview.includes('Old Journal')&&/Old Journal \(3\)My Journal/.test(preview),'preview: everything goes into the main journal by default');
  check(await count('journal_conversations',a.id)===0,'the preview writes nothing');
  await shoot('01-preview');
  await click('.mj-import-preview button','Import 3 entries');
  await until(()=>!!document.querySelector('[aria-label="Import report"]'),'report',undefined,600);
  check(await has('[aria-label="Import report"]','3 imported'),'report: 3 imported');
  check(await count('journal_conversations',a.id,{origin:'import'})===3,'three ordinary entries exist');
- check(await count('journal_journals',a.id)===2,'the new journal was made as mapped');
+ check(await count('journal_journals',a.id)===1,'no extra journal is made; everything is in one place');
  const batch=must(await a.client.from('journal_import_batches').select('*').single());
  check(batch.status==='complete'&&batch.imported===3&&JSON.stringify(batch.report).indexOf('printmaking')<0,'the stored report has counts, never journal text');
  await shoot('02-report');
@@ -104,7 +104,8 @@ try{
  check(true,'History search finds words inside an imported conversation');
  const c1=must(await a.client.from('journal_conversations').select('id').eq('title','Jamie at the gallery').single()).id;
  await go(`/journal?entry=${c1}`,'!!document.querySelector(".mj-message")','entry');
- await until(()=>[...document.querySelectorAll('.muse-kicker')].some(x=>x.textContent.includes('imported from a Muse export')),'provenance');
+ await until(()=>[...document.querySelectorAll('.muse-kicker')].some(x=>x.textContent.includes('2025')),'entry header');
+ check(!(await has('.muse-kicker','imported')),'an imported entry looks like any other entry');
  check(await has('.muse-kicker','Sun, Mar 2')||await has('.muse-kicker','Mar'),'the entry keeps its original date');
  const bodies=await evaluate(()=>[...document.querySelectorAll('.mj-message')].map(m=>m.textContent));
  check(bodies.length===4&&bodies[1].includes('printmaking')&&bodies[0].includes('How was tonight'),'original messages in their original order');

@@ -59,7 +59,7 @@ export function ImportHistory({ onBack }: { onBack: () => void }) {
       }
       setPrep({ parsed: r.parsed, ready, duplicates, known: inMuse, problems });
       const names = [...new Set(ready.map((e) => e.journalName))];
-      setMapping(Object.fromEntries(names.map((n) => { const same = journals.find((x) => x.name.trim().toLowerCase() === n.trim().toLowerCase()); return [n, same ? same.id : n ? `${NEW}${n}` : fallback?.id ?? ""]; })));
+      setMapping(Object.fromEntries(names.map((n) => { const same = journals.find((x) => x.name.trim().toLowerCase() === n.trim().toLowerCase()); return [n, same ? same.id : fallback?.id ?? `${NEW}${n || "Imported"}`]; })));
     } catch { setError("That file couldn’t be read. Nothing was imported."); }
     finally { setBusy(false); }
   }

@@ -9,8 +9,6 @@ import { MuseIcon } from "../MuseIcon";
 import { useMuseSpark } from "../MuseSpark";
 import { Thread, Prose, type ThreadMessage } from "./Thread";
 import { EntryImages } from "./EntryImages";
-
-const importSourceName: Record<string, string> = { rosebud: "Rosebud", muse: "a Muse export" };
 import { TagEditor } from "./TagEditor";
 import { MUSE_STAR_PATH } from "../MuseStar";
 import { HighlightCard, HighlightEditor, SelectionHighlighter, jumpToHighlight } from "./Highlights";
@@ -72,12 +70,12 @@ export function EntryView({ conversation: c, onClose, focusHighlight = null }: {
       .catch((e) => { if (live) { setError(e instanceof Error ? e.message : "This entry couldn’t load."); setLoaded(true); } });
     return () => { live = false; };
   }, [client, userId, c.id]);
-  // An imported entry says quietly where it came from (provenance lives beside the entry, not in it).
-  const [importedFrom, setImportedFrom] = useState<string | null>(null), [timeUnknown, setTimeUnknown] = useState(false);
+  // An imported entry looks like any other; only a source that exported no times hides the (invented) clock.
+  const [timeUnknown, setTimeUnknown] = useState(false);
   useEffect(() => {
     if (c.origin !== "import") return;
     let live = true;
-    void client.from("journal_import_sources").select("source,original").eq("user_id", userId).eq("conversation_id", c.id).maybeSingle().then((r) => { if (!live) return; setImportedFrom(r.data?.source ?? "import"); setTimeUnknown(Boolean((r.data?.original as { time_unknown?: boolean } | null)?.time_unknown)); });
+    void client.from("journal_import_sources").select("original").eq("user_id", userId).eq("conversation_id", c.id).maybeSingle().then((r) => { if (!live) return; setTimeUnknown(Boolean((r.data?.original as { time_unknown?: boolean } | null)?.time_unknown)); });
     return () => { live = false; };
   }, [client, userId, c.id, c.origin]);
   // While the analysis is being written, look again every few seconds.
@@ -142,12 +140,12 @@ export function EntryView({ conversation: c, onClose, focusHighlight = null }: {
         </div>
       </div>
       <div className="mj-entry-head-copy">
-        <p className="muse-kicker type-meta"><button type="button" className="mj-date-edit" title="Change date & time" onClick={() => setDating(true)}>{formatDayIn(c.localDate, j.today)}{timeUnknown ? "" : ` · ${displayClock(c.startedAt, c.timeZone)}`}<MuseIcon name="edit" size={12} /></button> · {journal?.name ?? "Journal"}{c.companionName ? ` · with ${c.companionName}` : ""}{c.origin === "playground" ? " · kept from the Studio" : ""}{c.origin === "import" ? ` · imported${importedFrom && importSourceName[importedFrom] ? ` from ${importSourceName[importedFrom]}` : ""}` : ""}{c.guideSnapshot ? ` · ${c.guideSnapshot.icon ? `${c.guideSnapshot.icon} ` : ""}${c.guideSnapshot.name}` : ""}</p>
+        <p className="muse-kicker type-meta"><button type="button" className="mj-date-edit" title="Change date & time" onClick={() => setDating(true)}>{formatDayIn(c.localDate, j.today)}{timeUnknown ? "" : ` · ${displayClock(c.startedAt, c.timeZone)}`}<MuseIcon name="edit" size={12} /></button> · {journal?.name ?? "Journal"}{c.companionName ? ` · with ${c.companionName}` : ""}{c.origin === "playground" ? " · kept from the Studio" : ""}{c.guideSnapshot ? ` · ${c.guideSnapshot.icon ? `${c.guideSnapshot.icon} ` : ""}${c.guideSnapshot.name}` : ""}</p>
         {editingTitle ? <form className="mj-title-edit" onSubmit={(e) => { e.preventDefault(); void saveTitle(); }}>
           <input type="text" aria-label="Title" className="type-title" value={title} maxLength={200} onChange={(e) => setTitle(e.target.value)} autoFocus />
           <button type="submit" className="muse-button button-primary">Save</button><button type="button" className="muse-button" onClick={() => { setTitle(c.title); setEditingTitle(false); }}>Cancel</button>
         </form> : <h2 id="mj-entry-title" className="type-title mj-entry-title">{entryTitle(c)}</h2>}
-        <p className="mj-entry-facts type-meta"><span className="type-numeric">{c.userWords}</span> words · <span className="type-numeric">{c.messageCount}</span> messages{c.titleSource === "ai" && <> · <span className="mj-ai-badge">title by AI</span></>}{c.titleSource === "import" && importedFrom === "rosebud" && <> · title from Rosebud</>}{c.excludeFromMemory && <> · kept out of AI context</>}</p>
+        <p className="mj-entry-facts type-meta"><span className="type-numeric">{c.userWords}</span> words · <span className="type-numeric">{c.messageCount}</span> messages{c.titleSource === "ai" && <> · <span className="mj-ai-badge">title by AI</span></>}{c.excludeFromMemory && <> · kept out of AI context</>}</p>
         {(c.continuesId || c.continuesTitle || continuedIn.length > 0) && <p className="mj-entry-links type-meta">
           {(c.continuesId || c.continuesTitle) && <span>Continues {c.continuesId && state.conversations.some((x) => x.id === c.continuesId) ? <Link href={`/journal?entry=${c.continuesId}`}>“{c.continuesTitle || "an earlier entry"}”</Link> : <>“{c.continuesTitle || "an earlier entry"}” (no longer in your journal)</>}{c.continuesDate ? ` · ${formatShort(c.continuesDate)}` : ""}</span>}
           {continuedIn.length > 0 && <span>Continued in {continuedIn.map((x, i) => <span key={x.id}>{i > 0 && ", "}<Link href={`/journal?entry=${x.id}`}>“{entryTitle(x, "an entry in progress")}”</Link> · {formatShort(x.localDate)}</span>)}</span>}
@@ -237,7 +235,7 @@ function AnalysisPanel({ c, analysis, ai, analysing, onRun, onChanged }: { c: Co
   return <section className="mj-analysis muse-journal-archive mj-stagger" aria-label="Analysis">
     <div className="mj-overview">
       <div className="mj-row-between"><h3 className="mj-section-title">Overview</h3>
-        <span className="mj-row-tools">{c.summary && c.summarySource === "ai" && <span className="mj-ai-badge">Written by AI · yours to edit</span>}{c.summary && c.summarySource === "import" && <span className="mj-ai-badge">From the journal it was imported from</span>}
+        <span className="mj-row-tools">{c.summary && c.summarySource === "ai" && <span className="mj-ai-badge">Written by AI · yours to edit</span>}
           {ai && <button type="button" className="muse-button button-ghost" disabled={pending} onClick={() => onRun(Boolean(analysis?.status === "ready"))}>{pending ? "Reading…" : analysis?.status === "ready" ? "Write a new analysis" : analysis?.status === "failed" ? "Try the analysis again" : "Write an analysis"}</button>}</span></div>
       {pending && <p className="mj-note" role="status">Reading your conversation… this takes a few seconds.</p>}
       {analysis?.status === "failed" && !pending && <p className="mj-error" role="alert">{analysis.error ?? "The analysis couldn’t be written."} Your entry is saved.</p>}

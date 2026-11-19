@@ -25,7 +25,7 @@ Every entry starts with Rosebud and strictly alternates. Replies contain their o
 | Reflection | `summary` (`summary_source='import'`) + `original.analysis.reflection` | Direct, labelled as Rosebud's. |
 | Emotions / People / Topics | mood / person / topic tags (`source='ai'`) | Direct, through existing tags and confirmed aliases. 551 distinct tags. |
 | Companion | `companion_name = 'Rosebud'` | Direct. |
-| Journals | — | Not in the export. Entries go to a journal you choose in the preview (default: a new "Rosebud" journal that shares memory). |
+| Journals | — | Not in the export. Entries go into your main journal by default; the preview can choose another. |
 | Source id | — | Not in the export. The duplicate key is a fingerprint of the day plus every message. |
 | Images | — | None in this export. |
 
@@ -37,7 +37,7 @@ Every entry starts with Rosebud and strictly alternates. Replies contain their o
 - **One entry, one database call** (`import_journal_entry`, security invoker, so row-level security applies). An entry is written all or nothing as an ordinary finished entry (`origin='import'`) with its original date, time, order and words. Three run at a time, with progress and Stop. A large export can't time out, and a failure costs only that entry.
 - **Idempotent.** The source id (or the fingerprint) is unique per account. Importing the same export again imports nothing twice. Matching dates are never treated as duplicates, and an existing Muse entry is never overwritten.
 - **Deletion is respected.** An imported entry you delete by hand isn't brought back by a re-import (reported as "you'd deleted"). **Remove this import** (Earlier imports) deletes only that import's entries, never one written in Muse, so the file can be imported again.
-- **Provenance is separate:** `journal_import_batches` (counts, status, a report with positions, dates and reasons, never text) and `journal_import_sources` (source, key, fingerprint, batch, entry, immutable original metadata). The entry shows "imported from Rosebud" quietly in its date line.
+- **Provenance is separate:** `journal_import_batches` (counts, status, a report with positions, dates and reasons, never text) and `journal_import_sources` (source, key, fingerprint, batch, entry, immutable original metadata). Imported entries look like any other entry (her choice, Nov 19: "I just want all my journal entries in one spot"): no source label, and by default they go into her main journal. The source is kept only behind the scenes, for the companion and duplicate protection.
 - **No AI runs during an import.**
 
 ## Optional historical enrichment
