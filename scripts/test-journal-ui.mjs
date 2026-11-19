@@ -246,7 +246,7 @@ try{
  // A highlight whose words a correction removed is kept as a quote but never painted onto other words.
  const stale=firstUser.body.indexOf('Lisbon');
  must(await admin.from('journal_bookmarks').insert({user_id:a.id,conversation_id:convId,message_id:firstUser.id,excerpt:'Lisbon',start_offset:stale,end_offset:stale+6,created_at:'2020-01-01T00:00:00Z'}).select('id'));
- await go(`/journal?entry=${convId}`,'!!document.querySelector(".mj-hl-toggle")','entry reload');await click('.mj-hl-toggle');
+ await go(`/journal?entry=${convId}`,'!!document.querySelector(".mj-entry")','entry reload');await click('.mj-entry .muse-segmented button','Conversation');await until(()=>!!document.querySelector('.mj-hl-toggle'),'highlights bar');await click('.mj-hl-toggle');
  await until(()=>!!document.querySelector('.mj-hl-list'),'highlight list');
  await until(()=>[...document.querySelectorAll('.mj-hl-card')].some(c=>c.textContent.includes('corrected after you saved it')),'stale note',undefined,100).catch(()=>{});
  check(await has('.mj-hl-card','corrected after you saved it')&&!(await has('mark.mj-hl','Lisbon'))&&(await evaluate(()=>[...document.querySelectorAll('.mj-hl-card')].filter(c=>c.textContent.includes('corrected after')).length))===1,'after a correction the old quote is kept and never attached to the wrong text');

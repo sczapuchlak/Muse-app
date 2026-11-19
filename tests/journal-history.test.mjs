@@ -174,3 +174,13 @@ test('Rosebud: entries, speakers, tags, reflection and dates read exactly; repli
   assert.match(prev.fields.find((f) => f.key === 'times').note, /dates only/);
   assert.equal(R2.middayIn('2025-07-01', 'America/Chicago'), '2025-07-01T17:00:00.000Z', 'daylight time is respected');
 });
+
+test('History previews end at a sentence or a whole word, never mid-word', () => {
+  const F = load('components/journal/format');
+  const s = 'I went to the gallery tonight and it was lovely. Jamie was there and we talked for ages about printmaking and the weird little shop downtown. Then we walked to the river and I felt something shift.';
+  assert.equal(F.preview(s, 160), 'I went to the gallery tonight and it was lovely. Jamie was there and we talked for ages about printmaking and the weird little shop downtown.');
+  const words = F.preview('alpha beta gamma delta epsilon zeta eta theta iota kappa lambda mu nu xi omicron pi rho sigma tau upsilon', 50);
+  assert.ok(words.endsWith('…') && words.length <= 51 && !/\S…$/.test(words.replace(/\w+…$/, '')), words);
+  assert.match(words, /^alpha beta gamma delta epsilon zeta eta theta…$/);
+  assert.equal(F.preview('Short.\n\nNext', 200), 'Short. Next');
+});

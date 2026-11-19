@@ -41,7 +41,9 @@ export function EntryView({ conversation: c, onClose, focusHighlight = null }: {
   const journal = state.journals.find((x) => x.id === c.journalId);
   const companion = state.companions.find((x) => x.id === c.companionId) ?? null;
   const who = companion ? { name: companion.name, icon: companion.icon, tone: companion.tone } : { name: c.companionName || "Companion", icon: "sparkle", tone: 5 as const };
-  const [tab, setTab] = useState<Tab>("conversation"); // a highlight link always lands on the conversation
+  // Analysis first (her choice, Nov 19); a highlight link lands on its passage, and an entry with nothing analysed opens
+  // on its conversation rather than an empty page.
+  const [tab, setTab] = useState<Tab>(() => (focusHighlight || (!c.summary.trim() && !c.analysisStatus) ? "conversation" : "analysis"));
   const [messages, setMessages] = useState<Message[]>([]);
   const [corrections, setCorrections] = useState<Correction[]>([]);
   const [analysis, setAnalysis] = useState<Analysis | null>(null);
@@ -154,7 +156,7 @@ export function EntryView({ conversation: c, onClose, focusHighlight = null }: {
         </p>}
       </div>
       <div className="mj-entry-switch">
-        <MuseSegmented label="Entry view" value={tab} onChange={setTab} options={[{ id: "conversation", label: "Conversation" }, { id: "analysis", label: "Analysis" }]} />
+        <MuseSegmented label="Entry view" value={tab} onChange={setTab} options={[{ id: "analysis", label: "Analysis" }, { id: "conversation", label: "Conversation" }]} />
         <MuseChoiceMenu label="Journal" icon="notes" valueLabel={journal?.name ?? "Journal"} selectedIds={[c.journalId]} options={state.journals.map((x) => ({ id: x.id, label: x.name }))} onSelect={(id) => void j.updateMeta({ ...c, journalId: id })} />
       </div>
     </header>

@@ -103,7 +103,9 @@ try{
  await until(()=>{const r=[...document.querySelectorAll('.mj-history-view .mj-row')];return r.length===1&&r[0].textContent.includes('Jamie at the gallery');},'search hit');
  check(true,'History search finds words inside an imported conversation');
  const c1=must(await a.client.from('journal_conversations').select('id').eq('title','Jamie at the gallery').single()).id;
- await go(`/journal?entry=${c1}`,'!!document.querySelector(".mj-message")','entry');
+ await go(`/journal?entry=${c1}`,'!!document.querySelector(".muse-segmented[aria-label=\\"Entry view\\"]")','entry');
+ check(await evaluate(()=>[...document.querySelectorAll('.muse-segmented[aria-label="Entry view"] button')].map(b=>b.textContent+(b.getAttribute('aria-pressed')==='true'?'*':'')).join('|'))==='Analysis*|Conversation','an entry opens on its analysis, listed first');
+ await click('.muse-segmented[aria-label="Entry view"] button','Conversation');await until(()=>!!document.querySelector('.mj-message'),'conversation');
  await until(()=>[...document.querySelectorAll('.muse-kicker')].some(x=>x.textContent.includes('2025')),'entry header');
  check(await has('.muse-kicker','imported from a Muse export')&&await has('.muse-kicker','My Journal'),'an imported entry sits in the main journal with a quiet “imported from” note');
  check(await has('.muse-kicker','Sun, Mar 2')||await has('.muse-kicker','Mar'),'the entry keeps its original date');
