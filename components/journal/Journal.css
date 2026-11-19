@@ -898,3 +898,31 @@
 .mj-workspace .mj-composer-dock{max-width:760px}
 .mj-workspace:has(.mj-blank):not(:has(.mj-guided)) .mj-composer-dock{max-width:none}
 .mj-workspace:has(.mj-guided) .mj-composer-dock{max-width:760px}
+
+/* Change date & time (Nov 18): the date line is a quiet button; the dialog is the shared date picker plus a time. */
+.mj-date-edit{display:inline-flex;align-items:center;gap:6px;padding:2px 6px;margin:-2px -6px;border:0;border-radius:8px;background:none;color:inherit;font:inherit;letter-spacing:inherit;text-transform:inherit;cursor:pointer}
+.mj-date-edit svg{opacity:.55}
+.mj-date-edit:hover{background:var(--surface-hover)}.mj-date-edit:hover svg{opacity:1}
+.mj-date-edit:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
+.mj-entry-date-row{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:12px}
+.mj-entry-date-field{display:grid;gap:6px;min-width:0}
+.mj-entry-date-field small{color:var(--text-muted);font-weight:500}
+.mj-entry-date-field input[type=time]{min-height:44px}
+.mj-entry-date .mj-note{display:flex;gap:8px;align-items:flex-start}
+.mj-entry-date .mj-note svg{flex:none;margin-top:3px}
+@container muse-content (max-width:480px){.mj-entry-date-row{grid-template-columns:minmax(0,1fr)}}
+
+/* Drafts (Nov 18): every unfinished entry in one list, as in History's other views. */
+.mj-drafts-intro{margin:4px 0 14px}
+.mj-drafts{display:grid;gap:10px;margin:0;padding:0;list-style:none}
+.mj-draft{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:14px;padding:14px 16px;border:1px solid var(--glass-border);border-radius:18px;background:var(--surface-subtle)}
+.mj-draft-copy{display:grid;gap:4px;min-width:0}
+.mj-draft-meta{display:flex;flex-wrap:wrap;gap:4px 10px;margin:0;color:var(--dl-kicker,var(--text-muted))}
+.mj-draft-meta span+span::before{content:"·";margin-right:10px;opacity:.6}
+.mj-draft-preview{margin:0;font-family:var(--font-editorial);font-size:1.05rem;line-height:1.4;overflow-wrap:anywhere}
+.mj-draft-edited{margin:0;color:var(--text-muted)}
+.mj-draft-actions{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:6px}
+.mj-draft-actions .muse-button{display:inline-flex;align-items:center;gap:6px;min-height:40px}
+.mj-draft-discard{color:var(--urgency-ink,var(--text-muted))}
+.mj-drafts-empty{display:grid;gap:4px;padding:28px 4px;text-align:center}.mj-drafts-empty p{margin:0}
+@container muse-content (max-width:640px){.mj-draft{grid-template-columns:minmax(0,1fr)}.mj-draft-actions{justify-content:flex-start}}

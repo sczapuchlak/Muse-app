@@ -96,12 +96,12 @@ export async function savePreferences(client: Client, userId: string, p: Prefere
 }
 
 /** Starts a conversation, pinning the Companion's current saved version. */
-export async function createConversation(client: Client, userId: string, o: { id: string; journalId: string; companion: Companion | null; mode: Mode; localDate: string; timeZone: string; status: "draft" | "active"; draft?: string; continues?: { id: string; title: string; date: string } | null; guide?: { id: string; snapshot: GuideSnapshot; state?: GuideState } | null }): Promise<Conversation> {
+export async function createConversation(client: Client, userId: string, o: { id: string; journalId: string; companion: Companion | null; mode: Mode; localDate: string; timeZone: string; startedAt?: string | null; status: "draft" | "active"; draft?: string; continues?: { id: string; title: string; date: string } | null; guide?: { id: string; snapshot: GuideSnapshot; state?: GuideState } | null }): Promise<Conversation> {
   let versionId: string | null = null;
   if (o.companion) { const v = await client.from("journal_companion_versions").select("id").eq("user_id", userId).eq("companion_id", o.companion.id).eq("version", o.companion.version).maybeSingle(); if (v.error) fail(v.error); versionId = v.data?.id ?? null; }
   return conversationFromRow(must(await client.from("journal_conversations").insert({
     id: o.id, user_id: userId, journal_id: o.journalId, companion_id: o.companion?.id ?? null, companion_version_id: versionId, companion_name: o.companion?.name ?? "", mode: o.mode,
-    local_date: o.localDate, time_zone: o.timeZone, status: o.status, draft: o.draft ?? "", draft_updated_at: o.draft ? new Date().toISOString() : null,
+    local_date: o.localDate, time_zone: o.timeZone, ...(o.startedAt ? { started_at: o.startedAt } : {}), status: o.status, draft: o.draft ?? "", draft_updated_at: o.draft ? new Date().toISOString() : null,
     ...(o.continues ? { continues_id: o.continues.id, continues_title: o.continues.title.slice(0, 200), continues_date: o.continues.date } : {}),
     ...(o.guide ? { guide_id: o.guide.id, guide_snapshot: o.guide.snapshot as unknown as Json, guide_state: (o.guide.state ?? {}) as unknown as Json } : {}),
   }).select("*").single()));
@@ -109,6 +109,12 @@ export async function createConversation(client: Client, userId: string, o: { id
 /** Drafts save often and never conflict with metadata edits (they don't bump the revision). */
 export async function saveDraft(client: Client, userId: string, id: string, text: string) {
   must(await client.from("journal_conversations").update({ draft: text.slice(0, 100000), draft_updated_at: new Date().toISOString() }).eq("id", id).eq("user_id", userId).neq("status", "completed").select("id"));
+}
+/** Moves an entry (and its own words) to the day, and optionally the time, it belongs to. Messages keep created_at. */
+export async function redateConversation(client: Client, c: Conversation, localDate: string, startedAt: string | null): Promise<Conversation> {
+  const rows = must(await client.rpc("redate_journal_entry", { p_id: c.id, p_local_date: localDate, p_started_at: startedAt as string, p_expected_revision: c.revision })) as unknown as Parameters<typeof conversationFromRow>[0][];
+  if (!rows?.[0]) throw Error("This entry couldn’t be moved. Reload and try again.");
+  return conversationFromRow(rows[0]);
 }
 export async function deleteConversation(client: Client, userId: string, id: string) {
   must(await client.from("journal_conversations").delete().eq("id", id).eq("user_id", userId).select("id"));

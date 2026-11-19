@@ -7,6 +7,9 @@
  .daily-working-left,.daily-working-right { display:contents; }
  /* Approved mobile order: Horoscope, Book, Plan, Priorities, Rituals, Water, Movement, Meals, Mood, Day Pulse, Reflection, Day in Three. */
  .daily-working-grid :is(.daily-working-left,.daily-working-right) > * { order:13; }
+ /* Arrangeable (Nov 18): each card sits in a slot carrying its phone position (the approved order below until you
+    arrange your own). */
+ .daily-working-grid :is(.daily-working-left,.daily-working-right) > .muse-daily-slot { order:var(--phone-order,13); }
  .daily-working-grid .muse-cosmic-forecast { order:1; }
  .daily-working-grid .muse-daily-bookshelf { order:2; }
  .daily-working-grid .schedule-card { order:3; }

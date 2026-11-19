@@ -1,0 +1,27 @@
+/* Daily Edit arrangement (Nov 18): an Arrange button by the section title, and compact tiles while arranging. */
+.muse-daily-title-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.muse-daily-title-row .muse-daily-section-title{margin-bottom:0}
+.muse-daily-arrange-toggle{display:inline-flex;align-items:center;gap:6px;min-height:38px}
+.muse-arrange{display:grid;gap:14px;margin-top:12px;padding:16px;border:1px solid var(--glass-border);border-radius:var(--card-radius,22px);background:var(--glass-background);box-shadow:var(--card-shadow)}
+.muse-arrange-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px}
+.muse-arrange-head .mj-note{margin:0;max-width:60ch;color:var(--text-muted);font-size:.86rem}
+.muse-arrange-actions{display:flex;gap:8px}
+.muse-arrange-board{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:14px;align-items:start}
+.muse-arrange-col{display:grid;gap:8px;min-height:60px;margin:0;padding:10px;border:1px dashed color-mix(in srgb,var(--glass-border) 80%,transparent);border-radius:16px;list-style:none}
+.muse-arrange-tile{display:grid;grid-template-columns:auto auto minmax(0,1fr) auto;align-items:center;gap:10px;padding:6px 8px 6px 4px;border:1px solid var(--glass-border);border-radius:14px;background:var(--surface-control);transition:box-shadow .15s,transform .15s,opacity .15s}
+.muse-arrange-tile[data-dragging]{transform:scale(1.02);box-shadow:0 10px 24px rgba(0,0,0,.18);border-color:var(--selected-border);background:var(--selected-background)}
+.muse-arrange-board[data-dragging] .muse-arrange-tile:not([data-dragging]){opacity:.85}
+.muse-arrange-handle{display:grid;place-items:center;width:40px;height:40px;border:0;border-radius:10px;background:none;color:var(--text-muted);cursor:grab;touch-action:none}
+.muse-arrange-handle:active{cursor:grabbing}
+.muse-arrange-handle:focus-visible{outline:2px solid var(--focus-ring);outline-offset:1px}
+.muse-arrange-mark{display:grid;place-items:center;width:28px;height:28px;border-radius:9px;color:#fff;background:linear-gradient(140deg,var(--icon-gradient-start),var(--icon-gradient-end))}
+.muse-arrange-name{min-width:0;overflow:hidden;font-weight:600;text-overflow:ellipsis;white-space:nowrap}
+.muse-arrange-moves{display:flex;gap:2px}
+.muse-arrange-moves .muse-icon-button{width:32px;height:32px;min-width:32px;min-height:32px}
+.muse-arrange-moves .muse-icon-button[data-up] svg{transform:rotate(180deg)}
+.muse-arrange-moves .muse-icon-button[data-across=right] svg{transform:none}
+.muse-arrange-moves .muse-icon-button[data-across=left] svg{transform:rotate(180deg)}
+.muse-arrange-moves .muse-icon-button:disabled{opacity:.35}
+.muse-daily-slot:empty{display:none}
+@container muse-content (max-width:900px){.muse-arrange-board{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:600px){.muse-arrange{padding:12px}.muse-arrange-moves .muse-icon-button:last-child{display:none}}
