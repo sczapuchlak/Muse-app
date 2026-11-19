@@ -24,10 +24,15 @@
 .muse-arrange-moves .muse-icon-button:disabled{opacity:.35}
 .muse-daily-slot:empty{display:none}
 @container muse-content (max-width:900px){.muse-arrange-board{grid-template-columns:minmax(0,1fr)}}
-@media(max-width:600px){.muse-arrange{padding:12px}.muse-arrange-moves .muse-icon-button:last-child{display:none}}
+@media(max-width:600px){.muse-arrange{padding:12px}.muse-arrange-moves .muse-icon-button[data-across]{display:none}}
 /* Hide from the Daily Edit (Nov 18): a hidden card stays on the board, dimmed, so it's always one tap from coming back. */
 .muse-arrange-tile[data-hidden]{opacity:.62;background:color-mix(in srgb,var(--surface-control) 55%,transparent);border-style:dashed}
 .muse-arrange-tile[data-hidden] .muse-arrange-mark{filter:grayscale(.7)}
 .muse-arrange-off{color:var(--text-muted);font-weight:500}
 .muse-arrange-eye[aria-pressed=true] svg{color:var(--accent-primary)}
 .muse-arrange-eye[aria-pressed=false] svg{color:var(--text-muted)}
+
+/* Phone view: one list, as the page reads on a phone. */
+.muse-arrange[data-mode=phone] .muse-arrange-board{grid-template-columns:minmax(0,1fr)}
+/* Phone tiles: names read in full (they wrap) and the handle is a touch slimmer. */
+@media(max-width:600px){.muse-arrange-tile{gap:8px;padding:6px 6px 6px 2px}.muse-arrange-handle{width:32px}.muse-arrange-name{white-space:normal;line-height:1.2;text-overflow:clip}}

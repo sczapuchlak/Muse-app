@@ -24,7 +24,7 @@ import {PlannerPersistenceStatus} from "./PlannerStore";
 import { CosmicForecast } from "./CosmicForecast";
 import { useMuseDate } from "./MuseSession";
 import { Suspense, useState, type CSSProperties, type ReactNode } from "react";
-import { DailyArrange, phoneOrder, useDailyLayout, type DailyCardKey } from "./daily/DailyLayout";
+import { DailyArrange, hiddenFor, phoneOrder, useDailyLayout, useOneColumn, type DailyCardKey } from "./daily/DailyLayout";
 import { MuseIcon } from "./MuseIcon";
 import { WelcomeOrientation } from "./WelcomeOrientation";
 
@@ -40,7 +40,9 @@ export function DailyEdit() {
   const day = mockDay(selectedDate);
   const {profile,snapshot}=useDailyData();
   const priorityTaskIds=snapshot.days[selectedDate]?.priorities.flatMap(item=>item.task_id?[item.task_id]:[])??[];
-  const { layout, save, error, custom } = useDailyLayout();
+  const { layout, save, error } = useDailyLayout();
+  // Phone (one column) and computer (two columns) are arranged separately.
+  const oneColumn = useOneColumn(), mode = oneColumn ? "phone" as const : "columns" as const, hiddenHere = hiddenFor(layout, mode);
   const [arranging, setArranging] = useState(false);
   // Each card on its own, so the Daily Edit can be arranged; every card still owns its data and saving.
   const cards: Record<DailyCardKey, ReactNode> = {
@@ -69,10 +71,10 @@ export function DailyEdit() {
       <div className="muse-daily-title-row"><h1 className="muse-daily-section-title" id="daily-edit">The Daily Edit</h1>
         {!arranging && <button type="button" className="muse-button button-ghost muse-daily-arrange-toggle" onClick={() => setArranging(true)}><MuseIcon name="grip" size={15} />Arrange</button>}</div>
       {error && <p className="small-label" role="status">{error}</p>}
-      {arranging ? <DailyArrange layout={layout} onCancel={() => setArranging(false)} onDone={(next) => { setArranging(false); void save(next); }} />
+      {arranging ? <DailyArrange key={mode} layout={layout} mode={mode} onCancel={() => setArranging(false)} onDone={(next) => { setArranging(false); void save(next); }} />
       : <div className="daily-working-grid" key={`working/${selectedDate}`}>
-        <div className="daily-working-left">{layout.left.filter((k) => !(layout.hidden ?? []).includes(k)).map((k) => <div key={k} className="muse-daily-slot" data-card={k} style={{ "--phone-order": phoneOrder(layout, custom, k) } as CSSProperties}>{cards[k]}</div>)}</div>
-        <div className="daily-working-right">{layout.right.filter((k) => !(layout.hidden ?? []).includes(k)).map((k) => <div key={k} className="muse-daily-slot" data-card={k} style={{ "--phone-order": phoneOrder(layout, custom, k) } as CSSProperties}>{cards[k]}</div>)}</div>
+        <div className="daily-working-left">{layout.left.filter((k) => !hiddenHere.includes(k)).map((k) => <div key={k} className="muse-daily-slot" data-card={k} style={{ "--phone-order": phoneOrder(layout, k) } as CSSProperties}>{cards[k]}</div>)}</div>
+        <div className="daily-working-right">{layout.right.filter((k) => !hiddenHere.includes(k)).map((k) => <div key={k} className="muse-daily-slot" data-card={k} style={{ "--phone-order": phoneOrder(layout, k) } as CSSProperties}>{cards[k]}</div>)}</div>
       </div>}
       <footer className="muse-footer"><DailySaveStatus date={selectedDate}/><PlannerPersistenceStatus compact/><WellnessSaveStatus/>Your daily entries, plan, meals, hydration and movement save to your account.</footer>
     </main>
