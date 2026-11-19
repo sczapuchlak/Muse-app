@@ -1,0 +1,31 @@
+/* Daily Edit Journal card (Nov 18): an invitation before you write, a keepsake once you have. Theme tokens only. */
+.muse-journal-widget{position:relative;isolation:isolate;overflow:hidden}
+.muse-journal-widget::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+ background:radial-gradient(70% 60% at 100% 0%,color-mix(in srgb,var(--accent-secondary) 16%,transparent),transparent 70%),radial-gradient(60% 55% at 0% 100%,color-mix(in srgb,var(--accent-primary) 12%,transparent),transparent 72%)}
+.mjw-invite,.mjw-keepsake{display:grid;gap:12px;min-width:0}
+.mjw-kicker{display:flex;flex-wrap:wrap;gap:4px 10px;margin:0;color:var(--dl-kicker,var(--text-muted))}
+.mjw-kicker span+span::before{content:"·";margin-right:10px;opacity:.55}
+.mjw-prompt{margin:0;font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight,500);font-size:clamp(1.3rem,2.4vw,1.6rem);line-height:1.25;letter-spacing:-.01em;
+ background:linear-gradient(100deg,var(--foreground) 30%,color-mix(in oklab,var(--accent-primary) 70%,var(--foreground)));-webkit-background-clip:text;background-clip:text;color:transparent}
+.mjw-title{margin:0;font-family:var(--font-editorial);font-weight:var(--type-title-weight,560);font-size:clamp(1.35rem,2.4vw,1.7rem);line-height:1.15;letter-spacing:-.01em;overflow-wrap:anywhere}
+.mjw-summary{position:relative;margin:0;padding-left:16px;font-family:var(--font-editorial);font-style:italic;font-size:1rem;line-height:1.55;color:var(--foreground);display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.mjw-summary::before{content:"";position:absolute;left:0;top:4px;bottom:4px;width:3px;border-radius:3px;background:linear-gradient(180deg,var(--accent-secondary),var(--accent-primary))}
+.mjw-tags{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0;list-style:none}
+.mjw-tags li{padding:4px 11px;border-radius:999px;font-size:.78rem;font-weight:600;border:1px solid color-mix(in srgb,var(--tag-ink) 40%,transparent);background:color-mix(in srgb,var(--tag-ink) 14%,transparent);color:var(--foreground);--tag-ink:var(--accent-pop)}
+.mjw-tags li[data-kind=mood]{--tag-ink:var(--accent-primary)}
+.mjw-tags li[data-kind=person]{--tag-ink:var(--accent-secondary)}
+.mjw-tags li[data-kind=topic]{--tag-ink:var(--accent-warm,var(--accent-pop))}
+.mjw-week{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 16px;padding:10px 12px;border-radius:16px;background:color-mix(in srgb,var(--foreground) 4%,transparent);border:1px solid color-mix(in srgb,var(--glass-border) 70%,transparent)}
+.mjw-week .mj-constellation{width:min(100%,250px)}
+.mjw-streak{display:inline-flex;align-items:center;gap:6px;font-size:.84rem;color:var(--text-muted)}
+.mjw-streak b{font-family:var(--font-editorial);font-size:1.25rem;color:var(--foreground)}
+.mjw-flame{width:12px;height:16px;background:linear-gradient(180deg,var(--accent-pop,var(--accent-primary)),#ff9a3d 70%,#ffcf5a);clip-path:polygon(50% 0,72% 30%,92% 55%,85% 85%,50% 100%,15% 85%,8% 55%,30% 32%);filter:drop-shadow(0 0 3px rgba(255,140,60,.6))}
+.mjw-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
+.mjw-actions .muse-button{display:inline-flex;align-items:center;gap:7px;min-height:42px}
+.mjw-last{font-size:.86rem;color:var(--text-muted);text-decoration:none}
+.mjw-last span{color:var(--link-ink,var(--foreground));text-decoration:underline;text-underline-offset:3px}
+.mjw-last:hover{color:var(--foreground)}
+@media (prefers-reduced-motion:no-preference){:root:not([data-magic=quiet]) .mjw-keepsake>*,:root:not([data-magic=quiet]) .mjw-invite>*{animation:mjw-rise .5s cubic-bezier(.2,.8,.2,1) both}
+ :root:not([data-magic=quiet]) :is(.mjw-keepsake,.mjw-invite)>:nth-child(2){animation-delay:.05s}:root:not([data-magic=quiet]) :is(.mjw-keepsake,.mjw-invite)>:nth-child(n+3){animation-delay:.1s}}
+@keyframes mjw-rise{from{opacity:0;transform:translateY(5px)}}
+@media(forced-colors:active){.mjw-prompt{color:CanvasText;background:none}}
