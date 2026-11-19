@@ -7,7 +7,10 @@ import "server-only";
  */
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database, Json } from "@/lib/database.types";
-import { cleanTagName, findTag, normalizeMemory, normalizeTag, tagFromRow, type AnalysisData, type TagKind } from "../model";
+import { cleanTagName, findTag, memoryOverlap, normalizeMemory, normalizeTag, tagFromRow, type AnalysisData, type TagKind } from "../model";
+
+/** Historical (imported) entries: at most this many suggestions each, and this many waiting from imports at once. */
+export const HISTORICAL_SUGGESTIONS = { perEntry: 2, waiting: 30 } as const;
 
 type Client = SupabaseClient<Database>;
 type Conv = Database["public"]["Tables"]["journal_conversations"]["Row"];
@@ -53,11 +56,17 @@ export async function applyAnalysis(client: Client, userId: string, conv: Conv, 
   if (data.memories.length) {
     // Never re-propose: words you already have (any status, compared loosely), or words you dismissed or corrected
     // away for this entry. Suggestions never change a confirmed memory; they only ever wait for your approval.
-    const have = await client.from("journal_memories").select("body").eq("user_id", userId).limit(2000);
+    const have = await client.from("journal_memories").select("body,status,source,source_conversation_id").eq("user_id", userId).limit(2000);
     if (have.error) throw have.error;
     const prior = await client.from("journal_analyses").select("dismissed").eq("conversation_id", conv.id).eq("user_id", userId).maybeSingle();
     const known = new Set([...have.data.map((m) => normalizeMemory(m.body)), ...(prior.data?.dismissed ?? []).filter((d) => d.startsWith("memory:")).map((d) => d.slice(7))]);
-    const fresh = [...new Set(data.memories.map((m) => m.trim()).filter(Boolean))].filter((m) => !known.has(normalizeMemory(m)));
+    let fresh = [...new Set(data.memories.map((m) => m.trim()).filter(Boolean))].filter((m) => !known.has(normalizeMemory(m)));
+    if (conv.origin === "import") {
+      // An archive analysed in bulk would otherwise repeat the same person or situation dozens of times: skip anything
+      // close to a memory already known or waiting, keep a few per entry, and stop while many imported ones wait.
+      const waitingFromImports = have.data.filter((m) => m.status === "suggested" && m.source === "ai" && m.source_conversation_id).length;
+      fresh = fresh.filter((m) => !have.data.some((x) => memoryOverlap(x.body, m) >= 0.6)).slice(0, Math.max(0, Math.min(HISTORICAL_SUGGESTIONS.perEntry, HISTORICAL_SUGGESTIONS.waiting - waitingFromImports)));
+    }
     if (fresh.length) {
       const ins = await client.from("journal_memories").insert(fresh.map((body) => ({ user_id: userId, body: body.slice(0, 1000), kind: "fact", status: "suggested", source: "ai", source_conversation_id: conv.id })));
       if (ins.error) throw ins.error;

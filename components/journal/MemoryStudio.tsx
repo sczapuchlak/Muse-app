@@ -5,6 +5,7 @@ import { MuseChoiceMenu } from "../MuseChoiceMenu";
 import { MuseIcon } from "../MuseIcon";
 import { newId, useJournal } from "./useJournal";
 import { formatShort } from "./format";
+import { aiAction } from "@/lib/journal/ai-client";
 import { entryTitle, memoryKindLabel, memoryKinds, memoryOverlap, normalizeMemory, type Memory, type MemoryKind } from "@/lib/journal/model";
 
 const scopeLabel = { shared: "Shares memory", journal: "Keeps memory to itself", off: "No memory" } as const;
@@ -99,5 +100,42 @@ export function MemoryStudio() {
       {groups.length ? groups.map(({ k, items }) => <div key={k} className="mj-mem-group"><h4 className="type-meta">{memoryKindLabel[k]} <span className="type-numeric">{items.length}</span></h4><ul className="mj-mem-list">{items.map((m) => <MemoryCard key={m.id} m={m} />)}</ul></div>)
         : <p className="mj-note">{needle || kind ? "No memory matches." : "Nothing yet. Approve a suggestion or add one yourself."}</p>}
     </section>
+    <RecallCheck />
   </div>;
+}
+
+type Recall = { journalId: string; allowed: boolean; memories: string[]; recent: string[]; retrieved: { id: string; why: string[] }[]; entities: string[]; approxTokens: number };
+/**
+ * "What would my companion recall?": runs the same selection a reply uses for a sentence you type, in the journal you
+ * choose, and lists what it would bring in and why. Reads only; never calls AI and costs nothing.
+ */
+function RecallCheck() {
+  const j = useJournal();
+  const journals = j.state.journals.filter((x) => !x.archivedAt);
+  const [text, setText] = useState(""), [journalId, setJournalId] = useState(j.state.prefs.defaultJournalId ?? journals[0]?.id ?? ""), [out, setOut] = useState<Recall | null>(null), [error, setError] = useState(""), [busy, setBusy] = useState(false);
+  const entry = (id: string) => j.state.conversations.find((c) => c.id === id);
+  const reason = (w: string) => (w === "search" ? "matching words" : `tagged ${w.slice(4)}`);
+  async function check(e: React.FormEvent) {
+    e.preventDefault(); if (!text.trim()) return;
+    setBusy(true); setError("");
+    try { setOut(await aiAction<Recall>({ action: "recall", text: text.trim(), journalId, localDate: j.today })); }
+    catch (x) { setError(x instanceof Error ? x.message : "That didn’t work."); }
+    finally { setBusy(false); }
+  }
+  return <details className="mj-mem-how mj-recall"><summary>Check what your companion would recall</summary>
+    <p className="mj-note">Type something you might say. Muse shows which memories and earlier entries it would bring into that conversation, and why. This doesn’t use AI and costs nothing.</p>
+    <form className="mj-mem-add" onSubmit={check}>
+      <input type="text" aria-label="Something you might say" placeholder="e.g. “Guess who messaged me again? Jamie!”" value={text} maxLength={4000} onChange={(e) => setText(e.target.value)} />
+      {journals.length > 1 && <MuseChoiceMenu label="In journal" valueLabel={journals.find((x) => x.id === journalId)?.name ?? "Journal"} selectedIds={[journalId]} options={journals.map((x) => ({ id: x.id, label: x.name }))} onSelect={setJournalId} />}
+      <button type="submit" className="muse-button" disabled={busy || !text.trim()}>{busy ? "Checking…" : "Check"}</button>
+    </form>
+    {error && <p className="mj-error" role="alert">{error}</p>}
+    {out && (!out.allowed ? <p className="mj-note" role="status">Memory is off here, so nothing from your journal would be used.</p> : <div role="status" className="mj-recall-out">
+      <p className="mj-note">{out.memories.length} known {out.memories.length === 1 ? "memory" : "memories"} · {out.recent.length} recent {out.recent.length === 1 ? "entry" : "entries"} (last 7 days) · about {out.approxTokens.toLocaleString()} tokens of context{out.entities.length ? ` · recognised ${out.entities.join(", ")}` : ""}</p>
+      {out.retrieved.length ? <ul className="mj-import-fields">{out.retrieved.map((r) => { const c = entry(r.id); return <li key={r.id}>
+        {c ? <Link href={`/journal?entry=${c.id}`}>{entryTitle(c)} · {formatShort(c.localDate)}</Link> : <span>An earlier entry</span>}
+        <span className="type-meta">{r.why.map(reason).join(" + ")}</span></li>; })}</ul>
+        : <p className="mj-note">No older entries would be brought in for this.</p>}
+    </div>)}
+  </details>;
 }

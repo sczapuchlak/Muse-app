@@ -246,7 +246,7 @@ try{
  // A highlight whose words a correction removed is kept as a quote but never painted onto other words.
  const stale=firstUser.body.indexOf('Lisbon');
  must(await admin.from('journal_bookmarks').insert({user_id:a.id,conversation_id:convId,message_id:firstUser.id,excerpt:'Lisbon',start_offset:stale,end_offset:stale+6,created_at:'2020-01-01T00:00:00Z'}).select('id'));
- await go(`/journal?entry=${convId}`,'!!document.querySelector(".mj-hl-toggle")','entry reload');await click('.mj-hl-toggle');
+ await go(`/journal?entry=${convId}`,'!!document.querySelector(".mj-entry")','entry reload');await click('.mj-entry .muse-segmented button','Conversation');await until(()=>!!document.querySelector('.mj-hl-toggle'),'highlights bar');await click('.mj-hl-toggle');
  await until(()=>!!document.querySelector('.mj-hl-list'),'highlight list');
  await until(()=>[...document.querySelectorAll('.mj-hl-card')].some(c=>c.textContent.includes('corrected after you saved it')),'stale note',undefined,100).catch(()=>{});
  check(await has('.mj-hl-card','corrected after you saved it')&&!(await has('mark.mj-hl','Lisbon'))&&(await evaluate(()=>[...document.querySelectorAll('.mj-hl-card')].filter(c=>c.textContent.includes('corrected after')).length))===1,'after a correction the old quote is kept and never attached to the wrong text');
@@ -270,13 +270,14 @@ try{
  await until(()=>[...document.querySelectorAll('.mj-results .mj-row')].some(x=>x.textContent.includes('Dinner with Alex')),'global search');
  check(true,'a search from the week view finds entries from weeks ago');
  await setValue('.mj-history-view input[type=search]','');
- // Filters: one panel, a tag finder inside it, tags AND the search text.
+ // Filters: one panel of dropdowns, one multi-select per tag kind; tags AND the search text.
  await click('.mj-filters-toggle');await until(()=>!!document.querySelector('.mj-filter-panel'),'filter panel');
- await setValue('.mj-filter-find input','first');
- await until(()=>document.querySelectorAll('.mj-filter-chip').length===1,'tag finder narrows');
- await click('.mj-filter-chip');await until(()=>!!document.querySelector('.mj-active-filters .mj-tag[data-kind=custom]'),'active chip');
+ check(!(await has('.mj-filter-panel .mj-filter-chip')),'tags live in dropdowns, not chip walls');
+ await click('.mj-filter-panel button.muse-choice-trigger','My tags');await until(()=>[...document.querySelectorAll('.popover-choice')].some(x=>x.textContent.startsWith('#First Dates')),'my tags menu');
+ await click('.popover-choice','#First Dates');await until(()=>!!document.querySelector('.mj-active-filters .mj-tag[data-kind=custom]'),'active chip');
+ await evaluate(()=>document.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true})));
  check((await evaluate(()=>document.querySelectorAll('.mj-results .mj-row').length))===1,'choosing #First Dates shows only the entries I tagged');
- await setValue('.mj-filter-find input','');await shoot('06b-filters');
+ await shoot('06b-filters');
  await setValue('.mj-history-view input[type=search]','Lisbon');await wait(900);
  check((await evaluate(()=>document.querySelectorAll('.mj-results .mj-row').length))===1,'#First Dates AND “Lisbon” keeps the matching entry');
  await setValue('.mj-history-view input[type=search]','colours');

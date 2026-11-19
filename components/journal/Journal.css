@@ -319,7 +319,11 @@
 .mj-compare-card>button{justify-self:start}
 
 /* ── History ──────────────────────────────────────────────────────────────────────────────────────────────────── */
-.mj-history-view{gap:16px}
+.mj-history-view{gap:16px;grid-template-columns:minmax(0,1fr)}
+/* Phones: the view switcher scrolls inside the row instead of stretching the card past its edge. */
+.mj-shelf-head>.mj-history-controls{min-width:0;max-width:100%}
+.mj-shelf-head>.mj-history-controls>.muse-segmented{min-width:0;flex:0 1 auto;overflow-x:auto;scrollbar-width:none}
+.mj-shelf-head>.mj-history-controls>:not(.muse-segmented){flex:none}
 .mj-finder{display:grid;gap:10px}
 .mj-filters{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
 .mj-filters[data-more]{padding:10px;border:1px dashed var(--glass-border);border-radius:14px}
@@ -638,10 +642,13 @@
 .mj-filter-chip:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
 .mj-filter-chip[data-kind="person"]{--tag:var(--chart-2)}.mj-filter-chip[data-kind="place"]{--tag:var(--chart-6)}.mj-filter-chip[data-kind="topic"]{--tag:var(--chart-1)}.mj-filter-chip[data-kind="theme"]{--tag:var(--chart-7)}.mj-filter-chip[data-kind="mood"]{--tag:var(--chart-8)}
 .mj-filter-more{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding-top:12px;border-top:1px solid var(--mj-hair)}
+.mj-filter-more:first-child{padding-top:0;border-top:0}
 .mj-filter-done{display:flex;justify-content:flex-end}
 @container muse-content (max-width:640px){
  .mj-filter-panel{padding:12px}
- .mj-filter-more{display:grid;grid-template-columns:minmax(0,1fr)}
+ .mj-filter-more{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+ .mj-filter-more>.mj-range{grid-column:1/-1}
+ .mj-filter-more .muse-choice-trigger{width:100%;min-width:0}
  .mj-filter-done .muse-button{width:100%;justify-content:center}
 }
 @media (prefers-reduced-motion:reduce){.mj-filter-panel{animation:none}}
@@ -926,3 +933,17 @@
 .mj-blank-streak b{font-family:var(--font-editorial);font-size:1.2rem;color:var(--foreground)}
 .mj-blank-streak .mj-streak-flame{width:11px;height:15px;background:linear-gradient(180deg,var(--accent-pop,var(--accent-primary)),#ff9a3d 70%,#ffcf5a);clip-path:polygon(50% 0,72% 30%,92% 55%,85% 85%,50% 100%,15% 85%,8% 55%,30% 32%);filter:drop-shadow(0 0 3px rgba(255,140,60,.6))}
 .mj-blank-week>p:empty{display:none}
+
+/* Import journal history (Journal settings → Privacy & usage) and the recall check (Memory). Hairline rows like the
+   analysis tag rows; the file picker is a normal Muse button holding a visually hidden input. */
+.mj-import-preview{display:grid;gap:12px}
+.mj-file-pick{position:relative;justify-self:start;cursor:pointer}
+.mj-file-pick input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%}
+.mj-file-pick:has(input:focus-visible){outline:2px solid var(--focus-ring);outline-offset:2px}
+.mj-import-fields{display:grid;margin:0;padding:0;list-style:none}
+.mj-import-fields>li{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:4px 12px;padding:8px 2px;border-bottom:1px solid var(--mj-hair)}
+.mj-import-fields>li:last-child{border-bottom:0}
+.mj-import-fields .type-meta{color:var(--text-muted)}
+.mj-recall{display:grid;gap:10px}
+.mj-recall[open]>summary{margin-bottom:4px}
+.mj-recall-out{display:grid;gap:6px}

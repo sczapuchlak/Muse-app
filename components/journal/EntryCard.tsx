@@ -2,7 +2,7 @@
 import { MuseMark, type MuseMarkIcon } from "../design/MuseHeading";
 import { MuseIcon } from "../MuseIcon";
 import { tagsFor, useJournal } from "./useJournal";
-import { dayNumber, formatDay, formatShort, weekdayShort } from "./format";
+import { dayNumber, formatDay, formatShort, preview, weekdayShort } from "./format";
 import { entryTitle, tagLabel, type Conversation, type Tag } from "@/lib/journal/model";
 
 /** My tags first: the ones you chose say most about why an entry matters. */
@@ -29,7 +29,7 @@ export function EntryCard({ c, onOpen, snippet, showYear, compact }: { c: Conver
       </span>
     </span>
     <span className="mj-card-title type-title">{entryTitle(c)}</span>
-    {text && <span className="mj-card-excerpt">{snippet ? highlight(snippet) : text.slice(0, 220)}</span>}
+    {text && <span className="mj-card-excerpt">{snippet ? highlight(snippet) : preview(text, 220)}</span>}
     {!compact && <span className="mj-card-foot type-meta">
       <span>{journal?.name ?? "Journal"}{c.companionName ? ` · ${c.companionName}` : ""}</span>
       <span className="type-numeric">{c.userWords} words</span>
@@ -59,7 +59,7 @@ export function EntryRow({ c, onOpen, snippet, showDay = true }: { c: Conversati
         {(c.continuesId || c.continuesTitle) && <span><ReturnGlyph />Continues “{c.continuesTitle || "an earlier entry"}”</span>}
         {continuedIn > 0 && <span><ReturnGlyph flip />Continued {continuedIn === 1 ? "once" : `${continuedIn} times`}</span>}
       </span>}
-      {text && <span className="mj-row-excerpt">{snippet ? highlight(snippet) : text.slice(0, 200)}</span>}
+      {text && <span className="mj-row-excerpt">{snippet ? highlight(snippet) : preview(text, 200)}</span>}
       {tags.length > 0 && <span className="mj-card-tags">{tags.map((t) => <span key={t.id} className="mj-tag" data-kind={t.kind}>{tagLabel(t)}</span>)}</span>}
     </span>
     <span className="mj-row-meta type-meta">
