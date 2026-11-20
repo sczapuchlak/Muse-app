@@ -7,6 +7,7 @@ import {bookReads,isFavoriteRead,preserveOpinions,readOpinion,readStats,unlinked
 import {sessionSeconds} from '@/lib/whimsy/reading-stats';
 import {readSummaryLine,yearDate} from './EarlierReads';
 import {MuseIcon} from '@/components/MuseIcon';
+import {RatingStars} from '@/components/collections/StarRating';
 
 const md=(d:string)=>new Intl.DateTimeFormat('en-US',{month:'short',day:'numeric',timeZone:'UTC'}).format(new Date(`${d}T12:00:00Z`));
 /** "Nov 9 – 18, 2026", "Dec 28, 2025 – Jan 3, 2026", "Nov 9, 2026 – now". */
@@ -31,7 +32,7 @@ export function ReadHistory({book:saved,sessions,today,onEditSession,onSaveEmoji
    return <li key={read.id} className="muse-read-card" data-state={read.open?'open':'finished'}>
     <header className="muse-read-card-head"><span className="muse-read-card-number">Read {read.number}</span><span className="muse-read-card-badge">{read.open?'In progress':<><MuseIcon name="sparkle" size={12}/>Finished</>}</span></header>
     <p className="muse-read-card-dates" title={`${read.startedOn?yearDate(read.startedOn):'Start not recorded'} – ${read.finishedOn?yearDate(read.finishedOn):'now'}`}>{readRange(read.startedOn,read.finishedOn)}</p>
-    {opinion.rating?<span className="muse-read-card-stars" role="img" aria-label={`${opinion.rating} out of 5`}>{[1,2,3,4,5].map(n=><i key={n} data-on={n<=opinion.rating!||undefined}/>)}</span>:null}
+    <RatingStars value={opinion.rating} className="muse-read-card-stars" showValue/>
     {opinion.review&&<blockquote className="muse-read-card-review type-reading">{opinion.review}</blockquote>}
     {read.completion&&(editing?.id===read.id?<div className="muse-books-read-emojis"><BookEmojiPicker values={editing.emojis} onChange={v=>setEditing({id:read.id,emojis:v.slice(0,3)})}/>
       <div className="muse-books-actions"><button type="button" className="muse-button button-primary" disabled={busy} onClick={async()=>{if(!onSaveEmojis)return;setBusy(true);const ok=await onSaveEmojis(read.id,editing.emojis);setBusy(false);if(ok)setEditing(null);}}>{busy?'Saving…':'Save emojis'}</button><button type="button" className="text-button" onClick={()=>setEditing(null)}>Cancel</button></div></div>

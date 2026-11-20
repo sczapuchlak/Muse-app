@@ -7,3 +7,27 @@
 .muse-star-rating button[data-filled=true] svg{fill:currentColor}
 .muse-star-rating button:hover{background:var(--surface-control)}
 .muse-star-rating button:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
+/* Half stars (Books): an outlined star with a filled copy clipped to 0, 50 or 100% of its width. */
+.muse-star-rating-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
+.muse-star-rating-row>[role=group]{display:flex;gap:2px;touch-action:manipulation}
+.muse-star-rating[data-step=half] button[data-star]{width:42px;height:42px}
+.muse-star-rating-glyph{position:relative;display:inline-grid;place-items:center;width:24px;height:24px;line-height:0}
+.muse-star-rating-fill{position:absolute;inset:0 auto 0 0;width:0;overflow:hidden;color:var(--accent-primary);transition:width .14s ease}
+.muse-star-rating-fill svg{fill:currentColor}
+.muse-star-rating button[data-fill=half] .muse-star-rating-fill{width:50%}
+.muse-star-rating button[data-fill=full] .muse-star-rating-fill{width:100%}
+.muse-star-rating button[aria-pressed=true]{background:color-mix(in srgb,var(--accent-primary) 10%,transparent)}
+.muse-star-rating button[data-fill=half],.muse-star-rating button[data-fill=full]{color:var(--accent-primary)}
+.muse-star-rating-clear{font-size:.78rem}
+.muse-star-rating-readout strong{font-size:.9rem;color:var(--foreground)}
+.muse-star-rating-hint[data-for=mouse]{display:none}
+@media (hover:hover) and (pointer:fine){.muse-star-rating-hint[data-for=touch]{display:none}.muse-star-rating-hint[data-for=mouse]{display:inline}}
+@media (prefers-reduced-motion:reduce){.muse-star-rating-fill{transition:none}}
+
+/* Saved ratings, display only. A surface sets --star-on/--star-off (and font-size) to keep its own look. */
+.muse-rating-stars{--star-on:var(--accent-pop,var(--accent-primary));--star-off:color-mix(in srgb,var(--foreground) 18%,transparent);display:inline-flex;align-items:center;gap:.12em;line-height:1;vertical-align:middle}
+.muse-rating-stars i{position:relative;display:inline-block;width:1em;height:1em;clip-path:polygon(50% 0,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);background:var(--star-off)}
+.muse-rating-stars i::before{content:"";position:absolute;inset:0 auto 0 0;width:0;background:var(--star-on)}
+.muse-rating-stars i[data-fill=half]::before{width:50%}
+.muse-rating-stars i[data-fill=full]::before{width:100%}
+.muse-rating-stars b{margin-left:.35em;font-size:.85em;font-weight:600;color:var(--text-muted)}

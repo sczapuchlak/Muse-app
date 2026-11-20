@@ -39,7 +39,7 @@ export function bookReads(book:Book):ReadEntry[]{
 /** The read a session belongs to, or null when it is not linked (removed read, or ambiguous older session). */
 export function sessionReadId(book:Book,session:Pick<ReadingSession,'cycleId'|'date'>,reads=bookReads(book)):string|null{
  if(session.cycleId)return reads.some(r=>r.id===session.cycleId)?session.cycleId:null;
- reads=reads.filter(r=>!r.completion?.importSource);
+ reads=reads.filter(r=>!r.completion?.importSource&&!r.completion?.historical);
  if(!reads.length)return null;
  if(reads.length===1)return reads[0].id;
  const done=reads.filter(r=>!r.open),open=reads.find(r=>r.open);
@@ -114,6 +114,30 @@ export function shelfMove(original:Book,next:Book['status'],today:string,details
  const latest=completions.at(-1),dates=next==='finished'&&latest?{startedOn:latest.startedOn,finishedOn:latest.finishedOn}:{startedOn,finishedOn:completions.length?undefined:finishedOn};
  const mirror=completions.length?mirroredOpinions(completions,book):{rating:book.rating,finalThoughts:book.finalThoughts,reviewEmojis:book.reviewEmojis};
  return {status:next,...dates,...(completions.length?{completions}:{}),...(cycleId?{cycleId}:{}),...(book.unassignedRating!==undefined?{unassignedRating:book.unassignedRating}:{}),...(book.unassignedReview?{unassignedReview:book.unassignedReview}:{}),...(book.unassignedEmojis?.length?{unassignedEmojis:book.unassignedEmojis}:{}),rating:mirror.rating,finalThoughts:mirror.finalThoughts,reviewEmojis:mirror.reviewEmojis??[]};
+}
+
+/**
+ * Finishes the read in progress (from To Be Read, Reading, Paused or DNF) as one completion under its own id, with the
+ * start date the reader confirmed: their own date, the book's, or none (an unknown start stays unknown).
+ */
+export function finishCurrentRead(original:Book,today:string,details:FinishOpinion&{startedOn?:string}):ReadFields&{readId:string}{
+ const book={...preserveOpinions(original),startedOn:details.startedOn||undefined};
+ const readId=openReadId(book)??newCycleId(book);
+ return {...shelfMove(book,'finished',today,details),readId};
+}
+
+/**
+ * An earlier (or another) finished read recorded after the fact: added to the book's reads in date order with its own
+ * dates and opinions. The book's status and its read in progress are untouched; a finished book's dates and mirrored
+ * opinions follow its latest read as always. The new read is marked historical so it never takes older unlinked
+ * sessions by date; only sessions saved with its id belong to it.
+ */
+export function addPastRead(original:Book,today:string,details:FinishOpinion&{startedOn?:string}):ReadFields&{readId:string}{
+ const book=preserveOpinions(original),history=bookCompletions(book),readId=completionIdFactory(book)();
+ const read:BookCompletion={id:readId,finishedOn:details.finishedOn,...(details.startedOn&&details.startedOn<=details.finishedOn?{startedOn:details.startedOn}:{}),recordedAt:`${today}T00:00:00.000Z`,historical:true,...(details.rating?{rating:details.rating}:{}),...(details.review?{review:details.review}:{}),...(details.reviewEmojis.length?{emojis:details.reviewEmojis.slice(0,3)}:{}),...(details.favorite?{favorite:true}:{})};
+ const completions=[...history,read].sort((a,b)=>a.finishedOn.localeCompare(b.finishedOn)||a.recordedAt.localeCompare(b.recordedAt));
+ const finished=book.status==='finished',latest=completions.at(-1)!,mirror=mirroredOpinions(completions,book);
+ return {status:book.status,...(finished?{startedOn:latest.startedOn,finishedOn:latest.finishedOn,cycleId:latest.id}:{startedOn:book.startedOn,finishedOn:undefined,...(book.cycleId?{cycleId:book.cycleId}:{})}),completions,...(book.unassignedRating!==undefined?{unassignedRating:book.unassignedRating}:{}),...(book.unassignedReview?{unassignedReview:book.unassignedReview}:{}),...(book.unassignedEmojis?.length?{unassignedEmojis:book.unassignedEmojis}:{}),rating:mirror.rating,finalThoughts:mirror.finalThoughts,reviewEmojis:mirror.reviewEmojis??[],readId};
 }
 
 export type EditorReads={status:Book['status'];startedOn:string;finishedOn:string;reads:BookCompletion[];rating?:number;review:string;unassigned:{rating?:number;review?:string}};

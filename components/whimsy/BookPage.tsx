@@ -44,7 +44,7 @@ export type BookPageProps={
  book:Book;books:Book[];sessions:ReadingSession[];goals:ReadingGoal[];today:string;userId:string;tick:number;busy:boolean;
  timer:ReadingTimer|null;timerLoaded:boolean;timerBook:Book|null;checkIn:ReactNode;cover:ReactNode;
  onStart:(targetMinutes?:number)=>void;onTimer:(action:'pause'|'resume'|'finish'|'cancel')=>void;
- onEdit:()=>void;onLog:()=>void;onArchive:()=>void;onSaveFavorite:(readId:string,favorite:boolean)=>Promise<boolean>;onRestore:()=>void;onMove:(status:Book['status'])=>void;
+ onEdit:()=>void;onLog:()=>void;onFinishBook:()=>void;onAddPastRead:()=>void;onArchive:()=>void;onSaveFavorite:(readId:string,favorite:boolean)=>Promise<boolean>;onRestore:()=>void;onMove:(status:Book['status'])=>void;
  onEditSession:(session:ReadingSession)=>void;onDeleteSession:(session:ReadingSession)=>void;
  onSaveEmojis:(readId:string,emojis:string[])=>Promise<boolean>;onMessage:(text:string)=>void;
  onEnrich:(changes:Partial<Book>)=>Promise<Book|null>;
@@ -96,7 +96,7 @@ export function BookPage(props:BookPageProps){
    <div className="muse-book-panel-meter" role="meter" aria-label="Reading progress" aria-valuemin={0} aria-valuemax={100} aria-valuenow={percent??0}><span style={{width:`${percent??0}%`}}/></div>
    <p className="muse-book-panel-dates">{book.status==='finished'&&book.finishedOn?`Finished ${longDate(book.finishedOn)}`:book.startedOn?`Started ${longDate(book.startedOn)}`:book.status==='planned'?'Not started yet':'Start date not recorded'}{!book.totalPages&&<> · <button type="button" className="text-button" onClick={props.onEdit}>Add page count</button></>}</p>
   </div>
-  {active&&clock&&<ReadingSessionCard phase={timer!.phase as SessionPhase} label={clock.label} overtime={clock.overtime} elapsed={clock.elapsed} targetMinutes={timer!.targetMinutes} busy={busy} onToggle={()=>props.onTimer(timer!.phase==='paused'?'resume':'pause')} onFinish={()=>props.onTimer('finish')} onDiscard={()=>props.onTimer('cancel')}>{props.checkIn}</ReadingSessionCard>}
+  {active&&clock&&<ReadingSessionCard phase={timer!.phase as SessionPhase} label={clock.label} overtime={clock.overtime} elapsed={clock.elapsed} targetMinutes={timer!.targetMinutes} busy={busy} onToggle={()=>props.onTimer(timer!.phase==='paused'?'resume':'pause')} onFinish={()=>props.onTimer('finish')} onFinishBook={book.status!=='finished'?props.onFinishBook:undefined} onDiscard={()=>props.onTimer('cancel')}>{props.checkIn}</ReadingSessionCard>}
   {elsewhere&&<section className="muse-book-session-elsewhere" aria-label="Session in progress"><span className="small-label">A sitting is open</span><p>You’re reading <strong>{props.timerBook?.title??'another book'}</strong> right now. Finish or pause it there to start this one.</p>{props.timerBook&&<button type="button" className="muse-button button-ghost" onClick={()=>open(bookHref(props.timerBook!.id),book.title)}>Go to that book</button>}</section>}
   {!timer&&props.timerLoaded&&<BookSittingChoice books={books} sessions={sessions} goals={props.goals} today={today} tick={tick} busy={busy} onStart={props.onStart} variant="panel" heading={finished?'Read it again?':undefined}/>}
   {!props.timerLoaded&&<p className="muse-book-panel-loading" role="status">Checking for an open sitting…</p>}
@@ -166,7 +166,8 @@ export function BookPage(props:BookPageProps){
        </li>;})}</ol></>}
      </section>}
      <div hidden={tab!=='journal'}><BookJournal book={book} sessions={sessions} today={today} userId={props.userId}/></div>
-     {tab==='reads'&&<section className="muse-book-page-panel" aria-label="Your reads"><ReadHistory book={book} sessions={sessions} today={today} onSaveFavorite={props.onSaveFavorite} onSaveEmojis={props.onSaveEmojis} onEditSession={props.onEditSession}/></section>}
+     {tab==='reads'&&<section className="muse-book-page-panel" aria-label="Your reads"><ReadHistory book={book} sessions={sessions} today={today} onSaveFavorite={props.onSaveFavorite} onSaveEmojis={props.onSaveEmojis} onEditSession={props.onEditSession}/>
+      <div className="muse-book-page-reads-actions"><button type="button" className="muse-button button-ghost" onClick={props.onAddPastRead}><MuseIcon name="plus" size={15}/>Add a past read</button><span className="small-label">Read it before? Record when, with just the dates or the sessions you have.</span></div></section>}
      {tab==='details'&&<section className="muse-book-page-panel muse-book-detail-edition" aria-label="Edition and details"><dl>
       <div><dt>Published</dt><dd>{book.publishedDate?longDate(book.publishedDate):'Not listed'}</dd></div>
       <div><dt>Publisher</dt><dd>{book.publisher||'Not listed'}</dd></div>

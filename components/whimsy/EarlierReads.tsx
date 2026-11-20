@@ -35,7 +35,7 @@ export function EarlierReads({reads,summary,unassigned,onChange}:{reads:BookComp
     <label>Started<input type="date" value={read.startedOn??''} max={read.finishedOn||undefined} onChange={e=>update(read.id,{startedOn:e.target.value||undefined})}/></label>
     <label>Finished<input type="date" required value={read.finishedOn} onChange={e=>update(read.id,{finishedOn:e.target.value})}/></label>
    </div>
-   <StarRating label={`Rating for read ${index+1}`} value={read.rating??null} onChange={rating=>update(read.id,{rating:rating??undefined})}/>
+   <StarRating step={0.5} label={`Rating for read ${index+1}`} value={read.rating??null} onChange={rating=>update(read.id,{rating:rating??undefined})}/>
    <label><span className="muse-whimsy-inline-label">Review for read {index+1} <small>optional</small></span><textarea value={read.review??''} onChange={e=>update(read.id,{review:e.target.value||undefined})}/></label>
    <small className="small-label">{readSummaryLine(summary(read))}</small>
    {removing===read.id?<span className="muse-books-actions"><button type="button" className="muse-button muse-books-delete" onClick={()=>{onChange(reads.filter(r=>r.id!==read.id),unassigned);setRemoving(null);}}>Remove read {index+1}</button><button type="button" className="text-button" onClick={()=>setRemoving(null)}>Keep</button></span>

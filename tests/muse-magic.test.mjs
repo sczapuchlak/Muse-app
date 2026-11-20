@@ -82,8 +82,11 @@ test('streak tiers reuse the existing streak count and never mark a break',()=>{
 
 test('signature moments trigger only after successful saves and keep existing behaviour',()=>{
  const books=read('components/whimsy/Bookshelf.tsx');
- const i=books.indexOf("await saveWhimsyRecord(client,'books',{record,expectedRevision:book.revision");const j=books.indexOf("celebrate({kind:'book'");
+ const i=books.indexOf("await saveWhimsyRecord(client,'books',{record,expectedRevision:book.revision");const j=books.indexOf("celebrate({kind:'book'",i);
  assert.ok(i>0&&j>i,'the book ritual follows the saved finish');assert.match(books,/key:`book:\$\{book\.id\}:\$\{details\.finishedOn\}:/,'once per read');
+ // Finish Book (every entry point): the ritual follows the confirmed transaction, once per read, only for a read finished now.
+ const f=books.indexOf('await saveReadingPlan(client,{book,plan,sessions,timeZone,today,sitting});'),g=books.indexOf("celebrate({kind:'book'",f);
+ assert.ok(f>0&&g>f&&g<books.indexOf('function finishInSheet'),'Finish Book celebrates only after its save');assert.match(books,/if\(recent\)celebrate\(\{kind:'book'[^]*?key:`book:\$\{book\.id\}:\$\{finishedOn\}:/,'once per read; historical entries are quieter');
  const priorities=read('components/PrioritiesCard.tsx');assert.match(priorities,/settled=!!status\?\.loaded&&!status\.pending&&!status\.saving&&!status\.error/);assert.match(priorities,/key:`priorities:\$\{date\}`/);
  const water=read('components/WaterCard.tsx');assert.match(water,/<AchievementBadge achieved=\{achieved\} label="Water goal achieved"/,'the existing water finish is preserved');assert.match(water,/key:`water:\$\{initialDay\.date\}`/);
  assert.match(read('components/rituals/RitualWeekCell.tsx'),/store\.whenSaved\(\(\)=>\{trigger\(feedback\.kind\);playSound/,'habit chimes follow the save');

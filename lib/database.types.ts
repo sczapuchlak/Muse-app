@@ -3881,6 +3881,9 @@ isOneToOne: false
         isOneToOne: true
         isSetofReturn: false
       } },
+"save_book_reading":
+{ Args: { "p_book": Json|null,"p_book_id": string,"p_command_id": string|null,"p_expected_revision": number|null,"p_sessions"?: Json,"p_timer"?: Json }; Returns: Json
+                           },
 "save_imported_book":
 { Args: { "p_batch": string,"p_book": Json,"p_command_id": string,"p_observation": Json,"p_observed": Json,"p_revision": number,"p_series"?: Json,"p_shelves"?: (string)[],"p_source": string,"p_source_id": string }; Returns: Json
                            },
