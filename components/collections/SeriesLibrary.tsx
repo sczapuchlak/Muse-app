@@ -12,6 +12,7 @@ import {collectionsChanged,useCollectionsData} from './CollectionsData';
 import {MuseChoiceMenu} from '@/components/MuseChoiceMenu';
 import {MuseIconButton} from '@/components/MuseIconButton';
 import {MuseIcon} from '@/components/MuseIcon';
+import {RatingStars} from './StarRating';
 import {GlassPopover} from '@/components/GlassPopover';
 import {Bookshelf} from '@/components/whimsy/Bookshelf';
 import {SeriesEditionPicker} from './SeriesEditionPicker';
@@ -124,7 +125,7 @@ export function SeriesLibrary({initialAdd=false,initialSeriesId=null,catalog=nul
      <span className="muse-series-order">{row.position_known?`#${row.sequence}`:'·'}</span>
      <span className="muse-series-thumb" aria-hidden="true">{item?.book?<BookCover book={item.book}/>:item?.coverUrl?<img src={item.coverUrl} alt=""/>:<span>✧</span>}</span>
      <span className="muse-series-row-text"><strong>{item?<Link href={itemHref(item)}>{item.title}</Link>:row.catalog_title??'Untitled installment'}</strong>
-      <span className="muse-series-row-meta">{ghost?<span>Not on your shelf</span>:<span className="muse-series-chip" data-status={item&&completed(item)?'done':item?.status}>{item?.status?.replace(/-/g,' ')}</span>}{row.role!=='mainline'&&<span className="muse-series-chip">{row.role}</span>}{row.release_state!=='released'&&<span className="muse-series-chip" data-kind="release">{row.release_state}</span>}{row.catalog_release_date&&<span>{row.catalog_release_date}</span>}{item?.rating?<span>{'★'.repeat(item.rating)}</span>:null}</span></span>
+      <span className="muse-series-row-meta">{ghost?<span>Not on your shelf</span>:<span className="muse-series-chip" data-status={item&&completed(item)?'done':item?.status}>{item?.status?.replace(/-/g,' ')}</span>}{row.role!=='mainline'&&<span className="muse-series-chip">{row.role}</span>}{row.release_state!=='released'&&<span className="muse-series-chip" data-kind="release">{row.release_state}</span>}{row.catalog_release_date&&<span>{row.catalog_release_date}</span>}{item?.rating?<RatingStars value={item.rating} className="muse-series-row-stars"/>:null}</span></span>
      <span className="muse-series-row-actions">{detaching===row.id?<span className="muse-mark-confirm" role="group" aria-label="Confirm removal">Remove from series?<button type="button" className="text-button" disabled={busy} onClick={()=>void removeMember(row)}>Remove</button><button type="button" className="text-button" onClick={()=>setDetaching(null)}>Keep</button></span>:<>
       {ghost&&<button type="button" className="muse-button button-primary muse-series-quick-add" disabled={busy} onClick={()=>void openCatalogAdd(row)}>Add</button>}{!virtual&&ghost&&<button type="button" className="text-button muse-series-star" aria-label={row.starred?'Remove star':'Star installment'} aria-pressed={row.starred} disabled={busy} onClick={()=>void toggleStar(row)}>{row.starred?'★':'☆'}</button>}
       {!virtual&&<><MuseIconButton icon="edit" label={`Correct ${item?.title??row.catalog_title??'installment'}`} onClick={()=>setMember(memberForm(row))}/><MuseIconButton icon="close" label={`Remove ${item?.title??row.catalog_title??'installment'} from the series`} onClick={()=>setDetaching(row.id)}/></>}</>}</span>

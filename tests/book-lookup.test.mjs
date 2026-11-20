@@ -151,7 +151,9 @@ test('every book write keeps lookup metadata, and older books stay valid',()=>{
  const meta={isbn:'9781619634480',publisher:'Bloomsbury',publishedDate:'2017-05-02',description:'Text',metadataSource:{provider:'open-library',workKey:'/works/OL1W',importedAt:'2026-11-04T00:00:00.000Z'}};
  assert.deepEqual(bookMetadataFields({...meta,title:'ignored'}),meta);
  const shelf=read('components/whimsy/Bookshelf.tsx');
- assert.match(shelf,/finalThoughts:book\.finalThoughts,\.\.\.bookCarryFields\(book\),\.\.\.changes\};\}/,'every shelf write starts from the complete record');
+ // The complete record is built once (lib/books/finish) for the shelf and for Finish Book's single transaction.
+ assert.match(read('lib/books/finish.ts'),/finalThoughts:book\.finalThoughts,\.\.\.bookCarryFields\(book\),\.\.\.changes\};\}/,'every book write starts from the complete record');
+ assert.match(shelf,/function bookRecord\(original:Book,changes:Partial<Book>\)\{return fullBookRecord\(original,changes\);\}/,'every shelf write starts from the complete record');
  assert.match(shelf,/const record=bookRecord\(base,shelfMove\(base,next/,'status moves use the complete record');
  assert.match(read('lib/whimsy/books.ts'),/return \{\.\.\.bookMetadataFields\(book\),\.\.\.\(book\.completions\?\.length/,'carry fields include lookup metadata');
  assert.match(shelf,/\.\.\.bookMetadataFields\(\{isbn:bookForm\.isbn/,'editor saves metadata');

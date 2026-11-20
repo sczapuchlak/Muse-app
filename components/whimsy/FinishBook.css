@@ -1,0 +1,41 @@
+/* Finish Book: the one sheet for every way of finishing a book (now or in the past, by dates or sessions). */
+.muse-modal#bookshelf-finish-book{width:min(720px,calc(100vw - 32px))}
+@media (max-width:680px){.muse-modal#bookshelf-finish-book{width:calc(100vw - 16px)}}
+.muse-finish-book .muse-books-form-body{gap:16px}
+.muse-finish-footer{display:grid;gap:10px;justify-content:stretch}
+.muse-finish-footer .muse-finish-actions{margin:0;justify-content:flex-end}
+@media (max-width:640px){.muse-finish-footer .muse-finish-actions{justify-content:stretch}.muse-finish-footer .muse-finish-actions .muse-button{flex:1 1 auto}}
+.muse-finish-section{display:grid;gap:7px;min-width:0}
+.muse-finish-section>.muse-segmented{justify-self:start}
+.muse-finish-section>small{line-height:1.4}
+.muse-finish-mode button{min-height:38px}
+.muse-finish-dates{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1.3fr) minmax(0,.75fr);gap:12px;align-items:start;padding:12px;border:1px solid var(--glass-border);border-radius:14px;background:var(--surface-subtle)}
+.muse-finish-dates .muse-books-select-field>span{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 6px;font-size:.82rem}
+.muse-finish-dates .muse-date-picker-trigger,.muse-finish-dates .muse-optional-date-picker{width:100%}
+.muse-finish-dates .muse-optional-date-picker .muse-date-picker-trigger{flex:1}
+.muse-finish-pages{display:grid;gap:5px;font-size:.82rem}
+.muse-finish-source{display:inline-flex;align-items:center;padding:1px 7px;border-radius:999px;font-size:.66rem;letter-spacing:.04em;color:var(--text-muted);background:color-mix(in srgb,var(--accent-secondary) 14%,transparent)}
+.muse-finish-source[data-source=sessions],.muse-finish-source[data-source=timer]{background:color-mix(in srgb,var(--accent-primary) 14%,transparent);color:var(--foreground)}
+.muse-finish-problem{margin:0;font-size:.78rem;line-height:1.35;color:var(--foreground)}
+.muse-finish-problem::before{content:"";display:inline-block;width:7px;height:7px;margin-right:6px;border-radius:50%;background:var(--accent-warm,var(--accent-secondary));vertical-align:1px}
+.muse-finish-summary{margin:0;padding:8px 12px;border-radius:12px;border:1px solid color-mix(in srgb,var(--accent-primary) 30%,var(--glass-border));background:color-mix(in srgb,var(--accent-primary) 6%,transparent);font-family:var(--font-editorial);font-size:1rem;line-height:1.35;font-variant-numeric:tabular-nums}
+.muse-finish-sitting{padding:12px;border:1px solid var(--glass-border);border-radius:14px;background:color-mix(in srgb,var(--accent-primary) 5%,transparent)}
+.muse-finish-sitting p{margin:0}
+.muse-finish-endpage{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:.85rem}
+.muse-books-dialog .muse-finish-endpage input{width:7ch;min-width:7ch;flex:none;font-variant-numeric:tabular-nums}
+.muse-finish-own,.muse-finish-counts{margin:0}
+.muse-finish-toggle svg{flex:none;color:var(--accent-primary)}
+@media (max-width:640px){
+ .muse-finish-dates{grid-template-columns:minmax(0,1fr)}
+ .muse-finish-section>.muse-segmented{justify-self:stretch}
+ .muse-finish-section>.muse-segmented>button{flex:1}
+ .muse-books-dialog .muse-finish-pages input,.muse-books-dialog .muse-finish-endpage input{font-size:16px}
+}
+/* Entry points elsewhere: the timer's "I finished this book", Your reads' "Add a past read", the log's "several at once". */
+.muse-session-finish-book{justify-self:center;display:inline-flex;align-items:center;gap:7px;min-height:38px;font-size:.84rem}
+.muse-session-finish-book svg{color:var(--accent-primary)}
+.muse-book-page-reads-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin-top:12px}
+.muse-book-page-reads-actions .muse-button{display:inline-flex;align-items:center;gap:7px}
+.muse-books-log-title{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 12px;margin:0}
+.muse-books-log-title .text-button{display:inline-flex;align-items:center;gap:5px}
+@media (max-width:640px){.muse-finish-summary{font-size:.92rem}}

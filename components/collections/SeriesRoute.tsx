@@ -8,7 +8,7 @@ import {createMuseBrowserClient} from '@/lib/supabase/client';
 import {deleteSeries,saveSeriesMember} from '@/lib/collections/persistence';
 import type {Series,SeriesMember} from '@/lib/collections/models';
 import type {SeriesCatalog} from '@/lib/books/series-discovery';
-import {fetchSeriesCatalog} from '@/lib/books/add-book';
+import {fetchSeriesCatalog,type QuickStatus} from '@/lib/books/add-book';
 import {catalogNeedsRefresh,saveDiscoveredSeries} from '@/lib/books/series-save';
 import {catalogSeriesView,primaryBasisNote,seriesCompletion,seriesShelf,shelfStateLabel,type ShelfEntry} from '@/lib/books/series-view';
 import {useAdditionalFit} from './useAdditionalFit';
@@ -89,7 +89,7 @@ export function SeriesRoute({seriesKey}:{seriesKey:string}){
   collectionsChanged();await retry();
   if(error)throw error;return data;
  }
- async function add(entry:ShelfEntry,status:'planned'|'reading'){
+ async function add(entry:ShelfEntry,status:QuickStatus){
   setProblem('');
   try{
    const member=await savedMember(entry);

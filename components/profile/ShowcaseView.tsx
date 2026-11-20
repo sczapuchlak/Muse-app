@@ -6,6 +6,7 @@ import type {ShowcaseLayout} from '@/lib/profile/model';
 import type {ShowcaseDisplay} from '@/lib/profile/adapters';
 import {MuseIcon,type MuseIconName} from '../MuseIcon';
 import {MuseStar} from '../MuseStar';
+import {RatingStars} from '../collections/StarRating';
 
 export type ShowcaseViewItem={id:string;display:ShowcaseDisplay;note?:string;missing?:boolean};
 export type ShowcaseViewData={id:string;title:string;description:string;icon:string;gradient:string;layout:ShowcaseLayout;items:ShowcaseViewItem[]};
@@ -13,7 +14,7 @@ const kindLabel:Record<string,string>={book:'Book',movie:'Film',tv:'Series',game
 const icon=(name:string|undefined,fallback:MuseIconName):MuseIconName=>(name as MuseIconName)||fallback;
 const kindIcon:Record<string,MuseIconName>={book:'book',movie:'film',tv:'television',game:'gamepad','tarot-card':'tarot','dream-symbol':'dreams','side-quest':'wand'};
 
-function Stars({value}:{value:number}){return <span className="muse-showcase-stars" aria-label={`${value} out of 5`}>{[1,2,3,4,5].map(n=><span key={n} aria-hidden="true" data-on={n<=Math.round(value)||undefined}>★</span>)}</span>;}
+function Stars({value}:{value:number}){return <RatingStars value={value} className="muse-showcase-stars"/>;}
 export function ItemCard({item,variant}:{item:ShowcaseViewItem;variant:'tile'|'card'|'feature'}){
  const d=item.display,date=d.date?new Date(`${d.date}T12:00:00`).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'}):null;
  return <article className="muse-showcase-item" data-variant={variant} data-kind={d.kind} data-missing={item.missing||undefined}>

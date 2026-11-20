@@ -36,3 +36,10 @@
 .muse-quick-add[data-size="sm"]{border-radius:11px}
 .muse-quick-add[data-size="sm"]>button{min-height:34px;padding:0 8px;gap:4px;font-size:.72rem}
 .muse-quick-add[data-size="sm"] svg{width:14px;height:14px}
+/* Three choices on a phone: tighter buttons everywhere; inside two-up Series cards, icons with their full names as labels. */
+@media(max-width:620px){
+ .muse-quick-add>button{min-width:0;padding:0 9px;gap:5px}
+ .muse-series-card .muse-quick-add[data-size="sm"]{width:100%}
+ .muse-series-card .muse-quick-add[data-size="sm"]>button{flex:1;padding:0}
+ .muse-series-card .muse-quick-add[data-size="sm"]>button>span:not(.muse-quick-add-spinner){position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+}

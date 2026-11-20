@@ -13,7 +13,7 @@ const phaseLabel:Record<SessionPhase,string>={running:'Reading now',paused:'Paus
  * gently for an open sitting), a ripple at the fill edge, and a finish star when the target is met. It only presents
  * the shared timer; every action goes through the existing write paths.
  */
-export function ReadingSessionCard({phase,label,overtime,elapsed,targetMinutes,title,cover,busy,unsynced,onToggle,onFinish,onDiscard,onOpenBook,children,variant='panel'}:{phase:SessionPhase;label:string;overtime:boolean;elapsed:number;targetMinutes?:number;title?:string;cover?:ReactNode;busy:boolean;unsynced?:ReactNode;onToggle:()=>void;onFinish:()=>void;onDiscard:()=>void;onOpenBook?:()=>void;children?:ReactNode;variant?:'panel'|'desk'}){
+export function ReadingSessionCard({phase,label,overtime,elapsed,targetMinutes,title,cover,busy,unsynced,onToggle,onFinish,onFinishBook,onDiscard,onOpenBook,children,variant='panel'}:{phase:SessionPhase;label:string;overtime:boolean;elapsed:number;targetMinutes?:number;title?:string;cover?:ReactNode;busy:boolean;unsynced?:ReactNode;onToggle:()=>void;onFinish:()=>void;onFinishBook?:()=>void;onDiscard:()=>void;onOpenBook?:()=>void;children?:ReactNode;variant?:'panel'|'desk'}){
  const target=targetMinutes?targetMinutes*60:0,fill=target?Math.min(1,Math.max(0,elapsed/target)):0,percent=Math.round(fill*100),controls=phase==='running'||phase==='paused';
  const minutes=Math.floor(elapsed/60),spoken=`${minutes} ${minutes===1?'minute':'minutes'} of active reading${targetMinutes?`, ${overtime?'past':'toward'} a ${targetMinutes}-minute sitting`:''}`;
  return <section className="muse-session" data-phase={phase} data-variant={variant} data-overtime={overtime||undefined} data-target={target?'yes':'open'} aria-label="Reading session">
@@ -36,6 +36,7 @@ export function ReadingSessionCard({phase,label,overtime,elapsed,targetMinutes,t
    <button type="button" className="muse-button button-primary muse-session-toggle" disabled={busy} onClick={onToggle} aria-label={phase==='paused'?'Resume reading':'Pause reading'}><MuseIcon name={phase==='paused'?'play':'pause'} size={22}/><span>{phase==='paused'?'Resume':'Pause'}</span></button>
    <button type="button" className="muse-button button-ghost muse-session-finish-button" disabled={busy} onClick={onFinish}>Finish session</button>
   </div>}
+  {controls&&onFinishBook&&<button type="button" className="muse-button button-ghost muse-session-finish-book" disabled={busy} onClick={onFinishBook}><MuseIcon name="sparkle" size={15}/>I finished this book</button>}
   {phase!=='saving'&&<button type="button" className="text-button muse-session-discard" disabled={busy} onClick={onDiscard}>Discard session</button>}
   {children&&<div className="muse-session-checkin">{children}</div>}
  </section>;

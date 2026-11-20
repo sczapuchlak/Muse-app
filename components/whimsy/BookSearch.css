@@ -105,3 +105,6 @@
 
 /* Phone (Nov 18): a result's two add choices sit beneath its title, lined up with the text, so titles keep their width. */
 @media(max-width:560px){.muse-book-result-row{grid-template-columns:minmax(0,1fr)}.muse-book-result-action{padding-left:70px}.muse-book-result-action .muse-quick-add{width:100%}.muse-book-result-action .muse-quick-add>button{flex:1}}
+/* Three add choices (To Be Read · Reading now · Read) share the row on a phone without clipping. */
+@media(max-width:560px){.muse-book-result-action .muse-quick-add>button{min-width:0;padding:0 8px;gap:5px;font-size:.76rem}}
+@media(max-width:420px){.muse-book-result-action{padding-left:0}}

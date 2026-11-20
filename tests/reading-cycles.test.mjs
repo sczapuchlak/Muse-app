@@ -129,7 +129,7 @@ test('timed and manual sessions are linked to their read in the app',()=>{
  assert.match(shelf,/const cycleId=fields\?\.cycleId\?\?book\.cycleId\?\?await ensureOpenRead\(book\);/,'the timer records the read when it starts');
  assert.match(shelf,/startBookReadingTimer\(client,command\.record,command\.revision,command\.timer,/,'the automatic status and timer start save together');
  assert.match(shelf,/\.\.\.\(saving\.cycleId\?\{cycleId:saving\.cycleId\}:\{\}\)\},expectedRevision:0/,'the timed session saves the timer\'s read');
- assert.equal((shelf.match(/\.\.\.\(timer\.cycleId\?\{cycleId:timer\.cycleId\}:\{\}\)/g)??[]).length,2,'pause, resume and finish keep the read on the timer');
+ assert.equal((shelf.match(/\.\.\.\(timer\.cycleId\?\{cycleId:timer\.cycleId\}:\{\}\)/g)??[]).length,3,'pause, resume, finish and the Finish Book sitting keep the read on the timer');
  assert.match(shelf,/\.\.\.\(t\.cycleId\?\{cycleId:t\.cycleId\}:\{\}\)/,'long-stretch corrections keep the read');
  assert.match(shelf,/form\.cycleId=bookReads\(book\)\.at\(-1\)\?\.id\?\?'';if\(session\)\{form\.cycleId=session\.cycleId\?\?'';/,'a new manual session defaults to the current read; an edited one keeps its own link or stays unlinked');
  assert.match(shelf,/sessionForm\.cycleId===legacyOpenId\(book\)\?await ensureOpenRead\(book\):sessionForm\.cycleId\|\|undefined/);
@@ -142,7 +142,7 @@ test('timed and manual sessions are linked to their read in the app',()=>{
 
 test('Finish Book saves this read\'s details, prefills only a first read, and uses quiet Muse Magic',()=>{
  const finishView=read('components/whimsy/FinishBook.tsx'),css=read('components/whimsy/Bookshelf.css'),shelf=read('components/whimsy/Bookshelf.tsx');
- assert.match(finishView,/draft=\{rating:reread\?undefined:book\.rating,review:reread\?undefined:/,'a reread starts with an empty rating and review');
+ assert.match(finishView,/draft=\{rating:reread\|\|target==='past'\?undefined:book\.rating,review:reread\|\|target==='past'\?undefined:/,'a reread (or a past read) starts with an empty rating and review');
  assert.match(finishView,/Skip details/);assert.match(finishView,/<CoverThumb src=\{book\.coverUrl\}\/>/);assert.match(finishView,/<BookEmojiPicker/);
  assert.match(shelf,/if\(next==='finished'&&!details\)\{setError\(''\);setDetailId\(null\);setFinishing\(\{bookId:book\.id,reason:'shelf'\}\)/,'moving to Finished opens the finish check-in');
  assert.match(css,/@keyframes muse-finish-shimmer/);assert.match(css,/prefers-reduced-motion: reduce\)[^}]*\.muse-finish-shimmer/);assert.match(css,/data-magic="quiet"\] \.muse-finish-shimmer/);
