@@ -1,3 +1,4 @@
+import { allPages } from "@/lib/supabase/pages";
 import "server-only";
 /**
  * AI entitlement, budget and usage (Journal V1 §21–22; budget brief: $10/month, warning at $7.50). Entitlements and
@@ -38,7 +39,8 @@ export function estimateUsd(model: string, inputTokens: number, maxOutputTokens:
 export async function allowance(admin: Admin, userId: string): Promise<Allowance> {
   const [e, u] = await Promise.all([
     admin.from("journal_ai_entitlements").select("*").eq("user_id", userId).maybeSingle(),
-    admin.from("journal_ai_usage").select("kind,cost_usd,estimated_usd,created_at,status,input_tokens,output_tokens").eq("user_id", userId).gte("created_at", startOfUtcMonth()).limit(20000),
+    // Every request this month, in pages: the API answers at most 1000 rows, and a spending limit must see them all.
+    allPages((a, z) => admin.from("journal_ai_usage").select("kind,cost_usd,estimated_usd,created_at,status,input_tokens,output_tokens").eq("user_id", userId).gte("created_at", startOfUtcMonth()).order("id").range(a, z)).then((data) => ({ data, error: null as unknown }), (error) => ({ data: null, error })),
   ]);
   if (e.error) throw e.error; if (u.error) throw u.error;
   const day = startOfUtcDay(), rows = u.data ?? [], now = Date.now();

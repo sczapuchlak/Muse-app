@@ -38,6 +38,7 @@
     "test:vision-boards:ui": "node scripts/test-vision-boards-ui.mjs",
     "test:journal:db": "node scripts/test-local-journal.mjs",
     "test:journal:history": "node scripts/test-local-journal-history.mjs",
+    "test:journal:paging": "node scripts/test-local-journal-paging.mjs",
     "test:journal:ui": "node scripts/test-journal-ui.mjs",
     "test:inner-compass:db": "node scripts/test-local-inner-compass.mjs",
     "test:inner-compass:ui": "node scripts/test-inner-compass-ui.mjs",

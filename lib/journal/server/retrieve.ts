@@ -1,3 +1,4 @@
+import { allPages } from "@/lib/supabase/pages";
 import "server-only";
 /**
  * Loads the records a Journal AI request may draw on, always with the signed-in person's own client (RLS), so another
@@ -20,7 +21,7 @@ export async function basics(client: Client, userId: string): Promise<Basics> {
     // Pinned first, then newest: the same size budget decides how many fit, so pinning adds no tokens.
     client.from("journal_memories").select("*").eq("user_id", userId).eq("status", "confirmed").order("pinned", { ascending: false }).order("updated_at", { ascending: false }).limit(200),
     // Tags recall can follow: people, places, topics and their own tags (not moods or themes), never removed ones.
-    client.from("journal_tags").select("*").eq("user_id", userId).in("kind", ["person", "place", "topic", "custom"]).eq("suppressed", false).limit(5000),
+    allPages((a, z) => client.from("journal_tags").select("*").eq("user_id", userId).in("kind", ["person", "place", "topic", "custom"]).eq("suppressed", false).order("id").range(a, z)).then((data) => ({ data, error: null as unknown }), (error) => ({ data: null, error })),
   ]);
   return { prefs: preferencesFromRow(must(p)), journals: must(j).map(journalFromRow), memories: must(m).map(memoryFromRow), tags: must(t).map(tagFromRow) };
 }
