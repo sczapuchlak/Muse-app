@@ -5,7 +5,7 @@ import type { Database } from "@/lib/database.types";
 import { privateResponse, routeAuthClient, trustedOrigin } from "@/lib/auth/http";
 import { createMuseAdminClient } from "@/lib/supabase/admin";
 import { approxTokens, buildOpening, buildReply, defaultBudget, partOfDay, periodInput, transcript, weekInput, type InputMessage, type PeriodEntry, type WeekEntry } from "@/lib/journal/context";
-import { APPLICATION_RULES } from "@/lib/journal/instructions";
+import { APPLICATION_RULES, CONVERSATION_DEFAULTS } from "@/lib/journal/instructions";
 import { analysisSchema, ANALYSIS_RULES, periodRules, periodSchema, REPORT_RULES, reportSchema, type Layers } from "@/lib/journal/instructions";
 import { conversationFromRow, journalFromRow, isListed, parseAnalysisData, parseGuideSnapshot, parseReportData, type Journal } from "@/lib/journal/model";
 import { generate, providerConfig, ProviderError, type ProviderConfig } from "@/lib/journal/server/provider";
@@ -48,7 +48,7 @@ const date = (v: unknown): v is string => typeof v === "string" && /^\d{4}-\d{2}
 const str = (v: unknown, max: number) => (typeof v === "string" ? v.slice(0, max) : "");
 const httpStatus: Record<string, number> = { locked: 409, busy: 409, "not-entitled": 403, "not-configured": 503, "limit-daily": 429, "limit-monthly": 429, "too-fast": 429, duplicate: 409, "in-progress": 409, invalid: 400, gone: 404, finished: 409 };
 /** Conservative input size for a conversational request: rules, layers and the full memory budget, plus the dialogue. */
-const overhead = approxTokens(APPLICATION_RULES.length + 16000 + defaultBudget.memories + defaultBudget.recent + defaultBudget.retrieved);
+const overhead = approxTokens(APPLICATION_RULES.length + CONVERSATION_DEFAULTS.length + 16000 + defaultBudget.memories + defaultBudget.recent + defaultBudget.retrieved);
 class Bad extends Error { constructor(public code: string, message: string) { super(message); } }
 
 function carry(from: NextResponse, to: NextResponse) { for (const c of from.cookies.getAll()) to.cookies.set(c); return privateResponse(to); }
