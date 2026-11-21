@@ -7,6 +7,7 @@ import "server-only";
  */
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database, Json } from "@/lib/database.types";
+import { allPages } from "@/lib/supabase/pages";
 import { cleanTagName, findTag, memoryOverlap, normalizeMemory, normalizeTag, tagFromRow, type AnalysisData, type TagKind } from "../model";
 
 /** Historical (imported) entries: at most this many suggestions each, and this many waiting from imports at once. */
@@ -30,9 +31,8 @@ export async function applyAnalysis(client: Client, userId: string, conv: Conv, 
     ...data.people.map((n) => ["person", n] as [TagKind, string]), ...data.topics.map((n) => ["topic", n] as [TagKind, string]), ...data.emotions.map((n) => ["mood", n] as [TagKind, string]),
   ].map(([k, n]) => [k, cleanTagName(n)] as [TagKind, string]).filter(([, n]) => n.length > 0);
   if (wanted.length) {
-    const existing = await client.from("journal_tags").select("*").eq("user_id", userId).limit(5000);
-    if (existing.error) throw existing.error;
-    const tags = existing.data.map(tagFromRow), ids: string[] = [];
+    // Every existing tag (in pages past the API's 1000-row cap), so a known name is reused rather than missed.
+    const tags = (await allPages((a, z) => client.from("journal_tags").select("*").eq("user_id", userId).order("id").range(a, z))).map(tagFromRow), ids: string[] = [];
     // Tags the person removed from this entry before are remembered in the analysis' dismissed list and not re-added.
     const prior = await client.from("journal_analyses").select("dismissed").eq("conversation_id", conv.id).eq("user_id", userId).maybeSingle();
     const dismissed = new Set((prior.data?.dismissed ?? []).map((d) => d.toLowerCase()));
@@ -56,8 +56,7 @@ export async function applyAnalysis(client: Client, userId: string, conv: Conv, 
   if (data.memories.length) {
     // Never re-propose: words you already have (any status, compared loosely), or words you dismissed or corrected
     // away for this entry. Suggestions never change a confirmed memory; they only ever wait for your approval.
-    const have = await client.from("journal_memories").select("body,status,source,source_conversation_id").eq("user_id", userId).limit(2000);
-    if (have.error) throw have.error;
+    const have = { data: await allPages((a, z) => client.from("journal_memories").select("id,body,status,source,source_conversation_id").eq("user_id", userId).order("id").range(a, z)) };
     const prior = await client.from("journal_analyses").select("dismissed").eq("conversation_id", conv.id).eq("user_id", userId).maybeSingle();
     const known = new Set([...have.data.map((m) => normalizeMemory(m.body)), ...(prior.data?.dismissed ?? []).filter((d) => d.startsWith("memory:")).map((d) => d.slice(7))]);
     let fresh = [...new Set(data.memories.map((m) => m.trim()).filter(Boolean))].filter((m) => !known.has(normalizeMemory(m)));

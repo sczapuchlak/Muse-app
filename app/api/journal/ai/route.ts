@@ -1,3 +1,4 @@
+import { allPages } from "@/lib/supabase/pages";
 import { NextResponse, type NextRequest } from "next/server";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/lib/database.types";
@@ -331,15 +332,15 @@ async function report(client: Client, admin: Client, config: ProviderConfig, use
   if (cached.data && body.regenerate !== true) return { report: cached.data, cached: true, stale: cached.data.source_signature !== signature };
   const [links, tags, journals] = await Promise.all([
     client.from("journal_entry_tags").select("conversation_id,tag_id,source").eq("user_id", userId).in("conversation_id", list.map((c) => c.id)),
-    client.from("journal_tags").select("*").eq("user_id", userId).limit(5000),
+    allPages((a, z) => client.from("journal_tags").select("*").eq("user_id", userId).order("id").range(a, z)).then((data) => ({ data, error: null as unknown })),
     client.from("journal_journals").select("id,name,memory_scope").eq("user_id", userId),
   ]);
   // Privacy: entries kept out of AI context, and journals with memory off, are never sent.
   const off = new Set((journals.data ?? []).filter((x) => x.memory_scope === "off").map((x) => x.id));
   const eligible = list.filter((c) => !c.excludeFromMemory && !off.has(c.journalId));
   if (!eligible.length) throw new Bad("invalid", "Every entry this week is kept out of AI, so there’s nothing to reflect on.");
-  const msgs = await client.from("journal_messages").select("conversation_id,role,body,guide_question,created_at").eq("user_id", userId).in("conversation_id", eligible.map((c) => c.id)).order("created_at").limit(20000);
-  if (msgs.error) throw msgs.error;
+  // The whole week's words, in pages: a busy week can pass the API's 1000-row cap.
+  const msgs = { data: await allPages((a, z) => client.from("journal_messages").select("conversation_id,role,body,guide_question,created_at,id").eq("user_id", userId).in("conversation_id", eligible.map((c) => c.id)).order("created_at").order("id").range(a, z)) };
   const stats = weekStats(start, list, (links.data ?? []).map((l) => ({ conversationId: l.conversation_id, tagId: l.tag_id, source: l.source as "user" | "ai" })), (tags.data ?? []).map((t) => ({ id: t.id, kind: t.kind as "person", name: t.name, normalized: t.normalized ?? "", aliases: t.aliases, suppressed: false, note: t.note, revision: t.revision })));
   const names = new Map((journals.data ?? []).map((j) => [j.id, j.name])), tagName = new Map((tags.data ?? []).filter((t) => !t.suppressed && t.kind !== "theme").map((t) => [t.id, t.kind === "custom" ? `#${t.name}` : t.name]));
   const week: WeekEntry[] = eligible.map((c) => ({
@@ -383,7 +384,7 @@ async function periodReport(client: Client, admin: Client, config: ProviderConfi
   const cached = await client.from("journal_reports").select("*").eq("user_id", userId).eq("period", kind).eq("week_start", start).maybeSingle();
   if (cached.data && body.regenerate !== true) return { report: cached.data, cached: true, stale: cached.data.source_signature !== signature };
   const [tags, journals, reports] = await Promise.all([
-    client.from("journal_tags").select("id,kind,name,suppressed").eq("user_id", userId).limit(5000),
+    allPages((a, z) => client.from("journal_tags").select("id,kind,name,suppressed").eq("user_id", userId).order("id").range(a, z)).then((data) => ({ data, error: null as unknown })),
     client.from("journal_journals").select("id,name,memory_scope").eq("user_id", userId),
     client.from("journal_reports").select("period,week_start,data").eq("user_id", userId).eq("period", kind === "year" ? "month" : "week").gte("week_start", kind === "month" ? addDays(start, -6) : start).lte("week_start", end).order("week_start"),
   ]);

@@ -2,6 +2,7 @@
 // statistics, tag identity, analysis validation, pricing and export.
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import { load } from './helpers.mjs';
 
 const C = load('lib/journal/context'), I = load('lib/journal/instructions'), S = load('lib/journal/stats'), M = load('lib/journal/model'), $ = load('lib/journal/pricing'), X = load('lib/journal/export');
@@ -162,4 +163,21 @@ test('highlights are placed exactly or not at all, and overlaps paint as one', (
   assert.deepEqual(M.anchorHighlight(body, { excerpt: 'Later', start: 1, end: 6 }), { start: 27, end: 32 }, 'moved text found again when it appears exactly once');
   assert.equal(M.anchorHighlight('Corrected wording.', { excerpt: 'old words', start: 0, end: 9 }), null, 'a correction that removed the words leaves it unplaced');
   assert.deepEqual(M.mergeRanges([{ start: 5, end: 10, id: 'a' }, { start: 8, end: 14, id: 'b' }, { start: 20, end: 22, id: 'c' }]), [{ start: 5, end: 14, ids: ['a', 'b'] }, { start: 20, end: 22, ids: ['c'] }]);
+});
+
+test('companion engages and digs: no hollow mirroring, and their own style can ask for more depth and length', () => {
+  assert.match(I.APPLICATION_RULES, /Never just reflect their feeling back or restate what they said/);
+  assert.match(I.APPLICATION_RULES, /That must have felt nice/, 'the failure mode is named');
+  assert.match(I.APPLICATION_RULES, /Keep digging into the same thread/);
+  assert.doesNotMatch(I.APPLICATION_RULES, /not in every reply|Default to short replies|not a long one/, 'no blanket brevity or question limits');
+  assert.match(I.APPLICATION_RULES, /where they ask for more depth, length, questions, directness or swearing than the conversation defaults above, they win/);
+  assert.match(I.APPLICATION_RULES, /can change the memory and honesty, photo or boundary rules/, 'safety, honesty and privacy stay locked');
+});
+
+test('every journal list that can pass the 1000-row API cap is read in pages', () => {
+  const read = (f) => readFileSync(new URL(`../${f}`, import.meta.url), 'utf8');
+  const loadJournal = read('lib/journal/persistence.ts');
+  for (const table of ['journal_conversations', 'journal_tags', 'journal_entry_tags', 'journal_bookmarks', 'journal_memories', 'journal_links', 'journal_highlight_tags', 'journal_tag_corrections']) assert.match(loadJournal, new RegExp(`paged\\(\\(a, z\\) => client\\.from\\("${table}"\\)[^\\n]*\\.range\\(a, z\\)`), table);
+  assert.doesNotMatch(read('lib/journal/server/export-read.ts'), /\.limit\(/, 'the export reads everything');
+  assert.match(read('lib/journal/server/usage.ts'), /allPages\(\(a, z\) => admin\.from\("journal_ai_usage"\)/, 'the spending limit sees every request');
 });

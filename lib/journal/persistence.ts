@@ -2,6 +2,7 @@
  * Journal persistence from the browser (owner-only RLS). Edits a person makes are revision-checked so two devices
  * never silently overwrite each other; messages are append-only; drafts save without bumping the revision.
  */
+import { allPages } from "@/lib/supabase/pages";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database, Json } from "@/lib/database.types";
 import {
@@ -21,20 +22,24 @@ export type JournalState = {
   prefs: Preferences; journals: Journal[]; companions: Companion[]; conversations: Conversation[]; tags: Tag[]; entryTags: EntryTag[];
   bookmarks: Bookmark[]; memories: Memory[]; links: EntryLink[]; highlightTags: HighlightTag[]; corrections: TagCorrection[]; guides: Guide[];
 };
+/** A paged list read as one result, so a missing table (an environment without a newer migration) still reports its error. */
+const paged = <T,>(read: (from: number, to: number) => PromiseLike<{ data: T[] | null; error: unknown }>): Promise<{ data: T[] | null; error: unknown }> =>
+  allPages(read).then((data) => ({ data, error: null }), (error) => ({ data: null, error }));
 /** Metadata only; messages load per entry. Personal archives stay small enough to filter on the device. */
 export async function loadJournal(client: Client, userId: string): Promise<JournalState> {
   const [p, j, c, v, t, et, b, m, l, ht, tc, gd] = await Promise.all([
     client.from("journal_preferences").select("*").eq("user_id", userId).maybeSingle(),
     client.from("journal_journals").select("*").eq("user_id", userId).order("position").order("created_at").limit(500),
     client.from("journal_companions").select("*").eq("user_id", userId).order("position").order("created_at").limit(500),
-    client.from("journal_conversations").select("*").eq("user_id", userId).order("local_date", { ascending: false }).order("started_at", { ascending: false }).limit(5000),
-    client.from("journal_tags").select("*").eq("user_id", userId).order("name").limit(5000),
-    client.from("journal_entry_tags").select("conversation_id,tag_id,source").eq("user_id", userId).limit(50000),
-    client.from("journal_bookmarks").select("*").eq("user_id", userId).order("created_at", { ascending: false }).limit(5000),
-    client.from("journal_memories").select("*").eq("user_id", userId).order("updated_at", { ascending: false }).limit(2000),
-    client.from("journal_links").select("conversation_id,kind,target_id,label").eq("user_id", userId).limit(10000),
-    client.from("journal_highlight_tags").select("highlight_id,tag_id").eq("user_id", userId).limit(20000),
-    client.from("journal_tag_corrections").select("id,kind,from_name,to_tag_id,times").eq("user_id", userId).order("updated_at", { ascending: false }).limit(2000),
+    // Lists that can pass the API's 1000-row cap are read in pages (an imported archive has thousands of tag links).
+    paged((a, z) => client.from("journal_conversations").select("*").eq("user_id", userId).order("local_date", { ascending: false }).order("started_at", { ascending: false }).order("id").range(a, z)),
+    paged((a, z) => client.from("journal_tags").select("*").eq("user_id", userId).order("name").order("id").range(a, z)),
+    paged((a, z) => client.from("journal_entry_tags").select("conversation_id,tag_id,source").eq("user_id", userId).order("conversation_id").order("tag_id").range(a, z)),
+    paged((a, z) => client.from("journal_bookmarks").select("*").eq("user_id", userId).order("created_at", { ascending: false }).order("id").range(a, z)),
+    paged((a, z) => client.from("journal_memories").select("*").eq("user_id", userId).order("updated_at", { ascending: false }).order("id").range(a, z)),
+    paged((a, z) => client.from("journal_links").select("conversation_id,kind,target_id,label").eq("user_id", userId).order("conversation_id").order("kind").order("target_id").range(a, z)),
+    paged((a, z) => client.from("journal_highlight_tags").select("highlight_id,tag_id").eq("user_id", userId).order("highlight_id").order("tag_id").range(a, z)),
+    paged((a, z) => client.from("journal_tag_corrections").select("id,kind,from_name,to_tag_id,times").eq("user_id", userId).order("updated_at", { ascending: false }).order("id").range(a, z)),
     client.from("journal_guides").select("*").eq("user_id", userId).order("created_at").limit(500),
   ]);
   return {
