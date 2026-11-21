@@ -165,13 +165,19 @@ test('highlights are placed exactly or not at all, and overlaps paint as one', (
   assert.deepEqual(M.mergeRanges([{ start: 5, end: 10, id: 'a' }, { start: 8, end: 14, id: 'b' }, { start: 20, end: 22, id: 'c' }]), [{ start: 5, end: 14, ids: ['a', 'b'] }, { start: 20, end: 22, ids: ['c'] }]);
 });
 
-test('companion engages and digs: no hollow mirroring, and their own style can ask for more depth and length', () => {
-  assert.match(I.APPLICATION_RULES, /Never just reflect their feeling back or restate what they said/);
-  assert.match(I.APPLICATION_RULES, /That must have felt nice/, 'the failure mode is named');
-  assert.match(I.APPLICATION_RULES, /Keep digging into the same thread/);
-  assert.doesNotMatch(I.APPLICATION_RULES, /not in every reply|Default to short replies|not a long one/, 'no blanket brevity or question limits');
-  assert.match(I.APPLICATION_RULES, /where they ask for more depth, length, questions, directness or swearing than the conversation defaults above, they win/);
-  assert.match(I.APPLICATION_RULES, /can change the memory and honesty, photo or boundary rules/, 'safety, honesty and privacy stay locked');
+test('how the companion talks is theirs: style defaults are sent only when no personality is written', () => {
+  const layers = (o) => ({ globalInstructions: '', companion: { name: 'My Homegirl', instructions: '', conversationPrefs: '' }, journal: null, mode: 'open', ...o });
+  const written = I.composeInstructions(layers({ companion: { name: 'My Homegirl', instructions: 'Treat me like your best friend. We yap and unpack everything.', conversationPrefs: 'Never short.' } }));
+  assert.doesNotMatch(written, /How to talk \(used only/, 'a written personality gets no style defaults at all');
+  assert.doesNotMatch(written, /2–5 sentences|not in every reply|Match their length/, 'no competing length or question rules');
+  assert.match(written, /Treat me like your best friend/);
+  assert.match(I.composeInstructions(layers({ globalInstructions: 'I love to yap.' })), /^(?![\s\S]*How to talk \(used only)/, 'global preferences alone also replace them');
+  const blank = I.composeInstructions(layers({}));
+  assert.match(blank, /How to talk \(used only because no personality has been written/, 'a blank companion still has a style');
+  assert.match(I.CONVERSATION_DEFAULTS, /Never just reflect their feeling back or restate what they said/);
+  for (const t of [written, blank]) { assert.match(t, /Never identify a real person/); assert.match(t, /988/); assert.match(t, /Never invent or imply other memories/); }
+  assert.doesNotMatch(I.APPLICATION_RULES, /How to be in the conversation|Default to short replies/, 'the locked rules hold no style');
+  assert.match(I.APPLICATION_RULES, /decide how you talk with them/);
 });
 
 test('every journal list that can pass the 1000-row API cap is read in pages', () => {
