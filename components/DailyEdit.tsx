@@ -8,7 +8,6 @@ import { WaterCard } from "./WaterCard";
 import { ScheduleCard } from "./ScheduleCard";
 import { MealsCard } from "./MealsCard";
 import { MoodCard } from "./MoodCard";
-import {DailyReflectionCard} from './daily/DailyReflectionCard';
 import { DayPulseCard } from "./DayPulseCard";
 import { DayInThreeCard } from "./DayInThree";
 import {LittleRituals} from "./rituals/LittleRituals";
@@ -52,7 +51,6 @@ export function DailyEdit() {
     water: <WellnessCapture><WaterCard initialDay={{ date: selectedDate, total: 0 }} settings={day.water.settings} /></WellnessCapture>,
     goals: <WellnessGoalsGlance date={selectedDate}/>,
     mood: <DailyCapture date={selectedDate}><MoodCard emotions={emotionCatalog} /></DailyCapture>,
-    reflection: <DailyCapture date={selectedDate}><DailyReflectionCard date={selectedDate}/></DailyCapture>,
     dayInThree: <DailyCapture date={selectedDate}><DayInThreeCard /></DailyCapture>,
     books: <BooksDayviewWidget date={selectedDate}/>,
     rituals: <LittleRituals date={selectedDate}/>,

@@ -93,7 +93,7 @@ test('#97 non-destructive: detailed Insights hidden behind a flag, not deleted; 
  assert.doesNotMatch(glance,/store\?\.edit|dispatch\(|saveMark|\.insert\(|\.update\(/,'Insights is read-only');
  const mood=read('components/mood/Mood.tsx');
  assert.doesNotMatch(mood,/<Dayprint /,'Mood no longer hosts the Dayprint portrait');
- assert.match(mood,/<MoodCheckInLayout /);assert.match(mood,/<ReflectionEditor /);assert.match(mood,/function CheckInHistory/);
+ assert.match(mood,/<MoodCheckInLayout /);assert.match(read('components/MoodCard.tsx'),/<MoodWhy /,'Mood keeps its reflection, inside the check-in');assert.match(mood,/function CheckInHistory/);
  assert.match(mood,/store\?\.edit\(removed\.date,\{kind:'delete',id:removed\.id\}\)/,'deleting a check-in still works');
  assert.match(mood,/\/insights\?period=day&date=/);
  const prefs=load('lib/insights/preferences');

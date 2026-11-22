@@ -174,3 +174,16 @@ test('a bill payment still counts by category when no plan funds that bill', () 
   assert.equal(actual(s, 'rent'), 170000);
   assert.equal(r.occurrenceStatus(r.billOccurrences(s, '2026-11-01', '2026-11-30')[0], '2026-11-02'), 'paid');
 });
+
+test('card plan in a category: a payment to the card from the bank counts; purchases on the card in that category never do', () => {
+  let s = save(base(), 'cards', {id: 'bilt', name: 'Bilt', balanceCents: 0, accent: 'primary'});
+  s = save(s, 'categories', {id: 'cards', name: 'Credit Cards', accent: 'warm', archived: false, subcategories: [{id: 'bilt-card', name: 'Bilt Card'}]});
+  s = save(s, 'allocations', plan('pay-bilt', 'nov1', 24076, 'cards', 'bilt-card', {cardId: 'bilt'}));
+  assert.equal(actual(s, 'pay-bilt'), null);
+  s = save(s, 'transactions', tx('bilt-from-checking', '2026-11-05', 24000, 'cards', 'bilt-card'));
+  assert.equal(actual(s, 'pay-bilt'), 24000, 'a debit payment in the card\'s category is the Actual');
+  s = save(s, 'transactions', tx('bought-on-bilt', '2026-11-06', 5000, 'cards', 'bilt-card', {cardId: 'bilt', paymentMethod: 'card'}));
+  assert.equal(actual(s, 'pay-bilt'), 24000, 'a purchase charged to a card never counts toward a card plan');
+  s = save(s, 'payments', {id: 'p-bilt', cardId: 'bilt', amountCents: 1000, date: '2026-11-08', paycheckId: 'nov1', allocationId: 'pay-bilt'});
+  assert.equal(actual(s, 'pay-bilt'), 25000, 'recorded card payments still count too');
+});

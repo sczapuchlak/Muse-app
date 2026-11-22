@@ -11,14 +11,14 @@ import "./DailyLayout.css";
  * hidden cards. Unknown names are dropped and new cards join their default place, so adding or retiring a card never
  * breaks a saved layout. Only the Daily Edit is arrangeable.
  */
-export type DailyCardKey = "forecast" | "priorities" | "movement" | "water" | "goals" | "mood" | "reflection" | "dayInThree" | "books" | "rituals" | "schedule" | "meals" | "pulse" | "dreams" | "fortune" | "chapter" | "journal";
+export type DailyCardKey = "forecast" | "priorities" | "movement" | "water" | "goals" | "mood" | "dayInThree" | "books" | "rituals" | "schedule" | "meals" | "pulse" | "dreams" | "fortune" | "chapter" | "journal";
 export type DailyLayout = { left: DailyCardKey[]; right: DailyCardKey[]; hidden?: DailyCardKey[]; phone?: DailyCardKey[]; phoneHidden?: DailyCardKey[] };
 export type ArrangeMode = "columns" | "phone";
 export const dailyCards: { key: DailyCardKey; label: string; icon: MuseIconName }[] = [
   { key: "forecast", label: "Cosmic Forecast", icon: "moon" }, { key: "priorities", label: "Today’s priorities", icon: "focus" },
   { key: "movement", label: "Movement", icon: "movement" }, { key: "water", label: "Water", icon: "water" },
   { key: "goals", label: "Wellness goals", icon: "chart" }, { key: "mood", label: "Mood", icon: "mood" },
-  { key: "reflection", label: "A little reflection", icon: "journal" }, { key: "dayInThree", label: "Day in Three", icon: "sparkle" },
+  { key: "dayInThree", label: "Day in Three", icon: "sparkle" },
   { key: "books", label: "Bookshelf", icon: "bookshelf" }, { key: "rituals", label: "Little Rituals", icon: "rituals" },
   { key: "schedule", label: "Today’s plan", icon: "calendar" }, { key: "meals", label: "Meals", icon: "meals" },
   { key: "pulse", label: "Day Pulse", icon: "insights" }, { key: "dreams", label: "Dreams", icon: "dreams" },
@@ -26,12 +26,12 @@ export const dailyCards: { key: DailyCardKey; label: string; icon: MuseIconName 
   { key: "journal", label: "Journal", icon: "notes" },
 ];
 export const defaultDailyLayout: DailyLayout = {
-  left: ["forecast", "priorities", "movement", "water", "goals", "mood", "reflection", "dayInThree"],
+  left: ["forecast", "priorities", "movement", "water", "goals", "mood", "dayInThree"],
   right: ["books", "rituals", "schedule", "meals", "pulse", "dreams", "fortune", "chapter", "journal"],
 };
 const known = new Set<string>(dailyCards.map((c) => c.key));
 /** The approved one-column (phone) order, used until you arrange your phone yourself. */
-export const defaultPhoneOrder: DailyCardKey[] = ["forecast", "books", "schedule", "priorities", "rituals", "water", "movement", "goals", "meals", "mood", "pulse", "reflection", "dayInThree", "dreams", "fortune", "chapter", "journal"];
+export const defaultPhoneOrder: DailyCardKey[] = ["forecast", "books", "schedule", "priorities", "rituals", "water", "movement", "goals", "meals", "mood", "pulse", "dayInThree", "dreams", "fortune", "chapter", "journal"];
 const phoneList = (l: DailyLayout) => l.phone ?? defaultPhoneOrder;
 /** Where a card sits in the one-column view (its CSS order there). */
 export const phoneOrder = (layout: DailyLayout, k: DailyCardKey) => phoneList(layout).indexOf(k) + 1;

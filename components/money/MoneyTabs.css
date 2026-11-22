@@ -218,3 +218,47 @@
    padding box, so it carries breathing room inside and gives it back with negative margins (no layout shift). */
 .muse-money-paycheck-choices{padding:8px 8px 26px!important;margin:-8px -8px calc(var(--space-4,16px) - 26px)!important;scroll-padding-inline:8px}
 .muse-paycheck-navigation .muse-money-paycheck-choices{padding:0!important;margin:0!important}
+
+/* Recurring payments without a category: a neutral line in Expected by category. */
+.muse-recurring-category-summary .muse-recurring-unassigned .muse-money-color-dot{background:transparent;border:2px dashed var(--text-muted)}
+.muse-recurring-category-summary .muse-recurring-unassigned{color:var(--text-muted)}
+.muse-recurring-category-summary .muse-recurring-unassigned strong{color:var(--foreground)}
+
+/* Quick changes on a recurring row: category, billed through and paid with as compact menus in place of plain text.
+   Billed through / Paid with read like the text they replace (dotted underline, chevron on hover) so nothing truncates. */
+.muse-recurring-quick{display:inline-flex;min-width:0;max-width:100%}
+.muse-recurring-quick .muse-choice-menu{min-width:0;max-width:100%}
+.muse-recurring-quick :is(span,button){overflow-wrap:normal}
+.muse-recurring-quick .muse-choice-trigger{min-height:28px;padding:2px 9px;gap:6px;font-size:.8rem;max-width:100%}
+.muse-recurring-quick .muse-choice-lead .muse-money-color-dot{margin-right:2px}
+.muse-recurring-quick .muse-choice-value{min-width:0}
+.muse-recurring-quick .muse-choice-value>span{padding-right:3px}
+:is(.muse-recurring-provider,.muse-recurring-method) .muse-recurring-quick .muse-choice-trigger{min-height:0;padding:1px 2px;margin-left:-2px;border:0;border-radius:6px;background:transparent;font:inherit;font-size:inherit;text-decoration:underline dotted color-mix(in srgb,var(--text-muted) 70%,transparent);text-underline-offset:4px}
+:is(.muse-recurring-provider,.muse-recurring-method) .muse-recurring-quick .muse-choice-trigger svg{opacity:0;width:12px;height:12px;transition:opacity .15s}
+:is(.muse-recurring-provider,.muse-recurring-method) .muse-recurring-quick .muse-choice-trigger:is(:hover,:focus-visible,[aria-expanded=true]){background:var(--surface-hover)}
+:is(.muse-recurring-provider,.muse-recurring-method) .muse-recurring-quick .muse-choice-trigger:is(:hover,:focus-visible,[aria-expanded=true]) svg{opacity:1}
+.muse-recurring-name .muse-ledger-name{overflow-wrap:normal;word-break:normal}
+.muse-recurring-dot-none{background:transparent!important;border:2px dashed var(--text-muted)}
+.muse-recurring-problem{margin:4px 0 0;font-size:.78rem}
+@media(pointer:coarse){.muse-recurring-quick .muse-choice-trigger{min-height:36px}:is(.muse-recurring-provider,.muse-recurring-method) .muse-recurring-quick .muse-choice-trigger{min-height:32px;padding-inline:4px}:is(.muse-recurring-provider,.muse-recurring-method) .muse-recurring-quick .muse-choice-trigger svg{opacity:1}}
+@container muse-content (max-width:850px){
+ .muse-recurring-open{grid-template-areas:"name cost menu" "next next next" "meta2 meta2 meta2" "meta1 meta1 meta1"}
+ .muse-recurring-name{grid-area:name}.muse-recurring-cost{grid-area:cost}.muse-recurring-open>.muse-overflow-wrap{grid-area:menu}.muse-recurring-next{grid-area:next}
+ .muse-recurring-provider{grid-area:meta2}.muse-recurring-method{grid-area:meta1}
+ :is(.muse-recurring-provider,.muse-recurring-method){display:flex;align-items:center;gap:6px}
+ :is(.muse-recurring-provider,.muse-recurring-method)>small{display:inline;margin:0}
+ .muse-recurring-name>small{flex-basis:100%}
+}
+
+/* Paycheck rows: Planned and Actual line up down the whole list. Fixed column widths (not sized to each row's chip), and
+   both start at the top, so the PLANNED/ACTUAL labels share a line, the amounts share a line, and the status note
+   ("On plan", "$60.00 under") sits under Actual without pushing Planned down. Phones keep their stacked layout. */
+@container muse-content (min-width:851px){
+ .muse-paychecks-view .muse-money-allocation-row{grid-template-columns:minmax(0,1fr) 92px 104px 36px;column-gap:12px;align-items:center}
+ .muse-paychecks-view .muse-money-allocation-row>.muse-money-ledger-number{align-self:start;padding-top:6px;white-space:nowrap}
+ .muse-paychecks-view .muse-money-allocation-row>.muse-money-ledger-number small{display:block;white-space:normal;line-height:1.25}
+}
+@container muse-content (max-width:850px){
+ .muse-paychecks-view .muse-money-allocation-row{grid-template-columns:minmax(0,1fr) minmax(0,1fr) 36px}
+ .muse-paychecks-view .muse-money-allocation-row>.muse-money-ledger-number{align-self:start}
+}

@@ -13,7 +13,8 @@ test('each Intentions period has its own guide, derived from the range alone (#1
  const week=guide('week','2026-11-12');
  assert.equal(count(week,/<li[ >]/g),7,'a week is seven days');
  assert.match(week,/data-today="true"/,'today is marked');
- assert.match(week,/\/planner\?view=agenda&amp;date=2026-11-09/,'days open the planner');
+ assert.doesNotMatch(week,/<a |view=agenda/,'the week\'s days are a view; a click never leaves Intentions (Nov 22)');
+ assert.match(week,/aria-label="Monday, November 9"/,'each day is named for screen readers');
  assert.match(week,/Day 4 of 7/);
  const month=guide('month','2026-11-12');
  assert.equal(count(month,/<li[ >]/g),6,'November 2026 touches six Monday-start weeks');

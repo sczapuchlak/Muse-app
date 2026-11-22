@@ -56,8 +56,8 @@ test('week strip has seven date actions and the official MuseStar selection', ()
   assert.ok(html.includes('viewBox="0 0 24 40"'));
 });
 
-test('Daily Edit reflection shows the selected Morning or Evening record and keeps drafts separate', () => {
-  const {DailyReflectionCard} = load('components/daily/DailyReflectionCard');
+test('Mood’s Why? is the check-in reflection: the selected Morning or Evening record, drafts kept separate, prompt about the feelings', () => {
+  const {MoodWhy} = load('components/mood/MoodWhy');
   const {MuseSessionProvider} = load('components/MuseSession');
   const date = '2026-10-29';
   const checkins = ['morning', 'evening'].map((period) => ({
@@ -65,22 +65,23 @@ test('Daily Edit reflection shows the selected Morning or Evening record and kee
     createdAt: 'now', updatedAt: 'now', emotionIds: [], causeTagIds: [],
   }));
   const days = dailyFixture({date, checkins});
-  function render(period, drafts = {}) {
+  function render(period, drafts = {}, feelings = []) {
     const child = React.createElement(MuseSessionProvider, {
       initialDate: date,
       initialRecords: {'library/mood-sessions': {[date]: period}, 'library/reflection-drafts': drafts},
-    }, React.createElement(DailyReflectionCard, {date}));
+    }, React.createElement(MoodWhy, {date, feelings}));
     return renderToStaticMarkup(dailyTestTree(child, days));
   }
   const morning = render('morning', {[`${date}/morning`]: 'morning draft', [`${date}/evening`]: 'evening draft'});
   const evening = render('evening', {[`${date}/morning`]: 'morning draft', [`${date}/evening`]: 'evening draft'});
-  assert.match(morning, /aria-label="Reflection period"/);
-  assert.match(morning, /<textarea[^>]*id="daily-reflection-text"[^>]*>morning draft<\/textarea>/);
-  assert.match(evening, /<textarea[^>]*id="daily-reflection-text"[^>]*>evening draft<\/textarea>/);
+  assert.match(morning, /What would you like to carry into today\?/, 'no feelings yet: the general morning question');
+  assert.match(morning, /<textarea[^>]*id="mood-why-morning"[^>]*>morning draft<\/textarea>/);
+  assert.match(evening, /<textarea[^>]*id="mood-why-evening"[^>]*>evening draft<\/textarea>/);
   assert.ok(morning.includes('morning saved') === false);
   assert.ok(evening.includes('evening saved') === false);
   assert.match(render('morning'), /<textarea[^>]*>morning saved<\/textarea>/);
   assert.match(render('evening'), /<textarea[^>]*>evening saved<\/textarea>/);
+  assert.match(render('evening', {}, ['Comfortable', 'Accomplished']), /What’s behind feeling Comfortable and Accomplished tonight\?/);
 });
 
 test('greeting uses the supplied profile and gracefully handles an absent name', () => {

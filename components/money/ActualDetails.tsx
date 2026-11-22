@@ -11,7 +11,7 @@ const how = { linked: "Linked to this plan", bill: "Pays a bill this plan funds"
 export function ActualDetails({ allocation, anchor, onClose }: { allocation: Allocation; anchor: HTMLElement; onClose: () => void }) {
   const { state, dispatch } = useMoney(), detail = planActual(state, allocation), paycheck = state.paychecks.find((p) => p.id === allocation.paycheckId);
   const bill = allocation.billId ? state.bills.find((b) => b.id === allocation.billId) : undefined, label = planLabel(state, allocation);
-  const rule = allocation.cardId ? `Card payments recorded for ${state.cards.find((c) => c.id === allocation.cardId)?.name ?? "this card"} and linked to this plan. Purchases on the card don’t count here.`
+  const rule = allocation.cardId ? `Card payments recorded for ${state.cards.find((c) => c.id === allocation.cardId)?.name ?? "this card"} and linked to this plan${allocation.categoryId && paycheck ? `, and payments in ${label.name} dated ${shortDate(paycheck.periodStart)} – ${shortDate(paycheck.periodEnd)} that weren’t charged to a card (paying it from your bank account)` : ""}. Purchases on the card don’t count here.`
     : allocation.categoryId && paycheck ? `Purchases in ${label.name} dated ${shortDate(paycheck.periodStart)} – ${shortDate(paycheck.periodEnd)}, unless they’re linked to another plan, marked “not from a paycheck”, or transfers.`
     : "Only records linked to this plan; it has no category to match.";
   const list = (items: Contribution[]) => <ul className="muse-money-payment-list">{items.map((c) => <li key={`${c.kind}-${c.id}-${c.amountCents}`}><span>{c.name}<small>{how[c.how]}</small></span><time dateTime={c.date}>{shortDate(c.date)}</time><strong>{formatMoney(c.amountCents)}</strong></li>)}</ul>;

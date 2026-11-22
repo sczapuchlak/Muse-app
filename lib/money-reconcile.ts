@@ -11,7 +11,9 @@
  *    - category: automatic. A transaction (or each split part) in this paycheck's period with the same subcategory, or the
  *      same category when the plan has no subcategory. The most specific plan wins; two equally specific plans in one
  *      paycheck are a tie, and the transaction waits in review instead of being guessed. Transfers, and transactions
- *      marked "not from a paycheck", are never matched automatically. Card plans reconcile card payments only.
+ *      marked "not from a paycheck", are never matched automatically. Card plans count recorded card payments, and
+ *      transactions in their category that weren't charged to a card (a payment to the card made from a bank account);
+ *      purchases on a card never count toward a card plan.
  * A transaction counts toward at most one planned amount. Dates choose a paycheck only as a convenience; a link always
  * wins, and the person can move a transaction to another plan or to none.
  */
@@ -54,7 +56,9 @@ export function reconcile(state: MoneyState): { plans: Map<string, PlanActual>; 
     }
     if (tx.unplanned || tx.transfer) continue;
     const paycheck = paycheckFor(state, tx.date); if (!paycheck) continue;
-    const plans = state.allocations.filter((a) => a.paycheckId === paycheck.id && !a.cardId && a.categoryId);
+    // A card plan takes category matches only from transactions not charged to a card: paying the card from checking counts,
+    // purchases on the card never do (they're spending, not the card payment).
+    const plans = state.allocations.filter((a) => a.paycheckId === paycheck.id && a.categoryId && (!a.cardId || !tx.cardId));
     for (const part of parts(tx)) {
       if (!part.categoryId) continue;
       const exact = part.subcategoryId ? plans.filter((a) => a.categoryId === part.categoryId && a.subcategoryId === part.subcategoryId) : [];
