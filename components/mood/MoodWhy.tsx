@@ -2,6 +2,7 @@
 import {useState} from 'react';
 import {useMood} from './useMood';
 import {ReflectionEditor} from './ReflectionEditor';
+import {MuseIcon} from '../MuseIcon';
 
 const list=(items:string[])=>items.length<=1?items.join(''):`${items.slice(0,-1).join(', ')} and ${items.at(-1)}`;
 const more:Record<'morning'|'evening',string[]>={
@@ -21,7 +22,7 @@ export function MoodWhy({date,feelings}:{date:string;feelings:string[]}){
  const options=[...(feelings.length?[`What’s behind feeling ${list(feelings)} ${when}?`]:[]),...more[period]];
  const prompt=options[turn%options.length];
  return <div className="muse-mood-why">
-  <div className="muse-mood-label-row"><p className="editor-label">Why?</p><button type="button" className="text-button muse-mood-why-another" onClick={()=>setTurn(value=>value+1)}>Another prompt</button></div>
+  <div className="muse-mood-label-row"><p className="editor-label">Why?</p><button type="button" className="muse-button button-ghost muse-mood-why-another" onClick={()=>setTurn(value=>value+1)}><MuseIcon name="sparkle" size={13}/>Another prompt</button></div>
   {shaping.length>0&&<p className="small-label muse-mood-why-context">Shaped by {list(shaping)}</p>}
   <ReflectionEditor date={date} prompt={prompt} id={`mood-why-${period}`}/>
  </div>;

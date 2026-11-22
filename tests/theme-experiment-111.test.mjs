@@ -31,7 +31,10 @@ test('one card surface per theme: no alternating or per-widget card colours; sid
   assert.ok(surfaces.includes(`[data-theme="${id}"]`),`${id} opts into role assignment`);
  }
  assert.doesNotMatch(surfaces,/nth-child|data-surface=/,'no rotation or per-widget roles');
- for(const t of themes.filter(t=>!ROLE.includes(t.id)))assert.ok(!surfaces.includes(`[data-theme="${t.id}"]`),t.id);
+ // The non-role themes (Nov 22) keep their own surfaces but opt into the gradient outline only: once, in the outline block.
+ const outlineOnly=['disco-damage','iridescent','solstice','afterglow','issya-bday','issya-bday-xxx'];
+ for(const t of themes.filter(t=>!ROLE.includes(t.id)&&!outlineOnly.includes(t.id)))assert.ok(!surfaces.includes(`[data-theme="${t.id}"]`),t.id);
+ for(const id of outlineOnly){assert.equal(surfaces.split(`[data-theme="${id}"]`).length-1,1,`${id} appears once`);const at=surfaces.indexOf(`[data-theme="${id}"]`);assert.ok(surfaces.slice(at,at+600).includes('Thin luminous outline'),`${id} joins the outline block only`);assert.match(block(id)['--tone-card-border'],/^linear-gradient\(/);}
  assert.match(surfaces,/--surface-sidebar: var\(--tone-sidebar, var\(--glass-background\)\)/);
  assert.match(read('components/AppShell.css'),/background: var\(--surface-sidebar\)/);
 });

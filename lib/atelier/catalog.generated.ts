@@ -140,7 +140,8 @@ export const officialTokenValues:Record<string,Record<string,string>>={
   "--page-bloom-position-1": "3% 16svh",
   "--page-bloom-position-2": "97% 20svh",
   "--page-bloom-position-3": "72% 92svh",
-  "--page-bloom-position-4": "48% 43svh"
+  "--page-bloom-position-4": "48% 43svh",
+  "--tone-card-border": "linear-gradient(135deg,var(--icon-gradient-start),var(--icon-gradient-middle) 50%,var(--icon-gradient-end))"
  },
  "astral": {
   "--icon-gradient-start": "#ff6fb5",
@@ -603,7 +604,8 @@ export const officialTokenValues:Record<string,Record<string,string>>={
   "--page-bloom-position-1": "94% 22svh",
   "--page-bloom-position-2": "6% 10svh",
   "--page-bloom-position-3": "58% 100svh",
-  "--page-bloom-position-4": "2% 70svh"
+  "--page-bloom-position-4": "2% 70svh",
+  "--tone-card-border": "linear-gradient(135deg,var(--icon-gradient-start),var(--icon-gradient-middle) 50%,var(--icon-gradient-end))"
  },
  "prism-noir": {
   "--icon-gradient-start": "#b98cff",
@@ -894,7 +896,8 @@ export const officialTokenValues:Record<string,Record<string,string>>={
   "--page-bloom-position-1": "0% 3svh",
   "--page-bloom-position-2": "53% 9svh",
   "--page-bloom-position-3": "95% 3svh",
-  "--page-bloom-position-4": "88% 89svh"
+  "--page-bloom-position-4": "88% 89svh",
+  "--tone-card-border": "linear-gradient(135deg,var(--icon-gradient-start),var(--icon-gradient-middle) 50%,var(--icon-gradient-end))"
  },
  "issya-bday": {
   "--icon-gradient-start": "#8000ff",
@@ -1036,7 +1039,8 @@ export const officialTokenValues:Record<string,Record<string,string>>={
   "--page-bloom-position-1": "3% 16svh",
   "--page-bloom-position-2": "95% 11svh",
   "--page-bloom-position-3": "82% 86svh",
-  "--page-bloom-position-4": "37% 69svh"
+  "--page-bloom-position-4": "37% 69svh",
+  "--tone-card-border": "linear-gradient(135deg,var(--icon-gradient-start),var(--icon-gradient-middle) 50%,var(--icon-gradient-end))"
  },
  "issya-bday-xxx": {
   "--icon-gradient-start": "#ff4eb3",
@@ -1178,7 +1182,8 @@ export const officialTokenValues:Record<string,Record<string,string>>={
   "--page-bloom-position-1": "3% 16svh",
   "--page-bloom-position-2": "95% 11svh",
   "--page-bloom-position-3": "82% 86svh",
-  "--page-bloom-position-4": "37% 69svh"
+  "--page-bloom-position-4": "37% 69svh",
+  "--tone-card-border": "linear-gradient(135deg,var(--icon-gradient-start),var(--icon-gradient-middle) 50%,var(--icon-gradient-end))"
  },
  "disco-damage": {
   "--icon-gradient-start": "#00eeff",
@@ -1320,7 +1325,8 @@ export const officialTokenValues:Record<string,Record<string,string>>={
   "--page-bloom-position-1": "2% 27svh",
   "--page-bloom-position-2": "98% 74svh",
   "--page-bloom-position-3": "98% 16svh",
-  "--page-bloom-position-4": "8% 96svh"
+  "--page-bloom-position-4": "8% 96svh",
+  "--tone-card-border": "linear-gradient(135deg,#00eeff,#7b5cff 26%,#ff159b 52%,#ffb000 76%,#c6ff00)"
  },
  "dreamstorm-lab": {
   "--icon-gradient-start": "#75c9f2",
