@@ -221,3 +221,29 @@
 .muse-mood-lower .muse-mood-history>*:first-child{padding-bottom:12px;border-bottom:1px solid color-mix(in srgb,var(--glass-border) 80%,transparent)}
 .muse-mood-lower .muse-mood-insights{grid-template-columns:minmax(0,1fr)!important}
 .muse-mood-lower .muse-mood-insights>:nth-child(2){grid-column:auto;order:0}
+
+/* Mood check-in as one guided moment (Nov 22): 1 How are you feeling → 2 What's shaping it → 3 Why, three numbered
+   steps joined by a thin thread, each with the same title style and the same add control. */
+.mood-card .mood-content{display:flex;flex-direction:column;gap:0;counter-reset:mood-step;margin-top:var(--space-4)}
+.mood-card .mood-content>:is(div:first-child,.muse-mood-influences,.muse-mood-why){position:relative;margin:0;padding:0 0 var(--space-5) 42px;border:0}
+.mood-card .mood-content>.muse-mood-why{padding-bottom:0}
+.mood-card .mood-content>:is(div:first-child,.muse-mood-influences,.muse-mood-why)::before{counter-increment:mood-step;content:counter(mood-step);position:absolute;left:0;top:-2px;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font:700 .78rem/1 var(--font-ui);color:#fff;background:linear-gradient(135deg,var(--icon-gradient-start,var(--accent-primary)),var(--icon-gradient-end,var(--accent-secondary)));box-shadow:0 0 0 4px color-mix(in srgb,var(--accent-primary) 12%,transparent)}
+.mood-card .mood-content>:is(div:first-child,.muse-mood-influences)::after{content:"";position:absolute;left:13px;top:32px;bottom:6px;width:2px;border-radius:2px;background:linear-gradient(var(--icon-gradient-start,var(--accent-primary)),color-mix(in srgb,var(--icon-gradient-end,var(--accent-secondary)) 35%,transparent))}
+.mood-card .mood-content :is(#selected-feelings-label,.muse-mood-label-row>.editor-label){margin:0 0 var(--space-2);min-height:24px;display:flex;align-items:center;font-size:.98rem;font-weight:600;color:var(--foreground)}
+.mood-card .muse-mood-label-row{display:flex;align-items:center;justify-content:space-between;gap:var(--space-3);margin-bottom:var(--space-2)}
+.mood-card .muse-mood-label-row>.editor-label{margin:0}
+.mood-card .muse-mood-label-row>.small-label{font-variant-numeric:tabular-nums}
+.mood-card .muse-mood-empty-copy{margin:-4px 0 var(--space-3);color:var(--text-muted);font-size:.85rem}
+/* One add control everywhere: a compact pill, never a full-width slab. */
+.mood-card .mood-content>div:first-child .feeling-chips>.add-control:only-child{grid-column:auto;justify-self:start;width:auto;min-height:44px;padding:0 20px;flex-direction:row;gap:8px}
+.mood-card .muse-mood-influences .feeling-chips{margin-top:0}
+.mood-card .muse-mood-why{display:grid;gap:var(--space-2)}
+.mood-card .muse-mood-why .muse-mood-label-row{margin-bottom:0}
+.mood-card .muse-mood-why-another{min-height:32px;padding:0 12px;gap:6px;font-size:.78rem}
+.mood-card .muse-mood-why-context{margin:0;color:var(--text-muted)}
+.mood-card .muse-reflection-prompt{margin:2px 0 var(--space-2);font-family:var(--font-editorial);font-style:italic;font-size:1.1rem;line-height:1.35;color:var(--foreground)}
+.mood-card .muse-reflection-editor textarea{min-height:84px;resize:vertical;field-sizing:content;max-height:320px}
+.mood-card .muse-reflection-editor .editor-actions{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-2) var(--space-3);margin-top:var(--space-2)}
+.mood-card .muse-reflection-editor .editor-actions .muse-button{min-height:38px}
+.mood-card .muse-reflection-editor:not([data-dirty]) .editor-actions .small-label{color:var(--text-muted)}
+@media (max-width:600px){.mood-card .mood-content>:is(div:first-child,.muse-mood-influences,.muse-mood-why){padding-left:38px}}

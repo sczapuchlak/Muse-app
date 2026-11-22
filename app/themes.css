@@ -147,6 +147,8 @@
   --page-bloom-position-2: 97% 20svh;
   --page-bloom-position-3: 72% 92svh;
   --page-bloom-position-4: 48% 43svh;
+  /* Card outline (Nov 22): the theme's own icon gradient as the thin ring every theme wears. */
+  --tone-card-border: linear-gradient(135deg,var(--icon-gradient-start),var(--icon-gradient-middle) 50%,var(--icon-gradient-end));
 }
 
 :root[data-theme="astral"] {
@@ -632,6 +634,8 @@
   --page-bloom-position-2: 6% 10svh;
   --page-bloom-position-3: 58% 100svh;
   --page-bloom-position-4: 2% 70svh;
+  /* Card outline (Nov 22): the theme's own icon gradient as the thin ring every theme wears. */
+  --tone-card-border: linear-gradient(135deg,var(--icon-gradient-start),var(--icon-gradient-middle) 50%,var(--icon-gradient-end));
 }
 
 :root[data-theme="prism-noir"] {
@@ -953,6 +957,8 @@
   --page-bloom-position-2: 53% 9svh;
   --page-bloom-position-3: 95% 3svh;
   --page-bloom-position-4: 88% 89svh;
+  /* Card outline (Nov 22): the theme's own icon gradient as the thin ring every theme wears. */
+  --tone-card-border: linear-gradient(135deg,var(--icon-gradient-start),var(--icon-gradient-middle) 50%,var(--icon-gradient-end));
 }
 
 /* CANDY COATED REALNESS: purpose-designed sibling materials. */
@@ -1099,6 +1105,8 @@
   --page-bloom-position-2: 95% 11svh;
   --page-bloom-position-3: 82% 86svh;
   --page-bloom-position-4: 37% 69svh;
+  /* Card outline (Nov 22): the theme's own icon gradient as the thin ring every theme wears. */
+  --tone-card-border: linear-gradient(135deg,var(--icon-gradient-start),var(--icon-gradient-middle) 50%,var(--icon-gradient-end));
 }
 
 /* CANDY COATED REALNESS: purpose-designed sibling materials. */
@@ -1245,6 +1253,8 @@
   --page-bloom-position-2: 95% 11svh;
   --page-bloom-position-3: 82% 86svh;
   --page-bloom-position-4: 37% 69svh;
+  /* Card outline (Nov 22): the theme's own icon gradient as the thin ring every theme wears. */
+  --tone-card-border: linear-gradient(135deg,var(--icon-gradient-start),var(--icon-gradient-middle) 50%,var(--icon-gradient-end));
 }
 
 
@@ -1396,6 +1406,8 @@
   --page-bloom-position-2: 98% 74svh;
   --page-bloom-position-3: 98% 16svh;
   --page-bloom-position-4: 8% 96svh;
+  /* Card outline (Nov 22): the disco-ball neon run, aqua to hot pink to acid lime. */
+  --tone-card-border: linear-gradient(135deg,#00eeff,#7b5cff 26%,#ff159b 52%,#ffb000 76%,#c6ff00);
 }
 
 :root[data-theme="dreamstorm-lab"] {

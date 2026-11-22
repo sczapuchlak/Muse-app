@@ -12,8 +12,9 @@ test('the catalog is generated from the CSS that renders the official themes',()
  assert.equal(read('lib/atelier/catalog.generated.ts'),renderCatalog(),'run node scripts/generate-atelier-catalog.mjs');
  const {officialTokenValues}=load('lib/atelier/catalog.generated');
  assert.deepEqual(Object.keys(officialTokenValues).sort(),allThemes.map(t=>t.id).sort(),'every registry theme (and Theme Lab palette) has tokens');
- const names=JSON.stringify(Object.keys(officialTokenValues.iridescent));
  const roleOnly=n=>/^--(frosted-)?tone-/.test(n)||/^--atmosphere-(bloom|pool|haze)-layers$/.test(n);
+ // The reference ignores optional surface tones too (since Nov 22 every theme has an outline tone).
+ const names=JSON.stringify(Object.keys(officialTokenValues.iridescent).filter(n=>!roleOnly(n)));
  for(const theme of themes)assert.equal(JSON.stringify(Object.keys(officialTokenValues[theme.id]).filter(n=>!roleOnly(n))),names,`${theme.id} defines the shared token set (plus optional #111 surface tones)`);
 });
 
