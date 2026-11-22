@@ -23,11 +23,11 @@ function NewCategory({startOpen,onCreated}:{startOpen:boolean;onCreated:(id:stri
  const {state,dispatch,status}=useMoney(),[open,setOpen]=useState(startOpen),[name,setName]=useState(""),[accent,setAccent]=useState<MoneyAccent>("secondary"),[error,setError]=useState("");
  if(!open)return <button type="button" className="text-button muse-money-new-inline" onClick={()=>setOpen(true)}><MuseIcon name="plus" size={13}/> New category</button>;
  const create=()=>{const id=crypto.randomUUID(),clean=name.trim(),action={type:"save" as const,collection:"categories" as const,record:{id,name:clean,accent:pinAccent(accent),archived:false,subcategories:[]}},message=state.categories.some((c)=>c.name.trim().toLowerCase()===clean.toLowerCase())?"You already have a category with that name.":moneyError(state,action);if(message){setError(message);return;}dispatch(action);onCreated(id);setName("");setError("");setOpen(false);};
- return <fieldset className="muse-money-new-inline-form"><legend>{state.categories.length?"New category":"You don’t have a category yet. Make one here."}</legend>
+ return <fieldset className="muse-money-new-inline-form"><legend>{state.categories.length?"New category":"You don’t have a category yet. Make one here."}</legend><div className="muse-money-fieldset-body">
   <MoneyField label="Category name"><input type="text" maxLength={60} value={name} autoFocus={!startOpen} onChange={(e)=>setName(e.target.value)} onKeyDown={(e)=>{if(e.key==="Enter"){e.preventDefault();if(name.trim())create();}}}/></MoneyField>
   <MoneyColor value={accent} onChange={setAccent}/>
   {error&&<p className="field-error" role="alert">{error}</p>}
-  <div className="editor-actions"><button type="button" className="muse-button" disabled={!name.trim()||!status.loaded||!!status.error} onClick={create}>Add category</button>{state.categories.length>0&&<button type="button" className="muse-button button-ghost" onClick={()=>{setOpen(false);setName("");setError("");}}>Cancel</button>}</div>
+  <div className="editor-actions"><button type="button" className="muse-button" disabled={!name.trim()||!status.loaded||!!status.error} onClick={create}>Add category</button>{state.categories.length>0&&<button type="button" className="muse-button button-ghost" onClick={()=>{setOpen(false);setName("");setError("");}}>Cancel</button>}</div></div>
  </fieldset>;
 }
 

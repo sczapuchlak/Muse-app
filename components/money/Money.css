@@ -361,7 +361,10 @@ details.muse-money-footnote[open]>summary{margin-bottom:4px}
 .muse-money-panel-heading h2 .muse-money-mark{margin-right:10px}
 
 /* Category editor: subcategory rows (rename or delete) and confirmations before deleting. */
-.muse-money-subcategories{display:grid;gap:8px}
+/* Fieldsets stay plain blocks: grid or flex on a fieldset itself lays out unreliably (Safari pushed the subcategory
+   Add row below the whole form). The layout lives on an inner wrapper instead. */
+.muse-money-subcategories{display:block}
+.muse-money-fieldset-body{display:grid;gap:8px;min-width:0}
 .muse-money-subcategory{display:grid;gap:6px}
 .muse-money-subcategory-row{display:flex;gap:8px;align-items:center}
 .muse-money-subcategory-row input{flex:1;min-width:0}
@@ -371,7 +374,7 @@ details.muse-money-footnote[open]>summary{margin-bottom:4px}
 .muse-money-danger-text{color:color-mix(in srgb,var(--accent-pop) 70%,var(--foreground))!important;justify-self:start}
 .muse-money-taxonomy-grid>:only-child{grid-column:1/-1}
 .muse-money-new-inline{justify-self:start;display:inline-flex;align-items:center;gap:5px;margin:-4px 0 var(--space-2);font-size:.84rem}
-.muse-money-new-inline-form{display:grid;gap:8px;margin-bottom:var(--space-2);padding:12px!important;border:1px dashed var(--glass-border)!important;border-radius:12px}
+.muse-money-new-inline-form{display:block;margin-bottom:var(--space-2);padding:12px!important;border:1px dashed var(--glass-border)!important;border-radius:12px}
 .muse-money-new-inline-form legend{padding:0 4px;font-size:.84rem}
 .muse-recurring-bill-chip{display:inline-flex;align-items:center;margin-right:6px;padding:1px 7px;border-radius:999px;background:color-mix(in srgb,var(--chart-4) 18%,transparent);color:color-mix(in oklch,var(--chart-4) 45%,var(--foreground));font:700 .62rem/1.5 var(--font-ui);letter-spacing:.08em;text-transform:uppercase}
 /* Reconciliation: payments behind a bill or a plan's Actual, the review note, and a partly paid bill. */
