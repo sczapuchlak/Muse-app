@@ -6,6 +6,15 @@
 .muse-mood-label-row > .editor-label { margin:0; }
 .muse-mood-influences { border-top:1px solid var(--divider); padding-top:var(--space-4); margin-top:var(--space-4); }
 .muse-mood-influences .feeling-chips { margin-top:var(--space-2); }
+/* Why? — the check-in's reflection, under its feelings and influences (one Morning/Evening moment). */
+.muse-mood-why { border-top:1px solid var(--divider); padding-top:var(--space-4); margin-top:var(--space-4); display:grid; gap:var(--space-2); }
+.muse-mood-why .muse-mood-label-row { display:flex; align-items:baseline; justify-content:space-between; gap:var(--space-3); }
+.muse-mood-why .muse-mood-label-row .editor-label { margin:0; }
+.muse-mood-why-another { font-size:.78rem; }
+.muse-mood-why-context { margin:0; }
+.muse-mood-why .muse-reflection-editor .editor-label { font-size:.95rem; color:var(--foreground); }
+/* With the reflection inside Mood, the Emotional Landscape has the row to itself. */
+.muse-mood-grid > .muse-card:only-child { grid-column:1/-1; }
 .muse-mood-period { display:flex; gap:2px; border:1px solid var(--glass-border); border-radius:var(--pill-radius); padding:2px; }
 .muse-mood-period button { min-height:36px; padding:4px 9px; border:0; border-radius:var(--pill-radius); color:var(--text-muted); background:transparent; font-size:.65rem; text-transform:capitalize; }
 .muse-mood-period button[aria-pressed="true"] { color:var(--selected-text); background:var(--selected-background); }

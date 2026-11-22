@@ -64,21 +64,25 @@ function PeriodBook({ period, start: periodStart, end, today, client, upload }: 
   const range = { start: periodStart, end };
   const [review, setReview] = useState<Review | null | undefined>(undefined), [error, setError] = useState(""), [status, setStatus] = useState("");
   const [editing, setEditing] = useState(false);
-  const saved = useRef<Review | null>(null), timer = useRef<number | null>(null), queue = useRef<Promise<void>>(Promise.resolve());
+  const saved = useRef<Review | null>(null), pending = useRef<Review | null>(null), timer = useRef<number | null>(null), queue = useRef<Promise<void>>(Promise.resolve());
 
   useEffect(() => { let live = true;
     readReview(client(), period, range.start).then((r) => { if (live) { saved.current = r; setReview(r); } }).catch((e) => { if (live) { setReview(null); setError(e instanceof Error ? e.message : "Reflections couldn’t load."); } });
     return () => { live = false; }; }, [client, period, range.start]);
 
+  const persist = useCallback((next: Review) => { queue.current = queue.current.then(async () => { setStatus("Saving…");
+    try { const out = await saveReview(client(), { ...next, revision: saved.current?.revision ?? 0 }); saved.current = out; setReview((c) => c && c.id === out.id ? { ...c, revision: out.revision } : c); setStatus("Saved"); }
+    catch (e) { setStatus(""); setError(e instanceof Error ? e.message : "That didn’t save. Your words are still here."); } }); }, [client]);
   /** Every change shows at once and saves shortly after, in order, against the last saved revision. */
   const change = useCallback((fn: (r: Review) => Review, delay = 700) => {
-    setReview((cur) => { if (!cur) return cur; const next = fn(cur); if (timer.current) window.clearTimeout(timer.current);
-      timer.current = window.setTimeout(() => { queue.current = queue.current.then(async () => { setStatus("Saving…");
-        try { const out = await saveReview(client(), { ...next, revision: saved.current?.revision ?? 0 }); saved.current = out; setReview((c) => c && c.id === out.id ? { ...c, revision: out.revision } : c); setStatus("Saved"); }
-        catch (e) { setStatus(""); setError(e instanceof Error ? e.message : "That didn’t save. Your words are still here."); } }); }, delay);
+    setReview((cur) => { if (!cur) return cur; const next = fn(cur); pending.current = next; if (timer.current) window.clearTimeout(timer.current);
+      timer.current = window.setTimeout(() => { timer.current = null; pending.current = null; persist(next); }, delay);
       return next; });
-  }, [client]);
-  useEffect(() => () => { if (timer.current) window.clearTimeout(timer.current); }, []);
+  }, [persist]);
+  /** Save: what was just typed goes now (not after the pause), and the page returns to reading. */
+  const saveNow = useCallback(() => { if (timer.current) { window.clearTimeout(timer.current); timer.current = null; } if (pending.current) { const next = pending.current; pending.current = null; persist(next); } }, [persist]);
+  // Leaving the page mid-sentence still saves what was typed.
+  useEffect(() => () => saveNow(), [saveNow]);
 
   async function start(layout: LayoutId) {
     const r: Review = { id: uid(), period, start: range.start, end: range.end, layout, modules: seedModules(layout), status: "draft", title: "", revision: 0 };
@@ -89,7 +93,7 @@ function PeriodBook({ period, start: periodStart, end, today, client, upload }: 
     {error && <p className="muse-reflections-alert" role="alert">{error} <button type="button" className="muse-reflections-pill" onClick={() => setError("")}>Dismiss</button></p>}
     {review === undefined ? <p className="muse-reflections-quiet" role="status">Opening your memory book…</p>
       : review === null ? <LayoutPicker period={period} future={range.start > today} onPick={(id) => void start(id)} />
-      : <ReviewBook review={review} editing={editing} setEditing={setEditing} status={status} change={change} client={client} upload={upload} today={today} />}
+      : <ReviewBook review={review} editing={editing} setEditing={setEditing} saveNow={saveNow} status={status} change={change} client={client} upload={upload} today={today} />}
   </>;
 }
 
@@ -110,7 +114,7 @@ function LayoutPicker({ period, future, onPick, current, onCancel }: { period: R
 
 // ---------- The review ----------
 type Change = (fn: (r: Review) => Review, delay?: number) => void;
-function ReviewBook({ review, editing, setEditing, status, change, client, upload, today }: { review: Review; editing: boolean; setEditing: (v: boolean) => void; status: string; change: Change; client: () => Client; upload: (f: File, id: string) => Promise<ReflectionImage>; today: string }) {
+function ReviewBook({ review, editing, setEditing, saveNow, status, change, client, upload, today }: { review: Review; editing: boolean; setEditing: (v: boolean) => void; saveNow: () => void; status: string; change: Change; client: () => Client; upload: (f: File, id: string) => Promise<ReflectionImage>; today: string }) {
   const layout = layoutById(review.layout), [switching, setSwitching] = useState<null | "pick" | LayoutId>(null);
   const setModules = (fn: (m: ReflectionModule[]) => ReflectionModule[], delay?: number) => change((r) => ({ ...r, modules: fn(r.modules) }), delay);
   const visible = review.modules.filter((m) => editing || (!m.hidden && (hasContent(m) || m.type === "level10")));
@@ -124,7 +128,7 @@ function ReviewBook({ review, editing, setEditing, status, change, client, uploa
         <span className="muse-reflections-quiet" role="status">{status}</span>
         {editing && <button type="button" className="muse-reflections-pill" onClick={() => setSwitching("pick")}>Change layout</button>}
         <button type="button" className="muse-reflections-pill" onClick={() => change((r) => ({ ...r, status: r.status === "complete" ? "draft" : "complete" }), 0)}>{review.status === "complete" ? "Reopen as draft" : "✓ Mark complete"}</button>
-        <button type="button" className="muse-button button-primary" onClick={() => setEditing(!editing)}>{editing ? "Done" : "✎ Edit"}</button>
+        <button type="button" className="muse-button button-primary" onClick={() => { if (editing) saveNow(); setEditing(!editing); }}>{editing ? "Save" : "✎ Edit"}</button>
       </div>
     </header>
 

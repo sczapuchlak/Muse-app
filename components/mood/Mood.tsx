@@ -26,13 +26,11 @@ import {dayPulse,hasDailyData} from '@/lib/data/daily-projections';
 import {useDailyData,useDailyRange,DailyCapture,DailySaveStatus} from '../daily/DailyData';
 import { MuseModal } from '../MuseModal';
 import { useMuseDate,useMuseState } from '../MuseSession';
-import {ReflectionEditor} from './ReflectionEditor';
 import { useMood } from './useMood';
 import './Mood.css';
 import {ShareToStream} from '../stream/ShareToStream';
-const prompts=['What stayed with you today?','What gave you energy?','What felt heavier than expected?','What would you like to carry into tomorrow?'];
 export function Mood({embedded=false,onDateChange}:{embedded?:boolean;onDateChange?:(date:string)=>void}={}) {
- const [date,setDate]=useMuseDate(dailyEditSample.date.iso),{state,store,record,setPeriod}=useMood(date),[prompt,setPrompt]=useState(0),[historyAnchor,setHistoryAnchor]=useState<{selected:string;date:string}|null>(null),[allHistory,setAllHistory]=useState(false),[deleteId,setDeleteId]=useState<string|null>(null),[deleteAnchor,setDeleteAnchor]=useState<HTMLElement|null>(null);
+ const [date,setDate]=useMuseDate(dailyEditSample.date.iso),{state,store,record,setPeriod}=useMood(date),[historyAnchor,setHistoryAnchor]=useState<{selected:string;date:string}|null>(null),[allHistory,setAllHistory]=useState(false),[deleteId,setDeleteId]=useState<string|null>(null),[deleteAnchor,setDeleteAnchor]=useState<HTMLElement|null>(null);
  const [,setReflectionDrafts]=useMuseState<Record<string,string>>('reflection-drafts',{},true);
  const {state:wellness}=useWellness();
  const {snapshot,profile}=useDailyData(),[earlier,setEarlier]=useState<{anchor:string;start:string}|null>(null);
@@ -56,7 +54,7 @@ export function Mood({embedded=false,onDateChange}:{embedded?:boolean;onDateChan
  <DailyCapture date={date}><MoodCheckInLayout date={date} emotions={emotionCatalog}/></DailyCapture>
  {/* #12: the day's Little Moment lives in the Day Pulse card above (saved on its own, never part of Mood notes); it isn't repeated here. */}
  <div className="muse-mood-grid">
- <MuseCard id="mood-reflection" className="muse-mood-reflection"><CardHeading id="mood-reflection" title="A little reflection" icon="notes"><button className="muse-button button-ghost" type="button" onClick={()=>setPrompt((value)=>(value+1)%prompts.length)}>Another prompt</button></CardHeading><DailyCapture date={date}><ReflectionEditor date={date} prompt={prompts[prompt]}/></DailyCapture></MuseCard>
+ 
  <MuseCard id="mood-meter"><CardHeading id="mood-meter" title="Emotional Landscape" icon="mood"/><p className="card-description">Different families of feeling. More than one can belong.</p><div className="muse-mood-meter">{(['red','yellow','blue','green'] as EmotionQuadrant[]).map((key)=><div key={key} data-quadrant={key}><strong><i className="quadrant-dot"/>{moodQuadrants[key].label}</strong><small>{moodQuadrants[key].energy} energy · {moodQuadrants[key].pleasantness}</small><p>{emotionCatalog.filter((emotion)=>emotion.quadrant===key&&record.emotionIds.includes(emotion.id)).map((emotion)=>emotion.name).join(' · ')||'—'}</p></div>)}</div><p className="small-label">These are emotional families, separate from your Day Pulse Energy score.</p></MuseCard></div>
  <div className="muse-mood-lower"><section className="muse-mood-history" aria-labelledby="mood-history-title"><div className="muse-mood-history-header"><MuseHeading icon="heart" tone={2} level={2} id="mood-history-title" title="Your emotional history" description={<>Only the moments you’ve recorded. Each day’s full Dayprint lives in <Link href={`/insights?period=day&date=${selectedDay}`}>Insights</Link>.</>}/><div className="muse-mood-history-navigation"><button className="muse-button" type="button" aria-label="Previous history week" onClick={()=>{setAllHistory(false);setHistoryDate(shiftDate(historyDate,-7));}}>‹</button><span>{shortDate(week[0])} – {shortDate(week[6])}, {week[0].slice(0,4)}</span><button className="muse-button" type="button" aria-label="Next history week" onClick={()=>{setAllHistory(false);setHistoryDate(shiftDate(historyDate,7));}}>›</button><button className="muse-button" type="button" aria-expanded={allHistory} onClick={()=>setAllHistory(value=>!value)}>Browse History</button></div></div>
  {allHistory&&<nav className="muse-history-browse" aria-label="Recorded history dates">{recordedDates.filter(day=>day>=start&&day<=end).sort().reverse().map(day=><button type="button" className="muse-button button-ghost" key={day} onClick={()=>{setHistoryDate(day);selectDay(day);setAllHistory(false);}}>{shortDate(day)}</button>)}<button className="muse-button button-ghost" type="button" onClick={()=>setEarlier({anchor:historyDate,start:shiftDate(historyStart,-90)})}>Load earlier days</button></nav>}

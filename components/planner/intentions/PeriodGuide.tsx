@@ -1,5 +1,4 @@
 "use client";
-import Link from "next/link";
 import { shiftDate, weekDates } from "@/lib/dates";
 import { intentionRange, type IntentionPeriod, type IntentionRange } from "@/lib/intentions/periods";
 
@@ -8,7 +7,8 @@ const daysBetween = (a: string, b: string) => Math.round((Date.parse(`${b}T00:00
 
 /**
  * A period's own way of looking around (#119 Intentions, Option A): the week as seven days, the month as its weeks,
- * the quarter as three months, the year as four quarters. Pure navigation derived from the range: nothing here is
+ * the quarter as three months, the year as four quarters (the week's days are a view, not links away to the Agenda).
+ * Derived from the range: nothing here is
  * stored, copied or written, so it needs no data and can never disagree with the pages it links to.
  */
 export function PeriodGuide({ range, today, go }: { range: IntentionRange; today: string; go: (period: IntentionPeriod, date: string) => void }) {
@@ -23,7 +23,7 @@ export function PeriodGuide({ range, today, go }: { range: IntentionRange; today
     const days = weekDates(range.start);
     return <nav className="muse-intentions-guide" data-period="week" aria-label="The seven days of this week">
       <ol className="muse-intentions-days">{days.map((d) => <li key={d} data-today={d === today || undefined}>
-        <Link href={`/planner?view=agenda&date=${d}`} aria-label={`Open ${fmt(d, { weekday: "long", month: "long", day: "numeric" })} in your planner`}><small>{fmt(d, { weekday: "short" })}</small><strong>{Number(d.slice(8))}</strong></Link></li>)}</ol>
+        <span className="muse-intentions-day" aria-label={fmt(d, { weekday: "long", month: "long", day: "numeric" })}><small>{fmt(d, { weekday: "short" })}</small><strong>{Number(d.slice(8))}</strong></span></li>)}</ol>
       {progress}</nav>;
   }
   if (range.period === "month") {

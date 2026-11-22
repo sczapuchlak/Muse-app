@@ -83,6 +83,8 @@ function ChapterLoader({ range, today, client, go }: { range: IntentionRange; to
       timer.current = window.setTimeout(() => { timer.current = null; pending.current = null; persist(next); }, delay);
       return next; });
   }, [persist]);
+  /** Save: what was just typed goes now (not after the pause), and the page returns to reading. */
+  const saveNow = useCallback(() => { if (timer.current) { window.clearTimeout(timer.current); timer.current = null; } if (pending.current) { const next = pending.current; pending.current = null; persist(next); } }, [persist]);
   // Moving to another period mid-sentence still saves what was typed.
   useEffect(() => () => { if (timer.current) { window.clearTimeout(timer.current); if (pending.current) persist(pending.current); } }, [persist]);
 
@@ -103,7 +105,7 @@ function ChapterLoader({ range, today, client, go }: { range: IntentionRange; to
     {error && <p className="muse-reflections-alert" role="alert">{error} <button type="button" className="muse-reflections-pill" onClick={() => setError("")}>Dismiss</button></p>}
     {page === undefined ? <p className="muse-reflections-quiet" role="status">Opening this chapter…</p>
       : page === null ? <StartChapter range={range} tense={tense} onBegin={(blank) => void begin(blank)} />
-      : <Chapter page={page} range={range} today={today} tense={tense} status={status} change={change} client={client} go={go} onClear={() => void clear()} />}
+      : <Chapter key={`${range.period}/${range.start}`} page={page} range={range} today={today} tense={tense} status={status} change={change} saveNow={saveNow} client={client} go={go} onClear={() => void clear()} />}
     <ReflectionsLink range={range} client={client} />
   </>;
 }
@@ -176,23 +178,26 @@ const refHref = (r: Ref, range: IntentionRange) => r.kind === "aspiration" ? `/e
   : r.kind === "event" ? `/planner?view=agenda&date=${r.date ?? range.start}` : "/planner";
 const shortDate = (d: string) => new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", timeZone: "UTC" }).format(new Date(`${d}T12:00:00Z`));
 
-function Chapter({ page, range, today, tense, status, change, client, go, onClear }: { page: IntentionPage; range: IntentionRange; today: string; tense: string; status: string; change: Change; client: () => Client; go: (period: IntentionPeriod, date: string) => void; onClear: () => void }) {
+function Chapter({ page, range, today, tense, status, change, saveNow, client, go, onClear }: { page: IntentionPage; range: IntentionRange; today: string; tense: string; status: string; change: Change; saveNow: () => void; client: () => Client; go: (period: IntentionPeriod, date: string) => void; onClear: () => void }) {
   const L = useLookups(range, today);
+  // Read first, edit intentionally: a page with words opens as reading; Edit opens it, Save saves and returns to reading.
+  const [editing, setEditing] = useState(() => !pageHasContent(page.sections));
   const [arranging, setArranging] = useState(false), [confirm, setConfirm] = useState<string | "page" | null>(null), [adding, setAdding] = useState(false);
   const [promptAnchor, setPromptAnchor] = useState<HTMLElement | null>(null), [promptOpen, setPromptOpen] = useState(false);
   const usedQuestions = useMemo(() => new Set(page.sections.flatMap((x) => { const q = (x.content as { question?: string }).question; return q ? [q] : []; })), [page.sections]);
   const setSections = (fn: (s: IntentionSection[]) => IntentionSection[], delay?: number) => change((p) => ({ ...p, sections: fn(p.sections) }), delay);
   const update = (id: string, fn: (s: IntentionSection) => IntentionSection, delay?: number) => setSections((list) => list.map((s) => s.id === id ? fn(s) : s), delay);
   const visible = page.sections.filter((s) => arranging || !s.hidden), hiddenCount = page.sections.filter((s) => s.hidden).length;
-  return <article className="muse-intentions-page" data-period={range.period} data-arranging={arranging || undefined}>
+  return <article className="muse-intentions-page" data-period={range.period} data-arranging={arranging || undefined} data-reading={!editing || undefined}>
     <header className="muse-intentions-cover">
       <div>
         <h2 className="muse-reflections-kicker">{templates[range.period].name} <MuseStar size={14} prismatic />{tense === "future" && <span className="muse-reflections-badge">Planned ahead</span>}</h2>
       </div>
       <div className="muse-reflections-actions">
         <span className="muse-reflections-quiet" role="status">{status}</span>
-        <button type="button" className="muse-button" disabled={page.sections.length >= MAX_SECTIONS} onClick={(e) => { setPromptAnchor(e.currentTarget); setPromptOpen(true); }}><MuseIcon name="sparkle" size={15} />Prompts</button>
-        <button type="button" className="muse-button" aria-pressed={arranging} onClick={() => { setArranging(!arranging); setAdding(false); setConfirm(null); }}>{arranging ? "Done arranging" : "Arrange sections"}</button>
+        {editing && <button type="button" className="muse-button" disabled={page.sections.length >= MAX_SECTIONS} onClick={(e) => { setPromptAnchor(e.currentTarget); setPromptOpen(true); }}><MuseIcon name="sparkle" size={15} />Prompts</button>}
+        {editing && <button type="button" className="muse-button" aria-pressed={arranging} onClick={() => { setArranging(!arranging); setAdding(false); setConfirm(null); }}>{arranging ? "Done arranging" : "Arrange sections"}</button>}
+        <button type="button" className="muse-button button-primary" onClick={() => { if (editing) { saveNow(); setArranging(false); setAdding(false); setConfirm(null); } setEditing(!editing); }}>{editing ? "Save" : "✎ Edit"}</button>
       </div>
     </header>
 
@@ -205,12 +210,12 @@ function Chapter({ page, range, today, tense, status, change, client, go, onClea
         onHide={() => update(s.id, (x) => ({ ...x, hidden: !x.hidden || undefined }), 0)}
         onRemove={() => { const r = removeSection(page.sections, s.id); if (r.needsConfirmation) setConfirm(s.id); else setSections(() => r.sections, 0); }}
         confirming={confirm === s.id} onConfirm={(yes) => { if (yes) setSections((list) => removeSection(list, s.id, true).sections, 0); setConfirm(null); }}>
-        <SectionBody section={s} range={range} L={L} onChange={(content, delay) => update(s.id, (x) => ({ ...x, content } as IntentionSection), delay)} />
+        <fieldset className="muse-intentions-section-fields" disabled={!editing}><SectionBody section={s} range={range} L={L} onChange={(content, delay) => update(s.id, (x) => ({ ...x, content } as IntentionSection), delay)} /></fieldset>
       </SectionFrame>)}
-      {visible.length === 0 && <div className="muse-reflections-empty"><MuseStar size={20} prismatic /><p>A blank page, ready when you are.</p>{!arranging && <button type="button" className="muse-button button-primary" onClick={() => { setArranging(true); setAdding(true); }}>Add a section</button>}</div>}
+      {visible.length === 0 && <div className="muse-reflections-empty"><MuseStar size={20} prismatic /><p>A blank page, ready when you are.</p>{!arranging && <button type="button" className="muse-button button-primary" onClick={() => { setEditing(true); setArranging(true); setAdding(true); }}>Add a section</button>}</div>}
     </div>
 
-    {!arranging && hiddenCount > 0 && <p className="muse-reflections-quiet">{hiddenCount} hidden {hiddenCount === 1 ? "section keeps its" : "sections keep their"} words. <button type="button" className="text-button" onClick={() => setArranging(true)}>Arrange sections</button> to show {hiddenCount === 1 ? "it" : "them"}.</p>}
+    {!arranging && hiddenCount > 0 && <p className="muse-reflections-quiet">{hiddenCount} hidden {hiddenCount === 1 ? "section keeps its" : "sections keep their"} words. <button type="button" className="text-button" onClick={() => { setEditing(true); setArranging(true); }}>Arrange sections</button> to show {hiddenCount === 1 ? "it" : "them"}.</p>}
     {arranging && <div className="muse-reflections-add">
       {page.sections.length < MAX_SECTIONS && (adding
         ? <div className="muse-reflections-library" role="group" aria-label="Add a section">{sectionKinds.map((k) => <button key={k.key} type="button" onClick={() => { setSections((list) => [...list, newSection(k.key as SectionKindKey, uid())], 0); setAdding(false); }}><span aria-hidden="true">{k.emoji}</span><strong>{k.title}</strong><small>{k.hint}</small></button>)}</div>

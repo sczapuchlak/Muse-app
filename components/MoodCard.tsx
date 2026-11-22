@@ -3,6 +3,7 @@
 import { useMuseDate } from "./MuseSession";
 import { useMood } from "./mood/useMood";
 import { MoodInfluences } from "./mood/MoodInfluences";
+import { MoodWhy } from "./mood/MoodWhy";
 import { dailyEditSample } from "@/lib/daily-edit-data";
 
 import { useMemo, useRef, useState } from "react";
@@ -75,6 +76,7 @@ export function MoodCard({ emotions }: MoodCardProps) {
           </MuseModal>}
         </div>
         <MoodInfluences date={date}/>
+        <MoodWhy date={date} feelings={selectedEmotions.map((emotion)=>emotion.name)}/>
       </div>
     </MuseCard>
   );
