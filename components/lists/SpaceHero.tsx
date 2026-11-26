@@ -17,7 +17,7 @@ const jump = (id: string) => { const el = document.getElementById(id); if (!el) 
  * Section tiles: shortcuts down the same page (never separate pages). They stay within reach while scrolling and
  * light the section you're in. Shown once a space has three or more sections.
  */
-export function SpaceNav({ sections, blocks, items }: { sections: ListSection[]; blocks: ListBlock[]; items: ListItem[] }) {
+export function SpaceNav({ sections, blocks, items, onHide }: { sections: ListSection[]; blocks: ListBlock[]; items: ListItem[]; /** Hides the tiles for this space (Space settings brings them back). */ onHide?: () => void }) {
   const [current, setCurrent] = useState<string | null>(null);
   const ids = sections.map((s) => s.id).join("|");
   useEffect(() => {
@@ -40,6 +40,7 @@ export function SpaceNav({ sections, blocks, items }: { sections: ListSection[];
         <span>{s.title}</span>{count > 0 && <small>{count}</small>}
       </button></li>;
     })}</ol>
+    {onHide && <button type="button" className="muse-space-nav-hide" aria-label="Hide section tiles (bring them back in Space settings)" title="Hide section tiles" onClick={onHide}><MuseIcon name="eye-off" size={14} /></button>}
   </nav>;
 }
 

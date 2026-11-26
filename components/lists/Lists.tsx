@@ -70,7 +70,9 @@ export function ListsSaveStatus() {
 function ListsLibrary({ today, onOpen }: { today: string; onOpen: (id: string, focusAdd?: boolean) => void }) {
   const s = useLists(), { state: planner } = usePlanner();
   const [query, setQuery] = useState(""), [scope, setScope] = useState<Scope>("active"), [sort, setSort] = useState<Sort>("updated");
-  const [creating, setCreating] = useState(false), newAnchor = useRef<HTMLButtonElement>(null);
+  const [creating, setCreating] = useState(false), [returnTo, setReturnTo] = useState<HTMLElement | null>(null), newAnchor = useRef<HTMLButtonElement>(null);
+  // Remember what opened the dialog (in the click, not during render) so focus returns there.
+  const openNew = () => { setReturnTo(newAnchor.current); setCreating(true); };
   const stats = useMemo(() => new Map(s.lists.map((l) => {
     const items = s.items.filter((i) => i.listId === l.id), events = items.flatMap((i) => effectiveEvents(i, s.events, planner));
     const due = items.filter((i) => i.schedule ? scheduleState(i.schedule, events.filter((e) => e.itemId === i.id), today).due : !i.completedAt && !!i.dueDate && i.dueDate <= today).length;
@@ -92,7 +94,6 @@ function ListsLibrary({ today, onOpen }: { today: string; onOpen: (id: string, f
     .sort((a, b) => Number(b.pinned) - Number(a.pinned) || (sort === "name" ? a.title.localeCompare(b.title) : sort === "due" ? (stats.get(b.id)?.due ?? 0) - (stats.get(a.id)?.due ?? 0) : b.updatedAt.localeCompare(a.updatedAt)));
   const counts = { active: s.lists.filter((l) => !l.isTemplate && !l.archivedAt).length, templates: s.lists.filter((l) => l.isTemplate && !l.archivedAt).length, archived: s.lists.filter((l) => l.archivedAt).length };
 
-  const activeLists = s.lists.filter((l) => !l.isTemplate && !l.archivedAt), totals = activeLists.reduce((t, l) => { const x = stats.get(l.id); return x ? { done: t.done + x.done, total: t.total + x.total, due: t.due + x.due } : t; }, { done: 0, total: 0, due: 0 });
   return <section className="muse-lists" aria-label="Spaces">
     <div className="muse-journal-archive muse-lists-archive">
     <div className="muse-journal-hero muse-lists-hero" data-compact="">
@@ -100,8 +101,6 @@ function ListsLibrary({ today, onOpen }: { today: string; onOpen: (id: string, f
         <p className="muse-kicker">Spaces</p>
         <h2 className="muse-journal-title">A space for everything you’re planning</h2>
         <p>A trip with its flights, stays and plans. A room makeover. A cleaning rhythm. Or just the groceries. Everything for one thing, on one page.</p>
-        {activeLists.length > 0 && <dl className="muse-journal-stats"><div><dt>Spaces</dt><dd className="type-numeric">{activeLists.length}</dd></div><div><dt>Checked off</dt><dd className="type-numeric">{totals.done}<small> of {totals.total}</small></dd></div><div><dt>Due now</dt><dd className="type-numeric">{totals.due}</dd></div></dl>}
-        <div className="muse-journal-actions"><button ref={newAnchor} type="button" className="muse-button button-primary muse-lists-new" aria-expanded={creating} onClick={() => setCreating(true)}><MuseIcon name="plus" size={14} /> New space</button></div>
       </div>
       <div className="muse-journal-art muse-lists-hero-art" aria-hidden="true"><MindspaceArt kind="lists" /></div>
     </div>
@@ -109,26 +108,37 @@ function ListsLibrary({ today, onOpen }: { today: string; onOpen: (id: string, f
       <label className="muse-search muse-edge muse-lists-search"><MuseIcon name="search" size={15} /><input type="search" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search spaces…" aria-label="Search spaces" /></label>
       <MuseChoiceMenu label="Sort spaces" valueLabel={sorts.find((x) => x.id === sort)!.label} options={sorts} selectedIds={[sort]} onSelect={(id) => setSort(id as Sort)} />
     </div>
-    <div className="muse-chip-row muse-lists-scopes" role="group" aria-label="Show">
-      {(["active", "templates", "archived"] as Scope[]).map((x) => <button key={x} type="button" aria-pressed={scope === x} onClick={() => setScope(x)}>{x === "active" ? "Spaces" : x === "templates" ? "Templates" : "Archived"} <small>{counts[x]}</small></button>)}
+    {/* Scopes on the left, New space across from them on the right (Nov 26: out of the header). */}
+    <div className="muse-lists-scope-row">
+      <div className="muse-chip-row muse-lists-scopes" role="group" aria-label="Show">
+        {(["active", "templates", "archived"] as Scope[]).map((x) => <button key={x} type="button" aria-pressed={scope === x} onClick={() => setScope(x)}>{x === "active" ? "Spaces" : x === "templates" ? "Templates" : "Archived"} <small>{counts[x]}</small></button>)}
+      </div>
+      <button ref={newAnchor} type="button" className="muse-button button-primary muse-lists-new" aria-haspopup="dialog" aria-expanded={creating} onClick={() => openNew()}><MuseIcon name="plus" size={14} /> New space</button>
     </div>
     {!s.loaded ? <p className="small-label">Loading your spaces…</p> : s.error && !s.lists.length ? <p className="small-label" role="alert">{s.error}</p>
-      : shown.length ? <ul className="muse-lists-grid">{shown.map((l) => <ListCard key={l.id} list={l} stat={stats.get(l.id)!} today={today} onOpen={() => onOpen(l.id)} />)}{scope === "active" && !query.trim() && shown.length % 3 !== 0 && <li className="muse-lists-invite-slot" style={{ "--ghost-3": 3 - shown.length % 3, "--ghost-2": 2 - shown.length % 2 } as CSSProperties}><MuseInviteCard count={shown.length} title="Start another space" note="A trip, a room, a routine, or just the next ten things." cta="New space" art={<DailyArt kind="priorities" />} onClick={() => setCreating(true)} /></li>}</ul>
-      : <div className="muse-empty-state muse-lists-empty" data-variant="editorial"><span className="muse-lists-empty-art" aria-hidden="true"><MuseMark icon="suitcase" tone={2} size="lg" /><MuseMark icon="checklist" tone={1} size="lg" /><MuseMark icon="basket" tone={4} size="lg" /></span><h3>{query ? "Nothing by that name" : scope === "active" ? "A space for everything you’re planning." : scope === "templates" ? "No templates yet" : "Nothing archived"}</h3><p>{query ? "No spaces match that search." : scope === "templates" ? "No templates yet. Open a space and choose Save as template." : scope === "archived" ? "Nothing archived." : "Start one for a trip, a room, a routine, groceries — anything."}</p>{scope === "active" && !query && <button type="button" className="muse-button" onClick={() => setCreating(true)}>Create a space</button>}</div>}
+      : shown.length ? <ul className="muse-lists-grid">{shown.map((l) => <ListCard key={l.id} list={l} stat={stats.get(l.id)!} today={today} onOpen={() => onOpen(l.id)} />)}{scope === "active" && !query.trim() && shown.length % 3 !== 0 && <li className="muse-lists-invite-slot" style={{ "--ghost-3": 3 - shown.length % 3, "--ghost-2": 2 - shown.length % 2 } as CSSProperties}><MuseInviteCard count={shown.length} title="Start another space" note="A trip, a room, a routine, or just the next ten things." cta="New space" art={<DailyArt kind="priorities" />} onClick={() => openNew()} /></li>}</ul>
+      : <div className="muse-empty-state muse-lists-empty" data-variant="editorial"><span className="muse-lists-empty-art" aria-hidden="true"><MuseMark icon="suitcase" tone={2} size="lg" /><MuseMark icon="checklist" tone={1} size="lg" /><MuseMark icon="basket" tone={4} size="lg" /></span><h3>{query ? "Nothing by that name" : scope === "active" ? "A space for everything you’re planning." : scope === "templates" ? "No templates yet" : "Nothing archived"}</h3><p>{query ? "No spaces match that search." : scope === "templates" ? "No templates yet. Open a space and choose Save as template." : scope === "archived" ? "Nothing archived." : "Start one for a trip, a room, a routine, groceries — anything."}</p>{scope === "active" && !query && <button type="button" className="muse-button" onClick={() => openNew()}>Create a space</button>}</div>}
     </div>
-    <GlassPopover id="lists-new" label="New space" open={creating} anchorRef={newAnchor} onClose={() => setCreating(false)} width={600}>
-      {creating && <NewList today={today} onDone={(id, focusAdd) => { setCreating(false); if (id) onOpen(id, focusAdd); }} />}
-    </GlassPopover>
+    {/* A centred dialog, so the gallery never runs off the bottom of the screen. */}
+    {creating && <MuseModal id="lists-new" label="New space" title="New space" returnFocus={returnTo} onClose={() => setCreating(false)}>
+      <NewList today={today} onDone={(id, focusAdd) => { setCreating(false); if (id) onOpen(id, focusAdd); }} />
+    </MuseModal>}
   </section>;
 }
 
-/** Cover art tied to what the list IS: ticked rows for a checklist, a repeating week for a routine, stepping stones for a project. */
-function ListCover({ preset }: { preset: string }) {
-  return <svg viewBox="0 0 240 84" preserveAspectRatio="xMaxYMid meet" focusable="false">
-    {preset === "scheduled" ? <>{[0, 1, 2, 3, 4, 5, 6].map((i) => <g key={i}><rect x={96 + i * 20} y={22} width="15" height="40" rx="5" fill="currentColor" opacity={i % 3 === 0 ? .38 : .14} />{i % 3 === 0 && <path d={`M${100 + i * 20} 43l2.500 2.500 5-6`} fill="none" stroke="#fff" strokeWidth="1.800" strokeLinecap="round" strokeLinejoin="round" opacity=".9" />}</g>)}<path d="M112 12c40-12 78-8 112 6m0 0-9-7m9 7-11 3" fill="none" stroke="currentColor" strokeWidth="1.600" strokeLinecap="round" opacity=".45" /></>
-      : preset === "project" ? <><path d="M92 66c22 0 22-16 44-16s22-16 44-16 22-14 44-14" fill="none" stroke="currentColor" strokeWidth="1.600" strokeDasharray="2 6" strokeLinecap="round" opacity=".5" />{[[92, 66], [136, 50], [180, 34]].map(([x, y], i) => <circle key={i} cx={x} cy={y} r="7" fill="currentColor" opacity={.22 + i * .12} />)}<path d="M222 22V4m0 0h-13l4 5-4 5h13" fill="currentColor" fillOpacity=".4" stroke="currentColor" strokeWidth="1.600" strokeLinejoin="round" opacity=".8" /></>
-      : <>{[0, 1, 2].map((i) => <g key={i} opacity={1 - i * .28}><rect x={150 - i * 10} y={14 + i * 21} width="15" height="15" rx="5" fill="currentColor" opacity={i === 0 ? .42 : .18} />{i === 0 && <path d="M153.500 21.500l3 3 5.500-6.500" fill="none" stroke="#fff" strokeWidth="1.800" strokeLinecap="round" strokeLinejoin="round" />}<rect x={172 - i * 10} y={18 + i * 21} width={58 - i * 8} height="7" rx="3.500" fill="currentColor" opacity=".2" /></g>)}</>}
-  </svg>;
+/**
+ * A space's card cover when it has no photo (Nov 26: "beautiful backgrounds, no graphics"): a layered gradient in the
+ * theme's own inks, a palette per kind (trip, routine, checklist, space, template), arranged differently per space
+ * (seeded by its id) so no two look the same. Pure CSS; no drawings.
+ */
+function skyStyle(id: string): CSSProperties {
+  let h = 7; for (const c of id) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+  const r = () => { h = (h * 1664525 + 1013904223) >>> 0; return h / 4294967296; };
+  const pct = (lo: number, hi: number) => `${Math.round(lo + r() * (hi - lo))}%`;
+  return { "--sky-x1": pct(0, 40), "--sky-y1": pct(0, 100), "--sky-x2": pct(55, 100), "--sky-y2": pct(0, 70), "--sky-x3": pct(30, 75), "--sky-y3": pct(60, 120), "--sky-angle": `${Math.round(100 + r() * 70)}deg` } as CSSProperties;
+}
+function SpaceSky({ id, kind }: { id: string; kind: string }) {
+  return <span className="muse-space-sky" data-kind={kind} style={skyStyle(id)}><i /></span>;
 }
 
 type CardStat = { done: number; total: number; pct: number; due: number; sections: number; next: string[]; more: number; repeats: boolean; trip: boolean; blocks: { cards: number; notes: number; photos: number } };
@@ -139,7 +149,7 @@ function ListCard({ list, stat, today, onOpen }: { list: MuseList; stat: CardSta
   const act = async (fn: () => Promise<unknown>) => { setMenu(false); await fn(); };
   return <li className="muse-lists-card" style={style}>
     <button type="button" className="muse-lists-card-open" onClick={onOpen} aria-label={`Open ${list.title}`}>
-      <span className="muse-lists-cover" data-preset={list.preset} data-photo={list.cover ? true : undefined} aria-hidden="true">{list.cover ? <span className="muse-space-card-cover" style={{ "--focus": `${list.cover.focus}%` } as CSSProperties}><SpaceImg image={list.cover.image} thumb alt="" /></span> : <ListCover preset={list.preset} />}{when && <span className="muse-space-countdown">{when}</span>}<span className="muse-lists-card-icon">{list.icon ?? "✦"}</span>{list.pinned && <span className="muse-lists-pinned"><MuseIcon name="pin" size={11} />Pinned</span>}</span>
+      <span className="muse-lists-cover" data-preset={list.preset} data-photo={list.cover ? true : undefined} aria-hidden="true">{list.cover ? <span className="muse-space-card-cover" style={{ "--focus": `${list.cover.focus}%` } as CSSProperties}><SpaceImg image={list.cover.image} thumb alt="" /></span> : <SpaceSky id={list.id} kind={list.isTemplate ? "template" : stat.trip ? "trip" : list.preset === "scheduled" ? "routine" : list.preset === "checklist" ? "checklist" : "space"} />}{when && <span className="muse-space-countdown">{when}</span>}<span className="muse-lists-card-icon">{list.icon ?? "✦"}</span>{list.pinned && <span className="muse-lists-pinned"><MuseIcon name="pin" size={11} />Pinned</span>}</span>
       <span className="muse-lists-card-text"><span className="muse-lists-kind">{list.isTemplate ? "Template" : stat.trip ? "Trip" : list.preset === "scheduled" ? "Routine" : list.preset === "project" ? "Space" : "Checklist"}</span><strong>{list.title}</strong>
         {list.description && <span className="muse-lists-desc">{list.description}</span>}</span>
       {stat.next.length > 0 ? <span className="muse-lists-next">{stat.next.map((title, i) => <span key={i}><i />{title}</span>)}{stat.more > 0 ? <small>+{stat.more} more</small> : stat.more === 0 && stat.total - stat.done > stat.next.length && <small>+{stat.total - stat.done - stat.next.length} more</small>}</span>
