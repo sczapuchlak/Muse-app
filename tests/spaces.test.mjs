@@ -74,7 +74,7 @@ test('Spaces card templates: structure only; cards snapshot their fields; previe
  assert.deepEqual(n.preview,['room'],'unknown and repeated preview fields are dropped');assert.equal(n.icon,undefined);assert.equal(n.fields[2].type,'checkbox');
 });
 test('Spaces content migrations are additive (section tiles, card templates)',()=>{
- for(const f of ['20270116000100_space_section_tiles.sql','20270117000100_space_card_templates.sql']){const sql=read('supabase/migrations/'+f);assert.doesNotMatch(sql,/\bdrop\b|\brename\b|\bdelete from\b|\bupdate public\./i,f);}
+ for(const f of ['20270116000100_space_section_tiles.sql','20270117000100_space_card_templates.sql','20270118000100_space_paint.sql']){const sql=read('supabase/migrations/'+f);assert.doesNotMatch(sql,/\bdrop\b|\brename\b|\bdelete from\b|\bupdate public\./i,f);}
  const t=read('supabase/migrations/20270117000100_space_card_templates.sql');assert.match(t,/enable row level security/);assert.match(t,/revoke all on public\.list_card_templates from public, anon/);
 });
 test('Spaces card looks: only safe paints are kept; presets keep chosen colours; templates carry look, layout and header field',()=>{

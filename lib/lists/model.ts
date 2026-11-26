@@ -5,7 +5,8 @@
 import type { ListEvent, ListSchedule } from "./schedule";
 import { scheduleState, validSchedule } from "./schedule";
 import type { JSONContent } from "@tiptap/react";
-import { newCard, type BlockWidth, type CardPreset, type ListBlock, type SpaceCover } from "./blocks";
+import type { Paint } from "../planner-customization";
+import { newCard, validPaint, type BlockWidth, type CardPreset, type ListBlock, type SpaceCover } from "./blocks";
 
 export const listAccents = ["primary", "secondary", "pop", "warm", "info"] as const;
 export type ListAccent = typeof listAccents[number];
@@ -19,6 +20,7 @@ export type MuseList = {
   isTemplate: boolean; pinned: boolean; archivedAt: string | null; startDate: string | null; endDate: string | null;
   fields: ListField[]; tableView: boolean; /** Section layout: 0 = auto, else 1–3 columns. */ columns: 0 | 1 | 2 | 3; itemGroup: import("./order").ItemGroup; itemSort: import("./order").ItemSort; showInDaily: boolean; showInAgenda: boolean; aspirationId: string | null;
   /** Optional cover photo (Spaces). Undefined when the database predates covers. */ cover?: SpaceCover | null;
+  /** A custom colour or gradient for the space (shared paint picker); unset = `accent`. Undefined on an older database. */ paint?: Paint | null;
   /** Section tiles at the top: null = automatic (three or more sections), true/false = always / never. Undefined on an older database. */ sectionTiles?: boolean | null;
   position: number; createdAt: string; updatedAt: string;
 };
@@ -65,7 +67,7 @@ export function listFromRow(r: Record<string, unknown>): MuseList {
     accent: (listAccents as readonly string[]).includes(String(r.accent)) ? r.accent as ListAccent : "primary", preset: (r.preset as ListPreset) ?? "checklist",
     isTemplate: !!r.is_template, pinned: !!r.pinned, archivedAt: (r.archived_at as string) ?? null, startDate: (r.start_date as string) ?? null, endDate: (r.end_date as string) ?? null,
     fields: Array.isArray(r.fields) ? r.fields as ListField[] : [], tableView: !!r.table_view, columns: ([0, 1, 2, 3].includes(Number(r.section_columns)) ? Number(r.section_columns) : 0) as MuseList["columns"], itemGroup: (["section", "frequency", "none"].includes(String(r.item_group)) ? r.item_group : "section") as MuseList["itemGroup"], itemSort: (["manual", "frequency", "due", "name"].includes(String(r.item_sort)) ? r.item_sort : "manual") as MuseList["itemSort"], showInDaily: !!r.show_in_daily, showInAgenda: !!r.show_in_agenda,
-    aspirationId: (r.aspiration_id as string) ?? null, ...("cover" in r ? { cover: validCover(r.cover) } : {}), ...("section_tiles" in r ? { sectionTiles: typeof r.section_tiles === "boolean" ? r.section_tiles : null } : {}), position: Number(r.position ?? 0), createdAt: String(r.created_at ?? ""), updatedAt: String(r.updated_at ?? "") };
+    aspirationId: (r.aspiration_id as string) ?? null, ...("cover" in r ? { cover: validCover(r.cover) } : {}), ...("paint" in r ? { paint: validPaint(r.paint) ?? null } : {}), ...("section_tiles" in r ? { sectionTiles: typeof r.section_tiles === "boolean" ? r.section_tiles : null } : {}), position: Number(r.position ?? 0), createdAt: String(r.created_at ?? ""), updatedAt: String(r.updated_at ?? "") };
 }
 export function sectionFromRow(r: Record<string, unknown>): ListSection {
   return { id: String(r.id), listId: String(r.list_id), title: String(r.title), ...("description" in r ? { description: (r.description as string) ?? null } : {}), icon: (r.icon as string) ?? null, accent: (r.accent as ListAccent) ?? null, position: Number(r.position ?? 0), collapsed: !!r.collapsed };

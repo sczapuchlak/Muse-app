@@ -29,9 +29,9 @@ export function ListHeroArt({ stars, seed }: { stars: ListStar[]; seed: string }
     <defs>
       <radialGradient id="muse-list-star-glow"><stop offset="0" className="muse-list-art-glow-in" /><stop offset="1" className="muse-list-art-glow-out" /></radialGradient>
     </defs>
-    {dust.map((d, i) => <circle key={`d${i}`} className="muse-list-art-dust" cx={d.x} cy={d.y} r={d.r} style={{ animationDelay: `${d.d}s` } as CSSProperties} />)}
+    {dust.map((d, i) => <circle key={`d${i}`} className="muse-list-art-dust" cx={d.x} cy={d.y} r={d.r} style={{ animationDelay: `${-(d.d * 3).toFixed(2)}s` } as CSSProperties} />)}
     {pts.slice(1).map((p, i) => { const a = pts[i]; return <line key={`l${i}`} className="muse-list-art-thread" data-lit={(a.state === "lit" && p.state === "lit") || undefined} x1={a.x} y1={a.y} x2={p.x} y2={p.y} />; })}
-    {pts.map((p, i) => <g key={i} className="muse-list-art-star" data-state={p.state} style={{ animationDelay: `${i * .45}s` } as CSSProperties}>
+    {pts.map((p, i) => <g key={i} className="muse-list-art-star" data-state={p.state} style={{ animationDelay: `${-(i * 3.7).toFixed(1)}s` } as CSSProperties}>
       <title>{`${p.s.label} · ${p.s.done}/${p.s.total}`}</title>
       {p.state !== "dim" && <circle className="muse-list-art-halo" cx={p.x} cy={p.y} r={p.state === "lit" ? 22 : 14} fill="url(#muse-list-star-glow)" />}
       <path d={MUSE_STAR_PATH} transform={`translate(${p.x - 12 * p.size} ${p.y - 20 * p.size}) scale(${p.size})`} />
