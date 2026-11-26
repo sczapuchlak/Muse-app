@@ -14,7 +14,7 @@ try{
  await b.go('/collections','document.querySelectorAll(".muse-plan-card").length>0','dashboard');await wait(900);
  const titles=()=>b.evaluate(()=>[...document.querySelectorAll('.muse-plans .muse-plan-title')].map(t=>t.textContent));
  let t=await titles();
- check(t.length===4&&t[0]==='A Court of Wings and Ruin','the Dashboard shows this month\'s plan, four books a page, in plan order');
+ check(t.length===5&&t[0]==='A Court of Wings and Ruin'&&await b.evaluate(()=>new Set([...document.querySelectorAll('.muse-plans[data-variant=dashboard] .muse-plan-card')].map(c=>Math.round(c.getBoundingClientRect().top))).size<=3),'the Dashboard shows this month\'s plan in order, never more than three rows tall (six a page, Nov 25)');
  check(await b.evaluate(()=>/5 books/.test(document.querySelector('.muse-plans-count').textContent)&&[...document.querySelectorAll('.muse-plan-bar-seg')].map(s=>s.textContent).join(',')==='1,1,2,1'),'status bar counts the five books by real status (1 TBR, 1 reading, 2 finished, 1 paused)');
  check(await b.evaluate(()=>document.querySelector('.muse-plan-card [data-status="finished"] , .muse-plan-card[data-status="finished"] .muse-plan-status')!==null&&!!document.querySelector('.muse-plan-dates')),'cards show status chips and actual dates');
  await b.shoot('plans-dashboard');
