@@ -11,7 +11,7 @@ test('only waiting books are eligible',()=>{
 test('every source offers its own eligible books and skips ones already in other slots',()=>{
  const books=[b('a'),b('c','paused'),b('d','finished'),b('r','reading'),b('t')],plans=[e('month','2026-11','a',0),e('month','2026-11','d',1),e('month','2026-12','t',0),e('year','2026','c',0),e('year','2026','r',1)];
  const p=U.buildPools(books,plans,'2026-11-11',new Set());
- assert.deepEqual(p.month.map(x=>x.id),['a'],'this month, minus finished');assert.deepEqual(p.year.map(x=>x.id),['c'],'yearly, minus reading');
+ assert.deepEqual(p.month.map(x=>x.id),['a'],'this month, minus finished');assert.deepEqual(p.year.map(x=>x.id),['a','t','c'],'the year as shown: its months (Nov, Dec) then its own books, minus finished and reading');
  assert.deepEqual(p.tbr.map(x=>x.id),['a','t']);assert.deepEqual(p.library.map(x=>x.id),['a','c','t']);
  assert.deepEqual(U.buildPools(books,plans,'2026-11-11',new Set(['a'])).month,[],'a book in another slot is not offered');
  assert.deepEqual(U.poolFor(p,'surprise').map(x=>x.id).sort(),['a','c','t'],'surprise merges the four, each book once');
@@ -30,10 +30,14 @@ test('random picks are uniform, unbiased and avoid an immediate repeat',()=>{
  let calls=0;const rigged=a=>{calls++;a[0]=calls===1?0xffffffff:2;return a;};assert.equal(U.randomIndex(3,rigged),2);assert.equal(calls,2);
 });
 test('the reel always ends on the winner',()=>{const pool=[b('a'),b('b'),b('c')],w=pool[1],r=U.reelFor(pool,w,10);assert.equal(r.length,10);assert.equal(r.at(-1).id,'b');});
-test('slots: placing never duplicates, nudging swaps, settle drops started or missing books',()=>{
- let s=U.emptySlots();s=U.setSlot(s,0,'a');s=U.setSlot(s,1,'b');s=U.setSlot(s,2,'a');assert.deepEqual(s,[null,'b','a'],'a book moves rather than duplicating');
- assert.deepEqual(U.nudgeSlot(['a','b',null],0,1),['b','a',null]);assert.deepEqual(U.nudgeSlot(['a','b',null],0,-1),['a','b',null]);
- assert.deepEqual(U.removeFromSlot(['a','b','c'],1),['a',null,'c']);
- assert.deepEqual(U.settle(['a','b','c'],[b('a','reading'),b('b','planned'),b('x')]),[null,'b',null],'started and missing books leave Up Next');
- assert.deepEqual(U.settle(['p'],[b('p','paused')]),['p'],'a paused book stays');
+test('the yearly source reads the year as it is shown: its months and its own books',()=>{
+ const books=[b('n'),b('o'),b('y'),b('r','reading')],plans=[e('month','2026-11','n',0),e('month','2026-03','o',0),e('year','2026','y',0),e('month','2026-11','r',1)];
+ assert.deepEqual(U.buildPools(books,plans,'2026-11-11',new Set()).year.map(x=>x.id),['o','n','y'],'by month, then the year itself; reading books skipped');
+ assert.deepEqual(U.buildPools(books,plans,'2026-11-11',new Set(['n']),{month:'2026-03',year:'2026'}).month.map(x=>x.id),['o'],'the plan on screen, minus books already in it');
+});
+test('retiring Up Next keeps only waiting books, in slot order',()=>{
+ const books=[b('a'),b('s','reading'),b('p','paused'),b('x','planned',{archivedAt:'2026-01-01'})];
+ assert.deepEqual(U.upNextToPlan(['p',null,'a'],books),['p','a']);
+ assert.deepEqual(U.upNextToPlan(['s','x','gone'],books),[],'started, archived and missing books are let go');
+ assert.deepEqual(U.emptySlots(),[null,null,null]);
 });

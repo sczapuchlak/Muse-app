@@ -131,10 +131,13 @@ async function mock(call: Call): Promise<Result> {
     text = JSON.stringify({ title: "A Mock Week of Small Things", review: `Mock review across ${titles.length} entries: ${titles.join("; ") || "none"}.\n\nDays: ${days.join(", ")}.`, themes: titles.length > 1 ? [{ heading: "A thread that ran through it", body: `It showed up on ${days.join(" and ")}.` }] : [], insights: titles.length > 1 ? [{ heading: "A pattern", body: "Maybe something worth noticing." }] : [], wins: [{ heading: "You wrote", body: `${titles.length} entries.` }], closing: "" });
   } else {
     const testing = /## Test conversation/.test(call.instructions) ? " (test)" : "";
-    text = last
+    // "[long]" asks the stand-in for a long, slow, many-paragraph reply (tests how the page behaves while one streams).
+    if (/\[long\]/.test(last)) text = Array.from({ length: 14 }, (_, i) => `[mock ${companion}] Paragraph ${i + 1}. ${"That sounds like it carried a lot of weight, and it is worth staying with for a moment longer. ".repeat(3)}`).join("\n\n");
+    else text = last
       ? `[mock ${companion}${testing}] I heard ${last.trim().split(/\s+/).length} words.${seen}${titles.length ? ` Context: ${titles.join(" | ")}.` : " No journal context."}${remembered.length ? ` Remembered: ${remembered.join(" / ")}.` : ""} What feels most alive in that for you?`
       : `[mock ${companion}] Opening.${titles.length ? ` Context: ${titles.join(" | ")}.` : ""} What's on your mind?`;
   }
-  if (call.onDelta) for (const piece of text.match(/[\s\S]{1,12}/g) ?? []) { call.onDelta(piece); await new Promise((r) => setTimeout(r, 4)); }
+  const pause = /\[long\]/.test(last) ? 6 : 4;
+  if (call.onDelta) for (const piece of text.match(/[\s\S]{1,12}/g) ?? []) { call.onDelta(piece); await new Promise((r) => setTimeout(r, pause)); }
   return { text, usage: { inputTokens: Math.ceil((call.instructions.length + all.length) / 3.8), cachedTokens: 0, outputTokens: Math.ceil(text.length / 3.8) }, model: "mock" };
 }

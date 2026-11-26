@@ -45,17 +45,18 @@ try{
  await b.evaluate(n=>{[...document.querySelectorAll('#reading-plan-place .muse-plan-picker-grid button')].find(x=>x.getAttribute('aria-label').includes('already')||x.disabled)&&0;const [y,m]=n.split('-');[...document.querySelectorAll('#reading-plan-place .muse-plan-picker-grid button')].find(x=>x.dataset.now!==undefined&&!x.disabled)?.click();},month);await wait(1000);
  check((await dbOrder('month',month)).length===5&&(await dbOrder('month',nextMonth)).length===1,'copying keeps both memberships');
  // Remove from plan leaves the book in the Library.
- await b.click('.muse-plans-today');await wait(500);await b.evaluate(()=>document.querySelector('.muse-plan-more').click());await b.until(()=>!!document.querySelector('.muse-plan-menu'),'menu3');await b.click('.muse-plan-menu .popover-choice','Remove from plan');await wait(900);
+ await b.click('.muse-plans-today');await wait(500);await b.evaluate(()=>document.querySelector('.muse-plan-more').click());await b.until(()=>!!document.querySelector('.muse-plan-menu'),'menu3');await b.click('.muse-plan-menu .popover-choice','Remove from');await wait(900);
  check((await dbOrder('month',month)).length===4&&(await client.from('whimsy_books').select('id')).data.length>=5,'removing from a plan keeps the book in the Library');
  // Status sync: finishing a planned book elsewhere updates the plan without any plan action.
  sql(`update public.whimsy_books set payload=jsonb_set(payload,'{status}','"reading"') where id='${ids.manual}'`);
  await b.go('/collections','document.querySelectorAll(".muse-plan-card").length>0','status sync');await wait(900);
  check(await b.evaluate(()=>[...document.querySelectorAll('.muse-plan-card')].some(c=>/recipe notebook/.test(c.textContent)&&c.dataset.status==='reading')),'a status change anywhere updates the plan automatically');
  // Yearly plan and Add books.
- await b.click('.muse-plans .muse-segmented button','Yearly');await wait(600);check(await b.evaluate(()=>/Nothing planned for/.test(document.querySelector('.muse-plans').textContent)),'an empty yearly plan has an inviting empty state');
+ await b.click('.muse-plans .muse-segmented button','Yearly');await wait(600);check(await b.evaluate(()=>document.querySelectorAll('.muse-plans .muse-plan-card').length>0),'this year’s plan shows the months’ books (Nov 25)');
+ await b.evaluate(()=>document.querySelector('.muse-plans-step[aria-label="Next year"]').click());await wait(500);check(await b.evaluate(()=>/Nothing planned for/.test(document.querySelector('.muse-plans').textContent)),'an empty yearly plan has an inviting empty state');
  await b.click('.muse-plans-empty .muse-button','Add books');await b.until(()=>!!document.querySelector('#reading-plan-add[open]'),'add modal');await b.shoot('plans-add-books');
  await b.evaluate(()=>document.querySelector('.muse-plan-suggest button').click());await wait(200);await b.click('.muse-plan-add-actions .button-primary');await wait(1000);
- check((await dbOrder('year',String(now.getUTCFullYear()))).length===1,'books are added to the yearly plan from the shelf picker');
+ check((await dbOrder('year',String(now.getUTCFullYear()+1))).length===1,'books are added to a future year (Anytime) from the shelf picker');
  await b.shoot('plans-yearly');
  // Full view.
  await b.go('/collections/plans','document.querySelectorAll(".muse-plan-card").length>0||!!document.querySelector(".muse-plans-empty")','full view');await wait(700);

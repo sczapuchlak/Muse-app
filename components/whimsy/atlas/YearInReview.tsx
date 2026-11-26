@@ -54,7 +54,7 @@ export function YearInReview({books,sessions,today,goals=[]}:{books:Book[];sessi
   {keepsake&&<KeepsakeExport books={books} sessions={sessions} goals={goals} year={year} today={today} onClose={()=>setKeepsake(false)}/>}
   <dl className="muse-yir-stats" aria-label="The numbers">{stats.map(s=><div key={s.k}><dt>{s.k}</dt><dd className="type-numeric">{s.v}</dd><small>{s.d}</small></div>)}</dl>
   <Highlights books={books} sessions={sessions} range={range} label={String(year)} today={today} wholeYear/>
-  <div className="muse-yir-emoji-shelf"><EmojiBoard books={books} range={range} label={String(year)} title={`Your ${year} in emojis`}/>
+  <div className="muse-yir-emoji-shelf"><EmojiBoard books={books} range={range} label={String(year)} title={`Your ${year} in emojis`} restSize={4}/>
    <MonthShelf books={books} today={today} fixedYear={year}/></div>
   <div className="muse-yir-pair muse-yir-pair-even">
    <ActivityBars unit="time" title="Reading timeline" note={`Reading time by month in ${year}${progress?' (so far)':''}.`} items={r.months.map(m=>({key:m.month,label:monthLabel(m.month),short:shortMonth(m.month),value:m.seconds||m.pages,text:`${duration(m.seconds)} · ${m.pages} pages · ${m.finished} finished`}))}/>

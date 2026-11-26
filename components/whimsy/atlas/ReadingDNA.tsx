@@ -11,17 +11,25 @@ import type {CSSProperties} from 'react';
 import {MuseIcon} from '@/components/MuseIcon';
 import {ActivityBars,Insight,duration,hours,monthLabel,num,plural} from './parts';
 
+const traitIcon=(id='')=>id==='night-owl'?'moon' as const:id==='early-bird'?'sparkle' as const:id.includes('weekend')?'calendar' as const:'flame' as const;
+
 /** Personality, genres, habits and book emojis for one period. Every line is computed from saved records. */
 export function ReadingDNA({books,sessions,range,label,today}:{books:Book[];sessions:ReadingSession[];range:DateRange|null;label:string;today:string}){
  const genres=genreBreakdown(books,sessions,range),fav=favoriteGenres(genres.rows),persona=genrePersona(books,range),traits=readingTraits(books,sessions,range,today);
  const habits=readingHabits(sessions,range,today);
  const isPersona=(p:Persona|{needed:number}):p is Persona=>'title' in p;
  return <div className="muse-atlas-section">
-  <article className="muse-books-panel muse-atlas-persona"><span className="small-label">Your reading personality · {label}</span>
-   {isPersona(persona)?<><h4>{persona.title}</h4><p>{persona.line}</p><small className="small-label">{persona.evidence}</small></>
-    :<><h4>Still taking shape</h4><p>Finish {plural(persona.needed,'more book')} with a genre {label==='all time'?'':`${label} `}to reveal your genre personality.</p></>}
-   {traits.length>0&&<ul className="muse-atlas-traits">{traits.map(t=><li key={t.title}><strong>{t.title}</strong><span>{t.line}</span><small className="small-label">{t.evidence}</small></li>)}</ul>}
-   <p className="small-label">Personalities follow fixed rules about your genres and reading times, never guesses.</p>
+  {/* Personality (Nov 25): one compact band — who you are as a reader (or a little "still taking shape" placeholder) on
+      one side, the reading-time traits on the other — so the highlights below start sooner. */}
+  <article className="muse-books-panel muse-atlas-persona" data-forming={!isPersona(persona)||undefined} data-traits={traits.length>0||undefined}>
+   <div className="muse-persona-main">
+    {isPersona(persona)?<span className="muse-persona-badge" aria-hidden="true"><MuseIcon name="sparkle" size={22}/></span>
+     :<span className="muse-persona-art" aria-hidden="true"><i/><i/><i/><b>✦</b></span>}
+    <div className="muse-persona-copy"><span className="small-label">Your reading personality · {label}</span>
+     {isPersona(persona)?<><h4>{persona.title}</h4><p>{persona.line}</p><small className="small-label">{persona.evidence}</small></>
+      :<><h4>Still taking shape</h4><p>Finish {plural(persona.needed,'more book')} with a genre {label==='all time'?'':`${label} `}to reveal it.</p></>}</div>
+   </div>
+   {traits.length>0&&<ul className="muse-atlas-traits">{traits.map(t=><li key={t.title}><span className="muse-trait-icon" aria-hidden="true"><MuseIcon name={traitIcon(t.id)} size={16}/></span><span className="muse-trait-copy"><strong>{t.title}</strong><span>{t.line}</span><small className="small-label">{t.evidence}</small></span></li>)}</ul>}
   </article>
   <article className="muse-books-panel muse-dna-highlights"><div className="muse-books-panel-head"><h4><AtlasMark title="Genre highlights"/>Genre highlights</h4><span className="small-label">{label}</span></div>
   <div className="muse-atlas-insights" data-tone="genre">
@@ -46,7 +54,7 @@ export function ReadingDNA({books,sessions,range,label,today}:{books:Book[];sess
     <PagedList tag="ul" className="muse-genre-legend" items={genres.rows} size={4} label="genres" render={r=>{const i=genres.rows.indexOf(r);return <li key={r.key} style={{'--c':paletteAt(i<7?i:7)} as CSSProperties}><i aria-hidden="true"/><strong>{r.genre}</strong><span className="type-numeric">{genres.finishedBooks?`${r.share}%`:'—'} · {r.finished} {r.finished===1?'book':'books'}</span><small className="type-numeric">{r.seconds?hours(r.seconds):'no timed reading'}{r.pages?` · ${num(r.pages)} pages`:''}</small></li>;}}/></div>}
    <p className="small-label">A book with several genres counts fully in each, so shares can add up to more than 100%{genres.overlapping?' (they do here)':''}.{genres.untagged?` ${plural(genres.untagged,'finished book')} without a genre ${genres.untagged===1?'is':'are'} not shown.`:''}</p>
   </article>
-  <EmojiBoard books={books} range={range} label={label} title="Most popular book emojis"/>
+  <EmojiBoard books={books} range={range} label={label} title="Most popular book emojis" restSize={4}/>
   </div>
   <div className="muse-books-atlas-grid">
    <ActivityBars title="When you read" note="Timed sessions only, by local hour in each session's time zone; a session crossing an hour is split." items={habits.hours.map((s,h)=>({key:String(h),label:hourLabel(h),short:h%6===0?hourLabel(h):'',value:s,text:duration(s)}))}/>

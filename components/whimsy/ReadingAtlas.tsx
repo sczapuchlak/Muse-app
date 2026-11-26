@@ -101,7 +101,9 @@ export function ReadingAtlas({books,sessions,goals,today,range,setRange,calendar
    </div>
   </div>}
   {period==='month'?<div className="muse-atlas-tf muse-atlas-month-pair"><ActivityBars anchor="pages" title="Pages by day" note="This month · each bar is a day" items={periodDays.map(d=>({key:d.date,label:dateLabel(d.date),short:String(Number(d.date.slice(-2))),value:d.pages,text:`${d.pages} pages`}))}/><Favorites books={books} range={range_} label={label} onOpenBook={onOpenBook} size={4} cols={4}/></div>:
-  <div className="muse-atlas-tf"><TopRated books={books} range={range_} label={label} onOpenBook={onOpenBook} size={6} cols={3}/><div className="muse-atlas-tf-stack"><Favorites books={books} range={range_} label={label} onOpenBook={onOpenBook} size={4} cols={4}/><EmojiBoard books={books} range={range_} label={label} title="Vibes" top={2}/></div></div>}
+  <>{/* Top rated and Favorites (Nov 25): the same size, one row of smaller covers each, a carousel for more; Vibes below. */}
+   <div className="muse-atlas-tf" data-even><TopRated books={books} range={range_} label={label} onOpenBook={onOpenBook} size={6} cols={6}/><Favorites books={books} range={range_} label={label} onOpenBook={onOpenBook} size={6} cols={6}/></div>
+   <EmojiBoard books={books} range={range_} label={label} title="Vibes" top={4} restSize={8} restCols={8}/></>}
   {(period==='year'||period==='all')&&<MonthShelf books={books} today={today} onOpenBook={onOpenBook}/>}
 
   {(period==='year'||period==='all')&&<div className="muse-atlas-books-pair"><ActivityBars line title="Books finished by year" note="Every year of your history · the line follows the ups and downs" items={yearlyBooks.map(y=>({key:y.start,label:y.start.slice(0,4),short:y.start.slice(0,4),value:y.count,text:`${y.count} ${y.count===1?'book':'books'}`}))}/><RatingsByMonth books={books} today={today}/></div>}

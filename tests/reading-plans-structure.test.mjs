@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {readFileSync} from 'node:fs';
+import {existsSync,readFileSync} from 'node:fs';
 const read=f=>readFileSync(new URL('../'+f,import.meta.url),'utf8');
 test('Reading Plans migration is additive, owner-only and keeps plans as membership only',()=>{
  const sql=read('supabase/migrations/20261215000100_reading_plans.sql').split('\n').filter(l=>!l.trim().startsWith('--')).join('\n');
@@ -20,8 +20,18 @@ test('Up Next migration is additive, three-slot, one-book-per-slot and owner-onl
  const sql=readFileSync(new URL('../supabase/migrations/20261216000100_up_next.sql',import.meta.url),'utf8').split('\n').filter(l=>!l.trim().startsWith('--')).join('\n');
  assert.doesNotMatch(sql,/drop\s+(table|column)|alter\s+table\s+public\.whimsy_books|truncate/i);
  assert.match(sql,/slot between 0 and 2/);assert.match(sql,/unique \(user_id, book_id\)/);assert.match(sql,/enable row level security/);assert.doesNotMatch(sql,/security definer/i);
- const ui=read('components/whimsy/upnext/UpNext.tsx')+read('components/whimsy/upnext/UpNextFlow.tsx')+read('lib/books/use-up-next.ts');
- assert.doesNotMatch(ui,/status:\s*'reading'|setStatus|moveBook/,'Up Next never changes a status; starting goes through the existing start flow');
+ const ui=read('components/whimsy/plans/Roulette.tsx')+read('lib/books/up-next.ts');
+ assert.doesNotMatch(ui,/status:\s*'reading'|setStatus|moveBook/,'the wheel never changes a status; starting goes through the existing start flow');
+});
+test('Up Next is merged into the Reading Plan: no Up Next card, one wheel, Start reading reuses the start flow (Nov 25)',()=>{
+ const shelf=read('components/whimsy/Bookshelf.tsx'),plans=read('components/whimsy/plans/ReadingPlans.tsx');
+ assert.doesNotMatch(shelf,/<UpNext\b|upnext\/UpNext/,'the standalone Up Next card is gone');
+ assert.equal(shelf.split('\n').filter(l=>l.includes('<ReadingPlans ')&&l.includes("onStart={book=>void timerAction('start',book)}")).length,2,'both planners start books through the existing timer start');
+ assert.match(plans,/<Roulette /,'Spin to add uses the existing wheel');assert.match(plans,/Spin to add/);assert.match(plans,/Add books/);
+ assert.match(plans,/initialSource="tbr"/,'the wheel starts on To Be Read');assert.match(plans,/taken=\{taken\}/,'books already in the plan are not offered');
+ assert.match(plans,/adoptUpNext/,'old Up Next books are handed to the plan once');
+ assert.doesNotMatch(plans,/status===|setStatus|updateStatus/,'plans never write a status');
+ assert.ok(!existsSync(new URL('../components/whimsy/upnext/UpNext.tsx',import.meta.url)),'no second Up Next component remains');
 });
 test('Daily Edit\'s Bookshelf card uses the liquid meter, and daily-goal data stays derived (no counters, no migration)',()=>{
  assert.doesNotMatch(read('components/whimsy/BooksDayviewWidget.tsx'),/<progress/);assert.match(read('components/whimsy/BooksDayviewWidget.tsx'),/muse-desk-pool/);
