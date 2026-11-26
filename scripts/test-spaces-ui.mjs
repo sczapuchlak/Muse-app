@@ -109,7 +109,7 @@ try{
  await type('#list-new-title','UK trip');await click('.muse-space-start','Trip');await evaluate(()=>document.querySelector('.muse-lists-new-form').requestSubmit());
  await until(()=>document.querySelectorAll('.muse-list-section').length>=8,'trip sections');await wait(800);
  const trip=await listByTitle('UK trip');
- check(await evaluate(()=>document.querySelectorAll('.muse-space-nav button').length===8),'eight section tiles sit at the top of the trip');
+ check(await evaluate(()=>document.querySelectorAll('.muse-space-nav li button').length===8),'eight section tiles sit at the top of the trip');
  check(await evaluate(()=>document.querySelectorAll('.muse-space-card-ghost').length>=4),'empty cards invite you to fill them in rather than showing forms');
  await shoot('spaces-trip-empty',{full:true});
  // Fill the flight.

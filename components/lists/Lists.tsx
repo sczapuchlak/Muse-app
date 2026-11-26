@@ -85,7 +85,10 @@ function ListsLibrary({ today, onOpen }: { today: string; onOpen: (id: string, f
     const next = dated.length >= 2 ? dated.slice(0, 3).map((x) => `${dayLabel(x.day, { month: "short", day: "numeric" })} · ${x.line}`) : open.length ? open : lines.slice(0, 3);
     const words = [...blocks.map(blockLine), ...blocks.filter((b) => b.kind === "note").map((b) => (b.data as NoteData).text ?? ""), ...items.map((i) => i.title)].join(" ").toLowerCase();
     const trip = blocks.some((b) => b.kind === "card" && ["route", "stay"].includes(presetOf((b.data as CardData).preset).shape));
-    return [l.id, { ...progress(items, events, today), due, sections: s.sections.filter((x) => x.listId === l.id).length, next, more: dated.length >= 2 ? -1 : open.length ? 0 : Math.max(0, lines.length - 3), repeats: items.some((i) => !!i.schedule), words, trip,
+    // Its look in the library follows what it holds: a home makeover (measurements, shopping) or gifts.
+    const has = (...ps: string[]) => blocks.some((b) => b.kind === "card" && ps.includes((b.data as CardData).preset));
+    const home = has("measurement", "shopping"), gifts = has("gift");
+    return [l.id, { ...progress(items, events, today), due, sections: s.sections.filter((x) => x.listId === l.id).length, next, more: dated.length >= 2 ? -1 : open.length ? 0 : Math.max(0, lines.length - 3), repeats: items.some((i) => !!i.schedule), words, trip, home, gifts, asLines: dated.length >= 2 || !open.length,
       blocks: { cards: blocks.filter((b) => b.kind === "card").length, notes: blocks.filter((b) => b.kind === "note").length, photos: blocks.reduce((n, b) => n + (b.kind === "images" ? (b.data as ImagesData).images.length : 0), 0) } }];
   })), [s, planner, today]);
   const shown = s.lists
@@ -138,10 +141,39 @@ function skyStyle(id: string): CSSProperties {
   return { "--sky-x1": pct(0, 40), "--sky-y1": pct(0, 100), "--sky-x2": pct(55, 100), "--sky-y2": pct(0, 70), "--sky-x3": pct(30, 75), "--sky-y3": pct(60, 120), "--sky-angle": `${Math.round(100 + r() * 70)}deg` } as CSSProperties;
 }
 function SpaceSky({ id, kind }: { id: string; kind: string }) {
-  return <span className="muse-space-sky" data-kind={kind} style={skyStyle(id)}><i /></span>;
+  return <span className="muse-space-sky" data-kind={kind} style={skyStyle(id)}><i /><SkyArt kind={kind} /></span>;
 }
 
-type CardStat = { done: number; total: number; pct: number; due: number; sections: number; next: string[]; more: number; repeats: boolean; trip: boolean; blocks: { cards: number; notes: number; photos: number } };
+/**
+ * Each kind of space has its own little scene on its sky, so spaces are told apart at a glance (Nov 26: "cute and
+ * shnazzy"). Glassy white shapes with accents in the card's own palette; they drift gently unless motion is reduced.
+ */
+function SkyArt({ kind }: { kind: string }) {
+  const art: Record<string, React.ReactNode> = {
+    trip: <><path className="trail" d="M18 86C52 50 84 96 124 58" /><g className="cloud"><ellipse cx="62" cy="30" rx="16" ry="7" /><ellipse cx="74" cy="25" rx="11" ry="9" /><ellipse cx="86" cy="30" rx="13" ry="6" /></g>
+      <g className="cloud small"><ellipse cx="176" cy="78" rx="12" ry="5" /><ellipse cx="185" cy="74" rx="8" ry="6" /></g>
+      <g className="float"><g transform="translate(132 30) rotate(-14)"><path className="w" d="M0 16 38 0 25 34 18 21Z" /><path className="a" d="M18 21 38 0 14 18Z" /><path className="s" d="M18 21 21 31 25 34Z" /></g></g></>,
+    home: <><g className="float"><path className="w" d="M128 92V44a26 26 0 0 1 52 0v48Z" /><path className="glow" d="M134 88V45a20 20 0 0 1 40 0v43Z" /><path className="frame" d="M154 25v63M134 58h40" /></g>
+      <g className="float slow"><path className="a" d="M98 92h20l-3 -14h-14Z" /><path className="leaf" d="M108 78c-10-6-12-16-8-24 6 4 9 13 8 24Zm0 0c6-9 14-11 20-8-3 7-11 10-20 8Zm0 0c-1-12 3-22 10-26 3 8 0 18-10 26Z" /></g></>,
+    gifts: <><g className="float"><rect className="w" x="126" y="44" width="50" height="40" rx="6" /><rect className="a" x="122" y="36" width="58" height="12" rx="4" /><path className="ribbon" d="M151 36v48" /><path className="bow" d="M151 36c-8-14-24-10-16-2 4 4 12 3 16 2Zm0 0c8-14 24-10 16-2-4 4-12 3-16 2Z" /></g>
+      <g className="confetti"><rect x="104" y="30" width="5" height="9" rx="2" transform="rotate(24 106 34)" /><rect x="190" y="24" width="5" height="9" rx="2" transform="rotate(-30 192 28)" /><circle cx="114" cy="74" r="3" /><circle cx="194" cy="66" r="2.5" /><rect x="96" y="56" width="4" height="8" rx="2" transform="rotate(-50 98 60)" /></g></>,
+    routine: <><g className="float"><circle className="bubble" cx="150" cy="54" r="24" /><path className="shine" d="M136 44a16 16 0 0 1 12-10" /></g><g className="float slow"><circle className="bubble" cx="186" cy="30" r="12" /><path className="shine" d="M180 25a7 7 0 0 1 5-5" /></g>
+      <g className="float"><circle className="bubble" cx="112" cy="78" r="9" /><circle className="bubble" cx="190" cy="82" r="6" /></g></>,
+    checklist: <><g className="float"><g transform="rotate(-8 154 52)"><rect className="w" x="122" y="18" width="64" height="72" rx="10" />
+      {[0, 1, 2].map((i) => <g key={i}><rect className={i < 2 ? "a" : "box"} x="132" y={32 + i * 18} width="11" height="11" rx="3.5" />{i < 2 && <path className="tick" d={`M134.5 ${37.5 + i * 18}l2.5 2.5 4-5`} />}<rect className="line" x="149" y={34.5 + i * 18} width={i === 2 ? 22 : 28} height="5" rx="2.5" /></g>)}</g></g></>,
+    space: <><g className="float slow"><rect className="w" x="120" y="30" width="38" height="44" rx="5" transform="rotate(-12 139 52)" /><rect className="a" x="125" y="35" width="28" height="26" rx="3" transform="rotate(-12 139 52)" /></g>
+      <g className="float"><rect className="w" x="152" y="22" width="38" height="44" rx="5" transform="rotate(9 171 44)" /><rect className="b" x="157" y="27" width="28" height="26" rx="3" transform="rotate(9 171 44)" /></g>
+      <g className="float slow"><rect className="w" x="140" y="58" width="34" height="38" rx="5" transform="rotate(-3 157 77)" /><rect className="c" x="145" y="62" width="24" height="22" rx="3" transform="rotate(-3 157 77)" /></g></>,
+    template: <><g className="float"><path className="w" d="M136 14h40v76l-20-14-20 14Z" /><path className="a" d="M136 14h40v12h-40Z" /><path className="star" d="M156 40l3.5 7 7.5 1-5.5 5 1.5 7.5-7-3.5-7 3.5 1.5-7.5-5.5-5 7.5-1Z" /></g>
+      <path className="trail" d="M114 34h10M108 52h14M114 70h10" /></>,
+  };
+  return <svg className="muse-sky-art" data-kind={kind} viewBox="0 0 210 104" preserveAspectRatio="xMaxYMid meet" aria-hidden="true" focusable="false">
+    {art[kind] ?? art.space}
+    <path className="spark" d="M98 20l2 5 5 2-5 2-2 5-2-5-5-2 5-2Z" /><path className="spark small" d="M196 50l1.4 3.6 3.6 1.4-3.6 1.4-1.4 3.6-1.4-3.6-3.6-1.4 3.6-1.4Z" />
+  </svg>;
+}
+
+type CardStat = { done: number; total: number; pct: number; due: number; sections: number; next: string[]; more: number; repeats: boolean; trip: boolean; home: boolean; gifts: boolean; asLines: boolean; blocks: { cards: number; notes: number; photos: number } };
 function ListCard({ list, stat, today, onOpen }: { list: MuseList; stat: CardStat; today: string; onOpen: () => void }) {
   const when = countdown(list, today);
   const [menu, setMenu] = useState(false), [confirm, setConfirm] = useState<HTMLElement | null>(null), anchor = useRef<HTMLButtonElement>(null);
@@ -149,10 +181,10 @@ function ListCard({ list, stat, today, onOpen }: { list: MuseList; stat: CardSta
   const act = async (fn: () => Promise<unknown>) => { setMenu(false); await fn(); };
   return <li className="muse-lists-card" style={style}>
     <button type="button" className="muse-lists-card-open" onClick={onOpen} aria-label={`Open ${list.title}`}>
-      <span className="muse-lists-cover" data-preset={list.preset} data-photo={list.cover ? true : undefined} aria-hidden="true">{list.cover ? <span className="muse-space-card-cover" style={{ "--focus": `${list.cover.focus}%` } as CSSProperties}><SpaceImg image={list.cover.image} thumb alt="" /></span> : <SpaceSky id={list.id} kind={list.isTemplate ? "template" : stat.trip ? "trip" : list.preset === "scheduled" ? "routine" : list.preset === "checklist" ? "checklist" : "space"} />}{when && <span className="muse-space-countdown">{when}</span>}<span className="muse-lists-card-icon">{list.icon ?? "✦"}</span>{list.pinned && <span className="muse-lists-pinned"><MuseIcon name="pin" size={11} />Pinned</span>}</span>
+      <span className="muse-lists-cover" data-preset={list.preset} data-photo={list.cover ? true : undefined} aria-hidden="true">{list.cover ? <span className="muse-space-card-cover" style={{ "--focus": `${list.cover.focus}%` } as CSSProperties}><SpaceImg image={list.cover.image} thumb alt="" /></span> : <SpaceSky id={list.id} kind={list.isTemplate ? "template" : stat.trip ? "trip" : stat.home ? "home" : stat.gifts ? "gifts" : list.preset === "scheduled" ? "routine" : list.preset === "checklist" ? "checklist" : "space"} />}{when && <span className="muse-space-countdown">{when}</span>}<span className="muse-lists-card-icon">{list.icon ?? "✦"}</span>{list.pinned && <span className="muse-lists-pinned"><MuseIcon name="pin" size={11} />Pinned</span>}</span>
       <span className="muse-lists-card-text"><span className="muse-lists-kind">{list.isTemplate ? "Template" : stat.trip ? "Trip" : list.preset === "scheduled" ? "Routine" : list.preset === "project" ? "Space" : "Checklist"}</span><strong>{list.title}</strong>
         {list.description && <span className="muse-lists-desc">{list.description}</span>}</span>
-      {stat.next.length > 0 ? <span className="muse-lists-next">{stat.next.map((title, i) => <span key={i}><i />{title}</span>)}{stat.more > 0 ? <small>+{stat.more} more</small> : stat.more === 0 && stat.total - stat.done > stat.next.length && <small>+{stat.total - stat.done - stat.next.length} more</small>}</span>
+      {stat.next.length > 0 ? <span className="muse-lists-next" data-lines={stat.asLines || undefined}>{stat.next.map((title, i) => <span key={i}><i />{title}</span>)}{stat.more > 0 ? <small>+{stat.more} more</small> : stat.more === 0 && stat.total - stat.done > stat.next.length && <small>+{stat.total - stat.done - stat.next.length} more</small>}</span>
         : <span className="muse-lists-next" data-empty>{stat.total ? "Everything here is done." : "Nothing here yet."}</span>}
       <span className="muse-lists-meta">
         {!list.isTemplate && stat.total > 0 && <span className="muse-lists-progress-row" role="img" aria-label={`${stat.done} of ${stat.total} done`}><span className="muse-list-progress"><span style={{ width: `${stat.pct}%` }} /></span><b>{stat.done}/{stat.total}</b></span>}

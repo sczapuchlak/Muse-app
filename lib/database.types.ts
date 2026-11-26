@@ -1696,6 +1696,20 @@ isOneToOne: false
       referencedColumns: ["user_id","id"]
     }
                   ]
+                },"list_card_templates": {
+                  Row: {
+                    "created_at": string,"display": NonNullable<Json>,"fields": NonNullable<Json>,"icon": string | null,"id": string,"name": string,"position": number,"preset": string,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"display"?: NonNullable<Json>,"fields"?: NonNullable<Json>,"icon"?: string | null,"id": string,"name": string,"position"?: number,"preset"?: string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Update: {
+                    "created_at"?: string,"display"?: NonNullable<Json>,"fields"?: NonNullable<Json>,"icon"?: string | null,"id"?: string,"name"?: string,"position"?: number,"preset"?: string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
                 },"list_item_events": {
                   Row: {
                     "id": string,"item_id": string,"kind": string,"list_id": string,"moved_to": string | null,"occurred_on": string | null,"period_end": string,"period_start": string,"recorded_at": string,"source": string,"user_id": string

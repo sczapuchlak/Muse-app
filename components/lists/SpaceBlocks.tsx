@@ -1,17 +1,18 @@
 "use client";
 import { useRef, useState, type CSSProperties, type ReactNode, type PointerEvent as ReactPointerEvent } from "react";
-import { MuseMark, type MuseMarkIcon } from "@/components/design/MuseHeading";
 import { GlassPopover } from "../GlassPopover";
 import { MuseIcon } from "../MuseIcon";
 import { MuseModal } from "../MuseModal";
-import { BLOCK_LIMITS, cardPresets, newCard, presetOf, type BlockData, type BlockKind, type BlockWidth, type CardData, type CardPreset, type HeadingData, type ListBlock } from "@/lib/lists/blocks";
+import { BLOCK_LIMITS, cardDisplays, newCard, presetOf, type BlockKind, type BlockWidth, type CardData, type CardDisplay, type HeadingData, type ListBlock } from "@/lib/lists/blocks";
+import { ContentPicker, openTemplateManager, type AddChoice } from "./SpaceTemplates";
+export type { AddChoice };
 import type { ListSection } from "@/lib/lists/model";
 
-type Tone = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
 export type BlockDrag = { active: boolean; over: boolean; offset?: { x: number; y: number }; register: (el: HTMLElement | null) => void; down: (e: ReactPointerEvent) => void; move: (e: ReactPointerEvent) => void; up: (e: ReactPointerEvent) => void };
 export type BlockActions = {
   edit?: () => void; width: (w: BlockWidth) => void; move: (by: -1 | 1) => void; moveTo: (sectionId: string | null) => void; duplicate?: () => void;
   rename?: (title: string) => void; remove: () => void;
+  /** Cards: how it displays, and saving its structure as a reusable template. */ display?: (d: CardDisplay) => void; saveTemplate?: () => void;
 };
 const kindName: Record<BlockKind, string> = { checklist: "checklist", note: "note", images: "photos", link: "link", heading: "heading", card: "card" };
 
@@ -50,7 +51,9 @@ export function BlockShell({ block, span, label, first, last, sections, itemCoun
         {!first && <button type="button" className="popover-choice" onClick={close(() => actions.move(-1))}><span><span className="muse-list-icon-up"><MuseIcon name="arrow" size={15} /></span>Move up</span></button>}
         {!last && <button type="button" className="popover-choice" onClick={close(() => actions.move(1))}><span><span className="muse-list-icon-down"><MuseIcon name="arrow" size={15} /></span>Move down</span></button>}
         <button type="button" className="popover-choice" onClick={() => setMoving(true)}><span><MuseIcon name="sort" size={15} />Move to section…</span></button>
-        {actions.duplicate && <button type="button" className="popover-choice" onClick={close(actions.duplicate)}><span><MuseIcon name="sparkle" size={15} />Duplicate</span></button>}
+        {actions.display && <div className="muse-space-menu-display" role="group" aria-label="Shows as">{cardDisplays.map((d) => <button key={d.id} type="button" aria-pressed={((block.data as CardData).display ?? "card") === d.id} title={d.detail} onClick={close(() => actions.display!(d.id))}>{d.label}</button>)}</div>}
+        {actions.duplicate && <button type="button" className="popover-choice" onClick={close(actions.duplicate)}><span><MuseIcon name="sparkle" size={15} />{isCard ? "Duplicate card (with its details)" : "Duplicate"}</span></button>}
+        {actions.saveTemplate && <button type="button" className="popover-choice" onClick={close(actions.saveTemplate)}><span><MuseIcon name="bookmark" size={15} />Save as card template…</span></button>}
         <button type="button" className="popover-choice" data-destructive onClick={() => { setMenu(false); setConfirm(more.current); }}><span><MuseIcon name="trash" size={15} />Delete…</span></button>
       </div>}
     </GlassPopover>
@@ -83,34 +86,23 @@ export function HeadingBlock({ data, editing, onSave, onEditing }: { data: Headi
   return data.style === "title" ? <h4 className="muse-space-heading" onDoubleClick={() => onEditing(true)}>{data.text}</h4> : <p className="muse-space-text" onDoubleClick={() => onEditing(true)}>{data.text}</p>;
 }
 
-export type AddChoice = { kind: BlockKind; data: BlockData; width: BlockWidth };
-const basics: { id: string; label: string; icon: MuseMarkIcon; tone: Tone; make: () => AddChoice }[] = [
-  { id: "checklist", label: "Checklist", icon: "checklist", tone: 2, make: () => ({ kind: "checklist", data: {}, width: "full" }) },
-  { id: "note", label: "Note", icon: "quill", tone: 6, make: () => ({ kind: "note", data: { text: "" }, width: "full" }) },
-  { id: "images", label: "Photos", icon: "photo", tone: 1, make: () => ({ kind: "images", data: { images: [] }, width: "full" }) },
-  { id: "link", label: "Link", icon: "link", tone: 5, make: () => ({ kind: "link", data: { url: "" }, width: "half" }) },
-  { id: "heading", label: "Heading", icon: "letter", tone: 3, make: () => ({ kind: "heading", data: { text: "", style: "title" }, width: "full" }) },
-  { id: "divider", label: "Divider", icon: "minus", tone: 8, make: () => ({ kind: "heading", data: { text: "", style: "divider" }, width: "full" }) },
-];
-
-/** "+ Add" at the end of a section: the basics and every card preset, as gradient tiles. Cards already here come first. */
-export function AddBlock({ blocks, onAdd, label = "Add" }: { blocks: ListBlock[]; onAdd: (c: AddChoice) => void; label?: string }) {
-  const [open, setOpen] = useState(false), anchor = useRef<HTMLButtonElement>(null);
-  const here = [...new Set(blocks.filter((b) => b.kind === "card").map((b) => (b.data as CardData).preset))].slice(0, 2);
+/**
+ * "+ Add content" at the end of a section: the shared picker (blocks, information cards, My templates). Cards of a kind
+ * already here get an "Another …" shortcut. `open`/`onOpenChange` let the section ⋯ menu open the same picker.
+ */
+export function AddBlock({ blocks, onAdd, empty, open: openProp, onOpenChange }: { blocks: ListBlock[]; onAdd: (c: AddChoice) => void; /** The section has nothing yet: say what can go here. */ empty?: boolean; open?: boolean; onOpenChange?: (v: boolean) => void }) {
+  const [own, setOwn] = useState(false), open = openProp ?? own, setOpen = (v: boolean) => { setOwn(v); onOpenChange?.(v); };
+  const anchor = useRef<HTMLButtonElement>(null);
+  const here = [...new Set(blocks.filter((b) => b.kind === "card" && !(b.data as CardData).template).map((b) => (b.data as CardData).preset))].slice(0, 2);
   const pick = (c: AddChoice) => { setOpen(false); onAdd(c); };
-  const card = (id: CardPreset): AddChoice => ({ kind: "card", data: newCard(id), width: presetOf(id).width });
   return <>
-    <span className="muse-space-add-row">
-      {here.map((id) => <button key={id} type="button" className="muse-space-add-quick" onClick={() => pick(card(id))}><MuseIcon name="plus" size={13} />Another {presetOf(id).add.toLowerCase()}</button>)}
-      <button ref={anchor} type="button" className="muse-space-add" aria-expanded={open} aria-haspopup="dialog" onClick={() => setOpen((v) => !v)}><MuseIcon name="plus" size={14} />{label}</button>
+    <span className="muse-space-add-row" data-empty={empty || undefined}>
+      <button ref={anchor} type="button" className="muse-space-add" aria-expanded={open} aria-haspopup="dialog" onClick={() => setOpen(!open)}><MuseIcon name="plus" size={14} />Add content</button>
+      {empty ? <small className="muse-space-add-hint">A checklist, note, photos, a link or an info card.</small>
+        : here.map((id) => <button key={id} type="button" className="muse-space-add-quick" onClick={() => pick({ kind: "card", data: newCard(id), width: presetOf(id).width })}><MuseIcon name="plus" size={13} />Another {presetOf(id).add.toLowerCase()}</button>)}
     </span>
-    <GlassPopover id="space-add" label="Add to this section" open={open} anchorRef={anchor} onClose={() => setOpen(false)} width={420}>
-      <div className="muse-space-palette">
-        <p className="editor-label">Write &amp; collect</p>
-        <div className="muse-space-palette-grid">{basics.map((b) => <button key={b.id} type="button" onClick={() => pick(b.make())}><MuseMark icon={b.icon} tone={b.tone} size="sm" /><span>{b.label}</span></button>)}</div>
-        <p className="editor-label">Information cards</p>
-        <div className="muse-space-palette-grid" data-cards>{cardPresets.map((p) => <button key={p.id} type="button" onClick={() => pick(card(p.id))} title={p.detail}><MuseMark icon={p.icon as MuseMarkIcon} tone={p.tone as Tone} size="sm" /><span>{p.label}</span></button>)}</div>
-      </div>
+    <GlassPopover id="space-add" label="Add content to this section" open={open} anchorRef={anchor} onClose={() => setOpen(false)} width={460}>
+      {open && <ContentPicker onPick={pick} onManage={() => { setOpen(false); openTemplateManager(); }} />}
     </GlassPopover>
   </>;
 }

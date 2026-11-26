@@ -4,6 +4,7 @@
  * fields, an icon and how the card reads (a route, a stay, a place…). Nothing here is a travel system: no live data.
  */
 import type { JSONContent } from "@tiptap/react";
+import type { Paint } from "../planner-customization";
 
 export const blockKinds = ["checklist", "note", "images", "link", "heading", "card"] as const;
 export type BlockKind = typeof blockKinds[number];
@@ -11,8 +12,10 @@ export type BlockWidth = "full" | "half";
 
 /** A private image in the shared board bucket (`<owner>/<block or space id>/<hash>.<ext>`). */
 export type SpaceImage = { id: string; path: string; thumbnailPath: string; width: number; height: number; mime: string; caption?: string; alpha?: boolean };
-export type CardFieldType = "text" | "longtext" | "date" | "time" | "number" | "money" | "url" | "choice";
-export type CardField = { id: string; label: string; type: CardFieldType; value: string; options?: string[] };
+export type CardFieldType = "text" | "longtext" | "date" | "time" | "number" | "money" | "url" | "choice" | "checkbox";
+export const cardFieldTypes: CardFieldType[] = ["text", "longtext", "date", "time", "number", "money", "url", "choice", "checkbox"];
+/** `width` arranges the expanded card: "half" fields pair up side by side; unset keeps the automatic layout. */
+export type CardField = { id: string; label: string; type: CardFieldType; value: string; options?: string[]; width?: "half" | "full" };
 export type CardShape = "route" | "stay" | "place" | "item" | "measure" | "event" | "info";
 export type CardPreset = "flight" | "transit" | "stay" | "place" | "reservation" | "shopping" | "gift" | "measurement" | "info";
 
@@ -21,7 +24,30 @@ export type NoteData = { title?: string; doc?: JSONContent; text?: string };
 export type ImagesData = { title?: string; images: SpaceImage[] };
 export type LinkData = { url: string; title?: string; note?: string; image?: SpaceImage };
 export type HeadingData = { text: string; style: "title" | "text" | "divider" };
-export type CardData = { preset: CardPreset; title: string; fields: CardField[]; image?: SpaceImage };
+export type CardDisplay = "card" | "collapsible" | "row";
+export const cardDisplays: { id: CardDisplay; label: string; detail: string }[] = [
+  { id: "card", label: "Full card", detail: "Every field, always" },
+  { id: "collapsible", label: "Collapsible", detail: "Preview fields; expand for the rest" },
+  { id: "row", label: "Compact row", detail: "One line; expand for the rest" }];
+export const PREVIEW_MAX = 6;
+/**
+ * One information card. `fields` are this card's own snapshot (a template never rewrites them). `display` shows it as a
+ * full card, a collapsible card or a compact row (same record); `preview` lists, in order, the fields shown while
+ * collapsed (empty = sensible ones for the card's shape). `template` is a reference with a
+ * name snapshot, kept only so the card can say where it came from.
+ */
+/**
+ * How a card looks (all optional; unset = the theme's card). Background and border are independent paints from Muse's
+ * shared paint picker (theme colour, custom colour or gradient). `strength` softens the background (a callout tint).
+ */
+export type CardLook = { preset?: LookPreset; bg?: Paint; strength?: number; border?: Paint; placement?: "left" | "full" | "none"; iconBg?: Paint; title?: "standard" | "editorial" };
+export const lookPresets = ["minimal", "callout", "outline", "gradient", "editorial"] as const;
+export type LookPreset = typeof lookPresets[number];
+export type CardData = { preset: CardPreset; title: string; fields: CardField[]; image?: SpaceImage; icon?: string; display?: CardDisplay; preview?: string[]; /** A field shown on the right of the header (date, time, price…). */ aside?: string; look?: CardLook; template?: { id: string; name: string } };
+/** A reusable card structure the person saved (Spaces → My templates): field definitions without values. */
+export type CardTemplate = { id: string; name: string; preset: CardPreset; icon: string | null; fields: Omit<CardField, "value">[]; display: CardDisplay; preview: string[]; aside: string | null; look: CardLook | null; position: number; createdAt: string; updatedAt: string };
+/** Icons a card or card template can wear (the one gradient-tile style). */
+export const cardIcons = ["info", "home", "key", "plane", "compass", "map-pin", "calendar", "shopping", "gift", "columns", "utensils", "gem", "heart", "sparkle", "checklist", "quill", "camera", "palette", "wallet", "receipt", "music", "film", "leaf", "briefcase"] as const;
 export type BlockData = ChecklistData | NoteData | ImagesData | LinkData | HeadingData | CardData;
 
 export type ListBlock = {
@@ -45,13 +71,13 @@ export const cardPresets: PresetDef[] = [
     { id: "date", label: "Date", type: "date" }, { id: "departs", label: "Departs", type: "time" }, { id: "arrives", label: "Arrives", type: "time" },
     { id: "carrier", label: "Airline & flight", type: "text", placeholder: "Delta DL 8725" }, { id: "confirmation", label: "Confirmation", type: "text" },
     { id: "seat", label: "Seat", type: "text" }, { id: "cost", label: "Cost", type: "money" }, { id: "notes", label: "Notes", type: "longtext" }] },
-  { id: "transit", label: "Train, bus or car", add: "Train / bus", icon: "compass", tone: 5, shape: "route", width: "half", detail: "Any ride from A to B", titleLabel: "Label", titlePlaceholder: "Eurostar, the night bus…", fields: [
+  { id: "transit", label: "Transportation", add: "Ride", icon: "compass", tone: 5, shape: "route", width: "half", detail: "Any ride from A to B", titleLabel: "Label", titlePlaceholder: "Eurostar, the night bus…", fields: [
     { id: "from", label: "From", type: "text", placeholder: "London" }, { id: "fromPlace", label: "From detail", type: "text", placeholder: "Victoria Coach Station" },
     { id: "to", label: "To", type: "text", placeholder: "Cardiff" }, { id: "toPlace", label: "To detail", type: "text", placeholder: "Central Station" },
     { id: "date", label: "Date", type: "date" }, { id: "departs", label: "Departs", type: "time" }, { id: "arrives", label: "Arrives", type: "time" },
     { id: "carrier", label: "Carrier", type: "text", placeholder: "National Express" }, { id: "confirmation", label: "Confirmation", type: "text" },
     { id: "cost", label: "Cost", type: "money" }, { id: "notes", label: "Notes", type: "longtext" }] },
-  { id: "stay", label: "Stay", add: "Stay", icon: "key", tone: 4, shape: "stay", width: "half", detail: "Hotel, hostel, rental, a friend's sofa", titleLabel: "Name", titlePlaceholder: "The Z Hotel Bath", fields: [
+  { id: "stay", label: "Accommodation", add: "Stay", icon: "key", tone: 4, shape: "stay", width: "half", detail: "Hotel, hostel, rental, a friend's sofa", titleLabel: "Name", titlePlaceholder: "The Z Hotel Bath", fields: [
     { id: "address", label: "Address", type: "text" }, { id: "checkin", label: "Check-in", type: "date" }, { id: "checkout", label: "Check-out", type: "date" },
     { id: "confirmation", label: "Confirmation", type: "text" }, { id: "cost", label: "Cost", type: "money" }, { id: "link", label: "Link", type: "url" }, { id: "notes", label: "Notes", type: "longtext" }] },
   { id: "place", label: "Place", add: "Place", icon: "map-pin", tone: 1, shape: "place", width: "half", detail: "Somewhere to see, eat or wander", titleLabel: "Name", titlePlaceholder: "Sky Garden", fields: [
@@ -69,7 +95,7 @@ export const cardPresets: PresetDef[] = [
   { id: "measurement", label: "Measurement", add: "Measurement", icon: "columns", tone: 7, shape: "measure", width: "half", detail: "Room, wall or furniture sizes", titleLabel: "What", titlePlaceholder: "Living room window", fields: [
     { id: "width", label: "Width", type: "text", placeholder: "84 in" }, { id: "height", label: "Height", type: "text", placeholder: "60 in" },
     { id: "depth", label: "Depth", type: "text" }, { id: "notes", label: "Notes", type: "longtext" }] },
-  { id: "info", label: "Info card", add: "Info card", icon: "info", tone: 8, shape: "info", width: "half", detail: "Any labelled details you want at a glance", titleLabel: "Title", titlePlaceholder: "Wi-Fi & door codes", fields: [
+  { id: "info", label: "Custom card", add: "Card", icon: "info", tone: 8, shape: "info", width: "half", detail: "Build a card with your own fields and layout", titleLabel: "Title", titlePlaceholder: "Wi-Fi & door codes", fields: [
     { id: "detail", label: "Detail", type: "text" }, { id: "notes", label: "Notes", type: "longtext" }] },
 ];
 export const presetOf = (id: string | undefined) => cardPresets.find((p) => p.id === id) ?? cardPresets[cardPresets.length - 1];
@@ -102,9 +128,17 @@ export function normalizeData(kind: BlockKind, raw: unknown): BlockData {
     case "card": {
       const preset = presetOf(typeof d.preset === "string" ? d.preset : "info").id;
       const fields = Array.isArray(d.fields) ? (d.fields as CardField[]).filter((f) => f && typeof f.id === "string").slice(0, BLOCK_LIMITS.fields).map((f) => ({ id: f.id.slice(0, 40), label: str(f.label, BLOCK_LIMITS.fieldLabel) || "Detail",
-        type: (["text", "longtext", "date", "time", "number", "money", "url", "choice"].includes(f.type) ? f.type : "text") as CardFieldType, value: str(f.value, f.type === "longtext" ? BLOCK_LIMITS.longValue : BLOCK_LIMITS.fieldValue),
-        ...(Array.isArray(f.options) ? { options: f.options.filter((o) => typeof o === "string").slice(0, 12).map((o) => o.slice(0, 40)) } : {}) })) : newCard(preset).fields;
-      return { preset, title: str(d.title, BLOCK_LIMITS.title), fields, image: img(d.image) };
+        type: (cardFieldTypes.includes(f.type) ? f.type : "text") as CardFieldType, value: str(f.value, f.type === "longtext" ? BLOCK_LIMITS.longValue : BLOCK_LIMITS.fieldValue),
+        ...(Array.isArray(f.options) ? { options: f.options.filter((o) => typeof o === "string").slice(0, 12).map((o) => o.slice(0, 40)) } : {}),
+        ...(f.width === "half" || f.width === "full" ? { width: f.width } : {}) })) : newCard(preset).fields;
+      const ids = new Set(fields.map((f) => f.id)), t = d.template as CardData["template"];
+      return { preset, title: str(d.title, BLOCK_LIMITS.title), fields, image: img(d.image),
+        ...(validIcon(d.icon) ? { icon: d.icon as string } : {}),
+        ...(typeof d.aside === "string" && ids.has(d.aside) ? { aside: d.aside } : {}),
+        ...(validLook(d.look) ? { look: validLook(d.look)! } : {}),
+        ...(d.display === "row" || d.display === "collapsible" ? { display: d.display as CardDisplay } : {}),
+        ...(Array.isArray(d.preview) ? { preview: [...new Set((d.preview as unknown[]).filter((x): x is string => typeof x === "string" && ids.has(x)))].slice(0, PREVIEW_MAX) } : {}),
+        ...(t && typeof t.id === "string" ? { template: { id: t.id, name: str(t.name, 80) } } : {}) };
     }
   }
 }
@@ -184,4 +218,80 @@ export function docText(doc: JSONContent | undefined): string {
 export function imagesOfBlock(b: ListBlock): SpaceImage[] {
   const d = b.data as Partial<ImagesData & LinkData & CardData>;
   return b.kind === "images" ? d.images ?? [] : (b.kind === "link" || b.kind === "card") && d.image ? [d.image] : [];
+}
+
+/* ---------- Card looks ---------- */
+
+/** A Muse icon name, an emoji (up to a few characters), or "none". */
+export function validIcon(v: unknown): v is string {
+  return typeof v === "string" && ((cardIcons as readonly string[]).includes(v) || v === "none" || (v.length <= 16 && /\p{Extended_Pictographic}/u.test(v) && !/[<>"'`]/.test(v)));
+}
+const hex = (v: unknown): v is `#${string}` => typeof v === "string" && /^#[\da-f]{6}$/i.test(v);
+/** A paint from the shared picker: a theme accent or #hex, or a 2–3 stop gradient. Anything else is dropped. */
+export function validPaint(v: unknown): Paint | undefined {
+  const p = v as Paint; if (!p || typeof p !== "object") return undefined;
+  if (p.kind === "solid") return hex(p.color) || ["primary", "secondary", "pop", "warm", "info"].includes(p.color as string) ? { kind: "solid", color: p.color } : undefined;
+  if (p.kind === "gradient" && p.gradient && Array.isArray(p.gradient.colors)) {
+    const colors = p.gradient.colors.filter(hex).slice(0, 3);
+    return colors.length >= 2 ? { kind: "gradient", gradient: { colors: colors as [`#${string}`, `#${string}`, `#${string}`?], angle: Number.isFinite(p.gradient.angle) ? Math.round(p.gradient.angle) % 360 : 135 } } : undefined;
+  }
+  return undefined;
+}
+export function validLook(v: unknown): CardLook | undefined {
+  const l = v as CardLook; if (!l || typeof l !== "object") return undefined;
+  const out: CardLook = {};
+  if ((lookPresets as readonly string[]).includes(l.preset as string)) out.preset = l.preset;
+  const bg = validPaint(l.bg), border = validPaint(l.border), iconBg = validPaint(l.iconBg);
+  if (bg) out.bg = bg; if (border) out.border = border; if (iconBg) out.iconBg = iconBg;
+  if (Number.isFinite(l.strength)) out.strength = Math.max(8, Math.min(100, Math.round(l.strength!)));
+  if (l.placement === "left" || l.placement === "full" || l.placement === "none") out.placement = l.placement;
+  if (l.title === "editorial") out.title = "editorial";
+  return Object.keys(out).length ? out : undefined;
+}
+/**
+ * Appearance presets: visual starting points, every part changeable afterwards. They keep any colours already chosen
+ * and only fill in what's missing, so switching preset never throws away a colour you picked.
+ */
+export function applyLookPreset(preset: LookPreset, cur: CardLook = {}): CardLook {
+  const accent: Paint = cur.border ?? cur.bg ?? { kind: "solid", color: "primary" };
+  switch (preset) {
+    case "minimal": return { preset };
+    case "callout": return { preset, bg: cur.bg ?? accent, strength: cur.bg ? cur.strength ?? 22 : 22, border: cur.border ?? accent, placement: "left" };
+    case "outline": return { preset, border: cur.border ?? accent, placement: "full" };
+    case "gradient": return { preset, bg: cur.bg?.kind === "gradient" ? cur.bg : { kind: "gradient", gradient: { colors: ["#ff7eb3", "#ff9f5a"], angle: 135 } }, strength: 100, border: cur.border, placement: cur.border ? cur.placement ?? "full" : "none" };
+    case "editorial": return { preset, border: cur.border ?? accent, placement: "left", title: "editorial" };
+  }
+}
+
+/* ---------- Card templates and compact rows ---------- */
+
+/** A new, empty card from a saved template (its own snapshot of the fields; nothing personal comes along). */
+export function cardFromTemplate(t: CardTemplate): CardData {
+  return { preset: t.preset, title: "", fields: t.fields.map((f) => ({ ...f, value: "" })), ...(t.icon ? { icon: t.icon } : {}), ...(t.display !== "card" ? { display: t.display } : {}),
+    ...(t.preview.length ? { preview: t.preview } : {}), ...(t.aside ? { aside: t.aside } : {}), ...(t.look ? { look: structuredClone(t.look) } : {}), template: { id: t.id, name: t.name } };
+}
+/** A template from a card: its structure (preset, icon, field definitions and order, display), never its values or photo. */
+export function templateFields(card: CardData) {
+  return { preset: card.preset, icon: card.icon ?? null, fields: card.fields.map(({ id, label, type, options, width }) => ({ id, label, type, ...(options ? { options } : {}), ...(width ? { width } : {}) })),
+    display: card.display ?? "card", preview: card.preview ?? [], aside: card.aside ?? null, look: card.look ? structuredClone(card.look) : null };
+}
+export function templateFromRow(r: Record<string, unknown>): CardTemplate {
+  const card = normalizeData("card", { preset: r.preset, title: "", fields: Array.isArray(r.fields) ? (r.fields as object[]).map((f) => ({ ...f, value: "" })) : [], icon: r.icon ?? undefined,
+    display: (r.display as { mode?: string })?.mode, preview: (r.display as { preview?: string[] })?.preview, aside: (r.display as { aside?: string })?.aside, look: (r.display as { look?: unknown })?.look }) as CardData;
+  return { id: String(r.id), name: String(r.name ?? "Card"), preset: card.preset, icon: card.icon ?? null, fields: card.fields.map((f) => ({ id: f.id, label: f.label, type: f.type, ...(f.options ? { options: f.options } : {}), ...(f.width ? { width: f.width } : {}) })), display: card.display ?? "card", preview: card.preview ?? [], aside: card.aside ?? null, look: card.look ?? null,
+    position: Number(r.position ?? 0), createdAt: String(r.created_at ?? ""), updatedAt: String(r.updated_at ?? "") };
+}
+
+/** What a collapsed card or row shows: the chosen preview fields in order, or sensible ones for the card's shape. */
+export function previewFields(card: CardData): { id: string; label: string; field?: CardField; text?: string }[] {
+  const p = presetOf(card.preset), v = (id: string) => fieldValue(card, id), filled = (f: CardField) => !!f.value.trim();
+  if (card.preview?.length) return card.preview.map((id) => card.fields.find((f) => f.id === id)).filter((f): f is CardField => !!f && filled(f)).map((f) => ({ id: f.id, label: f.label, field: f }));
+  const pick = (...ids: string[]) => ids.map((id) => card.fields.find((f) => f.id === id)).filter((f): f is CardField => !!f && filled(f)).map((f) => ({ id: f.id, label: f.label, field: f }));
+  if (p.shape === "route") return [...(v("from") || v("to") ? [{ id: "route", label: "Route", text: `${v("from") || "?"} → ${v("to") || "?"}` }] : []), ...pick("date", "departs")];
+  if (p.shape === "stay") return pick("address", "checkin");
+  if (p.shape === "event") return pick("date", "time");
+  if (p.shape === "item") return pick("price", "status");
+  if (p.shape === "measure") return pick("width", "height");
+  if (p.shape === "place") return pick("when", "address");
+  return card.fields.filter((f) => f.type !== "longtext" && filled(f)).slice(0, 3).map((f) => ({ id: f.id, label: f.label, field: f }));
 }
