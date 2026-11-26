@@ -674,3 +674,6 @@ input.muse-space-block-title{all:revert;font:inherit;font-size:.8rem;min-height:
 .muse-space-live{display:grid;gap:4px;padding:8px;border-radius:14px;background:color-mix(in srgb,var(--foreground) 4%,transparent)}
 .muse-space-live>small{font-size:.62rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)}
 .muse-space-live .muse-space-card,.muse-space-live .muse-space-card-row{pointer-events:none}
+/* The sky dust on a space's header and sections breathes over a minute, and only a little (Muse's default is 7s). */
+:root:not([data-magic="quiet"]) .muse-space :is(.muse-list-hero,.muse-list-section):not(#\#)::before{animation:muse-space-sky-breathe 64s ease-in-out infinite}
+@keyframes muse-space-sky-breathe{0%,100%{opacity:.85}50%{opacity:.62}}

@@ -291,8 +291,8 @@
 .muse-list-art-glow-in{stop-color:var(--list-accent,var(--chart-1));stop-opacity:.55}
 .muse-list-art-glow-out{stop-color:var(--list-accent,var(--chart-1));stop-opacity:0}
 @media (prefers-reduced-motion:no-preference){:root:not([data-magic="quiet"]){
- & .muse-list-art-star[data-state="lit"] .muse-list-art-halo{animation:muse-journal-twinkle 3.6s ease-in-out infinite}
- & .muse-list-art-dust{animation:muse-journal-twinkle 4.2s ease-in-out infinite}
+ & .muse-list-art-star[data-state="lit"] .muse-list-art-halo{animation:muse-list-glimmer 44s ease-in-out infinite}
+ & .muse-list-art-dust{animation:muse-list-glimmer 60s ease-in-out infinite}
 }}
 @container muse-content (max-width:640px){
  .muse-list-icon .muse-emoji-trigger{width:52px;height:52px;border-radius:16px;font-size:1.8rem}
@@ -339,3 +339,7 @@
  .muse-list-hero .muse-list-title{font-size:clamp(1.7rem,7.5vw,2.2rem)!important}
 }
 .muse-list-collapsed-note{flex:none;font-size:.7rem;color:var(--text-muted);font-style:italic}
+
+/* Space header sky (Nov 26: "1,000,000 times slower, barely noticeable"): a soft glow that breathes over most of a
+   minute. Opacity only, no shrinking. */
+@keyframes muse-list-glimmer{0%,100%{opacity:1}50%{opacity:.72}}
