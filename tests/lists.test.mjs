@@ -54,8 +54,8 @@ test('templates and duplicates are independent copies without completion, histor
  assert.equal(c.items[0].completedAt,null);assert.equal(c.items[0].linkId,null);assert.equal(c.items[0].schedule.since,'2026-11-08');
  assert.equal(b.items[0].completedAt,'x','the source is untouched');
 });
-test('starters: blank plus Travel Essentials, Home Reset and Project Plan',()=>{
- assert.deepEqual(M.starters.map(s=>s.id),['blank','travel','home','project']);
+test('starters: the original four ids are kept, plus checklist, groceries, trip, makeover and gifts (Spaces)',()=>{
+ assert.deepEqual(M.starters.map(s=>s.id),['blank','checklist','grocery','travel','home','project','trip','makeover','gifts']);
  assert.equal(M.starters.find(s=>s.id==='blank').sections.length,0);
  assert.ok(M.starters.find(s=>s.id==='home').sections.every(s=>s.items.every(i=>typeof i!=='string'&&i.repeat)));
 });
@@ -79,9 +79,9 @@ test('database: owner-only tables, one completion and one skip per period, valid
  assert.match(sql,/check \(schedule is null or completed_at is null\)/);
  assert.match(read('app/api/account/export/route.ts'),/from\('list_item_events'\)/);
 });
-test('Mindspace: Sticky Board | Lists tabs, Checklists filter, hidden Notes view kept',()=>{
- const {mindspaceView}=load('lib/mindspace');assert.equal(mindspaceView(null),'constellations');assert.equal(mindspaceView('lists'),'lists');assert.equal(mindspaceView('notes'),'notes');
- const notes=read('components/notes/Notes.tsx');assert.match(notes,/label:"Sticky Board",href:"\/notes"/);assert.match(notes,/label:"Lists",href:"\/notes\?view=lists"/);assert.doesNotMatch(notes,/label:"Notes"/);
+test('Mindspace: Sticky Board | Spaces tabs (Lists renamed, same route), Checklists filter, hidden Notes view kept',()=>{
+ const {mindspaceView}=load('lib/mindspace');assert.equal(mindspaceView(null),'constellations');assert.equal(mindspaceView('lists'),'lists');assert.equal(mindspaceView('spaces'),'lists');assert.equal(mindspaceView('notes'),'notes');
+ const notes=read('components/notes/Notes.tsx');assert.match(notes,/label:"Sticky Board",href:"\/notes"/);assert.match(notes,/label:"Spaces",href:"\/notes\?view=lists"/);assert.doesNotMatch(notes,/label:"Notes"/);
  const board=read('components/notes/Constellations.tsx');assert.match(board,/>Checklists<\/button>/);assert.doesNotMatch(board,/>Lists<\/button>/);assert.match(board,/aria-label="Sticky Board"/);
 });
 test('opt-in summaries leave out linked items so nothing appears twice',()=>{

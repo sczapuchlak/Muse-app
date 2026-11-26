@@ -1670,6 +1670,32 @@ isOneToOne: false
       referencedColumns: ["user_id","id"]
     }
                   ]
+                },"list_blocks": {
+                  Row: {
+                    "created_at": string,"data": NonNullable<Json>,"id": string,"kind": string,"list_id": string,"position": number,"section_id": string | null,"updated_at": string,"user_id": string,"width": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"data"?: NonNullable<Json>,"id": string,"kind": string,"list_id": string,"position"?: number,"section_id"?: string | null,"updated_at"?: string,"user_id"?: string,"width"?: string
+                  }
+                  Update: {
+                    "created_at"?: string,"data"?: NonNullable<Json>,"id"?: string,"kind"?: string,"list_id"?: string,"position"?: number,"section_id"?: string | null,"updated_at"?: string,"user_id"?: string,"width"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "list_blocks_user_id_list_id_fkey"
+      columns: ["user_id","list_id"]
+isOneToOne: false
+      referencedRelation: "lists"
+      referencedColumns: ["user_id","id"]
+    },{
+      foreignKeyName: "list_blocks_user_id_section_id_fkey"
+      columns: ["user_id","section_id"]
+isOneToOne: false
+      referencedRelation: "list_sections"
+      referencedColumns: ["user_id","id"]
+    }
+                  ]
                 },"list_item_events": {
                   Row: {
                     "id": string,"item_id": string,"kind": string,"list_id": string,"moved_to": string | null,"occurred_on": string | null,"period_end": string,"period_start": string,"recorded_at": string,"source": string,"user_id": string
@@ -1698,14 +1724,14 @@ isOneToOne: false
                   ]
                 },"list_items": {
                   Row: {
-                    "completed_at": string | null,"completed_on": string | null,"created_at": string,"due_date": string | null,"field_values": NonNullable<Json>,"id": string,"link_id": string | null,"link_kind": string | null,"list_id": string,"notes": string | null,"position": number,"priority": string | null,"schedule": Json | null,"section_id": string | null,"title": string,"updated_at": string,"user_id": string
+                    "block_id": string | null,"completed_at": string | null,"completed_on": string | null,"created_at": string,"due_date": string | null,"field_values": NonNullable<Json>,"id": string,"link_id": string | null,"link_kind": string | null,"list_id": string,"notes": string | null,"position": number,"priority": string | null,"schedule": Json | null,"section_id": string | null,"title": string,"updated_at": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "completed_at"?: string | null,"completed_on"?: string | null,"created_at"?: string,"due_date"?: string | null,"field_values"?: NonNullable<Json>,"id": string,"link_id"?: string | null,"link_kind"?: string | null,"list_id": string,"notes"?: string | null,"position"?: number,"priority"?: string | null,"schedule"?: Json | null,"section_id"?: string | null,"title": string,"updated_at"?: string,"user_id"?: string
+                    "block_id"?: string | null,"completed_at"?: string | null,"completed_on"?: string | null,"created_at"?: string,"due_date"?: string | null,"field_values"?: NonNullable<Json>,"id": string,"link_id"?: string | null,"link_kind"?: string | null,"list_id": string,"notes"?: string | null,"position"?: number,"priority"?: string | null,"schedule"?: Json | null,"section_id"?: string | null,"title": string,"updated_at"?: string,"user_id"?: string
                   }
                   Update: {
-                    "completed_at"?: string | null,"completed_on"?: string | null,"created_at"?: string,"due_date"?: string | null,"field_values"?: NonNullable<Json>,"id"?: string,"link_id"?: string | null,"link_kind"?: string | null,"list_id"?: string,"notes"?: string | null,"position"?: number,"priority"?: string | null,"schedule"?: Json | null,"section_id"?: string | null,"title"?: string,"updated_at"?: string,"user_id"?: string
+                    "block_id"?: string | null,"completed_at"?: string | null,"completed_on"?: string | null,"created_at"?: string,"due_date"?: string | null,"field_values"?: NonNullable<Json>,"id"?: string,"link_id"?: string | null,"link_kind"?: string | null,"list_id"?: string,"notes"?: string | null,"position"?: number,"priority"?: string | null,"schedule"?: Json | null,"section_id"?: string | null,"title"?: string,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
                     {
@@ -1744,14 +1770,14 @@ isOneToOne: false
                   ]
                 },"lists": {
                   Row: {
-                    "accent": string,"archived_at": string | null,"aspiration_id": string | null,"created_at": string,"description": string | null,"end_date": string | null,"fields": NonNullable<Json>,"icon": string | null,"id": string,"is_template": boolean,"item_group": string,"item_sort": string,"pinned": boolean,"position": number,"preset": string,"section_columns": number,"show_in_agenda": boolean,"show_in_daily": boolean,"start_date": string | null,"table_view": boolean,"title": string,"updated_at": string,"user_id": string
+                    "accent": string,"archived_at": string | null,"aspiration_id": string | null,"cover": Json | null,"created_at": string,"description": string | null,"end_date": string | null,"fields": NonNullable<Json>,"icon": string | null,"id": string,"is_template": boolean,"item_group": string,"item_sort": string,"pinned": boolean,"position": number,"preset": string,"section_columns": number,"show_in_agenda": boolean,"show_in_daily": boolean,"start_date": string | null,"table_view": boolean,"title": string,"updated_at": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "accent"?: string,"archived_at"?: string | null,"aspiration_id"?: string | null,"created_at"?: string,"description"?: string | null,"end_date"?: string | null,"fields"?: NonNullable<Json>,"icon"?: string | null,"id": string,"is_template"?: boolean,"item_group"?: string,"item_sort"?: string,"pinned"?: boolean,"position"?: number,"preset"?: string,"section_columns"?: number,"show_in_agenda"?: boolean,"show_in_daily"?: boolean,"start_date"?: string | null,"table_view"?: boolean,"title": string,"updated_at"?: string,"user_id"?: string
+                    "accent"?: string,"archived_at"?: string | null,"aspiration_id"?: string | null,"cover"?: Json | null,"created_at"?: string,"description"?: string | null,"end_date"?: string | null,"fields"?: NonNullable<Json>,"icon"?: string | null,"id": string,"is_template"?: boolean,"item_group"?: string,"item_sort"?: string,"pinned"?: boolean,"position"?: number,"preset"?: string,"section_columns"?: number,"show_in_agenda"?: boolean,"show_in_daily"?: boolean,"start_date"?: string | null,"table_view"?: boolean,"title": string,"updated_at"?: string,"user_id"?: string
                   }
                   Update: {
-                    "accent"?: string,"archived_at"?: string | null,"aspiration_id"?: string | null,"created_at"?: string,"description"?: string | null,"end_date"?: string | null,"fields"?: NonNullable<Json>,"icon"?: string | null,"id"?: string,"is_template"?: boolean,"item_group"?: string,"item_sort"?: string,"pinned"?: boolean,"position"?: number,"preset"?: string,"section_columns"?: number,"show_in_agenda"?: boolean,"show_in_daily"?: boolean,"start_date"?: string | null,"table_view"?: boolean,"title"?: string,"updated_at"?: string,"user_id"?: string
+                    "accent"?: string,"archived_at"?: string | null,"aspiration_id"?: string | null,"cover"?: Json | null,"created_at"?: string,"description"?: string | null,"end_date"?: string | null,"fields"?: NonNullable<Json>,"icon"?: string | null,"id"?: string,"is_template"?: boolean,"item_group"?: string,"item_sort"?: string,"pinned"?: boolean,"position"?: number,"preset"?: string,"section_columns"?: number,"show_in_agenda"?: boolean,"show_in_daily"?: boolean,"start_date"?: string | null,"table_view"?: boolean,"title"?: string,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
                     

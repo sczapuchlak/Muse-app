@@ -1212,6 +1212,15 @@ In edit mode every section can be renamed, resized (full / wide / half / third o
 - **Fields:** up to 8 per list (text, number, date, select, url, checkbox); optional desktop table view.
 - **Data:** `lists`, `list_sections`, `list_items`, `list_item_events` (owner RLS; unique per item, period and kind). Included in Export your data.
 
+## Mindspace Spaces (Lists evolved) — implemented on `feat/spaces-v1`, Staging acceptance pending
+
+- **Files:** `lib/lists/blocks.ts` (kinds, card presets, safe links, layout, costs), `lib/lists/areas.ts` (which checklist each item shows in), `components/lists/SpaceBlocks.tsx` (block frame, ⋯ menu, heading, Add palette), `SpaceCards.tsx` (card reading shapes and editor), `SpaceNote.tsx` + `richMarks.ts` (notes), `SpaceMedia.tsx` (photos, lightbox, links), `SpaceHero.tsx` (section tiles, trip timeline, countdown, cover settings), `Spaces.css`. Store: `addBlock`, `updateBlock`, `deleteBlock`, `moveBlock`, `moveBlockBy`, `duplicateBlock`, `ensureChecklist`, `uploadSpaceImage`, `releaseImages` in `ListsStore.ts`.
+- **Library:** Spaces / Templates / Archived; search also matches notes, cards, links and items; cards show the cover photo, a countdown, "Trip" for spaces with rides or stays, and for trips the next dated cards.
+- **New space:** a gallery of nine starting points (gradient tiles, section preview); Checklist is the default and opens with the cursor in "Add an item".
+- **A space:** header (cover, icon, title, description, chips for dates + countdown, amounts noted and block counts, progress); section tiles; trip timeline; views Page / This week / Due / History (the last three when items repeat); Group by / Sort by / columns as before; sections with blocks and "+ Add" (plus up to two "Another flight"-style shortcuts).
+- **Cards read by shape:** route (big codes, dashed path, date and times with +1, carrier, perforation, then details), stay (check-in → nights as moons → check-out), place (photo, numbered pin, about, address), reservation (calendar tile, time, place), shopping/gift (price, status pill), measurement (a drawn rectangle with W/H/D), info (labelled details). Unused fields list as labelled details; notes last.
+- **Tests:** `scripts/test-spaces-ui.mjs` (52 checks), `tests/spaces.test.mjs`, existing `scripts/test-lists-glowup-ui.mjs` (21) and `tests/lists.test.mjs`.
+
 ## Envision & Planner Intentions (#117) — implemented on feature branch (local migration only)
 
 Rules: PRODUCT_RULES "Envision & Planner Intentions (#117)". Ownership and references: [Integration Map](INTEGRATION_MAP.md).
