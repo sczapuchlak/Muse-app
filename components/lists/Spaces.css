@@ -247,7 +247,8 @@ input.muse-space-block-title{all:revert;font:inherit;font-size:.8rem;min-height:
 .muse-space-pin[data-inline]{position:relative;left:auto;bottom:auto;flex:none;width:28px;height:28px}
 /* An empty card is an invitation, not a form. */
 .muse-space-card-ghost{all:unset;box-sizing:border-box;display:flex;align-items:center;gap:12px;width:100%;height:100%;min-height:74px;padding:12px 14px;border:1.5px dashed color-mix(in srgb,var(--list-accent,var(--accent-primary)) 35%,var(--glass-border));border-radius:16px;cursor:pointer;color:var(--text-muted);transition:border-color .18s,background .18s,color .18s}
-.muse-space-card-ghost>span{display:grid;flex:1;min-width:0}
+.muse-space-card-ghost>span:not(.muse-mark){display:grid;flex:1;min-width:0}
+.muse-space-card-ghost>:is(.muse-mark,.muse-space-emoji){flex:none}
 .muse-space-card-ghost strong{color:var(--foreground);font-size:.9rem}
 .muse-space-card-ghost small{font-size:.76rem}
 .muse-space-card-ghost:hover{border-style:solid;background:color-mix(in srgb,var(--list-accent,var(--accent-primary)) 7%,transparent);color:var(--foreground)}
@@ -674,6 +675,10 @@ input.muse-space-block-title{all:revert;font:inherit;font-size:.8rem;min-height:
 .muse-space-live{display:grid;gap:4px;padding:8px;border-radius:14px;background:color-mix(in srgb,var(--foreground) 4%,transparent)}
 .muse-space-live>small{font-size:.62rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)}
 .muse-space-live .muse-space-card,.muse-space-live .muse-space-card-row{pointer-events:none}
-/* The sky dust on a space's header and sections breathes over a minute, and only a little (Muse's default is 7s). */
-:root:not([data-magic="quiet"]) .muse-space :is(.muse-list-hero,.muse-list-section):not(#\#)::before{animation:muse-space-sky-breathe 64s ease-in-out infinite}
-@keyframes muse-space-sky-breathe{0%,100%{opacity:.85}50%{opacity:.62}}
+/* The sky dust on a space's header and sections breathes over 20s (Muse's default is 7s), with a visible fade. */
+:root:not([data-magic="quiet"]) .muse-space :is(.muse-list-hero,.muse-list-section):not(#\#)::before{animation:muse-space-sky-breathe 20s ease-in-out infinite}
+@keyframes muse-space-sky-breathe{0%,100%{opacity:.9}50%{opacity:.4}}
+/* A space's own colour (Nov 26): a custom colour or gradient runs through its progress bar and header glow. */
+.muse-space .muse-list-progress span,.muse-lists-card .muse-list-progress span{background:var(--list-gradient,linear-gradient(90deg,var(--list-accent,var(--accent-primary)),var(--accent-secondary)))}
+.muse-space[data-paint] .muse-list-hero:not(#\#){background-image:radial-gradient(70% 120% at 100% 0%,color-mix(in srgb,var(--list-accent-2,var(--list-accent,transparent)) 14%,transparent),transparent 60%)}
+.muse-list-settings .muse-paint-picker{margin:0}

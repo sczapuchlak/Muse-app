@@ -26,6 +26,8 @@ import { AddBlock, BlockShell, HeadingBlock, type AddChoice, type BlockDrag } fr
 import { SpaceNote } from "./SpaceNote";
 import { SpaceCard } from "./SpaceCards";
 import { ImagesBlock, LinkBlock, SpaceImg } from "./SpaceMedia";
+import { spaceVars } from "./cardLook";
+import { MusePaintPicker } from "../MusePaintPicker";
 import { CoverSettings, JourneyRibbon, SpaceNav, blockAnchor, countdown, sectionAnchor } from "./SpaceHero";
 import "./Spaces.css";
 
@@ -89,7 +91,7 @@ export function ListView({ listId, today, onBack, onOpen }: { listId: string; to
   });
   const ctx: RowCtx = { list, today, eventsOf, sections: b.sections, toggle, openDetail, order, manual, blocks: b.blocks, blocksReady: s.blocksReady, editing, setEditing, blockDrag };
   const unsorted = b.items.filter((i) => !i.sectionId || !b.sections.some((x) => x.id === i.sectionId));
-  const style = { "--list-accent": accentCss(list.accent) } as CSSProperties;
+  const style = spaceVars(list);
   // Sections reorder by dragging their handle (mouse or touch); the ⋯ menu keeps Move up / Move down as well (Nov 25).
   const cards = useRef(new Map<string, HTMLElement>()), origin = useRef({ x: 0, y: 0 });
   const [drag, setDrag] = useState<{ id: string; x: number; y: number; over: string | null } | null>(null), dragId = drag?.id ?? null;
@@ -105,7 +107,7 @@ export function ListView({ listId, today, onBack, onOpen }: { listId: string; to
   const costs = cardCosts(b.blocks), when = countdown(list, today), rootBlocks = b.blocks.filter((x) => !x.sectionId);
   const kinds = { cards: b.blocks.filter((x) => x.kind === "card").length, notes: b.blocks.filter((x) => x.kind === "note").length, photos: b.blocks.reduce((n, x) => n + (x.kind === "images" ? (x.data as ImagesData).images.length : 0), 0), links: b.blocks.filter((x) => x.kind === "link").length };
   const pageView = view === "all" && list.itemGroup === "section" && !(list.tableView && list.fields.length > 0);
-  return <section className="muse-list muse-space" style={style} aria-label={list.title}>
+  return <section className="muse-list muse-space" style={style} data-paint={list.paint ? "" : undefined} aria-label={list.title}>
     <button type="button" className="text-button muse-list-back" onClick={onBack}>← All spaces</button>
     <div className="muse-list-hero" data-cover={list.cover ? true : undefined}>
     {list.cover && <div className="muse-space-cover" style={{ "--focus": `${list.cover.focus}%` } as CSSProperties} aria-hidden="true"><SpaceImg image={list.cover.image} alt="" /></div>}
@@ -366,8 +368,11 @@ function ListSettings({ list, today, onBack, onOpen, onClose }: { list: MuseList
       <div className="muse-segmented muse-space-tiles-choice" role="group" aria-label="Section tiles at the top">
         {([[null, "Automatic"], [true, "Always"], [false, "Hidden"]] as const).map(([v, label]) => <button key={label} type="button" aria-pressed={list.sectionTiles === v} title={v === null ? "Shown once there are three or more sections" : undefined} onClick={() => void updateList(list.id, { sectionTiles: v })}>{label}</button>)}
       </div></>}
-    <p className="editor-label">Colour</p>
-    <div className="muse-list-swatches" role="group" aria-label="Space colour">{listAccents.map((a) => <button key={a} type="button" aria-pressed={list.accent === a} aria-label={a} style={{ background: accentCss(a) }} onClick={() => void updateList(list.id, { accent: a })} />)}</div>
+    {/* Any colour or gradient (Muse's shared paint picker). A theme accent keeps using the original accent setting. */}
+    {list.paint !== undefined ? <MusePaintPicker label="Colour" value={list.paint ?? { kind: "solid", color: list.accent }}
+      onChange={(p) => void updateList(list.id, !p || (p.kind === "solid" && (listAccents as readonly string[]).includes(p.color)) ? { paint: null, ...(p?.kind === "solid" ? { accent: p.color as MuseList["accent"] } : {}) } : { paint: p })} />
+      : <><p className="editor-label">Colour</p>
+        <div className="muse-list-swatches" role="group" aria-label="Space colour">{listAccents.map((a) => <button key={a} type="button" aria-pressed={list.accent === a} aria-label={a} style={{ background: accentCss(a) }} onClick={() => void updateList(list.id, { accent: a })} />)}</div></>}
     <div className="muse-list-dates"><label>Starts<input type="date" value={list.startDate ?? ""} onChange={(e) => void updateList(list.id, { startDate: e.target.value || null })} /></label>
       <label>Ends<input type="date" value={list.endDate ?? ""} min={list.startDate ?? undefined} onChange={(e) => void updateList(list.id, { endDate: e.target.value || null })} /></label></div>
     <p className="editor-label">Fields</p>

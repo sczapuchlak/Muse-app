@@ -106,6 +106,19 @@ try{
  check(JSON.stringify(inst.data.look)===JSON.stringify(vd.look)&&inst.data.fields.every(x=>!x.value)&&inst.data.aside==='date','a card from the template arrives with the same look and layout, values empty');
  inst.data.look={...inst.data.look,bg:solid('#e85d75')};await client.from('list_blocks').update({data:inst.data}).eq('id',inst.id);
  check(JSON.stringify((await client.from('list_card_templates').select('display').eq('id',tpl.id).single()).data.display.look)===JSON.stringify(vd.look),'restyling that card leaves the template as it was');
+ // ---- A space's own colour: any colour or a gradient ----
+ await go(`/notes?view=lists&list=${H}`,'!!document.querySelector("[aria-label=\\"Space settings\\"]")','apartment');await wait(900);
+ const plainBar=await evaluate(()=>getComputedStyle(document.querySelector('.muse-list')).getPropertyValue('--list-gradient'));
+ check(!plainBar.trim(),'a space without a custom colour keeps its theme accent as before');
+ await click('[aria-label="Space settings"]','');await until(()=>!!document.querySelector('.muse-list-settings .muse-paint-picker'),'settings paint');
+ await evaluate(()=>{const fs=[...document.querySelectorAll('.muse-list-settings fieldset')].find(x=>x.querySelector('legend')?.textContent==='Colour');[...fs.querySelectorAll('button')].find(b=>b.textContent==='Gradient').click();});await wait(300);
+ await evaluate(()=>{const fs=[...document.querySelectorAll('.muse-list-settings fieldset')].find(x=>x.querySelector('legend')?.textContent==='Colour');fs.querySelectorAll('.muse-paint-gradient')[2].click();});await wait(900);
+ const painted=(await client.from('lists').select('paint,accent').eq('id',H).single()).data;
+ check(painted.paint?.kind==='gradient'&&painted.paint.gradient.colors.length>=2,'Space settings saves a gradient as the space’s colour');
+ check(await evaluate(()=>/linear-gradient/.test(getComputedStyle(document.querySelector('.muse-list')).getPropertyValue('--list-gradient'))&&document.querySelector('.muse-list').hasAttribute('data-paint')),'and the space wears it');
+ await shoot('looks-space-gradient');
+ await evaluate(()=>{const fs=[...document.querySelectorAll('.muse-list-settings fieldset')].find(x=>x.querySelector('legend')?.textContent==='Colour');[...fs.querySelectorAll('button')].find(b=>b.textContent==='Solid').click();});await wait(900);
+ check((await client.from('lists').select('paint').eq('id',H).single()).data.paint===null,'picking a theme colour again clears the custom paint (the original accent is used)');
  // ---- Dark theme: contrast still follows each background; phone layout ----
  await go(`/notes?view=lists&list=${T}`,'document.querySelectorAll(".muse-space-card-row").length>=2','monday dark');await wait(800);
  await evaluate(()=>{document.documentElement.dataset.theme='northern-lights-out';});await wait(500);

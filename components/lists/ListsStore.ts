@@ -29,7 +29,7 @@ const eventFromRow = (r: Record<string, unknown>): ListEvent => ({ id: String(r.
   recordedAt: String(r.recorded_at), source: (r.source as ListEvent["source"]) ?? "list" });
 const listRow = (l: MuseList) => ({ id: l.id, title: l.title.trim(), description: l.description, icon: l.icon, accent: l.accent, preset: l.preset, is_template: l.isTemplate, pinned: l.pinned,
   archived_at: l.archivedAt, start_date: l.startDate, end_date: l.endDate, fields: l.fields, table_view: l.tableView, section_columns: l.columns, item_group: l.itemGroup, item_sort: l.itemSort, show_in_daily: l.showInDaily, show_in_agenda: l.showInAgenda,
-  aspiration_id: l.aspirationId, position: l.position, ...(l.cover !== undefined ? { cover: l.cover } : {}), ...(l.sectionTiles !== undefined ? { section_tiles: l.sectionTiles } : {}) });
+  aspiration_id: l.aspirationId, position: l.position, ...(l.cover !== undefined ? { cover: l.cover } : {}), ...(l.sectionTiles !== undefined ? { section_tiles: l.sectionTiles } : {}), ...(l.paint !== undefined ? { paint: l.paint as unknown as Json } : {}) });
 /** `description` is sent only when set, so a database without the Nov 25 column still saves every other section. */
 const sectionRow = (s: ListSection) => ({ id: s.id, list_id: s.listId, title: s.title.trim(), ...(s.description !== undefined ? { description: s.description?.trim() || null } : {}), icon: s.icon, accent: s.accent, position: s.position, collapsed: s.collapsed });
 const itemRow = (i: ListItem) => ({ id: i.id, list_id: i.listId, section_id: i.sectionId, title: i.title.trim(), notes: i.notes, position: i.position, priority: i.priority, due_date: i.dueDate,

@@ -43,3 +43,14 @@ export function lookAttrs(card: CardData): { [k: `data-${string}`]: string | und
     style,
   };
 }
+
+/**
+ * A space's colour as CSS variables: `--list-accent` (a single colour for checkboxes, rings and tints: a gradient's
+ * first stop) and `--list-gradient` (the progress bar, the header glow), from its custom paint or its theme accent.
+ */
+export function spaceVars(list: { accent: AccentColor; paint?: Paint | null }): CSSProperties {
+  const p = list.paint;
+  if (!p) return { "--list-accent": accentCss(list.accent) } as CSSProperties;
+  if (p.kind === "solid") return { "--list-accent": accentCss(p.color), "--list-gradient": `linear-gradient(90deg, ${accentCss(p.color)}, ${accentCss(p.color)})` } as CSSProperties;
+  return { "--list-accent": p.gradient.colors[0], "--list-accent-2": p.gradient.colors[1], "--list-gradient": customGradientCss({ ...p.gradient, angle: 90 }) } as CSSProperties;
+}

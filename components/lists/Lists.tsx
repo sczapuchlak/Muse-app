@@ -6,10 +6,10 @@ import { todayInTimeZone } from "@/lib/dates";
 import { progress, starters, type MuseList } from "@/lib/lists/model";
 import { dayLabel, docText, fieldValue, presetOf, siteName, type CardData, type ImagesData, type LinkData, type ListBlock, type NoteData } from "@/lib/lists/blocks";
 import { countdown } from "./SpaceHero";
+import { spaceVars } from "./cardLook";
 import { SpaceImg } from "./SpaceMedia";
 import type { MuseMarkIcon } from "@/components/design/MuseHeading";
 import { scheduleState } from "@/lib/lists/schedule";
-import { accentCss } from "@/lib/appearance-values";
 import { useDailyData } from "../daily/DailyData";
 import { usePlanner } from "../PlannerStore";
 import { GlassPopover } from "../GlassPopover";
@@ -177,7 +177,7 @@ type CardStat = { done: number; total: number; pct: number; due: number; section
 function ListCard({ list, stat, today, onOpen }: { list: MuseList; stat: CardStat; today: string; onOpen: () => void }) {
   const when = countdown(list, today);
   const [menu, setMenu] = useState(false), [confirm, setConfirm] = useState<HTMLElement | null>(null), anchor = useRef<HTMLButtonElement>(null);
-  const style = { "--list-accent": accentCss(list.accent) } as CSSProperties;
+  const style = spaceVars(list);
   const act = async (fn: () => Promise<unknown>) => { setMenu(false); await fn(); };
   return <li className="muse-lists-card" style={style}>
     <button type="button" className="muse-lists-card-open" onClick={onOpen} aria-label={`Open ${list.title}`}>

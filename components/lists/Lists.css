@@ -291,8 +291,8 @@
 .muse-list-art-glow-in{stop-color:var(--list-accent,var(--chart-1));stop-opacity:.55}
 .muse-list-art-glow-out{stop-color:var(--list-accent,var(--chart-1));stop-opacity:0}
 @media (prefers-reduced-motion:no-preference){:root:not([data-magic="quiet"]){
- & .muse-list-art-star[data-state="lit"] .muse-list-art-halo{animation:muse-list-glimmer 44s ease-in-out infinite}
- & .muse-list-art-dust{animation:muse-list-glimmer 60s ease-in-out infinite}
+ & .muse-list-art-star[data-state="lit"] .muse-list-art-halo{animation:muse-list-glow 9s ease-in-out infinite;animation-delay:inherit;transform-box:fill-box;transform-origin:center}
+ & .muse-list-art-dust{animation:muse-list-sparkle 12s linear infinite;transform-box:fill-box;transform-origin:center}
 }}
 @container muse-content (max-width:640px){
  .muse-list-icon .muse-emoji-trigger{width:52px;height:52px;border-radius:16px;font-size:1.8rem}
@@ -340,6 +340,9 @@
 }
 .muse-list-collapsed-note{flex:none;font-size:.7rem;color:var(--text-muted);font-style:italic}
 
-/* Space header sky (Nov 26: "1,000,000 times slower, barely noticeable"): a soft glow that breathes over most of a
-   minute. Opacity only, no shrinking. */
-@keyframes muse-list-glimmer{0%,100%{opacity:1}50%{opacity:.72}}
+/* Space header sky (Nov 26, third pass): dots rest and sparkle briefly every 12s, each at its own moment (a slow
+   fade alone read as still dots); lit stars' glow breathes over 9s. */
+/* Each dot rests, then sparkles briefly (a quick brighten and fade), at its own moment. */
+@keyframes muse-list-sparkle{0%,80%,100%{opacity:.5;transform:scale(1)}86%{opacity:1;transform:scale(1.9)}92%{opacity:.2;transform:scale(.7)}}
+/* Lit stars' glow swells and settles. */
+@keyframes muse-list-glow{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(.82)}}
