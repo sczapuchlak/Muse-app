@@ -126,3 +126,17 @@
  .muse-plans .muse-plan-body{grid-template-columns:minmax(0,1fr)}
  .muse-plans .muse-plan-body>.muse-plan-meta{grid-column:1;grid-row:3;justify-content:flex-start}
 }
+
+/* Dashboard plan: never taller than three rows (Nov 25), so "Your last 30 days" beside it keeps its size. Books run down
+   three rows, then into a second column; more than six page. Numbers, status, stars, drag and menus are unchanged. */
+.muse-plans[data-variant="dashboard"] .muse-plan-list{grid-template-columns:minmax(0,1fr);grid-template-rows:repeat(var(--plan-rows,3),auto);grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:6px 10px}
+.muse-plans[data-variant="dashboard"] .muse-plan-list:has(> :nth-child(4)) .muse-plan-card{min-height:64px}
+.muse-plans[data-variant="dashboard"] .muse-plan-list:has(> :nth-child(4)) .muse-plan-card :is(h4,.muse-plan-title){white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* Two columns: the status chip becomes its coloured icon (name on hover and for screen readers), stars step aside, and the
+   title gets the room. */
+.muse-plans[data-variant="dashboard"] .muse-plan-list:has(> :nth-child(4)) .muse-plan-card{grid-template-columns:30px 14px 38px minmax(0,1fr) auto;gap:8px;padding-inline:6px}
+.muse-plans[data-variant="dashboard"] .muse-plan-list:has(> :nth-child(4)) .muse-plan-status{padding:2px}
+.muse-plans[data-variant="dashboard"] .muse-plan-list:has(> :nth-child(4)) .muse-plan-status>span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.muse-plans[data-variant="dashboard"] .muse-plan-list:has(> :nth-child(4)) .muse-plan-meta{gap:6px}
+.muse-plans[data-variant="dashboard"] .muse-plan-list:has(> :nth-child(4)) .muse-plan-stars{display:none}
+@container muse-content (max-width:900px){.muse-plans[data-variant="dashboard"] .muse-plan-list{grid-template-rows:none;grid-auto-flow:row}}
