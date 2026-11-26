@@ -75,6 +75,12 @@ try{
  await click('.muse-lists-new','');await until(()=>!!document.querySelector('.muse-space-starts'),'new space');
  check(await evaluate(()=>document.querySelectorAll('.muse-space-start').length>=9),'the gallery offers all nine starting points');
  check(await evaluate(()=>document.querySelector('.muse-space-start[data-selected]')?.textContent.includes('Checklist')),'Checklist is picked by default');
+ check(await evaluate(()=>!document.querySelector('.muse-lists .muse-journal-stats')),'the library header has no Spaces / Checked off / Due now bubbles');
+ check(await evaluate(()=>!!document.querySelector('.muse-lists-scope-row .muse-lists-new')&&!document.querySelector('.muse-lists-hero .muse-lists-new')),'New space sits across from the scope tags, not in the header');
+ check(await evaluate(()=>{const b=document.querySelector('.muse-lists-new');return b.scrollHeight<=b.clientHeight+1&&b.getBoundingClientRect().height<=48&&getComputedStyle(b).whiteSpace==='nowrap';}),'New space is one comfortable line, never squeezed');
+ check(await evaluate(()=>{const r=document.querySelector('dialog#lists-new').getBoundingClientRect();return r.top>=0&&r.bottom<=innerHeight&&r.left>=0&&r.right<=innerWidth;}),'the New space dialog sits fully on screen');
+ check(await evaluate(()=>{const rows=new Map();for(const t of document.querySelectorAll('.muse-space-start')){const r=t.getBoundingClientRect(),h=t.querySelector('strong').getBoundingClientRect();const k=Math.round(r.top);rows.set(k,[...(rows.get(k)??[]),Math.round(h.top-r.top)]);}return [...rows.values()].every(v=>Math.max(...v)-Math.min(...v)<=1);}),'every template title sits on the same line as its neighbours');
+ check(await evaluate(()=>{const i=document.querySelector('#list-new-title');i.blur();const c=getComputedStyle(i);return parseFloat(c.borderTopWidth)>=1&&c.borderTopStyle!=='none'&&c.backgroundColor!=='rgba(0, 0, 0, 0)';}),'the name field looks like a text box even when not focused');
  await shoot('spaces-new');
  await type('#list-new-title','Pharmacy');await evaluate(()=>document.querySelector('.muse-lists-new-form').requestSubmit());
  await until(()=>!!document.activeElement?.closest?.('.muse-list-quickadd'),'focus lands in add');
@@ -135,6 +141,12 @@ try{
  // Section tile jumps down the same page.
  await click('.muse-space-nav button','Packing');await wait(900);
  check(await evaluate(()=>{const s=[...document.querySelectorAll('.muse-list-section')].find(x=>x.textContent.includes('Passport'));const t=s.getBoundingClientRect().top,atEnd=scrollY+innerHeight>=document.documentElement.scrollHeight-2;return scrollY>200&&((t>-10&&t<260)||(atEnd&&t<innerHeight-100));}),'a section tile scrolls to that section on the same page');
+ await evaluate(()=>window.scrollTo(0,0));await click('.muse-space-nav-hide','');await wait(900);
+ check(await evaluate(()=>!document.querySelector('.muse-space-nav'))&&(await client.from('lists').select('section_tiles').eq('id',trip.id).single()).data.section_tiles===false,'the section tiles can be hidden for this space (saved)');
+ await click('[aria-label="Space settings"]','');await until(()=>!!document.querySelector('.muse-space-tiles-choice'),'tiles choice');
+ await click('.muse-space-tiles-choice button','Automatic');await wait(900);
+ check(await evaluate(()=>!!document.querySelector('.muse-space-nav'))&&(await client.from('lists').select('section_tiles').eq('id',trip.id).single()).data.section_tiles===null,'Space settings brings them back (Automatic)');
+ await evaluate(()=>document.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true})));await evaluate(()=>document.querySelector('[aria-label="Space settings"]').click());await wait(400);
 
  // ---- Links: only web addresses ----
  const placesLink=(await blocksOf(trip.id)).find(b=>b.kind==='link');

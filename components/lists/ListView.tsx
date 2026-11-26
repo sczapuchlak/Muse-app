@@ -127,7 +127,7 @@ export function ListView({ listId, today, onBack, onOpen }: { listId: string; to
     {!list.cover && <div className="muse-list-artwrap"><ListHeroArt seed={list.id} stars={b.sections.length ? b.sections.map((sec) => { const its = b.items.filter((i) => i.sectionId === sec.id), p = progress(its, its.flatMap((i) => eventsOf.get(i.id) ?? []), today); return { label: sec.title, done: p.done, total: p.total }; })
       : (b.items.length ? b.items.slice(0, 10) : Array.from({ length: 5 }, () => null)).map((it, i) => it ? { label: it.title, done: isDone(it, eventsOf.get(it.id) ?? [], today) ? 1 : 0, total: 1 } : { label: `Star ${i + 1}`, done: 0, total: 0 })} /></div>}
     </div>
-    {pageView && b.sections.length >= 3 && <SpaceNav sections={b.sections} blocks={b.blocks} items={b.items} />}
+    {pageView && b.sections.length > 0 && (list.sectionTiles ?? b.sections.length >= 3) && <SpaceNav sections={b.sections} blocks={b.blocks} items={b.items} onHide={list.sectionTiles !== undefined ? () => void updateList(list.id, { sectionTiles: false }) : undefined} />}
     {pageView && <JourneyRibbon list={list} blocks={b.blocks} />}
     <div className="muse-list-viewbar">
       {scheduled ? <div className="muse-chip-row muse-list-views" role="group" aria-label="List view">
@@ -348,6 +348,10 @@ function ListSettings({ list, today, onBack, onOpen, onClose }: { list: MuseList
   };
   return <div className="muse-list-settings">
     <CoverSettings list={list} />
+    {list.sectionTiles !== undefined && <><p className="editor-label">Section tiles at the top</p>
+      <div className="muse-segmented muse-space-tiles-choice" role="group" aria-label="Section tiles at the top">
+        {([[null, "Automatic"], [true, "Always"], [false, "Hidden"]] as const).map(([v, label]) => <button key={label} type="button" aria-pressed={list.sectionTiles === v} title={v === null ? "Shown once there are three or more sections" : undefined} onClick={() => void updateList(list.id, { sectionTiles: v })}>{label}</button>)}
+      </div></>}
     <p className="editor-label">Colour</p>
     <div className="muse-list-swatches" role="group" aria-label="Space colour">{listAccents.map((a) => <button key={a} type="button" aria-pressed={list.accent === a} aria-label={a} style={{ background: accentCss(a) }} onClick={() => void updateList(list.id, { accent: a })} />)}</div>
     <div className="muse-list-dates"><label>Starts<input type="date" value={list.startDate ?? ""} onChange={(e) => void updateList(list.id, { startDate: e.target.value || null })} /></label>
