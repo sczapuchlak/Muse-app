@@ -111,7 +111,7 @@ Envision remains the owner of aspirations and their journey; Planner → Reflect
 | Manual steps | Wellness → Movement | `step_days`, `step_settings` | Insights read it; separate from planned movement and completed activities; per-day goal snapshot | owner + local date; `source=manual` |
 | Ritual (habit) | Rituals | `rituals`, `ritual_entries`, `ritual_groups` | Aspirations, Intentions, Daily Edit, Wellness, Insights | id; Intentions keeps a name snapshot |
 | Daily intention | Daily Edit | `daily_records` | Insights | separate from Intentions; never overwritten by them |
-| Lists | Mindspace → Lists | `lists`, `list_*` | Planner (linked tasks), Aspirations | id |
+| Lists | Mindspace → Lists | `lists`, `list_*` (sections carry an optional icon, accent and description) | Planner (linked tasks), Aspirations | id |
 | Insights | Insights | none (derived) | none | reads other modules; stores nothing |
 | Book and reading journal (#135) | Collections → Books | `whimsy_books`, `book_journal_entries` | Reading Desk, Series, Daily Edit, Reading Atlas, Insights | book id; journal keeps a title snapshot and optional read/session references; session deletion retains writing |
 | Book import provenance (#133) | Collections → Books Settings | `book_import_batches`, `book_import_sources`, `book_import_observations`, `book_import_collection_links` | Import review/refresh, Library export; future Book Detail history presentation | canonical book id + stable source id; immutable normalized source/opinion/title snapshots; optional existing completion id; source shelf references the same canonical My Collection even after renaming |

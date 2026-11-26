@@ -560,5 +560,8 @@ button.muse-future-mini-day:is([data-col="5"],[data-col="6"]) .muse-future-mini-
    animations) and every hover faded small controls in, so Safari kept promoting and dropping layers and flashed the
    whole screen. In week view the stars hold still and hover reveals are instant. Everywhere else is unchanged. */
 .muse-agenda-week>.muse-agenda-day::before,.muse-agenda-week>.muse-agenda-day::after{animation:none!important}
+/* Safari, part three (Nov 25): the still starfield no longer fades through a mask either (the ring is now the column's
+   border; see app/surfaces.css), so a week holds no masked layers. */
+.muse-agenda-week>.muse-agenda-day::before{-webkit-mask-image:none!important;mask-image:none!important}
 .muse-agenda-week :is(.muse-agenda-task-more,.muse-agenda-mark-add,.muse-agenda-section-mark,.muse-agenda-item-remove,.muse-list-more),
 .muse-agenda-week .muse-agenda-resize::after{transition:none!important}

@@ -240,13 +240,6 @@
 .muse-list-hero>.muse-list-progress{grid-column:1/-1;grid-row:2}
 .muse-list-hero .muse-list-title{font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-display-weight);font-size:clamp(2rem,4vw,2.9rem)!important;line-height:1.05}
 .muse-list-hero .muse-list-head>:first-child{font-size:2rem;min-width:64px;min-height:64px;border-radius:18px;background:color-mix(in srgb,var(--list-accent,var(--chart-1)) 18%,var(--surface-subtle));box-shadow:0 0 0 1px color-mix(in srgb,var(--list-accent,var(--chart-1)) 40%,transparent),0 10px 24px -14px var(--list-accent,var(--chart-1))}
-.muse-list-ring{position:relative;grid-column:2;grid-row:1;display:grid;place-items:center;width:104px;height:104px;border-radius:50%;
- background:radial-gradient(closest-side,var(--glass-background) 78%,transparent 80% 100%),conic-gradient(var(--list-accent,var(--chart-1)) calc(var(--pct,0) * 1%),color-mix(in srgb,var(--foreground) 10%,transparent) 0);filter:drop-shadow(0 0 14px color-mix(in srgb,var(--list-accent,var(--chart-1)) 40%,transparent))}
-.muse-list-ring b{font:500 1.7rem/1 var(--font-editorial)}
-.muse-list-ring small{font-size:.55em;color:var(--text-muted)}
-.muse-list-ring i{position:absolute;top:6px;right:8px;width:14px;height:14px;background:color-mix(in srgb,var(--list-accent,var(--chart-1)) 55%,#fff);-webkit-mask:var(--sky-star) center/contain no-repeat;mask:var(--sky-star) center/contain no-repeat;filter:drop-shadow(0 0 6px var(--list-accent,var(--chart-1)))}
-@media (prefers-reduced-motion:no-preference){:root:not([data-magic="quiet"]) .muse-list-ring i{animation:muse-journal-twinkle 3.2s ease-in-out infinite}}
-@container muse-content (max-width:640px){.muse-list-ring{width:76px;height:76px}.muse-list-ring b{font-size:1.25rem}.muse-list-hero .muse-list-head>:first-child{min-width:48px;min-height:48px;font-size:1.5rem}}
 /* Compact hero (Nov 15): the clipboard becomes a miniature with two rows. */
 .muse-lists-hero[data-compact] .muse-lists-hero-art{min-height:0;height:74px;margin:0;place-items:center end}
 .muse-lists-hero[data-compact] .muse-lists-clipboard{width:150px;min-height:0;height:66px;gap:3px;padding:13px 10px 6px;border-radius:9px;overflow:hidden;transform:rotate(2deg);box-shadow:inset 0 0 0 3px var(--glass-background),inset 0 0 0 4px color-mix(in srgb,var(--journal-a) 25%,transparent),0 14px 22px -16px rgba(0,0,0,.7),0 0 20px -12px var(--journal-a)}
@@ -258,3 +251,91 @@
 .muse-lists-hero[data-compact] .muse-lists-clip-row:nth-of-type(n+3):not([data-done]){display:none}
 .muse-lists-hero[data-compact] .muse-lists-clip-row[data-done]>b::after{font-size:7px}
 @container muse-content (max-width:640px){.muse-lists-hero[data-compact] .muse-lists-hero-art{min-height:0;height:64px;margin:0}.muse-lists-hero[data-compact] .muse-lists-clipboard{width:106px;height:58px}}
+
+/* ---- List page glow-up (Nov 25) --------------------------------------------------------------------------------
+   Hero: the icon fills its tile (clearing it is a small corner badge), a drawn notepad in the list's colour on the
+   right that ticks off as the list does, the progress ring tucked onto it, settings in the corner. Sections: drag
+   handle, optional icon and one-line description, a count pill, and one ⋯ menu instead of arrows and a bin on every card. */
+/* Compact band: the hero is about half the old height; the icon fills a 60px tile and the title is a size down. */
+.muse-list-hero{grid-template-columns:minmax(0,1fr) minmax(200px,46%);gap:10px 20px;min-height:0;padding:14px 22px 14px 16px;overflow:hidden}
+.muse-list-hero .muse-list-title{font-size:clamp(1.55rem,2.6vw,2.05rem)!important}
+.muse-list-hero>.muse-list-head{grid-template-columns:auto minmax(0,1fr);gap:14px}
+.muse-list-hero .muse-list-titles{gap:1px}
+.muse-list-hero .muse-list-desc{font-size:.9rem}
+.muse-list-hero .muse-list-head>.muse-lists-icon{position:absolute;top:10px;right:10px;z-index:3;min-height:32px;min-width:32px;width:32px;height:32px;padding:0}
+.muse-list-hero .muse-list-head>.muse-list-icon{min-width:0;min-height:0;border-radius:0;background:none;box-shadow:none;font-size:inherit}
+.muse-list-hero>.muse-list-progress{margin-top:2px;height:4px}
+.muse-list-icon{position:relative;flex:none}
+.muse-list-icon .muse-emoji-button-group{position:relative;display:block}
+.muse-list-icon .muse-emoji-trigger{width:62px;height:62px;padding:0;border-radius:19px;font-size:2.1rem;line-height:1;
+ border:1px solid color-mix(in srgb,var(--list-accent,var(--chart-1)) 45%,transparent);
+ background:radial-gradient(70% 60% at 30% 22%,rgba(255,255,255,.42),transparent 70%),linear-gradient(150deg,color-mix(in srgb,var(--list-accent,var(--chart-1)) 34%,var(--glass-background)),color-mix(in srgb,var(--list-accent,var(--chart-1)) 12%,var(--glass-background)));
+ box-shadow:0 12px 26px -14px var(--list-accent,var(--chart-1)),inset 0 1px 0 rgba(255,255,255,.45)}
+.muse-list-icon .muse-emoji-trigger :is(.muse-emoji-glyph,img){font-size:2.1rem;line-height:1;width:auto;height:auto;max-width:42px;max-height:42px}
+.muse-list-icon[data-empty] .muse-emoji-trigger{color:var(--list-accent,var(--chart-1))}
+.muse-list-icon .muse-emoji-clear{position:absolute;top:-6px;right:-6px;z-index:2;display:grid;place-items:center;width:20px;height:20px;min-width:0;min-height:0;padding:0;border-radius:50%;
+ border:1px solid var(--glass-border);background:var(--floating-background,var(--glass-background));box-shadow:0 3px 10px rgba(0,0,0,.18);color:var(--text-muted);font-size:.85rem;line-height:1;opacity:0;transition:opacity .15s ease}
+.muse-list-icon:is(:hover,:focus-within) .muse-emoji-clear{opacity:1}
+@media (hover:none){.muse-list-icon .muse-emoji-clear{opacity:1}}
+.muse-list-meta{margin-top:2px}
+/* The list's constellation: one star per section, lit when the section is done, half lit while under way. */
+.muse-list-artwrap{position:relative;grid-column:2;grid-row:1;align-self:stretch;display:grid;align-items:center;min-width:0;margin:-6px 30px -6px 0;
+ background:radial-gradient(60% 80% at 55% 50%,color-mix(in srgb,var(--list-accent,var(--chart-1)) 16%,transparent),transparent 72%)}
+.muse-list-art{display:block;width:100%;height:auto;max-height:110px;overflow:visible}
+.muse-list-art-dust{fill:color-mix(in srgb,var(--list-accent,var(--chart-1)) 45%,var(--foreground))}
+.muse-list-art-thread{stroke:color-mix(in srgb,var(--list-accent,var(--chart-1)) 40%,transparent);stroke-width:1;stroke-dasharray:2 3}
+.muse-list-art-thread[data-lit]{stroke:var(--list-accent,var(--chart-1));stroke-dasharray:none;stroke-width:1.3}
+.muse-list-art-star path{fill:none;stroke:color-mix(in srgb,var(--list-accent,var(--chart-1)) 60%,var(--foreground));stroke-width:1.5;stroke-linejoin:round;fill:color-mix(in srgb,var(--glass-background) 70%,transparent)}
+.muse-list-art-star[data-state="half"] path{fill:color-mix(in srgb,var(--list-accent,var(--chart-1)) 45%,transparent);stroke:var(--list-accent,var(--chart-1))}
+.muse-list-art-star[data-state="lit"] path{fill:var(--list-accent,var(--chart-1));stroke:color-mix(in srgb,var(--list-accent,var(--chart-1)) 70%,#fff);filter:drop-shadow(0 0 4px var(--list-accent,var(--chart-1)))}
+.muse-list-art-glow-in{stop-color:var(--list-accent,var(--chart-1));stop-opacity:.55}
+.muse-list-art-glow-out{stop-color:var(--list-accent,var(--chart-1));stop-opacity:0}
+@media (prefers-reduced-motion:no-preference){:root:not([data-magic="quiet"]){
+ & .muse-list-art-star[data-state="lit"] .muse-list-art-halo{animation:muse-journal-twinkle 3.6s ease-in-out infinite}
+ & .muse-list-art-dust{animation:muse-journal-twinkle 4.2s ease-in-out infinite}
+}}
+@container muse-content (max-width:640px){
+ .muse-list-icon .muse-emoji-trigger{width:52px;height:52px;border-radius:16px;font-size:1.8rem}
+ .muse-list-icon .muse-emoji-trigger :is(.muse-emoji-glyph,img){font-size:1.8rem;max-width:36px;max-height:36px}
+}
+
+.muse-list-section{position:relative;gap:6px;padding:12px 12px 10px 10px;border-radius:18px;transition:box-shadow .18s ease,outline-color .18s ease}
+.muse-list-section-head{display:flex;align-items:center;gap:6px;min-height:36px}
+.muse-list-section-names{display:grid;gap:1px;flex:1;min-width:0}
+.muse-list-section-title{font-size:.8rem}
+.muse-list-section-names .muse-inline-text{max-width:100%;text-align:left}
+.muse-list-section-desc{font-size:.8rem;font-weight:400;letter-spacing:0;text-transform:none;color:var(--text-muted);white-space:normal}
+.muse-list-section-grip{display:grid;place-items:center;flex:none;width:22px;height:32px;padding:0;border:0;border-radius:8px;background:none;color:var(--text-muted);cursor:grab;touch-action:none;opacity:.5;transition:opacity .15s ease}
+.muse-list-section:is(:hover,:focus-within) .muse-list-section-grip{opacity:1}
+@media (hover:none){.muse-list-section-grip{opacity:.8}}
+.muse-list-section-icon{display:grid;place-items:center;flex:none;width:34px;height:34px;padding:0;border:0;border-radius:11px;font-size:1.25rem;line-height:1;cursor:pointer;
+ background:color-mix(in srgb,var(--section-accent,var(--list-accent,var(--accent-primary))) 16%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--section-accent,var(--list-accent,var(--accent-primary))) 30%,transparent)}
+.muse-list-count{flex:none;padding:1px 9px;border-radius:999px;font-size:.72rem;background:color-mix(in srgb,var(--section-accent,var(--list-accent,var(--accent-primary))) 14%,transparent)}
+.muse-list-count[data-done]{background:var(--section-accent,var(--list-accent,var(--accent-primary)));color:#fff}
+.muse-list-section-more{flex:none;opacity:.75}
+.muse-list-section:is(:hover,:focus-within) .muse-list-section-more{opacity:1}
+.muse-list-section[data-dragging]{z-index:6;cursor:grabbing;box-shadow:0 22px 44px -14px rgba(0,0,0,.4);transition:none}
+.muse-list-section[data-dragging] .muse-list-section-grip{cursor:grabbing}
+.muse-list-sections[data-dragging] .muse-list-section[data-over]{outline:2px dashed var(--selected-border);outline-offset:3px;background:var(--selected-background)}
+.muse-list-sections[data-dragging]{user-select:none;-webkit-user-select:none}
+.muse-list-section-menu .muse-list-section-swatches{display:flex;flex-wrap:wrap;gap:8px;padding:8px 12px 10px}
+.muse-list-section-swatches>button{width:22px;height:22px;padding:0;border:2px solid transparent;border-radius:50%;cursor:pointer;box-shadow:0 0 0 1px var(--glass-border)}
+.muse-list-section-swatches>button:first-child{background:conic-gradient(from 0deg,var(--accent-primary),var(--accent-secondary),var(--accent-pop,var(--accent-primary)),var(--accent-primary))}
+.muse-list-section-swatches>button[aria-pressed="true"]{border-color:var(--background);box-shadow:0 0 0 2px var(--selected-border)}
+.muse-list-icon-up,.muse-list-icon-down{display:inline-grid;place-items:center}
+.muse-list-icon-up svg{transform:rotate(-90deg)}.muse-list-icon-down svg{transform:rotate(90deg)}
+
+.muse-list-addsection input{min-height:52px;padding:14px 18px 14px 44px;border:1.5px dashed color-mix(in srgb,var(--list-accent,var(--accent-primary)) 45%,var(--glass-border));border-radius:18px;
+ background:color-mix(in srgb,var(--glass-background) 60%,transparent);font-size:.92rem}
+.muse-list-addsection{position:relative}
+.muse-list-addsection::before{content:"+";position:absolute;left:18px;top:50%;transform:translateY(-52%);font-size:1.2rem;font-weight:600;color:var(--list-accent,var(--accent-primary));pointer-events:none}
+.muse-list-addsection input::placeholder{color:var(--text-muted)}
+.muse-list-addsection input:focus{border-style:solid;border-color:var(--selected-border)}
+.muse-list-section-menu .popover-choice>span{display:inline-flex;align-items:center;gap:10px}
+@container muse-content (max-width:640px){
+ .muse-list-hero{grid-template-columns:minmax(0,1fr)}
+ .muse-list-hero .muse-list-artwrap{display:none}
+ .muse-list-hero .muse-list-titles{padding-right:44px}
+ .muse-list-hero .muse-list-title{font-size:clamp(1.7rem,7.5vw,2.2rem)!important}
+}
+.muse-list-collapsed-note{flex:none;font-size:.7rem;color:var(--text-muted);font-style:italic}

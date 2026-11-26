@@ -150,6 +150,13 @@ Saved Meals uses a responsive three/two/one-column grid of natural-height cards,
 
 Paycheck adjustments and saved transactions use a restrained Muse Spark; marking bills paid gives local feedback; fully allocated positive plans show a golden AchievementStar and guarded earned glint on the transition, never on initial history load. Existing reduced-motion feedback applies. No component-specific palette or new animation framework is introduced.
 
+## Malibu Mugshot readability and Safari-safe week columns (Nov 25) — on Staging, acceptance pending
+
+- Solid tags (`app/solid-tags.css`) mix their tone into `var(--tag-base, var(--background))` at `var(--tag-mix, 36%)` with `var(--tag-ink, var(--foreground))` words. A theme whose page background is a loud colour sets these instead of restyling every chip: Malibu uses a deep berry base, a stronger mix and white words, and badges inside a chip stop drawing their own pale pill.
+- Malibu's canvas is deep magenta at the top, so words sitting straight on it are white: page titles and their lines (and the Daily Edit greeting), The Daily Edit label, Planner date titles, and week strips outside cards, whose selected day is a solid white pill. Words inside cards keep the card ink.
+- Life Atlas constellation labels are haloed with the card surface (`--glass-background`), never the page background.
+- Agenda week columns hold no masked layers (Safari re-rasterised them on any nearby hover, so columns flashed or vanished): the theme ring is the column's own gradient border, and the still starfield is unmasked. Any new full-height layer in the week must avoid masks, live blur and running animations.
+
 ## Global theme chrome and golden reward primitive
 
 `ThemeSwitcher` is shared in the desktop sidebar footer near Appearance/Settings, compact orb when collapsed; mobile reaches theme/material previews through More → Appearance. It retains immediate theme/material preferences and uniquely identified floating menus with keyboard/Escape/outside behavior. Appearance remains the future deeper preference destination; no route change is required for quick switching. Headers contain no theme picker.

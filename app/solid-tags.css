@@ -46,9 +46,9 @@
   .muse-book-page-genres>*
 ):not([aria-pressed="true"],[aria-selected="true"],[aria-current],[data-status],[data-selected="true"]){
   --tag-tone:var(--item-accent,var(--organization-accent,var(--accent-primary)));
-  background:color-mix(in srgb,var(--tag-tone) 36%,var(--background));
-  border-color:color-mix(in srgb,var(--tag-tone) 78%,var(--background));
-  color:var(--foreground);
+  background:color-mix(in srgb,var(--tag-tone) var(--tag-mix,36%),var(--tag-base,var(--background)));
+  border-color:color-mix(in srgb,var(--tag-tone) 78%,var(--tag-edge-base,var(--background)));
+  color:var(--tag-ink,var(--foreground));
   -webkit-backdrop-filter:none;backdrop-filter:none;
 }
 :root :is(
@@ -231,5 +231,12 @@
 /* Selected filters: a stronger solid fill and a tone ring, never a see-through wash. */
 :root :is(.muse-board-tag-choices>.choice-button,.muse-collections-tag-filter>*,.muse-notes-tag-rail>*,.muse-chip-row>*)[aria-pressed="true"]{
   --tag-tone:var(--item-accent,var(--organization-accent,var(--accent-primary)));
-  background:color-mix(in srgb,var(--tag-tone) 62%,var(--background));
-  border-color:var(--tag-tone);box-shadow:0 0 0 1px var(--tag-tone);color:var(--foreground)}
+  background:color-mix(in srgb,var(--tag-tone) var(--tag-mix-selected,62%),var(--tag-base,var(--background)));
+  border-color:var(--tag-tone);box-shadow:0 0 0 1px var(--tag-tone);color:var(--tag-ink,var(--foreground))}
+
+/* Malibu Mugshot (Nov 25): its background is hot pink, so tags mixed from it came out loud magenta with dark words.
+   Here tags mix their tone into a deep berry instead and the words are white; small badges inside a chip stop drawing
+   their own pale pill and take the chip's white. */
+:root[data-theme="bubblegum-baby"]{--tag-base:#4a0430;--tag-edge-base:#ffffff;--tag-mix:58%;--tag-mix-selected:78%;--tag-ink:#ffffff}
+:root[data-theme="bubblegum-baby"] :is(.muse-dream-type-chips,.muse-dream-type-legend,.muse-dream-chip-row,.muse-chip-row)>button :is(.muse-dream-type,small,span){background:none;border-color:transparent;color:inherit}
+:root[data-theme="bubblegum-baby"] :is(.muse-dream-type-chips,.muse-dream-type-legend,.muse-dream-chip-row,.muse-chip-row)>button small{opacity:.8}

@@ -853,6 +853,13 @@ A Little Moment is its own record (one per local date). It is never stored in Da
 - Linked Planner tasks: while linked, the Planner is the one source of truth for completion, per occurrence for recurring items. Lists keeps a history copy, so unlinking or deleting the task never loses history. The schedule is edited in one place (locked in Lists while linked). Deleting a list item leaves the task in the Planner.
 - Daily Edit and Agenda summaries are opt-in per list, off by default, compact (one line / one small count), and leave out linked items so nothing appears twice. Aspirations show supporting lists read-only.
 
+## Mindspace list page glow-up (Nov 25) — on Staging, acceptance pending
+
+- A list opens on a compact band (about half the old hero): its icon fills a tile (clearing it is a small corner badge, so the icon never shifts), title, description, sections and progress (with the percent), and the list drawn as a small constellation, one star per section joined by a fine thread: lit when the section is done, half lit while under way. On a phone the constellation steps aside so the title has the width.
+- Sections can have an icon and a short description (up to 200 characters) under their name; both are optional and copy with templates and duplicates.
+- Each section has one ⋯ menu (collapse/expand, icon, description, colour, Move up / Move down, Delete) instead of a collapse arrow, arrows and a bin on every card; a collapsed section says so beside its count. Sections reorder by dragging their handle, with a mouse or by touch; Move up / Move down stay in the menu for anyone who prefers them, and the handle also takes the arrow keys.
+- Data: one additive, nullable column, `list_sections.description` (migration `20270114000100`).
+
 ## Envision & Planner Intentions (#117) — implemented on feature branch, awaiting review
 
 - **One life, one system.** Each record has one home; other modules reference it by id. See the [Integration Map](INTEGRATION_MAP.md) and run its Cohesion Check before major features. Envision → Intend → Live → Reflect → Understand is the product model, not a required workflow.
