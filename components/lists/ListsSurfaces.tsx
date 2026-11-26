@@ -35,7 +35,7 @@ export function ListsDailyLine({ date }: { date: string }) {
   if (!due.length) return null;
   const total = due.reduce((n, d) => n + d.count, 0);
   const href = due.length === 1 ? `/notes?view=lists&list=${due[0].list.id}` : "/notes?view=lists";
-  return <Link className="muse-lists-daily" href={href}><span aria-hidden="true">✦</span> Lists · {total} due <small>{due.slice(0, 2).map((d) => `${d.list.title} ${d.count}`).join(" · ")}{due.length > 2 ? ` · +${due.length - 2}` : ""}</small></Link>;
+  return <Link className="muse-lists-daily" href={href}><span aria-hidden="true">✦</span> Spaces · {total} due <small>{due.slice(0, 2).map((d) => `${d.list.title} ${d.count}`).join(" · ")}{due.length > 2 ? ` · +${due.length - 2}` : ""}</small></Link>;
 }
 
 /** Agenda day header: a tiny count of list items planned that day. */
@@ -43,7 +43,7 @@ export function ListsAgendaChip({ day }: { day: string }) {
   const due = useDue(day, "showInAgenda");
   if (!due.length) return null;
   const total = due.reduce((n, d) => n + d.count, 0);
-  return <Link className="muse-lists-agenda-chip" href={due.length === 1 ? `/notes?view=lists&list=${due[0].list.id}` : "/notes?view=lists"} title={due.map((d) => `${d.list.title}: ${d.count}`).join("\n")} aria-label={`${total} list item${total === 1 ? "" : "s"} planned`}>☰ {total}</Link>;
+  return <Link className="muse-lists-agenda-chip" href={due.length === 1 ? `/notes?view=lists&list=${due[0].list.id}` : "/notes?view=lists"} title={due.map((d) => `${d.list.title}: ${d.count}`).join("\n")} aria-label={`${total} checklist item${total === 1 ? "" : "s"} planned`}>☰ {total}</Link>;
 }
 
 /** Aspiration detail: lists that support it (read-only links; nothing is copied). */
@@ -51,5 +51,5 @@ export function AspirationLists({ aspirationId }: { aspirationId: string }) {
   const s = useLists();
   const lists = s.lists.filter((l) => l.aspirationId === aspirationId && !l.isTemplate);
   if (!lists.length) return null;
-  return <p className="small-label muse-lists-aspiration">Supporting lists: {lists.map((l, i) => <span key={l.id}>{i ? ", " : ""}<Link href={`/notes?view=lists&list=${l.id}`}>{l.icon ? `${l.icon} ` : ""}{l.title}</Link></span>)}</p>;
+  return <p className="small-label muse-lists-aspiration">Supporting spaces: {lists.map((l, i) => <span key={l.id}>{i ? ", " : ""}<Link href={`/notes?view=lists&list=${l.id}`}>{l.icon ? `${l.icon} ` : ""}{l.title}</Link></span>)}</p>;
 }

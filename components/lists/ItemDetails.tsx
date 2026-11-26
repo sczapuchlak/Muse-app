@@ -5,7 +5,8 @@ import { anchorFor, itemHistory, periodFor, scheduleState, schedulePresets, type
 import type { Frequency, RecurrenceRule, Weekday } from "@/lib/recurrence";
 import { usePlanner } from "../PlannerStore";
 import { MuseModal } from "../MuseModal";
-import { deleteItem, moveItem, removeEvent, reschedulePeriod, setSchedule, skipPeriod, updateItem } from "./ListsStore";
+import { deleteItem, moveItem, removeEvent, reschedulePeriod, setSchedule, skipPeriod, updateItem, useLists } from "./ListsStore";
+import { blockOfItem, isVirtualId } from "@/lib/lists/areas";
 import { addLinkedTask, linkedTask, moveViaPlanner, skipViaPlanner } from "./taskLink";
 import { FieldCell } from "./ListView";
 
@@ -17,7 +18,9 @@ export function ItemDetails({ item, list, sections, items, events, today, onClos
   const { state: planner, dispatch, status: plannerStatus } = usePlanner(), task = linkedTask(item, planner), linked = item.linkKind === "task";
   const [title, setTitle] = useState(item.title), [notes, setNotes] = useState(item.notes ?? ""), [confirm, setConfirm] = useState(false), [error, setError] = useState("");
   const st = item.schedule ? scheduleState(item.schedule, events, today) : null, period = item.schedule ? periodFor(item.schedule, today) : null;
-  const sibs = items.filter((i) => i.sectionId === item.sectionId).sort((a, b) => a.position - b.position), idx = sibs.findIndex((i) => i.id === item.id);
+  // Up/down move within the checklist the item is shown in (a section can hold several checklists).
+  const { blocks } = useLists(), shownIn = blockOfItem(item, blocks), inBlock = isVirtualId(shownIn) ? undefined : shownIn;
+  const sibs = items.filter((i) => i.sectionId === item.sectionId && blockOfItem(i, blocks) === shownIn).sort((a, b) => a.position - b.position), idx = sibs.findIndex((i) => i.id === item.id);
   const saveText = () => { const t = title.trim(); const patch: Partial<ListItem> = {}; if (t && t !== item.title) patch.title = t.slice(0, LIMITS.itemTitle); if ((notes.trim() || null) !== item.notes) patch.notes = notes.trim().slice(0, LIMITS.notes) || null; if (Object.keys(patch).length) void updateItem(item.id, patch); };
 
   function sendToPlanner() {
@@ -62,8 +65,8 @@ export function ItemDetails({ item, list, sections, items, events, today, onClos
     </section>
 
     <div className="muse-list-detail-foot">
-      <span><button type="button" className="muse-lists-mini" aria-label="Move up" disabled={idx <= 0} onClick={() => void moveItem(item.id, item.sectionId, idx - 1)}>↑</button>
-        <button type="button" className="muse-lists-mini" aria-label="Move down" disabled={idx < 0 || idx >= sibs.length - 1} onClick={() => void moveItem(item.id, item.sectionId, idx + 1)}>↓</button></span>
+      <span><button type="button" className="muse-lists-mini" aria-label="Move up" disabled={idx <= 0} onClick={() => void moveItem(item.id, item.sectionId, idx - 1, inBlock)}>↑</button>
+        <button type="button" className="muse-lists-mini" aria-label="Move down" disabled={idx < 0 || idx >= sibs.length - 1} onClick={() => void moveItem(item.id, item.sectionId, idx + 1, inBlock)}>↓</button></span>
       <span><button type="button" className="text-button muse-lists-danger" onClick={() => setConfirm(true)}>Delete</button><button type="button" className="muse-button" onClick={() => { saveText(); onClose(); }}>Done</button></span>
     </div>
     {confirm && <MuseModal id="list-item-delete" label="Delete item?" returnFocus={null} onClose={() => setConfirm(false)}>

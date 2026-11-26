@@ -921,3 +921,12 @@ Saved content is presented as something to read, not as a form. Default state: r
 
 ### Photo atmospheres (Nov 18, 2026)
 A theme may paint its canvas from one of Stephanie's reference images by setting `--atmosphere-photo` (in `app/atmosphere.css`, beside the layer). The photo is one fixed, viewport-sized layer (`.muse-atmosphere-photo`), never stretched down the document and never `background-attachment:fixed` (iOS ignores it); stars and the vignette sit above it. Images live in `public/themes/` as WebP. In use: Midnight Ballerina, Hot Summer Nights, Pretty Toxic (now a light hologram theme) and All-American Girl (light). Each palette is sampled from its own image.
+
+## Spaces (Mindspace, Nov 25) — Staging acceptance pending
+
+- Sections keep the theme's gradient ring as the primary container; blocks inside are quieter. Checklists and notes sit straight on the section; cards and links get a soft inner surface (`--glass-background` lightly tinted by the space colour) and a 16px radius. Nothing becomes a patchwork of card colours.
+- Every card, palette entry, section tile and timeline marker uses the one icon style (`MuseMark`, gradient tile, white glyph) with varied tones.
+- Block tools (handle + ⋯) appear on hover, focus or touch at the block's top right; no buttons on every card.
+- Section tiles are a sticky glass pill bar; the current section is lit with the space colour.
+- Notes: editorial serif headings (H1 italic), space-colour bullets, gradient quote rule, star divider, rounded tables; colours and highlights map tones 1–6 to `--chart-1…6` mixed toward the text colour for readability.
+- Motion: a gentle lift on links, a plane glide on route cards and a flash on the section a tile jumps to; all off under reduced motion and Quiet magic.
