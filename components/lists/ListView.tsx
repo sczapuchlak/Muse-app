@@ -129,7 +129,6 @@ export function ListView({ listId, today, onBack, onOpen }: { listId: string; to
     {!list.cover && <div className="muse-list-artwrap"><ListHeroArt seed={list.id} stars={b.sections.length ? b.sections.map((sec) => { const its = b.items.filter((i) => i.sectionId === sec.id), p = progress(its, its.flatMap((i) => eventsOf.get(i.id) ?? []), today); return { label: sec.title, done: p.done, total: p.total }; })
       : (b.items.length ? b.items.slice(0, 10) : Array.from({ length: 5 }, () => null)).map((it, i) => it ? { label: it.title, done: isDone(it, eventsOf.get(it.id) ?? [], today) ? 1 : 0, total: 1 } : { label: `Star ${i + 1}`, done: 0, total: 0 })} /></div>}
     </div>
-    {pageView && b.sections.length > 0 && (list.sectionTiles ?? b.sections.length >= 3) && <SpaceNav sections={b.sections} blocks={b.blocks} items={b.items} onHide={list.sectionTiles !== undefined ? () => void updateList(list.id, { sectionTiles: false }) : undefined} />}
     {pageView && <JourneyRibbon list={list} blocks={b.blocks} />}
     <div className="muse-list-viewbar">
       {scheduled ? <div className="muse-chip-row muse-list-views" role="group" aria-label="List view">
@@ -144,6 +143,7 @@ export function ListView({ listId, today, onBack, onOpen }: { listId: string; to
       </div>}
     </div>
 
+    {pageView && b.sections.length > 0 && (list.sectionTiles ?? b.sections.length >= 3) && <SpaceNav sections={b.sections} blocks={b.blocks} items={b.items} onHide={list.sectionTiles !== undefined ? () => void updateList(list.id, { sectionTiles: false }) : undefined} />}
     {view === "all" && <>
       {list.tableView && list.fields.length > 0 ? <TableView ctx={ctx} items={b.items} /> : <>
         <div className="muse-list-sections" data-columns={list.columns} data-dragging={drag ? true : undefined}>
