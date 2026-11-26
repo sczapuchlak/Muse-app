@@ -1,9 +1,9 @@
 "use client";
 import { MuseChoiceMenu } from "../MuseChoiceMenu";
 import { frequencyGroups, itemGroups, itemSorts, sortItems, type ItemGroup, type ItemSort } from "@/lib/lists/order";
-import { useEffect, useMemo, useRef, useState, type CSSProperties, type DragEvent, type FormEvent, type KeyboardEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type CSSProperties, type DragEvent, type FormEvent, type KeyboardEvent, type PointerEvent as ReactPointerEvent } from "react";
 import { accentCss } from "@/lib/appearance-values";
-import { listAccents, progress, LIMITS, type ListField, type ListItem, type ListSection, type MuseList } from "@/lib/lists/model";
+import { isDone, listAccents, progress, LIMITS, type ListField, type ListItem, type ListSection, type MuseList } from "@/lib/lists/model";
 import { itemHistory, periodFor, plannedOn, scheduleState, type ListEvent } from "@/lib/lists/schedule";
 import { shiftDate } from "@/lib/dates";
 import { usePlanner } from "../PlannerStore";
@@ -11,9 +11,10 @@ import { useMuseSpark } from "../MuseSpark";
 import { MuseIcon } from "../MuseIcon";
 import { GlassPopover } from "../GlassPopover";
 import { MuseModal } from "../MuseModal";
-import { EmojiButton } from "../EmojiPicker";
+import { EmojiButton, EmojiGlyph, EmojiPicker } from "../EmojiPicker";
+import { ListHeroArt } from "./ListHeroArt";
 import { useAspirations } from "../envision/aspirations/useAspirations";
-import { addItem, addSection, bundleOf, copyList, deleteList, deleteSection, moveItem, moveSection, removeEvent, resetChecklist, syncTaskCopies, toggleItem, updateItem, updateList, updateSection, useLists } from "./ListsStore";
+import { addItem, addSection, bundleOf, copyList, deleteList, deleteSection, moveItem, moveSection, removeEvent, reorderSections, resetChecklist, syncTaskCopies, toggleItem, updateItem, updateList, updateSection, useLists } from "./ListsStore";
 import { effectiveEvents, linkedTask, plannerEvents, toggleViaPlanner } from "./taskLink";
 import { ItemDetails } from "./ItemDetails";
 
@@ -51,21 +52,34 @@ export function ListView({ listId, today, onBack, onOpen }: { listId: string; to
   const ctx: RowCtx = { list, today, eventsOf, sections: b.sections, toggle, openDetail, order, manual };
   const unsorted = b.items.filter((i) => !i.sectionId || !b.sections.some((x) => x.id === i.sectionId));
   const style = { "--list-accent": accentCss(list.accent) } as CSSProperties;
+  // Sections reorder by dragging their handle (mouse or touch); the ⋯ menu keeps Move up / Move down as well (Nov 25).
+  const cards = useRef(new Map<string, HTMLElement>()), origin = useRef({ x: 0, y: 0 });
+  const [drag, setDrag] = useState<{ id: string; x: number; y: number; over: string | null } | null>(null), dragId = drag?.id ?? null;
+  useEffect(() => { if (!dragId) return; const stop = (e: Event) => e.preventDefault(); document.addEventListener("touchmove", stop, { passive: false }); return () => document.removeEventListener("touchmove", stop); }, [dragId]);
+  const overAt = (x: number, y: number, self: string) => { for (const [id, el] of cards.current) { if (id === self) continue; const r = el.getBoundingClientRect(); if (x >= r.left && x <= r.right && y >= r.top && y <= r.bottom) return id; } return null; };
+  const dragDown = (id: string) => (e: ReactPointerEvent) => { e.preventDefault(); (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId); origin.current = { x: e.clientX, y: e.clientY }; setDrag({ id, x: 0, y: 0, over: null }); };
+  const dragMove = (id: string) => (e: ReactPointerEvent) => { if (dragId !== id) return; setDrag({ id, x: e.clientX - origin.current.x, y: e.clientY - origin.current.y, over: overAt(e.clientX, e.clientY, id) }); };
+  const dragUp = (id: string) => (e: ReactPointerEvent) => {
+    if (dragId !== id) return; const over = overAt(e.clientX, e.clientY, id); setDrag(null); if (!over) return;
+    const ids = b.sections.map((x) => x.id), from = ids.indexOf(id), to = ids.indexOf(over); ids.splice(from, 1); ids.splice(to, 0, id); void reorderSections(list.id, ids);
+  };
 
   return <section className="muse-list" style={style} aria-label={list.title}>
     <button type="button" className="text-button muse-list-back" onClick={onBack}>← All lists</button>
     <div className="muse-list-hero">
     <header className="muse-list-head">
-      <EmojiButton value={list.icon} onChange={(icon) => void updateList(list.id, { icon })} label="List icon" />
+      {/* The icon fills its tile; clearing it is a small corner badge, so it never pushes the icon off centre (Nov 25). */}
+      <div className="muse-list-icon" data-empty={!list.icon || undefined}><EmojiButton value={list.icon} onChange={(icon) => void updateList(list.id, { icon })} label="List icon" /></div>
       <div className="muse-list-titles">
         <InlineText className="muse-list-title" value={list.title} max={LIMITS.title} label="List title" onSave={(title) => updateList(list.id, { title })} />
         <InlineText className="muse-list-desc" value={list.description ?? ""} max={LIMITS.description} label="Description" placeholder="Add a description" onSave={(d) => updateList(list.id, { description: d || null })} />
-        <p className="small-label">{list.isTemplate ? "Template · " : ""}{prog.done} of {prog.total} done{list.startDate ? ` · ${shortDate(list.startDate)}${list.endDate ? ` – ${shortDate(list.endDate)}` : ""}` : ""}</p>
+        <p className="small-label muse-list-meta">{list.isTemplate ? "Template · " : ""}{b.sections.length > 0 && `${b.sections.length} section${b.sections.length === 1 ? "" : "s"} · `}{prog.done} of {prog.total} done{prog.total > 0 ? ` · ${Math.round(prog.pct)}%` : ""}{list.startDate ? ` · ${shortDate(list.startDate)}${list.endDate ? ` – ${shortDate(list.endDate)}` : ""}` : ""}</p>
       </div>
       <button ref={settingsAnchor} type="button" className="muse-button muse-lists-icon" aria-label="List settings" aria-expanded={settings} onClick={() => setSettings(true)}><MuseIcon name="settings" size={16} /></button>
     </header>
     {prog.total > 0 && <div className="muse-list-progress" role="progressbar" aria-valuenow={prog.pct} aria-valuemin={0} aria-valuemax={100} aria-label="List progress"><span style={{ width: `${prog.pct}%` }} /></div>}
-    {prog.total > 0 && <span className="muse-list-ring" aria-hidden="true" style={{ "--pct": prog.pct } as CSSProperties}><b>{Math.round(prog.pct)}<small>%</small></b><i /></span>}
+    <div className="muse-list-artwrap"><ListHeroArt seed={list.id} stars={b.sections.length ? b.sections.map((sec) => { const its = b.items.filter((i) => i.sectionId === sec.id), p = progress(its, its.flatMap((i) => eventsOf.get(i.id) ?? []), today); return { label: sec.title, done: p.done, total: p.total }; })
+      : (b.items.length ? b.items.slice(0, 10) : Array.from({ length: 5 }, () => null)).map((it, i) => it ? { label: it.title, done: isDone(it, eventsOf.get(it.id) ?? [], today) ? 1 : 0, total: 1 } : { label: `Star ${i + 1}`, done: 0, total: 0 })} /></div>
     </div>
     <div className="muse-list-viewbar">
       {scheduled ? <div className="muse-chip-row muse-list-views" role="group" aria-label="List view">
@@ -82,10 +96,11 @@ export function ListView({ listId, today, onBack, onOpen }: { listId: string; to
 
     {view === "all" && <>
       {list.tableView && list.fields.length > 0 ? <TableView ctx={ctx} items={b.items} /> : <>
-        <div className="muse-list-sections" data-columns={list.columns}>
+        <div className="muse-list-sections" data-columns={list.columns} data-dragging={drag ? true : undefined}>
         {list.itemGroup === "section" ? <>
           {(unsorted.length > 0 || b.sections.length === 0) && <SectionBlock ctx={ctx} section={null} items={unsorted} />}
-          {b.sections.map((sec, i) => <SectionBlock key={sec.id} ctx={ctx} section={sec} items={b.items.filter((it) => it.sectionId === sec.id)} first={i === 0} last={i === b.sections.length - 1} />)}
+          {b.sections.map((sec, i) => <SectionBlock key={sec.id} ctx={ctx} section={sec} items={b.items.filter((it) => it.sectionId === sec.id)} first={i === 0} last={i === b.sections.length - 1}
+            drag={{ active: drag?.id === sec.id, over: drag?.over === sec.id, offset: drag?.id === sec.id ? { x: drag.x, y: drag.y } : undefined, register: (el) => { if (el) cards.current.set(sec.id, el); else cards.current.delete(sec.id); }, down: dragDown(sec.id), move: dragMove(sec.id), up: dragUp(sec.id) }} />)}
         </> : list.itemGroup === "frequency" ? frequencyGroups(b.items).map((g) => <SectionBlock key={g.label} ctx={ctx} section={null} title={g.label} items={g.items} />)
           : <SectionBlock ctx={ctx} section={null} title="All items" items={b.items} />}
         </div>
@@ -107,29 +122,58 @@ export function ListView({ listId, today, onBack, onOpen }: { listId: string; to
 
 type RowCtx = { list: MuseList; today: string; eventsOf: Map<string, ListEvent[]>; sections: ListSection[]; toggle: (i: ListItem) => void; openDetail: (id: string, a: HTMLElement) => void; order: (items: ListItem[]) => ListItem[]; manual: boolean };
 
-function SectionBlock({ ctx, section, items, first, last, title }: { ctx: RowCtx; section: ListSection | null; items: ListItem[]; first?: boolean; last?: boolean; /** A display group (frequency / all items) instead of a section. */ title?: string }) {
+type SectionDrag = { active: boolean; over: boolean; offset?: { x: number; y: number }; register: (el: HTMLElement | null) => void; down: (e: ReactPointerEvent) => void; move: (e: ReactPointerEvent) => void; up: (e: ReactPointerEvent) => void };
+
+/**
+ * One section (Nov 25): drag handle, collapse, its icon and name, a short optional description, the count, and one ⋯
+ * menu (icon, description, colour, move up/down, delete) instead of tools on every card.
+ */
+function SectionBlock({ ctx, section, items, first, last, title, drag }: { ctx: RowCtx; section: ListSection | null; items: ListItem[]; first?: boolean; last?: boolean; /** A display group (frequency / all items) instead of a section. */ title?: string; drag?: SectionDrag }) {
   const [over, setOver] = useState(false), [confirm, setConfirm] = useState<HTMLElement | null>(null);
+  const [menu, setMenu] = useState(false), [picker, setPicker] = useState(false), [editDesc, setEditDesc] = useState(false), more = useRef<HTMLButtonElement>(null);
   const sorted = ctx.order(items), prog = progress(sorted, sorted.flatMap((i) => ctx.eventsOf.get(i.id) ?? []), ctx.today);
   const collapsed = !!section?.collapsed;
   const onDrop = (e: DragEvent) => { e.preventDefault(); setOver(false); const id = e.dataTransfer.getData("text/muse-list-item"); if (id) void moveItem(id, section?.id ?? null, sorted.length); };
-  return <section className="muse-list-section" data-over={over || undefined} style={section?.accent ? { "--section-accent": accentCss(section.accent) } as CSSProperties : undefined}
+  const style = { ...(section?.accent ? { "--section-accent": accentCss(section.accent) } : {}), ...(drag?.offset ? { transform: `translate(${drag.offset.x}px, ${drag.offset.y}px)` } : {}) } as CSSProperties;
+  const done = prog.total > 0 && prog.done === prog.total;
+  return <section ref={drag?.register} className="muse-list-section" data-over={over || drag?.over || undefined} data-dragging={drag?.active || undefined} data-done={done || undefined} style={style}
     onDragOver={(e) => { if (ctx.manual && !title && e.dataTransfer.types.includes("text/muse-list-item")) { e.preventDefault(); setOver(true); } }} onDragLeave={() => setOver(false)} onDrop={onDrop}>
     <header className="muse-list-section-head">
       {section ? <>
-        <button type="button" className="muse-lists-mini" aria-expanded={!collapsed} aria-label={`${collapsed ? "Expand" : "Collapse"} ${section.title}`} onClick={() => void updateSection(section.id, { collapsed: !collapsed })}><span aria-hidden="true" className="muse-list-chevron" data-open={!collapsed || undefined}>›</span></button>
-        <InlineText className="muse-list-section-title" value={section.title} max={LIMITS.sectionTitle} label="Section name" onSave={(title) => updateSection(section.id, { title })} />
+        {drag && <button type="button" className="muse-list-section-grip" aria-label={`Drag to reorder ${section.title}. Or use Move up and Move down in its menu.`} title="Drag to reorder"
+          onPointerDown={drag.down} onPointerMove={drag.move} onPointerUp={drag.up} onPointerCancel={drag.up}
+          onKeyDown={(e) => { if (e.key === "ArrowUp" || e.key === "ArrowLeft") { e.preventDefault(); if (!first) void moveSection(section.id, -1); } else if (e.key === "ArrowDown" || e.key === "ArrowRight") { e.preventDefault(); if (!last) void moveSection(section.id, 1); } }}><MuseIcon name="grip" size={14} /></button>}
+        {section.icon && <button type="button" className="muse-list-section-icon" aria-label={`Change icon for ${section.title}`} onClick={() => { setPicker(true); }}><EmojiGlyph value={section.icon} /></button>}
+        <div className="muse-list-section-names">
+          <InlineText className="muse-list-section-title" value={section.title} max={LIMITS.sectionTitle} label="Section name" onSave={(t) => updateSection(section.id, { title: t })} />
+          {(section.description || editDesc) && <InlineText className="muse-list-section-desc" value={section.description ?? ""} max={LIMITS.sectionDescription} label={`Description for ${section.title}`} placeholder="A short note" editing={editDesc}
+            onSave={(d) => updateSection(section.id, { description: d || null })} onDone={() => setEditDesc(false)} />}
+        </div>
       </> : <h3 className="muse-list-section-title">{title ?? (ctx.sections.length ? "Unsorted" : "Items")}</h3>}
-      <small className="muse-list-count">{prog.done}/{prog.total}</small>
-      {section && <span className="muse-list-section-tools">
-        <button type="button" className="muse-lists-mini" aria-label={`Move ${section.title} up`} disabled={first} onClick={() => void moveSection(section.id, -1)}>↑</button>
-        <button type="button" className="muse-lists-mini" aria-label={`Move ${section.title} down`} disabled={last} onClick={() => void moveSection(section.id, 1)}>↓</button>
-        <button type="button" className="muse-lists-mini" aria-label={`Delete ${section.title}`} onClick={(e) => setConfirm(e.currentTarget)}><MuseIcon name="trash" size={13} /></button>
-      </span>}
+      {collapsed && <small className="muse-list-collapsed-note">Collapsed</small>}
+      <small className="muse-list-count" data-done={done || undefined}>{prog.done}/{prog.total}</small>
+      {section && <button ref={more} type="button" className="muse-lists-mini muse-list-section-more" aria-label={`Options for ${section.title}`} aria-haspopup="dialog" aria-expanded={menu} onClick={() => setMenu((v) => !v)}><MuseIcon name="more" size={16} /></button>}
     </header>
     {!collapsed && <>
       <ul className="muse-list-items">{sorted.map((it, i) => <ItemRow key={it.id} ctx={ctx} item={it} index={i} />)}</ul>
       <QuickAdd listId={ctx.list.id} sectionId={section?.id ?? null} />
     </>}
+    {section && <GlassPopover id={`section-menu-${section.id}`} label={`Options for ${section.title}`} open={menu} anchorRef={more} onClose={() => setMenu(false)} width={250} align="end" bare>
+      <div className="popover-choice-list muse-list-section-menu">
+        <button type="button" className="popover-choice" aria-expanded={!collapsed} onClick={() => { setMenu(false); void updateSection(section.id, { collapsed: !collapsed }); }}><span><MuseIcon name={collapsed ? "eye" : "eye-off"} size={15} />{collapsed ? "Expand section" : "Collapse section"}</span></button>
+        <button type="button" className="popover-choice" onClick={() => { setMenu(false); setPicker(true); }}><span><MuseIcon name="sparkle" size={15} />{section.icon ? "Change icon" : "Add an icon"}</span></button>
+        {section.icon && <button type="button" className="popover-choice" onClick={() => { setMenu(false); void updateSection(section.id, { icon: null }); }}><span><MuseIcon name="close" size={15} />Remove icon</span></button>}
+        <button type="button" className="popover-choice" onClick={() => { setMenu(false); setEditDesc(true); }}><span><MuseIcon name="edit" size={15} />{section.description ? "Edit description" : "Add a description"}</span></button>
+        <div className="muse-list-section-swatches" role="group" aria-label={`Colour for ${section.title}`}>
+          <button type="button" aria-pressed={!section.accent} aria-label="List colour" title="List colour" onClick={() => void updateSection(section.id, { accent: null })} />
+          {listAccents.map((a) => <button key={a} type="button" aria-pressed={section.accent === a} aria-label={a} title={a} style={{ background: accentCss(a) }} onClick={() => void updateSection(section.id, { accent: a })} />)}
+        </div>
+        {!first && <button type="button" className="popover-choice" onClick={() => { setMenu(false); void moveSection(section.id, -1); }}><span><span className="muse-list-icon-up" aria-hidden="true"><MuseIcon name="arrow" size={15} /></span>Move up</span></button>}
+        {!last && <button type="button" className="popover-choice" onClick={() => { setMenu(false); void moveSection(section.id, 1); }}><span><span className="muse-list-icon-down" aria-hidden="true"><MuseIcon name="arrow" size={15} /></span>Move down</span></button>}
+        <button type="button" className="popover-choice" data-destructive onClick={() => { setMenu(false); setConfirm(more.current); }}><span><MuseIcon name="trash" size={15} />Delete section…</span></button>
+      </div>
+    </GlassPopover>}
+    {section && <EmojiPicker open={picker} anchorRef={more} onClose={() => setPicker(false)} onSelect={(icon) => { setPicker(false); void updateSection(section.id, { icon }); }} label={`Icon for ${section.title}`} />}
     {confirm && section && <MuseModal id={`section-delete-${section.id}`} label="Delete section?" returnFocus={confirm} onClose={() => setConfirm(null)}>
       <h2>Delete “{section.title}”?</h2><p>Its {items.length} item{items.length === 1 ? "" : "s"} move to Unsorted. Nothing else is deleted.</p>
       <div className="muse-lists-modal-actions"><button type="button" className="muse-button" onClick={() => { setConfirm(null); void deleteSection(section.id); }}>Delete section</button><button type="button" className="muse-button button-ghost" onClick={() => setConfirm(null)}>Keep it</button></div>
@@ -167,16 +211,18 @@ function QuickAdd({ listId, sectionId }: { listId: string; sectionId: string | n
 function AddSection({ listId }: { listId: string }) {
   const [text, setText] = useState("");
   const submit = (e: FormEvent) => { e.preventDefault(); const t = text.trim(); if (!t) return; setText(""); void addSection(listId, t); };
-  return <form className="muse-list-addsection" onSubmit={submit}><input value={text} maxLength={LIMITS.sectionTitle} onChange={(e) => setText(e.target.value)} placeholder="+ Add a section (Kitchen, Clothing, Sewing…)" aria-label="Add a section" /></form>;
+  return <form className="muse-list-addsection" onSubmit={submit}><input value={text} maxLength={LIMITS.sectionTitle} onChange={(e) => setText(e.target.value)} placeholder="Add a section (Kitchen, Clothing, Sewing…)" aria-label="Add a section" /></form>;
 }
 
 /** Click to edit; Enter or blur saves; Escape cancels. */
-function InlineText({ value, onSave, label, max, className, placeholder }: { value: string; onSave: (v: string) => unknown; label: string; max: number; className?: string; placeholder?: string }) {
-  const [draft, setDraft] = useState<string | null>(null);
-  const commit = () => { if (draft === null) return; const v = draft.trim(); setDraft(null); if (v !== value && (v || placeholder)) void onSave(v); };
+function InlineText({ value, onSave, label, max, className, placeholder, editing, onDone }: { value: string; onSave: (v: string) => unknown; label: string; max: number; className?: string; placeholder?: string; /** Open straight into editing (e.g. "Add a description" from a menu). */ editing?: boolean; onDone?: () => void }) {
+  const [draft, setDraft] = useState<string | null>(editing ? value : null);
+  const [wasEditing, setWasEditing] = useState(editing);
+  if (editing !== wasEditing) { setWasEditing(editing); if (editing && draft === null) setDraft(value); }
+  const commit = () => { if (draft === null) return; const v = draft.trim(); setDraft(null); onDone?.(); if (v !== value && (v || placeholder)) void onSave(v); };
   if (draft === null) return <button type="button" className={`muse-inline-text ${className ?? ""}`} data-empty={!value || undefined} onClick={() => setDraft(value)} aria-label={`${label}: ${value || "empty"}. Edit`}>{value || placeholder}</button>;
   return <input className={`muse-inline-input ${className ?? ""}`} autoFocus value={draft} maxLength={max} aria-label={label} onChange={(e) => setDraft(e.target.value)} onBlur={commit}
-    onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => { if (e.key === "Enter") commit(); if (e.key === "Escape") setDraft(null); }} />;
+    onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => { if (e.key === "Enter") commit(); if (e.key === "Escape") { setDraft(null); onDone?.(); } }} />;
 }
 
 function TableView({ ctx, items }: { ctx: RowCtx; items: ListItem[] }) {

@@ -1724,14 +1724,14 @@ isOneToOne: false
                   ]
                 },"list_sections": {
                   Row: {
-                    "accent": string | null,"collapsed": boolean,"icon": string | null,"id": string,"list_id": string,"position": number,"title": string,"user_id": string
+                    "accent": string | null,"collapsed": boolean,"description": string | null,"icon": string | null,"id": string,"list_id": string,"position": number,"title": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "accent"?: string | null,"collapsed"?: boolean,"icon"?: string | null,"id": string,"list_id": string,"position"?: number,"title": string,"user_id"?: string
+                    "accent"?: string | null,"collapsed"?: boolean,"description"?: string | null,"icon"?: string | null,"id": string,"list_id": string,"position"?: number,"title": string,"user_id"?: string
                   }
                   Update: {
-                    "accent"?: string | null,"collapsed"?: boolean,"icon"?: string | null,"id"?: string,"list_id"?: string,"position"?: number,"title"?: string,"user_id"?: string
+                    "accent"?: string | null,"collapsed"?: boolean,"description"?: string | null,"icon"?: string | null,"id"?: string,"list_id"?: string,"position"?: number,"title"?: string,"user_id"?: string
                   }
                   Relationships: [
                     {

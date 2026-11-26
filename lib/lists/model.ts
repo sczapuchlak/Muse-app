@@ -18,7 +18,7 @@ export type MuseList = {
   fields: ListField[]; tableView: boolean; /** Section layout: 0 = auto, else 1–3 columns. */ columns: 0 | 1 | 2 | 3; itemGroup: import("./order").ItemGroup; itemSort: import("./order").ItemSort; showInDaily: boolean; showInAgenda: boolean; aspirationId: string | null;
   position: number; createdAt: string; updatedAt: string;
 };
-export type ListSection = { id: string; listId: string; title: string; icon: string | null; accent: ListAccent | null; position: number; collapsed: boolean };
+export type ListSection = { id: string; listId: string; title: string; /** A short line under the name (Nov 25). */ description?: string | null; icon: string | null; accent: ListAccent | null; position: number; collapsed: boolean };
 export type ListItem = {
   id: string; listId: string; sectionId: string | null; title: string; notes: string | null; position: number;
   priority: "low" | "medium" | "high" | null; dueDate: string | null; completedAt: string | null; completedOn: string | null;
@@ -26,7 +26,7 @@ export type ListItem = {
   linkKind: ItemLinkKind | null; linkId: string | null; createdAt: string; updatedAt: string;
 };
 
-export const LIMITS = { title: 120, description: 500, sectionTitle: 80, itemTitle: 300, notes: 4000, fields: 8 } as const;
+export const LIMITS = { title: 120, description: 500, sectionTitle: 80, sectionDescription: 200, itemTitle: 300, notes: 4000, fields: 8 } as const;
 export const presetLabels: Record<ListPreset, { label: string; detail: string }> = {
   checklist: { label: "Checklist", detail: "Packing, shopping, ideas, supplies" },
   scheduled: { label: "Scheduled", detail: "Cleaning, maintenance, routines that repeat" },
@@ -64,7 +64,7 @@ export function listFromRow(r: Record<string, unknown>): MuseList {
     aspirationId: (r.aspiration_id as string) ?? null, position: Number(r.position ?? 0), createdAt: String(r.created_at ?? ""), updatedAt: String(r.updated_at ?? "") };
 }
 export function sectionFromRow(r: Record<string, unknown>): ListSection {
-  return { id: String(r.id), listId: String(r.list_id), title: String(r.title), icon: (r.icon as string) ?? null, accent: (r.accent as ListAccent) ?? null, position: Number(r.position ?? 0), collapsed: !!r.collapsed };
+  return { id: String(r.id), listId: String(r.list_id), title: String(r.title), ...("description" in r ? { description: (r.description as string) ?? null } : {}), icon: (r.icon as string) ?? null, accent: (r.accent as ListAccent) ?? null, position: Number(r.position ?? 0), collapsed: !!r.collapsed };
 }
 
 export type ListBundle = { list: MuseList; sections: ListSection[]; items: ListItem[] };

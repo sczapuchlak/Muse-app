@@ -247,3 +247,6 @@
 .mood-card .muse-reflection-editor .editor-actions .muse-button{min-height:38px}
 .mood-card .muse-reflection-editor:not([data-dirty]) .editor-actions .small-label{color:var(--text-muted)}
 @media (max-width:600px){.mood-card .mood-content>:is(div:first-child,.muse-mood-influences,.muse-mood-why){padding-left:38px}}
+/* "Add feeling" always fits on one line (Nov 25): the button sizes to its words instead of wrapping in a narrow cell. */
+.mood-card .mood-content>div:first-child .feeling-chips>.add-control{white-space:nowrap}
+.mood-card .mood-content>div:first-child .feeling-chips>.add-control:only-child{grid-column:1/-1;justify-self:start;width:max-content;max-width:100%}
