@@ -29,3 +29,11 @@ test('plan dates come from the read that is finished or in progress',()=>{
  assert.deepEqual(P.planDates({status:'reading',startedOn:'2026-11-02'}),{started:'2026-11-02',finished:undefined});
  assert.deepEqual(P.planDates({status:'planned'}),{started:undefined,finished:undefined});
 });
+test('a year shows every month of it, by month, each book once, then the books planned for the year itself (Nov 25)',()=>{
+ const E=(kind,period,bookId,position)=>({id:`${kind}${period}${bookId}`,kind,period,bookId,position});
+ const entries=[E('month','2026-11','a',0),E('month','2026-11','b',1),E('month','2026-03','c',0),E('month','2026-10','a',0),E('year','2026','d',0),E('year','2026','b',1),E('month','2025-11','z',0),E('year','2027','q',0)];
+ const rows=P.yearRollup(entries,'2026');
+ assert.deepEqual(rows.map(r=>`${r.bookId}@${r.period}`),['c@2026-03','a@2026-11','b@2026-11','d@2026'],'March, then November (a appears once, under its latest month), then Anytime (b is already in November)');
+ assert.deepEqual(P.planRows(entries,'month','2026-11').map(r=>r.bookId),['a','b'],'a month is just its own books');
+ assert.deepEqual(P.yearsWithPlans(entries),['2027','2026','2025'],'a year with only monthly plans still counts');
+});

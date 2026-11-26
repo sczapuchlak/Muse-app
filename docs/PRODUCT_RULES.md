@@ -954,7 +954,18 @@ Supersedes the book-level heart above. A favourite is "marked as a favourite in 
 - Everyday planning happens on the Dashboard (four books a page); `/collections/plans` is the same planner with every period. Books can be added from the planner, from Library select mode and from Book Detail.
 - Data is additive (one table plus three owner-only functions, migration `20261215000100`). Phase 3 (Up Next, Reading Roulette) reads these entries for the current month, the year or the whole Library.
 
-## Up Next and Reading Roulette — approved, implemented (Books Phase 3)
+## Reading Atlas: use the space (Nov 25)
+
+- Nothing is blown up to fill a panel. Month calendar covers fit inside their day. Top rated and Favorites are equal panels with one row of six small covers each and a carousel for more; Vibes runs full width, eight emojis to a row. Streaks' Daily goal calendar keeps small fixed days (about half the old height) beside its goal chart. Reading DNA's personality is one compact band (a small drawn placeholder while it is still taking shape; traits such as The Night Owl beside it), without the "fixed rules" line; its emoji carousel shows one row so Genre breakdown ends where its content does. Year in Review's Books a month becomes a two-shelf bookcase beside the emojis.
+
+## Up Next merged into the Reading Plan — approved, implemented (Nov 25)
+
+- The Reading Plan is the one place for planned reading. The standalone Up Next card is gone; its row on the Dashboard is now Recently finished beside Recent reading sessions.
+- **Add books** (you choose), **Spin to add** (the existing Reading Roulette wheel chooses, you decide) and **Start reading** (any waiting book in the plan, in any order) all live on the plan. The wheel starts on To Be Read, never offers a book already in the plan, and keeping its pick only adds it: nothing starts reading. Start reading is the existing timer start; it waits while another sitting is open. A plan never holds a book twice; removing a book leaves it in the Library.
+- Books still waiting in someone's old Up Next were handed to the current month's plan once (after its own books, in slot order); started, finished or archived ones were let go. `up_next_slots` is kept, unused.
+- **A year shows its months.** The yearly view lists every book planned for any month of that year, by month (each book once, under its latest month), then books planned for the year itself ("Anytime in 2026"). The Dashboard shows a small month chip on each row; the full view has a heading per month. Reordering stays within one month (or Anytime). Adding books in a year asks which month (this month by default in the current year) or Anytime.
+
+## Up Next and Reading Roulette — superseded Nov 25 (see above); kept for history (Books Phase 3)
 
 - Up Next is up to three suggested reads on the Books Dashboard; any slot may stay empty. Slots can be chosen, replaced, removed and reordered (drag the handle, arrow keys, or Move left/right). It is a suggestion, not a commitment.
 - Books come from a source: this month's plan, the yearly plan, To Be Read, the entire Library, "Surprise me" (all four merged), or a brand-new book (existing search / Add Book flow; defaults to To Be Read; never added to a plan silently, the reader is offered the monthly or yearly plan). Only waiting books (To Be Read, Paused, DNF; not archived) are eligible, and a book already in another slot is not offered again.
@@ -966,7 +977,7 @@ Supersedes the book-level heart above. A favourite is "marked as a favourite in 
 ## Books statuses and Dashboard layout — approved, implemented (cleanup)
 
 - The five book statuses are named once in `lib/books/status.ts`, in one order: Currently Reading, To Be Read (the stored value is still `planned`), Finished, Did Not Finish (`dnf`), Paused (`paused`; formerly "On Hold"). Every dropdown (Book Detail, editor, Library filter), badge and message reads from it; the Library filter lists all five with counts and the shared vivid status dot.
-- Dashboard grid: two fixed equal columns that end on the same line (streak over Currently reading | the annual challenge over the daily goal); then Reading plans; then Recently read (40%, paged) beside Up next (60%, three plan-sized rows). Paired panels in Atlas stretch to equal heights; tile grids never leave a ragged last row.
+- Dashboard grid: two fixed equal columns that end on the same line (streak over Currently reading | the annual challenge over the daily goal); then Reading plans (never taller than three rows) beside Your last 30 days; then Recently finished beside Recent reading sessions, equal halves ending on the same line (Up Next retired Nov 25). Paired panels in Atlas stretch to equal heights; tile grids never leave a ragged last row.
 
 ## Reading goals, streaks and celebrations — approved, implemented (Books Phase 4)
 

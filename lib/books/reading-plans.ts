@@ -1,5 +1,6 @@
 import type {SupabaseClient} from '@supabase/supabase-js';
 import type {Book} from '@/lib/whimsy/models';
+import {allPages} from '@/lib/supabase/pages';
 
 /**
  * Reading Plans (Phase 2). A plan is the ordered set of entries sharing (kind, period): 'month' + 'YYYY-MM' or
@@ -33,6 +34,26 @@ export const planEntries=(entries:readonly PlanEntry[],kind:PlanKind,period:stri
 export const planCount=(entries:readonly PlanEntry[],kind:PlanKind,period:string)=>entries.reduce((n,e)=>n+(e.kind===kind&&e.period===period?1:0),0);
 /** Every period (of a kind) that has books, newest first: for "past and future plans". */
 export const periodsWithPlans=(entries:readonly PlanEntry[],kind:PlanKind)=>[...new Set(entries.filter(e=>e.kind===kind).map(e=>e.period))].sort().reverse();
+/** One book as a plan shows it, and the plan entry it comes from (a month's or the year's own). */
+export type PlanRow={bookId:string;kind:PlanKind;period:string;position:number};
+/**
+ * A year as read (Nov 25): every book planned for any month of that year, by month (January first), each book once
+ * under the latest month it is planned for; then the books planned for the year itself without a month ("Anytime").
+ * Nothing is copied: each row still belongs to the one plan entry it came from, so moving, removing and reordering
+ * act on that entry.
+ */
+export function yearRollup(entries:readonly PlanEntry[],year:string):PlanRow[]{
+ const latest=new Map<string,PlanEntry>();
+ for(const e of entries)if(e.kind==='month'&&e.period.slice(0,4)===year){const had=latest.get(e.bookId);if(!had||e.period>had.period)latest.set(e.bookId,e);}
+ const months=[...latest.values()].sort((a,b)=>a.period.localeCompare(b.period)||byPosition(a,b));
+ const anytime=planEntries(entries,'year',year).filter(e=>!latest.has(e.bookId));
+ return [...months,...anytime].map(({bookId,kind,period,position})=>({bookId,kind,period,position}));
+}
+/** The rows a plan shows: a month's own entries, or a year's roll-up. */
+export const planRows=(entries:readonly PlanEntry[],kind:PlanKind,period:string):PlanRow[]=>kind==='year'?yearRollup(entries,period):planEntries(entries,'month',period).map(({bookId,kind:k,period:p,position})=>({bookId,kind:k,period:p,position}));
+/** Every year with anything planned in it (its own plan or any of its months), newest first. */
+export const yearsWithPlans=(entries:readonly PlanEntry[])=>[...new Set(entries.map(e=>e.period.slice(0,4)))].sort().reverse();
+
 /** The plans a book belongs to. */
 export const plansForBook=(entries:readonly PlanEntry[],bookId:string)=>entries.filter(e=>e.bookId===bookId).sort((a,b)=>a.kind===b.kind?a.period.localeCompare(b.period):a.kind==='year'?-1:1);
 
@@ -65,8 +86,9 @@ const fromRow=(r:Row):PlanEntry=>({id:r.id,kind:r.period_kind,period:r.period,bo
 const fail=(error:{message:string}|null)=>{if(error)throw Error(error.message);};
 
 export async function readPlanEntries(client:SupabaseClient):Promise<PlanEntry[]>{
- const {data,error}=await client.from('reading_plan_entries').select('id,period_kind,period,book_id,position').order('period_kind').order('period').order('position').limit(5000);
- fail(error);return (data??[]).map(r=>fromRow(r as Row));
+ // Hosted reads stop at 1000 rows, so years of plans are read in pages (ordered by a unique key).
+ const rows=await allPages<Row>((from,to)=>client.from('reading_plan_entries').select('id,period_kind,period,book_id,position').order('period_kind').order('period').order('position').order('id').range(from,to));
+ return rows.map(fromRow);
 }
 export async function addToPlan(client:SupabaseClient,kind:PlanKind,period:string,bookIds:string[]){const {error}=await client.rpc('add_reading_plan_books',{p_kind:kind,p_period:period,p_book_ids:bookIds});fail(error);}
 export async function savePlanOrder(client:SupabaseClient,kind:PlanKind,period:string,bookIds:string[]){const {error}=await client.rpc('reorder_reading_plan',{p_kind:kind,p_period:period,p_book_ids:bookIds});fail(error);}

@@ -212,6 +212,10 @@
 .muse-cal-cover img{width:100%;height:100%;object-fit:contain!important;border-radius:3px}
 .muse-cal-day[data-books="2"] .muse-cal-cover{padding:0}
 .muse-cal-day[data-books="2"] .muse-cal-cover img{object-fit:cover!important;border-radius:0}
+/* Covers fit their day (Nov 25): the cover is a plain box filling the day (absolute, inset 0), not a grid whose auto row
+   let a 100%-tall image take its own height and spill past the bottom of the cell. */
+.muse-cal-day .muse-cal-cover{display:block}
+.muse-cal-day .muse-cal-cover img{max-width:100%;max-height:100%}
 .muse-atlas-today{display:grid;gap:8px;margin:0;padding:0;list-style:none}
 .muse-atlas-today li{display:flex;justify-content:space-between;gap:12px;align-items:baseline}
 .muse-atlas-today span{color:var(--text-muted);font-size:.84rem}

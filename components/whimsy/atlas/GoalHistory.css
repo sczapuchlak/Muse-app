@@ -28,3 +28,10 @@
 .muse-goalhist-note{margin:0;font-size:.72rem;color:var(--text-muted)}
 .muse-goalhist-side{grid-template-rows:auto minmax(0,1fr) auto;align-content:stretch}
 .muse-goalhist-months{height:100%;min-height:120px}
+/* Half the size (Nov 25): the calendar keeps small fixed days instead of stretching to its column, and the goal chart
+   beside it takes the rest of the row at the same (shorter) height. */
+.muse-goalhist:not(.muse-goalhist-empty){grid-template-columns:auto minmax(0,1fr)}
+.muse-goalhist-cal .muse-goalhist-grid{grid-template-columns:repeat(7,40px);gap:5px;justify-content:start}
+.muse-goalhist-cal .muse-goalhist-grid>li:not(.muse-goalhist-wd){font-size:.7rem}
+.muse-goalhist-side .muse-goalhist-months{min-height:0}
+@container muse-content (max-width:760px){.muse-goalhist:not(.muse-goalhist-empty){grid-template-columns:minmax(0,1fr)}.muse-goalhist-cal .muse-goalhist-grid{grid-template-columns:repeat(7,minmax(0,40px));justify-content:center}.muse-goalhist-side .muse-goalhist-months{min-height:120px}}

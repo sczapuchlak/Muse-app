@@ -1,5 +1,5 @@
 "use client";
-import type { ReactNode } from "react";
+import { memo, type ReactNode } from "react";
 import { MuseMark, type MuseMarkIcon, type MuseTone } from "../design/MuseHeading";
 import { MUSE_STAR_PATH } from "../MuseStar";
 import type { Message, MessageImage } from "@/lib/journal/model";
@@ -31,7 +31,11 @@ function paint(p: string, at: number, marks: { start: number; end: number; ids: 
   return out;
 }
 
-export type ThreadMessage = Pick<Message, "id" | "role" | "body" | "createdAt" | "correctedAt"> & { companionVersionId?: string | null; pending?: boolean; streaming?: boolean; failed?: boolean; marked?: boolean; images?: MessageImage[]; previews?: string[]; replyTo?: string | null; guideQuestionId?: string | null; guideQuestion?: string | null };
+export type ThreadMessage = Pick<Message, "id" | "role" | "body" | "createdAt" | "correctedAt"> & { companionVersionId?: string | null; pending?: boolean; streaming?: boolean; failed?: boolean; marked?: boolean; images?: MessageImage[]; previews?: string[]; replyTo?: string | null; guideQuestionId?: string | null; guideQuestion?: string | null;
+  /** The row a streamed reply was written in: the saved reply keeps it, so finishing never rebuilds (or re-animates) it. */
+  rowKey?: string };
+type Who = { name: string; icon: string; tone: MuseTone };
+type Marks = { start: number; end: number; ids: string[] }[];
 
 /**
  * The conversation as an editorial dialogue, not chat bubbles. Your words sit on a softly inked page edge in the
@@ -51,7 +55,17 @@ export function Thread({ messages, companion, companionFor, timeZone, actions, e
 }) {
   if (!messages.length) return <>{empty}</>;
   return <ol className="mj-thread" aria-label="Conversation">
-    {messages.map((m) => { const who = m.role === "assistant" ? companionFor?.(m) ?? companion : null; return <li key={m.id} id={`m-${m.id}`} data-message-id={m.id} className="mj-message" style={who ? ({ "--who-ink": `var(--chart-${who.tone})` } as React.CSSProperties) : undefined} data-role={m.role} data-pending={m.pending || undefined} data-streaming={m.streaming || undefined} data-failed={m.failed || undefined} data-marked={m.marked || undefined}>
+    {messages.map((m) => <MessageRow key={m.rowKey ?? m.id} m={m} who={m.role === "assistant" ? companionFor?.(m) ?? companion : null} timeZone={timeZone} noTimes={noTimes}
+      actions={actions} onReattach={onReattach} anchored={Boolean(highlights)} marks={highlights?.get(m.id)} />)}
+  </ol>;
+}
+
+/** One message. Memoized: while a reply streams in, only the streaming row re-renders, never the whole conversation
+ *  (a long entry otherwise re-parsed every paragraph on every word, which is what made long talks stall). */
+const MessageRow = memo(function MessageRow({ m, who, timeZone, noTimes, actions, onReattach, anchored, marks }: {
+  m: ThreadMessage; who: Who | null; timeZone: string; noTimes?: boolean; actions?: (m: ThreadMessage) => ReactNode; onReattach?: (img: MessageImage) => void; anchored: boolean; marks?: Marks;
+}) {
+  return <li id={`m-${m.id}`} data-message-id={m.id} className="mj-message" style={who ? ({ "--who-ink": `var(--chart-${who.tone})` } as React.CSSProperties) : undefined} data-role={m.role} data-pending={m.pending || undefined} data-streaming={m.streaming || undefined} data-failed={m.failed || undefined} data-marked={m.marked || undefined}>
       <div className="mj-message-who type-meta">
         {m.role === "assistant" ? <><MuseMark icon={(who?.icon ?? "sparkle") as MuseMarkIcon} tone={who?.tone ?? 5} size="sm" /><span>{who?.name ?? "Companion"}</span></> : <span>You</span>}
         {!noTimes && <time dateTime={m.createdAt}>{m.pending ? "Saving…" : m.failed ? "Not saved" : timeLabel(m.createdAt, timeZone)}</time>}
@@ -59,11 +73,11 @@ export function Thread({ messages, companion, companionFor, timeZone, actions, e
         {actions && <span className="mj-message-actions">{actions(m)}</span>}
       </div>
       {m.role === "user" && m.guideQuestion && <p className="mj-guide-asked type-meta"><span aria-hidden="true">✦ </span>{m.guideQuestion}</p>}
-      <div className={`mj-message-body ${m.role === "assistant" ? "type-reading" : "type-body"}`}><Prose text={m.body} anchored={Boolean(highlights)} marks={highlights?.get(m.id)} />{m.streaming && <span className="mj-caret" aria-hidden="true" />}</div>
+      <div className={`mj-message-body ${m.role === "assistant" ? "type-reading" : "type-body"}`}><Prose text={m.body} anchored={anchored} marks={marks} />{m.streaming && <span className="mj-caret" aria-hidden="true" />}</div>
       {m.role === "user" && <MessagePhotos images={m.images} previews={m.previews} onReattach={onReattach} />}
-    </li>; })}
-  </ol>;
-}
+    </li>;
+}, (a, b) => a.m === b.m && a.timeZone === b.timeZone && a.noTimes === b.noTimes && a.actions === b.actions && a.onReattach === b.onReattach && a.anchored === b.anchored && a.marks === b.marks
+  && a.who?.name === b.who?.name && a.who?.icon === b.who?.icon && a.who?.tone === b.who?.tone);
 
 /** Three small Muse stars that light in turn while the companion is thinking. */
 export function Thinking({ name }: { name: string }) {

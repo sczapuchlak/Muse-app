@@ -163,3 +163,10 @@
 .muse-dash-col .muse-desk-track>li{height:auto;display:grid}
 .muse-bookshelf[data-surface="dashboard"] .muse-dash-col .muse-desk-layout .muse-desk-tile{height:100%!important;grid-template-rows:auto 1fr auto!important}
 .muse-bookshelf[data-surface="dashboard"] .muse-dash-col .muse-desk-tile-progress{align-self:end}
+/* Up Next merged into the Reading Plan (Nov 25): Recently finished (two covers) beside Recent reading sessions (three
+   rows), equal halves of one row that end on the same line. */
+.muse-dash-trio[data-pair]{grid-template-columns:repeat(2,minmax(0,1fr))!important;align-items:stretch}
+.muse-dash-trio[data-pair]>*{height:100%;box-sizing:border-box}
+.muse-dash-trio[data-pair] .muse-dash-recent{align-content:start}
+.muse-dash-trio[data-pair] .muse-dash-recent-list{grid-template-columns:minmax(0,1fr)!important}
+@container muse-content (max-width:900px){.muse-dash-trio[data-pair]{grid-template-columns:minmax(0,1fr)!important}}

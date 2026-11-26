@@ -81,7 +81,7 @@ function Page({ initialId, onRouteClear, continueFrom, onCreated }: { initialId:
   const [messages, setMessages] = useState<ThreadMessage[]>([]);
   const [versions, setVersions] = useState<Map<string, { companionId: string; name: string; version: number }>>(new Map());
   const [loadedFor, setLoadedFor] = useState<string | null>(null);
-  const [stream, setStream] = useState<{ text: string; pending: Pending } | null>(null);
+  const [stream, setStream] = useState<{ text: string; pending: Pending; key: string } | null>(null);
   const [error, setError] = useState<{ text: string; retry?: Pending } | null>(null);
   const [sending, setSending] = useState(false);
   const [confirmFinish, setConfirmFinish] = useState(false);
@@ -93,7 +93,7 @@ function Page({ initialId, onRouteClear, continueFrom, onCreated }: { initialId:
   const [greetNote, setGreetNote] = useState("");
   const [draftEntry, setDraftEntry] = useState<string | null>(null);
   const creating = useRef<Promise<Conversation | null> | null>(null);
-  const end = useRef<HTMLDivElement>(null);
+  const end = useRef<HTMLDivElement>(null), pageRef = useRef<HTMLDivElement>(null);
   const [dock, setDock] = useState<HTMLDivElement | null>(null);
   /** On a desktop the page runs to the bottom of the window (less our usual padding), so the conversation gets every
    *  line of room; the toolbar sits up in the header. Measured, because the header's height varies by theme and width. */
@@ -121,15 +121,26 @@ function Page({ initialId, onRouteClear, continueFrom, onCreated }: { initialId:
   }, [client, userId, convId]);
   const shown = convId ? messages : [];
   const streaming = Boolean(stream);
-  useEffect(() => { if (shown.length) end.current?.scrollIntoView({ block: "nearest", behavior: "smooth" }); }, [shown.length, streaming]);
+  const follow = useFollow(pageRef, end);
+  // Opening an entry starts at its latest words, once (never again on later renders).
+  const landedFor = useRef<string | null>(null);
+  useEffect(() => { if (loaded && convId && shown.length && landedFor.current !== convId) { landedFor.current = convId; follow.toEnd(false); } }, [loaded, convId, shown.length, follow]);
 
   const ask = useCallback(async (id: string, pending: Pending) => {
-    setError(null); setStream({ text: "", pending });
+    const key = `reply-${newId()}`;
+    setError(null); setStream({ text: "", pending, key });
+    // Words arrive many times a second; they're painted at most once a frame, and the page follows them only until
+    // the reply's first line reaches the top, or until you scroll yourself.
+    let buffered = "", frame = 0;
+    const paint = () => { frame = 0; const add = buffered; buffered = ""; setStream((s) => (s && s.key === key ? { ...s, text: s.text + add } : s)); requestAnimationFrame(() => follow.reply(key)); };
     try {
       const done = await aiStream<{ message: Message }>(pending.kind === "opening" ? { action: "opening", conversationId: id, localDate: today, hour: new Date().getHours() } : { action: "reply", conversationId: id, messageId: pending.messageId, localDate: today },
-        (d) => setStream((s) => (s ? { ...s, text: s.text + d } : s)));
+        (d) => { buffered += d; if (!frame) frame = requestAnimationFrame(paint); });
+      if (frame) cancelAnimationFrame(frame);
       const m = done.message as unknown as Record<string, string>;
-      setMessages((list) => [...list, { id: m.id, role: "assistant", body: m.body, createdAt: m.created_at, correctedAt: null, companionVersionId: m.companion_version_id, replyTo: m.reply_to ?? null }]);
+      // The saved reply takes over the streaming row in the same render: no second copy, no rebuilt row, no jump.
+      setStream(null);
+      setMessages((list) => [...list, { id: m.id, rowKey: key, role: "assistant", body: m.body, createdAt: m.created_at, correctedAt: null, companionVersionId: m.companion_version_id, replyTo: m.reply_to ?? null }]);
       const v = await P.versionsByIds(client, userId, [m.companion_version_id]).catch(() => new Map());
       setVersions((old) => new Map([...old, ...v]));
       void j.refreshAi(); void j.refreshConversation(id);
@@ -145,8 +156,8 @@ function Page({ initialId, onRouteClear, continueFrom, onCreated }: { initialId:
       }
       setError({ text: e instanceof Error ? e.message : "The reply couldn’t be finished.", retry: ["duplicate", "not-entitled", "limit-daily", "limit-monthly", "finished"].includes(code) ? undefined : pending });
       if (code === "duplicate") { const fresh = await P.loadMessages(client, userId, id); setMessages(fresh.messages); }
-    } finally { setStream(null); }
-  }, [client, userId, today, j]);
+    } finally { if (frame) cancelAnimationFrame(frame); setStream((s) => (s && s.key === key ? null : s)); }
+  }, [client, userId, today, j, follow]);
 
   /** Creates the entry only when needed (first Send, or "ask to begin"). Reuses this page's saved draft entry. */
   async function ensureEntry(status: "active" | "draft", draft?: string, guideState?: GuideState): Promise<Conversation | null> {
@@ -159,15 +170,16 @@ function Page({ initialId, onRouteClear, continueFrom, onCreated }: { initialId:
   }
   const [attachments, setAttachments] = useState<Attachment[]>([]);
   /** An earlier photo, attached again to the next message (the companion only sees photos with their own message). */
-  function reattach(img: MessageImage) {
+  const reattach = (img: MessageImage) => {
     void boardImageUrl(img.thumbnailPath).catch(() => "").then((preview) => setAttachments((list) => list.length >= 7 || list.some((a) => a.stored?.id === img.id) ? list : [...list, { key: `again-${img.id}`, preview, stored: img }]));
-  }
+  };
   async function send(text: string, photos: Attachment[] = []) {
     const c = await ensureEntry("active"); if (!c) return false;
     const body = text || (photos.length === 1 ? "[1 photo]" : `[${photos.length} photos]`);
     const id = newId(), optimistic: ThreadMessage = { id, role: "user", body, createdAt: new Date().toISOString(), correctedAt: null, pending: true, previews: photos.map((p) => p.preview).filter(Boolean) };
     setSending(true); setError(null); setSaved(null);
-    if (!convId) { setConvId(c.id); setLoadedFor(c.id); setMessages([optimistic]); } else setMessages((list) => [...list, optimistic]);
+    if (!convId) { setConvId(c.id); setLoadedFor(c.id); setMessages([optimistic]); landedFor.current = c.id; } else setMessages((list) => [...list, optimistic]);
+    follow.sent();
     try {
       // Photos upload first (resized, private, in this entry's folder), so a saved message never waits on them.
       const folder = `${userId}/${c.id}/`;
@@ -253,7 +265,7 @@ function Page({ initialId, onRouteClear, continueFrom, onCreated }: { initialId:
       const m = await postAnswer(c, q, text);
       const next = { ...gState, sent: [...new Set([...(gState.sent ?? []), q.id])] };
       setGState(next); await P.saveGuideState(client, userId, c.id, next).catch(() => undefined);
-      if (!convId || c.status === "draft") { setConvId(c.id); setLoadedFor(c.id); }
+      if (!convId || c.status === "draft") { setConvId(c.id); setLoadedFor(c.id); landedFor.current = c.id; }
       void j.refreshConversation(c.id); setSending(false);
       if (aiOn) void ask(c.id, { kind: "reply", messageId: m.id });
     } catch (e) { setSending(false); setError({ text: e instanceof Error ? e.message : "Not saved." }); }
@@ -271,7 +283,7 @@ function Page({ initialId, onRouteClear, continueFrom, onCreated }: { initialId:
     setMode(m);
     const c = await j.startConversation({ journalId: journal.id, companion, mode: m });
     if (!c) return;
-    setConvId(c.id); setLoadedFor(c.id); setMessages([]); setSaved(null);
+    setConvId(c.id); setLoadedFor(c.id); setMessages([]); setSaved(null); landedFor.current = c.id;
     void ask(c.id, { kind: "opening" });
   }
   /** Switching journals changes the page's context. An entry in progress stays where it is (with its draft) and
@@ -289,11 +301,13 @@ function Page({ initialId, onRouteClear, continueFrom, onCreated }: { initialId:
   const userCount = shown.filter((m) => m.role === "user").length;
   const others = state.conversations.filter((c) => c.id !== conv?.id && unfinished(c)).slice(0, 5);
   const pinned = conv?.companionVersionId ? [...versions.entries()].find(([id]) => id === conv.companionVersionId)?.[1] : undefined;
-  const display: ThreadMessage[] = stream ? [...shown, { id: "streaming", role: "assistant", body: stream.text || " ", createdAt: new Date().toISOString(), correctedAt: null, streaming: true, companionVersionId: conv?.companionVersionId ?? null }] : shown;
+  const display: ThreadMessage[] = stream ? [...shown, { id: stream.key, rowKey: stream.key, role: "assistant", body: stream.text || " ", createdAt: new Date().toISOString(), correctedAt: null, streaming: true, companionVersionId: conv?.companionVersionId ?? null }] : shown;
+  const convCompanionId = conv?.companionId, convCompanionName = conv?.companionName;
+  // Plain functions: the React Compiler keeps them stable, so settled message rows don't re-render while a reply streams.
   const whoFor = (m: ThreadMessage) => {
     const v = m.companionVersionId ? versions.get(m.companionVersionId) : undefined;
-    const c = state.companions.find((x) => x.id === (v?.companionId ?? conv?.companionId));
-    return { name: v?.name ?? c?.name ?? conv?.companionName ?? "Companion", icon: c?.icon ?? "sparkle", tone: c?.tone ?? (5 as MuseTone) };
+    const c = state.companions.find((x) => x.id === (v?.companionId ?? convCompanionId));
+    return { name: v?.name ?? c?.name ?? convCompanionName ?? "Companion", icon: c?.icon ?? "sparkle", tone: c?.tone ?? (5 as MuseTone) };
   };
   // The Journal menu's "This entry" and "Pick up where you left off" (what the old ⋯ menu held, minus new-entry starts).
   const entryMenu = (close: () => void) => <>
@@ -321,7 +335,7 @@ function Page({ initialId, onRouteClear, continueFrom, onCreated }: { initialId:
   return <section ref={fitToViewport} className="muse-journal-archive mj-workspace mj-reveal" aria-label="Journal" style={{ "--journal-a": `var(--chart-${tone})`, "--journal-b": `var(--chart-${(tone % 8) + 1})` } as React.CSSProperties}>
     {ui.toolbarSlot && createPortal(toolbar, ui.toolbarSlot)}
 
-    <div className="mj-ws-page">
+    <div className="mj-ws-page" ref={pageRef}>
       {reference && <div className="mj-ref" role="note">
         <svg className="mj-ref-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 14 4 9l5-5M4 9h10a6 6 0 0 1 0 12h-3" /></svg>
         <span className="type-meta">{conv && !conv.continuesId ? "Continued from" : "Referencing"}</span>
@@ -462,4 +476,45 @@ function NewEntryMenu({ disabled, guided, greet, companionName, onStart }: { dis
       </div>
     </GlassPopover>
   </>;
+}
+
+/**
+ * Keeps the conversation in view without dragging you around. The page scrolls in one place: the conversation itself on
+ * a computer (it has its own scroll), the window on a phone. It moves only:
+ *  - once when an entry opens (to the latest words), and when you send (your own message comes into view);
+ *  - while a reply streams, downward only, and only until the reply's first line reaches the top, so a long answer is
+ *    read from its beginning. Scrolling yourself (wheel, touch, keys) stops it until you send again.
+ * Never smooth-scrolls the window when a reply finishes.
+ */
+function useFollow(pageRef: React.RefObject<HTMLDivElement | null>, end: React.RefObject<HTMLDivElement | null>) {
+  const held = useRef(false);
+  useEffect(() => {
+    const hold = () => { held.current = true; };
+    const keys = (e: KeyboardEvent) => { if (["ArrowUp", "PageUp", "Home"].includes(e.key) && !(e.target instanceof HTMLTextAreaElement)) hold(); };
+    window.addEventListener("wheel", hold, { passive: true }); window.addEventListener("touchmove", hold, { passive: true }); window.addEventListener("keydown", keys);
+    return () => { window.removeEventListener("wheel", hold); window.removeEventListener("touchmove", hold); window.removeEventListener("keydown", keys); };
+  }, []);
+  return useMemo(() => {
+    /** The conversation's own scroller when it has one (computer), else the window (phone). */
+    const box = () => { const el = pageRef.current; return el && /(auto|scroll)/.test(getComputedStyle(el).overflowY) ? el : null; };
+    const scrollTo = (top: number, smooth: boolean) => { const el = box(); const behavior: ScrollBehavior = smooth ? "smooth" : "auto"; if (el) el.scrollTo({ top, behavior }); else window.scrollTo({ top, behavior }); };
+    const current = () => box()?.scrollTop ?? window.scrollY;
+    /** How far down the page can go so its end (the box you type in) is in view. */
+    const bottom = () => { const el = box(); if (!end.current) return current();
+      if (el) return Math.max(0, el.scrollHeight - el.clientHeight);
+      const doc = document.scrollingElement ?? document.documentElement; return Math.max(0, doc.scrollHeight - window.innerHeight); };
+    /** Where a row's top sits in scroll terms, with a little air above it (and below a phone's top bar). */
+    const topOf = (row: Element) => { const el = box(); const r = row.getBoundingClientRect();
+      return el ? r.top - el.getBoundingClientRect().top + el.scrollTop - 16 : r.top + window.scrollY - 88; };
+    return {
+      toEnd: (smooth: boolean) => scrollTo(bottom(), smooth),
+      sent: () => { held.current = false; requestAnimationFrame(() => scrollTo(bottom(), true)); },
+      reply: (key: string) => {
+        if (held.current) return;
+        const row = document.querySelector(`[data-message-id="${CSS.escape(key)}"]`); if (!row) return;
+        const target = Math.min(bottom(), topOf(row));
+        if (target > current() + 1) scrollTo(target, false);
+      },
+    };
+  }, [pageRef, end]);
 }

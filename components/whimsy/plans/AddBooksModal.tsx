@@ -1,5 +1,5 @@
 'use client';
-import {useState} from 'react';
+import {useState,type ReactNode} from 'react';
 import {useRouter} from 'next/navigation';
 import {MuseModal} from '@/components/MuseModal';
 import type {Book} from '@/lib/whimsy/models';
@@ -15,7 +15,8 @@ import './ReadingPlans.css';
  * Add books to a plan using the existing Muse Library search (your shelf first, then the catalog). Nothing is
  * duplicated: shelf books are chosen by id, and a catalog book is added to the Library through Quick Add first.
  */
-export function AddBooksModal({kind,period,label,books,planned,onAdd,onClose}:{kind:PlanKind;period:string;label:string;books:Book[];planned:ReadonlySet<string>;onAdd:(ids:string[])=>void;onClose:()=>void}){
+export function AddBooksModal({kind,period,label,books,planned,onAdd,onClose,destination}:{kind:PlanKind;period:string;label:string;books:Book[];planned:ReadonlySet<string>;onAdd:(ids:string[])=>void;onClose:()=>void;
+ /** In a year: which month the books are planned for (or the year itself). */ destination?:ReactNode}){
  const router=useRouter(),[picked,setPicked]=useState<string[]>([]);
  const byId=new Map(books.map(b=>[b.id,b]));
  const choose=(id:string)=>setPicked(list=>list.includes(id)?list:[...list,id]);
@@ -23,8 +24,9 @@ export function AddBooksModal({kind,period,label,books,planned,onAdd,onClose}:{k
  const suggestions=books.filter(b=>!b.archivedAt&&!planned.has(b.id)&&(b.status==='planned'||b.status==='reading')).sort((a,b)=>(a.status===b.status?0:a.status==='reading'?-1:1)||b.createdAt.localeCompare(a.createdAt)).slice(0,12);
  const toggle=(id:string)=>setPicked(list=>list.includes(id)?list.filter(x=>x!==id):[...list,id]);
  const fresh=picked.filter(id=>!planned.has(id));
- return <MuseModal id="reading-plan-add" label={`Add books to ${label}`} title={`Add to ${label}`} returnFocus={null} onClose={onClose}>
+ return <MuseModal id="reading-plan-add" label={`Add books to ${label}`} title={destination?'Add books':`Add to ${label}`} returnFocus={null} onClose={onClose}>
   <div className="muse-plan-add">
+   {destination&&<div className="muse-plan-add-where"><span className="small-label">Plan them for</span>{destination}</div>}
    {suggestions.length>0&&<section aria-label="From your shelf"><span className="small-label">From your shelf</span>
     <ul className="muse-plan-suggest">{suggestions.map(b=><li key={b.id}><button type="button" aria-pressed={picked.includes(b.id)} onClick={()=>toggle(b.id)} title={b.title}><span className="muse-plan-suggest-cover"><Cover book={b}/></span><strong>{b.title}</strong><StatusChip status={b.status} compact/></button></li>)}</ul></section>}
    <section aria-label="Search your library and the catalog"><span className="small-label">Or search</span>
