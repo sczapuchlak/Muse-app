@@ -1,8 +1,9 @@
 "use client";
 import { useEffect, useSyncExternalStore } from "react";
 import { createMuseBrowserClient } from "@/lib/supabase/client";
+import type { Json } from "@/lib/database.types";
 import { copyBundle, itemFromRow, listFromRow, sectionFromRow, starterCard, starters, type ListBundle, type ListItem, type ListPreset, type ListSection, type MuseList, type StarterItem } from "@/lib/lists/model";
-import { blockFromRow, imagesOfBlock, presetOf, type BlockData, type BlockKind, type BlockWidth, type CardData, type ListBlock, type SpaceImage } from "@/lib/lists/blocks";
+import { blockFromRow, imagesOfBlock, presetOf, templateFromRow, type CardTemplate, type BlockData, type BlockKind, type BlockWidth, type CardData, type ListBlock, type SpaceImage } from "@/lib/lists/blocks";
 import { areaView, blockOfItem, isVirtualId } from "@/lib/lists/areas";
 import { uploadBoardImage, boardImageBucket } from "@/lib/data/constellation-images";
 import { anchorFor, periodFor, schedulePresets, type ListEvent, type ListSchedule } from "@/lib/lists/schedule";
@@ -13,8 +14,8 @@ import { shiftDate } from "@/lib/dates";
  * and reloaded from the server if a write fails so the screen never drifts from what's saved.
  */
 /** `blocksReady` is false only on a database that predates Spaces blocks (lists still work there). */
-type Snap = { loaded: boolean; error: string; lists: MuseList[]; sections: ListSection[]; items: ListItem[]; events: ListEvent[]; blocks: ListBlock[]; blocksReady: boolean };
-let snap: Snap = { loaded: false, error: "", lists: [], sections: [], items: [], events: [], blocks: [], blocksReady: true };
+type Snap = { loaded: boolean; error: string; lists: MuseList[]; sections: ListSection[]; items: ListItem[]; events: ListEvent[]; blocks: ListBlock[]; blocksReady: boolean; /** My card templates (any space). */ cardTemplates: CardTemplate[]; templatesReady: boolean };
+let snap: Snap = { loaded: false, error: "", lists: [], sections: [], items: [], events: [], blocks: [], blocksReady: true, cardTemplates: [], templatesReady: true };
 let client: ReturnType<typeof createMuseBrowserClient> | undefined, loading: Promise<void> | null = null;
 const db = () => client ??= createMuseBrowserClient();
 const listeners = new Set<() => void>();
@@ -33,21 +34,21 @@ const listRow = (l: MuseList) => ({ id: l.id, title: l.title.trim(), description
 const sectionRow = (s: ListSection) => ({ id: s.id, list_id: s.listId, title: s.title.trim(), ...(s.description !== undefined ? { description: s.description?.trim() || null } : {}), icon: s.icon, accent: s.accent, position: s.position, collapsed: s.collapsed });
 const itemRow = (i: ListItem) => ({ id: i.id, list_id: i.listId, section_id: i.sectionId, title: i.title.trim(), notes: i.notes, position: i.position, priority: i.priority, due_date: i.dueDate,
   completed_at: i.completedAt, completed_on: i.completedOn, schedule: i.schedule, field_values: i.fieldValues, link_kind: i.linkKind, link_id: i.linkId, ...(i.blockId !== undefined ? { block_id: i.blockId } : {}) });
-const blockRow = (b: ListBlock) => ({ id: b.id, list_id: b.listId, section_id: b.sectionId, kind: b.kind, position: b.position, width: b.width, data: b.data });
+const blockRow = (b: ListBlock) => ({ id: b.id, list_id: b.listId, section_id: b.sectionId, kind: b.kind, position: b.position, width: b.width, data: b.data as unknown as NonNullable<Json> });
 const missingTable = (e: { code?: string } | null) => !!e && ["PGRST205", "42P01"].includes(String(e.code));
 
 export async function loadLists(force = false) {
   if (loading && !force) return loading;
   loading = (async () => {
     const since = shiftDate(new Date().toISOString().slice(0, 10), -800);
-    const [l, s, i, e, b] = await Promise.all([
+    const [l, s, i, e, b, t] = await Promise.all([
       db().from("lists").select("*").order("position"), db().from("list_sections").select("*").order("position"),
       db().from("list_items").select("*").order("position"), db().from("list_item_events").select("*").gte("period_end", since).order("period_start", { ascending: false }).limit(5000),
-      db().from("list_blocks").select("*").order("position")]);
-    const err = l.error ?? s.error ?? i.error ?? e.error ?? (missingTable(b.error) ? null : b.error);
+      db().from("list_blocks").select("*").order("position"), db().from("list_card_templates").select("*").order("position")]);
+    const err = l.error ?? s.error ?? i.error ?? e.error ?? (missingTable(b.error) ? null : b.error) ?? (missingTable(t.error) ? null : t.error);
     if (err) { emit({ loaded: true, error: "Your spaces couldn’t load. Check your connection and try again." }); return; }
     emit({ loaded: true, error: "", lists: (l.data ?? []).map(listFromRow), sections: (s.data ?? []).map(sectionFromRow), items: (i.data ?? []).map(itemFromRow), events: (e.data ?? []).map(eventFromRow),
-      blocks: (b.data ?? []).map(blockFromRow), blocksReady: !b.error });
+      blocks: (b.data ?? []).map(blockFromRow), blocksReady: !b.error, cardTemplates: (t.data ?? []).map(templateFromRow), templatesReady: !t.error });
   })().finally(() => { loading = null; });
   return loading;
 }
@@ -71,7 +72,10 @@ export const bundleOf = (s: Snap, listId: string): ListBundle | null => {
 async function insertBundle(b: ListBundle) {
   const blocks = snap.blocksReady ? b.blocks : [];
   emit({ lists: [...snap.lists, b.list], sections: [...snap.sections, ...b.sections], items: [...snap.items, ...b.items], blocks: [...snap.blocks, ...blocks] });
-  await write(() => db().from("lists").insert(listRow(b.list)));
+  // Read the new row back, so the space knows which settings this database supports (e.g. section tiles).
+  const created = await db().from("lists").insert(listRow(b.list)).select().single();
+  if (created.error) { emit({ error: "That change didn’t save. Your spaces were refreshed from what’s saved." }); await loadLists(true); throw created.error; }
+  if (created.data) { const fresh = listFromRow(created.data); emit({ lists: snap.lists.map((l) => l.id === fresh.id ? fresh : l) }); }
   if (b.sections.length) await write(() => db().from("list_sections").insert(b.sections.map(sectionRow)));
   if (blocks.length) await write(() => db().from("list_blocks").insert(blocks.map(blockRow)));
   if (b.items.length) await write(() => db().from("list_items").insert(b.items.map(itemRow)));
@@ -241,7 +245,7 @@ export async function updateBlock(id: string, patch: { data?: BlockData; width?:
   const cur = snap.blocks.find((b) => b.id === id); if (!cur) return;
   const next = { ...cur, ...patch, updatedAt: now() };
   emit({ blocks: snap.blocks.map((b) => b.id === id ? next : b) });
-  await write(() => db().from("list_blocks").update({ data: next.data, width: next.width }).eq("id", id));
+  await write(() => db().from("list_blocks").update({ data: next.data as unknown as NonNullable<Json>, width: next.width }).eq("id", id));
 }
 
 /** Delete a block. A checklist takes the items it shows with it (the confirmation says how many). Photos no longer used anywhere are removed. */
@@ -284,6 +288,73 @@ export async function deleteItems(ids: string[]) {
   if (!ids.length) return;
   emit({ items: snap.items.filter((i) => !ids.includes(i.id)), events: snap.events.filter((e) => !ids.includes(e.itemId)) });
   await write(() => db().from("list_items").delete().in("id", ids));
+}
+
+/* ---------- Spaces: card templates (My templates, usable in any space) ---------- */
+
+type TemplateStructure = Pick<CardTemplate, "preset" | "icon" | "fields" | "display" | "preview" | "aside" | "look">;
+const templateRow = (t: CardTemplate) => ({ id: t.id, name: t.name.trim().slice(0, 80) || "Card", preset: t.preset, icon: t.icon, fields: t.fields as unknown as NonNullable<Json>, display: { mode: t.display, preview: t.preview, ...(t.aside ? { aside: t.aside } : {}), ...(t.look ? { look: t.look } : {}) } as unknown as NonNullable<Json>, position: t.position, updated_at: t.updatedAt });
+export async function createCardTemplate(name: string, structure: TemplateStructure) {
+  if (!snap.templatesReady) { emit({ error: "Card templates need a quick update before they can save. Refresh in a minute." }); throw Error("templates unavailable"); }
+  const stamp = now(), t: CardTemplate = { id: uuid(), name: name.trim().slice(0, 80) || "Card", ...structure, position: snap.cardTemplates.length, createdAt: stamp, updatedAt: stamp };
+  emit({ cardTemplates: [...snap.cardTemplates, t] });
+  await write(() => db().from("list_card_templates").insert(templateRow(t)));
+  return t.id;
+}
+/** Editing a template changes future cards only; cards already made keep their own fields. */
+export async function updateCardTemplate(id: string, patch: Partial<Omit<CardTemplate, "id">>) {
+  const cur = snap.cardTemplates.find((t) => t.id === id); if (!cur) return;
+  const next = { ...cur, ...patch, updatedAt: now() };
+  emit({ cardTemplates: snap.cardTemplates.map((t) => t.id === id ? next : t) });
+  await write(() => db().from("list_card_templates").update(templateRow(next)).eq("id", id));
+}
+export async function duplicateCardTemplate(id: string) {
+  const cur = snap.cardTemplates.find((t) => t.id === id); if (!cur) return null;
+  return createCardTemplate(`${cur.name} copy`, structuredClone({ preset: cur.preset, icon: cur.icon, fields: cur.fields, display: cur.display, preview: cur.preview, aside: cur.aside, look: cur.look }));
+}
+/** Deleting a template never touches the cards made from it. */
+export async function deleteCardTemplate(id: string) {
+  emit({ cardTemplates: snap.cardTemplates.filter((t) => t.id !== id) });
+  await write(() => db().from("list_card_templates").delete().eq("id", id));
+}
+
+/* ---------- Spaces: duplicate a section ---------- */
+
+/**
+ * Duplicate a section right after itself.
+ * - Structure: the same blocks, layout and card field definitions, with nothing personal: cards keep their fields
+ *   but no values, title or photo; notes, links and photo galleries start empty; checklists keep their names but no items.
+ * - With content: independent copies of everything written (photos are shared by reference). Checklist items come
+ *   unticked, with no history and no Planner link; repeating items restart from today, like any Spaces copy.
+ */
+export async function duplicateSection(sectionId: string, withContent: boolean, today: string) {
+  const src = snap.sections.find((x) => x.id === sectionId); if (!src) return null;
+  const sibs = snap.sections.filter((x) => x.listId === src.listId).sort((a, b) => a.position - b.position), at = sibs.findIndex((x) => x.id === sectionId) + 1;
+  const stamp = now(), copy: ListSection = { ...src, id: uuid(), title: `${src.title} copy`.slice(0, 80), collapsed: false, position: at };
+  const shifted = sibs.slice(at).map((x, k) => ({ ...x, position: at + 1 + k }));
+  const srcBlocks = areaBlocks(src.listId, sectionId), ids = new Map(srcBlocks.map((b) => [b.id, uuid()]));
+  const blank = (b: ListBlock): BlockData => {
+    const d = structuredClone(b.data) as BlockData & Record<string, unknown>;
+    if (withContent) return d;
+    if (b.kind === "card") { const c = d as CardData; return { ...c, title: "", image: undefined, fields: c.fields.map((f) => ({ ...f, value: "" })) }; }
+    if (b.kind === "note") return { title: (d as { title?: string }).title, text: "" };
+    if (b.kind === "images") return { title: (d as { title?: string }).title, images: [] };
+    if (b.kind === "link") return { url: "" };
+    return d;
+  };
+  const blocks: ListBlock[] = srcBlocks.map((b) => ({ ...b, id: ids.get(b.id)!, sectionId: copy.id, data: blank(b), createdAt: stamp, updatedAt: stamp }));
+  const listBlocks = snap.blocks.filter((b) => b.listId === src.listId);
+  const items: ListItem[] = !withContent ? [] : snap.items.filter((i) => i.listId === src.listId && i.sectionId === sectionId).map((i) => {
+    const shown = blockOfItem(i, listBlocks);
+    return { ...i, id: uuid(), sectionId: copy.id, ...(i.blockId !== undefined || ids.has(shown) ? { blockId: ids.get(shown) ?? null } : {}), completedAt: null, completedOn: null, linkKind: null, linkId: null,
+      schedule: i.schedule ? { ...i.schedule, anchor: today, since: today } : null, createdAt: stamp, updatedAt: stamp };
+  });
+  emit({ sections: [...snap.sections.map((x) => shifted.find((y) => y.id === x.id) ?? x), copy], blocks: [...snap.blocks, ...blocks], items: [...snap.items, ...items] });
+  if (shifted.length) await write(() => db().from("list_sections").upsert(shifted.map(sectionRow)));
+  await write(() => db().from("list_sections").insert(sectionRow(copy)));
+  if (blocks.length) await write(() => db().from("list_blocks").insert(blocks.map(blockRow)));
+  if (items.length) await write(() => db().from("list_items").insert(items.map(itemRow)));
+  return copy.id;
 }
 
 /* ---------- Spaces: photos ---------- */

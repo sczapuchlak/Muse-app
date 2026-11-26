@@ -429,7 +429,7 @@ input.muse-space-block-title{all:revert;font:inherit;font-size:.8rem;min-height:
   radial-gradient(1.2px 1.2px at 71% 30%,#fff,transparent),radial-gradient(1px 1px at 83% 64%,rgb(255 255 255 / .75),transparent),
   radial-gradient(1.5px 1.5px at 92% 22%,#fff,transparent),radial-gradient(1px 1px at 36% 44%,rgb(255 255 255 / .7),transparent),
   linear-gradient(115deg,transparent 35%,rgb(255 255 255 / .22) 50%,transparent 65%);opacity:.9;transition:transform 1.2s cubic-bezier(.2,.8,.2,1)}
-@media (prefers-reduced-motion:no-preference){:root:not([data-magic="quiet"]) .muse-lists-card:hover .muse-space-sky>i{transform:translate(6%,-3%)}}
+/* Star dust stays put (no drift on hover). */
 /* The icon tile floats on the sky with a soft glow in the card's palette. */
 .muse-lists .muse-lists-cover:not([data-photo]) .muse-lists-card-icon{box-shadow:0 0 0 1px rgb(255 255 255 / .55),0 12px 26px -12px color-mix(in srgb,var(--foreground) 45%,transparent)}
 .muse-lists .muse-lists-cover .muse-lists-pinned,.muse-lists .muse-lists-cover .muse-space-countdown{z-index:2}
@@ -445,3 +445,232 @@ input.muse-space-block-title{all:revert;font:inherit;font-size:.8rem;min-height:
 /* Softer edge into the card body and a touch less heat, so the sky glows rather than shouts. */
 .muse-space-sky{filter:saturate(.9)}
 .muse-space-sky::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 52%,color-mix(in srgb,var(--glass-background) 55%,transparent))}
+
+/* ── Section tiles bar, fixed (Nov 26): the tiles get the whole width; hiding sits at the far right edge behind a divider. */
+.muse-space-nav:not(#\#){display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:0}
+.muse-space-nav:not(#\#)>ol{display:flex;flex-wrap:nowrap;min-width:0;width:100%}
+.muse-space-nav:not(#\#) li{flex:0 0 auto}
+.muse-space-nav:not(#\#)>.muse-space-nav-hide{grid-column:2;margin-left:6px;padding-left:4px;border-left:1px solid var(--divider);border-radius:0 10px 10px 0;width:38px}
+@media (min-width:1100px){.muse-space-nav:not(#\#) li{flex:1 0 auto}}
+
+/* ── Three different adds, three different looks ───────────────────────────────────────────────────────────────
+   Add an item: an inline row inside a checklist. Add content: a pill at the end of a section. New section: a wide
+   dashed field under the sections, with Add content beside it for the whole page. */
+.muse-space-add:not(#\#){min-height:34px;padding:0 14px;border-style:solid;border-color:color-mix(in srgb,var(--list-accent,var(--accent-primary)) 45%,var(--glass-border));
+ background:color-mix(in srgb,var(--list-accent,var(--accent-primary)) 9%,var(--glass-background));color:var(--foreground);font-weight:700}
+.muse-space-add:not(#\#) svg{color:var(--list-accent,var(--accent-primary))}
+.muse-space-add-row[data-empty]{padding:10px 12px;border:1px dashed var(--glass-border);border-radius:14px}
+.muse-space-add-hint{color:var(--text-muted);font-size:.78rem}
+.muse-list-quickadd span{font-weight:700;color:var(--list-accent,var(--text-muted))}
+.muse-space-page-add{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:stretch}
+.muse-space-page-content{display:inline-flex;align-items:center;gap:6px;min-height:52px;padding:0 18px;border-radius:18px;white-space:nowrap}
+@container muse-content (max-width:560px){.muse-space-page-add{grid-template-columns:minmax(0,1fr)}.muse-space-page-content{justify-content:center;min-height:44px}}
+
+/* Picker tiles: a name and what it's for. */
+.muse-space-palette-grid button>span{display:grid;gap:0;min-width:0}
+.muse-space-palette-grid button b{font-size:.82rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.muse-space-palette-grid button small{font-size:.68rem;font-weight:500;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.muse-space-palette-mine{display:flex;align-items:center;justify-content:space-between}
+.muse-space-palette-hint{margin:0 2px 4px}
+.muse-space-add-where{margin-bottom:10px}
+.muse-space-add-where select{min-height:40px;font:inherit}
+
+/* ── Card display modes ─────────────────────────────────────────────────────────────────────────────────────── */
+.muse-space-card-toggle{all:unset;box-sizing:border-box;cursor:pointer;width:100%;border-radius:10px}
+.muse-space-card-toggle.muse-space-card-head{display:flex;align-items:center;gap:10px;min-width:0;padding-right:0}
+.muse-space-card-toggle:focus-visible{outline:2px solid var(--focus-ring);outline-offset:3px}
+.muse-space-chev{flex:none;display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--surface-control);color:var(--text-muted);transition:transform .25s cubic-bezier(.2,.8,.2,1)}
+.muse-space-chev[data-open]{transform:rotate(180deg)}
+.muse-space-card[data-mode=collapsible] .muse-space-card-head,.muse-space-card[data-mode=row] .muse-space-card-head{padding-right:0}
+.muse-space-block[data-kind=card]:has(.muse-space-card-toggle)>.muse-space-block-tools{right:44px}
+.muse-space-preview{cursor:pointer}
+.muse-space-preview dd{font-weight:600}
+.muse-space-card-more{display:grid;gap:8px}
+@media (prefers-reduced-motion:no-preference){:root:not([data-magic="quiet"]) .muse-space-card-more{animation:muse-space-open .28s cubic-bezier(.2,.8,.2,1)}}
+@keyframes muse-space-open{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+.muse-space-card-row{all:unset;box-sizing:border-box;display:grid;grid-template-columns:auto minmax(110px,.9fr) minmax(0,2fr) auto auto;align-items:center;gap:12px;width:100%;min-height:58px;padding:8px 12px 8px 10px;cursor:pointer;
+ border:1px solid var(--glass-border);border-radius:14px;background:color-mix(in srgb,var(--glass-background) 62%,color-mix(in srgb,var(--list-accent,var(--chart-1)) 5%,transparent));transition:border-color .16s,box-shadow .16s}
+.muse-space-card-row:hover{border-color:var(--selected-border);box-shadow:0 8px 20px -16px var(--selected-border)}
+.muse-space-card-row:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
+.muse-space-row-title{display:grid;min-width:0}
+.muse-space-row-title small{font-size:.6rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.muse-space-row-title strong{font-family:var(--font-editorial);font-size:1rem;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.muse-space-row-bits{display:flex;flex-wrap:wrap;gap:4px 16px;min-width:0}
+.muse-space-row-bits>span{display:grid;min-width:0;font-size:.86rem;font-weight:600;font-variant-numeric:tabular-nums}
+.muse-space-row-bits small{font-size:.58rem;font-weight:800;letter-spacing:.11em;text-transform:uppercase;color:var(--text-muted)}
+.muse-space-block[data-kind=card]:has(.muse-space-card-row)>.muse-space-block-tools{top:50%;transform:translateY(-50%);right:46px}
+@container space-section (max-width:560px){
+ .muse-space-card-row{grid-template-columns:auto minmax(0,1fr) auto;gap:4px 10px}
+ .muse-space-row-bits{grid-column:2/-1;grid-row:2}
+ .muse-space-card-row>.muse-space-cost{display:none}
+}
+.muse-space-yes{display:inline-flex;align-items:center;gap:4px;color:color-mix(in srgb,var(--chart-5) 70%,var(--foreground))}
+
+/* ── Card / template editor ─────────────────────────────────────────────────────────────────────────────────── */
+.muse-space-look{display:flex;flex-wrap:wrap;align-items:end;gap:10px 16px}
+.muse-space-display{display:flex}
+.muse-space-display button{font-size:.78rem}
+.muse-space-icon-pick{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:2px 8px 2px 2px;border:1px solid var(--glass-border);border-radius:12px;background:var(--surface-control);color:var(--text-muted);cursor:pointer}
+.muse-space-icon-grid{flex-basis:100%;display:grid;grid-template-columns:repeat(auto-fill,minmax(38px,1fr));gap:4px;padding:6px;border:1px solid var(--glass-border);border-radius:12px}
+.muse-space-icon-grid button{display:grid;place-items:center;height:38px;padding:0;border:0;border-radius:10px;background:transparent;cursor:pointer}
+.muse-space-icon-grid button[aria-pressed=true],.muse-space-icon-grid button:hover{background:var(--selected-background)}
+.muse-space-fieldset{display:grid;gap:8px}
+.muse-space-fields-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 10px;margin:0;padding:0;list-style:none}
+@container space-section (max-width:520px){.muse-space-fields-list{grid-template-columns:minmax(0,1fr)}}
+.muse-modal .muse-space-fields-list{grid-template-columns:minmax(0,1fr)}
+.muse-space-field-item{display:grid;gap:4px;min-width:0;padding:6px 8px;border:1px solid color-mix(in srgb,var(--glass-border) 70%,transparent);border-radius:12px}
+.muse-space-field-item[data-wide]{grid-column:1/-1}
+.muse-space-field-top{display:flex;align-items:center;gap:2px;min-width:0}
+.muse-space-field-top .muse-space-field-label{flex:1 1 auto;min-width:0}
+.muse-space-field-type{flex:none;max-width:96px;min-height:26px;padding:0 4px;border:0;border-radius:8px;background:var(--surface-control);color:var(--text-muted);font:inherit;font-size:.7rem}
+.muse-space-field-item :is(input:not(.muse-space-field-label):not([type=checkbox]),textarea){min-height:36px;font:inherit;font-size:.88rem;width:100%;box-sizing:border-box}
+.muse-space-field-options{min-height:30px!important;font-size:.76rem!important}
+.muse-space-preview-toggle{display:inline-grid;place-items:center;width:28px;height:28px;padding:0;border:1px solid transparent;border-radius:8px;background:transparent;color:var(--text-muted);cursor:pointer;opacity:.55}
+.muse-space-preview-toggle[aria-pressed=true]{opacity:1;color:var(--list-accent,var(--accent-primary));border-color:color-mix(in srgb,var(--list-accent,var(--accent-primary)) 45%,transparent);background:color-mix(in srgb,var(--list-accent,var(--accent-primary)) 10%,transparent)}
+.muse-space-preview-toggle:focus-visible{outline:2px solid var(--focus-ring)}
+.muse-space-preview-order{padding-top:6px;border-top:1px dashed var(--divider)}
+.muse-space-preview-order .editor-label small{margin-left:6px;font-weight:500;letter-spacing:0;text-transform:none;color:var(--text-muted)}
+.muse-space-preview-order ol{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 0;padding:0;list-style:none}
+.muse-space-preview-order li{display:inline-flex;align-items:center;gap:2px;padding:2px 4px 2px 10px;border-radius:999px;background:color-mix(in srgb,var(--list-accent,var(--accent-primary)) 12%,var(--surface-control));font-size:.78rem;font-weight:600}
+.muse-space-preview-order li span{margin-right:4px}
+.muse-space-addfield button{white-space:nowrap}
+/* Card ⋯ menu: how it displays */
+.muse-space-menu-display{display:flex;gap:2px;margin:2px 4px 4px;padding:2px;border-radius:10px;background:var(--surface-control)}
+.muse-space-menu-display button{flex:1;min-height:30px;padding:0 6px;border:0;border-radius:8px;background:transparent;color:var(--text-muted);font:inherit;font-size:.72rem;font-weight:700;cursor:pointer}
+.muse-space-menu-display button[aria-pressed=true]{background:var(--glass-background);color:var(--foreground);box-shadow:0 1px 3px color-mix(in srgb,var(--foreground) 15%,transparent)}
+/* My card templates */
+.muse-space-tpl-list ul{display:grid;gap:6px;margin:8px 0 0;padding:0;list-style:none}
+.muse-space-tpl-list li{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto auto;align-items:center;gap:10px;padding:8px 10px;border:1px solid var(--glass-border);border-radius:14px}
+.muse-space-tpl-list li>span{display:grid;min-width:0}
+.muse-space-tpl-list strong{font-family:var(--font-editorial);font-size:1rem}
+.muse-space-tpl-list small{color:var(--text-muted);font-size:.74rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.muse-space-tpl-edit{display:grid;gap:12px;min-height:0;overflow:auto}
+.muse-space-tpl-edit .muse-space-field input,.muse-space-tpl-edit .muse-space-field select{min-height:40px;font:inherit}
+
+/* Sky scenes (Nov 26): one per kind of space, on the right of the cover, glassy white with the sky's own accents. */
+.muse-sky-art{position:absolute;inset:0 6px 0 auto;width:min(68%,240px);height:100%;overflow:visible;filter:drop-shadow(0 6px 10px rgb(0 0 0 / .12))}
+.muse-sky-art .w{fill:rgb(255 255 255 / .92)}
+.muse-sky-art .a{fill:color-mix(in srgb,var(--sky-c) 70%,#fff)}
+.muse-sky-art .b{fill:color-mix(in srgb,var(--sky-d) 70%,#fff)}
+.muse-sky-art .c{fill:color-mix(in srgb,var(--sky-a) 65%,#fff)}
+.muse-sky-art .s{fill:rgb(255 255 255 / .6)}
+.muse-sky-art .trail{fill:none;stroke:rgb(255 255 255 / .85);stroke-width:2.2;stroke-linecap:round;stroke-dasharray:1 7}
+.muse-sky-art .cloud{fill:rgb(255 255 255 / .55)}
+.muse-sky-art .cloud.small{fill:rgb(255 255 255 / .4)}
+.muse-sky-art .glow{fill:color-mix(in srgb,var(--sky-c) 45%,#fff4cf)}
+.muse-sky-art .frame{fill:none;stroke:rgb(255 255 255 / .95);stroke-width:3}
+.muse-sky-art .leaf{fill:color-mix(in srgb,var(--sky-d) 55%,#bff2cf)}
+.muse-sky-art .ribbon{stroke:color-mix(in srgb,var(--sky-c) 70%,#fff);stroke-width:7}
+.muse-sky-art .bow{fill:color-mix(in srgb,var(--sky-d) 75%,#fff)}
+.muse-sky-art .confetti>*{fill:rgb(255 255 255 / .85)}
+.muse-sky-art .confetti>*:nth-child(odd){fill:color-mix(in srgb,var(--sky-c) 60%,#fff)}
+.muse-sky-art .bubble{fill:rgb(255 255 255 / .2);stroke:rgb(255 255 255 / .9);stroke-width:1.6}
+.muse-sky-art .shine{fill:none;stroke:#fff;stroke-width:2.4;stroke-linecap:round}
+.muse-sky-art .box{fill:none;stroke:color-mix(in srgb,var(--sky-c) 65%,#fff);stroke-width:1.6}
+.muse-sky-art .tick{fill:none;stroke:#fff;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.muse-sky-art .line{fill:color-mix(in srgb,var(--sky-a) 25%,#e8e4f2)}
+.muse-sky-art .star{fill:color-mix(in srgb,var(--sky-c) 75%,#fff)}
+.muse-sky-art .spark{fill:#fff;opacity:.9}
+.muse-sky-art .spark.small{opacity:.7}
+/* Calm on purpose (Nov 26: "the in and out of the stars is a lot"): stars stay still; the drawings drift very slowly
+   and only a couple of pixels; hovering doesn't speed anything up. */
+@media (prefers-reduced-motion:no-preference){:root:not([data-magic="quiet"]){
+ & .muse-sky-art .float{animation:muse-sky-float 14s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+ & .muse-sky-art .float.slow{animation-duration:18s;animation-delay:-6s}
+}}
+@keyframes muse-sky-float{0%,100%{translate:0 0}50%{translate:0 -2px}}
+
+/* Add content picker (Nov 26 IA): basics grid, three card actions, then templates / presets in the same panel. */
+.muse-space-card-actions{display:grid;gap:6px}
+.muse-space-card-actions button{all:unset;box-sizing:border-box;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:12px;min-height:56px;padding:8px 12px 8px 8px;border:1px solid var(--glass-border);border-radius:14px;cursor:pointer;color:var(--text-muted);transition:border-color .16s,background .16s}
+.muse-space-card-actions button>span{display:grid;min-width:0}
+.muse-space-card-actions b{color:var(--foreground);font-size:.9rem}
+.muse-space-card-actions small{font-size:.74rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.muse-space-card-actions button:hover{border-color:var(--selected-border);background:var(--surface-hover)}
+.muse-space-card-actions button:focus-visible{outline:2px solid var(--focus-ring);outline-offset:1px}
+.muse-space-card-actions button[data-primary]{border-color:color-mix(in srgb,var(--list-accent,var(--accent-primary)) 45%,var(--glass-border));background:color-mix(in srgb,var(--list-accent,var(--accent-primary)) 9%,transparent)}
+.muse-space-card-actions button svg{transform:rotate(-90deg)}
+.muse-space-palette-back{justify-self:start;display:inline-flex;align-items:center;gap:6px;font-weight:700}
+.muse-space-palette-group{display:grid;gap:4px}
+.muse-space-palette[data-view=presets] .muse-space-palette-grid,.muse-space-palette[data-view=templates] .muse-space-palette-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.muse-space-palette-empty{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:center;padding:10px;border:1px dashed var(--glass-border);border-radius:14px}
+.muse-space-palette-empty p{margin:0;font-size:.82rem;line-height:1.45;color:var(--text-muted)}
+.muse-space-palette-empty p b{color:var(--foreground)}
+.muse-space-palette-empty .muse-button{grid-column:1/-1;justify-self:start}
+.muse-space-block-title.muse-inline-text{display:block;font-size:.72rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)}
+/* Previews of cards and notes are not tasks: a dot, not a checkbox. */
+.muse-lists-next[data-lines] i{width:6px;height:6px;margin:0 4px 0 3px;border:0;border-radius:50%;background:var(--list-accent,var(--accent-primary))}
+
+/* ── Card looks (Nov 26): background, border and text are independent ───────────────────────────────────────── */
+:is(.muse-space-card,.muse-space-card-row)[data-painted],:is(.muse-space-card,.muse-space-card-row)[data-border]{position:relative;isolation:isolate}
+:is(.muse-space-card,.muse-space-card-row)[data-painted]::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;background:var(--card-bg);opacity:var(--card-bg-alpha,1);pointer-events:none}
+:is(.muse-space-card,.muse-space-card-row)[data-painted]{background:var(--glass-background)}
+:is(.muse-space-card,.muse-space-card-row)[data-border]::after{content:"";position:absolute;pointer-events:none;z-index:2}
+:is(.muse-space-card,.muse-space-card-row)[data-border=left]::after{inset:0 auto 0 0;width:5px;border-radius:16px 0 0 16px;background:var(--card-border)}
+.muse-space-card-row[data-border=left]::after{border-radius:14px 0 0 14px}
+:is(.muse-space-card,.muse-space-card-row)[data-border=left]{padding-left:6px}
+:is(.muse-space-card,.muse-space-card-row)[data-border=full]{border-color:transparent}
+:is(.muse-space-card,.muse-space-card-row)[data-border=full]::after{inset:-1px;border-radius:inherit;padding:2px;background:var(--card-border);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
+/* Automatic ink on strong custom backgrounds: everything inside follows it, labels a step softer. */
+:is(.muse-space-card,.muse-space-card-row)[data-ink=dark]{--ink:#1d1828;--ink-soft:rgb(29 24 40 / .66);--ink-line:rgb(29 24 40 / .16)}
+:is(.muse-space-card,.muse-space-card-row)[data-ink=light]{--ink:#fff;--ink-soft:rgb(255 255 255 / .76);--ink-line:rgb(255 255 255 / .24)}
+:is(.muse-space-card,.muse-space-card-row)[data-ink]{color:var(--ink)}
+:is(.muse-space-card,.muse-space-card-row)[data-ink] :is(strong,b,dd,p,a,em,span:not(.muse-mark):not(.muse-mark *)){color:inherit}
+:is(.muse-space-card,.muse-space-card-row)[data-ink] :is(small,dt,.muse-space-carrier,.muse-space-address,.muse-space-preview-line,.muse-space-aside,.muse-space-route-ends small){color:var(--ink-soft)}
+:is(.muse-space-card,.muse-space-card-row)[data-ink] :is(.muse-space-perf,.muse-space-details){border-color:var(--ink-line)}
+:is(.muse-space-card,.muse-space-card-row)[data-ink] .muse-space-chev{background:var(--ink-line);color:var(--ink)}
+:is(.muse-space-card,.muse-space-card-row)[data-ink] .muse-space-cost{background:var(--ink-line);color:var(--ink)}
+:is(.muse-space-card,.muse-space-card-row)[data-titlestyle=editorial] :is(.muse-space-card-titles strong,.muse-space-row-main strong){font-family:var(--font-editorial);font-style:italic;font-size:1.3rem}
+
+/* The emoji tile: soft by default, or its own colour. */
+.muse-space-emoji{display:grid;place-items:center;flex:none;width:34px;height:34px;border-radius:11px;font-size:1.15rem;line-height:1;
+ background:var(--card-icon-bg,color-mix(in srgb,var(--list-accent,var(--chart-1)) 16%,var(--surface-control)))}
+.muse-space-emoji[data-size=md]{width:44px;height:44px;font-size:1.45rem;border-radius:14px}
+[style*="--card-icon-bg"] .muse-space-emoji{background:var(--card-icon-bg)}
+
+/* ── The callout row (her mock): icon · title over a dotted line of values · the header field · chevron ───────── */
+.muse-space-card-row:not(#\#){grid-template-columns:auto minmax(0,1fr) auto auto;gap:14px;min-height:64px;padding:10px 14px 10px 12px}
+.muse-space-card-row[data-border=left]:not(#\#){padding-left:18px}
+.muse-space-row-main{display:grid;gap:2px;min-width:0}
+.muse-space-row-main strong{font-family:var(--font-ui);font-weight:600;font-size:1.02rem;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.muse-space-preview-line{margin:0;font-size:.92rem;line-height:1.35;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.muse-space-preview-line i{font-style:normal;color:var(--text-muted)}
+.muse-space-card .muse-space-preview-line{cursor:pointer;padding-left:44px}
+.muse-space-aside{flex:none;align-self:start;padding-top:2px;font-size:.84rem;color:var(--text-muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.muse-space-card-head .muse-space-aside{margin-left:auto;align-self:center}
+.muse-space-card-row>.muse-space-aside{align-self:center}
+@container space-section (max-width:560px){
+ .muse-space-card-row:not(#\#){grid-template-columns:auto minmax(0,1fr) auto}
+ .muse-space-card-row>.muse-space-aside{grid-column:2;grid-row:2;align-self:start;padding:0}
+ .muse-space-card .muse-space-preview-line{padding-left:0}
+}
+
+/* Your field layout inside the expanded card: side-by-side pairs, a lone one fills its row. */
+.muse-space-details[data-layout]{grid-template-columns:repeat(2,minmax(0,1fr))}
+.muse-space-details[data-layout]>[data-span="2"]{grid-column:1/-1}
+@container space-section (max-width:380px){.muse-space-details[data-layout]{grid-template-columns:minmax(0,1fr)}}
+
+/* ── Editor: appearance, header field, side-by-side toggle, live preview ─────────────────────────────────────── */
+.muse-space-appearance{border:1px solid var(--glass-border);border-radius:14px;padding:0 10px}
+.muse-space-appearance[open]{padding-bottom:10px}
+.muse-space-appearance>summary{display:flex;align-items:center;gap:8px;min-height:40px;cursor:pointer;font-weight:700;font-size:.86rem}
+.muse-space-appearance>*+*{margin-top:10px}
+.muse-space-appearance .muse-paint-picker{margin:0}
+.muse-space-look-presets{display:flex;flex-wrap:wrap;gap:6px}
+.muse-space-look-presets button{display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:0 12px 0 6px;border:1px solid var(--glass-border);border-radius:999px;background:transparent;color:var(--foreground);font:inherit;font-size:.78rem;font-weight:600;cursor:pointer}
+.muse-space-look-presets button[aria-pressed=true]{border-color:var(--selected-border);background:var(--selected-background)}
+.muse-space-look-presets i{width:20px;height:20px;border-radius:7px;border:1px solid var(--glass-border);background:var(--glass-background)}
+.muse-space-look-presets [data-look=callout] i{background:color-mix(in srgb,var(--accent-primary) 22%,var(--glass-background));box-shadow:inset 3px 0 0 var(--accent-primary)}
+.muse-space-look-presets [data-look=outline] i{border:2px solid var(--accent-primary)}
+.muse-space-look-presets [data-look=gradient] i{background:linear-gradient(135deg,#ff7eb3,#ff9f5a)}
+.muse-space-look-presets [data-look=editorial] i{box-shadow:inset 3px 0 0 var(--foreground);font-family:var(--font-editorial)}
+.muse-space-strength{display:grid;gap:2px;font-size:.74rem;color:var(--text-muted)}
+.muse-space-icon-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.muse-space-emoji-pick{min-height:36px;font-size:.8rem}
+.muse-space-icon-none{padding:0 6px;font-size:.78rem}
+.muse-space-aside-choice select{min-height:36px;font:inherit;font-size:.86rem}
+.muse-space-width-toggle{display:inline-grid;place-items:center;width:28px;height:28px;padding:0;border:1px solid transparent;border-radius:8px;background:transparent;color:var(--text-muted);cursor:pointer;opacity:.55}
+.muse-space-width-toggle[aria-pressed=true]{opacity:1;color:var(--list-accent,var(--accent-primary));border-color:color-mix(in srgb,var(--list-accent,var(--accent-primary)) 45%,transparent);background:color-mix(in srgb,var(--list-accent,var(--accent-primary)) 10%,transparent)}
+.muse-space-live{display:grid;gap:4px;padding:8px;border-radius:14px;background:color-mix(in srgb,var(--foreground) 4%,transparent)}
+.muse-space-live>small{font-size:.62rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)}
+.muse-space-live .muse-space-card,.muse-space-live .muse-space-card-row{pointer-events:none}

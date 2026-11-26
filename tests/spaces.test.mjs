@@ -63,3 +63,31 @@ test('Spaces notes store theme tones, never raw colours, and export includes blo
  assert.match(read('app/api/account/export/route.ts'),/blocks:listBlocks\.data\?\?\[\]/);
  const css=read('components/lists/Spaces.css');for(const m of css.matchAll(/(-webkit-)?backdrop-filter:[^;}]+[;}]\s*(-webkit-)?backdrop-filter/g))assert.ok(m[0].startsWith('-webkit-'),'-webkit- blur comes first');
 });
+test('Spaces card templates: structure only; cards snapshot their fields; preview follows the chosen order',()=>{
+ const card={preset:'info',title:'Linen headboard',icon:'home',display:'collapsible',preview:['price','room'],fields:[{id:'room',label:'Room',type:'text',value:'Bedroom'},{id:'price',label:'Price',type:'money',value:'489'},{id:'ok',label:'Ordered',type:'checkbox',value:'true'}]};
+ const t=B.templateFields(card);assert.ok(t.fields.every(f=>!('value' in f)));assert.deepEqual(t.preview,['price','room']);assert.equal(t.display,'collapsible');
+ const made=B.cardFromTemplate({id:'T',name:'Furniture',...t,position:0,createdAt:'',updatedAt:''});
+ assert.equal(made.title,'');assert.ok(made.fields.every(f=>f.value===''));assert.deepEqual(made.template,{id:'T',name:'Furniture'});
+ made.fields[0].label='Changed';assert.equal(t.fields[0].label,'Room','a card never shares field objects with its template');
+ assert.deepEqual(B.previewFields(card).map(p=>p.id),['price','room']);
+ const n=B.normalizeData('card',{preset:'info',title:'',fields:card.fields,display:'row',preview:['room','gone','room'],icon:'not-an-icon'});
+ assert.deepEqual(n.preview,['room'],'unknown and repeated preview fields are dropped');assert.equal(n.icon,undefined);assert.equal(n.fields[2].type,'checkbox');
+});
+test('Spaces content migrations are additive (section tiles, card templates)',()=>{
+ for(const f of ['20270116000100_space_section_tiles.sql','20270117000100_space_card_templates.sql']){const sql=read('supabase/migrations/'+f);assert.doesNotMatch(sql,/\bdrop\b|\brename\b|\bdelete from\b|\bupdate public\./i,f);}
+ const t=read('supabase/migrations/20270117000100_space_card_templates.sql');assert.match(t,/enable row level security/);assert.match(t,/revoke all on public\.list_card_templates from public, anon/);
+});
+test('Spaces card looks: only safe paints are kept; presets keep chosen colours; templates carry look, layout and header field',()=>{
+ assert.equal(B.validPaint({kind:'solid',color:'red; background:url(x)'}),undefined,'no raw CSS sneaks in as a colour');
+ assert.deepEqual(B.validPaint({kind:'solid',color:'#FFF1C2'}),{kind:'solid',color:'#FFF1C2'});
+ assert.equal(B.validPaint({kind:'gradient',gradient:{colors:['#ff4fa3'],angle:90}}),undefined,'a gradient needs two stops');
+ assert.ok(B.validIcon('✈️')&&B.validIcon('none')&&B.validIcon('plane')&&!B.validIcon('<img>')&&!B.validIcon('hello'));
+ const border={kind:'gradient',gradient:{colors:['#ff4fa3','#ff9a3c'],angle:90}};
+ const callout=B.applyLookPreset('callout',{border});assert.equal(callout.placement,'left');assert.deepEqual(callout.border,border,'switching preset keeps the border you chose');
+ assert.equal(B.applyLookPreset('minimal',callout).border,undefined);
+ const card={preset:'info',title:'Vendor',aside:'date',display:'row',preview:['contact'],look:callout,fields:[{id:'date',label:'Date',type:'date',value:'2027-06-12',width:'half'},{id:'contact',label:'Contact',type:'text',value:'Mika',width:'half'}]};
+ const t=B.templateFields(card);assert.equal(t.aside,'date');assert.deepEqual(t.look,callout);assert.ok(t.fields.every(f=>f.width==='half'&&!('value' in f)));
+ const made=B.cardFromTemplate({id:'T',name:'Vendor',...t,position:0,createdAt:'',updatedAt:''});
+ assert.deepEqual(made.look,callout);made.look.border.gradient.colors[0]='#000000';assert.equal(t.look.border.gradient.colors[0],'#ff4fa3','a card never shares its look with the template');
+ assert.equal(B.normalizeData('card',{...card,aside:'missing'}).aside,undefined,'a header field must exist on the card');
+});

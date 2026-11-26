@@ -18,8 +18,10 @@ import { addItem, addSection, bundleOf, copyList, deleteList, deleteSection, mov
 import { effectiveEvents, linkedTask, plannerEvents, toggleViaPlanner } from "./taskLink";
 import { ItemDetails } from "./ItemDetails";
 import { areaView, isVirtualId } from "@/lib/lists/areas";
-import { cardCosts, money, placeBlocks, type CardData, type HeadingData, type ImagesData, type LinkData, type ListBlock, type NoteData } from "@/lib/lists/blocks";
-import { addBlock, deleteBlock, deleteItems, duplicateBlock, moveBlock, moveBlockBy, realBlockId, updateBlock } from "./ListsStore";
+import { cardCosts, money, placeBlocks, presetOf, type CardDisplay, type CardData, type HeadingData, type ImagesData, type LinkData, type ListBlock, type NoteData } from "@/lib/lists/blocks";
+import { addBlock, deleteBlock, deleteItems, duplicateBlock, duplicateSection, moveBlock, moveBlockBy, realBlockId, updateBlock } from "./ListsStore";
+import { AddContentDialog, SaveTemplateDialog, TemplateManager, createCardTemplate } from "./SpaceTemplates";
+import { templateFields } from "@/lib/lists/blocks";
 import { AddBlock, BlockShell, HeadingBlock, type AddChoice, type BlockDrag } from "./SpaceBlocks";
 import { SpaceNote } from "./SpaceNote";
 import { SpaceCard } from "./SpaceCards";
@@ -58,7 +60,7 @@ export function ListView({ listId, today, onBack, onOpen }: { listId: string; to
   // #12: display-only grouping and sorting; "My order" by section is the saved manual order (and the only drag mode).
   const manual = list.itemGroup === "section" && list.itemSort === "manual";
   const order = (xs: ListItem[]) => sortItems(xs, list.itemSort, (id) => eventsOf.get(id) ?? [], today);
-  const [editing, setEditing] = useState<string | null>(null);
+  const [editing, setEditing] = useState<string | null>(null), [addingContent, setAddingContent] = useState(false);
   // Blocks move by dragging their handle onto another block (or onto a section), on any section of the page.
   const blockEls = useRef(new Map<string, HTMLElement>()), blockOrigin = useRef({ x: 0, y: 0 });
   const [bdrag, setBdrag] = useState<{ id: string; x: number; y: number; over: string | null } | null>(null), bdragId = bdrag?.id ?? null;
@@ -153,7 +155,10 @@ export function ListView({ listId, today, onBack, onOpen }: { listId: string; to
           : <SectionBlock ctx={ctx} section={null} title="All items" items={b.items} />}
         </div>
       </>}
-      <AddSection listId={list.id} />
+      <div className="muse-space-page-add">
+        <AddSection listId={list.id} />
+        {s.blocksReady && <button type="button" className="muse-button muse-space-page-content" onClick={() => setAddingContent(true)}><MuseIcon name="plus" size={14} />Add content</button>}
+      </div>
     </>}
     {view === "week" && <WeekView ctx={ctx} items={b.items} />}
     {view === "due" && <DueView ctx={ctx} items={b.items} />}
@@ -162,6 +167,10 @@ export function ListView({ listId, today, onBack, onOpen }: { listId: string; to
     <GlassPopover id={`list-item-detail`} label="Item details" open={!!detail} anchorRef={detailAnchor} onClose={() => setDetail(null)} width={400}>
       {detail && b.items.some((i) => i.id === detail.id) && <ItemDetails key={detail.id} item={b.items.find((i) => i.id === detail.id)!} list={list} sections={b.sections} items={b.items} events={eventsOf.get(detail.id) ?? []} today={today} onClose={() => setDetail(null)} />}
     </GlassPopover>
+    {addingContent && <AddContentDialog sections={[...(rootBlocks.length || !b.sections.length ? [{ id: null, title: b.sections.length ? "Top of the page" : "This page" }] : []), ...b.sections.map((x) => ({ id: x.id, title: x.title }))]}
+      defaultSection={b.sections.at(-1)?.id ?? null} onClose={() => setAddingContent(false)}
+      onAdd={(sid, c) => { setAddingContent(false); void addBlock(list.id, sid, c.kind, c.data, { width: c.width }).then((id) => { if (c.kind !== "checklist" && c.kind !== "images") setEditing(id); requestAnimationFrame(() => document.getElementById(blockAnchor(id))?.scrollIntoView({ block: "center", behavior: "smooth" })); }).catch(() => undefined); }} />}
+    <TemplateManager />
     <GlassPopover id="list-settings" label="Space settings" open={settings} anchorRef={settingsAnchor} onClose={() => setSettings(false)} width={380}>
       {settings && <ListSettings list={list} today={today} onBack={onBack} onOpen={onOpen} onClose={() => setSettings(false)} />}
     </GlassPopover>
@@ -179,7 +188,7 @@ type SectionDrag = { active: boolean; over: boolean; offset?: { x: number; y: nu
  */
 function SectionBlock({ ctx, section, items, first, last, title, drag }: { ctx: RowCtx; section: ListSection | null; items: ListItem[]; first?: boolean; last?: boolean; /** A display group (frequency / all items) instead of a section. */ title?: string; drag?: SectionDrag }) {
   const [over, setOver] = useState(false), [confirm, setConfirm] = useState<HTMLElement | null>(null);
-  const [menu, setMenu] = useState(false), [picker, setPicker] = useState(false), [editDesc, setEditDesc] = useState(false), more = useRef<HTMLButtonElement>(null);
+  const [menu, setMenu] = useState(false), [picker, setPicker] = useState(false), [editDesc, setEditDesc] = useState(false), [addOpen, setAddOpen] = useState(false), more = useRef<HTMLButtonElement>(null);
   const sorted = ctx.order(items), prog = progress(sorted, sorted.flatMap((i) => ctx.eventsOf.get(i.id) ?? []), ctx.today);
   const collapsed = !!section?.collapsed;
   const onDrop = (e: DragEvent) => { e.preventDefault(); setOver(false); const id = e.dataTransfer.getData("text/muse-list-item"); if (id) void moveItem(id, section?.id ?? null, sorted.length); };
@@ -204,12 +213,13 @@ function SectionBlock({ ctx, section, items, first, last, title, drag }: { ctx: 
       {prog.total > 0 ? <small className="muse-list-count" data-done={done || undefined}>{prog.done}/{prog.total}</small> : <span className="muse-list-section-spacer" />}
       {section && <button ref={more} type="button" className="muse-lists-mini muse-list-section-more" aria-label={`Options for ${section.title}`} aria-haspopup="dialog" aria-expanded={menu} onClick={() => setMenu((v) => !v)}><MuseIcon name="more" size={16} /></button>}
     </header>
-    {!collapsed && (pageMode ? <AreaBlocks ctx={ctx} sectionId={section?.id ?? null} items={items} showEmpty={!!section || !ctx.sections.length} /> : <>
+    {!collapsed && (pageMode ? <AreaBlocks ctx={ctx} sectionId={section?.id ?? null} items={items} showEmpty={!!section || !ctx.sections.length} addOpen={addOpen} onAddOpen={setAddOpen} /> : <>
       <ul className="muse-list-items">{sorted.map((it, i) => <ItemRow key={it.id} ctx={ctx} item={it} index={i} />)}</ul>
       <QuickAdd listId={ctx.list.id} sectionId={section?.id ?? null} />
     </>)}
     {section && <GlassPopover id={`section-menu-${section.id}`} label={`Options for ${section.title}`} open={menu} anchorRef={more} onClose={() => setMenu(false)} width={250} align="end" bare>
       <div className="popover-choice-list muse-list-section-menu">
+        {pageMode && ctx.blocksReady && <button type="button" className="popover-choice" onClick={() => { setMenu(false); if (collapsed) void updateSection(section.id, { collapsed: false }); requestAnimationFrame(() => setAddOpen(true)); }}><span><MuseIcon name="plus" size={15} />Add content…</span></button>}
         <button type="button" className="popover-choice" aria-expanded={!collapsed} onClick={() => { setMenu(false); void updateSection(section.id, { collapsed: !collapsed }); }}><span><MuseIcon name={collapsed ? "eye" : "eye-off"} size={15} />{collapsed ? "Expand section" : "Collapse section"}</span></button>
         <button type="button" className="popover-choice" onClick={() => { setMenu(false); setPicker(true); }}><span><MuseIcon name="sparkle" size={15} />{section.icon ? "Change icon" : "Add an icon"}</span></button>
         {section.icon && <button type="button" className="popover-choice" onClick={() => { setMenu(false); void updateSection(section.id, { icon: null }); }}><span><MuseIcon name="close" size={15} />Remove icon</span></button>}
@@ -220,6 +230,10 @@ function SectionBlock({ ctx, section, items, first, last, title, drag }: { ctx: 
         </div>
         {!first && <button type="button" className="popover-choice" onClick={() => { setMenu(false); void moveSection(section.id, -1); }}><span><span className="muse-list-icon-up" aria-hidden="true"><MuseIcon name="arrow" size={15} /></span>Move up</span></button>}
         {!last && <button type="button" className="popover-choice" onClick={() => { setMenu(false); void moveSection(section.id, 1); }}><span><span className="muse-list-icon-down" aria-hidden="true"><MuseIcon name="arrow" size={15} /></span>Move down</span></button>}
+        {ctx.blocksReady && <>
+          <button type="button" className="popover-choice" title="Same blocks, layout and card fields, with nothing filled in" onClick={() => { setMenu(false); void duplicateSection(section.id, false, ctx.today); }}><span><MuseIcon name="columns" size={15} />Duplicate structure</span></button>
+          <button type="button" className="popover-choice" title="An independent copy of everything written here; ticks and history start fresh" onClick={() => { setMenu(false); void duplicateSection(section.id, true, ctx.today); }}><span><MuseIcon name="sparkle" size={15} />Duplicate with content</span></button>
+        </>}
         <button type="button" className="popover-choice" data-destructive onClick={() => { setMenu(false); setConfirm(more.current); }}><span><MuseIcon name="trash" size={15} />Delete section…</span></button>
       </div>
     </GlassPopover>}
@@ -261,7 +275,7 @@ function QuickAdd({ listId, sectionId, blockId }: { listId: string; sectionId: s
 function AddSection({ listId }: { listId: string }) {
   const [text, setText] = useState("");
   const submit = (e: FormEvent) => { e.preventDefault(); const t = text.trim(); if (!t) return; setText(""); void addSection(listId, t); };
-  return <form className="muse-list-addsection" onSubmit={submit}><input value={text} maxLength={LIMITS.sectionTitle} onChange={(e) => setText(e.target.value)} placeholder="Add a section (Kitchen, Clothing, Sewing…)" aria-label="Add a section" /></form>;
+  return <form className="muse-list-addsection" onSubmit={submit}><input value={text} maxLength={LIMITS.sectionTitle} onChange={(e) => setText(e.target.value)} placeholder="New section: Monday, Kitchen, Clothing…" aria-label="Add a section" /></form>;
 }
 
 /** Click to edit; Enter or blur saves; Escape cancels. */
@@ -387,13 +401,13 @@ function ListSettings({ list, today, onBack, onOpen, onClose }: { list: MuseList
  * One area of the page (a section, or the top): its blocks on a two-column grid (full blocks take the row; side-by-side
  * blocks pair up; a lone one fills its row), then "+ Add".
  */
-function AreaBlocks({ ctx, sectionId, items, showEmpty }: { ctx: RowCtx; sectionId: string | null; items: ListItem[]; showEmpty: boolean }) {
+function AreaBlocks({ ctx, sectionId, items, showEmpty, addOpen, onAddOpen }: { ctx: RowCtx; sectionId: string | null; items: ListItem[]; showEmpty: boolean; addOpen?: boolean; onAddOpen?: (v: boolean) => void }) {
   const view = areaView(ctx.list.id, sectionId, ctx.blocks, items, showEmpty), placed = placeBlocks(view.blocks);
   let place = 0; const numbers = new Map(view.blocks.filter((x) => x.kind === "card" && (x.data as CardData).preset === "place").map((x) => [x.id, ++place]));
   const add = async (c: AddChoice) => { const id = await addBlock(ctx.list.id, sectionId, c.kind, c.data, { width: c.width }).catch(() => null); if (id && c.kind !== "checklist" && c.kind !== "images") ctx.setEditing(id); };
   return <div className="muse-space-area">
     {placed.length > 0 && <div className="muse-space-grid">{placed.map((blk, i) => <BlockItem key={blk.id} ctx={ctx} block={blk} span={blk.span} items={view.itemsOf.get(blk.id) ?? []} first={i === 0} last={i === placed.length - 1} number={numbers.get(blk.id)} />)}</div>}
-    {ctx.blocksReady && <AddBlock blocks={view.blocks} onAdd={(c) => void add(c)} />}
+    {ctx.blocksReady && <AddBlock blocks={view.blocks} empty={!items.length && view.blocks.every((x) => x.virtual)} open={addOpen} onOpenChange={onAddOpen} onAdd={(c) => void add(c)} />}
   </div>;
 }
 
@@ -401,7 +415,7 @@ function BlockItem({ ctx, block, span, items, first, last, number }: { ctx: RowC
   const editing = ctx.editing === block.id, setEditing = (v: boolean) => ctx.setEditing(v ? block.id : null);
   const real = () => realBlockId(block.id, ctx.list.id, block.sectionId);
   const save = (data: unknown) => updateBlock(block.id, { data: data as ListBlock["data"] });
-  const [over, setOver] = useState(false);
+  const [over, setOver] = useState(false), [savingTemplate, setSavingTemplate] = useState(false);
   const label = block.kind === "card" ? `${(block.data as CardData).title || "Card"}` : block.kind === "checklist" ? ((block.data as { title?: string }).title || "Checklist") : block.kind[0].toUpperCase() + block.kind.slice(1);
   const actions = {
     edit: block.kind === "checklist" ? undefined : () => setEditing(true),
@@ -410,6 +424,8 @@ function BlockItem({ ctx, block, span, items, first, last, number }: { ctx: RowC
     moveTo: (sid: string | null) => void real().then((id) => moveBlock(id, sid, 9999)),
     duplicate: block.kind === "checklist" ? undefined : () => void duplicateBlock(block.id),
     rename: block.kind === "checklist" ? (t: string) => void real().then((id) => updateBlock(id, { data: { title: t || undefined } })) : undefined,
+    display: block.kind === "card" ? (d: CardDisplay) => void updateBlock(block.id, { data: { ...(block.data as CardData), display: d === "card" ? undefined : d }, ...(d === "row" ? { width: "full" as const } : {}) }) : undefined,
+    saveTemplate: block.kind === "card" ? () => setSavingTemplate(true) : undefined,
     remove: () => void (block.virtual ? deleteItems(items.map((i) => i.id)) : deleteBlock(block.id, block.kind === "checklist" ? items.map((i) => i.id) : [])),
   };
   let body: ReactNode = null;
@@ -428,5 +444,7 @@ function BlockItem({ ctx, block, span, items, first, last, number }: { ctx: RowC
   else if (block.kind === "heading") body = <HeadingBlock key={editing ? "e" : "r"} data={block.data as HeadingData} editing={editing} onEditing={setEditing} onSave={save} />;
   return <div id={blockAnchor(block.id)} className="muse-space-cell" data-span={span}>
     <BlockShell block={block} span={span} label={label} first={first} last={last} sections={ctx.sections} itemCount={items.length} editing={editing} actions={actions} drag={ctx.manual ? ctx.blockDrag(block) : undefined}>{body}</BlockShell>
+    {savingTemplate && <SaveTemplateDialog suggested={(block.data as CardData).template?.name || (block.data as CardData).title || presetOf((block.data as CardData).preset).label}
+      onClose={() => setSavingTemplate(false)} onSave={(name) => createCardTemplate(name, templateFields(block.data as CardData))} />}
   </div>;
 }

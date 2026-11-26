@@ -930,3 +930,10 @@ A theme may paint its canvas from one of Stephanie's reference images by setting
 - Section tiles are a sticky glass pill bar; the current section is lit with the space colour.
 - Notes: editorial serif headings (H1 italic), space-colour bullets, gradient quote rule, star divider, rounded tables; colours and highlights map tones 1–6 to `--chart-1…6` mixed toward the text colour for readability.
 - Motion: a gentle lift on links, a plane glide on route cards and a flash on the section a tile jumps to; all off under reduced motion and Quiet magic.
+
+### Spaces card looks (Nov 26)
+
+- Card backgrounds and borders use `MusePaintPicker` (shared with Rituals, Planner and Muse Marks). A background is painted on the card's `::before` (strength = opacity over the card surface); the border on `::after` (a 5px left stripe running top to bottom, or a 2px masked outline). They never inherit each other.
+- Ink: on a background at 55% strength or more, `data-ink` switches the whole card to dark (`#1d1828`) or light text from the paint's real luminance (`lib/atelier/contrast.ts`); soft tints keep the theme's text colours.
+- Callout row: icon tile (emoji on its own soft tile), title, a dotted line of preview values, the header field right-aligned, chevron only when there is more.
+- Library card scenes drift very slowly (14–18s, 2px) and their stars stay still; nothing speeds up on hover (Nov 26: "the in and out of the stars is a lot").
