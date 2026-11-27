@@ -60,12 +60,12 @@ test('Patterns renders honestly with sparse, multi-year and reread histories',()
  const {Patterns}=load('components/whimsy/atlas/Patterns');
  const base={sessions:[],label:'this year',series:[],seriesMembers:[],media:[],range:Y26};
  const empty=renderToStaticMarkup(createElement(Patterns,{...base,books:[]}));
- assert.doesNotMatch(empty,/NaN|Infinity|undefined/);assert.match(empty,/No rated reads/);assert.match(empty,/Timed sessions will draw your week/);
+ assert.doesNotMatch(empty,/NaN|Infinity|undefined/);assert.match(empty,/Rate a finished read|No finished reads/);assert.match(empty,/Timed sessions will draw your week/);
  const books=[book('a',{genre:'Fantasy',author:'A. Writer',format:'physical',completions:[done('a','2024-05-01','2024-04-01',{rating:3,emojis:['🌙']}),done('a','2026-05-01','2026-04-20',{rating:5,emojis:['🐉','✨']})]})];
  const full=renderToStaticMarkup(createElement(Patterns,{...base,books,sessions:[session('2026-04-21','2026-04-21T20:00:00.000Z',45)],onOpenBook:()=>{}}));
  assert.doesNotMatch(full,/NaN|Infinity|undefined/);
- assert.match(full,/5\/5/);assert.match(full,/Show 1 book/);assert.match(full,/Show as a table/);assert.match(full,/🐉/);
- assert.match(full,/2024.*🌙/s,'each year keeps its own read’s emojis');
+ assert.match(full,/5 \/ 5/);assert.match(full,/muse-atlas-booklist-open/,'every figure can open the books behind it');assert.match(full,/>Table </,'the rhythm opens as a table');assert.match(full,/🐉/);
+ assert.match(full,/aria-label="Emotions by"[^]*Genre[^]*Year/,'book emotions switch between genre and year (each year keeps its own read’s emojis: see emojisByYear tests)');
 });
 
 test('keepsake: reviews stay out unless chosen, sections follow the choices, and sparse years stay honest',()=>{
@@ -124,4 +124,11 @@ test('Reading Challenge: pinned year wins, rereads count in their finish year, p
  assert.equal(r.challengeProgress(pinned,[],'2026','2026-01-01').done,0,'sparse: an empty shelf');
  const s=r.challengeSignals(p,books);assert.deepEqual(s.thresholds,[25,50]);assert.equal(s.personalRecord,true,'2 beats 2025’s 1');assert.equal(s.firstFinishOfYear.finishedOn,'2026-01-02');
  assert.deepEqual(r.challengeYears([pinned],books,'2026-11-06'),['2027','2026','2025']);
+});
+
+test('Book emotions by year: each year keeps its own read’s emojis',()=>{
+ const dna=load('lib/whimsy/reading-dna');
+ const books=[book('a',{genre:'Fantasy',completions:[done('a','2024-05-01','2024-04-01',{rating:3,emojis:['🌙']}),done('a','2026-05-01','2026-04-20',{rating:5,emojis:['🐉','✨']})]})];
+ const rows=dna.emojisByYear(books,3),y24=rows.find(r=>String(r.year)==='2024'),y26=rows.find(r=>String(r.year)==='2026');
+ assert.deepEqual(y24?.top.map(e=>e.emoji),['🌙']);assert.ok(y26?.top.some(e=>e.emoji==='🐉')&&!y26.top.some(e=>e.emoji==='🌙'));
 });

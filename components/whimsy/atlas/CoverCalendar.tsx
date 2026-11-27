@@ -14,7 +14,9 @@ const minutes=(s:number)=>s>=3600?`${Math.floor(s/3600)} hr ${Math.round(s%3600/
 const shiftMonth=(month:string,by:number)=>{const [y,m]=month.split('-').map(Number),d=new Date(Date.UTC(y,m-1+by,1));return `${d.getUTCFullYear()}-${String(d.getUTCMonth()+1).padStart(2,'0')}`;};
 
 export function Cover({book}:{book:Pick<Book,'title'|'coverUrl'>|undefined}){
- return book?.coverUrl&&validCoverUrl(book.coverUrl)?<img src={book.coverUrl} alt="" loading="lazy" decoding="async" referrerPolicy="no-referrer"/>:<span className="muse-cal-cover-blank">{book?.title?.slice(0,22)??'Book'}</span>;
+ // A cover that fails to load shows the title card instead of a broken image.
+ const [failed,setFailed]=useState<string|null>(null);
+ return book?.coverUrl&&validCoverUrl(book.coverUrl)&&failed!==book.coverUrl?<img src={book.coverUrl} alt="" loading="lazy" decoding="async" referrerPolicy="no-referrer" onError={()=>setFailed(book.coverUrl??null)}/>:<span className="muse-cal-cover-blank">{book?.title?.slice(0,22)??'Book'}</span>;
 }
 
 /**

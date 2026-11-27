@@ -6,6 +6,8 @@ import {dateLabel} from '@/lib/dates';
 import {MuseIcon,type MuseIconName} from '@/components/MuseIcon';
 
 export const duration=(seconds:number)=>seconds?seconds<60?'Less than a minute':`${Math.round(seconds/60)} min`:'Time not recorded';
+/** Short reading time for tight slots: "<1 min", "41 min", "5.3 h" (never "Less than a minute"). */
+export const compactTime=(sec:number)=>!sec?'—':sec<60?'<1 min':sec<3600?`${Math.round(sec/60)} min`:`${(sec/3600).toFixed(1)} h`;
 export const hours=(seconds:number)=>seconds<3600?duration(seconds):`${(seconds/3600).toFixed(seconds<36000?1:0)} h`;
 export const num=(n:number)=>Math.round(n).toLocaleString('en-US');
 export const days=(n:number)=>`${n} ${n===1?'day':'days'}`;
@@ -19,22 +21,25 @@ export const yearDate=(date:string)=>`${dateLabel(date)}, ${date.slice(0,4)}`;
 export function AtlasMetric({label,value,detail}:{label:string;value:string;detail:string}){return <div><span className="small-label">{label}</span><strong>{value}</strong><small>{detail}</small></div>;}
 
 /** A compact bar chart with a text equivalent; empty periods are real zeros, never estimates. */
-const axisValue=(value:number,unit:'time'|'count'|'rating')=>unit==='rating'?`${Math.round(value*10)/10}★`:unit==='time'?(value>=3600?`${+(value/3600).toFixed(1)}h`:`${Math.round(value/60)}m`):num(value);
+const axisValue=(value:number,unit:'time'|'count'|'rating')=>unit==='rating'?`${Math.round(value*10)/10}★`:unit==='time'?(value>=3600?`${+(value/3600).toFixed(1)}h`:value>=60?`${Math.round(value/60)}m`:value>0?`${Math.round(value)}s`:'0'):num(value);
 
 /** A bar chart with a value axis; hover, focus or tap a bar to read its exact figure. An optional line follows the ups and downs. */
-export function ActivityBars({title,note,items,line=false,unit='count',max:fixedMax,anchor}:{anchor?:string;title:string;note:string;items:{key:string;label:string;short:string;value:number;text:string}[];line?:boolean;unit?:'time'|'count'|'rating';max?:number}){
+export function ActivityBars({title,note,items,line=false,unit='count',max:fixedMax,anchor,variant='bars',sub}:{anchor?:string;title:string;note:string;items:{key:string;label:string;short:string;value:number;text:string}[];line?:boolean;unit?:'time'|'count'|'rating';max?:number;
+ /** How the series draws (Atlas V2): bars for discrete comparisons, an area for a trend over time, a line for an average. */ variant?:'bars'|'area'|'line';
+ /** A short subtitle under the title ("by week · last 12 weeks"). */ sub?:string}){
  const [active,setActive]=useState<number|null>(null);
  const max=fixedMax??Math.max(1,...items.map(i=>i.value)),empty=items.every(i=>!i.value),n=items.length;
  const points=items.map((i,k)=>({x:(k+.5)/n*100,y:i.value/max*100}));
  const shown=active!==null?items[active]:null;
- return <article className="muse-books-panel" id={anchor?`atlas-${anchor}`:undefined}><div className="muse-books-panel-head"><h4><AtlasMark title={title}/>{title}</h4></div>
+ const drawn=variant!=='bars'||line,ys=points.map(p=>100-p.y);
+ return <article className="muse-books-panel muse-atlas-chart" data-variant={variant} id={anchor?`atlas-${anchor}`:undefined}><div className="muse-books-panel-head"><h4><AtlasMark title={title}/><span>{title}{sub&&<small className="muse-atlas-chart-sub">{sub}</small>}</span></h4></div>
   {empty?<p>Nothing recorded in this window yet.</p>:<div className="muse-bars-wrap">
    <div className="muse-bars-axis" aria-hidden="true"><span>{axisValue(max,unit)}</span>{(unit!=='count'||max>=4)&&<span>{axisValue(unit==='count'?Math.round(max/2):max/2,unit)}</span>}<span>0</span></div>
    <div className="muse-bars-plot" onPointerLeave={()=>setActive(null)}>
    <div className="muse-bars-grid" aria-hidden="true"><i/>{(unit!=='count'||max>=4)&&<i/>}<i/></div>
    <ol className="muse-books-bars" aria-label={title}>{items.map((i,k)=><li key={i.key}><button type="button" className="muse-books-bar-hit" aria-label={`${i.label}: ${i.text}`} aria-pressed={active===k} onPointerEnter={()=>setActive(k)} onFocus={()=>setActive(k)} onBlur={()=>setActive(null)} onClick={()=>setActive(active===k?null:k)}><span className="muse-books-bar" data-active={active===k||undefined} style={{'--bar':`${Math.round(i.value/max*100)}%`} as CSSProperties} aria-hidden="true"/></button><small aria-hidden="true">{i.short}</small></li>)}</ol>
    {shown&&active!==null&&<div className="muse-bars-tip" role="status" style={{left:`clamp(14%,${points[active].x}%,86%)`,bottom:`calc((100% - 18px) * ${points[active].y/100} + 18px)`} as CSSProperties}><strong><span aria-hidden="true">✦</span> {shown.text}</strong><span>{shown.label}</span></div>}
-   {line&&n>1&&<div className="muse-bars-line" aria-hidden="true"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><polyline points={points.map(p=>`${p.x},${100-p.y}`).join(' ')} fill="none" vectorEffect="non-scaling-stroke"/></svg>{points.map((p,k)=><i key={k} style={{left:`${p.x}%`,bottom:`${p.y}%`}}/>)}</div>}
+   {drawn&&n>1&&<div className="muse-bars-line" data-variant={variant} aria-hidden="true"><svg viewBox="0 0 100 100" preserveAspectRatio="none">{variant==='area'&&<polygon className="muse-bars-area" points={`${points[0].x},100 ${points.map((p,k)=>`${p.x},${ys[k]}`).join(' ')} ${points[n-1].x},100`}/>}<polyline points={points.map((p,k)=>({p,k})).filter(({k})=>variant!=='line'||items[k].value>0).map(({p,k})=>`${p.x},${ys[k]}`).join(' ')} fill="none" vectorEffect="non-scaling-stroke"/></svg>{points.map((p,k)=><i key={k} data-active={active===k||undefined} data-zero={!items[k].value||undefined} style={{left:`${p.x}%`,bottom:`${p.y}%`}}/>)}</div>}
    </div>
   </div>}
   <p className="small-label">{note}</p></article>;

@@ -1,57 +1,72 @@
 'use client';
 import {AtlasMark} from './parts';
-import {useState} from 'react';
-import {MuseModal} from '@/components/MuseModal';
+import {useState,type ReactNode} from 'react';
+import {MonthBooksModal,YearBooksModal} from './BooksOfYear';
 import {Cover} from './CoverCalendar';
 import type {Book,ReadingSession} from '@/lib/whimsy/models';
-import {completedBookSeries} from '@/lib/whimsy/books';
-import {completedReadAverages,completionEvents,inclusiveCalendarDays,type DateRange} from '@/lib/whimsy/reading-stats';
+import {completedReadAverages,inclusiveCalendarDays,type DateRange} from '@/lib/whimsy/reading-stats';
 import {readOpinion} from '@/lib/whimsy/reading-cycles';
 import {bookSuperlatives,emojiRanking,favoriteGenres,genreBreakdown,milestoneUnit,readsIn,readingMilestones} from '@/lib/whimsy/reading-dna';
 import {PagedList} from './PagedList';
 import {EmojiBoard} from './EmojiBoard';
-import {Insight,days,hours,monthLabel,plural,yearDate} from './parts';
-import {CoverGlow} from '../BookAtmosphere';
+import {Insight,days,hours,plural,yearDate} from './parts';
+import {MonthShelf} from './Highlights';
+import {AtlasBand} from './AtlasBand';
+import {MuseIcon,type MuseIconName} from '@/components/MuseIcon';
+import {RatingStars} from '@/components/collections/StarRating';
 
-/** Superlatives and completion history for one period, plus every milestone (all time). */
-export function BooksMilestones({books,sessions,range,label,onOpenBook}:{books:Book[];sessions:ReadingSession[];range:DateRange|null;label:string;onOpenBook?:(id:string)=>void}){
- const [openMonth,setOpenMonth]=useState<string|null>(null);
+export type AtlasStat={icon:MuseIconName;value:string;label:string};
+/** A section's heading band: its title and line, and the period's headline numbers on the right. */
+export function AtlasHero({title,line,stats}:{title:string;line:string;stats:AtlasStat[]}){
+ return <AtlasBand art="milestones" kicker="Your reading journey" title={title} line={line} stats={stats}/>;
+}
+
+/**
+ * Books & Milestones (Atlas V2): the period at a glance, the superlatives (the longest book featured, the rest in a row
+ * you can swipe), the milestone journey, the book emojis, and the year as a cover timeline beside the completed list.
+ * Milestones are all time; everything else follows the period.
+ */
+export function BooksMilestones({books,sessions,range,label,onOpenBook,today,stats=[],byYear}:{byYear?:ReactNode;books:Book[];sessions:ReadingSession[];range:DateRange|null;label:string;onOpenBook?:(id:string)=>void;today:string;stats?:AtlasStat[]}){
+ const [openMonth,setOpenMonth]=useState<string|null>(null),[allBooks,setAllBooks]=useState(false),seeYear=range?range.end.slice(0,4)>today.slice(0,4)?today.slice(0,4):range.end.slice(0,4):today.slice(0,4),[allMilestones,setAllMilestones]=useState(false);
  const sup=bookSuperlatives(books,sessions,range),reads=readsIn(books,range),averages=completedReadAverages(books,sessions),genre=favoriteGenres(genreBreakdown(books,sessions,range).rows).mostRead,emoji=emojiRanking(books,range).ranking[0];
  const milestones=readingMilestones(books,sessions),reached=milestones.filter(m=>m.achievedOn).sort((a,b)=>b.achievedOn!.localeCompare(a.achievedOn!)),next=milestones.filter(m=>!m.achievedOn).slice(0,3);
- const monthly=completedBookSeries(books,'month'),maxMonth=Math.max(1,...monthly.map(s=>s.count)),byMost=[...monthly].sort((x,y)=>y.count-x.count||y.start.localeCompare(x.start));
- return <div className="muse-atlas-section">
-  <article className="muse-books-panel"><div className="muse-books-panel-head"><h4><AtlasMark title="Book superlatives"/>Book superlatives</h4><span className="small-label">{plural(sup.finishedBooks,'book')} finished {label}</span></div>
-   <div className="muse-atlas-insights" data-tone="book">
-    <Insight label="Longest book finished" value={sup.longest?.book.title} detail={sup.longest&&`${sup.longest.book.totalPages} pages`} empty="Needs a finished book with its page count"/>
-    <Insight label="Shortest book finished" value={sup.shortest?.book.title} detail={sup.shortest&&`${sup.shortest.book.totalPages} pages`} empty="Needs two finished books with page counts"/>
-    <Insight label="Fastest finish" value={sup.fastest?.book.title} detail={sup.fastest&&`${days(sup.fastest.days)}, start to finish (inclusive)${sup.fastest.reread?' · reread':''}`} empty="Needs a finished read with a start date"/>
-    <Insight label="Most reading time" value={sup.mostTime?.book.title} detail={sup.mostTime&&hours(sup.mostTime.seconds)} empty="No timed sessions yet"/>
-    <Insight label="Most sessions" value={sup.mostSessions?.book.title} detail={sup.mostSessions&&plural(sup.mostSessions.sessions,'session')} empty="No sessions yet"/>
-    <Insight label="Highest rated" value={sup.highestRated?.book.title} detail={sup.highestRated&&`${sup.highestRated.rating}/5 for that read${sup.highestRated.tied?` · tied with ${plural(sup.highestRated.tied,'other read')}`:''}`} empty="Rate a finished read to see it here"/>
-    <Insight label="Most read genre" value={genre?.genre} detail={genre&&plural(genre.reads,'finished read')} empty="Add genres to finished books"/>
-    <Insight label="Most common book emoji" value={emoji&&<span className="muse-atlas-emoji">{emoji.emoji}</span>} detail={emoji&&plural(emoji.books,'book')} empty="Add emojis to finished books"/>
+ const journey=[...reached.slice(0,2).reverse(),...next],firstNext=next[0]?.id;
+ return <div className="muse-atlas-section muse-atlas-bm">
+  <AtlasHero title="Books & Milestones" line={`Your reading journey at a glance · ${label}`} stats={stats}/>
+  <article className="muse-books-panel muse-sup"><div className="muse-books-panel-head"><h4><AtlasMark title="Book superlatives"/>Book superlatives</h4><span className="small-label">{plural(sup.finishedBooks,'book')} finished {label}</span></div>
+   <div className="muse-sup-row">
+    {sup.longest?<button type="button" className="muse-sup-feature" onClick={()=>onOpenBook?.(sup.longest!.book.id)}><span className="muse-sup-cover" aria-hidden="true"><Cover book={sup.longest.book}/></span><span className="muse-sup-copy"><span className="muse-sup-tag"><MuseIcon name="book" size={12}/>Longest book finished</span><strong>{sup.longest.book.title}</strong><small>{sup.longest.book.totalPages} pages</small></span></button>
+     :<div className="muse-sup-feature" data-empty><span className="muse-sup-copy"><span className="muse-sup-tag"><MuseIcon name="book" size={12}/>Longest book finished</span><small>Needs a finished book with its page count</small></span></div>}
+    <div className="muse-atlas-insights muse-sup-scroll" data-tone="book">
+     <Insight label="Fastest finish" value={sup.fastest?.book.title} detail={sup.fastest&&`${days(sup.fastest.days)}, start to finish (inclusive)${sup.fastest.reread?' · reread':''}`} empty="Needs a finished read with a start date"/>
+     <Insight label="Most read genre" value={genre?.genre} detail={genre&&plural(genre.reads,'finished read')} empty="Add genres to finished books"/>
+     <Insight label="Most reading time" value={sup.mostTime?.book.title} detail={sup.mostTime&&hours(sup.mostTime.seconds)} empty="No timed sessions yet"/>
+     <Insight label="Highest rated" value={sup.highestRated?.book.title} detail={sup.highestRated&&`${sup.highestRated.rating}/5 for that read${sup.highestRated.tied?` · tied with ${plural(sup.highestRated.tied,'other read')}`:''}`} empty="Rate a finished read to see it here"/>
+     <Insight label="Shortest book finished" value={sup.shortest?.book.title} detail={sup.shortest&&`${sup.shortest.book.totalPages} pages`} empty="Needs two finished books with page counts"/>
+     <Insight label="Most sessions" value={sup.mostSessions?.book.title} detail={sup.mostSessions&&plural(sup.mostSessions.sessions,'session')} empty="No sessions yet"/>
+     <Insight label="Most common book emoji" value={emoji&&<span className="muse-atlas-emoji">{emoji.emoji}</span>} detail={emoji&&plural(emoji.books,'book')} empty="Add emojis to finished books"/>
+    </div>
    </div>
   </article>
-  <div className="muse-atlas-books-pair">
-  <article className="muse-books-panel"><div className="muse-books-panel-head"><h4><AtlasMark title="Milestones"/>Milestones</h4><span className="small-label">{reached.length} of {milestones.length} reached · all time</span></div>
-   {!reached.length?<p>Your first finished book or first 100 pages will light the first star.</p>:<PagedList tag="ol" className="muse-atlas-milestones" items={reached} size={4} label="milestones reached" render={m=><li key={m.id}><span className="muse-atlas-milestone-star" aria-hidden="true">✦</span><strong>{m.title}</strong><small>{yearDate(m.achievedOn!)}</small></li>}/>}
-   {next.length>0&&<div className="muse-atlas-next"><span className="small-label">Next up</span>{next.map(m=><div key={m.id}><span>{m.title}</span><progress value={m.progress} max={m.threshold} aria-label={`${m.title}: ${Math.floor(m.progress)} of ${m.threshold} ${milestoneUnit[m.metric]}`}/><small>{m.metric==='hours'?m.progress.toFixed(1):Math.floor(m.progress)} / {m.threshold} {milestoneUnit[m.metric]}</small></div>)}</div>}
-   <p className="small-label">Reached on the first day your saved history crossed each line. Editing past sessions recalculates them; a milestone is only ever celebrated once.</p>
+  <div className="muse-atlas-bm-pair">
+  <article className="muse-books-panel muse-journey-panel"><div className="muse-books-panel-head"><h4><AtlasMark title="Milestones"/>Your milestone journey</h4><span className="small-label">{reached.length} of {milestones.length} reached · all time</span></div>
+   {journey.length?<ol className="muse-journey" aria-label="Recent and next milestones">{journey.map(m=><li key={m.id} data-done={m.achievedOn?true:undefined} data-next={m.id===firstNext||undefined}><span className="muse-journey-dot" aria-hidden="true">{m.achievedOn?<MuseIcon name="check" size={14}/>:'✦'}</span><strong>{m.title}</strong><small className="type-numeric">{m.achievedOn?yearDate(m.achievedOn):`${m.metric==='hours'?m.progress.toFixed(1):Math.floor(m.progress)} / ${m.threshold} ${milestoneUnit[m.metric]}`}</small></li>)}</ol>
+    :<p>Your first finished book or first 100 pages will light the first star.</p>}
+   {reached.length>0&&<button type="button" className="text-button muse-journey-all" aria-expanded={allMilestones} onClick={()=>setAllMilestones(v=>!v)}>{allMilestones?'Hide':'All'} reached milestones ({reached.length})</button>}
+   {allMilestones&&<PagedList tag="ol" className="muse-atlas-milestones" items={reached} size={6} label="milestones reached" render={m=><li key={m.id}><span className="muse-atlas-milestone-star" aria-hidden="true">✦</span><strong>{m.title}</strong><small>{yearDate(m.achievedOn!)}</small></li>}/>}
+   <p className="small-label">Reached on the first day your saved history crossed each line; a milestone is only ever celebrated once.</p>
   </article>
-  <EmojiBoard books={books} range={range} label={label}/>
+  <EmojiBoard books={books} range={range} label={label} top={3} restSize={6} restCols={6}/>
   </div>
-  <div className="muse-atlas-books-pair">
-  <article className="muse-books-panel" id="atlas-completed"><div className="muse-books-panel-head"><h4><AtlasMark title="Completed books"/>Completed books</h4><span className="small-label">{label}</span></div>{!reads.length?<p>{label==='all time'?'A finished book belongs here whenever you reach its last page.':`Nothing finished ${label} yet.`}</p>:<>
-   <p className="muse-atlas-books-note">{averages.averageCalendarDays!==null?`${averages.averageCalendarDays.toFixed(1)} calendar days on average (inclusive), from ${plural(averages.datedCompletions,'read')} with a start date`:'Start dates not recorded'}{averages.averageActiveSeconds!==null?` · ${hours(averages.averageActiveSeconds)} average active time, from ${averages.timedCompletions} timed ${averages.timedCompletions===1?'read':'reads'}`:''} · all time</p>
-   <PagedList items={reads} size={4} label="completed books" render={({book,completion,reread})=>{const opinion=readOpinion(book,completion);return <button type="button" role="listitem" className="muse-books-finished-row" data-glow={book.coverUrl?true:undefined} key={`${book.id}:${completion.id}`} onClick={()=>onOpenBook?.(book.id)}><CoverGlow url={book.coverUrl}/><span className="muse-finished-cover" aria-hidden="true"><Cover book={book}/></span><span className="muse-finished-copy"><strong>{book.title}{reread?' · reread':''}</strong><span>{yearDate(completion.finishedOn)}{completion.startedOn?` · ${days(inclusiveCalendarDays(completion.startedOn,completion.finishedOn)??0)} (inclusive)`:''}{opinion.rating?` · ${opinion.rating}/5`:''} {book.reviewEmojis.join(' ')}</span></span></button>;}}/></>}
-  </article>
-  <article className="muse-books-panel"><div className="muse-books-panel-head"><h4><AtlasMark title="Finished by month"/>Finished by month</h4><span className="small-label">busiest first</span></div>
-   {monthly.length>0?<PagedList items={byMost} size={5} label="months" render={item=><button type="button" role="listitem" className="muse-books-month-row" key={item.start} onClick={()=>setOpenMonth(item.start.slice(0,7))} aria-label={`${monthLabel(item.start.slice(0,7))}: ${item.count} finished. Show the books`}><div><span>{monthLabel(item.start.slice(0,7))}</span><strong>{item.count} finished <span aria-hidden="true">›</span></strong></div><progress value={item.count} max={maxMonth} aria-hidden="true"/></button>}/>:<p>Months appear as books are finished.</p>}
-   <p className="small-label">Tap a month to see its books.</p>
-  </article>
+  <div className="muse-atlas-bm-timeline">
+   {byYear}
+   <MonthShelf books={books} today={today} onOpenBook={onOpenBook} onMonth={setOpenMonth} title="Your reading timeline"/>
+   <article className="muse-books-panel muse-bm-completed" id="atlas-completed"><div className="muse-books-panel-head"><h4><AtlasMark title="Completed books"/>Completed books</h4><span className="small-label">{label}</span><button type="button" className="muse-yir2-seeall" onClick={()=>setAllBooks(true)}>See all of {seeYear} by month</button></div>{!reads.length?<p>{label==='all time'?'A finished book belongs here whenever you reach its last page.':`Nothing finished ${label} yet.`}</p>:<>
+    <p className="muse-atlas-books-note">{averages.averageCalendarDays!==null?`${averages.averageCalendarDays.toFixed(1)} days on average, start to finish`:'Start dates not recorded'}{averages.averageActiveSeconds!==null?` · ${hours(averages.averageActiveSeconds)} average active time`:''} · all time</p>
+    <PagedList items={reads} size={9} label="completed books" render={({book,completion,reread})=>{const opinion=readOpinion(book,completion);return <button type="button" role="listitem" className="muse-bm-row" key={`${book.id}:${completion.id}`} onClick={()=>onOpenBook?.(book.id)}><span className="muse-finished-cover" aria-hidden="true"><Cover book={book}/></span><span className="muse-finished-copy"><strong>{book.title}{reread?' · reread':''}</strong><span>{yearDate(completion.finishedOn)}{completion.startedOn?` · ${days(inclusiveCalendarDays(completion.startedOn,completion.finishedOn)??0)}`:''} {book.reviewEmojis.join(' ')}</span></span>{opinion.rating?<RatingStars value={opinion.rating} className="muse-bm-stars"/>:<span className="muse-bm-stars muse-lib-muted">Not rated</span>}</button>;}}/></>}
+   </article>
   </div>
-  {openMonth&&(()=>{const finished=completionEvents(books).filter(e=>e.completion.finishedOn?.startsWith(openMonth)).sort((x,y)=>(x.completion.finishedOn??'').localeCompare(y.completion.finishedOn??''));return <MuseModal id="atlas-month-books" label={`Books finished in ${monthLabel(openMonth)}`} title={monthLabel(openMonth)} returnFocus={null} onClose={()=>setOpenMonth(null)}>
-   <p className="muse-atlas-books-note">{plural(finished.length,'book')} finished</p>
-   <ol className="muse-month-books">{finished.map(e=><li key={`${e.book.id}:${e.completion.id}`}><button type="button" onClick={()=>{setOpenMonth(null);onOpenBook?.(e.book.id);}}><span className="muse-finished-cover" aria-hidden="true"><Cover book={e.book}/></span><span className="muse-finished-copy"><strong>{e.book.title}</strong><span>{e.book.author||'Author not recorded'} · {yearDate(e.completion.finishedOn!)}{readOpinion(e.book,e.completion).rating?` · ${readOpinion(e.book,e.completion).rating}/5`:''}</span></span></button></li>)}</ol></MuseModal>;})()}
+  {openMonth&&<MonthBooksModal books={books} month={openMonth} onOpenBook={onOpenBook} onClose={()=>setOpenMonth(null)}/>}
+  {allBooks&&<YearBooksModal books={books} year={seeYear} onOpenBook={onOpenBook} onClose={()=>setAllBooks(false)}/>}
  </div>;
 }

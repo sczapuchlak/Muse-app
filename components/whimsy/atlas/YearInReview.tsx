@@ -1,67 +1,75 @@
 'use client';
 import {AtlasMark} from './parts';
-import {useState,type CSSProperties} from 'react';
+import {useState,type CSSProperties,type ReactNode} from 'react';
 import {MuseChoiceMenu} from '@/components/MuseChoiceMenu';
-import {MuseStar} from '@/components/MuseStar';
 import type {Book,ReadingGoal,ReadingSession} from '@/lib/whimsy/models';
-import {PagedList} from './PagedList';
-import {Highlights} from './Highlights2';
-import {EmojiBoard} from './EmojiBoard';
+import {OverviewHighlights} from './Highlights3';
 import {Cover} from './CoverCalendar';
-import {MonthShelf} from './Highlights';
-import {TopRated} from './TopRated';
-import {Favorites} from './Favourites';
 import {KeepsakeExport} from './KeepsakeExport';
+import {MonthBooksModal,YearBooksModal} from './BooksOfYear';
 import {completionEvents} from '@/lib/whimsy/reading-stats';
 import {readEmojis,readOpinion} from '@/lib/whimsy/reading-cycles';
-import {hourLabel,yearReview,yearsWithReading,type Persona} from '@/lib/whimsy/reading-dna';
-import {ActivityBars,InsightIcon,days,duration,hours,monthLabel,monthName,num,plural,shortMonth,yearDate} from './parts';
-import {CoverGlow} from '../BookAtmosphere';
+import {emojiRanking,yearReview,yearsWithReading} from '@/lib/whimsy/reading-dna';
+import {MuseIcon,type MuseIconName} from '@/components/MuseIcon';
+import {isFavoriteRead} from '@/lib/whimsy/reading-cycles';
+import {compactTime,days,duration,monthLabel,num,plural,shortMonth,yearDate} from './parts';
 import {RatingStars} from '@/components/collections/StarRating';
 
 /** A literary scrapbook of one year, computed live from saved records (nothing is stored as a snapshot). */
-export function YearInReview({books,sessions,today,goals=[]}:{books:Book[];sessions:ReadingSession[];today:string;goals?:ReadingGoal[]}){
- const years=yearsWithReading(books,sessions),[chosen,setChosen]=useState(today.slice(0,4)),[keepsake,setKeepsake]=useState(false),year=years.includes(chosen)?chosen:years[0];
+export function YearInReview({books,sessions,today,goals=[],onOpenBook}:{books:Book[];sessions:ReadingSession[];today:string;goals?:ReadingGoal[];onOpenBook?:(id:string)=>void}){
+ const years=yearsWithReading(books,sessions),[chosen,setChosen]=useState(today.slice(0,4)),[keepsake,setKeepsake]=useState(false),[allBooks,setAllBooks]=useState(false),[month,setMonth]=useState<string|null>(null),year=years.includes(chosen)?chosen:years[0];
  if(!year)return <div className="muse-empty-state muse-books-empty" data-variant="editorial"><h4>Your first year in books is waiting.</h4><p>Once you log a session or finish a book, its year will have a recap here.</p></div>;
- const r=yearReview(books,sessions,year,today),n=r.numbers,isPersona=(p:Persona|{needed:number}):p is Persona=>'title' in p,progress=year===today.slice(0,4);
- const covers=completionEvents(books).filter(e=>e.completion.finishedOn?.startsWith(year)).sort((x,y)=>(x.completion.finishedOn??'').localeCompare(y.completion.finishedOn??'')),sparkMax=Math.max(1,...r.months.map(m=>m.seconds||m.pages));
+ const r=yearReview(books,sessions,year,today),n=r.numbers,progress=year===today.slice(0,4);
+ const covers=completionEvents(books).filter(e=>e.completion.finishedOn?.startsWith(year)).sort((x,y)=>(x.completion.finishedOn??'').localeCompare(y.completion.finishedOn??''));
  const range={start:`${year}-01-01`,end:`${year}-12-31`},stats=[
   {k:'Books finished',v:String(n.reads),d:n.reads?`${plural(n.uniqueBooks,'title')}${n.rereads?` · ${plural(n.rereads,'reread')}`:''}`:'None yet'},
   {k:'Pages read',v:num(n.pages),d:'From saved sessions'},
-  {k:'Reading time',v:n.seconds?hours(n.seconds):'—',d:'Pauses excluded'},
+  {k:'Reading time',v:compactTime(n.seconds),d:'Pauses excluded'},
   {k:'Reading days',v:String(n.readingDays),d:'Each day once'},
   {k:'Sessions',v:String(n.sessions),d:'Saved sittings'},
   {k:'Longest streak',v:days(n.longestStreak),d:'Within this year'}];
- const tiles=[
-  {k:'Personality',v:isPersona(r.persona)?r.persona.title:undefined,d:isPersona(r.persona)?r.persona.line:undefined,e:`Finish ${isPersona(r.persona)?0:plural(r.persona.needed,'more book')} with a genre`},
-  {k:'Favorite genre',v:r.favorites.mostRead?.genre,d:r.favorites.mostRead&&plural(r.favorites.mostRead.reads,'finished read'),e:'Add genres to finished books'},
-  {k:'Genres explored',v:r.genres.rows.filter(g=>g.finished).length?String(r.genres.rows.filter(g=>g.finished).length):undefined,d:'Across finished books',e:'No finished books with genres'},
-  {k:'Favorite reading day',v:r.habits.favoriteDay?.name,d:r.habits.favoriteDay&&plural(r.habits.favoriteDay.days,'reading day'),e:'No reading days'},
-  {k:'Most active month',v:r.habits.mostActiveMonth&&monthName(r.habits.mostActiveMonth.month),d:r.habits.mostActiveMonth&&(r.habits.anyTime?hours(r.habits.mostActiveMonth.seconds):`${r.habits.mostActiveMonth.pages} pages`),e:'No reading months'},
-  {k:'Favorite reading hour',v:r.habits.topHour!==null?hourLabel(r.habits.topHour):undefined,d:'Timed sessions only',e:'Needs three timed sessions'},
-  {k:'Longest book',v:r.superlatives.longest?.book.title,d:r.superlatives.longest&&`${r.superlatives.longest.book.totalPages} pages`,e:'Needs a page count'},
-  {k:'Shortest book',v:r.superlatives.shortest?.book.title,d:r.superlatives.shortest&&`${r.superlatives.shortest.book.totalPages} pages`,e:'Needs two page counts'},
-  {k:'Highest rated',v:r.superlatives.highestRated?.book.title,d:r.superlatives.highestRated&&`${r.superlatives.highestRated.rating}/5`,e:'No rated reads'},
-  {k:'Most time with',v:r.superlatives.mostTime?.book.title,d:r.superlatives.mostTime&&hours(r.superlatives.mostTime.seconds),e:'No timed sessions'}];
- return <div className="muse-atlas-section muse-atlas-year">
-  <header className="muse-atlas-year-hero muse-yir-hero"><span className="muse-atlas-year-stars" aria-hidden="true"><MuseStar size={18}/><MuseStar size={12} color="aqua"/><MuseStar size={10} color="pink"/></span>
-   <div className="muse-yir-title"><span className="small-label">{progress?'Your year so far':'Your year in reading'}</span><h4 className="muse-rainbow-year">{year}</h4>
-    <div className="muse-yir-controls"><MuseChoiceMenu label="Year" valueLabel={year} options={years.map(y=>({id:y,label:y}))} selectedIds={[year]} onSelect={setChosen}/><button type="button" className="muse-button button-primary muse-keepsake-open" onClick={()=>setKeepsake(true)}>Make a keepsake</button></div></div>
-   <div className="muse-yir-glimpse"><p className="muse-yir-lede">{n.reads?`${plural(n.reads,'finished read')}${n.rereads?` (${plural(n.uniqueBooks,'book')}, ${plural(n.rereads,'reread')})`:''}, ${num(n.pages)} pages and ${n.seconds?hours(n.seconds):'no timed reading'} across ${plural(n.readingDays,'reading day')}.`:`${num(n.pages)} pages and ${n.seconds?hours(n.seconds):'no timed reading'} across ${plural(n.readingDays,'reading day')}; no finished books ${progress?'yet':'that year'}.`}</p>
-    <div className="muse-yir-covers" aria-label={`Books finished in ${year}`}>{covers.length?<>{covers.slice(0,6).map((e,i)=><span key={`${e.book.id}-${i}`} className="muse-yir-cover" title={e.book.title}><Cover book={e.book}/></span>)}{covers.length>6&&<span className="muse-yir-more type-numeric">+{covers.length-6}</span>}</>:Array.from({length:4},(_,i)=><span key={i} className="muse-yir-cover" data-empty/>)}</div>
-    <div className="muse-yir-spark" role="img" aria-label="Reading time by month">{r.months.map(m=><span key={m.month} title={`${monthLabel(m.month)}: ${duration(m.seconds)} · ${m.finished} finished`}><i style={{'--h':`${Math.round(100*(m.seconds||m.pages)/sparkMax)}%`} as CSSProperties}/><small>{shortMonth(m.month).slice(0,1)}</small></span>)}</div></div>
+ const emo=emojiRanking(books,range),share=(x:number)=>emo.finishedBooks?Math.round(100*x/emo.finishedBooks):0;
+ const rated=covers.map(e=>({e,rating:readOpinion(e.book,e.completion).rating??0})).filter(x=>x.rating>0).sort((a2,b2)=>b2.rating-a2.rating);
+ const favs=covers.filter(e=>isFavoriteRead(e.book,e.completion)).reverse(),recent=r.recent;
+ const halves=[r.months.slice(0,6),r.months.slice(6)];
+ const icons:MuseIconName[]=['book','series','timer','calendar','chart','flame'];
+ const open=(id:string)=>onOpenBook?.(id);
+ return <div className="muse-atlas-section muse-yir2">
+  <header className="muse-yir2-hero">
+   <div className="muse-yir2-title"><span className="muse-yir2-kicker"><span aria-hidden="true">✦</span>{progress?'Your year so far':'Your year in reading'}</span><h3 className="muse-gradient-num type-numeric">{year}</h3>
+    <p>{n.reads?`${progress?'So far: ':''}${plural(n.reads,'book')}, ${num(n.pages)} pages and ${n.seconds?compactTime(n.seconds):'no timed reading'} across ${plural(n.readingDays,'reading day')}.`:`${num(n.pages)} pages across ${plural(n.readingDays,'reading day')}; no finished books ${progress?'yet':'that year'}.`}</p>
+    <div className="muse-yir-controls"><MuseChoiceMenu label="Year" valueLabel={year} options={years.map(y=>({id:y,label:y}))} selectedIds={[year]} onSelect={setChosen}/><button type="button" className="muse-button button-ghost muse-keepsake-open" onClick={()=>setKeepsake(true)}>Make a keepsake</button>{covers.length>0&&<button type="button" className="muse-button button-ghost muse-yb-open" onClick={()=>setAllBooks(true)}><MuseIcon name="book" size={14}/>See all {year} books</button>}</div></div>
+   <div className="muse-yir2-covers" aria-label={`Books finished in ${year}`}>{covers.length?covers.slice(-4).reverse().map((e,i)=><button key={`${e.book.id}-${i}`} type="button" title={e.book.title} onClick={()=>open(e.book.id)}><Cover book={e.book}/></button>):Array.from({length:4},(_,i)=><span key={i} data-empty/>)}</div>
+   <ul className="muse-yir2-lines">{[['book',n.reads,n.reads===1?'finished read':'finished reads'],['series',num(n.pages),'pages'],['timer',compactTime(n.seconds),'reading time'],['calendar',n.readingDays,'reading days']].map(([ic,v,l])=><li key={String(l)}><MuseIcon name={ic as MuseIconName} size={18}/><strong className="type-numeric">{v}</strong><span>{l}</span></li>)}</ul>
+   <div className="muse-yir2-spark" role="img" aria-label={`Books finished each month of ${year}`}>{r.months.map(m=><span key={m.month} title={`${monthLabel(m.month)}: ${m.finished} finished · ${duration(m.seconds)}`}><i data-on={m.finished>0||undefined} style={{'--h':`${m.finished?Math.max(14,Math.round(100*m.finished/Math.max(1,...r.months.map(x=>x.finished)))):6}%`} as CSSProperties}/><small>{shortMonth(m.month).slice(0,1)}</small></span>)}</div>
   </header>
+  {allBooks&&<YearBooksModal books={books} year={year} onOpenBook={onOpenBook} onClose={()=>setAllBooks(false)}/>}
+  {month&&<MonthBooksModal books={books} month={month} onOpenBook={onOpenBook} onClose={()=>setMonth(null)}/>}
   {keepsake&&<KeepsakeExport books={books} sessions={sessions} goals={goals} year={year} today={today} onClose={()=>setKeepsake(false)}/>}
-  <dl className="muse-yir-stats" aria-label="The numbers">{stats.map(s=><div key={s.k}><dt>{s.k}</dt><dd className="type-numeric">{s.v}</dd><small>{s.d}</small></div>)}</dl>
-  <Highlights books={books} sessions={sessions} range={range} label={String(year)} today={today} wholeYear/>
-  <div className="muse-yir-emoji-shelf"><EmojiBoard books={books} range={range} label={String(year)} title={`Your ${year} in emojis`} restSize={4}/>
-   <MonthShelf books={books} today={today} fixedYear={year}/></div>
-  <div className="muse-yir-pair muse-yir-pair-even">
-   <ActivityBars unit="time" title="Reading timeline" note={`Reading time by month in ${year}${progress?' (so far)':''}.`} items={r.months.map(m=>({key:m.month,label:monthLabel(m.month),short:shortMonth(m.month),value:m.seconds||m.pages,text:`${duration(m.seconds)} · ${m.pages} pages · ${m.finished} finished`}))}/>
-   <section aria-label="Milestones this year" className="muse-books-panel"><div className="muse-books-panel-head"><h4><AtlasMark title="Milestones"/>Milestones</h4><span className="small-label">{year}</span></div>{r.milestones.length?<PagedList tag="ol" className="muse-atlas-milestones" items={r.milestones} size={4} label="milestones" render={m=><li key={m.id}><span className="muse-atlas-milestone-star" aria-hidden="true">✦</span><strong>{m.title}</strong><small>{yearDate(m.achievedOn!)}</small></li>}/>:<p>No new milestones{progress?' yet':''} this year.</p>}</section>
+  <dl className="muse-yir2-chips" aria-label="The numbers">{stats.map((x,i)=><div key={x.k} title={x.d}><span aria-hidden="true"><MuseIcon name={icons[i]} size={20}/></span><dd className="type-numeric">{x.v}</dd><dt>{x.k}</dt></div>)}</dl>
+  {/* Her note (Nov 26): Highlights get their own row, the same three-part panel as the Overview, so every highlight shows. */}
+  <OverviewHighlights books={books} sessions={sessions} range={range} label={year} today={today}/>
+  <div className="muse-yir2-row" data-row="story">
+   <article className="muse-books-panel muse-yir2-emoji"><div className="muse-books-panel-head"><h4><AtlasMark title="Vibes"/>Your {year} in emojis</h4></div>
+    {!emo.ranking.length?<p>Add emojis to finished books and their mood gathers here.</p>:<><ul className="muse-dna-vibes">{emo.ranking.slice(0,4).map(e=><li key={e.emoji} title={`${e.emoji} on ${plural(e.books,'book')}`}><span aria-hidden="true">{e.emoji}</span><strong className="type-numeric">{share(e.books)}%</strong><small className="type-numeric">×{e.books}</small></li>)}</ul>
+     <p className="muse-dna-note">{emo.ranking[0].emoji} is on {share(emo.ranking[0].books)}% of finished books ({plural(emo.ranking[0].books,'book')}).</p></>}</article>
+   <article className="muse-books-panel muse-yir2-journey"><div className="muse-books-panel-head"><h4><AtlasMark title="Your reading journey"/>Your reading journey</h4>{covers.length>0?<button type="button" className="muse-yir2-seeall" onClick={()=>setAllBooks(true)}>{plural(n.reads,'book')} · See all</button>:<span className="small-label">No books finished yet</span>}</div>
+    {halves.map((half,hi)=><ol key={hi} className="muse-yir2-line">{half.map(m=>{const list=covers.filter(e=>e.completion.finishedOn.startsWith(m.month));return <li key={m.month} data-on={list.length>0||undefined}>
+     <span className="muse-yir2-line-covers">{list.slice(-1).map((e,i)=><button key={i} type="button" title={list.map(x=>x.book.title).join(', ')} aria-label={list.length>1?`${monthLabel(m.month)}: ${list.length} finished. Show the books`:undefined} onClick={()=>list.length>1?setMonth(m.month):open(e.book.id)}><Cover book={e.book}/>{list.length>1&&<b className="type-numeric">{list.length}</b>}</button>)}</span>
+     <i aria-hidden="true"/><small>{shortMonth(m.month)}</small></li>;})}</ol>)}</article>
   </div>
-  <div className="muse-yir-pair muse-yir-pair-even"><TopRated books={books} range={range} label={String(year)}/><Favorites books={books} range={range} label={String(year)}/></div>
-  {r.recent.length>0&&<section aria-label="Recently finished" className="muse-books-panel"><div className="muse-books-panel-head"><h4><AtlasMark title="Recently finished"/>Recently finished</h4><span className="small-label">{year}</span></div>
-   <PagedList items={r.recent} size={4} cols={2} className="muse-finished-grid" label="recently finished" render={({book,completion,reread})=>{const o=readOpinion(book,completion);return <div role="listitem" className="muse-books-finished-row" data-glow={book.coverUrl?true:undefined} key={`${book.id}:${completion.id}`}><CoverGlow url={book.coverUrl}/><span className="muse-finished-cover" aria-hidden="true"><Cover book={book}/></span><span className="muse-finished-copy"><strong>{book.title}{reread?' · reread':''}</strong><span>{yearDate(completion.finishedOn)}</span>{(o.rating||readEmojis(book,completion).length>0)&&<span className="muse-finished-meta">{o.rating?<RatingStars value={o.rating} className="muse-finished-stars"/>:null}{readEmojis(book,completion).join(' ')}</span>}</span></div>;}}/></section>}
+  {/* Recently finished (a little narrower), Top rated and Favorites: one row, each a carousel; no Milestones here. */}
+  <div className="muse-yir2-row" data-row="close">
+   <article className="muse-books-panel muse-yir2-books" data-kind="recent"><Carousel title="Recently finished" per={1} items={recent} empty={`Nothing finished ${progress?'yet':'that year'}.`} render={x=>{const o=readOpinion(x.book,x.completion);return <button key={`${x.book.id}${x.completion.id}`} type="button" className="muse-yir2-last" onClick={()=>open(x.book.id)}><span className="muse-yir2-last-cover"><Cover book={x.book}/></span><span><strong>{x.book.title}{x.reread?' · reread':''}</strong><small>{yearDate(x.completion.finishedOn)}</small>{o.rating?<RatingStars value={o.rating}/>:null}<em>{readEmojis(x.book,x.completion).join(' ')}</em></span></button>;}}/></article>
+   <article className="muse-books-panel muse-yir2-books" data-kind="rated"><Carousel title="Top rated" per={4} items={rated} empty="No rated reads." render={({e,rating})=><button key={`${e.book.id}${e.completion.id}`} type="button" className="muse-yir2-shelfbook" title={`${e.book.title} · ${rating}/5`} onClick={()=>open(e.book.id)}><span><Cover book={e.book}/></span><RatingStars value={rating}/></button>}/></article>
+   <article className="muse-books-panel muse-yir2-books" data-kind="favs"><Carousel title="Favorites" per={4} items={favs} empty="Heart a finished read." render={e=><button key={`${e.book.id}${e.completion.id}`} type="button" className="muse-yir2-shelfbook" title={e.book.title} onClick={()=>open(e.book.id)}><span><Cover book={e.book}/></span></button>}/></article>
+  </div>
  </div>;
+}
+
+/** A titled shelf that pages through its items (per at a time) with the shared round arrows. */
+function Carousel<T>({title,per,items,empty,render}:{title:string;per:number;items:T[];empty:string;render:(item:T)=>ReactNode}){
+ const [at,setAt]=useState(0),pages=Math.max(1,Math.ceil(items.length/per)),page=Math.min(at,pages-1);
+ return <><div className="muse-books-panel-head"><h4><AtlasMark title={title}/>{title}</h4>{pages>1&&<span className="muse-yir2-nav"><small className="type-numeric">{page+1} / {pages}</small><button type="button" aria-label={`Previous ${title.toLowerCase()}`} disabled={page===0} onClick={()=>setAt(page-1)}><MuseIcon name="chevron" size={14}/></button><button type="button" aria-label={`Next ${title.toLowerCase()}`} disabled={page>=pages-1} onClick={()=>setAt(page+1)}><MuseIcon name="chevron" size={14}/></button></span>}</div>
+  {items.length?<div className="muse-yir2-shelf" data-per={per}>{items.slice(page*per,page*per+per).map(render)}</div>:<p>{empty}</p>}</>;
 }

@@ -15,8 +15,8 @@ test('Book editor, Book Detail and Library filters all take the five status name
  assert.match(source,/MuseChoiceMenu label="Book status"[^\n]*bookStatusOptions\(\)/);
  assert.match(readFileSync(resolve(root,'components/whimsy/BookPage.tsx'),'utf8'),/bookStatusOptions\(\)/);
  const collections=readFileSync(resolve(root,'components/collections/Collections.tsx'),'utf8');
- assert.match(collections,/BOOK_STATUS_ORDER\.map\(id=>\(\{id,label:`\$\{BOOK_STATUS_LABEL\[id\]\}/,'Library status filter lists all five in order, with counts');
- assert.match(collections,/label:`Archived books \(\$\{archivedItems\.length\}\)`/,'archived books stay reachable from Collections');
+ assert.match(collections,/BOOK_STATUS_ORDER\.map\(id=><button[^]*?BOOK_STATUS_LABEL\[id\]\} <small className="type-numeric">\{items\.filter/,'Library status filter lists all five in order, with counts');
+ assert.match(collections,/setStatusFilter\(statusFilter==='archived'\?'':'archived'\)\}><MuseIcon name="archive" size=\{14\}\/>Archived <small className="type-numeric">\{archivedItems\.length\}/,'archived books stay reachable from Collections (Filters › Archived)');
 });
 test('active media shelves reuse existing items and statuses without excluding full-library records',()=>{
  const items=[media('watching-film','movie','watching'),media('watched-film','movie','watched'),media('watching-show','tv','watching'),media('playing-game','game','playing'),media('planned-game','game','planned')];

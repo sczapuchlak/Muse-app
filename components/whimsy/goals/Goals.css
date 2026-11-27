@@ -1,0 +1,188 @@
+/* Books home cards (Up next, Goals), the Goals page and the New goal sheet (Nov 26). One card language: frosted glass,
+   editorial titles with a gradient mark, the streak's gradient numerals, a liquid pill with its count written inside. */
+.muse-home-card{position:relative;isolation:isolate;display:grid;align-content:start;gap:12px;min-width:0;padding:14px 16px;border:1px solid var(--glass-border);border-radius:22px;background:var(--glass-background)}
+.muse-home-card h3{margin:0;display:inline-flex;align-items:center;gap:10px;font-family:var(--font-editorial);font-size:1.3rem;font-weight:var(--type-title-weight,600);line-height:1.1;white-space:nowrap}
+.muse-home-card-top{display:flex;align-items:center;gap:10px;min-width:0;flex-wrap:wrap}
+.muse-home-card-head{display:inline-flex;align-items:center;color:inherit;text-decoration:none;border-radius:12px}
+.muse-home-card-head:hover h3{text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}
+.muse-home-card-head:focus-visible{outline:2px solid var(--focus-ring,var(--foreground));outline-offset:3px}
+.muse-home-spark{font-size:.8rem;color:var(--accent-pop,var(--accent-primary))}
+.muse-home-sub{flex:1 1 auto;font-family:var(--font-editorial);font-style:italic;font-size:.9rem;color:var(--text-muted);white-space:nowrap}
+.muse-home-chevron{display:grid;place-items:center;flex:none;color:var(--text-muted)}
+.muse-home-chevron svg{transform:rotate(-90deg)}
+.muse-goal-open{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;color:inherit}
+.muse-goal-open:hover{background:var(--surface-hover)}
+/* the gradient numerals (same recipe as the streak count) */
+.muse-goal-tile-count b,.muse-gradient-num{font-family:var(--font-editorial);font-weight:var(--type-title-weight,600);letter-spacing:-.03em;background:linear-gradient(120deg,var(--accent-pop,var(--accent-primary)),var(--accent-primary),var(--accent-secondary));-webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* The spin pill: a little bit of the Tarot table on the Dashboard. */
+.muse-spin-pill{display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:0 14px;border:0;border-radius:999px;font-size:.82rem;font-weight:650;text-decoration:none;color:#fff;background:linear-gradient(130deg,color-mix(in srgb,var(--accent-primary) 85%,#1b0f2e),color-mix(in srgb,var(--accent-secondary) 80%,#1b0f2e));box-shadow:0 6px 16px -8px var(--accent-primary),inset 0 1px 0 rgba(255,255,255,.25)}
+.muse-spin-pill:hover{filter:brightness(1.08)}
+
+/* Up next: covers on a shelf with title, author and the month they are planned for. Swipes when there are more. */
+.muse-upnext-card{align-content:start}
+.muse-next-shelf{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(96px,calc((100% - 36px)/4));gap:12px;margin:0;padding:4px 2px 6px;list-style:none;overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:none;overscroll-behavior-inline:contain;min-height:60px}
+.muse-next-shelf::-webkit-scrollbar{display:none}
+.muse-next-shelf>li{scroll-snap-align:start;min-width:0}
+.muse-next-shelf :is(button,a){display:grid;gap:3px;justify-items:start;width:100%;padding:0;border:0;background:none;color:inherit;font:inherit;text-align:left;text-decoration:none;cursor:pointer}
+.muse-next-cover{position:relative;display:grid;place-items:center;width:100%;aspect-ratio:2/3;border-radius:3px 7px 7px 3px;overflow:hidden;box-shadow:2px 5px 14px rgba(0,0,0,.32);transition:transform 200ms ease;margin-bottom:5px}
+.muse-next-cover :is(img,.muse-cal-cover-blank){display:block;width:100%;height:100%;object-fit:cover}
+.muse-next-cover .muse-cal-cover-blank{display:grid;place-items:center;padding:6px;font-size:.66rem;text-align:center;background:linear-gradient(160deg,color-mix(in srgb,var(--m,var(--accent-primary)) 30%,var(--surface-control)),var(--surface-control))}
+.muse-next-shelf button:hover .muse-next-cover{transform:translateY(-3px) rotate(-1deg)}
+.muse-next-first{position:absolute;top:6px;left:6px;padding:1px 8px;border-radius:999px;font-size:.62rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:linear-gradient(130deg,var(--accent-pop,var(--accent-primary)),var(--accent-secondary));box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.muse-next-title{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;max-width:100%;font-family:var(--font-editorial);font-weight:var(--type-title-weight,600);font-size:.92rem;line-height:1.15}
+.muse-next-author{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.74rem;color:var(--text-muted)}
+.muse-next-when{margin-top:3px;padding:1px 9px;border-radius:999px;font-size:.68rem;font-weight:700;color:var(--foreground);background:color-mix(in srgb,var(--m,var(--accent-secondary)) 24%,var(--surface-control));border:1px solid color-mix(in srgb,var(--m,var(--accent-secondary)) 45%,transparent)}
+.muse-next-open .muse-next-cover{box-sizing:border-box;border:1.5px dashed color-mix(in srgb,var(--foreground) 24%,transparent);box-shadow:none;color:var(--text-muted);background:color-mix(in srgb,var(--foreground) 3%,transparent)}
+.muse-next-open .muse-next-title{font-size:.8rem;color:var(--text-muted)}
+.muse-next-empty{display:flex;align-items:center;gap:16px;padding:12px;border:1.5px dashed color-mix(in srgb,var(--foreground) 20%,transparent);border-radius:16px;color:inherit;text-decoration:none}
+.muse-next-empty strong{display:block;font-family:var(--font-editorial);font-size:1.1rem}.muse-next-empty small{color:var(--text-muted);font-size:.82rem}
+.muse-next-empty-art{display:flex;gap:5px;flex:none}.muse-next-empty-art i{display:block;width:26px;aspect-ratio:2/3;border-radius:3px;border:1.5px dashed color-mix(in srgb,var(--foreground) 28%,transparent)}.muse-next-empty-art i:nth-child(2){transform:translateY(-5px) rotate(3deg)}.muse-next-empty-art i:nth-child(4){transform:rotate(-4deg)}
+
+/* Goals: tiles for the year and this month side by side, today as a slim row beneath. */
+.muse-goal-addpill{margin-left:auto;display:inline-flex;align-items:center;gap:5px;min-height:32px;padding:0 13px;border-radius:999px;font-size:.8rem;background:var(--surface-control)}
+.muse-goal-tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.muse-goal-tile{--t:var(--chart-4);position:relative;overflow:hidden;display:grid;align-content:start;gap:6px;min-width:0;padding:12px 14px;border:1px solid color-mix(in srgb,var(--t) 40%,var(--glass-border));border-radius:18px;background:radial-gradient(120% 140% at 100% 0%,color-mix(in srgb,var(--t) 26%,transparent),transparent 60%),color-mix(in srgb,var(--t) 9%,var(--surface-subtle));color:inherit;font:inherit;text-align:left;text-decoration:none;cursor:pointer;transition:border-color 160ms ease,transform 160ms ease}
+.muse-goal-tile:hover{border-color:color-mix(in srgb,var(--t) 70%,transparent);transform:translateY(-1px)}
+.muse-goal-tile[data-tile="month"]{--t:var(--chart-6)}
+.muse-goal-tile[data-tile="daily"]{--t:var(--chart-2);grid-column:1/-1;grid-template-columns:auto auto minmax(0,1fr) auto;align-items:center;column-gap:14px;padding:10px 14px}
+.muse-goal-tile[data-tile="daily"] .muse-goal-tile-count b{font-size:1.6rem}
+.muse-goal-tile-kicker{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-editorial);font-style:italic;font-size:.92rem;color:var(--foreground);white-space:nowrap}
+.muse-goal-tile-kicker svg{color:color-mix(in srgb,var(--t) 80%,var(--foreground))}
+.muse-goal-tile-count{display:flex;align-items:baseline;gap:6px;min-width:0}
+.muse-goal-tile-count b{font-size:2.3rem;line-height:1}
+.muse-goal-tile-count small{font-size:.82rem;color:var(--text-muted);white-space:nowrap}
+.muse-goal-tile-note{position:absolute;top:13px;right:14px;font-size:.68rem;color:var(--text-muted)}
+.muse-goal-tile-invite{display:inline-flex;align-items:center;gap:6px;margin-top:6px;font-size:.84rem;font-weight:650;color:var(--text-muted)}
+.muse-goal-tile[data-empty]{border-style:dashed}
+.muse-goal-tile[data-tile="daily"][data-empty]{grid-template-columns:auto 1fr}
+@container muse-content (max-width:520px){
+ .muse-goal-tile{padding:11px 12px}
+ .muse-goal-tile-count b{font-size:2rem}
+ .muse-goal-tile-note{position:static;margin-top:-2px}
+ .muse-goal-tile[data-tile="daily"]{grid-template-columns:auto minmax(0,1fr);row-gap:8px}
+ .muse-goal-tile[data-tile="daily"] .muse-goal-bar{grid-column:1/-1;grid-row:2}
+ .muse-goal-tile[data-tile="daily"] .muse-goal-week{grid-column:1/-1;grid-row:3}
+ .muse-upnext-card .muse-home-sub{order:3;flex-basis:100%;margin-top:-6px}
+ .muse-next-shelf{grid-auto-columns:minmax(88px,calc((100% - 24px)/3.3))}
+}
+.muse-goal-line{margin:0;font-size:.8rem;color:var(--text-muted)}
+.muse-goal-empty{display:grid;gap:10px;justify-items:start;align-content:center}
+.muse-goal-empty p{margin:0;font-size:.88rem;color:var(--text-muted)}
+.muse-goal-empty .muse-button{min-height:34px}
+
+/* The pill: track, liquid fill, the count written across it. */
+.muse-goal-bar{position:relative;display:grid;align-items:center;height:30px;border-radius:999px;overflow:hidden;background:color-mix(in srgb,var(--foreground) 9%,var(--surface-control));box-shadow:inset 0 0 0 1px var(--glass-border)}
+.muse-goal-bar[data-size="lg"]{height:36px}
+.muse-goal-bar[data-size="sm"]{height:20px}.muse-goal-bar[data-size="sm"] .muse-goal-bar-text{font-size:.72rem}
+.muse-goal-bar-fill{position:absolute;inset:0 auto 0 0;width:var(--fill);border-radius:inherit;background:var(--water-progress-gradient,linear-gradient(90deg,var(--accent-pop,var(--accent-primary)),var(--accent-primary),var(--accent-secondary)));box-shadow:0 0 14px var(--water-glow,color-mix(in srgb,var(--accent-primary) 50%,transparent));transition:width 600ms cubic-bezier(.2,.8,.2,1)}
+.muse-goal-bar[data-reached] .muse-goal-bar-fill{background:linear-gradient(90deg,var(--accent-pop,var(--accent-primary)),var(--accent-secondary),var(--accent-pop,var(--accent-primary)))}
+.muse-goal-bar-text{position:relative;justify-self:center;padding:0 12px;font-size:.84rem;font-weight:650;letter-spacing:.01em;color:var(--foreground);text-shadow:0 1px 3px color-mix(in srgb,var(--background) 80%,transparent);white-space:nowrap}
+.muse-goal-bar[data-size="lg"] .muse-goal-bar-text{font-size:.92rem}
+@media(prefers-reduced-motion:reduce){.muse-goal-bar-fill{transition:none}}
+
+.muse-goal-covers{display:flex;gap:6px;margin:0;padding:0;list-style:none;min-width:0}
+.muse-goal-covers li{flex:0 0 auto;width:min(34px,calc((100% - 30px)/6))}
+.muse-goal-covers button{position:relative;display:block;width:100%;aspect-ratio:2/3;padding:0;border:0;border-radius:2px 4px 4px 2px;overflow:visible;background:none;cursor:pointer}
+.muse-goal-covers button :is(img,.muse-cal-cover-blank){display:block;width:100%;height:100%;object-fit:cover;border-radius:inherit;box-shadow:1px 2px 6px rgba(0,0,0,.3)}
+.muse-goal-covers .muse-cal-cover-blank{display:grid;place-items:center;font-size:.4rem;overflow:hidden;background:var(--surface-control)}
+.muse-goal-check{position:absolute;right:-5px;bottom:-5px;display:grid;place-items:center;width:17px;height:17px;border-radius:50%;color:var(--ink-finished,#3f1d00);background:var(--st-finished,#ffa23d);border:2px solid #120c1f}
+.muse-goal-more{align-self:center;padding:0 4px;font-size:.74rem;color:var(--text-muted)}
+.muse-goal-week{display:flex;justify-content:space-between;gap:6px;margin:0;padding:0;list-style:none}
+.muse-goal-week li{display:grid;justify-items:center;gap:3px}
+.muse-goal-week li>span[aria-hidden]{display:block;width:20px;height:20px;border-radius:50%;border:1.5px solid color-mix(in srgb,var(--foreground) 34%,transparent)}
+.muse-goal-week li[data-state="read"]>span[aria-hidden]{border-color:var(--accent-primary);background:color-mix(in srgb,var(--accent-primary) 30%,transparent)}
+.muse-goal-week li[data-state="met"]>span[aria-hidden]{border-color:transparent;background:linear-gradient(140deg,var(--accent-pop,var(--accent-primary)),var(--accent-secondary));box-shadow:0 0 10px -2px var(--accent-primary)}
+.muse-goal-week li[data-today]>span[aria-hidden]{outline:2px solid var(--accent-pop,var(--accent-primary));outline-offset:2px}
+.muse-goal-week small{font-size:.62rem;color:var(--text-muted);font-weight:600}
+
+/* The Goals page */
+.muse-goals-page{display:grid;gap:16px;min-width:0;max-width:920px;width:100%;justify-self:center}
+.muse-goals-hero{display:grid;gap:14px;justify-items:center;text-align:center;padding:6px 0 2px}
+.muse-goals-hero h2{margin:0;font-family:var(--font-editorial);font-size:clamp(1.7rem,4.6vw,2.6rem);font-weight:var(--type-title-weight,600);line-height:1.08;letter-spacing:-.02em}
+.muse-goals-controls{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap}
+.muse-goals-controls .muse-segmented .muse-edge{min-width:84px}
+.muse-goals-new{min-height:38px;display:inline-flex;align-items:center;gap:6px}
+.muse-goals-stepper{display:flex;align-items:center;justify-content:center;gap:14px}
+.muse-goals-stepper strong{font-family:var(--font-editorial);font-size:1.3rem;min-width:9ch;text-align:center}
+.muse-goals-stepper .muse-button{width:36px;min-width:36px;height:36px;min-height:36px;padding:0;display:grid;place-items:center;font-size:1.15rem;background:var(--surface-control)}
+.muse-goal-panel{display:grid;gap:12px;padding:18px 20px;border:1px solid var(--glass-border);border-radius:22px;background:var(--glass-background)}
+.muse-goal-panel>header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.muse-goal-panel h3{margin:2px 0 0;font-family:var(--font-editorial);font-size:1.35rem;font-weight:var(--type-title-weight,600)}
+.muse-goal-panel[data-reached]{border-color:color-mix(in srgb,var(--accent-primary) 45%,var(--glass-border));box-shadow:0 0 0 3px color-mix(in srgb,var(--accent-primary) 10%,transparent)}
+.muse-goal-edit{display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:0 14px;border-radius:999px;background:var(--surface-control)}
+.muse-goal-invite{grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:16px}
+.muse-goal-invite h3{margin:0}.muse-goal-invite p{margin:4px 0 0;color:var(--text-muted);font-size:.88rem}
+.muse-goal-panel .muse-daily{border:0;padding:0;background:none}
+.muse-goals-list{display:grid;gap:10px}
+.muse-goals-list>header{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:6px 4px 0}
+.muse-goals-list h3{margin:0;font-family:var(--font-editorial);font-size:1.35rem;font-weight:var(--type-title-weight,600)}
+.muse-goals-list h3 small{margin-left:6px;padding:2px 9px;border-radius:999px;font-family:var(--font-body,inherit);font-size:.72rem;font-weight:700;vertical-align:middle;background:color-mix(in srgb,var(--accent-primary) 18%,transparent)}
+.muse-goals-list>ol{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.muse-goals-link{display:inline-flex;align-items:center;gap:6px;font-size:.86rem;color:var(--text-muted);text-decoration:none}.muse-goals-link:hover{color:var(--foreground);text-decoration:underline;text-underline-offset:3px}
+.muse-goals-none{margin:0;padding:16px;border:1.5px dashed color-mix(in srgb,var(--foreground) 20%,transparent);border-radius:16px;color:var(--text-muted);font-size:.88rem}
+.muse-goals-more{justify-self:center;display:inline-flex;align-items:center;gap:8px;min-height:36px;border-radius:999px;background:var(--surface-control)}
+.muse-goals-more small{color:var(--text-muted)}
+.muse-goal-row{display:grid;grid-template-columns:auto 52px minmax(0,1fr);align-items:center;gap:14px;padding:10px 14px 10px 10px;border:1px solid var(--glass-border);border-radius:18px;background:var(--glass-background)}
+.muse-goal-row:not(:has(.muse-goal-rank)){grid-template-columns:52px minmax(0,1fr)}
+.muse-goal-rank{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;font-family:var(--font-editorial);font-size:.98rem;background:color-mix(in srgb,var(--accent-primary) 18%,var(--surface-control));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--accent-primary) 40%,transparent)}
+.muse-goal-row-cover{display:block;width:52px;aspect-ratio:2/3;padding:0;border:0;border-radius:3px 6px 6px 3px;overflow:hidden;background:none;cursor:pointer;box-shadow:2px 4px 10px rgba(0,0,0,.3)}
+.muse-goal-row-cover :is(img,.muse-cal-cover-blank){display:block;width:100%;height:100%;object-fit:cover}
+.muse-goal-row-cover .muse-cal-cover-blank{display:grid;place-items:center;padding:3px;font-size:.5rem;background:var(--surface-control)}
+.muse-goal-row-body{display:grid;gap:3px;min-width:0}
+.muse-goal-row-title{justify-self:start;max-width:100%;padding:0;border:0;background:none;color:inherit;font-family:var(--font-editorial);font-weight:var(--type-title-weight,600);font-size:1.05rem;line-height:1.2;text-align:left;cursor:pointer;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden}
+.muse-goal-row-title:hover{text-decoration:underline;text-underline-offset:3px}
+.muse-goal-row-author{font-size:.82rem;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.muse-goal-row-meta{display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;margin-top:3px}
+.muse-goal-when{display:inline-flex;align-items:center;padding:1px 9px;border-radius:999px;font-size:.74rem;font-weight:600;background:color-mix(in srgb,var(--accent-secondary) 16%,var(--surface-control));border:1px solid color-mix(in srgb,var(--accent-secondary) 28%,transparent)}
+.muse-goal-row[data-status="finished"] .muse-goal-row-cover{box-shadow:0 0 0 2px var(--st-finished,#ffa23d),2px 4px 10px rgba(0,0,0,.3)}
+@container muse-content (max-width:640px){
+ .muse-goal-panel{padding:16px}
+ .muse-goal-invite{grid-template-columns:minmax(0,1fr)}
+ .muse-goal-row{gap:12px;padding:10px}
+ .muse-goal-row,.muse-goal-row:not(:has(.muse-goal-rank)){grid-template-columns:auto 46px minmax(0,1fr)}
+ .muse-goal-row:not(:has(.muse-goal-rank)){grid-template-columns:46px minmax(0,1fr)}
+ .muse-goal-row-cover{width:46px}
+ .muse-goals-controls{width:100%}
+ .muse-goals-controls .muse-segmented{flex:1 1 100%;justify-content:center}
+ .muse-goals-controls .muse-segmented .muse-edge{flex:1;min-width:0}
+}
+
+/* New goal sheet */
+.muse-goal-sheet{display:grid;gap:14px;min-width:0}
+.muse-goal-sheet-h{margin:0;font-family:var(--font-editorial);font-size:1.4rem;font-weight:var(--type-title-weight,600)}
+.muse-goal-sheet-sub{margin:2px 0 10px;color:var(--text-muted);font-size:.88rem}
+.muse-goal-sheet-or{margin:0;color:var(--text-muted)}
+.muse-goal-ideas{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(150px,46%);gap:10px;margin:0 -4px;padding:4px 4px 8px;list-style:none;overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:thin}
+.muse-goal-ideas li{scroll-snap-align:start;display:grid}
+.muse-goal-ideas button{display:grid;align-content:start;gap:4px;padding:14px;border:1px solid var(--glass-border);border-radius:16px;background:var(--surface-subtle);color:inherit;font:inherit;text-align:left;cursor:pointer;min-height:92px;transition:border-color 160ms ease,transform 160ms ease}
+.muse-goal-ideas button:hover{border-color:var(--selected-border);transform:translateY(-2px)}
+.muse-goal-ideas strong{font-size:.98rem;line-height:1.2}
+.muse-goal-ideas span{font-size:.8rem;color:var(--text-muted)}
+.muse-goal-timeframes{display:flex;gap:8px;flex-wrap:wrap}
+.muse-goal-timeframes .muse-edge{min-height:40px;padding:0 18px}
+.muse-goal-form{display:grid;gap:14px;justify-items:center;text-align:center}
+.muse-goal-form .muse-books-actions{justify-content:center}
+.muse-goal-period{display:flex;align-items:center;gap:14px}
+.muse-goal-period strong{font-family:var(--font-editorial);font-size:1.3rem;min-width:9ch}
+.muse-goal-period .muse-button,.muse-goal-number .muse-button{width:38px;min-width:38px;height:38px;min-height:38px;padding:0;display:grid;place-items:center;border-radius:50%;background:var(--surface-control)}
+.muse-goal-number{display:grid;grid-template-columns:auto auto auto;grid-template-rows:auto auto;align-items:center;justify-items:center;gap:6px 14px}
+.muse-goal-number input{width:4.2ch;padding:2px 0;border:0;border-bottom:2px solid color-mix(in srgb,var(--accent-primary) 60%,transparent);background:none;color:inherit;font-family:var(--font-editorial);font-size:3rem;line-height:1;text-align:center;-moz-appearance:textfield;appearance:textfield}
+.muse-goal-number input::-webkit-inner-spin-button,.muse-goal-number input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.muse-goal-number input:focus-visible{outline:none;border-bottom-color:var(--accent-pop,var(--accent-primary))}
+.muse-goal-unit{grid-column:1/-1;color:var(--text-muted);font-size:.92rem}
+.muse-goal-every{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.muse-goal-every .muse-edge{min-height:36px;padding:0 14px}
+.muse-goal-hint{margin:0;max-width:44ch;color:var(--text-muted);font-size:.82rem}
+/* Choice pills in the sheet (outside a segmented control, .muse-edge has no frame of its own). */
+.muse-goal-sheet :is(.muse-goal-every,.muse-goal-timeframes) .muse-edge{display:inline-flex;align-items:center;justify-content:center;border:1.5px solid color-mix(in srgb,var(--foreground) 22%,transparent);border-radius:999px;background:var(--surface-control);color:inherit;font-weight:600;cursor:pointer;transition:border-color 160ms ease,background 160ms ease}
+.muse-goal-sheet :is(.muse-goal-every,.muse-goal-timeframes) .muse-edge:hover{border-color:var(--selected-border)}
+.muse-goal-sheet .muse-goal-every .muse-edge[aria-pressed="true"]{border-color:transparent;color:var(--on-accent,#fff);background:linear-gradient(130deg,var(--accent-pop,var(--accent-primary)),var(--accent-primary) 55%,var(--accent-secondary))}
+.muse-goal-sheet .muse-goal-timeframes .muse-edge{min-width:96px}
+/* Editorial titles survive the Bookshelf's button font reset. */
+.muse-goals-page .muse-goal-row-title{font-family:var(--font-editorial);font-size:1.05rem;font-weight:var(--type-title-weight,600)}
+/* The plan note sits under the count (never over the label); the tiles share the card's height so nothing floats. */
+.muse-goal-tile-note{position:static;margin-top:-2px}
+.muse-goals-card{grid-template-rows:auto 1fr}
+.muse-goals-card .muse-goal-tiles{grid-template-rows:1fr auto}
+.muse-goals-card .muse-goal-tile:not([data-tile="daily"]){align-content:space-between}

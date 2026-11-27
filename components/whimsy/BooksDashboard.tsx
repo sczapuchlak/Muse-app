@@ -1,4 +1,5 @@
 'use client';
+import Link from 'next/link';
 import {MuseMark} from '@/components/design/MuseHeading';
 import {useState,type CSSProperties,type ReactNode} from 'react';
 import {MuseIcon} from '@/components/MuseIcon';
@@ -41,4 +42,11 @@ export function RecentSessions({books,sessions,onOpen}:{books:Book[];sessions:Re
  const byId=new Map(books.map(b=>[b.id,b])),recent=[...sessions].sort((a,b)=>b.date.localeCompare(a.date)||b.createdAt.localeCompare(a.createdAt)).slice(0,18);
  return <section className="muse-dash-card muse-dash-recent" aria-labelledby="dash-recent"><header><h3 id="dash-recent"><MuseMark icon="clock" tone={3} size="sm" className="muse-books-mark"/>Recent reading sessions</h3></header>
   {recent.length?<PagedList items={recent} size={3} cols={3} label="recent sittings" className="muse-dash-recent-list" render={s=>{const b=byId.get(s.bookId);return <button type="button" role="listitem" key={s.id} onClick={()=>b&&onOpen(b.id)}><span className="muse-finished-cover" aria-hidden="true"><Cover book={b}/></span><span className="muse-finished-copy"><strong>{b?.title??'A book'}</strong><span>{yearDate(s.date)} · {sessionSeconds(s)?span(sessionSeconds(s))+' · ':''}{s.pages} {s.pages===1?'page':'pages'}</span></span></button>;}}/>:<p>Your sittings show up here after the first one.</p>}</section>;
+}
+
+/** A door into the Reading Atlas from the Dashboard: a line about what is there and a little rising chart. */
+export function AtlasLinkCard(){
+ return <Link href="/collections/reading-atlas" className="muse-dash-card muse-dash-atlas"><header><h3><MuseMark icon="globe" tone={6} size="sm" className="muse-books-mark"/>Reading Atlas</h3><span className="muse-home-chevron" aria-hidden="true"><MuseIcon name="chevron" size={16}/></span></header>
+  <p>Explore your reading patterns, habits and trends.</p>
+  <span className="muse-dash-atlas-art" aria-hidden="true"><i style={{'--h':'34%'} as CSSProperties}/><i style={{'--h':'52%'} as CSSProperties}/><i style={{'--h':'44%'} as CSSProperties}/><i style={{'--h':'72%'} as CSSProperties}/><i style={{'--h':'92%'} as CSSProperties}/></span></Link>;
 }

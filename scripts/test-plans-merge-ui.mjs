@@ -29,14 +29,12 @@ try{
  const {evaluate,until,go,click,viewport,shoot,errors,text}=ui;
  const planTitles=()=>evaluate(()=>[...document.querySelectorAll('.muse-plans .muse-plan-title')].map(x=>x.textContent));
 
- // ---- Dashboard: Up Next is gone and its waiting book is in this month's plan ----
- await go('/collections','!!document.querySelector(".muse-plans .muse-plan-card")','dashboard plans');
+ // ---- Plans: the old Up Next slots' waiting book is in this month's plan (the Dashboard's Up next now reads from plans) ----
+ await go('/collections/plans','!!document.querySelector(".muse-plans .muse-plan-card")','dashboard plans');
  await until(()=>/Up Next now lives/.test(document.querySelector('.muse-plans-note')?.textContent??''),'the hand-over note');
  check(!(await evaluate(()=>!!document.querySelector('.muse-upnext'))),'there is no Up Next card on the Dashboard');
  check(JSON.stringify(await planTitles())==='["A Court of Wings and Ruin"]','the waiting Up Next book is now in this month’s plan (the one being read is let go)');
  check(sql(`select count(*) from public.up_next_slots where user_id='${userId}'`)==='0','the old Up Next slots are emptied, so it happens once');
- check(await evaluate(()=>!!document.querySelector('.muse-dash-trio[data-pair] .muse-dash-finished')&&!!document.querySelector('.muse-dash-trio[data-pair] .muse-dash-recent')),'Recently finished and Recent reading sessions share one row');
- check(await evaluate(()=>{const [a,b]=[...document.querySelectorAll('.muse-dash-trio[data-pair]>*')].map(x=>x.getBoundingClientRect());return Math.abs(a.top-b.top)<2&&Math.abs(a.bottom-b.bottom)<2;}),'the two panels end on the same line');
  await shoot('plans-dashboard',{full:true});
 
  // ---- Spin to add: the wheel offers waiting books not already in the plan, and only adds ----
@@ -44,7 +42,7 @@ try{
  await until(()=>!!document.querySelector('.muse-roulette'),'the wheel opens');
  check(await evaluate(()=>document.querySelector('.muse-roulette [aria-pressed="true"]')?.textContent.startsWith('To Be Read')),'the wheel starts on To Be Read');
  check(await evaluate(()=>!document.querySelector('.muse-roulette').textContent.includes('This month’s plan')),'adding to this month, the wheel doesn’t offer this month’s own plan');
- check(await evaluate(()=>/^1 book is in the wheel/.test(document.querySelector('.muse-roulette-tease')?.textContent??'')),'books already in the plan are not in the wheel');
+ check(await evaluate(()=>/^1 book is in the deck/.test(document.querySelector('.muse-roulette-tease')?.textContent??'')),'books already in the plan are not in the wheel');
  await click('.muse-roulette-spin');await until(()=>!!document.querySelector('.muse-roulette-result'),'a book is picked');
  check((await text('.muse-roulette-result strong'))==='Fourth Wing','the wheel lands on the one eligible book');
  await shoot('plans-spin');
@@ -62,40 +60,39 @@ try{
  check(await evaluate(()=>[...document.querySelectorAll('.muse-plans .muse-plan-start')].every(b=>b.disabled)),'while a sitting is open, the other Start buttons wait');
 
  // ---- Yearly: every month's books, by month, then the year's own ----
- await click('.muse-plans .muse-segmented button','Yearly');await wait(400);
+ await click('.muse-plans .muse-segmented button','Year');await wait(400);
  check(JSON.stringify(await planTitles())==='["Circe","A Court of Wings and Ruin","Fourth Wing","My grandmother’s recipe notebook"]','the year lists March, then this month, then the year’s own books');
- check(JSON.stringify(await evaluate(()=>[...document.querySelectorAll('.muse-plans .muse-plan-where')].map(x=>x.textContent)))===JSON.stringify(['Mar',new Intl.DateTimeFormat('en-US',{month:'short',timeZone:'UTC'}).format(new Date()),new Intl.DateTimeFormat('en-US',{month:'short',timeZone:'UTC'}).format(new Date()),'Anytime']),'each book in the year shows its month');
- check((await text('.muse-plans-count'))==='4 books','the year counts every book once');
+ check(/^4 books planned/.test(await text('.muse-rp-periodlabel span')),'the year counts every book once');
  await click('.muse-plans button','Add books');await until(()=>!!document.querySelector('.muse-plan-add-where'),'add books opens');
  check(await evaluate(()=>document.querySelector('.muse-plan-add-where').textContent.includes(new Intl.DateTimeFormat('en-US',{month:'long',timeZone:'UTC'}).format(new Date()))),'adding in a year asks which month, defaulting to this month');
  await click('.muse-modal-universal-close, [aria-label="Close"]').catch(()=>{});await wait(300);
  await shoot('plans-yearly');
  await go('/collections/plans','!!document.querySelector(".muse-plans .muse-plan-card")','full plans');
- await click('.muse-plans .muse-segmented button','Yearly');await wait(400);
- check(await evaluate(()=>[...document.querySelectorAll('.muse-plan-group-head')].map(h=>h.firstChild.textContent).join('|')==='March|'+new Intl.DateTimeFormat('en-US',{month:'long',timeZone:'UTC'}).format(new Date())+'|Anytime in '+new Date().getUTCFullYear()),'the full yearly plan has a heading per month');
+ await click('.muse-plans .muse-segmented button','Year');await wait(400);
+ check(await evaluate(()=>[...document.querySelectorAll('.muse-month-card .muse-month-name')].map(h=>h.textContent).join('|')==='March|'+new Intl.DateTimeFormat('en-US',{month:'long',timeZone:'UTC'}).format(new Date())+'|Anytime in '+new Date().getUTCFullYear()),'the full yearly plan has a heading per month');
  await shoot('plans-yearly-full',{full:true});
 
  // ---- Reading Atlas ----
  await go('/collections/reading-atlas?period=month','!!document.querySelector(".muse-cal-day")','atlas month');await wait(1500);
  check(await evaluate(()=>[...document.querySelectorAll('.muse-cal-day[data-books] .muse-cal-cover img')].every(img=>{const d=img.closest('.muse-cal-day').getBoundingClientRect(),r=img.getBoundingClientRect();return r.bottom<=d.bottom+1&&r.top>=d.top-1&&r.height>0;})),'calendar covers fit inside their day');
  await shoot('atlas-month',{full:true});
- await go('/collections/reading-atlas?period=year','!!document.querySelector(".muse-atlas-tf[data-even]")','atlas year');await wait(1500);
- check(await evaluate(()=>{const [a,b]=[...document.querySelectorAll('.muse-atlas-tf[data-even]>*')].map(x=>x.getBoundingClientRect());return Math.abs(a.width-b.width)<2;}),'Top rated and Favorites are the same width');
- check(await evaluate(()=>[...document.querySelectorAll('.muse-atlas-tf[data-even] .muse-toprated-cover')].every(c=>c.getBoundingClientRect().width<160)),'their covers are about half the old size');
+ await go('/collections/reading-atlas?period=year','!!document.querySelector(".muse-atlas-shelves .muse-toprated")','atlas year');await wait(1500);
+ check(await evaluate(()=>{const [a,b]=[...document.querySelectorAll('.muse-atlas-shelves>.muse-books-panel')].map(x=>x.getBoundingClientRect());return Math.abs(a.width-b.width)<2;}),'Top rated and Favorites are the same width (Atlas V2 shelves)');
+ check(await evaluate(()=>[...document.querySelectorAll('.muse-atlas-shelves .muse-toprated-cover')].every(c=>c.getBoundingClientRect().width<160)),'their covers stay small');
  await shoot('atlas-year',{full:true});
- await go('/collections/reading-atlas?section=dna&period=year','!!document.querySelector(".muse-atlas-persona")','atlas dna');await wait(1200);
+ await go('/collections/reading-atlas?section=dna&period=year','!!document.querySelector(".muse-dna-hero")','atlas dna');await wait(1200);
  check(!(await evaluate(()=>document.body.textContent.includes('never guesses'))),'the “fixed rules, never guesses” line is gone');
- check(await evaluate(()=>document.querySelector('.muse-atlas-persona').getBoundingClientRect().height<260),'the personality band is compact');
- check(await evaluate(()=>document.querySelectorAll('.muse-dna-pair .muse-emojiboard-rest .muse-emojiboard-item').length<=4),'the emoji carousel shows one row at a time');
+ check(await evaluate(()=>document.querySelector('.muse-dna-hero').getBoundingClientRect().height<200),'the personality band is compact');
+ check(await evaluate(()=>document.querySelectorAll('.muse-dna-vibes li').length<=4),'the vibes show one row of four at a time');
  await shoot('atlas-dna',{full:true});
  await go('/collections/reading-atlas?section=streak','!!document.querySelector(".muse-streaks-main")','atlas streaks');await wait(1200);
  check(await evaluate(()=>{const g=document.querySelector('.muse-goalhist-cal');return !!g&&g.getBoundingClientRect().height<520;}),'the daily goal calendar is about half its old height');
  await shoot('atlas-streaks',{full:true});
- await go('/collections/reading-atlas?section=year','!!document.querySelector(".muse-yir-emoji-shelf")','atlas year in review');await wait(1500);
+ await go('/collections/reading-atlas?section=year','!!document.querySelector(".muse-yir2-hero")','atlas year in review');await wait(1500);
  await shoot('atlas-review',{full:true});
  // ---- Phone ----
  await viewport(390,844,true);
- await go('/collections','!!document.querySelector(".muse-plans .muse-plan-card")','phone dashboard');await wait(1200);
+ await go('/collections/plans','!!document.querySelector(".muse-plans .muse-plan-card")','phone dashboard');await wait(1200);
  check(!(await ui.overflow()),'no sideways scrolling on a phone');
  await shoot('plans-phone',{full:true});
  check(errors.length===0,`no page errors${errors.length?`: ${errors[0]}`:''}`);

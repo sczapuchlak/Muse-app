@@ -52,7 +52,7 @@ test('Dream Diary and Tarot journal filters fold away on mobile and count what i
 
 test('Collections remember the chosen sort with the other view preferences',()=>{
  const text=source('components/collections/Collections.tsx');
- assert.match(text,/updated=\{\.\.\.preferences,sort:/);assert.match(text,/saveCollectionsPreferences\(client,collection\.userId,updated\)/);assert.match(text,/data-advanced=\{advancedOpen\}/);
+ assert.match(text,/updated=\{\.\.\.preferences,sort:/);assert.match(text,/saveCollectionsPreferences\(client,collection\.userId,updated\)/);assert.match(text,/setFiltersOpen/);
 });
 
 test('Placement details never repeat the hero title or summary',()=>{
