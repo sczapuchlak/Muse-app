@@ -170,3 +170,94 @@
 .muse-dash-trio[data-pair] .muse-dash-recent{align-content:start}
 .muse-dash-trio[data-pair] .muse-dash-recent-list{grid-template-columns:minmax(0,1fr)!important}
 @container muse-content (max-width:900px){.muse-dash-trio[data-pair]{grid-template-columns:minmax(0,1fr)!important}}
+
+/* Nov 26 (round 2): the streak is a slim band across the top (no stretched card); Goals sits beside Up next, which takes
+   the wider column; on phones they stack. Then Currently reading beside the last 30 days. Plans live in Plans. */
+.muse-bookshelf[data-surface="dashboard"]>.muse-dash-hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.45fr);gap:clamp(12px,1.8vw,20px);align-items:stretch;min-width:0}
+.muse-dash-hero>*{margin:0!important;min-width:0}
+.muse-dash-hero>.muse-streak-panel{grid-column:1/-1;border-radius:22px;background:linear-gradient(105deg,color-mix(in srgb,var(--accent-primary) 30%,#140c24) 0%,color-mix(in srgb,var(--accent-secondary) 26%,#140c24) 100%);border-color:color-mix(in srgb,var(--accent-primary) 40%,transparent);color:#fff}
+.muse-dash-hero .muse-streak{grid-template-columns:auto minmax(0,1fr) auto;grid-template-rows:auto;align-items:center;column-gap:clamp(14px,3vw,36px);padding:12px clamp(14px,2vw,22px);color:#fff}
+.muse-dash-hero .muse-streak-count{grid-column:1;grid-row:1;display:grid;gap:0;line-height:1}
+.muse-dash-hero .muse-streak-count strong{font-size:2.3rem;background:linear-gradient(120deg,#fff,color-mix(in srgb,var(--accent-pop,var(--accent-primary)) 55%,#fff));-webkit-background-clip:text;background-clip:text}
+.muse-dash-hero .muse-streak-count span{color:rgba(255,255,255,.78);font-family:var(--font-editorial);font-style:italic;font-size:.9rem}
+.muse-dash-hero .muse-streak-week{grid-column:2;grid-row:1;justify-content:space-around;gap:4px;max-width:520px;width:100%;justify-self:center}
+.muse-dash-hero .muse-streak-week li>span{color:rgba(255,255,255,.72)}
+.muse-dash-hero .muse-streak-heart{width:24px;height:24px;color:rgba(255,255,255,.42)}
+.muse-dash-hero .muse-streak-week li:last-child::before{width:30px;height:30px;margin-left:-15px;top:-3px}
+.muse-dash-hero .muse-streak-meta{grid-column:3;grid-row:1;color:rgba(255,255,255,.75)}
+.muse-dash-hero .muse-streak-meta strong,.muse-dash-hero .muse-streak-chevron{color:#fff}
+.muse-dash-hero .muse-streak-note{padding:0 18px 10px;border-top-color:rgba(255,255,255,.16);color:rgba(255,255,255,.85)}
+.muse-dash-hero .muse-streak::after{opacity:.9}
+@container muse-content (max-width:760px){.muse-bookshelf[data-surface="dashboard"]>.muse-dash-hero{grid-template-columns:minmax(0,1fr)}}
+@container muse-content (max-width:520px){
+ .muse-dash-hero .muse-streak{column-gap:10px;padding:10px 12px}
+ .muse-dash-hero .muse-streak-count strong{font-size:1.8rem}
+ .muse-dash-hero .muse-streak-count span{font-size:.72rem;white-space:nowrap}
+ .muse-dash-hero .muse-streak-heart{width:18px;height:18px}
+ .muse-dash-hero .muse-streak-week{gap:2px}
+ .muse-dash-hero .muse-streak-week li>span{font-size:.56rem}
+ .muse-dash-hero .muse-streak-week li:last-child::before{width:24px;height:24px;margin-left:-12px;top:-3px}
+ .muse-dash-hero .muse-streak-meta{font-size:.7rem;gap:4px}
+ .muse-dash-hero .muse-streak-meta em{display:none}
+ .muse-dash-hero .muse-streak-note{display:none}
+ .muse-dash-hero .muse-home-card{padding:12px}
+}
+.muse-bookshelf[data-surface="dashboard"]>.muse-dash-main{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:clamp(12px,1.8vw,20px);align-items:stretch;min-width:0}
+.muse-dash-main>*{margin:0!important;min-width:0}
+.muse-dash-main>.muse-books-section[aria-label="Reading Desk"]{display:grid;gap:clamp(12px,1.8vw,20px);padding:0!important;border:0!important;border-radius:0!important;background:none!important;box-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;min-height:0;align-content:start}
+.muse-dash-main>.muse-books-section[aria-label="Reading Desk"]::before,.muse-dash-main>.muse-books-section[aria-label="Reading Desk"]::after{display:none}
+.muse-dash-main>.muse-books-section[aria-label="Reading Desk"]:has(>:only-child){align-content:stretch}
+.muse-dash-main .muse-desk-layout,.muse-dash-main .muse-desk-reading{height:100%;box-sizing:border-box}
+.muse-dash-main .muse-desk-reading{grid-template-rows:auto 1fr;align-content:start}
+.muse-dash-main .muse-desk-spot{align-self:stretch;align-content:center}
+.muse-dash-main>.muse-trends{height:100%;box-sizing:border-box}
+@container muse-content (max-width:900px){.muse-bookshelf[data-surface="dashboard"]>.muse-dash-main{grid-template-columns:minmax(0,1fr)}}
+/* The streak never stretches into an empty card: it centres in the row and keeps its own compact height. */
+.muse-dash-hero .muse-streak-panel{align-self:stretch;display:grid;align-content:center}
+@container muse-content (min-width:761px){.muse-dash-hero .muse-streak{grid-template-rows:auto auto;row-gap:14px}.muse-dash-hero .muse-streak-count strong{font-size:2.4rem}}
+
+/* Nov 26 (round 3, her reference): streak band · Currently reading across the full width (book | also reading) ·
+   Goals | Up next | last 30 days · Recently finished | Recent sessions | Reading Atlas. Rows end on one line. */
+.muse-bookshelf[data-surface="dashboard"]>.muse-dash-hero{grid-template-columns:minmax(0,1fr)!important}
+.muse-bookshelf[data-surface="dashboard"]>.muse-dash-reading{min-width:0}
+.muse-dash-reading>.muse-books-section[aria-label="Reading Desk"]{display:grid;gap:clamp(12px,1.8vw,20px);padding:0!important;border:0!important;border-radius:0!important;background:none!important;box-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+.muse-dash-reading>.muse-books-section[aria-label="Reading Desk"]::before,.muse-dash-reading>.muse-books-section[aria-label="Reading Desk"]::after{display:none}
+.muse-dash-reading .muse-desk-split{grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:20px}
+.muse-dash-reading .muse-desk-split .muse-desk-spot{border:0;background:none;padding:4px 0}
+.muse-dash-reading .muse-desk-others{border:0;border-left:1px solid color-mix(in srgb,var(--foreground) 12%,transparent);border-radius:0;padding:0 0 0 20px}
+.muse-dash-reading .muse-desk-split .muse-desk-picks{grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}
+.muse-desk-pick-more{display:grid;gap:4px;width:100%;padding:0;border:0;background:none;color:inherit;font:inherit;cursor:pointer}
+.muse-desk-pick-more .muse-desk-pick-cover{display:grid!important;place-content:center;justify-items:center;gap:2px;box-sizing:border-box;border:1.5px dashed color-mix(in srgb,var(--foreground) 26%,transparent);box-shadow:none!important;background:color-mix(in srgb,var(--foreground) 4%,transparent)}
+.muse-desk-pick-more strong{font-family:var(--font-editorial);font-size:1.3rem}.muse-desk-pick-more small{font-size:.72rem;color:var(--text-muted)}
+@container muse-content (max-width:760px){
+ .muse-dash-reading .muse-desk-split{grid-template-columns:minmax(0,1fr)}
+ .muse-dash-reading .muse-desk-others{border-left:0;border-top:1px solid color-mix(in srgb,var(--foreground) 12%,transparent);padding:12px 0 0}
+ .muse-dash-reading .muse-desk-split .muse-desk-picks{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+.muse-bookshelf[data-surface="dashboard"]>.muse-dash-row3{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr) minmax(0,1fr);gap:clamp(12px,1.8vw,20px);align-items:stretch;min-width:0}
+.muse-dash-row3>*{margin:0!important;min-width:0}
+@container muse-content (max-width:900px){.muse-bookshelf[data-surface="dashboard"]>.muse-dash-row3{grid-template-columns:repeat(2,minmax(0,1fr))}.muse-dash-row3>.muse-trends{grid-column:1/-1}}
+@container muse-content (max-width:760px){.muse-bookshelf[data-surface="dashboard"]>.muse-dash-row3{grid-template-columns:minmax(0,1fr)}}
+/* Goals as rows: label, the count in gradient numerals, and the pill beside it. */
+.muse-dash-row3 .muse-goal-tiles{grid-template-columns:minmax(0,1fr)!important;grid-template-rows:none!important;gap:8px}
+.muse-dash-row3 .muse-goal-tile,.muse-dash-row3 .muse-goal-tile[data-tile="daily"]{grid-column:auto;display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-areas:"kicker note" "count bar";align-items:center;align-content:center;gap:4px 14px;padding:9px 14px}
+.muse-dash-row3 .muse-goal-tile>.muse-goal-tile-kicker{grid-area:kicker}
+.muse-dash-row3 .muse-goal-tile>.muse-goal-tile-count{grid-area:count}
+.muse-dash-row3 .muse-goal-tile>.muse-goal-bar{grid-area:bar}
+.muse-dash-row3 .muse-goal-tile>.muse-goal-tile-note{grid-area:note;justify-self:end;margin:0}
+.muse-dash-row3 .muse-goal-tile>.muse-goal-week{display:none}
+.muse-dash-row3 .muse-goal-tile-count b,.muse-dash-row3 .muse-goal-tile[data-tile="daily"] .muse-goal-tile-count b{font-size:1.55rem}
+.muse-dash-row3 .muse-goal-tile[data-empty]{grid-template-areas:"kicker invite";grid-template-columns:auto minmax(0,1fr)}
+.muse-dash-row3 .muse-goal-tile[data-empty] .muse-goal-tile-invite{grid-area:invite;justify-self:end;margin:0}
+.muse-dash-row3 .muse-next-shelf{grid-auto-columns:minmax(84px,calc((100% - 24px)/3.4))}
+.muse-dash-row3>.muse-trends{height:100%;box-sizing:border-box}
+/* bottom row: three equal cards */
+.muse-bookshelf[data-surface="dashboard"]>.muse-dash-trio[data-pair]{grid-template-columns:repeat(3,minmax(0,1fr))!important;align-items:stretch}
+@container muse-content (max-width:900px){.muse-bookshelf[data-surface="dashboard"]>.muse-dash-trio[data-pair]{grid-template-columns:minmax(0,1fr)!important}}
+.muse-dash-atlas{position:relative;overflow:hidden;display:grid;align-content:start;gap:8px;color:inherit;text-decoration:none;background:radial-gradient(80% 120% at 100% 100%,color-mix(in srgb,var(--accent-primary) 22%,transparent),transparent 65%),var(--glass-background)!important;transition:border-color 160ms ease}
+.muse-dash-atlas:hover{border-color:var(--selected-border)}
+.muse-dash-atlas header{display:flex;align-items:center;justify-content:space-between}
+.muse-dash-atlas h3{display:inline-flex;align-items:center;gap:10px}
+.muse-dash-atlas p{max-width:24ch}
+.muse-dash-atlas-art{display:flex;align-items:flex-end;justify-content:flex-end;gap:7px;height:70px;margin-top:auto}
+.muse-dash-atlas-art i{display:block;width:16px;height:var(--h);border-radius:6px 6px 2px 2px;background:linear-gradient(180deg,var(--accent-pop,var(--accent-primary)),color-mix(in srgb,var(--accent-secondary) 60%,transparent))}

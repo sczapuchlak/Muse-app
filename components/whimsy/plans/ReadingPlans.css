@@ -159,3 +159,320 @@
  .muse-plans-add,.muse-plans-spin{flex:1 1 0}
  .muse-plans .muse-plan-start{width:32px;min-width:32px;height:32px;min-height:32px}
 }
+
+/* Plans is where planning happens (Nov 26): the books feeding Up next wear a small chip; phones get a calm, roomy row. */
+.muse-plans-actions{display:inline-flex;align-items:center;gap:8px}
+.muse-plans-hint{display:flex;align-items:center;gap:6px;margin:-2px 0 0;font-size:.78rem;color:var(--text-muted)}
+.muse-plans-hint svg{flex:none;color:var(--accent-pop,var(--accent-primary))}
+.muse-plans .muse-plan-next{display:inline-flex;align-items:center;gap:4px;padding:1px 8px;border-radius:999px;font-size:.7rem;font-weight:700;white-space:nowrap;color:var(--on-accent,#fff);background:linear-gradient(130deg,var(--accent-pop,var(--accent-primary)),var(--accent-secondary))}
+@container muse-content (max-width:640px){
+ .muse-plans{padding:14px;border-radius:20px;gap:12px}
+ .muse-plans-head{display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
+ .muse-plans-head .muse-segmented{display:flex;width:100%;box-sizing:border-box}.muse-plans-head .muse-segmented .muse-edge{flex:1}
+ .muse-plans-period{display:grid;grid-template-columns:36px minmax(0,1fr) 36px;align-items:center;gap:8px}
+ .muse-plans-period>.muse-plans-label{justify-content:center;min-width:0}
+ .muse-plans-period>.muse-plans-today{grid-column:1/-1;justify-self:center;grid-row:2}
+ .muse-plans-period>.muse-plans-spacer{display:none}
+ .muse-plans-period>.muse-plans-actions{grid-column:1/-1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ .muse-plans-actions>.muse-button{width:100%;justify-content:center;min-height:42px}
+ .muse-plans .muse-plan-card{position:relative;grid-template-columns:56px minmax(0,1fr) auto;align-items:center;gap:12px;min-height:0;padding:10px 10px 10px 12px}
+ .muse-plans .muse-plan-rank{position:absolute;left:4px;top:4px;z-index:2;width:24px;height:24px;font-size:.82rem;box-shadow:0 2px 6px rgba(0,0,0,.35),inset 0 0 0 1px color-mix(in srgb,var(--accent-primary) 40%,transparent);background:color-mix(in srgb,var(--accent-primary) 30%,var(--surface-control))}
+ .muse-plans .muse-plan-handle{display:none}
+ .muse-plans .muse-plan-cover,.muse-plans .muse-plan-cover :is(img,.muse-cal-cover,span){width:56px;height:84px}
+ .muse-plans .muse-plan-body{grid-template-columns:minmax(0,1fr);row-gap:3px}
+ .muse-plans .muse-plan-body>.muse-plan-meta{grid-column:1;grid-row:3;justify-content:flex-start;flex-wrap:wrap;gap:6px;margin-top:3px}
+ .muse-plans .muse-plan-title{white-space:normal;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;font-size:1.04rem}
+ .muse-plans .muse-plan-actions{flex-direction:column;gap:6px}
+}
+
+/* ======================================================================================================================
+   Plans page glow-up (Nov 26, round 2): a drawn hero, Up next as a night band, seasons as month cards, books as tiles.
+   ====================================================================================================================== */
+.muse-plans[data-variant="full"]{gap:16px;padding:0;border:0;border-radius:0;background:none;box-shadow:none}
+.muse-plans[data-variant="full"]::before,.muse-plans[data-variant="full"]::after{display:none}
+/* hero */
+.muse-plans-hero{position:relative;display:grid;grid-template-columns:minmax(0,1fr) clamp(150px,30%,260px);align-items:center;gap:12px;padding:clamp(16px,3vw,26px) clamp(16px,3vw,28px);border:1px solid var(--glass-border);border-radius:26px;overflow:hidden;background:radial-gradient(90% 120% at 100% 0%,color-mix(in srgb,var(--accent-primary) 22%,transparent),transparent 60%),radial-gradient(70% 90% at 0% 100%,color-mix(in srgb,var(--accent-secondary) 14%,transparent),transparent 60%),var(--glass-background)}
+.muse-plans-hero-copy{display:grid;gap:6px;min-width:0}
+.muse-plans-hero h2{margin:0;font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-title-weight,600);font-size:clamp(2rem,5.4vw,3rem);line-height:1;letter-spacing:-.02em;background:linear-gradient(120deg,var(--foreground) 40%,color-mix(in srgb,var(--accent-primary) 70%,var(--foreground)));-webkit-background-clip:text;background-clip:text;color:transparent}
+.muse-plans-hero h2 .muse-home-spark{-webkit-text-fill-color:var(--accent-pop,var(--accent-primary));font-size:1.1rem;vertical-align:super}
+.muse-plans-hero p{margin:0;max-width:40ch;font-size:.92rem;color:var(--text-muted)}
+.muse-plans-art{width:100%;height:auto;overflow:visible}
+@media(prefers-reduced-motion:no-preference){
+ .muse-plans-art-stars path{transform-box:fill-box;transform-origin:center;animation:muse-plans-twinkle 12s ease-in-out infinite}
+ .muse-plans-art-stars path:nth-child(2){animation-delay:-3s}.muse-plans-art-stars path:nth-child(3){animation-delay:-6.5s}.muse-plans-art-stars path:nth-child(4){animation-delay:-9s}
+ .muse-plans-art-tail{transform-box:fill-box;transform-origin:0 0;animation:muse-plans-tail 7s ease-in-out infinite}
+}
+@keyframes muse-plans-twinkle{0%,70%,100%{opacity:.35;scale:.8}80%{opacity:1;scale:1.15}}
+@keyframes muse-plans-tail{0%,100%{rotate:0deg}50%{rotate:7deg}}
+/* Up next band */
+.muse-plans-next{display:grid;grid-template-columns:minmax(160px,.38fr) minmax(0,1fr);align-items:center;gap:18px;padding:16px 18px;border-radius:24px;color:#fff;background:radial-gradient(1px 1px at 12% 20%,rgba(255,255,255,.8),transparent 60%),radial-gradient(1.5px 1.5px at 48% 12%,rgba(255,255,255,.6),transparent 60%),radial-gradient(1px 1px at 92% 70%,rgba(255,255,255,.6),transparent 60%),linear-gradient(110deg,color-mix(in srgb,var(--accent-primary) 34%,#150c26),color-mix(in srgb,var(--accent-secondary) 28%,#150c26));box-shadow:0 14px 34px -18px color-mix(in srgb,var(--accent-primary) 80%,transparent)}
+.muse-plans-next h3{margin:0;font-family:var(--font-editorial);font-style:italic;font-size:1.6rem;font-weight:var(--type-title-weight,600)}
+.muse-plans-next h3 span{font-size:.9rem;color:var(--accent-pop,#ffd27a)}
+.muse-plans-next p{margin:4px 0 0;font-size:.84rem;color:rgba(255,255,255,.75)}
+.muse-plans-next .muse-next-shelf{grid-auto-columns:minmax(86px,calc((100% - 50px)/6))}
+.muse-plans-next :is(.muse-next-title){color:#fff}.muse-plans-next .muse-next-author{color:rgba(255,255,255,.7)}
+.muse-plans-next .muse-next-when{color:#fff;background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.25)}
+/* toolbar */
+.muse-plans-toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.muse-plans-toolbar .muse-segmented .muse-edge{min-width:96px}
+.muse-plans-spin{display:inline-flex;align-items:center;gap:10px;min-height:42px;padding:0 18px 0 12px;border:0;border-radius:999px;font:inherit;font-weight:650;font-size:.9rem;color:#fff;cursor:pointer;background:linear-gradient(130deg,color-mix(in srgb,var(--accent-primary) 80%,#1b0f2e),color-mix(in srgb,var(--accent-secondary) 75%,#1b0f2e));box-shadow:0 8px 20px -10px var(--accent-primary),inset 0 1px 0 rgba(255,255,255,.25);transition:filter 160ms ease,transform 160ms ease}
+.muse-plans-spin:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.muse-plans-spin-deck{position:relative;width:26px;height:26px}
+.muse-plans-spin-deck i{position:absolute;left:8px;top:2px;width:12px;height:20px;border-radius:3px;border:1.5px solid rgba(255,255,255,.9);background:linear-gradient(160deg,rgba(255,255,255,.35),rgba(255,255,255,.08));transform-origin:50% 110%}
+.muse-plans-spin-deck i:nth-child(1){transform:rotate(-20deg)}.muse-plans-spin-deck i:nth-child(3){transform:rotate(20deg)}
+@media(prefers-reduced-motion:no-preference){.muse-plans-spin:hover .muse-plans-spin-deck i:nth-child(1){transform:rotate(-32deg)}.muse-plans-spin:hover .muse-plans-spin-deck i:nth-child(3){transform:rotate(32deg)}.muse-plans-spin-deck i{transition:transform 220ms ease}}
+.muse-plans[data-variant="full"] .muse-plans-add{min-height:42px;border-radius:999px;padding:0 18px}
+/* month cards */
+.muse-month-cards{display:grid;gap:12px;margin:0;padding:0;list-style:none}
+.muse-month-card{--m:var(--accent-primary);--m2:var(--accent-secondary);position:relative;display:grid;gap:12px;padding:14px 16px;border:1px solid color-mix(in srgb,var(--m) 34%,var(--glass-border));border-radius:24px;overflow:hidden;background:radial-gradient(80% 140% at 0% 0%,color-mix(in srgb,var(--m) 22%,transparent),transparent 60%),radial-gradient(60% 120% at 100% 100%,color-mix(in srgb,var(--m2) 12%,transparent),transparent 60%),var(--glass-background)}
+.muse-month-card[data-open]{border-color:color-mix(in srgb,var(--m) 60%,transparent);box-shadow:0 18px 40px -26px color-mix(in srgb,var(--m) 90%,transparent)}
+.muse-month-card[data-kind="year"]{--m:var(--accent-secondary);--m2:var(--accent-primary)}
+.muse-month-head{display:grid;grid-template-columns:auto minmax(0,1fr) minmax(120px,220px) auto;align-items:center;gap:12px}
+.muse-month-motif{display:grid;place-items:center;width:46px;height:46px;border-radius:50%;background:color-mix(in srgb,var(--m) 16%,transparent)}
+.muse-month-any{font-size:1.4rem;color:var(--m)}
+.muse-month-titles{display:grid;gap:1px;min-width:0}
+.muse-month-name{justify-self:start;margin:0;padding:0;border:0;background:none;font:inherit;font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-title-weight,600);font-size:clamp(1.4rem,3.4vw,1.9rem);line-height:1.05;color:color-mix(in srgb,var(--m) 45%,var(--foreground));cursor:pointer;text-align:left}
+h4.muse-month-name{cursor:default}
+button.muse-month-name:hover{text-decoration:underline;text-underline-offset:5px;text-decoration-thickness:1px}
+.muse-month-count{font-size:.84rem;color:var(--text-muted)}
+.muse-month-progress{display:grid;gap:5px;font-size:.78rem;color:var(--text-muted);text-align:right}
+.muse-month-meter{position:relative;display:block;height:8px;border-radius:999px;overflow:hidden;background:color-mix(in srgb,var(--foreground) 10%,transparent)}
+.muse-month-meter i{position:absolute;inset:0 auto 0 0;width:var(--fill);border-radius:inherit;background:linear-gradient(90deg,var(--m2),var(--m));box-shadow:0 0 10px color-mix(in srgb,var(--m) 60%,transparent)}
+.muse-month-toggle{display:grid;place-items:center;width:34px;height:34px;padding:0;border:0;border-radius:50%;background:color-mix(in srgb,var(--m) 14%,var(--surface-control));color:inherit;cursor:pointer}
+.muse-month-toggle svg{transform:rotate(-90deg)}
+.muse-month-card[data-open] .muse-month-toggle svg{transform:rotate(0)}
+.muse-month-strip{display:flex;align-items:center;gap:10px;overflow-x:auto;scrollbar-width:none;padding:2px 2px 4px}
+.muse-month-strip::-webkit-scrollbar{display:none}
+.muse-month-cover{position:relative;flex:none;width:58px;aspect-ratio:2/3;padding:0;border:0;border-radius:3px 6px 6px 3px;overflow:visible;background:none;cursor:pointer}
+.muse-month-cover :is(img,.muse-cal-cover-blank){display:block;width:100%;height:100%;object-fit:cover;border-radius:inherit;box-shadow:2px 4px 10px rgba(0,0,0,.3)}
+.muse-month-cover .muse-cal-cover-blank{display:grid;place-items:center;padding:3px;font-size:.5rem;text-align:center;background:var(--surface-control)}
+.muse-month-cover[data-status="finished"] :is(img,.muse-cal-cover-blank){opacity:.7}
+.muse-month-cover:hover{transform:translateY(-2px)}
+.muse-month-add,.muse-plan-addtile button{display:grid;place-items:center;flex:none;width:58px;aspect-ratio:2/3;padding:0;border:1.5px dashed color-mix(in srgb,var(--m,var(--foreground)) 45%,transparent);border-radius:8px;background:color-mix(in srgb,var(--m,var(--foreground)) 6%,transparent);color:color-mix(in srgb,var(--m,var(--foreground)) 70%,var(--foreground));cursor:pointer}
+.muse-month-add:hover,.muse-plan-addtile button:hover{background:color-mix(in srgb,var(--m,var(--foreground)) 14%,transparent)}
+.muse-month-more{font-size:.8rem;color:var(--text-muted)}
+.muse-month-body{display:grid;gap:12px}
+.muse-plans-another{display:flex;align-items:center;justify-content:center;gap:8px;min-height:52px;border:1.5px dashed color-mix(in srgb,var(--foreground) 22%,transparent);border-radius:20px;background:none;color:inherit;font:inherit;font-weight:600;cursor:pointer}
+.muse-plans-another:hover{border-color:var(--selected-border);background:var(--surface-hover)}
+/* book tiles */
+.muse-plans[data-variant="full"] .muse-plan-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;margin:0;padding:0;list-style:none}
+.muse-plans[data-variant="full"] .muse-plan-card{position:relative;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto 1fr;align-content:start;gap:8px;min-height:0;padding:8px 8px 10px;border:1px solid color-mix(in srgb,var(--foreground) 10%,transparent);border-left-width:1px;border-radius:18px;background:var(--surface-subtle);transition:border-color 160ms ease,box-shadow 160ms ease,transform 160ms ease}
+.muse-plans[data-variant="full"] .muse-plan-card:hover{border-color:color-mix(in srgb,var(--seg) 70%,transparent);box-shadow:0 12px 26px -16px color-mix(in srgb,var(--seg) 90%,transparent)}
+.muse-plans[data-variant="full"] .muse-plan-card[data-over]{border-color:var(--accent-primary);box-shadow:0 0 0 2px color-mix(in srgb,var(--accent-primary) 35%,transparent)}
+.muse-plans[data-variant="full"] .muse-plan-card[data-dragging]{z-index:20;box-shadow:0 18px 40px rgba(0,0,0,.4);opacity:.95}
+.muse-plans[data-variant="full"] .muse-plan-card[data-status="finished"]{opacity:1}
+.muse-plan-cover-wrap{position:relative;width:100%;aspect-ratio:2/3}
+.muse-plans[data-variant="full"] .muse-plan-cover{display:block;width:100%;height:100%;padding:0;border-radius:4px 10px 10px 4px;overflow:hidden;box-shadow:3px 6px 16px rgba(0,0,0,.3)}
+.muse-plans[data-variant="full"] .muse-plan-cover :is(img,.muse-cal-cover,span){width:100%;height:100%;border-radius:0;object-fit:cover}
+.muse-plans[data-variant="full"] .muse-plan-cover .muse-cal-cover-blank{display:grid;place-items:center;padding:8px;font-size:.8rem;background:linear-gradient(160deg,color-mix(in srgb,var(--seg) 35%,var(--surface-control)),var(--surface-control))}
+.muse-plans[data-variant="full"] .muse-plan-card[data-status="finished"] .muse-plan-cover{filter:saturate(.75)}
+.muse-plans[data-variant="full"] .muse-plan-rank{position:absolute;left:6px;top:6px;z-index:2;display:grid;place-items:center;width:28px;height:28px;border-radius:50%;font-family:var(--font-editorial);font-size:.95rem;color:#fff;background:rgba(20,12,36,.72);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);box-shadow:0 0 0 1.5px rgba(255,255,255,.55)}
+.muse-plans[data-variant="full"] .muse-plan-card:first-child .muse-plan-rank{background:linear-gradient(140deg,var(--accent-pop,var(--accent-primary)),var(--accent-secondary))}
+.muse-plans[data-variant="full"] .muse-plan-next{position:absolute;left:0;right:0;bottom:0;z-index:2;justify-content:center;border-radius:0 0 10px 4px;padding:3px 6px;font-size:.66rem;letter-spacing:.04em;text-transform:uppercase}
+.muse-plan-pct{position:absolute;left:6px;right:6px;bottom:6px;z-index:2;display:grid;place-items:center;height:20px;border-radius:999px;overflow:hidden;font-size:.7rem;font-weight:800;color:#fff;background:rgba(20,12,36,.7);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.muse-plan-pct i{position:absolute;inset:0 auto 0 0;width:var(--fill);background:linear-gradient(90deg,var(--st-reading),var(--accent-primary));opacity:.85}
+.muse-plan-done{position:absolute;right:6px;bottom:6px;z-index:2;display:grid;place-items:center;width:24px;height:24px;border-radius:50%;color:var(--ink-finished);background:var(--st-finished);border:2px solid #120c1f}
+.muse-month-cover .muse-plan-done{right:-5px;bottom:-5px;width:18px;height:18px}
+.muse-plans[data-variant="full"] .muse-plan-handle{position:absolute;left:50%;top:6px;z-index:3;width:34px;height:22px;margin-left:-17px;border-radius:999px;color:#fff;background:rgba(20,12,36,.6);opacity:0;transition:opacity 160ms ease}
+.muse-plans[data-variant="full"] .muse-plan-card:is(:hover,:focus-within) .muse-plan-handle,.muse-plans[data-variant="full"] .muse-plan-handle:focus-visible{opacity:1}
+.muse-plans[data-variant="full"] .muse-plan-actions{position:absolute;top:14px;right:14px;z-index:3;display:grid;gap:6px}
+.muse-plans[data-variant="full"] :is(.muse-plan-more,.muse-plan-start){width:30px;min-width:30px;height:30px;min-height:30px;padding:0;display:grid;place-items:center;border-radius:50%;color:#fff;background:rgba(20,12,36,.66);border:1px solid rgba(255,255,255,.3);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.muse-plans[data-variant="full"] .muse-plan-start{background:linear-gradient(140deg,var(--accent-primary),var(--accent-secondary))}
+.muse-plans[data-variant="full"] .muse-plan-body{display:grid;grid-template-columns:minmax(0,1fr);gap:2px;align-content:start;padding:0 2px}
+.muse-plans[data-variant="full"] .muse-plan-body>*{grid-column:1;grid-row:auto}
+.muse-plans[data-variant="full"] .muse-plan-title{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;white-space:normal;overflow:hidden;font-family:var(--font-editorial);font-size:1rem;line-height:1.18}
+.muse-plans[data-variant="full"] .muse-plan-author{font-size:.76rem}
+.muse-plans[data-variant="full"] .muse-plan-meta{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;margin-top:4px;justify-content:flex-start}
+.muse-plans[data-variant="full"] .muse-plan-status{padding:1px 9px 1px 2px;font-size:.68rem}
+.muse-plans[data-variant="full"] .muse-plan-status svg{width:11px;height:11px}
+.muse-plans[data-variant="full"] .muse-plan-stars{font-size:.7rem}
+.muse-plans[data-variant="full"] .muse-plan-dates{display:block;font-size:.66rem;margin-top:2px}
+.muse-plan-addtile{display:grid}
+.muse-plan-addtile button{width:100%;height:100%;min-height:200px;aspect-ratio:auto;align-content:center;gap:8px;border-radius:18px;font:inherit;font-size:.84rem;font-weight:600}
+.muse-plan-addtile span{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:color-mix(in srgb,var(--m,var(--accent-primary)) 20%,transparent)}
+.muse-plans[data-variant="full"] .muse-plan-bar{height:22px}
+.muse-plans[data-variant="full"] .muse-plans-periods{padding-top:4px}
+@container muse-content (max-width:640px){
+ .muse-plans-hero{grid-template-columns:minmax(0,1fr) 120px;padding:16px;border-radius:22px}
+ .muse-plans-hero p{font-size:.84rem}
+ .muse-plans-next{grid-template-columns:minmax(0,1fr);gap:10px;padding:14px}
+ .muse-plans-next .muse-next-shelf{grid-auto-columns:minmax(84px,calc((100% - 24px)/3.4))}
+ .muse-plans-toolbar .muse-segmented{flex:1 1 100%;display:flex}.muse-plans-toolbar .muse-segmented .muse-edge{flex:1}
+ .muse-plans-toolbar .muse-plans-spacer{display:none}
+ .muse-plans-toolbar .muse-plans-actions{flex:1 1 100%;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+ .muse-plans-toolbar .muse-plans-actions>*{justify-content:center;width:100%}
+ .muse-month-card{padding:12px;border-radius:20px}
+ .muse-month-head{grid-template-columns:auto minmax(0,1fr) auto;row-gap:8px}
+ .muse-month-motif{width:40px;height:40px}.muse-month-motif svg{width:30px;height:30px}
+ .muse-month-progress{grid-column:1/-1;grid-row:2;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:10px;text-align:left}
+ .muse-month-toggle{grid-column:3;grid-row:1}
+ .muse-plans[data-variant="full"] .muse-plan-list{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+ .muse-plans[data-variant="full"] .muse-plan-card{padding:6px 6px 8px;border-radius:14px}
+ .muse-plans[data-variant="full"] .muse-plan-title{font-size:.86rem}
+ .muse-plans[data-variant="full"] .muse-plan-author{font-size:.68rem}
+ .muse-plans[data-variant="full"] .muse-plan-dates{display:none}
+ .muse-plans[data-variant="full"] .muse-plan-rank{width:22px;height:22px;font-size:.78rem;left:4px;top:4px}
+ .muse-plans[data-variant="full"] .muse-plan-actions{top:10px;right:10px;gap:4px}
+ .muse-plans[data-variant="full"] :is(.muse-plan-more,.muse-plan-start){width:26px;min-width:26px;height:26px;min-height:26px}
+ .muse-plans[data-variant="full"] .muse-plan-handle{display:none}
+ .muse-plans[data-variant="full"] .muse-plan-status{font-size:.62rem}
+ .muse-plan-addtile button{min-height:150px;font-size:.74rem}
+}
+.muse-month-card .muse-month-name{font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-title-weight,600);font-size:clamp(1.4rem,3.4vw,1.9rem);line-height:1.05}
+.muse-plans-hero h2{white-space:nowrap}
+
+/* ======================================================================================================================
+   Reading Plan (Nov 26, consolidated with Goals): compact header · reading intentions · your year | the lineup ·
+   other months. No decorative hero; covers are thumbnails; secondary actions sit behind ⋯.
+   ====================================================================================================================== */
+.muse-plans[data-variant="full"]{gap:14px}
+.muse-rp-head{display:flex;align-items:center;gap:10px 14px;flex-wrap:wrap;padding:10px 16px;border:1px solid var(--glass-border);border-radius:22px;background:var(--glass-background)}
+.muse-rp-period{display:flex;align-items:center;gap:8px;margin-right:auto;min-width:0}
+.muse-rp-periodlabel{display:grid;gap:0;padding:0 4px;border:0;background:none;color:inherit;font:inherit;text-align:left;cursor:pointer;min-width:0}
+.muse-rp-periodlabel h2{margin:0;font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-title-weight,600);font-size:clamp(1.45rem,3vw,1.95rem);line-height:1.05;white-space:nowrap}
+.muse-rp-periodlabel span{font-size:.78rem;color:var(--text-muted)}
+.muse-rp-head .muse-segmented .muse-edge{min-width:68px}
+.muse-rp-head .muse-plans-actions{display:inline-flex;gap:8px}
+/* intentions */
+.muse-rp-intent{display:grid;grid-template-columns:minmax(190px,.75fr) minmax(0,2.25fr);align-items:center;gap:8px 18px;padding:14px 18px;border:1px solid color-mix(in srgb,var(--accent-primary) 30%,var(--glass-border));border-radius:22px;background:radial-gradient(60% 140% at 0% 50%,color-mix(in srgb,var(--accent-primary) 20%,transparent),transparent 70%),radial-gradient(40% 120% at 30% 0%,color-mix(in srgb,var(--accent-secondary) 12%,transparent),transparent 70%),var(--glass-background)}
+.muse-rp-intent-title{display:flex;align-items:center;gap:12px;min-width:0}
+.muse-rp-spark{flex:none;font-size:1.5rem;color:var(--accent-pop,var(--accent-primary))}
+.muse-rp-intent-title h3{margin:0;font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-title-weight,600);font-size:1.3rem;line-height:1.1}
+.muse-rp-intent-title p{margin:2px 0 0;font-family:var(--font-editorial);font-style:italic;font-size:.84rem;color:var(--text-muted)}
+.muse-rp-intent-items{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));min-width:0}
+.muse-rp-intent-item{display:flex;align-items:flex-start;gap:10px;min-width:0;padding:2px 14px;border:0;border-left:1px solid color-mix(in srgb,var(--foreground) 12%,transparent);background:none;color:inherit;font:inherit;text-align:left;cursor:pointer;border-radius:0}
+.muse-rp-intent-item:not([data-static]):hover .muse-rp-intent-copy small{color:var(--foreground)}
+.muse-rp-intent-item[data-static]{cursor:default}
+.muse-rp-intent-icon{flex:none;display:grid;place-items:center;width:34px;height:34px;border-radius:50%;color:var(--accent-primary);background:color-mix(in srgb,var(--accent-primary) 14%,transparent)}
+.muse-rp-intent-copy{display:grid;gap:4px;min-width:0;flex:1}
+.muse-rp-intent-copy small{font-size:.74rem;color:var(--text-muted)}
+.muse-rp-intent-copy strong{font-size:.92rem;font-weight:600}
+.muse-rp-intent-copy strong b,.muse-rp-sidecard strong b{font-family:var(--font-editorial);font-size:1.6rem;line-height:1;background:linear-gradient(120deg,var(--accent-pop,var(--accent-primary)),var(--accent-primary),var(--accent-secondary));-webkit-background-clip:text;background-clip:text;color:transparent}
+.muse-rp-intent-copy em,.muse-rp-sidecard em{display:inline-flex;align-items:center;gap:5px;font-style:normal;font-size:.84rem;font-weight:650;color:var(--accent-primary)}
+.muse-rp-intent-note{font-size:.74rem;color:var(--text-muted)}
+.muse-rp-intent-hint{grid-column:1/-1;margin:0;font-size:.72rem;color:var(--text-muted)}
+@container muse-content (max-width:900px){.muse-rp-intent{grid-template-columns:minmax(0,1fr)}.muse-rp-intent-item:first-child{border-left:0;padding-left:0}}
+@container muse-content (max-width:560px){.muse-rp-intent-items{grid-template-columns:minmax(0,1fr);row-gap:10px}.muse-rp-intent-item{border-left:0;padding:8px 0 0;border-top:1px solid color-mix(in srgb,var(--foreground) 10%,transparent)}.muse-rp-intent-item:first-child{border-top:0;padding-top:0}}
+/* body: your year | the lineup */
+.muse-rp-body{display:grid;grid-template-columns:minmax(210px,.3fr) minmax(0,1fr);gap:14px;align-items:start}
+.muse-rp-side{display:grid;gap:12px;align-content:start;min-width:0}
+.muse-rp-sidecard{display:grid;gap:7px;padding:12px 14px;border:1px solid var(--glass-border);border-radius:18px;background:var(--glass-background);color:inherit;font:inherit;text-align:left;text-decoration:none;cursor:pointer;min-width:0;transition:border-color 160ms ease}
+.muse-rp-sidecard:hover{border-color:var(--selected-border)}
+.muse-rp-sidehead{display:flex;align-items:center;gap:7px;font-family:var(--font-editorial);font-style:italic;font-size:1.02rem}
+.muse-rp-sidehead svg{margin-left:auto;transform:rotate(-90deg);color:var(--text-muted)}
+.muse-rp-sidecard strong{font-size:.92rem;font-weight:600}.muse-rp-sidecard strong small{margin-left:8px;font-size:.76rem;color:var(--text-muted);font-weight:500}
+.muse-rp-sidecovers{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.muse-rp-sidecovers>span{display:block;aspect-ratio:2/3;border-radius:2px 5px 5px 2px;overflow:hidden;box-shadow:1px 3px 8px rgba(0,0,0,.3)}
+.muse-rp-sidecovers :is(img,.muse-cal-cover-blank){display:block;width:100%;height:100%;object-fit:cover}
+.muse-rp-sidecovers .muse-cal-cover-blank{display:grid;place-items:center;font-size:.42rem;background:var(--surface-control)}
+@container muse-content (max-width:900px){.muse-rp-body{grid-template-columns:minmax(0,1fr)}.muse-rp-side{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@container muse-content (max-width:640px){.muse-rp-side{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:72%;overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:none;padding-bottom:2px}.muse-rp-side>*{scroll-snap-align:start}}
+.muse-rp-main{display:grid;gap:14px;min-width:0}
+/* the lineup */
+.muse-plans[data-variant="full"] .muse-rp-lineup,.muse-rp-yearview{gap:12px;padding:14px 16px;border-radius:22px}
+.muse-rp-yearview{display:grid;border:1px solid var(--glass-border);background:var(--glass-background)}
+.muse-rp-lineup-head{display:flex;align-items:center;flex-wrap:wrap;gap:8px 12px}
+.muse-rp-lineup-head .muse-month-motif{width:38px;height:38px}
+.muse-plans .muse-rp-lineup-head .muse-month-name,.muse-rp-yeartitle{margin:0;font-family:var(--font-editorial);font-style:italic;font-weight:var(--type-title-weight,600);font-size:clamp(1.2rem,2.4vw,1.45rem);line-height:1.1;color:var(--foreground)}
+.muse-rp-lineup-head .muse-month-count{padding:2px 10px;border-radius:999px;font-size:.74rem;font-weight:700;background:color-mix(in srgb,var(--m,var(--accent-primary)) 18%,transparent)}
+.muse-rp-hint{margin-left:auto;font-size:.76rem;color:var(--text-muted)}
+.muse-rp-viewtoggle{display:inline-flex;gap:2px;padding:3px;border:1px solid var(--glass-border);border-radius:999px;background:var(--surface-control)}
+.muse-rp-yearview .muse-rp-viewtoggle{margin-left:auto}
+.muse-rp-viewtoggle button{display:grid;place-items:center;width:32px;height:28px;padding:0;border:0;border-radius:999px;background:none;color:var(--text-muted);cursor:pointer}
+.muse-rp-viewtoggle button[aria-pressed="true"]{color:var(--on-accent,#fff);background:linear-gradient(130deg,var(--accent-primary),var(--accent-secondary))}
+@container muse-content (max-width:640px){.muse-rp-hint{display:none}.muse-rp-viewtoggle{margin-left:auto}}
+/* gallery tiles: the cover is the card */
+.muse-plans[data-variant="full"] .muse-plan-list{grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:16px 12px}
+.muse-plans[data-variant="full"] .muse-plan-card{padding:0;border:0;border-radius:0;background:none;box-shadow:none;gap:6px}
+.muse-plans[data-variant="full"] .muse-plan-card:hover{box-shadow:none}
+.muse-plans[data-variant="full"] .muse-plan-card:hover .muse-plan-cover{transform:translateY(-3px)}
+.muse-plans[data-variant="full"] .muse-plan-cover{transition:transform 180ms ease}
+.muse-plans[data-variant="full"] .muse-plan-card[data-over] .muse-plan-cover{box-shadow:0 0 0 3px var(--accent-primary)}
+.muse-plans[data-variant="full"] .muse-plan-title{font-size:.9rem}
+.muse-plans[data-variant="full"] .muse-plan-author{font-size:.72rem}
+.muse-plans[data-variant="full"] .muse-plan-dates,.muse-plans[data-variant="full"] .muse-plan-stars{display:none}
+.muse-plans[data-variant="full"] .muse-plan-rank{width:24px;height:24px;font-size:.8rem}
+.muse-plans[data-variant="full"] .muse-plan-actions{top:6px;right:6px}
+.muse-plans[data-variant="full"] :is(.muse-plan-more,.muse-plan-start){width:28px;min-width:28px;height:28px;min-height:28px}
+.muse-plans[data-variant="full"] .muse-plan-addtile button{min-height:0;aspect-ratio:2/3;border-radius:10px;font-size:.78rem}
+.muse-plans[data-variant="full"] .muse-plan-addtile span{width:38px;height:38px}
+@container muse-content (max-width:640px){.muse-plans[data-variant="full"] .muse-plan-list{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px 10px}}
+/* list view: thin rows */
+.muse-plans[data-view="list"] .muse-plan-list{grid-template-columns:minmax(0,1fr)!important;gap:6px!important}
+.muse-plans[data-view="list"] .muse-plan-card{grid-template-columns:42px minmax(0,1fr) auto!important;grid-template-rows:none!important;align-items:center;gap:12px!important;padding:6px 10px!important;border:1px solid var(--glass-border)!important;border-radius:14px!important;background:var(--surface-subtle)!important}
+.muse-plans[data-view="list"] .muse-plan-cover-wrap{width:42px}
+.muse-plans[data-view="list"] :is(.muse-plan-pct,.muse-plan-next,.muse-plan-done){display:none}
+.muse-plans[data-view="list"] .muse-plan-rank{left:-6px;top:-6px;width:20px;height:20px;font-size:.7rem}
+.muse-plans[data-view="list"] .muse-plan-handle{display:none}
+.muse-plans[data-view="list"] .muse-plan-body{grid-template-columns:minmax(0,1fr) auto!important;align-items:center;column-gap:12px}
+.muse-plans[data-view="list"] .muse-plan-body>.muse-plan-title{grid-column:1;grid-row:1;-webkit-line-clamp:1;line-clamp:1}
+.muse-plans[data-view="list"] .muse-plan-body>.muse-plan-author{grid-column:1;grid-row:2}
+.muse-plans[data-view="list"] .muse-plan-body>.muse-plan-meta{grid-column:2;grid-row:1/3;margin:0}
+.muse-plans[data-view="list"] .muse-plan-actions{position:static;display:flex;gap:6px}
+.muse-plans[data-view="list"] :is(.muse-plan-more,.muse-plan-start){color:inherit;background:var(--surface-control);border-color:var(--glass-border)}
+.muse-plans[data-view="list"] .muse-plan-addtile button{aspect-ratio:auto;min-height:44px;flex-direction:row;display:flex;justify-content:center;gap:8px}
+.muse-plans[data-view="list"] .muse-plan-addtile span{width:26px;height:26px}
+@container muse-content (max-width:560px){.muse-plans[data-view="list"] .muse-plan-body{grid-template-columns:minmax(0,1fr)!important}.muse-plans[data-view="list"] .muse-plan-body>.muse-plan-meta{grid-column:1;grid-row:3}}
+/* other months: one slim row each */
+.muse-rp-others{display:grid;gap:8px;padding:12px 16px;border:1px solid var(--glass-border);border-radius:20px;background:var(--glass-background)}
+.muse-rp-others>h3{margin:0;font-family:var(--font-editorial);font-style:italic;font-size:1.08rem;font-weight:var(--type-title-weight,600)}
+.muse-rp-others .muse-month-cards{gap:6px}
+.muse-plans .muse-rp-month{display:grid;grid-template-columns:auto auto auto minmax(0,1fr) auto;align-items:center;gap:10px;padding:6px 10px;border-radius:14px;box-shadow:none}
+.muse-rp-month .muse-month-motif{width:30px;height:30px}
+.muse-plans .muse-rp-month .muse-month-name{font-size:1.08rem}
+.muse-rp-month .muse-month-count{font-size:.76rem;color:var(--text-muted);white-space:nowrap}
+.muse-rp-month-covers{display:flex;align-items:center;gap:4px;justify-content:flex-end;min-width:0;overflow:hidden}
+.muse-rp-month-covers button{flex:none;width:24px;aspect-ratio:2/3;padding:0;border:0;border-radius:2px 4px 4px 2px;overflow:hidden;background:none;cursor:pointer;box-shadow:1px 2px 5px rgba(0,0,0,.3)}
+.muse-rp-month-covers :is(img,.muse-cal-cover-blank){display:block;width:100%;height:100%;object-fit:cover}
+.muse-rp-month-covers .muse-cal-cover-blank{font-size:0;background:var(--surface-control)}
+.muse-rp-month-covers small{font-size:.72rem;color:var(--text-muted)}
+.muse-rp-month-add{display:grid;place-items:center;width:30px;height:30px;padding:0;border:1.5px dashed color-mix(in srgb,var(--m,var(--foreground)) 50%,transparent);border-radius:50%;background:none;color:inherit;cursor:pointer}
+.muse-rp-others .muse-plans-another{min-height:38px;border-radius:14px;font-size:.84rem}
+@container muse-content (max-width:560px){.muse-plans .muse-rp-month{grid-template-columns:auto minmax(0,1fr) auto}.muse-rp-month .muse-month-motif,.muse-rp-month-covers{display:none}.muse-rp-month .muse-month-count{grid-column:2;grid-row:2}.muse-plans .muse-rp-month .muse-month-name{grid-column:2;grid-row:1}.muse-rp-month-add{grid-column:3;grid-row:1/3}}
+
+/* Reading Plan's page wrapper is not a card (her note, Nov 26): no glass, no ring, no backdrop. Only the cards inside it
+   are surfaces, so the page gradient shows between them. */
+:root .muse-plans[data-variant="full"]:not(#\#):not(#\#):not(#\#){padding:0;border:0;border-radius:0;background:none;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+:root .muse-plans[data-variant="full"]:not(#\#):not(#\#):not(#\#)::before,:root .muse-plans[data-variant="full"]:not(#\#):not(#\#):not(#\#)::after{content:none;display:none}
+/* the plan chips now close the Other months card */
+.muse-rp-others .muse-plans-periods{padding:6px 2px 0;border-top:1px dashed color-mix(in srgb,var(--foreground) 14%,transparent)}
+.muse-rp-yearview>.muse-plans-periods{order:-1}
+
+/* Her note (Nov 26): books a third smaller so several months fit without endless scrolling */
+.muse-plans[data-variant="full"] .muse-plan-list{grid-template-columns:repeat(auto-fill,minmax(108px,1fr))!important;gap:14px 12px!important}
+.muse-plans[data-variant="full"] .muse-plan-title{font-size:.84rem!important}
+.muse-plans[data-variant="full"] .muse-plan-author{font-size:.7rem!important}
+.muse-plans[data-variant="full"] .muse-plan-status{font-size:.62rem!important}
+.muse-plans[data-variant="full"] .muse-plan-rank{width:20px;height:20px;font-size:.7rem}
+.muse-plans[data-variant="full"] :is(.muse-plan-more,.muse-plan-start){width:24px;min-width:24px;height:24px;min-height:24px}
+.muse-plans[data-variant="full"] .muse-plan-pct{height:16px;font-size:.6rem}
+.muse-plans[data-variant="full"] .muse-plan-next{font-size:.56rem;padding:2px 4px}
+@container muse-content (max-width:640px){.muse-plans[data-variant="full"] .muse-plan-list{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:12px 8px!important}}
+/* list view: two columns of slim rows, each with a drag handle on the left */
+.muse-plans[data-view="list"] .muse-plan-list{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}
+.muse-plans[data-view="list"] .muse-plan-card{grid-template-columns:20px 34px minmax(0,1fr) auto!important;padding:6px 8px!important}
+.muse-plans[data-view="list"] .muse-plan-cover-wrap{display:contents}
+.muse-plans[data-view="list"] .muse-plan-cover{grid-column:2;grid-row:1;width:34px;height:auto;aspect-ratio:2/3}
+.muse-plans[data-view="list"] .muse-plan-handle{display:grid!important;position:static!important;grid-column:1;grid-row:1;width:20px!important;height:34px!important;margin:0!important;opacity:.7!important;color:var(--text-muted);background:none!important}
+.muse-plans[data-view="list"] .muse-plan-rank{display:none}
+.muse-plans[data-view="list"] .muse-plan-body{grid-column:3;grid-row:1}
+.muse-plans[data-view="list"] .muse-plan-actions{grid-column:4;grid-row:1}
+.muse-plans[data-view="list"] .muse-plan-title{font-size:.9rem!important}
+@container muse-content (max-width:760px){.muse-plans[data-view="list"] .muse-plan-list{grid-template-columns:minmax(0,1fr)!important}}
+/* Year reads (Nov 26): three rows of four covers a page, a pager past twelve, "See all" to the Atlas. */
+.muse-rp-yearreads{cursor:default}
+.muse-rp-yearreads .muse-rp-sidehead{color:inherit;text-decoration:none}
+ol.muse-rp-sidecovers{margin:0;padding:0;list-style:none}
+.muse-rp-sidecovers>li{display:block;aspect-ratio:2/3;border-radius:2px 5px 5px 2px;overflow:hidden;box-shadow:1px 3px 8px rgba(0,0,0,.3)}
+.muse-rp-sidecovers>li>a{display:block;width:100%;height:100%;transition:transform 160ms ease}
+.muse-rp-sidecovers>li>a:hover{transform:translateY(-2px)}
+.muse-rp-yearreads-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:26px}
+.muse-rp-yearreads-foot:empty{display:none}
+.muse-rp-yearreads-pager{display:inline-flex;align-items:center;gap:6px}
+.muse-rp-yearreads-pager button{display:grid;place-items:center;width:26px;height:26px;border-radius:99px;border:1px solid var(--glass-border);background:var(--surface-control);color:inherit;cursor:pointer}
+.muse-rp-yearreads-pager button:first-child svg{transform:rotate(90deg)}.muse-rp-yearreads-pager button:last-child svg{transform:rotate(-90deg)}
+.muse-rp-yearreads-pager button:disabled{opacity:.4;cursor:default}
+.muse-rp-yearreads-pager small{font-size:.74rem;color:var(--text-muted)}
+.muse-rp-yearreads-all{margin-left:auto;font-size:.8rem;font-weight:650;color:var(--accent-primary);text-decoration:none}
+.muse-rp-yearreads-all:hover{text-decoration:underline}
+button.muse-rp-yearreads-all{padding:0;border:0;background:none;font:inherit;font-size:.8rem;font-weight:650;color:var(--accent-primary);cursor:pointer}

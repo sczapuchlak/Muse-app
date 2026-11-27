@@ -28,13 +28,16 @@ import {ReadingDesk} from './ReadingDesk';
 import {streakCelebration,streakDetail} from '@/lib/whimsy/reading-streak';
 import {bookHref,rememberReturn,seriesHref} from '@/lib/books/return-nav';
 import {TimerRecovery,type StretchResolution} from './TimerRecovery';
-import {RecentSessions,RecentlyFinished} from './BooksDashboard';
-import {DailyGoalCard,DailyGoalModal} from './DailyGoalCard';
+
+import {DailyGoalModal} from './DailyGoalCard';
 import {CelebrationToast} from './Celebration';
 import {ReadingTrends} from './ReadingTrends';
 import {activeDailyGoal,goalStreak,secondsByDay,withTarget} from '@/lib/whimsy/daily-goal';
 import {detectCelebrations} from '@/lib/whimsy/celebrations';
 import {ReadingPlans} from './plans/ReadingPlans';
+import {BooksHomeTop,type GoalView} from './goals/BooksHome';
+import {NewGoalSheet,type GoalDraft} from './goals/NewGoalSheet';
+import {monthEnd,monthStart} from '@/lib/whimsy/reading-goals';
 import {BOOK_STATUS_LABEL,bookStatusOptions} from '@/lib/books/status';
 import {StatusDot} from '@/components/books/StatusDot';
 import {addToPlan,isPeriod as isPlanPeriod} from '@/lib/books/reading-plans';
@@ -107,6 +110,8 @@ export function Bookshelf({surface,embedded=false,editorOnly=false,onExit,initia
  const reading=useMemo(()=>{if(!status.loaded||!today)return null;const streakNow=streakDetail(sessions,today),goalNow=goalStreak(dailyGoal,secondsByDay(sessions),streakNow.days,today),year=today.slice(0,4),annual=challengeFor(goals,year);return {streak:streakNow,goal:goalNow,challenge:annual?challengeProgress(annual,books,year,today):null};},[status.loaded,today,sessions,goals,books,dailyGoal]);
  const celebrations=useMemo(()=>reading?detectCelebrations({today,streak:reading.streak,goal:dailyGoal?reading.goal:null,challenge:reading.challenge}):[],[reading,dailyGoal,today]);
  const [dailyOpen,setDailyOpen]=useState(false);
+ /** The New goal / Edit goal sheet: what it opens with, and the goal record it edits (if any). */
+ const [goalSheet,setGoalSheet]=useState<{initial?:Partial<GoalDraft>&{timeframe:GoalView};existing:ReadingGoal|null}|null>(null);
  useEffect(()=>{if(mode!=='book'||!message)return;const timer=window.setTimeout(()=>setMessage(''),5200);return()=>window.clearTimeout(timer);},[mode,message]);
  const almanacSignals=useMemo(()=>status.loaded&&today&&records?readingSignals({books:records.books,sessions:records.sessions,goals:records.goals,today}):[],[status.loaded,records,today]);
  useEffect(()=>{if(!initialAdd||!today)return;const timer=window.setTimeout(()=>setBookForm(blankBook(today)),0);return()=>window.clearTimeout(timer);},[initialAdd,today]);
@@ -301,6 +306,25 @@ export function Bookshelf({surface,embedded=false,editorOnly=false,onExit,initia
   await saveWhimsyRecord(client,'goals',{record,expectedRevision:existing?.revision??0,commandId:writeId('daily-goal',{minutes,today,id:record.id},existing?.revision??0)});delete pendingWrites.current['daily-goal'];
   setDailyOpen(false);setMessage(`Daily goal set: ${minutes} minutes.`);await retry();}catch(e){noteError(e);}finally{setBusy(false);}}
  async function removeDailyGoal(){if(!dailyGoal)return;await removeGoal(dailyGoal);setDailyOpen(false);}
+ /**
+  * A monthly books goal (Nov 26): "just this month" is a goal pinned to that month; "every month" starts a repeating goal
+  * from that month, so earlier months keep the goal they had. Choosing every month retires that month's own pinned goal.
+  */
+ async function saveMonthGoal(month:string,target:number,every:boolean){if(busy)return;setBusy(true);setError('');try{
+  const books=(g:ReadingGoal)=>g.period==='month'&&g.unit==='books'&&g.start.slice(0,7)===month;
+  const pinned=goals.find(g=>books(g)&&!g.recurs),repeating=goals.find(g=>books(g)&&g.recurs),existing=every?repeating:pinned;
+  const record={id:existing?.id??crypto.randomUUID(),period:'month' as const,start:monthStart(month),end:monthEnd(month),unit:'books' as const,target,recurs:every};
+  await saveWhimsyRecord(client,'goals',{record,expectedRevision:existing?.revision??0,commandId:writeId('month-goal',{month,target,every,id:record.id},existing?.revision??0)});delete pendingWrites.current['month-goal'];
+  if(every&&pinned)await deleteWhimsyRecord(client,'goals',pinned.id,pinned.revision,crypto.randomUUID());
+  const name=new Intl.DateTimeFormat('en-US',{month:'long',timeZone:'UTC'}).format(new Date(`${month}-01T12:00:00Z`));
+  setMessage(every?`Every month from ${name}: ${target} ${target===1?'book':'books'}.`:`Your ${name} goal is set: ${target} ${target===1?'book':'books'}.`);await retry();}catch(e){noteError(e);}finally{setBusy(false);}}
+ /** Saves whatever the New goal sheet made, into the goal record that already owns it. */
+ function saveGoalDraft(draft:GoalDraft,existing:ReadingGoal|null){
+  setGoalSheet(null);
+  if(draft.timeframe==='year'){const pinned=existing??goals.find(g=>g.period==='year'&&g.unit==='books'&&!g.recurs&&g.start.slice(0,4)===draft.period)??null;void saveChallenge(draft.period,draft.target,pinned);}
+  else if(draft.timeframe==='month')void saveMonthGoal(draft.period,draft.target,draft.every);
+  else void saveDailyTarget(draft.target);
+ }
  /** Remembers which milestones were already shown, on the account's Bookshelf preference (synced; best effort, retried next visit). */
  async function saveMilestonesSeen(seen:string[]){const existing=records?.widgets.find(w=>w.experience==='bookshelf'),revision=existing?.revision??0;try{await saveWhimsyRecord(client,'widgets',{record:{id:existing?.id??crypto.randomUUID(),experience:'bookshelf',enabled:existing?.enabled??false,...bookshelfWidgetExtras(existing),readingMilestones:{seen,since:existing?.readingMilestones?.since??new Date().toISOString()}},expectedRevision:revision,commandId:writeId('milestones',{seen},revision)});delete pendingWrites.current.milestones;await retry();}catch{/* not saved: the next visit compares again; nothing is celebrated twice once it saves */}}
  const Root=embedded?'div':'main';
@@ -321,17 +345,18 @@ const deleteInfo=deleteTarget?(()=>{const history=historyFor(deleteTarget),secon
  {mode==='desk'&&!dash&&status.loaded&&streak&&<div className="muse-desk-top"><ReadingStreak detail={streak} celebrate={streakCelebration(streak,today)}><AlmanacWhisper surface={surfaces.bookshelf} signals={almanacSignals} today={today}/></ReadingStreak><ReadingChallenge variant="compact" books={books} goals={goals} today={today} busy={busy} onSave={(y,t,g)=>void saveChallenge(y,t,g)} onRemove={g=>void removeGoal(g)} onOpenAtlas={()=>router.push('/collections/reading-atlas')}/></div>}
  {error&&<div className="muse-books-error" role="alert">{error} <button type="button" className="text-button" onClick={()=>void reloadTimer()}>Reload latest</button></div>}{message&&<p className="muse-books-message" role="status">{message}</p>}{!status.loaded&&mode!=='book'&&<p role="status">{status.error??'Loading your private reading history…'}</p>}
  {!dash&&deskSection}
- {status.loaded&&dash&&streak&&<div className="muse-dash-top"><div className="muse-dash-col"><ReadingStreak detail={streak} celebrate={streakCelebration(streak,today)}><AlmanacWhisper surface={surfaces.bookshelf} signals={almanacSignals} today={today}/></ReadingStreak>{deskSection}</div>
-  <div className="muse-dash-col"><ReadingChallenge variant="compact" books={books} goals={goals} today={today} busy={busy} onSave={(y,t,g)=>void saveChallenge(y,t,g)} onRemove={g=>void removeGoal(g)} onOpenAtlas={()=>router.push('/collections/reading-atlas')}/>
-   <section className="muse-dash-goals" aria-label="Daily reading goal"><div className="muse-dash-goals-head"><span className="small-label">Daily reading goal</span></div>{reading&&<DailyGoalCard goal={dailyGoal} detail={reading.goal} today={today} onSet={()=>setDailyOpen(true)}/>}</section></div></div>}
- {status.loaded&&dash&&<div className="muse-dash-plans-row"><ReadingPlans books={books} today={today} variant="dashboard" onOpenBook={id=>openBookPage(id,'Reading plans')} canStart={!timer&&timerLoaded} onStart={book=>void timerAction('start',book)}/><ReadingTrends books={books} sessions={sessions} today={today}/></div>}
- {/* Up Next merged into the Reading Plan (Nov 25): Recently finished and Recent reading sessions share its row. */}
- {status.loaded&&dash&&<div className="muse-dash-trio" data-pair><RecentlyFinished books={books} sessions={sessions} onOpen={id=>openBookPage(id,'Recently finished')}/><RecentSessions books={books} sessions={sessions} onOpen={id=>openBookPage(id,'Recent sessions')}/></div>}
- {status.loaded&&mode==='plans'&&<ReadingPlans books={books} today={today} variant="full" onOpenBook={id=>openBookPage(id,'Reading plans')} canStart={!timer&&timerLoaded} onStart={book=>void timerAction('start',book)}/>}
+ {/* Books Dashboard (Nov 26, Pagebound-clear): streak, Up next (read from the plans) and Goals; then Currently reading beside the
+     last 30 days; then Recently finished and Recent reading sessions. Plans are made on their own page, not here. */}
+ {status.loaded&&dash&&<BooksHomeTop sessions={sessions} reading={deskSection} streak={streak?<ReadingStreak detail={streak} celebrate={streakCelebration(streak,today)}><AlmanacWhisper surface={surfaces.bookshelf} signals={almanacSignals} today={today}/></ReadingStreak>:null}
+   books={books} goals={goals} today={today} dailyGoal={dailyGoal} dailyDetail={reading?.goal??null} onOpenBook={id=>openBookPage(id,'Books')}
+   onNewGoal={view=>setGoalSheet(view?{initial:{timeframe:view},existing:null}:{existing:null})} onSetDaily={()=>setDailyOpen(true)}/>}
+ {status.loaded&&mode==='plans'&&<ReadingPlans variant="full" books={books} sessions={sessions} today={today} goals={goals} dailyGoal={dailyGoal} dailyDetail={reading?.goal??null} streak={reading?.streak??null} onEditGoal={(initial,existing)=>setGoalSheet({initial,existing})} onSetDaily={()=>setDailyOpen(true)} onOpenBook={id=>openBookPage(id,'Reading plans')} canStart={!timer&&timerLoaded} onStart={book=>void timerAction('start',book)}/>}
  {status.loaded&&mode==='atlas'&&<ReadingAtlas timeZone={timeZone} books={books} sessions={sessions} goals={goals} today={today} range={range} setRange={setRange} calendarMonth={calendarMonth} setCalendarMonth={setCalendarMonth} selectedDay={selectedDay} setSelectedDay={setSelectedDay} onAddGoal={()=>setGoalForm({id:crypto.randomUUID(),period:'day',unit:'minutes',target:'20'})} onSetDailyGoal={()=>setDailyOpen(true)} onRemoveGoal={goal=>void removeGoal(goal)} onSaveChallenge={(y,t,g)=>void saveChallenge(y,t,g)} onOpenBook={id=>openBookPage(id,'Reading Atlas')} challengeBusy={busy} onEditSession={session=>{const book=books.find(b=>b.id===session.bookId);if(book)openSession(book,session);}} onDeleteSession={session=>void removeSession(session)} milestoneState={records?.widgets.find(w=>w.experience==='bookshelf')?.readingMilestones} milestonesReady={status.loaded} onMilestonesSeen={seen=>void saveMilestonesSeen(seen)} collections={collectionRecords} almanacSignals={almanacSignals}/>}
  {nextReadOpen&&<MuseModal id="bookshelf-next-read" label="Choose your next read" title="Choose your next read" returnFocus={null} onClose={()=>setNextReadOpen(false)}><div className="muse-books-dialog muse-books-next-read"><p>Move a book from To Be Read to Currently Reading. Its notes, progress and sessions stay with the same book.</p>{books.filter(book=>book.status==='planned').map(book=><article key={book.id} className="muse-books-next-choice"><BookCover book={book}/><div><h3>{book.title}</h3>{book.author&&<p>{book.author}</p>}<button type="button" className="muse-button button-primary" disabled={busy} onClick={()=>void moveBook(book,'reading').then(saved=>{if(saved)setNextReadOpen(false);})}>Start this book</button></div></article>)}</div></MuseModal>}
  {mode==='book'&&status.loaded&&(pageBook?<BookPage key={pageBook.id} onSaveFavorite={(readId,favorite)=>saveReadFavorite(pageBook,readId,favorite)} book={pageBook} books={books} sessions={sessions} goals={goals} today={today} userId={userId} tick={tick} busy={busy} timer={timer} timerLoaded={timerLoaded} timerBook={activeBook??null} checkIn={pageBook.id===timer?.bookId?checkIn:null} cover={<BookCover book={pageBook} priority/>} onStart={targetMinutes=>void timerAction('start',pageBook,targetMinutes)} onTimer={action=>void timerAction(action)} onEdit={()=>openBook(pageBook)} onLog={()=>openSession(pageBook)} onFinishBook={()=>void finishBookFromTimer()} onAddPastRead={()=>{setError('');setFinishing({bookId:pageBook.id,reason:'past-read'});}} onArchive={()=>{setDeleteForever(false);setDeleteTarget(pageBook);}} onRestore={()=>void archiveBook(pageBook,true)} onMove={next=>void moveBook(pageBook,next)} onEditSession={session=>openSession(pageBook,session)} onDeleteSession={session=>void removeSession(session)} onSaveEmojis={(readId,emojis)=>saveReadEmojis(pageBook,readId,emojis)} onMessage={setMessage} onEnrich={changes=>enrichBook(pageBook,changes)}/>:<div className="muse-empty-state muse-book-missing" data-variant="editorial"><h3>This book isn’t on your shelves.</h3><p>It may have been deleted, or the link belongs to another account.</p><Link className="muse-button button-primary" href="/collections?kind=book">Back to Books</Link></div>)}
  {mode==='book'&&!status.loaded&&<div className="muse-book-page-loading" role="status" aria-busy="true"><span className="sr-only">{status.error??'Opening your book…'}</span><span/><span/><span/></div>}
+ {goalSheet&&<NewGoalSheet today={today} initial={goalSheet.initial} busy={busy} onSave={draft=>saveGoalDraft(draft,goalSheet.existing)} onClose={()=>setGoalSheet(null)}
+   onRemove={goalSheet.existing?()=>{const g=goalSheet.existing!;setGoalSheet(null);void removeGoal(g);}:goalSheet.initial?.timeframe==='daily'&&dailyGoal&&goalSheet.initial.target?()=>{setGoalSheet(null);void removeDailyGoal();}:undefined}/>}
  {dailyOpen&&<DailyGoalModal current={dailyGoal?.target??null} busy={busy} onSave={m=>void saveDailyTarget(m)} onRemove={dailyGoal?()=>void removeDailyGoal():undefined} onClose={()=>setDailyOpen(false)}/>}
  {dash&&status.loaded&&<CelebrationToast events={celebrations}/>}
  {quick.sheet}<QuickAddToast toast={quick.toast} spark={quick.spark} onDismiss={quick.dismissToast} onOpen={book=>{quick.dismissToast();openBookPage(book.id,'search');}}/>

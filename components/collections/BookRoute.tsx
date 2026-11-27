@@ -1,7 +1,5 @@
 'use client';
-import Link from 'next/link';
 import {MusePageHeader} from '@/components/MusePageHeader';
-import {MuseIcon} from '@/components/MuseIcon';
 import {BooksNav} from '@/components/books/BooksNav';
 import {Bookshelf} from '@/components/whimsy/Bookshelf';
 import '@/components/whimsy/BookPage.css';
@@ -20,12 +18,11 @@ export function ReadingAtlasRoute(){
  </main>;
 }
 
-/** The full Reading Plans view: the same planner as the Dashboard, with every month and year to browse and manage. */
+/** Reading Plans: where plans are made (Nov 26). The Dashboard shows only Up Next, which reads from here. */
 export function ReadingPlansRoute(){
  return <main className="muse-page muse-collections muse-plans-route">
-  <MusePageHeader title="Books" description="Plan the months and the year ahead."/>
-  <BooksNav current="dashboard"/>
-  <Link href="/collections" className="muse-collections-back"><span className="muse-collections-back-icon"><MuseIcon name="arrow" size={16}/></span>Back to Dashboard</Link>
+  <MusePageHeader title="Books" description="What I'm reading, and what I hope to finish."/>
+  <BooksNav current="plans"/>
   <Bookshelf surface="plans" embedded/>
  </main>;
 }

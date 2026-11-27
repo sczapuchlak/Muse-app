@@ -1,87 +1,97 @@
-/* Reading Desk (#135): one frosted sheet of compact tiles. Two across on phones; more swipe in. */
+/* Currently reading (#135; Pagebound-style spotlight since Nov 26): a strip of covers, the picked book large beneath. */
 .muse-desk-layout{display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(12px,1.6vw,18px);min-width:0}
-.muse-desk-reading{display:grid;align-content:start;gap:10px;min-width:0;padding:14px 16px;border:1px solid var(--glass-border);border-radius:var(--card-radius,22px);background:var(--glass-background)}
+.muse-desk-reading{display:grid;align-content:start;gap:14px;min-width:0;padding:16px 18px;border:1px solid var(--glass-border);border-radius:var(--card-radius,22px);background:var(--glass-background)}
 .muse-desk-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .muse-desk-head h3{margin:0;display:inline-flex;align-items:center;gap:10px;font-family:var(--font-editorial);font-size:1.25rem;font-style:normal}
 .muse-desk-count{display:grid;place-items:center;min-width:24px;height:24px;padding:0 7px;border-radius:999px;font-family:var(--font-body,inherit);font-size:.74rem;font-weight:700;background:color-mix(in srgb,var(--accent-primary) 18%,transparent)}
-.muse-desk-nav{display:flex;align-items:center;gap:6px}
-.muse-desk-nav .small-label{margin:0 4px 0 0}
-.muse-desk-nav .muse-button{width:32px;min-width:32px;height:32px;min-height:32px;padding:0;display:grid;place-items:center;background:var(--surface-control)}
-.muse-desk-nav .muse-button:first-of-type svg{transform:rotate(90deg)}.muse-desk-nav .muse-button:last-of-type svg{transform:rotate(-90deg)}
-.muse-desk-nav .muse-button:disabled{opacity:.4}
-.muse-desk-track{display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - 28px)/3);gap:14px;margin:0;padding:0;list-style:none;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-inline:contain}
-.muse-desk-track::-webkit-scrollbar{display:none}
-.muse-desk-layout[data-count="1"] .muse-desk-track{grid-auto-columns:min(100%,440px)}
-.muse-desk-layout[data-count="2"] .muse-desk-track{grid-auto-columns:calc((100% - 14px)/2)}
-.muse-desk-track>li{min-width:0;scroll-snap-align:start}
-.muse-desk-tile{position:relative;display:grid;grid-template-columns:56px minmax(0,1fr);align-items:start;gap:12px;box-sizing:border-box;height:100%;padding:12px;border:1px solid var(--glass-border);border-radius:16px;background:var(--surface-subtle);cursor:pointer;transition:border-color var(--motion-hover,180ms) ease}
-.muse-desk-tile:hover{border-color:var(--selected-border)}
-.muse-desk-tile-cover .muse-book-cover{max-width:none;border-radius:4px 7px 7px 4px;box-shadow:2px 3px 8px rgba(0,0,0,.25)}
-.muse-desk-tile-body{display:grid;grid-template-columns:minmax(0,1fr);gap:5px;align-content:start;min-width:0}
-.muse-desk-tile h4{margin:0;font-size:1rem;line-height:1.2}
-.muse-desk-tile-open{padding:0;border:0;background:none;color:inherit;font-family:var(--font-editorial);font-weight:var(--type-title-weight);font-size:1rem;line-height:1.2;text-align:left;cursor:pointer;overflow-wrap:anywhere;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden}
-.muse-desk-tile-open:focus-visible{outline:2px solid var(--focus-ring,var(--foreground));outline-offset:2px;border-radius:4px}
-.muse-desk-tile-author{margin:0;font-size:.8rem;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.muse-desk-tile-progress{display:grid;gap:4px;margin-top:2px}
+
+/* The strip: every cover the same size; the picked one lifts and wears the theme ring. Swipes on phones. */
+.muse-desk-picks{display:grid;grid-auto-flow:column;grid-auto-columns:64px;gap:12px;padding:6px 4px 8px;margin:-6px -4px -4px;overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:none;overscroll-behavior-inline:contain}
+.muse-desk-picks::-webkit-scrollbar{display:none}
+.muse-desk-picks button{position:relative;display:block;width:64px;aspect-ratio:2/3;padding:0;border:0;border-radius:4px 7px 7px 4px;overflow:visible;background:none;cursor:pointer;scroll-snap-align:start;opacity:.72;transition:transform 180ms ease,opacity 180ms ease}
+.muse-desk-picks button :is(img,.muse-cal-cover-blank){display:block;width:100%;height:100%;object-fit:cover;border-radius:inherit;box-shadow:2px 4px 10px rgba(0,0,0,.3)}
+.muse-desk-picks .muse-cal-cover-blank{display:grid;place-items:center;padding:4px;font-size:.55rem;text-align:center;background:var(--surface-control)}
+.muse-desk-picks button:hover{opacity:1;transform:translateY(-2px)}
+.muse-desk-picks button[aria-selected="true"]{opacity:1;transform:translateY(-3px)}
+.muse-desk-picks button[aria-selected="true"]::after{content:"";position:absolute;inset:-4px;border-radius:8px 10px 10px 8px;border:2px solid var(--accent-pop,var(--accent-primary));box-shadow:0 0 0 3px color-mix(in srgb,var(--accent-primary) 18%,transparent),0 8px 18px -6px color-mix(in srgb,var(--accent-primary) 60%,transparent);pointer-events:none}
+.muse-desk-picks button:focus-visible{outline:2px solid var(--focus-ring,var(--foreground));outline-offset:6px}
+
+/* The spotlight */
+.muse-desk-spot{position:relative;isolation:isolate;display:grid;grid-template-columns:clamp(96px,26%,132px) minmax(0,1fr);gap:16px 18px;align-items:start;padding:14px;border:1px solid var(--glass-border);border-radius:18px;background:var(--surface-subtle);overflow:hidden}
+.muse-desk-spot-cover{display:block;width:100%;padding:0;border:0;background:none;cursor:pointer}
+.muse-desk-spot-cover .muse-book-cover{max-width:none;width:100%;border-radius:4px 8px 8px 4px;box-shadow:3px 6px 16px rgba(0,0,0,.35)}
+.muse-desk-spot-body{display:grid;gap:6px;align-content:start;min-width:0}
+.muse-desk-spot h4{margin:0;min-width:0}
+.muse-desk-spot-title{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;max-width:100%;padding:0;border:0;background:none;color:inherit;font-family:var(--font-editorial);font-weight:var(--type-title-weight,600);font-size:clamp(1.15rem,2.4vw,1.45rem);line-height:1.15;letter-spacing:-.01em;text-align:left;cursor:pointer}
+.muse-desk-spot-title:hover{text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}
+.muse-desk-spot-title:focus-visible{outline:2px solid var(--focus-ring,var(--foreground));outline-offset:2px;border-radius:4px}
+.muse-desk-tile-author{margin:0;font-size:.88rem;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.muse-desk-spot-facts{display:flex;flex-wrap:wrap;gap:4px 14px;margin:2px 0 0;padding:0;list-style:none}
+.muse-desk-spot-facts li{display:inline-flex;align-items:center;gap:6px;font-size:.78rem;color:var(--text-muted)}
+.muse-desk-spot-progress{display:grid;gap:5px;margin-top:6px}
 .muse-desk-pool{position:relative;display:block;height:8px;border-radius:999px;overflow:hidden;background:var(--wash-aqua,color-mix(in srgb,var(--foreground) 9%,transparent));box-shadow:inset 0 0 0 1px var(--glass-aqua-edge,var(--glass-border))}
-.muse-desk-pool>span{position:absolute;inset:0 auto 0 0;width:var(--fill);border-radius:inherit;background:var(--water-progress-gradient,linear-gradient(90deg,var(--accent-primary),var(--accent-secondary)));box-shadow:0 0 8px var(--water-glow,color-mix(in srgb,var(--accent-primary) 40%,transparent))}
-.muse-desk-tile-pages{font-size:.76rem;color:var(--text-muted)}.muse-desk-tile-pages strong{color:var(--foreground)}
-.muse-desk-tile-actions{display:flex;align-items:center;gap:6px;margin-top:4px}
-.muse-desk-start{flex:1 1 auto;min-width:0;display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:36px;padding:0 12px;border-radius:999px;font-size:.84rem;white-space:nowrap}
-.muse-desk-start span{display:inline}
-.muse-desk-more{flex:none;display:grid;place-items:center;width:36px;min-width:36px;height:36px;min-height:36px;padding:0;border-radius:50%;background:var(--surface-control)}
+.muse-desk-pool[data-size="lg"]{height:12px}
+.muse-desk-pool>span{position:absolute;inset:0 auto 0 0;width:var(--fill);border-radius:inherit;background:var(--water-progress-gradient,linear-gradient(90deg,var(--accent-primary),var(--accent-secondary)));box-shadow:0 0 8px var(--water-glow,color-mix(in srgb,var(--accent-primary) 45%,transparent))}
+.muse-desk-spot-pages{font-size:.8rem;color:var(--text-muted)}.muse-desk-spot-pages strong{color:var(--foreground);font-size:.92rem}
+.muse-desk-spot-actions{grid-column:1/-1;display:flex;align-items:center;gap:8px}
+.muse-desk-spot-actions .muse-desk-start{flex:1 1 auto}
+.muse-desk-start{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:38px;padding:0 16px;border-radius:999px;font-size:.86rem;white-space:nowrap}
+.muse-desk-log{display:inline-flex;align-items:center;gap:6px;min-height:38px;padding:0 14px;border-radius:999px;font-size:.86rem;white-space:nowrap;background:var(--surface-control)}
+.muse-desk-more{flex:none;display:grid;place-items:center;width:38px;min-width:38px;height:38px;min-height:38px;padding:0;border-radius:50%;background:var(--surface-control)}
 .muse-desk-menu{display:grid;gap:2px;padding:6px}
 .muse-desk-menu .popover-choice{display:flex;align-items:center;justify-content:flex-start;gap:8px;text-align:left}
 .muse-desk-menu .popover-choice>span{display:inline-flex;align-items:center;gap:9px}
 .muse-desk-menu-label{padding:8px 12px 2px;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);font-weight:650}
+@container muse-content (max-width:640px){
+ .muse-desk-reading{padding:14px;border-radius:20px;gap:12px}
+ .muse-desk-picks{grid-auto-columns:56px;gap:10px}.muse-desk-picks button{width:56px}
+ .muse-desk-spot{grid-template-columns:104px minmax(0,1fr);gap:12px 14px;padding:12px}
+ .muse-desk-log span{display:none}.muse-desk-log{width:38px;padding:0;justify-content:center}
+}
+@media(prefers-reduced-motion:reduce){.muse-desk-picks button{transition:none}}
+
+/* Collections › Books desk surface: no second frame around the section. */
 .muse-bookshelf[data-surface="desk"] .muse-books-section[aria-label="Reading Desk"]{padding:0;border:0;border-radius:0;background:none;box-shadow:none;gap:clamp(12px,1.6vw,18px)}
 .muse-bookshelf[data-surface="desk"] .muse-books-section[aria-label="Reading Desk"]::before,.muse-bookshelf[data-surface="desk"] .muse-books-section[aria-label="Reading Desk"]::after{display:none}
-@container muse-content (max-width:980px){.muse-desk-track{grid-auto-columns:calc((100% - 14px)/2)}}
-@container muse-content (max-width:640px){
- .muse-desk-reading{padding:12px;border-radius:18px}
- .muse-desk-track{grid-auto-columns:calc((100% - 10px)/2);gap:10px}
- .muse-desk-layout[data-count="1"] .muse-desk-track{grid-auto-columns:100%}
- .muse-desk-layout:not([data-count="1"]) .muse-desk-tile{grid-template-columns:minmax(0,1fr);gap:8px;padding:10px}
- .muse-desk-layout:not([data-count="1"]) .muse-desk-tile-cover{width:48px}
- .muse-desk-layout:not([data-count="1"]) .muse-desk-start span{display:none}
- .muse-desk-layout:not([data-count="1"]) .muse-desk-start{padding:0 10px}
- .muse-desk-nav .small-label{display:none}
-}
-@media(prefers-reduced-motion:reduce){.muse-desk-tile{transition:none}}
-
-/* Top row: the streak and the yearly goal share it, each hugging its content. */
+/* Top row (desk surface): the streak and the yearly goal share it, each hugging its content. */
 .muse-desk-top{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(12px,1.6vw,18px);align-items:stretch;min-width:0}
 .muse-desk-top>*{min-width:0;margin:0!important}
-@container muse-content (max-width:760px){.muse-desk-top{grid-template-columns:minmax(0,1fr)}}
-
-/* Every tile is the same height whatever its title, so a long title elsewhere in the row never stretches the rest. */
-.muse-desk-tile-open{display:block;-webkit-line-clamp:unset;line-clamp:unset;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%}
-.muse-desk-tile h4{min-width:0}
-/* One padding for the three top containers: 14px top and bottom, 16px at the sides. */
-.muse-desk-reading{padding:14px 16px}
 .muse-desk-top .muse-streak-panel,.muse-desk-top .muse-desk-goal{padding:0!important}
 .muse-desk-top .muse-streak{padding:14px 16px}
-.muse-desk-top .muse-desk-goal{padding:14px 16px!important}
-.muse-desk-top{align-items:stretch}
+.muse-desk-top .muse-desk-goal{padding:14px 16px!important;align-content:center}
 .muse-desk-top .muse-streak-panel{align-self:stretch;align-content:center}
-.muse-desk-top .muse-desk-goal{align-content:center}
 .muse-desk-top .muse-streak-note{padding:0 16px 12px}
-@container muse-content (max-width:640px){.muse-desk-reading{padding:12px 14px}.muse-desk-top .muse-streak{padding:12px 14px}.muse-desk-top .muse-desk-goal{padding:12px 14px!important}}
-/* Compact tiles: cover and text on top; the Start button gets the full tile width beneath so its label always fits. */
-.muse-desk-track,.muse-desk-layout[data-count="1"] .muse-desk-track,.muse-desk-layout[data-count="2"] .muse-desk-track{grid-auto-columns:230px;gap:12px}
-.muse-desk-layout .muse-desk-tile{grid-template-columns:44px minmax(0,1fr)!important;gap:6px 10px!important;align-items:start}
-.muse-desk-tile-body{display:contents}
-.muse-desk-tile-cover{grid-column:1;grid-row:1/3;width:44px!important}
-.muse-desk-tile-body>h4,.muse-desk-tile-body>.muse-desk-tile-author{grid-column:2}
-.muse-desk-tile-progress{grid-column:1/-1}
-.muse-desk-tile-actions{grid-column:1/-1}
-.muse-desk-layout .muse-desk-start{white-space:nowrap;padding:0 12px!important}
-.muse-desk-layout .muse-desk-start span{display:inline!important}
+@container muse-content (max-width:760px){.muse-desk-top{grid-template-columns:minmax(0,1fr)}}
+.muse-desk-spot .muse-desk-spot-title{font-family:var(--font-editorial);font-weight:var(--type-title-weight,600);font-size:clamp(1.15rem,2.4vw,1.45rem);line-height:1.15}
+
+/* Nov 26 (round 2): compact split. The picked book on the left (about 60%), the others two across on the right. */
+.muse-desk-reading[data-layout="split"]{gap:12px;padding:14px 16px}
+.muse-desk-split{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:14px;align-items:stretch}
+.muse-desk-split[data-alone]{grid-template-columns:minmax(0,1fr)}
+.muse-desk-split .muse-desk-spot{grid-template-columns:88px minmax(0,1fr);gap:10px 14px;padding:12px;align-content:start}
+.muse-desk-split .muse-desk-spot-title{font-size:1.15rem}
+.muse-desk-split .muse-desk-spot-progress{margin-top:2px}
+.muse-desk-split .muse-desk-spot-actions{gap:6px}
+.muse-desk-split .muse-desk-start{min-height:36px;padding:0 14px;font-size:.84rem}
+.muse-desk-split .muse-desk-log{min-height:36px;padding:0 12px;font-size:.84rem}
+.muse-desk-split .muse-desk-more{width:36px;min-width:36px;height:36px;min-height:36px}
+.muse-desk-others{display:grid;align-content:start;gap:8px;min-width:0;padding:10px 12px;border:1px dashed color-mix(in srgb,var(--foreground) 16%,transparent);border-radius:18px}
+.muse-desk-others-label{font-family:var(--font-editorial);font-style:italic;font-size:.88rem;color:var(--text-muted)}
+.muse-desk-split .muse-desk-picks{display:grid;grid-auto-flow:row;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-columns:auto;gap:10px;margin:0;padding:0;overflow:visible}
+.muse-desk-split .muse-desk-picks button{display:grid;gap:4px;width:100%;aspect-ratio:auto;padding:0;border:0;background:none;opacity:1;cursor:pointer;color:inherit;font:inherit}
+.muse-desk-split .muse-desk-picks button::after{display:none}
+.muse-desk-pick-cover{display:block;width:100%;max-width:84px;justify-self:center;aspect-ratio:2/3;border-radius:3px 6px 6px 3px;overflow:hidden;box-shadow:2px 4px 10px rgba(0,0,0,.3);transition:transform 180ms ease}
+.muse-desk-pick-cover :is(img,.muse-cal-cover-blank){display:block;width:100%;height:100%;object-fit:cover}
+.muse-desk-pick-cover .muse-cal-cover-blank{display:grid;place-items:center;padding:4px;font-size:.55rem;text-align:center;background:var(--surface-control)}
+.muse-desk-split .muse-desk-picks button:hover .muse-desk-pick-cover{transform:translateY(-3px)}
+.muse-desk-pick-pct{position:relative;display:grid;place-items:center;justify-self:center;width:100%;max-width:84px;height:16px;border-radius:999px;overflow:hidden;font-size:.64rem;font-weight:700;background:color-mix(in srgb,var(--foreground) 9%,var(--surface-control))}
+.muse-desk-pick-pct i{position:absolute;inset:0 auto 0 0;width:var(--fill);background:var(--water-progress-gradient,linear-gradient(90deg,var(--accent-primary),var(--accent-secondary)));opacity:.7}
+.muse-desk-reading[data-empty] .muse-books-empty{padding:14px 16px!important;gap:6px}
+.muse-desk-reading[data-empty] .muse-books-empty h4{font-size:1.1rem;margin:0}
+.muse-desk-reading[data-empty] .muse-books-empty p{margin:0;font-size:.86rem}
 @container muse-content (max-width:640px){
- .muse-desk-track,.muse-desk-layout[data-count="1"] .muse-desk-track,.muse-desk-layout[data-count="2"] .muse-desk-track{grid-auto-columns:calc((100% - 10px)/2);gap:10px}
- .muse-desk-layout .muse-desk-tile{padding:10px}
+ .muse-desk-split{grid-template-columns:minmax(0,1fr)}
+ .muse-desk-split .muse-desk-spot{grid-template-columns:80px minmax(0,1fr)}
+ .muse-desk-split .muse-desk-picks{grid-template-columns:repeat(4,minmax(0,1fr))}
+ .muse-desk-others{padding:10px}
 }
-.muse-dash-col .muse-streak-panel{padding:0!important}
-.muse-dash-col .muse-streak{padding:14px 16px}
-.muse-desk-tile-text{display:grid;gap:3px;align-content:start;min-width:0}
-.muse-desk-tile-facts{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:6px}.muse-desk-tile-facts li{display:flex;align-items:center;gap:8px;font-size:.82rem;min-width:0}.muse-desk-tile-facts svg{flex:none;color:var(--text-muted)}

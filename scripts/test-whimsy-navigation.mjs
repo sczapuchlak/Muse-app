@@ -104,7 +104,7 @@ try{
  await navigate('/collections?mode=library');
  await until(()=>document.querySelectorAll('.muse-collections-card').length===4,'Board and Library share one book and three media items');
  assert.equal(await evaluate(()=>['Genre','Rating','Personal tag','Series','Added on or after','Completed on or after','Favorites only'].every(label=>[...document.querySelectorAll('.muse-collections-filters label')].some(node=>node.textContent.includes(label)))),true,'Library exposes all shared filters');
- await evaluate(()=>{const input=document.querySelector('.muse-collections-controls input[type=search]');Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set.call(input,'A Local Movie');input.dispatchEvent(new Event('input',{bubbles:true}));});
+ await evaluate(()=>{const input=document.querySelector('.muse-lib-toolbar input[type=search]');Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set.call(input,'A Local Movie');input.dispatchEvent(new Event('input',{bubbles:true}));});
  await until(()=>document.querySelectorAll('.muse-collections-card').length===1&&document.querySelector('.muse-collections-card')?.textContent.includes('A Local Movie'),'Library search filters canonical items');
  await navigate('/collections?view=series&add=1');
  await until(()=>!!document.querySelector('#collection-series-editor[open]'),'Series Add opens editor');

@@ -13,7 +13,7 @@ export const navGlyphs:Record<string,Art>={
  'journal:today':a('quill',5),'journal:journals':a('journal',2),'journal:history':a('openbook',7),'journal:insights':a('bars',4),
  'mindspace:board':a('lightbulb',4),'mindspace:lists':a('list',1),
  'wellness:mood':a('smile',2),'wellness:goals':a('target',1),'wellness:plan':a('utensils',4),'wellness:grocery':a('basket',3),
- 'books:dashboard':a('pie',5),'books:library':a('openbook',2),'books:atlas':a('globe',6),
+ 'books:dashboard':a('pie',5),'books:library':a('openbook',2),'books:plans':a('calendar',8),'books:atlas':a('globe',6),
  'tarot:table':a('spread',6),'tarot:grimoire':a('scroll',4),'tarot:journal':a('journal',2),
  'dreams:diary':a('journal',5),'dreams:decoder':a('key',7),'dreams:encyclopedia':a('openbook',3),'dreams:atlas':a('map',6),
  'cosmic:forecast':a('sun',4),'cosmic:chart':a('wheel',7),'cosmic:library':a('openbook',2),'cosmic:calendar':a('calendar',5),'cosmic:journal':a('journal',6),

@@ -13,10 +13,10 @@ try{
  const total=Number(sql(`select count(*) from public.whimsy_books where user_id='${account.userId}'`));
  console.log(`Seeded ${total} books`);check(total>=1000,`library has at least 1,000 books (${total})`);
  browser=await openBrowser(account,{shots});const b=browser;
- const cards=()=>b.evaluate(()=>document.querySelectorAll('.muse-collections-library-page .muse-collections-card').length);
+ const cards=()=>b.evaluate(()=>document.querySelectorAll('.muse-collections-library-page .muse-lib-item').length);
  const summary=()=>b.text('.muse-pagination[data-position="top"] .muse-pagination-summary');
- const firstTitle=()=>b.text('.muse-collections-library-page .muse-collections-card .muse-card-title');
- const ready='document.querySelectorAll(".muse-collections-library-page .muse-collections-card").length>0';
+ const firstTitle=()=>b.text('.muse-collections-library-page .muse-lib-item .muse-card-title');
+ const ready='document.querySelectorAll(".muse-collections-library-page .muse-lib-item").length>0';
  const library=(query='')=>b.go(`/collections?tab=library&kind=book${query}`,ready,'library '+query);
  const libraryTop=()=>b.evaluate(()=>{document.querySelector('.muse-collections-library-page')?.scrollIntoView({block:'start'});window.scrollBy(0,-8);});
  const shootLibrary=async name=>{await libraryTop();return b.shoot(name);};
@@ -62,21 +62,21 @@ try{
  await b.type('.muse-search input, input[type="search"]',needleTitle.split(' ')[0]);await b.until(()=>/of 1 book/.test(document.querySelector('.muse-pagination-summary')?.textContent??''),'search result');
  check((await firstTitle()).includes('Quillfeather'),'search finds a book that was never on a visible page');check(/Page 1 of 1/.test(await summary()),'search resets to page 1');
  await b.type('.muse-search input, input[type="search"]','');await b.until(()=>/of 1,0\d\d books/.test(document.querySelector('.muse-pagination-summary')?.textContent??''),'search cleared');
- await library('&page=3');await chooseMenu('Collection status','Finished');
+ await library('&page=3');await b.click('.muse-collections-filter-trigger');await b.until(()=>!!document.querySelector('.muse-lib-pills'),'filters open');await b.click('.muse-lib-pills button','Finished');await wait(300);await b.click('.muse-lib-filters-foot .button-primary');await b.until(()=>!document.querySelector('.muse-lib-filters'),'filters closed');
  check(/Page 1 of/.test(await summary())&&new RegExp(`of ${books.filter(x=>x.status==='finished').length+2} books`).test(await summary()),`status filter resets to page 1 and counts the whole library: ${await summary()}`);
- check(await b.evaluate(()=>[...document.querySelectorAll('.muse-collections-library-page .muse-card-status-badge')].every(n=>/Finished/.test(n.getAttribute('aria-label')))),'every card matches the status filter');
+ check(await b.evaluate(()=>[...document.querySelectorAll('.muse-collections-library-page .muse-lib-badge')].every(n=>/Finished/.test(n.getAttribute('aria-label')))),'every card matches the status filter');
  await library('&page=3');await chooseMenu('Collection sort','Title');
  const expected=[...books.map(x=>x.title),'Heir of Fire','A Court of Wings and Ruin','A Court of Thorns and Roses','Circe','My grandmother’s recipe notebook'].sort((x,y)=>x.localeCompare(y))[0];
  check(/Page 1 of/.test(await summary())&&(await firstTitle())===expected,`sort by title reorders the entire library (first: ${await firstTitle()})`);
 
  // Long titles and missing metadata keep card heights consistent
  await library('&sort=recent&size=96&page=11');
- const geometry=await b.evaluate(()=>{const cs=[...document.querySelectorAll('.muse-collections-library-page .muse-collections-card')].map(c=>({h:Math.round(c.getBoundingClientRect().height),t:c.querySelector('.muse-card-title').textContent,over:c.scrollWidth>c.clientWidth+1}));return {n:cs.length,heights:[...new Set(cs.map(c=>c.h))],over:cs.some(c=>c.over)};});
+ const geometry=await b.evaluate(()=>{const cs=[...document.querySelectorAll('.muse-collections-library-page .muse-lib-item')].map(c=>({h:Math.round(c.getBoundingClientRect().height),t:c.querySelector('.muse-card-title').textContent,over:c.scrollWidth>c.clientWidth+1}));return {n:cs.length,heights:[...new Set(cs.map(c=>c.h))],over:cs.some(c=>c.over)};});
  console.log('card heights',JSON.stringify(geometry));
  const tallestSpread=Math.max(...geometry.heights)-Math.min(...geometry.heights);
  check(geometry.n>0,'last 96-book page renders');
  await library('&sort=oldest&size=12&page=1');
- const awkward=await b.evaluate(({longTitle})=>{const cs=[...document.querySelectorAll('.muse-collections-library-page .muse-collections-card')];const h=cs.map(c=>Math.round(c.getBoundingClientRect().height));const long=cs.find(c=>c.querySelector('.muse-card-title').textContent===longTitle);return {titles:cs.map(c=>c.querySelector('.muse-card-title').textContent.slice(0,24)),heights:h,spread:Math.max(...h)-Math.min(...h),longClamped:long?long.querySelector('.muse-card-title').scrollHeight>long.querySelector('.muse-card-title').clientHeight:null,overflow:cs.some(c=>c.scrollWidth>c.clientWidth+1)};},{longTitle});
+ const awkward=await b.evaluate(({longTitle})=>{const cs=[...document.querySelectorAll('.muse-collections-library-page .muse-lib-item')];const h=cs.map(c=>Math.round(c.getBoundingClientRect().height));const long=cs.find(c=>c.querySelector('.muse-card-title').textContent===longTitle);return {titles:cs.map(c=>c.querySelector('.muse-card-title').textContent.slice(0,24)),heights:h,spread:Math.max(...h)-Math.min(...h),longClamped:long?long.querySelector('.muse-card-title').scrollHeight>long.querySelector('.muse-card-title').clientHeight:null,overflow:cs.some(c=>c.scrollWidth>c.clientWidth+1)};},{longTitle});
  console.log('awkward page',JSON.stringify(awkward));
  check(awkward.longClamped===true,'the very long title is visually clamped');check(awkward.spread<=1,`all cards on the awkward page share one height (spread ${awkward.spread}px)`);check(!awkward.overflow,'no card text overflows its card');
  check(tallestSpread<=1,`cards share one height across a 96-card page (spread ${tallestSpread}px)`);
@@ -86,13 +86,13 @@ try{
  await library('&sort=title&size=48&page=3&status=planned');
  const before={first:await firstTitle(),summary:await summary()};
  await b.evaluate(()=>window.scrollTo(0,1400));await wait(300);const scrollBefore=await b.evaluate(()=>Math.round(window.scrollY));
- const openedTitle=await b.evaluate(()=>{const c=[...document.querySelectorAll('.muse-collections-library-page .muse-collections-card')].find(x=>x.getBoundingClientRect().top>200&&x.getBoundingClientRect().top<800);const t=c.querySelector('.muse-card-title').textContent;c.click();return t;});
+ const openedTitle=await b.evaluate(()=>{const c=[...document.querySelectorAll('.muse-collections-library-page .muse-lib-item')].find(x=>x.getBoundingClientRect().top>200&&x.getBoundingClientRect().top<800);const t=c.querySelector('.muse-card-title').textContent;c.click();return t;});
  await b.until(()=>location.pathname.startsWith('/collections/books/'),'book detail opened');await b.until(()=>!!document.querySelector('main h1, main h2'),'detail rendered');
  await b.shoot('desktop-book-detail');
  await b.send('Page.navigate',{url:'about:blank'}).catch(()=>{});await b.go('/collections?tab=library&kind=book',ready,'reset');
  // Fresh history entry above, then do the real round trip with browser Back
  await library('&sort=title&size=48&page=3&status=planned');await b.evaluate(()=>window.scrollTo(0,1400));await wait(300);
- await b.evaluate(()=>{const c=[...document.querySelectorAll('.muse-collections-library-page .muse-collections-card')].find(x=>x.getBoundingClientRect().top>200&&x.getBoundingClientRect().top<800);c.click();});
+ await b.evaluate(()=>{const c=[...document.querySelectorAll('.muse-collections-library-page .muse-lib-item')].find(x=>x.getBoundingClientRect().top>200&&x.getBoundingClientRect().top<800);c.click();});
  await b.until(()=>location.pathname.startsWith('/collections/books/'),'detail again');await wait(800);
  await b.evaluate(()=>history.back());await b.until(new Function(`return location.pathname==='/collections'&&${ready}`),'back to library');await wait(1200);
  const after={first:await firstTitle(),summary:await summary(),search:await b.evaluate(()=>location.search),scroll:await b.evaluate(()=>Math.round(window.scrollY))};

@@ -11,11 +11,11 @@ try{
  const dbOrder=async(kind,period)=>(await client.from('reading_plan_entries').select('book_id').eq('period_kind',kind).eq('period',period).order('position')).data.map(r=>r.book_id);
  await rpc('add_reading_plan_books',{p_kind:'month',p_period:month,p_book_ids:[ids.acowar,ids.heir,ids.circe,ids.acotar,ids.manual]});
  browser=await openBrowser(account,{shots});const b=browser;await b.viewport(1280,1100);
- await b.go('/collections','document.querySelectorAll(".muse-plan-card").length>0','dashboard');await wait(900);
+ await b.go('/collections/plans','document.querySelectorAll(".muse-plan-card").length>0','dashboard');await wait(900);
  const titles=()=>b.evaluate(()=>[...document.querySelectorAll('.muse-plans .muse-plan-title')].map(t=>t.textContent));
  let t=await titles();
- check(t.length===5&&t[0]==='A Court of Wings and Ruin'&&await b.evaluate(()=>new Set([...document.querySelectorAll('.muse-plans[data-variant=dashboard] .muse-plan-card')].map(c=>Math.round(c.getBoundingClientRect().top))).size<=3),'the Dashboard shows this month\'s plan in order, never more than three rows tall (six a page, Nov 25)');
- check(await b.evaluate(()=>/5 books/.test(document.querySelector('.muse-plans-count').textContent)&&[...document.querySelectorAll('.muse-plan-bar-seg')].map(s=>s.textContent).join(',')==='1,1,2,1'),'status bar counts the five books by real status (1 TBR, 1 reading, 2 finished, 1 paused)');
+ check(t.length===5&&t[0]==='A Court of Wings and Ruin','Plans shows this month\'s plan in order');
+ check(await b.evaluate(()=>/5 books/.test(document.querySelector('.muse-month-card[data-open] .muse-month-count').textContent)&&[...document.querySelectorAll('.muse-plan-bar-seg')].map(s=>s.textContent).join(',')==='1,1,2,1'),'status bar counts the five books by real status (1 TBR, 1 reading, 2 finished, 1 paused)');
  check(await b.evaluate(()=>document.querySelector('.muse-plan-card [data-status="finished"] , .muse-plan-card[data-status="finished"] .muse-plan-status')!==null&&!!document.querySelector('.muse-plan-dates')),'cards show status chips and actual dates');
  await b.shoot('plans-dashboard');
  // Drag the first card's handle onto the third card.
@@ -26,7 +26,7 @@ try{
  await b.shoot('plans-dragging');await mouse('mouseReleased',pos.ox,pos.oy);await wait(900);
  t=await titles();const stored=await dbOrder('month',month);
  check(t[2]==='A Court of Wings and Ruin'&&stored[2]===ids.acowar,'dropping reorders the plan and saves it');
- await b.go('/collections','document.querySelectorAll(".muse-plan-card").length>0','reload');await wait(700);
+ await b.go('/collections/plans','document.querySelectorAll(".muse-plan-card").length>0','reload');await wait(700);
  check((await titles())[2]==='A Court of Wings and Ruin','the order survives a refresh');
  // Keyboard alternative: ArrowUp on the focused handle moves the card up one.
  await b.evaluate(()=>document.querySelectorAll('.muse-plan-card')[2].querySelector('.muse-plan-handle').focus());
@@ -40,19 +40,19 @@ try{
  check(!(await titles()).includes(first)&&(await dbOrder('month',nextMonth)).length===1&&!(await dbOrder('month',month)).includes((await dbOrder('month',nextMonth))[0]),'moving a book changes plan membership: it leaves this month and joins next month');
  const reading=await client.from('whimsy_books').select('payload').eq('id',ids.heir).single();check(reading.data.payload.status==='reading','moving never touches reading status');
  // Next month shows it; copy it back to this month (membership in both).
- await b.click('.muse-plans-step[aria-label="Next month"]');await wait(500);check((await titles()).length===1,'next month\'s plan holds the moved book');
+ await b.evaluate(()=>document.querySelector('.muse-month-card:not([data-open]) button.muse-month-name').click());await wait(500);check((await titles()).length===1,'next month\'s plan holds the moved book');
  await b.evaluate(()=>document.querySelector('.muse-plan-more').click());await b.until(()=>!!document.querySelector('.muse-plan-menu'),'menu2');await b.click('.muse-plan-menu .popover-choice','Copy to another plan');await b.until(()=>!!document.querySelector('#reading-plan-place[open]'),'picker2');
  await b.evaluate(n=>{[...document.querySelectorAll('#reading-plan-place .muse-plan-picker-grid button')].find(x=>x.getAttribute('aria-label').includes('already')||x.disabled)&&0;const [y,m]=n.split('-');[...document.querySelectorAll('#reading-plan-place .muse-plan-picker-grid button')].find(x=>x.dataset.now!==undefined&&!x.disabled)?.click();},month);await wait(1000);
  check((await dbOrder('month',month)).length===5&&(await dbOrder('month',nextMonth)).length===1,'copying keeps both memberships');
  // Remove from plan leaves the book in the Library.
- await b.click('.muse-plans-today');await wait(500);await b.evaluate(()=>document.querySelector('.muse-plan-more').click());await b.until(()=>!!document.querySelector('.muse-plan-menu'),'menu3');await b.click('.muse-plan-menu .popover-choice','Remove from');await wait(900);
+ await b.evaluate(()=>document.querySelector('.muse-month-card:not([data-open]) button.muse-month-name').click());await wait(500);await b.evaluate(()=>document.querySelector('.muse-plan-more').click());await b.until(()=>!!document.querySelector('.muse-plan-menu'),'menu3');await b.click('.muse-plan-menu .popover-choice','Remove from');await wait(900);
  check((await dbOrder('month',month)).length===4&&(await client.from('whimsy_books').select('id')).data.length>=5,'removing from a plan keeps the book in the Library');
  // Status sync: finishing a planned book elsewhere updates the plan without any plan action.
  sql(`update public.whimsy_books set payload=jsonb_set(payload,'{status}','"reading"') where id='${ids.manual}'`);
- await b.go('/collections','document.querySelectorAll(".muse-plan-card").length>0','status sync');await wait(900);
+ await b.go('/collections/plans','document.querySelectorAll(".muse-plan-card").length>0','status sync');await wait(900);
  check(await b.evaluate(()=>[...document.querySelectorAll('.muse-plan-card')].some(c=>/recipe notebook/.test(c.textContent)&&c.dataset.status==='reading')),'a status change anywhere updates the plan automatically');
  // Yearly plan and Add books.
- await b.click('.muse-plans .muse-segmented button','Yearly');await wait(600);check(await b.evaluate(()=>document.querySelectorAll('.muse-plans .muse-plan-card').length>0),'this year’s plan shows the months’ books (Nov 25)');
+ await b.click('.muse-plans .muse-segmented button','Year');await wait(600);check(await b.evaluate(()=>document.querySelectorAll('.muse-plans .muse-plan-card').length>0),'this year’s plan shows the months’ books (Nov 25)');
  await b.evaluate(()=>document.querySelector('.muse-plans-step[aria-label="Next year"]').click());await wait(500);check(await b.evaluate(()=>/Nothing planned for/.test(document.querySelector('.muse-plans').textContent)),'an empty yearly plan has an inviting empty state');
  await b.click('.muse-plans-empty .muse-button','Add books');await b.until(()=>!!document.querySelector('#reading-plan-add[open]'),'add modal');await b.shoot('plans-add-books');
  await b.evaluate(()=>document.querySelector('.muse-plan-suggest button').click());await wait(200);await b.click('.muse-plan-add-actions .button-primary');await wait(1000);
@@ -67,16 +67,16 @@ try{
  check(await b.evaluate(()=>/Plan/.test(document.querySelector('#reading-plan-place').textContent)),'Book Detail can add the book to a plan');
  await b.evaluate(()=>document.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true})));
  // Library select mode: tick books, add them to a plan.
- await b.go('/collections?tab=library','document.querySelectorAll(".muse-collections-library-page .muse-collections-card").length>0','library');await wait(700);
+ await b.go('/collections?tab=library','document.querySelectorAll(".muse-collections-library-page .muse-lib-item").length>0','library');await wait(700);
  await b.click('.muse-collections-select-trigger');await wait(300);
- await b.evaluate(()=>{const c=[...document.querySelectorAll('.muse-collections-library-page .muse-collections-card')];c.find(x=>/Wings and Ruin/.test(x.textContent)).click();c.find(x=>/Circe/.test(x.textContent)).click();});await wait(300);
+ await b.evaluate(()=>{const c=[...document.querySelectorAll('.muse-collections-library-page .muse-lib-item')];c.find(x=>/Wings and Ruin/.test(x.textContent)).click();c.find(x=>/Circe/.test(x.textContent)).click();});await wait(300);
  check(await b.evaluate(()=>/2 selected/.test(document.querySelector('.muse-collections-select-bar').textContent)&&location.pathname==='/collections'),'Library select mode ticks books instead of opening them');
  await b.click('.muse-collections-select-bar .button-primary');await b.until(()=>!!document.querySelector('#reading-plan-place[open]'),'library picker');
  await b.evaluate(()=>[...document.querySelectorAll('#reading-plan-place .muse-plan-picker-grid button')].find(x=>x.dataset.now!==undefined&&!x.disabled)?.click());await wait(1000);
  check((await client.from('reading_plan_entries').select('id').eq('period_kind','month').eq('period',month)).data.length===5,'Library books are added to the chosen plan; one already there is not duplicated');
  await b.evaluate(()=>document.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true})));
  // Phone.
- await b.viewport(390,844,true);await b.go('/collections','document.querySelectorAll(".muse-plan-card").length>0||!!document.querySelector(".muse-plans-empty")','phone');await wait(900);
+ await b.viewport(390,844,true);await b.go('/collections/plans','document.querySelectorAll(".muse-plan-card").length>0||!!document.querySelector(".muse-plans-empty")','phone');await wait(900);
  check(!(await b.overflow()),'no horizontal overflow on a phone');
  check(await b.evaluate(()=>{const h=document.querySelector('.muse-plan-handle');return !h||getComputedStyle(h).touchAction==='none';}),'only the drag handle blocks scrolling; the rest of the page scrolls normally');
  await b.evaluate(()=>document.querySelector('.muse-plans').scrollIntoView({block:'start'}));await wait(300);await b.shoot('plans-phone');

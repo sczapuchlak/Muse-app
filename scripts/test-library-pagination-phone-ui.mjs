@@ -7,8 +7,8 @@ let passed=0;const check=(ok,label)=>{assert.ok(ok,label);passed++;console.log('
 const account=await seedAccount();let browser;
 try{
  seedLargeLibrary(account.userId,COUNT);browser=await openBrowser(account,{shots});const b=browser;
- const cards=()=>b.evaluate(()=>document.querySelectorAll('.muse-collections-library-page .muse-collections-card').length);
- const ready='document.querySelectorAll(".muse-collections-library-page .muse-collections-card").length>0';
+ const cards=()=>b.evaluate(()=>document.querySelectorAll('.muse-collections-library-page .muse-lib-item').length);
+ const ready='document.querySelectorAll(".muse-collections-library-page .muse-lib-item").length>0';
  const library=(query='')=>b.go(`/collections?tab=library&kind=book${query}`,ready,'library '+query);
  const libraryTop=()=>b.evaluate(()=>{document.querySelector('.muse-collections-library-page')?.scrollIntoView({block:'start'});window.scrollBy(0,-8);});
  const shootLibrary=async name=>{await libraryTop();return b.shoot(name);};
@@ -20,7 +20,7 @@ try{
  await shootLibrary('phone-top');await b.evaluate(()=>window.scrollTo(0,2000));await wait(300);await b.shoot('phone-mid');
  await b.evaluate(()=>document.querySelector('.muse-pagination[data-position="bottom"]').scrollIntoView({block:'center'}));await wait(300);await b.shoot('phone-bottom');
  await library('&sort=oldest&size=12&page=1');
- const phoneCards=await b.evaluate(()=>{const cs=[...document.querySelectorAll('.muse-collections-library-page .muse-collections-card')].map(c=>Math.round(c.getBoundingClientRect().height));return {spread:Math.max(...cs)-Math.min(...cs)};});
+ const phoneCards=await b.evaluate(()=>{const cs=[...document.querySelectorAll('.muse-collections-library-page .muse-lib-item')].map(c=>Math.round(c.getBoundingClientRect().height));return {spread:Math.max(...cs)-Math.min(...cs)};});
  check(phoneCards.spread<=1,`phone cards share one height (spread ${phoneCards.spread}px)`);await shootLibrary('phone-awkward-titles');
  await b.viewport(820,1000,true);await library('&page=2');check(!(await b.overflow()),'no horizontal overflow at 820 tablet');await shootLibrary('tablet-page-2');
 

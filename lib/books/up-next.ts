@@ -58,6 +58,26 @@ export function reelFor(pool:readonly Book[],winner:Book,length=14,random?:(a:Ui
  const reel:Book[]=[];for(let i=0;i<length-1;i++)reel.push(pool[randomIndex(pool.length,random)]);return [...reel,winner];
 }
 
+// ---- Up Next, read from the plans (Nov 26) ------------------------------------------------------------------------
+/**
+ * The Dashboard's Up Next: the next books waiting in your plans, never a list of its own. This month's plan in its own
+ * order, then later months' plans (soonest first), then books planned for a year without a month ("Anytime"). Only
+ * books waiting to be read (To Be Read, Paused, Did Not Finish), each once. Reordering a plan reorders Up Next.
+ */
+export type UpNextItem={book:Book;kind:'month'|'year';period:string};
+/** The same queue with the plan each book comes from (its month, or the year when it has no month). */
+export function upNextQueue(entries:readonly PlanEntry[],books:readonly Book[],today:string,limit=8):UpNextItem[]{
+ const byId=new Map(books.map(b=>[b.id,b])),month=periodOf('month',today),year=periodOf('year',today);
+ const months=[...new Set(entries.filter(e=>e.kind==='month'&&e.period>=month).map(e=>e.period))].sort();
+ const years=[...new Set(entries.filter(e=>e.kind==='year'&&e.period>=year).map(e=>e.period))].sort();
+ const seen=new Set<string>(),out:UpNextItem[]=[];
+ for(const e of [...months.flatMap(m=>planEntries(entries,'month',m)),...years.flatMap(y=>planEntries(entries,'year',y))]){
+  const book=byId.get(e.bookId);if(!book||seen.has(book.id)||!eligible(book))continue;seen.add(book.id);out.push({book,kind:e.kind,period:e.period});if(out.length>=limit)break;
+ }
+ return out;
+}
+export const upNextFromPlans=(entries:readonly PlanEntry[],books:readonly Book[],today:string,limit=8):Book[]=>upNextQueue(entries,books,today,limit).map(i=>i.book);
+
 // ---- Retiring the old Up Next slots ---------------------------------------------------------------------------------
 const SLOT_COUNT=3;
 export type Slots=(string|null)[];

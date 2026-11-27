@@ -38,8 +38,8 @@ test('Collections keeps old deep links, contextual Reading Atlas, and one filter
  assert.doesNotMatch(source,/muse-collections-nav/);
  assert.match(source,/router\.replace\(book\?bookHref\(book\):section==='atlas'\?'\/collections\/reading-atlas'/,'old Books deep links resolve to the book page or Reading Atlas (#136)');
  assert.match(source,/initialItemId=\{query\?\.get\('item'\)\}/);
- assert.match(source,/aria-expanded=\{advancedOpen\}/);
- assert.match(source,/setAdvancedOpen\(value=>!value\)/);
+ assert.match(source,/aria-expanded=\{filtersOpen\}/,'one Filters control owns every filter (Library V2)');
+ assert.match(source,/setFiltersOpen\(true\)/);
  assert.match(source,/<Bookshelf surface="dashboard" embedded\/>/,'Currently Reading lives on the Books Dashboard');assert.doesNotMatch(source,/muse-collections-board"/,'the Board is retired for Books');
 });
 
@@ -49,9 +49,8 @@ test('Collections restoration keeps one compact active shelf and direct add acti
  assert.match(source,/kindFilter==='book'\?'Currently Reading'/);
  assert.match(source,/kindFilter==='game'\?'Currently Playing'/);
  assert.match(source,/tab==='library'/,'Library is its own tab');
- assert.match(source,/muse-collections-search-add/);
- assert.match(source,/role="menu" open=\{addOpen\}/);
- assert.match(source,/onClick=\{\(\)=>id==='books'\?openAddBook\(\):go\(id,\{add:true\}\)\}/);
+ assert.match(source,/muse-lib-toolbar/);
+ assert.match(source,/className="muse-button button-primary muse-lib-add" aria-label="Add a book" onClick=\{\(\)=>openAddBook\(\)\}/,'Add opens Add a book directly (Books is the only kind)');
  assert.doesNotMatch(source,/What are you adding\?/);
  assert.match(source,/emptyCopy\[kindFilter\]/);
  assert.match(css,/\.muse-collections-active-card\{display:grid;grid-template-columns:64px minmax\(0,1fr\)/);

@@ -59,11 +59,12 @@ export function ReadingChallenge({books,goals,today,variant,onSave,onRemove,onOp
   </div>
   {editor}
   {variant==='full'&&<ol className="muse-challenge-shelf" aria-label={`${p.done} finished reads of ${p.target}`}>
-   {Array.from({length:slots},(_,i)=>{const r=p.reads[i];
+   {Array.from({length:Math.min(slots,p.done,4)},(_,i)=>{const r=p.reads[p.reads.length-1-i];
     return <li key={r?r.readId:`slot-${i}`} data-empty={!r||undefined}>{r?<button type="button" onClick={()=>onOpenBook?.(r.bookId)} title={`${r.title}${r.reread?' (reread)':''} · finished ${r.finishedOn}`} aria-label={`${i+1}. ${r.title}${r.reread?', reread':''}, finished ${r.finishedOn}`}>
      {r.coverUrl?<img src={r.coverUrl} alt="" loading="lazy" referrerPolicy="no-referrer"/>:<span className="muse-challenge-blank">{r.title}</span>}{r.reread&&<span className="muse-challenge-reread" aria-hidden="true"><MuseIcon name="undo" size={11}/></span>}</button>
      :<span aria-label={`Book ${i+1}, still to come`}>{i+1}</span>}</li>;})}
-   {p.done>60&&<li className="muse-challenge-more">+{p.done-60}</li>}
+   {p.done>4&&<li className="muse-challenge-togo" aria-label={`and ${p.done-4} more finished`}><span><strong className="type-numeric">+{p.done-4}</strong><small>more</small></span></li>}
+   {p.remaining>0&&p.done<=4&&<li className="muse-challenge-togo" aria-label={`${p.remaining} still to come`}><span><strong className="type-numeric">+{p.remaining}</strong><small>to go</small></span></li>}
   </ol>}
  </article>;
 }
